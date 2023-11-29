@@ -175,7 +175,7 @@ public:
                                         const int patternLength,
                                         const int maxError);
 
-    static bool cmpAmbiguous(char a, char b);
+    static bool cmpAmbiguousDna(char a, char b);
 };
 
 }  // namespace U2

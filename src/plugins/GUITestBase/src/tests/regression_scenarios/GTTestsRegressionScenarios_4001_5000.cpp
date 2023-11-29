@@ -4380,6 +4380,18 @@ GUI_TEST_CLASS_DEFINITION(test_4721) {
     GTComboBox::checkCurrentValue(treeViewCombo, "Phylogram");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4724) {
+    GTMenu::clickMainMenuItem({"Settings", "Plugins..."});
+    auto itemWithLicense = GTTreeWidget::findItem(GTWidget::findTreeWidget("treeWidget"), "PsiPred", nullptr, 1);
+    GTTreeWidget::click(itemWithLicense);
+
+    GTWidget::click(GTWidget::findButtonByText("Accept"));
+    auto itemToChangeFocus = GTTreeWidget::findItem(GTWidget::findTreeWidget("treeWidget"), "Primer3", nullptr, 1);
+    GTTreeWidget::click(itemToChangeFocus);
+
+    GTWidget::click(GTWidget::findButtonByText("Show License"));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4728) {
     // 1. Open 'fa1.fa'
     GTFileDialog::openFile(testDir + "_common_data/fasta", "fa1.fa");

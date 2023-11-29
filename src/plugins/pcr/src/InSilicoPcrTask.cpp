@@ -226,7 +226,7 @@ bool InSilicoPcrTask::checkPerfectMatch(const PrimerBind& bind, U2Strand::Direct
     for (int i = 0; i < perfectMatch; i++) {
         char a = sequence.at(sequenceLength - 1 - i);
         char b = croppedPrimer.at(primerLength - 1 - i);
-        if (!FindAlgorithm::cmpAmbiguous(a, b)) {
+        if (!FindAlgorithm::cmpAmbiguousDna(a, b)) {
             return false;
         }
     }

@@ -29,6 +29,7 @@
 
 #include <U2Algorithm/CDSearchTaskFactoryRegistry.h>
 
+#include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
@@ -50,8 +51,10 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVUtils.h>
 #include <U2View/AnnotatedDNAView.h>
+#include <U2View/AnnotationsTreeView.h>
 
 #include "BlastQuery.h"
+#include "RemoteBLASTPrimerPairsToAnnotationsTask.h"
 #include "RemoteBLASTTask.h"
 
 namespace U2 {
@@ -102,6 +105,7 @@ void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":/remote_blast/images/remote_db_request.png"), tr("Query NCBI BLAST database..."), 60);
     a->setObjectName("Query NCBI BLAST database");
+    a->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
 }
 
@@ -118,17 +122,35 @@ void RemoteBLASTViewContext::sl_showDialog() {
     QAction* a = (QAction*)sender();
     auto viewAction = qobject_cast<GObjectViewAction*>(a);
     auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
-    assert(av);
+    SAFE_POINT_NN(av, );
 
-    ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
+    auto seqCtx = av->getActiveSequenceContext();
+    // If we have selected primer pairs we should BLAST their regions
+    auto selectedPrimerPairs = getSelectedPrimerPairs(av->getAnnotationsGroupSelection());
+    QStringList selectedPrimerPairGroupNames;
+    for (const auto& primerPair : qAsConst(selectedPrimerPairs)) {
+        selectedPrimerPairGroupNames << primerPair.first->getGroup()->getName();
+    }
 
     bool isAminoSeq = seqCtx->getAlphabet()->isAmino();
-    QObjectScopedPointer<SendSelectionDialog> dlg = new SendSelectionDialog(seqCtx, isAminoSeq, av->getWidget());
+
+    QObjectScopedPointer<SendSelectionDialog> dlg = new SendSelectionDialog(seqCtx, isAminoSeq, selectedPrimerPairGroupNames, av->getWidget());
     dlg->exec();
     CHECK(!dlg.isNull(), );
+    CHECK(dlg->result() == QDialog::Accepted, );
 
-    if (QDialog::Accepted == dlg->result()) {
-        // prepare query
+    RemoteBLASTTaskSettings cfg = dlg->cfg;
+    auto seqObj = seqCtx->getSequenceObject();
+    SAFE_POINT_NN(seqObj, );
+
+    cfg.isCircular = seqObj->isCircular();
+    DNATranslation* aminoT = dlg->translateToAmino ? seqCtx->getAminoTT() : 0;
+    cfg.aminoT = aminoT;
+    DNATranslation* complT = dlg->translateToAmino ? seqCtx->getComplementTT() : 0;
+    cfg.complT = complT;
+
+
+    if (selectedPrimerPairs.isEmpty()) {
         DNASequenceSelection* s = seqCtx->getSequenceSelection();
         QVector<U2Region> regions;
         if (s->isEmpty()) {
@@ -138,36 +160,59 @@ void RemoteBLASTViewContext::sl_showDialog() {
         }
 
         // First check that the regions are not too large: remote service will not accept gigs of data.
-        foreach (const U2Region& region, regions) {
+        for (const U2Region& region : qAsConst(regions)) {
             if (region.length > MAX_REGION_SIZE_TO_SEARCH_WITH_REMOTE_BLAST) {
                 QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), tr("Selected region is too large!"));
                 return;
             }
         }
         U2OpStatusImpl os;
-        foreach (const U2Region& r, regions) {
+        for (const U2Region& r : qAsConst(regions)) {
             QByteArray query = seqCtx->getSequenceData(r, os);
             CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
 
-            DNATranslation* aminoT = (dlg->translateToAmino ? seqCtx->getAminoTT() : 0);
-            DNATranslation* complT = (dlg->translateToAmino ? seqCtx->getComplementTT() : 0);
-
-            RemoteBLASTTaskSettings cfg = dlg->cfg;
             cfg.query = query;
-            SAFE_POINT(seqCtx->getSequenceObject() != nullptr, "Sequence objects is NULL", );
-            cfg.isCircular = seqCtx->getSequenceObject()->isCircular();
-            cfg.aminoT = aminoT;
-            cfg.complT = complT;
+            auto annotationTableObject = dlg->getAnnotationObject();
+            SAFE_POINT(annotationTableObject != nullptr, L10N::nullPointerError("AnnotationTableObject"), );
 
-            AnnotationTableObject* aobject = dlg->getAnnotationObject();
-            if (aobject == nullptr) {
-                return;
-            }
-            Task* t = new RemoteBLASTToAnnotationsTask(cfg, r.startPos, aobject, dlg->getUrl(), dlg->getGroupName(), dlg->getAnnotationDescription());
+            Task* t = new RemoteBLASTToAnnotationsTask(cfg, r.startPos, annotationTableObject, dlg->getUrl(), dlg->getGroupName(), dlg->getAnnotationDescription());
             AppContext::getTaskScheduler()->registerTopLevelTask(t);
         }
+    } else {
+        auto sequenceObject = seqCtx->getSequenceObject();
+        auto t = new RemoteBLASTPrimerPairsToAnnotationsTask(sequenceObject, selectedPrimerPairs, cfg);
+        AppContext::getTaskScheduler()->registerTopLevelTask(t);
     }
 }
+
+const QList<QPair<Annotation*, Annotation*>> RemoteBLASTViewContext::getSelectedPrimerPairs(AnnotationGroupSelection* ags) {
+    auto annGroups = ags->getSelection();
+    QList<QPair<Annotation*, Annotation*>> primerAnnotationPairs;
+    for (auto primerGroup : qAsConst(annGroups)) {
+        auto primerAnnotations = primerGroup->getAnnotations();
+        Annotation* forward = nullptr;
+        Annotation* reverse = nullptr;
+        for (auto ann : qAsConst(primerAnnotations)) {
+            CHECK_BREAK(ann->getType() == U2FeatureTypes::Primer);
+            CHECK_CONTINUE(ann->getName() == "top_primers");
+
+            switch (ann->getLocation()->strand.getDirection()) {
+                case U2Strand::Direction::Direct:
+                    forward = ann;
+                    break;
+                case U2Strand::Direction::Complementary:
+                    reverse = ann;
+                    break;
+            }
+        }
+        if (forward != nullptr && reverse != nullptr) {
+            primerAnnotationPairs << QPair<Annotation*, Annotation*> {forward, reverse};
+        }
+    }
+
+    return primerAnnotationPairs;
+}
+
 
 QList<XMLTestFactory*> RemoteBLASTPluginTests::createTestFactories() {
     QList<XMLTestFactory*> res;

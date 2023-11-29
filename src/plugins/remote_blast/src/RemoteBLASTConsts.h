@@ -51,6 +51,9 @@ namespace U2 {
 #define SERVICE_ATTR "service"
 #define PATTERN_ATTR "phi-pattern"
 #define ENTREZ_QUERY_ATTR "entrez_query"
+#define BLAST_PRIMER_PAIRS "blast_primer_pairs"
+#define SEQUENCE_OBJECT_ATTR "sequence_object"
+#define ANNOTATIONS_OBJECT_ATTR "annotations_object"
 
 class ParametersLists {
 public:

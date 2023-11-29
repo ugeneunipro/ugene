@@ -7317,7 +7317,7 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="123"/>
         <source>Characters Occurrence</source>
-        <translation>Нуклеотиды</translation>
+        <translation>Встречаемость символов</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="130"/>

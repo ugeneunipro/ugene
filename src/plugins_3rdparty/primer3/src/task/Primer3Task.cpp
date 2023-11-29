@@ -22,7 +22,6 @@
 #include "Primer3Task.h"
 
 #include <U2Core/AppContext.h>
-#include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
@@ -44,7 +43,6 @@ namespace U2 {
 Primer3Task::Primer3Task(const QSharedPointer<Primer3TaskSettings>& _settings)
     : Task(tr("Pick primers task"), TaskFlag_ReportingIsEnabled),
       settings(_settings) {
-    GCOUNTER(cvar, "Primer3Task");
 
     // Primer3Task is single threaded: the original "primer3" tool doesn't support parallel calculations.
     addTaskResource(TaskResourceUsage(AppResource::buildDynamicResourceId("Primer 3 single thread"), 1, TaskResourceStage::Run));

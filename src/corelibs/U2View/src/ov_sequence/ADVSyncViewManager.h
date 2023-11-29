@@ -63,7 +63,8 @@ private:
     enum SyncMode {
         SyncMode_Start,
         SyncMode_SeqSel,
-        SyncMode_AnnSel
+        SyncMode_AnnSel,
+        SyncMode_None
     };
 
     void sync(bool lock, SyncMode mode);
@@ -89,6 +90,8 @@ private:
     QAction* syncBySeqSelAction;
     QAction* syncByAnnSelAction;
     QActionGroup* lockActionGroup;
+
+    SyncMode syncModeState = SyncMode_None;
 
     QToolButton* syncButton;
     QToolButton* lockButton;

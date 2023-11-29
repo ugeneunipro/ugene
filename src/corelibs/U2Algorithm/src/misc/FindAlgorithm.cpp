@@ -358,40 +358,44 @@ static void findInAmino_subst(FindAlgorithmResultsListener* rl,
     }  // base pos
 }
 
-static char* createAmbiguousBaseMap() {
+static const char* createAmbiguousDnaMatchMap() {
     // Source: http://www.ncbi.nlm.nih.gov/blast/fasta.shtml
     // Unknown symbol is zero: no match
+    static char map[256];
+    memset(map, 0, 256);
 
-    const int SIZE = 128;
-    static char map[SIZE];
+    char a = 0x01;  // Bitmask: 00000001;
+    char c = 0x02;  // Bitmask: 00000010;
+    char g = 0x04;  // Bitmask: 00000100;
+    char t = 0x08;  // Bitmask: 00001000;
 
-    for (int i = 0; i < SIZE; i++) {
-        map[i] = 0x00;
-    }
+    // Base alphabet.
+    map[(int)'A'] = a;
+    map[(int)'C'] = c;
+    map[(int)'G'] = g;
+    map[(int)'T'] = t;
+    map[(int)'U'] = t;
 
-    map['A'] = 0x01;  // Bitmask: 00000001
-    map['C'] = 0x02;  // Bitmask: 00000010
-    map['G'] = 0x04;  // Bitmask: 00000100
-    map['T'] = 0x08;  // Bitmask: 00001000
-    map['U'] = 0x08;  // Bitmask: 00001000
-    map['M'] = 0x03;  // Bitmask: 00000011
-    map['R'] = 0x05;  // Bitmask: 00000101
-    map['W'] = 0x09;  // Bitmask: 00001001
-    map['S'] = 0x06;  // Bitmask: 00000110
-    map['Y'] = 0x0A;  // Bitmask: 00001010
-    map['K'] = 0x0C;  // Bitmask: 00001100
-    map['V'] = 0x07;  // Bitmask: 00000111
-    map['H'] = 0x0B;  // Bitmask: 00001011
-    map['D'] = 0x0D;  // Bitmask: 00001101
-    map['B'] = 0x0E;  // Bitmask: 00001110
-    map['N'] = 0x0F;  // Bitmask: 00001111
-    map['X'] = 0x0F;  // Bitmask: 00001111
+    // Extended alphabet.
+    map[(int)'B'] = c | g | t;
+    map[(int)'D'] = a | g | t;
+    map[(int)'H'] = a | c | t;
+    map[(int)'K'] = g | t;
+    map[(int)'M'] = a | c;
+    map[(int)'R'] = a | g;
+    map[(int)'S'] = c | g;
+    map[(int)'V'] = a | c | g;
+    map[(int)'W'] = a | t;
+    map[(int)'Y'] = c | t;
+
+    // In 'ambiguous' mode N matches any symbol.
+    map[(int)'N'] = a | c | g | t;
 
     return &map[0];
 }
 
-bool FindAlgorithm::cmpAmbiguous(char a, char b) {
-    static char* charMap = createAmbiguousBaseMap();
+bool FindAlgorithm::cmpAmbiguousDna(char a, char b) {
+    static const char* charMap = createAmbiguousDnaMatchMap();
 
     SAFE_POINT(a >= 0 && b >= 0, "Invalid characters supplied!", false);
 
@@ -413,11 +417,11 @@ inline bool match_pattern(const char* seq, const char* p, int start, int pattern
     return match;
 }
 
-inline bool match_pattern_ambiguous(const char* seq, const char* p, int start, int patternLen, int maxErr, int& curErr) {
+inline bool match_pattern_ambiguous_dna(const char* seq, const char* p, int start, int patternLen, int maxErr, int& curErr) {
     bool match = true;
     curErr = 0;
     for (int j = 0; j < patternLen; j++) {
-        if (!FindAlgorithm::cmpAmbiguous(seq[start + j], p[j]) && ++curErr > maxErr) {
+        if (!FindAlgorithm::cmpAmbiguousDna(seq[start + j], p[j]) && ++curErr > maxErr) {
             match = false;
             break;
         }
@@ -675,6 +679,14 @@ static void find_subst(FindAlgorithmResultsListener* rl,
         tmp.resize(patternLen);
         complPattern = tmp.data();
         TextUtils::translate(complTT->getOne2OneMapper(), pattern, patternLen, complPattern);
+        for (int i = 0; i < patternLen; i++) {
+            if (complPattern[i] == 'N' && pattern[i] != 'N') {
+                // If some unknown symbol was replaced by 'N' in 'TextUtils::translate', do not keep N but keep the original symbol.
+                // Reason: in 'ambiguous' bases search mode 'N' matches any other symbol, and an unknown symbol (like 'Z') does not match anything
+                // but is translated as 'N' by 'TextUtils::translate'.
+                complPattern[i] = pattern[i];
+            }
+        }
         TextUtils::reverse(complPattern, patternLen);
     }
 
@@ -712,7 +724,7 @@ static void find_subst(FindAlgorithmResultsListener* rl,
             bool match = true;
             int curErr = 0;
             if (useAmbiguousBases) {
-                match = match_pattern_ambiguous(sequence, p, i, patternLen, maxErr, curErr);
+                match = match_pattern_ambiguous_dna(sequence, p, i, patternLen, maxErr, curErr);
             } else {
                 match = match_pattern(sequence, p, i, patternLen, maxErr, curErr);
             }

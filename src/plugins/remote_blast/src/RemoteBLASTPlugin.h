@@ -34,6 +34,8 @@
 
 namespace U2 {
 
+class Annotation;
+class AnnotationGroupSelection;
 class XMLTestFactory;
 class RemoteBLASTViewContext;
 
@@ -56,6 +58,11 @@ protected:
 
 private slots:
     void sl_showDialog();
+
+private:
+    // Check annotation selection and if some primer pairs group(s) if (are) selected
+    // (or its (their) parent, which named "top_primers"), than we should blast these primer pairs
+    static const QList<QPair<Annotation*, Annotation*>> getSelectedPrimerPairs(AnnotationGroupSelection* ags);
 };
 
 class RemoteBLASTPluginTests {

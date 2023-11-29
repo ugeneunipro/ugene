@@ -454,7 +454,7 @@ bool AddPluginTask::verifyPlugin() {
 }
 
 void AddPluginTask::instantiatePlugin() {
-    PLUG_INIT_FUNC init_fn = PLUG_INIT_FUNC(lib->resolve(U2_PLUGIN_INIT_FUNC_NAME));
+    auto init_fn = PLUG_INIT_FUNC(lib->resolve(U2_PLUGIN_INIT_FUNC_NAME));
     QString libUrl = desc.libraryUrl.getURLString();
     if (!init_fn) {
         stateInfo.setError(tr("Plugin initialization routine was not found: %1").arg(libUrl));
@@ -471,21 +471,14 @@ void AddPluginTask::instantiatePlugin() {
     p->setLicensePath(desc.licenseUrl.getURLString());
 
     if (!p->isFree()) {
-        QString versionAppendix = Version::buildDate;
-        if (!Version::appVersion().isDevVersion) {
-            versionAppendix.clear();
-        } else {
-            versionAppendix.replace(" ", ".");
-            versionAppendix.append("-");
-        }
         Settings* settings = AppContext::getSettings();
         QString pluginAcceptedLicenseSettingsDir = settings->toVersionKey(PLUGINS_ACCEPTED_LICENSE_LIST);
-        if (settings->getValue(pluginAcceptedLicenseSettingsDir + versionAppendix + desc.id + "license", false).toBool()) {
+        if (settings->getValue(pluginAcceptedLicenseSettingsDir + desc.id + "license", false).toBool()) {
             p->acceptLicense();
         }
     }
 
-    PluginRef* ref = new PluginRef(p, lib.take(), desc);
+    auto ref = new PluginRef(p, lib.take(), desc);
     ps->registerPlugin(ref);
 }
 

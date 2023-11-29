@@ -21,38 +21,35 @@
 
 #pragma once
 
-#include <U2Test/XMLTestUtils.h>
+#include <U2Core/Task.h>
 
 #include "RemoteBLASTTask.h"
 
+#include <QPointer>
+
 namespace U2 {
 
+class Annotation;
+class RemoteBLASTPrimerPairToAnnotationsTask;
 class U2SequenceObject;
 
-// cppcheck-suppress noConstructor
-class GTest_RemoteBLAST : public XmlTest {
+// Run @RemoteBLASTPrimerPairToAnnotationsTask for each received primer pair
+class RemoteBLASTPrimerPairsToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_RemoteBLAST, "plugin_remote-query");
+    // \param seqObj Sequence object.
+    // \param primerAnnotationPairs Primer pairs list.
+    // \param cfg BLAST config.
+    RemoteBLASTPrimerPairsToAnnotationsTask(const QPointer<U2SequenceObject>& seqObj,
+                                            const QList<QPair<Annotation*, Annotation*>>& primerAnnotationPairs,
+                                            const RemoteBLASTTaskSettings& cfg);
 
-    void prepare();
-    void cleanup();
-    Task::ReportResult report();
+    void prepare() override;
 
 private:
-    QString seqId;
-    QString annId;
-    U2SequenceObject* seqObj = nullptr;
-    QPointer<AnnotationTableObject> ao;
-    Task* task = nullptr;
-    int minLength;
-    int maxLength;
-    QString index;
-    QString sequence;
-    QString request;
-    QString algoritm;
-    QStringList expectedResults;
-    bool simple;
+    QPointer<U2SequenceObject> seqObj;
+    QList<QPair<Annotation*, Annotation*>> primerAnnotationPairs;
+    RemoteBLASTTaskSettings cfg;
 };
 
-}  // namespace U2
+}

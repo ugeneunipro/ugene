@@ -38,8 +38,6 @@ namespace U2 {
 /* TRANSLATOR U2::PluginViewerController */
 
 PluginViewerController::PluginViewerController() {
-    showServices = false;  //'true' mode is not functional anymore after service<->plugin model refactoring
-    mdiWindow = nullptr;
     connectStaticActions();
 }
 
@@ -94,7 +92,7 @@ void PluginViewerController::connectStaticActions() {
     MainWindow* mw = AppContext::getMainWindow();
     QMenu* pluginsMenu = mw->getTopLevelMenu(MWMENU_SETTINGS);
 
-    QAction* viewPluginsAction = new QAction(QIcon(":ugene/images/plugins.png"), tr("Plugins..."), this);
+    auto viewPluginsAction = new QAction(QIcon(":ugene/images/plugins.png"), tr("Plugins..."), this);
     connect(viewPluginsAction, SIGNAL(triggered()), SLOT(sl_show()));
     viewPluginsAction->setObjectName(ACTION__PLUGINS_VIEW);
     pluginsMenu->addAction(viewPluginsAction);
@@ -137,11 +135,11 @@ void PluginViewerController::updateActions() {
     disableServiceAction->setEnabled(isService && isServiceEnabled);
 }
 
-void PluginViewerController::buildItems() {
+void PluginViewerController::buildItems() const {
     const QList<Plugin*>& plugins = AppContext::getPluginSupport()->getPlugins();
     foreach (Plugin* p, plugins) {
         QTreeWidget* treeWidget = ui.treeWidget;
-        PlugViewPluginItem* pluginItem = new PlugViewPluginItem(nullptr, p, showServices);
+        auto pluginItem = new PlugViewPluginItem(nullptr, p, showServices);
         if (showServices) {
             QList<Service*> services = p->getServices();
             // this method is called for default state init also -> look for registered plugin services
@@ -157,17 +155,6 @@ void PluginViewerController::buildItems() {
         treeWidget->addTopLevelItem(pluginItem);
         pluginItem->setExpanded(true);
     }
-}
-
-PlugViewPluginItem* PluginViewerController::findPluginItem(Plugin* p) const {
-    int nPlugins = ui.treeWidget->topLevelItemCount();
-    for (int i = 0; i < nPlugins; i++) {
-        auto item = static_cast<PlugViewPluginItem*>(ui.treeWidget->topLevelItem(i));
-        if (item->plugin == p) {
-            return item;
-        }
-    }
-    return nullptr;
 }
 
 PlugViewServiceItem* PluginViewerController::findServiceItem(Service* /*s*/) const {
@@ -247,13 +234,6 @@ PlugViewServiceItem* PluginViewerController::getCurrentServiceItem() const {
     return si;
 }
 
-PlugViewPluginItem* PluginViewerController::getCurrentPluginItem() const {
-    auto item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
-    assert(item != nullptr && item->isPluginItem());
-    auto pi = static_cast<PlugViewPluginItem*>(item);
-    return pi;
-}
-
 void PluginViewerController::sl_enableService() {
     assert(showServices);
     PlugViewServiceItem* si = getCurrentServiceItem();
@@ -295,18 +275,16 @@ void PluginViewerController::updateState() {
 }
 
 void PluginViewerController::sl_treeCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous) {
-    Q_UNUSED(current);
-    Q_UNUSED(previous);
     if (current == previous) {
         return;
     }
     ui.showLicenseButton->setEnabled(true);
-    auto curentItem = dynamic_cast<PlugViewPluginItem*>(current);
-    if (!curentItem->plugin->isFree()) {
-        if (!curentItem->plugin->isLicenseAccepted()) {
-            showLicense();
-        } else {
+    auto currentItem = dynamic_cast<PlugViewPluginItem*>(current);
+    if (!currentItem->plugin->isFree()) {
+        if (currentItem->plugin->isLicenseAccepted()) {
             hideLicense();
+        } else {
+            showLicense();
         }
     } else {
         hideLicense();
@@ -322,28 +300,21 @@ void PluginViewerController::sl_showHideLicense() {
     }
 }
 void PluginViewerController::sl_acceptLicense() {
-    auto curentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
+    auto currentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
     showLicense();
-    AppContext::getPluginSupport()->setLicenseAccepted(curentItem->plugin);
+    AppContext::getPluginSupport()->setLicenseAccepted(currentItem->plugin);
+    hideLicense();
 }
 
-void PluginViewerController::showLicense() {
+void PluginViewerController::showLicense() const {
     ui.showLicenseButton->setText(tr("Hide License"));
     ui.licenseView->show();
     ui.licenseLabel->show();
-    auto curentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
-    if (!curentItem->plugin->isFree()) {
-        if (!curentItem->plugin->isLicenseAccepted()) {
-            ui.acceptLicenseButton->show();
-        } else {
-            ui.acceptLicenseButton->hide();
-        }
-    } else {
-        ui.acceptLicenseButton->hide();
-    }
+    auto currentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
+    ui.acceptLicenseButton->setHidden(!currentItem || currentItem->plugin->isFree() || currentItem->plugin->isLicenseAccepted());
 
-    // Opening license file
-    QFile licenseFile(curentItem->plugin->getLicensePath().getURLString());
+    // Opening the license file.
+    QFile licenseFile(currentItem->plugin->getLicensePath().getURLString());
     if (!licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         ui.licenseView->setText(tr("License file not found."));
     } else {
@@ -351,7 +322,8 @@ void PluginViewerController::showLicense() {
         licenseFile.close();
     }
 }
-void PluginViewerController::hideLicense() {
+
+void PluginViewerController::hideLicense() const {
     ui.showLicenseButton->setText(tr("Show License"));
     ui.licenseView->hide();
     ui.licenseLabel->hide();

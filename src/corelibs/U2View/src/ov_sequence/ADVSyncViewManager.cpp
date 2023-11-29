@@ -24,6 +24,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
@@ -42,17 +43,17 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
 
     lockByStartPosAction = new QAction(tr("Lock scales: visible range start"), this);
     lockByStartPosAction->setObjectName("Lock scales: visible range start");
-    connect(lockByStartPosAction, SIGNAL(triggered()), SLOT(sl_lock()));
+    connect(lockByStartPosAction, &QAction::triggered, this, &ADVSyncViewManager::sl_lock);
     lockByStartPosAction->setCheckable(true);
 
     lockBySeqSelAction = new QAction(tr("Lock scales: selected sequence"), this);
     lockBySeqSelAction->setObjectName("Lock scales: selected sequence");
-    connect(lockBySeqSelAction, SIGNAL(triggered()), SLOT(sl_lock()));
+    connect(lockBySeqSelAction, &QAction::triggered, this, &ADVSyncViewManager::sl_lock);
     lockBySeqSelAction->setCheckable(true);
 
     lockByAnnSelAction = new QAction(tr("Lock scales: selected annotation"), this);
     lockByAnnSelAction->setObjectName("Lock scales: selected annotation");
-    connect(lockByAnnSelAction, SIGNAL(triggered()), SLOT(sl_lock()));
+    connect(lockByAnnSelAction, &QAction::triggered, this, &ADVSyncViewManager::sl_lock);
     lockByAnnSelAction->setCheckable(true);
 
     lockActionGroup = new QActionGroup(this);
@@ -267,31 +268,34 @@ void ADVSyncViewManager::sl_lock() {
     QObject* s = sender();
     bool buttonClicked = (s == lockButton);
 
-    SyncMode m = SyncMode_Start;
+    SyncMode m = SyncMode_None;
+    if (s == lockByStartPosAction) {
+        m = SyncMode_Start;
+    } else if (s == lockBySeqSelAction) {
+        m = SyncMode_SeqSel;
+    } else if (s == lockByAnnSelAction) {
+        m = SyncMode_AnnSel;
+    } else if (buttonClicked) {
+        m = detectSyncMode();
+    }
     if (lockButton->isChecked()) {
         unlock();
     } else {
-        if (s == lockBySeqSelAction) {
-            m = SyncMode_SeqSel;
-        } else if (s == lockByAnnSelAction) {
-            m = SyncMode_AnnSel;
-        } else if (s == lockButton) {
-            m = detectSyncMode();
-        }
         sync(true, m);
     }
 
     if (buttonClicked) {
-        QAction* checkedAction = lockActionGroup->checkedAction();
-        if (checkedAction == nullptr) {
-            toggleCheckedAction(m);
-        } else {
-            checkedAction->toggle();
-        }
+        toggleCheckedAction(m);
         lockButton->toggle();
     } else {
+        if (syncModeState == m) {
+            lockButton->setChecked(false);
+            m = SyncMode_None;
+            toggleCheckedAction(m);
+        }
         lockButton->setChecked(lockActionGroup->checkedAction() != nullptr);
     }
+    syncModeState = m;
 }
 
 void ADVSyncViewManager::sl_sync() {
@@ -334,6 +338,8 @@ void ADVSyncViewManager::sync(bool lock, SyncMode m) {
             case SyncMode_AnnSel:
                 offset = offsetByAnnSel(seqW);
                 break;
+            case SyncMode_None:
+                return;
         }
         offsets[i] = offset;
         if (seqW == focusedW) {
@@ -513,8 +519,14 @@ void ADVSyncViewManager::toggleCheckedAction(SyncMode mode) {
         case SyncMode_SeqSel:
             lockBySeqSelAction->toggle();
             break;
-        default:
+        case SyncMode_Start:
             lockByStartPosAction->toggle();
+            break;
+        case SyncMode_None:
+            lockByStartPosAction->setChecked(false);
+            lockBySeqSelAction->setChecked(false);
+            lockByAnnSelAction->setChecked(false);
+            break;
     }
 }
 

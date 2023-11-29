@@ -32,9 +32,11 @@
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLabel.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTScrollBar.h>
+#include <primitives/GTSpinBox.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
@@ -76,6 +78,7 @@
 #include "runnables/ugene/plugins/biostruct3d_view/StructuralAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "system/GTClipboard.h"
@@ -2603,6 +2606,46 @@ GUI_TEST_CLASS_DEFINITION(test_0085) {
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0086) {
+    GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "primer3_action"}));
+    GTUtilsDialog::add(new Primer3DialogFiller(Primer3DialogFiller::Primer3Settings()));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsAnnotationsTreeView::clickItem("pair 1  (0, 2)", 1, false);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsAnnotationsTreeView::clickItem("pair 5  (0, 2)", 1, false);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            GTCheckBox::checkState("megablastCheckBox", true, dialog);
+            int v = GTSpinBox::getValue("quantitySpinBox", dialog);
+            CHECK_SET_ERR(v == 200, QString("Unexpected primer results limit, expected: 200, current: %1").arg(v));
+
+            auto pairItems = GTListWidget::getItems(GTWidget::findListWidget("listWidget", dialog));
+            CHECK_SET_ERR(pairItems.size() == 5, QString("Unexpected items size, expected: 5, current: %1").arg(pairItems.size()));
+
+            for (int i = 1; i < 6; i++) {
+                QString name = QString("pair %1").arg(i);
+                bool ok = pairItems.contains(name);
+                CHECK_SET_ERR(ok, QString("No %1 item").arg(name));
+            }
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new RemoteBLASTDialogFiller(new Scenario()));
+    GTKeyboardDriver::keyClick('b', Qt::ShiftModifier | Qt::ControlModifier);
+}
+
 
 }  // namespace GUITest_common_scenarios_sequence_view
 
