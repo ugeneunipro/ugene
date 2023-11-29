@@ -21,38 +21,20 @@
 
 #pragma once
 
-#include <U2Test/XMLTestUtils.h>
-
-#include "RemoteBLASTTask.h"
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 
-class U2SequenceObject;
+namespace GUITest_regression_scenarios {
 
-// cppcheck-suppress noConstructor
-class GTest_RemoteBLAST : public XmlTest {
-    Q_OBJECT
-public:
-    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_RemoteBLAST, "plugin_remote-query");
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_regression_scenarios"
 
-    void prepare();
-    void cleanup();
-    Task::ReportResult report();
+GUI_TEST_CLASS_DECLARATION(test_8009)
+GUI_TEST_CLASS_DECLARATION(test_8015)
 
-private:
-    QString seqId;
-    QString annId;
-    U2SequenceObject* seqObj = nullptr;
-    QPointer<AnnotationTableObject> ao;
-    Task* task = nullptr;
-    int minLength;
-    int maxLength;
-    QString index;
-    QString sequence;
-    QString request;
-    QString algoritm;
-    QStringList expectedResults;
-    bool simple;
-};
+#undef GUI_TEST_SUITE
+
+}  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
