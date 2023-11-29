@@ -61,7 +61,7 @@ DotPlotDialog::DotPlotDialog(QWidget* parent, AnnotatedDNAView* currentADV, int 
     directCheckBox->setChecked(dir);
     invertedCheckBox->setChecked(inv);
 
-    QStyle* buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
+    auto buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
     buttonStyle->setParent(this);
     directColorButton->setStyle(buttonStyle);
     invertedColorButton->setStyle(buttonStyle);
