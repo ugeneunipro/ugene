@@ -70,13 +70,18 @@
 #include <U2View/TvTextItem.h>
 
 #include "GTTestsRegressionScenarios_8001_9000.h"
+#include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsLog.h"
+#include "GTUtilsMdi.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsProject.h"
+#include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "GTUtilsOptionPanelSequenceView.h"
-
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
+#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -140,6 +145,21 @@ GUI_TEST_CLASS_DEFINITION(test_8015) {
 
     auto resultLabel = GTWidget::findLabel("resultLabel");
     CHECK_SET_ERR(resultLabel->text() == "Results: -/0", "Unexpected find algorithm results");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8028) {
+    GTUtilsDialog::waitForDialog(new SaveProjectAsDialogFiller("proj_test_8028", sandBoxDir + "/proj_test_8028"));
+    GTMenu::clickMainMenuItem({"File", "New project..."}, GTGlobals::UseMouse);
+
+    GTUtilsDialog::waitForDialog(new DocumentFormatSelectorDialogFiller("Plain text"));
+    GTUtilsProject::openFile(testDir + "_common_data/text/text.txt");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsBookmarksTreeView::addBookmark(GTUtilsMdi::activeWindow()->windowTitle(), "test_8028");
+
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("text"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
 
 }  // namespace GUITest_regression_scenarios
