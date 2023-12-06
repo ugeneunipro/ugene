@@ -29,6 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
@@ -78,6 +79,8 @@ QList<Task*> CAP3SupportTask::onSubTaskFinished(Task* subTask) {
     if (subTask == prepareDataForCAP3Task) {
         assert(!prepareDataForCAP3Task->getPreparedPath().isEmpty());
         GUrl inputUrl = prepareDataForCAP3Task->getPreparedPath();
+        CHECK_EXT(QFile::exists(inputUrl.getURLString()), stateInfo.setError("Input file doesn't exist"), res);
+        FileAndDirectoryUtils::convertToLfLineEndings(inputUrl.getURLString());
         tmpOutputUrl = inputUrl.getURLString() + CAP3_EXT;
 
         QStringList arguments = settings.getArgumentsList();

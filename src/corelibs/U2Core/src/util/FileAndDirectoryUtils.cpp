@@ -226,4 +226,25 @@ void FileAndDirectoryUtils::closeFileIfOpen(FILE* file) {
     fclose(file);
 }
 
+void FileAndDirectoryUtils::convertToLfLineEndings(const QString& inputFilePath) {
+    QFile inputFile(inputFilePath);
+    QStringList lines;
+    if (inputFile.open(QIODevice::ReadOnly)) {
+        QTextStream in(&inputFile);
+        while (!in.atEnd()) {
+            lines.append(in.readLine());
+        }
+        inputFile.close();
+    }
+
+    if (inputFile.open(QFile::WriteOnly | QFile::Truncate)) {
+        QTextStream stream(&inputFile);
+        for (const QString& str : qAsConst(lines)) {
+            stream << str << endl;
+        }
+        inputFile.close();
+    }
+
+}
+
 }  // namespace U2

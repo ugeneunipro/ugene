@@ -73,6 +73,9 @@ public:
     /** Closes file descriptor if the file descriptor is defined and is open. */
     static void closeFileIfOpen(FILE* file);
 
+    /** Converts line endings in file to LF */
+    static void convertToLfLineEndings(const QString& inputFilePath);
+
 private:
     static QString getFormatId(const FormatDetectionResult& r);
 

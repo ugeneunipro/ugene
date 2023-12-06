@@ -118,6 +118,7 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
+#include "runnables/ugene/plugins/cap3/CAP3SupportDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
@@ -4868,6 +4869,23 @@ GUI_TEST_CLASS_DEFINITION(test_7947) {
     GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea();
     GTUtilsSequenceView::clickAnnotationPan("misc_feature", 100'000, 0, true);
     CHECK_SET_ERR(!GTUtilsSequenceView::getSelection().isEmpty(), "No selected regions, but should be");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7956) {
+    /*
+    * 1. Click "Tools -> Sanger data analysis -> Reads de novo assembly (with CAP3)..."
+    * 2. Set "_common_data/scenarios/_regression/7957/Sunisa_test_CRLF.fasta" as input.
+    * 3. Click "OK".
+    * 4. Open the result file as Multiple Alignment or Assembly (that does not matter).
+    * Expected state: ace file opened, no errors in the log
+    */
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new ImportACEFileFiller(false, sandBoxDir + "test_7957.ugenedb"));
+    GTUtilsDialog::waitForDialog(new CAP3SupportDialogFiller({testDir + "_common_data/scenarios/_regression/7957/Sunisa_test_CRLF.fasta"}, sandBoxDir + "test_7957.ace"));
+    GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Reads de novo assembly (with CAP3)..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    lt.assertNoErrors();
+    CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle() == "Contig1 [test_7957.ugenedb]", "Unexpected tab title: " + GTUtilsMdi::activeWindowTitle());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7957) {
