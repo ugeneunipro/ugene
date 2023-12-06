@@ -131,7 +131,7 @@ public:
 #define CHECK(condition, result) RUN_IF_FALSY_1(condition, return result) // NOLINT(*-macro-parentheses)
 
 /** Checks 'pointer' is not equal nullptr */
-#define CHECK_NN(pointer, result) RUN_IF_FALSY_1((pointer) == nullptr, return result) // NOLINT(*-macro-parentheses)
+#define CHECK_NN(pointer, result) RUN_IF_FALSY_1((pointer) != nullptr, return result) // NOLINT(*-macro-parentheses)
 
 /** Checks 'condition' and calls 'break' if 'condition' is 'false'. */
 #define CHECK_BREAK(condition) RUN_IF_FALSY_1(condition, break)
