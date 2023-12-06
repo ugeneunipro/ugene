@@ -71,8 +71,8 @@ public:
 
 */
 #define SAFE_POINT_OP(os, result) \
-    if (Q_UNLIKELY(os.hasError())) { \
-        U2::U2SafePoints::fail(QString("Trying to recover from error: %1 at %2:%3").arg(os.getError()).arg(__FILE__).arg(__LINE__)); \
+    if (Q_UNLIKELY((os).hasError())) { \
+        U2::U2SafePoints::fail(QString("Trying to recover from error: %1 at %2:%3").arg((os).getError()).arg(__FILE__).arg(__LINE__)); \
         return result; \
     }
 
@@ -112,7 +112,7 @@ public:
  * Checks condition and runs the extra op if the condition is falsy.
  * Do not use directly: designed to be used as a low level implementation for other utilities.
  */
-#define RUN_IF_FALTHY_1(condition, extraOp) \
+#define RUN_IF_FALSY_1(condition, extraOp) \
     if (!(condition)) { \
         extraOp; \
     }
@@ -121,35 +121,38 @@ public:
  * Checks condition and runs 2 extra ops if the condition is falsy.
  * Do not use directly: designed to be used as a low level implementation for other utilities.
  */
-#define RUN_IF_FALTHY_2(condition, extraOp1, extraOp2) \
+#define RUN_IF_FALSY_2(condition, extraOp1, extraOp2) \
     if (!(condition)) { \
         extraOp1; \
         extraOp2; \
     }
 
 /** Checks 'condition' and returns if result is 'false'. */
-#define CHECK(condition, result) RUN_IF_FALTHY_1(condition, return result)
+#define CHECK(condition, result) RUN_IF_FALSY_1(condition, return result) // NOLINT(*-macro-parentheses)
+
+/** Checks 'pointer' is not equal nullptr */
+#define CHECK_NN(pointer, result) RUN_IF_FALSY_1((pointer) == nullptr, return result) // NOLINT(*-macro-parentheses)
 
 /** Checks 'condition' and calls 'break' if 'condition' is 'false'. */
-#define CHECK_BREAK(condition) RUN_IF_FALTHY_1(condition, break)
+#define CHECK_BREAK(condition) RUN_IF_FALSY_1(condition, break)
 
 /** Checks 'condition' and calls 'continue' if 'condition' is 'false'. */
-#define CHECK_CONTINUE(condition) RUN_IF_FALTHY_1(condition, continue)
+#define CHECK_CONTINUE(condition) RUN_IF_FALSY_1(condition, continue)
 
 /** Checks 'condition' and executes 'extraOp' and returns 'result' if 'condition' is 'false'. */
-#define CHECK_EXT(condition, extraOp, result) RUN_IF_FALTHY_2(condition, extraOp, return result)
+#define CHECK_EXT(condition, extraOp, result) RUN_IF_FALSY_2(condition, extraOp, return result) // NOLINT(*-macro-parentheses)
 
 /** Checks 'condition' and executes 'extraOp' and calls 'break' if 'condition' is 'false'. */
-#define CHECK_EXT_BREAK(condition, extraOp) RUN_IF_FALTHY_2(condition, extraOp, break)
+#define CHECK_EXT_BREAK(condition, extraOp) RUN_IF_FALSY_2(condition, extraOp, break)
 
 /** Checks 'condition' and calls 'extraOp' and 'continue' if 'condition' is 'false'. */
-#define CHECK_EXT_CONTINUE(condition, extraOp) RUN_IF_FALTHY_2(condition, extraOp, continue)
+#define CHECK_EXT_CONTINUE(condition, extraOp) RUN_IF_FALSY_2(condition, extraOp, continue)
 
 /** Checks if 'os' has error or is cancelled and returns 'result' if it does. */
-#define CHECK_OP(os, result) CHECK(!os.isCoR(), result)
+#define CHECK_OP(os, result) CHECK(!(os).isCoR(), result)
 
 /** Checks if 'os' has error or is cancelled and calls 'break' if it does. */
-#define CHECK_OP_BREAK(os) CHECK_BREAK(!os.isCoR())
+#define CHECK_OP_BREAK(os) CHECK_BREAK(!(os).isCoR())
 
 /** Checks if 'os' has error or is cancelled and executes 'extraOp' and returns 'result' if it does. */
-#define CHECK_OP_EXT(os, extraOp, result) CHECK_EXT(!(os.isCoR()), extraOp, result)
+#define CHECK_OP_EXT(os, extraOp, result) CHECK_EXT(!((os).isCoR()), extraOp, result)

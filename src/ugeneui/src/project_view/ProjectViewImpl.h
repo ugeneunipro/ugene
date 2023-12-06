@@ -61,8 +61,8 @@ private:
     bool isAnyDialogOpened() const;
     bool makeDecision(Document* doc, QListIterator<Document*>& iter);
 
-    Task* updateTask;
-    bool recursion;
+    Task* updateTask = nullptr;
+    bool recursion = false;
 };
 
 class ProjectViewWidget : public QWidget, public Ui_ProjectViewWidget {
@@ -71,7 +71,7 @@ public:
     ProjectViewWidget();
 
 private:
-    DocumentUpdater* updater;
+    DocumentUpdater* updater = nullptr;
 };
 
 class ProjectViewImpl : public ProjectView, public LoadDocumentTaskProvider {
@@ -83,13 +83,13 @@ class ProjectViewImpl : public ProjectView, public LoadDocumentTaskProvider {
 
 public:
     ProjectViewImpl();
-    ~ProjectViewImpl();
+    ~ProjectViewImpl() override;
 
-    virtual const DocumentSelection* getDocumentSelection() const {
+    const DocumentSelection* getDocumentSelection() const override {
         return projectTreeController->getDocumentSelection();
     }
 
-    virtual const GObjectSelection* getGObjectSelection() const {
+    const GObjectSelection* getGObjectSelection() const override {
         return projectTreeController->getGObjectSelection();
     }
 
@@ -97,28 +97,24 @@ public:
 
     // QAction* getAddExistingDocumentAction() const {return NULL;}
 
-    virtual QList<Task*> createLoadDocumentTasks(const QList<Document*>& docs) const;
+    QList<Task*> createLoadDocumentTasks(const QList<Document*>& docs) const override;
 
-    void highlightItem(Document*);
-
-    void setSaveProjectOnCloseEnabled(bool enabled) {
-        saveProjectOnClose = enabled;
-    }
+    void highlightItem(Document*) override;
 
     static const QString SETTINGS_ROOT;
     static const int MAX_SEARCH_PATTERN_LENGTH = 1000;
 
 protected:
     /// returns NULL if no actions are required to enable service
-    virtual Task* createServiceEnablingTask();
+    Task* createServiceEnablingTask() override;
 
     /// returns NULL if no actions are required to disable service
-    virtual Task* createServiceDisablingTask();
+    Task* createServiceDisablingTask() override;
 
     void enable();
     void disable();
 
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private slots:
     void sl_onProjectModifiedStateChanged();
@@ -174,10 +170,10 @@ class EnableProjectViewTask : public Task {
 public:
     EnableProjectViewTask(ProjectViewImpl* pvi);
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
-    ProjectViewImpl* pvi;
+    QPointer<ProjectViewImpl> projectView;
 };
 
 class DisableProjectViewTask : public Task {
@@ -185,12 +181,12 @@ class DisableProjectViewTask : public Task {
 
 public:
     DisableProjectViewTask(ProjectViewImpl* pvi, bool saveProjectOnClose);
-    void prepare();
-    ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
 
 private:
-    ProjectViewImpl* pvi;
-    bool saveProject;
+    QPointer<ProjectViewImpl> projectView;
+    bool saveProject = false;
 };
 
 }  // namespace U2
