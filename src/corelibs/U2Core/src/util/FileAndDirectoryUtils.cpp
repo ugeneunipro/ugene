@@ -226,7 +226,7 @@ void FileAndDirectoryUtils::closeFileIfOpen(FILE* file) {
     fclose(file);
 }
 
-void FileAndDirectoryUtils::convertToLfLineEndings(const QString& inputFilePath) {
+bool FileAndDirectoryUtils::convertToLfLineEndings(const QString& inputFilePath) {
     QFile inputFile(inputFilePath);
     QStringList lines;
     if (inputFile.open(QIODevice::ReadOnly)) {
@@ -235,6 +235,8 @@ void FileAndDirectoryUtils::convertToLfLineEndings(const QString& inputFilePath)
             lines.append(in.readLine());
         }
         inputFile.close();
+    } else {
+        return false;
     }
 
     if (inputFile.open(QFile::WriteOnly | QFile::Truncate)) {
@@ -243,8 +245,10 @@ void FileAndDirectoryUtils::convertToLfLineEndings(const QString& inputFilePath)
             stream << str << endl;
         }
         inputFile.close();
+    } else {
+        return false;
     }
-
+    return true;
 }
 
 }  // namespace U2

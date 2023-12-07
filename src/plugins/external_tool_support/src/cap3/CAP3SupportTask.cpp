@@ -79,8 +79,6 @@ QList<Task*> CAP3SupportTask::onSubTaskFinished(Task* subTask) {
     if (subTask == prepareDataForCAP3Task) {
         assert(!prepareDataForCAP3Task->getPreparedPath().isEmpty());
         GUrl inputUrl = prepareDataForCAP3Task->getPreparedPath();
-        CHECK_EXT(QFile::exists(inputUrl.getURLString()), stateInfo.setError("Input file doesn't exist"), res);
-        FileAndDirectoryUtils::convertToLfLineEndings(inputUrl.getURLString());
         tmpOutputUrl = inputUrl.getURLString() + CAP3_EXT;
 
         QStringList arguments = settings.getArgumentsList();
@@ -238,38 +236,43 @@ void PrepareInputForCAP3Task::prepare() {
 }
 
 void PrepareInputForCAP3Task::run() {
-    if (hasError() || onlyCopyFiles) {
+    if (hasError()) {
         return;
     }
 
-    while (seqReader.hasNext()) {
-        if (isCanceled()) {
-            return;
-        }
-        DNASequence* seq = seqReader.getNextSequenceObject();
-        if (seq == nullptr) {
-            setError(seqReader.getErrorMessage());
-            return;
-        }
-        // avoid names duplication
-        QByteArray seqName = seq->getName().toLatin1();
-        seqName.replace(' ', '_');
-        seq->setName(seqName);
-        bool ok = seqWriter.writeNextSequence(*seq);
-        if (!ok) {
-            setError(tr("Failed to write sequence %1").arg(seq->getName()));
-            return;
-        }
-
-        if (!seq->quality.isEmpty()) {
-            DNAQualityIOUtils::writeDNAQuality(seqName, seq->quality, qualityFilePath, true /*append*/, true /*decode*/, stateInfo);
-            if (stateInfo.hasError()) {
+    if (!onlyCopyFiles) {
+        while (seqReader.hasNext()) {
+            if (isCanceled()) {
                 return;
             }
+            DNASequence* seq = seqReader.getNextSequenceObject();
+            if (seq == nullptr) {
+                setError(seqReader.getErrorMessage());
+                return;
+            }
+            // avoid names duplication
+            QByteArray seqName = seq->getName().toLatin1();
+            seqName.replace(' ', '_');
+            seq->setName(seqName);
+            bool ok = seqWriter.writeNextSequence(*seq);
+            if (!ok) {
+                setError(tr("Failed to write sequence %1").arg(seq->getName()));
+                return;
+            }
+
+            if (!seq->quality.isEmpty()) {
+                DNAQualityIOUtils::writeDNAQuality(seqName, seq->quality, qualityFilePath, true /*append*/, true /*decode*/, stateInfo);
+                if (stateInfo.hasError()) {
+                    return;
+                }
+            }
         }
+        preparedPath = seqWriter.getOutputPath().getURLString();
+        seqWriter.close();
     }
-    preparedPath = seqWriter.getOutputPath().getURLString();
-    seqWriter.close();
+    CHECK_EXT(QFile::exists(preparedPath), stateInfo.setError(tr("Prepared input file in temporary folder doesn't exist.")), );
+    CHECK_EXT(FileAndDirectoryUtils::convertToLfLineEndings(preparedPath),
+              stateInfo.setError(tr("Prepared input file in temporary folder can't be read or written.")), );
 }
 
 QStringList CAP3SupportTaskSettings::getArgumentsList() {
