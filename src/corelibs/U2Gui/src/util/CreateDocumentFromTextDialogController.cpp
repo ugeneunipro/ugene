@@ -28,6 +28,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -88,6 +89,28 @@ void CreateDocumentFromTextDialogController::accept() {
     if (fullPath.isEmpty()) {
         QMessageBox::critical(this, L10N::errorTitle(), os.getError());
         return;
+    }
+
+    auto project = AppContext::getProject();
+    if (project != nullptr) {
+        const auto& documents = project->getDocuments();
+        for (const auto& document : qAsConst(documents)) {
+            auto docUrl = document->getURLString();
+            CHECK_CONTINUE(fullPath == docUrl);
+
+            int res = QMessageBox::question(this,
+                                            L10N::warningTitle(),
+                                            tr("A sequence, associated with the specified path, is already opened. "
+                                               "Do you want to remove it from the project and replace with the current sequence? "
+                                               "Data may be lost."),
+                                            QMessageBox::StandardButton::Yes,
+                                            QMessageBox::StandardButton::No);
+            if (res == QMessageBox::StandardButton::Yes) {
+                break;
+            } else {
+                return;
+            }
+        }
     }
 
     if (ui->nameEdit->text().isEmpty()) {

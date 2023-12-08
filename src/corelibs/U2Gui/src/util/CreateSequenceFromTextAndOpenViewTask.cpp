@@ -102,6 +102,19 @@ Document* CreateSequenceFromTextAndOpenViewTask::createEmptyDocument() {
 }
 
 void CreateSequenceFromTextAndOpenViewTask::addDocument() {
+    Project* project = AppContext::getProject();
+    SAFE_POINT(project != nullptr, "Project is NULL", );
+
+    // If we already have document, associated with the current URL - remove this document from the project
+    const auto& documents = project->getDocuments();
+    for (const auto& document : qAsConst(documents)) {
+        auto docUrl = document->getURLString();
+        CHECK_CONTINUE(saveToPath == docUrl);
+
+        project->removeDocument(document);
+        break;
+    }
+
     document = createEmptyDocument();
     CHECK_OP(stateInfo, );
 
@@ -110,8 +123,6 @@ void CreateSequenceFromTextAndOpenViewTask::addDocument() {
         document->addObject(new U2SequenceObject(importTask->getSequenceName(), importTask->getEntityRef()));
     }
 
-    Project* project = AppContext::getProject();
-    SAFE_POINT(project != nullptr, "Project is NULL", );
     project->addDocument(document);
 }
 
