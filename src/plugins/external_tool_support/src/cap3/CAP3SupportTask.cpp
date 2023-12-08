@@ -240,7 +240,11 @@ void PrepareInputForCAP3Task::run() {
         return;
     }
 
-    if (!onlyCopyFiles) {
+    if (onlyCopyFiles) {
+        CHECK_EXT(QFile::exists(preparedPath), stateInfo.setError(tr("Prepared input file in temporary folder doesn't exist.")), );
+        CHECK_EXT(FileAndDirectoryUtils::convertToLfLineEndings(preparedPath),
+                  stateInfo.setError(tr("Prepared input file in temporary folder can't be read or written.")), );
+    } else {
         while (seqReader.hasNext()) {
             if (isCanceled()) {
                 return;
@@ -270,9 +274,6 @@ void PrepareInputForCAP3Task::run() {
         preparedPath = seqWriter.getOutputPath().getURLString();
         seqWriter.close();
     }
-    CHECK_EXT(QFile::exists(preparedPath), stateInfo.setError(tr("Prepared input file in temporary folder doesn't exist.")), );
-    CHECK_EXT(FileAndDirectoryUtils::convertToLfLineEndings(preparedPath),
-              stateInfo.setError(tr("Prepared input file in temporary folder can't be read or written.")), );
 }
 
 QStringList CAP3SupportTaskSettings::getArgumentsList() {
