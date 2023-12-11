@@ -37,11 +37,10 @@
 
 namespace U2 {
 
-CreateSequenceFromTextAndOpenViewTask::CreateSequenceFromTextAndOpenViewTask(const QList<DNASequence>& sequences, const QString& formatId, const GUrl& saveToPath, bool saveImmediately)
+CreateSequenceFromTextAndOpenViewTask::CreateSequenceFromTextAndOpenViewTask(const QList<DNASequence>& sequences, const QString& formatId, const GUrl& saveToPath)
     : Task(tr("Create sequence from raw data"), TaskFlags_NR_FOSE_COSC),
       sequences(sequences),
       saveToPath(saveToPath),
-      saveImmediately(saveImmediately),
       openProjectTask(nullptr),
       importedSequences(0),
       document(nullptr) {
@@ -57,7 +56,7 @@ void CreateSequenceFromTextAndOpenViewTask::prepare() {
         addSubTask(openProjectTask);
     } else {
         prepareImportSequenceTasks();
-        foreach (Task* task, importTasks) {
+        for (Task* task : qAsConst(importTasks)) {
             addSubTask(task);
         }
     }
@@ -77,9 +76,8 @@ QList<Task*> CreateSequenceFromTextAndOpenViewTask::onSubTaskFinished(Task* subT
         if (importedSequences == sequences.size()) {
             addDocument();
             CHECK_OP(stateInfo, res);
-            if (saveImmediately && !saveToPath.isEmpty()) {
-                res << new SaveDocumentTask(document);
-            }
+
+            res << new SaveDocumentTask(document);
             res << new OpenViewTask(document);
         }
     }
@@ -88,7 +86,7 @@ QList<Task*> CreateSequenceFromTextAndOpenViewTask::onSubTaskFinished(Task* subT
 }
 
 QList<Task*> CreateSequenceFromTextAndOpenViewTask::prepareImportSequenceTasks() {
-    foreach (const DNASequence& sequence, sequences) {
+    for (const DNASequence& sequence : qAsConst(sequences)) {
         importTasks << new ImportSequenceFromRawDataTask(AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo), U2ObjectDbi::ROOT_FOLDER, sequence);
         CHECK_OP(stateInfo, QList<Task*>());
     }
@@ -105,18 +103,16 @@ void CreateSequenceFromTextAndOpenViewTask::addDocument() {
     Project* project = AppContext::getProject();
     SAFE_POINT(project != nullptr, "Project is NULL", );
 
-    // If we already have document, associated with the current URL - remove this document from the project
-    auto docInProject = project->findDocumentByURL(saveToPath);
-    if (docInProject != nullptr) {
-        project->removeDocument(docInProject);
-    }
     document = createEmptyDocument();
     CHECK_OP(stateInfo, );
 
-    foreach (Task* task, importTasks) {
+    for (Task* task : qAsConst(importTasks)) {
         auto importTask = qobject_cast<ImportSequenceFromRawDataTask*>(task);
         document->addObject(new U2SequenceObject(importTask->getSequenceName(), importTask->getEntityRef()));
     }
+
+    // We do not need to add the document, if we already have one, associated with the current URL
+    CHECK(project->findDocumentByURL(saveToPath) == nullptr, );
 
     project->addDocument(document);
 }

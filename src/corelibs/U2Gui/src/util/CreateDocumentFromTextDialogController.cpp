@@ -115,7 +115,7 @@ void CreateDocumentFromTextDialogController::accept() {
 
     CHECK_OP(os, );
 
-    Task* task = new CreateSequenceFromTextAndOpenViewTask(prepareSequences(), saveController->getFormatIdToSave(), GUrl(fullPath), ui->saveImmediatelyBox->isChecked());
+    Task* task = new CreateSequenceFromTextAndOpenViewTask(prepareSequences(), saveController->getFormatIdToSave(), GUrl(fullPath));
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
     QDialog::accept();
 }

@@ -34,7 +34,7 @@ class ImportSequenceFromRawDataTask;
 class CreateSequenceFromTextAndOpenViewTask : public Task {
     Q_OBJECT
 public:
-    CreateSequenceFromTextAndOpenViewTask(const QList<DNASequence>& sequences, const QString& formatId, const GUrl& saveToPath, bool saveImmediately);
+    CreateSequenceFromTextAndOpenViewTask(const QList<DNASequence>& sequences, const QString& formatId, const GUrl& saveToPath);
 
 private:
     void prepare();
@@ -47,7 +47,6 @@ private:
     const QList<DNASequence> sequences;
     DocumentFormat* format;
     const GUrl saveToPath;
-    const bool saveImmediately;
     Task* openProjectTask;
     QList<Task*> importTasks;
     int importedSequences;
