@@ -4708,7 +4708,7 @@ GUI_TEST_CLASS_DEFINITION(test_4783) {
     GTComboBox::selectItemByText(consensusType, "Levitsky");
     auto thresholdSpinBox = GTWidget::findSpinBox("thresholdSpinBox");
     GTSpinBox::setValue(thresholdSpinBox, 90, GTGlobals::UseKeyBoard);
-    GTUtilsMSAEditorSequenceArea::checkConsensus("-H");
+    GTUtilsMSAEditorSequenceArea::checkConsensus("-M");
 
     GTUtilsMsaEditor::clickSequenceName("2");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -4726,7 +4726,7 @@ GUI_TEST_CLASS_DEFINITION(test_4783) {
     GTUtilsMsaEditor::clickSequenceName("1");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsMSAEditorSequenceArea::checkConsensus("BB");
+    GTUtilsMSAEditorSequenceArea::checkConsensus("CC");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_2) {
