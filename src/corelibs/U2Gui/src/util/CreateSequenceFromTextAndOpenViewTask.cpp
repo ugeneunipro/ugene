@@ -106,15 +106,10 @@ void CreateSequenceFromTextAndOpenViewTask::addDocument() {
     SAFE_POINT(project != nullptr, "Project is NULL", );
 
     // If we already have document, associated with the current URL - remove this document from the project
-    const auto& documents = project->getDocuments();
-    for (const auto& document : qAsConst(documents)) {
-        auto docUrl = document->getURLString();
-        CHECK_CONTINUE(saveToPath == docUrl);
-
-        project->removeDocument(document);
-        break;
+    auto docInProject = project->findDocumentByURL(saveToPath);
+    if (docInProject != nullptr) {
+        project->removeDocument(docInProject);
     }
-
     document = createEmptyDocument();
     CHECK_OP(stateInfo, );
 

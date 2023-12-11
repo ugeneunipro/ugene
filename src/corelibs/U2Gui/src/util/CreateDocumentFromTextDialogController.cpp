@@ -93,11 +93,8 @@ void CreateDocumentFromTextDialogController::accept() {
 
     auto project = AppContext::getProject();
     if (project != nullptr) {
-        const auto& documents = project->getDocuments();
-        for (const auto& document : qAsConst(documents)) {
-            auto docUrl = document->getURLString();
-            CHECK_CONTINUE(fullPath == docUrl);
-
+        auto document = project->findDocumentByURL(fullPath);
+        if (document != nullptr) {
             int res = QMessageBox::question(this,
                                             L10N::warningTitle(),
                                             tr("A sequence, associated with the specified path, is already opened. "
@@ -105,9 +102,7 @@ void CreateDocumentFromTextDialogController::accept() {
                                                "Data may be lost."),
                                             QMessageBox::StandardButton::Yes,
                                             QMessageBox::StandardButton::No);
-            if (res == QMessageBox::StandardButton::Yes) {
-                break;
-            } else {
+            if (res == QMessageBox::StandardButton::No) {
                 return;
             }
         }
