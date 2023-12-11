@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include "MaConsensusAlgorithmSimpleExtended.h"
 #include "MSAConsensusAlgorithmLevitsky.h"
 
 #include <U2Core/MultipleSequenceAlignment.h>
@@ -68,6 +69,23 @@ D       A,T,G   3       not C (---||---)
 N       A,T,G,C 4       Any
 
 */
+
+static const QVector<uchar> SINGLE_NUCL = {'A', 'C', 'G', 'T', 'U'};
+static const int SINGLE_NUCL_SIZE = SINGLE_NUCL.size();
+static const QVector<uchar> DOUBLE_NUCL = {'W', 'R', 'M', 'K', 'Y', 'S'};
+static const int SINGLE_AND_DOUBLE_NUCL_SIZE = SINGLE_NUCL_SIZE + DOUBLE_NUCL.size();
+static const QVector<uchar> TRIPLE_NUCL = {'B', 'V', 'H', 'D'};
+static const int SINGLE_AND_DOUBLE_AND_TRIPLE_NUCL_SIZE = SINGLE_AND_DOUBLE_NUCL_SIZE + TRIPLE_NUCL.size();
+static const QVector<uchar> getAllPossibleNucl() {
+    QVector<uchar> allPossibleNucl;
+    allPossibleNucl.append(SINGLE_NUCL);
+    allPossibleNucl.append(DOUBLE_NUCL);
+    allPossibleNucl.append(TRIPLE_NUCL);
+    allPossibleNucl.append('N');
+
+    return allPossibleNucl;
+};
+static const QVector<uchar> ALL_POSSIBLE_NUCL = getAllPossibleNucl();
 
 static void registerHit(int* data, char c) {
     int idx = uchar(c);
@@ -140,23 +158,36 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
         registerHit(freqsData, c);
     }
     // find all symbols with freq > threshold, select one with the lowest global freq
-    char selectedChar = U2Msa::GAP_CHAR;
+    QVector<char> selectedChars;
     double selectedGlobalPercentage = 1;
-    bool firstConsensusCharFound = false;
+    int maLength = ma->getLength();
     double thresholdScore = getThreshold() / 100.0;
-    for (int c = 'A'; c <= 'Y'; c++) {
-        double localPercentage = (double)freqsData[uchar(c)] / nSeq;
-        if (localPercentage < thresholdScore) {
-            continue;
+    for (int i = 0; i < ALL_POSSIBLE_NUCL.size(); i++) {
+        uchar ch = ALL_POSSIBLE_NUCL[i];
+        if (i == SINGLE_NUCL_SIZE
+         || i == SINGLE_AND_DOUBLE_NUCL_SIZE
+         || i == SINGLE_AND_DOUBLE_AND_TRIPLE_NUCL_SIZE) {
+            CHECK_BREAK(selectedChars.isEmpty());
         }
-        double globalPercentage = (double)globalFreqs[uchar(c)] / (nSeq * ma->getLength());
-        if ((globalPercentage < selectedGlobalPercentage) || (!firstConsensusCharFound && (globalPercentage == selectedGlobalPercentage))) {
-            firstConsensusCharFound = true;
+
+        double localPercentage = (double)freqsData[ch] / nSeq;
+        CHECK_CONTINUE(localPercentage >= thresholdScore);
+
+        double globalFreqsCh = (double)globalFreqs[ch];
+        double globalPercentage = globalFreqsCh / (nSeq * maLength);
+        CHECK_CONTINUE(globalPercentage <= selectedGlobalPercentage);
+
+        if (globalPercentage < selectedGlobalPercentage) {
+            selectedChars.clear();
             selectedGlobalPercentage = globalPercentage;
-            selectedChar = c;
         }
+
+        selectedChars << ch;
     }
-    return selectedChar;
+    CHECK(!selectedChars.isEmpty(), U2Msa::GAP_CHAR);
+    CHECK(selectedChars.size() != 1, selectedChars.first());
+
+    return MaConsensusAlgorithmSimpleExtended::mergeCharacters(selectedChars);
 }
 
 MSAConsensusAlgorithmLevitsky* MSAConsensusAlgorithmLevitsky::clone() const {

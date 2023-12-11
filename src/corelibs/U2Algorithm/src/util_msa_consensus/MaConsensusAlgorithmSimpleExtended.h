@@ -111,6 +111,12 @@ private:
     static Character character2Flag(char character);
     static char flag2Character(Character flag);
     static char flags2Character(Characters flags);
+
+public:
+    // Take the flags representation of set of scharacter.
+    // This function transforms all bases to the single character, which fits all input bases.
+    // Example - A, C, G and T as input, N returned.
+    // See "enum Character" to find out how characters encode each other.
     static char mergeCharacters(const QVector<char>& characters);
 };
 

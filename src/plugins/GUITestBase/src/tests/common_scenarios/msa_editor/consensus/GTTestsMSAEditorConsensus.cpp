@@ -235,9 +235,9 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsMSAEditorSequenceArea::checkConsensus("WAGHH--HTWW---");
     // Expected state: consensus must be WAGHH--HTWW---
     GTSpinBox::setValue(thresholdSpinBox, 60, GTGlobals::UseKeyBoard);
-    GTUtilsMSAEditorSequenceArea::checkConsensus("AAGMYTWTTAA---");
+    GTUtilsMSAEditorSequenceArea::checkConsensus("AAGHYTWTTAA---");
     // 4. Set 60% threshold.
-    // Expected state: consensus must be AAGMYTWTTAA---
+    // Expected state: consensus must be AAGHYTWTTAA---
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004_1) {
