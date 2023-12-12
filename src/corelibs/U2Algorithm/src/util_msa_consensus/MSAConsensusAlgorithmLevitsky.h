@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QVarLengthArray>
+#include <QList>
 
 #include "BuiltInConsensusAlgorithms.h"
 #include "MSAConsensusAlgorithm.h"
@@ -71,6 +72,10 @@ public:
     char getConsensusChar(const MultipleAlignment& ma, int column) const override;
 
     MSAConsensusAlgorithmLevitsky* clone() const override;
+
+    void reinitializeData(const MultipleAlignment& ma) override;
+
+    void recalculateData(const MultipleAlignment& oldMa, const MultipleAlignment& newMa, const MaModificationInfo& mi) override;
 
 private:
     QVarLengthArray<int> globalFreqs;

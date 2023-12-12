@@ -22,6 +22,7 @@
 #include "MSAConsensusAlgorithmLevitsky.h"
 
 #include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/U2OpStatusUtils.h>
 
 namespace U2 {
 
@@ -111,17 +112,53 @@ static void registerHit(int* data, char c) {
     }
 }
 
+static void unregisterHit(int* data, char c) {
+    int idx = uchar(c);
+    data[idx]--;
+    switch (c) {
+        case 'A':
+            data['W']--;
+            data['R']--;
+            data['M']--;
+            data['V']--;
+            data['H']--;
+            data['D']--;
+            data['N']--;
+            break;
+        case 'C':
+            data['M']--;
+            data['Y']--;
+            data['S']--;
+            data['B']--;
+            data['V']--;
+            data['H']--;
+            data['N']--;
+            break;
+        case 'G':
+            data['R']--;
+            data['K']--;
+            data['S']--;
+            data['B']--;
+            data['V']--;
+            data['D']--;
+            data['N']--;
+            break;
+        case 'T':
+        case 'U':
+            data['W']--;
+            data['K']--;
+            data['Y']--;
+            data['B']--;
+            data['H']--;
+            data['D']--;
+            data['N']--;
+            break;
+    }
+}
+
 MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps)
     : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps), globalFreqs(QVarLengthArray<int>(256)) {
-    int* freqsData = globalFreqs.data();
-    std::fill(globalFreqs.begin(), globalFreqs.end(), 0);
-    int len = ma->getLength();
-    foreach (const MultipleAlignmentRow& row, ma->getRows()) {
-        for (int i = 0; i < len; i++) {
-            char c = row->charAt(i);
-            registerHit(freqsData, c);
-        }
-    }
+    reinitializeData(ma);
 }
 
 static QByteArray BASE_DNA_CHARS("ACGTU");
@@ -253,6 +290,89 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
 
 MSAConsensusAlgorithmLevitsky* MSAConsensusAlgorithmLevitsky::clone() const {
     return new MSAConsensusAlgorithmLevitsky(*this);
+}
+
+void MSAConsensusAlgorithmLevitsky::reinitializeData(const MultipleAlignment& ma) {
+    int* freqsData = globalFreqs.data();
+    std::fill(globalFreqs.begin(), globalFreqs.end(), 0);
+    const auto& maRows = ma->getRows();
+    int len = ma->getLength();
+    for (const MultipleAlignmentRow& row : qAsConst(maRows)) {
+        for (int i = 0; i < len; i++) {
+            char c = row->charAt(i);
+            registerHit(freqsData, c);
+        }
+    }
+}
+
+void MSAConsensusAlgorithmLevitsky::recalculateData(const MultipleAlignment& oldMa, const MultipleAlignment& newMa, const MaModificationInfo& mi) {
+    // It looks like a bug - sometimes @mi.alignmentLengthChanged is true,
+    // but length hasn't been changed
+    // TODO: fix it
+    if (mi.alignmentLengthChanged && oldMa->getLength() != newMa->getLength()) {
+        // If alignment length has been changed, we need to recalculate all alignment
+        // TODO: improve MaModificationInfo and provide additional info and prevent general recalculation
+        reinitializeData(newMa);
+        return;
+    }
+
+    // If alphabet has been changed by clicking "--> DNA"/"--> RNA"/ buttons,
+    // we could easily just switch 'T' and 'U' counters, but, for now,
+    // we do not have a tool of detecting these buttons clicked
+    // (could be passed with @MaModificationInfo)
+    // TODO: fix it
+    //if (mi.alphabetChanged) {
+    //}
+
+    int* freqsData = globalFreqs.data();
+    if (mi.rowContentChanged) {
+        // TODO: we need to pass the exact changed symbols to avoid extra operations
+        U2OpStatus2Log os;
+        int oldLen = oldMa->getLength();
+        int newLen = newMa->getLength();
+        for (qint64 rowId : qAsConst(mi.modifiedRowIds)) {
+            const auto& oldRow = oldMa->getRowByRowId(rowId, os);
+            CHECK_OP(os, );
+
+            for (int i = 0; i < oldLen; i++) {
+                char c = oldRow->charAt(i);
+                unregisterHit(freqsData, c);
+            }
+
+            const auto& newRow = newMa->getRowByRowId(rowId, os);
+            CHECK_OP(os, );
+
+            for (int i = 0; i < newLen; i++) {
+                char c = newRow->charAt(i);
+                registerHit(freqsData, c);
+            }
+        }
+    }
+
+    if (mi.rowListChanged) {
+        const auto& oldRows = oldMa->getRows();
+        const auto& newRows = newMa->getRows();
+        int len = newMa->getLength();
+        if (oldRows.size() < newRows.size()) {
+            for (const auto& newRow : qAsConst(newRows)) {
+                CHECK_CONTINUE(!oldRows.contains(newRow));
+
+                for (int i = 0; i < len; i++) {
+                    char c = newRow->charAt(i);
+                    registerHit(freqsData, c);
+                }
+            }
+        } else if (oldRows.size() > newRows.size()) {
+            for (const auto& oldRow : qAsConst(oldRows)) {
+                CHECK_CONTINUE(!newRows.contains(oldRow));
+
+                for (int i = 0; i < len; i++) {
+                    char c = oldRow->charAt(i);
+                    unregisterHit(freqsData, c);
+                }
+            }
+        }
+    }
 }
 
 }  // namespace U2

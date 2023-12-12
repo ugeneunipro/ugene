@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <U2Core/MaModificationInfo.h>
 #include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2Region.h>
 
@@ -100,6 +101,10 @@ public:
     virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score) const;
 
     virtual char getConsensusChar(const MultipleAlignment& ma, int column) const = 0;
+
+    virtual void reinitializeData(const MultipleAlignment&) {}
+
+    virtual void recalculateData(const MultipleAlignment&, const MultipleAlignment&, const MaModificationInfo&) {}
 
     virtual MSAConsensusAlgorithm* clone() const = 0;
 
