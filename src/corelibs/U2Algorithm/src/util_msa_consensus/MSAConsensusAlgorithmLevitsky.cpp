@@ -114,9 +114,8 @@ static void registerHit(int* data, char c) {
 }
 
 MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p)
-    : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p)
-    , globalFreqs(QVarLengthArray<int>(256)) {
-    int *freqsData = globalFreqs.data();
+    : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p), globalFreqs(QVarLengthArray<int>(256)) {
+    int* freqsData = globalFreqs.data();
     std::fill(globalFreqs.begin(), globalFreqs.end(), 0);
     int len = ma->getLength();
     foreach (const MultipleAlignmentRow& row, ma->getRows()) {
@@ -127,36 +126,130 @@ MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorit
     }
 }
 
+static QByteArray BASE_DNA_CHARS("ACGTU");
+static QByteArray EXT_DNA_CHARS_ONE_OF_TWO("WRMKYS");
+static QByteArray EXT_DNA_CHARS_ONE_OF_THREE("BVHD");
+static QByteArray EXT_DNA_CHARS_ONE_OF_FOUR("N");
+static QByteArray ALL_EXT_DNA_CHARACTERS = BASE_DNA_CHARS + EXT_DNA_CHARS_ONE_OF_TWO + EXT_DNA_CHARS_ONE_OF_THREE + EXT_DNA_CHARS_ONE_OF_FOUR;
+
+static const int GROUP1_LAST_IDX = BASE_DNA_CHARS.size() - 1;
+static const int GROUP2_LAST_IDX = GROUP1_LAST_IDX + EXT_DNA_CHARS_ONE_OF_TWO.size();
+static const int GROUP3_LAST_IDX = GROUP2_LAST_IDX + EXT_DNA_CHARS_ONE_OF_THREE.size();
+static int getCharacterGroup(int allExtDnaCharactersIndex) {
+    return allExtDnaCharactersIndex <= GROUP1_LAST_IDX   ? 0
+           : allExtDnaCharactersIndex <= GROUP2_LAST_IDX ? 1
+           : allExtDnaCharactersIndex < GROUP3_LAST_IDX  ? 2
+                                                         : 3;
+}
+
+enum DnaExtMask {
+    None = 0,
+    A = 1 << 0,
+    C = 1 << 1,
+    G = 1 << 2,
+    T = 1 << 3,
+    U = T,
+    W = A + T,
+    R = A + G,
+    M = A + C,
+    K = T + G,
+    Y = T + C,
+    S = G + C,
+    B = C + G + T,
+    V = A + C + G,
+    H = A + C + T,
+    D = A + G + T,
+    N = A + C + G + T,
+};
+
+static QVector<DnaExtMask> createChar2MaskMapping() {
+    QVector<DnaExtMask> result(256, DnaExtMask::None);
+    result[U2Msa::GAP_CHAR] = DnaExtMask::None;
+    result['A'] = DnaExtMask::A;
+    result['C'] = DnaExtMask::C;
+    result['G'] = DnaExtMask::G;
+    result['T'] = DnaExtMask::T;
+    result['U'] = DnaExtMask::U;
+    result['W'] = DnaExtMask::W;
+    result['R'] = DnaExtMask::R;
+    result['M'] = DnaExtMask::M;
+    result['K'] = DnaExtMask::K;
+    result['Y'] = DnaExtMask::Y;
+    result['S'] = DnaExtMask::S;
+    result['B'] = DnaExtMask::B;
+    result['V'] = DnaExtMask::V;
+    result['H'] = DnaExtMask::H;
+    result['D'] = DnaExtMask::D;
+    result['N'] = DnaExtMask::N;
+    return result;
+}
+
+static const QVector<DnaExtMask> CHAR_2_MASK = createChar2MaskMapping();
+
+static QVector<char> createMask2CharMapping() {
+    QVector<char> result(16, U2Msa::GAP_CHAR);
+    for (int c = 0; c < CHAR_2_MASK.length(); c++) {
+        int mask = CHAR_2_MASK[c];
+        SAFE_POINT(mask >= 0 && mask < result.length(), "Invalid mapping in createChar2MaskMapping()", result);
+        result[mask] = (char)c;
+    }
+    return result;
+}
+
+static const QVector<char> MASK_2_CHAR = createMask2CharMapping();
+
+static int mergeCharsIntoMask(const char* chars, int length) {
+    int mask = 0;
+    for (int i = 0; i < length; i++) {
+        mask = mask | CHAR_2_MASK[chars[i]];
+    }
+    return mask;
+}
+
 char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const {
     CHECK(filterIdx(seqIdx, ma, column), INVALID_CONS_CHAR);
 
-    // count local freqs first
-    QVarLengthArray<int> localFreqs(256);
+    // Count column-local frequencies.
+    QVarLengthArray<int, 91> localFreqs(91);  // Max tracked 'Z' character index is 90.
     int* freqsData = localFreqs.data();
     std::fill(localFreqs.begin(), localFreqs.end(), 0);
     int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
     for (int seq = 0; seq < nSeq; seq++) {
         char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], column);
-        registerHit(freqsData, c);
+        if (c >= 'A' && c <= 'Z') {
+            registerHit(freqsData, c);
+        }
     }
     // find all symbols with freq > threshold, select one with the lowest global freq
-    char selectedChar = U2Msa::GAP_CHAR;
-    double selectedGlobalPercentage = 1;
-    bool firstConsensusCharFound = false;
+    double selectedGlobalPercentage = 2; // Some value > 100% (2 == 200%).
     double thresholdScore = getThreshold() / 100.0;
-    for (int c = 'A'; c <= 'Y'; c++) {
-        double localPercentage = (double)freqsData[uchar(c)] / nSeq;
+    int selectedGroupIndex = -1;
+    QVarLengthArray<char, 16> selectedChars;
+    for (int i = 0; i < ALL_EXT_DNA_CHARACTERS.length(); i++) {
+        char c = ALL_EXT_DNA_CHARACTERS[i];
+        double localPercentage = (double)localFreqs[uchar(c)] / nSeq;
         if (localPercentage < thresholdScore) {
             continue;
         }
         double globalPercentage = (double)globalFreqs[uchar(c)] / (nSeq * ma->getLength());
-        if ((globalPercentage < selectedGlobalPercentage) || (!firstConsensusCharFound && (globalPercentage == selectedGlobalPercentage))) {
-            firstConsensusCharFound = true;
+        if (globalPercentage > selectedGlobalPercentage) {
+            continue;
+        }
+        int groupIndex = getCharacterGroup(i);
+        if (globalPercentage < selectedGlobalPercentage) {
+            selectedChars.clear();
+            selectedChars.append(c);
             selectedGlobalPercentage = globalPercentage;
-            selectedChar = c;
+            selectedGroupIndex = groupIndex;
+        } else if (groupIndex == selectedGroupIndex) {  // Skip characters from more ambiguous groups with the same score.
+            SAFE_POINT(selectedGroupIndex >= 0, "Invalid selectedGroupIndex in MSAConsensusAlgorithmLevitsky", U2Msa::GAP_CHAR);
+            selectedChars.append(c);
         }
     }
-    return selectedChar;
+    CHECK(!selectedChars.isEmpty(), U2Msa::GAP_CHAR);
+    CHECK(selectedChars.size() > 1, selectedChars[0]);
+    int mask = mergeCharsIntoMask(selectedChars.constData(), selectedChars.length());
+    return MASK_2_CHAR[mask];
 }
 
 MSAConsensusAlgorithmLevitsky* MSAConsensusAlgorithmLevitsky::clone() const {

@@ -507,8 +507,7 @@ void GTUtilsMSAEditorSequenceArea::checkConsensus(const QString& cons, int index
 
     QSharedPointer<MSAEditorConsensusCache> cache = consArea->getConsensusCache();
     CHECK_SET_ERR(QString(cache->getConsensusLine(true)) == cons,
-                  "Wrong consensus. Currens consensus is  " + cache->getConsensusLine(true));
-    GTGlobals::sleep(1000);
+                  "Wrong consensus. Current consensus is  " + cache->getConsensusLine(true));
 }
 
 void GTUtilsMSAEditorSequenceArea::selectSequence(const QString& seqName) {
