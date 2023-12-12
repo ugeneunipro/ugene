@@ -52,8 +52,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
 
@@ -73,8 +72,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        false);
+        "result");
 
     GTUtilsDialog::waitForDialog(filler);
 
@@ -96,8 +94,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
 
     GTUtilsDialog::waitForDialog(filler);
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -118,8 +115,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -140,8 +136,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result",
-        false);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -161,8 +156,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -183,8 +177,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
         "",
         testDir + "_common_data/scenarios/sandbox/result_new",
         CreateDocumentFiller::Genbank,
-        "result_new",
-        true);
+        "result_new");
     GTUtilsDialog::waitForDialog(filler1);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -205,8 +198,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -228,8 +220,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -250,8 +241,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        false);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -272,8 +262,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -294,8 +283,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -316,8 +304,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -338,8 +325,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -360,8 +346,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -382,8 +367,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
         "A",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -403,8 +387,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
         "A",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -425,8 +408,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
         "A",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -447,8 +429,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
         "A",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -468,8 +449,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
         "A",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -490,8 +470,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
         "A",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -512,8 +491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
         "A",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -534,8 +512,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
         "A",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -556,8 +533,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
         "A",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -578,8 +554,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
         "A",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -600,8 +575,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -622,8 +596,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_1) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -644,8 +617,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_2) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -678,8 +650,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -719,8 +690,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result.gb",
-        true);
+        "result.gb");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -761,7 +731,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
         "result",
-        true,
         GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(filler);
 
@@ -801,8 +770,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -842,8 +810,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::Genbank,
-        "result.gb",
-        true);
+        "result.gb");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -883,7 +850,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
         "result",
-        true,
         GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(filler);
 
@@ -911,8 +877,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result.fa",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -937,8 +902,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result.gb",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -963,8 +927,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result.fa",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -989,8 +952,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result.fa",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
 
     GTUtilsDialog::waitForDialog(filler);
 
@@ -1012,8 +974,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result.gb",
         CreateDocumentFiller::Genbank,
-        "result",
-        true);
+        "result");
 
     GTUtilsDialog::waitForDialog(filler);
 
@@ -1035,8 +996,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result.fa",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
 
     GTUtilsDialog::waitForDialog(filler);
 
@@ -1059,8 +1019,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
         "-",
         testDir + "",
         CancelCreateDocumentFiller::FASTA,
-        "",
-        false);
+        "");
 
     GTUtilsDialog::waitForDialog(filler);
 
@@ -1080,8 +1039,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
         "-",
         testDir + "",
         CancelCreateDocumentFiller::Genbank,
-        "",
-        false);
+        "");
 
     GTUtilsDialog::waitForDialog(filler);
 
@@ -1101,8 +1059,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result.fa",
         CreateDocumentFiller::FASTA,
-        "result",
-        false);
+        "result");
 
     GTUtilsDialog::waitForDialog(filler);
 
@@ -1122,8 +1079,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result.fa",
         CreateDocumentFiller::FASTA,
-        "result",
-        false);
+        "result");
 
     GTUtilsDialog::waitForDialog(filler);
 
@@ -1153,8 +1109,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result.fa",
         CreateDocumentFiller::FASTA,
-        "result",
-        false);
+        "result");
 
     GTUtilsDialog::waitForDialog(filler);
 
@@ -1184,8 +1139,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
         "-",
         testDir + "_common_data/scenarios/sandbox/result.fa",
         CreateDocumentFiller::FASTA,
-        "result",
-        false);
+        "result");
 
     GTUtilsDialog::waitForDialog(filler);
 
@@ -1213,7 +1167,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     //    >seq_name
     //    ACGT
 
-    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(">seq_name\nACGT", false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0016.fa", CreateDocumentFiller::FASTA, "test_0016", false));
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(">seq_name\nACGT", false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0016.fa", CreateDocumentFiller::FASTA, "test_0016"));
 
     //    3. Specify a created document location and press the "Create" button in the dialog.
     GTMenu::clickMainMenuItem({"File", "New document from text..."});
@@ -1236,7 +1190,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     //    >seq_name
     //    ACGT
 
-    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(";just a comment\n>seq_name\nACGT", false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0017.fa", CreateDocumentFiller::FASTA, "test_0017", false));
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(";just a comment\n>seq_name\nACGT", false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0017.fa", CreateDocumentFiller::FASTA, "test_0017"));
 
     //    3. Specify a created document location and press the "Create" button in the dialog.
     GTMenu::clickMainMenuItem({"File", "New document from text..."});
@@ -1263,7 +1217,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     //    TTTT
 
     const QString data = ">seq_name1\nACGT\n>seq_name2\nCCCC\n>seq_name3\nTTTT";
-    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(data, false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0018.fa", CreateDocumentFiller::FASTA, "test_0018", false));
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(data, false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0018.fa", CreateDocumentFiller::FASTA, "test_0018"));
 
     //    3. Specify a created document location and press the "Create" button in the dialog.
     GTMenu::clickMainMenuItem({"File", "New document from text..."});

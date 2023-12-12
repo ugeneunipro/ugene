@@ -37,7 +37,16 @@ public:
                             StandardAmino,
                             AllSymbols };
 
-    CreateDocumentFiller(const QString& _pasteDataHere, bool customSettings, documentAlphabet _alphabet, bool skipUnknownSymbols, bool replaceUnknownSymbols, const QString symbol, const QString& _documentLocation, documentFormat _format, const QString& _sequenceName, bool saveFile, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    CreateDocumentFiller(const QString& _pasteDataHere,
+                         bool customSettings,
+                         documentAlphabet _alphabet,
+                         bool skipUnknownSymbols,
+                         bool replaceUnknownSymbols,
+                         const QString symbol,
+                         const QString& _documentLocation,
+                         documentFormat _format,
+                         const QString& _sequenceName,
+                         GTGlobals::UseMethod method = GTGlobals::UseMouse);
     CreateDocumentFiller(CustomScenario* scenario);
     void commonScenario();
 
@@ -53,7 +62,6 @@ private:
     documentFormat format;
     QMap<documentFormat, QString> comboBoxItems;
     QString sequenceName;
-    bool saveFile;
     GTGlobals::UseMethod useMethod;
 };
 
@@ -68,7 +76,16 @@ public:
                             StandardAmino,
                             AllSymbols };
 
-    CancelCreateDocumentFiller(const QString& _pasteDataHere, bool customSettings, documentAlphabet _alphabet, bool skipUnknownSymbols, bool replaceUnknownSymbols, const QString symbol, const QString& _documentLocation, documentFormat _format, const QString& _sequenceName, bool saveFile, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    CancelCreateDocumentFiller(const QString& _pasteDataHere,
+                               bool customSettings,
+                               documentAlphabet _alphabet,
+                               bool skipUnknownSymbols,
+                               bool replaceUnknownSymbols,
+                               const QString symbol,
+                               const QString& _documentLocation,
+                               documentFormat _format,
+                               const QString& _sequenceName,
+                               GTGlobals::UseMethod method = GTGlobals::UseMouse);
     void commonScenario();
 
 private:
@@ -83,7 +100,6 @@ private:
     documentFormat format;
     QMap<documentFormat, QString> comboBoxItems;
     QString sequenceName;
-    bool saveFile;
     GTGlobals::UseMethod useMethod;
 };
 

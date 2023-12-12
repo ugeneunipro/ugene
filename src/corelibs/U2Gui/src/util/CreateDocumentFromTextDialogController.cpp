@@ -28,6 +28,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -90,6 +91,23 @@ void CreateDocumentFromTextDialogController::accept() {
         return;
     }
 
+    auto project = AppContext::getProject();
+    if (project != nullptr) {
+        auto document = project->findDocumentByURL(fullPath);
+        if (document != nullptr) {
+            int res = QMessageBox::question(this,
+                                            L10N::warningTitle(),
+                                            tr("A sequence, associated with the specified path, is already opened. "
+                                               "Do you want to remove it from the project and replace with the current sequence? "
+                                               "Data may be lost."),
+                                            QMessageBox::StandardButton::Yes,
+                                            QMessageBox::StandardButton::No);
+            if (res == QMessageBox::StandardButton::No) {
+                return;
+            }
+        }
+    }
+
     if (ui->nameEdit->text().isEmpty()) {
         QMessageBox::critical(this, this->windowTitle(), tr("Sequence name is empty"));
         return;
@@ -97,7 +115,7 @@ void CreateDocumentFromTextDialogController::accept() {
 
     CHECK_OP(os, );
 
-    Task* task = new CreateSequenceFromTextAndOpenViewTask(prepareSequences(), saveController->getFormatIdToSave(), GUrl(fullPath), ui->saveImmediatelyBox->isChecked());
+    Task* task = new CreateSequenceFromTextAndOpenViewTask(prepareSequences(), saveController->getFormatIdToSave(), GUrl(fullPath));
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
     QDialog::accept();
 }

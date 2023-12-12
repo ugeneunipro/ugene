@@ -51,7 +51,6 @@ CreateDocumentFiller::CreateDocumentFiller(
     const QString& _documentLocation = QString(),
     documentFormat _format = FASTA,
     const QString& _sequenceName = QString(),
-    bool saveFile = false,
     GTGlobals::UseMethod method)
     : Filler("CreateDocumentFromTextDialog"),
       customSettings(_customSettings),
@@ -60,7 +59,6 @@ CreateDocumentFiller::CreateDocumentFiller(
       replaceUnknownSymbols(_replaceUnknownSymbols),
       symbol(_symbol),
       format(_format),
-      saveFile(saveFile),
       useMethod(method) {
     sequenceName = _sequenceName;
     pasteDataHere = _pasteDataHere;
@@ -82,7 +80,6 @@ CreateDocumentFiller::CreateDocumentFiller(CustomScenario* scenario)
       skipUnknownSymbols(false),
       replaceUnknownSymbols(false),
       format(FASTA),
-      saveFile(false),
       useMethod(GTGlobals::UseMouse) {
 }
 
@@ -122,11 +119,6 @@ void CreateDocumentFiller::commonScenario() {
 
     GTLineEdit::setText("nameEdit", sequenceName, dialog);
 
-    if (saveFile) {
-        auto saveFileCheckBox = GTWidget::findCheckBox("saveImmediatelyBox", dialog);
-        GTCheckBox::setChecked(saveFileCheckBox);
-    }
-
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
     GTThread::waitForMainThread();
 }
@@ -134,9 +126,9 @@ void CreateDocumentFiller::commonScenario() {
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::cancelCreateDocumentFiller"
-CancelCreateDocumentFiller::CancelCreateDocumentFiller(const QString& _pasteDataHere, bool _customSettings = false, documentAlphabet _alphabet = StandardDNA, bool _skipUnknownSymbols = true, bool _replaceUnknownSymbols = false, const QString _symbol = "", const QString& _documentLocation = QString(), documentFormat _format = FASTA, const QString& _sequenceName = QString(), bool saveFile = false, GTGlobals::UseMethod method)
+CancelCreateDocumentFiller::CancelCreateDocumentFiller(const QString& _pasteDataHere, bool _customSettings = false, documentAlphabet _alphabet = StandardDNA, bool _skipUnknownSymbols = true, bool _replaceUnknownSymbols = false, const QString _symbol = "", const QString& _documentLocation = QString(), documentFormat _format = FASTA, const QString& _sequenceName = QString(), GTGlobals::UseMethod method)
     : Filler("CreateDocumentFromTextDialog"), customSettings(_customSettings), alphabet(_alphabet), skipUnknownSymbols(_skipUnknownSymbols), replaceUnknownSymbols(_replaceUnknownSymbols),
-      symbol(_symbol), format(_format), saveFile(saveFile), useMethod(method) {
+      symbol(_symbol), format(_format), useMethod(method) {
     sequenceName = _sequenceName;
     pasteDataHere = _pasteDataHere;
     documentLocation = GTFileDialog::toAbsoluteNativePath(_documentLocation);
@@ -185,11 +177,6 @@ void CancelCreateDocumentFiller::commonScenario() {
     GTComboBox::selectItemByIndex(comboBox, index, useMethod);
 
     GTLineEdit::setText("nameEdit", sequenceName, dialog);
-
-    if (saveFile) {
-        auto saveFileCheckBox = GTWidget::findCheckBox("saveImmediatelyBox", dialog);
-        GTCheckBox::setChecked(saveFileCheckBox);
-    }
 
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
 }

@@ -20,11 +20,13 @@
  */
 
 #include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMainWindow.h>
 #include <primitives/GTMenu.h>
+#include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTWidget.h>
 #include <utils/GTUtilsDialog.h>
 
@@ -46,14 +48,56 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "GTUtilsOptionPanelSequenceView.h"
+
+#include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
+
 
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
 using namespace HI;
+
+GUI_TEST_CLASS_DEFINITION(test_8001) {
+    // 1. Click "File -> New document from text"
+    // 2. Type "ACGT" as sequence and sandboxDir/test_8001.fa as path
+    // 3. Click "Create"
+    // Expected: sequence opened
+    // 4. Click "File -> New document from text" again
+    // 5. Type "ACGT" as sequence and sandboxDir/test_8001.fa as path again
+    // Expected: Question "Do you want to remove it from the project and replace with the current sequence?" appeared
+    // 6. Click Yes
+    // Expected: "Do you want to reload document?" dialog appeared
+    // 7. Click "Yes"
+    // Expected: no errors in the log
+
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller("ACGT", false, CreateDocumentFiller::StandardDNA, false, true, "-", sandBoxDir + "test_8001.fa", CreateDocumentFiller::FASTA, "test_8001"));
+    GTMenu::clickMainMenuItem({"File", "New document from text..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    class Scenario : public CustomScenario {
+    public:
+        void run() {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTPlainTextEdit::setText(GTWidget::findPlainTextEdit("sequenceEdit", dialog), "ACGT");
+            GTLineEdit::setText(GTWidget::findLineEdit("filepathEdit", dialog), sandBoxDir + "test_8001.fa");
+
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "Do you want to remove it from the project and replace with the current sequence?"));
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(new Scenario));
+    GTMenu::clickMainMenuItem({"File", "New document from text..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "Do you want to reload it?"));
+    CHECK_SET_ERR(!lt.hasErrors(), "Expected no errors");
+}
 
 GUI_TEST_CLASS_DEFINITION(test_8009) {
     /*
