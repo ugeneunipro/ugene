@@ -32,29 +32,29 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryDefault : public MSAConsens
 public:
     MSAConsensusAlgorithmFactoryDefault(QObject* p = nullptr);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
+    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent) override;
 
-    virtual QString getDescription() const;
+    QString getDescription() const override;
 
-    virtual QString getName() const;
+    QString getName() const override;
 
-    virtual int getMinThreshold() const {
+    int getMinThreshold() const override {
         return 1;
     }
 
-    virtual int getMaxThreshold() const {
+    int getMaxThreshold() const override {
         return 100;
     }
 
-    virtual int getDefaultThreshold() const {
+    int getDefaultThreshold() const override {
         return 100;
     }
 
-    virtual QString getThresholdSuffix() const {
-        return QString("%");
+    QString getThresholdSuffix() const override {
+        return "%";
     }
 
-    virtual bool isSequenceLikeResult() const {
+    bool isSequenceLikeResult() const override {
         return false;
     }
 };
@@ -66,14 +66,14 @@ public:
         : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
     }
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const {
+    char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const override {
         int countStub = 0;
         return getConsensusCharAndScore(ma, column, countStub, seqIdx);
     }
 
-    virtual MSAConsensusAlgorithmDefault* clone() const;
+    MSAConsensusAlgorithmDefault* clone() const override;
 
-    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx = QVector<int>()) const;
+    char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx) const override;
 };
 
 }  // namespace U2

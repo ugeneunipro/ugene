@@ -30,8 +30,10 @@ namespace GUITest_regression_scenarios {
 #undef GUI_TEST_SUITE
 #define GUI_TEST_SUITE "GUITest_regression_scenarios"
 
+GUI_TEST_CLASS_DECLARATION(test_8001)
 GUI_TEST_CLASS_DECLARATION(test_8009)
 GUI_TEST_CLASS_DECLARATION(test_8015)
+GUI_TEST_CLASS_DECLARATION(test_8028)
 
 #undef GUI_TEST_SUITE
 

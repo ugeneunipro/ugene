@@ -122,7 +122,7 @@ void ProjectImpl::addDocument(Document* d) {
     SAFE_POINT(d != nullptr, "NULL document", );
     coreLog.details(tr("Adding document to the project: %1").arg(d->getURLString()));
 
-    assert(findDocumentByURL(d->getURL()) == nullptr);
+    SAFE_POINT(findDocumentByURL(d->getURL()) == nullptr, QString("Project already has file opened %1").arg(d->getURLString()), );
     setParentStateLockItem_static(d, this);
 
     d->setGHints(new ModTrackHints(this, d->getGHintsMap(), true));

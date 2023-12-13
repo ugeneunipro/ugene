@@ -21,36 +21,14 @@
 
 #pragma once
 
-#include <U2Core/DNASequence.h>
-#include <U2Core/GUrl.h>
-#include <U2Core/Task.h>
+#include <unittest.h>
+
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
-class Document;
-class DocumentFormat;
-class ImportSequenceFromRawDataTask;
-
-class CreateSequenceFromTextAndOpenViewTask : public Task {
-    Q_OBJECT
-public:
-    CreateSequenceFromTextAndOpenViewTask(const QList<DNASequence>& sequences, const QString& formatId, const GUrl& saveToPath);
-
-private:
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
-
-    QList<Task*> prepareImportSequenceTasks();
-    Document* createEmptyDocument();
-    void addDocument();
-
-    const QList<DNASequence> sequences;
-    DocumentFormat* format;
-    const GUrl saveToPath;
-    Task* openProjectTask;
-    QList<Task*> importTasks;
-    int importedSequences;
-    Document* document;
-};
+DECLARE_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase);
 
 }  // namespace U2
+
+DECLARE_METATYPE(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase)

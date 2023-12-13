@@ -158,16 +158,18 @@ void SimpleTextObjectView::updateView(const QVariantMap& data) {
 }
 
 QVariantMap SimpleTextObjectView::saveState() {
+    Document* document = textObject->getDocument();
+    CHECK(document != nullptr, {});
+
     QVariantMap data;
     // Content:
-    // file url
-    data[URL_KEY] = textObject->getDocument()->getURLString();
+    data[URL_KEY] = document->getURLString();
     data[OBJ_KEY] = textObject->getGObjectName();
     // GUI:
-    // start vis pos
     data[CURS_POS_KEY] = textEdit->textCursor().position();
     data[HBAR_POS_KEY] = textEdit->horizontalScrollBar()->sliderPosition();
     data[VBAR_POS_KEY] = textEdit->verticalScrollBar()->sliderPosition();
+
     return data;
 }
 

@@ -337,6 +337,7 @@ void ExtractConsensusTask::run() {
     CHECK(ma->getMaEditorWgt(0)->getConsensusArea()->getConsensusCache(), );
 
     const MultipleAlignment alignment = ma->getMaObject()->getMultipleAlignmentCopy();
+    static QVector<int> seqIdx;  // Not used.
     for (int i = 0, n = alignment->getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
             return;
@@ -345,7 +346,7 @@ void ExtractConsensusTask::run() {
         int nSeq = alignment->getRowCount();
         SAFE_POINT(0 != nSeq, "No sequences in alignment", );
 
-        QChar c = algorithm->getConsensusCharAndScore(alignment, i, count);
+        QChar c = algorithm->getConsensusCharAndScore(alignment, i, count, seqIdx);
         if (c == MSAConsensusAlgorithm::INVALID_CONS_CHAR) {
             c = U2Msa::GAP_CHAR;
         }

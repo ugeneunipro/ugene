@@ -43,16 +43,12 @@ class U2VIEW_EXPORT MSAEditorConsensusCache : public QObject {
     Q_DISABLE_COPY(MSAEditorConsensusCache)
 public:
     MSAEditorConsensusCache(QObject* p, MultipleAlignmentObject* aliObj, MSAConsensusAlgorithmFactory* algo);
-    ~MSAEditorConsensusCache();
+    ~MSAEditorConsensusCache() override;
 
     char getConsensusChar(int pos);
 
     int getConsensusCharPercent(int pos);
     QList<int> getConsensusPercents(const U2Region& region);
-
-    int getConsensusLength() const {
-        return cache.size();
-    }
 
     void setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algo);
 
@@ -75,7 +71,7 @@ private slots:
 private:
     struct CacheItem {
         CacheItem(char c = '-', int tc = 0)
-            : topChar(c), topPercent(tc) {
+            : topChar(c), topPercent((char)tc) {
         }
         char topChar;
         char topPercent;

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <math.h>
+#include <cmath>
 
 #include <QTextStream>
 
@@ -240,7 +240,7 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
     QByteArray consensus(aliLen, U2Msa::GAP_CHAR);
 
     MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
-    QScopedPointer<MSAConsensusAlgorithm> algo(algoFactory->createAlgorithm(msa));
+    QScopedPointer<MSAConsensusAlgorithm> algo(algoFactory->createAlgorithm(msa, false, nullptr));
     MSAConsensusUtils::updateConsensus(msa, consensus, algo.data());
 
     int maxNumLength = 1 + (aliLen < 10 ? 1 : (int)log10((double)aliLen));
@@ -281,7 +281,7 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
             line.append(QByteArray(spaces, seqStart - line.length()));
 
             // Sequence.
-            QByteArray sequence = *si;
+            const QByteArray& sequence = *si;
             line.append(sequence);
             line.append(' ');
             line.append(QString::number(qMin(i + seqPerPage, aliLen)));

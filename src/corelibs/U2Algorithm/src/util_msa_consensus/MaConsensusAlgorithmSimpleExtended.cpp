@@ -20,7 +20,7 @@
  */
 
 #include "MaConsensusAlgorithmSimpleExtended.h"
-#include <math.h>
+#include <cmath>
 
 #include <QMetaEnum>
 
@@ -159,7 +159,7 @@ char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const MultipleAlignmen
     const int thresholdCount = ceil(((frequencies.size() - 1) * getThreshold()) / 100.0);
 
     for (int frequency = frequencies.size() - 1; frequency > 0; frequency--) {
-        CHECK_CONTINUE(0 < frequencies[frequency].size());
+        CHECK_CONTINUE(!frequencies[frequency].empty());
         if (frequency >= thresholdCount && frequencies[frequency].size() == 1) {
             // A single character that fits the threshold found
             return frequencies[frequency].first();

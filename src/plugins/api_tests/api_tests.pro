@@ -7,6 +7,7 @@ HEADERS += \
     src/UnitTestSuite.h \
     src/core/datatype/annotations/AnnotationGroupUnitTests.h \
     src/core/datatype/annotations/AnnotationUnitTests.h \
+    src/core/datatype/msa/MsaConsensusAlgorithmUnitTests.h \
     src/core/datatype/msa/MsaRowUnitTests.h \
     src/core/datatype/msa/MsaRowUtilsUnitTests.h \
     src/core/datatype/msa/MsaUnitTests.h \
@@ -47,6 +48,7 @@ SOURCES += \
     src/UnitTestSuite.cpp \
     src/core/datatype/annotations/AnnotationGroupUnitTests.cpp \
     src/core/datatype/annotations/AnnotationUnitTests.cpp \
+    src/core/datatype/msa/MsaConsensusAlgorithmUnitTests.cpp \
     src/core/datatype/msa/MsaRowUnitTests.cpp \
     src/core/datatype/msa/MsaRowUtilsUnitTests.cpp \
     src/core/datatype/msa/MsaUnitTests.cpp \

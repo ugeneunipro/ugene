@@ -48,7 +48,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactory : public QObject {
 public:
     MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags flags, QObject* p = nullptr);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps = false, QObject* parent = nullptr) = 0;
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent) = 0;
 
     QString getId() const {
         return algorithmId;
@@ -73,13 +73,13 @@ public:
     virtual int getDefaultThreshold() const = 0;
 
     virtual QString getThresholdSuffix() const {
-        return QString();
+        return "";
     }
 
     virtual bool isSequenceLikeResult() const = 0;
 
     // utility method
-    static ConsensusAlgorithmFlags getAphabetFlags(const DNAAlphabet* al);
+    static ConsensusAlgorithmFlags getAlphabetFlags(const DNAAlphabet* al);
 
 private:
     QString algorithmId;
@@ -97,9 +97,9 @@ public:
         Score is a number: [0, num] sequences. Usually is means count of the char in the row
         Note that consensus character may be out of the to MSA alphabet symbols range
     */
-    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx = QVector<int>()) const;
+    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx) const;
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const = 0;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const = 0;
 
     virtual MSAConsensusAlgorithm* clone() const = 0;
 
@@ -152,7 +152,7 @@ signals:
 
 protected:
     // returns true if there are meaningful symbols on @pos, depending on @ignoreTrailingleadingGaps flag
-    bool filterIdx(QVector<int>& seqIdx, const MultipleAlignment& ma, const int pos) const;
+    bool filterIdx(QVector<int>& seqIdx, const MultipleAlignment& ma, int pos) const;
 
 private:
     MSAConsensusAlgorithmFactory* factory;

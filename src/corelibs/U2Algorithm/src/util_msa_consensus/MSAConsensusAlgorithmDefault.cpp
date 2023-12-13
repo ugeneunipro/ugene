@@ -55,11 +55,10 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignm
 
     // TODO: use var-length array!
     QVector<QPair<int, char>> freqs(32);
-    int ch = U2Msa::GAP_CHAR;
+    char ch;
     int nSeq = seqIdx.isEmpty() ? msa->getRowCount() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
-        uchar c = (uchar)msa->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq],
-                                     pos);
+        char c = msa->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
             assert(idx >= 0 && idx <= freqs.size());
@@ -74,7 +73,7 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignm
         ch = U2Msa::GAP_CHAR;
         cnt = 0;
     } else {
-        int c1 = freqs[freqs.size() - 1].second;
+        char c1 = freqs[freqs.size() - 1].second;
         ch = p2 == p1 ? '+' : c1;
         cnt = p1;
     }
@@ -83,9 +82,8 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignm
     int currentThreshold = getThreshold();
     int cntToUseLowerCase = int(currentThreshold / 100.0 * nSeq);
     if (cnt < cntToUseLowerCase && (ch >= 'A' && ch <= 'Z')) {
-        ch = ch + ('a' - 'A');
+        ch = char(ch + ('a' - 'A'));
     }
-
     return ch;
 }
 

@@ -19,78 +19,94 @@
  * MA 02110-1301, USA.
  */
 
-#include <api/GTUtils.h>
 #include <base_dialogs/GTFileDialog.h>
-#include <cmath>
+#include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
-#include <primitives/GTAction.h>
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTDoubleSpinBox.h>
-#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTListWidget.h>
 #include <primitives/GTMainWindow.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
-#include <primitives/GTRadioButton.h>
-#include <primitives/GTSlider.h>
-#include <primitives/GTSpinBox.h>
-#include <primitives/GTTabWidget.h>
-#include <primitives/GTTableView.h>
-#include <primitives/GTToolbar.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
-#include <primitives/PopupChooser.h>
-#include <system/GTClipboard.h>
-#include <system/GTFile.h>
-#include <utils/GTKeyboardUtils.h>
 #include <utils/GTUtilsDialog.h>
-#include <utils/GTUtilsText.h>
-#include <utils/GTUtilsToolTip.h>
 
-#include <QApplication>
 #include <QClipboard>
-#include <QDir>
-#include <QFileInfo>
-#include <QListWidget>
-#include <QRadioButton>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
 
-#include <U2Gui/Notification.h>
-
-#include <U2View/ADVConstants.h>
-#include <U2View/TvBranchItem.h>
-#include <U2View/TvNodeItem.h>
 #include <U2View/TvTextItem.h>
 
 #include "GTTestsRegressionScenarios_8001_9000.h"
+#include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsLog.h"
+#include "GTUtilsMdi.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsProject.h"
+#include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 
+#include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
+#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
+
 
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
 using namespace HI;
 
+GUI_TEST_CLASS_DEFINITION(test_8001) {
+    // 1. Click "File -> New document from text"
+    // 2. Type "ACGT" as sequence and sandboxDir/test_8001.fa as path
+    // 3. Click "Create"
+    // Expected: sequence opened
+    // 4. Click "File -> New document from text" again
+    // 5. Type "ACGT" as sequence and sandboxDir/test_8001.fa as path again
+    // Expected: Question "Do you want to remove it from the project and replace with the current sequence?" appeared
+    // 6. Click Yes
+    // Expected: "Do you want to reload document?" dialog appeared
+    // 7. Click "Yes"
+    // Expected: no errors in the log
+
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller("ACGT", false, CreateDocumentFiller::StandardDNA, false, true, "-", sandBoxDir + "test_8001.fa", CreateDocumentFiller::FASTA, "test_8001"));
+    GTMenu::clickMainMenuItem({"File", "New document from text..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    class Scenario : public CustomScenario {
+    public:
+        void run() {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTPlainTextEdit::setText(GTWidget::findPlainTextEdit("sequenceEdit", dialog), "ACGT");
+            GTLineEdit::setText(GTWidget::findLineEdit("filepathEdit", dialog), sandBoxDir + "test_8001.fa");
+
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "Do you want to remove it from the project and replace with the current sequence?"));
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(new Scenario));
+    GTMenu::clickMainMenuItem({"File", "New document from text..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "Do you want to reload it?"));
+    CHECK_SET_ERR(!lt.hasErrors(), "Expected no errors");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8009) {
     /*
-     * 1. Open Tools->Sanger data ahalysis-> Map reads to reference
+     * 1. Open Tools->Sanger data analysis-> Map reads to reference
      * 2. Set wrong format reference file from sample: sample/ACE/k26.ace
      * 3. Add reads: _common_data/sanger/sanger_03.ab1
      * 4. Click Map button
      * Expected: Error log message 'wrong reference format'
-     * 5. Open Tools->Sanger data ahalysis-> Map reads to reference
+     * 5. Open Tools->Sanger data analysis-> Map reads to reference
      * 5. Set wrong format reference file from sample: path which not exists
      * 7. Add reads: _common_data/sanger/sanger_03.ab1
      * 8. Click Map button
@@ -113,7 +129,7 @@ GUI_TEST_CLASS_DEFINITION(test_8009) {
     };
 
     GTLogTracer lt;
-    SetRefAndAlign* setRefAndAlignScenario = new SetRefAndAlign();
+    auto setRefAndAlignScenario = new SetRefAndAlign();
     setRefAndAlignScenario->refUrl = dataDir + "samples/ACE/K26.ace";
     GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(setRefAndAlignScenario));
     GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
@@ -140,6 +156,21 @@ GUI_TEST_CLASS_DEFINITION(test_8015) {
 
     auto resultLabel = GTWidget::findLabel("resultLabel");
     CHECK_SET_ERR(resultLabel->text() == "Results: -/0", "Unexpected find algorithm results");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8028) {
+    GTUtilsDialog::waitForDialog(new SaveProjectAsDialogFiller("proj_test_8028", sandBoxDir + "proj_test_8028"));
+    GTMenu::clickMainMenuItem({"File", "New project..."}, GTGlobals::UseMouse);
+
+    GTUtilsDialog::waitForDialog(new DocumentFormatSelectorDialogFiller("Plain text"));
+    GTUtilsProject::openFile(testDir + "_common_data/text/text.txt");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsBookmarksTreeView::addBookmark(GTUtilsMdi::activeWindow()->windowTitle(), "test_8028");
+
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("text"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
 
 }  // namespace GUITest_regression_scenarios

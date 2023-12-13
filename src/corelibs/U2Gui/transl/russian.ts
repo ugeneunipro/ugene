@@ -1672,32 +1672,37 @@ complement(5..15)</translation>
 <context>
     <name>U2::CreateDocumentFromTextDialogController</name>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="128"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="151"/>
         <source>Select file to save...</source>
         <translation>Сохранение файла...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="56"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="57"/>
         <source>Create</source>
         <translation>Создать</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="57"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="58"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="81"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="82"/>
         <source>No path specified</source>
         <translation>Путь не задан</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="94"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="103"/>
+        <source>A sequence, associated with the specified path, is already opened. Do you want to remove it from the project and replace with the current sequence? Data may be lost.</source>
+        <translation>Последовательность, ассоциированная с заданным путём к файлу, уже открыта. Вы хотите удалить её из проекта и заменить текущей последовательностью? Данные могут быть утеряны.</translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="117"/>
         <source>Sequence name is empty</source>
         <translation>Имя последовательности пусто</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="76"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="77"/>
         <source>Filename is empty</source>
         <translation>Не задано имя файла</translation>
     </message>
@@ -2384,42 +2389,42 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::LogViewWidget</name>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="68"/>
+        <location filename="../src/util/logview/LogView.cpp" line="66"/>
         <source>Log</source>
         <translation>Лог</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="75"/>
+        <location filename="../src/util/logview/LogView.cpp" line="73"/>
         <source>Settings...</source>
         <translation>Настройки...</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="79"/>
+        <location filename="../src/util/logview/LogView.cpp" line="77"/>
         <source>Dump performance counters</source>
         <translation>Сбросить счетчики производительности</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="82"/>
+        <location filename="../src/util/logview/LogView.cpp" line="80"/>
         <source>Append separator</source>
         <translation>Добавить разделитель</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="84"/>
+        <location filename="../src/util/logview/LogView.cpp" line="82"/>
         <source>Clear log</source>
         <translation>Очистить лог</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="129"/>
+        <location filename="../src/util/logview/LogView.cpp" line="118"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="194"/>
+        <location filename="../src/util/logview/LogView.cpp" line="181"/>
         <source>logview_set_case</source>
         <translation>Установить тип</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="197"/>
+        <location filename="../src/util/logview/LogView.cpp" line="184"/>
         <source>logview_use_regexp</source>
         <translation>Использовать регулярные выражения</translation>
     </message>
@@ -3042,42 +3047,42 @@ Text edit was cleared.</source>
 <context>
     <name>U2::ToolsMenu</name>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="106"/>
+        <location filename="../src/ToolsMenu.cpp" line="107"/>
         <source>Sanger data analysis</source>
         <translation>Анализ данных секвенирования по Сэнгеру</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="116"/>
+        <location filename="../src/ToolsMenu.cpp" line="117"/>
         <source>NGS data analysis</source>
         <translation>Анализ данных NGS</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="144"/>
+        <location filename="../src/ToolsMenu.cpp" line="145"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="158"/>
+        <location filename="../src/ToolsMenu.cpp" line="159"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="169"/>
+        <location filename="../src/ToolsMenu.cpp" line="170"/>
         <source>Cloning</source>
         <translation>Клонирование</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="177"/>
+        <location filename="../src/ToolsMenu.cpp" line="178"/>
         <source>Primer</source>
         <translation>Праймеры</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="183"/>
+        <location filename="../src/ToolsMenu.cpp" line="185"/>
         <source>Search for TFBS</source>
         <translation>Поиск сайтов связывания транскрипционных факторов (TFBS)</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="192"/>
+        <location filename="../src/ToolsMenu.cpp" line="194"/>
         <source>HMMER tools</source>
         <translation>Инструменты HMMER</translation>
     </message>

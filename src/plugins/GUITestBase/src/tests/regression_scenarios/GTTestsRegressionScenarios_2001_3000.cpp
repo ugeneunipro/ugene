@@ -4087,8 +4087,7 @@ GUI_TEST_CLASS_DEFINITION(test_2770) {
         "",
         testDir + "_common_data/scenarios/sandbox/result",
         CreateDocumentFiller::FASTA,
-        "result",
-        true);
+        "result");
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);

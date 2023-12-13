@@ -51,7 +51,8 @@ MSAEditorConsensusCache::~MSAEditorConsensusCache() {
 void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory) {
     delete algorithm;
     algorithm = nullptr;
-    algorithm = factory->createAlgorithm(aliObj->getMultipleAlignment(), qobject_cast<MultipleChromatogramAlignmentObject*>(aliObj) != nullptr);
+    bool ignoreTrailingLeadingGaps = qobject_cast<MultipleChromatogramAlignmentObject*>(aliObj) != nullptr;
+    algorithm = factory->createAlgorithm(aliObj->getMultipleAlignment(), ignoreTrailingLeadingGaps, nullptr);
     connect(algorithm, SIGNAL(si_thresholdChanged(int)), SLOT(sl_thresholdChanged(int)));
     updateMap.fill(false);
 }
@@ -91,7 +92,8 @@ void MSAEditorConsensusCache::updateCacheItem(int pos) {
         int nSeq = ma->getRowCount();
         SAFE_POINT(0 != nSeq, errorMessage, );
 
-        ci.topChar = algorithm->getConsensusCharAndScore(ma, pos, count);
+        static QVector<int> seqIdx;  // Not used.
+        ci.topChar = algorithm->getConsensusCharAndScore(ma, pos, count, seqIdx);
         ci.topPercent = (char)qRound(count * 100. / nSeq);
         assert(ci.topPercent >= 0 && ci.topPercent <= 100);
         updateMap.setBit(pos, true);
