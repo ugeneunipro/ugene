@@ -26,7 +26,6 @@
 #include <U2Algorithm/MSAConsensusUtils.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -41,7 +40,6 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
 
-#include <U2View/AssemblyModel.h>
 #include <U2View/ExportConsensusTask.h>
 
 namespace U2 {
@@ -100,13 +98,13 @@ MultipleSequenceAlignment ExtractMSAConsensusWorker::takeMsa(U2OpStatus& os) {
     const QVariantMap data = m.getData().toMap();
     if (!data.contains(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId())) {
         os.setError(tr("Empty msa slot"));
-        return MultipleSequenceAlignment();
+        return {};
     }
     const SharedDbiDataHandler dbiId = data[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()].value<SharedDbiDataHandler>();
     const MultipleSequenceAlignmentObject* obj = StorageUtils::getMsaObject(context->getDataStorage(), dbiId);
     if (obj == nullptr) {
         os.setError(tr("Error with msa object"));
-        return MultipleSequenceAlignment();
+        return {};
     }
     return obj->getMultipleAlignment();
 }
@@ -232,7 +230,7 @@ MSAConsensusAlgorithm* ExtractMSAConsensusTaskHelper::createAlgorithm() {
         setError(ExtractMSAConsensusTaskHelper::tr("Unknown consensus algorithm: ") + algoId);
         return nullptr;
     }
-    MSAConsensusAlgorithm* alg = f->createAlgorithm(msa);
+    MSAConsensusAlgorithm* alg = f->createAlgorithm(msa, false, nullptr);
     SAFE_POINT_EXT(alg != nullptr, setError("NULL algorithm"), nullptr);
     alg->setThreshold(threshold);
 
@@ -292,8 +290,8 @@ void ExtractMSAConsensusSequenceWorkerFactory::init() {
                                   ExtractMSAConsensusSequenceWorker::tr("Keep gaps"),
                                   ExtractMSAConsensusSequenceWorker::tr("Set this parameter if the result consensus must keep the gaps."));
 
-        Attribute* thr = new Attribute(thresholdDesc, BaseTypes::NUM_TYPE(), true, 100);
-        Attribute* algo = new Attribute(algoDesc, BaseTypes::STRING_TYPE(), true, BuiltInConsensusAlgorithms::STRICT_ALGO);
+        auto thr = new Attribute(thresholdDesc, BaseTypes::NUM_TYPE(), true, 100);
+        auto algo = new Attribute(algoDesc, BaseTypes::STRING_TYPE(), true, BuiltInConsensusAlgorithms::STRICT_ALGO);
         attrs << algo << thr << new Attribute(gapsDesc, BaseTypes::BOOL_TYPE(), true, true);
 
         QVariantMap algos;
@@ -301,7 +299,7 @@ void ExtractMSAConsensusSequenceWorkerFactory::init() {
         QVariantList visibleRelationList;
         m["minimum"] = 0;
         m["maximum"] = 100;
-        SpinBoxDelegate* thrDelegate = new SpinBoxDelegate(m);
+        auto thrDelegate = new SpinBoxDelegate(m);
         foreach (const QString& algoId, reg->getAlgorithmIds()) {
             MSAConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
             if (f->isSequenceLikeResult()) {
@@ -372,8 +370,8 @@ void ExtractMSAConsensusStringWorkerFactory::init() {
         const Descriptor thresholdDesc(THRESHOLD_ATTR_ID,
                                        ExtractMSAConsensusSequenceWorker::tr("Threshold"),
                                        ExtractMSAConsensusSequenceWorker::tr("The threshold of the algorithm."));
-        Attribute* thr = new Attribute(thresholdDesc, BaseTypes::NUM_TYPE(), true, 100);
-        Attribute* algo = new Attribute(algoDesc, BaseTypes::STRING_TYPE(), true, BuiltInConsensusAlgorithms::DEFAULT_ALGO);
+        auto thr = new Attribute(thresholdDesc, BaseTypes::NUM_TYPE(), true, 100);
+        auto algo = new Attribute(algoDesc, BaseTypes::STRING_TYPE(), true, BuiltInConsensusAlgorithms::DEFAULT_ALGO);
         attrs << algo << thr;
 
         QVariantList visibleRelationList;
@@ -381,7 +379,7 @@ void ExtractMSAConsensusStringWorkerFactory::init() {
         QVariantMap m;
         m["minimum"] = 0;
         m["maximum"] = 100;
-        SpinBoxDelegate* thrDelegate = new SpinBoxDelegate(m);
+        auto thrDelegate = new SpinBoxDelegate(m);
         foreach (const QString& algoId, reg->getAlgorithmIds()) {
             MSAConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
             if (!f->isSequenceLikeResult()) {

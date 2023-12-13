@@ -80,9 +80,9 @@ class MaConsensusAlgorithmSimpleExtended : public MSAConsensusAlgorithm {
 public:
     MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps, QObject* parent);
 
-    char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
+    char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const override;
 
-    virtual MaConsensusAlgorithmSimpleExtended* clone() const;
+    MaConsensusAlgorithmSimpleExtended* clone() const override;
 
     enum Character {
         None = 0,
@@ -121,18 +121,18 @@ class MaConsensusAlgorithmFactorySimpleExtended : public MSAConsensusAlgorithmFa
 public:
     MaConsensusAlgorithmFactorySimpleExtended(QObject* parent = nullptr);
 
-    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
+    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent) override;
 
-    QString getDescription() const;
-    QString getName() const;
+    QString getDescription() const override;
+    QString getName() const override;
 
-    int getMinThreshold() const;
-    int getMaxThreshold() const;
-    int getDefaultThreshold() const;
+    int getMinThreshold() const override;
+    int getMaxThreshold() const override;
+    int getDefaultThreshold() const override;
 
-    QString getThresholdSuffix() const;
+    QString getThresholdSuffix() const override;
 
-    bool isSequenceLikeResult() const;
+    bool isSequenceLikeResult() const override;
 };
 
 }  // namespace U2

@@ -50,27 +50,28 @@ void MSAConsensusUtils::updateConsensus(const MultipleAlignment& ma, const QVect
         cons.resize(aliLen);
     }
 
+    QVector<int> seqIdx;
     foreach (const U2Region& r, regions) {
-        for (int i = r.startPos, n = r.endPos(); i < n; i++) {
-            cons[i] = algo->getConsensusChar(ma, i);
+        for (int i = (int)r.startPos, n = (int)r.endPos(); i < n; i++) {
+            cons[i] = algo->getConsensusChar(ma, i, seqIdx);
         }
     }
 }
 
 QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment& ma, int pos, int minReportPercent, int maxReportChars, bool ignoreLeadingTrailingGaps /* = false */) {
     if (ma->getLength() == 0) {
-        return QString();
+        return "";
     }
     QVector<QPair<int, char>> freqs(32);  // TODO: try QVarLengthArray?
     assert(pos >= 0 && pos < ma->getLength());
     int nSeq = ma->getRowCount();
     assert(nSeq > 0);
     if (nSeq == 0) {
-        return QString();
+        return "";
     }
     int gaps = 0;
     for (int seq = 0; seq < ma->getRowCount(); seq++) {
-        uchar c = (uchar)ma->charAt(seq, pos);
+        char c = ma->charAt(seq, pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
             freqs[idx].first++;
@@ -99,7 +100,7 @@ QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment& ma, i
         if (i == maxReportChars) {
             break;
         }
-        int c = freqs[freqs.size() - i - 1].second;
+        char c = freqs[freqs.size() - i - 1].second;
         res = res + "<tr><td><b>" + QChar(c) + "</b></td>";
         res = res + "<td align=right>" + QString::number(percent, 'f', 1) + "%</td>";
         res = res + "<td align=right>" + QString::number(p) + "</td>";
@@ -141,9 +142,8 @@ uchar MSAConsensusUtils::getColumnFreqs(const MultipleAlignment& ma, int pos, QV
     int maxCFreq = 0;
     int* freqs = freqsByChar.data();
     int nSeq = seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size();
-    for (qint64 seq = 0; seq < nSeq; seq++) {
-        uchar c = (uchar)ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq],
-                                    pos);
+    for (int seq = 0; seq < nSeq; seq++) {
+        auto c = (uchar)ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], pos);
         freqs[c]++;
         if (c != U2Msa::GAP_CHAR && freqs[c] > maxCFreq) {
             maxCFreq = freqs[c];
@@ -161,7 +161,7 @@ quint32 MSAConsensusUtils::packConsensusCharsToInt(const MultipleAlignment& ma, 
     int numNoGaps = 0;
     int nSeq = ma->getRowCount();
     for (int seq = 0; seq < nSeq; seq++) {
-        uchar c = (uchar)ma->charAt(seq, pos);
+        char c = ma->charAt(seq, pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
             freqs[idx].first++;
@@ -173,7 +173,7 @@ quint32 MSAConsensusUtils::packConsensusCharsToInt(const MultipleAlignment& ma, 
     if (!gapsAffectPercents && numNoGaps == 0) {
         return 0xE0E0E0E0;  //'4' in masks, '0' in values
     }
-    int res = 0;
+    quint32 res = 0;
     double percentK = 100.0 / (gapsAffectPercents ? nSeq : numNoGaps);
     for (int i = 0; i < 4; i++) {
         int p = int(freqs[freqs.size() - i - 1].first * percentK);

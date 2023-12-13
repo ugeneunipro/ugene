@@ -69,7 +69,7 @@ public:
     virtual QString getName() const = 0;
 
     // utility method
-    static DistanceAlgorithmFlags getAphabetFlags(const DNAAlphabet* al);
+    static DistanceAlgorithmFlags getAlphabetFlags(const DNAAlphabet* al);
 
 protected:
     QString algorithmId;
