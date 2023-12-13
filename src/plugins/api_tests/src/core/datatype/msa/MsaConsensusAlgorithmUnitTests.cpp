@@ -40,10 +40,10 @@ static char c1(const QString& column, int threshold) {
     }
 
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
-    QSharedPointer<MSAConsensusAlgorithm> algorithm(factory->createAlgorithm(alignment, false, nullptr));
+    QSharedPointer<MSAConsensusAlgorithm> algorithm(factory->createAlgorithm(alignment, false));
     algorithm->setThreshold(threshold);
 
-    return algorithm->getConsensusChar(alignment, 0, {});
+    return algorithm->getConsensusChar(alignment, 0);
 }
 
 static char cN(const QStringList& alignmentRows, int threshold) {
@@ -56,10 +56,10 @@ static char cN(const QStringList& alignmentRows, int threshold) {
     }
 
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
-    QSharedPointer<MSAConsensusAlgorithm> algorithm(factory->createAlgorithm(alignment, false, nullptr));
+    QSharedPointer<MSAConsensusAlgorithm> algorithm(factory->createAlgorithm(alignment, false));
     algorithm->setThreshold(threshold);
 
-    return algorithm->getConsensusChar(alignment, 0, {});
+    return algorithm->getConsensusChar(alignment, 0);
 }
 
 /*

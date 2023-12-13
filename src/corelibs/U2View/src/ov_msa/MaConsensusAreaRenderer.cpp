@@ -125,11 +125,10 @@ ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<
 
     MSAConsensusAlgorithm* algorithm = area->getConsensusAlgorithm();
     const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
-    static QVector<int> seqIdxForGetChar;  // Not used.
     for (int i = 0, n = static_cast<int>(region.length); i < n; i++) {
         int column = (int)region.startPos + i;
         int score = 0;
-        const char consensusChar = algorithm->getConsensusCharAndScore(ma, column, score, seqIdxForGetChar);
+        const char consensusChar = algorithm->getConsensusCharAndScore(ma, column, score);
         consensusRenderData.data += consensusChar;
         consensusRenderData.percentage << qRound(score * 100. / seqIdx.size());
         consensusRenderData.mismatches[i] = (consensusChar != editor->getReferenceCharAt(column));

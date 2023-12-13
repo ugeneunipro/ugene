@@ -36,7 +36,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryLevitsky : public MSAConsen
 public:
     MSAConsensusAlgorithmFactoryLevitsky(QObject* p = nullptr);
 
-    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent) override;
+    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
 
     QString getDescription() const override;
 
@@ -66,9 +66,9 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmLevitsky : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p = nullptr);
+    MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps);
 
-    char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const override;
+    char getConsensusChar(const MultipleAlignment& ma, int column) const override;
 
     MSAConsensusAlgorithmLevitsky* clone() const override;
 

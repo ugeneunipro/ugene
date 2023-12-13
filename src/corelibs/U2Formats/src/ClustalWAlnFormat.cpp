@@ -240,7 +240,7 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
     QByteArray consensus(aliLen, U2Msa::GAP_CHAR);
 
     MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
-    QScopedPointer<MSAConsensusAlgorithm> algo(algoFactory->createAlgorithm(msa, false, nullptr));
+    QScopedPointer<MSAConsensusAlgorithm> algo(algoFactory->createAlgorithm(msa, false));
     MSAConsensusUtils::updateConsensus(msa, consensus, algo.data());
 
     int maxNumLength = 1 + (aliLen < 10 ? 1 : (int)log10((double)aliLen));

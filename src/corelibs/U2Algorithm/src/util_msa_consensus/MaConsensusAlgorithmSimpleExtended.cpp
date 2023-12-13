@@ -30,8 +30,8 @@
 
 namespace U2 {
 
-MaConsensusAlgorithmSimpleExtended::MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps, QObject* parent)
-    : MSAConsensusAlgorithm(factory, ignoreTrailingLeadingGaps, parent) {
+MaConsensusAlgorithmSimpleExtended::MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps)
+    : MSAConsensusAlgorithm(factory, ignoreTrailingLeadingGaps) {
 }
 
 MaConsensusAlgorithmSimpleExtended::Character MaConsensusAlgorithmSimpleExtended::character2Flag(char character) {
@@ -150,8 +150,9 @@ static QVector<QVector<char>> getFrequencies(const MultipleAlignment& ma, int co
     return sortedFrequencies;
 }
 
-char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const {
-    CHECK(filterIdx(seqIdx, ma, column), INVALID_CONS_CHAR);
+char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const MultipleAlignment& ma, int column) const {
+    QVector<int> seqIdx = pickRowsToUseInConsensus(ma, column);
+    CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 
     QVector<QVector<char>> frequencies = getFrequencies(ma, column, seqIdx);
 
@@ -192,8 +193,8 @@ MaConsensusAlgorithmFactorySimpleExtended::MaConsensusAlgorithmFactorySimpleExte
                                    parent) {
 }
 
-MSAConsensusAlgorithm* MaConsensusAlgorithmFactorySimpleExtended::createAlgorithm(const MultipleAlignment& /*ma*/, bool ignoreTrailingLeadingGaps, QObject* parent) {
-    return new MaConsensusAlgorithmSimpleExtended(this, ignoreTrailingLeadingGaps, parent);
+MSAConsensusAlgorithm* MaConsensusAlgorithmFactorySimpleExtended::createAlgorithm(const MultipleAlignment& /*ma*/, bool ignoreTrailingLeadingGaps) {
+    return new MaConsensusAlgorithmSimpleExtended(this, ignoreTrailingLeadingGaps);
 }
 
 QString MaConsensusAlgorithmFactorySimpleExtended::getDescription() const {

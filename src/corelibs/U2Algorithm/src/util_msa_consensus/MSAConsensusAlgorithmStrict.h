@@ -32,7 +32,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryStrict : public MSAConsensu
 public:
     MSAConsensusAlgorithmFactoryStrict(QObject* p = nullptr);
 
-    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent) override;
+    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
 
     QString getDescription() const override;
 
@@ -62,11 +62,11 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmStrict : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmStrict(MSAConsensusAlgorithmFactoryStrict* f, bool ignoreTrailingLeadingGaps, QObject* p = nullptr)
-        : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
+    MSAConsensusAlgorithmStrict(MSAConsensusAlgorithmFactoryStrict* f, bool ignoreTrailingLeadingGaps)
+        : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps) {
     }
 
-    char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const override;
+    char getConsensusChar(const MultipleAlignment& ma, int column) const override;
 
     MSAConsensusAlgorithmStrict* clone() const override;
 };

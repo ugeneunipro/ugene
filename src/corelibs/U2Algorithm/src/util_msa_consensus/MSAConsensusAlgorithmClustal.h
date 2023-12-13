@@ -33,7 +33,7 @@ public:
         : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO, ConsensusAlgorithmFlags_AllAlphabets, p) {
     }
 
-    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent) override;
+    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
 
     QString getDescription() const override;
 
@@ -59,11 +59,11 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmClustal : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmClustal(MSAConsensusAlgorithmFactoryClustal* f, bool ignoreTrailingLeadingGaps, QObject* p = nullptr)
-        : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
+    MSAConsensusAlgorithmClustal(MSAConsensusAlgorithmFactoryClustal* f, bool ignoreTrailingLeadingGaps)
+        : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps) {
     }
 
-    char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const override;
+    char getConsensusChar(const MultipleAlignment& ma, int column) const override;
 
     MSAConsensusAlgorithmClustal* clone() const override;
 };

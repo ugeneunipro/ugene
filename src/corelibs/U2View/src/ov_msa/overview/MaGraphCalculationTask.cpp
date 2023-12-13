@@ -134,15 +134,13 @@ MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MultipleA
     SAFE_POINT_EXT(factory != nullptr, setError("Strict consensus algorithm factory is NULL"), );
 
     SAFE_POINT_EXT(msa != nullptr, setError("MSA is NULL"), );
-    algorithm = factory->createAlgorithm(msa->getMultipleAlignment(), false, nullptr);
+    algorithm = factory->createAlgorithm(msa->getMultipleAlignment(), false);
     algorithm->setParent(this);
 }
 
-static QVector<int> seqIdx;  // Not used.
-
 int MaConsensusOverviewCalculationTask::getGraphValue(int pos) const {
     int score = 0;
-    algorithm->getConsensusCharAndScore(ma, pos, score, seqIdx);
+    algorithm->getConsensusCharAndScore(ma, pos, score);
     return qRound(score * 100. / seqNumber);
 }
 
@@ -173,12 +171,12 @@ MaClustalOverviewCalculationTask::MaClustalOverviewCalculationTask(MultipleAlign
     SAFE_POINT_EXT(factory != nullptr, setError("Clustal algorithm factory is NULL"), );
 
     SAFE_POINT_EXT(msa != nullptr, setError("MSA is NULL"), );
-    algorithm = factory->createAlgorithm(ma, false, nullptr);
+    algorithm = factory->createAlgorithm(ma, false);
     algorithm->setParent(this);
 }
 
 int MaClustalOverviewCalculationTask::getGraphValue(int pos) const {
-    char c = algorithm->getConsensusChar(ma, pos, seqIdx);
+    char c = algorithm->getConsensusChar(ma, pos);
     switch (c) {
         case '*':
             return 100;

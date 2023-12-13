@@ -78,9 +78,9 @@ class MaConsensusAlgorithmFactorySimpleExtended;
 class MaConsensusAlgorithmSimpleExtended : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps, QObject* parent);
+    MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps);
 
-    char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const override;
+    char getConsensusChar(const MultipleAlignment& ma, int column) const override;
 
     MaConsensusAlgorithmSimpleExtended* clone() const override;
 
@@ -121,7 +121,7 @@ class MaConsensusAlgorithmFactorySimpleExtended : public MSAConsensusAlgorithmFa
 public:
     MaConsensusAlgorithmFactorySimpleExtended(QObject* parent = nullptr);
 
-    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent) override;
+    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
 
     QString getDescription() const override;
     QString getName() const override;

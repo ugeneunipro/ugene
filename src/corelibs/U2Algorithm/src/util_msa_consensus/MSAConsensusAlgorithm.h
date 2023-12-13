@@ -48,7 +48,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactory : public QObject {
 public:
     MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags flags, QObject* p = nullptr);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent) = 0;
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) = 0;
 
     QString getId() const {
         return algorithmId;
@@ -89,7 +89,7 @@ private:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithm : public QObject {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory, bool ignoreTrailingLeadingGaps, QObject* p = nullptr);
+    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory, bool ignoreTrailingLeadingGaps);
     MSAConsensusAlgorithm(const MSAConsensusAlgorithm& algorithm);
 
     /**
@@ -97,9 +97,9 @@ public:
         Score is a number: [0, num] sequences. Usually is means count of the char in the row
         Note that consensus character may be out of the to MSA alphabet symbols range
     */
-    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx) const;
+    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score) const;
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const = 0;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column) const = 0;
 
     virtual MSAConsensusAlgorithm* clone() const = 0;
 
@@ -145,19 +145,40 @@ public:
         return factory;
     }
 
-    static char INVALID_CONS_CHAR;
+    static const char INVALID_CONS_CHAR;
 
 signals:
     void si_thresholdChanged(int);
 
 protected:
-    // returns true if there are meaningful symbols on @pos, depending on @ignoreTrailingleadingGaps flag
-    bool filterIdx(QVector<int>& seqIdx, const MultipleAlignment& ma, int pos) const;
+    /** Returns row indexes where `pos` is inside core area (not a part of the leading or trailing gap). */
+    static QVector<int> pickRowsWithCharInCoreArea(const MultipleAlignment& ma, int pos);
+
+    /**
+     * Returns rows that should be used to calculate the consensus.
+     * If `ignoreTrailingAndLeadingGaps` is false always returns an empty list and consensus must be calculated using all rows.
+     * If `ignoreTrailingAndLeadingGaps` is true and an empty list is returned - there are no rows to calculate the consensus.
+     */
+    QVector<int> pickRowsToUseInConsensus(const MultipleAlignment& ma, int pos) const;
+
+protected:
+    MSAConsensusAlgorithmFactory* factory = nullptr;
+    int threshold = 0;
+
+    /**
+     * TODO: this mode is used only for MCA.
+     *
+     * There is a better solution in this case: wrap an original MSA algorithm with
+     * an MCA wrapper and remove this field from the original MSA algorithm.
+     */
+    bool ignoreTrailingAndLeadingGaps = false;
 
 private:
-    MSAConsensusAlgorithmFactory* factory;
-    int threshold;
-    bool ignoreTrailingAndLeadingGaps;
+    /**
+     * Stub of the empty vector. Used to avoid new vector creation when only an empty value is needed.
+     * In this case it is beneficial (from the performance POV) to create a shared copy of `emptyRowIdxStub`.
+     */
+    const QVector<int> emptyRowIdxStub;
 };
 
 }  // namespace U2
