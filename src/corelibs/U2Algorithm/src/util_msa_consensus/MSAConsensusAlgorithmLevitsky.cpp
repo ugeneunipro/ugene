@@ -66,9 +66,7 @@ V       A,G,C   3       not T (---||---)
 H       A,T,C   3       not G (---||---)
 D       A,T,G   3       not C (---||---)
 N       A,T,G,C 4       Any
-
 */
-
 static void registerHit(int* data, char c) {
     int idx = uchar(c);
     data[idx]++;
@@ -138,7 +136,7 @@ static const int GROUP3_LAST_IDX = GROUP2_LAST_IDX + EXT_DNA_CHARS_ONE_OF_THREE.
 static int getCharacterGroup(int allExtDnaCharactersIndex) {
     return allExtDnaCharactersIndex <= GROUP1_LAST_IDX   ? 0
            : allExtDnaCharactersIndex <= GROUP2_LAST_IDX ? 1
-           : allExtDnaCharactersIndex < GROUP3_LAST_IDX  ? 2
+           : allExtDnaCharactersIndex <= GROUP3_LAST_IDX  ? 2
                                                          : 3;
 }
 
@@ -221,7 +219,7 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
         }
     }
     // find all symbols with freq > threshold, select one with the lowest global freq
-    double selectedGlobalPercentage = 2; // Some value > 100% (2 == 200%).
+    double selectedGlobalPercentage = 2;  // Some value > 100% (2 == 200%).
     double thresholdScore = getThreshold() / 100.0;
     int selectedGroupIndex = -1;
     QVarLengthArray<char, 16> selectedChars;

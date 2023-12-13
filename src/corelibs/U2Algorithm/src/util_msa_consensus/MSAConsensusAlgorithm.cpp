@@ -38,7 +38,7 @@ MSAConsensusAlgorithmFactory::MSAConsensusAlgorithmFactory(const QString& algoId
     : QObject(p), algorithmId(algoId), flags(_flags) {
 }
 
-ConsensusAlgorithmFlags MSAConsensusAlgorithmFactory::getAphabetFlags(const DNAAlphabet* al) {
+ConsensusAlgorithmFlags MSAConsensusAlgorithmFactory::getAlphabetFlags(const DNAAlphabet* al) {
     if (al->getType() == DNAAlphabet_AMINO) {
         return ConsensusAlgorithmFlag_Amino;
     } else if (al->getType() == DNAAlphabet_NUCL) {
@@ -85,7 +85,7 @@ void MSAConsensusAlgorithm::setThreshold(int val) {
     emit si_thresholdChanged(newThreshold);
 }
 
-bool MSAConsensusAlgorithm::filterIdx(QVector<int>& seqIdx, const MultipleAlignment& ma, const int pos) const {
+bool MSAConsensusAlgorithm::filterIdx(QVector<int>& seqIdx, const MultipleAlignment& ma, int pos) const {
     CHECK(ignoreTrailingAndLeadingGaps, true);
 
     QVector<int> tmp;

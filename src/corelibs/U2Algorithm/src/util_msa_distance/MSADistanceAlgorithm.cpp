@@ -32,7 +32,7 @@ MSADistanceAlgorithmFactory::MSADistanceAlgorithmFactory(const QString& algoId, 
     : QObject(p), algorithmId(algoId), flags(_flags) {
 }
 
-DistanceAlgorithmFlags MSADistanceAlgorithmFactory::getAphabetFlags(const DNAAlphabet* al) {
+DistanceAlgorithmFlags MSADistanceAlgorithmFactory::getAlphabetFlags(const DNAAlphabet* al) {
     if (al->getType() == DNAAlphabet_AMINO) {
         return DistanceAlgorithmFlag_Amino;
     } else if (al->getType() == DNAAlphabet_NUCL) {

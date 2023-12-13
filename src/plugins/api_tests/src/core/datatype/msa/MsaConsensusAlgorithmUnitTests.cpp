@@ -40,10 +40,10 @@ static char c1(const QString& column, int threshold) {
     }
 
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
-    auto algorithm = QSharedPointer<MSAConsensusAlgorithm>(factory->createAlgorithm(alignment));
+    QSharedPointer<MSAConsensusAlgorithm> algorithm(factory->createAlgorithm(alignment, false, nullptr));
     algorithm->setThreshold(threshold);
 
-    return algorithm->getConsensusChar(alignment, 0);
+    return algorithm->getConsensusChar(alignment, 0, {});
 }
 
 static char cN(const QStringList& alignmentRows, int threshold) {
@@ -56,10 +56,10 @@ static char cN(const QStringList& alignmentRows, int threshold) {
     }
 
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
-    auto algorithm = QSharedPointer<MSAConsensusAlgorithm>(factory->createAlgorithm(alignment));
+    QSharedPointer<MSAConsensusAlgorithm> algorithm(factory->createAlgorithm(alignment, false, nullptr));
     algorithm->setThreshold(threshold);
 
-    return algorithm->getConsensusChar(alignment, 0);
+    return algorithm->getConsensusChar(alignment, 0, {});
 }
 
 /*
@@ -86,11 +86,35 @@ IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase) {
 #define CHECK_LEVITSKY(c, f) CHECK_EQUAL((c), (f), __LINE__);
     // 1. One base mix
     //  Single base in the column - this base in consensus
+    CHECK_LEVITSKY('A', c1("A", 50));
+    CHECK_LEVITSKY('C', c1("C", 50));
+    CHECK_LEVITSKY('G', c1("G", 50));
+    CHECK_LEVITSKY('T', c1("T", 50));
+    CHECK_LEVITSKY('U', c1("U", 50));
+    CHECK_LEVITSKY('N', c1("N", 50));
+    CHECK_LEVITSKY('-', c1("-", 50));
+
     CHECK_LEVITSKY('A', c1("AA", 50));
     CHECK_LEVITSKY('C', c1("CC", 50));
     CHECK_LEVITSKY('G', c1("GG", 50));
     CHECK_LEVITSKY('T', c1("TT", 50));
     CHECK_LEVITSKY('U', c1("UU", 50));
+    CHECK_LEVITSKY('N', c1("NN", 50));
+    CHECK_LEVITSKY('-', c1("--", 50));
+
+    CHECK_LEVITSKY('A', c1("A-", 50));
+    CHECK_LEVITSKY('C', c1("C-", 50));
+    CHECK_LEVITSKY('G', c1("G-", 50));
+    CHECK_LEVITSKY('T', c1("T-", 50));
+    CHECK_LEVITSKY('U', c1("U-", 50));
+    CHECK_LEVITSKY('N', c1("N-", 50));
+
+    CHECK_LEVITSKY('-', c1("A--", 50));
+    CHECK_LEVITSKY('-', c1("C--", 50));
+    CHECK_LEVITSKY('-', c1("G--", 50));
+    CHECK_LEVITSKY('-', c1("T--", 50));
+    CHECK_LEVITSKY('-', c1("U--", 50));
+    CHECK_LEVITSKY('-', c1("N--", 50));
 
     // 2. Two bases mix
     // 2.1 The case, when consensus character is defined only by bases of the column
@@ -259,7 +283,7 @@ IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase) {
     CHECK_LEVITSKY('N', cN({"A", "C", "G", "T"}, 100))
     CHECK_LEVITSKY('W', cN({"AG", "CG", "GC", "TC"}, 50));
     CHECK_LEVITSKY('N', cN({"AA", "CC", "GG", "TT"}, 70));
-    CHECK_LEVITSKY('D', cN({"AC", "CC", "GG", "TT"}, 70)); // D has the rarest global percentage (has no C).
+    CHECK_LEVITSKY('D', cN({"AC", "CC", "GG", "TT"}, 70));  // D has the rarest global percentage (has no C).
 }
 
 }  // namespace U2

@@ -35,7 +35,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmRegistry : public QObject {
 public:
     MSAConsensusAlgorithmRegistry(QObject* p = nullptr);
 
-    ~MSAConsensusAlgorithmRegistry();
+    ~MSAConsensusAlgorithmRegistry() override;
 
     MSAConsensusAlgorithmFactory* getAlgorithmFactory(const QString& algoId);
 
