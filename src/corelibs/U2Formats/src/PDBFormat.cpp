@@ -391,38 +391,10 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QList<
     char chainIdentifier = currentPDBLine.at(21).toLatin1();
 
     ResidueIndex residueIndex(resId, insCode);
-    bool atomIsInChain = !isHetero || seqResContains(chainIdentifier, residueIndex.toInt(), residueAcronym);
-
     QByteArray elementName = currentPDBLine.mid(76, 2).toLatin1().trimmed();
-
     QByteArray element = elementName.isEmpty() ? atomName.mid(0, 1) : elementName;
     int atomicNumber = PDBFormat::getElementNumberByName(element);
-
     int chainIndex = chainIndexMap.contains(chainIdentifier) ? chainIndexMap.value(chainIdentifier) : currentChainIndex;
-
-    if (currentModelIndex == 0 && atomIsInChain) {
-        // Process residue
-
-        if (!biostruct.moleculeMap.contains(chainIndex)) {
-            createMolecule(chainIdentifier, biostruct, chainIndex);
-        }
-
-        SharedMolecule& mol = biostruct.moleculeMap[chainIndex];
-
-        if (currentResidueIndex != residueIndex) {
-            SharedResidue residue(new ResidueData);
-            residue->name = residueName;
-            residue->acronym = residueAcronym;
-            if (residue->acronym == 'X') {
-                ioLog.details(tr("PDB warning: unknown residue name: %1").arg(residue->name.constData()));
-            }
-            residue->chainIndex = chainIndex;
-            currentResidueIndex = residueIndex;
-            residueOrder++;
-            residueIndex.setOrder(residueOrder);
-            mol->residueMap.insert(residueIndex, residue);
-        }
-    }
 
     // Process atom
     double x, y, z;
@@ -444,8 +416,27 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QList<
     int modelId = currentModelIndex + 1;
     biostruct.modelMap[modelId].insert(id, a);
 
-    if (atomIsInChain) {
+    // If atom is in chain
+    if (!isHetero || seqResContains(chainIdentifier, residueIndex.toInt(), residueAcronym)) {
+        // Process residue
+        if (!biostruct.moleculeMap.contains(chainIndex)) {
+            createMolecule(chainIdentifier, biostruct, chainIndex);
+        }
         SharedMolecule& mol = biostruct.moleculeMap[chainIndex];
+        if (currentResidueIndex != residueIndex) {
+            SharedResidue residue(new ResidueData);
+            residue->name = residueName;
+            residue->acronym = residueAcronym;
+            if (residue->acronym == 'X') {
+                ioLog.details(tr("PDB warning: unknown residue name: %1").arg(residue->name.constData()));
+            }
+            residue->chainIndex = chainIndex;
+            currentResidueIndex = residueIndex;
+            residueOrder++;
+            residueIndex.setOrder(residueOrder);
+            mol->residueMap.insert(residueIndex, residue);
+        }
+        // Add molecule to 3D view
         Molecule3DModel& model3D = mol->models[modelId];
         model3D.atoms.append(a);
         sequenceIds.append(id);
