@@ -32,7 +32,7 @@ class MaConsensusAlgorithmFactorySimpleExtended;
  * 1. Threshold can be from 50% to 100%.
  * 2. Meaningful (not gap) characters merge with each other by the rules of the extended DNA alphabet: A + C = M, C + S = S, G + Y = B.
  * 3. Gap merges with any meaningful character to symbol 'N'.
- * 4. If there is the only one character that fits the threshold, the it is the result.
+ * 4. If there is the only one character that fits the threshold, it is the result.
  * 5. If there are two characters that fit the threshold, the the merged character from these two characters is the result.
  *    It can be in case of threshold is equal 50%, and both characters are spotted in 50% of rows.
  * 6. If there are no characters that fit the threshold, then most popular symbols are involved to the calculations:

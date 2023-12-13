@@ -132,7 +132,7 @@ char MaConsensusAlgorithmSimpleExtended::mergeCharacters(const QVector<char>& ch
     return flags2Character(mergedFlag);
 }
 
-QVector<QVector<char>> getFrequences(const MultipleAlignment& ma, int column, QVector<int> seqIdx) {
+static QVector<QVector<char>> getFrequencies(const MultipleAlignment& ma, int column, QVector<int> seqIdx) {
     QVarLengthArray<int> frequencies(256);
     memset(frequencies.data(), 0, frequencies.size() * sizeof(int));
 
@@ -153,7 +153,7 @@ QVector<QVector<char>> getFrequences(const MultipleAlignment& ma, int column, QV
 char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const {
     CHECK(filterIdx(seqIdx, ma, column), INVALID_CONS_CHAR);
 
-    QVector<QVector<char>> frequencies = getFrequences(ma, column, seqIdx);
+    QVector<QVector<char>> frequencies = getFrequencies(ma, column, seqIdx);
 
     char bestCharacter = INVALID_CONS_CHAR;
     const int thresholdCount = ceil(((frequencies.size() - 1) * getThreshold()) / 100.0);
@@ -198,7 +198,7 @@ MSAConsensusAlgorithm* MaConsensusAlgorithmFactorySimpleExtended::createAlgorith
 
 QString MaConsensusAlgorithmFactorySimpleExtended::getDescription() const {
     return tr("The algorithm selects the best character from the extended DNA alphabet. "
-              "Only bases with frequences which are greater than a threshold value are taken into account.");
+              "Only bases with frequencies which are greater than a threshold value are taken into account.");
 }
 
 QString MaConsensusAlgorithmFactorySimpleExtended::getName() const {
