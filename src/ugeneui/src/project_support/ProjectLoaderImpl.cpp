@@ -1050,6 +1050,7 @@ QList<Task*> AddDocumentsToProjectTask::onSubTaskFinished(Task* t) {
     } else if (t->hasWarning()) {
         setReportingSupported(true);
         setReportingEnabled(true);
+        SAFE_POINT(propagateSubtaskWarnings(), L10N::internalError("No warnings passed to parent"), res);
     }
     foreach (Document* d, docsToMarkAsModified) {
         if (d->isLoaded() && !d->isModified()) {

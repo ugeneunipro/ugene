@@ -142,6 +142,29 @@ Task* Task::getSubtaskWithErrors() const {
     return nullptr;
 }
 
+bool Task::propagateSubtaskWarnings() {
+    if (hasWarning()) {
+        return true;
+    }
+    QList<Task*> badChildren = getSubtasksWithWarnings();
+    if (!badChildren.isEmpty()) {
+        for (const Task* sub : qAsConst(badChildren)) {
+            stateInfo.addWarnings(sub->getWarnings());
+        }
+    }
+    return stateInfo.hasWarnings();
+}
+
+QList<Task*> Task::getSubtasksWithWarnings() const {
+    QList<Task*> result;
+    for (const QPointer<Task>& sub : qAsConst(getSubtasks())) {
+        if (sub->hasWarning()) {
+            result.append(sub);
+        }
+    }
+    return result;
+}
+
 QList<Task*> Task::onSubTaskFinished(Task*) {
     static QList<Task*> stub;
     return stub;

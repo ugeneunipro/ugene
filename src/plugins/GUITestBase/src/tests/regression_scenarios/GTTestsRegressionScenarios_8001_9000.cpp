@@ -158,6 +158,14 @@ GUI_TEST_CLASS_DEFINITION(test_8015) {
     CHECK_SET_ERR(resultLabel->text() == "Results: -/0", "Unexpected find algorithm results");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8024) {
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new DocumentFormatSelectorDialogFiller("BED"));
+    GTFileDialog::openFileList(testDir + "_common_data/regression/8024/", {"55555.gb", "reads_consensus.txt"});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(!lt.hasMessage("No warnings to show at"), "'No warnings to show at' should not appear!");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8028) {
     GTUtilsDialog::waitForDialog(new SaveProjectAsDialogFiller("proj_test_8028", sandBoxDir + "proj_test_8028"));
     GTMenu::clickMainMenuItem({"File", "New project..."}, GTGlobals::UseMouse);

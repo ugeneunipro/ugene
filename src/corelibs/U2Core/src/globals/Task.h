@@ -384,6 +384,9 @@ public:
 
     virtual Task* getSubtaskWithErrors() const;
 
+    /* Pass all warnings from subtask to parent stateInfo, returns true if there is any. */
+    virtual bool propagateSubtaskWarnings();
+
     virtual qint64 getTaskId() const {
         return taskId;
     }
@@ -553,6 +556,8 @@ protected:
     int maxParallelSubtasks;
 
 private:
+    QList<Task*> getSubtaskWithWarnings() const;
+
     TaskFlags flags;
     QString taskName;
     State state;
