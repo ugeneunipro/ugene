@@ -28,7 +28,14 @@
 namespace U2 {
 
 DECLARE_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase);
+DECLARE_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckReplace);
+DECLARE_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckAddRow);
+DECLARE_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckRemoveColumn);
+
 
 }  // namespace U2
 
 DECLARE_METATYPE(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase)
+DECLARE_METATYPE(MsaConsensusAlgorithmUnitTests, levitskyCheckReplace)
+DECLARE_METATYPE(MsaConsensusAlgorithmUnitTests, levitskyCheckAddRow)
+DECLARE_METATYPE(MsaConsensusAlgorithmUnitTests, levitskyCheckRemoveColumn)

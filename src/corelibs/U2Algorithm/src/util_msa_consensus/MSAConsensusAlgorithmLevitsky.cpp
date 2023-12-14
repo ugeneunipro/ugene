@@ -306,15 +306,26 @@ void MSAConsensusAlgorithmLevitsky::reinitializeData(const MultipleAlignment& ma
 }
 
 void MSAConsensusAlgorithmLevitsky::recalculateData(const MultipleAlignment& oldMa, const MultipleAlignment& newMa, const MaModificationInfo& mi) {
-    // It looks like a bug - sometimes @mi.alignmentLengthChanged is true,
-    // but length hasn't been changed
-    // TODO: fix it
-    if (mi.alignmentLengthChanged && oldMa->getLength() != newMa->getLength()) {
-        // If alignment length has been changed, we need to recalculate all alignment
-        // TODO: improve MaModificationInfo and provide additional info and prevent general recalculation
+    // When we recalculate a row, we first do @unregisterHit() for all bases, and then @registerHit().
+    // That means, that we need to do 2 times more ticks for a row if we recalculate it than if we just clean in and do @registerHit() from scratch.
+    // That means, that we have a calculation time profit only if we recalculate half as many sequences as in the entire alignment.
+    // Otherwise, it is better just to recalculate the whole alignment.
+    if (mi.modifiedRowIds.size() > newMa->getRowCount() / 2) {
         reinitializeData(newMa);
         return;
     }
+
+    //return;
+    // It looks like a bug - sometimes @mi.alignmentLengthChanged is true,
+    // but length hasn't been changed
+    // TODO: fix it
+    //if (mi.alignmentLengthChanged && oldMa->getLength() != newMa->getLength()) {
+        // If alignment length has been changed, we need to recalculate all alignment
+        // This code is unreachable until the problem above is fixed
+        // TODO: improve MaModificationInfo and provide additional info and prevent general recalculation
+        //reinitializeData(newMa);
+        //return;
+    //}
 
     // If alphabet has been changed by clicking "--> DNA"/"--> RNA"/ buttons,
     // we could easily just switch 'T' and 'U' counters, but, for now,
