@@ -556,7 +556,7 @@ protected:
     int maxParallelSubtasks;
 
 private:
-    QList<Task*> getSubtaskWithWarnings() const;
+    QList<Task*> getSubtasksWithWarnings() const;
 
     TaskFlags flags;
     QString taskName;
