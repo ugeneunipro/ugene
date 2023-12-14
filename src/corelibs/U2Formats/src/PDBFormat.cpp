@@ -416,7 +416,6 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QList<
     int modelId = currentModelIndex + 1;
     biostruct.modelMap[modelId].insert(id, a);
 
-    // If atom is in chain
     if (!isHetero || seqResContains(chainIdentifier, residueIndex.toInt(), residueAcronym)) {
         // Process residue
         if (!biostruct.moleculeMap.contains(chainIndex)) {
