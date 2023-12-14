@@ -39,8 +39,8 @@ QString MSAConsensusAlgorithmFactoryDefault::getName() const {
     return tr("Default");
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
-    return new MSAConsensusAlgorithmDefault(this, ignoreTrailingLeadingGaps, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps) {
+    return new MSAConsensusAlgorithmDefault(this, ignoreTrailingLeadingGaps);
 }
 
 U2::MSAConsensusAlgorithmDefault* MSAConsensusAlgorithmDefault::clone() const {
@@ -50,15 +50,16 @@ U2::MSAConsensusAlgorithmDefault* MSAConsensusAlgorithmDefault::clone() const {
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& msa, int pos, int& cnt, QVector<int> seqIdx) const {
-    CHECK(filterIdx(seqIdx, msa, pos), INVALID_CONS_CHAR);
+char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& ma, int pos, int& cnt) const {
+    QVector<int> seqIdx = pickRowsToUseInConsensus(ma, pos);
+    CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 
     // TODO: use var-length array!
     QVector<QPair<int, char>> freqs(32);
     char ch;
-    int nSeq = seqIdx.isEmpty() ? msa->getRowCount() : seqIdx.size();
+    int nSeq = seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
-        char c = msa->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], pos);
+        char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
             assert(idx >= 0 && idx <= freqs.size());

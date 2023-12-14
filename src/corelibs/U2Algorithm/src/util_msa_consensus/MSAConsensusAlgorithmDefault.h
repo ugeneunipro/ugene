@@ -32,7 +32,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryDefault : public MSAConsens
 public:
     MSAConsensusAlgorithmFactoryDefault(QObject* p = nullptr);
 
-    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent) override;
+    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
 
     QString getDescription() const override;
 
@@ -62,18 +62,18 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmDefault : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmDefault(MSAConsensusAlgorithmFactoryDefault* f, bool ignoreTrailingLeadingGaps, QObject* p = nullptr)
-        : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
+    MSAConsensusAlgorithmDefault(MSAConsensusAlgorithmFactoryDefault* f, bool ignoreTrailingLeadingGaps)
+        : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps) {
     }
 
-    char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const override {
+    char getConsensusChar(const MultipleAlignment& ma, int column) const override {
         int countStub = 0;
-        return getConsensusCharAndScore(ma, column, countStub, seqIdx);
+        return getConsensusCharAndScore(ma, column, countStub);
     }
 
     MSAConsensusAlgorithmDefault* clone() const override;
 
-    char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx) const override;
+    char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score) const override;
 };
 
 }  // namespace U2

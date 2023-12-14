@@ -230,7 +230,7 @@ MSAConsensusAlgorithm* ExtractMSAConsensusTaskHelper::createAlgorithm() {
         setError(ExtractMSAConsensusTaskHelper::tr("Unknown consensus algorithm: ") + algoId);
         return nullptr;
     }
-    MSAConsensusAlgorithm* alg = f->createAlgorithm(msa, false, nullptr);
+    MSAConsensusAlgorithm* alg = f->createAlgorithm(msa, false);
     SAFE_POINT_EXT(alg != nullptr, setError("NULL algorithm"), nullptr);
     alg->setThreshold(threshold);
 

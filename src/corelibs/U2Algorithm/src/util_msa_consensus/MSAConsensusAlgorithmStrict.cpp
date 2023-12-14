@@ -41,15 +41,16 @@ QString MSAConsensusAlgorithmFactoryStrict::getName() const {
     return tr("Strict");
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
-    return new MSAConsensusAlgorithmStrict(this, ignoreTrailingLeadingGaps, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps) {
+    return new MSAConsensusAlgorithmStrict(this, ignoreTrailingLeadingGaps);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const {
-    CHECK(filterIdx(seqIdx, ma, column), INVALID_CONS_CHAR);
+char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment& ma, int column) const {
+    QVector<int> seqIdx = pickRowsToUseInConsensus(ma, column);
+    CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 
     QVector<int> freqsByChar(256, 0);
     int nonGaps = 0;

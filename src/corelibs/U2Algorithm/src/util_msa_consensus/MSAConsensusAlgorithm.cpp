@@ -24,8 +24,8 @@
 #include <QVector>
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "MSAConsensusUtils.h"
 
@@ -51,9 +51,10 @@ ConsensusAlgorithmFlags MSAConsensusAlgorithmFactory::getAlphabetFlags(const DNA
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithm::INVALID_CONS_CHAR = '\0';
-MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _factory, bool ignoreTrailingLeadingGaps, QObject* p)
-    : QObject(p), factory(_factory),
+const char MSAConsensusAlgorithm::INVALID_CONS_CHAR = '\0';
+
+MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _factory, bool ignoreTrailingLeadingGaps)
+    : factory(_factory),
       threshold(0),
       ignoreTrailingAndLeadingGaps(ignoreTrailingLeadingGaps) {
 }
@@ -64,13 +65,13 @@ MSAConsensusAlgorithm::MSAConsensusAlgorithm(const MSAConsensusAlgorithm& algori
       ignoreTrailingAndLeadingGaps(algorithm.ignoreTrailingAndLeadingGaps) {
 }
 
-char MSAConsensusAlgorithm::getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx) const {
-    char consensusChar = getConsensusChar(ma, column, seqIdx);
+char MSAConsensusAlgorithm::getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score) const {
+    char consensusChar = getConsensusChar(ma, column);
 
     // now compute score using most freq character
     int nonGaps = 0;
     QVector<int> freqsByChar(256);
-    uchar topChar = MSAConsensusUtils::getColumnFreqs(ma, column, freqsByChar, nonGaps, seqIdx);
+    uchar topChar = MSAConsensusUtils::getColumnFreqs(ma, column, freqsByChar, nonGaps);
     score = freqsByChar[topChar];
 
     return consensusChar;
@@ -85,23 +86,21 @@ void MSAConsensusAlgorithm::setThreshold(int val) {
     emit si_thresholdChanged(newThreshold);
 }
 
-bool MSAConsensusAlgorithm::filterIdx(QVector<int>& seqIdx, const MultipleAlignment& ma, int pos) const {
-    CHECK(ignoreTrailingAndLeadingGaps, true);
-
-    QVector<int> tmp;
-    int nSeq = seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size();
-    for (int seq = 0; seq < nSeq; seq++) {
-        int rowNum = seqIdx.isEmpty() ? seq : seqIdx[seq];
-        const MultipleAlignmentRow& row = ma->getRow(rowNum);
-        if (row->isTrailingOrLeadingGap(pos)) {
-            continue;
+QVector<int> MSAConsensusAlgorithm::pickRowsWithCharInCoreArea(const MultipleAlignment& ma, int pos) {
+    QVector<int> seqIdx;
+    int nSeq = ma->getRowCount();
+    for (int rowIndex = 0; rowIndex < nSeq; rowIndex++) {
+        const MultipleAlignmentRow& row = ma->getRow(rowIndex);
+        if (!row->isTrailingOrLeadingGap(pos)) {
+            seqIdx << rowIndex;
         }
-        tmp << rowNum;
     }
-    if (tmp.size() != nSeq) {
-        seqIdx = tmp;
-    }
-    return !tmp.isEmpty();
+    return seqIdx;
+}
+
+QVector<int> MSAConsensusAlgorithm::pickRowsToUseInConsensus(const MultipleAlignment& ma, int pos) const {
+    CHECK(ignoreTrailingAndLeadingGaps, emptyRowIdxStub);
+    return pickRowsWithCharInCoreArea(ma, pos);
 }
 
 }  // namespace U2

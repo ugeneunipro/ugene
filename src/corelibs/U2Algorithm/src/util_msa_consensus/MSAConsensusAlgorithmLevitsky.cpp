@@ -42,8 +42,8 @@ QString MSAConsensusAlgorithmFactoryLevitsky::getName() const {
     return tr("Levitsky");
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p) {
-    return new MSAConsensusAlgorithmLevitsky(this, ma, ignoreTrailingLeadingGaps, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) {
+    return new MSAConsensusAlgorithmLevitsky(this, ma, ignoreTrailingLeadingGaps);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -111,8 +111,8 @@ static void registerHit(int* data, char c) {
     }
 }
 
-MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p)
-    : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p), globalFreqs(QVarLengthArray<int>(256)) {
+MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps)
+    : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps), globalFreqs(QVarLengthArray<int>(256)) {
     int* freqsData = globalFreqs.data();
     std::fill(globalFreqs.begin(), globalFreqs.end(), 0);
     int len = ma->getLength();
@@ -136,7 +136,7 @@ static const int GROUP3_LAST_IDX = GROUP2_LAST_IDX + EXT_DNA_CHARS_ONE_OF_THREE.
 static int getCharacterGroup(int allExtDnaCharactersIndex) {
     return allExtDnaCharactersIndex <= GROUP1_LAST_IDX   ? 0
            : allExtDnaCharactersIndex <= GROUP2_LAST_IDX ? 1
-           : allExtDnaCharactersIndex <= GROUP3_LAST_IDX  ? 2
+           : allExtDnaCharactersIndex <= GROUP3_LAST_IDX ? 2
                                                          : 3;
 }
 
@@ -204,8 +204,9 @@ static int mergeCharsIntoMask(const char* chars, int length) {
     return mask;
 }
 
-char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const {
-    CHECK(filterIdx(seqIdx, ma, column), INVALID_CONS_CHAR);
+char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma, int column) const {
+    QVector<int> seqIdx = pickRowsToUseInConsensus(ma, column);
+    CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 
     // Count column-local frequencies.
     QVarLengthArray<int, 91> localFreqs(91);  // Max tracked 'Z' character index is 90.
