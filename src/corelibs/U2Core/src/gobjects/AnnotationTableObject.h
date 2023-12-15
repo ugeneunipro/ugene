@@ -47,6 +47,11 @@ public:
      * Converts all the features stored in DB to annotations and returns the result
      */
     QList<Annotation*> getAnnotations() const;
+
+    /*
+     * Returns map with group path as a key and this group annotations as value
+     */
+    QMap<QString, QList<Annotation*>> getGroupPathAnnotationsMap() const;
     /**
      * Returning value specifies if at least a single annotation belongs to the object
      */
@@ -71,6 +76,11 @@ public:
      * Returns list of annotations having @name
      */
     QList<Annotation*> getAnnotationsByName(const QString& name) const;
+    /*
+     * Returns map with group path as a key and this group annotations as value,
+     * but only if annotations betong to the @region.
+     */
+    QMap<QString, QList<Annotation*>> getGroupPathAnnotationsMapByRegion(const U2Region& region) const;
     /**
      * Returns list of annotations having belonging to the @region. @contains specifies
      * whether the result set should include only annotations that has no region or its part

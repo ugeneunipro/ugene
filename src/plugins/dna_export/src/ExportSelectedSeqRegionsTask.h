@@ -42,7 +42,7 @@ public:
     const ExportSequenceTaskSettings& getExportSettings() const;
 
 private:
-    QList<SharedAnnotationData> findAnnotationsInRegion(const U2Region& region);
+    QMap<QString, QList<SharedAnnotationData>> findAnnotationsInRegion(const U2Region& region);
 
     QPointer<U2SequenceObject> seqObject;
     QList<QPointer<AnnotationTableObject>> annotations;

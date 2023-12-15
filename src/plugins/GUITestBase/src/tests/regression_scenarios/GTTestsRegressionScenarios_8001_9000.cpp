@@ -23,10 +23,12 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMainWindow.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <utils/GTUtilsDialog.h>
 
@@ -39,6 +41,7 @@
 #include <U2View/TvTextItem.h>
 
 #include "GTTestsRegressionScenarios_8001_9000.h"
+#include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -51,7 +54,9 @@
 #include "GTUtilsOptionPanelSequenceView.h"
 
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 
@@ -143,6 +148,39 @@ GUI_TEST_CLASS_DEFINITION(test_8009) {
     GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(lt.hasMessage("reference file doesn't exist"), "Expected message 'reference file doesn't exist' not found!");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8010) {
+    // Open murine.gb
+    // Open "Primer 3"
+    // Click OK with default settings.
+    // Export sequence with annotations to another GenBank file
+    // Expected : primers have pair group parents
+    GTFileDialog::openFile(dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsDialog::waitForDialog(new Primer3DialogFiller(Primer3DialogFiller::Primer3Settings()));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTLineEdit::setText("fileNameEdit", sandBoxDir + "test_8010.gb", dialog, true);
+            GTComboBox::selectItemByText("formatCombo", dialog, "GenBank");
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE}));
+    GTUtilsDialog::add(new ExportSelectedRegionFiller(new Scenario()));
+    GTUtilsProjectTreeView::click("NC_001363", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAnnotationsTreeView::clickItem("pair 1  (0, 2)", 1, false);
+    GTUtilsAnnotationsTreeView::clickItem("pair 2  (0, 2)", 1, false);
+    GTUtilsAnnotationsTreeView::clickItem("pair 3  (0, 2)", 1, false);
+    GTUtilsAnnotationsTreeView::clickItem("pair 4  (0, 2)", 1, false);
+    GTUtilsAnnotationsTreeView::clickItem("pair 5  (0, 2)", 1, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8015) {
