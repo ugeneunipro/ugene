@@ -480,10 +480,11 @@ void SequenceInfo::connectSlots() {
     connect(&codonTaskRunner, SIGNAL(si_finished()), SLOT(sl_updateCodonOccurData()));
 
     // A subgroup has been opened/closed
-    connect(charOccurWidget, SIGNAL(si_subgroupStateChanged(QString)), SLOT(sl_subgroupStateChanged(QString)));
-    connect(dinuclWidget, SIGNAL(si_subgroupStateChanged(QString)), SLOT(sl_subgroupStateChanged(QString)));
-    connect(codonWidget, SIGNAL(si_subgroupStateChanged(QString)), SLOT(sl_subgroupStateChanged(QString)));
-    connect(aminoAcidWidget, SIGNAL(si_subgroupStateChanged(QString)), SLOT(sl_subgroupStateChanged(QString)));
+    connect(statsWidget,     &ShowHideSubgroupWidget::si_subgroupStateChanged, this, &SequenceInfo::sl_subgroupStateChanged);
+    connect(charOccurWidget, &ShowHideSubgroupWidget::si_subgroupStateChanged, this, &SequenceInfo::sl_subgroupStateChanged);
+    connect(dinuclWidget,    &ShowHideSubgroupWidget::si_subgroupStateChanged, this, &SequenceInfo::sl_subgroupStateChanged);
+    connect(codonWidget,     &ShowHideSubgroupWidget::si_subgroupStateChanged, this, &SequenceInfo::sl_subgroupStateChanged);
+    connect(aminoAcidWidget, &ShowHideSubgroupWidget::si_subgroupStateChanged, this, &SequenceInfo::sl_subgroupStateChanged);
 }
 
 void SequenceInfo::sl_onSelectionChanged(LRegionsSelection*,

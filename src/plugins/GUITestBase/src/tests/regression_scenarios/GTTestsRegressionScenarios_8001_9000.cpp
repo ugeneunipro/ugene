@@ -99,6 +99,25 @@ GUI_TEST_CLASS_DEFINITION(test_8001) {
     CHECK_SET_ERR(!lt.hasErrors(), "Expected no errors");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8002) {
+    // Open murine.gb
+    // Open the "Statistics" tab
+    // Hide "Common statistics"
+    // Double click on the first annotation
+    // Show "Common statistics"
+    // Expected: Length = 589
+
+    GTFileDialog::openFile(dataDir + "samples/Genbank", "murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Statistics);
+    auto arrowheaderCommonStatistics = GTWidget::findWidget("ArrowHeader_Common Statistics");
+    GTWidget::click(arrowheaderCommonStatistics);
+    GTUtilsSequenceView::clickAnnotationPan("misc_feature", 2, 0, true);
+    GTWidget::click(arrowheaderCommonStatistics);
+    auto commonStatistics = GTWidget::findLabel("Common Statistics");
+    CHECK_SET_ERR(commonStatistics->text().contains("589 nt"), "Expected text not found");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8009) {
     /*
      * 1. Open Tools->Sanger data analysis-> Map reads to reference
