@@ -18,9 +18,7 @@ HEADERS += src/SamtoolsAdapter.h \
            src/samtools/sam.h \
            src/samtools/sam_header.h
 
-win32 : HEADERS += src/samtools/win32/stdint.h \
-                   src/samtools/win32/unistd.h \
-                   src/samtools/win32/msvc_compat.h
+win32 : HEADERS += src/samtools/win32/unistd.h
 
 SOURCES += src/SamtoolsAdapter.cpp \
            src/samtools/bam.c \
