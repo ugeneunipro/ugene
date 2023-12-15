@@ -50,6 +50,14 @@ MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(con
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
+void plusOne(int& v) {
+    v++;
+}
+
+void minusOne(int& v) {
+    v--;
+}
+
 /*
 Code table from Victor Levitsky:
 A       A       1
@@ -68,90 +76,47 @@ H       A,T,C   3       not G (---||---)
 D       A,T,G   3       not C (---||---)
 N       A,T,G,C 4       Any
 */
-static void registerHit(int* data, char c) {
+template<class T>
+static void updateHit(int* data, char c, T func) {
     int idx = uchar(c);
-    data[idx]++;
+    func(data[idx]);
     switch (c) {
         case 'A':
-            data['W']++;
-            data['R']++;
-            data['M']++;
-            data['V']++;
-            data['H']++;
-            data['D']++;
-            data['N']++;
+            func(data['W']);
+            func(data['R']);
+            func(data['M']);
+            func(data['V']);
+            func(data['H']);
+            func(data['D']);
+            func(data['N']);
             break;
         case 'C':
-            data['M']++;
-            data['Y']++;
-            data['S']++;
-            data['B']++;
-            data['V']++;
-            data['H']++;
-            data['N']++;
+            func(data['M']);
+            func(data['Y']);
+            func(data['S']);
+            func(data['B']);
+            func(data['V']);
+            func(data['H']);
+            func(data['N']);
             break;
         case 'G':
-            data['R']++;
-            data['K']++;
-            data['S']++;
-            data['B']++;
-            data['V']++;
-            data['D']++;
-            data['N']++;
+            func(data['R']);
+            func(data['K']);
+            func(data['S']);
+            func(data['B']);
+            func(data['V']);
+            func(data['D']);
+            func(data['N']);
             break;
         case 'T':
         case 'U':
-            data['W']++;
-            data['K']++;
-            data['Y']++;
-            data['B']++;
-            data['H']++;
-            data['D']++;
-            data['N']++;
-            break;
-    }
-}
-
-static void unregisterHit(int* data, char c) {
-    int idx = uchar(c);
-    data[idx]--;
-    switch (c) {
-        case 'A':
-            data['W']--;
-            data['R']--;
-            data['M']--;
-            data['V']--;
-            data['H']--;
-            data['D']--;
-            data['N']--;
-            break;
-        case 'C':
-            data['M']--;
-            data['Y']--;
-            data['S']--;
-            data['B']--;
-            data['V']--;
-            data['H']--;
-            data['N']--;
-            break;
-        case 'G':
-            data['R']--;
-            data['K']--;
-            data['S']--;
-            data['B']--;
-            data['V']--;
-            data['D']--;
-            data['N']--;
-            break;
-        case 'T':
-        case 'U':
-            data['W']--;
-            data['K']--;
-            data['Y']--;
-            data['B']--;
-            data['H']--;
-            data['D']--;
-            data['N']--;
+            func(data['W']);
+            func(data['K']);
+            func(data['Y']);
+            func(data['B']);
+            func(data['H']);
+            func(data['D']);
+            func(data['N']);
             break;
     }
 }
@@ -253,7 +218,7 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
     for (int seq = 0; seq < nSeq; seq++) {
         char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], column);
         if (c >= 'A' && c <= 'Z') {
-            registerHit(freqsData, c);
+            updateHit(freqsData, c, plusOne);
         }
     }
     // find all symbols with freq > threshold, select one with the lowest global freq
@@ -300,14 +265,14 @@ void MSAConsensusAlgorithmLevitsky::reinitializeData(const MultipleAlignment& ma
     for (const MultipleAlignmentRow& row : qAsConst(maRows)) {
         for (int i = 0; i < len; i++) {
             char c = row->charAt(i);
-            registerHit(freqsData, c);
+            updateHit(freqsData, c, plusOne);
         }
     }
 }
 
 void MSAConsensusAlgorithmLevitsky::recalculateData(const MultipleAlignment& oldMa, const MultipleAlignment& newMa, const MaModificationInfo& mi) {
-    // When we recalculate a row, we first do @unregisterHit() for all bases, and then @registerHit().
-    // That means, that we need to do 2 times more ticks for a row if we recalculate it than if we just clean in and do @registerHit() from scratch.
+    // When we recalculate a row, we first do @updateHit(,,minusOne) for all bases, and then @updateHit(,,plusOne).
+    // That means, that we need to do 2 times more ticks for a row if we recalculate it than if we just clean in and do @updateHit(,,plusOne) from scratch.
     // That means, that we have a calculation time profit only if we recalculate half as many sequences as in the entire alignment.
     // Otherwise, it is better just to recalculate the whole alignment.
     if (mi.modifiedRowIds.size() > newMa->getRowCount() / 2) {
@@ -347,7 +312,7 @@ void MSAConsensusAlgorithmLevitsky::recalculateData(const MultipleAlignment& old
 
             for (int i = 0; i < oldLen; i++) {
                 char c = oldRow->charAt(i);
-                unregisterHit(freqsData, c);
+                updateHit(freqsData, c, minusOne);
             }
 
             const auto& newRow = newMa->getRowByRowId(rowId, os);
@@ -355,7 +320,7 @@ void MSAConsensusAlgorithmLevitsky::recalculateData(const MultipleAlignment& old
 
             for (int i = 0; i < newLen; i++) {
                 char c = newRow->charAt(i);
-                registerHit(freqsData, c);
+                updateHit(freqsData, c, plusOne);
             }
         }
     }
@@ -370,7 +335,7 @@ void MSAConsensusAlgorithmLevitsky::recalculateData(const MultipleAlignment& old
 
                 for (int i = 0; i < len; i++) {
                     char c = newRow->charAt(i);
-                    registerHit(freqsData, c);
+                    updateHit(freqsData, c, plusOne);
                 }
             }
         } else if (oldRows.size() > newRows.size()) {
@@ -379,7 +344,7 @@ void MSAConsensusAlgorithmLevitsky::recalculateData(const MultipleAlignment& old
 
                 for (int i = 0; i < len; i++) {
                     char c = oldRow->charAt(i);
-                    unregisterHit(freqsData, c);
+                    updateHit(freqsData, c, minusOne);
                 }
             }
         }
