@@ -46,44 +46,43 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(ConsensusAlgorithmFlags)
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactory : public QObject {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags flags, QObject* p = nullptr);
+    MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags flags);
 
     virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) = 0;
 
-    QString getId() const {
-        return algorithmId;
-    }
+    QString getId() const;
 
-    ConsensusAlgorithmFlags getFlags() const {
-        return flags;
-    }
+    ConsensusAlgorithmFlags getFlags() const;
 
-    virtual QString getDescription() const = 0;
+    QString getDescription() const;
 
-    virtual QString getName() const = 0;
+    QString getName() const;
 
-    virtual bool supportsThreshold() const {
-        return flags.testFlag(ConsensusAlgorithmFlag_SupportThreshold);
-    }
+    bool supportsThreshold() const;
 
-    virtual int getMinThreshold() const = 0;
+    int getMinThreshold() const;
 
-    virtual int getMaxThreshold() const = 0;
+    int getMaxThreshold() const;
 
-    virtual int getDefaultThreshold() const = 0;
+    int getDefaultThreshold() const;
 
-    virtual QString getThresholdSuffix() const {
-        return "";
-    }
+    QString getThresholdSuffix() const;
 
-    virtual bool isSequenceLikeResult() const = 0;
+    bool isSequenceLikeResult() const;
 
-    // utility method
     static ConsensusAlgorithmFlags getAlphabetFlags(const DNAAlphabet* al);
 
-private:
+protected:
     QString algorithmId;
     ConsensusAlgorithmFlags flags;
+
+    QString name;
+    QString description;
+    int minThreshold = 0;
+    int maxThreshold = 0;
+    int defaultThreshold = 0;
+    QString thresholdSuffix = "";
+    bool isSequenceLikeResultFlag = false;
 };
 
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithm : public QObject {
@@ -103,47 +102,27 @@ public:
 
     virtual MSAConsensusAlgorithm* clone() const = 0;
 
-    virtual QString getDescription() const {
-        return factory->getDescription();
-    }
+    QString getDescription() const;
 
-    virtual QString getName() const {
-        return factory->getName();
-    }
+    QString getName() const;
 
-    virtual void setThreshold(int val);
+    void setThreshold(int val);
 
-    virtual int getThreshold() const {
-        return threshold;
-    }
+    int getThreshold() const;
 
-    bool supportsThreshold() const {
-        return factory->supportsThreshold();
-    }
+    bool supportsThreshold() const;
 
-    virtual int getMinThreshold() const {
-        return factory->getMinThreshold();
-    }
+    int getMinThreshold() const;
 
-    virtual int getMaxThreshold() const {
-        return factory->getMaxThreshold();
-    }
+    int getMaxThreshold() const;
 
-    virtual int getDefaultThreshold() const {
-        return factory->getDefaultThreshold();
-    }
+    int getDefaultThreshold() const;
 
-    virtual QString getThresholdSuffix() const {
-        return factory->getThresholdSuffix();
-    }
+    QString getThresholdSuffix() const;
 
-    QString getId() const {
-        return factory->getId();
-    }
+    QString getId() const;
 
-    MSAConsensusAlgorithmFactory* getFactory() const {
-        return factory;
-    }
+    MSAConsensusAlgorithmFactory* getFactory() const;
 
     static const char INVALID_CONS_CHAR;
 

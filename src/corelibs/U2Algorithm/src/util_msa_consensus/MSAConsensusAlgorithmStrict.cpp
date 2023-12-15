@@ -29,16 +29,15 @@
 
 namespace U2 {
 
-MSAConsensusAlgorithmFactoryStrict::MSAConsensusAlgorithmFactoryStrict(QObject* p)
-    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO, ConsensusAlgorithmFlags_AllAlphabets | ConsensusAlgorithmFlag_SupportThreshold | ConsensusAlgorithmFlag_AvailableForChromatogram, p) {
-}
-
-QString MSAConsensusAlgorithmFactoryStrict::getDescription() const {
-    return tr("The algorithm returns gap character ('-') if symbol frequency in a column is lower than threshold specified.");
-}
-
-QString MSAConsensusAlgorithmFactoryStrict::getName() const {
-    return tr("Strict");
+MSAConsensusAlgorithmFactoryStrict::MSAConsensusAlgorithmFactoryStrict()
+    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO, ConsensusAlgorithmFlags_AllAlphabets | ConsensusAlgorithmFlag_SupportThreshold | ConsensusAlgorithmFlag_AvailableForChromatogram) {
+    name = tr("Strict");
+    description = tr("The algorithm returns gap character ('-') if symbol frequency in a column is lower than threshold specified.");
+    minThreshold = 1;
+    maxThreshold = 100;
+    defaultThreshold = 100;
+    thresholdSuffix = "%";
+    isSequenceLikeResultFlag = true;
 }
 
 MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps) {

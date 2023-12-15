@@ -34,8 +34,8 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 // Factory
 
-MSAConsensusAlgorithmFactory::MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags _flags, QObject* p)
-    : QObject(p), algorithmId(algoId), flags(_flags) {
+MSAConsensusAlgorithmFactory::MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags _flags)
+    : algorithmId(algoId), flags(_flags) {
 }
 
 ConsensusAlgorithmFlags MSAConsensusAlgorithmFactory::getAlphabetFlags(const DNAAlphabet* al) {
@@ -48,6 +48,45 @@ ConsensusAlgorithmFlags MSAConsensusAlgorithmFactory::getAlphabetFlags(const DNA
     return ConsensusAlgorithmFlag_Raw;
 }
 
+QString MSAConsensusAlgorithmFactory::getId() const {
+    return algorithmId;
+}
+
+ConsensusAlgorithmFlags MSAConsensusAlgorithmFactory::getFlags() const {
+    return flags;
+}
+
+QString MSAConsensusAlgorithmFactory::getDescription() const {
+    return description;
+}
+
+QString MSAConsensusAlgorithmFactory::getName() const {
+    return name;
+}
+
+bool MSAConsensusAlgorithmFactory::supportsThreshold() const {
+    return flags.testFlag(ConsensusAlgorithmFlag_SupportThreshold);
+}
+
+int MSAConsensusAlgorithmFactory::getMinThreshold() const {
+    return minThreshold;
+}
+
+int MSAConsensusAlgorithmFactory::getMaxThreshold() const {
+    return maxThreshold;
+};
+
+int MSAConsensusAlgorithmFactory::getDefaultThreshold() const {
+    return defaultThreshold;
+};
+
+QString MSAConsensusAlgorithmFactory::getThresholdSuffix() const {
+    return thresholdSuffix;
+}
+
+bool MSAConsensusAlgorithmFactory::isSequenceLikeResult() const {
+    return isSequenceLikeResultFlag;
+}
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
@@ -101,6 +140,46 @@ QVector<int> MSAConsensusAlgorithm::pickRowsWithCharInCoreArea(const MultipleAli
 QVector<int> MSAConsensusAlgorithm::pickRowsToUseInConsensus(const MultipleAlignment& ma, int pos) const {
     CHECK(ignoreTrailingAndLeadingGaps, emptyRowIdxStub);
     return pickRowsWithCharInCoreArea(ma, pos);
+}
+
+QString MSAConsensusAlgorithm::getDescription() const {
+    return factory->getDescription();
+}
+
+QString MSAConsensusAlgorithm::getName() const {
+    return factory->getName();
+}
+
+int MSAConsensusAlgorithm::getThreshold() const {
+    return threshold;
+}
+
+bool MSAConsensusAlgorithm::supportsThreshold() const {
+    return factory->supportsThreshold();
+}
+
+int MSAConsensusAlgorithm::getMinThreshold() const {
+    return factory->getMinThreshold();
+}
+
+int MSAConsensusAlgorithm::getMaxThreshold() const {
+    return factory->getMaxThreshold();
+}
+
+int MSAConsensusAlgorithm::getDefaultThreshold() const {
+    return factory->getDefaultThreshold();
+}
+
+QString MSAConsensusAlgorithm::getThresholdSuffix() const {
+    return factory->getThresholdSuffix();
+}
+
+QString MSAConsensusAlgorithm::getId() const {
+    return factory->getId();
+}
+
+MSAConsensusAlgorithmFactory* MSAConsensusAlgorithm::getFactory() const {
+    return factory;
 }
 
 }  // namespace U2

@@ -30,33 +30,9 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryStrict : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryStrict(QObject* p = nullptr);
+    MSAConsensusAlgorithmFactoryStrict();
 
     MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
-
-    QString getDescription() const override;
-
-    QString getName() const override;
-
-    int getMinThreshold() const override {
-        return 1;
-    }
-
-    int getMaxThreshold() const override {
-        return 100;
-    }
-
-    int getDefaultThreshold() const override {
-        return 100;
-    }
-
-    QString getThresholdSuffix() const override {
-        return "%";
-    }
-
-    bool isSequenceLikeResult() const override {
-        return true;
-    }
 };
 
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmStrict : public MSAConsensusAlgorithm {

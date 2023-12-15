@@ -29,31 +29,9 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryClustal : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryClustal(QObject* p = nullptr)
-        : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO, ConsensusAlgorithmFlags_AllAlphabets, p) {
-    }
+    MSAConsensusAlgorithmFactoryClustal();
 
     MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
-
-    QString getDescription() const override;
-
-    QString getName() const override;
-
-    int getMinThreshold() const override {
-        return 0;
-    }
-
-    int getMaxThreshold() const override {
-        return 0;
-    }
-
-    int getDefaultThreshold() const override {
-        return 0;
-    }
-
-    bool isSequenceLikeResult() const override {
-        return false;
-    }
 };
 
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmClustal : public MSAConsensusAlgorithm {
