@@ -27,16 +27,14 @@
 
 namespace U2 {
 
-MSAConsensusAlgorithmFactoryDefault::MSAConsensusAlgorithmFactoryDefault(QObject* p)
-    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::DEFAULT_ALGO, ConsensusAlgorithmFlags_NuclAmino | ConsensusAlgorithmFlag_SupportThreshold, p) {
-}
-
-QString MSAConsensusAlgorithmFactoryDefault::getDescription() const {
-    return tr("Based on JalView algorithm. Returns '+' if there are 2 characters with high frequency. Returns symbol in lower case if the symbol content in a row is lower than the threshold specified.");
-}
-
-QString MSAConsensusAlgorithmFactoryDefault::getName() const {
-    return tr("Default");
+MSAConsensusAlgorithmFactoryDefault::MSAConsensusAlgorithmFactoryDefault()
+    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::DEFAULT_ALGO, ConsensusAlgorithmFlags_NuclAmino | ConsensusAlgorithmFlag_SupportThreshold) {
+    name = tr("Default");
+    description = tr("Based on JalView algorithm. Returns '+' if there are 2 characters with high frequency. Returns symbol in lower case if the symbol content in a row is lower than the threshold specified.");
+    minThreshold = 1;
+    maxThreshold = 100;
+    defaultThreshold = 100;
+    thresholdSuffix = "%";
 }
 
 MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps) {

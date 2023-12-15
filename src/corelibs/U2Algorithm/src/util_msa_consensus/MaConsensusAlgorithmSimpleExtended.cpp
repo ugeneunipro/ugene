@@ -187,43 +187,21 @@ U2::MaConsensusAlgorithmSimpleExtended* MaConsensusAlgorithmSimpleExtended::clon
     return new MaConsensusAlgorithmSimpleExtended(*this);
 }
 
-MaConsensusAlgorithmFactorySimpleExtended::MaConsensusAlgorithmFactorySimpleExtended(QObject* parent)
+MaConsensusAlgorithmFactorySimpleExtended::MaConsensusAlgorithmFactorySimpleExtended()
     : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO,
-                                   ConsensusAlgorithmFlag_Nucleic | ConsensusAlgorithmFlag_SupportThreshold | ConsensusAlgorithmFlag_AvailableForChromatogram,
-                                   parent) {
+                                   ConsensusAlgorithmFlag_Nucleic | ConsensusAlgorithmFlag_SupportThreshold | ConsensusAlgorithmFlag_AvailableForChromatogram) {
+    name = tr("Simple extended");
+    description = tr("The algorithm selects the best character from the extended DNA alphabet. "
+                     "Only bases with frequencies which are greater than a threshold value are taken into account.");
+    minThreshold = 50;
+    maxThreshold = 100;
+    defaultThreshold = 100;
+    thresholdSuffix = "%";
+    isSequenceLikeResultFlag = true;
 }
 
 MSAConsensusAlgorithm* MaConsensusAlgorithmFactorySimpleExtended::createAlgorithm(const MultipleAlignment& /*ma*/, bool ignoreTrailingLeadingGaps) {
     return new MaConsensusAlgorithmSimpleExtended(this, ignoreTrailingLeadingGaps);
-}
-
-QString MaConsensusAlgorithmFactorySimpleExtended::getDescription() const {
-    return tr("The algorithm selects the best character from the extended DNA alphabet. "
-              "Only bases with frequencies which are greater than a threshold value are taken into account.");
-}
-
-QString MaConsensusAlgorithmFactorySimpleExtended::getName() const {
-    return tr("Simple extended");
-}
-
-int MaConsensusAlgorithmFactorySimpleExtended::getMinThreshold() const {
-    return 50;
-}
-
-int MaConsensusAlgorithmFactorySimpleExtended::getMaxThreshold() const {
-    return 100;
-}
-
-int MaConsensusAlgorithmFactorySimpleExtended::getDefaultThreshold() const {
-    return 100;
-}
-
-QString MaConsensusAlgorithmFactorySimpleExtended::getThresholdSuffix() const {
-    return "%";
-}
-
-bool MaConsensusAlgorithmFactorySimpleExtended::isSequenceLikeResult() const {
-    return true;
 }
 
 }  // namespace U2

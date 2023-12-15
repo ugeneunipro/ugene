@@ -34,33 +34,9 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryLevitsky : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryLevitsky(QObject* p = nullptr);
+    MSAConsensusAlgorithmFactoryLevitsky();
 
     MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
-
-    QString getDescription() const override;
-
-    QString getName() const override;
-
-    int getMinThreshold() const override {
-        return 50;
-    }
-
-    int getMaxThreshold() const override {
-        return 100;
-    }
-
-    int getDefaultThreshold() const override {
-        return 90;
-    }
-
-    QString getThresholdSuffix() const override {
-        return "%";
-    }
-
-    bool isSequenceLikeResult() const override {
-        return true;
-    }
 };
 
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmLevitsky : public MSAConsensusAlgorithm {
@@ -73,7 +49,7 @@ public:
     MSAConsensusAlgorithmLevitsky* clone() const override;
 
 private:
-    QVarLengthArray<int> globalFreqs;
+    QVarLengthArray<int, 256> globalFreqs;
 };
 
 }  // namespace U2

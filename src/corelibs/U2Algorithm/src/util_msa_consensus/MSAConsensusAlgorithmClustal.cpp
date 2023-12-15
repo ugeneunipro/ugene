@@ -26,12 +26,10 @@
 
 namespace U2 {
 
-QString MSAConsensusAlgorithmFactoryClustal::getDescription() const {
-    return tr("Emulates ClustalW program and file format behavior.");
-}
-
-QString MSAConsensusAlgorithmFactoryClustal::getName() const {
-    return tr("ClustalW");
+MSAConsensusAlgorithmFactoryClustal::MSAConsensusAlgorithmFactoryClustal()
+    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO, ConsensusAlgorithmFlags_AllAlphabets) {
+    name = tr("ClustalW");
+    description = tr("Emulates ClustalW program and file format behavior.");
 }
 
 MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps) {

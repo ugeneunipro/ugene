@@ -119,20 +119,9 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(MaConsensusAlgorithmSimpleExtended::Characters)
 class MaConsensusAlgorithmFactorySimpleExtended : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MaConsensusAlgorithmFactorySimpleExtended(QObject* parent = nullptr);
+    MaConsensusAlgorithmFactorySimpleExtended();
 
     MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
-
-    QString getDescription() const override;
-    QString getName() const override;
-
-    int getMinThreshold() const override;
-    int getMaxThreshold() const override;
-    int getDefaultThreshold() const override;
-
-    QString getThresholdSuffix() const override;
-
-    bool isSequenceLikeResult() const override;
 };
 
 }  // namespace U2

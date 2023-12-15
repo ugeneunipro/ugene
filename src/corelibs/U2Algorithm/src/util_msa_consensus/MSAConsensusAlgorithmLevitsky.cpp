@@ -25,21 +25,19 @@
 
 namespace U2 {
 
-MSAConsensusAlgorithmFactoryLevitsky::MSAConsensusAlgorithmFactoryLevitsky(QObject* p)
+MSAConsensusAlgorithmFactoryLevitsky::MSAConsensusAlgorithmFactoryLevitsky()
     : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO,
-                                   ConsensusAlgorithmFlag_Nucleic | ConsensusAlgorithmFlag_SupportThreshold,
-                                   p) {
-}
-
-QString MSAConsensusAlgorithmFactoryLevitsky::getDescription() const {
-    return tr("The algorithm proposed by Victor Levitsky to work with DNA alignments.\n"
-              "Collects global alignment frequency for every symbol using extended (15 symbols) DNA alphabet first.\n"
-              "For every column selects the most rare symbol in the whole alignment with percentage in the column "
-              "greater or equals to the threshold value.");
-}
-
-QString MSAConsensusAlgorithmFactoryLevitsky::getName() const {
-    return tr("Levitsky");
+                                   ConsensusAlgorithmFlag_Nucleic | ConsensusAlgorithmFlag_SupportThreshold) {
+    name = tr("Levitsky");
+    description = tr("The algorithm proposed by Victor Levitsky to work with DNA alignments.\n"
+                     "Collects global alignment frequency for every symbol using extended (15 symbols) DNA alphabet first.\n"
+                     "For every column selects the most rare symbol in the whole alignment with percentage in the column "
+                     "greater or equals to the threshold value.");
+    minThreshold = 50;
+    maxThreshold = 100;
+    defaultThreshold = 90;
+    thresholdSuffix = "%";
+    isSequenceLikeResultFlag = true;
 }
 
 MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) {
