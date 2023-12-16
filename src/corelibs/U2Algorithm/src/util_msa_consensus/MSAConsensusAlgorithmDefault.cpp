@@ -24,6 +24,7 @@
 #include <QVector>
 
 #include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Timer.h>
 
 namespace U2 {
 
@@ -49,30 +50,30 @@ U2::MSAConsensusAlgorithmDefault* MSAConsensusAlgorithmDefault::clone() const {
 // Algorithm
 
 char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& ma, int pos, int& cnt) const {
+    //    GTIMER(timer, tm, "MSAConsensusAlgorithmDefault::getConsensusCharAndScore");
     QVector<int> seqIdx = pickRowsToUseInConsensus(ma, pos);
     CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 
-    // TODO: use var-length array!
-    QVector<QPair<int, char>> freqs(32);
+    QVarLengthArray<QPair<int, char>, 32> frequencies(32);
+    std::fill(frequencies.begin(), frequencies.end(), QPair<int, char>(0, '-'));
     char ch;
     int nSeq = seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
         char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
-            assert(idx >= 0 && idx <= freqs.size());
-            freqs[idx].first++;
-            freqs[idx].second = c;
+            frequencies[idx].first++;
+            frequencies[idx].second = c;
         }
     }
-    std::sort(freqs.begin(), freqs.end());
-    int p1 = freqs[freqs.size() - 1].first;
-    int p2 = freqs[freqs.size() - 2].first;
+    std::sort(frequencies.begin(), frequencies.end());
+    int p1 = frequencies[frequencies.size() - 1].first;
+    int p2 = frequencies[frequencies.size() - 2].first;
     if (p1 == 0 || (p1 == 1 && nSeq > 1)) {
         ch = U2Msa::GAP_CHAR;
         cnt = 0;
     } else {
-        char c1 = freqs[freqs.size() - 1].second;
+        char c1 = frequencies[frequencies.size() - 1].second;
         ch = p2 == p1 ? '+' : c1;
         cnt = p1;
     }

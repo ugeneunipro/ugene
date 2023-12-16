@@ -92,7 +92,7 @@ protected:
     MultipleAlignmentData(const MultipleAlignmentDataType& type,
                           const QString& name = QString(),
                           const DNAAlphabet* alphabet = nullptr,
-                          const QList<MultipleAlignmentRow>& rows = QList<MultipleAlignmentRow>());
+                          const QVector<MultipleAlignmentRow>& rows = {});
 
 public:
     virtual ~MultipleAlignmentData() = default;
@@ -147,7 +147,7 @@ public:
     const MultipleAlignmentRow& getRow(const QString& name) const;
 
     /** Returns all rows in the alignment */
-    const QList<MultipleAlignmentRow>& getRows() const;
+    const QVector<MultipleAlignmentRow>& getRows() const;
 
     /** Returns IDs of the alignment rows in the database */
     QList<qint64> getRowsIds() const;
@@ -226,7 +226,7 @@ protected:
     const DNAAlphabet* alphabet = nullptr;
 
     /** Alignment rows (each row = sequence + gap model) */
-    QList<MultipleAlignmentRow> rows;
+    QVector<MultipleAlignmentRow> rows;
 
     /** The length of the longest row in the alignment */
     qint64 length = 0;

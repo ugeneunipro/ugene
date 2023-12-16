@@ -79,8 +79,8 @@ QSharedPointer<MultipleChromatogramAlignmentData> MultipleChromatogramAlignment:
 
 namespace {
 
-QList<MultipleAlignmentRow> convertToMaRows(const QList<MultipleChromatogramAlignmentRow>& mcaRows) {
-    QList<MultipleAlignmentRow> maRows;
+QVector<MultipleAlignmentRow> convertToMaRows(const QList<MultipleChromatogramAlignmentRow>& mcaRows) {
+    QVector<MultipleAlignmentRow> maRows;
     foreach (const MultipleChromatogramAlignmentRow& mcaRow, mcaRows) {
         maRows << mcaRow;
     }

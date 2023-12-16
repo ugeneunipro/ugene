@@ -883,7 +883,7 @@ void MSAEditor::sl_sortGroupsBySize() {
 
 // TODO: move this function into MSA?
 /* Groups rows by similarity. Two rows are considered equal if their sequences are equal with ignoring of gaps. */
-static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow>& msaRows) {
+static QList<QList<int>> groupRowsBySimilarity(const QVector<MultipleAlignmentRow>& msaRows) {
     QList<QList<int>> rowGroups;
     QSet<int> mappedRows;  // contains indexes of the already processed rows.
     for (int i = 0; i < msaRows.size(); i++) {
