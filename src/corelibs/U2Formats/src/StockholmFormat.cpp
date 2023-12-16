@@ -304,7 +304,7 @@ static bool isEndOfMsaBlock(IOAdapterReader& reader, U2OpStatus& os) {
 
 /** Returns true if there is a row in the 'msa' with the given name. */
 static bool hasRowWithName(const MultipleSequenceAlignment& msa, const QString& name) {
-    const QList<MultipleAlignmentRow>& rows = msa->getRows();
+    const QVector<MultipleAlignmentRow>& rows = msa->getRows();
     return std::any_of(rows.begin(), rows.end(), [name](auto& row) { return row->getName() == name; });
 }
 
@@ -465,7 +465,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*
 
 /** Returns maximum row name length in the msa. */
 static int getMaxNameLen(const MultipleSequenceAlignment& msa) {
-    const QList<MultipleAlignmentRow>& rows = msa->getRows();
+    const QVector<MultipleAlignmentRow>& rows = msa->getRows();
     CHECK(rows.isEmpty(), 0);
     auto it = std::max_element(rows.begin(), rows.end(), [](auto& r1, auto& r2) { return r1->getName().length() < r2->getName().length(); });
     return (*it)->getName().length();
@@ -487,7 +487,7 @@ static void save(IOAdapterWriter& writer, const MultipleSequenceAlignment& msa, 
     int maxNameLength = getMaxNameLen(msa);
     int remainingSequenceLength = msa->getLength();
     MultipleSequenceAlignmentWalker walker(msa);
-    const QList<MultipleAlignmentRow>& rows = msa->getRows();
+    const QVector<MultipleAlignmentRow>& rows = msa->getRows();
     while (remainingSequenceLength > 0) {
         // Write a block.
         int blockLength = qMin(remainingSequenceLength, WRITE_BLOCK_LENGTH);

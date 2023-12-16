@@ -122,7 +122,7 @@ public:
     /**
      * Returns list of columns with desired quantity of gaps.
      */
-    static QList<U2Region> getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, const QList<MultipleAlignmentRow>& rows, int alignmentLength, int requiredGapsCount = -1);
+    static QList<U2Region> getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, const QVector<MultipleAlignmentRow>& rows, int alignmentLength, int requiredGapsCount = -1);
     static void removeColumnsWithGaps(MultipleSequenceAlignment& msa, int requiredGapsCount = -1);
 
     /**

@@ -190,7 +190,7 @@ qint64 MultipleAlignmentObject::getRowCount() const {
     return getMultipleAlignment()->getRowCount();
 }
 
-const QList<MultipleAlignmentRow>& MultipleAlignmentObject::getRows() const {
+const QVector<MultipleAlignmentRow>& MultipleAlignmentObject::getRows() const {
     return getMultipleAlignment()->getRows();
 }
 
@@ -576,10 +576,10 @@ void MultipleAlignmentObject::removeRegion(int startPos, int startRow, int nBase
 
     QList<qint64> modifiedRowIds;
     const MultipleAlignment& ma = getMultipleAlignment();
-    const QList<MultipleAlignmentRow>& maRows = ma->getRows();
+    const QVector<MultipleAlignmentRow>& maRows = ma->getRows();
     SAFE_POINT(nRows > 0 && startRow >= 0 && startRow + nRows <= maRows.size() && startPos + nBases <= ma->getLength(), "Invalid parameters", );
-    QList<MultipleAlignmentRow>::ConstIterator it = maRows.begin() + startRow;
-    QList<MultipleAlignmentRow>::ConstIterator end = it + nRows;
+    QVector<MultipleAlignmentRow>::ConstIterator it = maRows.begin() + startRow;
+    QVector<MultipleAlignmentRow>::ConstIterator end = it + nRows;
     for (; it != end; it++) {
         modifiedRowIds << (*it)->getRowId();
     }
@@ -809,7 +809,7 @@ int MultipleAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus& os, const QList<
 
 QList<qint64> MultipleAlignmentObject::convertMaRowIndexesToMaRowIds(const QList<int>& maRowIndexes, bool excludeErrors) {
     QList<qint64> ids;
-    const QList<MultipleAlignmentRow>& rows = getMultipleAlignment()->getRows();
+    const QVector<MultipleAlignmentRow>& rows = getMultipleAlignment()->getRows();
     for (int i = 0; i < maRowIndexes.length(); i++) {
         int index = maRowIndexes[i];
         bool isValid = index >= 0 && index <= rows.size() - 1;
@@ -824,7 +824,7 @@ QList<qint64> MultipleAlignmentObject::convertMaRowIndexesToMaRowIds(const QList
 
 QList<int> MultipleAlignmentObject::convertMaRowIdsToMaRowIndexes(const QList<qint64>& maRowIds, bool excludeErrors) {
     QList<int> indexes;
-    const QList<MultipleAlignmentRow>& rows = getMultipleAlignment()->getRows();
+    const QVector<MultipleAlignmentRow>& rows = getMultipleAlignment()->getRows();
     for (int i = 0; i < maRowIds.length(); i++) {
         int rowId = maRowIds[i];
         int index = -1;
