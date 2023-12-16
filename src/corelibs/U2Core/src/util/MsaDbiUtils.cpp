@@ -718,7 +718,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
     const DNAAlphabet* originalMaAlphabet = ma->getAlphabet();
     SAFE_POINT(originalMaAlphabet != nullptr, "The alignment alphabet is NULL!", );
 
-    U2Msa msaObj;
+    U2Msa msaObj(U2Type::Msa);
     msaObj.id = msaRef.entityId;
     msaObj.visualName = ma->getName();
     msaObj.alphabet.id = originalMaAlphabet->getId();

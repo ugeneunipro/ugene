@@ -52,7 +52,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/Vector3D.h \
            src/datatype/udr/RawDataUdrSchema.h \
            src/datatype/U2Msa.h \
-           src/datatype/U2Mca.h \
            src/datatype/msa/MaStateCheck.h \
            src/datatype/msa/MultipleAlignment.h \
            src/datatype/msa/MultipleAlignmentInfo.h \
@@ -309,7 +308,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/UdrSchema.cpp \
            src/datatype/UdrSchemaRegistry.cpp \
            src/datatype/Vector3D.cpp \
-           src/datatype/U2Mca.cpp \
            src/datatype/U2Msa.cpp \
            src/datatype/DNAChromatogram.cpp \
            src/datatype/msa/MaStateCheck.cpp \

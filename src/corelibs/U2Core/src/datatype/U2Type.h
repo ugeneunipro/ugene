@@ -220,8 +220,7 @@ inline uint qHash(const U2Object& obj) {
 */
 class U2CORE_EXPORT U2CrossDatabaseReference : public U2Object {
 public:
-    U2CrossDatabaseReference() {
-    }
+    U2CrossDatabaseReference() = default;
     U2CrossDatabaseReference(U2DataId id, QString dbId, qint64 version)
         : U2Object(id, dbId, version) {
     }
@@ -229,7 +228,7 @@ public:
     // remote data element id;
     U2EntityRef dataRef;
 
-    U2DataType getType() const {
+    U2DataType getType() const override {
         return U2Type::CrossDatabaseReference;
     }
 };
@@ -238,8 +237,7 @@ public:
 template<class T>
 class U2DbiIterator {
 public:
-    virtual ~U2DbiIterator() {
-    }
+    virtual ~U2DbiIterator() = default;
 
     /** returns true if there are more reads to iterate*/
     virtual bool hasNext() = 0;

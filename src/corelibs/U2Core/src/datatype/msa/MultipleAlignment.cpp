@@ -191,14 +191,16 @@ void MultipleAlignmentData::sortRows(MultipleAlignment::SortType type, MultipleA
 }
 
 MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {
+    static MultipleAlignmentRow emptyRow = getEmptyRow();
     int rowCount = rows.count();
-    SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", getEmptyRow());
+    SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
 const MultipleAlignmentRow& MultipleAlignmentData::getRow(int rowIndex) const {
+    static MultipleAlignmentRow emptyRow = getEmptyRow();
     int rowCount = rows.count();
-    SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", getEmptyRow());
+    SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
