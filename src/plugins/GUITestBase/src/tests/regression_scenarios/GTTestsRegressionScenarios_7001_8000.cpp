@@ -2488,16 +2488,14 @@ GUI_TEST_CLASS_DEFINITION(test_7520) {
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
             GTWidget::click(addButton);
 
-            GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget("palindromeThreshold")));
-            QString tooltip = GTUtilsToolTip::getToolTip();
-            QString expedtedTooltip("A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible."
+            QString tooltip = GTWidget::findWidget("palindromeThreshold")->toolTip();
+            QString expectedTooltip("A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible."
                                     " Therefore the threshold can be in the range of 30. Even though this threshold is very high"
                                     " (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.");
-            CHECK_SET_ERR(tooltip.contains(expedtedTooltip), QString("Actual tooltip not contains expected string. Expected string: %1").arg(expedtedTooltip));
+            CHECK_SET_ERR(tooltip.contains(expectedTooltip), QString("Actual tooltip not contains expected string. Current tooltip: %1").arg(tooltip));
 
-            GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget("palindromeLabel")));
-            tooltip = GTUtilsToolTip::getToolTip();
-            CHECK_SET_ERR(tooltip.contains(expedtedTooltip), QString("Actual tooltip not contains expected string. Expected string: %1").arg(expedtedTooltip));
+            tooltip = GTWidget::findWidget("palindromeLabel")->toolTip();
+            CHECK_SET_ERR(tooltip.contains(expectedTooltip), QString("Actual tooltip not contains expected string. Current tooltip: %1").arg(tooltip));
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
