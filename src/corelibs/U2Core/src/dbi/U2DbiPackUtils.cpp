@@ -213,7 +213,7 @@ QByteArray U2DbiPackUtils::packRow(int rowIndex, const U2MsaRow& row) {
 
 bool U2DbiPackUtils::unpackRow(const QByteArray& modDetails, int& rowIndex, U2MsaRow& row) {
     QList<QByteArray> tokens = modDetails.split(SEP);
-    SAFE_POINT(tokens.size() == 7, QString("Invalid added row modDetails string '%1'").arg(QString(modDetails)), false);
+    SAFE_POINT(tokens.size() == 8, QString("Invalid added row modDetails string '%1'").arg(QString(modDetails)), false);
     {  // version
         SAFE_POINT(tokens[0] == VERSION, QString("Invalid modDetails version '%1'").arg(tokens[0].data()), false);
     }
@@ -230,21 +230,21 @@ bool U2DbiPackUtils::unpackRow(const QByteArray& modDetails, int& rowIndex, U2Ms
     // sequenceId
     row.sequenceId = QByteArray::fromHex(tokens[3]);
 
-    // sequenceId
+    // chromatogramId
     row.chromatogramId = QByteArray::fromHex(tokens[4]);
 
     {  // gstart
         bool ok = false;
-        row.gstart = tokens[4].toLongLong(&ok);
+        row.gstart = tokens[5].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails gstart '%1'").arg(tokens[5].data()), false);
     }
     {  // gend
         bool ok = false;
-        row.gend = tokens[5].toLongLong(&ok);
+        row.gend = tokens[6].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails gend '%1'").arg(tokens[6].data()), false);
     }
     {  // gaps
-        bool ok = unpackGaps(tokens[6], row.gaps);
+        bool ok = unpackGaps(tokens[7], row.gaps);
         SAFE_POINT(ok, QString("Invalid added row modDetails gaps '%1'").arg(tokens[7].data()), false);
     }
     return true;
