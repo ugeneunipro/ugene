@@ -44,8 +44,8 @@ public:
     MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentRowData* mcaRowData);
 
     /** Creates a row in memory. */
-    MultipleChromatogramAlignmentRow(const U2McaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, MultipleChromatogramAlignmentData* mcaData);
-    MultipleChromatogramAlignmentRow(const U2McaRow& rowInDb, const QString& rowName, const DNAChromatogram& chromatogram, const QByteArray& rawData, MultipleChromatogramAlignmentData* mcaData);
+    MultipleChromatogramAlignmentRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, MultipleChromatogramAlignmentData* mcaData);
+    MultipleChromatogramAlignmentRow(const U2MsaRow& rowInDb, const QString& rowName, const DNAChromatogram& chromatogram, const QByteArray& rawData, MultipleChromatogramAlignmentData* mcaData);
     MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData);
 
     MultipleChromatogramAlignmentRowData* data() const;
@@ -78,14 +78,14 @@ protected:
     MultipleChromatogramAlignmentRowData(MultipleChromatogramAlignmentData* mcaData = nullptr);
 
     /** Creates a row in memory. */
-    MultipleChromatogramAlignmentRowData(const U2McaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, MultipleChromatogramAlignmentData* mcaData);
-    MultipleChromatogramAlignmentRowData(const U2McaRow& rowInDb, const QString& rowName, const DNAChromatogram& chromatogram, const QByteArray& rawData, MultipleChromatogramAlignmentData* mcaData);
+    MultipleChromatogramAlignmentRowData(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, MultipleChromatogramAlignmentData* mcaData);
+    MultipleChromatogramAlignmentRowData(const U2MsaRow& rowInDb, const QString& rowName, const DNAChromatogram& chromatogram, const QByteArray& rawData, MultipleChromatogramAlignmentData* mcaData);
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData);
 
 public:
     /** Name of the row (equals to the sequence name), can be empty */
-    QString getName() const;
-    void setName(const QString& name);
+    QString getName() const override;
+    void setName(const QString& name) override;
 
     /** Returns the list of gaps for the row */
     inline const QVector<U2MsaGap>& getGaps() const;
@@ -110,10 +110,10 @@ public:
     void setSequenceId(const U2DataId& sequenceId);
 
     /** Returns ID of the row sequence in the database. */
-    U2McaRow getRowDbInfo() const;
+    U2MsaRow getRowDbInfo() const;
 
     /** Sets database IDs for row and sequence */
-    void setRowDbInfo(const U2McaRow& dbRow);
+    void setRowDbInfo(const U2MsaRow& dbRow);
 
     /**
      * The length must be greater or equal to the row length.
@@ -284,7 +284,7 @@ private:
     DNAChromatogram chromatogram;
 
     /** The row in the database */
-    U2McaRow initialRowInDb;
+    U2MsaRow initialRowInDb;
 
     QVariantMap additionalInfo;
 };

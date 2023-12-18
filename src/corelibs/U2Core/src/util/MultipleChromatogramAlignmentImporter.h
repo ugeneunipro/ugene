@@ -35,10 +35,10 @@ public:
     static MultipleChromatogramAlignmentObject* createAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const QString& folder, MultipleChromatogramAlignment& mca);
 
 private:
-    static U2Mca importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleChromatogramAlignment& mca);
+    static U2Msa importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleChromatogramAlignment& mca);
     static void importMcaInfo(U2OpStatus& os, const DbiConnection& connection, const U2DataId& mcaId, const MultipleChromatogramAlignment& mca);
     static QList<McaRowDatabaseData> importRowChildObjects(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleChromatogramAlignment& mca);
-    static QList<U2McaRow> importRows(U2OpStatus& os, const DbiConnection& connection, U2Mca& dbMca, const QList<McaRowDatabaseData>& mcaRowDatabaseData);
+    static QList<U2MsaRow> importRows(U2OpStatus& os, const DbiConnection& connection, U2Msa& dbMca, const QList<McaRowDatabaseData>& mcaRowDatabaseData);
     static U2Chromatogram importChromatogram(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const DNAChromatogram& chromatogram);
     static U2Sequence importSequence(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const DNASequence& sequence, const U2AlphabetId& alphabetId);
     static void importRowAdditionalInfo(U2OpStatus& os, const DbiConnection& connection, const U2Chromatogram& chromatogram, const QVariantMap& additionalInfo);

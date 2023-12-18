@@ -3525,7 +3525,7 @@ GUI_TEST_CLASS_DEFINITION(test_5755) {
     // Expected : Trailing gaps were inserted into the end of reference.
     int refLength = (int)GTUtilsMcaEditorSequenceArea::getReferenceLength();
     QString refReg = GTUtilsMcaEditorSequenceArea::getReferenceReg(refLength - 20, 20);
-    bool isGap = std::all_of(refReg.begin(), refReg.end(), [](const auto& c) { return c == U2Mca::GAP_CHAR; });
+    bool isGap = std::all_of(refReg.begin(), refReg.end(), [](const auto& c) { return c == U2Msa::GAP_CHAR; });
     CHECK_SET_ERR(isGap, "Expected only gaps, got: " + refReg);
 }
 

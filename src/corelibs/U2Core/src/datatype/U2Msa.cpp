@@ -23,17 +23,13 @@
 
 namespace U2 {
 
-U2MsaGap::U2MsaGap(int _startPos, int _length)
-    : startPos(_startPos),
-      length(_length) {
+U2MsaGap::U2MsaGap(qint64 _startPos, qint64 _length)
+    : startPos((int)_startPos),
+      length((int)_length) {
 }
 
 int U2MsaGap::endPos() const {
     return startPos + length;
-}
-
-void U2MsaGap::setEndPos(qint64 newEndPos) {
-    length = newEndPos - startPos;
 }
 
 bool U2MsaGap::isValid() const {
@@ -49,43 +45,37 @@ bool U2MsaGap::lessThan(const U2MsaGap& first, const U2MsaGap& second) {
 }
 
 U2MsaGap U2MsaGap::intersect(const U2MsaGap& anotherGap) const {
-    const qint64 newOffset = qMax(startPos, anotherGap.startPos);
-    const qint64 newEnd = qMin(endPos(), anotherGap.endPos());
+    qint64 newOffset = qMax(startPos, anotherGap.startPos);
+    qint64 newEnd = qMin(endPos(), anotherGap.endPos());
     if (newOffset > newEnd) {
-        return U2MsaGap();
+        return {};
     }
-    return U2MsaGap(newOffset, newEnd - newOffset);
+    return {newOffset, newEnd - newOffset};
 }
 
 U2MsaGap::operator U2Region() const {
-    return U2Region(startPos, length);
+    return {startPos, length};
 }
 
 const qint64 U2MsaRow::INVALID_ROW_ID = -1;
 
-U2MsaRow::U2MsaRow()
-    : rowId(INVALID_ROW_ID),
-      gstart(0),
-      gend(0),
-      length(0) {
-}
-
-U2MsaRow::~U2MsaRow() {
-}
-
 const char U2Msa::GAP_CHAR = '-';
 const char U2Msa::INVALID_CHAR = '\0';
 
-U2Msa::U2Msa()
-    : length(0) {
+U2Msa::U2Msa(const U2DataType& _type)
+    : type(_type) {
 }
 
-U2Msa::U2Msa(const U2DataId& id, const QString& dbId, qint64 version)
-    : U2Object(id, dbId, version) {
+U2Msa::U2Msa(const U2DataType& _type, const U2DataId& id, const QString& dbId, qint64 version)
+    : U2Object(id, dbId, version), type(_type) {
+}
+
+bool U2MsaRow::hasValidChildObjectIds() const {
+    return !chromatogramId.isEmpty();
 }
 
 U2DataType U2Msa::getType() const {
-    return U2Type::Msa;
+    return type;
 }
 
 }  // namespace U2

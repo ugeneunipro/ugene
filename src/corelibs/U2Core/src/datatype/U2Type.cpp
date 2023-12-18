@@ -23,6 +23,32 @@
 
 namespace U2 {
 
+// Make types exported by the U2Core shared library.
+constexpr U2DataType U2Type::Unknown;
+constexpr U2DataType U2Type::Sequence;
+constexpr U2DataType U2Type::Msa;
+constexpr U2DataType U2Type::Assembly;
+constexpr U2DataType U2Type::VariantTrack;
+constexpr U2DataType U2Type::VariantType;
+constexpr U2DataType U2Type::AnnotationTable;
+constexpr U2DataType U2Type::Mca;
+constexpr U2DataType U2Type::Text;
+constexpr U2DataType U2Type::PhyTree;
+constexpr U2DataType U2Type::Chromatogram;
+constexpr U2DataType U2Type::BioStruct3D;
+constexpr U2DataType U2Type::PFMatrix;
+constexpr U2DataType U2Type::PWMatrix;
+constexpr U2DataType U2Type::CrossDatabaseReference;
+constexpr U2DataType U2Type::Annotation;
+constexpr U2DataType U2Type::AnnotationGroup;
+constexpr U2DataType U2Type::AssemblyRead;
+constexpr U2DataType U2Type::Feature;
+constexpr U2DataType U2Type::UdrRecord;
+constexpr U2DataType U2Type::AttributeInteger;
+constexpr U2DataType U2Type::AttributeReal;
+constexpr U2DataType U2Type::AttributeString;
+constexpr U2DataType U2Type::AttributeByteArray;
+
 //////////////////////////////////////////////////////////////////////////
 /// U2Entity implementation
 //////////////////////////////////////////////////////////////////////////
@@ -136,7 +162,7 @@ class Registrator {
     static const bool u2DataIdRegistered;
 };
 
-const bool Registrator::u2DataIdRegistered = registerDataId();
+const bool u2DataIdRegistered = registerDataId();
 
 }  // namespace
 

@@ -39,10 +39,9 @@ struct MsaRowReplacementData {
 /** Getting a multiple sequence alignment from DBI */
 class U2CORE_EXPORT MultipleSequenceAlignmentExporter {
 public:
-    MultipleSequenceAlignmentExporter();
+    MultipleSequenceAlignmentExporter() = default;
 
     MultipleSequenceAlignment getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const;
-    U2Msa getAlignmentObject(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const;
     QList<MsaRowReplacementData> getAlignmentRows(const U2DbiRef& dbiRef, const U2DataId& msaId, const QList<qint64> rowIds, U2OpStatus& os) const;
 
 private:

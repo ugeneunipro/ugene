@@ -1440,7 +1440,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg();
     QString consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg();
     CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
-    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = T, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
+    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == U2Msa::GAP_CHAR, QString("Incorrect symbols, Expected ref = T, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     // 3. Push "Jump to previous variation" button twice
     GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar("mwtoolbar_activemdi"), "prev_mismatch"));
@@ -1450,7 +1450,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg();
     consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg();
     CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
-    CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = C, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
+    CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == U2Msa::GAP_CHAR, QString("Incorrect symbols, Expected ref = C, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     // 4. Push "Jump to previous variation" from context menu
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Navigation", "Jump to previous variation"}));
@@ -1461,7 +1461,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg();
     consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg();
     CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
-    CHECK_SET_ERR(referenceChar[0] == 'G' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = G, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
+    CHECK_SET_ERR(referenceChar[0] == 'G' && consensusChar[0] == U2Msa::GAP_CHAR, QString("Incorrect symbols, Expected ref = G, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     // 9. Push "Jump to next variation" from main menu
     GTMenu::clickMainMenuItem({"Actions", "Navigation", "Jump to previous variation"});
@@ -1470,7 +1470,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg();
     consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg();
     CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
-    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = T, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
+    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == U2Msa::GAP_CHAR, QString("Incorrect symbols, Expected ref = T, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_2) {
@@ -1891,11 +1891,11 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
     CHECK_SET_ERR(modState == 1, "Incorrect modification state");
 
     // 5. Press a key on the keyboard with another character of the same alphabet (e.g GAP key).
-    GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
+    GTKeyboardDriver::keyClick(U2Msa::GAP_CHAR);
 
     // Expected state: Expected result: the original character of the alignment was replaced with the new one (e.g 'C' was replaced with GAP).
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar();
-    CHECK_SET_ERR(selectedChar == U2Mca::GAP_CHAR, "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == U2Msa::GAP_CHAR, "Incorrect selected character");
 
     // Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode();
@@ -1913,7 +1913,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
 
     // Expected state: This is character GAP
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar();
-    CHECK_SET_ERR(selectedChar == U2Mca::GAP_CHAR, "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == U2Msa::GAP_CHAR, "Incorrect selected character");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0022_3) {
@@ -1947,11 +1947,11 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
     CHECK_SET_ERR(modState == 1, "Incorrect modification state");
 
     // 5. Press a key on the keyboard with another character of the same alphabet (e.g GAP key).
-    GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
+    GTKeyboardDriver::keyClick(U2Msa::GAP_CHAR);
 
     // Expected state: Expected result: the original character of the alignment was replaced with the new one (e.g 'C' was replaced with GAP).
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar();
-    CHECK_SET_ERR(selectedChar == U2Mca::GAP_CHAR, QString("Incorrect selected character, expected: GAP, current: %1").arg(selectedChar));
+    CHECK_SET_ERR(selectedChar == U2Msa::GAP_CHAR, QString("Incorrect selected character, expected: GAP, current: %1").arg(selectedChar));
 
     // Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode();
@@ -2136,7 +2136,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
             continue;
         }
         char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(QPoint(x, i));
-        if (ch != U2Mca::GAP_CHAR) {
+        if (ch != U2Msa::GAP_CHAR) {
             isGapColoumn = false;
             break;
         }
@@ -2146,7 +2146,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     // Expected state: Gap has been inserted in the reference;
     QString refChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(x, 1);
     CHECK_SET_ERR(refChar.size() == 1, "Incorrect reference selection");
-    CHECK_SET_ERR(refChar[0] == U2Mca::GAP_CHAR, "Incorrect reference character");
+    CHECK_SET_ERR(refChar[0] == U2Msa::GAP_CHAR, "Incorrect reference character");
 
     // Expected state: consensus  sequence is recomputed according to the settings in the Option Panel
     QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(U2Region(x, 1));
@@ -2228,7 +2228,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
             continue;
         }
         char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(QPoint(x, i));
-        if (ch != U2Mca::GAP_CHAR) {
+        if (ch != U2Msa::GAP_CHAR) {
             isGapColoumn = false;
             break;
         }
@@ -2238,7 +2238,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     // Expected state: Gap has been inserted in the reference;
     QString refChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(x, 1);
     CHECK_SET_ERR(refChar.size() == 1, "Incorrect reference selection");
-    CHECK_SET_ERR(refChar[0] == U2Mca::GAP_CHAR, "Incorrect reference character");
+    CHECK_SET_ERR(refChar[0] == U2Msa::GAP_CHAR, "Incorrect reference character");
 
     // Expected state: consensus  sequence is recomputed according to the settings in the Option Panel
     QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(U2Region(x, 1));
@@ -2316,7 +2316,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
             continue;
         }
         char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(QPoint(x, i));
-        if (ch != U2Mca::GAP_CHAR) {
+        if (ch != U2Msa::GAP_CHAR) {
             isGapColoumn = false;
             break;
         }
@@ -2326,7 +2326,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     // Expected state: Gap has been inserted in the reference;
     QString refChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(x, 1);
     CHECK_SET_ERR(refChar.size() == 1, "Incorrect reference selection");
-    CHECK_SET_ERR(refChar[0] == U2Mca::GAP_CHAR, "Incorrect reference character");
+    CHECK_SET_ERR(refChar[0] == U2Msa::GAP_CHAR, "Incorrect reference character");
 
     // Expected state: consensus  sequence is recomputed according to the settings in the Option Panel
     QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(U2Region(x, 1));
@@ -2714,7 +2714,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
 
     // 3. Replace this symbol by gap
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
+    GTKeyboardDriver::keyClick(U2Msa::GAP_CHAR);
 
     // 7. Press Shift + Delete
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
@@ -2737,11 +2737,11 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
     // Expected result : gap column was restored
     CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing");
     refSel = GTUtilsMcaEditorSequenceArea::getReferenceReg(sel.x(), 1);
-    CHECK_SET_ERR(refSel[0] == U2Mca::GAP_CHAR, QString("Invalid reference selected character, expected: GAP, current: %1").arg(refSel[0]));
+    CHECK_SET_ERR(refSel[0] == U2Msa::GAP_CHAR, QString("Invalid reference selected character, expected: GAP, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar();
-    CHECK_SET_ERR(rowChar == U2Mca::GAP_CHAR, QString("Invalid row selected character, expected: GAP, current: %1").arg(rowChar));
+    CHECK_SET_ERR(rowChar == U2Msa::GAP_CHAR, QString("Invalid row selected character, expected: GAP, current: %1").arg(rowChar));
     consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(U2Region(sel.x(), 1));
-    CHECK_SET_ERR(consSel[0] == U2Mca::GAP_CHAR, QString("Invalid consensus selected character, expected: GAP, current: %1").arg(consSel[0]))
+    CHECK_SET_ERR(consSel[0] == U2Msa::GAP_CHAR, QString("Invalid consensus selected character, expected: GAP, current: %1").arg(consSel[0]))
 
     // 5. Push Redo(Ctrl + Y)
     GTUtilsMcaEditor::redo();
@@ -2768,7 +2768,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
 
     // 3. Replace this symbol by gap
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
+    GTKeyboardDriver::keyClick(U2Msa::GAP_CHAR);
 
     // 4. Press "Remove all columns of gaps" from context menu
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Edit", "Remove all columns of gaps"}));
@@ -2791,11 +2791,11 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
     // Expected result : gap column was restored
     CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing 2");
     refSel = GTUtilsMcaEditorSequenceArea::getReferenceReg(sel.x(), 1);
-    CHECK_SET_ERR(refSel[0] == U2Mca::GAP_CHAR, QString("Invalid reference selected character, expected: GAP, current: %1").arg(refSel[0]));
+    CHECK_SET_ERR(refSel[0] == U2Msa::GAP_CHAR, QString("Invalid reference selected character, expected: GAP, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar();
-    CHECK_SET_ERR(rowChar == U2Mca::GAP_CHAR, QString("Invalid row selected character, expected: GAP, current: %1").arg(rowChar));
+    CHECK_SET_ERR(rowChar == U2Msa::GAP_CHAR, QString("Invalid row selected character, expected: GAP, current: %1").arg(rowChar));
     consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(U2Region(sel.x(), 1));
-    CHECK_SET_ERR(consSel[0] == U2Mca::GAP_CHAR, QString("Invalid consensus selected character, expected: GAP, current: %1").arg(consSel[0]))
+    CHECK_SET_ERR(consSel[0] == U2Msa::GAP_CHAR, QString("Invalid consensus selected character, expected: GAP, current: %1").arg(consSel[0]))
 
     // 6. Push Redo(Ctrl + Y)
     GTUtilsMcaEditor::redo();
@@ -2822,7 +2822,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
 
     // 3 Replace this symbol by gap
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
+    GTKeyboardDriver::keyClick(U2Msa::GAP_CHAR);
 
     // 4. Press "Remove all columns of gaps" from main menu
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Remove all columns of gaps"});
@@ -2843,11 +2843,11 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
     // Expected result : gap column was restored
     CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing");
     refSel = GTUtilsMcaEditorSequenceArea::getReferenceReg(sel.x(), 1);
-    CHECK_SET_ERR(refSel[0] == U2Mca::GAP_CHAR, QString("Invalid reference selected character, expected: GAP, current: %1").arg(refSel[0]));
+    CHECK_SET_ERR(refSel[0] == U2Msa::GAP_CHAR, QString("Invalid reference selected character, expected: GAP, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar();
-    CHECK_SET_ERR(rowChar == U2Mca::GAP_CHAR, QString("Invalid row selected character, expected: GAP, current: %1").arg(rowChar));
+    CHECK_SET_ERR(rowChar == U2Msa::GAP_CHAR, QString("Invalid row selected character, expected: GAP, current: %1").arg(rowChar));
     consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(U2Region(sel.x(), 1));
-    CHECK_SET_ERR(consSel[0] == U2Mca::GAP_CHAR, QString("Invalid consensus selected character, expected: GAP, current: %1").arg(consSel[0]))
+    CHECK_SET_ERR(consSel[0] == U2Msa::GAP_CHAR, QString("Invalid consensus selected character, expected: GAP, current: %1").arg(consSel[0]))
 
     // 6. Push Redo(Ctrl + Y)
     GTUtilsMcaEditor::redo();
@@ -2881,7 +2881,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
 
     // Expected state : Gap is inserted before symbol
     char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(point);
-    CHECK_SET_ERR(ch == U2Mca::GAP_CHAR, QString("Incorrect character, expected GAP, current %1").arg(ch));
+    CHECK_SET_ERR(ch == U2Msa::GAP_CHAR, QString("Incorrect character, expected GAP, current %1").arg(ch));
 
     // 4. Push Васkspace key
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
@@ -2909,7 +2909,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
 
     // Expected state: Gap is inserted before symbol
     char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(point);
-    CHECK_SET_ERR(ch == U2Mca::GAP_CHAR, QString("Incorrect character, expected GAP, current %1").arg(ch));
+    CHECK_SET_ERR(ch == U2Msa::GAP_CHAR, QString("Incorrect character, expected GAP, current %1").arg(ch));
 
     // 4. Move mouse with pressed left button to the left on one position
     GTUtilsMcaEditorSequenceArea::dragAndDrop(startMousePosotion);
