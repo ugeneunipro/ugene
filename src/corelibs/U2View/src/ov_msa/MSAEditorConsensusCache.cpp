@@ -35,7 +35,7 @@ MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MultipleAlignmentOb
     : QObject(p), curCacheSize(0), aliObj(o), algorithm(nullptr) {
     setConsensusAlgorithm(factory);
 
-    connect(aliObj, &MultipleAlignmentObject::si_alignmentChanged, this, &MSAEditorConsensusCache::sl_alignmentChanged);
+    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
     connect(aliObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_invalidateAlignmentObject()));
 
     curCacheSize = aliObj->getLength();
@@ -68,17 +68,8 @@ QByteArray MSAEditorConsensusCache::getConsensusLine(const U2Region& region, boo
     return res;
 }
 
-void MSAEditorConsensusCache::sl_alignmentChanged(const MultipleAlignment& oldCachedMa, const MaModificationInfo& mi) {
-    SAFE_POINT(!mi.middleState, "Should not be middle state", );
-
-    // Undo-Redo Framework does not provide detailed change info.
-    // In this case we can only recalculate all.
-    bool isUnknownChange = mi.type == MaModificationType_Undo || mi.type == MaModificationType_Redo;
-    if (isUnknownChange) {
-        algorithm->reinitializeData(aliObj->getMultipleAlignment());
-    } else {
-        algorithm->recalculateData(oldCachedMa, aliObj->getMultipleAlignment(), mi);
-    }
+void MSAEditorConsensusCache::sl_alignmentChanged() {
+    algorithm->reinitializeData(aliObj->getMultipleAlignment());
 
     if (curCacheSize != aliObj->getLength()) {
         curCacheSize = aliObj->getLength();

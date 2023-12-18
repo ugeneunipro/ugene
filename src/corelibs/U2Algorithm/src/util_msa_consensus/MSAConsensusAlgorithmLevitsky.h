@@ -75,8 +75,6 @@ public:
 
     void reinitializeData(const MultipleAlignment& ma) override;
 
-    void recalculateData(const MultipleAlignment& oldMa, const MultipleAlignment& newMa, const MaModificationInfo& mi) override;
-
 private:
     QVarLengthArray<int> globalFreqs;
 };

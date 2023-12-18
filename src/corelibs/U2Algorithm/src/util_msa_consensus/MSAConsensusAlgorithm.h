@@ -104,8 +104,6 @@ public:
 
     virtual void reinitializeData(const MultipleAlignment&) {}
 
-    virtual void recalculateData(const MultipleAlignment&, const MultipleAlignment&, const MaModificationInfo&) {}
-
     virtual MSAConsensusAlgorithm* clone() const = 0;
 
     virtual QString getDescription() const {

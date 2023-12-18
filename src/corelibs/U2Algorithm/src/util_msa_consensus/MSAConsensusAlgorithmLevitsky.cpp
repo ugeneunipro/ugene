@@ -50,14 +50,6 @@ MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(con
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-void plusOne(int& v) {
-    v++;
-}
-
-void minusOne(int& v) {
-    v--;
-}
-
 /*
 Code table from Victor Levitsky:
 A       A       1
@@ -76,47 +68,46 @@ H       A,T,C   3       not G (---||---)
 D       A,T,G   3       not C (---||---)
 N       A,T,G,C 4       Any
 */
-template<class T>
-static void updateHit(int* data, char c, T func) {
+static void registerHit(int* data, char c) {
     int idx = uchar(c);
-    func(data[idx]);
+    data[idx]++;
     switch (c) {
         case 'A':
-            func(data['W']);
-            func(data['R']);
-            func(data['M']);
-            func(data['V']);
-            func(data['H']);
-            func(data['D']);
-            func(data['N']);
+            data['W']++;
+            data['R']++;
+            data['M']++;
+            data['V']++;
+            data['H']++;
+            data['D']++;
+            data['N']++;
             break;
         case 'C':
-            func(data['M']);
-            func(data['Y']);
-            func(data['S']);
-            func(data['B']);
-            func(data['V']);
-            func(data['H']);
-            func(data['N']);
+            data['M']++;
+            data['Y']++;
+            data['S']++;
+            data['B']++;
+            data['V']++;
+            data['H']++;
+            data['N']++;
             break;
         case 'G':
-            func(data['R']);
-            func(data['K']);
-            func(data['S']);
-            func(data['B']);
-            func(data['V']);
-            func(data['D']);
-            func(data['N']);
+            data['R']++;
+            data['K']++;
+            data['S']++;
+            data['B']++;
+            data['V']++;
+            data['D']++;
+            data['N']++;
             break;
         case 'T':
         case 'U':
-            func(data['W']);
-            func(data['K']);
-            func(data['Y']);
-            func(data['B']);
-            func(data['H']);
-            func(data['D']);
-            func(data['N']);
+            data['W']++;
+            data['K']++;
+            data['Y']++;
+            data['B']++;
+            data['H']++;
+            data['D']++;
+            data['N']++;
             break;
     }
 }
@@ -218,7 +209,7 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
     for (int seq = 0; seq < nSeq; seq++) {
         char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], column);
         if (c >= 'A' && c <= 'Z') {
-            updateHit(freqsData, c, plusOne);
+            registerHit(freqsData, c);
         }
     }
     // find all symbols with freq > threshold, select one with the lowest global freq
@@ -265,88 +256,7 @@ void MSAConsensusAlgorithmLevitsky::reinitializeData(const MultipleAlignment& ma
     for (const MultipleAlignmentRow& row : qAsConst(maRows)) {
         for (int i = 0; i < len; i++) {
             char c = row->charAt(i);
-            updateHit(freqsData, c, plusOne);
-        }
-    }
-}
-
-void MSAConsensusAlgorithmLevitsky::recalculateData(const MultipleAlignment& oldMa, const MultipleAlignment& newMa, const MaModificationInfo& mi) {
-    // When we recalculate a row, we first do @updateHit(,,minusOne) for all bases, and then @updateHit(,,plusOne).
-    // That means, that we need to do 2 times more ticks for a row if we recalculate it than if we just clean in and do @updateHit(,,plusOne) from scratch.
-    // That means, that we have a calculation time profit only if we recalculate half as many sequences as in the entire alignment.
-    // Otherwise, it is better just to recalculate the whole alignment.
-    if (mi.modifiedRowIds.size() > newMa->getRowCount() / 2) {
-        reinitializeData(newMa);
-        return;
-    }
-
-    //return;
-    // It looks like a bug - sometimes @mi.alignmentLengthChanged is true,
-    // but length hasn't been changed
-    // TODO: fix it
-    //if (mi.alignmentLengthChanged && oldMa->getLength() != newMa->getLength()) {
-        // If alignment length has been changed, we need to recalculate all alignment
-        // This code is unreachable until the problem above is fixed
-        // TODO: improve MaModificationInfo and provide additional info and prevent general recalculation
-        //reinitializeData(newMa);
-        //return;
-    //}
-
-    // If alphabet has been changed by clicking "--> DNA"/"--> RNA"/ buttons,
-    // we could easily just switch 'T' and 'U' counters, but, for now,
-    // we do not have a tool of detecting these buttons clicked
-    // (could be passed with @MaModificationInfo)
-    // TODO: fix it
-    //if (mi.alphabetChanged) {
-    //}
-
-    int* freqsData = globalFreqs.data();
-    if (mi.rowContentChanged) {
-        // TODO: we need to pass the exact changed symbols to avoid extra operations
-        U2OpStatus2Log os;
-        int oldLen = oldMa->getLength();
-        int newLen = newMa->getLength();
-        for (qint64 rowId : qAsConst(mi.modifiedRowIds)) {
-            const auto& oldRow = oldMa->getRowByRowId(rowId, os);
-            CHECK_OP(os, );
-
-            for (int i = 0; i < oldLen; i++) {
-                char c = oldRow->charAt(i);
-                updateHit(freqsData, c, minusOne);
-            }
-
-            const auto& newRow = newMa->getRowByRowId(rowId, os);
-            CHECK_OP(os, );
-
-            for (int i = 0; i < newLen; i++) {
-                char c = newRow->charAt(i);
-                updateHit(freqsData, c, plusOne);
-            }
-        }
-    }
-
-    if (mi.rowListChanged) {
-        const auto& oldRows = oldMa->getRows();
-        const auto& newRows = newMa->getRows();
-        int len = newMa->getLength();
-        if (oldRows.size() < newRows.size()) {
-            for (const auto& newRow : qAsConst(newRows)) {
-                CHECK_CONTINUE(!oldRows.contains(newRow));
-
-                for (int i = 0; i < len; i++) {
-                    char c = newRow->charAt(i);
-                    updateHit(freqsData, c, plusOne);
-                }
-            }
-        } else if (oldRows.size() > newRows.size()) {
-            for (const auto& oldRow : qAsConst(oldRows)) {
-                CHECK_CONTINUE(!newRows.contains(oldRow));
-
-                for (int i = 0; i < len; i++) {
-                    char c = oldRow->charAt(i);
-                    updateHit(freqsData, c, minusOne);
-                }
-            }
+            registerHit(freqsData, c);
         }
     }
 }

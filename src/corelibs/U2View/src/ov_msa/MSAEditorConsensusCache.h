@@ -64,7 +64,7 @@ signals:
     void si_cacheResized(int newSize);
 
 private slots:
-    void sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&);
+    void sl_alignmentChanged();
     void sl_thresholdChanged(int newValue);
     void sl_invalidateAlignmentObject();
 
