@@ -22,7 +22,6 @@
 #pragma once
 
 #include <QVarLengthArray>
-#include <QList>
 
 #include "BuiltInConsensusAlgorithms.h"
 #include "MSAConsensusAlgorithm.h"

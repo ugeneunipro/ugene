@@ -22,7 +22,6 @@
 #include "MSAConsensusAlgorithmLevitsky.h"
 
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/U2OpStatusUtils.h>
 
 namespace U2 {
 

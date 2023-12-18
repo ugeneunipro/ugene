@@ -21,7 +21,6 @@
 
 #pragma once
 
-#include <U2Core/MaModificationInfo.h>
 #include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2Region.h>
 
