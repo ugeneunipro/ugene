@@ -1250,7 +1250,6 @@ QList<qint64> MsaDbiUtils::trim(const U2EntityRef& msaRef, U2OpStatus& os) {
 }
 
 void MsaDbiUtils::addRow(const U2EntityRef& msaRef, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os) {
-    SAFE_POINT_EXT(row.hasValidChildObjectIds(), os.setError("Invalid child objects references"), );
     // Validate the parameters
     SAFE_POINT_EXT(!row.sequenceId.isEmpty(), os.setError("Invalid sequence reference"), );
 
