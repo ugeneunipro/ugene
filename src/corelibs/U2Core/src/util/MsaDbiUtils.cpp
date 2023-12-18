@@ -1281,10 +1281,8 @@ void MsaDbiUtils::removeRow(const U2EntityRef& msaRef, qint64 rowId, U2OpStatus&
 }
 
 QList<U2MsaRow> MsaDbiUtils::getMsaRows(U2OpStatus& os, const U2EntityRef& msaRef) {
-    QList<U2MsaRow> mcaRows;
-
     DbiConnection connection(msaRef.dbiRef, os);
-    CHECK_OP(os, mcaRows);
+    CHECK_OP(os, {});
 
     U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
     SAFE_POINT_NN(msaDbi, {});
@@ -1292,18 +1290,17 @@ QList<U2MsaRow> MsaDbiUtils::getMsaRows(U2OpStatus& os, const U2EntityRef& msaRe
     U2Msa msa = msaDbi->getMsaObject(msaRef.entityId, os);
     CHECK_OP(os, {});
 
-    QList<U2MsaRow> msaRows = msaDbi->getRows(msaRef.entityId, os);
-    CHECK_OP(os, mcaRows);
+    QList<U2MsaRow> rows = msaDbi->getRows(msaRef.entityId, os);
+    CHECK_OP(os, {});
 
     if (msa.type == U2Type::Mca) {
-        foreach (const U2MsaRow& msaRow, msaRows) {
-            U2MsaRow mcaRow(msaRow);
-            mcaRow.chromatogramId = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, U2EntityRef(msaRef.dbiRef, msaRow.sequenceId)).entityId;
-            CHECK_OP(os, mcaRows);
-            mcaRows << mcaRow;
+        for (U2MsaRow& row: rows) {
+            U2EntityRef sequenceRef(msaRef.dbiRef, row.sequenceId);
+            row.chromatogramId = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, sequenceRef).entityId;
+            CHECK_OP(os, {});
         }
     }
-    return mcaRows;
+    return rows;
 }
 
 U2MsaRow MsaDbiUtils::getMsaRow(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId) {
@@ -1316,19 +1313,16 @@ U2MsaRow MsaDbiUtils::getMsaRow(U2OpStatus& os, const U2EntityRef& msaRef, qint6
     U2Msa msa = msaDbi->getMsaObject(msaRef.entityId, os);
     CHECK_OP(os, {});
 
-    U2MsaRow msaRow = msaDbi->getRow(msaRef.entityId, rowId, os);
+    U2MsaRow row = msaDbi->getRow(msaRef.entityId, rowId, os);
     CHECK_OP(os, {});
-
-    U2MsaRow mcaRow(msaRow);
 
     // Resolve chromatograms only for MCA today.
     if (msa.type == U2Type::Mca) {
-        mcaRow.chromatogramId = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, U2EntityRef(msaRef.dbiRef, msaRow.sequenceId)).entityId;
+        U2EntityRef sequenceEntityRef(msaRef.dbiRef, row.sequenceId);
+        row.chromatogramId = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, sequenceEntityRef).entityId;
+        CHECK_OP(os, row);
     }
-
-    CHECK_OP(os, mcaRow);
-
-    return mcaRow;
+    return row;
 }
 
 }  // namespace U2

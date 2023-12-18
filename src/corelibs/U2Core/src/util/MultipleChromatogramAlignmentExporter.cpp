@@ -116,13 +116,14 @@ QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(
     QList<McaRowMemoryData> mcaRowsMemoryData;
     mcaRowsMemoryData.reserve(rows.count());
 
-    foreach (const U2MsaRow& row, rows) {
+    for (const U2MsaRow& row: qAsConst(rows)) {
         McaRowMemoryData mcaRowMemoryData;
-        mcaRowMemoryData.chromatogram = ChromatogramUtils::exportChromatogram(os, U2EntityRef(connection.dbi->getDbiRef(), row.chromatogramId));
-        CHECK_OP(os, QList<McaRowMemoryData>());
+        U2EntityRef chromatogramRef(connection.dbi->getDbiRef(), row.chromatogramId);
+        mcaRowMemoryData.chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
+        CHECK_OP(os, {});
 
         mcaRowMemoryData.sequence = exportSequence(os, row.sequenceId);
-        CHECK_OP(os, QList<McaRowMemoryData>());
+        CHECK_OP(os, {});
 
         mcaRowMemoryData.additionalInfo = exportRowAdditionalInfo(os, row.chromatogramId);
 
