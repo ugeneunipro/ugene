@@ -24,6 +24,7 @@
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/McaDbiUtils.h>
+#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2MsaDbi.h>
@@ -97,13 +98,15 @@ QMap<qint64, McaRowMemoryData> MultipleChromatogramAlignmentExporter::getMcaRowM
 }
 
 QList<U2MsaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId) const {
-    return McaDbiUtils::getMcaRows(os, U2EntityRef(dbiRef, mcaId));
+    U2EntityRef ref(dbiRef, mcaId);
+    return MsaDbiUtils::getMsaRows(os, ref);
 }
 
 QList<U2MsaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId, const QList<qint64>& rowIds) const {
     QList<U2MsaRow> result;
+    U2EntityRef entityRef(dbiRef, mcaId);
     foreach (qint64 rowId, rowIds) {
-        result << McaDbiUtils::getMcaRow(os, U2EntityRef(dbiRef, mcaId), rowId);
+        result << MsaDbiUtils::getMsaRow(os, entityRef, rowId);
         CHECK_OP(os, QList<U2MsaRow>());
     }
     return result;

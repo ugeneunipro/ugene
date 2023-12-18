@@ -103,21 +103,13 @@ void MultipleAlignmentObject::replaceCharacters(const U2Region& columnRange, int
     qint64 rowId = row->getRowId();
     U2OpStatus2Log os;
 
-    bool isMca = getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     if (newChar != U2Msa::GAP_CHAR) {
-        if (isMca) {
-            McaDbiUtils::replaceCharactersInRow(entityRef, rowId, columnRange, newChar, os);
-        } else {
-            MsaDbiUtils::replaceCharactersInRow(entityRef, rowId, columnRange, newChar, os);
-        }
+        MsaDbiUtils::replaceCharactersInRow(entityRef, rowId, columnRange, newChar, os);
         CHECK_OP(os, )
     } else {
-        if (isMca) {
-            McaDbiUtils::removeCharacters(entityRef, {rowId}, columnRange.startPos, columnRange.length, os);
-        } else {
-            MsaDbiUtils::removeRegion(entityRef, {rowId}, columnRange.startPos, columnRange.length, os);
-        }
+        MsaDbiUtils::removeRegion(entityRef, {rowId}, columnRange.startPos, columnRange.length, os);
         CHECK_OP(os, )
+
         MsaDbiUtils::insertGaps(entityRef, {rowId}, columnRange.startPos, columnRange.length, os, true);
         CHECK_OP(os, )
     }
@@ -738,9 +730,8 @@ void MultipleAlignmentObject::releaseState() {
 }
 
 bool MultipleAlignmentObject::hasNonTrailingGap() const {
-    const QList<QVector<U2MsaGap>> &listGapModel = getGapModel();
-    if (std::any_of(listGapModel.constBegin(), listGapModel.constEnd(), 
-                    [](const QVector<U2MsaGap>& data) { return !data.isEmpty(); })) {
+    const QList<QVector<U2MsaGap>>& listGapModel = getGapModel();
+    if (std::any_of(listGapModel.constBegin(), listGapModel.constEnd(), [](const QVector<U2MsaGap>& data) { return !data.isEmpty(); })) {
         return true;
     }
     return false;

@@ -21,6 +21,7 @@
 
 #include "SQLiteMsaDbi.h"
 
+#include <U2Core/ChromatogramUtils.h>
 #include <U2Core/U2DbiPackUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SqlHelpers.h>
