@@ -912,7 +912,7 @@ U2DataId SQLiteObjectDbi::createObject(U2Object& object, const QString& folder, 
 
 U2DataType SQLiteObjectDbi::getObject(U2Object& object, const U2DataId& id, U2OpStatus& os) {
     SQLiteReadQuery q("SELECT name, version, trackMod, type FROM Object WHERE id = ?1", db, os);
-    U2DataType type;
+    U2DataType type = U2Type::Unknown;
     q.bindDataId(1, id);
     if (q.step()) {
         object.id = id;
