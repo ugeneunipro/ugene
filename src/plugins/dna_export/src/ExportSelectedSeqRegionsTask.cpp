@@ -103,7 +103,7 @@ QMap<QString, QList<SharedAnnotationData>> CreateExportItemsFromSeqRegionsTask::
     for (const QPointer<AnnotationTableObject>& aobj : qAsConst(annotations)) {
         CHECK_EXT(!aobj.isNull(), stateInfo.setError(tr("Invalid annotation table detected"));, result);
 
-        auto groupPathAnnotationsMap = aobj->getGroupPathAnnotationsMapByRegion(region);
+        auto groupPathAnnotationsMap = aobj->createGroupPathAnnotationsMapByRegion(region);
         auto keys = groupPathAnnotationsMap.keys();
         for (const auto& key : qAsConst(keys)) {
             auto newAnnDataList = result.value(key);

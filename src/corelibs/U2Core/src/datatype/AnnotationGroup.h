@@ -55,7 +55,7 @@ public:
     /*
      * Returns map with group path as a key and this group annotations as value
      */
-    QMap<QString, QList<Annotation*>> getGroupPathAnnotationsMap() const;
+    QMap<QString, QList<Annotation*>> createGroupPathAnnotationsMap() const;
 
     bool hasAnnotations() const;
 

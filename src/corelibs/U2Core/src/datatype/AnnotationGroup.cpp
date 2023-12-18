@@ -93,13 +93,13 @@ QList<Annotation*> AnnotationGroup::getAnnotations(bool recursively) const {
     return result;
 }
 
-QMap<QString, QList<Annotation*>> AnnotationGroup::getGroupPathAnnotationsMap() const {
+QMap<QString, QList<Annotation*>> AnnotationGroup::createGroupPathAnnotationsMap() const {
     QMap<QString, QList<Annotation*>> result;
     if (!annotations.isEmpty()) {
         result.insert(getGroupPath(), annotations);
     }
     for (auto subgroup : qAsConst(subgroups)) {
-        result.insert(subgroup->getGroupPathAnnotationsMap());
+        result.insert(subgroup->createGroupPathAnnotationsMap());
     }
     return result;
 }

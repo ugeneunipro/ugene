@@ -256,7 +256,7 @@ QMap<QString, QList<SharedAnnotationData>> getAllRelatedAnnotations(const U2Sequ
     QMap<QString, QList<SharedAnnotationData>> anns;
     for (GObject* aObj : qAsConst(relatedAnnotationTables)) {
         auto annObj = qobject_cast<AnnotationTableObject*>(aObj);
-        auto groupPathAnnotationsMap = annObj->getGroupPathAnnotationsMap();
+        auto groupPathAnnotationsMap = annObj->createGroupPathAnnotationsMap();
         auto keys = groupPathAnnotationsMap.keys();
         for (const auto& key : qAsConst(keys)) {
             auto newAnnDataList = anns.value(key);

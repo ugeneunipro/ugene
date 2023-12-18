@@ -66,11 +66,11 @@ QList<Annotation*> AnnotationTableObject::getAnnotations() const {
     return rootGroup->getAnnotations(true);
 }
 
-QMap<QString, QList<Annotation*>> AnnotationTableObject::getGroupPathAnnotationsMap() const {
+QMap<QString, QList<Annotation*>> AnnotationTableObject::createGroupPathAnnotationsMap() const {
     ensureDataLoaded();
     SAFE_POINT(rootGroup != nullptr, "Failed to load annotations", {});
 
-    return rootGroup->getGroupPathAnnotationsMap();
+    return rootGroup->createGroupPathAnnotationsMap();
 }
 
 bool AnnotationTableObject::hasAnnotations() const {
@@ -191,11 +191,13 @@ bool annotationIntersectsRange(const Annotation* a, const U2Region& range, bool 
 
 }  // namespace
 
-QMap<QString, QList<Annotation*>> AnnotationTableObject::getGroupPathAnnotationsMapByRegion(const U2Region& region) const {
+QMap<QString, QList<Annotation*>> AnnotationTableObject::createGroupPathAnnotationsMapByRegion(const U2Region& region) const {
     QMap<QString, QList<Annotation*>> result;
+    CHECK(!region.isEmpty(), result);
+
     ensureDataLoaded();
 
-    auto groupPathAnnotationsMap = getGroupPathAnnotationsMap();
+    auto groupPathAnnotationsMap = createGroupPathAnnotationsMap();
     auto keys = groupPathAnnotationsMap.keys();
     for (const auto& key : qAsConst(keys)) {
         auto annotations = groupPathAnnotationsMap.value(key);
