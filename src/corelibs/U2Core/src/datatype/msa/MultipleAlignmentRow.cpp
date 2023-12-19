@@ -86,7 +86,7 @@ bool MultipleAlignmentRowData::isTrailingOrLeadingGap(qint64 position) const {
 }
 
 U2Region MultipleAlignmentRowData::getCoreRegion() const {
-    return U2Region(getCoreStart(), getCoreLength());
+    return {getCoreStart(), getCoreLength()};
 }
 
 U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region& gappedRegion) const {
@@ -103,7 +103,8 @@ U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region& gappedRegio
 
 /* Compares sequences of 2 rows ignoring gaps. */
 bool MultipleAlignmentRowData::isEqualIgnoreGaps(const MultipleAlignmentRowData* row1, const MultipleAlignmentRowData* row2) {
-    SAFE_POINT(row1 != nullptr && row2 != nullptr, "One of the rows is nullptr!", false);
+    SAFE_POINT_NN(row1, false);
+    SAFE_POINT_NN(row2, false);
     if (row1 == row2) {
         return true;
     }
@@ -268,5 +269,35 @@ int MultipleAlignmentRowData::getRowLengthWithoutTrailing() const {
     return MsaRowUtils::getRowLength(sequence.seq, gaps);
 }
 
+int MultipleAlignmentRowData::getCoreStart() const {
+    return MsaRowUtils::getCoreStart(gaps);
+}
+
+int MultipleAlignmentRowData::getCoreEnd() const {
+    return getRowLengthWithoutTrailing();
+}
+
+qint64 MultipleAlignmentRowData::getCoreLength() const {
+    int coreStart = getCoreStart();
+    int coreEnd = getCoreEnd();
+    int length = coreEnd - coreStart;
+    SAFE_POINT(length >= 0, QString("Internal error in MultipleChromatogramAlignmentRowData: coreEnd is %1, coreStart is %2!").arg(coreEnd).arg(coreStart), length);
+    return length;
+}
+
+QByteArray MultipleAlignmentRowData::getCore() const {
+    return getSequenceWithGaps(false, false);
+}
+
+QByteArray MultipleAlignmentRowData::getData() const {
+    return getSequenceWithGaps(true, true);
+}
+
+bool MultipleAlignmentRowData::simplify() {
+    CHECK(!gaps.isEmpty(), false)
+    invalidateGappedCache();
+    gaps.clear();
+    return true;
+}
 
 }  // namespace U2

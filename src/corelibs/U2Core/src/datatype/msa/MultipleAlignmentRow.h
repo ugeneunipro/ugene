@@ -146,10 +146,25 @@ public:
     /** Returns length of the sequence + number of gaps. Doesn't include trailing gaps. */
     int getRowLengthWithoutTrailing() const;
 
-    virtual int getCoreStart() const = 0;
-    virtual int getCoreEnd() const = 0;
-    virtual qint64 getCoreLength() const = 0;
+    /** Obsolete. Always return the row length (non-inclusive!) */
+    int getCoreEnd() const;
+
+    /** Obsolete. Always returns zero. */
+    int getCoreStart() const;
+
+    /** Obsolete. The length of the row core */
+    qint64 getCoreLength() const;
+
     virtual qint64 getBaseCount(qint64 beforePosition) const = 0;
+
+    /** Packed version: returns the row without leading and trailing gaps */
+    QByteArray getCore() const;
+
+    /** Returns the row the way it is -- with leading and trailing gaps */
+    QByteArray getData() const;
+
+    /** Removes all gaps. Returns true if changed. */
+    bool simplify();
 
     virtual void crop(U2OpStatus& os, qint64 startPosition, qint64 count) = 0;
 
@@ -179,7 +194,7 @@ public:
 
     /**
      * Compares whole gapped sequences (with inner gaps) but with leading gaps removed.
-     * This method method may be overriden to compare other sequence related properties (like chromatogram in MCA).
+     * This method method may be overridden to compare other sequence related properties (like chromatogram in MCA).
      */
     virtual bool isEqualCore(const MultipleAlignmentRowData& other) const;
 
@@ -236,7 +251,7 @@ protected:
      * Cached segment of the gapped sequence.
      * The reason why this cache is efficient:
      *  Most of the algorithms access the row data sequentially: charAt(i), charAt(i+1), charAt(i+2).
-     *  This access may be very slow for rows with a large gap models: to compute every character the gap model must be re-applied form the very verst gap.
+     *  This access may be very slow for rows with a large gap models: to compute every character the gap model must be re-applied form the very first gap.
      *  This cache helps to avoid this gaps re-computation on sequential reads.
      */
     mutable QByteArray gappedSequenceCache;

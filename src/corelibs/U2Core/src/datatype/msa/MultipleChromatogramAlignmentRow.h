@@ -82,23 +82,6 @@ protected:
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData);
 
 public:
-    /** Packed version: returns the row without leading and trailing gaps */
-    QByteArray getCore() const;
-
-    /** Returns the row the way it is -- with leading and trailing gaps */
-    QByteArray getData() const;
-
-    /** Obsolete. Always return the row length (non-inclusive!) */
-    inline int getCoreEnd() const;
-
-    /** Obsolete. Always returns zero. */
-    int getCoreStart() const;
-
-    /** Obsolete. The length of the row core */
-    qint64 getCoreLength() const;
-
-    /** Removes all gaps. Returns true if changed. */
-    inline bool simplify();
 
     /** Adds anotherRow data to this row(ingores trailing gaps), "lengthBefore" must be greater than this row's length. */
     void append(const MultipleChromatogramAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
@@ -234,18 +217,6 @@ private:
 
     QVariantMap additionalInfo;
 };
-
-inline int MultipleChromatogramAlignmentRowData::getCoreEnd() const {
-    return getRowLengthWithoutTrailing();
-}
-
-inline bool MultipleChromatogramAlignmentRowData::simplify() {
-    if (gaps.count() > 0) {
-        gaps.clear();
-        return true;
-    }
-    return false;
-}
 
 inline int MultipleChromatogramAlignmentRowData::getUngappedLength() const {
     return sequence.length();

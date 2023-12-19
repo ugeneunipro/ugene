@@ -144,22 +144,6 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
     SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
 }
 
-QByteArray MultipleChromatogramAlignmentRowData::getCore() const {
-    return getSequenceWithGaps(false, false);
-}
-
-QByteArray MultipleChromatogramAlignmentRowData::getData() const {
-    return getSequenceWithGaps(true, true);
-}
-
-qint64 MultipleChromatogramAlignmentRowData::getCoreLength() const {
-    int coreStart = getCoreStart();
-    int coreEnd = getCoreEnd();
-    int length = coreEnd - coreStart;
-    SAFE_POINT(length >= 0, QString("Internal error in MultipleChromatogramAlignmentRowData: coreEnd is %1, coreStart is %2!").arg(coreEnd).arg(coreStart), length);
-    return length;
-}
-
 void MultipleChromatogramAlignmentRowData::append(const MultipleChromatogramAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os) {
     // TODO: remove
     append(*anotherRow, lengthBefore, os);
@@ -595,10 +579,6 @@ void MultipleChromatogramAlignmentRowData::setParentAlignment(const MultipleChro
 
 void MultipleChromatogramAlignmentRowData::setParentAlignment(MultipleChromatogramAlignmentData* mcaData) {
     alignment = mcaData;
-}
-
-int MultipleChromatogramAlignmentRowData::getCoreStart() const {
-    return MsaRowUtils::getCoreStart(gaps);
 }
 
 MultipleAlignmentData* MultipleChromatogramAlignmentRowData::getMultipleAlignmentData() const {

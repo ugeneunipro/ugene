@@ -82,24 +82,6 @@ protected:
     MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow& row, MultipleSequenceAlignmentData* msaData);
 
 public:
-    /** Packed version: returns the row without leading and trailing gaps */
-    QByteArray getCore() const;
-
-    /** Returns the row the way it is -- with leading and trailing gaps */
-    QByteArray getData() const;
-
-    /** Obsolete. Always return the row length (non-inclusive!) */
-    int getCoreEnd() const override;
-
-    /** Obsolete. Always returns zero. */
-    int getCoreStart() const override;
-
-    /** Obsolete. The length of the row core */
-    qint64 getCoreLength() const override;
-
-    /** Removes all gaps. Returns true if changed. */
-    bool simplify();
-
     /** Adds anotherRow data to this row(ingores trailing gaps), "lengthBefore" must be greater than this row's length. */
     void append(const MultipleSequenceAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
     void append(const MultipleSequenceAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os);
