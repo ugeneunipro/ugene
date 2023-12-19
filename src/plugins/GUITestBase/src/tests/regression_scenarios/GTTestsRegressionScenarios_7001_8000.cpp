@@ -4028,6 +4028,31 @@ GUI_TEST_CLASS_DEFINITION(test_7744) {
     GTUtilsDialog::checkNoActiveWaiters();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7746) {
+    // Check the settings are default.
+
+    // Open any file just for creating a project.
+    GTFileDialog::openFile(dataDir + "/samples/ABIF/A01.abi");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    // Expected: the Project View is open.
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
+
+    // Toggle all docks (Alt+`).
+    GTKeyboardDriver::keyClick('`', Qt::KeyboardModifier::AltModifier);
+    // Expected: the Project View is hidden.
+    GTUtilsProjectTreeView::checkProjectViewIsClosed();
+
+    // Close the project.
+    GTUtilsProject::closeProject(true);
+    // Expected: the Project View is deleted.
+    GTUtilsProjectTreeView::checkProjectViewIsClosed();
+
+    // Toggle all docks again (Alt+`).
+    GTKeyboardDriver::keyClick('`', Qt::KeyboardModifier::AltModifier);
+    // Expected: no crash, nothing changed.
+    GTUtilsProjectTreeView::checkProjectViewIsClosed();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7748) {
     GTUtilsDialog::waitForDialog(new ImportBAMFileFiller("", testDir + "_common_data/fasta/broken", "empty_name_multi.fa"));
     GTFileDialog::openFile(dataDir + "samples/Assembly/chrM.sam");
