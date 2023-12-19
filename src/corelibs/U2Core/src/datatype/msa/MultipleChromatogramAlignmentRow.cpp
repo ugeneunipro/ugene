@@ -109,27 +109,27 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(Multi
 }
 
 MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const U2MsaRow& rowInDb,
-                                                                           const DNAChromatogram& chromatogram,
+                                                                           const DNAChromatogram& _chromatogram,
                                                                            const DNASequence& sequence,
                                                                            const QVector<U2MsaGap>& gaps,
                                                                            MultipleChromatogramAlignmentData* mcaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MCA, sequence, gaps),
       alignment(mcaData),
-      chromatogram(chromatogram),
       initialRowInDb(rowInDb) {
+    chromatogram = _chromatogram;
     SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
     removeTrailingGaps();
 }
 
 MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const U2MsaRow& rowInDb,
                                                                            const QString& rowName,
-                                                                           const DNAChromatogram& chromatogram,
+                                                                           const DNAChromatogram& _chromatogram,
                                                                            const QByteArray& rawData,
                                                                            MultipleChromatogramAlignmentData* mcaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MCA),
       alignment(mcaData),
-      chromatogram(chromatogram),
       initialRowInDb(rowInDb) {
+    chromatogram = _chromatogram;
     QByteArray sequenceData;
     QVector<U2MsaGap> gapModel;
     MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
@@ -140,9 +140,9 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
 MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MCA, row->sequence, row->gaps),
       alignment(mcaData),
-      chromatogram(row->chromatogram),
       initialRowInDb(row->initialRowInDb),
       additionalInfo(row->additionalInfo) {
+    chromatogram = row->chromatogram;
     SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
 }
 

@@ -23,7 +23,6 @@
 
 #include <U2Core/DbiConnection.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2ObjectDbi.h>

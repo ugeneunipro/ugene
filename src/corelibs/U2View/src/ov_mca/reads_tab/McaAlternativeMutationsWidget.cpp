@@ -22,7 +22,6 @@
 #include "McaAlternativeMutationsWidget.h"
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/U2AttributeUtils.h>
@@ -79,7 +78,7 @@ void McaAlternativeMutationsWidget::sl_updateAlternativeMutations() {
     CHECK_OP(os, );
 }
 
-const QString McaAlternativeMutationsWidget::getAlternativeMutationsCheckedId() {
+QString McaAlternativeMutationsWidget::getAlternativeMutationsCheckedId() {
     return ALTERNATIVE_MUTATIONS_CHECKED;
 }
 

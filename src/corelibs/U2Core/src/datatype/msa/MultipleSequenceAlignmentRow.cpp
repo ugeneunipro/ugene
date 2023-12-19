@@ -151,6 +151,7 @@ U2MsaRow MultipleSequenceAlignmentRowData::getRowDbInfo() const {
     U2MsaRow row;
     row.rowId = initialRowInDb.rowId;
     row.sequenceId = initialRowInDb.sequenceId;
+    row.chromatogramId = initialRowInDb.chromatogramId;
     row.gstart = 0;
     row.gend = sequence.length();
     row.gaps = gaps;

@@ -27,6 +27,7 @@
 
 namespace U2 {
 
+/** In-memory representation of the chromatogram. */
 class U2CORE_EXPORT DNAChromatogram {
 public:
     enum class Trace {
