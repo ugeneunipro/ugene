@@ -182,4 +182,45 @@ void MultipleAlignmentRowData::setRowId(qint64 rowId) {
     initialRowInDb.rowId = rowId;
 }
 
+void MultipleAlignmentRowData::setSequenceId(const U2DataId& sequenceId) {
+    initialRowInDb.sequenceId = sequenceId;
+}
+
+U2MsaRow MultipleAlignmentRowData::getRowDbInfo() const {
+    U2MsaRow row;
+    row.rowId = initialRowInDb.rowId;
+    row.sequenceId = initialRowInDb.sequenceId;
+    row.chromatogramId = initialRowInDb.chromatogramId;
+    row.gstart = 0;
+    row.gend = sequence.length();
+    row.gaps = gaps;
+    row.length = getRowLengthWithoutTrailing();
+    return row;
+}
+
+void MultipleAlignmentRowData::setRowDbInfo(const U2MsaRow& dbRow) {
+    invalidateGappedCache();
+    initialRowInDb = dbRow;
+}
+
+void MultipleAlignmentRowData::invalidateGappedCache() const {
+    gappedCacheOffset = 0;
+    gappedSequenceCache.clear();
+}
+
+const DNASequence& MultipleAlignmentRowData::getSequence() const {
+    return sequence;
+}
+
+void MultipleAlignmentRowData::setGapModel(const QVector<U2MsaGap>& newGapModel) {
+    invalidateGappedCache();
+    gaps = newGapModel;
+    removeTrailingGaps();
+}
+
+void MultipleAlignmentRowData::removeTrailingGaps() {
+    CHECK(!gaps.isEmpty(), )
+    MsaRowUtils::removeTrailingGapsFromModel(sequence.length(), gaps);
+}
+
 }  // namespace U2

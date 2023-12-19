@@ -121,27 +121,6 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const Multipl
     SAFE_POINT(alignment != nullptr, "Parent MultipleSequenceAlignmentData are NULL", );
 }
 
-void MultipleSequenceAlignmentRowData::setSequenceId(const U2DataId& sequenceId) {
-    initialRowInDb.sequenceId = sequenceId;
-}
-
-U2MsaRow MultipleSequenceAlignmentRowData::getRowDbInfo() const {
-    U2MsaRow row;
-    row.rowId = initialRowInDb.rowId;
-    row.sequenceId = initialRowInDb.sequenceId;
-    row.chromatogramId = initialRowInDb.chromatogramId;
-    row.gstart = 0;
-    row.gend = sequence.length();
-    row.gaps = gaps;
-    row.length = getRowLengthWithoutTrailing();
-    return row;
-}
-
-void MultipleSequenceAlignmentRowData::setRowDbInfo(const U2MsaRow& dbRow) {
-    invalidateGappedCache();
-    initialRowInDb = dbRow;
-}
-
 QByteArray MultipleSequenceAlignmentRowData::toByteArray(U2OpStatus& os, qint64 length) const {
     if (length < getCoreEnd()) {
         coreLog.trace("Incorrect length was passed to MultipleSequenceAlignmentRowData::toByteArray");
@@ -466,15 +445,6 @@ void MultipleSequenceAlignmentRowData::mergeConsecutiveGaps() {
     MsaRowUtils::mergeConsecutiveGaps(gaps);
 }
 
-void MultipleSequenceAlignmentRowData::removeTrailingGaps() {
-    if (gaps.isEmpty()) {
-        return;
-    }
-
-    // If the last char in the row is gap, remove the last gap
-    MsaRowUtils::removeTrailingGapsFromModel(sequence.length(), gaps);
-}
-
 void MultipleSequenceAlignmentRowData::getStartAndEndSequencePositions(int pos, int count, int& startPosInSeq, int& endPosInSeq) {
     int rowLengthWithoutTrailingGap = getRowLengthWithoutTrailing();
     SAFE_POINT(pos < rowLengthWithoutTrailingGap,
@@ -545,10 +515,6 @@ MultipleAlignmentData* MultipleSequenceAlignmentRowData::getMultipleAlignmentDat
     return alignment;
 }
 
-const DNASequence& MultipleSequenceAlignmentRowData::getSequence() const {
-    return sequence;
-}
-
 qint64 MultipleSequenceAlignmentRowData::getRowLengthWithoutTrailing() const {
     return MsaRowUtils::getRowLength(sequence.seq, gaps);
 }
@@ -566,11 +532,6 @@ bool MultipleSequenceAlignmentRowData::simplify() {
 
 int MultipleSequenceAlignmentRowData::getGapsLength() const {
     return MsaRowUtils::getGapsLength(gaps);
-}
-
-void MultipleSequenceAlignmentRowData::invalidateGappedCache() const {
-    gappedCacheOffset = 0;
-    gappedSequenceCache.clear();
 }
 
 /**

@@ -83,21 +83,7 @@ protected:
 
 public:
 
-    /** Sets a new gap model. Warning: does not validate the new gap model. */
-    void setGapModel(const QVector<U2MsaGap>& newGapModel);
-
-    /** Returns the row sequence (without gaps) */
-    const DNASequence& getSequence() const;
-
-    void setSequenceId(const U2DataId& sequenceId);
-
-    /** Returns ID of the row sequence in the database. */
-    U2MsaRow getRowDbInfo() const;
-
-    /** Sets database IDs for row and sequence */
-    void setRowDbInfo(const U2MsaRow& dbRow);
-
-    /**
+        /**
      * The length must be greater or equal to the row length.
      * When the specified length is greater, an appropriate number of
      * trailing gaps are appended to the end of the byte array.
@@ -218,9 +204,6 @@ private:
     /** If there are consecutive gaps in the gaps model, merges them into one gap */
     void mergeConsecutiveGaps();
 
-    /** The row must not contain trailing gaps, this method is used to assure it after the row modification */
-    void removeTrailingGaps();
-
     /**
      * Calculates start and end position in the sequence,
      * depending on the start position in the row and the 'count' character from it
@@ -233,25 +216,10 @@ private:
     void setParentAlignment(const MultipleSequenceAlignment& msa);
     void setParentAlignment(MultipleSequenceAlignmentData* msaData);
 
-    /** Invalidates gapped sequence cache. */
-    void invalidateGappedCache() const;
-
     /** Gets char from the gapped sequence cache. Updates the cache if needed. */
     char getCharFromCache(int gappedPosition) const;
 
     MultipleSequenceAlignmentData* alignment = nullptr;
-
-    /** Gapped cache offset in the row position.*/
-    mutable int gappedCacheOffset = 0;
-
-    /**
-     * Cached segment of the gapped sequence.
-     * The reason why this cache is efficient:
-     *  Most of the algorithms access the row data sequentially: charAt(i), charAt(i+1), charAt(i+2).
-     *  This access may be very slow for rows with a large gap models: to compute every character the gap model must be re-applied form the very verst gap.
-     *  This cache helps to avoid this gaps re-computation on sequential reads.
-     */
-    mutable QByteArray gappedSequenceCache;
 };
 
 inline bool operator==(const MultipleSequenceAlignmentRow& ptr1, const MultipleSequenceAlignmentRow& ptr2) {

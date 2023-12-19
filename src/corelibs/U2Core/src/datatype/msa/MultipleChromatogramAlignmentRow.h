@@ -83,25 +83,11 @@ protected:
 
 public:
 
-    /** Careful, the new gap model is not validated! */
-    void setGapModel(const QVector<U2MsaGap>& newGapModel);
-
-    /** Returns the row sequence (without gaps) */
-    inline const DNASequence& getSequence() const;
-
     const DNAChromatogram& getChromatogram() const;
     DNAChromatogram getGappedChromatogram() const;
 
     /** Returns the position of @pos, including gaps */
     qint64 getGappedPosition(int pos) const;
-
-    void setSequenceId(const U2DataId& sequenceId);
-
-    /** Returns ID of the row sequence in the database. */
-    U2MsaRow getRowDbInfo() const;
-
-    /** Sets database IDs for row and sequence */
-    void setRowDbInfo(const U2MsaRow& dbRow);
 
     /**
      * The length must be greater or equal to the row length.
@@ -250,9 +236,6 @@ private:
     /** If there are consecutive gaps in the gaps model, merges them into one gap */
     void mergeConsecutiveGaps();
 
-    /** The row must not contain trailing gaps, this method is used to assure it after the row modification */
-    void removeTrailingGaps();
-
     void syncLengths();
 
     /**
@@ -271,10 +254,6 @@ private:
 
     QVariantMap additionalInfo;
 };
-
-inline const DNASequence& MultipleChromatogramAlignmentRowData::getSequence() const {
-    return sequence;
-}
 
 inline qint64 MultipleChromatogramAlignmentRowData::getRowLengthWithoutTrailing() const {
     return MsaRowUtils::getRowLength(sequence.seq, gaps);

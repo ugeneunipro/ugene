@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <typeinfo>
-
 #include <QList>
 
 #include <U2Core/ChromatogramUtils.h>
@@ -146,11 +144,6 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
     SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
 }
 
-void MultipleChromatogramAlignmentRowData::setGapModel(const QVector<U2MsaGap>& newGapModel) {
-    gaps = newGapModel;
-    removeTrailingGaps();
-}
-
 const DNAChromatogram& MultipleChromatogramAlignmentRowData::getChromatogram() const {
     return chromatogram;
 }
@@ -161,26 +154,6 @@ DNAChromatogram MultipleChromatogramAlignmentRowData::getGappedChromatogram() co
 
 qint64 MultipleChromatogramAlignmentRowData::getGappedPosition(int pos) const {
     return MsaRowUtils::getGappedRegion(gaps, U2Region(pos, 1)).startPos;
-}
-
-void MultipleChromatogramAlignmentRowData::setSequenceId(const U2DataId& sequenceId) {
-    initialRowInDb.sequenceId = sequenceId;
-}
-
-U2MsaRow MultipleChromatogramAlignmentRowData::getRowDbInfo() const {
-    U2MsaRow row;
-    row.rowId = initialRowInDb.rowId;
-    row.chromatogramId = initialRowInDb.chromatogramId;
-    row.sequenceId = initialRowInDb.sequenceId;
-    row.gstart = 0;
-    row.gend = sequence.length();
-    row.gaps = gaps;
-    row.length = getRowLengthWithoutTrailing();
-    return row;
-}
-
-void MultipleChromatogramAlignmentRowData::setRowDbInfo(const U2MsaRow& dbRow) {
-    initialRowInDb = dbRow;
 }
 
 QByteArray MultipleChromatogramAlignmentRowData::toByteArray(U2OpStatus& os, qint64 length) const {
@@ -599,17 +572,6 @@ void MultipleChromatogramAlignmentRowData::addOffsetToGapModel(QVector<U2MsaGap>
 
 void MultipleChromatogramAlignmentRowData::mergeConsecutiveGaps() {
     MsaRowUtils::mergeConsecutiveGaps(gaps);
-}
-
-void MultipleChromatogramAlignmentRowData::removeTrailingGaps() {
-    if (gaps.isEmpty()) {
-        return;
-    }
-
-    // If the last char in the row is gap, remove the last gap
-    if (U2Msa::GAP_CHAR == charAt(MsaRowUtils::getRowLength(sequence.constData(), gaps) - 1)) {
-        gaps.removeLast();
-    }
 }
 
 void MultipleChromatogramAlignmentRowData::syncLengths() {
