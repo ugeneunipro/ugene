@@ -134,9 +134,18 @@ public:
     virtual bool isGap(qint64 position) const = 0;
     virtual bool isLeadingOrTrailingGap(qint64 position) const = 0;
 
-    virtual QByteArray toByteArray(U2OpStatus& os, qint64 length) const = 0;
+    /**
+     * The length must be greater or equal to the row length.
+     * When the specified length is greater, an appropriate number of trailing gaps are appended to the end of the byte array.
+     */
+    QByteArray toByteArray(U2OpStatus& os, int length) const;
 
-    virtual qint64 getRowLengthWithoutTrailing() const = 0;
+    /** Returns length of the sequence + number of gaps including trailing gaps (if any) */
+    int getRowLength() const;
+
+    /** Returns length of the sequence + number of gaps. Doesn't include trailing gaps. */
+    int getRowLengthWithoutTrailing() const;
+
     virtual int getCoreStart() const = 0;
     virtual int getCoreEnd() const = 0;
     virtual qint64 getCoreLength() const = 0;
@@ -188,8 +197,13 @@ public:
 
     const DNAChromatogram& getChromatogram() const;
 
+    DNAChromatogram getGappedChromatogram() const;
+
     /** Returns the row sequence (without gaps). */
     const DNASequence& getSequence() const;
+
+    /** Returns the position of @pos, including gaps */
+    qint64 getGappedPosition(int pos) const;
 
 protected:
     /** Invalidates gapped sequence cache. */
