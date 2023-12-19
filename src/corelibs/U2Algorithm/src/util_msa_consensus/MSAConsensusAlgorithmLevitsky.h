@@ -48,6 +48,8 @@ public:
 
     MSAConsensusAlgorithmLevitsky* clone() const override;
 
+    void reinitializeData(const MultipleAlignment& ma) override;
+
 private:
     QVarLengthArray<int, 256> globalFreqs;
 };
