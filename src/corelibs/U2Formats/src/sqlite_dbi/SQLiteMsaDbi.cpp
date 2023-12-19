@@ -21,6 +21,7 @@
 
 #include "SQLiteMsaDbi.h"
 
+#include <U2Core/ChromatogramUtils.h>
 #include <U2Core/U2DbiPackUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SqlHelpers.h>
@@ -528,8 +529,7 @@ void SQLiteMsaDbi::deleteRowsData(const U2DataId& msaId, U2OpStatus& os) {
 
 U2Msa SQLiteMsaDbi::getMsaObject(const U2DataId& msaId, U2OpStatus& os) {
     U2Msa res(U2Type::Msa);
-    dbi->getSQLiteObjectDbi()->getObject(res, msaId, os);
-
+    res.type = dbi->getSQLiteObjectDbi()->getObject(res, msaId, os);
     SAFE_POINT_OP(os, res);
 
     SQLiteReadQuery q("SELECT length, alphabet FROM Msa WHERE object = ?1", db, os);

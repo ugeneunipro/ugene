@@ -100,6 +100,8 @@ public:
 
     virtual char getConsensusChar(const MultipleAlignment& ma, int column) const = 0;
 
+    virtual void reinitializeData(const MultipleAlignment&) {}
+
     virtual MSAConsensusAlgorithm* clone() const = 0;
 
     QString getDescription() const;

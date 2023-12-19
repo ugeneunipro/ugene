@@ -174,8 +174,9 @@ protected:
     }
 
 public:
-    virtual void getObject(U2Object&, const U2DataId&, U2OpStatus& os) {
+    virtual U2DataType getObject(U2Object&, const U2DataId&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
+        return {};
     }
 
     virtual U2DataId getObject(qint64 objectId, U2OpStatus& os) {

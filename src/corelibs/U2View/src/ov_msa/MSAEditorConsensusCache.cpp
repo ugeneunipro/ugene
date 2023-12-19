@@ -69,10 +69,12 @@ QByteArray MSAEditorConsensusCache::getConsensusLine(const U2Region& region, boo
 }
 
 void MSAEditorConsensusCache::sl_alignmentChanged() {
+    algorithm->reinitializeData(aliObj->getMultipleAlignment());
+
     if (curCacheSize != aliObj->getLength()) {
         curCacheSize = aliObj->getLength();
         updateMap.resize(curCacheSize);
-        cache.resize(aliObj->getLength());
+        cache.resize(curCacheSize);
 
         emit si_cacheResized(curCacheSize);
     }

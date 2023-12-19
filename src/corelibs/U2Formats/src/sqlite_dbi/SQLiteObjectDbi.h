@@ -41,7 +41,7 @@ public:
      Retrieves U2Object fields from database entry with 'id'
      and sets these fields for 'object'
     */
-    virtual void getObject(U2Object& object, const U2DataId& id, U2OpStatus& os);
+    virtual U2DataType getObject(U2Object& object, const U2DataId& id, U2OpStatus& os);
 
     /**
     Retrieves database object by objectId.

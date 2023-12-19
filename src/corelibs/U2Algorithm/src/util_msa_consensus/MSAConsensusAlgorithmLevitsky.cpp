@@ -111,15 +111,7 @@ static void registerHit(int* data, char c) {
 
 MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps)
     : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps), globalFreqs(QVarLengthArray<int>(256)) {
-    int* freqsData = globalFreqs.data();
-    std::fill(globalFreqs.begin(), globalFreqs.end(), 0);
-    int len = ma->getLength();
-    foreach (const MultipleAlignmentRow& row, ma->getRows()) {
-        for (int i = 0; i < len; i++) {
-            char c = row->charAt(i);
-            registerHit(freqsData, c);
-        }
-    }
+    reinitializeData(ma);
 }
 
 static QByteArray BASE_DNA_CHARS("ACGTU");
@@ -251,6 +243,19 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
 
 MSAConsensusAlgorithmLevitsky* MSAConsensusAlgorithmLevitsky::clone() const {
     return new MSAConsensusAlgorithmLevitsky(*this);
+}
+
+void MSAConsensusAlgorithmLevitsky::reinitializeData(const MultipleAlignment& ma) {
+    int* freqsData = globalFreqs.data();
+    std::fill(globalFreqs.begin(), globalFreqs.end(), 0);
+    const auto& maRows = ma->getRows();
+    int len = ma->getLength();
+    for (const MultipleAlignmentRow& row : qAsConst(maRows)) {
+        for (int i = 0; i < len; i++) {
+            char c = row->charAt(i);
+            registerHit(freqsData, c);
+        }
+    }
 }
 
 }  // namespace U2

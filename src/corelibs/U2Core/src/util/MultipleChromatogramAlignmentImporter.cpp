@@ -27,6 +27,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/McaDbiUtils.h>
+#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -172,8 +173,11 @@ QList<U2MsaRow> MultipleChromatogramAlignmentImporter::importRows(U2OpStatus& os
         rows << row;
     }
 
-    McaDbiUtils::addRows(os, U2EntityRef(connection.dbi->getDbiRef(), dbMca.id), rows);
-    CHECK_OP(os, QList<U2MsaRow>());
+    U2EntityRef mcaRef(connection.dbi->getDbiRef(), dbMca.id);
+    for (int i = 0; i < rows.length(); i++) {
+        MsaDbiUtils::addRow(mcaRef, -1, rows[i], os);
+        CHECK_OP(os, {});
+    }
     return rows;
 }
 

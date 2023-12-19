@@ -34,22 +34,12 @@ class U2OpStatus;
 class U2CORE_EXPORT McaDbiUtils : public QObject {
 public:
     static void updateMca(U2OpStatus& os, const U2EntityRef& mcaRef, const MultipleChromatogramAlignment& mca);
-    static void addRow(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 posInMca, U2MsaRow& row);
-    static void addRows(U2OpStatus& os, const U2EntityRef& mcaRef, QList<U2MsaRow>& rows);
-    static QList<U2MsaRow> getMcaRows(U2OpStatus& os, const U2EntityRef& mcaRef);
-    static U2MsaRow getMcaRow(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 rowId);
 
-    static void removeRow(const U2EntityRef& mcaRef, qint64 rowId, U2OpStatus& os);
-    static void removeCharacters(const U2EntityRef& mcaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os);
-
-    /** Replaces all characters in the given column range with a new character. */
-    static void replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, const U2Region& range, char newChar, U2OpStatus& os);
     /*
      * Replaces the set of characters.
      * It's better than use @replaceCharacterInRow several times, because this function opens database just one time.
      */
     static void replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QHash<qint64, char> newCharList, U2OpStatus& os);
-    static void removeRegion(const U2EntityRef& entityRef, qint64 rowId, qint64 pos, qint64 count, U2OpStatus& os);
 };
 
 }  // namespace U2

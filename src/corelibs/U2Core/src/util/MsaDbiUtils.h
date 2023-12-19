@@ -193,6 +193,10 @@ public:
     /** Calculates a new gap model when 'count' gaps are inserted to 'pos' position */
     static void calculateGapModelAfterInsert(QVector<U2MsaGap>& gapModel, qint64 pos, qint64 count);
 
+    static U2MsaRow getMsaRow(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId);
+
+    static QList<U2MsaRow> getMsaRows(U2OpStatus& os, const U2EntityRef& msaRef);
+
 private:
     /**
      * Verifies if the alignment contains columns of gaps at the beginning.

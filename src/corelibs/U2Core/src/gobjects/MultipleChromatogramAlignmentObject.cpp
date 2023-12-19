@@ -196,7 +196,7 @@ void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int curren
             count = lengthWithoutTrailing - currentPos;
             break;
     }
-    McaDbiUtils::removeRegion(entityRef, rowId, pos, count, os);
+    MsaDbiUtils::removeRegion(entityRef, {rowId}, pos, count, os);
     U2Region region(rowIndex, 1);
     if (edge == Left) {
         insertGap(region, 0, count);
@@ -213,7 +213,7 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAl
         const MultipleChromatogramAlignmentRow& mcaRow = static_cast<const MultipleChromatogramAlignmentRow&>(getRow(i));
         qint64 ungappedLength = mcaRow->getUngappedLength();
 
-        QHash<qint64, char> newCharList;
+        QHash<qint64, char> newCharMap;
         for (int j = 0; j < ungappedLength; j++) {
             bool ok = false;
             auto res = mcaRow->getTwoHighestPeaks(j, ok);
@@ -235,12 +235,12 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAl
                 continue;
             }
 
-            newCharList.insert(gappedPos, newChar);
+            newCharMap.insert(gappedPos, newChar);
         }
 
         const MultipleAlignment& ma = getMultipleAlignment();
         qint64 modifiedRowId = ma->getRow(i)->getRowId();
-        McaDbiUtils::replaceCharactersInRow(getEntityRef(), modifiedRowId, newCharList, os);
+        McaDbiUtils::replaceCharactersInRow(getEntityRef(), modifiedRowId, newCharMap, os);
         SAFE_POINT_OP(os, );
     }
     updateCachedMultipleAlignment();
@@ -272,11 +272,11 @@ void MultipleChromatogramAlignmentObject::updateDatabase(U2OpStatus& os, const M
 }
 
 void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 rowId) {
-    McaDbiUtils::removeRow(mcaRef, rowId, os);
+    MsaDbiUtils::removeRow(mcaRef, rowId, os);
 }
 
 void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus& os, const U2EntityRef& maRef, const QList<qint64>& rows, int startPos, int nBases) {
-    McaDbiUtils::removeCharacters(maRef, rows, startPos, nBases, os);
+    MsaDbiUtils::removeRegion(maRef, rows, startPos, nBases, os);
 }
 
 int MultipleChromatogramAlignmentObject::getReferenceLengthWithGaps() const {
