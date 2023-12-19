@@ -82,23 +82,12 @@ protected:
     MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow& row, MultipleSequenceAlignmentData* msaData);
 
 public:
-    /** Name of the row (equals to the sequence name), can be empty */
-    QString getName() const override;
-    void setName(const QString& name) override;
 
-    /** Returns the list of gaps for the row */
-    const QVector<U2MsaGap>& getGaps() const override;
-
-    /** Careful, the new gap model is not validated! */
+    /** Sets a new gap model. Warning: does not validate the new gap model. */
     void setGapModel(const QVector<U2MsaGap>& newGapModel);
 
     /** Returns the row sequence (without gaps) */
     const DNASequence& getSequence() const;
-
-    /** Returns ID of the row in the database. */
-    qint64 getRowId() const override;
-
-    void setRowId(qint64 rowId) override;
 
     void setSequenceId(const U2DataId& sequenceId);
 
@@ -251,9 +240,6 @@ private:
     char getCharFromCache(int gappedPosition) const;
 
     MultipleSequenceAlignmentData* alignment = nullptr;
-
-    /** The row in the database */
-    U2MsaRow initialRowInDb;
 
     /** Gapped cache offset in the row position.*/
     mutable int gappedCacheOffset = 0;

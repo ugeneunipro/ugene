@@ -82,12 +82,6 @@ protected:
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData);
 
 public:
-    /** Name of the row (equals to the sequence name), can be empty */
-    QString getName() const override;
-    void setName(const QString& name) override;
-
-    /** Returns the list of gaps for the row */
-    inline const QVector<U2MsaGap>& getGaps() const;
 
     /** Careful, the new gap model is not validated! */
     void setGapModel(const QVector<U2MsaGap>& newGapModel);
@@ -100,11 +94,6 @@ public:
 
     /** Returns the position of @pos, including gaps */
     qint64 getGappedPosition(int pos) const;
-
-    /** Returns ID of the row in the database. */
-    qint64 getRowId() const;
-
-    void setRowId(qint64 rowId);
 
     void setSequenceId(const U2DataId& sequenceId);
 
@@ -280,15 +269,8 @@ private:
 
     MultipleChromatogramAlignmentData* alignment;
 
-    /** The row in the database */
-    U2MsaRow initialRowInDb;
-
     QVariantMap additionalInfo;
 };
-
-inline const QVector<U2MsaGap>& MultipleChromatogramAlignmentRowData::getGaps() const {
-    return gaps;
-}
 
 inline const DNASequence& MultipleChromatogramAlignmentRowData::getSequence() const {
     return sequence;

@@ -114,8 +114,8 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
                                                                            const QVector<U2MsaGap>& gaps,
                                                                            MultipleChromatogramAlignmentData* mcaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MCA, sequence, gaps),
-      alignment(mcaData),
-      initialRowInDb(rowInDb) {
+      alignment(mcaData) {
+    initialRowInDb = rowInDb;
     chromatogram = _chromatogram;
     SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
     removeTrailingGaps();
@@ -127,9 +127,9 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
                                                                            const QByteArray& rawData,
                                                                            MultipleChromatogramAlignmentData* mcaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MCA),
-      alignment(mcaData),
-      initialRowInDb(rowInDb) {
+      alignment(mcaData) {
     chromatogram = _chromatogram;
+    initialRowInDb = rowInDb;
     QByteArray sequenceData;
     QVector<U2MsaGap> gapModel;
     MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
@@ -140,18 +140,10 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
 MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MCA, row->sequence, row->gaps),
       alignment(mcaData),
-      initialRowInDb(row->initialRowInDb),
       additionalInfo(row->additionalInfo) {
+    initialRowInDb = row->initialRowInDb;
     chromatogram = row->chromatogram;
     SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
-}
-
-QString MultipleChromatogramAlignmentRowData::getName() const {
-    return sequence.getName();
-}
-
-void MultipleChromatogramAlignmentRowData::setName(const QString& name) {
-    sequence.setName(name);
 }
 
 void MultipleChromatogramAlignmentRowData::setGapModel(const QVector<U2MsaGap>& newGapModel) {
@@ -169,14 +161,6 @@ DNAChromatogram MultipleChromatogramAlignmentRowData::getGappedChromatogram() co
 
 qint64 MultipleChromatogramAlignmentRowData::getGappedPosition(int pos) const {
     return MsaRowUtils::getGappedRegion(gaps, U2Region(pos, 1)).startPos;
-}
-
-qint64 MultipleChromatogramAlignmentRowData::getRowId() const {
-    return initialRowInDb.rowId;
-}
-
-void MultipleChromatogramAlignmentRowData::setRowId(qint64 rowId) {
-    initialRowInDb.rowId = rowId;
 }
 
 void MultipleChromatogramAlignmentRowData::setSequenceId(const U2DataId& sequenceId) {

@@ -112,16 +112,15 @@ public:
     DNASequence getUngappedSequence() const;
 
     /** Returns the list of gaps for the row */
-    virtual const QVector<U2MsaGap>& getGaps() const = 0;
+    const QVector<U2MsaGap>& getGaps() const;
     virtual void removeChars(int pos, int count, U2OpStatus& os) = 0;
 
-    /** Name of the row, can be empty */
-    virtual QString getName() const = 0;
-    virtual void setName(const QString& name) = 0;
+    QString getName() const;
+    void setName(const QString& name);
 
     /** Returns ID of the row in the database. */
-    virtual qint64 getRowId() const = 0;
-    virtual void setRowId(qint64 rowId) = 0;
+    virtual qint64 getRowId() const;
+    virtual void setRowId(qint64 rowId);
 
     virtual char charAt(qint64 position) const = 0;
     virtual bool isGap(qint64 position) const = 0;
@@ -191,6 +190,9 @@ protected:
 
     /** Optional chromatogram. Defined only for MCA objects today. */
     DNAChromatogram chromatogram;
+
+    /** The row in the database */
+    U2MsaRow initialRowInDb;
 };
 
 inline int MultipleAlignmentRowData::getUngappedLength() const {
@@ -215,5 +217,10 @@ inline bool operator!=(const MultipleAlignmentRow& ptr1, const MultipleAlignment
 inline bool operator!=(const MultipleAlignmentRowData* ptr1, const MultipleAlignmentRow& ptr2) {
     return !(ptr1 == ptr2);
 }
+
+inline const QVector<U2MsaGap>& MultipleAlignmentRowData::getGaps() const {
+    return gaps;
+}
+
 
 }  // namespace U2

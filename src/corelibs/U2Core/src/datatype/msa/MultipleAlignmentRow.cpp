@@ -166,4 +166,20 @@ const DNAChromatogram& MultipleAlignmentRowData::getChromatogram() const {
     return chromatogram;
 }
 
+QString MultipleAlignmentRowData::getName() const {
+    return sequence.getName();
+}
+
+void MultipleAlignmentRowData::setName(const QString& name) {
+    sequence.setName(name);
+}
+
+qint64 MultipleAlignmentRowData::getRowId() const {
+    return initialRowInDb.rowId;
+}
+
+void MultipleAlignmentRowData::setRowId(qint64 rowId) {
+    initialRowInDb.rowId = rowId;
+}
+
 }  // namespace U2

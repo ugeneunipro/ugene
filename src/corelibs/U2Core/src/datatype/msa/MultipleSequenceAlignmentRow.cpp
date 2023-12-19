@@ -97,16 +97,16 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
                                                                    const QVector<U2MsaGap>& gaps,
                                                                    MultipleSequenceAlignmentData* msaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MSA, sequence, gaps),
-      alignment(msaData),
-      initialRowInDb(rowInDb) {
+      alignment(msaData) {
     SAFE_POINT(alignment != nullptr, "Parent MultipleSequenceAlignmentData are NULL", );
+    initialRowInDb = rowInDb;
     removeTrailingGaps();
 }
 
 MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRow& rowInDb, const QString& rowName, const QByteArray& rawData, MultipleSequenceAlignmentData* msaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MSA),
-      alignment(msaData),
-      initialRowInDb(rowInDb) {
+      alignment(msaData) {
+    initialRowInDb = rowInDb;
     QByteArray sequenceData;
     QVector<U2MsaGap> gapModel;
     MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
@@ -116,31 +116,9 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
 
 MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow& row, MultipleSequenceAlignmentData* msaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MSA, row->sequence, row->gaps),
-      alignment(msaData),
-      initialRowInDb(row->initialRowInDb) {
+      alignment(msaData) {
+    initialRowInDb = row->initialRowInDb;
     SAFE_POINT(alignment != nullptr, "Parent MultipleSequenceAlignmentData are NULL", );
-}
-
-QString MultipleSequenceAlignmentRowData::getName() const {
-    return sequence.getName();
-}
-
-void MultipleSequenceAlignmentRowData::setName(const QString& name) {
-    sequence.setName(name);
-}
-
-void MultipleSequenceAlignmentRowData::setGapModel(const QVector<U2MsaGap>& newGapModel) {
-    invalidateGappedCache();
-    gaps = newGapModel;
-    removeTrailingGaps();
-}
-
-qint64 MultipleSequenceAlignmentRowData::getRowId() const {
-    return initialRowInDb.rowId;
-}
-
-void MultipleSequenceAlignmentRowData::setRowId(qint64 rowId) {
-    initialRowInDb.rowId = rowId;
 }
 
 void MultipleSequenceAlignmentRowData::setSequenceId(const U2DataId& sequenceId) {
@@ -565,10 +543,6 @@ int MultipleSequenceAlignmentRowData::getCoreStart() const {
 
 MultipleAlignmentData* MultipleSequenceAlignmentRowData::getMultipleAlignmentData() const {
     return alignment;
-}
-
-const QVector<U2MsaGap>& MultipleSequenceAlignmentRowData::getGaps() const {
-    return gaps;
 }
 
 const DNASequence& MultipleSequenceAlignmentRowData::getSequence() const {
