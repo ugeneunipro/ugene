@@ -910,8 +910,9 @@ U2DataId SQLiteObjectDbi::createObject(U2Object& object, const QString& folder, 
     return res;
 }
 
-void SQLiteObjectDbi::getObject(U2Object& object, const U2DataId& id, U2OpStatus& os) {
-    SQLiteReadQuery q("SELECT name, version, trackMod FROM Object WHERE id = ?1", db, os);
+U2DataType SQLiteObjectDbi::getObject(U2Object& object, const U2DataId& id, U2OpStatus& os) {
+    SQLiteReadQuery q("SELECT name, version, trackMod, type FROM Object WHERE id = ?1", db, os);
+    U2DataType type = U2Type::Unknown;
     q.bindDataId(1, id);
     if (q.step()) {
         object.id = id;
@@ -919,6 +920,7 @@ void SQLiteObjectDbi::getObject(U2Object& object, const U2DataId& id, U2OpStatus
         object.visualName = q.getString(0);
         object.version = q.getInt64(1);
         int trackMod = q.getInt32(2);
+        type = q.getDataType(3);
         if (trackMod >= 0 && trackMod < TRACK_MOD_TYPE_NR_ITEMS) {
             object.trackModType = (U2TrackModType)trackMod;
         } else {
@@ -929,6 +931,7 @@ void SQLiteObjectDbi::getObject(U2Object& object, const U2DataId& id, U2OpStatus
     } else if (!os.hasError()) {
         os.setError(U2DbiL10n::tr("Object not found."));
     }
+    return type;
 }
 
 U2DataId SQLiteObjectDbi::getObject(qint64 objectId, U2OpStatus& os) {

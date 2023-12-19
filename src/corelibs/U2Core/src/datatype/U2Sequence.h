@@ -26,29 +26,25 @@
 
 namespace U2 {
 
-/**
-    Sequence representation.
-    'Length' field contains the overall length of all sequence parts.
-    */
+/** Sequence representation in DBI. */
 class U2CORE_EXPORT U2Sequence : public U2Object {
 public:
-    U2Sequence()
-        : length(0), circular(false) {
-    }
+    U2Sequence() = default;
+
     U2Sequence(const U2DataId& id, const QString& dbId, qint64 version)
-        : U2Object(id, dbId, version), length(0) {
+        : U2Object(id, dbId, version) {
     }
 
-    /** Sequence alphabet id */
+    /** Sequence alphabet id. */
     U2AlphabetId alphabet;
 
-    /** Length of the sequence */
-    qint64 length;
+    /** Length of the sequence. */
+    qint64 length = 0;
 
-    /** A flag to mark that sequence is circular */
-    bool circular;
+    /** A flag to mark that sequence is circular. */
+    bool circular = false;
 
-    U2DataType getType() const {
+    U2DataType getType() const override {
         return U2Type::Sequence;
     }
 };
