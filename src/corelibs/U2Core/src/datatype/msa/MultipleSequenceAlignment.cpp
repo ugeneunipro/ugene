@@ -23,12 +23,12 @@
 
 #include <QSet>
 
+#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaRowUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2Region.h>
 
 #include "MaStateCheck.h"
-#include "MultipleAlignmentInfo.h"
 #include "MultipleSequenceAlignment.h"
 
 namespace U2 {
@@ -151,7 +151,7 @@ bool MultipleSequenceAlignmentData::trim(bool removeLeadingGaps) {
         if (newLength == 0) {
             newLength = row->getRowLengthWithoutTrailing();
         } else {
-            newLength = qMax(row->getRowLengthWithoutTrailing(), newLength);
+            newLength = qMax((qint64)row->getRowLengthWithoutTrailing(), newLength);
         }
     }
 
@@ -295,7 +295,7 @@ MultipleSequenceAlignmentRow MultipleSequenceAlignmentData::createRow(const QStr
     QByteArray newSequenceBytes;
     QVector<U2MsaGap> newGapsModel;
 
-    MultipleSequenceAlignmentRowData::splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
+    MaDbiUtils::splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
     DNASequence newSequence(name, newSequenceBytes);
 
     U2MsaRow row;

@@ -168,6 +168,11 @@ public:
 
     virtual void crop(U2OpStatus& os, qint64 startPosition, qint64 count) = 0;
 
+    /** Adds anotherRow data to this row(ignores trailing gaps), "lengthBefore" must be greater than this row's length. */
+    void append(const MultipleAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
+
+    void append(const MultipleAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os);
+
     virtual bool isDefault() const = 0;
 
     /** Returns ID of the row sequence in the database. */
@@ -220,9 +225,34 @@ public:
     /** Returns the position of @pos, including gaps */
     qint64 getGappedPosition(int pos) const;
 
+    /**
+     * Sets new sequence and gap model.
+     * If the sequence is empty, the offset is ignored (if any).
+     */
+    void setRowContent(const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel, U2OpStatus& os);
+
+    /**
+     * Sets new sequence and gap model.
+     * If the sequence is empty, the offset is ignored (if any).
+     */
+    void setRowContent(const DNASequence& sequence, const QVector<U2MsaGap>& gapModel, U2OpStatus& os);
+
+    void setRowContent(const QByteArray& bytes, int offset, U2OpStatus& os);
+
+
 protected:
     /** Invalidates gapped sequence cache. */
     void invalidateGappedCache() const;
+
+    /** If there are consecutive gaps in the gaps model, merges them into one gap */
+    void mergeConsecutiveGaps();
+
+    /**
+     * Add "offset" of gaps to the beginning of the row
+     * Warning: it is not verified that the row sequence is not empty.
+     */
+    static void addOffsetToGapModel(QVector<U2MsaGap>& gapModel, int offset);
+
 
 public:
     const MultipleAlignmentDataType type;

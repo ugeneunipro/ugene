@@ -22,6 +22,9 @@
 #include "MultipleAlignmentRow.h"
 
 #include <U2Core/ChromatogramUtils.h>
+#include <U2Core/DNASequenceUtils.h>
+#include <U2Core/Log.h>
+#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MultipleAlignment.h"
@@ -298,6 +301,113 @@ bool MultipleAlignmentRowData::simplify() {
     invalidateGappedCache();
     gaps.clear();
     return true;
+}
+
+void MultipleAlignmentRowData::append(const MultipleAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os) {
+    append(*anotherRow, lengthBefore, os);
+}
+
+void MultipleAlignmentRowData::append(const MultipleAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os) {
+    int rowLength = getRowLengthWithoutTrailing();
+
+    if (lengthBefore < rowLength) {
+        coreLog.trace(QString("Internal error: incorrect length '%1' were passed to MultipleChromatogramAlignmentRowData::append,"
+                              "coreEnd is '%2'")
+                          .arg(lengthBefore)
+                          .arg(getCoreEnd()));
+        os.setError("Failed to append one row to another");
+        return;
+    }
+
+    invalidateGappedCache();
+
+    // Gap between rows
+    if (lengthBefore > rowLength) {
+        gaps.append(U2MsaGap(getRowLengthWithoutTrailing(), lengthBefore - getRowLengthWithoutTrailing()));
+    }
+
+    // Merge gaps
+    QVector<U2MsaGap> anotherRowGaps = anotherRow.getGaps();
+    for (int i = 0; i < anotherRowGaps.count(); ++i) {
+        anotherRowGaps[i].startPos += lengthBefore;
+    }
+    gaps.append(anotherRowGaps);
+    mergeConsecutiveGaps();
+
+    // Merge sequences
+    DNASequenceUtils::append(sequence, anotherRow.sequence);
+
+    // Merge chromatograms
+    ChromatogramUtils::append(chromatogram, anotherRow.chromatogram);
+}
+
+void MultipleAlignmentRowData::mergeConsecutiveGaps() {
+    MsaRowUtils::mergeConsecutiveGaps(gaps);
+}
+
+void MultipleAlignmentRowData::setRowContent(const DNAChromatogram& newChromatogram, const DNASequence& newSequence, const QVector<U2MsaGap>& newGapModel, U2OpStatus& os) {
+    SAFE_POINT_EXT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), os.setError("The sequence must be without gaps"), );
+    chromatogram = newChromatogram;
+    sequence = newSequence;
+    setGapModel(newGapModel);
+
+    if (sequence.length() > chromatogram.seqLength) {
+        ushort baseCall = chromatogram.baseCalls.isEmpty() ? 0 : chromatogram.baseCalls.last();
+        chromatogram.baseCalls.insert(chromatogram.seqLength, sequence.length() - chromatogram.seqLength, baseCall);
+    }
+}
+
+void MultipleAlignmentRowData::setRowContent(const DNASequence& newSequence, const QVector<U2MsaGap>& newGapModel, U2OpStatus& os) {
+    SAFE_POINT_EXT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), os.setError("The sequence must be without gaps"), );
+    invalidateGappedCache();
+    sequence = newSequence;
+    chromatogram = DNAChromatogram();  // Clear chromatogram.
+    setGapModel(newGapModel);
+}
+
+void MultipleAlignmentRowData::setRowContent(const QByteArray& bytes, int offset, U2OpStatus&) {
+    invalidateGappedCache();
+
+    QByteArray newSequenceBytes;
+    QVector<U2MsaGap> newGapsModel;
+
+    MaDbiUtils::splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
+    DNASequence newSequence(getName(), newSequenceBytes);
+
+    addOffsetToGapModel(newGapsModel, offset);
+
+    sequence = newSequence;
+    chromatogram = DNAChromatogram();  // Clear chromatogram.
+    gaps = newGapsModel;
+    removeTrailingGaps();
+}
+
+void MultipleAlignmentRowData::addOffsetToGapModel(QVector<U2MsaGap>& gapModel, int offset) {
+    CHECK(offset != 0, );
+
+    if (!gapModel.isEmpty()) {
+        U2MsaGap& firstGap = gapModel[0];
+        if (firstGap.startPos == 0) {
+            firstGap.length += offset;
+        } else {
+            SAFE_POINT(offset >= 0, "Negative gap offset", );
+            U2MsaGap beginningGap(0, offset);
+            gapModel.insert(0, beginningGap);
+        }
+
+        // Shift other gaps
+        if (gapModel.count() > 1) {
+            for (int i = 1; i < gapModel.count(); ++i) {
+                qint64 newOffset = gapModel[i].startPos + offset;
+                SAFE_POINT(newOffset >= 0, "Negative gap offset", );
+                gapModel[i].startPos = newOffset;
+            }
+        }
+    } else {
+        SAFE_POINT(offset >= 0, "Negative gap offset", );
+        U2MsaGap gap(0, offset);
+        gapModel.append(gap);
+    }
 }
 
 }  // namespace U2

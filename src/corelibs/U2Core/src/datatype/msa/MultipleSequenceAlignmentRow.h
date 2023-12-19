@@ -82,17 +82,6 @@ protected:
     MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow& row, MultipleSequenceAlignmentData* msaData);
 
 public:
-    /** Adds anotherRow data to this row(ingores trailing gaps), "lengthBefore" must be greater than this row's length. */
-    void append(const MultipleSequenceAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
-    void append(const MultipleSequenceAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os);
-
-    /**
-     * Sets new sequence and gap model.
-     * If the sequence is empty, the offset is ignored (if any).
-     */
-    void setRowContent(const DNASequence& sequence, const QVector<U2MsaGap>& gapModel, U2OpStatus& os);
-    void setRowContent(const QByteArray& bytes, int offset, U2OpStatus& os);
-
     /**
      * Inserts 'count' gaps into the specified position, if possible.
      * If position is bigger than the row length or negative, does nothing.
@@ -157,20 +146,8 @@ public:
     MultipleAlignmentData* getMultipleAlignmentData() const override;
 
 private:
-    /** Splits input to sequence bytes and gaps model */
-    static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QVector<U2MsaGap>& gapModel);
-
-    /**
-     * Add "offset" of gaps to the beginning of the row
-     * Warning: it is not verified that the row sequence is not empty.
-     */
-    static void addOffsetToGapModel(QVector<U2MsaGap>& gapModel, int offset);
-
     /** Gets the length of all gaps */
     int getGapsLength() const;
-
-    /** If there are consecutive gaps in the gaps model, merges them into one gap */
-    void mergeConsecutiveGaps();
 
     /**
      * Calculates start and end position in the sequence,
