@@ -23,7 +23,6 @@
 
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>

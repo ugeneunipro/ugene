@@ -21,7 +21,6 @@
 
 #pragma once
 
-#include <U2Core/DNAChromatogram.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/McaRowInnerData.h>
 #include <U2Core/MsaRowUtils.h>
@@ -280,8 +279,6 @@ private:
     void setParentAlignment(MultipleChromatogramAlignmentData* mcaData);
 
     MultipleChromatogramAlignmentData* alignment;
-
-    DNAChromatogram chromatogram;
 
     /** The row in the database */
     U2MsaRow initialRowInDb;

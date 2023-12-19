@@ -238,7 +238,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/IOAdapterUtils.h \
            src/util/MaIterator.h \
            src/util/MaModificationInfo.h \
-           src/util/McaDbiUtils.h \
            src/util/MsaDbiUtils.h \
            src/util/McaRowInnerData.h \
            src/util/MsaRowUtils.h \
@@ -470,7 +469,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/IOAdapterUtils.cpp \
            src/util/MaIterator.cpp \
            src/util/MaModificationInfo.cpp \
-           src/util/McaDbiUtils.cpp \
            src/util/McaRowInnerData.cpp \
            src/util/MsaDbiUtils.cpp \
            src/util/MsaRowUtils.cpp \

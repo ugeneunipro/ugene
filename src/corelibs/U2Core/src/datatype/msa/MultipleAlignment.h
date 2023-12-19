@@ -214,13 +214,13 @@ public:
 
     virtual MultipleAlignment getCopy() const = 0;
 
+    const MultipleAlignmentDataType type;
+
 protected:
     virtual MultipleAlignmentRow getEmptyRow() const = 0;
 
     /** Helper-method for adding a row to the alignment */
     void addRowPrivate(const MultipleAlignmentRow& row, qint64 rowLenWithTrailingGaps, int rowIndex);
-
-    const MultipleAlignmentDataType type;
 
     /** Alphabet for all sequences in the alignment */
     const DNAAlphabet* alphabet = nullptr;

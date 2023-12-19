@@ -134,6 +134,14 @@ public:
     /** Replaces all characters in the given column range with a new character. */
     static void replaceCharactersInRow(const U2EntityRef& msaRef, qint64 rowId, const U2Region& range, char newChar, U2OpStatus& os);
 
+    /*
+     * Replaces the set of characters.
+     * It's better than use @replaceCharactersInRow several times, because this function opens database just one time.
+     */
+    static void replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QHash<qint64, char> newCharList, U2OpStatus& os);
+
+
+
     /**
      * Replaces a non-gap character in the whole alignment.
      * Returns list of modified row ids.

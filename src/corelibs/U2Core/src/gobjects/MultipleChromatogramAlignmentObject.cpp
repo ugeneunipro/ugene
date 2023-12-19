@@ -27,7 +27,6 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleChromatogramAlignmentExporter.h>
 #include <U2Core/MultipleChromatogramAlignmentImporter.h>
@@ -240,7 +239,7 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAl
 
         const MultipleAlignment& ma = getMultipleAlignment();
         qint64 modifiedRowId = ma->getRow(i)->getRowId();
-        McaDbiUtils::replaceCharactersInRow(getEntityRef(), modifiedRowId, newCharMap, os);
+        MsaDbiUtils::replaceCharactersInRow(getEntityRef(), modifiedRowId, newCharMap, os);
         SAFE_POINT_OP(os, );
     }
     updateCachedMultipleAlignment();
@@ -268,7 +267,7 @@ void MultipleChromatogramAlignmentObject::updateCachedRows(U2OpStatus& os, const
 
 void MultipleChromatogramAlignmentObject::updateDatabase(U2OpStatus& os, const MultipleAlignment& ma) {
     const MultipleChromatogramAlignment mca = ma.dynamicCast<MultipleChromatogramAlignment>();
-    McaDbiUtils::updateMca(os, entityRef, mca);
+    MsaDbiUtils::updateMsa(entityRef, mca, os);
 }
 
 void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 rowId) {

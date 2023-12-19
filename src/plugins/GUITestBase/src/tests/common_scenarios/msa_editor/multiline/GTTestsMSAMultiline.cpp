@@ -1048,6 +1048,7 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0002) {
     // Expected result : the gap is successfully replaced.
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
     GTKeyboardDriver::keyClick('c');
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     GTKeyboardUtils::copy();
     QString selectionContent = GTClipboard::text();

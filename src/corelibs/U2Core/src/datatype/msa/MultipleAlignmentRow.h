@@ -23,6 +23,7 @@
 
 #include <QSharedPointer>
 
+#include <U2Core/DNAChromatogram.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/MsaRowUtils.h>
 #include <U2Core/U2Msa.h>
@@ -172,6 +173,8 @@ public:
      */
     virtual bool isComplemented() const;
 
+    const DNAChromatogram& getChromatogram() const;
+
 public:
     const MultipleAlignmentDataType type;
 
@@ -185,6 +188,9 @@ protected:
      * Trailing gaps are 'Virtual': they are stored 'inside' the alignment length
      */
     QVector<U2MsaGap> gaps;
+
+    /** Optional chromatogram. Defined only for MCA objects today. */
+    DNAChromatogram chromatogram;
 };
 
 inline int MultipleAlignmentRowData::getUngappedLength() const {

@@ -27,6 +27,7 @@
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
+#include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
@@ -702,24 +703,23 @@ bool MsaDbiUtils::gapInPosition(const QVector<U2MsaGap>& gapModel, qint64 pos) {
 // MSA DBI Utilities
 
 void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAlignment& ma, U2OpStatus& os) {
-    // Prepare the connection
     DbiConnection con(msaRef.dbiRef, os);
     CHECK_OP(os, );
 
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(msaDbi != nullptr, "NULL Msa Dbi!", );
+    SAFE_POINT_NN(msaDbi, );
 
     U2SequenceDbi* seqDbi = con.dbi->getSequenceDbi();
-    SAFE_POINT(seqDbi != nullptr, "NULL Sequence Dbi!", );
+    SAFE_POINT_NN(seqDbi, );
 
     U2AttributeDbi* attrDbi = con.dbi->getAttributeDbi();
-    SAFE_POINT(attrDbi != nullptr, "NULL Attribute Dbi!", );
+    SAFE_POINT_NN(attrDbi, );
 
     //// UPDATE MSA OBJECT
     const DNAAlphabet* originalMaAlphabet = ma->getAlphabet();
-    SAFE_POINT(originalMaAlphabet != nullptr, "The alignment alphabet is NULL!", );
+    SAFE_POINT_NN(originalMaAlphabet, );
 
-    U2Msa msaObj(U2Type::Msa);
+    U2Msa msaObj(ma->type == MultipleAlignmentDataType::MCA ? U2Type::Mca : U2Type::Msa);
     msaObj.id = msaRef.entityId;
     msaObj.visualName = ma->getName();
     msaObj.alphabet.id = originalMaAlphabet->getId();
@@ -752,7 +752,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
             U2MsaRow newRow = ma->getMsaRowByRowId(currentRow.rowId, os)->getRowDbInfo();
             CHECK_OP(os, );
 
-            if (newRow.sequenceId != currentRow.sequenceId) {
+            if (newRow.sequenceId != currentRow.sequenceId || newRow.chromatogramId != currentRow.chromatogramId) {
                 // Kill the row from the current alignment, it is incorrect. New row with this ID will be created later.
                 MsaDbiUtils::removeRow(msaRef, currentRow.rowId, os);
                 CHECK_OP(os, );
@@ -761,14 +761,22 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
                 continue;
             }
 
-            DNASequence sequence = ma->getMsaRowByRowId(newRow.rowId, os)->getSequence();
+            const MultipleSequenceAlignmentRow& row = ma->getMsaRowByRowId(newRow.rowId, os);
             CHECK_OP(os, );
 
+            DNASequence sequence = row->getSequence();
             msaDbi->updateRowName(msaRef.entityId, newRow.rowId, sequence.getName(), os);
             CHECK_OP(os, );
 
             msaDbi->updateRowContent(msaRef.entityId, newRow.rowId, sequence.seq, newRow.gaps, os);
             CHECK_OP(os, );
+
+            if (!newRow.chromatogramId.isEmpty()) {
+                const DNAChromatogram& chromatogram = row->getChromatogram();
+                U2EntityRef chromatogramRef(msaRef.dbiRef, newRow.chromatogramId);
+                ChromatogramUtils::updateChromatogramData(os, msaRef.entityId, chromatogramRef, chromatogram);
+                CHECK_OP(os, );
+            }
         } else {
             // Remove rows that are no more present in the alignment
             eliminatedRows.append(currentRow.rowId);
@@ -808,9 +816,18 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
             seqDbi->updateSequenceData(sequence.id, U2_REGION_MAX, seqData, hints, os);
             CHECK_OP(os, );
 
+            // Import the chromatogram.
+            U2EntityRef chromatogramRef;
+            const DNAChromatogram& chromatogram = alRow->getChromatogram();
+            if (msaObj.type == U2Type::Mca) {
+                chromatogramRef = ChromatogramUtils::import(os, con.dbi->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, chromatogram);
+                CHECK_OP(os, );
+            }
+
             // Create the row
-            row.rowId = -1;  // set the row ID automatically
+            row.rowId = U2MsaRow::INVALID_ROW_ID;  // set the row ID automatically
             row.sequenceId = sequence.id;
+            row.chromatogramId = chromatogramRef.entityId;
             row.gstart = 0;
             row.gend = sequence.length;
             row.gaps = alRow->getGaps();
@@ -1326,6 +1343,60 @@ U2MsaRow MsaDbiUtils::getMsaRow(U2OpStatus& os, const U2EntityRef& msaRef, qint6
         CHECK_OP(os, row);
     }
     return row;
+}
+
+void U2::MsaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QHash<qint64, char> newCharList, U2OpStatus& os) {
+    QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaRef.dbiRef, os));
+    CHECK_OP(os, );
+
+    U2MsaDbi* msaDbi = con->dbi->getMsaDbi();
+    U2SequenceDbi* sequenceDbi = con->dbi->getSequenceDbi();
+
+    MaDbiUtils::validateRowIds(msaDbi, mcaRef.entityId, QList<qint64>() << rowId, os);
+    CHECK_OP(os, );
+
+    U2MsaRow row = MsaDbiUtils::getMsaRow(os, mcaRef, rowId);
+    CHECK_OP(os, );
+
+    qint64 msaLength = msaDbi->getMsaLength(mcaRef.entityId, os);
+    CHECK_OP(os, );
+
+    U2Region seqReg(0, row.length);
+    QByteArray seq = sequenceDbi->getSequenceData(row.sequenceId, seqReg, os);
+    CHECK_OP(os, );
+
+    for (const qint64 pos : newCharList.keys()) {
+        SAFE_POINT(pos >= 0 && pos < msaLength, "Incorrect position!", );
+
+        char newChar = newCharList.value(pos);
+        qint64 posInSeq = -1;
+        qint64 endPosInSeq = -1;
+        MaDbiUtils::getStartAndEndSequencePositions(seq, row.gaps, pos, 1, posInSeq, endPosInSeq);
+        SAFE_POINT(posInSeq >= 0, "incorrect posInSeq value", );
+        SAFE_POINT(endPosInSeq >= 0, "incorrect endPosInSeq value", );
+
+        if (posInSeq >= 0 && endPosInSeq > posInSeq) {  // not gap
+            DNASequenceUtils::replaceChars(seq, (int)posInSeq, QByteArray(1, newChar), os);
+            CHECK_OP(os, );
+            continue;
+        }
+
+        if (!row.chromatogramId.isEmpty()) {
+            U2EntityRef chromatogramRef = U2EntityRef(mcaRef.dbiRef, row.chromatogramId);
+            DNAChromatogram chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
+            CHECK_OP(os, );
+
+            ChromatogramUtils::insertBase(chromatogram, (int)posInSeq, row.gaps, (int)pos);
+            ChromatogramUtils::updateChromatogramData(os, mcaRef.entityId, chromatogramRef, chromatogram);
+            CHECK_OP(os, );
+        }
+        DNASequenceUtils::insertChars(seq, (int)posInSeq, QByteArray(1, newChar), os);
+        CHECK_OP(os, );
+
+        MaDbiUtils::calculateGapModelAfterReplaceChar(row.gaps, pos);
+    }
+
+    msaDbi->updateRowContent(mcaRef.entityId, rowId, seq, row.gaps, os);
 }
 
 }  // namespace U2

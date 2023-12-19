@@ -162,4 +162,8 @@ bool MultipleAlignmentRowData::isComplemented() const {
     return false;
 }
 
+const DNAChromatogram& MultipleAlignmentRowData::getChromatogram() const {
+    return chromatogram;
+}
+
 }  // namespace U2

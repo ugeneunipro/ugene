@@ -52,7 +52,7 @@ public:
      */
     void init(MultipleAlignmentObject* maObject, MaEditorSequenceArea* seqArea, MaEditorStatusBar* statusBar);
 
-    static const QString getAlternativeMutationsCheckedId();
+    static QString getAlternativeMutationsCheckedId();
 
 private slots:
     /*
