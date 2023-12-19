@@ -82,20 +82,6 @@ protected:
     MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow& row, MultipleSequenceAlignmentData* msaData);
 
 public:
-
-        /**
-     * The length must be greater or equal to the row length.
-     * When the specified length is greater, an appropriate number of
-     * trailing gaps are appended to the end of the byte array.
-     */
-    QByteArray toByteArray(U2OpStatus& os, qint64 length) const override;
-
-    /** Returns length of the sequence + number of gaps including trailing gaps (if any) */
-    int getRowLength() const;
-
-    /** Returns length of the sequence + number of gaps. Doesn't include trailing gaps. */
-    qint64 getRowLengthWithoutTrailing() const override;
-
     /** Packed version: returns the row without leading and trailing gaps */
     QByteArray getCore() const;
 

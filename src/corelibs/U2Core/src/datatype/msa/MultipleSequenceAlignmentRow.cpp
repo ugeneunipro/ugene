@@ -121,38 +121,6 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const Multipl
     SAFE_POINT(alignment != nullptr, "Parent MultipleSequenceAlignmentData are NULL", );
 }
 
-QByteArray MultipleSequenceAlignmentRowData::toByteArray(U2OpStatus& os, qint64 length) const {
-    if (length < getCoreEnd()) {
-        coreLog.trace("Incorrect length was passed to MultipleSequenceAlignmentRowData::toByteArray");
-        os.setError("Failed to get row data");
-        return QByteArray();
-    }
-
-    if (gaps.isEmpty() && sequence.length() == length) {
-        return sequence.constSequence();
-    }
-
-    QByteArray bytes = getSequenceWithGaps(true, true);
-
-    // Append additional gaps, if necessary
-    if (length > bytes.count()) {
-        QByteArray gapsBytes;
-        gapsBytes.fill(U2Msa::GAP_CHAR, length - bytes.count());
-        bytes.append(gapsBytes);
-    }
-    if (length < bytes.count()) {
-        // cut extra trailing gaps
-        bytes = bytes.left(length);
-    }
-
-    return bytes;
-}
-
-int MultipleSequenceAlignmentRowData::getRowLength() const {
-    SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", getRowLengthWithoutTrailing());
-    return alignment->getLength();
-}
-
 QByteArray MultipleSequenceAlignmentRowData::getCore() const {
     return getSequenceWithGaps(false, false);
 }
@@ -513,10 +481,6 @@ int MultipleSequenceAlignmentRowData::getCoreStart() const {
 
 MultipleAlignmentData* MultipleSequenceAlignmentRowData::getMultipleAlignmentData() const {
     return alignment;
-}
-
-qint64 MultipleSequenceAlignmentRowData::getRowLengthWithoutTrailing() const {
-    return MsaRowUtils::getRowLength(sequence.seq, gaps);
 }
 
 int MultipleSequenceAlignmentRowData::getCoreEnd() const {

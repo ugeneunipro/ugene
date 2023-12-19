@@ -144,50 +144,6 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
     SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
 }
 
-const DNAChromatogram& MultipleChromatogramAlignmentRowData::getChromatogram() const {
-    return chromatogram;
-}
-
-DNAChromatogram MultipleChromatogramAlignmentRowData::getGappedChromatogram() const {
-    return ChromatogramUtils::getGappedChromatogram(chromatogram, gaps);
-}
-
-qint64 MultipleChromatogramAlignmentRowData::getGappedPosition(int pos) const {
-    return MsaRowUtils::getGappedRegion(gaps, U2Region(pos, 1)).startPos;
-}
-
-QByteArray MultipleChromatogramAlignmentRowData::toByteArray(U2OpStatus& os, qint64 length) const {
-    if (length < getCoreEnd()) {
-        coreLog.trace("Incorrect length was passed to MultipleChromatogramAlignmentRowData::toByteArray");
-        os.setError("Failed to get row data");
-        return {};
-    }
-
-    if (gaps.isEmpty() && sequence.length() == length) {
-        return sequence.constSequence();
-    }
-
-    QByteArray bytes = getSequenceWithGaps(true, true);
-
-    // Append additional gaps, if necessary
-    if (length > bytes.count()) {
-        QByteArray gapsBytes;
-        gapsBytes.fill(U2Msa::GAP_CHAR, length - bytes.count());
-        bytes.append(gapsBytes);
-    }
-    if (length < bytes.count()) {
-        // cut extra trailing gaps
-        bytes = bytes.left(length);
-    }
-
-    return bytes;
-}
-
-int MultipleChromatogramAlignmentRowData::getRowLength() const {
-    SAFE_POINT(alignment != nullptr, "Parent MultipleAlignment is NULL", getRowLengthWithoutTrailing());
-    return alignment->getLength();
-}
-
 QByteArray MultipleChromatogramAlignmentRowData::getCore() const {
     return getSequenceWithGaps(false, false);
 }

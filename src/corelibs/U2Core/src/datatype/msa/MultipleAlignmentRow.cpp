@@ -21,6 +21,7 @@
 
 #include "MultipleAlignmentRow.h"
 
+#include <U2Core/ChromatogramUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MultipleAlignment.h"
@@ -222,5 +223,50 @@ void MultipleAlignmentRowData::removeTrailingGaps() {
     CHECK(!gaps.isEmpty(), )
     MsaRowUtils::removeTrailingGapsFromModel(sequence.length(), gaps);
 }
+
+DNAChromatogram MultipleAlignmentRowData::getGappedChromatogram() const {
+    return ChromatogramUtils::getGappedChromatogram(chromatogram, gaps);
+}
+
+qint64 MultipleAlignmentRowData::getGappedPosition(int pos) const {
+    return MsaRowUtils::getGappedRegion(gaps, U2Region(pos, 1)).startPos;
+}
+
+QByteArray MultipleAlignmentRowData::toByteArray(U2OpStatus& os, int length) const {
+    if (length < getCoreEnd()) {
+        os.setError("Failed to get row data");
+        return {};
+    }
+
+    if (gaps.isEmpty() && sequence.length() == length) {
+        return sequence.constSequence();
+    }
+
+    QByteArray bytes = getSequenceWithGaps(true, true);
+
+    // Append additional gaps, if necessary
+    if (length > bytes.count()) {
+        QByteArray gapsBytes;
+        gapsBytes.fill(U2Msa::GAP_CHAR, length - bytes.count());
+        bytes.append(gapsBytes);
+    }
+    if (length < bytes.count()) {
+        // cut extra trailing gaps
+        bytes = bytes.left(length);
+    }
+
+    return bytes;
+}
+
+int MultipleAlignmentRowData::getRowLength() const {
+    MultipleAlignmentData* alignment = getMultipleAlignmentData();
+    SAFE_POINT_NN(alignment, 0);
+    return alignment->getLength();
+}
+
+int MultipleAlignmentRowData::getRowLengthWithoutTrailing() const {
+    return MsaRowUtils::getRowLength(sequence.seq, gaps);
+}
+
 
 }  // namespace U2

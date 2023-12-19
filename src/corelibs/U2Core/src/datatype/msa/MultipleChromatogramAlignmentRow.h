@@ -82,26 +82,6 @@ protected:
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData);
 
 public:
-
-    const DNAChromatogram& getChromatogram() const;
-    DNAChromatogram getGappedChromatogram() const;
-
-    /** Returns the position of @pos, including gaps */
-    qint64 getGappedPosition(int pos) const;
-
-    /**
-     * The length must be greater or equal to the row length.
-     * When the specified length is greater, an appropriate number of
-     * trailing gaps are appended to the end of the byte array.
-     */
-    QByteArray toByteArray(U2OpStatus& os, qint64 length) const;
-
-    /** Returns length of the sequence + number of gaps including trailing gaps (if any) */
-    int getRowLength() const;
-
-    /** Returns length of the sequence + number of gaps. Doesn't include trailing gaps. */
-    inline qint64 getRowLengthWithoutTrailing() const;
-
     /** Packed version: returns the row without leading and trailing gaps */
     QByteArray getCore() const;
 
@@ -254,10 +234,6 @@ private:
 
     QVariantMap additionalInfo;
 };
-
-inline qint64 MultipleChromatogramAlignmentRowData::getRowLengthWithoutTrailing() const {
-    return MsaRowUtils::getRowLength(sequence.seq, gaps);
-}
 
 inline int MultipleChromatogramAlignmentRowData::getCoreEnd() const {
     return getRowLengthWithoutTrailing();
