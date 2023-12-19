@@ -961,19 +961,23 @@ void MsaDbiUtils::removeRegion(const U2EntityRef& msaRef, const QList<qint64>& r
         SAFE_POINT_OP(os, );
 
         // Calculate the modified row
-        int seqLengthBefore = seq.length();
+        QByteArray seqBefore = seq;
+        QVector<U2MsaGap> gapsBefore = row.gaps;
         removeCharsFromRow(seq, row.gaps, pos, count);
 
         // If the sequence is changed - update chromatogram too.
-        if (seq.length() != seqLengthBefore && !row.chromatogramId.isEmpty()) {
+        if (seq.length() != seqBefore.length() && !row.chromatogramId.isEmpty()) {
             qint64 startPosInSeq = -1;
             qint64 endPosInSeq = -1;
-            MaDbiUtils::getStartAndEndSequencePositions(seq, row.gaps, pos, count, startPosInSeq, endPosInSeq);
+            MaDbiUtils::getStartAndEndSequencePositions(seqBefore, gapsBefore, pos, count, startPosInSeq, endPosInSeq);
 
             U2EntityRef chromatogramRef(msaRef.dbiRef, row.chromatogramId);
             DNAChromatogram chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
+            SAFE_POINT_OP(os, );
             ChromatogramUtils::removeBaseCalls(os, chromatogram, (int)startPosInSeq, (int)endPosInSeq);
+            SAFE_POINT_OP(os, );
             ChromatogramUtils::updateChromatogramData(os, msaRef.entityId, chromatogramRef, chromatogram);
+            SAFE_POINT_OP(os, );
         }
 
         msaDbi->updateRowContent(msaRef.entityId, rowId, seq, row.gaps, os);
@@ -1293,7 +1297,7 @@ QList<U2MsaRow> MsaDbiUtils::getMsaRows(U2OpStatus& os, const U2EntityRef& msaRe
     CHECK_OP(os, {});
 
     if (msa.type == U2Type::Mca) {
-        for (U2MsaRow& row: rows) {
+        for (U2MsaRow& row : rows) {
             U2EntityRef sequenceRef(msaRef.dbiRef, row.sequenceId);
             row.chromatogramId = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, sequenceRef).entityId;
             CHECK_OP(os, {});
