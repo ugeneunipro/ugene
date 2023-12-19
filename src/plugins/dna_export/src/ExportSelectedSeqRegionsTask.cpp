@@ -41,21 +41,30 @@ bool isSeqObjectValid(const QPointer<U2SequenceObject>& seqObject, U2OpStatus& o
 
 // removes all annotation regions that does not intersect the given region
 // adjusts startpos to make in relative to the given region
-void adjustAnnotationLocations(const U2Region& r, QList<SharedAnnotationData>& anns) {
-    for (int i = anns.size(); --i >= 0;) {
-        SharedAnnotationData& d = anns[i];
-        for (int j = d->location->regions.size(); --j >= 0;) {
-            U2Region& ar = d->location->regions[j];
-            U2Region resr = ar.intersect(r);
-            if (resr.isEmpty()) {
-                d->location->regions.remove(j);
-                continue;
+void adjustAnnotationLocations(const U2Region& r, QMap<QString, QList<SharedAnnotationData>>& groupPathsAnnotationData) {
+    auto keys = groupPathsAnnotationData.keys();
+    for (const auto& key : qAsConst(keys)) {
+        auto anns = groupPathsAnnotationData.value(key);
+        for (int i = anns.size(); --i >= 0;) {
+            SharedAnnotationData& d = anns[i];
+            for (int j = d->location->regions.size(); --j >= 0;) {
+                U2Region& ar = d->location->regions[j];
+                U2Region resr = ar.intersect(r);
+                if (resr.isEmpty()) {
+                    d->location->regions.remove(j);
+                    continue;
+                }
+                resr.startPos -= r.startPos;
+                d->location->regions[j] = resr;
             }
-            resr.startPos -= r.startPos;
-            d->location->regions[j] = resr;
+            if (d->location->regions.isEmpty()) {
+                anns.removeAt(i);
+            }
         }
-        if (d->location->regions.isEmpty()) {
-            anns.removeAt(i);
+        if (!anns.isEmpty()) {
+            groupPathsAnnotationData.insert(key, anns);
+        } else {
+            groupPathsAnnotationData.remove(key);
         }
     }
 }
@@ -89,16 +98,20 @@ const ExportSequenceTaskSettings& CreateExportItemsFromSeqRegionsTask::getExport
     return exportSettings;
 }
 
-QList<SharedAnnotationData> CreateExportItemsFromSeqRegionsTask::findAnnotationsInRegion(const U2Region& region) {
-    QList<SharedAnnotationData> result;
-    foreach (const QPointer<AnnotationTableObject>& aobj, annotations) {
-        if (aobj.isNull()) {
-            stateInfo.setError(tr("Invalid annotation table detected"));
-            return result;
-        }
-        QList<Annotation*> regionAnnotations = aobj->getAnnotationsByRegion(region);
-        for (Annotation* a : qAsConst(regionAnnotations)) {
-            result.append(a->getData());
+QMap<QString, QList<SharedAnnotationData>> CreateExportItemsFromSeqRegionsTask::findAnnotationsInRegion(const U2Region& region) {
+    QMap<QString, QList<SharedAnnotationData>> result;
+    for (const QPointer<AnnotationTableObject>& aobj : qAsConst(annotations)) {
+        CHECK_EXT(!aobj.isNull(), stateInfo.setError(tr("Invalid annotation table detected"));, result);
+
+        auto groupPathAnnotationsMap = aobj->createGroupPathAnnotationsMapByRegion(region);
+        auto keys = groupPathAnnotationsMap.keys();
+        for (const auto& key : qAsConst(keys)) {
+            auto newAnnDataList = result.value(key);
+            auto annotations = groupPathAnnotationsMap.value(key);
+            for (auto annotation : qAsConst(annotations)) {
+                newAnnDataList.append(annotation->getData());
+            }
+            result.insert(key, newAnnDataList);
         }
     }
     return result;

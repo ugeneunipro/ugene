@@ -23,7 +23,7 @@
 
 #include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequence.h>
-#include <U2Core/U2Mca.h>
+#include <U2Core/U2Msa.h>
 #include <U2Core/U2Sequence.h>
 
 namespace U2 {

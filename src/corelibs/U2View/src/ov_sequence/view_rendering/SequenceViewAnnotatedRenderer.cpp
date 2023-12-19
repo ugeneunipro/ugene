@@ -132,6 +132,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotationSelection(QPainter& p, const Q
 
 void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, Annotation* a, const AnnotationDisplaySettings& displaySettings, bool selected, const AnnotationSettings* as) {
     const SharedAnnotationData& aData = a->getData();
+    SAFE_POINT_NN(aData, )
     if (as == nullptr) {
         AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
         as = asr->getAnnotationSettings(aData);
@@ -233,7 +234,7 @@ U2Region SequenceViewAnnotatedRenderer::getAnnotationXRange(const U2Region& anno
 
     const int visibleLocationStartCoord = posToXCoord(visibleLocation.startPos, canvasSize, visibleRange);
     const int visibleLocationEndCoord = posToXCoord(visibleLocation.endPos(), canvasSize, visibleRange);
-    
+
     const int visibleRegionWidth = qMax(selected ? MIN_SELECTED_ANNOTATION_WIDTH : MIN_ANNOTATION_WIDTH, visibleLocationEndCoord - visibleLocationStartCoord);
     SAFE_POINT(visibleRegionWidth > 0, "Negative length of annotationXRange", U2Region());
 
@@ -276,7 +277,7 @@ int SequenceViewAnnotatedRenderer::getCutPosition(const U2Region& r, const QStri
     int cutComplementShift = 0;
     if (!cutQual.isEmpty()) {
         int complSplit = cutQual.indexOf('/');
-        if (complSplit  != -1) {
+        if (complSplit != -1) {
             cutDirectShift = cutQual.left(complSplit).toInt(&hasDirect);
             cutComplementShift = cutQual.mid(complSplit + 1).toInt(&hasComplement);
         } else {

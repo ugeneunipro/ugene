@@ -58,7 +58,7 @@ const MultipleAlignmentData* MultipleAlignment::operator->() const {
 MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentDataType& _type,
                                              const QString& name,
                                              const DNAAlphabet* _alphabet,
-                                             const QList<MultipleAlignmentRow>& _rows)
+                                             const QVector<MultipleAlignmentRow>& _rows)
     : type(_type), alphabet(_alphabet), rows(_rows) {
     MaStateCheck check(this);
     Q_UNUSED(check);
@@ -191,17 +191,16 @@ void MultipleAlignmentData::sortRows(MultipleAlignment::SortType type, MultipleA
 }
 
 MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {
-    int rowsCount = rows.count();
-    SAFE_POINT(0 != rowsCount, "No rows", getEmptyRow());
-    SAFE_POINT(rowIndex >= 0 && (rowIndex < rowsCount), "Internal error: unexpected row index was passed to MAlignmnet::getRow", getEmptyRow());
+    static MultipleAlignmentRow emptyRow = getEmptyRow();
+    int rowCount = rows.count();
+    SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
 const MultipleAlignmentRow& MultipleAlignmentData::getRow(int rowIndex) const {
     static MultipleAlignmentRow emptyRow = getEmptyRow();
-    int rowsCount = rows.count();
-    SAFE_POINT(rowsCount != 0, "No rows", emptyRow);
-    SAFE_POINT(rowIndex >= 0 && rowIndex < rowsCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
+    int rowCount = rows.count();
+    SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
@@ -215,7 +214,7 @@ const MultipleAlignmentRow& MultipleAlignmentData::getRow(const QString& name) c
     SAFE_POINT(false, "Internal error: row name passed to MAlignmnet::getRow function not exists", emptyRow);
 }
 
-const QList<MultipleAlignmentRow>& MultipleAlignmentData::getRows() const {
+const QVector<MultipleAlignmentRow>& MultipleAlignmentData::getRows() const {
     return rows;
 }
 
@@ -247,8 +246,11 @@ MultipleAlignmentRow MultipleAlignmentData::getRowByRowId(qint64 rowId, U2OpStat
     return emptyRow;
 }
 
-char MultipleAlignmentData::charAt(int rowNumber, qint64 position) const {
-    return getRow(rowNumber)->charAt(position);
+char MultipleAlignmentData::charAt(int rowIndex, qint64 position) const {
+    int rowCount = rows.count();
+    return rowIndex >= 0 && rowIndex < rowCount
+               ? rows[rowIndex]->charAt(position)  // Hotspot: 20% Faster this way than getRow().
+               : getRow(rowIndex)->charAt(position);
 }
 
 bool MultipleAlignmentData::isGap(int rowNumber, qint64 pos) const {
@@ -348,11 +350,11 @@ void MultipleAlignmentData::moveRowsBlock(int startRow, int numRows, int delta) 
                    .arg(numRows)
                    .arg(delta), );
 
-    QList<MultipleAlignmentRow> toMove;
+    QVector<MultipleAlignmentRow> toMove;
     int fromRow = delta > 0 ? startRow + numRows : startRow + delta;
 
     while (i < k) {
-        const MultipleAlignmentRow row = rows.takeAt(fromRow);
+        MultipleAlignmentRow row = rows.takeAt(fromRow);
         toMove.append(row);
         i++;
     }
@@ -360,8 +362,7 @@ void MultipleAlignmentData::moveRowsBlock(int startRow, int numRows, int delta) 
     int toRow = delta > 0 ? startRow : startRow + numRows - k;
 
     while (toMove.count() > 0) {
-        int n = toMove.count();
-        const MultipleAlignmentRow row = toMove.takeAt(n - 1);
+        MultipleAlignmentRow row = toMove.takeLast();
         rows.insert(toRow, row);
     }
 }
@@ -404,7 +405,7 @@ bool MultipleAlignmentData::sortRowsByList(const QStringList& rowsOrder) {
         CHECK(rowsOrder.contains(rowName), false);
     }
 
-    QList<MultipleAlignmentRow> sortedRows;
+    QVector<MultipleAlignmentRow> sortedRows;
     foreach (const QString& rowName, rowsOrder) {
         int rowIndex = rowNames.indexOf(rowName);
         if (rowIndex >= 0) {

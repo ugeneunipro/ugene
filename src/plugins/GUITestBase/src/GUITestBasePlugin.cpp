@@ -110,6 +110,7 @@
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_7001_8000.h"
+#include "tests/regression_scenarios/GTTestsRegressionScenarios_8001_9000.h"
 
 namespace U2 {
 
@@ -1263,6 +1264,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4966);
     REGISTER_TEST(GUITest_regression_scenarios::test_4969_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4969_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4981);
     REGISTER_TEST(GUITest_regression_scenarios::test_4983);
     REGISTER_TEST(GUITest_regression_scenarios::test_4985);
     REGISTER_TEST(GUITest_regression_scenarios::test_4986);
@@ -1845,6 +1847,14 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7947);
     REGISTER_TEST(GUITest_regression_scenarios::test_7957);
     REGISTER_TEST(GUITest_regression_scenarios::test_7968);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7979);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_8001);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8002);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8009);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8010);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8015);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8028);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2059,6 +2069,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0083);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0084);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0085);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0086);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/sequence edit/

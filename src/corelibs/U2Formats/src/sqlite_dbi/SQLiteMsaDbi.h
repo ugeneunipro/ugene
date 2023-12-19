@@ -211,9 +211,6 @@ private:
     /** Gets a sequence ID for the row */
     U2DataId getSequenceIdByRowId(const U2DataId& msaId, qint64 rowId, U2OpStatus& os);
 
-    /** Required for store modification track of removed rows  */
-    QByteArray getRemovedRowDetails(const U2MsaRow& row);
-
     /** Gets position of the row in the msa */
     qint64 getPosInMsa(const U2DataId& msaId, qint64 rowId, U2OpStatus& os);
 

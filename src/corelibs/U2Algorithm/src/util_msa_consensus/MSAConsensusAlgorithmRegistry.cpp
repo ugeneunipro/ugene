@@ -52,10 +52,7 @@ MSAConsensusAlgorithmFactory* MSAConsensusAlgorithmRegistry::getAlgorithmFactory
 void MSAConsensusAlgorithmRegistry::addAlgorithm(MSAConsensusAlgorithmFactory* algo) {
     const QString& id = algo->getId();
     MSAConsensusAlgorithmFactory* oldVersion = algorithms.value(id);
-    if (oldVersion != nullptr) {
-        delete oldVersion;
-        oldVersion = nullptr;
-    }
+    delete oldVersion;
     algorithms[id] = algo;
 }
 

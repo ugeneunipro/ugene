@@ -251,13 +251,20 @@ bool hasNucleicForAll(const QList<GObject*>& set) {
     return true;
 }
 
-QList<SharedAnnotationData> getAllRelatedAnnotations(const U2SequenceObject* so, const QList<GObject*>& annotationTables) {
+QMap<QString, QList<SharedAnnotationData>> getAllRelatedAnnotations(const U2SequenceObject* so, const QList<GObject*>& annotationTables) {
     QList<GObject*> relatedAnnotationTables = GObjectUtils::findObjectsRelatedToObjectByRole(so, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, annotationTables, UOF_LoadedOnly);
-    QList<SharedAnnotationData> anns;
+    QMap<QString, QList<SharedAnnotationData>> anns;
     for (GObject* aObj : qAsConst(relatedAnnotationTables)) {
         auto annObj = qobject_cast<AnnotationTableObject*>(aObj);
-        foreach (Annotation* ann, annObj->getAnnotations()) {
-            anns.append(ann->getData());
+        auto groupPathAnnotationsMap = annObj->createGroupPathAnnotationsMap();
+        auto keys = groupPathAnnotationsMap.keys();
+        for (const auto& key : qAsConst(keys)) {
+            auto newAnnDataList = anns.value(key);
+            auto annotations = groupPathAnnotationsMap.value(key);
+            for (auto annotation : qAsConst(annotations)) {
+                newAnnDataList.append(annotation->getData());
+            }
+            anns.insert(key, newAnnDataList);
         }
     }
     return anns;
@@ -271,7 +278,7 @@ void addExportItemsToSettings(ExportSequencesDialog* d, const QList<GObject*> se
     foreach (GObject* o, seqObjs) {
         U2SequenceObject* so = qobject_cast<U2SequenceObject*>(o);
         SAFE_POINT(so != nullptr, "Invalid sequence object", );
-        QList<SharedAnnotationData> anns;
+        QMap<QString, QList<SharedAnnotationData>> anns;
         if (s.saveAnnotations) {
             anns = getAllRelatedAnnotations(so, allAnnotationTables);
         }

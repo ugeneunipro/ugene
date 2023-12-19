@@ -25,7 +25,6 @@
 
 #include <U2Algorithm/MSAConsensusAlgorithmClustal.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSAConsensusAlgorithmStrict.h>
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
@@ -46,8 +45,8 @@ MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject* maObject
       width(width),
       height(height) {
     SAFE_POINT_EXT(maObject != nullptr, setError("MSA is NULL"), );
-    msaLength = maObject->getLength();
-    seqNumber = maObject->getRowCount();
+    msaLength = (int)maObject->getLength();
+    seqNumber = (int)maObject->getRowCount();
     if (!memLocker.tryAcquire(maObject->getMultipleAlignment()->getLength() * maObject->getMultipleAlignment()->getRowCount())) {
         setError(memLocker.getError());
         return;
@@ -135,7 +134,7 @@ MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MultipleA
     SAFE_POINT_EXT(factory != nullptr, setError("Strict consensus algorithm factory is NULL"), );
 
     SAFE_POINT_EXT(msa != nullptr, setError("MSA is NULL"), );
-    algorithm = factory->createAlgorithm(msa->getMultipleAlignment());
+    algorithm = factory->createAlgorithm(msa->getMultipleAlignment(), false);
     algorithm->setParent(this);
 }
 
@@ -155,7 +154,7 @@ int MaGapOverviewCalculationTask::getGraphValue(int pos) const {
         if (pos > ma->getLength()) {
             continue;
         }
-        uchar c = static_cast<uchar>(ma->charAt(seq, pos));
+        char c = ma->charAt(seq, pos);
         if (c == U2Msa::GAP_CHAR) {
             gapCounter++;
         }
@@ -172,13 +171,12 @@ MaClustalOverviewCalculationTask::MaClustalOverviewCalculationTask(MultipleAlign
     SAFE_POINT_EXT(factory != nullptr, setError("Clustal algorithm factory is NULL"), );
 
     SAFE_POINT_EXT(msa != nullptr, setError("MSA is NULL"), );
-    algorithm = factory->createAlgorithm(ma);
+    algorithm = factory->createAlgorithm(ma, false);
     algorithm->setParent(this);
 }
 
 int MaClustalOverviewCalculationTask::getGraphValue(int pos) const {
     char c = algorithm->getConsensusChar(ma, pos);
-
     switch (c) {
         case '*':
             return 100;

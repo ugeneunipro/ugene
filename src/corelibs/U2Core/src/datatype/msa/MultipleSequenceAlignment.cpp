@@ -76,8 +76,8 @@ QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment::getMsaD
 
 namespace {
 
-static QList<MultipleAlignmentRow> convertToMaRows(const QList<MultipleSequenceAlignmentRow>& msaRows) {
-    QList<MultipleAlignmentRow> maRows;
+static QVector<MultipleAlignmentRow> convertToMaRows(const QList<MultipleSequenceAlignmentRow>& msaRows) {
+    QVector<MultipleAlignmentRow> maRows;
     foreach (const MultipleSequenceAlignmentRow& msaRow, msaRows) {
         maRows << msaRow;
     }

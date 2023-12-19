@@ -23,7 +23,6 @@
 #include <primitives/GTScrollBar.h>
 #include <utils/GTThread.h>
 
-#include <QApplication>
 #include <QMainWindow>
 
 #include <U2Core/AppContext.h>
@@ -163,7 +162,7 @@ bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(QString rowName) {
 
 QStringList GTUtilsMcaEditorSequenceArea::getNameList() {
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    McaEditor* editor = mw->findChild<McaEditor*>();
+    auto editor = mw->findChild<McaEditor*>();
     CHECK_SET_ERR_RESULT(editor != nullptr, "MsaEditor not found", QStringList());
 
     QStringList result = editor->getMaObject()->getMultipleAlignment()->getRowNames();
@@ -224,7 +223,7 @@ QString GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg() {
 
 void GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(int shift) {
     QStringList visible = getVisibleNames();
-    GT_CHECK_RESULT(visible.size() != 0, "No visible reads", );
+    GT_CHECK_RESULT(!visible.isEmpty(), "No visible reads", );
     QString firstVisible = visible.first();
 
     const QRect sequenceNameRect = GTUtilsMcaEditor::getReadNameRect(firstVisible);
@@ -317,19 +316,19 @@ short GTUtilsMcaEditorSequenceArea::getCharacterModificationMode() {
 
 char GTUtilsMcaEditorSequenceArea::getSelectedReadChar() {
     QRect selection = GTUtilsMcaEditorSequenceArea::getSelectedRect();
-    GT_CHECK_RESULT(selection.width() > 0 && selection.height() > 0, "There is no selection", U2Mca::INVALID_CHAR);
-    GT_CHECK_RESULT(selection.width() <= 1 && selection.height() <= 1, "The selection is too big", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(selection.width() > 0 && selection.height() > 0, "There is no selection", U2Msa::INVALID_CHAR);
+    GT_CHECK_RESULT(selection.width() <= 1 && selection.height() <= 1, "The selection is too big", U2Msa::INVALID_CHAR);
     int rowNum = selection.y();
     qint64 pos = selection.x();
 
     McaEditorSequenceArea* mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea();
-    GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor sequence area is not found", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor sequence area is not found", U2Msa::INVALID_CHAR);
 
     McaEditor* mcaEditor = mcaSeqArea->getEditor();
-    GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", U2Msa::INVALID_CHAR);
 
     MultipleChromatogramAlignmentObject* mcaObj = mcaEditor->getMaObject();
-    GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", U2Msa::INVALID_CHAR);
 
     const MultipleChromatogramAlignmentRow mcaRow = mcaObj->getRow(rowNum);
 
@@ -342,13 +341,13 @@ char GTUtilsMcaEditorSequenceArea::getReadCharByPos(const QPoint p) {
     qint64 pos = p.x();
 
     McaEditorSequenceArea* mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea();
-    GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor sequence area is not found", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor sequence area is not found", U2Msa::INVALID_CHAR);
 
     McaEditor* mcaEditor = mcaSeqArea->getEditor();
-    GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", U2Msa::INVALID_CHAR);
 
     MultipleChromatogramAlignmentObject* mcaObj = mcaEditor->getMaObject();
-    GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", U2Msa::INVALID_CHAR);
 
     const MultipleChromatogramAlignmentRow mcaRow = mcaObj->getRow(rowNum);
 
@@ -404,7 +403,7 @@ U2Region GTUtilsMcaEditorSequenceArea::getReferenceSelection() {
 
     QVector<U2Region> region = dnaSel->getSelectedRegions();
 
-    CHECK(region.size() != 0, U2Region());
+    CHECK(!region.isEmpty(), U2Region());
 
     GT_CHECK_RESULT(region.size() == 1, "Incorrect selected region", U2Region());
 

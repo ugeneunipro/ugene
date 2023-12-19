@@ -205,11 +205,11 @@ MSAConsensusAlgorithmFactory* MaEditorConsensusArea::getConsensusAlgorithmFactor
     MSAConsensusAlgorithmFactory* algo = reg->getAlgorithmFactory(lastUsedAlgo);
 
     const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
-    ConsensusAlgorithmFlags alphaFlags = MSAConsensusAlgorithmFactory::getAphabetFlags(al);
+    ConsensusAlgorithmFlags alphaFlags = MSAConsensusAlgorithmFactory::getAlphabetFlags(al);
     if (algo == nullptr || (algo->getFlags() & alphaFlags) != alphaFlags) {
         algo = reg->getAlgorithmFactory(getDefaultAlgorithmId());
         if ((algo->getFlags() & alphaFlags) != alphaFlags) {
-            QList<MSAConsensusAlgorithmFactory*> algorithms = reg->getAlgorithmFactories(MSAConsensusAlgorithmFactory::getAphabetFlags(al));
+            QList<MSAConsensusAlgorithmFactory*> algorithms = reg->getAlgorithmFactories(MSAConsensusAlgorithmFactory::getAlphabetFlags(al));
             SAFE_POINT(algorithms.count() > 0, "There are no consensus algorithms for the current alphabet.", nullptr);
             algo = algorithms.first();
         }

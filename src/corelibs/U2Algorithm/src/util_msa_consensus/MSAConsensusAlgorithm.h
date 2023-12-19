@@ -46,50 +46,49 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(ConsensusAlgorithmFlags)
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactory : public QObject {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags flags, QObject* p = nullptr);
+    MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags flags);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps = false, QObject* parent = nullptr) = 0;
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) = 0;
 
-    QString getId() const {
-        return algorithmId;
-    }
+    QString getId() const;
 
-    ConsensusAlgorithmFlags getFlags() const {
-        return flags;
-    }
+    ConsensusAlgorithmFlags getFlags() const;
 
-    virtual QString getDescription() const = 0;
+    QString getDescription() const;
 
-    virtual QString getName() const = 0;
+    QString getName() const;
 
-    virtual bool supportsThreshold() const {
-        return flags.testFlag(ConsensusAlgorithmFlag_SupportThreshold);
-    }
+    bool supportsThreshold() const;
 
-    virtual int getMinThreshold() const = 0;
+    int getMinThreshold() const;
 
-    virtual int getMaxThreshold() const = 0;
+    int getMaxThreshold() const;
 
-    virtual int getDefaultThreshold() const = 0;
+    int getDefaultThreshold() const;
 
-    virtual QString getThresholdSuffix() const {
-        return QString();
-    }
+    QString getThresholdSuffix() const;
 
-    virtual bool isSequenceLikeResult() const = 0;
+    bool isSequenceLikeResult() const;
 
-    // utility method
-    static ConsensusAlgorithmFlags getAphabetFlags(const DNAAlphabet* al);
+    static ConsensusAlgorithmFlags getAlphabetFlags(const DNAAlphabet* al);
 
-private:
+protected:
     QString algorithmId;
     ConsensusAlgorithmFlags flags;
+
+    QString name;
+    QString description;
+    int minThreshold = 0;
+    int maxThreshold = 0;
+    int defaultThreshold = 0;
+    QString thresholdSuffix = "";
+    bool isSequenceLikeResultFlag = false;
 };
 
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithm : public QObject {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory, bool ignoreTrailingLeadingGaps, QObject* p = nullptr);
+    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory, bool ignoreTrailingLeadingGaps);
     MSAConsensusAlgorithm(const MSAConsensusAlgorithm& algorithm);
 
     /**
@@ -97,67 +96,68 @@ public:
         Score is a number: [0, num] sequences. Usually is means count of the char in the row
         Note that consensus character may be out of the to MSA alphabet symbols range
     */
-    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx = QVector<int>()) const;
+    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score) const;
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const = 0;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column) const = 0;
 
     virtual MSAConsensusAlgorithm* clone() const = 0;
 
-    virtual QString getDescription() const {
-        return factory->getDescription();
-    }
+    QString getDescription() const;
 
-    virtual QString getName() const {
-        return factory->getName();
-    }
+    QString getName() const;
 
-    virtual void setThreshold(int val);
+    void setThreshold(int val);
 
-    virtual int getThreshold() const {
-        return threshold;
-    }
+    int getThreshold() const;
 
-    bool supportsThreshold() const {
-        return factory->supportsThreshold();
-    }
+    bool supportsThreshold() const;
 
-    virtual int getMinThreshold() const {
-        return factory->getMinThreshold();
-    }
+    int getMinThreshold() const;
 
-    virtual int getMaxThreshold() const {
-        return factory->getMaxThreshold();
-    }
+    int getMaxThreshold() const;
 
-    virtual int getDefaultThreshold() const {
-        return factory->getDefaultThreshold();
-    }
+    int getDefaultThreshold() const;
 
-    virtual QString getThresholdSuffix() const {
-        return factory->getThresholdSuffix();
-    }
+    QString getThresholdSuffix() const;
 
-    QString getId() const {
-        return factory->getId();
-    }
+    QString getId() const;
 
-    MSAConsensusAlgorithmFactory* getFactory() const {
-        return factory;
-    }
+    MSAConsensusAlgorithmFactory* getFactory() const;
 
-    static char INVALID_CONS_CHAR;
+    static const char INVALID_CONS_CHAR;
 
 signals:
     void si_thresholdChanged(int);
 
 protected:
-    // returns true if there are meaningful symbols on @pos, depending on @ignoreTrailingleadingGaps flag
-    bool filterIdx(QVector<int>& seqIdx, const MultipleAlignment& ma, const int pos) const;
+    /** Returns row indexes where `pos` is inside core area (not a part of the leading or trailing gap). */
+    static QVector<int> pickRowsWithCharInCoreArea(const MultipleAlignment& ma, int pos);
+
+    /**
+     * Returns rows that should be used to calculate the consensus.
+     * If `ignoreTrailingAndLeadingGaps` is false always returns an empty list and consensus must be calculated using all rows.
+     * If `ignoreTrailingAndLeadingGaps` is true and an empty list is returned - there are no rows to calculate the consensus.
+     */
+    QVector<int> pickRowsToUseInConsensus(const MultipleAlignment& ma, int pos) const;
+
+protected:
+    MSAConsensusAlgorithmFactory* factory = nullptr;
+    int threshold = 0;
+
+    /**
+     * TODO: this mode is used only for MCA.
+     *
+     * There is a better solution in this case: wrap an original MSA algorithm with
+     * an MCA wrapper and remove this field from the original MSA algorithm.
+     */
+    bool ignoreTrailingAndLeadingGaps = false;
 
 private:
-    MSAConsensusAlgorithmFactory* factory;
-    int threshold;
-    bool ignoreTrailingAndLeadingGaps;
+    /**
+     * Stub of the empty vector. Used to avoid new vector creation when only an empty value is needed.
+     * In this case it is beneficial (from the performance POV) to create a shared copy of `emptyRowIdxStub`.
+     */
+    const QVector<int> emptyRowIdxStub;
 };
 
 }  // namespace U2

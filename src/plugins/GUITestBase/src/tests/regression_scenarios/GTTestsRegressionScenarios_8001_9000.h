@@ -21,30 +21,24 @@
 
 #pragma once
 
-#include "U2Msa.h"
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 
-/**
-    Row of multiple chromatogram alignment: gaps map and sequence id
-*/
-class U2CORE_EXPORT U2McaRow : public U2MsaRow {
-public:
-    U2McaRow();
-    U2McaRow(const U2MsaRow& msaRow);
+namespace GUITest_regression_scenarios {
 
-    bool hasValidChildObjectIds() const;
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_regression_scenarios"
 
-    U2DataId chromatogramId;
-};
+GUI_TEST_CLASS_DECLARATION(test_8001)
+GUI_TEST_CLASS_DECLARATION(test_8002)
+GUI_TEST_CLASS_DECLARATION(test_8009)
+GUI_TEST_CLASS_DECLARATION(test_8010)
+GUI_TEST_CLASS_DECLARATION(test_8015)
+GUI_TEST_CLASS_DECLARATION(test_8028)
 
-class U2CORE_EXPORT U2Mca : public U2Msa {
-public:
-    U2Mca();
-    U2Mca(const U2Msa& dbMsa);
-    U2Mca(const U2DataId& id, const QString& dbId, qint64 version);
+#undef GUI_TEST_SUITE
 
-    U2DataType getType() const;
-};
+}  // namespace GUITest_regression_scenarios
 
 }  // namespace U2

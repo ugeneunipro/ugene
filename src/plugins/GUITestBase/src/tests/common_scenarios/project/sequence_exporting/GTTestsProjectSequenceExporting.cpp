@@ -330,8 +330,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
         "",
         testDir + "_common_data/scenarios/sandbox/",
         CreateDocumentFiller::Genbank,
-        "Sequence",
-        false);
+        "Sequence");
     GTUtilsDialog::waitForDialog(filler);
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
 

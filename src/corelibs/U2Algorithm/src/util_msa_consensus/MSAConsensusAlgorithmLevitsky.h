@@ -34,46 +34,22 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryLevitsky : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryLevitsky(QObject* p = nullptr);
+    MSAConsensusAlgorithmFactoryLevitsky();
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
-
-    virtual QString getDescription() const;
-
-    virtual QString getName() const;
-
-    virtual int getMinThreshold() const {
-        return 50;
-    }
-
-    virtual int getMaxThreshold() const {
-        return 100;
-    }
-
-    virtual int getDefaultThreshold() const {
-        return 90;
-    }
-
-    virtual QString getThresholdSuffix() const {
-        return QString("%");
-    }
-
-    virtual bool isSequenceLikeResult() const {
-        return true;
-    }
+    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
 };
 
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmLevitsky : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p = nullptr);
+    MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps);
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
+    char getConsensusChar(const MultipleAlignment& ma, int column) const override;
 
-    virtual MSAConsensusAlgorithmLevitsky* clone() const;
+    MSAConsensusAlgorithmLevitsky* clone() const override;
 
 private:
-    QVarLengthArray<int> globalFreqs;
+    QVarLengthArray<int, 256> globalFreqs;
 };
 
 }  // namespace U2

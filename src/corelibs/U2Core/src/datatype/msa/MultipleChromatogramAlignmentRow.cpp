@@ -54,7 +54,7 @@ MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(MultipleChrom
     : MultipleAlignmentRow(mcaRowData) {
 }
 
-MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const U2McaRow& rowInDb,
+MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const U2MsaRow& rowInDb,
                                                                    const DNAChromatogram& chromatogram,
                                                                    const DNASequence& sequence,
                                                                    const QVector<U2MsaGap>& gaps,
@@ -62,7 +62,7 @@ MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const U2McaRo
     : MultipleAlignmentRow(new MultipleChromatogramAlignmentRowData(rowInDb, chromatogram, sequence, gaps, mcaData)) {
 }
 
-MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const U2McaRow& rowInDb,
+MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const U2MsaRow& rowInDb,
                                                                    const QString& rowName,
                                                                    const DNAChromatogram& chromatogram,
                                                                    const QByteArray& rawData,
@@ -108,7 +108,7 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(Multi
     removeTrailingGaps();
 }
 
-MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const U2McaRow& rowInDb,
+MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const U2MsaRow& rowInDb,
                                                                            const DNAChromatogram& chromatogram,
                                                                            const DNASequence& sequence,
                                                                            const QVector<U2MsaGap>& gaps,
@@ -121,7 +121,7 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
     removeTrailingGaps();
 }
 
-MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const U2McaRow& rowInDb,
+MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const U2MsaRow& rowInDb,
                                                                            const QString& rowName,
                                                                            const DNAChromatogram& chromatogram,
                                                                            const QByteArray& rawData,
@@ -183,8 +183,8 @@ void MultipleChromatogramAlignmentRowData::setSequenceId(const U2DataId& sequenc
     initialRowInDb.sequenceId = sequenceId;
 }
 
-U2McaRow MultipleChromatogramAlignmentRowData::getRowDbInfo() const {
-    U2McaRow row;
+U2MsaRow MultipleChromatogramAlignmentRowData::getRowDbInfo() const {
+    U2MsaRow row;
     row.rowId = initialRowInDb.rowId;
     row.chromatogramId = initialRowInDb.chromatogramId;
     row.sequenceId = initialRowInDb.sequenceId;
@@ -195,7 +195,7 @@ U2McaRow MultipleChromatogramAlignmentRowData::getRowDbInfo() const {
     return row;
 }
 
-void MultipleChromatogramAlignmentRowData::setRowDbInfo(const U2McaRow& dbRow) {
+void MultipleChromatogramAlignmentRowData::setRowDbInfo(const U2MsaRow& dbRow) {
     initialRowInDb = dbRow;
 }
 
@@ -203,7 +203,7 @@ QByteArray MultipleChromatogramAlignmentRowData::toByteArray(U2OpStatus& os, qin
     if (length < getCoreEnd()) {
         coreLog.trace("Incorrect length was passed to MultipleChromatogramAlignmentRowData::toByteArray");
         os.setError("Failed to get row data");
-        return QByteArray();
+        return {};
     }
 
     if (gaps.isEmpty() && sequence.length() == length) {

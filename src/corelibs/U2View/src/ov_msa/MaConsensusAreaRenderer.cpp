@@ -126,7 +126,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<
     MSAConsensusAlgorithm* algorithm = area->getConsensusAlgorithm();
     const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
     for (int i = 0, n = static_cast<int>(region.length); i < n; i++) {
-        const int column = region.startPos + i;
+        int column = (int)region.startPos + i;
         int score = 0;
         const char consensusChar = algorithm->getConsensusCharAndScore(ma, column, score);
         consensusRenderData.data += consensusChar;

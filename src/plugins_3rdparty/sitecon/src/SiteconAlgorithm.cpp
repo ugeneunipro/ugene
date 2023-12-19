@@ -78,7 +78,7 @@ QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Mul
             average /= N;
 
             qreal dispersion = 0;  // dispersion in a column
-            const QList<MultipleAlignmentRow>& msaRows = ma->getRows();
+            const QVector<MultipleAlignmentRow>& msaRows = ma->getRows();
             for (int j = 0; j < msaRows.size(); j++) {  // collect di-position stat for all sequence in alignment
                 CHECK(!ts.isCoR(), {});
                 const MultipleSequenceAlignmentRow& row = msaRows[j];

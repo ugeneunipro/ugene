@@ -178,7 +178,7 @@ void MaConsensusModeWidget::initConsensusTypeCombo() {
 
     const DNAAlphabet* alphabet = maObject->getAlphabet();
     curAlphabetId = alphabet->getId();
-    ConsensusAlgorithmFlags flags = MSAConsensusAlgorithmFactory::getAphabetFlags(alphabet);
+    ConsensusAlgorithmFlags flags = MSAConsensusAlgorithmFactory::getAlphabetFlags(alphabet);
     if (qobject_cast<MultipleChromatogramAlignmentObject*>(maObject) != nullptr) {
         flags |= ConsensusAlgorithmFlag_AvailableForChromatogram;
     }

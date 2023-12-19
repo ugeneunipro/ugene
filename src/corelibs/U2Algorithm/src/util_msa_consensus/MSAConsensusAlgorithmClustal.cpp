@@ -26,23 +26,22 @@
 
 namespace U2 {
 
-QString MSAConsensusAlgorithmFactoryClustal::getDescription() const {
-    return tr("Emulates ClustalW program and file format behavior.");
+MSAConsensusAlgorithmFactoryClustal::MSAConsensusAlgorithmFactoryClustal()
+    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO, ConsensusAlgorithmFlags_AllAlphabets) {
+    name = tr("ClustalW");
+    description = tr("Emulates ClustalW program and file format behavior.");
 }
 
-QString MSAConsensusAlgorithmFactoryClustal::getName() const {
-    return tr("ClustalW");
-}
-
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
-    return new MSAConsensusAlgorithmClustal(this, ignoreTrailingLeadingGaps, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps) {
+    return new MSAConsensusAlgorithmClustal(this, ignoreTrailingLeadingGaps);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma, int pos, QVector<int> seqIdx) const {
-    CHECK(filterIdx(seqIdx, ma, pos), INVALID_CONS_CHAR);
+char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma, int pos) const {
+    QVector<int> seqIdx = pickRowsToUseInConsensus(ma, pos);
+    CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 
     if (!ma->getAlphabet()->isAmino()) {
         // for nucleic alphabet work as strict algorithm but use ' ' as default

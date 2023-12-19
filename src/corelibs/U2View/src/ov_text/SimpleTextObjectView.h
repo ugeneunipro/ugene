@@ -39,15 +39,15 @@ public:
 
     static const GObjectViewFactoryId ID;
 
-    virtual bool canCreateView(const MultiGSelection& multiSelection);
+    bool canCreateView(const MultiGSelection& multiSelection) override;
 
-    virtual bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData);
+    bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData) override;
 
-    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
+    Task* createViewTask(const MultiGSelection& multiSelection, bool single = false) override;
 
-    virtual Task* createViewTask(const QString& viewName, const QVariantMap& state);
+    Task* createViewTask(const QString& viewName, const QVariantMap& state) override;
 
-    virtual bool supportsSavedStates() const {
+    bool supportsSavedStates() const override {
         return true;
     }
 };
@@ -60,9 +60,9 @@ class U2VIEW_EXPORT SimpleTextObjectView : public GObjectViewController {
 public:
     SimpleTextObjectView(const QString& name, TextObject* to, const QVariantMap& state);
 
-    virtual QVariantMap saveState();
+    QVariantMap saveState() override;
 
-    virtual Task* updateViewTask(const QString& stateName, const QVariantMap& stateData);
+    Task* updateViewTask(const QString& stateName, const QVariantMap& stateData) override;
 
     virtual const TextSelection& getSelectedText() {
         return selection;
@@ -79,7 +79,7 @@ public:
     static void setDocumentUrl(QVariantMap& savedState, const QString& url);
 
 protected:
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private slots:
     void sl_onTextEditTextChanged();

@@ -24,23 +24,22 @@
 #include <QVector>
 
 #include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Timer.h>
 
 namespace U2 {
 
-MSAConsensusAlgorithmFactoryDefault::MSAConsensusAlgorithmFactoryDefault(QObject* p)
-    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::DEFAULT_ALGO, ConsensusAlgorithmFlags_NuclAmino | ConsensusAlgorithmFlag_SupportThreshold, p) {
+MSAConsensusAlgorithmFactoryDefault::MSAConsensusAlgorithmFactoryDefault()
+    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::DEFAULT_ALGO, ConsensusAlgorithmFlags_NuclAmino | ConsensusAlgorithmFlag_SupportThreshold) {
+    name = tr("Default");
+    description = tr("Based on JalView algorithm. Returns '+' if there are 2 characters with high frequency. Returns symbol in lower case if the symbol content in a row is lower than the threshold specified.");
+    minThreshold = 1;
+    maxThreshold = 100;
+    defaultThreshold = 100;
+    thresholdSuffix = "%";
 }
 
-QString MSAConsensusAlgorithmFactoryDefault::getDescription() const {
-    return tr("Based on JalView algorithm. Returns '+' if there are 2 characters with high frequency. Returns symbol in lower case if the symbol content in a row is lower than the threshold specified.");
-}
-
-QString MSAConsensusAlgorithmFactoryDefault::getName() const {
-    return tr("Default");
-}
-
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
-    return new MSAConsensusAlgorithmDefault(this, ignoreTrailingLeadingGaps, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps) {
+    return new MSAConsensusAlgorithmDefault(this, ignoreTrailingLeadingGaps);
 }
 
 U2::MSAConsensusAlgorithmDefault* MSAConsensusAlgorithmDefault::clone() const {
@@ -50,31 +49,31 @@ U2::MSAConsensusAlgorithmDefault* MSAConsensusAlgorithmDefault::clone() const {
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& msa, int pos, int& cnt, QVector<int> seqIdx) const {
-    CHECK(filterIdx(seqIdx, msa, pos), INVALID_CONS_CHAR);
+char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& ma, int pos, int& cnt) const {
+    //    GTIMER(timer, tm, "MSAConsensusAlgorithmDefault::getConsensusCharAndScore");
+    QVector<int> seqIdx = pickRowsToUseInConsensus(ma, pos);
+    CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 
-    // TODO: use var-length array!
-    QVector<QPair<int, char>> freqs(32);
-    int ch = U2Msa::GAP_CHAR;
-    int nSeq = seqIdx.isEmpty() ? msa->getRowCount() : seqIdx.size();
+    QVarLengthArray<QPair<int, char>, 32> frequencies(32);
+    std::fill(frequencies.begin(), frequencies.end(), QPair<int, char>(0, '-'));
+    char ch;
+    int nSeq = seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
-        uchar c = (uchar)msa->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq],
-                                     pos);
+        char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
-            assert(idx >= 0 && idx <= freqs.size());
-            freqs[idx].first++;
-            freqs[idx].second = c;
+            frequencies[idx].first++;
+            frequencies[idx].second = c;
         }
     }
-    std::sort(freqs.begin(), freqs.end());
-    int p1 = freqs[freqs.size() - 1].first;
-    int p2 = freqs[freqs.size() - 2].first;
+    std::sort(frequencies.begin(), frequencies.end());
+    int p1 = frequencies[frequencies.size() - 1].first;
+    int p2 = frequencies[frequencies.size() - 2].first;
     if (p1 == 0 || (p1 == 1 && nSeq > 1)) {
         ch = U2Msa::GAP_CHAR;
         cnt = 0;
     } else {
-        int c1 = freqs[freqs.size() - 1].second;
+        char c1 = frequencies[frequencies.size() - 1].second;
         ch = p2 == p1 ? '+' : c1;
         cnt = p1;
     }
@@ -83,9 +82,8 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignm
     int currentThreshold = getThreshold();
     int cntToUseLowerCase = int(currentThreshold / 100.0 * nSeq);
     if (cnt < cntToUseLowerCase && (ch >= 'A' && ch <= 'Z')) {
-        ch = ch + ('a' - 'A');
+        ch = char(ch + ('a' - 'A'));
     }
-
     return ch;
 }
 

@@ -7758,7 +7758,7 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1986) {
-    // Download a sequence from NCBI. Use "limit" for results.
+    // Download a sequence from NCBI. Use "limit" for results. The first sequence in the result list is clicked.
     GTUtilsDialog::waitForDialog(new NCBISearchDialogSimpleFiller("rabbit", false, 10, "Organism"));
     GTMenu::clickMainMenuItem({"File", "Search NCBI GenBank..."});
 

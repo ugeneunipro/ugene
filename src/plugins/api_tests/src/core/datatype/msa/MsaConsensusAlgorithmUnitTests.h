@@ -19,35 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "U2Mca.h"
+#pragma once
+
+#include <unittest.h>
+
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
-U2McaRow::U2McaRow()
-    : U2MsaRow() {
-}
-
-U2McaRow::U2McaRow(const U2MsaRow& msaRow)
-    : U2MsaRow(msaRow) {
-}
-
-bool U2McaRow::hasValidChildObjectIds() const {
-    return !chromatogramId.isEmpty();
-}
-
-U2Mca::U2Mca() {
-}
-
-U2Mca::U2Mca(const U2Msa& dbMsa)
-    : U2Msa(dbMsa) {
-}
-
-U2Mca::U2Mca(const U2DataId& id, const QString& dbId, qint64 version)
-    : U2Msa(id, dbId, version) {
-}
-
-U2DataType U2Mca::getType() const {
-    return U2Type::Mca;
-}
+DECLARE_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase);
 
 }  // namespace U2
+
+DECLARE_METATYPE(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase)

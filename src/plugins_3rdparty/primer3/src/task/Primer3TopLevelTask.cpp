@@ -33,6 +33,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CreateAnnotationTask.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -63,7 +64,9 @@ Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSetting
                                                               TaskFlag_FailOnSubtaskError |
                                                               TaskFlag_CollectChildrenWarnings),
     settings(_settings), seqObj(_seqObj), annotationTableObject(_aobj),
-    groupName(_groupName), annName(_annName), annDescription(_annDescription) {}
+    groupName(_groupName), annName(_annName), annDescription(_annDescription) {
+    GCOUNTER(cvar, "Primer3Task");
+}
 
 Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSettings>& _settings,
                                          const QString& _resultFilePath,
@@ -74,7 +77,9 @@ Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSetting
                                                               TaskFlag_FailOnSubtaskError |
                                                               TaskFlag_CollectChildrenWarnings),
     settings(_settings), resultFilePath(_resultFilePath), openView(_openView),
-    groupName(PRIMER_ANNOTATION_NAME), annName(PRIMER_ANNOTATION_NAME) {}
+    groupName(PRIMER_ANNOTATION_NAME), annName(PRIMER_ANNOTATION_NAME) {
+    GCOUNTER(cvar, "Primer3Task_noTargetSequence");
+}
 
 void Primer3TopLevelTask::prepare() {
     if (settings->getSpanIntronExonBoundarySettings().enabled) {
@@ -166,36 +171,36 @@ QString Primer3TopLevelTask::generateReport() const {
     }
 
     auto getStatsValues = [hasThSettings](const oligo_stats& stats, oligo_type type) -> QList<int> {
-        QList<int> res;
-        res.append(stats.considered);
-        res.append(stats.ns);
-        res.append(stats.target);
-        res.append(stats.excluded);
+        QList<int> res2;
+        res2.append(stats.considered);
+        res2.append(stats.ns);
+        res2.append(stats.target);
+        res2.append(stats.excluded);
         switch (type) {
         case OT_LEFT:
-            res.append(stats.not_in_any_left_ok_region);
+            res2.append(stats.not_in_any_left_ok_region);
             break;
         case OT_RIGHT:
-            res.append(stats.not_in_any_right_ok_region);
+            res2.append(stats.not_in_any_right_ok_region);
             break;
         case OT_INTL:
-            res.append(0);
+            res2.append(0);
             break;
         }
-        res.append(stats.gc);
-        res.append(stats.gc_clamp);
-        res.append(stats.temp_min);
-        res.append(stats.temp_max);
-        res.append(stats.compl_any);
-        res.append(stats.compl_end);
+        res2.append(stats.gc);
+        res2.append(stats.gc_clamp);
+        res2.append(stats.temp_min);
+        res2.append(stats.temp_max);
+        res2.append(stats.compl_any);
+        res2.append(stats.compl_end);
         if (hasThSettings) {
-            res.append(stats.hairpin_th);
+            res2.append(stats.hairpin_th);
         }
-        res.append(stats.poly_x);
-        res.append(stats.stability);
-        res.append(stats.ok);
+        res2.append(stats.poly_x);
+        res2.append(stats.stability);
+        res2.append(stats.ok);
 
-        return res;
+        return res2;
     };
 
     if (settings->getPrimerSettings()->pick_left_primer) {

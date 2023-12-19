@@ -22,6 +22,8 @@
 #include <math.h>
 
 #include <QDesktopWidget>
+#include <QProxyStyle>
+#include <QStyleFactory>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -58,6 +60,11 @@ DotPlotDialog::DotPlotDialog(QWidget* parent, AnnotatedDNAView* currentADV, int 
 
     directCheckBox->setChecked(dir);
     invertedCheckBox->setChecked(inv);
+
+    auto buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
+    buttonStyle->setParent(this);
+    directColorButton->setStyle(buttonStyle);
+    invertedColorButton->setStyle(buttonStyle);
 
     updateColors();
 
@@ -266,8 +273,6 @@ void DotPlotDialog::sl_directInvertedCheckBox() {
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isDirect() || isInverted());
 }
 
-static const QString COLOR_STYLE("QPushButton { background-color: %1 }");
-
 void DotPlotDialog::sl_directColorButton() {
     QObjectScopedPointer<QColorDialog> d = new U2ColorDialog(directColor, this);
     d->exec();
@@ -344,8 +349,13 @@ void DotPlotDialog::sl_loadTaskStateChanged(Task* t) {
 }
 
 void DotPlotDialog::updateColors() {
-    directColorButton->setStyleSheet(COLOR_STYLE.arg(directColor.name()));
-    invertedColorButton->setStyleSheet(COLOR_STYLE.arg(invertedColor.name()));
+    QPalette palette = directColorButton->palette();
+    palette.setColor(QPalette::Button, directColor);   
+    directColorButton->setPalette(palette);
+
+    palette = invertedColorButton->palette();
+    palette.setColor(invertedColorButton->backgroundRole(), invertedColor);
+    invertedColorButton->setPalette(palette);
 }
 
 bool DotPlotDialog::isObjectInADV(GObject* obj) {

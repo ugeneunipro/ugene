@@ -33,9 +33,6 @@ static const char* ROWS_SEQS_COUNT_MISMATCH_ERROR = "Different number of rows an
 
 namespace U2 {
 
-MultipleSequenceAlignmentExporter::MultipleSequenceAlignmentExporter() {
-}
-
 MultipleSequenceAlignment MultipleSequenceAlignmentExporter::getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const {
     SAFE_POINT(!con.isOpen(), OPENED_DBI_CONNECTION_ERROR, MultipleSequenceAlignment());
     con.open(dbiRef, false, os);
@@ -70,18 +67,7 @@ MultipleSequenceAlignment MultipleSequenceAlignmentExporter::getAlignment(const 
     al->setAlphabet(alphabet);
     al->setName(msa.visualName);
     al->setLength(msa.length);
-
     return al;
-}
-
-U2Msa MultipleSequenceAlignmentExporter::getAlignmentObject(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const {
-    SAFE_POINT(!con.isOpen(), OPENED_DBI_CONNECTION_ERROR, U2Msa());
-    con.open(dbiRef, false, os);
-
-    U2Msa msa = exportAlignmentObject(msaId, os);
-    CHECK_OP(os, U2Msa());
-
-    return msa;
 }
 
 QList<MsaRowReplacementData> MultipleSequenceAlignmentExporter::getAlignmentRows(const U2DbiRef& dbiRef,
@@ -173,7 +159,7 @@ QVariantMap MultipleSequenceAlignmentExporter::exportAlignmentInfo(const U2DataI
 
 U2Msa MultipleSequenceAlignmentExporter::exportAlignmentObject(const U2DataId& msaId, U2OpStatus& os) const {
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(msaDbi != nullptr, "NULL MSA Dbi during exporting an alignment object!", U2Msa());
+    SAFE_POINT(msaDbi != nullptr, "NULL MSA Dbi during exporting an alignment object!", {U2Type::Msa});
 
     return msaDbi->getMsaObject(msaId, os);
 }

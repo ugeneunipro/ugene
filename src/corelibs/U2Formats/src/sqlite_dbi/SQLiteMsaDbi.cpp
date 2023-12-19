@@ -88,7 +88,7 @@ U2DataId SQLiteMsaDbi::createMsaObject(const QString& folder, const QString& nam
 
 U2DataId SQLiteMsaDbi::createMsaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, int length, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
-    U2Msa msa;
+    U2Msa msa(U2Type::Msa);
     msa.visualName = name;
     msa.alphabet = alphabet;
     msa.length = length;
@@ -527,7 +527,7 @@ void SQLiteMsaDbi::deleteRowsData(const U2DataId& msaId, U2OpStatus& os) {
 }
 
 U2Msa SQLiteMsaDbi::getMsaObject(const U2DataId& msaId, U2OpStatus& os) {
-    U2Msa res;
+    U2Msa res(U2Type::Msa);
     dbi->getSQLiteObjectDbi()->getObject(res, msaId, os);
 
     SAFE_POINT_OP(os, res);
@@ -757,7 +757,7 @@ U2DataId SQLiteMsaDbi::createMcaObject(const QString& folder, const QString& nam
 U2DataId SQLiteMsaDbi::createMcaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, int length, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
 
-    U2Mca mca;
+    U2Msa mca(U2Type::Mca);
     mca.visualName = name;
     mca.alphabet = alphabet;
     mca.length = length;
@@ -841,33 +841,6 @@ U2DataId SQLiteMsaDbi::getSequenceIdByRowId(const U2DataId& msaId, qint64 rowId,
     } else if (!os.hasError()) {
         os.setError(U2DbiL10n::tr("Msa row not found!"));
     }
-
-    return res;
-}
-
-QByteArray SQLiteMsaDbi::getRemovedRowDetails(const U2MsaRow& row) {
-    QByteArray res;
-
-    // Info about gaps
-    QByteArray gapsInfo;
-    for (int i = 0, n = row.gaps.count(); i < n; ++i) {
-        const U2MsaGap& gap = row.gaps[i];
-        gapsInfo += "offset=";
-        gapsInfo += QByteArray::number(gap.startPos);
-        gapsInfo += "&gap=";
-        gapsInfo += QByteArray::number(gap.length);
-
-        if (i > 0 && i < n - 1) {
-            gapsInfo += "&";
-        }
-    }
-
-    res = QByteArray("rowId=") + QByteArray::number(row.rowId) +
-          QByteArray("&sequenceId=") + row.sequenceId.toHex() +
-          QByteArray("&gstart=") + QByteArray::number(row.gstart) +
-          QByteArray("&gend=") + QByteArray::number(row.gend) +
-          QByteArray("&gaps=\"") + gapsInfo + QByteArray("\"") +
-          QByteArray("&length=") + QByteArray::number(row.length);
 
     return res;
 }

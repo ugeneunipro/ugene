@@ -49,7 +49,7 @@ static QStringList getFileNames(QWidget* parent,
     fileDialog->setOptions(options);
     fileDialog->setFileMode(fileMode);
     fileDialog->setAcceptMode(acceptMode);
-    CHECK(fileDialog->exec() == QFileDialog::Accepted, {});
+    CHECK(fileDialog->exec() == QFileDialog::Accepted && !fileDialog.isNull(), {});
     return fileDialog->selectedFiles();
 }
 

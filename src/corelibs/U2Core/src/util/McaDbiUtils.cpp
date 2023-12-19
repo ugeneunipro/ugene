@@ -55,7 +55,7 @@ void McaDbiUtils::updateMca(U2OpStatus& os, const U2EntityRef& mcaRef, const Mul
     SAFE_POINT_EXT(alphabet != nullptr, os.setError("The alignment alphabet is NULL"), );
 
     //// UPDATE MCA
-    U2Msa dbMca;
+    U2Msa dbMca(U2Type::Mca);
     dbMca.id = mcaRef.entityId;
     dbMca.visualName = mca->getName();
     dbMca.alphabet.id = alphabet->getId();
@@ -72,7 +72,7 @@ void McaDbiUtils::updateMca(U2OpStatus& os, const U2EntityRef& mcaRef, const Mul
 
     //// UPDATE ROWS AND SEQUENCES
     // Get rows that are currently stored in the database
-    const QList<U2McaRow> currentRows = getMcaRows(os, mcaRef);
+    QList<U2MsaRow> currentRows = getMcaRows(os, mcaRef);
     CHECK_OP(os, );
 
     QList<qint64> currentRowIds;
@@ -81,13 +81,13 @@ void McaDbiUtils::updateMca(U2OpStatus& os, const U2EntityRef& mcaRef, const Mul
     // TODO: get the mca folder and create child objects there
     const QString dbFolder = U2ObjectDbi::ROOT_FOLDER;
 
-    foreach (const U2McaRow& currentRow, currentRows) {
+    foreach (const U2MsaRow& currentRow, currentRows) {
         currentRowIds << currentRow.rowId;
 
         // Update data for rows with the same row and child objects IDs
         if (newRowsIds.contains(currentRow.rowId)) {
             // Update sequence and row info
-            const U2McaRow newRow = mca->getMcaRowByRowId(currentRow.rowId, os)->getRowDbInfo();
+            U2MsaRow newRow = mca->getMcaRowByRowId(currentRow.rowId, os)->getRowDbInfo();
             CHECK_OP(os, );
 
             if (newRow.chromatogramId != currentRow.chromatogramId ||
@@ -126,7 +126,7 @@ void McaDbiUtils::updateMca(U2OpStatus& os, const U2EntityRef& mcaRef, const Mul
     QList<qint64> rowsOrder;
     for (int i = 0, n = mca->getRowCount(); i < n; ++i) {
         const MultipleChromatogramAlignmentRow mcaRow = mca->getMcaRow(i);
-        U2McaRow dbRow = mcaRow->getRowDbInfo();
+        U2MsaRow dbRow = mcaRow->getRowDbInfo();
 
         if (!dbRow.hasValidChildObjectIds() || !currentRowIds.contains(dbRow.rowId)) {
             // Import the child objects
@@ -165,7 +165,7 @@ void McaDbiUtils::updateMca(U2OpStatus& os, const U2EntityRef& mcaRef, const Mul
     }
 }
 
-void McaDbiUtils::addRow(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 posInMca, U2McaRow& row) {
+void McaDbiUtils::addRow(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 posInMca, U2MsaRow& row) {
     SAFE_POINT_EXT(row.hasValidChildObjectIds(), os.setError("Invalid child objects references"), );
 
     DbiConnection connection(mcaRef.dbiRef, os);
@@ -178,15 +178,15 @@ void McaDbiUtils::addRow(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 posIn
     CHECK_OP(os, );
 }
 
-void McaDbiUtils::addRows(U2OpStatus& os, const U2EntityRef& mcaRef, QList<U2McaRow>& rows) {
+void McaDbiUtils::addRows(U2OpStatus& os, const U2EntityRef& mcaRef, QList<U2MsaRow>& rows) {
     for (int i = 0; i < rows.size(); i++) {
         addRow(os, mcaRef, -1, rows[i]);
         CHECK_OP(os, );
     }
 }
 
-QList<U2McaRow> McaDbiUtils::getMcaRows(U2OpStatus& os, const U2EntityRef& mcaRef) {
-    QList<U2McaRow> mcaRows;
+QList<U2MsaRow> McaDbiUtils::getMcaRows(U2OpStatus& os, const U2EntityRef& mcaRef) {
+    QList<U2MsaRow> mcaRows;
 
     DbiConnection connection(mcaRef.dbiRef, os);
     CHECK_OP(os, mcaRows);
@@ -198,7 +198,7 @@ QList<U2McaRow> McaDbiUtils::getMcaRows(U2OpStatus& os, const U2EntityRef& mcaRe
     CHECK_OP(os, mcaRows);
 
     foreach (const U2MsaRow& msaRow, msaRows) {
-        U2McaRow mcaRow(msaRow);
+        U2MsaRow mcaRow(msaRow);
         mcaRow.chromatogramId = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, U2EntityRef(mcaRef.dbiRef, msaRow.sequenceId)).entityId;
         CHECK_OP(os, mcaRows);
         mcaRows << mcaRow;
@@ -207,17 +207,17 @@ QList<U2McaRow> McaDbiUtils::getMcaRows(U2OpStatus& os, const U2EntityRef& mcaRe
     return mcaRows;
 }
 
-U2McaRow McaDbiUtils::getMcaRow(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 rowId) {
+U2MsaRow McaDbiUtils::getMcaRow(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 rowId) {
     DbiConnection connection(mcaRef.dbiRef, os);
-    CHECK_OP(os, U2McaRow());
+    CHECK_OP(os, U2MsaRow());
 
     U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
-    SAFE_POINT_EXT(msaDbi != nullptr, os.setError("MSA dbi is NULL"), U2McaRow());
+    SAFE_POINT_EXT(msaDbi != nullptr, os.setError("MSA dbi is NULL"), U2MsaRow());
 
     const U2MsaRow msaRow = msaDbi->getRow(mcaRef.entityId, rowId, os);
-    CHECK_OP(os, U2McaRow());
+    CHECK_OP(os, U2MsaRow());
 
-    U2McaRow mcaRow(msaRow);
+    U2MsaRow mcaRow(msaRow);
     mcaRow.chromatogramId = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, U2EntityRef(mcaRef.dbiRef, msaRow.sequenceId)).entityId;
     CHECK_OP(os, mcaRow);
 
@@ -253,7 +253,7 @@ void McaDbiUtils::removeCharacters(const U2EntityRef& mcaRef, const QList<qint64
 
     // Remove region for each row from the list
     foreach (qint64 rowId, rowIds) {
-        U2McaRow row = getMcaRow(os, mcaRef, rowId);
+        U2MsaRow row = getMcaRow(os, mcaRef, rowId);
         SAFE_POINT_OP(os, );
 
         U2Region seqReg(0, row.length);
@@ -290,7 +290,7 @@ void McaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId
     MaDbiUtils::validateRowIds(msaDbi, mcaRef.entityId, QList<qint64>() << rowId, os);
     CHECK_OP(os, );
 
-    U2McaRow row = getMcaRow(os, mcaRef, rowId);
+    U2MsaRow row = getMcaRow(os, mcaRef, rowId);
     CHECK_OP(os, );
     qint64 msaLength = msaDbi->getMsaLength(mcaRef.entityId, os);
     CHECK_EXT(U2Region(0, msaLength).contains(range), os.setError(tr("Invalid range: %1 %2").arg(range.startPos).arg(range.endPos())), );
@@ -332,7 +332,7 @@ void U2::McaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 r
     MaDbiUtils::validateRowIds(msaDbi, mcaRef.entityId, QList<qint64>() << rowId, os);
     CHECK_OP(os, );
 
-    U2McaRow row = getMcaRow(os, mcaRef, rowId);
+    U2MsaRow row = getMcaRow(os, mcaRef, rowId);
     CHECK_OP(os, );
 
     qint64 msaLength = msaDbi->getMsaLength(mcaRef.entityId, os);
@@ -385,7 +385,7 @@ void McaDbiUtils::removeRegion(const U2EntityRef& entityRef, const qint64 rowId,
     U2SequenceDbi* sequenceDbi = con->dbi->getSequenceDbi();
 
     // Remove region for the row from
-    U2McaRow row = McaDbiUtils::getMcaRow(os, entityRef, rowId);
+    U2MsaRow row = McaDbiUtils::getMcaRow(os, entityRef, rowId);
     SAFE_POINT_OP(os, );
 
     U2Region seqReg(0, row.length);

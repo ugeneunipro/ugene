@@ -47,6 +47,7 @@ protected:
     MultipleAlignmentRow(MultipleAlignmentRowData* maRowData);
 
 public:
+    MultipleAlignmentRow() = default;
     virtual ~MultipleAlignmentRow() = default;
 
     MultipleAlignmentRowData* data() const;

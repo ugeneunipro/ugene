@@ -29,27 +29,27 @@
 
 namespace U2 {
 
-MSAConsensusAlgorithmFactoryStrict::MSAConsensusAlgorithmFactoryStrict(QObject* p)
-    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO, ConsensusAlgorithmFlags_AllAlphabets | ConsensusAlgorithmFlag_SupportThreshold | ConsensusAlgorithmFlag_AvailableForChromatogram, p) {
+MSAConsensusAlgorithmFactoryStrict::MSAConsensusAlgorithmFactoryStrict()
+    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO, ConsensusAlgorithmFlags_AllAlphabets | ConsensusAlgorithmFlag_SupportThreshold | ConsensusAlgorithmFlag_AvailableForChromatogram) {
+    name = tr("Strict");
+    description = tr("The algorithm returns gap character ('-') if symbol frequency in a column is lower than threshold specified.");
+    minThreshold = 1;
+    maxThreshold = 100;
+    defaultThreshold = 100;
+    thresholdSuffix = "%";
+    isSequenceLikeResultFlag = true;
 }
 
-QString MSAConsensusAlgorithmFactoryStrict::getDescription() const {
-    return tr("The algorithm returns gap character ('-') if symbol frequency in a column is lower than threshold specified.");
-}
-
-QString MSAConsensusAlgorithmFactoryStrict::getName() const {
-    return tr("Strict");
-}
-
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
-    return new MSAConsensusAlgorithmStrict(this, ignoreTrailingLeadingGaps, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps) {
+    return new MSAConsensusAlgorithmStrict(this, ignoreTrailingLeadingGaps);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const {
-    CHECK(filterIdx(seqIdx, ma, column), INVALID_CONS_CHAR);
+char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment& ma, int column) const {
+    QVector<int> seqIdx = pickRowsToUseInConsensus(ma, column);
+    CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 
     QVector<int> freqsByChar(256, 0);
     int nonGaps = 0;

@@ -27,6 +27,8 @@
 
 namespace U2 {
 
+class U2SequenceObject;
+
 // cppcheck-suppress noConstructor
 class GTest_RemoteBLAST : public XmlTest {
     Q_OBJECT
@@ -38,8 +40,11 @@ public:
     Task::ReportResult report();
 
 private:
-    AnnotationTableObject* ao;
-    RemoteBLASTToAnnotationsTask* task;
+    QString seqId;
+    QString annId;
+    U2SequenceObject* seqObj = nullptr;
+    QPointer<AnnotationTableObject> ao;
+    Task* task = nullptr;
     int minLength;
     int maxLength;
     QString index;

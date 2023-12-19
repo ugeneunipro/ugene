@@ -29,43 +29,21 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryClustal : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryClustal(QObject* p = nullptr)
-        : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO, ConsensusAlgorithmFlags_AllAlphabets, p) {
-    }
+    MSAConsensusAlgorithmFactoryClustal();
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
-
-    virtual QString getDescription() const;
-
-    virtual QString getName() const;
-
-    virtual int getMinThreshold() const {
-        return 0;
-    }
-
-    virtual int getMaxThreshold() const {
-        return 0;
-    }
-
-    virtual int getDefaultThreshold() const {
-        return 0;
-    }
-
-    virtual bool isSequenceLikeResult() const {
-        return false;
-    }
+    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
 };
 
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmClustal : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmClustal(MSAConsensusAlgorithmFactoryClustal* f, bool ignoreTrailingLeadingGaps, QObject* p = nullptr)
-        : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
+    MSAConsensusAlgorithmClustal(MSAConsensusAlgorithmFactoryClustal* f, bool ignoreTrailingLeadingGaps)
+        : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps) {
     }
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
+    char getConsensusChar(const MultipleAlignment& ma, int column) const override;
 
-    virtual MSAConsensusAlgorithmClustal* clone() const;
+    MSAConsensusAlgorithmClustal* clone() const override;
 };
 
 }  // namespace U2

@@ -4708,7 +4708,7 @@ GUI_TEST_CLASS_DEFINITION(test_4783) {
     GTComboBox::selectItemByText(consensusType, "Levitsky");
     auto thresholdSpinBox = GTWidget::findSpinBox("thresholdSpinBox");
     GTSpinBox::setValue(thresholdSpinBox, 90, GTGlobals::UseKeyBoard);
-    GTUtilsMSAEditorSequenceArea::checkConsensus("-H");
+    GTUtilsMSAEditorSequenceArea::checkConsensus("-M");
 
     GTUtilsMsaEditor::clickSequenceName("2");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -4726,7 +4726,7 @@ GUI_TEST_CLASS_DEFINITION(test_4783) {
     GTUtilsMsaEditor::clickSequenceName("1");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsMSAEditorSequenceArea::checkConsensus("BB");
+    GTUtilsMSAEditorSequenceArea::checkConsensus("CC");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_2) {
@@ -5659,6 +5659,25 @@ GUI_TEST_CLASS_DEFINITION(test_4969_2) {
     CHECK_SET_ERR(GTUtilsDocument::isDocumentLoaded("murine.gb"), "The file is not loaded");
     QString title = GTUtilsMdi::activeWindowTitle();
     CHECK_SET_ERR(title.contains("NC_"), "Wrong MDI window is active");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4981) {
+    GTFileDialog::openFile(dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
+
+    GTKeyboardDriver::keyClick('3', Qt::AltModifier);
+    auto logView = GTWidget::findWidget("dock_log_view");
+    GTWidget::click(logView); // Move focus to the log view.
+
+    GTKeyboardDriver::keyClick('1', Qt::AltModifier);
+    GTUtilsProjectTreeView::checkProjectViewIsClosed();
+
+    GTKeyboardDriver::keyClick('1', Qt::AltModifier);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
+
+    GTKeyboardDriver::keyClick('2', Qt::AltModifier);
+    CHECK_SET_ERR(GTUtilsTaskTreeView::isViewOpened(), "Task view is expected to be opened");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4983) {
