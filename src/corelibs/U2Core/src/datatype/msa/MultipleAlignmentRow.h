@@ -135,11 +135,13 @@ public:
     void removeTrailingGaps();
 
     QString getName() const;
+
     void setName(const QString& name);
 
     /** Returns ID of the row in the database. */
-    virtual qint64 getRowId() const;
-    virtual void setRowId(qint64 rowId);
+    qint64 getRowId() const;
+
+    void setRowId(qint64 rowId);
 
     void setSequenceId(const U2DataId& sequenceId);
 
@@ -184,14 +186,19 @@ public:
     /** Removes all gaps. Returns true if changed. */
     bool simplify();
 
-    virtual void crop(U2OpStatus& os, qint64 startPosition, qint64 count) = 0;
+    /**
+     * Crops the row -> keeps only specified region in the row.
+     * 'pos' and 'pos + count' can be greater than the row length.
+     * Keeps trailing gaps.
+     */
+    void crop(U2OpStatus& os, int startPosition, int count);
 
     /** Adds anotherRow data to this row(ignores trailing gaps), "lengthBefore" must be greater than this row's length. */
     void append(const MultipleAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
 
     void append(const MultipleAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os);
 
-    virtual bool isDefault() const = 0;
+    bool isDefault() const;
 
     /** Returns ID of the row sequence in the database. */
     U2MsaRow getRowDbInfo() const;
@@ -204,7 +211,7 @@ public:
      * Only rows of the same 'MultipleAlignmentDataType' can be equal.
      * For the equality method details see comments for the implementation.
      */
-    virtual bool isEqual(const MultipleAlignmentRowData& other) const = 0;
+    bool isEqual(const MultipleAlignmentRowData& other) const;
 
     /** Calls isEqual() method. */
     bool operator==(const MultipleAlignmentRowData& other) const;
@@ -215,17 +222,14 @@ public:
     /* Compares sequences of 2 rows ignoring gaps. */
     static bool isEqualIgnoreGaps(const MultipleAlignmentRowData* row1, const MultipleAlignmentRowData* row2);
 
-    /**
-     * Compares whole gapped sequences (with inner gaps) but with leading gaps removed.
-     * This method method may be overridden to compare other sequence related properties (like chromatogram in MCA).
-     */
-    virtual bool isEqualCore(const MultipleAlignmentRowData& other) const;
+    /** Compares whole gapped sequences (with inner gaps) but with leading gaps removed. */
+    bool isEqualCore(const MultipleAlignmentRowData& other) const;
 
     /** Joins sequence chars and gaps into one byte array. */
     QByteArray getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const;
 
     /** Returns whole alignment data. */
-    virtual MultipleAlignmentData* getMultipleAlignmentData() const = 0;
+    virtual MultipleAlignmentData* getMultipleAlignmentData() const;
 
     /**
      * Returns true if the row sequence should be read in the reversed direction

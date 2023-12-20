@@ -83,21 +83,6 @@ protected:
 
 public:
 
-    bool isDefault() const override;
-
-    /** Checks that 'other' is MultipleSequenceAlignmentRowData and calls the MSA version of the method. */
-    bool isEqual(const MultipleAlignmentRowData& other) const override;
-
-    /** Compares 2 rows. Rows are equal if their names, sequences and gap models are equal. */
-    bool isEqual(const MultipleSequenceAlignmentRowData& other) const;
-
-    /**
-     * Crops the row -> keeps only specified region in the row.
-     * 'pos' and 'pos + count' can be greater than the row length.
-     * Keeps trailing gaps.
-     */
-    void crop(U2OpStatus& os, qint64 startPosition, qint64 count) override;
-
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.
      * 'pos' and 'pos + count' can be greater than the row length.

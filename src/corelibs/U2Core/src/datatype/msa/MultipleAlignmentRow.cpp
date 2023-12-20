@@ -121,6 +121,10 @@ bool MultipleAlignmentRowData::isEqualCore(const MultipleAlignmentRowData& other
     CHECK(sequence.seq == other.sequence.seq, false);
     CHECK(sequence.length() > 0, true);
 
+    if (type == MultipleAlignmentDataType::MCA) {
+        CHECK(ChromatogramUtils::areEqual(chromatogram, other.chromatogram), false);
+    }
+
     QVector<U2MsaGap> thisGaps = gaps;
     if (!thisGaps.isEmpty() && charAt(0) == U2Msa::GAP_CHAR) {
         thisGaps.removeFirst();
@@ -551,6 +555,74 @@ char MultipleAlignmentRowData::getCharFromCache(int gappedPosition) const {
     int indexInCache = gappedPosition - gappedCacheOffset;
     SAFE_POINT(indexInCache >= 0 && indexInCache < gappedSequenceCache.length(), "Invalid gapped cache index", '?');
     return gappedSequenceCache[gappedPosition - gappedCacheOffset];
+}
+
+bool MultipleAlignmentRowData::isDefault() const {
+    static const MultipleAlignmentRowData defaultRow(MultipleAlignmentDataType::MSA);
+    return isEqual(defaultRow);
+}
+
+bool MultipleAlignmentRowData::isEqual(const MultipleAlignmentRowData& other) const {
+    CHECK(this != &other, true);
+    CHECK(getName() == other.getName(), false);
+    CHECK(gaps == other.getGaps(), false);
+    CHECK(sequence.alphabet == other.sequence.alphabet, false);
+    CHECK(sequence.seq == sequence.seq, false);
+    if (type == MultipleAlignmentDataType::MCA) {
+        CHECK(ChromatogramUtils::areEqual(chromatogram, other.chromatogram), false);
+    }
+    return true;
+}
+
+void MultipleAlignmentRowData::crop(U2OpStatus& os, int startPosition, int count) {
+    if (startPosition < 0 || count < 0) {
+        coreLog.trace(QString("Internal error: incorrect parameters were passed to MultipleSequenceAlignmentRowData::crop, "
+                              "startPos '%1', length '%2', row length '%3'")
+                          .arg(startPosition)
+                          .arg(count)
+                          .arg(getRowLength()));
+        os.setError("Can't crop a row!");
+        return;
+    }
+    invalidateGappedCache();
+
+    int initialRowLength = getRowLength();
+    int initialSeqLength = getUngappedLength();
+
+    if (startPosition >= getRowLengthWithoutTrailing()) {
+        // Clear the row content
+        DNASequenceUtils::makeEmpty(sequence);
+    } else {
+        int startPosInSeq = -1;
+        int endPosInSeq = -1;
+        getStartAndEndSequencePositions(startPosition, count, startPosInSeq, endPosInSeq);
+
+        // Remove inside a gap
+        if ((startPosInSeq <= endPosInSeq) && (-1 != startPosInSeq) && (-1 != endPosInSeq)) {
+            if (endPosInSeq < initialSeqLength) {
+                DNASequenceUtils::removeChars(sequence, endPosInSeq, getUngappedLength(), os);
+                CHECK_OP(os, );
+            }
+
+            if (startPosInSeq > 0) {
+                DNASequenceUtils::removeChars(sequence, 0, startPosInSeq, os);
+                CHECK_OP(os, );
+            }
+        }
+    }
+
+    if (type == MultipleAlignmentDataType::MCA) {
+        ChromatogramUtils::crop(chromatogram, startPosition, count);
+    }
+
+    if (startPosition + count < initialRowLength) {
+        removeGapsFromGapModel(os, startPosition + count, initialRowLength - startPosition - count);
+    }
+
+    if (startPosition > 0) {
+        removeGapsFromGapModel(os, 0, startPosition);
+    }
+    removeTrailingGaps();
 }
 
 }  // namespace U2
