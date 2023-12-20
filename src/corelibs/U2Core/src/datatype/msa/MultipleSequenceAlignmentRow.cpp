@@ -121,24 +121,6 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const Multipl
     SAFE_POINT(alignment != nullptr, "Parent MultipleSequenceAlignmentData are NULL", );
 }
 
-char MultipleSequenceAlignmentRowData::charAt(qint64 position) const {
-    return getCharFromCache((int)position);
-}
-
-bool MultipleSequenceAlignmentRowData::isGap(qint64 pos) const {
-    return MsaRowUtils::isGap(sequence.length(), gaps, pos);
-}
-
-bool MultipleSequenceAlignmentRowData::isLeadingOrTrailingGap(qint64 pos) const {
-    return MsaRowUtils::isLeadingOrTrailingGap(sequence.length(), gaps, pos);
-}
-
-qint64 MultipleSequenceAlignmentRowData::getBaseCount(qint64 before) const {
-    const int rowLength = MsaRowUtils::getRowLength(sequence.seq, gaps);
-    const int trimmedRowPos = before < rowLength ? before : rowLength;
-    return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), trimmedRowPos, true);
-}
-
 bool MultipleSequenceAlignmentRowData::isDefault() const {
     static const MultipleSequenceAlignmentRowData defaultRow;
     return isEqual(defaultRow);
@@ -280,39 +262,6 @@ MultipleAlignmentData* MultipleSequenceAlignmentRowData::getMultipleAlignmentDat
 
 int MultipleSequenceAlignmentRowData::getGapsLength() const {
     return MsaRowUtils::getGapsLength(gaps);
-}
-
-/**
- * Size of the gapped cache: 200 symbols.
- * Optimized for chars per screen and makes getChar() ~200x faster thanMsaRowUtils::charAt for sequential access.
- */
-static constexpr int GAPPED_CACHE_SIZE = 200;
-
-char MultipleSequenceAlignmentRowData::getCharFromCache(int gappedPosition) const {
-    if (gappedPosition >= gappedCacheOffset && gappedPosition < gappedCacheOffset + gappedSequenceCache.size()) {
-        return gappedSequenceCache[gappedPosition - gappedCacheOffset];
-    }
-    invalidateGappedCache();
-    int newGappedCacheSize = GAPPED_CACHE_SIZE;
-    int newGappedCacheOffset = qMax(0, gappedPosition - (newGappedCacheSize / 10));  // Cache one both sides. Prefer forward iteration.
-
-    // Optimize cache size for sequences < GAPPED_CACHE_SIZE.
-    int rowLength = getRowLength();
-    if (newGappedCacheOffset + newGappedCacheSize > rowLength) {
-        newGappedCacheOffset = rowLength - newGappedCacheSize;
-        if (newGappedCacheOffset < 0) {
-            newGappedCacheOffset = 0;
-            newGappedCacheSize = rowLength;
-        }
-    }
-    gappedSequenceCache = MsaRowUtils::getGappedSubsequence({newGappedCacheOffset, newGappedCacheSize}, sequence.constSequence(), gaps);
-    CHECK(!gappedSequenceCache.isEmpty(), MsaRowUtils::charAt(sequence.seq, gaps, gappedPosition));
-    SAFE_POINT(gappedSequenceCache.size() == newGappedCacheSize, "Invalid gapped cache size!", '?');
-
-    gappedCacheOffset = newGappedCacheOffset;
-    int indexInCache = gappedPosition - gappedCacheOffset;
-    SAFE_POINT(indexInCache >= 0 && indexInCache < gappedSequenceCache.length(), "Invalid gapped cache index", '?');
-    return gappedSequenceCache[gappedPosition - gappedCacheOffset];
 }
 
 }  // namespace U2

@@ -82,18 +82,6 @@ protected:
     MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow& row, MultipleSequenceAlignmentData* msaData);
 
 public:
-    /**
-     * Returns a character in row at the specified position.
-     * If the specified position is outside the row bounds, returns a gap.
-     */
-    char charAt(qint64 position) const override;
-    bool isGap(qint64 pos) const override;
-    bool isLeadingOrTrailingGap(qint64 pos) const override;
-
-    /**
-     * Returns base count located leftward to the 'before' position in the alignment.
-     */
-    qint64 getBaseCount(qint64 before) const override;
 
     bool isDefault() const override;
 
@@ -137,9 +125,6 @@ private:
 
     void setParentAlignment(const MultipleSequenceAlignment& msa);
     void setParentAlignment(MultipleSequenceAlignmentData* msaData);
-
-    /** Gets char from the gapped sequence cache. Updates the cache if needed. */
-    char getCharFromCache(int gappedPosition) const;
 
     MultipleSequenceAlignmentData* alignment = nullptr;
 };

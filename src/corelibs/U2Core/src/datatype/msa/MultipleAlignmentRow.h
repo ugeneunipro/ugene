@@ -128,7 +128,6 @@ public:
      */
     void removeChars(int pos, int count, U2OpStatus& os);
 
-
     /** Sets a new gap model. Warning: does not validate the new gap model. */
     void setGapModel(const QVector<U2MsaGap>& newGapModel);
 
@@ -144,9 +143,16 @@ public:
 
     void setSequenceId(const U2DataId& sequenceId);
 
-    virtual char charAt(qint64 position) const = 0;
-    virtual bool isGap(qint64 position) const = 0;
-    virtual bool isLeadingOrTrailingGap(qint64 position) const = 0;
+    char charAt(qint64 position) const;
+
+    bool isGap(qint64 position) const;
+
+    bool isLeadingOrTrailingGap(qint64 position) const;
+
+    /**
+     * Returns base count located leftward to the 'before' position in the alignment.
+     */
+    qint64 getBaseCount(qint64 before) const;
 
     /**
      * The length must be greater or equal to the row length.
@@ -168,8 +174,6 @@ public:
 
     /** Obsolete. The length of the row core */
     qint64 getCoreLength() const;
-
-    virtual qint64 getBaseCount(qint64 beforePosition) const = 0;
 
     /** Packed version: returns the row without leading and trailing gaps */
     QByteArray getCore() const;
@@ -253,7 +257,6 @@ public:
 
     void setRowContent(const QByteArray& bytes, int offset, U2OpStatus& os);
 
-
 protected:
     /** Invalidates gapped sequence cache. */
     void invalidateGappedCache() const;
@@ -275,6 +278,9 @@ protected:
 
     /** Removing gaps from the row between position 'pos' and 'pos + count' */
     void removeGapsFromGapModel(U2OpStatus& os, int pos, int count);
+
+    /** Gets char from the gapped sequence cache. Updates the cache if needed. */
+    char getCharFromCache(int gappedPosition) const;
 
 public:
     const MultipleAlignmentDataType type;

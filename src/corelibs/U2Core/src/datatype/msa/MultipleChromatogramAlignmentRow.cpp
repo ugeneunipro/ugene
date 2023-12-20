@@ -144,28 +144,6 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
     SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
 }
 
-char MultipleChromatogramAlignmentRowData::charAt(qint64 position) const {
-    return MsaRowUtils::charAt(sequence.seq, gaps, position);
-}
-
-bool MultipleChromatogramAlignmentRowData::isGap(qint64 position) const {
-    return MsaRowUtils::isGap(sequence.length(), gaps, position);
-}
-
-bool MultipleChromatogramAlignmentRowData::isLeadingOrTrailingGap(qint64 position) const {
-    return MsaRowUtils::isLeadingOrTrailingGap(sequence.length(), gaps, position);
-}
-
-int MultipleChromatogramAlignmentRowData::getUngappedPosition(int pos) const {
-    return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), pos);
-}
-
-qint64 MultipleChromatogramAlignmentRowData::getBaseCount(qint64 before) const {
-    const int rowLength = MsaRowUtils::getRowLength(sequence.seq, gaps);
-    const int trimmedRowPos = before < rowLength ? before : rowLength;
-    return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), trimmedRowPos, true);
-}
-
 const QMap<DNAChromatogram::Trace, QVector<ushort> DNAChromatogram::*> PEAKS =
     {{DNAChromatogram::Trace::Trace_A, &DNAChromatogram::A},
      {DNAChromatogram::Trace::Trace_C, &DNAChromatogram::C},

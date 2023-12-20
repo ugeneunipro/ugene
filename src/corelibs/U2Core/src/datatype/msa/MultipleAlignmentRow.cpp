@@ -64,7 +64,7 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataTy
 }
 
 int MultipleAlignmentRowData::getUngappedPosition(int pos) const {
-    return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), pos);
+    return (int)MsaRowUtils::getUngappedPosition(gaps, sequence.length(), pos);
 }
 
 DNASequence MultipleAlignmentRowData::getUngappedSequence() const {
@@ -142,15 +142,15 @@ QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, b
         return bytes;
     }
 
-    for (int i = 0; i < gaps.size(); ++i) {
+    for (const auto& gap : qAsConst(gaps)) {
         QByteArray gapsBytes;
-        if (!keepLeadingGaps && (0 == gaps[i].startPos)) {
-            beginningOffset = gaps[i].length;
+        if (!keepLeadingGaps && (0 == gap.startPos)) {
+            beginningOffset = gap.length;
             continue;
         }
 
-        gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].length);
-        bytes.insert(gaps[i].startPos - beginningOffset, gapsBytes);
+        gapsBytes.fill(U2Msa::GAP_CHAR, gap.length);
+        bytes.insert(gap.startPos - beginningOffset, gapsBytes);
     }
     MultipleAlignmentData* alignment = getMultipleAlignmentData();
     SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", QByteArray());
@@ -498,6 +498,59 @@ void MultipleAlignmentRowData::getStartAndEndSequencePositions(int pos, int coun
 void MultipleAlignmentRowData::removeGapsFromGapModel(U2OpStatus& os, int pos, int count) {
     invalidateGappedCache();
     MsaRowUtils::removeGaps(os, gaps, getRowLengthWithoutTrailing(), pos, count);
+}
+
+char MultipleAlignmentRowData::charAt(qint64 position) const {
+    return type == MultipleAlignmentDataType::MSA
+               ? getCharFromCache((int)position)
+               : MsaRowUtils::charAt(sequence.seq, gaps, (int)position);
+}
+
+bool MultipleAlignmentRowData::isGap(qint64 pos) const {
+    return MsaRowUtils::isGap(sequence.length(), gaps, (int)pos);
+}
+
+bool MultipleAlignmentRowData::isLeadingOrTrailingGap(qint64 pos) const {
+    return MsaRowUtils::isLeadingOrTrailingGap(sequence.length(), gaps, (int)pos);
+}
+
+qint64 MultipleAlignmentRowData::getBaseCount(qint64 before) const {
+    int rowLength = MsaRowUtils::getRowLength(sequence.seq, gaps);
+    int trimmedRowPos = before < rowLength ? (int)before : rowLength;
+    return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), trimmedRowPos, true);
+}
+
+/**
+ * Size of the gapped cache: 200 symbols.
+ * Optimized for chars per screen and makes getChar() ~200x faster thanMsaRowUtils::charAt for sequential access.
+ */
+static constexpr int GAPPED_CACHE_SIZE = 200;
+
+char MultipleAlignmentRowData::getCharFromCache(int gappedPosition) const {
+    if (gappedPosition >= gappedCacheOffset && gappedPosition < gappedCacheOffset + gappedSequenceCache.size()) {
+        return gappedSequenceCache[gappedPosition - gappedCacheOffset];
+    }
+    invalidateGappedCache();
+    int newGappedCacheSize = GAPPED_CACHE_SIZE;
+    int newGappedCacheOffset = qMax(0, gappedPosition - (newGappedCacheSize / 10));  // Cache one both sides. Prefer forward iteration.
+
+    // Optimize cache size for sequences < GAPPED_CACHE_SIZE.
+    int rowLength = getRowLength();
+    if (newGappedCacheOffset + newGappedCacheSize > rowLength) {
+        newGappedCacheOffset = rowLength - newGappedCacheSize;
+        if (newGappedCacheOffset < 0) {
+            newGappedCacheOffset = 0;
+            newGappedCacheSize = rowLength;
+        }
+    }
+    gappedSequenceCache = MsaRowUtils::getGappedSubsequence({newGappedCacheOffset, newGappedCacheSize}, sequence.constSequence(), gaps);
+    CHECK(!gappedSequenceCache.isEmpty(), MsaRowUtils::charAt(sequence.seq, gaps, gappedPosition));
+    SAFE_POINT(gappedSequenceCache.size() == newGappedCacheSize, "Invalid gapped cache size!", '?');
+
+    gappedCacheOffset = newGappedCacheOffset;
+    int indexInCache = gappedPosition - gappedCacheOffset;
+    SAFE_POINT(indexInCache >= 0 && indexInCache < gappedSequenceCache.length(), "Invalid gapped cache index", '?');
+    return gappedSequenceCache[gappedPosition - gappedCacheOffset];
 }
 
 }  // namespace U2

@@ -82,28 +82,6 @@ protected:
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData);
 
 public:
-    /**
-     * Returns a character in row at the specified position.
-     * If the specified position is outside the row bounds, returns a gap.
-     */
-    char charAt(qint64 position) const;
-    bool isGap(qint64 position) const;
-    bool isLeadingOrTrailingGap(qint64 position) const;
-
-    /** Length of the sequence without gaps */
-    inline int getUngappedLength() const;
-
-    /**
-     * If character at 'pos' position is not a gap, returns the char position in sequence.
-     * Otherwise returns '-1'.
-     */
-    int getUngappedPosition(int pos) const;
-
-    /**
-     * Returns base count located leftward to the 'before' position in the alignment.
-     */
-    qint64 getBaseCount(qint64 before) const;
-
     /** Returns pair of the first and the second (by peak height) chromatogram trace characted in the @pos position */
     QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(qint64 position, bool& hasTwoPeaks) const;
 
@@ -169,10 +147,6 @@ private:
 
     QVariantMap additionalInfo;
 };
-
-inline int MultipleChromatogramAlignmentRowData::getUngappedLength() const {
-    return sequence.length();
-}
 
 inline int MultipleChromatogramAlignmentRowData::getGapsLength() const {
     return MsaRowUtils::getGapsLength(gaps);
