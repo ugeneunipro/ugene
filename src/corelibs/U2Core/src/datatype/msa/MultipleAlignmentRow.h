@@ -113,7 +113,21 @@ public:
 
     /** Returns the list of gaps for the row */
     const QVector<U2MsaGap>& getGaps() const;
-    virtual void removeChars(int pos, int count, U2OpStatus& os) = 0;
+
+    /**
+     * Inserts 'count' gaps into the specified position, if possible.
+     * If position is bigger than the row length or negative, does nothing.
+     * Returns incorrect status if 'count' is negative.
+     */
+    void insertGaps(int pos, int count, U2OpStatus& os);
+
+    /**
+     * Removes up to 'count' characters starting from the specified position
+     * If position is bigger than the row length, does nothing.
+     * Returns incorrect status if 'pos' or 'count' is negative.
+     */
+    void removeChars(int pos, int count, U2OpStatus& os);
+
 
     /** Sets a new gap model. Warning: does not validate the new gap model. */
     void setGapModel(const QVector<U2MsaGap>& newGapModel);
@@ -253,6 +267,14 @@ protected:
      */
     static void addOffsetToGapModel(QVector<U2MsaGap>& gapModel, int offset);
 
+    /**
+     * Calculates start and end position in the sequence,
+     * depending on the start position in the row and the 'count' character from it
+     */
+    void getStartAndEndSequencePositions(int pos, int count, int& startPosInSeq, int& endPosInSeq) const;
+
+    /** Removing gaps from the row between position 'pos' and 'pos + count' */
+    void removeGapsFromGapModel(U2OpStatus& os, int pos, int count);
 
 public:
     const MultipleAlignmentDataType type;

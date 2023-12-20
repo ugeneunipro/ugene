@@ -410,4 +410,94 @@ void MultipleAlignmentRowData::addOffsetToGapModel(QVector<U2MsaGap>& gapModel, 
     }
 }
 
+void MultipleAlignmentRowData::insertGaps(int pos, int count, U2OpStatus& os) {
+    invalidateGappedCache();
+    MsaRowUtils::insertGaps(os, gaps, getRowLengthWithoutTrailing(), pos, count);
+}
+
+void MultipleAlignmentRowData::removeChars(int pos, int count, U2OpStatus& os) {
+    if (pos < 0 || count < 0) {
+        coreLog.trace(QString("Internal error: incorrect parameters were passed to MultipleSequenceAlignmentRowData::removeChars, "
+                              "pos '%1', count '%2'")
+                          .arg(pos)
+                          .arg(count));
+        os.setError("Can't remove chars from a row");
+        return;
+    }
+    if (pos >= getRowLengthWithoutTrailing()) {
+        return;
+    }
+
+    invalidateGappedCache();
+
+    if (pos < getRowLengthWithoutTrailing()) {
+        int startPosInSeq = -1;
+        int endPosInSeq = -1;
+        getStartAndEndSequencePositions(pos, count, startPosInSeq, endPosInSeq);
+
+        // Remove inside a gap
+        if ((startPosInSeq < endPosInSeq) && (-1 != startPosInSeq) && (-1 != endPosInSeq)) {
+            DNASequenceUtils::removeChars(sequence, startPosInSeq, endPosInSeq, os);
+            CHECK_OP(os, );
+        }
+    }
+
+    // Remove gaps from the gaps model
+    removeGapsFromGapModel(os, pos, count);
+
+    removeTrailingGaps();
+    mergeConsecutiveGaps();
+}
+
+void MultipleAlignmentRowData::getStartAndEndSequencePositions(int pos, int count, int& startPosInSeq, int& endPosInSeq) const {
+    int rowLengthWithoutTrailingGap = getRowLengthWithoutTrailing();
+    SAFE_POINT(pos < rowLengthWithoutTrailingGap,
+               QString("Incorrect position '%1' in MultipleSequenceAlignmentRowData::getStartAndEndSequencePosition, "
+                       "row length without trailing gaps is '%2'")
+                   .arg(pos)
+                   .arg(rowLengthWithoutTrailingGap), );
+
+    // Remove chars from the sequence
+    // Calculate start position in the sequence
+    if (U2Msa::GAP_CHAR == charAt(pos)) {
+        int i = 1;
+        while (U2Msa::GAP_CHAR == charAt(pos + i)) {
+            if (getRowLength() == pos + i) {
+                break;
+            }
+            i++;
+        }
+        startPosInSeq = getUngappedPosition(pos + i);
+    } else {
+        startPosInSeq = getUngappedPosition(pos);
+    }
+
+    // Calculate end position in the sequence
+    int endRegionPos = pos + count;  // non-inclusive
+
+    if (endRegionPos > rowLengthWithoutTrailingGap) {
+        endRegionPos = rowLengthWithoutTrailingGap;
+    }
+
+    if (endRegionPos == rowLengthWithoutTrailingGap) {
+        endPosInSeq = getUngappedLength();
+    } else if (U2Msa::GAP_CHAR == charAt(endRegionPos)) {
+        int i = 1;
+        while (U2Msa::GAP_CHAR == charAt(endRegionPos + i)) {
+            if (getRowLength() == endRegionPos + i) {
+                break;
+            }
+            i++;
+        }
+        endPosInSeq = getUngappedPosition(endRegionPos + i);
+    } else {
+        endPosInSeq = getUngappedPosition(endRegionPos);
+    }
+}
+
+void MultipleAlignmentRowData::removeGapsFromGapModel(U2OpStatus& os, int pos, int count) {
+    invalidateGappedCache();
+    MsaRowUtils::removeGaps(os, gaps, getRowLengthWithoutTrailing(), pos, count);
+}
+
 }  // namespace U2

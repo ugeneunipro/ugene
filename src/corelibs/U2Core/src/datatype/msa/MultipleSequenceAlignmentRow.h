@@ -83,20 +83,6 @@ protected:
 
 public:
     /**
-     * Inserts 'count' gaps into the specified position, if possible.
-     * If position is bigger than the row length or negative, does nothing.
-     * Returns incorrect status if 'count' is negative.
-     */
-    void insertGaps(int pos, int count, U2OpStatus& os);
-
-    /**
-     * Removes up to 'count' characters starting from the specified position
-     * If position is bigger than the row length, does nothing.
-     * Returns incorrect status if 'pos' or 'count' is negative.
-     */
-    void removeChars(int pos, int count, U2OpStatus& os) override;
-
-    /**
      * Returns a character in row at the specified position.
      * If the specified position is outside the row bounds, returns a gap.
      */
@@ -148,15 +134,6 @@ public:
 private:
     /** Gets the length of all gaps */
     int getGapsLength() const;
-
-    /**
-     * Calculates start and end position in the sequence,
-     * depending on the start position in the row and the 'count' character from it
-     */
-    void getStartAndEndSequencePositions(int pos, int count, int& startPosInSeq, int& endPosInSeq);
-
-    /** Removing gaps from the row between position 'pos' and 'pos + count' */
-    void removeGapsFromGapModel(U2OpStatus& os, int pos, int count);
 
     void setParentAlignment(const MultipleSequenceAlignment& msa);
     void setParentAlignment(MultipleSequenceAlignmentData* msaData);
