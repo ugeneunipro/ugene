@@ -96,7 +96,7 @@ public:
     virtual ~MultipleAlignmentRowData() = default;
 
     /** Length of the sequence without gaps */
-    inline int getUngappedLength() const;
+    int getUngappedLength() const;
 
     /**
      * If character at 'pos' position is not a gap, returns the char position in sequence.
@@ -198,7 +198,7 @@ public:
 
     void append(const MultipleAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os);
 
-    bool isDefault() const;
+    virtual bool isDefault() const = 0;
 
     /** Returns ID of the row sequence in the database. */
     U2MsaRow getRowDbInfo() const;
@@ -229,13 +229,7 @@ public:
     QByteArray getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const;
 
     /** Returns whole alignment data. */
-    virtual MultipleAlignmentData* getMultipleAlignmentData() const;
-
-    /**
-     * Returns true if the row sequence should be read in the reversed direction
-     * Such rows only exist for MCA alignments with a reverse-complementary read direction.
-     */
-    virtual bool isComplemented() const;
+    virtual MultipleAlignmentData* getMultipleAlignmentData() const = 0;
 
     const DNAChromatogram& getChromatogram() const;
 
@@ -260,6 +254,36 @@ public:
     void setRowContent(const DNASequence& sequence, const QVector<U2MsaGap>& gapModel, U2OpStatus& os);
 
     void setRowContent(const QByteArray& bytes, int offset, U2OpStatus& os);
+
+    /** Converts the row sequence to upper case */
+    void toUpperCase();
+
+    /**
+     * Replaces all occurrences of 'origChar' by 'resultChar'.
+     * The 'origChar' must be a non-gap character.
+     * The 'resultChar' can be a gap, gaps model is recalculated in this case.
+     */
+    void replaceChars(char origChar, char resultChar, U2OpStatus& os);
+
+    void setAdditionalInfo(const QVariantMap& additionalInfo);
+
+    const QVariantMap& getAdditionalInfo() const;
+
+    void reverse();
+    void complement();
+    void reverseComplement();
+
+    bool isReversed() const;
+    /**
+
+     * Returns true if the row sequence should be read in the reversed direction
+     * Such rows only exist for MCA alignments with a reverse-complementary read direction.
+     */
+    bool isComplemented() const;
+
+    /** Returns pair of the first and the second most frequent chromatogram characters. */
+    QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(int position, bool& hasTwoPeaks) const;
+
 
 protected:
     /** Invalidates gapped sequence cache. */
@@ -317,11 +341,10 @@ protected:
      *  This cache helps to avoid this gaps re-computation on sequential reads.
      */
     mutable QByteArray gappedSequenceCache;
-};
 
-inline int MultipleAlignmentRowData::getUngappedLength() const {
-    return sequence.length();
-}
+    // TODO: this field is not used in comparison algorithm. Check its usage and fix or remove the field completely.1
+    QVariantMap additionalInfo;
+};
 
 inline bool operator==(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRow& ptr2) {
     return *ptr1 == *ptr2;
@@ -340,10 +363,6 @@ inline bool operator!=(const MultipleAlignmentRow& ptr1, const MultipleAlignment
 }
 inline bool operator!=(const MultipleAlignmentRowData* ptr1, const MultipleAlignmentRow& ptr2) {
     return !(ptr1 == ptr2);
-}
-
-inline const QVector<U2MsaGap>& MultipleAlignmentRowData::getGaps() const {
-    return gaps;
 }
 
 }  // namespace U2

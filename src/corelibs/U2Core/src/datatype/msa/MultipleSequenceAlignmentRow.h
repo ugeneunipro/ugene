@@ -82,7 +82,6 @@ protected:
     MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow& row, MultipleSequenceAlignmentData* msaData);
 
 public:
-
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.
      * 'pos' and 'pos + count' can be greater than the row length.
@@ -90,24 +89,12 @@ public:
      */
     MultipleSequenceAlignmentRow mid(int pos, int count, U2OpStatus& os) const;
 
-    /** Converts the row sequence to upper case */
-    void toUpperCase();
-
-    /**
-     * Replaces all occurrences of 'origChar' by 'resultChar'.
-     * The 'origChar' must be a non-gap character.
-     * The 'resultChar' can be a gap, gaps model is recalculated in this case.
-     */
-    void replaceChars(char origChar, char resultChar, U2OpStatus& os);
-
     MultipleSequenceAlignmentRow getExplicitCopy() const;
 
     MultipleAlignmentData* getMultipleAlignmentData() const override;
 
+    bool isDefault() const override;
 private:
-    /** Gets the length of all gaps */
-    int getGapsLength() const;
-
     void setParentAlignment(const MultipleSequenceAlignment& msa);
     void setParentAlignment(MultipleSequenceAlignmentData* msaData);
 

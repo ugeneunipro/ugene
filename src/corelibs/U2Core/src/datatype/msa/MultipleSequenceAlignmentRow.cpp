@@ -127,53 +127,6 @@ MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::mid(int pos, int 
     return row;
 }
 
-void MultipleSequenceAlignmentRowData::toUpperCase() {
-    DNASequenceUtils::toUpperCase(sequence);
-}
-
-void MultipleSequenceAlignmentRowData::replaceChars(char origChar, char resultChar, U2OpStatus& os) {
-    if (U2Msa::GAP_CHAR == origChar) {
-        coreLog.trace("The original char can't be a gap in MultipleSequenceAlignmentRowData::replaceChars");
-        os.setError("Failed to replace chars in an alignment row");
-        return;
-    }
-
-    invalidateGappedCache();
-
-    if (resultChar == U2Msa::GAP_CHAR) {
-        // Get indexes of all 'origChar' characters in the row sequence
-        QList<int> gapsIndexes;
-        for (int i = 0; i < getRowLength(); i++) {
-            if (origChar == charAt(i)) {
-                gapsIndexes.append(i);
-            }
-        }
-
-        if (gapsIndexes.isEmpty()) {
-            return;  // There is nothing to replace
-        }
-
-        // Remove all 'origChar' characters from the row sequence
-        sequence.seq.replace(origChar, "");
-
-        // Re-calculate the gaps model
-        QVector<U2MsaGap> newGapsModel = gaps;
-        for (int i = 0; i < gapsIndexes.size(); ++i) {
-            int index = gapsIndexes[i];
-            U2MsaGap gap(index, 1);
-            newGapsModel.append(gap);
-        }
-        std::sort(newGapsModel.begin(), newGapsModel.end(), U2MsaGap::lessThan);
-
-        // Replace the gaps model with the new one
-        gaps = newGapsModel;
-        mergeConsecutiveGaps();
-    } else {
-        // Just replace all occurrences of 'origChar' by 'resultChar'
-        sequence.seq.replace(origChar, resultChar);
-    }
-}
-
 MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::getExplicitCopy() const {
     return MultipleSequenceAlignmentRow(new MultipleSequenceAlignmentRowData(*this));
 }
@@ -191,8 +144,9 @@ MultipleAlignmentData* MultipleSequenceAlignmentRowData::getMultipleAlignmentDat
     return alignment;
 }
 
-int MultipleSequenceAlignmentRowData::getGapsLength() const {
-    return MsaRowUtils::getGapsLength(gaps);
+bool MultipleSequenceAlignmentRowData::isDefault() const {
+    static const MultipleSequenceAlignmentRowData defaultRow;
+    return isEqual(defaultRow);
 }
 
 }  // namespace U2

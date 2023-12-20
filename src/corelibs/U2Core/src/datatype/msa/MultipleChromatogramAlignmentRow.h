@@ -82,9 +82,6 @@ protected:
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData);
 
 public:
-    /** Returns pair of the first and the second (by peak height) chromatogram trace characted in the @pos position */
-    QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(qint64 position, bool& hasTwoPeaks) const;
-
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.
      * 'pos' and 'pos + count' can be greater than the row length.
@@ -92,47 +89,18 @@ public:
      */
     MultipleChromatogramAlignmentRow mid(int pos, int count, U2OpStatus& os) const;
 
-    /** Converts the row sequence to upper case */
-    void toUpperCase();
-
-    /**
-     * Replaces all occurrences of 'origChar' by 'resultChar'.
-     * The 'origChar' must be a non-gap character.
-     * The 'resultChar' can be a gap, gaps model is recalculated in this case.
-     */
-    void replaceChars(char origChar, char resultChar, U2OpStatus& os);
-
     MultipleChromatogramAlignmentRow getExplicitCopy() const;
 
     MultipleAlignmentData* getMultipleAlignmentData() const override;
 
-    void setAdditionalInfo(const QVariantMap& additionalInfo);
-    QVariantMap getAdditionalInfo() const;
-
-    McaRowMemoryData getRowMemoryData() const;
-
-    void reverse();
-    void complement();
-    void reverseComplement();
-
-    bool isReversed() const;
-    bool isComplemented() const override;
+    bool isDefault() const override;
 
 private:
-    /** Gets the length of all gaps */
-    inline int getGapsLength() const;
-
     void setParentAlignment(const MultipleChromatogramAlignment& msa);
     void setParentAlignment(MultipleChromatogramAlignmentData* mcaData);
 
     MultipleChromatogramAlignmentData* alignment;
-
-    QVariantMap additionalInfo;
 };
-
-inline int MultipleChromatogramAlignmentRowData::getGapsLength() const {
-    return MsaRowUtils::getGapsLength(gaps);
-}
 
 inline bool operator==(const MultipleChromatogramAlignmentRow& ptr1, const MultipleChromatogramAlignmentRow& ptr2) {
     return *ptr1 == *ptr2;

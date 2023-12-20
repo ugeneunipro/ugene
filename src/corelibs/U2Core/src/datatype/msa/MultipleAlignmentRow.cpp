@@ -25,6 +25,7 @@
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MultipleAlignmentRowInfo.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MultipleAlignment.h"
@@ -165,10 +166,6 @@ QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, b
     }
 
     return bytes;
-}
-
-bool MultipleAlignmentRowData::isComplemented() const {
-    return false;
 }
 
 const DNAChromatogram& MultipleAlignmentRowData::getChromatogram() const {
@@ -557,11 +554,6 @@ char MultipleAlignmentRowData::getCharFromCache(int gappedPosition) const {
     return gappedSequenceCache[gappedPosition - gappedCacheOffset];
 }
 
-bool MultipleAlignmentRowData::isDefault() const {
-    static const MultipleAlignmentRowData defaultRow(MultipleAlignmentDataType::MSA);
-    return isEqual(defaultRow);
-}
-
 bool MultipleAlignmentRowData::isEqual(const MultipleAlignmentRowData& other) const {
     CHECK(this != &other, true);
     CHECK(getName() == other.getName(), false);
@@ -623,6 +615,156 @@ void MultipleAlignmentRowData::crop(U2OpStatus& os, int startPosition, int count
         removeGapsFromGapModel(os, 0, startPosition);
     }
     removeTrailingGaps();
+}
+
+void MultipleAlignmentRowData::toUpperCase() {
+    DNASequenceUtils::toUpperCase(sequence);
+}
+
+void MultipleAlignmentRowData::setAdditionalInfo(const QVariantMap& newAdditionalInfo) {
+    additionalInfo = newAdditionalInfo;
+}
+
+const QVariantMap& MultipleAlignmentRowData::getAdditionalInfo() const {
+    return additionalInfo;
+}
+
+void MultipleAlignmentRowData::replaceChars(char origChar, char resultChar, U2OpStatus& os) {
+    if (origChar == U2Msa::GAP_CHAR) {
+        coreLog.trace("The original char can't be a gap in MultipleSequenceAlignmentRowData::replaceChars");
+        os.setError("Failed to replace chars in an alignment row");
+        return;
+    }
+
+    invalidateGappedCache();
+
+    if (resultChar == U2Msa::GAP_CHAR) {
+        // Get indexes of all 'origChar' characters in the row sequence
+        QList<int> gapsIndexes;
+        for (int i = 0; i < getRowLength(); i++) {
+            if (origChar == charAt(i)) {
+                gapsIndexes.append(i);
+            }
+        }
+
+        if (gapsIndexes.isEmpty()) {
+            return;  // There is nothing to replace
+        }
+
+        // Remove all 'origChar' characters from the row sequence
+        sequence.seq.replace(origChar, "");
+
+        // Re-calculate the gaps model
+        QVector<U2MsaGap> newGapsModel = gaps;
+        for (int index : gapsIndexes) {
+            U2MsaGap gap(index, 1);
+            newGapsModel.append(gap);
+        }
+        std::sort(newGapsModel.begin(), newGapsModel.end(), U2MsaGap::lessThan);
+
+        // Replace the gaps model with the new one
+        gaps = newGapsModel;
+        mergeConsecutiveGaps();
+
+        if (type == MultipleAlignmentDataType::MCA) {
+            for (int index : qAsConst(gapsIndexes)) {
+                chromatogram.baseCalls.removeAt(index);
+            }
+            chromatogram.seqLength -= gapsIndexes.size();
+        }
+
+    } else {
+        // Just replace all occurrences of 'origChar' by 'resultChar'
+        sequence.seq.replace(origChar, resultChar);
+    }
+}
+
+const QVector<U2MsaGap>& MultipleAlignmentRowData::getGaps() const {
+    return gaps;
+}
+
+void MultipleAlignmentRowData::reverse() {
+    sequence = DNASequenceUtils::reverse(sequence);
+    chromatogram = ChromatogramUtils::reverse(chromatogram);
+    gaps = MsaRowUtils::reverseGapModel(gaps, getRowLengthWithoutTrailing());
+    MultipleAlignmentRowInfo::setReversed(additionalInfo, !isReversed());
+}
+
+void MultipleAlignmentRowData::complement() {
+    sequence = DNASequenceUtils::complement(sequence);
+    chromatogram = ChromatogramUtils::complement(chromatogram);
+    MultipleAlignmentRowInfo::setComplemented(additionalInfo, !isComplemented());
+}
+
+void MultipleAlignmentRowData::reverseComplement() {
+    reverse();
+    complement();
+}
+
+bool MultipleAlignmentRowData::isReversed() const {
+    return type == MultipleAlignmentDataType::MCA && MultipleAlignmentRowInfo::getReversed(additionalInfo);
+}
+
+bool MultipleAlignmentRowData::isComplemented() const {
+    return type == MultipleAlignmentDataType::MCA && MultipleAlignmentRowInfo::getComplemented(additionalInfo);
+}
+
+const QMap<DNAChromatogram::Trace, QVector<ushort> DNAChromatogram::*> PEAKS =
+    {{DNAChromatogram::Trace::Trace_A, &DNAChromatogram::A},
+     {DNAChromatogram::Trace::Trace_C, &DNAChromatogram::C},
+     {DNAChromatogram::Trace::Trace_G, &DNAChromatogram::G},
+     {DNAChromatogram::Trace::Trace_T, &DNAChromatogram::T}};
+
+QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue>
+    MultipleAlignmentRowData::getTwoHighestPeaks(int position, bool& hasTwoPeaks) const {
+    if (type == MultipleAlignmentDataType::MSA) {
+        hasTwoPeaks = false;
+        return {
+            DNAChromatogram::ChromatogramTraceAndValue(DNAChromatogram::Trace::Trace_A, 0),
+            DNAChromatogram::ChromatogramTraceAndValue(DNAChromatogram::Trace::Trace_C, 0),
+        };
+    }
+    hasTwoPeaks = true;
+    int previousBaseCall = chromatogram.baseCalls[position != 0 ? position - 1 : position];
+    int baseCall = chromatogram.baseCalls[position];
+    int nextBaseCall = chromatogram.baseCalls[position != (chromatogram.baseCalls.size() - 1) ? position + 1 : position];
+    QList<DNAChromatogram::ChromatogramTraceAndValue> peaks;
+
+    auto peaksKeys = PEAKS.keys();
+    for (auto peak : qAsConst(peaksKeys)) {
+        const QVector<ushort>& chromatogramBaseCallVector = chromatogram.*PEAKS.value(peak);
+        auto peakValue = chromatogramBaseCallVector[baseCall];
+        int startOfCharacterBaseCall = baseCall - ((baseCall - previousBaseCall) / 2);
+        int startValue = chromatogramBaseCallVector[startOfCharacterBaseCall];
+        if (previousBaseCall == baseCall) {
+            startValue = chromatogramBaseCallVector[0];
+        }
+        int endOfCharacterBaseCall = baseCall + ((nextBaseCall - baseCall) / 2);
+        int endValue = chromatogramBaseCallVector[endOfCharacterBaseCall];
+        if (nextBaseCall == baseCall) {
+            endValue = chromatogramBaseCallVector[chromatogramBaseCallVector.size() - 1];
+        }
+
+        if (startValue <= peakValue && endValue <= peakValue) {
+            peaks.append({peak, peakValue});
+        }
+    }
+
+    if (peaks.size() < 2) {
+        hasTwoPeaks = false;
+        return {{DNAChromatogram::Trace::Trace_A, 0}, {DNAChromatogram::Trace::Trace_C, 0}};
+    }
+
+    std::sort(peaks.begin(),
+              peaks.end(),
+              [](const auto& first, const auto& second) {
+                  return first.value > second.value;
+              });
+    return {peaks[0], peaks[1]};
+}
+
+int MultipleAlignmentRowData::getUngappedLength() const {
+    return sequence.length();
 }
 
 }  // namespace U2
