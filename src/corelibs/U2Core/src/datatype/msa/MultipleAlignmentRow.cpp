@@ -21,6 +21,10 @@
 
 #include "MultipleAlignmentRow.h"
 
+#include <U2Core/ChromatogramUtils.h>
+#include <U2Core/DNASequenceUtils.h>
+#include <U2Core/Log.h>
+#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MultipleAlignment.h"
@@ -85,7 +89,7 @@ bool MultipleAlignmentRowData::isTrailingOrLeadingGap(qint64 position) const {
 }
 
 U2Region MultipleAlignmentRowData::getCoreRegion() const {
-    return U2Region(getCoreStart(), getCoreLength());
+    return {getCoreStart(), getCoreLength()};
 }
 
 U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region& gappedRegion) const {
@@ -102,7 +106,8 @@ U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region& gappedRegio
 
 /* Compares sequences of 2 rows ignoring gaps. */
 bool MultipleAlignmentRowData::isEqualIgnoreGaps(const MultipleAlignmentRowData* row1, const MultipleAlignmentRowData* row2) {
-    SAFE_POINT(row1 != nullptr && row2 != nullptr, "One of the rows is nullptr!", false);
+    SAFE_POINT_NN(row1, false);
+    SAFE_POINT_NN(row2, false);
     if (row1 == row2) {
         return true;
     }
@@ -164,6 +169,245 @@ bool MultipleAlignmentRowData::isComplemented() const {
 
 const DNAChromatogram& MultipleAlignmentRowData::getChromatogram() const {
     return chromatogram;
+}
+
+QString MultipleAlignmentRowData::getName() const {
+    return sequence.getName();
+}
+
+void MultipleAlignmentRowData::setName(const QString& name) {
+    sequence.setName(name);
+}
+
+qint64 MultipleAlignmentRowData::getRowId() const {
+    return initialRowInDb.rowId;
+}
+
+void MultipleAlignmentRowData::setRowId(qint64 rowId) {
+    initialRowInDb.rowId = rowId;
+}
+
+void MultipleAlignmentRowData::setSequenceId(const U2DataId& sequenceId) {
+    initialRowInDb.sequenceId = sequenceId;
+}
+
+U2MsaRow MultipleAlignmentRowData::getRowDbInfo() const {
+    U2MsaRow row;
+    row.rowId = initialRowInDb.rowId;
+    row.sequenceId = initialRowInDb.sequenceId;
+    row.chromatogramId = initialRowInDb.chromatogramId;
+    row.gstart = 0;
+    row.gend = sequence.length();
+    row.gaps = gaps;
+    row.length = getRowLengthWithoutTrailing();
+    return row;
+}
+
+void MultipleAlignmentRowData::setRowDbInfo(const U2MsaRow& dbRow) {
+    invalidateGappedCache();
+    initialRowInDb = dbRow;
+}
+
+void MultipleAlignmentRowData::invalidateGappedCache() const {
+    gappedCacheOffset = 0;
+    gappedSequenceCache.clear();
+}
+
+const DNASequence& MultipleAlignmentRowData::getSequence() const {
+    return sequence;
+}
+
+void MultipleAlignmentRowData::setGapModel(const QVector<U2MsaGap>& newGapModel) {
+    invalidateGappedCache();
+    gaps = newGapModel;
+    removeTrailingGaps();
+}
+
+void MultipleAlignmentRowData::removeTrailingGaps() {
+    CHECK(!gaps.isEmpty(), )
+    MsaRowUtils::removeTrailingGapsFromModel(sequence.length(), gaps);
+}
+
+DNAChromatogram MultipleAlignmentRowData::getGappedChromatogram() const {
+    return ChromatogramUtils::getGappedChromatogram(chromatogram, gaps);
+}
+
+qint64 MultipleAlignmentRowData::getGappedPosition(int pos) const {
+    return MsaRowUtils::getGappedRegion(gaps, U2Region(pos, 1)).startPos;
+}
+
+QByteArray MultipleAlignmentRowData::toByteArray(U2OpStatus& os, int length) const {
+    if (length < getCoreEnd()) {
+        os.setError("Failed to get row data");
+        return {};
+    }
+
+    if (gaps.isEmpty() && sequence.length() == length) {
+        return sequence.constSequence();
+    }
+
+    QByteArray bytes = getSequenceWithGaps(true, true);
+
+    // Append additional gaps, if necessary
+    if (length > bytes.count()) {
+        QByteArray gapsBytes;
+        gapsBytes.fill(U2Msa::GAP_CHAR, length - bytes.count());
+        bytes.append(gapsBytes);
+    }
+    if (length < bytes.count()) {
+        // cut extra trailing gaps
+        bytes = bytes.left(length);
+    }
+
+    return bytes;
+}
+
+int MultipleAlignmentRowData::getRowLength() const {
+    MultipleAlignmentData* alignment = getMultipleAlignmentData();
+    SAFE_POINT_NN(alignment, 0);
+    return alignment->getLength();
+}
+
+int MultipleAlignmentRowData::getRowLengthWithoutTrailing() const {
+    return MsaRowUtils::getRowLength(sequence.seq, gaps);
+}
+
+int MultipleAlignmentRowData::getCoreStart() const {
+    return MsaRowUtils::getCoreStart(gaps);
+}
+
+int MultipleAlignmentRowData::getCoreEnd() const {
+    return getRowLengthWithoutTrailing();
+}
+
+qint64 MultipleAlignmentRowData::getCoreLength() const {
+    int coreStart = getCoreStart();
+    int coreEnd = getCoreEnd();
+    int length = coreEnd - coreStart;
+    SAFE_POINT(length >= 0, QString("Internal error in MultipleChromatogramAlignmentRowData: coreEnd is %1, coreStart is %2!").arg(coreEnd).arg(coreStart), length);
+    return length;
+}
+
+QByteArray MultipleAlignmentRowData::getCore() const {
+    return getSequenceWithGaps(false, false);
+}
+
+QByteArray MultipleAlignmentRowData::getData() const {
+    return getSequenceWithGaps(true, true);
+}
+
+bool MultipleAlignmentRowData::simplify() {
+    CHECK(!gaps.isEmpty(), false)
+    invalidateGappedCache();
+    gaps.clear();
+    return true;
+}
+
+void MultipleAlignmentRowData::append(const MultipleAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os) {
+    append(*anotherRow, lengthBefore, os);
+}
+
+void MultipleAlignmentRowData::append(const MultipleAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os) {
+    int rowLength = getRowLengthWithoutTrailing();
+
+    if (lengthBefore < rowLength) {
+        coreLog.trace(QString("Internal error: incorrect length '%1' were passed to MultipleChromatogramAlignmentRowData::append,"
+                              "coreEnd is '%2'")
+                          .arg(lengthBefore)
+                          .arg(getCoreEnd()));
+        os.setError("Failed to append one row to another");
+        return;
+    }
+
+    invalidateGappedCache();
+
+    // Gap between rows
+    if (lengthBefore > rowLength) {
+        gaps.append(U2MsaGap(getRowLengthWithoutTrailing(), lengthBefore - getRowLengthWithoutTrailing()));
+    }
+
+    // Merge gaps
+    QVector<U2MsaGap> anotherRowGaps = anotherRow.getGaps();
+    for (int i = 0; i < anotherRowGaps.count(); ++i) {
+        anotherRowGaps[i].startPos += lengthBefore;
+    }
+    gaps.append(anotherRowGaps);
+    mergeConsecutiveGaps();
+
+    // Merge sequences
+    DNASequenceUtils::append(sequence, anotherRow.sequence);
+
+    // Merge chromatograms
+    ChromatogramUtils::append(chromatogram, anotherRow.chromatogram);
+}
+
+void MultipleAlignmentRowData::mergeConsecutiveGaps() {
+    MsaRowUtils::mergeConsecutiveGaps(gaps);
+}
+
+void MultipleAlignmentRowData::setRowContent(const DNAChromatogram& newChromatogram, const DNASequence& newSequence, const QVector<U2MsaGap>& newGapModel, U2OpStatus& os) {
+    SAFE_POINT_EXT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), os.setError("The sequence must be without gaps"), );
+    chromatogram = newChromatogram;
+    sequence = newSequence;
+    setGapModel(newGapModel);
+
+    if (sequence.length() > chromatogram.seqLength) {
+        ushort baseCall = chromatogram.baseCalls.isEmpty() ? 0 : chromatogram.baseCalls.last();
+        chromatogram.baseCalls.insert(chromatogram.seqLength, sequence.length() - chromatogram.seqLength, baseCall);
+    }
+}
+
+void MultipleAlignmentRowData::setRowContent(const DNASequence& newSequence, const QVector<U2MsaGap>& newGapModel, U2OpStatus& os) {
+    SAFE_POINT_EXT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), os.setError("The sequence must be without gaps"), );
+    invalidateGappedCache();
+    sequence = newSequence;
+    chromatogram = DNAChromatogram();  // Clear chromatogram.
+    setGapModel(newGapModel);
+}
+
+void MultipleAlignmentRowData::setRowContent(const QByteArray& bytes, int offset, U2OpStatus&) {
+    invalidateGappedCache();
+
+    QByteArray newSequenceBytes;
+    QVector<U2MsaGap> newGapsModel;
+
+    MaDbiUtils::splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
+    DNASequence newSequence(getName(), newSequenceBytes);
+
+    addOffsetToGapModel(newGapsModel, offset);
+
+    sequence = newSequence;
+    chromatogram = DNAChromatogram();  // Clear chromatogram.
+    gaps = newGapsModel;
+    removeTrailingGaps();
+}
+
+void MultipleAlignmentRowData::addOffsetToGapModel(QVector<U2MsaGap>& gapModel, int offset) {
+    CHECK(offset != 0, );
+
+    if (!gapModel.isEmpty()) {
+        U2MsaGap& firstGap = gapModel[0];
+        if (firstGap.startPos == 0) {
+            firstGap.length += offset;
+        } else {
+            SAFE_POINT(offset >= 0, "Negative gap offset", );
+            U2MsaGap beginningGap(0, offset);
+            gapModel.insert(0, beginningGap);
+        }
+
+        // Shift other gaps
+        if (gapModel.count() > 1) {
+            for (int i = 1; i < gapModel.count(); ++i) {
+                qint64 newOffset = gapModel[i].startPos + offset;
+                SAFE_POINT(newOffset >= 0, "Negative gap offset", );
+                gapModel[i].startPos = newOffset;
+            }
+        }
+    } else {
+        SAFE_POINT(offset >= 0, "Negative gap offset", );
+        U2MsaGap gap(0, offset);
+        gapModel.append(gap);
+    }
 }
 
 }  // namespace U2

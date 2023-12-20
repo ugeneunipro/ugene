@@ -82,79 +82,6 @@ protected:
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData);
 
 public:
-    /** Name of the row (equals to the sequence name), can be empty */
-    QString getName() const override;
-    void setName(const QString& name) override;
-
-    /** Returns the list of gaps for the row */
-    inline const QVector<U2MsaGap>& getGaps() const;
-
-    /** Careful, the new gap model is not validated! */
-    void setGapModel(const QVector<U2MsaGap>& newGapModel);
-
-    /** Returns the row sequence (without gaps) */
-    inline const DNASequence& getSequence() const;
-
-    const DNAChromatogram& getChromatogram() const;
-    DNAChromatogram getGappedChromatogram() const;
-
-    /** Returns the position of @pos, including gaps */
-    qint64 getGappedPosition(int pos) const;
-
-    /** Returns ID of the row in the database. */
-    qint64 getRowId() const;
-
-    void setRowId(qint64 rowId);
-
-    void setSequenceId(const U2DataId& sequenceId);
-
-    /** Returns ID of the row sequence in the database. */
-    U2MsaRow getRowDbInfo() const;
-
-    /** Sets database IDs for row and sequence */
-    void setRowDbInfo(const U2MsaRow& dbRow);
-
-    /**
-     * The length must be greater or equal to the row length.
-     * When the specified length is greater, an appropriate number of
-     * trailing gaps are appended to the end of the byte array.
-     */
-    QByteArray toByteArray(U2OpStatus& os, qint64 length) const;
-
-    /** Returns length of the sequence + number of gaps including trailing gaps (if any) */
-    int getRowLength() const;
-
-    /** Returns length of the sequence + number of gaps. Doesn't include trailing gaps. */
-    inline qint64 getRowLengthWithoutTrailing() const;
-
-    /** Packed version: returns the row without leading and trailing gaps */
-    QByteArray getCore() const;
-
-    /** Returns the row the way it is -- with leading and trailing gaps */
-    QByteArray getData() const;
-
-    /** Obsolete. Always return the row length (non-inclusive!) */
-    inline int getCoreEnd() const;
-
-    /** Obsolete. Always returns zero. */
-    int getCoreStart() const;
-
-    /** Obsolete. The length of the row core */
-    qint64 getCoreLength() const;
-
-    /** Removes all gaps. Returns true if changed. */
-    inline bool simplify();
-
-    /** Adds anotherRow data to this row(ingores trailing gaps), "lengthBefore" must be greater than this row's length. */
-    void append(const MultipleChromatogramAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
-    void append(const MultipleChromatogramAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os);
-
-    /**
-     * Sets new sequence and gap model.
-     * If the sequence is empty, the offset is ignored (if any).
-     */
-    void setRowContent(const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel, U2OpStatus& os);
-
     /**
      * Inserts 'count' gaps into the specified position, if possible.
      * If position is bigger than the row length or negative, does nothing.
@@ -246,25 +173,8 @@ public:
     bool isComplemented() const override;
 
 private:
-    /** Splits input to sequence bytes and gaps model */
-    static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QVector<U2MsaGap>& gapModel);
-
-    /**
-     * Add "offset" of gaps to the beginning of the row
-     * Warning: it is not verified that the row sequence is not empty.
-     */
-    static void addOffsetToGapModel(QVector<U2MsaGap>& gapModel, int offset);
-
     /** Gets the length of all gaps */
     inline int getGapsLength() const;
-
-    /** If there are consecutive gaps in the gaps model, merges them into one gap */
-    void mergeConsecutiveGaps();
-
-    /** The row must not contain trailing gaps, this method is used to assure it after the row modification */
-    void removeTrailingGaps();
-
-    void syncLengths();
 
     /**
      * Calculates start and end position in the sequence,
@@ -280,35 +190,8 @@ private:
 
     MultipleChromatogramAlignmentData* alignment;
 
-    /** The row in the database */
-    U2MsaRow initialRowInDb;
-
     QVariantMap additionalInfo;
 };
-
-inline const QVector<U2MsaGap>& MultipleChromatogramAlignmentRowData::getGaps() const {
-    return gaps;
-}
-
-inline const DNASequence& MultipleChromatogramAlignmentRowData::getSequence() const {
-    return sequence;
-}
-
-inline qint64 MultipleChromatogramAlignmentRowData::getRowLengthWithoutTrailing() const {
-    return MsaRowUtils::getRowLength(sequence.seq, gaps);
-}
-
-inline int MultipleChromatogramAlignmentRowData::getCoreEnd() const {
-    return getRowLengthWithoutTrailing();
-}
-
-inline bool MultipleChromatogramAlignmentRowData::simplify() {
-    if (gaps.count() > 0) {
-        gaps.clear();
-        return true;
-    }
-    return false;
-}
 
 inline int MultipleChromatogramAlignmentRowData::getUngappedLength() const {
     return sequence.length();

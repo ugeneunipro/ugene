@@ -97,16 +97,16 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
                                                                    const QVector<U2MsaGap>& gaps,
                                                                    MultipleSequenceAlignmentData* msaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MSA, sequence, gaps),
-      alignment(msaData),
-      initialRowInDb(rowInDb) {
+      alignment(msaData) {
     SAFE_POINT(alignment != nullptr, "Parent MultipleSequenceAlignmentData are NULL", );
+    initialRowInDb = rowInDb;
     removeTrailingGaps();
 }
 
 MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRow& rowInDb, const QString& rowName, const QByteArray& rawData, MultipleSequenceAlignmentData* msaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MSA),
-      alignment(msaData),
-      initialRowInDb(rowInDb) {
+      alignment(msaData) {
+    initialRowInDb = rowInDb;
     QByteArray sequenceData;
     QVector<U2MsaGap> gapModel;
     MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
@@ -116,157 +116,9 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
 
 MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow& row, MultipleSequenceAlignmentData* msaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MSA, row->sequence, row->gaps),
-      alignment(msaData),
-      initialRowInDb(row->initialRowInDb) {
+      alignment(msaData) {
+    initialRowInDb = row->initialRowInDb;
     SAFE_POINT(alignment != nullptr, "Parent MultipleSequenceAlignmentData are NULL", );
-}
-
-QString MultipleSequenceAlignmentRowData::getName() const {
-    return sequence.getName();
-}
-
-void MultipleSequenceAlignmentRowData::setName(const QString& name) {
-    sequence.setName(name);
-}
-
-void MultipleSequenceAlignmentRowData::setGapModel(const QVector<U2MsaGap>& newGapModel) {
-    invalidateGappedCache();
-    gaps = newGapModel;
-    removeTrailingGaps();
-}
-
-qint64 MultipleSequenceAlignmentRowData::getRowId() const {
-    return initialRowInDb.rowId;
-}
-
-void MultipleSequenceAlignmentRowData::setRowId(qint64 rowId) {
-    initialRowInDb.rowId = rowId;
-}
-
-void MultipleSequenceAlignmentRowData::setSequenceId(const U2DataId& sequenceId) {
-    initialRowInDb.sequenceId = sequenceId;
-}
-
-U2MsaRow MultipleSequenceAlignmentRowData::getRowDbInfo() const {
-    U2MsaRow row;
-    row.rowId = initialRowInDb.rowId;
-    row.sequenceId = initialRowInDb.sequenceId;
-    row.chromatogramId = initialRowInDb.chromatogramId;
-    row.gstart = 0;
-    row.gend = sequence.length();
-    row.gaps = gaps;
-    row.length = getRowLengthWithoutTrailing();
-    return row;
-}
-
-void MultipleSequenceAlignmentRowData::setRowDbInfo(const U2MsaRow& dbRow) {
-    invalidateGappedCache();
-    initialRowInDb = dbRow;
-}
-
-QByteArray MultipleSequenceAlignmentRowData::toByteArray(U2OpStatus& os, qint64 length) const {
-    if (length < getCoreEnd()) {
-        coreLog.trace("Incorrect length was passed to MultipleSequenceAlignmentRowData::toByteArray");
-        os.setError("Failed to get row data");
-        return QByteArray();
-    }
-
-    if (gaps.isEmpty() && sequence.length() == length) {
-        return sequence.constSequence();
-    }
-
-    QByteArray bytes = getSequenceWithGaps(true, true);
-
-    // Append additional gaps, if necessary
-    if (length > bytes.count()) {
-        QByteArray gapsBytes;
-        gapsBytes.fill(U2Msa::GAP_CHAR, length - bytes.count());
-        bytes.append(gapsBytes);
-    }
-    if (length < bytes.count()) {
-        // cut extra trailing gaps
-        bytes = bytes.left(length);
-    }
-
-    return bytes;
-}
-
-int MultipleSequenceAlignmentRowData::getRowLength() const {
-    SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", getRowLengthWithoutTrailing());
-    return alignment->getLength();
-}
-
-QByteArray MultipleSequenceAlignmentRowData::getCore() const {
-    return getSequenceWithGaps(false, false);
-}
-
-QByteArray MultipleSequenceAlignmentRowData::getData() const {
-    return getSequenceWithGaps(true, true);
-}
-
-qint64 MultipleSequenceAlignmentRowData::getCoreLength() const {
-    int coreStart = getCoreStart();
-    int coreEnd = getCoreEnd();
-    int length = coreEnd - coreStart;
-    SAFE_POINT(length >= 0, QString("Internal error in MultipleSequenceAlignmentRowData: coreEnd is %1, coreStart is %2!").arg(coreEnd).arg(coreStart), length);
-    return length;
-}
-
-void MultipleSequenceAlignmentRowData::append(const MultipleSequenceAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os) {
-    append(*anotherRow, lengthBefore, os);
-}
-
-void MultipleSequenceAlignmentRowData::append(const MultipleSequenceAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os) {
-    int rowLength = getRowLengthWithoutTrailing();
-
-    if (lengthBefore < rowLength) {
-        coreLog.trace(QString("Internal error: incorrect length '%1' were passed to MultipleSequenceAlignmentRowData::append,"
-                              "coreEnd is '%2'")
-                          .arg(lengthBefore)
-                          .arg(getCoreEnd()));
-        os.setError("Failed to append one row to another");
-        return;
-    }
-    invalidateGappedCache();
-
-    // Gap between rows
-    if (lengthBefore > rowLength) {
-        gaps.append(U2MsaGap(getRowLengthWithoutTrailing(), lengthBefore - getRowLengthWithoutTrailing()));
-    }
-
-    // Merge gaps
-    QVector<U2MsaGap> anotherRowGaps = anotherRow.getGaps();
-    for (int i = 0; i < anotherRowGaps.count(); ++i) {
-        anotherRowGaps[i].startPos += lengthBefore;
-    }
-    gaps.append(anotherRowGaps);
-    mergeConsecutiveGaps();
-
-    // Merge sequences
-    DNASequenceUtils::append(sequence, anotherRow.sequence);
-}
-
-void MultipleSequenceAlignmentRowData::setRowContent(const DNASequence& newSequence, const QVector<U2MsaGap>& newGapModel, U2OpStatus& os) {
-    SAFE_POINT_EXT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), os.setError("The sequence must be without gaps"), );
-    invalidateGappedCache();
-    sequence = newSequence;
-    setGapModel(newGapModel);
-}
-
-void MultipleSequenceAlignmentRowData::setRowContent(const QByteArray& bytes, int offset, U2OpStatus&) {
-    invalidateGappedCache();
-
-    QByteArray newSequenceBytes;
-    QVector<U2MsaGap> newGapsModel;
-
-    splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
-    DNASequence newSequence(getName(), newSequenceBytes);
-
-    addOffsetToGapModel(newGapsModel, offset);
-
-    sequence = newSequence;
-    gaps = newGapsModel;
-    removeTrailingGaps();
 }
 
 void MultipleSequenceAlignmentRowData::insertGaps(int pos, int count, U2OpStatus& os) {
@@ -452,51 +304,6 @@ MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::getExplicitCopy()
     return MultipleSequenceAlignmentRow(new MultipleSequenceAlignmentRowData(*this));
 }
 
-void MultipleSequenceAlignmentRowData::splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QVector<U2MsaGap>& gapsModel) {
-    MaDbiUtils::splitBytesToCharsAndGaps(input, seqBytes, gapsModel);
-}
-
-void MultipleSequenceAlignmentRowData::addOffsetToGapModel(QVector<U2MsaGap>& gapModel, int offset) {
-    CHECK(offset != 0, );
-
-    if (!gapModel.isEmpty()) {
-        U2MsaGap& firstGap = gapModel[0];
-        if (0 == firstGap.startPos) {
-            firstGap.length += offset;
-        } else {
-            SAFE_POINT(offset >= 0, "Negative gap offset", );
-            U2MsaGap beginningGap(0, offset);
-            gapModel.insert(0, beginningGap);
-        }
-
-        // Shift other gaps
-        if (gapModel.count() > 1) {
-            for (int i = 1; i < gapModel.count(); ++i) {
-                qint64 newOffset = gapModel[i].startPos + offset;
-                SAFE_POINT(newOffset >= 0, "Negative gap offset", );
-                gapModel[i].startPos = newOffset;
-            }
-        }
-    } else {
-        SAFE_POINT(offset >= 0, "Negative gap offset", );
-        U2MsaGap gap(0, offset);
-        gapModel.append(gap);
-    }
-}
-
-void MultipleSequenceAlignmentRowData::mergeConsecutiveGaps() {
-    MsaRowUtils::mergeConsecutiveGaps(gaps);
-}
-
-void MultipleSequenceAlignmentRowData::removeTrailingGaps() {
-    if (gaps.isEmpty()) {
-        return;
-    }
-
-    // If the last char in the row is gap, remove the last gap
-    MsaRowUtils::removeTrailingGapsFromModel(sequence.length(), gaps);
-}
-
 void MultipleSequenceAlignmentRowData::getStartAndEndSequencePositions(int pos, int count, int& startPosInSeq, int& endPosInSeq) {
     int rowLengthWithoutTrailingGap = getRowLengthWithoutTrailing();
     SAFE_POINT(pos < rowLengthWithoutTrailingGap,
@@ -559,44 +366,12 @@ void MultipleSequenceAlignmentRowData::setParentAlignment(MultipleSequenceAlignm
     alignment = msaData;
 }
 
-int MultipleSequenceAlignmentRowData::getCoreStart() const {
-    return MsaRowUtils::getCoreStart(gaps);
-}
-
 MultipleAlignmentData* MultipleSequenceAlignmentRowData::getMultipleAlignmentData() const {
     return alignment;
 }
 
-const QVector<U2MsaGap>& MultipleSequenceAlignmentRowData::getGaps() const {
-    return gaps;
-}
-
-const DNASequence& MultipleSequenceAlignmentRowData::getSequence() const {
-    return sequence;
-}
-
-qint64 MultipleSequenceAlignmentRowData::getRowLengthWithoutTrailing() const {
-    return MsaRowUtils::getRowLength(sequence.seq, gaps);
-}
-
-int MultipleSequenceAlignmentRowData::getCoreEnd() const {
-    return getRowLengthWithoutTrailing();
-}
-
-bool MultipleSequenceAlignmentRowData::simplify() {
-    CHECK(!gaps.isEmpty(), false);
-    invalidateGappedCache();
-    gaps.clear();
-    return true;
-}
-
 int MultipleSequenceAlignmentRowData::getGapsLength() const {
     return MsaRowUtils::getGapsLength(gaps);
-}
-
-void MultipleSequenceAlignmentRowData::invalidateGappedCache() const {
-    gappedCacheOffset = 0;
-    gappedSequenceCache.clear();
 }
 
 /**

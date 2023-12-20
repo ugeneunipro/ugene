@@ -24,6 +24,7 @@
 #include <QSet>
 
 #include <U2Core/McaRowInnerData.h>
+#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -144,7 +145,7 @@ bool MultipleChromatogramAlignmentData::trim(bool removeLeadingGaps) {
         if (newLength == 0) {
             newLength = row->getRowLengthWithoutTrailing();
         } else {
-            newLength = qMax(row->getRowLengthWithoutTrailing(), newLength);
+            newLength = qMax((qint64)row->getRowLengthWithoutTrailing(), newLength);
         }
     }
 
@@ -292,7 +293,7 @@ MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(co
     QByteArray newSequenceBytes;
     QVector<U2MsaGap> newGapsModel;
 
-    MultipleChromatogramAlignmentRowData::splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
+    MaDbiUtils::splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
     DNASequence newSequence(name, newSequenceBytes);
 
     U2MsaRow row;

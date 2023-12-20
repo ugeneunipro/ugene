@@ -82,74 +82,6 @@ protected:
     MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow& row, MultipleSequenceAlignmentData* msaData);
 
 public:
-    /** Name of the row (equals to the sequence name), can be empty */
-    QString getName() const override;
-    void setName(const QString& name) override;
-
-    /** Returns the list of gaps for the row */
-    const QVector<U2MsaGap>& getGaps() const override;
-
-    /** Careful, the new gap model is not validated! */
-    void setGapModel(const QVector<U2MsaGap>& newGapModel);
-
-    /** Returns the row sequence (without gaps) */
-    const DNASequence& getSequence() const;
-
-    /** Returns ID of the row in the database. */
-    qint64 getRowId() const override;
-
-    void setRowId(qint64 rowId) override;
-
-    void setSequenceId(const U2DataId& sequenceId);
-
-    /** Returns ID of the row sequence in the database. */
-    U2MsaRow getRowDbInfo() const;
-
-    /** Sets database IDs for row and sequence */
-    void setRowDbInfo(const U2MsaRow& dbRow);
-
-    /**
-     * The length must be greater or equal to the row length.
-     * When the specified length is greater, an appropriate number of
-     * trailing gaps are appended to the end of the byte array.
-     */
-    QByteArray toByteArray(U2OpStatus& os, qint64 length) const override;
-
-    /** Returns length of the sequence + number of gaps including trailing gaps (if any) */
-    int getRowLength() const;
-
-    /** Returns length of the sequence + number of gaps. Doesn't include trailing gaps. */
-    qint64 getRowLengthWithoutTrailing() const override;
-
-    /** Packed version: returns the row without leading and trailing gaps */
-    QByteArray getCore() const;
-
-    /** Returns the row the way it is -- with leading and trailing gaps */
-    QByteArray getData() const;
-
-    /** Obsolete. Always return the row length (non-inclusive!) */
-    int getCoreEnd() const override;
-
-    /** Obsolete. Always returns zero. */
-    int getCoreStart() const override;
-
-    /** Obsolete. The length of the row core */
-    qint64 getCoreLength() const override;
-
-    /** Removes all gaps. Returns true if changed. */
-    bool simplify();
-
-    /** Adds anotherRow data to this row(ingores trailing gaps), "lengthBefore" must be greater than this row's length. */
-    void append(const MultipleSequenceAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
-    void append(const MultipleSequenceAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os);
-
-    /**
-     * Sets new sequence and gap model.
-     * If the sequence is empty, the offset is ignored (if any).
-     */
-    void setRowContent(const DNASequence& sequence, const QVector<U2MsaGap>& gapModel, U2OpStatus& os);
-    void setRowContent(const QByteArray& bytes, int offset, U2OpStatus& os);
-
     /**
      * Inserts 'count' gaps into the specified position, if possible.
      * If position is bigger than the row length or negative, does nothing.
@@ -214,23 +146,8 @@ public:
     MultipleAlignmentData* getMultipleAlignmentData() const override;
 
 private:
-    /** Splits input to sequence bytes and gaps model */
-    static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QVector<U2MsaGap>& gapModel);
-
-    /**
-     * Add "offset" of gaps to the beginning of the row
-     * Warning: it is not verified that the row sequence is not empty.
-     */
-    static void addOffsetToGapModel(QVector<U2MsaGap>& gapModel, int offset);
-
     /** Gets the length of all gaps */
     int getGapsLength() const;
-
-    /** If there are consecutive gaps in the gaps model, merges them into one gap */
-    void mergeConsecutiveGaps();
-
-    /** The row must not contain trailing gaps, this method is used to assure it after the row modification */
-    void removeTrailingGaps();
 
     /**
      * Calculates start and end position in the sequence,
@@ -244,28 +161,10 @@ private:
     void setParentAlignment(const MultipleSequenceAlignment& msa);
     void setParentAlignment(MultipleSequenceAlignmentData* msaData);
 
-    /** Invalidates gapped sequence cache. */
-    void invalidateGappedCache() const;
-
     /** Gets char from the gapped sequence cache. Updates the cache if needed. */
     char getCharFromCache(int gappedPosition) const;
 
     MultipleSequenceAlignmentData* alignment = nullptr;
-
-    /** The row in the database */
-    U2MsaRow initialRowInDb;
-
-    /** Gapped cache offset in the row position.*/
-    mutable int gappedCacheOffset = 0;
-
-    /**
-     * Cached segment of the gapped sequence.
-     * The reason why this cache is efficient:
-     *  Most of the algorithms access the row data sequentially: charAt(i), charAt(i+1), charAt(i+2).
-     *  This access may be very slow for rows with a large gap models: to compute every character the gap model must be re-applied form the very verst gap.
-     *  This cache helps to avoid this gaps re-computation on sequential reads.
-     */
-    mutable QByteArray gappedSequenceCache;
 };
 
 inline bool operator==(const MultipleSequenceAlignmentRow& ptr1, const MultipleSequenceAlignmentRow& ptr2) {

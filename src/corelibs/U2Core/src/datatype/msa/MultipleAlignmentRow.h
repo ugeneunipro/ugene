@@ -112,32 +112,74 @@ public:
     DNASequence getUngappedSequence() const;
 
     /** Returns the list of gaps for the row */
-    virtual const QVector<U2MsaGap>& getGaps() const = 0;
+    const QVector<U2MsaGap>& getGaps() const;
     virtual void removeChars(int pos, int count, U2OpStatus& os) = 0;
 
-    /** Name of the row, can be empty */
-    virtual QString getName() const = 0;
-    virtual void setName(const QString& name) = 0;
+    /** Sets a new gap model. Warning: does not validate the new gap model. */
+    void setGapModel(const QVector<U2MsaGap>& newGapModel);
+
+    /** The row must not contain trailing gaps, this method is used to assure it after the row modification.  */
+    void removeTrailingGaps();
+
+    QString getName() const;
+    void setName(const QString& name);
 
     /** Returns ID of the row in the database. */
-    virtual qint64 getRowId() const = 0;
-    virtual void setRowId(qint64 rowId) = 0;
+    virtual qint64 getRowId() const;
+    virtual void setRowId(qint64 rowId);
+
+    void setSequenceId(const U2DataId& sequenceId);
 
     virtual char charAt(qint64 position) const = 0;
     virtual bool isGap(qint64 position) const = 0;
     virtual bool isLeadingOrTrailingGap(qint64 position) const = 0;
 
-    virtual QByteArray toByteArray(U2OpStatus& os, qint64 length) const = 0;
+    /**
+     * The length must be greater or equal to the row length.
+     * When the specified length is greater, an appropriate number of trailing gaps are appended to the end of the byte array.
+     */
+    QByteArray toByteArray(U2OpStatus& os, int length) const;
 
-    virtual qint64 getRowLengthWithoutTrailing() const = 0;
-    virtual int getCoreStart() const = 0;
-    virtual int getCoreEnd() const = 0;
-    virtual qint64 getCoreLength() const = 0;
+    /** Returns length of the sequence + number of gaps including trailing gaps (if any) */
+    int getRowLength() const;
+
+    /** Returns length of the sequence + number of gaps. Doesn't include trailing gaps. */
+    int getRowLengthWithoutTrailing() const;
+
+    /** Obsolete. Always return the row length (non-inclusive!) */
+    int getCoreEnd() const;
+
+    /** Obsolete. Always returns zero. */
+    int getCoreStart() const;
+
+    /** Obsolete. The length of the row core */
+    qint64 getCoreLength() const;
+
     virtual qint64 getBaseCount(qint64 beforePosition) const = 0;
+
+    /** Packed version: returns the row without leading and trailing gaps */
+    QByteArray getCore() const;
+
+    /** Returns the row the way it is -- with leading and trailing gaps */
+    QByteArray getData() const;
+
+    /** Removes all gaps. Returns true if changed. */
+    bool simplify();
 
     virtual void crop(U2OpStatus& os, qint64 startPosition, qint64 count) = 0;
 
+    /** Adds anotherRow data to this row(ignores trailing gaps), "lengthBefore" must be greater than this row's length. */
+    void append(const MultipleAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
+
+    void append(const MultipleAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os);
+
     virtual bool isDefault() const = 0;
+
+    /** Returns ID of the row sequence in the database. */
+    U2MsaRow getRowDbInfo() const;
+
+    /** Sets database IDs for row and sequence */
+    void setRowDbInfo(const U2MsaRow& dbRow);
 
     /**
      * Checks that the row is equal to 'other' rows.
@@ -157,7 +199,7 @@ public:
 
     /**
      * Compares whole gapped sequences (with inner gaps) but with leading gaps removed.
-     * This method method may be overriden to compare other sequence related properties (like chromatogram in MCA).
+     * This method method may be overridden to compare other sequence related properties (like chromatogram in MCA).
      */
     virtual bool isEqualCore(const MultipleAlignmentRowData& other) const;
 
@@ -175,6 +217,43 @@ public:
 
     const DNAChromatogram& getChromatogram() const;
 
+    DNAChromatogram getGappedChromatogram() const;
+
+    /** Returns the row sequence (without gaps). */
+    const DNASequence& getSequence() const;
+
+    /** Returns the position of @pos, including gaps */
+    qint64 getGappedPosition(int pos) const;
+
+    /**
+     * Sets new sequence and gap model.
+     * If the sequence is empty, the offset is ignored (if any).
+     */
+    void setRowContent(const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel, U2OpStatus& os);
+
+    /**
+     * Sets new sequence and gap model.
+     * If the sequence is empty, the offset is ignored (if any).
+     */
+    void setRowContent(const DNASequence& sequence, const QVector<U2MsaGap>& gapModel, U2OpStatus& os);
+
+    void setRowContent(const QByteArray& bytes, int offset, U2OpStatus& os);
+
+
+protected:
+    /** Invalidates gapped sequence cache. */
+    void invalidateGappedCache() const;
+
+    /** If there are consecutive gaps in the gaps model, merges them into one gap */
+    void mergeConsecutiveGaps();
+
+    /**
+     * Add "offset" of gaps to the beginning of the row
+     * Warning: it is not verified that the row sequence is not empty.
+     */
+    static void addOffsetToGapModel(QVector<U2MsaGap>& gapModel, int offset);
+
+
 public:
     const MultipleAlignmentDataType type;
 
@@ -191,6 +270,21 @@ protected:
 
     /** Optional chromatogram. Defined only for MCA objects today. */
     DNAChromatogram chromatogram;
+
+    /** The row in the database */
+    U2MsaRow initialRowInDb;
+
+    /** Gapped cache offset in the row position.*/
+    mutable int gappedCacheOffset = 0;
+
+    /**
+     * Cached segment of the gapped sequence.
+     * The reason why this cache is efficient:
+     *  Most of the algorithms access the row data sequentially: charAt(i), charAt(i+1), charAt(i+2).
+     *  This access may be very slow for rows with a large gap models: to compute every character the gap model must be re-applied form the very first gap.
+     *  This cache helps to avoid this gaps re-computation on sequential reads.
+     */
+    mutable QByteArray gappedSequenceCache;
 };
 
 inline int MultipleAlignmentRowData::getUngappedLength() const {
@@ -214,6 +308,10 @@ inline bool operator!=(const MultipleAlignmentRow& ptr1, const MultipleAlignment
 }
 inline bool operator!=(const MultipleAlignmentRowData* ptr1, const MultipleAlignmentRow& ptr2) {
     return !(ptr1 == ptr2);
+}
+
+inline const QVector<U2MsaGap>& MultipleAlignmentRowData::getGaps() const {
+    return gaps;
 }
 
 }  // namespace U2

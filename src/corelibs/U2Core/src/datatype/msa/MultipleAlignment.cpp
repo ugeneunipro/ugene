@@ -67,7 +67,7 @@ MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentDataType& _t
 
     setName(name);
     for (int i = 0, n = rows.size(); i < n; i++) {
-        length = qMax(length, rows[i]->getRowLengthWithoutTrailing());  // TODO: implement or replace the method for row length
+        length = qMax(length, (qint64)rows[i]->getRowLengthWithoutTrailing());  // TODO: implement or replace the method for row length
     }
 }
 
