@@ -55,7 +55,6 @@ public:
     const MultipleChromatogramAlignment getMca() const;
     const MultipleChromatogramAlignment getMcaCopy() const;
 
-    const MultipleChromatogramAlignmentRow getMcaRow(int row) const;
     U2SequenceObject* getReferenceObj() const;
 
     // inserts column of gaps with newChar at rowIndex row

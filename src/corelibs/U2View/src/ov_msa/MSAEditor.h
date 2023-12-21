@@ -97,7 +97,7 @@ public:
     void fillMenu(QMenu* m, const QString& type);
 
     // Return alignment row that is displayed on target line in MSAEditor
-    MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
+    MultipleAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
 
     PairwiseAlignmentWidgetsSettings* getPairwiseAlignmentWidgetsSettings() const {
         return pairwiseAlignmentWidgetsSettings;

@@ -137,7 +137,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
         int mcaRowIndex = resultMca->getRowCount() - 1;
 
         if (pairwiseAlignment.isOnComplementaryStrand) {
-            resultMca->getMcaRow(mcaRowIndex)->reverseComplement();
+            resultMca->getRow(mcaRowIndex)->reverseComplement();
         }
 
         const QVector<U2MsaGap>& gaps = pairwiseAlignment.readGaps;
@@ -151,7 +151,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
         CHECK_OP(stateInfo, );
 
         // Add read annotation to the reference.
-        const MultipleChromatogramAlignmentRow readRow = resultMca->getMcaRow(mcaRowIndex);
+        const MultipleAlignmentRow& readRow = resultMca->getRow(mcaRowIndex);
         U2Region region = getReadRegion(readRow, referenceGaps);
         SharedAnnotationData annotation(new AnnotationData());
         annotation->location = getLocation(region, pairwiseAlignment.isOnComplementaryStrand);
@@ -203,7 +203,7 @@ void ComposeResultSubtask::enlargeReferenceByGaps() {
     }
 }
 
-U2Region ComposeResultSubtask::getReadRegion(const MultipleChromatogramAlignmentRow& readRow, const QVector<U2MsaGap>& referenceGapModel) const {
+U2Region ComposeResultSubtask::getReadRegion(const MultipleAlignmentRow& readRow, const QVector<U2MsaGap>& referenceGapModel) const {
     U2Region region(0, readRow->getRowLengthWithoutTrailing());
 
     // calculate read start

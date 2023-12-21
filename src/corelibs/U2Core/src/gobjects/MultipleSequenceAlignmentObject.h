@@ -46,14 +46,13 @@ public:
 
     /** Const getters */
     char charAt(int seqNum, qint64 position) const;
-    const MultipleSequenceAlignmentRow getMsaRow(int row) const;
 
     /**
      * Updates a gap model of the alignment.
      * The map must contain valid row IDs and corresponding gap models.
      */
     void updateGapModel(U2OpStatus& os, const QMap<qint64, QVector<U2MsaGap>>& rowsGapModel);
-    void updateGapModel(const QList<MultipleSequenceAlignmentRow>& sourceRows);
+    void updateGapModel(const QList<MultipleAlignmentRow>& sourceRows);
 
     /** Keeps only given row ids and given column range in the alignment. */
     void crop(const QList<qint64>& rowIds, const U2Region& columnRange);

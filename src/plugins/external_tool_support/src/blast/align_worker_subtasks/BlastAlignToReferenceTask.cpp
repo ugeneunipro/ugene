@@ -250,8 +250,8 @@ QList<Task*> BlastAlignToReferenceTask::onSubTaskFinished(Task* subTask) {
             pairwiseAlignmentSettings->alphabet = msaAlphabet->getId();
             pairwiseAlignmentSettings->inNewWindow = false;
             pairwiseAlignmentSettings->msaRef = pairwiseMsaObject->getEntityRef();
-            pairwiseAlignmentSettings->firstSequenceRef = U2EntityRef(storage->getDbiRef(), pairwiseMsaObject->getMsaRow(0)->getRowDbInfo().sequenceId);
-            pairwiseAlignmentSettings->secondSequenceRef = U2EntityRef(storage->getDbiRef(), pairwiseMsaObject->getMsaRow(1)->getRowDbInfo().sequenceId);
+            pairwiseAlignmentSettings->firstSequenceRef = U2EntityRef(storage->getDbiRef(), pairwiseMsaObject->getRow(0)->getRowDbInfo().sequenceId);
+            pairwiseAlignmentSettings->secondSequenceRef = U2EntityRef(storage->getDbiRef(), pairwiseMsaObject->getRow(1)->getRowDbInfo().sequenceId);
             pairwiseAlignmentSettings->setCustomValue("SW_gapOpen", -10);
             pairwiseAlignmentSettings->setCustomValue("SW_gapExtd", -1);
             pairwiseAlignmentSettings->setCustomValue("SW_scoringMatrix", "dna");
@@ -274,8 +274,8 @@ QList<Task*> BlastAlignToReferenceTask::onSubTaskFinished(Task* subTask) {
         AlignToReferenceResult* alignmentResult = alignmentResultByRead[readKey];
         SAFE_POINT_EXT(alignmentResult != nullptr, setError("Internal error! Read result is not found"), {});
 
-        QVector<U2MsaGap> referenceGaps = pairwiseMsaObject->getMsaRow(0)->getGaps();
-        QVector<U2MsaGap> readGaps = pairwiseMsaObject->getMsaRow(1)->getGaps();
+        QVector<U2MsaGap> referenceGaps = pairwiseMsaObject->getRow(0)->getGaps();
+        QVector<U2MsaGap> readGaps = pairwiseMsaObject->getRow(1)->getGaps();
 
         // Shift reference gaps back to the global coordinates: add a constant offset to all reference gaps.
         int referenceRegionOffset = (int)alignmentResult->pairwiseAlignmentReferenceRegion.startPos;  // Cast is SAFE. We run 2GB check during the start.

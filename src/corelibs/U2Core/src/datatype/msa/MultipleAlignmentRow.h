@@ -43,13 +43,36 @@ enum class U2CORE_EXPORT MultipleAlignmentDataType {
 
 class U2CORE_EXPORT MultipleAlignmentRow {
     friend class MultipleAlignmentData;
-
-protected:
-    MultipleAlignmentRow(MultipleAlignmentRowData* maRowData);
+    friend class MultipleAlignmentRowData;
 
 public:
-    MultipleAlignmentRow() = default;
+    MultipleAlignmentRow(MultipleAlignmentRowData* maRowData);
+    MultipleAlignmentRow(MultipleAlignmentData* maData = nullptr);
+    MultipleAlignmentRow(const MultipleAlignmentDataType& type);
+
+    /** Creates a row in memory. */
+    MultipleAlignmentRow(const U2MsaRow& rowInDb,
+                         const DNAChromatogram& chromatogram,
+                         const DNASequence& sequence,
+                         const QVector<U2MsaGap>& gaps,
+                         MultipleAlignmentData* maData);
+
+    MultipleAlignmentRow(const U2MsaRow& rowInDb,
+                         const DNASequence& sequence,
+                         const QVector<U2MsaGap>& gaps,
+                         MultipleAlignmentData* maData);
+
+    MultipleAlignmentRow(const U2MsaRow& rowInDb,
+                         const QString& rowName,
+                         const DNAChromatogram& chromatogram,
+                         const QByteArray& rawData,
+                         MultipleAlignmentData* maData);
+
+    MultipleAlignmentRow(const MultipleAlignmentRow& row, MultipleAlignmentData* mcaData);
+
     virtual ~MultipleAlignmentRow() = default;
+
+    MultipleAlignmentRow clone() const;
 
     MultipleAlignmentRowData* data() const;
     template<class Derived>
@@ -91,8 +114,17 @@ Derived MultipleAlignmentRow::dynamicCast(U2OpStatus& os) const {
  */
 class U2CORE_EXPORT MultipleAlignmentRowData {
 public:
+    MultipleAlignmentRowData(MultipleAlignmentData* maData = nullptr);
     MultipleAlignmentRowData(const MultipleAlignmentDataType& type);
     MultipleAlignmentRowData(const MultipleAlignmentDataType& type, const DNASequence& sequence, const QVector<U2MsaGap>& gaps);
+    MultipleAlignmentRowData(const U2MsaRow& rowInDb,
+                             const DNAChromatogram& chromatogram,
+                             const DNASequence& sequence,
+                             const QVector<U2MsaGap>& gaps,
+                             MultipleAlignmentData* mcaData);
+    MultipleAlignmentRowData(const U2MsaRow& rowInDb, const QString& rowName, const DNAChromatogram& chromatogram, const QByteArray& rawData, MultipleAlignmentData* maData);
+    MultipleAlignmentRowData(const MultipleAlignmentRow& row, MultipleAlignmentData* maData);
+
     virtual ~MultipleAlignmentRowData() = default;
 
     /** Length of the sequence without gaps */
@@ -198,7 +230,7 @@ public:
 
     void append(const MultipleAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os);
 
-    virtual bool isDefault() const = 0;
+    bool isDefault() const;
 
     /** Returns ID of the row sequence in the database. */
     U2MsaRow getRowDbInfo() const;
@@ -227,9 +259,6 @@ public:
 
     /** Joins sequence chars and gaps into one byte array. */
     QByteArray getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const;
-
-    /** Returns whole alignment data. */
-    virtual MultipleAlignmentData* getMultipleAlignmentData() const = 0;
 
     const DNAChromatogram& getChromatogram() const;
 
@@ -284,6 +313,14 @@ public:
     /** Returns pair of the first and the second most frequent chromatogram characters. */
     QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(int position, bool& hasTwoPeaks) const;
 
+    /**
+     * Returns new row of the specified 'count' length, started from 'pos'.
+     * 'pos' and 'pos + count' can be greater than the row length.
+     * Keeps trailing gaps.
+     */
+    MultipleAlignmentRow mid(int pos, int count, U2OpStatus& os) const;
+
+    MultipleAlignmentRow getExplicitCopy() const;
 
 protected:
     /** Invalidates gapped sequence cache. */
@@ -309,6 +346,13 @@ protected:
 
     /** Gets char from the gapped sequence cache. Updates the cache if needed. */
     char getCharFromCache(int gappedPosition) const;
+
+    // TODO: review if there is a better way to reset parent and remove the method below.
+    friend class MultipleChromatogramAlignment;
+    friend class MultipleChromatogramAlignmentData;
+    friend class MultipleSequenceAlignment;
+    friend class MultipleSequenceAlignmentData;
+    void setParentAlignment(MultipleAlignmentData* alignment);
 
 public:
     const MultipleAlignmentDataType type;
@@ -344,6 +388,8 @@ protected:
 
     // TODO: this field is not used in comparison algorithm. Check its usage and fix or remove the field completely.1
     QVariantMap additionalInfo;
+
+    MultipleAlignmentData* alignment = nullptr;
 };
 
 inline bool operator==(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRow& ptr2) {

@@ -76,8 +76,8 @@ Task::ReportResult GTest_CompareTwoMca::report() {
               ReportResult_Finished);
 
     for (int i = 0; i < rowsNumber1; i++) {
-        const MultipleChromatogramAlignmentRow row1 = mca1->getMcaRow(i);
-        const MultipleChromatogramAlignmentRow row2 = mca2->getMcaRow(i);
+        const MultipleAlignmentRow& row1 = mca1->getRow(i);
+        const MultipleAlignmentRow& row2 = mca2->getRow(i);
         const bool areEqual = row1->isEqualCore(*row2);
         CHECK_EXT(areEqual, setError(QString("The rows with number %1 differ from each other").arg(i)), ReportResult_Finished);
     }

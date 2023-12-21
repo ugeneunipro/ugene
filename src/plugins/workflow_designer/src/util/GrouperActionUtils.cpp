@@ -24,7 +24,6 @@
 #include <QScopedPointer>
 
 #include <U2Core/AnnotationTableObject.h>
-#include <U2Core/QVariantUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -44,7 +43,7 @@ ActionPerformer* GrouperActionUtils::getActionPerformer(const GrouperOutSlot& sl
     QString type = action.getType();
     if (ActionTypes::MERGE_SEQUENCE == type) {
         QString seqSlot = slot.getOutSlotId();
-        MergeSequencePerformer* msp = new MergeSequencePerformer(seqSlot, action, context);
+        auto msp = new MergeSequencePerformer(seqSlot, action, context);
         foreach (ActionPerformer* p, perfs) {
             if (ActionTypes::MERGE_ANNS != p->getActionType()) {
                 continue;
@@ -67,7 +66,7 @@ ActionPerformer* GrouperActionUtils::getActionPerformer(const GrouperOutSlot& sl
         return new MergerStringPerformer(slot.getOutSlotId(), action, context);
     } else if (ActionTypes::MERGE_ANNS == type) {
         QString seqSlot = slot.getAction()->getParameterValue(ActionParameters::SEQ_SLOT).toString();
-        MergeAnnotationPerformer* map = new MergeAnnotationPerformer(slot.getOutSlotId(), action, context);
+        auto map = new MergeAnnotationPerformer(slot.getOutSlotId(), action, context);
         if (!seqSlot.isEmpty()) {
             foreach (ActionPerformer* p, perfs) {
                 if (ActionTypes::MERGE_SEQUENCE != p->getActionType()) {
@@ -129,14 +128,14 @@ bool GrouperActionUtils::equalData(const QString& groupOp, const QVariant& data1
         if (GroupOperations::BY_NAME() == groupOp) {
             return al1->getName() == al2->getName();
         } else {  // id or value
-            if (al1->getMsaRows().size() != al2->getMsaRows().size()) {
+            if (al1->getRows().size() != al2->getRows().size()) {
                 return false;
             }
 
-            QList<MultipleSequenceAlignmentRow> rows1 = al1->getMsaRows();
-            QList<MultipleSequenceAlignmentRow> rows2 = al2->getMsaRows();
-            QList<MultipleSequenceAlignmentRow>::const_iterator it1 = rows1.constBegin();
-            QList<MultipleSequenceAlignmentRow>::const_iterator it2 = rows2.constBegin();
+            QList<MultipleAlignmentRow> rows1 = al1->getRows().toList();
+            QList<MultipleAlignmentRow> rows2 = al2->getRows().toList();
+            QList<MultipleAlignmentRow>::const_iterator it1 = rows1.constBegin();
+            QList<MultipleAlignmentRow>::const_iterator it2 = rows2.constBegin();
             for (; it1 != rows1.constEnd(); ++it1, ++it2) {
                 if (**it1 != **it2) {
                     return false;
@@ -203,7 +202,7 @@ void ActionPerformer::setParameters(const QVariantMap&) {
 }
 
 QVariantMap ActionPerformer::getParameters() const {
-    return QVariantMap();
+    return {};
 }
 
 QString ActionPerformer::getActionType() const {
@@ -295,7 +294,7 @@ bool Sequence2MSAPerformer::applyAction(const QVariant& newData) {
     }
 
     if (unique) {
-        foreach (const MultipleSequenceAlignmentRow& currRow, result->getMsaRows()) {
+        foreach (const MultipleAlignmentRow& currRow, result->getRows()) {
             if ((currRow->getName() == rowName) &&
                 (currRow->getData() == bytes)) {
                 return true;
@@ -341,8 +340,8 @@ bool MergerMSAPerformer::applyAction(const QVariant& newData) {
     }
 
     U2OpStatus2Log os;
-    const QList<MultipleSequenceAlignmentRow> rows = result->getMsaRows();
-    foreach (const MultipleSequenceAlignmentRow& newRow, newAl->getMsaRows()) {
+    const QVector<MultipleAlignmentRow>& rows = result->getRows();
+    foreach (const MultipleAlignmentRow& newRow, newAl->getRows()) {
         if (unique) {
             if (!rows.contains(newRow)) {
                 result->addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);

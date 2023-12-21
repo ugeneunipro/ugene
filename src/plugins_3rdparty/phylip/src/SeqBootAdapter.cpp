@@ -101,7 +101,7 @@ void SeqBoot::generateSequencesFromAlignment(const MultipleSequenceAlignment& ma
     nodep_boot = matrix_char_new(spp, sites);
     for (int k = 0; k < spp; k++) {
         for (int j = 0; j < sites; j++) {
-            const MultipleSequenceAlignmentRow rowK = ma->getMsaRow(k);
+            const MultipleAlignmentRow& rowK = ma->getRow(k);
             nodep_boot[k][j] = rowK->charAt(j);
         }
     }

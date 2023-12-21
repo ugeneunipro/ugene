@@ -113,7 +113,7 @@ U2SequenceObject* MultipleChromatogramAlignmentObject::getReferenceObj() const {
 char MultipleChromatogramAlignmentObject::charAt(int seqNum, qint64 position) const {
     SAFE_POINT(seqNum >= 0 && seqNum < getRowCount(), QString("Invalid sequence num: %1").arg(seqNum), U2Msa::GAP_CHAR);
     SAFE_POINT(position >= 0 && position < getLength(), QString("Invalid position: %1").arg(position), U2Msa::GAP_CHAR);
-    return getMcaRow(seqNum)->charAt(position);
+    return getRow(seqNum)->charAt(position);
 }
 
 const MultipleChromatogramAlignment MultipleChromatogramAlignmentObject::getMca() const {
@@ -122,10 +122,6 @@ const MultipleChromatogramAlignment MultipleChromatogramAlignmentObject::getMca(
 
 const MultipleChromatogramAlignment MultipleChromatogramAlignmentObject::getMcaCopy() const {
     return getMca()->getCopy();
-}
-
-const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentObject::getMcaRow(int row) const {
-    return getRow(row).dynamicCast<MultipleChromatogramAlignmentRow>();
 }
 
 void MultipleChromatogramAlignmentObject::insertGap(const U2Region& rows, int pos, int nGaps) {
@@ -209,7 +205,7 @@ void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int curren
 
 void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os) {
     for (int i = 0; i < getRowCount(); i++) {
-        const MultipleChromatogramAlignmentRow& mcaRow = static_cast<const MultipleChromatogramAlignmentRow&>(getRow(i));
+        const MultipleAlignmentRow& mcaRow = static_cast<const MultipleAlignmentRow&>(getRow(i));
         qint64 ungappedLength = mcaRow->getUngappedLength();
 
         QHash<qint64, char> newCharMap;

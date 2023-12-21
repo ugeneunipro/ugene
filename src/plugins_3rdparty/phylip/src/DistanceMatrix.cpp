@@ -48,7 +48,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment& ma
         this->size = size;
         printdata = false;
 
-        foreach (const MultipleSequenceAlignmentRow& r, ma->getMsaRows()) {
+        foreach (const MultipleAlignmentRow& r, ma->getRows()) {
             const QString& str = r->getName();
             index_map.insert(str, index);
             index++;
@@ -92,7 +92,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment& ma
 
             for (int k = 0; k < spp; k++) {
                 for (int j = 0; j < sites; j++) {
-                    y[k][j] = ma->getMsaRow(k)->charAt(j);
+                    y[k][j] = ma->getRow(k)->charAt(j);
                 }
             }
             makeweights();
@@ -135,7 +135,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment& ma
 
             for (int k = 0; k < spp; k++) {
                 for (int j = 0; j < sites; j++) {
-                    charstate = ma->getMsaRow(k)->charAt(j);
+                    charstate = ma->getRow(k)->charAt(j);
                     switch (charstate) {
                         case 'A':
                             aa = ala;

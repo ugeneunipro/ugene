@@ -267,7 +267,7 @@ void MaSangerOverview::drawReads() {
 
     for (int viewRowIndex = 0; viewRowIndex < rowsCount; viewRowIndex++) {
         int maRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
-        const MultipleChromatogramAlignmentRow row = mca->getMcaRow(maRowIndex);
+        const MultipleAlignmentRow& row = mca->getRow(maRowIndex);
         U2Region coreRegion = row->getCoreRegion();
         U2Region positionRegion = editor->getMaEditorWgt(0)->getBaseWidthController()->getBasesGlobalRange(coreRegion);
 

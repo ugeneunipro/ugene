@@ -33,7 +33,7 @@ class U2CORE_EXPORT MSAUtils : public QObject {
 public:
     static bool equalsIgnoreGaps(const MultipleAlignmentRow& row, int startPos, const QByteArray& pattern, int& alternateLen);
 
-    static int getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pattern, int& alternateLen);
+    static int getPatternSimilarityIgnoreGaps(const MultipleAlignmentRow& row, int startPos, const QByteArray& pattern, int& alternateLen);
 
     static MultipleSequenceAlignment seq2ma(const QList<GObject*>& dnas, U2OpStatus& os, bool useGenbankHeader = false, bool recheckAlphabetFromDataIfRaw = false);
 
@@ -129,7 +129,7 @@ public:
      * Adds all MSA rows from the list into database.
      * Assigns result row and sequence ids to the rows in the list.
      */
-    static void addRowsToMsa(U2EntityRef& msaObjectRef, QList<MultipleSequenceAlignmentRow>& rows, U2OpStatus& os);
+    static void addRowsToMsa(U2EntityRef& msaObjectRef, QList<MultipleAlignmentRow>& rows, U2OpStatus& os);
 };
 
 }  // namespace U2

@@ -281,7 +281,7 @@ Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* db
     //        rname = "*";
     //    }
 
-    //    MultipleSequenceAlignmentRow row;
+    //    MultipleAlignmentRow row;
 
     //    //short flag = fields[1].toShort();
 
@@ -376,7 +376,7 @@ void SAMFormat::storeEntry(IOAdapter* /* io */, const QMap<GObjectType, QList<GO
     // foreach(const MultipleSequenceAlignmentObject* maObj, maList) {
     //     const MultipleSequenceAlignment &ma = maObj->getMAlignment();
     //     QByteArray rname(ma.getName().replace(QRegExp("\\s|\\t"), "_").toLatin1());
-    //     foreach(MultipleSequenceAlignmentRow row, ma.getRows()) {
+    //     foreach(MultipleAlignmentRow row, ma.getRows()) {
     //         block.clear();
     //         //const QByteArray &core = row.getCore();
     //         QByteArray qname = QString(row.getName()).replace(QRegExp("\\s|\\t"), "_").toLatin1();

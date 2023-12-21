@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleChromatogramAlignmentRow.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include "ov_msa/SequenceAreaRenderer.h"
 
@@ -49,7 +49,7 @@ public:
 private:
     int drawRow(QPainter& painter, const MultipleAlignment& mca, int rowIndex, const U2Region& region, int xStart, int yStart) const override;
 
-    void drawChromatogram(QPainter& painter, const MultipleChromatogramAlignmentRow& row, const U2Region& visibleRange, int xStart) const;
+    void drawChromatogram(QPainter& painter, const MultipleAlignmentRow& row, const U2Region& visibleRange, int xStart) const;
 
     QColor getBaseColor(char base) const;
 

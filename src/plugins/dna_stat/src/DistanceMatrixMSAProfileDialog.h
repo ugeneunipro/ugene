@@ -91,7 +91,7 @@ public:
     QString generateReport() const;
     virtual bool isReportingEnabled() const;
 
-    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleSequenceAlignmentRow>& rows, QFile* f);
+    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleAlignmentRow>& rows, QFile* f);
 
     QList<Task*> createStatisticsDocument(Task* subTask);
 

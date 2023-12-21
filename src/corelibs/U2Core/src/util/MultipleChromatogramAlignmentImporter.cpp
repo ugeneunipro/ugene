@@ -70,7 +70,7 @@ MultipleChromatogramAlignmentObject* MultipleChromatogramAlignmentImporter::crea
     SAFE_POINT_EXT(rows.size() == mca->getRowCount(), os.setError(QString("Unexpected error on MCA rows import")), nullptr);
 
     for (int i = 0, n = mca->getRowCount(); i < n; ++i) {
-        mca->getMcaRow(i)->setRowDbInfo(rows.at(i));
+        mca->getRow(i)->setRowDbInfo(rows.at(i));
     }
 
     return new MultipleChromatogramAlignmentObject(mca->getName(), U2EntityRef(dbiRef, dbMca.id), QVariantMap(), mca);
@@ -130,7 +130,7 @@ QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildO
     SAFE_POINT_EXT(alphabet != nullptr, os.setError("MCA alphabet is NULL"), mcaRowsDatabaseData);
     const U2AlphabetId alphabetId = alphabet->getId();
 
-    foreach (const MultipleChromatogramAlignmentRow& row, mca->getMcaRows()) {
+    foreach (const MultipleAlignmentRow& row, mca->getRows()) {
         McaRowDatabaseData mcaRowDatabaseData;
 
         mcaRowDatabaseData.chromatogram = importChromatogram(os, connection, folder, row->getChromatogram());

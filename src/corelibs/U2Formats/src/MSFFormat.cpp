@@ -194,7 +194,7 @@ void MSFFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObj
     U2OpStatus2Log seqCheckOs;
     const int numRows = al->getRowCount();
     for (int i = 0; i < numRows; i++) {
-        const MultipleSequenceAlignmentRow row = al->getMsaRow(i);
+        const MultipleAlignmentRow& row = al->getRow(i);
         const int expectedCheckSum = msfRows[i].checksum;
         const int sequenceCheckSum = getCheckSum(row->toByteArray(seqCheckOs, al->getLength()));
         if (expectedCheckSum < CHECK_SUM_MOD && sequenceCheckSum != expectedCheckSum) {
@@ -280,7 +280,7 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
     // Make row names unique
     QMap<qint64, QString> uniqueRowNames;
     int maxNameLen = 0;
-    foreach (const MultipleSequenceAlignmentRow& row, msa->getMsaRows()) {
+    foreach (const MultipleAlignmentRow& row, msa->getRows()) {
         QString rolledRowName = rollRowName(row->getName().replace(' ', '_'), uniqueRowNames.values());
         uniqueRowNames.insert(row->getRowId(), rolledRowName);
         maxNameLen = qMax(maxNameLen, uniqueRowNames.last().length());
@@ -290,7 +290,7 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
     int maLen = msa->getLength();
     int checkSum = 0;
     QMap<qint64, int> checkSums;
-    foreach (const MultipleSequenceAlignmentRow& row, msa->getMsaRows()) {
+    foreach (const MultipleAlignmentRow& row, msa->getRows()) {
         QByteArray sequence = row->toByteArray(os, maLen).replace(U2Msa::GAP_CHAR, '.');
         int seqCheckSum = getCheckSum(sequence);
         checkSums.insert(row->getRowId(), seqCheckSum);
@@ -312,7 +312,7 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
 
     // Write per-row info.
     int maxCheckSumLen = 4;
-    foreach (const MultipleSequenceAlignmentRow& row, msa->getMsaRows()) {
+    foreach (const MultipleAlignmentRow& row, msa->getRows()) {
         line = " " + NAME_FIELD;
         line += " " + uniqueRowNames[row->getRowId()].leftJustified(maxNameLen + 1);
         line += "  " + LEN_FIELD;
@@ -350,10 +350,10 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
         QList<QByteArray> sequenceList = walker.nextData(CHARS_IN_ROW, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = sequenceList.constBegin();
-        QList<MultipleSequenceAlignmentRow> msaRowList = msa->getMsaRows();
-        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = msaRowList.constBegin();
+        QList<MultipleAlignmentRow> msaRowList = msa->getRows().toList();
+        QList<MultipleAlignmentRow>::ConstIterator ri = msaRowList.constBegin();
         for (; si != sequenceList.constEnd(); si++, ri++) {
-            const MultipleSequenceAlignmentRow& row = *ri;
+            const MultipleAlignmentRow& row = *ri;
             QString rowName = uniqueRowNames[row->getRowId()].leftJustified(maxNameLen + 1);
             for (int j = 0; j < CHARS_IN_ROW && i + j < maLen; j += CHARS_IN_WORD) {
                 rowName += ' ';

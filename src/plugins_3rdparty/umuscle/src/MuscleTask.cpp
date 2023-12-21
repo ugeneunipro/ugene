@@ -187,7 +187,7 @@ void MuscleTask::doAlign(bool refine) {
         QByteArray gapSeq(resultSubMA->getLength(), U2Msa::GAP_CHAR);
         for (int i = 0, n = nSeq; i < n; i++) {
             if (!existID[i]) {
-                QString rowName = inputMA->getMsaRow(i)->getName();
+                QString rowName = inputMA->getRow(i)->getName();
                 if (config.stableMode) {
                     resultSubMA->addRow(rowName, gapSeq, i);
                 } else {
@@ -203,13 +203,13 @@ void MuscleTask::doAlign(bool refine) {
 
         if (config.alignRegion && config.regionToAlign.length != inputMA->getLength()) {
             for (int i = 0, n = inputMA->getRowCount(); i < n; i++) {
-                const MultipleSequenceAlignmentRow row = inputMA->getMsaRow(ids[i]);
+                const MultipleAlignmentRow& row = inputMA->getRow(ids[i]);
                 resultMA->addRow(row->getName(), emptySeq);
             }
             if (config.regionToAlign.startPos != 0) {
                 for (int i = 0; i < nSeq; i++) {
                     int regionLen = config.regionToAlign.startPos;
-                    const MultipleSequenceAlignmentRow inputRow = inputMA->getMsaRow(ids[i])->mid(0, regionLen, os);
+                    const MultipleAlignmentRow& inputRow = inputMA->getRow(ids[i])->mid(0, regionLen, os);
                     resultMA->appendChars(i, 0, inputRow->toByteArray(os, regionLen).constData(), regionLen);
                 }
             }
@@ -219,7 +219,7 @@ void MuscleTask::doAlign(bool refine) {
                 int subStart = config.regionToAlign.endPos();
                 int subLen = inputMA->getLength() - config.regionToAlign.endPos();
                 for (int i = 0; i < nSeq; i++) {
-                    const MultipleSequenceAlignmentRow inputRow = inputMA->getMsaRow(ids[i])->mid(subStart, subLen, os);
+                    const MultipleAlignmentRow& inputRow = inputMA->getRow(ids[i])->mid(subStart, subLen, os);
                     resultMA->appendChars(i, resultLen, inputRow->toByteArray(os, subLen).constData(), subLen);
                 }
             }
@@ -486,8 +486,8 @@ Task::ReportResult MuscleGObjectTask::report() {
 
         QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
         for (int i = 0, n = muscleTask->resultMA->getRowCount(); i < n; ++i) {
-            qint64 rowId = muscleTask->resultMA->getMsaRow(i)->getRowDbInfo().rowId;
-            const QVector<U2MsaGap>& newGapModel = muscleTask->resultMA->getMsaRow(i)->getGaps();
+            qint64 rowId = muscleTask->resultMA->getRow(i)->getRowDbInfo().rowId;
+            const QVector<U2MsaGap>& newGapModel = muscleTask->resultMA->getRow(i)->getGaps();
             rowsGapModel.insert(rowId, newGapModel);
         }
 

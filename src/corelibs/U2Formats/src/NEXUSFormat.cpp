@@ -797,17 +797,17 @@ void writeMAligment(const MultipleSequenceAlignment& ma, bool simpleName, IOAdap
 
     tabs.append(tab);
 
-    const QList<MultipleSequenceAlignmentRow> rows = ma->getMsaRows();
+    const QList<MultipleAlignmentRow> rows = ma->getRows().toList();
 
     int nameMaxLen = 0;
-    foreach (const MultipleSequenceAlignmentRow& row, rows) {
+    foreach (const MultipleAlignmentRow& row, rows) {
         if (row->getName().size() > nameMaxLen) {
             nameMaxLen = row->getName().size();
         }
     }
     nameMaxLen += 2;  // quotes may appear
 
-    foreach (const MultipleSequenceAlignmentRow& row, rows) {
+    foreach (const MultipleAlignmentRow& row, rows) {
         QString name = row->getName();
 
         if (name.contains(QRegExp("\\s|\\W"))) {

@@ -640,7 +640,7 @@ void MsaDbiUtils::replaceCharsInRow(QByteArray& sequence, QVector<U2MsaGap>& gap
     }
 }
 
-void MsaDbiUtils::cropCharsFromRow(MultipleSequenceAlignmentRow& alRow, qint64 pos, qint64 count) {
+void MsaDbiUtils::cropCharsFromRow(MultipleAlignmentRow& alRow, qint64 pos, qint64 count) {
     SAFE_POINT(pos >= 0, "Incorrect position!", );
     SAFE_POINT(count > 0, "Incorrect characters count!", );
 
@@ -749,7 +749,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
         // Update data for rows with the same row and sequence IDs
         if (newRowsIds.contains(currentRow.rowId)) {
             // Update sequence and row info
-            U2MsaRow newRow = ma->getMsaRowByRowId(currentRow.rowId, os)->getRowDbInfo();
+            U2MsaRow newRow = ma->getRowByRowId(currentRow.rowId, os)->getRowDbInfo();
             CHECK_OP(os, );
 
             if (newRow.sequenceId != currentRow.sequenceId || newRow.chromatogramId != currentRow.chromatogramId) {
@@ -761,7 +761,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
                 continue;
             }
 
-            const MultipleSequenceAlignmentRow& row = ma->getMsaRowByRowId(newRow.rowId, os);
+            const MultipleAlignmentRow& row = ma->getRowByRowId(newRow.rowId, os);
             CHECK_OP(os, );
 
             DNASequence sequence = row->getSequence();
@@ -790,7 +790,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
     // remember the rows order
     QList<qint64> rowsOrder;
     for (int i = 0, n = ma->getRowCount(); i < n; ++i) {
-        const MultipleSequenceAlignmentRow alRow = ma->getMsaRow(i);
+        const MultipleAlignmentRow& alRow = ma->getRow(i);
         U2MsaRow row = alRow->getRowDbInfo();
 
         if (row.sequenceId.isEmpty() || !currentRowIds.contains(row.rowId)) {
@@ -1184,7 +1184,7 @@ void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64>& rowIds, c
 
     // Crop or remove each row.
     for (int i = 0, n = al->getRowCount(); i < n; i++) {
-        MultipleSequenceAlignmentRow row = al->getMsaRow(i)->getExplicitCopy();
+        MultipleAlignmentRow row = al->getRow(i)->getExplicitCopy();
         qint64 rowId = row->getRowId();
         if (!rowIds.contains(rowId)) {
             MsaDbiUtils::removeRow(msaRef, row->getRowId(), os);

@@ -59,7 +59,7 @@ McaEditor::McaEditor(const QString& viewName,
     initFont();
 
     U2OpStatusImpl os;
-    foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
+    foreach (const MultipleAlignmentRow& row, obj->getMca()->getRows()) {
         chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), true);
     }
 

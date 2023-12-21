@@ -235,7 +235,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
                         }
                     }
                     if (!addedRowIndexes.isEmpty()) {
-                        QList<MultipleSequenceAlignmentRow> addedRows;
+                        QList<MultipleAlignmentRow> addedRows;
                         for (int i = 0; i < addedRowIndexes.size(); i++) {
                             int rowIndex = addedRowIndexes[i];
                             addedRows << resultMsa->getRow(rowIndex);
@@ -259,8 +259,8 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
 
                     QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
                     for (int i = 0, n = resultMsa->getRowCount(); i < n; ++i) {
-                        qint64 rowId = resultMsa->getMsaRow(i)->getRowDbInfo().rowId;
-                        const QVector<U2MsaGap>& newGapModel = resultMsa->getMsaRow(i)->getGaps();
+                        qint64 rowId = resultMsa->getRow(i)->getRowDbInfo().rowId;
+                        const QVector<U2MsaGap>& newGapModel = resultMsa->getRow(i)->getGaps();
                         rowsGapModel.insert(rowId, newGapModel);
                     }
 
@@ -379,7 +379,7 @@ QList<Task*> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
         // Set the result alignment to the alignment object of the current document
         mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->updateGapModel(clustalOSupportTask->getResultAlignment()->getMsaRows());
+        mAObject->updateGapModel(clustalOSupportTask->getResultAlignment()->getRows().toList());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

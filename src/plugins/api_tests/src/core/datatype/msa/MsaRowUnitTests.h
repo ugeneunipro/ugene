@@ -29,13 +29,13 @@ namespace U2 {
 
 class MsaRowTestUtils {
 public:
-    static MultipleSequenceAlignmentRow initTestRowWithGaps(MultipleSequenceAlignment& ma);
-    static MultipleSequenceAlignmentRow initTestRowWithGapsInMiddle(MultipleSequenceAlignment& ma);
-    static MultipleSequenceAlignmentRow initTestRowWithTrailingGaps(MultipleSequenceAlignment& ma);
-    static MultipleSequenceAlignmentRow initTestRowWithoutGaps(MultipleSequenceAlignment& ma);
-    static MultipleSequenceAlignmentRow initTestRowForModification(MultipleSequenceAlignment& ma);
-    static MultipleSequenceAlignmentRow initEmptyRow(MultipleSequenceAlignment& ma);
-    static QString getRowData(const MultipleSequenceAlignmentRow& row);
+    static MultipleAlignmentRow initTestRowWithGaps(MultipleSequenceAlignment& ma);
+    static MultipleAlignmentRow initTestRowWithGapsInMiddle(MultipleSequenceAlignment& ma);
+    static MultipleAlignmentRow initTestRowWithTrailingGaps(MultipleSequenceAlignment& ma);
+    static MultipleAlignmentRow initTestRowWithoutGaps(MultipleSequenceAlignment& ma);
+    static MultipleAlignmentRow initTestRowForModification(MultipleSequenceAlignment& ma);
+    static MultipleAlignmentRow initEmptyRow(MultipleSequenceAlignment& ma);
+    static QString getRowData(const MultipleAlignmentRow& row);
 
     static const int rowWithGapsLength;
     static const int rowWithGapsInMiddleLength;

@@ -30,7 +30,7 @@ namespace U2 {
 
 class RowWalker {
 public:
-    RowWalker(const MultipleSequenceAlignmentRow& row, char gapChar)
+    RowWalker(const MultipleAlignmentRow& row, char gapChar)
         : row(row), gaps(row->getGaps()), seqPos(0), gapChar(gapChar) {
     }
 
@@ -105,7 +105,7 @@ private:
     }
 
 private:
-    const MultipleSequenceAlignmentRow row;
+    const MultipleAlignmentRow row;
     QVector<U2MsaGap> gaps;
     int seqPos;
     const char gapChar;
@@ -117,7 +117,7 @@ private:
 MultipleSequenceAlignmentWalker::MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment& msa, char gapChar)
     : msa(msa), currentOffset(0) {
     for (int i = 0; i < msa->getRowCount(); i++) {
-        rowWalkerList << new RowWalker(msa->getMsaRow(i), gapChar);
+        rowWalkerList << new RowWalker(msa->getRow(i), gapChar);
     }
 }
 

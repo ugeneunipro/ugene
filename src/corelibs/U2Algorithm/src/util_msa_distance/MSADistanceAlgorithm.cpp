@@ -115,7 +115,7 @@ MSADistanceMatrix::MSADistanceMatrix(const MultipleSequenceAlignment& ma, bool _
     for (int i = 0; i < nSeq; i++) {
         table.append(QVarLengthArray<int>(i + 1));
         memset(table[i].data(), 0, (i + 1) * sizeof(int));
-        seqsUngappedLenghts.append(ma->getMsaRow(i)->getUngappedLength());
+        seqsUngappedLenghts.append(ma->getRow(i)->getUngappedLength());
     }
 }
 

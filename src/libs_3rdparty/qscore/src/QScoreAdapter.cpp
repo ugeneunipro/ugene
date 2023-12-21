@@ -8,7 +8,7 @@ namespace U2 {
   static void convertMAlignment2MSA(MSA_QScore& muscleMSA, const MultipleSequenceAlignment& ma){
 
     for (int i=0, n = ma->getRowCount(); i<n; i++) {
-      const MultipleSequenceAlignmentRow aseq = ma->getMsaRow(i);
+      const MultipleAlignmentRow& aseq = ma->getRow(i);
 
       char *sequence = new char[ma->getLength() + 1];
       for(int position = 0;position < ma->getLength();position++) {
