@@ -83,86 +83,20 @@ protected:
 
 public:
     /**
-     * Inserts 'count' gaps into the specified position, if possible.
-     * If position is bigger than the row length or negative, does nothing.
-     * Returns incorrect status if 'count' is negative.
-     */
-    void insertGaps(int pos, int count, U2OpStatus& os);
-
-    /**
-     * Removes up to 'count' characters starting from the specified position
-     * If position is bigger than the row length, does nothing.
-     * Returns incorrect status if 'pos' or 'count' is negative.
-     */
-    void removeChars(int pos, int count, U2OpStatus& os) override;
-
-    /**
-     * Returns a character in row at the specified position.
-     * If the specified position is outside the row bounds, returns a gap.
-     */
-    char charAt(qint64 position) const override;
-    bool isGap(qint64 pos) const override;
-    bool isLeadingOrTrailingGap(qint64 pos) const override;
-
-    /**
-     * Returns base count located leftward to the 'before' position in the alignment.
-     */
-    qint64 getBaseCount(qint64 before) const override;
-
-    bool isDefault() const override;
-
-    /** Checks that 'other' is MultipleSequenceAlignmentRowData and calls the MSA version of the method. */
-    bool isEqual(const MultipleAlignmentRowData& other) const override;
-
-    /** Compares 2 rows. Rows are equal if their names, sequences and gap models are equal. */
-    bool isEqual(const MultipleSequenceAlignmentRowData& other) const;
-
-    /**
-     * Crops the row -> keeps only specified region in the row.
-     * 'pos' and 'pos + count' can be greater than the row length.
-     * Keeps trailing gaps.
-     */
-    void crop(U2OpStatus& os, qint64 startPosition, qint64 count) override;
-
-    /**
      * Returns new row of the specified 'count' length, started from 'pos'.
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
     MultipleSequenceAlignmentRow mid(int pos, int count, U2OpStatus& os) const;
 
-    /** Converts the row sequence to upper case */
-    void toUpperCase();
-
-    /**
-     * Replaces all occurrences of 'origChar' by 'resultChar'.
-     * The 'origChar' must be a non-gap character.
-     * The 'resultChar' can be a gap, gaps model is recalculated in this case.
-     */
-    void replaceChars(char origChar, char resultChar, U2OpStatus& os);
-
     MultipleSequenceAlignmentRow getExplicitCopy() const;
 
     MultipleAlignmentData* getMultipleAlignmentData() const override;
 
+    bool isDefault() const override;
 private:
-    /** Gets the length of all gaps */
-    int getGapsLength() const;
-
-    /**
-     * Calculates start and end position in the sequence,
-     * depending on the start position in the row and the 'count' character from it
-     */
-    void getStartAndEndSequencePositions(int pos, int count, int& startPosInSeq, int& endPosInSeq);
-
-    /** Removing gaps from the row between position 'pos' and 'pos + count' */
-    void removeGapsFromGapModel(U2OpStatus& os, int pos, int count);
-
     void setParentAlignment(const MultipleSequenceAlignment& msa);
     void setParentAlignment(MultipleSequenceAlignmentData* msaData);
-
-    /** Gets char from the gapped sequence cache. Updates the cache if needed. */
-    char getCharFromCache(int gappedPosition) const;
 
     MultipleSequenceAlignmentData* alignment = nullptr;
 };

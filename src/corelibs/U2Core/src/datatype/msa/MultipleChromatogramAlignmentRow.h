@@ -83,123 +83,24 @@ protected:
 
 public:
     /**
-     * Inserts 'count' gaps into the specified position, if possible.
-     * If position is bigger than the row length or negative, does nothing.
-     * Returns incorrect status if 'count' is negative.
-     */
-    void insertGaps(int pos, int count, U2OpStatus& os);
-
-    /**
-     * Removes up to 'count' characters starting from the specified position
-     * If position is bigger than the row length, does nothing.
-     * Returns incorrect status if 'pos' or 'count' is negative.
-     */
-    void removeChars(int pos, int count, U2OpStatus& os);
-
-    /**
-     * Returns a character in row at the specified position.
-     * If the specified position is outside the row bounds, returns a gap.
-     */
-    char charAt(qint64 position) const;
-    bool isGap(qint64 position) const;
-    bool isLeadingOrTrailingGap(qint64 position) const;
-
-    /** Length of the sequence without gaps */
-    inline int getUngappedLength() const;
-
-    /**
-     * If character at 'pos' position is not a gap, returns the char position in sequence.
-     * Otherwise returns '-1'.
-     */
-    int getUngappedPosition(int pos) const;
-
-    /**
-     * Returns base count located leftward to the 'before' position in the alignment.
-     */
-    qint64 getBaseCount(qint64 before) const;
-
-    /** Returns pair of the first and the second (by peak height) chromatogram trace characted in the @pos position */
-    QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(qint64 position, bool& hasTwoPeaks) const;
-
-    /** Adds sequence chromatogram equality check to the base MultipleAlignmentRowData::isEqualCore method. */
-    bool isEqualCore(const MultipleAlignmentRowData& other) const override;
-
-    bool isDefault() const override;
-
-    /** Checks that 'other' is MultipleChromatogramAlignmentRowData and calls the MCA version of the method. */
-    bool isEqual(const MultipleAlignmentRowData& other) const override;
-
-    /** Compares 2 rows. Rows are equal if their names, sequences, no-leading-gap models and chromatograms are equal. */
-    bool isEqual(const MultipleChromatogramAlignmentRowData& other) const;
-
-    /**
-     * Crops the row -> keeps only specified region in the row.
-     * 'pos' and 'pos + count' can be greater than the row length.
-     * Keeps trailing gaps.
-     */
-    void crop(U2OpStatus& os, qint64 startPosition, qint64 count) override;
-
-    /**
      * Returns new row of the specified 'count' length, started from 'pos'.
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
     MultipleChromatogramAlignmentRow mid(int pos, int count, U2OpStatus& os) const;
 
-    /** Converts the row sequence to upper case */
-    void toUpperCase();
-
-    /**
-     * Replaces all occurrences of 'origChar' by 'resultChar'.
-     * The 'origChar' must be a non-gap character.
-     * The 'resultChar' can be a gap, gaps model is recalculated in this case.
-     */
-    void replaceChars(char origChar, char resultChar, U2OpStatus& os);
-
     MultipleChromatogramAlignmentRow getExplicitCopy() const;
 
     MultipleAlignmentData* getMultipleAlignmentData() const override;
 
-    void setAdditionalInfo(const QVariantMap& additionalInfo);
-    QVariantMap getAdditionalInfo() const;
-
-    McaRowMemoryData getRowMemoryData() const;
-
-    void reverse();
-    void complement();
-    void reverseComplement();
-
-    bool isReversed() const;
-    bool isComplemented() const override;
+    bool isDefault() const override;
 
 private:
-    /** Gets the length of all gaps */
-    inline int getGapsLength() const;
-
-    /**
-     * Calculates start and end position in the sequence,
-     * depending on the start position in the row and the 'count' character from it
-     */
-    void getStartAndEndSequencePositions(int pos, int count, int& startPosInSeq, int& endPosInSeq);
-
-    /** Removing gaps from the row between position 'pos' and 'pos + count' */
-    void removeGapsFromGapModel(U2OpStatus& os, int pos, int count);
-
     void setParentAlignment(const MultipleChromatogramAlignment& msa);
     void setParentAlignment(MultipleChromatogramAlignmentData* mcaData);
 
     MultipleChromatogramAlignmentData* alignment;
-
-    QVariantMap additionalInfo;
 };
-
-inline int MultipleChromatogramAlignmentRowData::getUngappedLength() const {
-    return sequence.length();
-}
-
-inline int MultipleChromatogramAlignmentRowData::getGapsLength() const {
-    return MsaRowUtils::getGapsLength(gaps);
-}
 
 inline bool operator==(const MultipleChromatogramAlignmentRow& ptr1, const MultipleChromatogramAlignmentRow& ptr2) {
     return *ptr1 == *ptr2;
