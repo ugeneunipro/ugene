@@ -65,8 +65,12 @@ private:
     QString seqName;
     QString docName;
     QString resultDocContextName;
-    bool isCircular;
-    CustomPatternAnnotationTask* searchTask;
+    bool isCircular = false;
+    // How many unique features was found
+    // Two features with the same name couns as one
+    int expectedUniqueFeaturesFound = -1;
+    CustomPatternAnnotationTask* searchTask = nullptr;;
+    AnnotationTableObject* ao = nullptr;
 };
 
 class GTest_GeneByGeneApproach : public XmlTest {

@@ -39,13 +39,18 @@ class AnnotationTableObject;
 
 class PlasmidFeatureTypes {
 public:
-    static const QString GENE;
-    static const QString FEATURE;
-    static const QString ORIGIN;
-    static const QString PRIMER;
     static const QString PROMOTER;
-    static const QString REGULATORY;
     static const QString TERMINATOR;
+    static const QString REGULATORY_SEQUENCE;
+    static const QString REPLICATION_ORIGIN;
+    static const QString SELECTABLE_MARKER;
+    static const QString REPORTER_GENE;
+    static const QString TWO_HYBRID_GENE;
+    static const QString LOCALIZATION_SEQUENCE;
+    static const QString AFFINITY_TAG;
+    static const QString GENE;
+    static const QString PRIMER;
+    static const QString MISCELLANEOUS;
 };
 
 struct FeaturePattern {

@@ -40,13 +40,6 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 // CustomPatternAnnotationTask
 
-const QString PlasmidFeatureTypes::FEATURE("Feature");
-const QString PlasmidFeatureTypes::GENE("Gene");
-const QString PlasmidFeatureTypes::ORIGIN("Origin");
-const QString PlasmidFeatureTypes::PRIMER("Primer");
-const QString PlasmidFeatureTypes::PROMOTER("Promoter");
-const QString PlasmidFeatureTypes::REGULATORY("Regulatory");
-const QString PlasmidFeatureTypes::TERMINATOR("Terminator");
 
 CustomPatternAnnotationTask::CustomPatternAnnotationTask(AnnotationTableObject* aObj, const U2::U2EntityRef& entityRef, const SharedFeatureStore& store, const QStringList& filteredFeatureTypes)
     : Task(tr("Custom pattern annotation"), TaskFlags_NR_FOSCOE), dnaObj("ref", entityRef), annotationTableObject(aObj),
@@ -67,13 +60,11 @@ void CustomPatternAnnotationTask::prepare() {
     if (patterns.length() == 0) {
         return;
     }
-    char unknownChar = 'N';
-
     if (sequence.length() < featureStore->getMinFeatureSize()) {
         return;
     }
 
-    index = QSharedPointer<SArrayIndex>(new SArrayIndex(sequence.constData(), quint32(sequence.length()), quint32(featureStore->getMinFeatureSize()), stateInfo, unknownChar));
+    index = QSharedPointer<SArrayIndex>(new SArrayIndex(sequence.constData(), quint32(sequence.length()), quint32(featureStore->getMinFeatureSize()), stateInfo));
 
     if (hasError()) {
         return;
@@ -92,7 +83,6 @@ void CustomPatternAnnotationTask::prepare() {
         }
 
         SArrayBasedSearchSettings settings;
-        settings.unknownChar = unknownChar;
         settings.query = pattern.sequence;
 
         SArrayBasedFindTask* task = new SArrayBasedFindTask(index.data(), settings);
@@ -184,24 +174,19 @@ void FeatureStore::load() {
     }
 
     int minPatternSize = INT_MAX;
-
     while (!inputFile.atEnd()) {
         QByteArray line = inputFile.readLine().trimmed();
-        QList<QByteArray> lineItems = line.split('\t');
+        CHECK_CONTINUE(!line.startsWith("#"));
 
-        if (line.startsWith("#")) {
-            continue;
-        }
+        QList<QByteArray> lineItems = line.split(',');
 
-        assert(lineItems.size() == 3);
-        if (lineItems.size() != 3) {
-            break;
-        }
+        //Each line has four elements - name, feature type and sequence
+        static constexpr const int ELEMENTS_NUMBER = 3;
+        SAFE_POINT(lineItems.size() == ELEMENTS_NUMBER, "Expected three elements", );
 
         FeaturePattern pattern;
-
-        pattern.name = lineItems[0].trimmed();
-        pattern.type = lineItems[1].trimmed();
+        pattern.name = lineItems[0];
+        pattern.type = lineItems[1];
         pattern.sequence = lineItems[2].toUpper();
         if (pattern.sequence.length() < minPatternSize) {
             minPatternSize = pattern.sequence.length();
