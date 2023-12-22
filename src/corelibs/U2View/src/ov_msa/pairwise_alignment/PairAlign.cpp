@@ -62,7 +62,7 @@
 #define DuplicateSequenceWarning 1
 
 inline U2::U2DataId getSequenceIdByRowId(U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus& os) {
-    const U2::MultipleSequenceAlignmentRow row = msa->getMaObject()->getMsa()->getMsaRowByRowId(rowId, os);
+    const U2::MultipleAlignmentRow& row = msa->getMaObject()->getMsa()->getRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
     return row->getRowDbInfo().sequenceId;
 }
@@ -300,8 +300,8 @@ void PairAlign::updatePercentOfSimilarity() {
     U2OpStatusImpl os;
     MultipleSequenceAlignment ma;
     const MultipleSequenceAlignment currentAlignment = msa->getMaObject()->getMultipleAlignment();
-    ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
-    ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
+    ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
+    ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
     distanceCalcTask = distanceFactory->createAlgorithm(ma);
     distanceCalcTask->setExcludeGaps(true);
     connect(distanceCalcTask, SIGNAL(si_stateChanged()), SLOT(sl_distanceCalculated()));

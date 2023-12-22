@@ -77,7 +77,7 @@ void FormatsMsaClipboardTask::prepare() {
         CHECK_OP(stateInfo, )
 
         for (int i = 0; i < msa->getRowCount(); i++) {
-            const MultipleSequenceAlignmentRow& row = msa->getMsaRow(i);
+            const MultipleAlignmentRow& row = msa->getRow(i);
             if (i > 0) {
                 resultText.append("\n");
             }

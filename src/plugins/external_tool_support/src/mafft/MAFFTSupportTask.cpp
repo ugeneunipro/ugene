@@ -215,8 +215,8 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
 
                 QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
                 for (int i = 0, n = resultMA->getRowCount(); i < n; ++i) {
-                    qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
-                    const QVector<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGaps();
+                    qint64 rowId = resultMA->getRow(i)->getRowDbInfo().rowId;
+                    const QVector<U2MsaGap>& newGapModel = resultMA->getRow(i)->getGaps();
                     rowsGapModel.insert(rowId, newGapModel);
                 }
 
@@ -348,7 +348,7 @@ QList<Task*> MAFFTWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask
         // Set the result alignment to the alignment object of the current document
         mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->updateGapModel(mAFFTSupportTask->resultMA->getMsaRows());
+        mAObject->updateGapModel(mAFFTSupportTask->resultMA->getRows().toList());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

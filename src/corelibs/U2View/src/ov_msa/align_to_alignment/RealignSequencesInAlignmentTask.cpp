@@ -88,7 +88,7 @@ U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
     locker = nullptr;
     U2UseCommonUserModStep modStep(originalMsaObject->getEntityRef(), stateInfo);
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
-    originalMsaObject->updateGapModel(msaObject->getMsa()->getMsaRows());
+    originalMsaObject->updateGapModel(msaObject->getMsa()->getRows().toList());
     QDir tmpDir(extractedSequencesDirUrl);
     foreach (const QString& file, tmpDir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries)) {
         tmpDir.remove(file);

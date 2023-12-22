@@ -33,7 +33,7 @@ namespace U2 {
 
 class MultipleChromatogramAlignment;
 class MultipleChromatogramAlignmentObject;
-class MultipleChromatogramAlignmentRow;
+class MultipleAlignmentRow;
 
 namespace Workflow {
 
@@ -65,7 +65,7 @@ private:
                                    const QVector<U2MsaGap>& mergedReferenceGaps);
     void createAlignmentAndAnnotations();
     void enlargeReferenceByGaps();
-    U2Region getReadRegion(const MultipleChromatogramAlignmentRow& readRow, const QVector<U2MsaGap>& referenceGapModel) const;
+    U2Region getReadRegion(const MultipleAlignmentRow& readRow, const QVector<U2MsaGap>& referenceGapModel) const;
     U2Location getLocation(const U2Region& region, bool isComplement);
 
 private:

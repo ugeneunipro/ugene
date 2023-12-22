@@ -173,7 +173,7 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
                 break;
             }
             if (rowIdx != -1) {
-                const MultipleSequenceAlignmentRow row = al->getMsaRow(rowIdx);
+                const MultipleAlignmentRow& row = al->getRow(rowIdx);
                 if (row->getName() != name) {
                     os.setError(ClustalWAlnFormat::tr("Sequence names are not matched: '%1' vs '%2', row index: %3").arg(name, row->getName(), QString::number(rowIdx)));
                     break;
@@ -231,7 +231,7 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
 
     // Precalculate maximum sequence name length.
     int maxNameLength = 0;
-    foreach (const MultipleSequenceAlignmentRow& row, msa->getMsaRows()) {
+    foreach (const MultipleAlignmentRow& row, msa->getRows()) {
         maxNameLength = qMax(maxNameLength, row->getName().length());
     }
     maxNameLength = qMin(maxNameLength, MAX_NAME_LEN);
@@ -266,10 +266,10 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
         QList<QByteArray> seqs = walker.nextData(partLen, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleSequenceAlignmentRow> rows = msa->getMsaRows();
-        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = rows.constBegin();
+        QList<MultipleAlignmentRow> rows = msa->getRows().toList();
+        QList<MultipleAlignmentRow>::ConstIterator ri = rows.constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MultipleSequenceAlignmentRow& row = *ri;
+            const MultipleAlignmentRow& row = *ri;
             // Name.
             QString line = row->getName();
             if (line.length() > MAX_NAME_LEN) {

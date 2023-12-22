@@ -364,7 +364,7 @@ void HMMBuildTask::_run() {
     }
     U2OpStatus2Log os;
     for (int i = 0; i < ma->getRowCount(); i++) {
-        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
+        const MultipleAlignmentRow& row = ma->getRow(i);
         QByteArray seq = row->toByteArray(os, ma->getLength());
         free(msa->aseq[i]);
         msa->aseq[i] = sre_strdup(seq.constData(), seq.size());

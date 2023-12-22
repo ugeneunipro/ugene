@@ -84,7 +84,7 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
 
     const MultipleSequenceAlignment msa = msaObject->getMsa();
     for (int i = 0; i < rowCount; i++) {
-        const MultipleSequenceAlignmentRow row = msa->getMsaRow(i);
+        const MultipleAlignmentRow& row = msa->getRow(i);
         auto checkBox = new QCheckBox(row->getName(), this);
         checkBox->setProperty(ROW_ID_PROPERTY, row->getRowId());
         checkBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

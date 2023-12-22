@@ -66,7 +66,7 @@ void SequenceSelectorWidgetController::setSequenceId(qint64 newId) {
         seqId = newId;
         return;
     }
-    const MultipleSequenceAlignmentRow& selectedRow = msa->getMaObject()->getMsa()->getMsaRowByRowId(newId, os);
+    const MultipleAlignmentRow& selectedRow = msa->getMaObject()->getMsa()->getRowByRowId(newId, os);
     CHECK_OP(os, );
     seqId = newId;
     const QString selectedName = selectedRow->getName();
@@ -118,9 +118,9 @@ void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished() {
                 for (int sameNameCounter = 0; sameNameCounter <= sequenceIndex; ++sameNameCounter) {
                     selectedRowIndex = rowNames.indexOf(selectedSeqName, selectedRowIndex + 1);
                 }
-                seqId = ma->getMsaRow(selectedRowIndex)->getRowId();
+                seqId = ma->getRow(selectedRowIndex)->getRowId();
             } else {  // case when chosen name is unique in the msa
-                seqId = ma->getMsaRow(selectedSeqName)->getRowId();
+                seqId = ma->getRow(selectedSeqName)->getRowId();
             }
         }
     }
@@ -132,7 +132,7 @@ void SequenceSelectorWidgetController::sl_addSeqClicked() {
         return;
     }
 
-    MultipleSequenceAlignmentRow selectedRow = msa->getRowByViewRowIndex(msa->getSelection().toRect().y());
+    MultipleAlignmentRow selectedRow = msa->getRowByViewRowIndex(msa->getSelection().toRect().y());
     setSequenceId(selectedRow->getRowId());
     emit si_selectionChanged();
 }

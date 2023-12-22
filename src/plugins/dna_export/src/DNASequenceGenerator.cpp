@@ -114,7 +114,7 @@ void DNASequenceGenerator::evaluateBaseContent(const DNASequence& sequence, QMap
 
 void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment& ma, QMap<char, qreal>& result) {
     QList<QMap<char, qreal>> rowsContents;
-    foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+    foreach (const MultipleAlignmentRow& row, ma->getRows()) {
         QMap<char, qreal> rowContent;
         evaluate(row->getData(), rowContent);
         rowsContents.append(rowContent);

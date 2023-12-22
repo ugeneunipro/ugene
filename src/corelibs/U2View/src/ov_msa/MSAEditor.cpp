@@ -221,9 +221,9 @@ void MSAEditor::onObjectRenamed(GObject*, const QString&) {
     OpenMaEditorTask::updateTitle(this);
 }
 
-MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
+MultipleAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
     int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
-    return getMaObject()->getMsaRow(maRowIndex);
+    return getMaObject()->getRow(maRowIndex);
 }
 
 MSAEditor::~MSAEditor() {

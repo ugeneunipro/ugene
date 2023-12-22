@@ -117,7 +117,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Multi
         painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
         painter.drawLine(0, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight, width, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight);
 
-        const MultipleChromatogramAlignmentRow& row = editor->getMaObject()->getMcaRow(rowIndex);
+        const MultipleAlignmentRow& row = editor->getMaObject()->getRow(rowIndex);
         drawChromatogram(painter, row, region, xStart);
         painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
         painter.restore();
@@ -126,7 +126,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Multi
     return seqRowHeight;
 }
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, const MultipleChromatogramAlignmentRow& row, const U2Region& visibleRegion, int xStart) const {
+void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, const MultipleAlignmentRow& row, const U2Region& visibleRegion, int xStart) const {
     const DNAChromatogram chroma = row->getGappedChromatogram();
 
     // SANGER_TODO: should not be here
@@ -211,9 +211,9 @@ static int getPreviousBaseCallEndPosition(const QVector<ushort>& baseCalls, int 
     int res = 0;
     SAFE_POINT(startPos > 0 && startPos < baseCalls.size(), "Out of array boundary", 0);
     int prevStep = baseCalls[startPos] - baseCalls[startPos - 1];
-    // When many gaps was insered to the single place, the difference between current and previous baceCalls element may be very little.
+    // When many gaps were inserted to the single place, the difference between current and previous baceCalls element may be very little.
     // Because of it, left correct point to draw may be out of the left edge of visible area
-    // If it happends, we need to go to the left while we will find a correct point
+    // If it happens, we need to go to the left while we will find a correct point
     if (prevStep <= 1) {
         int pos = startPos - 1;
         while (prevStep == 0 && pos > 0) {

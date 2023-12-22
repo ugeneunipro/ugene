@@ -241,7 +241,7 @@ void MSAEditorSequenceArea::copySelection(U2OpStatus& os) {
                 textMimeContent.append("\n");
             }
             int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
-            const MultipleSequenceAlignmentRow& row = maObj->getMsaRow(maRowIndex);
+            const MultipleAlignmentRow& row = maObj->getRow(maRowIndex);
             QByteArray sequence = row->mid(selectionRect.x(), selectionRect.width(), os)->toByteArray(os, selectionRect.width());
             ugeneMimeContent.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
                 .append(row.data()->getName())
@@ -720,7 +720,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
     QList<qint64> modifiedRowIds;
     for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
         int maRowIndex = selectedMaRowIndexes[i];
-        MultipleSequenceAlignmentRow currentRow = ma->getMsaRow(maRowIndex);
+        MultipleAlignmentRow currentRow = ma->getRow(maRowIndex);
         QByteArray currentRowContent = currentRow->toByteArray(os, ma->getLength());
         switch (type.getType()) {
             case ModificationType::Reverse:

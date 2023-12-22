@@ -33,7 +33,7 @@ public:
     ~MaSavedState();
 
     bool hasState() const;
-    const MultipleAlignment takeState();
+    MultipleAlignment takeState();
     void setState(const MultipleAlignment& ma);
 
 private:
@@ -56,7 +56,7 @@ public:
     const MultipleAlignment& getMultipleAlignment() const;
     void setMultipleAlignment(const MultipleAlignment& ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap& hints = QVariantMap());
 
-    const MultipleAlignment getMultipleAlignmentCopy() const;
+    MultipleAlignment getMultipleAlignmentCopy() const;
 
     /** GObject methods */
     void setGObjectName(const QString& newName);
@@ -66,7 +66,7 @@ public:
     qint64 getLength() const;
     qint64 getRowCount() const;
     const QVector<MultipleAlignmentRow>& getRows() const;
-    const MultipleAlignmentRow getRow(int row) const;
+    const MultipleAlignmentRow& getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
     virtual char charAt(int seqNum, qint64 position) const = 0;
 

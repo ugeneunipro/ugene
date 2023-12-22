@@ -26,6 +26,7 @@
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/BioStruct3DObject.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/GHints.h>
@@ -414,8 +415,6 @@ GObject* GObjectUtils::createObject(const U2DbiRef& ref, const U2DataId& id, con
             coreLog.trace(QObject::tr("Unsupported object type: %1").arg(type));
             return nullptr;
     }
-
-    return nullptr;
 }
 
 }  // namespace U2

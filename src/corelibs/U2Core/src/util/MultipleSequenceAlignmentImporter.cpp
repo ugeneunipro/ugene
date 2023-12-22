@@ -93,7 +93,7 @@ MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignm
     }
 
     for (int i = 0, n = al->getRowCount(); i < n; ++i) {
-        al->getMsaRow(i)->setRowDbInfo(rows.at(i));
+        al->getRow(i)->setRowDbInfo(rows.at(i));
     }
 
     return new MultipleSequenceAlignmentObject(al->getName(), U2EntityRef(dbiRef, msaId), QVariantMap(), al);
@@ -151,7 +151,7 @@ QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiCo
 
     QList<U2Sequence> sequences;
     for (int i = 0; i < al->getRowCount(); ++i) {
-        DNASequence dnaSeq = al->getMsaRow(i)->getSequence();
+        DNASequence dnaSeq = al->getRow(i)->getSequence();
 
         U2Sequence sequence = U2Sequence();
         sequence.visualName = dnaSeq.getName();
@@ -213,7 +213,7 @@ QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnectio
 
     for (int rowIdx = 0, seqIdx = 0; rowIdx < al->getRowCount(); ++rowIdx, ++seqIdx) {
         U2Sequence seq = sequences[seqIdx];
-        MultipleSequenceAlignmentRow alignmentRow = al->getMsaRow(rowIdx);
+        MultipleAlignmentRow alignmentRow = al->getRow(rowIdx);
         const QVector<U2MsaGap>& gapModel = msaGapModel[rowIdx];
         if (!gapModel.isEmpty() && (gapModel.last().startPos + gapModel.last().length) == MsaRowUtils::getRowLength(alignmentRow->getSequence().seq, gapModel)) {
             // remove trailing gap if it exists

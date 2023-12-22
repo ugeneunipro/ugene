@@ -54,7 +54,7 @@ MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment& ma, Mult
 
 int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment& ma) {
     QList<int> rowsLengths;
-    foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+    foreach (const MultipleAlignmentRow& row, ma->getRows()) {
         rowsLengths.append(row->getCoreLength());
     }
     std::sort(rowsLengths.begin(), rowsLengths.end(), std::greater<int>());

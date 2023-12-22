@@ -32,8 +32,47 @@
 
 namespace U2 {
 
-MultipleAlignmentRow::MultipleAlignmentRow(MultipleAlignmentRowData* ma)
-    : maRowData(ma) {
+MultipleAlignmentRow::MultipleAlignmentRow(const MultipleAlignmentDataType& _type)
+    : MultipleAlignmentRow(new MultipleAlignmentRowData(_type)) {
+}
+
+MultipleAlignmentRow::MultipleAlignmentRow(MultipleAlignmentData* _maRowData)
+    : maRowData(new MultipleAlignmentRowData(_maRowData)) {
+}
+
+MultipleAlignmentRow::MultipleAlignmentRow(MultipleAlignmentRowData* _maRowData)
+    : maRowData(_maRowData) {
+}
+
+MultipleAlignmentRow::MultipleAlignmentRow(const U2MsaRow& rowInDb,
+                                           const DNAChromatogram& chromatogram,
+                                           const DNASequence& sequence,
+                                           const QVector<U2MsaGap>& gaps,
+                                           MultipleAlignmentData* maData)
+    : maRowData(new MultipleAlignmentRowData(rowInDb, chromatogram, sequence, gaps, maData)) {
+}
+
+MultipleAlignmentRow::MultipleAlignmentRow(const U2MsaRow& rowInDb,
+                                           const DNASequence& sequence,
+                                           const QVector<U2MsaGap>& gaps,
+                                           MultipleAlignmentData* maData)
+    : maRowData(new MultipleAlignmentRowData(rowInDb, {}, sequence, gaps, maData)) {
+}
+
+MultipleAlignmentRow::MultipleAlignmentRow(const U2MsaRow& rowInDb,
+                                           const QString& rowName,
+                                           const DNAChromatogram& chromatogram,
+                                           const QByteArray& rawData,
+                                           MultipleAlignmentData* maData)
+    : maRowData(new MultipleAlignmentRowData(rowInDb, rowName, chromatogram, rawData, maData)) {
+}
+
+MultipleAlignmentRow::MultipleAlignmentRow(const MultipleAlignmentRow& row, MultipleAlignmentData* mcaData)
+    : maRowData(new MultipleAlignmentRowData(row, mcaData)) {
+}
+
+MultipleAlignmentRow MultipleAlignmentRow::clone() const {
+    return maRowData->getExplicitCopy();
 }
 
 MultipleAlignmentRowData* MultipleAlignmentRow::data() const {
@@ -54,6 +93,52 @@ MultipleAlignmentRowData* MultipleAlignmentRow::operator->() {
 
 const MultipleAlignmentRowData* MultipleAlignmentRow::operator->() const {
     return maRowData.data();
+}
+
+MultipleAlignmentRowData::MultipleAlignmentRowData(MultipleAlignmentData* _alignment)
+    : type(_alignment == nullptr ? MultipleAlignmentDataType::MSA : _alignment->type), alignment(_alignment) {
+}
+
+MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
+                                                   const DNAChromatogram& _chromatogram,
+                                                   const DNASequence& _sequence,
+                                                   const QVector<U2MsaGap>& _gaps,
+                                                   MultipleAlignmentData* _alignment)
+    : type(_alignment == nullptr ? MultipleAlignmentDataType::MSA : _alignment->type),  // TODO: ensure we never pass nullptr.
+      sequence(_sequence),
+      gaps(_gaps),
+      chromatogram(_chromatogram),
+      initialRowInDb(_rowInDb),
+      alignment(_alignment) {
+    SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
+    removeTrailingGaps();
+}
+
+MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
+                                                   const QString& _rowName,
+                                                   const DNAChromatogram& _chromatogram,
+                                                   const QByteArray& rawData,
+                                                   MultipleAlignmentData* _alignment)
+    : type(_alignment == nullptr ? MultipleAlignmentDataType::MSA : _alignment->type),  // TODO: ensure we never pass nullptr.
+      chromatogram(_chromatogram),
+      initialRowInDb(_rowInDb),
+      alignment(_alignment) {
+    QByteArray sequenceData;
+    QVector<U2MsaGap> gapModel;
+    MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
+    sequence = DNASequence(_rowName, sequenceData);
+    setGapModel(gapModel);
+}
+
+MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentRow& _row, MultipleAlignmentData* _alignment)
+    : type(_row->type),
+      sequence(_row->sequence),
+      gaps(_row->gaps),
+      chromatogram(_row->chromatogram),
+      initialRowInDb(_row->initialRowInDb),
+      additionalInfo(_row->additionalInfo),
+      alignment(_alignment) {
+    SAFE_POINT_NN(alignment, );
 }
 
 MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataType& _type)
@@ -157,7 +242,6 @@ QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, b
         gapsBytes.fill(U2Msa::GAP_CHAR, gap.length);
         bytes.insert(gap.startPos - beginningOffset, gapsBytes);
     }
-    MultipleAlignmentData* alignment = getMultipleAlignmentData();
     SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", QByteArray());
     if (keepTrailingGaps && bytes.size() < alignment->getLength()) {
         QByteArray gapsBytes;
@@ -264,7 +348,6 @@ QByteArray MultipleAlignmentRowData::toByteArray(U2OpStatus& os, int length) con
 }
 
 int MultipleAlignmentRowData::getRowLength() const {
-    MultipleAlignmentData* alignment = getMultipleAlignmentData();
     SAFE_POINT_NN(alignment, 0);
     return alignment->getLength();
 }
@@ -285,7 +368,7 @@ qint64 MultipleAlignmentRowData::getCoreLength() const {
     int coreStart = getCoreStart();
     int coreEnd = getCoreEnd();
     int length = coreEnd - coreStart;
-    SAFE_POINT(length >= 0, QString("Internal error in MultipleChromatogramAlignmentRowData: coreEnd is %1, coreStart is %2!").arg(coreEnd).arg(coreStart), length);
+    SAFE_POINT(length >= 0, QString("Internal error in MultipleAlignmentRowData: coreEnd is %1, coreStart is %2!").arg(coreEnd).arg(coreStart), length);
     return length;
 }
 
@@ -312,7 +395,7 @@ void MultipleAlignmentRowData::append(const MultipleAlignmentRowData& anotherRow
     int rowLength = getRowLengthWithoutTrailing();
 
     if (lengthBefore < rowLength) {
-        coreLog.trace(QString("Internal error: incorrect length '%1' were passed to MultipleChromatogramAlignmentRowData::append,"
+        coreLog.trace(QString("Internal error: incorrect length '%1' were passed to MultipleAlignmentRowData::append,"
                               "coreEnd is '%2'")
                           .arg(lengthBefore)
                           .arg(getCoreEnd()));
@@ -401,7 +484,7 @@ void MultipleAlignmentRowData::addOffsetToGapModel(QVector<U2MsaGap>& gapModel, 
             for (int i = 1; i < gapModel.count(); ++i) {
                 qint64 newOffset = gapModel[i].startPos + offset;
                 SAFE_POINT(newOffset >= 0, "Negative gap offset", );
-                gapModel[i].startPos = newOffset;
+                gapModel[i].startPos = (int)newOffset;
             }
         }
     } else {
@@ -418,7 +501,7 @@ void MultipleAlignmentRowData::insertGaps(int pos, int count, U2OpStatus& os) {
 
 void MultipleAlignmentRowData::removeChars(int pos, int count, U2OpStatus& os) {
     if (pos < 0 || count < 0) {
-        coreLog.trace(QString("Internal error: incorrect parameters were passed to MultipleSequenceAlignmentRowData::removeChars, "
+        coreLog.trace(QString("Internal error: incorrect parameters were passed to MultipleAlignmentRowData::removeChars, "
                               "pos '%1', count '%2'")
                           .arg(pos)
                           .arg(count));
@@ -453,7 +536,7 @@ void MultipleAlignmentRowData::removeChars(int pos, int count, U2OpStatus& os) {
 void MultipleAlignmentRowData::getStartAndEndSequencePositions(int pos, int count, int& startPosInSeq, int& endPosInSeq) const {
     int rowLengthWithoutTrailingGap = getRowLengthWithoutTrailing();
     SAFE_POINT(pos < rowLengthWithoutTrailingGap,
-               QString("Incorrect position '%1' in MultipleSequenceAlignmentRowData::getStartAndEndSequencePosition, "
+               QString("Incorrect position '%1' in MultipleAlignmentRowData::getStartAndEndSequencePosition, "
                        "row length without trailing gaps is '%2'")
                    .arg(pos)
                    .arg(rowLengthWithoutTrailingGap), );
@@ -568,7 +651,7 @@ bool MultipleAlignmentRowData::isEqual(const MultipleAlignmentRowData& other) co
 
 void MultipleAlignmentRowData::crop(U2OpStatus& os, int startPosition, int count) {
     if (startPosition < 0 || count < 0) {
-        coreLog.trace(QString("Internal error: incorrect parameters were passed to MultipleSequenceAlignmentRowData::crop, "
+        coreLog.trace(QString("Internal error: incorrect parameters were passed to MultipleAlignmentRowData::crop, "
                               "startPos '%1', length '%2', row length '%3'")
                           .arg(startPosition)
                           .arg(count)
@@ -631,7 +714,7 @@ const QVariantMap& MultipleAlignmentRowData::getAdditionalInfo() const {
 
 void MultipleAlignmentRowData::replaceChars(char origChar, char resultChar, U2OpStatus& os) {
     if (origChar == U2Msa::GAP_CHAR) {
-        coreLog.trace("The original char can't be a gap in MultipleSequenceAlignmentRowData::replaceChars");
+        coreLog.trace("The original char can't be a gap in MultipleAlignmentRowData::replaceChars");
         os.setError("Failed to replace chars in an alignment row");
         return;
     }
@@ -765,6 +848,26 @@ QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramT
 
 int MultipleAlignmentRowData::getUngappedLength() const {
     return sequence.length();
+}
+
+bool MultipleAlignmentRowData::isDefault() const {
+    static const MultipleAlignmentRowData mcaRow(MultipleAlignmentDataType::MCA);
+    static const MultipleAlignmentRowData msaRow(MultipleAlignmentDataType::MSA);
+    return isEqual(type == MultipleAlignmentDataType::MSA ? msaRow : mcaRow);
+}
+
+MultipleAlignmentRow MultipleAlignmentRowData::mid(int pos, int count, U2OpStatus& os) const {
+    MultipleAlignmentRow row = getExplicitCopy();
+    row->crop(os, pos, count);
+    return row;
+}
+
+MultipleAlignmentRow MultipleAlignmentRowData::getExplicitCopy() const {
+    return {new MultipleAlignmentRowData(*this)};
+}
+
+void MultipleAlignmentRowData::setParentAlignment(MultipleAlignmentData* alignmentData) {
+    alignment = alignmentData;
 }
 
 }  // namespace U2

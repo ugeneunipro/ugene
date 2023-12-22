@@ -249,7 +249,7 @@ private:
      * Parameter 'pos' can even be greater than the length of the row.
      * The row sequence and gap model are set to empty values in this case.
      */
-    static void cropCharsFromRow(MultipleSequenceAlignmentRow& alRow, qint64 pos, qint64 count);
+    static void cropCharsFromRow(MultipleAlignmentRow& alRow, qint64 pos, qint64 count);
 
     /** Returns "true" if there is a gap on position "pos" */
     static bool gapInPosition(const QVector<U2MsaGap>& gapModel, qint64 pos);

@@ -43,7 +43,7 @@ bool MaSavedState::hasState() const {
     return lastState != nullptr;
 }
 
-const MultipleAlignment MaSavedState::takeState() {
+MultipleAlignment MaSavedState::takeState() {
     const MultipleAlignment state = *lastState;
     delete lastState;
     lastState = nullptr;
@@ -51,9 +51,7 @@ const MultipleAlignment MaSavedState::takeState() {
 }
 
 void MaSavedState::setState(const MultipleAlignment& ma) {
-    if (lastState != nullptr) {
-        delete lastState;
-    }
+    delete lastState;
     lastState = new MultipleAlignment(ma->getCopy());
 }
 
@@ -149,7 +147,7 @@ void MultipleAlignmentObject::setMultipleAlignment(const MultipleAlignment& newM
     updateCachedMultipleAlignment(mi);
 }
 
-const MultipleAlignment MultipleAlignmentObject::getMultipleAlignmentCopy() const {
+MultipleAlignment MultipleAlignmentObject::getMultipleAlignmentCopy() const {
     return getMultipleAlignment()->getCopy();
 }
 
@@ -185,7 +183,7 @@ const QVector<MultipleAlignmentRow>& MultipleAlignmentObject::getRows() const {
     return getMultipleAlignment()->getRows();
 }
 
-const MultipleAlignmentRow MultipleAlignmentObject::getRow(int row) const {
+const MultipleAlignmentRow& MultipleAlignmentObject::getRow(int row) const {
     return getMultipleAlignment()->getRow(row);
 }
 
@@ -546,7 +544,7 @@ void MultipleAlignmentObject::removeRegion(const QList<int>& rowIndexes, int x, 
         if (!removedRowIds.isEmpty()) {
             // suppose that if at least one row in msa was removed then all the rows below it were changed
             QList<qint64> rowIdsAffectedByDeletion = getRowsAffectedByDeletion(ma, removedRowIds);
-            foreach (qint64 removedRowId, removedRowIds) {  // removed rows ain't need to be update
+            foreach (qint64 removedRowId, removedRowIds) {  // removed rows ain't need to be updated.
                 modifiedRowIds.removeAll(removedRowId);
             }
             modifiedRowIds = mergeLists(modifiedRowIds, rowIdsAffectedByDeletion);

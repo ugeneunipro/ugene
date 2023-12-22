@@ -213,7 +213,7 @@ void MafftAddToAlignmentTask::run() {
         CHECK_OP(stateInfo, );
     }
     QMap<QString, qint64> uniqueNamesToIds;
-    foreach (const MultipleSequenceAlignmentRow& refRow, inputMsa->getMsaRows()) {
+    foreach (const MultipleAlignmentRow& refRow, inputMsa->getRows()) {
         uniqueNamesToIds[refRow->getName()] = refRow->getRowId();
     }
 

@@ -277,8 +277,8 @@ Task::ReportResult GTest_DNAcompareSequencesNamesInTwoObjects::report() {
     const QList<GObject*>& objs = doc->getObjects();
     const QList<GObject*>& objs2 = doc2->getObjects();
     GObject* obj = nullptr;
-    U2SequenceObject* mySequence = nullptr;
-    U2SequenceObject* mySequence2 = nullptr;
+    U2SequenceObject* mySequence;
+    U2SequenceObject* mySequence2;
 
     for (int i = 0; (i != objs.size()) && (i != objs2.size()); i++) {
         obj = objs.at(i);
@@ -581,7 +581,7 @@ Task::ReportResult GTest_DNAMulSequencePart::report() {
     bool ok_flag = false;
     U2OpStatus2Log os;
     const MultipleSequenceAlignment ma = myMSequence->getMultipleAlignment();
-    foreach (const MultipleSequenceAlignmentRow& myItem, ma->getMsaRows()) {
+    foreach (const MultipleAlignmentRow& myItem, ma->getRows()) {
         if (myItem->getName() == seqName) {
             ok_flag = true;
             QByteArray objSubSeq = myItem->mid(startPos, subseq.length(), os)->toByteArray(os, subseq.length());
@@ -623,7 +623,7 @@ Task::ReportResult GTest_DNAMulSequenceName::report() {
     MultipleSequenceAlignmentObject* myMSequence = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     bool ok_flag = false;
     const MultipleSequenceAlignment ma = myMSequence->getMultipleAlignment();
-    foreach (const MultipleSequenceAlignmentRow& myItem, ma->getMsaRows()) {
+    foreach (const MultipleAlignmentRow& myItem, ma->getRows()) {
         if (myItem->getName() == seqName) {
             ok_flag = true;
             break;
@@ -671,7 +671,7 @@ Task::ReportResult GTest_DNAMulSequenceQuality::report() {
     }
 
     bool ok_flag = false;
-    foreach (const MultipleSequenceAlignmentRow& myItem, myMSequence->getMsa()->getMsaRows()) {
+    foreach (const MultipleAlignmentRow& myItem, myMSequence->getMsa()->getRows()) {
         if (myItem->getName() == seqName) {
             ok_flag = true;
             // QByteArray qualityCodes = myItem.getCoreQuality().qualCodes;
@@ -787,8 +787,8 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
 
         MultipleSequenceAlignment one = myMSequence->getMultipleAlignment();
         MultipleSequenceAlignment two = myMSequence2->getMultipleAlignment();
-        const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = one->getMsaRows();
-        const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = two->getMsaRows();
+        const QVector<MultipleAlignmentRow>& alignedSeqs1 = one->getRows();
+        const QVector<MultipleAlignmentRow>& alignedSeqs2 = two->getRows();
 
         if (alignedSeqs1.size() != alignedSeqs2.size()) {
             stateInfo.setError(QString("different_sequences_number_in_msa_in_%1_object").arg(i));
@@ -802,8 +802,8 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
 
         int seqSz = alignedSeqs1.size();
         for (int n = 0; n < seqSz; n++) {
-            const MultipleSequenceAlignmentRow& myItem1 = alignedSeqs1.at(i);
-            const MultipleSequenceAlignmentRow& myItem2 = alignedSeqs2.at(i);
+            const MultipleAlignmentRow& myItem1 = alignedSeqs1.at(i);
+            const MultipleAlignmentRow& myItem2 = alignedSeqs2.at(i);
             if (myItem1->getName() != myItem2->getName()) {
                 stateInfo.setError(QString("names of regions in position %1 not matched: %2, expected %3").arg(n).arg(myItem2->getName()).arg(myItem1->getName()));
                 return ReportResult_Finished;
@@ -876,12 +876,12 @@ Task::ReportResult GTest_DNAcompareMulSequencesNamesInTwoObjects::report() {
         }
         const MultipleSequenceAlignment one = myMSequence->getMultipleAlignment();
         const MultipleSequenceAlignment two = myMSequence2->getMultipleAlignment();
-        const QList<MultipleSequenceAlignmentRow>& myQList1 = one->getMsaRows();
-        const QList<MultipleSequenceAlignmentRow>& myQList2 = two->getMsaRows();
+        const QVector<MultipleAlignmentRow>& myQList1 = one->getRows();
+        const QVector<MultipleAlignmentRow>& myQList2 = two->getRows();
 
         for (int n = 0; (n != myQList1.size()) || (n != myQList2.size()); n++) {
-            const MultipleSequenceAlignmentRow& myItem1 = myQList1.at(i);
-            const MultipleSequenceAlignmentRow& myItem2 = myQList2.at(i);
+            const MultipleAlignmentRow& myItem1 = myQList1.at(i);
+            const MultipleAlignmentRow& myItem2 = myQList2.at(i);
             if (myItem1->getName() != myItem2->getName()) {
                 stateInfo.setError(QString("names of regions in position %1 not matched: %2, expected %3").arg(n).arg(myItem2->getName()).arg(myItem1->getName()));
                 return ReportResult_Finished;

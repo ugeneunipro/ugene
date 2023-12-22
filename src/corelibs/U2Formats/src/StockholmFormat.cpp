@@ -359,7 +359,7 @@ static void loadOneMsa(IOAdapterReader& reader, U2OpStatus& os, MultipleSequence
                 CHECK_EXT(!hasRowWithName(msa, name), os.setError(StockholmFormat::tr("Invalid file: duplicate sequence names in one block: %1").arg(name)), );
                 msa->addRow(name, seq);
             } else {
-                QString rowName = msa->getMsaRow(sequenceIndex)->getName();
+                QString rowName = msa->getRow(sequenceIndex)->getName();
                 CHECK_EXT(name == rowName, os.setError(StockholmFormat::tr("Invalid file: sequence names are not equal in blocks")), );
                 msa->appendChars(sequenceIndex, currentLen, seq.constData(), seq.size());
             }

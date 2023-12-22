@@ -77,7 +77,7 @@ McaEditor* McaEditorNameList::getEditor() const {
 }
 
 bool McaEditorNameList::isRowReversed(int rowIndex) const {
-    return getEditor()->getMaObject()->getMcaRow(rowIndex)->isReversed();
+    return getEditor()->getMaObject()->getRow(rowIndex)->isReversed();
 }
 
 void McaEditorNameList::drawText(QPainter& painter, const QString& text, const QRect& rect, bool selected) {

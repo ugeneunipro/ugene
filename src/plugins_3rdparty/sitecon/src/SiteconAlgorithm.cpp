@@ -72,7 +72,7 @@ QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Mul
         PositionStats posResult;
         for (DiPropertySitecon* p : qAsConst(props)) {  // for every property
             qreal average = 0;  // average in a column
-            foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {  // collect di-position stat for all sequence in alignment
+            foreach (const MultipleAlignmentRow& row, ma->getRows()) {  // collect di-position stat for all sequence in alignment
                 average += p->getOriginal(row->charAt(i), row->charAt(i + 1));
             }
             average /= N;
@@ -81,7 +81,7 @@ QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Mul
             const QVector<MultipleAlignmentRow>& msaRows = ma->getRows();
             for (int j = 0; j < msaRows.size(); j++) {  // collect di-position stat for all sequence in alignment
                 CHECK(!ts.isCoR(), {});
-                const MultipleSequenceAlignmentRow& row = msaRows[j];
+                const MultipleAlignmentRow& row = msaRows[j];
                 char c1 = row->charAt(i);
                 char c2 = row->charAt(i + 1);
                 qreal v = p->getOriginal(c1, c2);
@@ -159,7 +159,7 @@ QVector<qreal> SiteconAlgorithm::calculateFirstTypeError(const MultipleSequenceA
     int maLen = ma->getLength();
     for (int i = 0; i < ma->getRowCount(); i++) {
         CHECK(!ts.isCoR(), res);
-        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
+        const MultipleAlignmentRow& row = ma->getRow(i);
         MultipleSequenceAlignment subMA = ma->getCopy();
         subMA->removeRow(i, os);
         CHECK(!ts.isCoR(), res);
@@ -256,7 +256,7 @@ void SiteconAlgorithm::calculateACGTContent(const MultipleSequenceAlignment& ma,
     bs.acgtContent[0] = bs.acgtContent[1] = bs.acgtContent[2] = bs.acgtContent[3] = 0;
     int maLen = ma->getLength();
     int total = ma->getRowCount() * ma->getLength();
-    foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+    foreach (const MultipleAlignmentRow& row, ma->getRows()) {
         for (int i = 0; i < maLen; i++) {
             char c = row->charAt(i);
             if (c == 'A') {

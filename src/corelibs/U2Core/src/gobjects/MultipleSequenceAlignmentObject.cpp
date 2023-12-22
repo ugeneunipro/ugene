@@ -71,10 +71,6 @@ char MultipleSequenceAlignmentObject::charAt(int seqNum, qint64 position) const 
     return getMultipleAlignment()->charAt(seqNum, position);
 }
 
-const MultipleSequenceAlignmentRow MultipleSequenceAlignmentObject::getMsaRow(int row) const {
-    return getRow(row).dynamicCast<MultipleSequenceAlignmentRow>();
-}
-
 void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus& os, const QMap<qint64, QVector<U2MsaGap>>& rowsGapModel) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
@@ -99,14 +95,14 @@ void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus& os, const QMap<
     updateCachedMultipleAlignment(mi);
 }
 
-void MultipleSequenceAlignmentObject::updateGapModel(const QList<MultipleSequenceAlignmentRow>& sourceRows) {
-    const QList<MultipleSequenceAlignmentRow> oldRows = getMsa()->getMsaRows();
+void MultipleSequenceAlignmentObject::updateGapModel(const QList<MultipleAlignmentRow>& sourceRows) {
+    QList<MultipleAlignmentRow> oldRows = getMsa()->getRows().toList();
 
     SAFE_POINT(oldRows.count() == sourceRows.count(), "Different rows count", );
 
     QMap<qint64, QVector<U2MsaGap>> newGapModel;
-    QList<MultipleSequenceAlignmentRow>::ConstIterator oldRowsIterator = oldRows.begin();
-    QList<MultipleSequenceAlignmentRow>::ConstIterator sourceRowsIterator = sourceRows.begin();
+    QList<MultipleAlignmentRow>::ConstIterator oldRowsIterator = oldRows.begin();
+    QList<MultipleAlignmentRow>::ConstIterator sourceRowsIterator = sourceRows.begin();
     for (; oldRowsIterator != oldRows.end(); oldRowsIterator++, sourceRowsIterator++) {
         newGapModel[(*oldRowsIterator)->getRowId()] = (*sourceRowsIterator)->getGaps();
     }

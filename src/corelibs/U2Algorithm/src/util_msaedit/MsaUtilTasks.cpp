@@ -23,7 +23,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
@@ -142,12 +141,12 @@ void AlignInAminoFormTask::run() {
     SAFE_POINT_EXT(clonedObj != nullptr, setError("NULL clonedObj in AlignInAminoFormTask::prepare!"), );
 
     const MultipleSequenceAlignment newMsa = clonedObj->getMsa();
-    const QList<MultipleSequenceAlignmentRow> rows = newMsa->getMsaRows();
+    const QVector<MultipleAlignmentRow> rows = newMsa->getRows();
 
     // Create gap map from amino-acid alignment
-    for (const MultipleSequenceAlignmentRow& row : qAsConst(rows)) {
+    for (const MultipleAlignmentRow& row : qAsConst(rows)) {
         int rowIdx = MSAUtils::getRowIndexByName(maObj->getMsa(), row->getName());
-        MultipleSequenceAlignmentRow curRow = maObj->getMsa()->getMsaRow(row->getName());
+        const MultipleAlignmentRow& curRow = maObj->getMsa()->getRow(row->getName());
         SAFE_POINT_EXT(rowIdx >= 0, setError(QString("Can not find row %1 in original alignment.").arg(row->getName())), );
 
         QVector<U2MsaGap> gapsList;

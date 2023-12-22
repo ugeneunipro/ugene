@@ -63,11 +63,11 @@ void MSADistanceAlgorithmHammingRevCompl::run() {
         if (isCanceled()) {
             return;
         }
-        QByteArray arr = ma->getMsaRow(i)->toByteArray(os, ma->getLength());
+        QByteArray arr = ma->getRow(i)->toByteArray(os, ma->getLength());
         trans->translate(arr.data(), arr.length());
         TextUtils::reverse(arr.data(), arr.length());
 
-        revtransl->addRow(ma->getMsaRow(i)->getName(), arr);
+        revtransl->addRow(ma->getRow(i)->getName(), arr);
 
         CHECK_OP_EXT(os, setError(tr("An unexpected error has occurred during running"
                                      " the Hamming reverse-complement algorithm.")), );

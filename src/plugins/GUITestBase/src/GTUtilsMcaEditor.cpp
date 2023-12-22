@@ -171,8 +171,8 @@ const QStringList GTUtilsMcaEditor::getDirectReadsNames() {
     MultipleChromatogramAlignmentObject* mcaObject = getEditor()->getMaObject();
     const int rowsCount = mcaObject->getRowCount();
     for (int i = 0; i < rowsCount; i++) {
-        if (!mcaObject->getMcaRow(i)->isReversed()) {
-            directReadsNames << mcaObject->getMcaRow(i)->getName();
+        if (!mcaObject->getRow(i)->isReversed()) {
+            directReadsNames << mcaObject->getRow(i)->getName();
         }
     }
     return directReadsNames;
@@ -183,8 +183,8 @@ const QStringList GTUtilsMcaEditor::getReverseComplementReadsNames() {
     MultipleChromatogramAlignmentObject* mcaObject = getEditor()->getMaObject();
     const int rowsCount = mcaObject->getRowCount();
     for (int i = 0; i < rowsCount; i++) {
-        if (mcaObject->getMcaRow(i)->isReversed()) {
-            reverseComplementedReadsNames << mcaObject->getMcaRow(i)->getName();
+        if (mcaObject->getRow(i)->isReversed()) {
+            reverseComplementedReadsNames << mcaObject->getRow(i)->getName();
         }
     }
     return reverseComplementedReadsNames;
