@@ -55,11 +55,11 @@ FastTreeSupport::FastTreeSupport()
 ////////////////////////////////////////
 // FastTreeAdapter
 
-Task* FastTreeAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings) {
+Task* FastTreeAdapter::createCalculatePhyTreeTask(const MultipleAlignment& msa, const CreatePhyTreeSettings& settings) {
     return new FastTreeTask(msa, settings);
 }
 
-CreatePhyTreeWidget* FastTreeAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment& msa, QWidget* parent) {
+CreatePhyTreeWidget* FastTreeAdapter::createPhyTreeSettingsWidget(const MultipleAlignment& msa, QWidget* parent) {
     return new FastTreeWidget(msa, parent);
 }
 

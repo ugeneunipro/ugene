@@ -24,7 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -67,7 +67,7 @@ Task* Alignment2SequenceWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
-        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
+        const MultipleAlignment msa = msaObj->getAlignment();
 
         if (msa->isEmpty()) {
             return new FailTask(tr("empty input alignment"));

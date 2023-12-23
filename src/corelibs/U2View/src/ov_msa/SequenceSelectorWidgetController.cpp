@@ -66,7 +66,7 @@ void SequenceSelectorWidgetController::setSequenceId(qint64 newId) {
         seqId = newId;
         return;
     }
-    const MultipleAlignmentRow& selectedRow = msa->getMaObject()->getMsa()->getRowByRowId(newId, os);
+    const MultipleAlignmentRow& selectedRow = msa->getMaObject()->getAlignment()->getRowByRowId(newId, os);
     CHECK_OP(os, );
     seqId = newId;
     const QString selectedName = selectedRow->getName();
@@ -82,7 +82,7 @@ qint64 SequenceSelectorWidgetController::sequenceId() const {
 }
 
 void SequenceSelectorWidgetController::updateCompleter() {
-    QStringList newNamesList = msa->getMaObject()->getMultipleAlignment()->getRowNames();
+    QStringList newNamesList = msa->getMaObject()->getAlignment()->getRowNames();
     filler->updateSeqList(newNamesList);
     if (!newNamesList.contains(seqLineEdit->text())) {
         sl_seqLineEditEditingFinished();
@@ -93,12 +93,12 @@ void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished(const Multi
     if (!modInfo.rowListChanged) {
         return;
     }
-    filler->updateSeqList(msa->getMaObject()->getMultipleAlignment()->getRowNames());
+    filler->updateSeqList(msa->getMaObject()->getAlignment()->getRowNames());
     sl_seqLineEditEditingFinished();
 }
 
 void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished() {
-    const MultipleSequenceAlignment ma = msa->getMaObject()->getMultipleAlignment();
+    const MultipleAlignment ma = msa->getMaObject()->getAlignment();
     if (!ma->getRowNames().contains(seqLineEdit->text())) {
         seqLineEdit->setText(defaultSeqName);
     } else {

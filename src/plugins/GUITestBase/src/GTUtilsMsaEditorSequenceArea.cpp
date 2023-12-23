@@ -349,7 +349,7 @@ void GTUtilsMSAEditorSequenceArea::checkSelectedRect(const QRect& expectedRect) 
 
 QStringList GTUtilsMSAEditorSequenceArea::getNameList() {
     MSAEditor* editor = GTUtilsMsaEditor::getEditor();
-    QStringList result = editor->getMaObject()->getMultipleAlignment()->getRowNames();
+    QStringList result = editor->getMaObject()->getAlignment()->getRowNames();
     return result;
 }
 

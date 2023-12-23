@@ -33,8 +33,18 @@
 
 namespace U2 {
 
-MultipleAlignment::MultipleAlignment(MultipleAlignmentData* maData)
-    : maData(maData) {
+MultipleAlignment::MultipleAlignment(const MultipleAlignmentDataType& type, const QString& name, const DNAAlphabet* alphabet)
+    : maData(new MultipleAlignmentData(type)) {
+    if (!name.isEmpty()) {
+        maData->setName(name);
+    }
+    if (alphabet != nullptr) {
+        maData->setAlphabet(alphabet);
+    }
+}
+
+MultipleAlignment::MultipleAlignment(MultipleAlignmentData* _maData)
+    : maData(_maData) {
 }
 
 MultipleAlignmentData* MultipleAlignment::data() const {
@@ -244,7 +254,7 @@ static bool isLessByLeadingGap(const MultipleAlignmentRow& row1, const MultipleA
     return row1->getCoreStart() < row2->getCoreStart();
 }
 
-void MultipleAlignmentData::sortRows(MultipleAlignment::SortType type, MultipleAlignment::Order order, const U2Region& range) {
+void MultipleAlignmentData::sortRows(const MultipleAlignment::SortType& sortType, MultipleAlignment::Order order, const U2Region& range) {
     U2Region allRowsRange = U2Region(0, rows.size());
     SAFE_POINT(range.intersect(allRowsRange) == range, "Sort range is out of bounds", )
     MaStateCheck check(this);
@@ -253,7 +263,7 @@ void MultipleAlignmentData::sortRows(MultipleAlignment::SortType type, MultipleA
     U2Region sortingRange = range.isEmpty() ? allRowsRange : range;
     const auto& rangeStartIterator = rows.begin() + sortingRange.startPos;
     const auto& rangeEndIterator = rows.begin() + sortingRange.endPos();
-    switch (type) {
+    switch (sortType) {
         case MultipleAlignment::SortByName:
             std::stable_sort(rangeStartIterator, rangeEndIterator, isAscending ? isLessByName : isGreaterByName);
             break;
@@ -264,7 +274,7 @@ void MultipleAlignmentData::sortRows(MultipleAlignment::SortType type, MultipleA
             std::stable_sort(rangeStartIterator, rangeEndIterator, isAscending ? isLessByLeadingGap : isGreaterByLeadingGap);
             break;
         default:
-            FAIL("Unsupported sort type: " + QString::number(type), );
+            FAIL("Unsupported sort type: " + QString::number(sortType), );
     }
 }
 
@@ -897,6 +907,51 @@ void MultipleAlignmentData::replaceChars(int row, char origChar, char resultChar
 
     U2OpStatus2Log os;
     getRow(row)->replaceChars(origChar, resultChar, os);
+}
+
+MultipleAlignment MultipleAlignmentData::getCopy() const {
+    return {new MultipleAlignmentData(*this)};
+}
+
+MultipleAlignment MultipleAlignmentData::mid(int start, int len) const {
+    SAFE_POINT(start >= 0 && start + len <= length,
+               QString("Incorrect parameters were passed to MultipleAlignmentData::mid: "
+                       "start '%1', len '%2', the alignment length is '%3'")
+                   .arg(start)
+                   .arg(len)
+                   .arg(length),
+               {type});
+
+    MultipleAlignment res(type, getName(), alphabet);
+    MaStateCheck check(res.data());
+    Q_UNUSED(check);
+
+    U2OpStatus2Log os;
+    foreach (const MultipleAlignmentRow& row, rows) {
+        MultipleAlignmentRow mRow = row->mid(start, len, os);
+        mRow->setParentAlignment(res.data());
+        res->rows << mRow;
+    }
+    res->length = len;
+    return res;
+}
+
+MultipleAlignmentData& MultipleAlignmentData::operator+=(const MultipleAlignmentData& msaData) {
+    MaStateCheck check(this);
+    Q_UNUSED(check);
+
+    SAFE_POINT(msaData.alphabet == alphabet, "Different alphabets in MultipleAlignmentData::operator+=", *this);
+
+    int nSeq = getRowCount();
+    SAFE_POINT(msaData.getRowCount() == nSeq, "Different number of rows in MultipleAlignmentData::operator+=", *this);
+
+    U2OpStatus2Log os;
+    for (int i = 0; i < nSeq; i++) {
+        getRow(i)->append(msaData.getRow(i), length, os);
+    }
+
+    length += msaData.length;
+    return *this;
 }
 
 }  // namespace U2

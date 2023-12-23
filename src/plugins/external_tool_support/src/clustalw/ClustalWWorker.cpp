@@ -257,7 +257,7 @@ Task* ClustalWWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
-        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
+        const MultipleAlignment msa = msaObj->getAlignment();
 
         if (msa->isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to ClustalW.").arg(msa->getName()));
@@ -295,7 +295,7 @@ void ClustalWWorker::sl_taskFinished() {
 void ClustalWWorker::cleanup() {
 }
 
-void ClustalWWorker::send(const MultipleSequenceAlignment& msa) {
+void ClustalWWorker::send(const MultipleAlignment& msa) {
     SAFE_POINT(output != nullptr, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;

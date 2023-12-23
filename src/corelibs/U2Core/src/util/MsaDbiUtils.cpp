@@ -323,7 +323,7 @@ DbiConnection* MaDbiUtils::getCheckedConnection(const U2DbiRef& dbiRef, U2OpStat
 }
 
 /** Validates that all 'rowIds' contains in the alignment rows */
-bool MaDbiUtils::validateRowIds(const MultipleSequenceAlignment& al, const QList<qint64>& rowIds) {
+bool MaDbiUtils::validateRowIds(const MultipleAlignment& al, const QList<qint64>& rowIds) {
     QSet<qint64> alRowIds = al->getRowsIds().toSet();
     for (qint64 rowId : qAsConst(rowIds)) {
         if (!alRowIds.contains(rowId)) {
@@ -702,7 +702,7 @@ bool MsaDbiUtils::gapInPosition(const QVector<U2MsaGap>& gapModel, qint64 pos) {
 /////////////////////////////////////////////////////////////////
 // MSA DBI Utilities
 
-void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAlignment& ma, U2OpStatus& os) {
+void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleAlignment& ma, U2OpStatus& os) {
     DbiConnection con(msaRef.dbiRef, os);
     CHECK_OP(os, );
 
@@ -1154,7 +1154,7 @@ QList<qint64> MsaDbiUtils::removeEmptyRows(const U2EntityRef& msaRef, const QLis
 void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os) {
     // Get the alignment.
     MultipleSequenceAlignmentExporter alExporter;
-    MultipleSequenceAlignment al = alExporter.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = alExporter.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_OP_EXT(os, uiLog.error(os.getError()), );
 
     // Validate the parameters.

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include "BaseMessageTranslator.h"
 
@@ -35,7 +35,7 @@ public:
     QString getTranslation() const;
 
 protected:
-    MultipleSequenceAlignment malignment;
+    MultipleAlignment malignment;
 };
 
 }  // namespace U2

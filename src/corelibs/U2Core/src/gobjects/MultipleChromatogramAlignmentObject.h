@@ -23,7 +23,7 @@
 
 #include <U2Core/GObject.h>
 #include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/MultipleChromatogramAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 namespace U2 {
 
@@ -44,16 +44,13 @@ public:
     MultipleChromatogramAlignmentObject(const QString& name,
                                         const U2EntityRef& mcaRef,
                                         const QVariantMap& hintsMap = QVariantMap(),
-                                        const MultipleChromatogramAlignment& mca = MultipleChromatogramAlignment());
+                                        const MultipleAlignment& mca = MultipleAlignment(MultipleAlignmentDataType::MCA));
 
     virtual ~MultipleChromatogramAlignmentObject();
 
     GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
 
     char charAt(int seqNum, qint64 position) const;
-
-    const MultipleChromatogramAlignment getMca() const;
-    const MultipleChromatogramAlignment getMcaCopy() const;
 
     U2SequenceObject* getReferenceObj() const;
 

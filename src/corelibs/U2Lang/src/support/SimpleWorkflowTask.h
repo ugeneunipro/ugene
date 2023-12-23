@@ -27,7 +27,7 @@
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentProviderTask.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Task.h>
 
@@ -100,7 +100,7 @@ public:
 
     void prepare();
     ReportResult report();
-    MultipleSequenceAlignment getResult();
+    MultipleAlignment getResult();
 
 private:
     QPointer<MultipleSequenceAlignmentObject> msaObjectPointer;

@@ -37,7 +37,7 @@ namespace U2 {
 
 /////////////////////////////////////////////////////////////////////
 
-MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, const MuscleTaskSettings& _config, MuscleContext* ctx)
+MuscleParallelTask::MuscleParallelTask(const MultipleAlignment& ma, MultipleAlignment& res, const MuscleTaskSettings& _config, MuscleContext* ctx)
     : Task(tr("MuscleParallelTask"), TaskFlags_NR_FOSCOE), progAlignTask(nullptr), refineTreeTask(nullptr), refineTask(nullptr) {
     // assert(ma->isNormalized()); //not required to be normalized    assert(_config.op == MuscleTaskOp_Align || _config.op == MuscleTaskOp_Refine);    workpool = NULL;
     setMaxParallelSubtasks(1);
@@ -52,7 +52,7 @@ MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment& ma, Mult
     addTaskResource(resourceUsage);
 }
 
-int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment& ma) {
+int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleAlignment& ma) {
     QList<int> rowsLengths;
     foreach (const MultipleAlignmentRow& row, ma->getRows()) {
         rowsLengths.append(row->getCoreLength());

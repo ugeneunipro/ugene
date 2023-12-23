@@ -51,9 +51,9 @@ void MAFFTSupportTaskSettings::reset() {
     inputFilePath = "";
 }
 
-MAFFTSupportTask::MAFFTSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const MAFFTSupportTaskSettings& _settings)
+MAFFTSupportTask::MAFFTSupportTask(const MultipleAlignment& _inputMsa, const GObjectReference& _objRef, const MAFFTSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run MAFFT alignment task", TaskFlags_NR_FOSCOE),
-      inputMsa(_inputMsa->getExplicitCopy()),
+      inputMsa(_inputMsa->getCopy()),
       objRef(_objRef),
       tmpDoc(nullptr),
       logParser(nullptr),
@@ -229,7 +229,7 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
                         delete lock;
                         lock = nullptr;
                     } else {
-                        stateInfo.setError("MultipleSequenceAlignment object has been changed");
+                        stateInfo.setError("MultipleAlignment object has been changed");
                         return res;
                     }
 
@@ -342,7 +342,7 @@ QList<Task*> MAFFTWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        mAFFTSupportTask = new MAFFTSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
+        mAFFTSupportTask = new MAFFTSupportTask(mAObject->getAlignment(), GObjectReference(), settings);
         res.append(mAFFTSupportTask);
     } else if (subTask == mAFFTSupportTask) {
         // Set the result alignment to the alignment object of the current document

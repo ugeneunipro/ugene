@@ -297,7 +297,7 @@ void McaEditorSelectionController::setSelection(const MaEditorSelection& newSele
         return;
     }
     QList<QRect> selectedRects = newSelection.getRectList();
-    if (newSelection.isSingleBaseSelection() && mcaEditor->getMaObject()->getMca()->isLeadingOrTrailingGap(selectedRects[0].y(), selectedRects[0].x())) {
+    if (newSelection.isSingleBaseSelection() && mcaEditor->getMaObject()->getAlignment()->isLeadingOrTrailingGap(selectedRects[0].y(), selectedRects[0].x())) {
         // Clear selection if gap is clicked.
         MaEditorSelectionController::setSelection({});
         mcaEditor->getUI()->getReferenceArea()->clearSelection();

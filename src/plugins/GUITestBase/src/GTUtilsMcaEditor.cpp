@@ -163,7 +163,7 @@ int GTUtilsMcaEditor::getReadsCount() {
 }
 
 const QStringList GTUtilsMcaEditor::getReadsNames() {
-    return getEditor()->getMaObject()->getMultipleAlignment()->getRowNames();
+    return getEditor()->getMaObject()->getAlignment()->getRowNames();
 }
 
 const QStringList GTUtilsMcaEditor::getDirectReadsNames() {

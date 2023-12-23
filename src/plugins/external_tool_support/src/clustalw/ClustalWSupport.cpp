@@ -172,7 +172,7 @@ void ClustalWSupportContext::sl_align() {
     }
 
     ClustalWSupportTaskSettings settings;
-    QObjectScopedPointer<ClustalWSupportRunDialog> clustalWRunDialog = new ClustalWSupportRunDialog(obj->getMultipleAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ClustalWSupportRunDialog> clustalWRunDialog = new ClustalWSupportRunDialog(obj->getAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
     clustalWRunDialog->exec();
     CHECK(!clustalWRunDialog.isNull(), );
 
@@ -180,7 +180,7 @@ void ClustalWSupportContext::sl_align() {
         return;
     }
 
-    ClustalWSupportTask* clustalWSupportTask = new ClustalWSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
+    ClustalWSupportTask* clustalWSupportTask = new ClustalWSupportTask(obj->getAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalWSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalWSupportTask);
 

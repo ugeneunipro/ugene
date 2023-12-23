@@ -24,7 +24,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentProviderTask.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/Task.h>
 
 namespace U2 {
@@ -37,7 +37,7 @@ class MultipleSequenceAlignmentObject;
 class U2FORMATS_EXPORT ExportAlignmentTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportAlignmentTask(const MultipleSequenceAlignment& ma, const QString& url, const DocumentFormatId& documentFormatId);
+    ExportAlignmentTask(const MultipleAlignment& ma, const QString& url, const DocumentFormatId& documentFormatId);
 
     void run() override;
 
@@ -49,7 +49,7 @@ public:
     static constexpr qint64 MAX_SAFE_ALIGNMENT_SIZE_TO_EXPORT = 100 * 1000 * 1000;
 
 private:
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma;
     QString url;
     DocumentFormatId documentFormatId;
 };
@@ -58,12 +58,12 @@ private:
 class U2FORMATS_EXPORT ExportMSA2SequencesTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSA2SequencesTask(const MultipleSequenceAlignment& ma, const QString& url, bool trimLeadingAndTrailingGaps, const DocumentFormatId& documentFormatId);
+    ExportMSA2SequencesTask(const MultipleAlignment& ma, const QString& url, bool trimLeadingAndTrailingGaps, const DocumentFormatId& documentFormatId);
 
     void run() override;
 
 private:
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma;
     QString url;
     bool trimLeadingAndTrailingGaps;
     QString documentFormatId;
@@ -73,7 +73,7 @@ private:
 class U2FORMATS_EXPORT ExportMSA2MSATask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSA2MSATask(const MultipleSequenceAlignment& msa,
+    ExportMSA2MSATask(const MultipleAlignment& msa,
                       const QList<qint64>& rowIds,
                       const U2Region& columnRegion,
                       const QString& url,

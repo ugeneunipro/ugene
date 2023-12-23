@@ -63,7 +63,7 @@ public:
 class PhyMlWidget : public CreatePhyTreeWidget, public Ui_PhyMLDialog {
     Q_OBJECT
 public:
-    PhyMlWidget(const MultipleSequenceAlignment& ma, QWidget* parent);
+    PhyMlWidget(const MultipleAlignment& ma, QWidget* parent);
 
     void fillSettings(CreatePhyTreeSettings& settings) override;
     void storeSettings() override;

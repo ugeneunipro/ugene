@@ -24,6 +24,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -34,7 +35,7 @@ ConvertMca2MsaTask::ConvertMca2MsaTask(MultipleChromatogramAlignmentObject* mcaO
     SAFE_POINT_EXT(mcaObject != nullptr, setError(L10N::nullPointerError("MCA object")), );
 }
 
-MultipleSequenceAlignment ConvertMca2MsaTask::getMsa() const {
+MultipleAlignment ConvertMca2MsaTask::getMsa() const {
     return msa;
 }
 
@@ -43,7 +44,7 @@ void ConvertMca2MsaTask::prepare() {
 }
 
 void ConvertMca2MsaTask::run() {
-    msa = MultipleSequenceAlignment(mcaObject->getGObjectName(), mcaObject->getAlphabet());
+    msa = MultipleAlignment(MultipleAlignmentDataType::MSA, mcaObject->getGObjectName(), mcaObject->getAlphabet());
 
     if (includeReference) {
         U2SequenceObject* referenceObject = mcaObject->getReferenceObj();
@@ -51,7 +52,7 @@ void ConvertMca2MsaTask::run() {
         CHECK_OP(stateInfo, );
     }
 
-    foreach (const MultipleAlignmentRow& mcaRow, mcaObject->getMca()->getRows()) {
+    foreach (const MultipleAlignmentRow& mcaRow, mcaObject->getAlignment()->getRows()) {
         msa->addRow(mcaRow->getName(), mcaRow->getSequence(), mcaRow->getGaps(), stateInfo);
         CHECK_OP(stateInfo, );
     }

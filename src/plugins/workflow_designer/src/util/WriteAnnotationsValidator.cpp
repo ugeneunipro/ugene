@@ -21,6 +21,8 @@
 
 #include "WriteAnnotationsValidator.h"
 
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>
 

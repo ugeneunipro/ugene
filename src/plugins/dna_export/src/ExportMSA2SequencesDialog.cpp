@@ -105,7 +105,7 @@ void ExportMSA2SequencesDialog::showDialogAndStartExportTask(MultipleSequenceAli
     CHECK(!d.isNull() && rc != QDialog::Rejected && !msaObjectPtr.isNull(), );
     lod.url = d->url;
 
-    const MultipleSequenceAlignment& msa = msaObject->getMultipleAlignment();
+    const MultipleAlignment& msa = msaObject->getAlignment();
     auto t = ExportUtils::wrapExportTask(new ExportMSA2SequencesTask(msa, d->url, d->trimGapsFlag, d->format), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }

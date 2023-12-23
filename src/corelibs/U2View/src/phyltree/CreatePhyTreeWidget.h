@@ -25,7 +25,7 @@
 
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 namespace U2 {
 
@@ -46,7 +46,7 @@ public:
     virtual void restoreDefault() = 0;
 
     virtual bool checkSettings(QString& message, const CreatePhyTreeSettings& settings);
-    virtual bool checkMemoryEstimation(QString& message, const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings);
+    virtual bool checkMemoryEstimation(QString& message, const MultipleAlignment& ma, const CreatePhyTreeSettings& settings);
 
     static QString getAppSettingsRoot();
 };

@@ -123,7 +123,7 @@ void MSAExportContext::sl_exportSelectedMsaRowsToSeparateFiles() {
     QString extension = df->getSupportedDocumentFileExtensions().first();
 
     QList<int> selectedMaRowIndexes = editor->getSelection().getSelectedRowIndexes();
-    const MultipleSequenceAlignment& msa = editor->getMaObject()->getMsa();
+    const MultipleAlignment& msa = editor->getMaObject()->getAlignment();
     QSet<qint64> selectedMaRowIds = msa->getRowIdsByRowIndexes(selectedMaRowIndexes).toSet();
     auto exportTask = new ExportSequencesTask(msa,
                                               selectedMaRowIds,
@@ -138,7 +138,7 @@ void MSAExportContext::sl_exportSelectedMsaRowsToSeparateFiles() {
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
     MultipleSequenceAlignmentObject* maObject = editor->getMaObject();
-    const MultipleSequenceAlignment& ma = maObject->getMultipleAlignment();
+    const MultipleAlignment& ma = maObject->getAlignment();
     SAFE_POINT(ma->getAlphabet()->isNucleic(), "Alignment alphabet is not nucleic", );
 
     GUrl msaUrl = maObject->getDocument()->getURL();

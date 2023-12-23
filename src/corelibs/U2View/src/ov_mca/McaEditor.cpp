@@ -59,8 +59,8 @@ McaEditor::McaEditor(const QString& viewName,
     initFont();
 
     U2OpStatusImpl os;
-    foreach (const MultipleAlignmentRow& row, obj->getMca()->getRows()) {
-        chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), true);
+    foreach (const MultipleAlignmentRow& row, obj->getAlignment()->getRows()) {
+        chromVisibility.insert(obj->getAlignment()->getRowIndexByRowId(row->getRowId(), os), true);
     }
 
     U2SequenceObject* referenceObj = obj->getReferenceObj();

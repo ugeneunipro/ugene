@@ -34,11 +34,12 @@ class DNAAlphabet;
 
 class MultipleAlignmentData;
 
+/** Cached, in-memory MSA/MCA object model. */
 class U2CORE_EXPORT MultipleAlignment {
-protected:
-    MultipleAlignment(MultipleAlignmentData* maData);
-
 public:
+    MultipleAlignment(MultipleAlignmentData* maData);
+    MultipleAlignment(const MultipleAlignmentDataType& type = MultipleAlignmentDataType::MSA, const QString& name = "", const DNAAlphabet* alphabet = nullptr);
+
     enum Order {
         Ascending,
         Descending
@@ -84,7 +85,7 @@ Derived MultipleAlignment::dynamicCast() const {
  * is expected to keep the conformance of the data and the alphabet.
  */
 class U2CORE_EXPORT MultipleAlignmentData {
-protected:
+public:
     /**
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
@@ -94,7 +95,6 @@ protected:
                           const DNAAlphabet* alphabet = nullptr,
                           const QVector<MultipleAlignmentRow>& rows = {});
 
-public:
     virtual ~MultipleAlignmentData() = default;
 
     /**
@@ -158,7 +158,9 @@ public:
     QList<QVector<U2MsaGap>> getGapModel() const;
 
     /** Sorts rows. If range is provided and is not empty sorts only given range. */
-    void sortRows(MultipleAlignment::SortType type, MultipleAlignment::Order order = MultipleAlignment::Ascending, const U2Region& range = U2Region());
+    void sortRows(const MultipleAlignment::SortType& sortType,
+                  MultipleAlignment::Order order = MultipleAlignment::Ascending,
+                  const U2Region& range = {});
 
     /** Returns row of the alignment */
     MultipleAlignmentRow getRow(int row);
@@ -245,7 +247,7 @@ public:
     /** Arranges rows in lists order*/
     bool sortRowsByList(const QStringList& order);
 
-    virtual MultipleAlignment getCopy() const = 0;
+    MultipleAlignment getCopy() const;
 
     /**
      * Sorts rows by similarity making identical rows sequential. Sets MSA rows to the sorted rows.
@@ -295,7 +297,6 @@ public:
     void addRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os);
     void addRow(const QString& name, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 
-
     /**
      * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.
      * The 'origChar' must be a non-gap character.
@@ -322,6 +323,19 @@ public:
 
     /**  returns "True" if all sequences in the alignment have equal lengths */
     bool hasEqualLength() const;
+
+    /**
+     * Creates a new alignment from the sub-alignment. Do not trims the result.
+     * Assumes that 'start' >= 0, and 'start + len' is less or equal than the alignment length.
+     */
+    MultipleAlignment mid(int start, int len) const;
+
+    /**
+     * Joins two alignments. Alignments must have the same size and alphabet.
+     * Increases the alignment length.
+     */
+    MultipleAlignmentData& operator+=(const MultipleAlignmentData& ma);
+
 protected:
     /** Helper-method for adding a row to the alignment */
     void addRowPrivate(const MultipleAlignmentRow& row, qint64 rowLenWithTrailingGaps, int rowIndex);

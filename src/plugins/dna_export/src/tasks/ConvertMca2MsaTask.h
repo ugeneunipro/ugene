@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/StateLockableDataModel.h>
 #include <U2Core/Task.h>
 
@@ -34,7 +34,7 @@ class ConvertMca2MsaTask : public Task {
 public:
     ConvertMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject, bool includeReference);
 
-    MultipleSequenceAlignment getMsa() const;
+    MultipleAlignment getMsa() const;
 
 private:
     void prepare();
@@ -44,7 +44,7 @@ private:
     MultipleChromatogramAlignmentObject* mcaObject;
     const bool includeReference;
 
-    MultipleSequenceAlignment msa;
+    MultipleAlignment msa;
     QScopedPointer<StateLocker> locker;
 };
 

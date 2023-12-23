@@ -40,7 +40,7 @@
 #include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -473,7 +473,7 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
     SAFE_POINT_OP(os, );
 
     QMap<qint64, QVector<U2MsaGap>> noGapModel;
-    foreach (qint64 rowId, msa->getMultipleAlignment()->getRowsIds()) {
+    foreach (qint64 rowId, msa->getAlignment()->getRowsIds()) {
         noGapModel[rowId] = QVector<U2MsaGap>();
     }
 
@@ -492,7 +492,7 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
 void MSAEditorSequenceArea::sl_createSubalignment() {
     MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
     QList<int> maRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
-    const MultipleAlignment& alignment = msaObject->getMultipleAlignment();
+    const MultipleAlignment& alignment = msaObject->getAlignment();
     QList<qint64> maRowIds = maRowIndexes.isEmpty() ? alignment->getRowsIds() : alignment->getRowIdsByRowIndexes(maRowIndexes);
     const MaEditorSelection& selection = editor->getSelection();
     U2Region columnRange = selection.isEmpty()
@@ -704,7 +704,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
     // then shifting should be canceled
     cancelShiftTracking();
 
-    const MultipleSequenceAlignment ma = maObj->getMultipleAlignment();
+    const MultipleAlignment ma = maObj->getAlignment();
     DNATranslation* trans = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(ma->getAlphabet());
     if (trans == nullptr || !trans->isOne2One()) {
         return;
@@ -793,7 +793,7 @@ void MSAEditorSequenceArea::sl_complementCurrentSelection() {
 
 void MSAEditorSequenceArea::enableFreeRowOrderMode(QObject* marker, const QList<QStringList>& collapsedGroups) {
     MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
-    QStringList rowNames = msaObject->getMultipleAlignment()->getRowNames();
+    QStringList rowNames = msaObject->getAlignment()->getRowNames();
     QList<qint64> rowIds = msaObject->getRowIds();
 
     // The result list of virtual groups.
@@ -872,7 +872,7 @@ QString ExportHighlightingTask::generateExportHighlightingReport() const {
     QStringList result;
 
     MultipleAlignmentObject* maObj = msaEditor->getMaObject();
-    const MultipleAlignment& msa = maObj->getMultipleAlignment();
+    const MultipleAlignment& msa = maObj->getAlignment();
 
     U2OpStatusImpl os;
     int refSeq = msa->getRowIndexByRowId(msaEditor->getReferenceRowId(), os);

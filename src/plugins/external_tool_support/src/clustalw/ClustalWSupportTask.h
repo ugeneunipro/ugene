@@ -24,7 +24,7 @@
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GObjectReference.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Task.h>
 
@@ -82,7 +82,7 @@ class ClustalWSupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(ClustalWSupportTask)
 public:
-    ClustalWSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalWSupportTaskSettings& _settings);
+    ClustalWSupportTask(const MultipleAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalWSupportTaskSettings& _settings);
     ~ClustalWSupportTask();
 
     void prepare();
@@ -90,10 +90,10 @@ public:
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 
-    MultipleSequenceAlignment resultMA;
+    MultipleAlignment resultMA;
 
 private:
-    MultipleSequenceAlignment inputMsa;
+    MultipleAlignment inputMsa;
     GObjectReference objRef;
     QPointer<Document> tmpDoc;
     QString url;

@@ -57,7 +57,7 @@ private:
     MAFFTSupportTaskSettings cfg;
 
 private:
-    void send(const MultipleSequenceAlignment& msa);
+    void send(const MultipleAlignment& msa);
 };
 
 class MAFFTWorkerFactory : public DomainFactory {

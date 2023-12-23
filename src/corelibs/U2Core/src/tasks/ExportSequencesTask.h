@@ -24,7 +24,7 @@
 #include <QSet>
 
 #include <U2Core/DNASequence.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/Task.h>
 
 namespace U2 {
@@ -32,7 +32,7 @@ namespace U2 {
 class U2CORE_EXPORT ExportSequencesTask : public Task {
     Q_OBJECT
 public:
-    ExportSequencesTask(const MultipleSequenceAlignment& msa,
+    ExportSequencesTask(const MultipleAlignment& msa,
                         const QSet<qint64>& rowIds,
                         bool trimGaps,
                         bool addToProjectFlag,

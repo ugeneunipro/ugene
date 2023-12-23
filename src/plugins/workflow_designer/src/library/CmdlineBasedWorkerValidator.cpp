@@ -23,6 +23,8 @@
 
 #include <QDir>
 
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/ActorPrototype.h>
 #include <U2Lang/ExternalToolCfg.h>
 #include <U2Lang/WorkflowEnv.h>

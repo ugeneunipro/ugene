@@ -86,7 +86,7 @@ void FindPatternMsaTask::getResultFromTask() {
         currentSequenceIndex++;
         return;
     }
-    const MultipleAlignment& multipleAlignment = settings.msaObj->getMultipleAlignment();
+    const MultipleAlignment& multipleAlignment = settings.msaObj->getAlignment();
     QList<U2Region> regions;
     const MultipleAlignmentRow& msaRow = multipleAlignment->getRow(currentSequenceIndex);
     for (int i = 0; i < rowResults.length() && totalResultsCounter < settings.findSettings.maxResult2Find; i++) {

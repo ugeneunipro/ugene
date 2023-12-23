@@ -76,7 +76,7 @@ public:
     QSet<int> rowIndexesToAlign;
 
     // used only for MuscleTaskOp_AddUnalignedToProfile and MuscleTaskOp_ProfileToProfile
-    MultipleSequenceAlignment profile;
+    MultipleAlignment profile;
 
     // number of threads: 0 - auto, 1 - serial
     int nThreads;
@@ -87,7 +87,7 @@ public:
 class MuscleTask : public Task {
     Q_OBJECT
 public:
-    MuscleTask(const MultipleSequenceAlignment& ma, const MuscleTaskSettings& config);
+    MuscleTask(const MultipleAlignment& ma, const MuscleTaskSettings& config);
 
     void run();
 
@@ -101,11 +101,11 @@ public:
     ReportResult report();
 
     MuscleTaskSettings config;
-    MultipleSequenceAlignment inputMA;
-    MultipleSequenceAlignment resultMA;
+    MultipleAlignment inputMA;
+    MultipleAlignment resultMA;
 
-    MultipleSequenceAlignment inputSubMA;
-    MultipleSequenceAlignment resultSubMA;
+    MultipleAlignment inputSubMA;
+    MultipleAlignment resultSubMA;
 
     MuscleContext* ctx;
     MuscleParallelTask* parallelSubTask;
@@ -136,7 +136,7 @@ public:
     MuscleAlignOwnSequencesToSelfAction(MultipleSequenceAlignmentObject* msaObject, const QList<int>& maRowIndexes);
 };
 
-// locks MultipleSequenceAlignment object and propagate MuscleTask results to it
+// locks MultipleAlignment object and propagate MuscleTask results to it
 class MuscleGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:

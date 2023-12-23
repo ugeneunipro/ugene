@@ -595,7 +595,7 @@ void MaEditor::setCursorPosition(const QPoint& newCursorPosition) {
 }
 
 QList<qint64> MaEditor::getMaRowIds() const {
-    return maObject->getMultipleAlignment()->getRowsIds();
+    return maObject->getAlignment()->getRowsIds();
 }
 
 void MaEditor::selectRows(int firstViewRowIndex, int numberOfRows) {

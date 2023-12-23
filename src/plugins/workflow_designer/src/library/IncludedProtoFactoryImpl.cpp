@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 

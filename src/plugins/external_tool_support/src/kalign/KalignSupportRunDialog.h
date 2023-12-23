@@ -36,13 +36,13 @@ class SaveDocumentController;
 class Kalign3DialogWithMsaInput : public QDialog, public Ui_KalignSupportRunDialog {
     Q_OBJECT
 public:
-    Kalign3DialogWithMsaInput(QWidget* w, const MultipleSequenceAlignment& ma, Kalign3Settings& settings);
+    Kalign3DialogWithMsaInput(QWidget* w, const MultipleAlignment& ma, Kalign3Settings& settings);
 
 public slots:
     void accept() override;
 
 private:
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma;
     Kalign3Settings& settings;
 };
 

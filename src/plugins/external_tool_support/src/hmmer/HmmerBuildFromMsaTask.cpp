@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings& settings, const MultipleSequenceAlignment& msa)
+HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings& settings, const MultipleAlignment& msa)
     : ExternalToolSupportTask(tr("Build HMMER profile from msa"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
       msa(msa),

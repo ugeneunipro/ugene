@@ -26,8 +26,8 @@
 #include <U2Algorithm/BuiltInAssemblyConsensusAlgorithms.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/AddSequencesToAlignmentTask.h>
+#include <U2Core/AppContext.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -40,7 +40,7 @@ namespace U2 {
 
 static char c1(const QString& column, int threshold) {
     auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(column.toLocal8Bit());
-    MultipleSequenceAlignment alignment("Test alignment name", bestAlphabet);
+    MultipleAlignment alignment(MultipleAlignmentDataType::MSA, "Test alignment name", bestAlphabet);
 
     for (int i = 0; i < column.size(); i++) {
         alignment->addRow(QString::number(i), column.mid(i, 1).toLocal8Bit());
@@ -55,7 +55,7 @@ static char c1(const QString& column, int threshold) {
 
 static char cN(const QStringList& alignmentRows, int threshold) {
     auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(alignmentRows.join("").toLocal8Bit());
-    MultipleSequenceAlignment alignment("Test alignment name", bestAlphabet);
+    MultipleAlignment alignment(MultipleAlignmentDataType::MSA, "Test alignment name", bestAlphabet);
 
     for (int i = 0; i < alignmentRows.size(); i++) {
         const auto& row = alignmentRows[i];
@@ -295,7 +295,7 @@ IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase) {
 
 static MultipleSequenceAlignmentObject* createAlignmentObject(const QStringList& alignmentRows) {
     auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(alignmentRows.join("").toLocal8Bit());
-    MultipleSequenceAlignment alignment("Test alignment name", bestAlphabet);
+    MultipleAlignment alignment(MultipleAlignmentDataType::MSA, "Test alignment name", bestAlphabet);
 
     for (int i = 0; i < alignmentRows.size(); i++) {
         const auto& row = alignmentRows[i];
@@ -316,7 +316,7 @@ char getSymbolAfterAddRow(const QStringList& alignmentRows, char newChar) {
     auto msaObj = QSharedPointer<MultipleSequenceAlignmentObject>(createAlignmentObject(alignmentRows));
     CHECK(!msaObj.isNull(), '0');
 
-    const auto& alignment = msaObj->getMsa();
+    const auto& alignment = msaObj->getAlignment();
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
     auto msaConsCache = new MSAEditorConsensusCache(msaObj.get(), msaObj.get(), factory);
 
@@ -327,8 +327,6 @@ char getSymbolAfterAddRow(const QStringList& alignmentRows, char newChar) {
 
     return algorithm->getConsensusChar(alignment, 1);
 }
-
-
 
 IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckReplace) {
 #define CHECK_LEVITSKY_REPLACE(c, f) CHECK_EQUAL((c), (f), __LINE__);
@@ -361,7 +359,7 @@ char getSymbolAfterAddRow(const QStringList& alignmentRow, const QString& newRow
     auto msaObj = QSharedPointer<MultipleSequenceAlignmentObject>(createAlignmentObject({alignmentRow}));
     CHECK(!msaObj.isNull(), '0');
 
-    const auto& alignment = msaObj->getMsa();
+    const auto& alignment = msaObj->getAlignment();
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
     auto msaConsCache = new MSAEditorConsensusCache(msaObj.get(), msaObj.get(), factory);
 
@@ -408,7 +406,7 @@ char getSymbolAfterRemoveLastColumn(const QStringList& alignmentRow) {
     auto msaObj = QSharedPointer<MultipleSequenceAlignmentObject>(createAlignmentObject({alignmentRow}));
     CHECK(!msaObj.isNull(), '0');
 
-    const auto& alignment = msaObj->getMsa();
+    const auto& alignment = msaObj->getAlignment();
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
     auto msaConsCache = new MSAEditorConsensusCache(msaObj.get(), msaObj.get(), factory);
 
@@ -446,7 +444,5 @@ IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckRemoveColumn) {
     CHECK_LEVITSKY_REMOVE_COLUMN('Y', getSymbolAfterRemoveLastColumn({"UUA", "UCA"}));
     CHECK_LEVITSKY_REMOVE_COLUMN('K', getSymbolAfterRemoveLastColumn({"UUA", "UGA"}));
 }
-
-
 
 }  // namespace U2

@@ -7,7 +7,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
@@ -79,7 +79,7 @@ KalignPairwiseAlignmentTask::KalignPairwiseAlignmentTask(KalignPairwiseAlignment
     alphabet = U2AlphabetUtils::getById(settings->alphabet);
     SAFE_POINT(alphabet != nullptr, "Alphabet is invalid.", );
 
-    ma = MultipleSequenceAlignment(firstName + " vs. " + secondName, alphabet);
+    ma = MultipleAlignment(MultipleAlignmentDataType::MSA, firstName + " vs. " + secondName, alphabet);
     ma->addRow(firstName, first);
     ma->addRow(secondName, second);
 
@@ -115,7 +115,7 @@ QList<Task*> KalignPairwiseAlignmentTask::onSubTaskFinished(Task* subTask) {
             Document* alignmentDoc = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(newFileUrl), localStateInfo);
             CHECK_OP(localStateInfo, res);
 
-            MultipleSequenceAlignment resultMa = kalignSubTask->resultMA;
+            MultipleAlignment resultMa = kalignSubTask->resultMA;
             MultipleSequenceAlignmentObject* docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
             CHECK_OP(localStateInfo, res);
             alignmentDoc->addObject(docObject);

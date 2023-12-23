@@ -157,7 +157,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
             sub = new QMenu(tr("Export/Import"));
             sub->addAction(exportAlignmentAsSequencesAction);
             GObject* obj = set.first();
-            const MultipleSequenceAlignment& ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getMsa();
+            const MultipleAlignment& ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getAlignment();
             if (ma->getAlphabet()->isNucleic()) {
                 sub->addAction(exportNucleicAlignmentToAminoAction);
             }
@@ -430,7 +430,7 @@ void ExportProjectViewItemsContoller::sl_saveSequencesAsAlignment() {
         return;
     }
 
-    MultipleSequenceAlignment ma = MSAUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
+    MultipleAlignment ma = MSAUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
     if (os.hasError()) {
         QMessageBox::critical(nullptr, L10N::errorTitle(), os.getError());
         return;
@@ -494,13 +494,13 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     SAFE_POINT(msaObject != nullptr, "Not an MSA object", );
 
     Document* doc = msaObject->getDocument();
-    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), msaObject->getMsa()->getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), msaObject->getAlignment()->getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
     QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, true, AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
     CHECK(!d.isNull() && rc != QDialog::Rejected, );
 
-    const MultipleSequenceAlignment& msa = msaObject->getMsa();
+    const MultipleAlignment& msa = msaObject->getAlignment();
     DNATranslation* translation = AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
     bool convertUnknowToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
     bool reverseComplement = d->translationFrame < 0;
@@ -529,7 +529,7 @@ void ExportProjectViewItemsContoller::sl_importAnnotationsFromCSV() {
     }
     ImportAnnotationsFromCSVTaskConfig taskConfig;
     d->toTaskConfig(taskConfig);
-    ImportAnnotationsFromCSVTask* task = new ImportAnnotationsFromCSVTask(taskConfig);
+    auto task = new ImportAnnotationsFromCSVTask(taskConfig);
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 

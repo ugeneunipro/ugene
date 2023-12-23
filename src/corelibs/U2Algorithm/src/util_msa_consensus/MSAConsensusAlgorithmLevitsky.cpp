@@ -21,7 +21,8 @@
 
 #include "MSAConsensusAlgorithmLevitsky.h"
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 

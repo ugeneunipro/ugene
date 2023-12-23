@@ -86,7 +86,7 @@ void GTest_CalculateTreeFromAligment::prepare() {
                                              "sumt burnin=10;\n"
                                              "End;\n");
 
-    task = new PhyTreeGeneratorLauncherTask(maObj->getMultipleAlignment(), settings);
+    task = new PhyTreeGeneratorLauncherTask(maObj->getAlignment(), settings);
 
     if (task == nullptr) {
         stateInfo.setError(QString("Algorithm %1 not found").arg(algId));

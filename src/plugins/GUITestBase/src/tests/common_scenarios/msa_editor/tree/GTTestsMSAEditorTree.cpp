@@ -48,7 +48,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Check that original name list is correct.
     MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor();
     MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
-    QStringList nameList = msaObject->getMultipleAlignment()->getRowNames();
+    QStringList nameList = msaObject->getAlignment()->getRowNames();
     QStringList originalNameList = {"a", "b", "c", "d", "e", "f", "g", "h"};
     CHECK_SET_ERR(nameList == originalNameList, "1. Wrong original name list: " + nameList.join(","));
 
@@ -57,7 +57,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check that the tree is opened and MSA order was changed to match the tree order. The original MSA-object order must not change.
-    nameList = msaObject->getMultipleAlignment()->getRowNames();
+    nameList = msaObject->getAlignment()->getRowNames();
     CHECK_SET_ERR(nameList == originalNameList, "2. Wrong original name list: " + nameList.join(","));
     nameList = GTUtilsMSAEditorSequenceArea::getVisibleNames();
     QStringList expectedExpandedTreeNameList = {"h", "b", "f", "d", "c", "e", "g", "a"};

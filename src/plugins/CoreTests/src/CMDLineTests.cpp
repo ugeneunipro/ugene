@@ -30,6 +30,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>

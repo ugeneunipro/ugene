@@ -22,7 +22,7 @@
 #pragma once
 
 #include <U2Core/DNASequence.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -78,13 +78,13 @@ public:
         : Task(tr("MSAFromSequencesTask"), TaskFlag_None), sequences_(sequences) {
     }
     void run();
-    MultipleSequenceAlignment getResult() const {
+    MultipleAlignment getResult() const {
         return ma;
     }
 
 private:
     QList<DNASequence> sequences_;
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma;
 };
 
 }  // namespace LocalWorkflow

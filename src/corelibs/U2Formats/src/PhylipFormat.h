@@ -23,7 +23,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include "TextDocumentFormat.h"
@@ -49,7 +49,7 @@ protected:
 
     Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 
-    virtual MultipleSequenceAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const = 0;
+    virtual MultipleAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const = 0;
 };
 
 /** Sequential variant of Phylip format. Example:
@@ -71,7 +71,7 @@ public:
 protected:
     FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    MultipleSequenceAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const override;
+    MultipleAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const override;
 };
 
 /** Interleaved variant of Phylip format. Example:
@@ -93,7 +93,7 @@ public:
 protected:
     FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    MultipleSequenceAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const override;
+    MultipleAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const override;
 };
 
 }  // namespace U2

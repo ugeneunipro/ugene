@@ -95,7 +95,7 @@ void setupAlphaAndScore(const DNAAlphabet* al, TaskStateInfo& ti) {
     }
 }
 
-void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, bool fixAlpha) {
+void convertMAlignment2MSA(MSA& muscleMSA, const MultipleAlignment& ma, bool fixAlpha) {
     MuscleContext* ctx = getMuscleContext();
     ctx->fillUidsVectors(ma->getRowCount());
     for (int i = 0, n = ma->getRowCount(); i < n; i++) {
@@ -120,7 +120,7 @@ void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, 
     }
 }
 
-void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma, bool fixAlpha) {
+void convertMAlignment2SecVect(SeqVect& sv, const MultipleAlignment& ma, bool fixAlpha) {
     sv.Clear();
 
     MuscleContext* ctx = getMuscleContext();
@@ -147,7 +147,7 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma,
     }
 }
 
-void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& res) {
+void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleAlignment& res) {
     assert(res->isEmpty());
     MuscleContext* ctx = getMuscleContext();
     res->setAlphabet(al);
@@ -166,7 +166,7 @@ void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlig
     }
 }
 
-void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& ma, bool mhack) {
+void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MultipleAlignment& ma, bool mhack) {
     if (mhack) {
         MHackEnd(msa);
     }

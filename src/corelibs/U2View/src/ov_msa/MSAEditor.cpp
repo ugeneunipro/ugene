@@ -773,7 +773,7 @@ void MSAEditor::buildTree() {
 }
 
 QString MSAEditor::getReferenceRowName() const {
-    const MultipleAlignment alignment = getMaObject()->getMultipleAlignment();
+    const MultipleAlignment alignment = getMaObject()->getAlignment();
     U2OpStatusImpl os;
     const int refSeq = alignment->getRowIndexByRowId(getReferenceRowId(), os);
     return (U2MsaRow::INVALID_ROW_ID != refSeq) ? alignment->getRowNames().at(refSeq) : QString();
@@ -783,10 +783,10 @@ char MSAEditor::getReferenceCharAt(int pos) const {
     CHECK(getReferenceRowId() != U2MsaRow::INVALID_ROW_ID, '\n');
 
     U2OpStatusImpl os;
-    const int refSeq = maObject->getMultipleAlignment()->getRowIndexByRowId(getReferenceRowId(), os);
+    const int refSeq = maObject->getAlignment()->getRowIndexByRowId(getReferenceRowId(), os);
     SAFE_POINT_OP(os, '\n');
 
-    return maObject->getMultipleAlignment()->charAt(refSeq, pos);
+    return maObject->getAlignment()->charAt(refSeq, pos);
 }
 
 void MSAEditor::sl_showCustomSettings() {
@@ -797,7 +797,7 @@ void MSAEditor::sortSequences(const MultipleAlignment::SortType& sortType, const
     MultipleSequenceAlignmentObject* msaObject = getMaObject();
     CHECK(!msaObject->isStateLocked(), );
 
-    MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
+    MultipleAlignment msa = msaObject->getMultipleAlignmentCopy();
     const MaEditorSelection& selection = getSelection();
     QRect selectionRect = selection.toRect();
     U2Region sortRange = selectionRect.height() <= 1 ? U2Region() : U2Region(selectionRect.y(), selectionRect.height());
@@ -807,7 +807,7 @@ void MSAEditor::sortSequences(const MultipleAlignment::SortType& sortType, const
     getMaEditorMultilineWgt()->sl_toggleSequenceRowOrder(false);
 
     QStringList rowNames = msa->getRowNames();
-    if (rowNames != msaObject->getMultipleAlignment()->getRowNames()) {
+    if (rowNames != msaObject->getAlignment()->getRowNames()) {
         U2OpStatusImpl os;
         msaObject->updateRowsOrder(os, msa->getRowsIds());
     }
@@ -936,7 +936,7 @@ void MSAEditor::updateCollapseModel() {
         }
     }
     for (const auto & maRowsInGroup : qAsConst(rowGroups)) {
-        QList<qint64> maRowIdsInGroup = msaObject->getMultipleAlignment()->getRowIdsByRowIndexes(maRowsInGroup);
+        QList<qint64> maRowIdsInGroup = msaObject->getAlignment()->getRowIdsByRowIndexes(maRowsInGroup);
         bool isCollapsed = !maRowIdsOfNonCollapsedRowsBefore.contains(maRowIdsInGroup[0]);
         newCollapseGroups << MaCollapsibleGroup(maRowsInGroup, maRowIdsInGroup, isCollapsed);
     }

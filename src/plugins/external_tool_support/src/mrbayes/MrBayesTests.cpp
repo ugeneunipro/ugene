@@ -122,7 +122,7 @@ void GTest_MrBayes::prepare() {
                                              "End;\n")
                                          .arg(mbSeed);
 
-    task = new PhyTreeGeneratorLauncherTask(input->getMultipleAlignment(), settings);
+    task = new PhyTreeGeneratorLauncherTask(input->getAlignment(), settings);
     addSubTask(task);
 }
 

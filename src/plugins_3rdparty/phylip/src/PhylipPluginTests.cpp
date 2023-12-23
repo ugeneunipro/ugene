@@ -130,7 +130,7 @@ void GTest_NeighborJoin::prepare() {
         settings.replicates = 100;
     }
 
-    task = new PhyTreeGeneratorLauncherTask(input->getMultipleAlignment(), settings);
+    task = new PhyTreeGeneratorLauncherTask(input->getAlignment(), settings);
     addSubTask(task);
 }
 

@@ -258,7 +258,7 @@ void MaSangerOverview::drawReads() {
 
     MultipleChromatogramAlignmentObject const* const mcaObject = getEditor()->getMaObject();
     SAFE_POINT(mcaObject != nullptr, "Incorrect multiple chromatogram alignment object", );
-    const MultipleChromatogramAlignment mca = mcaObject->getMultipleAlignment();
+    const MultipleAlignment mca = mcaObject->getAlignment();
     const int rowsCount = editor->getCollapseModel()->getViewRowCount();
 
     double yOffset = 0;

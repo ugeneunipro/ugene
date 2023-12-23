@@ -38,7 +38,8 @@ namespace U2 {
 /* SimpleAddToAlignmentTask */
 /************************************************************************/
 SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings& settings)
-    : AbstractAlignmentTask("Simple add to alignment task", TaskFlags_NR_FOSCOE), settings(settings) {
+    : AbstractAlignmentTask("Simple add to alignment task", TaskFlags_NR_FOSCOE),
+      settings(settings), inputMsa(MultipleAlignmentDataType::MSA) {
     GCOUNTER(cvar, "SimpleAddToAlignmentTask");
 
     SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into SimpleAddToAlignmentTask"), );
@@ -57,7 +58,7 @@ void SimpleAddToAlignmentTask::prepare() {
         if (hasError() || isCanceled()) {
             return;
         }
-        BestPositionFindTask* findTask = new BestPositionFindTask(inputMsa, sequence, namesIterator.next(), settings.referenceRowId);
+        auto findTask = new BestPositionFindTask(inputMsa, sequence, namesIterator.next(), settings.referenceRowId);
         findTask->setSubtaskProgressWeight(100.0 / settings.addedSequencesRefs.size());
         addSubTask(findTask);
     }
@@ -66,7 +67,7 @@ void SimpleAddToAlignmentTask::prepare() {
 QList<Task*> SimpleAddToAlignmentTask::onSubTaskFinished(Task* subTask) {
     auto findTask = qobject_cast<BestPositionFindTask*>(subTask);
     sequencePositions[findTask->getSequenceId()] = findTask->getPosition();
-    return QList<Task*>();
+    return {};
 }
 
 Task::ReportResult SimpleAddToAlignmentTask::report() {
@@ -149,8 +150,9 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
 /* BestPositionFindTask */
 /************************************************************************/
 
-BestPositionFindTask::BestPositionFindTask(const MultipleSequenceAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId)
-    : Task(tr("Best position find task"), TaskFlag_None), inputMsa(alignment), sequenceRef(sequenceRef), sequenceId(sequenceId), bestPosition(0), referenceRowId(referenceRowId) {
+BestPositionFindTask::BestPositionFindTask(const MultipleAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId)
+    : Task(tr("Best position find task"), TaskFlag_None),
+      inputMsa(alignment), sequenceRef(sequenceRef), sequenceId(sequenceId), bestPosition(0), referenceRowId(referenceRowId) {
 }
 void BestPositionFindTask::run() {
     U2SequenceObject dnaSeq("sequence", sequenceRef);

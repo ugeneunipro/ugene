@@ -224,7 +224,7 @@ bool MegaFormat::skipComments(IOAdapter* io, QByteArray& line, U2OpStatus& ti) {
     return eof;
 }
 
-void MegaFormat::workUpIndels(MultipleSequenceAlignment& al) {
+void MegaFormat::workUpIndels(MultipleAlignment& al) {
     QByteArray firstSequence = al->getRow(0)->getData();
 
     for (int i = 1; i < al->getRowCount(); i++) {
@@ -239,7 +239,7 @@ void MegaFormat::workUpIndels(MultipleSequenceAlignment& al) {
 }
 
 void MegaFormat::load(U2::IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& fs, U2::U2OpStatus& os) {
-    MultipleSequenceAlignment al(io->getURL().baseFileName());
+    MultipleAlignment al(MultipleAlignmentDataType::MSA, io->getURL().baseFileName());
     QByteArray line;
     bool eof = false;
     bool firstBlock = true;
@@ -339,7 +339,7 @@ void MegaFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject
     auto obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(obj != nullptr, "Mega entry storing: NULL alignment object", );
 
-    const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
+    const MultipleAlignment msa = obj->getAlignment();
 
     // write header
     QByteArray header;

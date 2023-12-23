@@ -177,8 +177,8 @@ Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* db
 
     // QString lockReason;
 
-    // QMap<QString, MultipleSequenceAlignment> maMap; //file may contain multiple MA objects
-    // MultipleSequenceAlignment defaultMA("Alignment " + io->getURL().baseFileName());
+    // QMap<QString, MultipleAlignment> maMap; //file may contain multiple MA objects
+    // MultipleAlignment defaultMA("Alignment " + io->getURL().baseFileName());
 
     // QByteArray readBuffer(READ_BUFF_SIZE, '\0');
     // char* buff  = readBuffer.data();
@@ -198,7 +198,7 @@ Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* db
     //            foreach(QByteArray tag, tags) {
     //                if(tag.startsWith(TAG_SEQUENCE_NAME)) { // Set alignment name
     //                    QString maName = QByteArray(tag.constData() + 3, tag.length() - 3);
-    //                    MultipleSequenceAlignment ma;
+    //                    MultipleAlignment ma;
     //                    ma.setName(maName);
     //                    maMap[maName] = ma;
     //                }
@@ -305,7 +305,7 @@ Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* db
     //    os.setProgress(io->getProgress());
     //}
 
-    // foreach(MultipleSequenceAlignment ma, maMap.values()) {
+    // foreach(MultipleAlignment ma, maMap.values()) {
     //     U2AlphabetUtils::assignAlphabet(ma);
     //     CHECK_EXT(ma.getAlphabet() != NULL, os.setError( SAMFormat::tr("Alphabet is unknown")), NULL);
     //     objects.append(new MultipleSequenceAlignmentObject(ma));
@@ -363,7 +363,7 @@ void SAMFormat::storeEntry(IOAdapter* /* io */, const QMap<GObjectType, QList<GO
 
     ////Writing sequence section
     // foreach(const MultipleSequenceAlignmentObject* maObj, maList) {
-    //     const MultipleSequenceAlignment &ma = maObj->getMAlignment();
+    //     const MultipleAlignment &ma = maObj->getMAlignment();
     //     block.clear();
     //     block.append(SECTION_SEQUENCE).append(tab).append(TAG_SEQUENCE_NAME).append(":").append(ma.getName().replace(QRegExp("\\s|\\t"), "_"))
     //         .append(tab).append(TAG_SEQUENCE_LENGTH).append(":").append(QByteArray::number(ma.getLength())).append("\n");
@@ -374,7 +374,7 @@ void SAMFormat::storeEntry(IOAdapter* /* io */, const QMap<GObjectType, QList<GO
 
     ////Writing alignment section
     // foreach(const MultipleSequenceAlignmentObject* maObj, maList) {
-    //     const MultipleSequenceAlignment &ma = maObj->getMAlignment();
+    //     const MultipleAlignment &ma = maObj->getMAlignment();
     //     QByteArray rname(ma.getName().replace(QRegExp("\\s|\\t"), "_").toLatin1());
     //     foreach(MultipleAlignmentRow row, ma.getRows()) {
     //         block.clear();

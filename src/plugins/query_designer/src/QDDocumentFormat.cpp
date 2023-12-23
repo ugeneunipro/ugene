@@ -25,6 +25,7 @@
 #include <U2Core/GHints.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/SelectionUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "QDDocument.h"
 #include "QDSceneIOTasks.h"

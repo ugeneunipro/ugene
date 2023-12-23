@@ -854,7 +854,7 @@ void FindPatternMsaWidget::updatePatternText(int previousAlgorithm) {
 void FindPatternMsaWidget::runSearchInSequenceNames(const QStringList& patterns) {
     currentSearchPatternList = patterns;
 
-    const MultipleAlignment& multipleAlignment = msaEditor->getMaObject()->getMultipleAlignment();
+    const MultipleAlignment& multipleAlignment = msaEditor->getMaObject()->getAlignment();
     U2Region wholeRowRegion(0, msaEditor->getAlignmentLen());
     QSet<int> resultRowIndexSet;
     foreach (const QString& pattern, currentSearchPatternList) {

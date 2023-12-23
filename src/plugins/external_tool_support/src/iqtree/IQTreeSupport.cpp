@@ -62,11 +62,11 @@ IQTreeSupport::IQTreeSupport()
 ////////////////////////////////////////
 // IQTreeAdapter
 
-Task* IQTreeAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings) {
+Task* IQTreeAdapter::createCalculatePhyTreeTask(const MultipleAlignment& msa, const CreatePhyTreeSettings& settings) {
     return new IQTreeTask(msa, settings);
 }
 
-CreatePhyTreeWidget* IQTreeAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment& msa, QWidget* parent) {
+CreatePhyTreeWidget* IQTreeAdapter::createPhyTreeSettingsWidget(const MultipleAlignment& msa, QWidget* parent) {
     return new IQTreeWidget(msa, parent);
 }
 

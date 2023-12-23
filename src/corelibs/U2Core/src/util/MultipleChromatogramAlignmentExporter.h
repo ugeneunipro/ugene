@@ -22,7 +22,7 @@
 #pragma once
 
 #include <U2Core/DbiConnection.h>
-#include <U2Core/MultipleChromatogramAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include "McaRowInnerData.h"
 
@@ -30,7 +30,7 @@ namespace U2 {
 
 class U2CORE_EXPORT MultipleChromatogramAlignmentExporter {
 public:
-    MultipleChromatogramAlignment getAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId) const;
+    MultipleAlignment getAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId) const;
     QMap<qint64, McaRowMemoryData> getMcaRowMemoryData(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId, const QList<qint64>& rowIds) const;
 
 private:

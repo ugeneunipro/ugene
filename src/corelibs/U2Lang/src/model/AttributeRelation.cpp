@@ -25,6 +25,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FileFilters.h>
 #include <U2Core/GUrl.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/ConfigurationEditor.h>
 

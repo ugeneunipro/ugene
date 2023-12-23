@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2Msa.h>
 
@@ -41,7 +41,7 @@ class U2CORE_EXPORT MultipleSequenceAlignmentExporter {
 public:
     MultipleSequenceAlignmentExporter() = default;
 
-    MultipleSequenceAlignment getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const;
+    MultipleAlignment getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const;
     QList<MsaRowReplacementData> getAlignmentRows(const U2DbiRef& dbiRef, const U2DataId& msaId, const QList<qint64> rowIds, U2OpStatus& os) const;
 
 private:

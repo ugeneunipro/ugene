@@ -49,7 +49,7 @@ private:
     static bool readName(IOAdapter* io, QByteArray& line, QByteArray& name, U2OpStatus& ti);
     static bool readSequence(IOAdapter* io, QByteArray& line, U2OpStatus& ti, QByteArray& value, bool* lastIteration);
 
-    static void workUpIndels(MultipleSequenceAlignment& al);
+    static void workUpIndels(MultipleAlignment& al);
     static bool getNextLine(IOAdapter* io, QByteArray& line, U2OpStatus& ti);
     static bool skipComments(IOAdapter* io, QByteArray& line, U2OpStatus& ti);
     static bool checkName(QByteArray& name);

@@ -23,6 +23,8 @@
 
 #include <QStringList>
 
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/WorkflowUtils.h>
 

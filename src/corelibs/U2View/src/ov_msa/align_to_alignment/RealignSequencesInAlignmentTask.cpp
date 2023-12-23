@@ -74,7 +74,7 @@ RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenc
     dir = QDir(extractedSequencesDirUrl);
     dir.mkpath(extractedSequencesDirUrl);
 
-    extractSequences = new ExportSequencesTask(msaObject->getMsa(), clonedObjectRowsToAlignIds, false, false, extractedSequencesDirUrl, BaseDocumentFormats::FASTA, "fa");
+    extractSequences = new ExportSequencesTask(msaObject->getAlignment(), clonedObjectRowsToAlignIds, false, false, extractedSequencesDirUrl, BaseDocumentFormats::FASTA, "fa");
     addSubTask(extractSequences);
 }
 
@@ -88,7 +88,7 @@ U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
     locker = nullptr;
     U2UseCommonUserModStep modStep(originalMsaObject->getEntityRef(), stateInfo);
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
-    originalMsaObject->updateGapModel(msaObject->getMsa()->getRows().toList());
+    originalMsaObject->updateGapModel(msaObject->getAlignment()->getRows().toList());
     QDir tmpDir(extractedSequencesDirUrl);
     foreach (const QString& file, tmpDir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries)) {
         tmpDir.remove(file);

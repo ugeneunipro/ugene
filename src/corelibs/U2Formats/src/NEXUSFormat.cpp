@@ -454,8 +454,8 @@ bool NEXUSParser::readDataContents(Context& ctx) {
                 }
             }
 
-            // Build MultipleSequenceAlignment object
-            MultipleSequenceAlignment ma(tz.getIO()->getURL().baseFileName());
+            // Build MultipleAlignment object
+            MultipleAlignment ma(MultipleAlignmentDataType::MSA, tz.getIO()->getURL().baseFileName());
             for (int i = 0; i < names.length(); i++) {
                 ma->addRow(names[i], values[i]);
             }
@@ -754,7 +754,7 @@ void writeHeader(IOAdapter* io, U2OpStatus&) {
     io->writeBlock(line);
 }
 
-void writeMAligment(const MultipleSequenceAlignment& ma, bool simpleName, IOAdapter* io, U2OpStatus&) {
+void writeMAligment(const MultipleAlignment& ma, bool simpleName, IOAdapter* io, U2OpStatus&) {
     QByteArray line;
     QByteArray tabs, tab(4, ' ');
 
@@ -908,7 +908,7 @@ void NEXUSFormat::storeObjects(const QList<GObject*>& objects, bool simpleNames,
 
     for (GObject* object : qAsConst(objects)) {
         if (auto mao = qobject_cast<MultipleSequenceAlignmentObject*>(object)) {
-            writeMAligment(mao->getMultipleAlignment(), simpleNames, io, ti);
+            writeMAligment(mao->getAlignment(), simpleNames, io, ti);
             io->writeBlock(QByteArray("\n"));
         } else if (auto pto = qobject_cast<PhyTreeObject*>(object)) {
             writePhyTree(pto->getTree(), pto->getGObjectName(), io, ti);

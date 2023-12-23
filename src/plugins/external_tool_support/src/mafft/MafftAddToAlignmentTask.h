@@ -27,7 +27,7 @@
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include "MAFFTSupportTask.h"
 #include "MafftAddToAlignmentTask.h"
@@ -52,7 +52,7 @@ private:
 
     AlignSequencesToAlignmentTaskSettings settings;
 
-    MultipleSequenceAlignment inputMsa;
+    MultipleAlignment inputMsa;
 
     QSharedPointer<Document> tmpDoc;
     QString url;

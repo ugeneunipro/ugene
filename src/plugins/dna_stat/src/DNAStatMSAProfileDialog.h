@@ -24,7 +24,7 @@
 #include <QHash>
 #include <QSet>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/Task.h>
 #include <U2Core/global.h>
 
@@ -76,7 +76,7 @@ public:
 
     QString profileName;  // usually object name
     QString profileURL;  // document url
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
     bool usePercents;  // report percents but not counts
     DNAStatMSAProfileOutputFormat outFormat;
     QString outURL;

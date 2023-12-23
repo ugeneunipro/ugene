@@ -22,7 +22,8 @@
 #include "NewGrouperSlotDialog.h"
 
 #include <QMessageBox>
-#include <QPushButton>
+
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
 

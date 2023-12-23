@@ -34,7 +34,7 @@
 #include "muscle/tree.h"
 // clang-format on
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/Task.h>
 
 class MuscleContext;
@@ -64,10 +64,10 @@ private:
 int ugene_printf(FILE* f, const char* format, ...);
 ALPHA convertAlpha(const DNAAlphabet* al);
 void setupAlphaAndScore(const DNAAlphabet* al, TaskStateInfo& ti);
-void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, bool fixAlpha);
-void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma, bool fixAlpha);
-void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& res);
-void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& ma, bool mhack);
+void convertMAlignment2MSA(MSA& muscleMSA, const MultipleAlignment& ma, bool fixAlpha);
+void convertMAlignment2SecVect(SeqVect& sv, const MultipleAlignment& ma, bool fixAlpha);
+void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleAlignment& res);
+void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MultipleAlignment& ma, bool mhack);
 
 }  // namespace U2
 

@@ -67,7 +67,7 @@ const QString PhyMlSettingsPrefixes::TreeImprovementType(CreatePhyTreeWidget::ge
 const QString PhyMlSettingsPrefixes::TreeSearchingType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_search");
 const QString PhyMlSettingsPrefixes::UserTreePath(CreatePhyTreeWidget::getAppSettingsRoot() + "/user_tree");
 
-PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment& ma, QWidget* parent)
+PhyMlWidget::PhyMlWidget(const MultipleAlignment& ma, QWidget* parent)
     : CreatePhyTreeWidget(parent),
       isTtRationFixed(false),
       isTreeNumberSet(false) {

@@ -38,7 +38,7 @@ void PhylipTask::prepare() {
     MultipleSequenceAlignmentObject* msaObject = new MultipleSequenceAlignmentObject("msa", msaRef);
     msaObject->setParent(this);
 
-    treeTask = new NeighborJoinCalculateTreeTask(msaObject->getMultipleAlignment(), settings);
+    treeTask = new NeighborJoinCalculateTreeTask(msaObject->getAlignment(), settings);
     addSubTask(treeTask);
 }
 

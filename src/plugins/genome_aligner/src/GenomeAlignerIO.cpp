@@ -130,7 +130,7 @@ void GenomeAlignerMsaWriter::close() {
     result->setAlphabet(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
 }
 
-MultipleSequenceAlignment& GenomeAlignerMsaWriter::getResult() {
+MultipleAlignment& GenomeAlignerMsaWriter::getResult() {
     return result;
 }
 

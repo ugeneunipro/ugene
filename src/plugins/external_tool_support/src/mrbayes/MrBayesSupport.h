@@ -42,8 +42,8 @@ public:
 
 class MrBayesAdapter : public PhyTreeGenerator {
 public:
-    Task* createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s);
-    CreatePhyTreeWidget* createPhyTreeSettingsWidget(const MultipleSequenceAlignment& ma, QWidget* parent = nullptr);
+    Task* createCalculatePhyTreeTask(const MultipleAlignment& ma, const CreatePhyTreeSettings& s);
+    CreatePhyTreeWidget* createPhyTreeSettingsWidget(const MultipleAlignment& ma, QWidget* parent = nullptr);
 };
 
 class MrBayesModelTypes {

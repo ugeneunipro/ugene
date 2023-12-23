@@ -22,7 +22,7 @@
 #include "AprFormat.h"
 
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TextUtils.h>
@@ -128,7 +128,7 @@ static QByteArray getSequenceContent(QString string, int sequenceLength) {
     return byteArrayInfo;
 }
 
-static void createRows(IOAdapter* io, char* buff, const int sequnenceNum, const int alignmentLength, MultipleSequenceAlignment& al, U2OpStatus& os) {
+static void createRows(IOAdapter* io, char* buff, const int sequnenceNum, const int alignmentLength, MultipleAlignment& al, U2OpStatus& os) {
     for (int i = 0; i < sequnenceNum; i++) {
         QString rowInfo = getLine(io, buff, AREA_SEQUENCE, os);
         CHECK_OP(os, );
@@ -192,7 +192,7 @@ void AprFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     char* buff = readBuffer.data();
 
     QString objName = io->getURL().baseFileName();
-    MultipleSequenceAlignment al(objName);
+    MultipleAlignment al(MultipleAlignmentDataType::MSA, objName);
     bool lineOk = false;
 
     io->readLine(buff, READ_BUFF_SIZE, &lineOk);

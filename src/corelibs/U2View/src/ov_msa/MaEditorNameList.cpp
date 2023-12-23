@@ -153,7 +153,7 @@ void MaEditorNameList::updateScrollBar() {
     int maxNameWidth = 0;
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
-    foreach (const MultipleAlignmentRow& row, maObj->getMultipleAlignment()->getRows()) {
+    foreach (const MultipleAlignmentRow& row, maObj->getAlignment()->getRows()) {
         maxNameWidth = qMax(fm.width(row->getName()), maxNameWidth);
     }
 
@@ -721,7 +721,7 @@ void MaEditorNameList::drawContent(QPainter& painter) {
     MultipleAlignmentObject* maObj = editor->getMaObject();
     SAFE_POINT(maObj != nullptr, "NULL Ma Object in MAEditorNameList::drawContent", );
 
-    const MultipleAlignment ma = maObj->getMultipleAlignment();
+    const MultipleAlignment ma = maObj->getAlignment();
 
     U2OpStatusImpl os;
     const int referenceIndex = editor->getReferenceRowId() == U2MsaRow::INVALID_ROW_ID ? U2MsaRow::INVALID_ROW_ID : ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
@@ -930,7 +930,7 @@ qint64 MaEditorNameList::sequenceIdAtPos(const QPoint& p) {
     CHECK(ui->getSequenceArea()->isSeqInRange(rowIndex), U2MsaRow::INVALID_ROW_ID);
     CHECK(rowIndex >= 0, U2MsaRow::INVALID_ROW_ID);
     MultipleAlignmentObject* maObj = editor->getMaObject();
-    return maObj->getMultipleAlignment()->getRow(editor->getCollapseModel()->getMaRowIndexByViewRowIndex(rowIndex))->getRowId();
+    return maObj->getAlignment()->getRow(editor->getCollapseModel()->getMaRowIndexByViewRowIndex(rowIndex))->getRowId();
 }
 
 void MaEditorNameList::moveSelection(int offset, bool resetXRange) {

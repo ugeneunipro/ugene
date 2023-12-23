@@ -23,7 +23,7 @@
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -138,7 +138,7 @@ Task* PWMatrixBuildWorker::tick() {
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
 
-        Task* t = new PWMatrixBuildTask(cfg, msaObj->getMultipleAlignment());
+        Task* t = new PWMatrixBuildTask(cfg, msaObj->getAlignment());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -225,7 +225,7 @@ Task* PFMatrixBuildWorker::tick() {
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
 
-        Task* t = new PFMatrixBuildTask(cfg, msaObj->getMultipleAlignment());
+        Task* t = new PFMatrixBuildTask(cfg, msaObj->getAlignment());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {

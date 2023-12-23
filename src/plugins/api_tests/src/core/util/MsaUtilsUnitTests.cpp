@@ -35,13 +35,13 @@ IMPLEMENT_TEST(MsaUtilsUnitTests, one_name_with_spaces) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma1("msa1_one_name_with_spaces", alphabet);
+    MultipleAlignment ma1(MultipleAlignmentDataType::MSA, "msa1_one_name_with_spaces", alphabet);
     ma1->addRow("diss1", "AAAA--AAA", -1);
     ma1->addRow("fiss 2", "C--CCCCCC", -1);
     ma1->addRow("ziss3", "GG-GGGG-G", -1);
     ma1->addRow("riss4", "TTT-TTTT", -1);
 
-    MultipleSequenceAlignment ma2("msa2_one_name_with_spaces", alphabet);
+    MultipleAlignment ma2(MultipleAlignmentDataType::MSA, "msa2_one_name_with_spaces", alphabet);
     ma2->addRow("diss1", "AAAA--AAA", -1);
     ma2->addRow("fiss_2", "C--CCCCCC", -1);
     ma2->addRow("ziss3", "GG-GGGG-G", -1);
@@ -56,13 +56,13 @@ IMPLEMENT_TEST(MsaUtilsUnitTests, two_names_with_spaces) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma1("msa1_two_names_with_spaces", alphabet);
+    MultipleAlignment ma1(MultipleAlignmentDataType::MSA, "msa1_two_names_with_spaces", alphabet);
     ma1->addRow("diss1", "AAAA--AAA", -1);
     ma1->addRow("fiss 2", "C--CCCCCC", -1);
     ma1->addRow("ziss3", "GG-GGGG-G", -1);
     ma1->addRow("riss 4", "TTT-TTTT", -1);
 
-    MultipleSequenceAlignment ma2("msa2_two_names_with_spaces", alphabet);
+    MultipleAlignment ma2(MultipleAlignmentDataType::MSA, "msa2_two_names_with_spaces", alphabet);
     ma2->addRow("diss1", "AAAA--AAA", -1);
     ma2->addRow("fiss_2", "C--CCCCCC", -1);
     ma2->addRow("ziss3", "GG-GGGG-G", -1);
@@ -77,13 +77,13 @@ IMPLEMENT_TEST(MsaUtilsUnitTests, all_names_with_spaces) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma1("msa1_all_names_with_spaces", alphabet);
+    MultipleAlignment ma1(MultipleAlignmentDataType::MSA, "msa1_all_names_with_spaces", alphabet);
     ma1->addRow("diss 1", "AAAA--AAA", -1);
     ma1->addRow("fiss 2", "C--CCCCCC", -1);
     ma1->addRow("ziss 3", "GG-GGGG-G", -1);
     ma1->addRow("riss 4", "TTT-TTTT", -1);
 
-    MultipleSequenceAlignment ma2("msa2_two_all_names_with_spaces", alphabet);
+    MultipleAlignment ma2(MultipleAlignmentDataType::MSA, "msa2_two_all_names_with_spaces", alphabet);
     ma2->addRow("diss_1", "AAAA--AAA", -1);
     ma2->addRow("fiss_2", "C--CCCCCC", -1);
     ma2->addRow("ziss_3", "GG-GGGG-G", -1);

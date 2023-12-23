@@ -303,13 +303,13 @@ static bool isEndOfMsaBlock(IOAdapterReader& reader, U2OpStatus& os) {
 }
 
 /** Returns true if there is a row in the 'msa' with the given name. */
-static bool hasRowWithName(const MultipleSequenceAlignment& msa, const QString& name) {
+static bool hasRowWithName(const MultipleAlignment& msa, const QString& name) {
     const QVector<MultipleAlignmentRow>& rows = msa->getRows();
     return std::any_of(rows.begin(), rows.end(), [name](auto& row) { return row->getName() == name; });
 }
 
 /** Loads a single MSA object data and related annotations. */
-static void loadOneMsa(IOAdapterReader& reader, U2OpStatus& os, MultipleSequenceAlignment& msa, AnnotationBank& annotationBank) {
+static void loadOneMsa(IOAdapterReader& reader, U2OpStatus& os, MultipleAlignment& msa, AnnotationBank& annotationBank) {
     skipBlankLines(reader, os);
     CHECK_OP(os, );
 
@@ -408,7 +408,7 @@ static void setMsaInfoCutoffs(QVariantMap& info,
     MultipleAlignmentInfo::setCutoff(info, cof2, val2);
 }
 
-static void setMsaInfo(const QHash<QString, QString>& annMap, MultipleSequenceAlignment& ma) {
+static void setMsaInfo(const QHash<QString, QString>& annMap, MultipleAlignment& ma) {
     QVariantMap info = ma->getInfo();
 
     if (annMap.contains(StockholmFormat::FILE_ANNOTATION_AC)) {
@@ -440,7 +440,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*
     QSet<QString> objectNameList;
     QString baseFileName = reader.getURL().baseFileName();
     while (!reader.atEnd()) {
-        MultipleSequenceAlignment msa;
+        MultipleAlignment msa(MultipleAlignmentDataType::MSA);
         AnnotationBank annotationBank;
         loadOneMsa(reader, os, msa, annotationBank);
         CHECK_OP(os, );
@@ -464,7 +464,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*
 }
 
 /** Returns maximum row name length in the msa. */
-static int getMaxNameLen(const MultipleSequenceAlignment& msa) {
+static int getMaxNameLen(const MultipleAlignment& msa) {
     const QVector<MultipleAlignmentRow>& rows = msa->getRows();
     CHECK(rows.isEmpty(), 0);
     auto it = std::max_element(rows.begin(), rows.end(), [](auto& r1, auto& r2) { return r1->getName().length() < r2->getName().length(); });
@@ -472,7 +472,7 @@ static int getMaxNameLen(const MultipleSequenceAlignment& msa) {
 }
 
 /** Saves all objects in 'msa' into the 'writer' stream. */
-static void save(IOAdapterWriter& writer, const MultipleSequenceAlignment& msa, const QString& name, U2OpStatus& os) {
+static void save(IOAdapterWriter& writer, const MultipleAlignment& msa, const QString& name, U2OpStatus& os) {
     writer.write(os, HEADER);
     CHECK_OP(os, );
 
@@ -541,7 +541,7 @@ void StockholmFormat::storeTextDocument(IOAdapterWriter& writer, Document* doc, 
     for (GObject* obj : qAsConst(objects)) {
         auto alnObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
         SAFE_POINT_EXT(alnObj != nullptr, os.setError("Not an alignment object: " + obj->getGObjectName()), );
-        save(writer, alnObj->getMultipleAlignment(), alnObj->getGObjectName(), os);
+        save(writer, alnObj->getAlignment(), alnObj->getGObjectName(), os);
         CHECK_OP(os, );
     }
 }

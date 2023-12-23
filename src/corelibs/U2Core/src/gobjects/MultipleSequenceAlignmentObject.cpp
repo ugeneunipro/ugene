@@ -38,17 +38,10 @@ namespace U2 {
 MultipleSequenceAlignmentObject::MultipleSequenceAlignmentObject(const QString& name,
                                                                  const U2EntityRef& msaRef,
                                                                  const QVariantMap& hintsMap,
-                                                                 const MultipleSequenceAlignment& alnData)
+                                                                 const MultipleAlignment& alnData)
     : MultipleAlignmentObject(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, name, msaRef, hintsMap, alnData) {
 }
 
-const MultipleSequenceAlignment& MultipleSequenceAlignmentObject::getMsa() const {
-    return getMultipleAlignment().dynamicCast<const MultipleSequenceAlignment&>();
-}
-
-const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() const {
-    return getMsa()->getExplicitCopy();
-}
 
 MultipleSequenceAlignmentObject* MultipleSequenceAlignmentObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
@@ -58,7 +51,7 @@ MultipleSequenceAlignmentObject* MultipleSequenceAlignmentObject::clone(const U2
     gHints->setAll(hints);
     const QString dstFolder = gHints->get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-    MultipleSequenceAlignment msa = getMsa()->getExplicitCopy();
+    MultipleAlignment msa = getAlignment()->getCopy();
     MultipleSequenceAlignmentObject* clonedObj = MultipleSequenceAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
     CHECK_OP(os, nullptr);
 
@@ -68,13 +61,13 @@ MultipleSequenceAlignmentObject* MultipleSequenceAlignmentObject::clone(const U2
 }
 
 char MultipleSequenceAlignmentObject::charAt(int seqNum, qint64 position) const {
-    return getMultipleAlignment()->charAt(seqNum, position);
+    return getAlignment()->charAt(seqNum, position);
 }
 
 void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus& os, const QMap<qint64, QVector<U2MsaGap>>& rowsGapModel) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    const MultipleSequenceAlignment msa = getMultipleAlignment();
+    const MultipleAlignment msa = getAlignment();
 
     QList<qint64> rowIds = msa->getRowsIds();
     QList<qint64> modifiedRowIds;
@@ -96,7 +89,7 @@ void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus& os, const QMap<
 }
 
 void MultipleSequenceAlignmentObject::updateGapModel(const QList<MultipleAlignmentRow>& sourceRows) {
-    QList<MultipleAlignmentRow> oldRows = getMsa()->getRows().toList();
+    QList<MultipleAlignmentRow> oldRows = getAlignment()->getRows().toList();
 
     SAFE_POINT(oldRows.count() == sourceRows.count(), "Different rows count", );
 
@@ -135,7 +128,7 @@ void MultipleSequenceAlignmentObject::crop(const U2Region& columnRange) {
 void MultipleSequenceAlignmentObject::updateRow(U2OpStatus& os, int rowIdx, const QString& name, const QByteArray& seqBytes, const QVector<U2MsaGap>& gapModel) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    const MultipleSequenceAlignment msa = getMultipleAlignment();
+    const MultipleAlignment msa = getAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < msa->getRowCount(), "Invalid row index", );
     qint64 rowId = msa->getRow(rowIdx)->getRowId();
 
@@ -222,7 +215,7 @@ void MultipleSequenceAlignmentObject::loadAlignment(U2OpStatus& os) {
 }
 
 void MultipleSequenceAlignmentObject::updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) {
-    MultipleSequenceAlignment cachedMsa = cachedMa.dynamicCast<MultipleSequenceAlignment>();
+    MultipleAlignment cachedMsa = cachedMa.dynamicCast<MultipleAlignment>();
 
     MultipleSequenceAlignmentExporter msaExporter;
     QList<MsaRowReplacementData> rowsAndSeqs = msaExporter.getAlignmentRows(entityRef.dbiRef, entityRef.entityId, rowIds, os);
@@ -237,7 +230,7 @@ void MultipleSequenceAlignmentObject::updateCachedRows(U2OpStatus& os, const QLi
 }
 
 void MultipleSequenceAlignmentObject::updateDatabase(U2OpStatus& os, const MultipleAlignment& ma) {
-    const MultipleSequenceAlignment msa = ma.dynamicCast<MultipleSequenceAlignment>();
+    const MultipleAlignment msa = ma.dynamicCast<MultipleAlignment>();
     MsaDbiUtils::updateMsa(entityRef, msa, os);
 }
 

@@ -52,7 +52,7 @@ void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory
     delete algorithm;
     algorithm = nullptr;
     bool ignoreTrailingLeadingGaps = qobject_cast<MultipleChromatogramAlignmentObject*>(aliObj) != nullptr;
-    algorithm = factory->createAlgorithm(aliObj->getMultipleAlignment(), ignoreTrailingLeadingGaps);
+    algorithm = factory->createAlgorithm(aliObj->getAlignment(), ignoreTrailingLeadingGaps);
     connect(algorithm, SIGNAL(si_thresholdChanged(int)), SLOT(sl_thresholdChanged(int)));
     updateMap.fill(false);
 }
@@ -69,7 +69,7 @@ QByteArray MSAEditorConsensusCache::getConsensusLine(const U2Region& region, boo
 }
 
 void MSAEditorConsensusCache::sl_alignmentChanged() {
-    algorithm->reinitializeData(aliObj->getMultipleAlignment());
+    algorithm->reinitializeData(aliObj->getAlignment());
 
     if (curCacheSize != aliObj->getLength()) {
         curCacheSize = aliObj->getLength();
@@ -83,7 +83,7 @@ void MSAEditorConsensusCache::sl_alignmentChanged() {
 
 void MSAEditorConsensusCache::updateCacheItem(int pos) {
     if (!updateMap.at(pos) && aliObj != nullptr) {
-        const MultipleAlignment ma = aliObj->getMultipleAlignment();
+        const MultipleAlignment ma = aliObj->getAlignment();
 
         QString errorMessage = tr("Can not update consensus chache item");
         SAFE_POINT(pos >= 0 && pos < curCacheSize, errorMessage, );
@@ -124,7 +124,7 @@ QList<int> MSAEditorConsensusCache::getConsensusPercents(const U2Region& region)
 }
 
 QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
-    const MultipleAlignment ma = aliObj->getMultipleAlignment();
+    const MultipleAlignment ma = aliObj->getAlignment();
     const U2Region region(0, ma->getLength());
     return getConsensusLine(region, withGaps);
 }

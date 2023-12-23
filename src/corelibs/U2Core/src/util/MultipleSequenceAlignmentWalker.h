@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 namespace U2 {
 
@@ -29,7 +29,7 @@ class RowWalker;
 
 class U2CORE_EXPORT MultipleSequenceAlignmentWalker {
 public:
-    MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment& msa, char gapChar = U2Msa::GAP_CHAR);
+    MultipleSequenceAlignmentWalker(const MultipleAlignment& msa, char gapChar = U2Msa::GAP_CHAR);
     ~MultipleSequenceAlignmentWalker();
 
     bool isEnded() const;
@@ -37,7 +37,7 @@ public:
     QList<QByteArray> nextData(int length, U2OpStatus& os);
 
 private:
-    const MultipleSequenceAlignment& msa;
+    const MultipleAlignment& msa;
     int currentOffset;
     QList<RowWalker*> rowWalkerList;
 };

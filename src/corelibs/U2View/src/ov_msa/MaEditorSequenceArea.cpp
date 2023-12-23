@@ -556,7 +556,7 @@ void MaEditorSequenceArea::onVisibleRangeChanged() {
     exitFromEditCharacterMode();
     CHECK(!isAlignmentEmpty(), );
 
-    const QStringList rowsNames = editor->getMaObject()->getMultipleAlignment()->getRowNames();
+    const QStringList rowsNames = editor->getMaObject()->getAlignment()->getRowNames();
     QStringList visibleRowsNames;
 
     const QList<int> visibleRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
@@ -741,7 +741,7 @@ void MaEditorSequenceArea::sl_changeHighlightScheme() {
     highlightingScheme = factory->create(this, ui->getEditor()->getMaObject());
     highlightingScheme->applySettings(editor->getHighlightingSettings(id));
 
-    const MultipleAlignment ma = ui->getEditor()->getMaObject()->getMultipleAlignment();
+    const MultipleAlignment ma = ui->getEditor()->getMaObject()->getAlignment();
 
     U2OpStatusImpl os;
     const int refSeq = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
@@ -925,7 +925,7 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent* event) {
         maObj->si_completeStateChanged(true);
         MaModificationInfo mi;
         mi.alignmentLengthChanged = false;
-        maObj->si_alignmentChanged(maObj->getMultipleAlignment(), mi);
+        maObj->si_alignmentChanged(maObj->getAlignment(), mi);
     }
     ctrlModeGapModel.clear();
 
@@ -1207,7 +1207,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     SAFE_POINT_OP(os, );
 
-    const MultipleAlignment& ma = maObj->getMultipleAlignment();
+    const MultipleAlignment& ma = maObj->getAlignment();
     if (selectionRect.width() == ma->getLength() && selectionRect.height() == ma->getRowCount()) {
         return;
     }

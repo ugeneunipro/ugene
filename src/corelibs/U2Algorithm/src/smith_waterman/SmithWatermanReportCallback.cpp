@@ -30,7 +30,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
@@ -219,7 +219,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         QByteArray curResultPtrnSubseq = ptrnSequenceData.mid(pairAlignSeqs.ptrnSubseq.startPos, pairAlignSeqs.ptrnSubseq.length);
         alignSequences(curResultRefSubseq, curResultPtrnSubseq, pairAlignSeqs.pairAlignment);
 
-        MultipleSequenceAlignment msa(newFileName, msaAlphabet);
+        MultipleAlignment msa(MultipleAlignmentDataType::MSA, newFileName, msaAlphabet);
 
         expansionInfo.curProcessingSubseq = &pairAlignSeqs.refSubseq;
         msa->addRow(tagsRegistry->parseStringWithTags(refSubseqTemplate, expansionInfo), curResultRefSubseq);
@@ -310,7 +310,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     SAFE_POINT(refSequenceData.length() > 0 && ptrnSequenceData.length() > 0, "Invalid sequence length detected!", QString());
     alignSequences(refSequenceData, ptrnSequenceData, pairAlignSeqs.pairAlignment);
 
-    MultipleSequenceAlignment msa(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
+    MultipleAlignment msa(MultipleAlignmentDataType::MSA, refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
     msa->addRow(refSequence->visualName, refSequenceData);
     msa->addRow(ptrnSequence->visualName, ptrnSequenceData);
 
@@ -415,7 +415,6 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QByteArray& refSequence, 
                 --refSeqCurrentPosition;
                 --ptrnSeqCurrentPosition;
                 continue;
-                break;
             case SmithWatermanResult::UP:
                 ptrnSequence.insert(ptrnSeqCurrentPosition, U2Msa::GAP_CHAR);
                 --refSeqCurrentPosition;

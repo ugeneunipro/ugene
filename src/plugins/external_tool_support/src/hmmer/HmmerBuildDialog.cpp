@@ -26,7 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/FileFilters.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -89,7 +89,7 @@ void HmmerBuildDialog::initSaveController() {
     saveController = new SaveDocumentController(config, formatsInfo, this);
 }
 
-HmmerBuildDialog::HmmerBuildDialog(const MultipleSequenceAlignment& ma, QWidget* parent)
+HmmerBuildDialog::HmmerBuildDialog(const MultipleAlignment& ma, QWidget* parent)
     : QDialog(parent),
       saveController(nullptr) {
     initialize();

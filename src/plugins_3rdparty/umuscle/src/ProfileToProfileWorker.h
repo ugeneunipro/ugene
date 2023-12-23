@@ -79,18 +79,18 @@ protected:
 class ProfileToProfileTask : public Task {
     Q_OBJECT
 public:
-    ProfileToProfileTask(const MultipleSequenceAlignment& masterMsa, const MultipleSequenceAlignment& secondMsa);
+    ProfileToProfileTask(const MultipleAlignment& masterMsa, const MultipleAlignment& secondMsa);
     ~ProfileToProfileTask();
 
     virtual void prepare();
     virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
-    const MultipleSequenceAlignment& getResult();
+    const MultipleAlignment& getResult();
 
 private:
-    MultipleSequenceAlignment masterMsa;
-    MultipleSequenceAlignment secondMsa;
-    MultipleSequenceAlignment result;
+    MultipleAlignment masterMsa;
+    MultipleAlignment secondMsa;
+    MultipleAlignment result;
     int seqIdx;
     int subtaskCount;
 

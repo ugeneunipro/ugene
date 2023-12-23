@@ -30,6 +30,7 @@
 #include <U2Core/SelectionUtils.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2DbiUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
 

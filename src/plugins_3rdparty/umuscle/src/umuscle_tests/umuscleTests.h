@@ -100,7 +100,7 @@ public:
     Task::ReportResult report();
     void run();
     QList<Task*> onSubTaskFinished(Task* subTask);
-    MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+    MultipleAlignment dna_to_ma(QList<GObject*> dnaSeqs);
 
 public slots:
     void sl_muscleProgressChg() {
@@ -139,7 +139,7 @@ public slots:
     }
 
 private:
-    MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+    MultipleAlignment dna_to_ma(QList<GObject*> dnaSeqs);
     QString str_inFileURL;
     QString str_patFileURL;
     LoadDocumentTask* loadTask1;

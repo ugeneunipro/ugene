@@ -22,7 +22,7 @@
 #include "U2AlphabetUtils.h"
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -112,7 +112,7 @@ char U2AlphabetUtils::getDefaultSymbol(const U2AlphabetId& alphaId) {
     return al->getDefaultSymbol();
 }
 
-void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma) {
+void U2AlphabetUtils::assignAlphabet(MultipleAlignment& ma) {
     const DNAAlphabet* resAl = nullptr;
     for (int i = 0, n = ma->getRowCount(); i < n; i++) {
         const MultipleAlignmentRow& item = ma->getRow(i);
@@ -133,7 +133,7 @@ void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma) {
     }
 }
 
-void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma, char ignore) {
+void U2AlphabetUtils::assignAlphabet(MultipleAlignment& ma, char ignore) {
     const DNAAlphabet* resAl = nullptr;
     for (int i = 0, n = ma->getRowCount(); i < n; i++) {
         const MultipleAlignmentRow& item = ma->getRow(i);

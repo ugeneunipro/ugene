@@ -29,7 +29,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
@@ -40,14 +40,14 @@
 
 namespace U2 {
 
-IQTreeTaskContext::IQTreeTaskContext(const MultipleSequenceAlignment& _msa, const CreatePhyTreeSettings& _settings)
+IQTreeTaskContext::IQTreeTaskContext(const MultipleAlignment& _msa, const CreatePhyTreeSettings& _settings)
     : msa(_msa), settings(_settings) {
 }
 
 //////////////////////////////////////////////////////////////////////////
 /// IQTreeTask
 
-IQTreeTask::IQTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings)
+IQTreeTask::IQTreeTask(const MultipleAlignment& msa, const CreatePhyTreeSettings& settings)
     : PhyTreeGeneratorTask(msa, settings), context(msa, settings) {
     GCOUNTER(cvar, "ExternalTool_IQTree");
     setTaskName(tr("IQTree tree calculation"));

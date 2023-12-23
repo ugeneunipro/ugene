@@ -35,20 +35,21 @@
 
 namespace U2 {
 
-MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId) const {
-    SAFE_POINT_EXT(!connection.isOpen(), os.setError("Connection is already opened"), MultipleChromatogramAlignment());
+MultipleAlignment MultipleChromatogramAlignmentExporter::getAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId) const {
+    MultipleAlignment mca(MultipleAlignmentDataType::MCA);
+
+    SAFE_POINT_EXT(!connection.isOpen(), os.setError("Connection is already opened"), mca);
     connection.open(dbiRef, false, os);
-    CHECK_OP(os, MultipleChromatogramAlignment());
+    CHECK_OP(os, mca);
 
     // Rows and their child objects
     QList<U2MsaRow> rows = exportRows(os, dbiRef, mcaId);
-    CHECK_OP(os, MultipleChromatogramAlignment());
+    CHECK_OP(os, mca);
 
     QList<McaRowMemoryData> mcaRowsMemoryData = exportDataOfRows(os, rows);
-    CHECK_OP(os, MultipleChromatogramAlignment());
-    SAFE_POINT_EXT(rows.count() == mcaRowsMemoryData.count(), os.setError("Different number of rows and sequences"), MultipleChromatogramAlignment());
+    CHECK_OP(os, mca);
+    SAFE_POINT_EXT(rows.count() == mcaRowsMemoryData.count(), os.setError("Different number of rows and sequences"), mca);
 
-    MultipleChromatogramAlignment mca;
     for (int i = 0; i < rows.count(); ++i) {
         const McaRowMemoryData& rowData = mcaRowsMemoryData[i];
         mca->addRow(rows[i], rowData.chromatogram, rowData.sequence, os);
@@ -57,16 +58,16 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignmen
 
     // Info
     QVariantMap info = exportAlignmentInfo(os, mcaId);
-    CHECK_OP(os, MultipleChromatogramAlignment());
+    CHECK_OP(os, mca);
 
     mca->setInfo(info);
 
     // Alphabet, name and length
     U2Msa dbMca = exportAlignmentObject(os, mcaId);
-    CHECK_OP(os, MultipleChromatogramAlignment());
+    CHECK_OP(os, mca);
 
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(dbMca.alphabet);
-    SAFE_POINT_EXT(alphabet != nullptr, os.setError(QString("Alphabet with ID '%1' not found").arg(dbMca.alphabet.id)), MultipleChromatogramAlignment());
+    SAFE_POINT_EXT(alphabet != nullptr, os.setError(QString("Alphabet with ID '%1' not found").arg(dbMca.alphabet.id)), mca);
     mca->setAlphabet(alphabet);
     mca->setName(dbMca.visualName);
     mca->setLength(dbMca.length);

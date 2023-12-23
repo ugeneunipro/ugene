@@ -152,11 +152,11 @@ void Kalign3SupportContext::sl_align() {
     }
 
     Kalign3Settings settings;
-    QObjectScopedPointer<Kalign3DialogWithMsaInput> dialog(new Kalign3DialogWithMsaInput(AppContext::getMainWindow()->getQMainWindow(), obj->getMsa(), settings));
+    QObjectScopedPointer<Kalign3DialogWithMsaInput> dialog(new Kalign3DialogWithMsaInput(AppContext::getMainWindow()->getQMainWindow(), obj->getAlignment(), settings));
     dialog->exec();
     CHECK(!dialog.isNull() && dialog->result() == QDialog::Accepted, );
 
-    auto kalignTask = new Kalign3SupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
+    auto kalignTask = new Kalign3SupportTask(obj->getAlignment(), GObjectReference(obj), settings);
     connect(obj, &QObject::destroyed, kalignTask, &Task::cancel);
     AppContext::getTaskScheduler()->registerTopLevelTask(kalignTask);
 
