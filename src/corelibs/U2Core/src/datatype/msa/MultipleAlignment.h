@@ -103,6 +103,25 @@ public:
      */
     void clear();
 
+    /**
+     * Recomputes the length of the alignment and makes it as minimal
+     * as possible. All leading gaps columns are removed by default.
+     * Returns "true" if the alignment has been modified.
+     */
+    bool trim(bool removeLeadingGaps = true);
+
+    /**
+     * Removes all gaps from all columns in the alignment.
+     * Returns "true" if the alignment has been changed.
+     */
+    bool simplify();
+
+    /**
+     * Inserts 'count' gaps into the specified position.
+     * Can increase the overall alignment length.
+     */
+    void insertGaps(int row, int pos, int count, U2OpStatus& os);
+
     /** Returns  the name of the alignment */
     QString getName() const;
 

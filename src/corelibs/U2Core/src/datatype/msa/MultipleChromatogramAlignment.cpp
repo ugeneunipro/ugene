@@ -99,83 +99,6 @@ MultipleChromatogramAlignmentData::MultipleChromatogramAlignmentData(const Multi
     copy(mcaData);
 }
 
-bool MultipleChromatogramAlignmentData::trim(bool removeLeadingGaps) {
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    bool result = false;
-
-    if (removeLeadingGaps) {
-        // Verify if there are leading columns of gaps
-        // by checking the first gap in each row
-        int leadingGapColumnsNum = 0;
-        for (const auto& row : qAsConst(rows)) {
-            if (!row->getGaps().isEmpty()) {
-                const U2MsaGap& firstGap = row->getGaps().first();
-                if (firstGap.startPos > 0) {
-                    leadingGapColumnsNum = 0;
-                    break;
-                } else {
-                    if (leadingGapColumnsNum == 0) {
-                        leadingGapColumnsNum = firstGap.length;
-                    } else {
-                        leadingGapColumnsNum = qMin(leadingGapColumnsNum, firstGap.length);
-                    }
-                }
-            } else {
-                leadingGapColumnsNum = 0;
-                break;
-            }
-        }
-
-        // If there are leading gap columns, remove them
-        U2OpStatus2Log os;
-        if (leadingGapColumnsNum > 0) {
-            for (int i = 0; i < getRowCount(); ++i) {
-                getRow(i)->removeChars(0, leadingGapColumnsNum, os);
-                CHECK_OP(os, true);
-                result = true;
-            }
-        }
-    }
-
-    // Verify right side of the alignment (trailing gaps and rows' lengths)
-    qint64 newLength = 0;
-    foreach (const MultipleAlignmentRow& row, rows) {
-        if (newLength == 0) {
-            newLength = row->getRowLengthWithoutTrailing();
-        } else {
-            newLength = qMax((qint64)row->getRowLengthWithoutTrailing(), newLength);
-        }
-    }
-
-    if (newLength != length) {
-        length = newLength;
-        result = true;
-    }
-
-    return result;
-}
-
-bool MultipleChromatogramAlignmentData::simplify() {
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    int newLen = 0;
-    bool changed = false;
-    for (int i = 0, n = getRowCount(); i < n; i++) {
-        changed |= getRow(i)->simplify();
-        newLen = qMax(newLen, getRow(i)->getCoreEnd());
-    }
-
-    if (!changed) {
-        assert(length == newLen);
-        return false;
-    }
-    length = newLen;
-    return true;
-}
-
 MultipleChromatogramAlignment MultipleChromatogramAlignmentData::mid(int start, int len) const {
     SAFE_POINT(start >= 0 && start + len <= length,
                QString("Incorrect parameters were passed to MultipleChromatogramAlignmentData::mid: "
@@ -341,40 +264,6 @@ void MultipleChromatogramAlignmentData::addRow(const U2MsaRow& rowInDb, const Mc
     addRow(rowInDb, mcaRowMemoryData.chromatogram, mcaRowMemoryData.sequence, os);
 }
 
-void MultipleChromatogramAlignmentData::insertGaps(int row, int pos, int count, U2OpStatus& os) {
-    if (pos > length) {
-        length = pos + count;
-        return;
-    }
-    if (row >= getRowCount() || row < 0 || pos < 0 || count < 0) {
-        coreLog.trace(QString("Internal error: incorrect parameters were passed "
-                              "to MultipleChromatogramAlignmentData::insertGaps: row index '%1', pos '%2', count '%3'")
-                          .arg(row)
-                          .arg(pos)
-                          .arg(count));
-        os.setError("Failed to insert gaps into an alignment");
-        return;
-    }
-
-    if (pos == length) {
-        // add trailing gaps --> just increase alignment len
-        length += count;
-        return;
-    }
-
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    if (pos >= rows[row]->getRowLengthWithoutTrailing()) {
-        length += count;
-        return;
-    }
-    getRow(row)->insertGaps(pos, count, os);
-
-    qint64 rowLength = rows[row]->getRowLengthWithoutTrailing();
-    length = qMax(length, rowLength);
-}
-
 void MultipleChromatogramAlignmentData::appendChars(int row, const char* str, int len) {
     SAFE_POINT(0 <= row && row < getRowCount(),
                QString("Incorrect row index '%1' in MultipleChromatogramAlignmentData::appendChars").arg(row), );
@@ -486,18 +375,6 @@ void MultipleChromatogramAlignmentData::toUpperCase() {
     for (int i = 0, n = getRowCount(); i < n; i++) {
         getRow(i)->toUpperCase();
     }
-}
-
-char MultipleChromatogramAlignmentData::charAt(int rowNumber, int pos) const {
-    return getRow(rowNumber)->charAt(pos);
-}
-
-bool MultipleChromatogramAlignmentData::isGap(int rowNumber, int pos) const {
-    return getRow(rowNumber)->isGap(pos);
-}
-
-bool MultipleChromatogramAlignmentData::isTrailingOrLeadingGap(int rowNumber, int pos) const {
-    return getRow(rowNumber)->isTrailingOrLeadingGap(pos);
 }
 
 void MultipleChromatogramAlignmentData::setSequenceId(int rowIndex, const U2DataId& sequenceId) {

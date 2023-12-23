@@ -102,82 +102,6 @@ MultipleSequenceAlignmentData& MultipleSequenceAlignmentData::operator=(const Mu
     return *this;
 }
 
-bool MultipleSequenceAlignmentData::trim(bool removeLeadingGaps) {
-    MaStateCheck check(this);
-
-    bool result = false;
-
-    if (removeLeadingGaps) {
-        // Verify if there are leading columns of gaps
-        // by checking the first gap in each row
-        int leadingGapColumnsNum = 0;
-        for (const auto& row : qAsConst(rows)) {
-            if (!row->getGaps().isEmpty()) {
-                const U2MsaGap& firstGap = row->getGaps().first();
-                if (firstGap.startPos > 0) {
-                    leadingGapColumnsNum = 0;
-                    break;
-                } else {
-                    if (leadingGapColumnsNum == 0) {
-                        leadingGapColumnsNum = firstGap.length;
-                    } else {
-                        leadingGapColumnsNum = qMin(leadingGapColumnsNum, firstGap.length);
-                    }
-                }
-            } else {
-                leadingGapColumnsNum = 0;
-                break;
-            }
-        }
-
-        // If there are leading gap columns, remove them
-        U2OpStatus2Log os;
-        if (leadingGapColumnsNum > 0) {
-            for (int i = 0; i < getRowCount(); ++i) {
-                getRow(i)->removeChars(0, leadingGapColumnsNum, os);
-                CHECK_OP(os, true);
-                result = true;
-            }
-        }
-    }
-
-    // Verify right side of the alignment (trailing gaps and rows' lengths)
-    qint64 newLength = 0;
-    foreach (const MultipleAlignmentRow& row, rows) {
-        if (newLength == 0) {
-            newLength = row->getRowLengthWithoutTrailing();
-        } else {
-            newLength = qMax((qint64)row->getRowLengthWithoutTrailing(), newLength);
-        }
-    }
-
-    if (newLength != length) {
-        length = newLength;
-        result = true;
-    }
-
-    return result;
-}
-
-bool MultipleSequenceAlignmentData::simplify() {
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    int newLen = 0;
-    bool changed = false;
-    for (int i = 0, n = getRowCount(); i < n; i++) {
-        changed |= getRow(i)->simplify();
-        newLen = qMax(newLen, getRow(i)->getCoreEnd());
-    }
-
-    if (!changed) {
-        assert(length == newLen);
-        return false;
-    }
-    length = newLen;
-    return true;
-}
-
 bool MultipleSequenceAlignmentData::hasEmptyGapModel() const {
     foreach (const MultipleAlignmentRow& row, rows) {
         if (!row->getGaps().isEmpty()) {
@@ -357,36 +281,6 @@ void MultipleSequenceAlignmentData::addRow(const QString& name, const DNASequenc
     addRowPrivate(newRow, len, -1);
 }
 
-void MultipleSequenceAlignmentData::insertGaps(int row, int pos, int count, U2OpStatus& os) {
-    if (row >= getRowCount() || row < 0 || pos > length || pos < 0 || count < 0) {
-        coreLog.trace(QString("Internal error: incorrect parameters were passed "
-                              "to MultipleSequenceAlignmentData::insertGaps: row index '%1', pos '%2', count '%3'")
-                          .arg(row)
-                          .arg(pos)
-                          .arg(count));
-        os.setError("Failed to insert gaps into an alignment");
-        return;
-    }
-
-    if (pos == length) {
-        // add trailing gaps --> just increase alignment len
-        length += count;
-        return;
-    }
-
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    if (pos >= rows[row]->getRowLengthWithoutTrailing()) {
-        length += count;
-        return;
-    }
-    getRow(row)->insertGaps(pos, count, os);
-
-    qint64 rowLength = rows[row]->getRowLengthWithoutTrailing();
-    length = qMax(length, rowLength);
-}
-
 void MultipleSequenceAlignmentData::appendChars(int row, const char* str, int len) {
     SAFE_POINT(0 <= row && row < getRowCount(),
                QString("Incorrect row index '%1' in MultipleSequenceAlignmentData::appendChars").arg(row), );
@@ -459,10 +353,6 @@ void MultipleSequenceAlignmentData::removeRegion(int startPos, int startRow, int
             rows.clear();
         }
     }
-}
-
-int MultipleSequenceAlignmentData::getRowCount() const {
-    return rows.size();
 }
 
 void MultipleSequenceAlignmentData::renameRow(int row, const QString& name) {
@@ -541,14 +431,6 @@ QList<MultipleAlignmentRow> MultipleSequenceAlignmentData::getRowsSortedBySimila
         }
     }
     return sortedRows;
-}
-
-char MultipleSequenceAlignmentData::charAt(int rowNumber, int pos) const {
-    return getRow(rowNumber)->charAt(pos);
-}
-
-bool MultipleSequenceAlignmentData::isGap(int rowNumber, int pos) const {
-    return getRow(rowNumber)->isGap(pos);
 }
 
 void MultipleSequenceAlignmentData::setRowGapModel(int rowNumber, const QVector<U2MsaGap>& gapModel) {

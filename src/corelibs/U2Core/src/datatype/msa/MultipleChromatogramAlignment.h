@@ -76,30 +76,6 @@ public:
     MultipleChromatogramAlignmentData& operator=(const MultipleChromatogramAlignmentData& mcaData);
 
     /**
-     * Recomputes the length of the alignment and makes it as minimal
-     * as possible. All leading gaps columns are removed by default.
-     * Returns "true" if the alignment has been modified.
-     */
-    bool trim(bool removeLeadingGaps = true);
-
-    /**
-     * Removes all gaps from all columns in the alignment.
-     * Returns "true" if the alignment has been changed.
-     */
-    bool simplify();
-
-    /** Returns a character (a gap or a non-gap) in the specified row and position */
-    char charAt(int rowNumber, int pos) const;
-    bool isGap(int rowNumber, int pos) const;
-    bool isTrailingOrLeadingGap(int rowNumber, int pos) const;
-
-    /**
-     * Inserts 'count' gaps into the specified position.
-     * Can increase the overall alignment length.
-     */
-    void insertGaps(int row, int pos, int count, U2OpStatus& os);
-
-    /**
      * Removes a region from the alignment.
      * If "removeEmptyRows" is "true", removes all empty rows from the processed region.
      * The alignment is trimmed after removing the region.

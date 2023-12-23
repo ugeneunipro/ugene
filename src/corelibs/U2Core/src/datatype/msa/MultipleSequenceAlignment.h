@@ -80,22 +80,6 @@ public:
     MultipleSequenceAlignmentData& operator=(const MultipleSequenceAlignment& msa);
     MultipleSequenceAlignmentData& operator=(const MultipleSequenceAlignmentData& msaData);
 
-    /** Returns the number of rows in the alignment */
-    int getRowCount() const;
-
-    /**
-     * Recomputes the length of the alignment and makes it as minimal
-     * as possible. All leading gaps columns are removed by default.
-     * Returns "true" if the alignment has been modified.
-     */
-    bool trim(bool removeLeadingGaps = true);
-
-    /**
-     * Removes all gaps from all columns in the alignment.
-     * Returns "true" if the alignment has been changed.
-     */
-    bool simplify();
-
     /**
      * Sorts rows by similarity making identical rows sequential. Sets MSA rows to the sorted rows.
      * Returns 'true' if the rows were resorted and MSA is changed, and 'false' otherwise.
@@ -104,16 +88,6 @@ public:
 
     /** Returns rows sorted by similarity. Does not update MSA. */
     QList<MultipleAlignmentRow> getRowsSortedBySimilarity(QVector<U2Region>& united) const;
-
-    /** Returns a character (a gap or a non-gap) in the specified row and position */
-    char charAt(int rowNumber, int pos) const;
-    bool isGap(int rowNumber, int pos) const;
-
-    /**
-     * Inserts 'count' gaps into the specified position.
-     * Can increase the overall alignment length.
-     */
-    void insertGaps(int row, int pos, int count, U2OpStatus& os);
 
     /**
      * Removes a region from the alignment.
