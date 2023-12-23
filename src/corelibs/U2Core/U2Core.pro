@@ -57,7 +57,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/msa/MultipleAlignmentInfo.h \
            src/datatype/msa/MultipleAlignmentRow.h \
            src/datatype/msa/MultipleAlignmentRowInfo.h \
-           src/datatype/msa/MultipleAlignment.h \
            src/datatype/primers/Primer.h \
            src/datatype/primers/PrimerDimersFinder.h \
            src/datatype/primers/PrimerStatistics.h \
@@ -137,6 +136,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/gobjects/GObjectTypes.h \
            src/gobjects/GObjectUtils.h \
            src/gobjects/MultipleAlignmentObject.h \
+           src/gobjects/MultipleChromatogramAlignmentObject.h \
+           src/gobjects/MultipleSequenceAlignmentObject.h \
            src/gobjects/PFMatrixObject.h \
            src/gobjects/PhyTreeObject.h \
            src/gobjects/PWMatrixObject.h \
