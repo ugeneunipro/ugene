@@ -81,45 +81,6 @@ public:
     MultipleSequenceAlignmentData& operator=(const MultipleSequenceAlignmentData& msaData);
 
     /**
-     * Sorts rows by similarity making identical rows sequential. Sets MSA rows to the sorted rows.
-     * Returns 'true' if the rows were resorted and MSA is changed, and 'false' otherwise.
-     */
-    bool sortRowsBySimilarity(QVector<U2Region>& united);
-
-    /** Returns rows sorted by similarity. Does not update MSA. */
-    QList<MultipleAlignmentRow> getRowsSortedBySimilarity(QVector<U2Region>& united) const;
-
-    /**
-     * Removes a region from the alignment.
-     * If "removeEmptyRows" is "true", removes all empty rows from the processed region.
-     * The alignment is trimmed after removing the region.
-     * Can decrease the overall alignment length.
-     */
-    void removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows);
-
-    /**
-     * Renames the row with the specified index.
-     * Assumes that the row index is valid and the name is not empty.
-     */
-    void renameRow(int row, const QString& name);
-
-    /**
-     * Sets the new content for the row with the specified index.
-     * Assumes that the row index is valid.
-     * Can modify the overall alignment length (increase or decrease).
-     */
-    void setRowContent(int rowNumber, const QByteArray& sequence, int offset = 0);
-
-    /** Converts all rows' sequences to upper case */
-    void toUpperCase();
-
-    /** Keep only only column-range of given rows in the alignment. */
-    bool crop(const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os);
-
-    /** Keeps only 'columnRange' region in the alignment */
-    bool crop(const U2Region& columnRange, U2OpStatus& os);
-
-    /**
      * Creates a new alignment from the sub-alignment. Do not trims the result.
      * Assumes that 'start' >= 0, and 'start + len' is less or equal than the alignment length.
      */
@@ -196,8 +157,6 @@ private:
     MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 
     MultipleAlignmentRow createRow(const MultipleAlignmentRow& row);
-
-    void setRows(const QList<MultipleAlignmentRow>& msaRows);
 };
 
 inline bool operator!=(const MultipleSequenceAlignment& ptr1, const MultipleSequenceAlignment& ptr2) {

@@ -76,39 +76,6 @@ public:
     MultipleChromatogramAlignmentData& operator=(const MultipleChromatogramAlignmentData& mcaData);
 
     /**
-     * Removes a region from the alignment.
-     * If "removeEmptyRows" is "true", removes all empty rows from the processed region.
-     * The alignment is trimmed after removing the region.
-     * Can decrease the overall alignment length.
-     */
-    void removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows);
-
-    /**
-     * Renames the row with the specified index.
-     * Assumes that the row index is valid and the name is not empty.
-     */
-    void renameRow(int row, const QString& name);
-
-    /**
-     * Sets the new content for the row with the specified index.
-     * Assumes that the row index is valid.
-     * Can modify the overall alignment length (increase or decrease).
-     */
-    void setRowContent(int rowNumber, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel);
-    void setRowContent(int rowNumber, const McaRowMemoryData& mcaRowMemoryData);
-
-    /** Converts all rows' sequences to upper case */
-    void toUpperCase();
-
-    /**
-     * Modifies the alignment by keeping data from the specified region and rows only.
-     * Assumes that the region start is not negative, but it can be greater than a row length.
-     */
-    bool crop(const U2Region& region, const QSet<QString>& rowNames, U2OpStatus& os);
-    bool crop(const U2Region& region, U2OpStatus& os);
-    bool crop(int start, int count, U2OpStatus& os);
-
-    /**
      * Creates a new alignment from the sub-alignment. Do not trims the result.
      * Assumes that 'start' >= 0, and 'start + len' is less or equal than the alignment length.
      */
@@ -176,8 +143,6 @@ private:
     MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 
     MultipleAlignmentRow createRow(const MultipleAlignmentRow& row);
-
-    void setRows(const QList<MultipleAlignmentRow>& mcaRows);
 };
 
 inline bool operator!=(const MultipleChromatogramAlignment& ptr1, const MultipleChromatogramAlignment& ptr2) {

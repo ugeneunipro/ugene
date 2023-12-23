@@ -191,6 +191,12 @@ public:
      */
     void renameRow(int rowIndex, const QString& name);
 
+    /** Keep only only column-range of given rows in the alignment. */
+    bool crop(const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os);
+
+    /** Keeps only 'columnRange' region in the alignment */
+    bool crop(const U2Region& columnRange, U2OpStatus& os);
+
     /** Updates row ID of the row at 'rowIndex' position */
     void setRowId(int rowIndex, qint64 rowId);
 
@@ -199,6 +205,14 @@ public:
      * The alignment is changed only (to zero) if the alignment becomes empty.
      */
     void removeRow(int rowIndex, U2OpStatus& os);
+
+    /**
+     * Removes a region from the alignment.
+     * If "removeEmptyRows" is "true", removes all empty rows from the processed region.
+     * The alignment is trimmed after removing the region.
+     * Can decrease the overall alignment length.
+     */
+    void removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows);
 
     /**
      * Removes up to n characters starting from the specified position.
@@ -233,13 +247,34 @@ public:
 
     virtual MultipleAlignment getCopy() const = 0;
 
-    const MultipleAlignmentDataType type;
+    /**
+     * Sorts rows by similarity making identical rows sequential. Sets MSA rows to the sorted rows.
+     * Returns 'true' if the rows were resorted and MSA is changed, and 'false' otherwise.
+     */
+    bool sortRowsBySimilarity(QVector<U2Region>& united);
+
+    /** Returns rows sorted by similarity. Does not update MSA. */
+    QVector<MultipleAlignmentRow> getRowsSortedBySimilarity(QVector<U2Region>& united) const;
+
+    /**
+     * Sets the new content for the row with the specified index.
+     * Assumes that the row index is valid.
+     * Can modify the overall alignment length (increase or decrease).
+     */
+    void setRowContent(int rowNumber, const QByteArray& sequence, int offset = 0);
+    void setRowContent(int rowNumber, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel);
+
+    /** Converts all rows' sequences to upper case */
+    void toUpperCase();
 
 protected:
     virtual MultipleAlignmentRow getEmptyRow() const = 0;
 
     /** Helper-method for adding a row to the alignment */
     void addRowPrivate(const MultipleAlignmentRow& row, qint64 rowLenWithTrailingGaps, int rowIndex);
+
+protected:
+    const MultipleAlignmentDataType type;
 
     /** Alphabet for all sequences in the alignment */
     const DNAAlphabet* alphabet = nullptr;

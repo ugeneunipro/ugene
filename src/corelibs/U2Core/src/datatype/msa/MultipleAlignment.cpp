@@ -532,4 +532,150 @@ void MultipleAlignmentData::addRowPrivate(const MultipleAlignmentRow& row, qint6
     rows.insert(idx, row);
 }
 
+void MultipleAlignmentData::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows) {
+    SAFE_POINT(startPos >= 0 && startPos + nBases <= length && nBases > 0,
+               QString("Incorrect parameters were passed to MultipleAlignmentData::removeRegion: startPos '%1', "
+                       "nBases '%2', the length is '%3'")
+                   .arg(startPos)
+                   .arg(nBases)
+                   .arg(length), );
+    SAFE_POINT(startRow >= 0 && startRow + nRows <= getRowCount() && (nRows > 0 || (nRows == 0 && getRowCount() == 0)),
+               QString("Incorrect parameters were passed to MultipleAlignmentData::removeRegion: startRow '%1', "
+                       "nRows '%2', the number of rows is '%3'")
+                   .arg(startRow)
+                   .arg(nRows)
+                   .arg(getRowCount()), );
+
+    MaStateCheck check(this);
+    Q_UNUSED(check);
+
+    U2OpStatus2Log os;
+    for (int i = startRow + nRows; --i >= startRow;) {
+        getRow(i)->removeChars(startPos, nBases, os);
+        SAFE_POINT_OP(os, );
+
+        if (removeEmptyRows && (getRow(i)->getSequence().length() == 0)) {
+            rows.removeAt(i);
+        }
+    }
+
+    if (nRows == rows.size()) {
+        // full columns were removed
+        length -= nBases;
+        if (length == 0) {
+            rows.clear();
+        }
+    }
+}
+
+bool MultipleAlignmentData::crop(const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os) {
+    if (!(columnRange.startPos >= 0 && columnRange.length > 0 && columnRange.length < length && columnRange.startPos < length)) {
+        os.setError(QString("Incorrect region was passed to MultipleSequenceData::crop, "
+                            "startPos '%1', length '%2'")
+                        .arg(columnRange.startPos)
+                        .arg(columnRange.length));
+        return false;
+    }
+
+    qint64 safeLength = columnRange.length;
+    if (columnRange.endPos() > length) {
+        safeLength -= columnRange.endPos() - length;
+    }
+
+    MaStateCheck check(this);
+    Q_UNUSED(check);
+
+    QSet<qint64> rowIdSet = rowIds.toSet();
+    QVector<MultipleAlignmentRow> newRowList;
+    for (int i = 0; i < rows.size(); i++) {
+        MultipleAlignmentRow row = getRow(i).clone();
+        qint64 rowId = row->getRowId();
+        if (rowIdSet.contains(rowId)) {
+            row->crop(os, (int)columnRange.startPos, (int)safeLength);
+            CHECK_OP(os, false);
+            newRowList << row;
+        }
+    }
+    rows = newRowList;
+
+    length = safeLength;
+    return true;
+}
+
+bool MultipleAlignmentData::crop(const U2Region& region, U2OpStatus& os) {
+    return crop(getRowsIds(), region, os);
+}
+
+bool MultipleAlignmentData::sortRowsBySimilarity(QVector<U2Region>& united) {
+    QVector<MultipleAlignmentRow> sortedRows = getRowsSortedBySimilarity(united);
+    if (getRows() == sortedRows) {
+        return false;
+    }
+    rows = sortedRows;
+    return true;
+}
+
+QVector<MultipleAlignmentRow> MultipleAlignmentData::getRowsSortedBySimilarity(QVector<U2Region>& united) const {
+    QVector<MultipleAlignmentRow> oldRows = getRows();
+    QVector<MultipleAlignmentRow> sortedRows;
+    while (!oldRows.isEmpty()) {
+        MultipleAlignmentRow row = oldRows.takeFirst();
+        sortedRows << row;
+        int start = sortedRows.size() - 1;
+        int len = 1;
+        QMutableVectorIterator<MultipleAlignmentRow> iter(oldRows);
+        while (iter.hasNext()) {
+            const MultipleAlignmentRow& next = iter.next();
+            if (next->isEqualCore(*row)) {
+                sortedRows << next;
+                iter.remove();
+                ++len;
+            }
+        }
+        if (len > 1) {
+            united.append(U2Region(start, len));
+        }
+    }
+    return sortedRows;
+}
+
+void MultipleAlignmentData::setRowContent(int rowNumber, const QByteArray& sequence, int offset) {
+    SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(),
+               QString("Incorrect row index '%1' was passed to MultipleAlignmentData::setRowContent: "
+                       "the number of rows is '%2'")
+                   .arg(rowNumber)
+                   .arg(getRowCount()), );
+    MaStateCheck check(this);
+    Q_UNUSED(check);
+
+    U2OpStatus2Log os;
+    getRow(rowNumber)->setRowContent(sequence, offset, os);
+    SAFE_POINT_OP(os, );
+
+    length = qMax(length, (qint64)sequence.size() + offset);
+}
+
+void MultipleAlignmentData::setRowContent(int rowNumber, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel) {
+    SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(),
+               QString("Incorrect row index '%1' was passed to MultipleAlignmentData::setRowContent: "
+                       "the number of rows is '%2'")
+                   .arg(rowNumber)
+                   .arg(getRowCount()), );
+    MaStateCheck check(this);
+    Q_UNUSED(check);
+
+    U2OpStatus2Log os;
+    getRow(rowNumber)->setRowContent(chromatogram, sequence, gapModel, os);
+    SAFE_POINT_OP(os, );
+
+    length = qMax(length, (qint64)MsaRowUtils::getRowLength(sequence.seq, gapModel));
+}
+
+
+void MultipleAlignmentData::toUpperCase() {
+    for (int i = 0, n = getRowCount(); i < n; i++) {
+        getRow(i)->toUpperCase();
+    }
+}
+
 }  // namespace U2

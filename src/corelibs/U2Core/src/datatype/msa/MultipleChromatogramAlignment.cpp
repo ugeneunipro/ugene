@@ -78,20 +78,8 @@ QSharedPointer<MultipleChromatogramAlignmentData> MultipleChromatogramAlignment:
     return maData.dynamicCast<MultipleChromatogramAlignmentData>();
 }
 
-namespace {
-
-QVector<MultipleAlignmentRow> convertToMaRows(const QList<MultipleAlignmentRow>& mcaRows) {
-    QVector<MultipleAlignmentRow> maRows;
-    foreach (const MultipleAlignmentRow& mcaRow, mcaRows) {
-        maRows << mcaRow;
-    }
-    return maRows;
-}
-
-}  // namespace
-
 MultipleChromatogramAlignmentData::MultipleChromatogramAlignmentData(const QString& name, const DNAAlphabet* alphabet, const QList<MultipleAlignmentRow>& rows)
-    : MultipleAlignmentData(MultipleAlignmentDataType::MCA, name, alphabet, convertToMaRows(rows)) {
+    : MultipleAlignmentData(MultipleAlignmentDataType::MCA, name, alphabet, rows.toVector()) {
 }
 
 MultipleChromatogramAlignmentData::MultipleChromatogramAlignmentData(const MultipleChromatogramAlignmentData& mcaData)
@@ -149,47 +137,6 @@ bool MultipleChromatogramAlignmentData::operator!=(const MultipleChromatogramAli
     return !isEqual(other);
 }
 
-bool MultipleChromatogramAlignmentData::crop(const U2Region& region, const QSet<QString>& rowNames, U2OpStatus& os) {
-    if (!(region.startPos >= 0 && region.length > 0 && region.length < length && region.startPos < length)) {
-        os.setError(QString("Incorrect region was passed to MultipleChromatogramAlignmentData::crop, "
-                            "startPos '%1', length '%2'")
-                        .arg(region.startPos)
-                        .arg(region.length));
-        return false;
-    }
-
-    int cropLen = (int)region.length;
-    if (region.endPos() > length) {
-        cropLen -= (int)(region.endPos() - length);
-    }
-
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    QList<MultipleAlignmentRow> newList;
-    for (int i = 0; i < rows.size(); i++) {
-        MultipleAlignmentRow row = getRow(i).clone();
-        const QString rowName = row->getName();
-        if (rowNames.contains(rowName)) {
-            row->crop(os, (int)region.startPos, cropLen);
-            CHECK_OP(os, false);
-            newList << row;
-        }
-    }
-    setRows(newList);
-
-    length = cropLen;
-    return true;
-}
-
-bool MultipleChromatogramAlignmentData::crop(const U2Region& region, U2OpStatus& os) {
-    return crop(region, getRowNames().toSet(), os);
-}
-
-bool MultipleChromatogramAlignmentData::crop(int start, int count, U2OpStatus& os) {
-    return crop(U2Region(start, count), os);
-}
-
 MultipleAlignmentRow MultipleChromatogramAlignmentData::createRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes) {
     QByteArray newSequenceBytes;
     QVector<U2MsaGap> newGapsModel;
@@ -224,10 +171,6 @@ MultipleAlignmentRow MultipleChromatogramAlignmentData::createRow(const U2MsaRow
 
 MultipleAlignmentRow MultipleChromatogramAlignmentData::createRow(const MultipleAlignmentRow& row) {
     return {row, this};
-}
-
-void MultipleChromatogramAlignmentData::setRows(const QList<MultipleAlignmentRow>& mcaRows) {
-    rows = convertToMaRows(mcaRows);
 }
 
 void MultipleChromatogramAlignmentData::addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes) {
@@ -292,53 +235,6 @@ void MultipleChromatogramAlignmentData::appendChars(int row, qint64 afterPos, co
     length = qMax(length, afterPos + len);
 }
 
-void MultipleChromatogramAlignmentData::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows) {
-    SAFE_POINT(startPos >= 0 && startPos + nBases <= length && nBases > 0,
-               QString("Incorrect parameters were passed to MultipleChromatogramAlignmentData::removeRegion: startPos '%1', "
-                       "nBases '%2', the length is '%3'")
-                   .arg(startPos)
-                   .arg(nBases)
-                   .arg(length), );
-    SAFE_POINT(startRow >= 0 && startRow + nRows <= getRowCount() && nRows > 0,
-               QString("Incorrect parameters were passed to MultipleChromatogramAlignmentData::removeRegion: startRow '%1', "
-                       "nRows '%2', the number of rows is '%3'")
-                   .arg(startRow)
-                   .arg(nRows)
-                   .arg(getRowCount()), );
-
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    U2OpStatus2Log os;
-    for (int i = startRow + nRows; --i >= startRow;) {
-        getRow(i)->removeChars(startPos, nBases, os);
-        SAFE_POINT_OP(os, );
-
-        if (removeEmptyRows && (0 == getRow(i)->getSequence().length())) {
-            rows.removeAt(i);
-        }
-    }
-
-    if (nRows == rows.size()) {
-        // full columns were removed
-        length -= nBases;
-        if (length == 0) {
-            rows.clear();
-        }
-    }
-}
-
-void MultipleChromatogramAlignmentData::renameRow(int row, const QString& name) {
-    SAFE_POINT(row >= 0 && row < getRowCount(),
-               QString("Incorrect row index '%1' was passed to MultipleChromatogramAlignmentData::renameRow: "
-                       "the number of rows is '%2'")
-                   .arg(row)
-                   .arg(getRowCount()), );
-    SAFE_POINT(!name.isEmpty(),
-               "Incorrect parameter 'name' was passed to MultipleChromatogramAlignmentData::renameRow: "
-               "Can't set the name of a row to an empty string", );
-    rows[row]->setName(name);
-}
 
 void MultipleChromatogramAlignmentData::replaceChars(int row, char origChar, char resultChar) {
     SAFE_POINT(row >= 0 && row < getRowCount(), QString("Incorrect row index '%1' in MultipleChromatogramAlignmentData::replaceChars").arg(row), );
@@ -349,32 +245,6 @@ void MultipleChromatogramAlignmentData::replaceChars(int row, char origChar, cha
 
     U2OpStatus2Log os;
     getRow(row)->replaceChars(origChar, resultChar, os);
-}
-
-void MultipleChromatogramAlignmentData::setRowContent(int rowNumber, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel) {
-    SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(),
-               QString("Incorrect row index '%1' was passed to MultipleChromatogramAlignmentData::setRowContent: "
-                       "the number of rows is '%2'")
-                   .arg(rowNumber)
-                   .arg(getRowCount()), );
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    U2OpStatus2Log os;
-    getRow(rowNumber)->setRowContent(chromatogram, sequence, gapModel, os);
-    SAFE_POINT_OP(os, );
-
-    length = qMax(length, (qint64)MsaRowUtils::getRowLength(sequence.seq, gapModel));
-}
-
-void MultipleChromatogramAlignmentData::setRowContent(int rowNumber, const McaRowMemoryData& mcaRowMemoryData) {
-    setRowContent(rowNumber, mcaRowMemoryData.chromatogram, mcaRowMemoryData.sequence, mcaRowMemoryData.gapModel);
-}
-
-void MultipleChromatogramAlignmentData::toUpperCase() {
-    for (int i = 0, n = getRowCount(); i < n; i++) {
-        getRow(i)->toUpperCase();
-    }
 }
 
 void MultipleChromatogramAlignmentData::setSequenceId(int rowIndex, const U2DataId& sequenceId) {

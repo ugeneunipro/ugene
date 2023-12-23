@@ -26,7 +26,6 @@
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaRowUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/U2Region.h>
 
 #include "MaStateCheck.h"
 #include "MultipleSequenceAlignment.h"
@@ -173,44 +172,6 @@ bool MultipleSequenceAlignmentData::operator!=(const MultipleSequenceAlignmentDa
     return !isEqual(other);
 }
 
-bool MultipleSequenceAlignmentData::crop(const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os) {
-    if (!(columnRange.startPos >= 0 && columnRange.length > 0 && columnRange.length < length && columnRange.startPos < length)) {
-        os.setError(QString("Incorrect region was passed to MultipleSequenceAlignmentData::crop, "
-                            "startPos '%1', length '%2'")
-                        .arg(columnRange.startPos)
-                        .arg(columnRange.length));
-        return false;
-    }
-
-    qint64 safeLength = columnRange.length;
-    if (columnRange.endPos() > length) {
-        safeLength -= columnRange.endPos() - length;
-    }
-
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    QSet<qint64> rowIdSet = rowIds.toSet();
-    QList<MultipleAlignmentRow> newRowList;
-    for (int i = 0; i < rows.size(); i++) {
-        MultipleAlignmentRow row = getRow(i).clone();
-        qint64 rowId = row->getRowId();
-        if (rowIdSet.contains(rowId)) {
-            row->crop(os, columnRange.startPos, (int)safeLength);
-            CHECK_OP(os, false);
-            newRowList << row;
-        }
-    }
-    setRows(newRowList);
-
-    length = safeLength;
-    return true;
-}
-
-bool MultipleSequenceAlignmentData::crop(const U2Region& region, U2OpStatus& os) {
-    return crop(getRowsIds(), region, os);
-}
-
 MultipleAlignmentRow MultipleSequenceAlignmentData::createRow(const QString& name, const QByteArray& bytes) {
     QByteArray newSequenceBytes;
     QVector<U2MsaGap> newGapsModel;
@@ -245,10 +206,6 @@ MultipleAlignmentRow MultipleSequenceAlignmentData::createRow(const U2MsaRow& ro
 
 MultipleAlignmentRow MultipleSequenceAlignmentData::createRow(const MultipleAlignmentRow& row) {
     return {row, this};
-}
-
-void MultipleSequenceAlignmentData::setRows(const QList<MultipleAlignmentRow>& msaRows) {
-    rows = convertToMaRows(msaRows);
 }
 
 void MultipleSequenceAlignmentData::addRow(const QString& name, const QByteArray& bytes) {
@@ -319,54 +276,6 @@ void MultipleSequenceAlignmentData::appendRow(int rowNumber, qint64 afterPos, co
     length = qMax(length, afterPos + row->getRowLength());
 }
 
-void MultipleSequenceAlignmentData::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows) {
-    SAFE_POINT(startPos >= 0 && startPos + nBases <= length && nBases > 0,
-               QString("Incorrect parameters were passed to MultipleSequenceAlignmentData::removeRegion: startPos '%1', "
-                       "nBases '%2', the length is '%3'")
-                   .arg(startPos)
-                   .arg(nBases)
-                   .arg(length), );
-    SAFE_POINT(startRow >= 0 && startRow + nRows <= getRowCount() && (nRows > 0 || (nRows == 0 && getRowCount() == 0)),
-               QString("Incorrect parameters were passed to MultipleSequenceAlignmentData::removeRegion: startRow '%1', "
-                       "nRows '%2', the number of rows is '%3'")
-                   .arg(startRow)
-                   .arg(nRows)
-                   .arg(getRowCount()), );
-
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    U2OpStatus2Log os;
-    for (int i = startRow + nRows; --i >= startRow;) {
-        getRow(i)->removeChars(startPos, nBases, os);
-        SAFE_POINT_OP(os, );
-
-        if (removeEmptyRows && (getRow(i)->getSequence().length() == 0)) {
-            rows.removeAt(i);
-        }
-    }
-
-    if (nRows == rows.size()) {
-        // full columns were removed
-        length -= nBases;
-        if (length == 0) {
-            rows.clear();
-        }
-    }
-}
-
-void MultipleSequenceAlignmentData::renameRow(int row, const QString& name) {
-    SAFE_POINT(row >= 0 && row < getRowCount(),
-               QString("Incorrect row index '%1' was passed to MultipleSequenceAlignmentData::renameRow: "
-                       "the number of rows is '%2'")
-                   .arg(row)
-                   .arg(getRowCount()), );
-    SAFE_POINT(!name.isEmpty(),
-               "Incorrect parameter 'name' was passed to MultipleSequenceAlignmentData::renameRow: "
-               "Can't set the name of a row to an empty string", );
-    rows[row]->setName(name);
-}
-
 void MultipleSequenceAlignmentData::replaceChars(int row, char origChar, char resultChar) {
     SAFE_POINT(row >= 0 && row < getRowCount(), QString("Incorrect row index '%1' in MultipleSequenceAlignmentData::replaceChars").arg(row), );
 
@@ -376,61 +285,6 @@ void MultipleSequenceAlignmentData::replaceChars(int row, char origChar, char re
 
     U2OpStatus2Log os;
     getRow(row)->replaceChars(origChar, resultChar, os);
-}
-
-void MultipleSequenceAlignmentData::setRowContent(int rowNumber, const QByteArray& sequence, int offset) {
-    SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(),
-               QString("Incorrect row index '%1' was passed to MultipleSequenceAlignmentData::setRowContent: "
-                       "the number of rows is '%2'")
-                   .arg(rowNumber)
-                   .arg(getRowCount()), );
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    U2OpStatus2Log os;
-    getRow(rowNumber)->setRowContent(sequence, offset, os);
-    SAFE_POINT_OP(os, );
-
-    length = qMax(length, (qint64)sequence.size() + offset);
-}
-
-void MultipleSequenceAlignmentData::toUpperCase() {
-    for (int i = 0, n = getRowCount(); i < n; i++) {
-        getRow(i)->toUpperCase();
-    }
-}
-
-bool MultipleSequenceAlignmentData::sortRowsBySimilarity(QVector<U2Region>& united) {
-    QList<MultipleAlignmentRow> sortedRows = getRowsSortedBySimilarity(united);
-    if (getRows().toList() == sortedRows) {
-        return false;
-    }
-    setRows(sortedRows);
-    return true;
-}
-
-QList<MultipleAlignmentRow> MultipleSequenceAlignmentData::getRowsSortedBySimilarity(QVector<U2Region>& united) const {
-    QList<MultipleAlignmentRow> oldRows = getRows().toList();
-    QList<MultipleAlignmentRow> sortedRows;
-    while (!oldRows.isEmpty()) {
-        MultipleAlignmentRow row = oldRows.takeFirst();
-        sortedRows << row;
-        int start = sortedRows.size() - 1;
-        int len = 1;
-        QMutableListIterator<MultipleAlignmentRow> iter(oldRows);
-        while (iter.hasNext()) {
-            const MultipleAlignmentRow& next = iter.next();
-            if (next->isEqualCore(*row)) {
-                sortedRows << next;
-                iter.remove();
-                ++len;
-            }
-        }
-        if (len > 1) {
-            united.append(U2Region(start, len));
-        }
-    }
-    return sortedRows;
 }
 
 void MultipleSequenceAlignmentData::setRowGapModel(int rowNumber, const QVector<U2MsaGap>& gapModel) {
