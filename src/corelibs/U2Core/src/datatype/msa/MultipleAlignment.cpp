@@ -340,6 +340,10 @@ bool MultipleAlignmentData::isLeadingOrTrailingGap(int rowNumber, qint64 pos) co
 }
 
 void MultipleAlignmentData::insertGaps(int row, int pos, int count, U2OpStatus& os) {
+    if (pos > length) {
+        length = pos + count;
+        return;
+    }
     if (row >= getRowCount() || row < 0 || pos > length || pos < 0 || count < 0) {
         coreLog.trace(QString("Internal error: incorrect parameters were passed "
                               "to MultipleAlignmentData::insertGaps: row index '%1', pos '%2', count '%3'")
