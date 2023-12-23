@@ -267,15 +267,89 @@ public:
     /** Converts all rows' sequences to upper case */
     void toUpperCase();
 
-protected:
-    virtual MultipleAlignmentRow getEmptyRow() const = 0;
+    void setSequenceId(int rowIndex, const U2DataId& sequenceId);
 
+    void setRowGapModel(int rowNumber, const QVector<U2MsaGap>& gapModel);
+
+    /**
+     * Adds a new row to the alignment.
+     * If rowIndex == -1 -> appends the row to the alignment.
+     * Otherwise, if rowIndex is incorrect, the closer bound is used (the first or the last row).
+     * Does not trim the original alignment.
+     * Can increase the overall alignment length.
+     */
+    void addRow(const QString& name, const QByteArray& bytes);
+    void addRow(const QString& name, const QByteArray& bytes, int rowIndex);
+    void addRow(const U2MsaRow& rowInDb, const DNASequence& sequence, U2OpStatus& os);
+    void addRow(const QString& name, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+
+    /**
+     * Adds a new row to the alignment.
+     * If rowIndex == -1 -> appends the row to the alignment.
+     * Otherwise, if rowIndex is incorrect, the closer bound is used (the first or the last row).
+     * Does not trim the original alignment.
+     * Can increase the overall alignment length.
+     */
+    void addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes);
+    void addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes, int rowIndex);
+    void addRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os);
+    void addRow(const QString& name, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+
+
+    /**
+     * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.
+     * The 'origChar' must be a non-gap character.
+     * The 'resultChar' can be a gap, gaps model is recalculated in this case.
+     * The index must be valid as well.
+     */
+    void replaceChars(int row, char origChar, char resultChar);
+
+    /**
+     * Appends chars to the row with the specified index.
+     * The chars are appended to the alignment end, not to the row end
+     * (i.e. the alignment length is taken into account).
+     * Does NOT recalculate the alignment length!
+     * The index must be valid.
+     */
+    void appendChars(int row, const char* str, int len);
+
+    void appendChars(int row, qint64 afterPos, const char* str, int len);
+
+    void appendRow(int rowNumber, qint64 afterPos, const MultipleAlignmentRow& rowIdx, U2OpStatus& os);
+
+    /** returns "True" if there are no gaps in the alignment */
+    bool hasEmptyGapModel() const;
+
+    /**  returns "True" if all sequences in the alignment have equal lengths */
+    bool hasEqualLength() const;
+protected:
     /** Helper-method for adding a row to the alignment */
     void addRowPrivate(const MultipleAlignmentRow& row, qint64 rowLenWithTrailingGaps, int rowIndex);
 
-protected:
+    /** Create a new row (sequence + gap model) from the bytes */
+    MultipleAlignmentRow createRow(const QString& name, const QByteArray& bytes);
+
+    /**
+     * Sequence must not contain gaps.
+     * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
+     */
+    MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+
+    MultipleAlignmentRow createRow(const MultipleAlignmentRow& row);
+
+    /** Create a new row (sequence + gap model) from the bytes */
+    MultipleAlignmentRow createRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes);
+
+    /**
+     * Sequence must not contain gaps.
+     * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
+     */
+    MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+
+public:
     const MultipleAlignmentDataType type;
 
+protected:
     /** Alphabet for all sequences in the alignment */
     const DNAAlphabet* alphabet = nullptr;
 

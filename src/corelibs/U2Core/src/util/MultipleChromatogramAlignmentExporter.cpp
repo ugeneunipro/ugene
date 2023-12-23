@@ -50,8 +50,9 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignmen
 
     MultipleChromatogramAlignment mca;
     for (int i = 0; i < rows.count(); ++i) {
-        mca->addRow(rows[i], mcaRowsMemoryData[i], os);
-        mca->getRow(i)->setAdditionalInfo(mcaRowsMemoryData[i].additionalInfo);
+        const McaRowMemoryData& rowData = mcaRowsMemoryData[i];
+        mca->addRow(rows[i], rowData.chromatogram, rowData.sequence, os);
+        mca->getRow(i)->setAdditionalInfo(rowData.additionalInfo);
     }
 
     // Info

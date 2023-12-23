@@ -23,6 +23,8 @@
 
 #include <QSet>
 
+#include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MsaRowUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -267,21 +269,21 @@ void MultipleAlignmentData::sortRows(MultipleAlignment::SortType type, MultipleA
 }
 
 MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {
-    static MultipleAlignmentRow emptyRow = getEmptyRow();
+    static MultipleAlignmentRow emptyRow(type);
     int rowCount = rows.count();
     SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
 const MultipleAlignmentRow& MultipleAlignmentData::getRow(int rowIndex) const {
-    static MultipleAlignmentRow emptyRow = getEmptyRow();
+    static MultipleAlignmentRow emptyRow(type);
     int rowCount = rows.count();
     SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
 const MultipleAlignmentRow& MultipleAlignmentData::getRow(const QString& name) const {
-    static MultipleAlignmentRow emptyRow = getEmptyRow();
+    static MultipleAlignmentRow emptyRow(type);
     for (int i = 0; i < rows.count(); i++) {
         if (rows[i]->getName() == name) {
             return rows[i];
@@ -312,7 +314,7 @@ QList<qint64> MultipleAlignmentData::getRowIdsByRowIndexes(const QList<int>& row
 }
 
 MultipleAlignmentRow MultipleAlignmentData::getRowByRowId(qint64 rowId, U2OpStatus& os) const {
-    static MultipleAlignmentRow emptyRow = getEmptyRow();
+    static MultipleAlignmentRow emptyRow(type);
     foreach (const MultipleAlignmentRow& row, rows) {
         if (row->getRowId() == rowId) {
             return row;
@@ -671,11 +673,226 @@ void MultipleAlignmentData::setRowContent(int rowNumber, const DNAChromatogram& 
     length = qMax(length, (qint64)MsaRowUtils::getRowLength(sequence.seq, gapModel));
 }
 
-
 void MultipleAlignmentData::toUpperCase() {
     for (int i = 0, n = getRowCount(); i < n; i++) {
         getRow(i)->toUpperCase();
     }
+}
+
+void MultipleAlignmentData::setSequenceId(int rowIndex, const U2DataId& sequenceId) {
+    SAFE_POINT(rowIndex >= 0 && rowIndex < getRowCount(), "Invalid row index", );
+    getRow(rowIndex)->setSequenceId(sequenceId);
+}
+
+void MultipleAlignmentData::setRowGapModel(int rowNumber, const QVector<U2MsaGap>& gapModel) {
+    SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(), "Invalid row index", );
+    length = qMax(length, (qint64)MsaRowUtils::getGapsLength(gapModel) + getRow(rowNumber)->getSequence().length());
+    getRow(rowNumber)->setGapModel(gapModel);
+}
+
+void MultipleAlignmentData::addRow(const QString& name, const QByteArray& bytes) {
+    MultipleAlignmentRow newRow = createRow(name, bytes);
+    addRowPrivate(newRow, bytes.size(), -1);
+}
+
+void MultipleAlignmentData::addRow(const QString& name, const QByteArray& bytes, int rowIndex) {
+    MultipleAlignmentRow newRow = createRow(name, bytes);
+    addRowPrivate(newRow, bytes.size(), rowIndex);
+}
+
+void MultipleAlignmentData::addRow(const U2MsaRow& rowInDb, const DNASequence& sequence, U2OpStatus& os) {
+    MultipleAlignmentRow newRow = createRow(rowInDb, sequence, rowInDb.gaps, os);
+    CHECK_OP(os, );
+    addRowPrivate(newRow, rowInDb.length, -1);
+}
+
+void MultipleAlignmentData::addRow(const QString& name, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
+    SAFE_POINT(type == MultipleAlignmentDataType::MSA, "Can't use a method with no chromatogram for MSA", );
+    U2MsaRow row;
+    MultipleAlignmentRow newRow = createRow(row, sequence, gaps, os);
+    CHECK_OP(os, );
+
+    int len = sequence.length();
+    foreach (const U2MsaGap& gap, gaps) {
+        len += gap.length;
+    }
+
+    newRow->setName(name);
+    addRowPrivate(newRow, len, -1);
+}
+
+void MultipleAlignmentData::addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes) {
+    MultipleAlignmentRow newRow = createRow(name, chromatogram, bytes);
+    addRowPrivate(newRow, bytes.size(), -1);
+}
+
+void MultipleAlignmentData::addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes, int rowIndex) {
+    MultipleAlignmentRow newRow = createRow(name, chromatogram, bytes);
+    addRowPrivate(newRow, bytes.size(), rowIndex);
+}
+
+void MultipleAlignmentData::addRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os) {
+    MultipleAlignmentRow newRow = createRow(rowInDb, chromatogram, sequence, rowInDb.gaps, os);
+    CHECK_OP(os, );
+    addRowPrivate(newRow, rowInDb.length, -1);
+}
+
+void MultipleAlignmentData::addRow(const QString& name, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
+    SAFE_POINT(type == MultipleAlignmentDataType::MCA, "Only MCA can have chromatogram in a row", );
+    U2MsaRow row;
+    MultipleAlignmentRow newRow = createRow(row, chromatogram, sequence, gaps, os);
+    CHECK_OP(os, );
+
+    int len = sequence.length();
+    foreach (const U2MsaGap& gap, gaps) {
+        len += gap.length;
+    }
+
+    newRow->setName(name);
+    addRowPrivate(newRow, len, -1);
+}
+
+MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const QByteArray& bytes) {
+    SAFE_POINT(type == MultipleAlignmentDataType::MSA, "Can't use a method with no chromatogram for MSA", {type});
+    QByteArray newSequenceBytes;
+    QVector<U2MsaGap> newGapsModel;
+
+    MaDbiUtils::splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
+    DNASequence newSequence(name, newSequenceBytes);
+
+    U2MsaRow row;
+    return {row, newSequence, newGapsModel, this};
+}
+
+MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
+    SAFE_POINT(type == MultipleAlignmentDataType::MSA, "Can't use a method with no chromatogram for MSA", {type});
+    QString errorText = "Failed to create a multiple alignment row";
+    if (sequence.constSequence().indexOf(U2Msa::GAP_CHAR) != -1) {
+        coreLog.trace("Attempted to create an alignment row from a sequence with gaps");
+        os.setError(errorText);
+        return {type};
+    }
+
+    int length = sequence.length();
+    foreach (const U2MsaGap& gap, gaps) {
+        if (gap.startPos > length || !gap.isValid()) {
+            coreLog.trace("Incorrect gap model was passed to MultipleAlignmentData::createRow");
+            os.setError(errorText);
+            return {type};
+        }
+        length += gap.length;
+    }
+
+    return {rowInDb, sequence, gaps, this};
+}
+
+MultipleAlignmentRow MultipleAlignmentData::createRow(const MultipleAlignmentRow& row) {
+    return {row, this};
+}
+
+MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes) {
+    SAFE_POINT(type == MultipleAlignmentDataType::MCA, "Only MCA can have a chromatogram", {type});
+    QByteArray newSequenceBytes;
+    QVector<U2MsaGap> newGapsModel;
+
+    MaDbiUtils::splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
+    DNASequence newSequence(name, newSequenceBytes);
+
+    U2MsaRow row;
+    return {row, chromatogram, newSequence, newGapsModel, this};
+}
+
+MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
+    SAFE_POINT(type == MultipleAlignmentDataType::MCA, "Only MCA can have a chromatogram", {type});
+    QString errorText = "Failed to create a multiple alignment row";
+    if (sequence.constSequence().indexOf(U2Msa::GAP_CHAR) != -1) {
+        coreLog.trace("Attempted to create an alignment row from a sequence with gaps");
+        os.setError(errorText);
+        return {type};
+    }
+
+    int length = sequence.length();
+    foreach (const U2MsaGap& gap, gaps) {
+        if (gap.startPos > length || !gap.isValid()) {
+            coreLog.trace("Incorrect gap model was passed to MultipleAlignmentData::createRow");
+            os.setError(errorText);
+            return {type};
+        }
+        length += gap.length;
+    }
+
+    return {rowInDb, chromatogram, sequence, gaps, this};
+}
+
+bool MultipleAlignmentData::hasEmptyGapModel() const {
+    foreach (const MultipleAlignmentRow& row, rows) {
+        if (!row->getGaps().isEmpty()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool MultipleAlignmentData::hasEqualLength() const {
+    const int defaultSequenceLength = -1;
+    int sequenceLength = defaultSequenceLength;
+    for (int i = 0, n = rows.size(); i < n; ++i) {
+        if (defaultSequenceLength != sequenceLength && sequenceLength != getRow(i)->getUngappedLength()) {
+            return false;
+        } else {
+            sequenceLength = getRow(i)->getUngappedLength();
+        }
+    }
+    return true;
+}
+
+void MultipleAlignmentData::appendChars(int row, const char* str, int len) {
+    SAFE_POINT(0 <= row && row < getRowCount(),
+               QString("Incorrect row index '%1' in MultipleSequenceAlignmentData::appendChars").arg(row), );
+
+    MultipleAlignmentRow appendedRow = createRow("", QByteArray(str, len));
+
+    qint64 rowLength = getRow(row)->getRowLength();
+
+    U2OpStatus2Log os;
+    getRow(row)->append(appendedRow, (int)rowLength, os);
+    CHECK_OP(os, );
+
+    length = qMax(length, rowLength + len);
+}
+
+void MultipleAlignmentData::appendChars(int row, qint64 afterPos, const char* str, int len) {
+    SAFE_POINT(0 <= row && row < getRowCount(),
+               QString("Incorrect row index '%1' in MultipleSequenceAlignmentData::appendChars").arg(row), );
+
+    MultipleAlignmentRow appendedRow = createRow("", QByteArray(str, len));
+
+    U2OpStatus2Log os;
+    getRow(row)->append(appendedRow, (int)afterPos, os);
+    CHECK_OP(os, );
+
+    length = qMax(length, afterPos + len);
+}
+
+void MultipleAlignmentData::appendRow(int rowNumber, qint64 afterPos, const MultipleAlignmentRow& row, U2OpStatus& os) {
+    SAFE_POINT(0 <= rowNumber && rowNumber < getRowCount(),
+               QString("Incorrect row index '%1' in MultipleSequenceAlignmentData::appendRow").arg(rowNumber), );
+
+    getRow(rowNumber)->append(row, (int)afterPos, os);
+    CHECK_OP(os, );
+
+    length = qMax(length, afterPos + row->getRowLength());
+}
+
+void MultipleAlignmentData::replaceChars(int row, char origChar, char resultChar) {
+    SAFE_POINT(row >= 0 && row < getRowCount(), QString("Incorrect row index '%1' in MultipleSequenceAlignmentData::replaceChars").arg(row), );
+
+    if (origChar == resultChar) {
+        return;
+    }
+
+    U2OpStatus2Log os;
+    getRow(row)->replaceChars(origChar, resultChar, os);
 }
 
 }  // namespace U2

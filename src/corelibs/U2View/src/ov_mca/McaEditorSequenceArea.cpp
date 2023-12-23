@@ -195,7 +195,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     CHECK(selectionRect.width() == 1 && selectionRect.height() == 1, );
 
     const MultipleChromatogramAlignment mca = getEditor()->getMaObject()->getMca();
-    if (dy == 0 && mca->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x() + dx)) {
+    if (dy == 0 && mca->isLeadingOrTrailingGap(selectionRect.y(), selectionRect.x() + dx)) {
         return;
     }
 
@@ -203,7 +203,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     if (dy != 0) {
         bool noRowAvailable = true;
         for (; nextRowToSelect >= 0 && nextRowToSelect < editor->getCollapseModel()->getViewRowCount(); nextRowToSelect += dy) {
-            if (!mca->isTrailingOrLeadingGap(editor->getCollapseModel()->getMaRowIndexByViewRowIndex(nextRowToSelect), selectionRect.x() + dx)) {
+            if (!mca->isLeadingOrTrailingGap(editor->getCollapseModel()->getMaRowIndexByViewRowIndex(nextRowToSelect), selectionRect.x() + dx)) {
                 noRowAvailable = false;
                 break;
             }
