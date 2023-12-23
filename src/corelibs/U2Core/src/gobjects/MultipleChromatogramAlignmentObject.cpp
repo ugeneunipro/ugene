@@ -255,9 +255,10 @@ void MultipleChromatogramAlignmentObject::updateCachedRows(U2OpStatus& os, const
     foreach (const qint64 rowId, mcaRowsMemoryData.keys()) {
         const int rowIndex = cachedMca->getRowIndexByRowId(rowId, os);
         SAFE_POINT_OP(os, );
-        cachedMca->setRowContent(rowIndex, mcaRowsMemoryData[rowId]);
+        const McaRowMemoryData& rowData = mcaRowsMemoryData[rowId];
+        cachedMca->setRowContent(rowIndex, rowData.chromatogram, rowData.sequence, rowData.gapModel);
         SAFE_POINT_OP(os, );
-        cachedMca->renameRow(rowIndex, mcaRowsMemoryData[rowId].sequence.getName());
+        cachedMca->renameRow(rowIndex, rowData.sequence.getName());
     }
 }
 

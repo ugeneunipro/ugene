@@ -76,101 +76,10 @@ public:
     MultipleChromatogramAlignmentData& operator=(const MultipleChromatogramAlignmentData& mcaData);
 
     /**
-     * Recomputes the length of the alignment and makes it as minimal
-     * as possible. All leading gaps columns are removed by default.
-     * Returns "true" if the alignment has been modified.
-     */
-    bool trim(bool removeLeadingGaps = true);
-
-    /**
-     * Removes all gaps from all columns in the alignment.
-     * Returns "true" if the alignment has been changed.
-     */
-    bool simplify();
-
-    /** Returns a character (a gap or a non-gap) in the specified row and position */
-    char charAt(int rowNumber, int pos) const;
-    bool isGap(int rowNumber, int pos) const;
-    bool isTrailingOrLeadingGap(int rowNumber, int pos) const;
-
-    /**
-     * Inserts 'count' gaps into the specified position.
-     * Can increase the overall alignment length.
-     */
-    void insertGaps(int row, int pos, int count, U2OpStatus& os);
-
-    /**
-     * Removes a region from the alignment.
-     * If "removeEmptyRows" is "true", removes all empty rows from the processed region.
-     * The alignment is trimmed after removing the region.
-     * Can decrease the overall alignment length.
-     */
-    void removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows);
-
-    /**
-     * Renames the row with the specified index.
-     * Assumes that the row index is valid and the name is not empty.
-     */
-    void renameRow(int row, const QString& name);
-
-    /**
-     * Sets the new content for the row with the specified index.
-     * Assumes that the row index is valid.
-     * Can modify the overall alignment length (increase or decrease).
-     */
-    void setRowContent(int rowNumber, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel);
-    void setRowContent(int rowNumber, const McaRowMemoryData& mcaRowMemoryData);
-
-    /** Converts all rows' sequences to upper case */
-    void toUpperCase();
-
-    /**
-     * Modifies the alignment by keeping data from the specified region and rows only.
-     * Assumes that the region start is not negative, but it can be greater than a row length.
-     */
-    bool crop(const U2Region& region, const QSet<QString>& rowNames, U2OpStatus& os);
-    bool crop(const U2Region& region, U2OpStatus& os);
-    bool crop(int start, int count, U2OpStatus& os);
-
-    /**
      * Creates a new alignment from the sub-alignment. Do not trims the result.
      * Assumes that 'start' >= 0, and 'start + len' is less or equal than the alignment length.
      */
     MultipleChromatogramAlignment mid(int start, int len) const;
-
-    void setSequenceId(int rowIndex, const U2DataId& sequenceId);
-
-    /**
-     * Adds a new row to the alignment.
-     * If rowIndex == -1 -> appends the row to the alignment.
-     * Otherwise, if rowIndex is incorrect, the closer bound is used (the first or the last row).
-     * Does not trim the original alignment.
-     * Can increase the overall alignment length.
-     */
-    void addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes);
-    void addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes, int rowIndex);
-    void addRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os);
-    void addRow(const QString& name, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
-    void addRow(const U2MsaRow& rowInDb, const McaRowMemoryData& mcaRowMemoryData, U2OpStatus& os);
-
-    /**
-     * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.
-     * The 'origChar' must be a non-gap character.
-     * The 'resultChar' can be a gap, gaps model is recalculated in this case.
-     * The index must be valid as well.
-     */
-    void replaceChars(int row, char origChar, char resultChar);
-
-    /**
-     * Appends chars to the row with the specified index.
-     * The chars are appended to the alignment end, not to the row end
-     * (i.e. the alignment length is taken into account).
-     * Does NOT recalculate the alignment length!
-     * The index must be valid.
-     */
-    void appendChars(int row, const char* str, int len);
-
-    void appendChars(int row, qint64 afterPos, const char* str, int len);
 
     /**
      * Joins two alignments. Alignments must have the same size and alphabet.
@@ -182,26 +91,12 @@ public:
     bool operator==(const MultipleChromatogramAlignmentData& other) const;
     bool operator!=(const MultipleChromatogramAlignmentData& other) const;
 
-    MultipleAlignment getCopy() const;
+    MultipleAlignment getCopy() const override;
     MultipleChromatogramAlignment getExplicitCopy() const;
 
 private:
     void copy(const MultipleAlignmentData& other);
     void copy(const MultipleChromatogramAlignmentData& other);
-    MultipleAlignmentRow getEmptyRow() const;
-
-    /** Create a new row (sequence + gap model) from the bytes */
-    MultipleAlignmentRow createRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes);
-
-    /**
-     * Sequence must not contain gaps.
-     * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
-     */
-    MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
-
-    MultipleAlignmentRow createRow(const MultipleAlignmentRow& row);
-
-    void setRows(const QList<MultipleAlignmentRow>& mcaRows);
 };
 
 inline bool operator!=(const MultipleChromatogramAlignment& ptr1, const MultipleChromatogramAlignment& ptr2) {

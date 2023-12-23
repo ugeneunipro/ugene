@@ -103,6 +103,25 @@ public:
      */
     void clear();
 
+    /**
+     * Recomputes the length of the alignment and makes it as minimal
+     * as possible. All leading gaps columns are removed by default.
+     * Returns "true" if the alignment has been modified.
+     */
+    bool trim(bool removeLeadingGaps = true);
+
+    /**
+     * Removes all gaps from all columns in the alignment.
+     * Returns "true" if the alignment has been changed.
+     */
+    bool simplify();
+
+    /**
+     * Inserts 'count' gaps into the specified position.
+     * Can increase the overall alignment length.
+     */
+    void insertGaps(int row, int pos, int count, U2OpStatus& os);
+
     /** Returns  the name of the alignment */
     QString getName() const;
 
@@ -172,6 +191,12 @@ public:
      */
     void renameRow(int rowIndex, const QString& name);
 
+    /** Keep only only column-range of given rows in the alignment. */
+    bool crop(const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os);
+
+    /** Keeps only 'columnRange' region in the alignment */
+    bool crop(const U2Region& columnRange, U2OpStatus& os);
+
     /** Updates row ID of the row at 'rowIndex' position */
     void setRowId(int rowIndex, qint64 rowId);
 
@@ -180,6 +205,14 @@ public:
      * The alignment is changed only (to zero) if the alignment becomes empty.
      */
     void removeRow(int rowIndex, U2OpStatus& os);
+
+    /**
+     * Removes a region from the alignment.
+     * If "removeEmptyRows" is "true", removes all empty rows from the processed region.
+     * The alignment is trimmed after removing the region.
+     * Can decrease the overall alignment length.
+     */
+    void removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows);
 
     /**
      * Removes up to n characters starting from the specified position.
@@ -214,14 +247,109 @@ public:
 
     virtual MultipleAlignment getCopy() const = 0;
 
-    const MultipleAlignmentDataType type;
+    /**
+     * Sorts rows by similarity making identical rows sequential. Sets MSA rows to the sorted rows.
+     * Returns 'true' if the rows were resorted and MSA is changed, and 'false' otherwise.
+     */
+    bool sortRowsBySimilarity(QVector<U2Region>& united);
 
+    /** Returns rows sorted by similarity. Does not update MSA. */
+    QVector<MultipleAlignmentRow> getRowsSortedBySimilarity(QVector<U2Region>& united) const;
+
+    /**
+     * Sets the new content for the row with the specified index.
+     * Assumes that the row index is valid.
+     * Can modify the overall alignment length (increase or decrease).
+     */
+    void setRowContent(int rowNumber, const QByteArray& sequence, int offset = 0);
+    void setRowContent(int rowNumber, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel);
+
+    /** Converts all rows' sequences to upper case */
+    void toUpperCase();
+
+    void setSequenceId(int rowIndex, const U2DataId& sequenceId);
+
+    void setRowGapModel(int rowNumber, const QVector<U2MsaGap>& gapModel);
+
+    /**
+     * Adds a new row to the alignment.
+     * If rowIndex == -1 -> appends the row to the alignment.
+     * Otherwise, if rowIndex is incorrect, the closer bound is used (the first or the last row).
+     * Does not trim the original alignment.
+     * Can increase the overall alignment length.
+     */
+    void addRow(const QString& name, const QByteArray& bytes);
+    void addRow(const QString& name, const QByteArray& bytes, int rowIndex);
+    void addRow(const U2MsaRow& rowInDb, const DNASequence& sequence, U2OpStatus& os);
+    void addRow(const QString& name, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+
+    /**
+     * Adds a new row to the alignment.
+     * If rowIndex == -1 -> appends the row to the alignment.
+     * Otherwise, if rowIndex is incorrect, the closer bound is used (the first or the last row).
+     * Does not trim the original alignment.
+     * Can increase the overall alignment length.
+     */
+    void addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes);
+    void addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes, int rowIndex);
+    void addRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os);
+    void addRow(const QString& name, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+
+
+    /**
+     * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.
+     * The 'origChar' must be a non-gap character.
+     * The 'resultChar' can be a gap, gaps model is recalculated in this case.
+     * The index must be valid as well.
+     */
+    void replaceChars(int row, char origChar, char resultChar);
+
+    /**
+     * Appends chars to the row with the specified index.
+     * The chars are appended to the alignment end, not to the row end
+     * (i.e. the alignment length is taken into account).
+     * Does NOT recalculate the alignment length!
+     * The index must be valid.
+     */
+    void appendChars(int row, const char* str, int len);
+
+    void appendChars(int row, qint64 afterPos, const char* str, int len);
+
+    void appendRow(int rowNumber, qint64 afterPos, const MultipleAlignmentRow& rowIdx, U2OpStatus& os);
+
+    /** returns "True" if there are no gaps in the alignment */
+    bool hasEmptyGapModel() const;
+
+    /**  returns "True" if all sequences in the alignment have equal lengths */
+    bool hasEqualLength() const;
 protected:
-    virtual MultipleAlignmentRow getEmptyRow() const = 0;
-
     /** Helper-method for adding a row to the alignment */
     void addRowPrivate(const MultipleAlignmentRow& row, qint64 rowLenWithTrailingGaps, int rowIndex);
 
+    /** Create a new row (sequence + gap model) from the bytes */
+    MultipleAlignmentRow createRow(const QString& name, const QByteArray& bytes);
+
+    /**
+     * Sequence must not contain gaps.
+     * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
+     */
+    MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+
+    MultipleAlignmentRow createRow(const MultipleAlignmentRow& row);
+
+    /** Create a new row (sequence + gap model) from the bytes */
+    MultipleAlignmentRow createRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes);
+
+    /**
+     * Sequence must not contain gaps.
+     * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
+     */
+    MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+
+public:
+    const MultipleAlignmentDataType type;
+
+protected:
     /** Alphabet for all sequences in the alignment */
     const DNAAlphabet* alphabet = nullptr;
 
