@@ -46,7 +46,7 @@ enum RefineTreeNodeStatus {
 };
 
 struct MuscleWorkPool {
-    MuscleWorkPool(MuscleContext* _ctx, const MuscleTaskSettings& _config, TaskStateInfo& _ti, int _nThreads, const MultipleSequenceAlignment& _ma, MultipleSequenceAlignment& _res, bool _mhack);
+    MuscleWorkPool(MuscleContext* _ctx, const MuscleTaskSettings& _config, TaskStateInfo& _ti, int _nThreads, const MultipleAlignment& _ma, MultipleAlignment& _res, bool _mhack);
 
     ~MuscleWorkPool();
 
@@ -55,8 +55,8 @@ struct MuscleWorkPool {
 
     MuscleContext* ctx = nullptr;
     const MuscleTaskSettings& config;
-    MultipleSequenceAlignment ma;
-    MultipleSequenceAlignment& res;
+    MultipleAlignment ma;
+    MultipleAlignment& res;
     bool mhack;
     SeqVect v;
     Tree GuideTree;

@@ -21,6 +21,8 @@
 
 #include "SequenceQualityTrimWorker.h"
 
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>

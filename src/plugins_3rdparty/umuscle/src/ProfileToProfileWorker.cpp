@@ -69,12 +69,12 @@ Task* ProfileToProfileWorker::tick() {
         SharedDbiDataHandler masterMsaId = qm.value(MASTER_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> masterMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), masterMsaId));
         SAFE_POINT(!masterMsaObj.isNull(), "NULL MSA Object!", nullptr);
-        const MultipleSequenceAlignment masterMsa = masterMsaObj->getMultipleAlignment();
+        const MultipleAlignment masterMsa = masterMsaObj->getAlignment();
 
         SharedDbiDataHandler secondMsaId = qm.value(SECOND_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> secondMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), secondMsaId));
         SAFE_POINT(!secondMsaObj.isNull(), "NULL MSA Object!", nullptr);
-        const MultipleSequenceAlignment secondMsa = secondMsaObj->getMultipleAlignment();
+        const MultipleAlignment secondMsa = secondMsaObj->getAlignment();
 
         Task* t = new ProfileToProfileTask(masterMsa, secondMsa);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -103,7 +103,7 @@ void ProfileToProfileWorker::sl_taskFinished() {
     }
 
     if (outPort) {
-        MultipleSequenceAlignment resultAl = t->getResult();
+        MultipleAlignment resultAl = t->getResult();
         resultAl->setName("Aligned");
         SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(resultAl);
         QVariantMap msgData;
@@ -116,16 +116,15 @@ void ProfileToProfileWorker::sl_taskFinished() {
 /************************************************************************/
 /* Task */
 /************************************************************************/
-ProfileToProfileTask::ProfileToProfileTask(const MultipleSequenceAlignment& masterMsa, const MultipleSequenceAlignment& secondMsa)
+ProfileToProfileTask::ProfileToProfileTask(const MultipleAlignment& masterMsa, const MultipleAlignment& secondMsa)
     : Task(tr("Align profile to profile with MUSCLE"), TaskFlag_NoRun),
-      masterMsa(masterMsa->getExplicitCopy()),
-      secondMsa(secondMsa->getExplicitCopy()),
+      masterMsa(masterMsa->getCopy()),
+      secondMsa(secondMsa->getCopy()),
       seqIdx(0),
       subtaskCount(0) {
 }
 
-ProfileToProfileTask::~ProfileToProfileTask() {
-}
+ProfileToProfileTask::~ProfileToProfileTask() = default;
 
 void ProfileToProfileTask::prepare() {
     int maxThreads = 1;  // AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
@@ -158,7 +157,7 @@ QList<Task*> ProfileToProfileTask::onSubTaskFinished(Task* subTask) {
     return tasks;
 }
 
-const MultipleSequenceAlignment& ProfileToProfileTask::getResult() {
+const MultipleAlignment& ProfileToProfileTask::getResult() {
     U2AlphabetUtils::assignAlphabet(result);
     return result;
 }

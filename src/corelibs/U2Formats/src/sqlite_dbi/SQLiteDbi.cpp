@@ -349,7 +349,7 @@ void SQLiteDbi::init(const QHash<QString, QString>& props, const QVariantMap&, U
         int rc = sqlite3_open_v2(file.constData(), &db->handle, flags, nullptr);
         if (rc != SQLITE_OK) {
             QString err = getLastErrorMessage(rc);
-            os.setError(U2DbiL10n::tr("Error opening SQLite database: %1!").arg(err));
+            os.setError(U2DbiL10n::tr("Error opening SQLite database: '%1'. Error: %2").arg(file.constData()).arg(err));
             break;
         }
 

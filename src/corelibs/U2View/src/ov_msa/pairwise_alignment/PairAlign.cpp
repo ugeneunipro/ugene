@@ -62,7 +62,7 @@
 #define DuplicateSequenceWarning 1
 
 inline U2::U2DataId getSequenceIdByRowId(U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus& os) {
-    const U2::MultipleAlignmentRow& row = msa->getMaObject()->getMsa()->getRowByRowId(rowId, os);
+    const U2::MultipleAlignmentRow& row = msa->getMaObject()->getAlignment()->getRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
     return row->getRowDbInfo().sequenceId;
 }
@@ -298,8 +298,8 @@ void PairAlign::updatePercentOfSimilarity() {
     SAFE_POINT(distanceFactory != nullptr, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
 
     U2OpStatusImpl os;
-    MultipleSequenceAlignment ma;
-    const MultipleSequenceAlignment currentAlignment = msa->getMaObject()->getMultipleAlignment();
+    MultipleAlignment ma(MultipleAlignmentDataType::MSA);
+    const MultipleAlignment currentAlignment = msa->getMaObject()->getAlignment();
     ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
     ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
     distanceCalcTask = distanceFactory->createAlgorithm(ma);
@@ -309,7 +309,7 @@ void PairAlign::updatePercentOfSimilarity() {
 }
 
 bool PairAlign::checkSequenceNames() {
-    QList<qint64> rowIds = msa->getMaObject()->getMultipleAlignment()->getRowsIds();
+    QList<qint64> rowIds = msa->getMaObject()->getAlignment()->getRowsIds();
     return (rowIds.contains(firstSeqSelectorWC->sequenceId()) && rowIds.contains(secondSeqSelectorWC->sequenceId()));
 }
 

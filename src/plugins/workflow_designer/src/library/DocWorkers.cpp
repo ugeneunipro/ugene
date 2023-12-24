@@ -845,7 +845,7 @@ void MSAWriter::data2document(Document* doc, const QVariantMap& data, WorkflowCo
     SharedDbiDataHandler msaId = data.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
     SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", );
-    MultipleSequenceAlignment msa = msaObj->getMsaCopy();
+    MultipleAlignment msa = msaObj->getCopy();
 
     SAFE_POINT(!msa->isEmpty(), QString("Empty alignment passed for writing to %1").arg(doc->getURLString()), )
 

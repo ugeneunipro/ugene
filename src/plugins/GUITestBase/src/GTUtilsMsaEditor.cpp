@@ -310,7 +310,7 @@ void GTUtilsMsaEditor::clearSelection() {
 
 void GTUtilsMsaEditor::checkNameList(const QStringList& nameList) {
     MSAEditor* editor = GTUtilsMsaEditor::getEditor();
-    QStringList nameListInEditor = editor->getMaObject()->getMultipleAlignment()->getRowNames();
+    QStringList nameListInEditor = editor->getMaObject()->getAlignment()->getRowNames();
     CHECK_SET_ERR(nameListInEditor == nameList, "Name list does not match");
 }
 
@@ -337,7 +337,7 @@ void GTUtilsMsaEditor::checkSelection(const QList<QRect>& expectedRects) {
 
 void GTUtilsMsaEditor::checkSelectionByNames(const QStringList& selectedNames) {
     MSAEditor* editor = GTUtilsMsaEditor::getEditor();
-    QStringList rowNames = editor->getMaObject()->getMultipleAlignment()->getRowNames();
+    QStringList rowNames = editor->getMaObject()->getAlignment()->getRowNames();
     QList<int> selectedRowIndexes = editor->getSelection().getSelectedRowIndexes();
     QStringList selectedNamesFromEditor;
     for (int i = 0; i < selectedRowIndexes.size(); i++) {

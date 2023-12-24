@@ -24,6 +24,8 @@
 #include <QMetaType>
 #include <QString>
 
+#include <U2Core/U2SafePoints.h>
+
 #define _STR(c) #c
 #define TEST_CLASS(suite, name) suite##_##name
 #define TEST_CLASS_STR(suite, name) _STR(suite##_##name)

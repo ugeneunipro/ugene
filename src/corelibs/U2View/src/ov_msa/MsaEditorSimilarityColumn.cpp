@@ -27,7 +27,7 @@
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -72,7 +72,7 @@ QString MsaEditorSimilarityColumn::getTextForRow(int s) {
         return tr("-");
     }
 
-    const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
+    const MultipleAlignment ma = editor->getMaObject()->getAlignment();
     const qint64 referenceRowId = editor->getReferenceRowId();
     if (referenceRowId == U2MsaRow::INVALID_ROW_ID) {
         return tr("-");
@@ -184,7 +184,7 @@ void CreateDistanceMatrixTask::prepare() {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }
 
-    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.editor->getMaObject()->getMultipleAlignment());
+    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.editor->getMaObject()->getAlignment());
     CHECK(algo != nullptr, );
     addSubTask(algo);
 }

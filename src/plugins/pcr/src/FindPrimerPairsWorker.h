@@ -22,7 +22,7 @@
 #pragma once
 
 #include <U2Core/DNASequence.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/PrimerStatistics.h>
 
 #include <U2Lang/LocalDomain.h>

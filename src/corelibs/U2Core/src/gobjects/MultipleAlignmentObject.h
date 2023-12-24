@@ -53,13 +53,16 @@ public:
     /** Sets type of modifications tracking for the alignment */
     void setTrackMod(U2OpStatus& os, U2TrackModType trackMod);
 
-    const MultipleAlignment& getMultipleAlignment() const;
+    /** Returns cached in-memory msa object model. */
+    const MultipleAlignment& getAlignment() const;
     void setMultipleAlignment(const MultipleAlignment& ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap& hints = QVariantMap());
 
     MultipleAlignment getMultipleAlignmentCopy() const;
 
     /** GObject methods */
     void setGObjectName(const QString& newName);
+
+    MultipleAlignment getCopy() const;
 
     /** Const getters */
     const DNAAlphabet* getAlphabet() const;

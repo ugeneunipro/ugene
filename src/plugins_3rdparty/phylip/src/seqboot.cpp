@@ -30,7 +30,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include "seqboot.h"
@@ -788,7 +788,7 @@ void charpermute(long m, long n)
 } /* charpermute */
 
 
-void writedata( QVector<U2::MultipleSequenceAlignment>& mavect, int rep, const U2::MultipleSequenceAlignment& ma)
+void writedata( QList<U2::MultipleAlignment>& mavect, int rep, const U2::MultipleAlignment& ma)
 {
     
 
@@ -1172,7 +1172,7 @@ void writefactors(void)
 } /* writefactors */
 
 
-void bootwrite( QVector<U2::MultipleSequenceAlignment>& mavect, const U2::MultipleSequenceAlignment& ma)
+void bootwrite( QList<U2::MultipleAlignment>& mavect, const U2::MultipleAlignment& ma)
 { /* does bootstrapping and writes out data sets */
   long i, j, rr, repdiv10;
 

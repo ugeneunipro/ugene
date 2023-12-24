@@ -81,7 +81,7 @@ void GTest_Realign::prepare() {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
     }
-    QList<qint64> rowIds = msaObj->getMultipleAlignment()->getRowsIds();
+    QList<qint64> rowIds = msaObj->getAlignment()->getRowsIds();
     QSet<qint64> rowIdsToRealign;
     for (int index : qAsConst(rowsIndexesToAlign)) {
         rowIdsToRealign.insert(rowIds.at(index));

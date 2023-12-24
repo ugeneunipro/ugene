@@ -29,6 +29,7 @@
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2ObjectRelationsDbi.h>
 #include <U2Core/U2OpStatus.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 

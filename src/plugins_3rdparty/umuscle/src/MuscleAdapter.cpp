@@ -27,7 +27,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -39,7 +39,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 
-void MuscleAdapter::align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti, bool mhack) {
+void MuscleAdapter::align(const MultipleAlignment& ma, MultipleAlignment& res, TaskStateInfo& ti, bool mhack) {
     if (ti.cancelFlag) {
         return;
     }
@@ -58,7 +58,7 @@ void MuscleAdapter::align(const MultipleSequenceAlignment& ma, MultipleSequenceA
     }
 }
 
-void MuscleAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti, bool mhack) {
+void MuscleAdapter::alignUnsafe(const MultipleAlignment& ma, MultipleAlignment& res, TaskStateInfo& ti, bool mhack) {
     ti.progress = 0;
     MuscleContext* ctx = getMuscleContext();
 
@@ -187,7 +187,7 @@ void MuscleAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
 //////////////////////////////////////////////////////////////////////////
 // refine single MSA
 
-void MuscleAdapter::refine(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::refine(const MultipleAlignment& ma, MultipleAlignment& res, TaskStateInfo& ti) {
     if (ti.cancelFlag) {
         return;
     }
@@ -209,7 +209,7 @@ void MuscleAdapter::refine(const MultipleSequenceAlignment& ma, MultipleSequence
     }
 }
 
-void MuscleAdapter::refineUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::refineUnsafe(const MultipleAlignment& ma, MultipleAlignment& res, TaskStateInfo& ti) {
     ti.progress = 0;
 
     MuscleContext* ctx = getMuscleContext();
@@ -277,7 +277,7 @@ static ProfPos* ProfileFromMSALocal_ProfileCPP(MSA& msa, Tree& tree) {
     return ProfileFromMSA(msa);
 }
 
-void MuscleAdapter::align2Profiles(const MultipleSequenceAlignment& ma1, const MultipleSequenceAlignment& ma2, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::align2Profiles(const MultipleAlignment& ma1, const MultipleAlignment& ma2, MultipleAlignment& res, TaskStateInfo& ti) {
     if (ti.cancelFlag) {
         return;
     }
@@ -300,7 +300,7 @@ void MuscleAdapter::align2Profiles(const MultipleSequenceAlignment& ma1, const M
     }
 }
 
-void MuscleAdapter::align2ProfilesUnsafe(const MultipleSequenceAlignment& ma1, const MultipleSequenceAlignment& ma2, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::align2ProfilesUnsafe(const MultipleAlignment& ma1, const MultipleAlignment& ma2, MultipleAlignment& res, TaskStateInfo& ti) {
     assert(!ma1->isEmpty() && !ma2->isEmpty());
     const DNAAlphabet* al = U2AlphabetUtils::deriveCommonAlphabet(ma1->getAlphabet(), ma2->getAlphabet());
     CHECK_EXT(al != nullptr, ti.setError(tr("Incompatible alphabets")), );
@@ -389,7 +389,7 @@ static void originalMSAToCurrent(const QByteArray& adjPath, const QByteArray& or
     }
 }
 
-static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& path, QByteArray& msaPathChanges, const QByteArray& seq, const QString& name) {
+static void addSequenceToMSA(MultipleAlignment& ma, const QByteArray& path, QByteArray& msaPathChanges, const QByteArray& seq, const QString& name) {
     assert(msaPathChanges.length() == ma->getLength());
 
     QVector<int> insCoords;  // coords of gaps to be added to model
@@ -472,7 +472,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
     ma->addRow(name, alignedSeq);
 }
 
-void MuscleAdapter::addUnalignedSequencesToProfile(const MultipleSequenceAlignment& ma, const MultipleSequenceAlignment& unalignedSeqs, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::addUnalignedSequencesToProfile(const MultipleAlignment& ma, const MultipleAlignment& unalignedSeqs, MultipleAlignment& res, TaskStateInfo& ti) {
     if (ti.cancelFlag) {
         return;
     }
@@ -491,7 +491,7 @@ void MuscleAdapter::addUnalignedSequencesToProfile(const MultipleSequenceAlignme
     }
 }
 
-void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceAlignment& ma, const MultipleSequenceAlignment& unalignedSeqs, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleAlignment& ma, const MultipleAlignment& unalignedSeqs, MultipleAlignment& res, TaskStateInfo& ti) {
     const DNAAlphabet* al = U2AlphabetUtils::deriveCommonAlphabet(ma->getAlphabet(), unalignedSeqs->getAlphabet());
     CHECK_EXT(al != nullptr, ti.setError(tr("Incompatible alphabets")), );
 
@@ -510,7 +510,7 @@ void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceA
     MSA profileMSA;
     convertMAlignment2MSA(profileMSA, ma, true);
 
-    res = ma->getExplicitCopy();
+    res = ma->getCopy();
 
     // align with input sequences one by one
     Tree tree1;

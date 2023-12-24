@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include <QVector>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 typedef enum {
   seqs, morphology, restsites, genefreqs
@@ -137,12 +137,12 @@ void   bootweights(void);
 void   permute_vec(long *a, long n);
 void   sppermute(long);
 void   charpermute(long, long);
-void writedata(QVector<U2::MultipleSequenceAlignment*>& mavect, int rep, const U2::MultipleSequenceAlignment& ma);
+void writedata(QVector<U2::MultipleAlignment*>& mavect, int rep, const U2::MultipleAlignment& ma);
 void   writeweights(void);
 void   writecategories(void);
 void   writeauxdata(steptr, FILE*);
 void   writefactors(void);
-void bootwrite(QVector<U2::MultipleSequenceAlignment>& mavect, const U2::MultipleSequenceAlignment& ma);
+void bootwrite(QList<U2::MultipleAlignment>& mavect, const U2::MultipleAlignment& ma);
 //void   seqboot_inputaux(steptr, FILE*);
 void   freenewer(void);
 /* function prototypes */

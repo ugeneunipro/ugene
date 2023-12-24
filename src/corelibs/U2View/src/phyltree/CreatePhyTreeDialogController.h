@@ -25,7 +25,7 @@
 
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/global.h>
 
 class Ui_CreatePhyTree;
@@ -54,7 +54,7 @@ private:
     bool checkMemory();
     void initSaveController(const MultipleSequenceAlignmentObject* msaObject);
 
-    MultipleSequenceAlignment msa;
+    MultipleAlignment msa;
     CreatePhyTreeSettings& settings;
     CreatePhyTreeWidget* settingsWidget;
     Ui_CreatePhyTree* ui;

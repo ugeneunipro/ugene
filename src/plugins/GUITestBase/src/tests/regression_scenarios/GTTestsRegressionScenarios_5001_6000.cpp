@@ -2893,14 +2893,14 @@ GUI_TEST_CLASS_DEFINITION(test_5714_2) {
 
     // Expected: row length must be lesser than row length before trim
     qint64 currentLength = GTUtilsMcaEditorSequenceArea::getRowLength(1);
-    CHECK_SET_ERR(currentLength < rowLength, QString("Expected: row length must be lesser than row length before trim, cureent: start length %1, current length %2").arg(QString::number(rowLength)).arg(QString::number(currentLength)));
+    CHECK_SET_ERR(currentLength < rowLength, QString("Expected: row length must be lesser than row length before trim, current: start length %1, current length %2").arg(QString::number(rowLength)).arg(QString::number(currentLength)));
 
     // 7. Press undo
     GTUtilsMcaEditor::undo();
 
     // Expected: current row length is equal start row length
     currentLength = GTUtilsMcaEditorSequenceArea::getRowLength(1);
-    CHECK_SET_ERR(currentLength == rowLength, QString("Expected: current row length is equal start row length, cureent: start length %1, current length %2").arg(QString::number(rowLength)).arg(QString::number(currentLength)));
+    CHECK_SET_ERR(currentLength == rowLength, QString("Expected: current row length is equal start row length, current: start length %1, current length %2").arg(QString::number(rowLength)).arg(QString::number(currentLength)));
 
     // 8. Select position 2066 of the second read
     GTUtilsMcaEditorSequenceArea::clickToPosition(QPoint(2066, 1));

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include "../MsaOpSavableTab.h"
 #include "ui_GeneralTabOptionsPanelWidget.h"

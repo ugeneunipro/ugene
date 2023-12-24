@@ -26,7 +26,7 @@
 #include <U2Algorithm/CreateSubalignmentTask.h>
 
 #include <U2Core/GUrl.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include <U2Test/GTest.h>
 #include <U2Test/XMLTestUtils.h>

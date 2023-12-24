@@ -30,7 +30,7 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleChromatogramAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleChromatogramAlignmentImporter.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -109,7 +109,7 @@ MultipleChromatogramAlignmentObject* ComposeResultSubtask::takeMcaObject() {
 }
 
 void ComposeResultSubtask::createAlignmentAndAnnotations() {
-    MultipleChromatogramAlignment resultMca("Mapped reads");
+    MultipleAlignment resultMca(MultipleAlignmentDataType::MCA, "Mapped reads");
     resultMca->setAlphabet(referenceSequenceObject->getAlphabet());
 
     QVector<U2MsaGap> referenceGaps = getReferenceGaps();
@@ -286,7 +286,7 @@ void ComposeResultSubtask::insertShiftedGapsIntoReference() {
     mcaObject->deleteColumnsWithGaps(stateInfo);
 }
 
-void ComposeResultSubtask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment& alignment,
+void ComposeResultSubtask::insertShiftedGapsIntoRead(MultipleAlignment& alignment,
                                                      int mcaRowIndex,
                                                      const AlignToReferenceResult& alignResult,
                                                      const QVector<U2MsaGap>& mergedReferenceGaps) {

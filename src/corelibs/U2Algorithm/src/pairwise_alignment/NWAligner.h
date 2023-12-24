@@ -41,7 +41,7 @@ public:
     virtual void setSeq2(const QByteArray& value);
     virtual void setSeqs(const QByteArray& value1, const QByteArray& value2);
 
-    MultipleSequenceAlignment align();
+    MultipleAlignment align();
 
 private:
     SMatrix sMatrix;

@@ -25,7 +25,7 @@
 #include <QPushButton>
 
 #include <U2Core/BackgroundTaskRunner.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/Task.h>
 
 #include "MSAEditor.h"

@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings) {
+void DistanceMatrix::calculateOutOfAlignment(const MultipleAlignment& ma, const CreatePhyTreeSettings& settings) {
     try {
         malignment = &ma;
         int index = 0;

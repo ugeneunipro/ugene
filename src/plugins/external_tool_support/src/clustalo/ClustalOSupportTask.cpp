@@ -45,15 +45,14 @@
 
 namespace U2 {
 
-ClustalOSupportTaskSettings::ClustalOSupportTaskSettings() {
-}
+ClustalOSupportTaskSettings::ClustalOSupportTaskSettings() = default;
 
 /** Name prefix for the sequences in the temporary MSA object created by the task. */
 static constexpr const char* const INDEX_NAME_PREFIX = "EvaUX7cAm";
 
-ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalOSupportTaskSettings& _settings)
+ClustalOSupportTask::ClustalOSupportTask(const MultipleAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalOSupportTaskSettings& _settings)
     : ExternalToolSupportTask(tr("ClustalO alignment task"), TaskFlags_NR_FOSCOE),
-      inputMsa(_inputMsa->getExplicitCopy()),
+      inputMsa(_inputMsa->getCopy()),
       objRef(_objRef),
       settings(_settings),
       lock(nullptr) {
@@ -63,11 +62,11 @@ ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _input
     resultMsa->setAlphabet(inputMsa->getAlphabet());
 }
 
-ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _inputMsa,
+ClustalOSupportTask::ClustalOSupportTask(const MultipleAlignment& _inputMsa,
                                          const GObjectReference& _objRef,
                                          const QString& _secondAlignmentFileUrl,
                                          const ClustalOSupportTaskSettings& _settings)
-    : ExternalToolSupportTask(tr("ClustalO add sequences to alignment task"), TaskFlags_NR_FOSCOE), inputMsa(_inputMsa->getExplicitCopy()),
+    : ExternalToolSupportTask(tr("ClustalO add sequences to alignment task"), TaskFlags_NR_FOSCOE), inputMsa(_inputMsa->getCopy()),
       objRef(_objRef),
       settings(_settings),
       lock(nullptr),
@@ -76,12 +75,10 @@ ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _input
 }
 
 ClustalOSupportTask::~ClustalOSupportTask() {
-    if (tmpDoc != nullptr) {
-        delete tmpDoc;
-    }
+    delete tmpDoc;
 }
 
-const MultipleSequenceAlignment& ClustalOSupportTask::getResultAlignment() const {
+const MultipleAlignment& ClustalOSupportTask::getResultAlignment() const {
     return resultMsa;
 }
 
@@ -125,7 +122,7 @@ void ClustalOSupportTask::prepare() {
         return;
     }
 
-    MultipleSequenceAlignment copiedIndexedMsa = MSAUtils::createCopyWithIndexedRowNames(inputMsa, INDEX_NAME_PREFIX);
+    MultipleAlignment copiedIndexedMsa = MSAUtils::createCopyWithIndexedRowNames(inputMsa, INDEX_NAME_PREFIX);
     saveTemporaryDocumentTask = new SaveAlignmentTask(copiedIndexedMsa, inputMsaTmpFileUrl, BaseDocumentFormats::CLUSTAL_ALN);
     saveTemporaryDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveTemporaryDocumentTask);
@@ -202,7 +199,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
         auto tmpMsaObject = qobject_cast<MultipleSequenceAlignmentObject*>(tmpDoc->getObjects().first());
         SAFE_POINT(tmpMsaObject != nullptr, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
-        resultMsa = tmpMsaObject->getMsaCopy();
+        resultMsa = tmpMsaObject->getCopy();
         bool allRowsRestored = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMsa, inputMsa->getRowNames(), INDEX_NAME_PREFIX);
         SAFE_POINT(allRowsRestored, "Failed to restore initial row names!", res);
 
@@ -219,7 +216,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
 
                 // Save data to the database
                 {
-                    CHECK_EXT(!lock.isNull(), stateInfo.setError("MultipleSequenceAlignment object has been changed"), res);
+                    CHECK_EXT(!lock.isNull(), stateInfo.setError("MultipleAlignment object has been changed"), res);
                     unlockMsaObject();
 
                     U2OpStatus2Log os;
@@ -373,7 +370,7 @@ QList<Task*> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        clustalOSupportTask = new ClustalOSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
+        clustalOSupportTask = new ClustalOSupportTask(mAObject->getAlignment(), GObjectReference(), settings);
         res.append(clustalOSupportTask);
     } else if (subTask == clustalOSupportTask) {
         // Set the result alignment to the alignment object of the current document

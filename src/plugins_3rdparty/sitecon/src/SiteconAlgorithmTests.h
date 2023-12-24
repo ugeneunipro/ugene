@@ -23,7 +23,7 @@
 #define _U2_SITECON_ALG_TEST_H_
 
 #include <U2Core/GObject.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include <U2Test/XMLTestUtils.h>
 
@@ -44,7 +44,7 @@ public:
 private:
     QString docName;
     SiteconBuildSettings s;
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
     int expectedACGT[4];
 };
 
@@ -62,7 +62,7 @@ public:
 private:
     QString docName;
     SiteconBuildSettings s;
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
     QVector<PositionStats> result;
     QVector<ResultVector> expectedResults;
 };
@@ -80,7 +80,7 @@ private:
     QString docName;
     int offset;
     SiteconBuildSettings s;
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
     QVector<qreal> result;
     QVector<int> expectedResult;
 };
@@ -98,7 +98,7 @@ private:
     QString docName;
     int offset;
     SiteconBuildSettings s;
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
     QVector<qreal> result;
     QVector<int> expectedResult;
 };

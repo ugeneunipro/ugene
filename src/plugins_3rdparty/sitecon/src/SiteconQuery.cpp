@@ -29,6 +29,7 @@
 #include <U2Core/DNATranslation.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/TaskSignalMapper.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 

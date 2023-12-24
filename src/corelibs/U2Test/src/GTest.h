@@ -99,7 +99,7 @@ public:
     GTestFormat(const QString& _formatId)
         : formatId(_formatId) {};
 
-    const QString getFormatId() const {
+    const QString& getFormatId() const {
         return formatId;
     }
 
@@ -124,7 +124,7 @@ public:
         return shortName;
     }
 
-    const GTestFormatId getFormatId() {
+    const GTestFormatId& getFormatId() {
         return formatId;
     }
 

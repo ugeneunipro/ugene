@@ -26,18 +26,18 @@
 namespace U2 {
 
 class DbiConnection;
-class MultipleChromatogramAlignment;
+class MultipleAlignment;
 class MultipleChromatogramAlignmentObject;
 class U2OpStatus;
 
 class U2CORE_EXPORT MultipleChromatogramAlignmentImporter {
 public:
-    static MultipleChromatogramAlignmentObject* createAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const QString& folder, MultipleChromatogramAlignment& mca);
+    static MultipleChromatogramAlignmentObject* createAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const QString& folder, MultipleAlignment& mca);
 
 private:
-    static U2Msa importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleChromatogramAlignment& mca);
-    static void importMcaInfo(U2OpStatus& os, const DbiConnection& connection, const U2DataId& mcaId, const MultipleChromatogramAlignment& mca);
-    static QList<McaRowDatabaseData> importRowChildObjects(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleChromatogramAlignment& mca);
+    static U2Msa importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleAlignment& mca);
+    static void importMcaInfo(U2OpStatus& os, const DbiConnection& connection, const U2DataId& mcaId, const MultipleAlignment& mca);
+    static QList<McaRowDatabaseData> importRowChildObjects(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleAlignment& mca);
     static QList<U2MsaRow> importRows(U2OpStatus& os, const DbiConnection& connection, U2Msa& dbMca, const QList<McaRowDatabaseData>& mcaRowDatabaseData);
     static U2Chromatogram importChromatogram(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const DNAChromatogram& chromatogram);
     static U2Sequence importSequence(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const DNASequence& sequence, const U2AlphabetId& alphabetId);

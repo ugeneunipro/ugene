@@ -257,7 +257,7 @@ void LoadMSATask::run() {
             results.append(res);
         }
     } else {
-        MultipleSequenceAlignment ma = MSAUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
+        MultipleAlignment ma = MSAUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
 
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), ma, stateInfo));
         CHECK_OP(stateInfo, );
@@ -396,7 +396,7 @@ void LoadSeqTask::run() {
             if (msaObject == nullptr) {
                 continue;
             }
-            QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(msaObject->getMsa(), os);
+            QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(msaObject->getAlignment(), os);
             CHECK_OP(os, )
             for (const DNASequence& sequence : qAsConst(sequenceList)) {
                 if (!selector->matches(sequence)) {

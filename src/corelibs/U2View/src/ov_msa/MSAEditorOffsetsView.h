@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 namespace U2 {
 

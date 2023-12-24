@@ -23,18 +23,18 @@
 
 #include <unittest.h>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 namespace U2 {
 
 class MsaRowTestUtils {
 public:
-    static MultipleAlignmentRow initTestRowWithGaps(MultipleSequenceAlignment& ma);
-    static MultipleAlignmentRow initTestRowWithGapsInMiddle(MultipleSequenceAlignment& ma);
-    static MultipleAlignmentRow initTestRowWithTrailingGaps(MultipleSequenceAlignment& ma);
-    static MultipleAlignmentRow initTestRowWithoutGaps(MultipleSequenceAlignment& ma);
-    static MultipleAlignmentRow initTestRowForModification(MultipleSequenceAlignment& ma);
-    static MultipleAlignmentRow initEmptyRow(MultipleSequenceAlignment& ma);
+    static MultipleAlignmentRow initTestRowWithGaps(MultipleAlignment& ma);
+    static MultipleAlignmentRow initTestRowWithGapsInMiddle(MultipleAlignment& ma);
+    static MultipleAlignmentRow initTestRowWithTrailingGaps(MultipleAlignment& ma);
+    static MultipleAlignmentRow initTestRowWithoutGaps(MultipleAlignment& ma);
+    static MultipleAlignmentRow initTestRowForModification(MultipleAlignment& ma);
+    static MultipleAlignmentRow initEmptyRow(MultipleAlignment& ma);
     static QString getRowData(const MultipleAlignmentRow& row);
 
     static const int rowWithGapsLength;

@@ -112,7 +112,7 @@ void DNASequenceGenerator::evaluateBaseContent(const DNASequence& sequence, QMap
     evaluate(sequence.seq, result);
 }
 
-void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment& ma, QMap<char, qreal>& result) {
+void DNASequenceGenerator::evaluateBaseContent(const MultipleAlignment& ma, QMap<char, qreal>& result) {
     QList<QMap<char, qreal>> rowsContents;
     foreach (const MultipleAlignmentRow& row, ma->getRows()) {
         QMap<char, qreal> rowContent;
@@ -311,7 +311,7 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc(Document* source) {
     QString baseSeqName = cfg.getSequenceName();
     QList<U2Sequence> seqs = generateTask->getResults();
 
-    MultipleSequenceAlignment msa(tr("Generated MSA"), alp);
+    MultipleAlignment msa(MultipleAlignmentDataType::MSA, tr("Generated MSA"), alp);
     DbiConnection con(dbiRef, stateInfo);
 
     for (int sequenceIndex = 0, totalSeqCount = seqs.size(); sequenceIndex < totalSeqCount; sequenceIndex++) {
@@ -386,7 +386,7 @@ void EvaluateBaseContentTask::run() {
     } else if (_obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
         auto maObj = qobject_cast<MultipleSequenceAlignmentObject*>(_obj);
         alp = maObj->getAlphabet();
-        DNASequenceGenerator::evaluateBaseContent(maObj->getMultipleAlignment(), result);
+        DNASequenceGenerator::evaluateBaseContent(maObj->getAlignment(), result);
     } else {
         stateInfo.setError(tr("Base content can be evaluated for sequence or sequence alignment"));
     }

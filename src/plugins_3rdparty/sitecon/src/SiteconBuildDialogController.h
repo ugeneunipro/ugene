@@ -24,7 +24,7 @@
 
 #include <QDialog>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/Task.h>
 
 #include "SiteconAlgorithm.h"
@@ -66,7 +66,7 @@ private:
 class SiteconBuildTask : public Task {
     Q_OBJECT
 public:
-    SiteconBuildTask(const SiteconBuildSettings& s, const MultipleSequenceAlignment& ma, const QString& origin = QString());
+    SiteconBuildTask(const SiteconBuildSettings& s, const MultipleAlignment& ma, const QString& origin = QString());
     void run();
     SiteconModel getResult() const {
         return m;
@@ -74,7 +74,7 @@ public:
 
 private:
     SiteconBuildSettings settings;
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma;
     SiteconModel m;
 };
 

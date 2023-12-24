@@ -22,7 +22,7 @@
 #pragma once
 
 #include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 namespace U2 {
 
@@ -32,20 +32,14 @@ public:
     MultipleSequenceAlignmentObject(const QString& name,
                                     const U2EntityRef& msaRef,
                                     const QVariantMap& hintsMap = QVariantMap(),
-                                    const MultipleSequenceAlignment& msaData = MultipleSequenceAlignment());
-
-    /** Returns a reference to MultipleSequenceAlignment data . */
-    const MultipleSequenceAlignment& getMsa() const;
-
-    /** Returns a copy of the MultipleSequenceAlignment data . */
-    const MultipleSequenceAlignment getMsaCopy() const;
+                                    const MultipleAlignment& msaData = MultipleAlignment(MultipleAlignmentDataType::MSA));
 
     /** GObject methods */
     // Actually this method doesn't exactly clone MSA database rows, row ID will be generated for each copied row again
-    virtual MultipleSequenceAlignmentObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
+    virtual MultipleSequenceAlignmentObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = {}) const;
 
     /** Const getters */
-    char charAt(int seqNum, qint64 position) const;
+    char charAt(int seqNum, qint64 position) const override;
 
     /**
      * Updates a gap model of the alignment.
@@ -79,9 +73,9 @@ public:
 
     void deleteColumnsWithGaps(U2OpStatus& os, int requiredGapsCount = -1);
 
-    void insertGap(const U2Region& rows, int pos, int nGaps);
+    void insertGap(const U2Region& rows, int pos, int nGaps) override;
 
-    void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps);
+    void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps) override;
 
 private:
     void loadAlignment(U2OpStatus& os);

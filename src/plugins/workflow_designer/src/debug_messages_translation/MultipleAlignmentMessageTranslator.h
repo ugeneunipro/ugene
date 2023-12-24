@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include "BaseMessageTranslator.h"
 
@@ -32,10 +32,10 @@ public:
     MultipleAlignmentMessageTranslator(const QVariant& atomicMessage,
                                        Workflow::WorkflowContext* initContext);
 
-    QString getTranslation() const;
+    QString getTranslation() const override;
 
 protected:
-    MultipleSequenceAlignment malignment;
+    MultipleAlignment malignment = {MultipleAlignmentDataType::MSA};
 };
 
 }  // namespace U2

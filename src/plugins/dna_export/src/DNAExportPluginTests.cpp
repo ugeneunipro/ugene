@@ -33,6 +33,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/ExportTasks.h>
 
@@ -197,7 +198,7 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
         return;
     }
     auto alObj = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
-    srcAl = alObj->getMsaCopy();
+    srcAl = alObj->getCopy();
 
     QString translationId = DNATranslationID(0);
     translationId.replace("0", QString("%1").arg(transTable));
@@ -249,7 +250,7 @@ QList<Task*> GTest_ExportNucleicToAminoAlignmentTask::onSubTaskFinished(Task* su
             return res;
         }
         auto resAlign = qobject_cast<MultipleSequenceAlignmentObject*>(reslist.first());
-        resAl = resAlign->getMsaCopy();
+        resAl = resAlign->getCopy();
     }
     return res;
 }
@@ -272,7 +273,7 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
         return ReportResult_Finished;
     }
     auto expAlign = qobject_cast<MultipleSequenceAlignmentObject*>(explist.first());
-    const MultipleSequenceAlignment expAl = expAlign->getMultipleAlignment();
+    const MultipleAlignment expAl = expAlign->getAlignment();
 
     if (resAl->getLength() != expAl->getLength()) {
         stateInfo.setError(GTest::tr("Unexpected alignment length %1, expected %2").arg(resAl->getLength()).arg(expAl->getLength()));

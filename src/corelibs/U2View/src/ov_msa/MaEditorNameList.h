@@ -25,7 +25,7 @@
 #include <QRubberBand>
 #include <QScrollBar>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2Region.h>
 
 #include "MaCollapseModel.h"

@@ -47,7 +47,7 @@ MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject* maObject
     SAFE_POINT_EXT(maObject != nullptr, setError("MSA is NULL"), );
     msaLength = (int)maObject->getLength();
     seqNumber = (int)maObject->getRowCount();
-    if (!memLocker.tryAcquire(maObject->getMultipleAlignment()->getLength() * maObject->getMultipleAlignment()->getRowCount())) {
+    if (!memLocker.tryAcquire(maObject->getAlignment()->getLength() * maObject->getAlignment()->getRowCount())) {
         setError(memLocker.getError());
         return;
     }
@@ -134,7 +134,7 @@ MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MultipleA
     SAFE_POINT_EXT(factory != nullptr, setError("Strict consensus algorithm factory is NULL"), );
 
     SAFE_POINT_EXT(msa != nullptr, setError("MSA is NULL"), );
-    algorithm = factory->createAlgorithm(msa->getMultipleAlignment(), false);
+    algorithm = factory->createAlgorithm(msa->getAlignment(), false);
     algorithm->setParent(this);
 }
 

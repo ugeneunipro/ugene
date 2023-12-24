@@ -23,7 +23,7 @@
 
 #include <unittest.h>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2Dbi.h>
 
 #include "core/dbi/DbiTest.h"
@@ -41,7 +41,7 @@ public:
 
     static MultipleSequenceAlignmentObject* getTestAlignmentObject(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
     static U2EntityRef getTestAlignmentRef(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
-    static MultipleSequenceAlignment getTestAlignment(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
+    static MultipleAlignment getTestAlignment(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
 
 private:
     static TestDbiProvider dbiProvider;

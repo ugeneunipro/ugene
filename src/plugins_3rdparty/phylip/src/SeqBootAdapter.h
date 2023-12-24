@@ -36,7 +36,7 @@
 
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/PhyTree.h>
 
 namespace U2 {
@@ -46,19 +46,18 @@ typedef QVector<matrixrow> matrix;
 
 class SeqBoot {
 private:
-    MultipleSequenceAlignment malignment;
-    QVector<MultipleSequenceAlignment> generatedSeq;
+    MultipleAlignment malignment = {MultipleAlignmentDataType::MSA};
+    QList<MultipleAlignment> generatedSeq;
     int seqLen;
-    int seqRowCount;
 
 public:
     QString getTmpFileTemplate();
-    void clearGenratedSequences();  // to free memory
-    void generateSequencesFromAlignment(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings);
+    void clearGeneratedSequences();  // to free memory
+    void generateSequencesFromAlignment(const MultipleAlignment& ma, const CreatePhyTreeSettings& settings);
 
-    const MultipleSequenceAlignment& getMSA(int pos) const;
+    const MultipleAlignment& getMSA(int pos) const;
 
-    void initGenerSeq(int reps, int rowC, int seqLen);
+    void initGenerSeq(int reps, int seqLen);
 
     SeqBoot();
     ~SeqBoot();

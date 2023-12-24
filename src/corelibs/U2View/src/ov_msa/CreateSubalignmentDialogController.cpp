@@ -82,7 +82,7 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     startLineEdit->setText(QString::number(selectedColumnRegion.startPos + 1));  // Visual range starts with 1, not 0.
     endLineEdit->setText(QString::number(selectedColumnRegion.endPos()));
 
-    const MultipleSequenceAlignment msa = msaObject->getMsa();
+    const MultipleAlignment msa = msaObject->getAlignment();
     for (int i = 0; i < rowCount; i++) {
         const MultipleAlignmentRow& row = msa->getRow(i);
         auto checkBox = new QCheckBox(row->getName(), this);

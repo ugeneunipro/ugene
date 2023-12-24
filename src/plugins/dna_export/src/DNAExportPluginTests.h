@@ -23,7 +23,7 @@
 
 #include <QDomElement>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2Region.h>
 
 #include <U2Test/XMLTestUtils.h>
@@ -66,8 +66,8 @@ public:
     U2Region selectedRows;
     ExportMSA2MSATask* exportTask;
     LoadDocumentTask* resultLoadTask;
-    MultipleSequenceAlignment srcAl;
-    MultipleSequenceAlignment resAl;
+    MultipleAlignment srcAl = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment resAl = {MultipleAlignmentDataType::MSA};
 };
 
 class DNAExportPluginTests {

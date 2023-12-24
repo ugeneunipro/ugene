@@ -43,7 +43,7 @@ namespace U2 {
 /// TranslateMsa2AminoTask
 
 TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj)
-    : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), maObj(obj) {
+    : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), resultMA({MultipleAlignmentDataType::MSA}), maObj(obj) {
     SAFE_POINT_EXT(maObj != nullptr, setError("Invalid MSA object detected"), );
     SAFE_POINT_EXT(maObj->getAlphabet()->isNucleic(), setError("Multiple alignment already has amino-acid alphabet"), );
 
@@ -55,7 +55,7 @@ TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* 
 }
 
 TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj, const QString& translationId)
-    : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), maObj(obj) {
+    : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), resultMA({MultipleAlignmentDataType::MSA}), maObj(obj) {
     SAFE_POINT_EXT(maObj != nullptr, setError("Invalid MSA object detected"), );
     SAFE_POINT_EXT(maObj->getAlphabet()->isNucleic(), setError("Multiple alignment already has amino-acid alphabet"), );
 
@@ -65,10 +65,10 @@ TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* 
 void TranslateMsa2AminoTask::run() {
     SAFE_POINT_EXT(translation != nullptr, setError("Invalid translation object"), );
 
-    QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(maObj->getMultipleAlignment(), stateInfo, true);
+    QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(maObj->getAlignment(), stateInfo, true);
     CHECK_OP(stateInfo, );
 
-    resultMA = MultipleSequenceAlignment(maObj->getMultipleAlignment()->getName(), translation->getDstAlphabet());
+    resultMA = MultipleAlignment(MultipleAlignmentDataType::MSA, maObj->getAlignment()->getName(), translation->getDstAlphabet());
     for (const DNASequence& dna : qAsConst(sequenceList)) {
         int buflen = dna.length() / 3;
         QByteArray buf(buflen, '\0');
@@ -101,9 +101,9 @@ AlignInAminoFormTask::~AlignInAminoFormTask() {
 void AlignInAminoFormTask::prepare() {
     SAFE_POINT_EXT(maObj != nullptr, setError("Invalid MSA object detected"), );
     CHECK_EXT(maObj->getAlphabet()->isNucleic(), setError(tr("AlignInAminoFormTask: Input alphabet is not nucleic!")), );
-    CHECK_EXT(!maObj->getMultipleAlignment()->isEmpty(), setError(tr("AlignInAminoFormTask: Input alignment is empty!")), );
+    CHECK_EXT(!maObj->getAlignment()->isEmpty(), setError(tr("AlignInAminoFormTask: Input alignment is empty!")), );
 
-    MultipleSequenceAlignment msa = maObj->getMsaCopy();
+    MultipleAlignment msa = maObj->getCopy();
     const U2DbiRef& dbiRef = maObj->getEntityRef().dbiRef;
 
     // Create temporal document for the workflow run task
@@ -140,13 +140,13 @@ void AlignInAminoFormTask::run() {
 
     SAFE_POINT_EXT(clonedObj != nullptr, setError("NULL clonedObj in AlignInAminoFormTask::prepare!"), );
 
-    const MultipleSequenceAlignment newMsa = clonedObj->getMsa();
+    MultipleAlignment newMsa = clonedObj->getAlignment();
     const QVector<MultipleAlignmentRow> rows = newMsa->getRows();
 
     // Create gap map from amino-acid alignment
     for (const MultipleAlignmentRow& row : qAsConst(rows)) {
-        int rowIdx = MSAUtils::getRowIndexByName(maObj->getMsa(), row->getName());
-        const MultipleAlignmentRow& curRow = maObj->getMsa()->getRow(row->getName());
+        int rowIdx = MSAUtils::getRowIndexByName(maObj->getAlignment(), row->getName());
+        const MultipleAlignmentRow& curRow = maObj->getAlignment()->getRow(row->getName());
         SAFE_POINT_EXT(rowIdx >= 0, setError(QString("Can not find row %1 in original alignment.").arg(row->getName())), );
 
         QVector<U2MsaGap> gapsList;

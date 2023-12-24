@@ -56,7 +56,7 @@ namespace U2 {
 
 CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, const MultipleSequenceAlignmentObject* msaObject, CreatePhyTreeSettings& settings)
     : QDialog(parent),
-      msa(msaObject->getMsaCopy()),
+      msa(msaObject->getCopy()),
       settings(settings),
       settingsWidget(nullptr),
       ui(new Ui_CreatePhyTree),

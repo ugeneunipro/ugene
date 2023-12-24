@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 namespace U2 {
 
@@ -30,7 +30,7 @@ public:
     PairwiseAligner(const QByteArray& seq1, const QByteArray& seq2);
     virtual ~PairwiseAligner();
 
-    virtual MultipleSequenceAlignment align() = 0;
+    virtual MultipleAlignment align() = 0;
     virtual void setSeq1(const QByteArray& value);
     virtual void setSeq2(const QByteArray& value);
     virtual void setSeqs(const QByteArray& value1, const QByteArray& value2);

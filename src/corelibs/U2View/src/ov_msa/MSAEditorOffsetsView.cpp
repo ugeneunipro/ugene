@@ -201,7 +201,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
 
     QList<int> visibleRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
 
-    const MultipleAlignment alignment = editor->getMaObject()->getMultipleAlignment();
+    const MultipleAlignment alignment = editor->getMaObject()->getAlignment();
     U2OpStatusImpl os;
     const int refSeq = alignment->getRowIndexByRowId(editor->getReferenceRowId(), os);
 

@@ -21,6 +21,8 @@
 
 #include "./OutputFilesDashboardWidget.h"
 
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/WorkflowUtils.h>
 
 #include "./DomUtils.h"

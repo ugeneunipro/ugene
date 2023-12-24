@@ -24,7 +24,7 @@
 #include <QRandomGenerator>
 
 #include <U2Core/DNASequence.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Sequence.h>
 
@@ -125,7 +125,7 @@ public:
 
     static void evaluateBaseContent(const DNASequence& sequence, QMap<char, qreal>& result);
 
-    static void evaluateBaseContent(const MultipleSequenceAlignment& ma, QMap<char, qreal>& result);
+    static void evaluateBaseContent(const MultipleAlignment& ma, QMap<char, qreal>& result);
 };
 
 class EvaluateBaseContentTask : public Task {

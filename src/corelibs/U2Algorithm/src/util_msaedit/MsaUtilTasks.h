@@ -38,14 +38,14 @@ class U2ALGORITHM_EXPORT TranslateMsa2AminoTask : public Task {
 public:
     TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj);
     TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj, const QString& trId);
-    const MultipleSequenceAlignment& getTaskResult() {
+    const MultipleAlignment& getTaskResult() {
         return resultMA;
     }
     void run();
     ReportResult report();
 
 private:
-    MultipleSequenceAlignment resultMA;
+    MultipleAlignment resultMA;
     MultipleSequenceAlignmentObject* maObj;
     DNATranslation* translation;
 };

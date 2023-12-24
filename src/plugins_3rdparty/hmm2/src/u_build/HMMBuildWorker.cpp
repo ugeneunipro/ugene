@@ -24,7 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -279,7 +279,7 @@ Task* HMMBuildWorker::tick() {
             SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
             QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
             SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
-            const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
+            const MultipleAlignment msa = msaObj->getAlignment();
 
             Task* t = new HMMBuildTask(cfg, msa);
             connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));

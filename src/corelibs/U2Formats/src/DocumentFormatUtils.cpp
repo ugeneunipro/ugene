@@ -31,7 +31,7 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -125,8 +125,8 @@ QList<DNASequence> DocumentFormatUtils::toSequences(const GObject* obj) {
     auto maObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
     CHECK(maObj != nullptr, res);  // MultipleSequenceAlignmentObject is NULL
     const DNAAlphabet* al = maObj->getAlphabet();
-    qint64 alLen = maObj->getMsa()->getLength();
-    foreach (const MultipleAlignmentRow& row, maObj->getMsa()->getRows()) {
+    qint64 alLen = maObj->getAlignment()->getLength();
+    foreach (const MultipleAlignmentRow& row, maObj->getAlignment()->getRows()) {
         DNASequence seq;
         seq.seq = row->toByteArray(os, alLen);
         seq.setName(row->getName());

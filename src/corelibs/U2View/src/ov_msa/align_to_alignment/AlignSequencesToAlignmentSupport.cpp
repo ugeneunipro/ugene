@@ -118,7 +118,7 @@ void AlignSequencesToAlignmentAction::sl_updateState() {
         return;
     }
     bool canBeUsedWithEmptyObject = algorithmId == BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
-    if (msaObject->getMultipleAlignment()->isEmpty() && !canBeUsedWithEmptyObject) {
+    if (msaObject->getAlignment()->isEmpty() && !canBeUsedWithEmptyObject) {
         setEnabled(false);
         return;
     }

@@ -295,7 +295,7 @@ QList<Task*> BlastAlignToReferenceTask::onSubTaskFinished(Task* subTask) {
         CHECK_EXT(factory != nullptr, setError("MSADistanceAlgorithmFactory is NULL"), result);
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
 
-        MSADistanceAlgorithm* similarityTask = factory->createAlgorithm(pairwiseMsaObject->getMsa());
+        MSADistanceAlgorithm* similarityTask = factory->createAlgorithm(pairwiseMsaObject->getAlignment());
         CHECK_EXT(similarityTask != nullptr, setError(L10N::nullPointerError("MSADistanceAlgorithm")), result);
         similarityTask->setProperty(READ_ID_KEY, readKey);
         result << similarityTask;
@@ -358,7 +358,7 @@ MultipleSequenceAlignmentObject* BlastAlignToReferenceTask::createPairwiseAlignm
     const DNASequence& readSequence,
     const DNAAlphabet* alphabet,
     const AlignToReferenceResult& alignmentResult) {
-    MultipleSequenceAlignment pairwiseMsa("pairwise-msa", alphabet);
+    MultipleAlignment pairwiseMsa(MultipleAlignmentDataType::MSA, "pairwise-msa", alphabet);
     QByteArray croppedReferenceSequence = referenceSequence.seq.mid(alignmentResult.pairwiseAlignmentReferenceRegion.startPos,
                                                                     alignmentResult.pairwiseAlignmentReferenceRegion.length);
     pairwiseMsa->addRow("reference", croppedReferenceSequence);

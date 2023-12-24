@@ -25,7 +25,7 @@
 #include <QToolBar>
 #include <QWidget>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 

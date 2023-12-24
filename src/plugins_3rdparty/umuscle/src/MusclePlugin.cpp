@@ -175,7 +175,7 @@ void MuscleMSAEditorContext::sl_align() {
         }
     }
 
-    QObjectScopedPointer<MuscleAlignDialogController> dlg = new MuscleAlignDialogController(msaEditor->getWidget(), obj->getMultipleAlignment(), s);
+    QObjectScopedPointer<MuscleAlignDialogController> dlg = new MuscleAlignDialogController(msaEditor->getWidget(), obj->getAlignment(), s);
     int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
 

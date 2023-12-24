@@ -72,7 +72,7 @@ FormatsMsaClipboardTask::FormatsMsaClipboardTask(MultipleSequenceAlignmentObject
 
 void FormatsMsaClipboardTask::prepare() {
     if (formatId == BaseDocumentFormats::PLAIN_TEXT) {
-        MultipleSequenceAlignment msa = msaObj->getMsaCopy();
+        MultipleAlignment msa = msaObj->getCopy();
         msa->crop(rowIds, columnRange, stateInfo);
         CHECK_OP(stateInfo, )
 
@@ -171,7 +171,7 @@ void RichTextMsaClipboardTask::prepare() {
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
 
-    MultipleAlignment msa = maObject->getMultipleAlignment();
+    MultipleAlignment msa = maObject->getAlignment();
 
     U2OpStatusImpl os;
     qint64 refSeqRowId = maEditor->getReferenceRowId();

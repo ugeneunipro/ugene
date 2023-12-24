@@ -69,7 +69,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
     MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj != nullptr) {
         QVector<U2Region> unitedRows;
-        MultipleSequenceAlignment ma = msaObj->getMsaCopy();
+        MultipleAlignment ma = msaObj->getCopy();
         ma->sortRowsBySimilarity(unitedRows);
         if (unitedRows.size() < 2)
             groupStatisticsCheck->setEnabled(false);
@@ -117,7 +117,7 @@ void DistanceMatrixMSAProfileDialog::accept() {
     s.profileURL = msaObj->getDocument()->getURLString();
     s.usePercents = percentsRB->isChecked();
     s.algoId = algoCombo->currentData().toString();
-    s.ma = msaObj->getMsaCopy();
+    s.ma = msaObj->getCopy();
     s.excludeGaps = checkBox->isChecked();
     s.showGroupStatistic = groupStatisticsCheck->isChecked();
     s.ctx = ctx;

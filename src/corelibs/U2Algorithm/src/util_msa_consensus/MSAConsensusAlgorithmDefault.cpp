@@ -23,7 +23,7 @@
 
 #include <QVector>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/Timer.h>
 
 namespace U2 {

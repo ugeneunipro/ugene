@@ -47,8 +47,7 @@ AbstractAlignmentTaskSettings::AbstractAlignmentTaskSettings(const AbstractAlign
       customSettings(s.customSettings) {
 }
 
-AbstractAlignmentTaskSettings::~AbstractAlignmentTaskSettings() {
-}
+AbstractAlignmentTaskSettings::~AbstractAlignmentTaskSettings() = default;
 
 QVariant AbstractAlignmentTaskSettings::getCustomValue(const QString& optionName, const QVariant& defaultVal) const {
     return customSettings.value(optionName, defaultVal);
@@ -92,7 +91,6 @@ AbstractAlignmentTask::AbstractAlignmentTask(const QString& taskName, TaskFlags 
     : Task(taskName, flags) {
 }
 
-AbstractAlignmentTaskFactory::~AbstractAlignmentTaskFactory() {
-}
+AbstractAlignmentTaskFactory::~AbstractAlignmentTaskFactory() = default;
 
 }  // namespace U2

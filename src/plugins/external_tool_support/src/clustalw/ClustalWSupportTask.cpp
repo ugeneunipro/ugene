@@ -58,9 +58,9 @@ void ClustalWSupportTaskSettings::reset() {
     outOrderInput = true;
 }
 
-ClustalWSupportTask::ClustalWSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalWSupportTaskSettings& _settings)
+ClustalWSupportTask::ClustalWSupportTask(const MultipleAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalWSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run ClustalW alignment task", TaskFlags_NR_FOSCOE),
-      inputMsa(_inputMsa->getExplicitCopy()),
+      inputMsa(_inputMsa->getCopy()),
       objRef(_objRef),
       settings(_settings),
       lock(nullptr) {
@@ -222,11 +222,11 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(tmpDoc != nullptr, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), res);
         SAFE_POINT(tmpDoc->getObjects().length() == 1, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
-        // move MultipleSequenceAlignment from new alignment to old document
+        // move MultipleAlignment from new alignment to old document
         auto newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(tmpDoc->getObjects().first());
         SAFE_POINT(newMAligmentObject != nullptr, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
-        resultMA = newMAligmentObject->getMsaCopy();
+        resultMA = newMAligmentObject->getCopy();
         bool renamed = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT(renamed, "Failed to restore initial row names!", res);
 
@@ -256,7 +256,7 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
                         delete lock;
                         lock = nullptr;
                     } else {
-                        stateInfo.setError("MultipleSequenceAlignment object has been changed");
+                        stateInfo.setError("MultipleAlignment object has been changed");
                         return res;
                     }
 
@@ -365,7 +365,7 @@ QList<Task*> ClustalWWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        clustalWSupportTask = new ClustalWSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
+        clustalWSupportTask = new ClustalWSupportTask(mAObject->getAlignment(), GObjectReference(), settings);
         res.append(clustalWSupportTask);
     } else if (subTask == clustalWSupportTask) {
         // Set the result alignment to the alignment object of the current document

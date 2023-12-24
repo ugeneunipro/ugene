@@ -114,7 +114,7 @@ private:
 /************************************************************************/
 /* MultipleSequenceAlignmentWalker */
 /************************************************************************/
-MultipleSequenceAlignmentWalker::MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment& msa, char gapChar)
+MultipleSequenceAlignmentWalker::MultipleSequenceAlignmentWalker(const MultipleAlignment& msa, char gapChar)
     : msa(msa), currentOffset(0) {
     for (int i = 0; i < msa->getRowCount(); i++) {
         rowWalkerList << new RowWalker(msa->getRow(i), gapChar);

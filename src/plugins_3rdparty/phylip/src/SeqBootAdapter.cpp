@@ -18,14 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#include <float.h>
-#include <iostream>
 
-#include <QByteArray>
+#include "SeqBootAdapter.h"
+
 #include <QSharedData>
-#include <QTime>
 
-#include "U2Core/global.h"
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
@@ -33,20 +30,17 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include "SeqBootAdapter.h"
-
 namespace U2 {
 
 SeqBoot::SeqBoot() {
     seqLen = 0;
-    seqRowCount = 0;
 }
 
 SeqBoot::~SeqBoot() {
-    clearGenratedSequences();
+    clearGeneratedSequences();
 }
 
-void SeqBoot::clearGenratedSequences() {
+void SeqBoot::clearGeneratedSequences() {
     generatedSeq.clear();
 }
 
@@ -62,21 +56,20 @@ QString SeqBoot::getTmpFileTemplate() {
     }
 }
 
-void SeqBoot::initGenerSeq(int reps, int rowC, int seqLen) {
-    generatedSeq = QVector<MultipleSequenceAlignment>(reps);
+void SeqBoot::initGenerSeq(int reps, int seqLen) {
+    generatedSeq.clear();
     this->seqLen = seqLen;
-    seqRowCount = rowC;
 
     for (int i = 0; i < reps; i++) {
-        generatedSeq[i] = MultipleSequenceAlignment(QString("bootstrap %1").arg(reps), malignment->getAlphabet());
+        generatedSeq << MultipleAlignment(MultipleAlignmentDataType::MSA, QString("bootstrap %1").arg(reps), malignment->getAlphabet());
     }
 }
 
-const MultipleSequenceAlignment& SeqBoot::getMSA(int pos) const {
+const MultipleAlignment& SeqBoot::getMSA(int pos) const {
     return generatedSeq[pos];
 }
 
-void SeqBoot::generateSequencesFromAlignment(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings) {
+void SeqBoot::generateSequencesFromAlignment(const MultipleAlignment& ma, const CreatePhyTreeSettings& settings) {
     if (!settings.bootstrap) {
         return;
     }
@@ -91,7 +84,7 @@ void SeqBoot::generateSequencesFromAlignment(const MultipleSequenceAlignment& ma
     spp = ma->getRowCount();
     sites = ma->getLength();
 
-    initGenerSeq(replicates, spp, sites);
+    initGenerSeq(replicates, sites);
     loci = sites;
     maxalleles = 1;
 

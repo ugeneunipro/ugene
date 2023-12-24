@@ -22,7 +22,7 @@
 #pragma once
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include <U2View/CreatePhyTreeWidget.h>
 
@@ -33,7 +33,7 @@ namespace U2 {
 class MrBayesWidget : public CreatePhyTreeWidget, private Ui_MrBayesDialog {
     Q_OBJECT
 public:
-    MrBayesWidget(const MultipleSequenceAlignment& ma, QWidget* parent);
+    MrBayesWidget(const MultipleAlignment& ma, QWidget* parent);
 
     void fillSettings(CreatePhyTreeSettings& settings);
     void storeSettings();

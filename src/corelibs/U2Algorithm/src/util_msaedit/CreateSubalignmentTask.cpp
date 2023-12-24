@@ -76,7 +76,7 @@ void CreateSubalignmentTask::prepare() {
         CHECK_OP(stateInfo, );
 
         // TODO: do not copy whole object. Copy only cfg.rowIds.
-        MultipleSequenceAlignment msa = origMAObj->getMsaCopy();
+        MultipleAlignment msa = origMAObj->getCopy();
         resultMAObj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, );
         resultMAObj->setGHints(new GHintsDefaultImpl(origMAObj->getGHintsMap()));

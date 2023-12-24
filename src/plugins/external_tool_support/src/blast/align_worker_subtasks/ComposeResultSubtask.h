@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-class MultipleChromatogramAlignment;
+class MultipleAlignment;
 class MultipleChromatogramAlignmentObject;
 class MultipleAlignmentRow;
 
@@ -59,7 +59,7 @@ private:
 
     static QVector<U2MsaGap> getShiftedGaps(const QVector<U2MsaGap>& gaps);
     void insertShiftedGapsIntoReference();
-    void insertShiftedGapsIntoRead(MultipleChromatogramAlignment& alignment,
+    void insertShiftedGapsIntoRead(MultipleAlignment& alignment,
                                    int mcaRowIndex,
                                    const AlignToReferenceResult& alignResult,
                                    const QVector<U2MsaGap>& mergedReferenceGaps);

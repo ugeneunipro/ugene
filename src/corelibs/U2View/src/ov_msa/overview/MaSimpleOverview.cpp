@@ -127,7 +127,7 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
     MultipleAlignmentObject* mAlignmentObj = editor->getMaObject();
     SAFE_POINT(mAlignmentObj != nullptr, "Incorrect multiple alignment object!", );
 
-    const MultipleAlignment& ma = mAlignmentObj->getMultipleAlignment();
+    const MultipleAlignment& ma = mAlignmentObj->getAlignment();
     U2OpStatusImpl os;
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
         for (int pos = 0; pos < editor->getAlignmentLen(); pos++) {

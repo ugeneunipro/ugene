@@ -34,7 +34,6 @@ namespace U2 {
 class MultipleAlignment;
 class MultipleAlignmentData;
 class MultipleAlignmentRowData;
-class U2OpStatus;
 
 enum class U2CORE_EXPORT MultipleAlignmentDataType {
     MSA,
@@ -42,6 +41,7 @@ enum class U2CORE_EXPORT MultipleAlignmentDataType {
 };
 
 class U2CORE_EXPORT MultipleAlignmentRow {
+    friend class MultipleAlignment;
     friend class MultipleAlignmentData;
     friend class MultipleAlignmentRowData;
 
@@ -113,6 +113,10 @@ Derived MultipleAlignmentRow::dynamicCast(U2OpStatus& os) const {
  * it exactly equals to the row (offset always equals to zero).
  */
 class U2CORE_EXPORT MultipleAlignmentRowData {
+    friend class MultipleAlignment;
+    friend class MultipleAlignmentData;
+    friend class MultipleAlignmentRow;
+
 public:
     MultipleAlignmentRowData(MultipleAlignmentData* maData = nullptr);
     MultipleAlignmentRowData(const MultipleAlignmentDataType& type);
@@ -323,6 +327,8 @@ public:
     MultipleAlignmentRow getExplicitCopy() const;
 
 protected:
+    void setParentAlignment(MultipleAlignmentData* alignment);
+
     /** Invalidates gapped sequence cache. */
     void invalidateGappedCache() const;
 
@@ -346,13 +352,6 @@ protected:
 
     /** Gets char from the gapped sequence cache. Updates the cache if needed. */
     char getCharFromCache(int gappedPosition) const;
-
-    // TODO: review if there is a better way to reset parent and remove the method below.
-    friend class MultipleChromatogramAlignment;
-    friend class MultipleChromatogramAlignmentData;
-    friend class MultipleSequenceAlignment;
-    friend class MultipleSequenceAlignmentData;
-    void setParentAlignment(MultipleAlignmentData* alignment);
 
 public:
     const MultipleAlignmentDataType type;

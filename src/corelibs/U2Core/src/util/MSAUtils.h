@@ -35,9 +35,9 @@ public:
 
     static int getPatternSimilarityIgnoreGaps(const MultipleAlignmentRow& row, int startPos, const QByteArray& pattern, int& alternateLen);
 
-    static MultipleSequenceAlignment seq2ma(const QList<GObject*>& dnas, U2OpStatus& os, bool useGenbankHeader = false, bool recheckAlphabetFromDataIfRaw = false);
+    static MultipleAlignment seq2ma(const QList<GObject*>& dnas, U2OpStatus& os, bool useGenbankHeader = false, bool recheckAlphabetFromDataIfRaw = false);
 
-    static MultipleSequenceAlignment seq2ma(const QList<DNASequence>& dnas, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw = false);
+    static MultipleAlignment seq2ma(const QList<DNASequence>& dnas, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw = false);
 
     /**
      * Extracts list of sequences from MA.
@@ -45,7 +45,7 @@ public:
      * The order of the exported rows matches the original order in the MSA.
      * If column region is not empty - the sequences are cropped first and gaps trimmed next.
      */
-    static QList<DNASequence> convertMsaToSequenceList(const MultipleSequenceAlignment& msa,
+    static QList<DNASequence> convertMsaToSequenceList(const MultipleAlignment& msa,
                                                        U2OpStatus& os,
                                                        bool trimGaps = false,
                                                        const QSet<qint64>& rowIdFilter = {},
@@ -58,10 +58,10 @@ public:
     static const DNAAlphabet* deriveCommonAlphabet(const QList<const DNAAlphabet*>& alphabetList);
 
     // Returns row index or -1 if name is not present
-    static int getRowIndexByName(const MultipleSequenceAlignment& ma, const QString& name);
+    static int getRowIndexByName(const MultipleAlignment& ma, const QString& name);
 
     // checks that alignment is not empty and all packed sequence parts has equal length
-    static bool checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2OpStatus& ti);
+    static bool checkPackedModelSymmetry(const MultipleAlignment& ali, U2OpStatus& ti);
 
     static MultipleSequenceAlignmentObject* seqDocs2msaObj(QList<Document*> doc, const QVariantMap& hints, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw = false);
     static MultipleSequenceAlignmentObject* seqObjs2msaObj(const QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os, bool shallowCopy = false, bool recheckAlphabetFromDataIfRaw = false);
@@ -72,8 +72,8 @@ public:
      *
      * Indexes of non-matched rows are added to the removedRowIndexes/addedRowIndexes list.
      */
-    static void assignOriginalDataIds(const MultipleSequenceAlignment& origMsa,
-                                      MultipleSequenceAlignment& newMsa,
+    static void assignOriginalDataIds(const MultipleAlignment& origMsa,
+                                      MultipleAlignment& newMsa,
                                       QList<int>& removedRowIndexes,
                                       QList<int>& addedRowIndexes);
 
@@ -81,8 +81,8 @@ public:
      * Same as 'assignOriginalDataIds' above but fails if any row is failed to map.
      * The method guarantees that origMsa and newMsa have equal count of rows.
      */
-    static void assignOriginalDataIds(const MultipleSequenceAlignment& origMsa,
-                                      MultipleSequenceAlignment& newMsa,
+    static void assignOriginalDataIds(const MultipleAlignment& origMsa,
+                                      MultipleAlignment& newMsa,
                                       U2OpStatus& os);
 
     static void copyRowFromSequence(MultipleSequenceAlignmentObject* msaObj, U2SequenceObject* seqObj, U2OpStatus& os);
@@ -93,7 +93,7 @@ public:
      * Creates a copy of the 'msa' and aAssigns index based names to each result MSA row: 0, 1, 2, 3.
      * Appends 'prefix' to the result index name if provided.
      */
-    static MultipleSequenceAlignment createCopyWithIndexedRowNames(const MultipleSequenceAlignment& msa, const QString& prefix = "");
+    static MultipleAlignment createCopyWithIndexedRowNames(const MultipleAlignment& msa, const QString& prefix = "");
 
     /** Returns unique MSA row name. Uses rowName as is if it can't be found in the currentlyUsedNamesSet or rolls the suffix of rowName. */
     static QString rollMsaRowName(const QString& rowName, const QSet<QString>& usedRowNamesSet, const QString& suffixSeparator = "_");
@@ -109,7 +109,7 @@ public:
      *
      *  TODO: this method is deprecated and all usages of it will be removed. Use 'restoreOriginalRowProperties' instead.
      **/
-    static bool restoreOriginalRowNamesFromIndexedNames(MultipleSequenceAlignment& msa, const QStringList& names, const QString& prefix = "");
+    static bool restoreOriginalRowNamesFromIndexedNames(MultipleAlignment& msa, const QStringList& names, const QString& prefix = "");
 
     /**
      * Restores original rowId, sequenceId and rowName from using the by-name mapping in resultMa.
@@ -118,12 +118,12 @@ public:
      * If the prefix is not empty and the result sequence does not start with the prefix - do not update result row properties.
      * The method returns 'true' if all rows with a non-empty prefix were found and updated.
      */
-    static bool restoreOriginalRowProperties(MultipleSequenceAlignment& resultMa, const MultipleSequenceAlignment& originalMa, const QString& prefix = "");
+    static bool restoreOriginalRowProperties(MultipleAlignment& resultMa, const MultipleAlignment& originalMa, const QString& prefix = "");
     /**
      * Returns list of columns with desired quantity of gaps.
      */
     static QList<U2Region> getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, const QVector<MultipleAlignmentRow>& rows, int alignmentLength, int requiredGapsCount = -1);
-    static void removeColumnsWithGaps(MultipleSequenceAlignment& msa, int requiredGapsCount = -1);
+    static void removeColumnsWithGaps(MultipleAlignment& msa, int requiredGapsCount = -1);
 
     /**
      * Adds all MSA rows from the list into database.

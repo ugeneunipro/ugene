@@ -180,7 +180,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
         return;
     }
 
-    MAFFTSupportTask* mAFFTSupportTask = new MAFFTSupportTask(alignmentObject->getMultipleAlignment(), GObjectReference(alignmentObject), settings);
+    MAFFTSupportTask* mAFFTSupportTask = new MAFFTSupportTask(alignmentObject->getAlignment(), GObjectReference(alignmentObject), settings);
     connect(alignmentObject, SIGNAL(destroyed()), mAFFTSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(mAFFTSupportTask);
 

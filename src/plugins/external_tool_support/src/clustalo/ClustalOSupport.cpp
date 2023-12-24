@@ -153,7 +153,7 @@ void ClustalOSupportContext::sl_align() {
     }
 
     ClustalOSupportTaskSettings settings;
-    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getMultipleAlignment(),
+    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getAlignment(),
                                                                                                     settings,
                                                                                                     AppContext::getMainWindow()->getQMainWindow());
     clustalORunDialog->exec();
@@ -163,7 +163,7 @@ void ClustalOSupportContext::sl_align() {
         return;
     }
 
-    auto clustalOSupportTask = new ClustalOSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
+    auto clustalOSupportTask = new ClustalOSupportTask(obj->getAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 
@@ -190,7 +190,7 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     CHECK(!lod.url.isEmpty(), );
 
     ClustalOSupportTaskSettings settings;
-    auto clustalOSupportTask = new ClustalOSupportTask(msaObject->getMultipleAlignment(), GObjectReference(msaObject), lod.url, settings);
+    auto clustalOSupportTask = new ClustalOSupportTask(msaObject->getAlignment(), GObjectReference(msaObject), lod.url, settings);
     connect(msaObject, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 

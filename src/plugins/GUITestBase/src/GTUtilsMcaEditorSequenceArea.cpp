@@ -165,7 +165,7 @@ QStringList GTUtilsMcaEditorSequenceArea::getNameList() {
     auto editor = mw->findChild<McaEditor*>();
     CHECK_SET_ERR_RESULT(editor != nullptr, "MsaEditor not found", QStringList());
 
-    QStringList result = editor->getMaObject()->getMultipleAlignment()->getRowNames();
+    QStringList result = editor->getMaObject()->getAlignment()->getRowNames();
 
     return result;
 }

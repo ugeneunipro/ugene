@@ -57,7 +57,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/msa/MultipleAlignmentInfo.h \
            src/datatype/msa/MultipleAlignmentRow.h \
            src/datatype/msa/MultipleAlignmentRowInfo.h \
-           src/datatype/msa/MultipleSequenceAlignment.h \
            src/datatype/primers/Primer.h \
            src/datatype/primers/PrimerDimersFinder.h \
            src/datatype/primers/PrimerStatistics.h \
@@ -311,8 +310,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/msa/MultipleAlignmentInfo.cpp \
            src/datatype/msa/MultipleAlignmentRow.cpp \
            src/datatype/msa/MultipleAlignmentRowInfo.cpp \
-           src/datatype/msa/MultipleChromatogramAlignment.cpp \
-           src/datatype/msa/MultipleSequenceAlignment.cpp \
            src/datatype/primers/Primer.cpp \
            src/datatype/primers/PrimerDimersFinder.cpp \
            src/datatype/primers/PrimerStatistics.cpp \

@@ -52,7 +52,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
-SaveAlignmentTask::SaveAlignmentTask(const MultipleSequenceAlignment& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
+SaveAlignmentTask::SaveAlignmentTask(const MultipleAlignment& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
     : Task("", TaskFlag_None),
       ma(_ma->getCopy()),
       fileName(_fileName),
@@ -92,14 +92,14 @@ const QString& SaveAlignmentTask::getUrl() const {
     return fileName;
 }
 
-const MultipleSequenceAlignment& SaveAlignmentTask::getMAlignment() const {
+const MultipleAlignment& SaveAlignmentTask::getMAlignment() const {
     return ma;
 }
 
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MultipleSequenceAlignment& msa, const QString& _url, bool trimAli, const DocumentFormatId& _documentFormatId)
+SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MultipleAlignment& msa, const QString& _url, bool trimAli, const DocumentFormatId& _documentFormatId)
     : Task(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
       url(_url), documentFormatId(_documentFormatId) {
     GCOUNTER(cvar, "ExportMSA2SequencesTask");

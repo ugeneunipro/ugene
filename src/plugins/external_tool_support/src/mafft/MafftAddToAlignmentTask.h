@@ -27,7 +27,7 @@
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include "MAFFTSupportTask.h"
 #include "MafftAddToAlignmentTask.h"
@@ -41,18 +41,18 @@ class MafftAddToAlignmentTask : public AbstractAlignmentTask {
 public:
     MafftAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings& settings);
 
-    void prepare();
-    void run();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    void run() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     bool useMemsaveOption() const;
 
     AlignSequencesToAlignmentTaskSettings settings;
 
-    MultipleSequenceAlignment inputMsa;
+    MultipleAlignment inputMsa = {MultipleAlignmentDataType::MSA};
 
     QSharedPointer<Document> tmpDoc;
     QString url;

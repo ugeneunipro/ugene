@@ -194,7 +194,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     QRect selectionRect = editor->getSelection().toRect();
     CHECK(selectionRect.width() == 1 && selectionRect.height() == 1, );
 
-    const MultipleChromatogramAlignment mca = getEditor()->getMaObject()->getMca();
+    const MultipleAlignment mca = getEditor()->getMaObject()->getAlignment();
     if (dy == 0 && mca->isLeadingOrTrailingGap(selectionRect.y(), selectionRect.x() + dx)) {
         return;
     }
@@ -331,7 +331,7 @@ void McaEditorSequenceArea::sl_updateActions() {
     bool isEditing = maMode != ViewMode;
     bool isSingleSymbolSelected = selectionRect.width() == 1 && selectionRect.height() == 1;
     bool hasGapBeforeSelection = isSingleSymbolSelected && !readOnly &&
-                                 maObj->getMultipleAlignment()->isGap(selectionRect.y(), selectionRect.x() - 1);
+                                 maObj->getAlignment()->isGap(selectionRect.y(), selectionRect.x() - 1);
 
     ui->delSelectionAction->setEnabled(canEditSelectedArea);
     updateTrimActions(canEditSelectedArea && isSingleSymbolSelected);

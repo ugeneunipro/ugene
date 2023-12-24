@@ -46,7 +46,7 @@ MultipleAlignmentMessageTranslator::MultipleAlignmentMessageTranslator(const QVa
     QScopedPointer<MultipleSequenceAlignmentObject> malignmentObject(StorageUtils::getMsaObject(
         context->getDataStorage(), malignmentId));
     SAFE_POINT(!malignmentObject.isNull(), "Invalid MSA object detected!", );
-    malignment = malignmentObject->getMsaCopy();
+    malignment = malignmentObject->getCopy();
 }
 
 QString MultipleAlignmentMessageTranslator::getTranslation() const {

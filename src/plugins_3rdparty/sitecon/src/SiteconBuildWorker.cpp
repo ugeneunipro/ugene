@@ -157,7 +157,7 @@ Task* SiteconBuildWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
-        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
+        const MultipleAlignment msa = msaObj->getAlignment();
 
         Task* t = new SiteconBuildTask(cfg, msa, url);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));

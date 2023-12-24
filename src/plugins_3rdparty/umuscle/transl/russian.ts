@@ -517,8 +517,8 @@
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="467"/>
-        <source>MultipleSequenceAlignment object has been changed</source>
-        <translation>MultipleSequenceAlignment object has been changed</translation>
+        <source>MultipleAlignment object has been changed</source>
+        <translation>MultipleAlignment object has been changed</translation>
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="504"/>
@@ -632,8 +632,8 @@
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="104"/>
-        <source>Stopping MUSCLE task, because of error in MultipleSequenceAlignment::mid function</source>
-        <translation>Stopping MUSCLE task, because of error in MultipleSequenceAlignment::mid function</translation>
+        <source>Stopping MUSCLE task, because of error in MultipleAlignment::mid function</source>
+        <translation>Stopping MUSCLE task, because of error in MultipleAlignment::mid function</translation>
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="123"/>

@@ -50,7 +50,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
-ExportAlignmentTask::ExportAlignmentTask(const MultipleSequenceAlignment& _ma, const QString& _url, const DocumentFormatId& _documentFormatId)
+ExportAlignmentTask::ExportAlignmentTask(const MultipleAlignment& _ma, const QString& _url, const DocumentFormatId& _documentFormatId)
     : DocumentProviderTask(tr("Export alignment to %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), url(_url), documentFormatId(_documentFormatId) {
     GCOUNTER(cvar, "ExportAlignmentTask");
     documentDescription = QFileInfo(url).fileName();
@@ -82,7 +82,7 @@ void ExportAlignmentTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment& _ma,
+ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleAlignment& _ma,
                                                  const QString& _url,
                                                  bool _trimLeadingAndTrailingGaps,
                                                  const DocumentFormatId& _documentFormatId)
@@ -126,7 +126,7 @@ void ExportMSA2SequencesTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export nucleic alignment 2 amino alignment
 
-ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment& msa,
+ExportMSA2MSATask::ExportMSA2MSATask(const MultipleAlignment& msa,
                                      const QList<qint64>& rowIds,
                                      const U2Region& columnRegion,
                                      const QString& _url,
@@ -184,7 +184,7 @@ void ExportMSA2MSATask::run() {
             resultSequenceList << sequence;
         }
     }
-    MultipleSequenceAlignment aminoMa = MSAUtils::seq2ma(resultSequenceList, stateInfo);
+    MultipleAlignment aminoMa = MSAUtils::seq2ma(resultSequenceList, stateInfo);
     CHECK_OP(stateInfo, );
 
     MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), aminoMa, stateInfo);

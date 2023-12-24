@@ -31,10 +31,10 @@ class LoadDocumentTask;
 /** Set of data required by FastTreeTask. */
 struct FastTreeTaskContext {
     /** Creates a new context for FastTreeTask. */
-    FastTreeTaskContext(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings);
+    FastTreeTaskContext(const MultipleAlignment& msa, const CreatePhyTreeSettings& settings);
 
     /** Alignment to process. Provided during object instantiation. */
-    MultipleSequenceAlignment msa;
+    MultipleAlignment msa;
 
     /** Extra setting for the tool. Provided during object instantiation. */
     const CreatePhyTreeSettings settings;
@@ -52,7 +52,7 @@ struct FastTreeTaskContext {
 class FastTreeTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
-    FastTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings);
+    FastTreeTask(const MultipleAlignment& msa, const CreatePhyTreeSettings& settings);
 
     Task::ReportResult report() override;
 

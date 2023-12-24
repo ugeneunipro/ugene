@@ -98,7 +98,7 @@ struct MsfRow {
 
 void MSFFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os) {
     QString objName = reader.getURL().baseFileName();
-    MultipleSequenceAlignment al(objName);
+    MultipleAlignment al(MultipleAlignmentDataType::MSA, objName);
     int lineNumber = 0;  // Current line number from the object start. Used for error reporing.
 
     // Skip comments.
@@ -275,7 +275,7 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
     auto obj = dynamic_cast<MultipleSequenceAlignmentObject*>(objectList.first());
     SAFE_POINT(obj != nullptr, "MSF entry storing: the object is not an alignment", );
 
-    const MultipleSequenceAlignment& msa = obj->getMultipleAlignment();
+    const MultipleAlignment& msa = obj->getAlignment();
 
     // Make row names unique
     QMap<qint64, QString> uniqueRowNames;

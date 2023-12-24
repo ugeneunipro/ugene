@@ -53,7 +53,7 @@ static bool maContainsPattern(const MultipleAlignmentObject* maObject, const QSt
     SAFE_POINT_NN(maObject, false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
-    const MultipleAlignmentData* mData = maObject->getMultipleAlignment().data();
+    const MultipleAlignmentData* mData = maObject->getAlignment().data();
     const QByteArray searchStr = pattern.toUpper().toLatin1();
 
     for (int i = 0, n = mData->getRowCount(); i < n; ++i) {

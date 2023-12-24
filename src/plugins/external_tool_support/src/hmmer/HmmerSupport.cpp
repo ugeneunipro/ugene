@@ -84,7 +84,7 @@ void HmmerSupport::sl_buildProfile() {
         return;
     }
 
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma(MultipleAlignmentDataType::MSA);
     MWMDIWindow* activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (activeWindow != nullptr) {
         auto objectViewWindow = qobject_cast<GObjectViewWindow*>(activeWindow);
@@ -93,7 +93,7 @@ void HmmerSupport::sl_buildProfile() {
             if (msaEditor != nullptr) {
                 MultipleSequenceAlignmentObject* maObj = msaEditor->getMaObject();
                 if (maObj != nullptr) {
-                    ma = maObj->getMultipleAlignment();
+                    ma = maObj->getAlignment();
                 }
             }
         }
@@ -308,7 +308,7 @@ void HmmerMsaEditorContext::sl_build() {
 
     MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
     if (obj != nullptr) {
-        QObjectScopedPointer<HmmerBuildDialog> buildDlg = new HmmerBuildDialog(obj->getMultipleAlignment());
+        QObjectScopedPointer<HmmerBuildDialog> buildDlg = new HmmerBuildDialog(obj->getAlignment());
         buildDlg->exec();
         CHECK(!buildDlg.isNull(), );
     }

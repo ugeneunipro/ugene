@@ -25,7 +25,7 @@
 
 #include <U2Core/AppResources.h>
 #include <U2Core/BackgroundTaskRunner.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/global.h>
 
 #include <U2View/MSAEditorConsensusCache.h>

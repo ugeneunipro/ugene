@@ -128,7 +128,7 @@ void MSAEditorTreeManager::sl_refreshTree(MSAEditorTreeViewer* treeViewer) {
 }
 
 void MSAEditorTreeManager::createPhyTreeGeneratorTask(const CreatePhyTreeSettings& buildSettings, bool refreshExistingTree, MSAEditorTreeViewer* treeViewer) {
-    const MultipleSequenceAlignment msa = msaObject->getMultipleAlignment();
+    const MultipleAlignment msa = msaObject->getAlignment();
     settings = buildSettings;
 
     auto treeGeneratorTask = new PhyTreeGeneratorLauncherTask(msa, settings);
@@ -157,7 +157,7 @@ void MSAEditorTreeManager::sl_treeRebuildingFinished(Task* _treeBuildTask) {
 }
 
 bool MSAEditorTreeManager::canRefreshTree(MSAEditorTreeViewer* treeViewer) {
-    bool canRefresh = (treeViewer->getParentAlignmentName() == msaObject->getMultipleAlignment()->getName());
+    bool canRefresh = (treeViewer->getParentAlignmentName() == msaObject->getAlignment()->getName());
     return canRefresh && !activeRefreshTasks.contains(treeViewer);
 }
 
@@ -285,7 +285,7 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task* task) {
 
     if (!addExistingTree) {
         treeViewer->setCreatePhyTreeSettings(settings);
-        treeViewer->setParentAlignmentName(msaObject->getMultipleAlignment()->getName());
+        treeViewer->setParentAlignmentName(msaObject->getAlignment()->getName());
     }
 
     if (settings.syncAlignmentWithTree) {

@@ -580,7 +580,7 @@ Task::ReportResult GTest_DNAMulSequencePart::report() {
     }
     bool ok_flag = false;
     U2OpStatus2Log os;
-    const MultipleSequenceAlignment ma = myMSequence->getMultipleAlignment();
+    const MultipleAlignment ma = myMSequence->getAlignment();
     foreach (const MultipleAlignmentRow& myItem, ma->getRows()) {
         if (myItem->getName() == seqName) {
             ok_flag = true;
@@ -622,7 +622,7 @@ Task::ReportResult GTest_DNAMulSequenceName::report() {
 
     MultipleSequenceAlignmentObject* myMSequence = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     bool ok_flag = false;
-    const MultipleSequenceAlignment ma = myMSequence->getMultipleAlignment();
+    const MultipleAlignment ma = myMSequence->getAlignment();
     foreach (const MultipleAlignmentRow& myItem, ma->getRows()) {
         if (myItem->getName() == seqName) {
             ok_flag = true;
@@ -664,14 +664,14 @@ Task::ReportResult GTest_DNAMulSequenceQuality::report() {
         return ReportResult_Finished;
     }
 
-    MultipleSequenceAlignmentObject* myMSequence = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto myMSequence = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (myMSequence == nullptr) {
         stateInfo.setError(QString("Can not cast to alignment from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
 
     bool ok_flag = false;
-    foreach (const MultipleAlignmentRow& myItem, myMSequence->getMsa()->getRows()) {
+    foreach (const MultipleAlignmentRow& myItem, myMSequence->getAlignment()->getRows()) {
         if (myItem->getName() == seqName) {
             ok_flag = true;
             // QByteArray qualityCodes = myItem.getCoreQuality().qualCodes;
@@ -711,13 +711,13 @@ void GTest_DNASequencInMulSequence::init(XMLTestFormat*, const QDomElement& el) 
 }
 
 Task::ReportResult GTest_DNASequencInMulSequence::report() {
-    GObject* obj = getContext<GObject>(this, objContextName);
+    auto obj = getContext<GObject>(this, objContextName);
     if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
-    MultipleSequenceAlignmentObject* myMSequence = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto myMSequence = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (myMSequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -781,12 +781,12 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
             }
         }
         if (myMSequence->getLength() != myMSequence2->getLength()) {
-            stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%2").arg(myMSequence->getLength()).arg(myMSequence2->getMultipleAlignment()->getLength()));
+            stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%2").arg(myMSequence->getLength()).arg(myMSequence2->getAlignment()->getLength()));
             return ReportResult_Finished;
         }
 
-        MultipleSequenceAlignment one = myMSequence->getMultipleAlignment();
-        MultipleSequenceAlignment two = myMSequence2->getMultipleAlignment();
+        MultipleAlignment one = myMSequence->getAlignment();
+        MultipleAlignment two = myMSequence2->getAlignment();
         const QVector<MultipleAlignmentRow>& alignedSeqs1 = one->getRows();
         const QVector<MultipleAlignmentRow>& alignedSeqs2 = two->getRows();
 
@@ -871,11 +871,11 @@ Task::ReportResult GTest_DNAcompareMulSequencesNamesInTwoObjects::report() {
         }
         ////////////////////////////////////////
         if (myMSequence->getLength() != myMSequence2->getLength()) {
-            stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%").arg(myMSequence->getLength(), myMSequence2->getMultipleAlignment()->getLength()));
+            stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%").arg(myMSequence->getLength(), myMSequence2->getAlignment()->getLength()));
             return ReportResult_Finished;
         }
-        const MultipleSequenceAlignment one = myMSequence->getMultipleAlignment();
-        const MultipleSequenceAlignment two = myMSequence2->getMultipleAlignment();
+        const MultipleAlignment one = myMSequence->getAlignment();
+        const MultipleAlignment two = myMSequence2->getAlignment();
         const QVector<MultipleAlignmentRow>& myQList1 = one->getRows();
         const QVector<MultipleAlignmentRow>& myQList2 = two->getRows();
 

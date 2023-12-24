@@ -529,7 +529,7 @@
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="467"/>
-        <source>MultipleSequenceAlignment object has been changed</source>
+        <source>MultipleAlignment object has been changed</source>
         <translation>Çoklu Sıra Hizalama nesnesi değiştirildi</translation>
     </message>
     <message>
@@ -661,7 +661,7 @@
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="104"/>
-        <source>Stopping MUSCLE task, because of error in MultipleSequenceAlignment::mid function</source>
+        <source>Stopping MUSCLE task, because of error in MultipleAlignment::mid function</source>
         <translation>Çoklu Sıra Hizalamasındaki hata nedeniyle KAS görevini durdurma::orta işlev</translation>
     </message>
     <message>

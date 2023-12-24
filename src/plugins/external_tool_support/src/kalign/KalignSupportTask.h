@@ -24,7 +24,7 @@
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GObjectReference.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Task.h>
 
@@ -66,7 +66,7 @@ class Kalign3SupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(Kalign3SupportTask)
 public:
-    Kalign3SupportTask(const MultipleSequenceAlignment& inputMsa, const GObjectReference& objRef, const Kalign3Settings& settings);
+    Kalign3SupportTask(const MultipleAlignment& inputMsa, const GObjectReference& objRef, const Kalign3Settings& settings);
     ~Kalign3SupportTask() override;
 
     void prepare() override;
@@ -76,10 +76,10 @@ public:
 
     static bool isAlphabetSupported(const QString& alphabetId);
 
-    MultipleSequenceAlignment resultMA;
+    MultipleAlignment resultMA = {MultipleAlignmentDataType::MSA};
 
 private:
-    MultipleSequenceAlignment inputMsa;
+    MultipleAlignment inputMsa = {MultipleAlignmentDataType::MSA};
     GObjectReference objRef;
     QPointer<Document> tmpDoc;
     QString url;

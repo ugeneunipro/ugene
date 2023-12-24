@@ -57,7 +57,7 @@ namespace U2 {
 /** Use the same random seed for all MrBayes runs to have reproducible results by default. */
 static constexpr int DEFAULT_RANDOM_SEED = 5;
 
-MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment& ma, QWidget* parent)
+MrBayesWidget::MrBayesWidget(const MultipleAlignment& ma, QWidget* parent)
     : CreatePhyTreeWidget(parent) {
     setupUi(this);
     DNAAlphabetType alphabetType = ma->getAlphabet()->getType();

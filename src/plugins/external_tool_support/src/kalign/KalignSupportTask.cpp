@@ -82,9 +82,9 @@ Kalign3Settings Kalign3Settings::getDefaultSettings(const DNAAlphabet* alphabet)
     return {};
 }
 
-Kalign3SupportTask::Kalign3SupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const Kalign3Settings& _settings)
+Kalign3SupportTask::Kalign3SupportTask(const MultipleAlignment& _inputMsa, const GObjectReference& _objRef, const Kalign3Settings& _settings)
     : ExternalToolSupportTask("Kalign external tool task", TaskFlags_NR_FOSCOE),
-      inputMsa(_inputMsa->getExplicitCopy()),
+      inputMsa(_inputMsa->getCopy()),
       objRef(_objRef),
       settings(_settings) {
     GCOUNTER(cvar, "ExternalTool_Kalign");
@@ -257,7 +257,7 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
         auto newMsaObject = qobject_cast<MultipleSequenceAlignmentObject*>(newDocumentObjects.first());
         SAFE_POINT(newMsaObject != nullptr, "Failed to cast object from temporary document to alignment!", res);
 
-        resultMA = newMsaObject->getMsaCopy();
+        resultMA = newMsaObject->getCopy();
         bool renamed = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT(renamed, "Failed to restore initial row names!", res);
 
@@ -289,7 +289,7 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
                 delete lock;
                 lock = nullptr;
             } else {
-                stateInfo.setError("MultipleSequenceAlignment object has been changed");
+                stateInfo.setError("MultipleAlignment object has been changed");
                 return res;
             }
             Document* targetDocument = targetMsaObject->getDocument();
@@ -393,7 +393,7 @@ QList<Task*> Kalign3WithExternalFileSupportTask::onSubTaskFinished(Task* subTask
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        kalign3SupportTask = new Kalign3SupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
+        kalign3SupportTask = new Kalign3SupportTask(mAObject->getAlignment(), GObjectReference(), settings);
         res.append(kalign3SupportTask);
     } else if (subTask == kalign3SupportTask) {
         // Set the result alignment to the alignment object of the current document

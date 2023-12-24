@@ -24,7 +24,7 @@
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GObjectReference.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Task.h>
@@ -67,7 +67,7 @@ class ClustalOSupportTask : public ExternalToolSupportTask {
     Q_DISABLE_COPY(ClustalOSupportTask)
 public:
     /** Initializes ClustalO task that calls ClustalO to align 'msa' and saves the result to 'objRef'. */
-    ClustalOSupportTask(const MultipleSequenceAlignment& inputMsa,
+    ClustalOSupportTask(const MultipleAlignment& inputMsa,
                         const GObjectReference& objRef,
                         const ClustalOSupportTaskSettings& settings);
 
@@ -75,7 +75,7 @@ public:
      * Initializes ClustalO task that calls ClustalO to align 'msa' with another alignment from 'secondAlignmentFileUrl'
      * and saves the result to 'objRef'.
      */
-    ClustalOSupportTask(const MultipleSequenceAlignment& inputMsa,
+    ClustalOSupportTask(const MultipleAlignment& inputMsa,
                         const GObjectReference& objRef,
                         const QString& secondAlignmentFileUrl,
                         const ClustalOSupportTaskSettings& settings);
@@ -89,14 +89,16 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     /** Returns result multiple alignment. The result is non-empty only for successfully finished task. */
-    const MultipleSequenceAlignment& getResultAlignment() const;
+    const MultipleAlignment& getResultAlignment() const;
 
 private:
     /** Removes all object locks set by the task.*/
     void unlockMsaObject();
 
-    MultipleSequenceAlignment inputMsa;
-    MultipleSequenceAlignment resultMsa;
+    MultipleAlignment inputMsa = {MultipleAlignmentDataType::MSA};
+    ;
+    MultipleAlignment resultMsa = {MultipleAlignmentDataType::MSA};
+    ;
     GObjectReference objRef;
     QPointer<Document> tmpDoc;
 

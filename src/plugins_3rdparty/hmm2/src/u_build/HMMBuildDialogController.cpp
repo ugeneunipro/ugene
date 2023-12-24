@@ -46,7 +46,7 @@
 #include "hmmer2/funcs.h"
 
 namespace U2 {
-HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const MultipleSequenceAlignment& _ma, QWidget* p)
+HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const MultipleAlignment& _ma, QWidget* p)
     : QDialog(p),
       ma(_ma->getCopy()),
       profileName(_pn),
@@ -218,7 +218,7 @@ HMMBuildToFileTask::HMMBuildToFileTask(const QString& inFile, const QString& _ou
     addSubTask(loadTask);
 }
 
-HMMBuildToFileTask::HMMBuildToFileTask(const MultipleSequenceAlignment& _ma, const QString& _outFile, const UHMMBuildSettings& s)
+HMMBuildToFileTask::HMMBuildToFileTask(const MultipleAlignment& _ma, const QString& _outFile, const UHMMBuildSettings& s)
     : Task("", TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported),
       settings(s), outFile(_outFile), ma(_ma->getCopy()), loadTask(nullptr), buildTask(nullptr) {
     setTaskName(tr("Build HMM profile to '%1'").arg(QFileInfo(outFile).fileName()));
@@ -253,7 +253,7 @@ QList<Task*> HMMBuildToFileTask::onSubTaskFinished(Task* subTask) {
             stateInfo.setError(tr("Alignment object not found!"));
         } else {
             auto msa = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
-            const MultipleSequenceAlignment ma = msa->getMultipleAlignment();
+            const MultipleAlignment ma = msa->getAlignment();
             if (settings.name.isEmpty()) {
                 settings.name = msa->getGObjectName() == MA_OBJECT_NAME ? doc->getName() : msa->getGObjectName();
             }
@@ -322,7 +322,7 @@ QString HMMBuildToFileTask::generateReport() const {
     return res;
 }
 
-HMMBuildTask::HMMBuildTask(const UHMMBuildSettings& s, const MultipleSequenceAlignment& _ma)
+HMMBuildTask::HMMBuildTask(const UHMMBuildSettings& s, const MultipleAlignment& _ma)
     : Task("", TaskFlag_None), ma(_ma->getCopy()), settings(s), hmm(nullptr) {
     GCOUNTER(cvar, "HMMBuildTask");
     setTaskName(tr("Build HMM profile '%1'").arg(s.name));

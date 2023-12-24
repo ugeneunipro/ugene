@@ -35,11 +35,11 @@
 
 namespace U2 {
 
-MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, MultipleSequenceAlignment& al, U2OpStatus& os) {
+MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, MultipleAlignment& al, U2OpStatus& os) {
     return createAlignment(dbiRef, U2ObjectDbi::ROOT_FOLDER, al, os);
 }
 
-MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, const QString& folder, MultipleSequenceAlignment& al, U2OpStatus& os, const QList<U2Sequence>& alignedSeqs) {
+MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, const QString& folder, MultipleAlignment& al, U2OpStatus& os, const QList<U2Sequence>& alignedSeqs) {
     if (!alignedSeqs.isEmpty() && alignedSeqs.size() != al->getRowCount()) {
         os.setError(QObject::tr("Unexpected number of sequences in a multiple alignment"));
         return nullptr;
@@ -145,7 +145,7 @@ void MultipleSequenceAlignmentImporter::importMsaInfo(const DbiConnection& con, 
     }
 }
 
-QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiConnection& con, const QString& folder, const MultipleSequenceAlignment& al, U2OpStatus& os) {
+QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiConnection& con, const QString& folder, const MultipleAlignment& al, U2OpStatus& os) {
     U2SequenceDbi* seqDbi = con.dbi->getSequenceDbi();
     SAFE_POINT(seqDbi != nullptr, "NULL Sequence Dbi during importing an alignment!", QList<U2Sequence>());
 
@@ -207,7 +207,7 @@ void MultipleSequenceAlignmentImporter::splitToCharsAndGaps(const DbiConnection&
     }
 }
 
-QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnection& con, MultipleSequenceAlignment& al, const U2DataId& msaId, const QList<U2Sequence>& sequences, const QList<QVector<U2MsaGap>>& msaGapModel, U2OpStatus& os) {
+QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnection& con, MultipleAlignment& al, const U2DataId& msaId, const QList<U2Sequence>& sequences, const QList<QVector<U2MsaGap>>& msaGapModel, U2OpStatus& os) {
     QList<U2MsaRow> rows;
     SAFE_POINT_EXT(sequences.size() == msaGapModel.size(), os.setError("Gap model doesn't fit sequences count"), rows);
 
