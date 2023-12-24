@@ -57,6 +57,7 @@ class WorkflowRunFromCMDLineTask : public WorkflowRunFromCMDLineBase {
     Q_OBJECT
 public:
     Task* getWorkflowRunTask() const override;
-};  // WorkflowRunFromCMDLineTask
+    QString generateReport() const override;
+};
 
 }  // namespace U2
