@@ -41,7 +41,7 @@ public:
     const CreatePhyTreeSettings& getSettings() const;
 
 protected:
-    const MultipleAlignment inputMA;
+    MultipleAlignment inputMA;
     PhyTree result;
     CreatePhyTreeSettings settings;
 };

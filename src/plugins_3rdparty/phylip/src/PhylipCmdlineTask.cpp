@@ -85,7 +85,7 @@ Task::ReportResult PhylipCmdlineTask::report() {
 void PhylipCmdlineTask::createCmdlineTask() {
     CmdlineInOutTaskConfig config;
     CHECK_OP(stateInfo, );
-    msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, const_cast<MultipleAlignment&>(inputMA), stateInfo);
+    msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, inputMA, stateInfo);
     CHECK_OP(stateInfo, );
     msaObject->setParent(this);
     config.inputObjects << msaObject;

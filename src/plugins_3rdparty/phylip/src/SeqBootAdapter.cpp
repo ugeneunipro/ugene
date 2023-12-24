@@ -19,19 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include <QByteArray>
-#include <QSharedData>
-#include <QTime>
+#include "SeqBootAdapter.h"
 
-#include "U2Core/global.h"
+#include <QSharedData>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
-
-#include "SeqBootAdapter.h"
 
 namespace U2 {
 
@@ -60,11 +57,11 @@ QString SeqBoot::getTmpFileTemplate() {
 }
 
 void SeqBoot::initGenerSeq(int reps, int seqLen) {
-    generatedSeq = QList<MultipleAlignment>();
+    generatedSeq.clear();
     this->seqLen = seqLen;
 
     for (int i = 0; i < reps; i++) {
-        generatedSeq[i] = MultipleAlignment(MultipleAlignmentDataType::MSA, QString("bootstrap %1").arg(reps), malignment->getAlphabet());
+        generatedSeq << MultipleAlignment(MultipleAlignmentDataType::MSA, QString("bootstrap %1").arg(reps), malignment->getAlphabet());
     }
 }
 
