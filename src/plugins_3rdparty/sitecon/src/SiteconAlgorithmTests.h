@@ -44,7 +44,7 @@ public:
 private:
     QString docName;
     SiteconBuildSettings s;
-    MultipleAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
     int expectedACGT[4];
 };
 
@@ -62,7 +62,7 @@ public:
 private:
     QString docName;
     SiteconBuildSettings s;
-    MultipleAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
     QVector<PositionStats> result;
     QVector<ResultVector> expectedResults;
 };
@@ -80,7 +80,7 @@ private:
     QString docName;
     int offset;
     SiteconBuildSettings s;
-    MultipleAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
     QVector<qreal> result;
     QVector<int> expectedResult;
 };
@@ -98,7 +98,7 @@ private:
     QString docName;
     int offset;
     SiteconBuildSettings s;
-    MultipleAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
     QVector<qreal> result;
     QVector<int> expectedResult;
 };

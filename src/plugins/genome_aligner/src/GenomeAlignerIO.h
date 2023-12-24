@@ -48,8 +48,7 @@ namespace U2 {
 
 class GenomeAlignerReader {
 public:
-    virtual ~GenomeAlignerReader() {
-    }
+    virtual ~GenomeAlignerReader() = default;
     virtual SearchQuery* read() = 0;
     virtual bool isEnd() = 0;
     virtual int getProgress() = 0;
@@ -57,15 +56,13 @@ public:
     // so if you need it in an inherited class, where it isn't overloaded yet,
     // you need to overload the needed func
     virtual QString getMemberError() {
-        assert(false);
-        return QString();
+        return "";
     }
 };
 
 class GenomeAlignerWriter {
 public:
-    virtual ~GenomeAlignerWriter() {
-    }
+    virtual ~GenomeAlignerWriter() = default;
     virtual void write(SearchQuery* seq, SAType offset) = 0;
     virtual void close() = 0;
     virtual void setReferenceName(const QString& refName) = 0;
@@ -110,10 +107,10 @@ public:
 class GenomeAlignerUrlReader : public GenomeAlignerReader {
 public:
     GenomeAlignerUrlReader(const QList<GUrl>& dnaList);
-    inline SearchQuery* read();
-    inline bool isEnd();
-    int getProgress();
-    QString getMemberError();
+    inline SearchQuery* read() override;
+    inline bool isEnd() override;
+    int getProgress() override;
+    QString getMemberError() override;
 
 private:
     bool initOk;
@@ -123,9 +120,9 @@ private:
 class GenomeAlignerUrlWriter : public GenomeAlignerWriter {
 public:
     GenomeAlignerUrlWriter(const GUrl& resultFile, const QString& refName, int refLength);
-    inline void write(SearchQuery* seq, SAType offset);
-    void close();
-    void setReferenceName(const QString& refName);
+    inline void write(SearchQuery* seq, SAType offset) override;
+    void close() override;
+    void setReferenceName(const QString& refName) override;
 
 private:
     StreamShortReadsWriter seqWriter;
@@ -140,9 +137,9 @@ class GenomeAlignerCommunicationChanelReader : public GenomeAlignerReader {
 public:
     GenomeAlignerCommunicationChanelReader(CommunicationChannel* reads);
     ~GenomeAlignerCommunicationChanelReader();
-    inline SearchQuery* read();
-    inline bool isEnd();
-    int getProgress();
+    inline SearchQuery* read() override;
+    inline bool isEnd() override;
+    int getProgress() override;
 
 private:
     CommunicationChannel* reads;
@@ -151,13 +148,13 @@ private:
 class GenomeAlignerMsaWriter : public GenomeAlignerWriter {
 public:
     GenomeAlignerMsaWriter();
-    inline void write(SearchQuery* seq, SAType offset);
-    void close();
-    void setReferenceName(const QString& refName);
+    inline void write(SearchQuery* seq, SAType offset) override;
+    void close() override;
+    void setReferenceName(const QString& refName) override;
     MultipleAlignment& getResult();
 
 private:
-    MultipleAlignment result;
+    MultipleAlignment result = {MultipleAlignmentDataType::MSA};
 };
 
 }  // namespace LocalWorkflow
@@ -168,9 +165,9 @@ private:
 class GenomeAlignerDbiReader : public GenomeAlignerReader {
 public:
     GenomeAlignerDbiReader(U2AssemblyDbi* rDbi, U2Assembly assembly);
-    inline SearchQuery* read();
-    inline bool isEnd();
-    int getProgress();
+    inline SearchQuery* read() override;
+    inline bool isEnd() override;
+    int getProgress() override;
 
 private:
     bool end;
@@ -191,9 +188,9 @@ private:
 class GenomeAlignerDbiWriter : public GenomeAlignerWriter {
 public:
     GenomeAlignerDbiWriter(const QString& dbiFilePath, const QString& assemblyName, int refLength, const QString& referenceObjectName = QString(), const QString& referenceUrlForCrossLink = QString());
-    inline void write(SearchQuery* seq, SAType offset);
-    void close();
-    void setReferenceName(const QString&) {
+    inline void write(SearchQuery* seq, SAType offset) override;
+    void close() override;
+    void setReferenceName(const QString&) override {
     }
 
 private:

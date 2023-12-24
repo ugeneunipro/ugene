@@ -77,14 +77,14 @@ public:
     MSAFromSequencesTask(const QList<DNASequence>& sequences)
         : Task(tr("MSAFromSequencesTask"), TaskFlag_None), sequences_(sequences) {
     }
-    void run();
+    void run() override;
     MultipleAlignment getResult() const {
         return ma;
     }
 
 private:
     QList<DNASequence> sequences_;
-    MultipleAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
 };
 
 }  // namespace LocalWorkflow

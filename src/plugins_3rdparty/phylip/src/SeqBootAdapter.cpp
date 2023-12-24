@@ -18,8 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#include <float.h>
-#include <iostream>
 
 #include <QByteArray>
 #include <QSharedData>
@@ -62,7 +60,7 @@ QString SeqBoot::getTmpFileTemplate() {
 }
 
 void SeqBoot::initGenerSeq(int reps, int seqLen) {
-    generatedSeq = QVector<MultipleAlignment>(reps);
+    generatedSeq = QList<MultipleAlignment>();
     this->seqLen = seqLen;
 
     for (int i = 0; i < reps; i++) {

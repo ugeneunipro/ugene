@@ -37,14 +37,14 @@ public:
     MultipleAlignment getMsa() const;
 
 private:
-    void prepare();
-    void run();
-    ReportResult report();
+    void prepare() override;
+    void run() override;
+    ReportResult report() override;
 
     MultipleChromatogramAlignmentObject* mcaObject;
-    const bool includeReference;
+    bool includeReference;
 
-    MultipleAlignment msa;
+    MultipleAlignment msa = {MultipleAlignmentDataType::MSA};
     QScopedPointer<StateLocker> locker;
 };
 

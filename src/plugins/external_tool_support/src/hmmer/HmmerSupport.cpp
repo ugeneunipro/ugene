@@ -84,7 +84,7 @@ void HmmerSupport::sl_buildProfile() {
         return;
     }
 
-    MultipleAlignment ma;
+    MultipleAlignment ma(MultipleAlignmentDataType::MSA);
     MWMDIWindow* activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (activeWindow != nullptr) {
         auto objectViewWindow = qobject_cast<GObjectViewWindow*>(activeWindow);

@@ -31,8 +31,8 @@ class WorkflowRunFromCMDLineBase : public Task {
     Q_OBJECT
 public:
     WorkflowRunFromCMDLineBase();
-    virtual ~WorkflowRunFromCMDLineBase() = default;
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    ~WorkflowRunFromCMDLineBase() override = default;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     Task::ReportResult report() override;
 
 protected:
@@ -56,7 +56,7 @@ protected:
 class WorkflowRunFromCMDLineTask : public WorkflowRunFromCMDLineBase {
     Q_OBJECT
 public:
-    virtual Task* getWorkflowRunTask() const;
+    Task* getWorkflowRunTask() const override;
 };  // WorkflowRunFromCMDLineTask
 
 }  // namespace U2

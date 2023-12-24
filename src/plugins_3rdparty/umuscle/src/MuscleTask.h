@@ -76,7 +76,7 @@ public:
     QSet<int> rowIndexesToAlign;
 
     // used only for MuscleTaskOp_AddUnalignedToProfile and MuscleTaskOp_ProfileToProfile
-    MultipleAlignment profile;
+    MultipleAlignment profile = {MultipleAlignmentDataType::MSA};
 
     // number of threads: 0 - auto, 1 - serial
     int nThreads;
@@ -89,7 +89,7 @@ class MuscleTask : public Task {
 public:
     MuscleTask(const MultipleAlignment& ma, const MuscleTaskSettings& config);
 
-    void run();
+    void run() override;
 
     void doAlign(bool refineOnlyMode);
     void doAddUnalignedToProfile();
@@ -98,14 +98,14 @@ public:
     /** Aligns some rows from the alignment (settings.ownRowIds) to the rest of the alignment. */
     void alignOwnRowsToAlignment(U2OpStatus& os);
 
-    ReportResult report();
+    ReportResult report() override;
 
     MuscleTaskSettings config;
-    MultipleAlignment inputMA;
-    MultipleAlignment resultMA;
+    MultipleAlignment inputMA = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment resultMA = {MultipleAlignmentDataType::MSA};
 
-    MultipleAlignment inputSubMA;
-    MultipleAlignment resultSubMA;
+    MultipleAlignment inputSubMA = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment resultSubMA = {MultipleAlignmentDataType::MSA};
 
     MuscleContext* ctx;
     MuscleParallelTask* parallelSubTask;

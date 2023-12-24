@@ -32,10 +32,10 @@ public:
     MultipleAlignmentMessageTranslator(const QVariant& atomicMessage,
                                        Workflow::WorkflowContext* initContext);
 
-    QString getTranslation() const;
+    QString getTranslation() const override;
 
 protected:
-    MultipleAlignment malignment;
+    MultipleAlignment malignment = {MultipleAlignmentDataType::MSA};
 };
 
 }  // namespace U2

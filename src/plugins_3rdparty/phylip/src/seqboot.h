@@ -142,7 +142,7 @@ void   writeweights(void);
 void   writecategories(void);
 void   writeauxdata(steptr, FILE*);
 void   writefactors(void);
-void bootwrite(QVector<U2::MultipleAlignment>& mavect, const U2::MultipleAlignment& ma);
+void bootwrite(QList<U2::MultipleAlignment>& mavect, const U2::MultipleAlignment& ma);
 //void   seqboot_inputaux(steptr, FILE*);
 void   freenewer(void);
 /* function prototypes */

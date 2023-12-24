@@ -788,7 +788,7 @@ void charpermute(long m, long n)
 } /* charpermute */
 
 
-void writedata( QVector<U2::MultipleAlignment>& mavect, int rep, const U2::MultipleAlignment& ma)
+void writedata( QList<U2::MultipleAlignment>& mavect, int rep, const U2::MultipleAlignment& ma)
 {
     
 
@@ -1172,7 +1172,7 @@ void writefactors(void)
 } /* writefactors */
 
 
-void bootwrite( QVector<U2::MultipleAlignment>& mavect, const U2::MultipleAlignment& ma)
+void bootwrite( QList<U2::MultipleAlignment>& mavect, const U2::MultipleAlignment& ma)
 { /* does bootstrapping and writes out data sets */
   long i, j, rr, repdiv10;
 

@@ -25,8 +25,7 @@ namespace U2 {
 
 const QString PairwiseAlignmentTaskSettings::DEFAULT_RESULT_FILE_NAME("pairwise-alignment.aln");
 
-PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings() {
-}
+PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings() = default;
 
 PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings(const QVariantMap& someSettings)
     : AbstractAlignmentTaskSettings(someSettings) {

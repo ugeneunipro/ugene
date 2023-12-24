@@ -83,14 +83,14 @@ class ClustalWSupportTask : public ExternalToolSupportTask {
     Q_DISABLE_COPY(ClustalWSupportTask)
 public:
     ClustalWSupportTask(const MultipleAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalWSupportTaskSettings& _settings);
-    ~ClustalWSupportTask();
+    ~ClustalWSupportTask() override;
 
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    MultipleAlignment resultMA;
+    MultipleAlignment resultMA = {MultipleAlignmentDataType::MSA};
 
 private:
     MultipleAlignment inputMsa;
@@ -112,11 +112,11 @@ class ClustalWWithExtFileSpecifySupportTask : public Task {
     Q_DISABLE_COPY(ClustalWWithExtFileSpecifySupportTask)
 public:
     ClustalWWithExtFileSpecifySupportTask(const ClustalWSupportTaskSettings& settings);
-    ~ClustalWWithExtFileSpecifySupportTask();
-    void prepare();
-    Task::ReportResult report();
+    ~ClustalWWithExtFileSpecifySupportTask() override;
+    void prepare() override;
+    Task::ReportResult report() override;
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     MultipleSequenceAlignmentObject* mAObject;
@@ -132,7 +132,7 @@ private:
 class ClustalWLogParser : public ExternalToolLogParser {
 public:
     ClustalWLogParser(int countSequencesInMSA);
-    int getProgress();
+    int getProgress() override;
 
 private:
     int countSequencesInMSA;

@@ -38,7 +38,7 @@ class MultipleAlignmentData;
 class U2CORE_EXPORT MultipleAlignment {
 public:
     MultipleAlignment(MultipleAlignmentData* maData);
-    MultipleAlignment(const MultipleAlignmentDataType& type = MultipleAlignmentDataType::MSA, const QString& name = "", const DNAAlphabet* alphabet = nullptr);
+    MultipleAlignment(const MultipleAlignmentDataType& type, const QString& name = "", const DNAAlphabet* alphabet = nullptr);
 
     enum Order {
         Ascending,
@@ -94,6 +94,8 @@ public:
                           const QString& name = QString(),
                           const DNAAlphabet* alphabet = nullptr,
                           const QVector<MultipleAlignmentRow>& rows = {});
+
+    MultipleAlignmentData(const MultipleAlignmentData& data);
 
     virtual ~MultipleAlignmentData() = default;
 
@@ -360,6 +362,7 @@ protected:
      */
     MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 
+    void copyFrom(const MultipleAlignmentData& other);
 public:
     const MultipleAlignmentDataType type;
 

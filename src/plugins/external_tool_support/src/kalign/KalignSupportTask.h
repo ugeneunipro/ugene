@@ -76,10 +76,10 @@ public:
 
     static bool isAlphabetSupported(const QString& alphabetId);
 
-    MultipleAlignment resultMA;
+    MultipleAlignment resultMA = {MultipleAlignmentDataType::MSA};
 
 private:
-    MultipleAlignment inputMsa;
+    MultipleAlignment inputMsa = {MultipleAlignmentDataType::MSA};
     GObjectReference objRef;
     QPointer<Document> tmpDoc;
     QString url;

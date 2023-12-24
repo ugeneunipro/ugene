@@ -40,7 +40,7 @@ public:
 
     /* one of this is used */
     QString inputFile;
-    MultipleAlignment alignment;
+    MultipleAlignment alignment = {MultipleAlignmentDataType::MSA};
     bool alignmentUsing;
 };
 

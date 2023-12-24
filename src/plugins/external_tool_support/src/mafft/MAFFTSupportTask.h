@@ -55,9 +55,9 @@ public:
     }
     void reset();
 
-    float gapOpenPenalty;
-    float gapExtenstionPenalty;
-    int maxNumberIterRefinement;
+    float gapOpenPenalty{};
+    float gapExtenstionPenalty{};
+    int maxNumberIterRefinement{};
     QString inputFilePath;
     QString outputFilePath;
 };
@@ -67,14 +67,14 @@ class MAFFTSupportTask : public ExternalToolSupportTask {
     Q_DISABLE_COPY(MAFFTSupportTask)
 public:
     MAFFTSupportTask(const MultipleAlignment& _inputMsa, const GObjectReference& _objRef, const MAFFTSupportTaskSettings& settings);
-    ~MAFFTSupportTask();
+    ~MAFFTSupportTask() override;
 
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    MultipleAlignment resultMA;
+    MultipleAlignment resultMA = {MultipleAlignmentDataType::MSA};
 
 private slots:
     void sl_progressUndefined();
@@ -100,11 +100,11 @@ class MAFFTWithExtFileSpecifySupportTask : public Task {
     Q_DISABLE_COPY(MAFFTWithExtFileSpecifySupportTask)
 public:
     MAFFTWithExtFileSpecifySupportTask(const MAFFTSupportTaskSettings& settings);
-    ~MAFFTWithExtFileSpecifySupportTask();
-    void prepare();
-    Task::ReportResult report();
+    ~MAFFTWithExtFileSpecifySupportTask() override;
+    void prepare() override;
+    Task::ReportResult report() override;
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     MultipleSequenceAlignmentObject* mAObject;
@@ -122,16 +122,13 @@ class MAFFTLogParser : public ExternalToolLogParser {
     Q_DISABLE_COPY(MAFFTLogParser)
 public:
     MAFFTLogParser(int countSequencesInMSA, int countRefinementIter, const QString& outputFileName);
-    ~MAFFTLogParser() {
+    ~MAFFTLogParser() override {
         cleanup();
     }
-    int getProgress();
-    void parseOutput(const QString& partOfLog);
-    void parseErrOutput(const QString& partOfLog);
+    int getProgress() override;
+    void parseOutput(const QString& partOfLog) override;
+    void parseErrOutput(const QString& partOfLog) override;
 
-    bool isOutFileCreated() {
-        return isOutputFileCreated;
-    }
     void cleanup();
 
 signals:

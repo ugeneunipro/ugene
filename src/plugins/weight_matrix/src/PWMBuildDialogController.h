@@ -52,7 +52,7 @@ public:
     QString lastURL;
 
 public slots:
-    virtual void reject();
+    void reject() override;
 
 private slots:
     void sl_inFileButtonClicked();
@@ -80,7 +80,7 @@ class PFMatrixBuildTask : public Task {
     Q_OBJECT
 public:
     PFMatrixBuildTask(const PMBuildSettings& s, const MultipleAlignment& ma);
-    void run();
+    void run() override;
     PFMatrix getResult() const {
         return m;
     }
@@ -95,7 +95,7 @@ class PFMatrixBuildToFileTask : public Task {
     Q_OBJECT
 public:
     PFMatrixBuildToFileTask(const QString& inFile, const QString& outFile, const PMBuildSettings& s);
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     LoadDocumentTask* loadTask;
@@ -109,14 +109,14 @@ class PWMatrixBuildTask : public Task {
 public:
     PWMatrixBuildTask(const PMBuildSettings& s, const MultipleAlignment& ma);
     PWMatrixBuildTask(const PMBuildSettings& s, const PFMatrix& m);
-    void run();
+    void run() override;
     PWMatrix getResult() const {
         return m;
     }
 
 private:
     PMBuildSettings settings;
-    MultipleAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
     PFMatrix tempMatrix;
     PWMatrix m;
 };
@@ -125,7 +125,7 @@ class PWMatrixBuildToFileTask : public Task {
     Q_OBJECT
 public:
     PWMatrixBuildToFileTask(const QString& inFile, const QString& outFile, const PMBuildSettings& s);
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     LoadDocumentTask* loadTask;

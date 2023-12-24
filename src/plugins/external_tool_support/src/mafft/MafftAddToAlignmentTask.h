@@ -41,18 +41,18 @@ class MafftAddToAlignmentTask : public AbstractAlignmentTask {
 public:
     MafftAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings& settings);
 
-    void prepare();
-    void run();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    void run() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     bool useMemsaveOption() const;
 
     AlignSequencesToAlignmentTaskSettings settings;
 
-    MultipleAlignment inputMsa;
+    MultipleAlignment inputMsa = {MultipleAlignmentDataType::MSA};
 
     QSharedPointer<Document> tmpDoc;
     QString url;

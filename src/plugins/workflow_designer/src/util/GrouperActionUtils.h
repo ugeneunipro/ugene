@@ -95,28 +95,28 @@ private:
 class Sequence2MSAPerformer : public ActionPerformer {
 public:
     Sequence2MSAPerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context);
-    virtual bool applyAction(const QVariant& newData);
-    virtual QVariant finishAction(U2OpStatus& os);
+    bool applyAction(const QVariant& newData) override;
+    QVariant finishAction(U2OpStatus& os) override;
 
 private:
-    MultipleAlignment result;
+    MultipleAlignment result = {MultipleAlignmentDataType::MSA};
 };
 
 class MergerMSAPerformer : public ActionPerformer {
 public:
     MergerMSAPerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context);
-    virtual bool applyAction(const QVariant& newData);
-    virtual QVariant finishAction(U2OpStatus& os);
+    bool applyAction(const QVariant& newData) override;
+    QVariant finishAction(U2OpStatus& os) override;
 
 private:
-    MultipleAlignment result;
+    MultipleAlignment result = {MultipleAlignmentDataType::MSA};
 };
 
 class MergerStringPerformer : public ActionPerformer {
 public:
     MergerStringPerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context);
-    virtual bool applyAction(const QVariant& newData);
-    virtual QVariant finishAction(U2OpStatus& os);
+    bool applyAction(const QVariant& newData) override;
+    QVariant finishAction(U2OpStatus& os) override;
 
 private:
     QString result;
@@ -125,10 +125,10 @@ private:
 class MergeAnnotationPerformer : public ActionPerformer {
 public:
     MergeAnnotationPerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context);
-    virtual bool applyAction(const QVariant& newData);
-    virtual QVariant finishAction(U2OpStatus& os);
-    virtual QVariantMap getParameters() const;
-    virtual void setParameters(const QVariantMap& map);
+    bool applyAction(const QVariant& newData) override;
+    QVariant finishAction(U2OpStatus& os) override;
+    QVariantMap getParameters() const override;
+    void setParameters(const QVariantMap& map) override;
 
     static QString PARENT_SEQUENCE_SLOT;
 

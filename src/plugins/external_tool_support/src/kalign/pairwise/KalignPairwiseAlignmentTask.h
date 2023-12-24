@@ -67,7 +67,7 @@ protected:
 protected:
     KalignPairwiseAlignmentTaskSettings* settings = nullptr;
     Kalign3SupportTask* kalignSubTask = nullptr;
-    MultipleAlignment ma;
+    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
     const DNAAlphabet* alphabet = nullptr;
 };
 

@@ -78,8 +78,26 @@ MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentDataType& _t
     SAFE_POINT(alphabet == nullptr || !name.isEmpty(), "Incorrect parameters in MultipleAlignmentData ctor", );  // TODO: check the condition, it is strange
 
     setName(name);
-    for (int i = 0, n = rows.size(); i < n; i++) {
-        length = qMax(length, (qint64)rows[i]->getRowLengthWithoutTrailing());  // TODO: implement or replace the method for row length
+    for (auto & row : qAsConst(rows)) {
+        length = qMax(length, (qint64)row->getRowLengthWithoutTrailing());  // TODO: implement or replace the method for row length
+    }
+}
+
+MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentData& data)
+    : type(data.type) {
+    copyFrom(data);
+}
+
+void MultipleAlignmentData::copyFrom(const MultipleAlignmentData& other) {
+    SAFE_POINT(type == other.type, "Incompatible types", );
+    clear();
+    alphabet = other.alphabet;
+    length = other.length;
+    info = other.info;
+
+    for (int i = 0; i < other.rows.size(); i++) {
+        MultipleAlignmentRow row = createRow(other.rows[i]);
+        addRowPrivate(row, other.length, i);
     }
 }
 
@@ -196,7 +214,7 @@ bool MultipleAlignmentData::isEmpty() const {
 }
 
 int MultipleAlignmentData::getLength() const {
-    return length;
+    return (int)length;
 }
 
 void MultipleAlignmentData::setLength(int newLength) {
@@ -787,14 +805,14 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, c
         return {type};
     }
 
-    int length = sequence.length();
+    int sequenceLength = sequence.length();
     foreach (const U2MsaGap& gap, gaps) {
-        if (gap.startPos > length || !gap.isValid()) {
+        if (gap.startPos > sequenceLength || !gap.isValid()) {
             coreLog.trace("Incorrect gap model was passed to MultipleAlignmentData::createRow");
             os.setError(errorText);
             return {type};
         }
-        length += gap.length;
+        sequenceLength += gap.length;
     }
 
     return {rowInDb, sequence, gaps, this};
@@ -825,14 +843,14 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, c
         return {type};
     }
 
-    int length = sequence.length();
+    int sequenceLength = sequence.length();
     foreach (const U2MsaGap& gap, gaps) {
-        if (gap.startPos > length || !gap.isValid()) {
+        if (gap.startPos > sequenceLength || !gap.isValid()) {
             coreLog.trace("Incorrect gap model was passed to MultipleAlignmentData::createRow");
             os.setError(errorText);
             return {type};
         }
-        length += gap.length;
+        sequenceLength += gap.length;
     }
 
     return {rowInDb, chromatogram, sequence, gaps, this};
@@ -947,7 +965,7 @@ MultipleAlignmentData& MultipleAlignmentData::operator+=(const MultipleAlignment
 
     U2OpStatus2Log os;
     for (int i = 0; i < nSeq; i++) {
-        getRow(i)->append(msaData.getRow(i), length, os);
+        getRow(i)->append(msaData.getRow(i), (int)length, os);
     }
 
     length += msaData.length;
