@@ -33,12 +33,11 @@ public:
     static void append(DNAChromatogram chromatogram, const DNAChromatogram& appendedChromatogram);
     static void removeBaseCalls(U2OpStatus& os, DNAChromatogram& chromatogram, int startPos, int endPos);
     static void removeRegion(U2OpStatus& os, DNAChromatogram& chromatogram, int startPos, int endPos);
-    static bool areEqual(const DNAChromatogram& first, const DNAChromatogram& second);
+    static bool checkAllFieldsEqual(const DNAChromatogram& first, const DNAChromatogram& second);
     static void crop(DNAChromatogram& chromatogram, int startPos, int length);
     static U2EntityRef import(U2OpStatus& os, const U2DbiRef& dbiRef, const QString& folder, const DNAChromatogram& chromatogram);
     static DNAChromatogram exportChromatogram(U2OpStatus& os, const U2EntityRef& chromatogramRef);
     static U2Chromatogram getChromatogramDbInfo(U2OpStatus& os, const U2EntityRef& chromatogramRef);
-    static qint64 getChromatogramLength(U2OpStatus& os, const U2EntityRef& chromatogramRef);
 
     static void updateChromatogramData(U2OpStatus& os, const U2EntityRef& chromatogramRef, const DNAChromatogram& chromatogram);
     static void updateChromatogramData(U2OpStatus& os, const U2DataId& masterId, const U2EntityRef& chromatogramRef, const DNAChromatogram& chromatogram);

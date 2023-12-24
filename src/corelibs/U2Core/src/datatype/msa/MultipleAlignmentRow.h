@@ -35,11 +35,6 @@ class MultipleAlignment;
 class MultipleAlignmentData;
 class MultipleAlignmentRowData;
 
-enum class U2CORE_EXPORT MultipleAlignmentDataType {
-    MSA,
-    MCA,
-};
-
 class U2CORE_EXPORT MultipleAlignmentRow {
     friend class MultipleAlignment;
     friend class MultipleAlignmentData;
@@ -48,7 +43,6 @@ class U2CORE_EXPORT MultipleAlignmentRow {
 public:
     MultipleAlignmentRow(MultipleAlignmentRowData* maRowData);
     MultipleAlignmentRow(MultipleAlignmentData* maData = nullptr);
-    MultipleAlignmentRow(const MultipleAlignmentDataType& type);
 
     /** Creates a row in memory. */
     MultipleAlignmentRow(const U2MsaRow& rowInDb,
@@ -75,10 +69,6 @@ public:
     MultipleAlignmentRow clone() const;
 
     MultipleAlignmentRowData* data() const;
-    template<class Derived>
-    inline Derived dynamicCast() const;
-    template<class Derived>
-    inline Derived dynamicCast(U2OpStatus& os) const;
 
     MultipleAlignmentRowData& operator*();
     const MultipleAlignmentRowData& operator*() const;
@@ -89,21 +79,6 @@ public:
 protected:
     QSharedPointer<MultipleAlignmentRowData> maRowData;
 };
-
-template<class Derived>
-Derived MultipleAlignmentRow::dynamicCast() const {
-    return Derived(*this);
-}
-
-template<class Derived>
-Derived MultipleAlignmentRow::dynamicCast(U2OpStatus& os) const {
-    Derived derived(*this);
-    if (derived.maRowData == nullptr) {
-        assert(false);
-        os.setError("Can't cast MultipleAlignmentRow to a derived class");
-    }
-    return derived;
-}
 
 /**
  * A row in a multiple alignment structure.
@@ -119,8 +94,7 @@ class U2CORE_EXPORT MultipleAlignmentRowData {
 
 public:
     MultipleAlignmentRowData(MultipleAlignmentData* maData = nullptr);
-    MultipleAlignmentRowData(const MultipleAlignmentDataType& type);
-    MultipleAlignmentRowData(const MultipleAlignmentDataType& type, const DNASequence& sequence, const QVector<U2MsaGap>& gaps);
+    MultipleAlignmentRowData(const DNASequence& sequence, const QVector<U2MsaGap>& gaps);
     MultipleAlignmentRowData(const U2MsaRow& rowInDb,
                              const DNAChromatogram& chromatogram,
                              const DNASequence& sequence,
@@ -244,7 +218,6 @@ public:
 
     /**
      * Checks that the row is equal to 'other' rows.
-     * Only rows of the same 'MultipleAlignmentDataType' can be equal.
      * For the equality method details see comments for the implementation.
      */
     bool isEqual(const MultipleAlignmentRowData& other) const;
@@ -352,9 +325,6 @@ protected:
 
     /** Gets char from the gapped sequence cache. Updates the cache if needed. */
     char getCharFromCache(int gappedPosition) const;
-
-public:
-    const MultipleAlignmentDataType type;
 
 protected:
     /** The sequence of the row without gaps (cached) */

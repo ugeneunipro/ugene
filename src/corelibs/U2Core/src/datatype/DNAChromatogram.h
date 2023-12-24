@@ -31,10 +31,10 @@ namespace U2 {
 class U2CORE_EXPORT DNAChromatogram {
 public:
     enum class Trace {
-        Trace_A,
-        Trace_C,
-        Trace_G,
-        Trace_T,
+        Trace_A = 0,
+        Trace_C = 1,
+        Trace_G = 2,
+        Trace_T = 3,
     };
 
     /* Chromatogram trace and the corresponding peak height */
@@ -49,11 +49,11 @@ public:
         int value = 0;
     };
 
-    DNAChromatogram();
+    DNAChromatogram() = default;
 
-    QString name;
-    int traceLength;
-    int seqLength;
+    QString name = "chromatogram";
+    int traceLength = 0;
+    int seqLength = 0;
     QVector<ushort> baseCalls;
     QVector<ushort> A;
     QVector<ushort> C;
@@ -63,16 +63,18 @@ public:
     QVector<char> prob_C;
     QVector<char> prob_G;
     QVector<char> prob_T;
-    bool hasQV;
+    bool hasQV = false;
 
-    ushort getValue(Trace trace, qint64 position) const;
+    ushort getValue(const Trace& trace, qint64 position) const;
 
     bool operator==(const DNAChromatogram& otherChromatogram) const;
 
-    static const ushort INVALID_VALUE;
     static const char DEFAULT_PROBABILITY;
+
     /* The "U2::DNAChromatogram::Trace" enum and the corresponding "char" symbol */
-    static const QMap<Trace, char> TRACE_CHARACTER;
+    static const QVarLengthArray<char, 4> BASE_BY_TRACE;
+
+    bool isEmpty() const;
 };
 
 }  // namespace U2

@@ -78,7 +78,7 @@ MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentDataType& _t
     SAFE_POINT(alphabet == nullptr || !name.isEmpty(), "Incorrect parameters in MultipleAlignmentData ctor", );  // TODO: check the condition, it is strange
 
     setName(name);
-    for (auto & row : qAsConst(rows)) {
+    for (auto& row : qAsConst(rows)) {
         length = qMax(length, (qint64)row->getRowLengthWithoutTrailing());  // TODO: implement or replace the method for row length
     }
 }
@@ -297,27 +297,27 @@ void MultipleAlignmentData::sortRows(const MultipleAlignment::SortType& sortType
 }
 
 MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {
-    static MultipleAlignmentRow emptyRow(type);
+    static MultipleAlignmentRow emptyRow;
     int rowCount = rows.count();
     SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
 const MultipleAlignmentRow& MultipleAlignmentData::getRow(int rowIndex) const {
-    static MultipleAlignmentRow emptyRow(type);
+    static MultipleAlignmentRow emptyRow;
     int rowCount = rows.count();
     SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
 const MultipleAlignmentRow& MultipleAlignmentData::getRow(const QString& name) const {
-    static MultipleAlignmentRow emptyRow(type);
+    static MultipleAlignmentRow emptyRow;
     for (int i = 0; i < rows.count(); i++) {
         if (rows[i]->getName() == name) {
             return rows[i];
         }
     }
-    SAFE_POINT(false, "Internal error: row name passed to MAlignmnet::getRow function not exists", emptyRow);
+    FAIL("Internal error: row name passed to MultipleAlignmentData::getRow function not exists", emptyRow);
 }
 
 const QVector<MultipleAlignmentRow>& MultipleAlignmentData::getRows() const {
@@ -342,7 +342,7 @@ QList<qint64> MultipleAlignmentData::getRowIdsByRowIndexes(const QList<int>& row
 }
 
 MultipleAlignmentRow MultipleAlignmentData::getRowByRowId(qint64 rowId, U2OpStatus& os) const {
-    static MultipleAlignmentRow emptyRow(type);
+    static MultipleAlignmentRow emptyRow;
     foreach (const MultipleAlignmentRow& row, rows) {
         if (row->getRowId() == rowId) {
             return row;
@@ -785,7 +785,7 @@ void MultipleAlignmentData::addRow(const QString& name, const DNAChromatogram& c
 }
 
 MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const QByteArray& bytes) {
-    SAFE_POINT(type == MultipleAlignmentDataType::MSA, "Can't use a method with no chromatogram for MSA", {type});
+    SAFE_POINT(type == MultipleAlignmentDataType::MSA, "Can't use a method with no chromatogram for MSA", {});
     QByteArray newSequenceBytes;
     QVector<U2MsaGap> newGapsModel;
 
@@ -797,12 +797,12 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const
 }
 
 MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
-    SAFE_POINT(type == MultipleAlignmentDataType::MSA, "Can't use a method with no chromatogram for MSA", {type});
+    SAFE_POINT(type == MultipleAlignmentDataType::MSA, "Can't use a method with no chromatogram for MSA", {});
     QString errorText = "Failed to create a multiple alignment row";
     if (sequence.constSequence().indexOf(U2Msa::GAP_CHAR) != -1) {
         coreLog.trace("Attempted to create an alignment row from a sequence with gaps");
         os.setError(errorText);
-        return {type};
+        return {};
     }
 
     int sequenceLength = sequence.length();
@@ -810,7 +810,7 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, c
         if (gap.startPos > sequenceLength || !gap.isValid()) {
             coreLog.trace("Incorrect gap model was passed to MultipleAlignmentData::createRow");
             os.setError(errorText);
-            return {type};
+            return {};
         }
         sequenceLength += gap.length;
     }
@@ -823,7 +823,7 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const MultipleAlignmentRow
 }
 
 MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes) {
-    SAFE_POINT(type == MultipleAlignmentDataType::MCA, "Only MCA can have a chromatogram", {type});
+    SAFE_POINT(type == MultipleAlignmentDataType::MCA, "Only MCA can have a chromatogram", {});
     QByteArray newSequenceBytes;
     QVector<U2MsaGap> newGapsModel;
 
@@ -835,12 +835,12 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const
 }
 
 MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
-    SAFE_POINT(type == MultipleAlignmentDataType::MCA, "Only MCA can have a chromatogram", {type});
+    SAFE_POINT(type == MultipleAlignmentDataType::MCA, "Only MCA can have a chromatogram", {});
     QString errorText = "Failed to create a multiple alignment row";
     if (sequence.constSequence().indexOf(U2Msa::GAP_CHAR) != -1) {
         coreLog.trace("Attempted to create an alignment row from a sequence with gaps");
         os.setError(errorText);
-        return {type};
+        return {};
     }
 
     int sequenceLength = sequence.length();
@@ -848,7 +848,7 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, c
         if (gap.startPos > sequenceLength || !gap.isValid()) {
             coreLog.trace("Incorrect gap model was passed to MultipleAlignmentData::createRow");
             os.setError(errorText);
-            return {type};
+            return {};
         }
         sequenceLength += gap.length;
     }
