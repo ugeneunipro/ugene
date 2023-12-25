@@ -37,19 +37,6 @@
 
 namespace U2 {
 
-const QString PlasmidFeatureTypes::PROMOTER("Promoter");
-const QString PlasmidFeatureTypes::TERMINATOR("Terminator");
-const QString PlasmidFeatureTypes::REGULATORY_SEQUENCE("Regulatory sequence");
-const QString PlasmidFeatureTypes::REPLICATION_ORIGIN("Replication origin");
-const QString PlasmidFeatureTypes::SELECTABLE_MARKER("Selectable marker");
-const QString PlasmidFeatureTypes::REPORTER_GENE("Reporter gene");
-const QString PlasmidFeatureTypes::TWO_HYBRID_GENE("Two-hybrid gene");
-const QString PlasmidFeatureTypes::LOCALIZATION_SEQUENCE("Localization sequence");
-const QString PlasmidFeatureTypes::AFFINITY_TAG("Affinity tag");
-const QString PlasmidFeatureTypes::GENE("Gene");
-const QString PlasmidFeatureTypes::PRIMER("Primer");
-const QString PlasmidFeatureTypes::MISCELLANEOUS("Miscellaneous");
-
 CustomAutoAnnotationDialog::CustomAutoAnnotationDialog(ADVSequenceObjectContext* ctx)
     : QDialog(ctx->getAnnotatedDNAView()->getWidget()), seqCtx(ctx) {
     setupUi(this);

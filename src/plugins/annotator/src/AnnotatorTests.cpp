@@ -193,11 +193,7 @@ void GTest_CustomAutoAnnotation::init(XMLTestFormat*, const QDomElement& el) {
         return;
     }
 
-    QString strCircular = el.attribute(CIRCULAR_ATTR);
-    if (strCircular == "true") {
-        isCircular = true;
-    }
-
+    isCircular = el.attribute(CIRCULAR_ATTR) == "true";
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
     if (!expected.isEmpty()) {
         expectedUniqueFeaturesFound = expected.toInt();

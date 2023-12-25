@@ -40,6 +40,18 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 // CustomPatternAnnotationTask
 
+const QString PlasmidFeatureTypes::PROMOTER("Promoter");
+const QString PlasmidFeatureTypes::TERMINATOR("Terminator");
+const QString PlasmidFeatureTypes::REGULATORY_SEQUENCE("Regulatory sequence");
+const QString PlasmidFeatureTypes::REPLICATION_ORIGIN("Replication origin");
+const QString PlasmidFeatureTypes::SELECTABLE_MARKER("Selectable marker");
+const QString PlasmidFeatureTypes::REPORTER_GENE("Reporter gene");
+const QString PlasmidFeatureTypes::TWO_HYBRID_GENE("Two-hybrid gene");
+const QString PlasmidFeatureTypes::LOCALIZATION_SEQUENCE("Localization sequence");
+const QString PlasmidFeatureTypes::AFFINITY_TAG("Affinity tag");
+const QString PlasmidFeatureTypes::GENE("Gene");
+const QString PlasmidFeatureTypes::PRIMER("Primer");
+const QString PlasmidFeatureTypes::MISCELLANEOUS("Miscellaneous");
 
 CustomPatternAnnotationTask::CustomPatternAnnotationTask(AnnotationTableObject* aObj, const U2::U2EntityRef& entityRef, const SharedFeatureStore& store, const QStringList& filteredFeatureTypes)
     : Task(tr("Custom pattern annotation"), TaskFlags_NR_FOSCOE), dnaObj("ref", entityRef), annotationTableObject(aObj),
@@ -64,7 +76,9 @@ void CustomPatternAnnotationTask::prepare() {
         return;
     }
 
-    index = QSharedPointer<SArrayIndex>(new SArrayIndex(sequence.constData(), quint32(sequence.length()), quint32(featureStore->getMinFeatureSize()), stateInfo));
+    static constexpr const char UNKNOWN_CHAR = 'N';
+
+    index = QSharedPointer<SArrayIndex>(new SArrayIndex(sequence.constData(), quint32(sequence.length()), quint32(featureStore->getMinFeatureSize()), stateInfo, UNKNOWN_CHAR));
 
     if (hasError()) {
         return;
@@ -83,6 +97,7 @@ void CustomPatternAnnotationTask::prepare() {
         }
 
         SArrayBasedSearchSettings settings;
+        settings.unknownChar = UNKNOWN_CHAR;
         settings.query = pattern.sequence;
 
         SArrayBasedFindTask* task = new SArrayBasedFindTask(index.data(), settings);
