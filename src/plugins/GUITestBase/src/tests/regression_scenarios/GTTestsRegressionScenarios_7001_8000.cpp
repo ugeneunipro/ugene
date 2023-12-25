@@ -58,6 +58,7 @@
 #include <QListWidget>
 #include <QRadioButton>
 
+#include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -4908,6 +4909,31 @@ GUI_TEST_CLASS_DEFINITION(test_7957) {
 
     GTUtilsDialog::add(new Scenario());
     GTMenu::clickMainMenuItem({"Tools", "Primer", "Primer3 (no target sequence)..."});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7962) {
+    // Open murine.gb.
+    // Open the "Annotation hightliting" option panel.
+    // Choose "misc_feature".
+    // Disable "Show annotations".
+    // Expected: only "misc_feature" has been hidden.
+    GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::AnnotationsHighlighting);
+    auto highlightTree = GTWidget::findTreeWidget("OP_ANNOT_HIGHLIGHT_TREE");
+    GTTreeWidget::click(highlightTree->topLevelItem(2));
+    GTCheckBox::setChecked(GTWidget::findCheckBox("checkShowHideAnnots"), false);
+    auto pan = GTUtilsSequenceView::getPanViewByNumber();
+    auto anns = pan->findAnnotationsInRange(U2Region(0, pan->getSequenceLength()));
+    for (auto ann : qAsConst(anns)) {
+        AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
+        AnnotationSettings* as = asr->getAnnotationSettings(ann->getName());
+        if (ann->getName() == "CDS") {
+            CHECK_SET_ERR(as->visible, "CDS is not visible, but should be");
+        } else if (ann->getName() == "misc_feature") {
+            CHECK_SET_ERR(!as->visible, "misc_feature is visible, but should not be");
+        }
+    }
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7968) {
