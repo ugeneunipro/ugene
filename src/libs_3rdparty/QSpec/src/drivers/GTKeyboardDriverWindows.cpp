@@ -215,6 +215,9 @@ bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
         case '|':
             keyPressWindows(VK_OEM_5, GTKeyboardDriver::key[Qt::Key_Shift]);
             break;
+        case '`':
+            keyPressWindows(VK_OEM_3);
+            break;
         default:
             keyPressWindows((int)key);
             break;

@@ -307,6 +307,12 @@ void MWDockManagerImpl::destroyDockData(DockData* d) {
     }
     docks.removeOne(d);
     updateTB(d->area);
+    if (activeDocks[d->area] == d) {
+        activeDocks[d->area] = nullptr;
+    }
+    if (toggleDockState[d->area] == d) {
+        toggleDockState[d->area] = nullptr;
+    }
     delete d;
 }
 
