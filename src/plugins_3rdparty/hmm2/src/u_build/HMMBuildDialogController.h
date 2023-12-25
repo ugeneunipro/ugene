@@ -102,7 +102,7 @@ public:
 private:
     UHMMBuildSettings settings;
     QString outFile;
-    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment ma;
     LoadDocumentTask* loadTask;
     HMMBuildTask* buildTask;
 };

@@ -95,9 +95,9 @@ private:
     /** Removes all object locks set by the task.*/
     void unlockMsaObject();
 
-    MultipleAlignment inputMsa = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment inputMsa;
     ;
-    MultipleAlignment resultMsa = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment resultMsa;
     ;
     GObjectReference objRef;
     QPointer<Document> tmpDoc;

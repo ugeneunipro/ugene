@@ -76,7 +76,7 @@ public:
 
     QString profileName;  // usually object name
     QString profileURL;  // document url
-    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment ma;
     bool usePercents;  // report percents but not counts
     DNAStatMSAProfileOutputFormat outFormat;
     QString outURL;

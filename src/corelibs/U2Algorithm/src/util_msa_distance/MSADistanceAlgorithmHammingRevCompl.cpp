@@ -56,7 +56,7 @@ void MSADistanceAlgorithmHammingRevCompl::run() {
 
     DNATranslation* trans = compTT;
     int nSeq = ma->getRowCount();
-    MultipleAlignment revtransl(MultipleAlignmentDataType::MSA);
+    MultipleAlignment revtransl;
     revtransl->setAlphabet(ma->getAlphabet());
     U2OpStatus2Log os;
     for (int i = 0; i < nSeq; i++) {

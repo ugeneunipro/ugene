@@ -43,7 +43,7 @@ namespace U2 {
 /// TranslateMsa2AminoTask
 
 TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj)
-    : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), resultMA({MultipleAlignmentDataType::MSA}), maObj(obj) {
+    : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), resultMA({}), maObj(obj) {
     SAFE_POINT_EXT(maObj != nullptr, setError("Invalid MSA object detected"), );
     SAFE_POINT_EXT(maObj->getAlphabet()->isNucleic(), setError("Multiple alignment already has amino-acid alphabet"), );
 
@@ -55,7 +55,7 @@ TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* 
 }
 
 TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj, const QString& translationId)
-    : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), resultMA({MultipleAlignmentDataType::MSA}), maObj(obj) {
+    : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), resultMA({}), maObj(obj) {
     SAFE_POINT_EXT(maObj != nullptr, setError("Invalid MSA object detected"), );
     SAFE_POINT_EXT(maObj->getAlphabet()->isNucleic(), setError("Multiple alignment already has amino-acid alphabet"), );
 
@@ -68,7 +68,7 @@ void TranslateMsa2AminoTask::run() {
     QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(maObj->getAlignment(), stateInfo, true);
     CHECK_OP(stateInfo, );
 
-    resultMA = MultipleAlignment(MultipleAlignmentDataType::MSA, maObj->getAlignment()->getName(), translation->getDstAlphabet());
+    resultMA = MultipleAlignment(maObj->getAlignment()->getName(), translation->getDstAlphabet());
     for (const DNASequence& dna : qAsConst(sequenceList)) {
         int buflen = dna.length() / 3;
         QByteArray buf(buflen, '\0');

@@ -66,8 +66,8 @@ public:
     U2Region selectedRows;
     ExportMSA2MSATask* exportTask;
     LoadDocumentTask* resultLoadTask;
-    MultipleAlignment srcAl = {MultipleAlignmentDataType::MSA};
-    MultipleAlignment resAl = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment srcAl;
+    MultipleAlignment resAl;
 };
 
 class DNAExportPluginTests {

@@ -122,7 +122,7 @@ MultipleAlignment NWAligner::align() {
         j--;
     }
 
-    MultipleAlignment result(MultipleAlignmentDataType::MSA, MA_OBJECT_NAME, sMatrix.getAlphabet());
+    MultipleAlignment result(MA_OBJECT_NAME, sMatrix.getAlphabet());
     result->addRow("seq1", aligned1);
     result->addRow("seq2", aligned2);
 

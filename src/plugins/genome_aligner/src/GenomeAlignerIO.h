@@ -154,7 +154,7 @@ public:
     MultipleAlignment& getResult();
 
 private:
-    MultipleAlignment result = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment result;
 };
 
 }  // namespace LocalWorkflow

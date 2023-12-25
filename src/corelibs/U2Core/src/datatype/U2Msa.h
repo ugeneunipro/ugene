@@ -76,8 +76,6 @@ class U2CORE_EXPORT U2MsaRow {
 public:
     U2MsaRow() = default;
 
-    bool hasValidChildObjectIds() const;
-
     /** Id of the row in the database */
     qint64 rowId = INVALID_ROW_ID;
 
@@ -85,7 +83,7 @@ public:
     U2DataId sequenceId;
 
     /** Start of the row in the sequence */
-    qint64 gstart = 0;  // TODO: rename or remove, if it is not used
+    qint64 gstart = 0;  // TODO: rename or remove, if it is not used.
 
     /** End of the row in the sequence */
     qint64 gend = 0;
@@ -105,7 +103,7 @@ public:
 /** Shared database model for MSA and MCA. */
 class U2CORE_EXPORT U2Msa : public U2Object {
 public:
-    U2Msa(const U2DataType& type);
+    U2Msa(const U2DataType& type = U2Type::Msa);
     U2Msa(const U2DataType& type, const U2DataId& id, const QString& dbId, qint64 version);
 
     U2DataType getType() const override;

@@ -79,7 +79,7 @@ KalignPairwiseAlignmentTask::KalignPairwiseAlignmentTask(KalignPairwiseAlignment
     alphabet = U2AlphabetUtils::getById(settings->alphabet);
     SAFE_POINT(alphabet != nullptr, "Alphabet is invalid.", );
 
-    ma = MultipleAlignment(MultipleAlignmentDataType::MSA, firstName + " vs. " + secondName, alphabet);
+    ma = MultipleAlignment(firstName + " vs. " + secondName, alphabet);
     ma->addRow(firstName, first);
     ma->addRow(secondName, second);
 

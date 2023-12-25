@@ -99,7 +99,7 @@ public:
     QVariant finishAction(U2OpStatus& os) override;
 
 private:
-    MultipleAlignment result = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment result;
 };
 
 class MergerMSAPerformer : public ActionPerformer {
@@ -109,7 +109,7 @@ public:
     QVariant finishAction(U2OpStatus& os) override;
 
 private:
-    MultipleAlignment result = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment result;
 };
 
 class MergerStringPerformer : public ActionPerformer {

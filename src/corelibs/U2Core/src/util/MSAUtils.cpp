@@ -82,7 +82,7 @@ int MSAUtils::getPatternSimilarityIgnoreGaps(const MultipleAlignmentRow& row, in
 }
 
 MultipleAlignment MSAUtils::seq2ma(const QList<DNASequence>& list, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw) {
-    MultipleAlignment ma(MultipleAlignmentDataType::MSA);
+    MultipleAlignment ma;
     ma->setName(MA_OBJECT_NAME);
     const DNAAlphabet* alphabet = deriveCommonAlphabet(list, recheckAlphabetFromDataIfRaw);
     ma->setAlphabet(alphabet);
@@ -90,7 +90,7 @@ MultipleAlignment MSAUtils::seq2ma(const QList<DNASequence>& list, U2OpStatus& o
         // TODO: handle memory overflow
         ma->addRow(seq.getName(), seq.seq);
     }
-    CHECK_OP(os, MultipleAlignment(MultipleAlignmentDataType::MSA));
+    CHECK_OP(os, {});
     return ma;
 }
 
@@ -145,25 +145,25 @@ MultipleAlignment MSAUtils::seq2ma(const QList<GObject*>& list, U2OpStatus& os, 
         return obj->getCopy();
     }
 
-    MultipleAlignment ma(MultipleAlignmentDataType::MSA);
+    MultipleAlignment ma;
     ma->setName(MA_OBJECT_NAME);
     ma->setAlphabet(deriveCommonAlphabet(dnaList, recheckAlphabetFromDataIfRaw, os));
 
     int i = 0;
-    SAFE_POINT(dnaList.size() == nameList.size(), "DNA list size differs from name list size", {MultipleAlignmentDataType::MSA});
+    SAFE_POINT(dnaList.size() == nameList.size(), "DNA list size differs from name list size", {});
     QListIterator<U2SequenceObject*> listIterator(dnaList);
     QListIterator<QString> nameIterator(nameList);
     while (listIterator.hasNext()) {
         const U2SequenceObject& seq = *(listIterator.next());
         const QString& objName = nameIterator.next();
 
-        CHECK_OP(os, {MultipleAlignmentDataType::MSA});
+        CHECK_OP(os, {});
 
         ma->addRow(objName, QByteArray(""));
 
-        SAFE_POINT(i < ma->getRowCount(), "Row count differ from expected after adding row", {MultipleAlignmentDataType::MSA});
+        SAFE_POINT(i < ma->getRowCount(), "Row count differ from expected after adding row", {});
         appendSequenceToAlignmentRow(ma, i, 0, seq, os);
-        CHECK_OP(os, {MultipleAlignmentDataType::MSA});
+        CHECK_OP(os, {});
         i++;
     }
 

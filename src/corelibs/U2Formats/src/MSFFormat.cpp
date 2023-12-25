@@ -98,7 +98,7 @@ struct MsfRow {
 
 void MSFFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os) {
     QString objName = reader.getURL().baseFileName();
-    MultipleAlignment al(MultipleAlignmentDataType::MSA, objName);
+    MultipleAlignment al(objName);
     int lineNumber = 0;  // Current line number from the object start. Used for error reporing.
 
     // Skip comments.

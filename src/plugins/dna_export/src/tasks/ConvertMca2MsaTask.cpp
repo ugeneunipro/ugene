@@ -44,7 +44,7 @@ void ConvertMca2MsaTask::prepare() {
 }
 
 void ConvertMca2MsaTask::run() {
-    msa = MultipleAlignment(MultipleAlignmentDataType::MSA, mcaObject->getGObjectName(), mcaObject->getAlphabet());
+    msa = MultipleAlignment(mcaObject->getGObjectName(), mcaObject->getAlphabet());
 
     if (includeReference) {
         U2SequenceObject* referenceObject = mcaObject->getReferenceObj();

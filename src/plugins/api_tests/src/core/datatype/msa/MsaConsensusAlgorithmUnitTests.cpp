@@ -40,7 +40,7 @@ namespace U2 {
 
 static char c1(const QString& column, int threshold) {
     auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(column.toLocal8Bit());
-    MultipleAlignment alignment(MultipleAlignmentDataType::MSA, "Test alignment name", bestAlphabet);
+    MultipleAlignment alignment("Test alignment name", bestAlphabet);
 
     for (int i = 0; i < column.size(); i++) {
         alignment->addRow(QString::number(i), column.mid(i, 1).toLocal8Bit());
@@ -55,7 +55,7 @@ static char c1(const QString& column, int threshold) {
 
 static char cN(const QStringList& alignmentRows, int threshold) {
     auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(alignmentRows.join("").toLocal8Bit());
-    MultipleAlignment alignment(MultipleAlignmentDataType::MSA, "Test alignment name", bestAlphabet);
+    MultipleAlignment alignment("Test alignment name", bestAlphabet);
 
     for (int i = 0; i < alignmentRows.size(); i++) {
         const auto& row = alignmentRows[i];
@@ -295,7 +295,7 @@ IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase) {
 
 static MultipleSequenceAlignmentObject* createAlignmentObject(const QStringList& alignmentRows) {
     auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(alignmentRows.join("").toLocal8Bit());
-    MultipleAlignment alignment(MultipleAlignmentDataType::MSA, "Test alignment name", bestAlphabet);
+    MultipleAlignment alignment("Test alignment name", bestAlphabet);
 
     for (int i = 0; i < alignmentRows.size(); i++) {
         const auto& row = alignmentRows[i];

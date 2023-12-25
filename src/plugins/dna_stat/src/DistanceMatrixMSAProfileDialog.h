@@ -73,7 +73,7 @@ public:
     QString algoId;  // selected algorithm id
     QString profileName;  // usually object name
     QString profileURL;  // document url
-    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment ma;
     bool usePercents;  // report percents but not counts
     bool excludeGaps;  // exclude gaps when calculate distance
     bool showGroupStatistic;

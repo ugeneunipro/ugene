@@ -84,7 +84,7 @@ MatrixAndLogoController::MatrixAndLogoController(PFMatrix matrix, QWidget* p)
     }
 
     const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleAlignment ma(MultipleAlignmentDataType::MSA, "Temporary alignment", al);
+    MultipleAlignment ma("Temporary alignment", al);
     for (int i = 0; i < size; i++) {
         QByteArray arr;
         for (int j = 0; j < len; j++) {

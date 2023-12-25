@@ -109,7 +109,7 @@ MultipleChromatogramAlignmentObject* ComposeResultSubtask::takeMcaObject() {
 }
 
 void ComposeResultSubtask::createAlignmentAndAnnotations() {
-    MultipleAlignment resultMca(MultipleAlignmentDataType::MCA, "Mapped reads");
+    MultipleAlignment resultMca("Mapped reads");
     resultMca->setAlphabet(referenceSequenceObject->getAlphabet());
 
     QVector<U2MsaGap> referenceGaps = getReferenceGaps();

@@ -135,11 +135,11 @@ static QList<SharedAnnotationData> getAnnotationTable(QScriptContext* ctx, QScri
 
 static MultipleAlignment getAlignment(QScriptContext* ctx, QScriptEngine* engine, int argNum) {
     WorkflowScriptEngine* wse = ScriptEngineUtils::workflowEngine(engine);
-    CHECK(wse != nullptr, MultipleAlignment(MultipleAlignmentDataType::MSA));
+    CHECK(wse != nullptr, {});
 
     SharedDbiDataHandler msaId = ScriptEngineUtils::getDbiId(engine, ctx->argument(argNum));
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(wse->getWorkflowContext()->getDataStorage(), msaId));
-    CHECK(!msaObj.isNull(), MultipleAlignment(MultipleAlignmentDataType::MSA));
+    CHECK(!msaObj.isNull(), {});
     return msaObj->getCopy();
 }
 
@@ -590,7 +590,7 @@ QScriptValue WorkflowScriptLibrary::createAlignment(QScriptContext* ctx, QScript
         return ctx->throwError(QObject::tr("Incorrect number of arguments"));
     }
 
-    MultipleAlignment align(MultipleAlignmentDataType::MSA);
+    MultipleAlignment align;
     DNASequence seq = getSequence(ctx, engine, 0);
     if (seq.seq.isEmpty()) {
         return ctx->throwError(QObject::tr("Empty or invalid sequence"));

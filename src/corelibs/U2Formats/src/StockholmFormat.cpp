@@ -440,7 +440,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*
     QSet<QString> objectNameList;
     QString baseFileName = reader.getURL().baseFileName();
     while (!reader.atEnd()) {
-        MultipleAlignment msa(MultipleAlignmentDataType::MSA);
+        MultipleAlignment msa;
         AnnotationBank annotationBank;
         loadOneMsa(reader, os, msa, annotationBank);
         CHECK_OP(os, );

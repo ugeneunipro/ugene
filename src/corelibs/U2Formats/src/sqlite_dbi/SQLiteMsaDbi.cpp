@@ -128,7 +128,7 @@ void SQLiteMsaDbi::updateMsaAlphabet(const U2DataId& msaId, const U2AlphabetId& 
 
     // Get modDetails, if required
     QByteArray modDetails;
-    if (TrackOnUpdate == trackMod) {
+    if (trackMod == TrackOnUpdate) {
         U2Msa msaObj = getMsaObject(msaId, os);
         CHECK_OP(os, );
         modDetails = U2DbiPackUtils::packAlphabetDetails(msaObj.alphabet, alphabet);

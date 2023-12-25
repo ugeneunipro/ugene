@@ -235,24 +235,21 @@ void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus& os) {
 }
 
 void MultipleChromatogramAlignmentObject::updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) {
-    MultipleAlignment cachedMca = cachedMa.dynamicCast<MultipleAlignment>();
-
     MultipleChromatogramAlignmentExporter mcaExporter;
     QMap<qint64, McaRowMemoryData> mcaRowsMemoryData = mcaExporter.getMcaRowMemoryData(os, entityRef.dbiRef, entityRef.entityId, rowIds);
     SAFE_POINT_OP(os, );
     foreach (const qint64 rowId, mcaRowsMemoryData.keys()) {
-        const int rowIndex = cachedMca->getRowIndexByRowId(rowId, os);
+        const int rowIndex = cachedMa->getRowIndexByRowId(rowId, os);
         SAFE_POINT_OP(os, );
         const McaRowMemoryData& rowData = mcaRowsMemoryData[rowId];
-        cachedMca->setRowContent(rowIndex, rowData.chromatogram, rowData.sequence, rowData.gapModel);
+        cachedMa->setRowContent(rowIndex, rowData.chromatogram, rowData.sequence, rowData.gapModel);
         SAFE_POINT_OP(os, );
-        cachedMca->renameRow(rowIndex, rowData.sequence.getName());
+        cachedMa->renameRow(rowIndex, rowData.sequence.getName());
     }
 }
 
 void MultipleChromatogramAlignmentObject::updateDatabase(U2OpStatus& os, const MultipleAlignment& ma) {
-    const MultipleAlignment mca = ma.dynamicCast<MultipleAlignment>();
-    MsaDbiUtils::updateMsa(entityRef, mca, os);
+    MsaDbiUtils::updateMsa(entityRef, ma, os);
 }
 
 void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 rowId) {

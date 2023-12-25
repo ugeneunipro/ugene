@@ -86,9 +86,9 @@ public:
     const MultipleAlignment& getResult();
 
 private:
-    MultipleAlignment masterMsa = {MultipleAlignmentDataType::MSA};
-    MultipleAlignment secondMsa = {MultipleAlignmentDataType::MSA};
-    MultipleAlignment result = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment masterMsa;
+    MultipleAlignment secondMsa;
+    MultipleAlignment result;
     int seqIdx;
     int subtaskCount;
 

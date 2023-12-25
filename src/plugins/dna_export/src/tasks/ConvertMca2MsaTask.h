@@ -44,7 +44,7 @@ private:
     MultipleChromatogramAlignmentObject* mcaObject;
     bool includeReference;
 
-    MultipleAlignment msa = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment msa;
     QScopedPointer<StateLocker> locker;
 };
 

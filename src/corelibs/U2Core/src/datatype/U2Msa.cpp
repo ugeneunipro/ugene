@@ -70,10 +70,6 @@ U2Msa::U2Msa(const U2DataType& _type, const U2DataId& id, const QString& dbId, q
     : U2Object(id, dbId, version), type(_type) {
 }
 
-bool U2MsaRow::hasValidChildObjectIds() const {
-    return !chromatogramId.isEmpty();
-}
-
 U2DataType U2Msa::getType() const {
     return type;
 }

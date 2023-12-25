@@ -35,7 +35,7 @@ public:
     QString getTranslation() const override;
 
 protected:
-    MultipleAlignment malignment = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment malignment;
 };
 
 }  // namespace U2

@@ -34,7 +34,7 @@ static const char* ROWS_SEQS_COUNT_MISMATCH_ERROR = "Different number of rows an
 namespace U2 {
 
 MultipleAlignment MultipleSequenceAlignmentExporter::getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const {
-    static const MultipleAlignment emptyObject(MultipleAlignmentDataType::MSA);
+    static const MultipleAlignment emptyObject;
     SAFE_POINT(!con.isOpen(), OPENED_DBI_CONNECTION_ERROR, emptyObject);
     con.open(dbiRef, false, os);
     CHECK_OP(os, emptyObject);
@@ -48,7 +48,7 @@ MultipleAlignment MultipleSequenceAlignmentExporter::getAlignment(const U2DbiRef
 
     SAFE_POINT(rows.count() == sequences.count(), ROWS_SEQS_COUNT_MISMATCH_ERROR, emptyObject);
 
-    MultipleAlignment al(MultipleAlignmentDataType::MSA);
+    MultipleAlignment al;
     for (int i = 0; i < rows.count(); ++i) {
         al->addRow(rows[i], sequences[i], os);
         CHECK_OP(os, emptyObject);
