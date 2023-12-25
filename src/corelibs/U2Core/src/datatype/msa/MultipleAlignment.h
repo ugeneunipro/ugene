@@ -33,6 +33,10 @@ class DNAAlphabet;
 #define MA_OBJECT_NAME QString("Multiple alignment")
 
 class MultipleAlignmentData;
+enum class U2CORE_EXPORT MultipleAlignmentDataType {
+    MSA,
+    MCA,
+};
 
 /** Cached, in-memory MSA/MCA object model. */
 class U2CORE_EXPORT MultipleAlignment {

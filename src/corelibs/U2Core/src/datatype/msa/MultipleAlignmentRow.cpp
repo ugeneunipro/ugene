@@ -32,10 +32,6 @@
 
 namespace U2 {
 
-MultipleAlignmentRow::MultipleAlignmentRow(const MultipleAlignmentDataType& _type)
-    : MultipleAlignmentRow(new MultipleAlignmentRowData(_type)) {
-}
-
 MultipleAlignmentRow::MultipleAlignmentRow(MultipleAlignmentData* _maRowData)
     : maRowData(new MultipleAlignmentRowData(_maRowData)) {
 }
@@ -96,7 +92,7 @@ const MultipleAlignmentRowData* MultipleAlignmentRow::operator->() const {
 }
 
 MultipleAlignmentRowData::MultipleAlignmentRowData(MultipleAlignmentData* _alignment)
-    : type(_alignment == nullptr ? MultipleAlignmentDataType::MSA : _alignment->type), alignment(_alignment) {
+    : alignment(_alignment) {
 }
 
 MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
@@ -104,8 +100,7 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
                                                    const DNASequence& _sequence,
                                                    const QVector<U2MsaGap>& _gaps,
                                                    MultipleAlignmentData* _alignment)
-    : type(_alignment == nullptr ? MultipleAlignmentDataType::MSA : _alignment->type),  // TODO: ensure we never pass nullptr.
-      sequence(_sequence),
+    : sequence(_sequence),
       gaps(_gaps),
       chromatogram(_chromatogram),
       initialRowInDb(_rowInDb),
@@ -119,8 +114,7 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
                                                    const DNAChromatogram& _chromatogram,
                                                    const QByteArray& rawData,
                                                    MultipleAlignmentData* _alignment)
-    : type(_alignment == nullptr ? MultipleAlignmentDataType::MSA : _alignment->type),  // TODO: ensure we never pass nullptr.
-      chromatogram(_chromatogram),
+    : chromatogram(_chromatogram),
       initialRowInDb(_rowInDb),
       alignment(_alignment) {
     QByteArray sequenceData;
@@ -131,8 +125,7 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
 }
 
 MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentRow& _row, MultipleAlignmentData* _alignment)
-    : type(_row->type),
-      sequence(_row->sequence),
+    : sequence(_row->sequence),
       gaps(_row->gaps),
       chromatogram(_row->chromatogram),
       initialRowInDb(_row->initialRowInDb),
@@ -141,12 +134,8 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentRow& _
     SAFE_POINT_NN(alignment, );
 }
 
-MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataType& _type)
-    : type(_type) {
-}
-
-MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataType& _type, const DNASequence& sequence, const QVector<U2MsaGap>& gaps)
-    : type(_type), sequence(sequence), gaps(gaps) {
+MultipleAlignmentRowData::MultipleAlignmentRowData(const DNASequence& sequence, const QVector<U2MsaGap>& gaps)
+    : sequence(sequence), gaps(gaps) {
 }
 
 int MultipleAlignmentRowData::getUngappedPosition(int pos) const {
@@ -207,8 +196,8 @@ bool MultipleAlignmentRowData::isEqualCore(const MultipleAlignmentRowData& other
     CHECK(sequence.seq == other.sequence.seq, false);
     CHECK(sequence.length() > 0, true);
 
-    if (type == MultipleAlignmentDataType::MCA) {
-        CHECK(ChromatogramUtils::areEqual(chromatogram, other.chromatogram), false);
+    if (!chromatogram.isEmpty() || !other.chromatogram.isEmpty()) {
+        CHECK(ChromatogramUtils::checkAllFieldsEqual(chromatogram, other.chromatogram), false);
     }
 
     QVector<U2MsaGap> thisGaps = gaps;
@@ -585,9 +574,7 @@ void MultipleAlignmentRowData::removeGapsFromGapModel(U2OpStatus& os, int pos, i
 }
 
 char MultipleAlignmentRowData::charAt(qint64 position) const {
-    return type == MultipleAlignmentDataType::MSA
-               ? getCharFromCache((int)position)
-               : MsaRowUtils::charAt(sequence.seq, gaps, (int)position);
+    return getCharFromCache((int)position);
 }
 
 bool MultipleAlignmentRowData::isGap(qint64 pos) const {
@@ -643,8 +630,8 @@ bool MultipleAlignmentRowData::isEqual(const MultipleAlignmentRowData& other) co
     CHECK(gaps == other.getGaps(), false);
     CHECK(sequence.alphabet == other.sequence.alphabet, false);
     CHECK(sequence.seq == sequence.seq, false);
-    if (type == MultipleAlignmentDataType::MCA) {
-        CHECK(ChromatogramUtils::areEqual(chromatogram, other.chromatogram), false);
+    if (!chromatogram.isEmpty() || !other.chromatogram.isEmpty()) {
+        CHECK(ChromatogramUtils::checkAllFieldsEqual(chromatogram, other.chromatogram), false);
     }
     return true;
 }
@@ -686,7 +673,7 @@ void MultipleAlignmentRowData::crop(U2OpStatus& os, int startPosition, int count
         }
     }
 
-    if (type == MultipleAlignmentDataType::MCA) {
+    if (!chromatogram.isEmpty()) {
         ChromatogramUtils::crop(chromatogram, startPosition, count);
     }
 
@@ -749,7 +736,7 @@ void MultipleAlignmentRowData::replaceChars(char origChar, char resultChar, U2Op
         gaps = newGapsModel;
         mergeConsecutiveGaps();
 
-        if (type == MultipleAlignmentDataType::MCA) {
+        if (!chromatogram.isEmpty()) {
             for (int index : qAsConst(gapsIndexes)) {
                 chromatogram.baseCalls.removeAt(index);
             }
@@ -785,11 +772,11 @@ void MultipleAlignmentRowData::reverseComplement() {
 }
 
 bool MultipleAlignmentRowData::isReversed() const {
-    return type == MultipleAlignmentDataType::MCA && MultipleAlignmentRowInfo::getReversed(additionalInfo);
+    return MultipleAlignmentRowInfo::getReversed(additionalInfo);
 }
 
 bool MultipleAlignmentRowData::isComplemented() const {
-    return type == MultipleAlignmentDataType::MCA && MultipleAlignmentRowInfo::getComplemented(additionalInfo);
+    return MultipleAlignmentRowInfo::getComplemented(additionalInfo);
 }
 
 const QMap<DNAChromatogram::Trace, QVector<ushort> DNAChromatogram::*> PEAKS =
@@ -800,7 +787,7 @@ const QMap<DNAChromatogram::Trace, QVector<ushort> DNAChromatogram::*> PEAKS =
 
 QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue>
     MultipleAlignmentRowData::getTwoHighestPeaks(int position, bool& hasTwoPeaks) const {
-    if (type == MultipleAlignmentDataType::MSA) {
+    if (chromatogram.isEmpty()) {
         hasTwoPeaks = false;
         return {
             DNAChromatogram::ChromatogramTraceAndValue(DNAChromatogram::Trace::Trace_A, 0),
@@ -851,9 +838,8 @@ int MultipleAlignmentRowData::getUngappedLength() const {
 }
 
 bool MultipleAlignmentRowData::isDefault() const {
-    static const MultipleAlignmentRowData mcaRow(MultipleAlignmentDataType::MCA);
-    static const MultipleAlignmentRowData msaRow(MultipleAlignmentDataType::MSA);
-    return isEqual(type == MultipleAlignmentDataType::MSA ? msaRow : mcaRow);
+    static const MultipleAlignmentRowData emptyRow;
+    return isEqual(emptyRow);
 }
 
 MultipleAlignmentRow MultipleAlignmentRowData::mid(int pos, int count, U2OpStatus& os) const {
