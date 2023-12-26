@@ -1,0 +1,6 @@
+<multi-test>
+    <!-- Check, that there is no Ad5_left_arm_homology feature found -->
+    <!-- expected_results="2" because there are two features "left_inverted_terminal_repeat" and "right_inverted_terminal_repeat", which are subsequences of "Ad5_left_arm_homology" -->
+    <load-document index="doc" url="annotator/Ad5_left_arm_homology.fa" io="local_file" format="fasta"/>
+    <custom-auto-annotation-search doc="doc" seq="Ad5_left_arm_homology" result="plasmid_annotations" circular="false" expected_results="2"/>
+</multi-test>
