@@ -351,7 +351,7 @@ void GTest_uMuscleAddUnalignedSequenceToProfile::prepare() {
         stateInfo.setError(QString("no sequence objects found in doc: %1").arg(seqDoc->getURLString()));
         return;
     }
-    MultipleAlignment unalignedMA(MultipleAlignmentDataType::MSA);
+    MultipleAlignment unalignedMA;
     unalignedMA->setAlphabet(aliObj->getAlphabet());
     foreach (GObject* obj, seqObjs) {
         auto dnaObj = qobject_cast<U2SequenceObject*>(obj);
@@ -499,7 +499,7 @@ void GTest_Muscle_Load_Align_QScore::prepare() {
 MultipleAlignment GTest_Muscle_Load_Align_QScore::dna_to_ma(QList<GObject*> dnaSeqs) {
     int seqCount = dnaSeqs.count();
     auto seq = qobject_cast<U2SequenceObject*>(dnaSeqs[0]);
-    MultipleAlignment ma(MultipleAlignmentDataType::MSA, "Alignment", seq->getAlphabet());
+    MultipleAlignment ma("Alignment", seq->getAlphabet());
     for (int i = 0; i < seqCount; i++) {
         seq = qobject_cast<U2SequenceObject*>(dnaSeqs[i]);
         if (seq == nullptr) {
@@ -507,7 +507,7 @@ MultipleAlignment GTest_Muscle_Load_Align_QScore::dna_to_ma(QList<GObject*> dnaS
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleAlignment(MultipleAlignmentDataType::MSA));
+        SAFE_POINT_OP(stateInfo, {});
         ma->addRow(seq->getSequenceName(), seqData);
     }
     return ma;
@@ -640,7 +640,7 @@ void Muscle_Load_Align_Compare_Task::prepare() {
 MultipleAlignment Muscle_Load_Align_Compare_Task::dna_to_ma(QList<GObject*> dnaSeqs) {
     int seqCount = dnaSeqs.count();
     auto seq = qobject_cast<U2SequenceObject*>(dnaSeqs[0]);
-    MultipleAlignment ma(MultipleAlignmentDataType::MSA, "Alignment", seq->getAlphabet());
+    MultipleAlignment ma("Alignment", seq->getAlphabet());
     for (int i = 0; i < seqCount; i++) {
         seq = qobject_cast<U2SequenceObject*>(dnaSeqs[i]);
         if (seq == nullptr) {
@@ -648,7 +648,7 @@ MultipleAlignment Muscle_Load_Align_Compare_Task::dna_to_ma(QList<GObject*> dnaS
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleAlignment(MultipleAlignmentDataType::MSA));
+        SAFE_POINT_OP(stateInfo, {});
         ma->addRow(seq->getSequenceName(), seqData);
     }
     return ma;

@@ -31,8 +31,8 @@ class U2CORE_EXPORT MultipleSequenceAlignmentObject : public MultipleAlignmentOb
 public:
     MultipleSequenceAlignmentObject(const QString& name,
                                     const U2EntityRef& msaRef,
-                                    const QVariantMap& hintsMap = QVariantMap(),
-                                    const MultipleAlignment& msaData = MultipleAlignment(MultipleAlignmentDataType::MSA));
+                                    const QVariantMap& hintsMap = {},
+                                    const MultipleAlignment& msaData = {});
 
     /** GObject methods */
     // Actually this method doesn't exactly clone MSA database rows, row ID will be generated for each copied row again

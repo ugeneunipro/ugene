@@ -84,7 +84,7 @@ public:
 
 private:
     QList<DNASequence> sequences_;
-    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment ma;
 };
 
 }  // namespace LocalWorkflow

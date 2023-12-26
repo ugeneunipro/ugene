@@ -160,7 +160,7 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     QList<qint64> rowIdsToRemove = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
     SAFE_POINT(!rowIdsToRemove.isEmpty(), "rowIdsToRemove is empty", );
 
-    MultipleAlignment msaToExport(MultipleAlignmentDataType::MSA);
+    MultipleAlignment msaToExport;
     msaToExport->setName(urlInfo.baseName());
     msaToExport->setAlphabet(maObject->getAlphabet());
     for (int maRowIndex : qAsConst(selectedMaRowIndexes)) {

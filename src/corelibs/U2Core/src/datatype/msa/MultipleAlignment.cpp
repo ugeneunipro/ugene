@@ -33,8 +33,8 @@
 
 namespace U2 {
 
-MultipleAlignment::MultipleAlignment(const MultipleAlignmentDataType& type, const QString& name, const DNAAlphabet* alphabet)
-    : maData(new MultipleAlignmentData(type)) {
+MultipleAlignment::MultipleAlignment(const QString& name, const DNAAlphabet* alphabet)
+    : maData(new MultipleAlignmentData()) {
     if (!name.isEmpty()) {
         maData->setName(name);
     }
@@ -67,11 +67,10 @@ const MultipleAlignmentData* MultipleAlignment::operator->() const {
     return maData.data();
 }
 
-MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentDataType& _type,
-                                             const QString& name,
+MultipleAlignmentData::MultipleAlignmentData(const QString& name,
                                              const DNAAlphabet* _alphabet,
                                              const QVector<MultipleAlignmentRow>& _rows)
-    : type(_type), alphabet(_alphabet), rows(_rows) {
+    : alphabet(_alphabet), rows(_rows) {
     MaStateCheck check(this);
     Q_UNUSED(check);
 
@@ -83,13 +82,11 @@ MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentDataType& _t
     }
 }
 
-MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentData& data)
-    : type(data.type) {
+MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentData& data) {
     copyFrom(data);
 }
 
 void MultipleAlignmentData::copyFrom(const MultipleAlignmentData& other) {
-    SAFE_POINT(type == other.type, "Incompatible types", );
     clear();
     alphabet = other.alphabet;
     length = other.length;
@@ -509,7 +506,6 @@ void MultipleAlignmentData::moveRowsBlock(int startRow, int numRows, int delta) 
 
 bool MultipleAlignmentData::isEqual(const MultipleAlignmentData& other) const {
     CHECK(this != &other, true);
-    CHECK(type == other.type, false);
     CHECK(alphabet == other.alphabet, false);
     CHECK(length == other.length, false);
     CHECK(rows.size() == other.rows.size(), false);
@@ -739,7 +735,6 @@ void MultipleAlignmentData::addRow(const U2MsaRow& rowInDb, const DNASequence& s
 }
 
 void MultipleAlignmentData::addRow(const QString& name, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
-    SAFE_POINT(type == MultipleAlignmentDataType::MSA, "Can't use a method with no chromatogram for MSA", );
     U2MsaRow row;
     MultipleAlignmentRow newRow = createRow(row, sequence, gaps, os);
     CHECK_OP(os, );
@@ -770,7 +765,6 @@ void MultipleAlignmentData::addRow(const U2MsaRow& rowInDb, const DNAChromatogra
 }
 
 void MultipleAlignmentData::addRow(const QString& name, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
-    SAFE_POINT(type == MultipleAlignmentDataType::MCA, "Only MCA can have chromatogram in a row", );
     U2MsaRow row;
     MultipleAlignmentRow newRow = createRow(row, chromatogram, sequence, gaps, os);
     CHECK_OP(os, );
@@ -785,7 +779,6 @@ void MultipleAlignmentData::addRow(const QString& name, const DNAChromatogram& c
 }
 
 MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const QByteArray& bytes) {
-    SAFE_POINT(type == MultipleAlignmentDataType::MSA, "Can't use a method with no chromatogram for MSA", {});
     QByteArray newSequenceBytes;
     QVector<U2MsaGap> newGapsModel;
 
@@ -797,7 +790,6 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const
 }
 
 MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
-    SAFE_POINT(type == MultipleAlignmentDataType::MSA, "Can't use a method with no chromatogram for MSA", {});
     QString errorText = "Failed to create a multiple alignment row";
     if (sequence.constSequence().indexOf(U2Msa::GAP_CHAR) != -1) {
         coreLog.trace("Attempted to create an alignment row from a sequence with gaps");
@@ -823,7 +815,6 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const MultipleAlignmentRow
 }
 
 MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes) {
-    SAFE_POINT(type == MultipleAlignmentDataType::MCA, "Only MCA can have a chromatogram", {});
     QByteArray newSequenceBytes;
     QVector<U2MsaGap> newGapsModel;
 
@@ -835,7 +826,6 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const
 }
 
 MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
-    SAFE_POINT(type == MultipleAlignmentDataType::MCA, "Only MCA can have a chromatogram", {});
     QString errorText = "Failed to create a multiple alignment row";
     if (sequence.constSequence().indexOf(U2Msa::GAP_CHAR) != -1) {
         coreLog.trace("Attempted to create an alignment row from a sequence with gaps");
@@ -844,7 +834,7 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, c
     }
 
     int sequenceLength = sequence.length();
-    foreach (const U2MsaGap& gap, gaps) {
+    for (const U2MsaGap& gap : qAsConst(gaps)) {
         if (gap.startPos > sequenceLength || !gap.isValid()) {
             coreLog.trace("Incorrect gap model was passed to MultipleAlignmentData::createRow");
             os.setError(errorText);
@@ -938,9 +928,9 @@ MultipleAlignment MultipleAlignmentData::mid(int start, int len) const {
                    .arg(start)
                    .arg(len)
                    .arg(length),
-               {type});
+               {});
 
-    MultipleAlignment res(type, getName(), alphabet);
+    MultipleAlignment res(getName(), alphabet);
     MaStateCheck check(res.data());
     Q_UNUSED(check);
 

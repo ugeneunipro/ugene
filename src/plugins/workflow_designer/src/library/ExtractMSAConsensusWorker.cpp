@@ -98,13 +98,13 @@ MultipleAlignment ExtractMSAConsensusWorker::takeMsa(U2OpStatus& os) {
     const QVariantMap data = m.getData().toMap();
     if (!data.contains(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId())) {
         os.setError(tr("Empty msa slot"));
-        return {MultipleAlignmentDataType::MSA};
+        return {};
     }
     const SharedDbiDataHandler dbiId = data[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()].value<SharedDbiDataHandler>();
     const MultipleSequenceAlignmentObject* obj = StorageUtils::getMsaObject(context->getDataStorage(), dbiId);
     if (obj == nullptr) {
         os.setError(tr("Error with msa object"));
-        return {MultipleAlignmentDataType::MSA};
+        return {};
     }
     return obj->getAlignment();
 }

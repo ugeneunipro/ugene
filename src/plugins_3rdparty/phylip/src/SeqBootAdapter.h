@@ -46,7 +46,7 @@ typedef QVector<matrixrow> matrix;
 
 class SeqBoot {
 private:
-    MultipleAlignment malignment = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment malignment;
     QList<MultipleAlignment> generatedSeq;
     int seqLen;
 

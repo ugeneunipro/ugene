@@ -192,7 +192,7 @@ void AprFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     char* buff = readBuffer.data();
 
     QString objName = io->getURL().baseFileName();
-    MultipleAlignment al(MultipleAlignmentDataType::MSA, objName);
+    MultipleAlignment al(objName);
     bool lineOk = false;
 
     io->readLine(buff, READ_BUFF_SIZE, &lineOk);

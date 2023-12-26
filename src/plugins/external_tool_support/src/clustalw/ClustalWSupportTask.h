@@ -90,7 +90,7 @@ public:
 
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    MultipleAlignment resultMA = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment resultMA;
 
 private:
     MultipleAlignment inputMsa;

@@ -61,7 +61,7 @@ void SeqBoot::initGenerSeq(int reps, int seqLen) {
     this->seqLen = seqLen;
 
     for (int i = 0; i < reps; i++) {
-        generatedSeq << MultipleAlignment(MultipleAlignmentDataType::MSA, QString("bootstrap %1").arg(reps), malignment->getAlphabet());
+        generatedSeq << MultipleAlignment(QString("bootstrap %1").arg(reps), malignment->getAlphabet());
     }
 }
 

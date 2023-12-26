@@ -205,7 +205,7 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
 }
 
 MultipleAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
-    MultipleAlignment res(MultipleAlignmentDataType::MSA);
+    MultipleAlignment res;
     CHECK_OP(stateInfo, res);
 
     SAFE_POINT(runWorkflowTask != nullptr, "SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.", res);

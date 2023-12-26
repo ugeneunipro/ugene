@@ -84,7 +84,7 @@ U2EntityRef MsaObjectTestData::getTestAlignmentRef(const U2DbiRef& dbiRef, const
 
 MultipleAlignment MsaObjectTestData::getTestAlignment(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
     U2EntityRef malignmentRef = getTestAlignmentRef(dbiRef, name, os);
-    CHECK_OP(os, MultipleAlignment(MultipleAlignmentDataType::MSA));
+    CHECK_OP(os, {});
 
     MultipleSequenceAlignmentExporter exporter;
     return exporter.getAlignment(dbiRef, malignmentRef.entityId, os);

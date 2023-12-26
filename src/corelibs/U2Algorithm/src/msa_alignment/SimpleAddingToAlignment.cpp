@@ -39,7 +39,7 @@ namespace U2 {
 /************************************************************************/
 SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings& settings)
     : AbstractAlignmentTask("Simple add to alignment task", TaskFlags_NR_FOSCOE),
-      settings(settings), inputMsa(MultipleAlignmentDataType::MSA) {
+      settings(settings) {
     GCOUNTER(cvar, "SimpleAddToAlignmentTask");
 
     SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into SimpleAddToAlignmentTask"), );

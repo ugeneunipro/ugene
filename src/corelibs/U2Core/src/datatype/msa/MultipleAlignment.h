@@ -33,16 +33,12 @@ class DNAAlphabet;
 #define MA_OBJECT_NAME QString("Multiple alignment")
 
 class MultipleAlignmentData;
-enum class U2CORE_EXPORT MultipleAlignmentDataType {
-    MSA,
-    MCA,
-};
 
 /** Cached, in-memory MSA/MCA object model. */
 class U2CORE_EXPORT MultipleAlignment {
 public:
     MultipleAlignment(MultipleAlignmentData* maData);
-    MultipleAlignment(const MultipleAlignmentDataType& type, const QString& name = "", const DNAAlphabet* alphabet = nullptr);
+    MultipleAlignment(const QString& name = "", const DNAAlphabet* alphabet = nullptr);
 
     enum Order {
         Ascending,
@@ -94,8 +90,7 @@ public:
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
      */
-    MultipleAlignmentData(const MultipleAlignmentDataType& type,
-                          const QString& name = QString(),
+    MultipleAlignmentData(const QString& name = "",
                           const DNAAlphabet* alphabet = nullptr,
                           const QVector<MultipleAlignmentRow>& rows = {});
 
@@ -367,8 +362,6 @@ protected:
     MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 
     void copyFrom(const MultipleAlignmentData& other);
-public:
-    const MultipleAlignmentDataType type;
 
 protected:
     /** Alphabet for all sequences in the alignment */

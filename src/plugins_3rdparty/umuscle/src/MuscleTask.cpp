@@ -61,7 +61,7 @@ void MuscleTaskSettings::reset() {
     maxSecs = 0;
     stableMode = true;
     regionToAlign.startPos = regionToAlign.length = 0;
-    profile = MultipleAlignment(MultipleAlignmentDataType::MSA);
+    profile = MultipleAlignment();
     alignRegion = false;
     inputFilePath = "";
     mode = Default;
@@ -89,7 +89,7 @@ MuscleTask::MuscleTask(const MultipleAlignment& ma, const MuscleTaskSettings& _c
     // todo: make more precise estimation, use config.op mode
     int aliLen = ma->getLength();
     int nSeq = ma->getRowCount();
-    int memUseMB = qint64(aliLen) * qint64(nSeq) * 200 / (1024 * 1024);  // 200x per char in alignment
+    int memUseMB = int(qint64(aliLen) * qint64(nSeq) * 200 / (1024 * 1024));  // 200x per char in alignment
     TaskResourceUsage tru(UGENE_RESOURCE_ID_MEMORY, memUseMB, TaskResourceStage::Run);
 
     QString inputAlName = inputMA->getName();
@@ -101,7 +101,7 @@ MuscleTask::MuscleTask(const MultipleAlignment& ma, const MuscleTaskSettings& _c
         SAFE_POINT_EXT(config.regionToAlign.length > 0,
                        setError(tr("Incorrect region to align")), );
         inputSubMA = inputMA->mid(config.regionToAlign.startPos, config.regionToAlign.length);
-        CHECK_EXT(inputSubMA != MultipleAlignment(MultipleAlignmentDataType::MSA), setError(tr("Stopping MUSCLE task, because of error in MultipleAlignment::mid function")), );
+        CHECK_EXT(inputSubMA != MultipleAlignment(), setError(tr("Stopping MUSCLE task, because of error in MultipleAlignment::mid function")), );
     }
 
     if (config.nThreads == 1 || (config.op != MuscleTaskOp_Align)) {
@@ -240,8 +240,8 @@ void MuscleTask::doProfile2Profile() {
 
 void MuscleTask::alignOwnRowsToAlignment(U2OpStatus& os) {
     // Move own sequences from inputMA to profile.
-    MultipleAlignment inputTrimmedInputMa(MultipleAlignmentDataType::MSA, "inputTrimmedInputMa", inputMA->getAlphabet());
-    MultipleAlignment inputUnalignedMa(MultipleAlignmentDataType::MSA, "inputUnalignedMa", inputMA->getAlphabet());
+    MultipleAlignment inputTrimmedInputMa("inputTrimmedInputMa", inputMA->getAlphabet());
+    MultipleAlignment inputUnalignedMa("inputUnalignedMa", inputMA->getAlphabet());
     for (int rowIndex = 0; rowIndex < inputMA->getRowCount(); rowIndex++) {
         MultipleAlignmentRow row = inputMA->getRow(rowIndex);
         if (config.rowIndexesToAlign.contains(rowIndex)) {
@@ -254,7 +254,7 @@ void MuscleTask::alignOwnRowsToAlignment(U2OpStatus& os) {
     }
     SAFE_POINT_EXT(!inputTrimmedInputMa->isEmpty() && !inputUnalignedMa->isEmpty(), os.setError("Invalid rowIdsToAlign row set"), );
 
-    MultipleAlignment resultUnorderedMa(MultipleAlignmentDataType::MSA);  // Result alignment with incorrect (non-inputMA) rows order.
+    MultipleAlignment resultUnorderedMa;  // Result alignment with incorrect (non-inputMA) rows order.
     MuscleAdapter::addUnalignedSequencesToProfile(inputTrimmedInputMa, inputUnalignedMa, resultUnorderedMa, stateInfo);
 
     if (resultUnorderedMa->getRowCount() != inputMA->getRowCount()) {

@@ -45,7 +45,7 @@ MultipleAlignment MsaTestUtils::initTestAlignment() {
     QByteArray firstSequence("---AG-T");
     QByteArray secondSequence("AG-CT-TAA");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, alignmentName, alphabet);
+    MultipleAlignment almnt(alignmentName, alphabet);
 
     almnt->addRow("First row", firstSequence);
     almnt->addRow("Second row", secondSequence);
@@ -141,7 +141,7 @@ IMPLEMENT_TEST(MsaUnitTests, length_isEmptyFalse) {
 }
 
 IMPLEMENT_TEST(MsaUnitTests, length_isEmptyTrue) {
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA);
+    MultipleAlignment almnt;
     CHECK_TRUE(almnt->isEmpty(), "Method isEmpty() returned 'false' unexpectedly");
 }
 
@@ -152,7 +152,7 @@ IMPLEMENT_TEST(MsaUnitTests, length_get) {
 }
 
 IMPLEMENT_TEST(MsaUnitTests, length_getForEmpty) {
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA);
+    MultipleAlignment almnt;
     CHECK_EQUAL(0, almnt->getLength(), "alignment length");
 }
 
@@ -173,7 +173,7 @@ IMPLEMENT_TEST(MsaUnitTests, numOfRows_notEmpty) {
 }
 
 IMPLEMENT_TEST(MsaUnitTests, numOfRows_empty) {
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA);
+    MultipleAlignment almnt;
     CHECK_EQUAL(0, almnt->getRowCount(), "number of rows");
 }
 
@@ -192,7 +192,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_leadingGapColumns) {
     QByteArray firstSequence("---AG-T");
     QByteArray secondSequence("--AG-CT-TA");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment with leading gap columns");
+    MultipleAlignment almnt("Alignment with leading gap columns");
     almnt->addRow("First row", firstSequence);
     almnt->addRow("Second row", secondSequence);
 
@@ -215,7 +215,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_nothingToTrim) {
 IMPLEMENT_TEST(MsaUnitTests, trim_rowWithoutGaps) {
     QByteArray seq("ACGTAGTCGATC");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment");
+    MultipleAlignment almnt("Alignment");
     almnt->addRow("Row without gaps", seq);
 
     bool result = almnt->trim();
@@ -226,7 +226,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_rowWithoutGaps) {
 }
 
 IMPLEMENT_TEST(MsaUnitTests, trim_empty) {
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA);
+    MultipleAlignment almnt;
     bool result = almnt->trim();
     CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly");
 }
@@ -235,7 +235,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_trailingGapInOne) {
     QByteArray firstSequence("ACGT");
     QByteArray secondSequence("CAC-");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment");
+    MultipleAlignment almnt("Alignment");
     almnt->addRow("First row", firstSequence);
     almnt->addRow("Second row", secondSequence);
 
@@ -261,7 +261,7 @@ IMPLEMENT_TEST(MsaUnitTests, simplify_withGaps) {
 IMPLEMENT_TEST(MsaUnitTests, simplify_withoutGaps) {
     QByteArray seq("ACGTAGTCGATC");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment");
+    MultipleAlignment almnt("Alignment");
     almnt->addRow("Row without gaps", seq);
 
     bool result = almnt->simplify();
@@ -272,7 +272,7 @@ IMPLEMENT_TEST(MsaUnitTests, simplify_withoutGaps) {
 }
 
 IMPLEMENT_TEST(MsaUnitTests, simplify_empty) {
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA);
+    MultipleAlignment almnt;
     bool result = almnt->simplify();
     CHECK_FALSE(result, "Method simplify() returned 'true' unexpectedly");
 }
@@ -283,7 +283,7 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_byNameAsc) {
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("TTTTTT");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("NameBA", firstSequence);
     almnt->addRow("NameAB", secondSequence);
     almnt->addRow("NameAA", thirdSequence);
@@ -302,7 +302,7 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_byNameDesc) {
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("TTTTTT");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("NameAA", firstSequence);
     almnt->addRow("NameBA", secondSequence);
     almnt->addRow("NameAB", thirdSequence);
@@ -322,7 +322,7 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_twoSimilar) {
     QByteArray thirdSequence("TTTTTT");
     QByteArray forthSequence("AAAAAA");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("First", firstSequence);
     almnt->addRow("Second", secondSequence);
     almnt->addRow("Third", thirdSequence);
@@ -353,7 +353,7 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_threeSimilar) {
     QByteArray thirdSequence("TTTTTT");
     QByteArray forthSequence("AAAAAA");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("First", firstSequence);
     almnt->addRow("Second", secondSequence);
     almnt->addRow("Third", thirdSequence);
@@ -385,7 +385,7 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_similarTwoRegions) {
     QByteArray thirdSequence("AAAAAA");
     QByteArray forthSequence("CCCCCC");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("First", firstSequence);
     almnt->addRow("Second", secondSequence);
     almnt->addRow("Third", thirdSequence);
@@ -465,7 +465,7 @@ IMPLEMENT_TEST(MsaUnitTests, insertGaps_toBeginningLength) {
     QByteArray secondSequence("ACC");
 
     U2OpStatusImpl os;
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment");
+    MultipleAlignment almnt("Alignment");
     almnt->addRow("First", firstSequence);
     almnt->addRow("Second", secondSequence);
 
@@ -573,7 +573,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeRegion_validParams) {
     QByteArray thirdSequence("---CGA");
     QByteArray forthSequence("AAAAAA");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("First", firstSequence);
     almnt->addRow("Second", secondSequence);
     almnt->addRow("Third", thirdSequence);
@@ -594,7 +594,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeRegion_removeEmpty) {
     QByteArray thirdSequence("--AC");
     QByteArray forthSequence("AAAAAA");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("First", firstSequence);
     almnt->addRow("Second", secondSequence);
     almnt->addRow("Third", thirdSequence);
@@ -647,7 +647,7 @@ IMPLEMENT_TEST(MsaUnitTests, upperCase_charsAndGaps) {
     QByteArray sequence1("mMva-ke");
     QByteArray sequence2("avn-*y-s");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA,"Alignment with chars in lower-case");
+    MultipleAlignment almnt("Alignment with chars in lower-case");
     almnt->addRow("First row", sequence1);
     almnt->addRow("Second row", sequence2);
 
@@ -664,7 +664,7 @@ IMPLEMENT_TEST(MsaUnitTests, crop_validParams) {
     QByteArray thirdSequence("---CGA");
 
     U2OpStatusImpl os;
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("First", firstSequence);
     almnt->addRow("Second", secondSequence);
     almnt->addRow("Third", thirdSequence);
@@ -686,7 +686,7 @@ IMPLEMENT_TEST(MsaUnitTests, mid_validParams) {
     QByteArray secondSequence("A");
     QByteArray thirdSequence("---CGA");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("First", firstSequence);
     almnt->addRow("Second", secondSequence);
     almnt->addRow("Third", thirdSequence);
@@ -800,7 +800,7 @@ IMPLEMENT_TEST(MsaUnitTests, moveRowsBlock_positiveDelta) {
     QByteArray thirdSequence("GGGGGG");
     QByteArray forthSequence("TTTTTT");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("First", firstSequence);
     almnt->addRow("Second", secondSequence);
     almnt->addRow("Third", thirdSequence);
@@ -820,7 +820,7 @@ IMPLEMENT_TEST(MsaUnitTests, moveRowsBlock_negativeDelta) {
     QByteArray thirdSequence("GGGGGG");
     QByteArray forthSequence("TTTTTT");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("First", firstSequence);
     almnt->addRow("Second", secondSequence);
     almnt->addRow("Third", thirdSequence);
@@ -839,7 +839,7 @@ IMPLEMENT_TEST(MsaUnitTests, replaceChars_validParams) {
     QByteArray firstSequence("AGT.C.T");
     QByteArray secondSequence("A.CT.-AA");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA, "Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("First row", firstSequence);
     almnt->addRow("Second row", secondSequence);
 
@@ -884,7 +884,7 @@ IMPLEMENT_TEST(MsaUnitTests, operNotEqual_equal) {
 
 IMPLEMENT_TEST(MsaUnitTests, operNotEqual_notEqual) {
     MultipleAlignment almnt = MsaTestUtils::initTestAlignment();
-    MultipleAlignment almnt2(MultipleAlignmentDataType::MSA);
+    MultipleAlignment almnt2;
 
     bool res = (*almnt != *almnt2);
     CHECK_TRUE(res, "Operator!= returned 'False' unexpectedly");
@@ -901,7 +901,7 @@ IMPLEMENT_TEST(MsaUnitTests, hasEmptyGapModel_gaps) {
 IMPLEMENT_TEST(MsaUnitTests, hasEmptyGapModel_noGaps) {
     QByteArray firstSequence("AAAAAA");
 
-    MultipleAlignment almnt(MultipleAlignmentDataType::MSA,"Alignment name");
+    MultipleAlignment almnt("Alignment name");
     almnt->addRow("First", firstSequence);
 
     bool res = almnt->hasEmptyGapModel();

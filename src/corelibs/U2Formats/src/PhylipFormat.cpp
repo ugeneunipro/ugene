@@ -211,31 +211,31 @@ FormatCheckResult PhylipSequentialFormat::checkRawTextData(const QString& dataPr
 
 MultipleAlignment PhylipSequentialFormat::parse(IOAdapterReader& reader, U2OpStatus& os) const {
     QString msaName = reader.getURL().baseFileName();
-    MultipleAlignment msa(MultipleAlignmentDataType::MSA, msaName);
+    MultipleAlignment msa(msaName);
 
     QString firstLine = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
-    CHECK_OP(os, {MultipleAlignmentDataType::MSA});
+    CHECK_OP(os, {});
 
     int sequenceCountInHeader = 0;
     int columnCountInHeader = 0;
-    CHECK_EXT(parseHeader(firstLine, sequenceCountInHeader, columnCountInHeader), os.setError(PhylipFormat::tr("Failed to parse header line")), {MultipleAlignmentDataType::MSA});
+    CHECK_EXT(parseHeader(firstLine, sequenceCountInHeader, columnCountInHeader), os.setError(PhylipFormat::tr("Failed to parse header line")), {});
 
     for (int sequenceIndex = 0; sequenceIndex < sequenceCountInHeader;) {
-        CHECK_EXT(!reader.atEnd(), os.setError(PhylipFormat::tr("Unexpected end of data in Phylip file")), {MultipleAlignmentDataType::MSA});
+        CHECK_EXT(!reader.atEnd(), os.setError(PhylipFormat::tr("Unexpected end of data in Phylip file")), {});
 
         // Read name.
         QString line = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
-        CHECK_OP(os, {MultipleAlignmentDataType::MSA});
+        CHECK_OP(os, {});
         CHECK_CONTINUE(!TextUtils::isWhiteSpace(line));  // Allow empty lines between different sequences.
-        CHECK_EXT(line.length() > PHYLIP_NAME_COLUMNS_COUNT, os.setError(PhylipFormat::tr("Line with a name is too short %1").arg(line)), {MultipleAlignmentDataType::MSA});
+        CHECK_EXT(line.length() > PHYLIP_NAME_COLUMNS_COUNT, os.setError(PhylipFormat::tr("Line with a name is too short %1").arg(line)), {});
         QString name = line.left(PHYLIP_NAME_COLUMNS_COUNT).trimmed();
 
         // Read sequence.
         QByteArray sequence = line.mid(PHYLIP_NAME_COLUMNS_COUNT).replace(" ", "").toLatin1();
         while (sequence.length() != columnCountInHeader) {
-            CHECK_EXT(!reader.atEnd(), os.setError(PhylipFormat::tr("Unexpected end of file")), {MultipleAlignmentDataType::MSA});
+            CHECK_EXT(!reader.atEnd(), os.setError(PhylipFormat::tr("Unexpected end of file")), {});
             line = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
-            CHECK_OP(os, {MultipleAlignmentDataType::MSA});
+            CHECK_OP(os, {});
             sequence += line.replace(" ", "").toLatin1();
         }
         msa->addRow(name, sequence);
@@ -243,7 +243,7 @@ MultipleAlignment PhylipSequentialFormat::parse(IOAdapterReader& reader, U2OpSta
         sequenceIndex++;
     }
     validateMsaByHeaderData(msa, sequenceCountInHeader, columnCountInHeader, os);
-    CHECK_OP(os, {MultipleAlignmentDataType::MSA});
+    CHECK_OP(os, {});
     return msa;
 }
 
@@ -340,20 +340,20 @@ FormatCheckResult PhylipInterleavedFormat::checkRawTextData(const QString& dataP
 
 MultipleAlignment PhylipInterleavedFormat::parse(IOAdapterReader& reader, U2OpStatus& os) const {
     QString msaName = reader.getURL().baseFileName();
-    MultipleAlignment msa(MultipleAlignmentDataType::MSA, msaName);
+    MultipleAlignment msa(msaName);
 
     QString firstLine = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
-    CHECK_OP(os, {MultipleAlignmentDataType::MSA});
+    CHECK_OP(os, {});
 
     int sequenceCountInHeader = 0;
     int columnCountInHeader = 0;
-    CHECK_EXT(parseHeader(firstLine, sequenceCountInHeader, columnCountInHeader), os.setError(PhylipFormat::tr("Failed to parse header line")), {MultipleAlignmentDataType::MSA});
+    CHECK_EXT(parseHeader(firstLine, sequenceCountInHeader, columnCountInHeader), os.setError(PhylipFormat::tr("Failed to parse header line")), {});
 
     // Read the first block with names.
     for (int sequenceIndex = 0; sequenceIndex < sequenceCountInHeader && !reader.atEnd(); sequenceIndex++) {
         QString line = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
-        CHECK_OP(os, {MultipleAlignmentDataType::MSA});
-        CHECK_EXT(line.length() > PHYLIP_NAME_COLUMNS_COUNT, os.setError(PhylipFormat::tr("Line with a name is too short %1").arg(line)), {MultipleAlignmentDataType::MSA});
+        CHECK_OP(os, {});
+        CHECK_EXT(line.length() > PHYLIP_NAME_COLUMNS_COUNT, os.setError(PhylipFormat::tr("Line with a name is too short %1").arg(line)), {});
         QString name = line.left(PHYLIP_NAME_COLUMNS_COUNT).trimmed();
         QByteArray sequence = line.mid(PHYLIP_NAME_COLUMNS_COUNT).replace(" ", "").toLatin1();
         msa->addRow(name, sequence);
@@ -365,7 +365,7 @@ MultipleAlignment PhylipInterleavedFormat::parse(IOAdapterReader& reader, U2OpSt
         int msaLength = msa->getLength();
         for (int sequenceIndex = 0; sequenceIndex < sequenceCountInHeader && !reader.atEnd();) {
             QString line = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
-            CHECK_OP(os, {MultipleAlignmentDataType::MSA});
+            CHECK_OP(os, {});
             CHECK_CONTINUE(!TextUtils::isWhiteSpace(line) || sequenceIndex > 0);  // Allow empty lines only before the first block.
             QByteArray sequence = line.replace(" ", "").toLatin1();
             msa->appendChars(sequenceIndex, msaLength, sequence.constData(), sequence.length());
@@ -374,7 +374,7 @@ MultipleAlignment PhylipInterleavedFormat::parse(IOAdapterReader& reader, U2OpSt
         os.setProgress(reader.getProgress());
     }
     validateMsaByHeaderData(msa, sequenceCountInHeader, columnCountInHeader, os);
-    CHECK_OP(os, {MultipleAlignmentDataType::MSA});
+    CHECK_OP(os, {});
     return msa;
 }
 

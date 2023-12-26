@@ -311,7 +311,7 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc(Document* source) {
     QString baseSeqName = cfg.getSequenceName();
     QList<U2Sequence> seqs = generateTask->getResults();
 
-    MultipleAlignment msa(MultipleAlignmentDataType::MSA, tr("Generated MSA"), alp);
+    MultipleAlignment msa(tr("Generated MSA"), alp);
     DbiConnection con(dbiRef, stateInfo);
 
     for (int sequenceIndex = 0, totalSeqCount = seqs.size(); sequenceIndex < totalSeqCount; sequenceIndex++) {

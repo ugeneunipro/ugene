@@ -239,7 +239,7 @@ void MegaFormat::workUpIndels(MultipleAlignment& al) {
 }
 
 void MegaFormat::load(U2::IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& fs, U2::U2OpStatus& os) {
-    MultipleAlignment al(MultipleAlignmentDataType::MSA, io->getURL().baseFileName());
+    MultipleAlignment al(io->getURL().baseFileName());
     QByteArray line;
     bool eof = false;
     bool firstBlock = true;

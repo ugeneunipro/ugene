@@ -455,7 +455,7 @@ bool NEXUSParser::readDataContents(Context& ctx) {
             }
 
             // Build MultipleAlignment object
-            MultipleAlignment ma(MultipleAlignmentDataType::MSA, tz.getIO()->getURL().baseFileName());
+            MultipleAlignment ma(tz.getIO()->getURL().baseFileName());
             for (int i = 0; i < names.length(); i++) {
                 ma->addRow(names[i], values[i]);
             }

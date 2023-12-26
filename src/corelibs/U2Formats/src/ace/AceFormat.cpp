@@ -422,7 +422,7 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         parseConsensus(io, os, buff, consName, names, headerLine, consensus);
         CHECK_OP(os, );
 
-        MultipleAlignment al(MultipleAlignmentDataType::MSA, consName);
+        MultipleAlignment al(consName);
         al->addRow(consName, consensus);
 
         // AF

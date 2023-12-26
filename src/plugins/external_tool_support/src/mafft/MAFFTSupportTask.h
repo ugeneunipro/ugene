@@ -74,7 +74,7 @@ public:
 
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    MultipleAlignment resultMA = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment resultMA;
 
 private slots:
     void sl_progressUndefined();

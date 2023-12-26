@@ -116,7 +116,7 @@ public:
 
 private:
     PMBuildSettings settings;
-    MultipleAlignment ma = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment ma;
     PFMatrix tempMatrix;
     PWMatrix m;
 };

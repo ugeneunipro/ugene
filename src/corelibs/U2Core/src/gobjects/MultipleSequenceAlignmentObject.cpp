@@ -215,17 +215,15 @@ void MultipleSequenceAlignmentObject::loadAlignment(U2OpStatus& os) {
 }
 
 void MultipleSequenceAlignmentObject::updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) {
-    MultipleAlignment cachedMsa = cachedMa.dynamicCast<MultipleAlignment>();
-
     MultipleSequenceAlignmentExporter msaExporter;
     QList<MsaRowReplacementData> rowsAndSeqs = msaExporter.getAlignmentRows(entityRef.dbiRef, entityRef.entityId, rowIds, os);
     SAFE_POINT_OP(os, );
     foreach (const MsaRowReplacementData& data, rowsAndSeqs) {
-        const int rowIndex = cachedMsa->getRowIndexByRowId(data.row.rowId, os);
+        const int rowIndex = cachedMa->getRowIndexByRowId(data.row.rowId, os);
         SAFE_POINT_OP(os, );
-        cachedMsa->setRowContent(rowIndex, data.sequence.seq);
-        cachedMsa->setRowGapModel(rowIndex, data.row.gaps);
-        cachedMsa->renameRow(rowIndex, data.sequence.getName());
+        cachedMa->setRowContent(rowIndex, data.sequence.seq);
+        cachedMa->setRowGapModel(rowIndex, data.row.gaps);
+        cachedMa->renameRow(rowIndex, data.sequence.getName());
     }
 }
 

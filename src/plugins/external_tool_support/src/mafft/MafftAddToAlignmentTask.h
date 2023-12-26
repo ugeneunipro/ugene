@@ -52,7 +52,7 @@ private:
 
     AlignSequencesToAlignmentTaskSettings settings;
 
-    MultipleAlignment inputMsa = {MultipleAlignmentDataType::MSA};
+    MultipleAlignment inputMsa;
 
     QSharedPointer<Document> tmpDoc;
     QString url;

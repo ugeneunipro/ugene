@@ -126,7 +126,7 @@ void uHMMPlugin::sl_calibrate() {
 }
 
 void uHMMPlugin::sl_build() {
-    MultipleAlignment ma(MultipleAlignmentDataType::MSA);
+    MultipleAlignment ma;
 
     // try to find alignment check that MSA Editor is active
     QString profileName;

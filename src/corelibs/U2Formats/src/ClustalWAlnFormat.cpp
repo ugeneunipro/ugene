@@ -84,7 +84,7 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
     const QBitArray& LINE_BREAKS = TextUtils::LINE_BREAKS;
 
     QString objName = reader.getURL().baseFileName();
-    MultipleAlignment al(MultipleAlignmentDataType::MSA, objName);
+    MultipleAlignment al(objName);
     bool lineOk = false;
     bool firstBlock = true;
     int sequenceIdx = 0;

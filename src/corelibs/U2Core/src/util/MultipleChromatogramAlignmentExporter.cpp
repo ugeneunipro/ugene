@@ -36,7 +36,7 @@
 namespace U2 {
 
 MultipleAlignment MultipleChromatogramAlignmentExporter::getAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId) const {
-    MultipleAlignment mca(MultipleAlignmentDataType::MCA);
+    MultipleAlignment mca;
 
     SAFE_POINT_EXT(!connection.isOpen(), os.setError("Connection is already opened"), mca);
     connection.open(dbiRef, false, os);

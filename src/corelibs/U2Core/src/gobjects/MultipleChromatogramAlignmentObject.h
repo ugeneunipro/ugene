@@ -44,7 +44,7 @@ public:
     MultipleChromatogramAlignmentObject(const QString& name,
                                         const U2EntityRef& mcaRef,
                                         const QVariantMap& hintsMap = QVariantMap(),
-                                        const MultipleAlignment& mca = MultipleAlignment(MultipleAlignmentDataType::MCA));
+                                        const MultipleAlignment& mca = {});
 
     virtual ~MultipleChromatogramAlignmentObject();
 

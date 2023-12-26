@@ -358,7 +358,7 @@ MultipleSequenceAlignmentObject* BlastAlignToReferenceTask::createPairwiseAlignm
     const DNASequence& readSequence,
     const DNAAlphabet* alphabet,
     const AlignToReferenceResult& alignmentResult) {
-    MultipleAlignment pairwiseMsa(MultipleAlignmentDataType::MSA, "pairwise-msa", alphabet);
+    MultipleAlignment pairwiseMsa("pairwise-msa", alphabet);
     QByteArray croppedReferenceSequence = referenceSequence.seq.mid(alignmentResult.pairwiseAlignmentReferenceRegion.startPos,
                                                                     alignmentResult.pairwiseAlignmentReferenceRegion.length);
     pairwiseMsa->addRow("reference", croppedReferenceSequence);
