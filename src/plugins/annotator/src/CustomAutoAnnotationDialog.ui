@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
-    <height>205</height>
+    <width>372</width>
+    <height>240</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,9 +28,9 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QCheckBox" name="originBox">
+       <widget class="QCheckBox" name="twoHybridGeneBox">
         <property name="text">
-         <string>Origin</string>
+         <string>Two-hybrid gene</string>
         </property>
        </widget>
       </item>
@@ -42,30 +42,65 @@
        </widget>
       </item>
       <item row="1" column="1">
+       <widget class="QCheckBox" name="localizationBox">
+        <property name="text">
+         <string>Localization sequence</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="regulatoryBox">
+        <property name="text">
+         <string>Regulatory sequence</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="affinityBox">
+        <property name="text">
+         <string>Affinity tag</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="replicationBox">
+        <property name="text">
+         <string>Replication origin</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="geneBox">
+        <property name="text">
+         <string>Gene</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="selectableBox">
+        <property name="text">
+         <string>Selectable marker</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
        <widget class="QCheckBox" name="primerBox">
         <property name="text">
          <string>Primer</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="genesBox">
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="reporterGeneBox">
         <property name="text">
-         <string>Gene</string>
+         <string>Reporter gene</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QCheckBox" name="featureBox">
+      <item row="5" column="1">
+       <widget class="QCheckBox" name="miscellaneousBox">
         <property name="text">
-         <string>Other features</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="regulatoryBox">
-        <property name="text">
-         <string>Regulatory</string>
+         <string>Miscellaneous</string>
         </property>
        </widget>
       </item>

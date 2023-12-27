@@ -1,0 +1,4 @@
+<multi-test>
+    <load-document index="doc" url="annotator/seq_with_all_features.fa" io="local_file" format="fasta"/>
+    <custom-auto-annotation-search doc="doc" seq="clipboard_3" result="plasmid_annotations" circular="false" expected_results="457"/>
+</multi-test>
