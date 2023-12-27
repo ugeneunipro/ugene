@@ -27,7 +27,6 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceDbi.h>
 
-static const char* NULL_MSA_DBI_ERROR = "NULL MSA Dbi during exporting rows of an alignment!";
 static const char* OPENED_DBI_CONNECTION_ERROR = "Connection is already opened!";
 static const char* ROWS_SEQS_COUNT_MISMATCH_ERROR = "Different number of rows and sequences!";
 
@@ -67,42 +66,47 @@ MultipleAlignment MultipleSequenceAlignmentExporter::getAlignment(const U2DbiRef
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(msa.alphabet);
     al->setAlphabet(alphabet);
     al->setName(msa.visualName);
-    al->setLength(msa.length);
+    al->setLength((int)msa.length);
     return al;
 }
 
-QList<MsaRowReplacementData> MultipleSequenceAlignmentExporter::getAlignmentRows(const U2DbiRef& dbiRef,
-                                                                                 const U2DataId& msaId,
-                                                                                 const QList<qint64> rowIds,
-                                                                                 U2OpStatus& os) const {
-    SAFE_POINT(!con.isOpen(), OPENED_DBI_CONNECTION_ERROR, QList<MsaRowReplacementData>());
+QList<MsaRowSnapshot> MultipleSequenceAlignmentExporter::getAlignmentRows(const U2DbiRef& dbiRef,
+                                                                          const U2DataId& msaId,
+                                                                          const QList<qint64>& rowIds,
+                                                                          U2OpStatus& os) const {
+    SAFE_POINT(!con.isOpen(), OPENED_DBI_CONNECTION_ERROR, {});
     con.open(dbiRef, false, os);
-    CHECK_OP(os, QList<MsaRowReplacementData>());
+    CHECK_OP(os, {});
 
     QList<U2MsaRow> rows = exportRows(msaId, rowIds, os);
-    CHECK_OP(os, QList<MsaRowReplacementData>());
+    CHECK_OP(os, {});
 
     QList<DNASequence> sequences = exportSequencesOfRows(rows, os);
-    CHECK_OP(os, QList<MsaRowReplacementData>());
+    CHECK_OP(os, {});
 
-    QList<MsaRowReplacementData> result;
-    SAFE_POINT(rows.count() == sequences.count(), ROWS_SEQS_COUNT_MISMATCH_ERROR, QList<MsaRowReplacementData>());
+    SAFE_POINT(rows.count() == sequences.count(), ROWS_SEQS_COUNT_MISMATCH_ERROR, {});
+    QList<MsaRowSnapshot> result;
     for (int i = 0; i < rows.length(); ++i) {
-        result << MsaRowReplacementData(sequences.at(i), rows.at(i));
+        const U2MsaRow& row = rows.at(i);
+        MsaRowSnapshot snapshot;
+        snapshot.sequence = sequences.at(i);
+        snapshot.gaps = row.gaps;
+        snapshot.rowLength = row.length;
+        result << snapshot;
     }
     return result;
 }
 
 QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId& msaId, U2OpStatus& os) const {
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(msaDbi != nullptr, NULL_MSA_DBI_ERROR, QList<U2MsaRow>());
+    SAFE_POINT_NN(msaDbi, {});
 
     return msaDbi->getRows(msaId, os);
 }
 
-QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId& msaId, const QList<qint64> rowIds, U2OpStatus& os) const {
+QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os) const {
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(msaDbi != nullptr, NULL_MSA_DBI_ERROR, QList<U2MsaRow>());
+    SAFE_POINT_NN(msaDbi, {});
     QList<U2MsaRow> result;
     foreach (qint64 rowId, rowIds) {
         result.append(msaDbi->getRow(msaId, rowId, os));
@@ -113,7 +117,7 @@ QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId& ms
 
 QList<DNASequence> MultipleSequenceAlignmentExporter::exportSequencesOfRows(QList<U2MsaRow> rows, U2OpStatus& os) const {
     U2SequenceDbi* sequenceDbi = con.dbi->getSequenceDbi();
-    SAFE_POINT(sequenceDbi != nullptr, "NULL Sequence Dbi during exporting rows sequences!", QList<DNASequence>());
+    SAFE_POINT_NN(sequenceDbi, {});
 
     QList<DNASequence> sequences;
     sequences.reserve(rows.count());
@@ -124,10 +128,10 @@ QList<DNASequence> MultipleSequenceAlignmentExporter::exportSequencesOfRows(QLis
         U2Region regionInSequence(gstart, gend - gstart);
 
         QByteArray seqData = sequenceDbi->getSequenceData(sequenceId, regionInSequence, os);
-        CHECK_OP(os, QList<DNASequence>());
+        CHECK_OP(os, {});
 
         U2Sequence seqObj = sequenceDbi->getSequenceObject(sequenceId, os);
-        CHECK_OP(os, QList<DNASequence>());
+        CHECK_OP(os, {});
 
         DNASequence seq(seqObj.visualName, seqData);
         sequences.append(seq);
@@ -138,21 +142,17 @@ QList<DNASequence> MultipleSequenceAlignmentExporter::exportSequencesOfRows(QLis
 
 QVariantMap MultipleSequenceAlignmentExporter::exportAlignmentInfo(const U2DataId& msaId, U2OpStatus& os) const {
     U2AttributeDbi* attrDbi = con.dbi->getAttributeDbi();
-    SAFE_POINT(attrDbi != nullptr, "NULL Attribute Dbi during exporting an alignment info!", QVariantMap());
+    SAFE_POINT_NN(attrDbi, {});
 
     // Get all MSA attributes
     QVariantMap alInfo;
     QList<U2DataId> attributeIds = attrDbi->getObjectAttributes(msaId, "", os);
     CHECK_OP(os, QVariantMap());
 
-    foreach (U2DataId attributeId, attributeIds) {
+    for (const U2DataId& attributeId : qAsConst(attributeIds)) {
         U2StringAttribute attr = attrDbi->getStringAttribute(attributeId, os);
-        CHECK_OP(os, QVariantMap());
-
-        QString key = attr.name;
-        QVariant val = QVariant(attr.value);
-
-        alInfo.insert(key, val);
+        CHECK_OP(os, {});
+        alInfo.insert(attr.name, attr.value);
     }
 
     return alInfo;
@@ -160,8 +160,7 @@ QVariantMap MultipleSequenceAlignmentExporter::exportAlignmentInfo(const U2DataI
 
 U2Msa MultipleSequenceAlignmentExporter::exportAlignmentObject(const U2DataId& msaId, U2OpStatus& os) const {
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(msaDbi != nullptr, "NULL MSA Dbi during exporting an alignment object!", {U2Type::Msa});
-
+    SAFE_POINT_NN(msaDbi, {U2Type::Msa});
     return msaDbi->getMsaObject(msaId, os);
 }
 

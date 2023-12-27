@@ -236,13 +236,13 @@ void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus& os) {
 
 void MultipleChromatogramAlignmentObject::updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) {
     MultipleChromatogramAlignmentExporter mcaExporter;
-    QMap<qint64, McaRowMemoryData> mcaRowsMemoryData = mcaExporter.getMcaRowMemoryData(os, entityRef.dbiRef, entityRef.entityId, rowIds);
+    QMap<qint64, MsaRowSnapshot> mcaRowsMemoryData = mcaExporter.getMcaRowMemoryData(os, entityRef.dbiRef, entityRef.entityId, rowIds);
     SAFE_POINT_OP(os, );
     foreach (const qint64 rowId, mcaRowsMemoryData.keys()) {
         const int rowIndex = cachedMa->getRowIndexByRowId(rowId, os);
         SAFE_POINT_OP(os, );
-        const McaRowMemoryData& rowData = mcaRowsMemoryData[rowId];
-        cachedMa->setRowContent(rowIndex, rowData.chromatogram, rowData.sequence, rowData.gapModel);
+        const MsaRowSnapshot& rowData = mcaRowsMemoryData[rowId];
+        cachedMa->setRowContent(rowIndex, rowData.chromatogram, rowData.sequence, rowData.gaps);
         SAFE_POINT_OP(os, );
         cachedMa->renameRow(rowIndex, rowData.sequence.getName());
     }

@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2Sequence.h>
@@ -31,6 +32,15 @@ class DbiConnection;
 class MultipleSequenceAlignmentObject;
 class U2DbiRef;
 class U2OpStatus;
+
+class U2CORE_EXPORT MsaDbRowSnapshot {
+public:
+    U2Chromatogram chromatogram;
+    U2Sequence sequence;
+    QVector<U2MsaGap> gapModel;
+    qint64 rowLength = 0;
+    QVariantMap additionalInfo;
+};
 
 /** Importing a multiple alignment into db */
 class U2CORE_EXPORT MultipleSequenceAlignmentImporter {
