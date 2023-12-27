@@ -91,19 +91,19 @@ public:
 
     struct PatternInfo {
         QString name;
-        bool forwardStrand;
-        PatternInfo()
-            : forwardStrand(true) {
-        }
-        PatternInfo(const QString& nm, bool isForward)
-            : name(nm), forwardStrand(isForward) {
+        QString type;
+        bool forwardStrand = true;
+
+        PatternInfo() = default;
+        PatternInfo(const QString& _nm, const QString& _type, bool isForward)
+            : name(_nm), type(_type), forwardStrand(isForward) {
         }
     };
 
 private:
     QSharedPointer<SArrayIndex> index;
+    QMap<QString, QList<SharedAnnotationData>> groupAnnotationsMap;
     QMap<Task*, PatternInfo> taskFeatureNames;
-    QList<SharedAnnotationData> annotations;
     U2SequenceObject dnaObj;
     QPointer<AnnotationTableObject> annotationTableObject;
     QByteArray sequence;

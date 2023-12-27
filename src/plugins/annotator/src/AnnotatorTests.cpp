@@ -29,6 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectTypes.h>
+#include <U2Core/U2SafePoints.h>
 
 /* TRANSLATOR U2::GTest */
 
@@ -196,7 +197,17 @@ void GTest_CustomAutoAnnotation::init(XMLTestFormat*, const QDomElement& el) {
     isCircular = el.attribute(CIRCULAR_ATTR) == "true";
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
     if (!expected.isEmpty()) {
-        expectedUniqueFeaturesFound = expected.toInt();
+        bool ok = false;
+        int result = expected.toInt(&ok);
+        if (ok) {
+            expectedUniqueFeaturesFound = result;
+        } else {
+            expectedAnnotationGroupNames = expected.split(",");
+            if (expectedAnnotationGroupNames.isEmpty()) {
+                wrongValue(EXPECTED_RESULTS_ATTR);
+                return;
+            }
+        }
     }
 }
 
@@ -259,6 +270,25 @@ Task::ReportResult GTest_CustomAutoAnnotation::report() {
             return ReportResult_Finished;
         }
 
+    } else if (!expectedAnnotationGroupNames.isEmpty()) {
+        auto root = ao->getRootGroup();
+        CHECK_EXT(root != nullptr, setError("Root group is null"), ReportResult_Finished);
+
+        auto mainSubgroups = root->getSubgroups();
+        CHECK_EXT(mainSubgroups.size() == 1, setError("Main subgroup is not found"), ReportResult_Finished);
+
+        auto subgroups = mainSubgroups.first()->getSubgroups();
+        QStringList subgroupsNames;
+        for (auto subgroup : qAsConst(subgroups)) {
+            subgroupsNames << subgroup->getName();
+        }
+        std::sort(expectedAnnotationGroupNames.begin(), expectedAnnotationGroupNames.end());
+        std::sort(subgroupsNames.begin(), subgroupsNames.end());
+        if (expectedAnnotationGroupNames != subgroupsNames) {
+            setError(QString("Unexpected annotation group names, expected: \"%1\", current: \"%2\"")
+                .arg(expectedAnnotationGroupNames.join(",")).arg(subgroupsNames.join(",")));
+            return ReportResult_Finished;
+        }
     }
     return ReportResult_Finished;
 }

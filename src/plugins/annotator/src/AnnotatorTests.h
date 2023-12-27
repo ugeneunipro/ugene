@@ -69,6 +69,7 @@ private:
     // How many unique features was found
     // Two features with the same name couns as one
     int expectedUniqueFeaturesFound = -1;
+    QStringList expectedAnnotationGroupNames;
     CustomPatternAnnotationTask* searchTask = nullptr;;
     AnnotationTableObject* ao = nullptr;
 };
