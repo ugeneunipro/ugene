@@ -16,37 +16,77 @@
     <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="26"/>
         <source>Promoter</source>
-        <translation>Promoter</translation>
+        <translation>Промотор</translation>
     </message>
     <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="33"/>
-        <source>Origin</source>
-        <translation>Origin</translation>
+        <source>Two-hybrid gene</source>
+        <translation>Двухгибридный ген</translation>
     </message>
     <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="40"/>
         <source>Terminator</source>
-        <translation>Terminator</translation>
+        <translation>Терминатор</translation>
     </message>
     <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="47"/>
-        <source>Primer</source>
-        <translation>Primer</translation>
+        <source>Localization sequence</source>
+        <translation>Сигнал локализации</translation>
     </message>
     <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="54"/>
-        <source>Gene</source>
-        <translation>Gene</translation>
+        <source>Regulatory sequence</source>
+        <translation>Регуляторная последовательность</translation>
     </message>
     <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="61"/>
-        <source>Other features</source>
-        <translation>Другие аннотации</translation>
+        <source>Affinity tag</source>
+        <translation>Афинные метки</translation>
     </message>
     <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="68"/>
-        <source>Regulatory</source>
-        <translation>Regulatory</translation>
+        <source>Replication origin</source>
+        <translation>Точка начала репликации</translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="82"/>
+        <source>Selectable marker</source>
+        <translation>Селектируемый маркер</translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="89"/>
+        <source>Primer</source>
+        <translation>Праймер</translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="96"/>
+        <source>Reporter gene</source>
+        <translation>Репортёрные гены</translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="103"/>
+        <source>Miscellaneous</source>
+        <translation>Различные последовательности</translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="115"/>
+        <source>All</source>
+        <translation>Все</translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="122"/>
+        <source>None</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="129"/>
+        <source>Invert</source>
+        <translation>Инвертировать</translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="75"/>
+        <source>Gene</source>
+        <translation>Ген</translation>
     </message>
 </context>
 <context>
@@ -212,12 +252,12 @@
 <context>
     <name>U2::CustomPatternAnnotationTask</name>
     <message>
-        <location filename="../src/CustomPatternAnnotationTask.cpp" line="52"/>
+        <location filename="../src/CustomPatternAnnotationTask.cpp" line="57"/>
         <source>Custom pattern annotation</source>
         <translation>Пользовательская аннотация</translation>
     </message>
     <message>
-        <location filename="../src/CustomPatternAnnotationTask.cpp" line="112"/>
+        <location filename="../src/CustomPatternAnnotationTask.cpp" line="117"/>
         <source>Object with annotations was removed</source>
         <translation>Объект с аннотациями был удалён</translation>
     </message>

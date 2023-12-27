@@ -42,8 +42,37 @@ CustomAutoAnnotationDialog::CustomAutoAnnotationDialog(ADVSequenceObjectContext*
     setupUi(this);
     new HelpButton(this, buttonBox, "65930930");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Annotate"));
+    connect(pbAll, &QAbstractButton::clicked, this, [this]() {
+        setCheckboxesStates(CheckType::All);
+    });
+    connect(pbNone, &QAbstractButton::clicked, this, [this]() {
+        setCheckboxesStates(CheckType::None);
+    });
+    connect(pbInvert, &QAbstractButton::clicked, this, [this]() {
+        setCheckboxesStates(CheckType::Invert);
+    });
 
     loadSettings();
+}
+
+void CustomAutoAnnotationDialog::setCheckboxesStates(CheckType checkType) {
+    auto allChildren = groupBox->children();
+    for (auto child : qAsConst(allChildren)) {
+        auto checkBox = qobject_cast<QCheckBox*>(child);
+        CHECK_CONTINUE(checkBox != nullptr);
+
+        switch (checkType) {
+        case CheckType::All:
+            checkBox->setChecked(true);
+            break;
+        case CheckType::None:
+            checkBox->setChecked(false);
+            break;
+        case CheckType::Invert:
+            checkBox->setChecked(!checkBox->isChecked());
+            break;
+        }
+    }
 }
 
 void CustomAutoAnnotationDialog::loadSettings() {
