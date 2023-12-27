@@ -5,6 +5,5 @@
                  result="!tmp_data_dir!1195.ugenedb"
                  message="The aligning is finished"
                  nomessage="ERROR"
-                 lockForLogListening="true"
     />
 </multi-test>

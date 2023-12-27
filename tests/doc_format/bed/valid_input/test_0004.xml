@@ -2,7 +2,7 @@
 <!-- three required fields "chrom", "chromStart" and "chromEnd" -->
 <!-- and optional fields "name", "score"  -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="bed/valid_input/fields_num_5.bed" io="local_file" format="bed" no-message="BED parsing error"/>
 

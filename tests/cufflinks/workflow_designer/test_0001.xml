@@ -1,4 +1,4 @@
-<multi-test lockForLogListening="true">
+<multi-test>
     <remove-temp-dir url="cufflinks_0001"/>
     <!-- Running a simple workflow with Cufflinks -->
     <run-cmdline

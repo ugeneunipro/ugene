@@ -1,6 +1,6 @@
 <!-- Verify a valid FPKM Tracking Format file: locus value contains two colons (the one in the sequence name, and the one that divides sequence name and coordinates). -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="fpkm_tracking_format/valid/locus_seqname_contains_colon.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error"/>
 

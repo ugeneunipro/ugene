@@ -3,7 +3,7 @@
 <!--   1) The name of the annotations table object depends on the "seqname" field.  -->
 <!--   2) The test file can contain comments. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="gtf/valid.gtf" io="local_file" format="gtf" no-message="GTF parsing error"/>
 

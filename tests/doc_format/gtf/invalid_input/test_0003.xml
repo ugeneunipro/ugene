@@ -1,6 +1,6 @@
 <!-- Verify an invalid GTF file that can be opened: invalid strand value. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="gtf/invalid/invalid_strand.gtf" io="local_file" format="gtf" message="GTF parsing error: incorrect strand value"/>
 

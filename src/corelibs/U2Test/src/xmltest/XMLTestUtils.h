@@ -103,7 +103,6 @@ public:
     ReportResult report();
 
     static const QString FAIL_ON_SUBTEST_FAIL;  // it defines whether the test should stop execution after the first error; is "true" by default
-    static const QString LOCK_FOR_LOG_LISTENING;  // This attribute is used to avoid mixing log messages between different tests. Each test that listens to log should set this attribute to "true"
 };
 
 class GTest_Fail : public XmlTest {

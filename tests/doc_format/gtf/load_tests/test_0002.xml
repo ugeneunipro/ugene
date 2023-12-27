@@ -1,6 +1,6 @@
 <!-- The test verifies that we can input a file with annotations for several reference sequences. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="gtf/load_tests/fusions.gtf" io="local_file" format="gtf" no-message="GTF parsing error"/>
 

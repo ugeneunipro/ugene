@@ -1,4 +1,4 @@
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <remove-temp-dir url="pcr_0008"/>
     <create-temp-dir url="pcr_0008"/>

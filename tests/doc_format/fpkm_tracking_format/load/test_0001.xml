@@ -1,6 +1,6 @@
 <!-- Verify a big valid FPKM Tracking Format file from Internet. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="fpkm_tracking_format/valid/real_life_example.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error"/>
 

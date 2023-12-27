@@ -1,7 +1,7 @@
 <!-- Verify an invalid FPKM File Format file that can be opened: no value for tracking ID. -->
 <!-- The test also verifies that there are two error messages. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="fpkm_tracking_format/invalid/no_tracking_id.fpkm_tracking" io="local_file" format="fpkm-tracking" message="FPKM Tracking Format parsing error: tracking ID value is empty" message2="FPKM Tracking Format parsing error: one or more errors occurred while parsing the input file"/>
 

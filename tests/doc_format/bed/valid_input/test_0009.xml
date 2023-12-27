@@ -1,6 +1,6 @@
 <!-- Verify a valid BED file with strand value "-" -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="bed/valid_input/rev_compl_strand.bed" io="local_file" format="bed" no-message="BED parsing error"/>
 

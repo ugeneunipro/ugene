@@ -1,6 +1,6 @@
 <!-- Verify a valid BED file with score bound values 0 and 1000. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="bed/valid_input/score_0_and_1000.bed" io="local_file" format="bed" no-message="BED parsing error"/>
 

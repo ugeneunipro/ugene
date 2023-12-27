@@ -1,6 +1,6 @@
 <!-- Verify saving of a valid BED file: only 5 fields. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="bed/valid_input/fields_num_5.bed" io="local_file" format="bed" no-message="BED parsing error"/>
 

@@ -1,6 +1,6 @@
 <!-- Verify an invalid GTF file that can be opened: invalid frame value (value = 3). -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="gtf/invalid/invalid_frame_int.gtf" io="local_file" format="gtf" message="GTF parsing error: incorrect frame value"/>
 
