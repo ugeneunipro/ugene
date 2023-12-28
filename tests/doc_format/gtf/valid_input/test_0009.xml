@@ -1,6 +1,6 @@
 <!-- Verify an invalid GTF file that can be opened: 'gene_id' attribute is absent. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="gtf/invalid/invalid_no_gene_id.gtf" io="local_file" format="gtf"/>
 

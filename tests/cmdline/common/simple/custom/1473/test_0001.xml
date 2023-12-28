@@ -1,4 +1,4 @@
-<multi-test lockForLogListening="true">
+<multi-test>
     <remove-temp-dir url="1473"/>
     <create-temp-dir url="1473"/>
 

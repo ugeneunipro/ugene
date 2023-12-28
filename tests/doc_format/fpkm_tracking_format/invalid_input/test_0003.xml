@@ -1,6 +1,6 @@
 <!-- Verify an invalid FPKM File Format file that can be opened: incorrect value of 'coverage'. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="fpkm_tracking_format/invalid/invalid_coverage.fpkm_tracking" io="local_file" format="fpkm-tracking" message="FPKM Tracking Format parsing error: incorrect coverage value"/>
 

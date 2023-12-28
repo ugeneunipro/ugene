@@ -1,7 +1,7 @@
 <!-- Verify a valid FPKM Tracking Format file: valid values of each field. -->
 <!-- The name of the annotations table object is also verified. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="fpkm_tracking_format/valid/all_values.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error"/>
 

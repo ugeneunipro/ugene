@@ -1,6 +1,6 @@
 <!-- The test verifies that we can input a file with a line longer than 4096 characters. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="gtf/load_tests/long_line.gtf" io="local_file" format="gtf" no-message="GTF parsing error"/>
 

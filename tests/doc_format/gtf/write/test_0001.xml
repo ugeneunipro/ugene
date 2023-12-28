@@ -1,6 +1,6 @@
 <!-- Verify saving of a valid GTF file. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="gtf/valid.gtf" io="local_file" format="gtf" no-message="GTF parsing error"/>
 

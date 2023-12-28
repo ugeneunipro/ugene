@@ -1,6 +1,6 @@
 <!-- Verify a valid FPKM Tracking Format file: several "FPKM" columns for different samples, another names of these columns (according to the spec, not to the Cufflinks output). -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="fpkm_tracking_format/valid/several_fpkm_samples.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error"/>
 

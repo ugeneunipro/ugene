@@ -1,7 +1,7 @@
 <!-- Verify a valid BED file (TopHat output) -->
 <!-- It is also verified that the name of the annotations table object depends on the "chrom" field.  -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="bed/valid_input/tophat_output.bed" io="local_file" format="bed" no-message="BED parsing error"/>
 

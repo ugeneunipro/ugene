@@ -1,6 +1,6 @@
 <!-- Verify a valid BED file with another format of attributes' values in the header -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="bed/valid_input/header_attributes.bed" io="local_file" format="bed" no-message="BED parsing error"/>
 

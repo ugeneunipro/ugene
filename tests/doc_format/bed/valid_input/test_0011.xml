@@ -1,6 +1,6 @@
 <!-- Verify a valid BED file with not set value itemRgb. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="bed/valid_input/item_rgb_is_0.bed" io="local_file" format="bed" no-message="BED parsing error"/>
 
