@@ -42,7 +42,6 @@ MultipleSequenceAlignmentObject::MultipleSequenceAlignmentObject(const QString& 
     : MultipleAlignmentObject(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, name, msaRef, hintsMap, alnData) {
 }
 
-
 MultipleSequenceAlignmentObject* MultipleSequenceAlignmentObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     CHECK_OP(os, nullptr);
@@ -216,14 +215,17 @@ void MultipleSequenceAlignmentObject::loadAlignment(U2OpStatus& os) {
 
 void MultipleSequenceAlignmentObject::updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) {
     MultipleSequenceAlignmentExporter msaExporter;
-    QList<MsaRowReplacementData> rowsAndSeqs = msaExporter.getAlignmentRows(entityRef.dbiRef, entityRef.entityId, rowIds, os);
+    QList<MsaRowSnapshot> snapshots = msaExporter.getAlignmentRows(entityRef.dbiRef, entityRef.entityId, rowIds, os);
     SAFE_POINT_OP(os, );
-    foreach (const MsaRowReplacementData& data, rowsAndSeqs) {
-        const int rowIndex = cachedMa->getRowIndexByRowId(data.row.rowId, os);
+    SAFE_POINT(snapshots.length() == rowIds.length(), "Row count does not match", );
+    for (int i = 0; i < rowIds.length(); i++) {
+        qint64 rowId = rowIds[i];
+        const MsaRowSnapshot& snapshot = snapshots[i];
+        int rowIndex = cachedMa->getRowIndexByRowId(rowId, os);
         SAFE_POINT_OP(os, );
-        cachedMa->setRowContent(rowIndex, data.sequence.seq);
-        cachedMa->setRowGapModel(rowIndex, data.row.gaps);
-        cachedMa->renameRow(rowIndex, data.sequence.getName());
+        cachedMa->setRowContent(rowIndex, snapshot.sequence.seq);
+        cachedMa->setRowGapModel(rowIndex, snapshot.gaps);
+        cachedMa->renameRow(rowIndex, snapshot.sequence.getName());
     }
 }
 

@@ -24,19 +24,19 @@
 #include <U2Core/DbiConnection.h>
 #include <U2Core/MultipleAlignment.h>
 
-#include "McaRowInnerData.h"
+#include "MultipleSequenceAlignmentExporter.h"
 
 namespace U2 {
 
 class U2CORE_EXPORT MultipleChromatogramAlignmentExporter {
 public:
     MultipleAlignment getAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId) const;
-    QMap<qint64, McaRowMemoryData> getMcaRowMemoryData(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId, const QList<qint64>& rowIds) const;
+    QMap<qint64, MsaRowSnapshot> getMcaRowMemoryData(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId, const QList<qint64>& rowIds) const;
 
 private:
     QList<U2MsaRow> exportRows(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId) const;
     QList<U2MsaRow> exportRows(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId, const QList<qint64>& rowIds) const;
-    QList<McaRowMemoryData> exportDataOfRows(U2OpStatus& os, const QList<U2MsaRow>& rows) const;
+    QList<MsaRowSnapshot> exportDataOfRows(U2OpStatus& os, const QList<U2MsaRow>& rows) const;
     DNASequence exportSequence(U2OpStatus& os, const U2DataId& sequenceId) const;
     QVariantMap exportRowAdditionalInfo(U2OpStatus& os, const U2DataId& chromatogramId) const;
     QVariantMap exportAlignmentInfo(U2OpStatus& os, const U2DataId& mcaId) const;

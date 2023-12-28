@@ -21,19 +21,20 @@
 
 #pragma once
 
+#include <U2Core/DNAChromatogram.h>
+#include <U2Core/DNASequence.h>
 #include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2Msa.h>
 
 namespace U2 {
 
-struct MsaRowReplacementData {
-    MsaRowReplacementData(const DNASequence& _sequence, const U2MsaRow& _row)
-        : sequence(_sequence), row(_row) {
-    }
-
+struct U2CORE_EXPORT MsaRowSnapshot {
     DNASequence sequence;
-    U2MsaRow row;
+    DNAChromatogram chromatogram;
+    QVector<U2MsaGap> gaps;
+    qint64 rowLength;
+    QVariantMap additionalInfo;
 };
 
 /** Getting a multiple sequence alignment from DBI */
@@ -42,11 +43,11 @@ public:
     MultipleSequenceAlignmentExporter() = default;
 
     MultipleAlignment getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const;
-    QList<MsaRowReplacementData> getAlignmentRows(const U2DbiRef& dbiRef, const U2DataId& msaId, const QList<qint64> rowIds, U2OpStatus& os) const;
+    QList<MsaRowSnapshot> getAlignmentRows(const U2DbiRef& dbiRef, const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os) const;
 
 private:
     QList<U2MsaRow> exportRows(const U2DataId&, U2OpStatus&) const;
-    QList<U2MsaRow> exportRows(const U2DataId&, const QList<qint64> rowIds, U2OpStatus&) const;
+    QList<U2MsaRow> exportRows(const U2DataId&, const QList<qint64>& rowIds, U2OpStatus&) const;
     QList<DNASequence> exportSequencesOfRows(QList<U2MsaRow>, U2OpStatus&) const;
     QVariantMap exportAlignmentInfo(const U2DataId&, U2OpStatus&) const;
     U2Msa exportAlignmentObject(const U2DataId&, U2OpStatus&) const;

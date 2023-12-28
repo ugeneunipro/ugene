@@ -62,7 +62,7 @@ MultipleChromatogramAlignmentObject* MultipleChromatogramAlignmentImporter::crea
     CHECK_OP(os, nullptr);
 
     // MCA rows
-    QList<McaRowDatabaseData> mcaRowsDatabaseData = importRowChildObjects(os, connection, folder, mca);
+    QList<MsaDbRowSnapshot> mcaRowsDatabaseData = importRowChildObjects(os, connection, folder, mca);
     CHECK_OP(os, nullptr);
 
     QList<U2MsaRow> rows = importRows(os, connection, dbMca, mcaRowsDatabaseData);
@@ -116,11 +116,11 @@ void MultipleChromatogramAlignmentImporter::importMcaInfo(U2OpStatus& os, const 
     }
 }
 
-QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildObjects(U2OpStatus& os,
+QList<MsaDbRowSnapshot> MultipleChromatogramAlignmentImporter::importRowChildObjects(U2OpStatus& os,
                                                                                        const DbiConnection& connection,
                                                                                        const QString& folder,
                                                                                        const MultipleAlignment& mca) {
-    QList<McaRowDatabaseData> mcaRowsDatabaseData;
+    QList<MsaDbRowSnapshot> mcaRowsDatabaseData;
     UdrDbi* udrDbi = connection.dbi->getUdrDbi();
     SAFE_POINT_EXT(udrDbi != nullptr, os.setError("NULL UDR Dbi during importing an alignment"), mcaRowsDatabaseData);
     U2SequenceDbi* sequenceDbi = connection.dbi->getSequenceDbi();
@@ -131,7 +131,7 @@ QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildO
     const U2AlphabetId alphabetId = alphabet->getId();
 
     foreach (const MultipleAlignmentRow& row, mca->getRows()) {
-        McaRowDatabaseData mcaRowDatabaseData;
+        MsaDbRowSnapshot mcaRowDatabaseData;
 
         mcaRowDatabaseData.chromatogram = importChromatogram(os, connection, folder, row->getChromatogram());
         CHECK_OP(os, mcaRowsDatabaseData);
@@ -157,10 +157,10 @@ QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildO
 QList<U2MsaRow> MultipleChromatogramAlignmentImporter::importRows(U2OpStatus& os,
                                                                   const DbiConnection& connection,
                                                                   U2Msa& dbMca,
-                                                                  const QList<McaRowDatabaseData>& mcaRowsDatabaseData) {
+                                                                  const QList<MsaDbRowSnapshot>& mcaRowsDatabaseData) {
     QList<U2MsaRow> rows;
 
-    foreach (const McaRowDatabaseData& mcaRowDatabaseData, mcaRowsDatabaseData) {
+    foreach (const MsaDbRowSnapshot& mcaRowDatabaseData, mcaRowsDatabaseData) {
         U2MsaRow row;
         row.chromatogramId = mcaRowDatabaseData.chromatogram.id;
         row.sequenceId = mcaRowDatabaseData.sequence.id;

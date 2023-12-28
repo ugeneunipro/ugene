@@ -46,12 +46,12 @@ MultipleAlignment MultipleChromatogramAlignmentExporter::getAlignment(U2OpStatus
     QList<U2MsaRow> rows = exportRows(os, dbiRef, mcaId);
     CHECK_OP(os, mca);
 
-    QList<McaRowMemoryData> mcaRowsMemoryData = exportDataOfRows(os, rows);
+    QList<MsaRowSnapshot> mcaRowsMemoryData = exportDataOfRows(os, rows);
     CHECK_OP(os, mca);
     SAFE_POINT_EXT(rows.count() == mcaRowsMemoryData.count(), os.setError("Different number of rows and sequences"), mca);
 
     for (int i = 0; i < rows.count(); ++i) {
-        const McaRowMemoryData& rowData = mcaRowsMemoryData[i];
+        const MsaRowSnapshot& rowData = mcaRowsMemoryData[i];
         mca->addRow(rows[i], rowData.chromatogram, rowData.sequence, os);
         mca->getRow(i)->setAdditionalInfo(rowData.additionalInfo);
     }
@@ -70,16 +70,16 @@ MultipleAlignment MultipleChromatogramAlignmentExporter::getAlignment(U2OpStatus
     SAFE_POINT_EXT(alphabet != nullptr, os.setError(QString("Alphabet with ID '%1' not found").arg(dbMca.alphabet.id)), mca);
     mca->setAlphabet(alphabet);
     mca->setName(dbMca.visualName);
-    mca->setLength(dbMca.length);
+    mca->setLength((int)dbMca.length);
 
     return mca;
 }
 
-QMap<qint64, McaRowMemoryData> MultipleChromatogramAlignmentExporter::getMcaRowMemoryData(U2OpStatus& os,
-                                                                                          const U2DbiRef& dbiRef,
-                                                                                          const U2DataId& mcaId,
-                                                                                          const QList<qint64>& rowIds) const {
-    QMap<qint64, McaRowMemoryData> result;
+QMap<qint64, MsaRowSnapshot> MultipleChromatogramAlignmentExporter::getMcaRowMemoryData(U2OpStatus& os,
+                                                                                        const U2DbiRef& dbiRef,
+                                                                                        const U2DataId& mcaId,
+                                                                                        const QList<qint64>& rowIds) const {
+    QMap<qint64, MsaRowSnapshot> result;
     SAFE_POINT_EXT(!connection.isOpen(), os.setError("Connection is already opened"), result);
     connection.open(dbiRef, false, os);
     CHECK_OP(os, result);
@@ -87,7 +87,7 @@ QMap<qint64, McaRowMemoryData> MultipleChromatogramAlignmentExporter::getMcaRowM
     QList<U2MsaRow> rows = exportRows(os, dbiRef, mcaId, rowIds);
     CHECK_OP(os, result);
 
-    QList<McaRowMemoryData> rowsData = exportDataOfRows(os, rows);
+    QList<MsaRowSnapshot> rowsData = exportDataOfRows(os, rows);
     CHECK_OP(os, result);
     SAFE_POINT_EXT(rows.count() == rowsData.count(), os.setError("Different number of rows and sequences"), result);
 
@@ -113,25 +113,26 @@ QList<U2MsaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus& os
     return result;
 }
 
-QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(U2OpStatus& os, const QList<U2MsaRow>& rows) const {
-    QList<McaRowMemoryData> mcaRowsMemoryData;
+QList<MsaRowSnapshot> MultipleChromatogramAlignmentExporter::exportDataOfRows(U2OpStatus& os, const QList<U2MsaRow>& rows) const {
+    QList<MsaRowSnapshot> mcaRowsMemoryData;
     mcaRowsMemoryData.reserve(rows.count());
 
-    for (const U2MsaRow& row: qAsConst(rows)) {
-        McaRowMemoryData mcaRowMemoryData;
+    for (const U2MsaRow& row : qAsConst(rows)) {
+        MsaRowSnapshot snapshot;
+
         U2EntityRef chromatogramRef(connection.dbi->getDbiRef(), row.chromatogramId);
-        mcaRowMemoryData.chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
+        snapshot.chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
         CHECK_OP(os, {});
 
-        mcaRowMemoryData.sequence = exportSequence(os, row.sequenceId);
+        snapshot.sequence = exportSequence(os, row.sequenceId);
         CHECK_OP(os, {});
 
-        mcaRowMemoryData.additionalInfo = exportRowAdditionalInfo(os, row.chromatogramId);
+        snapshot.additionalInfo = exportRowAdditionalInfo(os, row.chromatogramId);
 
-        mcaRowMemoryData.gapModel = row.gaps;
-        mcaRowMemoryData.rowLength = row.length;
+        snapshot.gaps = row.gaps;
+        snapshot.rowLength = row.length;
 
-        mcaRowsMemoryData << mcaRowMemoryData;
+        mcaRowsMemoryData << snapshot;
     }
 
     return mcaRowsMemoryData;
@@ -180,7 +181,7 @@ QVariantMap MultipleChromatogramAlignmentExporter::exportAlignmentInfo(U2OpStatu
     QList<U2DataId> attributeIds = attributeDbi->getObjectAttributes(mcaId, "", os);
     CHECK_OP(os, QVariantMap());
 
-    foreach (const U2DataId& attributeId, attributeIds) {
+    for (const U2DataId& attributeId : qAsConst(attributeIds)) {
         if (dbi->getEntityTypeById(attributeId) != U2Type::AttributeString) {
             continue;
         }

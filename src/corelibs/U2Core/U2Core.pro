@@ -235,7 +235,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/MaIterator.h \
            src/util/MaModificationInfo.h \
            src/util/MsaDbiUtils.h \
-           src/util/McaRowInnerData.h \
            src/util/MsaRowUtils.h \
            src/util/MSAUtils.h \
            src/util/MultipleChromatogramAlignmentExporter.h \
@@ -461,7 +460,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/IOAdapterUtils.cpp \
            src/util/MaIterator.cpp \
            src/util/MaModificationInfo.cpp \
-           src/util/McaRowInnerData.cpp \
            src/util/MsaDbiUtils.cpp \
            src/util/MsaRowUtils.cpp \
            src/util/MSAUtils.cpp \

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "McaRowInnerData.h"
+#include "./MultipleSequenceAlignmentImporter.h"
 
 namespace U2 {
 
@@ -37,8 +37,8 @@ public:
 private:
     static U2Msa importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleAlignment& mca);
     static void importMcaInfo(U2OpStatus& os, const DbiConnection& connection, const U2DataId& mcaId, const MultipleAlignment& mca);
-    static QList<McaRowDatabaseData> importRowChildObjects(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleAlignment& mca);
-    static QList<U2MsaRow> importRows(U2OpStatus& os, const DbiConnection& connection, U2Msa& dbMca, const QList<McaRowDatabaseData>& mcaRowDatabaseData);
+    static QList<MsaDbRowSnapshot> importRowChildObjects(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleAlignment& mca);
+    static QList<U2MsaRow> importRows(U2OpStatus& os, const DbiConnection& connection, U2Msa& dbMca, const QList<MsaDbRowSnapshot>& mcaRowDatabaseData);
     static U2Chromatogram importChromatogram(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const DNAChromatogram& chromatogram);
     static U2Sequence importSequence(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const DNASequence& sequence, const U2AlphabetId& alphabetId);
     static void importRowAdditionalInfo(U2OpStatus& os, const DbiConnection& connection, const U2Chromatogram& chromatogram, const QVariantMap& additionalInfo);
