@@ -101,9 +101,10 @@ QList<U2MsaRow> MsaExportUtils::readRows(const U2DataId& msaId, const QList<qint
     U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
     SAFE_POINT_NN(msaDbi, {});
     QList<U2MsaRow> result;
-    foreach (qint64 rowId, rowIds) {
-        result.append(msaDbi->getRow(msaId, rowId, os));
-        SAFE_POINT_OP(os, QList<U2MsaRow>());
+    for (qint64 rowId : qAsConst(rowIds)) {
+        U2MsaRow row = msaDbi->getRow(msaId, rowId, os);
+        result.append(row);
+        SAFE_POINT_OP(os, {});
     }
     return result;
 }
@@ -154,6 +155,7 @@ QList<MsaRowSnapshot> MsaExportUtils::loadRows(const QList<U2MsaRow>& rows, U2Op
                 MultipleAlignmentRowInfo::setComplemented(rowSnapshot.additionalInfo, isComplemented);
             }
         }
+        rowSnapshots << rowSnapshot;
     }
 
     return rowSnapshots;
