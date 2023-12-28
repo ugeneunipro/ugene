@@ -33,9 +33,15 @@ public:
     AnyDialogFiller(const QString& objectName, QDialogButtonBox::StandardButton _b)
         : Filler(objectName), b(_b) {
     }
+    // Creates a filler with scenario for any dialog possible
+    // Useful in case of rarely-used dialogs, when you do not want to write a separate filler
+    AnyDialogFiller(const QString& objectName, CustomScenario* _scenario)
+        : Filler(objectName, _scenario) {
+    }
+
     void commonScenario();
 
 private:
-    QDialogButtonBox::StandardButton b;
+    QDialogButtonBox::StandardButton b = QDialogButtonBox::Ok;
 };
 }  // namespace U2

@@ -23,6 +23,7 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMainWindow.h>
@@ -57,6 +58,7 @@
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
+#include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 
@@ -228,6 +230,47 @@ GUI_TEST_CLASS_DEFINITION(test_8028) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("text"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8037) {
+    // Open human_T1.fa
+    // Open the "Annotate plasmid" dialog
+    // Check "All"
+    // Expected: 12 checkboxes checked
+    // Check "None"
+    // Expected: 0 checkboxes checked
+    // Check "Promoter", "Regulatory sequence" and "Gene"
+    // Check "Invert"
+    // Expected: 9 checkboxes checked
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTWidget::click(GTWidget::findPushButton("pbAll"));
+            auto checked = GTWidget::findChildren<QCheckBox>(dialog, [](QCheckBox* checkBox) { return checkBox->isChecked(); });
+            CHECK_SET_ERR(checked.size() == 12, QString("Unexpected checked size, expected: 12, current: %1").arg(checked.size()));
+
+            GTWidget::click(GTWidget::findPushButton("pbNone"));
+            checked = GTWidget::findChildren<QCheckBox>(dialog, [](QCheckBox* checkBox) { return checkBox->isChecked(); });
+            CHECK_SET_ERR(checked.size() == 0, QString("Unexpected checked size, expected: 0, current: %1").arg(checked.size()));
+
+            GTCheckBox::setChecked("promotersBox", dialog);
+            GTCheckBox::setChecked("regulatoryBox", dialog);
+            GTCheckBox::setChecked("geneBox", dialog);
+
+            GTWidget::click(GTWidget::findPushButton("pbInvert"));
+            checked = GTWidget::findChildren<QCheckBox>(dialog, [](QCheckBox* checkBox) { return checkBox->isChecked(); });
+            CHECK_SET_ERR(checked.size() == 9, QString("Unexpected checked size, expected: 9, current: %1").arg(checked.size()));
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new AnyDialogFiller("CustomAutoAnnotationDialog",  new Scenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Annotate plasmid");
 }
 
 }  // namespace GUITest_regression_scenarios

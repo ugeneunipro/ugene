@@ -34,6 +34,13 @@ public:
     virtual void accept();
 
 private:
+    enum class CheckType {
+        All,
+        None,
+        Invert
+    };
+    void setCheckboxesStates(CheckType checkType);
+
     ADVSequenceObjectContext* seqCtx;
     void loadSettings();
     void saveSettings();
