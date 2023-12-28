@@ -53,6 +53,14 @@ const QString PlasmidFeatureTypes::GENE("Gene");
 const QString PlasmidFeatureTypes::PRIMER("Primer");
 const QString PlasmidFeatureTypes::MISCELLANEOUS("Miscellaneous");
 
+static const QMap<QString, U2FeatureTypes::U2FeatureType> FEATURE_NAME_TYPE_MAP = {
+            {PlasmidFeatureTypes::PROMOTER, U2FeatureTypes::U2FeatureType::Promoter},
+            {PlasmidFeatureTypes::TERMINATOR, U2FeatureTypes::U2FeatureType::Terminator},
+            {PlasmidFeatureTypes::REGULATORY_SEQUENCE, U2FeatureTypes::U2FeatureType::Regulatory},
+            {PlasmidFeatureTypes::REPLICATION_ORIGIN, U2FeatureTypes::U2FeatureType::ReplicationOrigin},
+            {PlasmidFeatureTypes::GENE, U2FeatureTypes::U2FeatureType::Gene},
+            {PlasmidFeatureTypes::PRIMER, U2FeatureTypes::U2FeatureType::Primer} };
+
 CustomPatternAnnotationTask::CustomPatternAnnotationTask(AnnotationTableObject* aObj, const U2::U2EntityRef& entityRef, const SharedFeatureStore& store, const QStringList& filteredFeatureTypes)
     : Task(tr("Custom pattern annotation"), TaskFlags_NR_FOSCOE), dnaObj("ref", entityRef), annotationTableObject(aObj),
       featureStore(store), filteredFeatures(filteredFeatureTypes) {
@@ -87,7 +95,7 @@ void CustomPatternAnnotationTask::prepare() {
     DNATranslation* complTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(dnaObj.getAlphabet());
     assert(complTT);
 
-    foreach (const FeaturePattern& pattern, patterns) {
+    for (const FeaturePattern& pattern : qAsConst(patterns)) {
         if (filteredFeatures.contains(pattern.type)) {
             continue;
         }
@@ -101,14 +109,14 @@ void CustomPatternAnnotationTask::prepare() {
         settings.query = pattern.sequence;
 
         SArrayBasedFindTask* task = new SArrayBasedFindTask(index.data(), settings);
-        taskFeatureNames.insert(task, PatternInfo(pattern.name, true));
+        taskFeatureNames.insert(task, PatternInfo(pattern.name, pattern.type, true));
         addSubTask(task);
 
         complTT->translate(settings.query.data(), settings.query.size());
         TextUtils::reverse(settings.query.data(), settings.query.size());
 
         SArrayBasedFindTask* revComplTask = new SArrayBasedFindTask(index.data(), settings);
-        taskFeatureNames.insert(revComplTask, PatternInfo(pattern.name, false));
+        taskFeatureNames.insert(revComplTask, PatternInfo(pattern.name, pattern.type, false));
         addSubTask(revComplTask);
     }
 }
@@ -127,8 +135,7 @@ QList<Task*> CustomPatternAnnotationTask::onSubTaskFinished(Task* subTask) {
     PatternInfo info = taskFeatureNames.take(task);
 
     qint64 seqLen = dnaObj.getSequenceLength();
-
-    foreach (int pos, results) {
+    for (int pos : qAsConst(results)) {
         if (pos > dnaObj.getSequenceLength()) {
             continue;
         }
@@ -137,6 +144,7 @@ QList<Task*> CustomPatternAnnotationTask::onSubTaskFinished(Task* subTask) {
 
         SharedAnnotationData data(new AnnotationData);
         data->name = info.name;
+        data->type = FEATURE_NAME_TYPE_MAP.value(info.type, U2FeatureTypes::U2FeatureType::MiscFeature);
         U2Strand strand = info.forwardStrand ? U2Strand::Direct : U2Strand::Complementary;
         data->setStrand(strand);
 
@@ -152,12 +160,18 @@ QList<Task*> CustomPatternAnnotationTask::onSubTaskFinished(Task* subTask) {
             data->location->regions << region;
         }
 
+        auto annotations = groupAnnotationsMap.value(info.type);
         annotations.append(data);
+        groupAnnotationsMap.insert(info.type, annotations);
     }
 
-    if (taskFeatureNames.isEmpty() && annotations.size() > 0) {
+    if (taskFeatureNames.isEmpty() && groupAnnotationsMap.size() > 0) {
         const QString& groupName = featureStore->getName();
-        subTasks.append(new CreateAnnotationsTask(annotationTableObject, {{groupName, annotations}}));
+        auto subgroups = groupAnnotationsMap.keys();
+        for (const auto& subgroup : qAsConst(subgroups)) {
+            auto annotations = groupAnnotationsMap.value(subgroup);
+            subTasks.append(new CreateAnnotationsTask(annotationTableObject, {{groupName + "/" + subgroup, annotations}}));
+        }
     }
 
     return subTasks;
