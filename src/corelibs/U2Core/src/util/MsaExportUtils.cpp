@@ -22,14 +22,13 @@
 #include "MsaExportUtils.h"
 
 #include <U2Core/ChromatogramUtils.h>
+#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleAlignmentRowInfo.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceDbi.h>
-
-static const char* ROWS_SEQS_COUNT_MISMATCH_ERROR = "Different number of rows and sequences!";
 
 namespace U2 {
 
@@ -39,29 +38,33 @@ MultipleAlignment MsaExportUtils::loadAlignment(const U2DbiRef& dbiRef, const U2
     CHECK_OP(os, {});
 
     U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
-    SAFE_POINT_NN(msaDbi, {});
+    SAFE_POINT_EXT(msaDbi, os.setError("msaDbi is nullptr!"), {});
 
     U2Msa msa = msaDbi->getMsaObject(msaId, os);
     CHECK_OP(os, {});
 
     MultipleAlignment ma;
+
+    QVariantMap alignmentInfo = loadAlignmentInfo(msaId, os, connection);
+    CHECK_OP(os, {});
+    ma->setInfo(alignmentInfo);
+
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(msa.alphabet);
     ma->setAlphabet(alphabet);
     ma->setName(msa.visualName);
     ma->setLength((int)msa.length);
 
-    QVariantMap alInfo = loadAlignmentInfo(msaId, os, connection);
-    CHECK_OP(os, {});
-    ma->setInfo(alInfo);
-
     // Rows and their sequences
     QList<U2MsaRow> rows = readRows(msaId, os, connection);
+    CHECK_OP(os, {});
+
+    MsaDbiUtils::resolveMsaRowChromatograms(os, rows, msaId, connection);
     CHECK_OP(os, {});
 
     QList<MsaRowSnapshot> rowSnapshots = loadRows(rows, os, connection);
     CHECK_OP(os, {});
 
-    SAFE_POINT(rows.count() == rowSnapshots.count(), ROWS_SEQS_COUNT_MISMATCH_ERROR, {});
+    SAFE_POINT_EXT(rows.count() == rowSnapshots.count(), os.setError("Different number of rows and sequences!"), {});
 
     for (int i = 0; i < rows.count(); ++i) {
         const MsaRowSnapshot& rowSnapshot = rowSnapshots[i];
@@ -87,23 +90,24 @@ QList<MsaRowSnapshot> MsaExportUtils::loadRows(const U2DbiRef& dbiRef,
     QList<U2MsaRow> rows = readRows(msaId, rowIds, os, connection);
     CHECK_OP(os, {});
 
+    MsaDbiUtils::resolveMsaRowChromatograms(os, rows, msaId, connection);
+    CHECK_OP(os, {});
+
     return loadRows(rows, os, connection);
 }
 
 QList<U2MsaRow> MsaExportUtils::readRows(const U2DataId& msaId, U2OpStatus& os, const DbiConnection& connection) {
     U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
-    SAFE_POINT_NN(msaDbi, {});
-
+    SAFE_POINT_EXT(msaDbi, os.setError("msaDbi is null!"), {});
     return msaDbi->getRows(msaId, os);
 }
 
 QList<U2MsaRow> MsaExportUtils::readRows(const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os, const DbiConnection& connection) {
     U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
-    SAFE_POINT_NN(msaDbi, {});
+    SAFE_POINT_EXT(msaDbi, os.setError("msaDbi is null!"), {});
     QList<U2MsaRow> result;
     for (qint64 rowId : qAsConst(rowIds)) {
-        U2MsaRow row = msaDbi->getRow(msaId, rowId, os);
-        result.append(row);
+        result << msaDbi->getRow(msaId, rowId, os);
         SAFE_POINT_OP(os, {});
     }
     return result;
@@ -111,16 +115,16 @@ QList<U2MsaRow> MsaExportUtils::readRows(const U2DataId& msaId, const QList<qint
 
 QList<MsaRowSnapshot> MsaExportUtils::loadRows(const QList<U2MsaRow>& rows, U2OpStatus& os, const DbiConnection& connection) {
     U2SequenceDbi* sequenceDbi = connection.dbi->getSequenceDbi();
-    SAFE_POINT_NN(sequenceDbi, {});
+    SAFE_POINT_EXT(sequenceDbi, os.setError("Failed to get sequence dbi"), {});
 
     U2AttributeDbi* attributeDbi = connection.dbi->getAttributeDbi();
     SAFE_POINT_EXT(attributeDbi != nullptr, os.setError("Attribute Dbi is NULL during exporting an alignment info"), {});
 
-    QList<MsaRowSnapshot> rowSnapshots;
-    rowSnapshots.reserve(rows.count());
+    QList<MsaRowSnapshot> snapshots;
+    snapshots.reserve(rows.count());
     for (const auto& row : qAsConst(rows)) {
-        MsaRowSnapshot rowSnapshot;
-        rowSnapshot.rowId = row.rowId;
+        MsaRowSnapshot snapshot;
+        snapshot.rowId = row.rowId;
 
         U2Region regionInSequence(row.gstart, row.gend - row.gstart);
 
@@ -130,13 +134,13 @@ QList<MsaRowSnapshot> MsaExportUtils::loadRows(const QList<U2MsaRow>& rows, U2Op
         U2Sequence seqObj = sequenceDbi->getSequenceObject(row.sequenceId, os);
         CHECK_OP(os, {});
 
-        rowSnapshot.sequence = DNASequence(seqObj.visualName, seqData);
-        rowSnapshot.gaps = row.gaps;
-        rowSnapshot.rowLength = row.length;
+        snapshot.sequence = DNASequence(seqObj.visualName, seqData);
+        snapshot.gaps = row.gaps;
+        snapshot.rowLength = row.length;
 
         if (!row.chromatogramId.isEmpty()) {
             U2EntityRef chromatogramRef(connection.dbi->getDbiRef(), row.chromatogramId);
-            rowSnapshot.chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
+            snapshot.chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
             CHECK_OP(os, {});
 
             QList<U2DataId> reversedAttributeIds = attributeDbi->getObjectAttributes(row.chromatogramId, MultipleAlignmentRowInfo::REVERSED, os);
@@ -144,7 +148,7 @@ QList<MsaRowSnapshot> MsaExportUtils::loadRows(const QList<U2MsaRow>& rows, U2Op
 
             if (!reversedAttributeIds.isEmpty()) {
                 bool isReversed = attributeDbi->getIntegerAttribute(reversedAttributeIds.last(), os).value == 1;
-                MultipleAlignmentRowInfo::setReversed(rowSnapshot.additionalInfo, isReversed);
+                MultipleAlignmentRowInfo::setReversed(snapshot.additionalInfo, isReversed);
             }
 
             QList<U2DataId> complementedAttributeIds = attributeDbi->getObjectAttributes(row.chromatogramId, MultipleAlignmentRowInfo::COMPLEMENTED, os);
@@ -152,18 +156,18 @@ QList<MsaRowSnapshot> MsaExportUtils::loadRows(const QList<U2MsaRow>& rows, U2Op
 
             if (!reversedAttributeIds.isEmpty()) {
                 bool isComplemented = attributeDbi->getIntegerAttribute(complementedAttributeIds.last(), os).value == 1;
-                MultipleAlignmentRowInfo::setComplemented(rowSnapshot.additionalInfo, isComplemented);
+                MultipleAlignmentRowInfo::setComplemented(snapshot.additionalInfo, isComplemented);
             }
         }
-        rowSnapshots << rowSnapshot;
+        snapshots << snapshot;
     }
 
-    return rowSnapshots;
+    return snapshots;
 }
 
 QVariantMap MsaExportUtils::loadAlignmentInfo(const U2DataId& msaId, U2OpStatus& os, const DbiConnection& connection) {
     U2AttributeDbi* attrDbi = connection.dbi->getAttributeDbi();
-    SAFE_POINT_NN(attrDbi, {});
+    SAFE_POINT_EXT(attrDbi, os.setError("attrDbi is null!"), {});
 
     // Get all MSA attributes
     QVariantMap alInfo;

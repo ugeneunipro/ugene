@@ -138,7 +138,7 @@ public:
      * Replaces the set of characters.
      * It's better than use @replaceCharactersInRow several times, because this function opens database just one time.
      */
-    static void replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QHash<qint64, char> newCharList, U2OpStatus& os);
+    static void replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, const QHash<qint64, char>& newCharList, U2OpStatus& os);
 
     /**
      * Replaces a non-gap character in the whole alignment.
@@ -200,6 +200,9 @@ public:
     static void calculateGapModelAfterInsert(QVector<U2MsaGap>& gapModel, qint64 pos, qint64 count);
 
     static U2MsaRow getMsaRow(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId);
+    static U2MsaRow getMsaRow(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId, const DbiConnection& connection);
+    static void resolveMsaRowChromatogram(U2OpStatus& os, U2MsaRow& row, const U2DataId& msaEntityId, const DbiConnection& connection);
+    static void resolveMsaRowChromatograms(U2OpStatus& os, QList<U2MsaRow>& rows, const U2DataId& msaEntityId, const DbiConnection& connection);
 
     static QList<U2MsaRow> getMsaRows(U2OpStatus& os, const U2EntityRef& msaRef);
 

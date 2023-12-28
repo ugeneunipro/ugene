@@ -403,7 +403,7 @@ void MsaDbiUtils::calculateGapModelAfterInsert(QVector<U2MsaGap>& gapModel, qint
             else {
                 bool found = false;
 
-                int indexGreaterGaps = 0;
+                int indexGreaterGaps;
                 for (int i = 0; i < gapModel.count(); ++i) {
                     if (pos > gapModel[i].startPos + gapModel[i].length) {
                         continue;
@@ -441,8 +441,7 @@ QList<U2MsaRow> MsaDbiUtils::cutOffLeadingGaps(QList<U2MsaRow>& rows) {
         // If some rows first gap's offset isn't zero
         // return
         if (leadingGapsToRemove == 0 || rows[i].gaps.isEmpty() || rows[i].gaps.first().startPos != 0) {
-            leadingGapsToRemove = 0;
-            return QList<U2MsaRow>();
+            return {};
         }
         leadingGapsToRemove = qMin(leadingGapsToRemove, rows[i].gaps.first().length);
     }
@@ -1306,45 +1305,63 @@ QList<U2MsaRow> MsaDbiUtils::getMsaRows(U2OpStatus& os, const U2EntityRef& msaRe
     U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
     SAFE_POINT_NN(msaDbi, {});
 
-    U2Msa msa = msaDbi->getMsaObject(msaRef.entityId, os);
-    CHECK_OP(os, {});
-
     QList<U2MsaRow> rows = msaDbi->getRows(msaRef.entityId, os);
     CHECK_OP(os, {});
 
-    if (msa.type == U2Type::Mca) {
-        for (U2MsaRow& row : rows) {
-            U2EntityRef sequenceRef(msaRef.dbiRef, row.sequenceId);
-            row.chromatogramId = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, sequenceRef).entityId;
-            CHECK_OP(os, {});
-        }
-    }
+    resolveMsaRowChromatograms(os, rows, msaRef.entityId, connection);
     return rows;
 }
 
 U2MsaRow MsaDbiUtils::getMsaRow(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId) {
     DbiConnection connection(msaRef.dbiRef, os);
     CHECK_OP(os, {});
+    return getMsaRow(os, msaRef, rowId, connection);
+}
 
+U2MsaRow MsaDbiUtils::getMsaRow(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId, const DbiConnection& connection) {
     U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
-    SAFE_POINT_NN(msaDbi, {});
-
-    U2Msa msa = msaDbi->getMsaObject(msaRef.entityId, os);
-    CHECK_OP(os, {});
+    SAFE_POINT_EXT(msaDbi, os.setError("Msa dbi is null!"), {});
 
     U2MsaRow row = msaDbi->getRow(msaRef.entityId, rowId, os);
     CHECK_OP(os, {});
 
     // Resolve chromatograms only for MCA today.
-    if (msa.type == U2Type::Mca) {
-        U2EntityRef sequenceEntityRef(msaRef.dbiRef, row.sequenceId);
-        row.chromatogramId = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, sequenceEntityRef).entityId;
-        CHECK_OP(os, row);
-    }
+    resolveMsaRowChromatogram(os, row, msaRef.entityId, connection);
     return row;
 }
 
-void U2::MsaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QHash<qint64, char> newCharList, U2OpStatus& os) {
+void MsaDbiUtils::resolveMsaRowChromatogram(U2OpStatus& os, U2MsaRow& row, const U2DataId& msaEntityId, const DbiConnection& connection) {
+    U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
+    SAFE_POINT_EXT(msaDbi, os.setError("Msa dbi is null!"), );
+
+    U2Msa msa = msaDbi->getMsaObject(msaEntityId, os);  // TODO we need only type here, not the whole object.
+    CHECK_OP(os, );
+    if (msa.type == U2Type::Mca) {
+        U2EntityRef sequenceEntityRef(connection.dbi->getDbiRef(), row.sequenceId);
+        U2EntityRef chromatogramEntityRef = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, sequenceEntityRef);
+        CHECK_OP(os, );
+        row.chromatogramId = chromatogramEntityRef.entityId;
+    }
+}
+
+void MsaDbiUtils::resolveMsaRowChromatograms(U2OpStatus& os, QList<U2MsaRow>& rows, const U2DataId& msaEntityId, const DbiConnection& connection) {
+    U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
+    SAFE_POINT_EXT(msaDbi, os.setError("Msa dbi is null!"), );
+
+    U2Msa msa = msaDbi->getMsaObject(msaEntityId, os);  // TODO we need only type here, not the whole object.
+    SAFE_POINT_OP(os, );
+
+    if (msa.type == U2Type::Mca) {
+        for (U2MsaRow& row : rows) {
+            U2EntityRef sequenceEntityRef(connection.dbi->getDbiRef(), row.sequenceId);
+            U2EntityRef chromatogramEntityRef = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, sequenceEntityRef);
+            CHECK_OP(os, );
+            row.chromatogramId = chromatogramEntityRef.entityId;
+        }
+    }
+}
+
+void U2::MsaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, const QHash<qint64, char>& newCharList, U2OpStatus& os) {
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaRef.dbiRef, os));
     CHECK_OP(os, );
 
