@@ -25,7 +25,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MsaExportUtils.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
@@ -209,13 +209,11 @@ void MultipleSequenceAlignmentObject::deleteColumnsWithGaps(U2OpStatus& os, int 
 }
 
 void MultipleSequenceAlignmentObject::loadAlignment(U2OpStatus& os) {
-    MultipleSequenceAlignmentExporter msaExporter;
-    cachedMa = msaExporter.getAlignment(entityRef.dbiRef, entityRef.entityId, os);
+    cachedMa = MsaExportUtils::loadAlignment(entityRef.dbiRef, entityRef.entityId, os);
 }
 
 void MultipleSequenceAlignmentObject::updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) {
-    MultipleSequenceAlignmentExporter msaExporter;
-    QList<MsaRowSnapshot> snapshots = msaExporter.getAlignmentRows(entityRef.dbiRef, entityRef.entityId, rowIds, os);
+    QList<MsaRowSnapshot> snapshots = MsaExportUtils::loadRows(entityRef.dbiRef, entityRef.entityId, rowIds, os);
     SAFE_POINT_OP(os, );
     SAFE_POINT(snapshots.length() == rowIds.length(), "Row count does not match", );
     for (int i = 0; i < rowIds.length(); i++) {

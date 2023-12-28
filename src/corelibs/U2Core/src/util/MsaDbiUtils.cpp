@@ -23,7 +23,7 @@
 
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DNASequenceUtils.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MsaExportUtils.h>
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -1153,8 +1153,7 @@ QList<qint64> MsaDbiUtils::removeEmptyRows(const U2EntityRef& msaRef, const QLis
 
 void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os) {
     // Get the alignment.
-    MultipleSequenceAlignmentExporter alExporter;
-    MultipleAlignment al = alExporter.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_OP_EXT(os, uiLog.error(os.getError()), );
 
     // Validate the parameters.

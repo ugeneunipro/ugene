@@ -23,8 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaExportUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -85,9 +84,7 @@ U2EntityRef MsaObjectTestData::getTestAlignmentRef(const U2DbiRef& dbiRef, const
 MultipleAlignment MsaObjectTestData::getTestAlignment(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
     U2EntityRef malignmentRef = getTestAlignmentRef(dbiRef, name, os);
     CHECK_OP(os, {});
-
-    MultipleSequenceAlignmentExporter exporter;
-    return exporter.getAlignment(dbiRef, malignmentRef.entityId, os);
+    return MsaExportUtils::loadAlignment(dbiRef, malignmentRef.entityId, os);
 }
 
 IMPLEMENT_TEST(MsaObjectUnitTests, getMAlignment) {

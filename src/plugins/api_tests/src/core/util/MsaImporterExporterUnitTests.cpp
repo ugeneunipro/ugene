@@ -23,7 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MsaExportUtils.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -75,8 +75,7 @@ IMPLEMENT_TEST(MsaImporterExporterUnitTests, importExportAlignment) {
     CHECK_NO_ERROR(os);
 
     // Export the alignment
-    MultipleSequenceAlignmentExporter alExporter;
-    MultipleAlignment alActual = alExporter.getAlignment(dbiRef, msaObj->getEntityRef().entityId, os);
+    MultipleAlignment alActual = MsaExportUtils::loadAlignment(dbiRef, msaObj->getEntityRef().entityId, os);
     CHECK_NO_ERROR(os);
 
     bool alsEqual = (*al == *alActual);

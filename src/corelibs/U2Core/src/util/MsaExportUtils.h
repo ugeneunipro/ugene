@@ -30,6 +30,8 @@
 namespace U2 {
 
 struct U2CORE_EXPORT MsaRowSnapshot {
+    /** Row ID in the database. */
+    qint64 rowId;
     DNASequence sequence;
     DNAChromatogram chromatogram;
     QVector<U2MsaGap> gaps;
@@ -38,21 +40,21 @@ struct U2CORE_EXPORT MsaRowSnapshot {
 };
 
 /** Getting a multiple sequence alignment from DBI */
-class U2CORE_EXPORT MultipleSequenceAlignmentExporter {
+class U2CORE_EXPORT MsaExportUtils {
 public:
-    MultipleSequenceAlignmentExporter() = default;
+    MsaExportUtils() = default;
 
-    MultipleAlignment getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const;
-    QList<MsaRowSnapshot> getAlignmentRows(const U2DbiRef& dbiRef, const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os) const;
+    /** Returns in-memory alignment model. */
+    static MultipleAlignment loadAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os);
+
+    /** Returns in-memory rows model. */
+    static QList<MsaRowSnapshot> loadRows(const U2DbiRef& dbiRef, const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os);
 
 private:
-    QList<U2MsaRow> exportRows(const U2DataId&, U2OpStatus&) const;
-    QList<U2MsaRow> exportRows(const U2DataId&, const QList<qint64>& rowIds, U2OpStatus&) const;
-    QList<DNASequence> exportSequencesOfRows(QList<U2MsaRow>, U2OpStatus&) const;
-    QVariantMap exportAlignmentInfo(const U2DataId&, U2OpStatus&) const;
-    U2Msa exportAlignmentObject(const U2DataId&, U2OpStatus&) const;
-
-    mutable DbiConnection con;
+    static QList<U2MsaRow> readRows(const U2DataId&, U2OpStatus&, const DbiConnection& connection);
+    static QList<U2MsaRow> readRows(const U2DataId&, const QList<qint64>& rowIds, U2OpStatus&, const DbiConnection& connection);
+    static QList<MsaRowSnapshot> loadRows(const QList<U2MsaRow>& rows, U2OpStatus& os, const DbiConnection& connection);
+    static QVariantMap loadAlignmentInfo(const U2DataId& dataId, U2OpStatus& os, const DbiConnection& connection);
 };
 
 }  // namespace U2
