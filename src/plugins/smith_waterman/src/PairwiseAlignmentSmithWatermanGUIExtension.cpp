@@ -25,6 +25,7 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QLayout>
+#include <QMessageBox>
 #include <QStringList>
 #include <QVariant>
 
@@ -36,6 +37,8 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2View/SubstMatrixDialog.h>
 
 namespace U2 {
 
@@ -81,6 +84,8 @@ void PairwiseAlignmentSmithWatermanMainWidget::initParameters() {
     }
 
     fillInnerSettings();
+
+    connect(pbView, &QPushButton::clicked, this, &PairwiseAlignmentSmithWatermanMainWidget::sl_viewMatrixClicked);
 }
 
 void PairwiseAlignmentSmithWatermanMainWidget::addScoredMatrixes() {
@@ -104,6 +109,17 @@ void PairwiseAlignmentSmithWatermanMainWidget::updateWidget() {
     scoringMatrix->clear();
     addScoredMatrixes();
     innerSettings.insert(PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_SCORING_MATRIX_NAME, scoringMatrix->currentText());
+}
+
+void PairwiseAlignmentSmithWatermanMainWidget::sl_viewMatrixClicked() {
+    QString strSelectedMatrix = scoringMatrix->currentText();
+    SMatrix mtx = AppContext::getSubstMatrixRegistry()->getMatrix(strSelectedMatrix);
+    if (mtx.isEmpty()) {
+        QMessageBox::critical(this, windowTitle(), tr("Matrix not found."));
+        return;
+    }
+    SubstMatrixDialog smDialog(mtx, this);
+    smDialog.exec();
 }
 
 void PairwiseAlignmentSmithWatermanMainWidget::fillInnerSettings() {
