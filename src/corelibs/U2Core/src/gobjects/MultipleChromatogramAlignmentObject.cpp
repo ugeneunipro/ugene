@@ -28,7 +28,7 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleChromatogramAlignmentExporter.h>
+#include <U2Core/MsaExportUtils.h>
 #include <U2Core/MultipleChromatogramAlignmentImporter.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -230,21 +230,18 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAl
 }
 
 void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus& os) {
-    MultipleChromatogramAlignmentExporter mcaExporter;
-    cachedMa = mcaExporter.getAlignment(os, entityRef.dbiRef, entityRef.entityId);
+    cachedMa = MsaExportUtils::loadAlignment(entityRef.dbiRef, entityRef.entityId, os);
 }
 
 void MultipleChromatogramAlignmentObject::updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) {
-    MultipleChromatogramAlignmentExporter mcaExporter;
-    QMap<qint64, MsaRowSnapshot> mcaRowsMemoryData = mcaExporter.getMcaRowMemoryData(os, entityRef.dbiRef, entityRef.entityId, rowIds);
+    QList<MsaRowSnapshot> rows = MsaExportUtils::loadRows(entityRef.dbiRef, entityRef.entityId, rowIds, os);
     SAFE_POINT_OP(os, );
-    foreach (const qint64 rowId, mcaRowsMemoryData.keys()) {
-        const int rowIndex = cachedMa->getRowIndexByRowId(rowId, os);
+    for (const auto& row : qAsConst(rows)) {
+        int rowIndex = cachedMa->getRowIndexByRowId(row.rowId, os);
         SAFE_POINT_OP(os, );
-        const MsaRowSnapshot& rowData = mcaRowsMemoryData[rowId];
-        cachedMa->setRowContent(rowIndex, rowData.chromatogram, rowData.sequence, rowData.gaps);
+        cachedMa->setRowContent(rowIndex, row.chromatogram, row.sequence, row.gaps);
         SAFE_POINT_OP(os, );
-        cachedMa->renameRow(rowIndex, rowData.sequence.getName());
+        cachedMa->renameRow(rowIndex, row.sequence.getName());
     }
 }
 

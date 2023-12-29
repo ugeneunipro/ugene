@@ -28,7 +28,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MsaExportUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -44,8 +44,7 @@ SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignme
 
     SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into SimpleAddToAlignmentTask"), );
 
-    MultipleSequenceAlignmentExporter alnExporter;
-    inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
+    inputMsa = MsaExportUtils::loadAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
 }
 
 void SimpleAddToAlignmentTask::prepare() {

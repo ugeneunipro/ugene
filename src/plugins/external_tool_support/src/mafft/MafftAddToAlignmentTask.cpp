@@ -39,7 +39,7 @@
 #include <U2Core/Log.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MsaExportUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -70,8 +70,7 @@ MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignment
 
     SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into MafftAddToAlignmentTask"), );
 
-    MultipleSequenceAlignmentExporter alnExporter;
-    inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
+    inputMsa = MsaExportUtils::loadAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
     int rowNumber = inputMsa->getRowCount();
     for (int i = 0; i < rowNumber; i++) {
         inputMsa->renameRow(i, QString::number(i));

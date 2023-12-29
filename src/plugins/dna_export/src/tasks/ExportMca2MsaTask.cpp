@@ -24,7 +24,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/GHints.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MsaExportUtils.h>
 
 #include <U2Formats/ExportTasks.h>
 

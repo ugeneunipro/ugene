@@ -24,7 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MsaExportUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2MsaDbi.h>
@@ -973,8 +973,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_noGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1004,8 +1003,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1035,8 +1033,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1066,8 +1063,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGapsCutOff) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1097,8 +1093,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGapsCutOff) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1128,8 +1123,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingAndTrailingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1159,8 +1153,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_gapsOnly) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(0, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1188,8 +1181,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_oneRow) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 8, 3, os);
     CHECK_NO_ERROR(os);
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
@@ -1215,8 +1207,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_threeRows) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 2, 8, os);
     CHECK_NO_ERROR(os);
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
@@ -1242,8 +1233,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_lengthChange) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 5, 1, os);
     CHECK_NO_ERROR(os);
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
@@ -1271,8 +1261,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_allRows) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 3, os);
     CHECK_NO_ERROR(os);
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(11, al->getLength(), "Wrong msa length");
 
@@ -1318,8 +1307,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_all) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 14, os);
     CHECK_NO_ERROR(os);
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(0, al->getLength(), "Wrong msa length");
 
@@ -1344,8 +1332,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_negativePos) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, -1, 14, tmpOs);
     CHECK_TRUE(tmpOs.hasError(), "No error occurred for negative pos");
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
@@ -1392,8 +1379,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongCount) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 0, tmpOs);
     CHECK_TRUE(tmpOs.hasError(), "No error occurred for wrong count");
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
@@ -1786,9 +1772,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
     CHECK_NO_ERROR(os);
 
     // Export an alignment from the dbi to the memory (to set actual IDs)
-    MultipleSequenceAlignmentExporter exporter;
-    MultipleAlignment expMa;
-    expMa = exporter.getAlignment(dbiRef, msaId, os);
+    MultipleAlignment expMa = MsaExportUtils::loadAlignment(dbiRef, msaId, os);
     CHECK_NO_ERROR(os);
 
     // Set a new sequence ID for the second row
