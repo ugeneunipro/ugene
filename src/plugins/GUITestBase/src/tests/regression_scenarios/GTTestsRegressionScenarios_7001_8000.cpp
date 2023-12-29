@@ -4935,6 +4935,50 @@ GUI_TEST_CLASS_DEFINITION(test_7962) {
         }
     }
 }
+    
+GUI_TEST_CLASS_DEFINITION(test_7965) {
+    // Open human_T1.fa.
+    // Open "Find pattern" tab (Ctrl + F).
+    // Set "GTTTTCAGGGATATTAATGATATATATTTTTTAAGTATTCTGTTCTCTATCAGTTCTATTTCCTCGATTTGTTTTTTCTCAGTTGTTTGGTGATCTCTTGTATGTTTGAGAATCTCTATTTTGCAATGCTGTGGTTACAGGCTTTTATTATAGGAGTTTGTGAT" as search pattern.
+    // Expected: 1 result has been found.
+    // Save to file test_7965.gb
+    // Click "Create annotatios".
+    // Click on "Annotations [test_7965.gb] *" Annotation tree view item.
+    // Right button -> Remove -> Selected object with annotations from view (or just Shift + Del).
+    // Right mouse button on "human_T1.fa" in project view -> Export/Inport -> Export sequences...
+    // Choose "GenBank" fle format, make sure that "Export with annotations" is checked.
+    // Click OK. New sequence has been opened.
+    // Expected: no annotations.
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    QString pattern = "GTTTTCAGGGATATTAATGATATATATTTTTTAAGTATTCTGTTCTCTATCAGTTCTATTTCCTCGATTTGTTTTTTCTCAGTTGTTTGGTGATCTCTTGTATGTTTGAGAATCTCTATTTTGCAATGCTGTGGTTACAGGCTTTTATTATAGGAGTTTGTGAT";
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    GTPlainTextEdit::setText(GTWidget::findPlainTextEdit("textPattern"), pattern, true);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget();
+    GTRadioButton::click(GTWidget::findRadioButton("rbCreateNewTable"));
+    GTLineEdit::setText("leNewTablePath", sandBoxDir + "test_7965.gb");
+    GTUtilsOptionPanelSequenceView::clickGetAnnotation();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAnnotationsTreeView::clickItem("Annotations [test_7965.gb] *", 1, false);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete, Qt::ShiftModifier);
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTLineEdit::setText("fileNameEdit", sandBoxDir + "/test_7965_2.gb", dialog, true);
+            GTComboBox::selectItemByText("formatCombo", dialog, "GenBank");
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::add(new PopupChooserByText({"Export/Import", "Export sequences..."}));
+    GTUtilsDialog::add(new ExportSelectedRegionFiller(new Scenario));
+    GTUtilsProjectTreeView::click("human_T1 (UCSC April 2002 chr7:115977709-117855134)", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAnnotationsTreeView::checkNoAnnotations();
+}
 
 GUI_TEST_CLASS_DEFINITION(test_7968) {
     GTFileDialog::openFile(testDir + "_common_data/fasta/AMINO.fa");
