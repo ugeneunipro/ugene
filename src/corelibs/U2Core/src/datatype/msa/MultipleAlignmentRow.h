@@ -288,7 +288,7 @@ public:
     bool isComplemented() const;
 
     /** Returns pair of the first and the second most frequent chromatogram characters. */
-    QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(int position, bool& hasTwoPeaks) const;
+    QPair<ChromatogramData::TraceAndValue, ChromatogramData::TraceAndValue> getTwoHighestPeaks(int position, bool& hasTwoPeaks) const;
 
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.

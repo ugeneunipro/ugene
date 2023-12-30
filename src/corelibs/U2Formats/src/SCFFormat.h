@@ -49,7 +49,7 @@ protected:
 private:
     Document* parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);
 
-    bool loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram& cd, U2OpStatus& os);
+    bool loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram& chromatogram, U2OpStatus& os);
 };
 
 }  // namespace U2

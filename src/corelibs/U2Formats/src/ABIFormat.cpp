@@ -19,13 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <time.h>
-
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNAInfo.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
@@ -78,7 +74,7 @@ FormatCheckResult ABIFormat::checkRawData(const QByteArray& rawData, const GUrl&
 Document* ABIFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     QByteArray readBuff;
     QByteArray block(BUFF_SIZE, 0);
-    quint64 len = 0;
+    quint64 len;
     while ((len = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
         readBuff.append(QByteArray(block.data(), len));
         CHECK_EXT(readBuff.size() <= MAX_SUPPORTED_ABIF_SIZE, os.setError(L10N::errorFileTooLarge(io->getURL())), nullptr);
@@ -102,7 +98,7 @@ DNASequence* ABIFormat::loadSequence(IOAdapter* io, U2OpStatus& os) {
     CHECK_EXT((io != nullptr) && (io->isOpen() == true), os.setError(L10N::badArgument("IO adapter")), nullptr);
     QByteArray readBuff;
     QByteArray block(BUFF_SIZE, 0);
-    quint64 len = 0;
+    quint64 len;
     while ((len = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
         readBuff.append(QByteArray(block.data(), len));
         CHECK_EXT(readBuff.size() <= MAX_SUPPORTED_ABIF_SIZE, os.setError(L10N::errorFileTooLarge(io->getURL())), nullptr);
@@ -434,9 +430,9 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
     DNASequence dna;
-    DNAChromatogram cd;
+    DNAChromatogram chromatogram;
 
-    if (!loadABIObjects(fp, dna, cd)) {
+    if (!loadABIObjects(fp, dna, chromatogram)) {
         return nullptr;
     }
     if (dna.getName().isEmpty()) {
@@ -456,7 +452,7 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
     U2SequenceObject* seqObj = new U2SequenceObject(dna.getName(), ref);
     objects.append(seqObj);
 
-    DNAChromatogramObject* chromObj = DNAChromatogramObject::createInstance(cd, "Chromatogram", dbiRef, os, hints);
+    DNAChromatogramObject* chromObj = DNAChromatogramObject::createInstance(chromatogram, "Chromatogram", dbiRef, os, hints);
     CHECK_OP(os, nullptr);
     objects.append(chromObj);
 
@@ -470,7 +466,7 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
     return doc;
 }
 
-bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, DNAChromatogram& cd) {
+bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, DNAChromatogram& chromatogram) {
     uint numPoints, numBases;
     uint signalO;
     int no_bases = 0;
@@ -515,18 +511,18 @@ bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, DNAChromatogra
      * that we can treat it as a NULL terminated string.
      */
     if (sections & READ_BASES) {
-        cd.prob_A.resize(numBases + 1);
-        cd.prob_C.resize(numBases + 1);
-        cd.prob_G.resize(numBases + 1);
-        cd.prob_T.resize(numBases + 1);
-        cd.baseCalls.resize(numBases + 1);
+        chromatogram->prob_A.resize(numBases + 1);
+        chromatogram->prob_C.resize(numBases + 1);
+        chromatogram->prob_G.resize(numBases + 1);
+        chromatogram->prob_T.resize(numBases + 1);
+        chromatogram->baseCalls.resize(numBases + 1);
     }
 
     if (sections & READ_SAMPLES) {
-        cd.A.resize(numPoints + 1);
-        cd.C.resize(numPoints + 1);
-        cd.G.resize(numPoints + 1);
-        cd.T.resize(numPoints + 1);
+        chromatogram->A.resize(numPoints + 1);
+        chromatogram->C.resize(numPoints + 1);
+        chromatogram->G.resize(numPoints + 1);
+        chromatogram->T.resize(numPoints + 1);
     }
 
     /* Get the Filter Wheel Order (FWO_) field ... */
@@ -564,22 +560,22 @@ bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, DNAChromatogra
         /* Read in the C trace */
         if (SeekBuf(fp, dataCO, 0) == -1)
             return false;
-        getABIint2(fp, 0, 0, 0, cd.C.data(), numPoints);
+        getABIint2(fp, 0, 0, 0, chromatogram->C.data(), numPoints);
 
         /* Read in the A trace */
         if (SeekBuf(fp, dataAO, 0) == -1)
             return false;
-        getABIint2(fp, 0, 0, 0, cd.A.data(), numPoints);
+        getABIint2(fp, 0, 0, 0, chromatogram->A.data(), numPoints);
 
         /* Read in the G trace */
         if (SeekBuf(fp, dataGO, 0) == -1)
             return false;
-        getABIint2(fp, 0, 0, 0, cd.G.data(), numPoints);
+        getABIint2(fp, 0, 0, 0, chromatogram->G.data(), numPoints);
 
         /* Read in the T trace */
         if (SeekBuf(fp, dataTO, 0) == -1)
             return false;
-        getABIint2(fp, 0, 0, 0, cd.T.data(), numPoints);
+        getABIint2(fp, 0, 0, 0, chromatogram->T.data(), numPoints);
 
         /* Compute highest trace peak */
         /*for (i=0; i < numPoints; i++) {
@@ -621,41 +617,41 @@ bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, DNAChromatogra
                 switch (sequence[i]) {
                     case 'A':
                     case 'a':
-                        cd.prob_A[i] = conf[i];
-                        cd.prob_C[i] = 0;
-                        cd.prob_G[i] = 0;
-                        cd.prob_T[i] = 0;
+                        chromatogram->prob_A[i] = conf[i];
+                        chromatogram->prob_C[i] = 0;
+                        chromatogram->prob_G[i] = 0;
+                        chromatogram->prob_T[i] = 0;
                         break;
 
                     case 'C':
                     case 'c':
-                        cd.prob_A[i] = 0;
-                        cd.prob_C[i] = conf[i];
-                        cd.prob_G[i] = 0;
-                        cd.prob_T[i] = 0;
+                        chromatogram->prob_A[i] = 0;
+                        chromatogram->prob_C[i] = conf[i];
+                        chromatogram->prob_G[i] = 0;
+                        chromatogram->prob_T[i] = 0;
                         break;
 
                     case 'G':
                     case 'g':
-                        cd.prob_A[i] = 0;
-                        cd.prob_C[i] = 0;
-                        cd.prob_G[i] = conf[i];
-                        cd.prob_T[i] = 0;
+                        chromatogram->prob_A[i] = 0;
+                        chromatogram->prob_C[i] = 0;
+                        chromatogram->prob_G[i] = conf[i];
+                        chromatogram->prob_T[i] = 0;
                         break;
 
                     case 'T':
                     case 't':
-                        cd.prob_A[i] = 0;
-                        cd.prob_C[i] = 0;
-                        cd.prob_G[i] = 0;
-                        cd.prob_T[i] = conf[i];
+                        chromatogram->prob_A[i] = 0;
+                        chromatogram->prob_C[i] = 0;
+                        chromatogram->prob_G[i] = 0;
+                        chromatogram->prob_T[i] = conf[i];
                         break;
 
                     default:
-                        cd.prob_A[i] = 0;
-                        cd.prob_C[i] = 0;
-                        cd.prob_G[i] = 0;
-                        cd.prob_T[i] = 0;
+                        chromatogram->prob_A[i] = 0;
+                        chromatogram->prob_C[i] = 0;
+                        chromatogram->prob_G[i] = 0;
+                        chromatogram->prob_T[i] = 0;
                         break;
                 }
             }
@@ -665,7 +661,7 @@ bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, DNAChromatogra
     }
 
     /* Read in the base positions */
-    if (-1 == getABIint2(fp, indexO, BasePosEntryLabel, 1, cd.baseCalls.data(), numBases)) {
+    if (-1 == getABIint2(fp, indexO, BasePosEntryLabel, 1, chromatogram->baseCalls.data(), numBases)) {
         return false;
     }
 
@@ -673,12 +669,12 @@ bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, DNAChromatogra
      * Check for corrupted traces where the bases are positioned on sample
      * coordinates which do not exist. Witnessed on some MegaBACE files.
      */
-    if (cd.baseCalls[numBases - 1] > numPoints) {
-        int n = cd.baseCalls[numBases - 1] + 1;
-        cd.A.resize(n);
-        cd.C.resize(n);
-        cd.G.resize(n);
-        cd.T.resize(n);
+    if (chromatogram->baseCalls[numBases - 1] > numPoints) {
+        int n = chromatogram->baseCalls[numBases - 1] + 1;
+        chromatogram->A.resize(n);
+        chromatogram->C.resize(n);
+        chromatogram->G.resize(n);
+        chromatogram->T.resize(n);
         numPoints = n;
     }
 
@@ -747,7 +743,7 @@ skip_bases:
         if (fspacing <= 0) {
             if (numBases > 1) {
                 if (sections & READ_BASES)
-                    fspacing = (float)(cd.baseCalls[numBases - 1] - cd.baseCalls[0]) / (float)(numBases - 1);
+                    fspacing = (float)(chromatogram->baseCalls[numBases - 1] - chromatogram->baseCalls[0]) / (float)(numBases - 1);
                 else
                     fspacing = (float)numPoints / (float)numBases;
             } else {
@@ -837,12 +833,12 @@ skip_bases:
     }
 
     /* SUCCESS */
-    cd.name = sequenceName.isEmpty() ? "chromatogram" : sequenceName + " chromatogram";
-    cd.hasQV = true;
-    cd.seqLength = sequence.size();
+    chromatogram->name = sequenceName.isEmpty() ? "chromatogram" : sequenceName + " chromatogram";
+    chromatogram->hasQV = true;
+    chromatogram->seqLength = sequence.size();
     assert(sequence.size() == int(numBases));
-    cd.traceLength = numPoints;
-    assert(cd.A.size() == int(numPoints + 1));
+    chromatogram->traceLength = numPoints;
+    assert(chromatogram->A.size() == int(numPoints + 1));
 
     dna.setName(sequenceName);
     dna.seq = sequence;

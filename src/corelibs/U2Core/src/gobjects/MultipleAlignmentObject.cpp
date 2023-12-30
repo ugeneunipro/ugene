@@ -906,8 +906,8 @@ void MultipleAlignmentObject::updateAlternativeMutations(bool showAlternativeMut
             }
 
             double minimumThresholdValue = (double)res.second.value / res.first.value * 100;
-            DNAChromatogram::Trace trace = (minimumThresholdValue < threshold || !showAlternativeMutations ? res.first : res.second).trace;
-            char newChar = DNAChromatogram::BASE_BY_TRACE.value((int)trace);
+            ChromatogramData::Trace trace = (minimumThresholdValue < threshold || !showAlternativeMutations ? res.first : res.second).trace;
+            char newChar = ChromatogramData::BASE_BY_TRACE.value((int)trace);
 
             auto gappedPos = mcaRow->getGappedPosition(j);
             char currentChar = mcaRow->charAt(gappedPos);

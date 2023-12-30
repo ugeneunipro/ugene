@@ -45,7 +45,7 @@ protected:
 
 private:
     Document* parseABI(const U2DbiRef& dbiRef, SeekableBuf*, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);
-    bool loadABIObjects(SeekableBuf* fp, DNASequence& seq, DNAChromatogram& cd);
+    bool loadABIObjects(SeekableBuf* fp, DNASequence& seq, DNAChromatogram& chromatogram);
 };
 
 }  // namespace U2

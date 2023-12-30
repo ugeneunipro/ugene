@@ -100,7 +100,6 @@ private:
     const Primer3TaskSettings defaultSettings;
     const QByteArray primer3DataDirectory;
 
-    static const QMap<task, QString> TASK_ENUM_STRING_MAP;
     static const QStringList LINE_EDIT_PARAMETERS;
     static const QRegularExpression MUST_MATCH_END_REGEX;
     static const QRegularExpression MUST_MATCH_START_CODON_SEQUENCE_REGEX;

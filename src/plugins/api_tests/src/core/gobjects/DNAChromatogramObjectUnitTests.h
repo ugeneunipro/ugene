@@ -46,7 +46,7 @@ private:
     static const QString UDR_DB_URL;
     static bool inited;
     static U2EntityRef objRef;
-    static DNAChromatogram chroma;
+    static DNAChromatogram chromatogram;
 
 private:
     static void init();
