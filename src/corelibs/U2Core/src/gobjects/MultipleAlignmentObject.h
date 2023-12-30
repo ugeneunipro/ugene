@@ -43,12 +43,17 @@ private:
 class U2CORE_EXPORT MultipleAlignmentObject : public GObject {
     Q_OBJECT
 public:
+    enum TrimEdge {
+        Left,
+        Right
+    };
+
     MultipleAlignmentObject(const QString& gobjectType,
                             const QString& name,
                             const U2EntityRef& maRef,
                             const QVariantMap& hintsMap,
                             const MultipleAlignment& alignment);
-    ~MultipleAlignmentObject();
+    ~MultipleAlignmentObject() override;
 
     /** Sets type of modifications tracking for the alignment */
     void setTrackMod(U2OpStatus& os, U2TrackModType trackMod);
@@ -60,7 +65,7 @@ public:
     MultipleAlignment getMultipleAlignmentCopy() const;
 
     /** GObject methods */
-    void setGObjectName(const QString& newName);
+    void setGObjectName(const QString& newName) override;
 
     MultipleAlignment getCopy() const;
 
@@ -71,7 +76,16 @@ public:
     const QVector<MultipleAlignmentRow>& getRows() const;
     const MultipleAlignmentRow& getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
-    virtual char charAt(int seqNum, qint64 position) const = 0;
+    char charAt(int seqNum, qint64 position) const;
+
+    /** Keeps only given row ids and given column range in the alignment. */
+    void crop(const QList<qint64>& rowIds, const U2Region& columnRange);
+
+    /** Keeps only given column range in the alignment. */
+    void crop(const U2Region& columnRange);
+
+    // inserts column of gaps with newChar at rowIndex row
+    void insertCharacter(int rowIndex, int pos, char newChar);
 
     QList<QVector<U2MsaGap>> getGapModel() const;
 
@@ -133,16 +147,10 @@ public:
     void sortRowsByList(const QStringList& order);
 
     /** Replaces character in the row and changes the alphabet, if the current one does not contain the character. */
-    virtual void replaceCharacter(int startPos, int rowIndex, char newChar);
+    void replaceCharacter(int startPos, int rowIndex, char newChar);
 
     /** Replaces sequence of characters from startPos with the new char. Updates alignment alphabet if needed*/
-    virtual void replaceCharacters(const U2Region& columnRange, int rowIndex, char newChar);
-
-    /** Inserts gap into 'pos' for the given rows. */
-    virtual void insertGap(const U2Region& rows, int pos, int nGaps) = 0;
-
-    /** Inserts gap into 'pos' for the given rows. */
-    virtual void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps) = 0;
+    void replaceCharacters(const U2Region& columnRange, int rowIndex, char newChar);
 
     /**
      * Removes gap region that extends from the @pos column and is no longer than @maxGaps.
@@ -154,6 +162,14 @@ public:
     int deleteGap(U2OpStatus& os, const U2Region& rows, int pos, int maxGaps);
 
     int deleteGapByRowIndexList(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps);
+
+    void trimRow(int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge);
+
+    /**
+     * Updates the corresponding alternative mutations.
+     * Set the second strongest character, if it's peak height persantage is more then @threshold and @showAlternativeMutations is true.
+     */
+    void updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os);
 
     /**
      * Performs shift of the region specified by parameters @startPos (leftmost column number),
@@ -180,6 +196,36 @@ public:
      */
     bool hasNonTrailingGap() const;
 
+    /**
+     * Updates a gap model of the alignment.
+     * The map must contain valid row IDs and corresponding gap models.
+     */
+    void updateGapModel(U2OpStatus& os, const QMap<qint64, QVector<U2MsaGap>>& rowsGapModel);
+    void updateGapModel(const QList<MultipleAlignmentRow>& sourceRows);
+
+    /** Methods to work with rows */
+    void updateRow(U2OpStatus& os, int rowIdx, const QString& name, const QByteArray& seqBytes, const QVector<U2MsaGap>& gapModel);
+
+    /** Replaces all characters in the alignment and updates alphabet if provided.*/
+    void replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet* newAlphabet = nullptr);
+
+    /**
+     * Updates MSA alphabet to the 'newAlphabet'.
+     * Keeps only valid chars for the new alphabet, all invalid are replaced with the default symbol.
+     * 'replacementMap' can be used to adjust characters conversion:
+     *  - first a character is mapped using 'replacementMap'
+     *  - next this character is checked that it is valid for the given alphabet.
+     *
+     * The 'replacementMap' can be either empty of should contain mapping for all possible 256 Latin1 chars.
+     */
+    void morphAlphabet(const DNAAlphabet* newAlphabet, const QByteArray& replacementMap = QByteArray());
+
+    void insertGap(const U2Region& rows, int pos, int nGaps);
+
+    void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps);
+
+    void insertGapByRowIdList(const QList<qint64>& rowIds, int pos, int nGaps);
+
 signals:
     void si_startMaUpdating();
     void si_alignmentChanged(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo);
@@ -190,21 +236,13 @@ signals:
     void si_alphabetChanged(const MaModificationInfo& mi, const DNAAlphabet* prevAlphabet);
 
 protected:
-    virtual void loadAlignment(U2OpStatus& os) = 0;
-    virtual void updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) = 0;
-    virtual void updateDatabase(U2OpStatus& os, const MultipleAlignment& ma) = 0;
-    virtual void removeRowPrivate(U2OpStatus& os, const U2EntityRef& maRef, qint64 rowId) = 0;
-    virtual void removeRegionPrivate(U2OpStatus& os, const U2EntityRef& maRef, const QList<qint64>& rows, int startPos, int nBases) = 0;
-    void insertGap(const U2Region& rows, int pos, int nGaps, bool collapseTrailingGaps);
+    void loadAlignment(U2OpStatus& os);
+    void updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds);
+    void updateDatabase(U2OpStatus& os, const MultipleAlignment& ma);
+    void removeRowPrivate(U2OpStatus& os, const U2EntityRef& maRef, qint64 rowId);
+    void removeRegionPrivate(U2OpStatus& os, const U2EntityRef& maRef, const QList<qint64>& rows, int startPos, int nBases);
 
-    void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps, bool collapseTrailingGaps);
-
-    void insertGapByRowIdList(const QList<qint64>& rowIds, int pos, int nGaps, bool collapseTrailingGaps);
-
-    MultipleAlignment cachedMa;
-
-private:
-    void loadDataCore(U2OpStatus& os);
+    void loadDataCore(U2OpStatus& os) override;
 
     /**
      * Returns maximum count of subsequent gap columns in the region that starts from column
@@ -214,6 +252,8 @@ private:
      * in the MSA trailing gaps area, then 0 is returned.
      */
     int getMaxWidthOfGapRegion(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps);
+
+    MultipleAlignment cachedMa;
 
     MaSavedState savedState;
 };

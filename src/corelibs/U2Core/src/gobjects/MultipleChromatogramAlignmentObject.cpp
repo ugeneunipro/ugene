@@ -110,20 +110,6 @@ U2SequenceObject* MultipleChromatogramAlignmentObject::getReferenceObj() const {
     return referenceObj;
 }
 
-char MultipleChromatogramAlignmentObject::charAt(int seqNum, qint64 position) const {
-    SAFE_POINT(seqNum >= 0 && seqNum < getRowCount(), QString("Invalid sequence num: %1").arg(seqNum), U2Msa::GAP_CHAR);
-    SAFE_POINT(position >= 0 && position < getLength(), QString("Invalid position: %1").arg(position), U2Msa::GAP_CHAR);
-    return getRow(seqNum)->charAt(position);
-}
-
-void MultipleChromatogramAlignmentObject::insertGap(const U2Region& rows, int pos, int nGaps) {
-    MultipleAlignmentObject::insertGap(rows, pos, nGaps, true);
-}
-
-void MultipleChromatogramAlignmentObject::insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps) {
-    MultipleAlignmentObject::insertGapByRowIndexList(rowIndexes, pos, nGaps, true);
-}
-
 QList<U2Region> MultipleChromatogramAlignmentObject::getColumnsWithGaps() const {
     QList<QVector<U2MsaGap>> gapModel = getGapModel();
     gapModel.append(getReferenceGapModel());
@@ -137,14 +123,8 @@ QVector<U2MsaGap> MultipleChromatogramAlignmentObject::getReferenceGapModel() co
     return referenceGapModel;
 }
 
-void MultipleChromatogramAlignmentObject::insertCharacter(int rowIndex, int pos, char newChar) {
-    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    insertGap(U2Region(0, getRowCount()), pos, 1);
-    replaceCharacter(pos, rowIndex, newChar);
-}
-
 void MultipleChromatogramAlignmentObject::deleteColumnsWithGaps(U2OpStatus& os) {
-    const QList<U2Region> regionsToDelete = getColumnsWithGaps();
+    QList<U2Region> regionsToDelete = getColumnsWithGaps();
     CHECK(!regionsToDelete.isEmpty(), );
     CHECK(regionsToDelete.first().length != getLength(), );
 
@@ -164,97 +144,6 @@ void MultipleChromatogramAlignmentObject::deleteColumnsWithGaps(U2OpStatus& os) 
     CHECK_OP(os, );
 
     updateCachedMultipleAlignment();
-}
-
-void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge) {
-    U2EntityRef entityRef = getEntityRef();
-    MultipleAlignmentRow row = getRow(rowIndex);
-    int rowId = row->getRowId();
-    int pos = 0;
-    int count = 0;
-    switch (edge) {
-        case Left:
-            pos = row->getCoreStart();
-            count = currentPos - pos;
-            break;
-        case Right:
-            pos = currentPos + 1;
-            int lengthWithoutTrailing = row->getRowLengthWithoutTrailing();
-            count = lengthWithoutTrailing - currentPos;
-            break;
-    }
-    MsaDbiUtils::removeRegion(entityRef, {rowId}, pos, count, os);
-    U2Region region(rowIndex, 1);
-    if (edge == Left) {
-        insertGap(region, 0, count);
-    }
-
-    MaModificationInfo modificationInfo;
-    modificationInfo.rowContentChanged = true;
-    modificationInfo.rowListChanged = false;
-    updateCachedMultipleAlignment(modificationInfo);
-}
-
-void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os) {
-    for (int i = 0; i < getRowCount(); i++) {
-        const MultipleAlignmentRow& mcaRow = getRow(i);
-        qint64 ungappedLength = mcaRow->getUngappedLength();
-
-        QHash<qint64, char> newCharMap;
-        for (int j = 0; j < ungappedLength; j++) {
-            bool ok = false;
-            auto res = mcaRow->getTwoHighestPeaks(j, ok);
-            if (!ok) {
-                continue;
-            }
-
-            double minimumThresholdValue = (double)res.second.value / res.first.value * 100;
-            DNAChromatogram::Trace trace = (minimumThresholdValue < threshold || !showAlternativeMutations ? res.first : res.second).trace;
-            char newChar = DNAChromatogram::BASE_BY_TRACE.value((int)trace);
-
-            auto gappedPos = mcaRow->getGappedPosition(j);
-            char currentChar = mcaRow->charAt(gappedPos);
-            if (currentChar == newChar) {
-                continue;
-            }
-
-            newCharMap.insert(gappedPos, newChar);
-        }
-
-        const MultipleAlignment& ma = getAlignment();
-        qint64 modifiedRowId = ma->getRow(i)->getRowId();
-        MsaDbiUtils::replaceCharactersInRow(getEntityRef(), modifiedRowId, newCharMap, os);
-        SAFE_POINT_OP(os, );
-    }
-    updateCachedMultipleAlignment();
-}
-
-void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus& os) {
-    cachedMa = MsaExportUtils::loadAlignment(entityRef.dbiRef, entityRef.entityId, os);
-}
-
-void MultipleChromatogramAlignmentObject::updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) {
-    QList<MsaRowSnapshot> rows = MsaExportUtils::loadRows(entityRef.dbiRef, entityRef.entityId, rowIds, os);
-    SAFE_POINT_OP(os, );
-    for (const auto& row : qAsConst(rows)) {
-        int rowIndex = cachedMa->getRowIndexByRowId(row.rowId, os);
-        SAFE_POINT_OP(os, );
-        cachedMa->setRowContent(rowIndex, row.chromatogram, row.sequence, row.gaps);
-        SAFE_POINT_OP(os, );
-        cachedMa->renameRow(rowIndex, row.sequence.getName());
-    }
-}
-
-void MultipleChromatogramAlignmentObject::updateDatabase(U2OpStatus& os, const MultipleAlignment& ma) {
-    MsaDbiUtils::updateMsa(entityRef, ma, os);
-}
-
-void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 rowId) {
-    MsaDbiUtils::removeRow(mcaRef, rowId, os);
-}
-
-void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus& os, const U2EntityRef& maRef, const QList<qint64>& rows, int startPos, int nBases) {
-    MsaDbiUtils::removeRegion(maRef, rows, startPos, nBases, os);
 }
 
 int MultipleChromatogramAlignmentObject::getReferenceLengthWithGaps() const {
