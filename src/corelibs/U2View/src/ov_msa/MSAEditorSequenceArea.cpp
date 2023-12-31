@@ -41,7 +41,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -219,7 +219,7 @@ void MSAEditorSequenceArea::copySelection(U2OpStatus& os) {
     const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
 
-    MultipleSequenceAlignmentObject* maObj = getEditor()->getMaObject();
+    MultipleAlignmentObject* maObj = getEditor()->getMaObject();
     MaCollapseModel* collapseModel = editor->getCollapseModel();
     QString textMimeContent;
     QString ugeneMimeContent;
@@ -407,8 +407,8 @@ void MSAEditorSequenceArea::sl_delCol() {
         // then shifting should be canceled
         cancelShiftTracking();
 
-        MultipleSequenceAlignmentObject* msaObj = getEditor()->getMaObject();
-        int gapCount = 0;
+        MultipleAlignmentObject* msaObj = getEditor()->getMaObject();
+        int gapCount;
         switch (deleteMode) {
             case DeleteByAbsoluteVal:
                 gapCount = value;
@@ -460,7 +460,7 @@ void MSAEditorSequenceArea::sl_lockedStateChanged() {
 }
 
 void MSAEditorSequenceArea::sl_removeAllGaps() {
-    MultipleSequenceAlignmentObject* msa = getEditor()->getMaObject();
+    MultipleAlignmentObject* msa = getEditor()->getMaObject();
     SAFE_POINT(!msa->isStateLocked(), "MSA is locked", );
 
     // if this method was invoked during a region shifting
@@ -490,7 +490,7 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
 }
 
 void MSAEditorSequenceArea::sl_createSubalignment() {
-    MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
+    MultipleAlignmentObject* msaObject = getEditor()->getMaObject();
     QList<int> maRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
     const MultipleAlignment& alignment = msaObject->getAlignment();
     QList<qint64> maRowIds = maRowIndexes.isEmpty() ? alignment->getRowsIds() : alignment->getRowIdsByRowIndexes(maRowIndexes);
@@ -578,7 +578,7 @@ void MSAEditorSequenceArea::runPasteTask(bool isPasteBefore) {
 }
 
 void MSAEditorSequenceArea::sl_pasteTaskFinished(Task* _pasteTask) {
-    MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
+    MultipleAlignmentObject* msaObject = getEditor()->getMaObject();
     CHECK(!msaObject->isStateLocked(), );
 
     auto pasteTask = qobject_cast<PasteTask*>(_pasteTask);
@@ -618,7 +618,7 @@ void MSAEditorSequenceArea::sl_cutSelection() {
 }
 
 void MSAEditorSequenceArea::sl_addSeqFromFile() {
-    MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
+    MultipleAlignmentObject* msaObject = getEditor()->getMaObject();
     CHECK(!msaObject->isStateLocked(), );
 
     QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
@@ -642,7 +642,7 @@ void MSAEditorSequenceArea::sl_addSeqFromFile() {
 }
 
 void MSAEditorSequenceArea::sl_addSeqFromProject() {
-    MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
+    MultipleAlignmentObject* msaObject = getEditor()->getMaObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -690,7 +690,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
     if (type == ModificationType::NoType) {
         return;
     }
-    MultipleSequenceAlignmentObject* maObj = getEditor()->getMaObject();
+    MultipleAlignmentObject* maObj = getEditor()->getMaObject();
     if (maObj == nullptr || maObj->isStateLocked()) {
         return;
     }
@@ -792,7 +792,7 @@ void MSAEditorSequenceArea::sl_complementCurrentSelection() {
 }
 
 void MSAEditorSequenceArea::enableFreeRowOrderMode(QObject* marker, const QList<QStringList>& collapsedGroups) {
-    MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
+    MultipleAlignmentObject* msaObject = getEditor()->getMaObject();
     QStringList rowNames = msaObject->getAlignment()->getRowNames();
     QList<qint64> rowIds = msaObject->getRowIds();
 

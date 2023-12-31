@@ -51,7 +51,7 @@ public:
     const SharedDbiDataHandler& getAnnotations() const;
 
     U2SequenceObject* takeReferenceSequenceObject();
-    MultipleChromatogramAlignmentObject* takeMcaObject();
+    MultipleAlignmentObject* takeMcaObject();
 
 private:
     /** Merges reference gaps from all pairwise alignments. */
@@ -72,7 +72,7 @@ private:
     const SharedDbiDataHandler reference;
     const QList<AlignToReferenceResult> pairwiseAlignments;
     DbiDataStorage* storage = nullptr;
-    MultipleChromatogramAlignmentObject* mcaObject = nullptr;
+    MultipleAlignmentObject* mcaObject = nullptr;
     U2SequenceObject* referenceSequenceObject = nullptr;
     SharedDbiDataHandler annotationsDataHandler;
 };

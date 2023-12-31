@@ -22,7 +22,7 @@
 #include "ClipboardController.h"
 
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 
 namespace U2 {
 
@@ -63,7 +63,7 @@ QList<DNASequence> PasteUtils::getSequences(const QList<Document*>& docs, U2OpSt
         }
         const QList<GObject*> msaObjectList = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         for (GObject* msaObj : qAsConst(msaObjectList)) {
-            auto casted = qobject_cast<MultipleSequenceAlignmentObject*>(msaObj);
+            auto casted = qobject_cast<MultipleAlignmentObject*>(msaObj);
             if (casted == nullptr) {
                 continue;
             }

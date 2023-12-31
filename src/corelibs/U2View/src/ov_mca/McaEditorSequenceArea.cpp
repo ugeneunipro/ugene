@@ -311,12 +311,12 @@ void McaEditorSequenceArea::sl_removeColumnsOfGaps() {
 
 void McaEditorSequenceArea::sl_trimLeftEnd() {
     GCounter::increment("Trim left end", editor->getFactoryId());
-    trimRowEnd(MultipleChromatogramAlignmentObject::Left);
+    trimRowEnd(MultipleAlignmentObject::Left);
 }
 
 void McaEditorSequenceArea::sl_trimRightEnd() {
     GCounter::increment("Trim right end", editor->getFactoryId());
-    trimRowEnd(MultipleChromatogramAlignmentObject::Right);
+    trimRowEnd(MultipleAlignmentObject::Right);
 }
 
 void McaEditorSequenceArea::sl_updateActions() {
@@ -342,8 +342,8 @@ void McaEditorSequenceArea::sl_updateActions() {
     removeColumnsOfGapsAction->setEnabled(canEditAlignment);
 }
 
-void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge) {
-    MultipleChromatogramAlignmentObject* mcaObj = getEditor()->getMaObject();
+void McaEditorSequenceArea::trimRowEnd(MultipleAlignmentObject::TrimEdge edge) {
+    MultipleAlignmentObject* mcaObj = getEditor()->getMaObject();
     QList<int> maRowIndexes = getEditor()->getSelectionController()->getSelectedMaRowIndexes();
     SAFE_POINT(!maRowIndexes.isEmpty() && maRowIndexes.size() == 1, "Incorrect selection", )
     int maRowIndex = maRowIndexes[0];
@@ -415,7 +415,7 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
 
     SAFE_POINT(isInRange(selection.toRect()), "Selection rect is not in range!", );
 
-    MultipleChromatogramAlignmentObject* maObj = getEditor()->getMaObject();
+    MultipleAlignmentObject* maObj = getEditor()->getMaObject();
     CHECK(maObj != nullptr && !maObj->isStateLocked(), );
 
     // if this method was invoked during a region shifting

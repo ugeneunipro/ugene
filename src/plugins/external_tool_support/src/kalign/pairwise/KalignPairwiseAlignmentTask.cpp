@@ -9,7 +9,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -116,7 +116,7 @@ QList<Task*> KalignPairwiseAlignmentTask::onSubTaskFinished(Task* subTask) {
             CHECK_OP(localStateInfo, res);
 
             MultipleAlignment resultMa = kalignSubTask->resultMA;
-            MultipleSequenceAlignmentObject* docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
+            MultipleAlignmentObject* docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
             CHECK_OP(localStateInfo, res);
             alignmentDoc->addObject(docObject);
             res << new SaveDocumentTask(alignmentDoc, SaveDoc_OpenAfter);

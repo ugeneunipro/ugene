@@ -28,7 +28,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
@@ -92,10 +92,10 @@ void ExportMSA2SequencesDialog::initSaveController() {
     saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
-void ExportMSA2SequencesDialog::showDialogAndStartExportTask(MultipleSequenceAlignmentObject* msaObject) {
+void ExportMSA2SequencesDialog::showDialogAndStartExportTask(MultipleAlignmentObject* msaObject) {
     SAFE_POINT(msaObject != nullptr, "ExportMSA2SequencesDialog: msaObject is null!", );
 
-    QPointer<MultipleSequenceAlignmentObject> msaObjectPtr(msaObject);
+    QPointer<MultipleAlignmentObject> msaObjectPtr(msaObject);
 
     LastUsedDirHelper lod;
     QString defaultDir = lod.dir.isEmpty() ? GUrl(msaObject->getDocument()->getURLString()).dirPath() : lod.dir;

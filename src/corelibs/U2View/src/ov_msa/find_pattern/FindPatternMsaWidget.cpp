@@ -323,7 +323,7 @@ void FindPatternMsaWidget::connectSlots() {
     connect(editEnd, SIGNAL(textChanged(QString)), SLOT(sl_onRegionValueEdited()));
     connect(boxMaxResult, SIGNAL(valueChanged(int)), SLOT(sl_onMaxResultChanged(int)));
     connect(removeOverlapsBox, SIGNAL(stateChanged(int)), SLOT(sl_validateStateAndStartNewSearch()));
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    MultipleAlignmentObject* msaObject = msaEditor->getMaObject();
     connect(msaObject, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), this, SLOT(sl_onMsaModified()));
     connect(msaObject, SIGNAL(si_alphabetChanged(const MaModificationInfo&, const DNAAlphabet*)), this, SLOT(sl_onMsaModified()));
     connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_msaStateChanged()));
@@ -375,7 +375,7 @@ void FindPatternMsaWidget::sl_onRegionValueEdited() {
 }
 
 void FindPatternMsaWidget::updateActions() {
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    MultipleAlignmentObject* msaObject = msaEditor->getMaObject();
     groupResultsButton->setEnabled(!msaObject->isStateLocked());
 }
 
@@ -1045,7 +1045,7 @@ void FindPatternMsaWidget::updateCurrentResultLabel() {
 
 void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     CHECK(!allSearchResults.isEmpty(), )
-    MultipleSequenceAlignmentObject* maObject = msaEditor->getMaObject();
+    MultipleAlignmentObject* maObject = msaEditor->getMaObject();
     CHECK(!maObject->isStateLocked(), );
 
     // Switch to the Original row order mode.

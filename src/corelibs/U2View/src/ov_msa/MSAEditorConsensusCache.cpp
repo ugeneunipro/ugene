@@ -24,7 +24,7 @@
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MaEditor.h"
@@ -51,7 +51,7 @@ MSAEditorConsensusCache::~MSAEditorConsensusCache() {
 void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory) {
     delete algorithm;
     algorithm = nullptr;
-    bool ignoreTrailingLeadingGaps = qobject_cast<MultipleChromatogramAlignmentObject*>(aliObj) != nullptr;
+    bool ignoreTrailingLeadingGaps = qobject_cast<MultipleAlignmentObject*>(aliObj) != nullptr;
     algorithm = factory->createAlgorithm(aliObj->getAlignment(), ignoreTrailingLeadingGaps);
     connect(algorithm, SIGNAL(si_thresholdChanged(int)), SLOT(sl_thresholdChanged(int)));
     updateMap.fill(false);

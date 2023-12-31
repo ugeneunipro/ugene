@@ -33,7 +33,7 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -76,7 +76,7 @@ MAFFTSupportTask::~MAFFTSupportTask() {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (obj != nullptr) {
-                auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                auto alObj = dynamic_cast<MultipleAlignmentObject*>(obj);
                 CHECK(alObj != nullptr, );
                 if (alObj->isStateLocked()) {
                     alObj->unlockState(lock);
@@ -94,7 +94,7 @@ void MAFFTSupportTask::prepare() {
     if (objRef.isValid()) {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (obj != nullptr) {
-            auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+            auto alObj = dynamic_cast<MultipleAlignmentObject*>(obj);
             SAFE_POINT(alObj != nullptr, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
             lock = new StateLock("MAFFT Lock");
             alObj->lockState(lock);
@@ -207,7 +207,7 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (obj != nullptr) {
-                auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                auto alObj = dynamic_cast<MultipleAlignmentObject*>(obj);
                 SAFE_POINT(alObj != nullptr, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying MAFFT results!", res);
 
                 MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
@@ -338,7 +338,7 @@ QList<Task*> MAFFTWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask
         currentDocument = loadDocumentTask->takeDocument();
         SAFE_POINT(currentDocument != nullptr, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MultipleAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
@@ -346,7 +346,7 @@ QList<Task*> MAFFTWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask
         res.append(mAFFTSupportTask);
     } else if (subTask == mAFFTSupportTask) {
         // Set the result alignment to the alignment object of the current document
-        mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MultipleAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
         mAObject->updateGapModel(mAFFTSupportTask->resultMA->getRows().toList());
 

@@ -28,7 +28,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TaskWatchdog.h>
@@ -81,7 +81,7 @@ QString ExportUtils::genUniqueName(const QSet<QString>& names, QString prefix) {
     return name;
 }
 
-void ExportUtils::launchExportMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject) {
+void ExportUtils::launchExportMca2MsaTask(MultipleAlignmentObject* mcaObject) {
     SAFE_POINT(mcaObject != nullptr, "Can't cast the object to MultipleChromatogramAlignmentObject", );
 
     Document* document = mcaObject->getDocument();

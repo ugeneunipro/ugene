@@ -136,8 +136,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/gobjects/GObjectTypes.h \
            src/gobjects/GObjectUtils.h \
            src/gobjects/MultipleAlignmentObject.h \
-           src/gobjects/MultipleChromatogramAlignmentObject.h \
-           src/gobjects/MultipleSequenceAlignmentObject.h \
            src/gobjects/PFMatrixObject.h \
            src/gobjects/PWMatrixObject.h \
            src/gobjects/PhyTreeObject.h \
@@ -367,8 +365,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/gobjects/GObjectTypes.cpp \
            src/gobjects/GObjectUtils.cpp \
            src/gobjects/MultipleAlignmentObject.cpp \
-           src/gobjects/MultipleChromatogramAlignmentObject.cpp \
-           src/gobjects/MultipleSequenceAlignmentObject.cpp \
            src/gobjects/PFMatrixObject.cpp \
            src/gobjects/PWMatrixObject.cpp \
            src/gobjects/PhyTreeObject.cpp \

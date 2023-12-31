@@ -26,7 +26,7 @@
 
 #include <U2Algorithm/MsaUtilTasks.h>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2Region.h>
@@ -36,7 +36,7 @@ class MuscleContext;
 namespace U2 {
 
 class StateLock;
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class LoadDocumentTask;
 class MuscleParallelTask;
 
@@ -118,13 +118,13 @@ public:
         Profile2Profile,
         Sequences2Profile,
     };
-    MuscleAddSequencesToProfileTask(MultipleSequenceAlignmentObject* obj, const QString& fileWithSequencesOrProfile, const MMode& mode);
+    MuscleAddSequencesToProfileTask(MultipleAlignmentObject* obj, const QString& fileWithSequencesOrProfile, const MMode& mode);
 
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     ReportResult report() override;
 
-    QPointer<MultipleSequenceAlignmentObject> maObj;
+    QPointer<MultipleAlignmentObject> maObj;
     LoadDocumentTask* loadTask;
     MMode mode;
 };
@@ -133,14 +133,14 @@ public:
 class MuscleAlignOwnSequencesToSelfAction : public Task {
     Q_OBJECT
 public:
-    MuscleAlignOwnSequencesToSelfAction(MultipleSequenceAlignmentObject* msaObject, const QList<int>& maRowIndexes);
+    MuscleAlignOwnSequencesToSelfAction(MultipleAlignmentObject* msaObject, const QList<int>& maRowIndexes);
 };
 
 // locks MultipleAlignment object and propagate MuscleTask results to it
 class MuscleGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    MuscleGObjectTask(MultipleSequenceAlignmentObject* obj, const MuscleTaskSettings& config);
+    MuscleGObjectTask(MultipleAlignmentObject* obj, const MuscleTaskSettings& config);
     ~MuscleGObjectTask();
 
     virtual void prepare();
@@ -163,7 +163,7 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    MultipleSequenceAlignmentObject* mAObject;
+    MultipleAlignmentObject* mAObject;
     Document* currentDocument;
     bool cleanDoc;
 
@@ -188,10 +188,10 @@ private:
 class MuscleGObjectRunFromSchemaTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    MuscleGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject* obj, const MuscleTaskSettings& config);
+    MuscleGObjectRunFromSchemaTask(MultipleAlignmentObject* obj, const MuscleTaskSettings& config);
 
     void prepare();
-    void setMAObject(MultipleSequenceAlignmentObject* maobj);
+    void setMAObject(MultipleAlignmentObject* maobj);
 
 private:
     MuscleTaskSettings config;

@@ -23,7 +23,7 @@
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -52,7 +52,7 @@ void McaAlternativeMutationsWidget::init(MultipleAlignmentObject* _maObject,
     seqArea = qobject_cast<McaEditorSequenceArea*>(_seqArea);
     SAFE_POINT(seqArea != nullptr, "MaConsensusModeWidget can not be initialized: McaEditorSequenceArea is nullptr", );
 
-    mcaObject = qobject_cast<MultipleChromatogramAlignmentObject*>(_maObject);
+    mcaObject = qobject_cast<MultipleAlignmentObject*>(_maObject);
     SAFE_POINT(mcaObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleChromatogramAlignmentObject is nullptr", );
 
     statusBar = qobject_cast<McaEditorStatusBar*>(_statusBar);

@@ -61,9 +61,9 @@ public:
         return showQVAction->isChecked();
     }
 
-    void moveSelection(int dx, int dy, bool allowSelectionResize = false);
+    void moveSelection(int dx, int dy, bool allowSelectionResize = false) override;
 
-    virtual void adjustReferenceLength(U2OpStatus& os);
+    void adjustReferenceLength(U2OpStatus& os) override;
 
     MaAmbiguousCharactersController* getAmbiguousCharactersController() const;
 
@@ -93,25 +93,25 @@ private slots:
     void sl_trimLeftEnd();
     void sl_trimRightEnd();
 
-    void sl_updateActions();
+    void sl_updateActions() override;
 
 private:
-    void initRenderer();
-    void drawBackground(QPainter& p);
+    void initRenderer() override;
+    void drawBackground(QPainter& p) override;
 
     void updateCollapseModel(const MaModificationInfo& modInfo) override;
 
-    void getColorAndHighlightingIds(QString& csid, QString& hsid);
+    void getColorAndHighlightingIds(QString& csid, QString& hsid) override;
 
     QAction* createToggleTraceAction(const QString& actionName);
 
-    void insertChar(char newCharacter);
-    bool isCharacterAcceptable(const QString& text) const;
-    const QString& getInacceptableCharacterErrorMessage() const;
+    void insertChar(char newCharacter) override;
+    bool isCharacterAcceptable(const QString& text) const override;
+    const QString& getInacceptableCharacterErrorMessage() const override;
 
     McaEditorWgt* getMcaEditorWgt() const;
 
-    void trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge);
+    void trimRowEnd(MultipleAlignmentObject::TrimEdge edge);
 
     void updateTrimActions(bool isEnabled);
 

@@ -76,7 +76,7 @@ private:
     void updateDb(U2OpStatus& os);
 
     McaEditorSequenceArea* seqArea = nullptr;
-    MultipleChromatogramAlignmentObject* mcaObject = nullptr;
+    MultipleAlignmentObject* mcaObject = nullptr;
     McaEditorStatusBar* statusBar = nullptr;
     U2IntegerAttribute checkedStateAttribute;
     U2IntegerAttribute thresholdAttribute;

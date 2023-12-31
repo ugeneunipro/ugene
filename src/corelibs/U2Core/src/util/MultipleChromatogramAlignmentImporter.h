@@ -27,12 +27,12 @@ namespace U2 {
 
 class DbiConnection;
 class MultipleAlignment;
-class MultipleChromatogramAlignmentObject;
+class MultipleAlignmentObject;
 class U2OpStatus;
 
 class U2CORE_EXPORT MultipleChromatogramAlignmentImporter {
 public:
-    static MultipleChromatogramAlignmentObject* createAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const QString& folder, MultipleAlignment& mca);
+    static MultipleAlignmentObject* createAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const QString& folder, MultipleAlignment& mca);
 
 private:
     static U2Msa importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleAlignment& mca);

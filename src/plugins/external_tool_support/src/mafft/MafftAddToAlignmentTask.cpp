@@ -40,7 +40,7 @@
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaExportUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Mod.h>

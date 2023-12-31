@@ -29,7 +29,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -539,7 +539,7 @@ Document* StockholmFormat::loadTextDocument(IOAdapterReader& reader, const U2Dbi
 void StockholmFormat::storeTextDocument(IOAdapterWriter& writer, Document* doc, U2OpStatus& os) {
     QList<GObject*> objects = doc->getObjects();
     for (GObject* obj : qAsConst(objects)) {
-        auto alnObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
+        auto alnObj = qobject_cast<const MultipleAlignmentObject*>(obj);
         SAFE_POINT_EXT(alnObj != nullptr, os.setError("Not an alignment object: " + obj->getGObjectName()), );
         save(writer, alnObj->getAlignment(), alnObj->getGObjectName(), os);
         CHECK_OP(os, );

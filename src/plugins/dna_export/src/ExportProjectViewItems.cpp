@@ -43,8 +43,8 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultiTask.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SelectionModel.h>
@@ -157,7 +157,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
             sub = new QMenu(tr("Export/Import"));
             sub->addAction(exportAlignmentAsSequencesAction);
             GObject* obj = set.first();
-            const MultipleAlignment& ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getAlignment();
+            const MultipleAlignment& ma = qobject_cast<MultipleAlignmentObject*>(obj)->getAlignment();
             if (ma->getAlphabet()->isNucleic()) {
                 sub->addAction(exportNucleicAlignmentToAminoAction);
             }
@@ -453,7 +453,7 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
         QMessageBox::critical(nullptr, L10N::errorTitle(), tr("Select one alignment object to export"));
         return;
     }
-    auto msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(set.first());
+    auto msaObject = qobject_cast<MultipleAlignmentObject*>(set.first());
     SAFE_POINT(msaObject != nullptr, "Not MSA object!", );
     ExportMSA2SequencesDialog::showDialogAndStartExportTask(msaObject);
 }
@@ -472,7 +472,7 @@ void ExportProjectViewItemsContoller::sl_exportMcaToMsa() {
         return;
     }
 
-    MultipleChromatogramAlignmentObject* mcaObject = qobject_cast<MultipleChromatogramAlignmentObject*>(set.first());
+    MultipleAlignmentObject* mcaObject = qobject_cast<MultipleAlignmentObject*>(set.first());
     SAFE_POINT(mcaObject != nullptr, "Can't cast the object to MultipleChromatogramAlignmentObject", );
     ExportUtils::launchExportMca2MsaTask(mcaObject);
 }
@@ -490,7 +490,7 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
         return;
     }
 
-    auto msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(msaObjectList.first());
+    auto msaObject = qobject_cast<MultipleAlignmentObject*>(msaObjectList.first());
     SAFE_POINT(msaObject != nullptr, "Not an MSA object", );
 
     Document* doc = msaObject->getDocument();

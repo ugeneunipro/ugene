@@ -27,13 +27,13 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class FindPatternListTask;
 
 struct U2VIEW_EXPORT FindPatternMsaSettings {
     FindPatternMsaSettings();
 
-    MultipleSequenceAlignmentObject* msaObj;
+    MultipleAlignmentObject* msaObj;
     QList<NamePattern> patterns;
     bool removeOverlaps;
     int matchValue;

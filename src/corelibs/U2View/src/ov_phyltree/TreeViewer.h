@@ -31,7 +31,7 @@
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 
 #include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/PhyTree.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/Task.h>

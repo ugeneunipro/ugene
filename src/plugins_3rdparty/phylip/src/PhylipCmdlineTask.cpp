@@ -29,7 +29,7 @@
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>

@@ -34,7 +34,7 @@
 #include <U2Core/Log.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -259,7 +259,7 @@ void LoadMSATask::run() {
     } else {
         MultipleAlignment ma = MSAUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
 
-        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), ma, stateInfo));
+        QScopedPointer<MultipleAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), ma, stateInfo));
         CHECK_OP(stateInfo, );
 
         SharedDbiDataHandler handler = storage->getDataHandler(msaObj->getEntityRef());
@@ -392,7 +392,7 @@ void LoadSeqTask::run() {
         //              int gaps = cfg.value(mergeToken).toInt();
         U2OpStatus2Log os;
         foreach (GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
-            auto msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(go);
+            auto msaObject = qobject_cast<MultipleAlignmentObject*>(go);
             if (msaObject == nullptr) {
                 continue;
             }

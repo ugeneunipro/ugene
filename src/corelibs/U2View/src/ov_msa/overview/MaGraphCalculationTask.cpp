@@ -28,7 +28,7 @@
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -38,7 +38,7 @@ namespace U2 {
 
 MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject* maObject, int width, int height)
     : BackgroundTask<QPolygonF>(tr("Render overview"), TaskFlag_None),
-      ma(maObject->getMultipleAlignmentCopy()),  // SANGER_TODO: getting before any check
+      ma(maObject->getAlignment()->getCopy()),  // SANGER_TODO: getting before any check
       memLocker(stateInfo),
       msaLength(0),
       seqNumber(0),

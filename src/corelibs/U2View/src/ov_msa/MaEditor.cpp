@@ -30,7 +30,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2DbiUtils.h>

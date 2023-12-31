@@ -31,7 +31,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AssemblyUtils.h>
@@ -308,13 +308,13 @@ Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* db
     // foreach(MultipleAlignment ma, maMap.values()) {
     //     U2AlphabetUtils::assignAlphabet(ma);
     //     CHECK_EXT(ma.getAlphabet() != NULL, os.setError( SAMFormat::tr("Alphabet is unknown")), NULL);
-    //     objects.append(new MultipleSequenceAlignmentObject(ma));
+    //     objects.append(new MultipleAlignmentObject(ma));
     // }
 
     // if (defaultMA.getRows().count() != 0) {
     //     U2AlphabetUtils::assignAlphabet(defaultMA);
     //     CHECK_EXT(defaultMA.getAlphabet() != NULL, os.setError( SAMFormat::tr("Alphabet is unknown")), NULL);
-    //     objects.append(new MultipleSequenceAlignmentObject(defaultMA));
+    //     objects.append(new MultipleAlignmentObject(defaultMA));
     // }
 
     // CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
@@ -345,9 +345,9 @@ void SAMFormat::storeEntry(IOAdapter* /* io */, const QMap<GObjectType, QList<GO
     // const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     // SAFE_POINT(als.size() > 0, "Clustal entry storing: alignment objects count error", );
 
-    // QList<const MultipleSequenceAlignmentObject*> maList;
+    // QList<const MultipleAlignmentObject*> maList;
     // foreach(GObject *obj, als) {
-    //     const MultipleSequenceAlignmentObject* maObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
+    //     const MultipleAlignmentObject* maObj = qobject_cast<const MultipleAlignmentObject*>(obj);
     //     assert(maObj != NULL);
     //     maList.append(maObj);
     // }
@@ -362,7 +362,7 @@ void SAMFormat::storeEntry(IOAdapter* /* io */, const QMap<GObjectType, QList<GO
     // }
 
     ////Writing sequence section
-    // foreach(const MultipleSequenceAlignmentObject* maObj, maList) {
+    // foreach(const MultipleAlignmentObject* maObj, maList) {
     //     const MultipleAlignment &ma = maObj->getMAlignment();
     //     block.clear();
     //     block.append(SECTION_SEQUENCE).append(tab).append(TAG_SEQUENCE_NAME).append(":").append(ma.getName().replace(QRegExp("\\s|\\t"), "_"))
@@ -373,7 +373,7 @@ void SAMFormat::storeEntry(IOAdapter* /* io */, const QMap<GObjectType, QList<GO
     // }
 
     ////Writing alignment section
-    // foreach(const MultipleSequenceAlignmentObject* maObj, maList) {
+    // foreach(const MultipleAlignmentObject* maObj, maList) {
     //     const MultipleAlignment &ma = maObj->getMAlignment();
     //     QByteArray rname(ma.getName().replace(QRegExp("\\s|\\t"), "_").toLatin1());
     //     foreach(MultipleAlignmentRow row, ma.getRows()) {

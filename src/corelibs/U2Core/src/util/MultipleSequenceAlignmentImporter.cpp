@@ -24,7 +24,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleAlignmentInfo.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2MsaDbi.h>
@@ -35,11 +35,11 @@
 
 namespace U2 {
 
-MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, MultipleAlignment& al, U2OpStatus& os) {
+MultipleAlignmentObject* MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, MultipleAlignment& al, U2OpStatus& os) {
     return createAlignment(dbiRef, U2ObjectDbi::ROOT_FOLDER, al, os);
 }
 
-MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, const QString& folder, MultipleAlignment& al, U2OpStatus& os, const QList<U2Sequence>& alignedSeqs) {
+MultipleAlignmentObject* MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, const QString& folder, MultipleAlignment& al, U2OpStatus& os, const QList<U2Sequence>& alignedSeqs) {
     if (!alignedSeqs.isEmpty() && alignedSeqs.size() != al->getRowCount()) {
         os.setError(QObject::tr("Unexpected number of sequences in a multiple alignment"));
         return nullptr;
@@ -96,7 +96,7 @@ MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignm
         al->getRow(i)->setRowDbInfo(rows.at(i));
     }
 
-    return new MultipleSequenceAlignmentObject(al->getName(), U2EntityRef(dbiRef, msaId), QVariantMap(), al);
+    return new MultipleAlignmentObject(al->getName(), U2EntityRef(dbiRef, msaId), QVariantMap(), al);
 }
 
 void MultipleSequenceAlignmentImporter::setChildRankForSequences(const DbiConnection& con, const QList<U2Sequence>& sequences, U2OpStatus& os) {

@@ -118,7 +118,7 @@ QScrollBar* GTUtilsMcaEditor::getVerticalScrollBar() {
 
 MultipleAlignmentRowData* GTUtilsMcaEditor::getMcaRow(int rowNum) {
     McaEditor* mcaEditor = GTUtilsMcaEditor::getEditor();
-    MultipleChromatogramAlignmentObject* maObj = mcaEditor->getMaObject();
+    MultipleAlignmentObject* maObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(maObj != nullptr, "MultipleChromatogramAlignmentObject not found", nullptr);
 
     MultipleAlignmentRow row = maObj->getRow(rowNum);
@@ -168,7 +168,7 @@ const QStringList GTUtilsMcaEditor::getReadsNames() {
 
 const QStringList GTUtilsMcaEditor::getDirectReadsNames() {
     QStringList directReadsNames;
-    MultipleChromatogramAlignmentObject* mcaObject = getEditor()->getMaObject();
+    MultipleAlignmentObject* mcaObject = getEditor()->getMaObject();
     const int rowsCount = mcaObject->getRowCount();
     for (int i = 0; i < rowsCount; i++) {
         if (!mcaObject->getRow(i)->isReversed()) {
@@ -180,7 +180,7 @@ const QStringList GTUtilsMcaEditor::getDirectReadsNames() {
 
 const QStringList GTUtilsMcaEditor::getReverseComplementReadsNames() {
     QStringList reverseComplementedReadsNames;
-    MultipleChromatogramAlignmentObject* mcaObject = getEditor()->getMaObject();
+    MultipleAlignmentObject* mcaObject = getEditor()->getMaObject();
     const int rowsCount = mcaObject->getRowCount();
     for (int i = 0; i < rowsCount; i++) {
         if (mcaObject->getRow(i)->isReversed()) {

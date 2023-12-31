@@ -46,7 +46,7 @@ namespace U2 {
 
 #define ROW_ID_PROPERTY "row-id"
 
-CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject* obj, const QList<qint64>& preSelectedRowIdList, const U2Region& preSelectedColumnsRegion, QWidget* p)
+CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleAlignmentObject* obj, const QList<qint64>& preSelectedRowIdList, const U2Region& preSelectedColumnsRegion, QWidget* p)
     : QDialog(p), msaObject(obj), selectedRowIds(preSelectedRowIdList), selectedColumnRegion(preSelectedColumnsRegion), saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929690");
@@ -239,7 +239,7 @@ const QList<qint64>& CreateSubalignmentDialogController::getSelectedRowIds() con
     return selectedRowIds;
 }
 
-CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask(MultipleSequenceAlignmentObject* maObj, const CreateSubalignmentSettings& settings)
+CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask(MultipleAlignmentObject* maObj, const CreateSubalignmentSettings& settings)
     : Task(tr("Create sub-alignment and open view: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE) {
     csTask = new CreateSubalignmentTask(maObj, settings);
     addSubTask(csTask);

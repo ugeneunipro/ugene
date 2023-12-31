@@ -23,7 +23,7 @@
 
 #include <QScopedPointer>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/DbiDataHandler.h>
@@ -43,10 +43,10 @@ MultipleAlignmentMessageTranslator::MultipleAlignmentMessageTranslator(const QVa
     : BaseMessageTranslator(atomicMessage, initContext) {
     SAFE_POINT(source.canConvert<SharedDbiDataHandler>(), "Invalid MSA data supplied!", );
     SharedDbiDataHandler malignmentId = source.value<SharedDbiDataHandler>();
-    QScopedPointer<MultipleSequenceAlignmentObject> malignmentObject(StorageUtils::getMsaObject(
+    QScopedPointer<MultipleAlignmentObject> malignmentObject(StorageUtils::getMsaObject(
         context->getDataStorage(), malignmentId));
     SAFE_POINT(!malignmentObject.isNull(), "Invalid MSA object detected!", );
-    malignment = malignmentObject->getCopy();
+    malignment = malignmentObject->getAlignment()->getCopy();
 }
 
 QString MultipleAlignmentMessageTranslator::getTranslation() const {

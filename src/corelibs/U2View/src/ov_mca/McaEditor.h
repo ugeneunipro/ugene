@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/MaEditor.h>
@@ -51,13 +51,13 @@ class U2VIEW_EXPORT McaEditor : public MaEditor {
 
 public:
     McaEditor(const QString& viewName,
-              MultipleChromatogramAlignmentObject* obj);
+              MultipleAlignmentObject* obj);
 
     QString getSettingsRoot() const override {
         return MCAE_SETTINGS_ROOT;
     }
 
-    MultipleChromatogramAlignmentObject* getMaObject() const override;
+    MultipleAlignmentObject* getMaObject() const override;
     McaEditorWgt* getUI() const override;
 
     /** Returns current MCA editor selection controller instance. */

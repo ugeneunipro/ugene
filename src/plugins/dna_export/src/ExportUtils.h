@@ -27,12 +27,11 @@
 
 namespace U2 {
 
-class AbstractExportTask;
 class Annotation;
 class DocumentProviderTask;
 class ExportSequenceTaskSettings;
 class ExportSequencesDialog;
-class MultipleChromatogramAlignmentObject;
+class MultipleAlignmentObject;
 class Task;
 
 class ExportUtils : public QObject {
@@ -45,7 +44,7 @@ public:
     // generates unique name using prefix + numbers
     static QString genUniqueName(const QSet<QString>& names, QString prefix);
 
-    static void launchExportMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject);
+    static void launchExportMca2MsaTask(MultipleAlignmentObject* mcaObject);
 };
 
 }  // namespace U2

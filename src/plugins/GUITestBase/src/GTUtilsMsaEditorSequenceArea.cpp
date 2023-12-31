@@ -388,7 +388,7 @@ QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(bool asShownInNameList
     CHECK_SET_ERR_RESULT(nameListArea != nullptr, "MSA Editor name list area is NULL", QStringList());
 
     QList<int> visibleRowsIndexes = editor->getUI()->getUI(0)->getDrawHelper()->getVisibleMaRowIndexes(nameListArea->height());
-    MultipleSequenceAlignmentObject* msaObject = editor->getMaObject();
+    MultipleAlignmentObject* msaObject = editor->getMaObject();
 
     QStringList visibleRowNames;
     for (int rowIndex : qAsConst(visibleRowsIndexes)) {

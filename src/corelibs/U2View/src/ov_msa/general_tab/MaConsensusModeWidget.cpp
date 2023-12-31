@@ -27,7 +27,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/MSAEditorConsensusArea.h>
@@ -179,7 +179,7 @@ void MaConsensusModeWidget::initConsensusTypeCombo() {
     const DNAAlphabet* alphabet = maObject->getAlphabet();
     curAlphabetId = alphabet->getId();
     ConsensusAlgorithmFlags flags = MSAConsensusAlgorithmFactory::getAlphabetFlags(alphabet);
-    if (qobject_cast<MultipleChromatogramAlignmentObject*>(maObject) != nullptr) {
+    if (qobject_cast<MultipleAlignmentObject*>(maObject) != nullptr) {
         flags |= ConsensusAlgorithmFlag_AvailableForChromatogram;
     }
     QList<MSAConsensusAlgorithmFactory*> algos = reg->getAlgorithmFactories(flags);

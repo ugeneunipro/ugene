@@ -26,7 +26,6 @@
 #include <QMainWindow>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -65,7 +64,7 @@ QStringList GTUtilsMcaEditorSequenceArea::getVisibleNames() {
         nameListArea->height());
 
     QStringList visibleRowNames;
-    foreach (const int rowIndex, visibleRowsIndexes) {
+    foreach (int rowIndex, visibleRowsIndexes) {
         visibleRowNames << editor->getMaObject()->getRow(rowIndex)->getName();
     }
     return visibleRowNames;
@@ -133,7 +132,7 @@ void GTUtilsMcaEditorSequenceArea::scrollToBase(int position) {
     GTScrollBar::moveSliderWithMouseToValue(GTUtilsMcaEditor::getHorizontalScrollBar(), scrollBarValue);
 }
 
-void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(QString rowName, bool showChromatogram) {
+void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(const QString& rowName, bool showChromatogram) {
     auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>("mca_editor_sequence_area");
 
     int viewRowIndex = getVisibleNames().indexOf(rowName);
@@ -150,7 +149,7 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(QString rowName, bool s
     GTMouseDriver::click();
 }
 
-bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(QString rowName) {
+bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(const QString& rowName) {
     GTThread::waitForMainThread();
     auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>("mca_editor_sequence_area");
     int rowNum = GTUtilsMcaEditor::getReadsNames().indexOf(rowName);
@@ -185,18 +184,18 @@ void GTUtilsMcaEditorSequenceArea::moveTo(const QPoint& p) {
     GTMouseDriver::moveTo(convP);
 }
 
-QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(const QPoint p) {
+QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(const QPoint& p) {
     QWidget* activeWindow = GTUtilsMcaEditor::getActiveMcaEditorWindow();
     auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>("mca_editor_sequence_area", activeWindow);
 
-    const int posX = static_cast<int>(mcaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
-    const int posY = static_cast<int>(mcaEditArea->getEditor()->getUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y()).center());
+    int posX = static_cast<int>(mcaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
+    int posY = static_cast<int>(mcaEditArea->getEditor()->getUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y()).center());
     return mcaEditArea->mapToGlobal(QPoint(posX, posY));
 }
 
 QString GTUtilsMcaEditorSequenceArea::getReferenceReg(int num, int length) {
     McaEditor* editor = GTUtilsMcaEditor::getEditor();
-    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
+    MultipleAlignmentObject* obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != nullptr, "MultipleChromatogramAlignmentObject not found", QString());
 
     U2OpStatus2Log status;
@@ -208,7 +207,7 @@ QString GTUtilsMcaEditorSequenceArea::getReferenceReg(int num, int length) {
 
 QString GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg() {
     McaEditor* editor = GTUtilsMcaEditor::getEditor();
-    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
+    MultipleAlignmentObject* obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != nullptr, "MultipleChromatogramAlignmentObject not found", QString());
 
     U2Region sel = GTUtilsMcaEditorSequenceArea::getReferenceSelection();
@@ -234,7 +233,7 @@ void GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(int shif
     GTMouseDriver::release(Qt::LeftButton);
 }
 
-void GTUtilsMcaEditorSequenceArea::dragAndDrop(const QPoint p) {
+void GTUtilsMcaEditorSequenceArea::dragAndDrop(const QPoint& p) {
     GTMouseDriver::click();
     GTGlobals::sleep(1000);
     GTMouseDriver::press(Qt::LeftButton);
@@ -327,7 +326,7 @@ char GTUtilsMcaEditorSequenceArea::getSelectedReadChar() {
     McaEditor* mcaEditor = mcaSeqArea->getEditor();
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", U2Msa::INVALID_CHAR);
 
-    MultipleChromatogramAlignmentObject* mcaObj = mcaEditor->getMaObject();
+    MultipleAlignmentObject* mcaObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", U2Msa::INVALID_CHAR);
 
     const MultipleAlignmentRow& mcaRow = mcaObj->getRow(rowNum);
@@ -335,7 +334,7 @@ char GTUtilsMcaEditorSequenceArea::getSelectedReadChar() {
     return selectedChar;
 }
 
-char GTUtilsMcaEditorSequenceArea::getReadCharByPos(const QPoint p) {
+char GTUtilsMcaEditorSequenceArea::getReadCharByPos(const QPoint& p) {
     int rowNum = p.y();
     qint64 pos = p.x();
 
@@ -345,7 +344,7 @@ char GTUtilsMcaEditorSequenceArea::getReadCharByPos(const QPoint p) {
     McaEditor* mcaEditor = mcaSeqArea->getEditor();
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", U2Msa::INVALID_CHAR);
 
-    MultipleChromatogramAlignmentObject* mcaObj = mcaEditor->getMaObject();
+    MultipleAlignmentObject* mcaObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", U2Msa::INVALID_CHAR);
 
     const MultipleAlignmentRow& mcaRow = mcaObj->getRow(rowNum);
@@ -353,14 +352,14 @@ char GTUtilsMcaEditorSequenceArea::getReadCharByPos(const QPoint p) {
     return selectedChar;
 }
 
-qint64 GTUtilsMcaEditorSequenceArea::getRowLength(const int numRow) {
+qint64 GTUtilsMcaEditorSequenceArea::getRowLength(int numRow) {
     McaEditorSequenceArea* mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea();
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor sequence area is not found", 0);
 
     McaEditor* mcaEditor = mcaSeqArea->getEditor();
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", 0);
 
-    MultipleChromatogramAlignmentObject* mcaObj = mcaEditor->getMaObject();
+    MultipleAlignmentObject* mcaObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", 0);
 
     const MultipleAlignmentRow& mcaRow = mcaObj->getRow(numRow);
@@ -370,23 +369,13 @@ qint64 GTUtilsMcaEditorSequenceArea::getRowLength(const int numRow) {
 
 qint64 GTUtilsMcaEditorSequenceArea::getReferenceLength() {
     McaEditor* editor = GTUtilsMcaEditor::getEditor();
-    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
+    MultipleAlignmentObject* obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != nullptr, "MultipleChromatogramAlignmentObject not found", 0);
 
     U2OpStatus2Log status;
     qint64 refLength = obj->getReferenceObj()->getSequenceLength();
 
     return refLength;
-}
-
-qint64 GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps() {
-    McaEditor* editor = GTUtilsMcaEditor::getEditor();
-    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
-    GT_CHECK_RESULT(obj != nullptr, "MultipleChromatogramAlignmentObject not found", 0);
-
-    int length = obj->getReferenceLengthWithGaps();
-
-    return length;
 }
 
 U2Region GTUtilsMcaEditorSequenceArea::getReferenceSelection() {
@@ -426,7 +415,7 @@ QString GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg() {
     return res;
 }
 
-QString GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(const U2Region reg) {
+QString GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(const U2Region& reg) {
     McaEditorConsensusArea* consArea = GTUtilsMcaEditor::getConsensusArea();
     GT_CHECK_RESULT(consArea != nullptr, "Consensus area not found", QString());
 

@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 
 class MsaObjectTestData {
 public:
@@ -39,7 +39,7 @@ public:
 
     static U2DbiRef getDbiRef();
 
-    static MultipleSequenceAlignmentObject* getTestAlignmentObject(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
+    static MultipleAlignmentObject* getTestAlignmentObject(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
     static U2EntityRef getTestAlignmentRef(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
     static MultipleAlignment getTestAlignment(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
 

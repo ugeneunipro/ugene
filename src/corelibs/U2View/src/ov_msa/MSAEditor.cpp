@@ -56,7 +56,6 @@
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "MaEditorSelection.h"
-#include "MaEditorSequenceArea.h"
 #include "MaEditorTasks.h"
 #include "MsaEditorStatusBar.h"
 #include "align_to_alignment/RealignSequencesInAlignmentTask.h"
@@ -73,7 +72,7 @@ const QString MsaEditorMenuType::ALIGN_NEW_SEQUENCES_TO_ALIGNMENT("msa_editor_me
 const QString MsaEditorMenuType::ALIGN_NEW_ALIGNMENT_TO_ALIGNMENT("msa_editor_menu_align_new_alignment_to_alignment");
 const QString MsaEditorMenuType::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT("msa_editor_menu_align_selected_sequences_to_alignment");
 
-MSAEditor::MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* obj)
+MSAEditor::MSAEditor(const QString& viewName, MultipleAlignmentObject* obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
       treeManager(this) {
     optionsPanelController = new OptionsPanelController(this);
@@ -794,10 +793,10 @@ void MSAEditor::sl_showCustomSettings() {
 }
 
 void MSAEditor::sortSequences(const MultipleAlignment::SortType& sortType, const MultipleAlignment::Order& sortOrder) {
-    MultipleSequenceAlignmentObject* msaObject = getMaObject();
+    MultipleAlignmentObject* msaObject = getMaObject();
     CHECK(!msaObject->isStateLocked(), );
 
-    MultipleAlignment msa = msaObject->getMultipleAlignmentCopy();
+    MultipleAlignment msa = msaObject->getAlignment()->getCopy();
     const MaEditorSelection& selection = getSelection();
     QRect selectionRect = selection.toRect();
     U2Region sortRange = selectionRect.height() <= 1 ? U2Region() : U2Region(selectionRect.y(), selectionRect.height());
@@ -924,7 +923,7 @@ void MSAEditor::updateCollapseModel() {
     SAFE_POINT(rowOrderMode == MaEditorRowOrderMode::Sequence, "Unexpected row order mode", );
 
     // Order and group rows by sequence content.
-    MultipleSequenceAlignmentObject* msaObject = getMaObject();
+    MultipleAlignmentObject* msaObject = getMaObject();
     QList<QList<int>> rowGroups = groupRowsBySimilarity(msaObject->getRows());
     QVector<MaCollapsibleGroup> newCollapseGroups;
 

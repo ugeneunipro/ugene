@@ -23,7 +23,7 @@
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiRegistry.h>

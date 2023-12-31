@@ -74,7 +74,7 @@ void SequenceObjectsExtractor::extractSequencesFromObjects(const QList<GObject*>
         }
 
         if (object->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
-            auto curObj = qobject_cast<MultipleSequenceAlignmentObject*>(object);
+            auto curObj = qobject_cast<MultipleAlignmentObject*>(object);
             SAFE_POINT(curObj != nullptr, "MultipleSequenceAlignmentObject is null", );
 
             checkAlphabet(curObj->getAlphabet(), curObj->getGObjectName());
@@ -213,7 +213,7 @@ const SequenceObjectsExtractor& LoadSequencesTask::getExtractor() const {
 /************************************************************************/
 /* AlignSequencesToAlignmentTask */
 /************************************************************************/
-AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QString& algorithmId, const SequenceObjectsExtractor& extractor)
+AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleAlignmentObject* obj, const QString& algorithmId, const SequenceObjectsExtractor& extractor)
     : Task(tr("Align sequences to alignment task"), TaskFlags_NR_FOSE_COSC), maObjPointer(obj), stateLock(nullptr), docStateLock(nullptr),
       sequencesMaxLength(extractor.getMaxSequencesLength()), sequenceObjectsExtractor(extractor) {
     settings.addAsFragments = sequencesMaxLength < 100 && maObjPointer->getLength() / sequencesMaxLength > 3;
@@ -288,7 +288,7 @@ Task::ReportResult AlignSequencesToAlignmentTask::report() {
 /************************************************************************/
 /* LoadSequencesAndAlignToAlignmentTask */
 /************************************************************************/
-LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QString& _algorithmId, const QStringList& urls)
+LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MultipleAlignmentObject* obj, const QString& _algorithmId, const QStringList& urls)
     : Task(tr("Load sequences and add to alignment task"), TaskFlag_NoRun | TaskFlag_CollectChildrenWarnings),
       urls(urls), algorithmId(_algorithmId), maObjPointer(obj), loadSequencesTask(nullptr) {
 }

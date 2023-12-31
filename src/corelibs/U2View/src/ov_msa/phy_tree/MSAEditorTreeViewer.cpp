@@ -194,7 +194,7 @@ bool MSAEditorTreeViewer::checkTreeAndMsaNameListsAreSynchronized() const {
     if (msaViewRowCount != treeNameList.size()) {
         return false;
     }
-    MultipleSequenceAlignmentObject* maObject = editor->getMaObject();
+    MultipleAlignmentObject* maObject = editor->getMaObject();
     for (int viewRowIndex = 0; viewRowIndex < msaViewRowCount; viewRowIndex++) {
         int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
         const MultipleAlignmentRow& row = maObject->getRow(maRowIndex);

@@ -24,7 +24,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -208,7 +208,7 @@ void MSFFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObj
     CHECK_EXT(al->getAlphabet() != nullptr, os.setError(MSFFormat::tr("Alphabet unknown")), );
 
     QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+    MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
     CHECK_OP(os, );
     objects.append(obj);
 }
@@ -272,7 +272,7 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
     const QList<GObject*>& objectList = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(objectList.size() == 1, "MSFFormat::storeTextEntry can store only 1 object per file. Got: " + QString::number(objectList.size()), );
 
-    auto obj = dynamic_cast<MultipleSequenceAlignmentObject*>(objectList.first());
+    auto obj = dynamic_cast<MultipleAlignmentObject*>(objectList.first());
     SAFE_POINT(obj != nullptr, "MSF entry storing: the object is not an alignment", );
 
     const MultipleAlignment& msa = obj->getAlignment();

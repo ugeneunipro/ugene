@@ -22,7 +22,7 @@
 #include "FindPatternMsaTaskTest.h"
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 
 namespace U2 {
 
@@ -195,7 +195,7 @@ void GTest_FindPatternMsa::prepare() {
         return;
     }
     assert(obj != nullptr);
-    msaObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    msaObj = qobject_cast<MultipleAlignmentObject*>(obj);
     if (msaObj == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;

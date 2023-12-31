@@ -36,7 +36,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -125,7 +125,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
 
     QList<GObject*> mobjs = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (!mobjs.isEmpty()) {
-        auto mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
+        auto mobj = qobject_cast<MultipleAlignmentObject*>(mobjs.first());
         replaceLogo(mobj->getAlignment());
     } else {
         mobjs = doc->findGObjectByType(GObjectTypes::SEQUENCE);
@@ -404,7 +404,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         assert(d != nullptr);
         QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
-            auto mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
+            auto mobj = qobject_cast<MultipleAlignmentObject*>(mobjs.first());
             buildTask = new PFMatrixBuildTask(settings, mobj->getAlignment());
             res.append(buildTask);
         } else {
@@ -531,7 +531,7 @@ QList<Task*> PWMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         assert(d != nullptr);
         QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
-            auto mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
+            auto mobj = qobject_cast<MultipleAlignmentObject*>(mobjs.first());
             buildTask = new PWMatrixBuildTask(settings, mobj->getAlignment());
             res.append(buildTask);
         } else {

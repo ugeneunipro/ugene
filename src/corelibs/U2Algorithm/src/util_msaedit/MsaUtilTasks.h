@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/global.h>
 
@@ -36,17 +36,17 @@ class DNATranslation;
 class U2ALGORITHM_EXPORT TranslateMsa2AminoTask : public Task {
     Q_OBJECT
 public:
-    TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj);
-    TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj, const QString& trId);
+    TranslateMsa2AminoTask(MultipleAlignmentObject* obj);
+    TranslateMsa2AminoTask(MultipleAlignmentObject* obj, const QString& trId);
     const MultipleAlignment& getTaskResult() {
         return resultMA;
     }
-    void run();
-    ReportResult report();
+    void run() override;
+    ReportResult report() override;
 
 private:
     MultipleAlignment resultMA;
-    MultipleSequenceAlignmentObject* maObj;
+    MultipleAlignmentObject* maObj;
     DNATranslation* translation;
 };
 
@@ -57,18 +57,18 @@ private:
 class U2ALGORITHM_EXPORT AlignGObjectTask : public Task {
     Q_OBJECT
 public:
-    AlignGObjectTask(const QString& taskName, TaskFlags f, MultipleSequenceAlignmentObject* maobj)
+    AlignGObjectTask(const QString& taskName, TaskFlags f, MultipleAlignmentObject* maobj)
         : Task(taskName, f), obj(maobj) {
     }
-    virtual void setMAObject(MultipleSequenceAlignmentObject* maobj) {
+    virtual void setMAObject(MultipleAlignmentObject* maobj) {
         obj = maobj;
     }
-    MultipleSequenceAlignmentObject* getMAObject() {
+    MultipleAlignmentObject* getMAObject() {
         return obj;
     }
 
 protected:
-    QPointer<MultipleSequenceAlignmentObject> obj;
+    QPointer<MultipleAlignmentObject> obj;
 };
 
 /**
@@ -82,16 +82,16 @@ class U2ALGORITHM_EXPORT AlignInAminoFormTask : public Task {
     Q_OBJECT
     Q_DISABLE_COPY(AlignInAminoFormTask)
 public:
-    AlignInAminoFormTask(MultipleSequenceAlignmentObject* obj, AlignGObjectTask* alignTask, const QString& traslId);
+    AlignInAminoFormTask(MultipleAlignmentObject* obj, AlignGObjectTask* alignTask, const QString& traslId);
     ~AlignInAminoFormTask();
 
-    virtual void prepare();
-    virtual void run();
-    virtual ReportResult report();
+    void prepare() override;
+    void run() override;
+    ReportResult report() override;
 
 protected:
     AlignGObjectTask* alignTask;
-    MultipleSequenceAlignmentObject *maObj, *clonedObj;
+    MultipleAlignmentObject *maObj, *clonedObj;
     QString traslId;
     Document* tmpDoc;
     QMap<qint64, QVector<U2MsaGap>> rowsGapModel;

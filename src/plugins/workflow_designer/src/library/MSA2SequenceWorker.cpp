@@ -65,7 +65,7 @@ Task* Alignment2SequenceWorker::tick() {
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+        QScopedPointer<MultipleAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleAlignment msa = msaObj->getAlignment();
 

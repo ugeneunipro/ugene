@@ -172,7 +172,7 @@ SharedDbiDataHandler DbiDataStorage::putAlignment(const MultipleAlignment& al) {
 
     U2OpStatus2Log os;
     MultipleAlignment copiedAlignment = al->getCopy();
-    QScopedPointer<MultipleSequenceAlignmentObject> obj(MultipleSequenceAlignmentImporter::createAlignment(dbiHandle->getDbiRef(), copiedAlignment, os));
+    QScopedPointer<MultipleAlignmentObject> obj(MultipleSequenceAlignmentImporter::createAlignment(dbiHandle->getDbiRef(), copiedAlignment, os));
     CHECK_OP(os, SharedDbiDataHandler());
 
     DbiConnection* connection = this->getConnection(dbiHandle->getDbiRef(), os);
@@ -323,7 +323,7 @@ AssemblyObject* StorageUtils::getAssemblyObject(DbiDataStorage* storage, const S
     return new AssemblyObject(objName, assemblyRef);
 }
 
-MultipleSequenceAlignmentObject* StorageUtils::getMsaObject(DbiDataStorage* storage, const SharedDbiDataHandler& handler) {
+MultipleAlignmentObject* StorageUtils::getMsaObject(DbiDataStorage* storage, const SharedDbiDataHandler& handler) {
     CHECK(handler.constData() != nullptr, nullptr);
     // QScopedPointer<U2Ma> msa(dynamic_cast<U2Ma*>(storage->getObject(handler, U2Type::Msa)));
     QScopedPointer<U2Msa> msa(dynamic_cast<U2Msa*>(storage->getObject(handler, 2)));
@@ -332,7 +332,7 @@ MultipleSequenceAlignmentObject* StorageUtils::getMsaObject(DbiDataStorage* stor
     U2EntityRef msaRef(handler->getDbiRef(), msa->id);
     QString objName = msa->visualName;
 
-    return new MultipleSequenceAlignmentObject(objName, msaRef);
+    return new MultipleAlignmentObject(objName, msaRef);
 }
 
 AnnotationTableObject* StorageUtils::getAnnotationTableObject(DbiDataStorage* storage, const SharedDbiDataHandler& handler) {

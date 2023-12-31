@@ -397,7 +397,7 @@ static Document* loadFromMultipleFiles(IOAdapterFactory* iof, QVariantMap& fs, U
         CHECK_OP(os, nullptr);
         newObjects << sequences;
     } else if (fs.value(DocumentReadingMode_SequenceAsAlignmentHint).toBool()) {
-        MultipleSequenceAlignmentObject* msaObject = MSAUtils::seqDocs2msaObj(docs, fs, os);
+        MultipleAlignmentObject* msaObject = MSAUtils::seqDocs2msaObj(docs, fs, os);
         CHECK_OP(os, nullptr);
         SAFE_POINT_EXT(msaObject != nullptr, os.setError("The alignment object is NULL!"), nullptr);
         newObjects << msaObject;

@@ -91,7 +91,7 @@ void HmmerSupport::sl_buildProfile() {
         if (objectViewWindow != nullptr) {
             auto msaEditor = qobject_cast<MSAEditor*>(objectViewWindow->getObjectView());
             if (msaEditor != nullptr) {
-                MultipleSequenceAlignmentObject* maObj = msaEditor->getMaObject();
+                MultipleAlignmentObject* maObj = msaEditor->getMaObject();
                 if (maObj != nullptr) {
                     ma = maObj->getAlignment();
                 }
@@ -306,7 +306,7 @@ void HmmerMsaEditorContext::sl_build() {
     auto msaEditor = qobject_cast<MSAEditor*>(action->getObjectView());
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
 
-    MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
+    MultipleAlignmentObject* obj = msaEditor->getMaObject();
     if (obj != nullptr) {
         QObjectScopedPointer<HmmerBuildDialog> buildDlg = new HmmerBuildDialog(obj->getAlignment());
         buildDlg->exec();

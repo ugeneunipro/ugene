@@ -24,7 +24,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 
 #include "TextDocumentFormat.h"
 
@@ -42,7 +42,7 @@ public:
     void storeTextDocument(IOAdapterWriter& writer, Document* doc, U2OpStatus& os) override;
 
 protected:
-    MultipleSequenceAlignmentObject* load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    MultipleAlignmentObject* load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
     /** Parses header line and saves sequenceCount and columnCount values. Returns true if the header was parsed succesfully. */
     bool parseHeader(const QString& data, int& sequenceCount, int& columnCount) const;

@@ -34,7 +34,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -201,7 +201,7 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
     CHECK_EXT(al->getAlphabet() != nullptr, os.setError(ClustalWAlnFormat::tr("Alphabet is unknown")), );
 
     QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+    MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
     CHECK_OP(os, );
     objects.append(obj);
 }
@@ -219,7 +219,7 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
     const QList<GObject*>& als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(als.size() == 1, "Clustal entry storing: alignment objects count error", );
 
-    auto obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
+    auto obj = dynamic_cast<MultipleAlignmentObject*>(als.first());
     SAFE_POINT(obj != nullptr, "Clustal entry storing: NULL alignment object", );
 
     const MultipleAlignment msa = obj->getAlignment();
@@ -307,7 +307,7 @@ void ClustalWAlnFormat::storeTextDocument(IOAdapterWriter& writer, Document* d, 
     const QList<GObject*>& objectList = d->getObjects();
     CHECK_EXT(objectList.size() == 1, (objectList.isEmpty() ? tr("No data to write") : tr("Too many objects: %1").arg(objectList.size())), );
 
-    auto obj = qobject_cast<MultipleSequenceAlignmentObject*>(objectList.first());
+    auto obj = qobject_cast<MultipleAlignmentObject*>(objectList.first());
     CHECK_EXT(obj != nullptr, os.setError(tr("Not a multiple alignment object")), );
 
     QMap<GObjectType, QList<GObject*>> objectsMap;

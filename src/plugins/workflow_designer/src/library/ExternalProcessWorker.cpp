@@ -39,7 +39,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -119,14 +119,14 @@ static AnnotationTableObject* toAnotations(const QVariantMap& data, WorkflowCont
     return annsObj;
 }
 
-static MultipleSequenceAlignmentObject* toAlignment(const QVariantMap& data, WorkflowContext* context, U2OpStatus& os) {
+static MultipleAlignmentObject* toAlignment(const QVariantMap& data, WorkflowContext* context, U2OpStatus& os) {
     QString slot = BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId();
     if (!data.contains(slot)) {
         os.setError(QObject::tr("Empty alignment slot"));
         return nullptr;
     }
     SharedDbiDataHandler msaId = data[slot].value<SharedDbiDataHandler>();
-    MultipleSequenceAlignmentObject* msaObj = StorageUtils::getMsaObject(context->getDataStorage(), msaId);
+    MultipleAlignmentObject* msaObj = StorageUtils::getMsaObject(context->getDataStorage(), msaId);
     if (msaObj == nullptr) {
         os.setError(QObject::tr("Error with alignment object"));
     }
@@ -198,7 +198,7 @@ static void addObjects(Document* d, WorkflowContext* context, const DataConfig& 
         CHECK_OP(os, );
         d->addObject(annsObj);
     } else if (dataCfg.isAlignment()) {
-        MultipleSequenceAlignmentObject* msaObj = toAlignment(data, context, os);
+        MultipleAlignmentObject* msaObj = toAlignment(data, context, os);
         CHECK_OP(os, );
         d->addObject(msaObj);
     } else if (dataCfg.isAnnotatedSequence()) {
@@ -432,7 +432,7 @@ static SharedDbiDataHandler getAlignment(Document* d, WorkflowContext* context, 
     GObject* obj = getObject(d, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, os);
     CHECK_OP(os, SharedDbiDataHandler());
 
-    auto msaObj = static_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto msaObj = static_cast<MultipleAlignmentObject*>(obj);
     if (msaObj == nullptr) {
         os.setError(QObject::tr("Error with alignment object"));
         return SharedDbiDataHandler();

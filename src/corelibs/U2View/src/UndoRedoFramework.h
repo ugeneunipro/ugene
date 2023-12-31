@@ -24,7 +24,7 @@
 #include <QAction>
 #include <QObject>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 
 namespace U2 {
 

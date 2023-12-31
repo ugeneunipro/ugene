@@ -29,7 +29,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -300,7 +300,7 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task* subTask) {
 
         document->setDocumentOwnsDbiResources(false);
 
-        MultipleChromatogramAlignmentObject* mcaObject = composeSubTask->takeMcaObject();
+        MultipleAlignmentObject* mcaObject = composeSubTask->takeMcaObject();
         SAFE_POINT_EXT(mcaObject != nullptr, setError("Result MCA object is NULL"), result);
         document->addObject(mcaObject);
 

@@ -36,16 +36,16 @@ public:
     static void clickToPosition(const QPoint& globalMaPosition);
     static void scrollToPosition(const QPoint& position);
     static void scrollToBase(int position);
-    static void clickCollapseTriangle(QString seqName, bool showChromatogram);
-    static bool isChromatogramShown(QString seqName);
+    static void clickCollapseTriangle(const QString& seqName, bool showChromatogram);
+    static bool isChromatogramShown(const QString& seqName);
     static QStringList getNameList();
     static void callContextMenu(const QPoint& innerCoords = QPoint());
     static void moveTo(const QPoint& p);
-    static QPoint convertCoordinates(const QPoint p);
+    static QPoint convertCoordinates(const QPoint& p);
     static QString getReferenceReg(int num, int length);
     static QString getSelectedReferenceReg();
     static void moveTheBorderBetweenAlignmentAndRead(int shift);
-    static void dragAndDrop(const QPoint p);
+    static void dragAndDrop(const QPoint& p);
     static U2Region getSelectedRowsNum();
     static QStringList getSelectedRowsNames();
     static QRect getSelectedRect();
@@ -69,13 +69,12 @@ public:
      *Valid just if one character in sequence area selected
      */
     static char getSelectedReadChar();
-    static char getReadCharByPos(const QPoint p);
-    static qint64 getRowLength(const int numRow);
+    static char getReadCharByPos(const QPoint& p);
+    static qint64 getRowLength(int numRow);
     static qint64 getReferenceLength();
-    static qint64 getReferenceLengthWithGaps();
     static U2Region getReferenceSelection();
     static QString getSelectedConsensusReg();
-    static QString getConsensusStringByRegion(const U2Region reg);
+    static QString getConsensusStringByRegion(const U2Region& reg);
 };
 
 }  // namespace U2

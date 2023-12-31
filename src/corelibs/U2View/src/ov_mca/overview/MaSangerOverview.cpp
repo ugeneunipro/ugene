@@ -25,7 +25,6 @@
 #include <QPaintEvent>
 #include <QPainter>
 
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GraphUtils.h>
@@ -256,7 +255,7 @@ void MaSangerOverview::drawReads() {
     QPainter painter(&cachedReadsView);
     painter.fillRect(cachedReadsView.rect(), Qt::white);
 
-    MultipleChromatogramAlignmentObject const* const mcaObject = getEditor()->getMaObject();
+    const MultipleAlignmentObject* mcaObject = getEditor()->getMaObject();
     SAFE_POINT(mcaObject != nullptr, "Incorrect multiple chromatogram alignment object", );
     const MultipleAlignment mca = mcaObject->getAlignment();
     const int rowsCount = editor->getCollapseModel()->getViewRowCount();

@@ -36,7 +36,7 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -64,7 +64,7 @@ void ExportAlignmentTask::run() {
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), ma, stateInfo);
+    MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     exportedDocument->addObject(obj);
@@ -185,7 +185,7 @@ void ExportMSA2MSATask::run() {
     MultipleAlignment aminoMa = MSAUtils::seq2ma(resultSequenceList, stateInfo);
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), aminoMa, stateInfo);
+    MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), aminoMa, stateInfo);
     CHECK_OP(stateInfo, );
 
     exportedDocument->addObject(obj);

@@ -32,7 +32,7 @@
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -40,12 +40,12 @@
 
 namespace U2 {
 
-static MultipleSequenceAlignmentObject* getMsaObjectToStore(const QMap<GObjectType, QList<GObject*>>& objectsMap) {
+static MultipleAlignmentObject* getMsaObjectToStore(const QMap<GObjectType, QList<GObject*>>& objectsMap) {
     SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "PHYLIP entry storing: no alignment", nullptr);
     const QList<GObject*>& alignmentObjects = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(alignmentObjects.size() == 1, "PHYLIP entry storing: alignment objects count error", nullptr);
 
-    auto msaObject = dynamic_cast<MultipleSequenceAlignmentObject*>(alignmentObjects.first());
+    auto msaObject = dynamic_cast<MultipleAlignmentObject*>(alignmentObjects.first());
     SAFE_POINT(msaObject != nullptr, "PHYLIP entry storing: no alignment object is found", nullptr);
     return msaObject;
 }
@@ -89,7 +89,7 @@ PhylipFormat::PhylipFormat(QObject* p, const DocumentFormatId& id)
 void PhylipFormat::storeTextDocument(IOAdapterWriter& writer, Document* doc, U2OpStatus& os) {
     CHECK_EXT(doc->getObjects().size() == 1, os.setError(tr("Incorrect number of objects in document: %1").arg(doc->getObjects().size())), );
 
-    auto obj = qobject_cast<MultipleSequenceAlignmentObject*>(doc->getObjects().first());
+    auto obj = qobject_cast<MultipleAlignmentObject*>(doc->getObjects().first());
     CHECK_EXT(obj != nullptr, os.setError(L10N::internalError("No MSA object in document")), );
 
     QList<GObject*> als = {obj};
@@ -99,7 +99,7 @@ void PhylipFormat::storeTextDocument(IOAdapterWriter& writer, Document* doc, U2O
     CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(doc->getURL())), );
 }
 
-MultipleSequenceAlignmentObject* PhylipFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
+MultipleAlignmentObject* PhylipFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
     MultipleAlignment msa = parse(reader, os);
     CHECK_OP(os, nullptr);
     MSAUtils::checkPackedModelSymmetry(msa, os);

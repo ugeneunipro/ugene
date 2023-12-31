@@ -29,7 +29,7 @@
 namespace U2 {
 
 class DbiConnection;
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class U2DbiRef;
 class U2OpStatus;
 
@@ -49,8 +49,8 @@ public:
      * Creates an alignment in the db.
      * The alignment is completely removed in case of an error.
      */
-    static MultipleSequenceAlignmentObject* createAlignment(const U2DbiRef& dbiRef, MultipleAlignment& al, U2OpStatus& os);
-    static MultipleSequenceAlignmentObject* createAlignment(const U2DbiRef& dbiRef, const QString& folder, MultipleAlignment& al, U2OpStatus& os, const QList<U2Sequence>& alignedSequences = QList<U2Sequence>());
+    static MultipleAlignmentObject* createAlignment(const U2DbiRef& dbiRef, MultipleAlignment& al, U2OpStatus& os);
+    static MultipleAlignmentObject* createAlignment(const U2DbiRef& dbiRef, const QString& folder, MultipleAlignment& al, U2OpStatus& os, const QList<U2Sequence>& alignedSequences = QList<U2Sequence>());
 
 private:
     static U2DataId createEmptyMsaObject(const DbiConnection& con, const QString& folder, const QString& name, const DNAAlphabet* alphabet, U2OpStatus& os);
