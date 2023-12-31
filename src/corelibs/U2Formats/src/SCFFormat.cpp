@@ -983,13 +983,13 @@ int fwrite_scf(Scf* scf, FILE* fp) {
     return 0;
 }
 
-static void saveChromatogramToSCF(const DNAChromatogram& c, const QByteArray& seq, FILE* fp) {
+static void saveChromatogramToSCF(const DNAChromatogram& chromatogram, const QByteArray& seq, FILE* fp) {
     Scf scf;
     scf.comments = nullptr;
     scf.private_data = nullptr;
 
-    scf.header.bases = c.seqLength;
-    scf.header.samples = c.traceLength;
+    scf.header.bases = chromatogram->seqLength;
+    scf.header.samples = chromatogram->traceLength;
 
     scf.header.bases_left_clip = 0;
     scf.header.bases_right_clip = 0;
@@ -1000,26 +1000,26 @@ static void saveChromatogramToSCF(const DNAChromatogram& c, const QByteArray& se
     // Fixed precision for saving
     scf.header.sample_size = 2;
 
-    assert(c.seqLength == seq.length());
+    assert(chromatogram->seqLength == seq.length());
 
-    QVector<Bases> bases(c.seqLength);
-    for (int i = 0; i < c.seqLength; ++i) {
+    QVector<Bases> bases(chromatogram->seqLength);
+    for (int i = 0; i < chromatogram->seqLength; ++i) {
         bases[i].base = seq.at(i);
-        bases[i].prob_A = c.prob_A.at(i);
-        bases[i].prob_C = c.prob_C.at(i);
-        bases[i].prob_G = c.prob_G.at(i);
-        bases[i].prob_T = c.prob_T.at(i);
-        bases[i].peak_index = c.baseCalls.at(i);
+        bases[i].prob_A = chromatogram->prob_A.at(i);
+        bases[i].prob_C = chromatogram->prob_C.at(i);
+        bases[i].prob_G = chromatogram->prob_G.at(i);
+        bases[i].prob_T = chromatogram->prob_T.at(i);
+        bases[i].peak_index = chromatogram->baseCalls.at(i);
     }
 
     scf.bases = bases.data();
 
-    QVector<Samples2> samples(c.traceLength);
-    for (int i = 0; i < c.traceLength; ++i) {
-        samples[i].sample_A = c.A[i];
-        samples[i].sample_C = c.C[i];
-        samples[i].sample_G = c.G[i];
-        samples[i].sample_T = c.T[i];
+    QVector<Samples2> samples(chromatogram->traceLength);
+    for (int i = 0; i < chromatogram->traceLength; ++i) {
+        samples[i].sample_A = chromatogram->A[i];
+        samples[i].sample_C = chromatogram->C[i];
+        samples[i].sample_G = chromatogram->G[i];
+        samples[i].sample_T = chromatogram->T[i];
     }
     scf.samples.samples2 = samples.data();
 
@@ -1059,7 +1059,7 @@ void SCFFormat::exportDocumentToSCF(const QString& fileName, const DNAChromatogr
 
 #define MAX_SUPPORTED_SCF_SIZE 2 * 1024 * 1024
 
-bool SCFFormat::loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram& cd, U2OpStatus& os) {
+bool SCFFormat::loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram& chromatogram, U2OpStatus& os) {
     GUrl url = io->getURL();
     QByteArray readBuff;
     QByteArray block(BUFF_SIZE, 0);
@@ -1108,11 +1108,11 @@ bool SCFFormat::loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram&
             return false;
         }
 
-        cd.A.resize(h.samples);
-        cd.C.resize(h.samples);
-        cd.G.resize(h.samples);
-        cd.T.resize(h.samples);
-        cd.traceLength = h.samples;
+        chromatogram->A.resize(h.samples);
+        chromatogram->C.resize(h.samples);
+        chromatogram->G.resize(h.samples);
+        chromatogram->T.resize(h.samples);
+        chromatogram->traceLength = h.samples;
         int err;
 
         if (h.sample_size == 1) {
@@ -1126,10 +1126,10 @@ bool SCFFormat::loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram&
                 return false;
             }
             for (uint i = 0; i < h.samples; i++) {
-                cd.A[i] = samples[i].sample_A;
-                cd.C[i] = samples[i].sample_C;
-                cd.G[i] = samples[i].sample_G;
-                cd.T[i] = samples[i].sample_T;
+                chromatogram->A[i] = samples[i].sample_A;
+                chromatogram->C[i] = samples[i].sample_C;
+                chromatogram->G[i] = samples[i].sample_G;
+                chromatogram->T[i] = samples[i].sample_T;
             }
         } else {
             QVector<Samples2> samples(h.samples);
@@ -1142,10 +1142,10 @@ bool SCFFormat::loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram&
                 return false;
             }
             for (uint i = 0; i < h.samples; i++) {
-                cd.A[i] = samples[i].sample_A;
-                cd.C[i] = samples[i].sample_C;
-                cd.G[i] = samples[i].sample_G;
-                cd.T[i] = samples[i].sample_T;
+                chromatogram->A[i] = samples[i].sample_A;
+                chromatogram->C[i] = samples[i].sample_C;
+                chromatogram->G[i] = samples[i].sample_G;
+                chromatogram->T[i] = samples[i].sample_T;
             }
         }
     }
@@ -1168,21 +1168,21 @@ bool SCFFormat::loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram&
             }
         }
 
-        cd.seqLength = h.bases;
-        cd.baseCalls.resize(h.bases);
-        cd.prob_A.resize(h.bases);
-        cd.prob_C.resize(h.bases);
-        cd.prob_G.resize(h.bases);
-        cd.prob_T.resize(h.bases);
+        chromatogram->seqLength = h.bases;
+        chromatogram->baseCalls.resize(h.bases);
+        chromatogram->prob_A.resize(h.bases);
+        chromatogram->prob_C.resize(h.bases);
+        chromatogram->prob_G.resize(h.bases);
+        chromatogram->prob_T.resize(h.bases);
 
         for (uint i = 0; i < h.bases; i++) {
-            cd.prob_A[i] = bases[i].prob_A;
-            cd.prob_C[i] = bases[i].prob_C;
-            cd.prob_G[i] = bases[i].prob_G;
-            cd.prob_T[i] = bases[i].prob_T;
-            cd.baseCalls[i] = bases[i].peak_index;
+            chromatogram->prob_A[i] = bases[i].prob_A;
+            chromatogram->prob_C[i] = bases[i].prob_C;
+            chromatogram->prob_G[i] = bases[i].prob_G;
+            chromatogram->prob_T[i] = bases[i].prob_T;
+            chromatogram->baseCalls[i] = bases[i].peak_index;
             sequence[i] = bases[i].base;
-            uchar maxProb = getMaxProb(cd.prob_A[i], cd.prob_C[i], cd.prob_G[i], cd.prob_T[i]);
+            uchar maxProb = getMaxProb(chromatogram->prob_A[i], chromatogram->prob_C[i], chromatogram->prob_G[i], chromatogram->prob_T[i]);
             qualVals[i] = DNAQuality::encode(maxProb, DNAQualityType_Sanger);
         }
     }
@@ -1198,7 +1198,7 @@ bool SCFFormat::loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram&
         }
     }
 
-    cd.hasQV = true;
+    chromatogram->hasQV = true;
 
     QString sampleName;
     QStringList vals = comments.split("\n");
@@ -1213,7 +1213,7 @@ bool SCFFormat::loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram&
         sampleName = url.baseFileName();
     }
 
-    cd.name = sampleName + " chromatogram";
+    chromatogram->name = sampleName + " chromatogram";
 
     dna.setName(sampleName);
     dna.seq = sequence;

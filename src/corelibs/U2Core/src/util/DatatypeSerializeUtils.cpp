@@ -149,18 +149,18 @@ inline bool unpackBool(const uchar* data, int length, int& offset, U2OpStatus& o
 /************************************************************************/
 QByteArray DNAChromatogramSerializer::serialize(const DNAChromatogram& chroma) {
     QByteArray result;
-    result += packNum<int>(chroma.traceLength);
-    result += packNum<int>(chroma.seqLength);
-    result += packNumVector<ushort>(chroma.baseCalls);
-    result += packNumVector<ushort>(chroma.A);
-    result += packNumVector<ushort>(chroma.C);
-    result += packNumVector<ushort>(chroma.G);
-    result += packNumVector<ushort>(chroma.T);
-    result += packCharVector(chroma.prob_A);
-    result += packCharVector(chroma.prob_C);
-    result += packCharVector(chroma.prob_G);
-    result += packCharVector(chroma.prob_T);
-    result += packBool(chroma.hasQV);
+    result += packNum<int>(chroma->traceLength);
+    result += packNum<int>(chroma->seqLength);
+    result += packNumVector<ushort>(chroma->baseCalls);
+    result += packNumVector<ushort>(chroma->A);
+    result += packNumVector<ushort>(chroma->C);
+    result += packNumVector<ushort>(chroma->G);
+    result += packNumVector<ushort>(chroma->T);
+    result += packCharVector(chroma->prob_A);
+    result += packCharVector(chroma->prob_C);
+    result += packCharVector(chroma->prob_G);
+    result += packCharVector(chroma->prob_T);
+    result += packBool(chroma->hasQV);
     return result;
 }
 
@@ -170,29 +170,29 @@ DNAChromatogram DNAChromatogramSerializer::deserialize(const QByteArray& binary,
     int offset = 0;
     int length = binary.length();
 
-    result.traceLength = unpackNum<int>(data, length, offset, os);
+    result->traceLength = unpackNum<int>(data, length, offset, os);
     CHECK_OP(os, result);
-    result.seqLength = unpackNum<int>(data, length, offset, os);
+    result->seqLength = unpackNum<int>(data, length, offset, os);
     CHECK_OP(os, result);
-    result.baseCalls = unpackNumVector<ushort>(data, length, offset, os);
+    result->baseCalls = unpackNumVector<ushort>(data, length, offset, os);
     CHECK_OP(os, result);
-    result.A = unpackNumVector<ushort>(data, length, offset, os);
+    result->A = unpackNumVector<ushort>(data, length, offset, os);
     CHECK_OP(os, result);
-    result.C = unpackNumVector<ushort>(data, length, offset, os);
+    result->C = unpackNumVector<ushort>(data, length, offset, os);
     CHECK_OP(os, result);
-    result.G = unpackNumVector<ushort>(data, length, offset, os);
+    result->G = unpackNumVector<ushort>(data, length, offset, os);
     CHECK_OP(os, result);
-    result.T = unpackNumVector<ushort>(data, length, offset, os);
+    result->T = unpackNumVector<ushort>(data, length, offset, os);
     CHECK_OP(os, result);
-    result.prob_A = unpackCharVector(data, length, offset, os);
+    result->prob_A = unpackCharVector(data, length, offset, os);
     CHECK_OP(os, result);
-    result.prob_C = unpackCharVector(data, length, offset, os);
+    result->prob_C = unpackCharVector(data, length, offset, os);
     CHECK_OP(os, result);
-    result.prob_G = unpackCharVector(data, length, offset, os);
+    result->prob_G = unpackCharVector(data, length, offset, os);
     CHECK_OP(os, result);
-    result.prob_T = unpackCharVector(data, length, offset, os);
+    result->prob_T = unpackCharVector(data, length, offset, os);
     CHECK_OP(os, result);
-    result.hasQV = unpackBool(data, length, offset, os);
+    result->hasQV = unpackBool(data, length, offset, os);
     return result;
 }
 

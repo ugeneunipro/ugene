@@ -21,14 +21,23 @@
 
 #pragma once
 
+#include <QSharedPointer>
 #include <QVector>
 
 #include <U2Core/global.h>
 
 namespace U2 {
 
+class ChromatogramData;
+
 /** In-memory representation of the chromatogram. */
-class U2CORE_EXPORT DNAChromatogram {
+class U2CORE_EXPORT DNAChromatogram : public QSharedDataPointer<ChromatogramData> {
+public:
+    DNAChromatogram();
+    DNAChromatogram(ChromatogramData* data);
+};
+
+class U2CORE_EXPORT ChromatogramData : public QSharedData {
 public:
     enum class Trace {
         Trace_A = 0,
@@ -38,8 +47,8 @@ public:
     };
 
     /* Chromatogram trace and the corresponding peak height */
-    struct ChromatogramTraceAndValue {
-        ChromatogramTraceAndValue(Trace t, int v)
+    struct TraceAndValue {
+        TraceAndValue(Trace t, int v)
             : trace(t), value(v) {
         }
 
@@ -49,7 +58,7 @@ public:
         int value = 0;
     };
 
-    DNAChromatogram() = default;
+    ChromatogramData() = default;
 
     QString name = "chromatogram";
     int traceLength = 0;
@@ -67,9 +76,7 @@ public:
 
     ushort getValue(const Trace& trace, qint64 position) const;
 
-    bool operator==(const DNAChromatogram& otherChromatogram) const;
-
-    static const char DEFAULT_PROBABILITY;
+    bool operator==(const ChromatogramData& otherChromatogram) const;
 
     /* The "U2::DNAChromatogram::Trace" enum and the corresponding "char" symbol */
     static const QVarLengthArray<char, 4> BASE_BY_TRACE;

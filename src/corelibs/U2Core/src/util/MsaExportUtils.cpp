@@ -68,7 +68,7 @@ MultipleAlignment MsaExportUtils::loadAlignment(const U2DbiRef& dbiRef, const U2
 
     for (int i = 0; i < rows.count(); ++i) {
         const MsaRowSnapshot& rowSnapshot = rowSnapshots[i];
-        if (rowSnapshot.chromatogram.isEmpty()) {  // Use original MSA code.
+        if (rowSnapshot.chromatogram->isEmpty()) {  // Use original MSA code.
             ma->addRow(rows[i], rowSnapshot.sequence, os);
         } else {  // Use original MCA code.
             ma->addRow(rows[i], rowSnapshot.chromatogram, rowSnapshot.sequence, os);

@@ -54,7 +54,7 @@ namespace U2 {
 
 static const char GAP_CHAR = '-';
 
-ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSequenceLineView* cv, const DNAChromatogram& chroma)
+ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSequenceLineView* cv, const DNAChromatogram& chromatogram)
     : GSequenceLineView(p, v), editDNASeq(nullptr) {
     const QString objectName = "chromatogram_view_" + v->getSequenceGObject()->getGObjectName();
     setObjectName(objectName);
@@ -64,8 +64,8 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     showQVAction = new QAction(tr("Show quality bars"), this);
     showQVAction->setIcon(QIcon(":chroma_view/images/bars.png"));
     showQVAction->setCheckable(true);
-    showQVAction->setChecked(chroma.hasQV);
-    showQVAction->setEnabled(chroma.hasQV);
+    showQVAction->setChecked(chromatogram->hasQV);
+    showQVAction->setEnabled(chromatogram->hasQV);
     connect(showQVAction, SIGNAL(toggled(bool)), SLOT(completeUpdate()));
 
     showAllTraces = new QAction(tr("Show all"), this);
@@ -79,7 +79,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     traceActionMenu->addSeparator();
     traceActionMenu->addAction(showAllTraces);
 
-    renderArea = new ChromatogramViewRenderArea(this, chroma);
+    renderArea = new ChromatogramViewRenderArea(this, chromatogram);
 
     scaleBar = new ScaleBar();
     scaleBar->setRange(100, 1000);
@@ -432,20 +432,24 @@ ChromatogramViewRenderArea::ChromatogramViewRenderArea(ChromatogramView* p, cons
     heightAreaBC = 50;
     areaHeight = height() - heightAreaBC;
 
-    chroma = _chroma;
+    chromatogram = _chroma;
     chromaMax = 0;
-    for (int i = 0; i < chroma.traceLength; i++) {
-        if (chromaMax < chroma.A[i])
-            chromaMax = chroma.A[i];
-        if (chromaMax < chroma.C[i])
-            chromaMax = chroma.C[i];
-        if (chromaMax < chroma.G[i])
-            chromaMax = chroma.G[i];
-        if (chromaMax < chroma.T[i])
-            chromaMax = chroma.T[i];
+    for (int i = 0; i < chromatogram->traceLength; i++) {
+        if (chromaMax < chromatogram->A[i]) {
+            chromaMax = chromatogram->A[i];
+        }
+        if (chromaMax < chromatogram->C[i]) {
+            chromaMax = chromatogram->C[i];
+        }
+        if (chromaMax < chromatogram->G[i]) {
+            chromaMax = chromatogram->G[i];
+        }
+        if (chromaMax < chromatogram->T[i]) {
+            chromaMax = chromatogram->T[i];
+        }
     }
     hasSel = false;
-    if (chroma.hasQV && p->showQV()) {
+    if (chromatogram->hasQV && p->showQV()) {
         addUpIfQVL = 0;
     } else {
         addUpIfQVL = heightAreaBC - 2 * charHeight;
@@ -489,7 +493,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
             // draw basecalls
             drawOriginalBaseCalls(0, heightAreaBC - charHeight - addUpIfQVL, width(), charHeight, p, visible, seq);
 
-            if (chroma.hasQV && chromaView->showQV()) {
+            if (chromatogram->hasQV && chromaView->showQV()) {
                 drawQualityValues(0, charHeight, width(), heightAreaBC - 2 * charHeight, p, visible, seq);
             }
         } else {
@@ -534,18 +538,18 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
 
         U2Region self = sel.first();
         int i1 = int(self.startPos), i2 = int(self.endPos() - 1);
-        qreal startBaseCall = kLinearTransformTrace * chroma.baseCalls[i1];
-        qreal endBaseCall = kLinearTransformTrace * chroma.baseCalls[i2];
+        qreal startBaseCall = kLinearTransformTrace * chromatogram->baseCalls[i1];
+        qreal endBaseCall = kLinearTransformTrace * chromatogram->baseCalls[i2];
         if (i1 != 0) {
-            qreal prevBaseCall = kLinearTransformTrace * chroma.baseCalls[i1 - 1];
+            qreal prevBaseCall = kLinearTransformTrace * chromatogram->baseCalls[i1 - 1];
             int lineX = int((startBaseCall + prevBaseCall) / 2 + bLinearTransformTrace);
             p.drawLine(lineX, 0, lineX, pd->height());
         } else {
             int lineX = int(startBaseCall + bLinearTransformTrace - charWidth / 2);
             p.drawLine(lineX, 0, lineX, pd->height());
         }
-        if (i2 != chroma.seqLength - 1) {
-            int nextBaseCall = int(kLinearTransformTrace * chroma.baseCalls[i2 + 1]);
+        if (i2 != chromatogram->seqLength - 1) {
+            int nextBaseCall = int(kLinearTransformTrace * chromatogram->baseCalls[i2 + 1]);
             int lineX = int((endBaseCall + nextBaseCall) / 2 + bLinearTransformTrace);
             p.drawLine(lineX, 0, lineX, pd->height());
         } else {
@@ -562,14 +566,14 @@ void ChromatogramViewRenderArea::setAreaHeight(int newH) {
 qint64 ChromatogramViewRenderArea::coordToPos(const QPoint& coord) const {
     int x = coord.x();
     const U2Region& visibleRange = view->getVisibleRange();
-    qreal lastBaseCall = kLinearTransformTrace * chroma.baseCalls[chroma.seqLength - 1] + bLinearTransformTrace;
-    if (visibleRange.startPos + visibleRange.length == chroma.seqLength && x > lastBaseCall) {
-        return chroma.seqLength;
+    qreal lastBaseCall = kLinearTransformTrace * chromatogram->baseCalls[chromatogram->seqLength - 1] + bLinearTransformTrace;
+    if (visibleRange.startPos + visibleRange.length == chromatogram->seqLength && x > lastBaseCall) {
+        return chromatogram->seqLength;
     }
     qreal nearestPos = visibleRange.startPos;
-    while (nearestPos < chroma.seqLength - 1) {
-        qreal leftBaseCallPos = kLinearTransformTrace * chroma.baseCalls[nearestPos] + bLinearTransformTrace;
-        qreal rightBaseCallPos = kLinearTransformTrace * chroma.baseCalls[nearestPos + 1] + bLinearTransformTrace;
+    while (nearestPos < chromatogram->seqLength - 1) {
+        qreal leftBaseCallPos = kLinearTransformTrace * chromatogram->baseCalls[nearestPos] + bLinearTransformTrace;
+        qreal rightBaseCallPos = kLinearTransformTrace * chromatogram->baseCalls[nearestPos + 1] + bLinearTransformTrace;
         CHECK_BREAK((leftBaseCallPos + rightBaseCallPos) / 2 < x + (rightBaseCallPos - leftBaseCallPos) / 2);
         nearestPos++;
     }
@@ -581,13 +585,13 @@ int ChromatogramViewRenderArea::posToCoord(qint64 p, bool useVirtualSpace) const
     if (!useVirtualSpace && !visibleRange.contains(p) && p != visibleRange.endPos()) {
         return -1;
     }
-    qreal res = kLinearTransformTrace * chroma.baseCalls[visibleRange.startPos + p] + bLinearTransformTrace;
+    qreal res = kLinearTransformTrace * chromatogram->baseCalls[visibleRange.startPos + p] + bLinearTransformTrace;
     assert(useVirtualSpace || res <= width());
     return int(res);
 }
 
 QRectF ChromatogramViewRenderArea::posToRect(int i) const {
-    QRectF r(kLinearTransformBaseCallsOfEdited * chroma.baseCalls[i] + bLinearTransformBaseCallsOfEdited - charWidth / 2, 0, charWidth, heightAreaBC - addUpIfQVL);
+    QRectF r(kLinearTransformBaseCallsOfEdited * chromatogram->baseCalls[i] + bLinearTransformBaseCallsOfEdited - charWidth / 2, 0, charWidth, heightAreaBC - addUpIfQVL);
     return r;
 }
 
@@ -614,8 +618,8 @@ void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w
     p.drawLine(0,0,0,-h);
     p.drawLine(w,0,w,-h);*/
 
-    int a1 = chroma.baseCalls[visible.startPos];
-    int a2 = chroma.baseCalls[visible.endPos() - 1];
+    int a1 = chromatogram->baseCalls[visible.startPos];
+    int a2 = chromatogram->baseCalls[visible.endPos() - 1];
     qreal leftMargin, rightMargin;
     leftMargin = rightMargin = charWidth;
     qreal k1 = w - leftMargin - rightMargin;
@@ -623,17 +627,17 @@ void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w
     kLinearTransformTrace = qreal(k1) / k2;
     bLinearTransformTrace = leftMargin - kLinearTransformTrace * a1;
     int mk1 = qMin(static_cast<int>(leftMargin / kLinearTransformTrace), a1);
-    int mk2 = qMin(static_cast<int>(rightMargin / kLinearTransformTrace), chroma.traceLength - a2 - 1);
+    int mk2 = qMin(static_cast<int>(rightMargin / kLinearTransformTrace), chromatogram->traceLength - a2 - 1);
     int polylineSize = a2 - a1 + mk1 + mk2 + 1;
     QPolygonF polylineA(polylineSize), polylineC(polylineSize),
         polylineG(polylineSize), polylineT(polylineSize);
     qreal areaHeight = (heightPD - heightAreaBC + addUpIfQVL) * this->areaHeight / 100;
     for (int j = a1 - mk1; j <= a2 + mk2; ++j) {
         double lineX = kLinearTransformTrace * j + bLinearTransformTrace;
-        qreal yA = -qMin(chroma.A[j] * areaHeight / chromaMax, h);
-        qreal yC = -qMin(chroma.C[j] * areaHeight / chromaMax, h);
-        qreal yG = -qMin(chroma.G[j] * areaHeight / chromaMax, h);
-        qreal yT = -qMin(chroma.T[j] * areaHeight / chromaMax, h);
+        qreal yA = -qMin(chromatogram->A[j] * areaHeight / chromaMax, h);
+        qreal yC = -qMin(chromatogram->C[j] * areaHeight / chromaMax, h);
+        qreal yG = -qMin(chromatogram->G[j] * areaHeight / chromaMax, h);
+        qreal yT = -qMin(chromatogram->T[j] * areaHeight / chromaMax, h);
         polylineA[j - a1 + mk1] = QPointF(lineX, yA);
         polylineC[j - a1 + mk1] = QPointF(lineX, yC);
         polylineG[j - a1 + mk1] = QPointF(lineX, yG);
@@ -665,8 +669,8 @@ void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w
     p.resetTransform();
     p.translate(x, y + h);
 
-    int a1 = chroma.baseCalls[visible.startPos];
-    int a2 = chroma.baseCalls[visible.endPos() - 1];
+    int a1 = chromatogram->baseCalls[visible.startPos];
+    int a2 = chromatogram->baseCalls[visible.endPos() - 1];
     qreal leftMargin, rightMargin;
     leftMargin = rightMargin = charWidth;
     qreal k1 = w - leftMargin - rightMargin;
@@ -688,7 +692,7 @@ void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w
         } else {
             p.setFont(font);
         }
-        qreal xP = kLinearTransformBaseCalls * chroma.baseCalls[i] + bLinearTransformBaseCalls;
+        qreal xP = kLinearTransformBaseCalls * chromatogram->baseCalls[i] + bLinearTransformBaseCalls;
         rect.setRect(int(xP - charWidth / 2 + linePen.width()), -h, charWidth, h);
         p.drawText(rect, Qt::AlignCenter, QString(ba[i]));
 
@@ -730,8 +734,8 @@ void ChromatogramViewRenderArea::drawQualityValues(qreal x, qreal y, qreal w, qr
     p.setPen(Qt::black);
     p.setRenderHint(QPainter::Antialiasing, true);
 
-    int a1 = chroma.baseCalls[visible.startPos];
-    int a2 = chroma.baseCalls[visible.endPos() - 1];
+    int a1 = chromatogram->baseCalls[visible.startPos];
+    int a2 = chromatogram->baseCalls[visible.endPos() - 1];
     qreal leftMargin, rightMargin;
     leftMargin = rightMargin = charWidth;
     qreal k1 = w - leftMargin - rightMargin;
@@ -740,19 +744,19 @@ void ChromatogramViewRenderArea::drawQualityValues(qreal x, qreal y, qreal w, qr
     qreal bLinearTransformQV = leftMargin - kLinearTransformQV * a1;
 
     for (int i = int(visible.startPos); i < visible.endPos(); i++) {
-        qreal xP = kLinearTransformQV * chroma.baseCalls[i] + bLinearTransformQV - charWidth / 2 + linePen.width();
+        qreal xP = kLinearTransformQV * chromatogram->baseCalls[i] + bLinearTransformQV - charWidth / 2 + linePen.width();
         switch (ba[i]) {
             case 'A':
-                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_A[i]);
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chromatogram->prob_A[i]);
                 break;
             case 'C':
-                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_C[i]);
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chromatogram->prob_C[i]);
                 break;
             case 'G':
-                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_G[i]);
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chromatogram->prob_G[i]);
                 break;
             case 'T':
-                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_T[i]);
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chromatogram->prob_T[i]);
                 break;
         }
         if (qAbs(rectangle.height()) > h / 100) {
@@ -776,8 +780,8 @@ void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y
     p.drawLine(0,0,0,-h);
     p.drawLine(w,0,w,-h);*/
 
-    int a1 = chroma.baseCalls[visible.startPos];
-    int a2 = chroma.baseCalls[visible.endPos() - 1];
+    int a1 = chromatogram->baseCalls[visible.startPos];
+    int a2 = chromatogram->baseCalls[visible.endPos() - 1];
     qreal leftMargin, rightMargin;
     leftMargin = rightMargin = linePen.width();
     qreal k1 = w - leftMargin - rightMargin;
@@ -787,8 +791,8 @@ void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y
     double yRes = 0;
     double areaHeight = (heightPD - heightAreaBC + addUpIfQVL) * this->areaHeight / 100;
     for (int j = int(visible.startPos); j < visible.startPos + visible.length; j++) {
-        int temp = chroma.baseCalls[j];
-        if (temp >= chroma.traceLength) {
+        int temp = chromatogram->baseCalls[j];
+        if (temp >= chromatogram->traceLength) {
             // damaged data - FIXME improve?
             break;
         }
@@ -796,22 +800,22 @@ void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y
         bool drawBase = true;
         switch (ba[j]) {
             case 'A':
-                yRes = -qMin(chroma.A[temp] * areaHeight / chromaMax, h);
+                yRes = -qMin(chromatogram->A[temp] * areaHeight / chromaMax, h);
                 p.setPen(colorForIds[0]);
                 drawBase = settings.drawTraceA;
                 break;
             case 'C':
-                yRes = -qMin(chroma.C[temp] * areaHeight / chromaMax, h);
+                yRes = -qMin(chromatogram->C[temp] * areaHeight / chromaMax, h);
                 p.setPen(colorForIds[1]);
                 drawBase = settings.drawTraceC;
                 break;
             case 'G':
-                yRes = -qMin(chroma.G[temp] * areaHeight / chromaMax, h);
+                yRes = -qMin(chromatogram->G[temp] * areaHeight / chromaMax, h);
                 p.setPen(colorForIds[2]);
                 drawBase = settings.drawTraceG;
                 break;
             case 'T':
-                yRes = -qMin(chroma.T[temp] * areaHeight / chromaMax, h);
+                yRes = -qMin(chromatogram->T[temp] * areaHeight / chromaMax, h);
                 p.setPen(colorForIds[3]);
                 drawBase = settings.drawTraceT;
                 break;

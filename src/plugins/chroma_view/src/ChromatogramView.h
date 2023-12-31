@@ -51,7 +51,7 @@ class ChromatogramView : public GSequenceLineView {
     friend class ChromatogramViewRenderArea;
 
 public:
-    ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSequenceLineView* cv, const DNAChromatogram& chroma);
+    ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSequenceLineView* cv, const DNAChromatogram& chromatogram);
 
     virtual void buildPopupMenu(QMenu& m);
 
@@ -139,7 +139,7 @@ private:
     void drawQualityValues(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba);
     void drawChromatogramBaseCallsLines(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba, const ChromatogramViewSettings& settings);
 
-    DNAChromatogram chroma;
+    DNAChromatogram chromatogram;
     int chromaMax;
     QPen linePen;
     QFont font;

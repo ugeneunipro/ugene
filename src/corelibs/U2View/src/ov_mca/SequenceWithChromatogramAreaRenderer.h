@@ -53,16 +53,16 @@ private:
 
     QColor getBaseColor(char base) const;
 
-    void drawChromatogramTrace(const DNAChromatogram& chroma, qreal x, qreal y, qreal h, QPainter& p, const U2Region& visible) const;
+    void drawChromatogramTrace(const DNAChromatogram& chromatogram, qreal x, qreal y, qreal h, QPainter& p, const U2Region& visible) const;
     void drawOriginalBaseCalls(qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
-    void drawQualityValues(const DNAChromatogram& chroma, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
-    void drawChromatogramBaseCallsLines(const DNAChromatogram& chroma, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
+    void drawQualityValues(const DNAChromatogram& chromatogram, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
+    void drawChromatogramBaseCallsLines(const DNAChromatogram& chromatogram, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
 
 private:
     McaEditorSequenceArea* getSeqArea() const;
     const ChromatogramViewSettings& getSettings() const;
     static int getChromatogramHeight();
-    void completePolygonsWithLastBaseCallTrace(QPolygonF& polylineA, QPolygonF& polylineC, QPolygonF& polylineG, QPolygonF& polylineT, const DNAChromatogram& chroma, qreal columnWidth, const U2Region& visible, qreal h) const;
+    void completePolygonsWithLastBaseCallTrace(QPolygonF& polylineA, QPolygonF& polylineC, QPolygonF& polylineG, QPolygonF& polylineT, const DNAChromatogram& chromatogram, qreal columnWidth, const U2Region& visible, qreal h) const;
 
 private:
     qreal charWidth;

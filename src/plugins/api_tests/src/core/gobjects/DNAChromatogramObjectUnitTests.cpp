@@ -36,7 +36,7 @@ bool DNAChromatogramObjectTestData::inited = false;
 const QString DNAChromatogramObjectTestData::UDR_DB_URL = "DNAChromatogramObjectUnitTests.ugenedb";
 TestDbiProvider DNAChromatogramObjectTestData::dbiProvider = TestDbiProvider();
 U2EntityRef DNAChromatogramObjectTestData::objRef = U2EntityRef();
-DNAChromatogram DNAChromatogramObjectTestData::chroma = DNAChromatogram();
+DNAChromatogram DNAChromatogramObjectTestData::chromatogram = DNAChromatogram();
 
 U2DbiRef DNAChromatogramObjectTestData::getDbiRef() {
     if (!inited) {
@@ -70,7 +70,7 @@ const DNAChromatogram& DNAChromatogramObjectTestData::getChromatogram() {
     if (!inited) {
         init();
     }
-    return chroma;
+    return chromatogram;
 }
 
 void DNAChromatogramObjectTestData::init() {
@@ -93,12 +93,12 @@ void DNAChromatogramObjectTestData::initData() {
 
     objRef = U2EntityRef(dbiRef, object.id);
 
-    chroma = DNAChromatogram();
-    chroma.seqLength = 102;
-    chroma.G << 51;
-    chroma.prob_A << '1';
-    chroma.prob_C << '2';
-    RawDataUdrSchema::writeContent(DNAChromatogramSerializer::serialize(chroma), objRef, os);
+    chromatogram = DNAChromatogram();
+    chromatogram->seqLength = 102;
+    chromatogram->G << 51;
+    chromatogram->prob_A << '1';
+    chromatogram->prob_C << '2';
+    RawDataUdrSchema::writeContent(DNAChromatogramSerializer::serialize(chromatogram), objRef, os);
     SAFE_POINT_OP(os, );
 }
 
@@ -112,22 +112,22 @@ void DNAChromatogramObjectTestData::shutdown() {
 }
 
 IMPLEMENT_TEST(DNAChromatogramObjectUnitTests, createInstance) {
-    DNAChromatogram src;
-    src.baseCalls << 20;
+    DNAChromatogram chromatogram;
+    chromatogram->baseCalls << 20;
     U2OpStatusImpl os;
-    QScopedPointer<DNAChromatogramObject> object(DNAChromatogramObject::createInstance(src, "object", DNAChromatogramObjectTestData::getDbiRef(), os));
+    QScopedPointer<DNAChromatogramObject> object(DNAChromatogramObject::createInstance(chromatogram, "object", DNAChromatogramObjectTestData::getDbiRef(), os));
     CHECK_NO_ERROR(os);
 
-    CompareUtils::checkEqual(src, object->getChromatogram(), os);
+    CompareUtils::checkEqual(chromatogram, object->getChromatogram(), os);
     CHECK_NO_ERROR(os);
 }
 
 IMPLEMENT_TEST(DNAChromatogramObjectUnitTests, createInstance_WrongDbi) {
-    DNAChromatogram src;
-    src.A << 30;
+    DNAChromatogram chromatogram;
+    chromatogram->A << 30;
 
     U2OpStatusImpl os;
-    QScopedPointer<DNAChromatogramObject> object(DNAChromatogramObject::createInstance(src, "object", U2DbiRef(), os));
+    QScopedPointer<DNAChromatogramObject> object(DNAChromatogramObject::createInstance(chromatogram, "object", U2DbiRef(), os));
     CHECK_TRUE(os.hasError(), "no error");
 }
 
@@ -182,12 +182,12 @@ IMPLEMENT_TEST(DNAChromatogramObjectUnitTests, clone_NullObj) {
 }
 
 IMPLEMENT_TEST(DNAChromatogramObjectUnitTests, remove) {
-    DNAChromatogram src;
-    src.C << 50;
-    src.hasQV = true;
+    DNAChromatogram chromatogram;
+    chromatogram->C << 50;
+    chromatogram->hasQV = true;
 
     U2OpStatusImpl os;
-    QScopedPointer<DNAChromatogramObject> object(DNAChromatogramObject::createInstance(src, "object", DNAChromatogramObjectTestData::getDbiRef(), os));
+    QScopedPointer<DNAChromatogramObject> object(DNAChromatogramObject::createInstance(chromatogram, "object", DNAChromatogramObjectTestData::getDbiRef(), os));
     CHECK_NO_ERROR(os);
     U2DataId objId = object->getEntityRef().entityId;
 

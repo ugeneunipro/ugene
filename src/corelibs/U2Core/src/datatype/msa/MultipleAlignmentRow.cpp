@@ -196,7 +196,7 @@ bool MultipleAlignmentRowData::isEqualCore(const MultipleAlignmentRowData& other
     CHECK(sequence.seq == other.sequence.seq, false);
     CHECK(sequence.length() > 0, true);
 
-    if (!chromatogram.isEmpty() || !other.chromatogram.isEmpty()) {
+    if (!chromatogram->isEmpty() || !other.chromatogram->isEmpty()) {
         CHECK(ChromatogramUtils::checkAllFieldsEqual(chromatogram, other.chromatogram), false);
     }
 
@@ -424,9 +424,9 @@ void MultipleAlignmentRowData::setRowContent(const DNAChromatogram& newChromatog
     sequence = newSequence;
     setGapModel(newGapModel);
 
-    if (sequence.length() > chromatogram.seqLength) {
-        ushort baseCall = chromatogram.baseCalls.isEmpty() ? 0 : chromatogram.baseCalls.last();
-        chromatogram.baseCalls.insert(chromatogram.seqLength, sequence.length() - chromatogram.seqLength, baseCall);
+    if (sequence.length() > chromatogram->seqLength) {
+        ushort baseCall = chromatogram->baseCalls.isEmpty() ? 0 : chromatogram->baseCalls.last();
+        chromatogram->baseCalls.insert(chromatogram->seqLength, sequence.length() - chromatogram->seqLength, baseCall);
     }
 }
 
@@ -630,7 +630,7 @@ bool MultipleAlignmentRowData::isEqual(const MultipleAlignmentRowData& other) co
     CHECK(gaps == other.getGaps(), false);
     CHECK(sequence.alphabet == other.sequence.alphabet, false);
     CHECK(sequence.seq == sequence.seq, false);
-    if (!chromatogram.isEmpty() || !other.chromatogram.isEmpty()) {
+    if (!chromatogram->isEmpty() || !other.chromatogram->isEmpty()) {
         CHECK(ChromatogramUtils::checkAllFieldsEqual(chromatogram, other.chromatogram), false);
     }
     return true;
@@ -673,7 +673,7 @@ void MultipleAlignmentRowData::crop(U2OpStatus& os, int startPosition, int count
         }
     }
 
-    if (!chromatogram.isEmpty()) {
+    if (!chromatogram->isEmpty()) {
         ChromatogramUtils::crop(chromatogram, startPosition, count);
     }
 
@@ -736,11 +736,11 @@ void MultipleAlignmentRowData::replaceChars(char origChar, char resultChar, U2Op
         gaps = newGapsModel;
         mergeConsecutiveGaps();
 
-        if (!chromatogram.isEmpty()) {
+        if (!chromatogram->isEmpty()) {
             for (int index : qAsConst(gapsIndexes)) {
-                chromatogram.baseCalls.removeAt(index);
+                chromatogram->baseCalls.removeAt(index);
             }
-            chromatogram.seqLength -= gapsIndexes.size();
+            chromatogram->seqLength -= gapsIndexes.size();
         }
 
     } else {
@@ -779,30 +779,31 @@ bool MultipleAlignmentRowData::isComplemented() const {
     return MultipleAlignmentRowInfo::getComplemented(additionalInfo);
 }
 
-const QMap<DNAChromatogram::Trace, QVector<ushort> DNAChromatogram::*> PEAKS =
-    {{DNAChromatogram::Trace::Trace_A, &DNAChromatogram::A},
-     {DNAChromatogram::Trace::Trace_C, &DNAChromatogram::C},
-     {DNAChromatogram::Trace::Trace_G, &DNAChromatogram::G},
-     {DNAChromatogram::Trace::Trace_T, &DNAChromatogram::T}};
+const QMap<ChromatogramData::Trace, QVector<ushort> ChromatogramData::*> PEAKS =
+    {{ChromatogramData::Trace::Trace_A, &ChromatogramData::A},
+     {ChromatogramData::Trace::Trace_C, &ChromatogramData::C},
+     {ChromatogramData::Trace::Trace_G, &ChromatogramData::G},
+     {ChromatogramData::Trace::Trace_T, &ChromatogramData::T}};
 
-QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue>
+QPair<ChromatogramData::TraceAndValue, ChromatogramData::TraceAndValue>
     MultipleAlignmentRowData::getTwoHighestPeaks(int position, bool& hasTwoPeaks) const {
-    if (chromatogram.isEmpty()) {
+    if (chromatogram->isEmpty()) {
         hasTwoPeaks = false;
         return {
-            DNAChromatogram::ChromatogramTraceAndValue(DNAChromatogram::Trace::Trace_A, 0),
-            DNAChromatogram::ChromatogramTraceAndValue(DNAChromatogram::Trace::Trace_C, 0),
+            ChromatogramData::TraceAndValue(ChromatogramData::Trace::Trace_A, 0),
+            ChromatogramData::TraceAndValue(ChromatogramData::Trace::Trace_C, 0),
         };
     }
     hasTwoPeaks = true;
-    int previousBaseCall = chromatogram.baseCalls[position != 0 ? position - 1 : position];
-    int baseCall = chromatogram.baseCalls[position];
-    int nextBaseCall = chromatogram.baseCalls[position != (chromatogram.baseCalls.size() - 1) ? position + 1 : position];
-    QList<DNAChromatogram::ChromatogramTraceAndValue> peaks;
+    int previousBaseCall = chromatogram->baseCalls[position != 0 ? position - 1 : position];
+    int baseCall = chromatogram->baseCalls[position];
+    int nextBaseCall = chromatogram->baseCalls[position != (chromatogram->baseCalls.size() - 1) ? position + 1 : position];
+    QList<ChromatogramData::TraceAndValue> peaks;
 
     auto peaksKeys = PEAKS.keys();
+    const ChromatogramData& chromatogramData = *chromatogram;
     for (auto peak : qAsConst(peaksKeys)) {
-        const QVector<ushort>& chromatogramBaseCallVector = chromatogram.*PEAKS.value(peak);
+        const QVector<ushort>& chromatogramBaseCallVector = chromatogramData.*PEAKS.value(peak);
         auto peakValue = chromatogramBaseCallVector[baseCall];
         int startOfCharacterBaseCall = baseCall - ((baseCall - previousBaseCall) / 2);
         int startValue = chromatogramBaseCallVector[startOfCharacterBaseCall];
@@ -822,7 +823,7 @@ QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramT
 
     if (peaks.size() < 2) {
         hasTwoPeaks = false;
-        return {{DNAChromatogram::Trace::Trace_A, 0}, {DNAChromatogram::Trace::Trace_C, 0}};
+        return {{ChromatogramData::Trace::Trace_A, 0}, {ChromatogramData::Trace::Trace_C, 0}};
     }
 
     std::sort(peaks.begin(),

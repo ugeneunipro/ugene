@@ -25,10 +25,18 @@
 
 namespace U2 {
 
-const char DNAChromatogram::DEFAULT_PROBABILITY = 0;  // SANGER_TODO: 100?
-const QVarLengthArray<char, 4> DNAChromatogram::BASE_BY_TRACE = {'A', 'C', 'G', 'T'};
+DNAChromatogram::DNAChromatogram()
+    : QSharedDataPointer<ChromatogramData>(new ChromatogramData()) {
+}
 
-ushort DNAChromatogram::getValue(const Trace& trace, qint64 position) const {
+DNAChromatogram::DNAChromatogram(ChromatogramData* data)
+    : QSharedDataPointer<ChromatogramData>(data) {
+    SAFE_POINT_NN(data, );
+}
+
+const QVarLengthArray<char, 4> ChromatogramData::BASE_BY_TRACE = {'A', 'C', 'G', 'T'};
+
+ushort ChromatogramData::getValue(const Trace& trace, qint64 position) const {
     SAFE_POINT(0 <= position && position <= traceLength, "The position is out of trace boundaries", 0);
     switch (trace) {
         case Trace::Trace_A:
@@ -48,7 +56,7 @@ ushort DNAChromatogram::getValue(const Trace& trace, qint64 position) const {
     }
 }
 
-bool DNAChromatogram::operator==(const DNAChromatogram& otherChromatogram) const {
+bool ChromatogramData::operator==(const ChromatogramData& otherChromatogram) const {
     return traceLength == otherChromatogram.traceLength &&
            seqLength == otherChromatogram.seqLength &&
            baseCalls == otherChromatogram.baseCalls &&
@@ -63,7 +71,7 @@ bool DNAChromatogram::operator==(const DNAChromatogram& otherChromatogram) const
            hasQV == otherChromatogram.hasQV;
 }
 
-bool DNAChromatogram::isEmpty() const {
+bool ChromatogramData::isEmpty() const {
     return traceLength == 0;
 }
 }  // namespace U2

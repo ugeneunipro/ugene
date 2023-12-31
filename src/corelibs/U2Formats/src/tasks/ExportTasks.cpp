@@ -23,14 +23,12 @@
 
 #include <QFileInfo>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DNATranslationImpl.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/IOAdapter.h>
@@ -221,53 +219,53 @@ void ExportDNAChromatogramTask::prepare() {
     auto sObj = qobject_cast<U2SequenceObject*>(resObj);
     SAFE_POINT_EXT(sObj != nullptr, setError(L10N::nullPointerError("sequence object is null")), );
 
-    DNAChromatogram cd = chromaObject->getChromatogram();
+    DNAChromatogram chromatogram = chromaObject->getChromatogram();
     QByteArray seq = sObj->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
 
     if (settings.reverse) {
         TextUtils::reverse(seq.data(), seq.length());
-        reverseVector(cd.A);
-        reverseVector(cd.C);
-        reverseVector(cd.G);
-        reverseVector(cd.T);
+        reverseVector(chromatogram->A);
+        reverseVector(chromatogram->C);
+        reverseVector(chromatogram->G);
+        reverseVector(chromatogram->T);
         int offset = 0;
         if (chromaObject->getDocument()->getDocumentFormatId() == BaseDocumentFormats::ABIF) {
-            int baseNum = cd.baseCalls.count();
-            int seqLen = cd.seqLength;
+            int baseNum = chromatogram->baseCalls.count();
+            int seqLen = chromatogram->seqLength;
             // this is required for base <-> peak correspondence
             if (baseNum > seqLen) {
-                cd.baseCalls.remove(baseNum - 1);
-                cd.prob_A.remove(baseNum - 1);
-                cd.prob_C.remove(baseNum - 1);
-                cd.prob_G.remove(baseNum - 1);
-                cd.prob_T.remove(baseNum - 1);
+                chromatogram->baseCalls.remove(baseNum - 1);
+                chromatogram->prob_A.remove(baseNum - 1);
+                chromatogram->prob_C.remove(baseNum - 1);
+                chromatogram->prob_G.remove(baseNum - 1);
+                chromatogram->prob_T.remove(baseNum - 1);
             }
         } else if (chromaObject->getDocument()->getDocumentFormatId() == BaseDocumentFormats::SCF) {
             // SCF format particularities
             offset = -1;
         }
 
-        for (int i = 0; i < cd.seqLength; ++i) {
-            cd.baseCalls[i] = cd.traceLength - cd.baseCalls[i] + offset;
+        for (int i = 0; i < chromatogram->seqLength; ++i) {
+            chromatogram->baseCalls[i] = chromatogram->traceLength - chromatogram->baseCalls[i] + offset;
         }
-        reverseVector(cd.baseCalls);
-        reverseVector(cd.prob_A);
-        reverseVector(cd.prob_C);
-        reverseVector(cd.prob_G);
-        reverseVector(cd.prob_T);
+        reverseVector(chromatogram->baseCalls);
+        reverseVector(chromatogram->prob_A);
+        reverseVector(chromatogram->prob_C);
+        reverseVector(chromatogram->prob_G);
+        reverseVector(chromatogram->prob_T);
     }
 
     if (settings.complement) {
         DNATranslation* tr = AppContext::getDNATranslationRegistry()->lookupTranslation(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT);
         tr->translate(seq.data(), seq.length());
-        qSwap(cd.A, cd.T);
-        qSwap(cd.C, cd.G);
-        qSwap(cd.prob_A, cd.prob_T);
-        qSwap(cd.prob_C, cd.prob_G);
+        qSwap(chromatogram->A, chromatogram->T);
+        qSwap(chromatogram->C, chromatogram->G);
+        qSwap(chromatogram->prob_A, chromatogram->prob_T);
+        qSwap(chromatogram->prob_C, chromatogram->prob_G);
     }
 
-    SCFFormat::exportDocumentToSCF(settings.url, cd, seq, stateInfo);
+    SCFFormat::exportDocumentToSCF(settings.url, chromatogram, seq, stateInfo);
     CHECK_OP(stateInfo, );
 
     if (settings.loadDocument) {
