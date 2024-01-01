@@ -84,10 +84,6 @@ public:
         return MSAE_SETTINGS_ROOT;
     }
 
-    MultipleAlignmentObject* getMaObject() const override {
-        return qobject_cast<MultipleAlignmentObject*>(maObject);
-    }
-
     /** Returns selection controller instance. The instance is always defined and is never null. */
     MaEditorSelectionController* getSelectionController() const override;
 

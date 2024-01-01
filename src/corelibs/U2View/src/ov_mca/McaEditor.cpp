@@ -68,10 +68,6 @@ McaEditor::McaEditor(const QString& viewName,
     referenceCtx = new SequenceObjectContext(referenceObj, this);
 }
 
-MultipleAlignmentObject* McaEditor::getMaObject() const {
-    return qobject_cast<MultipleAlignmentObject*>(maObject);
-}
-
 McaEditorWgt* McaEditor::getUI() const {
     return qobject_cast<McaEditorWgt*>(ui);
 }

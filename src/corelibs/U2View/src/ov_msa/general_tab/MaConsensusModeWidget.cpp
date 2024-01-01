@@ -27,7 +27,6 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/MSAEditorConsensusArea.h>
@@ -56,10 +55,8 @@ void MaConsensusModeWidget::reInit(MultipleAlignmentObject* _maObject, MaEditorC
     connect(this, SIGNAL(si_algorithmChanged(QString)), consArea, SLOT(sl_changeConsensusAlgorithm(QString)));
     connect(this, SIGNAL(si_thresholdChanged(int)), consArea, SLOT(sl_changeConsensusThreshold(int)));
 
-    connect(consArea, &MaEditorConsensusArea::si_consensusAlgorithmChanged,
-            this, &MaConsensusModeWidget::sl_algorithmChanged);
-    connect(consArea, &MaEditorConsensusArea::si_consensusThresholdChanged,
-            this, &MaConsensusModeWidget::sl_thresholdChanged);
+    connect(consArea, &MaEditorConsensusArea::si_consensusAlgorithmChanged, this, &MaConsensusModeWidget::sl_algorithmChanged);
+    connect(consArea, &MaEditorConsensusArea::si_consensusThresholdChanged, this, &MaConsensusModeWidget::sl_thresholdChanged);
 }
 
 void MaConsensusModeWidget::init(MultipleAlignmentObject* _maObject, MaEditorConsensusArea* _consArea) {
@@ -164,7 +161,7 @@ void MaConsensusModeWidget::sl_thresholdResetClicked(bool newState) {
     Q_UNUSED(newState);
     MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
     MSAConsensusAlgorithmFactory* factory = reg->getAlgorithmFactory(consensusType->itemData(consensusType->currentIndex()).toString());
-    SAFE_POINT(factory != nullptr, "Consensus alorithm factory is NULL", );
+    SAFE_POINT_NN(factory, );
     sl_thresholdChanged(factory->getDefaultThreshold());
 }
 
@@ -174,17 +171,17 @@ void MaConsensusModeWidget::sl_thresholdChanged(int value) {
 
 void MaConsensusModeWidget::initConsensusTypeCombo() {
     MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
-    SAFE_POINT(reg != nullptr, "Consensus algorithm registry is NULL.", );
+    SAFE_POINT_NN(reg, );
 
     const DNAAlphabet* alphabet = maObject->getAlphabet();
     curAlphabetId = alphabet->getId();
     ConsensusAlgorithmFlags flags = MSAConsensusAlgorithmFactory::getAlphabetFlags(alphabet);
-    if (qobject_cast<MultipleAlignmentObject*>(maObject) != nullptr) {
+    if (maObject->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT) {
         flags |= ConsensusAlgorithmFlag_AvailableForChromatogram;
     }
     QList<MSAConsensusAlgorithmFactory*> algos = reg->getAlgorithmFactories(flags);
     consensusType->clear();
-    foreach (const MSAConsensusAlgorithmFactory* algo, algos) {
+    for (const MSAConsensusAlgorithmFactory* algo: qAsConst(algos)) {
         consensusType->addItem(algo->getName(), algo->getId());
     }
     QString currentAlgorithmName = consArea->getConsensusAlgorithm()->getName();

@@ -77,7 +77,7 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
       collapseModel(new MaCollapseModel(this, obj->getRowIds())) {
     GCOUNTER(cvar, factoryId);
 
-    maObject = qobject_cast<MultipleAlignmentObject*>(obj);
+    maObject = obj;
     objects.append(maObject);
 
     onObjectAdded(maObject);

@@ -24,7 +24,6 @@
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MaEditor.h"
@@ -51,7 +50,7 @@ MSAEditorConsensusCache::~MSAEditorConsensusCache() {
 void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory) {
     delete algorithm;
     algorithm = nullptr;
-    bool ignoreTrailingLeadingGaps = qobject_cast<MultipleAlignmentObject*>(aliObj) != nullptr;
+    bool ignoreTrailingLeadingGaps = aliObj->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     algorithm = factory->createAlgorithm(aliObj->getAlignment(), ignoreTrailingLeadingGaps);
     connect(algorithm, SIGNAL(si_thresholdChanged(int)), SLOT(sl_thresholdChanged(int)));
     updateMap.fill(false);
@@ -85,7 +84,7 @@ void MSAEditorConsensusCache::updateCacheItem(int pos) {
     if (!updateMap.at(pos) && aliObj != nullptr) {
         const MultipleAlignment ma = aliObj->getAlignment();
 
-        QString errorMessage = tr("Can not update consensus chache item");
+        QString errorMessage = "Can not update consensus cache item";
         SAFE_POINT(pos >= 0 && pos < curCacheSize, errorMessage, );
         SAFE_POINT(curCacheSize == ma->getLength(), errorMessage, );
 

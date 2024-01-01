@@ -52,8 +52,8 @@ void McaAlternativeMutationsWidget::init(MultipleAlignmentObject* _maObject,
     seqArea = qobject_cast<McaEditorSequenceArea*>(_seqArea);
     SAFE_POINT(seqArea != nullptr, "MaConsensusModeWidget can not be initialized: McaEditorSequenceArea is nullptr", );
 
-    mcaObject = qobject_cast<MultipleAlignmentObject*>(_maObject);
-    SAFE_POINT(mcaObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleChromatogramAlignmentObject is nullptr", );
+    mcaObject = _maObject;
+    SAFE_POINT(mcaObject->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, "Not a MCA object", );
 
     statusBar = qobject_cast<McaEditorStatusBar*>(_statusBar);
     SAFE_POINT(mcaObject != nullptr, "MaConsensusModeWidget can not be initialized: McaEditorStatusBar is nullptr", );

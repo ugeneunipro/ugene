@@ -57,7 +57,6 @@ public:
         return MCAE_SETTINGS_ROOT;
     }
 
-    MultipleAlignmentObject* getMaObject() const override;
     McaEditorWgt* getUI() const override;
 
     /** Returns current MCA editor selection controller instance. */
