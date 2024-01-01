@@ -1084,8 +1084,10 @@ U2SequenceObject* MultipleAlignmentObject::getReferenceObj() const {
         SAFE_POINT_NN(attributeDbi, nullptr);
         U2ByteArrayAttribute attribute = U2AttributeUtils::findByteArrayAttribute(attributeDbi, getEntityRef().entityId, REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT, os);
         CHECK_OP(os, nullptr);
+        CHECK(!attribute.value.isEmpty(), nullptr)
 
         GObject* obj = GObjectUtils::createObject(con.dbi->getDbiRef(), attribute.value, "reference object");
+        CHECK_NN(obj, nullptr);
 
         referenceObj = qobject_cast<U2SequenceObject*>(obj);
         referenceObj->setParent((MultipleAlignmentObject*)this);

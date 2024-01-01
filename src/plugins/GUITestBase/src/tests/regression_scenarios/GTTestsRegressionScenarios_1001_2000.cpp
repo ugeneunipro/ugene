@@ -3658,7 +3658,7 @@ GUI_TEST_CLASS_DEFINITION(test_1387) {
     // 3) In the appeared dialog select "Remove columns with percentage of gaps" and click the "Remove" button.
     // Expected state: UGENE not crashed
 
-    GTFileDialog::openFile(testDir + "_common_data/regression/1387/", "col_of_gaps.aln");
+    GTFileDialog::openFile(testDir + "_common_data/regression/1387/col_of_gaps.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::add(new PopupChooser({MSAE_MENU_EDIT, "remove_columns_of_gaps"}));
@@ -3757,7 +3757,7 @@ GUI_TEST_CLASS_DEFINITION(test_1405) {
 
 GUI_TEST_CLASS_DEFINITION(test_1408) {
     //    1) Open "data/samples/FASTA/human_T1.fa"
-    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
     //    2) Right click on "human_T1.fa" in the project tab
 
