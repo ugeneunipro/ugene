@@ -27,7 +27,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -482,7 +482,7 @@ bool NEXUSParser::readDataContents(Context& ctx) {
                 return false;
             }
 
-            MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, ma, ti);
+            MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, ma, ti);
             CHECK_OP(ti, false);
             addObject(obj);
         } else if (cmd == END) {
@@ -907,7 +907,7 @@ void NEXUSFormat::storeObjects(const QList<GObject*>& objects, bool simpleNames,
     writeHeader(io, ti);
 
     for (GObject* object : qAsConst(objects)) {
-        if (auto mao = qobject_cast<MultipleSequenceAlignmentObject*>(object)) {
+        if (auto mao = qobject_cast<MultipleAlignmentObject*>(object)) {
             writeMAligment(mao->getAlignment(), simpleNames, io, ti);
             io->writeBlock(QByteArray("\n"));
         } else if (auto pto = qobject_cast<PhyTreeObject*>(object)) {

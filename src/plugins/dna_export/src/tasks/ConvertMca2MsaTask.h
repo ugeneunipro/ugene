@@ -27,12 +27,12 @@
 
 namespace U2 {
 
-class MultipleChromatogramAlignmentObject;
+class MultipleAlignmentObject;
 
 class ConvertMca2MsaTask : public Task {
     Q_OBJECT
 public:
-    ConvertMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject, bool includeReference);
+    ConvertMca2MsaTask(MultipleAlignmentObject* mcaObject, bool includeReference);
 
     MultipleAlignment getMsa() const;
 
@@ -41,7 +41,7 @@ private:
     void run() override;
     ReportResult report() override;
 
-    MultipleChromatogramAlignmentObject* mcaObject;
+    MultipleAlignmentObject* mcaObject;
     bool includeReference;
 
     MultipleAlignment msa;

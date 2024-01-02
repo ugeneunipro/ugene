@@ -27,7 +27,7 @@
 namespace U2 {
 
 class CmdlineInOutTaskRunner;
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class PhyTreeObject;
 class TmpDbiHandle;
 
@@ -57,7 +57,7 @@ private:
 
 private:
     CmdlineInOutTaskRunner* cmdlineTask;
-    MultipleSequenceAlignmentObject* msaObject;
+    MultipleAlignmentObject* msaObject;
     PhyTreeObject* treeObject;
     QString dbiPath;
     U2DbiRef dbiRef;

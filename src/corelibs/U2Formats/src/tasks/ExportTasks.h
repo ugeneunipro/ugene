@@ -31,7 +31,7 @@ namespace U2 {
 
 class DNATranslation;
 class LoadDocumentTask;
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 
 /** Saves a copy of the alignment using the given document format. */
 class U2FORMATS_EXPORT ExportAlignmentTask : public DocumentProviderTask {

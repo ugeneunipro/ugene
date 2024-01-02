@@ -32,7 +32,7 @@ class MaEditorWgt;
 class MSAEditorOffsetsViewWidget;
 class MaEditorSequenceArea;
 class MaModificationInfo;
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 
 class U2VIEW_EXPORT MSAEditorOffsetsViewController : public QObject {
     Q_OBJECT

@@ -299,7 +299,7 @@ Task::ReportResult MuscleTask::report() {
 //////////////////////////////////////////////////////////////////////////
 // MuscleAddSequencesToProfileTask
 
-MuscleAddSequencesToProfileTask::MuscleAddSequencesToProfileTask(MultipleSequenceAlignmentObject* _obj,
+MuscleAddSequencesToProfileTask::MuscleAddSequencesToProfileTask(MultipleAlignmentObject* _obj,
                                                                  const QString& fileWithSequencesOrProfile,
                                                                  const MMode& _mode)
     : Task("", TaskFlags_NR_FOSCOE), maObj(_obj), mode(_mode) {
@@ -367,8 +367,8 @@ QList<Task*> MuscleAddSequencesToProfileTask::onSubTaskFinished(Task* subTask) {
     if (seqObjects.isEmpty()) {
         QList<GObject*> maObjects = loadTask->getDocument()->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!maObjects.isEmpty()) {
-            auto firstMaObj = qobject_cast<MultipleSequenceAlignmentObject*>(maObjects.first());
-            s.profile = firstMaObj->getCopy();
+            auto firstMaObj = qobject_cast<MultipleAlignmentObject*>(maObjects.first());
+            s.profile = firstMaObj->getAlignment()->getCopy();
         }
     }
 
@@ -394,7 +394,7 @@ Task::ReportResult MuscleAddSequencesToProfileTask::report() {
 //////////////////////////////////////////////////////////////////////////
 // MuscleGObjectTask
 
-MuscleGObjectTask::MuscleGObjectTask(MultipleSequenceAlignmentObject* _obj, const MuscleTaskSettings& _config)
+MuscleGObjectTask::MuscleGObjectTask(MultipleAlignmentObject* _obj, const MuscleTaskSettings& _config)
     : AlignGObjectTask("", TaskFlags_NR_FOSCOE, _obj), lock(nullptr), muscleTask(nullptr), config(_config) {
     QString aliName;
     if (obj->getDocument() == nullptr) {
@@ -570,7 +570,7 @@ QList<Task*> MuscleWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTas
         currentDocument = loadDocumentTask->takeDocument();
         SAFE_POINT(currentDocument != nullptr, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MultipleAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
         if (config.alignRegion) {
             if ((config.regionToAlign.startPos > mAObject->getLength()) || ((config.regionToAlign.startPos + config.regionToAlign.length) > mAObject->getLength())) {
@@ -601,7 +601,7 @@ Task::ReportResult MuscleWithExtFileSpecifySupportTask::report() {
 
 //////////////////////////////////
 // MuscleGObjectRunFromSchemaTask
-MuscleGObjectRunFromSchemaTask::MuscleGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject* obj, const MuscleTaskSettings& c)
+MuscleGObjectRunFromSchemaTask::MuscleGObjectRunFromSchemaTask(MultipleAlignmentObject* obj, const MuscleTaskSettings& c)
     : AlignGObjectTask("", TaskFlags_NR_FOSCOE, obj), config(c) {
     setMAObject(obj);
     SAFE_POINT_EXT(config.profile->isEmpty(), setError("Invalid config profile detected"), );
@@ -623,7 +623,7 @@ void MuscleGObjectRunFromSchemaTask::prepare() {
     addSubTask(new SimpleMSAWorkflow4GObjectTask(tr("Workflow wrapper '%1'").arg(getTaskName()), obj, conf));
 }
 
-void MuscleGObjectRunFromSchemaTask::setMAObject(MultipleSequenceAlignmentObject* maobj) {
+void MuscleGObjectRunFromSchemaTask::setMAObject(MultipleAlignmentObject* maobj) {
     SAFE_POINT_EXT(maobj != nullptr, setError("Invalid MSA object detected"), );
     Document* maDoc = maobj->getDocument();
     SAFE_POINT_EXT(maDoc != nullptr, setError("Invalid MSA document detected"), );
@@ -644,7 +644,7 @@ void MuscleGObjectRunFromSchemaTask::setMAObject(MultipleSequenceAlignmentObject
     setTaskName(tName);
 }
 
-MuscleAlignOwnSequencesToSelfAction::MuscleAlignOwnSequencesToSelfAction(MultipleSequenceAlignmentObject* msaObject, const QList<int>& maRowIndexes)
+MuscleAlignOwnSequencesToSelfAction::MuscleAlignOwnSequencesToSelfAction(MultipleAlignmentObject* msaObject, const QList<int>& maRowIndexes)
     : Task(tr("MUSCLE align rows to alignment '%1'").arg(msaObject->getGObjectName()), TaskFlags_NR_FOSCOE) {
     MuscleTaskSettings settings;
     settings.op = MuscleTaskOp_OwnRowsToAlignment;

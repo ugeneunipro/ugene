@@ -30,7 +30,7 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExportSequencesTask.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -89,7 +89,7 @@ MSAExportContext::MSAExportContext(MSAEditor* e)
     exportSelectedMsaRowsToSeparateFilesAction->setObjectName("exportSelectedMsaRowsToSeparateFilesAction");
     connect(exportSelectedMsaRowsToSeparateFilesAction, &QAction::triggered, this, &MSAExportContext::sl_exportSelectedMsaRowsToSeparateFiles);
 
-    connect(e->getMaObject(), &MultipleSequenceAlignmentObject::si_alignmentChanged, this, [this] { updateActions(); });
+    connect(e->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this] { updateActions(); });
 
     updateActions();
 }
@@ -103,7 +103,7 @@ void MSAExportContext::updateActions() {
 void MSAExportContext::buildMenu(QMenu* m) {
     QMenu* exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != nullptr, "exportMenu is not found", );
-    MultipleSequenceAlignmentObject* mObject = editor->getMaObject();
+    MultipleAlignmentObject* mObject = editor->getMaObject();
     if (mObject->getAlphabet()->isNucleic()) {
         exportMenu->addAction(exportNucleicMsaToAminoAction);
     }
@@ -137,7 +137,7 @@ void MSAExportContext::sl_exportSelectedMsaRowsToSeparateFiles() {
 }
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
-    MultipleSequenceAlignmentObject* maObject = editor->getMaObject();
+    MultipleAlignmentObject* maObject = editor->getMaObject();
     const MultipleAlignment& ma = maObject->getAlignment();
     SAFE_POINT(ma->getAlphabet()->isNucleic(), "Alignment alphabet is not nucleic", );
 

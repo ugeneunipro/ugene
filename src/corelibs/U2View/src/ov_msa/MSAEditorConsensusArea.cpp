@@ -60,7 +60,7 @@ void MSAEditorConsensusArea::initRenderer() {
 
 QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
     const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
-    SAFE_POINT(al != nullptr, "Alphabet is NULL", "");
+    SAFE_POINT_NN(al, "");
     const char* suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic"
                                                                       : "_raw";
     return editor->getSettingsRoot() + "_consensus_algorithm_" + suffix;

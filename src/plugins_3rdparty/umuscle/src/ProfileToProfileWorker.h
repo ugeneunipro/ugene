@@ -20,14 +20,14 @@
  */
 
 #pragma once
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 
 namespace LocalWorkflow {
 
@@ -47,7 +47,7 @@ private:
     IntegralBus* inPort;
     IntegralBus* outPort;
 
-    QList<MultipleSequenceAlignmentObject*> objects;
+    QList<MultipleAlignmentObject*> objects;
 };
 
 class ProfileToProfileWorkerFactory : public DomainFactory {

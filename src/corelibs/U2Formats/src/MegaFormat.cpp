@@ -26,7 +26,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -67,8 +67,8 @@ void MegaFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
     CHECK_EXT(d != nullptr, os.setError(L10N::badArgument("doc")), );
     CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
 
-    MultipleSequenceAlignmentObject* obj = nullptr;
-    if ((d->getObjects().size() != 1) || ((obj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first())) == nullptr)) {
+    MultipleAlignmentObject* obj = nullptr;
+    if ((d->getObjects().size() != 1) || ((obj = qobject_cast<MultipleAlignmentObject*>(d->getObjects().first())) == nullptr)) {
         os.setError("No data to write;");
         return;
     }
@@ -326,7 +326,7 @@ void MegaFormat::load(U2::IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>
     workUpIndels(al);  // replace '.' by symbols from the first sequence
 
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+    MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
     CHECK_OP(os, );
     objects.append(obj);
 }
@@ -336,7 +336,7 @@ void MegaFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject
     const QList<GObject*>& als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(1 == als.size(), "Mega entry storing: alignment objects count error", );
 
-    auto obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
+    auto obj = dynamic_cast<MultipleAlignmentObject*>(als.first());
     SAFE_POINT(obj != nullptr, "Mega entry storing: NULL alignment object", );
 
     const MultipleAlignment msa = obj->getAlignment();

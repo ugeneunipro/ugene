@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-ExportMca2MsaTask::ExportMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject,
+ExportMca2MsaTask::ExportMca2MsaTask(MultipleAlignmentObject* mcaObject,
                                      const QString& fileName,
                                      const DocumentFormatId& formatId,
                                      bool includeReference)

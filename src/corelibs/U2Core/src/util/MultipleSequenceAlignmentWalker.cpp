@@ -22,7 +22,7 @@
 #include "MultipleSequenceAlignmentWalker.h"
 
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -97,7 +97,7 @@ private:
         }
 
         SAFE_POINT_EXT((startPos + length >= inRegion.startPos + inRegion.length) && (inRegion.length + outRegion.length == gap.length),
-                       os.setError(L10N::internalError() + MultipleSequenceAlignmentObject::tr(" Incorrect gap splitting")), );
+                       os.setError(L10N::internalError() + MultipleAlignmentObject::tr(" Incorrect gap splitting")), );
     }
 
     QByteArray gapsBytes(int length) const {

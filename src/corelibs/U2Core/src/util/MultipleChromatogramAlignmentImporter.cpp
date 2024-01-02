@@ -28,7 +28,7 @@
 #include <U2Core/Log.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleAlignmentInfo.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -42,10 +42,10 @@
 
 namespace U2 {
 
-MultipleChromatogramAlignmentObject* MultipleChromatogramAlignmentImporter::createAlignment(U2OpStatus& os,
-                                                                                            const U2DbiRef& dbiRef,
-                                                                                            const QString& folder,
-                                                                                            MultipleAlignment& mca) {
+MultipleAlignmentObject* MultipleChromatogramAlignmentImporter::createAlignment(U2OpStatus& os,
+                                                                                const U2DbiRef& dbiRef,
+                                                                                const QString& folder,
+                                                                                MultipleAlignment& mca) {
     DbiConnection connection(dbiRef, true, os);
     CHECK(!os.isCanceled(), nullptr);
     SAFE_POINT_OP(os, nullptr);
@@ -73,7 +73,7 @@ MultipleChromatogramAlignmentObject* MultipleChromatogramAlignmentImporter::crea
         mca->getRow(i)->setRowDbInfo(rows.at(i));
     }
 
-    return new MultipleChromatogramAlignmentObject(mca->getName(), U2EntityRef(dbiRef, dbMca.id), QVariantMap(), mca);
+    return new MultipleAlignmentObject(mca->getName(), U2EntityRef(dbiRef, dbMca.id), QVariantMap(), mca, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT);
 }
 
 U2Msa MultipleChromatogramAlignmentImporter::importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleAlignment& mca) {
@@ -117,9 +117,9 @@ void MultipleChromatogramAlignmentImporter::importMcaInfo(U2OpStatus& os, const 
 }
 
 QList<MsaDbRowSnapshot> MultipleChromatogramAlignmentImporter::importRowChildObjects(U2OpStatus& os,
-                                                                                       const DbiConnection& connection,
-                                                                                       const QString& folder,
-                                                                                       const MultipleAlignment& mca) {
+                                                                                     const DbiConnection& connection,
+                                                                                     const QString& folder,
+                                                                                     const MultipleAlignment& mca) {
     QList<MsaDbRowSnapshot> mcaRowsDatabaseData;
     UdrDbi* udrDbi = connection.dbi->getUdrDbi();
     SAFE_POINT_EXT(udrDbi != nullptr, os.setError("NULL UDR Dbi during importing an alignment"), mcaRowsDatabaseData);

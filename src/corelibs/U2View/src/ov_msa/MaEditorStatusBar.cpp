@@ -23,7 +23,7 @@
 
 #include <QHBoxLayout>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 
 #include "MSAEditorSequenceArea.h"
 #include "MaEditorSelection.h"

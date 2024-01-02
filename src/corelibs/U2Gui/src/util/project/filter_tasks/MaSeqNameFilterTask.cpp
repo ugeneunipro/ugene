@@ -22,8 +22,7 @@
 #include "MaSeqNameFilterTask.h"
 
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "../ProjectFilterNames.h"
@@ -49,7 +48,7 @@ MsaSeqNameFilterTask::MsaSeqNameFilterTask(const ProjectTreeControllerModeSettin
 }
 
 bool MsaSeqNameFilterTask::filterAcceptsObject(GObject* obj) {
-    return isFilteredByMASequenceName(qobject_cast<MultipleSequenceAlignmentObject*>(obj), settings);
+    return isFilteredByMASequenceName(qobject_cast<MultipleAlignmentObject*>(obj), settings);
 }
 
 McaReadNameFilterTask::McaReadNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
@@ -57,7 +56,7 @@ McaReadNameFilterTask::McaReadNameFilterTask(const ProjectTreeControllerModeSett
 }
 
 bool McaReadNameFilterTask::filterAcceptsObject(GObject* obj) {
-    return isFilteredByMASequenceName(qobject_cast<MultipleChromatogramAlignmentObject*>(obj), settings);
+    return isFilteredByMASequenceName(qobject_cast<MultipleAlignmentObject*>(obj), settings);
 }
 
 McaReferenceNameFilterTask::McaReferenceNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
@@ -65,7 +64,7 @@ McaReferenceNameFilterTask::McaReferenceNameFilterTask(const ProjectTreeControll
 }
 
 bool McaReferenceNameFilterTask::filterAcceptsObject(GObject* obj) {
-    auto mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
+    auto mcaObj = qobject_cast<MultipleAlignmentObject*>(obj);
     CHECK(mcaObj != nullptr, false);
     U2SequenceObject* refObj = mcaObj->getReferenceObj();
     if (refObj != nullptr && settings.nameFilterAcceptsString(refObj->getSequenceName())) {

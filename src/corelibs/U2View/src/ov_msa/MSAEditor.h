@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2Msa.h>
 
 #include "MaEditor.h"
@@ -77,15 +77,11 @@ class U2VIEW_EXPORT MSAEditor : public MaEditor {
     friend class SequenceWithChromatogramAreaRenderer;
 
 public:
-    MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* obj);
+    MSAEditor(const QString& viewName, MultipleAlignmentObject* obj);
     ~MSAEditor() override;
 
     QString getSettingsRoot() const override {
         return MSAE_SETTINGS_ROOT;
-    }
-
-    MultipleSequenceAlignmentObject* getMaObject() const override {
-        return qobject_cast<MultipleSequenceAlignmentObject*>(maObject);
     }
 
     /** Returns selection controller instance. The instance is always defined and is never null. */

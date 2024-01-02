@@ -33,7 +33,7 @@
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -137,9 +137,9 @@ void uHMMPlugin::sl_build() {
             GObjectViewController* ov = ow->getObjectView();
             auto av = qobject_cast<MSAEditor*>(ov);
             if (av != NULL) {
-                MultipleSequenceAlignmentObject* maObj = av->getMaObject();
+                MultipleAlignmentObject* maObj = av->getMaObject();
                 if (maObj != NULL) {
-                    ma = maObj->getCopy();
+                    ma = maObj->getAlignment()->getCopy();
                     profileName = maObj->getGObjectName() == MA_OBJECT_NAME ? maObj->getDocument()->getName() : maObj->getGObjectName();
                 }
             }
@@ -214,7 +214,7 @@ void HMMMSAEditorContext::initViewContext(GObjectViewController* view) {
 
 void HMMMSAEditorContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
     auto msaed = qobject_cast<MSAEditor*>(v);
-    SAFE_POINT(NULL != msaed && NULL != m, "Invalid GObjectVeiw or QMenu", );
+    SAFE_POINT(msaed != NULL && m != NULL, "Invalid GObjectView or QMenu", );
     CHECK(msaed->getMaObject() != NULL, );
 
     QList<GObjectViewAction*> list = getViewActions(v);
@@ -230,7 +230,7 @@ void HMMMSAEditorContext::sl_build() {
     assert(action != NULL);
     auto ed = qobject_cast<MSAEditor*>(action->getObjectView());
     assert(ed != NULL);
-    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
+    MultipleAlignmentObject* obj = ed->getMaObject();
     if (obj) {
         QString profileName = obj->getGObjectName() == MA_OBJECT_NAME ? obj->getDocument()->getName() : obj->getGObjectName();
         QObjectScopedPointer<HMMBuildDialogController> d = new HMMBuildDialogController(profileName, obj->getAlignment());

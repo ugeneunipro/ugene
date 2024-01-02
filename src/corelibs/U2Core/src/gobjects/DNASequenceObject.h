@@ -113,7 +113,7 @@ public:
         return one->name < two->name;
     }
 
-private slots:
+public slots:
     void sl_resetDataCaches();
 
 signals:

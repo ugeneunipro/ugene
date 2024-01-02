@@ -54,7 +54,7 @@ CreateSubalignmentSettings::CreateSubalignmentSettings(const QList<qint64>& _row
     : rowIds(_rowIds), columnRange(_columnRange), url(_url), saveImmediately(_saveImmediately), addToProject(_addToProject), formatIdToSave(_formatIdToSave) {
 }
 
-CreateSubalignmentTask::CreateSubalignmentTask(MultipleSequenceAlignmentObject* maObj, const CreateSubalignmentSettings& settings)
+CreateSubalignmentTask::CreateSubalignmentTask(MultipleAlignmentObject* maObj, const CreateSubalignmentSettings& settings)
     : DocumentProviderTask(tr("Create sub-alignment: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE),
       origMAObj(maObj), resultMAObj(nullptr), cfg(settings) {
     origDoc = maObj->getDocument();
@@ -76,7 +76,7 @@ void CreateSubalignmentTask::prepare() {
         CHECK_OP(stateInfo, );
 
         // TODO: do not copy whole object. Copy only cfg.rowIds.
-        MultipleAlignment msa = origMAObj->getCopy();
+        MultipleAlignment msa = origMAObj->getAlignment()->getCopy();
         resultMAObj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, );
         resultMAObj->setGHints(new GHintsDefaultImpl(origMAObj->getGHintsMap()));

@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 
 class GTest_FindPatternMsa : public XmlTest {
     Q_OBJECT
@@ -44,7 +44,7 @@ public:
 
 private:
     QString inputObjectName;
-    MultipleSequenceAlignmentObject* msaObj;
+    MultipleAlignmentObject* msaObj;
     Document* doc;
     FindPatternMsaSettings settings;
     FindPatternMsaTask* findPatternTask;

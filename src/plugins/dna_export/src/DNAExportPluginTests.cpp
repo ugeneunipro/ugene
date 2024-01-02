@@ -32,7 +32,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/ExportTasks.h>
@@ -197,8 +197,8 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
         stateInfo.setError(GTest::tr(" container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    auto alObj = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
-    srcAl = alObj->getCopy();
+    auto alObj = qobject_cast<MultipleAlignmentObject*>(list.first());
+    srcAl = alObj->getAlignment()->getCopy();
 
     QString translationId = DNATranslationID(0);
     translationId.replace("0", QString("%1").arg(transTable));
@@ -249,8 +249,8 @@ QList<Task*> GTest_ExportNucleicToAminoAlignmentTask::onSubTaskFinished(Task* su
             stateInfo.setError(GTest::tr("container  of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return res;
         }
-        auto resAlign = qobject_cast<MultipleSequenceAlignmentObject*>(reslist.first());
-        resAl = resAlign->getCopy();
+        auto resAlign = qobject_cast<MultipleAlignmentObject*>(reslist.first());
+        resAl = resAlign->getAlignment()->getCopy();
     }
     return res;
 }
@@ -272,7 +272,7 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
         stateInfo.setError(GTest::tr("container of  object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return ReportResult_Finished;
     }
-    auto expAlign = qobject_cast<MultipleSequenceAlignmentObject*>(explist.first());
+    auto expAlign = qobject_cast<MultipleAlignmentObject*>(explist.first());
     const MultipleAlignment expAl = expAlign->getAlignment();
 
     if (resAl->getLength() != expAl->getLength()) {

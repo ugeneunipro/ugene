@@ -57,7 +57,7 @@ static const DNAAlphabet* deriveCommonAlphabet(const QList<DNASequence>& sequenc
 
 /** Adds MSA rows to the given MSA object. Adds rows to the same DBI with the MSA object. */
 static void createMsaRowsFromResultSequenceList(U2OpStatus& os,
-                                                const MultipleSequenceAlignmentObject* msaObject,
+                                                const MultipleAlignmentObject* msaObject,
                                                 const QList<DNASequence>& inputSequenceList,
                                                 QList<U2MsaRow>& resultRows) {
     QSet<QString> usedRowNames;
@@ -85,7 +85,7 @@ static void createMsaRowsFromResultSequenceList(U2OpStatus& os,
 /** Inserts rows into the alignment. The rows must be stored in the same DBI with MSA object. */
 static void addRowsToAlignment(U2OpStatus& os,
                                MaModificationInfo& mi,
-                               MultipleSequenceAlignmentObject* msaObject,
+                               MultipleAlignmentObject* msaObject,
                                U2MsaDbi* msaDbi,
                                QList<U2MsaRow>& rows,
                                int insertMaRowIndex) {
@@ -99,7 +99,7 @@ static void addRowsToAlignment(U2OpStatus& os,
 
 MaModificationInfo AddSequenceObjectsToAlignmentUtils::addObjectsToAlignment(
     U2OpStatus& os,
-    MultipleSequenceAlignmentObject* msaObject,
+    MultipleAlignmentObject* msaObject,
     const QList<DNASequence>& sequenceList,
     int insertRowIndex,
     bool recheckNewSequenceAlphabetOnMismatch) {
@@ -140,7 +140,7 @@ MaModificationInfo AddSequenceObjectsToAlignmentUtils::addObjectsToAlignment(
     return modInfo;
 }
 
-AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject* obj,
+AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleAlignmentObject* obj,
                                                                      const QList<DNASequence>& sequenceList,
                                                                      int insertMaRowIndex,
                                                                      bool recheckNewSequenceAlphabetOnMismatch)
@@ -163,7 +163,7 @@ const MaModificationInfo& AddSequenceObjectsToAlignmentTask::getMaModificationIn
     return mi;
 }
 
-AddSequencesFromFilesToAlignmentTask::AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls, int insertRowIndex)
+AddSequencesFromFilesToAlignmentTask::AddSequencesFromFilesToAlignmentTask(MultipleAlignmentObject* obj, const QStringList& urls, int insertRowIndex)
     : AddSequenceObjectsToAlignmentTask(obj, QList<DNASequence>(), insertRowIndex, false), urlList(urls), loadTask(nullptr) {
     connect(maObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_onCancel()));
 }
@@ -202,7 +202,7 @@ QList<Task*> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task* subTa
 
     QList<GObject*> msaObjects = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     for (const GObject* object : qAsConst(msaObjects)) {
-        auto msaObject = qobject_cast<const MultipleSequenceAlignmentObject*>(object);
+        auto msaObject = qobject_cast<const MultipleAlignmentObject*>(object);
         SAFE_POINT(msaObject != nullptr, "Not an alignment object:" + object->getGObjectName(), {});
         for (int i = 0; i < msaObject->getRowCount(); i++) {
             // Keep all gaps, so alignment sequences are added in the 'aligned' form.
@@ -217,7 +217,7 @@ QList<Task*> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task* subTa
 
 ////////////////////////////////////////////////////////////////////////////////
 // AddSequencesFromDocumentsToAlignmentTask
-AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject* obj,
+AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTask(MultipleAlignmentObject* obj,
                                                                                    const QList<Document*>& docs,
                                                                                    int insertMaRowIndex,
                                                                                    bool recheckNewSequenceAlphabets)

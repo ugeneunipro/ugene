@@ -26,7 +26,7 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DbiConnection.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 

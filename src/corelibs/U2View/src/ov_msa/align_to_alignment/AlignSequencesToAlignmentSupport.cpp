@@ -104,9 +104,9 @@ AlignSequencesToAlignmentAction::AlignSequencesToAlignmentAction(QObject* parent
     : BaseObjectViewAlignmentAction(parent, view, algorithmId, text, order) {
     connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
 
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
-    connect(msaObject, &MultipleSequenceAlignmentObject::si_lockedStateChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
-    connect(msaObject, &MultipleSequenceAlignmentObject::si_alignmentChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
+    MultipleAlignmentObject* msaObject = msaEditor->getMaObject();
+    connect(msaObject, &MultipleAlignmentObject::si_lockedStateChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
+    connect(msaObject, &MultipleAlignmentObject::si_alignmentChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
 
     sl_updateState();
 }

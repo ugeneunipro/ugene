@@ -23,8 +23,8 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SelectionUtils.h>
 
@@ -157,7 +157,7 @@ MsaEditorFactory::MsaEditorFactory()
 }
 
 MaEditor* MsaEditorFactory::getEditor(const QString& viewName, GObject* obj, U2OpStatus& os) {
-    auto msaObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto msaObj = qobject_cast<MultipleAlignmentObject*>(obj);
     SAFE_POINT(msaObj != nullptr, "Invalid GObject", nullptr);
     if (msaObj->getLength() > MSAEditor::MAX_SUPPORTED_MSA_OBJECT_LENGTH) {
         os.setError(tr("MSA object is too large to be opened in MSA Editor!"));
@@ -191,7 +191,7 @@ McaEditorFactory::McaEditorFactory()
 }
 
 MaEditor* McaEditorFactory::getEditor(const QString& viewName, GObject* obj, U2OpStatus&) {
-    auto mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
+    auto mcaObj = qobject_cast<MultipleAlignmentObject*>(obj);
     SAFE_POINT(mcaObj != nullptr, "Invalid GObject", nullptr);
     return new McaEditor(viewName, mcaObj);
 }

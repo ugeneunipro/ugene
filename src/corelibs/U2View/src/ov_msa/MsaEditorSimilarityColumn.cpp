@@ -28,7 +28,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -206,7 +206,7 @@ MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(MsaEditorWg
 
     settings = &contentWidget->getSettings();
     MSAEditor* editor = settings->editor;
-    connect(editor->getMaObject(), &MultipleSequenceAlignmentObject::si_alignmentChanged, this, [this] { contentWidget->onAlignmentChanged(); });
+    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this] { contentWidget->onAlignmentChanged(); });
     connect(editor, &MaEditor::si_fontChanged, this, [this](const QFont& font) { nameWidget->setFont(font); });
 
     createWidgetUI();

@@ -47,7 +47,7 @@ class MsaHighlightingScheme;
 class MsaHighlightingSchemeFactory;
 class MsaHighlightingSchemeRegistry;
 class MaModificationInfo;
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class Settings;
 class SequenceAreaRenderer;
 

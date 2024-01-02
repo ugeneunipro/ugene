@@ -36,7 +36,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 
 #include <U2Gui/HelpButton.h>
@@ -66,10 +66,10 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
         algoCombo->addItem(a->getName(), a->getId());
     }
 
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
+    MultipleAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj != nullptr) {
         QVector<U2Region> unitedRows;
-        MultipleAlignment ma = msaObj->getCopy();
+        MultipleAlignment ma = msaObj->getAlignment()->getCopy();
         ma->sortRowsBySimilarity(unitedRows);
         if (unitedRows.size() < 2)
             groupStatisticsCheck->setEnabled(false);
@@ -79,7 +79,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
 }
 
 void DistanceMatrixMSAProfileDialog::initSaveController() {
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
+    MultipleAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }
@@ -109,7 +109,7 @@ void DistanceMatrixMSAProfileDialog::initSaveController() {
 
 void DistanceMatrixMSAProfileDialog::accept() {
     DistanceMatrixMSAProfileTaskSettings s;
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
+    MultipleAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }
@@ -117,7 +117,7 @@ void DistanceMatrixMSAProfileDialog::accept() {
     s.profileURL = msaObj->getDocument()->getURLString();
     s.usePercents = percentsRB->isChecked();
     s.algoId = algoCombo->currentData().toString();
-    s.ma = msaObj->getCopy();
+    s.ma = msaObj->getAlignment()->getCopy();
     s.excludeGaps = checkBox->isChecked();
     s.showGroupStatistic = groupStatisticsCheck->isChecked();
     s.ctx = ctx;

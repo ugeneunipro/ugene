@@ -91,7 +91,7 @@ private:
     QPointer<StateLock> lock;
 };
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 
 class Kalign3WithExternalFileSupportTask : public Task {
     Q_OBJECT
@@ -105,7 +105,7 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    MultipleSequenceAlignmentObject* mAObject = nullptr;
+    MultipleAlignmentObject* mAObject = nullptr;
     Document* currentDocument = nullptr;
     bool cleanDoc = true;
 

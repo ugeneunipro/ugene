@@ -22,15 +22,24 @@
 #include "MultipleAlignmentObject.h"
 
 #include <U2Core/DbiConnection.h>
+#include <U2Core/GHints.h>
+#include <U2Core/GObjectUtils.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaExportUtils.h>
+#include <U2Core/MultipleChromatogramAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/U2AlphabetUtils.h>
+#include <U2Core/U2AttributeDbi.h>
+#include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2SequenceUtils.h>
 
 namespace U2 {
+
+const QString MultipleAlignmentObject::REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT = "MCAOBJECT_REFERENCE";
 
 MaSavedState::MaSavedState()
     : lastState(nullptr) {
@@ -56,12 +65,12 @@ void MaSavedState::setState(const MultipleAlignment& ma) {
     lastState = new MultipleAlignment(ma->getCopy());
 }
 
-MultipleAlignmentObject::MultipleAlignmentObject(const QString& gobjectType,
-                                                 const QString& name,
+MultipleAlignmentObject::MultipleAlignmentObject(const QString& name,
                                                  const U2EntityRef& maRef,
                                                  const QVariantMap& hintsMap,
-                                                 const MultipleAlignment& alignment)
-    : GObject(gobjectType, name, hintsMap),
+                                                 const MultipleAlignment& alignment,
+                                                 const GObjectType& objectType)
+    : GObject(objectType, name, hintsMap),
       cachedMa(alignment->getCopy()) {
     entityRef = maRef;
     dataLoaded = false;
@@ -146,10 +155,6 @@ void MultipleAlignmentObject::setMultipleAlignment(const MultipleAlignment& newM
 
     mi.hints = hints;
     updateCachedMultipleAlignment(mi);
-}
-
-MultipleAlignment MultipleAlignmentObject::getMultipleAlignmentCopy() const {
-    return getAlignment()->getCopy();
 }
 
 void MultipleAlignmentObject::setGObjectName(const QString& newName) {
@@ -641,7 +646,7 @@ int MultipleAlignmentObject::deleteGapByRowIndexList(U2OpStatus& os, const QList
         pos += maxGaps - removingGapColumnCount;
     }
     QList<qint64> modifiedRowIds;
-    MultipleAlignment msa = getMultipleAlignmentCopy();
+    MultipleAlignment msa = getAlignment()->getCopy();
     // iterate through given rows to update each of them in DB
     QList<int> uniqueRowIndexes = toUniqueRowIndexes(rowIndexes, getRowCount());
     for (int i = 0; i < rowIndexes.size(); i++) {
@@ -666,10 +671,6 @@ int MultipleAlignmentObject::deleteGapByRowIndexList(U2OpStatus& os, const QList
     mi.modifiedRowIds = modifiedRowIds;
     updateCachedMultipleAlignment(mi);
     return removingGapColumnCount;
-}
-
-MultipleAlignment MultipleAlignmentObject::getCopy() const {
-    return getAlignment()->getCopy();
 }
 
 int MultipleAlignmentObject::shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift) {
@@ -1071,6 +1072,108 @@ void MultipleAlignmentObject::morphAlphabet(const DNAAlphabet* newAlphabet, cons
         return;  // Nothing changed.
     }
     updateCachedMultipleAlignment(mi);
+}
+
+U2SequenceObject* MultipleAlignmentObject::getReferenceObj() const {
+    if (referenceObj == nullptr) {
+        U2OpStatus2Log os;
+        DbiConnection con(getEntityRef().dbiRef, os);
+        CHECK_OP(os, nullptr);
+
+        U2AttributeDbi* attributeDbi = con.dbi->getAttributeDbi();
+        SAFE_POINT_NN(attributeDbi, nullptr);
+        U2ByteArrayAttribute attribute = U2AttributeUtils::findByteArrayAttribute(attributeDbi, getEntityRef().entityId, REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT, os);
+        CHECK_OP(os, nullptr);
+        CHECK(!attribute.value.isEmpty(), nullptr)
+
+        GObject* obj = GObjectUtils::createObject(con.dbi->getDbiRef(), attribute.value, "reference object");
+        CHECK_NN(obj, nullptr);
+
+        referenceObj = qobject_cast<U2SequenceObject*>(obj);
+        referenceObj->setParent((MultipleAlignmentObject*)this);
+        connect(this, &MultipleAlignmentObject::si_alignmentChanged, referenceObj, &U2SequenceObject::sl_resetDataCaches);
+        connect(this, &MultipleAlignmentObject::si_alignmentChanged, referenceObj, &U2SequenceObject::si_sequenceChanged);
+    }
+    return referenceObj;
+}
+
+void MultipleAlignmentObject::deleteColumnsWithGaps(U2OpStatus& os, int requiredGapsCount) {
+    QList<QVector<U2MsaGap>> gapModel = getGapModel();
+    U2SequenceObject* sequenceObject = getReferenceObj();
+    if (sequenceObject != nullptr) {
+        QByteArray unusedSequence;
+        QVector<U2MsaGap> referenceGapModel;
+        MaDbiUtils::splitBytesToCharsAndGaps(getReferenceObj()->getSequenceData(U2_REGION_MAX), unusedSequence, referenceGapModel);
+        gapModel.append(referenceGapModel);
+    }
+
+    requiredGapsCount = requiredGapsCount > 0 ? requiredGapsCount : gapModel.size();
+    QList<U2Region> regionsToDelete = MSAUtils::getColumnsWithGaps(gapModel, getRows(), getLength(), requiredGapsCount);
+    CHECK(!regionsToDelete.isEmpty(), );
+    CHECK(regionsToDelete.first().length != getLength(), );
+
+    for (int i = regionsToDelete.size(); --i >= 0;) {
+        const U2Region& region = regionsToDelete[i];
+        removeRegion(region.startPos, 0, region.length, getRowCount(), true, false);
+        if (sequenceObject != nullptr) {
+            sequenceObject->replaceRegion(getEntityRef().entityId, region, DNASequence(), os);
+        }
+    }
+
+    if (referenceObj != nullptr) {  // Old behavior from MCA. Check if it should be common for both MCA & MSA.
+        int length = getLength();
+        int columnsRemoved = 0;
+        for (int i = 0; i < regionsToDelete.size(); i++) {
+            columnsRemoved += regionsToDelete[i].length;
+        }
+        int newLength = length - columnsRemoved;
+        changeLength(os, newLength);
+    }
+    CHECK_OP(os, );
+
+    updateCachedMultipleAlignment();
+}
+
+MultipleAlignmentObject* MultipleAlignmentObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) const {
+    DbiOperationsBlock opBlock(dstDbiRef, os);
+    CHECK_OP(os, nullptr);
+
+    QScopedPointer<GHintsDefaultImpl> gHints(new GHintsDefaultImpl(getGHintsMap()));
+    gHints->setAll(hints);
+    QString dstFolder = gHints->get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
+
+    MultipleAlignment msa = getAlignment()->getCopy();
+    bool isMca = type == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
+    MultipleAlignmentObject* clonedObject = isMca
+                                                ? MultipleChromatogramAlignmentImporter::createAlignment(os, dstDbiRef, dstFolder, msa)
+                                                : MultipleSequenceAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
+    CHECK_OP(os, nullptr);
+
+    QScopedPointer<MultipleAlignmentObject> p(clonedObject);
+    if (isMca) {
+        DbiConnection srcCon(getEntityRef().dbiRef, os);
+        CHECK_OP(os, nullptr);
+
+        DbiConnection dstCon(dstDbiRef, os);
+        CHECK_OP(os, nullptr);
+
+        U2SequenceObject* referenceSequenceObject = getReferenceObj();
+        U2Sequence referenceCopy = U2SequenceUtils::copySequence(referenceSequenceObject->getEntityRef(), dstDbiRef, dstFolder, os);
+        CHECK_OP(os, nullptr);
+
+        U2ByteArrayAttribute attribute;
+        U2Object obj;
+        obj.dbiId = dstDbiRef.dbiId;
+        obj.id = clonedObject->getEntityRef().entityId;
+        obj.version = clonedObject->getModificationVersion();
+        U2AttributeUtils::init(attribute, obj, MultipleAlignmentObject::REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT);
+        attribute.value = referenceCopy.id;
+        dstCon.dbi->getAttributeDbi()->createByteArrayAttribute(attribute, os);
+        CHECK_OP(os, nullptr);
+    }
+    clonedObject->setGHints(gHints.take());
+    clonedObject->setIndexInfo(getIndexInfo());
+    return p.take();
 }
 
 }  // namespace U2

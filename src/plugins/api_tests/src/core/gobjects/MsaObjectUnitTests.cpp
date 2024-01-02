@@ -24,7 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MsaExportUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -60,11 +60,11 @@ U2DbiRef MsaObjectTestData::getDbiRef() {
     return dbiRef;
 }
 
-MultipleSequenceAlignmentObject* MsaObjectTestData::getTestAlignmentObject(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
+MultipleAlignmentObject* MsaObjectTestData::getTestAlignmentObject(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
     const U2EntityRef entityRef = getTestAlignmentRef(dbiRef, name, os);
     CHECK_OP(os, nullptr);
 
-    return new MultipleSequenceAlignmentObject(name, entityRef);
+    return new MultipleAlignmentObject(name, entityRef);
 }
 
 U2EntityRef MsaObjectTestData::getTestAlignmentRef(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
@@ -96,7 +96,7 @@ IMPLEMENT_TEST(MsaObjectUnitTests, getMAlignment) {
     const U2DbiRef dbiRef = MsaObjectTestData::getDbiRef();
     U2OpStatusImpl os;
 
-    QScopedPointer<MultipleSequenceAlignmentObject> alObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alName, os));
+    QScopedPointer<MultipleAlignmentObject> alObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alName, os));
     CHECK_NO_ERROR(os);
 
     const MultipleAlignment alActual = alObj->getAlignment();
@@ -120,7 +120,7 @@ IMPLEMENT_TEST(MsaObjectUnitTests, setMAlignment) {
     const U2DbiRef dbiRef = MsaObjectTestData::getDbiRef();
     U2OpStatusImpl os;
 
-    QScopedPointer<MultipleSequenceAlignmentObject> alObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, firstAlignmentName, os));
+    QScopedPointer<MultipleAlignmentObject> alObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, firstAlignmentName, os));
     CHECK_NO_ERROR(os);
 
     const MultipleAlignment secondAlignment = MsaObjectTestData::getTestAlignment(dbiRef, secondAlignmentName, os);
@@ -144,7 +144,7 @@ IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_trailingGaps) {
     const U2DbiRef dbiRef = MsaObjectTestData::getDbiRef();
     U2OpStatusImpl os;
 
-    QScopedPointer<MultipleSequenceAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, malignment, os));
+    QScopedPointer<MultipleAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, malignment, os));
     CHECK_NO_ERROR(os);
 
     alnObj->deleteGap(os, U2Region(0, alnObj->getRowCount()), 10, 3);
@@ -167,7 +167,7 @@ IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols) {
     const U2DbiRef dbiRef = MsaObjectTestData::getDbiRef();
     U2OpStatusImpl os;
 
-    QScopedPointer<MultipleSequenceAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alignmentName, os));
+    QScopedPointer<MultipleAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alignmentName, os));
     CHECK_NO_ERROR(os);
 
     const int countOfDeleted = alnObj->deleteGap(os, U2Region(1, alnObj->getRowCount() - 1), 6, 2);
@@ -195,7 +195,7 @@ IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_gapRegion) {
     const U2DbiRef dbiRef = MsaObjectTestData::getDbiRef();
     U2OpStatusImpl os;
 
-    QScopedPointer<MultipleSequenceAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alignmentName, os));
+    QScopedPointer<MultipleAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alignmentName, os));
     CHECK_NO_ERROR(os);
 
     const int countOfDeleted = alnObj->deleteGap(os, U2Region(0, alnObj->getRowCount() - 1), 5, 2);

@@ -239,7 +239,7 @@ QList<Task*> BlastAlignToReferenceTask::onSubTaskFinished(Task* subTask) {
             convertBlastResultToAlignmentResult(blastResult, alignmentResult);
             assignReferencePairwiseAlignmentRegion(alignmentResult, readSequence.length(), referenceSequence.length());
 
-            QScopedPointer<MultipleSequenceAlignmentObject> pairwiseMsaObject(
+            QScopedPointer<MultipleAlignmentObject> pairwiseMsaObject(
                 createPairwiseAlignment(readOs, storage->getDbiRef(), referenceSequence, readSequence, msaAlphabet, alignmentResult));
             CHECK_CONTINUE(!readOs.hasError());
             SAFE_POINT(!pairwiseMsaObject.isNull() && pairwiseMsaObject->getRowCount() == 2 && pairwiseMsaObject->getEntityRef().dbiRef == storage->getDbiRef(),
@@ -265,7 +265,7 @@ QList<Task*> BlastAlignToReferenceTask::onSubTaskFinished(Task* subTask) {
         U2EntityRef msaRef = pairwiseMsaByRead.value(readKey);
 
         // Read 'pairwiseMsaObject' from the DB. It was created when 'blast' task was finished and now has a complete pairwise alignment.
-        QScopedPointer<MultipleSequenceAlignmentObject> pairwiseMsaObject(new MultipleSequenceAlignmentObject("pairwise-msa", msaRef));
+        QScopedPointer<MultipleAlignmentObject> pairwiseMsaObject(new MultipleAlignmentObject("pairwise-msa", msaRef));
 
         SAFE_POINT(pairwiseMsaObject->getRowCount() == 2, "Invalid pairwise MSA", {});
         // TODO: pairwiseMsaObject is never deallocated in DB: workflow DB is growing until the task ends! See DbiDataStorage::deleteObject!
@@ -351,7 +351,7 @@ void BlastAlignToReferenceTask::assignReferencePairwiseAlignmentRegion(AlignToRe
     alignResult.pairwiseAlignmentLeadingReadGap = unmappedReadLength - alignResult.blastReadRegion.startPos;
 }
 
-MultipleSequenceAlignmentObject* BlastAlignToReferenceTask::createPairwiseAlignment(
+MultipleAlignmentObject* BlastAlignToReferenceTask::createPairwiseAlignment(
     U2OpStatus& os,
     const U2DbiRef& dbiRef,
     const DNASequence& referenceSequence,

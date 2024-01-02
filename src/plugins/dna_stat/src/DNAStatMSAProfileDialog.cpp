@@ -29,10 +29,9 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/Theme.h>
 
 #include <U2Gui/HelpButton.h>
@@ -71,7 +70,7 @@ void DNAStatMSAProfileDialog::sl_formatChanged(const QString& newFormat) {
 }
 
 void DNAStatMSAProfileDialog::initSaveController() {
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
+    MultipleAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }
@@ -101,14 +100,14 @@ void DNAStatMSAProfileDialog::initSaveController() {
 
 void DNAStatMSAProfileDialog::accept() {
     DNAStatMSAProfileTaskSettings s;
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
+    MultipleAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }
     s.profileName = msaObj->getGObjectName();
     s.profileURL = msaObj->getDocument()->getURLString();
     s.usePercents = percentsRB->isChecked();
-    s.ma = msaObj->getCopy();
+    s.ma = msaObj->getAlignment()->getCopy();
     s.reportGaps = gapCB->isChecked();
     s.stripUnused = !unusedCB->isChecked();
     s.countGapsInConsensusNumbering = !skipGapPositionsCB->isChecked();

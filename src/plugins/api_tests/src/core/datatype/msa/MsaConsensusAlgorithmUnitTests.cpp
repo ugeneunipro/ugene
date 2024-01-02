@@ -29,7 +29,7 @@
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -293,7 +293,7 @@ IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase) {
     CHECK_LEVITSKY('D', cN({"AC", "CC", "GG", "TT"}, 70));  // D has the rarest global percentage (has no C).
 }
 
-static MultipleSequenceAlignmentObject* createAlignmentObject(const QStringList& alignmentRows) {
+static MultipleAlignmentObject* createAlignmentObject(const QStringList& alignmentRows) {
     auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(alignmentRows.join("").toLocal8Bit());
     MultipleAlignment alignment("Test alignment name", bestAlphabet);
 
@@ -313,7 +313,7 @@ static MultipleSequenceAlignmentObject* createAlignmentObject(const QStringList&
 }
 
 char getSymbolAfterAddRow(const QStringList& alignmentRows, char newChar) {
-    auto msaObj = QSharedPointer<MultipleSequenceAlignmentObject>(createAlignmentObject(alignmentRows));
+    auto msaObj = QSharedPointer<MultipleAlignmentObject>(createAlignmentObject(alignmentRows));
     CHECK(!msaObj.isNull(), '0');
 
     const auto& alignment = msaObj->getAlignment();
@@ -356,7 +356,7 @@ IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckReplace) {
 }
 
 char getSymbolAfterAddRow(const QStringList& alignmentRow, const QString& newRow) {
-    auto msaObj = QSharedPointer<MultipleSequenceAlignmentObject>(createAlignmentObject({alignmentRow}));
+    auto msaObj = QSharedPointer<MultipleAlignmentObject>(createAlignmentObject({alignmentRow}));
     CHECK(!msaObj.isNull(), '0');
 
     const auto& alignment = msaObj->getAlignment();
@@ -403,7 +403,7 @@ IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckAddRow) {
 }
 
 char getSymbolAfterRemoveLastColumn(const QStringList& alignmentRow) {
-    auto msaObj = QSharedPointer<MultipleSequenceAlignmentObject>(createAlignmentObject({alignmentRow}));
+    auto msaObj = QSharedPointer<MultipleAlignmentObject>(createAlignmentObject({alignmentRow}));
     CHECK(!msaObj.isNull(), '0');
 
     const auto& alignment = msaObj->getAlignment();

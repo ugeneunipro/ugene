@@ -36,7 +36,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextObject.h>
@@ -336,7 +336,7 @@ void ExtractConsensusTask::run() {
     CHECK(ma->getMaEditorWgt(0)->getConsensusArea(), );
     CHECK(ma->getMaEditorWgt(0)->getConsensusArea()->getConsensusCache(), );
 
-    const MultipleAlignment alignment = ma->getMaObject()->getMultipleAlignmentCopy();
+    const MultipleAlignment alignment = ma->getMaObject()->getAlignment()->getCopy();
     for (int i = 0, n = alignment->getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
             return;

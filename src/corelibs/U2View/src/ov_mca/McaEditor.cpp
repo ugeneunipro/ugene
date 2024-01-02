@@ -50,7 +50,7 @@
 namespace U2 {
 
 McaEditor::McaEditor(const QString& viewName,
-                     MultipleChromatogramAlignmentObject* obj)
+                     MultipleAlignmentObject* obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       showChromatogramsAction(nullptr), showGeneralTabAction(nullptr), showConsensusTabAction(nullptr), referenceCtx(nullptr) {
     optionsPanelController = new OptionsPanelController(this);
@@ -66,10 +66,6 @@ McaEditor::McaEditor(const QString& viewName,
     U2SequenceObject* referenceObj = obj->getReferenceObj();
     SAFE_POINT(referenceObj != nullptr, "Trying to open McaEditor without a reference", );
     referenceCtx = new SequenceObjectContext(referenceObj, this);
-}
-
-MultipleChromatogramAlignmentObject* McaEditor::getMaObject() const {
-    return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject);
 }
 
 McaEditorWgt* McaEditor::getUI() const {

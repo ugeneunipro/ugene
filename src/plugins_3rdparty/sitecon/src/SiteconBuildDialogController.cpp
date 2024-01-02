@@ -31,7 +31,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/Settings.h>
 
 #include <U2Gui/HelpButton.h>
@@ -277,7 +277,7 @@ QList<Task*> SiteconBuildToFileTask::onSubTaskFinished(Task* subTask) {
         if (mobjs.isEmpty()) {
             stateInfo.setError(tr("No alignment found"));
         } else {
-            auto mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
+            auto mobj = qobject_cast<MultipleAlignmentObject*>(mobjs.first());
             const MultipleAlignment msa = mobj->getAlignment();
             QString baseName = mobj->getDocument()->getURL().baseFileName();
             buildTask = new SiteconBuildTask(settings, msa, baseName);

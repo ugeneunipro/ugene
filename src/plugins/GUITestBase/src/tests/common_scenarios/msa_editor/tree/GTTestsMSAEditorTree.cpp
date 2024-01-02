@@ -47,7 +47,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     // Check that original name list is correct.
     MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor();
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    MultipleAlignmentObject* msaObject = msaEditor->getMaObject();
     QStringList nameList = msaObject->getAlignment()->getRowNames();
     QStringList originalNameList = {"a", "b", "c", "d", "e", "f", "g", "h"};
     CHECK_SET_ERR(nameList == originalNameList, "1. Wrong original name list: " + nameList.join(","));

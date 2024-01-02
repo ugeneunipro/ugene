@@ -23,10 +23,8 @@
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/L10n.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -60,8 +58,8 @@ static bool maContainsPattern(const MultipleAlignmentObject* maObject, const QSt
         const MultipleAlignmentRow& row = mData->getRow(i);
         for (int j = 0; j < (mData->getLength() - searchStr.length() + 1); ++j) {
             char c = row->charAt(j);
-            int altenateLength = 0;
-            if (U2Msa::GAP_CHAR != c && MSAUtils::equalsIgnoreGaps(row, j, searchStr, altenateLength)) {
+            int alternateLength = 0;
+            if (c != U2Msa::GAP_CHAR && MSAUtils::equalsIgnoreGaps(row, j, searchStr, alternateLength)) {
                 return true;
             }
         }
@@ -101,7 +99,7 @@ MsaContentFilterTask::MsaContentFilterTask(const ProjectTreeControllerModeSettin
 }
 
 bool MsaContentFilterTask::filterAcceptsObject(GObject* obj) {
-    return isFilteredByMAContent(qobject_cast<MultipleSequenceAlignmentObject*>(obj), settings);
+    return isFilteredByMAContent(qobject_cast<MultipleAlignmentObject*>(obj), settings);
 }
 
 McaReadContentFilterTask::McaReadContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
@@ -110,7 +108,7 @@ McaReadContentFilterTask::McaReadContentFilterTask(const ProjectTreeControllerMo
 }
 
 bool McaReadContentFilterTask::filterAcceptsObject(GObject* obj) {
-    return isFilteredByMAContent(qobject_cast<MultipleChromatogramAlignmentObject*>(obj), settings);
+    return isFilteredByMAContent(qobject_cast<MultipleAlignmentObject*>(obj), settings);
 }
 
 McaReferenceContentFilterTask::McaReferenceContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
@@ -119,7 +117,7 @@ McaReferenceContentFilterTask::McaReferenceContentFilterTask(const ProjectTreeCo
 }
 
 bool McaReferenceContentFilterTask::filterAcceptsObject(GObject* obj) {
-    auto mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
+    auto mcaObj = qobject_cast<MultipleAlignmentObject*>(obj);
     CHECK(mcaObj != nullptr, false);
 
     foreach (const QString& pattern, settings.tokensToShow) {

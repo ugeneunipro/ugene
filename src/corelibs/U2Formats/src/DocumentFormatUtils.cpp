@@ -32,7 +32,7 @@
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -122,7 +122,7 @@ QList<DNASequence> DocumentFormatUtils::toSequences(const GObject* obj) {
         CHECK_OP_EXT(os, res.removeLast(), res);
         return res;
     }
-    auto maObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
+    auto maObj = qobject_cast<const MultipleAlignmentObject*>(obj);
     CHECK(maObj != nullptr, res);  // MultipleSequenceAlignmentObject is NULL
     const DNAAlphabet* al = maObj->getAlphabet();
     qint64 alLen = maObj->getAlignment()->getLength();

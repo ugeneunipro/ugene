@@ -29,7 +29,7 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -135,7 +135,7 @@ QList<Task*> SimpleInOutWorkflowTask::onSubTaskFinished(Task* subTask) {
 //////////////////////////////////////////////////////////////////////////
 // RunSimpleMSAWorkflow4GObject
 SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& taskName,
-                                                             MultipleSequenceAlignmentObject* msaObj,
+                                                             MultipleAlignmentObject* msaObj,
                                                              const SimpleMSAWorkflowTaskConfig& conf)
     : Task(taskName, TaskFlags_NR_FOSCOE),
       msaObjectPointer(msaObj),
@@ -147,7 +147,7 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& task
     U2OpStatus2Log os;
     MultipleAlignment al = MSAUtils::createCopyWithIndexedRowNames(msaObjectPointer->getAlignment());
 
-    MultipleSequenceAlignmentObject* msaObject = MultipleSequenceAlignmentImporter::createAlignment(msaObjectPointer->getEntityRef().dbiRef, al, os);
+    MultipleAlignmentObject* msaObject = MultipleSequenceAlignmentImporter::createAlignment(msaObjectPointer->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os, );
 
     SimpleInOutWorkflowTaskConfig sioConf;
@@ -214,9 +214,9 @@ MultipleAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
     CHECK_EXT(d != nullptr, setError(tr("Result document not found!")), res);
     CHECK_EXT(d->getObjects().size() == 1, setError(tr("Result document content not matched! %1").arg(d->getURLString())), res);
 
-    auto maObj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first());
+    auto maObj = qobject_cast<MultipleAlignmentObject*>(d->getObjects().first());
     CHECK_EXT(maObj != nullptr, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
-    return maObj->getCopy();
+    return maObj->getAlignment()->getCopy();
 }
 
 }  // namespace U2

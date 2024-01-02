@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class MuscleGObjectTask;
 class LoadDocumentTask;
 
@@ -51,7 +51,7 @@ private:
     QString resultCtxName;
     Document* doc;
     MuscleGObjectTask* mTask;
-    MultipleSequenceAlignmentObject* ma_result;
+    MultipleAlignmentObject* ma_result;
     bool ctxAdded;
     bool refineOnly;
     int maxIters;
@@ -85,7 +85,7 @@ private:
     QString seqDocName;
     int resultAliLen;
     QList<QList<int>> gapPositionsForSeqs;
-    MultipleSequenceAlignmentObject* aliObj;
+    MultipleAlignmentObject* aliObj;
     int origAliSeqs;
     int resultAliSeqs;
 };
@@ -116,8 +116,8 @@ private:
     LoadDocumentTask* loadTask2;
     Task* muscleTask;
     MuscleTaskSettings config;
-    MultipleSequenceAlignmentObject* ma1;
-    MultipleSequenceAlignmentObject* ma2;
+    MultipleAlignmentObject* ma1;
+    MultipleAlignmentObject* ma2;
 };
 
 class Muscle_Load_Align_Compare_Task : public Task {
@@ -146,8 +146,8 @@ private:
     LoadDocumentTask* loadTask2;
     Task* muscleTask;
     MuscleTaskSettings config;
-    MultipleSequenceAlignmentObject* ma1;
-    MultipleSequenceAlignmentObject* ma2;
+    MultipleAlignmentObject* ma1;
+    MultipleAlignmentObject* ma2;
 };
 
 class GTest_Muscle_Load_Align_Compare : public XmlTest {

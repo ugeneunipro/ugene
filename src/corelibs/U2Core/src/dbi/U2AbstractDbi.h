@@ -50,93 +50,93 @@ protected:
         factoryId = fid;
     }
 
-    ~U2AbstractDbi() {
+    ~U2AbstractDbi() override {
         qDeleteAll(upgraders);
     }
 
 public:
-    virtual bool flush(U2OpStatus&) {
+    bool flush(U2OpStatus&) override {
         return true;
     }
 
-    virtual U2DbiState getState() const {
+    U2DbiState getState() const override {
         return state;
     }
 
-    virtual U2DbiId getDbiId() const {
+    U2DbiId getDbiId() const override {
         return dbiId;
     }
 
-    virtual U2DbiFactoryId getFactoryId() const {
+    U2DbiFactoryId getFactoryId() const override {
         return factoryId;
     }
 
-    virtual const QSet<U2DbiFeature>& getFeatures() const {
+    const QSet<U2DbiFeature>& getFeatures() const override {
         return features;
     }
 
-    virtual QHash<QString, QString> getInitProperties() const {
+    QHash<QString, QString> getInitProperties() const override {
         return initProperties;
     }
 
-    virtual QHash<QString, QString> getDbiMetaInfo(U2OpStatus&) {
+    QHash<QString, QString> getDbiMetaInfo(U2OpStatus&) override {
         return metaInfo;
     }
 
-    virtual U2SequenceDbi* getSequenceDbi() {
+    U2SequenceDbi* getSequenceDbi() override {
         return nullptr;
     }
 
-    virtual U2FeatureDbi* getFeatureDbi() {
+    U2FeatureDbi* getFeatureDbi() override {
         return nullptr;
     }
 
-    virtual U2MsaDbi* getMsaDbi() {
+    U2MsaDbi* getMsaDbi() override {
         return nullptr;
     }
 
-    virtual U2AssemblyDbi* getAssemblyDbi() {
+    U2AssemblyDbi* getAssemblyDbi() override {
         return nullptr;
     }
 
-    virtual U2AttributeDbi* getAttributeDbi() {
+    U2AttributeDbi* getAttributeDbi() override {
         return nullptr;
     }
 
-    virtual U2ObjectDbi* getObjectDbi() {
+    U2ObjectDbi* getObjectDbi() override {
         return nullptr;
     }
 
-    virtual U2ObjectRelationsDbi* getObjectRelationsDbi() {
+    U2ObjectRelationsDbi* getObjectRelationsDbi() override {
         return nullptr;
     }
 
-    virtual U2VariantDbi* getVariantDbi() {
+    U2VariantDbi* getVariantDbi() override {
         return nullptr;
     }
 
-    virtual U2ModDbi* getModDbi() {
+    U2ModDbi* getModDbi() override {
         return nullptr;
     }
 
-    virtual U2CrossDatabaseReferenceDbi* getCrossDatabaseReferenceDbi() {
+    U2CrossDatabaseReferenceDbi* getCrossDatabaseReferenceDbi() override {
         return nullptr;
     }
 
-    virtual UdrDbi* getUdrDbi() {
+    UdrDbi* getUdrDbi() override {
         return nullptr;
     }
 
-    virtual U2DataType getEntityTypeById(const U2DataId&) const {
+    U2DataType getEntityTypeById(const U2DataId&) const override {
         return U2Type::Unknown;
     }
 
-    virtual QString getProperty(const QString&, const QString& defaultValue, U2OpStatus& os) {
+    QString getProperty(const QString&, const QString& defaultValue, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_ReadProperties, this, os);
         return defaultValue;
     }
 
-    virtual void setProperty(const QString&, const QString&, U2OpStatus& os) {
+    void setProperty(const QString&, const QString&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteProperties, this, os);
     }
 
@@ -152,7 +152,7 @@ public:
         }
     }
 
-    bool isTransactionActive() const {
+    bool isTransactionActive() const override {
         return false;
     }
 
@@ -174,91 +174,91 @@ protected:
     }
 
 public:
-    virtual U2DataType getObject(U2Object&, const U2DataId&, U2OpStatus& os) {
+    U2DataType getObject(U2Object&, const U2DataId&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return {};
     }
 
-    virtual U2DataId getObject(qint64 objectId, U2OpStatus& os) {
+    U2DataId getObject(qint64 objectId, U2OpStatus& os) override {
         Q_UNUSED(objectId)
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return U2DataId();
     }
 
-    virtual QHash<U2Object, QString> getObjectFolders(U2OpStatus& os) {
+    QHash<U2Object, QString> getObjectFolders(U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return QHash<U2Object, QString>();
     }
 
-    virtual QStringList getObjectFolders(const U2DataId&, U2OpStatus& os) {
+    QStringList getObjectFolders(const U2DataId&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return QStringList();
     }
 
-    virtual bool removeObject(const U2DataId&, bool, U2OpStatus& os) {
+    bool removeObject(const U2DataId&, bool, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return false;
     }
 
-    virtual bool removeObjects(const QList<U2DataId>&, bool, U2OpStatus& os) {
+    bool removeObjects(const QList<U2DataId>&, bool, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return false;
     }
 
-    virtual void createFolder(const QString&, U2OpStatus& os) {
+    void createFolder(const QString&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
     }
 
-    virtual bool removeFolder(const QString&, U2OpStatus& os) {
+    bool removeFolder(const QString&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
         return false;
     }
 
-    virtual void renameFolder(const QString&, const QString&, U2OpStatus& os) {
+    void renameFolder(const QString&, const QString&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
     }
 
-    virtual QString getFolderPreviousPath(const QString&, U2OpStatus& os) {
+    QString getFolderPreviousPath(const QString&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
         return "";
     }
 
-    virtual void addObjectsToFolder(const QList<U2DataId>&, const QString&, U2OpStatus& os) {
+    void addObjectsToFolder(const QList<U2DataId>&, const QString&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
     }
 
-    virtual void moveObjects(const QList<U2DataId>&, const QString&, const QString&, U2OpStatus& os, bool) {
+    void moveObjects(const QList<U2DataId>&, const QString&, const QString&, U2OpStatus& os, bool) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
     }
 
-    virtual QStringList restoreObjects(const QList<U2DataId>&, U2OpStatus& os) {
+    QStringList restoreObjects(const QList<U2DataId>&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
         return QStringList();
     }
 
-    virtual U2TrackModType getTrackModType(const U2DataId&, U2OpStatus& os) {
+    U2TrackModType getTrackModType(const U2DataId&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_ReadModifications, getRootDbi(), os);
         return NoTrack;
     }
 
-    virtual void setTrackModType(const U2DataId&, U2TrackModType, U2OpStatus& os) {
+    void setTrackModType(const U2DataId&, U2TrackModType, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteModifications, getRootDbi(), os);
     }
 
-    virtual void undo(const U2DataId&, U2OpStatus& os) {
+    void undo(const U2DataId&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_UndoRedo, getRootDbi(), os);
     }
 
-    virtual void redo(const U2DataId&, U2OpStatus& os) {
+    void redo(const U2DataId&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_UndoRedo, getRootDbi(), os);
     }
 
-    virtual bool canUndo(const U2DataId& /*msaId*/, U2OpStatus& os) {
+    bool canUndo(const U2DataId& /*msaId*/, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_UndoRedo, getRootDbi(), os);
         return false;
     }
 
-    virtual bool canRedo(const U2DataId& /*objId*/, U2OpStatus& os) {
+    bool canRedo(const U2DataId& /*objId*/, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_UndoRedo, getRootDbi(), os);
         return false;
     }
@@ -272,35 +272,35 @@ protected:
     }
 
 public:
-    virtual void createAssemblyObject(U2Assembly&, const QString&, U2DbiIterator<U2AssemblyRead>*, U2AssemblyReadsImportInfo&, U2OpStatus& os) {
+    void createAssemblyObject(U2Assembly&, const QString&, U2DbiIterator<U2AssemblyRead>*, U2AssemblyReadsImportInfo&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void finalizeAssemblyObject(U2Assembly& /*assembly*/, U2OpStatus& os) {
+    void finalizeAssemblyObject(U2Assembly& /*assembly*/, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void removeAssemblyData(const U2DataId&, U2OpStatus& os) {
+    void removeAssemblyData(const U2DataId&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void updateAssemblyObject(U2Assembly&, U2OpStatus& os) {
+    void updateAssemblyObject(U2Assembly&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void removeReads(const U2DataId&, const QList<U2DataId>&, U2OpStatus& os) {
+    void removeReads(const U2DataId&, const QList<U2DataId>&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void addReads(const U2DataId&, U2DbiIterator<U2AssemblyRead>*, U2OpStatus& os) {
+    void addReads(const U2DataId&, U2DbiIterator<U2AssemblyRead>*, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void pack(const U2DataId&, U2AssemblyPackStat&, U2OpStatus& os) {
+    void pack(const U2DataId&, U2AssemblyPackStat&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_AssemblyReadsPacking, getRootDbi(), os);
     }
 
-    virtual void calculateCoverage(const U2DataId&, const U2Region&, U2AssemblyCoverageStat&, U2OpStatus& os) {
+    void calculateCoverage(const U2DataId&, const U2Region&, U2AssemblyCoverageStat&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_AssemblyCoverageStat, getRootDbi(), os);
     }
 };
@@ -313,27 +313,31 @@ protected:
     }
 
 public:
-    virtual void removeAttributes(const QList<U2DataId>&, U2OpStatus& os) {
+    void removeAttributes(const QList<U2DataId>&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 
-    virtual void removeObjectAttributes(const U2DataId&, U2OpStatus& os) {
+    void removeObjectAttributes(const U2DataId&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 
-    virtual void createIntegerAttribute(U2IntegerAttribute&, U2OpStatus& os) {
+    void createIntegerAttribute(U2IntegerAttribute&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 
-    virtual void createRealAttribute(U2RealAttribute&, U2OpStatus& os) {
+    void createRealAttribute(U2RealAttribute&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 
-    virtual void createStringAttribute(U2StringAttribute&, U2OpStatus& os) {
+    void createStringAttribute(U2StringAttribute&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 
-    virtual void createByteArrayAttribute(U2ByteArrayAttribute&, U2OpStatus& os) {
+    void createByteArrayAttribute(U2ByteArrayAttribute&, U2OpStatus& os) override {
+        U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
+    }
+
+    void updateByteArrayAttribute(U2ByteArrayAttribute&, U2OpStatus& os) override {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 };

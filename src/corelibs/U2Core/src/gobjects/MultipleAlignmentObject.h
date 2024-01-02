@@ -21,7 +21,9 @@
 
 #pragma once
 
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObject.h>
+#include <U2Core/GObjectTypes.h>
 #include <U2Core/MaModificationInfo.h>
 #include <U2Core/MultipleAlignment.h>
 
@@ -43,16 +45,19 @@ private:
 class U2CORE_EXPORT MultipleAlignmentObject : public GObject {
     Q_OBJECT
 public:
+    static const QString REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT;
+
     enum TrimEdge {
-        Left,
-        Right
+        Left = 1,
+        Right = 2
     };
 
-    MultipleAlignmentObject(const QString& gobjectType,
-                            const QString& name,
+    MultipleAlignmentObject(const QString& name,
                             const U2EntityRef& maRef,
-                            const QVariantMap& hintsMap,
-                            const MultipleAlignment& alignment);
+                            const QVariantMap& hintsMap = {},
+                            const MultipleAlignment& alignment = {},
+                            const GObjectType& objectType = GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+
     ~MultipleAlignmentObject() override;
 
     /** Sets type of modifications tracking for the alignment */
@@ -62,12 +67,8 @@ public:
     const MultipleAlignment& getAlignment() const;
     void setMultipleAlignment(const MultipleAlignment& ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap& hints = QVariantMap());
 
-    MultipleAlignment getMultipleAlignmentCopy() const;
-
     /** GObject methods */
     void setGObjectName(const QString& newName) override;
-
-    MultipleAlignment getCopy() const;
 
     /** Const getters */
     const DNAAlphabet* getAlphabet() const;
@@ -167,7 +168,7 @@ public:
 
     /**
      * Updates the corresponding alternative mutations.
-     * Set the second strongest character, if it's peak height persantage is more then @threshold and @showAlternativeMutations is true.
+     * Set the second strongest character, if it's peak height percentage is more then @threshold and @showAlternativeMutations is true.
      */
     void updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os);
 
@@ -226,6 +227,12 @@ public:
 
     void insertGapByRowIdList(const QList<qint64>& rowIds, int pos, int nGaps);
 
+    U2SequenceObject* getReferenceObj() const;
+
+    void deleteColumnsWithGaps(U2OpStatus& os, int requiredGapsCount = -1);
+
+    MultipleAlignmentObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = {}) const override;
+
 signals:
     void si_startMaUpdating();
     void si_alignmentChanged(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo);
@@ -256,6 +263,9 @@ protected:
     MultipleAlignment cachedMa;
 
     MaSavedState savedState;
+
+    /** Lazily loaded reference sequence object. Present only for Mca objects. */
+    mutable U2SequenceObject* referenceObj = nullptr;
 };
 
 }  // namespace U2

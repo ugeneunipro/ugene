@@ -353,4 +353,14 @@ void SQLiteAttributeDbi::createByteArrayAttribute(U2ByteArrayAttribute& a, U2OpS
     q->execute();
 }
 
+void SQLiteAttributeDbi::updateByteArrayAttribute(U2ByteArrayAttribute& a, U2OpStatus& os) {
+    SQLiteTransaction t(db, os);
+    static const QString queryString("UPDATE ByteArrayAttribute SET value = ?1 WHERE id = ?2");
+    QSharedPointer<SQLiteQuery> q = t.getPreparedQuery(queryString, db, os);
+    CHECK_OP(os, );
+    q->bindBlob(1, a.value, false);
+    q->bindDataId(1, a.id);
+    q->execute();
+}
+
 }  // namespace U2

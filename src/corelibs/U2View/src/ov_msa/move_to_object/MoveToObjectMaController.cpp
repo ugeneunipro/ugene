@@ -32,7 +32,7 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2Mod.h>
 
 #include <U2Formats/ExportTasks.h>
@@ -89,7 +89,7 @@ QMenu* MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
                 CHECK_EXT(referenceObject != nullptr, QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectNotFound(reference.objName)), );
                 CHECK_EXT(!referenceObject->isStateLocked(), QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectIsReadOnly(reference.objName)), );
 
-                auto targetMsaObject = qobject_cast<MultipleSequenceAlignmentObject*>(referenceObject);
+                auto targetMsaObject = qobject_cast<MultipleAlignmentObject*>(referenceObject);
                 CHECK_EXT(targetMsaObject != nullptr, QMessageBox::critical(ui, L10N::errorTitle(), L10N::nullPointerError(reference.objName)), );
 
                 QList<int> selectedViewRowIndexes = getSelection().getSelectedRowIndexes();

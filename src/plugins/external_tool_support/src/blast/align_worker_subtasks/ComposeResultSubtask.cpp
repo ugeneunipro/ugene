@@ -32,7 +32,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleAlignment.h>
 #include <U2Core/MultipleChromatogramAlignmentImporter.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2AttributeUtils.h>
 
@@ -100,8 +100,8 @@ U2SequenceObject* ComposeResultSubtask::takeReferenceSequenceObject() {
     return resultSequenceObject;
 }
 
-MultipleChromatogramAlignmentObject* ComposeResultSubtask::takeMcaObject() {
-    MultipleChromatogramAlignmentObject* resultMcaObject = mcaObject;
+MultipleAlignmentObject* ComposeResultSubtask::takeMcaObject() {
+    MultipleAlignmentObject* resultMcaObject = mcaObject;
     mcaObject->setParent(nullptr);
     mcaObject->moveToThread(QThread::currentThread());
     mcaObject = nullptr;
@@ -180,7 +180,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
     obj.dbiId = storage->getDbiRef().dbiId;
     obj.id = mcaObject->getEntityRef().entityId;
     obj.version = mcaObject->getModificationVersion();
-    U2AttributeUtils::init(attribute, obj, MultipleChromatogramAlignmentObject::MCAOBJECT_REFERENCE);
+    U2AttributeUtils::init(attribute, obj, MultipleAlignmentObject::REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT);
     attribute.value = referenceSequenceObject->getEntityRef().entityId;
     con.dbi->getAttributeDbi()->createByteArrayAttribute(attribute, stateInfo);
     CHECK_OP(stateInfo, );

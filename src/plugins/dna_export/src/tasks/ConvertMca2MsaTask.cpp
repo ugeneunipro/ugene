@@ -23,12 +23,12 @@
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
-ConvertMca2MsaTask::ConvertMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject, bool includeReference)
+ConvertMca2MsaTask::ConvertMca2MsaTask(MultipleAlignmentObject* mcaObject, bool includeReference)
     : Task(tr("Convert MCA to MSA task"), TaskFlag_None),
       mcaObject(mcaObject),
       includeReference(includeReference) {

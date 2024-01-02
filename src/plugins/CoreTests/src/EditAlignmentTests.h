@@ -43,8 +43,8 @@ public:
     Task::ReportResult report();
 
 private:
-    MultipleSequenceAlignmentObject* maobj;
-    MultipleSequenceAlignmentObject* expectedMaobj;
+    MultipleAlignmentObject* maobj;
+    MultipleAlignmentObject* expectedMaobj;
     QString docName;
     bool negativeTest;
     Task* t;
@@ -61,8 +61,8 @@ public:
     Task::ReportResult report();
 
 private:
-    MultipleSequenceAlignmentObject* maobj;
-    MultipleSequenceAlignmentObject* expectedMaobj;
+    MultipleAlignmentObject* maobj;
+    MultipleAlignmentObject* expectedMaobj;
     QString docName;
     QString expectedDocName;
     int startBase, startSeq, width, height;
@@ -76,8 +76,8 @@ public:
     Task::ReportResult report();
 
 private:
-    MultipleSequenceAlignmentObject* maobj;
-    MultipleSequenceAlignmentObject* expectedMaobj;
+    MultipleAlignmentObject* maobj;
+    MultipleAlignmentObject* expectedMaobj;
     QString docName;
     QString expectedDocName;
     QString seqFileName;

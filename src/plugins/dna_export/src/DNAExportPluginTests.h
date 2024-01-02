@@ -32,7 +32,7 @@ namespace U2 {
 class LoadDocumentTask;
 class ExportMSA2MSATask;
 class U2SequenceObject;
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 
 class GTest_ImportPhredQualityScoresTask : public XmlTest {
     Q_OBJECT

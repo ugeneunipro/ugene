@@ -37,7 +37,6 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/LocalFileAdapter.h>
-#include <U2Core/Log.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Settings.h>
@@ -66,13 +65,13 @@ PrepareMsaClipboardDataTask* MsaClipboardDataTaskFactory::newInstance(MSAEditor*
     }
 }
 
-FormatsMsaClipboardTask::FormatsMsaClipboardTask(MultipleSequenceAlignmentObject* msaObj, const QList<qint64>& _rowIds, const U2Region& _columnRange, const DocumentFormatId& formatId)
+FormatsMsaClipboardTask::FormatsMsaClipboardTask(MultipleAlignmentObject* msaObj, const QList<qint64>& _rowIds, const U2Region& _columnRange, const DocumentFormatId& formatId)
     : PrepareMsaClipboardDataTask(_rowIds, _columnRange), createSubalignmentTask(nullptr), msaObj(msaObj), formatId(formatId) {
 }
 
 void FormatsMsaClipboardTask::prepare() {
     if (formatId == BaseDocumentFormats::PLAIN_TEXT) {
-        MultipleAlignment msa = msaObj->getCopy();
+        MultipleAlignment msa = msaObj->getAlignment()->getCopy();
         msa->crop(rowIds, columnRange, stateInfo);
         CHECK_OP(stateInfo, )
 

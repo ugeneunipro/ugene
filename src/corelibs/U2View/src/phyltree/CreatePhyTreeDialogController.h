@@ -32,14 +32,14 @@ class Ui_CreatePhyTree;
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class CreatePhyTreeWidget;
 class SaveDocumentController;
 
 class U2VIEW_EXPORT CreatePhyTreeDialogController : public QDialog {
     Q_OBJECT
 public:
-    CreatePhyTreeDialogController(QWidget* parent, const MultipleSequenceAlignmentObject* msaObject, CreatePhyTreeSettings& settings);
+    CreatePhyTreeDialogController(QWidget* parent, const MultipleAlignmentObject* msaObject, CreatePhyTreeSettings& settings);
     ~CreatePhyTreeDialogController();
 
 private slots:
@@ -52,7 +52,7 @@ private:
     bool checkAndPrepareOutputFilePath();
     bool checkSettings();
     bool checkMemory();
-    void initSaveController(const MultipleSequenceAlignmentObject* msaObject);
+    void initSaveController(const MultipleAlignmentObject* msaObject);
 
     MultipleAlignment msa;
     CreatePhyTreeSettings& settings;

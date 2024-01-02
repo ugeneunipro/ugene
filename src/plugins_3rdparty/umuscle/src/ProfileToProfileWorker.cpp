@@ -24,7 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -67,12 +67,12 @@ Task* ProfileToProfileWorker::tick() {
 
         QVariantMap qm = m.getData().toMap();
         SharedDbiDataHandler masterMsaId = qm.value(MASTER_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
-        QScopedPointer<MultipleSequenceAlignmentObject> masterMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), masterMsaId));
+        QScopedPointer<MultipleAlignmentObject> masterMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), masterMsaId));
         SAFE_POINT(!masterMsaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleAlignment masterMsa = masterMsaObj->getAlignment();
 
         SharedDbiDataHandler secondMsaId = qm.value(SECOND_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
-        QScopedPointer<MultipleSequenceAlignmentObject> secondMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), secondMsaId));
+        QScopedPointer<MultipleAlignmentObject> secondMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), secondMsaId));
         SAFE_POINT(!secondMsaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleAlignment secondMsa = secondMsaObj->getAlignment();
 
@@ -87,7 +87,7 @@ Task* ProfileToProfileWorker::tick() {
 }
 
 void ProfileToProfileWorker::cleanup() {
-    foreach (MultipleSequenceAlignmentObject* obj, objects) {
+    foreach (MultipleAlignmentObject* obj, objects) {
         delete obj;
     }
     objects.clear();
