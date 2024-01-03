@@ -37,7 +37,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LocalFileAdapter.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -77,7 +77,7 @@ void CreateSubalignmentTask::prepare() {
 
         // TODO: do not copy whole object. Copy only cfg.rowIds.
         MultipleAlignment msa = origMAObj->getAlignment()->getCopy();
-        resultMAObj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
+        resultMAObj = MsaImportUtils::createMsaObject(resultDocument->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, );
         resultMAObj->setGHints(new GHintsDefaultImpl(origMAObj->getGHintsMap()));
 

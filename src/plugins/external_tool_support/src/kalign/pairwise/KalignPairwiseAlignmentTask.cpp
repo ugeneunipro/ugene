@@ -7,8 +7,8 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
@@ -116,7 +116,7 @@ QList<Task*> KalignPairwiseAlignmentTask::onSubTaskFinished(Task* subTask) {
             CHECK_OP(localStateInfo, res);
 
             MultipleAlignment resultMa = kalignSubTask->resultMA;
-            MultipleAlignmentObject* docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
+            MultipleAlignmentObject* docObject = MsaImportUtils::createMsaObject(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
             CHECK_OP(localStateInfo, res);
             alignmentDoc->addObject(docObject);
             res << new SaveDocumentTask(alignmentDoc, SaveDoc_OpenAfter);

@@ -28,7 +28,7 @@
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -306,7 +306,7 @@ static MultipleAlignmentObject* createAlignmentObject(const QStringList& alignme
     auto sessionDbi = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
     CHECK_OP(os, nullptr);
 
-    auto msaObj = MultipleSequenceAlignmentImporter::createAlignment(sessionDbi, alignment, os);
+    auto msaObj = MsaImportUtils::createMsaObject(sessionDbi, alignment, os);
     CHECK_OP(os, nullptr);
 
     return msaObj;

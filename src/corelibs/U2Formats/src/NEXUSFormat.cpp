@@ -26,7 +26,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/TextUtils.h>
@@ -482,7 +482,7 @@ bool NEXUSParser::readDataContents(Context& ctx) {
                 return false;
             }
 
-            MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, ma, ti);
+            MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(dbiRef, ma, ti, folder);
             CHECK_OP(ti, false);
             addObject(obj);
         } else if (cmd == END) {

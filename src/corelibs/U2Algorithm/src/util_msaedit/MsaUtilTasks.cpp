@@ -30,7 +30,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -65,7 +65,7 @@ TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleAlignmentObject* obj, con
 void TranslateMsa2AminoTask::run() {
     SAFE_POINT_EXT(translation != nullptr, setError("Invalid translation object"), );
 
-    QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(maObj->getAlignment(), stateInfo, true);
+    QList<DNASequence> sequenceList = MsaUtils::convertMsaToSequenceList(maObj->getAlignment(), stateInfo, true);
     CHECK_OP(stateInfo, );
 
     resultMA = MultipleAlignment(maObj->getAlignment()->getName(), translation->getDstAlphabet());
@@ -124,7 +124,7 @@ void AlignInAminoFormTask::prepare() {
     CHECK_OP(os, );
 
     // Create copy of multiple alignment object
-    clonedObj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, msa, stateInfo);
+    clonedObj = MsaImportUtils::createMsaObject(dbiRef, msa, stateInfo);
     CHECK_OP(stateInfo, );
     clonedObj->setGHints(new GHintsDefaultImpl(maObj->getGHintsMap()));
 
@@ -145,7 +145,7 @@ void AlignInAminoFormTask::run() {
 
     // Create gap map from amino-acid alignment
     for (const MultipleAlignmentRow& row : qAsConst(rows)) {
-        int rowIdx = MSAUtils::getRowIndexByName(maObj->getAlignment(), row->getName());
+        int rowIdx = MsaUtils::getRowIndexByName(maObj->getAlignment(), row->getName());
         const MultipleAlignmentRow& curRow = maObj->getAlignment()->getRow(row->getName());
         SAFE_POINT_EXT(rowIdx >= 0, setError(QString("Can not find row %1 in original alignment.").arg(row->getName())), );
 

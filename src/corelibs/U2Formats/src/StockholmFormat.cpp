@@ -27,8 +27,8 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/L10n.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentInfo.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/TextUtils.h>
@@ -456,7 +456,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*
         setMsaInfo(valueByNameMap, msa);
 
         QString folder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-        auto msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
+        auto msaObject = MsaImportUtils::createMsaObject(dbiRef, msa, os, folder);
         CHECK_OP(os, );
         msaObject->setIndexInfo(valueByNameMap);
         objectList.append(msaObject);

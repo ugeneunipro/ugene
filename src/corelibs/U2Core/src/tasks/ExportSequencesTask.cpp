@@ -50,7 +50,7 @@ ExportSequencesTask::ExportSequencesTask(const MultipleAlignment& msa, const QSe
       format(format),
       extension(extension),
       customFileName(customFileName) {
-    sequences = MSAUtils::convertMsaToSequenceList(msa, stateInfo, trimGaps, rowIds);
+    sequences = MsaUtils::convertMsaToSequenceList(msa, stateInfo, trimGaps, rowIds);
 }
 
 void ExportSequencesTask::prepare() {

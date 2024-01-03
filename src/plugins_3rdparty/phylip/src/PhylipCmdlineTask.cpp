@@ -28,7 +28,7 @@
 #include <U2Core/CmdlineInOutTaskRunner.h>
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -85,7 +85,7 @@ Task::ReportResult PhylipCmdlineTask::report() {
 void PhylipCmdlineTask::createCmdlineTask() {
     CmdlineInOutTaskConfig config;
     CHECK_OP(stateInfo, );
-    msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, inputMA, stateInfo);
+    msaObject = MsaImportUtils::createMsaObject(dbiRef, inputMA, stateInfo);
     CHECK_OP(stateInfo, );
     msaObject->setParent(this);
     config.inputObjects << msaObject;

@@ -23,7 +23,6 @@
 
 #include <QFileInfo>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/CloneObjectTask.h>
 #include <U2Core/Counter.h>
@@ -31,22 +30,17 @@
 #include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DNATranslationImpl.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
-
-#include <U2Formats/SCFFormat.h>
 
 namespace U2 {
 
@@ -73,7 +67,7 @@ void SaveAlignmentTask::run() {
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(fileName));
     doc.reset(f->createNewLoadedDocument(iof, fileName, stateInfo));
 
-    MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), ma, stateInfo);
+    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(doc->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     GHints* docHints = doc->getGHints();
@@ -105,7 +99,7 @@ SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MultipleAlignment& msa, const
     GCOUNTER(cvar, "ExportMSA2SequencesTask");
     setVerboseLogMode(true);
     stateInfo.setProgress(0);
-    sequenceList = MSAUtils::convertMsaToSequenceList(msa, stateInfo, trimAli);
+    sequenceList = MsaUtils::convertMsaToSequenceList(msa, stateInfo, trimAli);
 }
 
 void SaveMSA2SequencesTask::run() {

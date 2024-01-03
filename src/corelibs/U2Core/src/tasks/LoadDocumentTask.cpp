@@ -397,7 +397,7 @@ static Document* loadFromMultipleFiles(IOAdapterFactory* iof, QVariantMap& fs, U
         CHECK_OP(os, nullptr);
         newObjects << sequences;
     } else if (fs.value(DocumentReadingMode_SequenceAsAlignmentHint).toBool()) {
-        MultipleAlignmentObject* msaObject = MSAUtils::seqDocs2msaObj(docs, fs, os);
+        MultipleAlignmentObject* msaObject = MsaUtils::seqDocs2msaObj(docs, fs, os);
         CHECK_OP(os, nullptr);
         SAFE_POINT_EXT(msaObject != nullptr, os.setError("The alignment object is NULL!"), nullptr);
         newObjects << msaObject;
@@ -454,8 +454,7 @@ void LoadDocumentTask::loadDocument() {
     if (!renameList.isEmpty()) {
         renameObjects(loadedDocument.get(), renameList);
     }
-    bool useShallowCopy = loadedDocument->getDocumentFormat()->isObjectOpSupported(loadedDocument.get(), DocumentFormat::DocObjectOp_Remove, GObjectTypes::SEQUENCE);
-    Document* convertedDoc = DocumentUtils::createCopyRestructuredWithHints(loadedDocument.get(), stateInfo, useShallowCopy);
+    Document* convertedDoc = DocumentUtils::createCopyRestructuredWithHints(loadedDocument.get(), stateInfo);
     CHECK_OP(stateInfo, );
     if (convertedDoc != nullptr) {
         loadedDocument.reset(convertedDoc);

@@ -481,7 +481,7 @@ Task::ReportResult MuscleGObjectTask::report() {
         return ReportResult_Finished;
     }
     if (config.op == MuscleTaskOp_Align || config.op == MuscleTaskOp_Refine) {
-        MSAUtils::assignOriginalDataIds(muscleTask->inputMA, muscleTask->resultMA, stateInfo);
+        MsaUtils::assignOriginalDataIds(muscleTask->inputMA, muscleTask->resultMA, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
 
         QMap<qint64, QVector<U2MsaGap>> rowsGapModel;

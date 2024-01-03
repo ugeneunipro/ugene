@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class U2CORE_EXPORT MSAUtils : public QObject {
+class U2CORE_EXPORT MsaUtils : public QObject {
     Q_OBJECT
 public:
     static bool equalsIgnoreGaps(const MultipleAlignmentRow& row, int startPos, const QByteArray& pattern, int& alternateLen);
@@ -63,8 +63,11 @@ public:
     // checks that alignment is not empty and all packed sequence parts has equal length
     static bool checkPackedModelSymmetry(const MultipleAlignment& ali, U2OpStatus& ti);
 
-    static MultipleAlignmentObject* seqDocs2msaObj(QList<Document*> doc, const QVariantMap& hints, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw = false);
-    static MultipleAlignmentObject* seqObjs2msaObj(const QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os, bool shallowCopy = false, bool recheckAlphabetFromDataIfRaw = false);
+    static MultipleAlignmentObject* seqDocs2msaObj(const QList<Document*>& doc, const QVariantMap& hints, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw = false);
+    static MultipleAlignmentObject* convertSequenceObjectsToMsaObject(const QList<GObject*>& objects,
+                                                                      const QVariantMap& hints,
+                                                                      U2OpStatus& os,
+                                                                      bool recheckAlphabetFromDataIfRaw = false);
 
     /**
      * Assigns row & sequence ids to rows in 'newMsa' based in the info in 'origMsa'.

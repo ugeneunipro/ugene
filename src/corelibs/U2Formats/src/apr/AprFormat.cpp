@@ -22,8 +22,8 @@
 #include "AprFormat.h"
 
 #include <U2Core/IOAdapter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -227,7 +227,7 @@ void AprFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     CHECK_EXT(al->getAlphabet() != nullptr, os.setError(AprFormat::tr("Alphabet is unknown")), );
 
     const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
     CHECK_OP(os, );
     objects.append(obj);
 }

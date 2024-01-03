@@ -59,7 +59,7 @@ static bool maContainsPattern(const MultipleAlignmentObject* maObject, const QSt
         for (int j = 0; j < (mData->getLength() - searchStr.length() + 1); ++j) {
             char c = row->charAt(j);
             int alternateLength = 0;
-            if (c != U2Msa::GAP_CHAR && MSAUtils::equalsIgnoreGaps(row, j, searchStr, alternateLength)) {
+            if (c != U2Msa::GAP_CHAR && MsaUtils::equalsIgnoreGaps(row, j, searchStr, alternateLength)) {
                 return true;
             }
         }

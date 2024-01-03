@@ -32,7 +32,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -61,7 +61,6 @@ extern double QScore(const MultipleAlignment& maTest, const MultipleAlignment& m
 #define REGION_ATTR "region"
 #define STABLE_ATTR "stable"
 #define ENV_MUSCLE_N_THREADS "MUSCLE_N_THREADS"
-#define MACHINE_PATH "MACHINE"
 
 struct GTestBoolProperty {
     static bool get(QString attr, bool& value, const QDomElement& el) {
@@ -539,7 +538,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma1 = MsaImportUtils::createMsaObject(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if (ma1 == nullptr) {
@@ -582,7 +581,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma2 = MsaImportUtils::createMsaObject(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if (ma2 == nullptr) {
@@ -679,7 +678,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma1 = MsaImportUtils::createMsaObject(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if (ma1 == nullptr) {
@@ -722,7 +721,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma2 = MsaImportUtils::createMsaObject(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if (ma2 == nullptr) {

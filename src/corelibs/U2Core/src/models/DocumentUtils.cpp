@@ -226,11 +226,7 @@ void DocumentUtils::removeDocumentsContainigGObjectFromProject(GObject* obj) {
     }
 }
 
-QFile::Permissions DocumentUtils::getPermissions(Document* doc) {
-    return QFile(doc->getURLString()).permissions();
-}
-
-Document* DocumentUtils::createCopyRestructuredWithHints(Document* doc, U2OpStatus& os, bool shallowCopy) {
+Document* DocumentUtils::createCopyRestructuredWithHints(Document* doc, U2OpStatus& os) {
     Document* resultDoc = nullptr;
     QVariantMap hints = doc->getGHintsMap();
 
@@ -239,7 +235,7 @@ Document* DocumentUtils::createCopyRestructuredWithHints(Document* doc, U2OpStat
     }
 
     if (hints.value(DocumentReadingMode_SequenceAsAlignmentHint, false).toBool()) {
-        MultipleAlignmentObject* maObj = MSAUtils::seqObjs2msaObj(doc->getObjects(), hints, os, shallowCopy, true);
+        MultipleAlignmentObject* maObj = MsaUtils::convertSequenceObjectsToMsaObject(doc->getObjects(), hints, os, true);
         CHECK_OP(os, nullptr);
         CHECK(maObj != nullptr, resultDoc);
         QList<GObject*> objects;

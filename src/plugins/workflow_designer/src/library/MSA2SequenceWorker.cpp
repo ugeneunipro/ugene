@@ -73,7 +73,7 @@ Task* Alignment2SequenceWorker::tick() {
             return new FailTask(tr("empty input alignment"));
         }
         U2OpStatusImpl os;
-        QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(msa, os, true);
+        QList<DNASequence> sequenceList = MsaUtils::convertMsaToSequenceList(msa, os, true);
         CHECK_OP(os, new FailTask(os.getError()));
 
         QVariantMap channelContext = output->getContext();

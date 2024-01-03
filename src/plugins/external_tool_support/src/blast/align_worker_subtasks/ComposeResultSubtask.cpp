@@ -30,8 +30,8 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleChromatogramAlignmentImporter.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2AttributeUtils.h>
@@ -165,7 +165,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
     }
     resultMca->trim(false);  // just recalculates alignment len
 
-    mcaObject = MultipleChromatogramAlignmentImporter::createAlignment(stateInfo, storage->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, resultMca);
+    mcaObject = MsaImportUtils::createMcaObject(storage->getDbiRef(), resultMca, stateInfo, U2ObjectDbi::ROOT_FOLDER);
     mcaObject->setParent(this);
     CHECK_OP(stateInfo, );
 

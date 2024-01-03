@@ -235,9 +235,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/MaModificationInfo.h \
            src/util/MsaDbiUtils.h \
            src/util/MsaExportUtils.h \
+           src/util/MsaImportUtils.h \
            src/util/MsaRowUtils.h \
-           src/util/MultipleChromatogramAlignmentImporter.h \
-           src/util/MultipleSequenceAlignmentImporter.h \
            src/util/MultipleSequenceAlignmentWalker.h \
            src/util/PMatrixSerializeUtils.h \
            src/util/QObjectScopedPointer.h \
@@ -458,9 +457,8 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/MaModificationInfo.cpp \
            src/util/MsaDbiUtils.cpp \
            src/util/MsaExportUtils.cpp \
+           src/util/MsaImportUtils.cpp \
            src/util/MsaRowUtils.cpp \
-           src/util/MultipleChromatogramAlignmentImporter.cpp \
-           src/util/MultipleSequenceAlignmentImporter.cpp \
            src/util/MultipleSequenceAlignmentWalker.cpp \
            src/util/QVariantUtils.cpp \
            src/util/SequenceUtils.cpp \

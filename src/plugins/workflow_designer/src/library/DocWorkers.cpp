@@ -35,7 +35,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2AttributeUtils.h>
@@ -856,7 +856,7 @@ void MSAWriter::data2document(Document* doc, const QVariantMap& data, WorkflowCo
     }
 
     U2OpStatus2Log os;
-    MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), msa, os);
+    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(doc->getDbiRef(), msa, os);
     CHECK_OP(os, );
 
     doc->addObject(obj);

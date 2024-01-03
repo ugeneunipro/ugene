@@ -30,7 +30,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2AssemblyDbi.h>
@@ -172,7 +172,7 @@ SharedDbiDataHandler DbiDataStorage::putAlignment(const MultipleAlignment& al) {
 
     U2OpStatus2Log os;
     MultipleAlignment copiedAlignment = al->getCopy();
-    QScopedPointer<MultipleAlignmentObject> obj(MultipleSequenceAlignmentImporter::createAlignment(dbiHandle->getDbiRef(), copiedAlignment, os));
+    QScopedPointer<MultipleAlignmentObject> obj(MsaImportUtils::createMsaObject(dbiHandle->getDbiRef(), copiedAlignment, os));
     CHECK_OP(os, SharedDbiDataHandler());
 
     DbiConnection* connection = this->getConnection(dbiHandle->getDbiRef(), os);
