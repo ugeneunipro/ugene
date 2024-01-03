@@ -27,8 +27,7 @@
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaExportUtils.h>
-#include <U2Core/MultipleChromatogramAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2AttributeUtils.h>
@@ -1108,7 +1107,7 @@ void MultipleAlignmentObject::deleteColumnsWithGaps(U2OpStatus& os, int required
     }
 
     requiredGapsCount = requiredGapsCount > 0 ? requiredGapsCount : gapModel.size();
-    QList<U2Region> regionsToDelete = MSAUtils::getColumnsWithGaps(gapModel, getRows(), getLength(), requiredGapsCount);
+    QList<U2Region> regionsToDelete = MsaUtils::getColumnsWithGaps(gapModel, getRows(), getLength(), requiredGapsCount);
     CHECK(!regionsToDelete.isEmpty(), );
     CHECK(regionsToDelete.first().length != getLength(), );
 
@@ -1145,8 +1144,8 @@ MultipleAlignmentObject* MultipleAlignmentObject::clone(const U2DbiRef& dstDbiRe
     MultipleAlignment msa = getAlignment()->getCopy();
     bool isMca = type == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     MultipleAlignmentObject* clonedObject = isMca
-                                                ? MultipleChromatogramAlignmentImporter::createAlignment(os, dstDbiRef, dstFolder, msa)
-                                                : MultipleSequenceAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
+                                                ? MsaImportUtils::createMcaObject(dstDbiRef, msa, os, dstFolder)
+                                                : MsaImportUtils::createMsaObject(dstDbiRef, msa, os, dstFolder);
     CHECK_OP(os, nullptr);
 
     QScopedPointer<MultipleAlignmentObject> p(clonedObject);

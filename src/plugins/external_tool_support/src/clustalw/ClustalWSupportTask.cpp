@@ -140,7 +140,7 @@ void ClustalWSupportTask::prepare() {
         return;
     }
 
-    saveTemporaryDocumentTask = new SaveAlignmentTask(MSAUtils::createCopyWithIndexedRowNames(inputMsa), url, BaseDocumentFormats::CLUSTAL_ALN);
+    saveTemporaryDocumentTask = new SaveAlignmentTask(MsaUtils::createCopyWithIndexedRowNames(inputMsa), url, BaseDocumentFormats::CLUSTAL_ALN);
     saveTemporaryDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveTemporaryDocumentTask);
 }
@@ -227,7 +227,7 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(newMAligmentObject != nullptr, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
         resultMA = newMAligmentObject->getAlignment()->getCopy();
-        bool renamed = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
+        bool renamed = MsaUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT(renamed, "Failed to restore initial row names!", res);
 
         // If an alignment object has been specified, save the result to it
@@ -237,7 +237,7 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
                 auto alObj = dynamic_cast<MultipleAlignmentObject*>(obj);
                 SAFE_POINT(alObj != nullptr, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", res);
 
-                MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
+                MsaUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
 
                 QMap<qint64, QVector<U2MsaGap>> rowsGapModel;

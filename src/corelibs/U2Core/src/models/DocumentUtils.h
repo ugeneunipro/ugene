@@ -132,13 +132,11 @@ public:
 
     static void removeDocumentsContainigGObjectFromProject(GObject* obj);
 
-    static QFile::Permissions getPermissions(Document* doc);
-
     /** Creates new document that contains data from original one restructured to new form according to document hints
         For example: combines all sequences to alignment, merge sequences, etc
         Return NULL if no restructuring was made
         */
-    static Document* createCopyRestructuredWithHints(Document* doc, U2OpStatus& os, bool shallowCopy = false);
+    static Document* createCopyRestructuredWithHints(Document* doc, U2OpStatus& os);
 };
 
 }  // namespace U2

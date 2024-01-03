@@ -164,7 +164,7 @@ void Kalign3SupportTask::prepare() {
         return;
     }
 
-    saveTemporaryDocumentTask = new SaveMSA2SequencesTask(MSAUtils::createCopyWithIndexedRowNames(inputMsa), url, false, BaseDocumentFormats::FASTA);
+    saveTemporaryDocumentTask = new SaveMSA2SequencesTask(MsaUtils::createCopyWithIndexedRowNames(inputMsa), url, false, BaseDocumentFormats::FASTA);
     saveTemporaryDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveTemporaryDocumentTask);
 }
@@ -258,7 +258,7 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(newMsaObject != nullptr, "Failed to cast object from temporary document to alignment!", res);
 
         resultMA = newMsaObject->getAlignment()->getCopy();
-        bool renamed = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
+        bool renamed = MsaUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT(renamed, "Failed to restore initial row names!", res);
 
         // If an alignment object has been specified, save the result to it.
@@ -271,7 +271,7 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
             auto targetMsaObject = dynamic_cast<MultipleAlignmentObject*>(obj);
             SAFE_POINT(targetMsaObject != nullptr, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying Kalign results!", res);
 
-            MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
+            MsaUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
             CHECK_OP(stateInfo, res);
 
             QMap<qint64, QVector<U2MsaGap>> rowsGapModel;

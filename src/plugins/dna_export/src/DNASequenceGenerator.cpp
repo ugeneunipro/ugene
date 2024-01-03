@@ -34,7 +34,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -320,7 +320,7 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc(Document* source) {
         QByteArray seqContent = con.dbi->getSequenceDbi()->getSequenceData(seqs[sequenceIndex].id, U2_REGION_MAX, stateInfo);
         msa->addRow(seqName, seqContent, sequenceIndex);
     }
-    MultipleAlignmentObject* alnObject = MultipleSequenceAlignmentImporter::createAlignment(source->getDbiRef(), msa, stateInfo);
+    MultipleAlignmentObject* alnObject = MsaImportUtils::createMsaObject(source->getDbiRef(), msa, stateInfo);
     CHECK_OP(stateInfo, );
     source->addObject(alnObject);
 }

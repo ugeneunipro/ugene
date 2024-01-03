@@ -31,8 +31,8 @@
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaExportUtils.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -229,7 +229,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         msa->addRow(tagsRegistry->parseStringWithTags(ptrnSubseqTemplate, expansionInfo), curResultPtrnSubseq);
         CHECK_OP(stateInfo, tr("Failed to add a pattern subsequence row."));
 
-        MultipleAlignmentObject* docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), msa, stateInfo);
+        MultipleAlignmentObject* docObject = MsaImportUtils::createMsaObject(alignmentDoc->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, tr("Failed to create an alignment."));
         alignmentDoc->addObject(docObject);
         currentProject->addDocument(alignmentDoc);
@@ -314,7 +314,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     msa->addRow(refSequence->visualName, refSequenceData);
     msa->addRow(ptrnSequence->visualName, ptrnSequenceData);
 
-    MultipleAlignmentObject* docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), msa, stateInfo);
+    MultipleAlignmentObject* docObject = MsaImportUtils::createMsaObject(alignmentDoc->getDbiRef(), msa, stateInfo);
     CHECK_OP(stateInfo, tr("Failed to create an alignment."));
     alignmentDoc->addObject(docObject);
 

@@ -35,7 +35,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TextUtils.h>
@@ -64,7 +64,7 @@ void ExportAlignmentTask::run() {
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 
-    MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), ma, stateInfo);
+    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(exportedDocument->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     exportedDocument->addObject(obj);
@@ -98,7 +98,7 @@ void ExportMSA2SequencesTask::run() {
     SAFE_POINT_NN(iof, );
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
-    QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(ma, stateInfo, trimLeadingAndTrailingGaps);
+    QList<DNASequence> sequenceList = MsaUtils::convertMsaToSequenceList(ma, stateInfo, trimLeadingAndTrailingGaps);
     CHECK_OP(stateInfo, );
     QSet<QString> usedNames;
     for (DNASequence& sequence : sequenceList) {
@@ -146,7 +146,7 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleAlignment& msa,
     SAFE_POINT_EXT(aminoTranslation == nullptr || aminoTranslation->isThree2One(), setError(QString("Invalid amino translation: %1").arg(aminoTranslation->getTranslationName())), );
     setVerboseLogMode(true);
 
-    sequenceList = MSAUtils::convertMsaToSequenceList(msa, stateInfo, trimLeadingAndTrailingGaps, rowIds.toSet(), columnRegion);
+    sequenceList = MsaUtils::convertMsaToSequenceList(msa, stateInfo, trimLeadingAndTrailingGaps, rowIds.toSet(), columnRegion);
     CHECK_OP(stateInfo, )
 }
 
@@ -182,10 +182,10 @@ void ExportMSA2MSATask::run() {
             resultSequenceList << sequence;
         }
     }
-    MultipleAlignment aminoMa = MSAUtils::seq2ma(resultSequenceList, stateInfo);
+    MultipleAlignment aminoMa = MsaUtils::seq2ma(resultSequenceList, stateInfo);
     CHECK_OP(stateInfo, );
 
-    MultipleAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), aminoMa, stateInfo);
+    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(exportedDocument->getDbiRef(), aminoMa, stateInfo);
     CHECK_OP(stateInfo, );
 
     exportedDocument->addObject(obj);

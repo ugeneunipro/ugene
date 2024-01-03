@@ -430,7 +430,7 @@ void ExportProjectViewItemsContoller::sl_saveSequencesAsAlignment() {
         return;
     }
 
-    MultipleAlignment ma = MSAUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
+    MultipleAlignment ma = MsaUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
     if (os.hasError()) {
         QMessageBox::critical(nullptr, L10N::errorTitle(), os.getError());
         return;

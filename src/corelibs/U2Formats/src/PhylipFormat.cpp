@@ -30,8 +30,8 @@
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -102,14 +102,14 @@ void PhylipFormat::storeTextDocument(IOAdapterWriter& writer, Document* doc, U2O
 MultipleAlignmentObject* PhylipFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
     MultipleAlignment msa = parse(reader, os);
     CHECK_OP(os, nullptr);
-    MSAUtils::checkPackedModelSymmetry(msa, os);
+    MsaUtils::checkPackedModelSymmetry(msa, os);
     CHECK_OP(os, nullptr);
 
     U2AlphabetUtils::assignAlphabet(msa);
     CHECK_EXT(msa->getAlphabet() != nullptr, os.setError(tr("Alphabet is unknown")), nullptr);
 
     QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    auto msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
+    auto msaObject = MsaImportUtils::createMsaObject(dbiRef, msa, os, folder);
     CHECK_OP(os, nullptr);
     return msaObject;
 }

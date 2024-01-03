@@ -128,7 +128,7 @@ void MAFFTSupportTask::prepare() {
         return;
     }
 
-    saveTemporaryDocumentTask = new SaveMSA2SequencesTask(MSAUtils::createCopyWithIndexedRowNames(inputMsa), url, false, BaseDocumentFormats::FASTA);
+    saveTemporaryDocumentTask = new SaveMSA2SequencesTask(MsaUtils::createCopyWithIndexedRowNames(inputMsa), url, false, BaseDocumentFormats::FASTA);
     saveTemporaryDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveTemporaryDocumentTask);
 }
@@ -195,12 +195,12 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(tmpDoc->getObjects().length() != 0, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
         // Get the result alignment
-        resultMA = MSAUtils::seq2ma(tmpDoc->getObjects(), stateInfo);
+        resultMA = MsaUtils::seq2ma(tmpDoc->getObjects(), stateInfo);
         if (hasError()) {
             emit si_stateChanged();  // TODO: task can't emit this signal!
             return res;
         }
-        bool renamed = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
+        bool renamed = MsaUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT(renamed, "Failed to restore initial row names!", res);
 
         // If an alignment object has been specified, save the result to it
@@ -210,7 +210,7 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
                 auto alObj = dynamic_cast<MultipleAlignmentObject*>(obj);
                 SAFE_POINT(alObj != nullptr, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying MAFFT results!", res);
 
-                MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
+                MsaUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
 
                 QMap<qint64, QVector<U2MsaGap>> rowsGapModel;

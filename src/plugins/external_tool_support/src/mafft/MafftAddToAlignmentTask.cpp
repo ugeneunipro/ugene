@@ -93,7 +93,7 @@ static QString generateTmpFileUrl(const QString& filePathAndPattern) {
 void MafftAddToAlignmentTask::prepare() {
     algoLog.info(tr("Align sequences to alignment with MAFFT started"));
 
-    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getRowCount());
+    MsaUtils::removeColumnsWithGaps(inputMsa, inputMsa->getRowCount());
 
     tmpDirUrl = ExternalToolSupportUtils::createTmpDir("add_to_alignment", stateInfo);
 
@@ -230,7 +230,7 @@ void MafftAddToAlignmentTask::run() {
             sequenceObject->setGObjectName(uniqueIdsToNames[sequenceObject->getGObjectName()]);
             SAFE_POINT(sequenceObject != nullptr, "U2SequenceObject is null", );
 
-            U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
+            U2MsaRow row = MsaUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
 
             rowWasAdded = row.length != 0;
             if (row.length - MsaRowUtils::getGapsLength(row.gaps) <= UNBREAKABLE_SEQUENCE_LENGTH_LIMIT) {
@@ -251,7 +251,7 @@ void MafftAddToAlignmentTask::run() {
             }
         } else {
             // maybe need add leading gaps to original rows
-            U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
+            U2MsaRow row = MsaUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
             qint64 rowId = uniqueNamesToIds.value(sequenceObject->getSequenceName(), -1);
             if (rowId == -1) {
                 stateInfo.setError(tr("Row for updating doesn't found"));

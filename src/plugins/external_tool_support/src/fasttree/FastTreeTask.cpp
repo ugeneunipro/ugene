@@ -29,8 +29,8 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -88,7 +88,7 @@ void PrepareFastTreeWorkDirTask::run() {
     DocumentFormat* documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
 
     QScopedPointer<Document> document(documentFormat->createNewLoadedDocument(ioAdapterFactory, alignmentFilePath, stateInfo));
-    auto* msaObject = MultipleSequenceAlignmentImporter::createAlignment(document->getDbiRef(), context->msa, stateInfo);
+    auto* msaObject = MsaImportUtils::createMsaObject(document->getDbiRef(), context->msa, stateInfo);
     CHECK_OP(stateInfo, );
 
     document->addObject(msaObject);

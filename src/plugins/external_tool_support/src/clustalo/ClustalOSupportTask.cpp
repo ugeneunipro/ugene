@@ -122,7 +122,7 @@ void ClustalOSupportTask::prepare() {
         return;
     }
 
-    MultipleAlignment copiedIndexedMsa = MSAUtils::createCopyWithIndexedRowNames(inputMsa, INDEX_NAME_PREFIX);
+    MultipleAlignment copiedIndexedMsa = MsaUtils::createCopyWithIndexedRowNames(inputMsa, INDEX_NAME_PREFIX);
     saveTemporaryDocumentTask = new SaveAlignmentTask(copiedIndexedMsa, inputMsaTmpFileUrl, BaseDocumentFormats::CLUSTAL_ALN);
     saveTemporaryDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveTemporaryDocumentTask);
@@ -200,7 +200,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(tmpMsaObject != nullptr, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
         resultMsa = tmpMsaObject->getAlignment()->getCopy();
-        bool allRowsRestored = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMsa, inputMsa->getRowNames(), INDEX_NAME_PREFIX);
+        bool allRowsRestored = MsaUtils::restoreOriginalRowNamesFromIndexedNames(resultMsa, inputMsa->getRowNames(), INDEX_NAME_PREFIX);
         SAFE_POINT(allRowsRestored, "Failed to restore initial row names!", res);
 
         // If an alignment object has been specified, save the result to it
@@ -212,7 +212,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
 
                 QList<int> removedRowIndexes;
                 QList<int> addedRowIndexes;
-                MSAUtils::assignOriginalDataIds(inputMsa, resultMsa, removedRowIndexes, addedRowIndexes);
+                MsaUtils::assignOriginalDataIds(inputMsa, resultMsa, removedRowIndexes, addedRowIndexes);
 
                 // Save data to the database
                 {
@@ -237,7 +237,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
                             int rowIndex = addedRowIndexes[i];
                             addedRows << resultMsa->getRow(rowIndex);
                         }
-                        MSAUtils::addRowsToMsa(objRef.entityRef, addedRows, os);
+                        MsaUtils::addRowsToMsa(objRef.entityRef, addedRows, os);
                         CHECK_EXT(!os.hasError(), stateInfo.setError("Failed to add new rows to the alignment!"), res);
 
                         // Save rowIds & row-sequence-ids back to the resultMsaModel.

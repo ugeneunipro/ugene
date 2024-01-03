@@ -33,7 +33,7 @@
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -372,7 +372,7 @@ MultipleAlignmentObject* BlastAlignToReferenceTask::createPairwiseAlignment(
     }
     pairwiseMsa->addRow("read", translatedReadSequence, readGaps, os);
     CHECK_OP(os, nullptr);
-    return MultipleSequenceAlignmentImporter::createAlignment(dbiRef, pairwiseMsa, os);
+    return MsaImportUtils::createMsaObject(dbiRef, pairwiseMsa, os);
 }
 
 const QList<AlignToReferenceResult>& BlastAlignToReferenceTask::getAlignmentResults() const {

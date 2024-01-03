@@ -38,7 +38,7 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2AlphabetUtils.h>

@@ -67,8 +67,8 @@ static void createMsaRowsFromResultSequenceList(U2OpStatus& os,
     U2DbiRef dbiRef = msaObject->getEntityRef().dbiRef;
     for (const DNASequence& sequenceObject : qAsConst(inputSequenceList)) {
         CHECK_OP(os, );
-        QString rowName = MSAUtils::rollMsaRowName(sequenceObject.getName(), usedRowNames);
-        U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, dbiRef, os);
+        QString rowName = MsaUtils::rollMsaRowName(sequenceObject.getName(), usedRowNames);
+        U2MsaRow row = MsaUtils::copyRowFromSequence(sequenceObject, dbiRef, os);
         CHECK_OP(os, );
         if (rowName != sequenceObject.getName()) {
             U2EntityRef rowSequenceRef(dbiRef, row.sequenceId);

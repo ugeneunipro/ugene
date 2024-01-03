@@ -47,7 +47,7 @@ IMPLEMENT_TEST(MsaUtilsUnitTests, one_name_with_spaces) {
     ma2->addRow("ziss3", "GG-GGGG-G", -1);
     ma2->addRow("riss4", "TTT-TTTT", -1);
 
-    MSAUtils::assignOriginalDataIds(ma1, ma2, os);
+    MsaUtils::assignOriginalDataIds(ma1, ma2, os);
     CHECK_NO_ERROR(os);
 }
 
@@ -68,7 +68,7 @@ IMPLEMENT_TEST(MsaUtilsUnitTests, two_names_with_spaces) {
     ma2->addRow("ziss3", "GG-GGGG-G", -1);
     ma2->addRow("riss_4", "TTT-TTTT", -1);
 
-    MSAUtils::assignOriginalDataIds(ma1, ma2, os);
+    MsaUtils::assignOriginalDataIds(ma1, ma2, os);
     CHECK_NO_ERROR(os);
 }
 
@@ -89,7 +89,7 @@ IMPLEMENT_TEST(MsaUtilsUnitTests, all_names_with_spaces) {
     ma2->addRow("ziss_3", "GG-GGGG-G", -1);
     ma2->addRow("riss_4", "TTT-TTTT", -1);
 
-    MSAUtils::assignOriginalDataIds(ma1, ma2, os);
+    MsaUtils::assignOriginalDataIds(ma1, ma2, os);
     CHECK_NO_ERROR(os);
 }
 

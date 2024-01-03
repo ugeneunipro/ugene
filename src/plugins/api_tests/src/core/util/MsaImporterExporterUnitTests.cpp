@@ -24,7 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MsaExportUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -71,7 +71,7 @@ IMPLEMENT_TEST(MsaImporterExporterUnitTests, importExportAlignment) {
     al->addRow("Second row", secondSequence);
 
     // Import the alignment
-    QScopedPointer<MultipleAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(dbiRef, al, os));
+    QScopedPointer<MultipleAlignmentObject> msaObj(MsaImportUtils::createMsaObject(dbiRef, al, os));
     CHECK_NO_ERROR(os);
 
     // Export the alignment

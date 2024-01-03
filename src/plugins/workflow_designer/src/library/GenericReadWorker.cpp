@@ -27,13 +27,12 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -257,9 +256,9 @@ void LoadMSATask::run() {
             results.append(res);
         }
     } else {
-        MultipleAlignment ma = MSAUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
+        MultipleAlignment ma = MsaUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
 
-        QScopedPointer<MultipleAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), ma, stateInfo));
+        QScopedPointer<MultipleAlignmentObject> msaObj(MsaImportUtils::createMsaObject(storage->getDbiRef(), ma, stateInfo));
         CHECK_OP(stateInfo, );
 
         SharedDbiDataHandler handler = storage->getDataHandler(msaObj->getEntityRef());
@@ -396,7 +395,7 @@ void LoadSeqTask::run() {
             if (msaObject == nullptr) {
                 continue;
             }
-            QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(msaObject->getAlignment(), os);
+            QList<DNASequence> sequenceList = MsaUtils::convertMsaToSequenceList(msaObject->getAlignment(), os);
             CHECK_OP(os, )
             for (const DNASequence& sequence : qAsConst(sequenceList)) {
                 if (!selector->matches(sequence)) {

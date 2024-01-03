@@ -28,7 +28,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -145,9 +145,9 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& task
     SAFE_POINT(msaObj != nullptr, "NULL MultipleSequenceAlignmentObject!", );
 
     U2OpStatus2Log os;
-    MultipleAlignment al = MSAUtils::createCopyWithIndexedRowNames(msaObjectPointer->getAlignment());
+    MultipleAlignment al = MsaUtils::createCopyWithIndexedRowNames(msaObjectPointer->getAlignment());
 
-    MultipleAlignmentObject* msaObject = MultipleSequenceAlignmentImporter::createAlignment(msaObjectPointer->getEntityRef().dbiRef, al, os);
+    MultipleAlignmentObject* msaObject = MsaImportUtils::createMsaObject(msaObjectPointer->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os, );
 
     SimpleInOutWorkflowTaskConfig sioConf;
@@ -188,7 +188,7 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
 
     MultipleAlignment resultMsa = getResult();
     const MultipleAlignment& originalMsa = msaObjectPointer->getAlignment();
-    bool isAllRowsRestored = MSAUtils::restoreOriginalRowProperties(resultMsa, originalMsa);
+    bool isAllRowsRestored = MsaUtils::restoreOriginalRowProperties(resultMsa, originalMsa);
     if (!isAllRowsRestored) {
         setError(tr("MSA has incompatible changes during the alignment. Ignoring the alignment result: '%1'").arg(docName));
         return ReportResult_Finished;

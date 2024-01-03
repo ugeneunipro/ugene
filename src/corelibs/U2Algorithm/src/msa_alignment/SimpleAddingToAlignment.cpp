@@ -50,7 +50,7 @@ SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignme
 void SimpleAddToAlignmentTask::prepare() {
     algoLog.info(tr("Align sequences to alignment with UGENE started"));
 
-    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getRowCount());
+    MsaUtils::removeColumnsWithGaps(inputMsa, inputMsa->getRowCount());
 
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
     foreach (const U2EntityRef& sequence, settings.addedSequencesRefs) {
@@ -105,7 +105,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     foreach (const U2EntityRef& sequence, settings.addedSequencesRefs) {
         QString seqName = namesIterator.peekNext();
         U2SequenceObject seqObject(seqName, sequence);
-        U2MsaRow row = MSAUtils::copyRowFromSequence(&seqObject, settings.msaRef.dbiRef, stateInfo);
+        U2MsaRow row = MsaUtils::copyRowFromSequence(&seqObject, settings.msaRef.dbiRef, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
 
         if (row.length != 0) {
@@ -177,7 +177,7 @@ void BestPositionFindTask::run() {
             stateInfo.setProgress(100 * p / iterationsNum);
             char c = row->charAt(p);
             int selLength = 0;
-            int patternSimilarity = MSAUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
+            int patternSimilarity = MsaUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
             if (U2Msa::GAP_CHAR != c && patternSimilarity > similarity) {
                 similarity = patternSimilarity;
                 bestPosition = p;
@@ -190,7 +190,7 @@ void BestPositionFindTask::run() {
             for (int p = 0; p < (aliLen - sequence.length() + 1); p++) {
                 char c = row->charAt(p);
                 int selLength = 0;
-                int patternSimilarity = MSAUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
+                int patternSimilarity = MsaUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
                 if (U2Msa::GAP_CHAR != c && patternSimilarity > similarity) {
                     similarity = patternSimilarity;
                     bestPosition = p;
