@@ -22,7 +22,7 @@
 #pragma once
 
 #include <U2Core/BioStruct3D.h>
-#include <U2Core/DNAChromatogram.h>
+#include <U2Core/Chromatogram.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/PFMatrix.h>
 #include <U2Core/PWMatrix.h>
@@ -46,12 +46,12 @@ public:
     /**
      * Returns the binary representation of @chroma.
      */
-    static QByteArray serialize(const DNAChromatogram& chroma);
+    static QByteArray serialize(const Chromatogram& chroma);
 
     /**
      * Returns DNAChromatogram extracted from @binary.
      */
-    static DNAChromatogram deserialize(const QByteArray& binary, U2OpStatus& os);
+    static Chromatogram deserialize(const QByteArray& binary, U2OpStatus& os);
 };
 
 /**

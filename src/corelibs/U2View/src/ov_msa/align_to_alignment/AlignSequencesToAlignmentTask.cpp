@@ -82,7 +82,7 @@ void SequenceObjectsExtractor::extractSequencesFromObjects(const QList<GObject*>
 
             const QVector<MultipleAlignmentRow>& msaRows = curObj->getAlignment()->getRows();
             for (const MultipleAlignmentRow& row : qAsConst(msaRows)) {
-                U2EntityRef seqRef(curObj->getEntityRef().dbiRef, row->getRowDbInfo().sequenceId);
+                U2EntityRef seqRef(curObj->getEntityRef().dbiRef, row->getSequenceId());
                 sequenceRefs << seqRef;
                 sequenceNames << row->getName();
             }

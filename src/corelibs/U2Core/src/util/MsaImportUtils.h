@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/DNAChromatogramObject.h>
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -70,7 +70,7 @@ private:
     static void importMcaInfo(U2OpStatus& os, const DbiConnection& connection, const U2DataId& mcaId, const MultipleAlignment& mca);
     static QList<MsaDbRowSnapshot> importRowChildObjects(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleAlignment& mca);
     static QList<U2MsaRow> importMcaRows(U2OpStatus& os, const DbiConnection& connection, U2Msa& dbMca, const QList<MsaDbRowSnapshot>& snapshots);
-    static U2Chromatogram importChromatogram(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const DNAChromatogram& chromatogram);
+    static U2Chromatogram importChromatogram(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const Chromatogram& chromatogram);
     static U2Sequence importReferenceSequence(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const DNASequence& sequence, const U2AlphabetId& alphabetId);
     static void importRowAdditionalInfo(U2OpStatus& os, const DbiConnection& connection, const U2Chromatogram& chromatogram, const QVariantMap& additionalInfo);
     static void createRelation(U2OpStatus& os, const DbiConnection& connection, const U2Sequence& sequence, const U2DataId& chromatogramId);

@@ -41,7 +41,7 @@ MultipleAlignmentRow::MultipleAlignmentRow(MultipleAlignmentRowData* _maRowData)
 }
 
 MultipleAlignmentRow::MultipleAlignmentRow(const U2MsaRow& rowInDb,
-                                           const DNAChromatogram& chromatogram,
+                                           const Chromatogram& chromatogram,
                                            const DNASequence& sequence,
                                            const QVector<U2MsaGap>& gaps,
                                            MultipleAlignmentData* maData)
@@ -57,7 +57,7 @@ MultipleAlignmentRow::MultipleAlignmentRow(const U2MsaRow& rowInDb,
 
 MultipleAlignmentRow::MultipleAlignmentRow(const U2MsaRow& rowInDb,
                                            const QString& rowName,
-                                           const DNAChromatogram& chromatogram,
+                                           const Chromatogram& chromatogram,
                                            const QByteArray& rawData,
                                            MultipleAlignmentData* maData)
     : maRowData(new MultipleAlignmentRowData(rowInDb, rowName, chromatogram, rawData, maData)) {
@@ -96,7 +96,7 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(MultipleAlignmentData* _align
 }
 
 MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
-                                                   const DNAChromatogram& _chromatogram,
+                                                   const Chromatogram& _chromatogram,
                                                    const DNASequence& _sequence,
                                                    const QVector<U2MsaGap>& _gaps,
                                                    MultipleAlignmentData* _alignment)
@@ -111,7 +111,7 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
 
 MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
                                                    const QString& _rowName,
-                                                   const DNAChromatogram& _chromatogram,
+                                                   const Chromatogram& _chromatogram,
                                                    const QByteArray& rawData,
                                                    MultipleAlignmentData* _alignment)
     : chromatogram(_chromatogram),
@@ -241,7 +241,7 @@ QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, b
     return bytes;
 }
 
-const DNAChromatogram& MultipleAlignmentRowData::getChromatogram() const {
+const Chromatogram& MultipleAlignmentRowData::getChromatogram() const {
     return chromatogram;
 }
 
@@ -277,6 +277,10 @@ U2MsaRow MultipleAlignmentRowData::getRowDbInfo() const {
     return row;
 }
 
+const U2DataId& MultipleAlignmentRowData::getSequenceId() const {
+    return initialRowInDb.sequenceId;
+}
+
 void MultipleAlignmentRowData::setRowDbInfo(const U2MsaRow& dbRow) {
     invalidateGappedCache();
     initialRowInDb = dbRow;
@@ -302,7 +306,7 @@ void MultipleAlignmentRowData::removeTrailingGaps() {
     MsaRowUtils::removeTrailingGapsFromModel(sequence.length(), gaps);
 }
 
-DNAChromatogram MultipleAlignmentRowData::getGappedChromatogram() const {
+Chromatogram MultipleAlignmentRowData::getGappedChromatogram() const {
     return ChromatogramUtils::getGappedChromatogram(chromatogram, gaps);
 }
 
@@ -418,7 +422,7 @@ void MultipleAlignmentRowData::mergeConsecutiveGaps() {
     MsaRowUtils::mergeConsecutiveGaps(gaps);
 }
 
-void MultipleAlignmentRowData::setRowContent(const DNAChromatogram& newChromatogram, const DNASequence& newSequence, const QVector<U2MsaGap>& newGapModel, U2OpStatus& os) {
+void MultipleAlignmentRowData::setRowContent(const Chromatogram& newChromatogram, const DNASequence& newSequence, const QVector<U2MsaGap>& newGapModel, U2OpStatus& os) {
     SAFE_POINT_EXT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), os.setError("The sequence must be without gaps"), );
     chromatogram = newChromatogram;
     sequence = newSequence;
@@ -434,7 +438,7 @@ void MultipleAlignmentRowData::setRowContent(const DNASequence& newSequence, con
     SAFE_POINT_EXT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), os.setError("The sequence must be without gaps"), );
     invalidateGappedCache();
     sequence = newSequence;
-    chromatogram = DNAChromatogram();  // Clear chromatogram.
+    chromatogram = Chromatogram();  // Clear chromatogram.
     setGapModel(newGapModel);
 }
 
@@ -450,7 +454,7 @@ void MultipleAlignmentRowData::setRowContent(const QByteArray& bytes, int offset
     addOffsetToGapModel(newGapsModel, offset);
 
     sequence = newSequence;
-    chromatogram = DNAChromatogram();  // Clear chromatogram.
+    chromatogram = Chromatogram();  // Clear chromatogram.
     gaps = newGapsModel;
     removeTrailingGaps();
 }

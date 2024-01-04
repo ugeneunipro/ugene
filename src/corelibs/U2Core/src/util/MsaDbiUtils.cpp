@@ -516,20 +516,6 @@ void MsaDbiUtils::calculateGapModelAfterRemove(QVector<U2MsaGap>& gapModel, qint
     gapModel = newGapModel;
 }
 
-qint64 MsaDbiUtils::calculateGapsLength(const QVector<U2MsaGap>& gapModel) {
-    qint64 length = 0;
-    foreach (U2MsaGap elt, gapModel) {
-        length += elt.length;
-    }
-    return length;
-}
-
-qint64 MsaDbiUtils::calculateRowLength(const U2MsaRow& row) {
-    qint64 seqLength = row.gend - row.gstart;
-    qint64 gapsLength = calculateGapsLength(row.gaps);
-    return seqLength + gapsLength;
-}
-
 void MsaDbiUtils::mergeConsecutiveGaps(QVector<U2MsaGap>& gapModel) {
     QVector<U2MsaGap> newGapModel;
     if (gapModel.isEmpty()) {
@@ -771,7 +757,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleAlignment& 
             CHECK_OP(os, );
 
             if (!newRow.chromatogramId.isEmpty()) {
-                const DNAChromatogram& chromatogram = row->getChromatogram();
+                const Chromatogram& chromatogram = row->getChromatogram();
                 U2EntityRef chromatogramRef(msaRef.dbiRef, newRow.chromatogramId);
                 ChromatogramUtils::updateChromatogramData(os, msaRef.entityId, chromatogramRef, chromatogram);
                 CHECK_OP(os, );
@@ -817,7 +803,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleAlignment& 
 
             // Import the chromatogram.
             U2EntityRef chromatogramRef;
-            const DNAChromatogram& chromatogram = alRow->getChromatogram();
+            const Chromatogram& chromatogram = alRow->getChromatogram();
             if (msaObj.type == U2Type::Mca) {
                 chromatogramRef = ChromatogramUtils::import(os, con.dbi->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, chromatogram);
                 CHECK_OP(os, );
@@ -869,11 +855,11 @@ void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& row
     CHECK_OP(os, );
 
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(msaDbi != nullptr, "NULL Msa Dbi!", );
+    SAFE_POINT_NN(msaDbi, );
 
     // Get the MSA properties
-    const U2Msa msaObj = msaDbi->getMsaObject(msaRef.entityId, os);
-    const qint64 alLength = msaObj.length;
+    U2Msa msaObj = msaDbi->getMsaObject(msaRef.entityId, os);
+    qint64 alLength = msaObj.length;
 
     // Validate the position
     if (pos < 0 || pos > alLength) {
@@ -891,10 +877,9 @@ void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& row
 
     // Insert gaps into rows
     QList<U2MsaRow> rows;
-    foreach (qint64 rowId, rowIds) {
+    for (qint64 rowId : qAsConst(rowIds)) {
         U2MsaRow row = msaDbi->getRow(msaRef.entityId, rowId, os);
         CHECK_OP(os, );
-
         rows.append(row);
     }
 
@@ -988,7 +973,7 @@ void MsaDbiUtils::removeRegion(const U2EntityRef& msaRef, const QList<qint64>& r
             MaDbiUtils::getStartAndEndSequencePositions(seqBefore, gapsBefore, pos, count, startPosInSeq, endPosInSeq);
 
             U2EntityRef chromatogramRef(msaRef.dbiRef, row.chromatogramId);
-            DNAChromatogram chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
+            Chromatogram chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
             SAFE_POINT_OP(os, );
             ChromatogramUtils::removeBaseCalls(os, chromatogram, (int)startPosInSeq, (int)endPosInSeq);
             SAFE_POINT_OP(os, );
@@ -1039,7 +1024,7 @@ void MsaDbiUtils::replaceCharactersInRow(const U2EntityRef& msaRef, qint64 rowId
             MaDbiUtils::getStartAndEndSequencePositions(sequence, row.gaps, pos, 1, posInSeq, endPosInSeq);
             if (posInSeq < 0 || posInSeq >= endPosInSeq) {
                 U2EntityRef chromatogramRef(msaRef.dbiRef, row.chromatogramId);
-                DNAChromatogram chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
+                Chromatogram chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
                 ChromatogramUtils::insertBase(chromatogram, (int)posInSeq, row.gaps, (int)pos);
                 CHECK_OP(os, );
                 ChromatogramUtils::updateChromatogramData(os, msaRef.entityId, chromatogramRef, chromatogram);
@@ -1192,7 +1177,7 @@ void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64>& rowIds, c
         if (!isRowLengthChanged) {
             continue;  // do not touch this column at all.
         }
-        U2DataId sequenceId = row->getRowDbInfo().sequenceId;
+        const U2DataId& sequenceId = row->getSequenceId();
         SAFE_POINT(!sequenceId.isEmpty(), "Empty sequence ID!", );
 
         // Calculate the modified row.
@@ -1290,26 +1275,12 @@ void MsaDbiUtils::removeRow(const U2EntityRef& msaRef, qint64 rowId, U2OpStatus&
     CHECK_OP(os, );
 
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(msaDbi != nullptr, "NULL Msa Dbi!", );
+    SAFE_POINT_NN(msaDbi, );
 
     // Remove the row
     msaDbi->removeRow(msaRef.entityId, rowId, os);
 
     // SANGER_TODO: remove chromatogram as well
-}
-
-QList<U2MsaRow> MsaDbiUtils::getMsaRows(U2OpStatus& os, const U2EntityRef& msaRef) {
-    DbiConnection connection(msaRef.dbiRef, os);
-    CHECK_OP(os, {});
-
-    U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
-    SAFE_POINT_NN(msaDbi, {});
-
-    QList<U2MsaRow> rows = msaDbi->getRows(msaRef.entityId, os);
-    CHECK_OP(os, {});
-
-    resolveMsaRowChromatograms(os, rows, msaRef.entityId, connection);
-    return rows;
 }
 
 U2MsaRow MsaDbiUtils::getMsaRow(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId) {
@@ -1399,7 +1370,7 @@ void U2::MsaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 r
 
         if (!row.chromatogramId.isEmpty()) {
             U2EntityRef chromatogramRef = U2EntityRef(mcaRef.dbiRef, row.chromatogramId);
-            DNAChromatogram chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
+            Chromatogram chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
             CHECK_OP(os, );
 
             ChromatogramUtils::insertBase(chromatogram, (int)posInSeq, row.gaps, (int)pos);

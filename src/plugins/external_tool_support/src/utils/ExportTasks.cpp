@@ -24,10 +24,10 @@
 #include <QFileInfo>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/CloneObjectTask.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentModel.h>

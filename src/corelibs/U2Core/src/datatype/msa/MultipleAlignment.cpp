@@ -685,7 +685,7 @@ void MultipleAlignmentData::setRowContent(int rowNumber, const QByteArray& seque
     length = qMax(length, (qint64)sequence.size() + offset);
 }
 
-void MultipleAlignmentData::setRowContent(int rowNumber, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel) {
+void MultipleAlignmentData::setRowContent(int rowNumber, const Chromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel) {
     SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(),
                QString("Incorrect row index '%1' was passed to MultipleAlignmentData::setRowContent: "
                        "the number of rows is '%2'")
@@ -748,23 +748,23 @@ void MultipleAlignmentData::addRow(const QString& name, const DNASequence& seque
     addRowPrivate(newRow, len, -1);
 }
 
-void MultipleAlignmentData::addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes) {
+void MultipleAlignmentData::addRow(const QString& name, const Chromatogram& chromatogram, const QByteArray& bytes) {
     MultipleAlignmentRow newRow = createRow(name, chromatogram, bytes);
     addRowPrivate(newRow, bytes.size(), -1);
 }
 
-void MultipleAlignmentData::addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes, int rowIndex) {
+void MultipleAlignmentData::addRow(const QString& name, const Chromatogram& chromatogram, const QByteArray& bytes, int rowIndex) {
     MultipleAlignmentRow newRow = createRow(name, chromatogram, bytes);
     addRowPrivate(newRow, bytes.size(), rowIndex);
 }
 
-void MultipleAlignmentData::addRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os) {
+void MultipleAlignmentData::addRow(const U2MsaRow& rowInDb, const Chromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os) {
     MultipleAlignmentRow newRow = createRow(rowInDb, chromatogram, sequence, rowInDb.gaps, os);
     CHECK_OP(os, );
     addRowPrivate(newRow, rowInDb.length, -1);
 }
 
-void MultipleAlignmentData::addRow(const QString& name, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
+void MultipleAlignmentData::addRow(const QString& name, const Chromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
     U2MsaRow row;
     MultipleAlignmentRow newRow = createRow(row, chromatogram, sequence, gaps, os);
     CHECK_OP(os, );
@@ -814,7 +814,7 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const MultipleAlignmentRow
     return {row, this};
 }
 
-MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes) {
+MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const Chromatogram& chromatogram, const QByteArray& bytes) {
     QByteArray newSequenceBytes;
     QVector<U2MsaGap> newGapsModel;
 
@@ -825,7 +825,7 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const
     return {row, chromatogram, newSequence, newGapsModel, this};
 }
 
-MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
+MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, const Chromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
     QString errorText = "Failed to create a multiple alignment row";
     if (sequence.constSequence().indexOf(U2Msa::GAP_CHAR) != -1) {
         coreLog.trace("Attempted to create an alignment row from a sequence with gaps");

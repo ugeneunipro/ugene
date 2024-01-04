@@ -150,7 +150,7 @@ void SQLiteMsaDbi::updateMsaAlphabet(const U2DataId& msaId, const U2AlphabetId& 
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteMsaDbi::createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& msaRow, U2OpStatus& os) {
+void SQLiteMsaDbi::createMsaRow(const U2DataId& msaId, qint64 posInMsa, const U2MsaRow& msaRow, U2OpStatus& os) {
     assert(posInMsa >= 0);
 
     // Calculate the row length
@@ -781,8 +781,8 @@ U2DataId SQLiteMsaDbi::createMcaObject(const QString& folder, const QString& nam
 
 qint64 SQLiteMsaDbi::calculateRowLength(qint64 seqLength, const QVector<U2MsaGap>& gaps) {
     qint64 res = seqLength;
-    foreach (const U2MsaGap& gap, gaps) {
-        if (gap.startPos < res) {  // ignore trailing gaps
+    for (const U2MsaGap& gap : qAsConst(gaps)) {
+        if (gap.startPos < res) {  // Ignore trailing gaps.
             res += gap.length;
         }
     }
@@ -1037,7 +1037,7 @@ void SQLiteMsaDbi::removeRowsCore(const U2DataId& msaId, const QList<qint64>& ro
     removeRowSubcore(msaId, numOfRows - rowIds.size(), os);
 }
 
-void SQLiteMsaDbi::setNewRowsOrderCore(const U2DataId& msaId, const QList<qint64> rowIds, U2OpStatus& os) {
+void SQLiteMsaDbi::setNewRowsOrderCore(const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     SQLiteWriteQuery q("UPDATE MsaRow SET pos = ?1 WHERE msa = ?2 AND rowId = ?3", db, os);
     CHECK_OP(os, );

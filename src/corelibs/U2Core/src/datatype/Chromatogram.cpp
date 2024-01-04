@@ -19,17 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include "DNAChromatogram.h"
-
 #include <U2Core/U2SafePoints.h>
+
+#include "Chromatogram.h"
 
 namespace U2 {
 
-DNAChromatogram::DNAChromatogram()
+Chromatogram::Chromatogram()
     : QSharedDataPointer<ChromatogramData>(new ChromatogramData()) {
 }
 
-DNAChromatogram::DNAChromatogram(ChromatogramData* data)
+Chromatogram::Chromatogram(ChromatogramData* data)
     : QSharedDataPointer<ChromatogramData>(data) {
     SAFE_POINT_NN(data, );
 }

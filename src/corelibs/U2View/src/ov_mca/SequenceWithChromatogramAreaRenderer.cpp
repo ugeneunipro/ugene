@@ -127,7 +127,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Multi
 }
 
 void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, const MultipleAlignmentRow& row, const U2Region& visibleRegion, int xStart) const {
-    DNAChromatogram chromatogram = row->getGappedChromatogram();
+    Chromatogram chromatogram = row->getGappedChromatogram();
 
     // SANGER_TODO: should not be here
     chromaMax = 0;
@@ -250,7 +250,7 @@ static int getCorrectPointsCountVariable(const QVector<ushort>& baseCalls, int p
 
 }  // namespace
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChromatogram& chromatogram,
+void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const Chromatogram& chromatogram,
                                                                  qreal x,
                                                                  qreal y,
                                                                  qreal h,
@@ -322,7 +322,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
     p.translate(-x, -h - y);
 }
 
-void SequenceWithChromatogramAreaRenderer::completePolygonsWithLastBaseCallTrace(QPolygonF& polylineA, QPolygonF& polylineC, QPolygonF& polylineG, QPolygonF& polylineT, const DNAChromatogram& chromatogram, qreal columnWidth, const U2Region& visible, qreal h) const {
+void SequenceWithChromatogramAreaRenderer::completePolygonsWithLastBaseCallTrace(QPolygonF& polylineA, QPolygonF& polylineC, QPolygonF& polylineG, QPolygonF& polylineT, const Chromatogram& chromatogram, qreal columnWidth, const U2Region& visible, qreal h) const {
     // The last character may not to be included in visible area, so the trace for this symbol may be necessary to draw separately.
     int areaHeight = (heightPD - heightBC) * this->maxTraceHeight / 100;
     int startPos = visible.startPos;
@@ -374,7 +374,7 @@ void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPaint
     p.translate(0, -h);
 }
 
-void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogram& chromatogram, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
+void SequenceWithChromatogramAreaRenderer::drawQualityValues(const Chromatogram& chromatogram, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
     p.translate(0, h);
 
     // draw grid
@@ -420,7 +420,7 @@ void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogr
     p.translate(0, -h);
 }
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const DNAChromatogram& chromatogram, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
+void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const Chromatogram& chromatogram, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
     p.setRenderHint(QPainter::Antialiasing, false);
     p.translate(0, h);
 

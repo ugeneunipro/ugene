@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/DNAChromatogram.h>
+#include <U2Core/Chromatogram.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2DbiUtils.h>
@@ -33,7 +33,7 @@ struct U2CORE_EXPORT MsaRowSnapshot {
     /** Row ID in the database. */
     qint64 rowId;
     DNASequence sequence;
-    DNAChromatogram chromatogram;
+    Chromatogram chromatogram;
     QVector<U2MsaGap> gaps;
     qint64 rowLength;
     QVariantMap additionalInfo;

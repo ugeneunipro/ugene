@@ -63,8 +63,8 @@
 
 inline U2::U2DataId getSequenceIdByRowId(U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus& os) {
     const U2::MultipleAlignmentRow& row = msa->getMaObject()->getAlignment()->getRowByRowId(rowId, os);
-    CHECK_OP(os, U2::U2DataId());
-    return row->getRowDbInfo().sequenceId;
+    CHECK_OP(os, {});
+    return row->getSequenceId();
 }
 
 namespace U2 {

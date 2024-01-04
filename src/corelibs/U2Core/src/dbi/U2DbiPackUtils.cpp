@@ -411,16 +411,6 @@ bool U2DbiPackUtils::unpackSequenceDataDetails(const QByteArray& modDetails, U2R
     return true;
 }
 
-QByteArray U2DbiPackUtils::packChromatogramData(const DNAChromatogram& chromatogram) {
-    return DNAChromatogramSerializer::serialize(chromatogram).toHex();
-}
-
-bool U2DbiPackUtils::unpackChromatogramData(const QByteArray& modDetails, DNAChromatogram& chromatogram) {
-    U2OpStatusImpl os;
-    chromatogram = DNAChromatogramSerializer::deserialize(QByteArray::fromHex(modDetails), os);
-    return !os.hasError();
-}
-
 QByteArray U2DbiPackUtils::packSequenceDataHints(const QVariantMap& hints) {
     QByteArray result;
     foreach (QString key, hints.keys()) {

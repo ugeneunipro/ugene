@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-class DNAChromatogramObject;
+class ChromatogramObject;
 class U2SequenceObject;
 
 class SequenceQualityTrimTaskSettings {
@@ -61,7 +61,7 @@ private:
 
     const SequenceQualityTrimTaskSettings settings;
     U2SequenceObject* trimmedSequenceObject;
-    DNAChromatogramObject* trimmedChromatogramObject;
+    ChromatogramObject* trimmedChromatogramObject;
     bool isFilteredOut;
 };
 

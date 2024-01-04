@@ -330,7 +330,7 @@ QList<U2MsaRow> MsaImportUtils::importMcaRows(U2OpStatus& os,
 U2Chromatogram MsaImportUtils::importChromatogram(U2OpStatus& os,
                                                   const DbiConnection& connection,
                                                   const QString& folder,
-                                                  const DNAChromatogram& chromatogram) {
+                                                  const Chromatogram& chromatogram) {
     const U2EntityRef chromatogramRef = ChromatogramUtils::import(os, connection.dbi->getDbiRef(), folder, chromatogram);
     CHECK_OP(os, U2Chromatogram());
     connection.dbi->getObjectDbi()->setObjectRank(chromatogramRef.entityId, U2DbiObjectRank_Child, os);

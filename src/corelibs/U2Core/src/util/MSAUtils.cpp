@@ -357,11 +357,11 @@ void MsaUtils::assignOriginalDataIds(const MultipleAlignment& origMsa,
             QString origRowNameForCompare = origMsaRow->getName().replace(" ", "_");
             if (newRowNameForCompare == origRowNameForCompare && origMsaRow->getSequence().seq == newMsaRow->getSequence().seq) {
                 isNewRowRemapped = true;
-                qint64 rowId = origMsaRow->getRowDbInfo().rowId;
+                qint64 rowId = origMsaRow->getRowId();
                 newMsa->setRowId(newRowIndex, rowId);
                 remappedRowIds.insert(rowId);
 
-                U2DataId sequenceId = origMsaRow->getRowDbInfo().sequenceId;
+                const U2DataId& sequenceId = origMsaRow->getSequenceId();
                 newMsa->setSequenceId(newRowIndex, sequenceId);
                 break;
             }
@@ -497,9 +497,8 @@ bool MsaUtils::restoreOriginalRowProperties(MultipleAlignment& resultMa, const M
         int originalRowIndex = indexedName.toInt(&ok);
         CHECK(ok && originalRowIndex >= 0 && originalRowIndex < rowCount, false);
         const MultipleAlignmentRow& originalRow = originalMa->getRow(originalRowIndex);
-        U2MsaRow originalRowInfo = originalRow->getRowDbInfo();
-        resultMa->setRowId(resultMaIndex, originalRowInfo.rowId);
-        resultMa->setSequenceId(resultMaIndex, originalRowInfo.sequenceId);
+        resultMa->setRowId(resultMaIndex, originalRow->getRowId());
+        resultMa->setSequenceId(resultMaIndex, originalRow->getSequenceId());
         resultMa->renameRow(resultMaIndex, originalRow->getName());
     }
     return true;

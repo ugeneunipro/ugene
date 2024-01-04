@@ -176,7 +176,7 @@ private:
      * Adds a new MSA row into database.
      * To add a gap for the row, use the "createMsaRowGap" method.
      */
-    void createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& msa, U2OpStatus& os);
+    void createMsaRow(const U2DataId& msaId, qint64 posInMsa, const U2MsaRow& row, U2OpStatus& os);
 
     /** Adds a new gap for a MSA row into database. */
     void createMsaRowGap(const U2DataId& msaId, qint64 msaRowId, const U2MsaGap& msaGap, U2OpStatus& os);
@@ -225,7 +225,7 @@ private:
     void removeRowSubcore(const U2DataId& msaId, qint64 numOfRows, U2OpStatus& os);
     void removeRowCore(const U2DataId& msaId, qint64 rowId, bool removeSequence, U2OpStatus& os);
     void removeRowsCore(const U2DataId& msaId, const QList<qint64>& rowIds, bool removeSequence, U2OpStatus& os);
-    void setNewRowsOrderCore(const U2DataId& msaId, const QList<qint64> rowIds, U2OpStatus& os);
+    void setNewRowsOrderCore(const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os);
     void updateRowInfoCore(const U2DataId& msaId, const U2MsaRow& row, U2OpStatus& os);
     void updateMsaLengthCore(const U2DataId& msaId, qint64 length, U2OpStatus& os);
 

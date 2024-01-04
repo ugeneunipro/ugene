@@ -21,7 +21,7 @@
 
 #include "DNAQuality.h"
 
-#include "DNAChromatogram.h"
+#include "Chromatogram.h"
 
 namespace U2 {
 

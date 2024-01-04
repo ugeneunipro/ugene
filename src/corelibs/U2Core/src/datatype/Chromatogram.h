@@ -31,10 +31,10 @@ namespace U2 {
 class ChromatogramData;
 
 /** In-memory representation of the chromatogram. */
-class U2CORE_EXPORT DNAChromatogram : public QSharedDataPointer<ChromatogramData> {
+class U2CORE_EXPORT Chromatogram : public QSharedDataPointer<ChromatogramData> {
 public:
-    DNAChromatogram();
-    DNAChromatogram(ChromatogramData* data);
+    Chromatogram();
+    Chromatogram(ChromatogramData* data);
 };
 
 class U2CORE_EXPORT ChromatogramData : public QSharedData {

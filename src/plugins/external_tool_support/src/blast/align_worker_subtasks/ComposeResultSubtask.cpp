@@ -129,7 +129,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
         U2EntityRef chromatogramRef = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(stateInfo, readObject->getEntityRef());
         CHECK_OP(stateInfo, );
         CHECK_EXT(chromatogramRef.isValid(), setError(tr("The related chromatogram not found")), );
-        DNAChromatogram readChromatogram = ChromatogramUtils::exportChromatogram(stateInfo, chromatogramRef);
+        Chromatogram readChromatogram = ChromatogramUtils::exportChromatogram(stateInfo, chromatogramRef);
         CHECK_OP(stateInfo, );
 
         resultMca->addRow(pairwiseAlignment.readName, readChromatogram, readSequence, {}, stateInfo);

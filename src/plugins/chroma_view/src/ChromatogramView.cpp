@@ -23,8 +23,8 @@
 
 #include <QMessageBox>
 
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentUtils.h>
@@ -54,7 +54,7 @@ namespace U2 {
 
 static const char GAP_CHAR = '-';
 
-ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSequenceLineView* cv, const DNAChromatogram& chromatogram)
+ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSequenceLineView* cv, const Chromatogram& chromatogram)
     : GSequenceLineView(p, v), editDNASeq(nullptr) {
     const QString objectName = "chromatogram_view_" + v->getSequenceGObject()->getGObjectName();
     setObjectName(objectName);
@@ -415,7 +415,7 @@ void ChromatogramView::sl_showAllTraces() {
 
 //////////////////////////////////////
 ////render area
-ChromatogramViewRenderArea::ChromatogramViewRenderArea(ChromatogramView* p, const DNAChromatogram& _chroma)
+ChromatogramViewRenderArea::ChromatogramViewRenderArea(ChromatogramView* p, const Chromatogram& _chroma)
     : GSequenceLineViewRenderArea(p),
       linePen(Qt::gray, 1, Qt::DotLine),
       kLinearTransformTrace(0.0),

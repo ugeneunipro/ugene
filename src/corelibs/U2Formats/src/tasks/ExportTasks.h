@@ -115,7 +115,7 @@ private:
     const int translationFrame;
 };
 
-class DNAChromatogramObject;
+class ChromatogramObject;
 
 /** A task settings to export chromatograms. */
 class U2FORMATS_EXPORT ExportChromatogramTaskSettings {
@@ -133,12 +133,12 @@ public:
 class U2FORMATS_EXPORT ExportDNAChromatogramTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportDNAChromatogramTask(DNAChromatogramObject* chromaObj, const ExportChromatogramTaskSettings& url);
+    ExportDNAChromatogramTask(ChromatogramObject* chromaObj, const ExportChromatogramTaskSettings& url);
     void prepare() override;
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    DNAChromatogramObject* chromaObject;
+    ChromatogramObject* chromaObject;
     ExportChromatogramTaskSettings settings;
     LoadDocumentTask* loadTask;
 };
