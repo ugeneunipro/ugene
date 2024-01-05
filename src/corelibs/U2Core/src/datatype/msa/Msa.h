@@ -60,8 +60,6 @@ public:
     virtual ~Msa() = default;
 
     MsaData* data() const;
-    template<class Derived>
-    inline Derived dynamicCast() const;
 
     MsaData& operator*();
     const MsaData& operator*() const;
