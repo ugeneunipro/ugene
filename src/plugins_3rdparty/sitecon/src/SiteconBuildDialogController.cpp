@@ -31,7 +31,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Settings.h>
 
 #include <U2Gui/HelpButton.h>
@@ -177,7 +177,7 @@ void SiteconBuildDialogController::reject() {
 //////////////////////////////////////////////////////////////////////////
 // task
 
-SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings& s, const MultipleAlignment& ma, const QString& origin)
+SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings& s, const Msa& ma, const QString& origin)
     : Task(tr("Build SITECON model"), TaskFlag_None), settings(s), ma(ma->getCopy()) {
     GCOUNTER(cvar, "SiteconBuildTask");
     tpm = Task::Progress_Manual;
@@ -277,8 +277,8 @@ QList<Task*> SiteconBuildToFileTask::onSubTaskFinished(Task* subTask) {
         if (mobjs.isEmpty()) {
             stateInfo.setError(tr("No alignment found"));
         } else {
-            auto mobj = qobject_cast<MultipleAlignmentObject*>(mobjs.first());
-            const MultipleAlignment msa = mobj->getAlignment();
+            auto mobj = qobject_cast<MsaObject*>(mobjs.first());
+            const Msa msa = mobj->getAlignment();
             QString baseName = mobj->getDocument()->getURL().baseFileName();
             buildTask = new SiteconBuildTask(settings, msa, baseName);
             res.append(buildTask);

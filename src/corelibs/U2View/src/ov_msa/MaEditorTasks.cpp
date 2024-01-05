@@ -36,7 +36,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextObject.h>
@@ -58,7 +58,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 /// open new view
 
-OpenMaEditorTask::OpenMaEditorTask(MultipleAlignmentObject* _obj, GObjectViewFactoryId fid, GObjectType type)
+OpenMaEditorTask::OpenMaEditorTask(MsaObject* _obj, GObjectViewFactoryId fid, GObjectType type)
     : ObjectViewTask(fid),
       type(type),
       maObject(_obj) {
@@ -94,11 +94,11 @@ void OpenMaEditorTask::open() {
         if (unloadedReference.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(unloadedReference, UOF_LoadedOnly);
             if (obj != nullptr && obj->getGObjectType() == type) {
-                maObject = qobject_cast<MultipleAlignmentObject*>(obj);
+                maObject = qobject_cast<MsaObject*>(obj);
             }
         } else {
             QList<GObject*> objects = doc->findGObjectByType(type, UOF_LoadedAndUnloaded);
-            maObject = objects.isEmpty() ? nullptr : qobject_cast<MultipleAlignmentObject*>(objects.first());
+            maObject = objects.isEmpty() ? nullptr : qobject_cast<MsaObject*>(objects.first());
         }
         if (maObject.isNull()) {
             stateInfo.setError(tr("Multiple alignment object not found"));
@@ -120,14 +120,14 @@ void OpenMaEditorTask::updateTitle(MSAEditor* msaEd) {
     const QString& oldViewName = msaEd->getName();
     GObjectViewWindow* w = GObjectViewUtils::findViewByName(oldViewName);
     if (w != nullptr) {
-        MultipleAlignmentObject* msaObject = msaEd->getMaObject();
+        MsaObject* msaObject = msaEd->getMaObject();
         QString newViewName = GObjectViewUtils::genUniqueViewName(msaObject->getDocument(), msaObject);
         msaEd->setName(newViewName);
         w->setWindowTitle(newViewName);
     }
 }
 
-OpenMsaEditorTask::OpenMsaEditorTask(MultipleAlignmentObject* obj)
+OpenMsaEditorTask::OpenMsaEditorTask(MsaObject* obj)
     : OpenMaEditorTask(obj, MsaEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
 }
 
@@ -143,7 +143,7 @@ MaEditor* OpenMsaEditorTask::getEditor(const QString& viewName, GObject* obj) {
     return MsaEditorFactory().getEditor(viewName, obj, stateInfo);
 }
 
-OpenMcaEditorTask::OpenMcaEditorTask(MultipleAlignmentObject* obj)
+OpenMcaEditorTask::OpenMcaEditorTask(MsaObject* obj)
     : OpenMaEditorTask(obj, McaEditorFactory::ID, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT) {
 }
 
@@ -207,7 +207,7 @@ void OpenSavedMaEditorTask::open() {
         stateInfo.setError(tr("Alignment object not found: %1").arg(ref.objName));
         return;
     }
-    auto maObject = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto maObject = qobject_cast<MsaObject*>(obj);
     assert(maObject != nullptr);
 
     MaEditor* maEditor = factory->getEditor(viewName, maObject, stateInfo);
@@ -336,7 +336,7 @@ void ExtractConsensusTask::run() {
     CHECK(ma->getMaEditorWgt(0)->getConsensusArea(), );
     CHECK(ma->getMaEditorWgt(0)->getConsensusArea()->getConsensusCache(), );
 
-    const MultipleAlignment alignment = ma->getMaObject()->getAlignment()->getCopy();
+    const Msa alignment = ma->getMaObject()->getAlignment()->getCopy();
     for (int i = 0, n = alignment->getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
             return;

@@ -23,13 +23,13 @@
 
 #include <QColor>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 namespace U2 {
 
 const QColor MsaHighlightingSchemeGaps::gapColor = QColor(192, 192, 192);
 
-MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject* parent, const MsaHighlightingSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject* parent, const MsaHighlightingSchemeFactory* factory, MsaObject* maObj)
     : MsaHighlightingScheme(parent, factory, maObj) {
 }
 
@@ -48,7 +48,7 @@ MsaHighlightingSchemeGapsFactory::MsaHighlightingSchemeGapsFactory(QObject* pare
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets, true) {
 }
 
-MsaHighlightingScheme* MsaHighlightingSchemeGapsFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaHighlightingScheme* MsaHighlightingSchemeGapsFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaHighlightingSchemeGaps(parent, this, maObj);
 }
 

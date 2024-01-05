@@ -32,7 +32,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT PhyTreeGeneratorTask : public Task {
     Q_OBJECT
 public:
-    PhyTreeGeneratorTask(const MultipleAlignment& ma,
+    PhyTreeGeneratorTask(const Msa& ma,
                          const CreatePhyTreeSettings& settings,
                          const TaskFlags& taskFlags = TaskFlag_NoRun | TaskFlag_FailOnSubtaskError);
 
@@ -41,7 +41,7 @@ public:
     const CreatePhyTreeSettings& getSettings() const;
 
 protected:
-    MultipleAlignment inputMA;
+    Msa inputMA;
     PhyTree result;
     CreatePhyTreeSettings settings;
 };
@@ -49,7 +49,7 @@ protected:
 class U2ALGORITHM_EXPORT PhyTreeGeneratorLauncherTask : public Task {
     Q_OBJECT
 public:
-    PhyTreeGeneratorLauncherTask(const MultipleAlignment& ma, const CreatePhyTreeSettings& _settings);
+    PhyTreeGeneratorLauncherTask(const Msa& ma, const CreatePhyTreeSettings& _settings);
     const PhyTree& getResult() const;
     void prepare() override;
     ReportResult report() override;
@@ -58,7 +58,7 @@ public slots:
     void sl_onCalculationCanceled();
 
 private:
-    MultipleAlignment inputMA;
+    Msa inputMA;
     QStringList originalRowNameByIndex;
     PhyTree result;
     CreatePhyTreeSettings settings;

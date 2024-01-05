@@ -116,14 +116,14 @@ bool GrouperActionUtils::equalData(const QString& groupOp, const QVariant& data1
         SharedDbiDataHandler alId1 = data1.value<SharedDbiDataHandler>();
         SharedDbiDataHandler alId2 = data2.value<SharedDbiDataHandler>();
 
-        QScopedPointer<MultipleAlignmentObject> alObj1(StorageUtils::getMsaObject(context->getDataStorage(), alId1));
+        QScopedPointer<MsaObject> alObj1(StorageUtils::getMsaObject(context->getDataStorage(), alId1));
         SAFE_POINT(alObj1.data() != nullptr, "NULL MSA Object!", false);
 
-        QScopedPointer<MultipleAlignmentObject> alObj2(StorageUtils::getMsaObject(context->getDataStorage(), alId2));
+        QScopedPointer<MsaObject> alObj2(StorageUtils::getMsaObject(context->getDataStorage(), alId2));
         SAFE_POINT(alObj2.data() != nullptr, "NULL MSA Object!", false);
 
-        const MultipleAlignment al1 = alObj1->getAlignment();
-        const MultipleAlignment al2 = alObj2->getAlignment();
+        const Msa al1 = alObj1->getAlignment();
+        const Msa al2 = alObj2->getAlignment();
 
         if (GroupOperations::BY_NAME() == groupOp) {
             return al1->getName() == al2->getName();
@@ -132,10 +132,10 @@ bool GrouperActionUtils::equalData(const QString& groupOp, const QVariant& data1
                 return false;
             }
 
-            QList<MultipleAlignmentRow> rows1 = al1->getRows().toList();
-            QList<MultipleAlignmentRow> rows2 = al2->getRows().toList();
-            QList<MultipleAlignmentRow>::const_iterator it1 = rows1.constBegin();
-            QList<MultipleAlignmentRow>::const_iterator it2 = rows2.constBegin();
+            QList<MsaRow> rows1 = al1->getRows().toList();
+            QList<MsaRow> rows2 = al2->getRows().toList();
+            QList<MsaRow>::const_iterator it1 = rows1.constBegin();
+            QList<MsaRow>::const_iterator it2 = rows2.constBegin();
             for (; it1 != rows1.constEnd(); ++it1, ++it2) {
                 if (**it1 != **it2) {
                     return false;
@@ -294,7 +294,7 @@ bool Sequence2MSAPerformer::applyAction(const QVariant& newData) {
     }
 
     if (unique) {
-        foreach (const MultipleAlignmentRow& currRow, result->getRows()) {
+        foreach (const MsaRow& currRow, result->getRows()) {
             if ((currRow->getName() == rowName) &&
                 (currRow->getData() == bytes)) {
                 return true;
@@ -318,9 +318,9 @@ MergerMSAPerformer::MergerMSAPerformer(const QString& outSlot, const GrouperSlot
 
 bool MergerMSAPerformer::applyAction(const QVariant& newData) {
     SharedDbiDataHandler newAlId = newData.value<SharedDbiDataHandler>();
-    QScopedPointer<MultipleAlignmentObject> newAlObj(StorageUtils::getMsaObject(context->getDataStorage(), newAlId));
+    QScopedPointer<MsaObject> newAlObj(StorageUtils::getMsaObject(context->getDataStorage(), newAlId));
     SAFE_POINT(newAlObj.data() != nullptr, "NULL MSA Object!", false);
-    const MultipleAlignment newAl = newAlObj->getAlignment();
+    const Msa newAl = newAlObj->getAlignment();
 
     if (!started) {
         QString name;
@@ -340,8 +340,8 @@ bool MergerMSAPerformer::applyAction(const QVariant& newData) {
     }
 
     U2OpStatus2Log os;
-    const QVector<MultipleAlignmentRow>& rows = result->getRows();
-    foreach (const MultipleAlignmentRow& newRow, newAl->getRows()) {
+    const QVector<MsaRow>& rows = result->getRows();
+    foreach (const MsaRow& newRow, newAl->getRows()) {
         if (unique) {
             if (!rows.contains(newRow)) {
                 result->addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);

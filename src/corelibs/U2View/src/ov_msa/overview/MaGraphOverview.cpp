@@ -67,7 +67,7 @@ MaGraphOverview::MaGraphOverview(MaEditor* _editor, QWidget* _ui)
     auto mui = qobject_cast<MaEditorMultilineWgt*>(_ui);
     CHECK(mui != nullptr, );
 
-    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, [this]() {
         state.maObjectVersion = editor->getMaObject()->getObjectVersion();
         recomputeGraphIfNeeded();
     });

@@ -22,7 +22,7 @@
 #include "MaSeqNameFilterTask.h"
 
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "../ProjectFilterNames.h"
@@ -33,7 +33,7 @@ namespace U2 {
 /// MaSeqNameFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-static bool isFilteredByMASequenceName(const MultipleAlignmentObject* maObj, const ProjectTreeControllerModeSettings& settings) {
+static bool isFilteredByMASequenceName(const MsaObject* maObj, const ProjectTreeControllerModeSettings& settings) {
     CHECK(maObj != nullptr, false);
     for (int i = 0, n = maObj->getRowCount(); i < n; ++i) {
         if (settings.nameFilterAcceptsString(maObj->getRow(i)->getName())) {
@@ -48,7 +48,7 @@ MsaSeqNameFilterTask::MsaSeqNameFilterTask(const ProjectTreeControllerModeSettin
 }
 
 bool MsaSeqNameFilterTask::filterAcceptsObject(GObject* obj) {
-    return isFilteredByMASequenceName(qobject_cast<MultipleAlignmentObject*>(obj), settings);
+    return isFilteredByMASequenceName(qobject_cast<MsaObject*>(obj), settings);
 }
 
 McaReadNameFilterTask::McaReadNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
@@ -56,7 +56,7 @@ McaReadNameFilterTask::McaReadNameFilterTask(const ProjectTreeControllerModeSett
 }
 
 bool McaReadNameFilterTask::filterAcceptsObject(GObject* obj) {
-    return isFilteredByMASequenceName(qobject_cast<MultipleAlignmentObject*>(obj), settings);
+    return isFilteredByMASequenceName(qobject_cast<MsaObject*>(obj), settings);
 }
 
 McaReferenceNameFilterTask::McaReferenceNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
@@ -64,7 +64,7 @@ McaReferenceNameFilterTask::McaReferenceNameFilterTask(const ProjectTreeControll
 }
 
 bool McaReferenceNameFilterTask::filterAcceptsObject(GObject* obj) {
-    auto mcaObj = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto mcaObj = qobject_cast<MsaObject*>(obj);
     CHECK(mcaObj != nullptr, false);
     U2SequenceObject* refObj = mcaObj->getReferenceObj();
     if (refObj != nullptr && settings.nameFilterAcceptsString(refObj->getSequenceName())) {

@@ -31,52 +31,52 @@
 
 namespace U2 {
 
-class MultipleAlignment;
-class MultipleAlignmentData;
-class MultipleAlignmentRowData;
+class Msa;
+class MsaData;
+class MsaRowData;
 
-class U2CORE_EXPORT MultipleAlignmentRow {
-    friend class MultipleAlignment;
-    friend class MultipleAlignmentData;
-    friend class MultipleAlignmentRowData;
+class U2CORE_EXPORT MsaRow {
+    friend class Msa;
+    friend class MsaData;
+    friend class MsaRowData;
 
 public:
-    MultipleAlignmentRow(MultipleAlignmentRowData* maRowData);
-    MultipleAlignmentRow(MultipleAlignmentData* maData = nullptr);
+    MsaRow(MsaRowData* maRowData);
+    MsaRow(MsaData* maData = nullptr);
 
-    MultipleAlignmentRow(const U2MsaRow& rowInDb,
-                         const DNASequence& sequence,
-                         const QVector<U2MsaGap>& gaps,
-                         const U2DataId& chromatogramId,
-                         const Chromatogram& chromatogram,
-                         MultipleAlignmentData* maData);
+    MsaRow(const U2MsaRow& rowInDb,
+           const DNASequence& sequence,
+           const QVector<U2MsaGap>& gaps,
+           const U2DataId& chromatogramId,
+           const Chromatogram& chromatogram,
+           MsaData* maData);
 
-    MultipleAlignmentRow(const U2MsaRow& rowInDb,
-                         const DNASequence& sequence,
-                         const QVector<U2MsaGap>& gaps,
-                         MultipleAlignmentData* maData);
+    MsaRow(const U2MsaRow& rowInDb,
+           const DNASequence& sequence,
+           const QVector<U2MsaGap>& gaps,
+           MsaData* maData);
 
-    MultipleAlignmentRow(const U2MsaRow& rowInDb,
-                         const QString& rowName,
-                         const QByteArray& rawSequenceData,
-                         MultipleAlignmentData* maData);
+    MsaRow(const U2MsaRow& rowInDb,
+           const QString& rowName,
+           const QByteArray& rawSequenceData,
+           MsaData* maData);
 
-    MultipleAlignmentRow(const MultipleAlignmentRow& row, MultipleAlignmentData* mcaData);
+    MsaRow(const MsaRow& row, MsaData* mcaData);
 
-    virtual ~MultipleAlignmentRow() = default;
+    virtual ~MsaRow() = default;
 
-    MultipleAlignmentRow clone() const;
+    MsaRow clone() const;
 
-    MultipleAlignmentRowData* data() const;
+    MsaRowData* data() const;
 
-    MultipleAlignmentRowData& operator*();
-    const MultipleAlignmentRowData& operator*() const;
+    MsaRowData& operator*();
+    const MsaRowData& operator*() const;
 
-    MultipleAlignmentRowData* operator->();
-    const MultipleAlignmentRowData* operator->() const;
+    MsaRowData* operator->();
+    const MsaRowData* operator->() const;
 
 protected:
-    QSharedPointer<MultipleAlignmentRowData> maRowData;
+    QSharedPointer<MsaRowData> maRowData;
 };
 
 /**
@@ -86,28 +86,28 @@ protected:
  * A row core is an obsolete concept. Currently,
  * it exactly equals to the row (offset always equals to zero).
  */
-class U2CORE_EXPORT MultipleAlignmentRowData {
-    friend class MultipleAlignment;
-    friend class MultipleAlignmentData;
-    friend class MultipleAlignmentRow;
+class U2CORE_EXPORT MsaRowData {
+    friend class Msa;
+    friend class MsaData;
+    friend class MsaRow;
 
 public:
-    MultipleAlignmentRowData(MultipleAlignmentData* maData = nullptr);
+    MsaRowData(MsaData* maData = nullptr);
 
-    MultipleAlignmentRowData(const U2MsaRow& rowInDb,
-                             const DNASequence& sequence,
-                             const QVector<U2MsaGap>& gaps,
-                             const U2DataId& chromatogramId,
-                             const Chromatogram& chromatogram,
-                             MultipleAlignmentData* mcaData);
+    MsaRowData(const U2MsaRow& rowInDb,
+               const DNASequence& sequence,
+               const QVector<U2MsaGap>& gaps,
+               const U2DataId& chromatogramId,
+               const Chromatogram& chromatogram,
+               MsaData* mcaData);
 
-    MultipleAlignmentRowData(const U2MsaRow& rowInDb,
-                             const QString& rowName,
-                             const QByteArray& rawSequenceData,
-                             MultipleAlignmentData* maData);
+    MsaRowData(const U2MsaRow& rowInDb,
+               const QString& rowName,
+               const QByteArray& rawSequenceData,
+               MsaData* maData);
 
-    MultipleAlignmentRowData(const MultipleAlignmentRow& row,
-                             MultipleAlignmentData* maData);
+    MsaRowData(const MsaRow& row,
+               MsaData* maData);
 
     /** Length of the sequence without gaps */
     int getUngappedLength() const;
@@ -208,9 +208,9 @@ public:
     void crop(U2OpStatus& os, int startPosition, int count);
 
     /** Adds anotherRow data to this row(ignores trailing gaps), "lengthBefore" must be greater than this row's length. */
-    void append(const MultipleAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
+    void append(const MsaRow& anotherRow, int lengthBefore, U2OpStatus& os);
 
-    void append(const MultipleAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os);
+    void append(const MsaRowData& anotherRow, int lengthBefore, U2OpStatus& os);
 
     bool isDefault() const;
 
@@ -230,19 +230,19 @@ public:
      * Checks that the row is equal to 'other' rows.
      * For the equality method details see comments for the implementation.
      */
-    bool isEqual(const MultipleAlignmentRowData& other) const;
+    bool isEqual(const MsaRowData& other) const;
 
     /** Calls isEqual() method. */
-    bool operator==(const MultipleAlignmentRowData& other) const;
+    bool operator==(const MsaRowData& other) const;
 
     /** Returns !isEqual() method result. */
-    bool operator!=(const MultipleAlignmentRowData& other) const;
+    bool operator!=(const MsaRowData& other) const;
 
     /* Compares sequences of 2 rows ignoring gaps. */
-    static bool isEqualIgnoreGaps(const MultipleAlignmentRowData* row1, const MultipleAlignmentRowData* row2);
+    static bool isEqualIgnoreGaps(const MsaRowData* row1, const MsaRowData* row2);
 
     /** Compares whole gapped sequences (with inner gaps) but with leading gaps removed. */
-    bool isEqualCore(const MultipleAlignmentRowData& other) const;
+    bool isEqualCore(const MsaRowData& other) const;
 
     /** Joins sequence chars and gaps into one byte array. */
     QByteArray getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const;
@@ -305,12 +305,12 @@ public:
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
-    MultipleAlignmentRow mid(int pos, int count, U2OpStatus& os) const;
+    MsaRow mid(int pos, int count, U2OpStatus& os) const;
 
-    MultipleAlignmentRow getExplicitCopy() const;
+    MsaRow getExplicitCopy() const;
 
 protected:
-    void setParentAlignment(MultipleAlignmentData* alignment);
+    void setParentAlignment(MsaData* alignment);
 
     /** Invalidates gapped sequence cache. */
     void invalidateGappedCache() const;
@@ -356,7 +356,6 @@ protected:
     /** The row in the database */
     U2MsaRow initialRowInDb;
 
-
     /** Gapped cache offset in the row position.*/
     mutable int gappedCacheOffset = 0;
 
@@ -372,25 +371,25 @@ protected:
     // TODO: this field is not used in comparison algorithm. Check its usage and fix or remove the field completely.1
     QVariantMap additionalInfo;
 
-    MultipleAlignmentData* alignment = nullptr;
+    MsaData* alignment = nullptr;
 };
 
-inline bool operator==(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRow& ptr2) {
+inline bool operator==(const MsaRow& ptr1, const MsaRow& ptr2) {
     return *ptr1 == *ptr2;
 }
-inline bool operator==(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRowData* ptr2) {
+inline bool operator==(const MsaRow& ptr1, const MsaRowData* ptr2) {
     return ptr2 == nullptr ? ptr1->isDefault() : (*ptr1 == *ptr2);
 }
-inline bool operator==(const MultipleAlignmentRowData* ptr1, const MultipleAlignmentRow& ptr2) {
+inline bool operator==(const MsaRowData* ptr1, const MsaRow& ptr2) {
     return ptr1 == nullptr ? ptr2->isDefault() : (*ptr1 == *ptr2);
 }
-inline bool operator!=(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRow& ptr2) {
+inline bool operator!=(const MsaRow& ptr1, const MsaRow& ptr2) {
     return !(ptr1 == ptr2);
 }
-inline bool operator!=(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRowData* ptr2) {
+inline bool operator!=(const MsaRow& ptr1, const MsaRowData* ptr2) {
     return !(ptr1 == ptr2);
 }
-inline bool operator!=(const MultipleAlignmentRowData* ptr1, const MultipleAlignmentRow& ptr2) {
+inline bool operator!=(const MsaRowData* ptr1, const MsaRow& ptr2) {
     return !(ptr1 == ptr2);
 }
 

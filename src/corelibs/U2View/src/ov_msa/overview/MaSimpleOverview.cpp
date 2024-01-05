@@ -124,10 +124,10 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
     MaEditorSequenceArea* sequenceArea = maEditorWgt->getSequenceArea();
     QString highlightingSchemeId = sequenceArea->getCurrentHighlightingScheme()->getFactory()->getId();
 
-    MultipleAlignmentObject* mAlignmentObj = editor->getMaObject();
+    MsaObject* mAlignmentObj = editor->getMaObject();
     SAFE_POINT(mAlignmentObj != nullptr, "Incorrect multiple alignment object!", );
 
-    const MultipleAlignment& ma = mAlignmentObj->getAlignment();
+    const Msa& ma = mAlignmentObj->getAlignment();
     U2OpStatusImpl os;
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
         for (int pos = 0; pos < editor->getAlignmentLen(); pos++) {

@@ -97,7 +97,7 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
     });
     connect(msaEditor->getSelectionController(), &MaEditorSelectionController::si_selectionChanged, this, [this, msaEditor]() { updateState(msaEditor); });
 
-    QPointer<MultipleAlignmentObject> msaObjectPtr = msaEditor->getMaObject();
+    QPointer<MsaObject> msaObjectPtr = msaEditor->getMaObject();
     QPointer<MSAEditor> msaEditorPtr = msaEditor;
     connect(msaObjectPtr, &GObject::si_lockedStateChanged, this, [this, msaEditorPtr]() {
         CHECK(!msaEditorPtr.isNull(), );
@@ -269,8 +269,8 @@ MsaExcludeListWidget::MsaExcludeListWidget(QWidget* parent, MSAEditor* _msaEdito
     }
 
     auto msaObject = msaEditor->getMaObject();
-    connect(msaObject, &MultipleAlignmentObject::si_alignmentChanged, this, &MsaExcludeListWidget::handleUndoRedoInMsaEditor);
-    connect(msaObject, &MultipleAlignmentObject::si_lockedStateChanged, this, &MsaExcludeListWidget::updateState);
+    connect(msaObject, &MsaObject::si_alignmentChanged, this, &MsaExcludeListWidget::handleUndoRedoInMsaEditor);
+    connect(msaObject, &MsaObject::si_lockedStateChanged, this, &MsaExcludeListWidget::updateState);
 
     excludeListFilePath = msaEditor->property(PROPERTY_LAST_USED_EXCLUDE_LIST_FILE).toString();
     if (excludeListFilePath.isEmpty() || !QFileInfo::exists(excludeListFilePath)) {
@@ -306,7 +306,7 @@ int MsaExcludeListWidget::addEntry(const DNASequence& sequence, int excludeListR
     return computedExcludeListRowId;
 }
 
-int MsaExcludeListWidget::addMsaRowEntry(const MultipleAlignmentRow& row, int excludeListRowId) {
+int MsaExcludeListWidget::addMsaRowEntry(const MsaRow& row, int excludeListRowId) {
     DNASequence sequence = row->getUngappedSequence();
     sequence.alphabet = msaEditor->getMaObject()->getAlphabet();  // TODO: MSA row must return a fully defined sequence with a correct alphabet.
     return addEntry(sequence, excludeListRowId);
@@ -413,7 +413,7 @@ void MsaExcludeListWidget::moveMsaRowIndexesToExcludeList(const QList<int>& msaR
     SAFE_POINT(loadTask == nullptr, "Can't add rows with an active load task!", )
 
     QList<int> excludeListRowIds;
-    MultipleAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
     if (msaObject->getRowCount() == msaRowIndexes.count()) {
         // TODO: support empty MSA for all file formats.
         QMessageBox::critical(this, L10N::warningTitle(), tr("Multiple alignment must keep at least one row"));
@@ -445,7 +445,7 @@ void MsaExcludeListWidget::moveMsaRowIndexesToExcludeList(const QList<int>& msaR
 
 void MsaExcludeListWidget::moveExcludeListSelectionToMaObject() {
     GCOUNTER(cvar, "MsaExcludeListWidget::moveToMsa");
-    MultipleAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
     QList<DNASequence> sequences;
     QList<int> excludeListRowIdsMovedToMsa;
     QList<QListWidgetItem*> selectedItems = nameListView->selectedItems();
@@ -469,7 +469,7 @@ void MsaExcludeListWidget::moveExcludeListSelectionToMaObject() {
     updateState();
 }
 
-void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo) {
+void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const Msa& maBefore, const MaModificationInfo& modInfo) {
     auto msaObject = msaEditor->getMaObject();
     int version = msaObject->getObjectVersion();
     if (modInfo.type != MaModificationType_Undo && modInfo.type != MaModificationType_Redo) {
@@ -492,10 +492,10 @@ void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const MultipleAlignment& ma
     const UndoRedoStep& undoRedoContext = isRedo ? trackedRedoMsaVersions.value(version) : trackedUndoMsaVersions.value(version);
     bool isAddToExcludeList = (isRedo && undoRedoContext.isMoveFromMsaToExcludeList) || (!isRedo && !undoRedoContext.isMoveFromMsaToExcludeList);
     if (isAddToExcludeList) {  // Add rows removed from MSA to Exclude list
-        QVector<MultipleAlignmentRow> msaRows;
+        QVector<MsaRow> msaRows;
         QSet<qint64> msaRowIdsAfter = msaObject->getRowIds().toSet();
         for (int i = 0; i < maBefore->getRowCount(); i++) {
-            const MultipleAlignmentRow& row = maBefore->getRow(i);
+            const MsaRow& row = maBefore->getRow(i);
             if (!msaRowIdsAfter.contains(row->getRowId())) {
                 msaRows << row;
             }

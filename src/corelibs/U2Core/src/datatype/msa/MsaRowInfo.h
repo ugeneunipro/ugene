@@ -21,25 +21,22 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignment.h>
+#include <QVariantMap>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 
-class RowWalker;
-
-class U2CORE_EXPORT MultipleSequenceAlignmentWalker {
+class U2CORE_EXPORT MsaRowInfo {
 public:
-    MultipleSequenceAlignmentWalker(const MultipleAlignment& msa, char gapChar = U2Msa::GAP_CHAR);
-    ~MultipleSequenceAlignmentWalker();
+    static void setReversed(QVariantMap& info, bool reversed);
+    static bool getReversed(const QVariantMap& info);
 
-    bool isEnded() const;
+    static void setComplemented(QVariantMap& info, bool complemented);
+    static bool getComplemented(const QVariantMap& info);
 
-    QList<QByteArray> nextData(int length, U2OpStatus& os);
-
-private:
-    const MultipleAlignment& msa;
-    int currentOffset;
-    QList<RowWalker*> rowWalkerList;
+    static const QString REVERSED;
+    static const QString COMPLEMENTED;
 };
 
 }  // namespace U2

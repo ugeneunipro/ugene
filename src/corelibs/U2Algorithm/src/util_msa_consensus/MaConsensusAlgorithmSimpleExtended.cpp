@@ -132,7 +132,7 @@ char MaConsensusAlgorithmSimpleExtended::mergeCharacters(const QVector<char>& ch
     return flags2Character(mergedFlag);
 }
 
-static QVector<QVector<char>> getFrequencies(const MultipleAlignment& ma, int column, QVector<int> seqIdx) {
+static QVector<QVector<char>> getFrequencies(const Msa& ma, int column, QVector<int> seqIdx) {
     QVarLengthArray<int> frequencies(256);
     memset(frequencies.data(), 0, frequencies.size() * sizeof(int));
 
@@ -150,7 +150,7 @@ static QVector<QVector<char>> getFrequencies(const MultipleAlignment& ma, int co
     return sortedFrequencies;
 }
 
-char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const MultipleAlignment& ma, int column) const {
+char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const Msa& ma, int column) const {
     QVector<int> seqIdx = pickRowsToUseInConsensus(ma, column);
     CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 
@@ -200,7 +200,7 @@ MaConsensusAlgorithmFactorySimpleExtended::MaConsensusAlgorithmFactorySimpleExte
     isSequenceLikeResultFlag = true;
 }
 
-MSAConsensusAlgorithm* MaConsensusAlgorithmFactorySimpleExtended::createAlgorithm(const MultipleAlignment& /*ma*/, bool ignoreTrailingLeadingGaps) {
+MSAConsensusAlgorithm* MaConsensusAlgorithmFactorySimpleExtended::createAlgorithm(const Msa& /*ma*/, bool ignoreTrailingLeadingGaps) {
     return new MaConsensusAlgorithmSimpleExtended(this, ignoreTrailingLeadingGaps);
 }
 

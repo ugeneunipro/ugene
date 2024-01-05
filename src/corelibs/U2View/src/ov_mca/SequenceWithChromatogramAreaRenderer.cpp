@@ -100,7 +100,7 @@ int SequenceWithChromatogramAreaRenderer::getScaleBarValue() const {
     return maxTraceHeight;
 }
 
-int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const MultipleAlignment& mca, int rowIndex, const U2Region& region, int xStart, int yStart) const {
+int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Msa& mca, int rowIndex, const U2Region& region, int xStart, int yStart) const {
     McaEditor* editor = getSeqArea()->getEditor();
     if (editor->isChromatogramRowExpanded(rowIndex)) {
         painter.translate(0, INDENT_BETWEEN_ROWS / 2);
@@ -117,7 +117,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Multi
         painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
         painter.drawLine(0, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight, width, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight);
 
-        const MultipleAlignmentRow& row = editor->getMaObject()->getRow(rowIndex);
+        const MsaRow& row = editor->getMaObject()->getRow(rowIndex);
         drawChromatogram(painter, row, region, xStart);
         painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
         painter.restore();
@@ -126,7 +126,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Multi
     return seqRowHeight;
 }
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, const MultipleAlignmentRow& row, const U2Region& visibleRegion, int xStart) const {
+void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, const MsaRow& row, const U2Region& visibleRegion, int xStart) const {
     Chromatogram chromatogram = row->getGappedChromatogram();
 
     // SANGER_TODO: should not be here

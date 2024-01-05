@@ -36,7 +36,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2Mod.h>
@@ -125,7 +125,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
 
     connect(&editModeAnimationTimer, SIGNAL(timeout()), SLOT(sl_changeSelectionColor()));
 
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_alignmentChanged(const Msa&, const MaModificationInfo&)));
 
     connect(this, SIGNAL(si_startMaChanging()), editor->getUndoRedoFramework(), SLOT(sl_updateUndoRedoState()));
     connect(this, SIGNAL(si_stopMaChanging(bool)), editor->getUndoRedoFramework(), SLOT(sl_updateUndoRedoState()));
@@ -236,7 +236,7 @@ void MaEditorSequenceArea::setSelectionRect(const QRect& newSelectionRect) {
 void MaEditorSequenceArea::sl_onSelectionChanged(const MaEditorSelection&, const MaEditorSelection&) {
     exitFromEditCharacterMode();
     QList<int> selectedMaRowsIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
-    MultipleAlignmentObject* maObject = editor->getMaObject();
+    MsaObject* maObject = editor->getMaObject();
     QStringList selectedRowNames;
     for (int maRow : qAsConst(selectedMaRowsIndexes)) {
         selectedRowNames.append(maObject->getRow(maRow)->getName());
@@ -297,7 +297,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
 
-    MultipleAlignmentObject* maObj = getEditor()->getMaObject();
+    MsaObject* maObj = getEditor()->getMaObject();
     CHECK(!maObj->isStateLocked(), );
 
     SAFE_POINT(isInRange(selection.toRect()), "Selection is not in range!", );
@@ -343,7 +343,7 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
     CHECK(shift != 0, true);
 
     // shifting of selection
-    MultipleAlignmentObject* maObj = editor->getMaObject();
+    MsaObject* maObj = editor->getMaObject();
     if (maObj->isStateLocked()) {
         return false;
     }
@@ -372,7 +372,7 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
 }
 
 int MaEditorSequenceArea::shiftRegion(int shift) {
-    MultipleAlignmentObject* maObj = editor->getMaObject();
+    MsaObject* maObj = editor->getMaObject();
     const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), 0);
 
@@ -503,7 +503,7 @@ QVector<U2MsaGap> MaEditorSequenceArea::findCommonGapColumns(int& numOfColumns) 
 }
 
 U2MsaGap MaEditorSequenceArea::addTrailingGapColumns(int count) {
-    MultipleAlignmentObject* maObj = editor->getMaObject();
+    MsaObject* maObj = editor->getMaObject();
     qint64 length = maObj->getLength();
     return U2MsaGap(length, count);
 }
@@ -571,7 +571,7 @@ void MaEditorSequenceArea::onVisibleRangeChanged() {
 }
 
 bool MaEditorSequenceArea::isAlignmentLocked() const {
-    MultipleAlignmentObject* obj = editor->getMaObject();
+    MsaObject* obj = editor->getMaObject();
     SAFE_POINT(obj != nullptr, "Alignment object is not available", true);
     return obj->isStateLocked();
 }
@@ -656,7 +656,7 @@ void U2::MaEditorSequenceArea::sl_replaceSelectionWithGaps() {
     emit si_stopMaChanging(true);
 }
 
-void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo& modInfo) {
+void MaEditorSequenceArea::sl_alignmentChanged(const Msa&, const MaModificationInfo& modInfo) {
     exitFromEditCharacterMode();
     updateCollapseModel(modInfo);
     ui->getScrollController()->sl_updateScrollBars();
@@ -741,7 +741,7 @@ void MaEditorSequenceArea::sl_changeHighlightScheme() {
     highlightingScheme = factory->create(this, ui->getEditor()->getMaObject());
     highlightingScheme->applySettings(editor->getHighlightingSettings(id));
 
-    const MultipleAlignment ma = ui->getEditor()->getMaObject()->getAlignment();
+    const Msa ma = ui->getEditor()->getMaObject()->getAlignment();
 
     U2OpStatusImpl os;
     const int refSeq = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
@@ -921,7 +921,7 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent* event) {
     movableBorder = SelectionModificationHelper::NoMovableBorder;
 
     if (ctrlModeGapModel.isEmpty() && isCtrlPressed) {
-        MultipleAlignmentObject* maObj = editor->getMaObject();
+        MsaObject* maObj = editor->getMaObject();
         maObj->si_completeStateChanged(true);
         MaModificationInfo mi;
         mi.alignmentLengthChanged = false;
@@ -1200,14 +1200,14 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     // then shifting should be canceled
     cancelShiftTracking();
 
-    MultipleAlignmentObject* maObj = editor->getMaObject();
+    MsaObject* maObj = editor->getMaObject();
     CHECK(maObj != nullptr && !maObj->isStateLocked(), );
 
     U2OpStatus2Log os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     SAFE_POINT_OP(os, );
 
-    const MultipleAlignment& ma = maObj->getAlignment();
+    const Msa& ma = maObj->getAlignment();
     if (selectionRect.width() == ma->getLength() && selectionRect.height() == ma->getRowCount()) {
         return;
     }
@@ -1235,7 +1235,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
 void MaEditorSequenceArea::removeGapsBeforeSelection(int countOfGaps) {
     const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
-    MultipleAlignmentObject* maObj = editor->getMaObject();
+    MsaObject* maObj = editor->getMaObject();
     CHECK(!maObj->isStateLocked(), );
     QRect selectionRect = selection.toRect();
 
@@ -1309,7 +1309,7 @@ void MaEditorSequenceArea::updateColorAndHighlightSchemes() {
     if (!s || !editor) {
         return;
     }
-    MultipleAlignmentObject* maObj = editor->getMaObject();
+    MsaObject* maObj = editor->getMaObject();
     if (!maObj) {
         return;
     }
@@ -1353,7 +1353,7 @@ void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hs
     highlightingSchemeMenuActions.clear();
     SAFE_POINT(hsf != nullptr, "Highlight scheme factory is NULL", );
 
-    MultipleAlignmentObject* maObj = editor->getMaObject();
+    MsaObject* maObj = editor->getMaObject();
     QVariantMap settings = highlightingScheme != nullptr ? highlightingScheme->getSettings() : QVariantMap();
     delete highlightingScheme;
 
@@ -1505,7 +1505,7 @@ void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
 void MaEditorSequenceArea::replaceChar(char newCharacter) {
     CHECK(maMode == ReplaceCharMode, );
 
-    MultipleAlignmentObject* maObj = editor->getMaObject();
+    MsaObject* maObj = editor->getMaObject();
     CHECK(!maObj->isStateLocked(), );
 
     const MaEditorSelection& selection = editor->getSelection();
@@ -1521,7 +1521,7 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
             const QRect& selectedRect = selectedRects[i];
             for (int viewRowIndex = selectedRect.top(); viewRowIndex <= selectedRect.bottom() && !hasEmptyRowsAsResult; viewRowIndex++) {
                 int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
-                MultipleAlignmentRow row = maObj->getRow(maRowIndex);
+                MsaRow row = maObj->getRow(maRowIndex);
                 hasEmptyRowsAsResult = columnRange.contains(U2Region::fromStartAndEnd(row->getCoreStart(), row->getCoreEnd()));
             }
         }

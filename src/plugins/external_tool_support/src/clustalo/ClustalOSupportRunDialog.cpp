@@ -41,7 +41,7 @@
 namespace U2 {
 ////////////////////////////////////////
 // ClustalOSupportRunDialog
-ClustalOSupportRunDialog::ClustalOSupportRunDialog(const MultipleAlignment& _ma, ClustalOSupportTaskSettings& _settings, QWidget* _parent)
+ClustalOSupportRunDialog::ClustalOSupportRunDialog(const Msa& _ma, ClustalOSupportTaskSettings& _settings, QWidget* _parent)
     : QDialog(_parent), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930933");

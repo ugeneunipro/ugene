@@ -42,7 +42,7 @@ void McaEditorContext::sl_exportMca2Msa() {
     McaEditor* mcaEditor = qobject_cast<McaEditor*>(action->getObjectView());
     SAFE_POINT(mcaEditor != nullptr, "Mca Editor is NULL", );
 
-    MultipleAlignmentObject* mcaObject = mcaEditor->getMaObject();
+    MsaObject* mcaObject = mcaEditor->getMaObject();
     ExportUtils::launchExportMca2MsaTask(mcaObject);
 }
 

@@ -27,8 +27,8 @@
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -72,7 +72,7 @@ QString MsaEditorSimilarityColumn::getTextForRow(int s) {
         return tr("-");
     }
 
-    const MultipleAlignment ma = editor->getMaObject()->getAlignment();
+    const Msa ma = editor->getMaObject()->getAlignment();
     const qint64 referenceRowId = editor->getReferenceRowId();
     if (referenceRowId == U2MsaRow::INVALID_ROW_ID) {
         return tr("-");
@@ -206,7 +206,7 @@ MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(MsaEditorWg
 
     settings = &contentWidget->getSettings();
     MSAEditor* editor = settings->editor;
-    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this] { contentWidget->onAlignmentChanged(); });
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, [this] { contentWidget->onAlignmentChanged(); });
     connect(editor, &MaEditor::si_fontChanged, this, [this](const QFont& font) { nameWidget->setFont(font); });
 
     createWidgetUI();

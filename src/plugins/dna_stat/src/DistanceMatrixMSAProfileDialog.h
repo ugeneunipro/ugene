@@ -24,7 +24,7 @@
 #include <QHash>
 #include <QSet>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 #include <U2Core/global.h>
 
@@ -73,7 +73,7 @@ public:
     QString algoId;  // selected algorithm id
     QString profileName;  // usually object name
     QString profileURL;  // document url
-    MultipleAlignment ma;
+    Msa ma;
     bool usePercents;  // report percents but not counts
     bool excludeGaps;  // exclude gaps when calculate distance
     bool showGroupStatistic;
@@ -91,7 +91,7 @@ public:
     QString generateReport() const;
     virtual bool isReportingEnabled() const;
 
-    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleAlignmentRow>& rows, QFile* f);
+    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MsaRow>& rows, QFile* f);
 
     QList<Task*> createStatisticsDocument(Task* subTask);
 

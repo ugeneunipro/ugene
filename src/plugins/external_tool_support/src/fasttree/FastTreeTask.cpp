@@ -29,9 +29,9 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/Msa.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -40,14 +40,14 @@
 
 namespace U2 {
 
-FastTreeTaskContext::FastTreeTaskContext(const MultipleAlignment& _msa, const CreatePhyTreeSettings& _settings)
+FastTreeTaskContext::FastTreeTaskContext(const Msa& _msa, const CreatePhyTreeSettings& _settings)
     : msa(_msa), settings(_settings) {
 }
 
 //////////////////////////////////////////////////////////////////////////
 /// FastTreeTask
 
-FastTreeTask::FastTreeTask(const MultipleAlignment& msa, const CreatePhyTreeSettings& settings)
+FastTreeTask::FastTreeTask(const Msa& msa, const CreatePhyTreeSettings& settings)
     : PhyTreeGeneratorTask(msa, settings), context(msa, settings) {
     GCOUNTER(cvar, "ExternalTool_FastTree");
     setTaskName(tr("FastTree tree calculation"));

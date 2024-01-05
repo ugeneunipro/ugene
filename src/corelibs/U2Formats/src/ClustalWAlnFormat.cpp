@@ -32,10 +32,10 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentWalker.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
+#include <U2Core/MsaWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
@@ -84,7 +84,7 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
     const QBitArray& LINE_BREAKS = TextUtils::LINE_BREAKS;
 
     QString objName = reader.getURL().baseFileName();
-    MultipleAlignment al(objName);
+    Msa al(objName);
     bool lineOk = false;
     bool firstBlock = true;
     int sequenceIdx = 0;
@@ -173,7 +173,7 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
                 break;
             }
             if (rowIdx != -1) {
-                const MultipleAlignmentRow& row = al->getRow(rowIdx);
+                const MsaRow& row = al->getRow(rowIdx);
                 if (row->getName() != name) {
                     os.setError(ClustalWAlnFormat::tr("Sequence names are not matched: '%1' vs '%2', row index: %3").arg(name, row->getName(), QString::number(rowIdx)));
                     break;
@@ -201,7 +201,7 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
     CHECK_EXT(al->getAlphabet() != nullptr, os.setError(ClustalWAlnFormat::tr("Alphabet is unknown")), );
 
     QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
+    MsaObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
     CHECK_OP(os, );
     objects.append(obj);
 }
@@ -219,10 +219,10 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
     const QList<GObject*>& als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(als.size() == 1, "Clustal entry storing: alignment objects count error", );
 
-    auto obj = dynamic_cast<MultipleAlignmentObject*>(als.first());
+    auto obj = dynamic_cast<MsaObject*>(als.first());
     SAFE_POINT(obj != nullptr, "Clustal entry storing: NULL alignment object", );
 
-    const MultipleAlignment msa = obj->getAlignment();
+    const Msa msa = obj->getAlignment();
 
     // Write header.
     QString header("CLUSTAL W 2.0 multiple sequence alignment\n\n");
@@ -231,7 +231,7 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
 
     // Precalculate maximum sequence name length.
     int maxNameLength = 0;
-    foreach (const MultipleAlignmentRow& row, msa->getRows()) {
+    foreach (const MsaRow& row, msa->getRows()) {
         maxNameLength = qMax(maxNameLength, row->getName().length());
     }
     maxNameLength = qMin(maxNameLength, MAX_NAME_LEN);
@@ -260,16 +260,16 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
     const char* spaces = TextUtils::SPACE_LINE.constData();
 
     // Write sequence.
-    MultipleSequenceAlignmentWalker walker(msa);
+    MsaWalker walker(msa);
     for (int i = 0; i < aliLen; i += seqPerPage) {
         int partLen = i + seqPerPage > aliLen ? aliLen - i : seqPerPage;
         QList<QByteArray> seqs = walker.nextData(partLen, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleAlignmentRow> rows = msa->getRows().toList();
-        QList<MultipleAlignmentRow>::ConstIterator ri = rows.constBegin();
+        QList<MsaRow> rows = msa->getRows().toList();
+        QList<MsaRow>::ConstIterator ri = rows.constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MultipleAlignmentRow& row = *ri;
+            const MsaRow& row = *ri;
             // Name.
             QString line = row->getName();
             if (line.length() > MAX_NAME_LEN) {
@@ -307,7 +307,7 @@ void ClustalWAlnFormat::storeTextDocument(IOAdapterWriter& writer, Document* d, 
     const QList<GObject*>& objectList = d->getObjects();
     CHECK_EXT(objectList.size() == 1, (objectList.isEmpty() ? tr("No data to write") : tr("Too many objects: %1").arg(objectList.size())), );
 
-    auto obj = qobject_cast<MultipleAlignmentObject*>(objectList.first());
+    auto obj = qobject_cast<MsaObject*>(objectList.first());
     CHECK_EXT(obj != nullptr, os.setError(tr("Not a multiple alignment object")), );
 
     QMap<GObjectType, QList<GObject*>> objectsMap;

@@ -34,7 +34,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
@@ -53,7 +53,7 @@
 
 namespace U2 {
 
-CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, const MultipleAlignmentObject* msaObject, CreatePhyTreeSettings& settings)
+CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, const MsaObject* msaObject, CreatePhyTreeSettings& settings)
     : QDialog(parent),
       msa(msaObject->getAlignment()->getCopy()),
       settings(settings),
@@ -174,7 +174,7 @@ bool CreatePhyTreeDialogController::checkMemory() {
     return true;
 }
 
-void CreatePhyTreeDialogController::initSaveController(const MultipleAlignmentObject* msaObject) {
+void CreatePhyTreeDialogController::initSaveController(const MsaObject* msaObject) {
     SaveDocumentControllerConfig config;
     GUrl msaDocumentUrl = msaObject->getDocument()->getURL();
     QString saveDirPath = QFileInfo(msaDocumentUrl.getURLString()).absolutePath();

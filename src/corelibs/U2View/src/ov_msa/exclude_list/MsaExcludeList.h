@@ -42,8 +42,8 @@ class LoadDocumentTask;
 class MSAEditor;
 class MaModificationInfo;
 class MsaExcludeListWidget;
-class MultipleAlignment;
-class MultipleAlignmentRow;
+class Msa;
+class MsaRow;
 
 /** MSA editor built-in support for "MSA Exclude List" widget. */
 class MsaExcludeListContext : public GObjectViewWindowContext {
@@ -116,13 +116,13 @@ private:
     void moveMsaRowIndexesToExcludeList(const QList<int>& msaRowIndexes);
 
     /** Adds a minimal support of the synchronized Undo/Redo for the Exclude List and MSA Editor. */
-    void handleUndoRedoInMsaEditor(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo);
+    void handleUndoRedoInMsaEditor(const Msa& maBefore, const MaModificationInfo& modInfo);
 
     /** Adds a name list entry. If excludeListRowId <= 0 auto-assigns a new row id. Returns a valid exclude list row id. */
     int addEntry(const DNASequence& sequence, int excludeListRowId = 0);
 
     /** Adds a name list entry from MSA row. Fixes non-defined DNA sequence alphabet of MSA row. */
-    int addMsaRowEntry(const MultipleAlignmentRow& row, int excludeListRowId = 0);
+    int addMsaRowEntry(const MsaRow& row, int excludeListRowId = 0);
 
     /** Remove sequence entries from the Exclude List model. */
     void removeEntries(const QList<QListWidgetItem*>& items);

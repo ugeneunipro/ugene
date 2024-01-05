@@ -24,7 +24,7 @@
 
 #include <QDialog>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 
 #include "uhmmbuild.h"
@@ -41,7 +41,7 @@ class SaveDocumentController;
 class HMMBuildDialogController : public QDialog, public Ui_HMMBuildDialog {
     Q_OBJECT
 public:
-    HMMBuildDialogController(const QString& profileName, const MultipleAlignment& ma, QWidget* p = nullptr);
+    HMMBuildDialogController(const QString& profileName, const Msa& ma, QWidget* p = nullptr);
 
 public slots:
     void reject();
@@ -56,7 +56,7 @@ private slots:
 private:
     void initSaveController();
 
-    MultipleAlignment ma;
+    Msa ma;
     QString profileName;
     Task* task;
     QPushButton* okButton;
@@ -70,7 +70,7 @@ private:
 class HMMBuildTask : public Task {
     Q_OBJECT
 public:
-    HMMBuildTask(const UHMMBuildSettings& s, const MultipleAlignment& ma);
+    HMMBuildTask(const UHMMBuildSettings& s, const Msa& ma);
     ~HMMBuildTask();
 
     void run();
@@ -80,7 +80,7 @@ public:
     }
 
 private:
-    MultipleAlignment ma;
+    Msa ma;
     UHMMBuildSettings settings;
     plan7_s* hmm;
 };
@@ -90,7 +90,7 @@ class HMMBuildToFileTask : public Task {
 public:
     HMMBuildToFileTask(const QString& inFile, const QString& outFile, const UHMMBuildSettings& s);
 
-    HMMBuildToFileTask(const MultipleAlignment& ma, const QString& outFile, const UHMMBuildSettings& s);
+    HMMBuildToFileTask(const Msa& ma, const QString& outFile, const UHMMBuildSettings& s);
 
     virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
@@ -102,7 +102,7 @@ public:
 private:
     UHMMBuildSettings settings;
     QString outFile;
-    MultipleAlignment ma;
+    Msa ma;
     LoadDocumentTask* loadTask;
     HMMBuildTask* buildTask;
 };

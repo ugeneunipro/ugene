@@ -24,7 +24,7 @@
 #include <U2Core/DNASequence.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrl.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 namespace U2 {
 

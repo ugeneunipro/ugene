@@ -24,9 +24,9 @@
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleAlignmentInfo.h>
-#include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/MultipleAlignmentRowInfo.h>
+#include <U2Core/MsaInfo.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaRowInfo.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2MsaDbi.h>
@@ -38,8 +38,8 @@
 
 namespace U2 {
 
-MultipleAlignmentObject* MsaImportUtils::createMsaObject(const U2DbiRef& dbiRef,
-                                                         MultipleAlignment& al,
+MsaObject* MsaImportUtils::createMsaObject(const U2DbiRef& dbiRef,
+                                                         Msa& al,
                                                          U2OpStatus& os,
                                                          const QString& folder) {
     DbiConnection con(dbiRef, true, os);
@@ -82,11 +82,11 @@ MultipleAlignmentObject* MsaImportUtils::createMsaObject(const U2DbiRef& dbiRef,
         al->getRow(i)->setRowDbInfo(rows.at(i));
     }
 
-    return new MultipleAlignmentObject(al->getName(), U2EntityRef(dbiRef, msaId), QVariantMap(), al);
+    return new MsaObject(al->getName(), U2EntityRef(dbiRef, msaId), QVariantMap(), al);
 }
 
-MultipleAlignmentObject* MsaImportUtils::createMcaObject(const U2DbiRef& dbiRef,
-                                                         MultipleAlignment& mca,
+MsaObject* MsaImportUtils::createMcaObject(const U2DbiRef& dbiRef,
+                                                         Msa& mca,
                                                          U2OpStatus& os,
                                                          const QString& folder) {
     DbiConnection connection(dbiRef, true, os);
@@ -116,7 +116,7 @@ MultipleAlignmentObject* MsaImportUtils::createMcaObject(const U2DbiRef& dbiRef,
         mca->getRow(i)->setRowDbInfo(rows.at(i));
     }
 
-    return new MultipleAlignmentObject(mca->getName(), U2EntityRef(dbiRef, dbMca.id), QVariantMap(), mca, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT);
+    return new MsaObject(mca->getName(), U2EntityRef(dbiRef, dbMca.id), QVariantMap(), mca, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT);
 }
 
 U2DataId MsaImportUtils::createEmptyMsaObject(const DbiConnection& con, const QString& folder, const QString& name, const DNAAlphabet* alphabet, U2OpStatus& os) {
@@ -144,7 +144,7 @@ void MsaImportUtils::importMsaInfo(const DbiConnection& con, const U2DataId& msa
     SAFE_POINT(attrDbi != nullptr, "NULL Attribute Dbi during importing an alignment!", );
 
     foreach (QString key, alInfo.keys()) {
-        if (key != MultipleAlignmentInfo::NAME) {  // name is stored in the object
+        if (key != MsaInfo::NAME) {  // name is stored in the object
             QString val = alInfo.value(key).value<QString>();
             U2StringAttribute attr(msaId, key, val);
 
@@ -154,7 +154,7 @@ void MsaImportUtils::importMsaInfo(const DbiConnection& con, const U2DataId& msa
     }
 }
 
-QList<U2Sequence> MsaImportUtils::importMsaSequences(const DbiConnection& con, const QString& folder, const MultipleAlignment& al, U2OpStatus& os) {
+QList<U2Sequence> MsaImportUtils::importMsaSequences(const DbiConnection& con, const QString& folder, const Msa& al, U2OpStatus& os) {
     U2SequenceDbi* seqDbi = con.dbi->getSequenceDbi();
     SAFE_POINT(seqDbi != nullptr, "NULL Sequence Dbi during importing an alignment!", QList<U2Sequence>());
 
@@ -188,7 +188,7 @@ QList<U2Sequence> MsaImportUtils::importMsaSequences(const DbiConnection& con, c
 }
 
 QList<U2MsaRow> MsaImportUtils::importMsaRows(const DbiConnection& con,
-                                              MultipleAlignment& al,
+                                              Msa& al,
                                               const U2DataId& msaId,
                                               const QList<U2Sequence>& sequences,
                                               const QList<QVector<U2MsaGap>>& msaGapModel,
@@ -198,7 +198,7 @@ QList<U2MsaRow> MsaImportUtils::importMsaRows(const DbiConnection& con,
 
     for (int rowIdx = 0, seqIdx = 0; rowIdx < al->getRowCount(); ++rowIdx, ++seqIdx) {
         U2Sequence seq = sequences[seqIdx];
-        MultipleAlignmentRow alignmentRow = al->getRow(rowIdx);
+        MsaRow alignmentRow = al->getRow(rowIdx);
         const QVector<U2MsaGap>& gapModel = msaGapModel[rowIdx];
         if (!gapModel.isEmpty() && (gapModel.last().startPos + gapModel.last().length) == MsaRowUtils::getRowLength(alignmentRow->getSequence().seq, gapModel)) {
             // remove trailing gap if it exists
@@ -224,7 +224,7 @@ QList<U2MsaRow> MsaImportUtils::importMsaRows(const DbiConnection& con,
     return rows;
 }
 
-U2Msa MsaImportUtils::importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleAlignment& mca) {
+U2Msa MsaImportUtils::importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const Msa& mca) {
     U2Msa dbMca(U2Type::Mca);
     const DNAAlphabet* alphabet = mca->getAlphabet();
     SAFE_POINT_EXT(alphabet != nullptr, os.setError("The alignment alphabet is NULL during importing"), U2Msa(U2Type::Mca));
@@ -248,14 +248,14 @@ U2Msa MsaImportUtils::importMcaObject(U2OpStatus& os, const DbiConnection& conne
     return dbMca;
 }
 
-void MsaImportUtils::importMcaInfo(U2OpStatus& os, const DbiConnection& connection, const U2DataId& mcaId, const MultipleAlignment& mca) {
+void MsaImportUtils::importMcaInfo(U2OpStatus& os, const DbiConnection& connection, const U2DataId& mcaId, const Msa& mca) {
     const QVariantMap info = mca->getInfo();
 
     U2AttributeDbi* attributeDbi = connection.dbi->getAttributeDbi();
     SAFE_POINT_EXT(attributeDbi != nullptr, os.setError("NULL Attribute Dbi during importing an alignment"), );
 
     foreach (const QString key, info.keys()) {
-        if (key != MultipleAlignmentInfo::NAME) {  // name is stored in the object
+        if (key != MsaInfo::NAME) {  // name is stored in the object
             const QString value = info.value(key).toString();
             U2StringAttribute attribute(mcaId, key, value);
             attributeDbi->createStringAttribute(attribute, os);
@@ -267,7 +267,7 @@ void MsaImportUtils::importMcaInfo(U2OpStatus& os, const DbiConnection& connecti
 QList<MsaDbRowSnapshot> MsaImportUtils::importRowChildObjects(U2OpStatus& os,
                                                               const DbiConnection& connection,
                                                               const QString& folder,
-                                                              const MultipleAlignment& mca) {
+                                                              const Msa& mca) {
     QList<MsaDbRowSnapshot> mcaRowsDatabaseData;
     UdrDbi* udrDbi = connection.dbi->getUdrDbi();
     SAFE_POINT_EXT(udrDbi != nullptr, os.setError("NULL UDR Dbi during importing an alignment"), mcaRowsDatabaseData);
@@ -278,7 +278,7 @@ QList<MsaDbRowSnapshot> MsaImportUtils::importRowChildObjects(U2OpStatus& os,
     SAFE_POINT_EXT(alphabet != nullptr, os.setError("MCA alphabet is NULL"), mcaRowsDatabaseData);
     const U2AlphabetId alphabetId = alphabet->getId();
 
-    foreach (const MultipleAlignmentRow& row, mca->getRows()) {
+    foreach (const MsaRow& row, mca->getRows()) {
         MsaDbRowSnapshot mcaRowDatabaseData;
 
         mcaRowDatabaseData.chromatogram = importChromatogram(os, connection, folder, row->getChromatogram());
@@ -352,18 +352,18 @@ U2Sequence MsaImportUtils::importReferenceSequence(U2OpStatus& os,
 void MsaImportUtils::importRowAdditionalInfo(U2OpStatus& os, const DbiConnection& connection, const U2Chromatogram& chromatogram, const QVariantMap& additionalInfo) {
     U2IntegerAttribute reversedAttribute;
     reversedAttribute.objectId = chromatogram.id;
-    reversedAttribute.name = MultipleAlignmentRowInfo::REVERSED;
+    reversedAttribute.name = MsaRowInfo::REVERSED;
     reversedAttribute.version = chromatogram.version;
-    reversedAttribute.value = MultipleAlignmentRowInfo::getReversed(additionalInfo) ? 1 : 0;
+    reversedAttribute.value = MsaRowInfo::getReversed(additionalInfo) ? 1 : 0;
 
     connection.dbi->getAttributeDbi()->createIntegerAttribute(reversedAttribute, os);
     CHECK_OP(os, );
 
     U2IntegerAttribute complementedAttribute;
     complementedAttribute.objectId = chromatogram.id;
-    complementedAttribute.name = MultipleAlignmentRowInfo::COMPLEMENTED;
+    complementedAttribute.name = MsaRowInfo::COMPLEMENTED;
     complementedAttribute.version = chromatogram.version;
-    complementedAttribute.value = MultipleAlignmentRowInfo::getComplemented(additionalInfo) ? 1 : 0;
+    complementedAttribute.value = MsaRowInfo::getComplemented(additionalInfo) ? 1 : 0;
 
     connection.dbi->getAttributeDbi()->createIntegerAttribute(complementedAttribute, os);
     CHECK_OP(os, );

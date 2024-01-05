@@ -40,12 +40,12 @@ public:
 class NeighborJoinWidget : public CreatePhyTreeWidget, public Ui_NeighborJoinWidget {
     Q_OBJECT
 public:
-    NeighborJoinWidget(const MultipleAlignment& ma, QWidget* parent = nullptr);
+    NeighborJoinWidget(const Msa& ma, QWidget* parent = nullptr);
 
     void fillSettings(CreatePhyTreeSettings& settings);
     void storeSettings();
     void restoreDefault();
-    bool checkMemoryEstimation(QString& msg, const MultipleAlignment& msa, const CreatePhyTreeSettings& settings);
+    bool checkMemoryEstimation(QString& msg, const Msa& msa, const CreatePhyTreeSettings& settings);
     bool checkSettings(QString& msg, const CreatePhyTreeSettings& settings);
 
 private slots:
@@ -53,7 +53,7 @@ private slots:
     void sl_onConsensusTypeChanged(const QString& consensusTypeName);
 
 private:
-    void init(const MultipleAlignment& ma);
+    void init(const Msa& ma);
     void connectSignals();
     static int getRandomSeed();
     static bool checkSeed(int seed);

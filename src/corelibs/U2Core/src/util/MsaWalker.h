@@ -21,17 +21,25 @@
 
 #pragma once
 
+#include <U2Core/Msa.h>
+
 namespace U2 {
 
-class MultipleAlignmentData;
+class RowWalker;
 
-class MaStateCheck {
+class U2CORE_EXPORT MsaWalker {
 public:
-    MaStateCheck(const MultipleAlignmentData* maData);
-    ~MaStateCheck();
+    MsaWalker(const Msa& msa, char gapChar = U2Msa::GAP_CHAR);
+    ~MsaWalker();
+
+    bool isEnded() const;
+
+    QList<QByteArray> nextData(int length, U2OpStatus& os);
 
 private:
-    const MultipleAlignmentData* maData;
+    const Msa& msa;
+    int currentOffset;
+    QList<RowWalker*> rowWalkerList;
 };
 
 }  // namespace U2

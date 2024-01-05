@@ -61,15 +61,15 @@ void SeqBoot::initGenerSeq(int reps, int seqLen) {
     this->seqLen = seqLen;
 
     for (int i = 0; i < reps; i++) {
-        generatedSeq << MultipleAlignment(QString("bootstrap %1").arg(reps), malignment->getAlphabet());
+        generatedSeq << Msa(QString("bootstrap %1").arg(reps), malignment->getAlphabet());
     }
 }
 
-const MultipleAlignment& SeqBoot::getMSA(int pos) const {
+const Msa& SeqBoot::getMSA(int pos) const {
     return generatedSeq[pos];
 }
 
-void SeqBoot::generateSequencesFromAlignment(const MultipleAlignment& ma, const CreatePhyTreeSettings& settings) {
+void SeqBoot::generateSequencesFromAlignment(const Msa& ma, const CreatePhyTreeSettings& settings) {
     if (!settings.bootstrap) {
         return;
     }
@@ -94,7 +94,7 @@ void SeqBoot::generateSequencesFromAlignment(const MultipleAlignment& ma, const 
     nodep_boot = matrix_char_new(spp, sites);
     for (int k = 0; k < spp; k++) {
         for (int j = 0; j < sites; j++) {
-            const MultipleAlignmentRow& rowK = ma->getRow(k);
+            const MsaRow& rowK = ma->getRow(k);
             nodep_boot[k][j] = rowK->charAt(j);
         }
     }

@@ -25,12 +25,12 @@
 
 #include <U2Algorithm/MSAConsensusUtils.h>
 
-#include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaObject.h>
 
 namespace U2 {
 
-MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj)
     : MsaColorScheme(parent, factory, maObj),
       cacheVersion(0),
       objVersion(1) {
@@ -47,7 +47,7 @@ MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject* pare
     memset(tmpChars, 0, sizeof(char) * 4);
     memset(tmpRanges, 0, sizeof(int) * 4);
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemePercentageIdentity::getBackgroundColor(int seq, int pos, char c) const {
@@ -84,7 +84,7 @@ void MsaColorSchemePercentageIdentity::updateCache() const {
     if (cacheVersion == objVersion) {
         return;
     }
-    const MultipleAlignment msa = maObj->getAlignment();
+    const Msa msa = maObj->getAlignment();
     int aliLen = msa->getLength();
     indentCache.resize(aliLen);
     for (int i = 0; i < aliLen; i++) {
@@ -97,7 +97,7 @@ MsaColorSchemePercentageIdentityFactory::MsaColorSchemePercentageIdentityFactory
     : MsaColorSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaColorScheme* MsaColorSchemePercentageIdentityFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaColorScheme* MsaColorSchemePercentageIdentityFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaColorSchemePercentageIdentity(parent, this, maObj);
 }
 

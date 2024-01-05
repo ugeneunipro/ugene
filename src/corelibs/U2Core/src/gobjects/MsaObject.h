@@ -25,24 +25,24 @@
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/MaModificationInfo.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 namespace U2 {
 
-class MaSavedState {
+class MsaSavedState {
 public:
-    MaSavedState();
-    ~MaSavedState();
+    MsaSavedState();
+    ~MsaSavedState();
 
     bool hasState() const;
-    MultipleAlignment takeState();
-    void setState(const MultipleAlignment& ma);
+    Msa takeState();
+    void setState(const Msa& ma);
 
 private:
-    MultipleAlignment* lastState;
+    Msa* lastState;
 };
 
-class U2CORE_EXPORT MultipleAlignmentObject : public GObject {
+class U2CORE_EXPORT MsaObject : public GObject {
     Q_OBJECT
 public:
     static const QString REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT;
@@ -52,20 +52,20 @@ public:
         Right = 2
     };
 
-    MultipleAlignmentObject(const QString& name,
+    MsaObject(const QString& name,
                             const U2EntityRef& maRef,
                             const QVariantMap& hintsMap = {},
-                            const MultipleAlignment& alignment = {},
+                            const Msa& alignment = {},
                             const GObjectType& objectType = GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
 
-    ~MultipleAlignmentObject() override;
+    ~MsaObject() override;
 
     /** Sets type of modifications tracking for the alignment */
     void setTrackMod(U2OpStatus& os, U2TrackModType trackMod);
 
     /** Returns cached in-memory msa object model. */
-    const MultipleAlignment& getAlignment() const;
-    void setMultipleAlignment(const MultipleAlignment& ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap& hints = QVariantMap());
+    const Msa& getAlignment() const;
+    void setMultipleAlignment(const Msa& ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap& hints = QVariantMap());
 
     /** GObject methods */
     void setGObjectName(const QString& newName) override;
@@ -74,8 +74,8 @@ public:
     const DNAAlphabet* getAlphabet() const;
     qint64 getLength() const;
     qint64 getRowCount() const;
-    const QVector<MultipleAlignmentRow>& getRows() const;
-    const MultipleAlignmentRow& getRow(int row) const;
+    const QVector<MsaRow>& getRows() const;
+    const MsaRow& getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
     char charAt(int seqNum, qint64 position) const;
 
@@ -202,7 +202,7 @@ public:
      * The map must contain valid row IDs and corresponding gap models.
      */
     void updateGapModel(U2OpStatus& os, const QMap<qint64, QVector<U2MsaGap>>& rowsGapModel);
-    void updateGapModel(const QList<MultipleAlignmentRow>& sourceRows);
+    void updateGapModel(const QList<MsaRow>& sourceRows);
 
     /** Methods to work with rows */
     void updateRow(U2OpStatus& os, int rowIdx, const QString& name, const QByteArray& seqBytes, const QVector<U2MsaGap>& gapModel);
@@ -231,11 +231,11 @@ public:
 
     void deleteColumnsWithGaps(U2OpStatus& os, int requiredGapsCount = -1);
 
-    MultipleAlignmentObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = {}) const override;
+    MsaObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = {}) const override;
 
 signals:
     void si_startMaUpdating();
-    void si_alignmentChanged(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo);
+    void si_alignmentChanged(const Msa& maBefore, const MaModificationInfo& modInfo);
     void si_alignmentBecomesEmpty(bool isEmpty);
     void si_completeStateChanged(bool complete);
     void si_rowsRemoved(const QList<qint64>& rowIds);
@@ -245,7 +245,7 @@ signals:
 protected:
     void loadAlignment(U2OpStatus& os);
     void updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds);
-    void updateDatabase(U2OpStatus& os, const MultipleAlignment& ma);
+    void updateDatabase(U2OpStatus& os, const Msa& ma);
     void removeRowPrivate(U2OpStatus& os, const U2EntityRef& maRef, qint64 rowId);
     void removeRegionPrivate(U2OpStatus& os, const U2EntityRef& maRef, const QList<qint64>& rows, int startPos, int nBases);
 
@@ -260,9 +260,9 @@ protected:
      */
     int getMaxWidthOfGapRegion(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps);
 
-    MultipleAlignment cachedMa;
+    Msa cachedMa;
 
-    MaSavedState savedState;
+    MsaSavedState savedState;
 
     /** Lazily loaded reference sequence object. Present only for Mca objects. */
     mutable U2SequenceObject* referenceObj = nullptr;

@@ -22,7 +22,7 @@
 #include "PhylipTask.h"
 
 #include <U2Core/CmdlineInOutTaskRunner.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -35,7 +35,7 @@ PhylipTask::PhylipTask(const U2EntityRef& msaRef, const U2DbiRef& outDbiRef, con
 }
 
 void PhylipTask::prepare() {
-    MultipleAlignmentObject* msaObject = new MultipleAlignmentObject("msa", msaRef);
+    MsaObject* msaObject = new MsaObject("msa", msaRef);
     msaObject->setParent(this);
 
     treeTask = new NeighborJoinCalculateTreeTask(msaObject->getAlignment(), settings);

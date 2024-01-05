@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include "MultipleSequenceAlignmentWalker.h"
+#include "MsaWalker.h"
 
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -30,7 +30,7 @@ namespace U2 {
 
 class RowWalker {
 public:
-    RowWalker(const MultipleAlignmentRow& row, char gapChar)
+    RowWalker(const MsaRow& row, char gapChar)
         : row(row), gaps(row->getGaps()), seqPos(0), gapChar(gapChar) {
     }
 
@@ -97,7 +97,7 @@ private:
         }
 
         SAFE_POINT_EXT((startPos + length >= inRegion.startPos + inRegion.length) && (inRegion.length + outRegion.length == gap.length),
-                       os.setError(L10N::internalError() + MultipleAlignmentObject::tr(" Incorrect gap splitting")), );
+                       os.setError(L10N::internalError() + MsaObject::tr(" Incorrect gap splitting")), );
     }
 
     QByteArray gapsBytes(int length) const {
@@ -105,7 +105,7 @@ private:
     }
 
 private:
-    const MultipleAlignmentRow row;
+    const MsaRow row;
     QVector<U2MsaGap> gaps;
     int seqPos;
     const char gapChar;
@@ -114,22 +114,22 @@ private:
 /************************************************************************/
 /* MultipleSequenceAlignmentWalker */
 /************************************************************************/
-MultipleSequenceAlignmentWalker::MultipleSequenceAlignmentWalker(const MultipleAlignment& msa, char gapChar)
+MsaWalker::MsaWalker(const Msa& msa, char gapChar)
     : msa(msa), currentOffset(0) {
     for (int i = 0; i < msa->getRowCount(); i++) {
         rowWalkerList << new RowWalker(msa->getRow(i), gapChar);
     }
 }
 
-MultipleSequenceAlignmentWalker::~MultipleSequenceAlignmentWalker() {
+MsaWalker::~MsaWalker() {
     qDeleteAll(rowWalkerList);
 }
 
-bool MultipleSequenceAlignmentWalker::isEnded() const {
+bool MsaWalker::isEnded() const {
     return currentOffset >= msa->getLength();
 }
 
-QList<QByteArray> MultipleSequenceAlignmentWalker::nextData(int length, U2OpStatus& os) {
+QList<QByteArray> MsaWalker::nextData(int length, U2OpStatus& os) {
     QList<QByteArray> result;
     SAFE_POINT_EXT(!isEnded(), os.setError(L10N::internalError() + QString(" Alignment walker is ended")), result);
     SAFE_POINT_EXT(msa->getRowCount() == rowWalkerList.size(), os.setError(L10N::internalError() + QString(" Alignment changed")), result);

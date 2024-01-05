@@ -39,7 +39,7 @@ class LoadDocumentTask;
 class MrBayesPrepareDataForCalculation : public Task {
     Q_OBJECT
 public:
-    MrBayesPrepareDataForCalculation(const MultipleAlignment& _ma, const CreatePhyTreeSettings& s, const QString& url);
+    MrBayesPrepareDataForCalculation(const Msa& _ma, const CreatePhyTreeSettings& s, const QString& url);
     void prepare();
     QList<Task*> onSubTaskFinished(Task* subTask);
     QString getInputFileUrl() {
@@ -47,7 +47,7 @@ public:
     }
 
 private:
-    const MultipleAlignment& ma;
+    const Msa& ma;
     CreatePhyTreeSettings settings;
     QString tmpDirUrl;
     SaveAlignmentTask* saveDocumentTask;
@@ -88,7 +88,7 @@ private:
 class MrBayesSupportTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
-    MrBayesSupportTask(const MultipleAlignment& _ma, const CreatePhyTreeSettings& s);
+    MrBayesSupportTask(const Msa& _ma, const CreatePhyTreeSettings& s);
     void prepare() override;
     Task::ReportResult report() override;
     QList<Task*> onSubTaskFinished(Task* subTask) override;

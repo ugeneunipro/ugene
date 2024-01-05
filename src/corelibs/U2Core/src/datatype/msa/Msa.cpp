@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "MultipleAlignment.h"
+#include "Msa.h"
 
 #include <QSet>
 
@@ -28,13 +28,13 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "MaStateCheck.h"
-#include "MultipleAlignmentInfo.h"
+#include "MsaInfo.h"
+#include "MsaStateCheck.h"
 
 namespace U2 {
 
-MultipleAlignment::MultipleAlignment(const QString& name, const DNAAlphabet* alphabet)
-    : maData(new MultipleAlignmentData()) {
+Msa::Msa(const QString& name, const DNAAlphabet* alphabet)
+    : maData(new MsaData()) {
     if (!name.isEmpty()) {
         maData->setName(name);
     }
@@ -43,35 +43,35 @@ MultipleAlignment::MultipleAlignment(const QString& name, const DNAAlphabet* alp
     }
 }
 
-MultipleAlignment::MultipleAlignment(MultipleAlignmentData* _maData)
+Msa::Msa(MsaData* _maData)
     : maData(_maData) {
 }
 
-MultipleAlignmentData* MultipleAlignment::data() const {
+MsaData* Msa::data() const {
     return maData.data();
 }
 
-MultipleAlignmentData& MultipleAlignment::operator*() {
+MsaData& Msa::operator*() {
     return *maData;
 }
 
-const MultipleAlignmentData& MultipleAlignment::operator*() const {
+const MsaData& Msa::operator*() const {
     return *maData;
 }
 
-MultipleAlignmentData* MultipleAlignment::operator->() {
+MsaData* Msa::operator->() {
     return maData.data();
 }
 
-const MultipleAlignmentData* MultipleAlignment::operator->() const {
+const MsaData* Msa::operator->() const {
     return maData.data();
 }
 
-MultipleAlignmentData::MultipleAlignmentData(const QString& name,
-                                             const DNAAlphabet* _alphabet,
-                                             const QVector<MultipleAlignmentRow>& _rows)
+MsaData::MsaData(const QString& name,
+                 const DNAAlphabet* _alphabet,
+                 const QVector<MsaRow>& _rows)
     : alphabet(_alphabet), rows(_rows) {
-    MaStateCheck check(this);
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     SAFE_POINT(alphabet == nullptr || !name.isEmpty(), "Incorrect parameters in MultipleAlignmentData ctor", );  // TODO: check the condition, it is strange
@@ -82,31 +82,31 @@ MultipleAlignmentData::MultipleAlignmentData(const QString& name,
     }
 }
 
-MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentData& data) {
+MsaData::MsaData(const MsaData& data) {
     copyFrom(data);
 }
 
-void MultipleAlignmentData::copyFrom(const MultipleAlignmentData& other) {
+void MsaData::copyFrom(const MsaData& other) {
     clear();
     alphabet = other.alphabet;
     length = other.length;
     info = other.info;
 
     for (int i = 0; i < other.rows.size(); i++) {
-        MultipleAlignmentRow row = createRow(other.rows[i]);
+        MsaRow row = createRow(other.rows[i]);
         addRowPrivate(row, other.length, i);
     }
 }
 
-void MultipleAlignmentData::clear() {
-    MaStateCheck check(this);
+void MsaData::clear() {
+    MsaStateCheck check(this);
     Q_UNUSED(check);
     rows.clear();
     length = 0;
 }
 
-bool MultipleAlignmentData::trim(bool removeLeadingGaps) {
-    MaStateCheck check(this);
+bool MsaData::trim(bool removeLeadingGaps) {
+    MsaStateCheck check(this);
 
     bool result = false;
 
@@ -146,7 +146,7 @@ bool MultipleAlignmentData::trim(bool removeLeadingGaps) {
 
     // Verify right side of the alignment (trailing gaps and rows' lengths)
     qint64 newLength = 0;
-    foreach (const MultipleAlignmentRow& row, rows) {
+    foreach (const MsaRow& row, rows) {
         if (newLength == 0) {
             newLength = row->getRowLengthWithoutTrailing();
         } else {
@@ -162,8 +162,8 @@ bool MultipleAlignmentData::trim(bool removeLeadingGaps) {
     return result;
 }
 
-bool MultipleAlignmentData::simplify() {
-    MaStateCheck check(this);
+bool MsaData::simplify() {
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     int newLen = 0;
@@ -181,43 +181,43 @@ bool MultipleAlignmentData::simplify() {
     return true;
 }
 
-QString MultipleAlignmentData::getName() const {
-    return MultipleAlignmentInfo::getName(info);
+QString MsaData::getName() const {
+    return MsaInfo::getName(info);
 }
 
-void MultipleAlignmentData::setName(const QString& newName) {
-    MultipleAlignmentInfo::setName(info, newName);
+void MsaData::setName(const QString& newName) {
+    MsaInfo::setName(info, newName);
 }
 
-const DNAAlphabet* MultipleAlignmentData::getAlphabet() const {
+const DNAAlphabet* MsaData::getAlphabet() const {
     return alphabet;
 }
 
-void MultipleAlignmentData::setAlphabet(const DNAAlphabet* newAlphabet) {
+void MsaData::setAlphabet(const DNAAlphabet* newAlphabet) {
     SAFE_POINT(newAlphabet != nullptr, "Internal error: attempted to set NULL alphabet for the alignment", );
     alphabet = newAlphabet;
 }
 
-QVariantMap MultipleAlignmentData::getInfo() const {
+QVariantMap MsaData::getInfo() const {
     return info;
 }
 
-void MultipleAlignmentData::setInfo(const QVariantMap& newInfo) {
+void MsaData::setInfo(const QVariantMap& newInfo) {
     info = newInfo;
 }
 
-bool MultipleAlignmentData::isEmpty() const {
+bool MsaData::isEmpty() const {
     return getLength() == 0 || rows.isEmpty();
 }
 
-int MultipleAlignmentData::getLength() const {
+int MsaData::getLength() const {
     return (int)length;
 }
 
-void MultipleAlignmentData::setLength(int newLength) {
+void MsaData::setLength(int newLength) {
     SAFE_POINT(newLength >= 0, QString("Internal error: attempted to set length '%1' for an alignment").arg(newLength), );
 
-    MaStateCheck check(this);
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     if (newLength >= length) {
@@ -233,59 +233,59 @@ void MultipleAlignmentData::setLength(int newLength) {
     length = newLength;
 }
 
-int MultipleAlignmentData::getRowCount() const {
+int MsaData::getRowCount() const {
     return rows.size();
 }
 
-QList<QVector<U2MsaGap>> MultipleAlignmentData::getGapModel() const {
+QList<QVector<U2MsaGap>> MsaData::getGapModel() const {
     QList<QVector<U2MsaGap>> gapModel;
-    for (const MultipleAlignmentRow& row : qAsConst(rows)) {
+    for (const MsaRow& row : qAsConst(rows)) {
         gapModel << row->getGaps();
     }
     return gapModel;
 }
 
-static bool isGreaterByName(const MultipleAlignmentRow& row1, const MultipleAlignmentRow& row2) {
+static bool isGreaterByName(const MsaRow& row1, const MsaRow& row2) {
     return QString::compare(row1->getName(), row2->getName(), Qt::CaseInsensitive) > 0;
 }
 
-static bool isLessByName(const MultipleAlignmentRow& row1, const MultipleAlignmentRow& row2) {
+static bool isLessByName(const MsaRow& row1, const MsaRow& row2) {
     return QString::compare(row1->getName(), row2->getName(), Qt::CaseInsensitive) < 0;
 }
 
-static bool isGreaterByLength(const MultipleAlignmentRow& row1, const MultipleAlignmentRow& row2) {
+static bool isGreaterByLength(const MsaRow& row1, const MsaRow& row2) {
     return row1->getUngappedLength() > row2->getUngappedLength();
 }
 
-static bool isLessByLength(const MultipleAlignmentRow& row1, const MultipleAlignmentRow& row2) {
+static bool isLessByLength(const MsaRow& row1, const MsaRow& row2) {
     return row1->getUngappedLength() < row2->getUngappedLength();
 }
 
-static bool isGreaterByLeadingGap(const MultipleAlignmentRow& row1, const MultipleAlignmentRow& row2) {
+static bool isGreaterByLeadingGap(const MsaRow& row1, const MsaRow& row2) {
     return row1->getCoreStart() > row2->getCoreStart();
 }
 
-static bool isLessByLeadingGap(const MultipleAlignmentRow& row1, const MultipleAlignmentRow& row2) {
+static bool isLessByLeadingGap(const MsaRow& row1, const MsaRow& row2) {
     return row1->getCoreStart() < row2->getCoreStart();
 }
 
-void MultipleAlignmentData::sortRows(const MultipleAlignment::SortType& sortType, MultipleAlignment::Order order, const U2Region& range) {
+void MsaData::sortRows(const Msa::SortType& sortType, Msa::Order order, const U2Region& range) {
     U2Region allRowsRange = U2Region(0, rows.size());
     SAFE_POINT(range.intersect(allRowsRange) == range, "Sort range is out of bounds", )
-    MaStateCheck check(this);
+    MsaStateCheck check(this);
     Q_UNUSED(check);
-    bool isAscending = order == MultipleAlignment::Ascending;
+    bool isAscending = order == Msa::Ascending;
     U2Region sortingRange = range.isEmpty() ? allRowsRange : range;
     const auto& rangeStartIterator = rows.begin() + sortingRange.startPos;
     const auto& rangeEndIterator = rows.begin() + sortingRange.endPos();
     switch (sortType) {
-        case MultipleAlignment::SortByName:
+        case Msa::SortByName:
             std::stable_sort(rangeStartIterator, rangeEndIterator, isAscending ? isLessByName : isGreaterByName);
             break;
-        case MultipleAlignment::SortByLength:
+        case Msa::SortByLength:
             std::stable_sort(rangeStartIterator, rangeEndIterator, isAscending ? isLessByLength : isGreaterByLength);
             break;
-        case MultipleAlignment::SortByLeadingGap:
+        case Msa::SortByLeadingGap:
             std::stable_sort(rangeStartIterator, rangeEndIterator, isAscending ? isLessByLeadingGap : isGreaterByLeadingGap);
             break;
         default:
@@ -293,22 +293,22 @@ void MultipleAlignmentData::sortRows(const MultipleAlignment::SortType& sortType
     }
 }
 
-MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {
-    static MultipleAlignmentRow emptyRow;
+MsaRow MsaData::getRow(int rowIndex) {
+    static MsaRow emptyRow;
     int rowCount = rows.count();
     SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
-const MultipleAlignmentRow& MultipleAlignmentData::getRow(int rowIndex) const {
-    static MultipleAlignmentRow emptyRow;
+const MsaRow& MsaData::getRow(int rowIndex) const {
+    static MsaRow emptyRow;
     int rowCount = rows.count();
     SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
-const MultipleAlignmentRow& MultipleAlignmentData::getRow(const QString& name) const {
-    static MultipleAlignmentRow emptyRow;
+const MsaRow& MsaData::getRow(const QString& name) const {
+    static MsaRow emptyRow;
     for (int i = 0; i < rows.count(); i++) {
         if (rows[i]->getName() == name) {
             return rows[i];
@@ -317,19 +317,19 @@ const MultipleAlignmentRow& MultipleAlignmentData::getRow(const QString& name) c
     FAIL("Internal error: row name passed to MultipleAlignmentData::getRow function not exists", emptyRow);
 }
 
-const QVector<MultipleAlignmentRow>& MultipleAlignmentData::getRows() const {
+const QVector<MsaRow>& MsaData::getRows() const {
     return rows;
 }
 
-QList<qint64> MultipleAlignmentData::getRowsIds() const {
+QList<qint64> MsaData::getRowsIds() const {
     QList<qint64> rowIds;
-    foreach (const MultipleAlignmentRow& row, rows) {
+    foreach (const MsaRow& row, rows) {
         rowIds.append(row->getRowId());
     }
     return rowIds;
 }
 
-QList<qint64> MultipleAlignmentData::getRowIdsByRowIndexes(const QList<int>& rowIndexes) const {
+QList<qint64> MsaData::getRowIdsByRowIndexes(const QList<int>& rowIndexes) const {
     QList<qint64> rowIds;
     foreach (int rowIndex, rowIndexes) {
         bool isValidRowIndex = rowIndex >= 0 && rowIndex < rows.size();
@@ -338,9 +338,9 @@ QList<qint64> MultipleAlignmentData::getRowIdsByRowIndexes(const QList<int>& row
     return rowIds;
 }
 
-MultipleAlignmentRow MultipleAlignmentData::getRowByRowId(qint64 rowId, U2OpStatus& os) const {
-    static MultipleAlignmentRow emptyRow;
-    foreach (const MultipleAlignmentRow& row, rows) {
+MsaRow MsaData::getRowByRowId(qint64 rowId, U2OpStatus& os) const {
+    static MsaRow emptyRow;
+    foreach (const MsaRow& row, rows) {
         if (row->getRowId() == rowId) {
             return row;
         }
@@ -349,22 +349,22 @@ MultipleAlignmentRow MultipleAlignmentData::getRowByRowId(qint64 rowId, U2OpStat
     return emptyRow;
 }
 
-char MultipleAlignmentData::charAt(int rowIndex, qint64 position) const {
+char MsaData::charAt(int rowIndex, qint64 position) const {
     int rowCount = rows.count();
     return rowIndex >= 0 && rowIndex < rowCount
                ? rows[rowIndex]->charAt(position)  // Hotspot: 20% Faster this way than getRow().
                : getRow(rowIndex)->charAt(position);
 }
 
-bool MultipleAlignmentData::isGap(int rowNumber, qint64 pos) const {
+bool MsaData::isGap(int rowNumber, qint64 pos) const {
     return getRow(rowNumber)->isGap(pos);
 }
 
-bool MultipleAlignmentData::isLeadingOrTrailingGap(int rowNumber, qint64 pos) const {
+bool MsaData::isLeadingOrTrailingGap(int rowNumber, qint64 pos) const {
     return getRow(rowNumber)->isLeadingOrTrailingGap(pos);
 }
 
-void MultipleAlignmentData::insertGaps(int row, int pos, int count, U2OpStatus& os) {
+void MsaData::insertGaps(int row, int pos, int count, U2OpStatus& os) {
     if (pos > length) {
         length = pos + count;
         return;
@@ -385,7 +385,7 @@ void MultipleAlignmentData::insertGaps(int row, int pos, int count, U2OpStatus& 
         return;
     }
 
-    MaStateCheck check(this);
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     if (pos >= rows[row]->getRowLengthWithoutTrailing()) {
@@ -398,15 +398,15 @@ void MultipleAlignmentData::insertGaps(int row, int pos, int count, U2OpStatus& 
     length = qMax(length, rowLength);
 }
 
-QStringList MultipleAlignmentData::getRowNames() const {
+QStringList MsaData::getRowNames() const {
     QStringList rowNames;
-    foreach (const MultipleAlignmentRow& row, rows) {
+    foreach (const MsaRow& row, rows) {
         rowNames.append(row->getName());
     }
     return rowNames;
 }
 
-int MultipleAlignmentData::getRowIndexByRowId(qint64 rowId, U2OpStatus& os) const {
+int MsaData::getRowIndexByRowId(qint64 rowId, U2OpStatus& os) const {
     for (int rowIndex = 0; rowIndex < rows.size(); ++rowIndex) {
         if (rows.at(rowIndex)->getRowId() == rowId) {
             return rowIndex;
@@ -416,7 +416,7 @@ int MultipleAlignmentData::getRowIndexByRowId(qint64 rowId, U2OpStatus& os) cons
     return -1;
 }
 
-void MultipleAlignmentData::renameRow(int rowIndex, const QString& name) {
+void MsaData::renameRow(int rowIndex, const QString& name) {
     SAFE_POINT(rowIndex >= 0 && rowIndex < getRowCount(),
                QString("Incorrect row index '%1' was passed to MultipleAlignmentData::renameRow: "
                        "the number of rows is '%2'")
@@ -428,12 +428,12 @@ void MultipleAlignmentData::renameRow(int rowIndex, const QString& name) {
     rows[rowIndex]->setName(name);
 }
 
-void MultipleAlignmentData::setRowId(int rowIndex, qint64 rowId) {
+void MsaData::setRowId(int rowIndex, qint64 rowId) {
     SAFE_POINT(rowIndex >= 0 && rowIndex < getRowCount(), "Invalid row index", );
     rows[rowIndex]->setRowId(rowId);
 }
 
-void MultipleAlignmentData::removeRow(int rowIndex, U2OpStatus& os) {
+void MsaData::removeRow(int rowIndex, U2OpStatus& os) {
     if (rowIndex < 0 || rowIndex >= getRowCount()) {
         coreLog.trace(QString("Internal error: incorrect parameters was passed to MultipleAlignmentData::removeRow, "
                               "rowIndex '%1', the number of rows is '%2'")
@@ -443,7 +443,7 @@ void MultipleAlignmentData::removeRow(int rowIndex, U2OpStatus& os) {
         return;
     }
 
-    MaStateCheck check(this);
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     rows.removeAt(rowIndex);
@@ -453,7 +453,7 @@ void MultipleAlignmentData::removeRow(int rowIndex, U2OpStatus& os) {
     }
 }
 
-void MultipleAlignmentData::removeChars(int rowNumber, int pos, int n, U2OpStatus& os) {
+void MsaData::removeChars(int rowNumber, int pos, int n, U2OpStatus& os) {
     if (rowNumber >= getRowCount() || rowNumber < 0 || pos > length || pos < 0 || n < 0) {
         coreLog.trace(QString("Internal error: incorrect parameters were passed "
                               "to MultipleAlignmentData::removeChars: row index '%1', pos '%2', count '%3'")
@@ -464,14 +464,14 @@ void MultipleAlignmentData::removeChars(int rowNumber, int pos, int n, U2OpStatu
         return;
     }
 
-    MaStateCheck check(this);
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     getRow(rowNumber)->removeChars(pos, n, os);
 }
 
-void MultipleAlignmentData::moveRowsBlock(int startRow, int numRows, int delta) {
-    MaStateCheck check(this);
+void MsaData::moveRowsBlock(int startRow, int numRows, int delta) {
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     // Assumption: numRows is rather big, delta is small (1~2)
@@ -487,11 +487,11 @@ void MultipleAlignmentData::moveRowsBlock(int startRow, int numRows, int delta) 
                    .arg(numRows)
                    .arg(delta), );
 
-    QVector<MultipleAlignmentRow> toMove;
+    QVector<MsaRow> toMove;
     int fromRow = delta > 0 ? startRow + numRows : startRow + delta;
 
     while (i < k) {
-        MultipleAlignmentRow row = rows.takeAt(fromRow);
+        MsaRow row = rows.takeAt(fromRow);
         toMove.append(row);
         i++;
     }
@@ -499,12 +499,12 @@ void MultipleAlignmentData::moveRowsBlock(int startRow, int numRows, int delta) 
     int toRow = delta > 0 ? startRow : startRow + numRows - k;
 
     while (toMove.count() > 0) {
-        MultipleAlignmentRow row = toMove.takeLast();
+        MsaRow row = toMove.takeLast();
         rows.insert(toRow, row);
     }
 }
 
-bool MultipleAlignmentData::isEqual(const MultipleAlignmentData& other) const {
+bool MsaData::isEqual(const MsaData& other) const {
     CHECK(this != &other, true);
     CHECK(alphabet == other.alphabet, false);
     CHECK(length == other.length, false);
@@ -515,15 +515,15 @@ bool MultipleAlignmentData::isEqual(const MultipleAlignmentData& other) const {
     return true;
 }
 
-bool MultipleAlignmentData::operator==(const MultipleAlignmentData& other) const {
+bool MsaData::operator==(const MsaData& other) const {
     return isEqual(other);
 }
 
-bool MultipleAlignmentData::operator!=(const MultipleAlignmentData& other) const {
+bool MsaData::operator!=(const MsaData& other) const {
     return !isEqual(other);
 }
 
-void MultipleAlignmentData::check() const {
+void MsaData::check() const {
 #ifdef DEBUG
     assert(getRowCount() != 0 || length == 0);
     for (int i = 0, n = getRowCount(); i < n; i++) {
@@ -532,8 +532,8 @@ void MultipleAlignmentData::check() const {
 #endif
 }
 
-bool MultipleAlignmentData::sortRowsByList(const QStringList& rowsOrder) {
-    MaStateCheck check(this);
+bool MsaData::sortRowsByList(const QStringList& rowsOrder) {
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     const QStringList rowNames = getRowNames();
@@ -541,7 +541,7 @@ bool MultipleAlignmentData::sortRowsByList(const QStringList& rowsOrder) {
         CHECK(rowsOrder.contains(rowName), false);
     }
 
-    QVector<MultipleAlignmentRow> sortedRows;
+    QVector<MsaRow> sortedRows;
     foreach (const QString& rowName, rowsOrder) {
         int rowIndex = rowNames.indexOf(rowName);
         if (rowIndex >= 0) {
@@ -553,8 +553,8 @@ bool MultipleAlignmentData::sortRowsByList(const QStringList& rowsOrder) {
     return true;
 }
 
-void MultipleAlignmentData::addRowPrivate(const MultipleAlignmentRow& row, qint64 rowLenWithTrailingGaps, int rowIndex) {
-    MaStateCheck check(this);
+void MsaData::addRowPrivate(const MsaRow& row, qint64 rowLenWithTrailingGaps, int rowIndex) {
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     length = qMax(rowLenWithTrailingGaps, length);
@@ -562,7 +562,7 @@ void MultipleAlignmentData::addRowPrivate(const MultipleAlignmentRow& row, qint6
     rows.insert(idx, row);
 }
 
-void MultipleAlignmentData::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows) {
+void MsaData::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows) {
     SAFE_POINT(startPos >= 0 && startPos + nBases <= length && nBases > 0,
                QString("Incorrect parameters were passed to MultipleAlignmentData::removeRegion: startPos '%1', "
                        "nBases '%2', the length is '%3'")
@@ -576,7 +576,7 @@ void MultipleAlignmentData::removeRegion(int startPos, int startRow, int nBases,
                    .arg(nRows)
                    .arg(getRowCount()), );
 
-    MaStateCheck check(this);
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     U2OpStatus2Log os;
@@ -598,7 +598,7 @@ void MultipleAlignmentData::removeRegion(int startPos, int startRow, int nBases,
     }
 }
 
-bool MultipleAlignmentData::crop(const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os) {
+bool MsaData::crop(const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os) {
     if (!(columnRange.startPos >= 0 && columnRange.length > 0 && columnRange.length < length && columnRange.startPos < length)) {
         os.setError(QString("Incorrect region was passed to MultipleSequenceData::crop, "
                             "startPos '%1', length '%2'")
@@ -612,13 +612,13 @@ bool MultipleAlignmentData::crop(const QList<qint64>& rowIds, const U2Region& co
         safeLength -= columnRange.endPos() - length;
     }
 
-    MaStateCheck check(this);
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     QSet<qint64> rowIdSet = rowIds.toSet();
-    QVector<MultipleAlignmentRow> newRowList;
+    QVector<MsaRow> newRowList;
     for (int i = 0; i < rows.size(); i++) {
-        MultipleAlignmentRow row = getRow(i).clone();
+        MsaRow row = getRow(i).clone();
         qint64 rowId = row->getRowId();
         if (rowIdSet.contains(rowId)) {
             row->crop(os, (int)columnRange.startPos, (int)safeLength);
@@ -632,12 +632,12 @@ bool MultipleAlignmentData::crop(const QList<qint64>& rowIds, const U2Region& co
     return true;
 }
 
-bool MultipleAlignmentData::crop(const U2Region& region, U2OpStatus& os) {
+bool MsaData::crop(const U2Region& region, U2OpStatus& os) {
     return crop(getRowsIds(), region, os);
 }
 
-bool MultipleAlignmentData::sortRowsBySimilarity(QVector<U2Region>& united) {
-    QVector<MultipleAlignmentRow> sortedRows = getRowsSortedBySimilarity(united);
+bool MsaData::sortRowsBySimilarity(QVector<U2Region>& united) {
+    QVector<MsaRow> sortedRows = getRowsSortedBySimilarity(united);
     if (getRows() == sortedRows) {
         return false;
     }
@@ -645,17 +645,17 @@ bool MultipleAlignmentData::sortRowsBySimilarity(QVector<U2Region>& united) {
     return true;
 }
 
-QVector<MultipleAlignmentRow> MultipleAlignmentData::getRowsSortedBySimilarity(QVector<U2Region>& united) const {
-    QVector<MultipleAlignmentRow> oldRows = getRows();
-    QVector<MultipleAlignmentRow> sortedRows;
+QVector<MsaRow> MsaData::getRowsSortedBySimilarity(QVector<U2Region>& united) const {
+    QVector<MsaRow> oldRows = getRows();
+    QVector<MsaRow> sortedRows;
     while (!oldRows.isEmpty()) {
-        MultipleAlignmentRow row = oldRows.takeFirst();
+        MsaRow row = oldRows.takeFirst();
         sortedRows << row;
         int start = sortedRows.size() - 1;
         int len = 1;
-        QMutableVectorIterator<MultipleAlignmentRow> iter(oldRows);
+        QMutableVectorIterator<MsaRow> iter(oldRows);
         while (iter.hasNext()) {
-            const MultipleAlignmentRow& next = iter.next();
+            const MsaRow& next = iter.next();
             if (next->isEqualCore(*row)) {
                 sortedRows << next;
                 iter.remove();
@@ -669,13 +669,13 @@ QVector<MultipleAlignmentRow> MultipleAlignmentData::getRowsSortedBySimilarity(Q
     return sortedRows;
 }
 
-void MultipleAlignmentData::setRowContent(int rowNumber, const QByteArray& sequence, int offset) {
+void MsaData::setRowContent(int rowNumber, const QByteArray& sequence, int offset) {
     SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(),
                QString("Incorrect row index '%1' was passed to MultipleAlignmentData::setRowContent: "
                        "the number of rows is '%2'")
                    .arg(rowNumber)
                    .arg(getRowCount()), );
-    MaStateCheck check(this);
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     U2OpStatus2Log os;
@@ -685,13 +685,13 @@ void MultipleAlignmentData::setRowContent(int rowNumber, const QByteArray& seque
     length = qMax(length, (qint64)sequence.size() + offset);
 }
 
-void MultipleAlignmentData::setRowContent(int rowNumber, const Chromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel) {
+void MsaData::setRowContent(int rowNumber, const Chromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel) {
     SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(),
                QString("Incorrect row index '%1' was passed to MultipleAlignmentData::setRowContent: "
                        "the number of rows is '%2'")
                    .arg(rowNumber)
                    .arg(getRowCount()), );
-    MaStateCheck check(this);
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     U2OpStatus2Log os;
@@ -701,42 +701,42 @@ void MultipleAlignmentData::setRowContent(int rowNumber, const Chromatogram& chr
     length = qMax(length, (qint64)MsaRowUtils::getRowLength(sequence.seq, gapModel));
 }
 
-void MultipleAlignmentData::toUpperCase() {
+void MsaData::toUpperCase() {
     for (int i = 0, n = getRowCount(); i < n; i++) {
         getRow(i)->toUpperCase();
     }
 }
 
-void MultipleAlignmentData::setSequenceId(int rowIndex, const U2DataId& sequenceId) {
+void MsaData::setSequenceId(int rowIndex, const U2DataId& sequenceId) {
     SAFE_POINT(rowIndex >= 0 && rowIndex < getRowCount(), "Invalid row index", );
     getRow(rowIndex)->setSequenceId(sequenceId);
 }
 
-void MultipleAlignmentData::setRowGapModel(int rowNumber, const QVector<U2MsaGap>& gapModel) {
+void MsaData::setRowGapModel(int rowNumber, const QVector<U2MsaGap>& gapModel) {
     SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(), "Invalid row index", );
     length = qMax(length, (qint64)MsaRowUtils::getGapsLength(gapModel) + getRow(rowNumber)->getSequence().length());
     getRow(rowNumber)->setGapModel(gapModel);
 }
 
-void MultipleAlignmentData::addRow(const QString& name, const QByteArray& bytes) {
-    MultipleAlignmentRow newRow = createRow(name, bytes);
+void MsaData::addRow(const QString& name, const QByteArray& bytes) {
+    MsaRow newRow = createRow(name, bytes);
     addRowPrivate(newRow, bytes.size(), -1);
 }
 
-void MultipleAlignmentData::addRow(const QString& name, const QByteArray& bytes, int rowIndex) {
-    MultipleAlignmentRow newRow = createRow(name, bytes);
+void MsaData::addRow(const QString& name, const QByteArray& bytes, int rowIndex) {
+    MsaRow newRow = createRow(name, bytes);
     addRowPrivate(newRow, bytes.size(), rowIndex);
 }
 
-void MultipleAlignmentData::addRow(const U2MsaRow& rowInDb, const DNASequence& sequence, U2OpStatus& os) {
-    MultipleAlignmentRow newRow = createRow(rowInDb, sequence, rowInDb.gaps, os);
+void MsaData::addRow(const U2MsaRow& rowInDb, const DNASequence& sequence, U2OpStatus& os) {
+    MsaRow newRow = createRow(rowInDb, sequence, rowInDb.gaps, os);
     CHECK_OP(os, );
     addRowPrivate(newRow, rowInDb.length, -1);
 }
 
-void MultipleAlignmentData::addRow(const QString& name, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
+void MsaData::addRow(const QString& name, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
     U2MsaRow row;
-    MultipleAlignmentRow newRow = createRow(row, sequence, gaps, os);
+    MsaRow newRow = createRow(row, sequence, gaps, os);
     CHECK_OP(os, );
 
     int len = sequence.length();
@@ -748,24 +748,24 @@ void MultipleAlignmentData::addRow(const QString& name, const DNASequence& seque
     addRowPrivate(newRow, len, -1);
 }
 
-void MultipleAlignmentData::addRow(const U2MsaRow& rowInDb,
-                                   const DNASequence& sequence,
-                                   const U2DataId& chromatogramId,
-                                   const Chromatogram& chromatogram,
-                                   U2OpStatus& os) {
-    MultipleAlignmentRow newRow = createRow(rowInDb, sequence, rowInDb.gaps, chromatogramId, chromatogram, os);
+void MsaData::addRow(const U2MsaRow& rowInDb,
+                     const DNASequence& sequence,
+                     const U2DataId& chromatogramId,
+                     const Chromatogram& chromatogram,
+                     U2OpStatus& os) {
+    MsaRow newRow = createRow(rowInDb, sequence, rowInDb.gaps, chromatogramId, chromatogram, os);
     CHECK_OP(os, );
     addRowPrivate(newRow, rowInDb.length, -1);
 }
 
-void MultipleAlignmentData::addRow(const QString& name,
-                                   const DNASequence& sequence,
-                                   const QVector<U2MsaGap>& gaps,
-                                   const U2DataId& chromatogramId,
-                                   const Chromatogram& chromatogram,
-                                   U2OpStatus& os) {
+void MsaData::addRow(const QString& name,
+                     const DNASequence& sequence,
+                     const QVector<U2MsaGap>& gaps,
+                     const U2DataId& chromatogramId,
+                     const Chromatogram& chromatogram,
+                     U2OpStatus& os) {
     U2MsaRow row;
-    MultipleAlignmentRow newRow = createRow(row, sequence, gaps, chromatogramId, chromatogram, os);
+    MsaRow newRow = createRow(row, sequence, gaps, chromatogramId, chromatogram, os);
     CHECK_OP(os, );
 
     int len = sequence.length();
@@ -777,7 +777,7 @@ void MultipleAlignmentData::addRow(const QString& name,
     addRowPrivate(newRow, len, -1);
 }
 
-MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const QByteArray& bytes) {
+MsaRow MsaData::createRow(const QString& name, const QByteArray& bytes) {
     QByteArray newSequenceBytes;
     QVector<U2MsaGap> newGapsModel;
 
@@ -788,7 +788,7 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const QString& name, const
     return {row, newSequence, newGapsModel, this};
 }
 
-MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
+MsaRow MsaData::createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
     QString errorText = "Failed to create a multiple alignment row";
     if (sequence.constSequence().indexOf(U2Msa::GAP_CHAR) != -1) {
         coreLog.trace("Attempted to create an alignment row from a sequence with gaps");
@@ -809,17 +809,17 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb, c
     return {rowInDb, sequence, gaps, this};
 }
 
-MultipleAlignmentRow MultipleAlignmentData::createRow(const MultipleAlignmentRow& row) {
+MsaRow MsaData::createRow(const MsaRow& row) {
     return {row, this};
 }
 
-MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb,
-                                                      const DNASequence& sequence,
-                                                      const QVector<U2MsaGap>& gaps,
-                                                      const U2DataId& chromatogramId,
-                                                      const Chromatogram& chromatogram,
+MsaRow MsaData::createRow(const U2MsaRow& rowInDb,
+                          const DNASequence& sequence,
+                          const QVector<U2MsaGap>& gaps,
+                          const U2DataId& chromatogramId,
+                          const Chromatogram& chromatogram,
 
-                                                      U2OpStatus& os) {
+                          U2OpStatus& os) {
     QString errorText = "Failed to create a multiple alignment row";
     if (sequence.constSequence().indexOf(U2Msa::GAP_CHAR) != -1) {
         coreLog.trace("Attempted to create an alignment row from a sequence with gaps");
@@ -840,8 +840,8 @@ MultipleAlignmentRow MultipleAlignmentData::createRow(const U2MsaRow& rowInDb,
     return {rowInDb, sequence, gaps, chromatogramId, chromatogram, this};
 }
 
-bool MultipleAlignmentData::hasEmptyGapModel() const {
-    foreach (const MultipleAlignmentRow& row, rows) {
+bool MsaData::hasEmptyGapModel() const {
+    foreach (const MsaRow& row, rows) {
         if (!row->getGaps().isEmpty()) {
             return false;
         }
@@ -849,7 +849,7 @@ bool MultipleAlignmentData::hasEmptyGapModel() const {
     return true;
 }
 
-bool MultipleAlignmentData::hasEqualLength() const {
+bool MsaData::hasEqualLength() const {
     const int defaultSequenceLength = -1;
     int sequenceLength = defaultSequenceLength;
     for (int i = 0, n = rows.size(); i < n; ++i) {
@@ -862,11 +862,11 @@ bool MultipleAlignmentData::hasEqualLength() const {
     return true;
 }
 
-void MultipleAlignmentData::appendChars(int row, const char* str, int len) {
+void MsaData::appendChars(int row, const char* str, int len) {
     SAFE_POINT(0 <= row && row < getRowCount(),
                QString("Incorrect row index '%1' in MultipleSequenceAlignmentData::appendChars").arg(row), );
 
-    MultipleAlignmentRow appendedRow = createRow("", QByteArray(str, len));
+    MsaRow appendedRow = createRow("", QByteArray(str, len));
 
     qint64 rowLength = getRow(row)->getRowLength();
 
@@ -877,11 +877,11 @@ void MultipleAlignmentData::appendChars(int row, const char* str, int len) {
     length = qMax(length, rowLength + len);
 }
 
-void MultipleAlignmentData::appendChars(int row, qint64 afterPos, const char* str, int len) {
+void MsaData::appendChars(int row, qint64 afterPos, const char* str, int len) {
     SAFE_POINT(0 <= row && row < getRowCount(),
                QString("Incorrect row index '%1' in MultipleSequenceAlignmentData::appendChars").arg(row), );
 
-    MultipleAlignmentRow appendedRow = createRow("", QByteArray(str, len));
+    MsaRow appendedRow = createRow("", QByteArray(str, len));
 
     U2OpStatus2Log os;
     getRow(row)->append(appendedRow, (int)afterPos, os);
@@ -890,7 +890,7 @@ void MultipleAlignmentData::appendChars(int row, qint64 afterPos, const char* st
     length = qMax(length, afterPos + len);
 }
 
-void MultipleAlignmentData::appendRow(int rowNumber, qint64 afterPos, const MultipleAlignmentRow& row, U2OpStatus& os) {
+void MsaData::appendRow(int rowNumber, qint64 afterPos, const MsaRow& row, U2OpStatus& os) {
     SAFE_POINT(0 <= rowNumber && rowNumber < getRowCount(),
                QString("Incorrect row index '%1' in MultipleSequenceAlignmentData::appendRow").arg(rowNumber), );
 
@@ -900,7 +900,7 @@ void MultipleAlignmentData::appendRow(int rowNumber, qint64 afterPos, const Mult
     length = qMax(length, afterPos + row->getRowLength());
 }
 
-void MultipleAlignmentData::replaceChars(int row, char origChar, char resultChar) {
+void MsaData::replaceChars(int row, char origChar, char resultChar) {
     SAFE_POINT(row >= 0 && row < getRowCount(), QString("Incorrect row index '%1' in MultipleSequenceAlignmentData::replaceChars").arg(row), );
 
     if (origChar == resultChar) {
@@ -911,11 +911,11 @@ void MultipleAlignmentData::replaceChars(int row, char origChar, char resultChar
     getRow(row)->replaceChars(origChar, resultChar, os);
 }
 
-MultipleAlignment MultipleAlignmentData::getCopy() const {
-    return {new MultipleAlignmentData(*this)};
+Msa MsaData::getCopy() const {
+    return {new MsaData(*this)};
 }
 
-MultipleAlignment MultipleAlignmentData::mid(int start, int len) const {
+Msa MsaData::mid(int start, int len) const {
     SAFE_POINT(start >= 0 && start + len <= length,
                QString("Incorrect parameters were passed to MultipleAlignmentData::mid: "
                        "start '%1', len '%2', the alignment length is '%3'")
@@ -924,13 +924,13 @@ MultipleAlignment MultipleAlignmentData::mid(int start, int len) const {
                    .arg(length),
                {});
 
-    MultipleAlignment res(getName(), alphabet);
-    MaStateCheck check(res.data());
+    Msa res(getName(), alphabet);
+    MsaStateCheck check(res.data());
     Q_UNUSED(check);
 
     U2OpStatus2Log os;
-    foreach (const MultipleAlignmentRow& row, rows) {
-        MultipleAlignmentRow mRow = row->mid(start, len, os);
+    foreach (const MsaRow& row, rows) {
+        MsaRow mRow = row->mid(start, len, os);
         mRow->setParentAlignment(res.data());
         res->rows << mRow;
     }
@@ -938,8 +938,8 @@ MultipleAlignment MultipleAlignmentData::mid(int start, int len) const {
     return res;
 }
 
-MultipleAlignmentData& MultipleAlignmentData::operator+=(const MultipleAlignmentData& msaData) {
-    MaStateCheck check(this);
+MsaData& MsaData::operator+=(const MsaData& msaData) {
+    MsaStateCheck check(this);
     Q_UNUSED(check);
 
     SAFE_POINT(msaData.alphabet == alphabet, "Different alphabets in MultipleAlignmentData::operator+=", *this);

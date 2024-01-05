@@ -33,7 +33,7 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrl.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PFMatrixObject.h>
 #include <U2Core/PWMatrixObject.h>
 #include <U2Core/PhyTreeObject.h>
@@ -387,9 +387,9 @@ GObject* GObjectUtils::createObject(const U2DbiRef& ref, const U2DataId& id, con
         case U2Type::Sequence:
             return new U2SequenceObject(name, entityRef);
         case U2Type::Mca:
-            return new MultipleAlignmentObject(name, entityRef, {}, {}, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT);
+            return new MsaObject(name, entityRef, {}, {}, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT);
         case U2Type::Msa:
-            return new MultipleAlignmentObject(name, entityRef, {}, {}, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+            return new MsaObject(name, entityRef, {}, {}, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         case U2Type::Assembly:
             return new AssemblyObject(name, entityRef);
         case U2Type::VariantTrack:

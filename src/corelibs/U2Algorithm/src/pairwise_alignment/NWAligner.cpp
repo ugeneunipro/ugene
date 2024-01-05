@@ -73,7 +73,7 @@ void NWAligner::setSeqs(const QByteArray& value1, const QByteArray& value2) {
     reassignSMatrixByAlphabet(value1 + value2);
 }
 
-MultipleAlignment NWAligner::align() {
+Msa NWAligner::align() {
     GTIMER(cvar, tvar, "NWAligner::align");
     float gapPenalty = -5;
 
@@ -122,7 +122,7 @@ MultipleAlignment NWAligner::align() {
         j--;
     }
 
-    MultipleAlignment result(MA_OBJECT_NAME, sMatrix.getAlphabet());
+    Msa result(MA_OBJECT_NAME, sMatrix.getAlphabet());
     result->addRow("seq1", aligned1);
     result->addRow("seq2", aligned2);
 

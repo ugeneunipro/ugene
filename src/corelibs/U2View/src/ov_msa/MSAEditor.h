@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2Msa.h>
 
 #include "MaEditor.h"
@@ -77,7 +77,7 @@ class U2VIEW_EXPORT MSAEditor : public MaEditor {
     friend class SequenceWithChromatogramAreaRenderer;
 
 public:
-    MSAEditor(const QString& viewName, MultipleAlignmentObject* obj);
+    MSAEditor(const QString& viewName, MsaObject* obj);
     ~MSAEditor() override;
 
     QString getSettingsRoot() const override {
@@ -93,7 +93,7 @@ public:
     void fillMenu(QMenu* m, const QString& type);
 
     // Return alignment row that is displayed on target line in MSAEditor
-    MultipleAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
+    MsaRow getRowByViewRowIndex(int viewRowIndex) const;
 
     PairwiseAlignmentWidgetsSettings* getPairwiseAlignmentWidgetsSettings() const {
         return pairwiseAlignmentWidgetsSettings;
@@ -109,7 +109,7 @@ public:
 
     char getReferenceCharAt(int pos) const override;
 
-    void sortSequences(const MultipleAlignment::SortType& sortType, const MultipleAlignment::Order& sortOrder);
+    void sortSequences(const Msa::SortType& sortType, const Msa::Order& sortOrder);
 
     /** Forces complete re-computation of the active collapse model based on the current MSA editor state. */
     void updateCollapseModel();

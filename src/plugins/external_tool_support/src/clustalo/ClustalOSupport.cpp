@@ -28,7 +28,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/FileFilters.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -147,7 +147,7 @@ void ClustalOSupportContext::sl_align() {
     auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
     MSAEditor* msaEditor = action->getMsaEditor();
-    MultipleAlignmentObject* obj = msaEditor->getMaObject();
+    MsaObject* obj = msaEditor->getMaObject();
     if (obj == nullptr || obj->isStateLocked()) {
         return;
     }
@@ -180,7 +180,7 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
     MSAEditor* msaEditor = action->getMsaEditor();
-    MultipleAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
 
     DocumentFormatConstraints c;
     QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE});

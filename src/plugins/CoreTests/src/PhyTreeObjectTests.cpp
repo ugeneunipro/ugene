@@ -26,7 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>
@@ -70,7 +70,7 @@ void GTest_CalculateTreeFromAligment::prepare() {
         return;
     }
 
-    auto maObj = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto maObj = qobject_cast<MsaObject*>(obj);
     if (maObj == nullptr) {
         stateInfo.setError(QString("can't cast to multiple alignment object from: %1").arg(obj->getGObjectName()));
         return;

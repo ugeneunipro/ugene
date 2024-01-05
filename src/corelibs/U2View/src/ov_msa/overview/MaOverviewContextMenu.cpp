@@ -22,7 +22,7 @@
 #include "MaOverviewContextMenu.h"
 
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 

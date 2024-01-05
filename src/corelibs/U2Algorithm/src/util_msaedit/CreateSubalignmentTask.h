@@ -24,7 +24,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/GUrl.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 
@@ -54,7 +54,7 @@ public:
 class U2ALGORITHM_EXPORT CreateSubalignmentTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    CreateSubalignmentTask(MultipleAlignmentObject* _maObj, const CreateSubalignmentSettings& settings);
+    CreateSubalignmentTask(MsaObject* _maObj, const CreateSubalignmentSettings& settings);
 
     virtual void prepare();
     const CreateSubalignmentSettings& getSettings() {
@@ -63,8 +63,8 @@ public:
 
 private:
     Document* origDoc;
-    MultipleAlignmentObject* origMAObj;
-    MultipleAlignmentObject* resultMAObj;
+    MsaObject* origMAObj;
+    MsaObject* resultMAObj;
 
     CreateSubalignmentSettings cfg;
     bool createCopy;

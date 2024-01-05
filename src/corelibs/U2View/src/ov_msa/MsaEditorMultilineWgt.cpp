@@ -60,7 +60,7 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, QWidget* parent,
     createChildren();
     this->setMultilineMode(multiline);
 
-    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, [this]() {
         this->updateSize();
     });
     connect(editor->getCollapseModel(), &MaCollapseModel::si_toggled, this, [this]() {

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2Region.h>
 
 namespace U2 {
@@ -48,7 +48,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactory : public QObject {
 public:
     MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags flags);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) = 0;
+    virtual MSAConsensusAlgorithm* createAlgorithm(const Msa& ma, bool ignoreTrailingLeadingGaps) = 0;
 
     QString getId() const;
 
@@ -96,11 +96,11 @@ public:
         Score is a number: [0, num] sequences. Usually is means count of the char in the row
         Note that consensus character may be out of the to MSA alphabet symbols range
     */
-    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score) const;
+    virtual char getConsensusCharAndScore(const Msa& ma, int column, int& score) const;
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column) const = 0;
+    virtual char getConsensusChar(const Msa& ma, int column) const = 0;
 
-    virtual void reinitializeData(const MultipleAlignment&) {}
+    virtual void reinitializeData(const Msa&) {}
 
     virtual MSAConsensusAlgorithm* clone() const = 0;
 
@@ -133,14 +133,14 @@ signals:
 
 protected:
     /** Returns row indexes where `pos` is inside core area (not a part of the leading or trailing gap). */
-    static QVector<int> pickRowsWithCharInCoreArea(const MultipleAlignment& ma, int pos);
+    static QVector<int> pickRowsWithCharInCoreArea(const Msa& ma, int pos);
 
     /**
      * Returns rows that should be used to calculate the consensus.
      * If `ignoreTrailingAndLeadingGaps` is false always returns an empty list and consensus must be calculated using all rows.
      * If `ignoreTrailingAndLeadingGaps` is true and an empty list is returned - there are no rows to calculate the consensus.
      */
-    QVector<int> pickRowsToUseInConsensus(const MultipleAlignment& ma, int pos) const;
+    QVector<int> pickRowsToUseInConsensus(const Msa& ma, int pos) const;
 
 protected:
     MSAConsensusAlgorithmFactory* factory = nullptr;

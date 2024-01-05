@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2Region.h>
 
 #include "MSAEditorConsensusCache.h"

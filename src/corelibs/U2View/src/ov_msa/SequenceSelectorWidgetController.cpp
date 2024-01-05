@@ -45,7 +45,7 @@ SequenceSelectorWidgetController::SequenceSelectorWidgetController(MSAEditor* _m
     connect(addSeq, SIGNAL(clicked()), SLOT(sl_addSeqClicked()));
     connect(deleteSeq, SIGNAL(clicked()), SLOT(sl_deleteSeqClicked()));
 
-    connect(msa->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_seqLineEditEditingFinished(const MultipleAlignment&, const MaModificationInfo&)));
+    connect(msa->getMaObject(), SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_seqLineEditEditingFinished(const Msa&, const MaModificationInfo&)));
 
     connect(completer, SIGNAL(si_editingFinished()), SLOT(sl_seqLineEditEditingFinished()));
 
@@ -66,7 +66,7 @@ void SequenceSelectorWidgetController::setSequenceId(qint64 newId) {
         seqId = newId;
         return;
     }
-    const MultipleAlignmentRow& selectedRow = msa->getMaObject()->getAlignment()->getRowByRowId(newId, os);
+    const MsaRow& selectedRow = msa->getMaObject()->getAlignment()->getRowByRowId(newId, os);
     CHECK_OP(os, );
     seqId = newId;
     const QString selectedName = selectedRow->getName();
@@ -89,7 +89,7 @@ void SequenceSelectorWidgetController::updateCompleter() {
     }
 }
 
-void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished(const MultipleAlignment&, const MaModificationInfo& modInfo) {
+void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished(const Msa&, const MaModificationInfo& modInfo) {
     if (!modInfo.rowListChanged) {
         return;
     }
@@ -98,7 +98,7 @@ void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished(const Multi
 }
 
 void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished() {
-    const MultipleAlignment ma = msa->getMaObject()->getAlignment();
+    const Msa ma = msa->getMaObject()->getAlignment();
     if (!ma->getRowNames().contains(seqLineEdit->text())) {
         seqLineEdit->setText(defaultSeqName);
     } else {
@@ -132,7 +132,7 @@ void SequenceSelectorWidgetController::sl_addSeqClicked() {
         return;
     }
 
-    MultipleAlignmentRow selectedRow = msa->getRowByViewRowIndex(msa->getSelection().toRect().y());
+    MsaRow selectedRow = msa->getRowByViewRowIndex(msa->getSelection().toRect().y());
     setSequenceId(selectedRow->getRowId());
     emit si_selectionChanged();
 }

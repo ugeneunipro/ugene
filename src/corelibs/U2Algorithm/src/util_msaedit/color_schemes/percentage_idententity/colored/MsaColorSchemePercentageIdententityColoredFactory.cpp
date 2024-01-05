@@ -30,7 +30,7 @@ MsaColorSchemePercentageIdententityColoredFactory::MsaColorSchemePercentageIdent
     needThreshold = true;
 }
 
-MsaColorScheme* MsaColorSchemePercentageIdententityColoredFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaColorScheme* MsaColorSchemePercentageIdententityColoredFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaColorSchemePercentageIdententityColored(parent, this, maObj);
 }
 

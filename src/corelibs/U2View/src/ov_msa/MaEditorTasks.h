@@ -30,7 +30,7 @@ namespace U2 {
 class MaEditor;
 class MaEditorFactory;
 class MSAEditor;
-class MultipleAlignmentObject;
+class MsaObject;
 class UnloadedObject;
 class MSAConsensusAlgorithm;
 
@@ -40,7 +40,7 @@ class MSAConsensusAlgorithm;
 class OpenMaEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenMaEditorTask(MultipleAlignmentObject* obj, GObjectViewFactoryId fid, GObjectType type);
+    OpenMaEditorTask(MsaObject* obj, GObjectViewFactoryId fid, GObjectType type);
     OpenMaEditorTask(UnloadedObject* obj, GObjectViewFactoryId fid, GObjectType type);
     OpenMaEditorTask(Document* doc, GObjectViewFactoryId fid, GObjectType type);
 
@@ -52,7 +52,7 @@ public:
 
 protected:
     GObjectType type;
-    QPointer<MultipleAlignmentObject> maObject;
+    QPointer<MsaObject> maObject;
     GObjectReference unloadedReference;
 };
 
@@ -62,7 +62,7 @@ protected:
 class OpenMsaEditorTask : public OpenMaEditorTask {
     Q_OBJECT
 public:
-    OpenMsaEditorTask(MultipleAlignmentObject* obj);
+    OpenMsaEditorTask(MsaObject* obj);
     OpenMsaEditorTask(UnloadedObject* obj);
     OpenMsaEditorTask(Document* doc);
 
@@ -75,7 +75,7 @@ public:
 class OpenMcaEditorTask : public OpenMaEditorTask {
     Q_OBJECT
 public:
-    OpenMcaEditorTask(MultipleAlignmentObject* obj);
+    OpenMcaEditorTask(MsaObject* obj);
     OpenMcaEditorTask(UnloadedObject* obj);
     OpenMcaEditorTask(Document* doc);
 

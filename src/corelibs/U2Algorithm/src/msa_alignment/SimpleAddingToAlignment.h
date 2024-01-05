@@ -24,8 +24,8 @@
 #include <U2Algorithm/AlignSequencesToAlignmentTaskSettings.h>
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaUtils.h>
 
 namespace U2 {
 
@@ -42,20 +42,20 @@ private:
     AlignSequencesToAlignmentTaskSettings settings;
     QMap<QString, int> sequencePositions;
 
-    MultipleAlignment inputMsa;
+    Msa inputMsa;
 };
 
 class BestPositionFindTask : public Task {
     Q_OBJECT
 public:
-    BestPositionFindTask(const MultipleAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId);
+    BestPositionFindTask(const Msa& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId);
     void run() override;
 
     int getPosition() const;
     const QString& getSequenceId() const;
 
 private:
-    const MultipleAlignment& inputMsa;
+    const Msa& inputMsa;
     U2EntityRef sequenceRef;
     QString sequenceId;
     int bestPosition;

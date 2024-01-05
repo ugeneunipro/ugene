@@ -23,16 +23,16 @@
 
 #include <QColor>
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
-MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject* parent, const MsaHighlightingSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject* parent, const MsaHighlightingSchemeFactory* factory, MsaObject* maObj)
     : MsaHighlightingScheme(parent, factory, maObj),
       threshold(50),
       lessThenThreshold(false) {
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_resetMap()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_resetMap()));
 }
 
 void MsaHighlightingSchemeConservation::process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const {
@@ -77,7 +77,7 @@ void MsaHighlightingSchemeConservation::sl_resetMap() {
 void MsaHighlightingSchemeConservation::calculateStatisticForColumn(int refCharColumn) const {
     CHECK(!msaCharCountMap.contains(refCharColumn), );
     CharCountMap columnStatistic;
-    const MultipleAlignment ma = maObj->getAlignment();
+    const Msa ma = maObj->getAlignment();
     for (int row = ma->getRowCount() - 1; row >= 0; row--) {
         char seqChar = ma->charAt(row, refCharColumn);
         if (columnStatistic.contains(seqChar)) {
@@ -93,7 +93,7 @@ MsaHighlightingSchemeConservationFactory::MsaHighlightingSchemeConservationFacto
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets, true, true) {
 }
 
-MsaHighlightingScheme* MsaHighlightingSchemeConservationFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaHighlightingScheme* MsaHighlightingSchemeConservationFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaHighlightingSchemeConservation(parent, this, maObj);
 }
 

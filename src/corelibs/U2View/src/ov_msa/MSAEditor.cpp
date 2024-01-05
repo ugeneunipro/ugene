@@ -72,7 +72,7 @@ const QString MsaEditorMenuType::ALIGN_NEW_SEQUENCES_TO_ALIGNMENT("msa_editor_me
 const QString MsaEditorMenuType::ALIGN_NEW_ALIGNMENT_TO_ALIGNMENT("msa_editor_menu_align_new_alignment_to_alignment");
 const QString MsaEditorMenuType::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT("msa_editor_menu_align_selected_sequences_to_alignment");
 
-MSAEditor::MSAEditor(const QString& viewName, MultipleAlignmentObject* obj)
+MSAEditor::MSAEditor(const QString& viewName, MsaObject* obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
       treeManager(this) {
     optionsPanelController = new OptionsPanelController(this);
@@ -220,7 +220,7 @@ void MSAEditor::onObjectRenamed(GObject*, const QString&) {
     OpenMaEditorTask::updateTitle(this);
 }
 
-MultipleAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
+MsaRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
     int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
     return getMaObject()->getRow(maRowIndex);
 }
@@ -772,7 +772,7 @@ void MSAEditor::buildTree() {
 }
 
 QString MSAEditor::getReferenceRowName() const {
-    const MultipleAlignment alignment = getMaObject()->getAlignment();
+    const Msa alignment = getMaObject()->getAlignment();
     U2OpStatusImpl os;
     const int refSeq = alignment->getRowIndexByRowId(getReferenceRowId(), os);
     return (U2MsaRow::INVALID_ROW_ID != refSeq) ? alignment->getRowNames().at(refSeq) : QString();
@@ -792,11 +792,11 @@ void MSAEditor::sl_showCustomSettings() {
     AppContext::getAppSettingsGUI()->showSettingsDialog(ColorSchemaSettingsPageId);
 }
 
-void MSAEditor::sortSequences(const MultipleAlignment::SortType& sortType, const MultipleAlignment::Order& sortOrder) {
-    MultipleAlignmentObject* msaObject = getMaObject();
+void MSAEditor::sortSequences(const Msa::SortType& sortType, const Msa::Order& sortOrder) {
+    MsaObject* msaObject = getMaObject();
     CHECK(!msaObject->isStateLocked(), );
 
-    MultipleAlignment msa = msaObject->getAlignment()->getCopy();
+    Msa msa = msaObject->getAlignment()->getCopy();
     const MaEditorSelection& selection = getSelection();
     QRect selectionRect = selection.toRect();
     U2Region sortRange = selectionRect.height() <= 1 ? U2Region() : U2Region(selectionRect.y(), selectionRect.height());
@@ -813,18 +813,18 @@ void MSAEditor::sortSequences(const MultipleAlignment::SortType& sortType, const
 }
 
 void MSAEditor::sl_sortSequencesByName() {
-    MultipleAlignment::Order order = sender() == sortByNameDescendingAction ? MultipleAlignment::Descending : MultipleAlignment::Ascending;
-    sortSequences(MultipleAlignment::SortByName, order);
+    Msa::Order order = sender() == sortByNameDescendingAction ? Msa::Descending : Msa::Ascending;
+    sortSequences(Msa::SortByName, order);
 }
 
 void MSAEditor::sl_sortSequencesByLength() {
-    MultipleAlignment::Order order = sender() == sortByLengthDescendingAction ? MultipleAlignment::Descending : MultipleAlignment::Ascending;
-    sortSequences(MultipleAlignment::SortByLength, order);
+    Msa::Order order = sender() == sortByLengthDescendingAction ? Msa::Descending : Msa::Ascending;
+    sortSequences(Msa::SortByLength, order);
 }
 
 void MSAEditor::sl_sortSequencesByLeadingGap() {
-    MultipleAlignment::Order order = sender() == sortByLeadingGapDescendingAction ? MultipleAlignment::Descending : MultipleAlignment::Ascending;
-    sortSequences(MultipleAlignment::SortByLeadingGap, order);
+    Msa::Order order = sender() == sortByLeadingGapDescendingAction ? Msa::Descending : Msa::Ascending;
+    sortSequences(Msa::SortByLeadingGap, order);
 }
 
 void MSAEditor::sl_convertBetweenDnaAndRnaAlphabets() {
@@ -882,19 +882,19 @@ void MSAEditor::sl_sortGroupsBySize() {
 
 // TODO: move this function into MSA?
 /* Groups rows by similarity. Two rows are considered equal if their sequences are equal with ignoring of gaps. */
-static QList<QList<int>> groupRowsBySimilarity(const QVector<MultipleAlignmentRow>& msaRows) {
+static QList<QList<int>> groupRowsBySimilarity(const QVector<MsaRow>& msaRows) {
     QList<QList<int>> rowGroups;
     QSet<int> mappedRows;  // contains indexes of the already processed rows.
     for (int i = 0; i < msaRows.size(); i++) {
         if (mappedRows.contains(i)) {
             continue;
         }
-        const MultipleAlignmentRow& row = msaRows[i];
+        const MsaRow& row = msaRows[i];
         QList<int> rowGroup;
         rowGroup << i;
         for (int j = i + 1; j < msaRows.size(); j++) {
-            const MultipleAlignmentRow& next = msaRows[j];
-            if (!mappedRows.contains(j) && MultipleAlignmentRowData::isEqualIgnoreGaps(next.data(), row.data())) {
+            const MsaRow& next = msaRows[j];
+            if (!mappedRows.contains(j) && MsaRowData::isEqualIgnoreGaps(next.data(), row.data())) {
                 rowGroup << j;
                 mappedRows.insert(j);
             }
@@ -923,7 +923,7 @@ void MSAEditor::updateCollapseModel() {
     SAFE_POINT(rowOrderMode == MaEditorRowOrderMode::Sequence, "Unexpected row order mode", );
 
     // Order and group rows by sequence content.
-    MultipleAlignmentObject* msaObject = getMaObject();
+    MsaObject* msaObject = getMaObject();
     QList<QList<int>> rowGroups = groupRowsBySimilarity(msaObject->getRows());
     QVector<MaCollapsibleGroup> newCollapseGroups;
 

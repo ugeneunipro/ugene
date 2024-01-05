@@ -23,8 +23,8 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaObject.h>
 
 #include "TextDocumentFormat.h"
 
@@ -42,14 +42,14 @@ public:
     void storeTextDocument(IOAdapterWriter& writer, Document* doc, U2OpStatus& os) override;
 
 protected:
-    MultipleAlignmentObject* load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    MsaObject* load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
     /** Parses header line and saves sequenceCount and columnCount values. Returns true if the header was parsed succesfully. */
     bool parseHeader(const QString& data, int& sequenceCount, int& columnCount) const;
 
     Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 
-    virtual MultipleAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const = 0;
+    virtual Msa parse(IOAdapterReader& reader, U2OpStatus& os) const = 0;
 };
 
 /** Sequential variant of Phylip format. Example:
@@ -71,7 +71,7 @@ public:
 protected:
     FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    MultipleAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const override;
+    Msa parse(IOAdapterReader& reader, U2OpStatus& os) const override;
 };
 
 /** Interleaved variant of Phylip format. Example:
@@ -93,7 +93,7 @@ public:
 protected:
     FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    MultipleAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const override;
+    Msa parse(IOAdapterReader& reader, U2OpStatus& os) const override;
 };
 
 }  // namespace U2

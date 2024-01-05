@@ -65,7 +65,7 @@ void ExtractMSAConsensusWorker::init() {
 Task* ExtractMSAConsensusWorker::tick() {
     if (hasMsa()) {
         U2OpStatusImpl os;
-        MultipleAlignment msa = takeMsa(os);
+        Msa msa = takeMsa(os);
         CHECK_OP(os, new FailTask(os.getError()));
         extractMsaConsensus = createTask(msa);
         return extractMsaConsensus;
@@ -93,7 +93,7 @@ bool ExtractMSAConsensusWorker::hasMsa() const {
     return port->hasMessage();
 }
 
-MultipleAlignment ExtractMSAConsensusWorker::takeMsa(U2OpStatus& os) {
+Msa ExtractMSAConsensusWorker::takeMsa(U2OpStatus& os) {
     const Message m = getMessageAndSetupScriptValues(ports[BasePorts::IN_MSA_PORT_ID()]);
     const QVariantMap data = m.getData().toMap();
     if (!data.contains(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId())) {
@@ -101,7 +101,7 @@ MultipleAlignment ExtractMSAConsensusWorker::takeMsa(U2OpStatus& os) {
         return {};
     }
     const SharedDbiDataHandler dbiId = data[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()].value<SharedDbiDataHandler>();
-    const MultipleAlignmentObject* obj = StorageUtils::getMsaObject(context->getDataStorage(), dbiId);
+    const MsaObject* obj = StorageUtils::getMsaObject(context->getDataStorage(), dbiId);
     if (obj == nullptr) {
         os.setError(tr("Error with msa object"));
         return {};
@@ -136,7 +136,7 @@ void ExtractMSAConsensusStringWorker::sendResult(const SharedDbiDataHandler& /*s
     outPort->put(Message(outPort->getBusType(), data));
 }
 
-ExtractMSAConsensusTaskHelper* ExtractMSAConsensusStringWorker::createTask(const MultipleAlignment& msa) {
+ExtractMSAConsensusTaskHelper* ExtractMSAConsensusStringWorker::createTask(const Msa& msa) {
     const QString algoId = getValue<QString>(ALGO_ATTR_ID);
     const int threshold = getValue<int>(THRESHOLD_ATTR_ID);
     extractMsaConsensus = new ExtractMSAConsensusTaskHelper(algoId, threshold, true, msa, context->getDataStorage()->getDbiRef());
@@ -170,7 +170,7 @@ void ExtractMSAConsensusSequenceWorker::sendResult(const SharedDbiDataHandler& s
     outPort->put(Message(outPort->getBusType(), data));
 }
 
-ExtractMSAConsensusTaskHelper* ExtractMSAConsensusSequenceWorker::createTask(const MultipleAlignment& msa) {
+ExtractMSAConsensusTaskHelper* ExtractMSAConsensusSequenceWorker::createTask(const Msa& msa) {
     const QString algoId = getValue<QString>(ALGO_ATTR_ID);
     const int threshold = getValue<int>(THRESHOLD_ATTR_ID);
     const bool keepGaps = getValue<bool>(GAPS_ATTR_ID);
@@ -181,7 +181,7 @@ ExtractMSAConsensusTaskHelper* ExtractMSAConsensusSequenceWorker::createTask(con
 
 ///////////////////////////////////////////////////////////////////////
 // ExtractMSAConsensusTaskHelper
-ExtractMSAConsensusTaskHelper::ExtractMSAConsensusTaskHelper(const QString& algoId, int threshold, bool keepGaps, const MultipleAlignment& msa, const U2DbiRef& targetDbi)
+ExtractMSAConsensusTaskHelper::ExtractMSAConsensusTaskHelper(const QString& algoId, int threshold, bool keepGaps, const Msa& msa, const U2DbiRef& targetDbi)
     : Task(ExtractMSAConsensusTaskHelper::tr("Extract consensus"), TaskFlags_NR_FOSCOE),
       algoId(algoId),
       threshold(threshold),

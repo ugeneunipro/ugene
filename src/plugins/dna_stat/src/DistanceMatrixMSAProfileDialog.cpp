@@ -36,7 +36,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/TextUtils.h>
 
 #include <U2Gui/HelpButton.h>
@@ -66,10 +66,10 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
         algoCombo->addItem(a->getName(), a->getId());
     }
 
-    MultipleAlignmentObject* msaObj = ctx->getMaObject();
+    MsaObject* msaObj = ctx->getMaObject();
     if (msaObj != nullptr) {
         QVector<U2Region> unitedRows;
-        MultipleAlignment ma = msaObj->getAlignment()->getCopy();
+        Msa ma = msaObj->getAlignment()->getCopy();
         ma->sortRowsBySimilarity(unitedRows);
         if (unitedRows.size() < 2)
             groupStatisticsCheck->setEnabled(false);
@@ -79,7 +79,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
 }
 
 void DistanceMatrixMSAProfileDialog::initSaveController() {
-    MultipleAlignmentObject* msaObj = ctx->getMaObject();
+    MsaObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }
@@ -109,7 +109,7 @@ void DistanceMatrixMSAProfileDialog::initSaveController() {
 
 void DistanceMatrixMSAProfileDialog::accept() {
     DistanceMatrixMSAProfileTaskSettings s;
-    MultipleAlignmentObject* msaObj = ctx->getMaObject();
+    MsaObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }
@@ -225,11 +225,11 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 resultText += "<table>\n";
                 QVector<U2Region> unitedRows;
                 s.ma->sortRowsBySimilarity(unitedRows);
-                QList<MultipleAlignmentRow> rows;
+                QList<MsaRow> rows;
                 int i = 1;
                 srand(uint(QDateTime::currentDateTime().toSecsSinceEpoch() / 1000));
                 foreach (const U2Region& reg, unitedRows) {
-                    MultipleAlignmentRow row = s.ma->getRow(reg.startPos + qrand() % reg.length);
+                    MsaRow row = s.ma->getRow(reg.startPos + qrand() % reg.length);
                     row->setName(QString("Group %1: ").arg(i) + "(" + row->getName() + ")");
                     rows.append(s.ma->getRow(reg.startPos + qrand() % reg.length)->getExplicitCopy());
 
@@ -309,7 +309,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
     return res;
 }
 
-void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleAlignmentRow>& rows, QFile* f) {
+void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* algo, const QList<MsaRow>& rows, QFile* f) {
     int maxVal = s.usePercents ? 100 : s.ma->getLength();
     QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
     bool isSimilarity = algo->isSimilarityMeasure();

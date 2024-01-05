@@ -27,7 +27,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -139,7 +139,7 @@ void Kalign3SupportContext::sl_align() {
     CHECK(action != nullptr, );
 
     MSAEditor* msaEditor = action->getMsaEditor();
-    MultipleAlignmentObject* obj = msaEditor->getMaObject();
+    MsaObject* obj = msaEditor->getMaObject();
     CHECK(obj != nullptr && !obj->isStateLocked(), )
 
     const DNAAlphabet* alphabet = obj->getAlphabet();

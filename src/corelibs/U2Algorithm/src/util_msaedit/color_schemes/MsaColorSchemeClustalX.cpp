@@ -23,11 +23,11 @@
 
 #include <U2Algorithm/MSAConsensusUtils.h>
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 namespace U2 {
 
-MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj)
     : MsaColorScheme(parent, factory, maObj),
       objVersion(1),
       cacheVersion(0),
@@ -41,7 +41,7 @@ MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject* parent, const MsaColorSc
     colorByIdx[ClustalColor_CYAN] = "#15a4a4";
     colorByIdx[ClustalColor_YELLOW] = "#c0c000";
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemeClustalX::getBackgroundColor(int seq, int pos, char) const {
@@ -86,7 +86,7 @@ void MsaColorSchemeClustalX::updateCache() const {
 
     // compute colors for whole ali
     // use 4 bits per color
-    const MultipleAlignment msa = maObj->getAlignment();
+    const Msa msa = maObj->getAlignment();
     int nSeq = msa->getRowCount();
     aliLen = maObj->getLength();
     cacheVersion = objVersion;
@@ -261,7 +261,7 @@ MsaColorSchemeClustalXFactory::MsaColorSchemeClustalXFactory(QObject* parent, co
     : MsaColorSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaColorScheme* MsaColorSchemeClustalXFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaColorScheme* MsaColorSchemeClustalXFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaColorSchemeClustalX(parent, this, maObj);
 }
 

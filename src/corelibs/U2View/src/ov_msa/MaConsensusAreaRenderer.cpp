@@ -24,7 +24,7 @@
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 #include <U2Algorithm/MsaColorScheme.h>
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 #include <U2Gui/GraphUtils.h>
 
@@ -124,7 +124,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<
     consensusRenderData.mismatches.resize(static_cast<int>(region.length));
 
     MSAConsensusAlgorithm* algorithm = area->getConsensusAlgorithm();
-    const MultipleAlignment ma = editor->getMaObject()->getAlignment();
+    const Msa ma = editor->getMaObject()->getAlignment();
     for (int i = 0, n = static_cast<int>(region.length); i < n; i++) {
         int column = (int)region.startPos + i;
         int score = 0;

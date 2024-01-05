@@ -30,8 +30,8 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Log.h>
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -133,12 +133,12 @@ static QList<SharedAnnotationData> getAnnotationTable(QScriptContext* ctx, QScri
     return result;
 }
 
-static MultipleAlignment getAlignment(QScriptContext* ctx, QScriptEngine* engine, int argNum) {
+static Msa getAlignment(QScriptContext* ctx, QScriptEngine* engine, int argNum) {
     WorkflowScriptEngine* wse = ScriptEngineUtils::workflowEngine(engine);
     CHECK(wse != nullptr, {});
 
     SharedDbiDataHandler msaId = ScriptEngineUtils::getDbiId(engine, ctx->argument(argNum));
-    QScopedPointer<MultipleAlignmentObject> msaObj(StorageUtils::getMsaObject(wse->getWorkflowContext()->getDataStorage(), msaId));
+    QScopedPointer<MsaObject> msaObj(StorageUtils::getMsaObject(wse->getWorkflowContext()->getDataStorage(), msaId));
     CHECK(!msaObj.isNull(), {});
     return msaObj->getAlignment()->getCopy();
 }
@@ -161,7 +161,7 @@ static QScriptValue putAnnotationTable(QScriptEngine* engine, const QList<Shared
     return engine->newVariant(qVariantFromValue(id));
 }
 
-static QScriptValue putAlignment(QScriptEngine* engine, const MultipleAlignment& msa) {
+static QScriptValue putAlignment(QScriptEngine* engine, const Msa& msa) {
     WorkflowScriptEngine* wse = ScriptEngineUtils::workflowEngine(engine);
     CHECK(wse != nullptr, QScriptValue::NullValue);
     WorkflowContext* ctx = wse->getWorkflowContext();
@@ -499,7 +499,7 @@ QScriptValue WorkflowScriptLibrary::getSequenceFromAlignment(QScriptContext* ctx
         return ctx->throwError(QObject::tr("Incorrect number of arguments"));
     }
 
-    MultipleAlignment align = getAlignment(ctx, engine, 0);
+    Msa align = getAlignment(ctx, engine, 0);
     if (align->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
@@ -514,7 +514,7 @@ QScriptValue WorkflowScriptLibrary::getSequenceFromAlignment(QScriptContext* ctx
         return ctx->throwError(QObject::tr("Row is out of range"));
     }
 
-    MultipleAlignmentRow aRow = align->getRow(row)->getExplicitCopy();
+    MsaRow aRow = align->getRow(row)->getExplicitCopy();
     aRow->simplify();
     U2OpStatus2Log os;
     QByteArray arr = aRow->toByteArray(os, aRow->getCoreLength());
@@ -553,7 +553,7 @@ QScriptValue WorkflowScriptLibrary::findInAlignment(QScriptContext* ctx, QScript
 
     QString name;
     DNASequence seq;
-    MultipleAlignment aln = getAlignment(ctx, engine, 0);
+    Msa aln = getAlignment(ctx, engine, 0);
     if (aln->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
@@ -590,7 +590,7 @@ QScriptValue WorkflowScriptLibrary::createAlignment(QScriptContext* ctx, QScript
         return ctx->throwError(QObject::tr("Incorrect number of arguments"));
     }
 
-    MultipleAlignment align;
+    Msa align;
     DNASequence seq = getSequence(ctx, engine, 0);
     if (seq.seq.isEmpty()) {
         return ctx->throwError(QObject::tr("Empty or invalid sequence"));
@@ -617,7 +617,7 @@ QScriptValue WorkflowScriptLibrary::addToAlignment(QScriptContext* ctx, QScriptE
         return ctx->throwError(QObject::tr("Incorrect number of arguments"));
     }
 
-    MultipleAlignment align = getAlignment(ctx, engine, 0);
+    Msa align = getAlignment(ctx, engine, 0);
     DNASequence seq = getSequence(ctx, engine, 1);
     if (seq.seq.isEmpty()) {
         return ctx->throwError(QObject::tr("Empty or invalid sequence"));
@@ -651,7 +651,7 @@ QScriptValue WorkflowScriptLibrary::removeFromAlignment(QScriptContext* ctx, QSc
         return ctx->throwError(QObject::tr("Incorrect number of arguments"));
     }
 
-    MultipleAlignment aln = getAlignment(ctx, engine, 0);
+    Msa aln = getAlignment(ctx, engine, 0);
     if (aln->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
@@ -677,7 +677,7 @@ QScriptValue WorkflowScriptLibrary::rowNum(QScriptContext* ctx, QScriptEngine* e
         return ctx->throwError(QObject::tr("Incorrect number of arguments"));
     }
 
-    MultipleAlignment aln = getAlignment(ctx, engine, 0);
+    Msa aln = getAlignment(ctx, engine, 0);
     if (aln->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
@@ -693,7 +693,7 @@ QScriptValue WorkflowScriptLibrary::columnNum(QScriptContext* ctx, QScriptEngine
         return ctx->throwError(QObject::tr("Incorrect number of arguments"));
     }
 
-    MultipleAlignment aln = getAlignment(ctx, engine, 0);
+    Msa aln = getAlignment(ctx, engine, 0);
     if (aln->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
@@ -709,7 +709,7 @@ QScriptValue WorkflowScriptLibrary::alignmentAlphabetType(QScriptContext* ctx, Q
         return ctx->throwError(QObject::tr("Incorrect number of arguments"));
     }
 
-    MultipleAlignment aln = getAlignment(ctx, engine, 0);
+    Msa aln = getAlignment(ctx, engine, 0);
     if (aln->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }

@@ -104,7 +104,7 @@ MSAConsensusAlgorithm::MSAConsensusAlgorithm(const MSAConsensusAlgorithm& algori
       ignoreTrailingAndLeadingGaps(algorithm.ignoreTrailingAndLeadingGaps) {
 }
 
-char MSAConsensusAlgorithm::getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score) const {
+char MSAConsensusAlgorithm::getConsensusCharAndScore(const Msa& ma, int column, int& score) const {
     char consensusChar = getConsensusChar(ma, column);
 
     // now compute score using most freq character
@@ -125,11 +125,11 @@ void MSAConsensusAlgorithm::setThreshold(int val) {
     emit si_thresholdChanged(newThreshold);
 }
 
-QVector<int> MSAConsensusAlgorithm::pickRowsWithCharInCoreArea(const MultipleAlignment& ma, int pos) {
+QVector<int> MSAConsensusAlgorithm::pickRowsWithCharInCoreArea(const Msa& ma, int pos) {
     QVector<int> seqIdx;
     int nSeq = ma->getRowCount();
     for (int rowIndex = 0; rowIndex < nSeq; rowIndex++) {
-        const MultipleAlignmentRow& row = ma->getRow(rowIndex);
+        const MsaRow& row = ma->getRow(rowIndex);
         if (!row->isTrailingOrLeadingGap(pos)) {
             seqIdx << rowIndex;
         }
@@ -137,7 +137,7 @@ QVector<int> MSAConsensusAlgorithm::pickRowsWithCharInCoreArea(const MultipleAli
     return seqIdx;
 }
 
-QVector<int> MSAConsensusAlgorithm::pickRowsToUseInConsensus(const MultipleAlignment& ma, int pos) const {
+QVector<int> MSAConsensusAlgorithm::pickRowsToUseInConsensus(const Msa& ma, int pos) const {
     CHECK(ignoreTrailingAndLeadingGaps, emptyRowIdxStub);
     return pickRowsWithCharInCoreArea(ma, pos);
 }

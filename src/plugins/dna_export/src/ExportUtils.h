@@ -31,7 +31,7 @@ class Annotation;
 class DocumentProviderTask;
 class ExportSequenceTaskSettings;
 class ExportSequencesDialog;
-class MultipleAlignmentObject;
+class MsaObject;
 class Task;
 
 class ExportUtils : public QObject {
@@ -44,7 +44,7 @@ public:
     // generates unique name using prefix + numbers
     static QString genUniqueName(const QSet<QString>& names, QString prefix);
 
-    static void launchExportMca2MsaTask(MultipleAlignmentObject* mcaObject);
+    static void launchExportMca2MsaTask(MsaObject* mcaObject);
 };
 
 }  // namespace U2

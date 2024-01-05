@@ -23,18 +23,18 @@
 
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MaEditor.h"
 
 namespace U2 {
 
-MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MultipleAlignmentObject* o, MSAConsensusAlgorithmFactory* factory)
+MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MsaObject* o, MSAConsensusAlgorithmFactory* factory)
     : QObject(p), curCacheSize(0), aliObj(o), algorithm(nullptr) {
     setConsensusAlgorithm(factory);
 
-    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
+    connect(aliObj, SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
     connect(aliObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_invalidateAlignmentObject()));
 
     curCacheSize = aliObj->getLength();
@@ -82,7 +82,7 @@ void MSAEditorConsensusCache::sl_alignmentChanged() {
 
 void MSAEditorConsensusCache::updateCacheItem(int pos) {
     if (!updateMap.at(pos) && aliObj != nullptr) {
-        const MultipleAlignment ma = aliObj->getAlignment();
+        const Msa ma = aliObj->getAlignment();
 
         QString errorMessage = "Can not update consensus cache item";
         SAFE_POINT(pos >= 0 && pos < curCacheSize, errorMessage, );
@@ -123,7 +123,7 @@ QList<int> MSAEditorConsensusCache::getConsensusPercents(const U2Region& region)
 }
 
 QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
-    const MultipleAlignment ma = aliObj->getAlignment();
+    const Msa ma = aliObj->getAlignment();
     const U2Region region(0, ma->getLength());
     return getConsensusLine(region, withGaps);
 }

@@ -22,7 +22,7 @@
 #pragma once
 
 #include <U2Core/AnnotationData.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2SequenceUtils.h>
 
 #include <U2Lang/Datatype.h>
@@ -99,7 +99,7 @@ public:
     QVariant finishAction(U2OpStatus& os) override;
 
 private:
-    MultipleAlignment result;
+    Msa result;
 };
 
 class MergerMSAPerformer : public ActionPerformer {
@@ -109,7 +109,7 @@ public:
     QVariant finishAction(U2OpStatus& os) override;
 
 private:
-    MultipleAlignment result;
+    Msa result;
 };
 
 class MergerStringPerformer : public ActionPerformer {

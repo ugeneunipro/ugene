@@ -28,7 +28,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentProviderTask.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2AlphabetUtils.h>
 
@@ -99,7 +99,7 @@ private:
 class AlignSequencesToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    AlignSequencesToAlignmentTask(MultipleAlignmentObject* obj,
+    AlignSequencesToAlignmentTask(MsaObject* obj,
                                   const QString& algorithmId,
                                   const SequenceObjectsExtractor& extractor);
 
@@ -108,7 +108,7 @@ public:
     ReportResult report() override;
 
 private:
-    QPointer<MultipleAlignmentObject> maObjPointer;
+    QPointer<MsaObject> maObjPointer;
     QStringList urls;
     StateLock* stateLock;
     StateLock* docStateLock;
@@ -122,7 +122,7 @@ private:
 class LoadSequencesAndAlignToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    LoadSequencesAndAlignToAlignmentTask(MultipleAlignmentObject* obj,
+    LoadSequencesAndAlignToAlignmentTask(MsaObject* obj,
                                          const QString& algorithmId,
                                          const QStringList& urls);
 
@@ -133,7 +133,7 @@ public:
 private:
     QStringList urls;
     QString algorithmId;
-    QPointer<MultipleAlignmentObject> maObjPointer;
+    QPointer<MsaObject> maObjPointer;
     LoadSequencesTask* loadSequencesTask;
 };
 

@@ -360,7 +360,7 @@ QStringList GTUtilsMSAEditorSequenceArea::getCurrentRowNames() {
     QStringList rowNameList;
     for (int viewRowIndex = 0; viewRowIndex < viewRowCount; viewRowIndex++) {
         int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
-        MultipleAlignmentRow maRow = editor->getMaObject()->getRow(maRowIndex);
+        MsaRow maRow = editor->getMaObject()->getRow(maRowIndex);
         rowNameList << maRow->getName();
     }
     return rowNameList;
@@ -388,7 +388,7 @@ QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(bool asShownInNameList
     CHECK_SET_ERR_RESULT(nameListArea != nullptr, "MSA Editor name list area is NULL", QStringList());
 
     QList<int> visibleRowsIndexes = editor->getUI()->getUI(0)->getDrawHelper()->getVisibleMaRowIndexes(nameListArea->height());
-    MultipleAlignmentObject* msaObject = editor->getMaObject();
+    MsaObject* msaObject = editor->getMaObject();
 
     QStringList visibleRowNames;
     for (int rowIndex : qAsConst(visibleRowsIndexes)) {

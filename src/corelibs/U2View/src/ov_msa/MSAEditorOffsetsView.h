@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 namespace U2 {
 
@@ -32,7 +32,7 @@ class MaEditorWgt;
 class MSAEditorOffsetsViewWidget;
 class MaEditorSequenceArea;
 class MaModificationInfo;
-class MultipleAlignmentObject;
+class MsaObject;
 
 class U2VIEW_EXPORT MSAEditorOffsetsViewController : public QObject {
     Q_OBJECT

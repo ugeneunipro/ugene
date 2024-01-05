@@ -23,7 +23,7 @@
 #include <QDialog>
 
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 #include "KalignSupportTask.h"
 
@@ -36,13 +36,13 @@ class SaveDocumentController;
 class Kalign3DialogWithMsaInput : public QDialog, public Ui_KalignSupportRunDialog {
     Q_OBJECT
 public:
-    Kalign3DialogWithMsaInput(QWidget* w, const MultipleAlignment& ma, Kalign3Settings& settings);
+    Kalign3DialogWithMsaInput(QWidget* w, const Msa& ma, Kalign3Settings& settings);
 
 public slots:
     void accept() override;
 
 private:
-    MultipleAlignment ma;
+    Msa ma;
     Kalign3Settings& settings;
 };
 

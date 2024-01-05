@@ -37,7 +37,7 @@ class McaEditorNameList;
 class McaEditorReferenceArea;
 class McaEditorSequenceArea;
 class McaEditorWgt;
-class MultipleAlignmentRowData;
+class MsaRowData;
 
 class GTUtilsMcaEditor {
 public:
@@ -57,7 +57,7 @@ public:
     static QScrollBar* getHorizontalScrollBar();
     static QScrollBar* getVerticalScrollBar();
 
-    static MultipleAlignmentRowData* getMcaRow(int rowNum);
+    static MsaRowData* getMcaRow(int rowNum);
 
     static QAction* getOffsetAction();
 

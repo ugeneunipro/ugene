@@ -28,7 +28,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2IdTypes.h>

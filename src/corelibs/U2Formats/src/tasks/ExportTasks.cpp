@@ -34,9 +34,9 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -48,7 +48,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
-ExportAlignmentTask::ExportAlignmentTask(const MultipleAlignment& _ma, const QString& _url, const DocumentFormatId& _documentFormatId)
+ExportAlignmentTask::ExportAlignmentTask(const Msa& _ma, const QString& _url, const DocumentFormatId& _documentFormatId)
     : DocumentProviderTask(tr("Export alignment to %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), url(_url), documentFormatId(_documentFormatId) {
     GCOUNTER(cvar, "ExportAlignmentTask");
     documentDescription = QFileInfo(url).fileName();
@@ -64,7 +64,7 @@ void ExportAlignmentTask::run() {
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 
-    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(exportedDocument->getDbiRef(), ma, stateInfo);
+    MsaObject* obj = MsaImportUtils::createMsaObject(exportedDocument->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     exportedDocument->addObject(obj);
@@ -80,7 +80,7 @@ void ExportAlignmentTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleAlignment& _ma,
+ExportMSA2SequencesTask::ExportMSA2SequencesTask(const Msa& _ma,
                                                  const QString& _url,
                                                  bool _trimLeadingAndTrailingGaps,
                                                  const DocumentFormatId& _documentFormatId)
@@ -124,7 +124,7 @@ void ExportMSA2SequencesTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export nucleic alignment 2 amino alignment
 
-ExportMSA2MSATask::ExportMSA2MSATask(const MultipleAlignment& msa,
+ExportMSA2MSATask::ExportMSA2MSATask(const Msa& msa,
                                      const QList<qint64>& rowIds,
                                      const U2Region& columnRegion,
                                      const QString& _url,
@@ -182,10 +182,10 @@ void ExportMSA2MSATask::run() {
             resultSequenceList << sequence;
         }
     }
-    MultipleAlignment aminoMa = MsaUtils::seq2ma(resultSequenceList, stateInfo);
+    Msa aminoMa = MsaUtils::seq2ma(resultSequenceList, stateInfo);
     CHECK_OP(stateInfo, );
 
-    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(exportedDocument->getDbiRef(), aminoMa, stateInfo);
+    MsaObject* obj = MsaImportUtils::createMsaObject(exportedDocument->getDbiRef(), aminoMa, stateInfo);
     CHECK_OP(stateInfo, );
 
     exportedDocument->addObject(obj);

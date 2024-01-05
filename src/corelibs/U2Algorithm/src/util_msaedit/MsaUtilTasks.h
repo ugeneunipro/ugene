@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/global.h>
 
@@ -36,17 +36,17 @@ class DNATranslation;
 class U2ALGORITHM_EXPORT TranslateMsa2AminoTask : public Task {
     Q_OBJECT
 public:
-    TranslateMsa2AminoTask(MultipleAlignmentObject* obj);
-    TranslateMsa2AminoTask(MultipleAlignmentObject* obj, const QString& trId);
-    const MultipleAlignment& getTaskResult() {
+    TranslateMsa2AminoTask(MsaObject* obj);
+    TranslateMsa2AminoTask(MsaObject* obj, const QString& trId);
+    const Msa& getTaskResult() {
         return resultMA;
     }
     void run() override;
     ReportResult report() override;
 
 private:
-    MultipleAlignment resultMA;
-    MultipleAlignmentObject* maObj;
+    Msa resultMA;
+    MsaObject* maObj;
     DNATranslation* translation;
 };
 
@@ -57,18 +57,18 @@ private:
 class U2ALGORITHM_EXPORT AlignGObjectTask : public Task {
     Q_OBJECT
 public:
-    AlignGObjectTask(const QString& taskName, TaskFlags f, MultipleAlignmentObject* maobj)
+    AlignGObjectTask(const QString& taskName, TaskFlags f, MsaObject* maobj)
         : Task(taskName, f), obj(maobj) {
     }
-    virtual void setMAObject(MultipleAlignmentObject* maobj) {
+    virtual void setMAObject(MsaObject* maobj) {
         obj = maobj;
     }
-    MultipleAlignmentObject* getMAObject() {
+    MsaObject* getMAObject() {
         return obj;
     }
 
 protected:
-    QPointer<MultipleAlignmentObject> obj;
+    QPointer<MsaObject> obj;
 };
 
 /**
@@ -82,7 +82,7 @@ class U2ALGORITHM_EXPORT AlignInAminoFormTask : public Task {
     Q_OBJECT
     Q_DISABLE_COPY(AlignInAminoFormTask)
 public:
-    AlignInAminoFormTask(MultipleAlignmentObject* obj, AlignGObjectTask* alignTask, const QString& traslId);
+    AlignInAminoFormTask(MsaObject* obj, AlignGObjectTask* alignTask, const QString& traslId);
     ~AlignInAminoFormTask();
 
     void prepare() override;
@@ -91,7 +91,7 @@ public:
 
 protected:
     AlignGObjectTask* alignTask;
-    MultipleAlignmentObject *maObj, *clonedObj;
+    MsaObject *maObj, *clonedObj;
     QString traslId;
     Document* tmpDoc;
     QMap<qint64, QVector<U2MsaGap>> rowsGapModel;

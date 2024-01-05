@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 #include "ov_msa/SequenceAreaRenderer.h"
 
@@ -47,9 +47,9 @@ public:
     static const int CHROMATOGRAM_MAX_HEIGHT;
 
 private:
-    int drawRow(QPainter& painter, const MultipleAlignment& mca, int rowIndex, const U2Region& region, int xStart, int yStart) const override;
+    int drawRow(QPainter& painter, const Msa& mca, int rowIndex, const U2Region& region, int xStart, int yStart) const override;
 
-    void drawChromatogram(QPainter& painter, const MultipleAlignmentRow& row, const U2Region& visibleRange, int xStart) const;
+    void drawChromatogram(QPainter& painter, const MsaRow& row, const U2Region& visibleRange, int xStart) const;
 
     QColor getBaseColor(char base) const;
 

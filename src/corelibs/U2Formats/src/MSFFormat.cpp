@@ -24,8 +24,8 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentWalker.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -98,7 +98,7 @@ struct MsfRow {
 
 void MSFFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os) {
     QString objName = reader.getURL().baseFileName();
-    MultipleAlignment al(objName);
+    Msa al(objName);
     int lineNumber = 0;  // Current line number from the object start. Used for error reporing.
 
     // Skip comments.
@@ -194,7 +194,7 @@ void MSFFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObj
     U2OpStatus2Log seqCheckOs;
     const int numRows = al->getRowCount();
     for (int i = 0; i < numRows; i++) {
-        const MultipleAlignmentRow& row = al->getRow(i);
+        const MsaRow& row = al->getRow(i);
         const int expectedCheckSum = msfRows[i].checksum;
         const int sequenceCheckSum = getCheckSum(row->toByteArray(seqCheckOs, al->getLength()));
         if (expectedCheckSum < CHECK_SUM_MOD && sequenceCheckSum != expectedCheckSum) {
@@ -208,7 +208,7 @@ void MSFFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObj
     CHECK_EXT(al->getAlphabet() != nullptr, os.setError(MSFFormat::tr("Alphabet unknown")), );
 
     QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
+    MsaObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
     CHECK_OP(os, );
     objects.append(obj);
 }
@@ -272,15 +272,15 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
     const QList<GObject*>& objectList = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(objectList.size() == 1, "MSFFormat::storeTextEntry can store only 1 object per file. Got: " + QString::number(objectList.size()), );
 
-    auto obj = dynamic_cast<MultipleAlignmentObject*>(objectList.first());
+    auto obj = dynamic_cast<MsaObject*>(objectList.first());
     SAFE_POINT(obj != nullptr, "MSF entry storing: the object is not an alignment", );
 
-    const MultipleAlignment& msa = obj->getAlignment();
+    const Msa& msa = obj->getAlignment();
 
     // Make row names unique
     QMap<qint64, QString> uniqueRowNames;
     int maxNameLen = 0;
-    foreach (const MultipleAlignmentRow& row, msa->getRows()) {
+    foreach (const MsaRow& row, msa->getRows()) {
         QString rolledRowName = rollRowName(row->getName().replace(' ', '_'), uniqueRowNames.values());
         uniqueRowNames.insert(row->getRowId(), rolledRowName);
         maxNameLen = qMax(maxNameLen, uniqueRowNames.last().length());
@@ -290,7 +290,7 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
     int maLen = msa->getLength();
     int checkSum = 0;
     QMap<qint64, int> checkSums;
-    foreach (const MultipleAlignmentRow& row, msa->getRows()) {
+    foreach (const MsaRow& row, msa->getRows()) {
         QByteArray sequence = row->toByteArray(os, maLen).replace(U2Msa::GAP_CHAR, '.');
         int seqCheckSum = getCheckSum(sequence);
         checkSums.insert(row->getRowId(), seqCheckSum);
@@ -312,7 +312,7 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
 
     // Write per-row info.
     int maxCheckSumLen = 4;
-    foreach (const MultipleAlignmentRow& row, msa->getRows()) {
+    foreach (const MsaRow& row, msa->getRows()) {
         line = " " + NAME_FIELD;
         line += " " + uniqueRowNames[row->getRowId()].leftJustified(maxNameLen + 1);
         line += "  " + LEN_FIELD;
@@ -328,7 +328,7 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
     writer.write(os, "\n" + SECTION_SEPARATOR + "\n\n");
     CHECK_OP(os, );
 
-    MultipleSequenceAlignmentWalker walker(msa, '.');
+    MsaWalker walker(msa, '.');
     for (int i = 0; !os.isCoR() && i < maLen; i += CHARS_IN_ROW) {
         /* write numbers */ {
             line = QString(maxNameLen + 2, ' ');
@@ -350,10 +350,10 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
         QList<QByteArray> sequenceList = walker.nextData(CHARS_IN_ROW, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = sequenceList.constBegin();
-        QList<MultipleAlignmentRow> msaRowList = msa->getRows().toList();
-        QList<MultipleAlignmentRow>::ConstIterator ri = msaRowList.constBegin();
+        QList<MsaRow> msaRowList = msa->getRows().toList();
+        QList<MsaRow>::ConstIterator ri = msaRowList.constBegin();
         for (; si != sequenceList.constEnd(); si++, ri++) {
-            const MultipleAlignmentRow& row = *ri;
+            const MsaRow& row = *ri;
             QString rowName = uniqueRowNames[row->getRowId()].leftJustified(maxNameLen + 1);
             for (int j = 0; j < CHARS_IN_ROW && i + j < maLen; j += CHARS_IN_WORD) {
                 rowName += ' ';

@@ -24,7 +24,7 @@
 #include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 #include <U2View/RealignSequencesInAlignmentTask.h>
 
@@ -76,7 +76,7 @@ void GTest_Realign::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    msaObj = qobject_cast<MultipleAlignmentObject*>(obj);
+    msaObj = qobject_cast<MsaObject*>(obj);
     if (msaObj == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;

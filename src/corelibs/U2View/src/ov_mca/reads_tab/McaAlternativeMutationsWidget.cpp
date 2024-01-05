@@ -23,7 +23,7 @@
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -42,7 +42,7 @@ McaAlternativeMutationsWidget::McaAlternativeMutationsWidget(QWidget* parent)
     setupUi(this);
 }
 
-void McaAlternativeMutationsWidget::init(MultipleAlignmentObject* _maObject,
+void McaAlternativeMutationsWidget::init(MsaObject* _maObject,
                                          MaEditorSequenceArea* _seqArea,
                                          MaEditorStatusBar* _statusBar) {
     SAFE_POINT(_seqArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorSequenceArea is nullptr", );

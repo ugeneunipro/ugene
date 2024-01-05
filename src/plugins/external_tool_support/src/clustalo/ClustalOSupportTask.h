@@ -24,8 +24,8 @@
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GObjectReference.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Task.h>
 
@@ -67,7 +67,7 @@ class ClustalOSupportTask : public ExternalToolSupportTask {
     Q_DISABLE_COPY(ClustalOSupportTask)
 public:
     /** Initializes ClustalO task that calls ClustalO to align 'msa' and saves the result to 'objRef'. */
-    ClustalOSupportTask(const MultipleAlignment& inputMsa,
+    ClustalOSupportTask(const Msa& inputMsa,
                         const GObjectReference& objRef,
                         const ClustalOSupportTaskSettings& settings);
 
@@ -75,7 +75,7 @@ public:
      * Initializes ClustalO task that calls ClustalO to align 'msa' with another alignment from 'secondAlignmentFileUrl'
      * and saves the result to 'objRef'.
      */
-    ClustalOSupportTask(const MultipleAlignment& inputMsa,
+    ClustalOSupportTask(const Msa& inputMsa,
                         const GObjectReference& objRef,
                         const QString& secondAlignmentFileUrl,
                         const ClustalOSupportTaskSettings& settings);
@@ -89,15 +89,15 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     /** Returns result multiple alignment. The result is non-empty only for successfully finished task. */
-    const MultipleAlignment& getResultAlignment() const;
+    const Msa& getResultAlignment() const;
 
 private:
     /** Removes all object locks set by the task.*/
     void unlockMsaObject();
 
-    MultipleAlignment inputMsa;
+    Msa inputMsa;
     ;
-    MultipleAlignment resultMsa;
+    Msa resultMsa;
     ;
     GObjectReference objRef;
     QPointer<Document> tmpDoc;
@@ -126,7 +126,7 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    MultipleAlignmentObject* mAObject = nullptr;
+    MsaObject* mAObject = nullptr;
     Document* currentDocument = nullptr;
     bool cleanDoc = true;
 

@@ -31,7 +31,7 @@
 namespace U2 {
 
 class RealignSequencesInAlignmentTask;
-class MultipleAlignmentObject;
+class MsaObject;
 
 class GTest_Realign : public XmlTest {
     Q_OBJECT
@@ -44,7 +44,7 @@ public:
 
 private:
     QString inputObjectName;
-    MultipleAlignmentObject* msaObj = nullptr;
+    MsaObject* msaObj = nullptr;
     QList<int> rowsIndexesToAlign;
     Document* doc = nullptr;
     RealignSequencesInAlignmentTask* realignTask = nullptr;

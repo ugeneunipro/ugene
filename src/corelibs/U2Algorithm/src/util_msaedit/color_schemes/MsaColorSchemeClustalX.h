@@ -32,7 +32,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MsaColorSchemeClustalX : public MsaColorScheme {
     Q_OBJECT
 public:
-    MsaColorSchemeClustalX(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj);
+    MsaColorSchemeClustalX(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj);
 
     QColor getBackgroundColor(int seq, int pos, char c) const override;
     QColor getFontColor(int seq, int pos, char c) const override;
@@ -72,7 +72,7 @@ class MsaColorSchemeClustalXFactory : public MsaColorSchemeFactory {
 public:
     MsaColorSchemeClustalXFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets);
 
-    MsaColorScheme* create(QObject* parent, MultipleAlignmentObject* maObj) const;
+    MsaColorScheme* create(QObject* parent, MsaObject* maObj) const;
 };
 
 }  // namespace U2

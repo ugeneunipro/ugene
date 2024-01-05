@@ -26,7 +26,7 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DbiConnection.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -127,7 +127,7 @@ void McaEditorStatusBar::updatePositionLabel() {
 
 void McaEditorStatusBar::updateMutationsLabel() {
     U2OpStatus2Log os;
-    MultipleAlignmentObject* maObject = editor->getMaObject();
+    MsaObject* maObject = editor->getMaObject();
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(maObject->getEntityRef().dbiRef, os));
     CHECK_OP(os, );
 

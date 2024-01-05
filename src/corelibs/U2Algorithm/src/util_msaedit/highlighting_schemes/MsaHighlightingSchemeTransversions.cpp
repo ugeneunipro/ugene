@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-MsaHighlightingSchemeTransversions::MsaHighlightingSchemeTransversions(QObject* parent, const MsaHighlightingSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaHighlightingSchemeTransversions::MsaHighlightingSchemeTransversions(QObject* parent, const MsaHighlightingSchemeFactory* factory, MsaObject* maObj)
     : MsaHighlightingScheme(parent, factory, maObj) {
 }
 
@@ -62,7 +62,7 @@ MsaHighlightingSchemeTransversionsFactory::MsaHighlightingSchemeTransversionsFac
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaHighlightingScheme* MsaHighlightingSchemeTransversionsFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaHighlightingScheme* MsaHighlightingSchemeTransversionsFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaHighlightingSchemeTransversions(parent, this, maObj);
 }
 

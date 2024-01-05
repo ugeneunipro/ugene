@@ -27,7 +27,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -455,7 +455,7 @@ bool NEXUSParser::readDataContents(Context& ctx) {
             }
 
             // Build MultipleAlignment object
-            MultipleAlignment ma(tz.getIO()->getURL().baseFileName());
+            Msa ma(tz.getIO()->getURL().baseFileName());
             for (int i = 0; i < names.length(); i++) {
                 ma->addRow(names[i], values[i]);
             }
@@ -482,7 +482,7 @@ bool NEXUSParser::readDataContents(Context& ctx) {
                 return false;
             }
 
-            MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(dbiRef, ma, ti, folder);
+            MsaObject* obj = MsaImportUtils::createMsaObject(dbiRef, ma, ti, folder);
             CHECK_OP(ti, false);
             addObject(obj);
         } else if (cmd == END) {
@@ -754,7 +754,7 @@ void writeHeader(IOAdapter* io, U2OpStatus&) {
     io->writeBlock(line);
 }
 
-void writeMAligment(const MultipleAlignment& ma, bool simpleName, IOAdapter* io, U2OpStatus&) {
+void writeMAligment(const Msa& ma, bool simpleName, IOAdapter* io, U2OpStatus&) {
     QByteArray line;
     QByteArray tabs, tab(4, ' ');
 
@@ -797,17 +797,17 @@ void writeMAligment(const MultipleAlignment& ma, bool simpleName, IOAdapter* io,
 
     tabs.append(tab);
 
-    const QList<MultipleAlignmentRow> rows = ma->getRows().toList();
+    const QList<MsaRow> rows = ma->getRows().toList();
 
     int nameMaxLen = 0;
-    foreach (const MultipleAlignmentRow& row, rows) {
+    foreach (const MsaRow& row, rows) {
         if (row->getName().size() > nameMaxLen) {
             nameMaxLen = row->getName().size();
         }
     }
     nameMaxLen += 2;  // quotes may appear
 
-    foreach (const MultipleAlignmentRow& row, rows) {
+    foreach (const MsaRow& row, rows) {
         QString name = row->getName();
 
         if (name.contains(QRegExp("\\s|\\W"))) {
@@ -907,7 +907,7 @@ void NEXUSFormat::storeObjects(const QList<GObject*>& objects, bool simpleNames,
     writeHeader(io, ti);
 
     for (GObject* object : qAsConst(objects)) {
-        if (auto mao = qobject_cast<MultipleAlignmentObject*>(object)) {
+        if (auto mao = qobject_cast<MsaObject*>(object)) {
             writeMAligment(mao->getAlignment(), simpleNames, io, ti);
             io->writeBlock(QByteArray("\n"));
         } else if (auto pto = qobject_cast<PhyTreeObject*>(object)) {

@@ -24,10 +24,10 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentWalker.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
+#include <U2Core/MsaWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
@@ -67,8 +67,8 @@ void MegaFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
     CHECK_EXT(d != nullptr, os.setError(L10N::badArgument("doc")), );
     CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
 
-    MultipleAlignmentObject* obj = nullptr;
-    if ((d->getObjects().size() != 1) || ((obj = qobject_cast<MultipleAlignmentObject*>(d->getObjects().first())) == nullptr)) {
+    MsaObject* obj = nullptr;
+    if ((d->getObjects().size() != 1) || ((obj = qobject_cast<MsaObject*>(d->getObjects().first())) == nullptr)) {
         os.setError("No data to write;");
         return;
     }
@@ -224,7 +224,7 @@ bool MegaFormat::skipComments(IOAdapter* io, QByteArray& line, U2OpStatus& ti) {
     return eof;
 }
 
-void MegaFormat::workUpIndels(MultipleAlignment& al) {
+void MegaFormat::workUpIndels(Msa& al) {
     QByteArray firstSequence = al->getRow(0)->getData();
 
     for (int i = 1; i < al->getRowCount(); i++) {
@@ -239,7 +239,7 @@ void MegaFormat::workUpIndels(MultipleAlignment& al) {
 }
 
 void MegaFormat::load(U2::IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& fs, U2::U2OpStatus& os) {
-    MultipleAlignment al(io->getURL().baseFileName());
+    Msa al(io->getURL().baseFileName());
     QByteArray line;
     bool eof = false;
     bool firstBlock = true;
@@ -326,7 +326,7 @@ void MegaFormat::load(U2::IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>
     workUpIndels(al);  // replace '.' by symbols from the first sequence
 
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
+    MsaObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
     CHECK_OP(os, );
     objects.append(obj);
 }
@@ -336,10 +336,10 @@ void MegaFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject
     const QList<GObject*>& als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(1 == als.size(), "Mega entry storing: alignment objects count error", );
 
-    auto obj = dynamic_cast<MultipleAlignmentObject*>(als.first());
+    auto obj = dynamic_cast<MsaObject*>(als.first());
     SAFE_POINT(obj != nullptr, "Mega entry storing: NULL alignment object", );
 
-    const MultipleAlignment msa = obj->getAlignment();
+    const Msa msa = obj->getAlignment();
 
     // write header
     QByteArray header;
@@ -351,22 +351,22 @@ void MegaFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject
     }
 
     int maxNameLength = 0;
-    foreach (const MultipleAlignmentRow& item, msa->getRows()) {
+    foreach (const MsaRow& item, msa->getRows()) {
         maxNameLength = qMax(maxNameLength, item->getName().length());
     }
 
     // write data
     int seqLength = msa->getLength();
     int writtenLength = 0;
-    MultipleSequenceAlignmentWalker walker(msa);
+    MsaWalker walker(msa);
     while (writtenLength < seqLength) {
         QList<QByteArray> seqs = walker.nextData(BLOCK_LENGTH, ti);
         CHECK_OP(ti, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleAlignmentRow> rows = msa->getRows().toList();
-        QList<MultipleAlignmentRow>::ConstIterator ri = rows.constBegin();
+        QList<MsaRow> rows = msa->getRows().toList();
+        QList<MsaRow>::ConstIterator ri = rows.constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MultipleAlignmentRow& item = *ri;
+            const MsaRow& item = *ri;
             QByteArray line;
             line.append(MEGA_SEPARATOR).append(item->getName());
             TextUtils::replace(line.data(), line.length(), TextUtils::WHITES, '_');

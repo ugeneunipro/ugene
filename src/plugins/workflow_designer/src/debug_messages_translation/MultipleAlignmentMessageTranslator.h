@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 #include "BaseMessageTranslator.h"
 
@@ -35,7 +35,7 @@ public:
     QString getTranslation() const override;
 
 protected:
-    MultipleAlignment malignment;
+    Msa malignment;
 };
 
 }  // namespace U2

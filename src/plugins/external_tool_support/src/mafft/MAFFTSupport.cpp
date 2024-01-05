@@ -26,7 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -167,7 +167,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
 
     MSAEditor* msaEditor = action->getMsaEditor();
-    MultipleAlignmentObject* alignmentObject = msaEditor->getMaObject();
+    MsaObject* alignmentObject = msaEditor->getMaObject();
     SAFE_POINT(alignmentObject != nullptr, "Alignment object is NULL during aligning with MAFFT!", );
     SAFE_POINT(!alignmentObject->isStateLocked(), "Alignment object is locked during aligning with MAFFT!", );
 

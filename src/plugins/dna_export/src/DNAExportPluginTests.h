@@ -23,7 +23,7 @@
 
 #include <QDomElement>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2Region.h>
 
 #include <U2Test/XMLTestUtils.h>
@@ -32,7 +32,7 @@ namespace U2 {
 class LoadDocumentTask;
 class ExportMSA2MSATask;
 class U2SequenceObject;
-class MultipleAlignmentObject;
+class MsaObject;
 
 class GTest_ImportPhredQualityScoresTask : public XmlTest {
     Q_OBJECT
@@ -66,8 +66,8 @@ public:
     U2Region selectedRows;
     ExportMSA2MSATask* exportTask;
     LoadDocumentTask* resultLoadTask;
-    MultipleAlignment srcAl;
-    MultipleAlignment resAl;
+    Msa srcAl;
+    Msa resAl;
 };
 
 class DNAExportPluginTests {

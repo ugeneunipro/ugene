@@ -26,10 +26,10 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaExportUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -149,7 +149,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
 /* BestPositionFindTask */
 /************************************************************************/
 
-BestPositionFindTask::BestPositionFindTask(const MultipleAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId)
+BestPositionFindTask::BestPositionFindTask(const Msa& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId)
     : Task(tr("Best position find task"), TaskFlag_None),
       inputMsa(alignment), sequenceRef(sequenceRef), sequenceId(sequenceId), bestPosition(0), referenceRowId(referenceRowId) {
 }
@@ -171,7 +171,7 @@ void BestPositionFindTask::run() {
     int similarity = 0;
 
     if (referenceRowId >= 0) {
-        const MultipleAlignmentRow& row = inputMsa->getRow(referenceRowId);
+        const MsaRow& row = inputMsa->getRow(referenceRowId);
         int iterationsNum = aliLen - sequence.length() + 1;
         for (int p = 0; p < iterationsNum; p++) {
             stateInfo.setProgress(100 * p / iterationsNum);
@@ -185,7 +185,7 @@ void BestPositionFindTask::run() {
         }
     } else {
         int processedRows = 0;
-        foreach (const MultipleAlignmentRow& row, inputMsa->getRows()) {
+        foreach (const MsaRow& row, inputMsa->getRows()) {
             stateInfo.setProgress(100 * processedRows / nSeq);
             for (int p = 0; p < (aliLen - sequence.length() + 1); p++) {
                 char c = row->charAt(p);

@@ -21,22 +21,17 @@
 
 #pragma once
 
-#include <QVariantMap>
-
-#include <U2Core/global.h>
-
 namespace U2 {
 
-class U2CORE_EXPORT MultipleAlignmentRowInfo {
+class MsaData;
+
+class MsaStateCheck {
 public:
-    static void setReversed(QVariantMap& info, bool reversed);
-    static bool getReversed(const QVariantMap& info);
+    MsaStateCheck(const MsaData* maData);
+    ~MsaStateCheck();
 
-    static void setComplemented(QVariantMap& info, bool complemented);
-    static bool getComplemented(const QVariantMap& info);
-
-    static const QString REVERSED;
-    static const QString COMPLEMENTED;
+private:
+    const MsaData* maData;
 };
 
 }  // namespace U2

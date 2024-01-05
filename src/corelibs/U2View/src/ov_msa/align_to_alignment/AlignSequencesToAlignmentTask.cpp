@@ -34,8 +34,8 @@
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
 
@@ -74,14 +74,14 @@ void SequenceObjectsExtractor::extractSequencesFromObjects(const QList<GObject*>
         }
 
         if (object->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
-            auto curObj = qobject_cast<MultipleAlignmentObject*>(object);
+            auto curObj = qobject_cast<MsaObject*>(object);
             SAFE_POINT(curObj != nullptr, "MultipleSequenceAlignmentObject is null", );
 
             checkAlphabet(curObj->getAlphabet(), curObj->getGObjectName());
             sequencesMaxLength = qMax(sequencesMaxLength, curObj->getLength());
 
-            const QVector<MultipleAlignmentRow>& msaRows = curObj->getAlignment()->getRows();
-            for (const MultipleAlignmentRow& row : qAsConst(msaRows)) {
+            const QVector<MsaRow>& msaRows = curObj->getAlignment()->getRows();
+            for (const MsaRow& row : qAsConst(msaRows)) {
                 U2EntityRef seqRef(curObj->getEntityRef().dbiRef, row->getSequenceId());
                 sequenceRefs << seqRef;
                 sequenceNames << row->getName();
@@ -213,7 +213,7 @@ const SequenceObjectsExtractor& LoadSequencesTask::getExtractor() const {
 /************************************************************************/
 /* AlignSequencesToAlignmentTask */
 /************************************************************************/
-AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleAlignmentObject* obj, const QString& algorithmId, const SequenceObjectsExtractor& extractor)
+AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MsaObject* obj, const QString& algorithmId, const SequenceObjectsExtractor& extractor)
     : Task(tr("Align sequences to alignment task"), TaskFlags_NR_FOSE_COSC), maObjPointer(obj), stateLock(nullptr), docStateLock(nullptr),
       sequencesMaxLength(extractor.getMaxSequencesLength()), sequenceObjectsExtractor(extractor) {
     settings.addAsFragments = sequencesMaxLength < 100 && maObjPointer->getLength() / sequencesMaxLength > 3;
@@ -288,7 +288,7 @@ Task::ReportResult AlignSequencesToAlignmentTask::report() {
 /************************************************************************/
 /* LoadSequencesAndAlignToAlignmentTask */
 /************************************************************************/
-LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MultipleAlignmentObject* obj, const QString& _algorithmId, const QStringList& urls)
+LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MsaObject* obj, const QString& _algorithmId, const QStringList& urls)
     : Task(tr("Load sequences and add to alignment task"), TaskFlag_NoRun | TaskFlag_CollectChildrenWarnings),
       urls(urls), algorithmId(_algorithmId), maObjPointer(obj), loadSequencesTask(nullptr) {
 }

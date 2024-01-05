@@ -33,7 +33,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Gui/HelpButton.h>
@@ -46,7 +46,7 @@
 #include "hmmer2/funcs.h"
 
 namespace U2 {
-HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const MultipleAlignment& _ma, QWidget* p)
+HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const Msa& _ma, QWidget* p)
     : QDialog(p),
       ma(_ma->getCopy()),
       profileName(_pn),
@@ -218,7 +218,7 @@ HMMBuildToFileTask::HMMBuildToFileTask(const QString& inFile, const QString& _ou
     addSubTask(loadTask);
 }
 
-HMMBuildToFileTask::HMMBuildToFileTask(const MultipleAlignment& _ma, const QString& _outFile, const UHMMBuildSettings& s)
+HMMBuildToFileTask::HMMBuildToFileTask(const Msa& _ma, const QString& _outFile, const UHMMBuildSettings& s)
     : Task("", TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported),
       settings(s), outFile(_outFile), ma(_ma->getCopy()), loadTask(nullptr), buildTask(nullptr) {
     setTaskName(tr("Build HMM profile to '%1'").arg(QFileInfo(outFile).fileName()));
@@ -252,8 +252,8 @@ QList<Task*> HMMBuildToFileTask::onSubTaskFinished(Task* subTask) {
         if (list.isEmpty()) {
             stateInfo.setError(tr("Alignment object not found!"));
         } else {
-            auto msa = qobject_cast<MultipleAlignmentObject*>(list.first());
-            const MultipleAlignment ma = msa->getAlignment();
+            auto msa = qobject_cast<MsaObject*>(list.first());
+            const Msa ma = msa->getAlignment();
             if (settings.name.isEmpty()) {
                 settings.name = msa->getGObjectName() == MA_OBJECT_NAME ? doc->getName() : msa->getGObjectName();
             }
@@ -322,7 +322,7 @@ QString HMMBuildToFileTask::generateReport() const {
     return res;
 }
 
-HMMBuildTask::HMMBuildTask(const UHMMBuildSettings& s, const MultipleAlignment& _ma)
+HMMBuildTask::HMMBuildTask(const UHMMBuildSettings& s, const Msa& _ma)
     : Task("", TaskFlag_None), ma(_ma->getCopy()), settings(s), hmm(nullptr) {
     GCOUNTER(cvar, "HMMBuildTask");
     setTaskName(tr("Build HMM profile '%1'").arg(s.name));
@@ -364,7 +364,7 @@ void HMMBuildTask::_run() {
     }
     U2OpStatus2Log os;
     for (int i = 0; i < ma->getRowCount(); i++) {
-        const MultipleAlignmentRow& row = ma->getRow(i);
+        const MsaRow& row = ma->getRow(i);
         QByteArray seq = row->toByteArray(os, ma->getLength());
         free(msa->aseq[i]);
         msa->aseq[i] = sre_strdup(seq.constData(), seq.size());

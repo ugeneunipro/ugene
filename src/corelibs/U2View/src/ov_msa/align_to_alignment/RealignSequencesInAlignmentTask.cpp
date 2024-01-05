@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleAlignmentObject* msaObjectToClone,
+RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MsaObject* msaObjectToClone,
                                                                  const QSet<qint64>& _rowsToAlignIds,
                                                                  const QString& _algorithmId)
     : Task(tr("Realign sequences in this alignment"), TaskFlags_NR_FOSE_COSC),

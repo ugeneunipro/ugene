@@ -19,17 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include "MaStateCheck.h"
+#include "MsaStateCheck.h"
 
-#include "MultipleAlignment.h"
+#include "Msa.h"
 
 namespace U2 {
 
-MaStateCheck::MaStateCheck(const MultipleAlignmentData* maData)
+MsaStateCheck::MsaStateCheck(const MsaData* maData)
     : maData(maData) {
 }
 
-MaStateCheck::~MaStateCheck() {
+MsaStateCheck::~MsaStateCheck() {
 #ifdef _DEBUG
     maData->check();
 #else

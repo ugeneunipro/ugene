@@ -26,7 +26,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -55,7 +55,7 @@ Task::ReportResult GTest_CompareTwoMsa::report() {
     const QList<GObject*> objs1 = doc1->getObjects();
     CHECK_EXT(1 == objs1.size(), setError(QString("document '%1' contains several objects: the comparison not implemented").arg(docContextName)), ReportResult_Finished);
 
-    auto msa1 = qobject_cast<MultipleAlignmentObject*>(objs1.first());
+    auto msa1 = qobject_cast<MsaObject*>(objs1.first());
     CHECK_EXT(msa1 != nullptr, setError(QString("document '%1' contains an incorrect object: expected '%2', got '%3'").arg(docContextName).arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).arg(objs1.first()->getGObjectType())), ReportResult_Finished);
 
     Document* doc2 = getContext<Document>(this, secondDocContextName);
@@ -64,7 +64,7 @@ Task::ReportResult GTest_CompareTwoMsa::report() {
     const QList<GObject*> objs2 = doc2->getObjects();
     CHECK_EXT(1 == objs2.size(), setError(QString("document '%1' contains several objects: the comparison not implemented").arg(secondDocContextName)), ReportResult_Finished);
 
-    auto msa2 = qobject_cast<MultipleAlignmentObject*>(objs2.first());
+    auto msa2 = qobject_cast<MsaObject*>(objs2.first());
     CHECK_EXT(msa2 != nullptr, setError(QString("document '%1' contains an incorrect object: expected '%2', got '%3'").arg(secondDocContextName).arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).arg(objs2.first()->getGObjectType())), ReportResult_Finished);
 
     const qint64 rowsNumber1 = msa1->getRowCount();
@@ -80,8 +80,8 @@ Task::ReportResult GTest_CompareTwoMsa::report() {
               ReportResult_Finished);
 
     for (int i = 0; i < rowsNumber1; i++) {
-        const MultipleAlignmentRow& row1 = msa1->getRow(i);
-        const MultipleAlignmentRow& row2 = msa2->getRow(i);
+        const MsaRow& row1 = msa1->getRow(i);
+        const MsaRow& row2 = msa2->getRow(i);
         bool areEqual = row1->isEqualCore(*row2);
         CHECK_EXT(areEqual, setError(QString("The rows with number %1 differ from each other").arg(i)), ReportResult_Finished);
     }

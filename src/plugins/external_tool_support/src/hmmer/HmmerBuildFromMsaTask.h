@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 #include "HmmerBuildTask.h"
 
@@ -30,7 +30,7 @@ namespace U2 {
 class HmmerBuildFromMsaTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    HmmerBuildFromMsaTask(const HmmerBuildSettings& settings, const MultipleAlignment& msa);
+    HmmerBuildFromMsaTask(const HmmerBuildSettings& settings, const Msa& msa);
 
     const QString& getHmmUrl() const;
 
@@ -43,7 +43,7 @@ private:
     void removeTempDir();
 
     HmmerBuildSettings settings;
-    const MultipleAlignment msa;
+    const Msa msa;
 
     SaveAlignmentTask* saveTask;
     HmmerBuildTask* hmmerTask;

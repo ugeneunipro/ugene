@@ -29,8 +29,8 @@ MuscleWorkPool::MuscleWorkPool(MuscleContext* _ctx,
                                const MuscleTaskSettings& _config,
                                TaskStateInfo& _ti,
                                int _nThreads,
-                               const MultipleAlignment& _ma,
-                               MultipleAlignment& _res,
+                               const Msa& _ma,
+                               Msa& _res,
                                bool _mhack)
     : ctx(_ctx), config(_config), ma(_ma->getCopy()), res(_res), mhack(_mhack), ti(_ti),
       nThreads(_nThreads) {

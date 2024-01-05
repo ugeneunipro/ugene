@@ -29,7 +29,7 @@
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>
@@ -48,7 +48,7 @@ const QString PhylipCmdlineTask::SEED_ARG = "seed";
 const QString PhylipCmdlineTask::FRACTION_ARG = "fraction";
 const QString PhylipCmdlineTask::CONSENSUS_ARG = "consensus";
 
-PhylipCmdlineTask::PhylipCmdlineTask(const MultipleAlignment& msa, const CreatePhyTreeSettings& settings)
+PhylipCmdlineTask::PhylipCmdlineTask(const Msa& msa, const CreatePhyTreeSettings& settings)
     : PhyTreeGeneratorTask(msa, settings), cmdlineTask(nullptr), msaObject(nullptr), treeObject(nullptr) {
     setTaskName(tr("PHYLIP command line wrapper task"));
     tpm = Progress_SubTasksBased;

@@ -25,7 +25,7 @@
 #include <QToolBar>
 #include <QWidget>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 
@@ -47,7 +47,7 @@ class MsaHighlightingScheme;
 class MsaHighlightingSchemeFactory;
 class MsaHighlightingSchemeRegistry;
 class MaModificationInfo;
-class MultipleAlignmentObject;
+class MsaObject;
 class Settings;
 class SequenceAreaRenderer;
 

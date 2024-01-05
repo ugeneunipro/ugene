@@ -25,7 +25,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -57,9 +57,9 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt* maEd
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_updateOffsets()));
     connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_updateOffsets()));
 
-    MultipleAlignmentObject* mobj = editor->getMaObject();
+    MsaObject* mobj = editor->getMaObject();
     SAFE_POINT_NN(mobj, );
-    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_updateOffsets()));
+    connect(mobj, SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_updateOffsets()));
 
     seqArea->installEventFilter(this);
 
@@ -166,7 +166,7 @@ QFont MSAEditorOffsetsViewWidget::getOffsetsFont() {
 }
 
 int MSAEditorOffsetsViewWidget::getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const {
-    const MultipleAlignmentRow& row = editor->getMaObject()->getRow(seqNum);
+    const MsaRow& row = editor->getMaObject()->getRow(seqNum);
     const int endPos = inclAliPos ? aliPos + 1 : aliPos;
 
     return (endPos < row->getCoreStart()) ? 0 : row->getBaseCount(endPos);
@@ -201,7 +201,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
 
     QList<int> visibleRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
 
-    const MultipleAlignment alignment = editor->getMaObject()->getAlignment();
+    const Msa alignment = editor->getMaObject()->getAlignment();
     U2OpStatusImpl os;
     const int refSeq = alignment->getRowIndexByRowId(editor->getReferenceRowId(), os);
 

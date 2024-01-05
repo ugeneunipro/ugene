@@ -55,7 +55,7 @@ void MSADistanceAlgorithmFactory::resetFlag(DistanceAlgorithmFlag flag) {
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory, const MultipleAlignment& _ma)
+MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory, const Msa& _ma)
     : Task(tr("MSA distance algorithm \"%1\" task").arg(_factory->getName()), TaskFlag_None), factory(_factory), ma(_ma->getCopy()), excludeGaps(true), isSimilarity(true) {
     int rowsNumber = ma->getRowCount();
     qint64 requiredMemory = sizeof(int) * rowsNumber * rowsNumber / 2 + sizeof(QVarLengthArray<int>) * rowsNumber;
@@ -108,7 +108,7 @@ MSADistanceMatrix::MSADistanceMatrix()
     : usePercents(true), excludeGaps(false), alignmentLength(0) {
 }
 
-MSADistanceMatrix::MSADistanceMatrix(const MultipleAlignment& ma, bool _excludeGaps, bool _usePercents)
+MSADistanceMatrix::MSADistanceMatrix(const Msa& ma, bool _excludeGaps, bool _usePercents)
     : usePercents(_usePercents), excludeGaps(_excludeGaps), alignmentLength(ma->getLength()) {
     int nSeq = ma->getRowCount();
     table.reserve(nSeq);

@@ -32,7 +32,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MsaColorSchemeWeakSimilarities : public MsaColorSchemePercentageIdententityColored {
     Q_OBJECT
 public:
-    MsaColorSchemeWeakSimilarities(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj);
+    MsaColorSchemeWeakSimilarities(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj);
 
     QColor getBackgroundColor(int seq, int pos, char c) const override;
     QColor getFontColor(int seq, int pos, char c) const override;
@@ -50,7 +50,7 @@ class MsaColorSchemeWeakSimilaritiesFactory : public MsaColorSchemeFactory {
 public:
     MsaColorSchemeWeakSimilaritiesFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets);
 
-    MsaColorScheme* create(QObject* parent, MultipleAlignmentObject* maObj) const;
+    MsaColorScheme* create(QObject* parent, MsaObject* maObj) const;
 };
 
 }  // namespace U2

@@ -27,7 +27,7 @@
 #include <U2Core/AssemblyImporter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GUrl.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -151,10 +151,10 @@ public:
     inline void write(SearchQuery* seq, SAType offset) override;
     void close() override;
     void setReferenceName(const QString& refName) override;
-    MultipleAlignment& getResult();
+    Msa& getResult();
 
 private:
-    MultipleAlignment result;
+    Msa result;
 };
 
 }  // namespace LocalWorkflow

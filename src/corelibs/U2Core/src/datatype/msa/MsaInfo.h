@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class U2CORE_EXPORT MultipleAlignmentInfo {
+class U2CORE_EXPORT MsaInfo {
 public:
     static const QString NAME;
     static const QString ACCESSION;

@@ -30,7 +30,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2DbiUtils.h>
@@ -64,7 +64,7 @@ const float MaEditor::zoomMult = 1.25;
 
 const double MaEditor::FONT_BOX_TO_CELL_BOX_MULTIPLIER = 1.25;
 
-MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewName, MultipleAlignmentObject* obj)
+MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewName, MsaObject* obj)
     : GObjectViewController(factoryId, viewName),
       ui(nullptr),
       resizeMode(ResizeMode_FontAndContent),
@@ -147,12 +147,12 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
 
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(maObject,
-            SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
-            SLOT(sl_onAlignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
+            SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)),
+            SLOT(sl_onAlignmentChanged(const Msa&, const MaModificationInfo&)));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(resetColumnWidthCache()));
 }
 
-void MaEditor::sl_onAlignmentChanged(const MultipleAlignment&, const MaModificationInfo&) {
+void MaEditor::sl_onAlignmentChanged(const Msa&, const MaModificationInfo&) {
     updateActions();
 }
 
@@ -635,7 +635,7 @@ void MaEditor::sl_gotoSelectedRead() {
     int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
     CHECK(maRowIndex >= 0 && maRowIndex < maObject->getRowCount(), );
 
-    MultipleAlignmentRow maRow = maObject->getRow(maRowIndex);
+    MsaRow maRow = maObject->getRow(maRowIndex);
     int posToCenter = maRow->isComplemented() ? maRow->getCoreEnd() - 1 : maRow->getCoreStart();
     MaEditorSequenceArea* sequenceArea = getMaEditorWgt(0)->getSequenceArea();
     if (sequenceArea->isPositionCentered(posToCenter)) {

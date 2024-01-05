@@ -28,7 +28,7 @@
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 
 #include "MuscleTask.h"
@@ -47,13 +47,13 @@ struct MuscleWorkPool;
 class MuscleParallelTask : public Task {
     Q_OBJECT
 public:
-    MuscleParallelTask(const MultipleAlignment& ma, MultipleAlignment& res, const MuscleTaskSettings& config, MuscleContext* ctx);
+    MuscleParallelTask(const Msa& ma, Msa& res, const MuscleTaskSettings& config, MuscleContext* ctx);
     ~MuscleParallelTask() {
         cleanup();
     }
     void cleanup();
     QList<Task*> onSubTaskFinished(Task* subTask);
-    int estimateMemoryUsageInMb(const MultipleAlignment& ma);
+    int estimateMemoryUsageInMb(const Msa& ma);
 
 private:
     MuscleWorkPool* workpool;

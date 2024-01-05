@@ -45,7 +45,7 @@ namespace U2 {
 
 static constexpr const char* IQTREE_EXTRA_PARAMETERS_SETTINGS_KEY = "/extra-parameters";
 
-IQTreeWidget::IQTreeWidget(const MultipleAlignment&, QWidget* parent)
+IQTreeWidget::IQTreeWidget(const Msa&, QWidget* parent)
     : CreatePhyTreeWidget(parent) {
     auto layout = new QVBoxLayout();
     setLayout(layout);

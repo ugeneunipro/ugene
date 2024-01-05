@@ -23,7 +23,7 @@
 
 #include <QDialog>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 #include "HmmerBuildTask.h"
 #include "ui_HmmerBuildDialog.h"
@@ -40,14 +40,14 @@ public:
 
     /* one of this is used */
     QString inputFile;
-    MultipleAlignment alignment;
+    Msa alignment;
     bool alignmentUsing;
 };
 
 class HmmerBuildDialog : public QDialog, public Ui_HmmerBuildDialog {
     Q_OBJECT
 public:
-    HmmerBuildDialog(const MultipleAlignment& ma, QWidget* parent = nullptr);
+    HmmerBuildDialog(const Msa& ma, QWidget* parent = nullptr);
 
     static const QString MA_FILES_DIR_ID;
     static const QString HMM_FILES_DIR_ID;

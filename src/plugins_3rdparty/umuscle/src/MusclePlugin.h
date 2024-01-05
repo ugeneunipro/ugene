@@ -32,7 +32,7 @@
 namespace U2 {
 
 class MSAEditor;
-class MultipleAlignmentObject;
+class MsaObject;
 class MuscleAction;
 class MuscleMSAEditorContext;
 class XMLTestFactory;
