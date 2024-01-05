@@ -41,26 +41,26 @@ MultipleAlignmentRow::MultipleAlignmentRow(MultipleAlignmentRowData* _maRowData)
 }
 
 MultipleAlignmentRow::MultipleAlignmentRow(const U2MsaRow& rowInDb,
-                                           const Chromatogram& chromatogram,
                                            const DNASequence& sequence,
                                            const QVector<U2MsaGap>& gaps,
+                                           const U2DataId& chromatogramId,
+                                           const Chromatogram& chromatogram,
                                            MultipleAlignmentData* maData)
-    : maRowData(new MultipleAlignmentRowData(rowInDb, chromatogram, sequence, gaps, maData)) {
+    : maRowData(new MultipleAlignmentRowData(rowInDb, sequence, gaps, chromatogramId, chromatogram, maData)) {
 }
 
 MultipleAlignmentRow::MultipleAlignmentRow(const U2MsaRow& rowInDb,
                                            const DNASequence& sequence,
                                            const QVector<U2MsaGap>& gaps,
                                            MultipleAlignmentData* maData)
-    : maRowData(new MultipleAlignmentRowData(rowInDb, {}, sequence, gaps, maData)) {
+    : maRowData(new MultipleAlignmentRowData(rowInDb, sequence, gaps, {}, {}, maData)) {
 }
 
 MultipleAlignmentRow::MultipleAlignmentRow(const U2MsaRow& rowInDb,
                                            const QString& rowName,
-                                           const Chromatogram& chromatogram,
-                                           const QByteArray& rawData,
+                                           const QByteArray& rawSequenceData,
                                            MultipleAlignmentData* maData)
-    : maRowData(new MultipleAlignmentRowData(rowInDb, rowName, chromatogram, rawData, maData)) {
+    : maRowData(new MultipleAlignmentRowData(rowInDb, rowName, rawSequenceData, maData)) {
 }
 
 MultipleAlignmentRow::MultipleAlignmentRow(const MultipleAlignmentRow& row, MultipleAlignmentData* mcaData)
@@ -96,12 +96,14 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(MultipleAlignmentData* _align
 }
 
 MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
-                                                   const Chromatogram& _chromatogram,
                                                    const DNASequence& _sequence,
                                                    const QVector<U2MsaGap>& _gaps,
+                                                   const U2DataId& _chromatogramId,
+                                                   const Chromatogram& _chromatogram,
                                                    MultipleAlignmentData* _alignment)
     : sequence(_sequence),
       gaps(_gaps),
+      chromatogramId(_chromatogramId),
       chromatogram(_chromatogram),
       initialRowInDb(_rowInDb),
       alignment(_alignment) {
@@ -111,15 +113,13 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
 
 MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
                                                    const QString& _rowName,
-                                                   const Chromatogram& _chromatogram,
-                                                   const QByteArray& rawData,
+                                                   const QByteArray& rawSequenceData,
                                                    MultipleAlignmentData* _alignment)
-    : chromatogram(_chromatogram),
-      initialRowInDb(_rowInDb),
+    : initialRowInDb(_rowInDb),
       alignment(_alignment) {
     QByteArray sequenceData;
     QVector<U2MsaGap> gapModel;
-    MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
+    MaDbiUtils::splitBytesToCharsAndGaps(rawSequenceData, sequenceData, gapModel);
     sequence = DNASequence(_rowName, sequenceData);
     setGapModel(gapModel);
 }
@@ -127,15 +127,12 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow& _rowInDb,
 MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentRow& _row, MultipleAlignmentData* _alignment)
     : sequence(_row->sequence),
       gaps(_row->gaps),
+      chromatogramId(_row->chromatogramId),
       chromatogram(_row->chromatogram),
       initialRowInDb(_row->initialRowInDb),
       additionalInfo(_row->additionalInfo),
       alignment(_alignment) {
     SAFE_POINT_NN(alignment, );
-}
-
-MultipleAlignmentRowData::MultipleAlignmentRowData(const DNASequence& sequence, const QVector<U2MsaGap>& gaps)
-    : sequence(sequence), gaps(gaps) {
 }
 
 int MultipleAlignmentRowData::getUngappedPosition(int pos) const {
@@ -269,7 +266,6 @@ U2MsaRow MultipleAlignmentRowData::getRowDbInfo() const {
     U2MsaRow row;
     row.rowId = initialRowInDb.rowId;
     row.sequenceId = initialRowInDb.sequenceId;
-    row.chromatogramId = initialRowInDb.chromatogramId;
     row.gstart = 0;
     row.gend = sequence.length();
     row.gaps = gaps;
@@ -279,6 +275,10 @@ U2MsaRow MultipleAlignmentRowData::getRowDbInfo() const {
 
 const U2DataId& MultipleAlignmentRowData::getSequenceId() const {
     return initialRowInDb.sequenceId;
+}
+
+const U2DataId& MultipleAlignmentRowData::getChromatogramId() const {
+    return chromatogramId;
 }
 
 void MultipleAlignmentRowData::setRowDbInfo(const U2MsaRow& dbRow) {

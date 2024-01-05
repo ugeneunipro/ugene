@@ -2071,7 +2071,6 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_append_undo) {
     QString expectedModDetails = "0\t-1\t" +
                                  QByteArray::number(row.rowId) + "\t" +
                                  row.sequenceId.toHex() + "\t" +
-                                 row.chromatogramId.toHex() + "\t" +
                                  "1\t20\t\"1,2\"";
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(QString(msaId), QString(modStep.objectId), "object id");
@@ -2250,7 +2249,6 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_zeroPos_undo) {
                                  QByteArray::number(posInMsa) + "\t" +
                                  QByteArray::number(row.rowId) + "\t" +
                                  row.sequenceId.toHex() + "\t" +
-                                 row.chromatogramId.toHex() + "\t" +
                                  "1\t20\t\"1,2\"";
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(QString(msaId), QString(modStep.objectId), "object id");
@@ -2886,7 +2884,6 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRow_undo) {
     QString expectedModDetails = "0\t1\t" +
                                  QByteArray::number(oldRow.rowId) + "\t" +
                                  oldRow.sequenceId.toHex() + "\t" +
-                                 oldRow.chromatogramId.toHex() + "\t" +
                                  "0\t10\t\"5,2\"";
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(msaId, oldVersion, os);
     CHECK_NO_ERROR(os);
@@ -2959,7 +2956,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRow_redo) {
     QString expectedModDetails = "0\t0\t" +
                                  QByteArray::number(oldRow.rowId) + "\t" +
                                  oldRow.sequenceId.toHex() + "\t" +
-                                 oldRow.chromatogramId.toHex() + "\t0\t11\t\"1,1;7,1\"";
+                                 "0\t11\t\"1,1;7,1\"";
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(msaId, oldVersion, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(QString(msaId), QString(modStep.objectId), "object id");
@@ -3045,11 +3042,11 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRows_undo) {
     QString expectedModDetails = "0" + sep +
                                  "0\t0\t" + QByteArray::number(rowsIds[0]) + "\t" +
                                  rows[0].sequenceId.toHex() + "\t" +
-                                 rows[0].chromatogramId.toHex() + "\t0\t11\t\"1,1;7,1\"" +
+                                 "0\t11\t\"1,1;7,1\"" +
                                  sep +
                                  "0\t1\t" + QByteArray::number(rowsIds[1]) + "\t" +
                                  rows[1].sequenceId.toHex() + "\t" +
-                                 rows[1].chromatogramId.toHex() + "\t0\t10\t\"5,2\"";
+                                 "0\t10\t\"5,2\"";
     QList<QList<U2SingleModStep>> modSteps = sqliteDbi->getSQLiteModDbi()->getModSteps(msaId, oldVersion, os);
     CHECK_EQUAL(1, modSteps.count(), "mod steps count");
     CHECK_EQUAL(2, modSteps.first().count(), "mod single steps");
@@ -3129,7 +3126,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRows_redo) {
     QString expectedModDetails = "0" + sep +
                                  "0\t1\t" + QByteArray::number(rowsIds[1]) + "\t" +
                                  rows[1].sequenceId.toHex() + "\t" +
-                                 rows[1].chromatogramId.toHex() + "\t0\t10\t\"5,2\"";
+                                 "0\t10\t\"5,2\"";
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(msaId, oldVersion, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(QString(msaId), QString(modStep.objectId), "object id");
@@ -3259,11 +3256,11 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_undo) {
     QString expectedModDetails = "0" + sep +
                                  "0\t2\t" + QByteArray::number(rows[0].rowId) + "\t" +
                                  rows[0].sequenceId.toHex() + "\t" +
-                                 rows[0].chromatogramId.toHex() + "\t1\t20\t\"1,2\"" +
+                                 "1\t20\t\"1,2\"" +
                                  sep +
                                  "0\t3\t" + QByteArray::number(rows[1].rowId) + "\t" +
                                  rows[1].sequenceId.toHex() + "\t" +
-                                 rows[1].chromatogramId.toHex() + "\t1\t20\t\"1,2\"";
+                                 "1\t20\t\"1,2\"";
     QList<QList<U2SingleModStep>> modSteps = sqliteDbi->getSQLiteModDbi()->getModSteps(msaId, oldVersion, os);
     CHECK_EQUAL(1, modSteps.count(), "mod steps count");
     CHECK_EQUAL(2, modSteps.first().count(), "mod single step count");
@@ -3332,7 +3329,6 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_redo) {
         U2MsaRow newRow1 = sqliteDbi->getMsaDbi()->getRow(msaId, rows[0].rowId, os);
         CHECK_NO_ERROR(os);
         CHECK_EQUAL(QString(row1.sequenceId), QString(newRow1.sequenceId), "sequence id 1");
-        CHECK_EQUAL(QString(row1.chromatogramId), QString(newRow1.chromatogramId), "chromatogram id 1");
         CHECK_EQUAL(1, newRow1.gstart, "gstart 1");
         CHECK_EQUAL(20, newRow1.gend, "gend 1");
         CHECK_TRUE(row1.gaps == newRow1.gaps, "gaps 1");
@@ -3341,7 +3337,6 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_redo) {
         U2MsaRow newRow2 = sqliteDbi->getMsaDbi()->getRow(msaId, rows[1].rowId, os);
         CHECK_NO_ERROR(os);
         CHECK_EQUAL(QString(row2.sequenceId), QString(newRow2.sequenceId), "sequence id 2");
-        CHECK_EQUAL(QString(row2.chromatogramId), QString(newRow2.chromatogramId), "chromatogram id 2");
         CHECK_EQUAL(1, newRow2.gstart, "gstart 2");
         CHECK_EQUAL(20, newRow2.gend, "gend 2");
         CHECK_TRUE(row2.gaps == newRow2.gaps, "gaps 2");
@@ -3374,12 +3369,12 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_redo) {
                                  "0\t2\t" +
                                  QByteArray::number(rows[0].rowId) + "\t" +
                                  rows[0].sequenceId.toHex() + "\t" +
-                                 rows[0].chromatogramId.toHex() + "\t1\t20\t\"1,2\"" +
+                                 "1\t20\t\"1,2\"" +
                                  sep +
                                  "0\t3\t" +
                                  QByteArray::number(rows[1].rowId) + "\t" +
                                  rows[1].sequenceId.toHex() + "\t" +
-                                 rows[0].chromatogramId.toHex() + "\t1\t20\t\"1,2\"";
+                                 "1\t20\t\"1,2\"";
     QList<QList<U2SingleModStep>> modSteps = sqliteDbi->getSQLiteModDbi()->getModSteps(msaId, oldVersion, os);
     CHECK_EQUAL(1, modSteps.count(), "mod steps count");
     CHECK_EQUAL(2, modSteps.first().count(), "single mod steps count");

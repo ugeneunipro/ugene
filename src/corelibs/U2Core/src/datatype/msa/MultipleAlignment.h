@@ -288,15 +288,21 @@ public:
 
     /**
      * Adds a new row to the alignment.
-     * If rowIndex == -1 -> appends the row to the alignment.
-     * Otherwise, if rowIndex is incorrect, the closer bound is used (the first or the last row).
      * Does not trim the original alignment.
      * Can increase the overall alignment length.
      */
-    void addRow(const QString& name, const Chromatogram& chromatogram, const QByteArray& bytes);
-    void addRow(const QString& name, const Chromatogram& chromatogram, const QByteArray& bytes, int rowIndex);
-    void addRow(const U2MsaRow& rowInDb, const Chromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os);
-    void addRow(const QString& name, const Chromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+    void addRow(const U2MsaRow& rowInDb,
+                const DNASequence& sequence,
+                const U2DataId& chromatogramId,
+                const Chromatogram& chromatogram,
+                U2OpStatus& os);
+
+    void addRow(const QString& name,
+                const DNASequence& sequence,
+                const QVector<U2MsaGap>& gaps,
+                const U2DataId& chromatogramId,
+                const Chromatogram& chromatogram,
+                U2OpStatus& os);
 
     /**
      * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.
@@ -337,7 +343,7 @@ public:
      */
     MultipleAlignmentData& operator+=(const MultipleAlignmentData& ma);
 
-protected:
+private:
     /** Helper-method for adding a row to the alignment */
     void addRowPrivate(const MultipleAlignmentRow& row, qint64 rowLenWithTrailingGaps, int rowIndex);
 
@@ -352,14 +358,16 @@ protected:
 
     MultipleAlignmentRow createRow(const MultipleAlignmentRow& row);
 
-    /** Create a new row (sequence + gap model) from the bytes */
-    MultipleAlignmentRow createRow(const QString& name, const Chromatogram& chromatogram, const QByteArray& bytes);
-
     /**
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const Chromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+    MultipleAlignmentRow createRow(const U2MsaRow& rowInDb,
+                                   const DNASequence& sequence,
+                                   const QVector<U2MsaGap>& gaps,
+                                   const U2DataId& chromatogramId,
+                                   const Chromatogram& chromatogram,
+                                   U2OpStatus& os);
 
     void copyFrom(const MultipleAlignmentData& other);
 

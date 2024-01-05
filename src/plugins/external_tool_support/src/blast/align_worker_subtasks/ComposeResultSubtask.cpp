@@ -132,7 +132,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
         Chromatogram readChromatogram = ChromatogramUtils::exportChromatogram(stateInfo, chromatogramRef);
         CHECK_OP(stateInfo, );
 
-        resultMca->addRow(pairwiseAlignment.readName, readChromatogram, readSequence, {}, stateInfo);
+        resultMca->addRow(pairwiseAlignment.readName, readSequence, {}, {}, readChromatogram, stateInfo);
         CHECK_OP(stateInfo, );
         int mcaRowIndex = resultMca->getRowCount() - 1;
 
