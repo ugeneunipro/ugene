@@ -230,7 +230,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/GenbankFeatures.h \
            src/util/IOAdapterUtils.h \
            src/util/ImportToDatabaseOptions.h \
-           src/util/MSAUtils.h \
+           src/util/MsaUtils.h \
            src/util/MaIterator.h \
            src/util/MaModificationInfo.h \
            src/util/MsaDbiUtils.h \
@@ -452,7 +452,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/GenbankFeatures.cpp \
            src/util/IOAdapterUtils.cpp \
            src/util/ImportToDatabaseOptions.cpp \
-           src/util/MSAUtils.cpp \
+           src/util/MsaUtils.cpp \
            src/util/MaIterator.cpp \
            src/util/MaModificationInfo.cpp \
            src/util/MsaDbiUtils.cpp \
