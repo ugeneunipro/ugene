@@ -23,7 +23,7 @@
 
 #include <unittest.h>
 
-#include <U2Core/DNAChromatogram.h>
+#include <U2Core/Chromatogram.h>
 
 #include "core/dbi/DbiTest.h"
 
@@ -31,7 +31,7 @@ namespace U2 {
 
 class CompareUtils {
 public:
-    static void checkEqual(const DNAChromatogram& chr1, const DNAChromatogram& chr2, U2OpStatus& os);
+    static void checkEqual(const Chromatogram& chr1, const Chromatogram& chr2, U2OpStatus& os);
 };
 
 /* DNAChromatogramSerializer 1 */

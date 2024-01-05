@@ -250,8 +250,8 @@ QList<Task*> BlastAlignToReferenceTask::onSubTaskFinished(Task* subTask) {
             pairwiseAlignmentSettings->alphabet = msaAlphabet->getId();
             pairwiseAlignmentSettings->inNewWindow = false;
             pairwiseAlignmentSettings->msaRef = pairwiseMsaObject->getEntityRef();
-            pairwiseAlignmentSettings->firstSequenceRef = U2EntityRef(storage->getDbiRef(), pairwiseMsaObject->getRow(0)->getRowDbInfo().sequenceId);
-            pairwiseAlignmentSettings->secondSequenceRef = U2EntityRef(storage->getDbiRef(), pairwiseMsaObject->getRow(1)->getRowDbInfo().sequenceId);
+            pairwiseAlignmentSettings->firstSequenceRef = U2EntityRef(storage->getDbiRef(), pairwiseMsaObject->getRow(0)->getSequenceId());
+            pairwiseAlignmentSettings->secondSequenceRef = U2EntityRef(storage->getDbiRef(), pairwiseMsaObject->getRow(1)->getSequenceId());
             pairwiseAlignmentSettings->setCustomValue("SW_gapOpen", -10);
             pairwiseAlignmentSettings->setCustomValue("SW_gapExtd", -1);
             pairwiseAlignmentSettings->setCustomValue("SW_scoringMatrix", "dna");

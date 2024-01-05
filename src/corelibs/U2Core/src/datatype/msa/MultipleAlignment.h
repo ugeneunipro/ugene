@@ -265,7 +265,7 @@ public:
      * Can modify the overall alignment length (increase or decrease).
      */
     void setRowContent(int rowNumber, const QByteArray& sequence, int offset = 0);
-    void setRowContent(int rowNumber, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel);
+    void setRowContent(int rowNumber, const Chromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel);
 
     /** Converts all rows' sequences to upper case */
     void toUpperCase();
@@ -293,10 +293,10 @@ public:
      * Does not trim the original alignment.
      * Can increase the overall alignment length.
      */
-    void addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes);
-    void addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes, int rowIndex);
-    void addRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os);
-    void addRow(const QString& name, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+    void addRow(const QString& name, const Chromatogram& chromatogram, const QByteArray& bytes);
+    void addRow(const QString& name, const Chromatogram& chromatogram, const QByteArray& bytes, int rowIndex);
+    void addRow(const U2MsaRow& rowInDb, const Chromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os);
+    void addRow(const QString& name, const Chromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 
     /**
      * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.
@@ -353,13 +353,13 @@ protected:
     MultipleAlignmentRow createRow(const MultipleAlignmentRow& row);
 
     /** Create a new row (sequence + gap model) from the bytes */
-    MultipleAlignmentRow createRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes);
+    MultipleAlignmentRow createRow(const QString& name, const Chromatogram& chromatogram, const QByteArray& bytes);
 
     /**
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+    MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const Chromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 
     void copyFrom(const MultipleAlignmentData& other);
 

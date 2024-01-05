@@ -23,7 +23,7 @@
 
 #include <QPen>
 
-#include <U2Core/DNAChromatogram.h>
+#include <U2Core/Chromatogram.h>
 
 #include <U2View/MSAEditorSequenceArea.h>
 

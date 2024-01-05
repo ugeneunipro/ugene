@@ -15,7 +15,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/DIProperties.h \
            src/datatype/DNAAlphabet.h \
            src/datatype/DNAAlphabetRegistryImpl.h \
-           src/datatype/DNAChromatogram.h \
+           src/datatype/Chromatogram.h \
            src/datatype/DNAInfo.h \
            src/datatype/DNAQuality.h \
            src/datatype/DNASequence.h \
@@ -130,7 +130,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/gobjects/AnnotationTableObject.h \
            src/gobjects/AssemblyObject.h \
            src/gobjects/BioStruct3DObject.h \
-           src/gobjects/DNAChromatogramObject.h \
+           src/gobjects/ChromatogramObject.h \
            src/gobjects/DNASequenceObject.h \
            src/gobjects/GObjectRelationRoles.h \
            src/gobjects/GObjectTypes.h \
@@ -275,7 +275,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/BioStruct3D.cpp \
            src/datatype/DNAAlphabet.cpp \
            src/datatype/DNAAlphabetRegistryImpl.cpp \
-           src/datatype/DNAChromatogram.cpp \
+           src/datatype/Chromatogram.cpp \
            src/datatype/DNAInfo.cpp \
            src/datatype/DNAQuality.cpp \
            src/datatype/DNASequence.cpp \
@@ -358,7 +358,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/gobjects/AnnotationTableObject.cpp \
            src/gobjects/AssemblyObject.cpp \
            src/gobjects/BioStruct3DObject.cpp \
-           src/gobjects/DNAChromatogramObject.cpp \
+           src/gobjects/ChromatogramObject.cpp \
            src/gobjects/DNASequenceObject.cpp \
            src/gobjects/GObjectRelationRoles.cpp \
            src/gobjects/GObjectTypes.cpp \

@@ -100,7 +100,6 @@ public:
 
 class U2CORE_EXPORT MsaDbiUtils : public QObject {
     Q_OBJECT
-    friend class McaDbiUtils;
 
 public:
     /**
@@ -204,8 +203,6 @@ public:
     static void resolveMsaRowChromatogram(U2OpStatus& os, U2MsaRow& row, const U2DataId& msaEntityId, const DbiConnection& connection);
     static void resolveMsaRowChromatograms(U2OpStatus& os, QList<U2MsaRow>& rows, const U2DataId& msaEntityId, const DbiConnection& connection);
 
-    static QList<U2MsaRow> getMsaRows(U2OpStatus& os, const U2EntityRef& msaRef);
-
 private:
     /**
      * Verifies if the alignment contains columns of gaps at the beginning.
@@ -228,12 +225,6 @@ private:
      * Shifts the remaining gaps, if required.
      */
     static void calculateGapModelAfterRemove(QVector<U2MsaGap>& gapModel, qint64 pos, qint64 count);
-
-    /** Length of all gaps in the gap model */
-    static qint64 calculateGapsLength(const QVector<U2MsaGap>& gapModel);
-
-    /** Length of the sequence and gap model for the row */
-    static qint64 calculateRowLength(const U2MsaRow& row);
 
     /** If there are consecutive gaps in the gaps model, merges them into one gap */
     static void mergeConsecutiveGaps(QVector<U2MsaGap>& gapModel);

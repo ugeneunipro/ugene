@@ -28,7 +28,7 @@ namespace U2 {
 
 class IOAdapter;
 class SeekableBuf;
-class DNAChromatogram;
+class Chromatogram;
 class DNASequence;
 class U2OpStatus;
 
@@ -39,7 +39,7 @@ public:
 
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
-    static void exportDocumentToSCF(const QString& fileName, const DNAChromatogram& cd, const QByteArray& seq, U2OpStatus& ts);
+    static void exportDocumentToSCF(const QString& fileName, const Chromatogram& cd, const QByteArray& seq, U2OpStatus& ts);
 
 protected:
     virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
@@ -49,7 +49,7 @@ protected:
 private:
     Document* parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);
 
-    bool loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram& chromatogram, U2OpStatus& os);
+    bool loadSCFObjects(IOAdapter* io, DNASequence& dna, Chromatogram& chromatogram, U2OpStatus& os);
 };
 
 }  // namespace U2

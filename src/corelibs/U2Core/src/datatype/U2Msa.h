@@ -34,7 +34,7 @@ namespace U2 {
 class U2MsaGap;
 
 /**
- * Gap represention in MSA row sequence.
+ * Gap in MSA row sequence.
  * Same as U2Region but uses 32 bit values (we do not support MSA sizes above 32 bits).
  *
  * 'startPos' in the gap is a position in the gapped sequence.
@@ -79,7 +79,7 @@ public:
     /** Id of the row in the database */
     qint64 rowId = INVALID_ROW_ID;
 
-    /** Id of the sequence of the row in the database */
+    /** Id of the sequence of the row in the database. */
     U2DataId sequenceId;
 
     /** Start of the row in the sequence */
@@ -94,11 +94,11 @@ public:
     /** Length of the sequence characters and gaps of the row (without trailing) */
     qint64 length = 0;
 
+    // TODO: remove. This field is not in the same table in DB.
     U2DataId chromatogramId;
 
     static const qint64 INVALID_ROW_ID;
 };
-
 
 /** Shared database model for MSA and MCA. */
 class U2CORE_EXPORT U2Msa : public U2Object {

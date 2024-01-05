@@ -25,8 +25,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/BioStruct3DObject.h>
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/GHints.h>
@@ -403,7 +403,7 @@ GObject* GObjectUtils::createObject(const U2DbiRef& ref, const U2DataId& id, con
         case U2Type::BioStruct3D:
             return new BioStruct3DObject(name, entityRef);
         case U2Type::Chromatogram:
-            return new DNAChromatogramObject(name, entityRef);
+            return new ChromatogramObject(name, entityRef);
         case U2Type::PFMatrix:
             return new PFMatrixObject(name, entityRef);
         case U2Type::PWMatrix:

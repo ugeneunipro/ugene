@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-void CompareUtils::checkEqual(const DNAChromatogram& chr1, const DNAChromatogram& chr2, U2OpStatus& os) {
+void CompareUtils::checkEqual(const Chromatogram& chr1, const Chromatogram& chr2, U2OpStatus& os) {
     CHECK_EXT(chr1->traceLength == chr2->traceLength, os.setError("traceLength"), );
     CHECK_EXT(chr1->seqLength == chr2->seqLength, os.setError("seqLength"), );
     CHECK_EXT(chr1->baseCalls == chr2->baseCalls, os.setError("baseCalls"), );
@@ -48,7 +48,7 @@ void CompareUtils::checkEqual(const DNAChromatogram& chr1, const DNAChromatogram
 }
 
 IMPLEMENT_TEST(DatatypeSerializeUtilsUnitTest, DNAChromatogramSerializer_true) {
-    DNAChromatogram chromatogram;
+    Chromatogram chromatogram;
     chromatogram->traceLength = 1;
     chromatogram->seqLength = -2;
     chromatogram->baseCalls << 3;
@@ -82,18 +82,18 @@ IMPLEMENT_TEST(DatatypeSerializeUtilsUnitTest, DNAChromatogramSerializer_true) {
     QByteArray binary = DNAChromatogramSerializer::serialize(chromatogram);
 
     U2OpStatusImpl os;
-    DNAChromatogram dst = DNAChromatogramSerializer::deserialize(binary, os);
+    Chromatogram dst = DNAChromatogramSerializer::deserialize(binary, os);
     CHECK_NO_ERROR(os);
     CompareUtils::checkEqual(chromatogram, dst, os);
 }
 
 IMPLEMENT_TEST(DatatypeSerializeUtilsUnitTest, DNAChromatogramSerializer_false) {
-    DNAChromatogram src;
+    Chromatogram src;
     src->hasQV = false;
     QByteArray binary = DNAChromatogramSerializer::serialize(src);
 
     U2OpStatusImpl os;
-    DNAChromatogram dst = DNAChromatogramSerializer::deserialize(binary, os);
+    Chromatogram dst = DNAChromatogramSerializer::deserialize(binary, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(src->hasQV == dst->hasQV, "");
 }

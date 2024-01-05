@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/DNAChromatogram.h>
+#include <U2Core/Chromatogram.h>
 #include <U2Core/Task.h>
 
 #include <U2Lang/DbiDataHandler.h>

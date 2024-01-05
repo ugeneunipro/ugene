@@ -24,8 +24,8 @@
 #include <QFileInfo>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslation.h>
@@ -200,7 +200,7 @@ void ExportMSA2MSATask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export chromatogram to SCF
 
-ExportDNAChromatogramTask::ExportDNAChromatogramTask(DNAChromatogramObject* _obj, const ExportChromatogramTaskSettings& _settings)
+ExportDNAChromatogramTask::ExportDNAChromatogramTask(ChromatogramObject* _obj, const ExportChromatogramTaskSettings& _settings)
     : DocumentProviderTask(tr("Export chromatogram to SCF"), TaskFlags_NR_FOSCOE), chromaObject(_obj), settings(_settings), loadTask(nullptr) {
     GCOUNTER(cvar, "ExportDNAChromatogramTask");
     setVerboseLogMode(true);
@@ -219,7 +219,7 @@ void ExportDNAChromatogramTask::prepare() {
     auto sObj = qobject_cast<U2SequenceObject*>(resObj);
     SAFE_POINT_EXT(sObj != nullptr, setError(L10N::nullPointerError("sequence object is null")), );
 
-    DNAChromatogram chromatogram = chromaObject->getChromatogram();
+    Chromatogram chromatogram = chromaObject->getChromatogram();
     QByteArray seq = sObj->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
 

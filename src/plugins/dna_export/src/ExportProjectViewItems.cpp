@@ -30,8 +30,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentSelection.h>
@@ -43,7 +43,6 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultiTask.h>
-#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -546,7 +545,7 @@ void ExportProjectViewItemsContoller::sl_exportChromatogramToSCF() {
         return;
     }
     GObject* obj = set.first();
-    auto chromaObj = qobject_cast<DNAChromatogramObject*>(obj);
+    auto chromaObj = qobject_cast<ChromatogramObject*>(obj);
     assert(chromaObj != nullptr);
 
     QObjectScopedPointer<ExportChromatogramDialog> d = new ExportChromatogramDialog(QApplication::activeWindow(), chromaObj->getDocument()->getURL());

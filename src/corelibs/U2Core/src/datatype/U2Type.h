@@ -185,10 +185,8 @@ public:
 */
 class U2CORE_EXPORT U2Object : public U2Entity {
 public:
-    U2Object()
-        : version(0), trackModType(NoTrack) {
-    }
-    U2Object(U2DataId id, const U2DbiId& _dbId, qint64 v)
+    U2Object() = default;
+    U2Object(const U2DataId& id, const U2DbiId& _dbId, qint64 v)
         : U2Entity(id), dbiId(_dbId), version(v), trackModType(NoTrack) {
     }
 
@@ -196,13 +194,13 @@ public:
     U2DbiId dbiId;
 
     /** Version of the object. Same as modification count of the object */
-    qint64 version;
+    qint64 version = 0;
 
     /** The name of the object shown to user. Any reasonably short text */
     QString visualName;
 
     /** Specifies whether modifications of the object must be tracked or not */
-    U2TrackModType trackModType;
+    U2TrackModType trackModType = NoTrack;
 
     /** The type of the object. Should be overridden in subclasses */
     virtual U2DataType getType() const {

@@ -147,7 +147,7 @@ inline bool unpackBool(const uchar* data, int length, int& offset, U2OpStatus& o
 /************************************************************************/
 /* DNAChromatogramSerializer */
 /************************************************************************/
-QByteArray DNAChromatogramSerializer::serialize(const DNAChromatogram& chroma) {
+QByteArray DNAChromatogramSerializer::serialize(const Chromatogram& chroma) {
     QByteArray result;
     result += packNum<int>(chroma->traceLength);
     result += packNum<int>(chroma->seqLength);
@@ -164,8 +164,8 @@ QByteArray DNAChromatogramSerializer::serialize(const DNAChromatogram& chroma) {
     return result;
 }
 
-DNAChromatogram DNAChromatogramSerializer::deserialize(const QByteArray& binary, U2OpStatus& os) {
-    DNAChromatogram result;
+Chromatogram DNAChromatogramSerializer::deserialize(const QByteArray& binary, U2OpStatus& os) {
+    Chromatogram result;
     auto data = (const uchar*)(binary.data());
     int offset = 0;
     int length = binary.length();

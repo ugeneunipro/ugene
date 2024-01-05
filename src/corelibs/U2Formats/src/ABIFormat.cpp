@@ -19,7 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/DNAChromatogramObject.h>
+#include "ABIFormat.h"
+
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/DNAInfo.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectTypes.h>
@@ -34,7 +36,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 
-#include "ABIFormat.h"
 #include "IOLibUtils.h"
 
 /* TRANSLATOR U2::ABIFormat */
@@ -110,7 +111,7 @@ DNASequence* ABIFormat::loadSequence(IOAdapter* io, U2OpStatus& os) {
     sf.size = readBuff.size();
 
     DNASequence* seq = new DNASequence();
-    DNAChromatogram cd;
+    Chromatogram cd;
 
     if (!loadABIObjects(&sf, (*seq), cd)) {
         os.setError(tr("Failed to load sequence from ABI file %1").arg(io->toString()));
@@ -430,7 +431,7 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
     DNASequence dna;
-    DNAChromatogram chromatogram;
+    Chromatogram chromatogram;
 
     if (!loadABIObjects(fp, dna, chromatogram)) {
         return nullptr;
@@ -452,7 +453,7 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
     U2SequenceObject* seqObj = new U2SequenceObject(dna.getName(), ref);
     objects.append(seqObj);
 
-    DNAChromatogramObject* chromObj = DNAChromatogramObject::createInstance(chromatogram, "Chromatogram", dbiRef, os, hints);
+    ChromatogramObject* chromObj = ChromatogramObject::createInstance(chromatogram, "Chromatogram", dbiRef, os, hints);
     CHECK_OP(os, nullptr);
     objects.append(chromObj);
 
@@ -466,7 +467,7 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
     return doc;
 }
 
-bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, DNAChromatogram& chromatogram) {
+bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, Chromatogram& chromatogram) {
     uint numPoints, numBases;
     uint signalO;
     int no_bases = 0;

@@ -23,7 +23,7 @@
 
 #include <unittest.h>
 
-#include <U2Core/DNAChromatogram.h>
+#include <U2Core/Chromatogram.h>
 
 #include "core/dbi/DbiTest.h"
 
@@ -39,14 +39,14 @@ public:
     static U2EntityRef getObjRef();
     static U2ObjectDbi* getObjDbi();
     static UdrDbi* getUdrDbi();
-    static const DNAChromatogram& getChromatogram();
+    static const Chromatogram& getChromatogram();
 
 private:
     static TestDbiProvider dbiProvider;
     static const QString UDR_DB_URL;
     static bool inited;
     static U2EntityRef objRef;
-    static DNAChromatogram chromatogram;
+    static Chromatogram chromatogram;
 
 private:
     static void init();

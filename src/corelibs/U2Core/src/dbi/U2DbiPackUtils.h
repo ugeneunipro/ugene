@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-class DNAChromatogram;
+class Chromatogram;
 class U2Region;
 
 class U2CORE_EXPORT U2DbiPackUtils {
@@ -79,10 +79,6 @@ public:
     /** Sequence data details */
     static QByteArray packSequenceDataDetails(const U2Region& replacedRegion, const QByteArray& oldData, const QByteArray& newData, const QVariantMap& hints);
     static bool unpackSequenceDataDetails(const QByteArray& modDetails, U2Region& replacedRegion, QByteArray& oldData, QByteArray& newData, QVariantMap& hints);
-
-    /** Chromatogram */
-    static QByteArray packChromatogramData(const DNAChromatogram& chromatogram);
-    static bool unpackChromatogramData(const QByteArray& modDetails, DNAChromatogram& chromatogram);
 
     /** Sequence data hints */
     static QByteArray packSequenceDataHints(const QVariantMap& hints);

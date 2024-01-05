@@ -24,8 +24,8 @@
 #include <QFile>
 #include <QVarLengthArray>
 
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/IOAdapter.h>
@@ -531,7 +531,7 @@ Document* SCFFormat::parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVari
     CHECK_OP(os, nullptr);
 
     DNASequence dna;
-    DNAChromatogram cd;
+    Chromatogram cd;
     if (!loadSCFObjects(io, dna, cd, os)) {
         return nullptr;
     }
@@ -549,7 +549,7 @@ Document* SCFFormat::parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVari
     SAFE_POINT(seqObj != nullptr, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error", nullptr);
     seqObj->setQuality(dna.quality);
 
-    DNAChromatogramObject* chromObj = DNAChromatogramObject::createInstance(cd, chromaObjName, dbiRef, os, hints);
+    ChromatogramObject* chromObj = ChromatogramObject::createInstance(cd, chromaObjName, dbiRef, os, hints);
     CHECK_OP(os, nullptr);
 
     QList<GObject*> objects;
@@ -983,7 +983,7 @@ int fwrite_scf(Scf* scf, FILE* fp) {
     return 0;
 }
 
-static void saveChromatogramToSCF(const DNAChromatogram& chromatogram, const QByteArray& seq, FILE* fp) {
+static void saveChromatogramToSCF(const Chromatogram& chromatogram, const QByteArray& seq, FILE* fp) {
     Scf scf;
     scf.comments = nullptr;
     scf.private_data = nullptr;
@@ -1026,7 +1026,7 @@ static void saveChromatogramToSCF(const DNAChromatogram& chromatogram, const QBy
     fwrite_scf(&scf, fp);
 }
 
-void SCFFormat::exportDocumentToSCF(const QString& fileName, const DNAChromatogram& cd, const QByteArray& seq, U2OpStatus& ts) {
+void SCFFormat::exportDocumentToSCF(const QString& fileName, const Chromatogram& cd, const QByteArray& seq, U2OpStatus& ts) {
     {
         QFile file(fileName);
         if (!file.open(QIODevice::WriteOnly)) {
@@ -1059,7 +1059,7 @@ void SCFFormat::exportDocumentToSCF(const QString& fileName, const DNAChromatogr
 
 #define MAX_SUPPORTED_SCF_SIZE 2 * 1024 * 1024
 
-bool SCFFormat::loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram& chromatogram, U2OpStatus& os) {
+bool SCFFormat::loadSCFObjects(IOAdapter* io, DNASequence& dna, Chromatogram& chromatogram, U2OpStatus& os) {
     GUrl url = io->getURL();
     QByteArray readBuff;
     QByteArray block(BUFF_SIZE, 0);
@@ -1229,7 +1229,7 @@ DNASequence* SCFFormat::loadSequence(IOAdapter* io, U2OpStatus& os) {
     }
 
     DNASequence* seq = new DNASequence();
-    DNAChromatogram cd;
+    Chromatogram cd;
 
     if (!loadSCFObjects(io, (*seq), cd, os)) {
         os.setError(tr("Failed to load sequence from SCF file %1").arg(io->toString()));
