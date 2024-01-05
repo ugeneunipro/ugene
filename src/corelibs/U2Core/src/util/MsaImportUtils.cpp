@@ -310,7 +310,6 @@ QList<U2MsaRow> MsaImportUtils::importMcaRows(U2OpStatus& os,
 
     for (const MsaDbRowSnapshot& snapshot : qAsConst(snapshots)) {
         U2MsaRow row;
-        row.chromatogramId = snapshot.chromatogram.id;
         row.sequenceId = snapshot.sequence.id;
         row.gaps = snapshot.gapModel;
         row.gstart = 0;

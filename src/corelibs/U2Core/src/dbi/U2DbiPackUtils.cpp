@@ -201,8 +201,6 @@ QByteArray U2DbiPackUtils::packRow(int rowIndex, const U2MsaRow& row) {
     result += SEP;
     result += row.sequenceId.toHex();
     result += SEP;
-    result += row.chromatogramId.toHex();
-    result += SEP;
     result += QByteArray::number(row.gstart);
     result += SEP;
     result += QByteArray::number(row.gend);
@@ -213,7 +211,7 @@ QByteArray U2DbiPackUtils::packRow(int rowIndex, const U2MsaRow& row) {
 
 bool U2DbiPackUtils::unpackRow(const QByteArray& modDetails, int& rowIndex, U2MsaRow& row) {
     QList<QByteArray> tokens = modDetails.split(SEP);
-    SAFE_POINT(tokens.size() == 8, QString("Invalid added row modDetails string '%1'").arg(QString(modDetails)), false);
+    SAFE_POINT(tokens.size() == 7, QString("Invalid added row modDetails string '%1'").arg(QString(modDetails)), false);
     {  // version
         SAFE_POINT(tokens[0] == VERSION, QString("Invalid modDetails version '%1'").arg(tokens[0].data()), false);
     }
@@ -230,21 +228,18 @@ bool U2DbiPackUtils::unpackRow(const QByteArray& modDetails, int& rowIndex, U2Ms
     // sequenceId
     row.sequenceId = QByteArray::fromHex(tokens[3]);
 
-    // chromatogramId
-    row.chromatogramId = QByteArray::fromHex(tokens[4]);
-
     {  // gstart
         bool ok = false;
-        row.gstart = tokens[5].toLongLong(&ok);
+        row.gstart = tokens[4].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails gstart '%1'").arg(tokens[5].data()), false);
     }
     {  // gend
         bool ok = false;
-        row.gend = tokens[6].toLongLong(&ok);
+        row.gend = tokens[5].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails gend '%1'").arg(tokens[6].data()), false);
     }
     {  // gaps
-        bool ok = unpackGaps(tokens[7], row.gaps);
+        bool ok = unpackGaps(tokens[6], row.gaps);
         SAFE_POINT(ok, QString("Invalid added row modDetails gaps '%1'").arg(tokens[7].data()), false);
     }
     return true;
@@ -256,8 +251,6 @@ QByteArray U2DbiPackUtils::packRowInfo(const U2MsaRow& row) {
     result += SECOND_SEP;
     result += row.sequenceId.toHex();
     result += SECOND_SEP;
-    result += row.chromatogramId.toHex();
-    result += SECOND_SEP;
     result += QByteArray::number(row.gstart);
     result += SECOND_SEP;
     result += QByteArray::number(row.gend);
@@ -268,17 +261,16 @@ QByteArray U2DbiPackUtils::packRowInfo(const U2MsaRow& row) {
 
 bool U2DbiPackUtils::unpackRowInfo(const QByteArray& str, U2MsaRow& row) {
     QList<QByteArray> tokens = str.split(SECOND_SEP);
-    CHECK(tokens.count() == 6, false);
+    CHECK(tokens.count() == 5, false);
     bool ok = false;
     row.rowId = tokens[0].toLongLong(&ok);
     CHECK(ok, false);
     row.sequenceId = QByteArray::fromHex(tokens[1]);
-    row.chromatogramId = QByteArray::fromHex(tokens[2]);
-    row.gstart = tokens[3].toLongLong(&ok);
+    row.gstart = tokens[2].toLongLong(&ok);
     CHECK(ok, false);
-    row.gend = tokens[4].toLongLong(&ok);
+    row.gend = tokens[3].toLongLong(&ok);
     CHECK(ok, false);
-    row.length = tokens[5].toLongLong(&ok);
+    row.length = tokens[4].toLongLong(&ok);
     CHECK(ok, false);
 
     return true;

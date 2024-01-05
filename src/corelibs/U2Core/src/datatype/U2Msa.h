@@ -94,9 +94,6 @@ public:
     /** Length of the sequence characters and gaps of the row (without trailing) */
     qint64 length = 0;
 
-    // TODO: remove. This field is not in the same table in DB.
-    U2DataId chromatogramId;
-
     static const qint64 INVALID_ROW_ID;
 };
 

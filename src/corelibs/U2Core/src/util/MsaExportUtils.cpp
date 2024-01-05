@@ -58,9 +58,6 @@ MultipleAlignment MsaExportUtils::loadAlignment(const U2DbiRef& dbiRef, const U2
     QList<U2MsaRow> rows = readRows(msaId, os, connection);
     CHECK_OP(os, {});
 
-    MsaDbiUtils::resolveMsaRowChromatograms(os, rows, msaId, connection);
-    CHECK_OP(os, {});
-
     QList<MsaRowSnapshot> rowSnapshots = loadRows(rows, os, connection);
     CHECK_OP(os, {});
 
@@ -71,7 +68,7 @@ MultipleAlignment MsaExportUtils::loadAlignment(const U2DbiRef& dbiRef, const U2
         if (rowSnapshot.chromatogram->isEmpty()) {  // Use original MSA code.
             ma->addRow(rows[i], rowSnapshot.sequence, os);
         } else {  // Use original MCA code.
-            ma->addRow(rows[i], rowSnapshot.chromatogram, rowSnapshot.sequence, os);
+            ma->addRow(rows[i], rowSnapshot.sequence, rowSnapshot.chromatogramId, rowSnapshot.chromatogram, os);
             ma->getRow(i)->setAdditionalInfo(rowSnapshot.additionalInfo);
         }
         CHECK_OP(os, {});
@@ -88,9 +85,6 @@ QList<MsaRowSnapshot> MsaExportUtils::loadRows(const U2DbiRef& dbiRef,
     CHECK_OP(os, {});
 
     QList<U2MsaRow> rows = readRows(msaId, rowIds, os, connection);
-    CHECK_OP(os, {});
-
-    MsaDbiUtils::resolveMsaRowChromatograms(os, rows, msaId, connection);
     CHECK_OP(os, {});
 
     return loadRows(rows, os, connection);
@@ -122,7 +116,15 @@ QList<MsaRowSnapshot> MsaExportUtils::loadRows(const QList<U2MsaRow>& rows, U2Op
 
     QList<MsaRowSnapshot> snapshots;
     snapshots.reserve(rows.count());
-    for (const auto& row : qAsConst(rows)) {
+
+    QList<U2DataId> chromatogramIds = MsaDbiUtils::resolveMsaRowChromatograms(os, rows, connection);
+    CHECK_OP(os, {});
+    SAFE_POINT_EXT(chromatogramIds.length() == rows.length(), os.setError("Internal error: chromatograms count does not match row count"), {});
+
+    for (int i = 0; i < rows.length(); i++) {
+        const U2MsaRow& row = rows[i];
+        const U2DataId chromatogramId = chromatogramIds[i];
+
         MsaRowSnapshot snapshot;
         snapshot.rowId = row.rowId;
 
@@ -137,13 +139,14 @@ QList<MsaRowSnapshot> MsaExportUtils::loadRows(const QList<U2MsaRow>& rows, U2Op
         snapshot.sequence = DNASequence(seqObj.visualName, seqData);
         snapshot.gaps = row.gaps;
         snapshot.rowLength = row.length;
+        snapshot.chromatogramId = chromatogramId;
 
-        if (!row.chromatogramId.isEmpty()) {
-            U2EntityRef chromatogramRef(connection.dbi->getDbiRef(), row.chromatogramId);
+        if (!chromatogramId.isEmpty()) {
+            U2EntityRef chromatogramRef(connection.dbi->getDbiRef(), chromatogramId);
             snapshot.chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
             CHECK_OP(os, {});
 
-            QList<U2DataId> reversedAttributeIds = attributeDbi->getObjectAttributes(row.chromatogramId, MultipleAlignmentRowInfo::REVERSED, os);
+            QList<U2DataId> reversedAttributeIds = attributeDbi->getObjectAttributes(chromatogramId, MultipleAlignmentRowInfo::REVERSED, os);
             CHECK_OP(os, {});
 
             if (!reversedAttributeIds.isEmpty()) {
@@ -151,7 +154,7 @@ QList<MsaRowSnapshot> MsaExportUtils::loadRows(const QList<U2MsaRow>& rows, U2Op
                 MultipleAlignmentRowInfo::setReversed(snapshot.additionalInfo, isReversed);
             }
 
-            QList<U2DataId> complementedAttributeIds = attributeDbi->getObjectAttributes(row.chromatogramId, MultipleAlignmentRowInfo::COMPLEMENTED, os);
+            QList<U2DataId> complementedAttributeIds = attributeDbi->getObjectAttributes(chromatogramId, MultipleAlignmentRowInfo::COMPLEMENTED, os);
             CHECK_OP(os, {});
 
             if (!reversedAttributeIds.isEmpty()) {

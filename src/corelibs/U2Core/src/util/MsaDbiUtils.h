@@ -200,8 +200,8 @@ public:
 
     static U2MsaRow getMsaRow(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId);
     static U2MsaRow getMsaRow(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId, const DbiConnection& connection);
-    static void resolveMsaRowChromatogram(U2OpStatus& os, U2MsaRow& row, const U2DataId& msaEntityId, const DbiConnection& connection);
-    static void resolveMsaRowChromatograms(U2OpStatus& os, QList<U2MsaRow>& rows, const U2DataId& msaEntityId, const DbiConnection& connection);
+    static U2DataId resolveMsaRowChromatogram(U2OpStatus& os, U2MsaRow& row, const U2DataId& msaEntityId, const DbiConnection& connection);
+    static QList<U2DataId> resolveMsaRowChromatograms(U2OpStatus& os, const QList<U2MsaRow>& rows, const DbiConnection& connection);
 
 private:
     /**

@@ -44,11 +44,11 @@ public:
     MultipleAlignmentRow(MultipleAlignmentRowData* maRowData);
     MultipleAlignmentRow(MultipleAlignmentData* maData = nullptr);
 
-    /** Creates a row in memory. */
     MultipleAlignmentRow(const U2MsaRow& rowInDb,
-                         const Chromatogram& chromatogram,
                          const DNASequence& sequence,
                          const QVector<U2MsaGap>& gaps,
+                         const U2DataId& chromatogramId,
+                         const Chromatogram& chromatogram,
                          MultipleAlignmentData* maData);
 
     MultipleAlignmentRow(const U2MsaRow& rowInDb,
@@ -58,8 +58,7 @@ public:
 
     MultipleAlignmentRow(const U2MsaRow& rowInDb,
                          const QString& rowName,
-                         const Chromatogram& chromatogram,
-                         const QByteArray& rawData,
+                         const QByteArray& rawSequenceData,
                          MultipleAlignmentData* maData);
 
     MultipleAlignmentRow(const MultipleAlignmentRow& row, MultipleAlignmentData* mcaData);
@@ -94,16 +93,21 @@ class U2CORE_EXPORT MultipleAlignmentRowData {
 
 public:
     MultipleAlignmentRowData(MultipleAlignmentData* maData = nullptr);
-    MultipleAlignmentRowData(const DNASequence& sequence, const QVector<U2MsaGap>& gaps);
+
     MultipleAlignmentRowData(const U2MsaRow& rowInDb,
-                             const Chromatogram& chromatogram,
                              const DNASequence& sequence,
                              const QVector<U2MsaGap>& gaps,
+                             const U2DataId& chromatogramId,
+                             const Chromatogram& chromatogram,
                              MultipleAlignmentData* mcaData);
-    MultipleAlignmentRowData(const U2MsaRow& rowInDb, const QString& rowName, const Chromatogram& chromatogram, const QByteArray& rawData, MultipleAlignmentData* maData);
-    MultipleAlignmentRowData(const MultipleAlignmentRow& row, MultipleAlignmentData* maData);
 
-    virtual ~MultipleAlignmentRowData() = default;
+    MultipleAlignmentRowData(const U2MsaRow& rowInDb,
+                             const QString& rowName,
+                             const QByteArray& rawSequenceData,
+                             MultipleAlignmentData* maData);
+
+    MultipleAlignmentRowData(const MultipleAlignmentRow& row,
+                             MultipleAlignmentData* maData);
 
     /** Length of the sequence without gaps */
     int getUngappedLength() const;
@@ -215,6 +219,9 @@ public:
 
     /** Returns ID of the sequence object used by the row. */
     const U2DataId& getSequenceId() const;
+
+    /** Returns ID of the chromatogram for the sequence. May be empty of no chromatogram is assigned. */
+    const U2DataId& getChromatogramId() const;
 
     /** Sets database IDs for row and sequence */
     void setRowDbInfo(const U2MsaRow& dbRow);
@@ -340,11 +347,15 @@ protected:
      */
     QVector<U2MsaGap> gaps;
 
+    /** Id of the chromatogram associated with the sequence. Can be empty. */
+    U2DataId chromatogramId;
+
     /** Optional chromatogram. Defined only for MCA objects today. */
     Chromatogram chromatogram;
 
     /** The row in the database */
     U2MsaRow initialRowInDb;
+
 
     /** Gapped cache offset in the row position.*/
     mutable int gappedCacheOffset = 0;

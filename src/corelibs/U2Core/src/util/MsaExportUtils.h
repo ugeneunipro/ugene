@@ -33,6 +33,7 @@ struct U2CORE_EXPORT MsaRowSnapshot {
     /** Row ID in the database. */
     qint64 rowId;
     DNASequence sequence;
+    U2DataId chromatogramId;
     Chromatogram chromatogram;
     QVector<U2MsaGap> gaps;
     qint64 rowLength;
@@ -48,7 +49,10 @@ public:
     static MultipleAlignment loadAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os);
 
     /** Returns in-memory rows model. */
-    static QList<MsaRowSnapshot> loadRows(const U2DbiRef& dbiRef, const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os);
+    static QList<MsaRowSnapshot> loadRows(const U2DbiRef& dbiRef,
+                                          const U2DataId& msaId,
+                                          const QList<qint64>& rowIds,
+                                          U2OpStatus& os);
 
 private:
     static QList<U2MsaRow> readRows(const U2DataId&, U2OpStatus&, const DbiConnection& connection);
