@@ -289,7 +289,7 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
                 delete lock;
                 lock = nullptr;
             } else {
-                stateInfo.setError("MultipleAlignment object has been changed");
+                stateInfo.setError("MsaObject has been changed");
                 return res;
             }
             Document* targetDocument = targetMsaObject->getDocument();

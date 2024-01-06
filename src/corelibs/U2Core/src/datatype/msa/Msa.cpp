@@ -74,7 +74,7 @@ MsaData::MsaData(const QString& name,
     MsaStateCheck check(this);
     Q_UNUSED(check);
 
-    SAFE_POINT(alphabet == nullptr || !name.isEmpty(), "Incorrect parameters in MultipleAlignmentData ctor", );  // TODO: check the condition, it is strange
+    SAFE_POINT(alphabet == nullptr || !name.isEmpty(), "Incorrect parameters in MsaData ctor", );  // TODO: check the condition, it is strange
 
     setName(name);
     for (auto& row : qAsConst(rows)) {
@@ -314,7 +314,7 @@ const MsaRow& MsaData::getRow(const QString& name) const {
             return rows[i];
         }
     }
-    FAIL("Internal error: row name passed to MultipleAlignmentData::getRow function not exists", emptyRow);
+    FAIL("Internal error: row name passed to MsaData::getRow function not exists", emptyRow);
 }
 
 const QVector<MsaRow>& MsaData::getRows() const {
@@ -371,7 +371,7 @@ void MsaData::insertGaps(int row, int pos, int count, U2OpStatus& os) {
     }
     if (row >= getRowCount() || row < 0 || pos > length || pos < 0 || count < 0) {
         coreLog.trace(QString("Internal error: incorrect parameters were passed "
-                              "to MultipleAlignmentData::insertGaps: row index '%1', pos '%2', count '%3'")
+                              "to MsaData::insertGaps: row index '%1', pos '%2', count '%3'")
                           .arg(row)
                           .arg(pos)
                           .arg(count));
@@ -418,12 +418,12 @@ int MsaData::getRowIndexByRowId(qint64 rowId, U2OpStatus& os) const {
 
 void MsaData::renameRow(int rowIndex, const QString& name) {
     SAFE_POINT(rowIndex >= 0 && rowIndex < getRowCount(),
-               QString("Incorrect row index '%1' was passed to MultipleAlignmentData::renameRow: "
+               QString("Incorrect row index '%1' was passed to MsaData::renameRow: "
                        "the number of rows is '%2'")
                    .arg(rowIndex)
                    .arg(getRowCount()), );
     SAFE_POINT(!name.isEmpty(),
-               "Incorrect parameter 'name' was passed to MultipleAlignmentData::renameRow: "
+               "Incorrect parameter 'name' was passed to MsaData::renameRow: "
                "Can't set the name of a row to an empty string", );
     rows[rowIndex]->setName(name);
 }
@@ -435,7 +435,7 @@ void MsaData::setRowId(int rowIndex, qint64 rowId) {
 
 void MsaData::removeRow(int rowIndex, U2OpStatus& os) {
     if (rowIndex < 0 || rowIndex >= getRowCount()) {
-        coreLog.trace(QString("Internal error: incorrect parameters was passed to MultipleAlignmentData::removeRow, "
+        coreLog.trace(QString("Internal error: incorrect parameters was passed to MsaData::removeRow, "
                               "rowIndex '%1', the number of rows is '%2'")
                           .arg(rowIndex)
                           .arg(getRowCount()));
@@ -456,7 +456,7 @@ void MsaData::removeRow(int rowIndex, U2OpStatus& os) {
 void MsaData::removeChars(int rowNumber, int pos, int n, U2OpStatus& os) {
     if (rowNumber >= getRowCount() || rowNumber < 0 || pos > length || pos < 0 || n < 0) {
         coreLog.trace(QString("Internal error: incorrect parameters were passed "
-                              "to MultipleAlignmentData::removeChars: row index '%1', pos '%2', count '%3'")
+                              "to MsaData::removeChars: row index '%1', pos '%2', count '%3'")
                           .arg(rowNumber)
                           .arg(pos)
                           .arg(n));
@@ -481,7 +481,7 @@ void MsaData::moveRowsBlock(int startRow, int numRows, int delta) {
     int k = qAbs(delta);
 
     SAFE_POINT((delta > 0 && startRow + numRows + delta - 1 < rows.length()) || (delta < 0 && startRow + delta >= 0),
-               QString("Incorrect parameters in MultipleAlignmentData::moveRowsBlock: "
+               QString("Incorrect parameters in MsaData::moveRowsBlock: "
                        "startRow: '%1', numRows: '%2', delta: '%3'")
                    .arg(startRow)
                    .arg(numRows)
@@ -564,13 +564,13 @@ void MsaData::addRowPrivate(const MsaRow& row, qint64 rowLenWithTrailingGaps, in
 
 void MsaData::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows) {
     SAFE_POINT(startPos >= 0 && startPos + nBases <= length && nBases > 0,
-               QString("Incorrect parameters were passed to MultipleAlignmentData::removeRegion: startPos '%1', "
+               QString("Incorrect parameters were passed to MsaData::removeRegion: startPos '%1', "
                        "nBases '%2', the length is '%3'")
                    .arg(startPos)
                    .arg(nBases)
                    .arg(length), );
     SAFE_POINT(startRow >= 0 && startRow + nRows <= getRowCount() && (nRows > 0 || (nRows == 0 && getRowCount() == 0)),
-               QString("Incorrect parameters were passed to MultipleAlignmentData::removeRegion: startRow '%1', "
+               QString("Incorrect parameters were passed to MsaData::removeRegion: startRow '%1', "
                        "nRows '%2', the number of rows is '%3'")
                    .arg(startRow)
                    .arg(nRows)
@@ -671,7 +671,7 @@ QVector<MsaRow> MsaData::getRowsSortedBySimilarity(QVector<U2Region>& united) co
 
 void MsaData::setRowContent(int rowNumber, const QByteArray& sequence, int offset) {
     SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(),
-               QString("Incorrect row index '%1' was passed to MultipleAlignmentData::setRowContent: "
+               QString("Incorrect row index '%1' was passed to MsaData::setRowContent: "
                        "the number of rows is '%2'")
                    .arg(rowNumber)
                    .arg(getRowCount()), );
@@ -687,7 +687,7 @@ void MsaData::setRowContent(int rowNumber, const QByteArray& sequence, int offse
 
 void MsaData::setRowContent(int rowNumber, const Chromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel) {
     SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(),
-               QString("Incorrect row index '%1' was passed to MultipleAlignmentData::setRowContent: "
+               QString("Incorrect row index '%1' was passed to MsaData::setRowContent: "
                        "the number of rows is '%2'")
                    .arg(rowNumber)
                    .arg(getRowCount()), );
@@ -799,7 +799,7 @@ MsaRow MsaData::createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, 
     int sequenceLength = sequence.length();
     foreach (const U2MsaGap& gap, gaps) {
         if (gap.startPos > sequenceLength || !gap.isValid()) {
-            coreLog.trace("Incorrect gap model was passed to MultipleAlignmentData::createRow");
+            coreLog.trace("Incorrect gap model was passed to MsaData::createRow");
             os.setError(errorText);
             return {};
         }
@@ -830,7 +830,7 @@ MsaRow MsaData::createRow(const U2MsaRow& rowInDb,
     int sequenceLength = sequence.length();
     for (const U2MsaGap& gap : qAsConst(gaps)) {
         if (gap.startPos > sequenceLength || !gap.isValid()) {
-            coreLog.trace("Incorrect gap model was passed to MultipleAlignmentData::createRow");
+            coreLog.trace("Incorrect gap model was passed to MsaData::createRow");
             os.setError(errorText);
             return {};
         }
@@ -917,7 +917,7 @@ Msa MsaData::getCopy() const {
 
 Msa MsaData::mid(int start, int len) const {
     SAFE_POINT(start >= 0 && start + len <= length,
-               QString("Incorrect parameters were passed to MultipleAlignmentData::mid: "
+               QString("Incorrect parameters were passed to MsaData::mid: "
                        "start '%1', len '%2', the alignment length is '%3'")
                    .arg(start)
                    .arg(len)
@@ -942,10 +942,10 @@ MsaData& MsaData::operator+=(const MsaData& msaData) {
     MsaStateCheck check(this);
     Q_UNUSED(check);
 
-    SAFE_POINT(msaData.alphabet == alphabet, "Different alphabets in MultipleAlignmentData::operator+=", *this);
+    SAFE_POINT(msaData.alphabet == alphabet, "Different alphabets in MsaData::operator+=", *this);
 
     int nSeq = getRowCount();
-    SAFE_POINT(msaData.getRowCount() == nSeq, "Different number of rows in MultipleAlignmentData::operator+=", *this);
+    SAFE_POINT(msaData.getRowCount() == nSeq, "Different number of rows in MsaData::operator+=", *this);
 
     U2OpStatus2Log os;
     for (int i = 0; i < nSeq; i++) {

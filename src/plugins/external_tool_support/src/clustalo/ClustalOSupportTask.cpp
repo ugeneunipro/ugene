@@ -216,7 +216,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
 
                 // Save data to the database
                 {
-                    CHECK_EXT(!lock.isNull(), stateInfo.setError("MultipleAlignment object has been changed"), res);
+                    CHECK_EXT(!lock.isNull(), stateInfo.setError("MsaObject has been changed"), res);
                     unlockMsaObject();
 
                     U2OpStatus2Log os;

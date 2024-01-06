@@ -72,10 +72,24 @@ void LogServer::removeListener(LogListener* listener) {
                                                .arg(numOfListenersRemoved), );
 }
 
+static const QString badSignalOrSlotQtErrorMessage = "QObject::connect";
+
+QString safeLogString(const QString& value) {
+    QString copy = value;
+    return copy.replace(badSignalOrSlotQtErrorMessage, "QObject.connect");
+}
+
 void LogServer::message(const LogMessage& m) {
     QMutexLocker l(&listenerMutex);
     for (LogListener* listener : qAsConst(listeners)) {
         listener->onMessage(m);
+    }
+
+    if (m.text.contains(badSignalOrSlotQtErrorMessage)) {
+        QString errorMessage = safeLogString(m.text);
+        fprintf(stderr, "%s\n", errorMessage.toLocal8Bit().constData());
+        fflush(stderr);
+        FAIL(errorMessage, );
     }
 }
 

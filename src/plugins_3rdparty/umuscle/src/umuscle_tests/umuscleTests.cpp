@@ -542,7 +542,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
         CHECK_OP(stateInfo, res);
 
         if (ma1 == nullptr) {
-            stateInfo.setError(QString("can't convert dna sequences to MultipleAlignment"));
+            stateInfo.setError(QString("can't convert dna sequences to Msa"));
             return res;
         }
 
@@ -585,7 +585,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
         CHECK_OP(stateInfo, res);
 
         if (ma2 == nullptr) {
-            stateInfo.setError(QString("can't convert dna sequences to MultipleAlignment"));
+            stateInfo.setError(QString("can't convert dna sequences to Msa"));
             return res;
         }
     }
@@ -682,7 +682,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
         CHECK_OP(stateInfo, res);
 
         if (ma1 == nullptr) {
-            stateInfo.setError(QString("can't convert dna sequences to MultipleAlignment"));
+            stateInfo.setError(QString("can't convert dna sequences to Msa"));
             return res;
         }
 
@@ -725,7 +725,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
         CHECK_OP(stateInfo, res);
 
         if (ma2 == nullptr) {
-            stateInfo.setError(QString("can't convert dna sequences to MultipleAlignment"));
+            stateInfo.setError(QString("can't convert dna sequences to Msa"));
             return res;
         }
     }

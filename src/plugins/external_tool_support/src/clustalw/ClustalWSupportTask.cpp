@@ -222,11 +222,11 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(tmpDoc != nullptr, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), res);
         SAFE_POINT(tmpDoc->getObjects().length() == 1, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
-        // move MultipleAlignment from new alignment to old document
-        auto newMAligmentObject = qobject_cast<MsaObject*>(tmpDoc->getObjects().first());
-        SAFE_POINT(newMAligmentObject != nullptr, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
+        // move Msa from new alignment to old document
+        auto newMAlignmentObject = qobject_cast<MsaObject*>(tmpDoc->getObjects().first());
+        SAFE_POINT(newMAlignmentObject != nullptr, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
-        resultMA = newMAligmentObject->getAlignment()->getCopy();
+        resultMA = newMAlignmentObject->getAlignment()->getCopy();
         bool renamed = MsaUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT(renamed, "Failed to restore initial row names!", res);
 
@@ -256,7 +256,7 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
                         delete lock;
                         lock = nullptr;
                     } else {
-                        stateInfo.setError("MultipleAlignment object has been changed");
+                        stateInfo.setError("MsaObject has been changed");
                         return res;
                     }
 

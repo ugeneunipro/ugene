@@ -46,7 +46,7 @@ void McaAlternativeMutationsWidget::init(MsaObject* _maObject,
                                          MaEditorSequenceArea* _seqArea,
                                          MaEditorStatusBar* _statusBar) {
     SAFE_POINT(_seqArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorSequenceArea is nullptr", );
-    SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is nullptr", );
+    SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MsaObject is nullptr", );
     SAFE_POINT(_statusBar != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorStatusBar is nullptr", );
 
     seqArea = qobject_cast<McaEditorSequenceArea*>(_seqArea);

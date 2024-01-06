@@ -68,7 +68,7 @@ char MsaRowUtils::charAt(const QByteArray& seq, const QVector<U2MsaGap>& gaps, i
     bool indexIsInBounds = (index < seq.length()) && (index >= 0);
 
     SAFE_POINT(indexIsInBounds,
-               QString("Internal error detected in MultipleAlignmentRow::charAt,"
+               QString("Internal error detected in MsaRow::charAt,"
                        " row length is '%1', gapsLength is '%2'!")
                    .arg(getRowLength(seq, gaps))
                    .arg(index),

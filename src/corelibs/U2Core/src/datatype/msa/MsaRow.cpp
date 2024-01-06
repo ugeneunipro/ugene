@@ -361,7 +361,7 @@ qint64 MsaRowData::getCoreLength() const {
     int coreStart = getCoreStart();
     int coreEnd = getCoreEnd();
     int length = coreEnd - coreStart;
-    SAFE_POINT(length >= 0, QString("Internal error in MultipleAlignmentRowData: coreEnd is %1, coreStart is %2!").arg(coreEnd).arg(coreStart), length);
+    SAFE_POINT(length >= 0, QString("Internal error in MsaRowData: coreEnd is %1, coreStart is %2!").arg(coreEnd).arg(coreStart), length);
     return length;
 }
 
@@ -388,7 +388,7 @@ void MsaRowData::append(const MsaRowData& anotherRow, int lengthBefore, U2OpStat
     int rowLength = getRowLengthWithoutTrailing();
 
     if (lengthBefore < rowLength) {
-        coreLog.trace(QString("Internal error: incorrect length '%1' were passed to MultipleAlignmentRowData::append,"
+        coreLog.trace(QString("Internal error: incorrect length '%1' were passed to MsaRowData::append,"
                               "coreEnd is '%2'")
                           .arg(lengthBefore)
                           .arg(getCoreEnd()));
@@ -494,7 +494,7 @@ void MsaRowData::insertGaps(int pos, int count, U2OpStatus& os) {
 
 void MsaRowData::removeChars(int pos, int count, U2OpStatus& os) {
     if (pos < 0 || count < 0) {
-        coreLog.trace(QString("Internal error: incorrect parameters were passed to MultipleAlignmentRowData::removeChars, "
+        coreLog.trace(QString("Internal error: incorrect parameters were passed to MsaRowData::removeChars, "
                               "pos '%1', count '%2'")
                           .arg(pos)
                           .arg(count));
@@ -529,7 +529,7 @@ void MsaRowData::removeChars(int pos, int count, U2OpStatus& os) {
 void MsaRowData::getStartAndEndSequencePositions(int pos, int count, int& startPosInSeq, int& endPosInSeq) const {
     int rowLengthWithoutTrailingGap = getRowLengthWithoutTrailing();
     SAFE_POINT(pos < rowLengthWithoutTrailingGap,
-               QString("Incorrect position '%1' in MultipleAlignmentRowData::getStartAndEndSequencePosition, "
+               QString("Incorrect position '%1' in MsaRowData::getStartAndEndSequencePosition, "
                        "row length without trailing gaps is '%2'")
                    .arg(pos)
                    .arg(rowLengthWithoutTrailingGap), );
@@ -642,7 +642,7 @@ bool MsaRowData::isEqual(const MsaRowData& other) const {
 
 void MsaRowData::crop(U2OpStatus& os, int startPosition, int count) {
     if (startPosition < 0 || count < 0) {
-        coreLog.trace(QString("Internal error: incorrect parameters were passed to MultipleAlignmentRowData::crop, "
+        coreLog.trace(QString("Internal error: incorrect parameters were passed to MsaRowData::crop, "
                               "startPos '%1', length '%2', row length '%3'")
                           .arg(startPosition)
                           .arg(count)
@@ -705,7 +705,7 @@ const QVariantMap& MsaRowData::getAdditionalInfo() const {
 
 void MsaRowData::replaceChars(char origChar, char resultChar, U2OpStatus& os) {
     if (origChar == U2Msa::GAP_CHAR) {
-        coreLog.trace("The original char can't be a gap in MultipleAlignmentRowData::replaceChars");
+        coreLog.trace("The original char can't be a gap in MsaRowData::replaceChars");
         os.setError("Failed to replace chars in an alignment row");
         return;
     }

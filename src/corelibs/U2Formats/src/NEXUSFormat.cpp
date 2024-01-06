@@ -454,7 +454,7 @@ bool NEXUSParser::readDataContents(Context& ctx) {
                 }
             }
 
-            // Build MultipleAlignment object
+            // Build MsaObject
             Msa ma(tz.getIO()->getURL().baseFileName());
             for (int i = 0; i < names.length(); i++) {
                 ma->addRow(names[i], values[i]);

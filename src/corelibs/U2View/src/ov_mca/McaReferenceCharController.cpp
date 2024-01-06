@@ -73,8 +73,8 @@ McaReferenceCharController::McaReferenceCharController(QObject* p, McaEditor* ed
     SAFE_POINT(ctx != nullptr, "Reference U2SequenceObject is NULL", );
     initRegions();
 
-    connect(refObject, SIGNAL(si_sequenceChanged()), SLOT(sl_update()));
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_update(MultipleAlignment, MaModificationInfo)));
+    connect(refObject, &U2SequenceObject::si_sequenceChanged, this, &McaReferenceCharController::sl_update);
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, &McaReferenceCharController::sl_update);
 }
 
 OffsetRegions McaReferenceCharController::getCharRegions(const U2Region& region) const {
@@ -117,12 +117,6 @@ void McaReferenceCharController::sl_update() {
     initRegions();
 }
 
-void McaReferenceCharController::sl_update(const Msa&, const MaModificationInfo& modInfo) {
-    if (modInfo.type == MaModificationType_Undo || modInfo.type == MaModificationType_Redo) {
-        initRegions();
-    }
-}
-
 void McaReferenceCharController::initRegions() {
     charRegions.clear();
     SAFE_POINT(refObject != nullptr, "MCA reference object is NULL", );
@@ -144,7 +138,7 @@ void McaReferenceCharController::initRegions() {
             }
         } else {
             if (!current.isEmpty()) {
-                // append the region to resut
+                // append the region to result.
                 charRegions.append(current, gapCounter);
                 current = U2Region();
             }

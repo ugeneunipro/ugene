@@ -64,7 +64,6 @@ signals:
 
 public slots:
     void sl_update();
-    void sl_update(const Msa& maBefore, const MaModificationInfo& modInfo);
 
 private:
     void initRegions();

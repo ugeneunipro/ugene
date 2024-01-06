@@ -63,8 +63,8 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt* ma
     GUIUtils::updateActionToolTip(previousAction);
     connect(previousAction, SIGNAL(triggered(bool)), SLOT(sl_previous()));
 
-    connect(maEditor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_resetCachedIterator()));
-    connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_resetCachedIterator()));
+    connect(maEditor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaAmbiguousCharactersController::sl_resetCachedIterator);
+    connect(maEditor->getCollapseModel(), &MaCollapseModel::si_toggled, this, &MaAmbiguousCharactersController::sl_resetCachedIterator);
 }
 
 QAction* MaAmbiguousCharactersController::getPreviousAction() const {

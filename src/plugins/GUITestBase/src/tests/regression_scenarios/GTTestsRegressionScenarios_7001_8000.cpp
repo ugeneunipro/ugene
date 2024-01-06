@@ -32,7 +32,6 @@
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
-#include <primitives/GTMainWindow.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
@@ -3892,46 +3891,6 @@ GUI_TEST_CLASS_DEFINITION(test_7714) {
     CHECK_SET_ERR(assemblyReads2 == expectedReads, QString("An unexpected assembly reads count: expect  %1, got %2").arg(expectedReads).arg(assemblyReads2));
 
     lt.assertNoErrors();
-}
-
-GUI_TEST_CLASS_DEFINITION(test_7715) {
-    // Open COI.aln.
-    //     Expected: no log messages
-    //         "QObject::connect(U2::MaEditorWgt, U2::MaGraphOverview): invalid nullptr parameter
-    //          QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes (-1,-1)
-    //              are not possible".
-    // Select the first character.
-    // Quickly and abruptly move the subalignment to the right by at least 20 characters.
-    //     Expected: the Overview isn't empty, no log messages
-    //         "QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes (-1,-1)
-    //              are not possible
-    //          QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes (-1,-1)
-    //              are not possible".
-    // Click "Wrap mode".
-    //     Expected: no size messages in the log.
-    // Click "Remove all gaps".
-    //     Expected: no size messages in the log.
-    GTLogTracer lt;
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-    GTUtilsMSAEditorSequenceArea::click();
-
-    GTMouseDriver::press();
-    GTThread::waitForMainThread();
-    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget(GTUtilsOptionPanelMsa::tabsNames[GTUtilsOptionPanelMsa::General])));
-    GTMouseDriver::release();
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    // The background is white, the bars are gray, the background in the selection is light gray, the bars
-    // in the selection are dark gray, the selection frame is black. Total 5 colors.
-    CHECK_SET_ERR(GTWidget::countColors(GTWidget::getImage(GTUtilsMsaEditor::getGraphOverview())).size() == 5,
-                  "Overview is empty (white)");
-
-    GTUtilsMsaEditor::setMultilineMode(true);
-    GTMenu::clickMainMenuItem({"Actions", "Edit", "Remove all gaps"});
-    GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasMessage("QObject::connect"), "Found unexpected message/1");
-    CHECK_SET_ERR(!lt.hasMessage("QWidget::setMinimumSize)"), "Found unexpected message/2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7720) {

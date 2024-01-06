@@ -38,9 +38,7 @@ McaGeneralTab::McaGeneralTab(McaEditor* mca)
     lengthLabel->setText(QString::number(mca->getAlignmentLen()));
     seqNumLabel->setText(QString::number(mca->getNumSequences()));
 
-    connect(mca->getMaObject(),
-            SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
-            SLOT(sl_alignmentChanged()));
+    connect(mca->getMaObject(), &MsaObject::si_alignmentChanged, this, &McaGeneralTab::sl_alignmentChanged);
 }
 
 void McaGeneralTab::sl_alignmentChanged() {
