@@ -27,10 +27,10 @@ namespace U2 {
 
 void U2SafePoints::fail(const QString& message) {
     coreLog.error(message);
-
     static bool isInTestMode = qgetenv("UGENE_GUI_TEST") == "1";
     if (isInTestMode) {
         fflush(stdout);
+        fflush(stderr);
         std::abort();
     }
     assert(false);

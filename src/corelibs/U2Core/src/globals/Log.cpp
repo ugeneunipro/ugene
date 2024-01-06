@@ -73,10 +73,11 @@ void LogServer::removeListener(LogListener* listener) {
 }
 
 static const QString badSignalOrSlotQtErrorMessage = "QObject::connect";
+static const QString badSignalOrSlotQtErrorMessageReplacement = "QObject.connect";
 
 QString safeLogString(const QString& value) {
     QString copy = value;
-    return copy.replace(badSignalOrSlotQtErrorMessage, "QObject.connect");
+    return copy.replace(badSignalOrSlotQtErrorMessage, badSignalOrSlotQtErrorMessageReplacement);
 }
 
 void LogServer::message(const LogMessage& m) {
@@ -88,7 +89,6 @@ void LogServer::message(const LogMessage& m) {
     if (m.text.contains(badSignalOrSlotQtErrorMessage)) {
         QString errorMessage = safeLogString(m.text);
         fprintf(stderr, "%s\n", errorMessage.toLocal8Bit().constData());
-        fflush(stderr);
         FAIL(errorMessage, );
     }
 }
