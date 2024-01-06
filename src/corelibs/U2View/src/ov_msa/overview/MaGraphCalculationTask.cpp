@@ -52,9 +52,9 @@ MaGraphCalculationTask::MaGraphCalculationTask(MsaObject* maObject, int width, i
         return;
     }
     //    ma = msa->getMultipleAlignmentCopy();
-    connect(maObject, SIGNAL(si_invalidateAlignmentObject()), this, SLOT(cancel()));
-    connect(maObject, SIGNAL(si_startMaUpdating()), this, SLOT(cancel()));
-    connect(maObject, SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), this, SLOT(cancel()));
+    connect(maObject, &MsaObject::si_invalidateAlignmentObject, this, &MaGraphCalculationTask::cancel);
+    connect(maObject, &MsaObject::si_startMaUpdating, this, &MaGraphCalculationTask::cancel);
+    connect(maObject, &MsaObject::si_alignmentChanged, this, &MaGraphCalculationTask::cancel);
 }
 
 void MaGraphCalculationTask::run() {
