@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2MsaDbi.h>
 
 namespace U2 {
@@ -92,7 +92,7 @@ public:
     static void getStartAndEndSequencePositions(const QByteArray& seq, const QVector<U2MsaGap>& gaps, qint64 pos, qint64 count, qint64& startPosInSeq, qint64& endPosInSeq);
 
     static DbiConnection* getCheckedConnection(const U2DbiRef& dbiRef, U2OpStatus& os);
-    static bool validateRowIds(const MultipleAlignment& al, const QList<qint64>& rowIds);
+    static bool validateRowIds(const Msa& al, const QList<qint64>& rowIds);
     static void validateRowIds(U2MsaDbi* msaDbi, const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os);
 
     static void calculateGapModelAfterReplaceChar(QVector<U2MsaGap>& gapModel, qint64 pos);
@@ -109,7 +109,7 @@ public:
      *    Otherwise adds or removes the corresponding rows and sequences.
      * 3) Updates rows positions
      */
-    static void updateMsa(const U2EntityRef& msaRef, const MultipleAlignment& ma, U2OpStatus& os);
+    static void updateMsa(const U2EntityRef& msaRef, const Msa& ma, U2OpStatus& os);
 
     /**
      * Inserts 'count' gaps to rows with specified IDs from 'pos' position.
@@ -241,7 +241,7 @@ private:
      * Parameter 'pos' can even be greater than the length of the row.
      * The row sequence and gap model are set to empty values in this case.
      */
-    static void cropCharsFromRow(MultipleAlignmentRow& alRow, qint64 pos, qint64 count);
+    static void cropCharsFromRow(MsaRow& alRow, qint64 pos, qint64 count);
 
     /** Returns "true" if there is a gap on position "pos" */
     static bool gapInPosition(const QVector<U2MsaGap>& gapModel, qint64 pos);

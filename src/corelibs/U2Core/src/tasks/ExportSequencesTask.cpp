@@ -29,7 +29,7 @@
 #include <U2Core/DocumentSelection.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MSAUtils.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -43,7 +43,7 @@
 
 namespace U2 {
 
-ExportSequencesTask::ExportSequencesTask(const MultipleAlignment& msa, const QSet<qint64>& rowIds, bool trimGaps, bool addToProjectFlag, const QString& dirUrl, const DocumentFormatId& format, const QString& extension, const QString& customFileName)
+ExportSequencesTask::ExportSequencesTask(const Msa& msa, const QSet<qint64>& rowIds, bool trimGaps, bool addToProjectFlag, const QString& dirUrl, const DocumentFormatId& format, const QString& extension, const QString& customFileName)
     : Task(tr("Export selected sequences from alignment"), TaskFlags_NR_FOSE_COSC),
       addToProjectFlag(addToProjectFlag),
       dirUrl(dirUrl),

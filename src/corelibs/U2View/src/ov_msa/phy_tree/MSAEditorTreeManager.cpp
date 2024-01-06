@@ -128,7 +128,7 @@ void MSAEditorTreeManager::sl_refreshTree(MSAEditorTreeViewer* treeViewer) {
 }
 
 void MSAEditorTreeManager::createPhyTreeGeneratorTask(const CreatePhyTreeSettings& buildSettings, bool refreshExistingTree, MSAEditorTreeViewer* treeViewer) {
-    const MultipleAlignment msa = msaObject->getAlignment();
+    const Msa msa = msaObject->getAlignment();
     settings = buildSettings;
 
     auto treeGeneratorTask = new PhyTreeGeneratorLauncherTask(msa, settings);

@@ -50,7 +50,7 @@
 namespace U2 {
 
 McaEditor::McaEditor(const QString& viewName,
-                     MultipleAlignmentObject* obj)
+                     MsaObject* obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       showChromatogramsAction(nullptr), showGeneralTabAction(nullptr), showConsensusTabAction(nullptr), referenceCtx(nullptr) {
     optionsPanelController = new OptionsPanelController(this);
@@ -59,7 +59,7 @@ McaEditor::McaEditor(const QString& viewName,
     initFont();
 
     U2OpStatusImpl os;
-    foreach (const MultipleAlignmentRow& row, obj->getAlignment()->getRows()) {
+    foreach (const MsaRow& row, obj->getAlignment()->getRows()) {
         chromVisibility.insert(obj->getAlignment()->getRowIndexByRowId(row->getRowId(), os), true);
     }
 

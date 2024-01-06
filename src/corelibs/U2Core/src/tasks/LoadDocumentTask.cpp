@@ -41,7 +41,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MSAUtils.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/ResourceTracker.h>
 #include <U2Core/SequenceUtils.h>
@@ -397,7 +397,7 @@ static Document* loadFromMultipleFiles(IOAdapterFactory* iof, QVariantMap& fs, U
         CHECK_OP(os, nullptr);
         newObjects << sequences;
     } else if (fs.value(DocumentReadingMode_SequenceAsAlignmentHint).toBool()) {
-        MultipleAlignmentObject* msaObject = MsaUtils::seqDocs2msaObj(docs, fs, os);
+        MsaObject* msaObject = MsaUtils::seqDocs2msaObj(docs, fs, os);
         CHECK_OP(os, nullptr);
         SAFE_POINT_EXT(msaObject != nullptr, os.setError("The alignment object is NULL!"), nullptr);
         newObjects << msaObject;

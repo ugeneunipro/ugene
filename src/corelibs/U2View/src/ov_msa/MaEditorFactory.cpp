@@ -23,8 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SelectionUtils.h>
 
@@ -99,7 +98,7 @@ Task* MaEditorFactory::createViewTask(const MultiGSelection& multiSelection, boo
                 resTasks.append(getOpenMaEditorTask(qobject_cast<UnloadedObject*>(o)));
             } else {
                 assert(o->getGObjectType() == type);
-                resTasks.append(getOpenMaEditorTask(qobject_cast<MultipleAlignmentObject*>(o)));
+                resTasks.append(getOpenMaEditorTask(qobject_cast<MsaObject*>(o)));
             }
         }
     }
@@ -157,7 +156,7 @@ MsaEditorFactory::MsaEditorFactory()
 }
 
 MaEditor* MsaEditorFactory::getEditor(const QString& viewName, GObject* obj, U2OpStatus& os) {
-    auto msaObj = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto msaObj = qobject_cast<MsaObject*>(obj);
     SAFE_POINT(msaObj != nullptr, "Invalid GObject", nullptr);
     if (msaObj->getLength() > MSAEditor::MAX_SUPPORTED_MSA_OBJECT_LENGTH) {
         os.setError(tr("MSA object is too large to be opened in MSA Editor!"));
@@ -166,7 +165,7 @@ MaEditor* MsaEditorFactory::getEditor(const QString& viewName, GObject* obj, U2O
     return new MSAEditor(viewName, msaObj);
 }
 
-OpenMaEditorTask* MsaEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject* obj) {
+OpenMaEditorTask* MsaEditorFactory::getOpenMaEditorTask(MsaObject* obj) {
     return new OpenMsaEditorTask(obj);
 }
 
@@ -191,12 +190,12 @@ McaEditorFactory::McaEditorFactory()
 }
 
 MaEditor* McaEditorFactory::getEditor(const QString& viewName, GObject* obj, U2OpStatus&) {
-    auto mcaObj = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto mcaObj = qobject_cast<MsaObject*>(obj);
     SAFE_POINT(mcaObj != nullptr, "Invalid GObject", nullptr);
     return new McaEditor(viewName, mcaObj);
 }
 
-OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject* obj) {
+OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(MsaObject* obj) {
     return new OpenMcaEditorTask(obj);
 }
 

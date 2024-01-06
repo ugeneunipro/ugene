@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/MaEditor.h>
@@ -51,7 +51,7 @@ class U2VIEW_EXPORT McaEditor : public MaEditor {
 
 public:
     McaEditor(const QString& viewName,
-              MultipleAlignmentObject* obj);
+              MsaObject* obj);
 
     QString getSettingsRoot() const override {
         return MCAE_SETTINGS_ROOT;

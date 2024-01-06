@@ -29,12 +29,12 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "phylip.h"
-#include "seq.h"
-
 #include <QVector>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
+
+#include "phylip.h"
+#include "seq.h"
 
 typedef enum {
   seqs, morphology, restsites, genefreqs
@@ -137,12 +137,12 @@ void   bootweights(void);
 void   permute_vec(long *a, long n);
 void   sppermute(long);
 void   charpermute(long, long);
-void writedata(QVector<U2::MultipleAlignment*>& mavect, int rep, const U2::MultipleAlignment& ma);
+void writedata(QVector<U2::Msa*>& mavect, int rep, const U2::Msa& ma);
 void   writeweights(void);
 void   writecategories(void);
 void   writeauxdata(steptr, FILE*);
 void   writefactors(void);
-void bootwrite(QList<U2::MultipleAlignment>& mavect, const U2::MultipleAlignment& ma);
+void bootwrite(QList<U2::Msa>& mavect, const U2::Msa& ma);
 //void   seqboot_inputaux(steptr, FILE*);
 void   freenewer(void);
 /* function prototypes */

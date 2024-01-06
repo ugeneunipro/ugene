@@ -33,7 +33,7 @@ class SimilarityStatisticsSettings;
 class ShowHideSubgroupWidget;
 class TreeViewer;
 class TreeViewerUI;
-class MultipleAlignment;
+class Msa;
 class MaModificationInfo;
 
 class TreeOptionsSavableWidget : public U2SavableWidget {

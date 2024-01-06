@@ -28,7 +28,7 @@ namespace U2 {
 class McaEditor;
 class U2SequenceObject;
 
-class MultipleAlignment;
+class Msa;
 class MaModificationInfo;
 
 class OffsetRegions {
@@ -64,7 +64,7 @@ signals:
 
 public slots:
     void sl_update();
-    void sl_update(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo);
+    void sl_update(const Msa& maBefore, const MaModificationInfo& modInfo);
 
 private:
     void initRegions();

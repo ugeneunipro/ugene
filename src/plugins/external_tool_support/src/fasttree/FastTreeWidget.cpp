@@ -45,7 +45,7 @@ namespace U2 {
 
 static constexpr const char* FAST_TREE_EXTRA_PARAMETERS_SETTINGS_KEY = "/extra-parameters";
 
-FastTreeWidget::FastTreeWidget(const MultipleAlignment& msa, QWidget* parent)
+FastTreeWidget::FastTreeWidget(const Msa& msa, QWidget* parent)
     : CreatePhyTreeWidget(parent) {
     auto layout = new QVBoxLayout();
     setLayout(layout);

@@ -323,7 +323,7 @@ DbiConnection* MaDbiUtils::getCheckedConnection(const U2DbiRef& dbiRef, U2OpStat
 }
 
 /** Validates that all 'rowIds' contains in the alignment rows */
-bool MaDbiUtils::validateRowIds(const MultipleAlignment& al, const QList<qint64>& rowIds) {
+bool MaDbiUtils::validateRowIds(const Msa& al, const QList<qint64>& rowIds) {
     QSet<qint64> alRowIds = al->getRowsIds().toSet();
     for (qint64 rowId : qAsConst(rowIds)) {
         if (!alRowIds.contains(rowId)) {
@@ -625,7 +625,7 @@ void MsaDbiUtils::replaceCharsInRow(QByteArray& sequence, QVector<U2MsaGap>& gap
     }
 }
 
-void MsaDbiUtils::cropCharsFromRow(MultipleAlignmentRow& alRow, qint64 pos, qint64 count) {
+void MsaDbiUtils::cropCharsFromRow(MsaRow& alRow, qint64 pos, qint64 count) {
     SAFE_POINT(pos >= 0, "Incorrect position!", );
     SAFE_POINT(count > 0, "Incorrect characters count!", );
 
@@ -687,7 +687,7 @@ bool MsaDbiUtils::gapInPosition(const QVector<U2MsaGap>& gapModel, qint64 pos) {
 /////////////////////////////////////////////////////////////////
 // MSA DBI Utilities
 
-void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleAlignment& ma, U2OpStatus& os) {
+void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const Msa& ma, U2OpStatus& os) {
     DbiConnection con(msaRef.dbiRef, os);
     CHECK_OP(os, );
 
@@ -734,7 +734,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleAlignment& 
         // Update data for rows with the same row and sequence IDs
         if (newRowsIds.contains(currentRow.rowId)) {
             // Update sequence and row info
-            const MultipleAlignmentRow& newMaRow = ma->getRowByRowId(currentRow.rowId, os);
+            const MsaRow& newMaRow = ma->getRowByRowId(currentRow.rowId, os);
             CHECK_OP(os, );
             U2MsaRow newRow = newMaRow->getRowDbInfo();
 
@@ -747,7 +747,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleAlignment& 
                 continue;
             }
 
-            const MultipleAlignmentRow& row = ma->getRowByRowId(newRow.rowId, os);
+            const MsaRow& row = ma->getRowByRowId(newRow.rowId, os);
             CHECK_OP(os, );
 
             DNASequence sequence = row->getSequence();
@@ -777,7 +777,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleAlignment& 
     // remember the rows order
     QList<qint64> rowsOrder;
     for (int i = 0, n = ma->getRowCount(); i < n; ++i) {
-        const MultipleAlignmentRow& alRow = ma->getRow(i);
+        const MsaRow& alRow = ma->getRow(i);
         U2MsaRow row = alRow->getRowDbInfo();
 
         if (row.sequenceId.isEmpty() || !currentRowIds.contains(row.rowId)) {
@@ -1141,7 +1141,7 @@ QList<qint64> MsaDbiUtils::removeEmptyRows(const U2EntityRef& msaRef, const QLis
 
 void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os) {
     // Get the alignment.
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_OP_EXT(os, uiLog.error(os.getError()), );
 
     // Validate the parameters.
@@ -1171,7 +1171,7 @@ void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64>& rowIds, c
 
     // Crop or remove each row.
     for (int i = 0, n = al->getRowCount(); i < n; i++) {
-        MultipleAlignmentRow row = al->getRow(i)->getExplicitCopy();
+        MsaRow row = al->getRow(i)->getExplicitCopy();
         qint64 rowId = row->getRowId();
         if (!rowIds.contains(rowId)) {
             MsaDbiUtils::removeRow(msaRef, row->getRowId(), os);

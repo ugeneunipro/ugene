@@ -78,11 +78,11 @@ MrBayesSupport::MrBayesSupport()
 ////////////////////////////////////////
 // MrBayesAdapter
 
-Task* MrBayesAdapter::createCalculatePhyTreeTask(const MultipleAlignment& ma, const CreatePhyTreeSettings& s) {
+Task* MrBayesAdapter::createCalculatePhyTreeTask(const Msa& ma, const CreatePhyTreeSettings& s) {
     return new MrBayesSupportTask(ma, s);
 }
 
-CreatePhyTreeWidget* MrBayesAdapter::createPhyTreeSettingsWidget(const MultipleAlignment& ma, QWidget* parent) {
+CreatePhyTreeWidget* MrBayesAdapter::createPhyTreeSettingsWidget(const Msa& ma, QWidget* parent) {
     return new MrBayesWidget(ma, parent);
 }
 

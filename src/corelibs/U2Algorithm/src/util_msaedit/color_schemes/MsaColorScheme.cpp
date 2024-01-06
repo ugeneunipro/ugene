@@ -24,7 +24,7 @@
 #include <QColor>
 
 #include <U2Core/FeatureColors.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ColorSchemeUtils.h"
@@ -64,7 +64,7 @@ const QString MsaColorScheme::CUSTOM_AMINO = "COLOR_SCHEME_CUSTOM_AMINO";
 
 const QString MsaColorScheme::THRESHOLD_PARAMETER_NAME = "threshold";
 
-MsaColorScheme::MsaColorScheme(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaColorScheme::MsaColorScheme(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj)
     : QObject(parent),
       factory(factory),
       maObj(maObj) {

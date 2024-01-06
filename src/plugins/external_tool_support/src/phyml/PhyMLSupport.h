@@ -39,8 +39,8 @@ public:
 
 class PhyMLAdapter : public PhyTreeGenerator {
 public:
-    Task* createCalculatePhyTreeTask(const MultipleAlignment& ma, const CreatePhyTreeSettings& s);
-    CreatePhyTreeWidget* createPhyTreeSettingsWidget(const MultipleAlignment& ma, QWidget* parent = nullptr);
+    Task* createCalculatePhyTreeTask(const Msa& ma, const CreatePhyTreeSettings& s);
+    CreatePhyTreeWidget* createPhyTreeSettingsWidget(const Msa& ma, QWidget* parent = nullptr);
 };
 
 enum SubstModelTrRatioType {

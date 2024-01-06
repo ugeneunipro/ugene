@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-Kalign3DialogWithMsaInput::Kalign3DialogWithMsaInput(QWidget* w, const MultipleAlignment& _ma, Kalign3Settings& _settings)
+Kalign3DialogWithMsaInput::Kalign3DialogWithMsaInput(QWidget* w, const Msa& _ma, Kalign3Settings& _settings)
     : QDialog(w), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930935");

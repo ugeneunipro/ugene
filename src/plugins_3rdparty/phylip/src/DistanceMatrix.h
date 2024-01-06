@@ -29,7 +29,7 @@
 #include <U2Algorithm/SubstMatrixRegistry.h>
 
 #include <U2Core/AppResources.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/PhyTree.h>
 
 #include "PhylipPlugin.h"
@@ -44,7 +44,7 @@ private:
     float* rawdata;
     int size;
     QMap<QString, int> index_map;
-    const MultipleAlignment* malignment;
+    const Msa* malignment;
     PhyTreeData* treedata;
     matrix qdata;
     matrix middlematrix;
@@ -60,7 +60,7 @@ public:
     matrix rawMatrix;
     /** Validates matrix and returns validation error. If the matrix is valid returns an empty string. */
     QString validate() const;
-    void calculateOutOfAlignment(const MultipleAlignment& ma, const CreatePhyTreeSettings& settings);
+    void calculateOutOfAlignment(const Msa& ma, const CreatePhyTreeSettings& settings);
     const QString& getErrorMessage() {
         return errorMessage;
     }

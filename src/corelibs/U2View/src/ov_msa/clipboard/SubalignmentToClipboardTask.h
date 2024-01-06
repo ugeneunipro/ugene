@@ -26,7 +26,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/GUrl.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 
@@ -49,7 +49,7 @@ public:
 class FormatsMsaClipboardTask : public PrepareMsaClipboardDataTask {
     Q_OBJECT
 public:
-    FormatsMsaClipboardTask(MultipleAlignmentObject* msaObj, const QList<qint64>& rowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
+    FormatsMsaClipboardTask(MsaObject* msaObj, const QList<qint64>& rowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
 
     void prepare() override;
 
@@ -60,7 +60,7 @@ protected:
 
 private:
     CreateSubalignmentTask* createSubalignmentTask;
-    MultipleAlignmentObject* msaObj;
+    MsaObject* msaObj;
     DocumentFormatId formatId;
 };
 

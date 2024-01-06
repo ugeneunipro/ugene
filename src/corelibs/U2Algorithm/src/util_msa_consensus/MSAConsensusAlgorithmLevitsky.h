@@ -36,19 +36,19 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryLevitsky : public MSAConsen
 public:
     MSAConsensusAlgorithmFactoryLevitsky();
 
-    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
+    MSAConsensusAlgorithm* createAlgorithm(const Msa& ma, bool ignoreTrailingLeadingGaps) override;
 };
 
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmLevitsky : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps);
+    MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const Msa& ma, bool ignoreTrailingLeadingGaps);
 
-    char getConsensusChar(const MultipleAlignment& ma, int column) const override;
+    char getConsensusChar(const Msa& ma, int column) const override;
 
     MSAConsensusAlgorithmLevitsky* clone() const override;
 
-    void reinitializeData(const MultipleAlignment& ma) override;
+    void reinitializeData(const Msa& ma) override;
 
 private:
     QVarLengthArray<int, 256> globalFreqs;

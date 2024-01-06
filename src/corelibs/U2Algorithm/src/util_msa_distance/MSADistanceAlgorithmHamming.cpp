@@ -21,7 +21,7 @@
 
 #include "MSADistanceAlgorithmHamming.h"
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 namespace U2 {
 
@@ -37,7 +37,7 @@ QString MSADistanceAlgorithmFactoryHamming::getName() const {
     return tr("Hamming dissimilarity");
 }
 
-MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHamming::createAlgorithm(const MultipleAlignment& ma, QObject*) {
+MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHamming::createAlgorithm(const Msa& ma, QObject*) {
     MSADistanceAlgorithm* res = new MSADistanceAlgorithmHamming(this, ma);
     if (flags.testFlag(DistanceAlgorithmFlag_ExcludeGaps)) {
         res->setExcludeGaps(true);

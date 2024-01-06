@@ -28,7 +28,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
@@ -92,10 +92,10 @@ void ExportMSA2SequencesDialog::initSaveController() {
     saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
-void ExportMSA2SequencesDialog::showDialogAndStartExportTask(MultipleAlignmentObject* msaObject) {
+void ExportMSA2SequencesDialog::showDialogAndStartExportTask(MsaObject* msaObject) {
     SAFE_POINT(msaObject != nullptr, "ExportMSA2SequencesDialog: msaObject is null!", );
 
-    QPointer<MultipleAlignmentObject> msaObjectPtr(msaObject);
+    QPointer<MsaObject> msaObjectPtr(msaObject);
 
     LastUsedDirHelper lod;
     QString defaultDir = lod.dir.isEmpty() ? GUrl(msaObject->getDocument()->getURLString()).dirPath() : lod.dir;
@@ -105,7 +105,7 @@ void ExportMSA2SequencesDialog::showDialogAndStartExportTask(MultipleAlignmentOb
     CHECK(!d.isNull() && rc != QDialog::Rejected && !msaObjectPtr.isNull(), );
     lod.url = d->url;
 
-    const MultipleAlignment& msa = msaObject->getAlignment();
+    const Msa& msa = msaObject->getAlignment();
     auto t = ExportUtils::wrapExportTask(new ExportMSA2SequencesTask(msa, d->url, d->trimGapsFlag, d->format), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }

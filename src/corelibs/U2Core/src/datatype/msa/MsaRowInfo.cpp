@@ -19,26 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include "MultipleAlignmentRowInfo.h"
+#include "MsaRowInfo.h"
 
 namespace U2 {
 
-const QString MultipleAlignmentRowInfo::REVERSED = "reversed";
-const QString MultipleAlignmentRowInfo::COMPLEMENTED = "complemented";
+const QString MsaRowInfo::REVERSED = "reversed";
+const QString MsaRowInfo::COMPLEMENTED = "complemented";
 
-void MultipleAlignmentRowInfo::setReversed(QVariantMap& info, bool reversed) {
+void MsaRowInfo::setReversed(QVariantMap& info, bool reversed) {
     info[REVERSED] = reversed;
 }
 
-bool MultipleAlignmentRowInfo::getReversed(const QVariantMap& info) {
+bool MsaRowInfo::getReversed(const QVariantMap& info) {
     return info.value(REVERSED, false).toBool();
 }
 
-void MultipleAlignmentRowInfo::setComplemented(QVariantMap& info, bool complemented) {
+void MsaRowInfo::setComplemented(QVariantMap& info, bool complemented) {
     info[COMPLEMENTED] = complemented;
 }
 
-bool MultipleAlignmentRowInfo::getComplemented(const QVariantMap& info) {
+bool MsaRowInfo::getComplemented(const QVariantMap& info) {
     return info.value(COMPLEMENTED, false).toBool();
 }
 

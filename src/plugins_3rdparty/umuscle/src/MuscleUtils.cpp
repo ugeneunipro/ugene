@@ -95,11 +95,11 @@ void setupAlphaAndScore(const DNAAlphabet* al, TaskStateInfo& ti) {
     }
 }
 
-void convertMAlignment2MSA(MSA& muscleMSA, const MultipleAlignment& ma, bool fixAlpha) {
+void convertMAlignment2MSA(MSA& muscleMSA, const Msa& ma, bool fixAlpha) {
     MuscleContext* ctx = getMuscleContext();
     ctx->fillUidsVectors(ma->getRowCount());
     for (int i = 0, n = ma->getRowCount(); i < n; i++) {
-        const MultipleAlignmentRow& row = ma->getRow(i);
+        const MsaRow& row = ma->getRow(i);
 
         int coreLen = row->getCoreLength();
         int maLen = ma->getLength();
@@ -120,7 +120,7 @@ void convertMAlignment2MSA(MSA& muscleMSA, const MultipleAlignment& ma, bool fix
     }
 }
 
-void convertMAlignment2SecVect(SeqVect& sv, const MultipleAlignment& ma, bool fixAlpha) {
+void convertMAlignment2SecVect(SeqVect& sv, const Msa& ma, bool fixAlpha) {
     sv.Clear();
 
     MuscleContext* ctx = getMuscleContext();
@@ -128,7 +128,7 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleAlignment& ma, bool fi
 
     unsigned i = 0;
     unsigned seq_count = 0;
-    foreach (const MultipleAlignmentRow& row, ma->getRows()) {
+    foreach (const MsaRow& row, ma->getRows()) {
         Seq* ptrSeq = new Seq();
         QByteArray name = row->getName().toLocal8Bit();
         ptrSeq->FromString(row->getCore().constData(), name.constData());
@@ -147,7 +147,7 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleAlignment& ma, bool fi
     }
 }
 
-void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleAlignment& res) {
+void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, Msa& res) {
     assert(res->isEmpty());
     MuscleContext* ctx = getMuscleContext();
     res->setAlphabet(al);
@@ -166,7 +166,7 @@ void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleAlignment& r
     }
 }
 
-void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MultipleAlignment& ma, bool mhack) {
+void prepareAlignResults(MSA& msa, const DNAAlphabet* al, Msa& ma, bool mhack) {
     if (mhack) {
         MHackEnd(msa);
     }

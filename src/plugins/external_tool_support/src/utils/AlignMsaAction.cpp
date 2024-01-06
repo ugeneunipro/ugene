@@ -31,7 +31,7 @@ AlignMsaAction::AlignMsaAction(QObject* parent, const QString& toolId, MSAEditor
     : ExternalToolSupportAction(parent, _msaEditor, text, order, QStringList(toolId)), msaEditor(_msaEditor) {
     sl_updateState();
 
-    MultipleAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
     connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateState()));
     connect(msaObject, SIGNAL(si_alignmentBecomesEmpty(bool)), SLOT(sl_updateState()));
 }

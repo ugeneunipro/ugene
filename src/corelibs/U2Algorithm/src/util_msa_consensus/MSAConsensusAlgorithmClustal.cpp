@@ -22,7 +22,7 @@
 #include "MSAConsensusAlgorithmClustal.h"
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -33,14 +33,14 @@ MSAConsensusAlgorithmFactoryClustal::MSAConsensusAlgorithmFactoryClustal()
     description = tr("Emulates ClustalW program and file format behavior.");
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const Msa&, bool ignoreTrailingLeadingGaps) {
     return new MSAConsensusAlgorithmClustal(this, ignoreTrailingLeadingGaps);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma, int pos) const {
+char MSAConsensusAlgorithmClustal::getConsensusChar(const Msa& ma, int pos) const {
     QVector<int> seqIdx = pickRowsToUseInConsensus(ma, pos);
     CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 

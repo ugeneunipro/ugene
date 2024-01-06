@@ -36,7 +36,7 @@ namespace U2 {
 const QString PhyMLSupportTask::TMP_FILE_NAME("tmp.phy");
 const QString PhyMLSupportTask::RESULT_TREE_EXT("_phyml_tree.txt");
 
-PhyMLPrepareDataForCalculation::PhyMLPrepareDataForCalculation(const MultipleAlignment& ma, const CreatePhyTreeSettings& s, const QString& url)
+PhyMLPrepareDataForCalculation::PhyMLPrepareDataForCalculation(const Msa& ma, const CreatePhyTreeSettings& s, const QString& url)
     : Task(tr("Generating input file for PhyML"), TaskFlags_NR_FOSE_COSC),
       ma(ma),
       settings(s),
@@ -80,7 +80,7 @@ QList<Task*> PhyMLPrepareDataForCalculation::onSubTaskFinished(Task* subTask) {
     return res;
 }
 
-PhyMLSupportTask::PhyMLSupportTask(const MultipleAlignment& ma, const CreatePhyTreeSettings& s)
+PhyMLSupportTask::PhyMLSupportTask(const Msa& ma, const CreatePhyTreeSettings& s)
     : PhyTreeGeneratorTask(ma, s),
       prepareDataTask(nullptr),
       phyMlTask(nullptr),

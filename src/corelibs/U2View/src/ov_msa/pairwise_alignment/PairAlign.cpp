@@ -36,7 +36,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2Alphabet.h>
 #include <U2Core/U2DbiUtils.h>
@@ -62,7 +62,7 @@
 #define DuplicateSequenceWarning 1
 
 inline U2::U2DataId getSequenceIdByRowId(U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus& os) {
-    const U2::MultipleAlignmentRow& row = msa->getMaObject()->getAlignment()->getRowByRowId(rowId, os);
+    const U2::MsaRow& row = msa->getMaObject()->getAlignment()->getRowByRowId(rowId, os);
     CHECK_OP(os, {});
     return row->getSequenceId();
 }
@@ -219,7 +219,7 @@ void PairAlign::connectSignals() {
     connect(firstSeqSelectorWC, SIGNAL(si_selectionChanged()), SLOT(sl_selectorTextChanged()));
     connect(secondSeqSelectorWC, SIGNAL(si_selectionChanged()), SLOT(sl_selectorTextChanged()));
     connect(msa->getMaObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_checkState()));
-    connect(msa->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
+    connect(msa->getMaObject(), SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
 }
 
 void PairAlign::sl_checkState() {
@@ -298,8 +298,8 @@ void PairAlign::updatePercentOfSimilarity() {
     SAFE_POINT(distanceFactory != nullptr, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
 
     U2OpStatusImpl os;
-    MultipleAlignment ma;
-    const MultipleAlignment currentAlignment = msa->getMaObject()->getAlignment();
+    Msa ma;
+    const Msa currentAlignment = msa->getMaObject()->getAlignment();
     ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
     ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
     distanceCalcTask = distanceFactory->createAlgorithm(ma);

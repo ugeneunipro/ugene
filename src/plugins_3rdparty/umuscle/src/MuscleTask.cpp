@@ -34,7 +34,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MSAUtils.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -61,14 +61,14 @@ void MuscleTaskSettings::reset() {
     maxSecs = 0;
     stableMode = true;
     regionToAlign.startPos = regionToAlign.length = 0;
-    profile = MultipleAlignment();
+    profile = Msa();
     alignRegion = false;
     inputFilePath = "";
     mode = Default;
     rowIndexesToAlign.clear();
 }
 
-MuscleTask::MuscleTask(const MultipleAlignment& ma, const MuscleTaskSettings& _config)
+MuscleTask::MuscleTask(const Msa& ma, const MuscleTaskSettings& _config)
     : Task(tr("MUSCLE alignment"), TaskFlags_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
       config(_config),
       inputMA(ma->getCopy()) {
@@ -101,7 +101,7 @@ MuscleTask::MuscleTask(const MultipleAlignment& ma, const MuscleTaskSettings& _c
         SAFE_POINT_EXT(config.regionToAlign.length > 0,
                        setError(tr("Incorrect region to align")), );
         inputSubMA = inputMA->mid(config.regionToAlign.startPos, config.regionToAlign.length);
-        CHECK_EXT(inputSubMA != MultipleAlignment(), setError(tr("Stopping MUSCLE task, because of error in MultipleAlignment::mid function")), );
+        CHECK_EXT(inputSubMA != Msa(), setError(tr("Stopping MUSCLE task, because of error in MultipleAlignment::mid function")), );
     }
 
     if (config.nThreads == 1 || (config.op != MuscleTaskOp_Align)) {
@@ -203,13 +203,13 @@ void MuscleTask::doAlign(bool refine) {
 
         if (config.alignRegion && config.regionToAlign.length != inputMA->getLength()) {
             for (int i = 0, n = inputMA->getRowCount(); i < n; i++) {
-                const MultipleAlignmentRow& row = inputMA->getRow(ids[i]);
+                const MsaRow& row = inputMA->getRow(ids[i]);
                 resultMA->addRow(row->getName(), emptySeq);
             }
             if (config.regionToAlign.startPos != 0) {
                 for (int i = 0; i < nSeq; i++) {
                     int regionLen = config.regionToAlign.startPos;
-                    const MultipleAlignmentRow& inputRow = inputMA->getRow(ids[i])->mid(0, regionLen, os);
+                    const MsaRow& inputRow = inputMA->getRow(ids[i])->mid(0, regionLen, os);
                     resultMA->appendChars(i, 0, inputRow->toByteArray(os, regionLen).constData(), regionLen);
                 }
             }
@@ -219,7 +219,7 @@ void MuscleTask::doAlign(bool refine) {
                 int subStart = config.regionToAlign.endPos();
                 int subLen = inputMA->getLength() - config.regionToAlign.endPos();
                 for (int i = 0; i < nSeq; i++) {
-                    const MultipleAlignmentRow& inputRow = inputMA->getRow(ids[i])->mid(subStart, subLen, os);
+                    const MsaRow& inputRow = inputMA->getRow(ids[i])->mid(subStart, subLen, os);
                     resultMA->appendChars(i, resultLen, inputRow->toByteArray(os, subLen).constData(), subLen);
                 }
             }
@@ -240,10 +240,10 @@ void MuscleTask::doProfile2Profile() {
 
 void MuscleTask::alignOwnRowsToAlignment(U2OpStatus& os) {
     // Move own sequences from inputMA to profile.
-    MultipleAlignment inputTrimmedInputMa("inputTrimmedInputMa", inputMA->getAlphabet());
-    MultipleAlignment inputUnalignedMa("inputUnalignedMa", inputMA->getAlphabet());
+    Msa inputTrimmedInputMa("inputTrimmedInputMa", inputMA->getAlphabet());
+    Msa inputUnalignedMa("inputUnalignedMa", inputMA->getAlphabet());
     for (int rowIndex = 0; rowIndex < inputMA->getRowCount(); rowIndex++) {
-        MultipleAlignmentRow row = inputMA->getRow(rowIndex);
+        MsaRow row = inputMA->getRow(rowIndex);
         if (config.rowIndexesToAlign.contains(rowIndex)) {
             DNASequence sequence = row->getUngappedSequence();
             inputUnalignedMa->addRow(row->getName(), sequence.seq);
@@ -254,7 +254,7 @@ void MuscleTask::alignOwnRowsToAlignment(U2OpStatus& os) {
     }
     SAFE_POINT_EXT(!inputTrimmedInputMa->isEmpty() && !inputUnalignedMa->isEmpty(), os.setError("Invalid rowIdsToAlign row set"), );
 
-    MultipleAlignment resultUnorderedMa;  // Result alignment with incorrect (non-inputMA) rows order.
+    Msa resultUnorderedMa;  // Result alignment with incorrect (non-inputMA) rows order.
     MuscleAdapter::addUnalignedSequencesToProfile(inputTrimmedInputMa, inputUnalignedMa, resultUnorderedMa, stateInfo);
 
     if (resultUnorderedMa->getRowCount() != inputMA->getRowCount()) {
@@ -280,7 +280,7 @@ void MuscleTask::alignOwnRowsToAlignment(U2OpStatus& os) {
         }
         SAFE_POINT_EXT(trimmedMsaRowIndex <= trimmedInputMsaRowCount, os.setError(L10N::internalError("Invalid trimmedMsaRowIndex")), );
         SAFE_POINT_EXT(resultUnorderedMsaRowIndex < inputMA->getRowCount(), os.setError(L10N::internalError("Invalid resultUnorderedMsaRowIndex")), );
-        MultipleAlignmentRow row = resultUnorderedMa->getRow(resultUnorderedMsaRowIndex);
+        MsaRow row = resultUnorderedMa->getRow(resultUnorderedMsaRowIndex);
         resultMA->addRow(row->getName(), row->getUngappedSequence(), row->getGaps(), stateInfo);
         CHECK_OP(stateInfo, );
 
@@ -299,7 +299,7 @@ Task::ReportResult MuscleTask::report() {
 //////////////////////////////////////////////////////////////////////////
 // MuscleAddSequencesToProfileTask
 
-MuscleAddSequencesToProfileTask::MuscleAddSequencesToProfileTask(MultipleAlignmentObject* _obj,
+MuscleAddSequencesToProfileTask::MuscleAddSequencesToProfileTask(MsaObject* _obj,
                                                                  const QString& fileWithSequencesOrProfile,
                                                                  const MMode& _mode)
     : Task("", TaskFlags_NR_FOSCOE), maObj(_obj), mode(_mode) {
@@ -367,7 +367,7 @@ QList<Task*> MuscleAddSequencesToProfileTask::onSubTaskFinished(Task* subTask) {
     if (seqObjects.isEmpty()) {
         QList<GObject*> maObjects = loadTask->getDocument()->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!maObjects.isEmpty()) {
-            auto firstMaObj = qobject_cast<MultipleAlignmentObject*>(maObjects.first());
+            auto firstMaObj = qobject_cast<MsaObject*>(maObjects.first());
             s.profile = firstMaObj->getAlignment()->getCopy();
         }
     }
@@ -394,7 +394,7 @@ Task::ReportResult MuscleAddSequencesToProfileTask::report() {
 //////////////////////////////////////////////////////////////////////////
 // MuscleGObjectTask
 
-MuscleGObjectTask::MuscleGObjectTask(MultipleAlignmentObject* _obj, const MuscleTaskSettings& _config)
+MuscleGObjectTask::MuscleGObjectTask(MsaObject* _obj, const MuscleTaskSettings& _config)
     : AlignGObjectTask("", TaskFlags_NR_FOSCOE, _obj), lock(nullptr), muscleTask(nullptr), config(_config) {
     QString aliName;
     if (obj->getDocument() == nullptr) {
@@ -570,7 +570,7 @@ QList<Task*> MuscleWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTas
         currentDocument = loadDocumentTask->takeDocument();
         SAFE_POINT(currentDocument != nullptr, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject = qobject_cast<MultipleAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MsaObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
         if (config.alignRegion) {
             if ((config.regionToAlign.startPos > mAObject->getLength()) || ((config.regionToAlign.startPos + config.regionToAlign.length) > mAObject->getLength())) {
@@ -601,7 +601,7 @@ Task::ReportResult MuscleWithExtFileSpecifySupportTask::report() {
 
 //////////////////////////////////
 // MuscleGObjectRunFromSchemaTask
-MuscleGObjectRunFromSchemaTask::MuscleGObjectRunFromSchemaTask(MultipleAlignmentObject* obj, const MuscleTaskSettings& c)
+MuscleGObjectRunFromSchemaTask::MuscleGObjectRunFromSchemaTask(MsaObject* obj, const MuscleTaskSettings& c)
     : AlignGObjectTask("", TaskFlags_NR_FOSCOE, obj), config(c) {
     setMAObject(obj);
     SAFE_POINT_EXT(config.profile->isEmpty(), setError("Invalid config profile detected"), );
@@ -623,7 +623,7 @@ void MuscleGObjectRunFromSchemaTask::prepare() {
     addSubTask(new SimpleMSAWorkflow4GObjectTask(tr("Workflow wrapper '%1'").arg(getTaskName()), obj, conf));
 }
 
-void MuscleGObjectRunFromSchemaTask::setMAObject(MultipleAlignmentObject* maobj) {
+void MuscleGObjectRunFromSchemaTask::setMAObject(MsaObject* maobj) {
     SAFE_POINT_EXT(maobj != nullptr, setError("Invalid MSA object detected"), );
     Document* maDoc = maobj->getDocument();
     SAFE_POINT_EXT(maDoc != nullptr, setError("Invalid MSA document detected"), );
@@ -644,7 +644,7 @@ void MuscleGObjectRunFromSchemaTask::setMAObject(MultipleAlignmentObject* maobj)
     setTaskName(tName);
 }
 
-MuscleAlignOwnSequencesToSelfAction::MuscleAlignOwnSequencesToSelfAction(MultipleAlignmentObject* msaObject, const QList<int>& maRowIndexes)
+MuscleAlignOwnSequencesToSelfAction::MuscleAlignOwnSequencesToSelfAction(MsaObject* msaObject, const QList<int>& maRowIndexes)
     : Task(tr("MUSCLE align rows to alignment '%1'").arg(msaObject->getGObjectName()), TaskFlags_NR_FOSCOE) {
     MuscleTaskSettings settings;
     settings.op = MuscleTaskOp_OwnRowsToAlignment;

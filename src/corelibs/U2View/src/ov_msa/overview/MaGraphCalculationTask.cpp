@@ -28,7 +28,7 @@
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject* maObject, int width, int height)
+MaGraphCalculationTask::MaGraphCalculationTask(MsaObject* maObject, int width, int height)
     : BackgroundTask<QPolygonF>(tr("Render overview"), TaskFlag_None),
       ma(maObject->getAlignment()->getCopy()),  // SANGER_TODO: getting before any check
       memLocker(stateInfo),
@@ -52,9 +52,9 @@ MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject* maObject
         return;
     }
     //    ma = msa->getMultipleAlignmentCopy();
-    connect(maObject, SIGNAL(si_invalidateAlignmentObject()), this, SLOT(cancel()));
-    connect(maObject, SIGNAL(si_startMaUpdating()), this, SLOT(cancel()));
-    connect(maObject, SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), this, SLOT(cancel()));
+    connect(maObject, &MsaObject::si_invalidateAlignmentObject, this, &MaGraphCalculationTask::cancel);
+    connect(maObject, &MsaObject::si_startMaUpdating, this, &MaGraphCalculationTask::cancel);
+    connect(maObject, &MsaObject::si_alignmentChanged, this, &MaGraphCalculationTask::cancel);
 }
 
 void MaGraphCalculationTask::run() {
@@ -124,7 +124,7 @@ void MaGraphCalculationTask::constructPolygon(QPolygonF& polygon) {
     emit si_progressChanged();
 }
 
-MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MultipleAlignmentObject* msa,
+MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MsaObject* msa,
                                                                        int width,
                                                                        int height)
     : MaGraphCalculationTask(msa, width, height) {
@@ -144,7 +144,7 @@ int MaConsensusOverviewCalculationTask::getGraphValue(int pos) const {
     return qRound(score * 100. / seqNumber);
 }
 
-MaGapOverviewCalculationTask::MaGapOverviewCalculationTask(MultipleAlignmentObject* msa, int width, int height)
+MaGapOverviewCalculationTask::MaGapOverviewCalculationTask(MsaObject* msa, int width, int height)
     : MaGraphCalculationTask(msa, width, height) {
 }
 
@@ -163,7 +163,7 @@ int MaGapOverviewCalculationTask::getGraphValue(int pos) const {
     return qRound(gapCounter * 100. / seqNumber);
 }
 
-MaClustalOverviewCalculationTask::MaClustalOverviewCalculationTask(MultipleAlignmentObject* msa, int width, int height)
+MaClustalOverviewCalculationTask::MaClustalOverviewCalculationTask(MsaObject* msa, int width, int height)
     : MaGraphCalculationTask(msa, width, height) {
     SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != nullptr, setError("MSAConsensusAlgorithmRegistry is NULL!"), );
 
@@ -210,7 +210,7 @@ MaHighlightingOverviewCalculationTask::MaHighlightingOverviewCalculationTask(MaE
     refSequenceId = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
 }
 
-bool MaHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleAlignment& ma, MsaHighlightingScheme* highlightingScheme, MsaColorScheme* colorScheme, int seq, int pos, int refSeq) {
+bool MaHighlightingOverviewCalculationTask::isCellHighlighted(const Msa& ma, MsaHighlightingScheme* highlightingScheme, MsaColorScheme* colorScheme, int seq, int pos, int refSeq) {
     SAFE_POINT(colorScheme != nullptr, "Color scheme is NULL", false);
     SAFE_POINT(highlightingScheme != nullptr, "Highlighting scheme is NULL", false);
     SAFE_POINT(highlightingScheme->getFactory() != nullptr, "Highlighting scheme factory is NULL", false);

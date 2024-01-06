@@ -33,7 +33,7 @@ class PhyTreeDisplayOptionsWidget;
 class IQTreeWidget : public CreatePhyTreeWidget {
     Q_OBJECT
 public:
-    IQTreeWidget(const MultipleAlignment& msa, QWidget* parent);
+    IQTreeWidget(const Msa& msa, QWidget* parent);
 
     void fillSettings(CreatePhyTreeSettings& settings) override;
 

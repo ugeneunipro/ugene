@@ -23,7 +23,7 @@
 
 #include <QVector>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Timer.h>
 
 namespace U2 {
@@ -38,7 +38,7 @@ MSAConsensusAlgorithmFactoryDefault::MSAConsensusAlgorithmFactoryDefault()
     thresholdSuffix = "%";
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const Msa&, bool ignoreTrailingLeadingGaps) {
     return new MSAConsensusAlgorithmDefault(this, ignoreTrailingLeadingGaps);
 }
 
@@ -49,7 +49,7 @@ U2::MSAConsensusAlgorithmDefault* MSAConsensusAlgorithmDefault::clone() const {
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& ma, int pos, int& cnt) const {
+char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const Msa& ma, int pos, int& cnt) const {
     //    GTIMER(timer, tm, "MSAConsensusAlgorithmDefault::getConsensusCharAndScore");
     QVector<int> seqIdx = pickRowsToUseInConsensus(ma, pos);
     CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);

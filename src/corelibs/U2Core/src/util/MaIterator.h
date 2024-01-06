@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 namespace U2 {
 
 class U2CORE_EXPORT MaIterator {
 public:
-    MaIterator(const MultipleAlignment& ma, NavigationDirection direction, const QList<int>& rowsIndexes = QList<int>());
+    MaIterator(const Msa& ma, NavigationDirection direction, const QList<int>& rowsIndexes = QList<int>());
 
     bool hasNext() const;
     char next();
@@ -53,7 +53,7 @@ protected:
     int getRowNumber(qint64 position) const;
     int getColumnNumber(qint64 position) const;
 
-    const MultipleAlignment ma;
+    const Msa ma;
     QList<int> rowsIndexes;
     NavigationDirection direction;
 

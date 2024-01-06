@@ -27,9 +27,9 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -135,7 +135,7 @@ QList<Task*> SimpleInOutWorkflowTask::onSubTaskFinished(Task* subTask) {
 //////////////////////////////////////////////////////////////////////////
 // RunSimpleMSAWorkflow4GObject
 SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& taskName,
-                                                             MultipleAlignmentObject* msaObj,
+                                                             MsaObject* msaObj,
                                                              const SimpleMSAWorkflowTaskConfig& conf)
     : Task(taskName, TaskFlags_NR_FOSCOE),
       msaObjectPointer(msaObj),
@@ -145,9 +145,9 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& task
     SAFE_POINT(msaObj != nullptr, "NULL MultipleSequenceAlignmentObject!", );
 
     U2OpStatus2Log os;
-    MultipleAlignment al = MsaUtils::createCopyWithIndexedRowNames(msaObjectPointer->getAlignment());
+    Msa al = MsaUtils::createCopyWithIndexedRowNames(msaObjectPointer->getAlignment());
 
-    MultipleAlignmentObject* msaObject = MsaImportUtils::createMsaObject(msaObjectPointer->getEntityRef().dbiRef, al, os);
+    MsaObject* msaObject = MsaImportUtils::createMsaObject(msaObjectPointer->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os, );
 
     SimpleInOutWorkflowTaskConfig sioConf;
@@ -186,8 +186,8 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
     CHECK_EXT(!msaObjectPointer.isNull(), setError(tr("Object '%1' removed").arg(docName)), ReportResult_Finished);
     CHECK_EXT(!msaObjectPointer->isStateLocked(), setError(tr("Object '%1' is locked").arg(docName)), ReportResult_Finished);
 
-    MultipleAlignment resultMsa = getResult();
-    const MultipleAlignment& originalMsa = msaObjectPointer->getAlignment();
+    Msa resultMsa = getResult();
+    const Msa& originalMsa = msaObjectPointer->getAlignment();
     bool isAllRowsRestored = MsaUtils::restoreOriginalRowProperties(resultMsa, originalMsa);
     if (!isAllRowsRestored) {
         setError(tr("MSA has incompatible changes during the alignment. Ignoring the alignment result: '%1'").arg(docName));
@@ -204,8 +204,8 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
     return ReportResult_Finished;
 }
 
-MultipleAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
-    MultipleAlignment res;
+Msa SimpleMSAWorkflow4GObjectTask::getResult() {
+    Msa res;
     CHECK_OP(stateInfo, res);
 
     SAFE_POINT(runWorkflowTask != nullptr, "SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.", res);
@@ -214,7 +214,7 @@ MultipleAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
     CHECK_EXT(d != nullptr, setError(tr("Result document not found!")), res);
     CHECK_EXT(d->getObjects().size() == 1, setError(tr("Result document content not matched! %1").arg(d->getURLString())), res);
 
-    auto maObj = qobject_cast<MultipleAlignmentObject*>(d->getObjects().first());
+    auto maObj = qobject_cast<MsaObject*>(d->getObjects().first());
     CHECK_EXT(maObj != nullptr, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
     return maObj->getAlignment()->getCopy();
 }

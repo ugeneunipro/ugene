@@ -33,7 +33,7 @@
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -126,7 +126,7 @@ void uHMMPlugin::sl_calibrate() {
 }
 
 void uHMMPlugin::sl_build() {
-    MultipleAlignment ma;
+    Msa ma;
 
     // try to find alignment check that MSA Editor is active
     QString profileName;
@@ -137,7 +137,7 @@ void uHMMPlugin::sl_build() {
             GObjectViewController* ov = ow->getObjectView();
             auto av = qobject_cast<MSAEditor*>(ov);
             if (av != NULL) {
-                MultipleAlignmentObject* maObj = av->getMaObject();
+                MsaObject* maObj = av->getMaObject();
                 if (maObj != NULL) {
                     ma = maObj->getAlignment()->getCopy();
                     profileName = maObj->getGObjectName() == MA_OBJECT_NAME ? maObj->getDocument()->getName() : maObj->getGObjectName();
@@ -230,7 +230,7 @@ void HMMMSAEditorContext::sl_build() {
     assert(action != NULL);
     auto ed = qobject_cast<MSAEditor*>(action->getObjectView());
     assert(ed != NULL);
-    MultipleAlignmentObject* obj = ed->getMaObject();
+    MsaObject* obj = ed->getMaObject();
     if (obj) {
         QString profileName = obj->getGObjectName() == MA_OBJECT_NAME ? obj->getDocument()->getName() : obj->getGObjectName();
         QObjectScopedPointer<HMMBuildDialogController> d = new HMMBuildDialogController(profileName, obj->getAlignment());

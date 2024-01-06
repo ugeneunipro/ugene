@@ -29,10 +29,10 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MSAUtils.h>
+#include <U2Core/Msa.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -40,12 +40,12 @@
 
 namespace U2 {
 
-static MultipleAlignmentObject* getMsaObjectToStore(const QMap<GObjectType, QList<GObject*>>& objectsMap) {
+static MsaObject* getMsaObjectToStore(const QMap<GObjectType, QList<GObject*>>& objectsMap) {
     SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "PHYLIP entry storing: no alignment", nullptr);
     const QList<GObject*>& alignmentObjects = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(alignmentObjects.size() == 1, "PHYLIP entry storing: alignment objects count error", nullptr);
 
-    auto msaObject = dynamic_cast<MultipleAlignmentObject*>(alignmentObjects.first());
+    auto msaObject = dynamic_cast<MsaObject*>(alignmentObjects.first());
     SAFE_POINT(msaObject != nullptr, "PHYLIP entry storing: no alignment object is found", nullptr);
     return msaObject;
 }
@@ -73,7 +73,7 @@ static int countNonSpaceChars(const QString& text) {
 }
 
 /** Checks that MSA has expected sequence and column counts. Sets error into 'os' if not. */
-static void validateMsaByHeaderData(const MultipleAlignment& msa, int sequenceCountInHeader, int columnCountInHeader, U2OpStatus& os) {
+static void validateMsaByHeaderData(const Msa& msa, int sequenceCountInHeader, int columnCountInHeader, U2OpStatus& os) {
     CHECK_EXT(msa->getRowCount() == sequenceCountInHeader,
               os.setError(PhylipFormat::tr("Wrong row count. Header: %1, actual: %2").arg(sequenceCountInHeader).arg(msa->getRowCount())), );
     CHECK_EXT(msa->getLength() == columnCountInHeader,
@@ -89,7 +89,7 @@ PhylipFormat::PhylipFormat(QObject* p, const DocumentFormatId& id)
 void PhylipFormat::storeTextDocument(IOAdapterWriter& writer, Document* doc, U2OpStatus& os) {
     CHECK_EXT(doc->getObjects().size() == 1, os.setError(tr("Incorrect number of objects in document: %1").arg(doc->getObjects().size())), );
 
-    auto obj = qobject_cast<MultipleAlignmentObject*>(doc->getObjects().first());
+    auto obj = qobject_cast<MsaObject*>(doc->getObjects().first());
     CHECK_EXT(obj != nullptr, os.setError(L10N::internalError("No MSA object in document")), );
 
     QList<GObject*> als = {obj};
@@ -99,8 +99,8 @@ void PhylipFormat::storeTextDocument(IOAdapterWriter& writer, Document* doc, U2O
     CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(doc->getURL())), );
 }
 
-MultipleAlignmentObject* PhylipFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
-    MultipleAlignment msa = parse(reader, os);
+MsaObject* PhylipFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
+    Msa msa = parse(reader, os);
     CHECK_OP(os, nullptr);
     MsaUtils::checkPackedModelSymmetry(msa, os);
     CHECK_OP(os, nullptr);
@@ -142,7 +142,7 @@ PhylipSequentialFormat::PhylipSequentialFormat(QObject* p)
 void PhylipSequentialFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) {
     auto msaObject = getMsaObjectToStore(objectsMap);
     CHECK_EXT(msaObject != nullptr, os.setError(PhylipFormat::tr("Failed to find MSA object to store")), );
-    const MultipleAlignment& msa = msaObject->getAlignment();
+    const Msa& msa = msaObject->getAlignment();
 
     // Write header.
     int sequenceCount = msa->getRowCount();
@@ -209,9 +209,9 @@ FormatCheckResult PhylipSequentialFormat::checkRawTextData(const QString& dataPr
                : FormatDetection_HighSimilarity;
 }
 
-MultipleAlignment PhylipSequentialFormat::parse(IOAdapterReader& reader, U2OpStatus& os) const {
+Msa PhylipSequentialFormat::parse(IOAdapterReader& reader, U2OpStatus& os) const {
     QString msaName = reader.getURL().baseFileName();
-    MultipleAlignment msa(msaName);
+    Msa msa(msaName);
 
     QString firstLine = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
     CHECK_OP(os, {});
@@ -255,7 +255,7 @@ PhylipInterleavedFormat::PhylipInterleavedFormat(QObject* p)
 void PhylipInterleavedFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) {
     auto msaObject = getMsaObjectToStore(objectsMap);
     CHECK_EXT(msaObject != nullptr, os.setError(PhylipFormat::tr("Failed to find MSA object to store")), );
-    const MultipleAlignment& msa = msaObject->getAlignment();
+    const Msa& msa = msaObject->getAlignment();
 
     // Write header.
     int sequenceCount = msa->getRowCount();
@@ -338,9 +338,9 @@ FormatCheckResult PhylipInterleavedFormat::checkRawTextData(const QString& dataP
     }
 }
 
-MultipleAlignment PhylipInterleavedFormat::parse(IOAdapterReader& reader, U2OpStatus& os) const {
+Msa PhylipInterleavedFormat::parse(IOAdapterReader& reader, U2OpStatus& os) const {
     QString msaName = reader.getURL().baseFileName();
-    MultipleAlignment msa(msaName);
+    Msa msa(msaName);
 
     QString firstLine = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
     CHECK_OP(os, {});

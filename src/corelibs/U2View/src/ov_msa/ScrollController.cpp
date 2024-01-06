@@ -21,9 +21,9 @@
 
 #include "ScrollController.h"
 
-#include "U2Core/U2SafePoints.h"
 #include "U2Core/Log.h"
-#include <U2Core/MultipleAlignmentObject.h>
+#include "U2Core/U2SafePoints.h"
+#include <U2Core/MsaObject.h>
 
 #include "BaseWidthController.h"
 #include "DrawHelper.h"

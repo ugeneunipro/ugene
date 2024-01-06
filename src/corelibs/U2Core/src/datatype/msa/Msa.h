@@ -23,7 +23,7 @@
 
 #include <QVariantMap>
 
-#include "MultipleAlignmentRow.h"
+#include "MsaRow.h"
 
 namespace U2 {
 
@@ -32,13 +32,13 @@ class DNAAlphabet;
 /** Default name for a multiple alignment */
 #define MA_OBJECT_NAME QString("Multiple alignment")
 
-class MultipleAlignmentData;
+class MsaData;
 
 /** Cached, in-memory MSA/MCA object model. */
-class U2CORE_EXPORT MultipleAlignment {
+class U2CORE_EXPORT Msa {
 public:
-    MultipleAlignment(MultipleAlignmentData* maData);
-    MultipleAlignment(const QString& name = "", const DNAAlphabet* alphabet = nullptr);
+    Msa(MsaData* maData);
+    Msa(const QString& name = "", const DNAAlphabet* alphabet = nullptr);
 
     enum Order {
         Ascending,
@@ -57,26 +57,19 @@ public:
         SortByLeadingGap = 3,
     };
 
-    virtual ~MultipleAlignment() = default;
+    virtual ~Msa() = default;
 
-    MultipleAlignmentData* data() const;
-    template<class Derived>
-    inline Derived dynamicCast() const;
+    MsaData* data() const;
 
-    MultipleAlignmentData& operator*();
-    const MultipleAlignmentData& operator*() const;
+    MsaData& operator*();
+    const MsaData& operator*() const;
 
-    MultipleAlignmentData* operator->();
-    const MultipleAlignmentData* operator->() const;
+    MsaData* operator->();
+    const MsaData* operator->() const;
 
 protected:
-    QSharedPointer<MultipleAlignmentData> maData;
+    QSharedPointer<MsaData> maData;
 };
-
-template<class Derived>
-Derived MultipleAlignment::dynamicCast() const {
-    return Derived(*this);
-}
 
 /**
  * Multiple alignment
@@ -84,19 +77,19 @@ Derived MultipleAlignment::dynamicCast() const {
  * There are minimal checks on the alignment's alphabet, but the client of the class
  * is expected to keep the conformance of the data and the alphabet.
  */
-class U2CORE_EXPORT MultipleAlignmentData {
+class U2CORE_EXPORT MsaData {
 public:
     /**
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
      */
-    MultipleAlignmentData(const QString& name = "",
-                          const DNAAlphabet* alphabet = nullptr,
-                          const QVector<MultipleAlignmentRow>& rows = {});
+    MsaData(const QString& name = "",
+            const DNAAlphabet* alphabet = nullptr,
+            const QVector<MsaRow>& rows = {});
 
-    MultipleAlignmentData(const MultipleAlignmentData& data);
+    MsaData(const MsaData& data);
 
-    virtual ~MultipleAlignmentData() = default;
+    virtual ~MsaData() = default;
 
     /**
      * Clears the alignment. Makes alignment length == 0.
@@ -159,17 +152,17 @@ public:
     QList<QVector<U2MsaGap>> getGapModel() const;
 
     /** Sorts rows. If range is provided and is not empty sorts only given range. */
-    void sortRows(const MultipleAlignment::SortType& sortType,
-                  MultipleAlignment::Order order = MultipleAlignment::Ascending,
+    void sortRows(const Msa::SortType& sortType,
+                  Msa::Order order = Msa::Ascending,
                   const U2Region& range = {});
 
     /** Returns row of the alignment */
-    MultipleAlignmentRow getRow(int row);
-    const MultipleAlignmentRow& getRow(int row) const;
-    const MultipleAlignmentRow& getRow(const QString& name) const;
+    MsaRow getRow(int row);
+    const MsaRow& getRow(int row) const;
+    const MsaRow& getRow(const QString& name) const;
 
     /** Returns all rows in the alignment */
-    const QVector<MultipleAlignmentRow>& getRows() const;
+    const QVector<MsaRow>& getRows() const;
 
     /** Returns IDs of the alignment rows in the database */
     QList<qint64> getRowsIds() const;
@@ -177,7 +170,7 @@ public:
     /** Returns row ids by row indexes. */
     QList<qint64> getRowIdsByRowIndexes(const QList<int>& rowIndexes) const;
 
-    MultipleAlignmentRow getRowByRowId(qint64 rowId, U2OpStatus& os) const;
+    MsaRow getRowByRowId(qint64 rowId, U2OpStatus& os) const;
 
     char charAt(int rowNumber, qint64 position) const;
     bool isGap(int rowNumber, qint64 pos) const;
@@ -234,13 +227,13 @@ public:
      * Returns true if 2 alignments have the same alphabets, dimensions and the same ordered list of rows.
      * To compare rows the method calls row.isEqual(otherRow) method.
      */
-    bool isEqual(const MultipleAlignmentData& other) const;
+    bool isEqual(const MsaData& other) const;
 
     /** Calls isEqual() method. */
-    bool operator==(const MultipleAlignmentData& other) const;
+    bool operator==(const MsaData& other) const;
 
     /** Returns !isEqual() method result. */
-    bool operator!=(const MultipleAlignmentData& ma) const;
+    bool operator!=(const MsaData& ma) const;
 
     /** Checks model consistency */
     virtual void check() const;
@@ -248,7 +241,7 @@ public:
     /** Arranges rows in lists order*/
     bool sortRowsByList(const QStringList& order);
 
-    MultipleAlignment getCopy() const;
+    Msa getCopy() const;
 
     /**
      * Sorts rows by similarity making identical rows sequential. Sets MSA rows to the sorted rows.
@@ -257,7 +250,7 @@ public:
     bool sortRowsBySimilarity(QVector<U2Region>& united);
 
     /** Returns rows sorted by similarity. Does not update MSA. */
-    QVector<MultipleAlignmentRow> getRowsSortedBySimilarity(QVector<U2Region>& united) const;
+    QVector<MsaRow> getRowsSortedBySimilarity(QVector<U2Region>& united) const;
 
     /**
      * Sets the new content for the row with the specified index.
@@ -323,7 +316,7 @@ public:
 
     void appendChars(int row, qint64 afterPos, const char* str, int len);
 
-    void appendRow(int rowNumber, qint64 afterPos, const MultipleAlignmentRow& rowIdx, U2OpStatus& os);
+    void appendRow(int rowNumber, qint64 afterPos, const MsaRow& rowIdx, U2OpStatus& os);
 
     /** returns "True" if there are no gaps in the alignment */
     bool hasEmptyGapModel() const;
@@ -335,48 +328,48 @@ public:
      * Creates a new alignment from the sub-alignment. Do not trims the result.
      * Assumes that 'start' >= 0, and 'start + len' is less or equal than the alignment length.
      */
-    MultipleAlignment mid(int start, int len) const;
+    Msa mid(int start, int len) const;
 
     /**
      * Joins two alignments. Alignments must have the same size and alphabet.
      * Increases the alignment length.
      */
-    MultipleAlignmentData& operator+=(const MultipleAlignmentData& ma);
+    MsaData& operator+=(const MsaData& ma);
 
 private:
     /** Helper-method for adding a row to the alignment */
-    void addRowPrivate(const MultipleAlignmentRow& row, qint64 rowLenWithTrailingGaps, int rowIndex);
+    void addRowPrivate(const MsaRow& row, qint64 rowLenWithTrailingGaps, int rowIndex);
 
     /** Create a new row (sequence + gap model) from the bytes */
-    MultipleAlignmentRow createRow(const QString& name, const QByteArray& bytes);
+    MsaRow createRow(const QString& name, const QByteArray& bytes);
 
     /**
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleAlignmentRow createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+    MsaRow createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 
-    MultipleAlignmentRow createRow(const MultipleAlignmentRow& row);
+    MsaRow createRow(const MsaRow& row);
 
     /**
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleAlignmentRow createRow(const U2MsaRow& rowInDb,
-                                   const DNASequence& sequence,
-                                   const QVector<U2MsaGap>& gaps,
-                                   const U2DataId& chromatogramId,
-                                   const Chromatogram& chromatogram,
-                                   U2OpStatus& os);
+    MsaRow createRow(const U2MsaRow& rowInDb,
+                     const DNASequence& sequence,
+                     const QVector<U2MsaGap>& gaps,
+                     const U2DataId& chromatogramId,
+                     const Chromatogram& chromatogram,
+                     U2OpStatus& os);
 
-    void copyFrom(const MultipleAlignmentData& other);
+    void copyFrom(const MsaData& other);
 
 protected:
     /** Alphabet for all sequences in the alignment */
     const DNAAlphabet* alphabet = nullptr;
 
     /** Alignment rows (each row = sequence + gap model) */
-    QVector<MultipleAlignmentRow> rows;
+    QVector<MsaRow> rows;
 
     /** The length of the longest row in the alignment */
     qint64 length = 0;
@@ -385,22 +378,22 @@ protected:
     QVariantMap info;
 };
 
-inline bool operator!=(const MultipleAlignment& ptr1, const MultipleAlignment& ptr2) {
+inline bool operator!=(const Msa& ptr1, const Msa& ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator!=(const MultipleAlignment& ptr1, const MultipleAlignmentData* ptr2) {
+inline bool operator!=(const Msa& ptr1, const MsaData* ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator!=(const MultipleAlignmentData* ptr1, const MultipleAlignment& ptr2) {
+inline bool operator!=(const MsaData* ptr1, const Msa& ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator==(const MultipleAlignment& ptr1, const MultipleAlignment& ptr2) {
+inline bool operator==(const Msa& ptr1, const Msa& ptr2) {
     return *ptr1 == *ptr2;
 }
-inline bool operator==(const MultipleAlignment& ptr1, const MultipleAlignmentData* ptr2) {
+inline bool operator==(const Msa& ptr1, const MsaData* ptr2) {
     return *ptr1 == *ptr2;
 }
-inline bool operator==(const MultipleAlignmentData* ptr1, const MultipleAlignment& ptr2) {
+inline bool operator==(const MsaData* ptr1, const Msa& ptr2) {
     return *ptr1 == *ptr2;
 }
 

@@ -26,7 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/MSAEditorConsensusArea.h>
@@ -43,7 +43,7 @@ MaConsensusModeWidget::MaConsensusModeWidget(QWidget* parent)
     setupUi(this);
 }
 
-void MaConsensusModeWidget::reInit(MultipleAlignmentObject* _maObject, MaEditorConsensusArea* _consArea) {
+void MaConsensusModeWidget::reInit(MsaObject* _maObject, MaEditorConsensusArea* _consArea) {
     SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is NULL", );
     SAFE_POINT(_consArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorConsensusArea is NULL", );
 
@@ -59,7 +59,7 @@ void MaConsensusModeWidget::reInit(MultipleAlignmentObject* _maObject, MaEditorC
     connect(consArea, &MaEditorConsensusArea::si_consensusThresholdChanged, this, &MaConsensusModeWidget::sl_thresholdChanged);
 }
 
-void MaConsensusModeWidget::init(MultipleAlignmentObject* _maObject, MaEditorConsensusArea* _consArea) {
+void MaConsensusModeWidget::init(MsaObject* _maObject, MaEditorConsensusArea* _consArea) {
     SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is NULL", );
     SAFE_POINT(_consArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorConsensusArea is NULL", );
 

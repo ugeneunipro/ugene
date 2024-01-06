@@ -1810,7 +1810,7 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
     GTUtilsOptionPanelMca::openTab(GTUtilsOptionPanelMca::General);
 
     // 2. Select last symbol of the read and insert some gaps, until reference will increase for a few symbols
-    MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(0);
+    MsaRowData* row = GTUtilsMcaEditor::getMcaRow(0);
     int end = int(row->getCoreStart() + row->getCoreLength() - 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(QPoint(end, 0));
 
@@ -2493,7 +2493,7 @@ GUI_TEST_CLASS_DEFINITION(test_5637) {
 
     // Expected: row length must be equal or lesser then reference length
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
-    MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(0);
+    MsaRowData* row = GTUtilsMcaEditor::getMcaRow(0);
     qint64 rowLength = row->getRowLengthWithoutTrailing();
     CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser then reference length, current: row lenght = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
 
@@ -3654,7 +3654,7 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
 
     GTLogTracer lt;
     // 2. Select the last char of the first row
-    MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(0);
+    MsaRowData* row = GTUtilsMcaEditor::getMcaRow(0);
     int end = int(row->getCoreStart() + row->getCoreLength() - 1);
     QPoint p(end, 0);
     GTUtilsMcaEditorSequenceArea::clickToPosition(p);

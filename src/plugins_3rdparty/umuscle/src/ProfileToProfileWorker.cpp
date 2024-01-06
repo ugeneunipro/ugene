@@ -24,7 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -67,14 +67,14 @@ Task* ProfileToProfileWorker::tick() {
 
         QVariantMap qm = m.getData().toMap();
         SharedDbiDataHandler masterMsaId = qm.value(MASTER_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
-        QScopedPointer<MultipleAlignmentObject> masterMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), masterMsaId));
+        QScopedPointer<MsaObject> masterMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), masterMsaId));
         SAFE_POINT(!masterMsaObj.isNull(), "NULL MSA Object!", nullptr);
-        const MultipleAlignment masterMsa = masterMsaObj->getAlignment();
+        const Msa masterMsa = masterMsaObj->getAlignment();
 
         SharedDbiDataHandler secondMsaId = qm.value(SECOND_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
-        QScopedPointer<MultipleAlignmentObject> secondMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), secondMsaId));
+        QScopedPointer<MsaObject> secondMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), secondMsaId));
         SAFE_POINT(!secondMsaObj.isNull(), "NULL MSA Object!", nullptr);
-        const MultipleAlignment secondMsa = secondMsaObj->getAlignment();
+        const Msa secondMsa = secondMsaObj->getAlignment();
 
         Task* t = new ProfileToProfileTask(masterMsa, secondMsa);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -87,7 +87,7 @@ Task* ProfileToProfileWorker::tick() {
 }
 
 void ProfileToProfileWorker::cleanup() {
-    foreach (MultipleAlignmentObject* obj, objects) {
+    foreach (MsaObject* obj, objects) {
         delete obj;
     }
     objects.clear();
@@ -103,7 +103,7 @@ void ProfileToProfileWorker::sl_taskFinished() {
     }
 
     if (outPort) {
-        MultipleAlignment resultAl = t->getResult();
+        Msa resultAl = t->getResult();
         resultAl->setName("Aligned");
         SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(resultAl);
         QVariantMap msgData;
@@ -116,7 +116,7 @@ void ProfileToProfileWorker::sl_taskFinished() {
 /************************************************************************/
 /* Task */
 /************************************************************************/
-ProfileToProfileTask::ProfileToProfileTask(const MultipleAlignment& masterMsa, const MultipleAlignment& secondMsa)
+ProfileToProfileTask::ProfileToProfileTask(const Msa& masterMsa, const Msa& secondMsa)
     : Task(tr("Align profile to profile with MUSCLE"), TaskFlag_NoRun),
       masterMsa(masterMsa->getCopy()),
       secondMsa(secondMsa->getCopy()),
@@ -130,7 +130,7 @@ void ProfileToProfileTask::prepare() {
     int maxThreads = 1;  // AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
     setMaxParallelSubtasks(maxThreads);
 
-    foreach (const MultipleAlignmentRow& row, masterMsa->getRows()) {
+    foreach (const MsaRow& row, masterMsa->getRows()) {
         result->addRow(row->getRowDbInfo(), row->getSequence(), stateInfo);
         CHECK_OP(stateInfo, );
     }
@@ -157,7 +157,7 @@ QList<Task*> ProfileToProfileTask::onSubTaskFinished(Task* subTask) {
     return tasks;
 }
 
-const MultipleAlignment& ProfileToProfileTask::getResult() {
+const Msa& ProfileToProfileTask::getResult() {
     U2AlphabetUtils::assignAlphabet(result);
     return result;
 }
@@ -167,7 +167,7 @@ void ProfileToProfileTask::appendResult(Task* task) {
     auto t = dynamic_cast<MuscleTask*>(task);
     SAFE_POINT(t != nullptr, "NULL Muscle task!", );
 
-    const QVector<MultipleAlignmentRow>& newRows = t->resultMA->getRows();
+    const QVector<MsaRow>& newRows = t->resultMA->getRows();
     if (newRows.size() == masterMsa->getRows().size() + 1) {
         U2OpStatus2Log os;
         result->addRow(newRows.last()->getRowDbInfo(), newRows.last()->getSequence(), os);

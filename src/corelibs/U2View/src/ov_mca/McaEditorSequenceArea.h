@@ -111,7 +111,7 @@ private:
 
     McaEditorWgt* getMcaEditorWgt() const;
 
-    void trimRowEnd(MultipleAlignmentObject::TrimEdge edge);
+    void trimRowEnd(MsaObject::TrimEdge edge);
 
     void updateTrimActions(bool isEnabled);
 

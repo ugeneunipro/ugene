@@ -25,7 +25,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MsaExportUtils.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Formats/SQLiteDbi.h>
@@ -65,17 +65,17 @@ IMPLEMENT_TEST(MsaImporterExporterUnitTests, importExportAlignment) {
     QByteArray firstSequence("---AG-T");
     QByteArray secondSequence("AG-CT-TAA");
 
-    MultipleAlignment al(alignmentName, alphabet);
+    Msa al(alignmentName, alphabet);
 
     al->addRow("First row", firstSequence);
     al->addRow("Second row", secondSequence);
 
     // Import the alignment
-    QScopedPointer<MultipleAlignmentObject> msaObj(MsaImportUtils::createMsaObject(dbiRef, al, os));
+    QScopedPointer<MsaObject> msaObj(MsaImportUtils::createMsaObject(dbiRef, al, os));
     CHECK_NO_ERROR(os);
 
     // Export the alignment
-    MultipleAlignment alActual = MsaExportUtils::loadAlignment(dbiRef, msaObj->getEntityRef().entityId, os);
+    Msa alActual = MsaExportUtils::loadAlignment(dbiRef, msaObj->getEntityRef().entityId, os);
     CHECK_NO_ERROR(os);
 
     bool alsEqual = (*al == *alActual);

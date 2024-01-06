@@ -20,14 +20,14 @@
  */
 
 #pragma once
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 
-class MultipleAlignmentObject;
+class MsaObject;
 
 namespace LocalWorkflow {
 
@@ -47,7 +47,7 @@ private:
     IntegralBus* inPort;
     IntegralBus* outPort;
 
-    QList<MultipleAlignmentObject*> objects;
+    QList<MsaObject*> objects;
 };
 
 class ProfileToProfileWorkerFactory : public DomainFactory {
@@ -77,18 +77,18 @@ protected:
 class ProfileToProfileTask : public Task {
     Q_OBJECT
 public:
-    ProfileToProfileTask(const MultipleAlignment& masterMsa, const MultipleAlignment& secondMsa);
+    ProfileToProfileTask(const Msa& masterMsa, const Msa& secondMsa);
     ~ProfileToProfileTask() override;
 
     void prepare() override;
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    const MultipleAlignment& getResult();
+    const Msa& getResult();
 
 private:
-    MultipleAlignment masterMsa;
-    MultipleAlignment secondMsa;
-    MultipleAlignment result;
+    Msa masterMsa;
+    Msa secondMsa;
+    Msa result;
     int seqIdx;
     int subtaskCount;
 

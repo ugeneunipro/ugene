@@ -23,7 +23,7 @@
 
 #include <QVector>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MSAConsensusUtils.h"
@@ -41,14 +41,14 @@ MSAConsensusAlgorithmFactoryStrict::MSAConsensusAlgorithmFactoryStrict()
     isSequenceLikeResultFlag = true;
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const Msa&, bool ignoreTrailingLeadingGaps) {
     return new MSAConsensusAlgorithmStrict(this, ignoreTrailingLeadingGaps);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment& ma, int column) const {
+char MSAConsensusAlgorithmStrict::getConsensusChar(const Msa& ma, int column) const {
     QVector<int> seqIdx = pickRowsToUseInConsensus(ma, column);
     CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 

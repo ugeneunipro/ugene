@@ -29,7 +29,7 @@
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -40,7 +40,7 @@ namespace U2 {
 
 static char c1(const QString& column, int threshold) {
     auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(column.toLocal8Bit());
-    MultipleAlignment alignment("Test alignment name", bestAlphabet);
+    Msa alignment("Test alignment name", bestAlphabet);
 
     for (int i = 0; i < column.size(); i++) {
         alignment->addRow(QString::number(i), column.mid(i, 1).toLocal8Bit());
@@ -55,7 +55,7 @@ static char c1(const QString& column, int threshold) {
 
 static char cN(const QStringList& alignmentRows, int threshold) {
     auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(alignmentRows.join("").toLocal8Bit());
-    MultipleAlignment alignment("Test alignment name", bestAlphabet);
+    Msa alignment("Test alignment name", bestAlphabet);
 
     for (int i = 0; i < alignmentRows.size(); i++) {
         const auto& row = alignmentRows[i];
@@ -293,9 +293,9 @@ IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckColumnBase) {
     CHECK_LEVITSKY('D', cN({"AC", "CC", "GG", "TT"}, 70));  // D has the rarest global percentage (has no C).
 }
 
-static MultipleAlignmentObject* createAlignmentObject(const QStringList& alignmentRows) {
+static MsaObject* createAlignmentObject(const QStringList& alignmentRows) {
     auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(alignmentRows.join("").toLocal8Bit());
-    MultipleAlignment alignment("Test alignment name", bestAlphabet);
+    Msa alignment("Test alignment name", bestAlphabet);
 
     for (int i = 0; i < alignmentRows.size(); i++) {
         const auto& row = alignmentRows[i];
@@ -313,7 +313,7 @@ static MultipleAlignmentObject* createAlignmentObject(const QStringList& alignme
 }
 
 char getSymbolAfterAddRow(const QStringList& alignmentRows, char newChar) {
-    auto msaObj = QSharedPointer<MultipleAlignmentObject>(createAlignmentObject(alignmentRows));
+    auto msaObj = QSharedPointer<MsaObject>(createAlignmentObject(alignmentRows));
     CHECK(!msaObj.isNull(), '0');
 
     const auto& alignment = msaObj->getAlignment();
@@ -356,7 +356,7 @@ IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckReplace) {
 }
 
 char getSymbolAfterAddRow(const QStringList& alignmentRow, const QString& newRow) {
-    auto msaObj = QSharedPointer<MultipleAlignmentObject>(createAlignmentObject({alignmentRow}));
+    auto msaObj = QSharedPointer<MsaObject>(createAlignmentObject({alignmentRow}));
     CHECK(!msaObj.isNull(), '0');
 
     const auto& alignment = msaObj->getAlignment();
@@ -403,7 +403,7 @@ IMPLEMENT_TEST(MsaConsensusAlgorithmUnitTests, levitskyCheckAddRow) {
 }
 
 char getSymbolAfterRemoveLastColumn(const QStringList& alignmentRow) {
-    auto msaObj = QSharedPointer<MultipleAlignmentObject>(createAlignmentObject({alignmentRow}));
+    auto msaObj = QSharedPointer<MsaObject>(createAlignmentObject({alignmentRow}));
     CHECK(!msaObj.isNull(), '0');
 
     const auto& alignment = msaObj->getAlignment();

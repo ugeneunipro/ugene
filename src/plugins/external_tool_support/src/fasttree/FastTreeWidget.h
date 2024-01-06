@@ -33,7 +33,7 @@ class PhyTreeDisplayOptionsWidget;
 class FastTreeWidget : public CreatePhyTreeWidget {
     Q_OBJECT
 public:
-    FastTreeWidget(const MultipleAlignment& msa, QWidget* parent);
+    FastTreeWidget(const Msa& msa, QWidget* parent);
 
     void fillSettings(CreatePhyTreeSettings& settings) override;
 

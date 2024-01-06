@@ -19,15 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include "MultipleAlignmentObject.h"
-
 #include <U2Core/DbiConnection.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaExportUtils.h>
 #include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2AttributeUtils.h>
@@ -36,38 +34,40 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 
+#include "MsaObject.h"
+
 namespace U2 {
 
-const QString MultipleAlignmentObject::REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT = "MCAOBJECT_REFERENCE";
+const QString MsaObject::REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT = "MCAOBJECT_REFERENCE";
 
-MaSavedState::MaSavedState()
+MsaSavedState::MsaSavedState()
     : lastState(nullptr) {
 }
 
-MaSavedState::~MaSavedState() {
+MsaSavedState::~MsaSavedState() {
     delete lastState;
 }
 
-bool MaSavedState::hasState() const {
+bool MsaSavedState::hasState() const {
     return lastState != nullptr;
 }
 
-MultipleAlignment MaSavedState::takeState() {
-    const MultipleAlignment state = *lastState;
+Msa MsaSavedState::takeState() {
+    const Msa state = *lastState;
     delete lastState;
     lastState = nullptr;
     return state;
 }
 
-void MaSavedState::setState(const MultipleAlignment& ma) {
+void MsaSavedState::setState(const Msa& ma) {
     delete lastState;
-    lastState = new MultipleAlignment(ma->getCopy());
+    lastState = new Msa(ma->getCopy());
 }
 
-MultipleAlignmentObject::MultipleAlignmentObject(const QString& name,
+MsaObject::MsaObject(const QString& name,
                                                  const U2EntityRef& maRef,
                                                  const QVariantMap& hintsMap,
-                                                 const MultipleAlignment& alignment,
+                                                 const Msa& alignment,
                                                  const GObjectType& objectType)
     : GObject(objectType, name, hintsMap),
       cachedMa(alignment->getCopy()) {
@@ -79,11 +79,11 @@ MultipleAlignmentObject::MultipleAlignmentObject(const QString& name,
     }
 }
 
-MultipleAlignmentObject::~MultipleAlignmentObject() {
+MsaObject::~MsaObject() {
     emit si_invalidateAlignmentObject();
 }
 
-void MultipleAlignmentObject::setTrackMod(U2OpStatus& os, U2TrackModType trackMod) {
+void MsaObject::setTrackMod(U2OpStatus& os, U2TrackModType trackMod) {
     // Prepare the connection
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
@@ -95,17 +95,17 @@ void MultipleAlignmentObject::setTrackMod(U2OpStatus& os, U2TrackModType trackMo
     objectDbi->setTrackModType(entityRef.entityId, trackMod, os);
 }
 
-void MultipleAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
+void MsaObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
     replaceCharacters({startPos, 1}, rowIndex, newChar);
 }
 
-void MultipleAlignmentObject::replaceCharacters(const U2Region& columnRange, int rowIndex, char newChar) {
+void MsaObject::replaceCharacters(const U2Region& columnRange, int rowIndex, char newChar) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    const MultipleAlignment& ma = getAlignment();
+    const Msa& ma = getAlignment();
     SAFE_POINT(U2Region(0, ma->getLength()).contains(columnRange), "Invalid parameters", );
 
-    const MultipleAlignmentRow& row = ma->getRow(rowIndex);
+    const MsaRow& row = ma->getRow(rowIndex);
     qint64 rowId = row->getRowId();
     U2OpStatus2Log os;
 
@@ -140,12 +140,12 @@ void MultipleAlignmentObject::replaceCharacters(const U2Region& columnRange, int
     updateCachedMultipleAlignment(mi);
 }
 
-const MultipleAlignment& MultipleAlignmentObject::getAlignment() const {
+const Msa& MsaObject::getAlignment() const {
     ensureDataLoaded();
     return cachedMa;
 }
 
-void MultipleAlignmentObject::setMultipleAlignment(const MultipleAlignment& newMa, MaModificationInfo mi, const QVariantMap& hints) {
+void MsaObject::setMultipleAlignment(const Msa& newMa, MaModificationInfo mi, const QVariantMap& hints) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
     U2OpStatus2Log os;
@@ -156,7 +156,7 @@ void MultipleAlignmentObject::setMultipleAlignment(const MultipleAlignment& newM
     updateCachedMultipleAlignment(mi);
 }
 
-void MultipleAlignmentObject::setGObjectName(const QString& newName) {
+void MsaObject::setGObjectName(const QString& newName) {
     ensureDataLoaded();
     CHECK(cachedMa->getName() != newName, );
 
@@ -172,38 +172,38 @@ void MultipleAlignmentObject::setGObjectName(const QString& newName) {
     }
 }
 
-const DNAAlphabet* MultipleAlignmentObject::getAlphabet() const {
+const DNAAlphabet* MsaObject::getAlphabet() const {
     return getAlignment()->getAlphabet();
 }
 
-qint64 MultipleAlignmentObject::getLength() const {
+qint64 MsaObject::getLength() const {
     return getAlignment()->getLength();
 }
 
-qint64 MultipleAlignmentObject::getRowCount() const {
+qint64 MsaObject::getRowCount() const {
     return getAlignment()->getRowCount();
 }
 
-const QVector<MultipleAlignmentRow>& MultipleAlignmentObject::getRows() const {
+const QVector<MsaRow>& MsaObject::getRows() const {
     return getAlignment()->getRows();
 }
 
-const MultipleAlignmentRow& MultipleAlignmentObject::getRow(int row) const {
+const MsaRow& MsaObject::getRow(int row) const {
     return getAlignment()->getRow(row);
 }
 
-int MultipleAlignmentObject::getRowPosById(qint64 rowId) const {
+int MsaObject::getRowPosById(qint64 rowId) const {
     return getAlignment()->getRowsIds().indexOf(rowId);
 }
 
-QList<QVector<U2MsaGap>> MultipleAlignmentObject::getGapModel() const {
+QList<QVector<U2MsaGap>> MsaObject::getGapModel() const {
     return getAlignment()->getGapModel();
 }
 
-void MultipleAlignmentObject::removeRow(int rowIdx) {
+void MsaObject::removeRow(int rowIdx) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    const MultipleAlignment& ma = getAlignment();
+    const Msa& ma = getAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getRowCount(), "Invalid row index", );
     qint64 rowId = ma->getRow(rowIdx)->getRowId();
 
@@ -221,7 +221,7 @@ void MultipleAlignmentObject::removeRow(int rowIdx) {
     updateCachedMultipleAlignment(mi, removedRowIds);
 }
 
-void MultipleAlignmentObject::removeRowsById(const QList<qint64>& rowIds) {
+void MsaObject::removeRowsById(const QList<qint64>& rowIds) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     CHECK(!rowIds.isEmpty(), );
 
@@ -242,11 +242,11 @@ void MultipleAlignmentObject::removeRowsById(const QList<qint64>& rowIds) {
     SAFE_POINT(removedRowIds.size() == rowIds.size(), "Failed to remove some rows", );
 }
 
-void MultipleAlignmentObject::removeRows(const QList<int>& rowIndexes) {
+void MsaObject::removeRows(const QList<int>& rowIndexes) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     CHECK(!rowIndexes.isEmpty(), );
 
-    const MultipleAlignment& ma = getAlignment();
+    const Msa& ma = getAlignment();
     QList<qint64> rowIdsToRemove;
     foreach (int rowIdx, rowIndexes) {
         SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getRowCount(), "Invalid row index", );
@@ -257,10 +257,10 @@ void MultipleAlignmentObject::removeRows(const QList<int>& rowIndexes) {
     removeRowsById(rowIdsToRemove);
 }
 
-void MultipleAlignmentObject::renameRow(int rowIdx, const QString& newName) {
+void MsaObject::renameRow(int rowIdx, const QString& newName) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    const MultipleAlignment& ma = getAlignment();
+    const Msa& ma = getAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getRowCount(), "Invalid row index", );
     qint64 rowId = ma->getRow(rowIdx)->getRowId();
 
@@ -273,8 +273,8 @@ void MultipleAlignmentObject::renameRow(int rowIdx, const QString& newName) {
     updateCachedMultipleAlignment(mi);
 }
 
-bool MultipleAlignmentObject::isRegionEmpty(int startPos, int startRow, int numChars, int numRows) const {
-    const MultipleAlignment& ma = getAlignment();
+bool MsaObject::isRegionEmpty(int startPos, int startRow, int numChars, int numRows) const {
+    const Msa& ma = getAlignment();
     bool isEmpty = true;
     for (int row = startRow; row < startRow + numRows && isEmpty; ++row) {
         for (int pos = startPos; pos < startPos + numChars && isEmpty; ++pos) {
@@ -284,8 +284,8 @@ bool MultipleAlignmentObject::isRegionEmpty(int startPos, int startRow, int numC
     return isEmpty;
 }
 
-bool MultipleAlignmentObject::isRegionEmpty(const QList<int>& rowIndexes, int x, int width) const {
-    const MultipleAlignment& ma = getAlignment();
+bool MsaObject::isRegionEmpty(const QList<int>& rowIndexes, int x, int width) const {
+    const Msa& ma = getAlignment();
     bool isEmpty = true;
     for (int i = 0; i < rowIndexes.size() && isEmpty; i++) {
         int rowIndex = rowIndexes[i];
@@ -296,7 +296,7 @@ bool MultipleAlignmentObject::isRegionEmpty(const QList<int>& rowIndexes, int x,
     return isEmpty;
 }
 
-void MultipleAlignmentObject::moveRowsBlock(int firstRow, int numRows, int shift) {
+void MsaObject::moveRowsBlock(int firstRow, int numRows, int shift) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
     QList<qint64> rowIds = getAlignment()->getRowsIds();
@@ -313,11 +313,11 @@ void MultipleAlignmentObject::moveRowsBlock(int firstRow, int numRows, int shift
     updateCachedMultipleAlignment();
 }
 
-QList<qint64> MultipleAlignmentObject::getRowIds() const {
+QList<qint64> MsaObject::getRowIds() const {
     return getAlignment()->getRowsIds();
 }
 
-QList<qint64> MultipleAlignmentObject::getRowIdsByRowIndexes(const QList<int>& rowIndexes) const {
+QList<qint64> MsaObject::getRowIdsByRowIndexes(const QList<int>& rowIndexes) const {
     QList<qint64> allRowIds = getRowIds();
     QList<qint64> resultRowIds;
     int rowCount = getRowCount();
@@ -328,7 +328,7 @@ QList<qint64> MultipleAlignmentObject::getRowIdsByRowIndexes(const QList<int>& r
     return resultRowIds;
 }
 
-void MultipleAlignmentObject::updateRowsOrder(U2OpStatus& os, const QList<qint64>& rowIds) {
+void MsaObject::updateRowsOrder(U2OpStatus& os, const QList<qint64>& rowIds) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     if (rowIds == getRowIds()) {
         return;
@@ -341,7 +341,7 @@ void MultipleAlignmentObject::updateRowsOrder(U2OpStatus& os, const QList<qint64
     updateCachedMultipleAlignment(mi);
 }
 
-void MultipleAlignmentObject::changeLength(U2OpStatus& os, qint64 newLength) {
+void MsaObject::changeLength(U2OpStatus& os, qint64 newLength) {
     qint64 length = getLength();
     CHECK(length != newLength, );
 
@@ -352,7 +352,7 @@ void MultipleAlignmentObject::changeLength(U2OpStatus& os, qint64 newLength) {
     if (newLength < length) {
         qint64 numRows = getRowCount();
         for (int i = 0; i < numRows; i++) {
-            MultipleAlignmentRow row = getRow(i);
+            MsaRow row = getRow(i);
             qint64 rowLengthWithoutTrailing = row->getRowLengthWithoutTrailing();
             if (rowLengthWithoutTrailing > newLength) {
                 row->crop(os, 0, newLength);
@@ -368,11 +368,11 @@ void MultipleAlignmentObject::changeLength(U2OpStatus& os, qint64 newLength) {
     updateCachedMultipleAlignment(modificationInfo);
 }
 
-void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModificationInfo& mi, const QList<qint64>& removedRowIds) {
+void MsaObject::updateCachedMultipleAlignment(const MaModificationInfo& mi, const QList<qint64>& removedRowIds) {
     ensureDataLoaded();
     emit si_startMaUpdating();
 
-    MultipleAlignment oldCachedMa = cachedMa->getCopy();
+    Msa oldCachedMa = cachedMa->getCopy();
 
     // Undo-Redo Framework does not provide detailed change info.
     // In this case or if we do not know which rows are changed we reload the whole object.
@@ -435,10 +435,10 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
     }
 }
 
-void MultipleAlignmentObject::sortRowsByList(const QStringList& order) {
+void MsaObject::sortRowsByList(const QStringList& order) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    MultipleAlignment ma = getAlignment()->getCopy();
+    Msa ma = getAlignment()->getCopy();
     ma->sortRowsByList(order);
     CHECK(ma->getRowsIds() != cachedMa->getRowsIds(), );
 
@@ -453,15 +453,15 @@ void MultipleAlignmentObject::sortRowsByList(const QStringList& order) {
     updateCachedMultipleAlignment(mi);
 }
 
-void MultipleAlignmentObject::insertCharacter(int rowIndex, int pos, char newChar) {
+void MsaObject::insertCharacter(int rowIndex, int pos, char newChar) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     insertGap(U2Region(0, getRowCount()), pos, 1);
     replaceCharacter(pos, rowIndex, newChar);
 }
 
-void MultipleAlignmentObject::insertGap(const U2Region& rows, int pos, int nGaps) {
+void MsaObject::insertGap(const U2Region& rows, int pos, int nGaps) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    const MultipleAlignment& ma = getAlignment();
+    const Msa& ma = getAlignment();
     int startSeq = rows.startPos;
     int endSeq = startSeq + rows.length;
 
@@ -473,8 +473,8 @@ void MultipleAlignmentObject::insertGap(const U2Region& rows, int pos, int nGaps
     insertGapByRowIdList(rowIds, pos, nGaps);
 }
 
-void MultipleAlignmentObject::insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps) {
-    const MultipleAlignment& ma = getAlignment();
+void MsaObject::insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps) {
+    const Msa& ma = getAlignment();
     QList<qint64> rowIds;
     for (int i = 0; i < rowIndexes.size(); i++) {
         int rowIndex = rowIndexes[i];
@@ -484,7 +484,7 @@ void MultipleAlignmentObject::insertGapByRowIndexList(const QList<int>& rowIndex
     insertGapByRowIdList(rowIds, pos, nGaps);
 }
 
-void MultipleAlignmentObject::insertGapByRowIdList(const QList<qint64>& rowIds, int pos, int nGaps) {
+void MsaObject::insertGapByRowIdList(const QList<qint64>& rowIds, int pos, int nGaps) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     U2OpStatus2Log os;
     bool collapseTrailingGaps = type == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
@@ -510,7 +510,7 @@ inline QList<T> mergeLists(const QList<T>& first, const QList<T>& second) {
     return result;
 }
 
-QList<qint64> getRowsAffectedByDeletion(const MultipleAlignment& ma, const QList<qint64>& removedRowIds) {
+QList<qint64> getRowsAffectedByDeletion(const Msa& ma, const QList<qint64>& removedRowIds) {
     QList<qint64> rowIdsAffectedByDeletion;
     U2OpStatus2Log os;
     const QList<qint64> maRows = ma->getRowsIds();
@@ -540,10 +540,10 @@ QList<qint64> getRowsAffectedByDeletion(const MultipleAlignment& ma, const QList
 
 }  // namespace
 
-void MultipleAlignmentObject::removeRegion(const QList<int>& rowIndexes, int x, int width, bool removeEmptyRows) {
+void MsaObject::removeRegion(const QList<int>& rowIndexes, int x, int width, bool removeEmptyRows) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    const MultipleAlignment& ma = getAlignment();
+    const Msa& ma = getAlignment();
     QList<qint64> modifiedRowIds = convertMaRowIndexesToMaRowIds(rowIndexes);
     U2OpStatus2Log os;
     removeRegionPrivate(os, entityRef, modifiedRowIds, x, width);
@@ -572,15 +572,15 @@ void MultipleAlignmentObject::removeRegion(const QList<int>& rowIndexes, int x, 
     }
 }
 
-void MultipleAlignmentObject::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows, bool track) {
+void MsaObject::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows, bool track) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
     QList<qint64> modifiedRowIds;
-    const MultipleAlignment& ma = getAlignment();
-    const QVector<MultipleAlignmentRow>& maRows = ma->getRows();
+    const Msa& ma = getAlignment();
+    const QVector<MsaRow>& maRows = ma->getRows();
     SAFE_POINT(nRows > 0 && startRow >= 0 && startRow + nRows <= maRows.size() && startPos + nBases <= ma->getLength(), "Invalid parameters", );
-    QVector<MultipleAlignmentRow>::ConstIterator it = maRows.begin() + startRow;
-    QVector<MultipleAlignmentRow>::ConstIterator end = it + nRows;
+    QVector<MsaRow>::ConstIterator it = maRows.begin() + startRow;
+    QVector<MsaRow>::ConstIterator end = it + nRows;
     for (; it != end; it++) {
         modifiedRowIds << (*it)->getRowId();
     }
@@ -614,7 +614,7 @@ void MultipleAlignmentObject::removeRegion(int startPos, int startRow, int nBase
     }
 }
 
-int MultipleAlignmentObject::deleteGap(U2OpStatus& os, const U2Region& rows, int pos, int maxGaps) {
+int MsaObject::deleteGap(U2OpStatus& os, const U2Region& rows, int pos, int maxGaps) {
     QList<int> rowIndexes;
     for (int i = (int)rows.startPos; i < (int)rows.endPos(); i++) {
         rowIndexes << i;
@@ -633,7 +633,7 @@ static QList<int> toUniqueRowIndexes(const QList<int>& rowIndexes, int numRows) 
     return uniqueRowIndexes.toList();
 }
 
-int MultipleAlignmentObject::deleteGapByRowIndexList(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps) {
+int MsaObject::deleteGapByRowIndexList(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", 0);
 
     int removingGapColumnCount = getMaxWidthOfGapRegion(os, rowIndexes, pos, maxGaps);
@@ -645,7 +645,7 @@ int MultipleAlignmentObject::deleteGapByRowIndexList(U2OpStatus& os, const QList
         pos += maxGaps - removingGapColumnCount;
     }
     QList<qint64> modifiedRowIds;
-    MultipleAlignment msa = getAlignment()->getCopy();
+    Msa msa = getAlignment()->getCopy();
     // iterate through given rows to update each of them in DB
     QList<int> uniqueRowIndexes = toUniqueRowIndexes(rowIndexes, getRowCount());
     for (int i = 0; i < rowIndexes.size(); i++) {
@@ -653,7 +653,7 @@ int MultipleAlignmentObject::deleteGapByRowIndexList(U2OpStatus& os, const QList
         msa->removeChars(rowIndex, pos, removingGapColumnCount, os);
         CHECK_OP(os, 0);
 
-        MultipleAlignmentRow row = msa->getRow(rowIndex);
+        MsaRow row = msa->getRow(rowIndex);
         MaDbiUtils::updateRowGapModel(entityRef, row->getRowId(), row->getGaps(), os);
         CHECK_OP(os, 0);
         modifiedRowIds << row->getRowId();
@@ -672,7 +672,7 @@ int MultipleAlignmentObject::deleteGapByRowIndexList(U2OpStatus& os, const QList
     return removingGapColumnCount;
 }
 
-int MultipleAlignmentObject::shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift) {
+int MsaObject::shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", 0);
     SAFE_POINT(!isRegionEmpty(startPos, startRow, nBases, nRows), "Region is empty", 0);
     SAFE_POINT(0 <= startPos && 0 <= startRow && 0 < nBases && 0 < nRows, "Invalid parameters of selected region encountered", 0);
@@ -712,18 +712,18 @@ int MultipleAlignmentObject::shiftRegion(int startPos, int startRow, int nBases,
     return n;
 }
 
-void MultipleAlignmentObject::saveState() {
-    const MultipleAlignment& ma = getAlignment();
+void MsaObject::saveState() {
+    const Msa& ma = getAlignment();
     emit si_completeStateChanged(false);
     savedState.setState(ma);
 }
 
-void MultipleAlignmentObject::releaseState() {
+void MsaObject::releaseState() {
     if (!isStateLocked()) {
         emit si_completeStateChanged(true);
 
         CHECK(savedState.hasState(), );
-        MultipleAlignment maBefore = savedState.takeState();
+        Msa maBefore = savedState.takeState();
         CHECK(*maBefore != *getAlignment(), );
         setModified(true);
 
@@ -738,7 +738,7 @@ void MultipleAlignmentObject::releaseState() {
     }
 }
 
-bool MultipleAlignmentObject::hasNonTrailingGap() const {
+bool MsaObject::hasNonTrailingGap() const {
     const QList<QVector<U2MsaGap>>& listGapModel = getGapModel();
     if (std::any_of(listGapModel.constBegin(), listGapModel.constEnd(), [](const QVector<U2MsaGap>& data) { return !data.isEmpty(); })) {
         return true;
@@ -746,14 +746,14 @@ bool MultipleAlignmentObject::hasNonTrailingGap() const {
     return false;
 }
 
-void MultipleAlignmentObject::loadDataCore(U2OpStatus& os) {
+void MsaObject::loadDataCore(U2OpStatus& os) {
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
     loadAlignment(os);
 }
 
-int MultipleAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps) {
-    const MultipleAlignment& ma = getAlignment();
+int MsaObject::getMaxWidthOfGapRegion(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps) {
+    const Msa& ma = getAlignment();
     SAFE_POINT_EXT(pos >= 0 && maxGaps >= 0 && pos < ma->getLength(), os.setError("Illegal parameters of the gap region"), 0);
 
     // check if there is nothing to remove
@@ -807,9 +807,9 @@ int MultipleAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus& os, const QList<
     return removingGapColumnCount;
 }
 
-QList<qint64> MultipleAlignmentObject::convertMaRowIndexesToMaRowIds(const QList<int>& maRowIndexes, bool excludeErrors) {
+QList<qint64> MsaObject::convertMaRowIndexesToMaRowIds(const QList<int>& maRowIndexes, bool excludeErrors) {
     QList<qint64> ids;
-    const QVector<MultipleAlignmentRow>& rows = getAlignment()->getRows();
+    const QVector<MsaRow>& rows = getAlignment()->getRows();
     for (int i = 0; i < maRowIndexes.length(); i++) {
         int index = maRowIndexes[i];
         bool isValid = index >= 0 && index <= rows.size() - 1;
@@ -822,14 +822,14 @@ QList<qint64> MultipleAlignmentObject::convertMaRowIndexesToMaRowIds(const QList
     return ids;
 }
 
-QList<int> MultipleAlignmentObject::convertMaRowIdsToMaRowIndexes(const QList<qint64>& maRowIds, bool excludeErrors) {
+QList<int> MsaObject::convertMaRowIdsToMaRowIndexes(const QList<qint64>& maRowIds, bool excludeErrors) {
     QList<int> indexes;
-    const QVector<MultipleAlignmentRow>& rows = getAlignment()->getRows();
+    const QVector<MsaRow>& rows = getAlignment()->getRows();
     for (int i = 0; i < maRowIds.length(); i++) {
         int rowId = maRowIds[i];
         int index = -1;
         for (int j = 0; j < rows.size(); j++) {
-            const MultipleAlignmentRow& row = rows[j];
+            const MsaRow& row = rows[j];
             if (row->getRowId() == rowId) {
                 index = j;
                 break;
@@ -845,11 +845,11 @@ QList<int> MultipleAlignmentObject::convertMaRowIdsToMaRowIndexes(const QList<qi
     return indexes;
 }
 
-char MultipleAlignmentObject::charAt(int seqNum, qint64 position) const {
+char MsaObject::charAt(int seqNum, qint64 position) const {
     return getAlignment()->charAt(seqNum, position);
 }
 
-void MultipleAlignmentObject::crop(const QList<qint64>& rowIds, const U2Region& columnRange) {
+void MsaObject::crop(const QList<qint64>& rowIds, const U2Region& columnRange) {
     SAFE_POINT(type == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, "This method is only tested for MSA", );
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     U2OpStatus2Log os;
@@ -859,13 +859,13 @@ void MultipleAlignmentObject::crop(const QList<qint64>& rowIds, const U2Region& 
     updateCachedMultipleAlignment();
 }
 
-void MultipleAlignmentObject::crop(const U2Region& columnRange) {
+void MsaObject::crop(const U2Region& columnRange) {
     crop(getRowIds(), columnRange);
 }
 
-void MultipleAlignmentObject::trimRow(const int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge) {
+void MsaObject::trimRow(const int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge) {
     U2EntityRef entityRef = getEntityRef();
-    MultipleAlignmentRow row = getRow(rowIndex);
+    MsaRow row = getRow(rowIndex);
     int rowId = row->getRowId();
     int pos = 0;
     int count = 0;
@@ -892,9 +892,9 @@ void MultipleAlignmentObject::trimRow(const int rowIndex, int currentPos, U2OpSt
     updateCachedMultipleAlignment(modificationInfo);
 }
 
-void MultipleAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os) {
+void MsaObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os) {
     for (int i = 0; i < getRowCount(); i++) {
-        const MultipleAlignmentRow& mcaRow = getRow(i);
+        const MsaRow& mcaRow = getRow(i);
         qint64 ungappedLength = mcaRow->getUngappedLength();
 
         QHash<qint64, char> newCharMap;
@@ -918,7 +918,7 @@ void MultipleAlignmentObject::updateAlternativeMutations(bool showAlternativeMut
             newCharMap.insert(gappedPos, newChar);
         }
 
-        const MultipleAlignment& ma = getAlignment();
+        const Msa& ma = getAlignment();
         qint64 modifiedRowId = ma->getRow(i)->getRowId();
         MsaDbiUtils::replaceCharactersInRow(getEntityRef(), modifiedRowId, newCharMap, os);
         SAFE_POINT_OP(os, );
@@ -926,11 +926,11 @@ void MultipleAlignmentObject::updateAlternativeMutations(bool showAlternativeMut
     updateCachedMultipleAlignment();
 }
 
-void MultipleAlignmentObject::loadAlignment(U2OpStatus& os) {
+void MsaObject::loadAlignment(U2OpStatus& os) {
     cachedMa = MsaExportUtils::loadAlignment(entityRef.dbiRef, entityRef.entityId, os);
 }
 
-void MultipleAlignmentObject::updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) {
+void MsaObject::updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) {
     QList<MsaRowSnapshot> snapshots = MsaExportUtils::loadRows(entityRef.dbiRef, entityRef.entityId, rowIds, os);
     CHECK_OP(os, );
     SAFE_POINT(snapshots.length() == rowIds.length(), "Row count does not match", );
@@ -949,22 +949,22 @@ void MultipleAlignmentObject::updateCachedRows(U2OpStatus& os, const QList<qint6
     }
 }
 
-void MultipleAlignmentObject::updateDatabase(U2OpStatus& os, const MultipleAlignment& ma) {
+void MsaObject::updateDatabase(U2OpStatus& os, const Msa& ma) {
     MsaDbiUtils::updateMsa(entityRef, ma, os);
 }
 
-void MultipleAlignmentObject::removeRowPrivate(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId) {
+void MsaObject::removeRowPrivate(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId) {
     MsaDbiUtils::removeRow(msaRef, rowId, os);
 }
 
-void MultipleAlignmentObject::removeRegionPrivate(U2OpStatus& os, const U2EntityRef& maRef, const QList<qint64>& rows, int startPos, int nBases) {
+void MsaObject::removeRegionPrivate(U2OpStatus& os, const U2EntityRef& maRef, const QList<qint64>& rows, int startPos, int nBases) {
     MsaDbiUtils::removeRegion(maRef, rows, startPos, nBases, os);
 }
 
-void MultipleAlignmentObject::updateGapModel(U2OpStatus& os, const QMap<qint64, QVector<U2MsaGap>>& rowsGapModel) {
+void MsaObject::updateGapModel(U2OpStatus& os, const QMap<qint64, QVector<U2MsaGap>>& rowsGapModel) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    const MultipleAlignment msa = getAlignment();
+    const Msa msa = getAlignment();
 
     QList<qint64> rowIds = msa->getRowsIds();
     QList<qint64> modifiedRowIds;
@@ -985,14 +985,14 @@ void MultipleAlignmentObject::updateGapModel(U2OpStatus& os, const QMap<qint64, 
     updateCachedMultipleAlignment(mi);
 }
 
-void MultipleAlignmentObject::updateGapModel(const QList<MultipleAlignmentRow>& sourceRows) {
-    QList<MultipleAlignmentRow> oldRows = getAlignment()->getRows().toList();
+void MsaObject::updateGapModel(const QList<MsaRow>& sourceRows) {
+    QList<MsaRow> oldRows = getAlignment()->getRows().toList();
 
     SAFE_POINT(oldRows.count() == sourceRows.count(), "Different rows count", );
 
     QMap<qint64, QVector<U2MsaGap>> newGapModel;
-    QList<MultipleAlignmentRow>::ConstIterator oldRowsIterator = oldRows.begin();
-    QList<MultipleAlignmentRow>::ConstIterator sourceRowsIterator = sourceRows.begin();
+    QList<MsaRow>::ConstIterator oldRowsIterator = oldRows.begin();
+    QList<MsaRow>::ConstIterator sourceRowsIterator = sourceRows.begin();
     for (; oldRowsIterator != oldRows.end(); oldRowsIterator++, sourceRowsIterator++) {
         newGapModel[(*oldRowsIterator)->getRowId()] = (*sourceRowsIterator)->getGaps();
     }
@@ -1001,10 +1001,10 @@ void MultipleAlignmentObject::updateGapModel(const QList<MultipleAlignmentRow>& 
     updateGapModel(os, newGapModel);
 }
 
-void MultipleAlignmentObject::updateRow(U2OpStatus& os, int rowIdx, const QString& name, const QByteArray& seqBytes, const QVector<U2MsaGap>& gapModel) {
+void MsaObject::updateRow(U2OpStatus& os, int rowIdx, const QString& name, const QByteArray& seqBytes, const QVector<U2MsaGap>& gapModel) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    const MultipleAlignment msa = getAlignment();
+    const Msa msa = getAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < msa->getRowCount(), "Invalid row index", );
     qint64 rowId = msa->getRow(rowIdx)->getRowId();
 
@@ -1015,7 +1015,7 @@ void MultipleAlignmentObject::updateRow(U2OpStatus& os, int rowIdx, const QStrin
     CHECK_OP(os, );
 }
 
-void MultipleAlignmentObject::replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet* newAlphabet) {
+void MsaObject::replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet* newAlphabet) {
     SAFE_POINT(type == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, "The method is tested only with Msa", );
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     SAFE_POINT(oldChar != U2Msa::GAP_CHAR && newChar != U2Msa::GAP_CHAR, "Gap characters replacement is not supported", );
@@ -1045,7 +1045,7 @@ void MultipleAlignmentObject::replaceAllCharacters(char oldChar, char newChar, c
     updateCachedMultipleAlignment(mi);
 }
 
-void MultipleAlignmentObject::morphAlphabet(const DNAAlphabet* newAlphabet, const QByteArray& replacementMap) {
+void MsaObject::morphAlphabet(const DNAAlphabet* newAlphabet, const QByteArray& replacementMap) {
     SAFE_POINT(type == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, "The method is tested only with Msa", );
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     SAFE_POINT(newAlphabet != nullptr, "newAlphabet is null!", );
@@ -1073,7 +1073,7 @@ void MultipleAlignmentObject::morphAlphabet(const DNAAlphabet* newAlphabet, cons
     updateCachedMultipleAlignment(mi);
 }
 
-U2SequenceObject* MultipleAlignmentObject::getReferenceObj() const {
+U2SequenceObject* MsaObject::getReferenceObj() const {
     if (referenceObj == nullptr) {
         U2OpStatus2Log os;
         DbiConnection con(getEntityRef().dbiRef, os);
@@ -1089,14 +1089,14 @@ U2SequenceObject* MultipleAlignmentObject::getReferenceObj() const {
         CHECK_NN(obj, nullptr);
 
         referenceObj = qobject_cast<U2SequenceObject*>(obj);
-        referenceObj->setParent((MultipleAlignmentObject*)this);
-        connect(this, &MultipleAlignmentObject::si_alignmentChanged, referenceObj, &U2SequenceObject::sl_resetDataCaches);
-        connect(this, &MultipleAlignmentObject::si_alignmentChanged, referenceObj, &U2SequenceObject::si_sequenceChanged);
+        referenceObj->setParent((MsaObject*)this);
+        connect(this, &MsaObject::si_alignmentChanged, referenceObj, &U2SequenceObject::sl_resetDataCaches);
+        connect(this, &MsaObject::si_alignmentChanged, referenceObj, &U2SequenceObject::si_sequenceChanged);
     }
     return referenceObj;
 }
 
-void MultipleAlignmentObject::deleteColumnsWithGaps(U2OpStatus& os, int requiredGapsCount) {
+void MsaObject::deleteColumnsWithGaps(U2OpStatus& os, int requiredGapsCount) {
     QList<QVector<U2MsaGap>> gapModel = getGapModel();
     U2SequenceObject* sequenceObject = getReferenceObj();
     if (sequenceObject != nullptr) {
@@ -1133,7 +1133,7 @@ void MultipleAlignmentObject::deleteColumnsWithGaps(U2OpStatus& os, int required
     updateCachedMultipleAlignment();
 }
 
-MultipleAlignmentObject* MultipleAlignmentObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) const {
+MsaObject* MsaObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     CHECK_OP(os, nullptr);
 
@@ -1141,14 +1141,14 @@ MultipleAlignmentObject* MultipleAlignmentObject::clone(const U2DbiRef& dstDbiRe
     gHints->setAll(hints);
     QString dstFolder = gHints->get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-    MultipleAlignment msa = getAlignment()->getCopy();
+    Msa msa = getAlignment()->getCopy();
     bool isMca = type == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
-    MultipleAlignmentObject* clonedObject = isMca
+    MsaObject* clonedObject = isMca
                                                 ? MsaImportUtils::createMcaObject(dstDbiRef, msa, os, dstFolder)
                                                 : MsaImportUtils::createMsaObject(dstDbiRef, msa, os, dstFolder);
     CHECK_OP(os, nullptr);
 
-    QScopedPointer<MultipleAlignmentObject> p(clonedObject);
+    QScopedPointer<MsaObject> p(clonedObject);
     if (isMca) {
         DbiConnection srcCon(getEntityRef().dbiRef, os);
         CHECK_OP(os, nullptr);
@@ -1165,7 +1165,7 @@ MultipleAlignmentObject* MultipleAlignmentObject::clone(const U2DbiRef& dstDbiRe
         obj.dbiId = dstDbiRef.dbiId;
         obj.id = clonedObject->getEntityRef().entityId;
         obj.version = clonedObject->getModificationVersion();
-        U2AttributeUtils::init(attribute, obj, MultipleAlignmentObject::REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT);
+        U2AttributeUtils::init(attribute, obj, MsaObject::REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT);
         attribute.value = referenceCopy.id;
         dstCon.dbi->getAttributeDbi()->createByteArrayAttribute(attribute, os);
         CHECK_OP(os, nullptr);

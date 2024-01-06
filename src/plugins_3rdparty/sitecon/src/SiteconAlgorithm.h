@@ -24,7 +24,7 @@
 
 #include <QVector>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 
@@ -93,19 +93,19 @@ class DNATranslation;
 class SiteconAlgorithm : public QObject {
     Q_OBJECT
 public:
-    static QVector<PositionStats> calculateDispersionAndAverage(const MultipleAlignment& ma, const SiteconBuildSettings& s, TaskStateInfo& ts);
+    static QVector<PositionStats> calculateDispersionAndAverage(const Msa& ma, const SiteconBuildSettings& s, TaskStateInfo& ts);
 
     static qreal calculatePSum(const char* seq, int len, const QVector<PositionStats>& normalizedMatrix, const SiteconBuildSettings& settings, qreal devThreshold, DNATranslation* complMap = nullptr);
 
-    static QVector<qreal> calculateFirstTypeError(const MultipleAlignment& ma, const SiteconBuildSettings& s, TaskStateInfo& ts);
+    static QVector<qreal> calculateFirstTypeError(const Msa& ma, const SiteconBuildSettings& s, TaskStateInfo& ts);
 
     static QVector<qreal> calculateSecondTypeError(const QVector<PositionStats>& matrix, const SiteconBuildSettings& s, TaskStateInfo& ts);
 
     static QVector<PositionStats> normalize(const QVector<PositionStats>& matrix);
 
-    static int calculateWeights(const MultipleAlignment& ma, QVector<PositionStats>& matrix, const SiteconBuildSettings& settings, bool matrixIsNormalized, TaskStateInfo& s);
+    static int calculateWeights(const Msa& ma, QVector<PositionStats>& matrix, const SiteconBuildSettings& settings, bool matrixIsNormalized, TaskStateInfo& s);
 
-    static void calculateACGTContent(const MultipleAlignment& ma, SiteconBuildSettings& bs);
+    static void calculateACGTContent(const Msa& ma, SiteconBuildSettings& bs);
 
     static QByteArray generateRandomSequence(const int* actgContent, int seqLen, TaskStateInfo& ts);
 };

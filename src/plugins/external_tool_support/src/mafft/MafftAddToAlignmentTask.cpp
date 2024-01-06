@@ -37,10 +37,10 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaExportUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Mod.h>
@@ -212,7 +212,7 @@ void MafftAddToAlignmentTask::run() {
         CHECK_OP(stateInfo, );
     }
     QMap<QString, qint64> uniqueNamesToIds;
-    foreach (const MultipleAlignmentRow& refRow, inputMsa->getRows()) {
+    foreach (const MsaRow& refRow, inputMsa->getRows()) {
         uniqueNamesToIds[refRow->getName()] = refRow->getRowId();
     }
 

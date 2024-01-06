@@ -67,7 +67,7 @@ QMap<QString, QString> JasparInfo::getProperties() const {
     return properties;
 }
 
-PFMatrix::PFMatrix(const MultipleAlignment& align, const PFMatrixType& _type)
+PFMatrix::PFMatrix(const Msa& align, const PFMatrixType& _type)
     : type(_type) {
     assert(align->hasEqualLength());
     const int sequenceLength = align->getRows().first()->getUngappedLength();

@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-void DistanceMatrix::calculateOutOfAlignment(const MultipleAlignment& ma, const CreatePhyTreeSettings& settings) {
+void DistanceMatrix::calculateOutOfAlignment(const Msa& ma, const CreatePhyTreeSettings& settings) {
     try {
         malignment = &ma;
         int index = 0;
@@ -48,7 +48,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleAlignment& ma, const 
         this->size = size;
         printdata = false;
 
-        foreach (const MultipleAlignmentRow& r, ma->getRows()) {
+        foreach (const MsaRow& r, ma->getRows()) {
             const QString& str = r->getName();
             index_map.insert(str, index);
             index++;

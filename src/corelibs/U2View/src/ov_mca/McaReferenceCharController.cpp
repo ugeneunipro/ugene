@@ -117,7 +117,7 @@ void McaReferenceCharController::sl_update() {
     initRegions();
 }
 
-void McaReferenceCharController::sl_update(const MultipleAlignment&, const MaModificationInfo& modInfo) {
+void McaReferenceCharController::sl_update(const Msa&, const MaModificationInfo& modInfo) {
     if (modInfo.type == MaModificationType_Undo || modInfo.type == MaModificationType_Redo) {
         initRegions();
     }

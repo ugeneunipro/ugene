@@ -23,7 +23,7 @@
 
 #include <U2Core/Chromatogram.h>
 #include <U2Core/DNASequence.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2Msa.h>
 
@@ -46,7 +46,7 @@ public:
     MsaExportUtils() = default;
 
     /** Returns in-memory alignment model. */
-    static MultipleAlignment loadAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os);
+    static Msa loadAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os);
 
     /** Returns in-memory rows model. */
     static QList<MsaRowSnapshot> loadRows(const U2DbiRef& dbiRef,

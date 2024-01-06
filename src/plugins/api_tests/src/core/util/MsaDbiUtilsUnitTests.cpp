@@ -973,7 +973,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_noGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1003,7 +1003,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1033,7 +1033,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1063,7 +1063,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGapsCutOff) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1093,7 +1093,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGapsCutOff) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1123,7 +1123,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingAndTrailingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1153,7 +1153,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_gapsOnly) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(0, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
@@ -1181,7 +1181,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_oneRow) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 8, 3, os);
     CHECK_NO_ERROR(os);
 
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
@@ -1207,7 +1207,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_threeRows) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 2, 8, os);
     CHECK_NO_ERROR(os);
 
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
@@ -1233,7 +1233,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_lengthChange) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 5, 1, os);
     CHECK_NO_ERROR(os);
 
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
@@ -1261,7 +1261,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_allRows) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 3, os);
     CHECK_NO_ERROR(os);
 
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(11, al->getLength(), "Wrong msa length");
 
@@ -1307,7 +1307,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_all) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 14, os);
     CHECK_NO_ERROR(os);
 
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(0, al->getLength(), "Wrong msa length");
 
@@ -1332,7 +1332,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_negativePos) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, -1, 14, tmpOs);
     CHECK_TRUE(tmpOs.hasError(), "No error occurred for negative pos");
 
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
@@ -1379,7 +1379,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongCount) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 0, tmpOs);
     CHECK_TRUE(tmpOs.hasError(), "No error occurred for wrong count");
 
-    MultipleAlignment al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
@@ -1398,13 +1398,13 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_empty) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
     ma->addRow("4", "TTT-TTTT", -1);
 
-    const QVector<MultipleAlignmentRow>& maRows = ma->getRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Call test function
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1453,13 +1453,13 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_nothingNew) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
     ma->addRow("4", "TTT-TTTT", -1);
 
-    const QVector<MultipleAlignmentRow>& maRows = ma->getRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // The first call is correct (updateMsa_empty test)
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1512,7 +1512,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newOrder) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1525,7 +1525,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newOrder) {
     // Change order of rows
     ma->moveRowsBlock(1, 1, 1);
 
-    const QVector<MultipleAlignmentRow>& maRows = ma->getRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Test call with new row order
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1574,13 +1574,13 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newName) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
     ma->addRow("4", "TTT-TTTT", -1);
 
-    const QVector<MultipleAlignmentRow>& maRows = ma->getRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // The first call is correct (updateMsa_empty test)
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1636,13 +1636,13 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newAlphabet) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
     ma->addRow("4", "TTT-TTTT", -1);
 
-    const QVector<MultipleAlignmentRow>& maRows = ma->getRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // The first call is correct (updateMsa_empty test)
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1699,7 +1699,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newContent) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1712,7 +1712,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newContent) {
     // Change sequence data in the second row
     ma->setRowContent(1, "AA--AA--AA--AA");
 
-    const QVector<MultipleAlignmentRow>& maRows = ma->getRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Test call with changed data in second row
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1761,7 +1761,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1772,7 +1772,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
     CHECK_NO_ERROR(os);
 
     // Export an alignment from the dbi to the memory (to set actual IDs)
-    MultipleAlignment expMa = MsaExportUtils::loadAlignment(dbiRef, msaId, os);
+    Msa expMa = MsaExportUtils::loadAlignment(dbiRef, msaId, os);
     CHECK_NO_ERROR(os);
 
     // Set a new sequence ID for the second row
@@ -1790,7 +1790,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
     expMa->addRow(changedRow, newDnaSeq, os);
     CHECK_NO_ERROR(os);
 
-    const QVector<MultipleAlignmentRow>& expMaRows = expMa->getRows();
+    const QVector<MsaRow>& expMaRows = expMa->getRows();
 
     // Test call with changed sequence ID
     MsaDbiUtils::updateMsa(msaRef, expMa, os);
@@ -1839,7 +1839,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_additionalRows) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1853,7 +1853,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_additionalRows) {
     ma->addRow("5", "ATATATATAT", -1);
     ma->addRow("6", "CGCG--CGCG", -1);
 
-    const QVector<MultipleAlignmentRow>& maRows = ma->getRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Test call without new information
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1902,7 +1902,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_removeRows) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1918,7 +1918,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_removeRows) {
     ma->removeRow(2, os);
     CHECK_NO_ERROR(os);
 
-    const QVector<MultipleAlignmentRow>& maRows = ma->getRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Test call without some rows
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1967,7 +1967,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_clear) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1980,7 +1980,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_clear) {
     // Clear alignment
     ma->clear();
 
-    const QVector<MultipleAlignmentRow>& maRows = ma->getRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Test call with empty alignment
     MsaDbiUtils::updateMsa(msaRef, ma, os);

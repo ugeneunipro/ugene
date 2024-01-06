@@ -23,14 +23,14 @@
 
 #include <unittest.h>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2Dbi.h>
 
 #include "core/dbi/DbiTest.h"
 
 namespace U2 {
 
-class MultipleAlignmentObject;
+class MsaObject;
 
 class MsaObjectTestData {
 public:
@@ -39,9 +39,9 @@ public:
 
     static U2DbiRef getDbiRef();
 
-    static MultipleAlignmentObject* getTestAlignmentObject(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
+    static MsaObject* getTestAlignmentObject(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
     static U2EntityRef getTestAlignmentRef(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
-    static MultipleAlignment getTestAlignment(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
+    static Msa getTestAlignment(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
 
 private:
     static TestDbiProvider dbiProvider;

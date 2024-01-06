@@ -5,10 +5,10 @@ extern double QScore(MSA_QScore* _msaTest, MSA_QScore* _msaRef);
 
 namespace U2 {
   
-  static void convertMAlignment2MSA(MSA_QScore& muscleMSA, const MultipleAlignment& ma){
+  static void convertMAlignment2MSA(MSA_QScore& muscleMSA, const Msa& ma){
 
     for (int i=0, n = ma->getRowCount(); i<n; i++) {
-      const MultipleAlignmentRow& aseq = ma->getRow(i);
+      const MsaRow& aseq = ma->getRow(i);
 
       char *sequence = new char[ma->getLength() + 1];
       for(int position = 0;position < ma->getLength();position++) {
@@ -24,7 +24,7 @@ namespace U2 {
     }
   }
 
-  double QScore(const MultipleAlignment& maTest, const MultipleAlignment& maRef, TaskStateInfo& ti) {
+  double QScore(const Msa& maTest, const Msa& maRef, TaskStateInfo& ti) {
     MSA_QScore msaTest, msaRef;
     try {
       convertMAlignment2MSA(msaTest, maTest);

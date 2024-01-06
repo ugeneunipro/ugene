@@ -51,11 +51,11 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/UdrSchema.h \
            src/datatype/UdrSchemaRegistry.h \
            src/datatype/Vector3D.h \
-           src/datatype/msa/MaStateCheck.h \
-           src/datatype/msa/MultipleAlignment.h \
-           src/datatype/msa/MultipleAlignmentInfo.h \
-           src/datatype/msa/MultipleAlignmentRow.h \
-           src/datatype/msa/MultipleAlignmentRowInfo.h \
+           src/datatype/msa/MsaStateCheck.h \
+           src/datatype/msa/Msa.h \
+           src/datatype/msa/MsaInfo.h \
+           src/datatype/msa/MsaRow.h \
+           src/datatype/msa/MsaRowInfo.h \
            src/datatype/primers/Primer.h \
            src/datatype/primers/PrimerDimersFinder.h \
            src/datatype/primers/PrimerStatistics.h \
@@ -135,7 +135,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/gobjects/GObjectRelationRoles.h \
            src/gobjects/GObjectTypes.h \
            src/gobjects/GObjectUtils.h \
-           src/gobjects/MultipleAlignmentObject.h \
+           src/gobjects/MsaObject.h \
            src/gobjects/PFMatrixObject.h \
            src/gobjects/PWMatrixObject.h \
            src/gobjects/PhyTreeObject.h \
@@ -230,14 +230,14 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/GenbankFeatures.h \
            src/util/IOAdapterUtils.h \
            src/util/ImportToDatabaseOptions.h \
-           src/util/MSAUtils.h \
+           src/util/MsaUtils.h \
            src/util/MaIterator.h \
            src/util/MaModificationInfo.h \
            src/util/MsaDbiUtils.h \
            src/util/MsaExportUtils.h \
            src/util/MsaImportUtils.h \
            src/util/MsaRowUtils.h \
-           src/util/MultipleSequenceAlignmentWalker.h \
+           src/util/MsaWalker.h \
            src/util/PMatrixSerializeUtils.h \
            src/util/QObjectScopedPointer.h \
            src/util/QVariantUtils.h \
@@ -300,11 +300,11 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/UdrSchema.cpp \
            src/datatype/UdrSchemaRegistry.cpp \
            src/datatype/Vector3D.cpp \
-           src/datatype/msa/MaStateCheck.cpp \
-           src/datatype/msa/MultipleAlignment.cpp \
-           src/datatype/msa/MultipleAlignmentInfo.cpp \
-           src/datatype/msa/MultipleAlignmentRow.cpp \
-           src/datatype/msa/MultipleAlignmentRowInfo.cpp \
+           src/datatype/msa/MsaStateCheck.cpp \
+           src/datatype/msa/Msa.cpp \
+           src/datatype/msa/MsaInfo.cpp \
+           src/datatype/msa/MsaRow.cpp \
+           src/datatype/msa/MsaRowInfo.cpp \
            src/datatype/primers/Primer.cpp \
            src/datatype/primers/PrimerDimersFinder.cpp \
            src/datatype/primers/PrimerStatistics.cpp \
@@ -363,7 +363,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/gobjects/GObjectRelationRoles.cpp \
            src/gobjects/GObjectTypes.cpp \
            src/gobjects/GObjectUtils.cpp \
-           src/gobjects/MultipleAlignmentObject.cpp \
+           src/gobjects/MsaObject.cpp \
            src/gobjects/PFMatrixObject.cpp \
            src/gobjects/PWMatrixObject.cpp \
            src/gobjects/PhyTreeObject.cpp \
@@ -452,14 +452,14 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/GenbankFeatures.cpp \
            src/util/IOAdapterUtils.cpp \
            src/util/ImportToDatabaseOptions.cpp \
-           src/util/MSAUtils.cpp \
+           src/util/MsaUtils.cpp \
            src/util/MaIterator.cpp \
            src/util/MaModificationInfo.cpp \
            src/util/MsaDbiUtils.cpp \
            src/util/MsaExportUtils.cpp \
            src/util/MsaImportUtils.cpp \
            src/util/MsaRowUtils.cpp \
-           src/util/MultipleSequenceAlignmentWalker.cpp \
+           src/util/MsaWalker.cpp \
            src/util/QVariantUtils.cpp \
            src/util/SequenceUtils.cpp \
            src/util/SnpeffDictionary.cpp \

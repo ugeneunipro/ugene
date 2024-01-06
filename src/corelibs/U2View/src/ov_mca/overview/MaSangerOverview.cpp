@@ -255,9 +255,9 @@ void MaSangerOverview::drawReads() {
     QPainter painter(&cachedReadsView);
     painter.fillRect(cachedReadsView.rect(), Qt::white);
 
-    const MultipleAlignmentObject* mcaObject = getEditor()->getMaObject();
+    const MsaObject* mcaObject = getEditor()->getMaObject();
     SAFE_POINT(mcaObject != nullptr, "Incorrect multiple chromatogram alignment object", );
-    const MultipleAlignment mca = mcaObject->getAlignment();
+    const Msa mca = mcaObject->getAlignment();
     const int rowsCount = editor->getCollapseModel()->getViewRowCount();
 
     double yOffset = 0;
@@ -266,7 +266,7 @@ void MaSangerOverview::drawReads() {
 
     for (int viewRowIndex = 0; viewRowIndex < rowsCount; viewRowIndex++) {
         int maRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
-        const MultipleAlignmentRow& row = mca->getRow(maRowIndex);
+        const MsaRow& row = mca->getRow(maRowIndex);
         U2Region coreRegion = row->getCoreRegion();
         U2Region positionRegion = editor->getMaEditorWgt(0)->getBaseWidthController()->getBasesGlobalRange(coreRegion);
 

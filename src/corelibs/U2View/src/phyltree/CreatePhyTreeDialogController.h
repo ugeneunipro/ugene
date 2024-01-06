@@ -25,21 +25,21 @@
 
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/global.h>
 
 class Ui_CreatePhyTree;
 
 namespace U2 {
 
-class MultipleAlignmentObject;
+class MsaObject;
 class CreatePhyTreeWidget;
 class SaveDocumentController;
 
 class U2VIEW_EXPORT CreatePhyTreeDialogController : public QDialog {
     Q_OBJECT
 public:
-    CreatePhyTreeDialogController(QWidget* parent, const MultipleAlignmentObject* msaObject, CreatePhyTreeSettings& settings);
+    CreatePhyTreeDialogController(QWidget* parent, const MsaObject* msaObject, CreatePhyTreeSettings& settings);
     ~CreatePhyTreeDialogController();
 
 private slots:
@@ -52,9 +52,9 @@ private:
     bool checkAndPrepareOutputFilePath();
     bool checkSettings();
     bool checkMemory();
-    void initSaveController(const MultipleAlignmentObject* msaObject);
+    void initSaveController(const MsaObject* msaObject);
 
-    MultipleAlignment msa;
+    Msa msa;
     CreatePhyTreeSettings& settings;
     CreatePhyTreeWidget* settingsWidget;
     Ui_CreatePhyTree* ui;

@@ -117,13 +117,13 @@ void GTest_CreateSubalignimentTask::prepare() {
         return;
     }
 
-    expectedMaobj = (MultipleAlignmentObject*)expList.first();
+    expectedMaobj = (MsaObject*)expList.first();
 
-    maobj = (MultipleAlignmentObject*)list.first();
+    maobj = (MsaObject*)list.first();
 
     QMap<QString, qint64> rowIdByRowName;
     for (int i = 0; i < maobj->getRowCount(); i++) {
-        const MultipleAlignmentRow& row = maobj->getRow(i);
+        const MsaRow& row = maobj->getRow(i);
         rowIdByRowName.insert(row->getName(), row->getRowId());
     }
 
@@ -140,8 +140,8 @@ void GTest_CreateSubalignimentTask::prepare() {
 }
 
 Task::ReportResult GTest_CreateSubalignimentTask::report() {
-    const MultipleAlignment actual = maobj->getAlignment();
-    const MultipleAlignment expected = expectedMaobj->getAlignment();
+    const Msa actual = maobj->getAlignment();
+    const Msa expected = expectedMaobj->getAlignment();
     if (actual->getRows().size() != expected->getRows().size()) {
         stateInfo.setError(GTest::tr("Expected and actual alignment sizes are different: %1 , %2")
                                .arg(expected->getRows().size())
@@ -149,7 +149,7 @@ Task::ReportResult GTest_CreateSubalignimentTask::report() {
         return ReportResult_Finished;
     }
     for (int i = 0; i < actual->getRows().size(); i++) {
-        const MultipleAlignmentRow& actItem = actual->getRow(i), expItem = expected->getRow(i);
+        const MsaRow & actItem = actual->getRow(i), expItem = expected->getRow(i);
         if (*actItem != *expItem) {
             stateInfo.setError(GTest::tr("Expected and actual alignments not equal"));
             return ReportResult_Finished;
@@ -265,16 +265,16 @@ void GTest_RemoveAlignmentRegion::prepare() {
         return;
     }
 
-    expectedMaobj = (MultipleAlignmentObject*)expList.first();
+    expectedMaobj = (MsaObject*)expList.first();
 
-    maobj = (MultipleAlignmentObject*)list.first();
+    maobj = (MsaObject*)list.first();
 }
 
 Task::ReportResult GTest_RemoveAlignmentRegion::report() {
     if (!hasError()) {
         maobj->removeRegion(startBase, startSeq, width, height, true);
-        const MultipleAlignment actual = maobj->getAlignment();
-        const MultipleAlignment expected = expectedMaobj->getAlignment();
+        const Msa actual = maobj->getAlignment();
+        const Msa expected = expectedMaobj->getAlignment();
 
         if (*actual != *expected) {
             stateInfo.setError(GTest::tr("Expected and actual alignments not equal"));
@@ -339,8 +339,8 @@ void GTest_AddSequenceToAlignment::prepare() {
         return;
     }
 
-    expectedMaobj = (MultipleAlignmentObject*)expList.first();
-    maobj = (MultipleAlignmentObject*)list.first();
+    expectedMaobj = (MsaObject*)expList.first();
+    maobj = (MsaObject*)list.first();
 
     if (seqFileName.isEmpty()) {
         stateInfo.setError(GTest::tr("File with sequences has empty name"));
@@ -355,8 +355,8 @@ Task::ReportResult GTest_AddSequenceToAlignment::report() {
     propagateSubtaskError();
 
     if (!hasError()) {
-        const MultipleAlignment actual = maobj->getAlignment();
-        const MultipleAlignment expected = expectedMaobj->getAlignment();
+        const Msa actual = maobj->getAlignment();
+        const Msa expected = expectedMaobj->getAlignment();
 
         if (*actual != *expected) {
             stateInfo.setError(GTest::tr("Expected and actual alignments not equal"));
@@ -395,7 +395,7 @@ void GTest_RemoveColumnsOfGaps::prepare() {
     }
     assert(obj != nullptr);
 
-    auto maObj = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto maObj = qobject_cast<MsaObject*>(obj);
     if (maObj == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;

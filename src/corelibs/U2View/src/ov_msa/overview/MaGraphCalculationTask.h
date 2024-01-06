@@ -25,7 +25,7 @@
 
 #include <U2Core/AppResources.h>
 #include <U2Core/BackgroundTaskRunner.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/global.h>
 
 #include <U2View/MSAEditorConsensusCache.h>
@@ -33,7 +33,7 @@
 namespace U2 {
 
 class MaEditor;
-class MultipleAlignmentObject;
+class MsaObject;
 class MSAConsensusAlgorithm;
 class MsaColorScheme;
 class MsaHighlightingScheme;
@@ -41,7 +41,7 @@ class MsaHighlightingScheme;
 class MaGraphCalculationTask : public BackgroundTask<QPolygonF> {
     Q_OBJECT
 public:
-    MaGraphCalculationTask(MultipleAlignmentObject* msa, int width, int height);
+    MaGraphCalculationTask(MsaObject* msa, int width, int height);
 
     void run();
 signals:
@@ -54,7 +54,7 @@ protected:
         return height;
     }
 
-    MultipleAlignment ma;
+    Msa ma;
     MemoryLocker memLocker;
     int msaLength;
     int seqNumber;
@@ -65,7 +65,7 @@ protected:
 class MaConsensusOverviewCalculationTask : public MaGraphCalculationTask {
     Q_OBJECT
 public:
-    MaConsensusOverviewCalculationTask(MultipleAlignmentObject* msa,
+    MaConsensusOverviewCalculationTask(MsaObject* msa,
                                        int width,
                                        int height);
 
@@ -78,7 +78,7 @@ private:
 class MaGapOverviewCalculationTask : public MaGraphCalculationTask {
     Q_OBJECT
 public:
-    MaGapOverviewCalculationTask(MultipleAlignmentObject* msa,
+    MaGapOverviewCalculationTask(MsaObject* msa,
                                  int width,
                                  int height);
 
@@ -89,7 +89,7 @@ private:
 class MaClustalOverviewCalculationTask : public MaGraphCalculationTask {
     Q_OBJECT
 public:
-    MaClustalOverviewCalculationTask(MultipleAlignmentObject* msa,
+    MaClustalOverviewCalculationTask(MsaObject* msa,
                                      int width,
                                      int height);
 
@@ -108,7 +108,7 @@ public:
                                           int width,
                                           int height);
 
-    static bool isCellHighlighted(const MultipleAlignment& msa,
+    static bool isCellHighlighted(const Msa& msa,
                                   MsaHighlightingScheme* highlightingScheme,
                                   MsaColorScheme* colorScheme,
                                   int seq,

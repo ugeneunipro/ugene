@@ -26,7 +26,7 @@
 
 #include <U2Algorithm/MsaUtilTasks.h>
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2Region.h>
@@ -36,7 +36,7 @@ class MuscleContext;
 namespace U2 {
 
 class StateLock;
-class MultipleAlignmentObject;
+class MsaObject;
 class LoadDocumentTask;
 class MuscleParallelTask;
 
@@ -76,7 +76,7 @@ public:
     QSet<int> rowIndexesToAlign;
 
     // used only for MuscleTaskOp_AddUnalignedToProfile and MuscleTaskOp_ProfileToProfile
-    MultipleAlignment profile;
+    Msa profile;
 
     // number of threads: 0 - auto, 1 - serial
     int nThreads;
@@ -87,7 +87,7 @@ public:
 class MuscleTask : public Task {
     Q_OBJECT
 public:
-    MuscleTask(const MultipleAlignment& ma, const MuscleTaskSettings& config);
+    MuscleTask(const Msa& ma, const MuscleTaskSettings& config);
 
     void run() override;
 
@@ -101,11 +101,11 @@ public:
     ReportResult report() override;
 
     MuscleTaskSettings config;
-    MultipleAlignment inputMA;
-    MultipleAlignment resultMA;
+    Msa inputMA;
+    Msa resultMA;
 
-    MultipleAlignment inputSubMA;
-    MultipleAlignment resultSubMA;
+    Msa inputSubMA;
+    Msa resultSubMA;
 
     MuscleContext* ctx;
     MuscleParallelTask* parallelSubTask;
@@ -118,13 +118,13 @@ public:
         Profile2Profile,
         Sequences2Profile,
     };
-    MuscleAddSequencesToProfileTask(MultipleAlignmentObject* obj, const QString& fileWithSequencesOrProfile, const MMode& mode);
+    MuscleAddSequencesToProfileTask(MsaObject* obj, const QString& fileWithSequencesOrProfile, const MMode& mode);
 
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     ReportResult report() override;
 
-    QPointer<MultipleAlignmentObject> maObj;
+    QPointer<MsaObject> maObj;
     LoadDocumentTask* loadTask;
     MMode mode;
 };
@@ -133,14 +133,14 @@ public:
 class MuscleAlignOwnSequencesToSelfAction : public Task {
     Q_OBJECT
 public:
-    MuscleAlignOwnSequencesToSelfAction(MultipleAlignmentObject* msaObject, const QList<int>& maRowIndexes);
+    MuscleAlignOwnSequencesToSelfAction(MsaObject* msaObject, const QList<int>& maRowIndexes);
 };
 
 // locks MultipleAlignment object and propagate MuscleTask results to it
 class MuscleGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    MuscleGObjectTask(MultipleAlignmentObject* obj, const MuscleTaskSettings& config);
+    MuscleGObjectTask(MsaObject* obj, const MuscleTaskSettings& config);
     ~MuscleGObjectTask();
 
     virtual void prepare();
@@ -163,7 +163,7 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    MultipleAlignmentObject* mAObject;
+    MsaObject* mAObject;
     Document* currentDocument;
     bool cleanDoc;
 
@@ -188,10 +188,10 @@ private:
 class MuscleGObjectRunFromSchemaTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    MuscleGObjectRunFromSchemaTask(MultipleAlignmentObject* obj, const MuscleTaskSettings& config);
+    MuscleGObjectRunFromSchemaTask(MsaObject* obj, const MuscleTaskSettings& config);
 
     void prepare();
-    void setMAObject(MultipleAlignmentObject* maobj);
+    void setMAObject(MsaObject* maobj);
 
 private:
     MuscleTaskSettings config;

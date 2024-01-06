@@ -23,7 +23,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 #include "TextDocumentFormat.h"
 
@@ -49,7 +49,7 @@ private:
     static bool readName(IOAdapter* io, QByteArray& line, QByteArray& name, U2OpStatus& ti);
     static bool readSequence(IOAdapter* io, QByteArray& line, U2OpStatus& ti, QByteArray& value, bool* lastIteration);
 
-    static void workUpIndels(MultipleAlignment& al);
+    static void workUpIndels(Msa& al);
     static bool getNextLine(IOAdapter* io, QByteArray& line, U2OpStatus& ti);
     static bool skipComments(IOAdapter* io, QByteArray& line, U2OpStatus& ti);
     static bool checkName(QByteArray& name);

@@ -65,18 +65,18 @@ PrepareMsaClipboardDataTask* MsaClipboardDataTaskFactory::newInstance(MSAEditor*
     }
 }
 
-FormatsMsaClipboardTask::FormatsMsaClipboardTask(MultipleAlignmentObject* msaObj, const QList<qint64>& _rowIds, const U2Region& _columnRange, const DocumentFormatId& formatId)
+FormatsMsaClipboardTask::FormatsMsaClipboardTask(MsaObject* msaObj, const QList<qint64>& _rowIds, const U2Region& _columnRange, const DocumentFormatId& formatId)
     : PrepareMsaClipboardDataTask(_rowIds, _columnRange), createSubalignmentTask(nullptr), msaObj(msaObj), formatId(formatId) {
 }
 
 void FormatsMsaClipboardTask::prepare() {
     if (formatId == BaseDocumentFormats::PLAIN_TEXT) {
-        MultipleAlignment msa = msaObj->getAlignment()->getCopy();
+        Msa msa = msaObj->getAlignment()->getCopy();
         msa->crop(rowIds, columnRange, stateInfo);
         CHECK_OP(stateInfo, )
 
         for (int i = 0; i < msa->getRowCount(); i++) {
-            const MultipleAlignmentRow& row = msa->getRow(i);
+            const MsaRow& row = msa->getRow(i);
             if (i > 0) {
                 resultText.append("\n");
             }
@@ -145,7 +145,7 @@ RichTextMsaClipboardTask::RichTextMsaClipboardTask(MaEditor* _maEditor, const QL
 }
 
 void RichTextMsaClipboardTask::prepare() {
-    MultipleAlignmentObject* maObject = maEditor->getMaObject();
+    MsaObject* maObject = maEditor->getMaObject();
     const DNAAlphabet* al = maObject->getAlphabet();
 
     Settings* appSettings = AppContext::getSettings();
@@ -170,7 +170,7 @@ void RichTextMsaClipboardTask::prepare() {
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
 
-    MultipleAlignment msa = maObject->getAlignment();
+    Msa msa = maObject->getAlignment();
 
     U2OpStatusImpl os;
     qint64 refSeqRowId = maEditor->getReferenceRowId();
@@ -179,7 +179,7 @@ void RichTextMsaClipboardTask::prepare() {
     resultText.append(QString("<span style=\"font-size:%1pt; font-family:%2;\">\n").arg(pointSize).arg(fontFamily).toUtf8());
     int numRows = msa->getRowCount();
     for (int maRowIndex = 0; maRowIndex < numRows; maRowIndex++) {
-        MultipleAlignmentRow row = msa->getRow(maRowIndex);
+        MsaRow row = msa->getRow(maRowIndex);
         if (!rowIds.contains(row->getRowId())) {
             continue;
         }

@@ -25,8 +25,8 @@
 #include <U2Core/DocumentImport.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SequenceUtils.h>
 #include <U2Core/TextUtils.h>
@@ -235,7 +235,7 @@ Document* DocumentUtils::createCopyRestructuredWithHints(Document* doc, U2OpStat
     }
 
     if (hints.value(DocumentReadingMode_SequenceAsAlignmentHint, false).toBool()) {
-        MultipleAlignmentObject* maObj = MsaUtils::convertSequenceObjectsToMsaObject(doc->getObjects(), hints, os, true);
+        MsaObject* maObj = MsaUtils::convertSequenceObjectsToMsaObject(doc->getObjects(), hints, os, true);
         CHECK_OP(os, nullptr);
         CHECK(maObj != nullptr, resultDoc);
         QList<GObject*> objects;

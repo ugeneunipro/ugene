@@ -41,12 +41,8 @@ MaOverview::MaOverview(MaEditor* _editor, QWidget* _ui)
       ui(_ui),
       stepX(0),
       stepY(0) {
-    connect(editor->getSelectionController(),
-            SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
-            SLOT(sl_selectionChanged()));
-    connect(editor->getMaObject(),
-            SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
-            SLOT(sl_redraw()));
+    connect(editor->getSelectionController(), &MaEditorSelectionController::si_selectionChanged, this, &MaOverview::sl_selectionChanged);
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaOverview::sl_redraw);
 
     // The hack
     // for MSA we have MaEditorMultilineWgt

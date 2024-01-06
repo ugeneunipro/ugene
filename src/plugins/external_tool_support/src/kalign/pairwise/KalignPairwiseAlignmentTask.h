@@ -24,7 +24,7 @@
 #include <U2Algorithm/PairwiseAlignmentTask.h>
 
 #include <U2Core/DNATranslation.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 #include "../KalignSupportTask.h"
 
@@ -67,7 +67,7 @@ protected:
 protected:
     KalignPairwiseAlignmentTaskSettings* settings = nullptr;
     Kalign3SupportTask* kalignSubTask = nullptr;
-    MultipleAlignment ma;
+    Msa ma;
     const DNAAlphabet* alphabet = nullptr;
 };
 

@@ -22,9 +22,9 @@
 #include "AprFormat.h"
 
 #include <U2Core/IOAdapter.h>
+#include <U2Core/Msa.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -128,7 +128,7 @@ static QByteArray getSequenceContent(QString string, int sequenceLength) {
     return byteArrayInfo;
 }
 
-static void createRows(IOAdapter* io, char* buff, const int sequnenceNum, const int alignmentLength, MultipleAlignment& al, U2OpStatus& os) {
+static void createRows(IOAdapter* io, char* buff, const int sequnenceNum, const int alignmentLength, Msa& al, U2OpStatus& os) {
     for (int i = 0; i < sequnenceNum; i++) {
         QString rowInfo = getLine(io, buff, AREA_SEQUENCE, os);
         CHECK_OP(os, );
@@ -192,7 +192,7 @@ void AprFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     char* buff = readBuffer.data();
 
     QString objName = io->getURL().baseFileName();
-    MultipleAlignment al(objName);
+    Msa al(objName);
     bool lineOk = false;
 
     io->readLine(buff, READ_BUFF_SIZE, &lineOk);
@@ -227,7 +227,7 @@ void AprFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     CHECK_EXT(al->getAlphabet() != nullptr, os.setError(AprFormat::tr("Alphabet is unknown")), );
 
     const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
+    MsaObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
     CHECK_OP(os, );
     objects.append(obj);
 }

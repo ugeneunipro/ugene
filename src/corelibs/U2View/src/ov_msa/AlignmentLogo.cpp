@@ -26,7 +26,7 @@
 #include <QPainter>
 
 #include "U2Core/DNAAlphabet.h"
-#include "U2Core/MultipleAlignment.h"
+#include "U2Core/Msa.h"
 
 #include <U2View/MSAEditor.h>
 
@@ -130,7 +130,7 @@ void AlignmentLogoRenderArea::resizeEvent(QResizeEvent* e) {
 }
 
 void AlignmentLogoRenderArea::evaluateHeights() {
-    const MultipleAlignment& ma = settings.ma;
+    const Msa& ma = settings.ma;
     int numRows = ma->getRowCount();
     error = (s - 1) / (2 * log(2.0) * numRows);
 
@@ -144,7 +144,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
 
     for (int pos = settings.startPos; pos < settings.len + settings.startPos; pos++) {
         for (int idx = 0; idx < numRows; idx++) {
-            const MultipleAlignmentRow& row = ma->getRow(idx);
+            const MsaRow& row = ma->getRow(idx);
             assert(pos < ma->getLength());
             char ch = row->charAt(pos);
             if (acceptableChars->contains(ch)) {

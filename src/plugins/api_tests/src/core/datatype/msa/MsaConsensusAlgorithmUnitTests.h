@@ -23,7 +23,7 @@
 
 #include <unittest.h>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 namespace U2 {
 

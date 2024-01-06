@@ -23,11 +23,10 @@
 
 #include <QDir>
 
-
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/SaveDocumentTask.h>
 
@@ -116,7 +115,7 @@ void GTest_PhyML::prepare() {
         return;
     }
     assert(obj != nullptr);
-    auto ma = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto ma = qobject_cast<MsaObject*>(obj);
     if (ma == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;

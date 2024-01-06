@@ -26,7 +26,7 @@
 #include <QVector>
 
 #include <U2Core/AppResources.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 
 namespace U2 {
@@ -51,7 +51,7 @@ class U2ALGORITHM_EXPORT MSADistanceAlgorithmFactory : public QObject {
 public:
     MSADistanceAlgorithmFactory(const QString& algoId, DistanceAlgorithmFlags flags, QObject* p = nullptr);
 
-    virtual MSADistanceAlgorithm* createAlgorithm(const MultipleAlignment& ma, QObject* parent = nullptr) = 0;
+    virtual MSADistanceAlgorithm* createAlgorithm(const Msa& ma, QObject* parent = nullptr) = 0;
 
     QString getId() const {
         return algorithmId;
@@ -83,7 +83,7 @@ class U2ALGORITHM_EXPORT MSADistanceMatrix {
 
 private:
     MSADistanceMatrix();
-    MSADistanceMatrix(const MultipleAlignment& ma, bool _excludeGaps, bool _usePercents);
+    MSADistanceMatrix(const Msa& ma, bool _excludeGaps, bool _usePercents);
 
 public:
     bool isEmpty() {
@@ -110,7 +110,7 @@ class U2ALGORITHM_EXPORT MSADistanceAlgorithm : public Task {
     Q_OBJECT
 
 public:
-    MSADistanceAlgorithm(MSADistanceAlgorithmFactory* factory, const MultipleAlignment& ma);
+    MSADistanceAlgorithm(MSADistanceAlgorithmFactory* factory, const Msa& ma);
 
     int getSimilarity(int row1, int row2, bool usePercents);
 
@@ -154,7 +154,7 @@ protected:
     virtual int calculateSimilarity(int, int) {
         return 0;
     }
-    MultipleAlignment ma;
+    Msa ma;
     mutable QMutex lock;
     bool excludeGaps;
     bool isSimilarity;

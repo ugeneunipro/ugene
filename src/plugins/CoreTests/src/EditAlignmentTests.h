@@ -26,7 +26,7 @@
 #include <U2Algorithm/CreateSubalignmentTask.h>
 
 #include <U2Core/GUrl.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 #include <U2Test/GTest.h>
 #include <U2Test/XMLTestUtils.h>
@@ -43,8 +43,8 @@ public:
     Task::ReportResult report();
 
 private:
-    MultipleAlignmentObject* maobj;
-    MultipleAlignmentObject* expectedMaobj;
+    MsaObject* maobj;
+    MsaObject* expectedMaobj;
     QString docName;
     bool negativeTest;
     Task* t;
@@ -61,8 +61,8 @@ public:
     Task::ReportResult report();
 
 private:
-    MultipleAlignmentObject* maobj;
-    MultipleAlignmentObject* expectedMaobj;
+    MsaObject* maobj;
+    MsaObject* expectedMaobj;
     QString docName;
     QString expectedDocName;
     int startBase, startSeq, width, height;
@@ -76,8 +76,8 @@ public:
     Task::ReportResult report();
 
 private:
-    MultipleAlignmentObject* maobj;
-    MultipleAlignmentObject* expectedMaobj;
+    MsaObject* maobj;
+    MsaObject* expectedMaobj;
     QString docName;
     QString expectedDocName;
     QString seqFileName;

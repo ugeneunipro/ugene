@@ -31,7 +31,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryClustal : public MSAConsens
 public:
     MSAConsensusAlgorithmFactoryClustal();
 
-    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
+    MSAConsensusAlgorithm* createAlgorithm(const Msa& ma, bool ignoreTrailingLeadingGaps) override;
 };
 
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmClustal : public MSAConsensusAlgorithm {
@@ -41,7 +41,7 @@ public:
         : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps) {
     }
 
-    char getConsensusChar(const MultipleAlignment& ma, int column) const override;
+    char getConsensusChar(const Msa& ma, int column) const override;
 
     MSAConsensusAlgorithmClustal* clone() const override;
 };

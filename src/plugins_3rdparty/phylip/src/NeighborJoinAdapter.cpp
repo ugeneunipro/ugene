@@ -47,7 +47,7 @@ namespace U2 {
 
 QMutex NeighborJoinCalculateTreeTask::runLock;
 
-void createPhyTreeFromPhylipTree(const MultipleAlignment& ma, node* p, double m, boolean njoin, node* start, PhyNode* root, int bootstrap_repl) {
+void createPhyTreeFromPhylipTree(const Msa& ma, node* p, double m, boolean njoin, node* start, PhyNode* root, int bootstrap_repl) {
     PhyNode* current = nullptr;
 
     if (p == start) {
@@ -93,15 +93,15 @@ void replacePhylipRestrictedSymbols(QByteArray& name) {
     }
 }
 
-Task* NeighborJoinAdapter::createCalculatePhyTreeTask(const MultipleAlignment& ma, const CreatePhyTreeSettings& s) {
+Task* NeighborJoinAdapter::createCalculatePhyTreeTask(const Msa& ma, const CreatePhyTreeSettings& s) {
     return new PhylipCmdlineTask(ma, s);
 }
 
-CreatePhyTreeWidget* NeighborJoinAdapter::createPhyTreeSettingsWidget(const MultipleAlignment& ma, QWidget* parent) {
+CreatePhyTreeWidget* NeighborJoinAdapter::createPhyTreeSettingsWidget(const Msa& ma, QWidget* parent) {
     return new NeighborJoinWidget(ma, parent);
 }
 
-NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MultipleAlignment& ma, const CreatePhyTreeSettings& s)
+NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const Msa& ma, const CreatePhyTreeSettings& s)
     : PhyTreeGeneratorTask(ma, s, TaskFlag_FailOnSubtaskError), memLocker(stateInfo) {
     setTaskName("NeighborJoin algorithm");
 }
@@ -145,7 +145,7 @@ void NeighborJoinCalculateTreeTask::run() {
             for (int replicateIndex = 0; replicateIndex < settings.replicates; replicateIndex++) {
                 stateInfo.progress = (int)(replicateIndex / (float)settings.replicates * 100);
 
-                const MultipleAlignment& curMSA = seqBoot->getMSA(replicateIndex);
+                const Msa& curMSA = seqBoot->getMSA(replicateIndex);
                 QScopedPointer<DistanceMatrix> distanceMatrix(new DistanceMatrix());
                 distanceMatrix->calculateOutOfAlignment(curMSA, settings);
 
@@ -180,7 +180,7 @@ void NeighborJoinCalculateTreeTask::run() {
 
                 naym* nayme = getNayme();
                 for (int rowIndex = 0; rowIndex < sz; ++rowIndex) {
-                    const MultipleAlignmentRow& row = inputMA->getRow(rowIndex);
+                    const MsaRow& row = inputMA->getRow(rowIndex);
                     QByteArray name = row->getName().toLatin1();
                     replacePhylipRestrictedSymbols(name);
                     qstrncpy(nayme[rowIndex], name.constData(), sizeof(naym));
@@ -264,7 +264,7 @@ void NeighborJoinCalculateTreeTask::run() {
 
             naym* nayme = getNayme();
             for (int i = 0; i < sz; ++i) {
-                const MultipleAlignmentRow& row = inputMA->getRow(i);
+                const MsaRow& row = inputMA->getRow(i);
                 QByteArray name = row->getName().toLatin1();
                 replacePhylipRestrictedSymbols(name);
                 qstrncpy(nayme[i], name.constData(), sizeof(naym));

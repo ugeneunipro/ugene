@@ -34,8 +34,8 @@
 #include <U2Core/GHints.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -46,7 +46,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
-SaveAlignmentTask::SaveAlignmentTask(const MultipleAlignment& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
+SaveAlignmentTask::SaveAlignmentTask(const Msa& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
     : Task("", TaskFlag_None),
       ma(_ma->getCopy()),
       fileName(_fileName),
@@ -67,7 +67,7 @@ void SaveAlignmentTask::run() {
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(fileName));
     doc.reset(f->createNewLoadedDocument(iof, fileName, stateInfo));
 
-    MultipleAlignmentObject* obj = MsaImportUtils::createMsaObject(doc->getDbiRef(), ma, stateInfo);
+    MsaObject* obj = MsaImportUtils::createMsaObject(doc->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     GHints* docHints = doc->getGHints();
@@ -86,14 +86,14 @@ const QString& SaveAlignmentTask::getUrl() const {
     return fileName;
 }
 
-const MultipleAlignment& SaveAlignmentTask::getMAlignment() const {
+const Msa& SaveAlignmentTask::getMAlignment() const {
     return ma;
 }
 
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MultipleAlignment& msa, const QString& _url, bool trimAli, const DocumentFormatId& _documentFormatId)
+SaveMSA2SequencesTask::SaveMSA2SequencesTask(const Msa& msa, const QString& _url, bool trimAli, const DocumentFormatId& _documentFormatId)
     : Task(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
       url(_url), documentFormatId(_documentFormatId) {
     GCOUNTER(cvar, "ExportMSA2SequencesTask");

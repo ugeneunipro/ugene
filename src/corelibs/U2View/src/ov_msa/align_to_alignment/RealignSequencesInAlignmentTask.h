@@ -28,13 +28,13 @@
 
 namespace U2 {
 
-class MultipleAlignmentObject;
+class MsaObject;
 class StateLocker;
 
 class U2VIEW_EXPORT RealignSequencesInAlignmentTask : public Task {
     Q_OBJECT
 public:
-    RealignSequencesInAlignmentTask(MultipleAlignmentObject* msaObject,
+    RealignSequencesInAlignmentTask(MsaObject* msaObject,
                                     const QSet<qint64>& sequencesToAlignIds,
                                     const QString& algorithmId);
 
@@ -46,8 +46,8 @@ protected:
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    MultipleAlignmentObject* originalMsaObject = nullptr;
-    MultipleAlignmentObject* msaObject = nullptr;
+    MsaObject* originalMsaObject = nullptr;
+    MsaObject* msaObject = nullptr;
     const QSet<qint64> rowsToAlignIds;
     QStringList originalRowOrder;
     Task* extractSequences = nullptr;

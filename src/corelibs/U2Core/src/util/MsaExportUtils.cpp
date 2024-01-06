@@ -23,7 +23,7 @@
 
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleAlignmentRowInfo.h>
+#include <U2Core/MsaRowInfo.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2MsaDbi.h>
@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-MultipleAlignment MsaExportUtils::loadAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) {
+Msa MsaExportUtils::loadAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) {
     DbiConnection connection;
     connection.open(dbiRef, false, os);
     CHECK_OP(os, {});
@@ -43,7 +43,7 @@ MultipleAlignment MsaExportUtils::loadAlignment(const U2DbiRef& dbiRef, const U2
     U2Msa msa = msaDbi->getMsaObject(msaId, os);
     CHECK_OP(os, {});
 
-    MultipleAlignment ma;
+    Msa ma;
 
     QVariantMap alignmentInfo = loadAlignmentInfo(msaId, os, connection);
     CHECK_OP(os, {});
@@ -146,20 +146,20 @@ QList<MsaRowSnapshot> MsaExportUtils::loadRows(const QList<U2MsaRow>& rows, U2Op
             snapshot.chromatogram = ChromatogramUtils::exportChromatogram(os, chromatogramRef);
             CHECK_OP(os, {});
 
-            QList<U2DataId> reversedAttributeIds = attributeDbi->getObjectAttributes(chromatogramId, MultipleAlignmentRowInfo::REVERSED, os);
+            QList<U2DataId> reversedAttributeIds = attributeDbi->getObjectAttributes(chromatogramId, MsaRowInfo::REVERSED, os);
             CHECK_OP(os, {});
 
             if (!reversedAttributeIds.isEmpty()) {
                 bool isReversed = attributeDbi->getIntegerAttribute(reversedAttributeIds.last(), os).value == 1;
-                MultipleAlignmentRowInfo::setReversed(snapshot.additionalInfo, isReversed);
+                MsaRowInfo::setReversed(snapshot.additionalInfo, isReversed);
             }
 
-            QList<U2DataId> complementedAttributeIds = attributeDbi->getObjectAttributes(chromatogramId, MultipleAlignmentRowInfo::COMPLEMENTED, os);
+            QList<U2DataId> complementedAttributeIds = attributeDbi->getObjectAttributes(chromatogramId, MsaRowInfo::COMPLEMENTED, os);
             CHECK_OP(os, {});
 
             if (!reversedAttributeIds.isEmpty()) {
                 bool isComplemented = attributeDbi->getIntegerAttribute(complementedAttributeIds.last(), os).value == 1;
-                MultipleAlignmentRowInfo::setComplemented(snapshot.additionalInfo, isComplemented);
+                MsaRowInfo::setComplemented(snapshot.additionalInfo, isComplemented);
             }
         }
         snapshots << snapshot;

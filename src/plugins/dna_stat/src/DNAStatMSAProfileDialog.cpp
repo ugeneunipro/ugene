@@ -31,7 +31,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Theme.h>
 
 #include <U2Gui/HelpButton.h>
@@ -70,7 +70,7 @@ void DNAStatMSAProfileDialog::sl_formatChanged(const QString& newFormat) {
 }
 
 void DNAStatMSAProfileDialog::initSaveController() {
-    MultipleAlignmentObject* msaObj = ctx->getMaObject();
+    MsaObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }
@@ -100,7 +100,7 @@ void DNAStatMSAProfileDialog::initSaveController() {
 
 void DNAStatMSAProfileDialog::accept() {
     DNAStatMSAProfileTaskSettings s;
-    MultipleAlignmentObject* msaObj = ctx->getMaObject();
+    MsaObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }

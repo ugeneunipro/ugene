@@ -39,7 +39,7 @@ class LoadDocumentTask;
 class PhyMLPrepareDataForCalculation : public Task {
     Q_OBJECT
 public:
-    PhyMLPrepareDataForCalculation(const MultipleAlignment& ma, const CreatePhyTreeSettings& s, const QString& url);
+    PhyMLPrepareDataForCalculation(const Msa& ma, const CreatePhyTreeSettings& s, const QString& url);
     void prepare() override;
     QList<Task*> onSubTaskFinished(Task* subTask) override;
     const QString& getInputFileUrl() const {
@@ -47,7 +47,7 @@ public:
     }
 
 private:
-    const MultipleAlignment& ma;
+    const Msa& ma;
     CreatePhyTreeSettings settings;
     QString tmpDirUrl;
     SaveAlignmentTask* saveDocumentTask = nullptr;
@@ -90,7 +90,7 @@ private:
 class PhyMLSupportTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
-    PhyMLSupportTask(const MultipleAlignment& ma, const CreatePhyTreeSettings& s);
+    PhyMLSupportTask(const Msa& ma, const CreatePhyTreeSettings& s);
     void prepare() override;
     Task::ReportResult report() override;
     void onExternalToolFailed(const QString& err);

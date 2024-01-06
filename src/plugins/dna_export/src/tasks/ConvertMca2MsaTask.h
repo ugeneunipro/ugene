@@ -21,30 +21,30 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/StateLockableDataModel.h>
 #include <U2Core/Task.h>
 
 namespace U2 {
 
-class MultipleAlignmentObject;
+class MsaObject;
 
 class ConvertMca2MsaTask : public Task {
     Q_OBJECT
 public:
-    ConvertMca2MsaTask(MultipleAlignmentObject* mcaObject, bool includeReference);
+    ConvertMca2MsaTask(MsaObject* mcaObject, bool includeReference);
 
-    MultipleAlignment getMsa() const;
+    Msa getMsa() const;
 
 private:
     void prepare() override;
     void run() override;
     ReportResult report() override;
 
-    MultipleAlignmentObject* mcaObject;
+    MsaObject* mcaObject;
     bool includeReference;
 
-    MultipleAlignment msa;
+    Msa msa;
     QScopedPointer<StateLocker> locker;
 };
 

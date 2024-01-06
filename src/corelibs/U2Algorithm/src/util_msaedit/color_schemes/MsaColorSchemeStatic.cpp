@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-MsaColorSchemeStatic::MsaColorSchemeStatic(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj, const QVector<QColor>& colorsPerChar)
+MsaColorSchemeStatic::MsaColorSchemeStatic(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj, const QVector<QColor>& colorsPerChar)
     : MsaColorScheme(parent, factory, maObj),
       colorsPerChar(colorsPerChar) {
 }
@@ -48,7 +48,7 @@ MsaColorSchemeStaticFactory::MsaColorSchemeStaticFactory(QObject* parent, const 
       colorsPerChar(colorsPerChar) {
 }
 
-MsaColorScheme* MsaColorSchemeStaticFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaColorScheme* MsaColorSchemeStaticFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaColorSchemeStatic(parent, this, maObj, colorsPerChar);
 }
 

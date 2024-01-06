@@ -30,9 +30,9 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Msa.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignment.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2AttributeUtils.h>
 
@@ -100,8 +100,8 @@ U2SequenceObject* ComposeResultSubtask::takeReferenceSequenceObject() {
     return resultSequenceObject;
 }
 
-MultipleAlignmentObject* ComposeResultSubtask::takeMcaObject() {
-    MultipleAlignmentObject* resultMcaObject = mcaObject;
+MsaObject* ComposeResultSubtask::takeMcaObject() {
+    MsaObject* resultMcaObject = mcaObject;
     mcaObject->setParent(nullptr);
     mcaObject->moveToThread(QThread::currentThread());
     mcaObject = nullptr;
@@ -109,7 +109,7 @@ MultipleAlignmentObject* ComposeResultSubtask::takeMcaObject() {
 }
 
 void ComposeResultSubtask::createAlignmentAndAnnotations() {
-    MultipleAlignment resultMca("Mapped reads");
+    Msa resultMca("Mapped reads");
     resultMca->setAlphabet(referenceSequenceObject->getAlphabet());
 
     QVector<U2MsaGap> referenceGaps = getReferenceGaps();
@@ -151,7 +151,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
         CHECK_OP(stateInfo, );
 
         // Add read annotation to the reference.
-        const MultipleAlignmentRow& readRow = resultMca->getRow(mcaRowIndex);
+        const MsaRow& readRow = resultMca->getRow(mcaRowIndex);
         U2Region region = getReadRegion(readRow, referenceGaps);
         SharedAnnotationData annotation(new AnnotationData());
         annotation->location = getLocation(region, pairwiseAlignment.isOnComplementaryStrand);
@@ -180,7 +180,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
     obj.dbiId = storage->getDbiRef().dbiId;
     obj.id = mcaObject->getEntityRef().entityId;
     obj.version = mcaObject->getModificationVersion();
-    U2AttributeUtils::init(attribute, obj, MultipleAlignmentObject::REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT);
+    U2AttributeUtils::init(attribute, obj, MsaObject::REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT);
     attribute.value = referenceSequenceObject->getEntityRef().entityId;
     con.dbi->getAttributeDbi()->createByteArrayAttribute(attribute, stateInfo);
     CHECK_OP(stateInfo, );
@@ -203,7 +203,7 @@ void ComposeResultSubtask::enlargeReferenceByGaps() {
     }
 }
 
-U2Region ComposeResultSubtask::getReadRegion(const MultipleAlignmentRow& readRow, const QVector<U2MsaGap>& referenceGapModel) const {
+U2Region ComposeResultSubtask::getReadRegion(const MsaRow& readRow, const QVector<U2MsaGap>& referenceGapModel) const {
     U2Region region(0, readRow->getRowLengthWithoutTrailing());
 
     // calculate read start
@@ -286,7 +286,7 @@ void ComposeResultSubtask::insertShiftedGapsIntoReference() {
     mcaObject->deleteColumnsWithGaps(stateInfo);
 }
 
-void ComposeResultSubtask::insertShiftedGapsIntoRead(MultipleAlignment& alignment,
+void ComposeResultSubtask::insertShiftedGapsIntoRead(Msa& alignment,
                                                      int mcaRowIndex,
                                                      const AlignToReferenceResult& alignResult,
                                                      const QVector<U2MsaGap>& mergedReferenceGaps) {

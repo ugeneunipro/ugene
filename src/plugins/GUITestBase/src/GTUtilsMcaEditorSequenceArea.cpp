@@ -195,7 +195,7 @@ QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(const QPoint& p) {
 
 QString GTUtilsMcaEditorSequenceArea::getReferenceReg(int num, int length) {
     McaEditor* editor = GTUtilsMcaEditor::getEditor();
-    MultipleAlignmentObject* obj = editor->getMaObject();
+    MsaObject* obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != nullptr, "MultipleChromatogramAlignmentObject not found", QString());
 
     U2OpStatus2Log status;
@@ -207,7 +207,7 @@ QString GTUtilsMcaEditorSequenceArea::getReferenceReg(int num, int length) {
 
 QString GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg() {
     McaEditor* editor = GTUtilsMcaEditor::getEditor();
-    MultipleAlignmentObject* obj = editor->getMaObject();
+    MsaObject* obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != nullptr, "MultipleChromatogramAlignmentObject not found", QString());
 
     U2Region sel = GTUtilsMcaEditorSequenceArea::getReferenceSelection();
@@ -326,10 +326,10 @@ char GTUtilsMcaEditorSequenceArea::getSelectedReadChar() {
     McaEditor* mcaEditor = mcaSeqArea->getEditor();
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", U2Msa::INVALID_CHAR);
 
-    MultipleAlignmentObject* mcaObj = mcaEditor->getMaObject();
+    MsaObject* mcaObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", U2Msa::INVALID_CHAR);
 
-    const MultipleAlignmentRow& mcaRow = mcaObj->getRow(rowNum);
+    const MsaRow& mcaRow = mcaObj->getRow(rowNum);
     char selectedChar = mcaRow->charAt(pos);
     return selectedChar;
 }
@@ -344,10 +344,10 @@ char GTUtilsMcaEditorSequenceArea::getReadCharByPos(const QPoint& p) {
     McaEditor* mcaEditor = mcaSeqArea->getEditor();
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", U2Msa::INVALID_CHAR);
 
-    MultipleAlignmentObject* mcaObj = mcaEditor->getMaObject();
+    MsaObject* mcaObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", U2Msa::INVALID_CHAR);
 
-    const MultipleAlignmentRow& mcaRow = mcaObj->getRow(rowNum);
+    const MsaRow& mcaRow = mcaObj->getRow(rowNum);
     char selectedChar = mcaRow->charAt(pos);
     return selectedChar;
 }
@@ -359,17 +359,17 @@ qint64 GTUtilsMcaEditorSequenceArea::getRowLength(int numRow) {
     McaEditor* mcaEditor = mcaSeqArea->getEditor();
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", 0);
 
-    MultipleAlignmentObject* mcaObj = mcaEditor->getMaObject();
+    MsaObject* mcaObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", 0);
 
-    const MultipleAlignmentRow& mcaRow = mcaObj->getRow(numRow);
+    const MsaRow& mcaRow = mcaObj->getRow(numRow);
     qint64 rowLength = mcaRow->getCoreLength();
     return rowLength;
 }
 
 qint64 GTUtilsMcaEditorSequenceArea::getReferenceLength() {
     McaEditor* editor = GTUtilsMcaEditor::getEditor();
-    MultipleAlignmentObject* obj = editor->getMaObject();
+    MsaObject* obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != nullptr, "MultipleChromatogramAlignmentObject not found", 0);
 
     U2OpStatus2Log status;

@@ -30,7 +30,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObject.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -153,8 +153,8 @@ Task::ReportResult GTest_PFMCreateTest::report() {
             stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return ReportResult_Finished;
         }
-        auto myAlign = qobject_cast<MultipleAlignmentObject*>(list.first());
-        const MultipleAlignment al = myAlign->getAlignment();
+        auto myAlign = qobject_cast<MsaObject*>(list.first());
+        const Msa al = myAlign->getAlignment();
         PFMatrix pfm(al, type);
         for (int i = 0, n = (type == PFM_MONONUCLEOTIDE) ? 4 : 16; i < n; i++) {
             for (int j = 0, nn = (type == PFM_MONONUCLEOTIDE) ? length : length - 1; j < nn; j++) {
@@ -321,8 +321,8 @@ Task::ReportResult GTest_PWMCreateTest::report() {
             stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return ReportResult_Finished;
         }
-        MultipleAlignmentObject* myAlign = (MultipleAlignmentObject*)list.first();
-        const MultipleAlignment al = myAlign->getAlignment();
+        MsaObject* myAlign = (MsaObject*)list.first();
+        const Msa al = myAlign->getAlignment();
 
         PFMatrix pfm(al, pftype);
         pwm = algorithm->convert(pfm);

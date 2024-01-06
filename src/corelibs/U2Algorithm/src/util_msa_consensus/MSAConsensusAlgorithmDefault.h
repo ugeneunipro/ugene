@@ -32,7 +32,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryDefault : public MSAConsens
 public:
     MSAConsensusAlgorithmFactoryDefault();
 
-    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
+    MSAConsensusAlgorithm* createAlgorithm(const Msa& ma, bool ignoreTrailingLeadingGaps) override;
 };
 
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmDefault : public MSAConsensusAlgorithm {
@@ -42,14 +42,14 @@ public:
         : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps) {
     }
 
-    char getConsensusChar(const MultipleAlignment& ma, int column) const override {
+    char getConsensusChar(const Msa& ma, int column) const override {
         int countStub = 0;
         return getConsensusCharAndScore(ma, column, countStub);
     }
 
     MSAConsensusAlgorithmDefault* clone() const override;
 
-    char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score) const override;
+    char getConsensusCharAndScore(const Msa& ma, int column, int& score) const override;
 };
 
 }  // namespace U2

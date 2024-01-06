@@ -23,7 +23,7 @@
 
 #include <QPointer>
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Type.h>
 
@@ -45,7 +45,7 @@ public:
      * Returns the result as a MaModificationInfo data structure.
      */
     static MaModificationInfo addObjectsToAlignment(U2OpStatus& os,
-                                                    MultipleAlignmentObject* obj,
+                                                    MsaObject* obj,
                                                     const QList<DNASequence>& sequenceList,
                                                     int insertRowIndex,
                                                     bool recheckNewSequenceAlphabetOnMismatch);
@@ -59,7 +59,7 @@ public:
      * For example insertRowIndex = 0 pre-appends sequences to the alignment.
      * If insertRowIndex < 0 or insertRowIndex >= row count - appends sequences to the end of the alignment rows.
      */
-    AddSequenceObjectsToAlignmentTask(MultipleAlignmentObject* obj,
+    AddSequenceObjectsToAlignmentTask(MsaObject* obj,
                                       const QList<DNASequence>& sequenceList,
                                       int insertRowIndex = -1,
                                       bool recheckNewSequenceAlphabetOnMismatch = false);
@@ -76,7 +76,7 @@ protected:
     /** Insert location for the sequence list. '-1' or any other illegal value results to appending after the last row in the selection.*/
     int insertMaRowIndex = -1;
 
-    QPointer<MultipleAlignmentObject> maObj;
+    QPointer<MsaObject> maObj;
 
 private:
     StateLock* stateLock = nullptr;
@@ -94,7 +94,7 @@ private:
 class U2CORE_EXPORT AddSequencesFromFilesToAlignmentTask : public AddSequenceObjectsToAlignmentTask {
     Q_OBJECT
 public:
-    AddSequencesFromFilesToAlignmentTask(MultipleAlignmentObject* obj, const QStringList& urls, int insertMaRowIndex);
+    AddSequencesFromFilesToAlignmentTask(MsaObject* obj, const QStringList& urls, int insertMaRowIndex);
 
     void prepare() override;
     QList<Task*> onSubTaskFinished(Task* subTask) override;
@@ -110,7 +110,7 @@ private:
 class U2CORE_EXPORT AddSequencesFromDocumentsToAlignmentTask : public AddSequenceObjectsToAlignmentTask {
     Q_OBJECT
 public:
-    AddSequencesFromDocumentsToAlignmentTask(MultipleAlignmentObject* obj, const QList<Document*>& docs, int insertMaRowIndex, bool recheckNewSequenceAlphabets);
+    AddSequencesFromDocumentsToAlignmentTask(MsaObject* obj, const QList<Document*>& docs, int insertMaRowIndex, bool recheckNewSequenceAlphabets);
 
     void prepare() override;
 

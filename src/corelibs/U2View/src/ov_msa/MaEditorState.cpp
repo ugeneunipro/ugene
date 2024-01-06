@@ -22,7 +22,7 @@
 #include "MaEditorState.h"
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 #include "MSAEditor.h"
 #include "MaEditorFactory.h"
@@ -102,7 +102,7 @@ QVariantMap MaEditorState::saveState(MaEditor* v) {
     MaEditorState ss;
     ss.stateData[VIEW_ID] = v->getFactoryId();
 
-    MultipleAlignmentObject* maObj = v->getMaObject();
+    MsaObject* maObj = v->getMaObject();
     if (maObj) {
         ss.setMaObjectRef(GObjectReference(maObj));
     }

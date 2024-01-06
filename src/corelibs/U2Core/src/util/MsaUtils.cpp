@@ -19,16 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAUtils.h"
+#include "MsaUtils.h"
 
 #include <QListIterator>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObject.h>
+#include <U2Core/Msa.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MultipleAlignment.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Msa.h>
@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-bool MsaUtils::equalsIgnoreGaps(const MultipleAlignmentRow& row, int startPos, const QByteArray& pat, int& alternateLen) {
+bool MsaUtils::equalsIgnoreGaps(const MsaRow& row, int startPos, const QByteArray& pat, int& alternateLen) {
     int sLen = row->getCoreEnd();
     int pLen = pat.size();
     int i = startPos;
@@ -62,7 +62,7 @@ bool MsaUtils::equalsIgnoreGaps(const MultipleAlignmentRow& row, int startPos, c
     return true;
 }
 
-int MsaUtils::getPatternSimilarityIgnoreGaps(const MultipleAlignmentRow& row, int startPos, const QByteArray& pat, int& alternateLen) {
+int MsaUtils::getPatternSimilarityIgnoreGaps(const MsaRow& row, int startPos, const QByteArray& pat, int& alternateLen) {
     int sLen = row->getCoreEnd();
     int pLen = pat.size();
     int i = startPos;
@@ -81,8 +81,8 @@ int MsaUtils::getPatternSimilarityIgnoreGaps(const MultipleAlignmentRow& row, in
     return similarity;
 }
 
-MultipleAlignment MsaUtils::seq2ma(const QList<DNASequence>& list, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw) {
-    MultipleAlignment ma;
+Msa MsaUtils::seq2ma(const QList<DNASequence>& list, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw) {
+    Msa ma;
     ma->setName(MA_OBJECT_NAME);
     const DNAAlphabet* alphabet = deriveCommonAlphabet(list, recheckAlphabetFromDataIfRaw);
     ma->setAlphabet(alphabet);
@@ -96,11 +96,11 @@ MultipleAlignment MsaUtils::seq2ma(const QList<DNASequence>& list, U2OpStatus& o
 
 namespace {
 
-MultipleAlignmentObject* prepareSequenceHeadersList(const QList<GObject*>& list, bool useGenbankHeader, QList<U2SequenceObject*>& dnaList, QList<QString>& nameList) {
+MsaObject* prepareSequenceHeadersList(const QList<GObject*>& list, bool useGenbankHeader, QList<U2SequenceObject*>& dnaList, QList<QString>& nameList) {
     foreach (GObject* obj, list) {
         auto dnaObj = qobject_cast<U2SequenceObject*>(obj);
         if (dnaObj == nullptr) {
-            if (auto maObj = qobject_cast<MultipleAlignmentObject*>(obj)) {
+            if (auto maObj = qobject_cast<MsaObject*>(obj)) {
                 return maObj;
             }
             continue;
@@ -120,7 +120,7 @@ MultipleAlignmentObject* prepareSequenceHeadersList(const QList<GObject*>& list,
     return nullptr;
 }
 
-void appendSequenceToAlignmentRow(MultipleAlignment& ma, int rowIndex, int afterPos, const U2SequenceObject& seq, U2OpStatus& os) {
+void appendSequenceToAlignmentRow(Msa& ma, int rowIndex, int afterPos, const U2SequenceObject& seq, U2OpStatus& os) {
     U2Region seqRegion(0, seq.getSequenceLength());
     const qint64 blockReadFromBD = 4194305;  // 4 MB + 1
 
@@ -136,16 +136,16 @@ void appendSequenceToAlignmentRow(MultipleAlignment& ma, int rowIndex, int after
 
 }  // unnamed namespace
 
-MultipleAlignment MsaUtils::seq2ma(const QList<GObject*>& list, U2OpStatus& os, bool useGenbankHeader, bool recheckAlphabetFromDataIfRaw) {
+Msa MsaUtils::seq2ma(const QList<GObject*>& list, U2OpStatus& os, bool useGenbankHeader, bool recheckAlphabetFromDataIfRaw) {
     QList<U2SequenceObject*> dnaList;
     QStringList nameList;
 
-    MultipleAlignmentObject* obj = prepareSequenceHeadersList(list, useGenbankHeader, dnaList, nameList);
+    MsaObject* obj = prepareSequenceHeadersList(list, useGenbankHeader, dnaList, nameList);
     if (obj != nullptr) {
         return obj->getAlignment()->getCopy();
     }
 
-    MultipleAlignment ma;
+    Msa ma;
     ma->setName(MA_OBJECT_NAME);
     ma->setAlphabet(deriveCommonAlphabet(dnaList, recheckAlphabetFromDataIfRaw, os));
 
@@ -234,7 +234,7 @@ const DNAAlphabet* MsaUtils::deriveCommonAlphabet(const QList<const DNAAlphabet*
     return result == nullptr ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::RAW()) : result;
 }
 
-QList<DNASequence> MsaUtils::convertMsaToSequenceList(const MultipleAlignment& msa,
+QList<DNASequence> MsaUtils::convertMsaToSequenceList(const Msa& msa,
                                                       U2OpStatus& os,
                                                       bool trimGaps,
                                                       const QSet<qint64>& rowIdFilter,
@@ -245,8 +245,8 @@ QList<DNASequence> MsaUtils::convertMsaToSequenceList(const MultipleAlignment& m
 
     const DNAAlphabet* msaAlphabet = msa->getAlphabet();
     QList<DNASequence> sequenceList;
-    const QVector<MultipleAlignmentRow>& rows = msa->getRows();
-    for (const MultipleAlignmentRow& row : qAsConst(rows)) {
+    const QVector<MsaRow>& rows = msa->getRows();
+    for (const MsaRow& row : qAsConst(rows)) {
         if (!rowIdFilter.isEmpty() && !rowIdFilter.contains(row->getRowId())) {
             continue;
         }
@@ -264,7 +264,7 @@ QList<DNASequence> MsaUtils::convertMsaToSequenceList(const MultipleAlignment& m
     return sequenceList;
 }
 
-bool MsaUtils::checkPackedModelSymmetry(const MultipleAlignment& ali, U2OpStatus& ti) {
+bool MsaUtils::checkPackedModelSymmetry(const Msa& ali, U2OpStatus& ti) {
     if (ali->getLength() == 0) {
         ti.setError(tr("Alignment is empty!"));
         return false;
@@ -284,10 +284,10 @@ bool MsaUtils::checkPackedModelSymmetry(const MultipleAlignment& ali, U2OpStatus
     return true;
 }
 
-int MsaUtils::getRowIndexByName(const MultipleAlignment& ma, const QString& name) {
+int MsaUtils::getRowIndexByName(const Msa& ma, const QString& name) {
     int idx = 0;
 
-    foreach (const MultipleAlignmentRow& row, ma->getRows()) {
+    foreach (const MsaRow& row, ma->getRows()) {
         if (row->getName() == name) {
             return idx;
         }
@@ -309,7 +309,7 @@ static bool listContainsSeqObject(const QList<GObject*>& objs, int& firstSeqObjP
     return false;
 }
 
-MultipleAlignmentObject* MsaUtils::convertSequenceObjectsToMsaObject(const QList<GObject*>& objects,
+MsaObject* MsaUtils::convertSequenceObjectsToMsaObject(const QList<GObject*>& objects,
                                                                      const QVariantMap& hints,
                                                                      U2OpStatus& os,
                                                                      bool recheckAlphabetFromDataIfRaw) {
@@ -325,7 +325,7 @@ MultipleAlignmentObject* MsaUtils::convertSequenceObjectsToMsaObject(const QList
     CHECK_OP(os, nullptr);
 
     bool useGenbankHeader = hints.value(ObjectConvertion_UseGenbankHeader, false).toBool();
-    MultipleAlignment ma = seq2ma(objects, os, useGenbankHeader, recheckAlphabetFromDataIfRaw);
+    Msa ma = seq2ma(objects, os, useGenbankHeader, recheckAlphabetFromDataIfRaw);
     CHECK_OP(os, nullptr);
     CHECK(!ma->isEmpty(), nullptr);
 
@@ -333,7 +333,7 @@ MultipleAlignmentObject* MsaUtils::convertSequenceObjectsToMsaObject(const QList
     return MsaImportUtils::createMsaObject(dbiRef, ma, os, dstFolder);
 }
 
-MultipleAlignmentObject* MsaUtils::seqDocs2msaObj(const QList<Document*>& docs, const QVariantMap& hints, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw) {
+MsaObject* MsaUtils::seqDocs2msaObj(const QList<Document*>& docs, const QVariantMap& hints, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw) {
     CHECK(!docs.isEmpty(), nullptr);
     QList<GObject*> objects;
     foreach (Document* doc, docs) {
@@ -342,18 +342,18 @@ MultipleAlignmentObject* MsaUtils::seqDocs2msaObj(const QList<Document*>& docs, 
     return convertSequenceObjectsToMsaObject(objects, hints, os, recheckAlphabetFromDataIfRaw);
 }
 
-void MsaUtils::assignOriginalDataIds(const MultipleAlignment& origMsa,
-                                     MultipleAlignment& newMsa,
+void MsaUtils::assignOriginalDataIds(const Msa& origMsa,
+                                     Msa& newMsa,
                                      QList<int>& removedRowIndexes,
                                      QList<int>& addedRowIndexes) {
-    QList<MultipleAlignmentRow> origMsaRows = origMsa->getRows().toList();
+    QList<MsaRow> origMsaRows = origMsa->getRows().toList();
     QSet<qint64> remappedRowIds;
     for (int newRowIndex = 0; newRowIndex < newMsa->getRowCount(); newRowIndex++) {
-        MultipleAlignmentRow newMsaRow = newMsa->getRow(newRowIndex);
+        MsaRow newMsaRow = newMsa->getRow(newRowIndex);
         QString newRowNameForCompare = newMsaRow->getName().replace(" ", "_");
         bool isNewRowRemapped = false;
         for (int origRowIndex = 0; origRowIndex < origMsaRows.size(); origRowIndex++) {
-            const MultipleAlignmentRow& origMsaRow = origMsaRows[origRowIndex];
+            const MsaRow& origMsaRow = origMsaRows[origRowIndex];
             QString origRowNameForCompare = origMsaRow->getName().replace(" ", "_");
             if (newRowNameForCompare == origRowNameForCompare && origMsaRow->getSequence().seq == newMsaRow->getSequence().seq) {
                 isNewRowRemapped = true;
@@ -378,8 +378,8 @@ void MsaUtils::assignOriginalDataIds(const MultipleAlignment& origMsa,
     }
 }
 
-void MsaUtils::assignOriginalDataIds(const MultipleAlignment& origMsa,
-                                     MultipleAlignment& newMsa,
+void MsaUtils::assignOriginalDataIds(const Msa& origMsa,
+                                     Msa& newMsa,
                                      U2OpStatus& os) {
     QList<int> removed;
     QList<int> added;
@@ -429,7 +429,7 @@ U2MsaRow MsaUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef& dstDb
     return row;
 }
 
-void MsaUtils::copyRowFromSequence(MultipleAlignmentObject* msaObj, U2SequenceObject* seqObj, U2OpStatus& os) {
+void MsaUtils::copyRowFromSequence(MsaObject* msaObj, U2SequenceObject* seqObj, U2OpStatus& os) {
     CHECK_EXT(msaObj != nullptr, os.setError("NULL msa object"), );
 
     U2MsaRow row = copyRowFromSequence(seqObj, msaObj->getEntityRef().dbiRef, os);
@@ -443,8 +443,8 @@ void MsaUtils::copyRowFromSequence(MultipleAlignmentObject* msaObj, U2SequenceOb
     con.dbi->getMsaDbi()->addRow(entityRef.entityId, -1, row, os);
 }
 
-MultipleAlignment MsaUtils::createCopyWithIndexedRowNames(const MultipleAlignment& ma, const QString& prefix) {
-    MultipleAlignment res = ma->getCopy();
+Msa MsaUtils::createCopyWithIndexedRowNames(const Msa& ma, const QString& prefix) {
+    Msa res = ma->getCopy();
     int rowNumber = res->getRowCount();
     for (int i = 0; i < rowNumber; i++) {
         res->renameRow(i, prefix + QString::number(i));
@@ -452,7 +452,7 @@ MultipleAlignment MsaUtils::createCopyWithIndexedRowNames(const MultipleAlignmen
     return res;
 }
 
-bool MsaUtils::restoreOriginalRowNamesFromIndexedNames(MultipleAlignment& ma, const QStringList& names, const QString& prefix) {
+bool MsaUtils::restoreOriginalRowNamesFromIndexedNames(Msa& ma, const QStringList& names, const QString& prefix) {
     int rowCount = ma->getRowCount();
     CHECK(rowCount == names.size() || !prefix.isEmpty(), false);
 
@@ -480,12 +480,12 @@ bool MsaUtils::restoreOriginalRowNamesFromIndexedNames(MultipleAlignment& ma, co
     return true;
 }
 
-bool MsaUtils::restoreOriginalRowProperties(MultipleAlignment& resultMa, const MultipleAlignment& originalMa, const QString& prefix) {
+bool MsaUtils::restoreOriginalRowProperties(Msa& resultMa, const Msa& originalMa, const QString& prefix) {
     int rowCount = resultMa->getRowCount();
     CHECK(rowCount == originalMa->getRowCount() || !prefix.isEmpty(), false);
 
     for (int resultMaIndex = 0; resultMaIndex < rowCount; resultMaIndex++) {
-        const MultipleAlignmentRow& resultRow = resultMa->getRow(resultMaIndex);
+        const MsaRow& resultRow = resultMa->getRow(resultMaIndex);
         QString indexedName = resultRow->getName();
         if (!prefix.isEmpty()) {
             if (!indexedName.startsWith(prefix)) {
@@ -496,7 +496,7 @@ bool MsaUtils::restoreOriginalRowProperties(MultipleAlignment& resultMa, const M
         bool ok = false;
         int originalRowIndex = indexedName.toInt(&ok);
         CHECK(ok && originalRowIndex >= 0 && originalRowIndex < rowCount, false);
-        const MultipleAlignmentRow& originalRow = originalMa->getRow(originalRowIndex);
+        const MsaRow& originalRow = originalMa->getRow(originalRowIndex);
         resultMa->setRowId(resultMaIndex, originalRow->getRowId());
         resultMa->setSequenceId(resultMaIndex, originalRow->getSequenceId());
         resultMa->renameRow(resultMaIndex, originalRow->getName());
@@ -504,7 +504,7 @@ bool MsaUtils::restoreOriginalRowProperties(MultipleAlignment& resultMa, const M
     return true;
 }
 
-QList<U2Region> MsaUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, const QVector<MultipleAlignmentRow>& rows, int alignmentLength, int requiredGapsCount) {
+QList<U2Region> MsaUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, const QVector<MsaRow>& rows, int alignmentLength, int requiredGapsCount) {
     const int rowsCount = rows.size();
     if (requiredGapsCount == -1) {
         requiredGapsCount = rowsCount;
@@ -535,7 +535,7 @@ QList<U2Region> MsaUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maG
     return regionsToDelete;
 }
 
-void MsaUtils::removeColumnsWithGaps(MultipleAlignment& msa, int requiredGapsCount) {
+void MsaUtils::removeColumnsWithGaps(Msa& msa, int requiredGapsCount) {
     GTIMER(c, t, "MSAUtils::removeColumnsWithGaps");
     const QList<U2Region> regionsToDelete = getColumnsWithGaps(msa->getGapModel(), msa->getRows(), msa->getLength(), requiredGapsCount);
     for (int i = regionsToDelete.size() - 1; i >= 0; i--) {
@@ -553,7 +553,7 @@ QString MsaUtils::rollMsaRowName(const QString& rowName, const QSet<QString>& us
     return result;
 }
 
-void MsaUtils::addRowsToMsa(U2EntityRef& msaObjectRef, QList<MultipleAlignmentRow>& rows, U2OpStatus& os) {
+void MsaUtils::addRowsToMsa(U2EntityRef& msaObjectRef, QList<MsaRow>& rows, U2OpStatus& os) {
     DbiConnection con(msaObjectRef.dbiRef, os);
     SAFE_POINT_OP(os, );
 
@@ -561,7 +561,7 @@ void MsaUtils::addRowsToMsa(U2EntityRef& msaObjectRef, QList<MultipleAlignmentRo
     SAFE_POINT_OP(os, );
 
     QList<U2MsaRow> msaRows;
-    for (MultipleAlignmentRow& row : rows) {
+    for (MsaRow& row : rows) {
         U2MsaRow msaRow = copyRowFromSequence(row->getSequence(), msaObjectRef.dbiRef, os);
         SAFE_POINT_OP(os, );
         msaDbi->addRow(msaObjectRef.entityId, -1, msaRow, os);

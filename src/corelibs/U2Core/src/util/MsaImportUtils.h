@@ -22,7 +22,7 @@
 #pragma once
 
 #include <U2Core/ChromatogramObject.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2Sequence.h>
@@ -30,7 +30,7 @@
 namespace U2 {
 
 class DbiConnection;
-class MultipleAlignmentObject;
+class MsaObject;
 class U2DbiRef;
 class U2OpStatus;
 
@@ -50,25 +50,25 @@ public:
      * Creates an alignment in the db.
      * The alignment is completely removed in case of an error.
      */
-    static MultipleAlignmentObject* createMsaObject(const U2DbiRef& dbiRef,
-                                                    MultipleAlignment& al,
+    static MsaObject* createMsaObject(const U2DbiRef& dbiRef,
+                                                    Msa& al,
                                                     U2OpStatus& os,
                                                     const QString& folder = U2ObjectDbi::ROOT_FOLDER);
 
-    static MultipleAlignmentObject* createMcaObject(const U2DbiRef& dbiRef,
-                                                    MultipleAlignment& mca,
+    static MsaObject* createMcaObject(const U2DbiRef& dbiRef,
+                                                    Msa& mca,
                                                     U2OpStatus& os,
                                                     const QString& folder = U2ObjectDbi::ROOT_FOLDER);
 
 private:
     static U2DataId createEmptyMsaObject(const DbiConnection& con, const QString& folder, const QString& name, const DNAAlphabet* alphabet, U2OpStatus& os);
     static void importMsaInfo(const DbiConnection& con, const U2DataId& msaId, const QVariantMap& alInfo, U2OpStatus& os);
-    static QList<U2Sequence> importMsaSequences(const DbiConnection& con, const QString& folder, const MultipleAlignment& al, U2OpStatus& os);
-    static QList<U2MsaRow> importMsaRows(const DbiConnection& con, MultipleAlignment& al, const U2DataId& msaId, const QList<U2Sequence>& rows, const QList<QVector<U2MsaGap>>& msaGapModel, U2OpStatus& os);
+    static QList<U2Sequence> importMsaSequences(const DbiConnection& con, const QString& folder, const Msa& al, U2OpStatus& os);
+    static QList<U2MsaRow> importMsaRows(const DbiConnection& con, Msa& al, const U2DataId& msaId, const QList<U2Sequence>& rows, const QList<QVector<U2MsaGap>>& msaGapModel, U2OpStatus& os);
 
-    static U2Msa importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleAlignment& mca);
-    static void importMcaInfo(U2OpStatus& os, const DbiConnection& connection, const U2DataId& mcaId, const MultipleAlignment& mca);
-    static QList<MsaDbRowSnapshot> importRowChildObjects(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleAlignment& mca);
+    static U2Msa importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const Msa& mca);
+    static void importMcaInfo(U2OpStatus& os, const DbiConnection& connection, const U2DataId& mcaId, const Msa& mca);
+    static QList<MsaDbRowSnapshot> importRowChildObjects(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const Msa& mca);
     static QList<U2MsaRow> importMcaRows(U2OpStatus& os, const DbiConnection& connection, U2Msa& dbMca, const QList<MsaDbRowSnapshot>& snapshots);
     static U2Chromatogram importChromatogram(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const Chromatogram& chromatogram);
     static U2Sequence importReferenceSequence(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const DNASequence& sequence, const U2AlphabetId& alphabetId);

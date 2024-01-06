@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QVector>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 namespace U2 {
 
@@ -34,7 +34,7 @@ class MaEditor;
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
 class MaModificationInfo;
-class MultipleAlignmentObject;
+class MsaObject;
 class U2OpStatus;
 
 class U2VIEW_EXPORT MSAEditorConsensusCache : public QObject {
@@ -42,7 +42,7 @@ class U2VIEW_EXPORT MSAEditorConsensusCache : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusCache)
 public:
-    MSAEditorConsensusCache(QObject* p, MultipleAlignmentObject* aliObj, MSAConsensusAlgorithmFactory* algo);
+    MSAEditorConsensusCache(QObject* p, MsaObject* aliObj, MSAConsensusAlgorithmFactory* algo);
     ~MSAEditorConsensusCache() override;
 
     char getConsensusChar(int pos);
@@ -82,7 +82,7 @@ private:
     int curCacheSize;
     QVector<CacheItem> cache;
     QBitArray updateMap;
-    MultipleAlignmentObject* aliObj;
+    MsaObject* aliObj;
     MSAConsensusAlgorithm* algorithm;
 };
 

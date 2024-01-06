@@ -24,7 +24,7 @@
 #include <QStringList>
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2Region.h>
 
 namespace U2 {

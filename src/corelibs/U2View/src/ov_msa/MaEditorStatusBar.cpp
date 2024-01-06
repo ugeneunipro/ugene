@@ -23,7 +23,7 @@
 
 #include <QHBoxLayout>
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 #include "MSAEditorSequenceArea.h"
 #include "MaEditorSelection.h"
@@ -85,8 +85,8 @@ MaEditorStatusBar::MaEditorStatusBar(MaEditor* _editor)
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_updateStatusBar()));
-    MultipleAlignmentObject* maObject = editor->getMaObject();
-    connect(maObject, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_updateStatusBar()));
+    MsaObject* maObject = editor->getMaObject();
+    connect(maObject, SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_updateStatusBar()));
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockStateChanged()));
     // Workaround
     // updateLabels() must be called after all queued signals,
@@ -117,7 +117,7 @@ QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo() const {
     }
     QPoint pos = selection.getRectList()[0].topLeft();
     int maRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(pos.y());
-    MultipleAlignmentRow row = editor->getMaObject()->getRow(maRowIndex);
+    MsaRow row = editor->getMaObject()->getRow(maRowIndex);
     QString ungappedLength = QString::number(row->getUngappedLength());
     if (row->charAt(pos.x()) == U2Msa::GAP_CHAR) {
         return {GAP_MARK, ungappedLength};

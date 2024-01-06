@@ -24,7 +24,7 @@
 
 #include <QObject>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 
 namespace U2 {
 
@@ -33,23 +33,23 @@ class TaskStateInfo;
 class MuscleAdapter : public QObject {
     Q_OBJECT
 public:
-    static void align(const MultipleAlignment& ma, MultipleAlignment& res, TaskStateInfo& ti, bool mhack = true);
+    static void align(const Msa& ma, Msa& res, TaskStateInfo& ti, bool mhack = true);
 
-    static void refine(const MultipleAlignment& ma, MultipleAlignment& res, TaskStateInfo& ti);
+    static void refine(const Msa& ma, Msa& res, TaskStateInfo& ti);
 
-    static void align2Profiles(const MultipleAlignment& ma1, const MultipleAlignment& ma2, MultipleAlignment& res, TaskStateInfo& ti);
+    static void align2Profiles(const Msa& ma1, const Msa& ma2, Msa& res, TaskStateInfo& ti);
 
-    static void addUnalignedSequencesToProfile(const MultipleAlignment& ma, const MultipleAlignment& unalignedSeqs, MultipleAlignment& res, TaskStateInfo& ti);
+    static void addUnalignedSequencesToProfile(const Msa& ma, const Msa& unalignedSeqs, Msa& res, TaskStateInfo& ti);
     static QString getBadAllocError();
 
 private:
-    static void alignUnsafe(const MultipleAlignment& ma, MultipleAlignment& res, TaskStateInfo& ti, bool mhack);
+    static void alignUnsafe(const Msa& ma, Msa& res, TaskStateInfo& ti, bool mhack);
 
-    static void refineUnsafe(const MultipleAlignment& ma, MultipleAlignment& res, TaskStateInfo& ti);
+    static void refineUnsafe(const Msa& ma, Msa& res, TaskStateInfo& ti);
 
-    static void align2ProfilesUnsafe(const MultipleAlignment& ma1, const MultipleAlignment& ma2, MultipleAlignment& res, TaskStateInfo& ti);
+    static void align2ProfilesUnsafe(const Msa& ma1, const Msa& ma2, Msa& res, TaskStateInfo& ti);
 
-    static void addUnalignedSequencesToProfileUnsafe(const MultipleAlignment& ma, const MultipleAlignment& unalignedSeqs, MultipleAlignment& res, TaskStateInfo& ti);
+    static void addUnalignedSequencesToProfileUnsafe(const Msa& ma, const Msa& unalignedSeqs, Msa& res, TaskStateInfo& ti);
 };
 
 }  // namespace U2

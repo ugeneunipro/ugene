@@ -40,9 +40,9 @@ MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget* parent, MSAE
 
     sortByCombo = new QComboBox();
     sortByCombo->setObjectName("sortByComboBox");
-    sortByCombo->addItem(tr("Name"), MultipleAlignment::SortByName);
-    sortByCombo->addItem(tr("Length"), MultipleAlignment::SortByLength);
-    sortByCombo->addItem(tr("Leading gap"), MultipleAlignment::SortByLeadingGap);
+    sortByCombo->addItem(tr("Name"), Msa::SortByName);
+    sortByCombo->addItem(tr("Length"), Msa::SortByLength);
+    sortByCombo->addItem(tr("Leading gap"), Msa::SortByLeadingGap);
     layout->addWidget(sortByCombo);
 
     auto sortOrderLabel = new QLabel();
@@ -51,8 +51,8 @@ MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget* parent, MSAE
 
     sortOrderCombo = new QComboBox();
     sortOrderCombo->setObjectName("sortOrderComboBox");
-    sortOrderCombo->addItem(tr("Ascending"), MultipleAlignment::Ascending);
-    sortOrderCombo->addItem(tr("Descending"), MultipleAlignment::Descending);
+    sortOrderCombo->addItem(tr("Ascending"), Msa::Ascending);
+    sortOrderCombo->addItem(tr("Descending"), Msa::Descending);
     layout->addWidget(sortOrderCombo);
 
     auto lastRowLayout = new QHBoxLayout();
@@ -65,19 +65,19 @@ MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget* parent, MSAE
     lastRowLayout->addWidget(sortButton);
     connect(sortButton, SIGNAL(clicked()), SLOT(sl_sortClicked()));
 
-    MultipleAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
     sortButton->setEnabled(!msaObject->isStateLocked());
     connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_msaObjectStateChanged()));
 }
 
 void MsaEditorSortSequencesWidget::sl_sortClicked() {
-    auto sortType = (MultipleAlignment::SortType)sortByCombo->currentData().toInt();
-    auto sortOrder = (MultipleAlignment::Order)sortOrderCombo->currentData().toInt();
+    auto sortType = (Msa::SortType)sortByCombo->currentData().toInt();
+    auto sortOrder = (Msa::Order)sortOrderCombo->currentData().toInt();
     msaEditor->sortSequences(sortType, sortOrder);
 }
 
 void MsaEditorSortSequencesWidget::sl_msaObjectStateChanged() {
-    MultipleAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
     sortButton->setEnabled(!msaObject->isStateLocked());
 }
 

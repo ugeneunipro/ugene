@@ -33,7 +33,7 @@ MsaColorSchemeCustomFactory::MsaColorSchemeCustomFactory(QObject* parent, const 
       colorsPerChar(colorMapToColorVector(scheme.alpColors)) {
 }
 
-MsaColorScheme* MsaColorSchemeCustomFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaColorScheme* MsaColorSchemeCustomFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaColorSchemeStatic(parent, this, maObj, colorsPerChar);
 }
 

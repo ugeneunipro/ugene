@@ -31,7 +31,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "DIPropertiesSitecon.h"
@@ -100,7 +100,7 @@ void GTest_CalculateACGTContent::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    auto mao = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto mao = qobject_cast<MsaObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
@@ -193,7 +193,7 @@ void GTest_CalculateDispersionAndAverage::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    auto mao = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto mao = qobject_cast<MsaObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
@@ -278,7 +278,7 @@ void GTest_CalculateFirstTypeError::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    auto mao = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto mao = qobject_cast<MsaObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
@@ -357,7 +357,7 @@ void GTest_CalculateSecondTypeError::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    auto mao = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto mao = qobject_cast<MsaObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;

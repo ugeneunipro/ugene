@@ -37,7 +37,7 @@ bool CreatePhyTreeWidget::checkSettings(QString&, const CreatePhyTreeSettings&) 
     return true;
 }
 
-bool CreatePhyTreeWidget::checkMemoryEstimation(QString&, const MultipleAlignment&, const CreatePhyTreeSettings&) {
+bool CreatePhyTreeWidget::checkMemoryEstimation(QString&, const Msa&, const CreatePhyTreeSettings&) {
     return true;
 }
 

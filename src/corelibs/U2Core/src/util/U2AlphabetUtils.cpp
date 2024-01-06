@@ -22,7 +22,7 @@
 #include "U2AlphabetUtils.h"
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -112,10 +112,10 @@ char U2AlphabetUtils::getDefaultSymbol(const U2AlphabetId& alphaId) {
     return al->getDefaultSymbol();
 }
 
-void U2AlphabetUtils::assignAlphabet(MultipleAlignment& ma) {
+void U2AlphabetUtils::assignAlphabet(Msa& ma) {
     const DNAAlphabet* resAl = nullptr;
     for (int i = 0, n = ma->getRowCount(); i < n; i++) {
-        const MultipleAlignmentRow& item = ma->getRow(i);
+        const MsaRow& item = ma->getRow(i);
         const QByteArray& itemSeq = item->getCore();
         const DNAAlphabet* itemAl = findBestAlphabet(itemSeq);
         if (resAl == nullptr) {
@@ -133,10 +133,10 @@ void U2AlphabetUtils::assignAlphabet(MultipleAlignment& ma) {
     }
 }
 
-void U2AlphabetUtils::assignAlphabet(MultipleAlignment& ma, char ignore) {
+void U2AlphabetUtils::assignAlphabet(Msa& ma, char ignore) {
     const DNAAlphabet* resAl = nullptr;
     for (int i = 0, n = ma->getRowCount(); i < n; i++) {
-        const MultipleAlignmentRow& item = ma->getRow(i);
+        const MsaRow& item = ma->getRow(i);
         QByteArray itemSeq = item->getCore();
         itemSeq.replace(ignore, U2Msa::GAP_CHAR);
         const DNAAlphabet* itemAl = findBestAlphabet(itemSeq);

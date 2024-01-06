@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 
@@ -34,7 +34,7 @@ class SaveDocumentController;
 class U2VIEW_EXPORT CreateSubalignmentDialogController : public QDialog, private Ui_CreateSubalignmentDialog {
     Q_OBJECT
 public:
-    CreateSubalignmentDialogController(MultipleAlignmentObject* obj, const QList<qint64>& preSelectedRowIdList, const U2Region& preSelectedColumnsRegion, QWidget* p = nullptr);
+    CreateSubalignmentDialogController(MsaObject* obj, const QList<qint64>& preSelectedRowIdList, const U2Region& preSelectedColumnsRegion, QWidget* p = nullptr);
 
     void accept() override;
 
@@ -63,7 +63,7 @@ private:
     void initSaveController();
     void updateSelectedRowIds();
 
-    MultipleAlignmentObject* msaObject;
+    MsaObject* msaObject;
     QList<qint64> selectedRowIds;
     U2Region selectedColumnRegion;
     SaveDocumentController* saveController;
@@ -75,7 +75,7 @@ class CreateSubalignmentSettings;
 class U2VIEW_EXPORT CreateSubalignmentAndOpenViewTask : public Task {
     Q_OBJECT
 public:
-    CreateSubalignmentAndOpenViewTask(MultipleAlignmentObject* mobj, const CreateSubalignmentSettings& settings);
+    CreateSubalignmentAndOpenViewTask(MsaObject* mobj, const CreateSubalignmentSettings& settings);
     QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:

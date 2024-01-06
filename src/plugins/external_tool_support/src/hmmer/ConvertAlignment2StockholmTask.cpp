@@ -29,7 +29,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -113,7 +113,7 @@ void ConvertAlignment2Stockholm::prepareSaveTask() {
         stateInfo.addWarning(tr("File contains several multiple alignments. Only the first one is saved to the result file."));
     }
 
-    auto maObject = qobject_cast<MultipleAlignmentObject*>(objects.first());
+    auto maObject = qobject_cast<MsaObject*>(objects.first());
     saveTask = new SaveAlignmentTask(maObject->getAlignment(), resultUrl, BaseDocumentFormats::STOCKHOLM);
     saveTask->setSubtaskProgressWeight(50);
 }

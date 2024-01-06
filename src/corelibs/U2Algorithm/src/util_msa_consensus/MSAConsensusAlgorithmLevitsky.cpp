@@ -21,7 +21,7 @@
 
 #include "MSAConsensusAlgorithmLevitsky.h"
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -41,7 +41,7 @@ MSAConsensusAlgorithmFactoryLevitsky::MSAConsensusAlgorithmFactoryLevitsky()
     isSequenceLikeResultFlag = true;
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const Msa& ma, bool ignoreTrailingLeadingGaps) {
     return new MSAConsensusAlgorithmLevitsky(this, ma, ignoreTrailingLeadingGaps);
 }
 
@@ -110,7 +110,7 @@ static void registerHit(int* data, char c) {
     }
 }
 
-MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps)
+MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const Msa& ma, bool ignoreTrailingLeadingGaps)
     : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps), globalFreqs(QVarLengthArray<int>(256)) {
     reinitializeData(ma);
 }
@@ -195,7 +195,7 @@ static int mergeCharsIntoMask(const char* chars, int length) {
     return mask;
 }
 
-char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma, int column) const {
+char MSAConsensusAlgorithmLevitsky::getConsensusChar(const Msa& ma, int column) const {
     QVector<int> seqIdx = pickRowsToUseInConsensus(ma, column);
     CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 
@@ -246,12 +246,12 @@ MSAConsensusAlgorithmLevitsky* MSAConsensusAlgorithmLevitsky::clone() const {
     return new MSAConsensusAlgorithmLevitsky(*this);
 }
 
-void MSAConsensusAlgorithmLevitsky::reinitializeData(const MultipleAlignment& ma) {
+void MSAConsensusAlgorithmLevitsky::reinitializeData(const Msa& ma) {
     int* freqsData = globalFreqs.data();
     std::fill(globalFreqs.begin(), globalFreqs.end(), 0);
     const auto& maRows = ma->getRows();
     int len = ma->getLength();
-    for (const MultipleAlignmentRow& row : qAsConst(maRows)) {
+    for (const MsaRow& row : qAsConst(maRows)) {
         for (int i = 0; i < len; i++) {
             char c = row->charAt(i);
             registerHit(freqsData, c);

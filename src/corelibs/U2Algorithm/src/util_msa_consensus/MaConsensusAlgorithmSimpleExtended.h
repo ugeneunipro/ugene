@@ -80,7 +80,7 @@ class MaConsensusAlgorithmSimpleExtended : public MSAConsensusAlgorithm {
 public:
     MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps);
 
-    char getConsensusChar(const MultipleAlignment& ma, int column) const override;
+    char getConsensusChar(const Msa& ma, int column) const override;
 
     MaConsensusAlgorithmSimpleExtended* clone() const override;
 
@@ -121,7 +121,7 @@ class MaConsensusAlgorithmFactorySimpleExtended : public MSAConsensusAlgorithmFa
 public:
     MaConsensusAlgorithmFactorySimpleExtended();
 
-    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps) override;
+    MSAConsensusAlgorithm* createAlgorithm(const Msa& ma, bool ignoreTrailingLeadingGaps) override;
 };
 
 }  // namespace U2

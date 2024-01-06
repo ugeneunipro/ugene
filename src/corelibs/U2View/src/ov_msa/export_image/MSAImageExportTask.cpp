@@ -92,7 +92,7 @@ void MSAImageExportToBitmapTask::run() {
     SAFE_POINT_EXT(ui->getEditor() != nullptr, setError(L10N::nullPointerError("MSAEditor")), );
     SAFE_POINT_EXT(QCoreApplication::instance()->thread() == QThread::currentThread(), setError("MSAImageExportToBitmapTask: not a main thread!"), );
 
-    MultipleAlignmentObject* mObj = ui->getEditor()->getMaObject();
+    MsaObject* mObj = ui->getEditor()->getMaObject();
     SAFE_POINT_EXT(mObj != nullptr, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
 
     bool exportAll = msaSettings.exportAll;
@@ -197,7 +197,7 @@ void MSAImageExportToSvgTask::run() {
     SAFE_POINT_EXT(QCoreApplication::instance()->thread() == QThread::currentThread(), setError("MSAImageExportToBitmapTask: not a main thread!"), );
     MaEditor* editor = ui->getEditor();
     SAFE_POINT_EXT(editor != nullptr, setError(L10N::nullPointerError("MSAEditor")), );
-    MultipleAlignmentObject* mObj = editor->getMaObject();
+    MsaObject* mObj = editor->getMaObject();
     SAFE_POINT_EXT(mObj != nullptr, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
 
     int ok = msaSettings.exportAll || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());

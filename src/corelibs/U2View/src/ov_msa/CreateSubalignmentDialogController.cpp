@@ -46,7 +46,7 @@ namespace U2 {
 
 #define ROW_ID_PROPERTY "row-id"
 
-CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleAlignmentObject* obj, const QList<qint64>& preSelectedRowIdList, const U2Region& preSelectedColumnsRegion, QWidget* p)
+CreateSubalignmentDialogController::CreateSubalignmentDialogController(MsaObject* obj, const QList<qint64>& preSelectedRowIdList, const U2Region& preSelectedColumnsRegion, QWidget* p)
     : QDialog(p), msaObject(obj), selectedRowIds(preSelectedRowIdList), selectedColumnRegion(preSelectedColumnsRegion), saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929690");
@@ -82,9 +82,9 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleA
     startLineEdit->setText(QString::number(selectedColumnRegion.startPos + 1));  // Visual range starts with 1, not 0.
     endLineEdit->setText(QString::number(selectedColumnRegion.endPos()));
 
-    const MultipleAlignment msa = msaObject->getAlignment();
+    const Msa msa = msaObject->getAlignment();
     for (int i = 0; i < rowCount; i++) {
-        const MultipleAlignmentRow& row = msa->getRow(i);
+        const MsaRow& row = msa->getRow(i);
         auto checkBox = new QCheckBox(row->getName(), this);
         checkBox->setProperty(ROW_ID_PROPERTY, row->getRowId());
         checkBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -239,7 +239,7 @@ const QList<qint64>& CreateSubalignmentDialogController::getSelectedRowIds() con
     return selectedRowIds;
 }
 
-CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask(MultipleAlignmentObject* maObj, const CreateSubalignmentSettings& settings)
+CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask(MsaObject* maObj, const CreateSubalignmentSettings& settings)
     : Task(tr("Create sub-alignment and open view: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE) {
     csTask = new CreateSubalignmentTask(maObj, settings);
     addSubTask(csTask);

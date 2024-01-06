@@ -41,9 +41,9 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MSAUtils.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/MultiTask.h>
-#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SelectionModel.h>
@@ -156,7 +156,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
             sub = new QMenu(tr("Export/Import"));
             sub->addAction(exportAlignmentAsSequencesAction);
             GObject* obj = set.first();
-            const MultipleAlignment& ma = qobject_cast<MultipleAlignmentObject*>(obj)->getAlignment();
+            const Msa& ma = qobject_cast<MsaObject*>(obj)->getAlignment();
             if (ma->getAlphabet()->isNucleic()) {
                 sub->addAction(exportNucleicAlignmentToAminoAction);
             }
@@ -429,7 +429,7 @@ void ExportProjectViewItemsContoller::sl_saveSequencesAsAlignment() {
         return;
     }
 
-    MultipleAlignment ma = MsaUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
+    Msa ma = MsaUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
     if (os.hasError()) {
         QMessageBox::critical(nullptr, L10N::errorTitle(), os.getError());
         return;
@@ -452,7 +452,7 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
         QMessageBox::critical(nullptr, L10N::errorTitle(), tr("Select one alignment object to export"));
         return;
     }
-    auto msaObject = qobject_cast<MultipleAlignmentObject*>(set.first());
+    auto msaObject = qobject_cast<MsaObject*>(set.first());
     SAFE_POINT(msaObject != nullptr, "Not MSA object!", );
     ExportMSA2SequencesDialog::showDialogAndStartExportTask(msaObject);
 }
@@ -471,7 +471,7 @@ void ExportProjectViewItemsContoller::sl_exportMcaToMsa() {
         return;
     }
 
-    MultipleAlignmentObject* mcaObject = qobject_cast<MultipleAlignmentObject*>(set.first());
+    MsaObject* mcaObject = qobject_cast<MsaObject*>(set.first());
     SAFE_POINT(mcaObject != nullptr, "Can't cast the object to MultipleChromatogramAlignmentObject", );
     ExportUtils::launchExportMca2MsaTask(mcaObject);
 }
@@ -489,7 +489,7 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
         return;
     }
 
-    auto msaObject = qobject_cast<MultipleAlignmentObject*>(msaObjectList.first());
+    auto msaObject = qobject_cast<MsaObject*>(msaObjectList.first());
     SAFE_POINT(msaObject != nullptr, "Not an MSA object", );
 
     Document* doc = msaObject->getDocument();
@@ -499,7 +499,7 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     const int rc = d->exec();
     CHECK(!d.isNull() && rc != QDialog::Rejected, );
 
-    const MultipleAlignment& msa = msaObject->getAlignment();
+    const Msa& msa = msaObject->getAlignment();
     DNATranslation* translation = AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
     bool convertUnknowToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
     bool reverseComplement = d->translationFrame < 0;
