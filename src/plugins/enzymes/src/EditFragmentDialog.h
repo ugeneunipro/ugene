@@ -33,7 +33,7 @@ class EditFragmentDialog : public QDialog, public Ui_EditFragmentDialog {
     Q_OBJECT
 public:
     EditFragmentDialog(DNAFragment& fragment, QWidget* p);
-    virtual void accept();
+    void accept() override;
 
 private:
     DNAFragment& dnaFragment;
