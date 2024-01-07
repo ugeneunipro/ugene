@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -101,7 +101,7 @@ MuscleTask::MuscleTask(const Msa& ma, const MuscleTaskSettings& _config)
         SAFE_POINT_EXT(config.regionToAlign.length > 0,
                        setError(tr("Incorrect region to align")), );
         inputSubMA = inputMA->mid(config.regionToAlign.startPos, config.regionToAlign.length);
-        CHECK_EXT(inputSubMA != Msa(), setError(tr("Stopping MUSCLE task, because of error in MultipleAlignment::mid function")), );
+        CHECK_EXT(inputSubMA != Msa(), setError(tr("Stopping MUSCLE task, because of error in Msa::mid function")), );
     }
 
     if (config.nThreads == 1 || (config.op != MuscleTaskOp_Align)) {
@@ -464,7 +464,7 @@ Task::ReportResult MuscleGObjectTask::report() {
         lock = nullptr;
     } else {
         if (!stateInfo.isCoR()) {
-            stateInfo.setError(tr("MultipleAlignment object has been changed"));
+            stateInfo.setError(tr("MsaObject has been changed"));
         }
         return ReportResult_Finished;
     }

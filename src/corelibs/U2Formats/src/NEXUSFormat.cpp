@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -454,7 +454,7 @@ bool NEXUSParser::readDataContents(Context& ctx) {
                 }
             }
 
-            // Build MultipleAlignment object
+            // Build MsaObject
             Msa ma(tz.getIO()->getURL().baseFileName());
             for (int i = 0; i < names.length(); i++) {
                 ma->addRow(names[i], values[i]);

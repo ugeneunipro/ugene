@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -72,10 +72,24 @@ void LogServer::removeListener(LogListener* listener) {
                                                .arg(numOfListenersRemoved), );
 }
 
+static const QString badSignalOrSlotQtErrorMessage = "QObject::connect";
+static const QString badSignalOrSlotQtErrorMessageReplacement = "QObject.connect";
+
+QString safeLogString(const QString& value) {
+    QString copy = value;
+    return copy.replace(badSignalOrSlotQtErrorMessage, badSignalOrSlotQtErrorMessageReplacement);
+}
+
 void LogServer::message(const LogMessage& m) {
     QMutexLocker l(&listenerMutex);
     for (LogListener* listener : qAsConst(listeners)) {
         listener->onMessage(m);
+    }
+
+    if (m.text.contains(badSignalOrSlotQtErrorMessage)) {
+        QString errorMessage = safeLogString(m.text);
+        fprintf(stderr, "%s\n", errorMessage.toLocal8Bit().constData());
+        FAIL(errorMessage, );
     }
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -127,7 +127,7 @@ FormatCheckResult SAMFormat::checkRawTextData(const QByteArray& rawData, const G
 //
 //     for(int i = 0, coreLen = core.length(); i < coreLen; i++) {
 //         char c = core[i];
-//         if(c == MultipleAlignment::GapChar) {
+//         if(c == Msa::GapChar) {
 //             if(!gap) {
 //                 if(i != lastCigarPos) {
 //                     cigarTokens.append(U2CigarToken(U2CigarOp_M, i - lastCigarPos));
@@ -177,8 +177,8 @@ Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* db
 
     // QString lockReason;
 
-    // QMap<QString, MultipleAlignment> maMap; //file may contain multiple MA objects
-    // MultipleAlignment defaultMA("Alignment " + io->getURL().baseFileName());
+    // QMap<QString, Msa> maMap; //file may contain multiple MA objects
+    // Msa defaultMA("Alignment " + io->getURL().baseFileName());
 
     // QByteArray readBuffer(READ_BUFF_SIZE, '\0');
     // char* buff  = readBuffer.data();
@@ -198,7 +198,7 @@ Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* db
     //            foreach(QByteArray tag, tags) {
     //                if(tag.startsWith(TAG_SEQUENCE_NAME)) { // Set alignment name
     //                    QString maName = QByteArray(tag.constData() + 3, tag.length() - 3);
-    //                    MultipleAlignment ma;
+    //                    Msa ma;
     //                    ma.setName(maName);
     //                    maMap[maName] = ma;
     //                }
@@ -281,7 +281,7 @@ Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* db
     //        rname = "*";
     //    }
 
-    //    MultipleAlignmentRow row;
+    //    MsaRow row;
 
     //    //short flag = fields[1].toShort();
 
@@ -305,7 +305,7 @@ Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* db
     //    os.setProgress(io->getProgress());
     //}
 
-    // foreach(MultipleAlignment ma, maMap.values()) {
+    // foreach(Msa ma, maMap.values()) {
     //     U2AlphabetUtils::assignAlphabet(ma);
     //     CHECK_EXT(ma.getAlphabet() != NULL, os.setError( SAMFormat::tr("Alphabet is unknown")), NULL);
     //     objects.append(new MultipleAlignmentObject(ma));
@@ -363,7 +363,7 @@ void SAMFormat::storeEntry(IOAdapter* /* io */, const QMap<GObjectType, QList<GO
 
     ////Writing sequence section
     // foreach(const MultipleAlignmentObject* maObj, maList) {
-    //     const MultipleAlignment &ma = maObj->getMAlignment();
+    //     const Msa &ma = maObj->getMAlignment();
     //     block.clear();
     //     block.append(SECTION_SEQUENCE).append(tab).append(TAG_SEQUENCE_NAME).append(":").append(ma.getName().replace(QRegExp("\\s|\\t"), "_"))
     //         .append(tab).append(TAG_SEQUENCE_LENGTH).append(":").append(QByteArray::number(ma.getLength())).append("\n");
@@ -374,9 +374,9 @@ void SAMFormat::storeEntry(IOAdapter* /* io */, const QMap<GObjectType, QList<GO
 
     ////Writing alignment section
     // foreach(const MultipleAlignmentObject* maObj, maList) {
-    //     const MultipleAlignment &ma = maObj->getMAlignment();
+    //     const Msa &ma = maObj->getMAlignment();
     //     QByteArray rname(ma.getName().replace(QRegExp("\\s|\\t"), "_").toLatin1());
-    //     foreach(MultipleAlignmentRow row, ma.getRows()) {
+    //     foreach(MsaRow row, ma.getRows()) {
     //         block.clear();
     //         //const QByteArray &core = row.getCore();
     //         QByteArray qname = QString(row.getName()).replace(QRegExp("\\s|\\t"), "_").toLatin1();

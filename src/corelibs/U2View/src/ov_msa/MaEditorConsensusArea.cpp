@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -138,7 +138,7 @@ QString MaEditorConsensusArea::createToolTip(QHelpEvent* he) const {
     QString result;
     if (0 <= column && column <= editor->getAlignmentLen()) {
         assert(editor->getMaObject());
-        // const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
+        // const Msa ma = editor->getMaObject()->getMultipleAlignment();
         // result = MSAConsensusUtils::getConsensusPercentTip(ma, column, 0, 4);
         result = getConsensusPercentTip(column, 0, 4);
     }

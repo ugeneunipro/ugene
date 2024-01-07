@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,9 +67,9 @@ MaSangerOverview::MaSangerOverview(MaEditor* editor, MaEditorWgt* ui)
     setMinimumHeight(MINIMUM_HEIGHT);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_updateScrollBar()));
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_resetCaches()));
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_completeRedraw()));
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaSangerOverview::sl_updateScrollBar);
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaSangerOverview::sl_resetCaches);
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaSangerOverview::sl_completeRedraw);
     connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
     connect(ui->getScrollController()->getVerticalScrollBar(), SIGNAL(valueChanged(int)), SLOT(sl_screenMoved()));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetCaches()));

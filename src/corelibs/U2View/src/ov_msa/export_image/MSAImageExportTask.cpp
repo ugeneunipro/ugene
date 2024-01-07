@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -93,7 +93,7 @@ void MSAImageExportToBitmapTask::run() {
     SAFE_POINT_EXT(QCoreApplication::instance()->thread() == QThread::currentThread(), setError("MSAImageExportToBitmapTask: not a main thread!"), );
 
     MsaObject* mObj = ui->getEditor()->getMaObject();
-    SAFE_POINT_EXT(mObj != nullptr, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
+    SAFE_POINT_EXT(mObj != nullptr, setError(L10N::nullPointerError("MsaObject")), );
 
     bool exportAll = msaSettings.exportAll;
     bool ok = (exportAll && mObj->getLength() > 0 && mObj->getRowCount() > 0) || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());

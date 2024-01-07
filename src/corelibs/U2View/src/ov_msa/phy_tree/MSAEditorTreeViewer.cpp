@@ -1,7 +1,7 @@
 
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ QWidget* MSAEditorTreeViewer::createViewWidget(QWidget* parent) {
     viewLayout->addWidget(ui);
     view->setLayout(viewLayout);
 
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), this, SLOT(sl_alignmentChanged()));
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MSAEditorTreeViewer::sl_alignmentChanged);
 
     MaCollapseModel* collapseModel = editor->getCollapseModel();
     connect(collapseModel, SIGNAL(si_toggled()), this, SLOT(sl_alignmentCollapseModelChanged()));

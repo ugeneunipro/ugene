@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,12 +24,9 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequence.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/FailTask.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -120,7 +117,7 @@ public:
         : screenedSlot(slot) {
     }
 
-    virtual bool validate(const Configuration* cfg, NotificationsList& notificationList) const {
+    bool validate(const Configuration* cfg, NotificationsList& notificationList) const override {
         auto vport = static_cast<const IntegralBusPort*>(cfg);
         assert(vport);
 
@@ -977,7 +974,7 @@ ScientificDoubleWidget::ScientificDoubleWidget(QWidget* parent)
     lineEdit->setValidator(validator);
     addMainWidget(lineEdit);
 
-    connect(lineEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_valueChanged(const QVariant&)));
+    connect(lineEdit, &QLineEdit::textChanged, this, &ScientificDoubleWidget::setValue);
 }
 
 QVariant ScientificDoubleWidget::value() {

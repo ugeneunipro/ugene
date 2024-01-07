@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -216,7 +216,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
 
                 // Save data to the database
                 {
-                    CHECK_EXT(!lock.isNull(), stateInfo.setError("MultipleAlignment object has been changed"), res);
+                    CHECK_EXT(!lock.isNull(), stateInfo.setError("MsaObject has been changed"), res);
                     unlockMsaObject();
 
                     U2OpStatus2Log os;

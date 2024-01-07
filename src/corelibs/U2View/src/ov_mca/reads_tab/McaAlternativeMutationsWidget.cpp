@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ void McaAlternativeMutationsWidget::init(MsaObject* _maObject,
                                          MaEditorSequenceArea* _seqArea,
                                          MaEditorStatusBar* _statusBar) {
     SAFE_POINT(_seqArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorSequenceArea is nullptr", );
-    SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is nullptr", );
+    SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MsaObject is nullptr", );
     SAFE_POINT(_statusBar != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorStatusBar is nullptr", );
 
     seqArea = qobject_cast<McaEditorSequenceArea*>(_seqArea);
