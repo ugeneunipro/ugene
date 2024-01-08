@@ -34,7 +34,7 @@ const QByteArray CopyDataTask::CRLF = QByteArray("\r\n");
 CopyDataTask::CopyDataTask(IOAdapterFactory* _ioFrom, const GUrl& _urlFrom, IOAdapterFactory* _ioTo, const GUrl& _urlTo, ReplaceLineEndings newLineEndings_)
     : Task(tr("Copy Data Task"), TaskFlag_None), ioFrom(_ioFrom), ioTo(_ioTo),
       urlFrom(_urlFrom), urlTo(_urlTo), newLineEndings(newLineEndings_) {
-    CHECK(ioFrom != nullptr && ioTo != nullptr);
+    CHECK(ioFrom != nullptr && ioTo != nullptr, );
     tpm = Progress_Manual;
 }
 
