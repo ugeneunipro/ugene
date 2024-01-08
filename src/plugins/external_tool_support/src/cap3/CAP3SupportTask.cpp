@@ -29,7 +29,6 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
@@ -209,7 +208,7 @@ void PrepareInputForCAP3Task::prepare() {
         foreach (const QString& fileName, filesToCopy) {
             IOAdapterFactory* iof =
                 AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-            CopyDataTask* copyTask = new CopyDataTask(iof, fileName, iof, outputDir + "/" + GUrl(fileName).fileName());
+            CopyDataTask* copyTask = new CopyDataTask(iof, fileName, iof, outputDir + "/" + GUrl(fileName).fileName(), CopyDataTask::ReplaceLineEndings::LF);
             addSubTask(copyTask);
         }
         preparedPath = outputDir + "/" + GUrl(inputFileUrl).fileName();
@@ -236,44 +235,38 @@ void PrepareInputForCAP3Task::prepare() {
 }
 
 void PrepareInputForCAP3Task::run() {
-    if (hasError()) {
+    if (hasError() || onlyCopyFiles) {
         return;
     }
 
-    if (onlyCopyFiles) {
-        CHECK_EXT(QFile::exists(preparedPath), stateInfo.setError(tr("Prepared input file in temporary folder doesn't exist.")), );
-        CHECK_EXT(FileAndDirectoryUtils::convertToLfLineEndings(preparedPath),
-                  stateInfo.setError(tr("Prepared input file in temporary folder can't be read or written.")), );
-    } else {
-        while (seqReader.hasNext()) {
-            if (isCanceled()) {
-                return;
-            }
-            DNASequence* seq = seqReader.getNextSequenceObject();
-            if (seq == nullptr) {
-                setError(seqReader.getErrorMessage());
-                return;
-            }
-            // avoid names duplication
-            QByteArray seqName = seq->getName().toLatin1();
-            seqName.replace(' ', '_');
-            seq->setName(seqName);
-            bool ok = seqWriter.writeNextSequence(*seq);
-            if (!ok) {
-                setError(tr("Failed to write sequence %1").arg(seq->getName()));
-                return;
-            }
+    while (seqReader.hasNext()) {
+        if (isCanceled()) {
+            return;
+        }
+        DNASequence* seq = seqReader.getNextSequenceObject();
+        if (seq == nullptr) {
+            setError(seqReader.getErrorMessage());
+            return;
+        }
+        // avoid names duplication
+        QByteArray seqName = seq->getName().toLatin1();
+        seqName.replace(' ', '_');
+        seq->setName(seqName);
+        bool ok = seqWriter.writeNextSequence(*seq);
+        if (!ok) {
+            setError(tr("Failed to write sequence %1").arg(seq->getName()));
+            return;
+        }
 
-            if (!seq->quality.isEmpty()) {
-                DNAQualityIOUtils::writeDNAQuality(seqName, seq->quality, qualityFilePath, true /*append*/, true /*decode*/, stateInfo);
-                if (stateInfo.hasError()) {
-                    return;
-                }
+        if (!seq->quality.isEmpty()) {
+            DNAQualityIOUtils::writeDNAQuality(seqName, seq->quality, qualityFilePath, true /*append*/, true /*decode*/, stateInfo);
+            if (stateInfo.hasError()) {
+                return;
             }
         }
-        preparedPath = seqWriter.getOutputPath().getURLString();
-        seqWriter.close();
     }
+    preparedPath = seqWriter.getOutputPath().getURLString();
+    seqWriter.close();
 }
 
 QStringList CAP3SupportTaskSettings::getArgumentsList() {

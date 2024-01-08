@@ -25,13 +25,16 @@
 
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
-CopyDataTask::CopyDataTask(IOAdapterFactory* _ioFrom, const GUrl& _urlFrom, IOAdapterFactory* _ioTo, const GUrl& _urlTo)
+const QByteArray CopyDataTask::CRLF = QByteArray("\r\n");
+
+CopyDataTask::CopyDataTask(IOAdapterFactory* _ioFrom, const GUrl& _urlFrom, IOAdapterFactory* _ioTo, const GUrl& _urlTo, ReplaceLineEndings newLineEndings_)
     : Task(tr("Copy Data Task"), TaskFlag_None), ioFrom(_ioFrom), ioTo(_ioTo),
-      urlFrom(_urlFrom), urlTo(_urlTo) {
-    assert(ioFrom != nullptr && ioTo != nullptr);
+      urlFrom(_urlFrom), urlTo(_urlTo), newLineEndings(newLineEndings_) {
+    CHECK(ioFrom != nullptr && ioTo != nullptr);
     tpm = Progress_Manual;
 }
 
@@ -46,9 +49,11 @@ void CopyDataTask::run() {
 
     qint64 count = 0;
     qint64 count_w = 0;
+    bool lineEndsWithCR = false;
     QByteArray buff(BUFFSIZE, 0);
 
     count = from->readBlock(buff.data(), BUFFSIZE);
+    replaceLineEndings(newLineEndings, lineEndsWithCR, buff, count);
     if (count == 0 || count == -1) {
         stateInfo.setError(tr("Cannot get data from: '%1'").arg(urlFrom.getURLString()));
         return;
@@ -66,12 +71,46 @@ void CopyDataTask::run() {
         }
         stateInfo.progress = from->getProgress();
         count = from->readBlock(buff.data(), BUFFSIZE);
+        replaceLineEndings(newLineEndings, lineEndsWithCR, buff, count);
     }
     if (count < 0 || count_w < 0) {
         if (!stateInfo.hasError()) {
             stateInfo.setError(tr("IO adapter error. %1").arg(from->errorString()));
         }
     }
+}
+
+void CopyDataTask::replaceLineEndings(ReplaceLineEndings newLineEndings, bool prevLineEndsWithCR, QByteArray& line, qint64& symbolsCount) const {
+    CHECK(newLineEndings != ReplaceLineEndings::KEEP_AS_IS, );
+    CHECK(symbolsCount != 0, );
+    QByteArray result;
+    line.resize(symbolsCount);
+    if (newLineEndings == ReplaceLineEndings::LF) {
+        bool prevCharCR = false;
+        for (QByteArray::const_iterator it = line.begin(); it != line.end(); it++) {
+            const char currentChar = *it;
+            if (prevCharCR || prevLineEndsWithCR) {
+                prevCharCR = false;
+                prevLineEndsWithCR = false;
+                result.append(CHAR_LF);
+                if (currentChar == CHAR_LF) {
+                    continue;
+                }
+            }
+            if (currentChar == CHAR_CR) {
+                prevCharCR = true;
+                prevLineEndsWithCR = true;
+                symbolsCount--;
+                continue;
+            } else {
+                prevLineEndsWithCR = false;
+            }
+            result.append(currentChar);
+            prevCharCR = false;
+        }
+    }
+    line = result;
+    line.resize(symbolsCount);
 }
 
 }  // namespace U2

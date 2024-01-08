@@ -31,16 +31,29 @@ class IOAdapterFactory;
 class U2CORE_EXPORT CopyDataTask : public Task {
     Q_OBJECT
 public:
-    CopyDataTask(IOAdapterFactory* ioFrom, const GUrl& urlFrom, IOAdapterFactory* ioTo, const GUrl& urlTo);
+    enum ReplaceLineEndings {
+        KEEP_AS_IS,
+        LF
+        //implement other line endings of necessity
+    };
+    CopyDataTask(IOAdapterFactory* ioFrom, const GUrl& urlFrom, IOAdapterFactory* ioTo, 
+        const GUrl& urlTo, ReplaceLineEndings newLineEndings = ReplaceLineEndings::KEEP_AS_IS);
 
     virtual void run();
 
 private:
+    void replaceLineEndings(ReplaceLineEndings newLineEndings, bool prevLineEndsWithCR, QByteArray& line, qint64& symbolsCount) const;
+
     static const int BUFFSIZE = 32 * 1024;
+    static const char CHAR_CR = '\r';
+    static const char CHAR_LF = '\n';
+    static const QByteArray CRLF;
+
     IOAdapterFactory* ioFrom;
     IOAdapterFactory* ioTo;
     GUrl urlFrom;
     GUrl urlTo;
+    ReplaceLineEndings newLineEndings;
 };
 
 }  // namespace U2
