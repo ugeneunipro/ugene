@@ -35,6 +35,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -118,8 +119,8 @@ void PairwiseAlignmentSmithWatermanMainWidget::sl_viewMatrixClicked() {
         QMessageBox::critical(this, windowTitle(), tr("Matrix not found."));
         return;
     }
-    SubstMatrixDialog smDialog(mtx, this);
-    smDialog.exec();
+    QObjectScopedPointer<SubstMatrixDialog> dlg = new SubstMatrixDialog(mtx, this);
+    dlg->exec();
 }
 
 void PairwiseAlignmentSmithWatermanMainWidget::fillInnerSettings() {
