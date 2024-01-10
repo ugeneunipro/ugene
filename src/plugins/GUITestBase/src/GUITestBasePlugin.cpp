@@ -3058,6 +3058,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0008);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0009);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0010);
+    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0011);
 
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0002);

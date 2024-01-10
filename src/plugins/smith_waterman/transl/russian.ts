@@ -9,27 +9,32 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="29"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="20"/>
         <source>Algorithm version:</source>
         <translation>Версия алгоритма:</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="39"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="30"/>
         <source>Scoring matrix:</source>
         <translation>Матрица:</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="62"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="55"/>
+        <source>View...</source>
+        <translation>Посмотреть...</translation>
+    </message>
+    <message>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="77"/>
         <source>Gap penalty</source>
         <translation>Штраф за пробел</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="77"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="92"/>
         <source>Open:</source>
         <translation>Открыть:</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="84"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="99"/>
         <source>Extension:</source>
         <translation>Расширение:</translation>
     </message>
@@ -335,6 +340,14 @@
         <location filename="../src/SWWorker.cpp" line="550"/>
         <source>Found %1 matches of pattern &apos;%2&apos;</source>
         <translation>Found %1 matches of pattern &apos;%2&apos;</translation>
+    </message>
+</context>
+<context>
+    <name>U2::PairwiseAlignmentSmithWatermanMainWidget</name>
+    <message>
+        <location filename="../src/PairwiseAlignmentSmithWatermanGUIExtension.cpp" line="118"/>
+        <source>Matrix not found.</source>
+        <translation>Матрица не найдена.</translation>
     </message>
 </context>
 <context>
