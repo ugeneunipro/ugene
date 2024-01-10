@@ -125,6 +125,37 @@ GUI_TEST_CLASS_DEFINITION(test_8002) {
     CHECK_SET_ERR(commonStatistics->text().contains("589 nt"), "Expected text not found");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8004) {
+    /*
+    * 1. Open human_T1.fa
+    * 2. Remove sequence object from document
+    * 3. Open context menu on document
+    * Expected state: submenu 'BLAST' not present in context menu
+    */
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class BLASTMenuItemChecker : public CustomScenario {
+        void run() override {
+            auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+            CHECK_SET_ERR(activePopupMenu != nullptr, "Active popup menu is NULL");
+            
+            QAction* showCircular = GTMenu::getMenuItem(activePopupMenu, "BLAST", false);
+            CHECK_SET_ERR(showCircular == nullptr, "'BLAST' menu item should be NULL");
+
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
+    };
+
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    GTUtilsDialog::waitForDialog(new PopupChecker(new BLASTMenuItemChecker));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("human_T1.fa"));
+    GTMouseDriver::click(Qt::RightButton);    
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8009) {
     /*
      * 1. Open Tools->Sanger data analysis-> Map reads to reference
