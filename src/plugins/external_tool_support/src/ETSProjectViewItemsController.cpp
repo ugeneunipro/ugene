@@ -62,7 +62,6 @@ void ETSProjectViewItemsController::sl_addToProjectViewMenu(QMenu& m) {
     MultiGSelection ms;  // ms.addSelection(pv->getGObjectSelection());
     ms.addSelection(pv->getDocumentSelection());
     QList<Document*> set = SelectionUtils::getSelectedDocs(ms);
-    bool hasFastaDocs = false;
     for (const Document* doc : qAsConst(set)) {
         if (doc->getDocumentFormatId() == BaseDocumentFormats::FASTA && !doc->findGObjectIdsByType(GObjectTypes::SEQUENCE).isEmpty()) {
             QMenu* subMenu = m.addMenu(tr("BLAST"));
