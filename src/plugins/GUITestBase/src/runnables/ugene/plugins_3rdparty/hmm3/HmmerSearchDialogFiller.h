@@ -27,14 +27,16 @@ using namespace HI;
 
 class HmmerSearchDialogFiller : public Filler {
 public:
-    HmmerSearchDialogFiller(QString _profile, QString _newFilePath)
+    HmmerSearchDialogFiller(QString _profile, QString _newFilePath, int _domE = -1)
         : Filler("HmmerSearchDialog"),
           profile(_profile),
-          newFilePath(_newFilePath) {
+          newFilePath(_newFilePath),
+          domE(_domE) {
     }
     virtual void commonScenario();
 
 private:
     QString profile, newFilePath;
+    int domE;
 };
 }  // namespace U2
