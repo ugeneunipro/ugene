@@ -101,7 +101,7 @@ echo "##teamcity[blockOpened name='Sign']"
 function code_sign() {
   FILE_TO_SIGN=$1
   echo "Signing ${FILE_TO_SIGN}"
-  if signtool.exe sign /a /t http://timestamp.digicert.com /s MY /n "NCIT UNIPRO LLC" /debug /v "${FILE_TO_SIGN}"; then
+  if signtool.exe sign /a /tr http://timestamp.globalsign.com/tsa/r6advanced1 /td SHA256 /fd SHA256 /n "NTSIT UNIPRO LLC" /debug /v "${FILE_TO_SIGN}"; then
     echo "File is signed successfully: ${FILE_TO_SIGN}"
   else
     echo "Failed to sign ${FILE_TO_SIGN}"
