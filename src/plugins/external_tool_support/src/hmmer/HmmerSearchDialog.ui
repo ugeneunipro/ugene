@@ -33,15 +33,15 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>587</width>
-       <height>309</height>
+       <width>447</width>
+       <height>237</height>
       </size>
      </property>
      <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="inputAndOutputTab">
       <property name="sizePolicy">
@@ -122,7 +122,7 @@
             <number>-999</number>
            </property>
            <property name="maximum">
-            <number>1</number>
+            <number>999</number>
            </property>
            <property name="value">
             <number>1</number>
