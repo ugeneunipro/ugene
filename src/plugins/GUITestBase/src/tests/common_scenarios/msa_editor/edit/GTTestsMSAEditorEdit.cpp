@@ -36,7 +36,7 @@
 #include <QApplication>
 #include <QCheckBox>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "GTTestsMSAEditorEdit.h"
 #include "GTUtilsMdi.h"

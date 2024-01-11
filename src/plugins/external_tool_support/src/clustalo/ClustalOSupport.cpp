@@ -37,8 +37,8 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MsaEditor.h>
 
 #include "ClustalOSupportRunDialog.h"
 #include "ClustalOSupportTask.h"
@@ -120,7 +120,7 @@ ClustalOSupportContext::ClustalOSupportContext(QObject* p)
 }
 
 void ClustalOSupportContext::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
     msaEditor->registerActionProvider(this);
@@ -146,7 +146,7 @@ void ClustalOSupportContext::sl_align() {
     // Call run ClustalO align dialog
     auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
-    MSAEditor* msaEditor = action->getMsaEditor();
+    MsaEditor* msaEditor = action->getMsaEditor();
     MsaObject* obj = msaEditor->getMaObject();
     if (obj == nullptr || obj->isStateLocked()) {
         return;
@@ -179,7 +179,7 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     // Call run ClustalO align dialog
     auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
-    MSAEditor* msaEditor = action->getMsaEditor();
+    MsaEditor* msaEditor = action->getMsaEditor();
     MsaObject* msaObject = msaEditor->getMaObject();
 
     DocumentFormatConstraints c;

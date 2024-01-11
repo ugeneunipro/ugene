@@ -58,12 +58,12 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
-#include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaEditorConsensusArea.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
 #include <U2View/McaEditorReferenceArea.h>
+#include <U2View/MsaEditorTreeViewer.h>
 
 #include "GTTestsRegressionScenarios_5001_6000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -4549,7 +4549,7 @@ GUI_TEST_CLASS_DEFINITION(test_5854) {
     // 3. Select "Mecopoda_elongata__Ishigaki__J" sequence
     GTUtilsMSAEditorSequenceArea::selectSequence("Mecopoda_elongata__Ishigaki__J");
 
-    MSAEditorSequenceArea* seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
+    MsaEditorSequenceArea* seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
     QRect sel = seqArea->getEditor()->getSelection().toRect();
     int index = seqArea->getRowIndex(sel.y()) + 1;
 

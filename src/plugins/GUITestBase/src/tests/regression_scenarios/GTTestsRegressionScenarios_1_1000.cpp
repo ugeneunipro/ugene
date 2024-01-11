@@ -58,8 +58,8 @@
 #include <U2View/AnnotationsTreeView.h>
 #include <U2View/DetView.h>
 #include <U2View/GSequenceGraphView.h>
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"

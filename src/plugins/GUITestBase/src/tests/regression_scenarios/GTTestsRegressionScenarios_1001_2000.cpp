@@ -73,10 +73,10 @@
 #include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/AnnotationsTreeView.h>
 #include <U2View/AssemblyBrowser.h>
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorTreeViewer.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTTestsRegressionScenarios_1001_2000.h"

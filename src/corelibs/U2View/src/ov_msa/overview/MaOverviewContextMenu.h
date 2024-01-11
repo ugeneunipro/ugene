@@ -28,7 +28,7 @@
 namespace U2 {
 
 class MaSimpleOverview;
-class MSAEditorOverviewArea;
+class MsaEditorOverviewArea;
 
 class MaOverviewContextMenu : public QMenu {
     Q_OBJECT

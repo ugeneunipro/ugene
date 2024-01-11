@@ -32,7 +32,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "GTTestsAlignSequenceToMsa.h"
 #include "GTUtilsExternalTools.h"

@@ -27,7 +27,7 @@
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "McaAlternativeMutationsWidget.h"
 

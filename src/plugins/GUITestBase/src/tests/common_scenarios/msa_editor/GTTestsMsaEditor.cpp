@@ -50,8 +50,8 @@
 #include <U2Core/TextUtils.h>
 
 #include <U2View/ADVConstants.h>
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
 
 #include "GTTestsMsaEditor.h"
 #include "GTUtilsBookmarksTreeView.h"

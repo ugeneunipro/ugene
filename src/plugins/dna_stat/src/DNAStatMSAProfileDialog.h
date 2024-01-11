@@ -32,14 +32,14 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 class SaveDocumentController;
 
 class DNAStatMSAProfileDialog : public QDialog, public Ui_DNAStatMSAProfileDialog {
     Q_OBJECT
 
 public:
-    DNAStatMSAProfileDialog(QWidget* p, MSAEditor* ctx);
+    DNAStatMSAProfileDialog(QWidget* p, MsaEditor* ctx);
 
     void accept();
     /*Notify user about problems with big report, and disable opening report in UGENE*/
@@ -51,7 +51,7 @@ private slots:
 private:
     void initSaveController();
 
-    MSAEditor* ctx;
+    MsaEditor* ctx;
     SaveDocumentController* saveController;
 
     static const QString HTML;

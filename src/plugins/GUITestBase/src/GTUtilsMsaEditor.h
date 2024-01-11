@@ -32,10 +32,10 @@
 
 namespace U2 {
 
-class MSAEditor;
-class MSAEditorConsensusArea;
+class MsaEditor;
+class MsaEditorConsensusArea;
 class MaEditorNameList;
-class MSAEditorSequenceArea;
+class MsaEditorSequenceArea;
 class MsaEditorWgt;
 
 // If you can't find an appropriate method check the GTUtilsMsaEditorSequenceArea class
@@ -56,7 +56,7 @@ public:
     static QColor getGraphOverviewPixelColor(const QPoint& point);
     static QColor getSimpleOverviewPixelColor(const QPoint& point);
 
-    static MSAEditor* getEditor();
+    static MsaEditor* getEditor();
     static MsaEditorWgt* getEditorUi();
 
     /** Returns overview area widget: a container of graph & simple overviews. */
@@ -71,8 +71,8 @@ public:
     static void checkNoTreeView();
 
     static MaEditorNameList* getNameListArea();
-    static MSAEditorConsensusArea* getConsensusArea(int index = 0);
-    static MSAEditorSequenceArea* getSequenceArea(int index = 0);
+    static MsaEditorConsensusArea* getConsensusArea(int index = 0);
+    static MsaEditorSequenceArea* getSequenceArea(int index = 0);
 
     static QRect getSequenceNameRect(const QString& sequenceName);
     static QRect getSequenceNameRect(int viewRowIndex);

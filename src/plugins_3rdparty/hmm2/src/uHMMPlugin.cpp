@@ -50,8 +50,8 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVUtils.h>
 #include <U2View/AnnotatedDNAView.h>
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MsaEditor.h>
 
 #include "HMMIO.h"
 #include "HMMIOWorker.h"
@@ -135,7 +135,7 @@ void uHMMPlugin::sl_build() {
         auto ow = qobject_cast<GObjectViewWindow*>(w);
         if (ow != NULL) {
             GObjectViewController* ov = ow->getObjectView();
-            auto av = qobject_cast<MSAEditor*>(ov);
+            auto av = qobject_cast<MsaEditor*>(ov);
             if (av != NULL) {
                 MsaObject* maObj = av->getMaObject();
                 if (maObj != NULL) {
@@ -201,7 +201,7 @@ HMMMSAEditorContext::HMMMSAEditorContext(QObject* p)
 }
 
 void HMMMSAEditorContext::initViewContext(GObjectViewController* view) {
-    auto msaed = qobject_cast<MSAEditor*>(view);
+    auto msaed = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
     CHECK(msaed->getMaObject() != NULL, );
 
@@ -213,7 +213,7 @@ void HMMMSAEditorContext::initViewContext(GObjectViewController* view) {
 }
 
 void HMMMSAEditorContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
-    auto msaed = qobject_cast<MSAEditor*>(v);
+    auto msaed = qobject_cast<MsaEditor*>(v);
     SAFE_POINT(msaed != NULL && m != NULL, "Invalid GObjectView or QMenu", );
     CHECK(msaed->getMaObject() != NULL, );
 
@@ -228,7 +228,7 @@ void HMMMSAEditorContext::buildStaticOrContextMenu(GObjectViewController* v, QMe
 void HMMMSAEditorContext::sl_build() {
     auto action = qobject_cast<GObjectViewAction*>(sender());
     assert(action != NULL);
-    auto ed = qobject_cast<MSAEditor*>(action->getObjectView());
+    auto ed = qobject_cast<MsaEditor*>(action->getObjectView());
     assert(ed != NULL);
     MsaObject* obj = ed->getMaObject();
     if (obj) {

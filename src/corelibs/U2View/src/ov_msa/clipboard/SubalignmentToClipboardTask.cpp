@@ -45,7 +45,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include "ov_msa/MSAEditorSequenceArea.h"
+#include "ov_msa/MsaEditorSequenceArea.h"
 
 namespace U2 {
 
@@ -54,7 +54,7 @@ PrepareMsaClipboardDataTask::PrepareMsaClipboardDataTask(const QList<qint64>& _r
     : Task(tr("Copy formatted alignment to the clipboard"), taskFlags), rowIds(_rowIds), columnRange(_columnRange) {
 }
 
-PrepareMsaClipboardDataTask* MsaClipboardDataTaskFactory::newInstance(MSAEditor* maEditor,
+PrepareMsaClipboardDataTask* MsaClipboardDataTaskFactory::newInstance(MsaEditor* maEditor,
                                                                       const QList<qint64>& maRowIds,
                                                                       const U2Region& columnRange,
                                                                       const DocumentFormatId& formatId) {
@@ -210,7 +210,7 @@ void RichTextMsaClipboardTask::prepare() {
     resultText.append("</span>");
 }
 
-SubalignmentToClipboardTask::SubalignmentToClipboardTask(MSAEditor* maEditor, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId)
+SubalignmentToClipboardTask::SubalignmentToClipboardTask(MsaEditor* maEditor, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId)
     : Task(tr("Copy formatted alignment to the clipboard"), TaskFlags_NR_FOSE_COSC), formatId(formatId) {
     prepareDataTask = MsaClipboardDataTaskFactory::newInstance(maEditor, maRowIds, columnRange, formatId);
     addSubTask(prepareDataTask);

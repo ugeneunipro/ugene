@@ -3723,7 +3723,7 @@ GUI_TEST_CLASS_DEFINITION(test_6654) {
     GTUtilsMsaEditor::moveToSequenceName("Roeseliana_roeseli");
     GTMouseDriver::click();
 
-    MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor();
+    MsaEditor* msaEditor = GTUtilsMsaEditor::getEditor();
     QRect selection = msaEditor->getSelection().toRect();
 
     CHECK_SET_ERR(selection.x() == 0, QString("1. Expected selection x: 0, actual: %1").arg(selection.x()));

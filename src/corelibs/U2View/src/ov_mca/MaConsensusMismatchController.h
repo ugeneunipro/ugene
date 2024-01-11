@@ -24,7 +24,7 @@
 #include <QBitArray>
 #include <QObject>
 
-#include "ov_msa/MSAEditorConsensusCache.h"
+#include "ov_msa/MsaEditorConsensusCache.h"
 
 class QAction;
 
@@ -36,7 +36,7 @@ class MaConsensusMismatchController : public QObject {
     Q_OBJECT
 public:
     MaConsensusMismatchController(QObject* p,
-                                  const QSharedPointer<MSAEditorConsensusCache>& consCache,
+                                  const QSharedPointer<MsaEditorConsensusCache>& consCache,
                                   MaEditor* editor);
     bool isMismatch(int pos) const;
 
@@ -58,7 +58,7 @@ private:
 
 private:
     QBitArray mismatchCache;
-    QSharedPointer<MSAEditorConsensusCache> consCache;
+    QSharedPointer<MsaEditorConsensusCache> consCache;
     MaEditor* editor;
 
     QAction* nextMismatch;

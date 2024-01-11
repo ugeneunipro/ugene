@@ -34,7 +34,7 @@ class QFile;
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 class MSADistanceAlgorithm;
 class SaveDocumentController;
 
@@ -42,7 +42,7 @@ class DistanceMatrixMSAProfileDialog : public QDialog, public Ui_DistanceMatrixM
     Q_OBJECT
 
 public:
-    DistanceMatrixMSAProfileDialog(QWidget* p, MSAEditor* ctx);
+    DistanceMatrixMSAProfileDialog(QWidget* p, MsaEditor* ctx);
 
     void accept();
 
@@ -53,7 +53,7 @@ private slots:
 private:
     void initSaveController();
 
-    MSAEditor* ctx;
+    MsaEditor* ctx;
     SaveDocumentController* saveController;
 
     static const QString HTML;
@@ -79,7 +79,7 @@ public:
     bool showGroupStatistic;
     DistanceMatrixMSAProfileOutputFormat outFormat;
     QString outURL;
-    MSAEditor* ctx;
+    MsaEditor* ctx;
 };
 
 class DistanceMatrixMSAProfileTask : public Task {

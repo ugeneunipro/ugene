@@ -25,7 +25,7 @@
 
 #include <U2Gui/OPWidgetFactory.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 

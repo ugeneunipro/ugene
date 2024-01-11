@@ -44,7 +44,7 @@
 #include <U2Gui/Notification.h>
 #include <U2Gui/SaveDocumentController.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 #include <U2View/WebWindow.h>
 
 namespace U2 {
@@ -52,7 +52,7 @@ namespace U2 {
 const QString DistanceMatrixMSAProfileDialog::HTML = "html";
 const QString DistanceMatrixMSAProfileDialog::CSV = "csv";
 
-DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEditor* _c)
+DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MsaEditor* _c)
     : QDialog(p),
       ctx(_c),
       saveController(nullptr) {

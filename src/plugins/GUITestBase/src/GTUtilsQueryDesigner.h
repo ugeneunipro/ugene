@@ -23,7 +23,7 @@
 
 #include <QTreeWidget>
 
-#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "GTGlobals.h"
 

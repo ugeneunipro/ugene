@@ -28,7 +28,7 @@
 namespace U2 {
 
 class MaEditorWgt;
-class MSAEditorSequenceArea;
+class MsaEditorSequenceArea;
 
 /************************************************************************/
 /* MaUtilsWidget */

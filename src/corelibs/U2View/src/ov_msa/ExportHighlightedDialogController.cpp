@@ -33,8 +33,8 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
 
-#include "ov_msa/MSAEditorSequenceArea.h"
 #include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MsaEditorSequenceArea.h"
 #include "ui_ExportHighlightedDialog.h"
 
 namespace U2 {

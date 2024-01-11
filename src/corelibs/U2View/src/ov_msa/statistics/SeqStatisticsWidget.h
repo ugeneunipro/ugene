@@ -22,18 +22,18 @@
 #pragma once
 
 #include "../MsaOpSavableTab.h"
-#include "ui_MSADistancesColumnSettingsWidget.h"
+#include "ui_MsaDistancesColumnSettingsWidget.h"
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 class MsaEditorWgt;
 class SimilarityStatisticsSettings;
 
 class U2VIEW_EXPORT SeqStatisticsWidget : public QWidget {
     Q_OBJECT
 public:
-    SeqStatisticsWidget(MSAEditor* msa);
+    SeqStatisticsWidget(MsaEditor* msa);
 
 private slots:
     void sl_onAlgoChanged();
@@ -55,9 +55,9 @@ private:
     void updateWidgetsSettings();
 
 private:
-    Ui_MSADistanceColumnSettingsForm ui;
+    Ui_MsaDistanceColumnSettingsForm ui;
 
-    MSAEditor* msa;
+    MsaEditor* msa;
 
     QWidget* distancesStatisticsGroup;
 

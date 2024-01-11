@@ -126,11 +126,11 @@
 #include <U2View/DnaAssemblyUtils.h>
 #include <U2View/FindPatternMsaWidgetFactory.h>
 #include <U2View/FindPatternWidgetFactory.h>
-#include <U2View/MSAGeneralTabFactory.h>
-#include <U2View/MSAHighlightingTabFactory.h>
 #include <U2View/MaExportConsensusTabFactory.h>
 #include <U2View/McaGeneralTabFactory.h>
 #include <U2View/McaReadsTabFactory.h>
+#include <U2View/MsaGeneralTabFactory.h>
+#include <U2View/MsaHighlightingTabFactory.h>
 #include <U2View/PairAlignFactory.h>
 #include <U2View/RefSeqCommonWidget.h>
 #include <U2View/RoughTmCalculatorFactory.h>
@@ -306,7 +306,7 @@ static void initOptionsPanels() {
     opWidgetFactoryRegistry->registerFactory(new AssemblySettingsWidgetFactory());
 
     // MSA groups
-    auto msaGeneralTabFactory = new MSAGeneralTabFactory();
+    auto msaGeneralTabFactory = new MsaGeneralTabFactory();
     QString msaGeneralId = msaGeneralTabFactory->getOPGroupParameters().getGroupId();
     opWidgetFactoryRegistry->registerFactory(msaGeneralTabFactory);
     opWidgetFactoryRegistry->registerFactory(new FindPatternMsaWidgetFactory());

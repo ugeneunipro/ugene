@@ -30,7 +30,7 @@ const int CURSOR_START_POSITION = 0;
 
 namespace U2 {
 
-SequenceSelectorWidgetController::SequenceSelectorWidgetController(MSAEditor* _msa)
+SequenceSelectorWidgetController::SequenceSelectorWidgetController(MsaEditor* _msa)
     : msa(_msa), defaultSeqName(""), seqId(U2MsaRow::INVALID_ROW_ID) {
     setupUi(this);
     filler = new MSACompletionFiller();

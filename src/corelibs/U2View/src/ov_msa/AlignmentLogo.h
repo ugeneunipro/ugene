@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 
 enum SequenceType { Auto,
                     NA,

@@ -45,10 +45,10 @@
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UnloadedObject.h>
 
-#include "MSAEditor.h"
-#include "MSAEditorConsensusArea.h"
 #include "MaEditorFactory.h"
 #include "MaEditorState.h"
+#include "MsaEditor.h"
+#include "MsaEditorConsensusArea.h"
 
 namespace U2 {
 
@@ -116,7 +116,7 @@ void OpenMaEditorTask::open() {
     mdiManager->addMDIWindow(objectViewWindow);
 }
 
-void OpenMaEditorTask::updateTitle(MSAEditor* msaEd) {
+void OpenMaEditorTask::updateTitle(MsaEditor* msaEd) {
     const QString& oldViewName = msaEd->getName();
     GObjectViewWindow* w = GObjectViewUtils::findViewByName(oldViewName);
     if (w != nullptr) {

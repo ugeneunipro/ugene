@@ -59,7 +59,7 @@
 #include "ov_msa/MultilineScrollController.h"
 #include "ov_msa/RowHeightController.h"
 #include "ov_msa/ScrollController.h"
-#include "ov_msa/highlighting/MSAHighlightingTabFactory.h"
+#include "ov_msa/highlighting/MsaHighlightingTabFactory.h"
 #include "ov_msa/highlighting/MsaSchemesMenuBuilder.h"
 
 namespace U2 {
@@ -1034,7 +1034,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
         return;
     }
 
-    bool isMsaEditor = qobject_cast<MSAEditor*>(getEditor()) != nullptr;
+    bool isMsaEditor = qobject_cast<MsaEditor*>(getEditor()) != nullptr;
     bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
     bool isCtrlPressed = e->modifiers().testFlag(Qt::ControlModifier);
 
@@ -1446,7 +1446,7 @@ void MaEditorSequenceArea::applyColorScheme(const QString& id) {
         action->setChecked(action->data() == id);
     }
 
-    if (qobject_cast<MSAEditor*>(getEditor()) != nullptr) {  // to avoid setting of sanger scheme
+    if (qobject_cast<MsaEditor*>(getEditor()) != nullptr) {  // to avoid setting of sanger scheme
         switch (ui->getEditor()->getMaObject()->getAlphabet()->getType()) {
             case DNAAlphabet_RAW:
                 AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, id);

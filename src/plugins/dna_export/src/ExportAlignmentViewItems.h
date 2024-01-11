@@ -32,7 +32,7 @@ class AnnotatedDNAView;
 class AnnotationSelection;
 class Annotation;
 class LRegionsSelection;
-class MSAEditor;
+class MsaEditor;
 
 class ExportAlignmentViewItemsController : public GObjectViewWindowContext {
     Q_OBJECT
@@ -48,7 +48,7 @@ protected:
 class MSAExportContext : public QObject {
     Q_OBJECT
 public:
-    MSAExportContext(MSAEditor* e);
+    MSAExportContext(MsaEditor* e);
     void buildMenu(QMenu* m);
 
 protected slots:
@@ -58,7 +58,7 @@ protected slots:
     void updateActions();
 
 private:
-    MSAEditor* editor = nullptr;
+    MsaEditor* editor = nullptr;
     QAction* exportNucleicMsaToAminoAction = nullptr;
     QAction* exportMsaToSequenceFileFormatAction = nullptr;
     QAction* exportSelectedMsaRowsToSeparateFilesAction = nullptr;

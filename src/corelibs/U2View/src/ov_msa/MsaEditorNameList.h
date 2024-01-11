@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 
 class MsaEditorNameList : public MaEditorNameList {
     Q_OBJECT
@@ -38,7 +38,7 @@ private slots:
 private:
     void buildMenu(QMenu* menu);
 
-    MSAEditor* getEditor() const;
+    MsaEditor* getEditor() const;
 
 protected:
     QSize sizeHint() const override;

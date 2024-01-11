@@ -32,8 +32,8 @@
 
 #include "MaOverviewImageExportTask.h"
 #include "MaSimpleOverview.h"
-#include "ov_msa/MSAEditorOverviewArea.h"
 #include "ov_msa/MaEditor.h"
+#include "ov_msa/MsaEditorOverviewArea.h"
 
 namespace U2 {
 

@@ -30,7 +30,7 @@
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "../MsaEditorSimilarityColumn.h"
 
@@ -45,7 +45,7 @@ static inline QVBoxLayout* initLayout(QWidget* w) {
     return layout;
 }
 
-SeqStatisticsWidget::SeqStatisticsWidget(MSAEditor* m)
+SeqStatisticsWidget::SeqStatisticsWidget(MsaEditor* m)
     : msa(m), savableTab(this, GObjectViewUtils::findViewByName(m->getName())) {
     setObjectName("SequenceStatisticsOptionsPanelTab");
     SAFE_POINT(m != nullptr, QString("Invalid parameter were passed into constructor SeqStatisticsWidget"), );

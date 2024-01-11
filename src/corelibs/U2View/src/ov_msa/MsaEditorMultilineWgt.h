@@ -27,14 +27,14 @@ namespace U2 {
 
 class GObjectViewWindow;
 class MSADistanceMatrix;
-class MSAEditor;
+class MsaEditor;
 class MsaEditorAlignmentDependentWidget;
-class MSAEditorMultiTreeViewer;
+class MsaEditorMultiTreeViewer;
 class MsaEditorWgt;
-class MSAEditorOverviewArea;
+class MsaEditorOverviewArea;
 class MsaEditorStatusBar;
 class MsaEditorSimilarityColumn;
-class MSAEditorTreeViewer;
+class MsaEditorTreeViewer;
 class MsaMultilineScrollArea;
 class SimilarityStatisticsSettings;
 
@@ -47,21 +47,21 @@ class U2VIEW_EXPORT MsaEditorMultilineWgt : public MaEditorMultilineWgt {
     Q_OBJECT
 
 public:
-    MsaEditorMultilineWgt(MSAEditor* editor, QWidget* parent, bool multiline);
+    MsaEditorMultilineWgt(MsaEditor* editor, QWidget* parent, bool multiline);
 
-    MSAEditor* getEditor() const;
+    MsaEditor* getEditor() const;
     MaEditorOverviewArea* getOverview();
     MaEditorStatusBar* getStatusBar();
 
     MaEditorWgt* getUI(int index) const override;
     void updateSize() override;
 
-    void addPhylTreeWidget(MSAEditorMultiTreeViewer* newMultiTreeViewer);
+    void addPhylTreeWidget(MsaEditorMultiTreeViewer* newMultiTreeViewer);
     void delPhylTreeWidget();
-    MSAEditorMultiTreeViewer* getPhylTreeWidget() const {
+    MsaEditorMultiTreeViewer* getPhylTreeWidget() const {
         return multiTreeViewer;
     };
-    MSAEditorTreeViewer* getCurrentTree() const;
+    MsaEditorTreeViewer* getCurrentTree() const;
 
     void setSimilaritySettings(const SimilarityStatisticsSettings* settings) override;
     void refreshSimilarityColumn() override;
@@ -95,8 +95,8 @@ protected:
     void addChild(MaEditorWgt* child) override;
 
 private:
-    MSAEditorMultiTreeViewer* multiTreeViewer;
-    MSAEditorTreeViewer* treeViewer;
+    MsaEditorMultiTreeViewer* multiTreeViewer;
+    MsaEditorTreeViewer* treeViewer;
 };
 
 }  // namespace U2

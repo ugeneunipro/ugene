@@ -27,29 +27,29 @@ namespace U2 {
 
 class GObjectViewWindow;
 class MSADistanceMatrix;
-class MSAEditor;
+class MsaEditor;
 class MsaEditorAlignmentDependentWidget;
-class MSAEditorMultiTreeViewer;
-class MSAEditorOverviewArea;
+class MsaEditorMultiTreeViewer;
+class MsaEditorOverviewArea;
 class MsaEditorSimilarityColumn;
-class MSAEditorTreeViewer;
+class MsaEditorTreeViewer;
 class SimilarityStatisticsSettings;
 
 class U2VIEW_EXPORT MsaEditorWgt : public MaEditorWgt {
     Q_OBJECT
     // todo: make public accessors:
-    friend class MSAEditorTreeViewer;
+    friend class MsaEditorTreeViewer;
     friend class MsaEditorSimilarityColumn;
 
 public:
-    MsaEditorWgt(MSAEditor* editor,
+    MsaEditorWgt(MsaEditor* editor,
                  QWidget* parent,
                  MaEditorOverviewArea* overview = nullptr,
                  MaEditorStatusBar* statusbar = nullptr);
 
-    MSAEditor* getEditor() const;
+    MsaEditor* getEditor() const;
 
-    MSAEditorSequenceArea* getSequenceArea() const;
+    MsaEditorSequenceArea* getSequenceArea() const;
 
     void createDistanceColumn(MSADistanceMatrix* matrix);
 
@@ -65,9 +65,9 @@ public:
 
     MsaEditorAlignmentDependentWidget* getSimilarityWidget() const;
 
-    MSAEditorTreeViewer* getCurrentTree() const;
+    MsaEditorTreeViewer* getCurrentTree() const;
 
-    MSAEditorMultiTreeViewer* getMultiTreeViewer() const;
+    MsaEditorMultiTreeViewer* getMultiTreeViewer() const;
 
     void initOverviewArea(MaEditorOverviewArea* overviewArea = nullptr) override;
     void initStatusBar(MaEditorStatusBar* statusBar = nullptr) override;
@@ -88,7 +88,7 @@ protected:
 
 private:
     MsaEditorSimilarityColumn* dataList = nullptr;
-    MSAEditorMultiTreeViewer* multiTreeViewer = nullptr;
+    MsaEditorMultiTreeViewer* multiTreeViewer = nullptr;
     MsaEditorAlignmentDependentWidget* similarityStatistics = nullptr;
 };
 

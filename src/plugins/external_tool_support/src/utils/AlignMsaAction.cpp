@@ -23,11 +23,11 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 
-AlignMsaAction::AlignMsaAction(QObject* parent, const QString& toolId, MSAEditor* _msaEditor, const QString& text, int order)
+AlignMsaAction::AlignMsaAction(QObject* parent, const QString& toolId, MsaEditor* _msaEditor, const QString& text, int order)
     : ExternalToolSupportAction(parent, _msaEditor, text, order, QStringList(toolId)), msaEditor(_msaEditor) {
     sl_updateState();
 
@@ -36,7 +36,7 @@ AlignMsaAction::AlignMsaAction(QObject* parent, const QString& toolId, MSAEditor
     connect(msaObject, SIGNAL(si_alignmentBecomesEmpty(bool)), SLOT(sl_updateState()));
 }
 
-MSAEditor* AlignMsaAction::getMsaEditor() const {
+MsaEditor* AlignMsaAction::getMsaEditor() const {
     return msaEditor;
 }
 

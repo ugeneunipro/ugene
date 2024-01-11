@@ -26,8 +26,8 @@
 #include <U2Core/Msa.h>
 #include <U2Core/U2Region.h>
 
-#include "MSAEditorConsensusCache.h"
 #include "MaEditorConsensusAreaSettings.h"
+#include "MsaEditorConsensusCache.h"
 
 class QHelpEvent;
 class QMenu;
@@ -60,7 +60,7 @@ public:
 
     QSize getCanvasSize(const U2Region& region, const MaEditorConsElements& elements) const;
 
-    QSharedPointer<MSAEditorConsensusCache> getConsensusCache();
+    QSharedPointer<MsaEditorConsensusCache> getConsensusCache();
 
     void setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algo);
     void setConsensusAlgorithmConsensusThreshold(int val);
@@ -134,7 +134,7 @@ protected:
     MaEditorConsensusAreaSettings consensusSettings;
     MaConsensusAreaRenderer* renderer;
 
-    QSharedPointer<MSAEditorConsensusCache> consensusCache;
+    QSharedPointer<MsaEditorConsensusCache> consensusCache;
 
     bool completeRedraw;
     QPixmap* cachedView;

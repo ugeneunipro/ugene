@@ -39,10 +39,10 @@
 #include <U2Gui/Notification.h>
 
 #include "DrawHelper.h"
-#include "MSAEditor.h"
 #include "MaEditorSelection.h"
 #include "MaEditorSequenceArea.h"
 #include "MaEditorWgt.h"
+#include "MsaEditor.h"
 #include "RowHeightController.h"
 #include "ScrollController.h"
 

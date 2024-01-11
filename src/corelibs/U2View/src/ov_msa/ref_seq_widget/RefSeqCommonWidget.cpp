@@ -26,13 +26,13 @@
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "../SequenceSelectorWidgetController.h"
 
 namespace U2 {
 
-RefSeqCommonWidget::RefSeqCommonWidget(MSAEditor* _msaEditor)
+RefSeqCommonWidget::RefSeqCommonWidget(MsaEditor* _msaEditor)
     : msaEditor(_msaEditor) {
     connect(msaEditor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_refSeqChanged(qint64)));
 
@@ -82,7 +82,7 @@ RefSeqCommonWidgetFactory::~RefSeqCommonWidgetFactory() {
 QWidget* RefSeqCommonWidgetFactory::createWidget(GObjectViewController* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr, QString("NULL object view!"), nullptr);
 
-    auto msa = qobject_cast<MSAEditor*>(objView);
+    auto msa = qobject_cast<MsaEditor*>(objView);
     SAFE_POINT(msa != nullptr, QString("Not MSAEditor!"), nullptr);
 
     return new RefSeqCommonWidget(msa);

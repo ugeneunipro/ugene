@@ -30,7 +30,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 
@@ -77,14 +77,14 @@ private:
 class MsaClipboardDataTaskFactory {
 public:
     /** Returns a new PrepareMsaClipboardDataTask instance. */
-    static PrepareMsaClipboardDataTask* newInstance(MSAEditor* context, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
+    static PrepareMsaClipboardDataTask* newInstance(MsaEditor* context, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 class SubalignmentToClipboardTask : public Task {
     Q_OBJECT
 public:
-    SubalignmentToClipboardTask(MSAEditor* maEditor, const QList<qint64>& rowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
+    SubalignmentToClipboardTask(MsaEditor* maEditor, const QList<qint64>& rowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
 
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask) override;

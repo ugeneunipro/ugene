@@ -52,16 +52,16 @@
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/AlignmentAlgorithmGUIExtension.h>
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "ov_msa/MaEditorSelection.h"
 
 #define BadAlphabetWarning 0
 #define DuplicateSequenceWarning 1
 
-inline U2::U2DataId getSequenceIdByRowId(U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus& os) {
+inline U2::U2DataId getSequenceIdByRowId(U2::MsaEditor* msa, qint64 rowId, U2::U2OpStatus& os) {
     const U2::MsaRow& row = msa->getMaObject()->getAlignment()->getRowByRowId(rowId, os);
     CHECK_OP(os, {});
     return row->getSequenceId();
@@ -69,7 +69,7 @@ inline U2::U2DataId getSequenceIdByRowId(U2::MSAEditor* msa, qint64 rowId, U2::U
 
 namespace U2 {
 
-PairAlign::PairAlign(MSAEditor* _msa)
+PairAlign::PairAlign(MsaEditor* _msa)
     : msa(_msa), pairwiseAlignmentWidgetsSettings(_msa->getPairwiseAlignmentWidgetsSettings()),
       distanceCalcTask(nullptr), settingsWidget(nullptr),
       showHideSequenceWidget(nullptr), showHideSettingsWidget(nullptr), showHideOutputWidget(nullptr),

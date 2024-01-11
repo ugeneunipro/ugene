@@ -50,11 +50,11 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include "ov_msa/MSAEditor.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditorFactory.h"
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/MaEditorSplitters.h"
+#include "ov_msa/MsaEditor.h"
 
 namespace U2 {
 ////////////////////////////////////
@@ -68,7 +68,7 @@ static const char* TOGGLE_EXCLUDE_LIST_ACTION_NAME = "exclude_list_toggle_action
 static const char* MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME = "exclude_list_move_from_msa_action";
 
 void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "View is not MSAEditor!", );
     msaEditor->registerActionProvider(this);
 
@@ -98,7 +98,7 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
     connect(msaEditor->getSelectionController(), &MaEditorSelectionController::si_selectionChanged, this, [this, msaEditor]() { updateState(msaEditor); });
 
     QPointer<MsaObject> msaObjectPtr = msaEditor->getMaObject();
-    QPointer<MSAEditor> msaEditorPtr = msaEditor;
+    QPointer<MsaEditor> msaEditorPtr = msaEditor;
     connect(msaObjectPtr, &GObject::si_lockedStateChanged, this, [this, msaEditorPtr]() {
         CHECK(!msaEditorPtr.isNull(), );
         updateState(msaEditorPtr);
@@ -118,7 +118,7 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
     updateState(msaEditor);
 }
 
-MsaExcludeListWidget* MsaExcludeListContext::findActiveExcludeList(MSAEditor* msaEditor) {
+MsaExcludeListWidget* MsaExcludeListContext::findActiveExcludeList(MsaEditor* msaEditor) {
     auto multilineLayout = msaEditor->getUI()->layout();
     auto excludeWidget = msaEditor->getUI()->findChild<MsaExcludeListWidget*>();
     if (excludeWidget != nullptr) {
@@ -130,7 +130,7 @@ MsaExcludeListWidget* MsaExcludeListContext::findActiveExcludeList(MSAEditor* ms
     return nullptr;
 }
 
-MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEditor) {
+MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MsaEditor* msaEditor) {
     MsaExcludeListWidget* excludeList = findActiveExcludeList(msaEditor);
     CHECK(excludeList == nullptr, excludeList);
     GCOUNTER(cvar, "MsaExcludeListWidget");
@@ -143,12 +143,12 @@ MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEdito
     return excludeList;
 }
 
-void MsaExcludeListContext::updateMsaEditorSplitterStyle(MSAEditor* msaEditor) {
+void MsaExcludeListContext::updateMsaEditorSplitterStyle(MsaEditor* msaEditor) {
     auto mainSplitter = msaEditor->getUI()->getUI(0)->getMainSplitter();
     MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
 }
 
-void MsaExcludeListContext::toggleExcludeListView(MSAEditor* msaEditor) {
+void MsaExcludeListContext::toggleExcludeListView(MsaEditor* msaEditor) {
     auto excludeList = findActiveExcludeList(msaEditor);
     if (excludeList != nullptr) {
         delete excludeList;
@@ -158,7 +158,7 @@ void MsaExcludeListContext::toggleExcludeListView(MSAEditor* msaEditor) {
     updateMsaEditorSplitterStyle(msaEditor);
 }
 
-void MsaExcludeListContext::updateState(MSAEditor* msaEditor) {
+void MsaExcludeListContext::updateState(MsaEditor* msaEditor) {
     bool isRegisteredView = viewResources.contains(msaEditor);
     CHECK(isRegisteredView, );
     // MSA editor emits signals during the destruction process (TreeWidget resets rows ordering and updates collapse model & selection).
@@ -169,7 +169,7 @@ void MsaExcludeListContext::updateState(MSAEditor* msaEditor) {
     moveAction->setEnabled(isEnabled);
 }
 
-QAction* MsaExcludeListContext::getMoveMsaSelectionToExcludeListAction(MSAEditor* msaEditor) {
+QAction* MsaExcludeListContext::getMoveMsaSelectionToExcludeListAction(MsaEditor* msaEditor) {
     auto moveAction = findViewAction(msaEditor, MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME);
     SAFE_POINT(moveAction != nullptr, "Can't find move action in Msa editor", nullptr)
     return moveAction;
@@ -188,7 +188,7 @@ static const char* PROPERTY_LAST_USED_EXCLUDE_LIST_FILE = "MsaExcludeList_lastUs
 /** A constant for Exclude List file. An Exclude List file name for "file.aln" is constructed like  "file." + EXCLUDE_LIST_FILE_SUFFIX. */
 static const char* EXCLUDE_LIST_FILE_SUFFIX = "exclude-list.fasta";
 
-MsaExcludeListWidget::MsaExcludeListWidget(QWidget* parent, MSAEditor* _msaEditor, MsaExcludeListContext* viewContext)
+MsaExcludeListWidget::MsaExcludeListWidget(QWidget* parent, MsaEditor* _msaEditor, MsaExcludeListContext* viewContext)
     : QWidget(parent), msaEditor(_msaEditor) {
     setObjectName("msa_exclude_list");
     auto layout = new QVBoxLayout(this);

@@ -25,14 +25,14 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 class SequenceSelectorWidgetController;
 
 /** Reference Sequence is a common widget in the Alignment Editor */
 class RefSeqCommonWidget : public QWidget {
     Q_OBJECT
 public:
-    RefSeqCommonWidget(MSAEditor* msaEditor);
+    RefSeqCommonWidget(MsaEditor* msaEditor);
 
 private slots:
     void sl_refSeqChanged(qint64);
@@ -40,7 +40,7 @@ private slots:
 
 private:
     QWidget* createReferenceGroup();
-    MSAEditor* msaEditor;
+    MsaEditor* msaEditor;
     SequenceSelectorWidgetController* reSeqSelector;
 };
 

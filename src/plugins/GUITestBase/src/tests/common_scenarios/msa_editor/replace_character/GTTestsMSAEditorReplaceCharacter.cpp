@@ -28,7 +28,7 @@
 #include <QComboBox>
 #include <QTableWidget>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "GTGlobals.h"
 #include "GTUtilsMdi.h"

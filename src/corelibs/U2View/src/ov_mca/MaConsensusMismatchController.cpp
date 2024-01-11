@@ -32,15 +32,15 @@
 
 #include "McaEditor.h"
 #include "McaEditorSequenceArea.h"
-#include "ov_msa/MSAEditorConsensusCache.h"
-#include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/MaEditorMultilineWgt.h"
+#include "ov_msa/MaEditorSequenceArea.h"
+#include "ov_msa/MsaEditorConsensusCache.h"
 #include "ov_sequence/SequenceObjectContext.h"
 
 namespace U2 {
 
 MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
-                                                             const QSharedPointer<MSAEditorConsensusCache>& consCache,
+                                                             const QSharedPointer<MsaEditorConsensusCache>& consCache,
                                                              MaEditor* editor)
     : QObject(p),
       consCache(consCache),

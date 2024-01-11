@@ -41,10 +41,10 @@
 #include <U2Gui/ExportObjectUtils.h>
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/MSAEditorOffsetsView.h>
-#include <U2View/MSAEditorOverviewArea.h>
-#include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/McaEditor.h>
+#include <U2View/MsaEditorOffsetsView.h>
+#include <U2View/MsaEditorOverviewArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 #include <U2View/UndoRedoFramework.h>
 
 #include "MaCollapseModel.h"

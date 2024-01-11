@@ -33,10 +33,10 @@
 #include <U2Gui/ProjectView.h>
 #include <U2Gui/U2FileDialog.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorSelection.h>
+#include <U2View/MsaEditor.h>
 
 #include "AlignSequencesToAlignmentTask.h"
 #include "RealignSequencesInAlignmentTask.h"
@@ -48,7 +48,7 @@ AlignSequencesToAlignmentSupport::AlignSequencesToAlignmentSupport(QObject* pare
 }
 
 void AlignSequencesToAlignmentSupport::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "View is not MSAEditor!", );
     CHECK(msaEditor->getMaObject() != nullptr, );
     msaEditor->registerActionProvider(this);
@@ -89,18 +89,18 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectViewController* vi
 /////////////////////////////////////
 /// AlignSequencesToAlignmentAction
 /////////////////////////////////////
-BaseObjectViewAlignmentAction::BaseObjectViewAlignmentAction(QObject* parent, MSAEditor* view, const QString& _algorithmId, const QString& text, int order)
+BaseObjectViewAlignmentAction::BaseObjectViewAlignmentAction(QObject* parent, MsaEditor* view, const QString& _algorithmId, const QString& text, int order)
     : GObjectViewAction(parent, view, text, order), msaEditor(view), algorithmId(_algorithmId) {
 }
 
-MSAEditor* BaseObjectViewAlignmentAction::getEditor() const {
+MsaEditor* BaseObjectViewAlignmentAction::getEditor() const {
     return msaEditor;
 }
 
 /////////////////////////////////////
 /// AlignSequencesToAlignmentAction
 /////////////////////////////////////
-AlignSequencesToAlignmentAction::AlignSequencesToAlignmentAction(QObject* parent, MSAEditor* view, const QString& algorithmId, const QString& text, int order)
+AlignSequencesToAlignmentAction::AlignSequencesToAlignmentAction(QObject* parent, MsaEditor* view, const QString& algorithmId, const QString& text, int order)
     : BaseObjectViewAlignmentAction(parent, view, algorithmId, text, order) {
     connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
 
@@ -180,7 +180,7 @@ void AlignSequencesToAlignmentAction::sl_activate() {
 /////////////////////////////////////
 /// AlignSelectedSequencesAction
 /////////////////////////////////////
-AlignSelectedSequencesAction::AlignSelectedSequencesAction(QObject* parent, MSAEditor* view, const QString& algorithmId, const QString& text, int order)
+AlignSelectedSequencesAction::AlignSelectedSequencesAction(QObject* parent, MsaEditor* view, const QString& algorithmId, const QString& text, int order)
     : BaseObjectViewAlignmentAction(parent, view, algorithmId, text, order) {
     connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
     connect(msaEditor->alignSelectedSequencesToAlignmentAction,

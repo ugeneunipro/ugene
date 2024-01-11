@@ -33,8 +33,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MsaEditor.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -103,7 +103,7 @@ Kalign3SupportContext::Kalign3SupportContext(QObject* p)
 }
 
 void Kalign3SupportContext::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView: not MSAEditor", );
     msaEditor->registerActionProvider(this);
 
@@ -138,7 +138,7 @@ void Kalign3SupportContext::sl_align() {
     auto action = qobject_cast<AlignMsaAction*>(sender());
     CHECK(action != nullptr, );
 
-    MSAEditor* msaEditor = action->getMsaEditor();
+    MsaEditor* msaEditor = action->getMsaEditor();
     MsaObject* obj = msaEditor->getMaObject();
     CHECK(obj != nullptr && !obj->isStateLocked(), )
 

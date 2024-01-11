@@ -27,9 +27,9 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SelectionUtils.h>
 
-#include "MSAEditor.h"
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
+#include "MsaEditor.h"
 #include "align_to_alignment/AlignSequencesToAlignmentSupport.h"
 #include "exclude_list/MsaExcludeList.h"
 #include "ov_mca/McaEditor.h"
@@ -158,11 +158,11 @@ MsaEditorFactory::MsaEditorFactory()
 MaEditor* MsaEditorFactory::getEditor(const QString& viewName, GObject* obj, U2OpStatus& os) {
     auto msaObj = qobject_cast<MsaObject*>(obj);
     SAFE_POINT(msaObj != nullptr, "Invalid GObject", nullptr);
-    if (msaObj->getLength() > MSAEditor::MAX_SUPPORTED_MSA_OBJECT_LENGTH) {
+    if (msaObj->getLength() > MsaEditor::MAX_SUPPORTED_MSA_OBJECT_LENGTH) {
         os.setError(tr("MSA object is too large to be opened in MSA Editor!"));
         return nullptr;
     }
-    return new MSAEditor(viewName, msaObj);
+    return new MsaEditor(viewName, msaObj);
 }
 
 OpenMaEditorTask* MsaEditorFactory::getOpenMaEditorTask(MsaObject* obj) {

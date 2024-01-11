@@ -25,11 +25,11 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 
-MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget* parent, MSAEditor* msaEditor)
+MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget* parent, MsaEditor* msaEditor)
     : QWidget(parent), msaEditor(msaEditor) {
     auto layout = new QVBoxLayout();
     setLayout(layout);

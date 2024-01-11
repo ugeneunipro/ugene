@@ -30,7 +30,7 @@
 
 #include <U2Core/DNAAlphabet.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "GTTestsMSAEditorColors.h"
 #include "GTUtilsMdi.h"

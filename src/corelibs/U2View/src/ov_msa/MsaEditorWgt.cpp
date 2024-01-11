@@ -23,22 +23,22 @@
 
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 
-#include "MSAEditor.h"
-#include "MSAEditorConsensusArea.h"
-#include "MSAEditorOverviewArea.h"
-#include "MSAEditorSequenceArea.h"
 #include "MaEditorSplitters.h"
+#include "MsaEditor.h"
+#include "MsaEditorConsensusArea.h"
 #include "MsaEditorNameList.h"
+#include "MsaEditorOverviewArea.h"
+#include "MsaEditorSequenceArea.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "MsaEditorStatusBar.h"
 #include "MsaRowHeightController.h"
 #include "ScrollController.h"
-#include "phy_tree/MSAEditorMultiTreeViewer.h"
-#include "phy_tree/MSAEditorTreeViewer.h"
+#include "phy_tree/MsaEditorMultiTreeViewer.h"
+#include "phy_tree/MsaEditorTreeViewer.h"
 
 namespace U2 {
 
-MsaEditorWgt::MsaEditorWgt(MSAEditor* editor,
+MsaEditorWgt::MsaEditorWgt(MsaEditor* editor,
                            QWidget* parent,
                            MaEditorOverviewArea* overview,
                            MaEditorStatusBar* statusbar)
@@ -59,12 +59,12 @@ MsaEditorWgt::MsaEditorWgt(MSAEditor* editor,
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 }
 
-MSAEditor* MsaEditorWgt::getEditor() const {
-    return qobject_cast<MSAEditor*>(editor);
+MsaEditor* MsaEditorWgt::getEditor() const {
+    return qobject_cast<MsaEditor*>(editor);
 }
 
-MSAEditorSequenceArea* MsaEditorWgt::getSequenceArea() const {
-    return qobject_cast<MSAEditorSequenceArea*>(sequenceArea);
+MsaEditorSequenceArea* MsaEditorWgt::getSequenceArea() const {
+    return qobject_cast<MsaEditorSequenceArea*>(sequenceArea);
 }
 
 void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
@@ -86,7 +86,7 @@ void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
     auto mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI());
 
     if (mui->getPhylTreeWidget() == nullptr) {
-        auto multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
+        auto multiTreeViewer = new MsaEditorMultiTreeViewer(tr("Tree view"), getEditor());
 
         mui->addPhylTreeWidget(multiTreeViewer);
         multiTreeViewer->addTreeView(treeView);
@@ -142,7 +142,7 @@ MsaEditorAlignmentDependentWidget* MsaEditorWgt::getSimilarityWidget() const {
 }
 
 void MsaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
-    sequenceArea = new MSAEditorSequenceArea(this, shBar, cvBar);
+    sequenceArea = new MsaEditorSequenceArea(this, shBar, cvBar);
 }
 
 void MsaEditorWgt::initOverviewArea(MaEditorOverviewArea* _overviewArea) {
@@ -155,7 +155,7 @@ void MsaEditorWgt::initNameList(QScrollBar* nhBar) {
 }
 
 void MsaEditorWgt::initConsensusArea() {
-    consensusArea = new MSAEditorConsensusArea(this);
+    consensusArea = new MsaEditorConsensusArea(this);
 }
 
 void MsaEditorWgt::initStatusBar(MaEditorStatusBar* _statusBar) {
@@ -163,16 +163,16 @@ void MsaEditorWgt::initStatusBar(MaEditorStatusBar* _statusBar) {
     statusBar = _statusBar;
 }
 
-MSAEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
+MsaEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
     CHECK(multiTreeViewer != nullptr, nullptr);
 
     auto page = qobject_cast<GObjectViewWindow*>(multiTreeViewer->getCurrentWidget());
     CHECK(page != nullptr, nullptr);
 
-    return qobject_cast<MSAEditorTreeViewer*>(page->getObjectView());
+    return qobject_cast<MsaEditorTreeViewer*>(page->getObjectView());
 }
 
-MSAEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() const {
+MsaEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() const {
     return qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI())->getPhylTreeWidget();
 }
 

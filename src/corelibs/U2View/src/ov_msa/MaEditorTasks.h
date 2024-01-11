@@ -29,7 +29,7 @@ namespace U2 {
 
 class MaEditor;
 class MaEditorFactory;
-class MSAEditor;
+class MsaEditor;
 class MsaObject;
 class UnloadedObject;
 class MSAConsensusAlgorithm;
@@ -46,7 +46,7 @@ public:
 
     virtual void open();
 
-    static void updateTitle(MSAEditor* msaEd);
+    static void updateTitle(MsaEditor* msaEd);
 
     virtual MaEditor* getEditor(const QString& viewName, GObject* obj) = 0;
 

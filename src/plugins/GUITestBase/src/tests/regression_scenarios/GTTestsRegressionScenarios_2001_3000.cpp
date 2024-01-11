@@ -63,8 +63,8 @@
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/AnnotationsTreeView.h>
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
 #include <U2View/TvBranchItem.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
@@ -4564,7 +4564,7 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
     QString colorSchemeName = GTUtils::genUniqueString(name);
     GTUtilsDialog::add(new PopupChooser({MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", "Create new color scheme"}));
     GTUtilsDialog::add(new NewColorSchemeCreator(colorSchemeName, NewColorSchemeCreator::nucl));
-    MSAEditorSequenceArea* msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
+    MsaEditorSequenceArea* msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
     GTMenu::showContextMenu(msaSeqArea);
 
     GTUtilsDialog::add(new PopupChooser({MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", colorSchemeName}));

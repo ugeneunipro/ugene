@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 class MsaObject;
 class MuscleAction;
 class MuscleMSAEditorContext;
@@ -71,7 +71,7 @@ class MuscleAction : public GObjectViewAction {
 public:
     MuscleAction(QObject* p, GObjectViewController* v, const QString& text, int order, bool isAlignSelectionAction = false);
 
-    MSAEditor* getMSAEditor() const;
+    MsaEditor* getMSAEditor() const;
 };
 
 }  // namespace U2
