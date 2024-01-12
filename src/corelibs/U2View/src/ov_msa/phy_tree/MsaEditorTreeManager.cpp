@@ -35,7 +35,6 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FileFilters.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
@@ -292,7 +291,7 @@ void MsaEditorTreeManager::sl_openTreeTaskFinished(Task* task) {
         treeViewer->enableSyncMode();
     }
 
-    connect(treeViewer, SIGNAL(si_refreshTree(MSAEditorTreeViewer*)), SLOT(sl_refreshTree(MSAEditorTreeViewer*)));
+    connect(treeViewer, &MsaEditorTreeViewer::si_refreshTree, this, &MsaEditorTreeManager::sl_refreshTree);
 }
 
 void MsaEditorTreeManager::openTreeFromFile() {
