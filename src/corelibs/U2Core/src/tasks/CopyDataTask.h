@@ -42,7 +42,10 @@ public:
     virtual void run();
 
 private:
-    void replaceLineEndings(ReplaceLineEndings newLineEndings, bool prevLineEndsWithCR, QByteArray& line, qint64& symbolsCount) const;
+    /*
+    * Replace existing line endings with desired
+    */
+    void replaceLineEndings(const ReplaceLineEndings& newLineEndings, bool prevLineEndsWithCR, QByteArray& line, int& symbolsCount) const;
 
     static const int BUFFSIZE = 32 * 1024;
     static const char CHAR_CR = '\r';
@@ -53,7 +56,7 @@ private:
     IOAdapterFactory* ioTo;
     GUrl urlFrom;
     GUrl urlTo;
-    ReplaceLineEndings newLineEndings;
+    ReplaceLineEndings newLineEndings = ReplaceLineEndings::KEEP_AS_IS;
 };
 
 }  // namespace U2

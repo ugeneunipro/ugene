@@ -34,7 +34,8 @@ const QByteArray CopyDataTask::CRLF = QByteArray("\r\n");
 CopyDataTask::CopyDataTask(IOAdapterFactory* _ioFrom, const GUrl& _urlFrom, IOAdapterFactory* _ioTo, const GUrl& _urlTo, ReplaceLineEndings newLineEndings_)
     : Task(tr("Copy Data Task"), TaskFlag_None), ioFrom(_ioFrom), ioTo(_ioTo),
       urlFrom(_urlFrom), urlTo(_urlTo), newLineEndings(newLineEndings_) {
-    SAFE_POINT(ioFrom != nullptr && ioTo != nullptr, "One of io adapters is null!", );
+    SAFE_POINT_NN(ioFrom, );
+    SAFE_POINT_NN(ioTo, );
     tpm = Progress_Manual;
 }
 
@@ -47,8 +48,8 @@ void CopyDataTask::run() {
         return;
     }
 
-    qint64 count = 0;
-    qint64 count_w = 0;
+    int count = 0;
+    int count_w = 0;
     bool lineEndsWithCR = false;
     QByteArray buff(BUFFSIZE, 0);
 
@@ -80,7 +81,7 @@ void CopyDataTask::run() {
     }
 }
 
-void CopyDataTask::replaceLineEndings(ReplaceLineEndings newLineEndings, bool prevLineEndsWithCR, QByteArray& line, qint64& symbolsCount) const {
+void CopyDataTask::replaceLineEndings(const ReplaceLineEndings& newLineEndings, bool prevLineEndsWithCR, QByteArray& line, int& symbolsCount) const {
     CHECK(newLineEndings != ReplaceLineEndings::KEEP_AS_IS, );
     CHECK(symbolsCount != 0, );
     QByteArray result;
