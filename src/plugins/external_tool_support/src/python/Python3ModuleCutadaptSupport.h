@@ -25,13 +25,12 @@
 
 namespace U2 {
 
-class CutadaptSupport : public ExternalTool {
+class Python3ModuleCutadaptSupport : public ExternalToolModule {
     Q_OBJECT
 public:
-    CutadaptSupport();
+    Python3ModuleCutadaptSupport();
 
-    static const QString ET_CUTADAPT;
-    static const QString ET_CUTADAPT_ID;
+    static const QString ET_PYTHON_CUTADAPT_ID;
     static const QString ADAPTERS_DIR_NAME;
     static const QString ADAPTERS_DATA_NAME;
 };

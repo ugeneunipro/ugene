@@ -21,33 +21,16 @@
 
 #pragma once
 
-#include <U2Core/ExternalToolRegistry.h>
-
 #include "RunnerTool.h"
-#include "utils/ExternalToolSupportAction.h"
 
 namespace U2 {
 
-class PythonSupport : public RunnerTool {
+class Python3Support : public RunnerTool {
     Q_OBJECT
 public:
-    PythonSupport();
+    Python3Support();
 
     static const QString ET_PYTHON_ID;
-};
-
-class PythonModuleSupport : public ExternalToolModule {
-    Q_OBJECT
-public:
-    PythonModuleSupport(const QString& id, const QString& name);
-};
-
-class PythonModuleBioSupport : public PythonModuleSupport {
-    Q_OBJECT
-public:
-    PythonModuleBioSupport();
-
-    static const QString ET_PYTHON_BIO_ID;
 };
 
 }  // namespace U2

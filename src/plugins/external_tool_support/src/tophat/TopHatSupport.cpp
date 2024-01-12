@@ -25,7 +25,7 @@
 
 #include <U2Gui/MainWindow.h>
 
-#include "python/PythonSupport.h"
+#include "python/Python3Support.h"
 
 namespace U2 {
 
@@ -50,7 +50,7 @@ TopHatSupport::TopHatSupport()
 #endif
     validationArguments << "--version";
 
-    dependencies << PythonSupport::ET_PYTHON_ID;
+    dependencies << Python3Support::ET_PYTHON_ID;
 
     validationMessageRegExp = "TopHat ";
     description = "<i>TopHat</i> is a program that aligns RNA-Seq reads to a genome"

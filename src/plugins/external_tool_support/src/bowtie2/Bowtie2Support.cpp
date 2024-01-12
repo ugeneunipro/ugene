@@ -27,7 +27,7 @@
 #include <U2Gui/MainWindow.h>
 
 #include "perl/PerlSupport.h"
-#include "python/PythonSupport.h"
+#include "python/Python3Support.h"
 
 namespace U2 {
 
@@ -57,8 +57,8 @@ Bowtie2Support::Bowtie2Support(const QString& id)
                          " and a set of sequencing read files and outputs a set of alignments.");
     } else if (id == ET_BOWTIE2_BUILD_ID) {  // Bowtie2-build
         name = "Bowtie 2 build indexer";
-        toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
-        dependencies << PythonSupport::ET_PYTHON_ID;
+        toolRunnerProgram = Python3Support::ET_PYTHON_ID;
+        dependencies << Python3Support::ET_PYTHON_ID;
         executableFileName = "bowtie2-build";
         validationArguments << "--version";
         validationMessageRegExp = "bowtie2-build";
@@ -71,8 +71,8 @@ Bowtie2Support::Bowtie2Support(const QString& id)
                          " once the index is built.");
     } else if (id == ET_BOWTIE2_INSPECT_ID) {  // Bowtie2-inspect
         name = "Bowtie 2 index inspector";
-        toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
-        dependencies << PythonSupport::ET_PYTHON_ID;
+        toolRunnerProgram = Python3Support::ET_PYTHON_ID;
+        dependencies << Python3Support::ET_PYTHON_ID;
         executableFileName = "bowtie2-inspect";
         validationArguments << "--version";
         validationMessageRegExp = "bowtie2-inspect";
