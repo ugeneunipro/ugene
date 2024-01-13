@@ -24,7 +24,7 @@
 
 #include <QGraphicsView>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "GTGlobals.h"
 #include "GTTestsMSAEditorTree.h"
@@ -46,7 +46,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     // Check that original name list is correct.
-    MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor();
+    MsaEditor* msaEditor = GTUtilsMsaEditor::getEditor();
     MsaObject* msaObject = msaEditor->getMaObject();
     QStringList nameList = msaObject->getAlignment()->getRowNames();
     QStringList originalNameList = {"a", "b", "c", "d", "e", "f", "g", "h"};

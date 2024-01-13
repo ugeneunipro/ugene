@@ -56,7 +56,7 @@
 
 #include <U2Core/AppContext.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTUtilsMdi.h"

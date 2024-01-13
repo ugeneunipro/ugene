@@ -32,7 +32,7 @@
 #include <utils/GTKeyboardUtils.h>
 #include <utils/GTUtilsDialog.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "GTTestsUndoRedo.h"
 #include "GTUtilsMdi.h"

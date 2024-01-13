@@ -24,8 +24,8 @@
 #include <QMouseEvent>
 #include <QPainter>
 
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/MaEditorSelection.h"

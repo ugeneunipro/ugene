@@ -27,11 +27,11 @@
 
 #include <U2Core/DNAAlphabet.h>
 
-#include "MSAEditorSequenceArea.h"
+#include "MsaEditorSequenceArea.h"
 
 namespace U2 {
 
-MsaEditorStatusBar::MsaEditorStatusBar(MSAEditor* msaEditor)
+MsaEditorStatusBar::MsaEditorStatusBar(MsaEditor* msaEditor)
     : MaEditorStatusBar(msaEditor) {
     setObjectName("msa_editor_status_bar");
     setStatusBarStyle();

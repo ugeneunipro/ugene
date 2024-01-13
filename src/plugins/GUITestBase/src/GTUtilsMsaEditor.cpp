@@ -34,14 +34,14 @@
 #include <U2Gui/MainWindow.h>
 
 #include <U2View/BaseWidthController.h>
-#include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorOverviewArea.h>
-#include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
 #include <U2View/MaSimpleOverview.h>
+#include <U2View/MsaEditorConsensusArea.h>
+#include <U2View/MsaEditorOverviewArea.h>
+#include <U2View/MsaEditorTreeViewer.h>
 #include <U2View/RowHeightController.h>
 
 #include "GTUtilsMdi.h"
@@ -81,7 +81,7 @@ QColor GTUtilsMsaEditor::getSimpleOverviewPixelColor(const QPoint& point) {
     return GTWidget::getColor(getSimpleOverview(), point);
 }
 
-MSAEditor* GTUtilsMsaEditor::getEditor() {
+MsaEditor* GTUtilsMsaEditor::getEditor() {
     MsaEditorWgt* editorUi = getEditorUi();
     return editorUi->getEditor();
 }
@@ -107,7 +107,7 @@ MsaEditorWgt* GTUtilsMsaEditor::getEditorUi() {
 
 QWidget* GTUtilsMsaEditor::getOverviewArea() {
     QWidget* activeWindow = getActiveMsaEditorWindow();
-    return GTWidget::findExactWidget<MaEditorOverviewArea*>(MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME, activeWindow);
+    return GTWidget::findExactWidget<MaEditorOverviewArea*>(MsaEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME, activeWindow);
 }
 
 QToolButton* GTUtilsMsaEditor::getShowOverviewButton() {
@@ -118,12 +118,12 @@ QToolButton* GTUtilsMsaEditor::getShowOverviewButton() {
 
 QWidget* GTUtilsMsaEditor::getGraphOverview() {
     QWidget* overviewArea = getOverviewArea();
-    return GTWidget::findExactWidget<MaGraphOverview*>(MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + "_graph", overviewArea);
+    return GTWidget::findExactWidget<MaGraphOverview*>(MsaEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + "_graph", overviewArea);
 }
 
 QWidget* GTUtilsMsaEditor::getSimpleOverview() {
     QWidget* overviewArea = getOverviewArea();
-    return GTWidget::findExactWidget<MaSimpleOverview*>(MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + "_simple", overviewArea);
+    return GTWidget::findExactWidget<MaSimpleOverview*>(MsaEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + "_simple", overviewArea);
 }
 
 QGraphicsView* GTUtilsMsaEditor::getTreeView() {
@@ -145,11 +145,11 @@ MaEditorNameList* GTUtilsMsaEditor::getNameListArea() {
     return result;
 }
 
-MSAEditorConsensusArea* GTUtilsMsaEditor::getConsensusArea(int index) {
+MsaEditorConsensusArea* GTUtilsMsaEditor::getConsensusArea(int index) {
     return GTUtilsMSAEditorSequenceArea::getConsensusArea(index);
 }
 
-MSAEditorSequenceArea* GTUtilsMsaEditor::getSequenceArea(int index) {
+MsaEditorSequenceArea* GTUtilsMsaEditor::getSequenceArea(int index) {
     return GTUtilsMSAEditorSequenceArea::getSequenceArea(index);
 }
 
@@ -171,11 +171,11 @@ QRect GTUtilsMsaEditor::getSequenceNameRect(int viewRowIndex) {
 }
 
 QRect GTUtilsMsaEditor::getColumnHeaderRect(int column) {
-    MSAEditorConsensusArea* consensusArea = getConsensusArea();
+    MsaEditorConsensusArea* consensusArea = getConsensusArea();
     GT_CHECK_RESULT(consensusArea != nullptr, "Consensus area is NULL", QRect());
-    MSAEditorSequenceArea* sequenceArea = getSequenceArea();
+    MsaEditorSequenceArea* sequenceArea = getSequenceArea();
     GT_CHECK_RESULT(sequenceArea != nullptr, "Sequence area is NULL", QRect());
-    MSAEditor* editor = getEditor();
+    MsaEditor* editor = getEditor();
     GT_CHECK_RESULT(editor != nullptr, "MSA Editor is NULL", QRect());
 
     BaseWidthController* baseWidthController = editor->getUI()->getUI(0)->getBaseWidthController();
@@ -309,13 +309,13 @@ void GTUtilsMsaEditor::clearSelection() {
 }
 
 void GTUtilsMsaEditor::checkNameList(const QStringList& nameList) {
-    MSAEditor* editor = GTUtilsMsaEditor::getEditor();
+    MsaEditor* editor = GTUtilsMsaEditor::getEditor();
     QStringList nameListInEditor = editor->getMaObject()->getAlignment()->getRowNames();
     CHECK_SET_ERR(nameListInEditor == nameList, "Name list does not match");
 }
 
 void GTUtilsMsaEditor::checkSelection(const QList<QRect>& expectedRects) {
-    MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor();
+    MsaEditor* msaEditor = GTUtilsMsaEditor::getEditor();
     QList<QRect> selectedRects = msaEditor->getSelection().getRectList();
     CHECK_SET_ERR(selectedRects.size() == expectedRects.size(), QString("Expected selection size: %1, actual: %2").arg(expectedRects.size()).arg(selectedRects.size()));
     for (int i = 0; i < selectedRects.size(); i++) {
@@ -336,7 +336,7 @@ void GTUtilsMsaEditor::checkSelection(const QList<QRect>& expectedRects) {
 }
 
 void GTUtilsMsaEditor::checkSelectionByNames(const QStringList& selectedNames) {
-    MSAEditor* editor = GTUtilsMsaEditor::getEditor();
+    MsaEditor* editor = GTUtilsMsaEditor::getEditor();
     QStringList rowNames = editor->getMaObject()->getAlignment()->getRowNames();
     QList<int> selectedRowIndexes = editor->getSelection().getSelectedRowIndexes();
     QStringList selectedNamesFromEditor;

@@ -33,9 +33,9 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "MSAEditor.h"
-#include "MSAEditorSequenceArea.h"
 #include "MaEditorUtils.h"
+#include "MsaEditor.h"
+#include "MsaEditorSequenceArea.h"
 
 namespace U2 {
 
@@ -205,7 +205,7 @@ MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(MsaEditorWg
     dataIsBeingUpdatedMessage = QString("<FONT COLOR=#0000FF>%1</FONT>").arg(tr("Data is being updated"));
 
     settings = &contentWidget->getSettings();
-    MSAEditor* editor = settings->editor;
+    MsaEditor* editor = settings->editor;
     connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, [this] { contentWidget->onAlignmentChanged(); });
     connect(editor, &MaEditor::si_fontChanged, this, [this](const QFont& font) { nameWidget->setFont(font); });
 

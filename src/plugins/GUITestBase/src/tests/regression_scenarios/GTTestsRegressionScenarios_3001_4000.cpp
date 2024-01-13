@@ -66,8 +66,8 @@
 #include <U2View/AnnotationsTreeView.h>
 #include <U2View/AssemblyNavigationWidget.h>
 #include <U2View/DetView.h>
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"
@@ -2669,7 +2669,7 @@ GUI_TEST_CLASS_DEFINITION(test_3555) {
     GTUtilsMsaEditor::clickSequenceName("1a0cA");
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    MsaEditor* editor = mw->findChild<MsaEditor*>();
     CHECK_SET_ERR(editor != nullptr, "MsaEditor not found");
 
     MaEditorNameList* nameList = editor->getUI()->getUI(0)->getEditorNameList();

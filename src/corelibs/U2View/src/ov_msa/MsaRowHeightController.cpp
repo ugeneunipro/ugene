@@ -21,9 +21,9 @@
 
 #include "MsaRowHeightController.h"
 
-#include "ov_msa/MSAEditor.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditorWgt.h"
+#include "ov_msa/MsaEditor.h"
 
 namespace U2 {
 

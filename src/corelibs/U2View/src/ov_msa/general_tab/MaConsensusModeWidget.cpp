@@ -29,7 +29,7 @@
 #include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/MSAEditorConsensusArea.h>
+#include <U2View/MsaEditorConsensusArea.h>
 
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorWgt.h"

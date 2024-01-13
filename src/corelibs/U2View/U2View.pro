@@ -65,13 +65,13 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/DeleteGapsDialog.h \
            src/ov_msa/DrawHelper.h \
            src/ov_msa/ExportHighlightedDialogController.h \
-           src/ov_msa/MSAEditor.h \
-           src/ov_msa/MSAEditorConsensusArea.h \
-           src/ov_msa/MSAEditorConsensusCache.h \
-           src/ov_msa/MSAEditorOffsetsView.h \
-           src/ov_msa/MSAEditorOverviewArea.h \
-           src/ov_msa/MSAEditorSequenceArea.h \
-           src/ov_msa/MSASelectSubalignmentDialog.h \
+           src/ov_msa/MsaEditor.h \
+           src/ov_msa/MsaEditorConsensusArea.h \
+           src/ov_msa/MsaEditorConsensusCache.h \
+           src/ov_msa/MsaEditorOffsetsView.h \
+           src/ov_msa/MsaEditorOverviewArea.h \
+           src/ov_msa/MsaEditorSequenceArea.h \
+           src/ov_msa/MsaSelectSubalignmentDialog.h \
            src/ov_msa/MaAmbiguousCharactersController.h \
            src/ov_msa/MaCollapseModel.h \
            src/ov_msa/MaConsensusAreaRenderer.h \
@@ -111,16 +111,16 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/exclude_list/MsaExcludeList.h \
            src/ov_msa/export_consensus/MaExportConsensusTabFactory.h \
            src/ov_msa/export_consensus/MaExportConsensusWidget.h \
-           src/ov_msa/export_image/MSAImageExportTask.h \
+           src/ov_msa/export_image/MsaImageExportTask.h \
            src/ov_msa/find_pattern/FindPatternMsaTask.h \
            src/ov_msa/find_pattern/FindPatternMsaWidget.h \
            src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.h \
            src/ov_msa/find_pattern/FindPatternMsaWidgetSavableTab.h \
-           src/ov_msa/general_tab/MSAGeneralTab.h \
-           src/ov_msa/general_tab/MSAGeneralTabFactory.h \
+           src/ov_msa/general_tab/MsaGeneralTab.h \
+           src/ov_msa/general_tab/MsaGeneralTabFactory.h \
            src/ov_msa/general_tab/MaConsensusModeWidget.h \
-           src/ov_msa/highlighting/MSAHighlightingTab.h \
-           src/ov_msa/highlighting/MSAHighlightingTabFactory.h \
+           src/ov_msa/highlighting/MsaHighlightingTab.h \
+           src/ov_msa/highlighting/MsaHighlightingTabFactory.h \
            src/ov_msa/highlighting/MsaHighlightingSavableTab.h \
            src/ov_msa/highlighting/MsaSchemeComboBoxController.h \
            src/ov_msa/highlighting/MsaSchemesMenuBuilder.h \
@@ -134,9 +134,9 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/overview/MaSimpleOverview.h \
            src/ov_msa/pairwise_alignment/PairAlign.h \
            src/ov_msa/pairwise_alignment/PairAlignFactory.h \
-           src/ov_msa/phy_tree/MSAEditorMultiTreeViewer.h \
-           src/ov_msa/phy_tree/MSAEditorTreeManager.h \
-           src/ov_msa/phy_tree/MSAEditorTreeViewer.h \
+           src/ov_msa/phy_tree/MsaEditorMultiTreeViewer.h \
+           src/ov_msa/phy_tree/MsaEditorTreeManager.h \
+           src/ov_msa/phy_tree/MsaEditorTreeViewer.h \
            src/ov_msa/phy_tree/MsaEditorTreeTabArea.h \
            src/ov_msa/phy_tree_tab/TreeOptionsWidget.h \
            src/ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.h \
@@ -262,13 +262,13 @@ FORMS += src/LicenseDialog.ui \
          src/ov_msa/SelectSubalignmentDialog.ui \
          src/ov_msa/SequenceSelectorWidget.ui \
          src/ov_msa/export_consensus/ExportConsensusWidget.ui \
-         src/ov_msa/export_image/MSAExportSettings.ui \
+         src/ov_msa/export_image/MsaExportSettings.ui \
          src/ov_msa/find_pattern/FindPatternMsaForm.ui \
          src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui \
          src/ov_msa/general_tab/MaConsensusModeWidget.ui \
          src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui \
          src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui \
-         src/ov_msa/statistics/MSADistancesColumnSettingsWidget.ui \
+         src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui \
          src/ov_sequence/CreateRulerDialog.ui \
          src/ov_sequence/SaveGraphCutoffsDialog.ui \
          src/ov_sequence/SearchQualifierDialog.ui \
@@ -351,13 +351,13 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/DeleteGapsDialog.cpp \
            src/ov_msa/DrawHelper.cpp \
            src/ov_msa/ExportHighlightedDialogController.cpp \
-           src/ov_msa/MSAEditor.cpp \
-           src/ov_msa/MSAEditorConsensusArea.cpp \
-           src/ov_msa/MSAEditorConsensusCache.cpp \
-           src/ov_msa/MSAEditorOffsetsView.cpp \
-           src/ov_msa/MSAEditorOverviewArea.cpp \
-           src/ov_msa/MSAEditorSequenceArea.cpp \
-           src/ov_msa/MSASelectSubalignmentDialog.cpp \
+           src/ov_msa/MsaEditor.cpp \
+           src/ov_msa/MsaEditorConsensusArea.cpp \
+           src/ov_msa/MsaEditorConsensusCache.cpp \
+           src/ov_msa/MsaEditorOffsetsView.cpp \
+           src/ov_msa/MsaEditorOverviewArea.cpp \
+           src/ov_msa/MsaEditorSequenceArea.cpp \
+           src/ov_msa/MsaSelectSubalignmentDialog.cpp \
            src/ov_msa/MaAmbiguousCharactersController.cpp \
            src/ov_msa/MaCollapseModel.cpp \
            src/ov_msa/MaConsensusAreaRenderer.cpp \
@@ -397,16 +397,16 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/exclude_list/MsaExcludeList.cpp \
            src/ov_msa/export_consensus/MaExportConsensusTabFactory.cpp \
            src/ov_msa/export_consensus/MaExportConsensusWidget.cpp \
-           src/ov_msa/export_image/MSAImageExportTask.cpp \
+           src/ov_msa/export_image/MsaImageExportTask.cpp \
            src/ov_msa/find_pattern/FindPatternMsaTask.cpp \
            src/ov_msa/find_pattern/FindPatternMsaWidget.cpp \
            src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.cpp \
            src/ov_msa/find_pattern/FindPatternMsaWidgetSavableTab.cpp \
-           src/ov_msa/general_tab/MSAGeneralTab.cpp \
-           src/ov_msa/general_tab/MSAGeneralTabFactory.cpp \
+           src/ov_msa/general_tab/MsaGeneralTab.cpp \
+           src/ov_msa/general_tab/MsaGeneralTabFactory.cpp \
            src/ov_msa/general_tab/MaConsensusModeWidget.cpp \
-           src/ov_msa/highlighting/MSAHighlightingTab.cpp \
-           src/ov_msa/highlighting/MSAHighlightingTabFactory.cpp \
+           src/ov_msa/highlighting/MsaHighlightingTab.cpp \
+           src/ov_msa/highlighting/MsaHighlightingTabFactory.cpp \
            src/ov_msa/highlighting/MsaHighlightingSavableTab.cpp \
            src/ov_msa/highlighting/MsaSchemesMenuBuilder.cpp \
            src/ov_msa/move_to_object/MoveToObjectMaController.cpp \
@@ -419,9 +419,9 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/overview/MaSimpleOverview.cpp \
            src/ov_msa/pairwise_alignment/PairAlign.cpp \
            src/ov_msa/pairwise_alignment/PairAlignFactory.cpp \
-           src/ov_msa/phy_tree/MSAEditorMultiTreeViewer.cpp \
-           src/ov_msa/phy_tree/MSAEditorTreeManager.cpp \
-           src/ov_msa/phy_tree/MSAEditorTreeViewer.cpp \
+           src/ov_msa/phy_tree/MsaEditorMultiTreeViewer.cpp \
+           src/ov_msa/phy_tree/MsaEditorTreeManager.cpp \
+           src/ov_msa/phy_tree/MsaEditorTreeViewer.cpp \
            src/ov_msa/phy_tree/MsaEditorTreeTabArea.cpp \
            src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp \
            src/ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.cpp \

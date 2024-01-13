@@ -24,8 +24,8 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MsaObject.h>
 
-#include "MSAEditor.h"
 #include "MaEditorFactory.h"
+#include "MsaEditor.h"
 #include "MultilineScrollController.h"
 #include "ScrollController.h"
 

@@ -38,8 +38,8 @@
 #include <U2View/ADVUtils.h>
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MsaEditor.h>
 
 #include "ExternalToolSupportSettingsController.h"
 #include "HmmerBuildDialog.h"
@@ -89,7 +89,7 @@ void HmmerSupport::sl_buildProfile() {
     if (activeWindow != nullptr) {
         auto objectViewWindow = qobject_cast<GObjectViewWindow*>(activeWindow);
         if (objectViewWindow != nullptr) {
-            auto msaEditor = qobject_cast<MSAEditor*>(objectViewWindow->getObjectView());
+            auto msaEditor = qobject_cast<MsaEditor*>(objectViewWindow->getObjectView());
             if (msaEditor != nullptr) {
                 MsaObject* maObj = msaEditor->getMaObject();
                 if (maObj != nullptr) {
@@ -276,7 +276,7 @@ HmmerMsaEditorContext::HmmerMsaEditorContext(QObject* parent)
 }
 
 void HmmerMsaEditorContext::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     CHECK(msaEditor->getMaObject() != nullptr, );
 
@@ -288,7 +288,7 @@ void HmmerMsaEditorContext::initViewContext(GObjectViewController* view) {
 }
 
 void HmmerMsaEditorContext::buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     SAFE_POINT(menu != nullptr, "Menu is NULL", );
     CHECK(msaEditor->getMaObject() != nullptr, );
@@ -303,7 +303,7 @@ void HmmerMsaEditorContext::buildStaticOrContextMenu(GObjectViewController* view
 void HmmerMsaEditorContext::sl_build() {
     auto action = qobject_cast<GObjectViewAction*>(sender());
     SAFE_POINT(action != nullptr, "action is NULL", );
-    auto msaEditor = qobject_cast<MSAEditor*>(action->getObjectView());
+    auto msaEditor = qobject_cast<MsaEditor*>(action->getObjectView());
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
 
     MsaObject* obj = msaEditor->getMaObject();

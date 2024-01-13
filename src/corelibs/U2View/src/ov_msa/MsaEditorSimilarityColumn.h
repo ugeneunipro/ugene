@@ -28,8 +28,8 @@
 #include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 
-#include "MSAEditor.h"
 #include "MaEditorNameList.h"
+#include "MsaEditor.h"
 
 namespace U2 {
 
@@ -47,7 +47,7 @@ enum DataState {
 
 class SimilarityStatisticsSettings {
 public:
-    QPointer<MSAEditor> editor;
+    QPointer<MsaEditor> editor;
     bool autoUpdate = true;
     /** Selected algorithm. */
     QString algoId;

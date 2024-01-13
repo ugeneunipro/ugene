@@ -28,7 +28,7 @@
 #include "U2Core/DNAAlphabet.h"
 #include "U2Core/Msa.h"
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 

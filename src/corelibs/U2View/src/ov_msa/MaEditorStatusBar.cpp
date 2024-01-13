@@ -25,8 +25,8 @@
 
 #include <U2Core/MsaObject.h>
 
-#include "MSAEditorSequenceArea.h"
 #include "MaEditorSelection.h"
+#include "MsaEditorSequenceArea.h"
 
 namespace U2 {
 

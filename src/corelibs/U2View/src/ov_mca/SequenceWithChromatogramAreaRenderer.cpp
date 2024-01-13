@@ -166,7 +166,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, c
     //    GSLV_UpdateFlags uf = view->getUpdateFlags();
     const bool completeRedraw = true;  // uf.testFlag(GSLV_UF_NeedCompleteRedraw) || uf.testFlag(GSLV_UF_ViewResized) || uf.testFlag(GSLV_UF_VisibleRangeChanged);
     bool drawQuality = chromatogram->hasQV && getSeqArea()->getShowQA();
-    const bool baseCallsLinesVisible = seqAreaWgt->getEditor()->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
+    const bool baseCallsLinesVisible = seqAreaWgt->getEditor()->getResizeMode() == MsaEditor::ResizeMode_FontAndContent;
 
     if (completeRedraw) {
         painter.setRenderHint(QPainter::Antialiasing, true);

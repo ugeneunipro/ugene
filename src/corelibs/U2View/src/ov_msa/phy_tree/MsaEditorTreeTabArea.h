@@ -27,12 +27,12 @@
 namespace U2 {
 
 class MSADistanceMatrix;
-class MSAEditor;
+class MsaEditor;
 
 class MsaEditorTreeTab : public QTabWidget {
     Q_OBJECT
 public:
-    MsaEditorTreeTab(MSAEditor* msaEditor, QWidget* parent);
+    MsaEditorTreeTab(MsaEditor* msaEditor, QWidget* parent);
 
     // TODO: method hides base class method to emit 'si_tabsCountChanged'.
     //  The signal should be emitted from inside of 'virtual void tabInserted(int index)'
@@ -61,7 +61,7 @@ signals:
     void si_tabsCountChanged(int curTabsNumber);
 
 private:
-    MSAEditor* editor;
+    MsaEditor* editor;
     QPushButton* addTabButton;
     QPoint menuPos;
     QAction* closeOtherTabs;
@@ -72,7 +72,7 @@ private:
 class MsaEditorTreeTabArea : public QWidget {
     Q_OBJECT
 public:
-    MsaEditorTreeTabArea(MSAEditor* msaEditor, QWidget* parent);
+    MsaEditorTreeTabArea(MsaEditor* msaEditor, QWidget* parent);
 
     /** Adds new tab with the given content and title. Activates the tab if 'activate' is true. */
     void addTab(QWidget* page, const QString& label, bool activate = false);
@@ -96,7 +96,7 @@ signals:
     void si_activeTabChanged(int tabIndex);
 
 private:
-    MSAEditor* editor;
+    MsaEditor* editor;
     MsaEditorTreeTab* treeTabWidget;
     QLayout* currentLayout;
 };

@@ -23,7 +23,7 @@
 
 #include <QDialog>
 
-#include "MSAEditor.h"
+#include "MsaEditor.h"
 
 class Ui_ExportHighlightedDialog;
 

@@ -35,7 +35,7 @@
 namespace U2 {
 
 class StateLock;
-class MSAEditor;
+class MsaEditor;
 
 class SequenceObjectsExtractor {
 public:

@@ -25,21 +25,21 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 
 class AlignMsaAction : public ExternalToolSupportAction {
     Q_OBJECT
 public:
-    AlignMsaAction(QObject* parent, const QString& toolId, MSAEditor* msaEditor, const QString& text, int order);
+    AlignMsaAction(QObject* parent, const QString& toolId, MsaEditor* msaEditor, const QString& text, int order);
 
-    MSAEditor* getMsaEditor() const;
+    MsaEditor* getMsaEditor() const;
 
 private slots:
     /** Updates action state based on the current MSA Editor state. */
     void sl_updateState();
 
 private:
-    MSAEditor* const msaEditor;
+    MsaEditor* const msaEditor;
 };
 
 }  // namespace U2

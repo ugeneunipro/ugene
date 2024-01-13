@@ -47,7 +47,7 @@
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
-#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "FindPatternMsaTask.h"
 #include "ov_msa/MaCollapseModel.h"
@@ -132,7 +132,7 @@ private:
 /** Last used search mode. Stored per session only. */
 static int isSearchInNamesModeByDefault = false;
 
-FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor* msaEditor, TriState isSearchInNamesModeTriState)
+FindPatternMsaWidget::FindPatternMsaWidget(MsaEditor* msaEditor, TriState isSearchInNamesModeTriState)
     : msaEditor(msaEditor),
       currentResultIndex(-1),
       searchTask(nullptr),

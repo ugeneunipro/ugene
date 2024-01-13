@@ -25,7 +25,7 @@
 
 #include <U2Core/Chromatogram.h>
 
-#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 namespace U2 {
 

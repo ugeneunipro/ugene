@@ -41,7 +41,7 @@
 
 #include <U2Core/AppContext.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 #include <U2View/TvNodeItem.h>
 #include <U2View/TvRectangularBranchItem.h>
 

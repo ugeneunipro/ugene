@@ -21,7 +21,7 @@
 
 #include <primitives/GTWidget.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 #include <U2View/MsaEditorWgt.h>
 
 #include "GTMSAEditorStatusWidget.h"

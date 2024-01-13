@@ -28,7 +28,7 @@
 #include <U2Core/Msa.h>
 #include <U2Core/global.h>
 
-#include <U2View/MSAEditorConsensusCache.h>
+#include <U2View/MsaEditorConsensusCache.h>
 
 namespace U2 {
 

@@ -31,10 +31,10 @@
 #include "MaEditorWgt.h"
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/DrawHelper.h"
-#include "ov_msa/MSAEditorConsensusArea.h"
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/MaEditorSequenceArea.h"
+#include "ov_msa/MsaEditorConsensusArea.h"
 #include "ov_msa/RowHeightController.h"
 #include "ov_msa/ScrollController.h"
 
@@ -301,7 +301,7 @@ void MaConsensusAreaRenderer::drawHistogram(QPainter& painter, const ConsensusRe
 }
 
 ConsensusRenderData MaConsensusAreaRenderer::getScreenDataToRender() const {
-    const QSharedPointer<MSAEditorConsensusCache> consensusCache = area->getConsensusCache();
+    const QSharedPointer<MsaEditorConsensusCache> consensusCache = area->getConsensusCache();
 
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = ui->getDrawHelper()->getVisibleBases(area->width());

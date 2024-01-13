@@ -23,7 +23,7 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 

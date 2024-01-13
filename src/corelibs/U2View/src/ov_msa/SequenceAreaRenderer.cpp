@@ -133,7 +133,7 @@ int SequenceAreaRenderer::drawRow(QPainter& painter, const Msa& ma, int maRowInd
     MaEditor* editor = seqAreaWgt->getEditor();
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
-    bool isTextVisible = editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
+    bool isTextVisible = editor->getResizeMode() == MsaEditor::ResizeMode_FontAndContent;
 
     U2OpStatusImpl os;
     int referenceMaRowIndex = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);

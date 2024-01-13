@@ -32,10 +32,10 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorConsensusArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "MaGraphCalculationTask.h"
 #include "ov_msa/MultilineScrollController.h"

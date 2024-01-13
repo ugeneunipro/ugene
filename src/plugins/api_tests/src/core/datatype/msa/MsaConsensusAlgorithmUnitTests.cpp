@@ -34,7 +34,7 @@
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 
-#include <U2View/MSAEditorConsensusCache.h>
+#include <U2View/MsaEditorConsensusCache.h>
 
 namespace U2 {
 
@@ -318,7 +318,7 @@ char getSymbolAfterAddRow(const QStringList& alignmentRows, char newChar) {
 
     const auto& alignment = msaObj->getAlignment();
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
-    auto msaConsCache = new MSAEditorConsensusCache(msaObj.get(), msaObj.get(), factory);
+    auto msaConsCache = new MsaEditorConsensusCache(msaObj.get(), msaObj.get(), factory);
 
     msaObj->replaceCharacter(0, 1, newChar);
 
@@ -361,7 +361,7 @@ char getSymbolAfterAddRow(const QStringList& alignmentRow, const QString& newRow
 
     const auto& alignment = msaObj->getAlignment();
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
-    auto msaConsCache = new MSAEditorConsensusCache(msaObj.get(), msaObj.get(), factory);
+    auto msaConsCache = new MsaEditorConsensusCache(msaObj.get(), msaObj.get(), factory);
 
     auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(newRow.toLocal8Bit());
     U2OpStatus2Log os;
@@ -408,7 +408,7 @@ char getSymbolAfterRemoveLastColumn(const QStringList& alignmentRow) {
 
     const auto& alignment = msaObj->getAlignment();
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
-    auto msaConsCache = new MSAEditorConsensusCache(msaObj.get(), msaObj.get(), factory);
+    auto msaConsCache = new MsaEditorConsensusCache(msaObj.get(), msaObj.get(), factory);
 
     msaObj->removeRegion({0, 1}, 2, 1, true);
 

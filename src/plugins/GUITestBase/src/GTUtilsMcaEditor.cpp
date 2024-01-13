@@ -32,13 +32,13 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/McaEditor.h>
 #include <U2View/McaEditorConsensusArea.h>
 #include <U2View/McaEditorNameList.h>
 #include <U2View/McaEditorReferenceArea.h>
 #include <U2View/McaEditorSequenceArea.h>
+#include <U2View/MsaEditorOffsetsView.h>
 #include <U2View/RowHeightController.h>
 #include <U2View/ScrollController.h>
 

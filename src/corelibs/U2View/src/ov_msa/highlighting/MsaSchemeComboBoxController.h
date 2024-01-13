@@ -28,7 +28,7 @@
 
 #include <U2Gui/GroupedComboBoxDelegate.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 class QStandardItemModel;
 
@@ -60,7 +60,7 @@ protected:
 template<class Factory, class Registry>
 class MsaSchemeComboBoxController : public ComboBoxSignalHandler {
 public:
-    MsaSchemeComboBoxController(MSAEditor* msa, Registry* registry, QWidget* parent = nullptr);
+    MsaSchemeComboBoxController(MsaEditor* msa, Registry* registry, QWidget* parent = nullptr);
     void init();
     void setCurrentItemById(const QString& id);
 
@@ -68,12 +68,12 @@ private:
     void fillCbWithGrouping();
     void createAndFillGroup(QList<Factory*> rawSchemesFactories, const QString& groupName);
 
-    MSAEditor* msa;
+    MsaEditor* msa;
     Registry* registry;
 };
 
 template<class Factory, class Registry>
-MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MSAEditor* _msa, Registry* _registry, QWidget* parent /*= NULL*/)
+MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MsaEditor* _msa, Registry* _registry, QWidget* parent /*= NULL*/)
     : ComboBoxSignalHandler(parent), msa(_msa), registry(_registry) {
     init();
 }

@@ -39,13 +39,13 @@
 #include <U2Gui/OptionsPanel.h>
 
 #include "ov_msa/BaseWidthController.h"
-#include "ov_msa/MSAEditor.h"
-#include "ov_msa/MSAEditorConsensusArea.h"
-#include "ov_msa/MSAEditorSequenceArea.h"
 #include "ov_msa/MaConsensusAreaRenderer.h"
 #include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MsaEditor.h"
+#include "ov_msa/MsaEditorConsensusArea.h"
+#include "ov_msa/MsaEditorSequenceArea.h"
 #include "ov_msa/ScrollController.h"
-#include "ov_msa/general_tab/MSAGeneralTabFactory.h"
+#include "ov_msa/general_tab/MsaGeneralTabFactory.h"
 
 namespace U2 {
 
@@ -98,7 +98,7 @@ QSize MaEditorConsensusArea::getCanvasSize(const U2Region& region, const MaEdito
     return QSize(ui->getBaseWidthController()->getBasesWidth(region), renderer->getHeight(elements));
 }
 
-QSharedPointer<MSAEditorConsensusCache> MaEditorConsensusArea::getConsensusCache() {
+QSharedPointer<MsaEditorConsensusCache> MaEditorConsensusArea::getConsensusCache() {
     return consensusCache;
 }
 
@@ -127,7 +127,7 @@ bool MaEditorConsensusArea::event(QEvent* e) {
 void MaEditorConsensusArea::initCache() {
     MSAConsensusAlgorithmFactory* algo = getConsensusAlgorithmFactory();
     GCounter::increment(QString("'%1' consensus type is selected on view opening").arg(algo->getName()), editor->getFactoryId());
-    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(nullptr, editor->getMaObject(), algo));
+    consensusCache = QSharedPointer<MsaEditorConsensusCache>(new MsaEditorConsensusCache(nullptr, editor->getMaObject(), algo));
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     restoreLastUsedConsensusThreshold();
 }
@@ -245,7 +245,7 @@ void MaEditorConsensusArea::setupFontAndHeight() {
 }
 
 void MaEditorConsensusArea::sl_zoomOperationPerformed(bool resizeModeChanged) {
-    if (!(editor->getResizeMode() == MSAEditor::ResizeMode_OnlyContent && !resizeModeChanged)) {
+    if (!(editor->getResizeMode() == MsaEditor::ResizeMode_OnlyContent && !resizeModeChanged)) {
         setupFontAndHeight();
     }
     sl_completeRedraw();
@@ -273,7 +273,7 @@ void MaEditorConsensusArea::sl_copyConsensusSequenceWithGaps() {
 }
 
 void MaEditorConsensusArea::sl_configureConsensusAction() {
-    editor->getOptionsPanelController()->openGroupById(MSAGeneralTabFactory::getGroupId());
+    editor->getOptionsPanelController()->openGroupById(MsaGeneralTabFactory::getGroupId());
 }
 
 void MaEditorConsensusArea::sl_changeConsensusAlgorithm(const QString& algoId) {

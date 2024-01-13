@@ -40,7 +40,7 @@
 #include "McaEditorStatusBar.h"
 #include "McaReferenceCharController.h"
 #include "McaRowHeightController.h"
-#include "ov_msa/MSAEditorOffsetsView.h"
+#include "ov_msa/MsaEditorOffsetsView.h"
 #include "ov_sequence/SequenceObjectContext.h"
 
 namespace U2 {

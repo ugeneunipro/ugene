@@ -41,9 +41,9 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OpenViewTask.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorSelection.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 

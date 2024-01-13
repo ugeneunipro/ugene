@@ -52,7 +52,7 @@ class RowHeightController;
 class MultilineScrollController;
 class SequenceAreaRenderer;
 class SimilarityStatisticsSettings;
-class MSAEditorMultiTreeViewer;
+class MsaEditorMultiTreeViewer;
 
 /************************************************************************/
 /* MaEditorMultilineWgt */

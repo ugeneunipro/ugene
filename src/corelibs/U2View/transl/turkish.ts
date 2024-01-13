@@ -1015,107 +1015,107 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>MSADistanceColumnSettingsForm</name>
+    <name>MsaDistanceColumnSettingsForm</name>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="23"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="23"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="77"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="77"/>
         <source>Show distances column</source>
         <translation>Mesafeler sütununu göster</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="104"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="104"/>
         <source>Distance algorithm:</source>
         <translation>Mesafe algoritması:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="132"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="132"/>
         <source>Count</source>
         <translation>Miktar</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="139"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="139"/>
         <source>Percentage</source>
         <translation>Yüzde</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="156"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="156"/>
         <source>Automatic updating</source>
         <translation>Otomatik güncelleme</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="171"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="171"/>
         <source>&lt;dataState&gt;</source>
         <translation>&lt;veri Durumu&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="178"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="178"/>
         <source>Refresh distances</source>
         <translation>Mesafeleri yenile</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="181"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="181"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="200"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="200"/>
         <source>&lt;hint&gt;</source>
         <translation>&lt;ipucu&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="114"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="114"/>
         <source>Profile mode</source>
         <translation>Profil modu</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui" line="146"/>
+        <location filename="../src/ov_msa/SeqStatistics/MsaDistancesColumnSettingsWidget.ui" line="146"/>
         <source>Exclude gaps</source>
         <translation>Boşlukları hariç tutun</translation>
     </message>
 </context>
 <context>
-    <name>MSAExportSettings</name>
+    <name>MsaExportSettings</name>
     <message>
-        <location filename="../src/ov_msa/Export/MSAExportSettings.ui" line="14"/>
+        <location filename="../src/ov_msa/Export/MsaExportSettings.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAExportSettings.ui" line="40"/>
+        <location filename="../src/ov_msa/Export/MsaExportSettings.ui" line="40"/>
         <source>Region</source>
         <translation>Bölge</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAExportSettings.ui" line="54"/>
+        <location filename="../src/ov_msa/Export/MsaExportSettings.ui" line="54"/>
         <source>Whole alignment</source>
         <translation>Tam hizalama</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAExportSettings.ui" line="59"/>
+        <location filename="../src/ov_msa/Export/MsaExportSettings.ui" line="59"/>
         <source>Custom region</source>
         <translation>Özel bölge</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAExportSettings.ui" line="73"/>
+        <location filename="../src/ov_msa/Export/MsaExportSettings.ui" line="73"/>
         <source>Select</source>
         <translation>Seç</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAExportSettings.ui" line="82"/>
+        <location filename="../src/ov_msa/Export/MsaExportSettings.ui" line="82"/>
         <source>Include sequences&apos; names</source>
         <translation>Dizilerin adlarını dahil et</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAExportSettings.ui" line="89"/>
+        <location filename="../src/ov_msa/Export/MsaExportSettings.ui" line="89"/>
         <source>Include consensus</source>
         <translation>Fikir birliğini dahil et</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAExportSettings.ui" line="96"/>
+        <location filename="../src/ov_msa/Export/MsaExportSettings.ui" line="96"/>
         <source>Include ruler</source>
         <translation>Cetveli dahil et</translation>
     </message>
@@ -1517,13 +1517,13 @@ Dalları daraltmak için çift tıklayın</translation>
         <translation>Uzlaşma</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/MSAGeneralTabFactory.cpp" line="62"/>
+        <location filename="../src/ov_msa/General/MsaGeneralTabFactory.cpp" line="62"/>
         <location filename="../src/ov_msa/General/McaGeneralTabFactory.cpp" line="59"/>
         <source>General</source>
         <translation>Genel</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTabFactory.cpp" line="54"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTabFactory.cpp" line="54"/>
         <source>Highlighting</source>
         <translation>Vurgulama</translation>
     </message>
@@ -4557,17 +4557,17 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
 <context>
     <name>U2::ExportHighlightingTask</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="875"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="875"/>
         <source>Export highlighting</source>
         <translation>Vurgulamayı dışa aktar</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="901"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="901"/>
         <source>Export highlighting finished successfully</source>
         <translation>Dışa aktarma vurgulama başarıyla tamamlandı</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="901"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="901"/>
         <source>Result file:</source>
         <translation>Sonuç dosyası:</translation>
     </message>
@@ -5502,200 +5502,200 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAEditor</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="432"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="432"/>
         <source>Align</source>
         <translation>Hizala</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="373"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="373"/>
         <source>Tree</source>
         <translation>Ağaç</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="72"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="72"/>
         <source>By name</source>
         <translation>Ada Göre</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="77"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="77"/>
         <source>By name, descending</source>
         <translation>Ada göre azalan</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="82"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="82"/>
         <source>By length</source>
         <translation>Uzunluğa göre</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="87"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="87"/>
         <source>By length, descending</source>
         <translation>Boyuna göre azalan</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="115"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="115"/>
         <source>Realign sequence(s) to other sequences</source>
         <translation>Dizileri diğer dizilere yeniden hizalayın</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="102"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="102"/>
         <source>Create new color scheme</source>
         <translation>Yeni renk şeması oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="74"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="74"/>
         <source>Sort selected sequences range or the whole alignment by name, ascending</source>
         <translation>Seçilen sıra aralığını veya hizalamanın tamamını ada göre artan şekilde sırala</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="79"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="79"/>
         <source>Sort selected sequences range or the whole alignment by name, descending</source>
         <translation>Seçili dizi aralığını veya tüm hizalamayı ada göre azalan sırala</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="84"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="84"/>
         <source>Sort selected sequences range or the whole alignment by length, ascending</source>
         <translation>Seçilen dizi aralığını veya tüm hizalamayı uzunluğa göre artan şekilde sırala</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="89"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="89"/>
         <source>Sort selected sequences range or the whole alignment by length, descending</source>
         <translation>Seçili dizi aralığını veya tüm hizalamayı uzunluğa göre azalan şekilde sırala</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="92"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="92"/>
         <source>By leading gap</source>
         <translation>Önde gelen boşlukla</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="94"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="94"/>
         <source>Sort selected sequences range or the whole alignment by leading gap, ascending</source>
         <translation>Seçili dizi aralığını veya hizalamanın tamamını önde gelen boşluğa göre artan şekilde sırala</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="97"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="97"/>
         <source>By leading gap, descending</source>
         <translation>Boşluğa liderlik ederek, alçalarak</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="99"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="99"/>
         <source>Sort selected sequences range or the whole alignment by leading gap, descending</source>
         <translation>Seçili dizi aralığını veya tüm hizalamayı satır aralığı boşluğuna göre azalan şekilde sırala</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="123"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="123"/>
         <source>Convert to RNA alphabet (T-&gt;U)</source>
         <translation>RNA alfabesine dönüştür (T-&gt;U)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="125"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="125"/>
         <source>Convert alignment from DNA to RNA alphabet: replace T with U</source>
         <translation>Hizalamayı DNA&apos;dan RNA alfabesine dönüştürün: T&apos;yi U ile değiştirin</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="128"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="128"/>
         <source>Convert to DNA alphabet (U-&gt;T)</source>
         <translation>DNA alfabesine dönüştür (U-&gt;T)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="130"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="130"/>
         <source>Convert alignment from RNA to DNA alphabet: replace U with T</source>
         <translation>Hizalamayı RNA&apos;dan DNA alfabesine dönüştürün: U yerine T</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="274"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="274"/>
         <source>Edit</source>
         <translation>Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="279"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="279"/>
         <source>Sort</source>
         <translation>Sırala</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="297"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="297"/>
         <source>Appearance</source>
         <translation>Görünüş</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="323"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="323"/>
         <source>Colors</source>
         <translation>Renkler</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="332"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="332"/>
         <source>Custom schemes</source>
         <translation>Özel şemalar</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="350"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="350"/>
         <source>Highlighting</source>
         <translation>Vurgulama</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="364"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="364"/>
         <source>Navigation</source>
         <translation>Gezinme</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="380"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="380"/>
         <source>Advanced</source>
         <translation>Gelişmiş</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="411"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="411"/>
         <source>Go to position…</source>
         <translation>Pozisyona git…</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="418"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="418"/>
         <source>Search in sequences…</source>
         <translation>Sırayla ara…</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="425"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="425"/>
         <source>Search in sequence names…</source>
         <translation>Sıra adlarında ara…</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="436"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="436"/>
         <source>Align sequence(s) to this alignment</source>
         <translation>Sıraları bu hizalamaya hizalayın</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="440"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="440"/>
         <source>Set this sequence as reference</source>
         <translation>Bu sıralamayı referans olarak ayarlayın</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="444"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="444"/>
         <source>Unset reference sequence</source>
         <translation>Ayarlanmamış referans sırası</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="573"/>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="678"/>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="698"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="573"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="678"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="698"/>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>Sıralar eklenirken bir sorun oluştu. Çoklu hizalama artık mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="667"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="667"/>
         <source>A problem occurred during realigning sequences. The multiple alignment is no more available.</source>
         <translation>Dizileri yeniden hizalarken bir sorun oluştu. Çoklu hizalama artık mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="690"/>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="693"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="690"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="693"/>
         <source>Open file with sequences</source>
         <translation>Dosyayı sıralı aç</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="109"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="109"/>
         <source>Build Tree</source>
         <translation>Ağaç Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="391"/>
+        <location filename="../src/ov_msa/MsaEditor.cpp" line="391"/>
         <source>Statistics</source>
         <translation>İstatistikler</translation>
     </message>
@@ -5703,7 +5703,7 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAEditorConsensusCache</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorConsensusCache.cpp" line="85"/>
+        <location filename="../src/ov_msa/MsaEditorConsensusCache.cpp" line="85"/>
         <source>Can not update consensus chache item</source>
         <translation>Mutabakat chache öğesi güncellenemiyor</translation>
     </message>
@@ -5711,7 +5711,7 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAEditorOffsetsViewController</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorOffsetsView.cpp" line="68"/>
+        <location filename="../src/ov_msa/MsaEditorOffsetsView.cpp" line="68"/>
         <source>Show offsets</source>
         <translation>Ofsetleri göster</translation>
     </message>
@@ -5719,88 +5719,88 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAEditorSequenceArea</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="100"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="100"/>
         <source>Remove columns of gaps...</source>
         <translation>Boşluk Sütunlarını Kaldır...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="111"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="111"/>
         <source>Export selected sequence(s)...</source>
         <translation>Seçili dizileri dışa aktar...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="115"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="115"/>
         <source>Remove all gaps</source>
         <translation>Tüm boşlukları kaldırın</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="119"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="119"/>
         <source>Sequence from file...</source>
         <translation>Dosyadan sıra...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="123"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="123"/>
         <source>Sequence from current project...</source>
         <translation>Mevcut projeden sıra...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="137"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="137"/>
         <source>Replace selected rows with reverse-complement</source>
         <translation>Seçili satırları ters tümlemeyle değiştir</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="141"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="141"/>
         <source>Replace selected rows with reverse</source>
         <translation>Seçili satırları tersiyle değiştir</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="145"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="145"/>
         <source>Replace selected rows with complement</source>
         <translation>Seçili satırları tamamlayıcıyla değiştir</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="435"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="435"/>
         <source>Go to Position</source>
         <translation>Pozisyona Git</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="452"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="452"/>
         <source>MSA is locked</source>
         <translation>MSA kilitlendi</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="632"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="632"/>
         <source>No new rows were inserted: selection contains no valid sequences.</source>
         <translation>Yeni satır eklenmedi: seçim geçerli bir sıra içermiyor.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="344"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="344"/>
         <source>The alignment has been modified, so that its alphabet has been switched from &quot;%1&quot; to &quot;%2&quot;. Use &quot;Undo&quot;, if you&apos;d like to restore the original alignment.</source>
         <translation>Hizalama değiştirildi, böylece alfabesi &quot;%1&quot; den &quot;%2&quot; ye değiştirildi. Orijinal hizalamayı geri yüklemek istiyorsanız &quot;Geri Al&quot; seçeneğini kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="655"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="658"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="655"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="658"/>
         <source>Open file with sequences</source>
         <translation>Dosyayı sıralı aç</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="665"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="665"/>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>Sıralar eklenirken bir sorun oluştu. Çoklu hizalama artık mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="107"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="107"/>
         <source>Save subalignment...</source>
         <translation>Alt hizalamayı kaydet...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="127"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="127"/>
         <source>Switch on/off collapsing</source>
         <translation>Daraltmayı aç / kapat</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="132"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="132"/>
         <source>Update collapsed groups</source>
         <translation>Daraltılmış grupları güncelleyin</translation>
     </message>
@@ -5852,29 +5852,29 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAEditorTreeManager</name>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="110"/>
+        <location filename="../src/ov_msa/PhyTrees/MsaEditorTreeManager.cpp" line="110"/>
         <source>Calculate phy tree</source>
         <translation>Bitkisel ağacı hesapla</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="110"/>
+        <location filename="../src/ov_msa/PhyTrees/MsaEditorTreeManager.cpp" line="110"/>
         <source>No algorithms for building phylogenetic tree are available.</source>
         <translation>Filogenetik ağaç oluşturmak için hiçbir algoritma mevcut değildir.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="271"/>
+        <location filename="../src/ov_msa/PhyTrees/MsaEditorTreeManager.cpp" line="271"/>
         <source>Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)</source>
         <translation>Ağaç Görüntüleyici *, MSA Düzenleyici Ağaç Görüntüleyicisi işlevinde MSA Düzenleyici Ağaç Görüntüleyicisine * dönüştürülemiyor::sl_aç Ağaç Görevi Tamamlandı (Görev * t)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="300"/>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="303"/>
+        <location filename="../src/ov_msa/PhyTrees/MsaEditorTreeManager.cpp" line="300"/>
+        <location filename="../src/ov_msa/PhyTrees/MsaEditorTreeManager.cpp" line="303"/>
         <source>Select files to open...</source>
         <translation>Açılacak dosyaları seçin...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="358"/>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="360"/>
+        <location filename="../src/ov_msa/PhyTrees/MsaEditorTreeManager.cpp" line="358"/>
+        <location filename="../src/ov_msa/PhyTrees/MsaEditorTreeManager.cpp" line="360"/>
         <source>Incorrect reference to the MSAEditor</source>
         <translation>MSAEditor&apos;a yanlış referans</translation>
     </message>
@@ -5882,22 +5882,22 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAEditorTreeViewer</name>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="70"/>
+        <location filename="../src/ov_msa/PhyTrees/MsaEditorTreeViewer.cpp" line="70"/>
         <source>MSAEditor tree toolbar</source>
         <translation>MSAEditor ağaç araç çubuğu</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="121"/>
+        <location filename="../src/ov_msa/PhyTrees/MsaEditorTreeViewer.cpp" line="121"/>
         <source>Disable Tree and Alignment synchronization</source>
         <translation>Ağaç ve Hizalama senkronizasyonunu devre dışı bırakın</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="121"/>
+        <location filename="../src/ov_msa/PhyTrees/MsaEditorTreeViewer.cpp" line="121"/>
         <source>Enable Tree and Alignment synchronization</source>
         <translation>Ağaç ve Hizalama senkronizasyonunu etkinleştirin</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="79"/>
+        <location filename="../src/ov_msa/PhyTrees/MsaEditorTreeViewer.cpp" line="79"/>
         <source>Refresh tree</source>
         <translation>Ağacı yenile</translation>
     </message>
@@ -5905,47 +5905,47 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAGeneralTab</name>
     <message>
-        <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="48"/>
+        <location filename="../src/ov_msa/General/MsaGeneralTab.cpp" line="48"/>
         <source>Alignment info</source>
         <translation>Hizalama bilgileri</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="49"/>
+        <location filename="../src/ov_msa/General/MsaGeneralTab.cpp" line="49"/>
         <source>Consensus mode</source>
         <translation>Konsensüs modu</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="51"/>
+        <location filename="../src/ov_msa/General/MsaGeneralTab.cpp" line="51"/>
         <source>Copy (custom format)</source>
         <translation>Kopyala (özel biçim)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="122"/>
+        <location filename="../src/ov_msa/General/MsaGeneralTab.cpp" line="122"/>
         <source>Rich text (HTML)</source>
         <translation>Zengin metin (HTML)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="145"/>
+        <location filename="../src/ov_msa/General/MsaGeneralTab.cpp" line="145"/>
         <source>RNA</source>
         <translation>RNA</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="146"/>
+        <location filename="../src/ov_msa/General/MsaGeneralTab.cpp" line="146"/>
         <source>Convert DNA alignment to RNA alignment</source>
         <translation>DNA hizalamasını RNA hizalamasına dönüştürün</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="148"/>
+        <location filename="../src/ov_msa/General/MsaGeneralTab.cpp" line="148"/>
         <source>DNA</source>
         <translation>DNA</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="149"/>
+        <location filename="../src/ov_msa/General/MsaGeneralTab.cpp" line="149"/>
         <source>Convert RNA alignment to DNA alignment</source>
         <translation>RNA hizalamasını DNA hizalamasına dönüştürün</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="52"/>
+        <location filename="../src/ov_msa/General/MsaGeneralTab.cpp" line="52"/>
         <source>Sort sequences</source>
         <translation>Sıraları sırala</translation>
     </message>
@@ -5957,54 +5957,54 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAHighlightingTab</name>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="77"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="77"/>
         <source>Threshold</source>
         <translation>Eşik</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="120"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="120"/>
         <source>Use dots</source>
         <translation>Noktaları kullanın</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="124"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="124"/>
         <source>Export</source>
         <translation>Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="134"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="134"/>
         <source>Highlight characters with conservation level:</source>
         <translation>Koruma düzeyine sahip karakterleri vurgulayın:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="137"/>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="138"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="137"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="138"/>
         <source> threshold</source>
         <translation> eşik</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="149"/>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="343"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="149"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="343"/>
         <source>Threshold: %1%</source>
         <translation>Eşik: %1%</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="176"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="176"/>
         <source>Color</source>
         <translation>Renk</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="179"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="179"/>
         <source>Highlighting</source>
         <translation>Vurgulama</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="275"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="275"/>
         <source>Info: set a reference sequence.</source>
         <translation>Bilgi: bir referans sırası ayarlamanızı sağlar.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="284"/>
+        <location filename="../src/ov_msa/Highlighting/MsaHighlightingTab.cpp" line="284"/>
         <source>Info: export is not available for the selected highlighting.</source>
         <translation>Bilgi: seçili vurgulama için dışa aktarma yapılamaz.</translation>
     </message>
@@ -6012,17 +6012,17 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAImageExportController</name>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="261"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="261"/>
         <source>Alignment</source>
         <translation>Hizalama</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="346"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="346"/>
         <source>Warning: selected region is too big to be exported. You can try to zoom out the alignment or select another region.</source>
         <translation>Uyarı: seçilen bölge dışa aktarılamayacak kadar büyük. Hizalamayı uzaklaştırmayı deneyebilir veya başka bir bölge seçebilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="349"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="349"/>
         <source>Warning: selected region is too big to be exported. You can try to select another region.</source>
         <translation>Uyarı: seçilen bölge dışa aktarılamayacak kadar büyük. Başka bir bölge seçmeyi deneyebilirsiniz.</translation>
     </message>
@@ -6038,18 +6038,18 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAImageExportTask</name>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="43"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="43"/>
         <source>MSA Editor UI is NULL</source>
         <translation>MSA Düzenleyici Kullanıcı Arayüzü BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="49"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="49"/>
         <source>MSA Editor is NULL</source>
         <translation>MSA Düzenleyicisi NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="56"/>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="73"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="56"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="73"/>
         <source>MSA Consensus area is NULL</source>
         <translation>MSA Konsensüs alanı BOŞ</translation>
     </message>
@@ -6057,18 +6057,18 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAImageExportToBitmapTask</name>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="108"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="108"/>
         <source>Nothing to export</source>
         <translation>Dışa aktarılacak bir şey yok</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="147"/>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="155"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="147"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="155"/>
         <source>Alignment is too big. </source>
         <translation>Hizalama çok büyük. </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="157"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="157"/>
         <source>Cannot save the file. </source>
         <translation>Dosyayı kaydedemezsiniz. </translation>
     </message>
@@ -6076,22 +6076,22 @@ Dizin Yolu: %1</translation>
 <context>
     <name>U2::MSAImageExportToSvgTask</name>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="204"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="204"/>
         <source>Nothing to export</source>
         <translation>Dışa aktarılacak bir şey yok</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="234"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="234"/>
         <source>The image size is too big.</source>
         <translation>Görüntü boyutu çok büyük.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="238"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="238"/>
         <source>SVG %1</source>
         <translation>SVG %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="239"/>
+        <location filename="../src/ov_msa/Export/MsaImageExportTask.cpp" line="239"/>
         <source>SVG image of multiple alignment created by Unipro UGENE</source>
         <translation>Unipro UGENE tarafından oluşturulan çoklu hizalamanın SVG görüntüsü</translation>
     </message>
@@ -7658,32 +7658,32 @@ Lütfen ilgili eklentileri yükleyin.</translation>
 <context>
     <name>U2::SelectSubalignmentDialog</name>
     <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="124"/>
+        <location filename="../src/ov_msa/MsaSelectSubalignmentDialog.cpp" line="124"/>
         <source>Select</source>
         <translation>Seçim</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="131"/>
+        <location filename="../src/ov_msa/MsaSelectSubalignmentDialog.cpp" line="131"/>
         <source>MSA Object is NULL</source>
         <translation>MSA Nesnesi BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="75"/>
+        <location filename="../src/ov_msa/MsaSelectSubalignmentDialog.cpp" line="75"/>
         <source>Start position must be less than end position!</source>
         <translation>Başlangıç konumu, son konumdan küçük olmalıdır!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="80"/>
+        <location filename="../src/ov_msa/MsaSelectSubalignmentDialog.cpp" line="80"/>
         <source>Entered region not contained in current sequence</source>
         <translation>Geçerli sırada yer almayan girilen bölge</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="92"/>
+        <location filename="../src/ov_msa/MsaSelectSubalignmentDialog.cpp" line="92"/>
         <source>No sequences selected</source>
         <translation>Dizi seçilmedi</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="120"/>
+        <location filename="../src/ov_msa/MsaSelectSubalignmentDialog.cpp" line="120"/>
         <source>Ma Editor is NULL</source>
         <translation>Ma Düzenleyicisi BOŞ</translation>
     </message>

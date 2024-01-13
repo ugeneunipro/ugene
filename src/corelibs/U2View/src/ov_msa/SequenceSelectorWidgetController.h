@@ -23,7 +23,7 @@
 
 #include <U2Gui/SuggestCompleter.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "ui_SequenceSelectorWidget.h"
 
@@ -32,7 +32,7 @@ namespace U2 {
 class SequenceSelectorWidgetController : public QWidget, Ui_SequenceSelectorWidget {
     Q_OBJECT
 public:
-    SequenceSelectorWidgetController(MSAEditor* _msa);
+    SequenceSelectorWidgetController(MsaEditor* _msa);
     ~SequenceSelectorWidgetController();
 
     QString text() const;
@@ -53,7 +53,7 @@ private slots:
 private:
     void updateCompleter();
 
-    MSAEditor* msa;
+    MsaEditor* msa;
     MSACompletionFiller* filler;
     BaseCompleter* completer;
     QString defaultSeqName;

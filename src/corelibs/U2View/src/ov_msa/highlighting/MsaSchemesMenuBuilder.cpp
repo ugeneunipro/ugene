@@ -32,8 +32,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "ov_msa/MSAEditor.h"
 #include "ov_msa/MaEditorSequenceArea.h"
+#include "ov_msa/MsaEditor.h"
 
 namespace U2 {
 
@@ -119,7 +119,7 @@ void MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(QAction* a, QMenu* co
 }
 
 void MsaSchemesMenuBuilder::fillColorSchemeMenuActions(QList<QAction*>& actions, QList<MsaColorSchemeFactory*> colorFactories, MaEditorSequenceArea* actionsParent) {
-    auto msa = qobject_cast<MSAEditor*>(actionsParent->getEditor());
+    auto msa = qobject_cast<MsaEditor*>(actionsParent->getEditor());
 
     foreach (MsaColorSchemeFactory* factory, colorFactories) {
         QString name = factory->getName();

@@ -38,7 +38,7 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 #include <U2View/WebWindow.h>
 
 namespace U2 {
@@ -46,7 +46,7 @@ namespace U2 {
 const QString DNAStatMSAProfileDialog::HTML = "html";
 const QString DNAStatMSAProfileDialog::CSV = "csv";
 
-DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget* p, MSAEditor* _c)
+DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget* p, MsaEditor* _c)
     : QDialog(p),
       ctx(_c),
       saveController(nullptr) {

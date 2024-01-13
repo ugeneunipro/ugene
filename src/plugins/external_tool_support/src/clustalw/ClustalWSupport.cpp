@@ -32,8 +32,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MsaEditor.h>
 
 #include "ClustalWSupportRunDialog.h"
 #include "ClustalWSupportTask.h"
@@ -122,7 +122,7 @@ ClustalWSupportContext::ClustalWSupportContext(QObject* p)
 }
 
 void ClustalWSupportContext::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     msaEditor->registerActionProvider(this);
 
@@ -165,7 +165,7 @@ void ClustalWSupportContext::sl_align() {
     // Call run ClustalW align dialog
     auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
-    MSAEditor* msaEditor = action->getMsaEditor();
+    MsaEditor* msaEditor = action->getMsaEditor();
     MsaObject* obj = msaEditor->getMaObject();
     if (obj == nullptr || obj->isStateLocked()) {
         return;

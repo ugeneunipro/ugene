@@ -42,7 +42,7 @@
 #include <U2Gui/ProjectView.h>
 #include <U2Gui/U2FileDialog.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 

@@ -38,9 +38,9 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorSelection.h>
+#include <U2View/MsaEditor.h>
 
 #include "ExportMSA2MSADialog.h"
 #include "ExportMSA2SequencesDialog.h"
@@ -57,7 +57,7 @@ ExportAlignmentViewItemsController::ExportAlignmentViewItemsController(QObject* 
 }
 
 void ExportAlignmentViewItemsController::initViewContext(GObjectViewController* v) {
-    auto msaEditor = qobject_cast<MSAEditor*>(v);
+    auto msaEditor = qobject_cast<MsaEditor*>(v);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     auto msaExportContext = new MSAExportContext(msaEditor);
     addViewResource(msaEditor, msaExportContext);
@@ -75,7 +75,7 @@ void ExportAlignmentViewItemsController::buildStaticOrContextMenu(GObjectViewCon
 //////////////////////////////////////////////////////////////////////////
 // MSA view context
 
-MSAExportContext::MSAExportContext(MSAEditor* e)
+MSAExportContext::MSAExportContext(MsaEditor* e)
     : editor(e) {
     exportNucleicMsaToAminoAction = new QAction(tr("Export amino acid translated alignment..."), this);
     exportNucleicMsaToAminoAction->setObjectName("exportNucleicMsaToAminoAction");

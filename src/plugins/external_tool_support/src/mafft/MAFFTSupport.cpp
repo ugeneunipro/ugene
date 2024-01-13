@@ -32,8 +32,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MsaEditor.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -122,7 +122,7 @@ MAFFTSupportContext::MAFFTSupportContext(QObject* p)
 }
 
 void MAFFTSupportContext::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     msaEditor->registerActionProvider(this);
 
@@ -166,7 +166,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
 
-    MSAEditor* msaEditor = action->getMsaEditor();
+    MsaEditor* msaEditor = action->getMsaEditor();
     MsaObject* alignmentObject = msaEditor->getMaObject();
     SAFE_POINT(alignmentObject != nullptr, "Alignment object is NULL during aligning with MAFFT!", );
     SAFE_POINT(!alignmentObject->isStateLocked(), "Alignment object is locked during aligning with MAFFT!", );

@@ -67,9 +67,9 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
-#include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaGraphOverview.h>
+#include <U2View/MsaEditorTreeViewer.h>
 #include <U2View/ScrollController.h>
 
 #include "GTTestsRegressionScenarios_4001_5000.h"
@@ -961,7 +961,7 @@ GUI_TEST_CLASS_DEFINITION(test_4106) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
+    MsaEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
     const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
@@ -2093,7 +2093,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Select a sequence that is two sequences above the last visible sequence in the name list area.
-    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
+    MsaEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
     const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
@@ -2683,7 +2683,7 @@ GUI_TEST_CLASS_DEFINITION(test_4383) {
     GTUtilsMSAEditorSequenceArea::scrollToPosition(QPoint(603, 1));
 
     QWidget* activeWindow = GTUtilsMdi::activeWindow();
-    GTWidget::findExactWidget<MSAEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
+    GTWidget::findExactWidget<MsaEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
     auto msaOffsetRight = GTWidget::findWidget("msa_editor_offsets_view_widget_right", activeWindow);
 
     GTMouseDriver::moveTo(msaOffsetRight->mapToGlobal(QPoint(msaOffsetRight->rect().left() - 2, 7)));
@@ -4566,7 +4566,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     GTUtilsMSAEditorSequenceArea::callContextMenu();
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    auto editor = mw->findChild<MSAEditor*>();
+    auto editor = mw->findChild<MsaEditor*>();
     QWidget* nameListWidget = editor->getUI()->getUI(0)->getEditorNameList();
 
     // 5. Open conext menu by right clicking "Name list area". Paste this subaliment throu context menu {Copy/Paste->Paste}
@@ -4599,7 +4599,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    auto editor = mw->findChild<MSAEditor*>();
+    auto editor = mw->findChild<MsaEditor*>();
     QWidget* sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
@@ -4619,7 +4619,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    auto editor = mw->findChild<MSAEditor*>();
+    auto editor = mw->findChild<MsaEditor*>();
     QWidget* sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(3, 0), QPoint(5, 4));

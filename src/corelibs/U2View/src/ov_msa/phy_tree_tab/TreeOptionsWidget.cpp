@@ -37,17 +37,17 @@
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "../../ov_phyltree/TreeViewerUtils.h"
-#include "ov_msa/phy_tree/MSAEditorMultiTreeViewer.h"
-#include "ov_msa/phy_tree/MSAEditorTreeViewer.h"
+#include "ov_msa/phy_tree/MsaEditorMultiTreeViewer.h"
+#include "ov_msa/phy_tree/MsaEditorTreeViewer.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "phyltree/TreeSettingsDialog.h"
 
 namespace U2 {
 
-TreeOptionsWidget::TreeOptionsWidget(MSAEditor* msaEditor)
+TreeOptionsWidget::TreeOptionsWidget(MsaEditor* msaEditor)
     : editor(msaEditor),
       savableTab(this, GObjectViewUtils::findViewByName(msaEditor->getName())) {
     SAFE_POINT(editor != nullptr, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
@@ -265,7 +265,7 @@ void TreeOptionsWidget::connectSlots() {
     if (editor != nullptr) {
         auto multiTreeViewer = qobject_cast<MsaEditorWgt*>(editor->getMaEditorWgt())->getMultiTreeViewer();
         SAFE_POINT(multiTreeViewer != nullptr, "Tree options widget is instantiated with no active tree view", );
-        connect(multiTreeViewer, &MSAEditorMultiTreeViewer::si_activeTreeViewChanged, this, [this] { updateAllWidgets(); });
+        connect(multiTreeViewer, &MsaEditorMultiTreeViewer::si_activeTreeViewChanged, this, [this] { updateAllWidgets(); });
     }
 }
 
@@ -311,7 +311,7 @@ TreeViewerUI* TreeOptionsWidget::getTreeViewer() const {
         return treeViewer;
     }
     auto mui = qobject_cast<MsaEditorMultilineWgt*>(editor->getUI());
-    MSAEditorTreeViewer* currentTree = mui->getCurrentTree();
+    MsaEditorTreeViewer* currentTree = mui->getCurrentTree();
     return currentTree != nullptr
                ? currentTree->getTreeViewerUI()
                : nullptr;
@@ -364,7 +364,7 @@ void TreeOptionsWidget::updateButtonColor(QPushButton* button, const QColor& new
     button->setPalette(palette);
 }
 
-AddTreeWidget::AddTreeWidget(MSAEditor* msaEditor)
+AddTreeWidget::AddTreeWidget(MsaEditor* msaEditor)
     : editor(msaEditor), openTreeButton(nullptr), buildTreeButton(nullptr), addTreeHint(nullptr) {
     setObjectName("AddTreeWidget");
     auto mainLayout = new QVBoxLayout(this);

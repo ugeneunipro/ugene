@@ -26,7 +26,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "TreeOptionsWidget.h"
-#include "ov_msa/MSAEditor.h"
+#include "ov_msa/MsaEditor.h"
 #include "ov_phyltree/TreeViewer.h"
 
 namespace U2 {
@@ -44,7 +44,7 @@ QWidget* MSATreeOptionsWidgetFactory::createWidget(GObjectViewController* objVie
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    auto msa = qobject_cast<MSAEditor*>(objView);
+    auto msa = qobject_cast<MsaEditor*>(objView);
     SAFE_POINT(msa != nullptr,
                QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
@@ -94,7 +94,7 @@ QWidget* AddTreeWidgetFactory::createWidget(GObjectViewController* objView, cons
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    auto msaEditor = qobject_cast<MSAEditor*>(objView);
+    auto msaEditor = qobject_cast<MsaEditor*>(objView);
     SAFE_POINT(msaEditor != nullptr,
                QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
                nullptr);

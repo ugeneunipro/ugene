@@ -24,8 +24,8 @@
 #include <GTGlobals.h>
 
 #include "U2View/MsaEditorSimilarityColumn.h"
-#include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MsaEditorConsensusArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 
@@ -34,8 +34,8 @@ namespace U2 {
 class GTUtilsMSAEditorSequenceArea {
 public:
     // The "index" is line index while multiline mode
-    static MSAEditorSequenceArea* getSequenceArea(int index = 0, bool checkError = true);
-    static MSAEditorConsensusArea* getConsensusArea(int index = 0, bool checkError = true);
+    static MsaEditorSequenceArea* getSequenceArea(int index = 0, bool checkError = true);
+    static MsaEditorConsensusArea* getConsensusArea(int index = 0, bool checkError = true);
     static MsaEditorSimilarityColumn* getSimilarityColumn(int index = 0);
     static QScrollBar* getHorizontalNamesScroll(int index = 0);
     static void callContextMenu(const QPoint& innerCoords = QPoint());  // zero-based position

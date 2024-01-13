@@ -400,7 +400,7 @@ QString GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg() {
     McaEditorConsensusArea* consArea = GTUtilsMcaEditor::getConsensusArea();
     GT_CHECK_RESULT(consArea != nullptr, "Consensus area not found", QString());
 
-    QSharedPointer<MSAEditorConsensusCache> consCache = consArea->getConsensusCache();
+    QSharedPointer<MsaEditorConsensusCache> consCache = consArea->getConsensusCache();
 
     U2Region sel = GTUtilsMcaEditorSequenceArea::getReferenceSelection();
     int start = sel.startPos;
@@ -419,7 +419,7 @@ QString GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(const U2Region&
     McaEditorConsensusArea* consArea = GTUtilsMcaEditor::getConsensusArea();
     GT_CHECK_RESULT(consArea != nullptr, "Consensus area not found", QString());
 
-    QSharedPointer<MSAEditorConsensusCache> consCache = consArea->getConsensusCache();
+    QSharedPointer<MsaEditorConsensusCache> consCache = consArea->getConsensusCache();
 
     int start = reg.startPos;
     int length = reg.length;

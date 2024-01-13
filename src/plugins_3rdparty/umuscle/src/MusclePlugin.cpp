@@ -41,10 +41,10 @@
 
 #include <U2Test/GTestFrameworkComponents.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorSelection.h>
+#include <U2View/MsaEditor.h>
 
 #include "MuscleAlignDialogController.h"
 #include "MuscleTask.h"
@@ -112,7 +112,7 @@ MuscleAction::MuscleAction(QObject* p, GObjectViewController* v, const QString& 
     : GObjectViewAction(p, v, text, order) {
     setIcon(QIcon(":umuscle/images/muscle_16.png"));
 
-    auto msaEditor = qobject_cast<MSAEditor*>(getObjectView());
+    auto msaEditor = qobject_cast<MsaEditor*>(getObjectView());
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
     QAction* msaEditorAction = isAlignSelectionAction ? msaEditor->alignSelectedSequencesToAlignmentAction : msaEditor->alignAction;
@@ -120,8 +120,8 @@ MuscleAction::MuscleAction(QObject* p, GObjectViewController* v, const QString& 
     setEnabled(msaEditorAction->isEnabled());
 }
 
-MSAEditor* MuscleAction::getMSAEditor() const {
-    auto e = qobject_cast<MSAEditor*>(getObjectView());
+MsaEditor* MuscleAction::getMSAEditor() const {
+    auto e = qobject_cast<MsaEditor*>(getObjectView());
     SAFE_POINT(e != nullptr, "Can't get an appropriate MSA Editor", nullptr);
     return e;
 }
@@ -161,7 +161,7 @@ void MuscleMSAEditorContext::initViewContext(GObjectViewController* view) {
 void MuscleMSAEditorContext::sl_align() {
     auto action = qobject_cast<MuscleAction*>(sender());
     SAFE_POINT(action != nullptr, "sl_align: not a MuscleAction", );
-    MSAEditor* msaEditor = action->getMSAEditor();
+    MsaEditor* msaEditor = action->getMSAEditor();
     MsaObject* obj = msaEditor->getMaObject();
 
     QRect selection = msaEditor->getSelection().toRect();
@@ -203,7 +203,7 @@ void MuscleMSAEditorContext::sl_align() {
 void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     auto action = qobject_cast<MuscleAction*>(sender());
     SAFE_POINT(action != nullptr, "Not a MuscleAction!", );
-    MSAEditor* msaEditor = action->getMSAEditor();
+    MsaEditor* msaEditor = action->getMSAEditor();
     MsaObject* msaObject = msaEditor->getMaObject();
 
     DocumentFormatConstraints c;
@@ -224,7 +224,7 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
 void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     auto action = qobject_cast<MuscleAction*>(sender());
     SAFE_POINT(action != nullptr, "sl_alignProfileToProfile: not a MuscleAction", );
-    MSAEditor* ed = action->getMSAEditor();
+    MsaEditor* ed = action->getMSAEditor();
     MsaObject* obj = ed->getMaObject();
     QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE});
     LastUsedDirHelper lod;
@@ -245,7 +245,7 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
 void MuscleMSAEditorContext::sl_alignSelectedSequences() {
     auto action = qobject_cast<MuscleAction*>(sender());
     SAFE_POINT(action != nullptr, "Not a MuscleAction!", );
-    MSAEditor* msaEditor = action->getMSAEditor();
+    MsaEditor* msaEditor = action->getMSAEditor();
     MsaObject* msaObject = msaEditor->getMaObject();
 
     QList<int> selectedMaRowIndexes = msaEditor->getSelection().getSelectedRowIndexes();

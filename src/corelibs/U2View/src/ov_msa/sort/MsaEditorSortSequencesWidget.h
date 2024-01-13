@@ -27,20 +27,20 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 
 class MsaEditorSortSequencesWidget : public QWidget {
     Q_OBJECT;
 
 public:
-    MsaEditorSortSequencesWidget(QWidget* parent, MSAEditor* msaEditor);
+    MsaEditorSortSequencesWidget(QWidget* parent, MsaEditor* msaEditor);
 
 private slots:
     void sl_sortClicked();
     void sl_msaObjectStateChanged();
 
 private:
-    MSAEditor* msaEditor;
+    MsaEditor* msaEditor;
     QComboBox* sortByCombo;
     QComboBox* sortOrderCombo;
     QPushButton* sortButton;
