@@ -26,7 +26,7 @@
 namespace U2 {
 
 class GObjectViewWindow;
-class MSADistanceMatrix;
+class MsaDistanceMatrix;
 class MsaEditor;
 class MsaEditorAlignmentDependentWidget;
 class MsaEditorMultiTreeViewer;
@@ -51,7 +51,7 @@ public:
 
     MsaEditorSequenceArea* getSequenceArea() const;
 
-    void createDistanceColumn(MSADistanceMatrix* matrix);
+    void createDistanceColumn(MsaDistanceMatrix* matrix);
 
     void addTreeView(GObjectViewWindow* treeView);
 

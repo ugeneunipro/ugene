@@ -21,7 +21,7 @@
 
 #include "MsaEditorMultilineWgt.h"
 
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
 #include "MaEditorNameList.h"
 #include "MaEditorSelection.h"

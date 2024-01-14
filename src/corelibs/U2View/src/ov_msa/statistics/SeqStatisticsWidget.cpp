@@ -21,7 +21,7 @@
 
 #include "SeqStatisticsWidget.h"
 
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
@@ -84,8 +84,8 @@ void SeqStatisticsWidget::copySettings() {
 }
 
 void SeqStatisticsWidget::updateWidgetsSettings() {
-    QList<MSADistanceAlgorithmFactory*> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
-    foreach (MSADistanceAlgorithmFactory* a, algos) {
+    QList<MsaDistanceAlgorithmFactory*> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
+    foreach (MsaDistanceAlgorithmFactory* a, algos) {
         ui.algoComboBox->addItem(a->getName(), a->getId());
     }
     ui.algoComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);

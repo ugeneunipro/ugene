@@ -35,7 +35,7 @@ class QFile;
 namespace U2 {
 
 class MsaEditor;
-class MSADistanceAlgorithm;
+class MsaDistanceAlgorithm;
 class SaveDocumentController;
 
 class DistanceMatrixMSAProfileDialog : public QDialog, public Ui_DistanceMatrixMSAProfileDialog {
@@ -91,7 +91,7 @@ public:
     QString generateReport() const;
     virtual bool isReportingEnabled() const;
 
-    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MsaRow>& rows, QFile* f);
+    void createDistanceTable(MsaDistanceAlgorithm* algo, const QList<MsaRow>& rows, QFile* f);
 
     QList<Task*> createStatisticsDocument(Task* subTask);
 

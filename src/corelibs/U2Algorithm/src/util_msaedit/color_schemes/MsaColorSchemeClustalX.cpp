@@ -21,7 +21,7 @@
 
 #include "MsaColorSchemeClustalX.h"
 
-#include <U2Algorithm/MSAConsensusUtils.h>
+#include <U2Algorithm/MsaConsensusUtils.h>
 
 #include <U2Core/MsaObject.h>
 
@@ -128,7 +128,7 @@ void MsaColorSchemeClustalX::updateCache() const {
 
     for (int pos = 0; pos < aliLen; pos++) {
         int nonGapChars = 0;
-        MSAConsensusUtils::getColumnFreqs(msa, pos, freqsByChar, nonGapChars);
+        MsaConsensusUtils::getColumnFreqs(msa, pos, freqsByChar, nonGapChars);
         int content50 = int(nonGapChars * 50.0 / 100);
         int content60 = int(nonGapChars * 60.0 / 100);
         int content80 = int(nonGapChars * 80.0 / 100);

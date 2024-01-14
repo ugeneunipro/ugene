@@ -34,7 +34,7 @@ namespace U2 {
 
 class MaEditor;
 class MsaObject;
-class MSAConsensusAlgorithm;
+class MsaConsensusAlgorithm;
 class MsaColorScheme;
 class MsaHighlightingScheme;
 
@@ -72,7 +72,7 @@ public:
 private:
     int getGraphValue(int pos) const;
 
-    MSAConsensusAlgorithm* algorithm;
+    MsaConsensusAlgorithm* algorithm;
 };
 
 class MaGapOverviewCalculationTask : public MaGraphCalculationTask {
@@ -96,7 +96,7 @@ public:
 private:
     int getGraphValue(int pos) const;
 
-    MSAConsensusAlgorithm* algorithm;
+    MsaConsensusAlgorithm* algorithm;
 };
 
 class MaHighlightingOverviewCalculationTask : public MaGraphCalculationTask {

@@ -35,10 +35,9 @@
 #include <U2Algorithm/CDSearchTaskFactoryRegistry.h>
 #include <U2Algorithm/DnaAssemblyAlgRegistry.h>
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
-
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/RepeatFinderTaskFactoryRegistry.h>
@@ -203,10 +202,10 @@ UgeneContextWrapper::UgeneContextWrapper(const QString& workingDirectoryPath)
     dbxrr = new DBXRefRegistry();
     appContext->setDBXRefRegistry(dbxrr);
 
-    msaConsReg = new MSAConsensusAlgorithmRegistry();
+    msaConsReg = new MsaConsensusAlgorithmRegistry();
     appContext->setMSAConsensusAlgorithmRegistry(msaConsReg);
 
-    msaDistReg = new MSADistanceAlgorithmRegistry();
+    msaDistReg = new MsaDistanceAlgorithmRegistry();
     appContext->setMSADistanceAlgorithmRegistry(msaDistReg);
 
     assemblyConsReg = new AssemblyConsensusAlgorithmRegistry();

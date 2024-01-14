@@ -45,7 +45,7 @@ namespace U2 {
 class AlignmentAlgorithm;
 class AlignmentAlgorithmMainWidget;
 class MaModificationInfo;
-class MSADistanceAlgorithm;
+class MsaDistanceAlgorithm;
 class MsaEditor;
 class PairwiseAlignmentTaskSettings;
 class SaveDocumentController;
@@ -88,7 +88,7 @@ private:
 
     MsaEditor* msa;
     PairwiseAlignmentWidgetsSettings* pairwiseAlignmentWidgetsSettings;
-    MSADistanceAlgorithm* distanceCalcTask;
+    MsaDistanceAlgorithm* distanceCalcTask;
 
     AlignmentAlgorithmMainWidget* settingsWidget;  // created by factories on demand
 

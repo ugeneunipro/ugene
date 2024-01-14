@@ -69,20 +69,20 @@ HEADERS += src/misc/BitsTable.h \
            src/util_assembly_consensus/AssemblyConsensusUtils.h \
            src/util_assembly_consensus/BuiltInAssemblyConsensusAlgorithms.h \
            src/util_msa_consensus/BuiltInConsensusAlgorithms.h \
-           src/util_msa_consensus/MSAConsensusAlgorithm.h \
-           src/util_msa_consensus/MSAConsensusAlgorithmClustal.h \
-           src/util_msa_consensus/MSAConsensusAlgorithmDefault.h \
-           src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.h \
-           src/util_msa_consensus/MSAConsensusAlgorithmRegistry.h \
-           src/util_msa_consensus/MSAConsensusAlgorithmStrict.h \
-           src/util_msa_consensus/MSAConsensusUtils.h \
+           src/util_msa_consensus/MsaConsensusAlgorithm.h \
+           src/util_msa_consensus/MsaConsensusAlgorithmClustal.h \
+           src/util_msa_consensus/MsaConsensusAlgorithmDefault.h \
+           src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.h \
+           src/util_msa_consensus/MsaConsensusAlgorithmRegistry.h \
+           src/util_msa_consensus/MsaConsensusAlgorithmStrict.h \
+           src/util_msa_consensus/MsaConsensusUtils.h \
            src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.h \
            src/util_msa_distance/BuiltInDistanceAlgorithms.h \
-           src/util_msa_distance/MSADistanceAlgorithm.h \
-           src/util_msa_distance/MSADistanceAlgorithmHamming.h \
-           src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.h \
-           src/util_msa_distance/MSADistanceAlgorithmRegistry.h \
-           src/util_msa_distance/MSADistanceAlgorithmSimilarity.h \
+           src/util_msa_distance/MsaDistanceAlgorithm.h \
+           src/util_msa_distance/MsaDistanceAlgorithmHamming.h \
+           src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.h \
+           src/util_msa_distance/MsaDistanceAlgorithmRegistry.h \
+           src/util_msa_distance/MsaDistanceAlgorithmSimilarity.h \
            src/util_msaedit/CreateSubalignmentTask.h \
            src/util_msaedit/MsaUtilTasks.h \
            src/util_msaedit/color_schemes/ColorSchemeUtils.h \
@@ -173,20 +173,20 @@ SOURCES += src/misc/BitsTable.cpp \
            src/util_assembly_consensus/AssemblyConsensusUtils.cpp \
            src/util_assembly_consensus/BuiltInAssemblyConsensusAlgorithms.cpp \
            src/util_msa_consensus/BuiltInConsensusAlgorithms.cpp \
-           src/util_msa_consensus/MSAConsensusAlgorithm.cpp \
-           src/util_msa_consensus/MSAConsensusAlgorithmClustal.cpp \
-           src/util_msa_consensus/MSAConsensusAlgorithmDefault.cpp \
-           src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.cpp \
-           src/util_msa_consensus/MSAConsensusAlgorithmRegistry.cpp \
-           src/util_msa_consensus/MSAConsensusAlgorithmStrict.cpp \
-           src/util_msa_consensus/MSAConsensusUtils.cpp \
+           src/util_msa_consensus/MsaConsensusAlgorithm.cpp \
+           src/util_msa_consensus/MsaConsensusAlgorithmClustal.cpp \
+           src/util_msa_consensus/MsaConsensusAlgorithmDefault.cpp \
+           src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.cpp \
+           src/util_msa_consensus/MsaConsensusAlgorithmRegistry.cpp \
+           src/util_msa_consensus/MsaConsensusAlgorithmStrict.cpp \
+           src/util_msa_consensus/MsaConsensusUtils.cpp \
            src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp \
            src/util_msa_distance/BuiltInDistanceAlgorithms.cpp \
-           src/util_msa_distance/MSADistanceAlgorithm.cpp \
-           src/util_msa_distance/MSADistanceAlgorithmHamming.cpp \
-           src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.cpp \
-           src/util_msa_distance/MSADistanceAlgorithmRegistry.cpp \
-           src/util_msa_distance/MSADistanceAlgorithmSimilarity.cpp \
+           src/util_msa_distance/MsaDistanceAlgorithm.cpp \
+           src/util_msa_distance/MsaDistanceAlgorithmHamming.cpp \
+           src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp \
+           src/util_msa_distance/MsaDistanceAlgorithmRegistry.cpp \
+           src/util_msa_distance/MsaDistanceAlgorithmSimilarity.cpp \
            src/util_msaedit/CreateSubalignmentTask.cpp \
            src/util_msaedit/MsaUtilTasks.cpp \
            src/util_msaedit/color_schemes/ColorSchemeUtils.cpp \

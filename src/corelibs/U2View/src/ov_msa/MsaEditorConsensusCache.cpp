@@ -21,7 +21,7 @@
 
 #include "MsaEditorConsensusCache.h"
 
-#include <U2Algorithm/MSAConsensusAlgorithm.h>
+#include <U2Algorithm/MsaConsensusAlgorithm.h>
 
 #include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-MsaEditorConsensusCache::MsaEditorConsensusCache(QObject* p, MsaObject* o, MSAConsensusAlgorithmFactory* factory)
+MsaEditorConsensusCache::MsaEditorConsensusCache(QObject* p, MsaObject* o, MsaConsensusAlgorithmFactory* factory)
     : QObject(p), curCacheSize(0), aliObj(o), algorithm(nullptr) {
     setConsensusAlgorithm(factory);
 
@@ -47,7 +47,7 @@ MsaEditorConsensusCache::~MsaEditorConsensusCache() {
     algorithm = nullptr;
 }
 
-void MsaEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory) {
+void MsaEditorConsensusCache::setConsensusAlgorithm(MsaConsensusAlgorithmFactory* factory) {
     delete algorithm;
     algorithm = nullptr;
     bool ignoreTrailingLeadingGaps = aliObj->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
