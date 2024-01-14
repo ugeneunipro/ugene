@@ -21,7 +21,7 @@
 
 #include "MaExportConsensusWidget.h"
 
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -104,7 +104,7 @@ void MaExportConsensusWidget::showHint(bool showHint) {
 }
 
 void MaExportConsensusWidget::sl_consensusChanged(const QString& algoId) {
-    MSAConsensusAlgorithmFactory* consAlgorithmFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
+    MsaConsensusAlgorithmFactory* consAlgorithmFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
     SAFE_POINT(consAlgorithmFactory != nullptr, "Fetched consensus algorithm factory is NULL", );
 
     if (consAlgorithmFactory->isSequenceLikeResult()) {

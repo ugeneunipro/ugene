@@ -32,7 +32,7 @@ class MaEditorFactory;
 class MsaEditor;
 class MsaObject;
 class UnloadedObject;
-class MSAConsensusAlgorithm;
+class MsaConsensusAlgorithm;
 
 /*!
  * \brief The OpenMaEditorTask class
@@ -111,13 +111,13 @@ public:
     QString url;
     DocumentFormatId format;
     QString name;
-    MSAConsensusAlgorithm* algorithm;
+    MsaConsensusAlgorithm* algorithm;
 };
 
 class ExtractConsensusTask : public Task {
     Q_OBJECT
 public:
-    ExtractConsensusTask(bool keepGaps, MaEditor* ma, MSAConsensusAlgorithm* algorithm);
+    ExtractConsensusTask(bool keepGaps, MaEditor* ma, MsaConsensusAlgorithm* algorithm);
     ~ExtractConsensusTask();
     void run();
     const QByteArray& getExtractedConsensus() const;
@@ -126,7 +126,7 @@ private:
     bool keepGaps;
     MaEditor* ma;
     QByteArray filteredConsensus;
-    MSAConsensusAlgorithm* algorithm;
+    MsaConsensusAlgorithm* algorithm;
 };
 
 class ExportMaConsensusTask : public DocumentProviderTask {

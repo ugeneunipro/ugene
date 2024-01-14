@@ -21,7 +21,7 @@
 
 #include "MsaEditorWgt.h"
 
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
 #include "MaEditorSplitters.h"
 #include "MsaEditor.h"
@@ -74,7 +74,7 @@ void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
     }
 }
 
-void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix* matrix) {
+void MsaEditorWgt::createDistanceColumn(MsaDistanceMatrix* matrix) {
     dataList->setMatrix(matrix);
     dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     MsaEditorAlignmentDependentWidget* statisticsWidget = new MsaEditorAlignmentDependentWidget(this, dataList);

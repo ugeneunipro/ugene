@@ -26,7 +26,7 @@
 namespace U2 {
 
 class GObjectViewWindow;
-class MSADistanceMatrix;
+class MsaDistanceMatrix;
 class MsaEditor;
 class MsaEditorAlignmentDependentWidget;
 class MsaEditorMultiTreeViewer;

@@ -21,8 +21,8 @@
 
 #include "MaConsensusAreaRenderer.h"
 
-#include <U2Algorithm/MSAConsensusAlgorithm.h>
 #include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaConsensusAlgorithm.h>
 
 #include <U2Core/MsaObject.h>
 
@@ -123,7 +123,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<
     consensusRenderData.selectedRegion = editor->getSelection().getColumnRegion();
     consensusRenderData.mismatches.resize(static_cast<int>(region.length));
 
-    MSAConsensusAlgorithm* algorithm = area->getConsensusAlgorithm();
+    MsaConsensusAlgorithm* algorithm = area->getConsensusAlgorithm();
     const Msa ma = editor->getMaObject()->getAlignment();
     for (int i = 0, n = static_cast<int>(region.length); i < n; i++) {
         int column = (int)region.startPos + i;
@@ -207,7 +207,7 @@ void MaConsensusAreaRenderer::drawConsensus(QPainter& painter, const ConsensusRe
     for (int i = 0, n = static_cast<int>(consensusRenderData.region.length); i < n; i++) {
         charData.column = static_cast<int>(consensusRenderData.region.startPos + i);
         charData.consensusChar = consensusRenderData.data[i];
-        if (MSAConsensusAlgorithm::INVALID_CONS_CHAR == charData.consensusChar) {
+        if (MsaConsensusAlgorithm::INVALID_CONS_CHAR == charData.consensusChar) {
             charData.xRange.startPos += settings.columnWidth;
             continue;
         }

@@ -23,8 +23,8 @@
 
 #include <QApplication>
 
-#include <U2Algorithm/MSAConsensusAlgorithm.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaConsensusAlgorithm.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>

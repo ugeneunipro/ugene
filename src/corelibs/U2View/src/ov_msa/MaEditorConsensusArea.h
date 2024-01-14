@@ -37,8 +37,8 @@ class QToolBar;
 namespace U2 {
 
 class GObjectViewController;
-class MSAConsensusAlgorithm;
-class MSAConsensusAlgorithmFactory;
+class MsaConsensusAlgorithm;
+class MsaConsensusAlgorithmFactory;
 
 class MaConsensusAreaRenderer;
 class MaEditor;
@@ -62,13 +62,13 @@ public:
 
     QSharedPointer<MsaEditorConsensusCache> getConsensusCache();
 
-    void setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algo);
+    void setConsensusAlgorithm(MsaConsensusAlgorithmFactory* algo);
     void setConsensusAlgorithmConsensusThreshold(int val);
 
     const MaEditorConsensusAreaSettings& getDrawSettings() const;
     void setDrawSettings(const MaEditorConsensusAreaSettings& settings);
 
-    MSAConsensusAlgorithm* getConsensusAlgorithm() const;
+    MsaConsensusAlgorithm* getConsensusAlgorithm() const;
 
     void drawContent(QPainter& painter);
     void drawContent(QPainter& painter,
@@ -121,7 +121,7 @@ protected:
     /** Grows current MA selection up to the given x position. Uses current MA editor cursor position as the base for growing. */
     void growSelectionUpTo(int xPos);
 
-    MSAConsensusAlgorithmFactory* getConsensusAlgorithmFactory();
+    MsaConsensusAlgorithmFactory* getConsensusAlgorithmFactory();
     void updateConsensusAlgorithm();
 
     MaEditor* editor;

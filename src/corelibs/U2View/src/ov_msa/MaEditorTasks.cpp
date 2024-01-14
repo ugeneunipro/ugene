@@ -23,7 +23,7 @@
 
 #include <QSet>
 
-#include <U2Algorithm/MSAConsensusAlgorithm.h>
+#include <U2Algorithm/MsaConsensusAlgorithm.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -317,7 +317,7 @@ Document* ExportMaConsensusTask::createDocument() {
     return doc.take();
 }
 
-ExtractConsensusTask::ExtractConsensusTask(bool keepGaps_, MaEditor* ma_, MSAConsensusAlgorithm* algorithm_)
+ExtractConsensusTask::ExtractConsensusTask(bool keepGaps_, MaEditor* ma_, MsaConsensusAlgorithm* algorithm_)
     : Task(tr("Extract consensus"), TaskFlags(TaskFlag_None)),
       keepGaps(keepGaps_),
       ma(ma_),
@@ -346,7 +346,7 @@ void ExtractConsensusTask::run() {
         SAFE_POINT(0 != nSeq, "No sequences in alignment", );
 
         QChar c = algorithm->getConsensusCharAndScore(alignment, i, count);
-        if (c == MSAConsensusAlgorithm::INVALID_CONS_CHAR) {
+        if (c == MsaConsensusAlgorithm::INVALID_CONS_CHAR) {
             c = U2Msa::GAP_CHAR;
         }
         if (c != U2Msa::GAP_CHAR || keepGaps) {

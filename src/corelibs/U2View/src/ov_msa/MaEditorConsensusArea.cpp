@@ -26,8 +26,8 @@
 #include <QPainter>
 #include <QToolTip>
 
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -125,7 +125,7 @@ bool MaEditorConsensusArea::event(QEvent* e) {
 }
 
 void MaEditorConsensusArea::initCache() {
-    MSAConsensusAlgorithmFactory* algo = getConsensusAlgorithmFactory();
+    MsaConsensusAlgorithmFactory* algo = getConsensusAlgorithmFactory();
     GCounter::increment(QString("'%1' consensus type is selected on view opening").arg(algo->getName()), editor->getFactoryId());
     consensusCache = QSharedPointer<MsaEditorConsensusCache>(new MsaEditorConsensusCache(nullptr, editor->getMaObject(), algo));
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
@@ -197,19 +197,19 @@ bool MaEditorConsensusArea::highlightConsensusChar(int /*pos*/) {
     return false;
 }
 
-MSAConsensusAlgorithmFactory* MaEditorConsensusArea::getConsensusAlgorithmFactory() {
-    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
+MsaConsensusAlgorithmFactory* MaEditorConsensusArea::getConsensusAlgorithmFactory() {
+    MsaConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
     SAFE_POINT(reg != nullptr, "Consensus algorithm registry is NULL.", nullptr);
     QString lastUsedAlgoKey = getLastUsedAlgoSettingsKey();
     QString lastUsedAlgo = AppContext::getSettings()->getValue(lastUsedAlgoKey).toString();
-    MSAConsensusAlgorithmFactory* algo = reg->getAlgorithmFactory(lastUsedAlgo);
+    MsaConsensusAlgorithmFactory* algo = reg->getAlgorithmFactory(lastUsedAlgo);
 
     const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
-    ConsensusAlgorithmFlags alphaFlags = MSAConsensusAlgorithmFactory::getAlphabetFlags(al);
+    ConsensusAlgorithmFlags alphaFlags = MsaConsensusAlgorithmFactory::getAlphabetFlags(al);
     if (algo == nullptr || (algo->getFlags() & alphaFlags) != alphaFlags) {
         algo = reg->getAlgorithmFactory(getDefaultAlgorithmId());
         if ((algo->getFlags() & alphaFlags) != alphaFlags) {
-            QList<MSAConsensusAlgorithmFactory*> algorithms = reg->getAlgorithmFactories(MSAConsensusAlgorithmFactory::getAlphabetFlags(al));
+            QList<MsaConsensusAlgorithmFactory*> algorithms = reg->getAlgorithmFactories(MsaConsensusAlgorithmFactory::getAlphabetFlags(al));
             SAFE_POINT(algorithms.count() > 0, "There are no consensus algorithms for the current alphabet.", nullptr);
             algo = algorithms.first();
         }
@@ -219,7 +219,7 @@ MSAConsensusAlgorithmFactory* MaEditorConsensusArea::getConsensusAlgorithmFactor
 }
 
 void MaEditorConsensusArea::updateConsensusAlgorithm() {
-    MSAConsensusAlgorithmFactory* newAlgo = getConsensusAlgorithmFactory();
+    MsaConsensusAlgorithmFactory* newAlgo = getConsensusAlgorithmFactory();
     CHECK(consensusCache != nullptr && newAlgo != nullptr, );
     ConsensusAlgorithmFlags cacheConsensusFlags = consensusCache->getConsensusAlgorithm()->getFactory()->getFlags();
     ConsensusAlgorithmFlags curFlags = newAlgo->getFlags();
@@ -277,7 +277,7 @@ void MaEditorConsensusArea::sl_configureConsensusAction() {
 }
 
 void MaEditorConsensusArea::sl_changeConsensusAlgorithm(const QString& algoId) {
-    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
+    MsaConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
     if (getConsensusAlgorithm()->getFactory() != algoFactory) {
         assert(algoFactory != nullptr);
         setConsensusAlgorithm(algoFactory);
@@ -289,8 +289,8 @@ QString MaEditorConsensusArea::getThresholdSettingsKey(const QString& factoryId)
     return getLastUsedAlgoSettingsKey() + "_" + factoryId + "_threshold";
 }
 
-void MaEditorConsensusArea::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algoFactory) {
-    MSAConsensusAlgorithm* oldAlgo = getConsensusAlgorithm();
+void MaEditorConsensusArea::setConsensusAlgorithm(MsaConsensusAlgorithmFactory* algoFactory) {
+    MsaConsensusAlgorithm* oldAlgo = getConsensusAlgorithm();
     if (oldAlgo != nullptr && algoFactory == oldAlgo->getFactory()) {
         return;
     }
@@ -313,7 +313,7 @@ void MaEditorConsensusArea::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* 
 }
 
 void MaEditorConsensusArea::setConsensusAlgorithmConsensusThreshold(int val) {
-    MSAConsensusAlgorithm* algo = getConsensusAlgorithm();
+    MsaConsensusAlgorithm* algo = getConsensusAlgorithm();
     if (val == algo->getThreshold()) {
         return;
     }
@@ -339,12 +339,12 @@ void MaEditorConsensusArea::sl_onConsensusThresholdChanged(int /*newValue*/) {
 
 void MaEditorConsensusArea::restoreLastUsedConsensusThreshold() {
     // restore last used threshold for new algorithm type if found
-    MSAConsensusAlgorithm* algo = getConsensusAlgorithm();
+    MsaConsensusAlgorithm* algo = getConsensusAlgorithm();
     int threshold = AppContext::getSettings()->getValue(getThresholdSettingsKey(algo->getId()), algo->getDefaultThreshold()).toInt();
     getConsensusAlgorithm()->setThreshold(threshold);
 }
 
-MSAConsensusAlgorithm* MaEditorConsensusArea::getConsensusAlgorithm() const {
+MsaConsensusAlgorithm* MaEditorConsensusArea::getConsensusAlgorithm() const {
     return consensusCache->getConsensusAlgorithm();
 }
 

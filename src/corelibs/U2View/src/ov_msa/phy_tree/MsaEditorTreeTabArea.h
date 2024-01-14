@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-class MSADistanceMatrix;
+class MsaDistanceMatrix;
 class MsaEditor;
 
 class MsaEditorTreeTab : public QTabWidget {

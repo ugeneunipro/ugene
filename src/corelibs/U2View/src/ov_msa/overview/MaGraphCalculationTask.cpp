@@ -23,9 +23,9 @@
 
 #include <QPolygonF>
 
-#include <U2Algorithm/MSAConsensusAlgorithmClustal.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaConsensusAlgorithmClustal.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/MsaObject.h>
@@ -130,7 +130,7 @@ MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MsaObject
     : MaGraphCalculationTask(msa, width, height) {
     SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != nullptr, setError("MSAConsensusAlgorithmRegistry is NULL!"), );
 
-    MSAConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO);
+    MsaConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO);
     SAFE_POINT_EXT(factory != nullptr, setError("Strict consensus algorithm factory is NULL"), );
 
     SAFE_POINT_EXT(msa != nullptr, setError("MSA is NULL"), );
@@ -167,7 +167,7 @@ MaClustalOverviewCalculationTask::MaClustalOverviewCalculationTask(MsaObject* ms
     : MaGraphCalculationTask(msa, width, height) {
     SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != nullptr, setError("MSAConsensusAlgorithmRegistry is NULL!"), );
 
-    MSAConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
+    MsaConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
     SAFE_POINT_EXT(factory != nullptr, setError("Clustal algorithm factory is NULL"), );
 
     SAFE_POINT_EXT(msa != nullptr, setError("MSA is NULL"), );

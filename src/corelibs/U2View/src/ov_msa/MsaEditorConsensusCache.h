@@ -31,8 +31,8 @@ namespace U2 {
 
 class MaEditor;
 
-class MSAConsensusAlgorithm;
-class MSAConsensusAlgorithmFactory;
+class MsaConsensusAlgorithm;
+class MsaConsensusAlgorithmFactory;
 class MaModificationInfo;
 class MsaObject;
 class U2OpStatus;
@@ -42,7 +42,7 @@ class U2VIEW_EXPORT MsaEditorConsensusCache : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(MsaEditorConsensusCache)
 public:
-    MsaEditorConsensusCache(QObject* p, MsaObject* aliObj, MSAConsensusAlgorithmFactory* algo);
+    MsaEditorConsensusCache(QObject* p, MsaObject* aliObj, MsaConsensusAlgorithmFactory* algo);
     ~MsaEditorConsensusCache() override;
 
     char getConsensusChar(int pos);
@@ -50,9 +50,9 @@ public:
     int getConsensusCharPercent(int pos);
     QList<int> getConsensusPercents(const U2Region& region);
 
-    void setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algo);
+    void setConsensusAlgorithm(MsaConsensusAlgorithmFactory* algo);
 
-    MSAConsensusAlgorithm* getConsensusAlgorithm() const {
+    MsaConsensusAlgorithm* getConsensusAlgorithm() const {
         return algorithm;
     }
 
@@ -83,7 +83,7 @@ private:
     QVector<CacheItem> cache;
     QBitArray updateMap;
     MsaObject* aliObj;
-    MSAConsensusAlgorithm* algorithm;
+    MsaConsensusAlgorithm* algorithm;
 };
 
 }  // namespace U2

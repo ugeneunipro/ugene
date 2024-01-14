@@ -28,8 +28,8 @@
 #include <QPushButton>
 #include <QTextBrowser>
 
-#include <U2Algorithm/MSADistanceAlgorithm.h>
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithm.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -61,8 +61,8 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MsaEd
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    QList<MSADistanceAlgorithmFactory*> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
-    foreach (MSADistanceAlgorithmFactory* a, algos) {
+    QList<MsaDistanceAlgorithmFactory*> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
+    foreach (MsaDistanceAlgorithmFactory* a, algos) {
         algoCombo->addItem(a->getName(), a->getId());
     }
 
@@ -155,13 +155,13 @@ DistanceMatrixMSAProfileTask::DistanceMatrixMSAProfileTask(const DistanceMatrixM
 }
 
 void DistanceMatrixMSAProfileTask::prepare() {
-    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
+    MsaDistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
     if (s.excludeGaps) {
         factory->setFlag(DistanceAlgorithmFlag_ExcludeGaps);
     } else {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }
-    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.ma);
+    MsaDistanceAlgorithm* algo = factory->createAlgorithm(s.ma);
     if (algo == nullptr) {
         return;
     }
@@ -169,7 +169,7 @@ void DistanceMatrixMSAProfileTask::prepare() {
 }
 
 QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
-    auto algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
+    auto algo = qobject_cast<MsaDistanceAlgorithm*>(subTask);
     QList<Task*> res;
     if (algo != nullptr) {
         if (algo->hasError() || algo->isCanceled()) {
@@ -309,7 +309,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
     return res;
 }
 
-void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* algo, const QList<MsaRow>& rows, QFile* f) {
+void DistanceMatrixMSAProfileTask::createDistanceTable(MsaDistanceAlgorithm* algo, const QList<MsaRow>& rows, QFile* f) {
     int maxVal = s.usePercents ? 100 : s.ma->getLength();
     QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
     bool isSimilarity = algo->isSimilarityMeasure();

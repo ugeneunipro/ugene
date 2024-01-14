@@ -23,7 +23,7 @@
 
 #include <QColor>
 
-#include <U2Algorithm/MSAConsensusUtils.h>
+#include <U2Algorithm/MsaConsensusUtils.h>
 
 #include <U2Core/Msa.h>
 #include <U2Core/MsaObject.h>
@@ -58,7 +58,7 @@ QColor MsaColorSchemePercentageIdentity::getBackgroundColor(int seq, int pos, ch
         return QColor();
     }
     quint32 packedVal = indentCache[pos];
-    MSAConsensusUtils::unpackConsensusCharsFromInt(packedVal, tmpChars, tmpRanges);
+    MsaConsensusUtils::unpackConsensusCharsFromInt(packedVal, tmpChars, tmpRanges);
     for (int i = 0; i < 4; i++) {
         if (c == tmpChars[i]) {
             int range = tmpRanges[i];
@@ -88,7 +88,7 @@ void MsaColorSchemePercentageIdentity::updateCache() const {
     int aliLen = msa->getLength();
     indentCache.resize(aliLen);
     for (int i = 0; i < aliLen; i++) {
-        indentCache[i] = MSAConsensusUtils::packConsensusCharsToInt(msa, i, mask4, true);
+        indentCache[i] = MsaConsensusUtils::packConsensusCharsToInt(msa, i, mask4, true);
     }
     cacheVersion = objVersion;
 }

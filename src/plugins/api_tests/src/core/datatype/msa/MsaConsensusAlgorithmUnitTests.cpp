@@ -24,7 +24,7 @@
 #include <QSharedPointer>
 
 #include <U2Algorithm/BuiltInAssemblyConsensusAlgorithms.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/AppContext.h>
@@ -47,7 +47,7 @@ static char c1(const QString& column, int threshold) {
     }
 
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
-    QSharedPointer<MSAConsensusAlgorithm> algorithm(factory->createAlgorithm(alignment, false));
+    QSharedPointer<MsaConsensusAlgorithm> algorithm(factory->createAlgorithm(alignment, false));
     algorithm->setThreshold(threshold);
 
     return algorithm->getConsensusChar(alignment, 0);
@@ -63,7 +63,7 @@ static char cN(const QStringList& alignmentRows, int threshold) {
     }
 
     auto factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO);
-    QSharedPointer<MSAConsensusAlgorithm> algorithm(factory->createAlgorithm(alignment, false));
+    QSharedPointer<MsaConsensusAlgorithm> algorithm(factory->createAlgorithm(alignment, false));
     algorithm->setThreshold(threshold);
 
     return algorithm->getConsensusChar(alignment, 0);

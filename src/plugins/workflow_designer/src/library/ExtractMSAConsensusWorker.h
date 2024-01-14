@@ -25,7 +25,7 @@
 #include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
-class MSAConsensusAlgorithm;
+class MsaConsensusAlgorithm;
 class ExportConsensusTask;
 class SpinBoxDelegate;
 namespace LocalWorkflow {
@@ -87,7 +87,7 @@ public:
     QByteArray getResultAsText() const;
 
 private:
-    MSAConsensusAlgorithm* createAlgorithm();
+    MsaConsensusAlgorithm* createAlgorithm();
     QString getResultName() const;
 
     const QString algoId;

@@ -31,7 +31,7 @@
 namespace U2 {
 
 MaConsensusAlgorithmSimpleExtended::MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps)
-    : MSAConsensusAlgorithm(factory, ignoreTrailingLeadingGaps) {
+    : MsaConsensusAlgorithm(factory, ignoreTrailingLeadingGaps) {
 }
 
 MaConsensusAlgorithmSimpleExtended::Character MaConsensusAlgorithmSimpleExtended::character2Flag(char character) {
@@ -188,7 +188,7 @@ U2::MaConsensusAlgorithmSimpleExtended* MaConsensusAlgorithmSimpleExtended::clon
 }
 
 MaConsensusAlgorithmFactorySimpleExtended::MaConsensusAlgorithmFactorySimpleExtended()
-    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO,
+    : MsaConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO,
                                    ConsensusAlgorithmFlag_Nucleic | ConsensusAlgorithmFlag_SupportThreshold | ConsensusAlgorithmFlag_AvailableForChromatogram) {
     name = tr("Simple extended");
     description = tr("The algorithm selects the best character from the extended DNA alphabet. "
@@ -200,7 +200,7 @@ MaConsensusAlgorithmFactorySimpleExtended::MaConsensusAlgorithmFactorySimpleExte
     isSequenceLikeResultFlag = true;
 }
 
-MSAConsensusAlgorithm* MaConsensusAlgorithmFactorySimpleExtended::createAlgorithm(const Msa& /*ma*/, bool ignoreTrailingLeadingGaps) {
+MsaConsensusAlgorithm* MaConsensusAlgorithmFactorySimpleExtended::createAlgorithm(const Msa& /*ma*/, bool ignoreTrailingLeadingGaps) {
     return new MaConsensusAlgorithmSimpleExtended(this, ignoreTrailingLeadingGaps);
 }
 

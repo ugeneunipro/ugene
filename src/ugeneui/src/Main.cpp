@@ -44,10 +44,10 @@
 #include <U2Algorithm/CDSearchTaskFactoryRegistry.h>
 #include <U2Algorithm/DnaAssemblyAlgRegistry.h>
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
 #include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
@@ -674,13 +674,13 @@ int main(int argc, char** argv) {
     auto mhsr = new MsaHighlightingSchemeRegistry();
     appContext->setMsaHighlightingSchemeRegistry(mhsr);
 
-    auto msaConsReg = new MSAConsensusAlgorithmRegistry();
+    auto msaConsReg = new MsaConsensusAlgorithmRegistry();
     appContext->setMSAConsensusAlgorithmRegistry(msaConsReg);
 
     auto assemblyConsReg = new AssemblyConsensusAlgorithmRegistry();
     appContext->setAssemblyConsensusAlgorithmRegistry(assemblyConsReg);
 
-    auto msaDistReg = new MSADistanceAlgorithmRegistry();
+    auto msaDistReg = new MsaDistanceAlgorithmRegistry();
     appContext->setMSADistanceAlgorithmRegistry(msaDistReg);
 
     auto pwmConvReg = new PWMConversionAlgorithmRegistry();

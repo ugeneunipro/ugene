@@ -26,7 +26,7 @@
 #include <QStyleFactory>
 #include <QTextEdit>
 
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Theme.h>

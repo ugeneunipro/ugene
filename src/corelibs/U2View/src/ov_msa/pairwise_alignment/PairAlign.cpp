@@ -27,8 +27,8 @@
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/BuiltInDistanceAlgorithms.h>
-#include <U2Algorithm/MSADistanceAlgorithm.h>
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithm.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 #include <U2Algorithm/PairwiseAlignmentTask.h>
 
 #include <U2Core/AppContext.h>
@@ -292,9 +292,9 @@ void PairAlign::updatePercentOfSimilarity() {
         return;
     }
 
-    MSADistanceAlgorithmRegistry* distanceReg = AppContext::getMSADistanceAlgorithmRegistry();
+    MsaDistanceAlgorithmRegistry* distanceReg = AppContext::getMSADistanceAlgorithmRegistry();
     SAFE_POINT(distanceReg != nullptr, "MSADistanceAlgorithmRegistry is NULL.", );
-    MSADistanceAlgorithmFactory* distanceFactory = distanceReg->getAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO);
+    MsaDistanceAlgorithmFactory* distanceFactory = distanceReg->getAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO);
     SAFE_POINT(distanceFactory != nullptr, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
 
     U2OpStatusImpl os;
@@ -431,7 +431,7 @@ void PairAlign::sl_distanceCalculated() {
         return;
     }
     if (distanceCalcTask->isFinished()) {
-        const MSADistanceMatrix& distanceMatrix = distanceCalcTask->getMatrix();
+        const MsaDistanceMatrix& distanceMatrix = distanceCalcTask->getMatrix();
         similarityValueLabel->setText(QString::number(distanceMatrix.getSimilarity(0, 1, true)) + "%");
         similarityWidget->setVisible(true);
         distanceCalcTask = nullptr;

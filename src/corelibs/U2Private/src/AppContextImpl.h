@@ -298,12 +298,12 @@ public:
         treeGeneratorRegistry = genRegistry;
     }
 
-    void setMSAConsensusAlgorithmRegistry(MSAConsensusAlgorithmRegistry* reg) {
+    void setMSAConsensusAlgorithmRegistry(MsaConsensusAlgorithmRegistry* reg) {
         assert(reg == nullptr || msaConsensusAlgoRegistry == nullptr);
         msaConsensusAlgoRegistry = reg;
     }
 
-    void setMSADistanceAlgorithmRegistry(MSADistanceAlgorithmRegistry* reg) {
+    void setMSADistanceAlgorithmRegistry(MsaDistanceAlgorithmRegistry* reg) {
         assert(reg == nullptr || msaDistanceAlgoRegistry == nullptr);
         msaDistanceAlgoRegistry = reg;
     }
@@ -566,10 +566,10 @@ protected:
     CMDLineRegistry* _getCMDLineRegistry() const override {
         return cmdLineRegistry;
     }
-    MSAConsensusAlgorithmRegistry* _getMSAConsensusAlgorithmRegistry() const override {
+    MsaConsensusAlgorithmRegistry* _getMSAConsensusAlgorithmRegistry() const override {
         return msaConsensusAlgoRegistry;
     }
-    MSADistanceAlgorithmRegistry* _getMSADistanceAlgorithmRegistry() const override {
+    MsaDistanceAlgorithmRegistry* _getMSADistanceAlgorithmRegistry() const override {
         return msaDistanceAlgoRegistry;
     }
     AssemblyConsensusAlgorithmRegistry* _getAssemblyConsensusAlgorithmRegistry() const override {
@@ -700,8 +700,8 @@ private:
     GenomeAssemblyAlgRegistry* genomeAssemblyAlgRegistry;
     IOAdapterRegistry* io;
     IdRegistry<WelcomePageAction>* welcomePageActionRegistry;
-    MSAConsensusAlgorithmRegistry* msaConsensusAlgoRegistry;
-    MSADistanceAlgorithmRegistry* msaDistanceAlgoRegistry;
+    MsaConsensusAlgorithmRegistry* msaConsensusAlgoRegistry;
+    MsaDistanceAlgorithmRegistry* msaDistanceAlgoRegistry;
     MainWindow* mw;
     MolecularSurfaceFactoryRegistry* msfr;
     MsaColorSchemeRegistry* mcsr;

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "MSAConsensusAlgorithm.h"
+#include "MsaConsensusAlgorithm.h"
 
 namespace U2 {
 
@@ -75,7 +75,7 @@ class MaConsensusAlgorithmFactorySimpleExtended;
  *      The result character: V - M is the most popular character, it is merged with A and T to V.
  */
 
-class MaConsensusAlgorithmSimpleExtended : public MSAConsensusAlgorithm {
+class MaConsensusAlgorithmSimpleExtended : public MsaConsensusAlgorithm {
     Q_OBJECT
 public:
     MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps);
@@ -116,12 +116,12 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(MaConsensusAlgorithmSimpleExtended::Characters)
 
-class MaConsensusAlgorithmFactorySimpleExtended : public MSAConsensusAlgorithmFactory {
+class MaConsensusAlgorithmFactorySimpleExtended : public MsaConsensusAlgorithmFactory {
     Q_OBJECT
 public:
     MaConsensusAlgorithmFactorySimpleExtended();
 
-    MSAConsensusAlgorithm* createAlgorithm(const Msa& ma, bool ignoreTrailingLeadingGaps) override;
+    MsaConsensusAlgorithm* createAlgorithm(const Msa& ma, bool ignoreTrailingLeadingGaps) override;
 };
 
 }  // namespace U2

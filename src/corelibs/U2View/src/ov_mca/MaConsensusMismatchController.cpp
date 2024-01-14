@@ -21,7 +21,7 @@
 
 #include "MaConsensusMismatchController.h"
 
-#include <U2Algorithm/MSAConsensusAlgorithm.h>
+#include <U2Algorithm/MsaConsensusAlgorithm.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -79,7 +79,7 @@ QAction* MaConsensusMismatchController::getNextMismatchAction() const {
 
 void MaConsensusMismatchController::sl_updateItem(int pos, char c) {
     SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", );
-    mismatchCache[pos] = c != MSAConsensusAlgorithm::INVALID_CONS_CHAR && editor->getReferenceCharAt(pos) != c;
+    mismatchCache[pos] = c != MsaConsensusAlgorithm::INVALID_CONS_CHAR && editor->getReferenceCharAt(pos) != c;
 }
 
 void MaConsensusMismatchController::sl_resize(int newSize) {

@@ -21,7 +21,7 @@
 
 #include "MaConsensusModeWidget.h"
 
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -87,7 +87,7 @@ void MaConsensusModeWidget::init(MsaObject* _maObject, MaEditorConsensusArea* _c
 void MaConsensusModeWidget::updateState() {
     SAFE_POINT(consArea != nullptr, "MaConsensusModeWidget is not initialized", );
 
-    const MSAConsensusAlgorithm* algo = consArea->getConsensusAlgorithm();
+    const MsaConsensusAlgorithm* algo = consArea->getConsensusAlgorithm();
     updateThresholdState(algo->supportsThreshold(),
                          algo->getMinThreshold(),
                          algo->getMaxThreshold(),
@@ -159,8 +159,8 @@ void MaConsensusModeWidget::sl_thresholdSpinBoxChanged(int value) {
 
 void MaConsensusModeWidget::sl_thresholdResetClicked(bool newState) {
     Q_UNUSED(newState);
-    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
-    MSAConsensusAlgorithmFactory* factory = reg->getAlgorithmFactory(consensusType->itemData(consensusType->currentIndex()).toString());
+    MsaConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
+    MsaConsensusAlgorithmFactory* factory = reg->getAlgorithmFactory(consensusType->itemData(consensusType->currentIndex()).toString());
     SAFE_POINT_NN(factory, );
     sl_thresholdChanged(factory->getDefaultThreshold());
 }
@@ -170,18 +170,18 @@ void MaConsensusModeWidget::sl_thresholdChanged(int value) {
 }
 
 void MaConsensusModeWidget::initConsensusTypeCombo() {
-    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
+    MsaConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
     SAFE_POINT_NN(reg, );
 
     const DNAAlphabet* alphabet = maObject->getAlphabet();
     curAlphabetId = alphabet->getId();
-    ConsensusAlgorithmFlags flags = MSAConsensusAlgorithmFactory::getAlphabetFlags(alphabet);
+    ConsensusAlgorithmFlags flags = MsaConsensusAlgorithmFactory::getAlphabetFlags(alphabet);
     if (maObject->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT) {
         flags |= ConsensusAlgorithmFlag_AvailableForChromatogram;
     }
-    QList<MSAConsensusAlgorithmFactory*> algos = reg->getAlgorithmFactories(flags);
+    QList<MsaConsensusAlgorithmFactory*> algos = reg->getAlgorithmFactories(flags);
     consensusType->clear();
-    for (const MSAConsensusAlgorithmFactory* algo: qAsConst(algos)) {
+    for (const MsaConsensusAlgorithmFactory* algo: qAsConst(algos)) {
         consensusType->addItem(algo->getName(), algo->getId());
     }
     QString currentAlgorithmName = consArea->getConsensusAlgorithm()->getName();

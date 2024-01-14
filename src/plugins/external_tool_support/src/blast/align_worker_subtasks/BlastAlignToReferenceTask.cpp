@@ -23,7 +23,7 @@
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/BuiltInDistanceAlgorithms.h>
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 #include <U2Algorithm/PairwiseAlignmentTask.h>
 
 #include <U2Core/AppContext.h>
@@ -291,21 +291,21 @@ QList<Task*> BlastAlignToReferenceTask::onSubTaskFinished(Task* subTask) {
 
         // Run similarity algorithm for the pairwise alignment to compute 'identity percent'.
         pairwiseMsaObject->crop(pairwiseMsaObject->getRow(1)->getCoreRegion());
-        MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO);
+        MsaDistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO);
         CHECK_EXT(factory != nullptr, setError("MSADistanceAlgorithmFactory is NULL"), result);
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
 
-        MSADistanceAlgorithm* similarityTask = factory->createAlgorithm(pairwiseMsaObject->getAlignment());
+        MsaDistanceAlgorithm* similarityTask = factory->createAlgorithm(pairwiseMsaObject->getAlignment());
         CHECK_EXT(similarityTask != nullptr, setError(L10N::nullPointerError("MSADistanceAlgorithm")), result);
         similarityTask->setProperty(READ_ID_KEY, readKey);
         result << similarityTask;
-    } else if (auto similarityTask = qobject_cast<MSADistanceAlgorithm*>(subTask)) {
+    } else if (auto similarityTask = qobject_cast<MsaDistanceAlgorithm*>(subTask)) {
         U2DataId readKey = similarityTask->property(READ_ID_KEY).toByteArray();
         SAFE_POINT_EXT(alignmentResultByRead.contains(readKey), setError("Internal error! Read not found"), {});
         AlignToReferenceResult* alignmentResult = alignmentResultByRead[readKey];
         SAFE_POINT_EXT(alignmentResult != nullptr, setError("Internal error! Read result is not found"), {});
 
-        const MSADistanceMatrix& matrix = similarityTask->getMatrix();
+        const MsaDistanceMatrix& matrix = similarityTask->getMatrix();
         alignmentResult->identityPercent = matrix.getSimilarity(0, 1, true);
     } else {
         FAIL("Unexpected alignment pipeline state: task is unknown: " + subTask->getTaskName(), {})

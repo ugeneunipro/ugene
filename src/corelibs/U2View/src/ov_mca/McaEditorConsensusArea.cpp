@@ -23,8 +23,8 @@
 
 #include <QToolBar>
 
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSAConsensusUtils.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaConsensusUtils.h>
 
 #include <U2Core/AppContext.h>
 
@@ -57,7 +57,7 @@ void McaEditorConsensusArea::buildStaticToolbar(QToolBar* t) {
 }
 
 QString McaEditorConsensusArea::getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const {
-    return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getAlignment(), pos, minReportPercent, maxReportChars, true);
+    return MsaConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getAlignment(), pos, minReportPercent, maxReportChars, true);
 }
 
 void McaEditorConsensusArea::initRenderer() {

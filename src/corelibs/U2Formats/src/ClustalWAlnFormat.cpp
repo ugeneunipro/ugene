@@ -24,8 +24,8 @@
 #include <QTextStream>
 
 #include <U2Algorithm/BuiltInConsensusAlgorithms.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSAConsensusUtils.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaConsensusUtils.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GObjectTypes.h>
@@ -239,9 +239,9 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
     int aliLen = msa->getLength();
     QByteArray consensus(aliLen, U2Msa::GAP_CHAR);
 
-    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
-    QScopedPointer<MSAConsensusAlgorithm> algo(algoFactory->createAlgorithm(msa, false));
-    MSAConsensusUtils::updateConsensus(msa, consensus, algo.data());
+    MsaConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
+    QScopedPointer<MsaConsensusAlgorithm> algo(algoFactory->createAlgorithm(msa, false));
+    MsaConsensusUtils::updateConsensus(msa, consensus, algo.data());
 
     int maxNumLength = 1 + (aliLen < 10 ? 1 : (int)log10((double)aliLen));
 

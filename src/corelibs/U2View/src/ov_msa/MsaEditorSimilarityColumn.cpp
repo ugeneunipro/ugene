@@ -23,8 +23,8 @@
 
 #include <QVBoxLayout>
 
-#include <U2Algorithm/MSADistanceAlgorithm.h>
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithm.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Msa.h>
@@ -63,7 +63,7 @@ void MsaEditorSimilarityColumn::updateWidget() {
     updateDistanceMatrix();
 }
 
-void MsaEditorSimilarityColumn::setMatrix(MSADistanceMatrix* _matrix) {
+void MsaEditorSimilarityColumn::setMatrix(MsaDistanceMatrix* _matrix) {
     matrix = _matrix;
 }
 
@@ -167,7 +167,7 @@ void MsaEditorSimilarityColumn::sl_createMatrixTaskFinished(Task* t) {
 }
 
 CreateDistanceMatrixTask::CreateDistanceMatrixTask(const SimilarityStatisticsSettings& _s)
-    : BackgroundTask<MSADistanceMatrix*>(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC),
+    : BackgroundTask<MsaDistanceMatrix*>(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC),
       s(_s) {
     SAFE_POINT(!s.editor.isNull(), "MSAEditor is null in CreateDistanceMatrixTask constructor!", );
     result = nullptr;
@@ -176,7 +176,7 @@ CreateDistanceMatrixTask::CreateDistanceMatrixTask(const SimilarityStatisticsSet
 
 void CreateDistanceMatrixTask::prepare() {
     CHECK_EXT(!s.editor.isNull(), cancel(), );
-    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
+    MsaDistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
     CHECK(factory != nullptr, );
     if (s.excludeGaps) {
         factory->setFlag(DistanceAlgorithmFlag_ExcludeGaps);
@@ -184,15 +184,15 @@ void CreateDistanceMatrixTask::prepare() {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }
 
-    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.editor->getMaObject()->getAlignment());
+    MsaDistanceAlgorithm* algo = factory->createAlgorithm(s.editor->getMaObject()->getAlignment());
     CHECK(algo != nullptr, );
     addSubTask(algo);
 }
 
 QList<Task*> CreateDistanceMatrixTask::onSubTaskFinished(Task* subTask) {
     CHECK(!subTask->isCanceled() && !subTask->hasError(), {});
-    auto algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
-    result = new MSADistanceMatrix(algo->getMatrix());
+    auto algo = qobject_cast<MsaDistanceAlgorithm*>(subTask);
+    result = new MsaDistanceMatrix(algo->getMatrix());
     return {};
 }
 
