@@ -21,6 +21,8 @@
 
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTSpinBox.h>
+#include <primitives/GTTabWidget.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
@@ -32,6 +34,13 @@ namespace U2 {
 
 void HmmerSearchDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
+
+    if (domE != -1) {
+        auto tabWidget = GTWidget::findTabWidget("tabWidget", dialog);
+        GTTabWidget::clickTab(tabWidget, "Reporting thresholds");
+        GTSpinBox::setValue("domESpinBox", domE, GTGlobals::UseKeyBoard, dialog);
+        GTTabWidget::clickTab(tabWidget, "Input and output");
+    }
 
     GTLineEdit::setText("queryHmmFileEdit", profile, dialog);
 

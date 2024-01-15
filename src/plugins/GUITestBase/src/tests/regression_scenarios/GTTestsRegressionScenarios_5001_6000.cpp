@@ -124,6 +124,7 @@
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/plugins_3rdparty/hmm3/HmmerSearchDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
@@ -1156,6 +1157,25 @@ GUI_TEST_CLASS_DEFINITION(test_5263) {
     region = GTUtilsAnnotationsTreeView::getAnnotationRegionString("EcoRI");
     CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
     GTUtilsAnnotationsTreeView::findItem("EcoRI");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5281) {
+    /*
+    * 1. Open _common_data\regression\1704\lrr_test_new.gb"
+    * 2. Open Actions->Analyze->Find HMM signals with HMMER3...
+    * 2. Set domE value to 1E+5
+    * 3. Find HMM3 signals with _common_data\_regession\1704\LRR_4.hmm model
+    * Expected state: there is no errors in the log and 27 results found
+    */
+    
+    GTLogTracer lt;
+    GTFileDialog::openFile(testDir + "_common_data/regression/1704", "lrr_test_new.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::waitForDialog(new HmmerSearchDialogFiller(testDir + "_common_data/regression/1704/LRR_4.hmm", sandBoxDir + "1704.gb", 5));
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find HMM signals with HMMER3..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup("hmm_signal  (0, 27)").size() == 27, "Unexpected number of result annotations");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5356) {
