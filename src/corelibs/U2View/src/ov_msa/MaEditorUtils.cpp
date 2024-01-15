@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,9 +26,9 @@
 #include <QPainter>
 #include <QVBoxLayout>
 
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorConsensusArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "MaEditorWgt.h"
 #include "ov_msa/MaEditorSelection.h"

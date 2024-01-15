@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -185,7 +185,7 @@ MaEditorSelectionController::MaEditorSelectionController(MaEditor* _editor)
     : QObject(_editor), editor(_editor) {
     SAFE_POINT(editor != nullptr, "MAEditor is null!", );
     connect(editor->getCollapseModel(), &MaCollapseModel::si_toggled, this, &MaEditorSelectionController::handleCollapseModelChange);
-    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, &MaEditorSelectionController::handleAlignmentChange);
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaEditorSelectionController::handleAlignmentChange);
 }
 
 const MaEditorSelection& MaEditorSelectionController::getSelection() const {
@@ -297,7 +297,7 @@ void McaEditorSelectionController::setSelection(const MaEditorSelection& newSele
         return;
     }
     QList<QRect> selectedRects = newSelection.getRectList();
-    if (newSelection.isSingleBaseSelection() && mcaEditor->getMaObject()->getMca()->isTrailingOrLeadingGap(selectedRects[0].y(), selectedRects[0].x())) {
+    if (newSelection.isSingleBaseSelection() && mcaEditor->getMaObject()->getAlignment()->isLeadingOrTrailingGap(selectedRects[0].y(), selectedRects[0].x())) {
         // Clear selection if gap is clicked.
         MaEditorSelectionController::setSelection({});
         mcaEditor->getUI()->getReferenceArea()->clearSelection();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,23 +26,21 @@
 #include <QMessageBox>
 
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/IncludedProtoFactory.h>
 #include <U2Lang/QueryDesignerRegistry.h>
 #include <U2Lang/WorkflowContext.h>
-#include <U2Lang/WorkflowSettings.h>
 
 #include "CreateScriptWorker.h"
 #include "WorkflowSamples.h"
 #include "WorkflowViewController.h"
 #include "library/ExternalProcessWorker.h"
-#include "library/IncludedProtoFactoryImpl.h"
 #include "library/ScriptWorker.h"
 #include "library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.h"
 #include "util/CustomWorkerUtils.h"
-
 namespace U2 {
 
 const QString WorkflowPalette::MIME_TYPE("application/x-ugene-workflow-id");
@@ -103,8 +101,8 @@ public:
         : QItemDelegate(view), m_view(view) {
     }
 
-    virtual void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual QSize sizeHint(const QStyleOptionViewItem& opt, const QModelIndex& index) const;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    QSize sizeHint(const QStyleOptionViewItem& opt, const QModelIndex& index) const override;
 
 private:
     WorkflowPaletteElements* m_view;
@@ -158,7 +156,7 @@ void PaletteDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
         buttonOption.subControls = QStyle::SC_ToolButton;
         buttonOption.features = QStyleOptionToolButton::None;
 
-        QAction* action = index.data(Qt::UserRole).value<QAction*>();
+        auto action = index.data(Qt::UserRole).value<QAction*>();
         buttonOption.text = action->text();
         buttonOption.icon = action->icon();
         if (!buttonOption.icon.isNull()) {
@@ -190,7 +188,6 @@ QSize PaletteDelegate::sizeHint(const QStyleOptionViewItem& opt, const QModelInd
     const QAbstractItemModel* model = index.model();
     Q_ASSERT(model);
 
-    QStyleOptionViewItem option = opt;
     bool top = !model->parent(index).isValid();
     QSize sz = QItemDelegate::sizeHint(opt, index) + QSize(top ? 2 : 20, top ? 2 : 20);
     return sz;

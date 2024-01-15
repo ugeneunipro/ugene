@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,9 +29,9 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -40,14 +40,14 @@
 
 namespace U2 {
 
-FastTreeTaskContext::FastTreeTaskContext(const MultipleSequenceAlignment& _msa, const CreatePhyTreeSettings& _settings)
+FastTreeTaskContext::FastTreeTaskContext(const Msa& _msa, const CreatePhyTreeSettings& _settings)
     : msa(_msa), settings(_settings) {
 }
 
 //////////////////////////////////////////////////////////////////////////
 /// FastTreeTask
 
-FastTreeTask::FastTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings)
+FastTreeTask::FastTreeTask(const Msa& msa, const CreatePhyTreeSettings& settings)
     : PhyTreeGeneratorTask(msa, settings), context(msa, settings) {
     GCOUNTER(cvar, "ExternalTool_FastTree");
     setTaskName(tr("FastTree tree calculation"));
@@ -88,7 +88,7 @@ void PrepareFastTreeWorkDirTask::run() {
     DocumentFormat* documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
 
     QScopedPointer<Document> document(documentFormat->createNewLoadedDocument(ioAdapterFactory, alignmentFilePath, stateInfo));
-    auto* msaObject = MultipleSequenceAlignmentImporter::createAlignment(document->getDbiRef(), context->msa, stateInfo);
+    auto* msaObject = MsaImportUtils::createMsaObject(document->getDbiRef(), context->msa, stateInfo);
     CHECK_OP(stateInfo, );
 
     document->addObject(msaObject);

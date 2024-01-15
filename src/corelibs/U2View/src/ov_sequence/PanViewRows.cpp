@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,14 +89,12 @@ void PVRowsManager::addAnnotation(Annotation* a) {
     const QVector<U2Region> location = data->getRegions();
 
     QString name = data->type == U2FeatureTypes::RestrictionSite ? PVRowData::RESTRICTION_SITE_NAME : data->name;
-    if (hasRowWithName(name)) {
-        const QList<PVRowData*> constRows(rows);
-        for (PVRowData* row : qAsConst(constRows)) {
-            if (row->fitToRow(location)) {
-                row->annotations.append(a);
-                rowByAnnotation[a] = row;
-                return;
-            }
+    auto rowsByName = getRowsByName(name);
+    for (auto row : qAsConst(rowsByName)) {
+        if (row->fitToRow(location)) {
+            row->annotations.append(a);
+            rowByAnnotation[a] = row;
+            return;
         }
     }
 
@@ -155,14 +153,14 @@ int PVRowsManager::getRowCount() const {
     return rows.size();
 }
 
-bool PVRowsManager::hasRowWithName(const QString& name) const {
-    const QList<PVRowData*> constRows(rows);
-    for (PVRowData* row : qAsConst(constRows)) {
+QList<PVRowData*> PVRowsManager::getRowsByName(const QString& name) const {
+    QList<PVRowData*> result;
+    for (PVRowData* row : qAsConst(rows)) {
         if (row->key == name) {
-            return true;
+            result << row;
         }
     }
-    return false;
+    return result;
 }
 
 PVRowData* PVRowsManager::getAnnotationRow(Annotation* a) const {

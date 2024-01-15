@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,8 +35,8 @@
 
 #include <U2Gui/MainWindow.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MsaEditor.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -57,7 +57,7 @@ namespace U2 {
 /** Use the same random seed for all MrBayes runs to have reproducible results by default. */
 static constexpr int DEFAULT_RANDOM_SEED = 5;
 
-MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment& ma, QWidget* parent)
+MrBayesWidget::MrBayesWidget(const Msa& ma, QWidget* parent)
     : CreatePhyTreeWidget(parent) {
     setupUi(this);
     DNAAlphabetType alphabetType = ma->getAlphabet()->getType();

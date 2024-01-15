@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ void McaEditorContext::sl_exportMca2Msa() {
     McaEditor* mcaEditor = qobject_cast<McaEditor*>(action->getObjectView());
     SAFE_POINT(mcaEditor != nullptr, "Mca Editor is NULL", );
 
-    MultipleChromatogramAlignmentObject* mcaObject = mcaEditor->getMaObject();
+    MsaObject* mcaObject = mcaEditor->getMaObject();
     ExportUtils::launchExportMca2MsaTask(mcaObject);
 }
 

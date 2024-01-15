@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,9 +23,9 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaExportUtils.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Formats/SQLiteDbi.h>
@@ -65,18 +65,17 @@ IMPLEMENT_TEST(MsaImporterExporterUnitTests, importExportAlignment) {
     QByteArray firstSequence("---AG-T");
     QByteArray secondSequence("AG-CT-TAA");
 
-    MultipleSequenceAlignment al(alignmentName, alphabet);
+    Msa al(alignmentName, alphabet);
 
     al->addRow("First row", firstSequence);
     al->addRow("Second row", secondSequence);
 
     // Import the alignment
-    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(dbiRef, al, os));
+    QScopedPointer<MsaObject> msaObj(MsaImportUtils::createMsaObject(dbiRef, al, os));
     CHECK_NO_ERROR(os);
 
     // Export the alignment
-    MultipleSequenceAlignmentExporter alExporter;
-    MultipleSequenceAlignment alActual = alExporter.getAlignment(dbiRef, msaObj->getEntityRef().entityId, os);
+    Msa alActual = MsaExportUtils::loadAlignment(dbiRef, msaObj->getEntityRef().entityId, os);
     CHECK_NO_ERROR(os);
 
     bool alsEqual = (*al == *alActual);

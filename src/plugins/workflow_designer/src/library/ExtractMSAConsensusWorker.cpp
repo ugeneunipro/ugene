@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,10 @@
 #include "ExtractMSAConsensusWorker.h"
 
 #include <U2Algorithm/BuiltInConsensusAlgorithms.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSAConsensusUtils.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaConsensusUtils.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -41,7 +40,6 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
 
-#include <U2View/AssemblyModel.h>
 #include <U2View/ExportConsensusTask.h>
 
 namespace U2 {
@@ -67,7 +65,7 @@ void ExtractMSAConsensusWorker::init() {
 Task* ExtractMSAConsensusWorker::tick() {
     if (hasMsa()) {
         U2OpStatusImpl os;
-        MultipleSequenceAlignment msa = takeMsa(os);
+        Msa msa = takeMsa(os);
         CHECK_OP(os, new FailTask(os.getError()));
         extractMsaConsensus = createTask(msa);
         return extractMsaConsensus;
@@ -95,20 +93,20 @@ bool ExtractMSAConsensusWorker::hasMsa() const {
     return port->hasMessage();
 }
 
-MultipleSequenceAlignment ExtractMSAConsensusWorker::takeMsa(U2OpStatus& os) {
+Msa ExtractMSAConsensusWorker::takeMsa(U2OpStatus& os) {
     const Message m = getMessageAndSetupScriptValues(ports[BasePorts::IN_MSA_PORT_ID()]);
     const QVariantMap data = m.getData().toMap();
     if (!data.contains(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId())) {
         os.setError(tr("Empty msa slot"));
-        return MultipleSequenceAlignment();
+        return {};
     }
     const SharedDbiDataHandler dbiId = data[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()].value<SharedDbiDataHandler>();
-    const MultipleSequenceAlignmentObject* obj = StorageUtils::getMsaObject(context->getDataStorage(), dbiId);
+    const MsaObject* obj = StorageUtils::getMsaObject(context->getDataStorage(), dbiId);
     if (obj == nullptr) {
         os.setError(tr("Error with msa object"));
-        return MultipleSequenceAlignment();
+        return {};
     }
-    return obj->getMultipleAlignment();
+    return obj->getAlignment();
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -138,7 +136,7 @@ void ExtractMSAConsensusStringWorker::sendResult(const SharedDbiDataHandler& /*s
     outPort->put(Message(outPort->getBusType(), data));
 }
 
-ExtractMSAConsensusTaskHelper* ExtractMSAConsensusStringWorker::createTask(const MultipleSequenceAlignment& msa) {
+ExtractMSAConsensusTaskHelper* ExtractMSAConsensusStringWorker::createTask(const Msa& msa) {
     const QString algoId = getValue<QString>(ALGO_ATTR_ID);
     const int threshold = getValue<int>(THRESHOLD_ATTR_ID);
     extractMsaConsensus = new ExtractMSAConsensusTaskHelper(algoId, threshold, true, msa, context->getDataStorage()->getDbiRef());
@@ -172,7 +170,7 @@ void ExtractMSAConsensusSequenceWorker::sendResult(const SharedDbiDataHandler& s
     outPort->put(Message(outPort->getBusType(), data));
 }
 
-ExtractMSAConsensusTaskHelper* ExtractMSAConsensusSequenceWorker::createTask(const MultipleSequenceAlignment& msa) {
+ExtractMSAConsensusTaskHelper* ExtractMSAConsensusSequenceWorker::createTask(const Msa& msa) {
     const QString algoId = getValue<QString>(ALGO_ATTR_ID);
     const int threshold = getValue<int>(THRESHOLD_ATTR_ID);
     const bool keepGaps = getValue<bool>(GAPS_ATTR_ID);
@@ -183,7 +181,7 @@ ExtractMSAConsensusTaskHelper* ExtractMSAConsensusSequenceWorker::createTask(con
 
 ///////////////////////////////////////////////////////////////////////
 // ExtractMSAConsensusTaskHelper
-ExtractMSAConsensusTaskHelper::ExtractMSAConsensusTaskHelper(const QString& algoId, int threshold, bool keepGaps, const MultipleSequenceAlignment& msa, const U2DbiRef& targetDbi)
+ExtractMSAConsensusTaskHelper::ExtractMSAConsensusTaskHelper(const QString& algoId, int threshold, bool keepGaps, const Msa& msa, const U2DbiRef& targetDbi)
     : Task(ExtractMSAConsensusTaskHelper::tr("Extract consensus"), TaskFlags_NR_FOSCOE),
       algoId(algoId),
       threshold(threshold),
@@ -202,10 +200,10 @@ QString ExtractMSAConsensusTaskHelper::getResultName() const {
 }
 
 void ExtractMSAConsensusTaskHelper::prepare() {
-    QSharedPointer<MSAConsensusAlgorithm> algo(createAlgorithm());
+    QSharedPointer<MsaConsensusAlgorithm> algo(createAlgorithm());
     SAFE_POINT_EXT(algo != nullptr, setError("Wrong consensus algorithm"), );
 
-    MSAConsensusUtils::updateConsensus(msa, resultText, algo.data());
+    MsaConsensusUtils::updateConsensus(msa, resultText, algo.data());
     if (!keepGaps && algo->getFactory()->isSequenceLikeResult()) {
         resultText.replace("-", "");
     }
@@ -223,16 +221,16 @@ U2EntityRef ExtractMSAConsensusTaskHelper::getResult() const {
     return ref;
 }
 
-MSAConsensusAlgorithm* ExtractMSAConsensusTaskHelper::createAlgorithm() {
-    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
+MsaConsensusAlgorithm* ExtractMSAConsensusTaskHelper::createAlgorithm() {
+    MsaConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
     SAFE_POINT_EXT(reg != nullptr, setError("NULL registry"), nullptr);
 
-    MSAConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
+    MsaConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
     if (f == nullptr) {
         setError(ExtractMSAConsensusTaskHelper::tr("Unknown consensus algorithm: ") + algoId);
         return nullptr;
     }
-    MSAConsensusAlgorithm* alg = f->createAlgorithm(msa);
+    MsaConsensusAlgorithm* alg = f->createAlgorithm(msa, false);
     SAFE_POINT_EXT(alg != nullptr, setError("NULL algorithm"), nullptr);
     alg->setThreshold(threshold);
 
@@ -254,7 +252,7 @@ Worker* ExtractMSAConsensusSequenceWorkerFactory::createWorker(Actor* actor) {
 }
 
 void ExtractMSAConsensusSequenceWorkerFactory::init() {
-    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
+    MsaConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
     SAFE_POINT(reg != nullptr, "NULL registry", );
 
     const Descriptor desc(ACTOR_ID,
@@ -292,8 +290,8 @@ void ExtractMSAConsensusSequenceWorkerFactory::init() {
                                   ExtractMSAConsensusSequenceWorker::tr("Keep gaps"),
                                   ExtractMSAConsensusSequenceWorker::tr("Set this parameter if the result consensus must keep the gaps."));
 
-        Attribute* thr = new Attribute(thresholdDesc, BaseTypes::NUM_TYPE(), true, 100);
-        Attribute* algo = new Attribute(algoDesc, BaseTypes::STRING_TYPE(), true, BuiltInConsensusAlgorithms::STRICT_ALGO);
+        auto thr = new Attribute(thresholdDesc, BaseTypes::NUM_TYPE(), true, 100);
+        auto algo = new Attribute(algoDesc, BaseTypes::STRING_TYPE(), true, BuiltInConsensusAlgorithms::STRICT_ALGO);
         attrs << algo << thr << new Attribute(gapsDesc, BaseTypes::BOOL_TYPE(), true, true);
 
         QVariantMap algos;
@@ -301,9 +299,9 @@ void ExtractMSAConsensusSequenceWorkerFactory::init() {
         QVariantList visibleRelationList;
         m["minimum"] = 0;
         m["maximum"] = 100;
-        SpinBoxDelegate* thrDelegate = new SpinBoxDelegate(m);
+        auto thrDelegate = new SpinBoxDelegate(m);
         foreach (const QString& algoId, reg->getAlgorithmIds()) {
-            MSAConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
+            MsaConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
             if (f->isSequenceLikeResult()) {
                 algos[f->getName()] = algoId;
                 if (f->supportsThreshold()) {
@@ -337,7 +335,7 @@ Worker* ExtractMSAConsensusStringWorkerFactory::createWorker(Actor* actor) {
 }
 
 void ExtractMSAConsensusStringWorkerFactory::init() {
-    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
+    MsaConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
     SAFE_POINT(reg != nullptr, "NULL registry", );
 
     const Descriptor desc(ACTOR_ID,
@@ -372,8 +370,8 @@ void ExtractMSAConsensusStringWorkerFactory::init() {
         const Descriptor thresholdDesc(THRESHOLD_ATTR_ID,
                                        ExtractMSAConsensusSequenceWorker::tr("Threshold"),
                                        ExtractMSAConsensusSequenceWorker::tr("The threshold of the algorithm."));
-        Attribute* thr = new Attribute(thresholdDesc, BaseTypes::NUM_TYPE(), true, 100);
-        Attribute* algo = new Attribute(algoDesc, BaseTypes::STRING_TYPE(), true, BuiltInConsensusAlgorithms::DEFAULT_ALGO);
+        auto thr = new Attribute(thresholdDesc, BaseTypes::NUM_TYPE(), true, 100);
+        auto algo = new Attribute(algoDesc, BaseTypes::STRING_TYPE(), true, BuiltInConsensusAlgorithms::DEFAULT_ALGO);
         attrs << algo << thr;
 
         QVariantList visibleRelationList;
@@ -381,9 +379,9 @@ void ExtractMSAConsensusStringWorkerFactory::init() {
         QVariantMap m;
         m["minimum"] = 0;
         m["maximum"] = 100;
-        SpinBoxDelegate* thrDelegate = new SpinBoxDelegate(m);
+        auto thrDelegate = new SpinBoxDelegate(m);
         foreach (const QString& algoId, reg->getAlgorithmIds()) {
-            MSAConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
+            MsaConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
             if (!f->isSequenceLikeResult()) {
                 algos[f->getName()] = algoId;
                 if (f->supportsThreshold()) {
@@ -430,9 +428,9 @@ QVariant SpinBoxDelegatePropertyRelation::getAffectResult(const QVariant& influe
 }
 
 void SpinBoxDelegatePropertyRelation::updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const {
-    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
+    MsaConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
     SAFE_POINT(reg != nullptr, "NULL registry", );
-    MSAConsensusAlgorithmFactory* consFactory = reg->getAlgorithmFactory(influencingValue.toString());
+    MsaConsensusAlgorithmFactory* consFactory = reg->getAlgorithmFactory(influencingValue.toString());
     if (!consFactory) {
         return;
     }

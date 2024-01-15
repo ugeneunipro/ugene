@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,10 +67,10 @@ QMap<QString, QString> JasparInfo::getProperties() const {
     return properties;
 }
 
-PFMatrix::PFMatrix(const MultipleSequenceAlignment& align, const PFMatrixType& _type)
+PFMatrix::PFMatrix(const Msa& align, const PFMatrixType& _type)
     : type(_type) {
     assert(align->hasEqualLength());
-    const int sequenceLength = align->getMsaRows().first()->getUngappedLength();
+    const int sequenceLength = align->getRows().first()->getUngappedLength();
     length = (type == PFM_MONONUCLEOTIDE) ? sequenceLength : sequenceLength - 1;
     assert(length > 0);
     int size = (type == PFM_MONONUCLEOTIDE) ? 4 : 16;
@@ -79,7 +79,7 @@ PFMatrix::PFMatrix(const MultipleSequenceAlignment& align, const PFMatrixType& _
     U2OpStatus2Log os;
     if (type == PFM_MONONUCLEOTIDE) {
         for (int i = 0, n = align->getRowCount(); i < n; i++) {
-            const QByteArray row = align->getMsaRow(i)->getSequence().seq;
+            const QByteArray row = align->getRow(i)->getSequence().seq;
             for (int j = 0; j < length; j++) {
                 char curr = row[j];
                 data[DiProperty::index(curr) * length + j]++;
@@ -87,7 +87,7 @@ PFMatrix::PFMatrix(const MultipleSequenceAlignment& align, const PFMatrixType& _
         }
     } else {
         for (int i = 0, n = align->getRowCount(); i < n; i++) {
-            const QByteArray row = align->getMsaRow(i)->getSequence().seq;
+            const QByteArray row = align->getRow(i)->getSequence().seq;
             for (int j = 0; j < length; j++) {
                 char curr = row[j];
                 char next = row[j + 1];

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -307,6 +307,12 @@ void MWDockManagerImpl::destroyDockData(DockData* d) {
     }
     docks.removeOne(d);
     updateTB(d->area);
+    if (activeDocks[d->area] == d) {
+        activeDocks[d->area] = nullptr;
+    }
+    if (toggleDockState[d->area] == d) {
+        toggleDockState[d->area] = nullptr;
+    }
     delete d;
 }
 

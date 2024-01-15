@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,20 +23,20 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 
-AlignMsaAction::AlignMsaAction(QObject* parent, const QString& toolId, MSAEditor* _msaEditor, const QString& text, int order)
+AlignMsaAction::AlignMsaAction(QObject* parent, const QString& toolId, MsaEditor* _msaEditor, const QString& text, int order)
     : ExternalToolSupportAction(parent, _msaEditor, text, order, QStringList(toolId)), msaEditor(_msaEditor) {
     sl_updateState();
 
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
     connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateState()));
     connect(msaObject, SIGNAL(si_alignmentBecomesEmpty(bool)), SLOT(sl_updateState()));
 }
 
-MSAEditor* AlignMsaAction::getMsaEditor() const {
+MsaEditor* AlignMsaAction::getMsaEditor() const {
     return msaEditor;
 }
 

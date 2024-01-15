@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,11 +27,11 @@
 
 #include <U2Core/DNAAlphabet.h>
 
-#include "MSAEditorSequenceArea.h"
+#include "MsaEditorSequenceArea.h"
 
 namespace U2 {
 
-MsaEditorStatusBar::MsaEditorStatusBar(MSAEditor* msaEditor)
+MsaEditorStatusBar::MsaEditorStatusBar(MsaEditor* msaEditor)
     : MaEditorStatusBar(msaEditor) {
     setObjectName("msa_editor_status_bar");
     setStatusBarStyle();

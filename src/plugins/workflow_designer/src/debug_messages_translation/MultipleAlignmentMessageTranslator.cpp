@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 
 #include <QScopedPointer>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/DbiDataHandler.h>
@@ -43,10 +43,10 @@ MultipleAlignmentMessageTranslator::MultipleAlignmentMessageTranslator(const QVa
     : BaseMessageTranslator(atomicMessage, initContext) {
     SAFE_POINT(source.canConvert<SharedDbiDataHandler>(), "Invalid MSA data supplied!", );
     SharedDbiDataHandler malignmentId = source.value<SharedDbiDataHandler>();
-    QScopedPointer<MultipleSequenceAlignmentObject> malignmentObject(StorageUtils::getMsaObject(
+    QScopedPointer<MsaObject> malignmentObject(StorageUtils::getMsaObject(
         context->getDataStorage(), malignmentId));
     SAFE_POINT(!malignmentObject.isNull(), "Invalid MSA object detected!", );
-    malignment = malignmentObject->getMsaCopy();
+    malignment = malignmentObject->getAlignment()->getCopy();
 }
 
 QString MultipleAlignmentMessageTranslator::getTranslation() const {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,10 +39,10 @@
 #include "general_tab/McaGeneralTabFactory.h"
 #include "ov_mca/MaConsensusMismatchController.h"
 #include "ov_mca/SequenceWithChromatogramAreaRenderer.h"
-#include "ov_msa/MSAEditorOffsetsView.h"
 #include "ov_msa/MaAmbiguousCharactersController.h"
 #include "ov_msa/MaEditorFactory.h"
 #include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MsaEditorOffsetsView.h"
 #include "ov_msa/export_consensus/MaExportConsensusTabFactory.h"
 #include "ov_msa/overview/MaEditorOverviewArea.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -50,7 +50,7 @@
 namespace U2 {
 
 McaEditor::McaEditor(const QString& viewName,
-                     MultipleChromatogramAlignmentObject* obj)
+                     MsaObject* obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       showChromatogramsAction(nullptr), showGeneralTabAction(nullptr), showConsensusTabAction(nullptr), referenceCtx(nullptr) {
     optionsPanelController = new OptionsPanelController(this);
@@ -59,17 +59,13 @@ McaEditor::McaEditor(const QString& viewName,
     initFont();
 
     U2OpStatusImpl os;
-    foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
-        chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), true);
+    foreach (const MsaRow& row, obj->getAlignment()->getRows()) {
+        chromVisibility.insert(obj->getAlignment()->getRowIndexByRowId(row->getRowId(), os), true);
     }
 
     U2SequenceObject* referenceObj = obj->getReferenceObj();
     SAFE_POINT(referenceObj != nullptr, "Trying to open McaEditor without a reference", );
     referenceCtx = new SequenceObjectContext(referenceObj, this);
-}
-
-MultipleChromatogramAlignmentObject* McaEditor::getMaObject() const {
-    return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject);
 }
 
 McaEditorWgt* McaEditor::getUI() const {

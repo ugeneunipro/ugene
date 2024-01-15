@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,18 +23,19 @@
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
-ConvertMca2MsaTask::ConvertMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject, bool includeReference)
+ConvertMca2MsaTask::ConvertMca2MsaTask(MsaObject* mcaObject, bool includeReference)
     : Task(tr("Convert MCA to MSA task"), TaskFlag_None),
       mcaObject(mcaObject),
       includeReference(includeReference) {
     SAFE_POINT_EXT(mcaObject != nullptr, setError(L10N::nullPointerError("MCA object")), );
 }
 
-MultipleSequenceAlignment ConvertMca2MsaTask::getMsa() const {
+Msa ConvertMca2MsaTask::getMsa() const {
     return msa;
 }
 
@@ -43,7 +44,7 @@ void ConvertMca2MsaTask::prepare() {
 }
 
 void ConvertMca2MsaTask::run() {
-    msa = MultipleSequenceAlignment(mcaObject->getGObjectName(), mcaObject->getAlphabet());
+    msa = Msa(mcaObject->getGObjectName(), mcaObject->getAlphabet());
 
     if (includeReference) {
         U2SequenceObject* referenceObject = mcaObject->getReferenceObj();
@@ -51,7 +52,7 @@ void ConvertMca2MsaTask::run() {
         CHECK_OP(stateInfo, );
     }
 
-    foreach (const MultipleChromatogramAlignmentRow& mcaRow, mcaObject->getMca()->getMcaRows()) {
+    foreach (const MsaRow& mcaRow, mcaObject->getAlignment()->getRows()) {
         msa->addRow(mcaRow->getName(), mcaRow->getSequence(), mcaRow->getGaps(), stateInfo);
         CHECK_OP(stateInfo, );
     }

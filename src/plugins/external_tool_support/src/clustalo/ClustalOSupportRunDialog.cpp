@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@
 namespace U2 {
 ////////////////////////////////////////
 // ClustalOSupportRunDialog
-ClustalOSupportRunDialog::ClustalOSupportRunDialog(const MultipleSequenceAlignment& _ma, ClustalOSupportTaskSettings& _settings, QWidget* _parent)
+ClustalOSupportRunDialog::ClustalOSupportRunDialog(const Msa& _ma, ClustalOSupportTaskSettings& _settings, QWidget* _parent)
     : QDialog(_parent), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930933");

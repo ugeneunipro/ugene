@@ -19,17 +19,15 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROFILE_TO_PROFILE_WORKER_H_
-#define _U2_PROFILE_TO_PROFILE_WORKER_H_
-
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#pragma once
+#include <U2Core/MsaObject.h>
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MsaObject;
 
 namespace LocalWorkflow {
 
@@ -38,9 +36,9 @@ class ProfileToProfileWorker : public BaseWorker {
 public:
     ProfileToProfileWorker(Actor* a);
 
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private slots:
     void sl_taskFinished();
@@ -49,7 +47,7 @@ private:
     IntegralBus* inPort;
     IntegralBus* outPort;
 
-    QList<MultipleSequenceAlignmentObject*> objects;
+    QList<MsaObject*> objects;
 };
 
 class ProfileToProfileWorkerFactory : public DomainFactory {
@@ -59,7 +57,7 @@ public:
     }
 
     static void init();
-    virtual Worker* createWorker(Actor* a);
+    Worker* createWorker(Actor* a) override;
 
 private:
     static const QString ACTOR_ID;
@@ -68,29 +66,29 @@ private:
 class ProfileToProfilePrompter : public PrompterBase<ProfileToProfilePrompter> {
     Q_OBJECT
 public:
-    ProfileToProfilePrompter(Actor* p = 0)
+    ProfileToProfilePrompter(Actor* p = nullptr)
         : PrompterBase<ProfileToProfilePrompter>(p) {
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class ProfileToProfileTask : public Task {
     Q_OBJECT
 public:
-    ProfileToProfileTask(const MultipleSequenceAlignment& masterMsa, const MultipleSequenceAlignment& secondMsa);
-    ~ProfileToProfileTask();
+    ProfileToProfileTask(const Msa& masterMsa, const Msa& secondMsa);
+    ~ProfileToProfileTask() override;
 
-    virtual void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    const MultipleSequenceAlignment& getResult();
+    const Msa& getResult();
 
 private:
-    MultipleSequenceAlignment masterMsa;
-    MultipleSequenceAlignment secondMsa;
-    MultipleSequenceAlignment result;
+    Msa masterMsa;
+    Msa secondMsa;
+    Msa result;
     int seqIdx;
     int subtaskCount;
 
@@ -102,5 +100,3 @@ private:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_PROFILE_TO_PROFILE_WORKER_H_

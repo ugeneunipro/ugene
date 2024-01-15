@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,10 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleAlignmentInfo.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentWalker.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaInfo.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -303,13 +303,13 @@ static bool isEndOfMsaBlock(IOAdapterReader& reader, U2OpStatus& os) {
 }
 
 /** Returns true if there is a row in the 'msa' with the given name. */
-static bool hasRowWithName(const MultipleSequenceAlignment& msa, const QString& name) {
-    const QList<MultipleAlignmentRow>& rows = msa->getRows();
+static bool hasRowWithName(const Msa& msa, const QString& name) {
+    const QVector<MsaRow>& rows = msa->getRows();
     return std::any_of(rows.begin(), rows.end(), [name](auto& row) { return row->getName() == name; });
 }
 
 /** Loads a single MSA object data and related annotations. */
-static void loadOneMsa(IOAdapterReader& reader, U2OpStatus& os, MultipleSequenceAlignment& msa, AnnotationBank& annotationBank) {
+static void loadOneMsa(IOAdapterReader& reader, U2OpStatus& os, Msa& msa, AnnotationBank& annotationBank) {
     skipBlankLines(reader, os);
     CHECK_OP(os, );
 
@@ -359,7 +359,7 @@ static void loadOneMsa(IOAdapterReader& reader, U2OpStatus& os, MultipleSequence
                 CHECK_EXT(!hasRowWithName(msa, name), os.setError(StockholmFormat::tr("Invalid file: duplicate sequence names in one block: %1").arg(name)), );
                 msa->addRow(name, seq);
             } else {
-                QString rowName = msa->getMsaRow(sequenceIndex)->getName();
+                QString rowName = msa->getRow(sequenceIndex)->getName();
                 CHECK_EXT(name == rowName, os.setError(StockholmFormat::tr("Invalid file: sequence names are not equal in blocks")), );
                 msa->appendChars(sequenceIndex, currentLen, seq.constData(), seq.size());
             }
@@ -397,40 +397,40 @@ static void loadOneMsa(IOAdapterReader& reader, U2OpStatus& os, MultipleSequence
 
 static void setMsaInfoCutoffs(QVariantMap& info,
                               const QString& string,
-                              const MultipleAlignmentInfo::Cutoffs& cof1,
-                              const MultipleAlignmentInfo::Cutoffs& cof2) {
+                              const MsaInfo::Cutoffs& cof1,
+                              const MsaInfo::Cutoffs& cof2) {
     QByteArray str = string.toLatin1();
     QTextStream txtStream(str);
     float val1 = .0f;
     float val2 = .0f;
     txtStream >> val1 >> val2;
-    MultipleAlignmentInfo::setCutoff(info, cof1, val1);
-    MultipleAlignmentInfo::setCutoff(info, cof2, val2);
+    MsaInfo::setCutoff(info, cof1, val1);
+    MsaInfo::setCutoff(info, cof2, val2);
 }
 
-static void setMsaInfo(const QHash<QString, QString>& annMap, MultipleSequenceAlignment& ma) {
+static void setMsaInfo(const QHash<QString, QString>& annMap, Msa& ma) {
     QVariantMap info = ma->getInfo();
 
     if (annMap.contains(StockholmFormat::FILE_ANNOTATION_AC)) {
-        MultipleAlignmentInfo::setAccession(info, annMap[StockholmFormat::FILE_ANNOTATION_AC]);
+        MsaInfo::setAccession(info, annMap[StockholmFormat::FILE_ANNOTATION_AC]);
     }
     if (annMap.contains(StockholmFormat::FILE_ANNOTATION_DE)) {
-        MultipleAlignmentInfo::setDescription(info, annMap[StockholmFormat::FILE_ANNOTATION_DE]);
+        MsaInfo::setDescription(info, annMap[StockholmFormat::FILE_ANNOTATION_DE]);
     }
     if (annMap.contains(StockholmFormat::COLUMN_ANNOTATION_SS_CONS)) {
-        MultipleAlignmentInfo::setSSConsensus(info, annMap[StockholmFormat::COLUMN_ANNOTATION_SS_CONS]);
+        MsaInfo::setSSConsensus(info, annMap[StockholmFormat::COLUMN_ANNOTATION_SS_CONS]);
     }
     if (annMap.contains(StockholmFormat::COLUMN_ANNOTATION_RF)) {
-        MultipleAlignmentInfo::setReferenceLine(info, annMap[StockholmFormat::COLUMN_ANNOTATION_RF]);
+        MsaInfo::setReferenceLine(info, annMap[StockholmFormat::COLUMN_ANNOTATION_RF]);
     }
     if (annMap.contains(StockholmFormat::FILE_ANNOTATION_GA)) {
-        setMsaInfoCutoffs(info, annMap[StockholmFormat::FILE_ANNOTATION_GA], MultipleAlignmentInfo::CUTOFF_GA1, MultipleAlignmentInfo::CUTOFF_GA2);
+        setMsaInfoCutoffs(info, annMap[StockholmFormat::FILE_ANNOTATION_GA], MsaInfo::CUTOFF_GA1, MsaInfo::CUTOFF_GA2);
     }
     if (annMap.contains(StockholmFormat::FILE_ANNOTATION_NC)) {
-        setMsaInfoCutoffs(info, annMap[StockholmFormat::FILE_ANNOTATION_NC], MultipleAlignmentInfo::CUTOFF_NC1, MultipleAlignmentInfo::CUTOFF_NC2);
+        setMsaInfoCutoffs(info, annMap[StockholmFormat::FILE_ANNOTATION_NC], MsaInfo::CUTOFF_NC1, MsaInfo::CUTOFF_NC2);
     }
     if (annMap.contains(StockholmFormat::FILE_ANNOTATION_TC)) {
-        setMsaInfoCutoffs(info, annMap[StockholmFormat::FILE_ANNOTATION_TC], MultipleAlignmentInfo::CUTOFF_TC1, MultipleAlignmentInfo::CUTOFF_TC2);
+        setMsaInfoCutoffs(info, annMap[StockholmFormat::FILE_ANNOTATION_TC], MsaInfo::CUTOFF_TC1, MsaInfo::CUTOFF_TC2);
     }
     ma->setInfo(info);
 }
@@ -440,7 +440,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*
     QSet<QString> objectNameList;
     QString baseFileName = reader.getURL().baseFileName();
     while (!reader.atEnd()) {
-        MultipleSequenceAlignment msa;
+        Msa msa;
         AnnotationBank annotationBank;
         loadOneMsa(reader, os, msa, annotationBank);
         CHECK_OP(os, );
@@ -456,7 +456,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*
         setMsaInfo(valueByNameMap, msa);
 
         QString folder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-        auto msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
+        auto msaObject = MsaImportUtils::createMsaObject(dbiRef, msa, os, folder);
         CHECK_OP(os, );
         msaObject->setIndexInfo(valueByNameMap);
         objectList.append(msaObject);
@@ -464,15 +464,15 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*
 }
 
 /** Returns maximum row name length in the msa. */
-static int getMaxNameLen(const MultipleSequenceAlignment& msa) {
-    const QList<MultipleAlignmentRow>& rows = msa->getRows();
+static int getMaxNameLen(const Msa& msa) {
+    const QVector<MsaRow>& rows = msa->getRows();
     CHECK(rows.isEmpty(), 0);
     auto it = std::max_element(rows.begin(), rows.end(), [](auto& r1, auto& r2) { return r1->getName().length() < r2->getName().length(); });
     return (*it)->getName().length();
 }
 
 /** Saves all objects in 'msa' into the 'writer' stream. */
-static void save(IOAdapterWriter& writer, const MultipleSequenceAlignment& msa, const QString& name, U2OpStatus& os) {
+static void save(IOAdapterWriter& writer, const Msa& msa, const QString& name, U2OpStatus& os) {
     writer.write(os, HEADER);
     CHECK_OP(os, );
 
@@ -486,8 +486,8 @@ static void save(IOAdapterWriter& writer, const MultipleSequenceAlignment& msa, 
     // Write sequences.
     int maxNameLength = getMaxNameLen(msa);
     int remainingSequenceLength = msa->getLength();
-    MultipleSequenceAlignmentWalker walker(msa);
-    const QList<MultipleAlignmentRow>& rows = msa->getRows();
+    MsaWalker walker(msa);
+    const QVector<MsaRow>& rows = msa->getRows();
     while (remainingSequenceLength > 0) {
         // Write a block.
         int blockLength = qMin(remainingSequenceLength, WRITE_BLOCK_LENGTH);
@@ -495,7 +495,7 @@ static void save(IOAdapterWriter& writer, const MultipleSequenceAlignment& msa, 
         CHECK_OP(os, );
         SAFE_POINT(sequences.size() == rows.size(), "Sequences and rows counts do not match!", );
         for (int i = 0; i < rows.size(); i++) {
-            const MultipleAlignmentRow& row = rows[i];
+            const MsaRow& row = rows[i];
             QByteArray safeRowName = row->getName().toLatin1();
             TextUtils::replace(safeRowName.data(), safeRowName.length(), TextUtils::WHITES, '_');
             writer.write(os, safeRowName);
@@ -539,9 +539,9 @@ Document* StockholmFormat::loadTextDocument(IOAdapterReader& reader, const U2Dbi
 void StockholmFormat::storeTextDocument(IOAdapterWriter& writer, Document* doc, U2OpStatus& os) {
     QList<GObject*> objects = doc->getObjects();
     for (GObject* obj : qAsConst(objects)) {
-        auto alnObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
+        auto alnObj = qobject_cast<const MsaObject*>(obj);
         SAFE_POINT_EXT(alnObj != nullptr, os.setError("Not an alignment object: " + obj->getGObjectName()), );
-        save(writer, alnObj->getMultipleAlignment(), alnObj->getGObjectName(), os);
+        save(writer, alnObj->getAlignment(), alnObj->getGObjectName(), os);
         CHECK_OP(os, );
     }
 }

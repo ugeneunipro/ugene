@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #include "KalignWorker.h"
 
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -171,9 +171,9 @@ Task* Kalign3Worker::tick() {
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+        QScopedPointer<MsaObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
+        const Msa msa = msaObj->getAlignment();
 
         if (msa->isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to Kalign.").arg(msa->getName()));
@@ -206,7 +206,7 @@ void Kalign3Worker::sl_taskFinished() {
 void Kalign3Worker::cleanup() {
 }
 
-void Kalign3Worker::send(const MultipleSequenceAlignment& msa) {
+void Kalign3Worker::send(const Msa& msa) {
     SAFE_POINT(output != nullptr, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;

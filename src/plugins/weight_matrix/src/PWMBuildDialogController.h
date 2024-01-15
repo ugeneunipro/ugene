@@ -26,7 +26,7 @@
 #include <U2Algorithm/PWMConversionAlgorithm.h>
 
 #include <U2Core/DNASequence.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/PFMatrix.h>
 #include <U2Core/PWMatrix.h>
 #include <U2Core/Task.h>
@@ -52,7 +52,7 @@ public:
     QString lastURL;
 
 public slots:
-    virtual void reject();
+    void reject() override;
 
 private slots:
     void sl_inFileButtonClicked();
@@ -73,21 +73,21 @@ private:
     AlignmentLogoRenderArea* logoArea;
     QPushButton* okButton;
     QPushButton* cancelButton;
-    void replaceLogo(const MultipleSequenceAlignment& ma);
+    void replaceLogo(const Msa& ma);
 };
 
 class PFMatrixBuildTask : public Task {
     Q_OBJECT
 public:
-    PFMatrixBuildTask(const PMBuildSettings& s, const MultipleSequenceAlignment& ma);
-    void run();
+    PFMatrixBuildTask(const PMBuildSettings& s, const Msa& ma);
+    void run() override;
     PFMatrix getResult() const {
         return m;
     }
 
 private:
     PMBuildSettings settings;
-    MultipleSequenceAlignment ma;
+    Msa ma;
     PFMatrix m;
 };
 
@@ -95,7 +95,7 @@ class PFMatrixBuildToFileTask : public Task {
     Q_OBJECT
 public:
     PFMatrixBuildToFileTask(const QString& inFile, const QString& outFile, const PMBuildSettings& s);
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     LoadDocumentTask* loadTask;
@@ -107,16 +107,16 @@ private:
 class PWMatrixBuildTask : public Task {
     Q_OBJECT
 public:
-    PWMatrixBuildTask(const PMBuildSettings& s, const MultipleSequenceAlignment& ma);
+    PWMatrixBuildTask(const PMBuildSettings& s, const Msa& ma);
     PWMatrixBuildTask(const PMBuildSettings& s, const PFMatrix& m);
-    void run();
+    void run() override;
     PWMatrix getResult() const {
         return m;
     }
 
 private:
     PMBuildSettings settings;
-    MultipleSequenceAlignment ma;
+    Msa ma;
     PFMatrix tempMatrix;
     PWMatrix m;
 };
@@ -125,7 +125,7 @@ class PWMatrixBuildToFileTask : public Task {
     Q_OBJECT
 public:
     PWMatrixBuildToFileTask(const QString& inFile, const QString& outFile, const PMBuildSettings& s);
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     LoadDocumentTask* loadTask;

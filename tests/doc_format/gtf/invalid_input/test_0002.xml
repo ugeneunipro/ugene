@@ -1,6 +1,6 @@
 <!-- Verify an invalid GTF file that can be opened: invalid score value. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="gtf/invalid/invalid_score.gtf" io="local_file" format="gtf" message="GTF parsing error: incorrect score value"/>
 

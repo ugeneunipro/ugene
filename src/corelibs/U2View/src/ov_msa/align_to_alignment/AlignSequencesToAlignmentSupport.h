@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 
 /** MSA editor built-in support for "Align-Sequences-To-Alignment" algorithms. */
 class AlignSequencesToAlignmentSupport : public GObjectViewWindowContext {
@@ -41,16 +41,16 @@ protected:
 class BaseObjectViewAlignmentAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    BaseObjectViewAlignmentAction(QObject* parent, MSAEditor* msaEditor, const QString& algorithmId, const QString& text, int order);
+    BaseObjectViewAlignmentAction(QObject* parent, MsaEditor* msaEditor, const QString& algorithmId, const QString& text, int order);
 
     /** Returns MSA editor this action is created for. */
-    MSAEditor* getEditor() const;
+    MsaEditor* getEditor() const;
 
 public slots:
     virtual void sl_activate() = 0;
 
 protected:
-    MSAEditor* msaEditor = nullptr;
+    MsaEditor* msaEditor = nullptr;
 
     QString algorithmId;
 };
@@ -58,7 +58,7 @@ protected:
 class AlignSequencesToAlignmentAction : public BaseObjectViewAlignmentAction {
     Q_OBJECT
 public:
-    AlignSequencesToAlignmentAction(QObject* parent, MSAEditor* msaEditor, const QString& algorithmId, const QString& text, int order);
+    AlignSequencesToAlignmentAction(QObject* parent, MsaEditor* msaEditor, const QString& algorithmId, const QString& text, int order);
 
 public slots:
 
@@ -71,7 +71,7 @@ public slots:
 class AlignSelectedSequencesAction : public BaseObjectViewAlignmentAction {
     Q_OBJECT
 public:
-    AlignSelectedSequencesAction(QObject* parent, MSAEditor* msaEditor, const QString& algorithmId, const QString& text, int order);
+    AlignSelectedSequencesAction(QObject* parent, MsaEditor* msaEditor, const QString& algorithmId, const QString& text, int order);
 public slots:
 
     /** Runs AlignSelectionToAlignment algorithm. */

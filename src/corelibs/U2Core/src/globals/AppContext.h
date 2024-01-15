@@ -52,8 +52,8 @@ class ExternalToolRegistry;
 class GObjectViewFactoryRegistry;
 class GenomeAssemblyAlgRegistry;
 class IOAdapterRegistry;
-class MSAConsensusAlgorithmRegistry;
-class MSADistanceAlgorithmRegistry;
+class MsaConsensusAlgorithmRegistry;
+class MsaDistanceAlgorithmRegistry;
 class MainWindow;
 class MolecularSurfaceFactoryRegistry;
 class MsaColorSchemeRegistry;
@@ -245,11 +245,11 @@ public:
         return getInstance()->_getCMDLineRegistry();
     }
 
-    static MSAConsensusAlgorithmRegistry* getMSAConsensusAlgorithmRegistry() {
+    static MsaConsensusAlgorithmRegistry* getMSAConsensusAlgorithmRegistry() {
         return getInstance()->_getMSAConsensusAlgorithmRegistry();
     }
 
-    static MSADistanceAlgorithmRegistry* getMSADistanceAlgorithmRegistry() {
+    static MsaDistanceAlgorithmRegistry* getMSADistanceAlgorithmRegistry() {
         return getInstance()->_getMSADistanceAlgorithmRegistry();
     }
 
@@ -444,8 +444,8 @@ protected:
     virtual RemoteMachineMonitor* _getRemoteMachineMonitor() const = 0;
     virtual PhyTreeGeneratorRegistry* _getPhyTreeGeneratorRegistry() const = 0;
     virtual CMDLineRegistry* _getCMDLineRegistry() const = 0;
-    virtual MSAConsensusAlgorithmRegistry* _getMSAConsensusAlgorithmRegistry() const = 0;
-    virtual MSADistanceAlgorithmRegistry* _getMSADistanceAlgorithmRegistry() const = 0;
+    virtual MsaConsensusAlgorithmRegistry* _getMSAConsensusAlgorithmRegistry() const = 0;
+    virtual MsaDistanceAlgorithmRegistry* _getMSADistanceAlgorithmRegistry() const = 0;
     virtual AssemblyConsensusAlgorithmRegistry* _getAssemblyConsensusAlgorithmRegistry() const = 0;
     virtual PWMConversionAlgorithmRegistry* _getPWMConversionAlgorithmRegistry() const = 0;
     virtual VirtualFileSystemRegistry* _getVirtualFileSystemRegistry() const = 0;

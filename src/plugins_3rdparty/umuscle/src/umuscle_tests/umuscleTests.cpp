@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,18 +28,15 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/SaveDocumentTask.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "MuscleConstants.h"
 #include "MuscleParallel.h"
 #include "MuscleTask.h"
 
@@ -47,7 +44,7 @@
 
 namespace U2 {
 
-extern double QScore(const MultipleSequenceAlignment& maTest, const MultipleSequenceAlignment& maRef, TaskStateInfo& ti);
+extern double QScore(const Msa& maTest, const Msa& maRef, TaskStateInfo& ti);
 
 #define OUT_FILE_NAME_ATTR "out"
 #define IN_FILE_NAME_ATTR "in"
@@ -64,7 +61,6 @@ extern double QScore(const MultipleSequenceAlignment& maTest, const MultipleSequ
 #define REGION_ATTR "region"
 #define STABLE_ATTR "stable"
 #define ENV_MUSCLE_N_THREADS "MUSCLE_N_THREADS"
-#define MACHINE_PATH "MACHINE"
 
 struct GTestBoolProperty {
     static bool get(QString attr, bool& value, const QDomElement& el) {
@@ -163,7 +159,7 @@ void GTest_uMuscle::prepare() {
         return;
     }
     assert(obj != nullptr);
-    auto ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto ma = qobject_cast<MsaObject*>(obj);
     if (ma == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
@@ -251,27 +247,27 @@ Task::ReportResult GTest_CompareMAlignment::report() {
 
     int listSize = objs1.size();
     for (int i = 0; i < listSize; i++) {
-        auto ma1 = qobject_cast<MultipleSequenceAlignmentObject*>(objs1.at(i));
-        auto ma2 = qobject_cast<MultipleSequenceAlignmentObject*>(objs2.at(i));
-        QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
-        QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
+        auto ma1 = qobject_cast<MsaObject*>(objs1.at(i));
+        auto ma2 = qobject_cast<MsaObject*>(objs2.at(i));
+        const QVector<MsaRow>& alignedSeqs1 = ma1->getAlignment()->getRows();
+        const QVector<MsaRow>& alignedSeqs2 = ma2->getAlignment()->getRows();
         if (ma1->objectName() != ma2->objectName()) {
-            stateInfo.setError(QString("MAlignmentObjects name not matched \"%1\", expected \"%2\"").arg(ma1->objectName()).arg(ma2->objectName()));
+            stateInfo.setError(QString(R"(MAlignmentObjects name not matched "%1", expected "%2")").arg(ma1->objectName()).arg(ma2->objectName()));
             return ReportResult_Finished;
         }
-        foreach (const MultipleSequenceAlignmentRow& maItem1, alignedSeqs1) {
+        foreach (const MsaRow& maItem1, alignedSeqs1) {
             bool nameFound = false;
-            for (const MultipleSequenceAlignmentRow& maItem2 : qAsConst(alignedSeqs2)) {
+            for (const MsaRow& maItem2 : qAsConst(alignedSeqs2)) {
                 if (maItem1->getName() == maItem2->getName()) {
                     nameFound = true;
                     int l1 = maItem1->getCoreEnd();
                     int l2 = maItem2->getCoreEnd();
                     if (l1 != l2) {
-                        stateInfo.setError(QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(l1).arg(l2));
+                        stateInfo.setError(QString(R"(Aligned sequences "%1" length not matched "%2", expected "%3")").arg(maItem1->getName()).arg(l1).arg(l2));
                         return ReportResult_Finished;
                     }
                     if (*maItem1 != *maItem2) {
-                        stateInfo.setError(QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(QString(maItem1->getCore())).arg(QString(maItem2->getCore())));
+                        stateInfo.setError(QString(R"(Aligned sequences "%1" not matched "%2", expected "%3")").arg(maItem1->getName()).arg(QString(maItem1->getCore())).arg(QString(maItem2->getCore())));
                         return ReportResult_Finished;
                     }
                 }
@@ -346,7 +342,7 @@ void GTest_uMuscleAddUnalignedSequenceToProfile::prepare() {
         stateInfo.setError(QString("no alignment object found in doc: %1").arg(aliDoc->getURLString()));
         return;
     }
-    aliObj = qobject_cast<MultipleSequenceAlignmentObject*>(aliObjs[0]);
+    aliObj = qobject_cast<MsaObject*>(aliObjs[0]);
     origAliSeqs = aliObj->getRowCount();
 
     QList<GObject*> seqObjs = seqDoc->findGObjectByType(GObjectTypes::SEQUENCE);
@@ -354,7 +350,7 @@ void GTest_uMuscleAddUnalignedSequenceToProfile::prepare() {
         stateInfo.setError(QString("no sequence objects found in doc: %1").arg(seqDoc->getURLString()));
         return;
     }
-    MultipleSequenceAlignment unalignedMA;
+    Msa unalignedMA;
     unalignedMA->setAlphabet(aliObj->getAlphabet());
     foreach (GObject* obj, seqObjs) {
         auto dnaObj = qobject_cast<U2SequenceObject*>(obj);
@@ -387,9 +383,9 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
     if (hasError()) {
         return ReportResult_Finished;
     }
-    const MultipleSequenceAlignment msa = aliObj->getMultipleAlignment();
+    const Msa msa = aliObj->getAlignment();
     if (msa->getLength() != resultAliLen) {
-        stateInfo.setError(QString("result alignment length notmatches: %1, expected: %2").arg(msa->getLength()).arg(resultAliLen));
+        stateInfo.setError(QString("result alignment length does not match: %1, expected: %2").arg(msa->getLength()).arg(resultAliLen));
         return ReportResult_Finished;
     }
 
@@ -400,7 +396,7 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
 
     U2OpStatus2Log os;
     for (int i = origAliSeqs, j = 0; i < msa->getRowCount(); i++, j++) {
-        const MultipleSequenceAlignmentRow row = msa->getMsaRow(i);
+        const MsaRow& row = msa->getRow(i);
         QByteArray seq = row->toByteArray(os, msa->getLength());
         QList<int> seqGaps = gapPositionsForSeqs[j];
         for (int pos = 0; pos < seq.size(); pos++) {
@@ -499,10 +495,10 @@ void GTest_Muscle_Load_Align_QScore::prepare() {
     loadTask1->setSubtaskProgressWeight(0);
 }
 
-MultipleSequenceAlignment GTest_Muscle_Load_Align_QScore::dna_to_ma(QList<GObject*> dnaSeqs) {
+Msa GTest_Muscle_Load_Align_QScore::dna_to_ma(QList<GObject*> dnaSeqs) {
     int seqCount = dnaSeqs.count();
     auto seq = qobject_cast<U2SequenceObject*>(dnaSeqs[0]);
-    MultipleSequenceAlignment ma("Alignment", seq->getAlphabet());
+    Msa ma("Alignment", seq->getAlphabet());
     for (int i = 0; i < seqCount; i++) {
         seq = qobject_cast<U2SequenceObject*>(dnaSeqs[i]);
         if (seq == nullptr) {
@@ -510,7 +506,7 @@ MultipleSequenceAlignment GTest_Muscle_Load_Align_QScore::dna_to_ma(QList<GObjec
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
+        SAFE_POINT_OP(stateInfo, {});
         ma->addRow(seq->getSequenceName(), seqData);
     }
     return ma;
@@ -537,20 +533,20 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        MultipleSequenceAlignment malign = dna_to_ma(list);
+        Msa malign = dna_to_ma(list);
         if (hasError()) {
             return res;
         }
 
-        ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma1 = MsaImportUtils::createMsaObject(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if (ma1 == nullptr) {
-            stateInfo.setError(QString("can't convert dna sequences to MultipleSequenceAlignment"));
+            stateInfo.setError(QString("can't convert dna sequences to Msa"));
             return res;
         }
 
-        muscleTask = new MuscleTask(ma1->getMultipleAlignment(), config);
+        muscleTask = new MuscleTask(ma1->getAlignment(), config);
         res << muscleTask;
         this->connect(muscleTask, SIGNAL(si_progressChanged()), SLOT(sl_muscleProgressChg()));
     } else if (subTask == muscleTask) {
@@ -580,16 +576,16 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        MultipleSequenceAlignment malign = dna_to_ma(list);
+        Msa malign = dna_to_ma(list);
         if (hasError()) {
             return res;
         }
 
-        ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma2 = MsaImportUtils::createMsaObject(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if (ma2 == nullptr) {
-            stateInfo.setError(QString("can't convert dna sequences to MultipleSequenceAlignment"));
+            stateInfo.setError(QString("can't convert dna sequences to Msa"));
             return res;
         }
     }
@@ -597,7 +593,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
 }
 
 void GTest_Muscle_Load_Align_QScore::run() {
-    double qscore = QScore(ma1->getMultipleAlignment(), ma2->getMultipleAlignment(), stateInfo);
+    double qscore = QScore(ma1->getAlignment(), ma2->getAlignment(), stateInfo);
     if (stateInfo.hasError()) {
         return;
     }
@@ -640,10 +636,10 @@ void Muscle_Load_Align_Compare_Task::prepare() {
     loadTask1->setSubtaskProgressWeight(0);
 }
 
-MultipleSequenceAlignment Muscle_Load_Align_Compare_Task::dna_to_ma(QList<GObject*> dnaSeqs) {
+Msa Muscle_Load_Align_Compare_Task::dna_to_ma(QList<GObject*> dnaSeqs) {
     int seqCount = dnaSeqs.count();
     auto seq = qobject_cast<U2SequenceObject*>(dnaSeqs[0]);
-    MultipleSequenceAlignment ma("Alignment", seq->getAlphabet());
+    Msa ma("Alignment", seq->getAlphabet());
     for (int i = 0; i < seqCount; i++) {
         seq = qobject_cast<U2SequenceObject*>(dnaSeqs[i]);
         if (seq == nullptr) {
@@ -651,7 +647,7 @@ MultipleSequenceAlignment Muscle_Load_Align_Compare_Task::dna_to_ma(QList<GObjec
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
+        SAFE_POINT_OP(stateInfo, {});
         ma->addRow(seq->getSequenceName(), seqData);
     }
     return ma;
@@ -677,20 +673,20 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        MultipleSequenceAlignment malign = dna_to_ma(list);
+        Msa malign = dna_to_ma(list);
         if (hasError()) {
             return res;
         }
 
-        ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma1 = MsaImportUtils::createMsaObject(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if (ma1 == nullptr) {
-            stateInfo.setError(QString("can't convert dna sequences to MultipleSequenceAlignment"));
+            stateInfo.setError(QString("can't convert dna sequences to Msa"));
             return res;
         }
 
-        muscleTask = new MuscleTask(ma1->getMultipleAlignment(), config);
+        muscleTask = new MuscleTask(ma1->getAlignment(), config);
 
         res << muscleTask;
         this->connect(muscleTask, SIGNAL(si_progressChanged()), SLOT(sl_muscleProgressChg()));
@@ -720,16 +716,16 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        MultipleSequenceAlignment malign = dna_to_ma(list);
+        Msa malign = dna_to_ma(list);
         if (hasError()) {
             return res;
         }
 
-        ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma2 = MsaImportUtils::createMsaObject(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if (ma2 == nullptr) {
-            stateInfo.setError(QString("can't convert dna sequences to MultipleSequenceAlignment"));
+            stateInfo.setError(QString("can't convert dna sequences to Msa"));
             return res;
         }
     }
@@ -737,12 +733,12 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
 }
 
 void Muscle_Load_Align_Compare_Task::run() {
-    QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
-    QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
+    QVector<MsaRow> alignedSeqs1 = ma1->getAlignment()->getRows();
+    QVector<MsaRow> alignedSeqs2 = ma2->getAlignment()->getRows();
 
-    for (const MultipleSequenceAlignmentRow& maItem1 : qAsConst(alignedSeqs1)) {
+    for (const MsaRow& maItem1 : qAsConst(alignedSeqs1)) {
         bool nameFound = false;
-        for (const MultipleSequenceAlignmentRow& maItem2 : qAsConst(alignedSeqs2)) {
+        for (const MsaRow& maItem2 : qAsConst(alignedSeqs2)) {
             if (maItem1->getName() == maItem2->getName()) {
                 nameFound = true;
                 int l1 = maItem1->getCoreLength();
@@ -820,8 +816,7 @@ Task::ReportResult GTest_Muscle_Load_Align_Compare::report() {
     return ReportResult_Finished;
 }
 
-GTest_Muscle_Load_Align_Compare::~GTest_Muscle_Load_Align_Compare() {
-}
+GTest_Muscle_Load_Align_Compare::~GTest_Muscle_Load_Align_Compare() = default;
 
 void GTest_uMusclePacketTest::init(U2::XMLTestFormat*, const QDomElement& el) {
     int nThread = qMax(0, getEnv()->getVar("NUM_THREADS").toInt());

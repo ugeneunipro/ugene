@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #include <QColor>
 
 #include <U2Core/FeatureColors.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ColorSchemeUtils.h"
@@ -64,7 +64,7 @@ const QString MsaColorScheme::CUSTOM_AMINO = "COLOR_SCHEME_CUSTOM_AMINO";
 
 const QString MsaColorScheme::THRESHOLD_PARAMETER_NAME = "threshold";
 
-MsaColorScheme::MsaColorScheme(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaColorScheme::MsaColorScheme(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj)
     : QObject(parent),
       factory(factory),
       maObj(maObj) {

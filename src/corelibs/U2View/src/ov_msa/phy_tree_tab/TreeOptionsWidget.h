@@ -28,12 +28,12 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 class SimilarityStatisticsSettings;
 class ShowHideSubgroupWidget;
 class TreeViewer;
 class TreeViewerUI;
-class MultipleAlignment;
+class Msa;
 class MaModificationInfo;
 
 class TreeOptionsSavableWidget : public U2SavableWidget {
@@ -54,7 +54,7 @@ class U2VIEW_EXPORT TreeOptionsWidget : public QWidget, private Ui_TreeOptionWid
     Q_OBJECT
 public:
     TreeOptionsWidget(TreeViewer* tree);
-    TreeOptionsWidget(MSAEditor* msaEditor);
+    TreeOptionsWidget(MsaEditor* msaEditor);
 
 private slots:
     void sl_labelsColorButton();
@@ -89,7 +89,7 @@ private:
 
     TreeViewerUI* getTreeViewer() const;
 
-    MSAEditor* editor = nullptr;
+    MsaEditor* editor = nullptr;
     TreeViewerUI* treeViewer = nullptr;
 
     TreeOptionsSavableWidget savableTab;
@@ -106,10 +106,10 @@ private:
 class U2VIEW_EXPORT AddTreeWidget : public QWidget {
     Q_OBJECT
 public:
-    AddTreeWidget(MSAEditor* msaEditor);
+    AddTreeWidget(MsaEditor* msaEditor);
 
 private:
-    MSAEditor* editor;
+    MsaEditor* editor;
     QPushButton* openTreeButton;
     QPushButton* buildTreeButton;
     QLabel* addTreeHint;

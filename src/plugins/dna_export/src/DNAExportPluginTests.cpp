@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,8 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/ExportTasks.h>
 
@@ -196,8 +197,8 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
         stateInfo.setError(GTest::tr(" container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    auto alObj = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
-    srcAl = alObj->getMsaCopy();
+    auto alObj = qobject_cast<MsaObject*>(list.first());
+    srcAl = alObj->getAlignment()->getCopy();
 
     QString translationId = DNATranslationID(0);
     translationId.replace("0", QString("%1").arg(transTable));
@@ -248,8 +249,8 @@ QList<Task*> GTest_ExportNucleicToAminoAlignmentTask::onSubTaskFinished(Task* su
             stateInfo.setError(GTest::tr("container  of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return res;
         }
-        auto resAlign = qobject_cast<MultipleSequenceAlignmentObject*>(reslist.first());
-        resAl = resAlign->getMsaCopy();
+        auto resAlign = qobject_cast<MsaObject*>(reslist.first());
+        resAl = resAlign->getAlignment()->getCopy();
     }
     return res;
 }
@@ -271,8 +272,8 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
         stateInfo.setError(GTest::tr("container of  object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return ReportResult_Finished;
     }
-    auto expAlign = qobject_cast<MultipleSequenceAlignmentObject*>(explist.first());
-    const MultipleSequenceAlignment expAl = expAlign->getMultipleAlignment();
+    auto expAlign = qobject_cast<MsaObject*>(explist.first());
+    const Msa expAl = expAlign->getAlignment();
 
     if (resAl->getLength() != expAl->getLength()) {
         stateInfo.setError(GTest::tr("Unexpected alignment length %1, expected %2").arg(resAl->getLength()).arg(expAl->getLength()));

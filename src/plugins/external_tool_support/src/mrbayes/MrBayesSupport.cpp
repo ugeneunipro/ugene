@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -78,11 +78,11 @@ MrBayesSupport::MrBayesSupport()
 ////////////////////////////////////////
 // MrBayesAdapter
 
-Task* MrBayesAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s) {
+Task* MrBayesAdapter::createCalculatePhyTreeTask(const Msa& ma, const CreatePhyTreeSettings& s) {
     return new MrBayesSupportTask(ma, s);
 }
 
-CreatePhyTreeWidget* MrBayesAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment& ma, QWidget* parent) {
+CreatePhyTreeWidget* MrBayesAdapter::createPhyTreeSettingsWidget(const Msa& ma, QWidget* parent) {
     return new MrBayesWidget(ma, parent);
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 
 #include "MsaColorSchemePercentageIdententityColored.h"
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -30,11 +30,11 @@ const QList<char> MsaColorSchemePercentageIdententityColored::NUCLEOTIDE_LIST = 
 const QList<QColor> MsaColorSchemePercentageIdententityColored::BACKGROUND_COLORS = {Qt::white, Qt::yellow, Qt::green, Qt::cyan};
 const QList<QColor> MsaColorSchemePercentageIdententityColored::FONT_COLORS = {Qt::black, Qt::red, Qt::black, Qt::blue};
 
-MsaColorSchemePercentageIdententityColored::MsaColorSchemePercentageIdententityColored(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaColorSchemePercentageIdententityColored::MsaColorSchemePercentageIdententityColored(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj)
     : MsaColorScheme(parent, factory, maObj),
       alignmentChanged(false),
       threshold(50.0) {
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), this, SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), this, SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemePercentageIdententityColored::getBackgroundColor(int rowNum, int columnNum, char c) const {
@@ -80,7 +80,7 @@ void MsaColorSchemePercentageIdententityColored::updateCache(const int columnNum
     SAFE_POINT(columnNum < maObj->getLength(), "Unexpected column number", );
 
     ColumnCharsCounter currentRowCounter;
-    foreach (const MultipleAlignmentRow& row, maObj->getRows()) {
+    foreach (const MsaRow& row, maObj->getRows()) {
         char ch = row.data()->charAt(columnNum);
         if (NUCLEOTIDE_LIST.contains(ch)) {
             currentRowCounter.addNucleotide(ch);

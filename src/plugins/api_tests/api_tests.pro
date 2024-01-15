@@ -7,6 +7,7 @@ HEADERS += \
     src/UnitTestSuite.h \
     src/core/datatype/annotations/AnnotationGroupUnitTests.h \
     src/core/datatype/annotations/AnnotationUnitTests.h \
+    src/core/datatype/msa/MsaConsensusAlgorithmUnitTests.h \
     src/core/datatype/msa/MsaRowUnitTests.h \
     src/core/datatype/msa/MsaRowUtilsUnitTests.h \
     src/core/datatype/msa/MsaUnitTests.h \
@@ -30,7 +31,7 @@ HEADERS += \
     src/core/format/sqlite_object_dbi/SQLiteObjectDbiUnitTests.h \
     src/core/format/sqlite_sequence_dbi/SequenceDbiSQLiteSpecificUnitTests.h \
     src/core/gobjects/BioStruct3DObjectUnitTests.h \
-    src/core/gobjects/DNAChromatogramObjectUnitTests.h \
+    src/core/gobjects/ChromatogramObjectUnitTests.h \
     src/core/gobjects/FeaturesTableObjectUnitTest.h \
     src/core/gobjects/MsaObjectUnitTests.h \
     src/core/gobjects/PhyTreeObjectUnitTests.h \
@@ -47,6 +48,7 @@ SOURCES += \
     src/UnitTestSuite.cpp \
     src/core/datatype/annotations/AnnotationGroupUnitTests.cpp \
     src/core/datatype/annotations/AnnotationUnitTests.cpp \
+    src/core/datatype/msa/MsaConsensusAlgorithmUnitTests.cpp \
     src/core/datatype/msa/MsaRowUnitTests.cpp \
     src/core/datatype/msa/MsaRowUtilsUnitTests.cpp \
     src/core/datatype/msa/MsaUnitTests.cpp \
@@ -70,7 +72,7 @@ SOURCES += \
     src/core/format/sqlite_object_dbi/SQLiteObjectDbiUnitTests.cpp \
     src/core/format/sqlite_sequence_dbi/SequenceDbiSQLiteSpecificUnitTests.cpp \
     src/core/gobjects/BioStruct3DObjectUnitTests.cpp \
-    src/core/gobjects/DNAChromatogramObjectUnitTests.cpp \
+    src/core/gobjects/ChromatogramObjectUnitTests.cpp \
     src/core/gobjects/FeaturesTableObjectUnitTest.cpp \
     src/core/gobjects/MsaObjectUnitTests.cpp \
     src/core/gobjects/PhyTreeObjectUnitTests.cpp \

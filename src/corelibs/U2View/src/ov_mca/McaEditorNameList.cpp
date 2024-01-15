@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ McaEditor* McaEditorNameList::getEditor() const {
 }
 
 bool McaEditorNameList::isRowReversed(int rowIndex) const {
-    return getEditor()->getMaObject()->getMcaRow(rowIndex)->isReversed();
+    return getEditor()->getMaObject()->getRow(rowIndex)->isReversed();
 }
 
 void McaEditorNameList::drawText(QPainter& painter, const QString& text, const QRect& rect, bool selected) {

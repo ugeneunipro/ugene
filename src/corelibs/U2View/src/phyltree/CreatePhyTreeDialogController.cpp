@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,12 +30,11 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
@@ -54,9 +53,9 @@
 
 namespace U2 {
 
-CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, const MultipleSequenceAlignmentObject* msaObject, CreatePhyTreeSettings& settings)
+CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, const MsaObject* msaObject, CreatePhyTreeSettings& settings)
     : QDialog(parent),
-      msa(msaObject->getMsaCopy()),
+      msa(msaObject->getAlignment()->getCopy()),
       settings(settings),
       settingsWidget(nullptr),
       ui(new Ui_CreatePhyTree),
@@ -175,7 +174,7 @@ bool CreatePhyTreeDialogController::checkMemory() {
     return true;
 }
 
-void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAlignmentObject* msaObject) {
+void CreatePhyTreeDialogController::initSaveController(const MsaObject* msaObject) {
     SaveDocumentControllerConfig config;
     GUrl msaDocumentUrl = msaObject->getDocument()->getURL();
     QString saveDirPath = QFileInfo(msaDocumentUrl.getURLString()).absolutePath();

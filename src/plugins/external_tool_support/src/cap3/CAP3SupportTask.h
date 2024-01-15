@@ -24,7 +24,7 @@
 #include <QFile>
 
 #include <U2Core/ExternalToolRunTask.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 #include <U2Formats/StreamSequenceReader.h>
 #include <U2Formats/StreamSequenceWriter.h>

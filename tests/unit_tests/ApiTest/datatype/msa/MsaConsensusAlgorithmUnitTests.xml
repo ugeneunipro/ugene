@@ -1,0 +1,9 @@
+<unittest>
+
+    MsaConsensusAlgorithmUnitTests
+    + levitskyCheckColumnBase
+    + levitskyCheckReplace
+    + levitskyCheckAddRow
+    + levitskyCheckRemoveColumn
+
+</unittest>

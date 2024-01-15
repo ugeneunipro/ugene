@@ -26,7 +26,7 @@
 #include <QTimer>
 #include <QWidget>
 
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2Region.h>
 
 #include <U2Gui/GScrollBar.h>
@@ -175,7 +175,7 @@ protected slots:
     void sl_insertGapBeforeSelection();
     void sl_replaceSelectionWithGaps();
 
-    void sl_alignmentChanged(const MultipleAlignment& ma, const MaModificationInfo& modInfo);
+    void sl_alignmentChanged(const Msa& ma, const MaModificationInfo& modInfo);
 
     void sl_completeUpdate();
     void sl_completeRedraw();

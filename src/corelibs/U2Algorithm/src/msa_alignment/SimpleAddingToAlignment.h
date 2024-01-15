@@ -24,8 +24,8 @@
 #include <U2Algorithm/AlignSequencesToAlignmentTaskSettings.h>
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaUtils.h>
 
 namespace U2 {
 
@@ -33,29 +33,29 @@ class SimpleAddToAlignmentTask : public AbstractAlignmentTask {
     Q_OBJECT
 public:
     SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings& settings);
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     AlignSequencesToAlignmentTaskSettings settings;
     QMap<QString, int> sequencePositions;
 
-    MultipleSequenceAlignment inputMsa;
+    Msa inputMsa;
 };
 
 class BestPositionFindTask : public Task {
     Q_OBJECT
 public:
-    BestPositionFindTask(const MultipleSequenceAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId);
-    void run();
+    BestPositionFindTask(const Msa& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId);
+    void run() override;
 
     int getPosition() const;
     const QString& getSequenceId() const;
 
 private:
-    const MultipleSequenceAlignment& inputMsa;
+    const Msa& inputMsa;
     U2EntityRef sequenceRef;
     QString sequenceId;
     int bestPosition;
@@ -64,7 +64,7 @@ private:
 
 class SimpleAddToAlignmentTaskFactory : public AbstractAlignmentTaskFactory {
 public:
-    virtual AbstractAlignmentTask* getTaskInstance(AbstractAlignmentTaskSettings* _settings) const;
+    AbstractAlignmentTask* getTaskInstance(AbstractAlignmentTaskSettings* _settings) const override;
 };
 
 class SimpleAddToAlignmentAlgorithm : public AlignmentAlgorithm {

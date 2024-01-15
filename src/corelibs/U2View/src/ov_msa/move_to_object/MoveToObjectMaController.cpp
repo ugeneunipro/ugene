@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,8 +31,8 @@
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/MultiTask.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2Mod.h>
 
 #include <U2Formats/ExportTasks.h>
@@ -41,9 +41,9 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OpenViewTask.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorSelection.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 
@@ -89,7 +89,7 @@ QMenu* MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
                 CHECK_EXT(referenceObject != nullptr, QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectNotFound(reference.objName)), );
                 CHECK_EXT(!referenceObject->isStateLocked(), QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectIsReadOnly(reference.objName)), );
 
-                auto targetMsaObject = qobject_cast<MultipleSequenceAlignmentObject*>(referenceObject);
+                auto targetMsaObject = qobject_cast<MsaObject*>(referenceObject);
                 CHECK_EXT(targetMsaObject != nullptr, QMessageBox::critical(ui, L10N::errorTitle(), L10N::nullPointerError(reference.objName)), );
 
                 QList<int> selectedViewRowIndexes = getSelection().getSelectedRowIndexes();
@@ -98,7 +98,7 @@ QMenu* MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
                 CHECK_EXT(!rowIdsToRemove.isEmpty(), QMessageBox::critical(ui, L10N::errorTitle(), L10N::internalError()), );
                 QList<DNASequence> sequencesWithGapsToMove;
                 for (int maRowIndex : qAsConst(selectedMaRowIndexes)) {
-                    MultipleAlignmentRow row = maObject->getRow(maRowIndex);
+                    MsaRow row = maObject->getRow(maRowIndex);
                     QByteArray sequenceWithGaps = row->getSequenceWithGaps(true, false);
                     sequencesWithGapsToMove << DNASequence(row->getName(), sequenceWithGaps, maObject->getAlphabet());
                 }
@@ -160,11 +160,11 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     QList<qint64> rowIdsToRemove = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
     SAFE_POINT(!rowIdsToRemove.isEmpty(), "rowIdsToRemove is empty", );
 
-    MultipleSequenceAlignment msaToExport;
+    Msa msaToExport;
     msaToExport->setName(urlInfo.baseName());
     msaToExport->setAlphabet(maObject->getAlphabet());
     for (int maRowIndex : qAsConst(selectedMaRowIndexes)) {
-        const MultipleAlignmentRow& row = maObject->getRow(maRowIndex);
+        const MsaRow& row = maObject->getRow(maRowIndex);
         msaToExport->addRow(row->getName(), row->getSequenceWithGaps(true, true));
     }
 
@@ -185,7 +185,7 @@ RemoveRowsFromMaObjectTask::RemoveRowsFromMaObjectTask(MaEditor* _maEditor, cons
 void RemoveRowsFromMaObjectTask::run() {
     CHECK(!maEditor.isNull(), );  // The editor may be closed while the task in the queue.
 
-    MultipleAlignmentObject* maObject = maEditor->getMaObject();
+    MsaObject* maObject = maEditor->getMaObject();
     CHECK_EXT(rowIds.size() < maObject->getRowCount(), setError(tr("Can't remove all rows from the alignment")), );
     U2UseCommonUserModStep userModStep(maObject->getEntityRef(), stateInfo);
     CHECK_OP(stateInfo, );

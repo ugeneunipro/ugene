@@ -23,7 +23,7 @@
 
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Task.h>
 

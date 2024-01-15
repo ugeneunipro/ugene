@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ namespace U2 {
 
 #define ROW_ID_PROPERTY "row-id"
 
-CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject* obj, const QList<qint64>& preSelectedRowIdList, const U2Region& preSelectedColumnsRegion, QWidget* p)
+CreateSubalignmentDialogController::CreateSubalignmentDialogController(MsaObject* obj, const QList<qint64>& preSelectedRowIdList, const U2Region& preSelectedColumnsRegion, QWidget* p)
     : QDialog(p), msaObject(obj), selectedRowIds(preSelectedRowIdList), selectedColumnRegion(preSelectedColumnsRegion), saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929690");
@@ -82,9 +82,9 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     startLineEdit->setText(QString::number(selectedColumnRegion.startPos + 1));  // Visual range starts with 1, not 0.
     endLineEdit->setText(QString::number(selectedColumnRegion.endPos()));
 
-    const MultipleSequenceAlignment msa = msaObject->getMsa();
+    const Msa msa = msaObject->getAlignment();
     for (int i = 0; i < rowCount; i++) {
-        const MultipleSequenceAlignmentRow row = msa->getMsaRow(i);
+        const MsaRow& row = msa->getRow(i);
         auto checkBox = new QCheckBox(row->getName(), this);
         checkBox->setProperty(ROW_ID_PROPERTY, row->getRowId());
         checkBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -239,7 +239,7 @@ const QList<qint64>& CreateSubalignmentDialogController::getSelectedRowIds() con
     return selectedRowIds;
 }
 
-CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask(MultipleSequenceAlignmentObject* maObj, const CreateSubalignmentSettings& settings)
+CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask(MsaObject* maObj, const CreateSubalignmentSettings& settings)
     : Task(tr("Create sub-alignment and open view: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE) {
     csTask = new CreateSubalignmentTask(maObj, settings);
     addSubTask(csTask);

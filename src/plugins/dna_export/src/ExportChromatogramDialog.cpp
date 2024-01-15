@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,20 +22,15 @@
 #include "ExportChromatogramDialog.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/Settings.h>
 
 #include <U2Gui/HelpButton.h>
-#include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
-
-#include "ExportUtils.h"
 
 #define SETTINGS_ROOT QString("dna_export/")
 

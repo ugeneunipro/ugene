@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,8 +31,8 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -122,11 +122,11 @@ QList<DNASequence> DocumentFormatUtils::toSequences(const GObject* obj) {
         CHECK_OP_EXT(os, res.removeLast(), res);
         return res;
     }
-    auto maObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
+    auto maObj = qobject_cast<const MsaObject*>(obj);
     CHECK(maObj != nullptr, res);  // MultipleSequenceAlignmentObject is NULL
     const DNAAlphabet* al = maObj->getAlphabet();
-    qint64 alLen = maObj->getMsa()->getLength();
-    foreach (const MultipleSequenceAlignmentRow& row, maObj->getMsa()->getMsaRows()) {
+    qint64 alLen = maObj->getAlignment()->getLength();
+    foreach (const MsaRow& row, maObj->getAlignment()->getRows()) {
         DNASequence seq;
         seq.seq = row->toByteArray(os, alLen);
         seq.setName(row->getName());

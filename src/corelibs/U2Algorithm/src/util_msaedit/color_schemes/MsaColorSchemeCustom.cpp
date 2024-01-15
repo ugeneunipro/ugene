@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ MsaColorSchemeCustomFactory::MsaColorSchemeCustomFactory(QObject* parent, const 
       colorsPerChar(colorMapToColorVector(scheme.alpColors)) {
 }
 
-MsaColorScheme* MsaColorSchemeCustomFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaColorScheme* MsaColorSchemeCustomFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaColorSchemeStatic(parent, this, maObj, colorsPerChar);
 }
 

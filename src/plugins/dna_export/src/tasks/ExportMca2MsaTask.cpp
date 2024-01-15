@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/GHints.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MsaExportUtils.h>
 
 #include <U2Formats/ExportTasks.h>
 
@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-ExportMca2MsaTask::ExportMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject,
+ExportMca2MsaTask::ExportMca2MsaTask(MsaObject* mcaObject,
                                      const QString& fileName,
                                      const DocumentFormatId& formatId,
                                      bool includeReference)

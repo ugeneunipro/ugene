@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -122,7 +122,7 @@ void ProjectImpl::addDocument(Document* d) {
     SAFE_POINT(d != nullptr, "NULL document", );
     coreLog.details(tr("Adding document to the project: %1").arg(d->getURLString()));
 
-    assert(findDocumentByURL(d->getURL()) == nullptr);
+    SAFE_POINT(findDocumentByURL(d->getURL()) == nullptr, QString("Project already has file opened %1").arg(d->getURLString()), );
     setParentStateLockItem_static(d, this);
 
     d->setGHints(new ModTrackHints(this, d->getGHintsMap(), true));

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ const int CURSOR_START_POSITION = 0;
 
 namespace U2 {
 
-SequenceSelectorWidgetController::SequenceSelectorWidgetController(MSAEditor* _msa)
+SequenceSelectorWidgetController::SequenceSelectorWidgetController(MsaEditor* _msa)
     : msa(_msa), defaultSeqName(""), seqId(U2MsaRow::INVALID_ROW_ID) {
     setupUi(this);
     filler = new MSACompletionFiller();
@@ -45,7 +45,7 @@ SequenceSelectorWidgetController::SequenceSelectorWidgetController(MSAEditor* _m
     connect(addSeq, SIGNAL(clicked()), SLOT(sl_addSeqClicked()));
     connect(deleteSeq, SIGNAL(clicked()), SLOT(sl_deleteSeqClicked()));
 
-    connect(msa->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_seqLineEditEditingFinished(const MultipleAlignment&, const MaModificationInfo&)));
+    connect(msa->getMaObject(), SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_seqLineEditEditingFinished(const Msa&, const MaModificationInfo&)));
 
     connect(completer, SIGNAL(si_editingFinished()), SLOT(sl_seqLineEditEditingFinished()));
 
@@ -66,7 +66,7 @@ void SequenceSelectorWidgetController::setSequenceId(qint64 newId) {
         seqId = newId;
         return;
     }
-    const MultipleSequenceAlignmentRow& selectedRow = msa->getMaObject()->getMsa()->getMsaRowByRowId(newId, os);
+    const MsaRow& selectedRow = msa->getMaObject()->getAlignment()->getRowByRowId(newId, os);
     CHECK_OP(os, );
     seqId = newId;
     const QString selectedName = selectedRow->getName();
@@ -82,23 +82,23 @@ qint64 SequenceSelectorWidgetController::sequenceId() const {
 }
 
 void SequenceSelectorWidgetController::updateCompleter() {
-    QStringList newNamesList = msa->getMaObject()->getMultipleAlignment()->getRowNames();
+    QStringList newNamesList = msa->getMaObject()->getAlignment()->getRowNames();
     filler->updateSeqList(newNamesList);
     if (!newNamesList.contains(seqLineEdit->text())) {
         sl_seqLineEditEditingFinished();
     }
 }
 
-void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished(const MultipleAlignment&, const MaModificationInfo& modInfo) {
+void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished(const Msa&, const MaModificationInfo& modInfo) {
     if (!modInfo.rowListChanged) {
         return;
     }
-    filler->updateSeqList(msa->getMaObject()->getMultipleAlignment()->getRowNames());
+    filler->updateSeqList(msa->getMaObject()->getAlignment()->getRowNames());
     sl_seqLineEditEditingFinished();
 }
 
 void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished() {
-    const MultipleSequenceAlignment ma = msa->getMaObject()->getMultipleAlignment();
+    const Msa ma = msa->getMaObject()->getAlignment();
     if (!ma->getRowNames().contains(seqLineEdit->text())) {
         seqLineEdit->setText(defaultSeqName);
     } else {
@@ -118,9 +118,9 @@ void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished() {
                 for (int sameNameCounter = 0; sameNameCounter <= sequenceIndex; ++sameNameCounter) {
                     selectedRowIndex = rowNames.indexOf(selectedSeqName, selectedRowIndex + 1);
                 }
-                seqId = ma->getMsaRow(selectedRowIndex)->getRowId();
+                seqId = ma->getRow(selectedRowIndex)->getRowId();
             } else {  // case when chosen name is unique in the msa
-                seqId = ma->getMsaRow(selectedSeqName)->getRowId();
+                seqId = ma->getRow(selectedSeqName)->getRowId();
             }
         }
     }
@@ -132,7 +132,7 @@ void SequenceSelectorWidgetController::sl_addSeqClicked() {
         return;
     }
 
-    MultipleSequenceAlignmentRow selectedRow = msa->getRowByViewRowIndex(msa->getSelection().toRect().y());
+    MsaRow selectedRow = msa->getRowByViewRowIndex(msa->getSelection().toRect().y());
     setSequenceId(selectedRow->getRowId());
     emit si_selectionChanged();
 }

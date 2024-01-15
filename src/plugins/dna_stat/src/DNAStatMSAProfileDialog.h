@@ -24,7 +24,7 @@
 #include <QHash>
 #include <QSet>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 #include <U2Core/global.h>
 
@@ -32,14 +32,14 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MsaEditor;
 class SaveDocumentController;
 
 class DNAStatMSAProfileDialog : public QDialog, public Ui_DNAStatMSAProfileDialog {
     Q_OBJECT
 
 public:
-    DNAStatMSAProfileDialog(QWidget* p, MSAEditor* ctx);
+    DNAStatMSAProfileDialog(QWidget* p, MsaEditor* ctx);
 
     void accept();
     /*Notify user about problems with big report, and disable opening report in UGENE*/
@@ -51,7 +51,7 @@ private slots:
 private:
     void initSaveController();
 
-    MSAEditor* ctx;
+    MsaEditor* ctx;
     SaveDocumentController* saveController;
 
     static const QString HTML;
@@ -76,7 +76,7 @@ public:
 
     QString profileName;  // usually object name
     QString profileURL;  // document url
-    MultipleSequenceAlignment ma;
+    Msa ma;
     bool usePercents;  // report percents but not counts
     DNAStatMSAProfileOutputFormat outFormat;
     QString outURL;

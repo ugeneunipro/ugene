@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,11 +62,11 @@ IQTreeSupport::IQTreeSupport()
 ////////////////////////////////////////
 // IQTreeAdapter
 
-Task* IQTreeAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings) {
+Task* IQTreeAdapter::createCalculatePhyTreeTask(const Msa& msa, const CreatePhyTreeSettings& settings) {
     return new IQTreeTask(msa, settings);
 }
 
-CreatePhyTreeWidget* IQTreeAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment& msa, QWidget* parent) {
+CreatePhyTreeWidget* IQTreeAdapter::createPhyTreeSettingsWidget(const Msa& msa, QWidget* parent) {
     return new IQTreeWidget(msa, parent);
 }
 

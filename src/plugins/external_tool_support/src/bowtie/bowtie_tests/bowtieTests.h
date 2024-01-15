@@ -34,7 +34,7 @@ namespace U2 {
 
 class BowtieGObjectTask;
 class DnaAssemblyMultiTask;
-class MultipleSequenceAlignmentObject;
+class MsaObject;
 
 class GTest_Bowtie : public XmlTest {
     Q_OBJECT

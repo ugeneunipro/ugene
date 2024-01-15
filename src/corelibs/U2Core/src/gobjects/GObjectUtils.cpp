@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/BioStruct3DObject.h>
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
@@ -32,8 +33,7 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrl.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PFMatrixObject.h>
 #include <U2Core/PWMatrixObject.h>
 #include <U2Core/PhyTreeObject.h>
@@ -47,7 +47,7 @@
 
 namespace U2 {
 
-QList<GObject*> GObjectUtils::select(const QList<GObject*>& objs, GObjectType t, UnloadedObjectFilter f) {
+QList<GObject*> GObjectUtils::select(const QList<GObject*>& objs, const GObjectType& t, UnloadedObjectFilter f) {
     QList<GObject*> res;
     foreach (GObject* o, objs) {
         bool isUnloaded = o->getGObjectType() == GObjectTypes::UNLOADED;
@@ -387,9 +387,9 @@ GObject* GObjectUtils::createObject(const U2DbiRef& ref, const U2DataId& id, con
         case U2Type::Sequence:
             return new U2SequenceObject(name, entityRef);
         case U2Type::Mca:
-            return new MultipleChromatogramAlignmentObject(name, entityRef);
+            return new MsaObject(name, entityRef, {}, {}, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT);
         case U2Type::Msa:
-            return new MultipleSequenceAlignmentObject(name, entityRef);
+            return new MsaObject(name, entityRef, {}, {}, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         case U2Type::Assembly:
             return new AssemblyObject(name, entityRef);
         case U2Type::VariantTrack:
@@ -403,7 +403,7 @@ GObject* GObjectUtils::createObject(const U2DbiRef& ref, const U2DataId& id, con
         case U2Type::BioStruct3D:
             return new BioStruct3DObject(name, entityRef);
         case U2Type::Chromatogram:
-            return new DNAChromatogramObject(name, entityRef);
+            return new ChromatogramObject(name, entityRef);
         case U2Type::PFMatrix:
             return new PFMatrixObject(name, entityRef);
         case U2Type::PWMatrix:
@@ -414,8 +414,6 @@ GObject* GObjectUtils::createObject(const U2DbiRef& ref, const U2DataId& id, con
             coreLog.trace(QObject::tr("Unsupported object type: %1").arg(type));
             return nullptr;
     }
-
-    return nullptr;
 }
 
 }  // namespace U2

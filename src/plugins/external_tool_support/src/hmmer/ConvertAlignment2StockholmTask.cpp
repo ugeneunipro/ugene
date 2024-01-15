@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -113,8 +113,8 @@ void ConvertAlignment2Stockholm::prepareSaveTask() {
         stateInfo.addWarning(tr("File contains several multiple alignments. Only the first one is saved to the result file."));
     }
 
-    auto maObject = qobject_cast<MultipleSequenceAlignmentObject*>(objects.first());
-    saveTask = new SaveAlignmentTask(maObject->getMultipleAlignment(), resultUrl, BaseDocumentFormats::STOCKHOLM);
+    auto maObject = qobject_cast<MsaObject*>(objects.first());
+    saveTask = new SaveAlignmentTask(maObject->getAlignment(), resultUrl, BaseDocumentFormats::STOCKHOLM);
     saveTask->setSubtaskProgressWeight(50);
 }
 

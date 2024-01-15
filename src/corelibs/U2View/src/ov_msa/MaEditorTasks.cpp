@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 
 #include <QSet>
 
-#include <U2Algorithm/MSAConsensusAlgorithm.h>
+#include <U2Algorithm/MsaConsensusAlgorithm.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -36,7 +36,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextObject.h>
@@ -45,10 +45,10 @@
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UnloadedObject.h>
 
-#include "MSAEditor.h"
-#include "MSAEditorConsensusArea.h"
 #include "MaEditorFactory.h"
 #include "MaEditorState.h"
+#include "MsaEditor.h"
+#include "MsaEditorConsensusArea.h"
 
 namespace U2 {
 
@@ -58,7 +58,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 /// open new view
 
-OpenMaEditorTask::OpenMaEditorTask(MultipleAlignmentObject* _obj, GObjectViewFactoryId fid, GObjectType type)
+OpenMaEditorTask::OpenMaEditorTask(MsaObject* _obj, GObjectViewFactoryId fid, GObjectType type)
     : ObjectViewTask(fid),
       type(type),
       maObject(_obj) {
@@ -94,11 +94,11 @@ void OpenMaEditorTask::open() {
         if (unloadedReference.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(unloadedReference, UOF_LoadedOnly);
             if (obj != nullptr && obj->getGObjectType() == type) {
-                maObject = qobject_cast<MultipleAlignmentObject*>(obj);
+                maObject = qobject_cast<MsaObject*>(obj);
             }
         } else {
             QList<GObject*> objects = doc->findGObjectByType(type, UOF_LoadedAndUnloaded);
-            maObject = objects.isEmpty() ? nullptr : qobject_cast<MultipleAlignmentObject*>(objects.first());
+            maObject = objects.isEmpty() ? nullptr : qobject_cast<MsaObject*>(objects.first());
         }
         if (maObject.isNull()) {
             stateInfo.setError(tr("Multiple alignment object not found"));
@@ -116,18 +116,18 @@ void OpenMaEditorTask::open() {
     mdiManager->addMDIWindow(objectViewWindow);
 }
 
-void OpenMaEditorTask::updateTitle(MSAEditor* msaEd) {
+void OpenMaEditorTask::updateTitle(MsaEditor* msaEd) {
     const QString& oldViewName = msaEd->getName();
     GObjectViewWindow* w = GObjectViewUtils::findViewByName(oldViewName);
     if (w != nullptr) {
-        MultipleAlignmentObject* msaObject = msaEd->getMaObject();
+        MsaObject* msaObject = msaEd->getMaObject();
         QString newViewName = GObjectViewUtils::genUniqueViewName(msaObject->getDocument(), msaObject);
         msaEd->setName(newViewName);
         w->setWindowTitle(newViewName);
     }
 }
 
-OpenMsaEditorTask::OpenMsaEditorTask(MultipleAlignmentObject* obj)
+OpenMsaEditorTask::OpenMsaEditorTask(MsaObject* obj)
     : OpenMaEditorTask(obj, MsaEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
 }
 
@@ -143,7 +143,7 @@ MaEditor* OpenMsaEditorTask::getEditor(const QString& viewName, GObject* obj) {
     return MsaEditorFactory().getEditor(viewName, obj, stateInfo);
 }
 
-OpenMcaEditorTask::OpenMcaEditorTask(MultipleAlignmentObject* obj)
+OpenMcaEditorTask::OpenMcaEditorTask(MsaObject* obj)
     : OpenMaEditorTask(obj, McaEditorFactory::ID, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT) {
 }
 
@@ -207,7 +207,7 @@ void OpenSavedMaEditorTask::open() {
         stateInfo.setError(tr("Alignment object not found: %1").arg(ref.objName));
         return;
     }
-    auto maObject = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto maObject = qobject_cast<MsaObject*>(obj);
     assert(maObject != nullptr);
 
     MaEditor* maEditor = factory->getEditor(viewName, maObject, stateInfo);
@@ -317,7 +317,7 @@ Document* ExportMaConsensusTask::createDocument() {
     return doc.take();
 }
 
-ExtractConsensusTask::ExtractConsensusTask(bool keepGaps_, MaEditor* ma_, MSAConsensusAlgorithm* algorithm_)
+ExtractConsensusTask::ExtractConsensusTask(bool keepGaps_, MaEditor* ma_, MsaConsensusAlgorithm* algorithm_)
     : Task(tr("Extract consensus"), TaskFlags(TaskFlag_None)),
       keepGaps(keepGaps_),
       ma(ma_),
@@ -336,7 +336,7 @@ void ExtractConsensusTask::run() {
     CHECK(ma->getMaEditorWgt(0)->getConsensusArea(), );
     CHECK(ma->getMaEditorWgt(0)->getConsensusArea()->getConsensusCache(), );
 
-    const MultipleAlignment alignment = ma->getMaObject()->getMultipleAlignmentCopy();
+    const Msa alignment = ma->getMaObject()->getAlignment()->getCopy();
     for (int i = 0, n = alignment->getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
             return;
@@ -346,7 +346,7 @@ void ExtractConsensusTask::run() {
         SAFE_POINT(0 != nSeq, "No sequences in alignment", );
 
         QChar c = algorithm->getConsensusCharAndScore(alignment, i, count);
-        if (c == MSAConsensusAlgorithm::INVALID_CONS_CHAR) {
+        if (c == MsaConsensusAlgorithm::INVALID_CONS_CHAR) {
             c = U2Msa::GAP_CHAR;
         }
         if (c != U2Msa::GAP_CHAR || keepGaps) {

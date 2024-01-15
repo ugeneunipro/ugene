@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1264,6 +1264,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4966);
     REGISTER_TEST(GUITest_regression_scenarios::test_4969_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4969_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4981);
     REGISTER_TEST(GUITest_regression_scenarios::test_4983);
     REGISTER_TEST(GUITest_regression_scenarios::test_4985);
     REGISTER_TEST(GUITest_regression_scenarios::test_4986);
@@ -1305,6 +1306,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5263);
     REGISTER_TEST(GUITest_regression_scenarios::test_5268);
     REGISTER_TEST(GUITest_regression_scenarios::test_5278);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5281);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5314);
     REGISTER_TEST(GUITest_regression_scenarios::test_5330);
@@ -1801,11 +1803,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7708);
     REGISTER_TEST(GUITest_regression_scenarios::test_7712);
     REGISTER_TEST(GUITest_regression_scenarios::test_7714);
-    REGISTER_TEST(GUITest_regression_scenarios::test_7715);
     REGISTER_TEST(GUITest_regression_scenarios::test_7720);
     REGISTER_TEST(GUITest_regression_scenarios::test_7730);
     REGISTER_TEST(GUITest_regression_scenarios::test_7740);
     REGISTER_TEST(GUITest_regression_scenarios::test_7744);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7746);
     REGISTER_TEST(GUITest_regression_scenarios::test_7748);
     REGISTER_TEST(GUITest_regression_scenarios::test_7751);
     REGISTER_TEST(GUITest_regression_scenarios::test_7753);
@@ -1846,12 +1848,19 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7947);
     REGISTER_TEST(GUITest_regression_scenarios::test_7956);
     REGISTER_TEST(GUITest_regression_scenarios::test_7957);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7962);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7965);
     REGISTER_TEST(GUITest_regression_scenarios::test_7968);
     REGISTER_TEST(GUITest_regression_scenarios::test_7979);
 
-    
+    REGISTER_TEST(GUITest_regression_scenarios::test_8001);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8002);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8004);
     REGISTER_TEST(GUITest_regression_scenarios::test_8009);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8010);
     REGISTER_TEST(GUITest_regression_scenarios::test_8015);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8028);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8037);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -3052,6 +3061,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0008);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0009);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0010);
+    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0011);
 
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0002);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,9 +23,8 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaExportUtils.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -61,11 +60,11 @@ U2DbiRef MsaObjectTestData::getDbiRef() {
     return dbiRef;
 }
 
-MultipleSequenceAlignmentObject* MsaObjectTestData::getTestAlignmentObject(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
+MsaObject* MsaObjectTestData::getTestAlignmentObject(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
     const U2EntityRef entityRef = getTestAlignmentRef(dbiRef, name, os);
     CHECK_OP(os, nullptr);
 
-    return new MultipleSequenceAlignmentObject(name, entityRef);
+    return new MsaObject(name, entityRef);
 }
 
 U2EntityRef MsaObjectTestData::getTestAlignmentRef(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
@@ -82,12 +81,10 @@ U2EntityRef MsaObjectTestData::getTestAlignmentRef(const U2DbiRef& dbiRef, const
     return U2EntityRef(dbiRef, msaId);
 }
 
-MultipleSequenceAlignment MsaObjectTestData::getTestAlignment(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
+Msa MsaObjectTestData::getTestAlignment(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
     U2EntityRef malignmentRef = getTestAlignmentRef(dbiRef, name, os);
-    CHECK_OP(os, MultipleSequenceAlignment());
-
-    MultipleSequenceAlignmentExporter exporter;
-    return exporter.getAlignment(dbiRef, malignmentRef.entityId, os);
+    CHECK_OP(os, {});
+    return MsaExportUtils::loadAlignment(dbiRef, malignmentRef.entityId, os);
 }
 
 IMPLEMENT_TEST(MsaObjectUnitTests, getMAlignment) {
@@ -99,10 +96,10 @@ IMPLEMENT_TEST(MsaObjectUnitTests, getMAlignment) {
     const U2DbiRef dbiRef = MsaObjectTestData::getDbiRef();
     U2OpStatusImpl os;
 
-    QScopedPointer<MultipleSequenceAlignmentObject> alObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alName, os));
+    QScopedPointer<MsaObject> alObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alName, os));
     CHECK_NO_ERROR(os);
 
-    const MultipleSequenceAlignment alActual = alObj->getMultipleAlignment();
+    const Msa alActual = alObj->getAlignment();
 
     const bool alsEqual = (*alActual == *MsaObjectTestData::getTestAlignment(dbiRef, alName, os));
     CHECK_TRUE(alsEqual, "Actual alignment doesn't equal to the original!");
@@ -123,12 +120,12 @@ IMPLEMENT_TEST(MsaObjectUnitTests, setMAlignment) {
     const U2DbiRef dbiRef = MsaObjectTestData::getDbiRef();
     U2OpStatusImpl os;
 
-    QScopedPointer<MultipleSequenceAlignmentObject> alObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, firstAlignmentName, os));
+    QScopedPointer<MsaObject> alObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, firstAlignmentName, os));
     CHECK_NO_ERROR(os);
 
-    const MultipleSequenceAlignment secondAlignment = MsaObjectTestData::getTestAlignment(dbiRef, secondAlignmentName, os);
+    const Msa secondAlignment = MsaObjectTestData::getTestAlignment(dbiRef, secondAlignmentName, os);
     alObj->setMultipleAlignment(secondAlignment);
-    const MultipleSequenceAlignment actualAlignment = alObj->getMultipleAlignment();
+    const Msa actualAlignment = alObj->getAlignment();
 
     bool alsEqual = (*secondAlignment == *actualAlignment);
     CHECK_TRUE(alsEqual, "Actual alignment doesn't equal to the original!");
@@ -147,15 +144,15 @@ IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_trailingGaps) {
     const U2DbiRef dbiRef = MsaObjectTestData::getDbiRef();
     U2OpStatusImpl os;
 
-    QScopedPointer<MultipleSequenceAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, malignment, os));
+    QScopedPointer<MsaObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, malignment, os));
     CHECK_NO_ERROR(os);
 
     alnObj->deleteGap(os, U2Region(0, alnObj->getRowCount()), 10, 3);
 
-    const MultipleSequenceAlignment resultAlignment = alnObj->getMultipleAlignment();
-    CHECK_TRUE(resultAlignment->getMsaRow(0)->getData() == "AC-GT--AAA-", "First row content is unexpected!");
-    CHECK_TRUE(resultAlignment->getMsaRow(1)->getData() == "-ACA---GTT-", "Second row content is unexpected!");
-    CHECK_TRUE(resultAlignment->getMsaRow(2)->getData() == "-ACACA-G---", "Third row content is unexpected!");
+    const Msa resultAlignment = alnObj->getAlignment();
+    CHECK_TRUE(resultAlignment->getRow(0)->getData() == "AC-GT--AAA-", "First row content is unexpected!");
+    CHECK_TRUE(resultAlignment->getRow(1)->getData() == "-ACA---GTT-", "Second row content is unexpected!");
+    CHECK_TRUE(resultAlignment->getRow(2)->getData() == "-ACACA-G---", "Third row content is unexpected!");
 }
 
 IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols) {
@@ -170,17 +167,17 @@ IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols) {
     const U2DbiRef dbiRef = MsaObjectTestData::getDbiRef();
     U2OpStatusImpl os;
 
-    QScopedPointer<MultipleSequenceAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alignmentName, os));
+    QScopedPointer<MsaObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alignmentName, os));
     CHECK_NO_ERROR(os);
 
     const int countOfDeleted = alnObj->deleteGap(os, U2Region(1, alnObj->getRowCount() - 1), 6, 2);
     SAFE_POINT_OP(os, );
 
     CHECK_TRUE(0 == countOfDeleted, "Unexpected count of removed symbols!");
-    const MultipleSequenceAlignment resultAlignment = alnObj->getMultipleAlignment();
-    CHECK_TRUE(resultAlignment->getMsaRow(0)->getData() == "AC-GT--AAA----", "First row content is unexpected!");
-    CHECK_TRUE(resultAlignment->getMsaRow(1)->getData() == "-ACA---GTT----", "Second row content is unexpected!");
-    CHECK_TRUE(resultAlignment->getMsaRow(2)->getData() == "-ACACA-G------", "Third row content is unexpected!");
+    const Msa resultAlignment = alnObj->getAlignment();
+    CHECK_TRUE(resultAlignment->getRow(0)->getData() == "AC-GT--AAA----", "First row content is unexpected!");
+    CHECK_TRUE(resultAlignment->getRow(1)->getData() == "-ACA---GTT----", "Second row content is unexpected!");
+    CHECK_TRUE(resultAlignment->getRow(2)->getData() == "-ACACA-G------", "Third row content is unexpected!");
 }
 
 IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_gapRegion) {
@@ -198,17 +195,17 @@ IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_gapRegion) {
     const U2DbiRef dbiRef = MsaObjectTestData::getDbiRef();
     U2OpStatusImpl os;
 
-    QScopedPointer<MultipleSequenceAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alignmentName, os));
+    QScopedPointer<MsaObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alignmentName, os));
     CHECK_NO_ERROR(os);
 
     const int countOfDeleted = alnObj->deleteGap(os, U2Region(0, alnObj->getRowCount() - 1), 5, 2);
     SAFE_POINT_OP(os, );
 
     CHECK_TRUE(2 == countOfDeleted, "Unexpected count of removed symbols!");
-    const MultipleSequenceAlignment resultAlignment = alnObj->getMultipleAlignment();
-    CHECK_TRUE(resultAlignment->getMsaRow(0)->getData() == "AC-GTAAA---", "First row content is unexpected!");
-    CHECK_TRUE(resultAlignment->getMsaRow(1)->getData() == "-ACA-GTT---", "Second row content is unexpected!");
-    CHECK_TRUE(resultAlignment->getMsaRow(2)->getData() == "-ACACA-G---", "Third row content is unexpected!");
+    const Msa resultAlignment = alnObj->getAlignment();
+    CHECK_TRUE(resultAlignment->getRow(0)->getData() == "AC-GTAAA---", "First row content is unexpected!");
+    CHECK_TRUE(resultAlignment->getRow(1)->getData() == "-ACA-GTT---", "Second row content is unexpected!");
+    CHECK_TRUE(resultAlignment->getRow(2)->getData() == "-ACACA-G---", "Third row content is unexpected!");
 }
 
 }  // namespace U2

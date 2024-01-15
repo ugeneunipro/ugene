@@ -34,7 +34,7 @@ namespace U2 {
 
 class BwaGObjectTask;
 class DnaAssemblyMultiTask;
-class MultipleSequenceAlignmentObject;
+class MsaObject;
 
 class GTest_Bwa : public XmlTest {
     Q_OBJECT

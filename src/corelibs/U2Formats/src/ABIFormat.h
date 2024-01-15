@@ -29,7 +29,7 @@ namespace U2 {
 class IOAdapter;
 class SeekableBuf;
 class U2OpStatus;
-class DNAChromatogram;
+class Chromatogram;
 
 class U2FORMATS_EXPORT ABIFormat : public DocumentFormat {
     Q_OBJECT
@@ -45,7 +45,7 @@ protected:
 
 private:
     Document* parseABI(const U2DbiRef& dbiRef, SeekableBuf*, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);
-    bool loadABIObjects(SeekableBuf* fp, DNASequence& seq, DNAChromatogram& cd);
+    bool loadABIObjects(SeekableBuf* fp, DNASequence& seq, Chromatogram& chromatogram);
 };
 
 }  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,23 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#include <math.h>
+#include <cmath>
 
 #include <QTextStream>
 
 #include <U2Algorithm/BuiltInConsensusAlgorithms.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSAConsensusUtils.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaConsensusUtils.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentWalker.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
+#include <U2Core/MsaWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
@@ -84,7 +84,7 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
     const QBitArray& LINE_BREAKS = TextUtils::LINE_BREAKS;
 
     QString objName = reader.getURL().baseFileName();
-    MultipleSequenceAlignment al(objName);
+    Msa al(objName);
     bool lineOk = false;
     bool firstBlock = true;
     int sequenceIdx = 0;
@@ -173,7 +173,7 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
                 break;
             }
             if (rowIdx != -1) {
-                const MultipleSequenceAlignmentRow row = al->getMsaRow(rowIdx);
+                const MsaRow& row = al->getRow(rowIdx);
                 if (row->getName() != name) {
                     os.setError(ClustalWAlnFormat::tr("Sequence names are not matched: '%1' vs '%2', row index: %3").arg(name, row->getName(), QString::number(rowIdx)));
                     break;
@@ -183,7 +183,7 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
         }
         if (lastBlockLine) {
             firstBlock = false;
-            if (!MSAUtils::checkPackedModelSymmetry(al, os)) {
+            if (!MsaUtils::checkPackedModelSymmetry(al, os)) {
                 break;
             }
             sequenceIdx = 0;
@@ -194,14 +194,14 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
 
         os.setProgress(reader.getProgress());
     }
-    MSAUtils::checkPackedModelSymmetry(al, os);
+    MsaUtils::checkPackedModelSymmetry(al, os);
     CHECK_OP(os, );
 
     U2AlphabetUtils::assignAlphabet(al);
     CHECK_EXT(al->getAlphabet() != nullptr, os.setError(ClustalWAlnFormat::tr("Alphabet is unknown")), );
 
     QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+    MsaObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
     CHECK_OP(os, );
     objects.append(obj);
 }
@@ -219,10 +219,10 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
     const QList<GObject*>& als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(als.size() == 1, "Clustal entry storing: alignment objects count error", );
 
-    auto obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
+    auto obj = dynamic_cast<MsaObject*>(als.first());
     SAFE_POINT(obj != nullptr, "Clustal entry storing: NULL alignment object", );
 
-    const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
+    const Msa msa = obj->getAlignment();
 
     // Write header.
     QString header("CLUSTAL W 2.0 multiple sequence alignment\n\n");
@@ -231,7 +231,7 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
 
     // Precalculate maximum sequence name length.
     int maxNameLength = 0;
-    foreach (const MultipleSequenceAlignmentRow& row, msa->getMsaRows()) {
+    foreach (const MsaRow& row, msa->getRows()) {
         maxNameLength = qMax(maxNameLength, row->getName().length());
     }
     maxNameLength = qMin(maxNameLength, MAX_NAME_LEN);
@@ -239,9 +239,9 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
     int aliLen = msa->getLength();
     QByteArray consensus(aliLen, U2Msa::GAP_CHAR);
 
-    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
-    QScopedPointer<MSAConsensusAlgorithm> algo(algoFactory->createAlgorithm(msa));
-    MSAConsensusUtils::updateConsensus(msa, consensus, algo.data());
+    MsaConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
+    QScopedPointer<MsaConsensusAlgorithm> algo(algoFactory->createAlgorithm(msa, false));
+    MsaConsensusUtils::updateConsensus(msa, consensus, algo.data());
 
     int maxNumLength = 1 + (aliLen < 10 ? 1 : (int)log10((double)aliLen));
 
@@ -260,16 +260,16 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
     const char* spaces = TextUtils::SPACE_LINE.constData();
 
     // Write sequence.
-    MultipleSequenceAlignmentWalker walker(msa);
+    MsaWalker walker(msa);
     for (int i = 0; i < aliLen; i += seqPerPage) {
         int partLen = i + seqPerPage > aliLen ? aliLen - i : seqPerPage;
         QList<QByteArray> seqs = walker.nextData(partLen, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleSequenceAlignmentRow> rows = msa->getMsaRows();
-        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = rows.constBegin();
+        QList<MsaRow> rows = msa->getRows().toList();
+        QList<MsaRow>::ConstIterator ri = rows.constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MultipleSequenceAlignmentRow& row = *ri;
+            const MsaRow& row = *ri;
             // Name.
             QString line = row->getName();
             if (line.length() > MAX_NAME_LEN) {
@@ -281,7 +281,7 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObje
             line.append(QByteArray(spaces, seqStart - line.length()));
 
             // Sequence.
-            QByteArray sequence = *si;
+            const QByteArray& sequence = *si;
             line.append(sequence);
             line.append(' ');
             line.append(QString::number(qMin(i + seqPerPage, aliLen)));
@@ -307,7 +307,7 @@ void ClustalWAlnFormat::storeTextDocument(IOAdapterWriter& writer, Document* d, 
     const QList<GObject*>& objectList = d->getObjects();
     CHECK_EXT(objectList.size() == 1, (objectList.isEmpty() ? tr("No data to write") : tr("Too many objects: %1").arg(objectList.size())), );
 
-    auto obj = qobject_cast<MultipleSequenceAlignmentObject*>(objectList.first());
+    auto obj = qobject_cast<MsaObject*>(objectList.first());
     CHECK_EXT(obj != nullptr, os.setError(tr("Not a multiple alignment object")), );
 
     QMap<GObjectType, QList<GObject*>> objectsMap;

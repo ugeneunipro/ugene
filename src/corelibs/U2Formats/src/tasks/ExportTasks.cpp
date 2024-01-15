@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,22 +23,20 @@
 
 #include <QFileInfo>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DNATranslationImpl.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -50,7 +48,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
-ExportAlignmentTask::ExportAlignmentTask(const MultipleSequenceAlignment& _ma, const QString& _url, const DocumentFormatId& _documentFormatId)
+ExportAlignmentTask::ExportAlignmentTask(const Msa& _ma, const QString& _url, const DocumentFormatId& _documentFormatId)
     : DocumentProviderTask(tr("Export alignment to %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), url(_url), documentFormatId(_documentFormatId) {
     GCOUNTER(cvar, "ExportAlignmentTask");
     documentDescription = QFileInfo(url).fileName();
@@ -66,7 +64,7 @@ void ExportAlignmentTask::run() {
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), ma, stateInfo);
+    MsaObject* obj = MsaImportUtils::createMsaObject(exportedDocument->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     exportedDocument->addObject(obj);
@@ -82,7 +80,7 @@ void ExportAlignmentTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment& _ma,
+ExportMSA2SequencesTask::ExportMSA2SequencesTask(const Msa& _ma,
                                                  const QString& _url,
                                                  bool _trimLeadingAndTrailingGaps,
                                                  const DocumentFormatId& _documentFormatId)
@@ -100,7 +98,7 @@ void ExportMSA2SequencesTask::run() {
     SAFE_POINT_NN(iof, );
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
-    QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(ma, stateInfo, trimLeadingAndTrailingGaps);
+    QList<DNASequence> sequenceList = MsaUtils::convertMsaToSequenceList(ma, stateInfo, trimLeadingAndTrailingGaps);
     CHECK_OP(stateInfo, );
     QSet<QString> usedNames;
     for (DNASequence& sequence : sequenceList) {
@@ -126,7 +124,7 @@ void ExportMSA2SequencesTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export nucleic alignment 2 amino alignment
 
-ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment& msa,
+ExportMSA2MSATask::ExportMSA2MSATask(const Msa& msa,
                                      const QList<qint64>& rowIds,
                                      const U2Region& columnRegion,
                                      const QString& _url,
@@ -148,7 +146,7 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment& msa,
     SAFE_POINT_EXT(aminoTranslation == nullptr || aminoTranslation->isThree2One(), setError(QString("Invalid amino translation: %1").arg(aminoTranslation->getTranslationName())), );
     setVerboseLogMode(true);
 
-    sequenceList = MSAUtils::convertMsaToSequenceList(msa, stateInfo, trimLeadingAndTrailingGaps, rowIds.toSet(), columnRegion);
+    sequenceList = MsaUtils::convertMsaToSequenceList(msa, stateInfo, trimLeadingAndTrailingGaps, rowIds.toSet(), columnRegion);
     CHECK_OP(stateInfo, )
 }
 
@@ -184,10 +182,10 @@ void ExportMSA2MSATask::run() {
             resultSequenceList << sequence;
         }
     }
-    MultipleSequenceAlignment aminoMa = MSAUtils::seq2ma(resultSequenceList, stateInfo);
+    Msa aminoMa = MsaUtils::seq2ma(resultSequenceList, stateInfo);
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), aminoMa, stateInfo);
+    MsaObject* obj = MsaImportUtils::createMsaObject(exportedDocument->getDbiRef(), aminoMa, stateInfo);
     CHECK_OP(stateInfo, );
 
     exportedDocument->addObject(obj);
@@ -202,7 +200,7 @@ void ExportMSA2MSATask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export chromatogram to SCF
 
-ExportDNAChromatogramTask::ExportDNAChromatogramTask(DNAChromatogramObject* _obj, const ExportChromatogramTaskSettings& _settings)
+ExportDNAChromatogramTask::ExportDNAChromatogramTask(ChromatogramObject* _obj, const ExportChromatogramTaskSettings& _settings)
     : DocumentProviderTask(tr("Export chromatogram to SCF"), TaskFlags_NR_FOSCOE), chromaObject(_obj), settings(_settings), loadTask(nullptr) {
     GCOUNTER(cvar, "ExportDNAChromatogramTask");
     setVerboseLogMode(true);
@@ -221,53 +219,53 @@ void ExportDNAChromatogramTask::prepare() {
     auto sObj = qobject_cast<U2SequenceObject*>(resObj);
     SAFE_POINT_EXT(sObj != nullptr, setError(L10N::nullPointerError("sequence object is null")), );
 
-    DNAChromatogram cd = chromaObject->getChromatogram();
+    Chromatogram chromatogram = chromaObject->getChromatogram();
     QByteArray seq = sObj->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
 
     if (settings.reverse) {
         TextUtils::reverse(seq.data(), seq.length());
-        reverseVector(cd.A);
-        reverseVector(cd.C);
-        reverseVector(cd.G);
-        reverseVector(cd.T);
+        reverseVector(chromatogram->A);
+        reverseVector(chromatogram->C);
+        reverseVector(chromatogram->G);
+        reverseVector(chromatogram->T);
         int offset = 0;
         if (chromaObject->getDocument()->getDocumentFormatId() == BaseDocumentFormats::ABIF) {
-            int baseNum = cd.baseCalls.count();
-            int seqLen = cd.seqLength;
+            int baseNum = chromatogram->baseCalls.count();
+            int seqLen = chromatogram->seqLength;
             // this is required for base <-> peak correspondence
             if (baseNum > seqLen) {
-                cd.baseCalls.remove(baseNum - 1);
-                cd.prob_A.remove(baseNum - 1);
-                cd.prob_C.remove(baseNum - 1);
-                cd.prob_G.remove(baseNum - 1);
-                cd.prob_T.remove(baseNum - 1);
+                chromatogram->baseCalls.remove(baseNum - 1);
+                chromatogram->prob_A.remove(baseNum - 1);
+                chromatogram->prob_C.remove(baseNum - 1);
+                chromatogram->prob_G.remove(baseNum - 1);
+                chromatogram->prob_T.remove(baseNum - 1);
             }
         } else if (chromaObject->getDocument()->getDocumentFormatId() == BaseDocumentFormats::SCF) {
             // SCF format particularities
             offset = -1;
         }
 
-        for (int i = 0; i < cd.seqLength; ++i) {
-            cd.baseCalls[i] = cd.traceLength - cd.baseCalls[i] + offset;
+        for (int i = 0; i < chromatogram->seqLength; ++i) {
+            chromatogram->baseCalls[i] = chromatogram->traceLength - chromatogram->baseCalls[i] + offset;
         }
-        reverseVector(cd.baseCalls);
-        reverseVector(cd.prob_A);
-        reverseVector(cd.prob_C);
-        reverseVector(cd.prob_G);
-        reverseVector(cd.prob_T);
+        reverseVector(chromatogram->baseCalls);
+        reverseVector(chromatogram->prob_A);
+        reverseVector(chromatogram->prob_C);
+        reverseVector(chromatogram->prob_G);
+        reverseVector(chromatogram->prob_T);
     }
 
     if (settings.complement) {
         DNATranslation* tr = AppContext::getDNATranslationRegistry()->lookupTranslation(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT);
         tr->translate(seq.data(), seq.length());
-        qSwap(cd.A, cd.T);
-        qSwap(cd.C, cd.G);
-        qSwap(cd.prob_A, cd.prob_T);
-        qSwap(cd.prob_C, cd.prob_G);
+        qSwap(chromatogram->A, chromatogram->T);
+        qSwap(chromatogram->C, chromatogram->G);
+        qSwap(chromatogram->prob_A, chromatogram->prob_T);
+        qSwap(chromatogram->prob_C, chromatogram->prob_G);
     }
 
-    SCFFormat::exportDocumentToSCF(settings.url, cd, seq, stateInfo);
+    SCFFormat::exportDocumentToSCF(settings.url, chromatogram, seq, stateInfo);
     CHECK_OP(stateInfo, );
 
     if (settings.loadDocument) {

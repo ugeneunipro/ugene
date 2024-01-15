@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -330,8 +330,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
         "",
         testDir + "_common_data/scenarios/sandbox/",
         CreateDocumentFiller::Genbank,
-        "Sequence",
-        false);
+        "Sequence");
     GTUtilsDialog::waitForDialog(filler);
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
 

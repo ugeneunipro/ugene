@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,36 +23,30 @@
 
 #include <QFileInfo>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/CloneObjectTask.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DNATranslationImpl.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
-
-#include <U2Formats/SCFFormat.h>
 
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
-SaveAlignmentTask::SaveAlignmentTask(const MultipleSequenceAlignment& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
+SaveAlignmentTask::SaveAlignmentTask(const Msa& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
     : Task("", TaskFlag_None),
       ma(_ma->getCopy()),
       fileName(_fileName),
@@ -73,7 +67,7 @@ void SaveAlignmentTask::run() {
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(fileName));
     doc.reset(f->createNewLoadedDocument(iof, fileName, stateInfo));
 
-    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), ma, stateInfo);
+    MsaObject* obj = MsaImportUtils::createMsaObject(doc->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     GHints* docHints = doc->getGHints();
@@ -92,20 +86,20 @@ const QString& SaveAlignmentTask::getUrl() const {
     return fileName;
 }
 
-const MultipleSequenceAlignment& SaveAlignmentTask::getMAlignment() const {
+const Msa& SaveAlignmentTask::getMAlignment() const {
     return ma;
 }
 
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MultipleSequenceAlignment& msa, const QString& _url, bool trimAli, const DocumentFormatId& _documentFormatId)
+SaveMSA2SequencesTask::SaveMSA2SequencesTask(const Msa& msa, const QString& _url, bool trimAli, const DocumentFormatId& _documentFormatId)
     : Task(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
       url(_url), documentFormatId(_documentFormatId) {
     GCOUNTER(cvar, "ExportMSA2SequencesTask");
     setVerboseLogMode(true);
     stateInfo.setProgress(0);
-    sequenceList = MSAUtils::convertMsaToSequenceList(msa, stateInfo, trimAli);
+    sequenceList = MsaUtils::convertMsaToSequenceList(msa, stateInfo, trimAli);
 }
 
 void SaveMSA2SequencesTask::run() {

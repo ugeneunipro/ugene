@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,9 +30,9 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleChromatogramAlignment.h>
-#include <U2Core/MultipleChromatogramAlignmentImporter.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2AttributeUtils.h>
 
@@ -100,8 +100,8 @@ U2SequenceObject* ComposeResultSubtask::takeReferenceSequenceObject() {
     return resultSequenceObject;
 }
 
-MultipleChromatogramAlignmentObject* ComposeResultSubtask::takeMcaObject() {
-    MultipleChromatogramAlignmentObject* resultMcaObject = mcaObject;
+MsaObject* ComposeResultSubtask::takeMcaObject() {
+    MsaObject* resultMcaObject = mcaObject;
     mcaObject->setParent(nullptr);
     mcaObject->moveToThread(QThread::currentThread());
     mcaObject = nullptr;
@@ -109,7 +109,7 @@ MultipleChromatogramAlignmentObject* ComposeResultSubtask::takeMcaObject() {
 }
 
 void ComposeResultSubtask::createAlignmentAndAnnotations() {
-    MultipleChromatogramAlignment resultMca("Mapped reads");
+    Msa resultMca("Mapped reads");
     resultMca->setAlphabet(referenceSequenceObject->getAlphabet());
 
     QVector<U2MsaGap> referenceGaps = getReferenceGaps();
@@ -129,15 +129,15 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
         U2EntityRef chromatogramRef = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(stateInfo, readObject->getEntityRef());
         CHECK_OP(stateInfo, );
         CHECK_EXT(chromatogramRef.isValid(), setError(tr("The related chromatogram not found")), );
-        DNAChromatogram readChromatogram = ChromatogramUtils::exportChromatogram(stateInfo, chromatogramRef);
+        Chromatogram readChromatogram = ChromatogramUtils::exportChromatogram(stateInfo, chromatogramRef);
         CHECK_OP(stateInfo, );
 
-        resultMca->addRow(pairwiseAlignment.readName, readChromatogram, readSequence, {}, stateInfo);
+        resultMca->addRow(pairwiseAlignment.readName, readSequence, {}, {}, readChromatogram, stateInfo);
         CHECK_OP(stateInfo, );
         int mcaRowIndex = resultMca->getRowCount() - 1;
 
         if (pairwiseAlignment.isOnComplementaryStrand) {
-            resultMca->getMcaRow(mcaRowIndex)->reverseComplement();
+            resultMca->getRow(mcaRowIndex)->reverseComplement();
         }
 
         const QVector<U2MsaGap>& gaps = pairwiseAlignment.readGaps;
@@ -151,7 +151,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
         CHECK_OP(stateInfo, );
 
         // Add read annotation to the reference.
-        const MultipleChromatogramAlignmentRow readRow = resultMca->getMcaRow(mcaRowIndex);
+        const MsaRow& readRow = resultMca->getRow(mcaRowIndex);
         U2Region region = getReadRegion(readRow, referenceGaps);
         SharedAnnotationData annotation(new AnnotationData());
         annotation->location = getLocation(region, pairwiseAlignment.isOnComplementaryStrand);
@@ -165,7 +165,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
     }
     resultMca->trim(false);  // just recalculates alignment len
 
-    mcaObject = MultipleChromatogramAlignmentImporter::createAlignment(stateInfo, storage->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, resultMca);
+    mcaObject = MsaImportUtils::createMcaObject(storage->getDbiRef(), resultMca, stateInfo, U2ObjectDbi::ROOT_FOLDER);
     mcaObject->setParent(this);
     CHECK_OP(stateInfo, );
 
@@ -180,7 +180,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
     obj.dbiId = storage->getDbiRef().dbiId;
     obj.id = mcaObject->getEntityRef().entityId;
     obj.version = mcaObject->getModificationVersion();
-    U2AttributeUtils::init(attribute, obj, MultipleChromatogramAlignmentObject::MCAOBJECT_REFERENCE);
+    U2AttributeUtils::init(attribute, obj, MsaObject::REFERENCE_SEQUENCE_ID_FOR_ALIGNMENT);
     attribute.value = referenceSequenceObject->getEntityRef().entityId;
     con.dbi->getAttributeDbi()->createByteArrayAttribute(attribute, stateInfo);
     CHECK_OP(stateInfo, );
@@ -203,7 +203,7 @@ void ComposeResultSubtask::enlargeReferenceByGaps() {
     }
 }
 
-U2Region ComposeResultSubtask::getReadRegion(const MultipleChromatogramAlignmentRow& readRow, const QVector<U2MsaGap>& referenceGapModel) const {
+U2Region ComposeResultSubtask::getReadRegion(const MsaRow& readRow, const QVector<U2MsaGap>& referenceGapModel) const {
     U2Region region(0, readRow->getRowLengthWithoutTrailing());
 
     // calculate read start
@@ -286,7 +286,7 @@ void ComposeResultSubtask::insertShiftedGapsIntoReference() {
     mcaObject->deleteColumnsWithGaps(stateInfo);
 }
 
-void ComposeResultSubtask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment& alignment,
+void ComposeResultSubtask::insertShiftedGapsIntoRead(Msa& alignment,
                                                      int mcaRowIndex,
                                                      const AlignToReferenceResult& alignResult,
                                                      const QVector<U2MsaGap>& mergedReferenceGaps) {

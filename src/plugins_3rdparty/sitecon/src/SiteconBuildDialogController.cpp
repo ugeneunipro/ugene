@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Settings.h>
 
 #include <U2Gui/HelpButton.h>
@@ -177,7 +177,7 @@ void SiteconBuildDialogController::reject() {
 //////////////////////////////////////////////////////////////////////////
 // task
 
-SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings& s, const MultipleSequenceAlignment& ma, const QString& origin)
+SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings& s, const Msa& ma, const QString& origin)
     : Task(tr("Build SITECON model"), TaskFlag_None), settings(s), ma(ma->getCopy()) {
     GCOUNTER(cvar, "SiteconBuildTask");
     tpm = Task::Progress_Manual;
@@ -277,8 +277,8 @@ QList<Task*> SiteconBuildToFileTask::onSubTaskFinished(Task* subTask) {
         if (mobjs.isEmpty()) {
             stateInfo.setError(tr("No alignment found"));
         } else {
-            auto mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
-            const MultipleSequenceAlignment msa = mobj->getMultipleAlignment();
+            auto mobj = qobject_cast<MsaObject*>(mobjs.first());
+            const Msa msa = mobj->getAlignment();
             QString baseName = mobj->getDocument()->getURL().baseFileName();
             buildTask = new SiteconBuildTask(settings, msa, baseName);
             res.append(buildTask);

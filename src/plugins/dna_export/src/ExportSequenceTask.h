@@ -56,7 +56,8 @@ public:
     const DNAAlphabet* alphabet;
     qint64 length;
 
-    QList<SharedAnnotationData> annotations;  // annotations to copy
+    // Annotations to copy. Key is the annotations group path, value - the list of the corresponding annotations
+    QMap<QString, QList<SharedAnnotationData>> annotations;
     const DNATranslation* complTT;  // complement translations for a sequence. Used only if 'strand' is 'compl' or 'both'
     const DNATranslation* aminoTT;  // amino translation for a sequence. If not NULL -> sequence is translated
     const DNATranslation* backTT;  // nucleic translation for a sequence. If not NULL -> sequence is back translated

@@ -24,7 +24,7 @@
 #include <QHash>
 #include <QSet>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 #include <U2Core/global.h>
 
@@ -34,15 +34,15 @@ class QFile;
 
 namespace U2 {
 
-class MSAEditor;
-class MSADistanceAlgorithm;
+class MsaEditor;
+class MsaDistanceAlgorithm;
 class SaveDocumentController;
 
 class DistanceMatrixMSAProfileDialog : public QDialog, public Ui_DistanceMatrixMSAProfileDialog {
     Q_OBJECT
 
 public:
-    DistanceMatrixMSAProfileDialog(QWidget* p, MSAEditor* ctx);
+    DistanceMatrixMSAProfileDialog(QWidget* p, MsaEditor* ctx);
 
     void accept();
 
@@ -53,7 +53,7 @@ private slots:
 private:
     void initSaveController();
 
-    MSAEditor* ctx;
+    MsaEditor* ctx;
     SaveDocumentController* saveController;
 
     static const QString HTML;
@@ -73,13 +73,13 @@ public:
     QString algoId;  // selected algorithm id
     QString profileName;  // usually object name
     QString profileURL;  // document url
-    MultipleSequenceAlignment ma;
+    Msa ma;
     bool usePercents;  // report percents but not counts
     bool excludeGaps;  // exclude gaps when calculate distance
     bool showGroupStatistic;
     DistanceMatrixMSAProfileOutputFormat outFormat;
     QString outURL;
-    MSAEditor* ctx;
+    MsaEditor* ctx;
 };
 
 class DistanceMatrixMSAProfileTask : public Task {
@@ -91,7 +91,7 @@ public:
     QString generateReport() const;
     virtual bool isReportingEnabled() const;
 
-    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleSequenceAlignmentRow>& rows, QFile* f);
+    void createDistanceTable(MsaDistanceAlgorithm* algo, const QList<MsaRow>& rows, QFile* f);
 
     QList<Task*> createStatisticsDocument(Task* subTask);
 

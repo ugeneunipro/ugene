@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,9 +21,9 @@
 
 #include "ScrollController.h"
 
-#include "U2Core/U2SafePoints.h"
 #include "U2Core/Log.h"
-#include <U2Core/MultipleAlignmentObject.h>
+#include "U2Core/U2SafePoints.h"
+#include <U2Core/MsaObject.h>
 
 #include "BaseWidthController.h"
 #include "DrawHelper.h"

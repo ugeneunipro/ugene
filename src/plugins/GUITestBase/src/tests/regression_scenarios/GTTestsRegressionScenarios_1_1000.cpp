@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,8 +58,8 @@
 #include <U2View/AnnotationsTreeView.h>
 #include <U2View/DetView.h>
 #include <U2View/GSequenceGraphView.h>
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"

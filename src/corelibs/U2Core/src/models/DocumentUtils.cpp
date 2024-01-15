@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,8 @@
 #include <U2Core/DocumentImport.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SequenceUtils.h>
 #include <U2Core/TextUtils.h>
@@ -226,11 +226,7 @@ void DocumentUtils::removeDocumentsContainigGObjectFromProject(GObject* obj) {
     }
 }
 
-QFile::Permissions DocumentUtils::getPermissions(Document* doc) {
-    return QFile(doc->getURLString()).permissions();
-}
-
-Document* DocumentUtils::createCopyRestructuredWithHints(Document* doc, U2OpStatus& os, bool shallowCopy) {
+Document* DocumentUtils::createCopyRestructuredWithHints(Document* doc, U2OpStatus& os) {
     Document* resultDoc = nullptr;
     QVariantMap hints = doc->getGHintsMap();
 
@@ -239,7 +235,7 @@ Document* DocumentUtils::createCopyRestructuredWithHints(Document* doc, U2OpStat
     }
 
     if (hints.value(DocumentReadingMode_SequenceAsAlignmentHint, false).toBool()) {
-        MultipleSequenceAlignmentObject* maObj = MSAUtils::seqObjs2msaObj(doc->getObjects(), hints, os, shallowCopy, true);
+        MsaObject* maObj = MsaUtils::convertSequenceObjectsToMsaObject(doc->getObjects(), hints, os, true);
         CHECK_OP(os, nullptr);
         CHECK(maObj != nullptr, resultDoc);
         QList<GObject*> objects;

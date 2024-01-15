@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/DNAChromatogram.h>
+#include <U2Core/Chromatogram.h>
 #include <U2Core/GObject.h>
 
 #include <U2Gui/ScaleBar.h>
@@ -51,7 +51,7 @@ class ChromatogramView : public GSequenceLineView {
     friend class ChromatogramViewRenderArea;
 
 public:
-    ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSequenceLineView* cv, const DNAChromatogram& chroma);
+    ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSequenceLineView* cv, const Chromatogram& chromatogram);
 
     virtual void buildPopupMenu(QMenu& m);
 
@@ -110,7 +110,7 @@ private:
 class ChromatogramViewRenderArea : public GSequenceLineViewRenderArea {
     Q_OBJECT
 public:
-    ChromatogramViewRenderArea(ChromatogramView* p, const DNAChromatogram& chroma);
+    ChromatogramViewRenderArea(ChromatogramView* p, const Chromatogram& chroma);
     ~ChromatogramViewRenderArea();
 
     int getHeightAreaBC() const {
@@ -139,7 +139,7 @@ private:
     void drawQualityValues(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba);
     void drawChromatogramBaseCallsLines(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba, const ChromatogramViewSettings& settings);
 
-    DNAChromatogram chroma;
+    Chromatogram chromatogram;
     int chromaMax;
     QPen linePen;
     QFont font;

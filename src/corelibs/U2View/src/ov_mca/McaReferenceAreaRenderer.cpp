@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,12 +27,12 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "ov_msa/BaseWidthController.h"
-#include "ov_msa/MSAEditorConsensusArea.h"
-#include "ov_msa/MSAEditorConsensusCache.h"
-#include "ov_msa/MSAEditorSequenceArea.h"
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/MaEditorWgt.h"
+#include "ov_msa/MsaEditorConsensusArea.h"
+#include "ov_msa/MsaEditorConsensusCache.h"
+#include "ov_msa/MsaEditorSequenceArea.h"
 #include "ov_msa/ScrollController.h"
 #include "ov_sequence/PanView.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -88,7 +88,7 @@ void McaReferenceAreaRenderer::drawSequence(QPainter& p, const QSize& /*canvasSi
         if (color.isValid()) {
             p.fillRect(charRect, color);
         }
-        if (maEditor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent) {
+        if (maEditor->getResizeMode() == MsaEditor::ResizeMode_FontAndContent) {
             p.drawText(charRect, Qt::AlignCenter, QString(c));
         }
     }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "DIPropertiesSitecon.h"
@@ -100,12 +100,12 @@ void GTest_CalculateACGTContent::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    auto mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto mao = qobject_cast<MsaObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
-    ma = mao->getMsaCopy();
+    ma = mao->getAlignment()->getCopy();
 }
 
 void GTest_CalculateACGTContent::run() {
@@ -193,12 +193,12 @@ void GTest_CalculateDispersionAndAverage::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    auto mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto mao = qobject_cast<MsaObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
-    ma = mao->getMsaCopy();
+    ma = mao->getAlignment()->getCopy();
 }
 
 void GTest_CalculateDispersionAndAverage::run() {
@@ -278,12 +278,12 @@ void GTest_CalculateFirstTypeError::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    auto mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto mao = qobject_cast<MsaObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
-    ma = mao->getMsaCopy();
+    ma = mao->getAlignment()->getCopy();
 }
 
 void GTest_CalculateFirstTypeError::run() {
@@ -357,12 +357,12 @@ void GTest_CalculateSecondTypeError::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    auto mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto mao = qobject_cast<MsaObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
-    ma = mao->getMsaCopy();
+    ma = mao->getAlignment()->getCopy();
 }
 
 void GTest_CalculateSecondTypeError::run() {

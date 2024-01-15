@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,8 +26,8 @@
 #include <QPainter>
 #include <QToolTip>
 
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -39,13 +39,13 @@
 #include <U2Gui/OptionsPanel.h>
 
 #include "ov_msa/BaseWidthController.h"
-#include "ov_msa/MSAEditor.h"
-#include "ov_msa/MSAEditorConsensusArea.h"
-#include "ov_msa/MSAEditorSequenceArea.h"
 #include "ov_msa/MaConsensusAreaRenderer.h"
 #include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MsaEditor.h"
+#include "ov_msa/MsaEditorConsensusArea.h"
+#include "ov_msa/MsaEditorSequenceArea.h"
 #include "ov_msa/ScrollController.h"
-#include "ov_msa/general_tab/MSAGeneralTabFactory.h"
+#include "ov_msa/general_tab/MsaGeneralTabFactory.h"
 
 namespace U2 {
 
@@ -65,7 +65,7 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt* _ui)
     connect(ui->getEditor(), SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_zoomOperationPerformed(bool)));
     connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
 
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
 
     connect(editor->copyConsensusAction, SIGNAL(triggered()), SLOT(sl_copyConsensusSequence()));
     connect(editor->copyConsensusWithGapsAction, SIGNAL(triggered()), SLOT(sl_copyConsensusSequenceWithGaps()));
@@ -98,7 +98,7 @@ QSize MaEditorConsensusArea::getCanvasSize(const U2Region& region, const MaEdito
     return QSize(ui->getBaseWidthController()->getBasesWidth(region), renderer->getHeight(elements));
 }
 
-QSharedPointer<MSAEditorConsensusCache> MaEditorConsensusArea::getConsensusCache() {
+QSharedPointer<MsaEditorConsensusCache> MaEditorConsensusArea::getConsensusCache() {
     return consensusCache;
 }
 
@@ -125,9 +125,9 @@ bool MaEditorConsensusArea::event(QEvent* e) {
 }
 
 void MaEditorConsensusArea::initCache() {
-    MSAConsensusAlgorithmFactory* algo = getConsensusAlgorithmFactory();
+    MsaConsensusAlgorithmFactory* algo = getConsensusAlgorithmFactory();
     GCounter::increment(QString("'%1' consensus type is selected on view opening").arg(algo->getName()), editor->getFactoryId());
-    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(nullptr, editor->getMaObject(), algo));
+    consensusCache = QSharedPointer<MsaEditorConsensusCache>(new MsaEditorConsensusCache(nullptr, editor->getMaObject(), algo));
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     restoreLastUsedConsensusThreshold();
 }
@@ -138,7 +138,7 @@ QString MaEditorConsensusArea::createToolTip(QHelpEvent* he) const {
     QString result;
     if (0 <= column && column <= editor->getAlignmentLen()) {
         assert(editor->getMaObject());
-        // const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
+        // const Msa ma = editor->getMaObject()->getMultipleAlignment();
         // result = MSAConsensusUtils::getConsensusPercentTip(ma, column, 0, 4);
         result = getConsensusPercentTip(column, 0, 4);
     }
@@ -197,19 +197,19 @@ bool MaEditorConsensusArea::highlightConsensusChar(int /*pos*/) {
     return false;
 }
 
-MSAConsensusAlgorithmFactory* MaEditorConsensusArea::getConsensusAlgorithmFactory() {
-    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
+MsaConsensusAlgorithmFactory* MaEditorConsensusArea::getConsensusAlgorithmFactory() {
+    MsaConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
     SAFE_POINT(reg != nullptr, "Consensus algorithm registry is NULL.", nullptr);
     QString lastUsedAlgoKey = getLastUsedAlgoSettingsKey();
     QString lastUsedAlgo = AppContext::getSettings()->getValue(lastUsedAlgoKey).toString();
-    MSAConsensusAlgorithmFactory* algo = reg->getAlgorithmFactory(lastUsedAlgo);
+    MsaConsensusAlgorithmFactory* algo = reg->getAlgorithmFactory(lastUsedAlgo);
 
     const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
-    ConsensusAlgorithmFlags alphaFlags = MSAConsensusAlgorithmFactory::getAphabetFlags(al);
+    ConsensusAlgorithmFlags alphaFlags = MsaConsensusAlgorithmFactory::getAlphabetFlags(al);
     if (algo == nullptr || (algo->getFlags() & alphaFlags) != alphaFlags) {
         algo = reg->getAlgorithmFactory(getDefaultAlgorithmId());
         if ((algo->getFlags() & alphaFlags) != alphaFlags) {
-            QList<MSAConsensusAlgorithmFactory*> algorithms = reg->getAlgorithmFactories(MSAConsensusAlgorithmFactory::getAphabetFlags(al));
+            QList<MsaConsensusAlgorithmFactory*> algorithms = reg->getAlgorithmFactories(MsaConsensusAlgorithmFactory::getAlphabetFlags(al));
             SAFE_POINT(algorithms.count() > 0, "There are no consensus algorithms for the current alphabet.", nullptr);
             algo = algorithms.first();
         }
@@ -219,7 +219,7 @@ MSAConsensusAlgorithmFactory* MaEditorConsensusArea::getConsensusAlgorithmFactor
 }
 
 void MaEditorConsensusArea::updateConsensusAlgorithm() {
-    MSAConsensusAlgorithmFactory* newAlgo = getConsensusAlgorithmFactory();
+    MsaConsensusAlgorithmFactory* newAlgo = getConsensusAlgorithmFactory();
     CHECK(consensusCache != nullptr && newAlgo != nullptr, );
     ConsensusAlgorithmFlags cacheConsensusFlags = consensusCache->getConsensusAlgorithm()->getFactory()->getFlags();
     ConsensusAlgorithmFlags curFlags = newAlgo->getFlags();
@@ -245,7 +245,7 @@ void MaEditorConsensusArea::setupFontAndHeight() {
 }
 
 void MaEditorConsensusArea::sl_zoomOperationPerformed(bool resizeModeChanged) {
-    if (!(editor->getResizeMode() == MSAEditor::ResizeMode_OnlyContent && !resizeModeChanged)) {
+    if (!(editor->getResizeMode() == MsaEditor::ResizeMode_OnlyContent && !resizeModeChanged)) {
         setupFontAndHeight();
     }
     sl_completeRedraw();
@@ -273,11 +273,11 @@ void MaEditorConsensusArea::sl_copyConsensusSequenceWithGaps() {
 }
 
 void MaEditorConsensusArea::sl_configureConsensusAction() {
-    editor->getOptionsPanelController()->openGroupById(MSAGeneralTabFactory::getGroupId());
+    editor->getOptionsPanelController()->openGroupById(MsaGeneralTabFactory::getGroupId());
 }
 
 void MaEditorConsensusArea::sl_changeConsensusAlgorithm(const QString& algoId) {
-    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
+    MsaConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
     if (getConsensusAlgorithm()->getFactory() != algoFactory) {
         assert(algoFactory != nullptr);
         setConsensusAlgorithm(algoFactory);
@@ -289,8 +289,8 @@ QString MaEditorConsensusArea::getThresholdSettingsKey(const QString& factoryId)
     return getLastUsedAlgoSettingsKey() + "_" + factoryId + "_threshold";
 }
 
-void MaEditorConsensusArea::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algoFactory) {
-    MSAConsensusAlgorithm* oldAlgo = getConsensusAlgorithm();
+void MaEditorConsensusArea::setConsensusAlgorithm(MsaConsensusAlgorithmFactory* algoFactory) {
+    MsaConsensusAlgorithm* oldAlgo = getConsensusAlgorithm();
     if (oldAlgo != nullptr && algoFactory == oldAlgo->getFactory()) {
         return;
     }
@@ -313,7 +313,7 @@ void MaEditorConsensusArea::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* 
 }
 
 void MaEditorConsensusArea::setConsensusAlgorithmConsensusThreshold(int val) {
-    MSAConsensusAlgorithm* algo = getConsensusAlgorithm();
+    MsaConsensusAlgorithm* algo = getConsensusAlgorithm();
     if (val == algo->getThreshold()) {
         return;
     }
@@ -339,12 +339,12 @@ void MaEditorConsensusArea::sl_onConsensusThresholdChanged(int /*newValue*/) {
 
 void MaEditorConsensusArea::restoreLastUsedConsensusThreshold() {
     // restore last used threshold for new algorithm type if found
-    MSAConsensusAlgorithm* algo = getConsensusAlgorithm();
+    MsaConsensusAlgorithm* algo = getConsensusAlgorithm();
     int threshold = AppContext::getSettings()->getValue(getThresholdSettingsKey(algo->getId()), algo->getDefaultThreshold()).toInt();
     getConsensusAlgorithm()->setThreshold(threshold);
 }
 
-MSAConsensusAlgorithm* MaEditorConsensusArea::getConsensusAlgorithm() const {
+MsaConsensusAlgorithm* MaEditorConsensusArea::getConsensusAlgorithm() const {
     return consensusCache->getConsensusAlgorithm();
 }
 

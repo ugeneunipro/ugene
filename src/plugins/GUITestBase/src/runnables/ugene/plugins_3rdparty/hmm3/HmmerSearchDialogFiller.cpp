@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,8 @@
 
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTSpinBox.h>
+#include <primitives/GTTabWidget.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
@@ -32,6 +34,13 @@ namespace U2 {
 
 void HmmerSearchDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
+
+    if (domE != -1) {
+        auto tabWidget = GTWidget::findTabWidget("tabWidget", dialog);
+        GTTabWidget::clickTab(tabWidget, "Reporting thresholds");
+        GTSpinBox::setValue("domESpinBox", domE, GTGlobals::UseKeyBoard, dialog);
+        GTTabWidget::clickTab(tabWidget, "Input and output");
+    }
 
     GTLineEdit::setText("queryHmmFileEdit", profile, dialog);
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,8 +35,8 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -843,9 +843,9 @@ void MSAWriter::data2doc(Document* doc, const QVariantMap& data) {
 
 void MSAWriter::data2document(Document* doc, const QVariantMap& data, WorkflowContext* context) {
     SharedDbiDataHandler msaId = data.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+    QScopedPointer<MsaObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
     SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", );
-    MultipleSequenceAlignment msa = msaObj->getMsaCopy();
+    Msa msa = msaObj->getAlignment()->getCopy();
 
     SAFE_POINT(!msa->isEmpty(), QString("Empty alignment passed for writing to %1").arg(doc->getURLString()), )
 
@@ -856,7 +856,7 @@ void MSAWriter::data2document(Document* doc, const QVariantMap& data, WorkflowCo
     }
 
     U2OpStatus2Log os;
-    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), msa, os);
+    MsaObject* obj = MsaImportUtils::createMsaObject(doc->getDbiRef(), msa, os);
     CHECK_OP(os, );
 
     doc->addObject(obj);

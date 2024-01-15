@@ -43,6 +43,9 @@ public:
     virtual QVariantMap getAlignmentAlgorithmCustomSettings(bool append);
     virtual void updateWidget();
 
+private slots:
+    void sl_viewMatrixClicked();
+
 private:
     void initParameters();
     void addScoredMatrixes();

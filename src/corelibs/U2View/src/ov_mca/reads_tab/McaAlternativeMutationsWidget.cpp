@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,8 @@
 #include "McaAlternativeMutationsWidget.h"
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -43,18 +42,18 @@ McaAlternativeMutationsWidget::McaAlternativeMutationsWidget(QWidget* parent)
     setupUi(this);
 }
 
-void McaAlternativeMutationsWidget::init(MultipleAlignmentObject* _maObject,
+void McaAlternativeMutationsWidget::init(MsaObject* _maObject,
                                          MaEditorSequenceArea* _seqArea,
                                          MaEditorStatusBar* _statusBar) {
     SAFE_POINT(_seqArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorSequenceArea is nullptr", );
-    SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is nullptr", );
+    SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MsaObject is nullptr", );
     SAFE_POINT(_statusBar != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorStatusBar is nullptr", );
 
     seqArea = qobject_cast<McaEditorSequenceArea*>(_seqArea);
     SAFE_POINT(seqArea != nullptr, "MaConsensusModeWidget can not be initialized: McaEditorSequenceArea is nullptr", );
 
-    mcaObject = qobject_cast<MultipleChromatogramAlignmentObject*>(_maObject);
-    SAFE_POINT(mcaObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleChromatogramAlignmentObject is nullptr", );
+    mcaObject = _maObject;
+    SAFE_POINT(mcaObject->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, "Not a MCA object", );
 
     statusBar = qobject_cast<McaEditorStatusBar*>(_statusBar);
     SAFE_POINT(mcaObject != nullptr, "MaConsensusModeWidget can not be initialized: McaEditorStatusBar is nullptr", );
@@ -79,7 +78,7 @@ void McaAlternativeMutationsWidget::sl_updateAlternativeMutations() {
     CHECK_OP(os, );
 }
 
-const QString McaAlternativeMutationsWidget::getAlternativeMutationsCheckedId() {
+QString McaAlternativeMutationsWidget::getAlternativeMutationsCheckedId() {
     return ALTERNATIVE_MUTATIONS_CHECKED;
 }
 

@@ -29,7 +29,7 @@
 namespace U2 {
 
 class MaEditor;
-class MultipleAlignmentObject;
+class MsaObject;
 class OpenMaEditorTask;
 class UnloadedObject;
 
@@ -54,7 +54,7 @@ public:
     virtual MaEditor* getEditor(const QString& viewName, GObject* obj, U2OpStatus& os) = 0;
 
 protected:
-    virtual OpenMaEditorTask* getOpenMaEditorTask(MultipleAlignmentObject* obj) = 0;
+    virtual OpenMaEditorTask* getOpenMaEditorTask(MsaObject* obj) = 0;
     virtual OpenMaEditorTask* getOpenMaEditorTask(UnloadedObject* obj) = 0;
     virtual OpenMaEditorTask* getOpenMaEditorTask(Document* doc) = 0;
 
@@ -80,7 +80,7 @@ public:
     void registerMsaEditorViewFeatures();
 
 private:
-    OpenMaEditorTask* getOpenMaEditorTask(MultipleAlignmentObject* obj);
+    OpenMaEditorTask* getOpenMaEditorTask(MsaObject* obj);
     OpenMaEditorTask* getOpenMaEditorTask(UnloadedObject* obj);
     OpenMaEditorTask* getOpenMaEditorTask(Document* doc);
 };
@@ -98,7 +98,7 @@ public:
     static const GObjectViewFactoryId ID;
 
 private:
-    OpenMaEditorTask* getOpenMaEditorTask(MultipleAlignmentObject* obj);
+    OpenMaEditorTask* getOpenMaEditorTask(MsaObject* obj);
     OpenMaEditorTask* getOpenMaEditorTask(UnloadedObject* obj);
     OpenMaEditorTask* getOpenMaEditorTask(Document* doc);
 };

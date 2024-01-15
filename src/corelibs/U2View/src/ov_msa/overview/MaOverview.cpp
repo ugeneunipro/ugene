@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
 #include <QMouseEvent>
 #include <QPainter>
 
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/MaEditorSelection.h"
@@ -41,12 +41,8 @@ MaOverview::MaOverview(MaEditor* _editor, QWidget* _ui)
       ui(_ui),
       stepX(0),
       stepY(0) {
-    connect(editor->getSelectionController(),
-            SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
-            SLOT(sl_selectionChanged()));
-    connect(editor->getMaObject(),
-            SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
-            SLOT(sl_redraw()));
+    connect(editor->getSelectionController(), &MaEditorSelectionController::si_selectionChanged, this, &MaOverview::sl_selectionChanged);
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaOverview::sl_redraw);
 
     // The hack
     // for MSA we have MaEditorMultilineWgt

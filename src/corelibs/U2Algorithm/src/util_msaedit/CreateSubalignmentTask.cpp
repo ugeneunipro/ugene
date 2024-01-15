@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LocalFileAdapter.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -54,7 +54,7 @@ CreateSubalignmentSettings::CreateSubalignmentSettings(const QList<qint64>& _row
     : rowIds(_rowIds), columnRange(_columnRange), url(_url), saveImmediately(_saveImmediately), addToProject(_addToProject), formatIdToSave(_formatIdToSave) {
 }
 
-CreateSubalignmentTask::CreateSubalignmentTask(MultipleSequenceAlignmentObject* maObj, const CreateSubalignmentSettings& settings)
+CreateSubalignmentTask::CreateSubalignmentTask(MsaObject* maObj, const CreateSubalignmentSettings& settings)
     : DocumentProviderTask(tr("Create sub-alignment: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE),
       origMAObj(maObj), resultMAObj(nullptr), cfg(settings) {
     origDoc = maObj->getDocument();
@@ -76,8 +76,8 @@ void CreateSubalignmentTask::prepare() {
         CHECK_OP(stateInfo, );
 
         // TODO: do not copy whole object. Copy only cfg.rowIds.
-        MultipleSequenceAlignment msa = origMAObj->getMsaCopy();
-        resultMAObj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
+        Msa msa = origMAObj->getAlignment()->getCopy();
+        resultMAObj = MsaImportUtils::createMsaObject(resultDocument->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, );
         resultMAObj->setGHints(new GHintsDefaultImpl(origMAObj->getGHintsMap()));
 

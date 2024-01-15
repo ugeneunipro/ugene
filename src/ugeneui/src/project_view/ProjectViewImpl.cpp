@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1166,18 +1166,19 @@ void ProjectViewImpl::sl_onOpenContainingFolder() {
 
 // EnableProjectViewTask
 
-EnableProjectViewTask::EnableProjectViewTask(ProjectViewImpl* _pvi)
-    : Task(tr("Enable ProjectView"), TaskFlag_NoRun), pvi(_pvi) {
+EnableProjectViewTask::EnableProjectViewTask(ProjectViewImpl* pvi)
+    : Task(tr("Enable ProjectView"), TaskFlag_NoRun), projectView(pvi) {
 }
 
 Task::ReportResult EnableProjectViewTask::report() {
-    assert(AppContext::getProject() != nullptr);
-    pvi->enable();
+    CHECK_NN(AppContext::getProject(), ReportResult_Finished);
+    CHECK_NN(projectView, ReportResult_Finished);
+    projectView->enable();
     return ReportResult_Finished;
 }
 
-DisableProjectViewTask::DisableProjectViewTask(ProjectViewImpl* _pvi, bool saveProjectOnClose)
-    : Task(tr("Disable project viewer"), TaskFlags_NR_FOSCOE), pvi(_pvi), saveProject(saveProjectOnClose) {
+DisableProjectViewTask::DisableProjectViewTask(ProjectViewImpl* pvi, bool saveProjectOnClose)
+    : Task(tr("Disable project viewer"), TaskFlags_NR_FOSCOE), projectView(pvi), saveProject(saveProjectOnClose) {
 }
 
 void DisableProjectViewTask::prepare() {
@@ -1192,7 +1193,8 @@ Task::ReportResult DisableProjectViewTask::report() {
     if (propagateSubtaskError()) {
         return ReportResult_Finished;
     }
-    pvi->disable();
+    CHECK_NN(projectView, ReportResult_Finished);
+    projectView->disable();
     return ReportResult_Finished;
 }
 

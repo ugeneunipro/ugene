@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,10 +33,10 @@
 #include <U2Gui/ProjectView.h>
 #include <U2Gui/U2FileDialog.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorSelection.h>
+#include <U2View/MsaEditor.h>
 
 #include "AlignSequencesToAlignmentTask.h"
 #include "RealignSequencesInAlignmentTask.h"
@@ -48,7 +48,7 @@ AlignSequencesToAlignmentSupport::AlignSequencesToAlignmentSupport(QObject* pare
 }
 
 void AlignSequencesToAlignmentSupport::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "View is not MSAEditor!", );
     CHECK(msaEditor->getMaObject() != nullptr, );
     msaEditor->registerActionProvider(this);
@@ -89,24 +89,24 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectViewController* vi
 /////////////////////////////////////
 /// AlignSequencesToAlignmentAction
 /////////////////////////////////////
-BaseObjectViewAlignmentAction::BaseObjectViewAlignmentAction(QObject* parent, MSAEditor* view, const QString& _algorithmId, const QString& text, int order)
+BaseObjectViewAlignmentAction::BaseObjectViewAlignmentAction(QObject* parent, MsaEditor* view, const QString& _algorithmId, const QString& text, int order)
     : GObjectViewAction(parent, view, text, order), msaEditor(view), algorithmId(_algorithmId) {
 }
 
-MSAEditor* BaseObjectViewAlignmentAction::getEditor() const {
+MsaEditor* BaseObjectViewAlignmentAction::getEditor() const {
     return msaEditor;
 }
 
 /////////////////////////////////////
 /// AlignSequencesToAlignmentAction
 /////////////////////////////////////
-AlignSequencesToAlignmentAction::AlignSequencesToAlignmentAction(QObject* parent, MSAEditor* view, const QString& algorithmId, const QString& text, int order)
+AlignSequencesToAlignmentAction::AlignSequencesToAlignmentAction(QObject* parent, MsaEditor* view, const QString& algorithmId, const QString& text, int order)
     : BaseObjectViewAlignmentAction(parent, view, algorithmId, text, order) {
     connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
 
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
-    connect(msaObject, &MultipleSequenceAlignmentObject::si_lockedStateChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
-    connect(msaObject, &MultipleSequenceAlignmentObject::si_alignmentChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
+    MsaObject* msaObject = msaEditor->getMaObject();
+    connect(msaObject, &MsaObject::si_lockedStateChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
+    connect(msaObject, &MsaObject::si_alignmentChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
 
     sl_updateState();
 }
@@ -118,7 +118,7 @@ void AlignSequencesToAlignmentAction::sl_updateState() {
         return;
     }
     bool canBeUsedWithEmptyObject = algorithmId == BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
-    if (msaObject->getMultipleAlignment()->isEmpty() && !canBeUsedWithEmptyObject) {
+    if (msaObject->getAlignment()->isEmpty() && !canBeUsedWithEmptyObject) {
         setEnabled(false);
         return;
     }
@@ -180,7 +180,7 @@ void AlignSequencesToAlignmentAction::sl_activate() {
 /////////////////////////////////////
 /// AlignSelectedSequencesAction
 /////////////////////////////////////
-AlignSelectedSequencesAction::AlignSelectedSequencesAction(QObject* parent, MSAEditor* view, const QString& algorithmId, const QString& text, int order)
+AlignSelectedSequencesAction::AlignSelectedSequencesAction(QObject* parent, MsaEditor* view, const QString& algorithmId, const QString& text, int order)
     : BaseObjectViewAlignmentAction(parent, view, algorithmId, text, order) {
     connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
     connect(msaEditor->alignSelectedSequencesToAlignmentAction,

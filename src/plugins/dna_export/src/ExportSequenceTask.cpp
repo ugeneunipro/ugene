@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -235,10 +235,16 @@ ExportSequenceItem toRevComplement(ExportSequenceItem& ei, const U2DbiRef& resul
 
     // fix annotation locations
     for (int a = 0; a < complEi.annotations.size(); a++) {
-        SharedAnnotationData& ad = complEi.annotations[a];
-        ad->setStrand(ad->getStrand() == U2Strand::Direct ? U2Strand::Complementary : U2Strand::Direct);
-        U2Region::mirror(ei.length, ad->location->regions);
-        U2Region::reverse(ad->location->regions);
+        auto groupPaths = complEi.annotations.keys();
+        for (const auto& groupPath : qAsConst(groupPaths)) {
+            auto annotationsData = complEi.annotations.value(groupPath);
+            for (SharedAnnotationData& ad : annotationsData) {
+                ad->setStrand(ad->getStrand() == U2Strand::Direct ? U2Strand::Complementary : U2Strand::Direct);
+                U2Region::mirror(ei.length, ad->location->regions);
+                U2Region::reverse(ad->location->regions);
+            }
+            complEi.annotations.insert(groupPath, annotationsData);
+        }
     }
 
     return complEi;
@@ -301,11 +307,19 @@ QList<ExportSequenceItem> toAmino(ExportSequenceItem& ei, bool allFrames, const 
 
         // fix annotation locations
         transEi.annotations.clear();
-        foreach (const SharedAnnotationData& ad, ei.annotations) {
-            if (checkFrame(ad->getRegions(), frameNumber)) {
+        auto groupPaths = ei.annotations.keys();
+        for (const auto& groupPath : qAsConst(groupPaths)) {
+            auto annotationsData = ei.annotations.value(groupPath);
+            QList<SharedAnnotationData> transEiSharedAnnotationsData;
+            for (const SharedAnnotationData& ad : qAsConst(annotationsData)) {
+                CHECK_CONTINUE(checkFrame(ad->getRegions(), frameNumber));
+
                 SharedAnnotationData r = ad;
                 U2Region::divide(3, r->location->regions);
-                transEi.annotations.append(r);
+                transEiSharedAnnotationsData.append(r);
+            }
+            if (!transEiSharedAnnotationsData.isEmpty()) {
+                ei.annotations.insert(groupPath, transEiSharedAnnotationsData);
             }
         }
         res.append(transEi);
@@ -349,8 +363,14 @@ ExportSequenceItem backToNucleic(ExportSequenceItem& ei, bool mostProbable, cons
 
     // fix annotation locations
     for (int a = 0; a < backEi.annotations.size(); a++) {
-        SharedAnnotationData& ad = backEi.annotations[a];
-        U2Region::multiply(3, ad->location->regions);
+        auto groupPaths = backEi.annotations.keys();
+        for (const auto& groupPath : qAsConst(groupPaths)) {
+            auto annotationsData = backEi.annotations.value(groupPath);
+            for (SharedAnnotationData& ad : annotationsData) {
+                U2Region::multiply(3, ad->location->regions);
+            }
+            backEi.annotations.insert(groupPath, annotationsData);
+        }
     }
     return backEi;
 }
@@ -379,10 +399,17 @@ ExportSequenceItem mergeExportItems(QList<ExportSequenceItem>& items, int mergeG
         }
 
         // fix annotation locations
-        foreach (const SharedAnnotationData& ad, ei2.annotations) {
-            SharedAnnotationData ma = ad;
-            U2Region::shift(mergedEi.length, ma->location->regions);
-            mergedEi.annotations.append(ma);
+        auto groupPaths = ei2.annotations.keys();
+        for (const auto& groupPath : qAsConst(groupPaths)) {
+            auto annotationsData = ei2.annotations.value(groupPath);
+            QList<SharedAnnotationData> mergedEiSharedAnnotationsData;
+            for (SharedAnnotationData ma : qAsConst(annotationsData)) {
+                U2Region::shift(mergedEi.length, ma->location->regions);
+                mergedEiSharedAnnotationsData.append(ma);
+            }
+            if (!mergedEiSharedAnnotationsData.isEmpty()) {
+                mergedEi.annotations.insert(groupPath, mergedEiSharedAnnotationsData);
+            }
         }
         mergedEi.length = mergedSeqObject.getSequenceLength();
     }
@@ -394,7 +421,7 @@ void saveExportItems2Doc(const QList<ExportSequenceItem>& items, const QString& 
     hints[DocumentFormat::DBI_FOLDER_HINT] = U2ObjectDbi::ROOT_FOLDER;
     QSet<QString> usedNames;
     int itemCount = 0;
-    foreach (ExportSequenceItem ri, items) {
+    for (ExportSequenceItem ri : qAsConst(items)) {
         U2SequenceObject* seqObj = ri.ownsSeq() ? ri.takeOwnedSeq() : qobject_cast<U2SequenceObject*>(U2SequenceObject(ri.name, ri.seqRef).clone(doc->getDbiRef(), os, hints));
         CHECK_OP(os, );
         seqObj->moveToThread(doc->thread());
@@ -415,7 +442,11 @@ void saveExportItems2Doc(const QList<ExportSequenceItem>& items, const QString& 
             const QString aName = ExportUtils::genUniqueName(usedNames, name + " annotations");
             AnnotationTableObject* annObj = new AnnotationTableObject(aName, doc->getDbiRef());
             usedNames.insert(aName);
-            annObj->addAnnotations(ri.annotations);
+            auto groupPaths = ri.annotations.keys();
+            for (const auto& groupPath : qAsConst(groupPaths)) {
+                auto annotationsData = ri.annotations.value(groupPath);
+                annObj->addAnnotations(annotationsData, groupPath);
+            }
             annObj->addObjectRelation(seqObj, ObjectRole_Sequence);
             annObj->setModified(false);
             doc->addObject(annObj);
@@ -599,7 +630,7 @@ void ExportAnnotationSequenceSubTask::run() {
     const int allAnnotationSize = totalAnnotationCount(config);
     int annotationCount = 0;
     // extract sequences for every annotation & form ExportSequenceTaskSettings
-    foreach (const ExportSequenceAItem& ei, config.items) {
+    for (const ExportSequenceAItem& ei : qAsConst(config.items)) {
         if (ei.sequence.isNull()) {
             coreLog.info(tr("Exported sequence has been deleted unexpectedly"));
             continue;
@@ -615,7 +646,9 @@ void ExportAnnotationSequenceSubTask::run() {
 
             ExportSequenceItem esi;
             esi.setOwnershipOverSeq(annSeqDbiObject, dbiRef);
-            esi.annotations.append(newAnn);
+            auto annotationList = esi.annotations.value(QString());
+            annotationList.append(newAnn);
+            esi.annotations.insert(QString(), annotationList);
             config.exportSequenceSettings.items.append(esi);
 
             stateInfo.setProgress(100 * ++annotationCount / allAnnotationSize);

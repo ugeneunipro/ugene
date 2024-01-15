@@ -1,4 +1,4 @@
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <run-cmdline task="!workflow_samples!NGS/fastqc.uwl"
                  in="!common_data_dir!cmdline/custom/6297/6297.fastq"

@@ -31,14 +31,12 @@ namespace U2 {
  */
 class U2CORE_EXPORT U2RawData : public U2Object {
 public:
-    U2RawData()
-        : U2Object() {
-    }
+    U2RawData() = default;
     U2RawData(const U2DbiRef& dbiRef)
         : U2Object(U2DataId(), dbiRef.dbiId, 0) {
     }
 
-    /** The identifier of a serializer which the data is packed by */
+    /** The identifier of a serializer which the data is packed by. */
     QString serializer;
 };
 

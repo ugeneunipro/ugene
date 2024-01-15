@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,7 +20,7 @@
  */
 
 #include "MaConsensusAlgorithmSimpleExtended.h"
-#include <math.h>
+#include <cmath>
 
 #include <QMetaEnum>
 
@@ -30,8 +30,8 @@
 
 namespace U2 {
 
-MaConsensusAlgorithmSimpleExtended::MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps, QObject* parent)
-    : MSAConsensusAlgorithm(factory, ignoreTrailingLeadingGaps, parent) {
+MaConsensusAlgorithmSimpleExtended::MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps)
+    : MsaConsensusAlgorithm(factory, ignoreTrailingLeadingGaps) {
 }
 
 MaConsensusAlgorithmSimpleExtended::Character MaConsensusAlgorithmSimpleExtended::character2Flag(char character) {
@@ -132,7 +132,7 @@ char MaConsensusAlgorithmSimpleExtended::mergeCharacters(const QVector<char>& ch
     return flags2Character(mergedFlag);
 }
 
-QVector<QVector<char>> getFrequences(const MultipleAlignment& ma, int column, QVector<int> seqIdx) {
+static QVector<QVector<char>> getFrequencies(const Msa& ma, int column, QVector<int> seqIdx) {
     QVarLengthArray<int> frequencies(256);
     memset(frequencies.data(), 0, frequencies.size() * sizeof(int));
 
@@ -150,16 +150,17 @@ QVector<QVector<char>> getFrequences(const MultipleAlignment& ma, int column, QV
     return sortedFrequencies;
 }
 
-char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const {
-    CHECK(filterIdx(seqIdx, ma, column), INVALID_CONS_CHAR);
+char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const Msa& ma, int column) const {
+    QVector<int> seqIdx = pickRowsToUseInConsensus(ma, column);
+    CHECK(!ignoreTrailingAndLeadingGaps || !seqIdx.isEmpty(), INVALID_CONS_CHAR);
 
-    QVector<QVector<char>> frequencies = getFrequences(ma, column, seqIdx);
+    QVector<QVector<char>> frequencies = getFrequencies(ma, column, seqIdx);
 
     char bestCharacter = INVALID_CONS_CHAR;
     const int thresholdCount = ceil(((frequencies.size() - 1) * getThreshold()) / 100.0);
 
     for (int frequency = frequencies.size() - 1; frequency > 0; frequency--) {
-        CHECK_CONTINUE(0 < frequencies[frequency].size());
+        CHECK_CONTINUE(!frequencies[frequency].empty());
         if (frequency >= thresholdCount && frequencies[frequency].size() == 1) {
             // A single character that fits the threshold found
             return frequencies[frequency].first();
@@ -186,43 +187,21 @@ U2::MaConsensusAlgorithmSimpleExtended* MaConsensusAlgorithmSimpleExtended::clon
     return new MaConsensusAlgorithmSimpleExtended(*this);
 }
 
-MaConsensusAlgorithmFactorySimpleExtended::MaConsensusAlgorithmFactorySimpleExtended(QObject* parent)
-    : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO,
-                                   ConsensusAlgorithmFlag_Nucleic | ConsensusAlgorithmFlag_SupportThreshold | ConsensusAlgorithmFlag_AvailableForChromatogram,
-                                   parent) {
+MaConsensusAlgorithmFactorySimpleExtended::MaConsensusAlgorithmFactorySimpleExtended()
+    : MsaConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO,
+                                   ConsensusAlgorithmFlag_Nucleic | ConsensusAlgorithmFlag_SupportThreshold | ConsensusAlgorithmFlag_AvailableForChromatogram) {
+    name = tr("Simple extended");
+    description = tr("The algorithm selects the best character from the extended DNA alphabet. "
+                     "Only bases with frequencies which are greater than a threshold value are taken into account.");
+    minThreshold = 50;
+    maxThreshold = 100;
+    defaultThreshold = 100;
+    thresholdSuffix = "%";
+    isSequenceLikeResultFlag = true;
 }
 
-MSAConsensusAlgorithm* MaConsensusAlgorithmFactorySimpleExtended::createAlgorithm(const MultipleAlignment& /*ma*/, bool ignoreTrailingLeadingGaps, QObject* parent) {
-    return new MaConsensusAlgorithmSimpleExtended(this, ignoreTrailingLeadingGaps, parent);
-}
-
-QString MaConsensusAlgorithmFactorySimpleExtended::getDescription() const {
-    return tr("The algorithm selects the best character from the extended DNA alphabet. "
-              "Only bases with frequences which are greater than a threshold value are taken into account.");
-}
-
-QString MaConsensusAlgorithmFactorySimpleExtended::getName() const {
-    return tr("Simple extended");
-}
-
-int MaConsensusAlgorithmFactorySimpleExtended::getMinThreshold() const {
-    return 50;
-}
-
-int MaConsensusAlgorithmFactorySimpleExtended::getMaxThreshold() const {
-    return 100;
-}
-
-int MaConsensusAlgorithmFactorySimpleExtended::getDefaultThreshold() const {
-    return 100;
-}
-
-QString MaConsensusAlgorithmFactorySimpleExtended::getThresholdSuffix() const {
-    return "%";
-}
-
-bool MaConsensusAlgorithmFactorySimpleExtended::isSequenceLikeResult() const {
-    return true;
+MsaConsensusAlgorithm* MaConsensusAlgorithmFactorySimpleExtended::createAlgorithm(const Msa& /*ma*/, bool ignoreTrailingLeadingGaps) {
+    return new MaConsensusAlgorithmSimpleExtended(this, ignoreTrailingLeadingGaps);
 }
 
 }  // namespace U2

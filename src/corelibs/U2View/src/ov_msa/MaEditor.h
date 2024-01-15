@@ -62,14 +62,14 @@ class MaCollapseModel;
 class MaEditorWgt;
 class MaEditorMultilineWgt;
 class MaEditorOverviewArea;
-class MultipleAlignmentObject;
+class MsaObject;
 class MaEditorSelection;
 class MaEditorSelectionController;
 class MaEditorWgt;
 class MaModificationInfo;
 class MaUndoRedoFramework;
-class MultipleAlignment;
-class MultipleAlignmentObject;
+class Msa;
+class MsaObject;
 
 class SNPSettings {
 public:
@@ -120,7 +120,7 @@ public:
     static const double FONT_BOX_TO_CELL_BOX_MULTIPLIER;
 
 public:
-    MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewName, MultipleAlignmentObject* obj);
+    MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewName, MsaObject* obj);
 
     virtual QVariantMap saveState();
 
@@ -128,7 +128,7 @@ public:
 
     virtual QString getSettingsRoot() const = 0;
 
-    virtual MultipleAlignmentObject* getMaObject() const {
+    virtual MsaObject* getMaObject() const {
         return maObject;
     }
 
@@ -257,7 +257,7 @@ protected slots:
     void sl_onClearActionTriggered();
 
     /** The slot is called each time alignment is changed. By default calls 'updateActions'. */
-    virtual void sl_onAlignmentChanged(const MultipleAlignment& ma, const MaModificationInfo& modInfo);
+    virtual void sl_onAlignmentChanged(const Msa& ma, const MaModificationInfo& modInfo);
 
     /** The slot is called each time selection is changed. By default calls 'updateActions'. */
     virtual void sl_selectionChanged(const MaEditorSelection& ma, const MaEditorSelection& modInfo);
@@ -293,7 +293,7 @@ protected:
 
     virtual void updateActions();
 
-    MultipleAlignmentObject* maObject;
+    MsaObject* maObject;
     QWidget* ui = nullptr;
 
     QFont font;

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/PhyTree.h>
 #include <U2Core/Task.h>
 
@@ -37,8 +37,8 @@ public:
     virtual ~PhyTreeGenerator() {
     }
 
-    virtual Task* createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s) = 0;
-    virtual CreatePhyTreeWidget* createPhyTreeSettingsWidget(const MultipleSequenceAlignment& ma, QWidget* parent = nullptr) = 0;
+    virtual Task* createCalculatePhyTreeTask(const Msa& ma, const CreatePhyTreeSettings& s) = 0;
+    virtual CreatePhyTreeWidget* createPhyTreeSettingsWidget(const Msa& ma, QWidget* parent = nullptr) = 0;
 };
 
 }  // namespace U2

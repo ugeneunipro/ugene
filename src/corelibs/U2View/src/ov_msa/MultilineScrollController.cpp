@@ -24,19 +24,19 @@
 #include <QWheelEvent>
 
 #include "U2Core/U2SafePoints.h"
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 #include "BaseWidthController.h"
 #include "DrawHelper.h"
 #include "RowHeightController.h"
 #include "ScrollController.h"
-#include "ov_msa/MSAEditorOverviewArea.h"
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorMultilineWgt.h"
 #include "ov_msa/MaEditorNameList.h"
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/MaEditorWgt.h"
+#include "ov_msa/MsaEditorOverviewArea.h"
 #include "ov_msa/MsaMultilineScrollArea.h"
 
 namespace U2 {

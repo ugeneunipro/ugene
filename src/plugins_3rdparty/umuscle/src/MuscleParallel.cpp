@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ namespace U2 {
 
 /////////////////////////////////////////////////////////////////////
 
-MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, const MuscleTaskSettings& _config, MuscleContext* ctx)
+MuscleParallelTask::MuscleParallelTask(const Msa& ma, Msa& res, const MuscleTaskSettings& _config, MuscleContext* ctx)
     : Task(tr("MuscleParallelTask"), TaskFlags_NR_FOSCOE), progAlignTask(nullptr), refineTreeTask(nullptr), refineTask(nullptr) {
     // assert(ma->isNormalized()); //not required to be normalized    assert(_config.op == MuscleTaskOp_Align || _config.op == MuscleTaskOp_Refine);    workpool = NULL;
     setMaxParallelSubtasks(1);
@@ -52,9 +52,9 @@ MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment& ma, Mult
     addTaskResource(resourceUsage);
 }
 
-int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment& ma) {
+int MuscleParallelTask::estimateMemoryUsageInMb(const Msa& ma) {
     QList<int> rowsLengths;
-    foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+    foreach (const MsaRow& row, ma->getRows()) {
         rowsLengths.append(row->getCoreLength());
     }
     std::sort(rowsLengths.begin(), rowsLengths.end(), std::greater<int>());

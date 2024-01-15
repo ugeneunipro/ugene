@@ -34,7 +34,7 @@ class DNAAlphabet;
 
 class U2CORE_EXPORT GObjectUtils {
 public:
-    static QList<GObject*> select(const QList<GObject*>& objects, GObjectType type, UnloadedObjectFilter f);
+    static QList<GObject*> select(const QList<GObject*>& objects, const GObjectType& type, UnloadedObjectFilter f);
 
     static GObject* selectOne(const QList<GObject*>& objects, GObjectType type, UnloadedObjectFilter f);
 

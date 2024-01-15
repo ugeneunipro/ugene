@@ -23,7 +23,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 
 namespace U2 {
@@ -34,16 +34,16 @@ class CloneObjectTask;
 class SaveAlignmentTask : public Task {
     Q_OBJECT
 public:
-    SaveAlignmentTask(const MultipleSequenceAlignment& ma, const QString& fileName, DocumentFormatId f, const QVariantMap& hints = QVariantMap());
+    SaveAlignmentTask(const Msa& ma, const QString& fileName, DocumentFormatId f, const QVariantMap& hints = QVariantMap());
 
     void run() override;
 
     virtual Document* getDocument() const;
     const QString& getUrl() const;
-    const MultipleSequenceAlignment& getMAlignment() const;
+    const Msa& getMAlignment() const;
 
 private:
-    MultipleSequenceAlignment ma;
+    Msa ma;
     QString fileName;
     QVariantMap hints;
     DocumentFormatId format;
@@ -54,7 +54,7 @@ private:
 class SaveMSA2SequencesTask : public Task {
     Q_OBJECT
 public:
-    SaveMSA2SequencesTask(const MultipleSequenceAlignment& ma, const QString& url, bool trimAli, const DocumentFormatId& format);
+    SaveMSA2SequencesTask(const Msa& ma, const QString& url, bool trimAli, const DocumentFormatId& format);
 
     void run() override;
 

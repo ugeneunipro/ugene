@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,9 +21,9 @@
 
 #include "MsaRowHeightController.h"
 
-#include "ov_msa/MSAEditor.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditorWgt.h"
+#include "ov_msa/MsaEditor.h"
 
 namespace U2 {
 

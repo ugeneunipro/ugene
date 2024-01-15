@@ -28,7 +28,7 @@
 #include <U2Algorithm/PhyTreeGeneratorTask.h>
 
 #include <U2Core/AppResources.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 
 namespace U2 {
 
@@ -37,13 +37,13 @@ class TaskStateInfo;
 
 class NeighborJoinAdapter : public PhyTreeGenerator {
 public:
-    Task* createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s);
-    CreatePhyTreeWidget* createPhyTreeSettingsWidget(const MultipleSequenceAlignment& ma, QWidget* parent = nullptr);
+    Task* createCalculatePhyTreeTask(const Msa& ma, const CreatePhyTreeSettings& s);
+    CreatePhyTreeWidget* createPhyTreeSettingsWidget(const Msa& ma, QWidget* parent = nullptr);
 };
 
 class NeighborJoinCalculateTreeTask : public PhyTreeGeneratorTask {
 public:
-    NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s);
+    NeighborJoinCalculateTreeTask(const Msa& ma, const CreatePhyTreeSettings& s);
     void run() override;
 
 private:

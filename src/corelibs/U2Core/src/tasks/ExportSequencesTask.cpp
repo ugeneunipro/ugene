@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,11 +29,12 @@
 #include <U2Core/DocumentSelection.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MSAUtils.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 
 #include <U2Formats/DocumentFormatUtils.h>
@@ -42,14 +43,14 @@
 
 namespace U2 {
 
-ExportSequencesTask::ExportSequencesTask(const MultipleSequenceAlignment& msa, const QSet<qint64>& rowIds, bool trimGaps, bool addToProjectFlag, const QString& dirUrl, const DocumentFormatId& format, const QString& extension, const QString& customFileName)
+ExportSequencesTask::ExportSequencesTask(const Msa& msa, const QSet<qint64>& rowIds, bool trimGaps, bool addToProjectFlag, const QString& dirUrl, const DocumentFormatId& format, const QString& extension, const QString& customFileName)
     : Task(tr("Export selected sequences from alignment"), TaskFlags_NR_FOSE_COSC),
       addToProjectFlag(addToProjectFlag),
       dirUrl(dirUrl),
       format(format),
       extension(extension),
       customFileName(customFileName) {
-    sequences = MSAUtils::convertMsaToSequenceList(msa, stateInfo, trimGaps, rowIds);
+    sequences = MsaUtils::convertMsaToSequenceList(msa, stateInfo, trimGaps, rowIds);
 }
 
 void ExportSequencesTask::prepare() {

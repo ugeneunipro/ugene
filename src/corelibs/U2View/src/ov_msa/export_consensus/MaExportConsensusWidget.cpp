@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,14 +21,14 @@
 
 #include "MaExportConsensusWidget.h"
 
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2IdTypes.h>
@@ -104,7 +104,7 @@ void MaExportConsensusWidget::showHint(bool showHint) {
 }
 
 void MaExportConsensusWidget::sl_consensusChanged(const QString& algoId) {
-    MSAConsensusAlgorithmFactory* consAlgorithmFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
+    MsaConsensusAlgorithmFactory* consAlgorithmFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
     SAFE_POINT(consAlgorithmFactory != nullptr, "Fetched consensus algorithm factory is NULL", );
 
     if (consAlgorithmFactory->isSequenceLikeResult()) {

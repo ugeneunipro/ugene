@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExportSequencesTask.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -38,9 +38,9 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorSelection.h>
+#include <U2View/MsaEditor.h>
 
 #include "ExportMSA2MSADialog.h"
 #include "ExportMSA2SequencesDialog.h"
@@ -57,7 +57,7 @@ ExportAlignmentViewItemsController::ExportAlignmentViewItemsController(QObject* 
 }
 
 void ExportAlignmentViewItemsController::initViewContext(GObjectViewController* v) {
-    auto msaEditor = qobject_cast<MSAEditor*>(v);
+    auto msaEditor = qobject_cast<MsaEditor*>(v);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     auto msaExportContext = new MSAExportContext(msaEditor);
     addViewResource(msaEditor, msaExportContext);
@@ -75,7 +75,7 @@ void ExportAlignmentViewItemsController::buildStaticOrContextMenu(GObjectViewCon
 //////////////////////////////////////////////////////////////////////////
 // MSA view context
 
-MSAExportContext::MSAExportContext(MSAEditor* e)
+MSAExportContext::MSAExportContext(MsaEditor* e)
     : editor(e) {
     exportNucleicMsaToAminoAction = new QAction(tr("Export amino acid translated alignment..."), this);
     exportNucleicMsaToAminoAction->setObjectName("exportNucleicMsaToAminoAction");
@@ -89,7 +89,7 @@ MSAExportContext::MSAExportContext(MSAEditor* e)
     exportSelectedMsaRowsToSeparateFilesAction->setObjectName("exportSelectedMsaRowsToSeparateFilesAction");
     connect(exportSelectedMsaRowsToSeparateFilesAction, &QAction::triggered, this, &MSAExportContext::sl_exportSelectedMsaRowsToSeparateFiles);
 
-    connect(e->getMaObject(), &MultipleSequenceAlignmentObject::si_alignmentChanged, this, [this] { updateActions(); });
+    connect(e->getMaObject(), &MsaObject::si_alignmentChanged, this, [this] { updateActions(); });
 
     updateActions();
 }
@@ -103,7 +103,7 @@ void MSAExportContext::updateActions() {
 void MSAExportContext::buildMenu(QMenu* m) {
     QMenu* exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != nullptr, "exportMenu is not found", );
-    MultipleSequenceAlignmentObject* mObject = editor->getMaObject();
+    MsaObject* mObject = editor->getMaObject();
     if (mObject->getAlphabet()->isNucleic()) {
         exportMenu->addAction(exportNucleicMsaToAminoAction);
     }
@@ -123,7 +123,7 @@ void MSAExportContext::sl_exportSelectedMsaRowsToSeparateFiles() {
     QString extension = df->getSupportedDocumentFileExtensions().first();
 
     QList<int> selectedMaRowIndexes = editor->getSelection().getSelectedRowIndexes();
-    const MultipleSequenceAlignment& msa = editor->getMaObject()->getMsa();
+    const Msa& msa = editor->getMaObject()->getAlignment();
     QSet<qint64> selectedMaRowIds = msa->getRowIdsByRowIndexes(selectedMaRowIndexes).toSet();
     auto exportTask = new ExportSequencesTask(msa,
                                               selectedMaRowIds,
@@ -137,8 +137,8 @@ void MSAExportContext::sl_exportSelectedMsaRowsToSeparateFiles() {
 }
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
-    MultipleSequenceAlignmentObject* maObject = editor->getMaObject();
-    const MultipleSequenceAlignment& ma = maObject->getMultipleAlignment();
+    MsaObject* maObject = editor->getMaObject();
+    const Msa& ma = maObject->getAlignment();
     SAFE_POINT(ma->getAlphabet()->isNucleic(), "Alignment alphabet is not nucleic", );
 
     GUrl msaUrl = maObject->getDocument()->getURL();

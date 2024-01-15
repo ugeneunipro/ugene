@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,6 @@
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
-#include <primitives/GTMainWindow.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
@@ -58,6 +57,7 @@
 #include <QListWidget>
 #include <QRadioButton>
 
+#include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -2489,16 +2489,14 @@ GUI_TEST_CLASS_DEFINITION(test_7520) {
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
             GTWidget::click(addButton);
 
-            GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget("palindromeThreshold")));
-            QString tooltip = GTUtilsToolTip::getToolTip();
-            QString expedtedTooltip("A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible."
+            QString tooltip = GTWidget::findWidget("palindromeThreshold")->toolTip();
+            QString expectedTooltip("A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible."
                                     " Therefore the threshold can be in the range of 30. Even though this threshold is very high"
                                     " (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.");
-            CHECK_SET_ERR(tooltip.contains(expedtedTooltip), QString("Actual tooltip not contains expected string. Expected string: %1").arg(expedtedTooltip));
+            CHECK_SET_ERR(tooltip.contains(expectedTooltip), QString("Actual tooltip not contains expected string. Current tooltip: %1").arg(tooltip));
 
-            GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget("palindromeLabel")));
-            tooltip = GTUtilsToolTip::getToolTip();
-            CHECK_SET_ERR(tooltip.contains(expedtedTooltip), QString("Actual tooltip not contains expected string. Expected string: %1").arg(expedtedTooltip));
+            tooltip = GTWidget::findWidget("palindromeLabel")->toolTip();
+            CHECK_SET_ERR(tooltip.contains(expectedTooltip), QString("Actual tooltip not contains expected string. Current tooltip: %1").arg(tooltip));
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
@@ -3896,46 +3894,6 @@ GUI_TEST_CLASS_DEFINITION(test_7714) {
     lt.assertNoErrors();
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7715) {
-    // Open COI.aln.
-    //     Expected: no log messages
-    //         "QObject::connect(U2::MaEditorWgt, U2::MaGraphOverview): invalid nullptr parameter
-    //          QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes (-1,-1)
-    //              are not possible".
-    // Select the first character.
-    // Quickly and abruptly move the subalignment to the right by at least 20 characters.
-    //     Expected: the Overview isn't empty, no log messages
-    //         "QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes (-1,-1)
-    //              are not possible
-    //          QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes (-1,-1)
-    //              are not possible".
-    // Click "Wrap mode".
-    //     Expected: no size messages in the log.
-    // Click "Remove all gaps".
-    //     Expected: no size messages in the log.
-    GTLogTracer lt;
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-    GTUtilsMSAEditorSequenceArea::click();
-
-    GTMouseDriver::press();
-    GTThread::waitForMainThread();
-    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget(GTUtilsOptionPanelMsa::tabsNames[GTUtilsOptionPanelMsa::General])));
-    GTMouseDriver::release();
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    // The background is white, the bars are gray, the background in the selection is light gray, the bars
-    // in the selection are dark gray, the selection frame is black. Total 5 colors.
-    CHECK_SET_ERR(GTWidget::countColors(GTWidget::getImage(GTUtilsMsaEditor::getGraphOverview())).size() == 5,
-                  "Overview is empty (white)");
-
-    GTUtilsMsaEditor::setMultilineMode(true);
-    GTMenu::clickMainMenuItem({"Actions", "Edit", "Remove all gaps"});
-    GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasMessage("QObject::connect"), "Found unexpected message/1");
-    CHECK_SET_ERR(!lt.hasMessage("QWidget::setMinimumSize)"), "Found unexpected message/2");
-}
-
 GUI_TEST_CLASS_DEFINITION(test_7720) {
     GTFileDialog::openFile(testDir + "_common_data/realign_sequences_in_alignment/", "amino_ext.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -4029,6 +3987,31 @@ GUI_TEST_CLASS_DEFINITION(test_7744) {
     GTUtilsDialog::waitForDialog(new PopupChooser({"AT Deviation (A-T)/(A+T)"}));
     GTWidget::click(GTWidget::findWidget("GraphMenuAction"));
     GTUtilsDialog::checkNoActiveWaiters();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7746) {
+    // Check the settings are default.
+
+    // Open any file just for creating a project.
+    GTFileDialog::openFile(dataDir + "/samples/ABIF/A01.abi");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    // Expected: the Project View is open.
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
+
+    // Toggle all docks (Alt+`).
+    GTKeyboardDriver::keyClick('`', Qt::KeyboardModifier::AltModifier);
+    // Expected: the Project View is hidden.
+    GTUtilsProjectTreeView::checkProjectViewIsClosed();
+
+    // Close the project.
+    GTUtilsProject::closeProject(true);
+    // Expected: the Project View is deleted.
+    GTUtilsProjectTreeView::checkProjectViewIsClosed();
+
+    // Toggle all docks again (Alt+`).
+    GTKeyboardDriver::keyClick('`', Qt::KeyboardModifier::AltModifier);
+    // Expected: no crash, nothing changed.
+    GTUtilsProjectTreeView::checkProjectViewIsClosed();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7748) {
@@ -4903,6 +4886,75 @@ GUI_TEST_CLASS_DEFINITION(test_7957) {
 
     GTUtilsDialog::add(new Scenario());
     GTMenu::clickMainMenuItem({"Tools", "Primer", "Primer3 (no target sequence)..."});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7962) {
+    // Open murine.gb.
+    // Open the "Annotation hightliting" option panel.
+    // Choose "misc_feature".
+    // Disable "Show annotations".
+    // Expected: only "misc_feature" has been hidden.
+    GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::AnnotationsHighlighting);
+    auto highlightTree = GTWidget::findTreeWidget("OP_ANNOT_HIGHLIGHT_TREE");
+    GTTreeWidget::click(highlightTree->topLevelItem(2));
+    GTCheckBox::setChecked(GTWidget::findCheckBox("checkShowHideAnnots"), false);
+    auto pan = GTUtilsSequenceView::getPanViewByNumber();
+    auto anns = pan->findAnnotationsInRange(U2Region(0, pan->getSequenceLength()));
+    for (auto ann : qAsConst(anns)) {
+        AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
+        AnnotationSettings* as = asr->getAnnotationSettings(ann->getName());
+        if (ann->getName() == "CDS") {
+            CHECK_SET_ERR(as->visible, "CDS is not visible, but should be");
+        } else if (ann->getName() == "misc_feature") {
+            CHECK_SET_ERR(!as->visible, "misc_feature is visible, but should not be");
+        }
+    }
+}
+    
+GUI_TEST_CLASS_DEFINITION(test_7965) {
+    // Open human_T1.fa.
+    // Open "Find pattern" tab (Ctrl + F).
+    // Set "GTTTTCAGGGATATTAATGATATATATTTTTTAAGTATTCTGTTCTCTATCAGTTCTATTTCCTCGATTTGTTTTTTCTCAGTTGTTTGGTGATCTCTTGTATGTTTGAGAATCTCTATTTTGCAATGCTGTGGTTACAGGCTTTTATTATAGGAGTTTGTGAT" as search pattern.
+    // Expected: 1 result has been found.
+    // Save to file test_7965.gb
+    // Click "Create annotatios".
+    // Click on "Annotations [test_7965.gb] *" Annotation tree view item.
+    // Right button -> Remove -> Selected object with annotations from view (or just Shift + Del).
+    // Right mouse button on "human_T1.fa" in project view -> Export/Inport -> Export sequences...
+    // Choose "GenBank" fle format, make sure that "Export with annotations" is checked.
+    // Click OK. New sequence has been opened.
+    // Expected: no annotations.
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    QString pattern = "GTTTTCAGGGATATTAATGATATATATTTTTTAAGTATTCTGTTCTCTATCAGTTCTATTTCCTCGATTTGTTTTTTCTCAGTTGTTTGGTGATCTCTTGTATGTTTGAGAATCTCTATTTTGCAATGCTGTGGTTACAGGCTTTTATTATAGGAGTTTGTGAT";
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    GTPlainTextEdit::setText(GTWidget::findPlainTextEdit("textPattern"), pattern, true);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget();
+    GTRadioButton::click(GTWidget::findRadioButton("rbCreateNewTable"));
+    GTLineEdit::setText("leNewTablePath", sandBoxDir + "test_7965.gb");
+    GTUtilsOptionPanelSequenceView::clickGetAnnotation();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAnnotationsTreeView::clickItem("Annotations [test_7965.gb] *", 1, false);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete, Qt::ShiftModifier);
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTLineEdit::setText("fileNameEdit", sandBoxDir + "/test_7965_2.gb", dialog, true);
+            GTComboBox::selectItemByText("formatCombo", dialog, "GenBank");
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::add(new PopupChooserByText({"Export/Import", "Export sequences..."}));
+    GTUtilsDialog::add(new ExportSelectedRegionFiller(new Scenario));
+    GTUtilsProjectTreeView::click("human_T1 (UCSC April 2002 chr7:115977709-117855134)", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAnnotationsTreeView::checkNoAnnotations();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7968) {

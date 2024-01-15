@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,8 +50,8 @@
 #include <U2Core/TextUtils.h>
 
 #include <U2View/ADVConstants.h>
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
 
 #include "GTTestsMsaEditor.h"
 #include "GTUtilsBookmarksTreeView.h"

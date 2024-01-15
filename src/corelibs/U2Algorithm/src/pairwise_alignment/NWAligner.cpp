@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,8 +26,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -75,7 +73,7 @@ void NWAligner::setSeqs(const QByteArray& value1, const QByteArray& value2) {
     reassignSMatrixByAlphabet(value1 + value2);
 }
 
-MultipleSequenceAlignment NWAligner::align() {
+Msa NWAligner::align() {
     GTIMER(cvar, tvar, "NWAligner::align");
     float gapPenalty = -5;
 
@@ -124,7 +122,7 @@ MultipleSequenceAlignment NWAligner::align() {
         j--;
     }
 
-    MultipleSequenceAlignment result(MA_OBJECT_NAME, sMatrix.getAlphabet());
+    Msa result(MA_OBJECT_NAME, sMatrix.getAlphabet());
     result->addRow("seq1", aligned1);
     result->addRow("seq2", aligned2);
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -63,8 +63,8 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt* ma
     GUIUtils::updateActionToolTip(previousAction);
     connect(previousAction, SIGNAL(triggered(bool)), SLOT(sl_previous()));
 
-    connect(maEditor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_resetCachedIterator()));
-    connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_resetCachedIterator()));
+    connect(maEditor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaAmbiguousCharactersController::sl_resetCachedIterator);
+    connect(maEditor->getCollapseModel(), &MaCollapseModel::si_toggled, this, &MaAmbiguousCharactersController::sl_resetCachedIterator);
 }
 
 QAction* MaAmbiguousCharactersController::getPreviousAction() const {
@@ -142,7 +142,7 @@ QPoint MaAmbiguousCharactersController::findNextAmbiguous(NavigationDirection di
 
 void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direction, const QPoint& startPosition) const {
     if (cachedIterator == nullptr) {
-        cachedIterator.reset(new MaIterator(maEditor->getMaObject()->getMultipleAlignment(),
+        cachedIterator.reset(new MaIterator(maEditor->getMaObject()->getAlignment(),
                                             direction,
                                             maEditor->getCollapseModel()->getMaRowsIndexesWithViewRowIndexes()));
         cachedIterator->setCircular(true);

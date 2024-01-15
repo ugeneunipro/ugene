@@ -25,7 +25,7 @@
 #include <QVarLengthArray>
 
 #include <U2Core/DNASequence.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -69,7 +69,7 @@ public:
     PFMatrix(const QVarLengthArray<int>& data, const PFMatrixType& type);
 
     // create matrix from alignment (without gaps)
-    PFMatrix(const MultipleSequenceAlignment& data, const PFMatrixType& type);
+    PFMatrix(const Msa& data, const PFMatrixType& type);
 
     // create matrix from set of sequences with equal length
     PFMatrix(const QList<DNASequence*>& data, const PFMatrixType& type);

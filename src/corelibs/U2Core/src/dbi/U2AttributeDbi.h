@@ -138,6 +138,7 @@ public:
         NOTE: When you create a new attribute, do not forget to add it to the clone method of the corresponding object!
     */
     virtual void createByteArrayAttribute(U2ByteArrayAttribute& a, U2OpStatus& os) = 0;
+    virtual void updateByteArrayAttribute(U2ByteArrayAttribute& a, U2OpStatus& os) = 0;
 };
 
 }  // namespace U2

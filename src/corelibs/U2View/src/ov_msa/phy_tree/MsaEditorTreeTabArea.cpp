@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,11 +31,11 @@
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 
-MsaEditorTreeTab::MsaEditorTreeTab(MSAEditor* msaEditor, QWidget* parent)
+MsaEditorTreeTab::MsaEditorTreeTab(MsaEditor* msaEditor, QWidget* parent)
     : QTabWidget(parent), editor(msaEditor), addTabButton(nullptr) {
     setObjectName("MsaEditorTreeTab");
     addTabButton = new QPushButton(QIcon(":/core/images/add_tree.png"), "", this);
@@ -132,7 +132,7 @@ void MsaEditorTreeTab::sl_onCloseTab() {
     deleteTree(index);
 }
 
-MsaEditorTreeTabArea::MsaEditorTreeTabArea(MSAEditor* msaEditor, QWidget* parent)
+MsaEditorTreeTabArea::MsaEditorTreeTabArea(MsaEditor* msaEditor, QWidget* parent)
     : QWidget(parent), editor(msaEditor), treeTabWidget(nullptr), currentLayout(nullptr) {
     setObjectName("msa_editor_tree_tab_area");
 

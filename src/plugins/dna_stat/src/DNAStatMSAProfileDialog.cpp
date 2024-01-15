@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,17 +29,16 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Theme.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 #include <U2View/WebWindow.h>
 
 namespace U2 {
@@ -47,7 +46,7 @@ namespace U2 {
 const QString DNAStatMSAProfileDialog::HTML = "html";
 const QString DNAStatMSAProfileDialog::CSV = "csv";
 
-DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget* p, MSAEditor* _c)
+DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget* p, MsaEditor* _c)
     : QDialog(p),
       ctx(_c),
       saveController(nullptr) {
@@ -71,7 +70,7 @@ void DNAStatMSAProfileDialog::sl_formatChanged(const QString& newFormat) {
 }
 
 void DNAStatMSAProfileDialog::initSaveController() {
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
+    MsaObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }
@@ -101,14 +100,14 @@ void DNAStatMSAProfileDialog::initSaveController() {
 
 void DNAStatMSAProfileDialog::accept() {
     DNAStatMSAProfileTaskSettings s;
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
+    MsaObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }
     s.profileName = msaObj->getGObjectName();
     s.profileURL = msaObj->getDocument()->getURLString();
     s.usePercents = percentsRB->isChecked();
-    s.ma = msaObj->getMsaCopy();
+    s.ma = msaObj->getAlignment()->getCopy();
     s.reportGaps = gapCB->isChecked();
     s.stripUnused = !unusedCB->isChecked();
     s.countGapsInConsensusNumbering = !skipGapPositionsCB->isChecked();
@@ -369,7 +368,7 @@ void DNAStatMSAProfileTask::computeStats() {
         cs.charFreqs.resize(aChars.size());
         cs.consChar = U2Msa::GAP_CHAR;
         for (int i = 0; i < s.ma->getRowCount(); i++) {
-            char c = s.ma->getMsaRow(i)->charAt(pos);
+            char c = s.ma->getRow(i)->charAt(pos);
             unusedChars.remove(c);
             int idx = char2index.value(c);
             int v = ++cs.charFreqs[idx];

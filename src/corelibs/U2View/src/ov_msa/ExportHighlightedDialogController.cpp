@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,8 +33,8 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
 
-#include "ov_msa/MSAEditorSequenceArea.h"
 #include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MsaEditorSequenceArea.h"
 #include "ui_ExportHighlightedDialog.h"
 
 namespace U2 {
@@ -45,7 +45,7 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
       saveController(nullptr),
       ui(new Ui_ExportHighlightedDialog()) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "65929627");
+    new HelpButton(this, ui->buttonBox, "96666040");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

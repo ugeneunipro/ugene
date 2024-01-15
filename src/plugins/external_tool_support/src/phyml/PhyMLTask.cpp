@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ namespace U2 {
 const QString PhyMLSupportTask::TMP_FILE_NAME("tmp.phy");
 const QString PhyMLSupportTask::RESULT_TREE_EXT("_phyml_tree.txt");
 
-PhyMLPrepareDataForCalculation::PhyMLPrepareDataForCalculation(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s, const QString& url)
+PhyMLPrepareDataForCalculation::PhyMLPrepareDataForCalculation(const Msa& ma, const CreatePhyTreeSettings& s, const QString& url)
     : Task(tr("Generating input file for PhyML"), TaskFlags_NR_FOSE_COSC),
       ma(ma),
       settings(s),
@@ -80,7 +80,7 @@ QList<Task*> PhyMLPrepareDataForCalculation::onSubTaskFinished(Task* subTask) {
     return res;
 }
 
-PhyMLSupportTask::PhyMLSupportTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s)
+PhyMLSupportTask::PhyMLSupportTask(const Msa& ma, const CreatePhyTreeSettings& s)
     : PhyTreeGeneratorTask(ma, s),
       prepareDataTask(nullptr),
       phyMlTask(nullptr),

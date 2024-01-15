@@ -32,7 +32,7 @@ class MaEditorSequenceArea;
 class McaEditorSequenceArea;
 class MaEditorStatusBar;
 class McaEditorStatusBar;
-class MultipleAlignmentObject;
+class MsaObject;
 class MultipleChromatogramAlignmentObject;
 
 /*
@@ -50,9 +50,9 @@ public:
      * Initialize object.
      * Call this function right after instance creation.
      */
-    void init(MultipleAlignmentObject* maObject, MaEditorSequenceArea* seqArea, MaEditorStatusBar* statusBar);
+    void init(MsaObject* maObject, MaEditorSequenceArea* seqArea, MaEditorStatusBar* statusBar);
 
-    static const QString getAlternativeMutationsCheckedId();
+    static QString getAlternativeMutationsCheckedId();
 
 private slots:
     /*
@@ -76,7 +76,7 @@ private:
     void updateDb(U2OpStatus& os);
 
     McaEditorSequenceArea* seqArea = nullptr;
-    MultipleChromatogramAlignmentObject* mcaObject = nullptr;
+    MsaObject* mcaObject = nullptr;
     McaEditorStatusBar* statusBar = nullptr;
     U2IntegerAttribute checkedStateAttribute;
     U2IntegerAttribute thresholdAttribute;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -39,7 +39,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 
-void MuscleAdapter::align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti, bool mhack) {
+void MuscleAdapter::align(const Msa& ma, Msa& res, TaskStateInfo& ti, bool mhack) {
     if (ti.cancelFlag) {
         return;
     }
@@ -58,7 +58,7 @@ void MuscleAdapter::align(const MultipleSequenceAlignment& ma, MultipleSequenceA
     }
 }
 
-void MuscleAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti, bool mhack) {
+void MuscleAdapter::alignUnsafe(const Msa& ma, Msa& res, TaskStateInfo& ti, bool mhack) {
     ti.progress = 0;
     MuscleContext* ctx = getMuscleContext();
 
@@ -187,7 +187,7 @@ void MuscleAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
 //////////////////////////////////////////////////////////////////////////
 // refine single MSA
 
-void MuscleAdapter::refine(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::refine(const Msa& ma, Msa& res, TaskStateInfo& ti) {
     if (ti.cancelFlag) {
         return;
     }
@@ -209,7 +209,7 @@ void MuscleAdapter::refine(const MultipleSequenceAlignment& ma, MultipleSequence
     }
 }
 
-void MuscleAdapter::refineUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::refineUnsafe(const Msa& ma, Msa& res, TaskStateInfo& ti) {
     ti.progress = 0;
 
     MuscleContext* ctx = getMuscleContext();
@@ -277,7 +277,7 @@ static ProfPos* ProfileFromMSALocal_ProfileCPP(MSA& msa, Tree& tree) {
     return ProfileFromMSA(msa);
 }
 
-void MuscleAdapter::align2Profiles(const MultipleSequenceAlignment& ma1, const MultipleSequenceAlignment& ma2, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::align2Profiles(const Msa& ma1, const Msa& ma2, Msa& res, TaskStateInfo& ti) {
     if (ti.cancelFlag) {
         return;
     }
@@ -300,7 +300,7 @@ void MuscleAdapter::align2Profiles(const MultipleSequenceAlignment& ma1, const M
     }
 }
 
-void MuscleAdapter::align2ProfilesUnsafe(const MultipleSequenceAlignment& ma1, const MultipleSequenceAlignment& ma2, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::align2ProfilesUnsafe(const Msa& ma1, const Msa& ma2, Msa& res, TaskStateInfo& ti) {
     assert(!ma1->isEmpty() && !ma2->isEmpty());
     const DNAAlphabet* al = U2AlphabetUtils::deriveCommonAlphabet(ma1->getAlphabet(), ma2->getAlphabet());
     CHECK_EXT(al != nullptr, ti.setError(tr("Incompatible alphabets")), );
@@ -389,7 +389,7 @@ static void originalMSAToCurrent(const QByteArray& adjPath, const QByteArray& or
     }
 }
 
-static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& path, QByteArray& msaPathChanges, const QByteArray& seq, const QString& name) {
+static void addSequenceToMSA(Msa& ma, const QByteArray& path, QByteArray& msaPathChanges, const QByteArray& seq, const QString& name) {
     assert(msaPathChanges.length() == ma->getLength());
 
     QVector<int> insCoords;  // coords of gaps to be added to model
@@ -426,7 +426,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
         int newLen = prevLen + numIns;
         QByteArray msaPathChangesNew;
         for (int i = 0, n = ma->getRowCount(); i < n; i++) {
-            const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
+            const MsaRow& row = ma->getRow(i);
             QByteArray newSeq;
             newSeq.reserve(newLen);
             int insCoordsPos = insCoords[0];
@@ -472,7 +472,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
     ma->addRow(name, alignedSeq);
 }
 
-void MuscleAdapter::addUnalignedSequencesToProfile(const MultipleSequenceAlignment& ma, const MultipleSequenceAlignment& unalignedSeqs, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::addUnalignedSequencesToProfile(const Msa& ma, const Msa& unalignedSeqs, Msa& res, TaskStateInfo& ti) {
     if (ti.cancelFlag) {
         return;
     }
@@ -491,7 +491,7 @@ void MuscleAdapter::addUnalignedSequencesToProfile(const MultipleSequenceAlignme
     }
 }
 
-void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceAlignment& ma, const MultipleSequenceAlignment& unalignedSeqs, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const Msa& ma, const Msa& unalignedSeqs, Msa& res, TaskStateInfo& ti) {
     const DNAAlphabet* al = U2AlphabetUtils::deriveCommonAlphabet(ma->getAlphabet(), unalignedSeqs->getAlphabet());
     CHECK_EXT(al != nullptr, ti.setError(tr("Incompatible alphabets")), );
 
@@ -510,7 +510,7 @@ void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceA
     MSA profileMSA;
     convertMAlignment2MSA(profileMSA, ma, true);
 
-    res = ma->getExplicitCopy();
+    res = ma->getCopy();
 
     // align with input sequences one by one
     Tree tree1;
@@ -520,7 +520,7 @@ void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceA
     for (int i = 0, n = unalignedSeqs->getRowCount(); i < n; i++) {
         ti.setDescription(tr("Aligning sequence %1 of %2").arg(QString::number(i + 1)).arg(QString::number(n)));
         ti.progress = dp + i * (95 - dp) / n;
-        const MultipleSequenceAlignmentRow useq = unalignedSeqs->getMsaRow(i);
+        const MsaRow& useq = unalignedSeqs->getRow(i);
         Seq seq;
         seq.FromString(useq->getCore().constData(), useq->getName().toLocal8Bit().constData());
         seq.SetId(0);

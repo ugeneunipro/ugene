@@ -34,7 +34,7 @@ namespace U2 {
 
 class MsaColorScheme;
 class MaEditorConsensusArea;
-class MSAEditorConsensusCache;
+class MsaEditorConsensusCache;
 
 class ConsensusRenderSettings {
 public:

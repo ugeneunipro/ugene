@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,10 @@ namespace U2 {
 
 void U2SafePoints::fail(const QString& message) {
     coreLog.error(message);
-
     static bool isInTestMode = qgetenv("UGENE_GUI_TEST") == "1";
     if (isInTestMode) {
         fflush(stdout);
+        fflush(stderr);
         std::abort();
     }
     assert(false);

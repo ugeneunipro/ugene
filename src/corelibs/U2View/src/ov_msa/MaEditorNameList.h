@@ -25,7 +25,7 @@
 #include <QRubberBand>
 #include <QScrollBar>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/U2Region.h>
 
 #include "MaCollapseModel.h"
@@ -68,7 +68,7 @@ private slots:
     /** Copies whole selected row content into clipboard without any formatting. */
     void sl_copyWholeRow();
     void sl_lockedStateChanged();
-    void sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&);
+    void sl_alignmentChanged(const Msa&, const MaModificationInfo&);
     void sl_vScrollBarActionPerformed();
     void sl_completeUpdate();
 

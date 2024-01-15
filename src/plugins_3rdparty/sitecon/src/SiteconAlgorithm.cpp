@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -62,7 +62,7 @@ bool SiteconModel::operator!=(const SiteconModel& model) const {
     return !eq;
 }
 
-QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const MultipleSequenceAlignment& ma, const SiteconBuildSettings& config, TaskStateInfo& ts) {
+QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Msa& ma, const SiteconBuildSettings& config, TaskStateInfo& ts) {
     const QList<DiPropertySitecon*>& props = config.props;
     assert(!props.isEmpty());
     QVector<PositionStats> matrix;
@@ -72,16 +72,16 @@ QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Mul
         PositionStats posResult;
         for (DiPropertySitecon* p : qAsConst(props)) {  // for every property
             qreal average = 0;  // average in a column
-            foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {  // collect di-position stat for all sequence in alignment
+            foreach (const MsaRow& row, ma->getRows()) {  // collect di-position stat for all sequence in alignment
                 average += p->getOriginal(row->charAt(i), row->charAt(i + 1));
             }
             average /= N;
 
             qreal dispersion = 0;  // dispersion in a column
-            const QList<MultipleAlignmentRow>& msaRows = ma->getRows();
+            const QVector<MsaRow>& msaRows = ma->getRows();
             for (int j = 0; j < msaRows.size(); j++) {  // collect di-position stat for all sequence in alignment
                 CHECK(!ts.isCoR(), {});
-                const MultipleSequenceAlignmentRow& row = msaRows[j];
+                const MsaRow& row = msaRows[j];
                 char c1 = row->charAt(i);
                 char c2 = row->charAt(i + 1);
                 qreal v = p->getOriginal(c1, c2);
@@ -144,7 +144,7 @@ qreal SiteconAlgorithm::calculatePSum(const char* seq,
     return pSum;
 }
 
-QVector<qreal> SiteconAlgorithm::calculateFirstTypeError(const MultipleSequenceAlignment& ma, const SiteconBuildSettings& s, TaskStateInfo& ts) {
+QVector<qreal> SiteconAlgorithm::calculateFirstTypeError(const Msa& ma, const SiteconBuildSettings& s, TaskStateInfo& ts) {
     QVector<qreal> res(100, 0);
 
     qreal devThresh = critchi(s.chisquare, s.numSequencesInAlignment - 2) / (s.numSequencesInAlignment - 1);
@@ -159,8 +159,8 @@ QVector<qreal> SiteconAlgorithm::calculateFirstTypeError(const MultipleSequenceA
     int maLen = ma->getLength();
     for (int i = 0; i < ma->getRowCount(); i++) {
         CHECK(!ts.isCoR(), res);
-        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
-        MultipleSequenceAlignment subMA = ma->getCopy();
+        const MsaRow& row = ma->getRow(i);
+        Msa subMA = ma->getCopy();
         subMA->removeRow(i, os);
         CHECK(!ts.isCoR(), res);
         QVector<PositionStats> matrix = calculateDispersionAndAverage(subMA, s, ts);
@@ -251,12 +251,12 @@ QVector<PositionStats> SiteconAlgorithm::normalize(const QVector<PositionStats>&
     return normMatrix;
 }
 
-void SiteconAlgorithm::calculateACGTContent(const MultipleSequenceAlignment& ma, SiteconBuildSettings& bs) {
+void SiteconAlgorithm::calculateACGTContent(const Msa& ma, SiteconBuildSettings& bs) {
     assert(ma->getAlphabet()->isNucleic());
     bs.acgtContent[0] = bs.acgtContent[1] = bs.acgtContent[2] = bs.acgtContent[3] = 0;
     int maLen = ma->getLength();
     int total = ma->getRowCount() * ma->getLength();
-    foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+    foreach (const MsaRow& row, ma->getRows()) {
         for (int i = 0; i < maLen; i++) {
             char c = row->charAt(i);
             if (c == 'A') {
@@ -340,7 +340,7 @@ static void dumpWeights(const QString& url, const PWVector& weights, const Sitec
 }
 #endif
 
-int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVector<PositionStats>& origMatrix, const SiteconBuildSettings& settings, bool matrixIsNormalized, TaskStateInfo& si) {
+int SiteconAlgorithm::calculateWeights(const Msa& ma, QVector<PositionStats>& origMatrix, const SiteconBuildSettings& settings, bool matrixIsNormalized, TaskStateInfo& si) {
     CHECK(!si.isCoR(), 0);
     int modelSize = settings.windowSize - 1;
     if (settings.weightAlg == SiteconWeightAlg_None) {

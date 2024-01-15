@@ -25,16 +25,16 @@
 #include <QPushButton>
 
 #include <U2Core/BackgroundTaskRunner.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 
-#include "MSAEditor.h"
 #include "MaEditorNameList.h"
+#include "MsaEditor.h"
 
 namespace U2 {
 
 class CreateDistanceMatrixTask;
-class MSADistanceMatrix;
+class MsaDistanceMatrix;
 class MaUtilsWidget;
 class MsaEditorWgt;
 class Task;
@@ -47,7 +47,7 @@ enum DataState {
 
 class SimilarityStatisticsSettings {
 public:
-    QPointer<MSAEditor> editor;
+    QPointer<MsaEditor> editor;
     bool autoUpdate = true;
     /** Selected algorithm. */
     QString algoId;
@@ -74,7 +74,7 @@ public:
 
     QString getHeaderText() const;
 
-    void setMatrix(MSADistanceMatrix* matrix);
+    void setMatrix(MsaDistanceMatrix* matrix);
 
     QString getTextForRow(int maRowIndex) override;
 
@@ -93,16 +93,16 @@ private slots:
 private:
     void updateDistanceMatrix();
 
-    MSADistanceMatrix* matrix = nullptr;
+    MsaDistanceMatrix* matrix = nullptr;
     SimilarityStatisticsSettings newSettings;
     SimilarityStatisticsSettings curSettings;
 
-    BackgroundTaskRunner<MSADistanceMatrix*> createDistanceMatrixTaskRunner;
+    BackgroundTaskRunner<MsaDistanceMatrix*> createDistanceMatrixTaskRunner;
 
     DataState state = DataIsOutdated;
 };
 
-class CreateDistanceMatrixTask : public BackgroundTask<MSADistanceMatrix*> {
+class CreateDistanceMatrixTask : public BackgroundTask<MsaDistanceMatrix*> {
     Q_OBJECT
 public:
     explicit CreateDistanceMatrixTask(const SimilarityStatisticsSettings& _s);

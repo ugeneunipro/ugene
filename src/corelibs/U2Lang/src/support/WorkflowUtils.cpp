@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@
 #include <U2Core/Folder.h>
 #include <U2Core/GObject.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PasswordStorage.h>
 #include <U2Core/Settings.h>
 #include <U2Core/StringAdapter.h>
@@ -626,7 +626,7 @@ void WorkflowUtils::print(const QString& slotString, const QVariant& data, DataT
         CHECK(obj.data() != nullptr, );
         data2text(context, BaseDocumentFormats::FASTA, obj.data(), text);
     } else if (BaseTypes::MULTIPLE_ALIGNMENT_TYPE() == type) {
-        QScopedPointer<MultipleSequenceAlignmentObject> obj(StorageUtils::getMsaObject(storage, data.value<SharedDbiDataHandler>()));
+        QScopedPointer<MsaObject> obj(StorageUtils::getMsaObject(storage, data.value<SharedDbiDataHandler>()));
         CHECK(obj.data() != nullptr, );
         data2text(context, BaseDocumentFormats::CLUSTAL_ALN, obj.data(), text);
     } else if (BaseTypes::ANNOTATION_TABLE_TYPE() == type || BaseTypes::ANNOTATION_TABLE_LIST_TYPE() == type) {

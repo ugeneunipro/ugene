@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #include "FindPatternMsaTaskTest.h"
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 namespace U2 {
 
@@ -195,7 +195,7 @@ void GTest_FindPatternMsa::prepare() {
         return;
     }
     assert(obj != nullptr);
-    msaObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    msaObj = qobject_cast<MsaObject*>(obj);
     if (msaObj == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;

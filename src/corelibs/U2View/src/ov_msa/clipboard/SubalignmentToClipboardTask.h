@@ -26,11 +26,11 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/GUrl.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 
@@ -49,7 +49,7 @@ public:
 class FormatsMsaClipboardTask : public PrepareMsaClipboardDataTask {
     Q_OBJECT
 public:
-    FormatsMsaClipboardTask(MultipleSequenceAlignmentObject* msaObj, const QList<qint64>& rowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
+    FormatsMsaClipboardTask(MsaObject* msaObj, const QList<qint64>& rowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
 
     void prepare() override;
 
@@ -60,7 +60,7 @@ protected:
 
 private:
     CreateSubalignmentTask* createSubalignmentTask;
-    MultipleSequenceAlignmentObject* msaObj;
+    MsaObject* msaObj;
     DocumentFormatId formatId;
 };
 
@@ -77,14 +77,14 @@ private:
 class MsaClipboardDataTaskFactory {
 public:
     /** Returns a new PrepareMsaClipboardDataTask instance. */
-    static PrepareMsaClipboardDataTask* newInstance(MSAEditor* context, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
+    static PrepareMsaClipboardDataTask* newInstance(MsaEditor* context, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 class SubalignmentToClipboardTask : public Task {
     Q_OBJECT
 public:
-    SubalignmentToClipboardTask(MSAEditor* maEditor, const QList<qint64>& rowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
+    SubalignmentToClipboardTask(MsaEditor* maEditor, const QList<qint64>& rowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
 
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask) override;

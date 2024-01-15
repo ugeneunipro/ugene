@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,9 +27,9 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -135,7 +135,7 @@ QList<Task*> SimpleInOutWorkflowTask::onSubTaskFinished(Task* subTask) {
 //////////////////////////////////////////////////////////////////////////
 // RunSimpleMSAWorkflow4GObject
 SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& taskName,
-                                                             MultipleSequenceAlignmentObject* msaObj,
+                                                             MsaObject* msaObj,
                                                              const SimpleMSAWorkflowTaskConfig& conf)
     : Task(taskName, TaskFlags_NR_FOSCOE),
       msaObjectPointer(msaObj),
@@ -145,9 +145,9 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& task
     SAFE_POINT(msaObj != nullptr, "NULL MultipleSequenceAlignmentObject!", );
 
     U2OpStatus2Log os;
-    MultipleSequenceAlignment al = MSAUtils::createCopyWithIndexedRowNames(msaObjectPointer->getMultipleAlignment());
+    Msa al = MsaUtils::createCopyWithIndexedRowNames(msaObjectPointer->getAlignment());
 
-    MultipleSequenceAlignmentObject* msaObject = MultipleSequenceAlignmentImporter::createAlignment(msaObjectPointer->getEntityRef().dbiRef, al, os);
+    MsaObject* msaObject = MsaImportUtils::createMsaObject(msaObjectPointer->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os, );
 
     SimpleInOutWorkflowTaskConfig sioConf;
@@ -186,9 +186,9 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
     CHECK_EXT(!msaObjectPointer.isNull(), setError(tr("Object '%1' removed").arg(docName)), ReportResult_Finished);
     CHECK_EXT(!msaObjectPointer->isStateLocked(), setError(tr("Object '%1' is locked").arg(docName)), ReportResult_Finished);
 
-    MultipleSequenceAlignment resultMsa = getResult();
-    const MultipleSequenceAlignment& originalMsa = msaObjectPointer->getMultipleAlignment();
-    bool isAllRowsRestored = MSAUtils::restoreOriginalRowProperties(resultMsa, originalMsa);
+    Msa resultMsa = getResult();
+    const Msa& originalMsa = msaObjectPointer->getAlignment();
+    bool isAllRowsRestored = MsaUtils::restoreOriginalRowProperties(resultMsa, originalMsa);
     if (!isAllRowsRestored) {
         setError(tr("MSA has incompatible changes during the alignment. Ignoring the alignment result: '%1'").arg(docName));
         return ReportResult_Finished;
@@ -204,8 +204,8 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
     return ReportResult_Finished;
 }
 
-MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
-    MultipleSequenceAlignment res;
+Msa SimpleMSAWorkflow4GObjectTask::getResult() {
+    Msa res;
     CHECK_OP(stateInfo, res);
 
     SAFE_POINT(runWorkflowTask != nullptr, "SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.", res);
@@ -214,9 +214,9 @@ MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
     CHECK_EXT(d != nullptr, setError(tr("Result document not found!")), res);
     CHECK_EXT(d->getObjects().size() == 1, setError(tr("Result document content not matched! %1").arg(d->getURLString())), res);
 
-    auto maObj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first());
+    auto maObj = qobject_cast<MsaObject*>(d->getObjects().first());
     CHECK_EXT(maObj != nullptr, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
-    return maObj->getMsaCopy();
+    return maObj->getAlignment()->getCopy();
 }
 
 }  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 
 #include "FindPatternMsaTask.h"
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 namespace U2 {
 
@@ -86,9 +86,9 @@ void FindPatternMsaTask::getResultFromTask() {
         currentSequenceIndex++;
         return;
     }
-    const MultipleAlignment& multipleAlignment = settings.msaObj->getMultipleAlignment();
+    const Msa& multipleAlignment = settings.msaObj->getAlignment();
     QList<U2Region> regions;
-    const MultipleAlignmentRow& msaRow = multipleAlignment->getRow(currentSequenceIndex);
+    const MsaRow& msaRow = multipleAlignment->getRow(currentSequenceIndex);
     for (int i = 0; i < rowResults.length() && totalResultsCounter < settings.findSettings.maxResult2Find; i++) {
         const SharedAnnotationData& annotationData = rowResults[i];
         const U2Region& resultRegion = annotationData->getRegions().first();

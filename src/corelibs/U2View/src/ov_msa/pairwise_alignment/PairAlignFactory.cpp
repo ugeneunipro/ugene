@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ QWidget* PairAlignFactory::createWidget(GObjectViewController* objView, const QV
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    auto msa = qobject_cast<MSAEditor*>(objView);
+    auto msa = qobject_cast<MsaEditor*>(objView);
     SAFE_POINT(msa != nullptr,
                QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
                nullptr);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,8 +31,8 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "MaGraphCalculationTask.h"
 #include "ov_msa/BaseWidthController.h"
@@ -124,10 +124,10 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
     MaEditorSequenceArea* sequenceArea = maEditorWgt->getSequenceArea();
     QString highlightingSchemeId = sequenceArea->getCurrentHighlightingScheme()->getFactory()->getId();
 
-    MultipleAlignmentObject* mAlignmentObj = editor->getMaObject();
+    MsaObject* mAlignmentObj = editor->getMaObject();
     SAFE_POINT(mAlignmentObj != nullptr, "Incorrect multiple alignment object!", );
 
-    const MultipleAlignment& ma = mAlignmentObj->getMultipleAlignment();
+    const Msa& ma = mAlignmentObj->getAlignment();
     U2OpStatusImpl os;
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
         for (int pos = 0; pos < editor->getAlignmentLen(); pos++) {

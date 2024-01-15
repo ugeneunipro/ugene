@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1070,16 +1070,19 @@ void AnnotationsTreeView::sl_removeObjectFromView() {
 
     QList<AVGroupItem*> topLevelGroups = selectGroupItems(tree->selectedItems(), TriState_Unknown, TriState_Yes);
     QList<GObject*> objects;
-    foreach (AVGroupItem* gItem, topLevelGroups) {
+    for (AVGroupItem *gItem : qAsConst(topLevelGroups)) {
         objects.append(gItem->group->getGObject());
     }
 
-    foreach (GObject* obj, objects) {
+    for (GObject *obj : qAsConst(objects)) {
         SAFE_POINT(obj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE, "Unexpected object type", );
         if (AutoAnnotationsSupport::isAutoAnnotationObject(obj)) {
             continue;
         }
-        ctx->removeObject(obj);
+        auto sequenceObjects = ctx->getSequenceObjectsWithContexts();
+        for (auto seqObj : qAsConst(sequenceObjects)) {
+            obj->removeObjectRelation(GObjectRelation(GObjectReference(seqObj), ObjectRole_Sequence));
+        }
     }
 }
 

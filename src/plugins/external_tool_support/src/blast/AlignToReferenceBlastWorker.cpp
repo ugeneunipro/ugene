@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -300,7 +300,7 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task* subTask) {
 
         document->setDocumentOwnsDbiResources(false);
 
-        MultipleChromatogramAlignmentObject* mcaObject = composeSubTask->takeMcaObject();
+        MsaObject* mcaObject = composeSubTask->takeMcaObject();
         SAFE_POINT_EXT(mcaObject != nullptr, setError("Result MCA object is NULL"), result);
         document->addObject(mcaObject);
 

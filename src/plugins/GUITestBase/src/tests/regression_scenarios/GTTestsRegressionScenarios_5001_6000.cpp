@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,12 +58,12 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
-#include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaEditorConsensusArea.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
 #include <U2View/McaEditorReferenceArea.h>
+#include <U2View/MsaEditorTreeViewer.h>
 
 #include "GTTestsRegressionScenarios_5001_6000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -124,6 +124,7 @@
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/plugins_3rdparty/hmm3/HmmerSearchDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
@@ -1158,6 +1159,25 @@ GUI_TEST_CLASS_DEFINITION(test_5263) {
     GTUtilsAnnotationsTreeView::findItem("EcoRI");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5281) {
+    /*
+    * 1. Open _common_data\regression\1704\lrr_test_new.gb"
+    * 2. Open Actions->Analyze->Find HMM signals with HMMER3...
+    * 2. Set domE value to 1E+5
+    * 3. Find HMM3 signals with _common_data\_regession\1704\LRR_4.hmm model
+    * Expected state: there is no errors in the log and 27 results found
+    */
+    
+    GTLogTracer lt;
+    GTFileDialog::openFile(testDir + "_common_data/regression/1704", "lrr_test_new.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::waitForDialog(new HmmerSearchDialogFiller(testDir + "_common_data/regression/1704/LRR_4.hmm", sandBoxDir + "1704.gb", 5));
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find HMM signals with HMMER3..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup("hmm_signal  (0, 27)").size() == 27, "Unexpected number of result annotations");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5356) {
     //    1. Open WD
     //    2. Create workflow: "Read FASTQ" --> "Cut Adapter" --> "FastQC"
@@ -1810,7 +1830,7 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
     GTUtilsOptionPanelMca::openTab(GTUtilsOptionPanelMca::General);
 
     // 2. Select last symbol of the read and insert some gaps, until reference will increase for a few symbols
-    MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(0);
+    MsaRowData* row = GTUtilsMcaEditor::getMcaRow(0);
     int end = int(row->getCoreStart() + row->getCoreLength() - 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(QPoint(end, 0));
 
@@ -2493,7 +2513,7 @@ GUI_TEST_CLASS_DEFINITION(test_5637) {
 
     // Expected: row length must be equal or lesser then reference length
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
-    MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(0);
+    MsaRowData* row = GTUtilsMcaEditor::getMcaRow(0);
     qint64 rowLength = row->getRowLengthWithoutTrailing();
     CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser then reference length, current: row lenght = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
 
@@ -2893,14 +2913,14 @@ GUI_TEST_CLASS_DEFINITION(test_5714_2) {
 
     // Expected: row length must be lesser than row length before trim
     qint64 currentLength = GTUtilsMcaEditorSequenceArea::getRowLength(1);
-    CHECK_SET_ERR(currentLength < rowLength, QString("Expected: row length must be lesser than row length before trim, cureent: start length %1, current length %2").arg(QString::number(rowLength)).arg(QString::number(currentLength)));
+    CHECK_SET_ERR(currentLength < rowLength, QString("Expected: row length must be lesser than row length before trim, current: start length %1, current length %2").arg(QString::number(rowLength)).arg(QString::number(currentLength)));
 
     // 7. Press undo
     GTUtilsMcaEditor::undo();
 
     // Expected: current row length is equal start row length
     currentLength = GTUtilsMcaEditorSequenceArea::getRowLength(1);
-    CHECK_SET_ERR(currentLength == rowLength, QString("Expected: current row length is equal start row length, cureent: start length %1, current length %2").arg(QString::number(rowLength)).arg(QString::number(currentLength)));
+    CHECK_SET_ERR(currentLength == rowLength, QString("Expected: current row length is equal start row length, current: start length %1, current length %2").arg(QString::number(rowLength)).arg(QString::number(currentLength)));
 
     // 8. Select position 2066 of the second read
     GTUtilsMcaEditorSequenceArea::clickToPosition(QPoint(2066, 1));
@@ -3525,7 +3545,7 @@ GUI_TEST_CLASS_DEFINITION(test_5755) {
     // Expected : Trailing gaps were inserted into the end of reference.
     int refLength = (int)GTUtilsMcaEditorSequenceArea::getReferenceLength();
     QString refReg = GTUtilsMcaEditorSequenceArea::getReferenceReg(refLength - 20, 20);
-    bool isGap = std::all_of(refReg.begin(), refReg.end(), [](const auto& c) { return c == U2Mca::GAP_CHAR; });
+    bool isGap = std::all_of(refReg.begin(), refReg.end(), [](const auto& c) { return c == U2Msa::GAP_CHAR; });
     CHECK_SET_ERR(isGap, "Expected only gaps, got: " + refReg);
 }
 
@@ -3654,7 +3674,7 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
 
     GTLogTracer lt;
     // 2. Select the last char of the first row
-    MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(0);
+    MsaRowData* row = GTUtilsMcaEditor::getMcaRow(0);
     int end = int(row->getCoreStart() + row->getCoreLength() - 1);
     QPoint p(end, 0);
     GTUtilsMcaEditorSequenceArea::clickToPosition(p);
@@ -4549,7 +4569,7 @@ GUI_TEST_CLASS_DEFINITION(test_5854) {
     // 3. Select "Mecopoda_elongata__Ishigaki__J" sequence
     GTUtilsMSAEditorSequenceArea::selectSequence("Mecopoda_elongata__Ishigaki__J");
 
-    MSAEditorSequenceArea* seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
+    MsaEditorSequenceArea* seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
     QRect sel = seqArea->getEditor()->getSelection().toRect();
     int index = seqArea->getRowIndex(sel.y()) + 1;
 

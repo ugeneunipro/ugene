@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MsaObject;
 class MuscleGObjectTask;
 class LoadDocumentTask;
 
@@ -51,7 +51,7 @@ private:
     QString resultCtxName;
     Document* doc;
     MuscleGObjectTask* mTask;
-    MultipleSequenceAlignmentObject* ma_result;
+    MsaObject* ma_result;
     bool ctxAdded;
     bool refineOnly;
     int maxIters;
@@ -85,7 +85,7 @@ private:
     QString seqDocName;
     int resultAliLen;
     QList<QList<int>> gapPositionsForSeqs;
-    MultipleSequenceAlignmentObject* aliObj;
+    MsaObject* aliObj;
     int origAliSeqs;
     int resultAliSeqs;
 };
@@ -100,7 +100,7 @@ public:
     Task::ReportResult report();
     void run();
     QList<Task*> onSubTaskFinished(Task* subTask);
-    MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+    Msa dna_to_ma(QList<GObject*> dnaSeqs);
 
 public slots:
     void sl_muscleProgressChg() {
@@ -116,8 +116,8 @@ private:
     LoadDocumentTask* loadTask2;
     Task* muscleTask;
     MuscleTaskSettings config;
-    MultipleSequenceAlignmentObject* ma1;
-    MultipleSequenceAlignmentObject* ma2;
+    MsaObject* ma1;
+    MsaObject* ma2;
 };
 
 class Muscle_Load_Align_Compare_Task : public Task {
@@ -139,15 +139,15 @@ public slots:
     }
 
 private:
-    MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+    Msa dna_to_ma(QList<GObject*> dnaSeqs);
     QString str_inFileURL;
     QString str_patFileURL;
     LoadDocumentTask* loadTask1;
     LoadDocumentTask* loadTask2;
     Task* muscleTask;
     MuscleTaskSettings config;
-    MultipleSequenceAlignmentObject* ma1;
-    MultipleSequenceAlignmentObject* ma2;
+    MsaObject* ma1;
+    MsaObject* ma2;
 };
 
 class GTest_Muscle_Load_Align_Compare : public XmlTest {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
 
 #include <QApplication>
 
-#include <U2Algorithm/MSAConsensusAlgorithm.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaConsensusAlgorithm.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -40,7 +40,7 @@
 #include "McaEditorStatusBar.h"
 #include "McaReferenceCharController.h"
 #include "McaRowHeightController.h"
-#include "ov_msa/MSAEditorOffsetsView.h"
+#include "ov_msa/MsaEditorOffsetsView.h"
 #include "ov_sequence/SequenceObjectContext.h"
 
 namespace U2 {

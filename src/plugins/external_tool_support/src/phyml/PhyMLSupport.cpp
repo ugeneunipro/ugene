@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,11 +57,11 @@ PhyMLSupport::PhyMLSupport()
 ////////////////////////////////////////
 // PhyMLAdapter
 
-Task* PhyMLAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s) {
+Task* PhyMLAdapter::createCalculatePhyTreeTask(const Msa& ma, const CreatePhyTreeSettings& s) {
     return new PhyMLSupportTask(ma, s);
 }
 
-CreatePhyTreeWidget* PhyMLAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment& ma, QWidget* parent) {
+CreatePhyTreeWidget* PhyMLAdapter::createPhyTreeSettingsWidget(const Msa& ma, QWidget* parent) {
     return new PhyMlWidget(ma, parent);
 }
 

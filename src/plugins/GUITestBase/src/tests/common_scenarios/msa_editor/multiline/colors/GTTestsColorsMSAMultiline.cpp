@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -103,18 +103,17 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected state: the alignment alphabet is changed to Raw, highlighting scheme options are the same.
-    const bool isAlphabetRaw = GTUtilsMsaEditor::getEditor()->getMaObject()->getAlphabet()->isRaw();
+    bool isAlphabetRaw = GTUtilsMsaEditor::getEditor()->getMaObject()->getAlphabet()->isRaw();
     CHECK_SET_ERR(isAlphabetRaw, "Alphabet is not RAW after the symbol replacing");
 
     int threshold = GTUtilsOptionPanelMsa::getThreshold();
     GTUtilsOptionPanelMsa::ThresholdComparison thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison();
     bool isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet();
-
-    CHECK_SET_ERR(expectedThreshold == threshold,
+    CHECK_SET_ERR(threshold == expectedThreshold,
                   QString("Threshold is incorrect: expected %1, got %2").arg(expectedThreshold).arg(threshold));
-    CHECK_SET_ERR(expectedThresholdComparison == thresholdComparison,
+    CHECK_SET_ERR(thresholdComparison == expectedThresholdComparison,
                   QString("Threshold comparison is incorrect: expected %1, got %2").arg(expectedThresholdComparison).arg(thresholdComparison));
-    CHECK_SET_ERR(expectedIsUseDotsOptionsSet == isUseDotsOptionsSet,
+    CHECK_SET_ERR(isUseDotsOptionsSet == expectedIsUseDotsOptionsSet,
                   QString("Use dots option status is incorrect: expected %1, got %2").arg(expectedIsUseDotsOptionsSet).arg(isUseDotsOptionsSet));
 
     //    6. Set the next highlighting scheme options:
@@ -133,18 +132,18 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsMsaEditor::undo();
 
     //    Expected state: the alignment alphabet is changed to Amino Acid, highlighting scheme options are the same.
-    const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor()->getMaObject()->getAlphabet()->isAmino();
+    bool isAlphabetAmino = GTUtilsMsaEditor::getEditor()->getMaObject()->getAlphabet()->isAmino();
     CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino acid after the undoing");
 
     threshold = GTUtilsOptionPanelMsa::getThreshold();
     thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison();
     isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet();
 
-    CHECK_SET_ERR(expectedThreshold == threshold,
+    CHECK_SET_ERR(threshold == expectedThreshold,
                   QString("Threshold is incorrect: expected %1, got %2").arg(expectedThreshold).arg(threshold));
-    CHECK_SET_ERR(expectedThresholdComparison == thresholdComparison,
+    CHECK_SET_ERR(thresholdComparison == expectedThresholdComparison,
                   QString("Threshold comparison is incorrect: expected %1, got %2").arg(expectedThresholdComparison).arg(thresholdComparison));
-    CHECK_SET_ERR(expectedIsUseDotsOptionsSet == isUseDotsOptionsSet,
+    CHECK_SET_ERR(isUseDotsOptionsSet == expectedIsUseDotsOptionsSet,
                   QString("Use dots option status is incorrect: expected %1, got %2").arg(expectedIsUseDotsOptionsSet).arg(isUseDotsOptionsSet));
 
     GTUtilsMsaEditor::setMultilineMode(false);

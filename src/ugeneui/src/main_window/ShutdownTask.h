@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SHUTDOWN_TASK_H_
-#define _U2_SHUTDOWN_TASK_H_
-
+#pragma once
 #include <U2Core/Task.h>
 
 namespace U2 {
@@ -34,12 +32,12 @@ class ShutdownTask : public Task {
 public:
     ShutdownTask(MainWindowImpl* mw);
 
-    void prepare();
+    void prepare() override;
 
-    ReportResult report();
+    ReportResult report() override;
 
 protected:
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     void cancelShutdown();
@@ -55,9 +53,9 @@ public:
     CloseWindowsTask();
 
 private:
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    ReportResult report();
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    ReportResult report() override;
 };
 
 class CancelAllTask : public Task {
@@ -66,10 +64,8 @@ public:
     CancelAllTask();
 
 private:
-    void prepare();
-    ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
 };
 
 }  // namespace U2
-
-#endif  // _U2_SHUTDOWN_TASK_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-MsaColorSchemePercentageIdententityGrayscale::MsaColorSchemePercentageIdententityGrayscale(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaColorSchemePercentageIdententityGrayscale::MsaColorSchemePercentageIdententityGrayscale(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj)
     : MsaColorSchemePercentageIdentity(parent, factory, maObj) {
     colorsByRange[0] = QColor("#646464");
     colorsByRange[1] = QColor("#999999");
@@ -34,7 +34,7 @@ MsaColorSchemePercentageIdententityGrayscaleFactory::MsaColorSchemePercentageIde
     : MsaColorSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaColorScheme* MsaColorSchemePercentageIdententityGrayscaleFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaColorScheme* MsaColorSchemePercentageIdententityGrayscaleFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaColorSchemePercentageIdententityGrayscale(parent, this, maObj);
 }
 

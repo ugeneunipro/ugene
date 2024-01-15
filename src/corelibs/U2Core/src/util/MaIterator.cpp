@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@ namespace U2 {
 
 const qint64 MaIterator::INVALID_POSITION = -1;
 
-MaIterator::MaIterator(const MultipleAlignment& ma, NavigationDirection direction, const QList<int>& _rowsIndexes)
+MaIterator::MaIterator(const Msa& ma, NavigationDirection direction, const QList<int>& _rowsIndexes)
     : ma(ma),
       rowsIndexes(_rowsIndexes),
       direction(direction),
@@ -132,7 +132,7 @@ int MaIterator::getStep(qint64 position) const {
     SAFE_POINT(isInRange(position), "Out of boundaries", 1);
     const int rowNumber = getRowNumber(position);
     const int columnNumber = getColumnNumber(position);
-    const MultipleAlignmentRow row = ma->getRow(rowsIndexes[rowNumber]);
+    const MsaRow row = ma->getRow(rowsIndexes[rowNumber]);
     CHECK(!row->isTrailingOrLeadingGap(columnNumber), 1);
     switch (direction) {
         case Forward:

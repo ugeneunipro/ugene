@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-class MultipleAlignmentObject;
+class MsaObject;
 class U2SequenceObject;
 
 //////////////////////////////////////////////////////////////////////////

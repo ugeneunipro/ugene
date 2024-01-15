@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -214,6 +214,9 @@ bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
             break;
         case '|':
             keyPressWindows(VK_OEM_5, GTKeyboardDriver::key[Qt::Key_Shift]);
+            break;
+        case '`':
+            keyPressWindows(VK_OEM_3);
             break;
         default:
             keyPressWindows((int)key);

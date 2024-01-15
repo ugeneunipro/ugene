@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,10 @@
 #include "MaEditorState.h"
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
-#include "MSAEditor.h"
 #include "MaEditorFactory.h"
+#include "MsaEditor.h"
 #include "MultilineScrollController.h"
 #include "ScrollController.h"
 
@@ -102,7 +102,7 @@ QVariantMap MaEditorState::saveState(MaEditor* v) {
     MaEditorState ss;
     ss.stateData[VIEW_ID] = v->getFactoryId();
 
-    MultipleAlignmentObject* maObj = v->getMaObject();
+    MsaObject* maObj = v->getMaObject();
     if (maObj) {
         ss.setMaObjectRef(GObjectReference(maObj));
     }

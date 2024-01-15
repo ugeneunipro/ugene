@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -100,7 +100,7 @@ int SequenceWithChromatogramAreaRenderer::getScaleBarValue() const {
     return maxTraceHeight;
 }
 
-int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const MultipleAlignment& mca, int rowIndex, const U2Region& region, int xStart, int yStart) const {
+int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Msa& mca, int rowIndex, const U2Region& region, int xStart, int yStart) const {
     McaEditor* editor = getSeqArea()->getEditor();
     if (editor->isChromatogramRowExpanded(rowIndex)) {
         painter.translate(0, INDENT_BETWEEN_ROWS / 2);
@@ -117,7 +117,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Multi
         painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
         painter.drawLine(0, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight, width, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight);
 
-        const MultipleChromatogramAlignmentRow& row = editor->getMaObject()->getMcaRow(rowIndex);
+        const MsaRow& row = editor->getMaObject()->getRow(rowIndex);
         drawChromatogram(painter, row, region, xStart);
         painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
         painter.restore();
@@ -126,20 +126,24 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Multi
     return seqRowHeight;
 }
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, const MultipleChromatogramAlignmentRow& row, const U2Region& visibleRegion, int xStart) const {
-    const DNAChromatogram chroma = row->getGappedChromatogram();
+void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, const MsaRow& row, const U2Region& visibleRegion, int xStart) const {
+    Chromatogram chromatogram = row->getGappedChromatogram();
 
     // SANGER_TODO: should not be here
     chromaMax = 0;
-    for (int i = 0; i < chroma.traceLength; i++) {
-        if (chromaMax < chroma.A[i])
-            chromaMax = chroma.A[i];
-        if (chromaMax < chroma.C[i])
-            chromaMax = chroma.C[i];
-        if (chromaMax < chroma.G[i])
-            chromaMax = chroma.G[i];
-        if (chromaMax < chroma.T[i])
-            chromaMax = chroma.T[i];
+    for (int i = 0; i < chromatogram->traceLength; i++) {
+        if (chromaMax < chromatogram->A[i]) {
+            chromaMax = chromatogram->A[i];
+        }
+        if (chromaMax < chromatogram->C[i]) {
+            chromaMax = chromatogram->C[i];
+        }
+        if (chromaMax < chromatogram->G[i]) {
+            chromaMax = chromatogram->G[i];
+        }
+        if (chromaMax < chromatogram->T[i]) {
+            chromaMax = chromatogram->T[i];
+        }
     }
 
     U2Region regionToDraw = visibleRegion.intersect(row->getCoreRegion());
@@ -161,8 +165,8 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, c
     // SANGER_TODO:
     //    GSLV_UpdateFlags uf = view->getUpdateFlags();
     const bool completeRedraw = true;  // uf.testFlag(GSLV_UF_NeedCompleteRedraw) || uf.testFlag(GSLV_UF_ViewResized) || uf.testFlag(GSLV_UF_VisibleRangeChanged);
-    bool drawQuality = chroma.hasQV && getSeqArea()->getShowQA();
-    const bool baseCallsLinesVisible = seqAreaWgt->getEditor()->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
+    bool drawQuality = chromatogram->hasQV && getSeqArea()->getShowQA();
+    const bool baseCallsLinesVisible = seqAreaWgt->getEditor()->getResizeMode() == MsaEditor::ResizeMode_FontAndContent;
 
     if (completeRedraw) {
         painter.setRenderHint(QPainter::Antialiasing, true);
@@ -170,7 +174,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, c
         if (baseCallsLinesVisible) {
             // quality and base calls can be visible
             if (drawQuality) {
-                drawQualityValues(chroma, regionWidth, heightQuality, painter, regionToDraw, seq);
+                drawQualityValues(chromatogram, regionWidth, heightQuality, painter, regionToDraw, seq);
                 painter.translate(0, heightQuality);
             }
             drawOriginalBaseCalls(drawQuality * heightQuality, painter, regionToDraw, seq);
@@ -180,10 +184,10 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, c
 
         if (regionWidth / charWidth > regionToDraw.length / TRACE_OR_BC_LINES_DIVIDER) {
             // draw continious trace
-            drawChromatogramTrace(chroma, 0, heightBC, heightPD - heightBC - drawQuality * heightQuality, painter, regionToDraw);
+            drawChromatogramTrace(chromatogram, 0, heightBC, heightPD - heightBC - drawQuality * heightQuality, painter, regionToDraw);
         } else {
             // draw only "columns" of peaks
-            drawChromatogramBaseCallsLines(chroma, heightPD, painter, regionToDraw, seq);
+            drawChromatogramBaseCallsLines(chromatogram, heightPD, painter, regionToDraw, seq);
         }
     }
 
@@ -211,9 +215,9 @@ static int getPreviousBaseCallEndPosition(const QVector<ushort>& baseCalls, int 
     int res = 0;
     SAFE_POINT(startPos > 0 && startPos < baseCalls.size(), "Out of array boundary", 0);
     int prevStep = baseCalls[startPos] - baseCalls[startPos - 1];
-    // When many gaps was insered to the single place, the difference between current and previous baceCalls element may be very little.
+    // When many gaps were inserted to the single place, the difference between current and previous baceCalls element may be very little.
     // Because of it, left correct point to draw may be out of the left edge of visible area
-    // If it happends, we need to go to the left while we will find a correct point
+    // If it happens, we need to go to the left while we will find a correct point
     if (prevStep <= 1) {
         int pos = startPos - 1;
         while (prevStep == 0 && pos > 0) {
@@ -246,7 +250,7 @@ static int getCorrectPointsCountVariable(const QVector<ushort>& baseCalls, int p
 
 }  // namespace
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChromatogram& chroma,
+void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const Chromatogram& chromatogram,
                                                                  qreal x,
                                                                  qreal y,
                                                                  qreal h,
@@ -271,33 +275,33 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
     int startPos = visible.startPos;
     int prev = 0;
     if (startPos != 0) {
-        prev = getPreviousBaseCallEndPosition(chroma.baseCalls, startPos);
+        prev = getPreviousBaseCallEndPosition(chromatogram->baseCalls, startPos);
     }
 
     qint64 endPos = visible.endPos();
     for (int i = startPos; i < endPos; i++) {
-        SAFE_POINT(i < chroma.baseCalls.length(), "Base calls array is too short: visible range index is out range", );
-        int currentBaseCalls = chroma.baseCalls[i];
+        SAFE_POINT(i < chromatogram->baseCalls.length(), "Base calls array is too short: visible range index is out range", );
+        int currentBaseCalls = chromatogram->baseCalls[i];
         int pointsCount = currentBaseCalls - prev;
 
-        pointsCount = getCorrectPointsCountVariable(chroma.baseCalls, pointsCount, endPos, i);
+        pointsCount = getCorrectPointsCountVariable(chromatogram->baseCalls, pointsCount, endPos, i);
 
         qreal pxPerPoint = columnWidth / pointsCount;
         for (int pointIndex = 0; pointIndex < pointsCount; pointIndex++) {
             double pointX = columnWidth * (i - startPos) + columnWidth / 2 - (pointsCount - pointIndex) * pxPerPoint;
-            qreal yA = -qMin(static_cast<qreal>(chroma.A[prev + pointIndex]) * areaHeight / chromaMax, h);
-            qreal yC = -qMin(static_cast<qreal>(chroma.C[prev + pointIndex]) * areaHeight / chromaMax, h);
-            qreal yG = -qMin(static_cast<qreal>(chroma.G[prev + pointIndex]) * areaHeight / chromaMax, h);
-            qreal yT = -qMin(static_cast<qreal>(chroma.T[prev + pointIndex]) * areaHeight / chromaMax, h);
+            qreal yA = -qMin(static_cast<qreal>(chromatogram->A[prev + pointIndex]) * areaHeight / chromaMax, h);
+            qreal yC = -qMin(static_cast<qreal>(chromatogram->C[prev + pointIndex]) * areaHeight / chromaMax, h);
+            qreal yG = -qMin(static_cast<qreal>(chromatogram->G[prev + pointIndex]) * areaHeight / chromaMax, h);
+            qreal yT = -qMin(static_cast<qreal>(chromatogram->T[prev + pointIndex]) * areaHeight / chromaMax, h);
             polylineA.append(QPointF(pointX, yA));
             polylineC.append(QPointF(pointX, yC));
             polylineG.append(QPointF(pointX, yG));
             polylineT.append(QPointF(pointX, yT));
         }
-        prev = chroma.baseCalls[i];
+        prev = chromatogram->baseCalls[i];
     }
 
-    completePolygonsWithLastBaseCallTrace(polylineA, polylineC, polylineG, polylineT, chroma, columnWidth, visible, h);
+    completePolygonsWithLastBaseCallTrace(polylineA, polylineC, polylineG, polylineT, chromatogram, columnWidth, visible, h);
 
     if (getSettings().drawTraceA) {
         p.setPen(getBaseColor('A'));
@@ -318,32 +322,32 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
     p.translate(-x, -h - y);
 }
 
-void SequenceWithChromatogramAreaRenderer::completePolygonsWithLastBaseCallTrace(QPolygonF& polylineA, QPolygonF& polylineC, QPolygonF& polylineG, QPolygonF& polylineT, const DNAChromatogram& chroma, qreal columnWidth, const U2Region& visible, qreal h) const {
+void SequenceWithChromatogramAreaRenderer::completePolygonsWithLastBaseCallTrace(QPolygonF& polylineA, QPolygonF& polylineC, QPolygonF& polylineG, QPolygonF& polylineT, const Chromatogram& chromatogram, qreal columnWidth, const U2Region& visible, qreal h) const {
     // The last character may not to be included in visible area, so the trace for this symbol may be necessary to draw separately.
     int areaHeight = (heightPD - heightBC) * this->maxTraceHeight / 100;
     int startPos = visible.startPos;
     int endPos = visible.endPos();
     int prev = 0;
     int pointsCount = 0;
-    if (endPos == chroma.baseCalls.size()) {
-        prev = chroma.baseCalls.back();
+    if (endPos == chromatogram->baseCalls.size()) {
+        prev = chromatogram->baseCalls.back();
         pointsCount = 2;
     } else {
-        prev = chroma.baseCalls[endPos - 1];
-        pointsCount = chroma.baseCalls[endPos] - prev;
-        pointsCount = getCorrectPointsCountVariable(chroma.baseCalls, pointsCount, endPos, endPos - 1);
+        prev = chromatogram->baseCalls[endPos - 1];
+        pointsCount = chromatogram->baseCalls[endPos] - prev;
+        pointsCount = getCorrectPointsCountVariable(chromatogram->baseCalls, pointsCount, endPos, endPos - 1);
         pointsCount = pointsCount == 1 ? 2 : pointsCount;
     }
     qreal pxPerPoint = columnWidth / pointsCount;
     for (int i = 0; i < pointsCount; i++) {
         double x = columnWidth * (endPos - startPos) + columnWidth / 2 - (pointsCount - i) * pxPerPoint;
-        if (chroma.A.size() == prev + i) {
+        if (chromatogram->A.size() == prev + i) {
             prev -= i;
         }
-        qreal yA = -qMin(static_cast<qreal>(chroma.A[prev + i]) * areaHeight / chromaMax, h);
-        qreal yC = -qMin(static_cast<qreal>(chroma.C[prev + i]) * areaHeight / chromaMax, h);
-        qreal yG = -qMin(static_cast<qreal>(chroma.G[prev + i]) * areaHeight / chromaMax, h);
-        qreal yT = -qMin(static_cast<qreal>(chroma.T[prev + i]) * areaHeight / chromaMax, h);
+        qreal yA = -qMin(static_cast<qreal>(chromatogram->A[prev + i]) * areaHeight / chromaMax, h);
+        qreal yC = -qMin(static_cast<qreal>(chromatogram->C[prev + i]) * areaHeight / chromaMax, h);
+        qreal yG = -qMin(static_cast<qreal>(chromatogram->G[prev + i]) * areaHeight / chromaMax, h);
+        qreal yT = -qMin(static_cast<qreal>(chromatogram->T[prev + i]) * areaHeight / chromaMax, h);
 
         polylineA.append(QPointF(x, yA));
         polylineC.append(QPointF(x, yC));
@@ -370,7 +374,7 @@ void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPaint
     p.translate(0, -h);
 }
 
-void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogram& chroma, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
+void SequenceWithChromatogramAreaRenderer::drawQualityValues(const Chromatogram& chromatogram, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
     p.translate(0, h);
 
     // draw grid
@@ -396,16 +400,16 @@ void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogr
         int xP = colWidth * (i - visible.startPos);
         switch (ba[i]) {
             case 'A':
-                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_A[i]);
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chromatogram->prob_A[i]);
                 break;
             case 'C':
-                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_C[i]);
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chromatogram->prob_C[i]);
                 break;
             case 'G':
-                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_G[i]);
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chromatogram->prob_G[i]);
                 break;
             case 'T':
-                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_T[i]);
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chromatogram->prob_T[i]);
                 break;
         }
         if (qAbs(rectangle.height()) > h / 100) {
@@ -416,7 +420,7 @@ void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogr
     p.translate(0, -h);
 }
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const DNAChromatogram& chroma, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
+void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const Chromatogram& chromatogram, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
     p.setRenderHint(QPainter::Antialiasing, false);
     p.translate(0, h);
 
@@ -424,28 +428,28 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const 
     int areaHeight = (heightPD - heightBC) * this->maxTraceHeight / 100;
     int colWidth = getSeqArea()->getEditor()->getColumnWidth();
     for (int i = visible.startPos; i < visible.startPos + visible.length; i++) {
-        SAFE_POINT(i < chroma.baseCalls.length(), "Base calls array is too short: visible range index is out range", );
-        int temp = chroma.baseCalls[i];
-        SAFE_POINT(temp <= chroma.traceLength, "Broken chromatogram data", );
+        SAFE_POINT(i < chromatogram->baseCalls.length(), "Base calls array is too short: visible range index is out range", );
+        int temp = chromatogram->baseCalls[i];
+        SAFE_POINT(temp <= chromatogram->traceLength, "Broken chromatogram data", );
 
         double x = colWidth * (i - visible.startPos) + colWidth / 2;
         bool drawBase = true;
         p.setPen(getBaseColor(ba[i]));
         switch (ba[i]) {
             case 'A':
-                yRes = -qMin(static_cast<qreal>(chroma.A[temp]) * areaHeight / chromaMax, h);
+                yRes = -qMin(static_cast<qreal>(chromatogram->A[temp]) * areaHeight / chromaMax, h);
                 drawBase = getSettings().drawTraceA;
                 break;
             case 'C':
-                yRes = -qMin(static_cast<qreal>(chroma.C[temp]) * areaHeight / chromaMax, h);
+                yRes = -qMin(static_cast<qreal>(chromatogram->C[temp]) * areaHeight / chromaMax, h);
                 drawBase = getSettings().drawTraceC;
                 break;
             case 'G':
-                yRes = -qMin(static_cast<qreal>(chroma.G[temp]) * areaHeight / chromaMax, h);
+                yRes = -qMin(static_cast<qreal>(chromatogram->G[temp]) * areaHeight / chromaMax, h);
                 drawBase = getSettings().drawTraceG;
                 break;
             case 'T':
-                yRes = -qMin(static_cast<qreal>(chroma.T[temp]) * areaHeight / chromaMax, h);
+                yRes = -qMin(static_cast<qreal>(chromatogram->T[temp]) * areaHeight / chromaMax, h);
                 drawBase = getSettings().drawTraceT;
                 break;
             case 'N':

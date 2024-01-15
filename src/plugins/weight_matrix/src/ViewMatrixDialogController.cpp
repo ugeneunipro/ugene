@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -84,7 +84,7 @@ MatrixAndLogoController::MatrixAndLogoController(PFMatrix matrix, QWidget* p)
     }
 
     const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(QString("Temporary alignment"), al);
+    Msa ma("Temporary alignment", al);
     for (int i = 0; i < size; i++) {
         QByteArray arr;
         for (int j = 0; j < len; j++) {

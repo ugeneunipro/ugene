@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ static QStringList getFileNames(QWidget* parent,
     fileDialog->setOptions(options);
     fileDialog->setFileMode(fileMode);
     fileDialog->setAcceptMode(acceptMode);
-    CHECK(fileDialog->exec() == QFileDialog::Accepted, {});
+    CHECK(fileDialog->exec() == QFileDialog::Accepted && !fileDialog.isNull(), {});
     return fileDialog->selectedFiles();
 }
 

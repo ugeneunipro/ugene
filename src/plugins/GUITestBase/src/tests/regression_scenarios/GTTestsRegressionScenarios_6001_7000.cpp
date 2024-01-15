@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -3723,7 +3723,7 @@ GUI_TEST_CLASS_DEFINITION(test_6654) {
     GTUtilsMsaEditor::moveToSequenceName("Roeseliana_roeseli");
     GTMouseDriver::click();
 
-    MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor();
+    MsaEditor* msaEditor = GTUtilsMsaEditor::getEditor();
     QRect selection = msaEditor->getSelection().toRect();
 
     CHECK_SET_ERR(selection.x() == 0, QString("1. Expected selection x: 0, actual: %1").arg(selection.x()));

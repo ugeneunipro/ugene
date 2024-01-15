@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #include "ClipboardController.h"
 
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 namespace U2 {
 
@@ -63,12 +63,12 @@ QList<DNASequence> PasteUtils::getSequences(const QList<Document*>& docs, U2OpSt
         }
         const QList<GObject*> msaObjectList = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         for (GObject* msaObj : qAsConst(msaObjectList)) {
-            auto casted = qobject_cast<MultipleSequenceAlignmentObject*>(msaObj);
+            auto casted = qobject_cast<MsaObject*>(msaObj);
             if (casted == nullptr) {
                 continue;
             }
-            const QList<MultipleSequenceAlignmentRow> msaRowList = casted->getMsa()->getMsaRows();
-            for (const MultipleSequenceAlignmentRow& row : qAsConst(msaRowList)) {
+            QVector<MsaRow> msaRowList = casted->getAlignment()->getRows();
+            for (const MsaRow& row : qAsConst(msaRowList)) {
                 DNASequence seq = row->getSequence();
                 seq.seq = row->getData();
                 seq.alphabet = casted->getAlphabet();

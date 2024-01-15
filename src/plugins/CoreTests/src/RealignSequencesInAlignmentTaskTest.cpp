@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 #include <U2View/RealignSequencesInAlignmentTask.h>
 
@@ -76,12 +76,12 @@ void GTest_Realign::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    msaObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    msaObj = qobject_cast<MsaObject*>(obj);
     if (msaObj == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
     }
-    QList<qint64> rowIds = msaObj->getMultipleAlignment()->getRowsIds();
+    QList<qint64> rowIds = msaObj->getAlignment()->getRowsIds();
     QSet<qint64> rowIdsToRealign;
     for (int index : qAsConst(rowsIndexesToAlign)) {
         rowIdsToRealign.insert(rowIds.at(index));

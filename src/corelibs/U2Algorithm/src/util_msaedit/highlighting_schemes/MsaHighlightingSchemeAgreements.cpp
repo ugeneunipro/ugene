@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-MsaHighlightingSchemeAgreements::MsaHighlightingSchemeAgreements(QObject* parent, const MsaHighlightingSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaHighlightingSchemeAgreements::MsaHighlightingSchemeAgreements(QObject* parent, const MsaHighlightingSchemeFactory* factory, MsaObject* maObj)
     : MsaHighlightingScheme(parent, factory, maObj) {
 }
 
@@ -41,7 +41,7 @@ MsaHighlightingSchemeAgreementsFactory::MsaHighlightingSchemeAgreementsFactory(Q
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaHighlightingScheme* MsaHighlightingSchemeAgreementsFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaHighlightingScheme* MsaHighlightingSchemeAgreementsFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaHighlightingSchemeAgreements(parent, this, maObj);
 }
 

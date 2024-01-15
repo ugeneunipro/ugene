@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ bool CreatePhyTreeWidget::checkSettings(QString&, const CreatePhyTreeSettings&) 
     return true;
 }
 
-bool CreatePhyTreeWidget::checkMemoryEstimation(QString&, const MultipleSequenceAlignment&, const CreatePhyTreeSettings&) {
+bool CreatePhyTreeWidget::checkMemoryEstimation(QString&, const Msa&, const CreatePhyTreeSettings&) {
     return true;
 }
 

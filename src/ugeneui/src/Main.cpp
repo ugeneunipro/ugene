@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,10 +44,10 @@
 #include <U2Algorithm/CDSearchTaskFactoryRegistry.h>
 #include <U2Algorithm/DnaAssemblyAlgRegistry.h>
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
 #include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
@@ -126,11 +126,11 @@
 #include <U2View/DnaAssemblyUtils.h>
 #include <U2View/FindPatternMsaWidgetFactory.h>
 #include <U2View/FindPatternWidgetFactory.h>
-#include <U2View/MSAGeneralTabFactory.h>
-#include <U2View/MSAHighlightingTabFactory.h>
 #include <U2View/MaExportConsensusTabFactory.h>
 #include <U2View/McaGeneralTabFactory.h>
 #include <U2View/McaReadsTabFactory.h>
+#include <U2View/MsaGeneralTabFactory.h>
+#include <U2View/MsaHighlightingTabFactory.h>
 #include <U2View/PairAlignFactory.h>
 #include <U2View/RefSeqCommonWidget.h>
 #include <U2View/RoughTmCalculatorFactory.h>
@@ -306,7 +306,7 @@ static void initOptionsPanels() {
     opWidgetFactoryRegistry->registerFactory(new AssemblySettingsWidgetFactory());
 
     // MSA groups
-    auto msaGeneralTabFactory = new MSAGeneralTabFactory();
+    auto msaGeneralTabFactory = new MsaGeneralTabFactory();
     QString msaGeneralId = msaGeneralTabFactory->getOPGroupParameters().getGroupId();
     opWidgetFactoryRegistry->registerFactory(msaGeneralTabFactory);
     opWidgetFactoryRegistry->registerFactory(new FindPatternMsaWidgetFactory());
@@ -674,13 +674,13 @@ int main(int argc, char** argv) {
     auto mhsr = new MsaHighlightingSchemeRegistry();
     appContext->setMsaHighlightingSchemeRegistry(mhsr);
 
-    auto msaConsReg = new MSAConsensusAlgorithmRegistry();
+    auto msaConsReg = new MsaConsensusAlgorithmRegistry();
     appContext->setMSAConsensusAlgorithmRegistry(msaConsReg);
 
     auto assemblyConsReg = new AssemblyConsensusAlgorithmRegistry();
     appContext->setAssemblyConsensusAlgorithmRegistry(assemblyConsReg);
 
-    auto msaDistReg = new MSADistanceAlgorithmRegistry();
+    auto msaDistReg = new MsaDistanceAlgorithmRegistry();
     appContext->setMSADistanceAlgorithmRegistry(msaDistReg);
 
     auto pwmConvReg = new PWMConversionAlgorithmRegistry();

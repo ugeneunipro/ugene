@@ -29,10 +29,10 @@ namespace U2 {
 
 class MaEditor;
 class MaEditorFactory;
-class MSAEditor;
-class MultipleAlignmentObject;
+class MsaEditor;
+class MsaObject;
 class UnloadedObject;
-class MSAConsensusAlgorithm;
+class MsaConsensusAlgorithm;
 
 /*!
  * \brief The OpenMaEditorTask class
@@ -40,19 +40,19 @@ class MSAConsensusAlgorithm;
 class OpenMaEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenMaEditorTask(MultipleAlignmentObject* obj, GObjectViewFactoryId fid, GObjectType type);
+    OpenMaEditorTask(MsaObject* obj, GObjectViewFactoryId fid, GObjectType type);
     OpenMaEditorTask(UnloadedObject* obj, GObjectViewFactoryId fid, GObjectType type);
     OpenMaEditorTask(Document* doc, GObjectViewFactoryId fid, GObjectType type);
 
     virtual void open();
 
-    static void updateTitle(MSAEditor* msaEd);
+    static void updateTitle(MsaEditor* msaEd);
 
     virtual MaEditor* getEditor(const QString& viewName, GObject* obj) = 0;
 
 protected:
     GObjectType type;
-    QPointer<MultipleAlignmentObject> maObject;
+    QPointer<MsaObject> maObject;
     GObjectReference unloadedReference;
 };
 
@@ -62,7 +62,7 @@ protected:
 class OpenMsaEditorTask : public OpenMaEditorTask {
     Q_OBJECT
 public:
-    OpenMsaEditorTask(MultipleAlignmentObject* obj);
+    OpenMsaEditorTask(MsaObject* obj);
     OpenMsaEditorTask(UnloadedObject* obj);
     OpenMsaEditorTask(Document* doc);
 
@@ -75,7 +75,7 @@ public:
 class OpenMcaEditorTask : public OpenMaEditorTask {
     Q_OBJECT
 public:
-    OpenMcaEditorTask(MultipleAlignmentObject* obj);
+    OpenMcaEditorTask(MsaObject* obj);
     OpenMcaEditorTask(UnloadedObject* obj);
     OpenMcaEditorTask(Document* doc);
 
@@ -111,13 +111,13 @@ public:
     QString url;
     DocumentFormatId format;
     QString name;
-    MSAConsensusAlgorithm* algorithm;
+    MsaConsensusAlgorithm* algorithm;
 };
 
 class ExtractConsensusTask : public Task {
     Q_OBJECT
 public:
-    ExtractConsensusTask(bool keepGaps, MaEditor* ma, MSAConsensusAlgorithm* algorithm);
+    ExtractConsensusTask(bool keepGaps, MaEditor* ma, MsaConsensusAlgorithm* algorithm);
     ~ExtractConsensusTask();
     void run();
     const QByteArray& getExtractedConsensus() const;
@@ -126,7 +126,7 @@ private:
     bool keepGaps;
     MaEditor* ma;
     QByteArray filteredConsensus;
-    MSAConsensusAlgorithm* algorithm;
+    MsaConsensusAlgorithm* algorithm;
 };
 
 class ExportMaConsensusTask : public DocumentProviderTask {

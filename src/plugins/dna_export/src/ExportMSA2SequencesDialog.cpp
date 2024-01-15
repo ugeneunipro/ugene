@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
@@ -92,10 +92,10 @@ void ExportMSA2SequencesDialog::initSaveController() {
     saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
-void ExportMSA2SequencesDialog::showDialogAndStartExportTask(MultipleSequenceAlignmentObject* msaObject) {
+void ExportMSA2SequencesDialog::showDialogAndStartExportTask(MsaObject* msaObject) {
     SAFE_POINT(msaObject != nullptr, "ExportMSA2SequencesDialog: msaObject is null!", );
 
-    QPointer<MultipleSequenceAlignmentObject> msaObjectPtr(msaObject);
+    QPointer<MsaObject> msaObjectPtr(msaObject);
 
     LastUsedDirHelper lod;
     QString defaultDir = lod.dir.isEmpty() ? GUrl(msaObject->getDocument()->getURLString()).dirPath() : lod.dir;
@@ -105,7 +105,7 @@ void ExportMSA2SequencesDialog::showDialogAndStartExportTask(MultipleSequenceAli
     CHECK(!d.isNull() && rc != QDialog::Rejected && !msaObjectPtr.isNull(), );
     lod.url = d->url;
 
-    const MultipleSequenceAlignment& msa = msaObject->getMultipleAlignment();
+    const Msa& msa = msaObject->getAlignment();
     auto t = ExportUtils::wrapExportTask(new ExportMSA2SequencesTask(msa, d->url, d->trimGapsFlag, d->format), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }

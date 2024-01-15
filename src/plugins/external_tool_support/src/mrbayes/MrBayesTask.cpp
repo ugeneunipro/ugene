@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ namespace U2 {
 #define TMPFILENAME "tmp.nex"
 #define TREEFILEEXT ".con.tre"
 
-MrBayesPrepareDataForCalculation::MrBayesPrepareDataForCalculation(const MultipleSequenceAlignment& _ma, const CreatePhyTreeSettings& s, const QString& url)
+MrBayesPrepareDataForCalculation::MrBayesPrepareDataForCalculation(const Msa& _ma, const CreatePhyTreeSettings& s, const QString& url)
     : Task(tr("Generating input file for MrBayes"), TaskFlags_NR_FOSCOE), ma(_ma), settings(s), tmpDirUrl(url) {
     saveDocumentTask = nullptr;
 }
@@ -80,7 +80,7 @@ QList<Task*> MrBayesPrepareDataForCalculation::onSubTaskFinished(Task* subTask) 
     return res;
 }
 
-MrBayesSupportTask::MrBayesSupportTask(const MultipleSequenceAlignment& _ma, const CreatePhyTreeSettings& s)
+MrBayesSupportTask::MrBayesSupportTask(const Msa& _ma, const CreatePhyTreeSettings& s)
     : PhyTreeGeneratorTask(_ma, s) {
     GCOUNTER(cvar, "ExternalTool_MrBayes");
 

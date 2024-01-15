@@ -39,13 +39,18 @@ class AnnotationTableObject;
 
 class PlasmidFeatureTypes {
 public:
-    static const QString GENE;
-    static const QString FEATURE;
-    static const QString ORIGIN;
-    static const QString PRIMER;
     static const QString PROMOTER;
-    static const QString REGULATORY;
     static const QString TERMINATOR;
+    static const QString REGULATORY_SEQUENCE;
+    static const QString REPLICATION_ORIGIN;
+    static const QString SELECTABLE_MARKER;
+    static const QString REPORTER_GENE;
+    static const QString TWO_HYBRID_GENE;
+    static const QString LOCALIZATION_SEQUENCE;
+    static const QString AFFINITY_TAG;
+    static const QString GENE;
+    static const QString PRIMER;
+    static const QString MISCELLANEOUS;
 };
 
 struct FeaturePattern {
@@ -86,19 +91,19 @@ public:
 
     struct PatternInfo {
         QString name;
-        bool forwardStrand;
-        PatternInfo()
-            : forwardStrand(true) {
-        }
-        PatternInfo(const QString& nm, bool isForward)
-            : name(nm), forwardStrand(isForward) {
+        QString type;
+        bool forwardStrand = true;
+
+        PatternInfo() = default;
+        PatternInfo(const QString& _nm, const QString& _type, bool isForward)
+            : name(_nm), type(_type), forwardStrand(isForward) {
         }
     };
 
 private:
     QSharedPointer<SArrayIndex> index;
+    QMap<QString, QList<SharedAnnotationData>> groupAnnotationsMap;
     QMap<Task*, PatternInfo> taskFeatureNames;
-    QList<SharedAnnotationData> annotations;
     U2SequenceObject dnaObj;
     QPointer<AnnotationTableObject> annotationTableObject;
     QByteArray sequence;

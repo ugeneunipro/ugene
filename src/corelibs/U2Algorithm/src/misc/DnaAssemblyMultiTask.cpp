@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,6 @@
 #include <U2Algorithm/DnaAssemblyAlgRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ProjectModel.h>
 
@@ -45,7 +44,6 @@ void DnaAssemblyMultiTask::prepare() {
     // perform assembly
     QString algName = settings.algName;
     DnaAssemblyAlgorithmEnv* env = AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(algName);
-    assert(env);
     if (env == nullptr) {
         setError(QString("Algorithm %1 is not found").arg(algName));
         return;

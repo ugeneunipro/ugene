@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
 
 #include "SequenceQualityTrimTask.h"
 
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/ChromatogramUtils.h>
-#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/U2ObjectRelationsDbi.h>
@@ -94,8 +94,8 @@ void SequenceQualityTrimTask::cloneChromatogram() {
     const QString chromatogramName = ChromatogramUtils::getChromatogramName(stateInfo, chromatogramRef);
     CHECK_OP(stateInfo, );
 
-    QScopedPointer<DNAChromatogramObject> chromatogramObject(new DNAChromatogramObject(chromatogramName, chromatogramRef));
-    trimmedChromatogramObject = qobject_cast<DNAChromatogramObject*>(chromatogramObject->clone(dbiRef, stateInfo));
+    QScopedPointer<ChromatogramObject> chromatogramObject(new ChromatogramObject(chromatogramName, chromatogramRef));
+    trimmedChromatogramObject = qobject_cast<ChromatogramObject*>(chromatogramObject->clone(dbiRef, stateInfo));
     CHECK_OP(stateInfo, );
 }
 
@@ -129,7 +129,7 @@ U2Region SequenceQualityTrimTask::trimSequence() {
 
 void SequenceQualityTrimTask::trimChromatogram(const U2Region& regionToCrop) {
     CHECK(trimmedChromatogramObject != nullptr, );
-    DNAChromatogram chromatogram = trimmedChromatogramObject->getChromatogram();
+    Chromatogram chromatogram = trimmedChromatogramObject->getChromatogram();
     ChromatogramUtils::crop(chromatogram, regionToCrop.startPos, regionToCrop.length);
     trimmedChromatogramObject->setChromatogram(stateInfo, chromatogram);
     CHECK_OP(stateInfo, );

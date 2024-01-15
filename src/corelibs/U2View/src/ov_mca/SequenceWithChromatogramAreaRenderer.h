@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/MultipleChromatogramAlignmentRow.h>
+#include <U2Core/Msa.h>
 
 #include "ov_msa/SequenceAreaRenderer.h"
 
@@ -47,22 +47,22 @@ public:
     static const int CHROMATOGRAM_MAX_HEIGHT;
 
 private:
-    int drawRow(QPainter& painter, const MultipleAlignment& mca, int rowIndex, const U2Region& region, int xStart, int yStart) const override;
+    int drawRow(QPainter& painter, const Msa& mca, int rowIndex, const U2Region& region, int xStart, int yStart) const override;
 
-    void drawChromatogram(QPainter& painter, const MultipleChromatogramAlignmentRow& row, const U2Region& visibleRange, int xStart) const;
+    void drawChromatogram(QPainter& painter, const MsaRow& row, const U2Region& visibleRange, int xStart) const;
 
     QColor getBaseColor(char base) const;
 
-    void drawChromatogramTrace(const DNAChromatogram& chroma, qreal x, qreal y, qreal h, QPainter& p, const U2Region& visible) const;
+    void drawChromatogramTrace(const Chromatogram& chromatogram, qreal x, qreal y, qreal h, QPainter& p, const U2Region& visible) const;
     void drawOriginalBaseCalls(qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
-    void drawQualityValues(const DNAChromatogram& chroma, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
-    void drawChromatogramBaseCallsLines(const DNAChromatogram& chroma, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
+    void drawQualityValues(const Chromatogram& chromatogram, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
+    void drawChromatogramBaseCallsLines(const Chromatogram& chromatogram, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
 
 private:
     McaEditorSequenceArea* getSeqArea() const;
     const ChromatogramViewSettings& getSettings() const;
     static int getChromatogramHeight();
-    void completePolygonsWithLastBaseCallTrace(QPolygonF& polylineA, QPolygonF& polylineC, QPolygonF& polylineG, QPolygonF& polylineT, const DNAChromatogram& chroma, qreal columnWidth, const U2Region& visible, qreal h) const;
+    void completePolygonsWithLastBaseCallTrace(QPolygonF& polylineA, QPolygonF& polylineC, QPolygonF& polylineG, QPolygonF& polylineT, const Chromatogram& chromatogram, qreal columnWidth, const U2Region& visible, qreal h) const;
 
 private:
     qreal charWidth;

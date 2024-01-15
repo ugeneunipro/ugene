@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,9 +38,7 @@ McaGeneralTab::McaGeneralTab(McaEditor* mca)
     lengthLabel->setText(QString::number(mca->getAlignmentLen()));
     seqNumLabel->setText(QString::number(mca->getNumSequences()));
 
-    connect(mca->getMaObject(),
-            SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
-            SLOT(sl_alignmentChanged()));
+    connect(mca->getMaObject(), &MsaObject::si_alignmentChanged, this, &McaGeneralTab::sl_alignmentChanged);
 }
 
 void McaGeneralTab::sl_alignmentChanged() {

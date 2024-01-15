@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,9 +67,9 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
-#include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaGraphOverview.h>
+#include <U2View/MsaEditorTreeViewer.h>
 #include <U2View/ScrollController.h>
 
 #include "GTTestsRegressionScenarios_4001_5000.h"
@@ -961,7 +961,7 @@ GUI_TEST_CLASS_DEFINITION(test_4106) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
+    MsaEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
     const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
@@ -2093,7 +2093,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Select a sequence that is two sequences above the last visible sequence in the name list area.
-    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
+    MsaEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
     const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
@@ -2683,7 +2683,7 @@ GUI_TEST_CLASS_DEFINITION(test_4383) {
     GTUtilsMSAEditorSequenceArea::scrollToPosition(QPoint(603, 1));
 
     QWidget* activeWindow = GTUtilsMdi::activeWindow();
-    GTWidget::findExactWidget<MSAEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
+    GTWidget::findExactWidget<MsaEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
     auto msaOffsetRight = GTWidget::findWidget("msa_editor_offsets_view_widget_right", activeWindow);
 
     GTMouseDriver::moveTo(msaOffsetRight->mapToGlobal(QPoint(msaOffsetRight->rect().left() - 2, 7)));
@@ -4566,7 +4566,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     GTUtilsMSAEditorSequenceArea::callContextMenu();
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    auto editor = mw->findChild<MSAEditor*>();
+    auto editor = mw->findChild<MsaEditor*>();
     QWidget* nameListWidget = editor->getUI()->getUI(0)->getEditorNameList();
 
     // 5. Open conext menu by right clicking "Name list area". Paste this subaliment throu context menu {Copy/Paste->Paste}
@@ -4599,7 +4599,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    auto editor = mw->findChild<MSAEditor*>();
+    auto editor = mw->findChild<MsaEditor*>();
     QWidget* sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
@@ -4619,7 +4619,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    auto editor = mw->findChild<MSAEditor*>();
+    auto editor = mw->findChild<MsaEditor*>();
     QWidget* sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(3, 0), QPoint(5, 4));
@@ -4708,7 +4708,7 @@ GUI_TEST_CLASS_DEFINITION(test_4783) {
     GTComboBox::selectItemByText(consensusType, "Levitsky");
     auto thresholdSpinBox = GTWidget::findSpinBox("thresholdSpinBox");
     GTSpinBox::setValue(thresholdSpinBox, 90, GTGlobals::UseKeyBoard);
-    GTUtilsMSAEditorSequenceArea::checkConsensus("-H");
+    GTUtilsMSAEditorSequenceArea::checkConsensus("-M");
 
     GTUtilsMsaEditor::clickSequenceName("2");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -4726,7 +4726,7 @@ GUI_TEST_CLASS_DEFINITION(test_4783) {
     GTUtilsMsaEditor::clickSequenceName("1");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsMSAEditorSequenceArea::checkConsensus("BB");
+    GTUtilsMSAEditorSequenceArea::checkConsensus("CC");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_2) {
@@ -5659,6 +5659,25 @@ GUI_TEST_CLASS_DEFINITION(test_4969_2) {
     CHECK_SET_ERR(GTUtilsDocument::isDocumentLoaded("murine.gb"), "The file is not loaded");
     QString title = GTUtilsMdi::activeWindowTitle();
     CHECK_SET_ERR(title.contains("NC_"), "Wrong MDI window is active");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4981) {
+    GTFileDialog::openFile(dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
+
+    GTKeyboardDriver::keyClick('3', Qt::AltModifier);
+    auto logView = GTWidget::findWidget("dock_log_view");
+    GTWidget::click(logView); // Move focus to the log view.
+
+    GTKeyboardDriver::keyClick('1', Qt::AltModifier);
+    GTUtilsProjectTreeView::checkProjectViewIsClosed();
+
+    GTKeyboardDriver::keyClick('1', Qt::AltModifier);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
+
+    GTKeyboardDriver::keyClick('2', Qt::AltModifier);
+    CHECK_SET_ERR(GTUtilsTaskTreeView::isViewOpened(), "Task view is expected to be opened");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4983) {

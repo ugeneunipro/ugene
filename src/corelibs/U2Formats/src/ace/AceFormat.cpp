@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,9 +26,9 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -422,7 +422,7 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         parseConsensus(io, os, buff, consName, names, headerLine, consensus);
         CHECK_OP(os, );
 
-        MultipleSequenceAlignment al(consName);
+        Msa al(consName);
         al->addRow(consName, consensus);
 
         // AF
@@ -464,7 +464,7 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
         const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-        MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+        MsaObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
         CHECK_OP(os, );
         objects.append(obj);
     }

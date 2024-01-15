@@ -24,7 +24,7 @@
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GObjectReference.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Task.h>
 
@@ -66,7 +66,7 @@ class Kalign3SupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(Kalign3SupportTask)
 public:
-    Kalign3SupportTask(const MultipleSequenceAlignment& inputMsa, const GObjectReference& objRef, const Kalign3Settings& settings);
+    Kalign3SupportTask(const Msa& inputMsa, const GObjectReference& objRef, const Kalign3Settings& settings);
     ~Kalign3SupportTask() override;
 
     void prepare() override;
@@ -76,10 +76,10 @@ public:
 
     static bool isAlphabetSupported(const QString& alphabetId);
 
-    MultipleSequenceAlignment resultMA;
+    Msa resultMA;
 
 private:
-    MultipleSequenceAlignment inputMsa;
+    Msa inputMsa;
     GObjectReference objRef;
     QPointer<Document> tmpDoc;
     QString url;
@@ -91,7 +91,7 @@ private:
     QPointer<StateLock> lock;
 };
 
-class MultipleSequenceAlignmentObject;
+class MsaObject;
 
 class Kalign3WithExternalFileSupportTask : public Task {
     Q_OBJECT
@@ -105,7 +105,7 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    MultipleSequenceAlignmentObject* mAObject = nullptr;
+    MsaObject* mAObject = nullptr;
     Document* currentDocument = nullptr;
     bool cleanDoc = true;
 

@@ -32,7 +32,7 @@
 namespace U2 {
 
 class IOAdapter;
-class MultipleSequenceAlignment;
+class Msa;
 
 class U2FORMATS_EXPORT AprFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT

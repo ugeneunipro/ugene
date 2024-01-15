@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,9 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTSpinBox.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "GTGlobals.h"
 #include "GTUtilsMdi.h"
@@ -235,9 +234,9 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsMSAEditorSequenceArea::checkConsensus("WAGHH--HTWW---");
     // Expected state: consensus must be WAGHH--HTWW---
     GTSpinBox::setValue(thresholdSpinBox, 60, GTGlobals::UseKeyBoard);
-    GTUtilsMSAEditorSequenceArea::checkConsensus("AAGMYTWTTAA---");
+    GTUtilsMSAEditorSequenceArea::checkConsensus("AAGHYTWTTAA---");
     // 4. Set 60% threshold.
-    // Expected state: consensus must be AAGMYTWTTAA---
+    // Expected state: consensus must be AAGHYTWTTAA---
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004_1) {

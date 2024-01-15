@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings) {
+void DistanceMatrix::calculateOutOfAlignment(const Msa& ma, const CreatePhyTreeSettings& settings) {
     try {
         malignment = &ma;
         int index = 0;
@@ -48,7 +48,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment& ma
         this->size = size;
         printdata = false;
 
-        foreach (const MultipleSequenceAlignmentRow& r, ma->getMsaRows()) {
+        foreach (const MsaRow& r, ma->getRows()) {
             const QString& str = r->getName();
             index_map.insert(str, index);
             index++;
@@ -92,7 +92,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment& ma
 
             for (int k = 0; k < spp; k++) {
                 for (int j = 0; j < sites; j++) {
-                    y[k][j] = ma->getMsaRow(k)->charAt(j);
+                    y[k][j] = ma->getRow(k)->charAt(j);
                 }
             }
             makeweights();
@@ -135,7 +135,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment& ma
 
             for (int k = 0; k < spp; k++) {
                 for (int j = 0; j < sites; j++) {
-                    charstate = ma->getMsaRow(k)->charAt(j);
+                    charstate = ma->getRow(k)->charAt(j);
                     switch (charstate) {
                         case 'A':
                             aa = ala;

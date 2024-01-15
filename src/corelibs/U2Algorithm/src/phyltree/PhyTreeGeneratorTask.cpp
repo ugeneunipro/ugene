@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-PhyTreeGeneratorTask::PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings, const TaskFlags& taskFlags)
+PhyTreeGeneratorTask::PhyTreeGeneratorTask(const Msa& ma, const CreatePhyTreeSettings& _settings, const TaskFlags& taskFlags)
     : Task(PhyTreeGeneratorTask::tr("Calculating Phylogenetic Tree"), taskFlags), inputMA(ma), settings(_settings) {
     tpm = Task::Progress_Manual;
 }
@@ -42,7 +42,7 @@ const CreatePhyTreeSettings& PhyTreeGeneratorTask::getSettings() const {
     return settings;
 }
 
-PhyTreeGeneratorLauncherTask::PhyTreeGeneratorLauncherTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings)
+PhyTreeGeneratorLauncherTask::PhyTreeGeneratorLauncherTask(const Msa& ma, const CreatePhyTreeSettings& _settings)
     : Task(PhyTreeGeneratorLauncherTask::tr("Calculating Phylogenetic Tree"), TaskFlags_NR_FOSE_COSC),
       inputMA(ma->getCopy()), settings(_settings), task(nullptr) {
     tpm = Task::Progress_SubTasksBased;

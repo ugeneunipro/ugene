@@ -21,30 +21,30 @@
 
 #pragma once
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/StateLockableDataModel.h>
 #include <U2Core/Task.h>
 
 namespace U2 {
 
-class MultipleChromatogramAlignmentObject;
+class MsaObject;
 
 class ConvertMca2MsaTask : public Task {
     Q_OBJECT
 public:
-    ConvertMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject, bool includeReference);
+    ConvertMca2MsaTask(MsaObject* mcaObject, bool includeReference);
 
-    MultipleSequenceAlignment getMsa() const;
+    Msa getMsa() const;
 
 private:
-    void prepare();
-    void run();
-    ReportResult report();
+    void prepare() override;
+    void run() override;
+    ReportResult report() override;
 
-    MultipleChromatogramAlignmentObject* mcaObject;
-    const bool includeReference;
+    MsaObject* mcaObject;
+    bool includeReference;
 
-    MultipleSequenceAlignment msa;
+    Msa msa;
     QScopedPointer<StateLocker> locker;
 };
 

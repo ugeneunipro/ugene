@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -255,9 +255,9 @@ Task* ClustalWWorker::tick() {
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+        QScopedPointer<MsaObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
-        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
+        const Msa msa = msaObj->getAlignment();
 
         if (msa->isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to ClustalW.").arg(msa->getName()));
@@ -295,7 +295,7 @@ void ClustalWWorker::sl_taskFinished() {
 void ClustalWWorker::cleanup() {
 }
 
-void ClustalWWorker::send(const MultipleSequenceAlignment& msa) {
+void ClustalWWorker::send(const Msa& msa) {
     SAFE_POINT(output != nullptr, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;

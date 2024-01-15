@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,9 +59,9 @@ bool SequenceAreaRenderer::drawContent(QPainter& painter, const U2Region& column
     painter.setPen(Qt::black);
     painter.setFont(editor->getFont());
 
-    MultipleAlignmentObject* maObj = editor->getMaObject();
+    MsaObject* maObj = editor->getMaObject();
     SAFE_POINT(maObj != nullptr, "Alignment object is NULL", false);
-    const MultipleAlignment& ma = maObj->getMultipleAlignment();
+    const Msa& ma = maObj->getAlignment();
 
     // Use dots to draw regions, which are similar to reference sequence
     highlightingScheme->setUseDots(seqAreaWgt->getUseDotsCheckedState());
@@ -124,7 +124,7 @@ void SequenceAreaRenderer::drawFocus(QPainter& painter) const {
     }
 }
 
-int SequenceAreaRenderer::drawRow(QPainter& painter, const MultipleAlignment& ma, int maRowIndex, const U2Region& columns, int xStart, int yStart) const {
+int SequenceAreaRenderer::drawRow(QPainter& painter, const Msa& ma, int maRowIndex, const U2Region& columns, int xStart, int yStart) const {
     // SANGER_TODO: deal with frequent handling of editor or h/color schemes through the editor etc.
     // move to class parameter
     MsaHighlightingScheme* highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
@@ -133,7 +133,7 @@ int SequenceAreaRenderer::drawRow(QPainter& painter, const MultipleAlignment& ma
     MaEditor* editor = seqAreaWgt->getEditor();
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
-    bool isTextVisible = editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
+    bool isTextVisible = editor->getResizeMode() == MsaEditor::ResizeMode_FontAndContent;
 
     U2OpStatusImpl os;
     int referenceMaRowIndex = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
@@ -141,7 +141,7 @@ int SequenceAreaRenderer::drawRow(QPainter& painter, const MultipleAlignment& ma
     bool hasReference = referenceMaRowIndex >= 0;
 
     qint64 regionEnd = qMin(columns.endPos(), (qint64)editor->getAlignmentLen());
-    const MultipleAlignmentRow& maRow = ma->getRow(maRowIndex);
+    const MsaRow& maRow = ma->getRow(maRowIndex);
     int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     int baseWidth = ui->getBaseWidthController()->getBaseWidth();
 

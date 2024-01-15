@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,14 +27,13 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -257,9 +256,9 @@ void LoadMSATask::run() {
             results.append(res);
         }
     } else {
-        MultipleSequenceAlignment ma = MSAUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
+        Msa ma = MsaUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
 
-        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), ma, stateInfo));
+        QScopedPointer<MsaObject> msaObj(MsaImportUtils::createMsaObject(storage->getDbiRef(), ma, stateInfo));
         CHECK_OP(stateInfo, );
 
         SharedDbiDataHandler handler = storage->getDataHandler(msaObj->getEntityRef());
@@ -392,11 +391,11 @@ void LoadSeqTask::run() {
         //              int gaps = cfg.value(mergeToken).toInt();
         U2OpStatus2Log os;
         foreach (GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
-            auto msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(go);
+            auto msaObject = qobject_cast<MsaObject*>(go);
             if (msaObject == nullptr) {
                 continue;
             }
-            QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(msaObject->getMsa(), os);
+            QList<DNASequence> sequenceList = MsaUtils::convertMsaToSequenceList(msaObject->getAlignment(), os);
             CHECK_OP(os, )
             for (const DNASequence& sequence : qAsConst(sequenceList)) {
                 if (!selector->matches(sequence)) {

@@ -49,7 +49,7 @@ public:
     void addAnnotation(Annotation* a);
     void removeAnnotation(Annotation* f);
 
-    bool hasRowWithName(const QString& name) const;
+    QList<PVRowData*> getRowsByName(const QString& name) const;
     int getRowCount() const;
     PVRowData* getRow(int row) const;
 

@@ -28,13 +28,13 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
 
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorOffsetsView.h>
-#include <U2View/MSAEditorOverviewArea.h>
-#include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorStatusBar.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorConsensusArea.h>
+#include <U2View/MsaEditorOffsetsView.h>
+#include <U2View/MsaEditorOverviewArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 #include <U2View/UndoRedoFramework.h>
 
 #include "MaEditorUtils.h"

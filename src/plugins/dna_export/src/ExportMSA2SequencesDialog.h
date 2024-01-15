@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MsaObject;
 class SaveDocumentController;
 
 class ExportMSA2SequencesDialog : public QDialog, private Ui_ExportMSA2SequencesDialog {
@@ -40,7 +40,7 @@ public:
     void accept() override;
 
     /** Shows dialog and if user accepts it start the export task. */
-    static void showDialogAndStartExportTask(MultipleSequenceAlignmentObject* msaObject);
+    static void showDialogAndStartExportTask(MsaObject* msaObject);
 
     QString url;
     QString defaultDir;

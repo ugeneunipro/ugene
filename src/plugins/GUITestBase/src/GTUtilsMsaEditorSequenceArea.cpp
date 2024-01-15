@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,9 +36,9 @@
 
 #include <U2View/BaseWidthController.h>
 #include <U2View/DrawHelper.h>
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MaEditorSelection.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorConsensusArea.h>
 #include <U2View/MsaEditorSimilarityColumn.h>
 #include <U2View/MultilineScrollController.h>
 #include <U2View/RowHeightController.h>
@@ -59,7 +59,7 @@ int GTUtilsMSAEditorSequenceArea::getBaseWidth() {
     return GTUtilsMsaEditor::getEditor()->getUI()->getUI(0)->getBaseWidthController()->getBaseWidth();
 }
 
-MSAEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getSequenceArea(int index, bool checkError) {
+MsaEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getSequenceArea(int index, bool checkError) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #index widget
     MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
@@ -71,10 +71,10 @@ MSAEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getSequenceArea(int index, 
     if (activeWindow == nullptr) {
         return nullptr;
     }
-    return GTWidget::findExactWidget<MSAEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
+    return GTWidget::findExactWidget<MsaEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
 }
 
-MSAEditorConsensusArea* GTUtilsMSAEditorSequenceArea::getConsensusArea(int index, bool checkError) {
+MsaEditorConsensusArea* GTUtilsMSAEditorSequenceArea::getConsensusArea(int index, bool checkError) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #index widget
     MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
@@ -86,7 +86,7 @@ MSAEditorConsensusArea* GTUtilsMSAEditorSequenceArea::getConsensusArea(int index
     if (activeWindow == nullptr) {
         return nullptr;
     }
-    return GTWidget::findExactWidget<MSAEditorConsensusArea*>("consArea", activeWindow);
+    return GTWidget::findExactWidget<MsaEditorConsensusArea*>("consArea", activeWindow);
 }
 
 QScrollBar* GTUtilsMSAEditorSequenceArea::getHorizontalNamesScroll(int index) {
@@ -131,7 +131,7 @@ QRect GTUtilsMSAEditorSequenceArea::getPositionRect(
     // at first we get line #index widget
     MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
     GT_CHECK_RESULT(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index), QRect());
-    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
+    auto msaEditArea = GTWidget::findExactWidget<MsaEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
 
     auto msaEditorWidget = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getUI()->getUI(index));
     U2Region regX = msaEditorWidget->getBaseWidthController()->getBaseGlobalRange(position.x());
@@ -148,7 +148,7 @@ QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(const QPoint& p, int ind
     // at first we get line #0 widget
     MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
     GT_CHECK_RESULT(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index), QPoint());
-    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
+    auto msaEditArea = GTWidget::findExactWidget<MsaEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
 
     auto ui = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getUI()->getUI(index));
     int posX = ui->getBaseWidthController()->getBaseScreenCenter(p.x());
@@ -348,19 +348,19 @@ void GTUtilsMSAEditorSequenceArea::checkSelectedRect(const QRect& expectedRect) 
 }
 
 QStringList GTUtilsMSAEditorSequenceArea::getNameList() {
-    MSAEditor* editor = GTUtilsMsaEditor::getEditor();
-    QStringList result = editor->getMaObject()->getMultipleAlignment()->getRowNames();
+    MsaEditor* editor = GTUtilsMsaEditor::getEditor();
+    QStringList result = editor->getMaObject()->getAlignment()->getRowNames();
     return result;
 }
 
 QStringList GTUtilsMSAEditorSequenceArea::getCurrentRowNames() {
-    MSAEditor* editor = GTUtilsMsaEditor::getEditor();
+    MsaEditor* editor = GTUtilsMsaEditor::getEditor();
     MaCollapseModel* collapseModel = editor->getCollapseModel();
     int viewRowCount = collapseModel->getViewRowCount();
     QStringList rowNameList;
     for (int viewRowIndex = 0; viewRowIndex < viewRowCount; viewRowIndex++) {
         int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
-        MultipleAlignmentRow maRow = editor->getMaObject()->getRow(maRowIndex);
+        MsaRow maRow = editor->getMaObject()->getRow(maRowIndex);
         rowNameList << maRow->getName();
     }
     return rowNameList;
@@ -383,12 +383,12 @@ bool GTUtilsMSAEditorSequenceArea::hasSequencesWithNames(const QStringList& name
 }
 
 QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(bool asShownInNameList) {
-    MSAEditor* editor = GTUtilsMsaEditor::getEditor();
+    MsaEditor* editor = GTUtilsMsaEditor::getEditor();
     MaEditorNameList* nameListArea = GTUtilsMsaEditor::getNameListArea();
     CHECK_SET_ERR_RESULT(nameListArea != nullptr, "MSA Editor name list area is NULL", QStringList());
 
     QList<int> visibleRowsIndexes = editor->getUI()->getUI(0)->getDrawHelper()->getVisibleMaRowIndexes(nameListArea->height());
-    MultipleSequenceAlignmentObject* msaObject = editor->getMaObject();
+    MsaObject* msaObject = editor->getMaObject();
 
     QStringList visibleRowNames;
     for (int rowIndex : qAsConst(visibleRowsIndexes)) {
@@ -459,12 +459,12 @@ int GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(int multilineIndex) {
 }
 
 int GTUtilsMSAEditorSequenceArea::getFirstVisibleRowIndex(bool countClipped) {
-    MSAEditor* editor = GTUtilsMsaEditor::getEditor();
+    MsaEditor* editor = GTUtilsMsaEditor::getEditor();
     return editor->getUI()->getScrollController()->getFirstVisibleViewRowIndex(countClipped);
 }
 
 int GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(bool countClipped) {
-    MSAEditor* editor = GTUtilsMsaEditor::getEditor();
+    MsaEditor* editor = GTUtilsMsaEditor::getEditor();
     int widgetHeight = editor->getMaEditorWgt()->getSequenceArea()->height();
     return editor->getUI()->getScrollController()->getLastVisibleViewRowIndex(widgetHeight, countClipped);
 }
@@ -475,7 +475,7 @@ int GTUtilsMSAEditorSequenceArea::getLength() {
 }
 
 int GTUtilsMSAEditorSequenceArea::getNumVisibleBases() {
-    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>("msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow());
+    auto msaEditArea = GTWidget::findExactWidget<MsaEditorSequenceArea*>("msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow());
     return msaEditArea->getEditor()->getUI()->getUI(0)->getDrawHelper()->getVisibleBasesCount(msaEditArea->width());
 }
 
@@ -505,10 +505,9 @@ bool GTUtilsMSAEditorSequenceArea::offsetsVisible() {
 void GTUtilsMSAEditorSequenceArea::checkConsensus(const QString& cons, int index) {
     auto consArea = getConsensusArea(index);
 
-    QSharedPointer<MSAEditorConsensusCache> cache = consArea->getConsensusCache();
+    QSharedPointer<MsaEditorConsensusCache> cache = consArea->getConsensusCache();
     CHECK_SET_ERR(QString(cache->getConsensusLine(true)) == cons,
-                  "Wrong consensus. Currens consensus is  " + cache->getConsensusLine(true));
-    GTGlobals::sleep(1000);
+                  "Wrong consensus. Current consensus is  " + cache->getConsensusLine(true));
 }
 
 void GTUtilsMSAEditorSequenceArea::selectSequence(const QString& seqName) {
@@ -527,7 +526,7 @@ void GTUtilsMSAEditorSequenceArea::selectSequence(const int row) {
 }
 
 bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(const QString& seqName) {
-    MSAEditor* editor = GTUtilsMsaEditor::getEditor();
+    MsaEditor* editor = GTUtilsMsaEditor::getEditor();
 
     // Seq names are drawn on widget, so this hack is needed
     QStringList selectedRowNames;
@@ -553,7 +552,7 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceVisible(const QString& seqName) {
 }
 
 QString GTUtilsMSAEditorSequenceArea::getSequenceData(const QString& sequenceName) {
-    MSAEditorSequenceArea* sequenceArea = getSequenceArea();
+    MsaEditorSequenceArea* sequenceArea = getSequenceArea();
     GT_CHECK_RESULT(sequenceArea != nullptr, "Sequence area is NULL", "");
 
     const QStringList names = getNameList();
@@ -566,7 +565,7 @@ QString GTUtilsMSAEditorSequenceArea::getSequenceData(const QString& sequenceNam
 }
 
 QString GTUtilsMSAEditorSequenceArea::getSequenceData(int rowNumber) {
-    MSAEditorSequenceArea* sequenceArea = getSequenceArea();
+    MsaEditorSequenceArea* sequenceArea = getSequenceArea();
     GT_CHECK_RESULT(sequenceArea != nullptr, "Sequence area is NULL", "");
 
     const QStringList names = getNameList();
@@ -582,7 +581,7 @@ void GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(int columnNumber, int
     // at first we get line #0 widget
     MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
     GT_CHECK(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index));
-    auto msaEditArea = qobject_cast<MSAEditorSequenceArea*>(
+    auto msaEditArea = qobject_cast<MsaEditorSequenceArea*>(
         GTWidget::findWidget("msa_editor_sequence_area", activeWindow));
     GT_CHECK_RESULT(msaEditArea != nullptr, "MsaEditorSequenceArea not found", );
 
@@ -641,7 +640,7 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(const QString& seqName)
 }
 
 QString GTUtilsMSAEditorSequenceArea::getColor(QPoint p) {
-    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>("msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow());
+    auto msaEditArea = GTWidget::findExactWidget<MsaEditorSequenceArea*>("msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow());
 
     QPoint global = convertCoordinates(p);
     global.setY(global.y() + (getRowHeight(p.y()) / 2 - 2));
@@ -664,7 +663,7 @@ void GTUtilsMSAEditorSequenceArea::checkMsaCellColor(const QPoint& pos, const QS
 }
 
 bool GTUtilsMSAEditorSequenceArea::hasPixelWithColor(const QPoint& p, const QColor& color) {
-    auto sequenceArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>("msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow());
+    auto sequenceArea = GTWidget::findExactWidget<MsaEditorSequenceArea*>("msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow());
     QImage img = GTWidget::getImage(sequenceArea);
     QRect rect = getPositionRect(p);
     for (int i = rect.left(); i < rect.right(); i++) {
@@ -735,7 +734,7 @@ void GTUtilsMSAEditorSequenceArea::checkSelection(const QPoint& start, const QPo
 }
 
 bool GTUtilsMSAEditorSequenceArea::isAlignmentLocked() {
-    MSAEditorSequenceArea* msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
+    MsaEditorSequenceArea* msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea();
     GT_CHECK_RESULT(msaSeqArea != nullptr, "MsaEditorSequenceArea is not found", false);
 
     return msaSeqArea->isAlignmentLocked();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #include <QGraphicsView>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "GTGlobals.h"
 #include "GTTestsMSAEditorTree.h"
@@ -46,9 +46,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     // Check that original name list is correct.
-    MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor();
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
-    QStringList nameList = msaObject->getMultipleAlignment()->getRowNames();
+    MsaEditor* msaEditor = GTUtilsMsaEditor::getEditor();
+    MsaObject* msaObject = msaEditor->getMaObject();
+    QStringList nameList = msaObject->getAlignment()->getRowNames();
     QStringList originalNameList = {"a", "b", "c", "d", "e", "f", "g", "h"};
     CHECK_SET_ERR(nameList == originalNameList, "1. Wrong original name list: " + nameList.join(","));
 
@@ -57,7 +57,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check that the tree is opened and MSA order was changed to match the tree order. The original MSA-object order must not change.
-    nameList = msaObject->getMultipleAlignment()->getRowNames();
+    nameList = msaObject->getAlignment()->getRowNames();
     CHECK_SET_ERR(nameList == originalNameList, "2. Wrong original name list: " + nameList.join(","));
     nameList = GTUtilsMSAEditorSequenceArea::getVisibleNames();
     QStringList expectedExpandedTreeNameList = {"h", "b", "f", "d", "c", "e", "g", "a"};

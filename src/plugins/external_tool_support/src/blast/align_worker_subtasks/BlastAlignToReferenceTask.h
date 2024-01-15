@@ -144,7 +144,7 @@ private:
      * Creates MSA object with 2 sequences: read & region of the reference sequence.
      * The MSA is created in the "storage" and must be cleaned up by the caller.
      */
-    static MultipleSequenceAlignmentObject* createPairwiseAlignment(U2OpStatus& os,
+    static MsaObject* createPairwiseAlignment(U2OpStatus& os,
                                                                     const U2DbiRef& dbiRef,
                                                                     const DNASequence& referenceSequence,
                                                                     const DNASequence& readSequence,

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,11 +55,11 @@ FastTreeSupport::FastTreeSupport()
 ////////////////////////////////////////
 // FastTreeAdapter
 
-Task* FastTreeAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings) {
+Task* FastTreeAdapter::createCalculatePhyTreeTask(const Msa& msa, const CreatePhyTreeSettings& settings) {
     return new FastTreeTask(msa, settings);
 }
 
-CreatePhyTreeWidget* FastTreeAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment& msa, QWidget* parent) {
+CreatePhyTreeWidget* FastTreeAdapter::createPhyTreeSettingsWidget(const Msa& msa, QWidget* parent) {
     return new FastTreeWidget(msa, parent);
 }
 

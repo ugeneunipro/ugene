@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,13 +24,14 @@
 #include "drivers/GTKeyboardDriver.h"
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTWidget.h"
+#include "system/GTClipboard.h"
 #include "utils/GTKeyboardUtils.h"
 
 namespace HI {
 
 #define GT_CLASS_NAME "GTPlainTextEdit"
 
-void GTPlainTextEdit::setText(QPlainTextEdit* textEdit, const QString& text) {
+void GTPlainTextEdit::setText(QPlainTextEdit* textEdit, const QString& text, bool useCopyPaste) {
     GT_CHECK(textEdit != nullptr, "textEdit is NULL");
     GT_CHECK(!textEdit->isReadOnly(), "textEdit is read-only: " + textEdit->objectName());
     if (textEdit->toPlainText() == text) {
@@ -41,7 +42,12 @@ void GTPlainTextEdit::setText(QPlainTextEdit* textEdit, const QString& text) {
         return;
     }
     GTWidget::setFocus(textEdit);
-    GTKeyboardDriver::keySequence(text);
+    if (useCopyPaste) {
+        GTClipboard::setText(text);
+        GTKeyboardUtils::paste();
+    } else {
+        GTKeyboardDriver::keySequence(text);
+    }
 }
 
 void GTPlainTextEdit::clear(QPlainTextEdit* textEdit) {

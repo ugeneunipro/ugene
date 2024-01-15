@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,39 +23,38 @@
 
 #include <QPolygonF>
 
-#include <U2Algorithm/MSAConsensusAlgorithmClustal.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSAConsensusAlgorithmStrict.h>
 #include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaConsensusAlgorithmClustal.h>
+#include <U2Algorithm/MsaConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 
-MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject* maObject, int width, int height)
+MaGraphCalculationTask::MaGraphCalculationTask(MsaObject* maObject, int width, int height)
     : BackgroundTask<QPolygonF>(tr("Render overview"), TaskFlag_None),
-      ma(maObject->getMultipleAlignmentCopy()),  // SANGER_TODO: getting before any check
+      ma(maObject->getAlignment()->getCopy()),  // SANGER_TODO: getting before any check
       memLocker(stateInfo),
       msaLength(0),
       seqNumber(0),
       width(width),
       height(height) {
     SAFE_POINT_EXT(maObject != nullptr, setError("MSA is NULL"), );
-    msaLength = maObject->getLength();
-    seqNumber = maObject->getRowCount();
-    if (!memLocker.tryAcquire(maObject->getMultipleAlignment()->getLength() * maObject->getMultipleAlignment()->getRowCount())) {
+    msaLength = (int)maObject->getLength();
+    seqNumber = (int)maObject->getRowCount();
+    if (!memLocker.tryAcquire(maObject->getAlignment()->getLength() * maObject->getAlignment()->getRowCount())) {
         setError(memLocker.getError());
         return;
     }
     //    ma = msa->getMultipleAlignmentCopy();
-    connect(maObject, SIGNAL(si_invalidateAlignmentObject()), this, SLOT(cancel()));
-    connect(maObject, SIGNAL(si_startMaUpdating()), this, SLOT(cancel()));
-    connect(maObject, SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), this, SLOT(cancel()));
+    connect(maObject, &MsaObject::si_invalidateAlignmentObject, this, &MaGraphCalculationTask::cancel);
+    connect(maObject, &MsaObject::si_startMaUpdating, this, &MaGraphCalculationTask::cancel);
+    connect(maObject, &MsaObject::si_alignmentChanged, this, &MaGraphCalculationTask::cancel);
 }
 
 void MaGraphCalculationTask::run() {
@@ -125,17 +124,17 @@ void MaGraphCalculationTask::constructPolygon(QPolygonF& polygon) {
     emit si_progressChanged();
 }
 
-MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MultipleAlignmentObject* msa,
+MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MsaObject* msa,
                                                                        int width,
                                                                        int height)
     : MaGraphCalculationTask(msa, width, height) {
     SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != nullptr, setError("MSAConsensusAlgorithmRegistry is NULL!"), );
 
-    MSAConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO);
+    MsaConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO);
     SAFE_POINT_EXT(factory != nullptr, setError("Strict consensus algorithm factory is NULL"), );
 
     SAFE_POINT_EXT(msa != nullptr, setError("MSA is NULL"), );
-    algorithm = factory->createAlgorithm(msa->getMultipleAlignment());
+    algorithm = factory->createAlgorithm(msa->getAlignment(), false);
     algorithm->setParent(this);
 }
 
@@ -145,7 +144,7 @@ int MaConsensusOverviewCalculationTask::getGraphValue(int pos) const {
     return qRound(score * 100. / seqNumber);
 }
 
-MaGapOverviewCalculationTask::MaGapOverviewCalculationTask(MultipleAlignmentObject* msa, int width, int height)
+MaGapOverviewCalculationTask::MaGapOverviewCalculationTask(MsaObject* msa, int width, int height)
     : MaGraphCalculationTask(msa, width, height) {
 }
 
@@ -155,7 +154,7 @@ int MaGapOverviewCalculationTask::getGraphValue(int pos) const {
         if (pos > ma->getLength()) {
             continue;
         }
-        uchar c = static_cast<uchar>(ma->charAt(seq, pos));
+        char c = ma->charAt(seq, pos);
         if (c == U2Msa::GAP_CHAR) {
             gapCounter++;
         }
@@ -164,21 +163,20 @@ int MaGapOverviewCalculationTask::getGraphValue(int pos) const {
     return qRound(gapCounter * 100. / seqNumber);
 }
 
-MaClustalOverviewCalculationTask::MaClustalOverviewCalculationTask(MultipleAlignmentObject* msa, int width, int height)
+MaClustalOverviewCalculationTask::MaClustalOverviewCalculationTask(MsaObject* msa, int width, int height)
     : MaGraphCalculationTask(msa, width, height) {
     SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != nullptr, setError("MSAConsensusAlgorithmRegistry is NULL!"), );
 
-    MSAConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
+    MsaConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
     SAFE_POINT_EXT(factory != nullptr, setError("Clustal algorithm factory is NULL"), );
 
     SAFE_POINT_EXT(msa != nullptr, setError("MSA is NULL"), );
-    algorithm = factory->createAlgorithm(ma);
+    algorithm = factory->createAlgorithm(ma, false);
     algorithm->setParent(this);
 }
 
 int MaClustalOverviewCalculationTask::getGraphValue(int pos) const {
     char c = algorithm->getConsensusChar(ma, pos);
-
     switch (c) {
         case '*':
             return 100;
@@ -212,7 +210,7 @@ MaHighlightingOverviewCalculationTask::MaHighlightingOverviewCalculationTask(MaE
     refSequenceId = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
 }
 
-bool MaHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleAlignment& ma, MsaHighlightingScheme* highlightingScheme, MsaColorScheme* colorScheme, int seq, int pos, int refSeq) {
+bool MaHighlightingOverviewCalculationTask::isCellHighlighted(const Msa& ma, MsaHighlightingScheme* highlightingScheme, MsaColorScheme* colorScheme, int seq, int pos, int refSeq) {
     SAFE_POINT(colorScheme != nullptr, "Color scheme is NULL", false);
     SAFE_POINT(highlightingScheme != nullptr, "Highlighting scheme is NULL", false);
     SAFE_POINT(highlightingScheme->getFactory() != nullptr, "Highlighting scheme factory is NULL", false);

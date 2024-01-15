@@ -23,7 +23,7 @@
 
 #include <unittest.h>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 
 #include "core/dbi/DbiTest.h"
 
@@ -142,18 +142,18 @@ DECLARE_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongId);
 DECLARE_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongCount);
 
 /**
- * updateMsa - updates a Msa in a database with data from a MultipleSequenceAlignment.
+ * updateMsa - updates a Msa in a database with data from a MultipleAlignment.
  * The msa stored in the database is not empty by default.
- *     ^   empty               - there is the empty msa stored in the database, the MultipleSequenceAlignment contains new rows.
- *     ^   nothingNew          - the MultipleSequenceAlignment contains the same information.
- *     ^   newOrder            - the MultipleSequenceAlignment contains the same rows in other order.
- *     ^   newName             - the MultipleSequenceAlignment contains the same rows, the msa name changes.
- *     ^   newAlphabet         - the MultipleSequenceAlignment contains the same rows, the msa alphabet changes.
- *     ^   newContent          - the MultipleSequenceAlignment doesn't contain new rows, some rows data changes.
- *     ^   newSequence         - the MultipleSequenceAlignment doesn't contain new rows, some rows have new sequences.
- *     ^   additionalRows      - the MultipleSequenceAlignment contains new rows, no rows are deleted.
- *     ^   removeRows          - the MultipleSequenceAlignment doesn't contain some rows.
- *     ^   clear               - the MultipleSequenceAlignment is empty.
+ *     ^   empty               - there is the empty msa stored in the database, the MultipleAlignment contains new rows.
+ *     ^   nothingNew          - the MultipleAlignment contains the same information.
+ *     ^   newOrder            - the MultipleAlignment contains the same rows in other order.
+ *     ^   newName             - the MultipleAlignment contains the same rows, the msa name changes.
+ *     ^   newAlphabet         - the MultipleAlignment contains the same rows, the msa alphabet changes.
+ *     ^   newContent          - the MultipleAlignment doesn't contain new rows, some rows data changes.
+ *     ^   newSequence         - the MultipleAlignment doesn't contain new rows, some rows have new sequences.
+ *     ^   additionalRows      - the MultipleAlignment contains new rows, no rows are deleted.
+ *     ^   removeRows          - the MultipleAlignment doesn't contain some rows.
+ *     ^   clear               - the MultipleAlignment is empty.
  */
 DECLARE_TEST(MsaDbiUtilsUnitTests, updateMsa_empty);
 DECLARE_TEST(MsaDbiUtilsUnitTests, updateMsa_nothingNew);

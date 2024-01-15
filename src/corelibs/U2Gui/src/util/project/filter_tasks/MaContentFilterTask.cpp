@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,10 +23,8 @@
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/L10n.h>
-#include <U2Core/MSAUtils.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -38,7 +36,7 @@ namespace U2 {
 /// MaContentFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-static bool patternFitsMaAlphabet(const MultipleAlignmentObject* maObject, const QString& pattern) {
+static bool patternFitsMaAlphabet(const MsaObject* maObject, const QString& pattern) {
     SAFE_POINT_NN(maObject, false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
@@ -49,19 +47,19 @@ static bool patternFitsMaAlphabet(const MultipleAlignmentObject* maObject, const
     return alphabet->containsAll(searchStr.constData(), searchStr.length());
 }
 
-static bool maContainsPattern(const MultipleAlignmentObject* maObject, const QString& pattern) {
+static bool maContainsPattern(const MsaObject* maObject, const QString& pattern) {
     SAFE_POINT_NN(maObject, false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
-    const MultipleAlignmentData* mData = maObject->getMultipleAlignment().data();
+    const MsaData* mData = maObject->getAlignment().data();
     const QByteArray searchStr = pattern.toUpper().toLatin1();
 
     for (int i = 0, n = mData->getRowCount(); i < n; ++i) {
-        const MultipleAlignmentRow& row = mData->getRow(i);
+        const MsaRow& row = mData->getRow(i);
         for (int j = 0; j < (mData->getLength() - searchStr.length() + 1); ++j) {
             char c = row->charAt(j);
-            int altenateLength = 0;
-            if (U2Msa::GAP_CHAR != c && MSAUtils::equalsIgnoreGaps(row, j, searchStr, altenateLength)) {
+            int alternateLength = 0;
+            if (c != U2Msa::GAP_CHAR && MsaUtils::equalsIgnoreGaps(row, j, searchStr, alternateLength)) {
                 return true;
             }
         }
@@ -69,7 +67,7 @@ static bool maContainsPattern(const MultipleAlignmentObject* maObject, const QSt
     return false;
 }
 
-static bool isFilteredByMAContent(const MultipleAlignmentObject* maObj, const ProjectTreeControllerModeSettings& settings) {
+static bool isFilteredByMAContent(const MsaObject* maObj, const ProjectTreeControllerModeSettings& settings) {
     CHECK(maObj != nullptr, false);
 
     foreach (const QString& pattern, settings.tokensToShow) {
@@ -101,7 +99,7 @@ MsaContentFilterTask::MsaContentFilterTask(const ProjectTreeControllerModeSettin
 }
 
 bool MsaContentFilterTask::filterAcceptsObject(GObject* obj) {
-    return isFilteredByMAContent(qobject_cast<MultipleSequenceAlignmentObject*>(obj), settings);
+    return isFilteredByMAContent(qobject_cast<MsaObject*>(obj), settings);
 }
 
 McaReadContentFilterTask::McaReadContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
@@ -110,7 +108,7 @@ McaReadContentFilterTask::McaReadContentFilterTask(const ProjectTreeControllerMo
 }
 
 bool McaReadContentFilterTask::filterAcceptsObject(GObject* obj) {
-    return isFilteredByMAContent(qobject_cast<MultipleChromatogramAlignmentObject*>(obj), settings);
+    return isFilteredByMAContent(qobject_cast<MsaObject*>(obj), settings);
 }
 
 McaReferenceContentFilterTask::McaReferenceContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
@@ -119,7 +117,7 @@ McaReferenceContentFilterTask::McaReferenceContentFilterTask(const ProjectTreeCo
 }
 
 bool McaReferenceContentFilterTask::filterAcceptsObject(GObject* obj) {
-    auto mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
+    auto mcaObj = qobject_cast<MsaObject*>(obj);
     CHECK(mcaObj != nullptr, false);
 
     foreach (const QString& pattern, settings.tokensToShow) {

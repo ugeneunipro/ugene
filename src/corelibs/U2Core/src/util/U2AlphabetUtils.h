@@ -22,7 +22,7 @@
 #pragma once
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2Alphabet.h>
@@ -131,9 +131,9 @@ public:
 
     static char getDefaultSymbol(const U2AlphabetId& alphaId);
 
-    static void assignAlphabet(MultipleSequenceAlignment& ma);
+    static void assignAlphabet(Msa& ma);
 
-    static void assignAlphabet(MultipleSequenceAlignment& ma, char ignore);
+    static void assignAlphabet(Msa& ma, char ignore);
 
     static const DNAAlphabet* getById(const U2AlphabetId& id) {
         return getById(id.id);

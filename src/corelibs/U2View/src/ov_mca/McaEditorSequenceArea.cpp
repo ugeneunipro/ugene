@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -194,8 +194,8 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     QRect selectionRect = editor->getSelection().toRect();
     CHECK(selectionRect.width() == 1 && selectionRect.height() == 1, );
 
-    const MultipleChromatogramAlignment mca = getEditor()->getMaObject()->getMca();
-    if (dy == 0 && mca->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x() + dx)) {
+    const Msa mca = getEditor()->getMaObject()->getAlignment();
+    if (dy == 0 && mca->isLeadingOrTrailingGap(selectionRect.y(), selectionRect.x() + dx)) {
         return;
     }
 
@@ -203,7 +203,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     if (dy != 0) {
         bool noRowAvailable = true;
         for (; nextRowToSelect >= 0 && nextRowToSelect < editor->getCollapseModel()->getViewRowCount(); nextRowToSelect += dy) {
-            if (!mca->isTrailingOrLeadingGap(editor->getCollapseModel()->getMaRowIndexByViewRowIndex(nextRowToSelect), selectionRect.x() + dx)) {
+            if (!mca->isLeadingOrTrailingGap(editor->getCollapseModel()->getMaRowIndexByViewRowIndex(nextRowToSelect), selectionRect.x() + dx)) {
                 noRowAvailable = false;
                 break;
             }
@@ -311,16 +311,16 @@ void McaEditorSequenceArea::sl_removeColumnsOfGaps() {
 
 void McaEditorSequenceArea::sl_trimLeftEnd() {
     GCounter::increment("Trim left end", editor->getFactoryId());
-    trimRowEnd(MultipleChromatogramAlignmentObject::Left);
+    trimRowEnd(MsaObject::Left);
 }
 
 void McaEditorSequenceArea::sl_trimRightEnd() {
     GCounter::increment("Trim right end", editor->getFactoryId());
-    trimRowEnd(MultipleChromatogramAlignmentObject::Right);
+    trimRowEnd(MsaObject::Right);
 }
 
 void McaEditorSequenceArea::sl_updateActions() {
-    MultipleAlignmentObject* maObj = editor->getMaObject();
+    MsaObject* maObj = editor->getMaObject();
     SAFE_POINT(maObj != nullptr, "MaObj is NULL", );
     const MaEditorSelection& selection = editor->getSelection();
     QRect selectionRect = selection.toRect();
@@ -331,7 +331,7 @@ void McaEditorSequenceArea::sl_updateActions() {
     bool isEditing = maMode != ViewMode;
     bool isSingleSymbolSelected = selectionRect.width() == 1 && selectionRect.height() == 1;
     bool hasGapBeforeSelection = isSingleSymbolSelected && !readOnly &&
-                                 maObj->getMultipleAlignment()->isGap(selectionRect.y(), selectionRect.x() - 1);
+                                 maObj->getAlignment()->isGap(selectionRect.y(), selectionRect.x() - 1);
 
     ui->delSelectionAction->setEnabled(canEditSelectedArea);
     updateTrimActions(canEditSelectedArea && isSingleSymbolSelected);
@@ -342,8 +342,8 @@ void McaEditorSequenceArea::sl_updateActions() {
     removeColumnsOfGapsAction->setEnabled(canEditAlignment);
 }
 
-void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge) {
-    MultipleChromatogramAlignmentObject* mcaObj = getEditor()->getMaObject();
+void McaEditorSequenceArea::trimRowEnd(MsaObject::TrimEdge edge) {
+    MsaObject* mcaObj = getEditor()->getMaObject();
     QList<int> maRowIndexes = getEditor()->getSelectionController()->getSelectedMaRowIndexes();
     SAFE_POINT(!maRowIndexes.isEmpty() && maRowIndexes.size() == 1, "Incorrect selection", )
     int maRowIndex = maRowIndexes[0];
@@ -369,7 +369,7 @@ void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
     int maRowIndex = getTopSelectedMaRow();
     CHECK(maRowIndex >= 0, );
 
-    MultipleAlignmentRow row = editor->getMaObject()->getRow(maRowIndex);
+    MsaRow row = editor->getMaObject()->getRow(maRowIndex);
     int start = row->getCoreStart();
     int end = row->getCoreEnd();
     int currentSelection = editor->getSelection().toRect().x();
@@ -415,7 +415,7 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
 
     SAFE_POINT(isInRange(selection.toRect()), "Selection rect is not in range!", );
 
-    MultipleChromatogramAlignmentObject* maObj = getEditor()->getMaObject();
+    MsaObject* maObj = getEditor()->getMaObject();
     CHECK(maObj != nullptr && !maObj->isStateLocked(), );
 
     // if this method was invoked during a region shifting
@@ -463,7 +463,7 @@ void McaEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
     if (!modInfo.rowListChanged) {
         return;
     }
-    MultipleAlignmentObject* maObject = editor->getMaObject();
+    MsaObject* maObject = editor->getMaObject();
     MaCollapseModel* collapseModel = editor->getCollapseModel();
     QSet<int> expandedGroupIndexes;
     for (int i = 0, n = collapseModel->getGroupCount(); i < n; i++) {

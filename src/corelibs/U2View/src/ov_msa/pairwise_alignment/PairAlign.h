@@ -45,8 +45,8 @@ namespace U2 {
 class AlignmentAlgorithm;
 class AlignmentAlgorithmMainWidget;
 class MaModificationInfo;
-class MSADistanceAlgorithm;
-class MSAEditor;
+class MsaDistanceAlgorithm;
+class MsaEditor;
 class PairwiseAlignmentTaskSettings;
 class SaveDocumentController;
 class ShowHideSubgroupWidget;
@@ -56,7 +56,7 @@ class U2VIEW_EXPORT PairAlign : public QWidget, public Ui_PairwiseAlignmentOptio
     Q_DISABLE_COPY(PairAlign)
 
 public:
-    PairAlign(MSAEditor* _msa);
+    PairAlign(MsaEditor* _msa);
 
 private slots:
     void sl_algorithmSelected(const QString& algorithmName);
@@ -86,9 +86,9 @@ private:
     bool isValidSequenceId(qint64 sequenceId) const;
     static QString getDefaultFilePath();
 
-    MSAEditor* msa;
+    MsaEditor* msa;
     PairwiseAlignmentWidgetsSettings* pairwiseAlignmentWidgetsSettings;
-    MSADistanceAlgorithm* distanceCalcTask;
+    MsaDistanceAlgorithm* distanceCalcTask;
 
     AlignmentAlgorithmMainWidget* settingsWidget;  // created by factories on demand
 

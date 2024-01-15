@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSlider.h>
+#include <primitives/GTTextEdit.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
@@ -55,6 +56,7 @@
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTBaseCompleter.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
+#include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 
 namespace U2 {
 
@@ -1428,6 +1430,27 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010) {
     CHECK_SET_ERR(error == expected, QString("enexpected error: %1").arg(error));
 
     GTFile::setReadWrite(dirPath);
+}
+
+GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011) {
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTComboBox::selectItemByText(GTWidget::findComboBox("algorithmListComboBox"), "Smith-Waterman");
+    GTWidget::click(GTWidget::findWidget("ArrowHeader_Algorithm settings"));
+
+    class Custom : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            auto text = GTTextEdit::getText(GTWidget::findTextEdit("infoEdit", dialog));
+            CHECK_SET_ERR(text.contains("Sample dna matrix from FASTA package"), QString("Unexpected text").arg(text));
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Close);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new AnyDialogFiller("SubstMatrixDialogBase", new Custom()));
+    GTWidget::click(GTWidget::findWidget("pbView"));
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0001) {

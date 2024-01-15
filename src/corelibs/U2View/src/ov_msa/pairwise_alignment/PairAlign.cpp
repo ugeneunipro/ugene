@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,8 +27,8 @@
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/BuiltInDistanceAlgorithms.h>
-#include <U2Algorithm/MSADistanceAlgorithm.h>
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithm.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 #include <U2Algorithm/PairwiseAlignmentTask.h>
 
 #include <U2Core/AppContext.h>
@@ -36,7 +36,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2Alphabet.h>
 #include <U2Core/U2DbiUtils.h>
@@ -52,24 +52,24 @@
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/AlignmentAlgorithmGUIExtension.h>
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "ov_msa/MaEditorSelection.h"
 
 #define BadAlphabetWarning 0
 #define DuplicateSequenceWarning 1
 
-inline U2::U2DataId getSequenceIdByRowId(U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus& os) {
-    const U2::MultipleSequenceAlignmentRow row = msa->getMaObject()->getMsa()->getMsaRowByRowId(rowId, os);
-    CHECK_OP(os, U2::U2DataId());
-    return row->getRowDbInfo().sequenceId;
+inline U2::U2DataId getSequenceIdByRowId(U2::MsaEditor* msa, qint64 rowId, U2::U2OpStatus& os) {
+    const U2::MsaRow& row = msa->getMaObject()->getAlignment()->getRowByRowId(rowId, os);
+    CHECK_OP(os, {});
+    return row->getSequenceId();
 }
 
 namespace U2 {
 
-PairAlign::PairAlign(MSAEditor* _msa)
+PairAlign::PairAlign(MsaEditor* _msa)
     : msa(_msa), pairwiseAlignmentWidgetsSettings(_msa->getPairwiseAlignmentWidgetsSettings()),
       distanceCalcTask(nullptr), settingsWidget(nullptr),
       showHideSequenceWidget(nullptr), showHideSettingsWidget(nullptr), showHideOutputWidget(nullptr),
@@ -219,7 +219,7 @@ void PairAlign::connectSignals() {
     connect(firstSeqSelectorWC, SIGNAL(si_selectionChanged()), SLOT(sl_selectorTextChanged()));
     connect(secondSeqSelectorWC, SIGNAL(si_selectionChanged()), SLOT(sl_selectorTextChanged()));
     connect(msa->getMaObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_checkState()));
-    connect(msa->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
+    connect(msa->getMaObject(), SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
 }
 
 void PairAlign::sl_checkState() {
@@ -292,16 +292,16 @@ void PairAlign::updatePercentOfSimilarity() {
         return;
     }
 
-    MSADistanceAlgorithmRegistry* distanceReg = AppContext::getMSADistanceAlgorithmRegistry();
+    MsaDistanceAlgorithmRegistry* distanceReg = AppContext::getMSADistanceAlgorithmRegistry();
     SAFE_POINT(distanceReg != nullptr, "MSADistanceAlgorithmRegistry is NULL.", );
-    MSADistanceAlgorithmFactory* distanceFactory = distanceReg->getAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO);
+    MsaDistanceAlgorithmFactory* distanceFactory = distanceReg->getAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO);
     SAFE_POINT(distanceFactory != nullptr, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
 
     U2OpStatusImpl os;
-    MultipleSequenceAlignment ma;
-    const MultipleSequenceAlignment currentAlignment = msa->getMaObject()->getMultipleAlignment();
-    ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
-    ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
+    Msa ma;
+    const Msa currentAlignment = msa->getMaObject()->getAlignment();
+    ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
+    ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
     distanceCalcTask = distanceFactory->createAlgorithm(ma);
     distanceCalcTask->setExcludeGaps(true);
     connect(distanceCalcTask, SIGNAL(si_stateChanged()), SLOT(sl_distanceCalculated()));
@@ -309,7 +309,7 @@ void PairAlign::updatePercentOfSimilarity() {
 }
 
 bool PairAlign::checkSequenceNames() {
-    QList<qint64> rowIds = msa->getMaObject()->getMultipleAlignment()->getRowsIds();
+    QList<qint64> rowIds = msa->getMaObject()->getAlignment()->getRowsIds();
     return (rowIds.contains(firstSeqSelectorWC->sequenceId()) && rowIds.contains(secondSeqSelectorWC->sequenceId()));
 }
 
@@ -431,7 +431,7 @@ void PairAlign::sl_distanceCalculated() {
         return;
     }
     if (distanceCalcTask->isFinished()) {
-        const MSADistanceMatrix& distanceMatrix = distanceCalcTask->getMatrix();
+        const MsaDistanceMatrix& distanceMatrix = distanceCalcTask->getMatrix();
         similarityValueLabel->setText(QString::number(distanceMatrix.getSimilarity(0, 1, true)) + "%");
         similarityWidget->setVisible(true);
         distanceCalcTask = nullptr;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-MuscleAlignDialogController::MuscleAlignDialogController(QWidget* w, const MultipleSequenceAlignment& _ma, MuscleTaskSettings& _settings)
+MuscleAlignDialogController::MuscleAlignDialogController(QWidget* w, const Msa& _ma, MuscleTaskSettings& _settings)
     : QDialog(w), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930833");

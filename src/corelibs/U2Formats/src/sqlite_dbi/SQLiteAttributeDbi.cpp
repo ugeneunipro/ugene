@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -350,6 +350,16 @@ void SQLiteAttributeDbi::createByteArrayAttribute(U2ByteArrayAttribute& a, U2OpS
     CHECK_OP(os, );
     q->bindInt64(1, id);
     q->bindBlob(2, a.value, false);
+    q->execute();
+}
+
+void SQLiteAttributeDbi::updateByteArrayAttribute(U2ByteArrayAttribute& a, U2OpStatus& os) {
+    SQLiteTransaction t(db, os);
+    static const QString queryString("UPDATE ByteArrayAttribute SET value = ?1 WHERE id = ?2");
+    QSharedPointer<SQLiteQuery> q = t.getPreparedQuery(queryString, db, os);
+    CHECK_OP(os, );
+    q->bindBlob(1, a.value, false);
+    q->bindDataId(1, a.id);
     q->execute();
 }
 

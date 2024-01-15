@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,13 +32,13 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/McaEditor.h>
 #include <U2View/McaEditorConsensusArea.h>
 #include <U2View/McaEditorNameList.h>
 #include <U2View/McaEditorReferenceArea.h>
 #include <U2View/McaEditorSequenceArea.h>
+#include <U2View/MsaEditorOffsetsView.h>
 #include <U2View/RowHeightController.h>
 #include <U2View/ScrollController.h>
 
@@ -116,12 +116,12 @@ QScrollBar* GTUtilsMcaEditor::getVerticalScrollBar() {
     return GTWidget::findScrollBar("vertical_sequence_scroll", getEditorUi());
 }
 
-MultipleAlignmentRowData* GTUtilsMcaEditor::getMcaRow(int rowNum) {
+MsaRowData* GTUtilsMcaEditor::getMcaRow(int rowNum) {
     McaEditor* mcaEditor = GTUtilsMcaEditor::getEditor();
-    MultipleChromatogramAlignmentObject* maObj = mcaEditor->getMaObject();
+    MsaObject* maObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(maObj != nullptr, "MultipleChromatogramAlignmentObject not found", nullptr);
 
-    MultipleAlignmentRow row = maObj->getRow(rowNum);
+    MsaRow row = maObj->getRow(rowNum);
     return row.data();
 }
 
@@ -163,16 +163,16 @@ int GTUtilsMcaEditor::getReadsCount() {
 }
 
 const QStringList GTUtilsMcaEditor::getReadsNames() {
-    return getEditor()->getMaObject()->getMultipleAlignment()->getRowNames();
+    return getEditor()->getMaObject()->getAlignment()->getRowNames();
 }
 
 const QStringList GTUtilsMcaEditor::getDirectReadsNames() {
     QStringList directReadsNames;
-    MultipleChromatogramAlignmentObject* mcaObject = getEditor()->getMaObject();
+    MsaObject* mcaObject = getEditor()->getMaObject();
     const int rowsCount = mcaObject->getRowCount();
     for (int i = 0; i < rowsCount; i++) {
-        if (!mcaObject->getMcaRow(i)->isReversed()) {
-            directReadsNames << mcaObject->getMcaRow(i)->getName();
+        if (!mcaObject->getRow(i)->isReversed()) {
+            directReadsNames << mcaObject->getRow(i)->getName();
         }
     }
     return directReadsNames;
@@ -180,11 +180,11 @@ const QStringList GTUtilsMcaEditor::getDirectReadsNames() {
 
 const QStringList GTUtilsMcaEditor::getReverseComplementReadsNames() {
     QStringList reverseComplementedReadsNames;
-    MultipleChromatogramAlignmentObject* mcaObject = getEditor()->getMaObject();
+    MsaObject* mcaObject = getEditor()->getMaObject();
     const int rowsCount = mcaObject->getRowCount();
     for (int i = 0; i < rowsCount; i++) {
-        if (mcaObject->getMcaRow(i)->isReversed()) {
-            reverseComplementedReadsNames << mcaObject->getMcaRow(i)->getName();
+        if (mcaObject->getRow(i)->isReversed()) {
+            reverseComplementedReadsNames << mcaObject->getRow(i)->getName();
         }
     }
     return reverseComplementedReadsNames;

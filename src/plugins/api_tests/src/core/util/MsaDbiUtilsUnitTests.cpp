@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MsaExportUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2MsaDbi.h>
@@ -220,7 +220,7 @@ U2MsaRow MsaDbiUtilsTestUtils::addRow(const QByteArray& name, const QByteArray& 
 }
 
 U2EntityRef MsaDbiUtilsTestUtils::removeRegionTestAlignment(U2OpStatus& os) {
-    U2MsaDbi* msaDbi = getMsaDbi();
+    auto msaDbi = getMsaDbi();
     U2SequenceDbi* sequenceDbi = getSequenceDbi();
     SAFE_POINT(msaDbi != nullptr, "MsaDbi is NULL", U2EntityRef());
     SAFE_POINT(sequenceDbi != nullptr, "SequenceDbi is NULL", U2EntityRef());
@@ -973,16 +973,15 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_noGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
+    actual << al->getRow(0)->toByteArray(os, al->getLength());
+    actual << al->getRow(1)->toByteArray(os, al->getLength());
+    actual << al->getRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1004,16 +1003,15 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
+    actual << al->getRow(0)->toByteArray(os, al->getLength());
+    actual << al->getRow(1)->toByteArray(os, al->getLength());
+    actual << al->getRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1035,16 +1033,15 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
+    actual << al->getRow(0)->toByteArray(os, al->getLength());
+    actual << al->getRow(1)->toByteArray(os, al->getLength());
+    actual << al->getRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1066,16 +1063,15 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGapsCutOff) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
+    actual << al->getRow(0)->toByteArray(os, al->getLength());
+    actual << al->getRow(1)->toByteArray(os, al->getLength());
+    actual << al->getRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1097,16 +1093,15 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGapsCutOff) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
+    actual << al->getRow(0)->toByteArray(os, al->getLength());
+    actual << al->getRow(1)->toByteArray(os, al->getLength());
+    actual << al->getRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1128,16 +1123,15 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingAndTrailingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
+    actual << al->getRow(0)->toByteArray(os, al->getLength());
+    actual << al->getRow(1)->toByteArray(os, al->getLength());
+    actual << al->getRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1159,16 +1153,15 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_gapsOnly) {
     MsaDbiUtils::trim(msaRef, os);
 
     // Check actual state
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(0, al->getLength(), "Wrong msa length.");
     CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
-    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
+    actual << al->getRow(0)->toByteArray(os, al->getLength());
+    actual << al->getRow(1)->toByteArray(os, al->getLength());
+    actual << al->getRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1188,14 +1181,13 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_oneRow) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 8, 3, os);
     CHECK_NO_ERROR(os);
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
-    QByteArray row0 = al->getMsaRow(0)->toByteArray(os, al->getLength());
-    QByteArray row1 = al->getMsaRow(1)->toByteArray(os, al->getLength());
-    QByteArray row2 = al->getMsaRow(2)->toByteArray(os, al->getLength());
+    QByteArray row0 = al->getRow(0)->toByteArray(os, al->getLength());
+    QByteArray row1 = al->getRow(1)->toByteArray(os, al->getLength());
+    QByteArray row2 = al->getRow(2)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("TAAGACTTCTAA--"), QString(row0), "Wrong msa row");
     CHECK_EQUAL(QString("TAAGCTTA------"), QString(row1), "Wrong msa row");
     CHECK_EQUAL(QString("TTAGTTTATTA---"), QString(row2), "Wrong msa row");
@@ -1215,14 +1207,13 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_threeRows) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 2, 8, os);
     CHECK_NO_ERROR(os);
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
-    QByteArray row1 = al->getMsaRow(1)->toByteArray(os, al->getLength());
-    QByteArray row5 = al->getMsaRow(5)->toByteArray(os, al->getLength());
-    QByteArray row8 = al->getMsaRow(8)->toByteArray(os, al->getLength());
+    QByteArray row1 = al->getRow(1)->toByteArray(os, al->getLength());
+    QByteArray row5 = al->getRow(5)->toByteArray(os, al->getLength());
+    QByteArray row8 = al->getRow(8)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("TAA-----------"), QString(row1), "Wrong msa row");
     CHECK_EQUAL(QString("T-ACTA--------"), QString(row5), "Wrong msa row");
     CHECK_EQUAL(QString("TTA-----------"), QString(row8), "Wrong msa row");
@@ -1242,15 +1233,14 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_lengthChange) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 5, 1, os);
     CHECK_NO_ERROR(os);
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
-    QByteArray row3 = al->getMsaRow(3)->toByteArray(os, al->getLength());
-    QByteArray row4 = al->getMsaRow(4)->toByteArray(os, al->getLength());
-    QByteArray row5 = al->getMsaRow(5)->toByteArray(os, al->getLength());
-    QByteArray row6 = al->getMsaRow(6)->toByteArray(os, al->getLength());
+    QByteArray row3 = al->getRow(3)->toByteArray(os, al->getLength());
+    QByteArray row4 = al->getRow(4)->toByteArray(os, al->getLength());
+    QByteArray row5 = al->getRow(5)->toByteArray(os, al->getLength());
+    QByteArray row6 = al->getRow(6)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("T--CAGTCTATTA-"), QString(row3), "Wrong msa row");
     CHECK_EQUAL(QString("T--CAGTTTATTA-"), QString(row4), "Wrong msa row");
     CHECK_EQUAL(QString("T--TAGTCTACTA-"), QString(row5), "Wrong msa row");
@@ -1271,24 +1261,23 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_allRows) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 3, os);
     CHECK_NO_ERROR(os);
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(11, al->getLength(), "Wrong msa length");
 
-    QByteArray row0 = al->getMsaRow(0)->toByteArray(os, al->getLength());
-    QByteArray row1 = al->getMsaRow(1)->toByteArray(os, al->getLength());
-    QByteArray row2 = al->getMsaRow(2)->toByteArray(os, al->getLength());
-    QByteArray row3 = al->getMsaRow(3)->toByteArray(os, al->getLength());
-    QByteArray row4 = al->getMsaRow(4)->toByteArray(os, al->getLength());
-    QByteArray row5 = al->getMsaRow(5)->toByteArray(os, al->getLength());
-    QByteArray row6 = al->getMsaRow(6)->toByteArray(os, al->getLength());
-    QByteArray row7 = al->getMsaRow(7)->toByteArray(os, al->getLength());
-    QByteArray row8 = al->getMsaRow(8)->toByteArray(os, al->getLength());
-    QByteArray row9 = al->getMsaRow(9)->toByteArray(os, al->getLength());
-    QByteArray row10 = al->getMsaRow(10)->toByteArray(os, al->getLength());
-    QByteArray row11 = al->getMsaRow(11)->toByteArray(os, al->getLength());
-    QByteArray row12 = al->getMsaRow(12)->toByteArray(os, al->getLength());
+    QByteArray row0 = al->getRow(0)->toByteArray(os, al->getLength());
+    QByteArray row1 = al->getRow(1)->toByteArray(os, al->getLength());
+    QByteArray row2 = al->getRow(2)->toByteArray(os, al->getLength());
+    QByteArray row3 = al->getRow(3)->toByteArray(os, al->getLength());
+    QByteArray row4 = al->getRow(4)->toByteArray(os, al->getLength());
+    QByteArray row5 = al->getRow(5)->toByteArray(os, al->getLength());
+    QByteArray row6 = al->getRow(6)->toByteArray(os, al->getLength());
+    QByteArray row7 = al->getRow(7)->toByteArray(os, al->getLength());
+    QByteArray row8 = al->getRow(8)->toByteArray(os, al->getLength());
+    QByteArray row9 = al->getRow(9)->toByteArray(os, al->getLength());
+    QByteArray row10 = al->getRow(10)->toByteArray(os, al->getLength());
+    QByteArray row11 = al->getRow(11)->toByteArray(os, al->getLength());
+    QByteArray row12 = al->getRow(12)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("GACTTCTAA--"), QString(row0), "Wrong msa row");
     CHECK_EQUAL(QString("GCTTACTA---"), QString(row1), "Wrong msa row");
     CHECK_EQUAL(QString("GTTTATTA---"), QString(row2), "Wrong msa row");
@@ -1318,13 +1307,12 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_all) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 14, os);
     CHECK_NO_ERROR(os);
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(0, al->getLength(), "Wrong msa length");
 
-    QByteArray row0 = al->getMsaRow(0)->toByteArray(os, al->getLength());
-    QByteArray row12 = al->getMsaRow(12)->toByteArray(os, al->getLength());
+    QByteArray row0 = al->getRow(0)->toByteArray(os, al->getLength());
+    QByteArray row12 = al->getRow(12)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString(""), QString(row0), "Wrong msa row");
     CHECK_EQUAL(QString(""), QString(row12), "Wrong msa row");
 }
@@ -1344,12 +1332,11 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_negativePos) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, -1, 14, tmpOs);
     CHECK_TRUE(tmpOs.hasError(), "No error occurred for negative pos");
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
-    QByteArray row0 = al->getMsaRow(0)->toByteArray(os, al->getLength());
+    QByteArray row0 = al->getRow(0)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("TAAGACTTCTAA--"), QString(row0), "Wrong msa row");
 }
 
@@ -1392,12 +1379,11 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongCount) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 0, tmpOs);
     CHECK_TRUE(tmpOs.hasError(), "No error occurred for wrong count");
 
-    MultipleSequenceAlignmentExporter ex;
-    MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    Msa al = MsaExportUtils::loadAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
-    QByteArray row0 = al->getMsaRow(0)->toByteArray(os, al->getLength());
+    QByteArray row0 = al->getRow(0)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("TAAGACTTCTAA--"), QString(row0), "Wrong msa row");
 }
 
@@ -1412,13 +1398,13 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_empty) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
     ma->addRow("4", "TTT-TTTT", -1);
 
-    QList<MultipleSequenceAlignmentRow> maRows = ma->getMsaRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Call test function
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1467,13 +1453,13 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_nothingNew) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
     ma->addRow("4", "TTT-TTTT", -1);
 
-    QList<MultipleSequenceAlignmentRow> maRows = ma->getMsaRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // The first call is correct (updateMsa_empty test)
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1526,7 +1512,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newOrder) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1539,7 +1525,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newOrder) {
     // Change order of rows
     ma->moveRowsBlock(1, 1, 1);
 
-    QList<MultipleSequenceAlignmentRow> maRows = ma->getMsaRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Test call with new row order
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1588,13 +1574,13 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newName) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
     ma->addRow("4", "TTT-TTTT", -1);
 
-    QList<MultipleSequenceAlignmentRow> maRows = ma->getMsaRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // The first call is correct (updateMsa_empty test)
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1650,13 +1636,13 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newAlphabet) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
     ma->addRow("4", "TTT-TTTT", -1);
 
-    QList<MultipleSequenceAlignmentRow> maRows = ma->getMsaRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // The first call is correct (updateMsa_empty test)
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1713,7 +1699,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newContent) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1726,7 +1712,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newContent) {
     // Change sequence data in the second row
     ma->setRowContent(1, "AA--AA--AA--AA");
 
-    QList<MultipleSequenceAlignmentRow> maRows = ma->getMsaRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Test call with changed data in second row
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1775,7 +1761,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1786,9 +1772,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
     CHECK_NO_ERROR(os);
 
     // Export an alignment from the dbi to the memory (to set actual IDs)
-    MultipleSequenceAlignmentExporter exporter;
-    MultipleSequenceAlignment expMa;
-    expMa = exporter.getAlignment(dbiRef, msaId, os);
+    Msa expMa = MsaExportUtils::loadAlignment(dbiRef, msaId, os);
     CHECK_NO_ERROR(os);
 
     // Set a new sequence ID for the second row
@@ -1798,7 +1782,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
     seqDbi->createSequenceObject(newSeq, "", os);
     CHECK_NO_ERROR(os);
 
-    U2MsaRow changedRow = expMa->getMsaRow(1)->getRowDbInfo();
+    U2MsaRow changedRow = expMa->getRow(1)->getRowDbInfo();
     changedRow.sequenceId = newSeq.id;
     expMa->removeRow(1, os);
     CHECK_NO_ERROR(os);
@@ -1806,7 +1790,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
     expMa->addRow(changedRow, newDnaSeq, os);
     CHECK_NO_ERROR(os);
 
-    QList<MultipleSequenceAlignmentRow> expMaRows = expMa->getMsaRows();
+    const QVector<MsaRow>& expMaRows = expMa->getRows();
 
     // Test call with changed sequence ID
     MsaDbiUtils::updateMsa(msaRef, expMa, os);
@@ -1855,7 +1839,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_additionalRows) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1869,7 +1853,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_additionalRows) {
     ma->addRow("5", "ATATATATAT", -1);
     ma->addRow("6", "CGCG--CGCG", -1);
 
-    QList<MultipleSequenceAlignmentRow> maRows = ma->getMsaRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Test call without new information
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1918,7 +1902,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_removeRows) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1934,7 +1918,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_removeRows) {
     ma->removeRow(2, os);
     CHECK_NO_ERROR(os);
 
-    QList<MultipleSequenceAlignmentRow> maRows = ma->getMsaRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Test call without some rows
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1983,7 +1967,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_clear) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
+    Msa ma(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1996,7 +1980,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_clear) {
     // Clear alignment
     ma->clear();
 
-    QList<MultipleSequenceAlignmentRow> maRows = ma->getMsaRows();
+    const QVector<MsaRow>& maRows = ma->getRows();
 
     // Test call with empty alignment
     MsaDbiUtils::updateMsa(msaRef, ma, os);

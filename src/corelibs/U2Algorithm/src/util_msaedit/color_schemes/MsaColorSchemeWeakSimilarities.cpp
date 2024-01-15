@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 
 #include "MsaColorSchemeWeakSimilarities.h"
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -34,7 +34,7 @@ const QList<QPair<QColor, QColor>> MsaColorSchemeWeakSimilarities::colorPairsByF
 
 const QPair<QColor, QColor> MsaColorSchemeWeakSimilarities::gapColorPair = QPair<QColor, QColor>(QColor("#000000"), QColor("#FFFFFF"));
 
-MsaColorSchemeWeakSimilarities::MsaColorSchemeWeakSimilarities(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaColorSchemeWeakSimilarities::MsaColorSchemeWeakSimilarities(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj)
     : MsaColorSchemePercentageIdententityColored(parent, factory, maObj) {
 }
 
@@ -84,7 +84,7 @@ MsaColorSchemeWeakSimilaritiesFactory::MsaColorSchemeWeakSimilaritiesFactory(QOb
     : MsaColorSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaColorScheme* MsaColorSchemeWeakSimilaritiesFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
+MsaColorScheme* MsaColorSchemeWeakSimilaritiesFactory::create(QObject* parent, MsaObject* maObj) const {
     return new MsaColorSchemeWeakSimilarities(parent, this, maObj);
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>
@@ -70,7 +70,7 @@ void GTest_CalculateTreeFromAligment::prepare() {
         return;
     }
 
-    auto maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto maObj = qobject_cast<MsaObject*>(obj);
     if (maObj == nullptr) {
         stateInfo.setError(QString("can't cast to multiple alignment object from: %1").arg(obj->getGObjectName()));
         return;
@@ -86,7 +86,7 @@ void GTest_CalculateTreeFromAligment::prepare() {
                                              "sumt burnin=10;\n"
                                              "End;\n");
 
-    task = new PhyTreeGeneratorLauncherTask(maObj->getMultipleAlignment(), settings);
+    task = new PhyTreeGeneratorLauncherTask(maObj->getAlignment(), settings);
 
     if (task == nullptr) {
         stateInfo.setError(QString("Algorithm %1 not found").arg(algId));

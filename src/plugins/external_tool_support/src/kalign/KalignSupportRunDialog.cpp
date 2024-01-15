@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/FileFilters.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -35,8 +36,8 @@
 
 namespace U2 {
 
-Kalign3DialogWithMsaInput::Kalign3DialogWithMsaInput(QWidget* w, const MultipleSequenceAlignment& _ma, Kalign3Settings& _settings)
-    : QDialog(w), ma(_ma->getExplicitCopy()), settings(_settings) {
+Kalign3DialogWithMsaInput::Kalign3DialogWithMsaInput(QWidget* w, const Msa& _ma, Kalign3Settings& _settings)
+    : QDialog(w), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930935");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));

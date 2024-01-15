@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,9 +26,9 @@
 #include <QPainter>
 
 #include "U2Core/DNAAlphabet.h"
-#include "U2Core/MultipleSequenceAlignment.h"
+#include "U2Core/Msa.h"
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 
@@ -130,7 +130,7 @@ void AlignmentLogoRenderArea::resizeEvent(QResizeEvent* e) {
 }
 
 void AlignmentLogoRenderArea::evaluateHeights() {
-    const MultipleSequenceAlignment& ma = settings.ma;
+    const Msa& ma = settings.ma;
     int numRows = ma->getRowCount();
     error = (s - 1) / (2 * log(2.0) * numRows);
 
@@ -144,7 +144,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
 
     for (int pos = settings.startPos; pos < settings.len + settings.startPos; pos++) {
         for (int idx = 0; idx < numRows; idx++) {
-            const MultipleSequenceAlignmentRow row = ma->getMsaRow(idx);
+            const MsaRow& row = ma->getRow(idx);
             assert(pos < ma->getLength());
             char ch = row->charAt(pos);
             if (acceptableChars->contains(ch)) {

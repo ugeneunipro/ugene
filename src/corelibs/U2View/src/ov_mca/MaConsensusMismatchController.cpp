@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 
 #include "MaConsensusMismatchController.h"
 
-#include <U2Algorithm/MSAConsensusAlgorithm.h>
+#include <U2Algorithm/MsaConsensusAlgorithm.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -32,15 +32,15 @@
 
 #include "McaEditor.h"
 #include "McaEditorSequenceArea.h"
-#include "ov_msa/MSAEditorConsensusCache.h"
-#include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/MaEditorMultilineWgt.h"
+#include "ov_msa/MaEditorSequenceArea.h"
+#include "ov_msa/MsaEditorConsensusCache.h"
 #include "ov_sequence/SequenceObjectContext.h"
 
 namespace U2 {
 
 MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
-                                                             const QSharedPointer<MSAEditorConsensusCache>& consCache,
+                                                             const QSharedPointer<MsaEditorConsensusCache>& consCache,
                                                              MaEditor* editor)
     : QObject(p),
       consCache(consCache),
@@ -79,7 +79,7 @@ QAction* MaConsensusMismatchController::getNextMismatchAction() const {
 
 void MaConsensusMismatchController::sl_updateItem(int pos, char c) {
     SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", );
-    mismatchCache[pos] = c != MSAConsensusAlgorithm::INVALID_CONS_CHAR && editor->getReferenceCharAt(pos) != c;
+    mismatchCache[pos] = c != MsaConsensusAlgorithm::INVALID_CONS_CHAR && editor->getReferenceCharAt(pos) != c;
 }
 
 void MaConsensusMismatchController::sl_resize(int newSize) {

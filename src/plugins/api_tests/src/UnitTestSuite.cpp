@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@
 #include "core/dbi/sequence/SequenceDbiUnitTests.h"
 #include "core/dbi/udr/UdrDbiUnitTests.h"
 #include "core/format/sqlite_msa_dbi/MsaDbiSQLiteSpecificUnitTests.h"
-#include "core/gobjects/DNAChromatogramObjectUnitTests.h"
+#include "core/gobjects/ChromatogramObjectUnitTests.h"
 #include "core/gobjects/FeaturesTableObjectUnitTest.h"
 #include "core/gobjects/MsaObjectUnitTests.h"
 #include "core/gobjects/TextObjectUnitTests.h"

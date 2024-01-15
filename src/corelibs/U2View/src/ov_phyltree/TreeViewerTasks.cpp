@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,9 +35,9 @@
 #include "TreeViewer.h"
 #include "TreeViewerFactory.h"
 #include "TreeViewerState.h"
-#include "ov_msa/MSAEditor.h"
-#include "ov_msa/phy_tree/MSAEditorTreeManager.h"
-#include "ov_msa/phy_tree/MSAEditorTreeViewer.h"
+#include "ov_msa/MsaEditor.h"
+#include "ov_msa/phy_tree/MsaEditorTreeManager.h"
+#include "ov_msa/phy_tree/MsaEditorTreeViewer.h"
 
 namespace U2 {
 
@@ -175,7 +175,7 @@ void UpdateTreeViewerTask::update() {
 //////////////////////////////////////////////////////////////////////////
 /// create view
 
-CreateMSAEditorTreeViewerTask::CreateMSAEditorTreeViewerTask(MSAEditor* _msaEditor,
+CreateMSAEditorTreeViewerTask::CreateMSAEditorTreeViewerTask(MsaEditor* _msaEditor,
                                                              const QString& name,
                                                              const QPointer<PhyTreeObject>& obj,
                                                              const QVariantMap& sData)
@@ -195,7 +195,7 @@ void CreateMSAEditorTreeViewerTask::prepare() {
 Task::ReportResult CreateMSAEditorTreeViewerTask::report() {
     CHECK(!stateInfo.isCoR(), Task::ReportResult_Finished);
     CHECK(!msaEditor.isNull(), Task::ReportResult_Finished);  // MSA Editor was closed. Do nothing.
-    view = new MSAEditorTreeViewer(msaEditor, viewName, phyObj);
+    view = new MsaEditorTreeViewer(msaEditor, viewName, phyObj);
 
     if (!stateData.isEmpty()) {
         OpenSavedTreeViewerTask::applySavedState(view, stateData);
@@ -238,7 +238,7 @@ Task::ReportResult CreateTreeViewerTask::report() {
     return Task::ReportResult_Finished;
 }
 
-MSAEditorOpenTreeViewerTask::MSAEditorOpenTreeViewerTask(PhyTreeObject* obj, MSAEditorTreeManager* _parent)
+MSAEditorOpenTreeViewerTask::MSAEditorOpenTreeViewerTask(PhyTreeObject* obj, MsaEditorTreeManager* _parent)
     : OpenTreeViewerTask(obj), treeManager(_parent) {
 }
 

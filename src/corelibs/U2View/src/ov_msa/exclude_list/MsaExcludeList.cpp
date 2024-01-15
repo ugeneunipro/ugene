@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,11 +50,11 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include "ov_msa/MSAEditor.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditorFactory.h"
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/MaEditorSplitters.h"
+#include "ov_msa/MsaEditor.h"
 
 namespace U2 {
 ////////////////////////////////////
@@ -68,7 +68,7 @@ static const char* TOGGLE_EXCLUDE_LIST_ACTION_NAME = "exclude_list_toggle_action
 static const char* MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME = "exclude_list_move_from_msa_action";
 
 void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "View is not MSAEditor!", );
     msaEditor->registerActionProvider(this);
 
@@ -97,8 +97,8 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
     });
     connect(msaEditor->getSelectionController(), &MaEditorSelectionController::si_selectionChanged, this, [this, msaEditor]() { updateState(msaEditor); });
 
-    QPointer<MultipleSequenceAlignmentObject> msaObjectPtr = msaEditor->getMaObject();
-    QPointer<MSAEditor> msaEditorPtr = msaEditor;
+    QPointer<MsaObject> msaObjectPtr = msaEditor->getMaObject();
+    QPointer<MsaEditor> msaEditorPtr = msaEditor;
     connect(msaObjectPtr, &GObject::si_lockedStateChanged, this, [this, msaEditorPtr]() {
         CHECK(!msaEditorPtr.isNull(), );
         updateState(msaEditorPtr);
@@ -118,7 +118,7 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
     updateState(msaEditor);
 }
 
-MsaExcludeListWidget* MsaExcludeListContext::findActiveExcludeList(MSAEditor* msaEditor) {
+MsaExcludeListWidget* MsaExcludeListContext::findActiveExcludeList(MsaEditor* msaEditor) {
     auto multilineLayout = msaEditor->getUI()->layout();
     auto excludeWidget = msaEditor->getUI()->findChild<MsaExcludeListWidget*>();
     if (excludeWidget != nullptr) {
@@ -130,7 +130,7 @@ MsaExcludeListWidget* MsaExcludeListContext::findActiveExcludeList(MSAEditor* ms
     return nullptr;
 }
 
-MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEditor) {
+MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MsaEditor* msaEditor) {
     MsaExcludeListWidget* excludeList = findActiveExcludeList(msaEditor);
     CHECK(excludeList == nullptr, excludeList);
     GCOUNTER(cvar, "MsaExcludeListWidget");
@@ -143,12 +143,12 @@ MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEdito
     return excludeList;
 }
 
-void MsaExcludeListContext::updateMsaEditorSplitterStyle(MSAEditor* msaEditor) {
+void MsaExcludeListContext::updateMsaEditorSplitterStyle(MsaEditor* msaEditor) {
     auto mainSplitter = msaEditor->getUI()->getUI(0)->getMainSplitter();
     MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
 }
 
-void MsaExcludeListContext::toggleExcludeListView(MSAEditor* msaEditor) {
+void MsaExcludeListContext::toggleExcludeListView(MsaEditor* msaEditor) {
     auto excludeList = findActiveExcludeList(msaEditor);
     if (excludeList != nullptr) {
         delete excludeList;
@@ -158,7 +158,7 @@ void MsaExcludeListContext::toggleExcludeListView(MSAEditor* msaEditor) {
     updateMsaEditorSplitterStyle(msaEditor);
 }
 
-void MsaExcludeListContext::updateState(MSAEditor* msaEditor) {
+void MsaExcludeListContext::updateState(MsaEditor* msaEditor) {
     bool isRegisteredView = viewResources.contains(msaEditor);
     CHECK(isRegisteredView, );
     // MSA editor emits signals during the destruction process (TreeWidget resets rows ordering and updates collapse model & selection).
@@ -169,7 +169,7 @@ void MsaExcludeListContext::updateState(MSAEditor* msaEditor) {
     moveAction->setEnabled(isEnabled);
 }
 
-QAction* MsaExcludeListContext::getMoveMsaSelectionToExcludeListAction(MSAEditor* msaEditor) {
+QAction* MsaExcludeListContext::getMoveMsaSelectionToExcludeListAction(MsaEditor* msaEditor) {
     auto moveAction = findViewAction(msaEditor, MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME);
     SAFE_POINT(moveAction != nullptr, "Can't find move action in Msa editor", nullptr)
     return moveAction;
@@ -188,7 +188,7 @@ static const char* PROPERTY_LAST_USED_EXCLUDE_LIST_FILE = "MsaExcludeList_lastUs
 /** A constant for Exclude List file. An Exclude List file name for "file.aln" is constructed like  "file." + EXCLUDE_LIST_FILE_SUFFIX. */
 static const char* EXCLUDE_LIST_FILE_SUFFIX = "exclude-list.fasta";
 
-MsaExcludeListWidget::MsaExcludeListWidget(QWidget* parent, MSAEditor* _msaEditor, MsaExcludeListContext* viewContext)
+MsaExcludeListWidget::MsaExcludeListWidget(QWidget* parent, MsaEditor* _msaEditor, MsaExcludeListContext* viewContext)
     : QWidget(parent), msaEditor(_msaEditor) {
     setObjectName("msa_exclude_list");
     auto layout = new QVBoxLayout(this);
@@ -269,8 +269,8 @@ MsaExcludeListWidget::MsaExcludeListWidget(QWidget* parent, MSAEditor* _msaEdito
     }
 
     auto msaObject = msaEditor->getMaObject();
-    connect(msaObject, &MultipleSequenceAlignmentObject::si_alignmentChanged, this, &MsaExcludeListWidget::handleUndoRedoInMsaEditor);
-    connect(msaObject, &MultipleSequenceAlignmentObject::si_lockedStateChanged, this, &MsaExcludeListWidget::updateState);
+    connect(msaObject, &MsaObject::si_alignmentChanged, this, &MsaExcludeListWidget::handleUndoRedoInMsaEditor);
+    connect(msaObject, &MsaObject::si_lockedStateChanged, this, &MsaExcludeListWidget::updateState);
 
     excludeListFilePath = msaEditor->property(PROPERTY_LAST_USED_EXCLUDE_LIST_FILE).toString();
     if (excludeListFilePath.isEmpty() || !QFileInfo::exists(excludeListFilePath)) {
@@ -306,7 +306,7 @@ int MsaExcludeListWidget::addEntry(const DNASequence& sequence, int excludeListR
     return computedExcludeListRowId;
 }
 
-int MsaExcludeListWidget::addMsaRowEntry(const MultipleAlignmentRow& row, int excludeListRowId) {
+int MsaExcludeListWidget::addMsaRowEntry(const MsaRow& row, int excludeListRowId) {
     DNASequence sequence = row->getUngappedSequence();
     sequence.alphabet = msaEditor->getMaObject()->getAlphabet();  // TODO: MSA row must return a fully defined sequence with a correct alphabet.
     return addEntry(sequence, excludeListRowId);
@@ -413,7 +413,7 @@ void MsaExcludeListWidget::moveMsaRowIndexesToExcludeList(const QList<int>& msaR
     SAFE_POINT(loadTask == nullptr, "Can't add rows with an active load task!", )
 
     QList<int> excludeListRowIds;
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
     if (msaObject->getRowCount() == msaRowIndexes.count()) {
         // TODO: support empty MSA for all file formats.
         QMessageBox::critical(this, L10N::warningTitle(), tr("Multiple alignment must keep at least one row"));
@@ -445,7 +445,7 @@ void MsaExcludeListWidget::moveMsaRowIndexesToExcludeList(const QList<int>& msaR
 
 void MsaExcludeListWidget::moveExcludeListSelectionToMaObject() {
     GCOUNTER(cvar, "MsaExcludeListWidget::moveToMsa");
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
     QList<DNASequence> sequences;
     QList<int> excludeListRowIdsMovedToMsa;
     QList<QListWidgetItem*> selectedItems = nameListView->selectedItems();
@@ -469,7 +469,7 @@ void MsaExcludeListWidget::moveExcludeListSelectionToMaObject() {
     updateState();
 }
 
-void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo) {
+void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const Msa& maBefore, const MaModificationInfo& modInfo) {
     auto msaObject = msaEditor->getMaObject();
     int version = msaObject->getObjectVersion();
     if (modInfo.type != MaModificationType_Undo && modInfo.type != MaModificationType_Redo) {
@@ -492,10 +492,10 @@ void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const MultipleAlignment& ma
     const UndoRedoStep& undoRedoContext = isRedo ? trackedRedoMsaVersions.value(version) : trackedUndoMsaVersions.value(version);
     bool isAddToExcludeList = (isRedo && undoRedoContext.isMoveFromMsaToExcludeList) || (!isRedo && !undoRedoContext.isMoveFromMsaToExcludeList);
     if (isAddToExcludeList) {  // Add rows removed from MSA to Exclude list
-        QList<MultipleAlignmentRow> msaRows;
+        QVector<MsaRow> msaRows;
         QSet<qint64> msaRowIdsAfter = msaObject->getRowIds().toSet();
         for (int i = 0; i < maBefore->getRowCount(); i++) {
-            const MultipleAlignmentRow& row = maBefore->getRow(i);
+            const MsaRow& row = maBefore->getRow(i);
             if (!msaRowIdsAfter.contains(row->getRowId())) {
                 msaRows << row;
             }

@@ -4,7 +4,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="118"/>
+        <location filename="../src/util_msa_consensus/MsaConsensusUtils.cpp" line="118"/>
         <source>Gaps:</source>
         <translation>Пробелы:</translation>
     </message>
@@ -179,12 +179,12 @@
 <context>
     <name>U2::MSAConsensusAlgorithmFactoryClustal</name>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmClustal.cpp" line="30"/>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmClustal.cpp" line="30"/>
         <source>Emulates ClustalW program and file format behavior.</source>
         <translation>Эмулирует программу ClustalW и её интерпретацию формата файла.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmClustal.cpp" line="34"/>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmClustal.cpp" line="34"/>
         <source>ClustalW</source>
         <translation>Схема ClustalW</translation>
     </message>
@@ -192,12 +192,12 @@
 <context>
     <name>U2::MSAConsensusAlgorithmFactoryDefault</name>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmDefault.cpp" line="35"/>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmDefault.cpp" line="35"/>
         <source>Based on JalView algorithm. Returns &apos;+&apos; if there are 2 characters with high frequency. Returns symbol in lower case if the symbol content in a row is lower than the threshold specified.</source>
         <translation>В основе лежит алгоритм JalView. Возвращает &apos;+&apos;ˇ, если имеется 2 символа с высокой частотой. Возвращает символ в нижнем регистре, если символ содержится в ряду меньшее число раз, чем это указано в пороге.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmDefault.cpp" line="39"/>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmDefault.cpp" line="39"/>
         <source>Default</source>
         <translation>Схема по умолчанию</translation>
     </message>
@@ -205,7 +205,7 @@
 <context>
     <name>U2::MSAConsensusAlgorithmFactoryLevitsky</name>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.cpp" line="35"/>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.cpp" line="35"/>
         <source>The algorithm proposed by Victor Levitsky to work with DNA alignments.
 Collects global alignment frequency for every symbol using extended (15 symbols) DNA alphabet first.
 For every column selects the most rare symbol in the whole alignment with percentage in the column greater or equals to the threshold value.</source>
@@ -214,7 +214,7 @@ For every column selects the most rare symbol in the whole alignment with percen
 Для каждого столбца выбирается наиболее редко встречаемый символ во всём выравнивании, такой что процентное соотношение его появления в столбце больше либо равно значению порога.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.cpp" line="42"/>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.cpp" line="42"/>
         <source>Levitsky</source>
         <translation>Схема Левицкого</translation>
     </message>
@@ -222,12 +222,12 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MSAConsensusAlgorithmFactoryStrict</name>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmStrict.cpp" line="37"/>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmStrict.cpp" line="37"/>
         <source>The algorithm returns gap character (&apos;-&apos;) if symbol frequency in a column is lower than threshold specified.</source>
         <translation>Алгоритм возвращает символ пробела (&apos;-&apos;), если частота появления символа в столбце меньше, чем величина, заданная в пороге.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmStrict.cpp" line="41"/>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmStrict.cpp" line="41"/>
         <source>Strict</source>
         <translation>Строгий</translation>
     </message>
@@ -235,7 +235,7 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MSADistanceAlgorithm</name>
     <message>
-        <location filename="../src/util_msa_distance/MSADistanceAlgorithm.cpp" line="59"/>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithm.cpp" line="59"/>
         <source>MSA distance algorithm &quot;%1&quot; task</source>
         <translation>Задача вычисления алгоритма дистанций в MSA &quot;%1&quot;</translation>
     </message>
@@ -243,12 +243,12 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MSADistanceAlgorithmFactoryHamming</name>
     <message>
-        <location filename="../src/util_msa_distance/MSADistanceAlgorithmHamming.cpp" line="33"/>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHamming.cpp" line="33"/>
         <source>Based on Hamming distance between two sequences</source>
         <translation>На основании расстояния Хэмминга между двумя последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_distance/MSADistanceAlgorithmHamming.cpp" line="37"/>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHamming.cpp" line="37"/>
         <source>Hamming dissimilarity</source>
         <translation>Расхождение Хэмминга</translation>
     </message>
@@ -256,12 +256,12 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MSADistanceAlgorithmFactoryHammingRevCompl</name>
     <message>
-        <location filename="../src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.cpp" line="38"/>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="38"/>
         <source>Based on Hamming distance between two sequences</source>
         <translation>На основании расстояния Хэмминга между двумя последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.cpp" line="42"/>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="42"/>
         <source>Hamming reverse-complement</source>
         <translation>Значение Хэмминга для обратно-комплементарной</translation>
     </message>
@@ -269,12 +269,12 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MSADistanceAlgorithmFactorySimilarity</name>
     <message>
-        <location filename="../src/util_msa_distance/MSADistanceAlgorithmSimilarity.cpp" line="33"/>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmSimilarity.cpp" line="33"/>
         <source>Based on similarity distance between two sequences</source>
         <translation>На основании расстояния сходства между двумя последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_distance/MSADistanceAlgorithmSimilarity.cpp" line="37"/>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmSimilarity.cpp" line="37"/>
         <source>Similarity</source>
         <translation>Простое сходство</translation>
     </message>
@@ -282,7 +282,7 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MSADistanceAlgorithmHammingRevCompl</name>
     <message>
-        <location filename="../src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.cpp" line="72"/>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="72"/>
         <source>An unexpected error has occurred during running the Hamming reverse-complement algorithm.</source>
         <translation>Произошла ошибка во время запуска обратно-комплементарного алгоритма Хэмминга.</translation>
     </message>

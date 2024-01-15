@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -468,7 +468,7 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
 
 #define MAX_ALI_MODEL (10 * 1000 * 1000)
 
-void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& ma, const QString& qualiferId, bool includeRef, U2OpStatus& os) {
+void ADVExportContext::prepareMAFromBlastAnnotations(Msa& ma, const QString& qualiferId, bool includeRef, U2OpStatus& os) {
     SAFE_POINT_EXT(ma->isEmpty(), os.setError("Illegal parameter: input alignment is not empty!"), );
     const QList<Annotation*>& selection = view->getAnnotationsSelection()->getAnnotations();
     CHECK_EXT(selection.size() >= 2, os.setError(tr("At least 2 annotations are required")), );
@@ -520,7 +520,7 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& 
     }
 }
 
-void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os) {
+void ADVExportContext::prepareMAFromAnnotations(Msa& ma, bool translate, U2OpStatus& os) {
     SAFE_POINT_EXT(ma->isEmpty(), os.setError("Illegal parameter: input alignment is not empty!"), );
     const QList<Annotation*>& selection = view->getAnnotationsSelection()->getAnnotations();
     CHECK_EXT(selection.size() >= 2, os.setError(tr("At least 2 annotations are required")), );
@@ -562,7 +562,7 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, b
     }
 }
 
-void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os) {
+void ADVExportContext::prepareMAFromSequences(Msa& ma, bool translate, U2OpStatus& os) {
     SAFE_POINT_EXT(ma->isEmpty(), os.setError("Illegal parameter: Input alignment is not empty!"), );
 
     const DNAAlphabet* al = translate ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT()) : nullptr;
@@ -621,7 +621,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, boo
 }
 
 void ADVExportContext::selectionToAlignment(const QString& title, bool annotations, bool translate) {
-    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
+    Msa ma(MA_OBJECT_NAME);
     U2OpStatusImpl os;
     if (annotations) {
         prepareMAFromAnnotations(ma, translate, os);
@@ -780,7 +780,7 @@ void ADVExportContext::sl_exportBlastResultToAlignment() {
         return;
     }
 
-    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
+    Msa ma(MA_OBJECT_NAME);
     U2OpStatusImpl os;
 
     prepareMAFromBlastAnnotations(ma, d->qualifierId, d->addRefFlag, os);

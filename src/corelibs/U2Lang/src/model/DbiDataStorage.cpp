@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2AssemblyDbi.h>
@@ -167,12 +167,12 @@ SharedDbiDataHandler DbiDataStorage::putSequence(const U2SequenceObject* sequenc
     return SharedDbiDataHandler(new DbiDataHandler(entityRef, connection->dbi->getObjectDbi(), true));
 }
 
-SharedDbiDataHandler DbiDataStorage::putAlignment(const MultipleSequenceAlignment& al) {
+SharedDbiDataHandler DbiDataStorage::putAlignment(const Msa& al) {
     assert(dbiHandle != nullptr);
 
     U2OpStatus2Log os;
-    MultipleSequenceAlignment copiedAlignment = al->getCopy();
-    QScopedPointer<MultipleSequenceAlignmentObject> obj(MultipleSequenceAlignmentImporter::createAlignment(dbiHandle->getDbiRef(), copiedAlignment, os));
+    Msa copiedAlignment = al->getCopy();
+    QScopedPointer<MsaObject> obj(MsaImportUtils::createMsaObject(dbiHandle->getDbiRef(), copiedAlignment, os));
     CHECK_OP(os, SharedDbiDataHandler());
 
     DbiConnection* connection = this->getConnection(dbiHandle->getDbiRef(), os);
@@ -323,7 +323,7 @@ AssemblyObject* StorageUtils::getAssemblyObject(DbiDataStorage* storage, const S
     return new AssemblyObject(objName, assemblyRef);
 }
 
-MultipleSequenceAlignmentObject* StorageUtils::getMsaObject(DbiDataStorage* storage, const SharedDbiDataHandler& handler) {
+MsaObject* StorageUtils::getMsaObject(DbiDataStorage* storage, const SharedDbiDataHandler& handler) {
     CHECK(handler.constData() != nullptr, nullptr);
     // QScopedPointer<U2Ma> msa(dynamic_cast<U2Ma*>(storage->getObject(handler, U2Type::Msa)));
     QScopedPointer<U2Msa> msa(dynamic_cast<U2Msa*>(storage->getObject(handler, 2)));
@@ -332,7 +332,7 @@ MultipleSequenceAlignmentObject* StorageUtils::getMsaObject(DbiDataStorage* stor
     U2EntityRef msaRef(handler->getDbiRef(), msa->id);
     QString objName = msa->visualName;
 
-    return new MultipleSequenceAlignmentObject(objName, msaRef);
+    return new MsaObject(objName, msaRef);
 }
 
 AnnotationTableObject* StorageUtils::getAnnotationTableObject(DbiDataStorage* storage, const SharedDbiDataHandler& handler) {

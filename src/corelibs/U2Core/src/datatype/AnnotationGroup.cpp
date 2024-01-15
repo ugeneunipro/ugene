@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,6 +89,17 @@ QList<Annotation*> AnnotationGroup::getAnnotations(bool recursively) const {
         foreach (AnnotationGroup* subgroup, subgroups) {
             result.append(subgroup->getAnnotations(true));
         }
+    }
+    return result;
+}
+
+QMap<QString, QList<Annotation*>> AnnotationGroup::createGroupPathAnnotationsMap() const {
+    QMap<QString, QList<Annotation*>> result;
+    if (!annotations.isEmpty()) {
+        result.insert(getGroupPath(), annotations);
+    }
+    for (auto subgroup : qAsConst(subgroups)) {
+        result.insert(subgroup->createGroupPathAnnotationsMap());
     }
     return result;
 }

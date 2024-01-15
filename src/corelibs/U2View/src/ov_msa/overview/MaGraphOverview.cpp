@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,10 +32,10 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorConsensusArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "MaGraphCalculationTask.h"
 #include "ov_msa/MultilineScrollController.h"
@@ -67,7 +67,7 @@ MaGraphOverview::MaGraphOverview(MaEditor* _editor, QWidget* _ui)
     auto mui = qobject_cast<MaEditorMultilineWgt*>(_ui);
     CHECK(mui != nullptr, );
 
-    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, [this]() {
         state.maObjectVersion = editor->getMaObject()->getObjectVersion();
         recomputeGraphIfNeeded();
     });

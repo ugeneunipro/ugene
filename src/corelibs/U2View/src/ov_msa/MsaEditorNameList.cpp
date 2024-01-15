@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include "MSAEditor.h"
+#include "MsaEditor.h"
 
 namespace U2 {
 
@@ -49,14 +49,14 @@ void MsaEditorNameList::buildMenu(QMenu* menu) {
 
     editMenu->insertAction(editMenu->isEmpty() ? nullptr : editMenu->actions().last(), removeSequenceAction);
 
-    CHECK(qobject_cast<MSAEditor*>(editor) != nullptr, );
+    CHECK(qobject_cast<MsaEditor*>(editor) != nullptr, );
     CHECK(rect().contains(mapFromGlobal(QCursor::pos())), );
 
     editMenu->insertAction(editMenu->isEmpty() ? nullptr : editMenu->actions().first(), editSequenceNameAction);
 }
 
-MSAEditor* MsaEditorNameList::getEditor() const {
-    return qobject_cast<MSAEditor*>(editor);
+MsaEditor* MsaEditorNameList::getEditor() const {
+    return qobject_cast<MsaEditor*>(editor);
 }
 
 QSize MsaEditorNameList::sizeHint() const {

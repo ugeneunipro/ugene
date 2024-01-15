@@ -43,6 +43,10 @@ public:
     bool middleState;
     bool alphabetChanged;
     QVariantMap hints;
+    /**
+     * Rows modified during the operation.
+     * Does not contain new or deleted row ids.
+     */
     QList<qint64> modifiedRowIds;
     MaModificationType type;
 

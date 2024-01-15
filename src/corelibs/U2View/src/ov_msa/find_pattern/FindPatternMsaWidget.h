@@ -23,7 +23,7 @@
 
 #include <U2Core/U2Region.h>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 #include "FindPatternMsaWidgetSavableTab.h"
 #include "ov_msa/MaEditorSelection.h"
@@ -67,7 +67,7 @@ public:
         SequenceIsTooBig
     };
     /** Creates a new widget. Activates search-in-name mode if isSearchInNamesMode is yes. Uses the last saved state if isSearchInNamesMode is Unknown. */
-    FindPatternMsaWidget(MSAEditor* msaEditor, TriState isSearchInNamesModeTriState = TriState_Unknown);
+    FindPatternMsaWidget(MsaEditor* msaEditor, TriState isSearchInNamesModeTriState = TriState_Unknown);
 
     int getTargetMsaLength() const;
 
@@ -188,7 +188,7 @@ private:
     /** Post processes allSearchResults list after search task is finished. */
     void postProcessAllSearchResults();
 
-    MSAEditor* msaEditor;
+    MsaEditor* msaEditor;
     int selectedAlgorithm;
     QString patternString;
     QString patternRegExp;

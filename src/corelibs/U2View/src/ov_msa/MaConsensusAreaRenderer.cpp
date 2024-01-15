@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,20 +21,20 @@
 
 #include "MaConsensusAreaRenderer.h"
 
-#include <U2Algorithm/MSAConsensusAlgorithm.h>
 #include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaConsensusAlgorithm.h>
 
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 #include <U2Gui/GraphUtils.h>
 
 #include "MaEditorWgt.h"
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/DrawHelper.h"
-#include "ov_msa/MSAEditorConsensusArea.h"
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/MaEditorSequenceArea.h"
+#include "ov_msa/MsaEditorConsensusArea.h"
 #include "ov_msa/RowHeightController.h"
 #include "ov_msa/ScrollController.h"
 
@@ -123,10 +123,10 @@ ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<
     consensusRenderData.selectedRegion = editor->getSelection().getColumnRegion();
     consensusRenderData.mismatches.resize(static_cast<int>(region.length));
 
-    MSAConsensusAlgorithm* algorithm = area->getConsensusAlgorithm();
-    const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
+    MsaConsensusAlgorithm* algorithm = area->getConsensusAlgorithm();
+    const Msa ma = editor->getMaObject()->getAlignment();
     for (int i = 0, n = static_cast<int>(region.length); i < n; i++) {
-        const int column = region.startPos + i;
+        int column = (int)region.startPos + i;
         int score = 0;
         const char consensusChar = algorithm->getConsensusCharAndScore(ma, column, score);
         consensusRenderData.data += consensusChar;
@@ -207,7 +207,7 @@ void MaConsensusAreaRenderer::drawConsensus(QPainter& painter, const ConsensusRe
     for (int i = 0, n = static_cast<int>(consensusRenderData.region.length); i < n; i++) {
         charData.column = static_cast<int>(consensusRenderData.region.startPos + i);
         charData.consensusChar = consensusRenderData.data[i];
-        if (MSAConsensusAlgorithm::INVALID_CONS_CHAR == charData.consensusChar) {
+        if (MsaConsensusAlgorithm::INVALID_CONS_CHAR == charData.consensusChar) {
             charData.xRange.startPos += settings.columnWidth;
             continue;
         }
@@ -301,7 +301,7 @@ void MaConsensusAreaRenderer::drawHistogram(QPainter& painter, const ConsensusRe
 }
 
 ConsensusRenderData MaConsensusAreaRenderer::getScreenDataToRender() const {
-    const QSharedPointer<MSAEditorConsensusCache> consensusCache = area->getConsensusCache();
+    const QSharedPointer<MsaEditorConsensusCache> consensusCache = area->getConsensusCache();
 
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = ui->getDrawHelper()->getVisibleBases(area->width());

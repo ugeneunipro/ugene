@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,6 @@
 #include <QPaintEvent>
 #include <QPainter>
 
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GraphUtils.h>
@@ -68,9 +67,9 @@ MaSangerOverview::MaSangerOverview(MaEditor* editor, MaEditorWgt* ui)
     setMinimumHeight(MINIMUM_HEIGHT);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_updateScrollBar()));
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_resetCaches()));
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_completeRedraw()));
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaSangerOverview::sl_updateScrollBar);
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaSangerOverview::sl_resetCaches);
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaSangerOverview::sl_completeRedraw);
     connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
     connect(ui->getScrollController()->getVerticalScrollBar(), SIGNAL(valueChanged(int)), SLOT(sl_screenMoved()));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetCaches()));
@@ -256,9 +255,9 @@ void MaSangerOverview::drawReads() {
     QPainter painter(&cachedReadsView);
     painter.fillRect(cachedReadsView.rect(), Qt::white);
 
-    MultipleChromatogramAlignmentObject const* const mcaObject = getEditor()->getMaObject();
+    const MsaObject* mcaObject = getEditor()->getMaObject();
     SAFE_POINT(mcaObject != nullptr, "Incorrect multiple chromatogram alignment object", );
-    const MultipleChromatogramAlignment mca = mcaObject->getMultipleAlignment();
+    const Msa mca = mcaObject->getAlignment();
     const int rowsCount = editor->getCollapseModel()->getViewRowCount();
 
     double yOffset = 0;
@@ -267,7 +266,7 @@ void MaSangerOverview::drawReads() {
 
     for (int viewRowIndex = 0; viewRowIndex < rowsCount; viewRowIndex++) {
         int maRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
-        const MultipleChromatogramAlignmentRow row = mca->getMcaRow(maRowIndex);
+        const MsaRow& row = mca->getRow(maRowIndex);
         U2Region coreRegion = row->getCoreRegion();
         U2Region positionRegion = editor->getMaEditorWgt(0)->getBaseWidthController()->getBasesGlobalRange(coreRegion);
 

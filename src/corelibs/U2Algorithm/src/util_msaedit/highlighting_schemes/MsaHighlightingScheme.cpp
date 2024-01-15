@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ const QString MsaHighlightingScheme::CONSERVATION = "CONSERVATION_SCHEME_GAPS";
 const QString MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME = "threshold";
 const QString MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME = "less_than_threshold";
 
-MsaHighlightingScheme::MsaHighlightingScheme(QObject* parent, const MsaHighlightingSchemeFactory* factory, MultipleAlignmentObject* maObj)
+MsaHighlightingScheme::MsaHighlightingScheme(QObject* parent, const MsaHighlightingSchemeFactory* factory, MsaObject* maObj)
     : QObject(parent),
       factory(factory),
       maObj(maObj),

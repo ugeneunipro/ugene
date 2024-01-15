@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1048,6 +1048,7 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0002) {
     // Expected result : the gap is successfully replaced.
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
     GTKeyboardDriver::keyClick('c');
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     GTKeyboardUtils::copy();
     QString selectionContent = GTClipboard::text();

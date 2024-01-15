@@ -27,7 +27,7 @@
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentProviderTask.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Task.h>
 
@@ -40,7 +40,7 @@ using namespace Workflow;
 
 class CmdlineTaskRunner;
 class LoadDocumentTask;
-class MultipleSequenceAlignmentObject;
+class MsaObject;
 
 class U2LANG_EXPORT SimpleInOutWorkflowTaskConfig {
 public:
@@ -96,14 +96,14 @@ class U2LANG_EXPORT SimpleMSAWorkflow4GObjectTask : public Task {
     Q_OBJECT
 
 public:
-    SimpleMSAWorkflow4GObjectTask(const QString& taskName, MultipleSequenceAlignmentObject* maObj, const SimpleMSAWorkflowTaskConfig& conf);
+    SimpleMSAWorkflow4GObjectTask(const QString& taskName, MsaObject* maObj, const SimpleMSAWorkflowTaskConfig& conf);
 
     void prepare();
     ReportResult report();
-    MultipleSequenceAlignment getResult();
+    Msa getResult();
 
 private:
-    QPointer<MultipleSequenceAlignmentObject> msaObjectPointer;
+    QPointer<MsaObject> msaObjectPointer;
     QString docName;
     SimpleMSAWorkflowTaskConfig conf;
     SimpleInOutWorkflowTask* runWorkflowTask;

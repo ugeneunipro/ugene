@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/FileFilters.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -37,8 +37,8 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MsaEditor.h>
 
 #include "ClustalOSupportRunDialog.h"
 #include "ClustalOSupportTask.h"
@@ -120,7 +120,7 @@ ClustalOSupportContext::ClustalOSupportContext(QObject* p)
 }
 
 void ClustalOSupportContext::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
     msaEditor->registerActionProvider(this);
@@ -146,14 +146,14 @@ void ClustalOSupportContext::sl_align() {
     // Call run ClustalO align dialog
     auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
-    MSAEditor* msaEditor = action->getMsaEditor();
-    MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
+    MsaEditor* msaEditor = action->getMsaEditor();
+    MsaObject* obj = msaEditor->getMaObject();
     if (obj == nullptr || obj->isStateLocked()) {
         return;
     }
 
     ClustalOSupportTaskSettings settings;
-    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getMultipleAlignment(),
+    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getAlignment(),
                                                                                                     settings,
                                                                                                     AppContext::getMainWindow()->getQMainWindow());
     clustalORunDialog->exec();
@@ -163,7 +163,7 @@ void ClustalOSupportContext::sl_align() {
         return;
     }
 
-    auto clustalOSupportTask = new ClustalOSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
+    auto clustalOSupportTask = new ClustalOSupportTask(obj->getAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 
@@ -179,8 +179,8 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     // Call run ClustalO align dialog
     auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
-    MSAEditor* msaEditor = action->getMsaEditor();
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaEditor* msaEditor = action->getMsaEditor();
+    MsaObject* msaObject = msaEditor->getMaObject();
 
     DocumentFormatConstraints c;
     QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE});
@@ -190,7 +190,7 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     CHECK(!lod.url.isEmpty(), );
 
     ClustalOSupportTaskSettings settings;
-    auto clustalOSupportTask = new ClustalOSupportTask(msaObject->getMultipleAlignment(), GObjectReference(msaObject), lod.url, settings);
+    auto clustalOSupportTask = new ClustalOSupportTask(msaObject->getAlignment(), GObjectReference(msaObject), lod.url, settings);
     connect(msaObject, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 

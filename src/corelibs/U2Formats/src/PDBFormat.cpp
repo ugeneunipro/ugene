@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -399,14 +399,13 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QList<
     int atomicNumber = PDBFormat::getElementNumberByName(element);
 
     int chainIndex = chainIndexMap.contains(chainIdentifier) ? chainIndexMap.value(chainIdentifier) : currentChainIndex;
+    
+    if (atomIsInChain && !biostruct.moleculeMap.contains(chainIndex)) {
+        createMolecule(chainIdentifier, biostruct, chainIndex);
+    }
 
     if (currentModelIndex == 0 && atomIsInChain) {
         // Process residue
-
-        if (!biostruct.moleculeMap.contains(chainIndex)) {
-            createMolecule(chainIdentifier, biostruct, chainIndex);
-        }
-
         SharedMolecule& mol = biostruct.moleculeMap[chainIndex];
 
         if (currentResidueIndex != residueIndex) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,8 +30,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentSelection.h>
@@ -41,10 +41,9 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MSAUtils.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/MultiTask.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SelectionModel.h>
@@ -157,7 +156,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
             sub = new QMenu(tr("Export/Import"));
             sub->addAction(exportAlignmentAsSequencesAction);
             GObject* obj = set.first();
-            const MultipleSequenceAlignment& ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getMsa();
+            const Msa& ma = qobject_cast<MsaObject*>(obj)->getAlignment();
             if (ma->getAlphabet()->isNucleic()) {
                 sub->addAction(exportNucleicAlignmentToAminoAction);
             }
@@ -251,13 +250,20 @@ bool hasNucleicForAll(const QList<GObject*>& set) {
     return true;
 }
 
-QList<SharedAnnotationData> getAllRelatedAnnotations(const U2SequenceObject* so, const QList<GObject*>& annotationTables) {
+QMap<QString, QList<SharedAnnotationData>> getAllRelatedAnnotations(const U2SequenceObject* so, const QList<GObject*>& annotationTables) {
     QList<GObject*> relatedAnnotationTables = GObjectUtils::findObjectsRelatedToObjectByRole(so, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, annotationTables, UOF_LoadedOnly);
-    QList<SharedAnnotationData> anns;
+    QMap<QString, QList<SharedAnnotationData>> anns;
     for (GObject* aObj : qAsConst(relatedAnnotationTables)) {
         auto annObj = qobject_cast<AnnotationTableObject*>(aObj);
-        foreach (Annotation* ann, annObj->getAnnotations()) {
-            anns.append(ann->getData());
+        auto groupPathAnnotationsMap = annObj->createGroupPathAnnotationsMap();
+        auto keys = groupPathAnnotationsMap.keys();
+        for (const auto& key : qAsConst(keys)) {
+            auto newAnnDataList = anns.value(key);
+            auto annotations = groupPathAnnotationsMap.value(key);
+            for (auto annotation : qAsConst(annotations)) {
+                newAnnDataList.append(annotation->getData());
+            }
+            anns.insert(key, newAnnDataList);
         }
     }
     return anns;
@@ -271,7 +277,7 @@ void addExportItemsToSettings(ExportSequencesDialog* d, const QList<GObject*> se
     foreach (GObject* o, seqObjs) {
         U2SequenceObject* so = qobject_cast<U2SequenceObject*>(o);
         SAFE_POINT(so != nullptr, "Invalid sequence object", );
-        QList<SharedAnnotationData> anns;
+        QMap<QString, QList<SharedAnnotationData>> anns;
         if (s.saveAnnotations) {
             anns = getAllRelatedAnnotations(so, allAnnotationTables);
         }
@@ -423,7 +429,7 @@ void ExportProjectViewItemsContoller::sl_saveSequencesAsAlignment() {
         return;
     }
 
-    MultipleSequenceAlignment ma = MSAUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
+    Msa ma = MsaUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
     if (os.hasError()) {
         QMessageBox::critical(nullptr, L10N::errorTitle(), os.getError());
         return;
@@ -446,7 +452,7 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
         QMessageBox::critical(nullptr, L10N::errorTitle(), tr("Select one alignment object to export"));
         return;
     }
-    auto msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(set.first());
+    auto msaObject = qobject_cast<MsaObject*>(set.first());
     SAFE_POINT(msaObject != nullptr, "Not MSA object!", );
     ExportMSA2SequencesDialog::showDialogAndStartExportTask(msaObject);
 }
@@ -465,7 +471,7 @@ void ExportProjectViewItemsContoller::sl_exportMcaToMsa() {
         return;
     }
 
-    MultipleChromatogramAlignmentObject* mcaObject = qobject_cast<MultipleChromatogramAlignmentObject*>(set.first());
+    MsaObject* mcaObject = qobject_cast<MsaObject*>(set.first());
     SAFE_POINT(mcaObject != nullptr, "Can't cast the object to MultipleChromatogramAlignmentObject", );
     ExportUtils::launchExportMca2MsaTask(mcaObject);
 }
@@ -483,17 +489,17 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
         return;
     }
 
-    auto msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(msaObjectList.first());
+    auto msaObject = qobject_cast<MsaObject*>(msaObjectList.first());
     SAFE_POINT(msaObject != nullptr, "Not an MSA object", );
 
     Document* doc = msaObject->getDocument();
-    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), msaObject->getMsa()->getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), msaObject->getAlignment()->getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
     QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, true, AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
     CHECK(!d.isNull() && rc != QDialog::Rejected, );
 
-    const MultipleSequenceAlignment& msa = msaObject->getMsa();
+    const Msa& msa = msaObject->getAlignment();
     DNATranslation* translation = AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
     bool convertUnknowToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
     bool reverseComplement = d->translationFrame < 0;
@@ -522,7 +528,7 @@ void ExportProjectViewItemsContoller::sl_importAnnotationsFromCSV() {
     }
     ImportAnnotationsFromCSVTaskConfig taskConfig;
     d->toTaskConfig(taskConfig);
-    ImportAnnotationsFromCSVTask* task = new ImportAnnotationsFromCSVTask(taskConfig);
+    auto task = new ImportAnnotationsFromCSVTask(taskConfig);
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
@@ -539,7 +545,7 @@ void ExportProjectViewItemsContoller::sl_exportChromatogramToSCF() {
         return;
     }
     GObject* obj = set.first();
-    auto chromaObj = qobject_cast<DNAChromatogramObject*>(obj);
+    auto chromaObj = qobject_cast<ChromatogramObject*>(obj);
     assert(chromaObj != nullptr);
 
     QObjectScopedPointer<ExportChromatogramDialog> d = new ExportChromatogramDialog(QApplication::activeWindow(), chromaObj->getDocument()->getURL());

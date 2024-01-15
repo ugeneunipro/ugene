@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -95,11 +95,11 @@ void setupAlphaAndScore(const DNAAlphabet* al, TaskStateInfo& ti) {
     }
 }
 
-void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, bool fixAlpha) {
+void convertMAlignment2MSA(MSA& muscleMSA, const Msa& ma, bool fixAlpha) {
     MuscleContext* ctx = getMuscleContext();
     ctx->fillUidsVectors(ma->getRowCount());
     for (int i = 0, n = ma->getRowCount(); i < n; i++) {
-        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
+        const MsaRow& row = ma->getRow(i);
 
         int coreLen = row->getCoreLength();
         int maLen = ma->getLength();
@@ -120,7 +120,7 @@ void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, 
     }
 }
 
-void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma, bool fixAlpha) {
+void convertMAlignment2SecVect(SeqVect& sv, const Msa& ma, bool fixAlpha) {
     sv.Clear();
 
     MuscleContext* ctx = getMuscleContext();
@@ -128,7 +128,7 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma,
 
     unsigned i = 0;
     unsigned seq_count = 0;
-    foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+    foreach (const MsaRow& row, ma->getRows()) {
         Seq* ptrSeq = new Seq();
         QByteArray name = row->getName().toLocal8Bit();
         ptrSeq->FromString(row->getCore().constData(), name.constData());
@@ -147,7 +147,7 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma,
     }
 }
 
-void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& res) {
+void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, Msa& res) {
     assert(res->isEmpty());
     MuscleContext* ctx = getMuscleContext();
     res->setAlphabet(al);
@@ -166,7 +166,7 @@ void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlig
     }
 }
 
-void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& ma, bool mhack) {
+void prepareAlignResults(MSA& msa, const DNAAlphabet* al, Msa& ma, bool mhack) {
     if (mhack) {
         MHackEnd(msa);
     }

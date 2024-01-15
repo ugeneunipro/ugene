@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #include "MaOverviewContextMenu.h"
 
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -32,8 +32,8 @@
 
 #include "MaOverviewImageExportTask.h"
 #include "MaSimpleOverview.h"
-#include "ov_msa/MSAEditorOverviewArea.h"
 #include "ov_msa/MaEditor.h"
+#include "ov_msa/MsaEditorOverviewArea.h"
 
 namespace U2 {
 

@@ -26,11 +26,11 @@
 #include <U2Core/SMatrix.h>
 #include <U2Core/global.h>
 
-#include "ui_SubstMatrixDialogBase.h"
+class Ui_SubstMatrixDialogBase;
 
 namespace U2 {
 
-class U2VIEW_EXPORT SubstMatrixDialog : public QDialog, public Ui_SubstMatrixDialogBase {
+class U2VIEW_EXPORT SubstMatrixDialog : public QDialog {
     Q_OBJECT
 public:
     SubstMatrixDialog(const SMatrix& m, QWidget* parent);
@@ -53,6 +53,7 @@ private:
     SMatrix m;
 
     QPushButton* bttnClose;
+    Ui_SubstMatrixDialogBase* base = nullptr;
 };
 
 }  // namespace U2

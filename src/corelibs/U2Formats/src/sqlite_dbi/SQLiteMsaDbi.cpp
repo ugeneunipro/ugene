@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 #include "SQLiteMsaDbi.h"
 
+#include <U2Core/ChromatogramUtils.h>
 #include <U2Core/U2DbiPackUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SqlHelpers.h>
@@ -88,7 +89,7 @@ U2DataId SQLiteMsaDbi::createMsaObject(const QString& folder, const QString& nam
 
 U2DataId SQLiteMsaDbi::createMsaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, int length, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
-    U2Msa msa;
+    U2Msa msa(U2Type::Msa);
     msa.visualName = name;
     msa.alphabet = alphabet;
     msa.length = length;
@@ -127,7 +128,7 @@ void SQLiteMsaDbi::updateMsaAlphabet(const U2DataId& msaId, const U2AlphabetId& 
 
     // Get modDetails, if required
     QByteArray modDetails;
-    if (TrackOnUpdate == trackMod) {
+    if (trackMod == TrackOnUpdate) {
         U2Msa msaObj = getMsaObject(msaId, os);
         CHECK_OP(os, );
         modDetails = U2DbiPackUtils::packAlphabetDetails(msaObj.alphabet, alphabet);
@@ -149,7 +150,7 @@ void SQLiteMsaDbi::updateMsaAlphabet(const U2DataId& msaId, const U2AlphabetId& 
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteMsaDbi::createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& msaRow, U2OpStatus& os) {
+void SQLiteMsaDbi::createMsaRow(const U2DataId& msaId, qint64 posInMsa, const U2MsaRow& msaRow, U2OpStatus& os) {
     assert(posInMsa >= 0);
 
     // Calculate the row length
@@ -527,9 +528,8 @@ void SQLiteMsaDbi::deleteRowsData(const U2DataId& msaId, U2OpStatus& os) {
 }
 
 U2Msa SQLiteMsaDbi::getMsaObject(const U2DataId& msaId, U2OpStatus& os) {
-    U2Msa res;
-    dbi->getSQLiteObjectDbi()->getObject(res, msaId, os);
-
+    U2Msa res(U2Type::Msa);
+    res.type = dbi->getSQLiteObjectDbi()->getObject(res, msaId, os);
     SAFE_POINT_OP(os, res);
 
     SQLiteReadQuery q("SELECT length, alphabet FROM Msa WHERE object = ?1", db, os);
@@ -757,7 +757,7 @@ U2DataId SQLiteMsaDbi::createMcaObject(const QString& folder, const QString& nam
 U2DataId SQLiteMsaDbi::createMcaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, int length, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
 
-    U2Mca mca;
+    U2Msa mca(U2Type::Mca);
     mca.visualName = name;
     mca.alphabet = alphabet;
     mca.length = length;
@@ -781,8 +781,8 @@ U2DataId SQLiteMsaDbi::createMcaObject(const QString& folder, const QString& nam
 
 qint64 SQLiteMsaDbi::calculateRowLength(qint64 seqLength, const QVector<U2MsaGap>& gaps) {
     qint64 res = seqLength;
-    foreach (const U2MsaGap& gap, gaps) {
-        if (gap.startPos < res) {  // ignore trailing gaps
+    for (const U2MsaGap& gap : qAsConst(gaps)) {
+        if (gap.startPos < res) {  // Ignore trailing gaps.
             res += gap.length;
         }
     }
@@ -841,33 +841,6 @@ U2DataId SQLiteMsaDbi::getSequenceIdByRowId(const U2DataId& msaId, qint64 rowId,
     } else if (!os.hasError()) {
         os.setError(U2DbiL10n::tr("Msa row not found!"));
     }
-
-    return res;
-}
-
-QByteArray SQLiteMsaDbi::getRemovedRowDetails(const U2MsaRow& row) {
-    QByteArray res;
-
-    // Info about gaps
-    QByteArray gapsInfo;
-    for (int i = 0, n = row.gaps.count(); i < n; ++i) {
-        const U2MsaGap& gap = row.gaps[i];
-        gapsInfo += "offset=";
-        gapsInfo += QByteArray::number(gap.startPos);
-        gapsInfo += "&gap=";
-        gapsInfo += QByteArray::number(gap.length);
-
-        if (i > 0 && i < n - 1) {
-            gapsInfo += "&";
-        }
-    }
-
-    res = QByteArray("rowId=") + QByteArray::number(row.rowId) +
-          QByteArray("&sequenceId=") + row.sequenceId.toHex() +
-          QByteArray("&gstart=") + QByteArray::number(row.gstart) +
-          QByteArray("&gend=") + QByteArray::number(row.gend) +
-          QByteArray("&gaps=\"") + gapsInfo + QByteArray("\"") +
-          QByteArray("&length=") + QByteArray::number(row.length);
 
     return res;
 }
@@ -1064,7 +1037,7 @@ void SQLiteMsaDbi::removeRowsCore(const U2DataId& msaId, const QList<qint64>& ro
     removeRowSubcore(msaId, numOfRows - rowIds.size(), os);
 }
 
-void SQLiteMsaDbi::setNewRowsOrderCore(const U2DataId& msaId, const QList<qint64> rowIds, U2OpStatus& os) {
+void SQLiteMsaDbi::setNewRowsOrderCore(const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     SQLiteWriteQuery q("UPDATE MsaRow SET pos = ?1 WHERE msa = ?2 AND rowId = ?3", db, os);
     CHECK_OP(os, );

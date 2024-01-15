@@ -26,7 +26,7 @@
 namespace U2 {
 
 class MaEditor;
-class MultipleAlignmentObject;
+class MsaObject;
 class MaEditorWgt;
 class MaEditorSelectionController;
 class MaEditorSelection;
@@ -43,7 +43,7 @@ public:
     MaEditorContext(MaEditor* editor, QWidget* wgt);
 
     MaEditor* const editor;
-    MultipleAlignmentObject* const maObject;
+    MsaObject* const maObject;
     QWidget* const ui;
     MaEditorSelectionController* const selectionController;
     MaCollapseModel* const collapseModel;

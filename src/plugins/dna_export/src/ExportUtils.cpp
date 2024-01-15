@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TaskWatchdog.h>
@@ -81,7 +81,7 @@ QString ExportUtils::genUniqueName(const QSet<QString>& names, QString prefix) {
     return name;
 }
 
-void ExportUtils::launchExportMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject) {
+void ExportUtils::launchExportMca2MsaTask(MsaObject* mcaObject) {
     SAFE_POINT(mcaObject != nullptr, "Can't cast the object to MultipleChromatogramAlignmentObject", );
 
     Document* document = mcaObject->getDocument();

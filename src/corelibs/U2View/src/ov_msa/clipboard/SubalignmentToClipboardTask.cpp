@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,8 +37,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/LocalFileAdapter.h>
-#include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MsaImportUtils.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -46,7 +45,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include "ov_msa/MSAEditorSequenceArea.h"
+#include "ov_msa/MsaEditorSequenceArea.h"
 
 namespace U2 {
 
@@ -55,7 +54,7 @@ PrepareMsaClipboardDataTask::PrepareMsaClipboardDataTask(const QList<qint64>& _r
     : Task(tr("Copy formatted alignment to the clipboard"), taskFlags), rowIds(_rowIds), columnRange(_columnRange) {
 }
 
-PrepareMsaClipboardDataTask* MsaClipboardDataTaskFactory::newInstance(MSAEditor* maEditor,
+PrepareMsaClipboardDataTask* MsaClipboardDataTaskFactory::newInstance(MsaEditor* maEditor,
                                                                       const QList<qint64>& maRowIds,
                                                                       const U2Region& columnRange,
                                                                       const DocumentFormatId& formatId) {
@@ -66,18 +65,18 @@ PrepareMsaClipboardDataTask* MsaClipboardDataTaskFactory::newInstance(MSAEditor*
     }
 }
 
-FormatsMsaClipboardTask::FormatsMsaClipboardTask(MultipleSequenceAlignmentObject* msaObj, const QList<qint64>& _rowIds, const U2Region& _columnRange, const DocumentFormatId& formatId)
+FormatsMsaClipboardTask::FormatsMsaClipboardTask(MsaObject* msaObj, const QList<qint64>& _rowIds, const U2Region& _columnRange, const DocumentFormatId& formatId)
     : PrepareMsaClipboardDataTask(_rowIds, _columnRange), createSubalignmentTask(nullptr), msaObj(msaObj), formatId(formatId) {
 }
 
 void FormatsMsaClipboardTask::prepare() {
     if (formatId == BaseDocumentFormats::PLAIN_TEXT) {
-        MultipleSequenceAlignment msa = msaObj->getMsaCopy();
+        Msa msa = msaObj->getAlignment()->getCopy();
         msa->crop(rowIds, columnRange, stateInfo);
         CHECK_OP(stateInfo, )
 
         for (int i = 0; i < msa->getRowCount(); i++) {
-            const MultipleSequenceAlignmentRow& row = msa->getMsaRow(i);
+            const MsaRow& row = msa->getRow(i);
             if (i > 0) {
                 resultText.append("\n");
             }
@@ -146,7 +145,7 @@ RichTextMsaClipboardTask::RichTextMsaClipboardTask(MaEditor* _maEditor, const QL
 }
 
 void RichTextMsaClipboardTask::prepare() {
-    MultipleAlignmentObject* maObject = maEditor->getMaObject();
+    MsaObject* maObject = maEditor->getMaObject();
     const DNAAlphabet* al = maObject->getAlphabet();
 
     Settings* appSettings = AppContext::getSettings();
@@ -171,7 +170,7 @@ void RichTextMsaClipboardTask::prepare() {
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
 
-    MultipleAlignment msa = maObject->getMultipleAlignment();
+    Msa msa = maObject->getAlignment();
 
     U2OpStatusImpl os;
     qint64 refSeqRowId = maEditor->getReferenceRowId();
@@ -180,7 +179,7 @@ void RichTextMsaClipboardTask::prepare() {
     resultText.append(QString("<span style=\"font-size:%1pt; font-family:%2;\">\n").arg(pointSize).arg(fontFamily).toUtf8());
     int numRows = msa->getRowCount();
     for (int maRowIndex = 0; maRowIndex < numRows; maRowIndex++) {
-        MultipleAlignmentRow row = msa->getRow(maRowIndex);
+        MsaRow row = msa->getRow(maRowIndex);
         if (!rowIds.contains(row->getRowId())) {
             continue;
         }
@@ -211,7 +210,7 @@ void RichTextMsaClipboardTask::prepare() {
     resultText.append("</span>");
 }
 
-SubalignmentToClipboardTask::SubalignmentToClipboardTask(MSAEditor* maEditor, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId)
+SubalignmentToClipboardTask::SubalignmentToClipboardTask(MsaEditor* maEditor, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId)
     : Task(tr("Copy formatted alignment to the clipboard"), TaskFlags_NR_FOSE_COSC), formatId(formatId) {
     prepareDataTask = MsaClipboardDataTaskFactory::newInstance(maEditor, maRowIds, columnRange, formatId);
     addSubTask(prepareDataTask);

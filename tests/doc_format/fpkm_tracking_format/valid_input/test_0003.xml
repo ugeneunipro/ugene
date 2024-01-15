@@ -1,6 +1,6 @@
 <!-- Verify a valid FPKM Tracking Format file: there is no 'FPKM', 'FPKM_status', etc. columns. -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="fpkm_tracking_format/valid/no_fpkm_columns.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error"/>
 

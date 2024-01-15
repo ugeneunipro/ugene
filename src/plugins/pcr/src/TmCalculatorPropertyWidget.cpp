@@ -28,6 +28,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2View/TmCalculatorSelectorDialog.h>
 

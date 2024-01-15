@@ -36,8 +36,8 @@ class PhyTreeObject;
 class UnloadedObject;
 class TreeViewer;
 class OpenTreeViewerTask;
-class MSAEditor;
-class MSAEditorTreeManager;
+class MsaEditor;
+class MsaEditorTreeManager;
 
 class OpenTreeViewerTask : public ObjectViewTask {
     Q_OBJECT
@@ -61,12 +61,12 @@ protected:
 class MSAEditorOpenTreeViewerTask : public OpenTreeViewerTask {
     Q_OBJECT
 public:
-    MSAEditorOpenTreeViewerTask(PhyTreeObject* obj, MSAEditorTreeManager* _parent);
+    MSAEditorOpenTreeViewerTask(PhyTreeObject* obj, MsaEditorTreeManager* _parent);
 
     void createTreeViewer() override;
 
 private:
-    MSAEditorTreeManager* treeManager = nullptr;
+    MsaEditorTreeManager* treeManager = nullptr;
 };
 
 class OpenSavedTreeViewerTask : public ObjectViewTask {
@@ -87,7 +87,7 @@ public:
 class CreateMSAEditorTreeViewerTask : public Task {
     Q_OBJECT
 public:
-    CreateMSAEditorTreeViewerTask(MSAEditor* msaEditor, const QString& name, const QPointer<PhyTreeObject>& obj, const QVariantMap& stateData);
+    CreateMSAEditorTreeViewerTask(MsaEditor* msaEditor, const QString& name, const QPointer<PhyTreeObject>& obj, const QVariantMap& stateData);
     void prepare() override;
     ReportResult report() override;
     TreeViewer* getTreeViewer() const;
@@ -98,7 +98,7 @@ private:
     QPointer<PhyTreeObject> phyObj;
     QVariantMap stateData;
     TreeViewer* view = nullptr;
-    QPointer<MSAEditor> msaEditor;
+    QPointer<MsaEditor> msaEditor;
 };
 
 class CreateTreeViewerTask : public Task {

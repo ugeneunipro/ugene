@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,11 +23,10 @@
 
 #include <QDir>
 
-
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/SaveDocumentTask.h>
 
@@ -116,7 +115,7 @@ void GTest_PhyML::prepare() {
         return;
     }
     assert(obj != nullptr);
-    auto ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto ma = qobject_cast<MsaObject*>(obj);
     if (ma == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
@@ -152,7 +151,7 @@ void GTest_PhyML::prepare() {
 
     settings.algorithm = PhyMLSupport::ET_PHYML_ALGORITHM_NAME_AND_KEY;
 
-    task = new PhyTreeGeneratorLauncherTask(input->getMultipleAlignment(), settings);
+    task = new PhyTreeGeneratorLauncherTask(input->getAlignment(), settings);
     addSubTask(task);
 }
 

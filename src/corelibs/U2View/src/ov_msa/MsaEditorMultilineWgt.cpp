@@ -21,22 +21,22 @@
 
 #include "MsaEditorMultilineWgt.h"
 
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
-#include "MSAEditor.h"
-#include "MSAEditorOverviewArea.h"
 #include "MaEditorNameList.h"
 #include "MaEditorSelection.h"
 #include "MaEditorSequenceArea.h"
+#include "MsaEditor.h"
+#include "MsaEditorOverviewArea.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "MsaEditorStatusBar.h"
 #include "MsaEditorWgt.h"
 #include "MsaMultilineScrollArea.h"
 #include "MultilineScrollController.h"
 #include "ScrollController.h"
-#include "phy_tree/MSAEditorMultiTreeViewer.h"
-#include "phy_tree/MSAEditorTreeViewer.h"
+#include "phy_tree/MsaEditorMultiTreeViewer.h"
 #include "phy_tree/MsaEditorTreeTabArea.h"
+#include "phy_tree/MsaEditorTreeViewer.h"
 
 namespace U2 {
 
@@ -47,7 +47,7 @@ void MsaSizeUtil::updateMinHeightIfPossible(MaEditorSequenceArea* heightFrom, QW
     }
 }
 
-MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, QWidget* parent, bool multiline)
+MsaEditorMultilineWgt::MsaEditorMultilineWgt(MsaEditor* editor, QWidget* parent, bool multiline)
     : MaEditorMultilineWgt(editor, parent),
       multiTreeViewer(nullptr),
       treeViewer(nullptr) {
@@ -60,7 +60,7 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, QWidget* parent,
     createChildren();
     this->setMultilineMode(multiline);
 
-    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, [this]() {
         this->updateSize();
     });
     connect(editor->getCollapseModel(), &MaCollapseModel::si_toggled, this, [this]() {
@@ -75,7 +75,7 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, QWidget* parent,
 MaEditorWgt* MsaEditorMultilineWgt::createChild(MaEditor* editor,
                                                 MaEditorOverviewArea* overviewArea,
                                                 MaEditorStatusBar* statusBar) {
-    auto msaEditor = qobject_cast<MSAEditor*>(editor);
+    auto msaEditor = qobject_cast<MsaEditor*>(editor);
     SAFE_POINT(msaEditor != nullptr, "Not MSAEditor!", nullptr);
     return new MsaEditorWgt(msaEditor, this, overviewArea, statusBar);
 }
@@ -209,8 +209,8 @@ void MsaEditorMultilineWgt::updateChildren() {
     getUI(0)->getSequenceArea()->setFocus();
 }
 
-MSAEditor* MsaEditorMultilineWgt::getEditor() const {
-    return qobject_cast<MSAEditor*>(editor);
+MsaEditor* MsaEditorMultilineWgt::getEditor() const {
+    return qobject_cast<MsaEditor*>(editor);
 }
 
 MaEditorOverviewArea* MsaEditorMultilineWgt::getOverview() {
@@ -230,7 +230,7 @@ void MsaEditorMultilineWgt::initScrollArea() {
 
 void MsaEditorMultilineWgt::initOverviewArea() {
     SAFE_POINT(statusBar == nullptr, "Duplicate initialization of overviewArea", );
-    overviewArea = new MSAEditorOverviewArea(this);
+    overviewArea = new MsaEditorOverviewArea(this);
 }
 
 void MsaEditorMultilineWgt::initStatusBar() {
@@ -264,7 +264,7 @@ void MsaEditorMultilineWgt::updateSize() {
     updateGeometry();
 }
 
-void MsaEditorMultilineWgt::addPhylTreeWidget(MSAEditorMultiTreeViewer* newMultiTreeViewer) {
+void MsaEditorMultilineWgt::addPhylTreeWidget(MsaEditorMultiTreeViewer* newMultiTreeViewer) {
     multiTreeViewer = newMultiTreeViewer;
     treeSplitter->insertWidget(0, newMultiTreeViewer);
     treeSplitter->setSizes(QList<int>({isOsMac() ? 600 : 550, 550}));
@@ -279,11 +279,11 @@ void MsaEditorMultilineWgt::delPhylTreeWidget() {
     multiTreeViewer = nullptr;
 }
 
-MSAEditorTreeViewer* MsaEditorMultilineWgt::getCurrentTree() const {
+MsaEditorTreeViewer* MsaEditorMultilineWgt::getCurrentTree() const {
     CHECK(multiTreeViewer != nullptr, nullptr);
     auto page = qobject_cast<GObjectViewWindow*>(multiTreeViewer->getCurrentWidget());
     CHECK(page != nullptr, nullptr);
-    return qobject_cast<MSAEditorTreeViewer*>(page->getObjectView());
+    return qobject_cast<MsaEditorTreeViewer*>(page->getObjectView());
 }
 
 void MsaEditorMultilineWgt::sl_changeColorSchemeOutside(const QString& id) {

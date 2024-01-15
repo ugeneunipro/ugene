@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,8 +26,8 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -454,8 +454,8 @@ bool NEXUSParser::readDataContents(Context& ctx) {
                 }
             }
 
-            // Build MultipleSequenceAlignment object
-            MultipleSequenceAlignment ma(tz.getIO()->getURL().baseFileName());
+            // Build MsaObject
+            Msa ma(tz.getIO()->getURL().baseFileName());
             for (int i = 0; i < names.length(); i++) {
                 ma->addRow(names[i], values[i]);
             }
@@ -482,7 +482,7 @@ bool NEXUSParser::readDataContents(Context& ctx) {
                 return false;
             }
 
-            MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, ma, ti);
+            MsaObject* obj = MsaImportUtils::createMsaObject(dbiRef, ma, ti, folder);
             CHECK_OP(ti, false);
             addObject(obj);
         } else if (cmd == END) {
@@ -754,7 +754,7 @@ void writeHeader(IOAdapter* io, U2OpStatus&) {
     io->writeBlock(line);
 }
 
-void writeMAligment(const MultipleSequenceAlignment& ma, bool simpleName, IOAdapter* io, U2OpStatus&) {
+void writeMAligment(const Msa& ma, bool simpleName, IOAdapter* io, U2OpStatus&) {
     QByteArray line;
     QByteArray tabs, tab(4, ' ');
 
@@ -797,17 +797,17 @@ void writeMAligment(const MultipleSequenceAlignment& ma, bool simpleName, IOAdap
 
     tabs.append(tab);
 
-    const QList<MultipleSequenceAlignmentRow> rows = ma->getMsaRows();
+    const QList<MsaRow> rows = ma->getRows().toList();
 
     int nameMaxLen = 0;
-    foreach (const MultipleSequenceAlignmentRow& row, rows) {
+    foreach (const MsaRow& row, rows) {
         if (row->getName().size() > nameMaxLen) {
             nameMaxLen = row->getName().size();
         }
     }
     nameMaxLen += 2;  // quotes may appear
 
-    foreach (const MultipleSequenceAlignmentRow& row, rows) {
+    foreach (const MsaRow& row, rows) {
         QString name = row->getName();
 
         if (name.contains(QRegExp("\\s|\\W"))) {
@@ -907,8 +907,8 @@ void NEXUSFormat::storeObjects(const QList<GObject*>& objects, bool simpleNames,
     writeHeader(io, ti);
 
     for (GObject* object : qAsConst(objects)) {
-        if (auto mao = qobject_cast<MultipleSequenceAlignmentObject*>(object)) {
-            writeMAligment(mao->getMultipleAlignment(), simpleNames, io, ti);
+        if (auto mao = qobject_cast<MsaObject*>(object)) {
+            writeMAligment(mao->getAlignment(), simpleNames, io, ti);
             io->writeBlock(QByteArray("\n"));
         } else if (auto pto = qobject_cast<PhyTreeObject*>(object)) {
             writePhyTree(pto->getTree(), pto->getGObjectName(), io, ti);

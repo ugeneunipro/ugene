@@ -39,11 +39,11 @@ class QToolButton;
 namespace U2 {
 
 class LoadDocumentTask;
-class MSAEditor;
+class MsaEditor;
 class MaModificationInfo;
 class MsaExcludeListWidget;
-class MultipleAlignment;
-class MultipleAlignmentRow;
+class Msa;
+class MsaRow;
 
 /** MSA editor built-in support for "MSA Exclude List" widget. */
 class MsaExcludeListContext : public GObjectViewWindowContext {
@@ -51,23 +51,23 @@ class MsaExcludeListContext : public GObjectViewWindowContext {
 public:
     MsaExcludeListContext(QObject* parent);
 
-    QAction* getMoveMsaSelectionToExcludeListAction(MSAEditor* msaEditor);
+    QAction* getMoveMsaSelectionToExcludeListAction(MsaEditor* msaEditor);
 
 protected:
     void initViewContext(GObjectViewController* view) override;
 
 private:
-    void toggleExcludeListView(MSAEditor* msaEditor);
+    void toggleExcludeListView(MsaEditor* msaEditor);
 
     /** Updates Exclude List actions associated with Msa Editor based on the current editor's state. */
-    void updateState(MSAEditor* msaEditor);
+    void updateState(MsaEditor* msaEditor);
 
     /** Returns active Exclude List widget or nullptr if the widget is not found. */
-    MsaExcludeListWidget* findActiveExcludeList(MSAEditor* msaEditor);
+    MsaExcludeListWidget* findActiveExcludeList(MsaEditor* msaEditor);
 
-    MsaExcludeListWidget* openExcludeList(MSAEditor* msaEditor);
+    MsaExcludeListWidget* openExcludeList(MsaEditor* msaEditor);
 
-    void updateMsaEditorSplitterStyle(MSAEditor* msaEditor);
+    void updateMsaEditorSplitterStyle(MsaEditor* msaEditor);
 };
 
 /** Stores per step (Undo or Redo) information used by Exclude List to keep synchronized state with MSA Editor during Undo/Redo ops. */
@@ -88,7 +88,7 @@ struct UndoRedoStep {
 class MsaExcludeListWidget : public QWidget {
     Q_OBJECT
 public:
-    MsaExcludeListWidget(QWidget* parent, MSAEditor* msaEditor, MsaExcludeListContext* viewContext);
+    MsaExcludeListWidget(QWidget* parent, MsaEditor* msaEditor, MsaExcludeListContext* viewContext);
 
     /** Triggers auto-save of the current exclude list state. */
     ~MsaExcludeListWidget();
@@ -116,13 +116,13 @@ private:
     void moveMsaRowIndexesToExcludeList(const QList<int>& msaRowIndexes);
 
     /** Adds a minimal support of the synchronized Undo/Redo for the Exclude List and MSA Editor. */
-    void handleUndoRedoInMsaEditor(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo);
+    void handleUndoRedoInMsaEditor(const Msa& maBefore, const MaModificationInfo& modInfo);
 
     /** Adds a name list entry. If excludeListRowId <= 0 auto-assigns a new row id. Returns a valid exclude list row id. */
     int addEntry(const DNASequence& sequence, int excludeListRowId = 0);
 
     /** Adds a name list entry from MSA row. Fixes non-defined DNA sequence alphabet of MSA row. */
-    int addMsaRowEntry(const MultipleAlignmentRow& row, int excludeListRowId = 0);
+    int addMsaRowEntry(const MsaRow& row, int excludeListRowId = 0);
 
     /** Remove sequence entries from the Exclude List model. */
     void removeEntries(const QList<QListWidgetItem*>& items);
@@ -157,7 +157,7 @@ private:
     /** Returns Exclude List DNA sequence associated with the given item. */
     DNASequence getExcludeListRowSequence(const QListWidgetItem* item) const;
 
-    MSAEditor* msaEditor = nullptr;
+    MsaEditor* msaEditor = nullptr;
 
     /** A name list widget. Used as a data model for Exclude List: keeps row names & sequences in user data slots. */
     QListWidget* nameListView = nullptr;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,15 +32,11 @@
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 
-#include <U2Lang/URLAttribute.h>
 #include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/WorkflowManager.h>
 #include <U2Lang/WorkflowRunTask.h>
 #include <U2Lang/WorkflowUtils.h>
 
 #include "WorkflowDesignerPlugin.h"
-
-#define WORKFLOW_CMDLINE_TASK_LOG_CAT "Workflow cmdline tasks"
 
 namespace U2 {
 
@@ -209,6 +205,12 @@ QByteArray WorkflowRunFromCMDLineBase::getReportFromError() const {
  *******************************************/
 Task* WorkflowRunFromCMDLineTask::getWorkflowRunTask() const {
     return new WorkflowRunTask(*schema, remapping);
+}
+
+QString WorkflowRunFromCMDLineTask::generateReport() const {
+    // TODO: WorkflowRunFromCMDLineBase declares that it can generate reports, but it can't?
+    // Try removing that flag in a separate PR.
+    return "";
 }
 
 }  // namespace U2

@@ -25,7 +25,7 @@
 #include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
-class MSAConsensusAlgorithm;
+class MsaConsensusAlgorithm;
 class ExportConsensusTask;
 class SpinBoxDelegate;
 namespace LocalWorkflow {
@@ -43,7 +43,7 @@ public:
     void cleanup();
 
 protected:
-    virtual ExtractMSAConsensusTaskHelper* createTask(const MultipleSequenceAlignment& msa) = 0;
+    virtual ExtractMSAConsensusTaskHelper* createTask(const Msa& msa) = 0;
     virtual void finish() = 0;
     virtual void sendResult(const SharedDbiDataHandler& seqId) = 0;
     ExtractMSAConsensusTaskHelper* extractMsaConsensus;
@@ -52,7 +52,7 @@ private slots:
 
 private:
     bool hasMsa() const;
-    MultipleSequenceAlignment takeMsa(U2OpStatus& os);
+    Msa takeMsa(U2OpStatus& os);
 };
 
 class ExtractMSAConsensusStringWorker : public ExtractMSAConsensusWorker {
@@ -61,7 +61,7 @@ public:
     ExtractMSAConsensusStringWorker(Actor* actor);
 
 protected:
-    virtual ExtractMSAConsensusTaskHelper* createTask(const MultipleSequenceAlignment& msa);
+    virtual ExtractMSAConsensusTaskHelper* createTask(const Msa& msa);
     virtual void finish();
     virtual void sendResult(const SharedDbiDataHandler& seqId);
 };
@@ -72,7 +72,7 @@ public:
     ExtractMSAConsensusSequenceWorker(Actor* actor);
 
 protected:
-    virtual ExtractMSAConsensusTaskHelper* createTask(const MultipleSequenceAlignment& msa);
+    virtual ExtractMSAConsensusTaskHelper* createTask(const Msa& msa);
     virtual void finish();
     virtual void sendResult(const SharedDbiDataHandler& seqId);
 };
@@ -80,20 +80,20 @@ protected:
 class ExtractMSAConsensusTaskHelper : public Task {
     Q_OBJECT
 public:
-    ExtractMSAConsensusTaskHelper(const QString& algoId, int threshold, bool keepGaps, const MultipleSequenceAlignment& msa, const U2DbiRef& targetDbi);
+    ExtractMSAConsensusTaskHelper(const QString& algoId, int threshold, bool keepGaps, const Msa& msa, const U2DbiRef& targetDbi);
 
     void prepare();
     U2EntityRef getResult() const;
     QByteArray getResultAsText() const;
 
 private:
-    MSAConsensusAlgorithm* createAlgorithm();
+    MsaConsensusAlgorithm* createAlgorithm();
     QString getResultName() const;
 
     const QString algoId;
     const int threshold;
     const bool keepGaps;
-    MultipleSequenceAlignment msa;
+    Msa msa;
     const U2DbiRef targetDbi;
     U2Sequence resultSequence;
     QByteArray resultText;

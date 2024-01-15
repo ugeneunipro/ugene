@@ -34,15 +34,15 @@
 namespace U2 {
 
 class PhyTreeObject;
-class MultipleSequenceAlignmentObject;
+class MsaObject;
 
 class GTest_NeighborJoin : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_NeighborJoin, "test-neighbor-join");
 
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
 private:
     QString inputDocCtxName;
@@ -51,7 +51,7 @@ private:
     Document* maDoc;
     Document* treeDoc;
     PhyTreeGeneratorLauncherTask* task;
-    MultipleSequenceAlignmentObject* input;
+    MsaObject* input;
     PhyTreeObject* treeObjFromDoc;
 };
 

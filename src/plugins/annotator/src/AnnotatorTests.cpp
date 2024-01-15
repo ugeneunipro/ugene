@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectTypes.h>
+#include <U2Core/U2SafePoints.h>
 
 /* TRANSLATOR U2::GTest */
 
@@ -193,11 +194,19 @@ void GTest_CustomAutoAnnotation::init(XMLTestFormat*, const QDomElement& el) {
         return;
     }
 
-    isCircular = false;
-    QString strCircular = el.attribute(CIRCULAR_ATTR);
-    if (!strCircular.isEmpty()) {
-        if (strCircular == "true") {
-            isCircular = true;
+    isCircular = el.attribute(CIRCULAR_ATTR) == "true";
+    QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
+    if (!expected.isEmpty()) {
+        bool ok = false;
+        int result = expected.toInt(&ok);
+        if (ok) {
+            expectedUniqueFeaturesFound = result;
+        } else {
+            expectedAnnotationGroupNames = expected.split(",");
+            if (expectedAnnotationGroupNames.isEmpty()) {
+                wrongValue(EXPECTED_RESULTS_ATTR);
+                return;
+            }
         }
     }
 }
@@ -241,7 +250,7 @@ void GTest_CustomAutoAnnotation::prepare() {
         return;
     }
 
-    AnnotationTableObject* ao = new AnnotationTableObject(resultDocContextName, doc->getDbiRef());
+    ao = new AnnotationTableObject(resultDocContextName, doc->getDbiRef());
     addContext(resultDocContextName, ao);
 
     searchTask = new CustomPatternAnnotationTask(ao, dnaObj->getEntityRef(), store);
@@ -249,20 +258,38 @@ void GTest_CustomAutoAnnotation::prepare() {
 }
 
 Task::ReportResult GTest_CustomAutoAnnotation::report() {
-    /*if(searchTask != NULL){
-        if (!searchTask->hasError()){
-            QVector<U2Region> actualResults = searchTask->popResults();
-            int actualSize = actualResults.size(), expectedSize = expectedResults.size();
-            if (actualSize != expectedSize) {
-                stateInfo.setError( QString("Expected and Actual lists of regions are different: %1 %2").arg(expectedSize).arg(actualSize));
-                return ReportResult_Finished;
-            }
-            std::sort(actualResults); std::sort(expectedResults);
-            if (actualResults != expectedResults) {
-                stateInfo.setError( QString("One of the expected regions not found in results").arg(expectedSize).arg(actualSize));
-            }
+    if (expectedUniqueFeaturesFound != -1) {
+        auto annotations = ao->getAnnotations();
+        QSet<QString> uniqueFeatures;
+        for (auto ann : qAsConst(annotations)) {
+            uniqueFeatures << ann->getName();
         }
-    }*/
+        int uniqueFeaturesSize = uniqueFeatures.size();
+        if (expectedUniqueFeaturesFound != uniqueFeaturesSize) {
+            setError(QString("Expected features number: %1, actual: %2").arg(expectedUniqueFeaturesFound).arg(uniqueFeaturesSize));
+            return ReportResult_Finished;
+        }
+
+    } else if (!expectedAnnotationGroupNames.isEmpty()) {
+        auto root = ao->getRootGroup();
+        CHECK_EXT(root != nullptr, setError("Root group is null"), ReportResult_Finished);
+
+        auto mainSubgroups = root->getSubgroups();
+        CHECK_EXT(mainSubgroups.size() == 1, setError("Main subgroup is not found"), ReportResult_Finished);
+
+        auto subgroups = mainSubgroups.first()->getSubgroups();
+        QStringList subgroupsNames;
+        for (auto subgroup : qAsConst(subgroups)) {
+            subgroupsNames << subgroup->getName();
+        }
+        std::sort(expectedAnnotationGroupNames.begin(), expectedAnnotationGroupNames.end());
+        std::sort(subgroupsNames.begin(), subgroupsNames.end());
+        if (expectedAnnotationGroupNames != subgroupsNames) {
+            setError(QString("Unexpected annotation group names, expected: \"%1\", current: \"%2\"")
+                .arg(expectedAnnotationGroupNames.join(",")).arg(subgroupsNames.join(",")));
+            return ReportResult_Finished;
+        }
+    }
     return ReportResult_Finished;
 }
 

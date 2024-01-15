@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ char MsaRowUtils::charAt(const QByteArray& seq, const QVector<U2MsaGap>& gaps, i
     bool indexIsInBounds = (index < seq.length()) && (index >= 0);
 
     SAFE_POINT(indexIsInBounds,
-               QString("Internal error detected in MultipleSequenceAlignmentRow::charAt,"
+               QString("Internal error detected in MsaRow::charAt,"
                        " row length is '%1', gapsLength is '%2'!")
                    .arg(getRowLength(seq, gaps))
                    .arg(index),

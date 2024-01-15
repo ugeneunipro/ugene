@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,6 +35,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2View/PhyTreeDisplayOptionsWidget.h>
 
@@ -44,7 +45,7 @@ namespace U2 {
 
 static constexpr const char* FAST_TREE_EXTRA_PARAMETERS_SETTINGS_KEY = "/extra-parameters";
 
-FastTreeWidget::FastTreeWidget(const MultipleSequenceAlignment& msa, QWidget* parent)
+FastTreeWidget::FastTreeWidget(const Msa& msa, QWidget* parent)
     : CreatePhyTreeWidget(parent) {
     auto layout = new QVBoxLayout();
     setLayout(layout);

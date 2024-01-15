@@ -24,16 +24,16 @@
 #include <QAction>
 #include <QObject>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 
 namespace U2 {
 
-class MultipleAlignmentObject;
+class MsaObject;
 
 class MaUndoRedoFramework : public QObject {
     Q_OBJECT
 public:
-    MaUndoRedoFramework(QObject* parent, MultipleAlignmentObject* maObject);
+    MaUndoRedoFramework(QObject* parent, MsaObject* maObject);
 
     QAction* getUndoAction() const;
 
@@ -49,7 +49,7 @@ private slots:
 private:
     void checkUndoRedoEnabled();
 
-    MultipleAlignmentObject* maObject = nullptr;
+    MsaObject* maObject = nullptr;
     bool stateComplete = true;
 
     QAction* undoAction = nullptr;

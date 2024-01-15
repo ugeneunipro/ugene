@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,14 +27,14 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MsaEditor.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -103,7 +103,7 @@ Kalign3SupportContext::Kalign3SupportContext(QObject* p)
 }
 
 void Kalign3SupportContext::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView: not MSAEditor", );
     msaEditor->registerActionProvider(this);
 
@@ -138,8 +138,8 @@ void Kalign3SupportContext::sl_align() {
     auto action = qobject_cast<AlignMsaAction*>(sender());
     CHECK(action != nullptr, );
 
-    MSAEditor* msaEditor = action->getMsaEditor();
-    MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
+    MsaEditor* msaEditor = action->getMsaEditor();
+    MsaObject* obj = msaEditor->getMaObject();
     CHECK(obj != nullptr && !obj->isStateLocked(), )
 
     const DNAAlphabet* alphabet = obj->getAlphabet();
@@ -152,11 +152,11 @@ void Kalign3SupportContext::sl_align() {
     }
 
     Kalign3Settings settings;
-    QObjectScopedPointer<Kalign3DialogWithMsaInput> dialog(new Kalign3DialogWithMsaInput(AppContext::getMainWindow()->getQMainWindow(), obj->getMsa(), settings));
+    QObjectScopedPointer<Kalign3DialogWithMsaInput> dialog(new Kalign3DialogWithMsaInput(AppContext::getMainWindow()->getQMainWindow(), obj->getAlignment(), settings));
     dialog->exec();
     CHECK(!dialog.isNull() && dialog->result() == QDialog::Accepted, );
 
-    auto kalignTask = new Kalign3SupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
+    auto kalignTask = new Kalign3SupportTask(obj->getAlignment(), GObjectReference(obj), settings);
     connect(obj, &QObject::destroyed, kalignTask, &Task::cancel);
     AppContext::getTaskScheduler()->registerTopLevelTask(kalignTask);
 

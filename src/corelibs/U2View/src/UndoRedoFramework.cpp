@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 
 #include "UndoRedoFramework.h"
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-MaUndoRedoFramework::MaUndoRedoFramework(QObject* parent, MultipleAlignmentObject* _maObject)
+MaUndoRedoFramework::MaUndoRedoFramework(QObject* parent, MsaObject* _maObject)
     : QObject(parent),
       maObject(_maObject) {
     SAFE_POINT(maObject != nullptr, "NULL MSA Object!", );
@@ -48,7 +48,7 @@ MaUndoRedoFramework::MaUndoRedoFramework(QObject* parent, MultipleAlignmentObjec
 
     checkUndoRedoEnabled();
 
-    connect(maObject, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_updateUndoRedoState()));
+    connect(maObject, SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_updateUndoRedoState()));
     connect(maObject, SIGNAL(si_completeStateChanged(bool)), SLOT(sl_completeStateChanged(bool)));
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateUndoRedoState()));
     connect(undoAction, SIGNAL(triggered()), this, SLOT(sl_undo()));

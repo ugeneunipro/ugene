@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,11 +25,11 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include <U2View/MSAEditor.h>
+#include <U2View/MsaEditor.h>
 
 namespace U2 {
 
-MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget* parent, MSAEditor* msaEditor)
+MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget* parent, MsaEditor* msaEditor)
     : QWidget(parent), msaEditor(msaEditor) {
     auto layout = new QVBoxLayout();
     setLayout(layout);
@@ -40,9 +40,9 @@ MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget* parent, MSAE
 
     sortByCombo = new QComboBox();
     sortByCombo->setObjectName("sortByComboBox");
-    sortByCombo->addItem(tr("Name"), MultipleAlignment::SortByName);
-    sortByCombo->addItem(tr("Length"), MultipleAlignment::SortByLength);
-    sortByCombo->addItem(tr("Leading gap"), MultipleAlignment::SortByLeadingGap);
+    sortByCombo->addItem(tr("Name"), Msa::SortByName);
+    sortByCombo->addItem(tr("Length"), Msa::SortByLength);
+    sortByCombo->addItem(tr("Leading gap"), Msa::SortByLeadingGap);
     layout->addWidget(sortByCombo);
 
     auto sortOrderLabel = new QLabel();
@@ -51,8 +51,8 @@ MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget* parent, MSAE
 
     sortOrderCombo = new QComboBox();
     sortOrderCombo->setObjectName("sortOrderComboBox");
-    sortOrderCombo->addItem(tr("Ascending"), MultipleAlignment::Ascending);
-    sortOrderCombo->addItem(tr("Descending"), MultipleAlignment::Descending);
+    sortOrderCombo->addItem(tr("Ascending"), Msa::Ascending);
+    sortOrderCombo->addItem(tr("Descending"), Msa::Descending);
     layout->addWidget(sortOrderCombo);
 
     auto lastRowLayout = new QHBoxLayout();
@@ -65,19 +65,19 @@ MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget* parent, MSAE
     lastRowLayout->addWidget(sortButton);
     connect(sortButton, SIGNAL(clicked()), SLOT(sl_sortClicked()));
 
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
     sortButton->setEnabled(!msaObject->isStateLocked());
     connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_msaObjectStateChanged()));
 }
 
 void MsaEditorSortSequencesWidget::sl_sortClicked() {
-    auto sortType = (MultipleAlignment::SortType)sortByCombo->currentData().toInt();
-    auto sortOrder = (MultipleAlignment::Order)sortOrderCombo->currentData().toInt();
+    auto sortType = (Msa::SortType)sortByCombo->currentData().toInt();
+    auto sortOrder = (Msa::Order)sortOrderCombo->currentData().toInt();
     msaEditor->sortSequences(sortType, sortOrder);
 }
 
 void MsaEditorSortSequencesWidget::sl_msaObjectStateChanged() {
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
     sortButton->setEnabled(!msaObject->isStateLocked());
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,13 +28,13 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
 
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorOffsetsView.h>
-#include <U2View/MSAEditorOverviewArea.h>
-#include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorStatusBar.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorConsensusArea.h>
+#include <U2View/MsaEditorOffsetsView.h>
+#include <U2View/MsaEditorOverviewArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "MaEditorSplitters.h"
 #include "MaEditorUtils.h"

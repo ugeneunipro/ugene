@@ -23,9 +23,9 @@
 
 #include <QPen>
 
-#include <U2Core/DNAChromatogram.h>
+#include <U2Core/Chromatogram.h>
 
-#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 namespace U2 {
 
@@ -47,7 +47,7 @@ public:
 
 protected:
     // returns the height of the drawn row
-    virtual int drawRow(QPainter& painter, const MultipleAlignment& ma, int maRowIndex, const U2Region& columns, int xStart, int yStart) const;
+    virtual int drawRow(QPainter& painter, const Msa& ma, int maRowIndex, const U2Region& columns, int xStart, int yStart) const;
 
     MaEditorWgt* ui;
     MaEditorSequenceArea* seqAreaWgt;

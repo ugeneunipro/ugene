@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Core/DNAChromatogramObject.h>
+#include <U2Core/ChromatogramObject.h>
 #include <U2Core/U2Region.h>
 #include <U2Core/U2Type.h>
 
@@ -30,27 +30,26 @@ namespace U2 {
 class U2MsaGap;
 class U2CORE_EXPORT ChromatogramUtils {
 public:
-    static void append(DNAChromatogram chromatogram, const DNAChromatogram& appendedChromatogram);
-    static void removeBaseCalls(U2OpStatus& os, DNAChromatogram& chromatogram, int startPos, int endPos);
-    static void removeRegion(U2OpStatus& os, DNAChromatogram& chromatogram, int startPos, int endPos);
-    static bool areEqual(const DNAChromatogram& first, const DNAChromatogram& second);
-    static void crop(DNAChromatogram& chromatogram, int startPos, int length);
-    static U2EntityRef import(U2OpStatus& os, const U2DbiRef& dbiRef, const QString& folder, const DNAChromatogram& chromatogram);
-    static DNAChromatogram exportChromatogram(U2OpStatus& os, const U2EntityRef& chromatogramRef);
+    static void append(Chromatogram chromatogram, const Chromatogram& appendedChromatogram);
+    static void removeBaseCalls(U2OpStatus& os, Chromatogram& chromatogram, int startPos, int endPos);
+    static void removeRegion(U2OpStatus& os, Chromatogram& chromatogram, int startPos, int endPos);
+    static bool checkAllFieldsEqual(const Chromatogram& first, const Chromatogram& second);
+    static void crop(Chromatogram& chromatogram, int startPos, int length);
+    static U2EntityRef import(U2OpStatus& os, const U2DbiRef& dbiRef, const QString& folder, const Chromatogram& chromatogram);
+    static Chromatogram exportChromatogram(U2OpStatus& os, const U2EntityRef& chromatogramRef);
     static U2Chromatogram getChromatogramDbInfo(U2OpStatus& os, const U2EntityRef& chromatogramRef);
-    static qint64 getChromatogramLength(U2OpStatus& os, const U2EntityRef& chromatogramRef);
 
-    static void updateChromatogramData(U2OpStatus& os, const U2EntityRef& chromatogramRef, const DNAChromatogram& chromatogram);
-    static void updateChromatogramData(U2OpStatus& os, const U2DataId& masterId, const U2EntityRef& chromatogramRef, const DNAChromatogram& chromatogram);
+    static void updateChromatogramData(U2OpStatus& os, const U2EntityRef& chromatogramRef, const Chromatogram& chromatogram);
+    static void updateChromatogramData(U2OpStatus& os, const U2DataId& masterId, const U2EntityRef& chromatogramRef, const Chromatogram& chromatogram);
 
     static U2EntityRef getChromatogramIdByRelatedSequenceId(U2OpStatus& os, const U2EntityRef& sequenceRef);
     static QString getChromatogramName(U2OpStatus& os, const U2EntityRef& chromatogramRef);
-    static DNAChromatogram reverse(const DNAChromatogram& chromatogram);
-    static DNAChromatogram complement(const DNAChromatogram& chromatogram);
-    static DNAChromatogram reverseComplement(const DNAChromatogram& chromatogram);
-    static U2Region sequenceRegion2TraceRegion(const DNAChromatogram& chromatogram, const U2Region& sequenceRegion);
-    static void insertBase(DNAChromatogram& chromatogram, int posUngapped, const QVector<U2MsaGap>& gapModel, int posWithGaps);
-    static DNAChromatogram getGappedChromatogram(const DNAChromatogram& chrom, const QVector<U2MsaGap>& gapModel);
+    static Chromatogram reverse(const Chromatogram& chromatogram);
+    static Chromatogram complement(const Chromatogram& chromatogram);
+    static Chromatogram reverseComplement(const Chromatogram& chromatogram);
+    static U2Region sequenceRegion2TraceRegion(const Chromatogram& chromatogram, const U2Region& sequenceRegion);
+    static void insertBase(Chromatogram& chromatogram, int posUngapped, const QVector<U2MsaGap>& gapModel, int posWithGaps);
+    static Chromatogram getGappedChromatogram(const Chromatogram& chrom, const QVector<U2MsaGap>& gapModel);
 };
 
 }  // namespace U2

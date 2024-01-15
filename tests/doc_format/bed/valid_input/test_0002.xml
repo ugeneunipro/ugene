@@ -1,6 +1,6 @@
 <!-- Verify a valid BED file: only 3 required fields "chrom", "chromStart" and "chromEnd" -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="bed/valid_input/fields_num_3.bed" io="local_file" format="bed" no-message="BED parsing error"/>
 

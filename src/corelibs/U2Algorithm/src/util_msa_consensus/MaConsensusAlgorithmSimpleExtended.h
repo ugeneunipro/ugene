@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "MSAConsensusAlgorithm.h"
+#include "MsaConsensusAlgorithm.h"
 
 namespace U2 {
 
@@ -32,7 +32,7 @@ class MaConsensusAlgorithmFactorySimpleExtended;
  * 1. Threshold can be from 50% to 100%.
  * 2. Meaningful (not gap) characters merge with each other by the rules of the extended DNA alphabet: A + C = M, C + S = S, G + Y = B.
  * 3. Gap merges with any meaningful character to symbol 'N'.
- * 4. If there is the only one character that fits the threshold, the it is the result.
+ * 4. If there is the only one character that fits the threshold, it is the result.
  * 5. If there are two characters that fit the threshold, the the merged character from these two characters is the result.
  *    It can be in case of threshold is equal 50%, and both characters are spotted in 50% of rows.
  * 6. If there are no characters that fit the threshold, then most popular symbols are involved to the calculations:
@@ -75,14 +75,14 @@ class MaConsensusAlgorithmFactorySimpleExtended;
  *      The result character: V - M is the most popular character, it is merged with A and T to V.
  */
 
-class MaConsensusAlgorithmSimpleExtended : public MSAConsensusAlgorithm {
+class MaConsensusAlgorithmSimpleExtended : public MsaConsensusAlgorithm {
     Q_OBJECT
 public:
-    MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps, QObject* parent);
+    MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps);
 
-    char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
+    char getConsensusChar(const Msa& ma, int column) const override;
 
-    virtual MaConsensusAlgorithmSimpleExtended* clone() const;
+    MaConsensusAlgorithmSimpleExtended* clone() const override;
 
     enum Character {
         None = 0,
@@ -116,23 +116,12 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(MaConsensusAlgorithmSimpleExtended::Characters)
 
-class MaConsensusAlgorithmFactorySimpleExtended : public MSAConsensusAlgorithmFactory {
+class MaConsensusAlgorithmFactorySimpleExtended : public MsaConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MaConsensusAlgorithmFactorySimpleExtended(QObject* parent = nullptr);
+    MaConsensusAlgorithmFactorySimpleExtended();
 
-    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
-
-    QString getDescription() const;
-    QString getName() const;
-
-    int getMinThreshold() const;
-    int getMaxThreshold() const;
-    int getDefaultThreshold() const;
-
-    QString getThresholdSuffix() const;
-
-    bool isSequenceLikeResult() const;
+    MsaConsensusAlgorithm* createAlgorithm(const Msa& ma, bool ignoreTrailingLeadingGaps) override;
 };
 
 }  // namespace U2

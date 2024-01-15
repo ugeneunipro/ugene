@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>603</width>
-    <height>669</height>
+    <height>672</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -56,23 +56,11 @@
       <attribute name="title">
        <string>Settings</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetMinimumSize</enum>
-       </property>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
-        <layout class="QGridLayout" name="gridLayout">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMinimumSize</enum>
-         </property>
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <property name="spacing">
-            <number>6</number>
-           </property>
-           <property name="sizeConstraint">
-            <enum>QLayout::SetMinimumSize</enum>
-           </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2">
            <item>
             <widget class="QGroupBox" name="bgStrand">
              <property name="sizePolicy">
@@ -147,77 +135,39 @@
                <height>0</height>
               </size>
              </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>Search Settings</string>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <property name="spacing">
-               <number>4</number>
-              </property>
-              <property name="sizeConstraint">
-               <enum>QLayout::SetMinimumSize</enum>
-              </property>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout">
-                <property name="sizeConstraint">
-                 <enum>QLayout::SetMinimumSize</enum>
+             <layout class="QFormLayout" name="formLayout">
+              <item row="0" column="0">
+               <widget class="QCheckBox" name="ckMinLen">
+                <property name="minimumSize">
+                 <size>
+                  <width>121</width>
+                  <height>20</height>
+                 </size>
                 </property>
-                <item>
-                 <widget class="QCheckBox" name="ckMinLen">
-                  <property name="minimumSize">
-                   <size>
-                    <width>121</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>Ignore ORFs shorter than the specified length</string>
-                  </property>
-                  <property name="whatsThis">
-                   <string>Ignore ORFs shorter than the specified length</string>
-                  </property>
-                  <property name="text">
-                   <string>Min length, bp:</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="sbMinLen">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="whatsThis">
-                   <string/>
-                  </property>
-                  <property name="suffix">
-                   <string/>
-                  </property>
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>999999999</number>
-                  </property>
-                  <property name="value">
-                   <number>100</number>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+                <property name="toolTip">
+                 <string>Ignore ORFs shorter than the specified length</string>
+                </property>
+                <property name="whatsThis">
+                 <string>Ignore ORFs shorter than the specified length</string>
+                </property>
+                <property name="text">
+                 <string>Min length, bp:</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
-              <item>
+              <item row="2" column="0" colspan="2">
                <widget class="QCheckBox" name="ckFit">
                 <property name="toolTip">
                  <string>Ignore boundary ORFs which last beyond the search region(i.e. have no stop codon within the range).
@@ -232,7 +182,7 @@
                 </property>
                </widget>
               </item>
-              <item>
+              <item row="4" column="0" colspan="2">
                <widget class="QCheckBox" name="ckInit">
                 <property name="toolTip">
                  <string>Specifies that each ORF found must start with the start codon</string>
@@ -248,7 +198,7 @@
                 </property>
                </widget>
               </item>
-              <item>
+              <item row="6" column="0">
                <widget class="QCheckBox" name="ckOverlap">
                 <property name="toolTip">
                  <string>
@@ -261,7 +211,7 @@
                 </property>
                </widget>
               </item>
-              <item>
+              <item row="7" column="0" colspan="2">
                <widget class="QCheckBox" name="ckAlt">
                 <property name="enabled">
                  <bool>true</bool>
@@ -289,7 +239,7 @@
                 </property>
                </widget>
               </item>
-              <item>
+              <item row="9" column="0" colspan="2">
                <widget class="QCheckBox" name="ckIncStopCodon">
                 <property name="toolTip">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -303,176 +253,231 @@ p, li { white-space: pre-wrap; }
                 </property>
                </widget>
               </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_3">
-                <property name="sizeConstraint">
-                 <enum>QLayout::SetMinimumSize</enum>
+              <item row="10" column="0">
+               <widget class="QCheckBox" name="maxResult">
+                <property name="minimumSize">
+                 <size>
+                  <width>117</width>
+                  <height>20</height>
+                 </size>
                 </property>
-                <property name="leftMargin">
-                 <number>0</number>
+                <property name="text">
+                 <string>Max result</string>
                 </property>
-                <property name="topMargin">
-                 <number>0</number>
+               </widget>
+              </item>
+              <item row="10" column="1">
+               <widget class="QSpinBox" name="maxResultField">
+                <property name="maximum">
+                 <number>500000</number>
                 </property>
-                <item>
-                 <widget class="QCheckBox" name="maxResult">
-                  <property name="minimumSize">
-                   <size>
-                    <width>117</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Max result</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="maxResultField">
-                  <property name="maximum">
-                   <number>500000</number>
-                  </property>
-                  <property name="singleStep">
-                   <number>100</number>
-                  </property>
-                  <property name="value">
-                   <number>200000</number>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+                <property name="singleStep">
+                 <number>100</number>
+                </property>
+                <property name="value">
+                 <number>200000</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="sbMinLen">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="toolTip">
+                 <string/>
+                </property>
+                <property name="whatsThis">
+                 <string/>
+                </property>
+                <property name="suffix">
+                 <string/>
+                </property>
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>999999999</number>
+                </property>
+                <property name="value">
+                 <number>100</number>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
            </item>
           </layout>
          </item>
-         <item row="0" column="1" rowspan="3">
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <widget class="QPushButton" name="pbFindAll">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="whatsThis">
-              <string>Start searching ORFs</string>
-             </property>
-             <property name="text">
-              <string>Preview</string>
-             </property>
-             <property name="shortcut">
-              <string/>
-             </property>
-             <property name="default">
-              <bool>true</bool>
-             </property>
-             <property name="flat">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pbClearList">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Clear results</string>
-             </property>
-             <property name="shortcut">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="spacer4">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>88</width>
-               <height>17</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="0">
+         <item>
           <widget class="QComboBox" name="transCombo"/>
-         </item>
-         <item row="2" column="0">
-          <widget class="QTextEdit" name="codonsView">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>65</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>65</height>
-            </size>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="rangeSelectorLayout"/>
-       </item>
-       <item>
-        <widget class="QTreeWidget" name="resultsTree">
-         <property name="rootIsDecorated">
+        <widget class="QSplitter" name="splitter">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="childrenCollapsible">
           <bool>false</bool>
          </property>
-         <attribute name="headerDefaultSectionSize">
-          <number>150</number>
-         </attribute>
-         <attribute name="headerMinimumSectionSize">
-          <number>150</number>
-         </attribute>
-         <column>
-          <property name="text">
-           <string>Region</string>
+         <widget class="QTextEdit" name="codonsView">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
           </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Strand</string>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>65</height>
+           </size>
           </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Length</string>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>130</height>
+           </size>
           </property>
-         </column>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QWidget" name="widget" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>4</verstretch>
+           </sizepolicy>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <layout class="QHBoxLayout" name="rangeSelectorLayout"/>
+             </item>
+             <item>
+              <widget class="QTreeWidget" name="resultsTree">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>4</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="rootIsDecorated">
+                <bool>false</bool>
+               </property>
+               <attribute name="headerMinimumSectionSize">
+                <number>150</number>
+               </attribute>
+               <attribute name="headerDefaultSectionSize">
+                <number>150</number>
+               </attribute>
+               <column>
+                <property name="text">
+                 <string>Region</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Strand</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Length</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <item>
+                <widget class="QPushButton" name="pbFindAll">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string/>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Start searching ORFs</string>
+                 </property>
+                 <property name="text">
+                  <string>Preview</string>
+                 </property>
+                 <property name="shortcut">
+                  <string/>
+                 </property>
+                 <property name="default">
+                  <bool>true</bool>
+                 </property>
+                 <property name="flat">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pbClearList">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Clear results</string>
+                 </property>
+                 <property name="shortcut">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,10 +73,10 @@
 #include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/AnnotationsTreeView.h>
 #include <U2View/AssemblyBrowser.h>
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MsaEditor.h>
+#include <U2View/MsaEditorTreeViewer.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTTestsRegressionScenarios_1001_2000.h"
@@ -3658,7 +3658,7 @@ GUI_TEST_CLASS_DEFINITION(test_1387) {
     // 3) In the appeared dialog select "Remove columns with percentage of gaps" and click the "Remove" button.
     // Expected state: UGENE not crashed
 
-    GTFileDialog::openFile(testDir + "_common_data/regression/1387/", "col_of_gaps.aln");
+    GTFileDialog::openFile(testDir + "_common_data/regression/1387/col_of_gaps.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::add(new PopupChooser({MSAE_MENU_EDIT, "remove_columns_of_gaps"}));
@@ -3757,7 +3757,7 @@ GUI_TEST_CLASS_DEFINITION(test_1405) {
 
 GUI_TEST_CLASS_DEFINITION(test_1408) {
     //    1) Open "data/samples/FASTA/human_T1.fa"
-    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
     //    2) Right click on "human_T1.fa" in the project tab
 
@@ -7758,8 +7758,8 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1986) {
-    // Download a sequence from NCBI. Use "limit" for results.
-    GTUtilsDialog::waitForDialog(new NCBISearchDialogSimpleFiller("rabbit", false, 10, "Organism", "NM_001329075"));
+    // Download a sequence from NCBI. Use "limit" for results. The first sequence in the result list is clicked.
+    GTUtilsDialog::waitForDialog(new NCBISearchDialogSimpleFiller("rabbit", false, 10, "Organism"));
     GTMenu::clickMainMenuItem({"File", "Search NCBI GenBank..."});
 
     // Expected state: the chosen sequence has been downloaded, saved in FASTA format and displayed in sequence view

@@ -23,15 +23,15 @@
 
 #include <unittest.h>
 
-#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Msa.h>
 
 namespace U2 {
 
 class MsaTestUtils {
 public:
-    static MultipleSequenceAlignment initTestAlignment();
-    static QString getRowData(const MultipleSequenceAlignment&, int rowNum);
-    static bool testAlignmentNotChanged(const MultipleSequenceAlignment&);
+    static Msa initTestAlignment();
+    static QString getRowData(const Msa&, int rowNum);
+    static bool testAlignmentNotChanged(const Msa&);
 
     static const int rowsNum;
     static const int firstRowLength;

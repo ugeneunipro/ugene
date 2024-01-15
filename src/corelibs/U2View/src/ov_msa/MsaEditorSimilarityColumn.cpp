@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,19 +23,19 @@
 
 #include <QVBoxLayout>
 
-#include <U2Algorithm/MSADistanceAlgorithm.h>
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaDistanceAlgorithm.h>
+#include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "MSAEditor.h"
-#include "MSAEditorSequenceArea.h"
 #include "MaEditorUtils.h"
+#include "MsaEditor.h"
+#include "MsaEditorSequenceArea.h"
 
 namespace U2 {
 
@@ -63,7 +63,7 @@ void MsaEditorSimilarityColumn::updateWidget() {
     updateDistanceMatrix();
 }
 
-void MsaEditorSimilarityColumn::setMatrix(MSADistanceMatrix* _matrix) {
+void MsaEditorSimilarityColumn::setMatrix(MsaDistanceMatrix* _matrix) {
     matrix = _matrix;
 }
 
@@ -72,7 +72,7 @@ QString MsaEditorSimilarityColumn::getTextForRow(int s) {
         return tr("-");
     }
 
-    const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
+    const Msa ma = editor->getMaObject()->getAlignment();
     const qint64 referenceRowId = editor->getReferenceRowId();
     if (referenceRowId == U2MsaRow::INVALID_ROW_ID) {
         return tr("-");
@@ -167,7 +167,7 @@ void MsaEditorSimilarityColumn::sl_createMatrixTaskFinished(Task* t) {
 }
 
 CreateDistanceMatrixTask::CreateDistanceMatrixTask(const SimilarityStatisticsSettings& _s)
-    : BackgroundTask<MSADistanceMatrix*>(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC),
+    : BackgroundTask<MsaDistanceMatrix*>(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC),
       s(_s) {
     SAFE_POINT(!s.editor.isNull(), "MSAEditor is null in CreateDistanceMatrixTask constructor!", );
     result = nullptr;
@@ -176,7 +176,7 @@ CreateDistanceMatrixTask::CreateDistanceMatrixTask(const SimilarityStatisticsSet
 
 void CreateDistanceMatrixTask::prepare() {
     CHECK_EXT(!s.editor.isNull(), cancel(), );
-    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
+    MsaDistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
     CHECK(factory != nullptr, );
     if (s.excludeGaps) {
         factory->setFlag(DistanceAlgorithmFlag_ExcludeGaps);
@@ -184,15 +184,15 @@ void CreateDistanceMatrixTask::prepare() {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }
 
-    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.editor->getMaObject()->getMultipleAlignment());
+    MsaDistanceAlgorithm* algo = factory->createAlgorithm(s.editor->getMaObject()->getAlignment());
     CHECK(algo != nullptr, );
     addSubTask(algo);
 }
 
 QList<Task*> CreateDistanceMatrixTask::onSubTaskFinished(Task* subTask) {
     CHECK(!subTask->isCanceled() && !subTask->hasError(), {});
-    auto algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
-    result = new MSADistanceMatrix(algo->getMatrix());
+    auto algo = qobject_cast<MsaDistanceAlgorithm*>(subTask);
+    result = new MsaDistanceMatrix(algo->getMatrix());
     return {};
 }
 
@@ -205,8 +205,8 @@ MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(MsaEditorWg
     dataIsBeingUpdatedMessage = QString("<FONT COLOR=#0000FF>%1</FONT>").arg(tr("Data is being updated"));
 
     settings = &contentWidget->getSettings();
-    MSAEditor* editor = settings->editor;
-    connect(editor->getMaObject(), &MultipleSequenceAlignmentObject::si_alignmentChanged, this, [this] { contentWidget->onAlignmentChanged(); });
+    MsaEditor* editor = settings->editor;
+    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, [this] { contentWidget->onAlignmentChanged(); });
     connect(editor, &MaEditor::si_fontChanged, this, [this](const QFont& font) { nameWidget->setFont(font); });
 
     createWidgetUI();

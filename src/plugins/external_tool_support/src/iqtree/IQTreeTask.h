@@ -28,10 +28,10 @@ namespace U2 {
 /** Set of data required by IQTreeTask. */
 struct IQTreeTaskContext {
     /** Creates a new context for IQTreeTask. */
-    IQTreeTaskContext(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings);
+    IQTreeTaskContext(const Msa& msa, const CreatePhyTreeSettings& settings);
 
     /** Alignment to process. Provided during object instantiation. */
-    MultipleSequenceAlignment msa;
+    Msa msa;
 
     /** Extra setting for the tool. Provided during object instantiation. */
     const CreatePhyTreeSettings settings;
@@ -49,7 +49,7 @@ struct IQTreeTaskContext {
 class IQTreeTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
-    IQTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings);
+    IQTreeTask(const Msa& msa, const CreatePhyTreeSettings& settings);
 
     Task::ReportResult report() override;
 

@@ -34,7 +34,7 @@ namespace U2 {
 class U2MsaGap;
 
 /**
- * Gap represention in MSA row sequence.
+ * Gap in MSA row sequence.
  * Same as U2Region but uses 32 bit values (we do not support MSA sizes above 32 bits).
  *
  * 'startPos' in the gap is a position in the gapped sequence.
@@ -45,11 +45,9 @@ class U2CORE_EXPORT U2MsaGap {
 public:
     U2MsaGap() = default;
 
-    U2MsaGap(int startPos, int length);
+    U2MsaGap(qint64 startPos, qint64 length);
 
     int endPos() const;  // not inclusive
-
-    void setEndPos(qint64 endPos);  // not inclusive
 
     /** The gap is valid if it has a length >= 0 & startPos >=0. */
     bool isValid() const;
@@ -76,47 +74,44 @@ public:
 */
 class U2CORE_EXPORT U2MsaRow {
 public:
-    U2MsaRow();
-    virtual ~U2MsaRow();
-
-    bool isValid() const;
+    U2MsaRow() = default;
 
     /** Id of the row in the database */
-    qint64 rowId;
+    qint64 rowId = INVALID_ROW_ID;
 
-    /** Id of the sequence of the row in the database */
+    /** Id of the sequence of the row in the database. */
     U2DataId sequenceId;
 
     /** Start of the row in the sequence */
-    qint64 gstart;  // TODO: rename or remove, if it is not used
+    qint64 gstart = 0;  // TODO: rename or remove, if it is not used.
 
     /** End of the row in the sequence */
-    qint64 gend;
+    qint64 gend = 0;
 
     /** A gap model for the row */
     QVector<U2MsaGap> gaps;
 
     /** Length of the sequence characters and gaps of the row (without trailing) */
-    qint64 length;
+    qint64 length = 0;
 
     static const qint64 INVALID_ROW_ID;
 };
 
-/**
-    Multiple sequence alignment representation
-*/
+/** Shared database model for MSA and MCA. */
 class U2CORE_EXPORT U2Msa : public U2Object {
 public:
-    U2Msa();
-    U2Msa(const U2DataId& id, const QString& dbId, qint64 version);
+    U2Msa(const U2DataType& type = U2Type::Msa);
+    U2Msa(const U2DataType& type, const U2DataId& id, const QString& dbId, qint64 version);
 
-    U2DataType getType() const;
+    U2DataType getType() const override;
 
     /** Alignment alphabet. All sequence in alignment must have alphabet that fits into alignment alphabet */
     U2AlphabetId alphabet;
 
     /** Length of the alignment */
-    qint64 length;
+    qint64 length = 0;
+
+    U2DataType type = U2Type::Msa;
 
     static const char GAP_CHAR;
     static const char INVALID_CHAR;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,6 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
-#include <U2Gui/U2FileDialog.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/AnnotatedDNAView.h>
@@ -52,15 +51,6 @@
 #include <U2View/TmCalculatorSelectorWidget.h>
 
 namespace U2 {
-
-const QMap<task, QString> Primer3Dialog::TASK_ENUM_STRING_MAP = {
-                        {task::generic, "generic"},
-                        {task::pick_sequencing_primers,"pick_sequencing_primers"},
-                        {task::pick_primer_list, "pick_primer_list"},
-                        {task::check_primers, "check_primers"},
-                        {task::pick_cloning_primers, "pick_cloning_primers"},
-                        {task::pick_discriminative_primers, "pick_discriminative_primers"}
-    };
 
 const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
                         { "SEQUENCE_PRIMER",
@@ -204,7 +194,8 @@ const QSharedPointer<Primer3TaskSettings>& Primer3Dialog::getSettings() {
 }
 
 const CreateAnnotationModel& Primer3Dialog::getCreateAnnotationModel() const {
-    SAFE_POINT(createAnnotationWidgetController != nullptr, L10N::nullPointerError("CreateAnnotationWidgetController"), CreateAnnotationModel());
+    static CreateAnnotationModel emptyModel;
+    SAFE_POINT(createAnnotationWidgetController != nullptr, L10N::nullPointerError("CreateAnnotationWidgetController"), emptyModel);
 
     return createAnnotationWidgetController->getModel();
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,7 +67,7 @@ const QString PhyMlSettingsPrefixes::TreeImprovementType(CreatePhyTreeWidget::ge
 const QString PhyMlSettingsPrefixes::TreeSearchingType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_search");
 const QString PhyMlSettingsPrefixes::UserTreePath(CreatePhyTreeWidget::getAppSettingsRoot() + "/user_tree");
 
-PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment& ma, QWidget* parent)
+PhyMlWidget::PhyMlWidget(const Msa& ma, QWidget* parent)
     : CreatePhyTreeWidget(parent),
       isTtRationFixed(false),
       isTreeNumberSet(false) {

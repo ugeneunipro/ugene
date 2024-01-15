@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
-#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MsaEditorSequenceArea.h>
 
 #include "FindPatternMsaTask.h"
 #include "ov_msa/MaCollapseModel.h"
@@ -132,7 +132,7 @@ private:
 /** Last used search mode. Stored per session only. */
 static int isSearchInNamesModeByDefault = false;
 
-FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor* msaEditor, TriState isSearchInNamesModeTriState)
+FindPatternMsaWidget::FindPatternMsaWidget(MsaEditor* msaEditor, TriState isSearchInNamesModeTriState)
     : msaEditor(msaEditor),
       currentResultIndex(-1),
       searchTask(nullptr),
@@ -323,8 +323,8 @@ void FindPatternMsaWidget::connectSlots() {
     connect(editEnd, SIGNAL(textChanged(QString)), SLOT(sl_onRegionValueEdited()));
     connect(boxMaxResult, SIGNAL(valueChanged(int)), SLOT(sl_onMaxResultChanged(int)));
     connect(removeOverlapsBox, SIGNAL(stateChanged(int)), SLOT(sl_validateStateAndStartNewSearch()));
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
-    connect(msaObject, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), this, SLOT(sl_onMsaModified()));
+    MsaObject* msaObject = msaEditor->getMaObject();
+    connect(msaObject, SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), this, SLOT(sl_onMsaModified()));
     connect(msaObject, SIGNAL(si_alphabetChanged(const MaModificationInfo&, const DNAAlphabet*)), this, SLOT(sl_onMsaModified()));
     connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_msaStateChanged()));
     connect(prevPushButton, SIGNAL(clicked()), SLOT(sl_prevButtonClicked()));
@@ -375,7 +375,7 @@ void FindPatternMsaWidget::sl_onRegionValueEdited() {
 }
 
 void FindPatternMsaWidget::updateActions() {
-    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    MsaObject* msaObject = msaEditor->getMaObject();
     groupResultsButton->setEnabled(!msaObject->isStateLocked());
 }
 
@@ -854,7 +854,7 @@ void FindPatternMsaWidget::updatePatternText(int previousAlgorithm) {
 void FindPatternMsaWidget::runSearchInSequenceNames(const QStringList& patterns) {
     currentSearchPatternList = patterns;
 
-    const MultipleAlignment& multipleAlignment = msaEditor->getMaObject()->getMultipleAlignment();
+    const Msa& multipleAlignment = msaEditor->getMaObject()->getAlignment();
     U2Region wholeRowRegion(0, msaEditor->getAlignmentLen());
     QSet<int> resultRowIndexSet;
     foreach (const QString& pattern, currentSearchPatternList) {
@@ -862,14 +862,14 @@ void FindPatternMsaWidget::runSearchInSequenceNames(const QStringList& patterns)
             continue;
         }
         for (int i = 0, n = multipleAlignment->getRowCount(); i < n; i++) {
-            const MultipleAlignmentRow& row = multipleAlignment->getRow(i);
+            const MsaRow& row = multipleAlignment->getRow(i);
             if (row->getName().contains(pattern, Qt::CaseInsensitive)) {
                 resultRowIndexSet << i;
             }
         }
     }
     foreach (int rowIndex, resultRowIndexSet) {
-        const MultipleAlignmentRow& row = multipleAlignment->getRow(rowIndex);
+        const MsaRow& row = multipleAlignment->getRow(rowIndex);
         allSearchResults << FindPatternWidgetResult(row->getRowId(), -1, wholeRowRegion);
     }
     postProcessAllSearchResults();
@@ -1045,7 +1045,7 @@ void FindPatternMsaWidget::updateCurrentResultLabel() {
 
 void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     CHECK(!allSearchResults.isEmpty(), )
-    MultipleSequenceAlignmentObject* maObject = msaEditor->getMaObject();
+    MsaObject* maObject = msaEditor->getMaObject();
     CHECK(!maObject->isStateLocked(), );
 
     // Switch to the Original row order mode.

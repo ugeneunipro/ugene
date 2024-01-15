@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MSAUtils.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/ResourceTracker.h>
 #include <U2Core/SequenceUtils.h>
@@ -397,7 +397,7 @@ static Document* loadFromMultipleFiles(IOAdapterFactory* iof, QVariantMap& fs, U
         CHECK_OP(os, nullptr);
         newObjects << sequences;
     } else if (fs.value(DocumentReadingMode_SequenceAsAlignmentHint).toBool()) {
-        MultipleSequenceAlignmentObject* msaObject = MSAUtils::seqDocs2msaObj(docs, fs, os);
+        MsaObject* msaObject = MsaUtils::seqDocs2msaObj(docs, fs, os);
         CHECK_OP(os, nullptr);
         SAFE_POINT_EXT(msaObject != nullptr, os.setError("The alignment object is NULL!"), nullptr);
         newObjects << msaObject;
@@ -454,8 +454,7 @@ void LoadDocumentTask::loadDocument() {
     if (!renameList.isEmpty()) {
         renameObjects(loadedDocument.get(), renameList);
     }
-    bool useShallowCopy = loadedDocument->getDocumentFormat()->isObjectOpSupported(loadedDocument.get(), DocumentFormat::DocObjectOp_Remove, GObjectTypes::SEQUENCE);
-    Document* convertedDoc = DocumentUtils::createCopyRestructuredWithHints(loadedDocument.get(), stateInfo, useShallowCopy);
+    Document* convertedDoc = DocumentUtils::createCopyRestructuredWithHints(loadedDocument.get(), stateInfo);
     CHECK_OP(stateInfo, );
     if (convertedDoc != nullptr) {
         loadedDocument.reset(convertedDoc);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,9 +79,9 @@ U2Sequence SQLiteSequenceDbi::getSequenceObject(const U2DataId& sequenceId, U2Op
 QByteArray SQLiteSequenceDbi::getSequenceData(const U2DataId& sequenceId, const U2Region& region, U2OpStatus& os) {
     try {
         QByteArray res;
-        if (0 == region.length) {
+        if (region.length == 0) {
             return res;
-        } else if (U2_REGION_MAX != region) {
+        } else if (region != U2_REGION_MAX) {
             res.reserve(region.length);
         }
         // Get all chunks that intersect the region
@@ -389,7 +389,6 @@ void SQLiteSequenceDbi::undoUpdateSequenceData(const U2DataId& sequenceId, const
 
 void SQLiteSequenceDbi::redoUpdateSequenceData(const U2DataId& sequenceId, const QByteArray& modDetails, U2OpStatus& os) {
     U2Region replacedRegion;
-    U2Region replacedByRegion;
     QByteArray oldData;
     QByteArray newData;
     QVariantMap hints;
@@ -398,9 +397,6 @@ void SQLiteSequenceDbi::redoUpdateSequenceData(const U2DataId& sequenceId, const
         os.setError("An error occurred during replacing sequence data!");
         return;
     }
-
-    replacedByRegion = U2Region(replacedRegion.startPos, newData.length());
-
     updateSequenceDataCore(sequenceId, replacedRegion, newData, hints, os);
 }
 }  // namespace U2

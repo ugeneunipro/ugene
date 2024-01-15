@@ -1,6 +1,6 @@
 <!-- Check annotation name -->
 
-<multi-test lockForLogListening="true">
+<multi-test>
 
     <load-document index="doc" url="bed/valid_input/cow.chr13.repeats.shifted.bed" io="local_file" format="bed" no-message="BED parsing error"/>
 

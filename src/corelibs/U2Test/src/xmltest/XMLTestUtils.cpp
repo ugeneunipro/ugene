@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -155,19 +155,35 @@ bool XMLTestUtils::parentTasksHaveError(Task* t) {
 }
 
 const QString XMLMultiTest::FAIL_ON_SUBTEST_FAIL = "fail-on-subtest-fail";
-const QString XMLMultiTest::LOCK_FOR_LOG_LISTENING = "lockForLogListening";
+
+/**
+ * Returns 'true' if the whole test must be executed under 'lock-log'.
+ * This lock is needed if any element of the test checks log.
+ */
+static bool checkIfLogLockIsNeeded(const QDomElement& multiTestElement) {
+    QList<QString> logMessageAttributePrefixes = {"message", "no-message"};
+
+    QDomNodeList childNodes = multiTestElement.childNodes();
+    for (int i = 0; i < childNodes.length(); i++) {
+        QDomNode node = childNodes.at(i);
+        if (node.isElement()) {
+            QDomNamedNodeMap attributes = node.attributes();
+            for (int j = 0; j < attributes.length(); j++) {
+                QDomNode attribute = attributes.item(j);
+                QString attributeName = attribute.nodeName();
+                for (const QString& logPrefix : qAsConst(logMessageAttributePrefixes)) {
+                    if (attributeName.startsWith(logPrefix)) {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
 
 void XMLMultiTest::init(XMLTestFormat* tf, const QDomElement& el) {
-    // This attribute is used to avoid mixing log messages between different tests
-    // Each test that listens to log should set this attribute to "true"
-    // See also: GTestLogHelper
-    checkAttribute(el, LOCK_FOR_LOG_LISTENING, {"true", "false"}, false);
-    CHECK_OP(stateInfo, );
-
-    bool lockForLogListening = false;
-    if ("true" == el.attribute(LOCK_FOR_LOG_LISTENING)) {
-        lockForLogListening = true;
-    }
+    bool lockForLogListening = checkIfLogLockIsNeeded(el);
 
     checkAttribute(el, FAIL_ON_SUBTEST_FAIL, {"true", "false"}, false);
     CHECK_OP(stateInfo, );

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,14 +26,14 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MsaEditor.h>
 
 #include "ClustalWSupportRunDialog.h"
 #include "ClustalWSupportTask.h"
@@ -122,7 +122,7 @@ ClustalWSupportContext::ClustalWSupportContext(QObject* p)
 }
 
 void ClustalWSupportContext::initViewContext(GObjectViewController* view) {
-    auto msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MsaEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     msaEditor->registerActionProvider(this);
 
@@ -165,14 +165,14 @@ void ClustalWSupportContext::sl_align() {
     // Call run ClustalW align dialog
     auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
-    MSAEditor* msaEditor = action->getMsaEditor();
-    MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
+    MsaEditor* msaEditor = action->getMsaEditor();
+    MsaObject* obj = msaEditor->getMaObject();
     if (obj == nullptr || obj->isStateLocked()) {
         return;
     }
 
     ClustalWSupportTaskSettings settings;
-    QObjectScopedPointer<ClustalWSupportRunDialog> clustalWRunDialog = new ClustalWSupportRunDialog(obj->getMultipleAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ClustalWSupportRunDialog> clustalWRunDialog = new ClustalWSupportRunDialog(obj->getAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
     clustalWRunDialog->exec();
     CHECK(!clustalWRunDialog.isNull(), );
 
@@ -180,7 +180,7 @@ void ClustalWSupportContext::sl_align() {
         return;
     }
 
-    ClustalWSupportTask* clustalWSupportTask = new ClustalWSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
+    ClustalWSupportTask* clustalWSupportTask = new ClustalWSupportTask(obj->getAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalWSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalWSupportTask);
 

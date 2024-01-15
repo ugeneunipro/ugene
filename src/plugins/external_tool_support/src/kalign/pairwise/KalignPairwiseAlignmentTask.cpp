@@ -7,9 +7,9 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/Msa.h>
+#include <U2Core/MsaImportUtils.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -79,7 +79,7 @@ KalignPairwiseAlignmentTask::KalignPairwiseAlignmentTask(KalignPairwiseAlignment
     alphabet = U2AlphabetUtils::getById(settings->alphabet);
     SAFE_POINT(alphabet != nullptr, "Alphabet is invalid.", );
 
-    ma = MultipleSequenceAlignment(firstName + " vs. " + secondName, alphabet);
+    ma = Msa(firstName + " vs. " + secondName, alphabet);
     ma->addRow(firstName, first);
     ma->addRow(secondName, second);
 
@@ -115,8 +115,8 @@ QList<Task*> KalignPairwiseAlignmentTask::onSubTaskFinished(Task* subTask) {
             Document* alignmentDoc = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(newFileUrl), localStateInfo);
             CHECK_OP(localStateInfo, res);
 
-            MultipleSequenceAlignment resultMa = kalignSubTask->resultMA;
-            MultipleSequenceAlignmentObject* docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
+            Msa resultMa = kalignSubTask->resultMA;
+            MsaObject* docObject = MsaImportUtils::createMsaObject(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
             CHECK_OP(localStateInfo, res);
             alignmentDoc->addObject(docObject);
             res << new SaveDocumentTask(alignmentDoc, SaveDoc_OpenAfter);
@@ -131,11 +131,11 @@ QList<Task*> KalignPairwiseAlignmentTask::onSubTaskFinished(Task* subTask) {
             SAFE_POINT_OP(os, res);
             for (int rowNumber = 0; rowNumber < rows.length(); ++rowNumber) {
                 if (rows[rowNumber].sequenceId == settings->firstSequenceRef.entityId) {
-                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getMsaRow(0)->getGaps(), os);
+                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getRow(0)->getGaps(), os);
                     CHECK_OP(os, res);
                 }
                 if (rows[rowNumber].sequenceId == settings->secondSequenceRef.entityId) {
-                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getMsaRow(1)->getGaps(), os);
+                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getRow(1)->getGaps(), os);
                     CHECK_OP(os, res);
                 }
             }

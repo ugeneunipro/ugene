@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,10 +37,10 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleSequenceAlignmentExporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MsaExportUtils.h>
+#include <U2Core/MsaObject.h>
+#include <U2Core/MsaUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Mod.h>
@@ -70,8 +70,7 @@ MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignment
 
     SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into MafftAddToAlignmentTask"), );
 
-    MultipleSequenceAlignmentExporter alnExporter;
-    inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
+    inputMsa = MsaExportUtils::loadAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
     int rowNumber = inputMsa->getRowCount();
     for (int i = 0; i < rowNumber; i++) {
         inputMsa->renameRow(i, QString::number(i));
@@ -94,7 +93,7 @@ static QString generateTmpFileUrl(const QString& filePathAndPattern) {
 void MafftAddToAlignmentTask::prepare() {
     algoLog.info(tr("Align sequences to alignment with MAFFT started"));
 
-    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getRowCount());
+    MsaUtils::removeColumnsWithGaps(inputMsa, inputMsa->getRowCount());
 
     tmpDirUrl = ExternalToolSupportUtils::createTmpDir("add_to_alignment", stateInfo);
 
@@ -213,7 +212,7 @@ void MafftAddToAlignmentTask::run() {
         CHECK_OP(stateInfo, );
     }
     QMap<QString, qint64> uniqueNamesToIds;
-    foreach (const MultipleSequenceAlignmentRow& refRow, inputMsa->getMsaRows()) {
+    foreach (const MsaRow& refRow, inputMsa->getRows()) {
         uniqueNamesToIds[refRow->getName()] = refRow->getRowId();
     }
 
@@ -231,7 +230,7 @@ void MafftAddToAlignmentTask::run() {
             sequenceObject->setGObjectName(uniqueIdsToNames[sequenceObject->getGObjectName()]);
             SAFE_POINT(sequenceObject != nullptr, "U2SequenceObject is null", );
 
-            U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
+            U2MsaRow row = MsaUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
 
             rowWasAdded = row.length != 0;
             if (row.length - MsaRowUtils::getGapsLength(row.gaps) <= UNBREAKABLE_SEQUENCE_LENGTH_LIMIT) {
@@ -252,7 +251,7 @@ void MafftAddToAlignmentTask::run() {
             }
         } else {
             // maybe need add leading gaps to original rows
-            U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
+            U2MsaRow row = MsaUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
             qint64 rowId = uniqueNamesToIds.value(sequenceObject->getSequenceName(), -1);
             if (rowId == -1) {
                 stateInfo.setError(tr("Row for updating doesn't found"));

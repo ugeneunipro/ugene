@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,18 +62,14 @@ void ETSProjectViewItemsController::sl_addToProjectViewMenu(QMenu& m) {
     MultiGSelection ms;  // ms.addSelection(pv->getGObjectSelection());
     ms.addSelection(pv->getDocumentSelection());
     QList<Document*> set = SelectionUtils::getSelectedDocs(ms);
-    bool hasFastaDocs = false;
-    foreach (Document* doc, set) {
-        if (doc->getDocumentFormatId() == BaseDocumentFormats::FASTA) {
-            hasFastaDocs = true;
-            break;
+    for (const Document* doc : qAsConst(set)) {
+        if (doc->getDocumentFormatId() == BaseDocumentFormats::FASTA && !doc->findGObjectIdsByType(GObjectTypes::SEQUENCE).isEmpty()) {
+            QMenu* subMenu = m.addMenu(tr("BLAST"));
+            subMenu->menuAction()->setObjectName(ACTION_BLAST_SUBMENU);
+            subMenu->setIcon(QIcon(":external_tool_support/images/ncbi.png"));
+            subMenu->addAction(makeBlastDbOnSelectionAction);
+            return;
         }
-    }
-    if (hasFastaDocs) {
-        QMenu* subMenu = m.addMenu(tr("BLAST"));
-        subMenu->menuAction()->setObjectName(ACTION_BLAST_SUBMENU);
-        subMenu->setIcon(QIcon(":external_tool_support/images/ncbi.png"));
-        subMenu->addAction(makeBlastDbOnSelectionAction);
     }
 }
 
