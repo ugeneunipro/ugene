@@ -45,7 +45,7 @@ TopHatSupport::TopHatSupport()
     executableFileName = "tophat.exe";
 #else
 #    if defined(Q_OS_UNIX)
-    executableFileName = "tophat";
+    executableFileName = "tophat_2";
 #    endif
 #endif
     validationArguments << "--version";
