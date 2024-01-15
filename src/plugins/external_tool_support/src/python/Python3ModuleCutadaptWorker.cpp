@@ -59,7 +59,7 @@ namespace LocalWorkflow {
 
 ///////////////////////////////////////////////////////////////
 // Primer3ModuleCutadapt
-const QString Primer3ModuleCutadaptWorkerFactory::ACTOR_ID("Primer3ModuleCutadapt");
+const QString Primer3ModuleCutadaptWorkerFactory::ACTOR_ID("CutAdaptFastq");
 
 static const QString INPUT_URLS_ID("input-urls");
 static const QString ADAPTERS_URL("adapters-url");
