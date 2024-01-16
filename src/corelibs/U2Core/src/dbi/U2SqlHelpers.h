@@ -210,6 +210,9 @@ public:
     /** Select list of strings */
     QStringList selectStrings();
 
+    /** Returns a blob. */
+    QList<QByteArray> selectBlobs();
+
     //////////////////////////////////////////////////////////////////////////
     // Query info methods
     const QString& getQueryText() const {

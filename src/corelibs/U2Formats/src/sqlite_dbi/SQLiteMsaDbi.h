@@ -62,7 +62,6 @@ public:
      * The number of rows and the length of the alignment are set to 0.
      * Returns the assigned id.
      */
-    U2DataId createMcaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, U2OpStatus& os) override;
     U2DataId createMcaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, int length, U2OpStatus& os) override;
     U2DataId createMsaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, U2OpStatus& os) override;
     U2DataId createMsaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, int length, U2OpStatus& os) override;
@@ -166,29 +165,17 @@ public:
 
 private:
     /**
-     * Creates new records in MsaRow and MsaRowGap tables for the added row, and
+     * Creates a new record in MsaRow table for the added row, and
      * sets the parent of the sequence object to the MSA object.
      * Sets the assigned ID to the passed U2MaRow instance.
      */
-    void addMsaRowAndGaps(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os);
+    void addMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os);
 
-    /**
-     * Adds a new MSA row into database.
-     * To add a gap for the row, use the "createMsaRowGap" method.
-     */
+    /** Adds a new MSA row into database. */
     void createMsaRow(const U2DataId& msaId, qint64 posInMsa, const U2MsaRow& row, U2OpStatus& os);
 
-    /** Adds a new gap for a MSA row into database. */
-    void createMsaRowGap(const U2DataId& msaId, qint64 msaRowId, const U2MsaGap& msaGap, U2OpStatus& os);
-
-    /** Removes records from MsaRow and MsaRowGap tables for the row. */
-    void removeMsaRowAndGaps(const U2DataId& msaId, qint64 rowId, bool removeSequence, U2OpStatus& os);
-
-    /** Removes all records about the row gaps from the database. */
-    void removeRecordsFromMsaRowGap(const U2DataId& msaId, qint64 rowId, U2OpStatus& os);
-
-    /** Removes a record about the row from the database. */
-    void removeRecordFromMsaRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os);
+    /** Removes records from MsaRow tables for the row. */
+    void removeMsaRow(const U2DataId& msaId, qint64 rowId, bool removeSequence, U2OpStatus& os);
 
     /** Updates "numOfRows" in the "Msa" table */
     void updateNumOfRows(const U2DataId& msaId, qint64 numOfRows, U2OpStatus& os);

@@ -58,6 +58,7 @@ bool SQLiteUtils::getMemoryHint(int& currentMemory, int& maxMemory, int resetMax
 //////////////////////////////////////////////////////////////////////////
 // L10N
 QString U2DbiL10n::queryError(const QString& err) {
+    FAIL(err, err);
     return tr("Error querying database: %1").arg(err);
 }
 
@@ -68,7 +69,7 @@ QString U2DbiL10n::tooManyResults() {
 //////////////////////////////////////////////////////////////////////////
 // SQLiteReadOnlyQuery
 
-//#define U2_TRACE_SQLITE_QUERIES
+// #define U2_TRACE_SQLITE_QUERIES
 
 #ifdef U2_TRACE_SQLITE_QUERIES
 static int nActiveQueries = 0;
@@ -452,6 +453,15 @@ QStringList SQLiteQuery::selectStrings() {
     QStringList res;
     while (step()) {
         QString text = getString(0);
+        res.append(text);
+    }
+    return res;
+}
+
+QList<QByteArray> SQLiteQuery::selectBlobs() {
+    QList<QByteArray> res;
+    while (step()) {
+        QByteArray text = getBlob(0);
         res.append(text);
     }
     return res;

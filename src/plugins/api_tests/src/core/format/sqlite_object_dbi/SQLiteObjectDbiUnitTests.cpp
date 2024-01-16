@@ -286,16 +286,18 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     qint64 msa2Rows = qMsaRow.selectInt64();
     CHECK_EQUAL(1, msa2Rows, "number of rows in MSA2");
 
-    // "MsaRowGap"
-    SQLiteReadQuery qMsaRowGap("SELECT COUNT(*) FROM MsaRowGap WHERE msa = ?1", sqliteDbi->getDbRef(), os);
+    // "Gaps"
+    SQLiteReadQuery qMsaRowGap("SELECT gaps FROM MsaRow WHERE msa = ?1", sqliteDbi->getDbRef(), os);
     qMsaRowGap.bindDataId(1, msaId);
-    qint64 msa1Gaps = qMsaRowGap.selectInt64();
-    CHECK_EQUAL(0, msa1Gaps, "number of gaps in MSA1 rows");
+    QList<QByteArray> msa1Gaps = qMsaRowGap.selectBlobs();
+    CHECK_EQUAL(0, msa1Gaps.length() == 1, "query returned no gap info/1");
+    CHECK_EQUAL(0, msa1Gaps[0].split(';').length(), "number of gaps in MSA1 rows");
 
     qMsaRowGap.reset(true);
     qMsaRowGap.bindDataId(1, msaId2);
-    qint64 msa2Gaps = qMsaRowGap.selectInt64();
-    CHECK_EQUAL(1, msa2Gaps, "number of gaps in MSA2 rows");
+    QList<QByteArray> msa2Gaps = qMsaRowGap.selectBlobs();
+    CHECK_EQUAL(0, msa2Gaps.length() == 1, "query returned no gap info/2");
+    CHECK_EQUAL(1, msa2Gaps[0].split(';').length(), "number of gaps in MSA2 rows");
 
     // "Sequence"
     SQLiteReadQuery qSeq("SELECT COUNT(*) FROM Sequence WHERE object = ?1", sqliteDbi->getDbRef(), os);

@@ -40,8 +40,9 @@
 #include "SQLiteSequenceDbi.h"
 #include "SQLiteUdrDbi.h"
 #include "SQLiteVariantDbi.h"
-#include "util/SqliteUpgraderFrom_0_To_1_13.h"
-#include "util/SqliteUpgraderFrom_1_13_To_1_25.h"
+#include "util/SqliteUpgrader_v13.h"
+#include "util/SqliteUpgrader_v25.h"
+#include "util/SqliteUpgrader_v50.h"
 
 namespace U2 {
 
@@ -64,8 +65,9 @@ SQLiteDbi::SQLiteDbi()
     featureDbi = new SQLiteFeatureDbi(this);
     udrDbi = new SQLiteUdrDbi(this);
 
-    upgraders << new SqliteUpgraderFrom_0_To_1_13(this);
-    upgraders << new SqliteUpgraderFrom_1_13_To_1_25(this);
+    upgraders << new SqliteUpgrader_v13(this);
+    upgraders << new SqliteUpgrader_v25(this);
+    upgraders << new SqliteUpgrader_v50(this);
 }
 
 SQLiteDbi::~SQLiteDbi() {

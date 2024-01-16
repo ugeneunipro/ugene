@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include "SqliteUpgraderFrom_0_To_1_13.h"
-
 #include <U2Core/L10n.h>
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2SafePoints.h>
@@ -29,14 +27,15 @@
 #include "../SQLiteAssemblyDbi.h"
 #include "../SQLiteDbi.h"
 #include "../SQLiteObjectRelationsDbi.h"
+#include "SqliteUpgrader_v13.h"
 
 namespace U2 {
 
-SqliteUpgraderFrom_0_To_1_13::SqliteUpgraderFrom_0_To_1_13(SQLiteDbi* dbi)
+SqliteUpgrader_v13::SqliteUpgrader_v13(SQLiteDbi* dbi)
     : SqliteUpgrader(Version::parseVersion("0.0.0"), Version::parseVersion("1.13.0"), dbi) {
 }
 
-void SqliteUpgraderFrom_0_To_1_13::upgrade(U2OpStatus& os) const {
+void SqliteUpgrader_v13::upgrade(U2OpStatus& os) const {
     SQLiteTransaction t(dbi->getDbRef(), os);
 
     upgradeObjectDbi(os);
@@ -51,7 +50,7 @@ void SqliteUpgraderFrom_0_To_1_13::upgrade(U2OpStatus& os) const {
     dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "1.13.0", os);
 }
 
-void SqliteUpgraderFrom_0_To_1_13::upgradeObjectDbi(U2OpStatus& os) const {
+void SqliteUpgrader_v13::upgradeObjectDbi(U2OpStatus& os) const {
     SQLiteWriteQuery q("PRAGMA table_info(Object)", dbi->getDbRef(), os);
     CHECK_OP(os, );
 
@@ -68,13 +67,13 @@ void SqliteUpgraderFrom_0_To_1_13::upgradeObjectDbi(U2OpStatus& os) const {
     SQLiteWriteQuery("ALTER TABLE Object ADD trackMod INTEGER NOT NULL DEFAULT 0", dbi->getDbRef(), os).execute();
 }
 
-void SqliteUpgraderFrom_0_To_1_13::upgradeObjectRelationsDbi(U2OpStatus& os) const {
+void SqliteUpgrader_v13::upgradeObjectRelationsDbi(U2OpStatus& os) const {
     SQLiteObjectRelationsDbi* objectRelationsDbi = dbi->getSQLiteObjectRelationsDbi();
     SAFE_POINT_EXT(objectRelationsDbi != nullptr, os.setError(L10N::nullPointerError("SQLite object relation dbi")), );
     objectRelationsDbi->initSqlSchema(os);
 }
 
-void SqliteUpgraderFrom_0_To_1_13::upgradeAssemblyDbi(U2OpStatus& os) const {
+void SqliteUpgrader_v13::upgradeAssemblyDbi(U2OpStatus& os) const {
     DbRef* db = dbi->getDbRef();
     SQLiteWriteQuery q("PRAGMA foreign_key_list(Assembly)", db, os);
     SAFE_POINT_OP(os, );

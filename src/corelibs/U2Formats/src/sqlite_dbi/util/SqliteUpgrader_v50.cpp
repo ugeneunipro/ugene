@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,22 +19,33 @@
  * MA 02110-1301, USA.
  */
 
-#pragma once
+#include "SqliteUpgrader_v50.h"
 
-#include "SqliteUpgrader.h"
+#include <U2Core/U2AssemblyUtils.h>
+#include <U2Core/U2Dbi.h>
+#include <U2Core/U2SafePoints.h>
+#include <U2Core/U2SqlHelpers.h>
+
+#include "../SQLiteAssemblyDbi.h"
+#include "../SQLiteObjectRelationsDbi.h"
 
 namespace U2 {
 
-class SqliteUpgraderFrom_0_To_1_13 : public SqliteUpgrader {
-public:
-    SqliteUpgraderFrom_0_To_1_13(SQLiteDbi* dbi);
+SqliteUpgrader_v50::SqliteUpgrader_v50(SQLiteDbi* dbi)
+    : SqliteUpgrader(Version::parseVersion("1.25.0"), Version::parseVersion("1.50.0"), dbi) {
+}
 
-    void upgrade(U2OpStatus& os) const;
+void SqliteUpgrader_v50::upgrade(U2OpStatus& os) const {
+    SQLiteTransaction t(dbi->getDbRef(), os);
 
-private:
-    void upgradeObjectDbi(U2OpStatus& os) const;
-    void upgradeObjectRelationsDbi(U2OpStatus& os) const;
-    void upgradeAssemblyDbi(U2OpStatus& os) const;
-};
+    upgradeMsaGaps(os);
+    CHECK_OP(os, );
+
+    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.toString(), os);
+}
+
+void SqliteUpgrader_v50::upgradeMsaGaps(U2OpStatus&) const {
+    // TODO
+}
 
 }  // namespace U2

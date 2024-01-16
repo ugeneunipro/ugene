@@ -62,7 +62,6 @@ public:
      * Creates a new empty MSA object
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual U2DataId createMcaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, U2OpStatus& os) = 0;
     virtual U2DataId createMcaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, int length, U2OpStatus& os) = 0;
     virtual U2DataId createMsaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, U2OpStatus& os) = 0;
     virtual U2DataId createMsaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, int length, U2OpStatus& os) = 0;

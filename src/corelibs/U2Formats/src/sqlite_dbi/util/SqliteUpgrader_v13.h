@@ -25,14 +25,16 @@
 
 namespace U2 {
 
-class SqliteUpgraderFrom_1_13_To_1_25 : public SqliteUpgrader {
+class SqliteUpgrader_v13 : public SqliteUpgrader {
 public:
-    SqliteUpgraderFrom_1_13_To_1_25(SQLiteDbi* dbi);
+    SqliteUpgrader_v13(SQLiteDbi* dbi);
 
-    void upgrade(U2OpStatus& os) const;
+    void upgrade(U2OpStatus& os) const override;
 
 private:
-    void upgradeCoverageAttribute(U2OpStatus& os) const;
+    void upgradeObjectDbi(U2OpStatus& os) const;
+    void upgradeObjectRelationsDbi(U2OpStatus& os) const;
+    void upgradeAssemblyDbi(U2OpStatus& os) const;
 };
 
 }  // namespace U2
