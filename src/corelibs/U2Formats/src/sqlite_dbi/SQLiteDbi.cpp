@@ -48,7 +48,7 @@ namespace U2 {
 
 const int SQLiteDbi::BIND_PARAMETERS_LIMIT = 999;
 
-const Version SQLiteDbi::MIN_COMPATIBLE_UGENE_VERSION = Version(1, 25);
+const Version SQLiteDbi::MIN_COMPATIBLE_UGENE_VERSION = Version(1, 50);
 
 SQLiteDbi::SQLiteDbi()
     : U2AbstractDbi(SQLiteDbiFactory::ID) {
@@ -163,13 +163,9 @@ QString SQLiteDbi::getProperty(const QString& name, const QString& defaultValue,
     SQLiteReadQuery q("SELECT value FROM Meta WHERE name = ?1", db, os);
     q.bindString(1, name);
     bool found = q.step();
-    if (os.hasError()) {
-        return QString();
-    }
-    if (found) {
-        return q.getString(0);
-    }
-    return defaultValue;
+    CHECK_OP(os, "");
+    CHECK(found, defaultValue);
+    return q.getString(0);
 }
 
 void SQLiteDbi::setProperty(const QString& name, const QString& value, U2OpStatus& os) {

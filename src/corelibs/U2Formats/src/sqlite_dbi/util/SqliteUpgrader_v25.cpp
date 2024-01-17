@@ -19,7 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/L10n.h>
+#include "SqliteUpgrader_v25.h"
+
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2CoreAttributes.h>
@@ -28,14 +29,12 @@
 #include <U2Core/U2SqlHelpers.h>
 
 #include "../SQLiteAssemblyDbi.h"
-#include "../SQLiteDbi.h"
 #include "../SQLiteObjectRelationsDbi.h"
-#include "SqliteUpgrader_v25.h"
 
 namespace U2 {
 
 SqliteUpgrader_v25::SqliteUpgrader_v25(SQLiteDbi* dbi)
-    : SqliteUpgrader(Version::parseVersion("1.13.0"), Version::parseVersion("1.25.0"), dbi) {
+    : SqliteUpgrader(Version::parseVersion("1.25.0"), dbi) {
 }
 
 void SqliteUpgrader_v25::upgrade(U2OpStatus& os) const {
@@ -44,7 +43,7 @@ void SqliteUpgrader_v25::upgrade(U2OpStatus& os) const {
     upgradeCoverageAttribute(os);
     CHECK_OP(os, );
 
-    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.toString(), os);
+    SqliteUpgrader::upgrade(os);
 }
 
 void SqliteUpgrader_v25::upgradeCoverageAttribute(U2OpStatus& os) const {

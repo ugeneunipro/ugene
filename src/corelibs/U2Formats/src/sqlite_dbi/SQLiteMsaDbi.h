@@ -163,6 +163,12 @@ public:
     /** Redo the operation for the MSA. */
     void redo(const U2DataId& msaId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os);
 
+    /** Packs vector or gaps into a serialized DB form stored as 'gaps' field in MsaRow table. */
+    static QByteArray packGaps(const QVector<U2MsaGap>& gaps);
+
+    /** Parses gaps from a serialized DB form stored as 'gaps' field in MsaRow table. */
+    QVector<U2MsaGap> unpackGaps(const QByteArray& gaps, U2OpStatus& os);
+
 private:
     /**
      * Creates a new record in MsaRow table for the added row, and

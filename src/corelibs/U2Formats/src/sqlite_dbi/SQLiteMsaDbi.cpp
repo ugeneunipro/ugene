@@ -138,7 +138,7 @@ void SQLiteMsaDbi::updateMsaAlphabet(const U2DataId& msaId, const U2AlphabetId& 
     SAFE_POINT_OP(os, );
 }
 
-static QByteArray packGaps(const QVector<U2MsaGap>& gaps) {
+QByteArray SQLiteMsaDbi::packGaps(const QVector<U2MsaGap>& gaps) {
     QByteArray result;
     for (const U2MsaGap& gap : qAsConst(gaps)) {
         if (result.length() > 0) {
@@ -149,7 +149,7 @@ static QByteArray packGaps(const QVector<U2MsaGap>& gaps) {
     return result;
 }
 
-static QVector<U2MsaGap> unpackGaps(const QByteArray& gaps, U2OpStatus& os) {
+QVector<U2MsaGap> SQLiteMsaDbi::unpackGaps(const QByteArray& gaps, U2OpStatus& os) {
     QVector<U2MsaGap> result;
     if (gaps.isEmpty()) {
         return result;

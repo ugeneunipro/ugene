@@ -170,6 +170,8 @@ public:
 
     QByteArray getBlob(int column) const;
 
+    U2DataType getType(int column) const;
+
     bool getBool(int column) const {
         return getInt32(column) != 0;
     }
@@ -264,7 +266,7 @@ public:
     SQLiteReadQuery(const QString& sql, DbRef* d, U2OpStatus& os);
     SQLiteReadQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
 
-    bool step();
+    bool step() override;
 };
 
 class U2CORE_EXPORT SQLiteWriteQuery : public SQLiteQuery {
@@ -278,7 +280,7 @@ public:
     SQLiteWriteQuery(const QString& sql, DbRef* d, U2OpStatus& os);
     SQLiteWriteQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
 
-    bool step();
+    bool step() override;
 };
 
 /** Helper class to mark transaction regions */
@@ -290,7 +292,7 @@ public:
     QSharedPointer<SQLiteQuery> getPreparedQuery(const QString& sql, DbRef* d, U2OpStatus& os);
     QSharedPointer<SQLiteQuery> getPreparedQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
 
-    bool isCacheQueries() {
+    bool isCacheQueries() const {
         return cacheQueries;
     }
 

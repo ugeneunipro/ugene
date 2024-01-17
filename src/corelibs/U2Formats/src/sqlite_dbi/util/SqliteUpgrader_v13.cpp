@@ -19,20 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include "SqliteUpgrader_v13.h"
+
 #include <U2Core/L10n.h>
-#include <U2Core/U2Dbi.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SqlHelpers.h>
 
 #include "../SQLiteAssemblyDbi.h"
-#include "../SQLiteDbi.h"
 #include "../SQLiteObjectRelationsDbi.h"
-#include "SqliteUpgrader_v13.h"
 
 namespace U2 {
 
 SqliteUpgrader_v13::SqliteUpgrader_v13(SQLiteDbi* dbi)
-    : SqliteUpgrader(Version::parseVersion("0.0.0"), Version::parseVersion("1.13.0"), dbi) {
+    : SqliteUpgrader(Version::parseVersion("1.13.0"), dbi) {
 }
 
 void SqliteUpgrader_v13::upgrade(U2OpStatus& os) const {
@@ -47,7 +46,7 @@ void SqliteUpgrader_v13::upgrade(U2OpStatus& os) const {
     upgradeAssemblyDbi(os);
     CHECK_OP(os, );
 
-    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "1.13.0", os);
+    SqliteUpgrader::upgrade(os);
 }
 
 void SqliteUpgrader_v13::upgradeObjectDbi(U2OpStatus& os) const {
@@ -105,9 +104,9 @@ void SqliteUpgrader_v13::upgradeAssemblyDbi(U2OpStatus& os) const {
     SAFE_POINT_OP(os, );
     while (assemblyFetch.step()) {
         assemblyInsert.bindDataId(1, assemblyFetch.getDataId(0, U2Type::Assembly));
-        const U2DataId refId = assemblyFetch.getDataId(1, U2Type::CrossDatabaseReference);
-        const qint64 dbiRefId = U2DbiUtils::toDbiId(refId);
-        if (0 == dbiRefId) {
+        U2DataId refId = assemblyFetch.getDataId(1, U2Type::CrossDatabaseReference);
+        qint64 dbiRefId = U2DbiUtils::toDbiId(refId);
+        if (dbiRefId == 0) {
             assemblyInsert.bindNull(2);
         } else {
             assemblyInsert.bindDataId(2, refId);

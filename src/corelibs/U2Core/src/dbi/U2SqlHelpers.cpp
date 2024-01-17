@@ -275,6 +275,10 @@ QByteArray SQLiteQuery::getBlob(int column) const {
     return res;
 }
 
+U2DataType SQLiteQuery::getType(int column) const {
+    return getInt64(column);
+}
+
 // param binding methods
 void SQLiteQuery::bindDataId(int idx, const U2DataId& val) {
     if (!val.isEmpty()) {
