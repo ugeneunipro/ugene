@@ -2272,6 +2272,51 @@ GUI_TEST_CLASS_DEFINITION(test_6474_2) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6485) {
+    /*
+    * 1. Create custom cmdline element 'test_6485', if it exists delete it and create again (it must be created in this session)
+    * 2. Open second instance of WD
+    * 3. Open context menu for created cmdline element on palette. Choose 'Remove' item.
+    * Expected state: message box with warning appeared, element is not removed
+    */
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "el_6485";
+
+    QTreeWidgetItem* treeItem = GTUtilsWorkflowDesigner::findTreeItem(settings.elementName, GTUtilsWorkflowDesigner::algorithms, false, false);
+    if (treeItem != nullptr) {
+        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "", "Remove element"));
+        GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove"}));
+        GTTreeWidget::click(treeItem);
+        GTMouseDriver::click(Qt::RightButton);
+    }
+
+    QList<CreateElementWithCommandLineToolFiller::InOutData> input;
+    CreateElementWithCommandLineToolFiller::InOutDataType inOutDataType;
+    inOutDataType.first = CreateElementWithCommandLineToolFiller::Sequence;
+    inOutDataType.second = "FASTA";
+    input << CreateElementWithCommandLineToolFiller::InOutData("in1", inOutDataType);
+    settings.input = input;
+    settings.command = "echo";
+
+    GTUtilsDialog::waitForDialog(new CreateElementWithCommandLineToolFiller(settings));
+    QAbstractButton* createElement = GTAction::button("createElementWithCommandLineTool");
+    GTWidget::click(createElement);
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();    
+    treeItem = GTUtilsWorkflowDesigner::findTreeItem(settings.elementName, GTUtilsWorkflowDesigner::algorithms);
+    CHECK_SET_ERR(treeItem != nullptr, "Element not found");
+    
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "The element with external tool is used in other Workflow Designer window(s). Please remove these instances to be able to remove the element configuration."));
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "", "Remove element"));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove"}));
+    GTTreeWidget::click(treeItem);
+    GTMouseDriver::click(Qt::RightButton);
+
+    GTUtilsWorkflowDesigner::findTreeItem(settings.elementName, GTUtilsWorkflowDesigner::algorithms);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     //    1. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
