@@ -1058,7 +1058,10 @@ void AssemblyBrowser::sl_setReference() {
     if (objects.isEmpty()) {
         loadReferenceFromFile();
     } else if (1 == objects.size()) {
-        tryAddObject(objects.first());
+        QString err = tryAddObject(objects.first());
+        if (!err.isEmpty()) {
+            QMessageBox::critical(ui, tr("Error!"), err);
+        }
     } else {
         QMessageBox::information(ui, tr("Choose Reference Sequence"), tr("An error occurred while setting reference to \"%1\". You have more than one sequence object selected in the Project View. Please select only one object and try again.").arg(gobject->getGObjectName()), QMessageBox::Ok);
     }
