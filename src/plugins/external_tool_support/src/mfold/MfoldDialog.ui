@@ -650,7 +650,7 @@
   <customwidget>
    <class>U2::ClickableLabel</class>
    <extends>QLabel</extends>
-   <header>ClickableLabel.h</header>
+   <header>mfold/ClickableLabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
