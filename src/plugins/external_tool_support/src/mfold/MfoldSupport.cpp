@@ -27,7 +27,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 
-#include <U2GUI/AppSettingsGUI.h>
+#include <U2Gui/AppSettingsGUI.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
