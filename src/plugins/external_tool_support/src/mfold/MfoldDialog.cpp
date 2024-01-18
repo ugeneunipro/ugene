@@ -20,6 +20,7 @@
  */
 #include "MfoldDialog.h"
 
+#include <QComboBox>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QScopedPointer>

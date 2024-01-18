@@ -24,6 +24,7 @@
 #include "MfoldSettings.h"
 #include "ui_MfoldDialog.h"
 
+class QComboBox;
 class QLineEdit;
 
 namespace U2 {
