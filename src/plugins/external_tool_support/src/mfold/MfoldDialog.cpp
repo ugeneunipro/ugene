@@ -56,9 +56,9 @@ void MfoldDialog::initRegionSelector(DNASequenceSelection* seqSelection) {
     regionSelector = new RegionSelector(this, seqLen, true, seqSelection, isCircular);
     ui.regionSelectorLayout->insertWidget(0, regionSelector);
 
-    auto lineEdits = regionSelector->getRegionLineEdits();
-    startEdit = lineEdits.startEdit;
-    endEdit = lineEdits.endEdit;
+    auto lineEdits = regionSelector->getLineEdits();
+    startEdit = lineEdits.first;
+    endEdit = lineEdits.second;
     validateRegionAndShowError();
     connect(startEdit, &QLineEdit::textChanged, this, &MfoldDialog::validateRegionAndShowError);
     connect(endEdit, &QLineEdit::textChanged, this, &MfoldDialog::validateRegionAndShowError);
@@ -87,7 +87,7 @@ void MfoldDialog::validateRegionAndShowError() {
 
     // Returns region len taking into account that the sequence can be circular. Doesn't validate region.
     auto getRegionLen = [this](qulonglong start, qulonglong end) {
-        return end > start ? end - start + 1 : seqLen - start + end + 1;
+        return end >= start ? end - start + 1 : seqLen - start + end + 1;
     };
 
     if (startEdit->text().isEmpty()) {

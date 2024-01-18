@@ -3,11 +3,11 @@
 #include "ClickableLabel.h"
 
 namespace U2 {
-ClickableLabel::ClickableLabel(QWidget* p, Qt::WindowFlags f)
+ClickableLabel::ClickableLabel(QWidget* p, Qt::WindowFlags)
     : QLabel(p) {
 }
 
-void ClickableLabel::mousePressEvent(QMouseEvent* event) {
+void ClickableLabel::mousePressEvent(QMouseEvent*) {
     emit clicked();
 }
 }  // namespace U2

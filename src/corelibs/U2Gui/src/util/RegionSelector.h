@@ -71,6 +71,8 @@ public:
 
     void showErrorMessage();
 
+    QPair<QLineEdit*, QLineEdit*> getLineEdits() const;
+
 signals:
     void si_regionChanged(const U2Region& newRegion);
 
