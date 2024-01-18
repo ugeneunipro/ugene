@@ -162,11 +162,11 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
 
     // FIRST ALIGNMENT
     // Create an alignment
-    U2DataId msaId = msaDbi->createMsaObject("", "Test name", BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
+    U2DataId msaId1 = msaDbi->createMsaObject("", "Test name", BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
     CHECK_NO_ERROR(os);
 
     // Add alignment info
-    U2StringAttribute attr(msaId, "MSA1 info key", "MSA1 info value");
+    U2StringAttribute attr(msaId1, "MSA1 info key", "MSA1 info value");
     U2AttributeDbi* attrDbi = SQLiteObjectDbiTestData::getAttributeDbi();
     attrDbi->createStringAttribute(attr, os);
     CHECK_NO_ERROR(os);
@@ -209,7 +209,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     QList<U2MsaRow> rows;
     rows << row1 << row2;
 
-    msaDbi->addRows(msaId, rows, -1, os);
+    msaDbi->addRows(msaId1, rows, -1, os);
     CHECK_NO_ERROR(os);
 
     // SECOND ALIGNMENT
@@ -248,7 +248,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
 
     // REMOVE THE FIRST ALIGNMENT OBJECT
     SQLiteObjectDbi* sqliteObjectDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
-    sqliteObjectDbi->removeObject(msaId, os);
+    sqliteObjectDbi->removeObject(msaId1, os);
 
     // VERIFY THAT THERE IS ONLY THE SECOND ALIGNMENT'S RECORDS LEFT IN TABLES
     SQLiteDbi* sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
@@ -277,27 +277,26 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
 
     // "MsaRow"
     SQLiteReadQuery qMsaRow("SELECT COUNT(*) FROM MsaRow WHERE msa = ?1", sqliteDbi->getDbRef(), os);
-    qMsaRow.bindDataId(1, msaId);
-    qint64 msa1Rows = qMsaRow.selectInt64();
-    CHECK_EQUAL(0, msa1Rows, "number of rows in MSA1");
+    qMsaRow.bindDataId(1, msaId1);
+    qint64 msa1RowCount = qMsaRow.selectInt64();
+    CHECK_EQUAL(0, msa1RowCount, "number of rows in MSA1");
 
     qMsaRow.reset(true);
     qMsaRow.bindDataId(1, msaId2);
-    qint64 msa2Rows = qMsaRow.selectInt64();
-    CHECK_EQUAL(1, msa2Rows, "number of rows in MSA2");
+    qint64 msa2RowCount = qMsaRow.selectInt64();
+    CHECK_EQUAL(1, msa2RowCount, "number of rows in MSA2");
 
     // "Gaps"
     SQLiteReadQuery qMsaRowGap("SELECT gaps FROM MsaRow WHERE msa = ?1", sqliteDbi->getDbRef(), os);
-    qMsaRowGap.bindDataId(1, msaId);
+    qMsaRowGap.bindDataId(1, msaId1);
     QList<QByteArray> msa1Gaps = qMsaRowGap.selectBlobs();
-    CHECK_EQUAL(0, msa1Gaps.length() == 1, "query returned no gap info/1");
-    CHECK_EQUAL(0, msa1Gaps[0].split(';').length(), "number of gaps in MSA1 rows");
+    CHECK_EQUAL(0, msa1Gaps.length(), "query returned no gap info/1");
 
     qMsaRowGap.reset(true);
     qMsaRowGap.bindDataId(1, msaId2);
     QList<QByteArray> msa2Gaps = qMsaRowGap.selectBlobs();
-    CHECK_EQUAL(0, msa2Gaps.length() == 1, "query returned no gap info/2");
-    CHECK_EQUAL(1, msa2Gaps[0].split(';').length(), "number of gaps in MSA2 rows");
+    CHECK_EQUAL(1, msa2Gaps.length(), "query returned no gap info/2");
+    CHECK_EQUAL(1, msa2Gaps[0].split(';').length(), "number of gaps in MSA2 row");
 
     // "Sequence"
     SQLiteReadQuery qSeq("SELECT COUNT(*) FROM Sequence WHERE object = ?1", sqliteDbi->getDbRef(), os);
@@ -317,7 +316,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
 
     // "Msa"
     SQLiteReadQuery qMsa("SELECT COUNT(*) FROM Msa WHERE object = ?1", sqliteDbi->getDbRef(), os);
-    qMsa.bindDataId(1, msaId);
+    qMsa.bindDataId(1, msaId1);
     qint64 msa1records = qMsa.selectInt64();
     CHECK_EQUAL(0, msa1records, "number of MSA1 records");
 
@@ -328,7 +327,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
 
     // "Object"
     SQLiteReadQuery qObj("SELECT COUNT(*) FROM Object WHERE id = ?1", sqliteDbi->getDbRef(), os);
-    qObj.bindDataId(1, msaId);
+    qObj.bindDataId(1, msaId1);
     qint64 msa1objects = qObj.selectInt64();
     CHECK_EQUAL(0, msa1objects, "number of MSA1 objects");
 

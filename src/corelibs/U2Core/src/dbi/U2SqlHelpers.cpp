@@ -58,7 +58,7 @@ bool SQLiteUtils::getMemoryHint(int& currentMemory, int& maxMemory, int resetMax
 //////////////////////////////////////////////////////////////////////////
 // L10N
 QString U2DbiL10n::queryError(const QString& err) {
-    FAIL(err, err);
+    // FAIL(err, err);
     return tr("Error querying database: %1").arg(err);
 }
 
