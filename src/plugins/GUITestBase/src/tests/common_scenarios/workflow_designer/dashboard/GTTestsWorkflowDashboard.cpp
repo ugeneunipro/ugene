@@ -577,7 +577,7 @@ static void createNodesElement(const QString& testDir) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0002) {
-    //GTUtilsDialog::waitForDialog(new StartupDialogFiller());
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     // 1. Create a custom element called Nodes
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -635,7 +635,7 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0003) {
-    //GTUtilsDialog::waitForDialog(new StartupDialogFiller());
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     // 1. Import a custom element from _common_data/workflow/dashboard/Nodes.etc if it is not
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -691,7 +691,7 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0004) {
-    //GTUtilsDialog::waitForDialog(new StartupDialogFiller());
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     // 1. Create a custom element called Nodes
     GTUtilsWorkflowDesigner::openWorkflowDesigner();

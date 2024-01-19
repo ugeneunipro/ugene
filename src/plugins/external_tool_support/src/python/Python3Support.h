@@ -24,7 +24,8 @@
 #include "RunnerTool.h"
 
 namespace U2 {
-    // Support of Python 3 in UGENE
+
+// Support of Python 3 in UGENE
 class Python3Support : public RunnerTool {
     Q_OBJECT
 public:
