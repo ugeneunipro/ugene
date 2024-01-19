@@ -3519,7 +3519,8 @@ GUI_TEST_CLASS_DEFINITION(test_2640) {
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
     // Expected state: tophat launched with argument -p
-    bool hasExpectedMessage = lt.hasMessage("tophat2/tophat -p 94 --output-dir") || lt.hasMessage("tophat2/tophat\" -p 94 --output-dir");
+    bool hasExpectedMessage = lt.hasMessage("tophat2/tophat -p 94 --output-dir") || lt.hasMessage("tophat2/tophat\" -p 94 --output-dir")
+                           || lt.hasMessage("tophat2/tophat_2 -p 94 --output-dir") || lt.hasMessage("tophat2/tophat_2\" -p 94 --output-dir");
     CHECK_SET_ERR(hasExpectedMessage, "Expected message not found");
 }
 
