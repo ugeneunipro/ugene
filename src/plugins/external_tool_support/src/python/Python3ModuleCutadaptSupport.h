@@ -25,6 +25,7 @@
 
 namespace U2 {
 
+// Support of the Python 3 module Cutadapt in UGENE
 class Python3ModuleCutadaptSupport : public ExternalToolModule {
     Q_OBJECT
 public:
