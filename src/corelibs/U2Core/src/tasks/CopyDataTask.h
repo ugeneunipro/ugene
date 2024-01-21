@@ -49,7 +49,7 @@ private:
     * @line - line to replace symbols in
     * @symbolsCount - valuable symbols count in @line
     */
-    void replaceLineEndings(const ReplaceLineEndings& newLineEndings, bool prevLineEndsWithCR, QByteArray& line, int& symbolsCount) const;
+    void replaceLineEndings(const ReplaceLineEndings& newLineEndings, QByteArray& line, int& symbolsCount);
 
     static const int BUFFSIZE = 32 * 1024;
     static const char CHAR_CR = '\r';
@@ -61,6 +61,9 @@ private:
     GUrl urlFrom;
     GUrl urlTo;
     ReplaceLineEndings newLineEndings = ReplaceLineEndings::KEEP_AS_IS;
+
+    int cRCount = 0;
+    int lFCount = 0;
 };
 
 }  // namespace U2

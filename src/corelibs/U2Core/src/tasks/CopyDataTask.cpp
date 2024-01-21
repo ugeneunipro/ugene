@@ -50,11 +50,10 @@ void CopyDataTask::run() {
 
     int count = 0;
     int count_w = 0;
-    bool lineEndsWithCR = false;
     QByteArray buff(BUFFSIZE, 0);
 
     count = from->readBlock(buff.data(), BUFFSIZE);
-    replaceLineEndings(newLineEndings, lineEndsWithCR, buff, count);
+    replaceLineEndings(newLineEndings, buff, count);
     if (count == 0 || count == -1) {
         stateInfo.setError(tr("Cannot get data from: '%1'").arg(urlFrom.getURLString()));
         return;
@@ -72,41 +71,35 @@ void CopyDataTask::run() {
         }
         stateInfo.progress = from->getProgress();
         count = from->readBlock(buff.data(), BUFFSIZE);
-        replaceLineEndings(newLineEndings, lineEndsWithCR, buff, count);
+        replaceLineEndings(newLineEndings, buff, count);
     }
     if (count < 0 || count_w < 0) {
         if (!stateInfo.hasError()) {
             stateInfo.setError(tr("IO adapter error. %1").arg(from->errorString()));
         }
     }
+
+    if (newLineEndings != KEEP_AS_IS) {
+        if (cRCount != 0 && cRCount != lFCount) {
+            stateInfo.addWarning(tr("File %1 contain different line endings. This may cause problems with further file processing."));
+        }
+    }
 }
 
-void CopyDataTask::replaceLineEndings(const ReplaceLineEndings& newLineEndings, bool prevLineEndsWithCR, QByteArray& line, int& symbolsCount) const {
+void CopyDataTask::replaceLineEndings(const ReplaceLineEndings& newLineEndings, QByteArray& line, int& symbolsCount) {
     CHECK(newLineEndings != ReplaceLineEndings::KEEP_AS_IS, );
     CHECK(symbolsCount != 0, );
     QByteArray result;
     line.resize(symbolsCount);
+    cRCount += line.count(CHAR_CR);
+    lFCount += line.count(CHAR_LF);
     if (newLineEndings == ReplaceLineEndings::LF) {
-        bool prevCharCR = false;
         for (const char currentChar : qAsConst(line)) {
-            if (prevCharCR || prevLineEndsWithCR) {
-                prevCharCR = false;
-                prevLineEndsWithCR = false;
-                result.append(CHAR_LF);
-                if (currentChar == CHAR_LF) {
-                    continue;
-                }
-            }
             if (currentChar == CHAR_CR) {
-                prevCharCR = true;
-                prevLineEndsWithCR = true;
                 symbolsCount--;
                 continue;
-            } else {
-                prevLineEndsWithCR = false;
             }
             result.append(currentChar);
-            prevCharCR = false;
         }
     }
     line = result;
