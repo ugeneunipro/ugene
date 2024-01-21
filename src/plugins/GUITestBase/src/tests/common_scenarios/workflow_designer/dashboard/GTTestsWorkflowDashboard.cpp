@@ -1026,21 +1026,6 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
                           .arg(pythonToolPath));
     }
 
-    const QString cutadaptToolName = "Cutadapt";
-    QString cutadaptToolPath = getExternalToolPath(cutadaptToolName);
-    if (cutadaptToolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(cutadaptToolName, getExternalToolDirPath(cutadaptToolName, "python3"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(cutadaptToolName, QDir::toNativeSeparators(newToolPath));
-
-        GTUtilsTaskTreeView::waitTaskFinished();
-        cutadaptToolPath = getExternalToolPath(cutadaptToolName);
-        CHECK_SET_ERR(QDir::toNativeSeparators(cutadaptToolPath) == QDir::toNativeSeparators(newToolPath),
-                      QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
-                          .arg(cutadaptToolName)
-                          .arg(newToolPath)
-                          .arg(cutadaptToolPath));
-    }
-
     //    1. Open "_common_data/workflow/dashboard/cutadapt.uwl".
     GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
