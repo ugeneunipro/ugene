@@ -202,7 +202,7 @@ class AddDocumentsToProjectTask : public Task {
     Q_OBJECT
 public:
     AddDocumentsToProjectTask(const QList<AD2P_DocumentInfo>& docsInfo, const QList<AD2P_ProviderInfo>& providersInfo);
-    ~AddDocumentsToProjectTask();
+    ~AddDocumentsToProjectTask() override;
 
     QList<Task*> onSubTaskFinished(Task* subTask) override;
     QString generateReport() const override;
@@ -213,7 +213,7 @@ private:
 
     QList<AD2P_DocumentInfo> docsInfo;
     QList<AD2P_ProviderInfo> providersInfo;
-    bool loadTasksAdded;
+    bool loadTasksAdded = false;
 };
 
 class OpenWithProjectTask : public Task {
