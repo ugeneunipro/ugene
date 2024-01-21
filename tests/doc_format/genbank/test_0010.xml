@@ -1,5 +1,5 @@
 <multi-test>
 
-    <load-document index="doc" url="genbank/AAA59172.1.gb" io="local_file" format="genbank" no-message="The number of valid sequence characters does not coincide with the declared size in the sequence header"/>
+    <load-document index="doc" url="genbank/AAA59172.1.gb" io="local_file" format="genbank" no-message="The number of valid sequence characters does not match with the declared size in the sequence header"/>
 
 </multi-test>
