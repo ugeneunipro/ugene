@@ -200,7 +200,7 @@ bool AssemblyBrowser::eventFilter(QObject* o, QEvent* e) {
                     QApplication::changeOverrideCursor(Qt::ArrowCursor);  // setting arrow cursor on Linux
                     QString err = tryAddObject(gomd->objPtr.data());
                     if (!err.isEmpty()) {
-                        QMessageBox::critical(ui, tr("Error!"), err);
+                        QMessageBox::critical(ui, L10N::errorTitle(), err);
                     }
                 }
             }
@@ -1060,7 +1060,7 @@ void AssemblyBrowser::sl_setReference() {
     } else if (1 == objects.size()) {
         QString err = tryAddObject(objects.first());
         if (!err.isEmpty()) {
-            QMessageBox::critical(ui, tr("Error!"), err);
+            QMessageBox::critical(ui, L10N::errorTitle(), err);
         }
     } else {
         QMessageBox::information(ui, tr("Choose Reference Sequence"), tr("An error occurred while setting reference to \"%1\". You have more than one sequence object selected in the Project View. Please select only one object and try again.").arg(gobject->getGObjectName()), QMessageBox::Ok);
