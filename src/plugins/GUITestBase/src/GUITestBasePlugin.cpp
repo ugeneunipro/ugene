@@ -1474,7 +1474,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6262);
     REGISTER_TEST(GUITest_regression_scenarios::test_6277);
     REGISTER_TEST(GUITest_regression_scenarios::test_6279);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6283);
     REGISTER_TEST(GUITest_regression_scenarios::test_6291);
     REGISTER_TEST(GUITest_regression_scenarios::test_6298);
 
@@ -1857,6 +1856,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_8004);
     REGISTER_TEST(GUITest_regression_scenarios::test_8009);
     REGISTER_TEST(GUITest_regression_scenarios::test_8010);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8018);
     REGISTER_TEST(GUITest_regression_scenarios::test_8015);
     REGISTER_TEST(GUITest_regression_scenarios::test_8028);
     REGISTER_TEST(GUITest_regression_scenarios::test_8037);
@@ -3266,8 +3266,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0004);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0007);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0008);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0009);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0010);

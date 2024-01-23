@@ -23,31 +23,17 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#include "RunnerTool.h"
-#include "utils/ExternalToolSupportAction.h"
-
 namespace U2 {
 
-class PythonSupport : public RunnerTool {
+// Support of the Python 3 module Cutadapt in UGENE
+class Python3ModuleCutadaptSupport : public ExternalToolModule {
     Q_OBJECT
 public:
-    PythonSupport();
+    Python3ModuleCutadaptSupport();
 
-    static const QString ET_PYTHON_ID;
-};
-
-class PythonModuleSupport : public ExternalToolModule {
-    Q_OBJECT
-public:
-    PythonModuleSupport(const QString& id, const QString& name);
-};
-
-class PythonModuleBioSupport : public PythonModuleSupport {
-    Q_OBJECT
-public:
-    PythonModuleBioSupport();
-
-    static const QString ET_PYTHON_BIO_ID;
+    static const QString ET_PYTHON_CUTADAPT_ID;
+    static const QString ADAPTERS_DIR_NAME;
+    static const QString ADAPTERS_DATA_NAME;
 };
 
 }  // namespace U2

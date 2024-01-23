@@ -21,19 +21,17 @@
 
 #pragma once
 
-#include <U2Core/ExternalToolRegistry.h>
+#include "RunnerTool.h"
 
 namespace U2 {
 
-class CutadaptSupport : public ExternalTool {
+// Support of Python 3 in UGENE
+class Python3Support : public RunnerTool {
     Q_OBJECT
 public:
-    CutadaptSupport();
+    Python3Support();
 
-    static const QString ET_CUTADAPT;
-    static const QString ET_CUTADAPT_ID;
-    static const QString ADAPTERS_DIR_NAME;
-    static const QString ADAPTERS_DATA_NAME;
+    static const QString ET_PYTHON_ID;
 };
 
 }  // namespace U2
