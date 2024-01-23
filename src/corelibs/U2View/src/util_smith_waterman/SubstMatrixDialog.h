@@ -44,15 +44,15 @@ private:
     void connectGUI();
     void prepareTable();
 
-    int hlBorderColumn;
-    int hlBorderRow;
+    int hlBorderColumn = -1;
+    int hlBorderRow = -1;
 
-    int hlInnerColumn;
-    int hlInnerRow;
+    int hlInnerColumn = -1;
+    int hlInnerRow = -1;
 
     SMatrix m;
 
-    QPushButton* bttnClose;
+    QPushButton* bttnClose = nullptr;
     Ui_SubstMatrixDialogBase* base = nullptr;
 };
 
