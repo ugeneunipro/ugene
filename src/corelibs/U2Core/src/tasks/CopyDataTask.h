@@ -45,7 +45,6 @@ private:
     /*
     * Replace existing line endings with desired.
     * @newLineEndings - desired line ending
-    * @prevLineEndsWithCR - store state if previous replacement stopped stopped on CR symbol and rewrites it if it stopped at current
     * @line - line to replace symbols in
     * @symbolsCount - valuable symbols count in @line
     */
