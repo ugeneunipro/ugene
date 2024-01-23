@@ -38,6 +38,11 @@ rm -rf "${APP_BUNDLE_DIR}/plugins/"*test_runner*
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_BUNDLE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
 }
+
+# These tools can't be notarized today:
+# mfold: This feature is still in progress
+rm -rf "${APP_EXE_DIR}/tools/mfold"
+
 echo "##teamcity[blockClosed name='Copy files']"
 
 echo "##teamcity[blockOpened name='Get version']"

@@ -56,9 +56,9 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
 }
 
 # These tools can't be notarized today:
-# python2.7: "The signature does not include a secure timestamp."
-rm -rf "${APP_EXE_DIR}/tools/python2"
+# python3: Remove until we find out how to notarize it
 rm -rf "${APP_EXE_DIR}/tools/python3"
+# mfold: This feature is still in progress
 rm -rf "${APP_EXE_DIR}/tools/mfold"
 
 echo " ##teamcity[blockClosed name='Copy files']"

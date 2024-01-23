@@ -1372,7 +1372,6 @@ tools/cap3
 tools/clustalo
 tools/clustalw
 tools/cufflinks
-tools/cutadapt
 tools/fastqc
 tools/fasttree
 tools/hmmer3
@@ -1382,7 +1381,6 @@ tools/kalign
 tools/mafft
 tools/mrbayes
 tools/phyml
-tools/python2
 tools/python3
 tools/samtools
 tools/snpeff
