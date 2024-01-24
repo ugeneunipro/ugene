@@ -21,20 +21,19 @@
 
 #pragma once
 
-#include "SqliteUpgrader.h"
+#include <U2Core/ExternalToolRegistry.h>
 
 namespace U2 {
 
-class SqliteUpgraderFrom_0_To_1_13 : public SqliteUpgrader {
+// Support of the Python 3 module Cutadapt in UGENE
+class Python3ModuleCutadaptSupport : public ExternalToolModule {
+    Q_OBJECT
 public:
-    SqliteUpgraderFrom_0_To_1_13(SQLiteDbi* dbi);
+    Python3ModuleCutadaptSupport();
 
-    void upgrade(U2OpStatus& os) const;
-
-private:
-    void upgradeObjectDbi(U2OpStatus& os) const;
-    void upgradeObjectRelationsDbi(U2OpStatus& os) const;
-    void upgradeAssemblyDbi(U2OpStatus& os) const;
+    static const QString ET_PYTHON_CUTADAPT_ID;
+    static const QString ADAPTERS_DIR_NAME;
+    static const QString ADAPTERS_DATA_NAME;
 };
 
 }  // namespace U2

@@ -1383,6 +1383,7 @@ tools/mafft
 tools/mrbayes
 tools/phyml
 tools/python2
+tools/python3
 tools/samtools
 tools/snpeff
 tools/spades

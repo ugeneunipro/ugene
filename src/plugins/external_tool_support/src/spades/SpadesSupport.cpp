@@ -20,7 +20,7 @@
  */
 
 #include "SpadesSupport.h"
-#include <python/PythonSupport.h>
+#include <python/Python3Support.h>
 
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
 
@@ -57,8 +57,8 @@ SpadesSupport::SpadesSupport()
     versionRegExp = QRegExp("SPAdes.* v(\\d+.\\d+.\\d+)");
     toolKitName = "SPAdes";
 
-    toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
-    dependencies << PythonSupport::ET_PYTHON_ID;
+    toolRunnerProgram = Python3Support::ET_PYTHON_ID;
+    dependencies << Python3Support::ET_PYTHON_ID;
 }
 
 void SpadesSupport::checkIn() {

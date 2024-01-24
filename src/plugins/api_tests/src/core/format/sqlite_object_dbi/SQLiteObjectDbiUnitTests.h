@@ -63,10 +63,9 @@ private:
  *   1) Records in "Attribute" table (MSA info)
  *   2) Records in "StringAttribute"
  *   3) Records in "MsaRow"
- *   4) Records in "MsaRowGap"
- *   5) Records in "Sequence" (not used by other objects)
- *   6) The record in "Msa"
- *   7) The record in "Object"
+ *   4) Records in "Sequence" (not used by other objects)
+ *   5) The record in "Msa"
+ *   6) The record in "Object"
  * Records of another MSA object are not removed.
  */
 DECLARE_TEST(SQLiteObjectDbiUnitTests, removeMsaObject);

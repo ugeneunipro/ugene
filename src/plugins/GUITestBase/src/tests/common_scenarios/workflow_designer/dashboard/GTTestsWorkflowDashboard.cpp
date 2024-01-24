@@ -23,8 +23,11 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 
@@ -33,6 +36,7 @@
 #include <QFileInfo>
 #include <QMdiArea>
 #include <QTemporaryDir>
+#include <QWizard>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
@@ -46,6 +50,7 @@
 #include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWorkflowDesigner.h"
+#include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DashboardsManagerDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 
@@ -543,29 +548,60 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0004) {
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 }
 
+static void createNodesElement(const QString& testDir) {
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "Nodes";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::ExecutablePath;
+    settings.tool = testDir + "_common_data/workflow/dashboard/fake_tools/nodes.py";
+
+    // Second page
+    QList<CreateElementWithCommandLineToolFiller::InOutData> input;
+    CreateElementWithCommandLineToolFiller::InOutDataType inDataType;
+    inDataType.first = CreateElementWithCommandLineToolFiller::String;
+    inDataType.second = "String data value";
+    input << CreateElementWithCommandLineToolFiller::InOutData("in", inDataType);
+    settings.input = input;
+
+    // Fourth page
+    QList<CreateElementWithCommandLineToolFiller::InOutData> output;
+    CreateElementWithCommandLineToolFiller::InOutDataType outDataType;
+    outDataType.first = CreateElementWithCommandLineToolFiller::String;
+    outDataType.second = "Output URL";
+    output << CreateElementWithCommandLineToolFiller::InOutData("out", outDataType);
+    settings.output = output;
+
+    // Fifth page
+    settings.command = "%USUPP_PYTHON3% %TOOL_PATH% --input $in --output $out";
+    GTUtilsDialog::waitForDialog(new CreateElementWithCommandLineToolFiller(settings));
+    GTWidget::click(GTAction::button("createElementWithCommandLineTool"));
+}
+
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0002) {
-    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
+    // 1. Create a custom element called Nodes
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    auto nodesElement = GTUtilsWorkflowDesigner::findTreeItem("Nodes", GTUtilsWorkflowDesigner::tab::algorithms, true, false);
+    if (nodesElement == nullptr) {
+        createNodesElement(testDir);
+    }
 
-    //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
-    const QString cutadaptToolName = "cutadapt";
-    const QString cutadaptToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(cutadaptToolName, cutadaptToolPath);
+    //    2. Open "_common_data/workflow/dashboard/nodes.uwl".
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/nodes.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    //    2. Open "_common_data/workflow/dashboard/cutadapt.uwl".
-    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click("Read File URL(s)");
+    //    3. Click "Read Sequence" element.
+    GTUtilsWorkflowDesigner::click("Read Sequence");
 
     //    4. Add "data/samples/FASTQ/eas.fastq" file 100 times to "Dataset 1" dataset.
     const QString inputDir = QFileInfo(sandBoxDir + "tree_nodes_creation_test_0002_input").absoluteFilePath();
     QDir().mkpath(inputDir);
+    QStringList inputFiles;
     for (int i = 0; i < 100; i++) {
-        GTFile::copy(dataDir + "samples/FASTQ/eas.fastq", inputDir + "/" + QString("eas_%2.fastq").arg(i));
+        QString inputFile = inputDir + "/" + QString("eas_%2.fastq").arg(i);
+        inputFiles << inputFile;
+        GTFile::copy(dataDir + "samples/FASTQ/eas.fastq", inputFile);
     }
-    GTUtilsWorkflowDesigner::setDatasetInputFolder(inputDir);
+    GTUtilsWorkflowDesigner::setDatasetInputFiles(inputFiles);
+    //GTUtilsWorkflowDesigner::setDatasetInputFolder(inputDir);
 
     //    5. Launch the workflow.
     GTUtilsWorkflowDesigner::runWorkflow();
@@ -579,38 +615,37 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0002) {
     //    Expected result:
     //    The tree looks like:
     //     -----------
-    //    Cut Adapter
-    //    ├Cut Adapter run 1
-    //     |└cutadapt run
-    //    ├Cut Adapter run 2
-    //     |└cutadapt run
+    //    Nodes
+    //    ├Nodes run 1
+    //     |└Nodes run
+    //    ├Nodes run 2
+    //     |└Nodes run
     //    ...
-    //    └Cut Adapter run 100
-    //      └cutadapt run
+    //    └Nodes run 100
+    //      └Nodes run
     QMap<QString, QList<QPair<QString, QStringList>>> expectedNodesTexts;
     QList<QPair<QString, QStringList>> secondLevelNodes;
     for (int i = 1; i < 101; i++) {
-        secondLevelNodes << qMakePair(QString("Cut Adapter run %1").arg(i), QStringList({"cutadapt run"}));
+        secondLevelNodes << qMakePair(QString("Nodes run %1").arg(i), QStringList({"Nodes run"}));
     }
-    expectedNodesTexts.insert("Cut Adapter", secondLevelNodes);
+    expectedNodesTexts.insert("Nodes", secondLevelNodes);
     checkTreeStructure(expectedNodesTexts);
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0003) {
-    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
+    // 1. Import a custom element from _common_data/workflow/dashboard/Nodes.etc if it is not
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    auto nodesElement = GTUtilsWorkflowDesigner::findTreeItem("Nodes", GTUtilsWorkflowDesigner::tab::algorithms, true, false);
+    if (nodesElement == nullptr) {
+        createNodesElement(testDir);
+    }
 
-    //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
-    const QString cutadaptToolName = "cutadapt";
-    const QString cutadaptToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(cutadaptToolName, cutadaptToolPath);
+    //    2. Open "_common_data/workflow/dashboard/nodes.uwl".
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/50_nodes.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    //    2. Open "_common_data/workflow/dashboard/50_cutadapts.uwl".
-    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/50_cutadapts.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click("Read File URL(s)");
+    //    3. Click "Read Sequence" element.
+    GTUtilsWorkflowDesigner::click("Read Sequence");
 
     //    4. Add "_common_data/fastq/eas.fastq" and "_common_data/fastq/eas_broken.fastq" files to "Dataset 1" dataset.
     GTUtilsWorkflowDesigner::setDatasetInputFiles({testDir + "_common_data/fastq/eas.fastq", testDir + "_common_data/fastq/eas_broken.fastq"});
@@ -627,45 +662,44 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0003) {
     //    Expected result:
     //    The tree looks like (note, that the elements order is not fixed):
     //     -----------
-    //    Cut Adapter 1
-    //    ├Cut Adapter 1 run 1
-    //     |└cutadapt run
-    //    └Cut Adapter 1 run 2
-    //      └cutadapt run
-    //    Cut Adapter 2
-    //    ├Cut Adapter 2 run 1
-    //     |└cutadapt run
-    //    └Cut Adapter 2 run 2
-    //      └cutadapt run
+    //    Nodes 1
+    //    ├Nodes 1 run 1
+    //     |└Nodes run
+    //    └Nodes 1 run 2
+    //      └Nodes run
+    //    Nodes 2
+    //    ├Nodes 2 run 1
+    //     |└Nodes run
+    //    └Nodes 2 run 2
+    //      └Nodes run
     //    ...
-    //    Cut Adapter 50
-    //    ├Cut Adapter 50 run 1
-    //     |└cutadapt run
-    //    └Cut Adapter 50 run 2
-    //      └cutadapt run
+    //    Nodes 50
+    //    ├Nodes 50 run 1
+    //     |└Nodes run
+    //    └Nodes 50 run 2
+    //      └Nodes run
     QMap<QString, QList<QPair<QString, QStringList>>> expectedNodesTexts;
     QList<QPair<QString, QStringList>> secondLevelNodes;
     for (int i = 1; i < 51; i++) {
-        expectedNodesTexts.insert(QString("Cut Adapter %1").arg(i), {qMakePair(QString("Cut Adapter %1 run 1").arg(i), QStringList({"cutadapt run"})), qMakePair(QString("Cut Adapter %1 run 2").arg(i), QStringList({"cutadapt run"}))});
+        expectedNodesTexts.insert(QString("Nodes %1").arg(i), {qMakePair(QString("Nodes %1 run 1").arg(i), QStringList({"Nodes run"})), qMakePair(QString("Nodes %1 run 2").arg(i), QStringList({"Nodes run"}))});
     }
     checkTreeStructure(expectedNodesTexts);
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0004) {
-    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
+    // 1. Create a custom element called Nodes
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    auto nodesElement = GTUtilsWorkflowDesigner::findTreeItem("Nodes", GTUtilsWorkflowDesigner::tab::algorithms, true, false);
+    if (nodesElement == nullptr) {
+        createNodesElement(testDir);
+    }
 
-    //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
-    const QString cutadaptToolName = "cutadapt";
-    const QString cutadaptToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(cutadaptToolName, cutadaptToolPath);
+    //    2. Open "_common_data/workflow/dashboard/nodes.uwl".
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/101_nodes.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    //    2. Open "_common_data/workflow/dashboard/101_cutadapts.uwl".
-    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/101_cutadapts.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click("Read File URL(s)");
+    //    3. Click "Read Sequence" element.
+    GTUtilsWorkflowDesigner::click("Read Sequence");
 
     //    4. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
     GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
@@ -682,23 +716,23 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0004) {
     //    Expected result:
     //    The tree looks like (note, that the elements order is not fixed):
     //     -----------
-    //    Cut Adapter 1
-    //    └Cut Adapter 1 run 1
-    //      └cutadapt run
-    //    Cut Adapter 2
-    //    └Cut Adapter 2 run 1
-    //      └cutadapt run
+    //    Nodes 1
+    //    └Nodes 1 run 1
+    //      └Nodes run
+    //    Nodes 2
+    //    └Nodes 2 run 1
+    //      └Nodes run
     //    ...
-    //    Cut Adapter 101
-    //    └Cut Adapter 101 run 1
-    //      └cutadapt run
+    //    Nodes 101
+    //    └Nodes 101 run 1
+    //      └Nodes run
     //    Messages limit on the dashboard exceeded. See log files, if required.
     //     -----------
     //    "log files" in a message is a link to a dir with tools execution logs.
     QMap<QString, QList<QPair<QString, QStringList>>> expectedNodesTexts;
     QList<QPair<QString, QStringList>> secondLevelNodes;
     for (int i = 1; i <= 100; i++) {
-        expectedNodesTexts.insert(QString("Cut Adapter %1").arg(i), {qMakePair(QString("Cut Adapter %1 run 1").arg(i), QStringList({"cutadapt run"}))});
+        expectedNodesTexts.insert(QString("Nodes %1").arg(i), {qMakePair(QString("Nodes %1 run 1").arg(i), QStringList({"Nodes run"}))});
     }
     checkTreeStructure(expectedNodesTexts);
 
@@ -977,7 +1011,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
     GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Ensure that neither "python" nor "cutadapt" contain spaces in their paths.
-    const QString pythonToolName = "python";
+    const QString pythonToolName = "Python 3";
     QString pythonToolPath = getExternalToolPath(pythonToolName);
     if (pythonToolPath.contains(" ")) {
         const QString newToolPath = putToolToFolderWithSpaces(pythonToolName, getExternalToolDirPath(pythonToolName, "python"), sandBoxDir);
@@ -990,21 +1024,6 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
                           .arg(pythonToolName)
                           .arg(newToolPath)
                           .arg(pythonToolPath));
-    }
-
-    const QString cutadaptToolName = "cutadapt";
-    QString cutadaptToolPath = getExternalToolPath(cutadaptToolName);
-    if (cutadaptToolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(cutadaptToolName, getExternalToolDirPath(cutadaptToolName, "cutadapt"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(cutadaptToolName, QDir::toNativeSeparators(newToolPath));
-
-        GTUtilsTaskTreeView::waitTaskFinished();
-        cutadaptToolPath = getExternalToolPath(cutadaptToolName);
-        CHECK_SET_ERR(QDir::toNativeSeparators(cutadaptToolPath) == QDir::toNativeSeparators(newToolPath),
-                      QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
-                          .arg(cutadaptToolName)
-                          .arg(newToolPath)
-                          .arg(cutadaptToolPath));
     }
 
     //    1. Open "_common_data/workflow/dashboard/cutadapt.uwl".
@@ -1042,10 +1061,9 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
 
     QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
     nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId).replace("\"",""); // If the test environment contains spaces the params will be wrapped with quotes.
-    QString expectedNodeTextPart = QString("%1 %2 ").arg(pythonToolPath).arg(cutadaptToolPath);
-    CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
+    CHECK_SET_ERR(nodeText.startsWith(pythonToolPath),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
-                      .arg(expectedNodeTextPart)
+                      .arg(pythonToolPath)
                       .arg(nodeText));
 }
 
@@ -1054,7 +1072,8 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0005) {
 
     //    1. Copy external tool "python" to a folder with spaces in its path.
     //    2. Set the copied "python" in the "Application Settings".
-    const QString pythonToolName = "python";
+    //       As far as Cutadat is a Python moduke either they both contain spaces or not
+    const QString pythonToolName = "Python 3";
     QString pythonToolPath = getExternalToolPath(pythonToolName);
     if (!pythonToolPath.contains(" ")) {
         const QString newToolPath = putToolToFolderWithSpaces(pythonToolName, getExternalToolDirPath(pythonToolName, "python"), sandBoxDir);
@@ -1105,147 +1124,6 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0005) {
     const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
     nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId);
     const QString expectedNodeTextPart = getQuotedString(pythonToolPath) + " ";
-    CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
-                  QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
-                      .arg(expectedNodeTextPart)
-                      .arg(nodeText));
-}
-
-GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0006) {
-    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
-
-    //    1. Copy external tool "cutadapt" to a folder with spaces in its path.
-    //    2. Set the copied "cutadapt" in the "Application Settings".
-    const QString cutadaptToolName = "cutadapt";
-    QString cutadaptToolPath = getExternalToolPath(cutadaptToolName);
-    if (!cutadaptToolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(cutadaptToolName, getExternalToolDirPath(cutadaptToolName, "cutadapt"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(cutadaptToolName, QDir::toNativeSeparators(newToolPath));
-
-        GTUtilsTaskTreeView::waitTaskFinished();
-        cutadaptToolPath = getExternalToolPath(cutadaptToolName);
-        CHECK_SET_ERR(QDir::toNativeSeparators(cutadaptToolPath) == QDir::toNativeSeparators(newToolPath),
-                      QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
-                          .arg(cutadaptToolName)
-                          .arg(newToolPath)
-                          .arg(cutadaptToolPath));
-    }
-
-    //    3. Open "_common_data/workflow/dashboard/cutadapt.uwl".
-    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    //    4. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click("Read File URL(s)");
-
-    //    5. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
-
-    //    6. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow();
-
-    //    7. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    //    8. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
-
-    //    9. Expand the third-level node "cutadapt run".
-    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(cutadaptRunNodeId);
-
-    //    Expected result: the third-level node "cutadapt run" has a child node "Command", which has a child node with the command. The second argument in the command is the path to the "cutadapt" that was set at the beginning, the path is wrapped with double quotesos.setError("Not implemented");
-    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(cutadaptRunCommandNodeId),
-                  QString("Node with ID '%1' is invisible after parent node expanding")
-                      .arg(cutadaptRunCommandNodeId));
-
-    QString nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandNodeId);
-    QString expectedNodeText = "Command";
-    CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(cutadaptRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
-
-    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId);
-    const QString expectedNodeTextPart = getQuotedString(cutadaptToolPath) + " ";
-    CHECK_SET_ERR(nodeText.contains(expectedNodeTextPart),
-                  QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
-                      .arg(expectedNodeTextPart)
-                      .arg(nodeText));
-}
-
-GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0007) {
-    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
-
-    //    1. Copy external tool "python" to a folder with spaces in its path.
-    //    2. Copy external tool "cutadapt" to a folder with spaces in its path.
-    //    3. Set the copied "python" in the "Application Settings".
-    //    4. Set the copied "cutadapt" in the "Application Settings".
-    const QString pythonToolName = "python";
-    QString pythonToolPath = getExternalToolPath(pythonToolName);
-    if (!pythonToolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(pythonToolName, getExternalToolDirPath(pythonToolName, "python"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(pythonToolName, QDir::toNativeSeparators(newToolPath));
-
-        GTUtilsTaskTreeView::waitTaskFinished();
-        pythonToolPath = getExternalToolPath(pythonToolName);
-        CHECK_SET_ERR(QDir::toNativeSeparators(pythonToolPath) == QDir::toNativeSeparators(newToolPath),
-                      QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
-                          .arg(pythonToolName)
-                          .arg(newToolPath)
-                          .arg(pythonToolPath));
-    }
-
-    const QString cutadaptToolName = "cutadapt";
-    QString cutadaptToolPath = getExternalToolPath(cutadaptToolName);
-    if (!cutadaptToolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(cutadaptToolName, getExternalToolDirPath(cutadaptToolName, "cutadapt"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(cutadaptToolName, QDir::toNativeSeparators(newToolPath));
-
-        GTUtilsTaskTreeView::waitTaskFinished();
-        cutadaptToolPath = getExternalToolPath(cutadaptToolName);
-        CHECK_SET_ERR(QDir::toNativeSeparators(cutadaptToolPath) == QDir::toNativeSeparators(newToolPath),
-                      QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
-                          .arg(cutadaptToolName)
-                          .arg(newToolPath)
-                          .arg(cutadaptToolPath));
-    }
-
-    //    5. Open "_common_data/workflow/dashboard/cutadapt.uwl".
-    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    //    6. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click("Read File URL(s)");
-
-    //    7. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
-
-    //    8. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow();
-
-    //    9. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    //    10. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
-
-    //    11. Expand the third-level node "cutadapt run".
-    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(cutadaptRunNodeId);
-
-    //    Expected result: the third-level node "cutadapt run" has a child node "Command", which has a child node with the command. The first argument in the command is the path to the "python", the second argument in the command is the path to the "cutadapt". Both of them are wrapped with double quotes.
-    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(cutadaptRunCommandNodeId),
-                  QString("Node with ID '%1' is invisible after parent node expanding")
-                      .arg(cutadaptRunCommandNodeId));
-
-    QString nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandNodeId);
-    QString expectedNodeText = "Command";
-    CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(cutadaptRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
-
-    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId);
-    const QString expectedNodeTextPart = getQuotedString(pythonToolPath) + " " + getQuotedString(cutadaptToolPath) + " ";
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
                       .arg(expectedNodeTextPart)

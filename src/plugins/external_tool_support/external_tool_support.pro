@@ -85,8 +85,6 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/custom_tools/ImportExternalToolDialog.h \
            src/custom_tools/LoadCustomExternalToolsTask.h \
            src/custom_tools/RegisterCustomToolTask.h \
-           src/cutadapt/CutadaptSupport.h \
-           src/cutadapt/CutadaptWorker.h \
            src/fastqc/FastqcSupport.h \
            src/fastqc/FastqcTask.h \
            src/fastqc/FastqcWorker.h \
@@ -138,7 +136,9 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/phyml/PhyMLSupport.h \
            src/phyml/PhyMLTask.h \
            src/phyml/PhyMLTests.h \
-           src/python/PythonSupport.h \
+           src/python/Python3ModuleCutadaptSupport.h \
+           src/python/Python3ModuleCutadaptWorker.h \
+           src/python/Python3Support.h \
            src/samtools/BcfToolsSupport.h \
            src/samtools/SamToolsExtToolSupport.h \
            src/samtools/TabixSupport.h \
@@ -325,8 +325,6 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/custom_tools/ImportExternalToolDialog.cpp \
            src/custom_tools/LoadCustomExternalToolsTask.cpp \
            src/custom_tools/RegisterCustomToolTask.cpp \
-           src/cutadapt/CutadaptSupport.cpp \
-           src/cutadapt/CutadaptWorker.cpp \
            src/fastqc/FastqcSupport.cpp \
            src/fastqc/FastqcTask.cpp \
            src/fastqc/FastqcWorker.cpp \
@@ -377,7 +375,9 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/phyml/PhyMLSupport.cpp \
            src/phyml/PhyMLTask.cpp \
            src/phyml/PhyMLTests.cpp \
-           src/python/PythonSupport.cpp \
+           src/python/Python3ModuleCutadaptSupport.cpp \
+           src/python/Python3ModuleCutadaptWorker.cpp \
+           src/python/Python3Support.cpp \
            src/samtools/BcfToolsSupport.cpp \
            src/samtools/SamToolsExtToolSupport.cpp \
            src/samtools/TabixSupport.cpp \
