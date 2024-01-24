@@ -33,7 +33,7 @@
 #include "Bowtie2Support.h"
 #include "Bowtie2Task.h"
 #include "perl/PerlSupport.h"
-#include "python/PythonSupport.h"
+#include "python/Python3Support.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -234,7 +234,7 @@ void Bowtie2WorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator());
     proto->addExternalTool(Bowtie2Support::ET_BOWTIE2_ALIGN_ID);
-    proto->addExternalTool(PythonSupport::ET_PYTHON_ID);
+    proto->addExternalTool(Python3Support::ET_PYTHON_ID);
     proto->addExternalTool(PerlSupport::ET_PERL_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new Bowtie2WorkerFactory());

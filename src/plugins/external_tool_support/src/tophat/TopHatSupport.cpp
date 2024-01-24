@@ -25,7 +25,7 @@
 
 #include <U2Gui/MainWindow.h>
 
-#include "python/PythonSupport.h"
+#include "python/Python3Support.h"
 
 namespace U2 {
 
@@ -45,12 +45,12 @@ TopHatSupport::TopHatSupport()
     executableFileName = "tophat.exe";
 #else
 #    if defined(Q_OS_UNIX)
-    executableFileName = "tophat";
+    executableFileName = "tophat_2";
 #    endif
 #endif
     validationArguments << "--version";
 
-    dependencies << PythonSupport::ET_PYTHON_ID;
+    dependencies << Python3Support::ET_PYTHON_ID;
 
     validationMessageRegExp = "TopHat ";
     description = "<i>TopHat</i> is a program that aligns RNA-Seq reads to a genome"

@@ -19,24 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include "SqliteUpgraderFrom_0_To_1_13.h"
+#include "SqliteUpgrader_v13.h"
 
 #include <U2Core/L10n.h>
-#include <U2Core/U2Dbi.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SqlHelpers.h>
 
 #include "../SQLiteAssemblyDbi.h"
-#include "../SQLiteDbi.h"
 #include "../SQLiteObjectRelationsDbi.h"
 
 namespace U2 {
 
-SqliteUpgraderFrom_0_To_1_13::SqliteUpgraderFrom_0_To_1_13(SQLiteDbi* dbi)
-    : SqliteUpgrader(Version::parseVersion("0.0.0"), Version::parseVersion("1.13.0"), dbi) {
+SqliteUpgrader_v13::SqliteUpgrader_v13(SQLiteDbi* dbi)
+    : SqliteUpgrader(Version::parseVersion("1.13.0"), dbi) {
 }
 
-void SqliteUpgraderFrom_0_To_1_13::upgrade(U2OpStatus& os) const {
+void SqliteUpgrader_v13::upgrade(U2OpStatus& os) const {
     SQLiteTransaction t(dbi->getDbRef(), os);
 
     upgradeObjectDbi(os);
@@ -48,10 +46,10 @@ void SqliteUpgraderFrom_0_To_1_13::upgrade(U2OpStatus& os) const {
     upgradeAssemblyDbi(os);
     CHECK_OP(os, );
 
-    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "1.13.0", os);
+    SqliteUpgrader::upgrade(os);
 }
 
-void SqliteUpgraderFrom_0_To_1_13::upgradeObjectDbi(U2OpStatus& os) const {
+void SqliteUpgrader_v13::upgradeObjectDbi(U2OpStatus& os) const {
     SQLiteWriteQuery q("PRAGMA table_info(Object)", dbi->getDbRef(), os);
     CHECK_OP(os, );
 
@@ -68,13 +66,13 @@ void SqliteUpgraderFrom_0_To_1_13::upgradeObjectDbi(U2OpStatus& os) const {
     SQLiteWriteQuery("ALTER TABLE Object ADD trackMod INTEGER NOT NULL DEFAULT 0", dbi->getDbRef(), os).execute();
 }
 
-void SqliteUpgraderFrom_0_To_1_13::upgradeObjectRelationsDbi(U2OpStatus& os) const {
+void SqliteUpgrader_v13::upgradeObjectRelationsDbi(U2OpStatus& os) const {
     SQLiteObjectRelationsDbi* objectRelationsDbi = dbi->getSQLiteObjectRelationsDbi();
     SAFE_POINT_EXT(objectRelationsDbi != nullptr, os.setError(L10N::nullPointerError("SQLite object relation dbi")), );
     objectRelationsDbi->initSqlSchema(os);
 }
 
-void SqliteUpgraderFrom_0_To_1_13::upgradeAssemblyDbi(U2OpStatus& os) const {
+void SqliteUpgrader_v13::upgradeAssemblyDbi(U2OpStatus& os) const {
     DbRef* db = dbi->getDbRef();
     SQLiteWriteQuery q("PRAGMA foreign_key_list(Assembly)", db, os);
     SAFE_POINT_OP(os, );
@@ -106,9 +104,9 @@ void SqliteUpgraderFrom_0_To_1_13::upgradeAssemblyDbi(U2OpStatus& os) const {
     SAFE_POINT_OP(os, );
     while (assemblyFetch.step()) {
         assemblyInsert.bindDataId(1, assemblyFetch.getDataId(0, U2Type::Assembly));
-        const U2DataId refId = assemblyFetch.getDataId(1, U2Type::CrossDatabaseReference);
-        const qint64 dbiRefId = U2DbiUtils::toDbiId(refId);
-        if (0 == dbiRefId) {
+        U2DataId refId = assemblyFetch.getDataId(1, U2Type::CrossDatabaseReference);
+        qint64 dbiRefId = U2DbiUtils::toDbiId(refId);
+        if (dbiRefId == 0) {
             assemblyInsert.bindNull(2);
         } else {
             assemblyInsert.bindDataId(2, refId);

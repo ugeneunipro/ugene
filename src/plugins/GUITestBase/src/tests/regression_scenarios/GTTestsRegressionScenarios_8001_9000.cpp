@@ -54,6 +54,7 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 
+#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
@@ -233,6 +234,31 @@ GUI_TEST_CLASS_DEFINITION(test_8010) {
     GTUtilsAnnotationsTreeView::clickItem("pair 3  (0, 2)", 1, false);
     GTUtilsAnnotationsTreeView::clickItem("pair 4  (0, 2)", 1, false);
     GTUtilsAnnotationsTreeView::clickItem("pair 5  (0, 2)", 1, false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8018) {
+    class Custom : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
+
+            // 2. Open a Python 3 tab
+            AppSettingsDialogFiller::isExternalToolValid("Python 3");
+
+            // Expected:: Cutadapt module is valid
+            bool isToolValid = AppSettingsDialogFiller::isExternalToolValid("Cutadapt");
+
+            if (!isToolValid) {
+                GT_FAIL("Bio is not valid", );
+            }
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    // 1. Open "UGENE Application Settings", select "External Tools" tab.
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new Custom()));
+    GTMenu::clickMainMenuItem({"Settings", "Preferences..."}, GTGlobals::UseMouse);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8015) {

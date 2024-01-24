@@ -20,7 +20,7 @@
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="60"/>
-        <source>The number of valid sequence characters does not coincide with the declared size in the sequence header.</source>
+        <source>The number of valid sequence characters does not match with the declared size in the sequence header.</source>
         <translation>Число допустимых символов последовательности не совпадает с заявленным размером в заголовке последовательности.</translation>
     </message>
 </context>

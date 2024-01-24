@@ -3035,12 +3035,12 @@ p, li { white-space: pre-wrap; }
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="155"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="156"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Click the &quot;Add new step&quot; button and select a step. The following options are available:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;ILLUMINACLIP: Cut adapter and other illumina-specific sequences from the read.&lt;/li&gt;&lt;li&gt;SLIDINGWINDOW: Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold.&lt;/li&gt;&lt;li&gt;LEADING: Cut bases off the start of a read, if below a threshold quality.&lt;/li&gt;&lt;li&gt;TRAILING: Cut bases off the end of a read, if below a threshold quality.&lt;/li&gt;&lt;li&gt;CROP: Cut the read to a specified length.&lt;/li&gt;&lt;li&gt;HEADCROP: Cut the specified number of bases from the start of the read.&lt;/li&gt;&lt;li&gt;MINLEN: Drop the read if it is below a specified length.&lt;/li&gt;&lt;li&gt;AVGQUAL: Drop the read if the average quality is below the specified level.&lt;/li&gt;&lt;li&gt;TOPHRED33: Convert quality scores to Phred-33.&lt;/li&gt;&lt;li&gt;TOPHRED64: Convert quality scores to Phred-64.&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt; &lt;head&gt; &lt;/ head&gt; &lt;body&gt; &lt;p&gt; Нажмите кнопку «Добавить новый шаг» и выберите шаг. Доступны следующие параметры: &lt;/ p&gt; &lt;ul&gt; &lt;li&gt; ILLUMINACLIP: вырезать адаптер и другие специфичные последовательности для рида. &lt;/ Li&gt; &lt;li&gt; SLIDINGWINDOW: выполнить обрезку скользящего окна, обрезав один раз среднее качество в пределах окна ниже порога. &lt;/ li&gt; &lt;li&gt; LEADING: обрезать базы от начала рида, если ниже порогового качества. &lt;/ li&gt; &lt;li&gt; TRAILING: обрезать базы от конца рида, если качество ниже порогового. &lt;/ li&gt; &lt;li&gt; CROP: обрезать рид до указанной длины. &lt;/ li&gt; &lt;li&gt; HEADCROP: вырезать указанное количество баз с начала рида. &lt;/ li&gt; &lt; li&gt; MINLEN: отбросить рид, если он меньше указанной длины. &lt;/ li&gt; &lt;li&gt; AVGQUAL: отбросить рид, если среднее качество ниже указанного уровня. &lt;/ li&gt; &lt;li&gt; TOPHRED33: преобразовать показатели качества в Phred-33. &lt;/ Li&gt; &lt;li&gt; TOPHRED64: преобразование показателей качества в Phred-64. &lt;/ Li&gt; &lt;/ ul&gt; &lt;/ body&gt; &lt;/ html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="170"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="171"/>
         <source>Add a step.</source>
         <translation>Добавить шаг.</translation>
     </message>
@@ -3104,7 +3104,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SpadesDelegate</name>
     <message>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="44"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="45"/>
         <source>Configure input type</source>
         <translation>Настрояка входного типа</translation>
     </message>
@@ -3236,17 +3236,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SpadesPropertyDialog</name>
     <message>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="150"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="151"/>
         <source>At least one of the required input ports should be set in the &quot;Input data&quot; parameter.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="166"/>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="174"/>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="196"/>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="226"/>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="302"/>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="306"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="167"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="175"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="197"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="227"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="303"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="307"/>
         <source>Incorrect parameters, can&apos;t parse</source>
         <translation></translation>
     </message>
@@ -3677,7 +3677,12 @@ p, li { white-space: pre-wrap; }
         <translation>wrong output format</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="233"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="232"/>
+        <source>Error: </source>
+        <translation>Ошибка: </translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="239"/>
         <source>Error log: </source>
         <translation>Журнал ошибок: </translation>
     </message>
@@ -3685,75 +3690,75 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AlignToReferenceBlastDialog</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="251"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="257"/>
         <source>Map</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="252"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="258"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="258"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="264"/>
         <source>File name</source>
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="259"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="265"/>
         <source>Sequence name from file</source>
         <translation>Имя последовательности в файле</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="277"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="283"/>
         <source>Select Output File...</source>
         <translation>Укажите выходной файл...</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="290"/>
         <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="296"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="314"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="333"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="302"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="320"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="339"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="290"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="296"/>
         <source>Reference sequence is not set.</source>
         <translation>Референсная последовательность не задана.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="296"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="302"/>
         <source>No reads provided.</source>
         <translation>Риды не заданы.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="314"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="320"/>
         <source>Output file is not set.</source>
         <translation>Выходной файл не указан.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="325"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="331"/>
         <source>Overwrite the file?</source>
         <translation>Переписать этот файл?</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="326"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="332"/>
         <source>The result file already exists. Would you like to overwrite it?</source>
         <translation>Такой файл уже существует. Переписать его?</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="333"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="339"/>
         <source>Unable to delete the file.</source>
         <translation>Невозможно удалить этот файл.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="345"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="351"/>
         <source>Open Reference Sequence</source>
         <translation>Выбрать референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="356"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="362"/>
         <source>Select File(s) with Read(s)</source>
         <translation>Выбрать прочтения</translation>
     </message>
@@ -3761,12 +3766,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AlignmentAlgorithmsRegistry</name>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="327"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="326"/>
         <source>Align sequences to alignment with MAFFT…</source>
         <translation>Добавить последовательности к выравниванию с MAFFT...</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="328"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="327"/>
         <source>Align selected sequences to alignment with MAFFT…</source>
         <translation>Выровнять выделенные последовательности на выравнивание при помощи MAFFT...</translation>
     </message>
@@ -4528,62 +4533,62 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalOSupportTask</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="89"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="86"/>
         <source>ClustalO alignment started</source>
         <translation>ClustalO alignment started</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="110"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="107"/>
         <source>Saving data to temporary file &apos;%1&apos;</source>
         <translation>Saving data to temporary file &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="55"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="54"/>
         <source>ClustalO alignment task</source>
         <translation>ClustalO alignment task</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="70"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="69"/>
         <source>ClustalO add sequences to alignment task</source>
         <translation>ClustalO add sequences to alignment task</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="119"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="116"/>
         <source>Folder for temporary files exists. Can not remove the folder: %1.</source>
         <translation>Folder for temporary files exists. Can not remove the folder: %1.</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="124"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="121"/>
         <source>Can not create folder for temporary files.</source>
         <translation>Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="182"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="179"/>
         <source>Output file %1 not found</source>
         <translation>Output file %1 not found</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="184"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="181"/>
         <source>Output file %3 not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Output file %3 not found. May be %1 tool path &apos;%2&apos; not valid?</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="191"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="188"/>
         <source>Loading output file &apos;%1&apos;</source>
         <translation>Loading output file &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="281"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="278"/>
         <source>Failed to apply the result of ClustalO: alignment object is not available!</source>
         <translation>Failed to apply the result of ClustalO: alignment object is not available!</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="286"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="283"/>
         <source>ClustalO alignment successfully finished</source>
         <translation>ClustalO alignment successfully finished</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="301"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="298"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Can not remove folder for temporary files.</translation>
     </message>
@@ -4634,7 +4639,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalOWithExtFileSpecifySupportTask</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="345"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="342"/>
         <source>Unrecognized input alignment file format</source>
         <translation>Unrecognized input alignment file format</translation>
     </message>
@@ -4889,9 +4894,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::CutadaptSupport</name>
     <message>
-        <location filename="../src/cutadapt/CutadaptSupport.cpp" line="48"/>
         <source>&lt;i&gt;cutadapt&lt;/i&gt; removes adapter sequences from high-throughput sequencing data. This is necessary when the reads are longer than the molecule that is sequenced, such as in microRNA data.</source>
-        <translation>&lt;i&gt;cutadapt&lt;/i&gt; удаляет последовательности из данных секвенирования с высокой пропускной способностью. Это необходимо, когда риды больше, чем молекулы, которые секвенированы, например, в данных микроРНК.</translation>
+        <translation type="vanished">&lt;i&gt;cutadapt&lt;/i&gt; удаляет последовательности из данных секвенирования с высокой пропускной способностью. Это необходимо, когда риды больше, чем молекулы, которые секвенированы, например, в данных микроРНК.</translation>
     </message>
 </context>
 <context>
@@ -4997,47 +5001,47 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Выровнять с помощью Kalign...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="308"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="305"/>
         <source>&lt;i&gt;Bowtie&lt;i&gt; is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end). &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </source>
         <translation>&lt;i&gt;Bowtie&lt;i&gt;один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час. &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="315"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="312"/>
         <source>&lt;i&gt;Cufflinks&lt;/i&gt; assembles transcripts, estimates their abundances, and tests for differential expression and regulation in RNA-Seq samples. It accepts aligned RNA-Seq reads and assembles the alignments into a parsimonious set of transcripts. It also estimates the relative abundances of these transcripts based on how many reads support each one, taking into account biases in library preparation protocols. </source>
         <translation>&lt;i&gt;Cufflinks&lt;/i&gt; собирает транскрипции и оценивает их распространенность. </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="322"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="319"/>
         <source>&lt;i&gt;Bowtie 2&lt;/i&gt; is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences. It is particularly good at aligning reads of about 50 up to 100s or 1000s of characters, and particularly good at aligning to relatively long (e.g. mammalian) genomes. &lt;br/&gt;&lt;br/&gt;It indexes the genome with an FM index to keep its memory footprint small: for the human genome, its memory footprint is typically around 3.2Gb. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;Bowtie 2&lt;/i&gt; supports gapped, local, and paired-end alignment modes.</source>
         <translation>&lt;i&gt;Bowtie 2&lt;/i&gt; один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на большие референсные последовательности. Особенно эффективно применение инструмента для выравнивания ридов начиная от 50 и до сотен и тысяч символов, и больших геномов (например млекопитающих).</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="330"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="327"/>
         <source>BLAST make database...</source>
         <translation>Создание базы данных BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="334"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="331"/>
         <source>Map reads to reference...</source>
         <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="362"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="359"/>
         <source>Reads de novo assembly (with %1)...</source>
         <translation>Сборка прочтений de novo (при помощи %1)...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="342"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="339"/>
         <source>BLAST search...</source>
         <translation>Поиск с помощью BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="305"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="302"/>
         <source>&lt;i&gt;BLAST&lt;/i&gt; finds regions of similarity between biological sequences. The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance.</source>
         <translation>&lt;i&gt;BLAST&lt;/i&gt; finds regions of similarity between biological sequences. The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="353"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="350"/>
         <source>BLAST query database...</source>
         <translation>Запрос с помощью BLAST...</translation>
     </message>
@@ -5055,12 +5059,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportService</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="462"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="459"/>
         <source>External tools support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="462"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="459"/>
         <source>Provides support to run external tools from UGENE</source>
         <translation>Позволяет запускать внешние инструменты из UGENE</translation>
     </message>
@@ -5291,59 +5295,59 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::FastTreeWidget</name>
     <message>
-        <location filename="../src/fasttree/FastTreeWidget.cpp" line="62"/>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="63"/>
         <source>Command line options for FastTree:</source>
         <translation>Командные параметры для FastTree:</translation>
     </message>
     <message>
-        <location filename="../src/fasttree/FastTreeWidget.cpp" line="63"/>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="64"/>
         <source>Example: -fastest -pseudo
  Use double-quotes (&quot;) for values with spaces.</source>
         <translation>Пример: -fastest -pseudo
  Используйте двойные кавычки (&quot;) для значений с пробелами.</translation>
     </message>
     <message>
-        <location filename="../src/fasttree/FastTreeWidget.cpp" line="68"/>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="69"/>
         <source>View all options</source>
         <translation>Посмотреть все опции</translation>
     </message>
     <message>
-        <location filename="../src/fasttree/FastTreeWidget.cpp" line="69"/>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="70"/>
         <source>Open official guide for FastTree in browser</source>
         <translation>Откройте официальное руководство по FastTree в браузере</translation>
     </message>
     <message>
-        <location filename="../src/fasttree/FastTreeWidget.cpp" line="78"/>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="79"/>
         <source>Use one parameter per one line</source>
         <translation>Используйте один параметр на одну строку</translation>
     </message>
     <message>
-        <location filename="../src/fasttree/FastTreeWidget.cpp" line="92"/>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="93"/>
         <source>Speed up the neighbor joining phase (&gt;50,000 sequences)</source>
         <translation>Ускорьте фазу построения дерева методом ближайших соседей (более чем 50 000 последовательностей)</translation>
     </message>
     <message>
-        <location filename="../src/fasttree/FastTreeWidget.cpp" line="97"/>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="98"/>
         <source>Use pseudo-counts (recommended for highly gapped sequences)</source>
         <translation>Используйте псевдо-значения (рекомендуется для сильно пропущенных последовательностей)</translation>
     </message>
     <message>
-        <location filename="../src/fasttree/FastTreeWidget.cpp" line="103"/>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="104"/>
         <source>FastTree options</source>
         <translation>Параметры FastTree</translation>
     </message>
     <message>
-        <location filename="../src/fasttree/FastTreeWidget.cpp" line="109"/>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="110"/>
         <source>Display Options</source>
         <translation>Параметры отображения</translation>
     </message>
     <message>
-        <location filename="../src/fasttree/FastTreeWidget.cpp" line="137"/>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="138"/>
         <source>Parameter can&apos;t be used with nucleotide alignment: %1</source>
         <translation>Параметр не может быть использован с нуклеотидным выравниванием: %1</translation>
     </message>
     <message>
-        <location filename="../src/fasttree/FastTreeWidget.cpp" line="138"/>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="139"/>
         <source>Parameter can&apos;t be used with amino acid alignment: %1</source>
         <translation>Параметр не может быть использован с аминокислотным выравниванием: %1</translation>
     </message>
@@ -5786,59 +5790,59 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::IQTreeWidget</name>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="62"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="63"/>
         <source>Command line options for IQ-TREE:</source>
         <translation>Опции командной строки для IQ-TREE:</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="63"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="64"/>
         <source>Example: -lmap 2000 -n 0 -m
  Use double-quotes (&quot;) for values with spaces.</source>
         <translation>Пример: -lmap 2000 -n 0 -m
  Используйте двойные кавычки (&quot;) для значений с пробелами.</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="68"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="69"/>
         <source>View all options</source>
         <translation>Посмотреть все опции</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="69"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="70"/>
         <source>Open official &apos;Command reference&apos; guide for IQ-TREE in browser</source>
         <translation>Откройте официальную &apos;Command reference&apos; документацию для IQ-TREE в браузере</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="78"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="79"/>
         <source>Use one parameter per one line</source>
         <translation>Используйте один параметр на одну строку</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="92"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="93"/>
         <source>Subst. model</source>
         <translation>Модель замен</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="100"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="101"/>
         <source>Ultrafast bootstrap</source>
         <translation>Сверхбыстрый бутстрап</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="108"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="109"/>
         <source>alrt</source>
         <translation>alrt</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="116"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="117"/>
         <source>Ancestral reconstruction</source>
         <translation>Родовая реконструкция</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="123"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="124"/>
         <source>IQ-TREE options</source>
         <translation>Настройки IQ-TREE</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="127"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="128"/>
         <source>Display Options</source>
         <translation>Опции отображения</translation>
     </message>
@@ -5875,38 +5879,38 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::Kalign3DialogWithFileInput</name>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="76"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="77"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="77"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="78"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="86"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="87"/>
         <source>Open an alignment file</source>
         <translation>Открыть выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="97"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="98"/>
         <source>Save an multiple alignment file</source>
         <translation>Сохранить выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="107"/>
-        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="111"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="108"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="112"/>
         <source>Align with Kalign</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="107"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="108"/>
         <source>Input file is not set!</source>
         <translation>Не указан входной файл!</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="111"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="112"/>
         <source>Output file is not set!</source>
         <translation>Не указан выходной файл!</translation>
     </message>
@@ -5914,12 +5918,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::Kalign3DialogWithMsaInput</name>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="42"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="43"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="43"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="44"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -8527,140 +8531,114 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>U2::LocalWorkflow::CutAdaptFastqPrompter</name>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="75"/>
         <source>unset</source>
-        <translation>не указан</translation>
+        <translation type="vanished">не указан</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="76"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation> из &lt;u&gt;%1&lt;/u&gt;</translation>
+        <translation type="vanished"> из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="78"/>
         <source>Removes adapter sequences %1.</source>
-        <translation>Удаляет переходные последовательности %1.</translation>
+        <translation type="vanished">Удаляет переходные последовательности %1.</translation>
     </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::CutAdaptFastqTask</name>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="230"/>
         <source>Can not copy the result file to: %1</source>
-        <translation>Can not copy the result file to: %1</translation>
+        <translation type="vanished">Can not copy the result file to: %1</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="265"/>
         <source>Unknown file format: </source>
-        <translation>Unknown file format: </translation>
+        <translation type="vanished">Unknown file format: </translation>
     </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::CutAdaptFastqWorker</name>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="96"/>
         <source>Cut Adapter</source>
-        <translation>Удаление адаптеров</translation>
+        <translation type="vanished">Удаление адаптеров</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="96"/>
         <source>Removes adapter sequences</source>
-        <translation>Удаляет последовательности адаптеров</translation>
+        <translation type="vanished">Удаляет последовательности адаптеров</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="100"/>
         <source>Input File</source>
-        <translation>Входной файл</translation>
+        <translation type="vanished">Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="100"/>
         <source>Set of FASTQ reads files</source>
-        <translation>Набор ридов вормате FASTQ</translation>
+        <translation type="vanished">Набор ридов вормате FASTQ</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="101"/>
         <source>Output File</source>
-        <translation>Выходной файл</translation>
+        <translation type="vanished">Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="101"/>
         <source>Output FASTQ file(s)</source>
-        <translation>Выходные FASTQ файлы</translation>
+        <translation type="vanished">Выходные FASTQ файлы</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="114"/>
         <source>Output folder</source>
-        <translation>Выходная папка</translation>
+        <translation type="vanished">Выходная папка</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="114"/>
         <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
-        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
+        <translation type="vanished">выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="118"/>
         <source>Custom folder</source>
-        <translation>Частная папка</translation>
+        <translation type="vanished">Частная папка</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="118"/>
         <source>Select the custom output folder.</source>
-        <translation>Укажите частную выходную папку.</translation>
+        <translation type="vanished">Укажите частную выходную папку.</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="120"/>
         <source>Output file name</source>
-        <translation>Имя выходного файла</translation>
+        <translation type="vanished">Имя выходного файла</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="120"/>
         <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
-        <translation>Имя выходного файла. По умолчанию будет использовано имя первого файла с соответствующим расширением.</translation>
+        <translation type="vanished">Имя выходного файла. По умолчанию будет использовано имя первого файла с соответствующим расширением.</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="122"/>
         <source>FASTA file with 3&apos; adapters</source>
-        <translation>FASTA файл с адаптерами 3&apos;</translation>
+        <translation type="vanished">FASTA файл с адаптерами 3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="122"/>
         <source>A FASTA file with one or multiple sequences of adapter that were ligated to the 3&apos; end. The adapter itself and anything that follows is trimmed. If the adapter sequence ends with the &apos;$&apos; character, the adapter is anchored to the end of the read and only found if it is a suffix of the read.</source>
-        <translation>FASTA файл с одним или несколькими адаптерами 3&apos;. Сам адаптер и все, что следует за ним обрезано. Если последовательность адаптера заканчивается символом &apos;$&apos;, адаптер прикрепляется к концу рида.</translation>
+        <translation type="vanished">FASTA файл с одним или несколькими адаптерами 3&apos;. Сам адаптер и все, что следует за ним обрезано. Если последовательность адаптера заканчивается символом &apos;$&apos;, адаптер прикрепляется к концу рида.</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="128"/>
         <source>FASTA file with 5&apos; adapters</source>
-        <translation>FASTA файл с адаптерами 5&apos;</translation>
+        <translation type="vanished">FASTA файл с адаптерами 5&apos;</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="128"/>
         <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end. If the adapter sequence starts with the character &apos;^&apos;, the adapter is &apos;anchored&apos;. An anchored adapter must appear in its entirety at the 5&apos; end of the read (it is a prefix of the read). A non-anchored adapter may appear partially at the 5&apos; end, or it may occur within the read. If it is found within a read, the sequence preceding the adapter is also trimmed. In all cases, the adapter itself is trimmed.</source>
-        <translation>FASTA файл с одним или несколькими адаптерами. Если адаптер начинается с символа &apos;^&apos;, адаптер называется«якорь». Если будет найден такой адаптер в риде, последовательность предшествующая адаптеру также обрезается.</translation>
+        <translation type="vanished">FASTA файл с одним или несколькими адаптерами. Если адаптер начинается с символа &apos;^&apos;, адаптер называется«якорь». Если будет найден такой адаптер в риде, последовательность предшествующая адаптеру также обрезается.</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="138"/>
         <source>FASTA file with 5&apos; and 3&apos; adapters</source>
-        <translation>FASTA файл с 5&apos; и 3&apos; концевыми адаптерами</translation>
+        <translation type="vanished">FASTA файл с 5&apos; и 3&apos; концевыми адаптерами</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="138"/>
         <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end or 3&apos; end.</source>
-        <translation>FASTA файл с одним или несколькими адаптерами 5&apos; или 3&apos; концов.</translation>
+        <translation type="vanished">FASTA файл с одним или несколькими адаптерами 5&apos; или 3&apos; концов.</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="166"/>
         <source>Input file</source>
-        <translation>Входной файл</translation>
+        <translation type="vanished">Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="167"/>
         <source>Workflow</source>
-        <translation>Схема</translation>
+        <translation type="vanished">Схема</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="168"/>
         <source>Custom</source>
-        <translation>Частный</translation>
+        <translation type="vanished">Частный</translation>
     </message>
 </context>
 <context>
@@ -9492,6 +9470,145 @@ bowtie медленнее, когда указан режим --best.</translati
         <location filename="../src/trimmomatic/util/NoSettingsWidget.cpp" line="34"/>
         <source>There are no settings for this step.</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::Primer3ModuleCutadaptPrompter</name>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="75"/>
+        <source>unset</source>
+        <translation>не указан</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="76"/>
+        <source> from &lt;u&gt;%1&lt;/u&gt;</source>
+        <translation> из &lt;u&gt;%1&lt;/u&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="78"/>
+        <source>Removes adapter sequences %1.</source>
+        <translation>Удаляет переходные последовательности %1.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::Primer3ModuleCutadaptTask</name>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="241"/>
+        <source>Can not copy the result file to: %1</source>
+        <translation>Невозможно скопировать результат в: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="278"/>
+        <source>Unknown file format: </source>
+        <translation>Неизвестный формат файла: </translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::Primer3ModuleCutadaptWorker</name>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="122"/>
+        <source>Cut Adapter</source>
+        <translation>Удаление адаптеров</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="122"/>
+        <source>Removes adapter sequences</source>
+        <translation>Удаляет последовательности адаптеров</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="126"/>
+        <source>Input File</source>
+        <translation>Входной файл</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="126"/>
+        <source>Set of FASTQ reads files</source>
+        <translation>Набор ридов в формате FASTQ</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="127"/>
+        <source>Output File</source>
+        <translation>Выходной файл</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="127"/>
+        <source>Output FASTQ file(s)</source>
+        <translation>Выходные FASTQ файлы</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="141"/>
+        <source>Output folder</source>
+        <translation>Выходная директория</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="142"/>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="146"/>
+        <source>Custom folder</source>
+        <translation>Частная директория</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="146"/>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную директорию.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="149"/>
+        <source>Output file name</source>
+        <translation>Имя выходного файла</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="150"/>
+        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
+        <translation>Имя выходного файла. По умолчанию будет использовано имя первого файла с соответствующим расширением.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="153"/>
+        <source>FASTA file with 3&apos; adapters</source>
+        <translation>FASTA файл с 3&apos; адаптерами</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="154"/>
+        <source>A FASTA file with one or multiple sequences of adapter that were ligated to the 3&apos; end. The adapter itself and anything that follows is trimmed. If the adapter sequence ends with the &apos;$&apos; character, the adapter is anchored to the end of the read and only found if it is a suffix of the read.</source>
+        <translation>FASTA файл с одним или несколькими 3&apos; адаптерами. Сам адаптер и все, что следует за ним обрезано. Если последовательность адаптера заканчивается символом &apos;$&apos;, адаптер прикрепляется к концу рида.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="161"/>
+        <source>FASTA file with 5&apos; adapters</source>
+        <translation>FASTA файл с 5&apos; адаптерами</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="162"/>
+        <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end. If the adapter sequence starts with the character &apos;^&apos;, the adapter is &apos;anchored&apos;. An anchored adapter must appear in its entirety at the 5&apos; end of the read (it is a prefix of the read). A non-anchored adapter may appear partially at the 5&apos; end, or it may occur within the read. If it is found within a read, the sequence preceding the adapter is also trimmed. In all cases, the adapter itself is trimmed.</source>
+        <translation>FASTA файл с одним или несколькими адаптерами. Если адаптер начинается с символа &apos;^&apos;, адаптер называется«якорь». Если будет найден такой адаптер в риде, последовательность предшествующая адаптеру также обрезается.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="173"/>
+        <source>FASTA file with 5&apos; and 3&apos; adapters</source>
+        <translation>FASTA файл с 5&apos; и 3&apos; концевыми адаптерами</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="174"/>
+        <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end or 3&apos; end.</source>
+        <translation>FASTA файл с одним или несколькими адаптерами 5&apos; или 3&apos; концов.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="202"/>
+        <source>Input file</source>
+        <translation>Входной файл</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="203"/>
+        <source>Workflow</source>
+        <translation>Схема</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="204"/>
+        <source>Custom</source>
+        <translation>Частный</translation>
     </message>
 </context>
 <context>
@@ -10972,7 +11089,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::LocalWorkflow::TrimmomaticPropertyDialog</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="178"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="179"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
@@ -11227,42 +11344,42 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Align sequences to alignment task</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="95"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="94"/>
         <source>Align sequences to alignment with MAFFT started</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="170"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="169"/>
         <source>Output file &apos;%1&apos; not found</source>
         <translation>Output file &apos;%1&apos; not found</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="172"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="171"/>
         <source>Output file &apos;%3&apos; not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Output file &apos;%3&apos; not found. May be %1 tool path &apos;%2&apos; not valid?</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="179"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="178"/>
         <source>Loading output file &apos;%1&apos;</source>
         <translation>Loading output file &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="258"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="257"/>
         <source>Row for updating doesn&apos;t found</source>
         <translation>Row for updating doesn&apos;t found</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="275"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="274"/>
         <source>Additional enhancement of short sequences alignment performed</source>
         <translation>Additional enhancement of short sequences alignment performed</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="284"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="283"/>
         <source>The following sequence(s) were not aligned as they do not contain meaningful characters: &quot;%1&quot;.</source>
         <translation>The following sequence(s) were not aligned as they do not contain meaningful characters: &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="296"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="295"/>
         <source>MAFFT alignment successfully finished</source>
         <translation>MAFFT alignment successfully finished</translation>
     </message>
@@ -11686,27 +11803,38 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
 </context>
 <context>
-    <name>U2::PythonModuleBioSupport</name>
+    <name>U2::Python3ModuleCutadaptSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="89"/>
-        <source> (or biopython) is a python module for biological computations.</source>
-        <translation></translation>
+        <location filename="../src/python/Python3ModuleCutadaptSupport.cpp" line="41"/>
+        <source> finds and removes adapter sequences, primers, poly-A tails and other types of unwanted sequence from your high-throughput sequencing reads.</source>
+        <translation> находит и удаляет адаптеры последовательностей, праймеры, хвосты poly-A и другие виды нежелательных последовательностей из ваших ридов, полученных в результате высокопроизводительного секвенирования.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptSupport.cpp" line="51"/>
+        <source>The &quot;Cutadapt&quot; module is not installed.Install module or set path to another Python scripts interpreter with installed module in the External Tools settings</source>
+        <translation>Модуль &quot;Cutadapt&quot; не установлен. Установите модуль или задайте другой интерпретатор Python с установленным модулем в настройках Встроенных Инструментов</translation>
+    </message>
+</context>
+<context>
+    <name>U2::Python3Support</name>
+    <message>
+        <location filename="../src/python/Python3Support.cpp" line="44"/>
+        <source>Python scripts interpreter</source>
+        <translation>Интерпретатор Python</translation>
     </message>
 </context>
 <context>
     <name>U2::PythonModuleSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="78"/>
         <source>Python module is not installed. Install module or set path to another Python scripts interpreter with installed module in the External Tools settings</source>
-        <translation>Python модуль не установлен. Установите модель или укажите другой путь с установленным модулем в настройках внешних инструментов</translation>
+        <translation type="vanished">Python модуль не установлен. Установите модель или укажите другой путь с установленным модулем в настройках внешних инструментов</translation>
     </message>
 </context>
 <context>
     <name>U2::PythonSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="51"/>
         <source>Python scripts interpreter</source>
-        <translation>Python интерпретатор</translation>
+        <translation type="vanished">Python интерпретатор</translation>
     </message>
 </context>
 <context>
@@ -11762,12 +11890,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SaveAlignmentTask</name>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="62"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="56"/>
         <source>Export alignment to &apos;%1&apos;</source>
         <translation>Export alignment to &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="66"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="60"/>
         <source>An alignment is empty</source>
         <translation>An alignment is empty</translation>
     </message>
@@ -11775,7 +11903,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SaveMSA2SequencesTask</name>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="103"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="97"/>
         <source>Export alignment to sequence: %1</source>
         <translation>Export alignment to sequence: %1</translation>
     </message>
@@ -11783,7 +11911,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SaveSequenceTask</name>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="132"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="126"/>
         <source>Save sequence</source>
         <translation>Save sequence</translation>
     </message>

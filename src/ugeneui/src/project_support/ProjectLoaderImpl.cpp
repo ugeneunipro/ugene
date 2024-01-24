@@ -494,7 +494,7 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
             hintsOverDocuments[ProjectLoaderHint_MultipleFilesMode_SaveDocumentFlag] = true;
             hintsOverDocuments[ProjectLoaderHint_MultipleFilesMode_Flag] = true;
             QStringList urlsStr;
-            foreach(GUrl url, _urls) {
+            foreach (GUrl url, _urls) {
                 urlsStr << url.getURLString();
             }
             hintsOverDocuments[ProjectLoaderHint_MultipleFilesMode_URLsDocumentConsistOf] = urlsStr;
@@ -1014,7 +1014,7 @@ void ProjectLoaderImpl::sl_onAddExistingDocument() {
 // Add documents to project task
 
 AddDocumentsToProjectTask::AddDocumentsToProjectTask(const QList<AD2P_DocumentInfo>& _docsInfo, const QList<AD2P_ProviderInfo>& _provInfo)
-    : Task(tr("Loading documents"), TaskFlags_NR_FOSE_COSC | TaskFlag_CollectChildrenWarnings), docsInfo(_docsInfo), providersInfo(_provInfo), loadTasksAdded(false) {
+    : Task(tr("Loading documents"), TaskFlags_NR_FOSE_COSC | TaskFlag_CollectChildrenWarnings), docsInfo(_docsInfo), providersInfo(_provInfo) {
     setMaxParallelSubtasks(MAX_PARALLEL_SUBTASKS_AUTO);
 
     Project* p = AppContext::getProject();
@@ -1061,10 +1061,20 @@ QList<Task*> AddDocumentsToProjectTask::onSubTaskFinished(Task* t) {
 }
 
 QString AddDocumentsToProjectTask::generateReport() const {
-    SAFE_POINT(stateInfo.hasWarnings(), L10N::internalError("No warnings to show"), "");
-    QString warnings = stateInfo.getWarnings().join("<br>");
-    warnings.replace("\n", "<br>");
-    return warnings;
+    const QList<QPointer<Task>>& subtasks = getSubtasks();
+    QString warningsHtml;
+    for (const auto& subtask : qAsConst(subtasks)) {
+        if (subtask->hasWarning()) {
+            warningsHtml.append("<br><div>");
+            warningsHtml.append("<h4>" + tr("Warnings in \"%1\":").arg(subtask->getTaskName()) + "</h4>");
+            const QStringList& subtaskWarnings = subtask->getWarnings();
+            for (const auto& warningText : qAsConst(subtaskWarnings)) {
+                warningsHtml.append("<pre style='background-color:#EEE;'>" + warningText.toHtmlEscaped() + "</pre>");
+            }
+            warningsHtml.append("</div>");
+        }
+    }
+    return warningsHtml;
 }
 
 QList<Task*> AddDocumentsToProjectTask::prepareLoadTasks() {
@@ -1107,7 +1117,7 @@ QList<Task*> AddDocumentsToProjectTask::prepareLoadTasks() {
                     QList<Task*> tasks;
                     tasks << addDocTask;
                     tasks << new LoadUnloadedDocumentTask(doc);
-                    SequentialMultiTask* multiTask = new SequentialMultiTask(tr("Load document and add to project: %1").arg(doc->getName()), tasks);
+                    auto multiTask = new SequentialMultiTask(tr("Load document and add to project: %1").arg(doc->getName()), tasks);
                     res << multiTask;
                 } else {
                     res << addDocTask;

@@ -1589,44 +1589,6 @@ GUI_TEST_CLASS_DEFINITION(test_6279) {
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6283) {
-    class Custom : public CustomScenario {
-        void run() override {
-            QWidget* dialog = GTWidget::getActiveModalWidget();
-            AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
-
-            // 2. Open a python tab
-            AppSettingsDialogFiller::isExternalToolValid("python");
-
-            // Expected:: Bio module is valid
-            bool isToolValid = true;
-            if (!isOsWindows()) {
-                isToolValid = AppSettingsDialogFiller::isExternalToolValid("Bio");
-            }
-            if (!isToolValid) {
-                GT_FAIL("Bio is not valid", );
-            }
-
-            bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
-            if (!isPathOnlyValidation) {
-                // Expected: Bio module version is 1.73
-                bool hasVersion = true;
-                if (!isOsWindows()) {
-                    hasVersion = AppSettingsDialogFiller::isToolDescriptionContainsString("Bio", "Version: 1.73");
-                }
-                if (!hasVersion) {
-                    GT_FAIL("Incorrect Bio version", );
-                }
-            }
-            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
-        }
-    };
-
-    // 1. Open "UGENE Application Settings", select "External Tools" tab.
-    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new Custom()));
-    GTMenu::clickMainMenuItem({"Settings", "Preferences..."}, GTGlobals::UseMouse);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_6291) {
     // 1. Open murine.gb
     GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");

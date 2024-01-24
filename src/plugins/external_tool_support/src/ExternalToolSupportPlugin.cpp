@@ -83,8 +83,6 @@
 #include "cufflinks/CufflinksWorker.h"
 #include "cufflinks/CuffmergeWorker.h"
 #include "cufflinks/GffreadWorker.h"
-#include "cutadapt/CutadaptSupport.h"
-#include "cutadapt/CutadaptWorker.h"
 #include "fastqc/FastqcSupport.h"
 #include "fastqc/FastqcWorker.h"
 #include "fasttree/FastTreeSupport.h"
@@ -103,7 +101,9 @@
 #include "perl/PerlSupport.h"
 #include "phyml/PhyMLSupport.h"
 #include "phyml/PhyMLTests.h"
-#include "python/PythonSupport.h"
+#include "python/Python3ModuleCutadaptSupport.h"
+#include "python/Python3ModuleCutadaptWorker.h"
+#include "python/Python3Support.h"
 #include "snpeff/SnpEffSupport.h"
 #include "snpeff/SnpEffWorker.h"
 #include "spades/SpadesWorker.h"
@@ -138,8 +138,8 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     SAFE_POINT(etRegistry != nullptr, "ExternalToolRegistry is null", );
 
     // python with modules
-    etRegistry->registerEntry(new PythonSupport());
-    etRegistry->registerEntry(new PythonModuleBioSupport());
+    etRegistry->registerEntry(new Python3Support());
+    etRegistry->registerEntry(new Python3ModuleCutadaptSupport());
 
     // perl
     etRegistry->registerEntry(new PerlSupport());
@@ -264,9 +264,6 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
 
     // bedtools
     etRegistry->registerEntry(new BedtoolsSupport());
-
-    // cutadapt
-    etRegistry->registerEntry(new CutadaptSupport());
 
     // bigwig
     etRegistry->registerEntry(new BigWigSupport());
@@ -447,7 +444,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
 
     LocalWorkflow::SnpEffFactory::init();
     LocalWorkflow::FastQCFactory::init();
-    LocalWorkflow::CutAdaptFastqWorkerFactory::init();
+    LocalWorkflow::Primer3ModuleCutadaptWorkerFactory::init();
     LocalWorkflow::TrimmomaticWorkerFactory::init();
     LocalWorkflow::BedtoolsIntersectWorkerFactory::init();
     LocalWorkflow::HmmerBuildWorkerFactory::init();

@@ -31,25 +31,25 @@ namespace U2 {
 namespace LocalWorkflow {
 
 //////////////////////////////////////////////////
-// CutAdaptFastq
-class CutAdaptFastqPrompter;
-typedef PrompterBase<CutAdaptFastqPrompter> CutAdaptFastqBase;
+// Primer3ModuleCutadapt
+class Primer3ModuleCutadaptPrompter;
+typedef PrompterBase<Primer3ModuleCutadaptPrompter> Primer3ModuleCutadaptBase;
 
-class CutAdaptFastqPrompter : public CutAdaptFastqBase {
+class Primer3ModuleCutadaptPrompter : public Primer3ModuleCutadaptBase {
     Q_OBJECT
 public:
-    CutAdaptFastqPrompter(Actor* p = 0)
-        : CutAdaptFastqBase(p) {
+    Primer3ModuleCutadaptPrompter(Actor* p = 0)
+        : Primer3ModuleCutadaptBase(p) {
     }
 
 protected:
     QString composeRichDoc();
-};  // CutAdaptFastqPrompter
+};  // Primer3ModuleCutadaptPrompter
 
-class CutAdaptFastqWorker : public BaseNGSWorker {
+class Primer3ModuleCutadaptWorker : public BaseNGSWorker {
     Q_OBJECT
 public:
-    CutAdaptFastqWorker(Actor* a);
+    Primer3ModuleCutadaptWorker(Actor* a);
 
 protected:
     QVariantMap getCustomParameters() const;
@@ -58,32 +58,32 @@ protected:
 
     QStringList inputUrls;
 
-};  // CutAdaptFastqWorker
+};  // Primer3ModuleCutadaptWorker
 
-class CutAdaptFastqWorkerFactory : public DomainFactory {
+class Primer3ModuleCutadaptWorkerFactory : public DomainFactory {
     static const QString ACTOR_ID;
 
 public:
     static void init();
-    CutAdaptFastqWorkerFactory()
+    Primer3ModuleCutadaptWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
     Worker* createWorker(Actor* a) {
-        return new CutAdaptFastqWorker(a);
+        return new Primer3ModuleCutadaptWorker(a);
     }
-};  // CutAdaptFastqWorkerFactory
+};  // Primer3ModuleCutadaptWorkerFactory
 
-class CutAdaptFastqTask : public BaseNGSTask {
+class Primer3ModuleCutadaptTask : public BaseNGSTask {
     Q_OBJECT
 public:
-    CutAdaptFastqTask(const BaseNGSSetting& settings);
+    Primer3ModuleCutadaptTask(const BaseNGSSetting& settings);
 
 protected:
     void prepareStep();
     QStringList getParameters(U2OpStatus& os);
 };
 
-class CutAdaptParser : public ExternalToolLogParser {
+class Primer3ModuleCutadaptParser : public ExternalToolLogParser {
 public:
     void parseErrOutput(const QString& partOfLog);
 
@@ -97,9 +97,9 @@ private:
     static const QStringList stringsToIgnore;
 };
 
-class CutAdaptLogProcessor : public ExternalToolLogProcessor {
+class Primer3ModuleCutadaptLogProcessor : public ExternalToolLogProcessor {
 public:
-    CutAdaptLogProcessor(WorkflowMonitor* monitor, const QString& actor);
+    Primer3ModuleCutadaptLogProcessor(WorkflowMonitor* monitor, const QString& actor);
 
     void processLogMessage(const QString& message);
 
