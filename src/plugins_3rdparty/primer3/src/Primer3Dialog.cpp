@@ -964,18 +964,19 @@ void Primer3Dialog::sl_taskChanged(const QString& text) {
 }
 
 void Primer3Dialog::sl_presetChanged(const QString& text) {
-    if (text == tr("Default")) {
-        loadSettings(primer3DataDirectory + "/presets/Default.txt");
-        gbCheckComplementary->setChecked(false);
-        lbPresetInfo->clear();
-    } else if (text == tr("Recombinase Polymerase Amplification")) {
+    if (text == tr("Recombinase Polymerase Amplification")) {
         loadSettings(primer3DataDirectory + "/presets/RPA.txt");
         if (context != nullptr) {
             gbCheckComplementary->setChecked(true);
             lbPresetInfo->setText(tr("Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)"));
         }
     } else {
-        FAIL("Unexpected preset", );
+        QString presetFilePath = primer3DataDirectory + "/presets/" + text + ".txt";
+        SAFE_POINT(QFile::exists(presetFilePath), "Unexpected preset", );
+
+        loadSettings(presetFilePath);
+        gbCheckComplementary->setChecked(false);
+        lbPresetInfo->clear();
     }
 
     updateNoSequenceDialogState();
