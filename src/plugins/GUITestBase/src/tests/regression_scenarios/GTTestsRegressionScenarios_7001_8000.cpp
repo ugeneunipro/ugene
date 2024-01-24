@@ -165,8 +165,8 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
             QString toolPath = testDir + "_common_data/regression/7003/dumb.";
             toolPath += isOsWindows() ? "cmd" : "sh";
 
-            AppSettingsDialogFiller::setExternalToolPath("python", QFileInfo(toolPath).absoluteFilePath());
-            CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid("python"),
+            AppSettingsDialogFiller::setExternalToolPath("Python 3", QFileInfo(toolPath).absoluteFilePath());
+            CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid("Python 3"),
                           "Python module is expected to be invalid, but in fact it is valid")
 
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
