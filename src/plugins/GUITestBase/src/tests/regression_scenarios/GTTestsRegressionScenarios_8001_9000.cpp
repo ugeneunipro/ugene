@@ -274,6 +274,11 @@ GUI_TEST_CLASS_DEFINITION(test_8015) {
     CHECK_SET_ERR(resultLabel->text() == "Results: -/0", "Unexpected find algorithm results");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8024) {
+    GTFileDialog::openFileList(testDir + "_common_data/scenarios/_regression/8024", {"55555.gb", "Aligned reads_consensus.txt"});
+    GTUtilsDialog::add(new DocumentFormatSelectorDialogFiller("BED"));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8028) {
     GTUtilsDialog::waitForDialog(new SaveProjectAsDialogFiller("proj_test_8028", sandBoxDir + "proj_test_8028"));
     GTMenu::clickMainMenuItem({"File", "New project..."}, GTGlobals::UseMouse);
