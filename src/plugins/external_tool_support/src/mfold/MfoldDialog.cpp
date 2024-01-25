@@ -106,9 +106,10 @@ void MfoldDialog::validateRegionAndShowError() {
         err = tr("Start position cannot be greater than end position");
     } else if (getRegionLen(startVal, endVal) > 3000) {
         err = TOO_LONG_REGION_STR;
+    } else {
+        err = "";
     }
     ui.wrongRegionLabel->setText(err);
-    ui.wrongRegionLabel->setVisible(!err.isEmpty());
 }
 
 void MfoldDialog::checkNotSave() {

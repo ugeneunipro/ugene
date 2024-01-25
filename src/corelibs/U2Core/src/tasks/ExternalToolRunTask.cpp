@@ -608,10 +608,10 @@ QString ExternalToolSupportUtils::checkToolPathLatinSymbols(const ExternalTool* 
     const QString& path = tool->getPath();
     QByteArray tolatin1(path.toLatin1());
     if (QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != path) {
-        tr("\"%1\" external tool located in path which contains non-latin symbols."
-           " Please change it location to path which contains only latin symbols, set the new path in"
-           " Preferences on the External tools and try again. Current problem path is: ") +
-            path;
+        return tr("\"%1\" external tool located in path which contains non-latin symbols."
+                  " Please change it location to path which contains only latin symbols, set the new path in"
+                  " Preferences on the External tools and try again. Current problem path is: ") +
+               path;
     }
     return "";
 }
