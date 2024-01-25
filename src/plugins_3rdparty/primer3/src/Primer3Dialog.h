@@ -76,14 +76,14 @@ private slots:
     void sl_saveSettings();
     void sl_loadSettings();
     void sl_taskChanged(const QString& text);
-    void sl_presetChanged(const QString& text);
+    void sl_presetChanged(int presetIndex);
     void sl_checkComplementStateChanged();
     void sl_ChooseCsvReportPathButtonClicked();
 
 private:
     void updateNoSequenceDialogState();
     void saveSettings(const QString& filePath);
-    void loadSettings(const QString& filePath);
+    bool loadSettings(const QString& filePath);
 
     U2Region selection;
     QList<QPair<QString, QByteArray>> repeatLibraries;

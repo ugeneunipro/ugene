@@ -90,7 +90,7 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* _context)
     connect(resetButton, &QPushButton::clicked, this, &Primer3Dialog::sl_resetClicked);
     connect(saveSettingsButton, &QPushButton::clicked, this, &Primer3Dialog::sl_saveSettings);
     connect(loadSettingsButton, &QPushButton::clicked, this, &Primer3Dialog::sl_loadSettings);
-    connect(cbPreset, &QComboBox::currentTextChanged, this, &Primer3Dialog::sl_presetChanged);
+    connect(cbPreset, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Primer3Dialog::sl_presetChanged);
     connect(edit_PRIMER_TASK, &QComboBox::currentTextChanged, this, &Primer3Dialog::sl_taskChanged);
     connect(edit_PRIMER_TASK, &QComboBox::currentTextChanged, this, &Primer3Dialog::sl_checkComplementStateChanged);
     connect(checkbox_PRIMER_PICK_LEFT_PRIMER, &QCheckBox::toggled, this, &Primer3Dialog::sl_checkComplementStateChanged);
@@ -341,7 +341,7 @@ bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>
 }
 
 void Primer3Dialog::reset() {
-    sl_presetChanged(cbPreset->currentText());
+    sl_presetChanged(cbPreset->currentIndex());
 }
 
 static U2Range<int> parseExonRange(const QString& text, bool& ok) {
@@ -963,23 +963,34 @@ void Primer3Dialog::sl_taskChanged(const QString& text) {
     }
 }
 
-void Primer3Dialog::sl_presetChanged(const QString& text) {
-    if (text == tr("Recombinase Polymerase Amplification")) {
-        loadSettings(primer3DataDirectory + "/presets/RPA.txt");
-        if (context != nullptr) {
-            gbCheckComplementary->setChecked(true);
-            lbPresetInfo->setText(tr("Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)"));
-        }
-    } else {
-        QString presetFilePath = primer3DataDirectory + "/presets/" + text + ".txt";
-        SAFE_POINT(QFile::exists(presetFilePath), "Unexpected preset", );
+static const QMap<int, QString> INDEX_FILE_NAME_MAP = {
+    {0, "Default"},
+    {1, "Default2"},
+    {2, "qPCR"},
+    {3, "Cloning Primers"},
+    {4, "Annealing Temp"},
+    {5, "Secondary Structures"},
+    {6, "Probe"},
+    {7, "RPA"}
+};
 
-        loadSettings(presetFilePath);
+void Primer3Dialog::sl_presetChanged(int presetIndex) {
+    SAFE_POINT(INDEX_FILE_NAME_MAP.contains(presetIndex), "Unexpected preset index", );
+
+    QString presetFilePath = primer3DataDirectory + "/presets/" + INDEX_FILE_NAME_MAP.value(presetIndex) + ".txt";
+    if (!loadSettings(presetFilePath)) {
+        QMessageBox::critical(this, windowTitle(), L10N::errorReadingFile(presetFilePath));
+        return;
+    }
+    if (context == nullptr) {
+        updateNoSequenceDialogState();
+    } else if (presetIndex == INDEX_FILE_NAME_MAP.lastKey()) {
+        gbCheckComplementary->setChecked(true);
+        lbPresetInfo->setText(tr("Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)"));
+    } else {
         gbCheckComplementary->setChecked(false);
         lbPresetInfo->clear();
     }
-
-    updateNoSequenceDialogState();
 }
 
 void Primer3Dialog::sl_checkComplementStateChanged() {
@@ -1089,16 +1100,12 @@ void Primer3Dialog::saveSettings(const QString& filePath) {
     file.close();
 }
 
-void Primer3Dialog::loadSettings(const QString& filePath) {
+bool Primer3Dialog::loadSettings(const QString& filePath) {
     QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::critical(this, windowTitle(), L10N::errorReadingFile(filePath));
-        return;
-    }
+    CHECK(file.open(QIODevice::ReadOnly), false);
 
     auto intPropList = defaultSettings.getIntPropertyList();
     auto doublePropList = defaultSettings.getDoublePropertyList();
-
     bool primerMinThreePrimeIsUsed = false;
     QTextStream stream(&file);
     QStringList changedLineEdits;
