@@ -1252,6 +1252,8 @@ bool Primer3Dialog::loadSettings(const QString& filePath) {
         }
     }
     file.close();
+
+    return true;
 }
 
 QString Primer3Dialog::checkModel() {
