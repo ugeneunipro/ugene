@@ -1453,7 +1453,6 @@ Unipro UGENE.app/Contents/MacOS/tools/mafft
 Unipro UGENE.app/Contents/MacOS/tools/mfold
 Unipro UGENE.app/Contents/MacOS/tools/mrbayes
 Unipro UGENE.app/Contents/MacOS/tools/phyml
-Unipro UGENE.app/Contents/MacOS/tools/python3
 Unipro UGENE.app/Contents/MacOS/tools/samtools
 Unipro UGENE.app/Contents/MacOS/tools/snpeff
 Unipro UGENE.app/Contents/MacOS/tools/spades
