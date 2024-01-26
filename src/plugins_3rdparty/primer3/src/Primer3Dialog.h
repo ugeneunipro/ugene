@@ -76,7 +76,7 @@ private slots:
     void sl_saveSettings();
     void sl_loadSettings();
     void sl_taskChanged(const QString& text);
-    void sl_presetChanged(int presetIndex);
+    void sl_presetChanged(const QString& text);
     void sl_checkComplementStateChanged();
     void sl_ChooseCsvReportPathButtonClicked();
 
@@ -99,6 +99,7 @@ private:
 
     const Primer3TaskSettings defaultSettings;
     const QByteArray primer3DataDirectory;
+    const QList<QPair<QString, QString>> presetNamesMap;
 
     static const QStringList LINE_EDIT_PARAMETERS;
     static const QRegularExpression MUST_MATCH_END_REGEX;
