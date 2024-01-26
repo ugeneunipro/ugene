@@ -137,12 +137,11 @@ GUrl::GUrl(const QString& _urlString, const GUrlType& _type) {
 }
 
 bool GUrl::operator==(const GUrl& url) const {
-#ifdef Q_OS_WIN
-    //case insensitive OS
-    return urlString.toLower() == url.getURLString().toLower();
-#else
-    return urlString == url.getURLString();
-#endif
+    if(isLocalFile() && url.isLocalFile()) {
+        return QFileInfo(urlString) == QFileInfo(url.getURLString());
+    } else {
+        return urlString == url.getURLString();
+    }    
 }
 
 bool GUrl::operator!=(const GUrl& url) const {
