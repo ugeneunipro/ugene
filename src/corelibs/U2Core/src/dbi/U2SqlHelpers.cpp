@@ -24,6 +24,7 @@
 
 #include <U2Core/Log.h>
 #include <U2Core/U2DbiUtils.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {

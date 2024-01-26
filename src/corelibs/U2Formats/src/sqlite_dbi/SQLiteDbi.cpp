@@ -312,6 +312,14 @@ void SQLiteDbi::internalInit(const QHash<QString, QString>& props, U2OpStatus& o
     features.insert(U2DbiFeature_WriteUdr);
 }
 
+void SQLiteDbi::testDatabaseLocked(U2OpStatus& os) {
+    SQLiteWriteQuery("DROP TABLE IF EXISTS TestLock;", db, os).execute();
+    CHECK_OP(os, );
+    SQLiteWriteQuery("CREATE TABLE TestLock (attribute INTEGER);", db, os).execute();
+    CHECK_OP(os, );
+    SQLiteWriteQuery("DROP TABLE IF EXISTS TestLock;", db, os).execute();
+}
+
 void SQLiteDbi::setState(U2DbiState s) {
     state = s;
 }
@@ -387,6 +395,8 @@ void SQLiteDbi::init(const QHash<QString, QString>& props, const QVariantMap&, U
             ioLog.trace(QString("SQLite: initialized: %1\n").arg(url));
         }
     } while (false);
+
+    testDatabaseLocked(os);
 
     if (os.hasError()) {
         sqlite3_close(db->handle);
