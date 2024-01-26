@@ -27,6 +27,7 @@
 #include <QPushButton>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FileAndDirectoryUtils.h>
@@ -58,6 +59,9 @@ SaveDocumentTask::SaveDocumentTask(Document* _doc, IOAdapterFactory* _io, const 
     if (url.isEmpty()) {
         url = doc->getURLString();
     }
+    // Do not write the same document (url) in parallel.
+    QString saveDocumentResourceId = AppResource::buildDynamicResourceId("SaveDocumentTask:" + url.getURLString());
+    addTaskResource(TaskResourceUsage(saveDocumentResourceId, 1, TaskResourceStage::Run));
     SAFE_POINT(doc != nullptr, "Document is null in SaveDocumentTask", );
 }
 
