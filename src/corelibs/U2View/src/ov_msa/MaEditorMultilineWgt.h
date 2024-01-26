@@ -60,79 +60,68 @@ class MsaEditorMultiTreeViewer;
 class U2VIEW_EXPORT MaEditorMultilineWgt : public QWidget {
     Q_OBJECT
 public:
-    explicit MaEditorMultilineWgt(MaEditor* editor, QWidget* parent);
+    explicit MaEditorMultilineWgt(QWidget* parent);
 
     /** Returns MA editor instance. The instance is always defined and is never null. */
-    MaEditor* getEditor() const;
+    virtual MaEditor* getEditor() const = 0;
 
     // Return overview area widget
-    MaEditorOverviewArea* getOverviewArea() const;
+    virtual MaEditorOverviewArea* getOverviewArea() const = 0;
 
     // Status bar widget
-    MaEditorStatusBar* getStatusBar() const;
+    virtual MaEditorStatusBar* getStatusBar() const = 0;
 
     // Get multiline scroll controller
-    MultilineScrollController* getScrollController() const;
+    virtual MultilineScrollController* getScrollController() const = 0;
 
     // Get scroll area which contain all MaEditorWidget(s)
-    QScrollArea* getChildrenScrollArea() const;
+    virtual QScrollArea* getChildrenScrollArea() const = 0;
 
     // Get MaEditorWgt from multiline widget by index
     // Can be nullptr
-    virtual MaEditorWgt* getUI(int index) const;
+    virtual MaEditorWgt* getLineWidget(int index) const = 0;
 
     // Get index of the known MaEditorWgt from multiline widget
     // If not found will be 0
-    virtual int getUIIndex(MaEditorWgt* _ui) const;
+    virtual int getUIIndex(MaEditorWgt* _ui) const = 0;
 
-    virtual void updateSize();
+    virtual void updateSize() = 0;
 
-    int getSequenceAreaWidth(int index) const;  // pixels
-    int getFirstVisibleBase(int index) const;
-    int getLastVisibleBase(int index) const;
-    int getSequenceAreaBaseLen(int index) const;  // bases
-    int getSequenceAreaBaseWidth(int index) const;  // pixels
-    int getSequenceAreaAllBaseLen() const;  // bases
-    int getSequenceAreaAllBaseWidth() const;  // pixels
+    virtual int getSequenceAreaWidth(int index) const = 0;  // pixels
+    virtual int getFirstVisibleBase(int index) const = 0;
+    virtual int getLastVisibleBase(int index) const = 0;
+    virtual int getSequenceAreaBaseLen(int index) const = 0;  // bases
+    virtual int getSequenceAreaBaseWidth(int index) const = 0;  // pixels
+    virtual int getSequenceAreaAllBaseLen() const = 0;  // bases
+    virtual int getSequenceAreaAllBaseWidth() const = 0;  // pixels
 
     virtual MaEditorWgt* createChild(MaEditor* editor,
                                      MaEditorOverviewArea* overviewArea,
                                      MaEditorStatusBar* statusBar) = 0;
-    virtual void deleteChild(int index) = 0;
+
     virtual void addChild(MaEditorWgt* child) = 0;
-
-    // Return lines count in multiline widget
-    int getChildrenCount() const {
-        return uiChildCount;
-    }
-
-    // Current multiline mode
-    bool getMultilineMode() const {
-        return multilineMode;
-    }
 
     // Set multiline mode
     // If mode was changed return true
     // Else return false
-    bool setMultilineMode(bool newmode);
+    virtual bool setMultilineMode(bool enabled) = 0;
 
     // Return MaEditorWgt widget which has input focus
-    MaEditorWgt* getActiveChild();
-    void setActiveChild(MaEditorWgt* child);
+    virtual MaEditorWgt* getActiveChild() const = 0;
+    virtual void setActiveChild(MaEditorWgt* child) = 0;
 
-    virtual void setSimilaritySettings(const SimilarityStatisticsSettings* settings) {
-        Q_UNUSED(settings);
-    };
-    virtual void refreshSimilarityColumn() {};
-    virtual void showSimilarity() {};
-    virtual void hideSimilarity() {};
+    virtual void setSimilaritySettings(const SimilarityStatisticsSettings* settings) = 0;
+    virtual void refreshSimilarityColumn() = 0;
+    virtual void showSimilarity() = 0;
+    virtual void hideSimilarity() = 0;
 
-    virtual bool moveSelection(int key, bool shift, bool ctrl) {
-        Q_UNUSED(key);
-        Q_UNUSED(shift);
-        Q_UNUSED(ctrl);
-        return false;
-    }
+    virtual bool moveSelection(int key, bool shift, bool ctrl) = 0;
+
+    // Return lines count in multiline widget
+    virtual int getChildrenCount() const = 0;
+
+    // Current multiline mode
+    virtual bool getMultilineMode() const = 0;
 
 signals:
     void si_startMaChanging();
@@ -142,14 +131,11 @@ signals:
 
 public slots:
     /** Switches between Original and Sequence row orders. */
-    void sl_toggleSequenceRowOrder(bool isOrderBySequence);
-    virtual void sl_goto() {};
-
-private slots:
+    virtual void sl_toggleSequenceRowOrder(bool isOrderBySequence) = 0;
+    virtual void sl_goto() = 0;
 
 protected:
-    virtual void initWidgets();
-    virtual void initActions();
+    virtual void initWidgets() = 0;
 
     virtual void createChildren() = 0;
     virtual void updateChildren() = 0;
@@ -160,32 +146,6 @@ protected:
     virtual void initChildrenArea() = 0;
 
 private:
-    // For correct display of Overview. `wgt` may have already been removed, or may still exist, so we need handles.
-    struct ActiveChild {
-        MaEditorWgt* wgt = nullptr;
-        QMetaObject::Connection startChangingHandle;
-        QMetaObject::Connection stopChangingHandle;
-    };
-
-protected:
-    MaEditor* const editor;
-    QScrollArea* scrollArea = nullptr;  // scroll area for multiline widget, it's widget is uiChildrenArea
-    QGroupBox* uiChildrenArea = nullptr;
-    MaEditorOverviewArea* overviewArea = nullptr;
-    MaEditorStatusBar* statusBar = nullptr;
-
-    bool treeView = false;
-    QSplitter* treeSplitter;
-
-    QVector<MaEditorWgt*> uiChild;
-    ActiveChild activeChild;
-    int uiChildLength = 0;
-    int uiChildCount = 0;
-    bool multilineMode = false;
-
-    MultilineScrollController* scrollController = nullptr;
-
-public:
 };
 
 }  // namespace U2

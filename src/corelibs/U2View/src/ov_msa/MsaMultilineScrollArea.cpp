@@ -119,7 +119,7 @@ void MsaMultilineScrollArea::moveVSlider(int currPos,
     int linesCount = maEditorUi->getChildrenCount();
     int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
     int fullLength = maEditor->getAlignmentLen();
-    int lineHeight = maEditorUi->getUI(0)->height();
+    int lineHeight = maEditorUi->getLineWidget(0)->height();
     int maxAreaScroll = vbar->maximum();
     int maxGlobalScroll = globalVBar->maximum();
     int direction = (newPos - currPos) > 0 ? 1 : (newPos - currPos) < 0 ? -1 : 0;

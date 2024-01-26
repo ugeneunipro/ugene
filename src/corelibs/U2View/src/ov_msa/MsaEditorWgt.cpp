@@ -69,7 +69,7 @@ MsaEditorSequenceArea* MsaEditorWgt::getSequenceArea() const {
 
 void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
     if (curTabsNumber < 1) {
-        qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI())->delPhylTreeWidget();
+        qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getMainWidget())->delPhylTreeWidget();
         emit si_hideTreeOP();
     }
 }
@@ -83,7 +83,7 @@ void MsaEditorWgt::createDistanceColumn(MsaDistanceMatrix* matrix) {
 }
 
 void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
-    auto mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI());
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getMainWidget());
 
     if (mui->getPhylTreeWidget() == nullptr) {
         auto multiTreeViewer = new MsaEditorMultiTreeViewer(tr("Tree view"), getEditor());
@@ -173,7 +173,7 @@ MsaEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
 }
 
 MsaEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() const {
-    return qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI())->getPhylTreeWidget();
+    return qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getMainWidget())->getPhylTreeWidget();
 }
 
 QSize MsaEditorWgt::sizeHint() const {

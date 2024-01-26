@@ -155,11 +155,11 @@ void MaGraphOverview::drawVisibleRange(QPainter& p) {
         int screenPositionX = -1;
         auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
         if (mui->getMultilineMode()) {
-            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
-            screenWidth = mui->getUI(0)->getSequenceArea()->width() * mui->getChildrenCount();
+            screenPositionX = mui->getLineWidget(0)->getScrollController()->getScreenPosition().x();
+            screenWidth = mui->getLineWidget(0)->getSequenceArea()->width() * mui->getChildrenCount();
         } else {
-            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
-            screenWidth = mui->getUI(0)->getSequenceArea()->width();
+            screenPositionX = mui->getLineWidget(0)->getScrollController()->getScreenPosition().x();
+            screenWidth = mui->getLineWidget(0)->getSequenceArea()->width();
         }
 
         cachedVisibleRange.setY(0);
@@ -223,7 +223,7 @@ void MaGraphOverview::updateHighlightingSchemes() {
     if (state.method == MaGraphCalculationMethod::Highlighting) {
         auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
         CHECK(mui != nullptr, );
-        MaEditorSequenceArea* sequenceArea = mui->getUI(0)->getSequenceArea();
+        MaEditorSequenceArea* sequenceArea = mui->getLineWidget(0)->getSequenceArea();
         MsaHighlightingScheme* highlightingScheme = sequenceArea->getCurrentHighlightingScheme();
         MsaColorScheme* colorScheme = sequenceArea->getCurrentColorScheme();
         state.highlightingSchemeId = highlightingScheme->getFactory()->getId();
@@ -335,7 +335,7 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
             }
         } else {
             int newScrollBarValue = newVisibleRange.x() * stepX;
-            mui->getUI(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
+            mui->getLineWidget(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
         }
     }
 

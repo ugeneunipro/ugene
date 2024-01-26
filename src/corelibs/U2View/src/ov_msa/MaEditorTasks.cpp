@@ -331,10 +331,10 @@ ExtractConsensusTask::~ExtractConsensusTask() {
 }
 
 void ExtractConsensusTask::run() {
-    CHECK(ma->getUI(), );
-    CHECK(ma->getMaEditorWgt(0), );
-    CHECK(ma->getMaEditorWgt(0)->getConsensusArea(), );
-    CHECK(ma->getMaEditorWgt(0)->getConsensusArea()->getConsensusCache(), );
+    CHECK(ma->getMainWidget(), );
+    CHECK(ma->getLineWidget(0), );
+    CHECK(ma->getLineWidget(0)->getConsensusArea(), );
+    CHECK(ma->getLineWidget(0)->getConsensusArea()->getConsensusCache(), );
 
     const Msa alignment = ma->getMaObject()->getAlignment()->getCopy();
     for (int i = 0, n = alignment->getLength(); i < n; i++) {

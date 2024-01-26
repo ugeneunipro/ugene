@@ -79,11 +79,11 @@ void MsaGeneralTab::sl_alignmentChanged() {
 
 void MsaGeneralTab::sl_copyFormatSelectionChanged(int index) {
     QString formatId = copyType->itemData(index).toString();
-    msaEditor->getMaEditorWgt()->getSequenceArea()->sl_changeCopyFormat(formatId);
+    msaEditor->getLineWidget(0)->getSequenceArea()->sl_changeCopyFormat(formatId);
 }
 
 void MsaGeneralTab::connectSignals() {
-    MaEditorSequenceArea* sequenceArea = msaEditor->getMaEditorWgt()->getSequenceArea();
+    MaEditorSequenceArea* sequenceArea = msaEditor->getLineWidget(0)->getSequenceArea();
 
     // Inner signals
     connect(copyType, SIGNAL(currentIndexChanged(int)), SLOT(sl_copyFormatSelectionChanged(int)));
@@ -100,7 +100,7 @@ void MsaGeneralTab::connectSignals() {
     connect(sequenceArea, SIGNAL(si_copyFormattedChanging(bool)), copyButton, SLOT(setEnabled(bool)));
 
     // MaEditor UI changed it's state, for example multiline mode, we need to re-init some internals
-    connect(msaEditor->getUI(), &MaEditorMultilineWgt::si_maEditorUIChanged, this, [this]() {
+    connect(msaEditor->getMainWidget(), &MaEditorMultilineWgt::si_maEditorUIChanged, this, [this]() {
         reInitializeParameters();
         updateState();
     });
@@ -108,12 +108,12 @@ void MsaGeneralTab::connectSignals() {
 
 void MsaGeneralTab::reInitializeParameters() {
     // Consensus type combobox
-    consensusModeWidget->init(msaEditor->getMaObject(), msaEditor->getMaEditorWgt()->getConsensusArea());
+    consensusModeWidget->init(msaEditor->getMaObject(), msaEditor->getLineWidget(0)->getConsensusArea());
 
     // Copy formatted
-    copyButton->setToolTip(msaEditor->getMaEditorWgt()->copyFormattedSelectionAction->toolTip());
+    copyButton->setToolTip(msaEditor->getLineWidget(0)->copyFormattedSelectionAction->toolTip());
 
-    QString currentCopyFormattedID = msaEditor->getMaEditorWgt()->getSequenceArea()->getCopyFormattedAlgorithmId();
+    QString currentCopyFormattedID = msaEditor->getLineWidget(0)->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
 }
 
@@ -124,10 +124,10 @@ void MsaGeneralTab::initializeParameters() {
     alignmentHeight->setText(QString::number(msaEditor->getNumSequences()));
 
     // Consensus type combobox
-    consensusModeWidget->init(msaEditor->getMaObject(), msaEditor->getMaEditorWgt()->getConsensusArea());
+    consensusModeWidget->init(msaEditor->getMaObject(), msaEditor->getLineWidget(0)->getConsensusArea());
 
     // Copy formatted
-    copyButton->setToolTip(msaEditor->getMaEditorWgt()->copyFormattedSelectionAction->toolTip());
+    copyButton->setToolTip(msaEditor->getLineWidget(0)->copyFormattedSelectionAction->toolTip());
 
     DocumentFormatConstraints constr;
     constr.supportedObjectTypes.insert(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
@@ -144,7 +144,7 @@ void MsaGeneralTab::initializeParameters() {
     copyType->addItem(QIcon(), tr("Rich text (HTML)"), "RTF");
     copyType->model()->sort(0);
 
-    QString currentCopyFormattedID = msaEditor->getMaEditorWgt()->getSequenceArea()->getCopyFormattedAlgorithmId();
+    QString currentCopyFormattedID = msaEditor->getLineWidget(0)->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
 }
 
@@ -154,7 +154,7 @@ void MsaGeneralTab::updateState() {
     alignmentHeight->setText(QString::number(msaEditor->getNumSequences()));
 
     consensusModeWidget->updateState();
-    copyButton->setEnabled(msaEditor->getMaEditorWgt()->copyFormattedSelectionAction->isEnabled());
+    copyButton->setEnabled(msaEditor->getLineWidget(0)->copyFormattedSelectionAction->isEnabled());
     updateConvertAlphabetButtonState();
 }
 

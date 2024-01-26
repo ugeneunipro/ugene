@@ -98,10 +98,6 @@ public:
     /** Called right after zoom-on/out/reset or any other font change operation to update internal scrollbars scales. */
     void updateScrollBarsOnFontOrZoomChange();
     void setHScrollBarVisible(bool visible);
-    bool getHScrollBarVisible() const;
-
-    void setVScrollBarVisible(bool visible);
-    bool getVScrollBarVisible() const;
 
 signals:
     void si_visibleAreaChanged();

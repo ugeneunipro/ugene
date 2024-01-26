@@ -53,11 +53,9 @@ public:
 
     void init(GScrollBar* _vScrollBar, QScrollArea* childrenArea);
 
-    // enable/disable multiline scroll controller while switching multiline mode
-    void setEnable(bool enable = true);
-    bool isEnabled() {
-        return enabled;
-    };
+    /** Enables/disables multiline scroll controller when switching to multiline mode. */
+    void setEnabled(bool enable = true);
+    bool isEnabled() const;
 
     void scrollToViewRow(QPoint maPoint);
     void scrollToBase(QPoint maPoint);
@@ -70,11 +68,6 @@ public:
     void setFirstVisibleViewRow(int viewRowIndex);
     void setFirstVisibleMaRow(int maRowIndex);
 
-    void scrollSmoothly(const Directions& directions);
-    void stopSmoothScrolling();
-
-    void scrollStep(Direction direction);
-    void scrollPage(Direction direction);
     void scrollToEnd(Direction direction);
 
     int getFirstVisibleBase(bool countClipped = false) const;
@@ -86,7 +79,6 @@ public:
     GScrollBar* getVerticalScrollBar() const;
 
     void vertScroll(const Directions& directions, bool byStep = true);
-    int getViewHeight();
 
     /** Called right after zoom-on/out/reset or any other font change operation to update internal scrollbars scales. */
     void updateScrollBarsOnFontOrZoomChange() {
@@ -95,7 +87,6 @@ public:
 
 signals:
     void si_visibleAreaChanged();
-    void si_vScrollValueChanged();
 
 public slots:
     void sl_updateScrollBars();
@@ -113,29 +104,18 @@ private:
     QMetaObject::Connection connVValueChanged;
     QMetaObject::Connection connVActionTriggered;
 
-    int getAdditionalXOffset() const;  // in pixels;
-    int getAdditionalYOffset() const;  // in pixels;
-
-    U2Region getVerticalRangeToDrawIn(int widgetHeight) const;  // in pixels
-
-    void zoomVerticalScrollBarPrivate();
     void updateVerticalScrollBarPrivate();
-    void updateChildrenScrollBarsPeivate();
+    void updateChildrenScrollBarsPrivate();
 
-    bool eventFilter(QObject* object, QEvent* event);
-    bool vertEventFilter(QWheelEvent* event);
+    bool eventFilter(QObject* object, QEvent* event) override;
 
     MaEditor* maEditor;
     MaEditorMultilineWgt* ui;
     QScrollArea* childrenScrollArea;
     GScrollBar* vScrollBar;
-    int hScrollTail;
     int vScrollTail;
 
-    int savedFirstVisibleMaRow;
-    int savedFirstVisibleMaRowOffset;
-
-    bool checkBoundary();
+    bool checkBoundary() const;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(MultilineScrollController::Directions)

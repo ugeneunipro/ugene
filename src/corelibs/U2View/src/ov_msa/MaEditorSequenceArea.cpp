@@ -1225,7 +1225,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
             const MaEditorSelection& sel = editor->getSelection();
             QRect rect = sel.isEmpty() ? QRect(cursorPosition, cursorPosition) : sel.toRect();
             QPoint newPos(rect.topLeft());
-            editor->getMaEditorMultilineWgt()->getScrollController()->scrollToPoint(newPos);
+            editor->getMainWidget()->getScrollController()->scrollToPoint(newPos);
         } else {
             ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
         }

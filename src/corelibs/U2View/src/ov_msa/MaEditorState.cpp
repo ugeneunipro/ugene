@@ -112,12 +112,12 @@ QVariantMap MaEditorState::saveState(MaEditor* v) {
     auto maEditor = qobject_cast<MaEditor*>(v);
     SAFE_POINT(maEditor != nullptr, "Not an MaEditor", {})
     if (maEditor->isMultilineMode()) {
-        MaEditorMultilineWgt* multilineWidget = maEditor->getMaEditorMultilineWgt();
+        MaEditorMultilineWgt* multilineWidget = maEditor->getMainWidget();
         MultilineScrollController* scrollController = multilineWidget->getScrollController();
         firstBase = scrollController->getFirstVisibleBase(true);
         firstSeq = scrollController->getFirstVisibleMaRowIndex(true);
     } else {
-        auto maEditorWgt = maEditor->getMaEditorWgt(0);
+        auto maEditorWgt = maEditor->getLineWidget(0);
         ScrollController* scrollController = maEditorWgt->getScrollController();
         firstBase = scrollController->getFirstVisibleBase(true);
         firstSeq = scrollController->getFirstVisibleMaRowIndex(true);
