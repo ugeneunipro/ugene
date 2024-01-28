@@ -73,7 +73,7 @@ void McaReferenceAreaRenderer::drawSequence(QPainter& p, const QSize& /*canvasSi
     p.setPen(Qt::black);
     p.setFont(commonMetrics.sequenceFont);
 
-    SAFE_POINT(maEditor->getMainWidget() != nullptr, "MaEditorWgt is NULL", );
+    SAFE_POINT(maEditor->getWidget() != nullptr, "MaEditorWgt is NULL", );
     MaEditorSequenceArea* seqArea = maEditor->getLineWidget(0)->getSequenceArea();
     SAFE_POINT(seqArea != nullptr, "MaEditorSequenceArea is NULL", );
     MsaColorScheme* scheme = seqArea->getCurrentColorScheme();

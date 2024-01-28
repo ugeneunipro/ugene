@@ -331,7 +331,6 @@ ExtractConsensusTask::~ExtractConsensusTask() {
 }
 
 void ExtractConsensusTask::run() {
-    CHECK(ma->getMainWidget(), );
     CHECK(ma->getLineWidget(0), );
     CHECK(ma->getLineWidget(0)->getConsensusArea(), );
     CHECK(ma->getLineWidget(0)->getConsensusArea()->getConsensusCache(), );

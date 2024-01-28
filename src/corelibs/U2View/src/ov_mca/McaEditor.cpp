@@ -154,6 +154,7 @@ void McaEditor::sl_showConsensusTab() {
 QWidget* McaEditor::createViewWidget(QWidget* parent) {
     SAFE_POINT(ui == nullptr, "UI is already initialized", ui);
     ui = new McaEditorWgt(this, parent);
+    viewWidget = ui;
 
     collapseModel->reset(getMaRowIds());
 

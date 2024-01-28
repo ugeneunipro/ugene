@@ -492,6 +492,7 @@ QWidget* MsaEditor::createViewWidget(QWidget* parent) {
     // Use false for multilineMode while creating widget
     multilineMode = false;
     ui = new MsaEditorMultilineWgt(this, parent, multilineMode);
+    viewWidget = ui;
     new MoveToObjectMaController(this, ui);
 
     // Now restore multiline mode from settings

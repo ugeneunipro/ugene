@@ -55,8 +55,7 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MsaEditor* _editor, QWidget* parent
     setFocusPolicy(Qt::ClickFocus);
     initWidgets();
 
-    this->setObjectName("msa_editor_vertical_childs_layout_" +
-                        editor->getMaObject()->getGObjectName());
+    this->setObjectName("msa_editor_vertical_childs_layout_" + editor->getMaObject()->getGObjectName());
 
     createChildren();
     this->setMultilineMode(multiline);

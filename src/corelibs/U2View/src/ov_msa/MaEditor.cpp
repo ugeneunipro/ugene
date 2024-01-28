@@ -188,7 +188,7 @@ int MaEditor::getRowContentIndent(int) const {
 }
 
 int MaEditor::getRowHeight() const {
-    QFontMetrics fm(font, getMainWidget());
+    QFontMetrics fm(font, viewWidget);
     return qRound(fm.height() * FONT_BOX_TO_CELL_BOX_MULTIPLIER);
 }
 
@@ -395,7 +395,7 @@ void MaEditor::sl_saveAlignmentAs() {
         return;
     }
 
-    QObjectScopedPointer<ExportDocumentDialogController> dialog = new ExportDocumentDialogController(srcDoc, getMainWidget());
+    QObjectScopedPointer<ExportDocumentDialogController> dialog = new ExportDocumentDialogController(srcDoc, getWidget());
     dialog->setAddToProjectFlag(true);
     dialog->setWindowTitle(tr("Save Alignment"));
     ExportObjectUtils::export2Document(dialog);
@@ -438,12 +438,12 @@ void MaEditor::initActions() {
     showOverviewAction->setCheckable(true);
     showOverviewAction->setChecked(true);
     connect(showOverviewAction, &QAction::triggered, getLineWidget(0)->getOverviewArea(), &QWidget::setVisible);
-    getMainWidget()->addAction(showOverviewAction);
+    getWidget()->addAction(showOverviewAction);
     clearSelectionAction = new QAction(tr("Clear selection"), this);
     clearSelectionAction->setShortcut(Qt::Key_Escape);
     clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     connect(clearSelectionAction, SIGNAL(triggered()), SLOT(sl_onClearActionTriggered()));
-    getMainWidget()->addAction(clearSelectionAction);
+    getWidget()->addAction(clearSelectionAction);
 
     connect(getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
@@ -451,8 +451,8 @@ void MaEditor::initActions() {
 
     connect(undoAction, &QAction::triggered, [this]() { GCounter::increment("Undo", factoryId); });
     connect(redoAction, &QAction::triggered, [this]() { GCounter::increment("Redo", factoryId); });
-    getMainWidget()->addAction(undoAction);
-    getMainWidget()->addAction(redoAction);
+    getWidget()->addAction(undoAction);
+    getWidget()->addAction(redoAction);
 }
 
 void MaEditor::initZoom() {
@@ -602,7 +602,7 @@ void MaEditor::selectRows(int firstViewRowIndex, int numberOfRows) {
 }
 
 QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont& sequenceFont) const {
-    QFontMetrics fontMetrics(sequenceFont, getMainWidget());
+    QFontMetrics fontMetrics(sequenceFont, viewWidget);
     return fontMetrics.boundingRect('W');
 }
 
