@@ -1739,6 +1739,24 @@ GUI_TEST_CLASS_DEFINITION(test_6321) {
     GTTreeWidget::click(GTUtilsAnnotationsTreeView::findItem("misc_feature"));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6330) {
+    /*
+    * 1. Open "_common_data/fasta/AMINO.fa".
+    * 2. Open "_common_data/ugenedb/scerevisiae.bam.ugenedb".
+    * 3. Click to the "AMINO263" sequence object in the Project View.
+    * 4. Click the "Set reference" button on the toolbar in the Assembly Browser.
+    * Expected result: messagebox appeared with message about alphabet
+    */
+    GTFileDialog::openFile(testDir + "_common_data/fasta/", "AMINO.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsProjectTreeView::click("AMINO263");
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok, "Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser."));
+    GTWidget::click(GTAction::button("setReferenceAction"));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6350) {
     // 1. Open "human_T1.fa"
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
