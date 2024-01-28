@@ -986,7 +986,7 @@ void Primer3Dialog::sl_presetChanged(const QString& text) {
     }
     if (context == nullptr) {
         updateNoSequenceDialogState();
-    } else if (text == presetNamesMap.last().first) {
+    } else if (text == tr("Recombinase Polymerase Amplification")) {
         gbCheckComplementary->setChecked(true);
         lbPresetInfo->setText(tr("Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)"));
     } else {
