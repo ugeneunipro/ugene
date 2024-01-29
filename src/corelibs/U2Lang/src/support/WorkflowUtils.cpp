@@ -833,7 +833,7 @@ QString WorkflowUtils::createUniqueString(const QString& str, const QString& sep
             int idx = uniq.lastIndexOf(sep);
             if (-1 != idx) {
                 QString left = uniq.left(idx);
-                if (str == left) {
+                if (str == left && uniqueStrs.contains(str)) {
                     QString right = uniq.mid(idx + 1);
                     bool ok = false;
                     int num = right.toInt(&ok);

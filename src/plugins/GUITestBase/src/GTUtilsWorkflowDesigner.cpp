@@ -157,7 +157,7 @@ static bool compare(const QString& s1, const QString& s2, bool isExactMatch) {
     return isExactMatch ? s1 == s2 : s1.toLower().contains(s2.toLower());
 }
 
-QTreeWidgetItem* GTUtilsWorkflowDesigner::findTreeItem(const QString& itemName, tab t, bool exactMatch, bool failIfNULL) {
+QTreeWidgetItem* GTUtilsWorkflowDesigner::findTreeItem(const QString& itemName, tab t, bool exactMatch, bool failIfNULL, bool returnFirst) {
     auto wdWindow = getActiveWorkflowDesignerWindow();
     auto treeWidget = GTWidget::findTreeWidget(t == algorithms ? "WorkflowPaletteElements" : "samples", wdWindow);
 
@@ -171,19 +171,17 @@ QTreeWidgetItem* GTUtilsWorkflowDesigner::findTreeItem(const QString& itemName, 
         }
 
         for (QTreeWidgetItem* item : qAsConst(innerList)) {
-            if (t == algorithms) {
-                QString s = item->data(0, Qt::UserRole).value<QAction*>()->text();
-                if (compare(s, itemName, exactMatch)) {
-                    GT_CHECK_RESULT(foundItem == nullptr, "several items have this description", item);
-                    foundItem = item;
-                }
-            } else {
-                QString s = item->text(0);
-                if (compare(s, itemName, exactMatch)) {
-                    GT_CHECK_RESULT(foundItem == nullptr, "several items have this description", item);
-                    foundItem = item;
+            QString s = (t == algorithms) ? item->data(0, Qt::UserRole).value<QAction*>()->text() : s = item->text(0);
+            if (compare(s, itemName, exactMatch)) {
+                GT_CHECK_RESULT(foundItem == nullptr, "several items have this description", item);
+                foundItem = item;
+                if (returnFirst) {
+                    break;
                 }
             }
+        }
+        if (returnFirst && foundItem != nullptr) {
+            break;
         }
     }
     GT_CHECK_RESULT(!failIfNULL || foundItem != nullptr, "Item \"" + itemName + "\" not found in treeWidget", nullptr);

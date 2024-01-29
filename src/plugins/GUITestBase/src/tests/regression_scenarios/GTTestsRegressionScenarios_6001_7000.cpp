@@ -2246,12 +2246,13 @@ GUI_TEST_CLASS_DEFINITION(test_6485) {
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "el_6485";
 
-    QTreeWidgetItem* treeItem = GTUtilsWorkflowDesigner::findTreeItem(settings.elementName, GTUtilsWorkflowDesigner::algorithms, false, false);
-    if (treeItem != nullptr) {
+    QTreeWidgetItem* treeItem = GTUtilsWorkflowDesigner::findTreeItem(settings.elementName, GTUtilsWorkflowDesigner::algorithms, false, false, true);
+    while (treeItem != nullptr) {
         GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "", "Remove element"));
         GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove"}));
         GTTreeWidget::click(treeItem);
         GTMouseDriver::click(Qt::RightButton);
+        treeItem = GTUtilsWorkflowDesigner::findTreeItem(settings.elementName, GTUtilsWorkflowDesigner::algorithms, false, false, true);
     }
 
     QList<CreateElementWithCommandLineToolFiller::InOutData> input;
