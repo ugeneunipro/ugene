@@ -171,15 +171,24 @@ QTreeWidgetItem* GTUtilsWorkflowDesigner::findTreeItem(const QString& itemName, 
         }
 
         for (QTreeWidgetItem* item : qAsConst(innerList)) {
-            QString s = (t == algorithms) ? item->data(0, Qt::UserRole).value<QAction*>()->text() : s = item->text(0);
-            if (compare(s, itemName, exactMatch)) {
-                GT_CHECK_RESULT(foundItem == nullptr, "several items have this description", item);
-                foundItem = item;
-                if (returnFirst) {
-                    break;
+            if (t == algorithms) {
+                QString s = item->data(0, Qt::UserRole).value<QAction*>()->text();
+                if (compare(s, itemName, exactMatch)) {
+                    GT_CHECK_RESULT(foundItem == nullptr, "several items have this description", item);
+                    foundItem = item;
+                }
+            } else {
+                QString s = item->text(0);
+                if (compare(s, itemName, exactMatch)) {
+                    GT_CHECK_RESULT(foundItem == nullptr, "several items have this description", item);
+                    foundItem = item;
                 }
             }
+            if (returnFirst && foundItem != nullptr) {
+                break;
+            }
         }
+
         if (returnFirst && foundItem != nullptr) {
             break;
         }
