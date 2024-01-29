@@ -984,15 +984,15 @@ void Primer3Dialog::sl_presetChanged(const QString& text) {
         QMessageBox::critical(this, windowTitle(), L10N::errorReadingFile(presetFilePath));
         return;
     }
-    if (context == nullptr) {
-        updateNoSequenceDialogState();
-    } else if (text == tr("Recombinase Polymerase Amplification")) {
+    if (text == tr("Recombinase Polymerase Amplification")) {
         gbCheckComplementary->setChecked(true);
         lbPresetInfo->setText(tr("Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)"));
     } else {
         gbCheckComplementary->setChecked(false);
         lbPresetInfo->clear();
     }
+
+    updateNoSequenceDialogState();
 }
 
 void Primer3Dialog::sl_checkComplementStateChanged() {
