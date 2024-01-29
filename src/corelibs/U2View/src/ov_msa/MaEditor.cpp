@@ -507,7 +507,7 @@ void MaEditor::setFont(const QFont& f) {
     updateFontMetrics();
     font.setPointSize(qBound(minimumFontPointSize, pSize, maximumFontPointSize));
     updateResizeMode();
-    if (auto w = qobject_cast<McaEditorWgt*>(getMainWidget())) {
+    if (auto w = qobject_cast<McaEditorWgt*>(getWidget())) {
         w->getScrollController()->updateScrollBarsOnFontOrZoomChange();
     }
     emit si_fontChanged(font);
