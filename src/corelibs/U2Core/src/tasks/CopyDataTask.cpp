@@ -89,21 +89,17 @@ void CopyDataTask::run() {
 void CopyDataTask::replaceLineEndings(const ReplaceLineEndings& newLineEndings, QByteArray& line, int& symbolsCount) {
     CHECK(newLineEndings != ReplaceLineEndings::KEEP_AS_IS, );
     CHECK(symbolsCount != 0, );
-    QByteArray result;
     line.resize(symbolsCount);
     cRCount += line.count(CHAR_CR);
     lFCount += line.count(CHAR_LF);
     if (newLineEndings == ReplaceLineEndings::LF) {
-        for (const char currentChar : qAsConst(line)) {
-            if (currentChar == CHAR_CR) {
-                symbolsCount--;
-                continue;
-            }
-            result.append(currentChar);
+        int cRIndex = line.indexOf(CHAR_CR);
+        while (cRIndex > -1) {
+            line.remove(cRIndex, 1);
+            symbolsCount--;
+            cRIndex = line.indexOf(CHAR_CR);
         }
     }
-    line = result;
-    line.resize(symbolsCount);
 }
 
 }  // namespace U2
