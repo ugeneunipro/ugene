@@ -313,11 +313,9 @@ void SQLiteDbi::internalInit(const QHash<QString, QString>& props, U2OpStatus& o
 }
 
 void SQLiteDbi::testDatabaseLocked(U2OpStatus& os) {
-    SQLiteWriteQuery("DROP TABLE IF EXISTS TestLock;", db, os).execute();
+    SQLiteWriteQuery("BEGIN EXCLUSIVE;", db, os).execute();
     CHECK_OP(os, );
-    SQLiteWriteQuery("CREATE TABLE TestLock (attribute INTEGER);", db, os).execute();
-    CHECK_OP(os, );
-    SQLiteWriteQuery("DROP TABLE IF EXISTS TestLock;", db, os).execute();
+    SQLiteWriteQuery("COMMIT;", db, os).execute();
 }
 
 void SQLiteDbi::setState(U2DbiState s) {
