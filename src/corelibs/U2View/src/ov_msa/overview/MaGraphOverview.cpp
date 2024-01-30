@@ -153,11 +153,10 @@ void MaGraphOverview::drawVisibleRange(QPainter& p) {
         // X position is defined by the first visible child
         qint64 screenWidth;
         int screenPositionX;
-        auto mui = editor->getMainWidget();
         screenPositionX = editor->getLineWidget(0)->getScrollController()->getScreenPosition().x();
         screenWidth = editor->getLineWidget(0)->getSequenceArea()->width();
-        if (mui->getMultilineMode()) {
-            screenWidth *= mui->getChildrenCount();
+        if (auto msaEditor = qobject_cast<MsaEditor*>(editor)) {
+            screenWidth *= msaEditor->getMainWidget()->getLineWidgetCount();
         }
 
         cachedVisibleRange.setY(0);

@@ -46,9 +46,8 @@ MaOverview::MaOverview(MaEditor* _editor, QWidget* _ui)
     // The hack
     // for MSA we have MaEditorMultilineWgt
     // for MCA we have MaEditorWgt
-    auto msaEditor = qobject_cast<MsaEditor*>(editor);
-    if (msaEditor != nullptr) {
-        connect(msaEditor->getMainWidget()->getScrollController(), &MultilineScrollController::si_visibleAreaChanged, this, &MaOverview::sl_redraw);
+    if (auto msaWidget = qobject_cast<MsaEditorMultilineWgt*>(ui)) {
+        connect(msaWidget->getScrollController(), &MultilineScrollController::si_visibleAreaChanged, this, &MaOverview::sl_redraw);
     } else {
         auto swgt = qobject_cast<MaEditorWgt*>(_ui);
         SAFE_POINT_NN(swgt, );

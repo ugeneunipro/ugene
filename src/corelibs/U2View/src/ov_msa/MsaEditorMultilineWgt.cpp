@@ -135,7 +135,7 @@ void MsaEditorMultilineWgt::createChildren() {
     // TODO:ichebyki
     // Need to move to special method
     // wich ass/updates connections
-    for (int i = 0; i < this->getChildrenCount(); i++) {
+    for (int i = 0; i < this->getLineWidgetCount(); i++) {
         connect(getLineWidget(i)->getNameAndSequenceAreasSplitter(),
                 &QSplitter::splitterMoved,
                 this,
@@ -217,7 +217,7 @@ MaEditorWgt* MsaEditorMultilineWgt::getLineWidget(int index) const {
 }
 
 void MsaEditorMultilineWgt::updateSize() {
-    for (int i = 0; i < getChildrenCount(); i++) {
+    for (int i = 0; i < getLineWidgetCount(); i++) {
         MaEditorWgt* w = getLineWidget(i);
         SAFE_POINT(w != nullptr, "UI widget is null! Index: " + QString::number(i), );
         MaEditorSequenceArea* area = w->getSequenceArea();
@@ -255,21 +255,21 @@ MsaEditorTreeViewer* MsaEditorMultilineWgt::getCurrentTree() const {
 }
 
 void MsaEditorMultilineWgt::sl_changeColorSchemeOutside(const QString& id) {
-    for (int i = 0; i < getChildrenCount(); i++) {
+    for (int i = 0; i < getLineWidgetCount(); i++) {
         MaEditorSequenceArea* sequence = getLineWidget(i)->getSequenceArea();
         sequence->sl_changeColorSchemeOutside(id);
     }
 }
 
 void MsaEditorMultilineWgt::sl_changeColorScheme(const QString& id) {
-    for (int i = 0; i < getChildrenCount(); i++) {
+    for (int i = 0; i < getLineWidgetCount(); i++) {
         MaEditorSequenceArea* sequence = getLineWidget(i)->getSequenceArea();
         sequence->applyColorScheme(id);
     }
 }
 
 void MsaEditorMultilineWgt::sl_triggerUseDots(int checkState) {
-    for (int i = 0; i < getChildrenCount(); i++) {
+    for (int i = 0; i < getLineWidgetCount(); i++) {
         MaEditorSequenceArea* sequence = getLineWidget(i)->getSequenceArea();
         sequence->sl_triggerUseDots(checkState);
     }
@@ -282,7 +282,7 @@ void MsaEditorMultilineWgt::sl_cursorPositionChanged(const QPoint& point) {
 }
 
 void MsaEditorMultilineWgt::setSimilaritySettings(const SimilarityStatisticsSettings* settings) {
-    for (int i = 0; i < getChildrenCount(); i++) {
+    for (int i = 0; i < getLineWidgetCount(); i++) {
         if (auto ui = qobject_cast<MsaEditorWgt*>(uiChild[i])) {
             ui->setSimilaritySettings(settings);
         }
@@ -290,7 +290,7 @@ void MsaEditorMultilineWgt::setSimilaritySettings(const SimilarityStatisticsSett
 }
 
 void MsaEditorMultilineWgt::refreshSimilarityColumn() {
-    for (int i = 0; i < getChildrenCount(); i++) {
+    for (int i = 0; i < getLineWidgetCount(); i++) {
         if (auto ui = qobject_cast<MsaEditorWgt*>(uiChild[i])) {
             ui->refreshSimilarityColumn();
         }
@@ -298,7 +298,7 @@ void MsaEditorMultilineWgt::refreshSimilarityColumn() {
 }
 
 void MsaEditorMultilineWgt::showSimilarity() {
-    for (int i = 0; i < getChildrenCount(); i++) {
+    for (int i = 0; i < getLineWidgetCount(); i++) {
         if (auto ui = qobject_cast<MsaEditorWgt*>(uiChild[i])) {
             ui->showSimilarity();
         }
@@ -306,7 +306,7 @@ void MsaEditorMultilineWgt::showSimilarity() {
 }
 
 void MsaEditorMultilineWgt::hideSimilarity() {
-    for (int i = 0; i < getChildrenCount(); i++) {
+    for (int i = 0; i < getLineWidgetCount(); i++) {
         if (auto ui = qobject_cast<MsaEditorWgt*>(uiChild[i])) {
             ui->hideSimilarity();
         }
@@ -347,7 +347,7 @@ void MsaEditorMultilineWgt::sl_setAllNameAndSequenceAreasSplittersSizes(int pos,
     auto signalSender = qobject_cast<QSplitter*>(sender());
     if (signalSender != nullptr) {
         auto sizes = signalSender->sizes();
-        for (int i = 0; i < getChildrenCount(); i++) {
+        for (int i = 0; i < getLineWidgetCount(); i++) {
             MaEditorWgt* child = getLineWidget(i);
             child->getNameAndSequenceAreasSplitter()->setSizes(sizes);
         }
@@ -594,12 +594,12 @@ int MsaEditorMultilineWgt::getLastVisibleBase(int index) const {
 }
 
 int MsaEditorMultilineWgt::getSequenceAreaBaseLen(int index) const {
-    CHECK(index >= 0 && index < getChildrenCount(), 0);
+    CHECK(index >= 0 && index < getLineWidgetCount(), 0);
     return getLastVisibleBase(index) - getFirstVisibleBase(index) + 1;
 }
 
 int MsaEditorMultilineWgt::getSequenceAreaBaseWidth(int index) const {
-    CHECK(index >= 0 && index < getChildrenCount(), 0);
+    CHECK(index >= 0 && index < getLineWidgetCount(), 0);
     MaEditorWgt* ui = getLineWidget(index);
     SAFE_POINT(ui != nullptr, "UI is nullptr for a valid index", 0);
     U2Region visibleBasesRegion = ui->getDrawHelper()->getVisibleBases(ui->getSequenceArea()->width());
@@ -609,7 +609,7 @@ int MsaEditorMultilineWgt::getSequenceAreaBaseWidth(int index) const {
 
 int MsaEditorMultilineWgt::getSequenceAreaAllBaseLen() const {
     int length = 0;
-    for (int i = 0; i < getChildrenCount(); i++) {
+    for (int i = 0; i < getLineWidgetCount(); i++) {
         length += getSequenceAreaBaseLen(i);
     }
     return length;
@@ -617,7 +617,7 @@ int MsaEditorMultilineWgt::getSequenceAreaAllBaseLen() const {
 
 int MsaEditorMultilineWgt::getSequenceAreaAllBaseWidth() const {
     int width = 0;
-    for (int i = 0; i < getChildrenCount(); i++) {
+    for (int i = 0; i < getLineWidgetCount(); i++) {
         width += getSequenceAreaBaseWidth(i);
     }
     return width;
@@ -657,7 +657,7 @@ MsaEditorMultiTreeViewer* MsaEditorMultilineWgt::getPhylTreeWidget() const {
     return multiTreeViewer;
 };
 
-int MsaEditorMultilineWgt::getChildrenCount() const {
+int MsaEditorMultilineWgt::getLineWidgetCount() const {
     return uiChildCount;
 }
 

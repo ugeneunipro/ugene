@@ -62,7 +62,6 @@ class U2VIEW_EXPORT MaEditorMultilineWgt : public QWidget {
 public:
     explicit MaEditorMultilineWgt(QWidget* parent);
 
-    virtual int getSequenceAreaWidth(int index) const = 0;  // pixels
     virtual int getFirstVisibleBase(int index) const = 0;
     virtual int getLastVisibleBase(int index) const = 0;
     virtual int getSequenceAreaBaseLen(int index) const = 0;  // bases
@@ -70,15 +69,7 @@ public:
     virtual int getSequenceAreaAllBaseLen() const = 0;  // bases
     virtual int getSequenceAreaAllBaseWidth() const = 0;  // pixels
 
-    virtual void setSimilaritySettings(const SimilarityStatisticsSettings* settings) = 0;
-    virtual void refreshSimilarityColumn() = 0;
-    virtual void showSimilarity() = 0;
-    virtual void hideSimilarity() = 0;
-
     virtual bool moveSelection(int key, bool shift, bool ctrl) = 0;
-
-    // Return lines count in multiline widget
-    virtual int getChildrenCount() const = 0;
 
     // Current multiline mode
     virtual bool getMultilineMode() const = 0;

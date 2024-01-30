@@ -207,7 +207,7 @@ void MsaEditor::sl_buildTree() {
 bool MsaEditor::onObjectRemoved(GObject* obj) {
     bool result = GObjectViewController::onObjectRemoved(obj);
 
-    for (int i = 0; i < ui->getChildrenCount(); i++) {
+    for (int i = 0; i < ui->getLineWidgetCount(); i++) {
         obj->disconnect(getLineWidget(i)->getSequenceArea());
         obj->disconnect(getLineWidget(i)->getConsensusArea());
         obj->disconnect(getLineWidget(i)->getEditorNameList());
@@ -515,7 +515,7 @@ void MsaEditor::onAfterViewWindowInit() {
 void MsaEditor::initChildrenActionsAndSignals() {
     MaEditorWgt* child;
 
-    for (int i = 0; i < ui->getChildrenCount(); i++) {
+    for (int i = 0; i < ui->getLineWidgetCount(); i++) {
         child = ui->getLineWidget(i);
         connect(child, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_onContextMenuRequested(const QPoint&)));
         connect(child, SIGNAL(si_showTreeOP()), SLOT(sl_showTreeOP()));

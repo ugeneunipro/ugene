@@ -189,7 +189,7 @@ void SeqStatisticsWidget::showSimilaritySettings() {
     statisticsIsShown = true;
     ui.optionsWidget->setEnabled(true);
     ui.refSeqWarning->show();
-    MaEditorMultilineWgt* mui = msa->getMainWidget();
+    MsaEditorMultilineWgt* mui = msa->getMainWidget();
     mui->showSimilarity();
     mui->setSimilaritySettings(settings);
     sl_onRefSeqChanged(msa->getReferenceRowId());

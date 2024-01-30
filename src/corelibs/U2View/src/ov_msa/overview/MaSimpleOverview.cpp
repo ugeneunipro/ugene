@@ -176,9 +176,11 @@ void MaSimpleOverview::drawVisibleRange(QPainter& p) {
     } else {
         qint64 screenWidth;
         int screenPositionX;
-        auto mui = editor->getMainWidget();
         screenPositionX = editor->getLineWidget(0)->getScrollController()->getScreenPosition().x();
-        screenWidth = editor->getLineWidget(0)->getSequenceArea()->width() * mui->getChildrenCount();
+        screenWidth = editor->getLineWidget(0)->getSequenceArea()->width();
+        if (auto msaEditor = qobject_cast<MsaEditor*>(editor)) {
+            screenWidth *= msaEditor->getMainWidget()->getLineWidgetCount();
+        }
         MaEditorWgt* maEditorWgt = editor->getLineWidget(0);
         QPoint screenPosition = maEditorWgt->getScrollController()->getScreenPosition();
         QSize screenSize = maEditorWgt->getSequenceArea()->size();

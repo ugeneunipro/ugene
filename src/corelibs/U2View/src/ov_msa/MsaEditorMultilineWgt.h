@@ -64,10 +64,10 @@ public:
     MsaEditorMultiTreeViewer* getPhylTreeWidget() const;
     MsaEditorTreeViewer* getCurrentTree() const;
 
-    void setSimilaritySettings(const SimilarityStatisticsSettings* settings) override;
-    void refreshSimilarityColumn() override;
-    void showSimilarity() override;
-    void hideSimilarity() override;
+    void setSimilaritySettings(const SimilarityStatisticsSettings* settings);
+    void refreshSimilarityColumn();
+    void showSimilarity();
+    void hideSimilarity();
 
     bool moveSelection(int key, bool shift, bool ctrl) override;
 
@@ -78,12 +78,12 @@ public:
     void setActiveChild(MaEditorWgt* child);
 
     // Return lines count in multiline widget
-    int getChildrenCount() const override;
+    int getLineWidgetCount() const;
 
     // Current multiline mode
     bool getMultilineMode() const override;
 
-    int getSequenceAreaWidth(int index) const override;
+    int getSequenceAreaWidth(int index) const;
     int getFirstVisibleBase(int index) const override;
     int getLastVisibleBase(int index) const override;
     int getSequenceAreaBaseLen(int index) const override;

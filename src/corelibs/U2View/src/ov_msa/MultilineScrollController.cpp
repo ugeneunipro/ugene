@@ -141,7 +141,7 @@ void MultilineScrollController::vertScroll(const Directions& directions, bool by
         } else if (directions.testFlag(SliderMaximum)) {
             scroller->verticalScrollBar()->setValue(scroller->verticalScrollBar()->maximum());
             int seqAreaBaseLength = ui->getSequenceAreaBaseLen(0);
-            int evenBase = maEditor->getAlignmentLen() / seqAreaBaseLength * seqAreaBaseLength - seqAreaBaseLength * (ui->getChildrenCount() - 1);
+            int evenBase = maEditor->getAlignmentLen() / seqAreaBaseLength * seqAreaBaseLength - seqAreaBaseLength * (ui->getLineWidgetCount() - 1);
             setFirstVisibleBase(evenBase);
             vScrollBar->setValue(vScrollBar->maximum());
         } else {
@@ -156,7 +156,7 @@ bool MultilineScrollController::checkBoundary() const {
     int firstBase;
     int prevFistBase = -1;
     bool needUpdate = false;
-    int childrenCount = ui->getChildrenCount();
+    int childrenCount = ui->getLineWidgetCount();
     int alignmentLen = maEditor->getAlignmentLen();
     for (int i = 0; i < childrenCount; i++) {
         MaEditorWgt* wgt = ui->getLineWidget(i);
@@ -228,7 +228,7 @@ void MultilineScrollController::scrollToViewRow(QPoint maPoint) {
     int baseNumber = maPoint.x();
     int viewRowIndex = maPoint.y();
     QList<int> widgetIndex;
-    for (int i = 0; i < ui->getChildrenCount(); i++) {
+    for (int i = 0; i < ui->getLineWidgetCount(); i++) {
         if (!ui->getLineWidget(i)->visibleRegion().isEmpty()) {
             widgetIndex.append(i);
         }
@@ -286,7 +286,7 @@ void MultilineScrollController::scrollToViewRow(QPoint maPoint) {
 void MultilineScrollController::scrollToBase(QPoint maPoint) {
     int baseNumber = maPoint.x();
     QList<int> widgetIndex;
-    for (int i = 0; i < ui->getChildrenCount(); i++) {
+    for (int i = 0; i < ui->getLineWidgetCount(); i++) {
         if (!ui->getLineWidget(i)->visibleRegion().isEmpty()) {
             widgetIndex.append(i);
         }
@@ -309,7 +309,7 @@ void MultilineScrollController::scrollToBase(QPoint maPoint) {
             int evenFirstVisibleBase = baseNumber / length * length;
             int scrollChildrenAreaValue = 0;
             const int lineHeight = ui->getLineWidget(0)->height();
-            while ((evenFirstVisibleBase + length * ((int)ui->getChildrenCount() - 1)) >= maEditor->getAlignmentLen()) {
+            while ((evenFirstVisibleBase + length * ((int)ui->getLineWidgetCount() - 1)) >= maEditor->getAlignmentLen()) {
                 evenFirstVisibleBase -= length;
                 scrollChildrenAreaValue += lineHeight;
             }
@@ -370,7 +370,7 @@ void MultilineScrollController::setFirstVisibleBase(int firstVisibleBase) {
         ui->setUpdatesEnabled(false);
 
         int length = ui->getLastVisibleBase(0) + 1 - ui->getFirstVisibleBase(0);
-        for (int i = 0; i < ui->getChildrenCount(); i++) {
+        for (int i = 0; i < ui->getLineWidgetCount(); i++) {
             ui->getLineWidget(i)->getScrollController()->setFirstVisibleBase(firstVisibleBase);
             firstVisibleBase += length;
         }
@@ -422,7 +422,7 @@ int MultilineScrollController::getFirstVisibleBase(bool countClipped) const {
 
 int MultilineScrollController::getLastVisibleBase(int widgetWidth, bool countClipped) const {
     CHECK(maEditor->getAlignmentLen() > 0, 0);
-    const int lastVisibleBase = ui->getLineWidget(ui->getChildrenCount() - 1)
+    const int lastVisibleBase = ui->getLineWidget(ui->getLineWidgetCount() - 1)
                                     ->getScrollController()
                                     ->getLastVisibleBase(widgetWidth, countClipped);
     return qMin(lastVisibleBase, maEditor->getAlignmentLen() - 1);
@@ -441,13 +441,13 @@ int MultilineScrollController::getFirstVisibleViewRowIndex(bool countClipped) co
 
 int MultilineScrollController::getLastVisibleViewRowIndex(int widgetHeight, bool countClipped) const {
     CHECK(maEditor->getAlignmentLen() > 0, 0);
-    int lastVisibleViewRow = ui->getLineWidget(ui->getChildrenCount() - 1)
+    int lastVisibleViewRow = ui->getLineWidget(ui->getLineWidgetCount() - 1)
                                  ->getScrollController()
                                  ->getLastVisibleViewRowIndex(widgetHeight, countClipped);
     if (lastVisibleViewRow < 0) {
         lastVisibleViewRow = maEditor->getCollapseModel()->getViewRowCount() - 1;
     }
-    U2Region lastRowScreenRegion = ui->getLineWidget(ui->getChildrenCount() - 1)
+    U2Region lastRowScreenRegion = ui->getLineWidget(ui->getLineWidgetCount() - 1)
                                        ->getRowHeightController()
                                        ->getScreenYRegionByViewRowIndex(lastVisibleViewRow);
     bool removeClippedRow = !countClipped && lastRowScreenRegion.endPos() > widgetHeight;
@@ -470,7 +470,7 @@ void MultilineScrollController::sl_updateScrollBars() {
 
 void MultilineScrollController::updateChildrenScrollBarsPrivate() {
     int val;
-    for (int i = 0; i < ui->getChildrenCount(); i++) {
+    for (int i = 0; i < ui->getLineWidgetCount(); i++) {
         auto wgt = ui->getLineWidget(i);
         SAFE_POINT_NN(wgt, );
 
@@ -486,13 +486,13 @@ void MultilineScrollController::updateChildrenScrollBarsPrivate() {
 }
 
 void MultilineScrollController::updateVerticalScrollBarPrivate() {
-    CHECK(ui->getChildrenCount() > 0, );
+    CHECK(ui->getLineWidgetCount() > 0, );
 
     SAFE_POINT(vScrollBar != nullptr, "Multiline Vertical scrollbar is not initialized", );
     QSignalBlocker signalBlocker(vScrollBar);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), vScrollBar->setVisible(false), );
-    CHECK_EXT(ui->getChildrenCount() > 0, vScrollBar->setVisible(false), );
+    CHECK_EXT(ui->getLineWidgetCount() > 0, vScrollBar->setVisible(false), );
 
     const int alignmentLength = maEditor->getAlignmentLen();
     const int columnWidth = maEditor->getColumnWidth();
@@ -518,7 +518,7 @@ void MultilineScrollController::updateVerticalScrollBarPrivate() {
 
     // Special
     childrenScrollArea->verticalScrollBar()->setMinimum(0);
-    childrenScrollArea->verticalScrollBar()->setMaximum(ui->getChildrenCount() * lineHeight -
+    childrenScrollArea->verticalScrollBar()->setMaximum(ui->getLineWidgetCount() * lineHeight -
                                                         scrollAreaHeight);
     childrenScrollArea->verticalScrollBar()->setSingleStep(rowHeight);
     childrenScrollArea->verticalScrollBar()->setPageStep(scrollAreaHeight);
