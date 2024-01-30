@@ -28,9 +28,9 @@
 namespace U2 {
 
 class GScrollBar;
-class MaEditor;
+class MsaEditor;
 class MaEditorSelection;
-class MaEditorMultilineWgt;
+class MsaEditorMultilineWgt;
 
 class U2VIEW_EXPORT MultilineScrollController : public QObject {
     Q_OBJECT
@@ -49,7 +49,7 @@ public:
     };
     Q_DECLARE_FLAGS(Directions, Direction)
 
-    MultilineScrollController(MaEditor* maEditor, MaEditorMultilineWgt* ui);
+    MultilineScrollController(MsaEditor* maEditor, MsaEditorMultilineWgt* ui);
 
     void init(GScrollBar* _vScrollBar, QScrollArea* childrenArea);
 
@@ -109,8 +109,8 @@ private:
 
     bool eventFilter(QObject* object, QEvent* event) override;
 
-    MaEditor* maEditor;
-    MaEditorMultilineWgt* ui;
+    MsaEditor* maEditor;
+    MsaEditorMultilineWgt* ui;
     QScrollArea* childrenScrollArea;
     GScrollBar* vScrollBar;
     int vScrollTail;

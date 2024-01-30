@@ -49,14 +49,14 @@ class U2VIEW_EXPORT MsaEditorMultilineWgt : public MaEditorMultilineWgt {
 public:
     MsaEditorMultilineWgt(MsaEditor* editor, QWidget* parent, bool multiline);
 
-    MaEditor* getEditor() const override;
-    MaEditorOverviewArea* getOverviewArea() const override;
+    MaEditor* getEditor() const;
+    MaEditorOverviewArea* getOverviewArea() const;
     MaEditorStatusBar* getStatusBar();
 
     MultilineScrollController* getScrollController() const override;
     QScrollArea* getChildrenScrollArea() const override;
 
-    MaEditorWgt* getLineWidget(int index) const override;
+    MaEditorWgt* getLineWidget(int index) const;
     void updateSize() override;
 
     void addPhylTreeWidget(MsaEditorMultiTreeViewer* newMultiTreeViewer);
@@ -71,7 +71,7 @@ public:
 
     bool moveSelection(int key, bool shift, bool ctrl) override;
 
-    MaEditorStatusBar* getStatusBar() const override;
+    MaEditorStatusBar* getStatusBar() const;
 
     // Return MaEditorWgt widget which has input focus
     MaEditorWgt* getActiveChild() const override;
@@ -94,9 +94,9 @@ public:
     // Set multiline mode
     // If mode was changed return true
     // Else return false
-    bool setMultilineMode(bool enabled) override;
+    bool setMultilineMode(bool enabled);
 
-    int getUIIndex(MaEditorWgt* _ui) const override;
+    int getUIIndex(MaEditorWgt* _ui) const;
 
 public slots:
     void sl_changeColorSchemeOutside(const QString& id);

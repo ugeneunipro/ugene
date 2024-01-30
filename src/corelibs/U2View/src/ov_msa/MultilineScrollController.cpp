@@ -24,27 +24,25 @@
 #include <QWheelEvent>
 
 #include "U2Core/U2SafePoints.h"
-#include <U2Core/MsaObject.h>
 
 #include "BaseWidthController.h"
 #include "DrawHelper.h"
 #include "RowHeightController.h"
 #include "ScrollController.h"
-#include "ov_msa/MaEditor.h"
-#include "ov_msa/MaEditorMultilineWgt.h"
 #include "ov_msa/MaEditorNameList.h"
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/MaEditorWgt.h"
+#include "ov_msa/MsaEditor.h"
 #include "ov_msa/MsaEditorOverviewArea.h"
 #include "ov_msa/MsaMultilineScrollArea.h"
 
 namespace U2 {
 
-MultilineScrollController::MultilineScrollController(MaEditor* maEditor, MaEditorMultilineWgt* maEditorUi)
-    : QObject(maEditorUi),
-      maEditor(maEditor),
-      ui(maEditorUi) {
+MultilineScrollController::MultilineScrollController(MsaEditor* _maEditor, MsaEditorMultilineWgt* _maEditorUi)
+    : QObject(_maEditorUi),
+      maEditor(_maEditor),
+      ui(_maEditorUi) {
 }
 
 void MultilineScrollController::init(GScrollBar* _vScrollBar,
@@ -250,9 +248,9 @@ void MultilineScrollController::scrollToViewRow(QPoint maPoint) {
                         ->getRowHeightController()
                         ->getGlobalYRegionByViewRowIndex(viewRowIndex);
         pTop = ui->getLineWidget(i)->getSequenceArea()->mapTo(ui->getChildrenScrollArea(),
-                                                      QPoint(0, rowRegion.startPos));
+                                                              QPoint(0, rowRegion.startPos));
         pBottom = ui->getLineWidget(i)->getSequenceArea()->mapTo(ui->getChildrenScrollArea(),
-                                                         QPoint(0, rowRegion.endPos()));
+                                                                 QPoint(0, rowRegion.endPos()));
         if (indexFound != -1) {
             if (pTop.y() >= 0 && pBottom.y() <= height) {
                 return;
@@ -279,7 +277,7 @@ void MultilineScrollController::scrollToViewRow(QPoint maPoint) {
                         ->getRowHeightController()
                         ->getGlobalYRegionByViewRowIndex(viewRowIndex);
         pTop = ui->getLineWidget(0)->getSequenceArea()->mapTo(ui->getChildrenScrollArea(),
-                                                      QPoint(0, rowRegion.startPos));
+                                                              QPoint(0, rowRegion.startPos));
         vScrollBar->setValue(vScrollBar->value() + pTop.y());
         scroller->setValue(scroller->value() + pTop.y());
     }

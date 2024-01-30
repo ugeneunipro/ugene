@@ -62,28 +62,11 @@ class U2VIEW_EXPORT MaEditorMultilineWgt : public QWidget {
 public:
     explicit MaEditorMultilineWgt(QWidget* parent);
 
-    /** Returns MA editor instance. The instance is always defined and is never null. */
-    virtual MaEditor* getEditor() const = 0;
-
-    // Return overview area widget
-    virtual MaEditorOverviewArea* getOverviewArea() const = 0;
-
-    // Status bar widget
-    virtual MaEditorStatusBar* getStatusBar() const = 0;
-
     // Get multiline scroll controller
     virtual MultilineScrollController* getScrollController() const = 0;
 
     // Get scroll area which contain all MaEditorWidget(s)
     virtual QScrollArea* getChildrenScrollArea() const = 0;
-
-    // Get MaEditorWgt from multiline widget by index
-    // Can be nullptr
-    virtual MaEditorWgt* getLineWidget(int index) const = 0;
-
-    // Get index of the known MaEditorWgt from multiline widget
-    // If not found will be 0
-    virtual int getUIIndex(MaEditorWgt* _ui) const = 0;
 
     virtual void updateSize() = 0;
 
@@ -100,11 +83,6 @@ public:
                                      MaEditorStatusBar* statusBar) = 0;
 
     virtual void addChild(MaEditorWgt* child) = 0;
-
-    // Set multiline mode
-    // If mode was changed return true
-    // Else return false
-    virtual bool setMultilineMode(bool enabled) = 0;
 
     // Return MaEditorWgt widget which has input focus
     virtual MaEditorWgt* getActiveChild() const = 0;

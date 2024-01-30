@@ -5,9 +5,8 @@
 
 #include <U2Gui/GScrollBar.h>
 
-#include "MaEditor.h"
+#include "MsaEditor.h"
 #include "MaEditorSelection.h"
-#include "MaEditorWgt.h"
 #include "MultilineScrollController.h"
 #include "RowHeightController.h"
 #include "ScrollController.h"
@@ -15,7 +14,7 @@
 
 namespace U2 {
 
-MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMultilineWgt* maEditorUi)
+MsaMultilineScrollArea::MsaMultilineScrollArea(MsaEditor* maEditor, MsaEditorMultilineWgt* maEditorUi)
     : QScrollArea(maEditorUi),
       maEditor(maEditor),
       maEditorUi(maEditorUi) {
