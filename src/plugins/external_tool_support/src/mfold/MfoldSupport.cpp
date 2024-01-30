@@ -110,26 +110,8 @@ void MfoldContext::sl_showDialog() {
     MfoldDialog dialog(*seqCtx);
     CHECK(dialog.exec() == QDialog::Accepted, );
 
-    auto settings = dialog.getSettings();
-    auto seqObj = seqCtx->getSequenceObject();
-    auto seqLen = seqObj->getSequenceLength();
-    auto regionHasJunctionPoint = settings.region.length > seqLen - settings.region.startPos;
-    QByteArray seq;
-    if (regionHasJunctionPoint) {
-        auto firstPartLen = seqLen - settings.region.startPos;
-        seq = seqCtx->getSequenceObject()->getSequenceData({settings.region.startPos, firstPartLen}, os);
-        CHECK_OP(os, );
-        seq += seqCtx->getSequenceObject()->getSequenceData({0, settings.region.length - firstPartLen}, os);
-        CHECK_OP(os, );
-    } else {
-        seq = seqCtx->getSequenceObject()->getSequenceData(settings.region, os);
-        CHECK_OP(os, );
-    }
-    auto t = new MfoldTask(seq,
-                           settings,
-                           seqObj->isCircular(),
-                           seqObj->getAlphabet()->isDNA(),
-                           seqCtx->getAnnotatedDNAView()->getWidget()->width());
+    auto t = createMfoldTask(seqCtx, dialog.getSettings(), seqCtx->getAnnotatedDNAView()->getWidget()->width(), os);
+    CHECK_OP(os, );
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 }  // namespace U2

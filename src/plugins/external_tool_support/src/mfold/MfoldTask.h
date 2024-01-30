@@ -25,6 +25,7 @@
 
 namespace U2 {
 struct MfoldSettings;
+class SequenceObjectContext;
 
 class MfoldTask final : public Task {
     Q_OBJECT
@@ -39,11 +40,14 @@ public:
     // seq -- sequence for analysis
     // settings -- settings changed by the user inside the dialog are used as tool args
     // isCircular, isDNA -- internal sequence parameters used as tool args
-    // svWindowWidth -- Sequence View window width, used for img size and pretty display of the HTML report
-    MfoldTask(const QByteArray& seq, const MfoldSettings& settings, bool isCircular, bool isDNA, int svWindowWidth);
+    // windowWidth -- Sequence View window width, used for img size and pretty display of the HTML report
+    MfoldTask(const QByteArray& seq, const MfoldSettings& settings, bool isCircular, bool isDNA, int windowWidth);
 
     void prepare() override;
     void run() override;
     QString generateReport() const override;
 };
+
+// Creates new MfoldTask based on sequence context. windowWidth is used for image size.
+MfoldTask* createMfoldTask(SequenceObjectContext* ctx, const MfoldSettings& settings, int windowWidth, U2OpStatus& os);
 }  // namespace U2

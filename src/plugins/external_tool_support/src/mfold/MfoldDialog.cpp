@@ -51,14 +51,11 @@ MfoldDialog::MfoldDialog(const ADVSequenceObjectContext& ctx)
     initOutputTab();
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
     new HelpButton(this, ui.buttonBox, "96666017");
-
-    show();
-    updateGeometry();
 }
 
 void MfoldDialog::initRegionSelector(DNASequenceSelection* seqSelection) {
     regionSelector = new RegionSelector(this, seqLen, true, seqSelection, isCircular);
-    ui.regionSelectorLayout->insertWidget(0, regionSelector);
+    ui.mfoldTabLayout->insertWidget(2, regionSelector);
 
     auto lineEdits = regionSelector->getLineEdits();
     startEdit = lineEdits.first;

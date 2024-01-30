@@ -25,9 +25,16 @@ namespace U2 {
 
 // Settings for UGENE MfoldTask.
 struct MfoldSettings final {
-    // Mfold specific params.
-    int temperature, percent, window, maxBp, maxFold, labFr, rotAng;
-    double naConc, mgConc;
+    // Mfold specific params. Default values are the same as in mfold script.
+    int temperature = 37;
+    int percent = 5;
+    int window = -1;  // -1=depends on sequence len, see mfold:338
+    int maxBp = 0;  // 0=inf i.e. no limit
+    int maxFold = 100;
+    int labFr = -1;  // -1=depends on sequence len, see mfold:551
+    int rotAng = 0;
+    double naConc = 1;
+    double mgConc = 0;
 
     // Sequence region for exporting to file and inputting into the Mfold tool.
     U2Region region;

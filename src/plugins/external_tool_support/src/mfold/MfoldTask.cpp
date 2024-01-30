@@ -28,9 +28,13 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
+#include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
+
+#include <U2View/SequenceObjectContext.h>
 
 #include "MfoldSettings.h"
 #include "MfoldSupport.h"
@@ -49,7 +53,7 @@ MfoldTask::MfoldTask(const QByteArray& seq,
                      const MfoldSettings& settings,
                      bool isCircular,
                      bool isDna,
-                     int svWidgetWidth)
+                     int windowWidth)
     : Task(tr("Predict and visualize hairpins with Mfold"),
            TaskFlags_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       seq(seq), mfoldArgs("RUN_TYPE=html"), outPath(constructOutPath(settings.outPath)),
@@ -98,7 +102,7 @@ MfoldTask::MfoldTask(const QByteArray& seq,
     // 3. limit it from above to 792 -- the default image width
 
     // Calculate the height so as to preserve the original proportions (792x1072).
-    imgSize.setWidth(qBound(300, svWidgetWidth / 2, 792));
+    imgSize.setWidth(qBound(300, windowWidth / 2, 792));
     imgSize.setHeight(imgSize.width() * 1072 / 792);
 }
 
@@ -228,5 +232,23 @@ void MfoldTask::run() {
 
 QString MfoldTask::generateReport() const {
     return report;
+}
+
+MfoldTask* createMfoldTask(SequenceObjectContext* ctx, const MfoldSettings& settings, int windowWidth, U2OpStatus& os) {
+    auto seqObj = ctx->getSequenceObject();
+    auto seqLen = ctx->getSequenceLength();
+    auto regionHasJunctionPoint = settings.region.length > seqLen - settings.region.startPos;
+    QByteArray seq;
+    if (regionHasJunctionPoint) {
+        auto firstPartLen = seqLen - settings.region.startPos;
+        seq = seqObj->getSequenceData({settings.region.startPos, firstPartLen}, os);
+        CHECK_OP(os, nullptr);
+        seq += seqObj->getSequenceData({0, settings.region.length - firstPartLen}, os);
+        CHECK_OP(os, nullptr);
+    } else {
+        seq = seqObj->getSequenceData(settings.region, os);
+        CHECK_OP(os, nullptr);
+    }
+    return new MfoldTask(seq, settings, seqObj->isCircular(), seqObj->getAlphabet()->isDNA(), windowWidth);
 }
 }  // namespace U2

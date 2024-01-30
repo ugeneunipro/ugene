@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
-    <height>477</height>
+    <width>409</width>
+    <height>536</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
       <attribute name="title">
        <string>Mfold settings</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="mfoldTabLayout">
        <item>
         <widget class="QGroupBox" name="gridGroupBox">
          <property name="title">
@@ -459,31 +459,13 @@
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="regionSelectorWidget" native="true">
-         <layout class="QVBoxLayout" name="regionSelectorLayout">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="wrongRegionLabel">
-            <property name="styleSheet">
-             <string notr="true">QLabel { font-weight: bold;color : red; }</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-         </layout>
+        <widget class="QLabel" name="wrongRegionLabel">
+         <property name="styleSheet">
+          <string notr="true">QLabel{ font-weight: bold; color: red; }</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
         </widget>
        </item>
       </layout>
