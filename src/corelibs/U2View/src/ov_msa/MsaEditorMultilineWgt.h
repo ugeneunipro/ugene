@@ -53,11 +53,11 @@ public:
     MaEditorOverviewArea* getOverviewArea() const;
     MaEditorStatusBar* getStatusBar();
 
-    MultilineScrollController* getScrollController() const override;
-    QScrollArea* getChildrenScrollArea() const override;
+    MultilineScrollController* getScrollController() const;
+    QScrollArea* getChildrenScrollArea() const;
 
     MaEditorWgt* getLineWidget(int index) const;
-    void updateSize() override;
+    void updateSize();
 
     void addPhylTreeWidget(MsaEditorMultiTreeViewer* newMultiTreeViewer);
     void delPhylTreeWidget();
@@ -74,8 +74,8 @@ public:
     MaEditorStatusBar* getStatusBar() const;
 
     // Return MaEditorWgt widget which has input focus
-    MaEditorWgt* getActiveChild() const override;
-    void setActiveChild(MaEditorWgt* child) override;
+    MaEditorWgt* getActiveChild() const;
+    void setActiveChild(MaEditorWgt* child);
 
     // Return lines count in multiline widget
     int getChildrenCount() const override;
@@ -116,10 +116,8 @@ protected:
     void initChildrenArea() override;
     void createChildren() override;
     void updateChildren() override;
-    MaEditorWgt* createChild(MaEditor* editor,
-                             MaEditorOverviewArea* overviewArea,
-                             MaEditorStatusBar* statusBar) override;
-    void addChild(MaEditorWgt* child) override;
+    MaEditorWgt* createChild(MaEditor* editor, MaEditorOverviewArea* overviewArea, MaEditorStatusBar* statusBar);
+    void addChild(MaEditorWgt* child);
 
 public:
     MsaEditor* const editor;

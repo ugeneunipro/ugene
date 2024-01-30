@@ -52,7 +52,7 @@ MsaEditorWgt::MsaEditorWgt(MsaEditor* editor,
 
     // For active MaEditorWgt tracking
     this->setAttribute(Qt::WA_Hover, true);
-    eventFilter = new MaEditorWgtEventFilter(this, this);
+    eventFilter = new MsaEditorWgtEventFilter(this);
     this->installEventFilter(eventFilter);
 
     setMinimumSize(minimumSizeHint());
@@ -195,6 +195,20 @@ QSize MsaEditorWgt::minimumSizeHint() const {
         return QSize(s.width(), newHeight);
     }
     return s;
+}
+
+
+bool MsaEditorWgtEventFilter::eventFilter(QObject* obj, QEvent* event) {
+    // TODO:ichebyki
+    // Maybe need to check QEvent::FocusIn || QEvent::Enter
+    // Also,there is a question about children (QEvent::ChildAdded)
+
+    // Please, don't forget about QWidget::setAttribute(Qt::WA_Hover, true);
+    if (event->type() == QEvent::HoverEnter) {
+        maEditorWgt->getEditor()->getMainWidget()->setActiveChild(maEditorWgt);
+    }
+    // standard event processing
+    return QObject::eventFilter(obj, event);
 }
 
 }  // namespace U2

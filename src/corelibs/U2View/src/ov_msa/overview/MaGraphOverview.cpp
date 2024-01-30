@@ -315,7 +315,7 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
 
     newVisibleRange.moveCenter(newPos);
 
-    auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(ui);
     if (mui != nullptr) {
         if (mui->getMultilineMode()) {
             // value = <overview-rect>.X / <overview>.width * <alignment-len>

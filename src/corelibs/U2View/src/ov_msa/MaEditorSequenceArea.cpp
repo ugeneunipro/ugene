@@ -1225,7 +1225,9 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
             const MaEditorSelection& sel = editor->getSelection();
             QRect rect = sel.isEmpty() ? QRect(cursorPosition, cursorPosition) : sel.toRect();
             QPoint newPos(rect.topLeft());
-            editor->getMainWidget()->getScrollController()->scrollToPoint(newPos);
+            auto msaEditor = qobject_cast<MsaEditor*>(editor);
+            SAFE_POINT_NN(msaEditor, );
+            msaEditor->getMainWidget()->getScrollController()->scrollToPoint(newPos);
         } else {
             ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
         }
@@ -1459,7 +1461,6 @@ void MaEditorSequenceArea::applyColorScheme(const QString& id) {
                 break;
             default:
                 FAIL(tr("Unknown alphabet"), );
-                break;
         }
     }
 

@@ -228,9 +228,9 @@ void MaSimpleOverview::moveVisibleRange(QPoint pos) {
     newVisibleRange.moveCenter(newPos);
 
     int newScrollBarValue = newVisibleRange.x() * stepX;
-    auto mui = editor->getMainWidget();
-    if (mui->getMultilineMode()) {
-        mui->getScrollController()->setMultilineVScrollbarValue(newScrollBarValue);
+    auto msaEditor = qobject_cast<MsaEditor*>(editor);
+    if (msaEditor && msaEditor->isMultilineMode()) {
+        msaEditor->getMainWidget()->getScrollController()->setMultilineVScrollbarValue(newScrollBarValue);
     } else {
         editor->getLineWidget(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
         int newVScrollBarValue = newVisibleRange.y() * stepY;

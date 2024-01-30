@@ -1001,7 +1001,7 @@ void MsaEditor::sl_multilineViewAction() {
     }
 }
 
-MaEditorMultilineWgt* MsaEditor::getMainWidget() const {
+MsaEditorMultilineWgt* MsaEditor::getMainWidget() const {
     return ui;
 }
 

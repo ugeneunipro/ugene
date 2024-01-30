@@ -132,9 +132,9 @@ public:
     static constexpr int MAX_SUPPORTED_MSA_OBJECT_LENGTH = 100 * 1000 * 1000;
 
     /** Returns main widget that is parent of all other widgets inside editor. */
-    MaEditorMultilineWgt* getMainWidget() const override;
+    MsaEditorMultilineWgt* getMainWidget() const override;
 
-    /** Returns a single line root widget. A single line consists of consensus, name and seqeunce area widgets. */
+    /** Returns a single line root widget. A single line consists of consensus, name and sequence area widgets. */
     MaEditorWgt* getLineWidget(int index) const override;
 
     void initChildrenActionsAndSignals() override;

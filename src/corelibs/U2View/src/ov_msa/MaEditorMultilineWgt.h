@@ -62,14 +62,6 @@ class U2VIEW_EXPORT MaEditorMultilineWgt : public QWidget {
 public:
     explicit MaEditorMultilineWgt(QWidget* parent);
 
-    // Get multiline scroll controller
-    virtual MultilineScrollController* getScrollController() const = 0;
-
-    // Get scroll area which contain all MaEditorWidget(s)
-    virtual QScrollArea* getChildrenScrollArea() const = 0;
-
-    virtual void updateSize() = 0;
-
     virtual int getSequenceAreaWidth(int index) const = 0;  // pixels
     virtual int getFirstVisibleBase(int index) const = 0;
     virtual int getLastVisibleBase(int index) const = 0;
@@ -77,16 +69,6 @@ public:
     virtual int getSequenceAreaBaseWidth(int index) const = 0;  // pixels
     virtual int getSequenceAreaAllBaseLen() const = 0;  // bases
     virtual int getSequenceAreaAllBaseWidth() const = 0;  // pixels
-
-    virtual MaEditorWgt* createChild(MaEditor* editor,
-                                     MaEditorOverviewArea* overviewArea,
-                                     MaEditorStatusBar* statusBar) = 0;
-
-    virtual void addChild(MaEditorWgt* child) = 0;
-
-    // Return MaEditorWgt widget which has input focus
-    virtual MaEditorWgt* getActiveChild() const = 0;
-    virtual void setActiveChild(MaEditorWgt* child) = 0;
 
     virtual void setSimilaritySettings(const SimilarityStatisticsSettings* settings) = 0;
     virtual void refreshSimilarityColumn() = 0;

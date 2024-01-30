@@ -44,7 +44,6 @@
 #include <U2Core/MsaObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -275,7 +274,7 @@ void MsaEditorSequenceArea::sl_buildStaticToolbar(GObjectViewController* v, QToo
 }
 
 void MsaEditorSequenceArea::sl_buildMenu(GObjectViewController*, QMenu* m, const QString& menuType) {
-    if (editor->getMainWidget()->getActiveChild() != ui) {
+    if (getEditor()->getMainWidget()->getActiveChild() != ui) {
         return;
     }
     bool isContextMenu = menuType == MsaEditorMenuType::CONTEXT;

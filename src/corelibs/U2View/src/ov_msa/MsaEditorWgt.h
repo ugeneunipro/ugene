@@ -34,6 +34,7 @@ class MsaEditorOverviewArea;
 class MsaEditorSimilarityColumn;
 class MsaEditorTreeViewer;
 class SimilarityStatisticsSettings;
+class MsaEditorWgtEventFilter;
 
 class U2VIEW_EXPORT MsaEditorWgt : public MaEditorWgt {
     Q_OBJECT
@@ -75,6 +76,10 @@ public:
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 
+    MsaEditorWgtEventFilter* getEventFilter() const {
+        return eventFilter;
+    };
+
 private slots:
     void sl_onTabsCountChanged(int tabsCount);
 signals:
@@ -90,6 +95,23 @@ private:
     MsaEditorSimilarityColumn* dataList = nullptr;
     MsaEditorMultiTreeViewer* multiTreeViewer = nullptr;
     MsaEditorAlignmentDependentWidget* similarityStatistics = nullptr;
+    MsaEditorWgtEventFilter* eventFilter = nullptr;
+
+
 };
+
+class U2VIEW_EXPORT MsaEditorWgtEventFilter : public QObject {
+    Q_OBJECT
+public:
+    MsaEditorWgtEventFilter(MsaEditorWgt* maeditorwgt)
+        : QObject(maeditorwgt), maEditorWgt(maeditorwgt) {
+    }
+
+    bool eventFilter(QObject* obj, QEvent* event) override;
+
+private:
+    MsaEditorWgt* maEditorWgt;
+};
+
 
 }  // namespace U2
