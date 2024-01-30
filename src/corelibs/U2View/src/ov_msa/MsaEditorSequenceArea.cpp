@@ -260,7 +260,7 @@ void MsaEditorSequenceArea::copySelection(U2OpStatus& os) {
 void MsaEditorSequenceArea::sl_buildStaticToolbar(GObjectViewController* v, QToolBar* t) {
     Q_UNUSED(v);
 
-    MaEditorWgt* child0 = editor->getMaEditorMultilineWgt()->getUI(0);
+    MaEditorWgt* child0 = editor->getLineWidget(0);
     if (child0 != ui) {
         return;
     }
@@ -275,7 +275,7 @@ void MsaEditorSequenceArea::sl_buildStaticToolbar(GObjectViewController* v, QToo
 }
 
 void MsaEditorSequenceArea::sl_buildMenu(GObjectViewController*, QMenu* m, const QString& menuType) {
-    if (editor->getMaEditorMultilineWgt()->getActiveChild() != ui) {
+    if (editor->getMainWidget()->getActiveChild() != ui) {
         return;
     }
     bool isContextMenu = menuType == MsaEditorMenuType::CONTEXT;
@@ -392,7 +392,7 @@ void MsaEditorSequenceArea::sl_updateActions() {
 }
 
 void MsaEditorSequenceArea::sl_delCol() {
-    QObjectScopedPointer<DeleteGapsDialog> dlg = new DeleteGapsDialog(editor->getUI(), editor->getMaObject()->getRowCount());
+    QObjectScopedPointer<DeleteGapsDialog> dlg = new DeleteGapsDialog(editor->getMainWidget(), editor->getMaObject()->getRowCount());
     dlg->exec();
     CHECK(!dlg.isNull(), );
 
@@ -499,7 +499,7 @@ void MsaEditorSequenceArea::sl_createSubalignment() {
                                ? U2Region(0, msaObject->getLength())  // Whole alignment.
                                : U2Region::fromXRange(selection.getRectList().first());
 
-    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(msaObject, maRowIds, columnRange, editor->getUI());
+    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(msaObject, maRowIds, columnRange, editor->getMainWidget());
     dialog->exec();
     CHECK(!dialog.isNull(), );
 
@@ -624,7 +624,7 @@ void MsaEditorSequenceArea::sl_addSeqFromFile() {
     QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
 
     LastUsedDirHelper lod;
-    QStringList urls = U2FileDialog::getOpenFileNames(editor->getUI(), tr("Open file with sequences"), lod.dir, filter);
+    QStringList urls = U2FileDialog::getOpenFileNames(editor->getMainWidget(), tr("Open file with sequences"), lod.dir, filter);
 
     if (!urls.isEmpty()) {
         lod.url = urls.first();
@@ -650,7 +650,7 @@ void MsaEditorSequenceArea::sl_addSeqFromProject() {
     ProjectTreeControllerModeSettings settings;
     settings.objectTypesToShow.insert(GObjectTypes::SEQUENCE);
 
-    QList<GObject*> objects = ProjectTreeItemSelectorDialog::selectObjects(settings, editor->getUI());
+    QList<GObject*> objects = ProjectTreeItemSelectorDialog::selectObjects(settings, editor->getMainWidget());
     QList<DNASequence> objectsToAdd;
     U2OpStatus2Log os;
     foreach (GObject* obj, objects) {
@@ -913,7 +913,7 @@ QString ExportHighlightingTask::generateExportHighlightingReport() const {
 
             QColor unused;
             bool highlight = false;
-            MaEditorSequenceArea* sequenceArea = msaEditor->getMaEditorWgt()->getSequenceArea();
+            MaEditorSequenceArea* sequenceArea = msaEditor->getLineWidget(0)->getSequenceArea();
             MsaHighlightingScheme* scheme = sequenceArea->getCurrentHighlightingScheme();
             scheme->setUseDots(sequenceArea->getUseDotsCheckedState());
             scheme->process(refChar, c, unused, highlight, pos, seq);

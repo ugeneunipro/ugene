@@ -116,7 +116,7 @@ void MaOverview::setVisibleRangeForEmptyAlignment() {
 }
 
 void MaOverview::recalculateScale() {
-    MaEditorWgt* maEditorWgt = editor->getMaEditorWgt(0);
+    MaEditorWgt* maEditorWgt = editor->getLineWidget(0);
     stepX = static_cast<double>(maEditorWgt->getBaseWidthController()->getTotalAlignmentWidth()) / getContentWidgetWidth();
     stepY = static_cast<double>(maEditorWgt->getRowHeightController()->getTotalAlignmentHeight()) / getContentWidgetHeight();
 }

@@ -28,6 +28,7 @@
 #include "McaEditor.h"
 #include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
+#include "ov_msa/MaEditorMultilineWgt.h"
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/RowHeightController.h"
 

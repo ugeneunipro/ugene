@@ -131,21 +131,11 @@ public:
      */
     static constexpr int MAX_SUPPORTED_MSA_OBJECT_LENGTH = 100 * 1000 * 1000;
 
-    MaEditorMultilineWgt* getUI() const override {
-        return getMaEditorMultilineWgt();
-    }
+    /** Returns main widget that is parent of all other widgets inside editor. */
+    MaEditorMultilineWgt* getMainWidget() const override;
 
-    MaEditorWgt* getMaEditorWgt(int index = 0) const override {
-        return qobject_cast<MsaEditorWgt*>(getUI()->getUI(index));
-    }
-
-    // Return multiline widget (parent of the all sequences' widget
-    // Can be nullptr if widget is not yet created, but is used in for example
-    // in font metric calculating in MaEditor
-    // Don't want to update MaEditor
-    MaEditorMultilineWgt* getMaEditorMultilineWgt() const override {
-        return qobject_cast<MsaEditorMultilineWgt*>(ui);
-    }
+    /** Returns a single line root widget. A single line consists of consensus, name and seqeunce area widgets. */
+    MaEditorWgt* getLineWidget(int index) const override;
 
     void initChildrenActionsAndSignals() override;
 
@@ -195,9 +185,9 @@ protected slots:
 
     void sl_multilineViewAction() override;
 
-    bool setMultilineMode(bool newmode) override {
-        multilineMode = newmode;
-        return getUI()->setMultilineMode(multilineMode);
+    bool setMultilineMode(bool isMultilineMode) override {
+        multilineMode = isMultilineMode;
+        return ui->setMultilineMode(multilineMode);
     }
 
 protected:
@@ -302,6 +292,7 @@ private:
     QToolBar* staticToolBar;
     QMenu* staticMenu;
     QString staticMenuType;
+    MsaEditorMultilineWgt* ui = nullptr;
 };
 
 /** Set of custom menu actions in MSA editor. */

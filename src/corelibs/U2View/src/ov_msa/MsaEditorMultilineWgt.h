@@ -49,18 +49,19 @@ class U2VIEW_EXPORT MsaEditorMultilineWgt : public MaEditorMultilineWgt {
 public:
     MsaEditorMultilineWgt(MsaEditor* editor, QWidget* parent, bool multiline);
 
-    MsaEditor* getEditor() const;
-    MaEditorOverviewArea* getOverview();
+    MaEditor* getEditor() const override;
+    MaEditorOverviewArea* getOverviewArea() const override;
     MaEditorStatusBar* getStatusBar();
 
-    MaEditorWgt* getUI(int index) const override;
+    MultilineScrollController* getScrollController() const override;
+    QScrollArea* getChildrenScrollArea() const override;
+
+    MaEditorWgt* getLineWidget(int index) const override;
     void updateSize() override;
 
     void addPhylTreeWidget(MsaEditorMultiTreeViewer* newMultiTreeViewer);
     void delPhylTreeWidget();
-    MsaEditorMultiTreeViewer* getPhylTreeWidget() const {
-        return multiTreeViewer;
-    };
+    MsaEditorMultiTreeViewer* getPhylTreeWidget() const;
     MsaEditorTreeViewer* getCurrentTree() const;
 
     void setSimilaritySettings(const SimilarityStatisticsSettings* settings) override;
@@ -70,7 +71,32 @@ public:
 
     bool moveSelection(int key, bool shift, bool ctrl) override;
 
-signals:
+    MaEditorStatusBar* getStatusBar() const override;
+
+    // Return MaEditorWgt widget which has input focus
+    MaEditorWgt* getActiveChild() const override;
+    void setActiveChild(MaEditorWgt* child) override;
+
+    // Return lines count in multiline widget
+    int getChildrenCount() const override;
+
+    // Current multiline mode
+    bool getMultilineMode() const override;
+
+    int getSequenceAreaWidth(int index) const override;
+    int getFirstVisibleBase(int index) const override;
+    int getLastVisibleBase(int index) const override;
+    int getSequenceAreaBaseLen(int index) const override;
+    int getSequenceAreaBaseWidth(int index) const override;
+    int getSequenceAreaAllBaseLen() const override;
+    int getSequenceAreaAllBaseWidth() const override;
+
+    // Set multiline mode
+    // If mode was changed return true
+    // Else return false
+    bool setMultilineMode(bool enabled) override;
+
+    int getUIIndex(MaEditorWgt* _ui) const override;
 
 public slots:
     void sl_changeColorSchemeOutside(const QString& id);
@@ -80,8 +106,10 @@ public slots:
     void sl_cursorPositionChanged(const QPoint&);
     void sl_setAllNameAndSequenceAreasSplittersSizes(int pos, int index);
     void sl_goto() override;
+    void sl_toggleSequenceRowOrder(bool isOrderBySequence) override;
 
 protected:
+    void initWidgets() override;
     void initScrollArea() override;
     void initOverviewArea() override;
     void initStatusBar() override;
@@ -91,12 +119,37 @@ protected:
     MaEditorWgt* createChild(MaEditor* editor,
                              MaEditorOverviewArea* overviewArea,
                              MaEditorStatusBar* statusBar) override;
-    void deleteChild(int index) override;
     void addChild(MaEditorWgt* child) override;
 
+public:
+    MsaEditor* const editor;
+
 private:
-    MsaEditorMultiTreeViewer* multiTreeViewer;
-    MsaEditorTreeViewer* treeViewer;
+    MsaEditorMultiTreeViewer* multiTreeViewer = nullptr;
+    MsaEditorTreeViewer* treeViewer = nullptr;
+    MultilineScrollController* scrollController = nullptr;
+
+    QScrollArea* scrollArea = nullptr;  // scroll area for multiline widget, it's widget is uiChildrenArea
+    QGroupBox* uiChildrenArea = nullptr;
+    MaEditorOverviewArea* overviewArea = nullptr;
+
+    bool treeView = false;
+    QSplitter* treeSplitter;
+
+    QVector<MaEditorWgt*> uiChild;
+
+    // For correct display of Overview. `wgt` may have already been removed, or may still exist, so we need handles.
+    struct ActiveChild {
+        MaEditorWgt* wgt = nullptr;
+        QMetaObject::Connection startChangingHandle;
+        QMetaObject::Connection stopChangingHandle;
+    };
+
+    ActiveChild activeChild;
+    int uiChildLength = 0;
+    int uiChildCount = 0;
+    bool multilineMode = false;
+    MaEditorStatusBar* statusBar = nullptr;
 };
 
 }  // namespace U2

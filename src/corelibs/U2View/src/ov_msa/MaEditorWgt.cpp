@@ -52,7 +52,7 @@ bool MaEditorWgtEventFilter::eventFilter(QObject* obj, QEvent* event) {
 
     // Please, don't forget about QWidget::setAttribute(Qt::WA_Hover, true);
     if (event->type() == QEvent::HoverEnter) {
-        maEditorWgt->getEditor()->getMaEditorMultilineWgt()->setActiveChild(maEditorWgt);
+        maEditorWgt->getEditor()->getMainWidget()->setActiveChild(maEditorWgt);
     }
     // standard event processing
     return QObject::eventFilter(obj, event);

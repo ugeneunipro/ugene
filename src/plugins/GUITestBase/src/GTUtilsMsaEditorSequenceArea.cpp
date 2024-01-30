@@ -56,13 +56,13 @@ const QString GTUtilsMSAEditorSequenceArea::highlightingColor = "#9999cc";
 #define GT_CLASS_NAME "GTUtilsMSAEditorSequenceArea"
 
 int GTUtilsMSAEditorSequenceArea::getBaseWidth() {
-    return GTUtilsMsaEditor::getEditor()->getUI()->getUI(0)->getBaseWidthController()->getBaseWidth();
+    return GTUtilsMsaEditor::getEditor()->getLineWidget(0)->getBaseWidthController()->getBaseWidth();
 }
 
 MsaEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getSequenceArea(int index, bool checkError) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #index widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getLineWidget(index);
     if (checkError) {
         CHECK_SET_ERR_RESULT(activeWindow != nullptr,
                              QString("Can't find sequence area #%1").arg(index),
@@ -77,7 +77,7 @@ MsaEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getSequenceArea(int index, 
 MsaEditorConsensusArea* GTUtilsMSAEditorSequenceArea::getConsensusArea(int index, bool checkError) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #index widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getLineWidget(index);
     if (checkError) {
         CHECK_SET_ERR_RESULT(activeWindow != nullptr,
                              QString("Can't find consensus area #%1").arg(index),
@@ -92,7 +92,7 @@ MsaEditorConsensusArea* GTUtilsMSAEditorSequenceArea::getConsensusArea(int index
 QScrollBar* GTUtilsMSAEditorSequenceArea::getHorizontalNamesScroll(int index) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #index widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getLineWidget(index);
     if (activeWindow == nullptr) {
         return nullptr;
     }
@@ -102,7 +102,7 @@ QScrollBar* GTUtilsMSAEditorSequenceArea::getHorizontalNamesScroll(int index) {
 MsaEditorSimilarityColumn* GTUtilsMSAEditorSequenceArea::getSimilarityColumn(int index) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #index widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getLineWidget(index);
     if (activeWindow == nullptr) {
         return nullptr;
     }
@@ -129,11 +129,11 @@ QRect GTUtilsMSAEditorSequenceArea::getPositionRect(
     int index) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #index widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getLineWidget(index);
     GT_CHECK_RESULT(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index), QRect());
     auto msaEditArea = GTWidget::findExactWidget<MsaEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
 
-    auto msaEditorWidget = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getUI()->getUI(index));
+    auto msaEditorWidget = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getLineWidget(index));
     U2Region regX = msaEditorWidget->getBaseWidthController()->getBaseGlobalRange(position.x());
     U2Region regY = msaEditorWidget->getRowHeightController()->getGlobalYRegionByViewRowIndex(position.y());
 
@@ -146,11 +146,11 @@ QRect GTUtilsMSAEditorSequenceArea::getPositionRect(
 QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(const QPoint& p, int index) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #0 widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getLineWidget(index);
     GT_CHECK_RESULT(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index), QPoint());
     auto msaEditArea = GTWidget::findExactWidget<MsaEditorSequenceArea*>("msa_editor_sequence_area", activeWindow);
 
-    auto ui = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getUI()->getUI(index));
+    auto ui = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getLineWidget(index));
     int posX = ui->getBaseWidthController()->getBaseScreenCenter(p.x());
     int posY = (int)ui->getRowHeightController()->getScreenYRegionByViewRowIndex(p.y()).center();
     return msaEditArea->mapToGlobal({posX, posY});
@@ -219,7 +219,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(const QPoint& position) {
                  .arg(msaSeqArea->getViewRowCount()));
 
     // Scroll down with a vertical scroll bar first.
-    MaEditorWgt* msaWidget = GTUtilsMsaEditor::getEditor()->getUI()->getUI(0);
+    MaEditorWgt* msaWidget = GTUtilsMsaEditor::getEditor()->getLineWidget(0);
     auto verticalScrollBar = GTWidget::findScrollBar("vertical_sequence_scroll", msaWidget);
 
     QStyleOptionSlider vScrollBarOptions;
@@ -306,9 +306,9 @@ void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(const QPoint& globalMaPos
                  .arg(msaSeqArea->getEditor()->getAlignmentLen())
                  .arg(msaSeqArea->getViewRowCount()));
 
-    auto ui = GTUtilsMsaEditor::getEditor()->getMaEditorMultilineWgt();
+    auto ui = GTUtilsMsaEditor::getEditor()->getMainWidget();
     QPoint positionCenter;
-    uint muiCount = msaSeqArea->getEditor()->getUI()->getChildrenCount();
+    uint muiCount = msaSeqArea->getEditor()->getMainWidget()->getChildrenCount();
     uint multilineIndex = 0;
     if (GTUtilsMsaEditor::getMultilineMode()) {
         ui->getScrollController()->scrollToPoint(globalMaPosition);
@@ -317,7 +317,7 @@ void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(const QPoint& globalMaPos
     }
     do {
         msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(multilineIndex);
-        MaEditorWgt* mui = ui->getUI(multilineIndex);
+        MaEditorWgt* mui = ui->getLineWidget(multilineIndex);
         positionCenter = QPoint(mui->getBaseWidthController()->getBaseScreenCenter(
                                     globalMaPosition.x()),
                                 mui->getRowHeightController()
@@ -387,7 +387,7 @@ QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(bool asShownInNameList
     MaEditorNameList* nameListArea = GTUtilsMsaEditor::getNameListArea();
     CHECK_SET_ERR_RESULT(nameListArea != nullptr, "MSA Editor name list area is NULL", QStringList());
 
-    QList<int> visibleRowsIndexes = editor->getUI()->getUI(0)->getDrawHelper()->getVisibleMaRowIndexes(nameListArea->height());
+    QList<int> visibleRowsIndexes = editor->getLineWidget(0)->getDrawHelper()->getVisibleMaRowIndexes(nameListArea->height());
     MsaObject* msaObject = editor->getMaObject();
 
     QStringList visibleRowNames;
@@ -413,7 +413,7 @@ QString GTUtilsMSAEditorSequenceArea::getSimilarityValue(int row, int index) {
 
 void GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(const QString& seqName) {
     auto msaEditArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(0);
-    auto msaEditWgt = msaEditArea->getEditor()->getUI()->getUI(0);
+    auto msaEditWgt = msaEditArea->getEditor()->getLineWidget(0);
 
     int rowNum = getVisibleNames().indexOf(seqName);
     GT_CHECK(rowNum != -1, "sequence not found in nameList");
@@ -445,14 +445,14 @@ bool GTUtilsMSAEditorSequenceArea::collapsingMode() {
 int GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(int multilineIndex, bool countClipped) {
     auto msaEditArea = getSequenceArea(multilineIndex);
 
-    ScrollController* scrollController = msaEditArea->getEditor()->getUI()->getUI(multilineIndex)->getScrollController();
+    ScrollController* scrollController = msaEditArea->getEditor()->getLineWidget(multilineIndex)->getScrollController();
     return scrollController->getFirstVisibleBase(countClipped);
 }
 
 int GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(int multilineIndex) {
     auto msaEditArea = getSequenceArea(multilineIndex);
 
-    ScrollController* scrollController = msaEditArea->getEditor()->getUI()->getUI(multilineIndex)->getScrollController();
+    ScrollController* scrollController = msaEditArea->getEditor()->getLineWidget(multilineIndex)->getScrollController();
     int clippedIdx = scrollController->getLastVisibleBase(msaEditArea->width(), true);
     int notClippedIdx = scrollController->getLastVisibleBase(msaEditArea->width(), false);
     return clippedIdx + (clippedIdx == notClippedIdx ? 0 : 1);
@@ -460,13 +460,13 @@ int GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(int multilineIndex) {
 
 int GTUtilsMSAEditorSequenceArea::getFirstVisibleRowIndex(bool countClipped) {
     MsaEditor* editor = GTUtilsMsaEditor::getEditor();
-    return editor->getUI()->getScrollController()->getFirstVisibleViewRowIndex(countClipped);
+    return editor->getMainWidget()->getScrollController()->getFirstVisibleViewRowIndex(countClipped);
 }
 
 int GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(bool countClipped) {
     MsaEditor* editor = GTUtilsMsaEditor::getEditor();
-    int widgetHeight = editor->getMaEditorWgt()->getSequenceArea()->height();
-    return editor->getUI()->getScrollController()->getLastVisibleViewRowIndex(widgetHeight, countClipped);
+    int widgetHeight = editor->getLineWidget(0)->getSequenceArea()->height();
+    return editor->getMainWidget()->getScrollController()->getLastVisibleViewRowIndex(widgetHeight, countClipped);
 }
 
 int GTUtilsMSAEditorSequenceArea::getLength() {
@@ -476,7 +476,7 @@ int GTUtilsMSAEditorSequenceArea::getLength() {
 
 int GTUtilsMSAEditorSequenceArea::getNumVisibleBases() {
     auto msaEditArea = GTWidget::findExactWidget<MsaEditorSequenceArea*>("msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow());
-    return msaEditArea->getEditor()->getUI()->getUI(0)->getDrawHelper()->getVisibleBasesCount(msaEditArea->width());
+    return msaEditArea->getEditor()->getLineWidget(0)->getDrawHelper()->getVisibleBasesCount(msaEditArea->width());
 }
 
 QRect GTUtilsMSAEditorSequenceArea::getSelectedRect() {
@@ -579,7 +579,7 @@ QString GTUtilsMSAEditorSequenceArea::getSequenceData(int rowNumber) {
 void GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(int columnNumber, int index) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #0 widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getLineWidget(index);
     GT_CHECK(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index));
     auto msaEditArea = qobject_cast<MsaEditorSequenceArea*>(
         GTWidget::findWidget("msa_editor_sequence_area", activeWindow));
@@ -593,7 +593,7 @@ void GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(int columnNumber, int
         shift = msaOffsetLeft->mapToGlobal(QPoint(msaOffsetLeft->rect().right(), 0));
     }
 
-    const int posX = msaEditArea->getEditor()->getUI()->getUI(index)->getBaseWidthController()->getBaseScreenCenter(columnNumber) + shift.x();
+    const int posX = msaEditArea->getEditor()->getLineWidget(index)->getBaseWidthController()->getBaseScreenCenter(columnNumber) + shift.x();
 
     auto consArea = GTUtilsMSAEditorSequenceArea::getConsensusArea(index);
 
@@ -620,7 +620,7 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(const QString& seqName)
     QPoint center = GTUtilsMsaEditor::getSequenceNameRect(row).center();
 
     // There are more than one name list in multiline mode, so at first we get line #0 widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(0);
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getLineWidget(0);
     auto nameList = GTWidget::findExactWidget<QWidget*>("msa_editor_name_list", activeWindow);
     GT_CHECK_RESULT(nameList != nullptr, "name list is NULL", false);
 
@@ -687,7 +687,7 @@ bool GTUtilsMSAEditorSequenceArea::checkColor(const QPoint& p, const QString& ex
 
 int GTUtilsMSAEditorSequenceArea::getRowHeight(int rowNumber) {
     // There are more than one MaEditorWgt in multiline mode, so at first we get line #0 widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(0);
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getLineWidget(0);
     auto ui = qobject_cast<MsaEditorWgt*>(activeWindow);
 
     SAFE_POINT(ui != nullptr, "Can't find MSA editor windows", -1);
