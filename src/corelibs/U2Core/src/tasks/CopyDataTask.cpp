@@ -93,12 +93,8 @@ void CopyDataTask::replaceLineEndings(const ReplaceLineEndings& newLineEndings, 
     cRCount += line.count(CHAR_CR);
     lFCount += line.count(CHAR_LF);
     if (newLineEndings == ReplaceLineEndings::LF) {
-        int cRIndex = line.indexOf(CHAR_CR);
-        while (cRIndex > -1) {
-            line.remove(cRIndex, 1);
-            symbolsCount--;
-            cRIndex = line.indexOf(CHAR_CR);
-        }
+        line.replace(CHAR_CR, "");
+        symbolsCount = line.length();
     }
 }
 
