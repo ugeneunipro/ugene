@@ -316,7 +316,7 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
 
     auto mui = qobject_cast<MsaEditorMultilineWgt*>(ui);
     if (mui != nullptr) {
-        if (mui->getMultilineMode()) {
+        if (mui->isWrapMode()) {
             // value = <overview-rect>.X / <overview>.width * <alignment-len>
             // but scroll bar has other min/max, so map it
             if (newVisibleRange.right() >= width()) {

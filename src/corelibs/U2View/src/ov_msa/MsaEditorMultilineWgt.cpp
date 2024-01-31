@@ -99,7 +99,7 @@ void MsaEditorMultilineWgt::addChild(MaEditorWgt* child) {
     vbox->addWidget(child);
 
     child->setObjectName(QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "_%1").arg(index));
-    child->getScrollController()->setHScrollBarVisible(!getMultilineMode());
+    child->getScrollController()->setHScrollBarVisible(!isWrapMode());
 
     connect(child->getScrollController(), &ScrollController::si_visibleAreaChanged, scrollController, &MultilineScrollController::si_visibleAreaChanged);
 
@@ -109,7 +109,7 @@ void MsaEditorMultilineWgt::addChild(MaEditorWgt* child) {
 }
 
 void MsaEditorMultilineWgt::createChildren() {
-    int childrenCount = getMultilineMode() ? 3 : 1;
+    int childrenCount = isWrapMode() ? 3 : 1;
 
     for (int i = 0; i < childrenCount; i++) {
         MaEditorWgt* child = createChild(editor, overviewArea, statusBar);
@@ -117,7 +117,7 @@ void MsaEditorMultilineWgt::createChildren() {
         addChild(child);
 
         // recalculate count
-        if (i == 0 && getMultilineMode()) {
+        if (i == 0 && isWrapMode()) {
             QSize s = child->minimumSizeHint();
             childrenCount = height() / s.height() + 3;
             int l = editor->getAlignmentLen();
@@ -316,7 +316,7 @@ void MsaEditorMultilineWgt::hideSimilarity() {
 void MsaEditorMultilineWgt::sl_onPosChangeRequest(int position) {
     int baseIndex = position - 1;
     CHECK(baseIndex >= 0 && baseIndex < editor->getAlignmentLen(), );
-    if (getMultilineMode()) {
+    if (isWrapMode()) {
         getScrollController()->scrollToBase(QPoint(baseIndex, 0));
     } else {
         getLineWidget(0)->getScrollController()->scrollToBase(baseIndex, getSequenceAreaWidth(0));
@@ -662,7 +662,7 @@ int MsaEditorMultilineWgt::getLineWidgetCount() const {
 }
 
 // Current multiline mode
-bool MsaEditorMultilineWgt::getMultilineMode() const {
+bool MsaEditorMultilineWgt::isWrapMode() const {
     return multilineMode;
 }
 

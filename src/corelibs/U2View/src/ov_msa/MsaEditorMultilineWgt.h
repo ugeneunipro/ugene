@@ -69,7 +69,7 @@ public:
     void showSimilarity();
     void hideSimilarity();
 
-    bool moveSelection(int key, bool shift, bool ctrl) override;
+    bool moveSelection(int key, bool shift, bool ctrl);
 
     MaEditorStatusBar* getStatusBar() const;
 
@@ -81,15 +81,15 @@ public:
     int getLineWidgetCount() const;
 
     // Current multiline mode
-    bool getMultilineMode() const override;
+    bool isWrapMode() const;
 
     int getSequenceAreaWidth(int index) const;
-    int getFirstVisibleBase(int index) const override;
-    int getLastVisibleBase(int index) const override;
-    int getSequenceAreaBaseLen(int index) const override;
-    int getSequenceAreaBaseWidth(int index) const override;
-    int getSequenceAreaAllBaseLen() const override;
-    int getSequenceAreaAllBaseWidth() const override;
+    int getFirstVisibleBase(int index) const;
+    int getLastVisibleBase(int index) const;
+    int getSequenceAreaBaseLen(int index) const;
+    int getSequenceAreaBaseWidth(int index) const;
+    int getSequenceAreaAllBaseLen() const;
+    int getSequenceAreaAllBaseWidth() const;
 
     // Set multiline mode
     // If mode was changed return true
@@ -105,8 +105,8 @@ public slots:
     void sl_triggerUseDots(int checkState);
     void sl_cursorPositionChanged(const QPoint&);
     void sl_setAllNameAndSequenceAreasSplittersSizes(int pos, int index);
-    void sl_goto() override;
-    void sl_toggleSequenceRowOrder(bool isOrderBySequence) override;
+    void sl_goto();
+    void sl_toggleSequenceRowOrder(bool isOrderBySequence);
 
 protected:
     void initWidgets() override;

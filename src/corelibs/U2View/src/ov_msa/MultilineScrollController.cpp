@@ -216,7 +216,7 @@ bool MultilineScrollController::checkBoundary() const {
 }
 
 void MultilineScrollController::sl_vScrollValueChanged() {
-    if (ui->getMultilineMode()) {
+    if (ui->isWrapMode()) {
         checkBoundary();
     } else {
         int v = vScrollBar->value();

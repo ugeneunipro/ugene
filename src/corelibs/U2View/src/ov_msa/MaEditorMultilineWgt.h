@@ -62,28 +62,11 @@ class U2VIEW_EXPORT MaEditorMultilineWgt : public QWidget {
 public:
     explicit MaEditorMultilineWgt(QWidget* parent);
 
-    virtual int getFirstVisibleBase(int index) const = 0;
-    virtual int getLastVisibleBase(int index) const = 0;
-    virtual int getSequenceAreaBaseLen(int index) const = 0;  // bases
-    virtual int getSequenceAreaBaseWidth(int index) const = 0;  // pixels
-    virtual int getSequenceAreaAllBaseLen() const = 0;  // bases
-    virtual int getSequenceAreaAllBaseWidth() const = 0;  // pixels
-
-    virtual bool moveSelection(int key, bool shift, bool ctrl) = 0;
-
-    // Current multiline mode
-    virtual bool getMultilineMode() const = 0;
-
 signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);
     void si_completeRedraw();
     void si_maEditorUIChanged();
-
-public slots:
-    /** Switches between Original and Sequence row orders. */
-    virtual void sl_toggleSequenceRowOrder(bool isOrderBySequence) = 0;
-    virtual void sl_goto() = 0;
 
 protected:
     virtual void initWidgets() = 0;
