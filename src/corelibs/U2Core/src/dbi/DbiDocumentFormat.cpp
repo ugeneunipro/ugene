@@ -31,7 +31,6 @@
 #include <U2Core/U2ObjectRelationsDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SqlHelpers.h>
 
 namespace U2 {
 
