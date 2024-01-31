@@ -56,6 +56,7 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
 }
 
 # These tools can't be notarized today:
+rm -rf "${APP_EXE_DIR}/tools/python3"
 
 echo " ##teamcity[blockClosed name='Copy files']"
 
