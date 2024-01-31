@@ -81,7 +81,16 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* _context)
       context(_context),
       savableWidget(this, GObjectViewUtils::findViewByName(context != nullptr ? context->getAnnotatedDNAView()->getName() : "primer3-no-target-sequence"),
                     {"primer3RegionSelector", "primer3AnnWgt"}),
-      primer3DataDirectory(QFileInfo(QString(PATH_PREFIX_DATA) + ":primer3/").absoluteFilePath().toLatin1()) {
+      primer3DataDirectory(QFileInfo(QString(PATH_PREFIX_DATA) + ":primer3/").absoluteFilePath().toLatin1()),
+      presetNamesMap({
+          {tr("Default"), "Default"},
+          {tr("Default2"), "Default2"},
+          {tr("qPCR"), "qPCR"},
+          {tr("Cloning Primers"), "Cloning Primers"},
+          {tr("Annealing Temp"), "Annealing Temp"},
+          {tr("Secondary Structures"), "Secondary Structures"},
+          {tr("Probe"), "Probe"},
+          {tr("Recombinase Polymerase Amplification"), "Recombinase Polymerase Amplification"}}) {
     setupUi(this);
     new HelpButton(this, helpButton, "65930919");
 
@@ -963,19 +972,24 @@ void Primer3Dialog::sl_taskChanged(const QString& text) {
     }
 }
 
+
 void Primer3Dialog::sl_presetChanged(const QString& text) {
-    if (text == tr("Default")) {
-        loadSettings(primer3DataDirectory + "/presets/Default.txt");
+    auto res = std::find_if(presetNamesMap.begin(), presetNamesMap.end(), [text](const QPair<QString, QString>& presetNamesPair) {
+        return text == presetNamesPair.first;
+    });
+    SAFE_POINT(res != presetNamesMap.end(), "Unexpected preset", );
+
+    QString presetFilePath = primer3DataDirectory + "/presets/" + res->second + ".txt";
+    if (!loadSettings(presetFilePath)) {
+        QMessageBox::critical(this, windowTitle(), L10N::errorReadingFile(presetFilePath));
+        return;
+    }
+    if (text == tr("Recombinase Polymerase Amplification")) {
+        gbCheckComplementary->setChecked(true);
+        lbPresetInfo->setText(tr("Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)"));
+    } else {
         gbCheckComplementary->setChecked(false);
         lbPresetInfo->clear();
-    } else if (text == tr("Recombinase Polymerase Amplification")) {
-        loadSettings(primer3DataDirectory + "/presets/RPA.txt");
-        if (context != nullptr) {
-            gbCheckComplementary->setChecked(true);
-            lbPresetInfo->setText(tr("Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)"));
-        }
-    } else {
-        FAIL("Unexpected preset", );
     }
 
     updateNoSequenceDialogState();
@@ -1088,16 +1102,12 @@ void Primer3Dialog::saveSettings(const QString& filePath) {
     file.close();
 }
 
-void Primer3Dialog::loadSettings(const QString& filePath) {
+bool Primer3Dialog::loadSettings(const QString& filePath) {
     QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::critical(this, windowTitle(), L10N::errorReadingFile(filePath));
-        return;
-    }
+    CHECK(file.open(QIODevice::ReadOnly), false);
 
     auto intPropList = defaultSettings.getIntPropertyList();
     auto doublePropList = defaultSettings.getDoublePropertyList();
-
     bool primerMinThreePrimeIsUsed = false;
     QTextStream stream(&file);
     QStringList changedLineEdits;
@@ -1244,6 +1254,8 @@ void Primer3Dialog::loadSettings(const QString& filePath) {
         }
     }
     file.close();
+
+    return true;
 }
 
 QString Primer3Dialog::checkModel() {
