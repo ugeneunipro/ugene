@@ -4,7 +4,7 @@
 #include <QLabel>
 
 namespace U2 {
-class ClickableLabel final : public QLabel {
+class ClickableLabel : public QLabel {
     Q_OBJECT
 public:
     explicit ClickableLabel(QWidget* p = nullptr, Qt::WindowFlags f = Qt::WindowFlags());

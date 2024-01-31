@@ -41,7 +41,7 @@
 #include <U2View/AnnotatedDNAView.h>
 
 namespace U2 {
-const QString TOO_LONG_REGION_STR = QT_TR_NOOP("Region cannot be larger than 3000 nucleotides");
+const QString tooLongRegionStr = QT_TR_NOOP("Region cannot be larger than 3000 nucleotides");
 
 MfoldDialog::MfoldDialog(const ADVSequenceObjectContext& ctx)
     : QDialog(ctx.getAnnotatedDNAView()->getWidget()), seqLen(ctx.getSequenceLength()),
@@ -102,7 +102,7 @@ void MfoldDialog::validateRegionAndShowError() {
     } else if (!isCircular && startVal > endVal) {
         err = tr("Start position cannot be greater than end position");
     } else if (getRegionLen(startVal, endVal) > 3000) {
-        err = TOO_LONG_REGION_STR;
+        err = tooLongRegionStr;
     } else {
         err = "";
     }
@@ -148,7 +148,7 @@ void MfoldDialog::accept() {
                                                                    tr("Invalid sequence region!"),
                                                                    QMessageBox::Ok,
                                                                    this);
-        msgBox->setInformativeText(TOO_LONG_REGION_STR);
+        msgBox->setInformativeText(tooLongRegionStr);
         msgBox->exec();
         regionSelector->setFocus(Qt::OtherFocusReason);
         return;

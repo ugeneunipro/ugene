@@ -32,7 +32,7 @@ struct MfoldSettings final {
     int maxBp = 0;  // 0=inf i.e. no limit
     int maxFold = 100;
     int labFr = -1;  // -1=depends on sequence len, see mfold:551
-    int rotAng = 0;
+    double rotAng = 0;
     double naConc = 1;
     double mgConc = 0;
 

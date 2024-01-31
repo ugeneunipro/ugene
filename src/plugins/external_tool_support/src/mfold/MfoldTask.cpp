@@ -18,7 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
 #include "MfoldTask.h"
 
 #include <QByteArray>
@@ -40,7 +39,7 @@
 #include "MfoldSupport.h"
 
 namespace U2 {
-const QString IN_SEQ_BASENAME = "inp.txt";
+const QString inSeqBasename = "inp.txt";
 
 static QString constructOutPath(const QString& userPath) {
     CHECK(!userPath.isEmpty(), userPath);
@@ -53,11 +52,11 @@ MfoldTask::MfoldTask(const QByteArray& seq,
                      const MfoldSettings& settings,
                      bool isCircular,
                      bool isDna,
-                     int windowWidth)
+                     const QSize& imgSize)
     : Task(tr("Predict and visualize hairpins with Mfold"),
            TaskFlags_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       seq(seq), mfoldArgs("RUN_TYPE=html"), outPath(constructOutPath(settings.outPath)),
-      cwd(ExternalToolSupportUtils::createTmpDir("mfold", stateInfo)) {
+      cwd(ExternalToolSupportUtils::createTmpDir("mfold", stateInfo)), imgSize(imgSize) {
     GCOUNTER(cvar, "mfold");
     CHECK_OP(stateInfo, );
 
@@ -66,7 +65,7 @@ MfoldTask::MfoldTask(const QByteArray& seq,
     CHECK_EXT(tool->isValid() && !tool->getPath().isEmpty(),
               setError(tr("Mfold tool is invalid, check it in settings")), );
 
-    mfoldArgs.append(QString("SEQ=%1").arg(QDir(cwd).absoluteFilePath(IN_SEQ_BASENAME)));
+    mfoldArgs.append(QString("SEQ=%1").arg(QDir(cwd).absoluteFilePath(inSeqBasename)));
     mfoldArgs.append(QString("T=%1").arg(settings.temperature));
     mfoldArgs.append(QString("P=%1").arg(settings.percent));
     mfoldArgs.append(QString("NA_CONC=%1").arg(settings.naConc));
@@ -88,29 +87,13 @@ MfoldTask::MfoldTask(const QByteArray& seq,
     if (isCircular) {
         mfoldArgs.append(QString("LC=circular"));
     }
-
-    // Mfold creates ps files. To convert them to PNG, we need to set width and height in Mfold script.
-    // These imgs will definitely be used in HTML report of UGENE task. Qt supports a very limited portion of HTML
-    // and does so with bugs https://bugreports.qt.io/browse/QTBUG-12283, so it cannot resize images to fit the screen.
-    // We must set the correct width ourselves, otherwise img will go beyond the edges of the resulting table.
-    // The only problem is with the width.
-
-    // Mfold produces all images with a resolution of 792x1072. So the final width should be as follows:
-    // 1. we will take the width of the image equal to 0.5 of report window width (we assume that the report window
-    //     will be the same size as the SV window)
-    // 2. limit it from below to 300
-    // 3. limit it from above to 792 -- the default image width
-
-    // Calculate the height so as to preserve the original proportions (792x1072).
-    imgSize.setWidth(qBound(300, windowWidth / 2, 792));
-    imgSize.setHeight(imgSize.width() * 1072 / 792);
 }
 
 void MfoldTask::prepare() {
     CHECK(!hasError(), );
 
     // todo split to separate task?
-    auto path = QDir(cwd).absoluteFilePath(IN_SEQ_BASENAME);
+    auto path = QDir(cwd).absoluteFilePath(inSeqBasename);
     QFile file(path);
     CHECK_EXT(file.open(QIODevice::ReadWrite), setError(QString(tr("Unable to create input file `%1`")).arg(path)), );
     file.write(seq);
@@ -249,6 +232,23 @@ MfoldTask* createMfoldTask(SequenceObjectContext* ctx, const MfoldSettings& sett
         seq = seqObj->getSequenceData(settings.region, os);
         CHECK_OP(os, nullptr);
     }
-    return new MfoldTask(seq, settings, seqObj->isCircular(), seqObj->getAlphabet()->isDNA(), windowWidth);
+
+    QSize imgSize;
+    // Mfold creates ps files. To convert them to PNG, we need to set width and height in Mfold script.
+    // These imgs will definitely be used in HTML report of UGENE task. Qt supports a very limited portion of HTML
+    // and does so with bugs https://bugreports.qt.io/browse/QTBUG-12283, so it cannot resize images to fit the screen.
+    // We must set the correct width ourselves, otherwise img will go beyond the edges of the resulting table.
+    // The only problem is with the width.
+
+    // Mfold produces all images with a resolution of 792x1072. So the final width should be as follows:
+    // 1. we will take the width of the image equal to 0.5 of report window width (we assume that the report window
+    //     will be the same size as the SV window)
+    // 2. limit it from below to 300
+    // 3. limit it from above to 792 -- the default image width
+
+    // Calculate the height so as to preserve the original proportions (792x1072).
+    imgSize.setWidth(qBound(300, windowWidth / 2, 792));
+    imgSize.setHeight(imgSize.width() * 1072 / 792);
+    return new MfoldTask(seq, settings, seqObj->isCircular(), seqObj->getAlphabet()->isDNA(), imgSize);
 }
 }  // namespace U2

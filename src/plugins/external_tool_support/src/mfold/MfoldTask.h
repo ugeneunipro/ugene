@@ -40,8 +40,8 @@ public:
     // seq -- sequence for analysis
     // settings -- settings changed by the user inside the dialog are used as tool args
     // isCircular, isDNA -- internal sequence parameters used as tool args
-    // windowWidth -- Sequence View window width, used for img size and pretty display of the HTML report
-    MfoldTask(const QByteArray& seq, const MfoldSettings& settings, bool isCircular, bool isDNA, int windowWidth);
+    // imgSize -- img size for pretty display of HTML report
+    MfoldTask(const QByteArray& seq, const MfoldSettings& settings, bool isCircular, bool isDNA, const QSize& imgSize);
 
     void prepare() override;
     void run() override;
