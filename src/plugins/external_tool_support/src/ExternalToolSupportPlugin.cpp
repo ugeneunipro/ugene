@@ -96,6 +96,7 @@
 #include "kalign/KalignWorker.h"
 #include "mafft/MAFFTSupport.h"
 #include "mafft/MAFFTWorker.h"
+#include "mfold/MfoldSupport.h"
 #include "mrbayes/MrBayesSupport.h"
 #include "mrbayes/MrBayesTests.h"
 #include "perl/PerlSupport.h"
@@ -297,6 +298,9 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
 
     // Trimmomatic
     etRegistry->registerEntry(new TrimmomaticSupport());
+
+    // Mfold
+    etRegistry->registerEntry(new MfoldSupport());
 
     if (AppContext::getMainWindow() != nullptr) {
         etRegistry->setToolkitDescription("BLAST", tr("<i>BLAST</i> finds regions of similarity between biological sequences. "

@@ -1379,6 +1379,7 @@ tools/iqtree
 tools/java8
 tools/kalign
 tools/mafft
+tools/mfold
 tools/mrbayes
 tools/phyml
 tools/python3

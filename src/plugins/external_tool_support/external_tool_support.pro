@@ -127,6 +127,11 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/mafft/MAFFTSupportTask.h \
            src/mafft/MAFFTWorker.h \
            src/mafft/MafftAddToAlignmentTask.h \
+           src/mfold/ClickableLabel.h \
+           src/mfold/MfoldDialog.h \
+           src/mfold/MfoldSettings.h \
+           src/mfold/MfoldSupport.h \
+           src/mfold/MfoldTask.h \
            src/mrbayes/MrBayesDialogWidget.h \
            src/mrbayes/MrBayesSupport.h \
            src/mrbayes/MrBayesTask.h \
@@ -229,6 +234,7 @@ FORMS += src/ETSSettingsWidget.ui \
          src/kalign/KalignSupportRunDialog.ui \
          src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui \
          src/mafft/MAFFTSupportRunDialog.ui \
+         src/mfold/MfoldDialog.ui \
          src/mrbayes/MrBayesDialog.ui \
          src/phyml/PhyMLDialog.ui \
          src/snpeff/SnpEffDatabaseDialog.ui \
@@ -366,6 +372,10 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/mafft/MAFFTSupportTask.cpp \
            src/mafft/MAFFTWorker.cpp \
            src/mafft/MafftAddToAlignmentTask.cpp \
+           src/mfold/ClickableLabel.cpp \
+           src/mfold/MfoldDialog.cpp \
+           src/mfold/MfoldSupport.cpp \
+           src/mfold/MfoldTask.cpp \
            src/mrbayes/MrBayesDialogWidget.cpp \
            src/mrbayes/MrBayesSupport.cpp \
            src/mrbayes/MrBayesTask.cpp \
