@@ -21,7 +21,11 @@
 
 #include "MsaEditorMultilineWgt.h"
 
+#include <QVBoxLayout>
+
 #include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
+
+#include <U2Gui/PositionSelector.h>
 
 #include <U2View/BaseWidthController.h>
 #include <U2View/DrawHelper.h>
@@ -31,6 +35,7 @@
 #include "MaEditorSequenceArea.h"
 #include "MsaEditor.h"
 #include "MsaEditorOverviewArea.h"
+#include "MsaEditorSequenceArea.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "MsaEditorStatusBar.h"
 #include "MsaEditorWgt.h"
@@ -51,7 +56,7 @@ void MsaSizeUtil::updateMinHeightIfPossible(MaEditorSequenceArea* heightFrom, QW
 }
 
 MsaEditorMultilineWgt::MsaEditorMultilineWgt(MsaEditor* _editor, QWidget* parent, bool multiline)
-    : MaEditorMultilineWgt(parent), editor(_editor), scrollController(new MultilineScrollController(_editor, this)) {
+    : QWidget(parent), editor(_editor), scrollController(new MultilineScrollController(_editor, this)) {
     setFocusPolicy(Qt::ClickFocus);
     initWidgets();
 
@@ -70,15 +75,14 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MsaEditor* _editor, QWidget* parent
     connect(editor, &MaEditor::si_cursorPositionChanged, this, &MsaEditorMultilineWgt::sl_cursorPositionChanged);
 }
 
-MaEditorWgt* MsaEditorMultilineWgt::createChild(MaEditor* _editor,
-                                                MaEditorOverviewArea* _overviewArea,
-                                                MaEditorStatusBar* _statusBar) {
-    auto msaEditor = qobject_cast<MsaEditor*>(_editor);
+MsaEditorWgt* MsaEditorMultilineWgt::createChild(MsaEditor* msaEditor,
+                                                 MsaEditorOverviewArea* _overviewArea,
+                                                 MsaEditorStatusBar* _statusBar) {
     SAFE_POINT(msaEditor != nullptr, "Not MSAEditor!", nullptr);
     return new MsaEditorWgt(msaEditor, this, _overviewArea, _statusBar);
 }
 
-void MsaEditorMultilineWgt::addChild(MaEditorWgt* child) {
+void MsaEditorMultilineWgt::addChild(MsaEditorWgt* child) {
     if (uiChildLength == 0) {
         uiChildLength = 8;
         uiChild.resize(uiChildLength);
@@ -112,7 +116,7 @@ void MsaEditorMultilineWgt::createChildren() {
     int childrenCount = isWrapMode() ? 3 : 1;
 
     for (int i = 0; i < childrenCount; i++) {
-        MaEditorWgt* child = createChild(editor, overviewArea, statusBar);
+        MsaEditorWgt* child = createChild(editor, overviewArea, statusBar);
         SAFE_POINT(child != nullptr, "Can't create sequence widget", );
         addChild(child);
 
@@ -180,7 +184,7 @@ void MsaEditorMultilineWgt::updateChildren() {
     getLineWidget(0)->getSequenceArea()->setFocus();
 }
 
-MaEditorStatusBar* MsaEditorMultilineWgt::getStatusBar() {
+MsaEditorStatusBar* MsaEditorMultilineWgt::getStatusBar() {
     return statusBar;
 }
 
@@ -210,7 +214,7 @@ void MsaEditorMultilineWgt::initChildrenArea() {
     uiChildrenArea->setObjectName("msa_editor_multiline_children_area");
 }
 
-MaEditorWgt* MsaEditorMultilineWgt::getLineWidget(int index) const {
+MsaEditorWgt* MsaEditorMultilineWgt::getLineWidget(int index) const {
     return index >= uiChildCount
                ? nullptr
                : qobject_cast<MsaEditorWgt*>(uiChild[index]);
@@ -228,7 +232,7 @@ void MsaEditorMultilineWgt::updateSize() {
     updateGeometry();
 }
 
-MaEditor* MsaEditorMultilineWgt::getEditor() const {
+MsaEditor* MsaEditorMultilineWgt::getEditor() const {
     return editor;
 }
 
@@ -317,7 +321,7 @@ void MsaEditorMultilineWgt::sl_onPosChangeRequest(int position) {
     int baseIndex = position - 1;
     CHECK(baseIndex >= 0 && baseIndex < editor->getAlignmentLen(), );
     if (isWrapMode()) {
-        getScrollController()->scrollToBase(QPoint(baseIndex, 0));
+        getScrollController()->scrollToBase({baseIndex, 0});
     } else {
         getLineWidget(0)->getScrollController()->scrollToBase(baseIndex, getSequenceAreaWidth(0));
     }
@@ -554,27 +558,27 @@ bool MsaEditorMultilineWgt::setMultilineMode(bool newmode) {
     return false;
 }
 
-MaEditorStatusBar* MsaEditorMultilineWgt::getStatusBar() const {
+MsaEditorStatusBar* MsaEditorMultilineWgt::getStatusBar() const {
     return statusBar;
 }
 
-MaEditorWgt* MsaEditorMultilineWgt::getActiveChild() const {
+MsaEditorWgt* MsaEditorMultilineWgt::getActiveChild() const {
     return activeChild.wgt;
 }
 
-void MsaEditorMultilineWgt::setActiveChild(MaEditorWgt* child) {
+void MsaEditorMultilineWgt::setActiveChild(MsaEditorWgt* child) {
     disconnect(activeChild.startChangingHandle);
     disconnect(activeChild.stopChangingHandle);
     activeChild.wgt = child;
     activeChild.startChangingHandle = connect(child,
                                               &MaEditorWgt::si_startMaChanging,
                                               this,
-                                              &MaEditorMultilineWgt::si_startMaChanging,
+                                              &MsaEditorMultilineWgt::si_startMaChanging,
                                               Qt::UniqueConnection);
     activeChild.stopChangingHandle = connect(child,
                                              &MaEditorWgt::si_stopMaChanging,
                                              this,
-                                             &MaEditorMultilineWgt::si_stopMaChanging,
+                                             &MsaEditorMultilineWgt::si_stopMaChanging,
                                              Qt::UniqueConnection);
 }
 
@@ -631,7 +635,7 @@ void MsaEditorMultilineWgt::sl_toggleSequenceRowOrder(bool isOrderBySequence) {
     }
 }
 
-MaEditorOverviewArea* MsaEditorMultilineWgt::getOverviewArea() const {
+MsaEditorOverviewArea* MsaEditorMultilineWgt::getOverviewArea() const {
     return overviewArea;
 }
 
@@ -643,7 +647,7 @@ QScrollArea* MsaEditorMultilineWgt::getChildrenScrollArea() const {
     return scrollArea;
 }
 
-int MsaEditorMultilineWgt::getUIIndex(MaEditorWgt* _ui) const {
+int MsaEditorMultilineWgt::getUIIndex(MsaEditorWgt* _ui) const {
     CHECK(_ui != nullptr, 0);
     for (int index = 0; index < uiChildCount && index < uiChildLength; index++) {
         if (_ui == uiChild[index]) {

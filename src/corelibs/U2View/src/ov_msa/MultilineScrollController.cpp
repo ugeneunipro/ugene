@@ -36,6 +36,7 @@
 #include "ov_msa/MsaEditor.h"
 #include "ov_msa/MsaEditorOverviewArea.h"
 #include "ov_msa/MsaMultilineScrollArea.h"
+#include "ov_msa/MsaEditorSequenceArea.h"
 
 namespace U2 {
 

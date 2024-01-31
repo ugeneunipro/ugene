@@ -33,7 +33,6 @@
 #include "ov_mca/McaReferenceCharController.h"
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/MaCollapseModel.h"
-#include "ov_msa/MaEditorMultilineWgt.h"
 #include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/RowHeightController.h"
 #include "ov_msa/ScrollController.h"

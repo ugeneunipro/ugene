@@ -82,8 +82,8 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
         changeTracker = new MsaEditorUserModStepController(editor->getMaObject()->getEntityRef());
     }
 
-    connect(this, SIGNAL(si_startMaChanging()), ui, SIGNAL(si_startMaChanging()));
-    connect(this, SIGNAL(si_stopMaChanging(bool)), ui, SIGNAL(si_stopMaChanging(bool)));
+    connect(this, &MaEditorNameList::si_startMaChanging, ui, &MaEditorWgt::si_startMaChanging);
+    connect(this, &MaEditorNameList::si_stopMaChanging, ui, &MaEditorWgt::si_stopMaChanging);
 
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),

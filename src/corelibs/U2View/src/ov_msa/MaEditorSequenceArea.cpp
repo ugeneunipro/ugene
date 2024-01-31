@@ -127,8 +127,8 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
 
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_alignmentChanged(const Msa&, const MaModificationInfo&)));
 
-    connect(this, SIGNAL(si_startMaChanging()), editor->getUndoRedoFramework(), SLOT(sl_updateUndoRedoState()));
-    connect(this, SIGNAL(si_stopMaChanging(bool)), editor->getUndoRedoFramework(), SLOT(sl_updateUndoRedoState()));
+    connect(this, &MaEditorSequenceArea::si_startMaChanging, editor->getUndoRedoFramework(), &MaUndoRedoFramework::sl_updateUndoRedoState);
+    connect(this, &MaEditorSequenceArea::si_stopMaChanging, editor->getUndoRedoFramework(), &MaUndoRedoFramework::sl_updateUndoRedoState);
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_onSelectionChanged(const MaEditorSelection&, const MaEditorSelection&)));

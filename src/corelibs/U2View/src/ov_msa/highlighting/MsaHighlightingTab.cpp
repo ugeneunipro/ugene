@@ -214,7 +214,7 @@ MsaHighlightingTab::MsaHighlightingTab(MsaEditor* m)
 
     initSeqArea();
     // MaEditor UI changed it's state, for example multiline mode, we need to re-init some internals
-    connect(m->getMainWidget(), &MaEditorMultilineWgt::si_maEditorUIChanged, this, [this]() {
+    connect(m->getMainWidget(), &MsaEditorMultilineWgt::si_maEditorUIChanged, this, [this]() {
         initSeqArea();
         sl_sync();
     });

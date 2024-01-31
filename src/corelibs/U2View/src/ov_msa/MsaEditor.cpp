@@ -590,7 +590,7 @@ void MsaEditor::initActions() {
 
 void MsaEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {
     QMenu m;
-    auto sender = qobject_cast<MaEditorWgt*>(QObject::sender());
+    auto sender = qobject_cast<MsaEditorWgt*>(QObject::sender());
     int uiIndex = ui->getUIIndex(sender);
 
     addAppearanceMenu(&m, uiIndex);

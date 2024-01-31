@@ -64,18 +64,18 @@ MaGraphOverview::MaGraphOverview(MsaEditor* _editor, QWidget* _ui)
         sl_redraw();
     });
 
-    auto mui = qobject_cast<MaEditorMultilineWgt*>(_ui);
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(_ui);
     CHECK(mui != nullptr, );
 
     connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, [this]() {
         state.maObjectVersion = editor->getMaObject()->getObjectVersion();
         recomputeGraphIfNeeded();
     });
-    connect(mui, &MaEditorMultilineWgt::si_startMaChanging, this, [this]() {
+    connect(mui, &MsaEditorMultilineWgt::si_startMaChanging, this, [this]() {
         isMaChangeInProgress = true;
         graphCalculationTaskRunner.cancel();
     });
-    connect(mui, &MaEditorMultilineWgt::si_stopMaChanging, this, [this]() {
+    connect(mui, &MsaEditorMultilineWgt::si_stopMaChanging, this, [this]() {
         isMaChangeInProgress = false;
         recomputeGraphIfNeeded();
     });

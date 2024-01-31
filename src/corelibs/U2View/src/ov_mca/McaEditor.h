@@ -81,8 +81,6 @@ public:
         return ui;
     }
 
-    MaEditorMultilineWgt* getMainWidget() const override;
-
 protected slots:
     void sl_onContextMenuRequested(const QPoint& pos) override;
     void sl_showHideChromatograms(bool show);

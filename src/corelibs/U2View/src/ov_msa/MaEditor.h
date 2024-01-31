@@ -136,8 +136,6 @@ public:
 
     virtual MaEditorWgt* getLineWidget(int lineIndex) const = 0;
 
-    virtual MaEditorMultilineWgt* getMainWidget() const = 0;
-
     const QFont& getFont() const {
         return font;
     }

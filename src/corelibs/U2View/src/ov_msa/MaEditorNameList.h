@@ -45,7 +45,7 @@ class U2VIEW_EXPORT MaEditorNameList : public QWidget {
     Q_DISABLE_COPY(MaEditorNameList)
 public:
     MaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
-    virtual ~MaEditorNameList();
+    ~MaEditorNameList() override;
 
     QSize getCanvasSize(const QList<int>& seqIdx) const;
 
