@@ -3708,6 +3708,30 @@ GUI_TEST_CLASS_DEFINITION(test_7680) {
                   QString("Height of the node changed: %1 vs %2").arg(viewRectBefore.height()).arg(viewRectAfter.height()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7681) {
+    /*
+    * 1. Open ..\samples\Assembly\chrM.sorted.bam
+    * 2. "Import Bam File" dialog appears
+    * 2. Set destination url equal to the same as input url: ..\samples\Assembly\chrM.sorted.bam
+    * 3. Push Import button
+    * Expected state: message box about the same location of source and destination files appears
+    */
+    class SameSrcAndDestUrls : public CustomScenario {
+        void run() override {
+            const QString destinationUrl = testDir + "_common_data/bam/chrM.sorted.bam";
+            const QString expectedMessage = QString("Destination file '%1' can not be the same as source file. Please select another file.").arg(destinationUrl);
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
+            GTLineEdit::setText("destinationUrlEdit", destinationUrl, dialog);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(new SameSrcAndDestUrls));
+    GTFileDialog::openFile(testDir + "_common_data/bam", "chrM.sorted.bam");
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7682) {
     // Check 'curvature' controls for rectangular branches.
     GTFileDialog::openFile(dataDir + "/samples/Newick/COI.nwk");
