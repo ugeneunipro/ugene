@@ -27,6 +27,9 @@ namespace U2 {
 struct MfoldSettings;
 class SequenceObjectContext;
 
+// For a given sequence fragment, task runs external script Mfold, which calculates foldings and saves imgs
+// of found hairpins. Output files are saved in temporary dir by default, but the most important files are saved in
+// a permanent dir if specified. As a report, it displays HTML table with folding data and hairpin imgs.
 class MfoldTask final : public Task {
     Q_OBJECT
     QByteArray seq;
