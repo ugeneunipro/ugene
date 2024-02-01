@@ -2103,6 +2103,21 @@ GUI_TEST_CLASS_DEFINITION(test_7476) {
     GTUtilsPhyTree::checkTreeViewerWindowIsActive("collapse_mode_");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7482) {
+    // Open _common_data/scenarios/_regression/7482/7482.ugenedb
+    // Select all
+    // Copy to clipboard
+    // Expected: "Block size is too big and can't be copied into the clipboard" in the log
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7482/", "test_7482.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller());
+    GTKeyboardUtils::selectAll();
+    GTUtilsDialog::checkNoActiveWaiters();
+    GTLogTracer lt;
+    GTKeyboardUtils::copy();
+    CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7487_1) {
     // Check that move of the multi-region selection with drag-and-drop works as expected (2 selected regions).
     GTFileDialog::openFile(testDir + "_common_data/clustal/collapse_mode_1.aln");
