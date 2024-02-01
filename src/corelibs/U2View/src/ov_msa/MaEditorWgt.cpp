@@ -45,19 +45,6 @@
 
 namespace U2 {
 
-bool MaEditorWgtEventFilter::eventFilter(QObject* obj, QEvent* event) {
-    // TODO:ichebyki
-    // Maybe need to check QEvent::FocusIn || QEvent::Enter
-    // Also,there is a question about children (QEvent::ChildAdded)
-
-    // Please, don't forget about QWidget::setAttribute(Qt::WA_Hover, true);
-    if (event->type() == QEvent::HoverEnter) {
-        maEditorWgt->getEditor()->getMainWidget()->setActiveChild(maEditorWgt);
-    }
-    // standard event processing
-    return QObject::eventFilter(obj, event);
-}
-
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/

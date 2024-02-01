@@ -328,10 +328,6 @@ void McaEditor::addEditMenu(QMenu* menu) {
     editMenu->addAction(redoAction);
 }
 
-MaEditorMultilineWgt* McaEditor::getMainWidget() const {
-    FAIL("getMainWidget must never be called on MCA manager", nullptr);
-}
-
 MaEditorSelectionController* McaEditor::getSelectionController() const {
     return selectionController;
 }

@@ -65,7 +65,7 @@ class U2VIEW_EXPORT MaEditorSequenceArea : public QWidget {
 
 public:
     MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
-    virtual ~MaEditorSequenceArea();
+    ~MaEditorSequenceArea() override;
 
     MaEditor* getEditor() const;
 
@@ -83,7 +83,7 @@ public:
      */
     int getViewRowCount() const;
 
-    int getRowIndex(const int num) const;
+    int getRowIndex(int num) const;
 
     bool isAlignmentEmpty() const;
 
@@ -203,7 +203,7 @@ private:
     QVector<U2MsaGap> findRemovableGapColumns(int& shift);
     QVector<U2MsaGap> findCommonGapColumns(int& numOfColumns);
     U2MsaGap addTrailingGapColumns(int count);
-    QVector<U2MsaGap> findRestorableGapColumns(const int shift);
+    QVector<U2MsaGap> findRestorableGapColumns(int shift);
 
 signals:
     void si_selectionChanged(const QStringList& selectedRows);
@@ -216,15 +216,15 @@ signals:
     void si_collapsingModeChanged();
 
 protected:
-    void resizeEvent(QResizeEvent* event);
-    void paintEvent(QPaintEvent* event);
-    virtual void wheelEvent(QWheelEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
+    void resizeEvent(QResizeEvent* event) override;
+    void paintEvent(QPaintEvent* event) override;
+    void wheelEvent(QWheelEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
 
-    void keyPressEvent(QKeyEvent*);
-    void keyReleaseEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent*) override;
+    void keyReleaseEvent(QKeyEvent*) override;
 
     virtual void initRenderer() = 0;
     virtual void drawBackground(QPainter& p);

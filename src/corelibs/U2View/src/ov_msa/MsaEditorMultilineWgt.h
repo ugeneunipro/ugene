@@ -21,7 +21,11 @@
 
 #pragma once
 
-#include "MaEditorMultilineWgt.h"
+#include <QGroupBox>
+#include <QScrollArea>
+#include <QSplitter>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 
@@ -37,66 +41,68 @@ class MsaEditorSimilarityColumn;
 class MsaEditorTreeViewer;
 class MsaMultilineScrollArea;
 class SimilarityStatisticsSettings;
+class MaEditorSequenceArea;
+class MultilineScrollController;
 
 // Helper function to properly support widget sizes.
 namespace MsaSizeUtil {
 void updateMinHeightIfPossible(MaEditorSequenceArea* heightFrom, QWidget* setTo);
 }
 
-class U2VIEW_EXPORT MsaEditorMultilineWgt : public MaEditorMultilineWgt {
+class U2VIEW_EXPORT MsaEditorMultilineWgt : public QWidget {
     Q_OBJECT
 
 public:
-    MsaEditorMultilineWgt(MsaEditor* editor, QWidget* parent, bool multiline);
+    MsaEditorMultilineWgt(MsaEditor* editor, QWidget* parent, bool isWrapMode);
 
-    MaEditor* getEditor() const override;
-    MaEditorOverviewArea* getOverviewArea() const override;
-    MaEditorStatusBar* getStatusBar();
+    MsaEditor* getEditor() const;
+    MsaEditorOverviewArea* getOverviewArea() const;
+    MsaEditorStatusBar* getStatusBar();
 
-    MultilineScrollController* getScrollController() const override;
-    QScrollArea* getChildrenScrollArea() const override;
+    MultilineScrollController* getScrollController() const;
+    QScrollArea* getChildrenScrollArea() const;
 
-    MaEditorWgt* getLineWidget(int index) const override;
-    void updateSize() override;
+    MsaEditorWgt* getLineWidget(int index) const;
+    void updateSize();
 
     void addPhylTreeWidget(MsaEditorMultiTreeViewer* newMultiTreeViewer);
     void delPhylTreeWidget();
     MsaEditorMultiTreeViewer* getPhylTreeWidget() const;
     MsaEditorTreeViewer* getCurrentTree() const;
 
-    void setSimilaritySettings(const SimilarityStatisticsSettings* settings) override;
-    void refreshSimilarityColumn() override;
-    void showSimilarity() override;
-    void hideSimilarity() override;
+    void setSimilaritySettings(const SimilarityStatisticsSettings* settings);
+    void refreshSimilarityColumn();
+    void showSimilarity();
+    void hideSimilarity();
 
-    bool moveSelection(int key, bool shift, bool ctrl) override;
+    bool moveSelection(int key, bool shift, bool ctrl);
 
-    MaEditorStatusBar* getStatusBar() const override;
+    MsaEditorStatusBar* getStatusBar() const;
 
     // Return MaEditorWgt widget which has input focus
-    MaEditorWgt* getActiveChild() const override;
-    void setActiveChild(MaEditorWgt* child) override;
+    MsaEditorWgt* getActiveChild() const;
+    void setActiveChild(MsaEditorWgt* child);
 
     // Return lines count in multiline widget
-    int getChildrenCount() const override;
+    int getLineWidgetCount() const;
 
     // Current multiline mode
-    bool getMultilineMode() const override;
+    bool isWrapMode() const;
 
-    int getSequenceAreaWidth(int index) const override;
-    int getFirstVisibleBase(int index) const override;
-    int getLastVisibleBase(int index) const override;
-    int getSequenceAreaBaseLen(int index) const override;
-    int getSequenceAreaBaseWidth(int index) const override;
-    int getSequenceAreaAllBaseLen() const override;
-    int getSequenceAreaAllBaseWidth() const override;
+    int getSequenceAreaWidth(int index) const;
+    int getFirstVisibleBase(int index) const;
+    int getLastVisibleBase(int index) const;
+    int getSequenceAreaBaseLen(int index) const;
+    int getSequenceAreaBaseWidth(int index) const;
+    int getSequenceAreaAllBaseLen() const;
+    int getSequenceAreaAllBaseWidth() const;
 
     // Set multiline mode
     // If mode was changed return true
     // Else return false
-    bool setMultilineMode(bool enabled) override;
+    bool setMultilineMode(bool enabled);
 
-    int getUIIndex(MaEditorWgt* _ui) const override;
+    int getUIIndex(MsaEditorWgt* _ui) const;
 
 public slots:
     void sl_changeColorSchemeOutside(const QString& id);
@@ -105,21 +111,25 @@ public slots:
     void sl_triggerUseDots(int checkState);
     void sl_cursorPositionChanged(const QPoint&);
     void sl_setAllNameAndSequenceAreasSplittersSizes(int pos, int index);
-    void sl_goto() override;
-    void sl_toggleSequenceRowOrder(bool isOrderBySequence) override;
+    void sl_goto();
+    void sl_toggleSequenceRowOrder(bool isOrderBySequence);
+
+signals:
+    void si_startMaChanging();
+    void si_stopMaChanging(bool modified = false);
+    void si_completeRedraw();
+    void si_maEditorUIChanged();
 
 protected:
-    void initWidgets() override;
-    void initScrollArea() override;
-    void initOverviewArea() override;
-    void initStatusBar() override;
-    void initChildrenArea() override;
-    void createChildren() override;
-    void updateChildren() override;
-    MaEditorWgt* createChild(MaEditor* editor,
-                             MaEditorOverviewArea* overviewArea,
-                             MaEditorStatusBar* statusBar) override;
-    void addChild(MaEditorWgt* child) override;
+    void initWidgets();
+    void initScrollArea();
+    void initOverviewArea();
+    void initStatusBar();
+    void initChildrenArea();
+    void createChildren();
+    void updateChildren();
+    MsaEditorWgt* createChild(MsaEditor* editor, MsaEditorOverviewArea* overviewArea, MsaEditorStatusBar* statusBar);
+    void addChild(MsaEditorWgt* child);
 
 public:
     MsaEditor* const editor;
@@ -131,16 +141,16 @@ private:
 
     QScrollArea* scrollArea = nullptr;  // scroll area for multiline widget, it's widget is uiChildrenArea
     QGroupBox* uiChildrenArea = nullptr;
-    MaEditorOverviewArea* overviewArea = nullptr;
+    MsaEditorOverviewArea* overviewArea = nullptr;
 
     bool treeView = false;
     QSplitter* treeSplitter;
 
-    QVector<MaEditorWgt*> uiChild;
+    QVector<MsaEditorWgt*> uiChild;
 
     // For correct display of Overview. `wgt` may have already been removed, or may still exist, so we need handles.
     struct ActiveChild {
-        MaEditorWgt* wgt = nullptr;
+        MsaEditorWgt* wgt = nullptr;
         QMetaObject::Connection startChangingHandle;
         QMetaObject::Connection stopChangingHandle;
     };
@@ -149,7 +159,7 @@ private:
     int uiChildLength = 0;
     int uiChildCount = 0;
     bool multilineMode = false;
-    MaEditorStatusBar* statusBar = nullptr;
+    MsaEditorStatusBar* statusBar = nullptr;
 };
 
 }  // namespace U2

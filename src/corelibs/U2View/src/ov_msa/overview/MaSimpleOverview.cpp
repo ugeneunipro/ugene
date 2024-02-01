@@ -174,15 +174,12 @@ void MaSimpleOverview::drawVisibleRange(QPainter& p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
-        qint64 screenWidth = 0;
-        int screenPositionX = -1;
-        auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
-        if (mui != nullptr && mui->getMultilineMode()) {
-            screenPositionX = mui->getLineWidget(0)->getScrollController()->getScreenPosition().x();
-            screenWidth = mui->getLineWidget(0)->getSequenceArea()->width() * mui->getChildrenCount();
-        } else {
-            screenPositionX = mui->getLineWidget(0)->getScrollController()->getScreenPosition().x();
-            screenWidth = mui->getLineWidget(0)->getSequenceArea()->width() * mui->getChildrenCount();
+        qint64 screenWidth;
+        int screenPositionX;
+        screenPositionX = editor->getLineWidget(0)->getScrollController()->getScreenPosition().x();
+        screenWidth = editor->getLineWidget(0)->getSequenceArea()->width();
+        if (auto msaEditor = qobject_cast<MsaEditor*>(editor)) {
+            screenWidth *= msaEditor->getMainWidget()->getLineWidgetCount();
         }
         MaEditorWgt* maEditorWgt = editor->getLineWidget(0);
         QPoint screenPosition = maEditorWgt->getScrollController()->getScreenPosition();
@@ -233,15 +230,13 @@ void MaSimpleOverview::moveVisibleRange(QPoint pos) {
     newVisibleRange.moveCenter(newPos);
 
     int newScrollBarValue = newVisibleRange.x() * stepX;
-    auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
-    if (mui != nullptr) {
-        if (mui->getMultilineMode()) {
-            mui->getScrollController()->setMultilineVScrollbarValue(newScrollBarValue);
-        } else {
-            mui->getLineWidget(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
-            const int newVScrollBarValue = newVisibleRange.y() * stepY;
-            mui->getLineWidget(0)->getScrollController()->setVScrollbarValue(newVScrollBarValue);
-        }
+    auto msaEditor = qobject_cast<MsaEditor*>(editor);
+    if (msaEditor && msaEditor->isMultilineMode()) {
+        msaEditor->getMainWidget()->getScrollController()->setMultilineVScrollbarValue(newScrollBarValue);
+    } else {
+        editor->getLineWidget(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
+        int newVScrollBarValue = newVisibleRange.y() * stepY;
+        editor->getLineWidget(0)->getScrollController()->setVScrollbarValue(newVScrollBarValue);
     }
 
     update();

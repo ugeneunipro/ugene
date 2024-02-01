@@ -207,7 +207,7 @@ void MsaEditor::sl_buildTree() {
 bool MsaEditor::onObjectRemoved(GObject* obj) {
     bool result = GObjectViewController::onObjectRemoved(obj);
 
-    for (int i = 0; i < ui->getChildrenCount(); i++) {
+    for (int i = 0; i < ui->getLineWidgetCount(); i++) {
         obj->disconnect(getLineWidget(i)->getSequenceArea());
         obj->disconnect(getLineWidget(i)->getConsensusArea());
         obj->disconnect(getLineWidget(i)->getEditorNameList());
@@ -515,7 +515,7 @@ void MsaEditor::onAfterViewWindowInit() {
 void MsaEditor::initChildrenActionsAndSignals() {
     MaEditorWgt* child;
 
-    for (int i = 0; i < ui->getChildrenCount(); i++) {
+    for (int i = 0; i < ui->getLineWidgetCount(); i++) {
         child = ui->getLineWidget(i);
         connect(child, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_onContextMenuRequested(const QPoint&)));
         connect(child, SIGNAL(si_showTreeOP()), SLOT(sl_showTreeOP()));
@@ -581,7 +581,7 @@ void MsaEditor::initActions() {
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_updateRealignAction()));
 
-    connect(gotoAction, &QAction::triggered, getMainWidget(), &MaEditorMultilineWgt::sl_goto);
+    connect(gotoAction, &QAction::triggered, ui, &MsaEditorMultilineWgt::sl_goto);
 
     qDeleteAll(filters);
 
@@ -590,7 +590,7 @@ void MsaEditor::initActions() {
 
 void MsaEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {
     QMenu m;
-    auto sender = qobject_cast<MaEditorWgt*>(QObject::sender());
+    auto sender = qobject_cast<MsaEditorWgt*>(QObject::sender());
     int uiIndex = ui->getUIIndex(sender);
 
     addAppearanceMenu(&m, uiIndex);
@@ -1001,7 +1001,7 @@ void MsaEditor::sl_multilineViewAction() {
     }
 }
 
-MaEditorMultilineWgt* MsaEditor::getMainWidget() const {
+MsaEditorMultilineWgt* MsaEditor::getMainWidget() const {
     return ui;
 }
 

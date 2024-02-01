@@ -32,7 +32,6 @@
 
 #include "McaEditor.h"
 #include "McaEditorSequenceArea.h"
-#include "ov_msa/MaEditorMultilineWgt.h"
 #include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/MsaEditorConsensusCache.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -102,7 +101,7 @@ void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direc
     CHECK(mcaEditor != nullptr, );
 
     SequenceObjectContext* ctx = mcaEditor->getReferenceContext();
-    int initialPos = -1;
+    int initialPos;
 
     if (ctx->getSequenceSelection()->isEmpty()) {
         // find next/prev from visible range

@@ -3900,7 +3900,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     GTUtilsMsaEditor::setMultilineMode(true);
     GTGlobals::sleep(2000);
 
-    MaEditorMultilineWgt* uiWidget = GTUtilsMsaEditor::getEditor()->getMainWidget();
+    MsaEditorMultilineWgt* uiWidget = GTUtilsMsaEditor::getEditor()->getMainWidget();
     auto handle = GTWidget::findSplitter("name_and_sequence_areas_splitter", uiWidget->getLineWidget(0))->handle(1);
 
     int baseWidth = GTUtilsMSAEditorSequenceArea::getBaseWidth();

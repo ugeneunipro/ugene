@@ -357,10 +357,11 @@ void MaEditor::scrollSelectionIntoView() {
     }
     int firstVisibleBaseIndex = selectionRect.x() + basesOffset;
     int firstVisibleRowIndex = selectionRect.y() + rowsOffset;
-    auto scrollController = getMainWidget()->getScrollController();
-    scrollController->setFirstVisibleBase(firstVisibleBaseIndex);
-    scrollController->setFirstVisibleViewRow(firstVisibleRowIndex);
-
+    if (auto msaEditor = qobject_cast<MsaEditor*>(this)) {
+        auto scrollController = msaEditor->getMainWidget()->getScrollController();
+        scrollController->setFirstVisibleBase(firstVisibleBaseIndex);
+        scrollController->setFirstVisibleViewRow(firstVisibleRowIndex);
+    }
     updateActions();
 }
 
@@ -547,9 +548,9 @@ void MaEditor::updateFontMetrics() {
 void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) const {
     CHECK(getLineWidget(0)->getSequenceArea()->isPosInRange(firstPos), );
 
-    if (isMultilineMode()) {
-        getMainWidget()->getScrollController()->setFirstVisibleBase(firstPos);
-        getMainWidget()->getScrollController()->setFirstVisibleMaRow(firstSeq);
+    if (auto msaEditor = qobject_cast<const MsaEditor*>(this)) {
+        msaEditor->getMainWidget()->getScrollController()->setFirstVisibleBase(firstPos);
+        msaEditor->getMainWidget()->getScrollController()->setFirstVisibleMaRow(firstSeq);
     } else {
         getLineWidget(0)->getScrollController()->setFirstVisibleBase(firstPos);
         getLineWidget(0)->getScrollController()->setFirstVisibleMaRow(firstSeq);

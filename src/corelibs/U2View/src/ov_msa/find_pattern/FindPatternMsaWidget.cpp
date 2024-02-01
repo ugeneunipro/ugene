@@ -906,7 +906,7 @@ void FindPatternMsaWidget::selectCurrentResult() {
     QRect selection(result.region.startPos, result.viewRowIndex, result.region.length, 1);
     MaEditorSequenceArea* seqArea = mui->getLineWidget(0)->getSequenceArea();
     seqArea->setSelectionRect(selection);
-    if (msaEditor->getMainWidget()->getMultilineMode()) {
+    if (msaEditor->getMainWidget()->isWrapMode()) {
         // mui->getScrollController()->setCenterVisibleBase(selection.topLeft().x());
         mui->getScrollController()->scrollToPoint(selection.topLeft());
     } else {

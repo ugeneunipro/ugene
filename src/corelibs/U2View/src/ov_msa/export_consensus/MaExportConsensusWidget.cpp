@@ -45,7 +45,6 @@
 
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorConsensusArea.h"
-#include "ov_msa/MaEditorMultilineWgt.h"
 #include "ov_msa/MaEditorWgt.h"
 
 namespace U2 {

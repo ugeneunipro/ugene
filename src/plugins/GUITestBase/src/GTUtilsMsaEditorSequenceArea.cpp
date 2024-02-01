@@ -308,7 +308,7 @@ void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(const QPoint& globalMaPos
 
     auto ui = GTUtilsMsaEditor::getEditor()->getMainWidget();
     QPoint positionCenter;
-    uint muiCount = msaSeqArea->getEditor()->getMainWidget()->getChildrenCount();
+    uint muiCount = msaSeqArea->getEditor()->getMainWidget()->getLineWidgetCount();
     uint multilineIndex = 0;
     if (GTUtilsMsaEditor::getMultilineMode()) {
         ui->getScrollController()->scrollToPoint(globalMaPosition);

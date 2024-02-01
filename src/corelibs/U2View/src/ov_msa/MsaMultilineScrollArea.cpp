@@ -5,9 +5,8 @@
 
 #include <U2Gui/GScrollBar.h>
 
-#include "MaEditor.h"
+#include "MsaEditor.h"
 #include "MaEditorSelection.h"
-#include "MaEditorWgt.h"
 #include "MultilineScrollController.h"
 #include "RowHeightController.h"
 #include "ScrollController.h"
@@ -15,7 +14,7 @@
 
 namespace U2 {
 
-MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMultilineWgt* maEditorUi)
+MsaMultilineScrollArea::MsaMultilineScrollArea(MsaEditor* maEditor, MsaEditorMultilineWgt* maEditorUi)
     : QScrollArea(maEditorUi),
       maEditor(maEditor),
       maEditorUi(maEditorUi) {
@@ -116,7 +115,7 @@ void MsaMultilineScrollArea::moveVSlider(int currPos,
     int newAreaScroll = currAreaScroll;
     int newGlobalScroll = currGlobalScroll;
     int newFirstVisibleBase = currFirstVisibleBase;
-    int linesCount = maEditorUi->getChildrenCount();
+    int linesCount = maEditorUi->getLineWidgetCount();
     int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
     int fullLength = maEditor->getAlignmentLen();
     int lineHeight = maEditorUi->getLineWidget(0)->height();
@@ -154,7 +153,7 @@ void MsaMultilineScrollArea::moveVSlider(int currPos,
                 newAreaScroll = maxAreaScroll;
                 newFirstVisibleBase = (fullLength / length + (fullLength % length ? 1 : 0)) *
                                           length -
-                                      length * maEditorUi->getChildrenCount();
+                                      length * maEditorUi->getLineWidgetCount();
                 if (newFirstVisibleBase < 0) {
                     newFirstVisibleBase = 0;
                 }

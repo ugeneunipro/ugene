@@ -304,7 +304,7 @@ GUI_TEST_CLASS_DEFINITION(search_test_0001) {
     // Check visible bases and selection
     int firstBaseIdx = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(0);
     int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(
-        GTUtilsMsaEditor::getEditor()->getMainWidget()->getChildrenCount() - 1);
+        GTUtilsMsaEditor::getEditor()->getMainWidget()->getLineWidgetCount() - 1);
 
     CHECK_SET_ERR(firstBaseIdx < 66 && 68 < lastBaseIdx,
                   "Selection must be between fist and last bases");
