@@ -253,6 +253,12 @@ void WorkflowEditor::handleDataChanged(const QModelIndex& topLeft, const QModelI
 }
 
 void WorkflowEditor::changeScriptMode(bool _mode) {
+    if (_mode) {
+        GCOUNTER(cvar, "Script. Scripting mode enabled");
+    } else {
+        GCOUNTER(cvar, "Script. Scripting mode disabled");
+    }
+
     if (table->currentIndex().column() == 2) {
         table->clearSelection();
         table->setCurrentIndex(QModelIndex());
