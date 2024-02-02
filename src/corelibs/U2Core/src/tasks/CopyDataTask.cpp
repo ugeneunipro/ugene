@@ -50,10 +50,18 @@ void CopyDataTask::run() {
 
     int count = 0;
     int count_w = 0;
+    int cRCount = 0;
+    int lFCount = 0;
     QByteArray buff(BUFFSIZE, 0);
 
     count = from->readBlock(buff.data(), BUFFSIZE);
-    replaceLineEndings(newLineEndings, buff, count);
+    buff.resize(count);
+    cRCount += buff.count(CHAR_CR);
+    lFCount += buff.count(CHAR_LF);
+    if (newLineEndings == ReplaceLineEndings::LF) {
+        buff.replace(CHAR_CR, "");
+        count = buff.length();
+    }
     if (count == 0 || count == -1) {
         stateInfo.setError(tr("Cannot get data from: '%1'").arg(urlFrom.getURLString()));
         return;
@@ -71,7 +79,13 @@ void CopyDataTask::run() {
         }
         stateInfo.progress = from->getProgress();
         count = from->readBlock(buff.data(), BUFFSIZE);
-        replaceLineEndings(newLineEndings, buff, count);
+        buff.resize(count);
+        cRCount += buff.count(CHAR_CR);
+        lFCount += buff.count(CHAR_LF);
+        if (newLineEndings == ReplaceLineEndings::LF) {
+            buff.replace(CHAR_CR, "");
+            count = buff.length();
+        }
     }
     if (count < 0 || count_w < 0) {
         if (!stateInfo.hasError()) {
@@ -83,18 +97,6 @@ void CopyDataTask::run() {
         if (cRCount != 0 && cRCount != lFCount) {
             stateInfo.addWarning(tr("File %1 contain different line endings. This may cause problems with further file processing."));
         }
-    }
-}
-
-void CopyDataTask::replaceLineEndings(const ReplaceLineEndings& newLineEndings, QByteArray& line, int& symbolsCount) {
-    CHECK(newLineEndings != ReplaceLineEndings::KEEP_AS_IS, );
-    CHECK(symbolsCount != 0, );
-    line.resize(symbolsCount);
-    cRCount += line.count(CHAR_CR);
-    lFCount += line.count(CHAR_LF);
-    if (newLineEndings == ReplaceLineEndings::LF) {
-        line.replace(CHAR_CR, "");
-        symbolsCount = line.length();
     }
 }
 

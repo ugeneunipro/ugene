@@ -42,14 +42,6 @@ public:
     virtual void run();
 
 private:
-    /*
-    * Replace existing line endings with desired.
-    * @newLineEndings - desired line ending
-    * @line - line to replace symbols in
-    * @symbolsCount - valuable symbols count in @line
-    */
-    void replaceLineEndings(const ReplaceLineEndings& newLineEndings, QByteArray& line, int& symbolsCount);
-
     static const int BUFFSIZE = 32 * 1024;
     static const char CHAR_CR = '\r';
     static const char CHAR_LF = '\n';
@@ -60,9 +52,6 @@ private:
     GUrl urlFrom;
     GUrl urlTo;
     ReplaceLineEndings newLineEndings = ReplaceLineEndings::KEEP_AS_IS;
-
-    int cRCount = 0;
-    int lFCount = 0;
 };
 
 }  // namespace U2
