@@ -60,7 +60,6 @@ void CopyDataTask::run() {
     lFCount += buff.count(CHAR_LF);
     if (newLineEndings == ReplaceLineEndings::LF) {
         buff.replace(CHAR_CR, "");
-        count = buff.length();
     }
     if (count == 0 || count == -1) {
         stateInfo.setError(tr("Cannot get data from: '%1'").arg(urlFrom.getURLString()));
@@ -84,7 +83,6 @@ void CopyDataTask::run() {
         lFCount += buff.count(CHAR_LF);
         if (newLineEndings == ReplaceLineEndings::LF) {
             buff.replace(CHAR_CR, "");
-            count = buff.length();
         }
     }
     if (count < 0 || count_w < 0) {
