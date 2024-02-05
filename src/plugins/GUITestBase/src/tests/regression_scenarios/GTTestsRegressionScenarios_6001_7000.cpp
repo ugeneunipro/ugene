@@ -766,6 +766,24 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     CHECK_SET_ERR(resultDirs.size() == 5, QString("Unexpected number of result folders, expected: 5, current: %1").arg(resultDirs.size()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6193) {
+    GTUtilsDialog::add(new StartupDialogFiller());
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "workflow_samples/Alignment/basic_align.uwl"));
+    GTMenu::clickMainMenuItem({"File", "Open..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    class CustomWizardScenario : public CustomScenario {
+    public:
+        void run() override {
+            GTUtilsWizard::setInputFiles(QList<QStringList>() << (QStringList() << dataDir + "samples/CLUSTALW/COI.aln"));
+            GTUtilsWizard::clickButton(GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsDialog::add(new WizardFiller("Align Sequences with MUSCLE Wizard", new CustomWizardScenario()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6204) {
     // 1. Open the WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
