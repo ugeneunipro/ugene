@@ -2104,11 +2104,15 @@ GUI_TEST_CLASS_DEFINITION(test_7476) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7482) {
-    // Open _common_data/scenarios/_regression/7482/7482.ugenedb
+    // Generate sequence more than 100'000'000 bases length and open it
     // Select all
     // Copy to clipboard
     // Expected: "Block size is too big and can't be copied into the clipboard" in the log
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7482/", "test_7482.ugenedb");
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "test_7403.fa");
+    model.seed = 1;
+    model.length = 100'000'100;
+    GTUtilsDialog::waitForDialog(new DNASequenceGeneratorDialogFiller(model));
+    GTMenu::clickMainMenuItem({"Tools", "Random sequence generator..."});
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller());
     GTKeyboardUtils::selectAll();
