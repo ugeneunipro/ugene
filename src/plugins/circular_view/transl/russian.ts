@@ -128,7 +128,7 @@
     <message>
         <location filename="../src/SetSequenceOriginDialog.ui" line="32"/>
         <source>Set sequence origin</source>
-        <translation>Установить последовательность отсчета</translation>
+        <translation>Установка точки отсчета</translation>
     </message>
     <message>
         <location filename="../src/SetSequenceOriginDialog.ui" line="40"/>
@@ -159,7 +159,7 @@
     <message>
         <location filename="../src/CircularViewPlugin.cpp" line="106"/>
         <source>Set new sequence origin...</source>
-        <translation>Установить последовательность отсчета...</translation>
+        <translation>Установить точку отсчета...</translation>
     </message>
     <message>
         <location filename="../src/CircularViewPlugin.cpp" line="118"/>
