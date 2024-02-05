@@ -243,6 +243,7 @@ WorkflowView* WorkflowView::createInstance(WorkflowGObject* go) {
     view->setWindowIcon(QIcon(":/workflow_designer/images/wd.png"));
     mdiManager->addMDIWindow(view);
     mdiManager->activateWindow(view);
+    view->startFirstAutoRunWizard();
     return view;
 }
 
