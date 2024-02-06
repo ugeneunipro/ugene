@@ -24,6 +24,7 @@
 #include <QTimer>
 #include <QTreeWidget>
 
+#include <U2Core/AnnotationData.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 
@@ -134,6 +135,11 @@ private slots:
 
     void sl_edit();
     void sl_addQualifier();
+    /*
+     * Called when we need to transform two selected annotations
+     * to them looked like they are a primer pair.
+     */
+    void sl_transformIntoPrimerPair();
 
     void sl_itemEntered(QTreeWidgetItem* i, int column);
     void sl_itemClicked(QTreeWidgetItem* item, int column);
@@ -213,6 +219,11 @@ private:
     void clearSelectedNotAnnotations();
     void emitAnnotationActivated(Annotation* annotation);
 
+    static const SharedAnnotationData createPrimerAnnotation(const SharedAnnotationData& originalAnnotation, int sequenceLength);
+    static const bool isTransformIntoPrimerPairEnabled(const QList<QTreeWidgetItem*>& items);
+    static const QString composeLabelSign(QTreeWidgetItem* item);
+    static const int calculateExistedPrimerPairsNumber(AnnotationTableObject* ato);
+
     AnnotationsTreeWidget* tree;
 
     AnnotatedDNAView* ctx;
@@ -228,6 +239,7 @@ private:
 
     QAction* editAction;  // action to edit active group/qualifier/annotation only
     QAction* addQualifierAction;  // action to create qualifier. Editable annotation or editable qualifier must be selected
+    QAction* transformIntoPrimerPair = nullptr;  // action to transform two selected annotations into a primer pair
 
     QAction* searchQualifierAction;
     QAction* invertAnnotationSelectionAction;
