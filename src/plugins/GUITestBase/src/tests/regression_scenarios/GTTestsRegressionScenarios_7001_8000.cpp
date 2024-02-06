@@ -2103,6 +2103,25 @@ GUI_TEST_CLASS_DEFINITION(test_7476) {
     GTUtilsPhyTree::checkTreeViewerWindowIsActive("collapse_mode_");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7482) {
+    // Generate sequence more than 100'000'000 bases length and open it
+    // Select all
+    // Copy to clipboard
+    // Expected: "Block size is too big and can't be copied into the clipboard" in the log
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "test_7403.fa");
+    model.seed = 1;
+    model.length = 100'000'100;
+    GTUtilsDialog::waitForDialog(new DNASequenceGeneratorDialogFiller(model));
+    GTMenu::clickMainMenuItem({"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller());
+    GTKeyboardUtils::selectAll();
+    GTUtilsDialog::checkNoActiveWaiters();
+    GTLogTracer lt;
+    GTKeyboardUtils::copy();
+    CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7487_1) {
     // Check that move of the multi-region selection with drag-and-drop works as expected (2 selected regions).
     GTFileDialog::openFile(testDir + "_common_data/clustal/collapse_mode_1.aln");
