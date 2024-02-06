@@ -328,11 +328,11 @@ GUI_TEST_CLASS_DEFINITION(test_8037) {
 
 GUI_TEST_CLASS_DEFINITION(test_8040) {
     GTLogTracer lt;
-    GTFileDialog::openFile(testDir + "_common_data/regression/8040/alignment.ugenedb");
+    GTFileDialog::openFile(testDir + "_common_data/regression/8040/8040.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(lt.getJoinedErrorString().contains("The file was created with a newer version of UGENE"), "Expected message is not found");
     GTUtilsProjectTreeView::checkItem("alignment.ugenedb");
-    CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded("alignment.ugenedb"), "Document must be unloaded");
+    CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded("8040.ugenedb"), "Document must be unloaded");
 }
 
 }  // namespace GUITest_regression_scenarios
