@@ -1363,6 +1363,8 @@ GUI_TEST_CLASS_DEFINITION(test_2316) {
     GTFileDialog::openFile(dataDir + "samples/../workflow_samples/Alignment", "basic_align.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
 
+    GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
+
     CHECK_SET_ERR(!GTUtilsProjectTreeView::isVisible(), "Project tree view is visible");
 
     //     1. Start UGENE

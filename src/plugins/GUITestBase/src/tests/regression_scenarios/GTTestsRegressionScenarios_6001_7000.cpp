@@ -758,7 +758,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     QDir sandbox(sandBoxDir);
     QStringList filter = {"????.??.??_?\?-??"};
     QStringList sandboxEntry = sandbox.entryList(filter, QDir::AllEntries);
-    CHECK_SET_ERR(sandboxEntry.size() == 1, QString("Unexpected nomber of folders, expected: 1, current62: %1").arg(sandboxEntry.size()));
+    CHECK_SET_ERR(sandboxEntry.size() == 1, QString("Unexpected number of folders, expected: 1, current62: %1").arg(sandboxEntry.size()));
 
     QString insideSandbox(sandBoxDir + sandboxEntry.first());
     QDir insideSandboxDir(insideSandbox);
@@ -767,9 +767,8 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6193) {
-    GTUtilsDialog::add(new StartupDialogFiller());
-    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "workflow_samples/Alignment/basic_align.uwl"));
-    GTMenu::clickMainMenuItem({"File", "Open..."});
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
+    GTFileDialog::openFile(dataDir + "samples/../workflow_samples/Alignment", "basic_align.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     class CustomWizardScenario : public CustomScenario {
@@ -780,8 +779,8 @@ GUI_TEST_CLASS_DEFINITION(test_6193) {
             GTUtilsWizard::clickButton(GTUtilsWizard::Run);
         }
     };
-
     GTUtilsDialog::add(new WizardFiller("Align Sequences with MUSCLE Wizard", new CustomWizardScenario()));
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6204) {
