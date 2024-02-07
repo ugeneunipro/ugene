@@ -1361,8 +1361,6 @@ GUI_TEST_CLASS_DEFINITION(test_2314) {
 GUI_TEST_CLASS_DEFINITION(test_2316) {
     GTUtilsDialog::waitForDialog(new StartupDialogFiller());
     GTFileDialog::openFile(dataDir + "samples/../workflow_samples/Alignment", "basic_align.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished();
-
     GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
     GTUtilsTaskTreeView::waitTaskFinished();
 

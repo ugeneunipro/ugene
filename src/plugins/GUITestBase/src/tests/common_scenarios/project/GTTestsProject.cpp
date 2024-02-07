@@ -692,7 +692,6 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
     GTUtilsDialog::waitForDialog(new StartupDialogFiller());
     GTKeyboardUtils::paste();
-    GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
     GTUtilsTaskTreeView::waitTaskFinished();

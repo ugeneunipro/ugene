@@ -768,8 +768,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
 
 GUI_TEST_CLASS_DEFINITION(test_6193) {
     GTUtilsDialog::waitForDialog(new StartupDialogFiller());
-    GTFileDialog::openFile(dataDir + "samples/../workflow_samples/Alignment", "basic_align.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFileDialog::openFile(dataDir + "samples/../workflow_samples/Alignment/basic_align.uwl");
 
     class CustomWizardScenario : public CustomScenario {
     public:
