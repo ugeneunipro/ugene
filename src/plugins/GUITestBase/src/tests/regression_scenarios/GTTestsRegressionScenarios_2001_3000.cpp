@@ -1364,6 +1364,7 @@ GUI_TEST_CLASS_DEFINITION(test_2316) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(!GTUtilsProjectTreeView::isVisible(), "Project tree view is visible");
 
