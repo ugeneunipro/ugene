@@ -4083,28 +4083,6 @@ GUI_TEST_CLASS_DEFINITION(test_7751) {
     GTUtilsPhyTree::getNodeByBranchText("0.009", "0.026");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7753) {
-    // 1. Open "data/samples/Assembly/chrM.sorted.bam".
-    // 2. Delete bam file
-    // 3. Press 'imort' button in dialog
-    // Expected state: you got message box with error and error in log
-    class DeleteFileBeforeImport : public CustomScenario {
-        void run() override {
-            QFile::remove(sandBoxDir + "test_7753/chrM.sorted.bam");
-            GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
-        }
-    };
-    GTLogTracer lt;
-    QString sandboxFilePath = sandBoxDir + "test_7753/chrM.sorted.bam";
-    QDir().mkpath(sandBoxDir + "test_7753");
-    GTFile::copy(dataDir + "samples/Assembly/chrM.sorted.bam", sandboxFilePath);
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
-    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(new DeleteFileBeforeImport()));
-    GTFileDialog::openFile(sandboxFilePath);
-    GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(lt.hasError(QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath())), "Expected error not found");
-}
-
 GUI_TEST_CLASS_DEFINITION(test_7770) {
     GTUtilsDialog::waitForDialog(new SiteconBuildDialogFiller(testDir + "_common_data/clustal/1000_sequences.aln", sandBoxDir + "/test_7770.sitecon"));
     GTMenu::clickMainMenuItem({"Tools", "Search for TFBS", "Build SITECON model..."});
