@@ -33,8 +33,6 @@
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 
-#include <U2View/SequenceObjectContext.h>
-
 #include "MfoldSettings.h"
 #include "MfoldSupport.h"
 
@@ -217,9 +215,8 @@ QString MfoldTask::generateReport() const {
     return report;
 }
 
-MfoldTask* createMfoldTask(SequenceObjectContext* ctx, const MfoldSettings& settings, int windowWidth, U2OpStatus& os) {
-    auto seqObj = ctx->getSequenceObject();
-    auto seqLen = ctx->getSequenceLength();
+MfoldTask* createMfoldTask(U2SequenceObject* seqObj, const MfoldSettings& settings, int windowWidth, U2OpStatus& os) {
+    auto seqLen = seqObj->getSequenceLength();
     auto regionHasJunctionPoint = settings.region.length > seqLen - settings.region.startPos;
     QByteArray seq;
     if (regionHasJunctionPoint) {

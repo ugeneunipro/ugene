@@ -1,0 +1,6 @@
+<multi-test>
+    <!-- Some sequences don't have foldings; task with them should fail. See comment in input file. -->
+    <load-document index="inp_doc" url="et/mfold/no_foldings_dna.gb" io="local_file" format="genbank"/>
+    <find-object-by-name index="inp" doc="inp_doc" name="inp" type="OT_SEQUENCE"/>
+    <mfold inp="inp" region="1..22" shouldFail="true"/>
+</multi-test>

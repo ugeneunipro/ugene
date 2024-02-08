@@ -97,6 +97,7 @@
 #include "mafft/MAFFTSupport.h"
 #include "mafft/MAFFTWorker.h"
 #include "mfold/MfoldSupport.h"
+#include "mfold/MfoldTests.h"
 #include "mrbayes/MrBayesSupport.h"
 #include "mrbayes/MrBayesTests.h"
 #include "perl/PerlSupport.h"
@@ -398,6 +399,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     xmlTestFormat->registerTestFactories(MrBayesToolTests::createTestFactories());
     xmlTestFormat->registerTestFactories(PhyMLToolTests::createTestFactories());
     xmlTestFormat->registerTestFactories(HmmerTests::createTestFactories());
+    xmlTestFormat->registerTestFactories(MfoldTests::createTestFactories());
 
     auto externalToolManager = new ExternalToolManagerImpl();
     externalToolManager->setParent(this);

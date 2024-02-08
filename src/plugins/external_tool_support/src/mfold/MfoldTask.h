@@ -25,7 +25,7 @@
 
 namespace U2 {
 struct MfoldSettings;
-class SequenceObjectContext;
+class U2SequenceObject;
 
 // For a given sequence fragment, task runs external script Mfold, which calculates foldings and saves imgs
 // of found hairpins. Output files are saved in temporary dir by default, but the most important files are saved in
@@ -52,5 +52,5 @@ public:
 };
 
 // Creates new MfoldTask based on sequence context. windowWidth is used for image size.
-MfoldTask* createMfoldTask(SequenceObjectContext* ctx, const MfoldSettings& settings, int windowWidth, U2OpStatus& os);
+MfoldTask* createMfoldTask(U2SequenceObject* ctx, const MfoldSettings& settings, int windowWidth, U2OpStatus& os);
 }  // namespace U2

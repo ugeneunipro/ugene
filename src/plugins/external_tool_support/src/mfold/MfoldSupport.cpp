@@ -110,7 +110,10 @@ void MfoldContext::sl_showDialog() {
     MfoldDialog dialog(*seqCtx);
     CHECK(dialog.exec() == QDialog::Accepted, );
 
-    auto t = createMfoldTask(seqCtx, dialog.getSettings(), seqCtx->getAnnotatedDNAView()->getWidget()->width(), os);
+    auto t = createMfoldTask(seqCtx->getSequenceObject(),
+                             dialog.getSettings(),
+                             seqCtx->getAnnotatedDNAView()->getWidget()->width(),
+                             os);
     CHECK_OP(os, );
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }

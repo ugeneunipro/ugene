@@ -132,6 +132,7 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/mfold/MfoldSettings.h \
            src/mfold/MfoldSupport.h \
            src/mfold/MfoldTask.h \
+           src/mfold/MfoldTests.h \
            src/mrbayes/MrBayesDialogWidget.h \
            src/mrbayes/MrBayesSupport.h \
            src/mrbayes/MrBayesTask.h \
@@ -376,6 +377,7 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/mfold/MfoldDialog.cpp \
            src/mfold/MfoldSupport.cpp \
            src/mfold/MfoldTask.cpp \
+           src/mfold/MfoldTests.cpp \
            src/mrbayes/MrBayesDialogWidget.cpp \
            src/mrbayes/MrBayesSupport.cpp \
            src/mrbayes/MrBayesTask.cpp \
