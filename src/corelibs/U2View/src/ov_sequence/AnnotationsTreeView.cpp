@@ -42,7 +42,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AutoAnnotationsSupport.h>
 #include <U2Core/ClipboardController.h>
-#include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DBXRefRegistry.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -242,13 +241,6 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     addQualifierAction->setObjectName("add_qualifier_action");
     connect(addQualifierAction, SIGNAL(triggered()), SLOT(sl_addQualifier()));
     tree->addAction(addQualifierAction);
-
-    transformIntoPrimerPair = new QAction(tr("Transform into a primer pair"), this);
-    transformIntoPrimerPair->setObjectName("transform_into_a_primer_pair");
-    transformIntoPrimerPair->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
-    transformIntoPrimerPair->setShortcutContext(Qt::WindowShortcut);
-    connect(transformIntoPrimerPair, &QAction::triggered, this, &AnnotationsTreeView::sl_transformIntoPrimerPair);
-    tree->addAction(transformIntoPrimerPair);
 
     exportAutoAnnotationsGroup = new QAction(tr("Make auto-annotations persistent"), this);
     connect(exportAutoAnnotationsGroup, SIGNAL(triggered()), SLOT(sl_exportAutoAnnotationsGroup()));
@@ -939,9 +931,6 @@ void AnnotationsTreeView::sl_onBuildMenu(GObjectViewController*, QMenu* m, const
     if (editAction->isEnabled()) {
         editMenu->addAction(editAction);
     }
-    if (transformIntoPrimerPair->isEnabled()) {
-        editMenu->addAction(transformIntoPrimerPair);
-    }
 
     m->insertSeparator(first);
     foreach (QAction* a, contextActions) {
@@ -1194,7 +1183,6 @@ void AnnotationsTreeView::updateState() {
     auto ci = static_cast<AVItem*>(ciBase);
     bool editableItemSelected = items.size() == 1 && ci != nullptr && ci == items.first() && !ci->isReadonly();
     editAction->setEnabled(editableItemSelected);
-    transformIntoPrimerPair->setEnabled(isTransformIntoPrimerPairEnabled(items));
 
     bool hasEditableAnnotationContext = editableItemSelected && (ci->type == AVItemType_Annotation || ci->type == AVItemType_Qualifier);
     addQualifierAction->setEnabled(hasEditableAnnotationContext);
@@ -1856,90 +1844,6 @@ void AnnotationsTreeView::emitAnnotationActivated(Annotation* annotation) {
     connectSequenceObjectContext(seqObjCtx);
 }
 
-static const QString TOP_PRIMERS_ANNOTATIONS_GROUP_NAME = "top_primers";
-static const QString PAIR_NAME_BEGINNING = "pair ";
-
-const SharedAnnotationData AnnotationsTreeView::createPrimerAnnotation(const SharedAnnotationData& originalAnnotation, int sequenceLength) {
-    SharedAnnotationData result(originalAnnotation);
-    result->name = TOP_PRIMERS_ANNOTATIONS_GROUP_NAME;
-    result->type = U2FeatureTypes::Primer;
-
-    return result;
-}
-
-const bool AnnotationsTreeView::isTransformIntoPrimerPairEnabled(const QList<QTreeWidgetItem*>& items) {
-    // There are two primers - the left one and the right one.
-    CHECK(items.size() == 2, false);
-
-    // The selected item should be an annotations (not a group or a qualifier)
-    // and shouldn't already be a primer.
-    // Also, to simplify everything, only writable objects are supported.
-    auto getAvItem = [](QTreeWidgetItem* item) -> AVAnnotationItem* {
-        auto avAnnItem = static_cast<AVAnnotationItem*>(item);
-        CHECK(!avAnnItem->isReadonly(), nullptr);
-        CHECK(avAnnItem->type == AVItemType::AVItemType_Annotation, nullptr);
-        CHECK(avAnnItem->annotation->getName() != "top_primers", nullptr);
-
-        return avAnnItem;
-    };
-
-    auto firstItem = getAvItem(items.first());
-    CHECK(firstItem != nullptr, false);
-
-    auto secondItem = getAvItem(items.last());
-    CHECK(secondItem != nullptr, false);
-
-    // Primers have only one region and never intersects each other
-    auto regionsAreOk = [](const QVector<U2Region>& firstRegions, const QVector<U2Region>& secondRegions) -> bool {
-        CHECK(firstRegions.size() == 1 && secondRegions.size() == 1, false);
-
-        return !firstRegions.first().intersects(secondRegions.first());
-    };
-    auto firstRegions = firstItem->annotation->getRegions();
-    auto secondRegions = secondItem->annotation->getRegions();
-    CHECK(regionsAreOk(firstRegions, secondRegions), false);
-
-    return true;
-}
-
-const QString AnnotationsTreeView::composeLabelSign(QTreeWidgetItem* item) {
-    auto firstAvAnnotationItem = static_cast<AVAnnotationItem*>(item);
-    SAFE_POINT_NN(firstAvAnnotationItem, QString());
-    SAFE_POINT(firstAvAnnotationItem->type == AVItemType::AVItemType_Annotation, "Should be an annotation", QString());
-
-    auto name = firstAvAnnotationItem->annotation->getName();
-    auto annRegions = firstAvAnnotationItem->annotation->getRegions();
-    SAFE_POINT(annRegions.size() == 1, "Expected 1 region", QString());
-
-    auto region = annRegions.first().toString();
-
-    return name + "" + region;
-}
-
-const int AnnotationsTreeView::calculateExistedPrimerPairsNumber(AnnotationTableObject* ato) {
-    int movedPairsNumber = 0;
-    auto rootGroup = ato->getRootGroup();
-    SAFE_POINT_NN(rootGroup, 0);
-
-    auto primer3ResultsGroup = rootGroup->getSubgroup(TOP_PRIMERS_ANNOTATIONS_GROUP_NAME, false);
-    if (primer3ResultsGroup != nullptr) {
-        auto pairGroups = primer3ResultsGroup->getSubgroups();
-        for (auto pairGroup : qAsConst(pairGroups)) {
-            auto name = pairGroup->getName();
-            CHECK_CONTINUE(name.startsWith(PAIR_NAME_BEGINNING));
-
-            auto orderNumberString = name.mid(PAIR_NAME_BEGINNING.size());
-            bool ok = false;
-            int orderNumber = orderNumberString.toInt(&ok);
-            CHECK_CONTINUE(ok);
-
-            movedPairsNumber = qMax(movedPairsNumber, orderNumber);
-        }
-    }
-
-    return movedPairsNumber;
-}
-
 void AnnotationsTreeView::clearSelectedNotAnnotations() {
     foreach (QTreeWidgetItem* item, tree->selectedItems()) {
         auto aVItem = static_cast<AVItem*>(item);
@@ -2300,50 +2204,6 @@ void AnnotationsTreeView::sl_addQualifier() {
         tree->setCurrentItem(qi);
         tree->scrollToItem(qi);
     }
-}
-
-void AnnotationsTreeView::sl_transformIntoPrimerPair() {
-    QList<QTreeWidgetItem*> items = tree->selectedItems();
-    SAFE_POINT(items.size() == 2, "Should be two selected items", );
-
-    AVAnnotationItem* firstAvItem = static_cast<AVAnnotationItem*>(items.first());
-    SAFE_POINT_NN(firstAvItem, );
-
-    AVAnnotationItem* secondAvItem = static_cast<AVAnnotationItem*>(items.last());
-    SAFE_POINT_NN(secondAvItem, );
-
-    // To simplify the case, primers should be in the same Annotation Table
-    auto ato = firstAvItem->getAnnotationTableObject();
-    SAFE_POINT_NN(ato, );
-
-    auto secondAto = secondAvItem->getAnnotationTableObject();
-    SAFE_POINT_NN(secondAto, );
-
-    if (ato != secondAto) {
-        coreLog.error(tr("Selected annotations belongs to different tables"));
-        return;
-    }
-    auto seqCtx = ctx->getSequenceContext(ato);
-    SAFE_POINT_NN(seqCtx, );
-
-    auto sequenceLength = seqCtx->getSequenceLength();
-    SharedAnnotationData forwardAnnData = createPrimerAnnotation(firstAvItem->annotation->getData(), sequenceLength);
-    SharedAnnotationData reverseAnnData = createPrimerAnnotation(secondAvItem->annotation->getData(), sequenceLength);
-    // Make primers "looks to each other"
-    if (forwardAnnData->getRegions().first().endPos() < reverseAnnData->getRegions().first().startPos) {
-        forwardAnnData->setStrand(U2Strand::Direct);
-        reverseAnnData->setStrand(U2Strand::Complementary);
-    } else {
-        forwardAnnData->setStrand(U2Strand::Complementary);
-        reverseAnnData->setStrand(U2Strand::Direct);
-    }
-    // Calculate the correct pair number
-    int existedPairNumber = calculateExistedPrimerPairsNumber(ato);
-    QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
-    QString movedPrimersGroupName = TOP_PRIMERS_ANNOTATIONS_GROUP_NAME + "/" + PAIR_NAME_BEGINNING  + QString::number(existedPairNumber + 1);
-    resultAnnotations.insert(movedPrimersGroupName, {forwardAnnData, reverseAnnData});
-    auto cat = new CreateAnnotationsTask(ato, resultAnnotations);
-    AppContext::getTaskScheduler()->registerTopLevelTask(cat);
 }
 
 void AnnotationsTreeView::sl_annotationObjectModifiedStateChanged() {
