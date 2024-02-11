@@ -32,6 +32,8 @@
 #include "RemoteBLASTWorker.h"
 #include "SendSelectionDialog.h"
 
+#include <QTreeWidgetItem>
+
 namespace U2 {
 
 class Annotation;
@@ -55,14 +57,23 @@ public:
 
 protected:
     void initViewContext(GObjectViewController* view) override;
+    void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) override;
 
 private slots:
     void sl_showDialog();
+    /*
+     * Called when we need to transform two selected annotations
+     * to them looked like they are a primer pair.
+     */
+    void sl_transformIntoPrimerPair();
 
 private:
     // Check annotation selection and if some primer pairs group(s) if (are) selected
     // (or its (their) parent, which named "top_primers"), than we should blast these primer pairs
     static const QList<QPair<Annotation*, Annotation*>> getSelectedPrimerPairs(AnnotationGroupSelection* ags);
+    // Check, that two selected annotations could be tranformed into a primer pair
+    static const bool isTransformIntoPrimerPairEnabled(const QList<QTreeWidgetItem*>& items);
+    static const int calculateExistedPrimerPairsNumber(AnnotationTableObject* ato);
 };
 
 class RemoteBLASTPluginTests {
