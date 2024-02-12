@@ -3674,7 +3674,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="217"/>
         <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="220"/>
         <source>wrong output format</source>
-        <translation>wrong output format</translation>
+        <translation>неправильный формат выходного файла</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="232"/>
