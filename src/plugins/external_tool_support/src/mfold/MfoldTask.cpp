@@ -41,6 +41,18 @@
 #include "MfoldSettings.h"
 #include "MfoldSupport.h"
 
+static QString toAmpersandEncode(const QString& string) {
+    QString encoded;
+    for (int i = 0; i < string.size(); ++i) {
+        QChar ch = string.at(i);
+        if (ch.unicode() > 255)
+            encoded += QString("&#%1;").arg((int)ch.unicode());
+        else
+            encoded += ch;
+    }
+    return encoded;
+}
+
 namespace U2 {
 const QString outHtmlBasename = "out.html";
 constexpr int maxHtmlLength = 100'000;
@@ -57,7 +69,7 @@ MfoldTask::MfoldTask(const QByteArray& seq,
 
 // todo what does this function return if tmp dir contains spaces or non-ascii
 QString MfoldTask::getSeqFilePath() const {
-    QString fileName = seqInfo.seqPath.baseFileName();
+    QString fileName = GUrlUtils::fixFileName(seqInfo.seqPath.baseFileName());
     QString inFilePath = cwd.getURLString() + '/' + fileName;
     return GUrlUtils::getLocalUrlFromUrl(inFilePath, fileName, ".txt", "");
 }
@@ -177,11 +189,11 @@ void MfoldTask::run() {
     QString info = "<table>"
         "<tr>"
             "<td >Sequence name:</td>"
-            "<td>" + seqInfo.seqName + "</td>"
+            "<td>" + toAmpersandEncode(seqInfo.seqName) + "</td>"
         "</tr>"
         "<tr>"
             "<td >File:</td>"
-            "<td><a href=\"" + seqInfo.seqPath.getURLString() + "\">" + seqInfo.seqPath.getURLString() + "</a></td>"
+            "<td><a href=\"" + toAmpersandEncode(seqInfo.seqPath.getURLString()) + "\">" + toAmpersandEncode(seqInfo.seqPath.getURLString()) + "</a></td>"
         "</tr>"
         "<tr>"
             "<td >Region:</td>"
@@ -218,10 +230,10 @@ void MfoldTask::run() {
         "</table>")
                   .arg(qBound(300, windowWidth - 250, 8192))
                   .arg(info)
-                  .arg(QDir(settings.outSettings.outPath).absoluteFilePath(outHtmlBasename));
+                  .arg(toAmpersandEncode(QDir(settings.outSettings.outPath).absoluteFilePath(outHtmlBasename)));
 
     report += "<table cellpadding=4>";
-    QString fileName = seqInfo.seqPath.baseFileName();
+    QString fileName = GUrlUtils::fixFileName(seqInfo.seqPath.baseFileName());
     QString foundStructures;
 
 
