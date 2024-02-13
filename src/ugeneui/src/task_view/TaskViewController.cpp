@@ -469,9 +469,12 @@ bool TVReportWindow::eventFilter(QObject*, QEvent* e) {
         QString url = textEdit->anchorAt(me->pos());
         if (!url.isEmpty()) {
             bool internetUrl = url.startsWith("http");
+            bool openInBrowser = url.startsWith("file:///");
             if (me->button() == Qt::LeftButton) {
-                if (internetUrl) {
+                if (internetUrl || openInBrowser) {
                     QDesktopServices::openUrl(QUrl(url));
+                } else if (url.startsWith("#")) {
+                    textEdit->scrollToAnchor(url.mid(1));
                 } else {
                     Task* t = AppContext::getProjectLoader()->openWithProjectTask(url);
                     if (t) {

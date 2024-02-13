@@ -30,6 +30,7 @@ class QLineEdit;
 namespace U2 {
 class ADVSequenceObjectContext;
 class DNASequenceSelection;
+class GUrl;
 class RegionSelector;
 class SaveDocumentController;
 
@@ -46,22 +47,20 @@ class MfoldDialog final : public QDialog {
     QComboBox* comboBox = nullptr;
 
     // To check the correctness of a region.
-    qint64 seqLen {};
-    bool isCircular {};
+    qint64 seqLen = 0;
+    bool isCircular = false;
 
     // Called once in ctor to create RegionSelector and bind signals.
     // DNASequenceSelection required for RegionSelector ctor.
     void initRegionSelector(DNASequenceSelection*);
     // Called once in ctor to bind signals on Output tab.
-    void initOutputTab();
+    // Takes path to input document to prompt user to save output there.
+    void initOutputTab(const GUrl& inpPath);
 
 private slots:
     // Checks the values of region widgets: if the region is incorrect, it enables the error label; if it is correct,
     // it disables the label.
     void validateRegionAndShowError();
-    // Switches the output radio buttons according to the name.
-    void checkNotSave();
-    void checkSave();
 
 public:
     // Uses the context to assign a dialog parent and get sequence params (current selection, isCircular, ...).

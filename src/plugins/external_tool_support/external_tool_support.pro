@@ -127,7 +127,6 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/mafft/MAFFTSupportTask.h \
            src/mafft/MAFFTWorker.h \
            src/mafft/MafftAddToAlignmentTask.h \
-           src/mfold/ClickableLabel.h \
            src/mfold/MfoldDialog.h \
            src/mfold/MfoldSettings.h \
            src/mfold/MfoldSupport.h \
@@ -373,8 +372,8 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/mafft/MAFFTSupportTask.cpp \
            src/mafft/MAFFTWorker.cpp \
            src/mafft/MafftAddToAlignmentTask.cpp \
-           src/mfold/ClickableLabel.cpp \
            src/mfold/MfoldDialog.cpp \
+           src/mfold/MfoldSettings.cpp \
            src/mfold/MfoldSupport.cpp \
            src/mfold/MfoldTask.cpp \
            src/mfold/MfoldTests.cpp \

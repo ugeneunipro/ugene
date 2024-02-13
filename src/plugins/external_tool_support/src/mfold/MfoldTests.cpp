@@ -62,7 +62,7 @@ void GTest_Mfold::init(XMLTestFormat*, const QDomElement& el) {
                   LocationParser::ParsingResult::Success,
               wrongValue(regionStr), );
     CHECK_EXT(location->regions.size() == 1, wrongValue(regionStr), );
-    settings.region = location->regions[0];
+    settings.region->regions += location->regions[0];
 
     // shouldFail
     if (el.hasAttribute(failAttr)) {
@@ -73,31 +73,31 @@ void GTest_Mfold::init(XMLTestFormat*, const QDomElement& el) {
 
     // Mfold script parameters parsing.
     if (el.hasAttribute(temperatureSetting)) {
-        settings.temperature = getInt(el, temperatureSetting);
+        settings.algoSettings.temperature = getInt(el, temperatureSetting);
     }
     if (el.hasAttribute(percentSetting)) {
-        settings.percent = getInt(el, percentSetting);
+        settings.algoSettings.percent = getInt(el, percentSetting);
     }
     if (el.hasAttribute(maxFoldSetting)) {
-        settings.maxFold = getInt(el, maxFoldSetting);
+        settings.algoSettings.maxFold = getInt(el, maxFoldSetting);
     }
     if (el.hasAttribute(windowSetting)) {
-        settings.window = getInt(el, windowSetting);
+        settings.algoSettings.window = getInt(el, windowSetting);
     }
     if (el.hasAttribute(maxBpSetting)) {
-        settings.maxBp = getInt(el, maxBpSetting);
+        settings.algoSettings.maxBp = getInt(el, maxBpSetting);
     }
     if (el.hasAttribute(labFrSetting)) {
-        settings.labFr = getInt(el, labFrSetting);
+        settings.algoSettings.labFr = getInt(el, labFrSetting);
     }
     if (el.hasAttribute(naSetting)) {
-        settings.naConc = getDouble(el, naSetting);
+        settings.algoSettings.naConc = getDouble(el, naSetting);
     }
     if (el.hasAttribute(mgSetting)) {
-        settings.mgConc = getDouble(el, mgSetting);
+        settings.algoSettings.mgConc = getDouble(el, mgSetting);
     }
     if (el.hasAttribute(rotAngSetting)) {
-        settings.rotAng = getDouble(el, rotAngSetting);
+        settings.algoSettings.rotAng = getDouble(el, rotAngSetting);
     }
 
     // Message for checking in log.
@@ -109,7 +109,7 @@ void GTest_Mfold::init(XMLTestFormat*, const QDomElement& el) {
 void GTest_Mfold::prepare() {
     auto seqCtx = getContext<U2SequenceObject>(this, inpCtx);
     CHECK_EXT(seqCtx != nullptr, stateInfo.setError(QString("Context `%1` not found").arg(inpCtx)), );
-    settings.outPath = env->getVar("TEMP_DATA_DIR");
+    settings.outSettings.outPath = env->getVar("TEMP_DATA_DIR");
 
     if (!logExpectedMessages.isEmpty()) {
         logHelper.initMessages(logExpectedMessages, {});

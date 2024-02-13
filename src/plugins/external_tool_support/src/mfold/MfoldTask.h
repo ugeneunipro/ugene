@@ -19,32 +19,38 @@
  * MA 02110-1301, USA.
  */
 #pragma once
-#include <QSize>
-
+#include <U2Core/GUrl.h>
 #include <U2Core/Task.h>
 
+#include "MfoldSettings.h"
+
 namespace U2 {
-struct MfoldSettings;
 class U2SequenceObject;
 
 // For a given sequence fragment, task runs external script Mfold, which calculates foldings and saves imgs
 // of found hairpins. Output files are saved in temporary dir by default, but the most important files are saved in
-// a permanent dir if specified. As a report, it displays HTML table with folding data and hairpin imgs.
+// a user-specified dir. As a report, it displays HTML table with folding data and hairpin imgs.
 class MfoldTask final : public Task {
     Q_OBJECT
     QByteArray seq;
-    QStringList mfoldArgs;
-    QString outPath;  // path for HTML report and imgs. Empty if saved temporarily.
-    QString cwd;  // tmp subfolder, all output is stored here. Then, if outPath is set, only imgs are copied to outPath.
-    QString report;  // HTML report to be displayed in UGENE and saved to a file if necessary.
-    QSize imgSize;
+    MfoldSettings settings;
+    MfoldSequenceInfo seqInfo;  // for dumping info to HTML report
+    GUrl cwd;  // tmp subfolder, all output is stored here
+    QString report;  // HTML report to be displayed in UGENE and saved to a file if necessary
+    int windowWidth = 0;
+
+    // For ET task input sequence saved in separate file in cwd. Returns this path.
+    QString getSeqFilePath() const;
 
 public:
     // seq -- sequence for analysis
     // settings -- settings changed by the user inside the dialog are used as tool args
-    // isCircular, isDNA -- internal sequence parameters used as tool args
-    // imgSize -- img size for pretty display of HTML report
-    MfoldTask(const QByteArray& seq, const MfoldSettings& settings, bool isCircular, bool isDNA, const QSize& imgSize);
+    // seqInfo -- internal sequence parameters used as tool args
+    // windowWidth -- used for pretty display of HTML report
+    MfoldTask(const QByteArray& seq,
+              const MfoldSettings& settings,
+              const MfoldSequenceInfo& seqInfo,
+              int windowWidth);
 
     void prepare() override;
     void run() override;

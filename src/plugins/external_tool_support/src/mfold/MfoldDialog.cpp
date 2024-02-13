@@ -48,7 +48,7 @@ MfoldDialog::MfoldDialog(const ADVSequenceObjectContext& ctx)
       isCircular(ctx.getSequenceObject()->isCircular()) {
     ui.setupUi(this);
     initRegionSelector(ctx.getSequenceSelection());
-    initOutputTab();
+    initOutputTab(ctx.getSequenceGObject()->getDocument()->getURL().dirPath());
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
     new HelpButton(this, ui.buttonBox, "96666017");
 }
@@ -65,16 +65,14 @@ void MfoldDialog::initRegionSelector(DNASequenceSelection* seqSelection) {
     connect(endEdit, &QLineEdit::textChanged, this, &MfoldDialog::validateRegionAndShowError);
 }
 
-void MfoldDialog::initOutputTab() {
-    connect(ui.notSaveBtnLabel, &ClickableLabel::clicked, this, &MfoldDialog::checkNotSave);
-    connect(ui.saveBtnLabel, &ClickableLabel::clicked, this, &MfoldDialog::checkSave);
-    ui.outPathLineEdit->setText(FileAndDirectoryUtils::getAbsolutePath(
-        AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath()));
+void MfoldDialog::initOutputTab(const GUrl& inpPath) {
+    QString defaultPath = GUrl(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath())
+                              .getURLString();
+    ui.outPathLineEdit->setText(inpPath.isLocalFile() ? inpPath.getURLString() : defaultPath);
     connect(ui.browsePushButton, &QAbstractButton::clicked, this, [this]() {
         QString dir = U2FileDialog::getExistingDirectory(this, tr("Select a folder"), ui.outPathLineEdit->text());
         if (!dir.isEmpty()) {
             ui.outPathLineEdit->setText(dir);
-            checkSave();
         }
     });
     // todo use PathLineEdit?
@@ -109,28 +107,20 @@ void MfoldDialog::validateRegionAndShowError() {
     ui.wrongRegionLabel->setText(err);
 }
 
-void MfoldDialog::checkNotSave() {
-    ui.notSaveRadioButton->setChecked(true);
-    ui.saveRadioButton->setChecked(false);
-}
-void MfoldDialog::checkSave() {
-    ui.notSaveRadioButton->setChecked(false);
-    ui.saveRadioButton->setChecked(true);
-}
-
 MfoldSettings MfoldDialog::getSettings() const {
     MfoldSettings settings;
-    settings.labFr = ui.labFrSpinBox->value();
-    settings.maxBp = ui.maxBpSpinBox->value();
-    settings.maxFold = ui.maxSpinBox->value();
-    settings.mgConc = ui.mgDoubleSpinBox->value();
-    settings.naConc = ui.naDoubleSpinBox->value();
-    settings.outPath = ui.saveRadioButton->isChecked() ? ui.outPathLineEdit->text() : "";
-    settings.percent = ui.pSpinBox->value();
-    settings.region = regionSelector->getRegion();
-    settings.rotAng = ui.rotAngDoubleSpinBox->value();
-    settings.temperature = ui.tSpinBox->value();
-    settings.window = ui.wSpinBox->value();
+    settings.algoSettings.temperature = ui.tSpinBox->value();
+    settings.algoSettings.naConc = ui.naDoubleSpinBox->value();
+    settings.algoSettings.mgConc = ui.mgDoubleSpinBox->value();
+    settings.algoSettings.percent = ui.pSpinBox->value();
+    settings.algoSettings.window = ui.wSpinBox->value();
+    settings.algoSettings.maxBp = ui.maxBpSpinBox->value();
+    settings.algoSettings.maxFold = ui.maxSpinBox->value();
+    settings.algoSettings.labFr = ui.labFrSpinBox->value();
+    settings.algoSettings.rotAng = ui.rotAngDoubleSpinBox->value();
+    settings.outSettings.outPath = ui.outPathLineEdit->text();
+    settings.outSettings.dpi = ui.dpiSpinBox->value();
+    settings.region->regions += regionSelector->getRegion();
     return settings;
 }
 
@@ -157,7 +147,7 @@ void MfoldDialog::accept() {
         auto absPath = FileAndDirectoryUtils::getAbsolutePath(dirPath);
         return !absPath.isEmpty() && FileAndDirectoryUtils::canWriteToPath(absPath);
     };
-    if (ui.saveRadioButton->isChecked() && !isDirValid(ui.outPathLineEdit->text())) {
+    if (!isDirValid(ui.outPathLineEdit->text())) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::NoIcon,
                                                                    L10N::errorTitle(),
                                                                    tr("Invalid out path!"),
