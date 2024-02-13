@@ -29,6 +29,9 @@
 
 namespace U2 {
 
+const int CopyDataTask::BUFFSIZE = 32 * 1024;
+const char CopyDataTask::CHAR_CR = '\r';
+const char CopyDataTask::CHAR_LF = '\n';
 const QByteArray CopyDataTask::CRLF = QByteArray("\r\n");
 
 CopyDataTask::CopyDataTask(IOAdapterFactory* _ioFrom, const GUrl& _urlFrom, IOAdapterFactory* _ioTo, const GUrl& _urlTo, ReplaceLineEndings newLineEndings_)

@@ -42,9 +42,9 @@ public:
     virtual void run();
 
 private:
-    static const int BUFFSIZE = 32 * 1024;
-    static const char CHAR_CR = '\r';
-    static const char CHAR_LF = '\n';
+    static const int BUFFSIZE;
+    static const char CHAR_CR;
+    static const char CHAR_LF;
     static const QByteArray CRLF;
 
     IOAdapterFactory* ioFrom;
