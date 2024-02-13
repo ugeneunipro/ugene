@@ -5018,12 +5018,11 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
             QMenu* activePopupMenu = GTWidget::getActivePopupMenu();
             if (menuItemNameToCheck.isEmpty()) {
                 CHECK_SET_ERR(GTMenu::getCheckedMenuItems(activePopupMenu).isEmpty(), "There should be no checked items!");
-                GTKeyboardDriver::keyClick(Qt::Key_Escape);
             } else {
                 QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
                 CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));
-                GTKeyboardDriver::keyClick(Qt::Key_Escape);
             }
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
 
         QString menuItemNameToCheck;

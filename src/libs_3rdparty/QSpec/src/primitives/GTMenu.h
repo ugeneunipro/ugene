@@ -47,7 +47,11 @@ public:
 
     static QAction* getMenuItem(const QMenu* menu, const QString& itemName, bool byText = false, Qt::MatchFlag matchFlag = Qt::MatchExactly);
     
-    //returnall checked menu items
+    /* 
+     * Return all checked menu items. 
+     * If menu is built dynamically not all actions may be available immediately.
+     * In this case wait up to 2 seconds before returning empty list.
+     */
     static QList<QAction*> getCheckedMenuItems(const QMenu* menu);
 
     // global position of menu action's center

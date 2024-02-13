@@ -154,8 +154,7 @@ QAction* GTMenu::getMenuItem(const QMenu* menu, const QString& itemName, bool by
 QList<QAction*> GTMenu::getCheckedMenuItems(const QMenu* menu) {
     QList<QAction*> result;
     GT_CHECK_RESULT(menu != nullptr, "menu is null", result);
-    QAction* action = nullptr;
-    for (int time = 0; time < 2000 && action == nullptr; time += GT_OP_CHECK_MILLIS) {
+    for (int time = 0; time < 2000; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         QList<QAction*> menuActions = menu->actions();
         for (QAction* menuAction : qAsConst(menuActions)) {
