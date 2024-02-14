@@ -50,7 +50,7 @@ MfoldDialog::MfoldDialog(const ADVSequenceObjectContext& ctx)
     initRegionSelector(ctx.getSequenceSelection());
     initOutputTab(ctx.getSequenceGObject()->getDocument()->getURL().dirPath());
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
-    new HelpButton(this, ui.buttonBox, "96666017");
+    new HelpButton(this, ui.buttonBox, "96666238");
 }
 
 void MfoldDialog::initRegionSelector(DNASequenceSelection* seqSelection) {
