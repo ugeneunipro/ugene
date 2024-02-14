@@ -92,7 +92,11 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* _context)
           {tr("Probe"), "Probe"},
           {tr("Recombinase Polymerase Amplification"), "Recombinase Polymerase Amplification"}}) {
     setupUi(this);
-    new HelpButton(this, helpButton, "65930919");
+    QString helpPageId = "65930919";
+    if (context == nullptr) {
+        helpPageId = "96666247";
+    }
+    new HelpButton(this, helpButton, helpPageId);
 
     connect(closeButton, &QPushButton::clicked, this, &Primer3Dialog::close);
     connect(pickPrimersButton, &QPushButton::clicked, this, &Primer3Dialog::sl_pickClicked);
