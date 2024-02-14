@@ -181,12 +181,11 @@ void MfoldTask::run() {
 
     QString dgStart(" dG = ");
     int hairpinNum = 1;
-    int hairpinCount = thermoHtml.count(dgStart);
 
     // Add task info table:
     // UGENE uses width=200 for printing task info table (status, time). We mimic a single style.
     // Second column will take up the entire remaining window width, plus subtract 50 pixels for padding and marging.
-    QString info = "<table>"
+    QString summary = "<table>"
         "<tr>"
             "<td >Sequence name:</td>"
             "<td>" + toAmpersandEncode(seqInfo.seqName) + "</td>"
@@ -229,7 +228,7 @@ void MfoldTask::run() {
         "<tr><td><b>Found structures</b></td><td>{{FOUND_HAIRPINS_LIST}}</td></tr>"
         "</table>")
                   .arg(qBound(300, windowWidth - 250, 8192))
-                  .arg(info)
+                  .arg(summary)
                   .arg(toAmpersandEncode(QDir(settings.outSettings.outPath).absoluteFilePath(outHtmlBasename)));
 
     report += "<table cellpadding=4>";
