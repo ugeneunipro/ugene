@@ -20,6 +20,7 @@
  */
 
 #include "GTTestsProject.h"
+#include "GTUtilsWizard.h"
 #include <GTUtilsAssemblyBrowser.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -224,7 +225,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
         }
         QTextStream in(&file);
         QString temp;
-        temp = in.readLine();
+        in.readLine();
         while (!in.atEnd()) {
             temp = in.readLine();
             fileContent[i] += temp;
@@ -681,7 +682,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0042) {
-    // check adding schemes (WD QD) in project, it should not appear in project view
+    // Check adding schemes (WD QD) in project, it should not appear in project view.
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -691,7 +692,10 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
     GTUtilsDialog::waitForDialog(new StartupDialogFiller());
     GTKeyboardUtils::paste();
+
+    GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
     GTUtilsTaskTreeView::waitTaskFinished();
+
     CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle().contains("Workflow Designer"), "Mdi window is not a WD window");
 }
 
@@ -1036,7 +1040,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
     GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList();
-    CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
+    CHECK_SET_ERR(!sequencesNameList.isEmpty(), "No sequences");
     CHECK_SET_ERR(sequencesNameList[8] == "human_T1 (UCSC April 2002 chr7:115977709-117855134)", "No pasted sequences");
 }
 
@@ -1050,7 +1054,7 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
     GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList();
-    CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
+    CHECK_SET_ERR(!sequencesNameList.isEmpty(), "No sequences");
     CHECK_SET_ERR(sequencesNameList[8] == "human_T1", "No pasted sequences");
 }
 
@@ -1066,7 +1070,7 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList();
-    CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
+    CHECK_SET_ERR(!sequencesNameList.isEmpty(), "No sequences");
     CHECK_SET_ERR(sequencesNameList[8] == "human_T1", "No pasted sequences");
 }
 

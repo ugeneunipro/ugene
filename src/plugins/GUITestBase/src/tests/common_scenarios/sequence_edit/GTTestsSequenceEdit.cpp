@@ -23,6 +23,7 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTLabel.h>
 #include <primitives/GTTreeWidget.h>
 
 #include <QApplication>
@@ -649,6 +650,24 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTUtilsMdi::activateWindow("human_T1 [qulifier_rebuilding.gb]");
 
     checkQualifierRegionsShift(0);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0017) {
+    // Open _common_data\primer3\custom_primers.gb.
+    // Select "primer1" and "primer2" annotations.
+    // Click right mouse button -> Edit -> Transform into a primer pair.
+    // Expected: new primer pair has appeared.
+    GTFileDialog::openFile(testDir + "_common_data/primer3/custom_primers.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsAnnotationsTreeView::clickItem("primer1", 1, false);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTUtilsAnnotationsTreeView::clickItem("primer2", 1, false);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Edit", "Transform into a primer pair"}));
+    GTUtilsAnnotationsTreeView::callContextMenuOnItem("primer1");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions("pair 1  (0, 2)", {{50, 79}, {400, 435}});
 }
 
 }  // namespace GUITest_common_scenarios_sequence_edit

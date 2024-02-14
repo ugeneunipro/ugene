@@ -30,6 +30,7 @@
 #include <QTreeWidget>
 #include <QVBoxLayout>
 
+#include <U2Core/Counter.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -260,8 +261,10 @@ void BreakpointManagerView::sl_newBreakpoint() {
                     processItem->toggleBreakpoint();
                 }
                 if (processItem->isBreakpointInserted()) {
+                    GCOUNTER(cvar, "Script. Breakpoint has been inserted");
                     debugInfo->addBreakpointToActor(processItem->getProcess()->getId());
                 } else {
+                    GCOUNTER(cvar, "Script. Breakpoint has been removed");
                     debugInfo->removeBreakpointFromActor(processItem->getProcess()->getId());
                 }
             }

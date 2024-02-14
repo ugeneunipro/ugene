@@ -907,8 +907,14 @@ data/primer3
 data/primer3/drosophila.w.transposons.txt
 data/primer3/humrep_and_simple.txt
 data/primer3/presets
+data/primer3/presets/Annealing Temp.txt
+data/primer3/presets/Cloning Primers.txt
 data/primer3/presets/Default.txt
-data/primer3/presets/RPA.txt
+data/primer3/presets/Default2.txt
+data/primer3/presets/Probe.txt
+data/primer3/presets/Recombinase Polymerase Amplification.txt
+data/primer3/presets/Secondary Structures.txt
+data/primer3/presets/qPCR.txt
 data/primer3/rodent_ref.txt
 data/primer3/rodrep_and_simple.txt
 data/query_samples

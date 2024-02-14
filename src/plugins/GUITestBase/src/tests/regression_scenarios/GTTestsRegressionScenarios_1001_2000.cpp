@@ -7318,6 +7318,8 @@ GUI_TEST_CLASS_DEFINITION(test_1821) {
     // 6. Open the file containing the saved scheme using "Open" button
     GTFileDialog::openFile(workflowOutputDirPath, "test.uwl");
 
+    GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
+
     // Expected state: scheme is opened in WD, its scale is 75%
     scaleCombo = dynamic_cast<QComboBox*>(GTWidget::findWidget("wdScaleCombo"));
     CHECK_SET_ERR(scaleCombo != nullptr, "Unable to find scale combobox!");
@@ -7349,6 +7351,7 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
 
     // 3) Reopen UGENE WD.
     GTFileDialog::openFile(sandBoxDir, "test.uwl");
+    GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected: the state is saved.

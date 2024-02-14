@@ -448,6 +448,11 @@ To append data to existing file press &apos;Append&apos;.</source>
         <translation>Файл &apos;%1&apos; не может быть удален</translation>
     </message>
     <message>
+        <location filename="../src/ConvertToSQLiteDialog.cpp" line="375"/>
+        <source>Destination file '%1' can not be the same as source file. Please select another file.</source>
+        <translation>Файл %1 не может быть тем же, что и исходный. Пожалуйста выберите другой файл.</translation>
+    </message>
+    <message>
         <location filename="../src/ConvertToSQLiteDialog.cpp" line="381"/>
         <location filename="../src/ConvertToSQLiteDialog.cpp" line="384"/>
         <source>Destination UGENEDB File</source>
