@@ -143,6 +143,7 @@ SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* _seqCtx, bool
     : QDialog(parent), isAminoSeq(_isAminoSeq), seqCtx(_seqCtx) {
     setupUi(this);
 
+    QString helpPageId;
     if (selectedPrimerPairNames.isEmpty()) {
         U2SequenceObject* dnaso = seqCtx->getSequenceObject();
         CreateAnnotationModel createAnnotationModel;
@@ -155,6 +156,7 @@ SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* _seqCtx, bool
 
         optionsTab->setCurrentIndex(0);
         layoutAnnotations->addWidget(annWgtController->getWidget());
+        helpPageId = "65930710";
     } else {
         auto label = new QLabel(tr("The following primer pairs will be BLASTed:"), this);
         // This listwidget shows grou names of all fit primer pairs
@@ -169,9 +171,9 @@ SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* _seqCtx, bool
         QString tooltip = tr("The maximum number of results received for each primer");
         lblQuantity->setToolTip(tooltip);
         quantitySpinBox->setToolTip(tooltip);
+        helpPageId = "96666281";
     }
-
-    new HelpButton(this, buttonBox, "65930710");
+    new HelpButton(this, buttonBox, helpPageId);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
