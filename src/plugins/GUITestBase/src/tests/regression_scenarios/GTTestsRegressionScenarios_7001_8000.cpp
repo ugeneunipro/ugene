@@ -5017,7 +5017,14 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
         void run() override {
             QMenu* activePopupMenu = GTWidget::getActivePopupMenu();
             if (menuItemNameToCheck.isEmpty()) {
-                CHECK_SET_ERR(GTMenu::getCheckedMenuItems(activePopupMenu).isEmpty(), "There should be no checked items!");
+                QList<QAction*> menuActions = activePopupMenu->actions();
+                QList<QAction*> checkedActions;
+                for (QAction* menuAction : qAsConst(menuActions)) {
+                    if (menuAction->isCheckable() && menuAction->isChecked()) {
+                        checkedActions.append(menuAction);
+                    }
+                }
+                CHECK_SET_ERR(checkedActions.isEmpty(), "There should be no checked items!");
             } else {
                 QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
                 CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));
