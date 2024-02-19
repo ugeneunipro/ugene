@@ -5021,10 +5021,9 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
                 QList<QAction*> checkedActions;
                 for (QAction* menuAction : qAsConst(menuActions)) {
                     if (menuAction->isCheckable() && menuAction->isChecked()) {
-                        checkedActions.append(menuAction);
+                        GT_FAIL( QString("Item %1 checked but should not!").arg(menuAction->objectName()), );
                     }
                 }
-                CHECK_SET_ERR(checkedActions.isEmpty(), "There should be no checked items!");
             } else {
                 QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
                 CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));
