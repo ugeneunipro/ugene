@@ -21,33 +21,20 @@
 
 #pragma once
 
-#include <U2Core/ExternalToolRegistry.h>
-
-#include "RunnerTool.h"
-#include "utils/ExternalToolSupportAction.h"
+#include "SqliteUpgrader.h"
 
 namespace U2 {
 
-class PythonSupport : public RunnerTool {
-    Q_OBJECT
+class SqliteUpgrader_v13 : public SqliteUpgrader {
 public:
-    PythonSupport();
+    SqliteUpgrader_v13(SQLiteDbi* dbi);
 
-    static const QString ET_PYTHON_ID;
-};
+    void upgrade(U2OpStatus& os) const override;
 
-class PythonModuleSupport : public ExternalToolModule {
-    Q_OBJECT
-public:
-    PythonModuleSupport(const QString& id, const QString& name);
-};
-
-class PythonModuleBioSupport : public PythonModuleSupport {
-    Q_OBJECT
-public:
-    PythonModuleBioSupport();
-
-    static const QString ET_PYTHON_BIO_ID;
+private:
+    void upgradeObjectDbi(U2OpStatus& os) const;
+    void upgradeObjectRelationsDbi(U2OpStatus& os) const;
+    void upgradeAssemblyDbi(U2OpStatus& os) const;
 };
 
 }  // namespace U2

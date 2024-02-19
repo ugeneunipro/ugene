@@ -22,7 +22,6 @@
 #include "MaOverview.h"
 
 #include <QMouseEvent>
-#include <QPainter>
 
 #include <U2View/MsaEditor.h>
 #include <U2View/MsaEditorSequenceArea.h>
@@ -47,17 +46,15 @@ MaOverview::MaOverview(MaEditor* _editor, QWidget* _ui)
     // The hack
     // for MSA we have MaEditorMultilineWgt
     // for MCA we have MaEditorWgt
-    auto mwgt = qobject_cast<MaEditorMultilineWgt*>(_ui);
-    if (mwgt != nullptr) {
-        connect(mwgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
+    if (auto msaWidget = qobject_cast<MsaEditorMultilineWgt*>(ui)) {
+        connect(msaWidget->getScrollController(), &MultilineScrollController::si_visibleAreaChanged, this, &MaOverview::sl_redraw);
     } else {
         auto swgt = qobject_cast<MaEditorWgt*>(_ui);
-        if (swgt != nullptr) {
-            connect(swgt->getSequenceArea(), SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
-            connect(swgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
-        }
+        SAFE_POINT_NN(swgt, );
+        connect(swgt->getSequenceArea(), SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
+        connect(swgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
     }
-    connect(editor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_redraw()));
+    connect(editor->getCollapseModel(), &MaCollapseModel::si_toggled, this, &MaOverview::sl_redraw);
 }
 
 MaEditor* MaOverview::getEditor() const {
@@ -116,7 +113,7 @@ void MaOverview::setVisibleRangeForEmptyAlignment() {
 }
 
 void MaOverview::recalculateScale() {
-    MaEditorWgt* maEditorWgt = editor->getMaEditorWgt(0);
+    MaEditorWgt* maEditorWgt = editor->getLineWidget(0);
     stepX = static_cast<double>(maEditorWgt->getBaseWidthController()->getTotalAlignmentWidth()) / getContentWidgetWidth();
     stepY = static_cast<double>(maEditorWgt->getRowHeightController()->getTotalAlignmentHeight()) / getContentWidgetHeight();
 }

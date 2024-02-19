@@ -21,11 +21,19 @@
 
 #include "SqliteUpgrader.h"
 
+#include <U2Core/U2Dbi.h>
+
+#include "../SQLiteDbi.h"
+
 namespace U2 {
 
-SqliteUpgrader::SqliteUpgrader(const Version& versionFrom, const Version& versionTo, SQLiteDbi* dbi)
-    : U2DbiUpgrader(versionFrom, versionTo),
-      dbi(dbi) {
+SqliteUpgrader::SqliteUpgrader(const Version& version, SQLiteDbi* _dbi)
+    : U2DbiUpgrader(version),
+      dbi(_dbi) {
+}
+
+void SqliteUpgrader::upgrade(U2OpStatus& os) const {
+    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, version.toString(), os);
 }
 
 }  // namespace U2

@@ -24,6 +24,9 @@
         <file>images/perl_gray.png</file>
         <file>images/perl_warn.png</file>
         <file>images/python.png</file>
+        <file>images/python_cutadapt.png</file>
+        <file>images/python_cutadapt_gray.png</file>
+        <file>images/python_cutadapt_warn.png</file>
         <file>images/python_gray.png</file>
         <file>images/python_warn.png</file>
         <file>images/up.png</file>

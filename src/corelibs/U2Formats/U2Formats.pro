@@ -67,8 +67,9 @@ HEADERS += src/ABIFormat.h \
            src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.h \
            src/sqlite_dbi/assembly/SingleTableAssemblyAdapter.h \
            src/sqlite_dbi/util/SqliteUpgrader.h \
-           src/sqlite_dbi/util/SqliteUpgraderFrom_0_To_1_13.h \
-           src/sqlite_dbi/util/SqliteUpgraderFrom_1_13_To_1_25.h \
+           src/sqlite_dbi/util/SqliteUpgrader_v13.h \
+           src/sqlite_dbi/util/SqliteUpgrader_v25.h \
+           src/sqlite_dbi/util/SqliteUpgrader_v50.h \
            src/tasks/BgzipTask.h \
            src/tasks/CalculateSequencesNumberTask.h \
            src/tasks/ConvertAssemblyToSamTask.h \
@@ -146,8 +147,9 @@ SOURCES += src/ABIFormat.cpp \
            src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp \
            src/sqlite_dbi/assembly/SingleTableAssemblyAdapter.cpp \
            src/sqlite_dbi/util/SqliteUpgrader.cpp \
-           src/sqlite_dbi/util/SqliteUpgraderFrom_0_To_1_13.cpp \
-           src/sqlite_dbi/util/SqliteUpgraderFrom_1_13_To_1_25.cpp \
+           src/sqlite_dbi/util/SqliteUpgrader_v13.cpp \
+           src/sqlite_dbi/util/SqliteUpgrader_v25.cpp \
+           src/sqlite_dbi/util/SqliteUpgrader_v50.cpp \
            src/tasks/BgzipTask.cpp \
            src/tasks/CalculateSequencesNumberTask.cpp \
            src/tasks/ConvertAssemblyToSamTask.cpp \

@@ -42,7 +42,7 @@
 #include <U2Lang/WorkflowTasksRegistry.h>
 
 #include "ExternalToolSupportL10N.h"
-#include "python/PythonSupport.h"
+#include "python/Python3Support.h"
 
 namespace U2 {
 
@@ -249,7 +249,7 @@ ExternalToolRunTask* TopHatSupportTask::runTophat() {
 
     // Add Bowtie, samtools an python to the PATH environment variable
     QStringList additionalPaths;
-    ExternalTool* pythonTool = AppContext::getExternalToolRegistry()->getById(PythonSupport::ET_PYTHON_ID);
+    ExternalTool* pythonTool = AppContext::getExternalToolRegistry()->getById(Python3Support::ET_PYTHON_ID);
     if (pythonTool != nullptr) {
         additionalPaths << QFileInfo(pythonTool->getPath()).dir().absolutePath();
     }

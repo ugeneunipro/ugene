@@ -758,12 +758,28 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     QDir sandbox(sandBoxDir);
     QStringList filter = {"????.??.??_?\?-??"};
     QStringList sandboxEntry = sandbox.entryList(filter, QDir::AllEntries);
-    CHECK_SET_ERR(sandboxEntry.size() == 1, QString("Unexpected nomber of folders, expected: 1, current62: %1").arg(sandboxEntry.size()));
+    CHECK_SET_ERR(sandboxEntry.size() == 1, QString("Unexpected number of folders, expected: 1, current62: %1").arg(sandboxEntry.size()));
 
     QString insideSandbox(sandBoxDir + sandboxEntry.first());
     QDir insideSandboxDir(insideSandbox);
     QStringList resultDirs = insideSandboxDir.entryList();
     CHECK_SET_ERR(resultDirs.size() == 5, QString("Unexpected number of result folders, expected: 5, current: %1").arg(resultDirs.size()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6193) {
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
+    GTFileDialog::openFile(dataDir + "samples/../workflow_samples/Alignment/basic_align.uwl");
+
+    class CustomWizardScenario : public CustomScenario {
+    public:
+        void run() override {
+            GTUtilsWizard::setInputFiles(QList<QStringList>() << (QStringList() << dataDir + "samples/CLUSTALW/COI.aln"));
+            GTUtilsWizard::clickButton(GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(GTUtilsWizard::Run);
+        }
+    };
+    GTUtilsDialog::add(new WizardFiller("Align Sequences with MUSCLE Wizard", new CustomWizardScenario()));
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6204) {
@@ -1589,44 +1605,6 @@ GUI_TEST_CLASS_DEFINITION(test_6279) {
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6283) {
-    class Custom : public CustomScenario {
-        void run() override {
-            QWidget* dialog = GTWidget::getActiveModalWidget();
-            AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
-
-            // 2. Open a python tab
-            AppSettingsDialogFiller::isExternalToolValid("python");
-
-            // Expected:: Bio module is valid
-            bool isToolValid = true;
-            if (!isOsWindows()) {
-                isToolValid = AppSettingsDialogFiller::isExternalToolValid("Bio");
-            }
-            if (!isToolValid) {
-                GT_FAIL("Bio is not valid", );
-            }
-
-            bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
-            if (!isPathOnlyValidation) {
-                // Expected: Bio module version is 1.73
-                bool hasVersion = true;
-                if (!isOsWindows()) {
-                    hasVersion = AppSettingsDialogFiller::isToolDescriptionContainsString("Bio", "Version: 1.73");
-                }
-                if (!hasVersion) {
-                    GT_FAIL("Incorrect Bio version", );
-                }
-            }
-            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
-        }
-    };
-
-    // 1. Open "UGENE Application Settings", select "External Tools" tab.
-    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new Custom()));
-    GTMenu::clickMainMenuItem({"Settings", "Preferences..."}, GTGlobals::UseMouse);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_6291) {
     // 1. Open murine.gb
     GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
@@ -1775,6 +1753,24 @@ GUI_TEST_CLASS_DEFINITION(test_6321) {
     GTUtilsDialog::waitForDialog(new EditAnnotationFiller(new CheckAnnotationDialogScenario()));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
     GTTreeWidget::click(GTUtilsAnnotationsTreeView::findItem("misc_feature"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6330) {
+    /*
+    * 1. Open "_common_data/fasta/AMINO.fa".
+    * 2. Open "_common_data/ugenedb/scerevisiae.bam.ugenedb".
+    * 3. Click to the "AMINO263" sequence object in the Project View.
+    * 4. Click the "Set reference" button on the toolbar in the Assembly Browser.
+    * Expected result: messagebox appeared with message about alphabet
+    */
+    GTFileDialog::openFile(testDir + "_common_data/fasta/", "AMINO.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsProjectTreeView::click("AMINO263");
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok, "Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser."));
+    GTWidget::click(GTAction::button("setReferenceAction"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6350) {

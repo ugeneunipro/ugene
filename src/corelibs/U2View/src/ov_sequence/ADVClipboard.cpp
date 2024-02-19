@@ -28,6 +28,7 @@
 #include <QTextStream>
 
 #include <U2Core/AnnotationSelection.h>
+#include <U2Core/ClipboardController.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -156,18 +157,27 @@ void ADVClipboard::copySequenceSelection(bool complement, bool amino) {
 
     QString res;
     QVector<U2Region> regions = seqCtx->getSequenceSelection()->getSelectedRegions();
-    if (!regions.isEmpty()) {
-        U2SequenceObject* seqObj = seqCtx->getSequenceObject();
-        DNATranslation* complTT = complement ? seqCtx->getComplementTT() : nullptr;
-        DNATranslation* aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
-        U2OpStatus2Log os;
-        QList<QByteArray> seqParts = U2SequenceUtils::extractRegions(seqObj->getSequenceRef(), regions, complTT, aminoTT, false, os);
-        if (os.hasError()) {
-            QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), tr("An error occurred during getting sequence data: %1").arg(os.getError()));
-            return;
-        }
-        res = U1SequenceUtils::joinRegions(seqParts);
+    CHECK(!regions.isEmpty(), );
+
+    qint64 estimatedResultLength = 0;
+    for (const auto& region : qAsConst(regions)) {
+        estimatedResultLength += region.length;
     }
+    if (estimatedResultLength > U2Clipboard::MAX_SAFE_COPY_TO_CLIPBOARD_SIZE) {
+        uiLog.error(tr("Block size is too big and can't be copied into the clipboard"));
+        return;
+    }
+
+    U2SequenceObject* seqObj = seqCtx->getSequenceObject();
+    DNATranslation* complTT = complement ? seqCtx->getComplementTT() : nullptr;
+    DNATranslation* aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
+    U2OpStatus2Log os;
+    QList<QByteArray> seqParts = U2SequenceUtils::extractRegions(seqObj->getSequenceRef(), regions, complTT, aminoTT, false, os);
+    if (os.hasError()) {
+        QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), tr("An error occurred during getting sequence data: %1").arg(os.getError()));
+        return;
+    }
+    res = U1SequenceUtils::joinRegions(seqParts);
     putIntoClipboard(res);
 }
 

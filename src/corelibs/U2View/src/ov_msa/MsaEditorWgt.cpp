@@ -52,7 +52,7 @@ MsaEditorWgt::MsaEditorWgt(MsaEditor* editor,
 
     // For active MaEditorWgt tracking
     this->setAttribute(Qt::WA_Hover, true);
-    eventFilter = new MaEditorWgtEventFilter(this, this);
+    eventFilter = new MsaEditorWgtEventFilter(this);
     this->installEventFilter(eventFilter);
 
     setMinimumSize(minimumSizeHint());
@@ -69,7 +69,7 @@ MsaEditorSequenceArea* MsaEditorWgt::getSequenceArea() const {
 
 void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
     if (curTabsNumber < 1) {
-        qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI())->delPhylTreeWidget();
+        qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getMainWidget())->delPhylTreeWidget();
         emit si_hideTreeOP();
     }
 }
@@ -83,7 +83,7 @@ void MsaEditorWgt::createDistanceColumn(MsaDistanceMatrix* matrix) {
 }
 
 void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
-    auto mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI());
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getMainWidget());
 
     if (mui->getPhylTreeWidget() == nullptr) {
         auto multiTreeViewer = new MsaEditorMultiTreeViewer(tr("Tree view"), getEditor());
@@ -173,7 +173,7 @@ MsaEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
 }
 
 MsaEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() const {
-    return qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI())->getPhylTreeWidget();
+    return qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getMainWidget())->getPhylTreeWidget();
 }
 
 QSize MsaEditorWgt::sizeHint() const {
@@ -195,6 +195,20 @@ QSize MsaEditorWgt::minimumSizeHint() const {
         return QSize(s.width(), newHeight);
     }
     return s;
+}
+
+
+bool MsaEditorWgtEventFilter::eventFilter(QObject* obj, QEvent* event) {
+    // TODO:ichebyki
+    // Maybe need to check QEvent::FocusIn || QEvent::Enter
+    // Also,there is a question about children (QEvent::ChildAdded)
+
+    // Please, don't forget about QWidget::setAttribute(Qt::WA_Hover, true);
+    if (event->type() == QEvent::HoverEnter) {
+        maEditorWgt->getEditor()->getMainWidget()->setActiveChild(maEditorWgt);
+    }
+    // standard event processing
+    return QObject::eventFilter(obj, event);
 }
 
 }  // namespace U2

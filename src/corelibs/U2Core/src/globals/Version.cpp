@@ -113,16 +113,16 @@ bool Version::operator>=(const Version& v) const {
 }
 
 bool Version::operator<(const Version& v) const {
-    if (v.major != major) {
-        return v.major > major;
+    if (major != v.major) {
+        return major < v.major;
     }
 
-    if (v.minor != minor) {
-        return v.minor > minor;
+    if (minor != v.minor) {
+        return minor < v.minor;
     }
 
-    if (v.patch != patch) {
-        return v.patch > patch;
+    if (patch != v.patch) {
+        return patch < v.patch;
     }
 
     return false;

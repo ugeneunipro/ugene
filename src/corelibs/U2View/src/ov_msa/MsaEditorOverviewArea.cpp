@@ -39,7 +39,7 @@ MsaEditorOverviewArea::MsaEditorOverviewArea(MsaEditorMultilineWgt* wgt)
     // The MSAEditorOverviewArea can't be resized vertically.
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-    MsaEditor* editor = wgt->getEditor();
+    MsaEditor* editor = wgt->editor;
     graphOverview = new MaGraphOverview(editor, wgt);
     graphOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + "_graph");
 

@@ -19,9 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include "SqliteUpgraderFrom_1_13_To_1_25.h"
+#include "SqliteUpgrader_v25.h"
 
-#include <U2Core/L10n.h>
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2CoreAttributes.h>
@@ -30,25 +29,24 @@
 #include <U2Core/U2SqlHelpers.h>
 
 #include "../SQLiteAssemblyDbi.h"
-#include "../SQLiteDbi.h"
 #include "../SQLiteObjectRelationsDbi.h"
 
 namespace U2 {
 
-SqliteUpgraderFrom_1_13_To_1_25::SqliteUpgraderFrom_1_13_To_1_25(SQLiteDbi* dbi)
-    : SqliteUpgrader(Version::parseVersion("1.13.0"), Version::parseVersion("1.25.0"), dbi) {
+SqliteUpgrader_v25::SqliteUpgrader_v25(SQLiteDbi* dbi)
+    : SqliteUpgrader(Version::parseVersion("1.25.0"), dbi) {
 }
 
-void SqliteUpgraderFrom_1_13_To_1_25::upgrade(U2OpStatus& os) const {
+void SqliteUpgrader_v25::upgrade(U2OpStatus& os) const {
     SQLiteTransaction t(dbi->getDbRef(), os);
 
     upgradeCoverageAttribute(os);
     CHECK_OP(os, );
 
-    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.toString(), os);
+    SqliteUpgrader::upgrade(os);
 }
 
-void SqliteUpgraderFrom_1_13_To_1_25::upgradeCoverageAttribute(U2OpStatus& os) const {
+void SqliteUpgrader_v25::upgradeCoverageAttribute(U2OpStatus& os) const {
     // get assembly ids
     QList<U2DataId> assemblyIds = dbi->getObjectDbi()->getObjects(U2Type::Assembly, 0, U2DbiOptions::U2_DBI_NO_LIMIT, os);
     CHECK_OP(os, );

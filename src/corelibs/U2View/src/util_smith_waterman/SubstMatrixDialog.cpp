@@ -33,7 +33,7 @@
 namespace U2 {
 
 SubstMatrixDialog::SubstMatrixDialog(const SMatrix& _m, QWidget* p)
-    : QDialog(p), base(new Ui_SubstMatrixDialogBase), hlBorderColumn(-1), hlBorderRow(-1), hlInnerColumn(-1), hlInnerRow(-1), m(_m) {
+    : QDialog(p), m(_m), base(new Ui_SubstMatrixDialogBase()) {
     assert(!m.isEmpty());
     base->setupUi(this);
 

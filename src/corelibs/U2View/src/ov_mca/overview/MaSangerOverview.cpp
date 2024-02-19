@@ -33,7 +33,6 @@
 #include "ov_mca/McaReferenceCharController.h"
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/MaCollapseModel.h"
-#include "ov_msa/MaEditorMultilineWgt.h"
 #include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/RowHeightController.h"
 #include "ov_msa/ScrollController.h"
@@ -132,8 +131,8 @@ void MaSangerOverview::sl_resetCaches() {
 }
 
 void MaSangerOverview::sl_screenMoved() {
-    int screenYPosition = editor->getMaEditorWgt(0)->getScrollController()->getScreenPosition().y();
-    int screenHeight = editor->getMaEditorWgt(0)->getSequenceArea()->height();
+    int screenYPosition = editor->getLineWidget(0)->getScrollController()->getScreenPosition().y();
+    int screenHeight = editor->getLineWidget(0)->getSequenceArea()->height();
     int mappedTopPosition = screenYPosition / stepY;
     int mappedBottomPosition = (screenYPosition + screenHeight) / stepY;
 
@@ -213,8 +212,8 @@ void MaSangerOverview::drawVisibleRange(QPainter& painter) {
     } else {
         recalculateScale();
 
-        QPoint screenPosition = editor->getMaEditorWgt(0)->getScrollController()->getScreenPosition();
-        QSize screenSize = editor->getMaEditorWgt(0)->getSequenceArea()->size();
+        QPoint screenPosition = editor->getLineWidget(0)->getScrollController()->getScreenPosition();
+        QSize screenSize = editor->getLineWidget(0)->getSequenceArea()->size();
 
         cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
         cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));
@@ -268,7 +267,7 @@ void MaSangerOverview::drawReads() {
         int maRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
         const MsaRow& row = mca->getRow(maRowIndex);
         U2Region coreRegion = row->getCoreRegion();
-        U2Region positionRegion = editor->getMaEditorWgt(0)->getBaseWidthController()->getBasesGlobalRange(coreRegion);
+        U2Region positionRegion = editor->getLineWidget(0)->getBaseWidthController()->getBasesGlobalRange(coreRegion);
 
         QRect readRect;
         readRect.setX(qRound(positionRegion.startPos / stepX));
@@ -304,9 +303,9 @@ void MaSangerOverview::moveVisibleRange(QPoint pos) {
     }
 
     int newHScrollBarValue = newVisibleRange.x() * stepX;
-    editor->getMaEditorWgt(0)->getScrollController()->setHScrollbarValue(newHScrollBarValue);
+    editor->getLineWidget(0)->getScrollController()->setHScrollbarValue(newHScrollBarValue);
     int newVScrollBarValue = (newVisibleRange.y() - getReferenceHeight() + getScrollBarValue()) * stepY;
-    editor->getMaEditorWgt(0)->getScrollController()->setVScrollbarValue(newVScrollBarValue);
+    editor->getLineWidget(0)->getScrollController()->setVScrollbarValue(newVScrollBarValue);
 }
 
 }  // namespace U2

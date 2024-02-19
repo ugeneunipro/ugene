@@ -29,10 +29,11 @@ class SQLiteDbi;
 
 class SqliteUpgrader : public U2DbiUpgrader {
 public:
-    SqliteUpgrader(const Version& versionFrom, const Version& versionTo, SQLiteDbi* dbi);
+    SqliteUpgrader(const Version& versionTo, SQLiteDbi* dbi);
+    void upgrade(U2OpStatus& os) const override;
 
 protected:
-    SQLiteDbi* dbi;
+    SQLiteDbi* dbi = nullptr;
 };
 
 }  // namespace U2

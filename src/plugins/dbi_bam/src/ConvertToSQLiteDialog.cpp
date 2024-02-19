@@ -371,6 +371,11 @@ void ConvertToSQLiteDialog::accept() {
             return;
         }
 
+        if (destinationUrl == sourceUrl) {
+            QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("Destination file '%1' can not be the same as source file. Please select another file.").arg(destinationUrl.getURLString()));
+            return;
+        }
+
         if (QFile::exists(destinationUrl.getURLString())) {
             int result = QMessageBox::question(this, windowTitle(), BAMDbiPlugin::tr("Destination file already exists.\n"
                                                                                      "To overwrite the file, press 'Replace'.\n"

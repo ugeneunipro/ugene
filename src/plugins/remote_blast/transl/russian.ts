@@ -753,12 +753,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::RemoteBLASTPlugin</name>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="68"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="69"/>
         <source>Performs remote database queries: BLAST, CDD, etc...</source>
         <translation>Посылает запрос в удаленную базу данных: BLAST, CDD и т.д...</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="68"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="69"/>
         <source>Remote BLAST</source>
         <translation>Удаленный поиск с помощью BLAST</translation>
     </message>
@@ -766,42 +766,42 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::RemoteBLASTPrimerPairToAnnotationsTask</name>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="44"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="45"/>
         <source>BLAST primer pair &quot;%1&quot;</source>
         <translation>BLAST для пары праймеров &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="58"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="61"/>
         <source>The left primer is lost, probably, annotation object has been removed from the project or the current annotation has been removed from the file</source>
         <translation>Левый праймер не найден, вероятно, объект аннотаций был удален из проекта либо текущая аннотация была удалена из файла</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="64"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="67"/>
         <source>The right primer is lost, probably, annotation object has been removed from the project or the current annotation has been removed from the file</source>
         <translation>Правый праймер не найден, вероятно, объект аннотаций был удален из проекта либо текущая аннотация была удалена из файла</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="91"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="94"/>
         <source>The left primer is lost, probably, annotation object has been closed</source>
         <translation>Левый праймер потерян, вероятно, объект аннотаций был закрыт</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="94"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="97"/>
         <source>The right primer is lost, probably, annotation object has been closed</source>
         <translation>Правый праймер потерян, вероятно, объект аннотаций был закрыт</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="152"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="155"/>
         <source>No BLAST pairs have been found for &quot;%1&quot;</source>
         <translation>Не было найдено пар BLAST для &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="158"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="161"/>
         <source>All found BLAST results already presented for &quot;%1&quot;</source>
         <translation>Все найденные результаты BLAST уже существуют в &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="183"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="186"/>
         <source>Primer &quot;%1&quot; has unexpected number of regions (%2) - it should not be more than two. Please, check this primer manually.</source>
         <translation>Праймер &quot;%1&quot; расположен на неправильно количестве регионов (%2) - должно быть не больше двух. Пожалуйста, проверьте этот праймер вручную.</translation>
     </message>
@@ -809,7 +809,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::RemoteBLASTPrimerPairsToAnnotationsTask</name>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairsToAnnotationsTask.cpp" line="39"/>
+        <location filename="../src/RemoteBLASTPrimerPairsToAnnotationsTask.cpp" line="40"/>
         <source>BLAST primer pairs</source>
         <translation>BLAST для набора пар праймеров</translation>
     </message>
@@ -845,14 +845,24 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::RemoteBLASTViewContext</name>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="106"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="109"/>
         <source>Query NCBI BLAST database...</source>
         <translation>Поиск в базе данных NCBI с помощью BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="165"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="114"/>
+        <source>Transform into a primer pair</source>
+        <translation>Превратить в пару праймеров</translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="198"/>
         <source>Selected region is too large!</source>
         <translation>Выбранный регион слишком большой!</translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="254"/>
+        <source>Selected annotations belongs to different tables</source>
+        <translation>Выделенные аннотации относятся к разным таблицам</translation>
     </message>
 </context>
 <context>

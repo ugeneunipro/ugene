@@ -111,7 +111,7 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
     });
     connect(view, &GObjectViewController::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectViewController*, QMenu* menu) {
         QMenu* copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
-        GUIUtils::insertActionAfter(copyMenu, msaEditor->getUI()->getUI(0)->cutSelectionAction, moveFromMsaAction);
+        GUIUtils::insertActionAfter(copyMenu, msaEditor->getLineWidget(0)->cutSelectionAction, moveFromMsaAction);
     });
     addViewAction(moveFromMsaAction);
 
@@ -119,8 +119,8 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
 }
 
 MsaExcludeListWidget* MsaExcludeListContext::findActiveExcludeList(MsaEditor* msaEditor) {
-    auto multilineLayout = msaEditor->getUI()->layout();
-    auto excludeWidget = msaEditor->getUI()->findChild<MsaExcludeListWidget*>();
+    auto multilineLayout = msaEditor->getMainWidget()->layout();
+    auto excludeWidget = msaEditor->getMainWidget()->findChild<MsaExcludeListWidget*>();
     if (excludeWidget != nullptr) {
         int idx = multilineLayout->indexOf(excludeWidget);
         if (idx >= 0) {
@@ -135,16 +135,16 @@ MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MsaEditor* msaEdito
     CHECK(excludeList == nullptr, excludeList);
     GCOUNTER(cvar, "MsaExcludeListWidget");
 
-    auto multilineMainLayout = qobject_cast<QVBoxLayout*>(msaEditor->getUI()->layout());
+    auto multilineMainLayout = qobject_cast<QVBoxLayout*>(msaEditor->getMainWidget()->layout());
     SAFE_POINT(multilineMainLayout != nullptr, "Can't insert exclude list widget in Msa editor", nullptr)
-    excludeList = new MsaExcludeListWidget(msaEditor->getUI(), msaEditor, this);
+    excludeList = new MsaExcludeListWidget(msaEditor->getMainWidget(), msaEditor, this);
     multilineMainLayout->insertWidget(1, excludeList);
 
     return excludeList;
 }
 
 void MsaExcludeListContext::updateMsaEditorSplitterStyle(MsaEditor* msaEditor) {
-    auto mainSplitter = msaEditor->getUI()->getUI(0)->getMainSplitter();
+    auto mainSplitter = msaEditor->getLineWidget(0)->getMainSplitter();
     MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
 }
 
@@ -295,7 +295,7 @@ MsaExcludeListWidget::~MsaExcludeListWidget() {
 }
 
 int MsaExcludeListWidget::addEntry(const DNASequence& sequence, int excludeListRowId) {
-    SAFE_POINT(sequence.alphabet != nullptr, "Sequence must be fully defined!", 0);  // By default MSA row sequences have no alphabet. Catch this kind of error ASAP.
+    SAFE_POINT(sequence.alphabet != nullptr, "Sequence must be fully defined!", 0);  // By default, MSA row sequences have no alphabet. Catch this kind of error ASAP.
     int computedExcludeListRowId = excludeListRowId <= 0 ? ++excludeListRowIdGenerator : excludeListRowId;
     auto item = new QListWidgetItem();
     item->setText(sequence.getName());

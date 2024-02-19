@@ -24,6 +24,7 @@
 #include <QApplication>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -649,6 +650,7 @@ void ScriptSelectionWidget::sl_comboCurrentIndexChanged(int itemId) {
             return;
         }
         case USER_SCRIPT_ITEM_ID: {
+            GCOUNTER(cvar, "Script. Run Edit script of the element dialog for parameter");
             AttributeScript attrScript = combobox->property(SCRIPT_PROPERTY.toLatin1().constData()).value<AttributeScript>();
             QObjectScopedPointer<ScriptEditorDialog> dlg = new ScriptEditorDialog(QApplication::activeWindow(), AttributeScriptDelegate::createScriptHeader(attrScript));
             dlg->setScriptText(attrScript.getScriptText());
@@ -658,7 +660,11 @@ void ScriptSelectionWidget::sl_comboCurrentIndexChanged(int itemId) {
             if (rc != QDialog::Accepted) {
                 combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
             } else {
-                attrScript.setScriptText(dlg->getScriptText());
+                auto scriptText = dlg->getScriptText();
+                if (!scriptText.isEmpty()) {
+                    GCOUNTER(cvar1, "Script. Done Edit script of the element dialog for parameter with new script");
+                }
+                attrScript.setScriptText(scriptText);
                 combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
             }
 

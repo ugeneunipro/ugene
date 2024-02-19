@@ -102,7 +102,7 @@ QString CreateElementWithCommandLineToolFiller::dataTypeToString(const Parameter
 
 QString CreateElementWithCommandLineToolFiller::formatToArgumentValue(const QString& format) const {
     QString result;
-    if ("String data value" != format || "Output URL" != format) {
+    if (format != "String data value" && format != "Output URL") {
         result = QString("URL to %1 file with data").arg(format);
     } else {
         result = format;
@@ -160,7 +160,16 @@ void CreateElementWithCommandLineToolFiller::processFirstPage() {
             auto rbCustomTool = GTWidget::findRadioButton("rbCustomTool", dialog);
 
             GTRadioButton::click(rbCustomTool);
-            GTLineEdit::setText("leToolPath", settings.tool, dialog);
+            auto leToolPath = GTWidget::findLineEdit("leToolPath", dialog);
+            if (isOsMac()) {
+                // Need to separate clear() and setText() on MacOS.
+                // Reason: QWizardPage buttons are affected by the line-edit state and steal focus on MacOS when the field is cleaned.
+                // so the input following the clear() is lost.
+
+                GTLineEdit::clear(leToolPath);
+                GTWidget::click(leToolPath);
+            }
+            GTLineEdit::setText(leToolPath, settings.tool, dialog);
             break;
         }
         case CommandLineToolType::IntegratedExternalTool: {

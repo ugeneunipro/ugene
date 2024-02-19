@@ -57,8 +57,8 @@
 
 /** To use CHECK_EQUAL and CHECK_NOT_EQUAL for class that is not convertible to QString,
     define partial specialization of template function toString<T>(const T &t) */
-#define CHECK_EQUAL(expected, actual, what) CHECK_TRUE(expected == actual, QString("unexpected %1: expected '%2', got '%3'").arg(what).arg(toString(expected)).arg(toString(actual)))
-#define CHECK_NOT_EQUAL(notExpected, actual, what) CHECK_TRUE(notExpected != actual, QString("unexpected %1: expected not to be '%2', but got '%3'").arg(what).arg(toString(notExpected)).arg(toString(actual)))
+#define CHECK_EQUAL(expected, actual, what) CHECK_TRUE((expected) == (actual), QString("unexpected %1: expected '%2', got '%3'").arg(what).arg(toString(expected)).arg(toString(actual)))
+#define CHECK_NOT_EQUAL(notExpected, actual, what) CHECK_TRUE((notExpected) != (actual), QString("unexpected %1: expected not to be '%2', but got '%3'").arg(what).arg(toString(notExpected)).arg(toString(actual)))
 
 namespace U2 {
 
