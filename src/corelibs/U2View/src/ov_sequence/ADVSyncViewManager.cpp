@@ -275,9 +275,9 @@ void ADVSyncViewManager::sl_lock() {
         m = SyncMode_SeqSel;
     } else if (s == lockByAnnSelAction) {
         m = SyncMode_AnnSel;
-    } else if (buttonClicked) {
+    } else if (buttonClicked && !lockButton->isChecked()) {
         m = detectSyncMode();
-    }
+    }    
     if (lockButton->isChecked()) {
         unlock();
     } else {
