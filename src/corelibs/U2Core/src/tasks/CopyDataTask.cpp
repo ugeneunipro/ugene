@@ -52,12 +52,15 @@ void CopyDataTask::run() {
     }
 
     int count = 0;
+    int initialCount = 0;
     int count_w = 0;
     int singleCRCount = 0;
     bool isCRLastSymbol = false;
+    bool replacementOccured = false;
     QByteArray buff(BUFFSIZE, 0);
 
     count = from->readBlock(buff.data(), BUFFSIZE);
+    initialCount = count;
     if (newLineEndings == ReplaceLineEndings::LF) {
         count -= buff.count(QB_CRLF);
         buff.replace(QB_CRLF, QB_LF);
@@ -67,6 +70,7 @@ void CopyDataTask::run() {
             count--;
         }
     }
+    replacementOccured = initialCount != count;
     if (count == 0 || count == -1) {
         stateInfo.setError(tr("Cannot get data from: '%1'").arg(urlFrom.getURLString()));
         return;
@@ -84,7 +88,7 @@ void CopyDataTask::run() {
         }
         stateInfo.progress = from->getProgress();
         count = from->readBlock(buff.data(), BUFFSIZE);
-        buff.resize(count);
+        initialCount = count;
         if (newLineEndings == ReplaceLineEndings::LF) {
             count -= buff.count(QB_CRLF);
             buff.replace(QB_CRLF, QB_LF);
@@ -97,6 +101,12 @@ void CopyDataTask::run() {
                 count--;
             }
         }
+        if (!replacementOccured) {
+            replacementOccured = initialCount != count;
+        }
+    }
+    if (replacementOccured) {
+        stateInfo.addWarning(tr("Line endings were changed in target file %1 during copy process.").arg(where->getURL().getURLString()));
     }
     if (count < 0 || count_w < 0) {
         if (!stateInfo.hasError()) {

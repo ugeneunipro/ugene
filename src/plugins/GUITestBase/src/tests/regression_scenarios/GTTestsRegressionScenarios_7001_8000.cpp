@@ -4888,7 +4888,7 @@ GUI_TEST_CLASS_DEFINITION(test_7956) {
     GTUtilsDialog::waitForDialog(new CAP3SupportDialogFiller({testDir + "_common_data/scenarios/_regression/7957/Sunisa_test_CRLF.fasta"}, sandBoxDir + "test_7957.ace"));
     GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Reads de novo assembly (with CAP3)..."});
     GTUtilsTaskTreeView::waitTaskFinished();
-    lt.assertNoErrors();
+    CHECK_SET_ERR(lt.hasMessage("Line endings were changed in target file"), "Expected warning message about line endings not found");
     CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle() == "Contig1 [test_7957.ugenedb]", "Unexpected tab title: " + GTUtilsMdi::activeWindowTitle());
 }
 
