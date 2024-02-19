@@ -30,9 +30,9 @@
 namespace U2 {
 
 const int CopyDataTask::BUFFSIZE = 32 * 1024;
-const char CopyDataTask::CHAR_CR = '\r';
-const char CopyDataTask::CHAR_LF = '\n';
-const QByteArray CopyDataTask::CRLF = QByteArray("\r\n");
+const QByteArray CopyDataTask::QB_CR = QByteArray("\r");
+const QByteArray CopyDataTask::QB_LF = QByteArray("\n");
+const QByteArray CopyDataTask::QB_CRLF = QByteArray("\r\n");
 
 CopyDataTask::CopyDataTask(IOAdapterFactory* _ioFrom, const GUrl& _urlFrom, IOAdapterFactory* _ioTo, const GUrl& _urlTo, ReplaceLineEndings newLineEndings_)
     : Task(tr("Copy Data Task"), TaskFlag_None), ioFrom(_ioFrom), ioTo(_ioTo),
@@ -53,16 +53,19 @@ void CopyDataTask::run() {
 
     int count = 0;
     int count_w = 0;
-    int cRCount = 0;
-    int lFCount = 0;
+    int singleCRCount = 0;
+    bool isCRLastSymbol = false;
     QByteArray buff(BUFFSIZE, 0);
 
     count = from->readBlock(buff.data(), BUFFSIZE);
-    buff.resize(count);
-    cRCount += buff.count(CHAR_CR);
-    lFCount += buff.count(CHAR_LF);
     if (newLineEndings == ReplaceLineEndings::LF) {
-        buff.replace(CHAR_CR, "");
+        count -= buff.count(QB_CRLF);
+        buff.replace(QB_CRLF, QB_LF);
+        singleCRCount = buff.count(QB_CR);
+        isCRLastSymbol = buff.endsWith(QB_CR);
+        if (isCRLastSymbol) {
+            count--;
+        }
     }
     if (count == 0 || count == -1) {
         stateInfo.setError(tr("Cannot get data from: '%1'").arg(urlFrom.getURLString()));
@@ -82,10 +85,17 @@ void CopyDataTask::run() {
         stateInfo.progress = from->getProgress();
         count = from->readBlock(buff.data(), BUFFSIZE);
         buff.resize(count);
-        cRCount += buff.count(CHAR_CR);
-        lFCount += buff.count(CHAR_LF);
         if (newLineEndings == ReplaceLineEndings::LF) {
-            buff.replace(CHAR_CR, "");
+            count -= buff.count(QB_CRLF);
+            buff.replace(QB_CRLF, QB_LF);
+            if (buff.startsWith(QB_LF) && isCRLastSymbol) {
+                singleCRCount--;
+            }
+            singleCRCount += buff.count(QB_CR);
+            isCRLastSymbol = buff.endsWith(QB_CR);
+            if (isCRLastSymbol) {
+                count--;
+            }
         }
     }
     if (count < 0 || count_w < 0) {
@@ -94,10 +104,8 @@ void CopyDataTask::run() {
         }
     }
 
-    if (newLineEndings != KEEP_AS_IS) {
-        if (cRCount != 0 && cRCount != lFCount) {
-            stateInfo.addWarning(tr("File %1 contain different line endings. This may cause problems with further file processing."));
-        }
+    if (newLineEndings == ReplaceLineEndings::LF && singleCRCount > 0) {
+        stateInfo.setError(tr("File %1 contain different line endings."));
     }
 }
 

@@ -43,9 +43,9 @@ public:
 
 private:
     static const int BUFFSIZE;
-    static const char CHAR_CR;
-    static const char CHAR_LF;
-    static const QByteArray CRLF;
+    static const QByteArray QB_CR;
+    static const QByteArray QB_LF;
+    static const QByteArray QB_CRLF;
 
     IOAdapterFactory* ioFrom;
     IOAdapterFactory* ioTo;
