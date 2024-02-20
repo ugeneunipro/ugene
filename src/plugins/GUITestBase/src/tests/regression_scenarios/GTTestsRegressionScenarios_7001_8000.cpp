@@ -4995,6 +4995,8 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     * 6. Press "Lock scales" button
     * 7. Activate "Lock scales: selected annotation" menu item in "Lock scales" menu
     * Expected state: "Lock scales: selected annotation" menu item checked in "Lock scales" menu, other items are not checked
+    * 8. Press "Lock scales" button
+    * Expected state: "Lock scales" button is not pressed, no menu items selected
     */
     GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Separate;
     GTUtilsDialog::waitForDialog(new GTSequenceReadingModeDialogUtils());
@@ -5014,8 +5016,18 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
         };
         void run() override {
             QMenu* activePopupMenu = GTWidget::getActivePopupMenu();
-            QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
-            CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));            
+            if (menuItemNameToCheck.isEmpty()) {
+                QList<QAction*> menuActions = activePopupMenu->actions();
+                QList<QAction*> checkedActions;
+                for (QAction* menuAction : qAsConst(menuActions)) {
+                    if (menuAction->isCheckable() && menuAction->isChecked()) {
+                        GT_FAIL( QString("Item %1 checked but should not!").arg(menuAction->objectName()), );
+                    }
+                }
+            } else {
+                QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
+                CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));
+            }
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
 
@@ -5051,6 +5063,11 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("Lock scales: selected annotation")));
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
+
+    GTWidget::click(lockScalesButton);
+    CHECK_SET_ERR(!lockScalesButton->isDown(), "'Lock scales' button should be down");
+    GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("")));
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 }
 

@@ -3652,13 +3652,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="97"/>
         <source>The &apos;%1&apos; reference file doesn&apos;t exist.</source>
-        <translation>The &apos;%1&apos; reference file doesn&apos;t exist.</translation>
+        <translation>&apos;%1&apos; файл с референсной последовательностью не существует.</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="102"/>
         <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="105"/>
         <source>wrong reference format</source>
-        <translation>wrong reference format</translation>
+        <translation>неверный формат референсной последовательности</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="162"/>
