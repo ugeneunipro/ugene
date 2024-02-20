@@ -55,14 +55,17 @@ void CopyDataTask::run() {
     int initialCount = 0;
     int count_w = 0;
     int singleCRCount = 0;
+    int singleLFCount = 0;
     bool isCRLastSymbol = false;
     bool replacementOccured = false;
     QByteArray buff(BUFFSIZE, 0);
 
     count = from->readBlock(buff.data(), BUFFSIZE);
-    initialCount = count;
     if (newLineEndings == ReplaceLineEndings::LF) {
-        count -= buff.count(QB_CRLF);
+        initialCount = count;
+        int cRLFCount = buff.count(QB_CRLF);
+        singleLFCount += buff.count(QB_LF) - cRLFCount;
+        count -= cRLFCount;
         buff.replace(QB_CRLF, QB_LF);
         singleCRCount = buff.count(QB_CR);
         isCRLastSymbol = buff.endsWith(QB_CR);
@@ -88,8 +91,10 @@ void CopyDataTask::run() {
         }
         stateInfo.progress = from->getProgress();
         count = from->readBlock(buff.data(), BUFFSIZE);
-        initialCount = count;
-        if (newLineEndings == ReplaceLineEndings::LF) {
+        if (newLineEndings == ReplaceLineEndings::LF && count > 0) {
+            initialCount = count;
+            int cRLFCount = buff.count(QB_CRLF);
+            singleLFCount += buff.count(QB_LF) - cRLFCount;
             count -= buff.count(QB_CRLF);
             buff.replace(QB_CRLF, QB_LF);
             if (buff.startsWith(QB_LF) && isCRLastSymbol) {
@@ -100,9 +105,9 @@ void CopyDataTask::run() {
             if (isCRLastSymbol) {
                 count--;
             }
-        }
-        if (!replacementOccured) {
-            replacementOccured = initialCount != count;
+            if (!replacementOccured) {
+                replacementOccured = initialCount != count;
+            }
         }
     }
     if (replacementOccured) {
@@ -114,7 +119,7 @@ void CopyDataTask::run() {
         }
     }
 
-    if (newLineEndings == ReplaceLineEndings::LF && singleCRCount > 0) {
+    if (newLineEndings == ReplaceLineEndings::LF && (singleCRCount > 0 || singleLFCount > 0)) {
         stateInfo.setError(tr("File %1 contain different line endings."));
     }
 }
