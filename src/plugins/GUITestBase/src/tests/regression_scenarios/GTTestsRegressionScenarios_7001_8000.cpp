@@ -4983,6 +4983,26 @@ GUI_TEST_CLASS_DEFINITION(test_7968) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7974) {
+    GTFileDialog::openFile(testDir + "_common_data/clustal", "10000_sequences.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    class RunFastTreeScenario : public CustomScenario {
+    public:
+        void run() override {
+            auto dialog = GTWidget::getActiveModalWidget();
+            GTComboBox::selectItemByText("algorithmBox", dialog, "FastTree");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new BuildTreeDialogFiller(new RunFastTreeScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    GTUtilsTaskTreeView::cancelTask("Run FastTree tool", true, {"Calculating Phylogenetic Tree", "FastTree tree calculation"});
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7979) {
     /*
     * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
