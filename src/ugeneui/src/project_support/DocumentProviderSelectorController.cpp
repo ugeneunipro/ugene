@@ -22,6 +22,7 @@
 #include "DocumentProviderSelectorController.h"
 
 #include <QButtonGroup>
+#include <QFileInfo>
 #include <QLabel>
 #include <QMessageBox>
 #include <QPushButton>
@@ -29,11 +30,14 @@
 #include <QToolButton>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/DocumentImport.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/ImportWidget.h>
@@ -152,7 +156,14 @@ ImportWidget* DocumentProviderSelectorController::getRadioButtonWgt(const Format
         QVariantMap settings;
         QVariant defaultFormatId = set->getValue(DOCUMENT_PROVIDER_SELECTOR_CONTROLLER_ROOT + title + "/" + formatId);
         settings[ImportHint_FormatId] = defaultFormatId;
-        wgt = result.importer->createImportWidget(url, settings);
+        QFileInfo fi(url.getURLString());
+        if (FileAndDirectoryUtils::canWriteToPath(fi.absolutePath())) {
+            wgt = result.importer->createImportWidget(url, settings);
+        } else {
+            QString userDirSavePath = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() +
+                                      "\\" + fi.fileName();
+            wgt = result.importer->createImportWidget(GUrl(userDirSavePath), settings);
+        }
         if (selectedFormat == formatId) {
             selectedRadioButton = it;
         }
