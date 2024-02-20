@@ -99,7 +99,7 @@ void CopyDataTask::run() {
             if (cRLFCount > 0) {
                 singleLFCount += buff.count(QB_LF) - cRLFCount;
             }
-            count -= buff.count(QB_CRLF);
+            count -= cRLFCount;
             buff.replace(QB_CRLF, QB_LF);
             if (buff.startsWith(QB_LF) && isCRLastSymbol) {
                 singleCRCount--;
