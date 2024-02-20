@@ -64,7 +64,9 @@ void CopyDataTask::run() {
     if (newLineEndings == ReplaceLineEndings::LF) {
         initialCount = count;
         int cRLFCount = buff.count(QB_CRLF);
-        singleLFCount += buff.count(QB_LF) - cRLFCount;
+        if (cRLFCount > 0) {
+            singleLFCount += buff.count(QB_LF) - cRLFCount;
+        }
         count -= cRLFCount;
         buff.replace(QB_CRLF, QB_LF);
         singleCRCount = buff.count(QB_CR);
@@ -94,7 +96,9 @@ void CopyDataTask::run() {
         if (newLineEndings == ReplaceLineEndings::LF && count > 0) {
             initialCount = count;
             int cRLFCount = buff.count(QB_CRLF);
-            singleLFCount += buff.count(QB_LF) - cRLFCount;
+            if (cRLFCount > 0) {
+                singleLFCount += buff.count(QB_LF) - cRLFCount;
+            }
             count -= buff.count(QB_CRLF);
             buff.replace(QB_CRLF, QB_LF);
             if (buff.startsWith(QB_LF) && isCRLastSymbol) {
