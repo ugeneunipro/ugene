@@ -35,27 +35,453 @@
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/IOAdapterTextStream.h>
+#include <U2Core/IOAdapterUtils.h>
+#include <U2Core/L10n.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "MfoldSettings.h"
 #include "MfoldSupport.h"
 
+// https://stackoverflow.com/a/13993058
 static QString toAmpersandEncode(const QString& string) {
     QString encoded;
     for (int i = 0; i < string.size(); ++i) {
         QChar ch = string.at(i);
-        if (ch.unicode() > 255)
-            encoded += QString("&#%1;").arg((int)ch.unicode());
-        else
-            encoded += ch;
+        ushort unicode = ch.unicode();
+        encoded += unicode > 255 ? QString("&#%1;").arg((int)unicode) : ch;
     }
     return encoded;
 }
+static QString toAmpersandWithoutSpaces(const QString& string) {
+    return toAmpersandEncode(string).replace(' ', "%20");
+}
 
 namespace U2 {
-const QString outHtmlBasename = "out.html";
-constexpr int maxHtmlLength = 100'000;
+const QString DEG_SYM = QChar(0xB0);
+const QString DELTA_SYM = QChar(0x3B4);
+const QString MID_DOT_SYM = QChar(0xB7);
+
+static int getStructuresNum(const GUrl& cwd, U2OpStatus& os) {
+    QString path = cwd.getURLString();
+    QDir dir(path);
+    dir.setNameFilters({"*.ps"});
+    int ans = dir.count();
+    SAFE_POINT_EXT(ans > 0, os.setError(QString(QT_TR_NOOP("No output files expected in `%1`")).arg(path)), {});
+    return ans;
+}
+
+namespace Th {
+using ThermodynInfo = QHash<QString, double>;
+const QString DELTA_G_KEY = "dG";
+const QString DELTA_H_KEY = "dH";
+const QString DELTA_S_KEY = "dS";
+const QString TM_KEY = "T<sub>m<\\/sub>";
+
+QVector<ThermodynInfo> parseThermodynamicInfo(const QString& filePath, U2OpStatus& os) {
+    //  dG =      3.70 &nbsp; dH =    -31.40 &nbsp; dS =   -113.17 &nbsp; T<sub>m</sub> =    4.3
+    // Reads all such entries from /cwd/SEQ_NAME.out.html
+    // and converts them into an array of associative arrays "parameter name->value".
+    QScopedPointer<IOAdapter> io(IOAdapterUtils::open(filePath, os, IOAdapterMode_Read));
+    SAFE_POINT_OP(os, {});
+    SAFE_POINT_NN(io, {});
+    IOAdapterReader reader(io.data());
+
+    QVector<ThermodynInfo> ans;
+    while (!reader.atEnd()) {
+        QString line = reader.readLine(os, -1);
+        line = line.simplified();
+        if (!line.startsWith(DELTA_G_KEY)) {
+            continue;
+        }
+
+        ThermodynInfo info;
+        for (const QString& paramName : {DELTA_G_KEY, DELTA_H_KEY, DELTA_S_KEY, TM_KEY}) {
+            // All parameters have form "dH = -31.40",
+            // i.e. parameter_name + space + equals sign + space + double value.
+            static const QString patternWithoutName = " =\\s?(-?\\d+\\.?\\d+)";
+            QRegularExpression re(paramName + patternWithoutName);
+            QRegularExpressionMatch result = re.match(line);
+            bool ok;
+            double val = result.captured(1).toDouble(&ok);
+            SAFE_POINT_EXT(ok, os.setError(QString(QT_TR_NOOP("Error parsing `%1` param")).arg(paramName)), {});
+            info[paramName] = val;
+        };
+        ans += info;
+    }
+    return ans;
+}
+QString constructTocList(const QVector<Th::ThermodynInfo>& thInfo) {
+    QString ans;
+    for (int i = 0; i < thInfo.size(); ++i) {
+        QString val = QString::number(qAsConst(thInfo)[i][Th::DELTA_G_KEY]);
+        ans += "<li><a href=\"#structure" + QString::number(i + 1) + "\">";
+        ans += DELTA_SYM + "G=" + val;
+        ans += "</a></li>";
+    }
+    return ans;
+}
+}  // namespace Th
+
+namespace Det {
+QString parseNextTblContent(IOAdapterReader& reader, U2OpStatus& os) {
+    QString ans;
+    // Find the beginning of the table.
+    while (!reader.atEnd()) {
+        QString line = reader.readLine(os, -1).simplified();
+        CHECK_OP(os, {});
+        if (line.startsWith("<p><table ")) {
+            ans += line.replace("<p><table border=3 cellpadding=4>", "");
+            break;
+        }
+    }
+    // Parse table until end.
+    while (!reader.atEnd()) {
+        QString line = reader.readLine(os, -1).simplified();
+        CHECK_OP(os, {});
+        if (line.startsWith("</table><p>")) {
+            break;
+        }
+        ans += line;
+    }
+    SAFE_POINT_EXT(!reader.atEnd(), os.setError("Unexpected EOF"), {});
+    return ans;
+}
+};  // namespace Det
+
+class MfoldTask::ReportHelper final {
+    MfoldTask& t;
+    IOAdapterReader& detReader;
+    int structuresNum = 0;
+    QVector<Th::ThermodynInfo> thInfo;
+    QVector<QString> detailTables;  // empty if report is too large
+    bool largeReport = false;
+
+public:
+    ReportHelper(MfoldTask& t, IOAdapterReader& detReader)
+        : t(t), detReader(detReader) {
+        structuresNum = getStructuresNum(t.cwd, t.stateInfo);
+        CHECK_OP(t.stateInfo, );
+        auto thHtmlPath = t.inpSeqPath + ".out.html";
+        thInfo = Th::parseThermodynamicInfo(thHtmlPath, t.stateInfo);
+        CHECK_OP(t.stateInfo, );
+        SAFE_POINT_EXT(structuresNum == thInfo.size(),
+                       t.stateInfo.setError(tr("Found %1 images in `%2` and %3 thermodynamic tables in `%4`")
+                                                .arg(structuresNum)
+                                                .arg(t.cwd.getURLString())
+                                                .arg(thInfo.size())
+                                                .arg(thHtmlPath)), );
+    }
+
+    QString constructFileReport() {
+        QString seqName = toAmpersandEncode(t.seqInfo.seqName);
+        QString inpSeqPath = toAmpersandEncode(t.seqInfo.seqPath.getURLString());
+        QString report = "<!DOCTYPE html>"
+                         "<html lang=\"en\">"
+                         "<head>"
+                         "<style>"
+                         "ul { font-size: large; }"
+                         ".imgcell { vertical-align: top; text-align: left; }"
+                         ".showinfo { vertical-align: top; text-align: left; }"
+                         ".dettbl { border-collapse: collapse; }"
+                         ".dettbl td, th { padding: 4px; border: 1px solid; }"
+                         "img { border: 1px solid; }"
+                         "</style>"
+                         "<title>"
+                         "Hairpins for " +
+                         seqName + "</title>";
+        report +=
+            "</head>"
+            "<body>"
+            "<h1>Task report [Mfold] (generated by UGENE)</h1>"
+            "<h2>Parameters</h2>";
+        // Dump run info.
+        /*
+        | Sequence name:                 | CVU55762                  |
+        |--------------------------------|---------------------------|
+        | File:                          | C:/Users/user/CVU55762.gb |
+        | Region:                        | 1..100                    |
+        | Sequence type:                 | Circular DNA              |
+        | Temperature:                   | 42                        |
+        | Percent suboptimality:         | 10%                       |
+        | Ionic conditions:              | Na=0.60 M                 |
+        |                                | Mg=0.90 M                 |
+        | Window:                        | 15                        |
+        | Maximum distance paired bases: | 13                        |
+        */
+        report +=
+            "<table>"
+            "<tr>"
+            "<td>Sequence name:</td>"
+            "<td>" +
+            seqName + "</td>";
+        report +=
+            "</tr>"
+            "<tr>"
+            "<td>File:</td>"
+            "<td><a href=\"" +
+            toAmpersandWithoutSpaces(inpSeqPath) + "\">" + inpSeqPath + "</a></td>";
+        report += "</tr>"
+                  "<tr>"
+                  "<td>Region:</td>"
+                  "<td>" +
+                  U1AnnotationUtils::buildLocationString(t.settings.region->regions) + "</td>";
+        report += "</tr>"
+                  "<tr>"
+                  "<td>Sequence type:</td>"
+                  "<td>";
+        report += t.seqInfo.isCircular ? "Circular " : "Linear ";
+        report += t.seqInfo.isDna ? "DNA" : "RNA";
+        report += "</td>"
+                  "</tr>"
+                  "<tr>"
+                  "<td>Temperature:</td>"
+                  "<td>" +
+                  QString::number(t.settings.algoSettings.temperature) + "&deg;C</td>";
+        report += "</tr>"
+                  "<tr>"
+                  "<td>Percent suboptimality:</td>"
+                  "<td>" +
+                  QString::number(t.settings.algoSettings.percent) + "%</td>";
+        report += "</tr>"
+                  "<tr>"
+                  "<td rowspan=\"2\">Ionic conditions:</td>"
+                  "<td>"
+                  "Na=" +
+                  QString::number(t.settings.algoSettings.naConc, 'f', 2) + " M";
+        report += "</td>"
+                  "</tr>"
+                  "<tr>"
+                  "<td>"
+                  "Mg=" +
+                  QString::number(t.settings.algoSettings.mgConc, 'f', 2) + " M";
+        report += "</td>"
+                  "</tr>"
+                  "<tr>"
+                  "<td>Window:</td>"
+                  "<td>" +
+                  (t.settings.algoSettings.window >= 0 ? QString::number(t.settings.algoSettings.window) : "default");
+        report += "</td>"
+                  "</tr>"
+                  "<tr>"
+                  "<td>Maximum distance between paired bases:</td>"
+                  "<td>" +
+                  (t.settings.algoSettings.maxBp > 0 ? QString::number(t.settings.algoSettings.maxBp) : "default");
+        // Dump structures summary: links to fast jump.
+        /*
+        1. dG=-3.84
+        2. dG=-3.58
+        */
+        report += "</td>"
+                  "</tr>"
+                  "</table>"
+                  "<h2>Found structures</h2>"
+                  "<ol>" +
+                  Th::constructTocList(thInfo) + "</ol>";
+
+        // Dump all hairpin stat and imgs.
+        for (int i = 0; i < structuresNum; ++i) {
+            QString iStr = QString::number(i + 1);
+            const Th::ThermodynInfo& th = qAsConst(thInfo)[i];
+            report += "<h2><a id=\"structure" + iStr + "\">Structure " + iStr + "</a></h2>";
+            report += "<ul>"
+                      "<li>&delta;G = " +
+                      QString::number(th[Th::DELTA_G_KEY], 'f', 2) + " kcal/mol</li>";
+            report += "<li>&delta;H = " +
+                      QString::number(th[Th::DELTA_H_KEY], 'f', 2) + " kcal/mol</li>";
+            report += "<li>&delta;S = " +
+                      QString::number(th[Th::DELTA_S_KEY], 'f', 2) + " cal/(K&middot;mol)</li>";
+            report += "<li>T<sub>m</sub> = " +
+                      QString::number(th[Th::TM_KEY], 'f', 2) + "&deg;C</li>";
+            report += "</ul>"
+                      "<table>"
+                      "<tr>"
+                      "<td class=\"imgcell\">"
+                      "<img src=\"" +
+                      toAmpersandWithoutSpaces(GUrlUtils::fixFileName(t.seqInfo.seqPath.baseFileName())) + ".txt_" + iStr +
+                      ".png\" alt=\"\" />";
+            report += "</td>"
+                      "<td class=\"showinfo\">"
+                      "<details>"
+                      "<summary>"
+                      "Show structure detailed info"
+                      "</summary>"
+                      "<table class=\"dettbl\">";
+            QString detTable = Det::parseNextTblContent(detReader, t.stateInfo);
+            SAFE_POINT_EXT(!detTable.isEmpty(), t.stateInfo.setError("Unexpected EOF"), {});
+            if (!largeReport && detTable.count("</") < 300) {  // 300 closing tags ~ 50 rows
+                detailTables += detTable;
+            } else {
+                largeReport = true;
+                detailTables.clear();
+            }
+            report += detTable;
+            report += "</table>"
+                      "</details>"
+                      "</td>"
+                      "</tr>"
+                      "</table>";
+        }
+        report +=
+            "</body>"
+            "</html>";
+        return report;
+    }
+
+    QString constructUgeneReport() {
+        if (largeReport) {
+            return "The report is too large to be displayed in UGENE, it is saved to the file "
+                   "`<a target=\"_blank\" href=\"file:///" +
+                   t.outHtmlPath + "\">" + t.outHtmlPath + "</a>`";
+        }
+        SAFE_POINT_EXT(structuresNum == thInfo.size() && structuresNum == detailTables.size(),
+                       t.stateInfo.setError(tr("%1 != %2 != %3")
+                                                .arg(structuresNum)
+                                                .arg(thInfo.size())
+                                                .arg(detailTables.size())),
+                       {});
+        QString inpSeqPath = t.seqInfo.seqPath.getURLString();
+        // Dump run info.
+        /*
+        | Parameters         | Sequence name:                         | CVU55762                  |
+        |                    | Sequence path:                         | C:/Users/user/CVU55762.gb |
+        |                    | Region:                                | 1..100                    |
+        |                    | Sequence type:                         | Circular DNA              |
+        |                    | Temperature:                           | 37°C                      |
+        |                    | Percent suboptimality:                 | 5%                        |
+        |                    | Ionic conditions:                      | Na=1.00 M                 |
+        |                    |                                        | Mg=0.00 M                 |
+        |                    | Window:                                | default                   |
+        |                    | Maximum distance between paired bases: | default                   |
+        | Output HTML report | C:/Users/user/out.html                                             |
+*/
+        QString report = "<table>"
+                         "<tr>"
+                         "<th width=\"200\" align=\"left\">Parameters</th>"
+                         "<td width=\"" +
+                         QString::number(qBound(300, t.windowWidth - 250, 8192));
+        report += "\">"
+                  "<table style=\"border-collapse:collapse;border:0px;\">"
+                  "<tr>"
+                  "<td style=\"padding-right:10px;\">Sequence name:</td>"
+                  "<td>" +
+                  t.seqInfo.seqName + "</td>";
+        report += "</tr>"
+                  "<tr>"
+                  "<td style=\"padding-right:10px;\">Sequence path:</td>"
+                  "<td>"
+                  "<a href=\"" +
+                  inpSeqPath + "\">" + inpSeqPath + "</a>";
+        report += "</td>"
+                  "</tr>"
+                  "<tr>"
+                  "<td style=\"padding-right:10px;\">Region:</td>"
+                  "<td>" +
+                  U1AnnotationUtils::buildLocationString(t.settings.region->regions) + "</td>";
+        report += "</tr>"
+                  "<tr>"
+                  "<td style=\"padding-right:10px;\">Sequence type:</td>"
+                  "<td>";
+        report += t.seqInfo.isCircular ? "Circular " : "Linear ";
+        report += t.seqInfo.isDna ? "DNA" : "RNA";
+        report += "</td>"
+                  "</tr>"
+                  "<tr>"
+                  "<td style=\"padding-right:10px;\">Temperature:</td>"
+                  "<td>" +
+                  QString::number(t.settings.algoSettings.temperature) + DEG_SYM + "C</td>";
+        report += "</tr>"
+                  "<tr>"
+                  "<td style=\"padding-right:10px;\">Percent suboptimality:</td>"
+                  "<td>" +
+                  QString::number(t.settings.algoSettings.percent) + "%</td>";
+        report += "</tr>"
+                  "<tr>"
+                  "<td style=\"padding-right:10px;\" rowspan=\"2\">Ionic conditions:</td>"
+                  "<td>Na=" +
+                  QString::number(t.settings.algoSettings.naConc, 'f', 2) + " M</td>";
+        report += "</tr>"
+                  "<tr>"
+                  "<td>Mg=" +
+                  QString::number(t.settings.algoSettings.mgConc, 'f', 2) + " M</td>";
+        report += "</tr>"
+                  "<tr>"
+                  "<td style=\"padding-right:10px;\">Window:</td>"
+                  "<td>";
+        report += t.settings.algoSettings.window >= 0 ? QString::number(t.settings.algoSettings.window) : "default";
+        report += "</td>"
+                  "</tr>"
+                  "<tr>"
+                  "<td style=\"padding-right:10px;\">Maximum distance between paired bases:</td>"
+                  "<td>";
+        report += t.settings.algoSettings.maxBp > 0 ? QString::number(t.settings.algoSettings.maxBp) : "default";
+        report += "</td>"
+                  "</tr>"
+                  "</table>"
+                  "</td>"
+                  "</tr>"
+                  "<tr>"
+                  "<th align=\"left\">Output HTML report</th>"
+                  "<td>"
+                  "<a href=\"file:///" +
+                  t.outHtmlPath + "\">" + t.outHtmlPath + "</a>";
+        // Dump structures summary: links to fast jump.
+        /*
+        1. dG=-3.84
+        2. dG=-3.58
+        */
+        report += "</td>"
+                  "</tr>"
+                  "<tr>"
+                  "<th align=\"left\">Found structures</th>"
+                  "<td>"
+                  "<ol style=\"margin-left:12px;-qt-list-indent:0;\">" +
+                  Th::constructTocList(thInfo);
+        // Dump all hairpin stat and imgs.
+        report +=
+            "</ol>"
+            "</td>"
+            "</tr>"
+            "</table>"
+            "<table cellpadding=\"4\" style=\"border-collapse: collapse;\">";
+        for (int i = 0; i < structuresNum; ++i) {
+            QString iStr = QString::number(i + 1);
+            const Th::ThermodynInfo& th = qAsConst(thInfo)[i];
+            report += "<tr>"
+                      "<th colspan=\"2\" style=\"border: 1px solid;\"><a name=\"structure" +
+                      iStr + "\">Structure " + iStr + "</a></th>";
+            report += "</tr>"
+                      "<tr>"
+                      "<td style=\"border: 1px solid;\">"
+                      "<ul style=\"margin-left: 12px; -qt-list-indent: 0; list-style: none; font-size: large;\">"
+                      "<li>" +
+                      DELTA_SYM + "G = " + QString::number(th[Th::DELTA_G_KEY], 'f', 2) + " kcal/mol</li>";
+            report += "<li>" +
+                      DELTA_SYM + "H = " +
+                      QString::number(th[Th::DELTA_H_KEY], 'f', 2) + " kcal/mol</li>";
+            report += "<li>" +
+                      DELTA_SYM + "S = " +
+                      QString::number(th[Th::DELTA_S_KEY], 'f', 2) + " cal/(K" + MID_DOT_SYM + "mol)</li>";
+            report += "<li>T<sub>m</sub> = " +
+                      QString::number(th[Th::TM_KEY], 'f', 2) + DEG_SYM + "C</li>";
+            report += "</ul>"
+                      "</td>"
+                      "<td rowspan=\"2\" style=\"border: 1px solid;\"><img src=\"" +
+                      t.inpSeqPath + "_" + iStr + ".png\" /></td>";
+            report += "</tr>"
+                      "<tr>"
+                      "<td style=\"border: 1px solid;\">"
+                      "<table border=\"1\" cellpadding=\"4\" style=\"border-collapse: collapse;\">" +
+                      detailTables[i];
+            report += "</table>"
+                      "</td>"
+                      "</tr>";
+        }
+        report += "</table>";
+        return report;
+    }
+};
 
 MfoldTask::MfoldTask(const QByteArray& seq,
                      const MfoldSettings& settings,
@@ -67,15 +493,7 @@ MfoldTask::MfoldTask(const QByteArray& seq,
     GCOUNTER(cvar, "mfold");
 }
 
-// todo what does this function return if tmp dir contains spaces or non-ascii
-QString MfoldTask::getSeqFilePath() const {
-    QString fileName = GUrlUtils::fixFileName(seqInfo.seqPath.baseFileName());
-    QString inFilePath = cwd.getURLString() + '/' + fileName;
-    return GUrlUtils::getLocalUrlFromUrl(inFilePath, fileName, ".txt", "");
-}
-
 void MfoldTask::prepare() {
-    // todo decompose some code in this function to other functions
     // Check tool is ok.
     auto tool = AppContext::getExternalToolRegistry()->getById(MfoldSupport::ET_MFOLD_ID);
     CHECK_EXT(tool->isValid() && !tool->getPath().isEmpty(),
@@ -86,13 +504,67 @@ void MfoldTask::prepare() {
     CHECK_OP(stateInfo, );
 
     // Save sequence in cwd.
-    QString seqPath = getSeqFilePath();
-    CHECK_EXT(FileAndDirectoryUtils::storeTextToFile(seqPath, seq),
-              setError(QString(tr("Unable to store input sequence to file `%1`")).arg(seqPath)), );  // todo check unicode space sequence name
+    inpSeqPath = constructSeqFilePath();
+    CHECK_EXT(FileAndDirectoryUtils::storeTextToFile(inpSeqPath, seq),
+              setError(QString(tr("Unable to store input sequence to file `%1`")).arg(inpSeqPath)), );  // todo check unicode space sequence name
 
-    // Prepare script arguments.
-    QStringList mfoldArgs = {
-        "SEQ=" + seqPath,
+    // Prepare out dir.
+    settings.outSettings.outPath = GUrlUtils::prepareDirLocation(constructOutPath(), stateInfo);
+    CHECK_OP(stateInfo, );
+    settings.outSettings.outPath = GUrlUtils::getSlashEndedPath(settings.outSettings.outPath);
+    outHtmlPath = settings.outSettings.outPath + "out.html";
+
+    auto etTask = new ExternalToolRunTask(MfoldSupport::ET_MFOLD_ID,
+                                          constructEtArgs(),
+                                          new ExternalToolLogParser(),
+                                          cwd.getURLString());
+    etTask->setAdditionalEnvVariables(constructEtEnv());
+    addSubTask(etTask);
+}
+
+void MfoldTask::run() {
+    CHECK_OP(stateInfo, );
+
+    QScopedPointer<IOAdapter> detIo(IOAdapterUtils::open(inpSeqPath + ".det.html", stateInfo, IOAdapterMode_Read));
+    CHECK_OP(stateInfo, );
+    SAFE_POINT_NN(detIo, );
+    IOAdapterReader detReader(detIo.data());
+
+    ReportHelper helper(*this, detReader);
+    CHECK_OP(stateInfo, );
+
+    QString fileReport = helper.constructFileReport();
+    CHECK_OP(stateInfo, );
+    QFile file(outHtmlPath);
+    CHECK_EXT(file.open(QIODevice::WriteOnly),
+              setError(QString(tr("Unable to create output file `%1`")).arg(outHtmlPath)), );
+    file.write(fileReport.toLocal8Bit());
+    file.close();
+
+    report = helper.constructUgeneReport();
+    CHECK_OP(stateInfo, );
+}
+
+QString MfoldTask::generateReport() const {
+    return report;
+}
+
+// todo what does this function return if tmp dir contains spaces or non-ascii
+QString MfoldTask::constructSeqFilePath() const {
+    QString fileName = GUrlUtils::fixFileName(seqInfo.seqPath.baseFileName());
+    QString inFilePath = GUrlUtils::getSlashEndedPath(cwd.getURLString()) + fileName;
+    return GUrlUtils::getLocalUrlFromUrl(inFilePath, fileName, ".txt", "");
+}
+
+QString MfoldTask::constructOutPath() const {
+    auto curDt = QDateTime::currentDateTime().toString("yyyy.MM.dd_hh-mm-ss");
+    auto suffixedPath = FileAndDirectoryUtils::getAbsolutePath(settings.outSettings.outPath + "/mfold/" + curDt);
+    return GUrlUtils::rollFileName(suffixedPath, "_");
+}
+
+QStringList MfoldTask::constructEtArgs() const {
+    QStringList etArgs = {
+        "SEQ=" + inpSeqPath,
         "RUN_TYPE=html",
         "NA=" + QString(seqInfo.isDna ? "DNA" : "RNA"),
         "LC=" + QString(seqInfo.isCircular ? "circular" : "linear"),
@@ -103,22 +575,18 @@ void MfoldTask::prepare() {
         "MAX=" + QString::number(settings.algoSettings.maxFold),
         "ROT_ANG=" + QString::number(settings.algoSettings.rotAng)};
     if (settings.algoSettings.window >= 0) {
-        mfoldArgs += "W=" + QString::number(settings.algoSettings.window);
+        etArgs += "W=" + QString::number(settings.algoSettings.window);
     }
     if (settings.algoSettings.maxBp > 0) {
-        mfoldArgs += "MAXBP=" + QString::number(settings.algoSettings.maxBp);
+        etArgs += "MAXBP=" + QString::number(settings.algoSettings.maxBp);
     }
     if (settings.algoSettings.labFr >= 0) {
-        mfoldArgs += "LAB_FR=" + QString::number(settings.algoSettings.labFr);
+        etArgs += "LAB_FR=" + QString::number(settings.algoSettings.labFr);
     }
+    return etArgs;
+}
 
-    // Prepare out dir.
-    auto curDt = QDateTime::currentDateTime().toString("yyyy.MM.dd_hh-mm-ss");
-    auto suffixedPath = FileAndDirectoryUtils::getAbsolutePath(settings.outSettings.outPath + "/mfold/" + curDt);
-    settings.outSettings.outPath = GUrlUtils::prepareDirLocation(GUrlUtils::rollFileName(suffixedPath, "_"), stateInfo);
-    CHECK_OP(stateInfo, );
-
-    // Prepare env args.
+StrStrMap MfoldTask::constructEtEnv() const {
     StrStrMap envVars;
     QSize imgSize;
     // Mfold creates ps files. To convert them to PNG, we need to set width and height in Mfold script.
@@ -139,183 +607,7 @@ void MfoldTask::prepare() {
     envVars["U2_GS_IMG_SIZE_FOR_UGENE_REPORT"] = QString("%1x%2").arg(imgSize.width()).arg(imgSize.height());
     envVars["U2_GS_IMG_OUT_PATH"] = settings.outSettings.outPath;
     envVars["U2_GS_IMG_DPI_FOR_OUT_REPORT"] = QString::number(settings.outSettings.dpi);
-    auto etTask = new ExternalToolRunTask(MfoldSupport::ET_MFOLD_ID,
-                                          mfoldArgs,
-                                          new ExternalToolLogParser(),
-                                          cwd.getURLString());
-    etTask->setAdditionalEnvVariables(envVars);
-    addSubTask(etTask);
-}
-
-void MfoldTask::run() {
-    CHECK_OP(stateInfo, );
-
-    QString seqPath = getSeqFilePath();
-    // todo how to read them?
-    // todo add more check for function return codes
-    auto readFileInput = [this, &seqPath](const QString& ext) -> QString {
-        auto filePath = seqPath + ext;
-        QFile f(filePath);
-        if (!f.exists() || !f.open(QIODevice::OpenModeFlag::ReadWrite)) {
-            setError(QString(tr("Unable to open output file `%1`").arg(filePath)));
-            return {};
-        }
-        QString content = f.readAll();
-        f.close();
-        return content;
-    };
-
-    // Read input.
-    QString hairpinHtml = readFileInput(".det.html");  // html with hairpin info tables
-    QString thermoHtml = readFileInput(".out.html");  // html with dG and dH info
-    CHECK(!hasError(), );
-
-    // Remove unnecessary data from the report.
-    QString header =
-        "<body bgcolor=\"#dfc890\" text=\"#000000\" link=\"#8e2323\" vlink=\"#2f4f4f\" alink=\"#00ffff\"><b>";
-    thermoHtml.remove(0, thermoHtml.indexOf(header) + header.length());
-
-    // Report parsing.
-    QString hairpinHeader = "<table border=3 cellpadding=4>";
-    auto hairpinStart = hairpinHtml.indexOf(hairpinHeader) + hairpinHeader.length();
-
-    QString dgStart(" dG = ");
-    int hairpinNum = 1;
-
-    // Add task info table:
-    // UGENE uses width=200 for printing task info table (status, time). We mimic a single style.
-    // Second column will take up the entire remaining window width, plus subtract 50 pixels for padding and marging.
-    QString summary = "<table>"
-        "<tr>"
-            "<td >Sequence name:</td>"
-            "<td>" + toAmpersandEncode(seqInfo.seqName) + "</td>"
-        "</tr>"
-        "<tr>"
-            "<td >File:</td>"
-            "<td><a href=\"" + toAmpersandEncode(seqInfo.seqPath.getURLString()) + "\">" + toAmpersandEncode(seqInfo.seqPath.getURLString()) + "</a></td>"
-        "</tr>"
-        "<tr>"
-            "<td >Region:</td>"
-            "<td>" + U1AnnotationUtils::buildLocationString(settings.region->regions) + "</td>"
-        "</tr>"
-        "<tr>"
-            "<td >Sequence type:</td>"
-            "<td>" + (seqInfo.isCircular ? "Circular " : "Linear ") + (seqInfo.isDna ? "DNA" : "RNA") + "</td>"
-        "</tr>"
-        "<tr>"
-            "<td >Temperature:</td>"
-            "<td>" + QString::number(settings.algoSettings.temperature) + "&deg;C</td>"
-        "</tr>"
-        "<tr>"
-            "<td >Percent suboptimality:</td>"
-            "<td>" + QString::number(settings.algoSettings.percent) + "%</td>"
-        "</tr>"
-        "<tr>"
-            "<td >Ionic conditions:</td>"
-            "<td>Na=" + QString::number(settings.algoSettings.naConc, 'f') + " M<br>Mg=" + QString::number(settings.algoSettings.mgConc, 'f') + " M</td>"
-        "</tr>"
-        "<tr>"
-            "<td >Window:</td>"
-            "<td>" + (settings.algoSettings.window >= 0 ? QString::number(settings.algoSettings.window) : "default") + "</td>"
-        "</tr>"
-        "<tr>"
-            "<td >Maximum distance between paired bases:</td>"
-            "<td>" + (settings.algoSettings.maxBp > 0 ? QString::number(settings.algoSettings.maxBp) : "default") + "</td>"
-        "</tr>"
-        "</table>";
-    report += QString("<table><tr><td width=200><b>Parameters</b></td><td width=%1>%2</td></tr>"
-        "<tr><td><b>Output HTML report</b></td><td><a target=\"_blank\" href=\"file:///%3\">%3</a></td></tr>"
-        "<tr><td><b>Found structures</b></td><td>{{FOUND_HAIRPINS_LIST}}</td></tr>"
-        "</table>")
-                  .arg(qBound(300, windowWidth - 250, 8192))
-                  .arg(summary)
-                  .arg(toAmpersandEncode(QDir(settings.outSettings.outPath).absoluteFilePath(outHtmlBasename)));
-
-    report += "<table cellpadding=4>";
-    QString fileName = GUrlUtils::fixFileName(seqInfo.seqPath.baseFileName());
-    QString foundStructures;
-
-
-    for (auto structBeginInd = thermoHtml.indexOf(dgStart); structBeginInd >= 0;) {
-        // Row with text "Structure N".
-        report += "<tr>";
-        report += "<th style=\"border:solid; border-width:1px;\" colspan=\"2\">";
-        report += QString("<a name=\"structure%1\"><b>Structure %1").arg(hairpinNum);
-        report += "</b></a></th></tr>";
-
-        report += "<tr>";
-
-        // Thermo table cell.
-        int structEndInd = thermoHtml.indexOf("\n", structBeginInd);
-        auto info = thermoHtml.mid(structBeginInd, structEndInd - structBeginInd).split("&nbsp;");
-        structBeginInd = thermoHtml.indexOf(dgStart, structEndInd);
-        report += "<td cellpadding=4 style=\"border:solid; border-width:1px;\">";
-        report += "<table cellpadding=4 border=1 style=\"max-height: 100%;\">";
-        for (auto thParam : info) {
-            report += "<tr>";
-            for (auto part : thParam.split("=")) {
-                report += "<td>" + part + "</td>";
-            }
-            report += "</tr>";
-            static const QRegularExpression dgRe("\\s*dG\\s*=\\s*(-?\\d+\\.\\d+).*");
-            QRegularExpressionMatch match = dgRe.match(thParam);
-            if (match.hasMatch()) {
-                foundStructures += QString("%1. <a href=\"#structure%1\">dG=%2</a><br>").arg(hairpinNum).arg(match.captured(1));
-            }
-        }
-        report += "</table></td>";
-
-        // Img cell.
-        // If html is used by UGENE, then $${{IMG_PATH_PREFIX}} corresponds to tmp folder where the images are saved.
-        // If html is saved to a file, then out.html and imgs should be together in outDir, and html should not use
-        // an absolute path so that HTML report can be easily shared.
-        report += "<td rowspan=\"2\" style=\"border:solid; border-width:1px;\">";
-        report += QString("<br><img src=\"$${{IMG_PATH_PREFIX}}%1.txt_%2.png\" "
-                          "style=\"max-width: 100%; max-height: 100%;\"/>")
-                      .arg(fileName)
-                      .arg(hairpinNum++);
-        report += "</td>";
-
-        report += "</tr>";
-
-        // Hairpin info table cell.
-        report += "<tr>";
-        report += "<td style=\"border:solid; border-width:1px;\">";
-        int hairpinEnd = hairpinHtml.indexOf(" </table>", hairpinStart);
-        auto hairpin = hairpinHtml.mid(hairpinStart, hairpinEnd - hairpinStart);
-        hairpinStart = hairpinHtml.indexOf(hairpinHeader, hairpinEnd) + hairpinHeader.length();
-        report += "<details><table border=1 cellpadding=4>";
-        report += hairpin;
-        report += "</table></details></td></tr>";
-    }
-    report += "</table>";
-
-   
-    report.replace("{{FOUND_HAIRPINS_LIST}}", foundStructures);
-
-    // Save report to file.
-    auto path = QDir(settings.outSettings.outPath).absoluteFilePath(outHtmlBasename);
-    QFile file(path);
-    CHECK_EXT(file.open(QIODevice::WriteOnly),
-              setError(QString(tr("Unable to create output file `%1`")).arg(path)), );
-    QString outReport = "<!DOCTYPE html><html><body><h1>Task report [Mfold] (generated by UGENE)</h1>" + report + "</body></html>";
-    outReport.replace("$${{IMG_PATH_PREFIX}}", "");
-    file.write(outReport.toLocal8Bit());
-    file.close();
-
-    // For large report display error.
-    if (report.length() > maxHtmlLength) {
-        // todo a file or the file
-        report = tr("The report is too large to be displayed in UGENE, it is saved to the file "
-                    "`<a target=\"_blank\" href=\"file:///%1\">%1</a>`")
-                     .arg(QDir(settings.outSettings.outPath).absoluteFilePath(outHtmlBasename));
-        return;
-    }
-    report.replace(QString("$${{IMG_PATH_PREFIX}}"), GUrlUtils::getSlashEndedPath(cwd.getURLString()));
-}
-
-QString MfoldTask::generateReport() const {
-    return report;
+    return envVars;
 }
 
 MfoldTask* createMfoldTask(U2SequenceObject* seqObj, const MfoldSettings& settings, int windowWidth, U2OpStatus& os) {

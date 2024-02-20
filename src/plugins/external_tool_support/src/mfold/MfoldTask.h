@@ -20,6 +20,7 @@
  */
 #pragma once
 #include <U2Core/GUrl.h>
+#include <U2Core/StrPackUtils.h>
 #include <U2Core/Task.h>
 
 #include "MfoldSettings.h"
@@ -32,15 +33,27 @@ class U2SequenceObject;
 // a user-specified dir. As a report, it displays HTML table with folding data and hairpin imgs.
 class MfoldTask final : public Task {
     Q_OBJECT
+
+    class ReportHelper;
+
     QByteArray seq;
     MfoldSettings settings;
     MfoldSequenceInfo seqInfo;  // for dumping info to HTML report
     GUrl cwd;  // tmp subfolder, all output is stored here
+    QString inpSeqPath;  // part of sequence for analysis, saved in this file
+    QString outHtmlPath;
     QString report;  // HTML report to be displayed in UGENE and saved to a file if necessary
     int windowWidth = 0;
 
-    // For ET task input sequence saved in separate file in cwd. Returns this path.
-    QString getSeqFilePath() const;
+    // For ET task input sequence saved in separate file in cwd. Returns this path. Expects valid cwd.
+    QString constructSeqFilePath() const;
+    // Like /dir_with_sequence/mfold/2006.01.02_15-04-05/
+    QString constructOutPath() const;
+
+    // Expects valid inpSeqPath.
+    QStringList constructEtArgs() const;
+    // Expects valid outPath.
+    StrStrMap constructEtEnv() const;
 
 public:
     // seq -- sequence for analysis
