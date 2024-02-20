@@ -4091,6 +4091,8 @@ GUI_TEST_CLASS_DEFINITION(test_7784) {
     GTUtilsTaskTreeView::waitTaskFinished();
     QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
     QStringList arguments {
+        "--log-no-task-progress",
+        "--log-level-details",
         "--task=\"" + testDir + "_common_data/scenarios/_regression/7784/7784.uwl\"",
         "--in-assembly=\"" + testDir + "_common_data/ugenedb/example-alignment.ugenedb\""
     };
@@ -4098,8 +4100,8 @@ GUI_TEST_CLASS_DEFINITION(test_7784) {
     process.start(cmdlineUgenePath, arguments);
     process.waitForFinished(GT_OP_WAIT_MILLIS);
     QString outStr = process.readAllStandardOutput();
-    CHECK_SET_ERR(outStr.contains("[ERROR] Nothing to write"), 
-        "Cmdline output doesn't contain '[ERROR] Nothing to write' message");
+    CHECK_SET_ERR(outStr.contains("Nothing to write"), 
+        "Cmdline output doesn't contain 'Nothing to write' message");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7786) {
