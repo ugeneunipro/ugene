@@ -5001,6 +5001,7 @@ GUI_TEST_CLASS_DEFINITION(test_7974) {
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Build Tree");
 
     GTUtilsTaskTreeView::cancelTask("Run FastTree tool", true, {"Calculating Phylogenetic Tree", "FastTree tree calculation"});
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7979) {
