@@ -152,7 +152,7 @@ QString parseNextTblContent(IOAdapterReader& reader, U2OpStatus& os) {
 
 class MfoldTask::ReportHelper final {
     MfoldTask& t;
-    IOAdapterReader& detReader;
+    IOAdapterReader& detReader; //todo replace with pointer?
     int structuresNum = 0;
     QVector<Th::ThermodynInfo> thInfo;
     QVector<QString> detailTables;  // empty if report is too large
@@ -181,13 +181,15 @@ public:
                          "<html lang=\"en\">"
                          "<head>"
                          "<style>"
-                         "ul { font-size: large; }"
-                         ".imgcell { vertical-align: top; text-align: left; }"
-                         ".showinfo { vertical-align: top; text-align: left; }"
-                         ".dettbl { border-collapse: collapse; }"
-                         ".dettbl td, th { padding: 4px; border: 1px solid; }"
-                         "img { border: 1px solid; }"
+                         "  ul { font-size: large; }"
+                         "  .imgcell { vertical-align: top; text-align: left; max-height: 85vh; }"
+                         "  .image { border: 1px solid; height: 50em; }"
+                         "  .showinfo { vertical-align: top; text-align: left; }"
+                         "  .dettbl { border-collapse: collapse; }"
+                         "  .dettbl td, th { padding: 4px; border: 1px solid; }"
                          "</style>"
+                         "<script src=\"https://unpkg.com/iv-viewer/dist/iv-viewer.js\"></script>"
+                         "<link rel=\"stylesheet\" href=\"https://unpkg.com/iv-viewer/dist/iv-viewer.css\" />"
                          "<title>"
                          "Hairpins for " +
                          seqName + "</title>";
@@ -294,13 +296,14 @@ public:
                       QString::number(th[Th::DELTA_S_KEY], 'f', 2) + " cal/(K&middot;mol)</li>";
             report += "<li>T<sub>m</sub> = " +
                       QString::number(th[Th::TM_KEY], 'f', 2) + "&deg;C</li>";
+            QString imgPath = toAmpersandWithoutSpaces(GUrlUtils::fixFileName(t.seqInfo.seqPath.baseFileName())) +
+                              ".txt_" + iStr + ".png";
             report += "</ul>"
                       "<table>"
                       "<tr>"
                       "<td class=\"imgcell\">"
-                      "<img src=\"" +
-                      toAmpersandWithoutSpaces(GUrlUtils::fixFileName(t.seqInfo.seqPath.baseFileName())) + ".txt_" + iStr +
-                      ".png\" alt=\"\" />";
+                      "<img class=\"image\" src=\"" +
+                      imgPath + "\" data-high-res-src=\"" + imgPath + "\" alt=\"\" />";
             report += "</td>"
                       "<td class=\"showinfo\">"
                       "<details>"
@@ -324,8 +327,16 @@ public:
                       "</table>";
         }
         report +=
+            "<script>"
+            "Array.from(document.querySelectorAll(\".image\")).forEach((elem) => {"
+            "new ImageViewer(elem);"
+            "});"
+            "</script>"
             "</body>"
             "</html>";
+        if (report.size() > 100'000) {
+            largeReport = true;
+        }
         return report;
     }
 
@@ -362,43 +373,43 @@ public:
                          "<td width=\"" +
                          QString::number(qBound(300, t.windowWidth - 250, 8192));
         report += "\">"
-                  "<table style=\"border-collapse:collapse;border:0px;\">"
+                  "<table style=\"border-collapse: collapse; border: 0px;\">"
                   "<tr>"
-                  "<td style=\"padding-right:10px;\">Sequence name:</td>"
+                  "<td style=\"padding-right: 10px;\">Sequence name:</td>"
                   "<td>" +
                   t.seqInfo.seqName + "</td>";
         report += "</tr>"
                   "<tr>"
-                  "<td style=\"padding-right:10px;\">Sequence path:</td>"
+                  "<td style=\"padding-right: 10px;\">Sequence path:</td>"
                   "<td>"
                   "<a href=\"" +
                   inpSeqPath + "\">" + inpSeqPath + "</a>";
         report += "</td>"
                   "</tr>"
                   "<tr>"
-                  "<td style=\"padding-right:10px;\">Region:</td>"
+                  "<td style=\"padding-right: 10px;\">Region:</td>"
                   "<td>" +
                   U1AnnotationUtils::buildLocationString(t.settings.region->regions) + "</td>";
         report += "</tr>"
                   "<tr>"
-                  "<td style=\"padding-right:10px;\">Sequence type:</td>"
+                  "<td style=\"padding-right: 10px;\">Sequence type:</td>"
                   "<td>";
         report += t.seqInfo.isCircular ? "Circular " : "Linear ";
         report += t.seqInfo.isDna ? "DNA" : "RNA";
         report += "</td>"
                   "</tr>"
                   "<tr>"
-                  "<td style=\"padding-right:10px;\">Temperature:</td>"
+                  "<td style=\"padding-right: 10px;\">Temperature:</td>"
                   "<td>" +
                   QString::number(t.settings.algoSettings.temperature) + DEG_SYM + "C</td>";
         report += "</tr>"
                   "<tr>"
-                  "<td style=\"padding-right:10px;\">Percent suboptimality:</td>"
+                  "<td style=\"padding-right: 10px;\">Percent suboptimality:</td>"
                   "<td>" +
                   QString::number(t.settings.algoSettings.percent) + "%</td>";
         report += "</tr>"
                   "<tr>"
-                  "<td style=\"padding-right:10px;\" rowspan=\"2\">Ionic conditions:</td>"
+                  "<td style=\"padding-right: 10px;\" rowspan=\"2\">Ionic conditions:</td>"
                   "<td>Na=" +
                   QString::number(t.settings.algoSettings.naConc, 'f', 2) + " M</td>";
         report += "</tr>"
@@ -407,13 +418,13 @@ public:
                   QString::number(t.settings.algoSettings.mgConc, 'f', 2) + " M</td>";
         report += "</tr>"
                   "<tr>"
-                  "<td style=\"padding-right:10px;\">Window:</td>"
+                  "<td style=\"padding-right: 10px;\">Window:</td>"
                   "<td>";
         report += t.settings.algoSettings.window >= 0 ? QString::number(t.settings.algoSettings.window) : "default";
         report += "</td>"
                   "</tr>"
                   "<tr>"
-                  "<td style=\"padding-right:10px;\">Maximum distance between paired bases:</td>"
+                  "<td style=\"padding-right: 10px;\">Maximum distance between paired bases:</td>"
                   "<td>";
         report += t.settings.algoSettings.maxBp > 0 ? QString::number(t.settings.algoSettings.maxBp) : "default";
         report += "</td>"
@@ -436,7 +447,7 @@ public:
                   "<tr>"
                   "<th align=\"left\">Found structures</th>"
                   "<td>"
-                  "<ol style=\"margin-left:12px;-qt-list-indent:0;\">" +
+                  "<ol style=\"margin-left: 12px; -qt-list-indent: 0;\">" +
                   Th::constructTocList(thInfo);
         // Dump all hairpin stat and imgs.
         report +=
@@ -454,7 +465,7 @@ public:
             report += "</tr>"
                       "<tr>"
                       "<td style=\"border: 1px solid;\">"
-                      "<ul style=\"margin-left: 12px; -qt-list-indent: 0; list-style: none; font-size: large;\">"
+                      "<ul style=\"margin-left: 9px; -qt-list-indent: 0; list-style: none; font-size: large;\">"
                       "<li>" +
                       DELTA_SYM + "G = " + QString::number(th[Th::DELTA_G_KEY], 'f', 2) + " kcal/mol</li>";
             report += "<li>" +
@@ -506,7 +517,7 @@ void MfoldTask::prepare() {
     // Save sequence in cwd.
     inpSeqPath = constructSeqFilePath();
     CHECK_EXT(FileAndDirectoryUtils::storeTextToFile(inpSeqPath, seq),
-              setError(QString(tr("Unable to store input sequence to file `%1`")).arg(inpSeqPath)), );  // todo check unicode space sequence name
+              setError(QString(tr("Unable to store input sequence to file `%1`")).arg(inpSeqPath)), );
 
     // Prepare out dir.
     settings.outSettings.outPath = GUrlUtils::prepareDirLocation(constructOutPath(), stateInfo);
