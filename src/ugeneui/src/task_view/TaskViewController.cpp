@@ -469,7 +469,7 @@ bool TVReportWindow::eventFilter(QObject*, QEvent* e) {
         QString url = textEdit->anchorAt(me->pos());
         if (!url.isEmpty()) {
             bool internetUrl = url.startsWith("http");
-            bool openInBrowser = url.startsWith("file:///");
+            bool openInBrowser = url.endsWith(".html");
             if (me->button() == Qt::LeftButton) {
                 if (internetUrl || openInBrowser) {
                     QDesktopServices::openUrl(QUrl(url));
@@ -481,7 +481,7 @@ bool TVReportWindow::eventFilter(QObject*, QEvent* e) {
                         AppContext::getTaskScheduler()->registerTopLevelTask(t);
                     }
                 }
-            } else if (me->button() == Qt::RightButton) {
+            } else if (me->button() == Qt::RightButton && !url.startsWith("#")) {
                 showContextMenu(me->globalPos(), url);
             }
         }
