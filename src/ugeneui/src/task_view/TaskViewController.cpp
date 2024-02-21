@@ -25,6 +25,7 @@
 #include <QDir>
 #include <QHeaderView>
 #include <QMenu>
+#include <QMessageBox>
 #include <QUrl>
 #include <QVBoxLayout>
 
@@ -463,18 +464,41 @@ QString TVReportWindow::prepareReportHTML(Task* t) {
     return report;
 }
 
+static void checkPathAndShowErrorOrOpen(const QString& url, QWidget* parent) {
+    QFileInfo finfo(url);
+    QString error;
+    if (!finfo.exists()) {
+        error = QT_TR_NOOP("Path doesn't exist: ");
+    } else if (finfo.isFile() && finfo.size() == 0) {
+        error = QT_TR_NOOP("File is empty: ");
+    }
+
+    if (!error.isEmpty()) {
+        QMessageBox::critical(parent, L10N::errorTitle(), error + url);
+        return;
+    }
+    QString preparedUrl = "file:///" + url;
+    if (isOsUnix()) {
+        preparedUrl.replace(QRegularExpression("\\/{3,}"), "///");
+    } else {
+        preparedUrl.replace(QRegularExpression("\\/{4,}"), "////");
+    }
+    QDesktopServices::openUrl(QUrl(preparedUrl));
+}
+
 bool TVReportWindow::eventFilter(QObject*, QEvent* e) {
     if (e->type() == QEvent::MouseButtonPress) {
         auto me = static_cast<QMouseEvent*>(e);
         QString url = textEdit->anchorAt(me->pos());
         if (!url.isEmpty()) {
             bool internetUrl = url.startsWith("http");
-            bool openInBrowser = url.endsWith(".html");
             if (me->button() == Qt::LeftButton) {
-                if (internetUrl || openInBrowser) {
-                    QDesktopServices::openUrl(QUrl(url));
-                } else if (url.startsWith("#")) {
+                if (url.startsWith("#")) {
                     textEdit->scrollToAnchor(url.mid(1));
+                } else if (internetUrl) {
+                    QDesktopServices::openUrl(QUrl(url));
+                } else if (url.endsWith(".html")) {
+                    checkPathAndShowErrorOrOpen(url, this);
                 } else {
                     Task* t = AppContext::getProjectLoader()->openWithProjectTask(url);
                     if (t) {
@@ -538,6 +562,10 @@ void TVReportWindow::sl_open() {
 
     QString url = dirAction->data().toString();
     bool internetUrl = url.startsWith("http");
+    if (!internetUrl && (url.endsWith(".html") || QFileInfo(url).isDir())) {
+        checkPathAndShowErrorOrOpen(url, this);
+        return;
+    }
     QDesktopServices::openUrl(QUrl(!internetUrl ? "file:///" : "" + url));
 }
 
