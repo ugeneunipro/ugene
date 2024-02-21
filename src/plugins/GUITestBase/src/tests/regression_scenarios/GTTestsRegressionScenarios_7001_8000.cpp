@@ -56,6 +56,7 @@
 #include <QFileInfo>
 #include <QListWidget>
 #include <QRadioButton>
+#include <QRegExp>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
@@ -4127,10 +4128,10 @@ GUI_TEST_CLASS_DEFINITION(test_7784) {
     testRunInfo += "QProcess::exitCode() = " + QString::number(process.exitCode()) + "[newline]";
     QString outStr = process.readAllStandardOutput();
     testRunInfo += "QProcess::readAllStandardOutput() ============================================================================================[newline]";
-    testRunInfo += outStr;
+    testRunInfo += outStr.replace(QRegExp("[\\n]+"), "[newline]");
     testRunInfo += "[newline]==============================================================================================================================[newline]";
     testRunInfo += "QProcess::readAllStandardError() ============================================================================================[newline]";
-    testRunInfo += process.readAllStandardError();
+    testRunInfo += QString(process.readAllStandardError()).replace(QRegExp("[\\n]+"), "[newline]");
     testRunInfo += "[newline]==============================================================================================================================[newline]";
     HI::GTGlobals::getOpStatus().setError(testRunInfo);
     /*
