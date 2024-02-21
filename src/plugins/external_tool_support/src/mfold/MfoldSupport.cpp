@@ -52,8 +52,13 @@ MfoldSupport::MfoldSupport()
         viewCtx->init();
     }
     description = tr(
-        "The <i>mfold</i> software computes a collection of optimal and suboptimal foldings https://unafold.org/.\n"
-        "Bitmap images of secondary structures are generated using Ghostscript https://www.ghostscript.com/.");
+        "The <i>mfold</i> software computes a collection of optimal and suboptimal foldings "
+        "<a href=\"http://www.unafold.org/\">http://www.unafold.org/</a>.<br>"
+        "Bitmap images of secondary structures are generated using Ghostscript "
+        "<a href=\"https://ghostscript.com/\">https://ghostscript.com/</a>.<br>"
+        "HTML reports created for browser use the "
+        "<a href=\"https://github.com/s-yadav/iv-viewer\">https://github.com/s-yadav/iv-viewer</a>"
+        " plugin to zoom images.");
     executableFileName = "mfold" + QString(isOsWindows() ? ".bat" : ".sh");
     validationArguments += "-v";
     version = "3.6";
