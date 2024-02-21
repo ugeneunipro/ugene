@@ -4110,7 +4110,11 @@ GUI_TEST_CLASS_DEFINITION(test_7781) {
 GUI_TEST_CLASS_DEFINITION(test_7784) {
     GTFileDialog::openFile(testDir + "_common_data/ugenedb/", "example-alignment.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished();
+    QString testRunInfo;
     QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
+    testRunInfo += "cmdlineUgenePath = " + cmdlineUgenePath + "\r\n";
+    QString exists = QFile(cmdlineUgenePath).exists() ? "true" : "false";
+    testRunInfo += "path exists = " + exists + "\r\n";
     QStringList arguments {
         "--log-no-task-progress",
         "--log-level-details",
@@ -4120,9 +4124,19 @@ GUI_TEST_CLASS_DEFINITION(test_7784) {
     QProcess process;
     process.start(cmdlineUgenePath, arguments);
     process.waitForFinished(GT_OP_WAIT_MILLIS);
+    testRunInfo += "QProcess::exitCode() = " + QString::number(process.exitCode()) + "\r\n";
     QString outStr = process.readAllStandardOutput();
+    testRunInfo += "QProcess::readAllStandardOutput() ============================================================================================\r\n";
+    testRunInfo += outStr;
+    testRunInfo += "\r\n==============================================================================================================================\r\n";
+    testRunInfo += "QProcess::readAllStandardError() ============================================================================================\r\n";
+    testRunInfo += process.readAllStandardError();
+    testRunInfo += "\r\n==============================================================================================================================\r\n";
+    HI::GTGlobals::getOpStatus().setError(testRunInfo);
+    /*
     CHECK_SET_ERR(outStr.contains("Nothing to write"), 
         "Cmdline output doesn't contain 'Nothing to write' message");
+    */
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7786) {
