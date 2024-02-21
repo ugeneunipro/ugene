@@ -4111,33 +4111,18 @@ GUI_TEST_CLASS_DEFINITION(test_7781) {
 GUI_TEST_CLASS_DEFINITION(test_7784) {
     GTFileDialog::openFile(testDir + "_common_data/ugenedb/", "example-alignment.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished();
-    QString testRunInfo;
     QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
-    testRunInfo += "cmdlineUgenePath = " + cmdlineUgenePath + "[newline]";
-    QString exists = QFile(cmdlineUgenePath).exists() ? "true" : "false";
-    testRunInfo += "path exists = " + exists + "[newline]";
     QStringList arguments {
         "--log-no-task-progress",
         "--log-level-details",
         "--task=\"" + testDir + "_common_data/scenarios/_regression/7784/7784.uwl\"",
-        "--in-assembly=\"" + testDir + "_common_data/ugenedb/example-alignment.ugenedb\""
-    };
+        "--in-assembly=\"" + testDir + "_common_data/ugenedb/example-alignment.ugenedb\""};
     QProcess process;
     process.start(cmdlineUgenePath, arguments);
     process.waitForFinished(GT_OP_WAIT_MILLIS);
-    testRunInfo += "QProcess::exitCode() = " + QString::number(process.exitCode()) + "[newline]";
     QString outStr = process.readAllStandardOutput();
-    testRunInfo += "QProcess::readAllStandardOutput() ============================================================================================[newline]";
-    testRunInfo += outStr.replace(QRegExp("[\\n]+"), "[newline]");
-    testRunInfo += "[newline]==============================================================================================================================[newline]";
-    testRunInfo += "QProcess::readAllStandardError() ============================================================================================[newline]";
-    testRunInfo += QString(process.readAllStandardError()).replace(QRegExp("[\\n]+"), "[newline]");
-    testRunInfo += "[newline]==============================================================================================================================[newline]";
-    HI::GTGlobals::getOpStatus().setError(testRunInfo);
-    /*
-    CHECK_SET_ERR(outStr.contains("Nothing to write"), 
-        "Cmdline output doesn't contain 'Nothing to write' message");
-    */
+    CHECK_SET_ERR(outStr.contains("Nothing to write"),
+                  "Cmdline output doesn't contain 'Nothing to write' message");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7786) {
