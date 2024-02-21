@@ -29,6 +29,7 @@
 namespace U2 {
 
 class MaGraphCalculationTask;
+class MsaEditor;
 
 class U2VIEW_EXPORT MaGraphOverviewDisplaySettings {
 public:
@@ -78,8 +79,8 @@ class U2VIEW_EXPORT MaGraphOverview : public MaOverview {
     Q_OBJECT
 
 public:
-    MaGraphOverview(MaEditor* editor, QWidget* ui);
-    bool isValid() const {
+    MaGraphOverview(MsaEditor* editor, QWidget* ui);
+    bool isValid() const override {
         return graphCalculationTaskRunner.getError().isEmpty();
     }
 

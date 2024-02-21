@@ -120,7 +120,7 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
 
     recalculateScale();
 
-    MaEditorWgt* maEditorWgt = editor->getMaEditorWgt(0);
+    MaEditorWgt* maEditorWgt = editor->getLineWidget(0);
     MaEditorSequenceArea* sequenceArea = maEditorWgt->getSequenceArea();
     QString highlightingSchemeId = sequenceArea->getCurrentHighlightingScheme()->getFactory()->getId();
 
@@ -174,17 +174,14 @@ void MaSimpleOverview::drawVisibleRange(QPainter& p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
-        qint64 screenWidth = 0;
-        int screenPositionX = -1;
-        auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
-        if (mui != nullptr && mui->getMultilineMode()) {
-            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
-            screenWidth = mui->getUI(0)->getSequenceArea()->width() * mui->getChildrenCount();
-        } else {
-            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
-            screenWidth = mui->getUI(0)->getSequenceArea()->width() * mui->getChildrenCount();
+        qint64 screenWidth;
+        int screenPositionX;
+        screenPositionX = editor->getLineWidget(0)->getScrollController()->getScreenPosition().x();
+        screenWidth = editor->getLineWidget(0)->getSequenceArea()->width();
+        if (auto msaEditor = qobject_cast<MsaEditor*>(editor)) {
+            screenWidth *= msaEditor->getMainWidget()->getLineWidgetCount();
         }
-        MaEditorWgt* maEditorWgt = editor->getMaEditorWgt(0);
+        MaEditorWgt* maEditorWgt = editor->getLineWidget(0);
         QPoint screenPosition = maEditorWgt->getScrollController()->getScreenPosition();
         QSize screenSize = maEditorWgt->getSequenceArea()->size();
 
@@ -208,7 +205,7 @@ void MaSimpleOverview::drawVisibleRange(QPainter& p) {
 
 void MaSimpleOverview::drawSelection(QPainter& p) {
     const MaEditorSelection& selection = editor->getSelection();
-    MaEditorWgt* maEditorWgt = editor->getMaEditorWgt(0);
+    MaEditorWgt* maEditorWgt = editor->getLineWidget(0);
     QList<QRect> selectedRects = selection.getRectList();
     for (const QRect& selectedRect : qAsConst(selectedRects)) {
         U2Region columnRange = maEditorWgt->getBaseWidthController()->getBasesGlobalRange(selectedRect.x(), selectedRect.width());
@@ -233,15 +230,13 @@ void MaSimpleOverview::moveVisibleRange(QPoint pos) {
     newVisibleRange.moveCenter(newPos);
 
     int newScrollBarValue = newVisibleRange.x() * stepX;
-    auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
-    if (mui != nullptr) {
-        if (mui->getMultilineMode()) {
-            mui->getScrollController()->setMultilineVScrollbarValue(newScrollBarValue);
-        } else {
-            mui->getUI(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
-            const int newVScrollBarValue = newVisibleRange.y() * stepY;
-            mui->getUI(0)->getScrollController()->setVScrollbarValue(newVScrollBarValue);
-        }
+    auto msaEditor = qobject_cast<MsaEditor*>(editor);
+    if (msaEditor && msaEditor->isMultilineMode()) {
+        msaEditor->getMainWidget()->getScrollController()->setMultilineVScrollbarValue(newScrollBarValue);
+    } else {
+        editor->getLineWidget(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
+        int newVScrollBarValue = newVisibleRange.y() * stepY;
+        editor->getLineWidget(0)->getScrollController()->setVScrollbarValue(newVScrollBarValue);
     }
 
     update();

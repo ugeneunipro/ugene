@@ -33,11 +33,11 @@
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/MaEditorNameList.h>
-#include <U2View/MsaEditor.h>
 #include <U2View/MsaEditorConsensusArea.h>
 #include <U2View/MsaEditorSequenceArea.h>
 
 #include "MaGraphCalculationTask.h"
+#include "ov_msa/MsaEditor.h"
 #include "ov_msa/MultilineScrollController.h"
 #include "ov_msa/ScrollController.h"
 
@@ -47,7 +47,7 @@
 
 namespace U2 {
 
-MaGraphOverview::MaGraphOverview(MaEditor* _editor, QWidget* _ui)
+MaGraphOverview::MaGraphOverview(MsaEditor* _editor, QWidget* _ui)
     : MaOverview(_editor, _ui) {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setFixedHeight(FIXED_HEIGHT);
@@ -64,18 +64,18 @@ MaGraphOverview::MaGraphOverview(MaEditor* _editor, QWidget* _ui)
         sl_redraw();
     });
 
-    auto mui = qobject_cast<MaEditorMultilineWgt*>(_ui);
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(_ui);
     CHECK(mui != nullptr, );
 
     connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, [this]() {
         state.maObjectVersion = editor->getMaObject()->getObjectVersion();
         recomputeGraphIfNeeded();
     });
-    connect(mui, &MaEditorMultilineWgt::si_startMaChanging, this, [this]() {
+    connect(mui, &MsaEditorMultilineWgt::si_startMaChanging, this, [this]() {
         isMaChangeInProgress = true;
         graphCalculationTaskRunner.cancel();
     });
-    connect(mui, &MaEditorMultilineWgt::si_stopMaChanging, this, [this]() {
+    connect(mui, &MsaEditorMultilineWgt::si_stopMaChanging, this, [this]() {
         isMaChangeInProgress = false;
         recomputeGraphIfNeeded();
     });
@@ -151,15 +151,12 @@ void MaGraphOverview::drawVisibleRange(QPainter& p) {
 
         // range width is a sum of the widths of all visible children
         // X position is defined by the first visible child
-        qint64 screenWidth = 0;
-        int screenPositionX = -1;
-        auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
-        if (mui->getMultilineMode()) {
-            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
-            screenWidth = mui->getUI(0)->getSequenceArea()->width() * mui->getChildrenCount();
-        } else {
-            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
-            screenWidth = mui->getUI(0)->getSequenceArea()->width();
+        qint64 screenWidth;
+        int screenPositionX;
+        screenPositionX = editor->getLineWidget(0)->getScrollController()->getScreenPosition().x();
+        screenWidth = editor->getLineWidget(0)->getSequenceArea()->width();
+        if (auto msaEditor = qobject_cast<MsaEditor*>(editor)) {
+            screenWidth *= msaEditor->getMainWidget()->getLineWidgetCount();
         }
 
         cachedVisibleRange.setY(0);
@@ -184,9 +181,9 @@ void MaGraphOverview::recomputeGraphIfNeeded() {
     state.width = width();
 
     const MaGraphOverviewState& stateToDedup = graphCalculationTaskRunner.isIdle() ? renderedState : inProgressState;
-    bool isViewVisible = isOsMac() ? !visibleRegion().isEmpty() : isVisible(); // On MacOS even a background window has isVisible() true! May be a "too old QT" issue.
+    bool isViewVisible = isOsMac() ? !visibleRegion().isEmpty() : isVisible();  // On MacOS even a background window has isVisible() true! May be a "too old QT" issue.
     CHECK(!isMaChangeInProgress && isViewVisible && state != stateToDedup && state.width > 0, );
-//    uiLog.info(QString("recomputeGraphIfNeeded: %1,%2 -> %3,%4").arg(int(stateToDedup.method)).arg(stateToDedup.width).arg(int(state.method)).arg(state.width));
+    //    uiLog.info(QString("recomputeGraphIfNeeded: %1,%2 -> %3,%4").arg(int(stateToDedup.method)).arg(stateToDedup.width).arg(int(state.method)).arg(state.width));
 
     graphCalculationTaskRunner.cancel();
     auto maObject = editor->getMaObject();
@@ -221,9 +218,7 @@ void MaGraphOverview::sl_highlightingChanged() {
 
 void MaGraphOverview::updateHighlightingSchemes() {
     if (state.method == MaGraphCalculationMethod::Highlighting) {
-        auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
-        CHECK(mui != nullptr, );
-        MaEditorSequenceArea* sequenceArea = mui->getUI(0)->getSequenceArea();
+        MaEditorSequenceArea* sequenceArea = editor->getLineWidget(0)->getSequenceArea();
         MsaHighlightingScheme* highlightingScheme = sequenceArea->getCurrentHighlightingScheme();
         MsaColorScheme* colorScheme = sequenceArea->getCurrentColorScheme();
         state.highlightingSchemeId = highlightingScheme->getFactory()->getId();
@@ -319,9 +314,9 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
 
     newVisibleRange.moveCenter(newPos);
 
-    auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(ui);
     if (mui != nullptr) {
-        if (mui->getMultilineMode()) {
+        if (mui->isWrapMode()) {
             // value = <overview-rect>.X / <overview>.width * <alignment-len>
             // but scroll bar has other min/max, so map it
             if (newVisibleRange.right() >= width()) {
@@ -335,7 +330,7 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
             }
         } else {
             int newScrollBarValue = newVisibleRange.x() * stepX;
-            mui->getUI(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
+            editor->getLineWidget(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
         }
     }
 

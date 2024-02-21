@@ -57,7 +57,7 @@ public:
         return MCAE_SETTINGS_ROOT;
     }
 
-    McaEditorWgt* getUI() const override;
+    McaEditorWgt* getUI() const;
 
     /** Returns current MCA editor selection controller instance. */
     MaEditorSelectionController* getSelectionController() const override;
@@ -76,16 +76,10 @@ public:
 
     SequenceObjectContext* getReferenceContext() const;
 
-    QAction* getGotoSelectedReadAction() const {
-        return gotoSelectedReadAction;
+    MaEditorWgt* getLineWidget(int index) const override {
+        SAFE_POINT(index == 0, "Calling getLineWidget(index) with index > 0 is prohibited for Mca", nullptr);
+        return ui;
     }
-
-    MaEditorWgt* getMaEditorWgt(int index) const override {
-        SAFE_POINT(index == 0, "Calling getMaEditorWgt(index) with index > 0 is prohibited for Mca", nullptr);
-        return qobject_cast<McaEditorWgt*>(ui);
-    }
-
-    MaEditorMultilineWgt* getMaEditorMultilineWgt() const override;
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint& pos) override;
@@ -102,16 +96,18 @@ protected:
     QWidget* createViewWidget(QWidget* parent) override;
     void initActions() override;
 
-    QAction* showChromatogramsAction;
-    QAction* showGeneralTabAction;
-    QAction* showConsensusTabAction;
+    QAction* showChromatogramsAction = nullptr;
+    QAction* showGeneralTabAction = nullptr;
+    QAction* showConsensusTabAction = nullptr;
 
     QMap<qint64, bool> chromVisibility;
 
-    SequenceObjectContext* referenceCtx;
+    SequenceObjectContext* referenceCtx = nullptr;
 
     /** Selection state controller. */
-    McaEditorSelectionController* selectionController;
+    McaEditorSelectionController* selectionController = nullptr;
+
+    McaEditorWgt* ui = nullptr;
 
     void addEditMenu(QMenu* menu) override;
     void addAlignmentMenu(QMenu* menu);

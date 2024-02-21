@@ -39,10 +39,11 @@ public:
 
     QAction* getRedoAction() const;
 
-private slots:
+public slots:
     void sl_updateUndoRedoState();
-    void sl_completeStateChanged(bool _stateComplete);
 
+private slots:
+    void sl_completeStateChanged(bool _stateComplete);
     void sl_undo();
     void sl_redo();
 

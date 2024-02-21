@@ -82,8 +82,8 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
         changeTracker = new MsaEditorUserModStepController(editor->getMaObject()->getEntityRef());
     }
 
-    connect(this, SIGNAL(si_startMaChanging()), ui, SIGNAL(si_startMaChanging()));
-    connect(this, SIGNAL(si_stopMaChanging(bool)), ui, SIGNAL(si_stopMaChanging(bool)));
+    connect(this, &MaEditorNameList::si_startMaChanging, ui, &MaEditorWgt::si_startMaChanging);
+    connect(this, &MaEditorNameList::si_stopMaChanging, ui, &MaEditorWgt::si_stopMaChanging);
 
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
@@ -848,7 +848,7 @@ void MaEditorNameList::sl_editSequenceName() {
     bool isMca = maObj->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     QString title = isMca ? tr("Rename Read") : tr("Rename Sequence");
     bool ok = false;
-    QString newName = QInputDialog::getText(editor->getUI(), title, tr("New name:"), QLineEdit::Normal, curName, &ok);
+    QString newName = QInputDialog::getText(editor->getWidget(), title, tr("New name:"), QLineEdit::Normal, curName, &ok);
 
     if (ok && !newName.isEmpty() && curName != newName) {
         emit si_sequenceNameChanged(curName, newName);

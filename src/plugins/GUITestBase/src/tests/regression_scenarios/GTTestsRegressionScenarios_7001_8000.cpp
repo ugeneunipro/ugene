@@ -2104,6 +2104,25 @@ GUI_TEST_CLASS_DEFINITION(test_7476) {
     GTUtilsPhyTree::checkTreeViewerWindowIsActive("collapse_mode_");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7482) {
+    // Generate sequence more than 100'000'000 bases length and open it
+    // Select all
+    // Copy to clipboard
+    // Expected: "Block size is too big and can't be copied into the clipboard" in the log
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "test_7403.fa");
+    model.seed = 1;
+    model.length = 100'000'100;
+    GTUtilsDialog::waitForDialog(new DNASequenceGeneratorDialogFiller(model));
+    GTMenu::clickMainMenuItem({"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller());
+    GTKeyboardUtils::selectAll();
+    GTUtilsDialog::checkNoActiveWaiters();
+    GTLogTracer lt;
+    GTKeyboardUtils::copy();
+    CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7487_1) {
     // Check that move of the multi-region selection with drag-and-drop works as expected (2 selected regions).
     GTFileDialog::openFile(testDir + "_common_data/clustal/collapse_mode_1.aln");
@@ -3709,6 +3728,30 @@ GUI_TEST_CLASS_DEFINITION(test_7680) {
                   QString("Height of the node changed: %1 vs %2").arg(viewRectBefore.height()).arg(viewRectAfter.height()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7681) {
+    /*
+    * 1. Open ..\samples\Assembly\chrM.sorted.bam
+    * 2. "Import Bam File" dialog appears
+    * 2. Set destination url equal to the same as input url: ..\samples\Assembly\chrM.sorted.bam
+    * 3. Push Import button
+    * Expected state: message box about the same location of source and destination files appears
+    */
+    class SameSrcAndDestUrls : public CustomScenario {
+        void run() override {
+            const QString destinationUrl = testDir + "_common_data/bam/chrM.sorted.bam";
+            const QString expectedMessage = QString("Destination file '%1' can not be the same as source file. Please select another file.").arg(destinationUrl);
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
+            GTLineEdit::setText("destinationUrlEdit", destinationUrl, dialog);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(new SameSrcAndDestUrls));
+    GTFileDialog::openFile(testDir + "_common_data/bam", "chrM.sorted.bam");
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7682) {
     // Check 'curvature' controls for rectangular branches.
     GTFileDialog::openFile(dataDir + "/samples/Newick/COI.nwk");
@@ -3901,8 +3944,8 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     GTUtilsMsaEditor::setMultilineMode(true);
     GTGlobals::sleep(2000);
 
-    MaEditorMultilineWgt* uiWidget = GTUtilsMsaEditor::getEditor()->getUI();
-    auto handle = GTWidget::findSplitter("name_and_sequence_areas_splitter", uiWidget->getUI(0))->handle(1);
+    MsaEditorMultilineWgt* uiWidget = GTUtilsMsaEditor::getEditor()->getMainWidget();
+    auto handle = GTWidget::findSplitter("name_and_sequence_areas_splitter", uiWidget->getLineWidget(0))->handle(1);
 
     int baseWidth = GTUtilsMSAEditorSequenceArea::getBaseWidth();
     int sequenceLength = GTUtilsMsaEditor::getEditor()->getAlignmentLen();
@@ -4039,28 +4082,6 @@ GUI_TEST_CLASS_DEFINITION(test_7751) {
     GTWidget::click(swapSiblingsButton);
     CHECK_SET_ERR(swapSiblingsButton->isEnabled(), "Swap siblings must be enabled");
     GTUtilsPhyTree::getNodeByBranchText("0.009", "0.026");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_7753) {
-    // 1. Open "data/samples/Assembly/chrM.sorted.bam".
-    // 2. Delete bam file
-    // 3. Press 'imort' button in dialog
-    // Expected state: you got message box with error and error in log
-    class DeleteFileBeforeImport : public CustomScenario {
-        void run() override {
-            QFile::remove(sandBoxDir + "test_7753/chrM.sorted.bam");
-            GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
-        }
-    };
-    GTLogTracer lt;
-    QString sandboxFilePath = sandBoxDir + "test_7753/chrM.sorted.bam";
-    QDir().mkpath(sandBoxDir + "test_7753");
-    GTFile::copy(dataDir + "samples/Assembly/chrM.sorted.bam", sandboxFilePath);
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
-    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(new DeleteFileBeforeImport()));
-    GTFileDialog::openFile(sandboxFilePath);
-    GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(lt.hasError(QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath())), "Expected error not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7770) {
@@ -4993,6 +5014,8 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     * 6. Press "Lock scales" button
     * 7. Activate "Lock scales: selected annotation" menu item in "Lock scales" menu
     * Expected state: "Lock scales: selected annotation" menu item checked in "Lock scales" menu, other items are not checked
+    * 8. Press "Lock scales" button
+    * Expected state: "Lock scales" button is not pressed, no menu items selected
     */
     GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Separate;
     GTUtilsDialog::waitForDialog(new GTSequenceReadingModeDialogUtils());
@@ -5012,8 +5035,18 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
         };
         void run() override {
             QMenu* activePopupMenu = GTWidget::getActivePopupMenu();
-            QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
-            CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));            
+            if (menuItemNameToCheck.isEmpty()) {
+                QList<QAction*> menuActions = activePopupMenu->actions();
+                QList<QAction*> checkedActions;
+                for (QAction* menuAction : qAsConst(menuActions)) {
+                    if (menuAction->isCheckable() && menuAction->isChecked()) {
+                        GT_FAIL( QString("Item %1 checked but should not!").arg(menuAction->objectName()), );
+                    }
+                }
+            } else {
+                QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
+                CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));
+            }
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
 
@@ -5049,6 +5082,11 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("Lock scales: selected annotation")));
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
+
+    GTWidget::click(lockScalesButton);
+    CHECK_SET_ERR(!lockScalesButton->isDown(), "'Lock scales' button should be down");
+    GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("")));
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 }
 

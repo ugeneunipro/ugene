@@ -69,7 +69,7 @@ McaEditor::McaEditor(const QString& viewName,
 }
 
 McaEditorWgt* McaEditor::getUI() const {
-    return qobject_cast<McaEditorWgt*>(ui);
+    return ui;
 }
 
 void McaEditor::buildStaticToolbar(QToolBar* tb) {
@@ -154,6 +154,7 @@ void McaEditor::sl_showConsensusTab() {
 QWidget* McaEditor::createViewWidget(QWidget* parent) {
     SAFE_POINT(ui == nullptr, "UI is already initialized", ui);
     ui = new McaEditorWgt(this, parent);
+    viewWidget = ui;
 
     collapseModel->reset(getMaRowIds());
 
@@ -255,7 +256,6 @@ void McaEditor::addAppearanceMenu(QMenu* menu) {
     QMenu* appearanceMenu = menu->addMenu(tr("Appearance"));
     appearanceMenu->menuAction()->setObjectName(MCAE_MENU_APPEARANCE);
 
-    auto ui = getUI();
     auto sequenceArea = ui->getSequenceArea();
     auto offsetsController = ui->getOffsetsViewController();
 
@@ -287,7 +287,6 @@ void McaEditor::addNavigationMenu(QMenu* menu) {
     QMenu* navigationMenu = menu->addMenu(tr("Navigation"));
     navigationMenu->menuAction()->setObjectName(MCAE_MENU_NAVIGATION);
 
-    auto ui = getUI();
     navigationMenu->addAction(gotoSelectedReadAction);
 
     auto ambiguousCharactersController = ui->getSequenceArea()->getAmbiguousCharactersController();
@@ -304,7 +303,6 @@ void McaEditor::addEditMenu(QMenu* menu) {
     QMenu* editMenu = menu->addMenu(tr("Edit"));
     editMenu->menuAction()->setObjectName(MCAE_MENU_EDIT);
 
-    auto ui = getUI();
     auto sequenceArea = ui->getSequenceArea();
 
     editMenu->addAction(sequenceArea->getInsertAction());
@@ -330,11 +328,8 @@ void McaEditor::addEditMenu(QMenu* menu) {
     editMenu->addAction(redoAction);
 }
 
-MaEditorMultilineWgt* McaEditor::getMaEditorMultilineWgt() const {
-    FAIL("getMaEditorMultilineWgt must never be called on MCA manager", nullptr);
-}
-
 MaEditorSelectionController* McaEditor::getSelectionController() const {
     return selectionController;
 }
+
 }  // namespace U2

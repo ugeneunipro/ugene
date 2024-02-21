@@ -137,7 +137,7 @@ void MsaSchemesMenuBuilder::fillColorSchemeMenuActions(QList<QAction*>& actions,
         }
     }
     if (msa != nullptr && msa->isMultilineMode()) {
-        connect(signalMapper, SIGNAL(mapped(const QString&)), msa->getUI(), SLOT(sl_changeColorScheme(const QString&)));
+        connect(signalMapper, SIGNAL(mapped(const QString&)), msa->getMainWidget(), SLOT(sl_changeColorScheme(const QString&)));
     }
 }
 
