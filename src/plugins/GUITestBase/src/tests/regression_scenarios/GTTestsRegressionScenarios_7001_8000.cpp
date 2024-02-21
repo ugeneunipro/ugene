@@ -4112,9 +4112,9 @@ GUI_TEST_CLASS_DEFINITION(test_7784) {
     GTUtilsTaskTreeView::waitTaskFinished();
     QString testRunInfo;
     QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
-    testRunInfo += "cmdlineUgenePath = " + cmdlineUgenePath + "\r\n";
+    testRunInfo += "cmdlineUgenePath = " + cmdlineUgenePath + "[newline]";
     QString exists = QFile(cmdlineUgenePath).exists() ? "true" : "false";
-    testRunInfo += "path exists = " + exists + "\r\n";
+    testRunInfo += "path exists = " + exists + "[newline]";
     QStringList arguments {
         "--log-no-task-progress",
         "--log-level-details",
@@ -4124,14 +4124,14 @@ GUI_TEST_CLASS_DEFINITION(test_7784) {
     QProcess process;
     process.start(cmdlineUgenePath, arguments);
     process.waitForFinished(GT_OP_WAIT_MILLIS);
-    testRunInfo += "QProcess::exitCode() = " + QString::number(process.exitCode()) + "\r\n";
+    testRunInfo += "QProcess::exitCode() = " + QString::number(process.exitCode()) + "[newline]";
     QString outStr = process.readAllStandardOutput();
-    testRunInfo += "QProcess::readAllStandardOutput() ============================================================================================\r\n";
+    testRunInfo += "QProcess::readAllStandardOutput() ============================================================================================[newline]";
     testRunInfo += outStr;
-    testRunInfo += "\r\n==============================================================================================================================\r\n";
-    testRunInfo += "QProcess::readAllStandardError() ============================================================================================\r\n";
+    testRunInfo += "[newline]==============================================================================================================================[newline]";
+    testRunInfo += "QProcess::readAllStandardError() ============================================================================================[newline]";
     testRunInfo += process.readAllStandardError();
-    testRunInfo += "\r\n==============================================================================================================================\r\n";
+    testRunInfo += "[newline]==============================================================================================================================[newline]";
     HI::GTGlobals::getOpStatus().setError(testRunInfo);
     /*
     CHECK_SET_ERR(outStr.contains("Nothing to write"), 
