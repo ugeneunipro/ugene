@@ -68,7 +68,7 @@ Document* GFFFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, con
     DocumentFormatUtils::updateFormatHints(objects, fs);
     fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings();
 
-    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
+    auto doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
     return doc;
 }
 
@@ -157,7 +157,7 @@ U2SequenceObject* importSequence(DNASequence& sequence,
     dbiObjects.objects << u2seq.id;
     CHECK_OP(os, nullptr);
 
-    U2SequenceObject* seqObj = new U2SequenceObject(objName, U2EntityRef(dbiRef, u2seq.id));
+    auto seqObj = new U2SequenceObject(objName, U2EntityRef(dbiRef, u2seq.id));
     seqObj->setSequenceInfo(sequence.info);
     objects << seqObj;
 
@@ -351,7 +351,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             QString groupName = words[2];
             QString annName = groupName;  // by default annotation named as group
             // annotation's qualifiers from attributes
-            AnnotationData* ad = new AnnotationData;
+            auto ad = new AnnotationData;
             AnnotationData* existingAnnotation = nullptr;
             bool newJoined = false;
             QString id;

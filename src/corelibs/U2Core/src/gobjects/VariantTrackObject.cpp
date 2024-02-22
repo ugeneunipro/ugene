@@ -106,7 +106,7 @@ GObject* VariantTrackObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, co
     U2AttributeUtils::copyObjectAttributes(entityRef.entityId, clonedTrack.id, srcCon.dbi->getAttributeDbi(), dstCon.dbi->getAttributeDbi(), os);
 
     U2EntityRef clonedTrackRef(dstDbiRef, clonedTrack.id);
-    VariantTrackObject* clonedObj = new VariantTrackObject(getGObjectName(), clonedTrackRef, gHints.getMap());
+    auto clonedObj = new VariantTrackObject(getGObjectName(), clonedTrackRef, gHints.getMap());
     return clonedObj;
 }
 

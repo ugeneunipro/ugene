@@ -38,7 +38,7 @@ QString MsaDistanceAlgorithmFactorySimilarity::getName() const {
 }
 
 MsaDistanceAlgorithm* MsaDistanceAlgorithmFactorySimilarity::createAlgorithm(const Msa& ma, QObject*) {
-    MsaDistanceAlgorithm* res = new MsaDistanceAlgorithmSimilarity(this, ma);
+    auto res = new MsaDistanceAlgorithmSimilarity(this, ma);
     if (flags.testFlag(DistanceAlgorithmFlag_ExcludeGaps)) {
         res->setExcludeGaps(true);
     } else {

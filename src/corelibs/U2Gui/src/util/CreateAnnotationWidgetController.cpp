@@ -359,7 +359,7 @@ bool CreateAnnotationWidgetController::prepareAnnotationObject() {
         U2OpStatusImpl os;
         const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
         SAFE_POINT_OP(os, false);
-        AnnotationTableObject* ann = new AnnotationTableObject(model.sequenceObjectRef.objName + FEATURES_TAG, localDbiRef);
+        auto ann = new AnnotationTableObject(model.sequenceObjectRef.objName + FEATURES_TAG, localDbiRef);
         ann->addObjectRelation(GObjectRelation(model.sequenceObjectRef, ObjectRole_Sequence));
         d->addObject(ann);
         occ->setSelectedObject(ann);

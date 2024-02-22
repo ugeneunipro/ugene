@@ -42,11 +42,11 @@ QWidget* ElementSelectorController::createGUI(U2OpStatus& /*os*/) {
     foreach (const SelectorValue& value, widget->getValues()) {
         values.append(qMakePair(value.getName(), value.getValue()));
     }
-    ComboBoxWidget* cb = new ComboBoxWidget(values);
+    auto cb = new ComboBoxWidget(values);
     connect(cb, SIGNAL(si_valueChanged(const QVariant&)), SLOT(sl_valueChanged(const QVariant&)));
     cb->setValue(wc->getSelectorValue(widget));
 
-    LabeledPropertyWidget* result = new LabeledPropertyWidget(widget->getLabel(), cb, nullptr);
+    auto result = new LabeledPropertyWidget(widget->getLabel(), cb, nullptr);
     if (labelSize >= 0) {
         result->setLabelWidth(labelSize);
     }

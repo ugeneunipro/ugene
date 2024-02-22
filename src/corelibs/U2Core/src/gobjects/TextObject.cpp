@@ -89,7 +89,7 @@ GObject* TextObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVar
     CHECK_OP(os, nullptr);
 
     U2EntityRef dstEntRef(dstDbiRef, dstObject.id);
-    TextObject* dst = new TextObject(getGObjectName(), dstEntRef, gHints.getMap());
+    auto dst = new TextObject(getGObjectName(), dstEntRef, gHints.getMap());
     dst->setIndexInfo(getIndexInfo());
     return dst;
 }
