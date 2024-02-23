@@ -164,7 +164,7 @@ void ExportObjectUtils::export2Document(const QObjectScopedPointer<ExportDocumen
     if (addToProject) {
         flags |= SaveDoc_OpenAfter;
     }
-    SaveDocumentTask* t = new SaveDocumentTask(dstDoc, iof, dstUrl, flags);
+    auto t = new SaveDocumentTask(dstDoc, iof, dstUrl, flags);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

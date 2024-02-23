@@ -376,7 +376,7 @@ bool CreateAnnotationWidgetController::prepareAnnotationObject() {
         CHECK_OP(os, false);
         const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
         SAFE_POINT_OP(os, false);
-        AnnotationTableObject* aobj = new AnnotationTableObject("Annotations", dbiRef);
+        auto aobj = new AnnotationTableObject("Annotations", dbiRef);
         aobj->addObjectRelation(GObjectRelation(model.sequenceObjectRef, ObjectRole_Sequence));
         d->addObject(aobj);
         AppContext::getProject()->addDocument(d);
@@ -402,7 +402,7 @@ void CreateAnnotationWidgetController::sl_groupName() {
 
     QMenu menu(w);
     for (const QString& str : qAsConst(groupNames)) {
-        QAction* a = new QAction(str, &menu);
+        auto a = new QAction(str, &menu);
         connect(a, SIGNAL(triggered()), SLOT(sl_setPredefinedGroupName()));
         menu.addAction(a);
     }

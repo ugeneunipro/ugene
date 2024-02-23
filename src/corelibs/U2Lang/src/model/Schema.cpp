@@ -354,7 +354,7 @@ void Schema::replaceProcess(Actor* oldActor, Actor* newActor, const QList<PortMa
             Port* p1 = l->source() == p ? l->destination() : l->source();
             Port* p2 = newActor->getPort(pm.getDstId());
             removeFlow(l);
-            Link* newLink = new Link(p1, p2);
+            auto newLink = new Link(p1, p2);
             addFlow(newLink);
             if (p2->isInput()) {
                 auto oldPort = dynamic_cast<IntegralBusPort*>(p);

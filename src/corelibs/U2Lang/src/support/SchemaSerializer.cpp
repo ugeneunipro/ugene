@@ -407,7 +407,7 @@ QString SchemaSerializer::xml2schema(const QDomElement& projectElement, Schema* 
                 return tr("Invalid content: cannot bind [%1 : %2] to [%3 : %4]").arg(inId).arg(inP).arg(outId).arg(outP);
             }
         } else {
-            Link* l = new Link(input, output);
+            auto l = new Link(input, output);
             schema->addFlow(l);
         }
     }

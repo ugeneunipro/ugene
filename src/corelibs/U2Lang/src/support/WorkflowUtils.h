@@ -245,7 +245,7 @@ public:
     }
     virtual ~PrompterBase() = default;
     virtual ActorDocument* createDescription(Actor* a) {
-        T* doc = new T(a);
+        auto doc = new T(a);
         doc->connect(a, SIGNAL(si_labelChanged()), SLOT(sl_actorModified()));
         doc->connect(a, SIGNAL(si_modified()), SLOT(sl_actorModified()));
         if (listenInputs) {

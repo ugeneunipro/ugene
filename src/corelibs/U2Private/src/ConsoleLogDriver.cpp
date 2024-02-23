@@ -76,7 +76,7 @@ void ConsoleLogDriver::setLogCmdlineHelp() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(cmdLineRegistry != nullptr);
 
-    CMDLineHelpProvider* logFormat = new CMDLineHelpProvider(
+    auto logFormat = new CMDLineHelpProvider(
         CMDLineCoreOptions::LOG_FORMAT,
         tr("Specifies the format of a log line."),
         tr("Specifies the format of a log line."
@@ -86,7 +86,7 @@ void ConsoleLogDriver::setLogCmdlineHelp() {
            " \n\nBy default, logformat=\"[L][hh:mm]\"."),
         tr("\"<format_string>\""));
 
-    CMDLineHelpProvider* logLevel = new CMDLineHelpProvider(
+    auto logLevel = new CMDLineHelpProvider(
         CMDLineCoreOptions::LOG_LEVEL,
         tr("Sets the log level."),
         tr("Sets the log level per category. If a category is not specified,"
@@ -98,7 +98,7 @@ void ConsoleLogDriver::setLogCmdlineHelp() {
            "\n\nBy default, loglevel=\"ERROR\"."),
         tr("\"<category1>=<level1> [<category2>=<level2> ...]\" | <level>"));
 
-    CMDLineHelpProvider* coloredOutput = new CMDLineHelpProvider(
+    auto coloredOutput = new CMDLineHelpProvider(
         ConsoleLogDriver::COLOR_OUTPUT_CMD_OPTION, tr("Enables colored output."));
 
     cmdLineRegistry->registerCMDLineHelpProvider(logFormat);

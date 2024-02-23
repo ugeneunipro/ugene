@@ -74,7 +74,7 @@ Attribute* getAttribute(Actor* proc, const QString& attrId) {
     if (proc->hasParameter(attrId)) {
         return proc->getParameter(attrId);
     } else if (proc->hasParameter(BaseAttributes::URL_IN_ATTRIBUTE().getId()) && attrId == BaseAttributes::URL_LOCATION_ATTRIBUTE().getId()) {
-        Attribute* attr = new Attribute(BaseAttributes::URL_LOCATION_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
+        auto attr = new Attribute(BaseAttributes::URL_LOCATION_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
         proc->addParameter(BaseAttributes::URL_LOCATION_ATTRIBUTE().getId(), attr);
         return attr;
     }
@@ -1303,7 +1303,7 @@ void HRSchemaSerializer::parseAttributes(Tokenizer& tokenizer, QList<AttributeCo
 }
 
 ExternalProcessConfig* HRSchemaSerializer::parseActorBody(Tokenizer& tokenizer) {
-    ExternalProcessConfig* cfg = new ExternalProcessConfig();
+    auto cfg = new ExternalProcessConfig();
     cfg->id = tokenizer.take();
     while (tokenizer.notEmpty() && tokenizer.look() != Constants::BLOCK_END) {
         QString tok = tokenizer.take();

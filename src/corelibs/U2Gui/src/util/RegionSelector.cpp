@@ -113,10 +113,10 @@ void RegionSelector::initLayout() {
     endEdit->setAlignment(Qt::AlignRight);
 
     if (isVertical) {
-        QGroupBox* gb = new QGroupBox(this);
+        auto gb = new QGroupBox(this);
         gb->setTitle(tr("Region"));
 
-        QGridLayout* l = new QGridLayout(gb);
+        auto l = new QGridLayout(gb);
         l->setSizeConstraint(QLayout::SetMinAndMaxSize);
         gb->setLayout(l);
 
@@ -126,17 +126,17 @@ void RegionSelector::initLayout() {
         l->addWidget(endEdit, 1, 2);
         l->addWidget(new QLabel(" ", gb), 2, 0);
 
-        QVBoxLayout* rootLayout = new QVBoxLayout(this);
+        auto rootLayout = new QVBoxLayout(this);
         rootLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
         rootLayout->setMargin(0);
         setLayout(rootLayout);
         rootLayout->addWidget(gb);
     } else {
-        QHBoxLayout* l = new QHBoxLayout(this);
+        auto l = new QHBoxLayout(this);
         l->setMargin(0);
         setLayout(l);
 
-        QLabel* rangeLabel = new QLabel(tr("Region"), this);
+        auto rangeLabel = new QLabel(tr("Region"), this);
         rangeLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 
         l->addWidget(rangeLabel);
@@ -167,7 +167,7 @@ void RegionLineEdit::focusOutEvent(QFocusEvent* event) {
 }
 void RegionLineEdit::contextMenuEvent(QContextMenuEvent* event) {
     QMenu* menu = createStandardContextMenu();
-    QAction* setDefaultValue = new QAction(actionName, this);
+    auto setDefaultValue = new QAction(actionName, this);
     connect(setDefaultValue, SIGNAL(triggered()), this, SLOT(sl_onSetMinMaxValue()));
     menu->insertSeparator(menu->actions().first());
     menu->insertAction(menu->actions().first(), setDefaultValue);

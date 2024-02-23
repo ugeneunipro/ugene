@@ -238,7 +238,7 @@ SharedDbiDataHandler DbiDataStorage::getDataHandler(const U2EntityRef& entRef, b
     DbiConnection* connection = this->getConnection(entRef.dbiRef, os);
     CHECK_OP(os, SharedDbiDataHandler());
 
-    DbiDataHandler* handler = new DbiDataHandler(entRef, connection->dbi->getObjectDbi(), useGC);
+    auto handler = new DbiDataHandler(entRef, connection->dbi->getObjectDbi(), useGC);
 
     return SharedDbiDataHandler(handler);
 }

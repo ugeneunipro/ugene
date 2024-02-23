@@ -69,7 +69,7 @@ Handle<Value> launchSchemeWithScheduler(const Arguments& args) {
         return scope.Close(Undefined());
     }
     Local<Function> schedulerCallback = Local<Function>::Cast(args[1]);
-    JsScheduler* scheduler = new JsScheduler(nullptr, schedulerCallback);
+    auto scheduler = new JsScheduler(nullptr, schedulerCallback);
 
     const String::Utf8Value pathToScheme(args[0]->ToString());
     const String::Utf8Value workingDir(args[2]->ToString());

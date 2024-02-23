@@ -86,7 +86,7 @@ ColorSchemaSettingsPageController::ColorSchemaSettingsPageController(MsaColorSch
 }
 
 AppSettingsGUIPageState* ColorSchemaSettingsPageController::getSavedState() {
-    ColorSchemaSettingsPageState* state = new ColorSchemaSettingsPageState();
+    auto state = new ColorSchemaSettingsPageState();
     state->colorsDir = ColorSchemeUtils::getColorsDir();
     state->customSchemas = ColorSchemeUtils::getSchemas();
 
@@ -108,7 +108,7 @@ void ColorSchemaSettingsPageController::saveState(AppSettingsGUIPageState* s) {
 }
 
 AppSettingsGUIPageWidget* ColorSchemaSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
-    ColorSchemaSettingsPageWidget* r = new ColorSchemaSettingsPageWidget(this);
+    auto r = new ColorSchemaSettingsPageWidget(this);
     r->setState(state);
     return r;
 }

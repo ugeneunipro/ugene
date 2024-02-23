@@ -434,7 +434,7 @@ DataTypePtr WorkflowUtils::getFromDatatypeForBusport(IntegralBusPort* p, DataTyp
         from = to;
     } else {
         // port is input and has links, go editing mode
-        IntegralBusType* bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
+        auto bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
         bt->addInputs(p, false);
         from = bt;
     }

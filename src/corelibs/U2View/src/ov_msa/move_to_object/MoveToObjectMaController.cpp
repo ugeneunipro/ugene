@@ -62,7 +62,7 @@ MoveToObjectMaController::MoveToObjectMaController(MaEditor* maEditor, QWidget* 
 }
 
 QMenu* MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
-    QMenu* menu = new QMenu(moveSelectionToAnotherObjectAction->text());
+    auto menu = new QMenu(moveSelectionToAnotherObjectAction->text());
     menu->setEnabled(moveSelectionToAnotherObjectAction->isEnabled());
     connect(moveSelectionToAnotherObjectAction, &QAction::changed, menu, [this, menu]() { menu->setEnabled(moveSelectionToAnotherObjectAction->isEnabled()); });
     connect(menu, &QMenu::aboutToShow, this, [this, menu]() {
