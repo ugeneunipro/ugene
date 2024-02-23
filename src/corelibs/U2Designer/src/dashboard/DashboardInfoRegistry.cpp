@@ -83,7 +83,7 @@ void DashboardInfoRegistry::removeDashboards(const QStringList& ids) {
             unregisterEntrySilently(id);
         }
     }
-    RemoveDashboardsTask* removeTask = new RemoveDashboardsTask(dashboardInfos);
+    auto removeTask = new RemoveDashboardsTask(dashboardInfos);
     AppContext::getTaskScheduler()->registerTopLevelTask(removeTask);
 
     emit si_dashboardsListChanged(QStringList(), ids);

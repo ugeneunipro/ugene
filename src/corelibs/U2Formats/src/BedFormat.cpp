@@ -108,7 +108,7 @@ Document* BedFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, con
     load(io, objects, dbiRef, os, fs);
     CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
-    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects);
+    auto doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects);
     return doc;
 }
 

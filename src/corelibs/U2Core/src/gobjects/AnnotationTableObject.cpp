@@ -133,7 +133,7 @@ GObject* AnnotationTableObject::clone(const U2DbiRef& ref, U2OpStatus& os, const
     DbiOperationsBlock opBlock(ref, os);
     CHECK_OP(os, nullptr);
 
-    AnnotationTableObject* cln = new AnnotationTableObject(getGObjectName(), ref, gHints.getMap());
+    auto cln = new AnnotationTableObject(getGObjectName(), ref, gHints.getMap());
     cln->setIndexInfo(getIndexInfo());
 
     QStringList subgroupPaths;

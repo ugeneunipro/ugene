@@ -37,18 +37,18 @@ RadioController::~RadioController() {
 }
 
 QWidget* RadioController::createGUI(U2OpStatus& /*os*/) {
-    QWidget* result = new QWidget();
-    QVBoxLayout* l = new QVBoxLayout(result);
+    auto result = new QWidget();
+    auto l = new QVBoxLayout(result);
     l->setMargin(0);
 #if defined(Q_OS_LINUX)
     l->setSpacing(0);
 #endif
 
-    QButtonGroup* group = new QButtonGroup(result);
+    auto group = new QButtonGroup(result);
     connect(group, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(sl_buttonClicked(QAbstractButton*)));
     QString id = wc->getVariableValue(rw->var()).toString();
     foreach (const RadioWidget::Value& value, rw->values()) {
-        QRadioButton* b = new QRadioButton(value.label);
+        auto b = new QRadioButton(value.label);
         b->setObjectName(value.label);
         group->addButton(b);
         l->addWidget(b);
@@ -56,11 +56,11 @@ QWidget* RadioController::createGUI(U2OpStatus& /*os*/) {
         b->setChecked(value.id == id);
         b->setProperty(VAR_ID, value.id);
         if (!value.tooltip.isEmpty()) {
-            QHBoxLayout* labelLayout = new QHBoxLayout;
+            auto labelLayout = new QHBoxLayout;
             labelLayout->setContentsMargins(20, 0, 0, 10);
             l->addLayout(labelLayout);
 
-            QLabel* label = new QLabel(value.tooltip);
+            auto label = new QLabel(value.tooltip);
             label->setWordWrap(true);
             label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
             label->setMinimumSize(0, 0);

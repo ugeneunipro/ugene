@@ -56,7 +56,7 @@ AnnotationTableObject* DocumentFormatUtils::addAnnotationsForMergedU2Sequence(co
                                                                               const QVariantMap& hints) {
     QVariantMap objectHints;
     objectHints.insert(DocumentFormat::DBI_FOLDER_HINT, hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
-    AnnotationTableObject* ao = new AnnotationTableObject("Contigs", dbiRef, objectHints);
+    auto ao = new AnnotationTableObject("Contigs", dbiRef, objectHints);
 
     // save relation if mergedSequenceRef is valid
     if (mergedSequenceRef.isValid()) {
@@ -100,7 +100,7 @@ QList<AnnotationSettings*> DocumentFormatUtils::predefinedSettings() {
         }
         predefined.append(settings);
     }
-    AnnotationSettings* secStructAnnotationSettings = new AnnotationSettings(BioStruct3D::SecStructAnnotationTag, true, QColor(102, 255, 0), true);
+    auto secStructAnnotationSettings = new AnnotationSettings(BioStruct3D::SecStructAnnotationTag, true, QColor(102, 255, 0), true);
     secStructAnnotationSettings->nameQuals.append(BioStruct3D::SecStructTypeQualifierName);
     secStructAnnotationSettings->showNameQuals = true;
     predefined.append(secStructAnnotationSettings);

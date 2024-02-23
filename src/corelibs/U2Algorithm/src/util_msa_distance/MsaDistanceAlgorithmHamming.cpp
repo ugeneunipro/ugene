@@ -38,7 +38,7 @@ QString MsaDistanceAlgorithmFactoryHamming::getName() const {
 }
 
 MsaDistanceAlgorithm* MsaDistanceAlgorithmFactoryHamming::createAlgorithm(const Msa& ma, QObject*) {
-    MsaDistanceAlgorithm* res = new MsaDistanceAlgorithmHamming(this, ma);
+    auto res = new MsaDistanceAlgorithmHamming(this, ma);
     if (flags.testFlag(DistanceAlgorithmFlag_ExcludeGaps)) {
         res->setExcludeGaps(true);
     } else {

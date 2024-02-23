@@ -58,32 +58,32 @@ void CMDLineCoreOptions::initHelp() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(cmdLineRegistry != nullptr);
 
-    CMDLineHelpProvider* helpSection = new CMDLineHelpProvider(
+    auto helpSection = new CMDLineHelpProvider(
         HELP,
         tr("Shows help information."),
         "",  // No full description
         "",  // No arguments
         HELP_SHORT);
 
-    CMDLineHelpProvider* loadSettingsFileSection = new CMDLineHelpProvider(
+    auto loadSettingsFileSection = new CMDLineHelpProvider(
         INI_FILE,
         tr("Loads UGENE configuration."),
         tr("Loads configuration from the specified .ini file. By default the UGENE.ini file is used."),
         tr("<path_to_file>"));
 
-    CMDLineHelpProvider* translSection = new CMDLineHelpProvider(
+    auto translSection = new CMDLineHelpProvider(
         TRANSLATION,
         tr("Specifies the language to use."),
         tr("Specifies the language to use. The following values are available: EN, RU, TR."),
         tr("<language_code>"));
 
-    CMDLineHelpProvider* tmpDirSection = new CMDLineHelpProvider(
+    auto tmpDirSection = new CMDLineHelpProvider(
         TMP_DIR,
         "Path to temporary folder",
         "",
         tr("<path_to_file>"));
 
-    CMDLineHelpProvider* sessionDatabaseSection = new CMDLineHelpProvider(
+    auto sessionDatabaseSection = new CMDLineHelpProvider(
         SESSION_DB,
         tr("Path to the session database file"),
         tr("Session database is stored in the temporary file that is created for every UGENE run.\n"

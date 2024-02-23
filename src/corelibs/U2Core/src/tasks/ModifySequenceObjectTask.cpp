@@ -172,7 +172,7 @@ void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
 
     if (df->isObjectOpSupported(newDoc, DocumentFormat::DocObjectOp_Add, GObjectTypes::ANNOTATION_TABLE)) {
         if (mergeAnnotations) {
-            AnnotationTableObject* newDocAto = new AnnotationTableObject("Annotations", newDoc->getDbiRef());
+            auto newDocAto = new AnnotationTableObject("Annotations", newDoc->getDbiRef());
             newDocAto->addObjectRelation(seqObj, ObjectRole_Sequence);
 
             for (Document* d : qAsConst(docs)) {

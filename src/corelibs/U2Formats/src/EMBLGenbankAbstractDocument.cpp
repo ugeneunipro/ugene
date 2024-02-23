@@ -79,7 +79,7 @@ Document* EMBLGenbankAbstractDocument::loadTextDocument(IOAdapter* io, const U2D
 
     DocumentFormatUtils::updateFormatHints(objects, fs);
     fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings() && checkFlags(DocumentFormatFlag_SupportWriting);
-    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, writeLockReason);
+    auto doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, writeLockReason);
     return doc;
 }
 
@@ -235,7 +235,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
 
                     fullSequenceSize = 0;
 
-                    U2SequenceObject* seqObj = new U2SequenceObject(sequenceName, U2EntityRef(dbiRef, u2seq.id));
+                    auto seqObj = new U2SequenceObject(sequenceName, U2EntityRef(dbiRef, u2seq.id));
                     QString translation = U1AnnotationUtils::guessAminoTranslation(annotationsObject, seqObj->getAlphabet());
                     if (!translation.isEmpty()) {
                         seqObj->setStringAttribute(Translation_Table_Id_Attribute, translation);
@@ -282,7 +282,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
     sequenceRef.entityRef = U2EntityRef(dbiRef, u2seq.id);
 
     CHECK_OP(os, );
-    U2SequenceObject* so = new U2SequenceObject(u2seq.visualName, U2EntityRef(dbiRef, u2seq.id));
+    auto so = new U2SequenceObject(u2seq.visualName, U2EntityRef(dbiRef, u2seq.id));
     objects << so;
     objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, contigs, mergedMapping, fs);
     AnnotationTableObject* mergedAnnotationsPtr = mergedAnnotations.take();
@@ -335,7 +335,7 @@ DNASequence* EMBLGenbankAbstractDocument::loadTextSequence(IOAdapter* io, U2OpSt
     QString sequenceName = genObjectName(usedNames, data.name, data.tags, 1, GObjectTypes::SEQUENCE);
 
     if (sequenceSize != 0) {
-        DNASequence* seq = new DNASequence(sequenceName, sequenceData, U2AlphabetUtils::getById(seqImporter.getAlphabet()));
+        auto seq = new DNASequence(sequenceName, sequenceData, U2AlphabetUtils::getById(seqImporter.getAlphabet()));
         return seq;
     }
 
@@ -567,7 +567,7 @@ AnnotationProcessStatus processParsingResult(const U2Location& location, Genbank
 }  // namespace
 
 SharedAnnotationData EMBLGenbankAbstractDocument::readAnnotation(IOAdapter* io, char* cbuff, int len, int READ_BUFF_SIZE, U2OpStatus& si, int offset, int seqLen) {
-    AnnotationData* a = new AnnotationData();
+    auto a = new AnnotationData();
     SharedAnnotationData f(a);
     QString key = QString::fromLatin1(cbuff + 5, 15).trimmed();
     if (key.isEmpty()) {

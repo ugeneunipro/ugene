@@ -106,10 +106,10 @@ void EditBreakpointLabelsDialog::sl_newLabelAdded() {
 
 void EditBreakpointLabelsDialog::addNewLabelToList(const QString& newLabel,
                                                    bool appliedToCallingBreakpoint) {
-    QListWidgetItem* itemWithCurrentLabel = new QListWidgetItem(LABEL_LEFT_SIDE_OFFSET + newLabel,
+    auto itemWithCurrentLabel = new QListWidgetItem(LABEL_LEFT_SIDE_OFFSET + newLabel,
                                                                 ui->labelList);
 
-    QCheckBox* labelApplianceController = new QCheckBox(ui->labelList);
+    auto labelApplianceController = new QCheckBox(ui->labelList);
     labelApplianceController->setChecked(appliedToCallingBreakpoint);
     connect(labelApplianceController, SIGNAL(stateChanged(int)), SLOT(sl_labelApplianceStateChanged(int)));
     applienceControlsForLabels[labelApplianceController] = newLabel;

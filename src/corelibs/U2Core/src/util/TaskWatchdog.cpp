@@ -43,12 +43,12 @@ void TaskWatchdog::sl_onResourceDestroyed() {
 }
 
 void TaskWatchdog::trackResourceExistence(QObject* resource, Task* task) {
-    TaskWatchdog* tracker = new TaskWatchdog(resource, task);
+    auto tracker = new TaskWatchdog(resource, task);
     tracker->setParent(task);
 }
 
 void TaskWatchdog::trackResourceExistence(QObject* resource, Task* task, const QString& errorMessage) {
-    TaskWatchdog* tracker = new TaskWatchdog(resource, task);
+    auto tracker = new TaskWatchdog(resource, task);
     tracker->setParent(task);
     tracker->setCancelError(errorMessage);
 }
