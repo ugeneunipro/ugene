@@ -292,7 +292,7 @@ void SmithWatermanDialog::addAnnotationWidget() {
     acm.sequenceLen = dnaso->getSequenceLength();
     annotationController = new CreateAnnotationWidgetController(acm, this);
     QWidget* caw = annotationController->getWidget();
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
 

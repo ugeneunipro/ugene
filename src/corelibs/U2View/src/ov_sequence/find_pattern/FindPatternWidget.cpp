@@ -407,7 +407,7 @@ void FindPatternWidget::initResultsLimit() {
 void FindPatternWidget::initUseAmbiguousBasesContainer() {
     useAmbiguousBasesContainer = new QWidget();
 
-    QHBoxLayout* useAmbiguousBasesLayout = new QHBoxLayout();
+    auto useAmbiguousBasesLayout = new QHBoxLayout();
     useAmbiguousBasesLayout->setContentsMargins(0, 0, 0, 0);
     useAmbiguousBasesLayout->setSpacing(10);
     useAmbiguousBasesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -415,7 +415,7 @@ void FindPatternWidget::initUseAmbiguousBasesContainer() {
 
     useAmbiguousBasesBox = new QCheckBox();
     useAmbiguousBasesBox->setObjectName("useAmbiguousBasesBox");
-    QLabel* useAmbiguousBasesLabel = new QLabel(tr("Search with ambiguous bases"));
+    auto useAmbiguousBasesLabel = new QLabel(tr("Search with ambiguous bases"));
     useAmbiguousBasesLabel->setWordWrap(true);
 
     useAmbiguousBasesLayout->addWidget(useAmbiguousBasesBox, 0);
@@ -432,13 +432,13 @@ void FindPatternWidget::initMaxResultLenContainer() {
     layoutRegExpLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
     useMaxResultLenContainer->setLayout(layoutRegExpLen);
 
-    QHBoxLayout* layoutUseMaxResultLen = new QHBoxLayout();
+    auto layoutUseMaxResultLen = new QHBoxLayout();
     layoutUseMaxResultLen->setSpacing(10);
     layoutUseMaxResultLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
     boxUseMaxResultLen = new QCheckBox();
     boxUseMaxResultLen->setObjectName("boxUseMaxResultLen");
-    QLabel* labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
+    auto labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
     labelUseMaxResultLen->setWordWrap(true);
     layoutUseMaxResultLen->addWidget(boxUseMaxResultLen, 0);
     layoutUseMaxResultLen->addWidget(labelUseMaxResultLen, 1);

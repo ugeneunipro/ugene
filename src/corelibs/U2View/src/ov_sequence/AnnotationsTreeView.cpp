@@ -139,7 +139,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     connect(tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), SLOT(sl_itemDoubleClicked(QTreeWidgetItem*, int)));
     connect(tree, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(sl_itemExpanded(QTreeWidgetItem*)));
 
-    QVBoxLayout* layout = new QVBoxLayout();
+    auto layout = new QVBoxLayout();
     layout->setMargin(0);
     layout->addWidget(tree);
     setLayout(layout);
@@ -744,7 +744,7 @@ void AnnotationsTreeView::sl_onGroupRenamed(AnnotationGroup* g) {
 }
 
 AVGroupItem* AnnotationsTreeView::buildGroupTree(AVGroupItem* parentGroupItem, AnnotationGroup* g, bool areAnnotationsNew) {
-    AVGroupItem* groupItem = new AVGroupItem(this, parentGroupItem, g);
+    auto groupItem = new AVGroupItem(this, parentGroupItem, g);
     const QList<AnnotationGroup*> subgroups = g->getSubgroups();
     foreach (AnnotationGroup* subgroup, subgroups) {
         buildGroupTree(groupItem, subgroup);
@@ -776,7 +776,7 @@ void AnnotationsTreeView::populateAnnotationQualifiers(AVAnnotationItem* ai) {
     SAFE_POINT(0 == ai->childCount(), "Unexpected tree item's child count!", );
     const QVector<U2Qualifier> qualifiers = ai->annotation->getQualifiers();
     foreach (const U2Qualifier& q, qualifiers) {
-        AVQualifierItem* curQualifierItem = new AVQualifierItem(ai, q);
+        auto curQualifierItem = new AVQualifierItem(ai, q);
         Q_UNUSED(curQualifierItem);
     }
     ai->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
@@ -1439,9 +1439,9 @@ bool AnnotationsTreeView::initiateDragAndDrop(QMouseEvent*) {
     serializedReferences.append(serializedReferences);
 
     // initiate dragging
-    QMimeData* mimeData = new QMimeData();
+    auto mimeData = new QMimeData();
     mimeData->setData(annotationMimeType, serializedReferences);
-    QDrag* drag = new QDrag(this);
+    auto drag = new QDrag(this);
     drag->setMimeData(mimeData);
     Qt::DropAction dndAction = drag->exec(Qt::MoveAction | Qt::CopyAction, Qt::CopyAction);
     if (dndAction == Qt::MoveAction || dndAction == Qt::CopyAction) {
@@ -2137,10 +2137,10 @@ void AnnotationsTreeView::moveDialogToItem(QTreeWidgetItem* item, QDialog* d) {
 QString AnnotationsTreeView::renameDialogHelper(AVItem* i, const QString& defText, const QString& title) {
     QObjectScopedPointer<QDialog> d = new QDialog(this);
     d->setWindowTitle(title);
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     d->setLayout(l);
 
-    QLineEdit* edit = new QLineEdit(d.data());
+    auto edit = new QLineEdit(d.data());
     edit->setText(defText);
     edit->setSelection(0, defText.length());
     connect(edit, SIGNAL(returnPressed()), d.data(), SLOT(accept()));
@@ -2550,7 +2550,7 @@ void AVAnnotationItem::removeQualifier(const U2Qualifier& q) {
 }
 
 void AVAnnotationItem::addQualifier(const U2Qualifier& q) {
-    AVQualifierItem* qi = new AVQualifierItem(this, q);
+    auto qi = new AVQualifierItem(this, q);
     Q_UNUSED(qi);
     updateVisual(ATVAnnUpdateFlag_QualColumns);
 }

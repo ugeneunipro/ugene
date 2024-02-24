@@ -71,7 +71,7 @@ int DotPlotImageExportController::getImageHeight() const {
 }
 
 void DotPlotImageExportController::initSettingsWidget() {
-    QVBoxLayout* layout = new QVBoxLayout();
+    auto layout = new QVBoxLayout();
     layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     layout->setContentsMargins(0, 0, 0, 0);
 

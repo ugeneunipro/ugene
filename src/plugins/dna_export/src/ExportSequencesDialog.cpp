@@ -107,7 +107,7 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
         const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
         DNATranslationRegistry* treg = AppContext::getDNATranslationRegistry();
         QList<DNATranslation*> nucleicTs = treg->lookupTranslation(al, DNATranslationType_AMINO_2_NUCL);
-        QTreeWidget* tree = new QTreeWidget();
+        auto tree = new QTreeWidget();
         tree->setHeaderHidden(true);
         organismCombo->setModel(tree->model());
         organismCombo->setView(tree);
@@ -122,7 +122,7 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
                 for (i = 0; i < n; i++) {
                     QTreeWidgetItem* gi = tree->topLevelItem(i);
                     if (gi->text(0) == type) {
-                        QTreeWidgetItem* curr = new QTreeWidgetItem(gi);
+                        auto curr = new QTreeWidgetItem(gi);
                         curr->setText(0, text);
                         curr->setText(1, t->getTranslationId());
                         gi->addChild(curr);
@@ -130,11 +130,11 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
                     }
                 }
                 if (i == n) {
-                    QTreeWidgetItem* gi = new QTreeWidgetItem(tree);
+                    auto gi = new QTreeWidgetItem(tree);
                     gi->setFlags(gi->flags() & ~Qt::ItemIsSelectable);
                     gi->setText(0, type);
                     tree->addTopLevelItem(gi);
-                    QTreeWidgetItem* curr = new QTreeWidgetItem(gi);
+                    auto curr = new QTreeWidgetItem(gi);
                     curr->setText(0, text);
                     curr->setText(1, t->getTranslationId());
                     gi->addChild(curr);
@@ -142,7 +142,7 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
                 }
             }
             tree->sortItems(0, Qt::AscendingOrder);
-            QTreeWidgetItem* def = new QTreeWidgetItem(tree);
+            auto def = new QTreeWidgetItem(tree);
             def->setText(0, tr("Select organism"));
             def->setFlags(def->flags() & ~Qt::ItemIsSelectable);
             tree->insertTopLevelItem(0, def);

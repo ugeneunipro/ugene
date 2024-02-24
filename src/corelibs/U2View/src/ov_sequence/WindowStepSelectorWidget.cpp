@@ -114,13 +114,13 @@ MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget* p, double min, double max, b
 
     normalPalette = maxBox->palette();
 
-    QFormLayout* l = new QFormLayout;
+    auto l = new QFormLayout;
     l->setSizeConstraint(QLayout::SetMinAndMaxSize);
     l->addRow(tr("Minimum"), minBox);
     l->addRow(tr("Maximum"), maxBox);
     minmaxGroup->setLayout(l);
 
-    QVBoxLayout* mainLayout = new QVBoxLayout;
+    auto mainLayout = new QVBoxLayout;
     mainLayout->setSizeConstraint(QLayout::SetFixedSize);
     mainLayout->setMargin(0);
     mainLayout->addWidget(minmaxGroup);
@@ -175,11 +175,11 @@ WindowStepSelectorDialog::WindowStepSelectorDialog(QWidget* p, const U2Region& w
     : QDialog(p) {
     wss = new WindowStepSelectorWidget(this, winRange, win, step);
     mms = new MinMaxSelectorWidget(this, min, max, e);
-    QVBoxLayout* l = new QVBoxLayout();
-    QHBoxLayout* buttonsLayout = new QHBoxLayout();
+    auto l = new QVBoxLayout();
+    auto buttonsLayout = new QHBoxLayout();
     buttonsLayout->addStretch(10);
-    QPushButton* cancelButton = new QPushButton(tr("Cancel"), this);
-    QPushButton* okButton = new QPushButton(tr("OK"), this);
+    auto cancelButton = new QPushButton(tr("Cancel"), this);
+    auto okButton = new QPushButton(tr("OK"), this);
     buttonsLayout->addWidget(okButton);
     buttonsLayout->addWidget(cancelButton);
 

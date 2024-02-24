@@ -98,7 +98,7 @@ void PVRowsManager::addAnnotation(Annotation* a) {
         }
     }
 
-    PVRowData* row = new PVRowData(name);
+    auto row = new PVRowData(name);
 
     row->ranges << location;
     row->annotations.append(a);
