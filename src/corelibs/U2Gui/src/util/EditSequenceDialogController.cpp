@@ -114,7 +114,7 @@ EditSequenceDialogController::EditSequenceDialogController(const EditSequencDial
     connect(ui->endPosToolButton, SIGNAL(clicked()), this, SLOT(sl_endPositionliClicked()));
 
     // event filter
-    SeqPasterEventFilter* evFilter = new SeqPasterEventFilter(this);
+    auto evFilter = new SeqPasterEventFilter(this);
     w->setEventFilter(evFilter);
     connect(evFilter, SIGNAL(si_enterPressed()), this, SLOT(sl_enterPressed()));
 }

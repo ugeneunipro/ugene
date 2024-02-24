@@ -41,7 +41,7 @@ static const int ITEMS_SPACING = 10;
 static const int TITLE_SPACING = 5;
 
 static inline QVBoxLayout* initLayout(QWidget* w) {
-    QVBoxLayout* layout = new QVBoxLayout;
+    auto layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(5);
 
@@ -75,7 +75,7 @@ static inline void createTwoWayBinding(QCheckBox* checkBox, QAction* action) {
 // ------- Reads ----------
 
 QWidget* AssemblySettingsWidget::createReadsSettings() {
-    QWidget* group = new QWidget(this);
+    auto group = new QWidget(this);
     QVBoxLayout* layout = initLayout(group);
     AssemblyReadsArea* readsArea = ui->getReadsArea();
     hint = new QLabel("", group);
@@ -110,19 +110,19 @@ QWidget* AssemblySettingsWidget::createReadsSettings() {
     layout->addWidget(readsHighlightCombo);
     layout->addWidget(hint);
 
-    QLabel* aboutScrolling = new QLabel(tr("Scrolling can be optimized by drawing only reads' positions without content while scrolling:"));
+    auto aboutScrolling = new QLabel(tr("Scrolling can be optimized by drawing only reads' positions without content while scrolling:"));
     aboutScrolling->setWordWrap(true);
     aboutScrolling->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     layout->addWidget(aboutScrolling);
 
-    QCheckBox* optimizeScroll = new QCheckBox(tr("Optimize scrolling"), group);
+    auto optimizeScroll = new QCheckBox(tr("Optimize scrolling"), group);
     QAction* optimizeAction = readsArea->getOptimizeRenderAction();
     createTwoWayBinding(optimizeScroll, optimizeAction);
     layout->addWidget(optimizeScroll);
 
     layout->addSpacing(ITEMS_SPACING);
 
-    QCheckBox* showHint = new QCheckBox(tr("Show pop-up hint"), group);
+    auto showHint = new QCheckBox(tr("Show pop-up hint"), group);
     QAction* hintAct = ui->getWindow()->getReadHintEnabledAction();
     createTwoWayBinding(showHint, hintAct);
     layout->addWidget(showHint);
@@ -156,7 +156,7 @@ void AssemblySettingsWidget::sl_changeCellRenderer(int index) {
 // ------- Consensus ----------
 
 QWidget* AssemblySettingsWidget::createConsensusSettings() {
-    QWidget* group = new QWidget(this);
+    auto group = new QWidget(this);
     QVBoxLayout* layout = initLayout(group);
     AssemblyConsensusArea* consensusArea = ui->getConsensusArea();
 
@@ -178,7 +178,7 @@ QWidget* AssemblySettingsWidget::createConsensusSettings() {
 
     layout->addSpacing(ITEMS_SPACING);
 
-    QCheckBox* showDiff = new QCheckBox(tr("Difference from reference"), group);
+    auto showDiff = new QCheckBox(tr("Difference from reference"), group);
     QAction* diffAct = consensusArea->getDiffAction();
     createTwoWayBinding(showDiff, diffAct);
     layout->addWidget(showDiff);
@@ -203,20 +203,20 @@ void AssemblySettingsWidget::sl_changeConsensusAlgorithm(int index) {
 // ------- Ruler ----------
 
 QWidget* AssemblySettingsWidget::createRulerSettings() {
-    QWidget* group = new QWidget(this);
+    auto group = new QWidget(this);
     QVBoxLayout* layout = initLayout(group);
     AssemblyBrowser* browser = ui->getWindow();
 
     layout->addSpacing(TITLE_SPACING);
 
-    QCheckBox* showCoords = new QCheckBox(tr("Show coordinates"), group);
+    auto showCoords = new QCheckBox(tr("Show coordinates"), group);
     QAction* coordAct = browser->getCoordsOnRulerAction();
     createTwoWayBinding(showCoords, coordAct);
     layout->addWidget(showCoords);
 
     layout->addSpacing(ITEMS_SPACING);
 
-    QCheckBox* showCoverage = new QCheckBox(tr("Show coverage under cursor"), group);
+    auto showCoverage = new QCheckBox(tr("Show coverage under cursor"), group);
     QAction* coverageAct = browser->getCoverageOnRulerAction();
     createTwoWayBinding(showCoverage, coverageAct);
     layout->addWidget(showCoverage);

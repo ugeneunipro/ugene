@@ -87,13 +87,13 @@ void TestFramework::setTRHelpSections() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(cmdLineRegistry != nullptr);
 
-    CMDLineHelpProvider* testTimeoutSection = new CMDLineHelpProvider(
+    auto testTimeoutSection = new CMDLineHelpProvider(
         TEST_TIMEOUT_CMD_OPTION,
         GTestFormatRegistry::tr("Sets timeout for the tests."),
         "",  // No full description
         "<number_of_seconds>");
 
-    CMDLineHelpProvider* testRunnerThreads = new CMDLineHelpProvider(
+    auto testRunnerThreads = new CMDLineHelpProvider(
         CMDLineCoreOptions::TEST_THREADS,
         GTestFormatRegistry::tr("Sets the number of threads."),
         GTestFormatRegistry::tr(
@@ -101,19 +101,19 @@ void TestFramework::setTRHelpSections() {
             " that can run at the same time.",
             "<number_of_threads>"));
 
-    CMDLineHelpProvider* testReport = new CMDLineHelpProvider(
+    auto testReport = new CMDLineHelpProvider(
         CMDLineCoreOptions::TEST_REPORT,
         GTestFormatRegistry::tr("Sets the folder for the test report."),
         "",  // No full description
         "<path_to_dir>");
 
-    CMDLineHelpProvider* suiteUrlSection = new CMDLineHelpProvider(
+    auto suiteUrlSection = new CMDLineHelpProvider(
         CMDLineCoreOptions::SUITE_URLS,
         GTestFormatRegistry::tr("Loads test suites and runs them."),
         "",  // No full description
         "<test_suite1> [<test_suite2> ...]");
 
-    CMDLineHelpProvider* teamcityOutputSection = new CMDLineHelpProvider(
+    auto teamcityOutputSection = new CMDLineHelpProvider(
         CMDLineCoreOptions::TEAMCITY_OUTPUT,
         GTestFormatRegistry::tr("Output a test's messages to the TeamCity system."),
         "");  // No full description

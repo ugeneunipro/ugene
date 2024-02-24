@@ -98,7 +98,7 @@ DataTypePtr IntegralBusPort::getBusType() const {
         return DataTypePtr(new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>()));
     }
     recursing = true;
-    IntegralBusType* t = new IntegralBusType(Descriptor(*this), QMap<Descriptor, DataTypePtr>());
+    auto t = new IntegralBusType(Descriptor(*this), QMap<Descriptor, DataTypePtr>());
     bool addPath = owner()->getProto()->getInfluenceOnPathFlag();
     foreach (Port* p, owner()->getInputPorts()) {
         if ((p->getFlags() & BLIND_INPUT) == 0) {

@@ -73,7 +73,7 @@ Wizard* HRWizardParser::takeResult() {
     pages.clear();
     pagesMap.clear();
 
-    Wizard* wizard = new Wizard(wizardName, retPages, helpPageId);
+    auto wizard = new Wizard(wizardName, retPages, helpPageId);
     foreach (const QString& name, vars.keys()) {
         wizard->addVariable(vars[name]);
     }

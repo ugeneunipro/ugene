@@ -301,7 +301,7 @@ QList<PluginDesc> PluginDescriptorHelper::orderPlugins(const QList<PluginDesc>& 
     }
 
     GAutoDeleteList<DepNode> allNodes;
-    DepNode* rootNode = new DepNode();
+    auto rootNode = new DepNode();
     rootNode->root = true;
     allNodes.qlist.append(rootNode);
 
@@ -325,7 +325,7 @@ QList<PluginDesc> PluginDescriptorHelper::orderPlugins(const QList<PluginDesc>& 
             return unordered;
         }
         if (nDeps == 0 || nodes.size() == nDeps) {
-            DepNode* descNode = new DepNode();
+            auto descNode = new DepNode();
             descNode->desc = desc;
             allNodes.qlist.append(descNode);
             // now add this node as a child to all nodes it depends on

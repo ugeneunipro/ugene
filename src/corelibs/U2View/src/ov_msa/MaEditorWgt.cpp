@@ -150,7 +150,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     seqAreaLayout->setRowStretch(1, 1);
     seqAreaLayout->setColumnStretch(1, 1);
 
-    QWidget* seqAreaContainer = new QWidget();
+    auto seqAreaContainer = new QWidget();
     seqAreaContainer->setLayout(seqAreaLayout);
 
     QWidget* consensusLabel = createHeaderLabelWidget(tr("Consensus:"), Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), consensusArea, false);
@@ -178,7 +178,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     nameAndSequenceAreasSplitter->addWidget(seqAreaContainer);
     nameAndSequenceAreasSplitter->setSizes({50, 100});  // Initial proportions of the name & sequence are (splitter has no real size at this moment).
 
-    QVBoxLayout* maContainerLayout = new QVBoxLayout();
+    auto maContainerLayout = new QVBoxLayout();
     maContainerLayout->setContentsMargins(0, 0, 0, 0);
     maContainerLayout->setSpacing(0);
 
@@ -189,10 +189,10 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
         maContainerLayout->addWidget(statusBar);
     }
 
-    QWidget* maContainer = new QWidget(this);
+    auto maContainer = new QWidget(this);
     maContainer->setLayout(maContainerLayout);
 
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    auto mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);

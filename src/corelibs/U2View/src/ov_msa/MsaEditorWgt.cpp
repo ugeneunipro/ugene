@@ -77,7 +77,7 @@ void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
 void MsaEditorWgt::createDistanceColumn(MsaDistanceMatrix* matrix) {
     dataList->setMatrix(matrix);
     dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    MsaEditorAlignmentDependentWidget* statisticsWidget = new MsaEditorAlignmentDependentWidget(this, dataList);
+    auto statisticsWidget = new MsaEditorAlignmentDependentWidget(this, dataList);
 
     MaSplitterUtils::insertWidgetWithScale(nameAndSequenceAreasSplitter, statisticsWidget, 0.04, nameAreaContainer, 1);
 }

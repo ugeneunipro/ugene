@@ -37,7 +37,7 @@ namespace U2 {
 /************************************************************************/
 AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings& _s, QWidget* p)
     : QWidget(p), settings(_s) {
-    QHBoxLayout* layout = new QHBoxLayout();
+    auto layout = new QHBoxLayout();
     layout->addWidget(this);
     p->setLayout(layout);
 
@@ -113,7 +113,7 @@ void AlignmentLogoRenderArea::paintEvent(QPaintEvent* e) {
             QPointF baseline(pos * (bitWidth + SPACER), yLevel);
             int charHeight = heights[(int)uchar(ch)][pos] * bitHeight;
             QColor charColor = settings.colorScheme[(int)uchar(ch)];
-            AlignmentLogoItem* logoItem = new AlignmentLogoItem(ch, baseline, bitWidth, charHeight, charFont, charColor);
+            auto logoItem = new AlignmentLogoItem(ch, baseline, bitWidth, charHeight, charFont, charColor);
             logoItem->paint(&p, nullptr, this);
             yLevel -= charHeight + SPACER;
         }

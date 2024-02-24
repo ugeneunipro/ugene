@@ -46,7 +46,7 @@ QWidget* McaGeneralTabFactory::createWidget(GObjectViewController* objView, cons
                QString("Internal error: unable to cast object view to McaEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    McaGeneralTab* widget = new McaGeneralTab(msa);
+    auto widget = new McaGeneralTab(msa);
     widget->setObjectName("McaGeneralTab");
     return widget;
 }
