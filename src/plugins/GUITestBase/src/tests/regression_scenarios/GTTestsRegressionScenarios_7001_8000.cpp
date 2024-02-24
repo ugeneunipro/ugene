@@ -56,10 +56,12 @@
 #include <QFileInfo>
 #include <QListWidget>
 #include <QRadioButton>
+#include <QRegExp>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CMDLineUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
 
@@ -4104,6 +4106,23 @@ GUI_TEST_CLASS_DEFINITION(test_7781) {
     CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
     CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
     CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7784) {
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb/", "example-alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
+    QStringList arguments {
+        "--log-no-task-progress",
+        "--log-level-details",
+        "--task=\"" + testDir + "_common_data/scenarios/_regression/7784/7784.uwl\"",
+        "--in-assembly=\"" + testDir + "_common_data/ugenedb/example-alignment.ugenedb\""};
+    QProcess process;
+    process.start(cmdlineUgenePath, arguments);
+    process.waitForFinished(GT_OP_WAIT_MILLIS);
+    QString outStr = process.readAllStandardOutput();
+    CHECK_SET_ERR(outStr.contains("Nothing to write"),
+                  "Cmdline output doesn't contain 'Nothing to write' message");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7786) {
