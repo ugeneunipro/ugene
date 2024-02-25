@@ -20,7 +20,6 @@
  */
 #include "MfoldDialog.h"
 
-#include <QComboBox>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QScopedPointer>
@@ -41,7 +40,17 @@
 #include <U2View/AnnotatedDNAView.h>
 
 namespace U2 {
-const QString tooLongRegionStr = QT_TR_NOOP("Region cannot be larger than 3000 nucleotides");
+namespace {
+// 1. Prior to version 8748 of the ext_tools repository (Fix bug with circular 1800bp sequence),
+//      tool froze on DNA 3000bp+.
+// 2. After fix, the tool can work with 5000bp sequence (a few minutes), but cannot work with 10'000.
+// 3. Thus, this constant can potentially even be increased.
+// 4. Although large sequences don't fit well on images: letters are very small.
+// 5. This bugfix differentiates UGENE from the original http://www.unafold.org/ tool,
+//      as some users enter large sequences and break the server.
+constexpr int maxRegionLen = 3000;
+const QString tooLongRegionStr = QString(QT_TR_NOOP("Region cannot be larger than %1 nucleotides")).arg(maxRegionLen);
+}  // namespace
 
 MfoldDialog::MfoldDialog(const ADVSequenceObjectContext& ctx)
     : QDialog(ctx.getAnnotatedDNAView()->getWidget()), seqLen(ctx.getSequenceLength()),
@@ -55,11 +64,16 @@ MfoldDialog::MfoldDialog(const ADVSequenceObjectContext& ctx)
 
 void MfoldDialog::initRegionSelector(DNASequenceSelection* seqSelection) {
     regionSelector = new RegionSelector(this, seqLen, true, seqSelection, isCircular);
+
+    // Layout:
+    // 0. Main settings
+    // 1. Extended settings
+    // 2. Region selector
+    // That's why second place
     ui.mfoldTabLayout->insertWidget(2, regionSelector);
 
-    auto lineEdits = regionSelector->getLineEdits();
-    startEdit = lineEdits.first;
-    endEdit = lineEdits.second;
+    startEdit = regionSelector->getStartLineEdit();
+    endEdit = regionSelector->getEndLineEdit();
     validateRegionAndShowError();
     connect(startEdit, &QLineEdit::textChanged, this, &MfoldDialog::validateRegionAndShowError);
     connect(endEdit, &QLineEdit::textChanged, this, &MfoldDialog::validateRegionAndShowError);
@@ -94,12 +108,12 @@ void MfoldDialog::validateRegionAndShowError() {
     } else if (endEdit->text().isEmpty()) {
         err = tr("End position not specified");
     } else if (!startOk) {
-        err = tr("Start position was overflowed");
+        err = tr("Invalid start position");
     } else if (!endOk) {
-        err = tr("End position was overflowed");
+        err = tr("Invalid end position");
     } else if (!isCircular && startVal > endVal) {
         err = tr("Start position cannot be greater than end position");
-    } else if (getRegionLen(startVal, endVal) > 3000) {
+    } else if (getRegionLen(startVal, endVal) > maxRegionLen) {
         err = tooLongRegionStr;
     } else {
         err = "";
@@ -132,7 +146,7 @@ void MfoldDialog::accept() {
         regionSelector->setFocus(Qt::OtherFocusReason);
         return;
     }
-    if (region.length > 3000) {
+    if (region.length > maxRegionLen) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::NoIcon,
                                                                    L10N::errorTitle(),
                                                                    tr("Invalid sequence region!"),

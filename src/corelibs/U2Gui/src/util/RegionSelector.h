@@ -71,7 +71,9 @@ public:
 
     void showErrorMessage();
 
-    QPair<QLineEdit*, QLineEdit*> getLineEdits() const;
+    // Returns internal line edit widgets. Can be used for region validation.
+    const QLineEdit* getStartLineEdit() const;
+    const QLineEdit* getEndLineEdit() const;
 
 signals:
     void si_regionChanged(const U2Region& newRegion);

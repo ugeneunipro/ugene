@@ -24,7 +24,6 @@
 #include "MfoldSettings.h"
 #include "ui_MfoldDialog.h"
 
-class QComboBox;
 class QLineEdit;
 
 namespace U2 {
@@ -32,7 +31,6 @@ class ADVSequenceObjectContext;
 class DNASequenceSelection;
 class GUrl;
 class RegionSelector;
-class SaveDocumentController;
 
 // Dialog for Mfold action.
 class MfoldDialog final : public QDialog {
@@ -41,10 +39,8 @@ class MfoldDialog final : public QDialog {
     // GUI fields.
     Ui_MfoldDialog ui;
     RegionSelector* regionSelector = nullptr;
-    SaveDocumentController* pathController = nullptr;
-    QLineEdit* startEdit = nullptr;
-    QLineEdit* endEdit = nullptr;
-    QComboBox* comboBox = nullptr;
+    const QLineEdit* startEdit = nullptr;
+    const QLineEdit* endEdit = nullptr;
 
     // To check the correctness of a region.
     qint64 seqLen = 0;

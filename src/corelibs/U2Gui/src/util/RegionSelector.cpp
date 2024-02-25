@@ -97,8 +97,11 @@ void RegionSelector::showErrorMessage() {
     }
 }
 
-QPair<QLineEdit*, QLineEdit*> RegionSelector::getLineEdits() const {
-    return {startEdit, endEdit};
+const QLineEdit* RegionSelector::getStartLineEdit() const {
+    return startEdit;
+}
+const QLineEdit* RegionSelector::getEndLineEdit() const {
+    return endEdit;
 }
 
 void RegionSelector::initLayout() {

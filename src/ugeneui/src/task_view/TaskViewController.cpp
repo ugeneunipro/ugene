@@ -477,10 +477,16 @@ static void checkPathAndShowErrorOrOpen(const QString& url, QWidget* parent) {
         QMessageBox::critical(parent, L10N::errorTitle(), error + url);
         return;
     }
+
     QString preparedUrl = "file:///" + url;
     if (isOsUnix()) {
+        // 3 slashes from file prefix + 1 slash from root = 4 slashes, but there should be 3 slashes totally
         preparedUrl.replace(QRegularExpression("\\/{3,}"), "///");
     } else {
+        // 2 situations:
+        //      1. Normal path C:/... -> file:///C:/... i.e. 3 slashes
+        //      2. UNC or possible long path
+        //          3 slashes from file prefix + 2 slashes at the beginning of path = 5 slashes, but this doesn't work, there should be 4 slashes.
         preparedUrl.replace(QRegularExpression("\\/{4,}"), "////");
     }
     QDesktopServices::openUrl(QUrl(preparedUrl));

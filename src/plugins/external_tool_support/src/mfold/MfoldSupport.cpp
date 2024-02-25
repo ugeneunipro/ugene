@@ -83,7 +83,9 @@ MfoldContext::MfoldContext(QObject* p)
 }
 
 void MfoldContext::initViewContext(GObjectViewController* controller) {
-    ADVGlobalAction* a = new ADVGlobalAction(qobject_cast<AnnotatedDNAView*>(controller),
+    auto adv = qobject_cast<AnnotatedDNAView*>(controller);
+    SAFE_POINT_NN(adv, );
+    ADVGlobalAction* a = new ADVGlobalAction(adv,
                                              QIcon(":/external_tool_support/images/mfold.png"),
                                              tr("Mfold..."),
                                              2002,
@@ -111,12 +113,15 @@ void MfoldContext::sl_showDialog() {
     CHECK_OP(os, );
 
     auto objView = qobject_cast<GObjectViewAction*>(sender())->getObjectView();
+    SAFE_POINT_NN(objView, );
     auto seqCtx = qobject_cast<AnnotatedDNAView*>(objView)->getActiveSequenceContext();
-    MfoldDialog dialog(*seqCtx);
-    CHECK(dialog.exec() == QDialog::Accepted, );
+    SAFE_POINT_NN(seqCtx, );
+    QScopedPointer<MfoldDialog, QScopedPointerDeleteLater> dialog(new MfoldDialog(*seqCtx));
+    SAFE_POINT_NN(dialog, );
+    CHECK(dialog->exec() == QDialog::Accepted, );
 
     auto t = createMfoldTask(seqCtx->getSequenceObject(),
-                             dialog.getSettings(),
+                             dialog->getSettings(),
                              seqCtx->getAnnotatedDNAView()->getWidget()->width(),
                              os);
     CHECK_OP(os, );

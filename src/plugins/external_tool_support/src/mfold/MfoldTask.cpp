@@ -59,9 +59,24 @@ static QString toAmpersandWithoutSpaces(const QString& string) {
 }
 
 namespace U2 {
+namespace {
+// Detailed table (detTable) of breakdown of each folding into loops can be very large
+// (see CVU55762 results, any region length 500+). When displaying such table, UGENE begins to freeze.
+// We need heuristic to determine if the table is large.
+
+// Each table row contains from 4 to 7 tags. Let's round up tag expected number for one row to 5.
+// In total, we will consider table large if it has more than 50 rows, i.e. 5*50=250 (closing) tags.
+constexpr int maxDetTableTagNum = 250;
+// Approximate experimentally determined constant at which UGENE freezes significantly when opening report.
+constexpr int maxHtmlReportLen = 100'000;
+// By default, tool writes this size in ps files.
+constexpr int defaultImgWidth = 792;
+constexpr int defaultImgHeight = 1072;
+
 const QString DEG_SYM = QChar(0xB0);
 const QString DELTA_SYM = QChar(0x3B4);
 const QString MID_DOT_SYM = QChar(0xB7);
+}  // namespace
 
 static int getStructuresNum(const GUrl& cwd, U2OpStatus& os) {
     QString path = cwd.getURLString();
@@ -309,7 +324,7 @@ public:
                       "<table class=\"dettbl\">";
             QString detTable = Det::parseNextTblContent(detReader, t.stateInfo);
             SAFE_POINT_EXT(!detTable.isEmpty(), t.stateInfo.setError("Unexpected EOF"), {});
-            if (!largeReport && detTable.count("</") < 300) {  // 300 closing tags ~ 50 rows
+            if (!largeReport && detTable.count("</") < maxDetTableTagNum) {
                 detailTables += detTable;
             } else {
                 largeReport = true;
@@ -329,7 +344,7 @@ public:
                   "</script>"
                   "</body>"
                   "</html>";
-        if (report.size() > 100'000) {
+        if (report.size() > maxHtmlReportLen) {
             largeReport = true;
         }
         return report;
@@ -361,11 +376,15 @@ public:
         |                    | Maximum distance between paired bases: | default                   |
         | Output HTML report | C:/Users/user/out.html                                             |
 */
+
+        // UGENE uses width=200 to print task info table (status, time). We mimic single style.
+        // Second column will take up the entire remaining window width plus subtract 50 pixels for padding, margins, and borders.
+        // Min value is set to 300 for no reason, max is 8K UHD width.
         QString report = "<table>"
                          "<tr>"
                          "<th width=\"200\" align=\"left\">Parameters</th>"
                          "<td width=\"" +
-                         QString::number(qBound(300, t.windowWidth - 250, 8192));
+                         QString::number(qBound(300, t.windowWidth - 250, 7680));
         report += "\">"
                   "<table style=\"border-collapse: collapse; border: 0px;\">"
                   "<tr>"
@@ -596,15 +615,15 @@ StrStrMap MfoldTask::constructEtEnv() const {
     // We must set the correct width ourselves, otherwise img will go beyond the edges of the resulting table.
     // The only problem is with the width.
 
-    // Mfold produces all images with a resolution of 792x1072. So the final width should be as follows:
+    // Mfold produces all images with a resolution of 792x1072 (defaultImgWidth x defaultImgHeight). So the final width should be as follows:
     // 1. we will take the width of the image equal to 0.5 of report window width (we assume that the report window
     //     will be the same size as the SV window)
     // 2. limit it from below to 300
     // 3. limit it from above to 792 -- the default image width
 
     // Calculate the height so as to preserve the original proportions (792x1072).
-    imgSize.setWidth(qBound(300, windowWidth / 2, 792));
-    imgSize.setHeight(imgSize.width() * 1072 / 792);
+    imgSize.setWidth(qBound(300, windowWidth / 2, defaultImgWidth));
+    imgSize.setHeight(imgSize.width() * defaultImgHeight / defaultImgWidth);
     envVars["U2_GS_IMG_SIZE_FOR_UGENE_REPORT"] = QString("%1x%2").arg(imgSize.width()).arg(imgSize.height());
     envVars["U2_GS_IMG_OUT_PATH"] = settings.outSettings.outPath;
     envVars["U2_GS_IMG_DPI_FOR_OUT_REPORT"] = QString::number(settings.outSettings.dpi);
