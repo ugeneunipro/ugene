@@ -127,7 +127,7 @@ GraphMenuAction::GraphMenuAction(const DNAAlphabet* a)
 
     separator = menu->addSeparator();
 
-    QAction* closeAllAction = new QAction(GraphMenuAction::tr("Close all graphs"), this);
+    auto closeAllAction = new QAction(GraphMenuAction::tr("Close all graphs"), this);
     menu->addAction(closeAllAction);
     connect(closeAllAction, SIGNAL(triggered()), this, SLOT(sl_closeAllGraphs()));
     setVisible(a->isNucleic());

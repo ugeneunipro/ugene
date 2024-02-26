@@ -109,10 +109,10 @@ void GenerateDNAWorkerFactory::init() {
         a << new Attribute(wnd, BaseTypes::NUM_TYPE(), true, 1000);
         a << new Attribute(rd, BaseTypes::STRING_TYPE(), false);
 
-        Attribute* aAttr = new Attribute(apd, BaseTypes::NUM_TYPE(), false, 25);
-        Attribute* cAttr = new Attribute(cpd, BaseTypes::NUM_TYPE(), false, 25);
-        Attribute* gAttr = new Attribute(gpd, BaseTypes::NUM_TYPE(), false, 25);
-        Attribute* tAttr = new Attribute(tpd, BaseTypes::NUM_TYPE(), false, 25);
+        auto aAttr = new Attribute(apd, BaseTypes::NUM_TYPE(), false, 25);
+        auto cAttr = new Attribute(cpd, BaseTypes::NUM_TYPE(), false, 25);
+        auto gAttr = new Attribute(gpd, BaseTypes::NUM_TYPE(), false, 25);
+        auto tAttr = new Attribute(tpd, BaseTypes::NUM_TYPE(), false, 25);
         aAttr->addRelation(new VisibilityRelation(ALGORITHM, "GC Content"));
         cAttr->addRelation(new VisibilityRelation(ALGORITHM, "GC Content"));
         gAttr->addRelation(new VisibilityRelation(ALGORITHM, "GC Content"));
@@ -122,7 +122,7 @@ void GenerateDNAWorkerFactory::init() {
         a << gAttr;
         a << tAttr;
 
-        Attribute* attr = new Attribute(gcSkew, BaseTypes::NUM_TYPE(), false, 0.25);
+        auto attr = new Attribute(gcSkew, BaseTypes::NUM_TYPE(), false, 0.25);
         attr->addRelation(new VisibilityRelation(ALGORITHM, "GC Skew"));
         a << attr;
     }

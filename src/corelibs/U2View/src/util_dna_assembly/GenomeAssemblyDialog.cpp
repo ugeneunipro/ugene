@@ -131,7 +131,7 @@ void GenomeAssemblyDialog::updateProperties() {
     } else if (numProperties < numberOfReads) {
         // add items
         for (int i = numProperties; i < numberOfReads; i++) {
-            ReadPropertiesItem* item = new ReadPropertiesItem(propertiesReadsTable);
+            auto item = new ReadPropertiesItem(propertiesReadsTable);
             item->setLibraryType(libraryComboBox->currentText());
             ReadPropertiesItem::addItemToTable(item, propertiesReadsTable);
         }
@@ -146,7 +146,7 @@ void GenomeAssemblyDialog::updateProperties() {
 
 void GenomeAssemblyDialog::addReads(QStringList fileNames, QTreeWidget* readsWidget) {
     foreach (const QString& f, fileNames) {
-        QTreeWidgetItem* item = new QTreeWidgetItem();
+        auto item = new QTreeWidgetItem();
         item->setToolTip(0, f);
         item->setText(0, GUrl(f).fileName());
         item->setData(0, Qt::UserRole, f);

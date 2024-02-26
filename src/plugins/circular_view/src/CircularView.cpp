@@ -575,7 +575,7 @@ void CircularViewRenderArea::drawSequenceSelection(QPainter& p) {
     QList<QPainterPath*> paths;
 
     foreach (const U2Region& r, selection) {
-        QPainterPath* path = new QPainterPath();
+        auto path = new QPainterPath();
         int yLevel = regionY.count() - 1;
         QRect outerRect(-outerEllipseSize / 2 - yLevel * ellipseDelta / 2 - ARROW_HEIGHT_DELTA,
                         -outerEllipseSize / 2 - yLevel * ellipseDelta / 2 - ARROW_HEIGHT_DELTA,
@@ -912,7 +912,7 @@ CircularAnnotationRegionItem* CircularViewRenderArea::createAnnotationRegionItem
         centerPercent = center / path.length();
     }
 
-    CircularAnnotationRegionItem* regItem = new CircularAnnotationRegionItem(path, isShort, index);
+    auto regItem = new CircularAnnotationRegionItem(path, isShort, index);
     CHECK(regItem != nullptr, nullptr);
     regItem->setArrowCenterPercentage(centerPercent);
 
@@ -1011,7 +1011,7 @@ void CircularViewRenderArea::buildAnnotationLabel(const QFont& font, Annotation*
     }
 
     for (int regionIndex = 0; regionIndex < newLocation.count(); regionIndex++) {
-        CircularAnnotationLabel* label = new CircularAnnotationLabel(a, newLocation, isAutoAnnotation, regionIndex, seqLen, font, this);
+        auto label = new CircularAnnotationLabel(a, newLocation, isAutoAnnotation, regionIndex, seqLen, font, this);
         labelList.append(label);
         CircularAnnotationRegionItem* ri = circItems[a]->getRegions()[regionIndex];
         label->setAnnRegion(ri);

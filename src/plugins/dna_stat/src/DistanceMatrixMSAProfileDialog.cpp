@@ -385,7 +385,7 @@ Task::ReportResult DistanceMatrixMSAProfileTask::report() {
     }
     assert(!resultText.isEmpty());
     QString title = s.profileName.isEmpty() ? tr("Distance matrix") : tr("Distance matrix for %1").arg(s.profileName);
-    WebWindow* w = new WebWindow(title, resultText);
+    auto w = new WebWindow(title, resultText);
 
     // Qt 5.4 has a bug and does not process 'white-space: nowrap' correctly. Enforcing it using rich text styles.
     w->textBrowser->setWordWrapMode(QTextOption::NoWrap);

@@ -557,7 +557,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
     QSet<QString> actionNames = aaActionMap.keys().toSet();
 
     foreach (const QString& aName, actionNames) {
-        QAction* action = new QAction(toggleAutoAnnotationsMenu);
+        auto action = new QAction(toggleAutoAnnotationsMenu);
         action->setObjectName(aName);
         connect(action, SIGNAL(triggered()), SLOT(sl_toggleAutoAnnotationHighlighting()));
         toggleAutoAnnotationsMenu->addAction(action);

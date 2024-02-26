@@ -173,7 +173,7 @@ Document* ImportAnnotationsFromCSVTask::prepareNewDocument(const QMap<QString, Q
     Document* result = format->createNewLoadedDocument(iof, config.dstFile, os);
     CHECK_OP(os, nullptr);
 
-    AnnotationTableObject* ao = new AnnotationTableObject("Annotations", result->getDbiRef());
+    auto ao = new AnnotationTableObject("Annotations", result->getDbiRef());
     foreach (const QString& groupName, groups.keys()) {
         ao->addAnnotations(groups[groupName], groupName);
     }

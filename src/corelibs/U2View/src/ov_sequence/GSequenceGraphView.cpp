@@ -157,17 +157,17 @@ void GSequenceGraphView::updateMovingLabels() {
 }
 
 void GSequenceGraphView::pack() {
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    auto vLayout = new QVBoxLayout();
     vLayout->setMargin(0);
     vLayout->setSpacing(0);
     vLayout->addWidget(renderArea);
 
     // use extra layout with scrollbar to have synchronized width with pan-view
     // in future fake-scroll-bar can be replaced with graph specific toolbar
-    QHBoxLayout* hLayout = new QHBoxLayout();
+    auto hLayout = new QHBoxLayout();
     hLayout->setMargin(0);
     hLayout->setSpacing(0);
-    QScrollBar* fakeBar = new QScrollBar(Qt::Vertical, this);
+    auto fakeBar = new QScrollBar(Qt::Vertical, this);
     fakeBar->setDisabled(true);
     hLayout->addLayout(vLayout);
     hLayout->addWidget(fakeBar);
@@ -202,7 +202,7 @@ void GSequenceGraphView::buildPopupMenu(QMenu& menu) {
                "Internal error: menu is not empty during insertion of the Graph menu!", );
 
     // Creating the Graphs menu
-    QMenu* graphMenu = new QMenu(tr("Graph"));
+    auto graphMenu = new QMenu(tr("Graph"));
     graphMenu->setIcon(QIcon(":core/images/graphs.png"));
     graphMenu->menuAction()->setObjectName("Graph");
 

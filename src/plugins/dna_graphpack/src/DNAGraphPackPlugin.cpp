@@ -42,7 +42,7 @@ namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     if (AppContext::getMainWindow()) {
-        DNAGraphPackPlugin* plug = new DNAGraphPackPlugin();
+        auto plug = new DNAGraphPackPlugin();
         return plug;
     }
     return nullptr;
@@ -87,7 +87,7 @@ void DNAGraphPackViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* _sequenc
     }
 
     foreach (GSequenceGraphFactory* factory, graphFactories) {
-        GraphAction* action = new GraphAction(factory);
+        auto action = new GraphAction(factory);
         if (!factory->isEnabled(sequenceWidget->getSequenceObject())) {
             action->setDisabled(true);
         }
