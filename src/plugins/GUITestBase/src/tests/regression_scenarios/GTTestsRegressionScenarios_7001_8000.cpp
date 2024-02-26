@@ -957,9 +957,9 @@ GUI_TEST_CLASS_DEFINITION(test_7257) {
             : pathToCheck(pathToCheck_) {};
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-#if defined(Q_OS_WIN)
-            pathToCheck.replace("/", "\\");
-#endif
+            if (isOsWindows()) {
+                pathToCheck.replace("/", "\\");
+            }
             GTLineEdit::checkText(GTWidget::findLineEdit("fileNameEdit", dialog), pathToCheck);
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
