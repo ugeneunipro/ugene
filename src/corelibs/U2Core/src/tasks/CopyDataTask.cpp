@@ -25,14 +25,13 @@
 
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
+#include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
 const int CopyDataTask::BUFFSIZE = 32 * 1024;
-const QByteArray CopyDataTask::QB_CR = QByteArray("\r");
-const QByteArray CopyDataTask::QB_LF = QByteArray("\n");
-const QByteArray CopyDataTask::QB_CRLF = QByteArray("\r\n");
+const char CopyDataTask::CHAR_CR = '\r';
 
 CopyDataTask::CopyDataTask(IOAdapterFactory* _ioFrom, const GUrl& _urlFrom, IOAdapterFactory* _ioTo, const GUrl& _urlTo, ReplaceLineEndings newLineEndings_)
     : Task(tr("Copy Data Task"), TaskFlag_None), ioFrom(_ioFrom), ioTo(_ioTo),
@@ -52,30 +51,19 @@ void CopyDataTask::run() {
     }
 
     int count = 0;
-    int initialCount = 0;
     int count_w = 0;
-    int singleCRCount = 0;
-    int singleLFCount = 0;
-    bool isCRLastSymbol = false;
-    bool replacementOccured = false;
+    bool replacementOcurred = false;
     QByteArray buff(BUFFSIZE, 0);
+    QBitArray CRCharMap = TextUtils::createBitMap(CHAR_CR);
 
     count = from->readBlock(buff.data(), BUFFSIZE);
     if (newLineEndings == ReplaceLineEndings::LF) {
-        initialCount = count;
-        int cRLFCount = buff.count(QB_CRLF);
-        if (cRLFCount > 0) {
-            singleLFCount += buff.count(QB_LF) - cRLFCount;
-        }
-        count -= cRLFCount;
-        buff.replace(QB_CRLF, QB_LF);
-        singleCRCount = buff.count(QB_CR);
-        isCRLastSymbol = buff.endsWith(QB_CR);
-        if (isCRLastSymbol) {
-            count--;
+        int newLen = TextUtils::remove(buff.data(), count, CRCharMap);
+        if (count != newLen) {
+            count = newLen;
+            replacementOcurred = true;
         }
     }
-    replacementOccured = initialCount != count;
     if (count == 0 || count == -1) {
         stateInfo.setError(tr("Cannot get data from: '%1'").arg(urlFrom.getURLString()));
         return;
@@ -94,37 +82,20 @@ void CopyDataTask::run() {
         stateInfo.progress = from->getProgress();
         count = from->readBlock(buff.data(), BUFFSIZE);
         if (newLineEndings == ReplaceLineEndings::LF && count > 0) {
-            initialCount = count;
-            int cRLFCount = buff.count(QB_CRLF);
-            if (cRLFCount > 0) {
-                singleLFCount += buff.count(QB_LF) - cRLFCount;
-            }
-            count -= cRLFCount;
-            buff.replace(QB_CRLF, QB_LF);
-            if (buff.startsWith(QB_LF) && isCRLastSymbol) {
-                singleCRCount--;
-            }
-            singleCRCount += buff.count(QB_CR);
-            isCRLastSymbol = buff.endsWith(QB_CR);
-            if (isCRLastSymbol) {
-                count--;
-            }
-            if (!replacementOccured) {
-                replacementOccured = initialCount != count;
+            int newLen = TextUtils::remove(buff.data(), count, CRCharMap);
+            if (count != newLen) {
+                count = newLen;
+                replacementOcurred = true;
             }
         }
-    }
-    if (replacementOccured) {
-        stateInfo.addWarning(tr("Line endings were changed in target file %1 during copy process.").arg(where->getURL().getURLString()));
     }
     if (count < 0 || count_w < 0) {
         if (!stateInfo.hasError()) {
             stateInfo.setError(tr("IO adapter error. %1").arg(from->errorString()));
         }
     }
-
-    if (newLineEndings == ReplaceLineEndings::LF && (singleCRCount > 0 || singleLFCount > 0)) {
-        stateInfo.setError(tr("File %1 contain different line endings."));
+    if (replacementOcurred) {
+        stateInfo.addWarning(tr("Line endings were changed in target file %1 during copy process.").arg(where->getURL().getURLString()));
     }
 }
 
