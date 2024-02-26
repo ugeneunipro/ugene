@@ -43,6 +43,7 @@
 
 #include "MfoldSettings.h"
 #include "MfoldSupport.h"
+#include "utils/OutputCollector.h"
 
 // https://stackoverflow.com/a/13993058
 static QString toAmpersandEncode(const QString& string) {
@@ -508,7 +509,8 @@ MfoldTask::MfoldTask(const QByteArray& seq,
                      const MfoldSequenceInfo& seqInfo,
                      int windowWidth)
     : Task(tr("Predict and visualize hairpins with Mfold"),
-           TaskFlags_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
+           TaskFlag_PropagateSubtaskDesc | TaskFlag_CancelOnSubtaskCancel | TaskFlag_ReportingIsSupported |
+               TaskFlag_ReportingIsEnabled),
       seq(seq), settings(settings), seqInfo(seqInfo), windowWidth(windowWidth) {
     GCOUNTER(cvar, "mfold");
 }
@@ -534,16 +536,27 @@ void MfoldTask::prepare() {
     settings.outSettings.outPath = GUrlUtils::getSlashEndedPath(settings.outSettings.outPath);
     outHtmlPath = settings.outSettings.outPath + "out.html";
 
+    etStdoutStderrListener = new OutputCollector(false);
     auto etTask = new ExternalToolRunTask(MfoldSupport::ET_MFOLD_ID,
                                           constructEtArgs(),
                                           new ExternalToolLogParser(),
                                           cwd.getURLString());
     etTask->setAdditionalEnvVariables(constructEtEnv());
+    etTask->addOutputListener(etStdoutStderrListener);
     addSubTask(etTask);
 }
 
 void MfoldTask::run() {
     CHECK_OP(stateInfo, );
+    SAFE_POINT_NN(etStdoutStderrListener, );
+
+    if (hasSubtasksWithErrors()) {
+        report += "Mfold log:<pre>";
+        report += etStdoutStderrListener->getLog();
+        report += "</pre>";
+        setError("No hairpins found. Nothing to show");
+        return;
+    }
 
     QScopedPointer<IOAdapter> detIo(IOAdapterUtils::open(inpSeqPath + ".det.html", stateInfo, IOAdapterMode_Read));
     CHECK_OP(stateInfo, );

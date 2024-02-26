@@ -26,6 +26,7 @@
 #include "MfoldSettings.h"
 
 namespace U2 {
+class OutputCollector;
 class U2SequenceObject;
 
 // For a given sequence fragment, task runs external script Mfold, which calculates foldings and saves imgs
@@ -42,8 +43,9 @@ class MfoldTask final : public Task {
     GUrl cwd;  // tmp subfolder, all output is stored here
     QString inpSeqPath;  // part of sequence for analysis, saved in this file
     QString outHtmlPath;
-    QString report;  // HTML report to be displayed in UGENE and saved to a file if necessary
     int windowWidth = 0;
+    OutputCollector* etStdoutStderrListener = nullptr;
+    QString report;  // HTML report to be displayed in UGENE and saved to a file if necessary
 
     // For ET task input sequence saved in separate file in cwd. Returns this path. Expects valid cwd.
     QString constructSeqFilePath() const;

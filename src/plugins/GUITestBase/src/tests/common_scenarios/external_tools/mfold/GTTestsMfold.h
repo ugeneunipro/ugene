@@ -25,8 +25,8 @@ namespace GUITest_common_scenarios_mfold {
 #undef GUI_TEST_SUITE
 #define GUI_TEST_SUITE "GUITest_common_scenarios_mfold"
 GUI_TEST_CLASS_DECLARATION(test_0001_success)
-//GUI_TEST_CLASS_DECLARATION(test_0002_fail)
-//GUI_TEST_CLASS_DECLARATION(test_0003_limits)
+GUI_TEST_CLASS_DECLARATION(test_0002_fail)
+GUI_TEST_CLASS_DECLARATION(test_0003_limits)
 //GUI_TEST_CLASS_DECLARATION(test_0004_region)
 #undef GUI_TEST_SUITE
 }  // namespace GUITest_common_scenarios_mfold

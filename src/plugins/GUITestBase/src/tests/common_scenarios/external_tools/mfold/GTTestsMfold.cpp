@@ -19,24 +19,45 @@
  * MA 02110-1301, USA.
  */
 #include "GTTestsMfold.h"
-#include <base_dialogs/GTFileDialog.h>
-#include <primitives/GTToolbar.h>
-#include <primitives/GTWidget.h>
-#include <runnables/ugene/ugeneui/AnyDialogFiller.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsNotifications.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTRegionSelector.h"
+#include "base_dialogs/GTFileDialog.h"
+#include "primitives/GTDoubleSpinBox.h"
+#include "primitives/GTMenu.h"
+#include "primitives/GTSpinBox.h"
+#include "primitives/GTToolbar.h"
+#include "primitives/GTWidget.h"
+#include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
+#include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 namespace U2 {
 namespace GUITest_common_scenarios_mfold {
 using namespace HI;
+static QString clickNotificationAndGetHtml() {
+    GTUtilsNotifications::clickOnNotificationWidget();
+    QWidget* reportWindow = GTUtilsMdi::checkWindowIsActive("Task report ");
+    auto reportEdit = GTWidget::findTextEdit("reportTextEdit", reportWindow);
+    return reportEdit->toHtml();
+}
+// Checks that HTML report contains row with two consecutive cells: left cell contains leftVal,
+// right cell contains rightVal.
+static void doesHtmlContainRow(const QString& html, const QVector<QPair<QString, QString>>& rowValues) {
+    for (auto p : qAsConst(rowValues)) {
+        QRegularExpression re(QString(p.first) + ".*?<\\/td>\\s*<td.*?>.*" + p.second,
+                              QRegularExpression::PatternOption::DotMatchesEverythingOption);
+        CHECK_SET_ERR(html.contains(re), QString("Expected row `%1: %2` not found").arg(p.first, p.second));
+    }
+}
 GUI_TEST_CLASS_DEFINITION(test_0001_success) {
-    // Simple run
+    // Simple run.
+    // Open sequence. Check its appearance.
     GTFileDialog::openFile(dataDir + "samples/Genbank/", "CVU55762.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
+    // Call dialog. Set region 1..100 and run.
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
     class SimpleScenario : public CustomScenario {
     public:
@@ -49,31 +70,129 @@ GUI_TEST_CLASS_DEFINITION(test_0001_success) {
     };
     GTUtilsDialog::add(new AnyDialogFiller("MfoldDialog", new SimpleScenario()));
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsNotifications::clickOnNotificationWidget();
 
-    // Get report.
-    QWidget* reportWindow = GTUtilsMdi::checkWindowIsActive("Task report ");
-    auto reportEdit = GTWidget::findTextEdit("reportTextEdit", reportWindow);
-    QString html = reportEdit->toHtml();
+    // Check report ok.
+    QString html = clickNotificationAndGetHtml();
+    doesHtmlContainRow(html,
+                       {{"Status", "Finished"},
+                        {"Sequence name", "CVU55762"},
+                        {"Region", "1..100"},
+                        {"Sequence type", "Circular DNA"},
+                        {"Temperature", "37"},
+                        {"Percent suboptimality", "5%"},
+                        {"", "Na=1.00 M"},
+                        {"", "Mg=0.00 M"},
+                        {"Window", "default"},
+                        {"Maximum distance between paired bases", "default"}});
+}
+GUI_TEST_CLASS_DEFINITION(test_0002_fail) {
+    // Create sequence that contains no possible complement pairs.
+    GTMenu::clickMainMenuItem({"Tools", "Random sequence generator..."});
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "mfold2.fa");
+    model.formatId = "fasta";
+    model.length = 100;
+    model.percentA = 50;
+    model.percentC = 50;
+    model.percentG = 0;
+    model.percentT = 0;
+    model.window = 100;
+    GTUtilsDialog::waitForDialog(new DNASequenceGeneratorDialogFiller(model));
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    // Checks that HTML report contains row with two consecutive cells: left cell contains leftVal,
-    // right cell contains rightVal.
-    auto doesReportContainRow = [&html](const std::pair<const char*, const char*>& p) {
-        QRegularExpression re(QString(p.first) + ".*?<\\/td>\\s*?<td.*?>.*?" + p.second,
-                              QRegularExpression::PatternOption::DotMatchesEverythingOption);
-        return html.contains(re);
+    // Run mfold.
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTUtilsDialog::add(new AnyDialogFiller("MfoldDialog", QDialogButtonBox::Ok));
+    GTUtilsTaskTreeView::waitTaskFinished();
+    QString html = clickNotificationAndGetHtml();
+    doesHtmlContainRow(html, {{"Status", "Failed"}});
+    QString expected = "No foldings.";
+    CHECK_SET_ERR(html.contains(expected), QString("Expected message `%1` not found in `%2`").arg(expected, html));
+}
+GUI_TEST_CLASS_DEFINITION(test_0003_limits) {
+    // Check that each spinbox has limits.
+    // Open sequence. Check its appearance.
+    GTFileDialog::openFile(dataDir + "samples/Genbank/", "CVU55762.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    // Call dialog and check. Don't run task.
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    class SpinboxChecker final : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            auto checkSpinbox = [dialog](const QString& widgetName, int min, int defaultValue, int max) {
+                auto w = GTWidget::findSpinBox(widgetName, dialog);
+                GTSpinBox::checkLimits(w, min, max);
+                auto curValue = GTSpinBox::getValue(w);
+                CHECK_SET_ERR(curValue == defaultValue,
+                              QString("Expected default `%1` value is %2, got %3")
+                                  .arg(widgetName)
+                                  .arg(defaultValue)
+                                  .arg(curValue));
+            };
+            auto checkDoubleSpinbox = [dialog](const QString& widgetName, double min, double defaultValue, double max) {
+                auto w = GTWidget::findDoubleSpinBox(widgetName, dialog);
+
+                class GetDoubleSbMinMax final : public CustomScenario {
+                    double& min_;
+                    double& max_;
+                    QDoubleSpinBox* w = nullptr;
+
+                public:
+                    explicit GetDoubleSbMinMax(double& min, double& max, QDoubleSpinBox* w)
+                        : min_(min), max_(max), w(w) {
+                    }
+                    void run() override {
+                        min_ = w->minimum();
+                        max_ = w->maximum();
+                    }
+                };
+                double minVal = 0;
+                double maxVal = 0;
+                GTThread::runInMainThread(new GetDoubleSbMinMax(minVal, maxVal, w));
+                GTThread::waitForMainThread();
+
+                CHECK_SET_ERR(minVal == min,
+                              QString("Expected minimum `%1` value is %2, got %3")
+                                  .arg(widgetName)
+                                  .arg(min)
+                                  .arg(minVal));
+                CHECK_SET_ERR(maxVal == max,
+                              QString("Expected maximum `%1` value is %2, got %3")
+                                  .arg(widgetName)
+                                  .arg(max)
+                                  .arg(maxVal));
+
+                auto curValue = GTDoubleSpinbox::getValue(w);
+                CHECK_SET_ERR(curValue == defaultValue,
+                              QString("Expected default `%1` value is %2, got %3")
+                                  .arg(widgetName)
+                                  .arg(defaultValue)
+                                  .arg(curValue));
+            };
+            checkSpinbox("tSpinBox", 0, 37, 100);
+            checkDoubleSpinbox("naDoubleSpinBox", 0, 1, 99.99);
+            checkDoubleSpinbox("mgDoubleSpinBox", 0, 0, 99.99);
+            checkSpinbox("pSpinBox", 0, 5, 100);
+            checkSpinbox("maxSpinBox", 1, 100, 100);
+            checkSpinbox("wSpinBox", -1, -1, 50000);
+            checkSpinbox("maxBpSpinBox", 0, 0, 6000);
+            checkSpinbox("labFrSpinBox", -1, -1, 1000);
+
+            // Check that angle can be -180 degrees and 180 degrees. Limits are not that important.
+            auto w = GTWidget::findDoubleSpinBox("rotAngDoubleSpinBox", dialog);
+            auto curValue = GTDoubleSpinbox::getValue(w);
+            CHECK_SET_ERR(curValue == 0, QString("Expected angle default value is 0, got %1").arg(curValue));
+            GTDoubleSpinbox::setValue(w, -180, GTGlobals::UseKeyBoard);
+            GTDoubleSpinbox::setValue(w, 180, GTGlobals::UseKeyBoard);
+
+            checkSpinbox("dpiSpinBox", 60, 72, 4000);
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
     };
-    for (auto p : std::initializer_list<std::pair<const char*, const char*>> {{"Sequence name", "CVU55762"},
-                                                                              {"Region", "1..100"},
-                                                                              {"Sequence type", "Circular DNA"},
-                                                                              {"Temperature", "37"},
-                                                                              {"Percent suboptimality", "5%"},
-                                                                              {"", "Na=1.00 M"},
-                                                                              {"", "Mg=0.00 M"},
-                                                                              {"Window", "default"},
-                                                                              {"Maximum distance between paired bases", "default"}}) {
-        CHECK_SET_ERR(doesReportContainRow(p), QString("Expected row `%1: %2` not found").arg(p.first, p.second));
-    }
+    GTUtilsDialog::add(new AnyDialogFiller("MfoldDialog", new SpinboxChecker()));
 }
 }  // namespace GUITest_common_scenarios_mfold
 }  // namespace U2
