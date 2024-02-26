@@ -47,7 +47,7 @@ SchemaEstimationTask::SchemaEstimationTask(const QSharedPointer<const Schema>& _
 void SchemaEstimationTask::run() {
     QScriptEngine engine;
     {
-        ExtimationsUtilsClass* utilsClass = new ExtimationsUtilsClass(engine, schema);
+        auto utilsClass = new ExtimationsUtilsClass(engine, schema);
         QScriptValue utils = engine.newQObject(utilsClass, QScriptEngine::ScriptOwnership);
         engine.globalObject().setProperty("utils", utils);
     }

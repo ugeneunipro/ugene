@@ -102,7 +102,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     nhBar->setVisible(false);
     sl_updateActions();
 
-    QObject* labelsParent = new QObject(this);
+    auto labelsParent = new QObject(this);
     labelsParent->setObjectName("labels_parent");
     labels = new QObject(labelsParent);
 }

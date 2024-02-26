@@ -57,7 +57,7 @@ QSize GroupedComboBoxDelegate::sizeHint(const QStyleOptionViewItem& option, cons
 }
 
 void GroupedComboBoxDelegate::addParentItem(QStandardItemModel* model, const QString& text, bool setItalic, bool setBold) {
-    QStandardItem* item = new QStandardItem(text);
+    auto item = new QStandardItem(text);
     item->setData("parent", Qt::AccessibleDescriptionRole);
     item->setFlags(item->flags() & ~(Qt::ItemIsEnabled | Qt::ItemIsSelectable));
     QFont font = item->font();
@@ -68,14 +68,14 @@ void GroupedComboBoxDelegate::addParentItem(QStandardItemModel* model, const QSt
 }
 
 void GroupedComboBoxDelegate::addChildItem(QStandardItemModel* model, const QString& text, const QVariant& data) {
-    QStandardItem* item = new QStandardItem(text + QString(4, QChar(' ')));
+    auto item = new QStandardItem(text + QString(4, QChar(' ')));
     item->setData(data, Qt::UserRole);
     item->setData("child", Qt::AccessibleDescriptionRole);
     model->appendRow(item);
 }
 
 void GroupedComboBoxDelegate::addUngroupedItem(QStandardItemModel* model, const QString& text, const QVariant& data) {
-    QStandardItem* item = new QStandardItem(text);
+    auto item = new QStandardItem(text);
     item->setData(data, Qt::UserRole);
     item->setData("ungrouped", Qt::AccessibleDescriptionRole);
     model->appendRow(item);

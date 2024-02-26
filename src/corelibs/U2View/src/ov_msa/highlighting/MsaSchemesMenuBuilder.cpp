@@ -107,10 +107,10 @@ void MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(QList<QAction*>
 void MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(QAction* a, QMenu* colorsSchemeMenu) {
     if (a->text().contains(SECTION_TOKEN)) {
         QString text = a->text().replace(SECTION_TOKEN, QString());
-        QLabel* pLabel = new QLabel(text);
+        auto pLabel = new QLabel(text);
         pLabel->setAlignment(Qt::AlignCenter);
         pLabel->setStyleSheet("font: bold;");
-        QWidgetAction* separator = new QWidgetAction(a);
+        auto separator = new QWidgetAction(a);
         separator->setDefaultWidget(pLabel);
         colorsSchemeMenu->addAction(separator);
     } else {
@@ -123,7 +123,7 @@ void MsaSchemesMenuBuilder::fillColorSchemeMenuActions(QList<QAction*>& actions,
 
     foreach (MsaColorSchemeFactory* factory, colorFactories) {
         QString name = factory->getName();
-        QAction* action = new QAction(name, actionsParent);
+        auto action = new QAction(name, actionsParent);
         action->setObjectName(name);
         action->setCheckable(true);
         action->setData(factory->getId());
@@ -144,7 +144,7 @@ void MsaSchemesMenuBuilder::fillColorSchemeMenuActions(QList<QAction*>& actions,
 void MsaSchemesMenuBuilder::fillHighlightingSchemeMenuActions(QList<QAction*>& actions, const QList<MsaHighlightingSchemeFactory*>& highlightingSchemeFactories, MaEditorSequenceArea* actionsParent) {
     foreach (MsaHighlightingSchemeFactory* factory, highlightingSchemeFactories) {
         QString name = factory->getName();
-        QAction* action = new QAction(name, actionsParent);
+        auto action = new QAction(name, actionsParent);
         action->setObjectName(name);
         action->setCheckable(true);
         action->setData(factory->getId());

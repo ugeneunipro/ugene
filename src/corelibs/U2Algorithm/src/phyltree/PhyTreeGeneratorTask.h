@@ -34,8 +34,7 @@ class U2ALGORITHM_EXPORT PhyTreeGeneratorTask : public Task {
 public:
     PhyTreeGeneratorTask(const Msa& ma,
                          const CreatePhyTreeSettings& settings,
-                         const TaskFlags& taskFlags = TaskFlag_NoRun | TaskFlag_FailOnSubtaskError);
-
+                         const TaskFlags& taskFlags = TaskFlags_NR_FOSE_COSC);
     const PhyTree& getResult() const;
 
     const CreatePhyTreeSettings& getSettings() const;

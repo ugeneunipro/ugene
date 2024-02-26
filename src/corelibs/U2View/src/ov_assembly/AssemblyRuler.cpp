@@ -55,7 +55,7 @@ AssemblyRuler::AssemblyRuler(AssemblyBrowserUi* ui_)
     sl_redraw();
     setMouseTracking(true);
 
-    QObject* startPositionParent = new QObject(this);
+    auto startPositionParent = new QObject(this);
     startPositionParent->setObjectName("start position");
     startPositionObject = new QObject(startPositionParent);
 

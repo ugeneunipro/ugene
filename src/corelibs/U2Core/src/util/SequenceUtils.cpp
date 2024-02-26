@@ -268,7 +268,7 @@ static QList<GObject*> createNewObjects(
         seqImport.startSequence(os, ref, folder, seqName, false);
         CHECK_OP(os, QList<GObject*>());
 
-        AnnotationTableObject* newAnnObj = new AnnotationTableObject(seqName + " annotations", ref, hints);
+        auto newAnnObj = new AnnotationTableObject(seqName + " annotations", ref, hints);
         QList<U2SequenceObject*> seqObjects = it.value();
         importGroupSequences2newObject(seqObjects, newAnnObj, mergeGap, seqImport, annotationsBySequenceObjectName, os);
 
@@ -280,7 +280,7 @@ static QList<GObject*> createNewObjects(
             newAnnObj->addObjectRelation(GObjectRelation(r, ObjectRole_Sequence));
         }
 
-        U2SequenceObject* seqObj = new U2SequenceObject(u2seq.visualName,
+        auto seqObj = new U2SequenceObject(u2seq.visualName,
                                                         U2EntityRef(ref, u2seq.id));
         objects << seqObj << newAnnObj;
     }

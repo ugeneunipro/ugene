@@ -286,13 +286,13 @@ void FindPatternMsaWidget::initMaxResultLenContainer() {
     layoutRegExpLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
     useMaxResultLenContainer->setLayout(layoutRegExpLen);
 
-    QHBoxLayout* layoutUseMaxResultLen = new QHBoxLayout();
+    auto layoutUseMaxResultLen = new QHBoxLayout();
     layoutUseMaxResultLen->setSpacing(10);
     layoutUseMaxResultLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
     boxUseMaxResultLen = new QCheckBox();
     boxUseMaxResultLen->setObjectName("boxUseMaxResultLen");
-    QLabel* labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
+    auto labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
     labelUseMaxResultLen->setWordWrap(true);
     layoutUseMaxResultLen->addWidget(boxUseMaxResultLen, 0);
     layoutUseMaxResultLen->addWidget(labelUseMaxResultLen, 1);

@@ -42,7 +42,7 @@ GObject* UnloadedObject::clone(const U2DbiRef& /*dstDbiRef*/, U2OpStatus& /*os*/
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
 
-    UnloadedObject* cln = new UnloadedObject(getGObjectName(), getLoadedObjectType(), getEntityRef(), gHints.getMap());
+    auto cln = new UnloadedObject(getGObjectName(), getLoadedObjectType(), getEntityRef(), gHints.getMap());
     cln->setIndexInfo(getIndexInfo());
     return cln;
 }

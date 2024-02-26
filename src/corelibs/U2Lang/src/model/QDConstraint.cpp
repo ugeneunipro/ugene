@@ -35,8 +35,8 @@ QDDistanceConstraint::QDDistanceConstraint(const QList<QDSchemeUnit*>& _units, Q
     Descriptor mind(QDConstraintController::MIN_LEN_ATTR, QObject::tr("Min distance"), QObject::tr("Minimum distance"));
     Descriptor maxd(QDConstraintController::MAX_LEN_ATTR, QObject::tr("Max distance"), QObject::tr("Maximum distance"));
 
-    Attribute* minAttr = new Attribute(mind, BaseTypes::NUM_TYPE(), true, QVariant(min));
-    Attribute* maxAttr = new Attribute(maxd, BaseTypes::NUM_TYPE(), true, QVariant(max));
+    auto minAttr = new Attribute(mind, BaseTypes::NUM_TYPE(), true, QVariant(min));
+    auto maxAttr = new Attribute(maxd, BaseTypes::NUM_TYPE(), true, QVariant(max));
 
     cfg->addParameter(minAttr->getId(), minAttr);
     cfg->addParameter(maxAttr->getId(), maxAttr);

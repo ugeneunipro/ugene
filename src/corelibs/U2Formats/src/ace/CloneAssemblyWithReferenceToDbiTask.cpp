@@ -55,11 +55,11 @@ CloneAssemblyWithReferenceToDbiTask::CloneAssemblyWithReferenceToDbiTask(const U
 }
 
 void CloneAssemblyWithReferenceToDbiTask::prepare() {
-    AssemblyObject* assemblyObject = new AssemblyObject(assembly.visualName, U2EntityRef(srcDbiRef, assembly.id));
+    auto assemblyObject = new AssemblyObject(assembly.visualName, U2EntityRef(srcDbiRef, assembly.id));
     cloneAssemblyTask = new CloneObjectTask(assemblyObject, dstDbiRef, dstFolder);
     addSubTask(cloneAssemblyTask);
 
-    U2SequenceObject* sequenceObject = new U2SequenceObject(reference.visualName, U2EntityRef(srcDbiRef, reference.id));
+    auto sequenceObject = new U2SequenceObject(reference.visualName, U2EntityRef(srcDbiRef, reference.id));
     cloneReferenceTask = new CloneObjectTask(sequenceObject, dstDbiRef, dstFolder);
     addSubTask(cloneReferenceTask);
 }

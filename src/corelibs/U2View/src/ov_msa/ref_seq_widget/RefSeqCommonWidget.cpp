@@ -36,7 +36,7 @@ RefSeqCommonWidget::RefSeqCommonWidget(MsaEditor* _msaEditor)
     : msaEditor(_msaEditor) {
     connect(msaEditor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_refSeqChanged(qint64)));
 
-    QVBoxLayout* mainLayout = new QVBoxLayout;
+    auto mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(5);
     mainLayout->setAlignment(Qt::AlignTop);
@@ -48,8 +48,8 @@ RefSeqCommonWidget::RefSeqCommonWidget(MsaEditor* _msaEditor)
 }
 
 QWidget* RefSeqCommonWidget::createReferenceGroup() {
-    QWidget* group = new QWidget(this);
-    QVBoxLayout* layout = new QVBoxLayout;
+    auto group = new QWidget(this);
+    auto layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(5);
     layout->setAlignment(Qt::AlignTop);

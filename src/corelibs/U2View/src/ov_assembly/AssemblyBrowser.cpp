@@ -641,9 +641,9 @@ void AssemblyBrowser::setupActions() {
     zoomOutAction = new QAction(QIcon(":core/images/zoom_out.png"), tr("Zoom out"), this);
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
-    QAction* linearScaleAction = new QAction(tr("Linear"), this);
+    auto linearScaleAction = new QAction(tr("Linear"), this);
     linearScaleAction->setCheckable(true);
-    QAction* logScaleAction = new QAction(tr("Logarithmic"), this);
+    auto logScaleAction = new QAction(tr("Logarithmic"), this);
     logScaleAction->setCheckable(true);
     connect(linearScaleAction, SIGNAL(triggered()), SLOT(sl_changeOverviewType()));
     connect(logScaleAction, SIGNAL(triggered()), SLOT(sl_changeOverviewType()));
@@ -693,7 +693,7 @@ void AssemblyBrowser::sl_exportToSam() {
     CHECK(!dialog.isNull(), );
 
     if (QDialog::Accepted == dialogResult) {
-        ConvertAssemblyToSamTask* convertTask = new ConvertAssemblyToSamTask(&(model->getDbiConnection()), dialog->getSamFileUrl());
+        auto convertTask = new ConvertAssemblyToSamTask(&(model->getDbiConnection()), dialog->getSamFileUrl());
         AppContext::getTaskScheduler()->registerTopLevelTask(convertTask);
     }
 }
@@ -1113,8 +1113,8 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_, QWidget* parent)
     if (browser->getModel()->hasReads(os)) {  // has mapped reads -> show rich visualization
         setMinimumSize(300, 200);
 
-        QScrollBar* readsHBar = new QScrollBar(Qt::Horizontal);
-        QScrollBar* readsVBar = new QScrollBar(Qt::Vertical);
+        auto readsHBar = new QScrollBar(Qt::Horizontal);
+        auto readsVBar = new QScrollBar(Qt::Vertical);
 
         zoomableOverview = new ZoomableAssemblyOverview(this, true);  // zooming temporarily disabled -iefremov
         referenceArea = new AssemblyReferenceArea(this);
@@ -1124,12 +1124,12 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_, QWidget* parent)
         readsArea = new AssemblyReadsArea(this, readsHBar, readsVBar);
         annotationsArea = new AssemblyAnnotationsArea(this);
 
-        QVBoxLayout* mainLayout = new QVBoxLayout();
+        auto mainLayout = new QVBoxLayout();
         mainLayout->setMargin(0);
         mainLayout->setSpacing(2);
         mainLayout->addWidget(zoomableOverview);
 
-        QGridLayout* readsLayout = new QGridLayout();
+        auto readsLayout = new QGridLayout();
         readsLayout->setMargin(0);
         readsLayout->setSpacing(0);
 
@@ -1143,7 +1143,7 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_, QWidget* parent)
         readsLayout->addWidget(readsVBar, 5, 1, 1, 1);
         readsLayout->addWidget(readsHBar, 5, 0);
 
-        QWidget* readsLayoutWidget = new QWidget;
+        auto readsLayoutWidget = new QWidget;
         readsLayoutWidget->setLayout(readsLayout);
         mainLayout->addWidget(readsLayoutWidget);
         mainLayout->addWidget(readsHBar);
@@ -1180,9 +1180,9 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_, QWidget* parent)
     }
     // do not how to show them
     else {
-        QVBoxLayout* mainLayout = new QVBoxLayout();
+        auto mainLayout = new QVBoxLayout();
         QString msg = tr("Assembly has no mapped reads. Nothing to visualize.");
-        QLabel* infoLabel = new QLabel(QString("<table align=\"center\"><tr><td>%1</td></tr></table>").arg(msg), this);
+        auto infoLabel = new QLabel(QString("<table align=\"center\"><tr><td>%1</td></tr></table>").arg(msg), this);
         infoLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         mainLayout->addWidget(infoLabel);
         setLayout(mainLayout);

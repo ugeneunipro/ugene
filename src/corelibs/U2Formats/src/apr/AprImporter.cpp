@@ -76,7 +76,7 @@ void AprImporterTask::prepare() {
     QString name = fileInfo.completeBaseName();
     dstUrl = QFileInfo(qDir, name).filePath();
 
-    DefaultConvertFileTask* convertTask = new DefaultConvertFileTask(srcUrl, currentFormat, dstUrl, formatId, dir);
+    auto convertTask = new DefaultConvertFileTask(srcUrl, currentFormat, dstUrl, formatId, dir);
 
     addSubTask(convertTask);
 }
@@ -127,7 +127,7 @@ FormatCheckResult AprImporter::checkRawData(const QByteArray& rawData, const GUr
 }
 
 DocumentProviderTask* AprImporter::createImportTask(const FormatDetectionResult& res, bool, const QVariantMap& hints) {
-    AprImporterTask* task = new AprImporterTask(res.url, hints);
+    auto task = new AprImporterTask(res.url, hints);
     return task;
 }
 

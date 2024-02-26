@@ -46,7 +46,7 @@ static QString toTimeString(qint64 timeSec) {
 }
 
 QMessageBox* EstimationReporter::createTimeMessage(const Workflow::EstimationResult& er) {
-    QMessageBox* result = new QMessageBox(
+    auto result = new QMessageBox(
         QMessageBox::Information,
         QObject::tr("Workflow Estimation"),
         QObject::tr("Approximate estimation time of the workflow run is ") + toTimeString(er.timeSec) + ".",
