@@ -4937,6 +4937,28 @@ GUI_TEST_CLASS_DEFINITION(test_5972_2) {
     CHECK_SET_ERR(check, QString("files are not equal"));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5998) {
+    GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
+    GTWidget::click(GTWidget::findWidget("ArrowHeader_Save annotation(s) to"));
+
+    auto newTable = GTWidget::findRadioButton("rbCreateNewTable");
+    //GTWidget::click(newTable, Qt::LeftButton, GTWidget::getWidgetVisibleCenter(newTable) - QPoint(60, 0));
+    GTWidget::click(newTable);
+
+    QString text = GTLineEdit::getText("leNewTablePath");
+    text.replace(".gb", "22222222.gb");
+    GTLineEdit::setText("leNewTablePath", text);
+
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    CHECK_SET_ERR(GTLineEdit::getText("leNewTablePath") == text, QString("line edit text expected: '%1', actual '%2'").arg(text).arg(GTLineEdit::getText("leNewTablePath")));
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
