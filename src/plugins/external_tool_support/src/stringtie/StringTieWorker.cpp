@@ -122,7 +122,7 @@ Task* StringTieWorker::tick() {
             return new FailTask(os.getError());
         }
 
-        StringTieTask* task = new StringTieTask(settings);
+        auto task = new StringTieTask(settings);
         task->addListeners(createLogListeners());
         connect(task, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
 
@@ -409,7 +409,7 @@ void StringTieWorkerFactory::init() {
         attributes << new Attribute(multiHitFraction, BaseTypes::NUM_TYPE(), false, 0.95);
         attributes << new Attribute(skipSequences, BaseTypes::STRING_TYPE(), false);
 
-        Attribute* refOnlyAbudanceAttr = new Attribute(refOnlyAbudance, BaseTypes::BOOL_TYPE(), false, false);
+        auto refOnlyAbudanceAttr = new Attribute(refOnlyAbudance, BaseTypes::BOOL_TYPE(), false, false);
         refOnlyAbudanceAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << refOnlyAbudanceAttr;
 
@@ -420,25 +420,25 @@ void StringTieWorkerFactory::init() {
 
         attributes << new Attribute(primaryOutput, BaseTypes::STRING_TYPE(), false);
 
-        Attribute* geneAbudanceOutputAttr = new Attribute(geneAbudanceOutput, BaseTypes::BOOL_TYPE(), false, false);
+        auto geneAbudanceOutputAttr = new Attribute(geneAbudanceOutput, BaseTypes::BOOL_TYPE(), false, false);
         geneAbudanceOutputAttr->addSlotRelation(new SlotRelationDescriptor(OUT_PORT_ID, GENE_ABUND_OUT_SLOT_ID, QVariantList() << true));
         attributes << geneAbudanceOutputAttr;
-        Attribute* geneAbudanceOutputFileAttr = new Attribute(geneAbudanceOutputFile, BaseTypes::STRING_TYPE(), false);
+        auto geneAbudanceOutputFileAttr = new Attribute(geneAbudanceOutputFile, BaseTypes::STRING_TYPE(), false);
         geneAbudanceOutputFileAttr->addRelation(new VisibilityRelation(GENE_ABUDANCE_OUTPUT, true));
         attributes << geneAbudanceOutputFileAttr;
 
-        Attribute* coverageRefOutputAttr = new Attribute(coverageRefOutput, BaseTypes::BOOL_TYPE(), false, false);
+        auto coverageRefOutputAttr = new Attribute(coverageRefOutput, BaseTypes::BOOL_TYPE(), false, false);
         coverageRefOutputAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << coverageRefOutputAttr;
-        Attribute* coverageRefOutputFileAttr = new Attribute(coverageRefOutputFile, BaseTypes::STRING_TYPE(), false);
+        auto coverageRefOutputFileAttr = new Attribute(coverageRefOutputFile, BaseTypes::STRING_TYPE(), false);
         coverageRefOutputFileAttr->addRelation(new VisibilityRelation(COVERAGE_REF_OUTPUT, true));
         coverageRefOutputFileAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << coverageRefOutputFileAttr;
 
-        Attribute* ballgawnOutputAttr = new Attribute(ballgownOutput, BaseTypes::BOOL_TYPE(), false, false);
+        auto ballgawnOutputAttr = new Attribute(ballgownOutput, BaseTypes::BOOL_TYPE(), false, false);
         ballgawnOutputAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << ballgawnOutputAttr;
-        Attribute* ballgownOutputFolderAttr = new Attribute(ballgownOutputFolder, BaseTypes::STRING_TYPE(), false, "");
+        auto ballgownOutputFolderAttr = new Attribute(ballgownOutputFolder, BaseTypes::STRING_TYPE(), false, "");
         ballgownOutputFolderAttr->addRelation(new VisibilityRelation(BALLGOWN_OUTPUT, true));
         ballgownOutputFolderAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << ballgownOutputFolderAttr;

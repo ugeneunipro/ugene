@@ -72,7 +72,7 @@ static SearchQuery* createRevComplQuery(SearchQuery* query, DNATranslation* tran
     TextUtils::reverse(reversed.data(), reversed.count());
 
     DNASequence dnaSeq(QString("%1_rev").arg(query->getName()), reversed, nullptr);
-    SearchQuery* rQu = new SearchQuery(&dnaSeq, query);
+    auto rQu = new SearchQuery(&dnaSeq, query);
     transl->translate(const_cast<char*>(rQu->constData()), rQu->length());
 
     if (rQu->constSequence() == query->constSequence()) {

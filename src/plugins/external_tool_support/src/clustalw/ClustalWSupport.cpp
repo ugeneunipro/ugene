@@ -111,7 +111,7 @@ void ClustalWSupport::sl_runWithExtFileSpecify() {
     }
     assert(!settings.inputFilePath.isEmpty());
 
-    ClustalWWithExtFileSpecifySupportTask* clustalWSupportTask = new ClustalWWithExtFileSpecifySupportTask(settings);
+    auto clustalWSupportTask = new ClustalWWithExtFileSpecifySupportTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalWSupportTask);
 }
 
@@ -180,7 +180,7 @@ void ClustalWSupportContext::sl_align() {
         return;
     }
 
-    ClustalWSupportTask* clustalWSupportTask = new ClustalWSupportTask(obj->getAlignment(), GObjectReference(obj), settings);
+    auto clustalWSupportTask = new ClustalWSupportTask(obj->getAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalWSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalWSupportTask);
 

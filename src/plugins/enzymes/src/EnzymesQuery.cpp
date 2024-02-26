@@ -74,7 +74,7 @@ Task* QDEnzymesActor::getAlgorithmTask(const QVector<U2Region>& location) {
     }
 
     foreach (const U2Region& r, location) {
-        FindEnzymesTask* st = new FindEnzymesTask(scheme->getEntityRef(), r, enzymes, INT_MAX, circular);
+        auto st = new FindEnzymesTask(scheme->getEntityRef(), r, enzymes, INT_MAX, circular);
         t->addSubTask(st);
         enzymesTasks.append(st);
     }
@@ -93,7 +93,7 @@ void QDEnzymesActor::sl_onAlgorithmTaskFinished() {
                 ru->quals.append(U2Qualifier("id", id));
                 ru->region = ad->location->regions[0];
                 ru->owner = units.value("enzyme");
-                QDResultGroup* g = new QDResultGroup(QDStrand_Both);
+                auto g = new QDResultGroup(QDStrand_Both);
                 g->add(ru);
                 results.append(g);
             }
@@ -116,7 +116,7 @@ QDEnzymesActorPrototype::QDEnzymesActorPrototype() {
 
     QMap<QString, PropertyDelegate*> delegates;
 
-    EnzymesSelectorDialogHandler* f = new EnzymesSelectorDialogHandler;
+    auto f = new EnzymesSelectorDialogHandler;
     delegates[ENZYMES_ATTR] = new StringSelectorDelegate("", f);
 
     editor = new DelegateEditor(delegates);
@@ -142,7 +142,7 @@ EnzymesSelectorDialog::EnzymesSelectorDialog(EnzymesSelectorDialogHandler* paren
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    QVBoxLayout* vl = new QVBoxLayout();
+    auto vl = new QVBoxLayout();
     enzSel = new EnzymesSelectorWidget();
     vl->setMargin(0);
     vl->addWidget(enzSel);

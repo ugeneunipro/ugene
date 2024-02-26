@@ -78,7 +78,7 @@ MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignment
 }
 
 static QString generateTmpFileUrl(const QString& filePathAndPattern) {
-    QTemporaryFile* generatedFile = new QTemporaryFile(filePathAndPattern);
+    auto generatedFile = new QTemporaryFile(filePathAndPattern);
     QFileInfo generatedFileInfo(generatedFile->fileName());
     while (generatedFile->exists() || generatedFileInfo.baseName().contains(" ") || !generatedFile->open()) {
         delete generatedFile;
