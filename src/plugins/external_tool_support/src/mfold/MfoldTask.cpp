@@ -39,6 +39,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U1AnnotationUtils.h>
+#include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "MfoldSettings.h"
@@ -70,6 +71,8 @@ namespace {
 constexpr int maxDetTableTagNum = 250;
 // Approximate experimentally determined constant at which UGENE freezes significantly when opening report.
 constexpr int maxHtmlReportLen = 100'000;
+// At the bottom of each img there is seq name. Only first 50 symbols of seq name are shown.
+constexpr int maxSeqNameLen = 50;
 // By default, tool writes this size in ps files.
 constexpr int defaultImgWidth = 792;
 constexpr int defaultImgHeight = 1072;
@@ -167,8 +170,8 @@ QString parseNextTblContent(IOAdapterReader& reader, U2OpStatus& os) {
 };  // namespace Det
 
 class MfoldTask::ReportHelper final {
-    MfoldTask& t; // replace with const
-    IOAdapterReader& detReader; //todo replace with pointer?
+    MfoldTask& t;  // replace with const
+    IOAdapterReader& detReader;  //todo replace with pointer?
     int structuresNum = 0;
     QVector<Th::ThermodynInfo> thInfo;
     QVector<QString> detailTables;  // empty if report is too large
@@ -354,7 +357,8 @@ public:
     QString constructUgeneReport() {
         if (largeReport) {
             return "The report is too large to be displayed in UGENE, it is saved to the file "
-                   "`<a target=\"_blank\" href=\"" + t.outHtmlPath + "\">" + t.outHtmlPath + "</a>`";
+                   "`<a target=\"_blank\" href=\"" +
+                   t.outHtmlPath + "\">" + t.outHtmlPath + "</a>`";
         }
         SAFE_POINT_EXT(structuresNum == thInfo.size() && structuresNum == detailTables.size(),
                        t.stateInfo.setError(tr("%1 != %2 != %3")
@@ -447,7 +451,8 @@ public:
                   "<tr>"
                   "<th align=\"left\">Output HTML report</th>"
                   "<td>"
-                  "<a href=\"" + t.outHtmlPath + "\">" + t.outHtmlPath + "</a>";
+                  "<a href=\"" +
+                  t.outHtmlPath + "\">" + t.outHtmlPath + "</a>";
         // Dump structures summary: links to fast jump.
         /*
         1. dG=-3.84
@@ -504,7 +509,7 @@ public:
     }
 };
 
-MfoldTask::MfoldTask(const QByteArray& seq,
+MfoldTask::MfoldTask(const DNASequence& seq,
                      const MfoldSettings& settings,
                      const MfoldSequenceInfo& seqInfo,
                      int windowWidth)
@@ -513,9 +518,12 @@ MfoldTask::MfoldTask(const QByteArray& seq,
                TaskFlag_ReportingIsEnabled),
       seq(seq), settings(settings), seqInfo(seqInfo), windowWidth(windowWidth) {
     GCOUNTER(cvar, "mfold");
+    SAFE_POINT_EXT(!settings.region->regions.empty(), setError(L10N::badArgument("region")), );
 }
 
 void MfoldTask::prepare() {
+    SAFE_POINT_OP(stateInfo, );
+
     // Check tool is ok.
     auto tool = AppContext::getExternalToolRegistry()->getById(MfoldSupport::ET_MFOLD_ID);
     CHECK_EXT(tool->isValid() && !tool->getPath().isEmpty(),
@@ -523,16 +531,32 @@ void MfoldTask::prepare() {
 
     // Prepare cwd.
     cwd = ExternalToolSupportUtils::createTmpDir("mfold", stateInfo);
-    CHECK_OP(stateInfo, );
+    SAFE_POINT_OP(stateInfo, );
 
     // Save sequence in cwd.
     inpSeqPath = constructSeqFilePath();
-    CHECK_EXT(FileAndDirectoryUtils::storeTextToFile(inpSeqPath, seq),
-              setError(QString(tr("Unable to store input sequence to file `%1`")).arg(inpSeqPath)), );
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    QScopedPointer<Document> doc(format->createNewLoadedDocument(iof, inpSeqPath, stateInfo));
+    SAFE_POINT_OP(stateInfo, );
+    const auto& regions = settings.region->regions;
+    auto regionToStr = [](const U2Region& region) { return QString::number(region.startPos + 1) + '-' +
+                                                           QString::number(region.endPos()); };
+    QString regionStr = ':' + regionToStr(regions[0]);
+    if (regions.size() > 1) {
+        regionStr += ',' + regionToStr(regions[1]);
+    }
+    QString seqName = seqInfo.seqName.left(std::min(seqInfo.seqName.size(), maxSeqNameLen - regionStr.size()));
+    seq.setName(seqName + regionStr);
+    U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), seq);
+    SAFE_POINT_OP(stateInfo, );
+    doc->addObject(new U2SequenceObject(seqName, seqRef));
+    SAFE_POINT_OP(stateInfo, );
+    format->storeDocument(doc.data(), stateInfo);
 
     // Prepare out dir.
     settings.outSettings.outPath = GUrlUtils::prepareDirLocation(constructOutPath(), stateInfo);
-    CHECK_OP(stateInfo, );
+    SAFE_POINT_OP(stateInfo, );
     settings.outSettings.outPath = GUrlUtils::getSlashEndedPath(settings.outSettings.outPath);
     outHtmlPath = settings.outSettings.outPath + "out.html";
 
@@ -547,7 +571,7 @@ void MfoldTask::prepare() {
 }
 
 void MfoldTask::run() {
-    CHECK_OP(stateInfo, );
+    SAFE_POINT_OP(stateInfo, );
     SAFE_POINT_NN(etStdoutStderrListener, );
 
     if (hasSubtasksWithErrors()) {
@@ -564,10 +588,10 @@ void MfoldTask::run() {
     IOAdapterReader detReader(detIo.data());
 
     ReportHelper helper(*this, detReader);
-    CHECK_OP(stateInfo, );
+    SAFE_POINT_OP(stateInfo, );
 
     QString fileReport = helper.constructFileReport();
-    CHECK_OP(stateInfo, );
+    SAFE_POINT_OP(stateInfo, );
     QFile file(outHtmlPath);
     CHECK_EXT(file.open(QIODevice::WriteOnly),
               setError(QString(tr("Unable to create output file `%1`")).arg(outHtmlPath)), );
@@ -575,7 +599,7 @@ void MfoldTask::run() {
     file.close();
 
     report = helper.constructUgeneReport();
-    CHECK_OP(stateInfo, );
+    SAFE_POINT_OP(stateInfo, );
 }
 
 QString MfoldTask::generateReport() const {
@@ -584,9 +608,9 @@ QString MfoldTask::generateReport() const {
 
 // todo what does this function return if tmp dir contains spaces or non-ascii
 QString MfoldTask::constructSeqFilePath() const {
-    QString fileName = GUrlUtils::fixFileName(seqInfo.seqPath.baseFileName());
+    QString fileName = "inp";
     QString inFilePath = GUrlUtils::getSlashEndedPath(cwd.getURLString()) + fileName;
-    return GUrlUtils::getLocalUrlFromUrl(inFilePath, fileName, ".txt", "");
+    return GUrlUtils::getLocalUrlFromUrl(inFilePath, fileName, ".fa", "");
 }
 
 QString MfoldTask::constructOutPath() const {
@@ -647,19 +671,21 @@ MfoldTask* createMfoldTask(U2SequenceObject* seqObj, const MfoldSettings& settin
     auto seqLen = seqObj->getSequenceLength();
     U2Region region = settings.region->regions[0];
     auto regionHasJunctionPoint = region.length > seqLen - region.startPos;
-    QByteArray seq;
+    QByteArray seqData;
     if (regionHasJunctionPoint) {
         auto firstPartLen = seqLen - region.startPos;
         U2Region firstRegionPart = {region.startPos, firstPartLen};
         U2Region secondRegionPart = {0, region.length - firstPartLen};
-        seq = seqObj->getSequenceData(firstRegionPart, os);
+        seqData = seqObj->getSequenceData(firstRegionPart, os);
         CHECK_OP(os, nullptr);
-        seq += seqObj->getSequenceData(secondRegionPart, os);
+        seqData += seqObj->getSequenceData(secondRegionPart, os);
         CHECK_OP(os, nullptr);
     } else {
-        seq = seqObj->getSequenceData(region, os);
+        seqData = seqObj->getSequenceData(region, os);
         CHECK_OP(os, nullptr);
     }
+
+    DNASequence seq(seqData, seqObj->getAlphabet());
 
     MfoldSettings correctedSettings = settings;
     Mfold::toGenbankLocation(correctedSettings.region, seqLen);

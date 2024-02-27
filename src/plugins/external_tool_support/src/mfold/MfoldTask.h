@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 #pragma once
+#include <U2Core/DNASequence.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/StrPackUtils.h>
 #include <U2Core/Task.h>
@@ -37,7 +38,7 @@ class MfoldTask final : public Task {
 
     class ReportHelper;
 
-    QByteArray seq;
+    DNASequence seq;
     MfoldSettings settings;
     MfoldSequenceInfo seqInfo;  // for dumping info to HTML report
     GUrl cwd;  // tmp subfolder, all output is stored here
@@ -62,7 +63,7 @@ public:
     // settings -- settings changed by the user inside the dialog are used as tool args
     // seqInfo -- internal sequence parameters used as tool args
     // windowWidth -- used for pretty display of HTML report
-    MfoldTask(const QByteArray& seq,
+    MfoldTask(const DNASequence& seq,
               const MfoldSettings& settings,
               const MfoldSequenceInfo& seqInfo,
               int windowWidth);
