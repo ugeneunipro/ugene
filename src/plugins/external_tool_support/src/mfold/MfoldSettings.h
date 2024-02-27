@@ -42,7 +42,7 @@ struct MfoldAlgoSettings final {
 struct MfoldOutSettings final {
     // Path for HTML report and imgs.
     QString outPath;
-    int dpi = 72;  // default gs DPI
+    int dpi = 96;  // default DPI set in ui
 };
 // Sequence info.
 struct MfoldSequenceInfo final {

@@ -201,14 +201,12 @@ public:
                          "<head>"
                          "<style>"
                          "  ul { font-size: large; }"
-                         "  .imgcell { vertical-align: top; text-align: left; max-height: 85vh; }"
-                         "  .image { border: 1px solid; height: 50em; }"
+                         "  .imgcell { vertical-align: top; text-align: left; }"
+                         "  .image { max-height: 85vh; }"
                          "  .showinfo { vertical-align: top; text-align: left; }"
                          "  .dettbl { border-collapse: collapse; }"
                          "  .dettbl td, th { padding: 4px; border: 1px solid; }"
                          "</style>"
-                         "<script src=\"https://unpkg.com/iv-viewer/dist/iv-viewer.js\"></script>"
-                         "<link rel=\"stylesheet\" href=\"https://unpkg.com/iv-viewer/dist/iv-viewer.css\" />"
                          "<title>"
                          "Hairpins for " +
                          seqName + "</title>";
@@ -311,14 +309,12 @@ public:
                       QString::number(th[Th::DELTA_S_KEY], 'f', 2) + " cal/(K&middot;mol)</li>";
             report += "<li>T<sub>m</sub> = " +
                       QString::number(th[Th::TM_KEY], 'f', 2) + "&deg;C</li>";
-            QString imgPath = toAmpersandWithoutSpaces(GUrlUtils::fixFileName(t.seqInfo.seqPath.baseFileName())) +
-                              ".txt_" + iStr + ".png";
             report += "</ul>"
                       "<table>"
                       "<tr>"
                       "<td class=\"imgcell\">"
                       "<img class=\"image\" src=\"" +
-                      imgPath + "\" data-high-res-src=\"" + imgPath + "\" alt=\"\" />";
+                      toAmpersandWithoutSpaces(GUrl(t.inpSeqPath).fileName()) + '_' + iStr + ".png\" alt=\"\" />";
             report += "</td>"
                       "<td class=\"showinfo\">"
                       "<details>"
@@ -575,10 +571,11 @@ void MfoldTask::run() {
     SAFE_POINT_NN(etStdoutStderrListener, );
 
     if (hasSubtasksWithErrors()) {
+        QString log = etStdoutStderrListener->getLog();
         report += "Mfold log:<pre>";
-        report += etStdoutStderrListener->getLog();
+        report += log;
         report += "</pre>";
-        setError("No hairpins found. Nothing to show");
+        setError(log.contains("No foldings.") ? "No hairpins found. Nothing to show" : "Mfold tool failed");
         return;
     }
 

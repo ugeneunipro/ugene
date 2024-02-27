@@ -486,7 +486,8 @@ static void checkPathAndShowErrorOrOpen(const QString& url, QWidget* parent) {
         // 2 situations:
         //      1. Normal path C:/... -> file:///C:/... i.e. 3 slashes
         //      2. UNC or possible long path
-        //          3 slashes from file prefix + 2 slashes at the beginning of path = 5 slashes, but this doesn't work, there should be 4 slashes.
+        //         3 slashes from file prefix + 2 slashes at the beginning of path = 5 slashes, but this doesn't work,
+        //         there should be 4 slashes.
         preparedUrl.replace(QRegularExpression("\\/{4,}"), "////");
     }
     QDesktopServices::openUrl(QUrl(preparedUrl));
@@ -568,7 +569,7 @@ void TVReportWindow::sl_open() {
 
     QString url = dirAction->data().toString();
     bool internetUrl = url.startsWith("http");
-    if (!internetUrl && (url.endsWith(".html") || QFileInfo(url).isDir())) {
+    if (!internetUrl && (url.endsWith(".html") || QFileInfo(url).isDir() || !QFileInfo(url).exists())) {
         checkPathAndShowErrorOrOpen(url, this);
         return;
     }
