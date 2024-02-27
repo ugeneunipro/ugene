@@ -101,11 +101,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                                                                testDir + "_common_data/fasta/",
                                                                "shuffled.fa");
     // Parameters
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(&bowtie2Parameters);
+    auto alignShortReadsFiller = new AlignShortReadsFiller(&bowtie2Parameters);
 
     GTUtilsDialog::add(alignShortReadsFiller);
 
-    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller();
+    auto importBAMFileFiller = new ImportBAMFileFiller();
 
     GTUtilsDialog::add(importBAMFileFiller);
 
@@ -162,11 +162,11 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     bowtie2Parameters.noOverlappingMates = true;
     bowtie2Parameters.noMatesContainingOneAnother = true;
 
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(&bowtie2Parameters);
+    auto alignShortReadsFiller = new AlignShortReadsFiller(&bowtie2Parameters);
 
     GTUtilsDialog::add(alignShortReadsFiller);
 
-    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller();
+    auto importBAMFileFiller = new ImportBAMFileFiller();
 
     GTUtilsDialog::add(importBAMFileFiller);
 

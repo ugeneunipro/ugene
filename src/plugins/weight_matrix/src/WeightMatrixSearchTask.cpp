@@ -64,7 +64,7 @@ WeightMatrixSingleSearchTask::WeightMatrixSingleSearchTask(const PWMatrix& m, co
     c.chunkSize = seq.length();
     c.overlapSize = 0;
 
-    SequenceWalkerTask* t = new SequenceWalkerTask(c, this, tr("Weight matrix search parallel"));
+    auto t = new SequenceWalkerTask(c, this, tr("Weight matrix search parallel"));
     addSubTask(t);
 }
 

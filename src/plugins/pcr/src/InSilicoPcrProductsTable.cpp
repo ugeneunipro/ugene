@@ -70,7 +70,7 @@ void InSilicoPcrProductsTable::setCurrentProducts(const QList<InSilicoPcrProduct
             endPos = endPos % seqLength;
         }
 
-        QTableWidgetItem* regionItem = new QTableWidgetItem(QString("%1 - %2").arg(startPos).arg(endPos));
+        auto regionItem = new QTableWidgetItem(QString("%1 - %2").arg(startPos).arg(endPos));
         setItem(row, 0, regionItem);
         setItem(row, 1, new QTableWidgetItem(QString::number(product.region.length)));
         setItem(row, 2, new QTableWidgetItem(product.ta != TmCalculator::INVALID_TM ? PrimerStatistics::getDoubleStringValue(product.ta) : tr("N/A")));

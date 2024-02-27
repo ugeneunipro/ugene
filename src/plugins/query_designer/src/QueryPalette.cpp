@@ -152,7 +152,7 @@ QueryPalette::QueryPalette(QWidget* parent /* =NULL */)
 }
 
 void QueryPalette::setContent() {
-    QTreeWidgetItem* algorithmCategory = new QTreeWidgetItem;
+    auto algorithmCategory = new QTreeWidgetItem;
     algorithmCategory->setText(0, tr("Algorithms"));
     addTopLevelItem(algorithmCategory);
     algorithmCategory->setExpanded(true);
@@ -160,14 +160,14 @@ void QueryPalette::setContent() {
     QDActorPrototypeRegistry* qpr = AppContext::getQDActorProtoRegistry();
     foreach (QDActorPrototype* pf, qpr->getAllEntries()) {
         QAction* action = createItemAction(pf);
-        QTreeWidgetItem* algMenuItem = new QTreeWidgetItem(/*algorithmCategory*/);
+        auto algMenuItem = new QTreeWidgetItem(/*algorithmCategory*/);
         actionMap[action] = algMenuItem;
         algMenuItem->setText(0, action->text());
         algMenuItem->setData(0, Qt::UserRole, qVariantFromValue(action));
         algorithmCategory->addChild(algMenuItem);
     }
 
-    QTreeWidgetItem* constraintCategory = new QTreeWidgetItem;
+    auto constraintCategory = new QTreeWidgetItem;
     constraintCategory->setText(0, tr("Constraints"));
     addTopLevelItem(constraintCategory);
     constraintCategory->setExpanded(true);
@@ -179,7 +179,7 @@ void QueryPalette::setContent() {
                           << createItemAction(QDDistanceIds::S2S);
 
     foreach (QAction* a, constraintItemActions) {
-        QTreeWidgetItem* linkMenuItem = new QTreeWidgetItem(constraintCategory);
+        auto linkMenuItem = new QTreeWidgetItem(constraintCategory);
         actionMap[a] = linkMenuItem;
         linkMenuItem->setText(0, a->text());
         linkMenuItem->setData(0, Qt::UserRole, qVariantFromValue(a));
@@ -188,7 +188,7 @@ void QueryPalette::setContent() {
 }
 
 QAction* QueryPalette::createItemAction(QDActorPrototype* item) {
-    QAction* a = new QAction(item->getDisplayName(), this);
+    auto a = new QAction(item->getDisplayName(), this);
     a->setCheckable(true);
     if (!item->getIcon().isNull()) {
         a->setIcon(item->getIcon());
@@ -203,7 +203,7 @@ QAction* QueryPalette::createItemAction(QDActorPrototype* item) {
 }
 
 QAction* QueryPalette::createItemAction(const QString& constraintId) {
-    QAction* a = new QAction(constraintId, this);
+    auto a = new QAction(constraintId, this);
     a->setCheckable(true);
     QIcon icon(":query_designer/images/green_circle.png");
     a->setIcon(icon);
@@ -267,8 +267,8 @@ void QueryPalette::mouseMoveEvent(QMouseEvent* event) {
             return;
         }
 
-        QDrag* drag = new QDrag(this);
-        QMimeData* mimeData = new QMimeData;
+        auto drag = new QDrag(this);
+        auto mimeData = new QMimeData;
         if (action->data().type() == QVariant::String) {
             QString str = action->data().toString();
             mimeData->setText(str);

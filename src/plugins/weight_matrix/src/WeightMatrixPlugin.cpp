@@ -49,7 +49,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    WeightMatrixPlugin* plug = new WeightMatrixPlugin();
+    auto plug = new WeightMatrixPlugin();
     return plug;
 }
 
@@ -59,7 +59,7 @@ WeightMatrixPlugin::WeightMatrixPlugin()
         ctxADV = new WeightMatrixADVContext(this);
         ctxADV->init();
 
-        QAction* buildAction = new QAction(tr("Build weight matrix..."), this);
+        auto buildAction = new QAction(tr("Build weight matrix..."), this);
         buildAction->setObjectName(ToolsMenu::TFBS_WEIGHT);
         connect(buildAction, SIGNAL(triggered()), SLOT(sl_build()));
         ToolsMenu::addAction(ToolsMenu::TFBS_MENU, buildAction);
@@ -105,7 +105,7 @@ WeightMatrixADVContext::WeightMatrixADVContext(QObject* p)
 
 void WeightMatrixADVContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
-    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":weight_matrix/images/weight_matrix.png"), tr("Find TFBS with matrices..."), 80);
+    auto a = new ADVGlobalAction(av, QIcon(":weight_matrix/images/weight_matrix.png"), tr("Find TFBS with matrices..."), 80);
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, SIGNAL(triggered()), SLOT(sl_search()));
 }

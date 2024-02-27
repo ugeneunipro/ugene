@@ -71,7 +71,7 @@ GObject* WorkflowGObject::clone(const U2DbiRef&, U2OpStatus&, const QVariantMap&
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
 
-    WorkflowGObject* copy = new WorkflowGObject(getGObjectName(), serializedScene, gHints.getMap());
+    auto copy = new WorkflowGObject(getGObjectName(), serializedScene, gHints.getMap());
     assert(!view);
     return copy;
 }

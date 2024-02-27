@@ -79,11 +79,11 @@ Task* QDTandemActor::getAlgorithmTask(const QVector<U2Region>& location) {
     settings.nThreads = cfg->getParameter(N_THREADS_ATTRIBUTE)->getAttributeValueWithoutScript<int>();
 
     const DNASequence& dnaSeq = scheme->getSequence();
-    Task* task = new Task(tr("TandemQDTask"), TaskFlag_NoRun);
+    auto task = new Task(tr("TandemQDTask"), TaskFlag_NoRun);
     foreach (const U2Region& r, location) {
         FindTandemsTaskSettings localSettings(settings);
         localSettings.seqRegion = r;
-        TandemFinder* subTask = new TandemFinder(localSettings, dnaSeq);
+        auto subTask = new TandemFinder(localSettings, dnaSeq);
         task->addSubTask(subTask);
         subTasks.append(subTask);
     }
@@ -102,7 +102,7 @@ void QDTandemActor::sl_onAlgorithmTaskFinished() {
     }
     subTasks.clear();
     for (const SharedAnnotationData& annotation : qAsConst(annotations)) {
-        QDResultGroup* group = new QDResultGroup(QDStrand_Both);
+        auto group = new QDResultGroup(QDStrand_Both);
         foreach (U2Region region, annotation->location->regions) {
             QDResultUnit resultUnit(new QDResultUnitData);
             resultUnit->quals = annotation->qualifiers;

@@ -52,7 +52,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    ORFMarkerPlugin* plug = new ORFMarkerPlugin();
+    auto plug = new ORFMarkerPlugin();
     return plug;
 }
 
@@ -94,7 +94,7 @@ ORFViewContext::ORFViewContext(QObject* p)
 
 void ORFViewContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
-    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":orf_marker/images/orf_marker.png"), tr("Find ORFs..."), 20);
+    auto a = new ADVGlobalAction(av, QIcon(":orf_marker/images/orf_marker.png"), tr("Find ORFs..."), 20);
     a->setObjectName("Find ORFs");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));

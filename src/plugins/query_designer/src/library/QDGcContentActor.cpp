@@ -186,12 +186,12 @@ Task* QDFindGcRegionsActor::getAlgorithmTask(const QVector<U2Region>& location) 
 
     settings.minLen = minLen;
 
-    Task* t = new Task(tr("Search GC regions QD task"), TaskFlag_NoRun);
+    auto t = new Task(tr("Search GC regions QD task"), TaskFlag_NoRun);
 
     foreach (U2Region r, location) {
         FindGcRegionsSettings stngs(settings);
         stngs.offset = r.startPos;
-        FindGcRegionsTask* sub = new FindGcRegionsTask(stngs, sequence);
+        auto sub = new FindGcRegionsTask(stngs, sequence);
         t->addSubTask(sub);
         connect(new TaskSignalMapper(sub), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onTaskFinished(Task*)));
     }
@@ -210,7 +210,7 @@ void QDFindGcRegionsActor::sl_onTaskFinished(Task* t) {
         ru->region = d->location->regions.first();
         ru->strand = d->location->strand;
         ru->owner = units.value(UNIT_ID);
-        QDResultGroup* g = new QDResultGroup(QDStrand_DirectOnly);
+        auto g = new QDResultGroup(QDStrand_DirectOnly);
         g->add(ru);
         results.append(g);
     }

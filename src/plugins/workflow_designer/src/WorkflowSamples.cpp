@@ -192,7 +192,7 @@ void SamplesWidget::revisible(const QString& nameFilter) {
 }
 
 void SamplesWidget::addCategory(const SampleCategory& cat) {
-    QTreeWidgetItem* ci = new QTreeWidgetItem(this, QStringList(cat.d.getDisplayName()));
+    auto ci = new QTreeWidgetItem(this, QStringList(cat.d.getDisplayName()));
     ci->setFlags(Qt::ItemIsEnabled);
     QFont cf;
     cf.setBold(true);
@@ -200,10 +200,10 @@ void SamplesWidget::addCategory(const SampleCategory& cat) {
     ci->setData(0, Qt::BackgroundRole, QColor(255, 255, 160, 127));
 
     foreach (const Sample& item, cat.items) {
-        QTreeWidgetItem* ib = new QTreeWidgetItem(ci, QStringList(item.d.getDisplayName()));
+        auto ib = new QTreeWidgetItem(ci, QStringList(item.d.getDisplayName()));
         ib->setData(0, DATA_ROLE, item.content);
         ib->setData(0, ID_ROLE, item.id);
-        QTextDocument* doc = new QTextDocument(this);
+        auto doc = new QTextDocument(this);
         ib->setData(0, DOC_ROLE, qVariantFromValue<QTextDocument*>(doc));
         Descriptor d = item.d;
         QIcon ico = item.ico;
