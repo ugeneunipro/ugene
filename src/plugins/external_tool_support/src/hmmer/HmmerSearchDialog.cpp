@@ -202,7 +202,7 @@ void HmmerSearchDialog::sl_okButtonClicked() {
         seqCtx->getAnnotatedDNAView()->tryAddObject(annotationsWidgetController->getModel().getAnnotationObject());
     }
 
-    HmmerSearchTask* searchTask = new HmmerSearchTask(model.searchSettings);
+    auto searchTask = new HmmerSearchTask(model.searchSettings);
     AppContext::getTaskScheduler()->registerTopLevelTask(searchTask);
 
     QDialog::accept();

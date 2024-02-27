@@ -148,15 +148,15 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new JavaSupport());
 
     // ClustalW
-    ClustalWSupport* clustalWTool = new ClustalWSupport();
+    auto clustalWTool = new ClustalWSupport();
     etRegistry->registerEntry(clustalWTool);
 
     // ClustalO
-    ClustalOSupport* clustalOTool = new ClustalOSupport();
+    auto clustalOTool = new ClustalOSupport();
     etRegistry->registerEntry(clustalOTool);
 
     // MAFFT
-    MAFFTSupport* mAFFTTool = new MAFFTSupport();
+    auto mAFFTTool = new MAFFTSupport();
     etRegistry->registerEntry(mAFFTTool);
 
     // Kalign
@@ -179,7 +179,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         clustalWTool->getViewContext()->setParent(this);
         clustalWTool->getViewContext()->init();
 
-        ExternalToolSupportAction* clustalWAction = new ExternalToolSupportAction(tr("Align with ClustalW..."), this, QStringList(ClustalWSupport::ET_CLUSTAL_ID));
+        auto clustalWAction = new ExternalToolSupportAction(tr("Align with ClustalW..."), this, QStringList(ClustalWSupport::ET_CLUSTAL_ID));
         clustalWAction->setObjectName(ToolsMenu::MALIGN_CLUSTALW);
         connect(clustalWAction, SIGNAL(triggered()), clustalWTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, clustalWAction);
@@ -187,7 +187,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         clustalOTool->getViewContext()->setParent(this);
         clustalOTool->getViewContext()->init();
 
-        ExternalToolSupportAction* clustalOAction = new ExternalToolSupportAction(tr("Align with ClustalO..."), this, QStringList(ClustalOSupport::ET_CLUSTALO_ID));
+        auto clustalOAction = new ExternalToolSupportAction(tr("Align with ClustalO..."), this, QStringList(ClustalOSupport::ET_CLUSTALO_ID));
         clustalOAction->setObjectName(ToolsMenu::MALIGN_CLUSTALO);
         connect(clustalOAction, SIGNAL(triggered()), clustalOTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, clustalOAction);
@@ -195,7 +195,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         mAFFTTool->getViewContext()->setParent(this);
         mAFFTTool->getViewContext()->init();
 
-        ExternalToolSupportAction* mAFFTAction = new ExternalToolSupportAction(tr("Align with MAFFT..."), this, QStringList(MAFFTSupport::ET_MAFFT_ID));
+        auto mAFFTAction = new ExternalToolSupportAction(tr("Align with MAFFT..."), this, QStringList(MAFFTSupport::ET_MAFFT_ID));
         mAFFTAction->setObjectName(ToolsMenu::MALIGN_MAFFT);
         connect(mAFFTAction, SIGNAL(triggered()), mAFFTTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, mAFFTAction);
@@ -228,7 +228,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(makeBlastDbTool);
 
     // CAP3
-    CAP3Support* cap3Tool = new CAP3Support(CAP3Support::ET_CAP3_ID, CAP3Support::ET_CAP3);
+    auto cap3Tool = new CAP3Support(CAP3Support::ET_CAP3_ID, CAP3Support::ET_CAP3);
     etRegistry->registerEntry(cap3Tool);
 
     // Bowtie 1
@@ -259,7 +259,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new VcfConsensusSupport());
 
     // Spidey
-    SpideySupport* spideySupport = new SpideySupport();
+    auto spideySupport = new SpideySupport();
     etRegistry->registerEntry(spideySupport);
 
     // bedtools
@@ -366,7 +366,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         spideyCtx->setParent(this);
         spideyCtx->init();
 
-        HmmerContext* hmmerContext = new HmmerContext(this);
+        auto hmmerContext = new HmmerContext(this);
         hmmerContext->init();
     }
 

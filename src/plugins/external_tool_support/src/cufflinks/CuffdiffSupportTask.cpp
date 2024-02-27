@@ -130,7 +130,7 @@ Task* CuffdiffSupportTask::createTranscriptTask() {
     createTranscriptDoc();
     CHECK_OP(stateInfo, nullptr);
 
-    SaveDocumentTask* t = new SaveDocumentTask(transcriptDoc.data(), transcriptDoc->getIOAdapterFactory(), transcriptUrl);
+    auto t = new SaveDocumentTask(transcriptDoc.data(), transcriptDoc->getIOAdapterFactory(), transcriptUrl);
     saveTasks << t;
     return t;
 }

@@ -257,7 +257,7 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
     enzymesFilterEdit->clear();
 
     for (const SEnzymeData& enz : qAsConst(enzymes)) {
-        EnzymeTreeItem* item = new EnzymeTreeItem(enz);
+        auto item = new EnzymeTreeItem(enz);
         if (lastSelection.contains(enz->id)) {
             item->setCheckState(0, Qt::Checked);
         }
@@ -337,7 +337,7 @@ EnzymeGroupTreeItem* EnzymesSelectorWidget::findGroupItem(const QString& s, bool
         }
     }
     if (create) {
-        EnzymeGroupTreeItem* gi = new EnzymeGroupTreeItem(s);
+        auto gi = new EnzymeGroupTreeItem(s);
         tree->addTopLevelItem(gi);
         return gi;
     }

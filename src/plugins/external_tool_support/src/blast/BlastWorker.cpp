@@ -116,7 +116,7 @@ void BlastWorkerFactory::init() {
     a << new Attribute(etp, BaseTypes::STRING_TYPE(), true, QVariant("default"));
     a << new Attribute(tdp, BaseTypes::STRING_TYPE(), true, QVariant("default"));
     a << new Attribute(ev, BaseTypes::NUM_TYPE(), false, QVariant(10.00));
-    Attribute* cbsAttr = new Attribute(cbs, BaseTypes::STRING_TYPE(), false, "D");
+    auto cbsAttr = new Attribute(cbs, BaseTypes::STRING_TYPE(), false, "D");
     QVariantList cbsVisibilitylist;
     cbsVisibilitylist << "blastp"
                       << "blastx"
@@ -126,7 +126,7 @@ void BlastWorkerFactory::init() {
     a << new Attribute(mh, BaseTypes::NUM_TYPE(), false, QVariant(0));
     a << new Attribute(gn, BaseTypes::STRING_TYPE(), false, QVariant("blast_result"));
 
-    Attribute* gaAttr = new Attribute(ga, BaseTypes::BOOL_TYPE(), false, QVariant(true));
+    auto gaAttr = new Attribute(ga, BaseTypes::BOOL_TYPE(), false, QVariant(true));
     QVariantList gaVisibilitylist;
     gaVisibilitylist << "blastn"
                      << "blastp"
@@ -137,7 +137,7 @@ void BlastWorkerFactory::init() {
 
     a << new Attribute(gc, BaseTypes::STRING_TYPE(), false, "2 2");
 
-    Attribute* msAttr = new Attribute(ms, BaseTypes::STRING_TYPE(), false, "1 -3");
+    auto msAttr = new Attribute(ms, BaseTypes::STRING_TYPE(), false, "1 -3");
     QVariantMap scoresGapDependency = ExternalToolSupportUtils::getScoresGapDependencyMap();
     msAttr->addRelation(new ValuesRelation(BLAST_GAP_COSTS_VALUE, scoresGapDependency));
     a << msAttr;

@@ -42,7 +42,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    GenomeAlignerPlugin* plug = new GenomeAlignerPlugin();
+    auto plug = new GenomeAlignerPlugin();
     return plug;
 }
 
@@ -91,7 +91,7 @@ GenomeAlignerPlugin::GenomeAlignerPlugin()
     readsFormats << BaseDocumentFormats::FASTA;
     readsFormats << BaseDocumentFormats::FASTQ;
     readsFormats << BaseDocumentFormats::PLAIN_GENBANK;
-    DnaAssemblyAlgorithmEnv* algo = new DnaAssemblyAlgorithmEnv("UGENE Genome Aligner", new GenomeAlignerTask::Factory, guiFactory, true, true, false, referenceFormats, readsFormats);
+    auto algo = new DnaAssemblyAlgorithmEnv("UGENE Genome Aligner", new GenomeAlignerTask::Factory, guiFactory, true, true, false, referenceFormats, readsFormats);
     bool res = registry->registerAlgorithm(algo);
     Q_UNUSED(res);
     assert(res);
@@ -119,7 +119,7 @@ void GenomeAlignerPlugin::registerCMDLineHelp() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(cmdLineRegistry != nullptr);
 
-    CMDLineHelpProvider* taskSection = new CMDLineHelpProvider(
+    auto taskSection = new CMDLineHelpProvider(
         RUN_GENOME_ALIGNER,
         tr("UGENE Short Reads Aligner"),
         tr("UGENE Genome Aligner is an efficient and fast tool for short read alignment."
