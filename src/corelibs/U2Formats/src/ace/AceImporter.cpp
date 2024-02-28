@@ -73,7 +73,7 @@ void AceImporterTask::prepare() {
         QDir().mkpath(tmpDir);
 
         const QString pattern = tmpDir + "XXXXXX.ugenedb";
-        QTemporaryFile* tempLocalDb = new QTemporaryFile(pattern, this);
+        auto tempLocalDb = new QTemporaryFile(pattern, this);
 
         tempLocalDb->open();
         const QString filePath = tempLocalDb->fileName();

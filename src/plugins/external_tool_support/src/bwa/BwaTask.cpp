@@ -55,7 +55,7 @@ void BwaBuildIndexTask::prepare() {
     arguments.append("-p");
     arguments.append(indexPath);
     arguments.append(referencePath);
-    ExternalToolRunTask* task = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new LogParser());
+    auto task = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new LogParser());
     setListenerForTask(task);
     addSubTask(task);
 }
@@ -197,7 +197,7 @@ void BwaAlignTask::prepare() {
 
         arguments.append(indexPath);
         arguments.append(currentReadSet.url.getURLString());
-        ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new LogParser(), nullptr);
+        auto alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new LogParser(), nullptr);
         setListenerForTask(alignTask);
         alignTasks.append(alignTask);
     }
@@ -238,7 +238,7 @@ QList<Task*> BwaAlignTask::onSubTaskFinished(Task* subTask) {
                 arguments.append(getSAIPath(currentReadsSet.url.getURLString()));
                 arguments.append(currentReadsSet.url.getURLString());
             }
-            ExternalToolRunTask* task = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new LogParser(), nullptr);
+            auto task = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new LogParser(), nullptr);
             setListenerForTask(task);
             samTasks.append(task);
         }
@@ -414,7 +414,7 @@ void BwaMemAlignTask::prepare() {
             }
             arguments.append(upStreamList[pairedReadsCounter].url.getURLString());
             arguments.append(downStreamList[pairedReadsCounter].url.getURLString());
-            ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), nullptr);
+            auto alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), nullptr);
             if (upStreamList.size() == 1) {
                 alignTask->setStandardOutputFile(settings.resultFileName.getURLString());
             } else {
@@ -426,7 +426,7 @@ void BwaMemAlignTask::prepare() {
             alignTasks.append(alignTask);
         } else if (settings.shortReadSets.size() > 1) {
             arguments.append(currentReadSet.url.getURLString());
-            ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), nullptr);
+            auto alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), nullptr);
             QString resultFilePathWithpartNumber = settings.tmpDirPath + "/" + resultFileInfo.baseName() + "_" +
                                                    QString::number(resultPartsCounter) + "." + resultFileInfo.completeSuffix();
             alignTask->setStandardOutputFile(resultFilePathWithpartNumber);
@@ -434,7 +434,7 @@ void BwaMemAlignTask::prepare() {
             alignTasks.append(alignTask);
         } else {
             arguments.append(currentReadSet.url.getURLString());
-            ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), nullptr);
+            auto alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), nullptr);
             alignTask->setStandardOutputFile(settings.resultFileName.getURLString());
             setListenerForTask(alignTask);
             alignTasks.append(alignTask);

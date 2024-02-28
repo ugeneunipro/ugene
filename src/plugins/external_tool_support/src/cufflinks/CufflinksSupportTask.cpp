@@ -167,7 +167,7 @@ ExternalToolRunTask* CufflinksSupportTask::runCufflinks() {
     arguments << settings.url;
 
     // Create the Cufflinks task
-    ExternalToolRunTask* runTask = new ExternalToolRunTask(CufflinksSupport::ET_CUFFLINKS_ID,
+    auto runTask = new ExternalToolRunTask(CufflinksSupport::ET_CUFFLINKS_ID,
                                                            arguments,
                                                            new ExternalToolLogParser(),
                                                            workingDirectory);

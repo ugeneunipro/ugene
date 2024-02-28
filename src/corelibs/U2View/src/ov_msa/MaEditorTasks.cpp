@@ -214,7 +214,7 @@ void OpenSavedMaEditorTask::open() {
     CHECK_OP(stateInfo, );
     SAFE_POINT(maEditor != nullptr, "MaEditor is null!", );
 
-    GObjectViewWindow* w = new GObjectViewWindow(maEditor, viewName, true);
+    auto w = new GObjectViewWindow(maEditor, viewName, true);
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
 

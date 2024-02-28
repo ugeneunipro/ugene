@@ -48,7 +48,7 @@ static const int ITEMS_SPACING = 6;
 static const int TITLE_SPACING = 1;
 
 static inline QVBoxLayout* initVBoxLayout(QWidget* w) {
-    QVBoxLayout* layout = new QVBoxLayout;
+    auto layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(5);
 
@@ -57,7 +57,7 @@ static inline QVBoxLayout* initVBoxLayout(QWidget* w) {
 }
 
 static inline QHBoxLayout* initHBoxLayout(QWidget* w) {
-    QHBoxLayout* layout = new QHBoxLayout;
+    auto layout = new QHBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
 
     w->setLayout(layout);
@@ -65,7 +65,7 @@ static inline QHBoxLayout* initHBoxLayout(QWidget* w) {
 }
 
 QWidget* MsaHighlightingTab::createColorGroup() {
-    QWidget* group = new QWidget(this);
+    auto group = new QWidget(this);
 
     QVBoxLayout* layout = initVBoxLayout(group);
     colorSchemeController = new MsaSchemeComboBoxController<MsaColorSchemeFactory, MsaColorSchemeRegistry>(msa, AppContext::getMsaColorSchemeRegistry(), this);
@@ -88,7 +88,7 @@ QWidget* MsaHighlightingTab::createColorGroup() {
     colorSpinBox->setDecimals(1);
     colorSpinBox->setObjectName("colorSpinBox");
 
-    QHBoxLayout* horizontalLayout = new QHBoxLayout();
+    auto horizontalLayout = new QHBoxLayout();
     horizontalLayout->addWidget(colorThresholdSlider);
     horizontalLayout->addWidget(colorSpinBox);
     horizontalLayout->setSpacing(10);
@@ -105,7 +105,7 @@ QWidget* MsaHighlightingTab::createColorGroup() {
 }
 
 QWidget* MsaHighlightingTab::createHighlightingGroup() {
-    QWidget* group = new QWidget(this);
+    auto group = new QWidget(this);
 
     QVBoxLayout* layout = initVBoxLayout(group);
     highlightingSchemeController = new MsaSchemeComboBoxController<MsaHighlightingSchemeFactory, MsaHighlightingSchemeRegistry>(msa, AppContext::getMsaHighlightingSchemeRegistry(), this);
@@ -124,7 +124,7 @@ QWidget* MsaHighlightingTab::createHighlightingGroup() {
     exportHighlightning->setMinimumWidth(198);
     exportHighlightning->setMinimumHeight(23);
 
-    QWidget* buttonAndSpacer = new QWidget(this);
+    auto buttonAndSpacer = new QWidget(this);
     QHBoxLayout* layout2 = initHBoxLayout(buttonAndSpacer);
     layout2->addWidget(exportHighlightning);
     // layout2->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));

@@ -68,7 +68,7 @@ GSequenceLineView::GSequenceLineView(QWidget* p, SequenceObjectContext* _ctx)
 }
 
 void GSequenceLineView::pack() {
-    QVBoxLayout* layout = new QVBoxLayout();
+    auto layout = new QVBoxLayout();
     layout->setMargin(0);
     layout->setSpacing(0);
     layout->addWidget(renderArea);

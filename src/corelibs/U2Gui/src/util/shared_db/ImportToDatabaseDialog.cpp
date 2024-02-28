@@ -193,7 +193,7 @@ void ImportToDatabaseDialog::accept() {
     importTasks << createImportDocumentsTasks();
 
     if (!importTasks.isEmpty()) {
-        ImportToDatabaseTask* importTask = new ImportToDatabaseTask(importTasks, 1);
+        auto importTask = new ImportToDatabaseTask(importTasks, 1);
         AppContext::getTaskScheduler()->registerTopLevelTask(importTask);
     }
 
@@ -339,7 +339,7 @@ void ImportToDatabaseDialog::addFolder(const QString& url) {
 
     const QString dstFolder = commonOptions.createSubfolderForTopLevelFolder ? U2DbiUtils::makeFolderCanonical(baseFolder + U2ObjectDbi::PATH_SEP + QFileInfo(url).fileName()) : baseFolder;
 
-    QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList() << url << dstFolder);
+    auto newItem = new QTreeWidgetItem(QStringList() << url << dstFolder);
     newItem->setIcon(COLUMN_ITEM_TEXT, QIcon(":U2Designer/images/directory.png"));
     newItem->setFlags(Qt::ItemIsEditable | newItem->flags());
     setFolderTooltip(newItem);
@@ -353,7 +353,7 @@ void ImportToDatabaseDialog::addFolder(const QString& url) {
 void ImportToDatabaseDialog::addFile(const QString& url) {
     CHECK(!url.isEmpty(), );
 
-    QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList() << url << baseFolder);
+    auto newItem = new QTreeWidgetItem(QStringList() << url << baseFolder);
     newItem->setIcon(COLUMN_ITEM_TEXT, QIcon(":/core/images/document.png"));
     newItem->setFlags(Qt::ItemIsEditable | newItem->flags());
     setFileTooltip(newItem);
@@ -377,7 +377,7 @@ void ImportToDatabaseDialog::addObjectsAndDocuments(const QList<Document*>& docs
 void ImportToDatabaseDialog::addDocument(Document* document) {
     CHECK(document != nullptr, );
 
-    QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList() << document->getName() << baseFolder);
+    auto newItem = new QTreeWidgetItem(QStringList() << document->getName() << baseFolder);
     newItem->setIcon(COLUMN_ITEM_TEXT, QIcon(":/core/images/document.png"));
     newItem->setFlags(Qt::ItemIsEditable | newItem->flags());
     setDocumentTooltip(newItem);
@@ -404,7 +404,7 @@ void ImportToDatabaseDialog::addObject(GObject* object, QTreeWidgetItem* parent)
         dstFolder = U2DbiUtils::makeFolderCanonical(dstFolder);
     }
 
-    QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList() << objectText << dstFolder);
+    auto newItem = new QTreeWidgetItem(QStringList() << objectText << dstFolder);
 
     if (parent == nullptr) {
         treeItem2Object[newItem] = object;
@@ -519,7 +519,7 @@ QTreeWidgetItem* ImportToDatabaseDialog::getHeaderItem(HeaderType headerType) co
     const QList<QTreeWidgetItem*> itemsList = ui->twOrders->findItems(itemText, Qt::MatchExactly);
 
     if (itemsList.isEmpty()) {
-        QTreeWidgetItem* headerItem = new QTreeWidgetItem(QStringList() << itemText);
+        auto headerItem = new QTreeWidgetItem(QStringList() << itemText);
         ui->twOrders->addTopLevelItem(headerItem);
         return headerItem;
     }

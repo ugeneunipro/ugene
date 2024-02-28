@@ -442,7 +442,7 @@ Task* CAP3Worker::runCap3() {
     }
 
     // Run the task
-    CAP3SupportTask* capTask = new CAP3SupportTask(settings);
+    auto capTask = new CAP3SupportTask(settings);
     capTask->addListeners(createLogListeners());
     connect(capTask, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
 

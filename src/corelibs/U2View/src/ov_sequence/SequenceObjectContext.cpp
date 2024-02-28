@@ -286,7 +286,7 @@ void SequenceObjectContext::sl_onAnnotationRelationChange() {
 
 QMenu* SequenceObjectContext::createGeneticCodeMenu() {
     CHECK(translations != nullptr, nullptr);
-    QMenu* menu = new QMenu(tr("Select genetic code"));
+    auto menu = new QMenu(tr("Select genetic code"));
     menu->setIcon(QIcon(":core/images/tt_switch.png"));
     menu->menuAction()->setObjectName("AminoTranslationAction");
 
@@ -298,7 +298,7 @@ QMenu* SequenceObjectContext::createGeneticCodeMenu() {
 
 QMenu* SequenceObjectContext::createTranslationFramesMenu(QList<QAction*> menuActions) {
     SAFE_POINT(visibleFrames != nullptr, "SequenceObjectContext: visibleFrames is NULL ?!", nullptr);
-    QMenu* menu = new QMenu(tr("Show/hide amino acid translations"));
+    auto menu = new QMenu(tr("Show/hide amino acid translations"));
     menu->setIcon(QIcon(":core/images/show_trans.png"));
     menu->menuAction()->setObjectName("Translation frames");
     new MultiClickMenu(menu);

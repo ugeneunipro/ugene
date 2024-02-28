@@ -166,6 +166,8 @@ private:
 
     void internalInit(const QHash<QString, QString>& props, U2OpStatus& os);
 
+    void testDatabaseLocked(U2OpStatus& os);
+
     QString url;
     DbRef* db;
 

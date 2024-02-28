@@ -139,14 +139,14 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
     linesSplitter->setAutoFillBackground(true);
     linesSplitter->setObjectName("single_sequence_view_splitter");
 
-    QWidget* linesLayoutWidget = new QWidget();
+    auto linesLayoutWidget = new QWidget();
     linesLayoutWidget->setObjectName("lines_layout_widget");
     linesLayoutWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     linesLayoutWidget->setLayout(linesLayout);
 
     linesSplitter->addWidget(linesLayoutWidget);
 
-    QVBoxLayout* l = new QVBoxLayout(this);
+    auto l = new QVBoxLayout(this);
     l->setMargin(0);
     l->setSpacing(0);
     l->addWidget(linesSplitter);
@@ -513,7 +513,7 @@ void ADVSingleSequenceWidget::buildPopupMenu(QMenu& m) {
 }
 
 void ADVSingleSequenceWidget::addSelectMenu(QMenu& m) {
-    QMenu* selectMenu = new QMenu(tr("Select"), &m);
+    auto selectMenu = new QMenu(tr("Select"), &m);
     selectMenu->menuAction()->setObjectName("Select");
 
     selectMenu->addAction(selectRangeAction2);
@@ -528,7 +528,7 @@ void ADVSingleSequenceWidget::addRulersMenu(QMenu& m) {
     qDeleteAll(rulerActions.qlist);
     rulerActions.qlist.clear();
 
-    QMenu* rulersM = new QMenu(tr("Rulers..."), &m);
+    auto rulersM = new QMenu(tr("Rulers..."), &m);
     rulersM->menuAction()->setObjectName("Rulers");
     rulersM->setIcon(QIcon(":core/images/ruler.png"));
 
@@ -539,7 +539,7 @@ void ADVSingleSequenceWidget::addRulersMenu(QMenu& m) {
     rulersM->addSeparator();
 
     foreach (const RulerInfo& ri, panView->getCustomRulers()) {
-        QAction* rulerAction = new QAction(tr("Remove '%1'").arg(ri.name), this);
+        auto rulerAction = new QAction(tr("Remove '%1'").arg(ri.name), this);
         rulerAction->setData(ri.name);
         connect(rulerAction, SIGNAL(triggered()), SLOT(sl_removeCustomRuler()));
         rulerActions.qlist.append(rulerAction);
@@ -688,7 +688,7 @@ void ADVSingleSequenceWidget::sl_zoomToRange() {
     dlg->setModal(true);
     dlg->setWindowTitle(tr("Zoom to range"));
 
-    RangeSelector* rs = new RangeSelector(dlg.data(), start, end, getSequenceLength(), true);
+    auto rs = new RangeSelector(dlg.data(), start, end, getSequenceLength(), true);
 
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
@@ -917,7 +917,7 @@ ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWi
 
     // TODO: track focus events (mouse clicks) on toolbar in disabled state and on disabled buttons !!!
 
-    QHBoxLayout* l = new QHBoxLayout();
+    auto l = new QHBoxLayout();
     l->setSpacing(4);
     l->setContentsMargins(5, 1, 0, 2);
 

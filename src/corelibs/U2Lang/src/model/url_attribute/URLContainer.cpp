@@ -124,7 +124,7 @@ FilesIterator* DirUrlContainer::getFileUrls() {
 }
 
 URLContainer* DirUrlContainer::clone() {
-    DirUrlContainer* cloned = new DirUrlContainer(url);
+    auto cloned = new DirUrlContainer(url);
     cloned->incFilter = incFilter;
     cloned->excFilter = excFilter;
     cloned->recursive = recursive;

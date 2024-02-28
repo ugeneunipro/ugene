@@ -140,7 +140,7 @@ Task* TrimmomaticWorker::createTask(const QList<Message>& messages) const {
     QList<Task*> trimmomaticTasks;
     foreach (const Message& message, messages) {
         const TrimmomaticTaskSettings settings = getSettings(message, trimmomaticWorkingDir);
-        TrimmomaticTask* task = new TrimmomaticTask(settings);
+        auto task = new TrimmomaticTask(settings);
         task->addListeners(createLogListeners());
         trimmomaticTasks << task;
     }

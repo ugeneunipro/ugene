@@ -117,7 +117,7 @@ QList<SequenceWalkerSubtask*> SequenceWalkerTask::createSubs(const QVector<U2Reg
         const U2Region& chunk = chunks[i];
         bool lo = config.overlapSize > 0 && i > 0;
         bool ro = config.overlapSize > 0 && i + 1 < n;
-        SequenceWalkerSubtask* t = new SequenceWalkerSubtask(this, chunk, lo, ro, config.seq + chunk.startPos, chunk.length, doCompl, doAmino);
+        auto t = new SequenceWalkerSubtask(this, chunk, lo, ro, config.seq + chunk.startPos, chunk.length, doCompl, doAmino);
         res.append(t);
     }
     return res;

@@ -79,7 +79,7 @@ void RangeSelector::init() {
         maxButton->setShortcut(QKeySequence(Qt::ALT | Qt::Key_X));
     }
 
-    QHBoxLayout* l = new QHBoxLayout(this);
+    auto l = new QHBoxLayout(this);
     if (dialog == nullptr) {
         l->setContentsMargins(5, 0, 5, 0);
         l->setSizeConstraint(QLayout::SetFixedSize);
@@ -111,25 +111,25 @@ RangeSelector::RangeSelector(QDialog* dialog, int rangeStart, int rangeEnd, int 
       minButton(nullptr), maxButton(nullptr), rangeLabel(nullptr), dialog(dialog), autoClose(autoClose) {
     init();
 
-    QPushButton* okButton = new QPushButton(this);
+    auto okButton = new QPushButton(this);
     okButton->setText(tr("OK"));
     okButton->setDefault(true);
     okButton->setObjectName("ok_button");
     connect(okButton, SIGNAL(clicked(bool)), SLOT(sl_onGoButtonClicked(bool)));
 
-    QPushButton* cancelButton = new QPushButton(this);
+    auto cancelButton = new QPushButton(this);
     cancelButton->setText(tr("Cancel"));
     cancelButton->setObjectName("cancel_button");
     connect(cancelButton, SIGNAL(clicked()), dialog, SLOT(reject()));
 
-    QHBoxLayout* l3 = new QHBoxLayout();
+    auto l3 = new QHBoxLayout();
     l3->setMargin(0);
     l3->addStretch();
     l3->addWidget(okButton);
     l3->addWidget(cancelButton);
 
     assert(dialog != nullptr);
-    QVBoxLayout* l2 = new QVBoxLayout();
+    auto l2 = new QVBoxLayout();
     l2->addWidget(this);
     l2->addStretch();
     l2->addLayout(l3);

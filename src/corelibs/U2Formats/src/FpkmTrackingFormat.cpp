@@ -96,7 +96,7 @@ Document* FpkmTrackingFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& db
     load(io, objects, dbiRef, hints, os);
     CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
-    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects);
+    auto doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects);
     return doc;
 }
 

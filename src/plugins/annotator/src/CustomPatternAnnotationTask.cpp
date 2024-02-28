@@ -108,14 +108,14 @@ void CustomPatternAnnotationTask::prepare() {
         settings.unknownChar = UNKNOWN_CHAR;
         settings.query = pattern.sequence;
 
-        SArrayBasedFindTask* task = new SArrayBasedFindTask(index.data(), settings);
+        auto task = new SArrayBasedFindTask(index.data(), settings);
         taskFeatureNames.insert(task, PatternInfo(pattern.name, pattern.type, true));
         addSubTask(task);
 
         complTT->translate(settings.query.data(), settings.query.size());
         TextUtils::reverse(settings.query.data(), settings.query.size());
 
-        SArrayBasedFindTask* revComplTask = new SArrayBasedFindTask(index.data(), settings);
+        auto revComplTask = new SArrayBasedFindTask(index.data(), settings);
         taskFeatureNames.insert(revComplTask, PatternInfo(pattern.name, pattern.type, false));
         addSubTask(revComplTask);
     }

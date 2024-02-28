@@ -382,7 +382,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
             }
             sequenceRef = GObjectReference(io->getURL().getURLString(), u2seq.visualName, GObjectTypes::SEQUENCE, U2EntityRef(dbiRef, u2seq.id));
 
-            U2SequenceObject* seqObj = new U2SequenceObject(u2seq.visualName, U2EntityRef(dbiRef, u2seq.id));
+            auto seqObj = new U2SequenceObject(u2seq.visualName, U2EntityRef(dbiRef, u2seq.id));
             CHECK_EXT_BREAK(seqObj != nullptr, os.setError("U2SequenceObject is NULL"));
             seqObj->setQuality(DNAQuality(qualityScores));
             objects << seqObj;
@@ -445,7 +445,7 @@ Document* FastqFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, c
 
     CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
     DocumentFormatUtils::updateFormatHints(objects, hints);
-    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, hints, lockReason);
+    auto doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, hints, lockReason);
 
     return doc;
 }
@@ -574,7 +574,7 @@ DNASequence* FastqFormat::loadTextSequence(IOAdapter* io, U2OpStatus& os) {
 
     CHECK_EXT(sequence.length() == qualityScores.length(), logOs.setError(U2::FastqFormat::tr("Not a valid FASTQ file. Bad quality scores: inconsistent size.")), new DNASequence());
 
-    DNASequence* seq = new DNASequence(sequenceName, sequence);
+    auto seq = new DNASequence(sequenceName, sequence);
     seq->quality = DNAQuality(qualityScores);
     seq->alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     SAFE_POINT(seq->alphabet != nullptr, "FastqFormat::loadSequence alphabet is NULL", new DNASequence());

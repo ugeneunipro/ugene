@@ -109,7 +109,7 @@ void MaOverviewImageExportController::initSettingsWidget() {
     exportSimpleOverview->setObjectName("export_msa_simple_overview");
     exportGraphOverview->setObjectName("export_msa_graph_overview");
 
-    QVBoxLayout* layout = new QVBoxLayout(settingsWidget);
+    auto layout = new QVBoxLayout(settingsWidget);
     layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     layout->setContentsMargins(0, 0, 0, 0);
 

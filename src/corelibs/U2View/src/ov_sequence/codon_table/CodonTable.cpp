@@ -89,7 +89,7 @@ CodonTableView::CodonTableView(AnnotatedDNAView* view)
         }
     }
 
-    QVBoxLayout* l = new QVBoxLayout(this);
+    auto l = new QVBoxLayout(this);
     l->addWidget(table);
     l->setMargin(0);
     l->setSpacing(0);

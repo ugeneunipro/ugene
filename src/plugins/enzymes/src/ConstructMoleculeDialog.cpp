@@ -195,7 +195,7 @@ void ConstructMoleculeDialog::update() {
         QListWidgetItem* item = fragmentListWidget->item(index);
         assert(item != nullptr);
         if (item != nullptr) {
-            QTreeWidgetItem* newItem = new QTreeWidgetItem(molConstructWidget);
+            auto newItem = new QTreeWidgetItem(molConstructWidget);
             const DNAFragment& fragment = fragments.at(index);
             if (fragment.getLeftTerminus().type == OVERHANG_TYPE_STICKY) {
                 newItem->setText(0, QString("%1 (%2)").arg(QString(fragment.getLeftTerminus().overhang)).arg(fragment.getLeftTerminus().isDirect ? tr("Fwd") : tr("Rev")));

@@ -167,7 +167,7 @@ static bool parseCutFile(const QString& url, char* amino, int* prob, char* n1, c
 }
 
 static void regCodon(DNATranslationRegistry* treg, char symbol, const char* shortName, QString fullName, const char* link, DNACodonGroup gr) {
-    DNACodon* c = new DNACodon(symbol, QString(shortName), fullName, gr);
+    auto c = new DNACodon(symbol, QString(shortName), fullName, gr);
     c->setLink(link);
     treg->registerDNACodon(c);
 };
@@ -181,7 +181,7 @@ void DNAAlphabetRegistryImpl::reg4tables(const char* amino, const char* role, co
         QMap<DNATranslationRole, QList<Triplet>> codons;
         fill3To1(map, codons, srcAlphabet, dstAlphabet, amino, role, n1, n2, n3);
 
-        DNATranslation* t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
+        auto t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
         treg->registerDNATranslation(t);
     }
 
@@ -194,7 +194,7 @@ void DNAAlphabetRegistryImpl::reg4tables(const char* amino, const char* role, co
         QMap<DNATranslationRole, QList<Triplet>> codons;
         fill3To1(map, codons, srcAlphabet, dstAlphabet, amino, role, n1, n2, n3);
 
-        DNATranslation* t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
+        auto t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
         treg->registerDNATranslation(t);
     }
     QByteArray an1(n1);
@@ -211,7 +211,7 @@ void DNAAlphabetRegistryImpl::reg4tables(const char* amino, const char* role, co
         QMap<DNATranslationRole, QList<Triplet>> codons;
         fill3To1(map, codons, srcAlphabet, dstAlphabet, amino, role, rn1, rn2, rn3);
 
-        DNATranslation* t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
+        auto t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
         treg->registerDNATranslation(t);
     }
 
@@ -223,7 +223,7 @@ void DNAAlphabetRegistryImpl::reg4tables(const char* amino, const char* role, co
         QMap<DNATranslationRole, QList<Triplet>> codons;
         fill3To1(map, codons, srcAlphabet, dstAlphabet, amino, role, rn1, rn2, rn3);
 
-        DNATranslation* t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
+        auto t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
         treg->registerDNATranslation(t);
     }
 }
@@ -236,7 +236,7 @@ void DNAAlphabetRegistryImpl::regPtables(const char* amino, const int* prob, con
         BackTranslationRules map;
         fill1To3(map, srcAlphabet, dstAlphabet, amino, prob, n1, n2, n3);
 
-        DNATranslation* t = new DNATranslation1to3Impl(id, name, srcAlphabet, dstAlphabet, map);
+        auto t = new DNATranslation1to3Impl(id, name, srcAlphabet, dstAlphabet, map);
         treg->registerDNATranslation(t);
     }
 }
@@ -261,7 +261,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         MAP('G', 'C');
         MAP('T', 'A');
 
-        DNATranslation* t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT,
+        auto t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT,
                                                        tr("Complement for standard DNA"),
                                                        srcAlphabet,
                                                        dstAlphabet,
@@ -281,7 +281,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         MAP('G', 'C');
         MAP('U', 'A');
 
-        DNATranslation* t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_RNA_DEFAULT_COMPLEMENT,
+        auto t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_RNA_DEFAULT_COMPLEMENT,
                                                        tr("Complement for standard RNA"),
                                                        srcAlphabet,
                                                        dstAlphabet,
@@ -311,7 +311,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         MAP('D', 'H');
         MAP('B', 'V');
 
-        DNATranslation* t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_DNA_EXTENDED_COMPLEMENT,
+        auto t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_DNA_EXTENDED_COMPLEMENT,
                                                        tr("Complement for extended DNA"),
                                                        srcAlphabet,
                                                        dstAlphabet,
@@ -341,7 +341,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         MAP('D', 'H');
         MAP('B', 'V');
 
-        DNATranslation* t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_RNA_EXTENDED_COMPLEMENT,
+        auto t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_RNA_EXTENDED_COMPLEMENT,
                                                        tr("Complement for extended RNA"),
                                                        srcAlphabet,
                                                        dstAlphabet,

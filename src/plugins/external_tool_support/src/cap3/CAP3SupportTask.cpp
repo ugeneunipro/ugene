@@ -208,7 +208,7 @@ void PrepareInputForCAP3Task::prepare() {
         foreach (const QString& fileName, filesToCopy) {
             IOAdapterFactory* iof =
                 AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-            CopyDataTask* copyTask = new CopyDataTask(iof, fileName, iof, outputDir + "/" + GUrl(fileName).fileName(), CopyDataTask::ReplaceLineEndings::LF);
+            auto copyTask = new CopyDataTask(iof, fileName, iof, outputDir + "/" + GUrl(fileName).fileName());
             addSubTask(copyTask);
         }
         preparedPath = outputDir + "/" + GUrl(inputFileUrl).fileName();

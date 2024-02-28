@@ -82,7 +82,7 @@ MaLabelWidget::MaLabelWidget(MaEditorWgt* ui, QWidget* heightWidget, const QStri
     // Disable text interaction: all mouse events from QLabel will be delivered to this widget.
     label->setTextInteractionFlags(Qt::NoTextInteraction);
 
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    auto layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(label);
     setLayout(layout);

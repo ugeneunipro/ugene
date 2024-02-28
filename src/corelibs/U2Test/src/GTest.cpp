@@ -298,7 +298,7 @@ GTestSuite* GTestSuite::readTestSuite(const QString& url, QString& err) {
         return nullptr;
     }
 
-    GTestSuite* suite = new GTestSuite();
+    auto suite = new GTestSuite();
     suite->url = suiteUrl.absoluteFilePath();
     suite->name = suiteName;
     suite->env = suiteEnv;

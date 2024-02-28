@@ -57,7 +57,7 @@ Overview::Overview(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx)
     panView = p->getPanView();
     detView = p->getDetView();
 
-    QAction* densityGraphAction = new QAction(QIcon(":core/images/sum.png"), "", this);
+    auto densityGraphAction = new QAction(QIcon(":core/images/sum.png"), "", this);
     densityGraphAction->setObjectName("density_graph_action");
     densityGraphAction->setCheckable(true);
     densityGraphAction->setToolTip(tr("Toggle annotation density graph"));
@@ -135,7 +135,7 @@ void Overview::sl_sequenceChanged() {
 }
 
 void Overview::pack() {
-    QHBoxLayout* layout = new QHBoxLayout();
+    auto layout = new QHBoxLayout();
     layout->setMargin(0);
     layout->setSpacing(0);
     layout->addWidget(renderArea);

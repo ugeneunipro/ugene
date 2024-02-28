@@ -340,7 +340,7 @@ Task::ReportResult DNAStatMSAProfileTask::report() {
     assert(!resultText.isEmpty());
     QString title = s.profileName.isEmpty() ? tr("Alignment profile") : tr("Alignment profile for %1").arg(s.profileName);
 
-    WebWindow* w = new WebWindow(title, resultText);
+    auto w = new WebWindow(title, resultText);
     // Qt 5.4 has a bug and does not process 'white-space: nowrap' correctly. Enforcing it using rich text styles.
     w->textBrowser->setWordWrapMode(QTextOption::NoWrap);
 

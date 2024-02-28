@@ -96,7 +96,7 @@ QString WorkflowProcess::getTempDirectory() const {
 }
 
 void WorkflowProcess::addFile(const QString& url) {
-    QFile* f = new QFile(url);
+    auto f = new QFile(url);
     bool opened = f->open(QIODevice::ReadOnly);
     if (!opened) {
         delete f;

@@ -155,7 +155,7 @@ void UdrTestData::initTestUdr() {
 
     U2OpStatusImpl os;
     {  // init test schema
-        UdrSchema* schema = new UdrSchema(TEST_SCHEMA_ID);
+        auto schema = new UdrSchema(TEST_SCHEMA_ID);
         schema->addField(UdrSchema::FieldDesc("int", UdrSchema::INTEGER, UdrSchema::INDEXED), os);
         schema->addField(UdrSchema::FieldDesc("double", UdrSchema::DOUBLE), os);
         schema->addField(UdrSchema::FieldDesc("string", UdrSchema::STRING), os);
@@ -169,7 +169,7 @@ void UdrTestData::initTestUdr() {
         SAFE_POINT_OP(os, );
     }
     {  // init test schema 2
-        UdrSchema* schema = new UdrSchema(TEST_SCHEMA_ID_2);
+        auto schema = new UdrSchema(TEST_SCHEMA_ID_2);
         schema->addField(UdrSchema::FieldDesc("url", UdrSchema::STRING), os);
         schema->addField(UdrSchema::FieldDesc("data", UdrSchema::BLOB, UdrSchema::NOT_INDEXED), os);
         SAFE_POINT_OP(os, );
@@ -178,7 +178,7 @@ void UdrTestData::initTestUdr() {
         SAFE_POINT_OP(os, );
     }
     {  // init test schema 3
-        UdrSchema* schema = new UdrSchema(TEST_SCHEMA_ID_3, true);
+        auto schema = new UdrSchema(TEST_SCHEMA_ID_3, true);
         schema->addField(UdrSchema::FieldDesc("data", UdrSchema::STRING), os);
         SAFE_POINT_OP(os, );
 

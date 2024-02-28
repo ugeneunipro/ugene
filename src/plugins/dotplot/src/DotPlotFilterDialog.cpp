@@ -65,7 +65,7 @@ DotPlotFilterDialog::DotPlotFilterDialog(QWidget* parent, ADVSequenceObjectConte
         seqXItem->setText(0, "Sequence X: " + xSeq->getSequenceGObject()->getGObjectName());
         AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
         foreach (const QString& aName, uniqueAnnotationNames) {
-            QTreeWidgetItem* aItem = new QTreeWidgetItem(seqXItem);
+            auto aItem = new QTreeWidgetItem(seqXItem);
             aItem->setText(0, aName);
             AnnotationSettings* as = asr->getAnnotationSettings(aName);
             QIcon icon = GUIUtils::createSquareIcon(as->color, 14);
@@ -79,7 +79,7 @@ DotPlotFilterDialog::DotPlotFilterDialog(QWidget* parent, ADVSequenceObjectConte
             seqYItem = new QTreeWidgetItem(featuresTree);
             seqYItem->setText(0, "Sequence Y: " + ySeq->getSequenceGObject()->getGObjectName());
             foreach (const QString& aName, uniqueAnnotationNames) {
-                QTreeWidgetItem* aItem = new QTreeWidgetItem(seqYItem);
+                auto aItem = new QTreeWidgetItem(seqYItem);
                 aItem->setText(0, aName);
                 AnnotationSettings* as = asr->getAnnotationSettings(aName);
                 QIcon icon = GUIUtils::createSquareIcon(as->color, 14);

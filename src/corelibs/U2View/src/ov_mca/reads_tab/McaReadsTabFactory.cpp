@@ -51,8 +51,8 @@ QWidget* McaReadsTabFactory::createWidget(GObjectViewController* objView, const 
                QString("Internal error: unable to cast object view to MaEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    QWidget* widget = new QWidget(objView->getWidget());
-    QVBoxLayout* layout = new QVBoxLayout();
+    auto widget = new QWidget(objView->getWidget());
+    auto layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
     widget->setLayout(layout);
 

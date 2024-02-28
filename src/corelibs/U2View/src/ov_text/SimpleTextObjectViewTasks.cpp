@@ -81,8 +81,8 @@ void OpenSavedTextObjectViewTask::open() {
         stateIsIllegal = true;
         return;
     }
-    SimpleTextObjectView* v = new SimpleTextObjectView(viewName, to, stateData);
-    GObjectViewWindow* w = new GObjectViewWindow(v, viewName, !stateData.isEmpty());
+    auto v = new SimpleTextObjectView(viewName, to, stateData);
+    auto w = new GObjectViewWindow(v, viewName, !stateData.isEmpty());
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
 }
@@ -99,8 +99,8 @@ void OpenSimpleTextObjectViewTask::open() {
         CHECK_EXT(obj != nullptr, stateInfo.setError(tr("Invalid object detected!")), );
 
         const QString viewName = GObjectViewUtils::genUniqueViewName(doc, to);
-        SimpleTextObjectView* v = new SimpleTextObjectView(viewName, to, stateData);
-        GObjectViewWindow* w = new GObjectViewWindow(v, viewName, !stateData.isEmpty());
+        auto v = new SimpleTextObjectView(viewName, to, stateData);
+        auto w = new GObjectViewWindow(v, viewName, !stateData.isEmpty());
         if (v->parent() == nullptr) {
             stateInfo.setError("Could not open view");
             delete v;

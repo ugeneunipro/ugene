@@ -685,10 +685,10 @@ void LigateFragmentsTask::createDocument(const QByteArray& seq, const QList<Shar
     U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, resultDoc->getDbiRef(), dna);
     CHECK_OP_EXT(stateInfo, delete resultDoc; resultDoc = nullptr, );
 
-    U2SequenceObject* dnaObj = new U2SequenceObject(seqName, seqRef);
+    auto dnaObj = new U2SequenceObject(seqName, seqRef);
     resultDoc->addObject(dnaObj);
 
-    AnnotationTableObject* aObj = new AnnotationTableObject(QString("%1 annotations").arg(seqName), resultDoc->getDbiRef());
+    auto aObj = new AnnotationTableObject(QString("%1 annotations").arg(seqName), resultDoc->getDbiRef());
     aObj->addAnnotations(annotations);
     resultDoc->addObject(aObj);
 

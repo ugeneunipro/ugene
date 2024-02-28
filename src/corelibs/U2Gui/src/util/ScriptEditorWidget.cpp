@@ -37,7 +37,7 @@ ScriptEditorWidget::ScriptEditorWidget(QWidget* parent, ScriptEditorType typeOfF
     scriptContainer = new QSplitter(Qt::Vertical, this);
     scriptContainer->setFocusPolicy(Qt::NoFocus);
 
-    QBoxLayout* layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    auto layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     layout->setMargin(0);
     layout->addWidget(scriptContainer);
 

@@ -68,7 +68,7 @@ void ZoomableAssemblyOverview::setupActions() {
     zoomOutAction = new QAction(tr("Zoom out"), this);
     zoomIn100xActon = new QAction(tr("Zoom in 100x"), this);
     restoreGlobalOverviewAction = new QAction(tr("Restore global overview"), this);
-    QAction* exportCoverageAction = new QAction(tr("Export coverage..."), this);
+    auto exportCoverageAction = new QAction(tr("Export coverage..."), this);
     exportCoverageAction->setObjectName("Export coverage");
 
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomInContextMenu()));

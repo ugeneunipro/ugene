@@ -56,10 +56,12 @@
 #include <QFileInfo>
 #include <QListWidget>
 #include <QRadioButton>
+#include <QRegExp>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CMDLineUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
 
@@ -4107,6 +4109,23 @@ GUI_TEST_CLASS_DEFINITION(test_7781) {
     CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7784) {
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb/", "example-alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
+    QStringList arguments {
+        "--log-no-task-progress",
+        "--log-level-details",
+        "--task=\"" + testDir + "_common_data/scenarios/_regression/7784/7784.uwl\"",
+        "--in-assembly=\"" + testDir + "_common_data/ugenedb/example-alignment.ugenedb\""};
+    QProcess process;
+    process.start(cmdlineUgenePath, arguments);
+    process.waitForFinished(GT_OP_WAIT_MILLIS);
+    QString outStr = process.readAllStandardOutput();
+    CHECK_SET_ERR(outStr.contains("Nothing to write"),
+                  "Cmdline output doesn't contain 'Nothing to write' message");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7786) {
     GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7786/7786.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -5001,6 +5020,27 @@ GUI_TEST_CLASS_DEFINITION(test_7968) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7974) {
+    GTFileDialog::openFile(testDir + "_common_data/clustal", "10000_sequences.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    class RunFastTreeScenario : public CustomScenario {
+    public:
+        void run() override {
+            auto dialog = GTWidget::getActiveModalWidget();
+            GTComboBox::selectItemByText("algorithmBox", dialog, "FastTree");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new BuildTreeDialogFiller(new RunFastTreeScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    GTUtilsTaskTreeView::cancelTask("Run FastTree tool", true, {"Calculating Phylogenetic Tree", "FastTree tree calculation"});
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7979) {
     /*
     * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
@@ -5013,6 +5053,8 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     * 6. Press "Lock scales" button
     * 7. Activate "Lock scales: selected annotation" menu item in "Lock scales" menu
     * Expected state: "Lock scales: selected annotation" menu item checked in "Lock scales" menu, other items are not checked
+    * 8. Press "Lock scales" button
+    * Expected state: "Lock scales" button is not pressed, no menu items selected
     */
     GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Separate;
     GTUtilsDialog::waitForDialog(new GTSequenceReadingModeDialogUtils());
@@ -5032,8 +5074,18 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
         };
         void run() override {
             QMenu* activePopupMenu = GTWidget::getActivePopupMenu();
-            QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
-            CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));            
+            if (menuItemNameToCheck.isEmpty()) {
+                QList<QAction*> menuActions = activePopupMenu->actions();
+                QList<QAction*> checkedActions;
+                for (QAction* menuAction : qAsConst(menuActions)) {
+                    if (menuAction->isCheckable() && menuAction->isChecked()) {
+                        GT_FAIL( QString("Item %1 checked but should not!").arg(menuAction->objectName()), );
+                    }
+                }
+            } else {
+                QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
+                CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));
+            }
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
 
@@ -5069,6 +5121,11 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("Lock scales: selected annotation")));
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
+
+    GTWidget::click(lockScalesButton);
+    CHECK_SET_ERR(!lockScalesButton->isDown(), "'Lock scales' button should be down");
+    GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("")));
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 }
 

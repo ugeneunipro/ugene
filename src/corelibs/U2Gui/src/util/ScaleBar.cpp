@@ -61,7 +61,7 @@ ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
     connect(plusButton, SIGNAL(clicked()), plusAction, SLOT(trigger()));
 
     // layout
-    QBoxLayout* zoomLayout = new QBoxLayout(ori == Qt::Vertical ? QBoxLayout::TopToBottom : QBoxLayout::RightToLeft);
+    auto zoomLayout = new QBoxLayout(ori == Qt::Vertical ? QBoxLayout::TopToBottom : QBoxLayout::RightToLeft);
     zoomLayout->addWidget(plusButton);
     zoomLayout->addWidget(scaleBar);
     zoomLayout->addWidget(minusButton);
