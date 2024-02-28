@@ -478,7 +478,7 @@ int main(int argc, char** argv) {
     auto settings = new SettingsImpl(QSettings::UserScope);
     appContext->setSettings(settings);
 
-    AppSettings* appSettings = new AppSettingsImpl();
+    auto appSettings = new AppSettingsImpl();
     appContext->setAppSettings(appSettings);
 
     UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
@@ -630,7 +630,7 @@ int main(int argc, char** argv) {
     }
     QObject::connect(UgeneUpdater::getInstance(), SIGNAL(si_update()), mw, SLOT(sl_exitAction()));
 
-    AppSettingsGUI* appSettingsGUI = new AppSettingsGUIImpl();
+    auto appSettingsGUI = new AppSettingsGUIImpl();
     appContext->setAppSettingsGUI(appSettingsGUI);
 
     AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, new TaskViewDockWidget(), QKeySequence(Qt::ALT | Qt::Key_2));
@@ -660,7 +660,7 @@ int main(int argc, char** argv) {
     auto dtr = new DNATranslationRegistry();
     appContext->setDNATranslationRegistry(dtr);
 
-    DNAAlphabetRegistry* dal = new DNAAlphabetRegistryImpl(dtr);
+    auto dal = new DNAAlphabetRegistryImpl(dtr);
     appContext->setDNAAlphabetRegistry(dal);
 
     auto dbxr = new DBXRefRegistry();
@@ -758,7 +758,7 @@ int main(int argc, char** argv) {
     auto dpr = new U2DataPathRegistry();
     appContext->setDataPathRegistry(dpr);
 
-    CredentialsAsker* credentialsAsker = new CredentialsAskerGui();
+    auto credentialsAsker = new CredentialsAskerGui();
     appContext->setCredentialsAsker(credentialsAsker);
 
     auto passwordStorage = new PasswordStorage();
@@ -775,7 +775,7 @@ int main(int argc, char** argv) {
     appContext->setProjectFilterTaskRegistry(projectFilterTaskRegistry);
     initProjectFilterTaskRegistry();
 
-    PasteFactory* pasteFactory = new PasteFactoryImpl;
+    auto pasteFactory = new PasteFactoryImpl;
     appContext->setPasteFactory(pasteFactory);
 
     auto dashboardInfoRegistry = new DashboardInfoRegistry;

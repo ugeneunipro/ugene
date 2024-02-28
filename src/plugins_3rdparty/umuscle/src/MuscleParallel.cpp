@@ -288,7 +288,7 @@ void ProgressiveAlignTask::prepare() {
     assert(workpool->nThreads >= 0);
     setMaxParallelSubtasks(workpool->nThreads);
     for (int i = 0; i < workpool->nThreads; i++) {
-        ProgressiveAlignWorker* sub = new ProgressiveAlignWorker(workpool, i);
+        auto sub = new ProgressiveAlignWorker(workpool, i);
         addSubTask(sub);
     }
     timer.start();

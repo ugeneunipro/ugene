@@ -58,7 +58,7 @@ void DirectoriesSettingsPageUtils::setIndexDir(const QString& indexDir) {
 }
 
 AppSettingsGUIPageState* DirectoriesSettingsPageController::getSavedState() {
-    DirectoriesSettingsPageState* state = new DirectoriesSettingsPageState();
+    auto state = new DirectoriesSettingsPageState();
     UserAppsSettings* s = AppContext::getAppSettings()->getUserAppsSettings();
     state->downloadsDirPath = s->getDownloadDirPath();
     state->documentsDirectory = s->getDefaultDataDirPath();
@@ -90,7 +90,7 @@ void DirectoriesSettingsPageController::saveState(AppSettingsGUIPageState* s) {
 }
 
 AppSettingsGUIPageWidget* DirectoriesSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
-    DirectoriesSettingsPageWidget* r = new DirectoriesSettingsPageWidget(this);
+    auto r = new DirectoriesSettingsPageWidget(this);
     r->setState(state);
     return r;
 }
@@ -118,7 +118,7 @@ void DirectoriesSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
 
 AppSettingsGUIPageState* DirectoriesSettingsPageWidget::getState(QString& err) const {
     Q_UNUSED(err)
-    DirectoriesSettingsPageState* state = new DirectoriesSettingsPageState();
+    auto state = new DirectoriesSettingsPageState();
     state->downloadsDirPath = downloadsDirPathEdit->text();
     state->documentsDirectory = documentsDirectoryEdit->text();
     state->temporaryDirPath = tmpDirPathEdit->text();
@@ -161,7 +161,7 @@ void DirectoriesSettingsPageWidget::sl_browseFileStorageButtonClicked() {
 }
 
 void DirectoriesSettingsPageWidget::sl_cleanupStorage() {
-    CleanupFileStorageTask* t = new CleanupFileStorageTask();
+    auto t = new CleanupFileStorageTask();
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

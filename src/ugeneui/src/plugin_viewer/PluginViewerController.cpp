@@ -185,7 +185,7 @@ void PluginViewerController::sl_onPluginAdded(Plugin* p) {
     assert(findPluginItem(p)==NULL);
 
     QTreeWidget* treeWidget = ui.treeWidget;
-    PlugViewPluginItem* pluginItem = new PlugViewPluginItem(NULL, p, showServices);
+    auto pluginItem = new PlugViewPluginItem(NULL, p, showServices);
     if (showServices) {
         const QList<Service*>& services = p->getServices();
         //this method is called for default state init also -> look for registered plugin services

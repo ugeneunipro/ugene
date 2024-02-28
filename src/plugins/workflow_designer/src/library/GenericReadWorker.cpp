@@ -98,7 +98,7 @@ Task* GenericDocReader::tick() {
 Task* GenericDocReader::createReadTask(const QString& url, const QString& datasetName) {
     if (!SharedDbUrlUtils::isDbObjectUrl(url)) {
         Task* t = createReadTask(url, datasetName);
-        NoFailTaskWrapper* wrapper = new NoFailTaskWrapper(t);
+        auto wrapper = new NoFailTaskWrapper(t);
         connect(wrapper, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return wrapper;
     } else {

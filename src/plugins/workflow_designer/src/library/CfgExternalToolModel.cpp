@@ -294,7 +294,7 @@ QVariant CfgExternalToolModel::headerData(int section, Qt::Orientation orientati
 
 bool CfgExternalToolModel::insertRows(int /*row*/, int /*count*/, const QModelIndex& parent) {
     beginInsertRows(parent, items.size(), items.size());
-    CfgExternalToolItem* newItem = new CfgExternalToolItem();
+    auto newItem = new CfgExternalToolItem();
     newItem->delegateForNames = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_NAME);
     newItem->delegateForIds = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_ID);
     newItem->delegateForTypes = new ComboBoxDelegate(types);
@@ -698,7 +698,7 @@ QVariant CfgExternalToolModelAttributes::headerData(int section, Qt::Orientation
 
 bool CfgExternalToolModelAttributes::insertRows(int /*row*/, int /*count*/, const QModelIndex& parent) {
     beginInsertRows(parent, items.size(), items.size());
-    AttributeItem* newItem = new AttributeItem();
+    auto newItem = new AttributeItem();
     newItem->delegateForNames = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_NAME);
     newItem->delegateForIds = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_ID);
     newItem->setDataType(AttributeConfig::STRING_TYPE);

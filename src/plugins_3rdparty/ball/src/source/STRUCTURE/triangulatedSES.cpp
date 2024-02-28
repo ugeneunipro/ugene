@@ -695,7 +695,7 @@ namespace BALL
                     (edge_[(*(face->edge_.begin())++)->index_].size() == 1) &&
                     (edge_[face->edge_.back()->index_].size() == 1)			)
             {
-                Triangle* triangle = new Triangle;
+                auto triangle = new Triangle;
                 HashSet<TrianglePoint*> points;
                 points.insert(point_[face->edge_.front()->vertex_[0]->index_]);
                 points.insert(point_[face->edge_.front()->vertex_[1]->index_]);
@@ -1618,7 +1618,7 @@ namespace BALL
             for (Position j = 0; j < number_of_segments; j++)
             {
                 offset2 = j*end+i;
-                Triangle* t1 = new Triangle;
+                auto t1 = new Triangle;
                     tses_->triangles_.push_back(t1);
                     tses_->number_of_triangles_++;
                     t1->vertex_[0] = points[offset2];
@@ -1634,7 +1634,7 @@ namespace BALL
                     t1->edge_[1]->face_[0] = t1;
                     t1->edge_[2]->face_[0] = t1;
                     triangles[2*(number_of_segments*i+j)] = t1;
-                Triangle* t2 = new Triangle;
+                    auto t2 = new Triangle;
                     tses_->triangles_.push_back(t2);
                     tses_->number_of_triangles_++;
                     t2->vertex_[0] = points[offset2];
@@ -1656,7 +1656,7 @@ namespace BALL
         if (edge0 == NULL)
         {
             offset = number_of_segments*end;
-            TriangleEdge* edge = new TriangleEdge;
+            auto edge = new TriangleEdge;
                 tses_->edges_.push_back(edge);
                 tses_->number_of_edges_++;
                 edge->vertex_[0] = points[offset];
@@ -1667,7 +1667,7 @@ namespace BALL
             for (Position i = 0; i < number_of_triangles; i++)
             {
                 offset2 = offset+i;
-                Triangle* t1 = new Triangle;
+                auto t1 = new Triangle;
                     tses_->triangles_.push_back(t1);
                     tses_->number_of_triangles_++;
                     t1->vertex_[0] = points[offset2];
@@ -1690,7 +1690,7 @@ namespace BALL
                     t1->edge_[1]->face_[0] = t1;
                     t1->edge_[2]->face_[0] = t1;
                     triangles.push_back(t1);
-                Triangle* t2 = new Triangle;
+                    auto t2 = new Triangle;
                     tses_->triangles_.push_back(t2);
                     tses_->number_of_triangles_++;
                     t2->vertex_[0] = points[offset2];
@@ -1721,7 +1721,7 @@ namespace BALL
         {
             Position last = (number_of_segments+1)*number_of_triangles;
             offset = (end-1)*(number_of_segments+2);
-            TriangleEdge* edge = new TriangleEdge;
+            auto edge = new TriangleEdge;
                 tses_->edges_.push_back(edge);
                 tses_->number_of_edges_++;
                 edge->vertex_[0] = points[number_of_triangles-1];
@@ -1731,7 +1731,7 @@ namespace BALL
                 edge_[edge0->index_].push_back(edge);
             for (Position i = 0; i < number_of_segments; i++)
             {
-                Triangle* t = new Triangle;
+                    auto t = new Triangle;
                     tses_->triangles_.push_back(t);
                     tses_->number_of_triangles_++;
                     t->vertex_[0] = points[number_of_triangles*(i+1)-1];

@@ -419,7 +419,7 @@ DataTypePtr WorkflowUtils::getToDatatypeForBusport(IntegralBusPort* p) {
         QMap<Descriptor, DataTypePtr> map;
         map.insert(*p, t);
         to = new MapDataType(Descriptor(), map);
-        // IntegralBusType* bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
+        // auto bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
         // bt->addOutput(t, p);
     }
     return to;

@@ -1031,7 +1031,7 @@ namespace BALL
                     findThirdAtom(atom1, atom2, s, candidates);
                     if (candidates.empty())
                     {
-                        RSVertex* vertex2 = new RSVertex(atom2);
+                        auto vertex2 = new RSVertex(atom2);
                         RSEdge* edge = createFreeEdge(vertex1,vertex2);
                         if (edge != NULL)
                         {
@@ -1059,11 +1059,11 @@ namespace BALL
                                 if (checkProbe(probe,SortedPosition3(atom1,atom2,atom3)) == true)
                                 {
                                     face = new RSFace;
-                                    RSEdge* edge1 = new RSEdge;
-                                    RSEdge* edge2 = new RSEdge;
-                                    RSEdge* edge3 = new RSEdge;
-                                    RSVertex* vertex2 = new RSVertex(atom2);
-                                    RSVertex* vertex3 = new RSVertex(atom3);
+                                    auto edge1 = new RSEdge;
+                                    auto edge2 = new RSEdge;
+                                    auto edge3 = new RSEdge;
+                                    auto vertex2 = new RSVertex(atom2);
+                                    auto vertex3 = new RSVertex(atom3);
                                     updateFaceAndEdges(vertex1,vertex2,vertex3,
                                                                          edge1,edge2,edge3,
                                                                          face,probe);
@@ -1254,7 +1254,7 @@ namespace BALL
             {
                 if (neighbours_[i].size() == 0)
                 {
-                    RSVertex* vertex = new RSVertex(i);
+                    auto vertex = new RSVertex(i);
                     insert(vertex);
 
                     return vertex;
@@ -1301,15 +1301,15 @@ namespace BALL
         }
         if (found)
         {
-            RSVertex* vertex1 = new RSVertex(a1);
-            RSVertex* vertex2 = new RSVertex(a2);
-            RSVertex* vertex3 = new RSVertex(a3);
+            auto vertex1 = new RSVertex(a1);
+            auto vertex2 = new RSVertex(a2);
+            auto vertex3 = new RSVertex(a3);
 
-            RSEdge* e1 = new RSEdge;
-            RSEdge* e2 = new RSEdge;
-            RSEdge* e3 = new RSEdge;
+            auto e1 = new RSEdge;
+            auto e2 = new RSEdge;
+            auto e3 = new RSEdge;
 
-            RSFace* face = new RSFace;
+            auto face = new RSFace;
 
             updateFaceAndEdges(vertex1,vertex2,vertex3,e1,e2,e3,face,probe);
 
@@ -1342,8 +1342,8 @@ namespace BALL
             return NULL;
         }
 
-        RSVertex* vertex1 = new RSVertex(a1);
-        RSVertex* vertex2 = new RSVertex(a2);
+        auto vertex1 = new RSVertex(a1);
+        auto vertex2 = new RSVertex(a2);
         neighboursOfTwoAtoms(SortedPosition2(a1,a2));
 
         RSEdge* edge = createFreeEdge(vertex1,vertex2);
@@ -1632,7 +1632,7 @@ namespace BALL
                 }
             }
             TVector3<double> vector(0,0,0);
-            RSEdge* edge = new RSEdge(vertex1, vertex2, NULL, NULL, circle1.p, circle1.radius,
+            auto edge = new RSEdge(vertex1, vertex2, NULL, NULL, circle1.p, circle1.radius,
                                       TAngle<double>(2*Constants::PI, true), circle2, circle3,
                                       vector, vector, false, -1);
 
@@ -1754,7 +1754,7 @@ namespace BALL
 
             if (GetIntersection(s1, s2, s3, c1, c2, false))
             {
-                ProbePosition* position = new ProbePosition;
+                auto position = new ProbePosition;
                 position->status[0] = STATUS_NOT_TESTED;
                 position->status[1] = STATUS_NOT_TESTED;
                 position->point[0] = c1;

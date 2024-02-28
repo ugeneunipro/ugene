@@ -61,7 +61,7 @@ namespace BALL
 
 		if (dim > 1)
 		{
-			T* submatrix = new T[dim1 * dim1];
+            auto submatrix = new T[dim1 * dim1];
 
 			for (Index i = 0; i < (Index)dim; ++i) 
 			{
@@ -194,7 +194,7 @@ namespace BALL
 		Index i, j, k, p;
 		// the column dimension of the matrix
 		const Size col_dim = dim + 1;
-		T* matrix = new T[dim * (dim + 1)];
+        auto matrix = new T[dim * (dim + 1)];
 		const T* source = m;
 		T* target = (T*)matrix;
 		T* end = (T*)&BALL_MATRIX_CELL(matrix, col_dim, dim - 1, dim);

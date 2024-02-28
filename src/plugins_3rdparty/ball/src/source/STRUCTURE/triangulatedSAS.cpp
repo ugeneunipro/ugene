@@ -451,7 +451,7 @@ namespace BALL
         t->vertex_[outside] = v1;
         v1->faces_.insert(t);
         // create a new triangle
-        Triangle* new_triangle = new Triangle;
+        auto new_triangle = new Triangle;
         new_triangle->vertex_[0] = v1;
         if ((outside-index == 1) || (outside-index == -2))
         {
@@ -481,7 +481,7 @@ namespace BALL
                 part.insert(new_point);
                 grid.insert(Vector3(pos.x,pos.y,pos.z),new_point);
             }
-            Triangle* third_triangle = new Triangle;
+            auto third_triangle = new Triangle;
             third_triangle->vertex_[0] = v1;
             if ((outside-index == 1) || (outside-index == -2))
             {
@@ -561,7 +561,7 @@ namespace BALL
                 part.insert(new_point);
                 grid.insert(Vector3(pos.x,pos.y,pos.z),new_point);
             }
-            Triangle* new_triangle = new Triangle;
+            auto new_triangle = new Triangle;
             new_triangle->vertex_[0] = t->vertex_[outside2];
             new_triangle->vertex_[1] = t->vertex_[outside1];
             new_triangle->vertex_[2] = new_point;

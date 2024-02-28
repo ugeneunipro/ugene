@@ -361,7 +361,7 @@ NameFilterLayout::NameFilterLayout(QWidget* parent)
     nameEdit->setObjectName("nameFilterLineEdit");
     nameEdit->setPlaceholderText(tr("Type to filter by name..."));
 
-    QLabel* label = new QLabel(tr("Name filter:"));
+    auto label = new QLabel(tr("Name filter:"));
     label->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     nameEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     addWidget(label);
@@ -394,10 +394,10 @@ bool NameFilterLayout::filterMatched(const QString& nameFilter, const QString& n
 /************************************************************************/
 SamplesWrapper::SamplesWrapper(SamplesWidget* samples, QWidget* parent)
     : QWidget(parent) {
-    QVBoxLayout* vl = new QVBoxLayout(this);
+    auto vl = new QVBoxLayout(this);
     vl->setContentsMargins(0, 3, 0, 0);
     vl->setSpacing(3);
-    NameFilterLayout* hl = new NameFilterLayout(nullptr);
+    auto hl = new NameFilterLayout(nullptr);
     vl->addLayout(hl);
     vl->addWidget(samples);
 

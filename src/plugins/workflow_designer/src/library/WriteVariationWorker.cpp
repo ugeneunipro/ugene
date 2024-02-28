@@ -133,7 +133,7 @@ void WriteVariationWorkerFactory::init() {
         QList<Attribute*> attrs;
         Attribute* docFormatAttr;
         {
-            Attribute* accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
+            auto accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
             accumulateAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
             attrs << accumulateAttr;
 
@@ -142,7 +142,7 @@ void WriteVariationWorkerFactory::init() {
             attrs << docFormatAttr;
         }
 
-        WriteDocActorProto* childProto = new WriteDocActorProto(format, protoDesc, portDescs, inDesc.getId(), attrs, true, false);
+        auto childProto = new WriteDocActorProto(format, protoDesc, portDescs, inDesc.getId(), attrs, true, false);
         IntegralBusActorPrototype* proto = childProto;
         docFormatAttr->addRelation(new FileExtensionRelation(childProto->getUrlAttr()->getId()));
 

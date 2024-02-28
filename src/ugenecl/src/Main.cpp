@@ -240,7 +240,7 @@ int main(int argc, char** argv) {
     auto settings = new SettingsImpl(QSettings::UserScope);
     appContext->setSettings(settings);
 
-    AppSettings* appSettings = new AppSettingsImpl();
+    auto appSettings = new AppSettingsImpl();
     appContext->setAppSettings(appSettings);
 
     UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
@@ -332,7 +332,7 @@ int main(int argc, char** argv) {
     auto dtr = new DNATranslationRegistry();
     appContext->setDNATranslationRegistry(dtr);
 
-    DNAAlphabetRegistry* dal = new DNAAlphabetRegistryImpl(dtr);
+    auto dal = new DNAAlphabetRegistryImpl(dtr);
     appContext->setDNAAlphabetRegistry(dal);
 
     // unlike ugene's main.cpp we don't create ScriptManagerView, MsaColorSchemeRegistry
@@ -413,7 +413,7 @@ int main(int argc, char** argv) {
     appContext->setPasswordStorage(passwordStorage);
     AppSettingsImpl::addPublicDbCredentials2Settings();
 
-    CredentialsAsker* credentialsAsker = new CredentialsAskerCli();
+    auto credentialsAsker = new CredentialsAskerCli();
     appContext->setCredentialsAsker(credentialsAsker);
 
     auto appFileStorage = new AppFileStorage();

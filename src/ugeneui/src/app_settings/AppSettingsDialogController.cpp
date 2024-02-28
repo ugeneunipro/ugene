@@ -45,7 +45,7 @@ AppSettingsDialogController::AppSettingsDialogController(const QString& pageId, 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    QHBoxLayout* pageLayout = new QHBoxLayout();
+    auto pageLayout = new QHBoxLayout();
     settingsBox->setLayout(pageLayout);
 
     connect(tree, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT(sl_currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));

@@ -128,7 +128,7 @@ void ScriptWorker::init() {
     engine = new WorkflowScriptEngine(context);
     if (AppContext::isGUIMode()) {  // add script debugger
         engine->setProcessEventsInterval(50);
-        QScriptEngineDebugger* scriptDebugger = new QScriptEngineDebugger(engine);
+        auto scriptDebugger = new QScriptEngineDebugger(engine);
         scriptDebugger->setAutoShowStandardWindow(true);
         scriptDebugger->attachTo(engine);
     }

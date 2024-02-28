@@ -40,7 +40,7 @@ NetworkSettingsPageController::NetworkSettingsPageController(QObject* p)
 }
 
 AppSettingsGUIPageState* NetworkSettingsPageController::getSavedState() {
-    NetworkSettingsPageState* state = new NetworkSettingsPageState();
+    auto state = new NetworkSettingsPageState();
     state->config = *AppContext::getAppSettings()->getNetworkConfiguration();
     UserAppsSettings* s = AppContext::getAppSettings()->getUserAppsSettings();
     state->webBrowserUrl = s->getWebBrowserURL();
@@ -58,7 +58,7 @@ void NetworkSettingsPageController::saveState(AppSettingsGUIPageState* s) {
 }
 
 AppSettingsGUIPageWidget* NetworkSettingsPageController::createWidget(AppSettingsGUIPageState* data) {
-    NetworkSettingsPageWidget* r = new NetworkSettingsPageWidget();
+    auto r = new NetworkSettingsPageWidget();
     r->setState(data);
     return r;
 }
@@ -126,7 +126,7 @@ void NetworkSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
 
 AppSettingsGUIPageState* NetworkSettingsPageWidget::getState(QString& err) const {
     Q_UNUSED(err);
-    NetworkSettingsPageState* state = new NetworkSettingsPageState();
+    auto state = new NetworkSettingsPageState();
     NetworkConfiguration& set = state->config;
 
     QString httpProxyAddress = httpProxyAddrEdit->text();

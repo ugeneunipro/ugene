@@ -320,7 +320,7 @@ Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* db
     // CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
     //
     // DocumentFormatUtils::updateFormatHints(objects, fs);
-    // Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, lockReason);
+    // auto doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, lockReason);
     // return doc;
 }
 

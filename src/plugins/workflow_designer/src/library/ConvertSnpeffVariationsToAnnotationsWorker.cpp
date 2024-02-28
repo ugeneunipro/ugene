@@ -96,7 +96,7 @@ void ConvertSnpeffVariationsToAnnotationsFactory::init() {
         attributes << new Attribute(BaseAttributes::URL_OUT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, "");
 
         const DocumentFormatId format = (supportedFormats.contains(BaseDocumentFormats::PLAIN_GENBANK) ? BaseDocumentFormats::PLAIN_GENBANK : supportedFormats.first());
-        Attribute* documentFormatAttribute = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, format);
+        auto documentFormatAttribute = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, format);
         documentFormatAttribute->addRelation(new FileExtensionRelation(BaseAttributes::URL_OUT_ATTRIBUTE().getId()));
         attributes << documentFormatAttribute;
     }

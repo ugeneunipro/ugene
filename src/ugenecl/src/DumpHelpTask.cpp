@@ -161,7 +161,7 @@ void DumpHelpTask::prepare() {
 
         // will be deleted in sl_loadSchemaStateChanged
         const QSharedPointer<Schema> schema = QSharedPointer<Schema>::create();
-        Metadata* meta = new Metadata();
+        auto meta = new Metadata();
 
         schema->setDeepCopyFlag(true);
         addSubTask(new LoadWorkflowTask(schema, meta, pathToSchema));
