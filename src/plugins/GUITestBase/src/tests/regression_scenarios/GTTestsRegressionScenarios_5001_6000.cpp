@@ -4945,8 +4945,8 @@ GUI_TEST_CLASS_DEFINITION(test_5998) {
     GTWidget::click(GTWidget::findWidget("ArrowHeader_Save annotation(s) to"));
 
     auto newTable = GTWidget::findRadioButton("rbCreateNewTable");
-    //GTWidget::click(newTable, Qt::LeftButton, GTWidget::getWidgetVisibleCenter(newTable) - QPoint(60, 0));
-    GTWidget::click(newTable);
+    GTWidget::click(newTable, Qt::LeftButton, GTWidget::getWidgetVisibleCenter(newTable) - QPoint(60, 0));
+    //GTWidget::click(newTable);
 
     QString text = GTLineEdit::getText("leNewTablePath");
     text.replace(".gb", "22222222.gb");
