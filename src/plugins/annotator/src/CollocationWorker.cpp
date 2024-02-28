@@ -102,9 +102,9 @@ void CollocationWorkerFactory::init() {
         Descriptor fd(FIT_ATTR, CollocationWorker::tr("Must fit into region"), CollocationWorker::tr("Whether the interesting annotations should entirely fit into the specified region to form a group."));
         Descriptor td(TYPE_ATTR, CollocationWorker::tr("Result type"), CollocationWorker::tr("Copy original annotations or annotate found regions with new ones."));
         Descriptor id(INC_BOUNDARY_ATTR, CollocationWorker::tr("Include boundaries"), CollocationWorker::tr("Include most left and most right boundary annotations regions into result or exclude them."));
-        Attribute* nameAttr = new Attribute(nd, BaseTypes::STRING_TYPE(), true, QVariant("misc_feature"));
-        Attribute* typeAttr = new Attribute(td, BaseTypes::STRING_TYPE(), false, NEW_TYPE_ATTR);
-        Attribute* boundAttr = new Attribute(id, BaseTypes::BOOL_TYPE(), false, true);
+        auto nameAttr = new Attribute(nd, BaseTypes::STRING_TYPE(), true, QVariant("misc_feature"));
+        auto typeAttr = new Attribute(td, BaseTypes::STRING_TYPE(), false, NEW_TYPE_ATTR);
+        auto boundAttr = new Attribute(id, BaseTypes::BOOL_TYPE(), false, true);
         a << typeAttr;
         a << nameAttr;
         a << boundAttr;

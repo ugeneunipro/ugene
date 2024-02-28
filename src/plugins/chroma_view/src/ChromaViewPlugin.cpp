@@ -42,7 +42,7 @@ namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     if (AppContext::getMainWindow()) {
-        ChromaViewPlugin* plug = new ChromaViewPlugin();
+        auto plug = new ChromaViewPlugin();
         return plug;
     }
     return nullptr;
@@ -89,7 +89,7 @@ void ChromaViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
         return;
     }
 
-    ChromaViewAction* action = new ChromaViewAction();
+    auto action = new ChromaViewAction();
     action->setIcon(QIcon(":chroma_view/images/cv.png"));
     action->setCheckable(true);
     action->setChecked(false);

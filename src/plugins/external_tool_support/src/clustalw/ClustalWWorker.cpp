@@ -263,7 +263,7 @@ Task* ClustalWWorker::tick() {
             algoLog.error(tr("An empty MSA '%1' has been supplied to ClustalW.").arg(msa->getName()));
             return nullptr;
         }
-        ClustalWSupportTask* supportTask = new ClustalWSupportTask(msa, GObjectReference(), cfg);
+        auto supportTask = new ClustalWSupportTask(msa, GObjectReference(), cfg);
         supportTask->addListeners(createLogListeners());
         Task* t = new NoFailTaskWrapper(supportTask);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));

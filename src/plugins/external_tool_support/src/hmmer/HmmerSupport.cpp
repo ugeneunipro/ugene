@@ -195,7 +195,7 @@ void HmmerSupport::initBuild() {
 
     MainWindow* mainWindow = AppContext::getMainWindow();
     if (mainWindow != nullptr) {
-        QAction* buildAction = new QAction(tr("Build HMM3 profile..."), this);
+        auto buildAction = new QAction(tr("Build HMM3 profile..."), this);
         buildAction->setObjectName(ToolsMenu::HMMER_BUILD3);
         connect(buildAction, SIGNAL(triggered()), SLOT(sl_buildProfile()));
         ToolsMenu::addAction(ToolsMenu::HMMER_MENU, buildAction);
@@ -215,7 +215,7 @@ void HmmerSupport::initSearch() {
 
     MainWindow* mainWindow = AppContext::getMainWindow();
     if (mainWindow != nullptr) {
-        QAction* searchAction = new QAction(tr("Search with HMMER3..."), this);
+        auto searchAction = new QAction(tr("Search with HMMER3..."), this);
         searchAction->setObjectName(ToolsMenu::HMMER_SEARCH3);
         connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
         ToolsMenu::addAction(ToolsMenu::HMMER_MENU, searchAction);
@@ -235,7 +235,7 @@ void HmmerSupport::initPhmmer() {
 
     MainWindow* mainWindow = AppContext::getMainWindow();
     if (mainWindow != nullptr) {
-        QAction* searchAction = new QAction(tr("Search with phmmer..."), this);
+        auto searchAction = new QAction(tr("Search with phmmer..."), this);
         searchAction->setObjectName(ToolsMenu::HMMER_SEARCH3P);
         connect(searchAction, SIGNAL(triggered()), SLOT(sl_phmmerSearch()));
         ToolsMenu::addAction(ToolsMenu::HMMER_MENU, searchAction);
@@ -280,7 +280,7 @@ void HmmerMsaEditorContext::initViewContext(GObjectViewController* view) {
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     CHECK(msaEditor->getMaObject() != nullptr, );
 
-    GObjectViewAction* action = new GObjectViewAction(this, view, tr("Build HMMER3 profile"));
+    auto action = new GObjectViewAction(this, view, tr("Build HMMER3 profile"));
     action->setObjectName("Build HMMER3 profile");
     action->setIcon(QIcon(":/external_tool_support/images/hmmer.png"));
     connect(action, SIGNAL(triggered()), SLOT(sl_build()));
@@ -322,7 +322,7 @@ void HmmerAdvContext::initViewContext(GObjectViewController* view) {
     auto adv = qobject_cast<AnnotatedDNAView*>(view);
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", );
 
-    ADVGlobalAction* searchAction = new ADVGlobalAction(adv, QIcon(":/external_tool_support/images/hmmer.png"), tr("Find HMM signals with HMMER3..."), 70);
+    auto searchAction = new ADVGlobalAction(adv, QIcon(":/external_tool_support/images/hmmer.png"), tr("Find HMM signals with HMMER3..."), 70);
     searchAction->setObjectName("Find HMM signals with HMMER3");
     connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
 }

@@ -97,7 +97,7 @@ ExternalToolRunTask* TBlastNTask::createBlastTask() {
 
     algoLog.trace("TBlastN arguments: " + arguments.join(" "));
     QString workingDirectory = QFileInfo(url).absolutePath();
-    ExternalToolRunTask* runTask = new ExternalToolRunTask(BlastSupport::ET_TBLASTN_ID, arguments, new ExternalToolLogParser(), workingDirectory);
+    auto runTask = new ExternalToolRunTask(BlastSupport::ET_TBLASTN_ID, arguments, new ExternalToolLogParser(), workingDirectory);
     setListenerForTask(runTask);
     return runTask;
 }

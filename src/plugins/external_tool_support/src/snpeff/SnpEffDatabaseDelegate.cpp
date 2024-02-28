@@ -158,7 +158,7 @@ SnpEffDatabaseDelegate::SnpEffDatabaseDelegate(QObject* parent)
 }
 
 QWidget* SnpEffDatabaseDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& /*option*/, const QModelIndex& /*index*/) const {
-    SnpEffDatabasePropertyWidget* editor = new SnpEffDatabasePropertyWidget(parent);
+    auto editor = new SnpEffDatabasePropertyWidget(parent);
     connect(editor, SIGNAL(si_valueChanged(QVariant)), SLOT(sl_commit()));
     return editor;
 }

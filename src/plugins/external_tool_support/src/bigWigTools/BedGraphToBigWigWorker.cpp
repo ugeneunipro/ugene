@@ -130,7 +130,7 @@ void BedGraphToBigWigFactory::init() {
         Descriptor genomeAttrDesc(BedGraphToBigWigWorker::GENOME, BedGraphToBigWigWorker::tr("Genome"), BedGraphToBigWigWorker::tr("File with genome length."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        auto customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BedGraphToBigWigWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         Attribute* genomeAttr = nullptr;

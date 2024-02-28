@@ -44,7 +44,7 @@ namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     if (AppContext::getMainWindow()) {
-        DNAStatPlugin* plug = new DNAStatPlugin();
+        auto plug = new DNAStatPlugin();
         return plug;
     }
     return nullptr;
@@ -70,7 +70,7 @@ void DNAStatMSAEditorContext::initViewContext(GObjectViewController* v) {
     if (msaed != nullptr && !msaed->getMaObject())
         return;
 
-    GObjectViewAction* profileAction = new GObjectViewAction(this, v, tr("Generate grid profile..."));
+    auto profileAction = new GObjectViewAction(this, v, tr("Generate grid profile..."));
     profileAction->setObjectName("Generate grid profile");
     connect(profileAction, SIGNAL(triggered()), SLOT(sl_showMSAProfileDialog()));
 
@@ -111,7 +111,7 @@ void DistanceMatrixMSAEditorContext::initViewContext(GObjectViewController* v) {
     if (msaed != nullptr && !msaed->getMaObject())
         return;
 
-    GObjectViewAction* profileAction = new GObjectViewAction(this, v, tr("Generate distance matrix..."));
+    auto profileAction = new GObjectViewAction(this, v, tr("Generate distance matrix..."));
     profileAction->setObjectName("Generate distance matrix");
     connect(profileAction, SIGNAL(triggered()), SLOT(sl_showDistanceMatrixDialog()));
     addViewAction(profileAction);

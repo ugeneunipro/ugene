@@ -214,11 +214,11 @@ void BwaWorkerFactory::init() {
 
         attrs << new Attribute(useMissProb, BaseTypes::BOOL_TYPE(), false, QVariant(true));
 
-        Attribute* maxDiffAttr = new Attribute(maxDiff, BaseTypes::NUM_TYPE(), false, QVariant(0));
+        auto maxDiffAttr = new Attribute(maxDiff, BaseTypes::NUM_TYPE(), false, QVariant(0));
         maxDiffAttr->addRelation(new VisibilityRelation(USE_MISS_PROB, QVariant(false)));
         attrs << maxDiffAttr;
 
-        Attribute* missProbAttr = new Attribute(missProb, BaseTypes::NUM_TYPE(), false, QVariant(0.04));
+        auto missProbAttr = new Attribute(missProb, BaseTypes::NUM_TYPE(), false, QVariant(0.04));
         missProbAttr->addRelation(new VisibilityRelation(USE_MISS_PROB, QVariant(true)));
         attrs << missProbAttr;
 
@@ -230,7 +230,7 @@ void BwaWorkerFactory::init() {
         attrs << new Attribute(nonIterative, BaseTypes::BOOL_TYPE(), false, QVariant(false));
         attrs << new Attribute(enableLongGaps, BaseTypes::BOOL_TYPE(), false, QVariant(true));
 
-        Attribute* maxGapExtensionsAttr = new Attribute(maxGapExtensions, BaseTypes::NUM_TYPE(), false, QVariant(0));
+        auto maxGapExtensionsAttr = new Attribute(maxGapExtensions, BaseTypes::NUM_TYPE(), false, QVariant(0));
         maxGapExtensionsAttr->addRelation(new VisibilityRelation(ENABLE_LONG_GAPS, QVariant(true)));
         attrs << maxGapExtensionsAttr;
 

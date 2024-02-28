@@ -80,11 +80,11 @@ StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject* fi
         ref->setModelDisabled();
     }
 
-    QVBoxLayout* refBox = new QVBoxLayout();
+    auto refBox = new QVBoxLayout();
     refBox->addWidget(ref);
     refGroup->setLayout(refBox);
 
-    QVBoxLayout* altBox = new QVBoxLayout();
+    auto altBox = new QVBoxLayout();
     altBox->addWidget(mob);
     altGroup->setLayout(altBox);
 

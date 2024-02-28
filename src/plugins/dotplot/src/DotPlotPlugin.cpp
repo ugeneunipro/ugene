@@ -46,7 +46,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    DotPlotPlugin* plug = new DotPlotPlugin();
+    auto plug = new DotPlotPlugin();
     return plug;
 }
 
@@ -69,7 +69,7 @@ void DotPlotPlugin::sl_initDotPlotView() {
 DotPlotViewContext::DotPlotViewContext(QObject* p)
     : GObjectViewWindowContext(p, AnnotatedDNAViewFactory::ID), createdByWizard(false) {
     // add dotplot item to the tools menu
-    QAction* showDlgAction = new QAction(QIcon(":dotplot/images/dotplot.png"), tr("Build dotplot..."), this);
+    auto showDlgAction = new QAction(QIcon(":dotplot/images/dotplot.png"), tr("Build dotplot..."), this);
     showDlgAction->setObjectName(ToolsMenu::DOTPLOT);
     connect(showDlgAction, SIGNAL(triggered()), SLOT(sl_showDotPlotDialog()));
     ToolsMenu::addAction(ToolsMenu::TOOLS, showDlgAction);
@@ -121,7 +121,7 @@ void DotPlotViewContext::sl_loadTaskStateChanged(Task* task) {
 
 // DotPlot wizard dialog
 void DotPlotViewContext::sl_showDotPlotDialog() {
-    Task* tasks = new Task("Creating dotplot", TaskFlag_NoRun);
+    auto tasks = new Task("Creating dotplot", TaskFlag_NoRun);
 
     QObjectScopedPointer<DotPlotFilesDialog> d = new DotPlotFilesDialog(QApplication::activeWindow());
     d->exec();
@@ -132,7 +132,7 @@ void DotPlotViewContext::sl_showDotPlotDialog() {
             tasks->addSubTask(AppContext::getProjectLoader()->createNewProjectTask());
         }
 
-        DotPlotLoadDocumentsTask* t = new DotPlotLoadDocumentsTask(d->getFirstFileName(), d->getFirstGap(), d->getSecondFileName(), d->getSecondGap());
+        auto t = new DotPlotLoadDocumentsTask(d->getFirstFileName(), d->getFirstGap(), d->getSecondFileName(), d->getSecondGap());
         tasks->addSubTask(t);
     }
 
@@ -164,7 +164,7 @@ void DotPlotViewContext::showBuildDotPlotDialog(GObjectViewController* ov) {
     auto dnaView = qobject_cast<AnnotatedDNAView*>(ov);
     CHECK(dnaView != nullptr, )
 
-    DotPlotWidget* dotPlot = new DotPlotWidget(dnaView);
+    auto dotPlot = new DotPlotWidget(dnaView);
     dotPlot->setSequences(getSequenceByFile(firstFile), getSequenceByFile(secondFile));
 
     // show settings dialog
@@ -219,11 +219,11 @@ void DotPlotViewContext::initViewContext(GObjectViewController* v) {
 
     // add the dotplot menu item to an analyze menu
     QString dotPlotBuildString = tr("Build dotplot...");
-    ADVGlobalAction* act = new ADVGlobalAction(av, QIcon(":dotplot/images/dotplot.png"), dotPlotBuildString, 40, ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu));
+    auto act = new ADVGlobalAction(av, QIcon(":dotplot/images/dotplot.png"), dotPlotBuildString, 40, ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu));
     act->setObjectName(BUILD_DOT_PLOT_ACTION_NAME);
     connect(act, SIGNAL(triggered()), SLOT(sl_buildDotPlot()));
 
-    ADVGlobalAction* tb = new ADVGlobalAction(av, QIcon(":dotplot/images/dotplot.png"), dotPlotBuildString, 40, ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar));
+    auto tb = new ADVGlobalAction(av, QIcon(":dotplot/images/dotplot.png"), dotPlotBuildString, 40, ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar));
     tb->setObjectName("build_dotplot_action");
     connect(tb, SIGNAL(triggered()), SLOT(sl_buildDotPlot()));
 

@@ -917,7 +917,7 @@ ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWi
 
     // TODO: track focus events (mouse clicks) on toolbar in disabled state and on disabled buttons !!!
 
-    QHBoxLayout* l = new QHBoxLayout();
+    auto l = new QHBoxLayout();
     l->setSpacing(4);
     l->setContentsMargins(5, 1, 0, 2);
 

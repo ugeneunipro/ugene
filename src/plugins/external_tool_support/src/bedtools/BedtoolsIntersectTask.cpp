@@ -200,12 +200,12 @@ Document* BedtoolsIntersectAnnotationsByEntityTask::createAnnotationsDocument(co
     CHECK_EXT(ioFactory != nullptr, setError(tr("Failed to get IOAdapterFactory")), nullptr);
 
     U2OpStatusImpl os;
-    Document* doc = new Document(bed, ioFactory, GUrl(url), AppContext::getDbiRegistry()->getSessionTmpDbiRef(os));
+    auto doc = new Document(bed, ioFactory, GUrl(url), AppContext::getDbiRegistry()->getSessionTmpDbiRef(os));
     CHECK_OP(os, nullptr);
 
     foreach (const U2EntityRef& enRef, entities) {
         U2AnnotationTable t = U2FeatureUtils::getAnnotationTable(enRef, os);
-        AnnotationTableObject* table = new AnnotationTableObject(t.visualName, enRef);
+        auto table = new AnnotationTableObject(t.visualName, enRef);
         renameAnnotationsForBed(table->getRootGroup());
         doc->setLoaded(true);
         doc->addObject(table);

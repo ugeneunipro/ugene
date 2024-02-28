@@ -53,7 +53,7 @@ DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
 
     splitter = new QSplitter(Qt::Horizontal);
 
-    WidgetWithLocalToolbar* wgt = new WidgetWithLocalToolbar(this);
+    auto wgt = new WidgetWithLocalToolbar(this);
     QLayout* l = new QVBoxLayout();
     l->setMargin(0);
     l->setSpacing(0);
@@ -91,7 +91,7 @@ bool DotPlotSplitter::onCloseEvent() {
 }
 
 QAction* DotPlotSplitter::createAction(const QIcon& ic, const QString& toolTip, const char* slot, bool checkable) {
-    QAction* a = new QAction(this);
+    auto a = new QAction(this);
     if (a != nullptr) {
         a->setIcon(ic);
         a->setToolTip(toolTip);

@@ -79,7 +79,7 @@ ExportSequenceViewItemsController::ExportSequenceViewItemsController(QObject* p)
 
 void ExportSequenceViewItemsController::initViewContext(GObjectViewController* v) {
     av = qobject_cast<AnnotatedDNAView*>(v);
-    ADVExportContext* vc = new ADVExportContext(av);
+    auto vc = new ADVExportContext(av);
     addViewResource(av, vc);
 }
 
@@ -250,7 +250,7 @@ void ADVExportContext::buildMenu(QMenu* m) {
 
     if (isShowId || isShowAccession || isShowDBXref) {
         name = name.isEmpty() ? "" : tr("from '") + name + "'";
-        QMenu* fetchMenu = new QMenu(tr("Fetch sequences from remote database"));
+        auto fetchMenu = new QMenu(tr("Fetch sequences from remote database"));
         m->insertMenu(exportMenu->menuAction(), fetchMenu);
         if (isShowId) {
             sequenceById->setText(tr("Fetch sequences by 'id' %1").arg(name));

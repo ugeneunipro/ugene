@@ -123,7 +123,7 @@ Task* AnnotatedDNAViewFactory::createViewTask(const MultiGSelection& multiSelect
         }
     }
 
-    OpenAnnotatedDNAViewTask* task = new OpenAnnotatedDNAViewTask(objectsToOpen);
+    auto task = new OpenAnnotatedDNAViewTask(objectsToOpen);
     return task;
 }
 

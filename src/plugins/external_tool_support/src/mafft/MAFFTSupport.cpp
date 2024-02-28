@@ -111,7 +111,7 @@ void MAFFTSupport::sl_runWithExtFileSpecify() {
     }
     assert(!settings.inputFilePath.isEmpty());
 
-    MAFFTWithExtFileSpecifySupportTask* mAFFTSupportTask = new MAFFTWithExtFileSpecifySupportTask(settings);
+    auto mAFFTSupportTask = new MAFFTWithExtFileSpecifySupportTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(mAFFTSupportTask);
 }
 
@@ -180,7 +180,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
         return;
     }
 
-    MAFFTSupportTask* mAFFTSupportTask = new MAFFTSupportTask(alignmentObject->getAlignment(), GObjectReference(alignmentObject), settings);
+    auto mAFFTSupportTask = new MAFFTSupportTask(alignmentObject->getAlignment(), GObjectReference(alignmentObject), settings);
     connect(alignmentObject, SIGNAL(destroyed()), mAFFTSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(mAFFTSupportTask);
 

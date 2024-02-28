@@ -77,7 +77,7 @@ void SubstMatrixDialog::prepareTable() {
     base->tableMatrix->setRowCount(n + 1);
     base->tableMatrix->setColumnCount(n + 1);
 
-    QTableWidgetItem* ptwi = new QTableWidgetItem("");
+    auto ptwi = new QTableWidgetItem("");
     Qt::ItemFlags flags = ptwi->flags();
     flags &= (~Qt::ItemIsEditable);
     ptwi->setFlags(flags);

@@ -62,8 +62,8 @@ void GTest_FindEnzymes::init(XMLTestFormat*, const QDomElement& el) {
 
     SAFE_POINT(AppContext::getIOAdapterRegistry() != nullptr, "IOAdapter registry is NULL", );
     IOAdapterFactory* ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    QTemporaryFile* t = new QTemporaryFile(this);
-    Document* doc = new Document(new GenbankPlainTextFormat(this), ioFactory, GUrl(QFileInfo(*t).absoluteFilePath()), dbiRef, QList<GObject*>() << aObj);
+    auto t = new QTemporaryFile(this);
+    auto doc = new Document(new GenbankPlainTextFormat(this), ioFactory, GUrl(QFileInfo(*t).absoluteFilePath()), dbiRef, QList<GObject*>() << aObj);
     aObj->setParent(doc);
 
     QString buf = el.attribute("minHits");
@@ -213,7 +213,7 @@ QList<Task*> GTest_FindEnzymes::onSubTaskFinished(Task* subTask) {
     cfg.excludedRegions = excludedRegions;
     cfg.circular = seqObj->isCircular();
 
-    FindEnzymesToAnnotationsTask* t = new FindEnzymesToAnnotationsTask(aObj, seqObj->getSequenceRef(), enzymesToSearch, cfg);
+    auto t = new FindEnzymesToAnnotationsTask(aObj, seqObj->getSequenceRef(), enzymesToSearch, cfg);
     res.append(t);
     return res;
 }
@@ -377,7 +377,7 @@ QList<Task*> GTest_DigestIntoFragments::onSubTaskFinished(Task* subTask) {
     cfg.enzymeData = enzymesToSearch;
     cfg.forceCircular = isCircular;
 
-    DigestSequenceTask* t = new DigestSequenceTask(seqObj, aObj, aObj, cfg);
+    auto t = new DigestSequenceTask(seqObj, aObj, aObj, cfg);
     res.append(t);
     return res;
 }

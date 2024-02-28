@@ -99,7 +99,7 @@ void AutoAnnotationsADVAction::updateMenu() {
         return;
     }
     foreach (AutoAnnotationsUpdater* updater, updaters) {
-        QAction* toggleAction = new QAction(updater->getName(), this);
+        auto toggleAction = new QAction(updater->getName(), this);
         toggleAction->setObjectName(updater->getName());
         toggleAction->setProperty(AUTO_ANNOTATION_GROUP_NAME, updater->getGroupName());
         bool enabled = updater->checkConstraints(constraints);
@@ -176,7 +176,7 @@ void AutoAnnotationsADVAction::addUpdaterToMenu(AutoAnnotationsUpdater* updater)
         constraints.hints = seqWidget->getSequenceObjects().first()->getGHints();
     }
 
-    QAction* toggleAction = new QAction(updater->getName(), this);
+    auto toggleAction = new QAction(updater->getName(), this);
     toggleAction->setProperty(AUTO_ANNOTATION_GROUP_NAME, updater->getGroupName());
     bool enabled = updater->checkConstraints(constraints);
     toggleAction->setEnabled(enabled);

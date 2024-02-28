@@ -109,7 +109,7 @@ void ClustalOSupport::sl_runWithExtFileSpecify() {
     }
     assert(!settings.inputFilePath.isEmpty());
 
-    ClustalOWithExtFileSpecifySupportTask* ClustalOSupportTask = new ClustalOWithExtFileSpecifySupportTask(settings);
+    auto ClustalOSupportTask = new ClustalOWithExtFileSpecifySupportTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(ClustalOSupportTask);
 }
 

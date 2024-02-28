@@ -136,7 +136,7 @@ void GTClipboard::setUrls(const QList<QString>& urls) {
         }
 
         void run() {
-            QMimeData* urlMime = new QMimeData();
+            auto urlMime = new QMimeData();
             urlMime->setUrls(urls);
 
             QClipboard* clipboard = QApplication::clipboard();

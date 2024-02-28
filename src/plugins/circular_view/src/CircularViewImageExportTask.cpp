@@ -96,9 +96,9 @@ void CircularViewImageExportToPDFTask::run() {
 void CircularViewImageExportToBitmapTask::run() {
     SAFE_POINT_EXT(settings.isBitmapFormat(), setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("CircularViewImageExportToBitmapTask")), );
 
-    QPixmap* im = new QPixmap(settings.imageSize);
+    auto im = new QPixmap(settings.imageSize);
     im->fill(Qt::white);
-    QPainter* painter = new QPainter(im);
+    auto painter = new QPainter(im);
     cvWidget->paint(*painter, settings.imageSize.width(), settings.imageSize.height(), cvExportSettings.includeSelection, cvExportSettings.includeMarker);
 
     CHECK_EXT(im->save(settings.fileName, qPrintable(settings.format), settings.imageQuality), setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
@@ -135,12 +135,12 @@ int CircularViewImageExportController::getImageHeight() const {
 }
 
 void CircularViewImageExportController::initSettingsWidget() {
-    QVBoxLayout* layout = new QVBoxLayout();
+    auto layout = new QVBoxLayout();
     layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     layout->setContentsMargins(0, 0, 0, 0);
 
     if (cvList.size() > 1) {
-        QLabel* label = new QLabel(tr("Sequence"));
+        auto label = new QLabel(tr("Sequence"));
         sequenceComboBox = new QComboBox();
         foreach (CircularView* cv, cvList) {
             SAFE_POINT(cv->getSequenceContext() != nullptr, "Sequence context is NULL!", );
@@ -153,7 +153,7 @@ void CircularViewImageExportController::initSettingsWidget() {
         }
         sequenceComboBox->setObjectName("Exported_sequence_combo");
 
-        QHBoxLayout* seqLayout = new QHBoxLayout();
+        auto seqLayout = new QHBoxLayout();
         seqLayout->addWidget(label);
         seqLayout->addWidget(sequenceComboBox);
 

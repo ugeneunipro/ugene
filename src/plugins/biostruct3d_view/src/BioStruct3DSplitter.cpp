@@ -105,7 +105,7 @@ BioStruct3DGLWidget* BioStruct3DSplitter::addBioStruct3DGLWidget(BioStruct3DObje
         adaptSize(1);
     }
 
-    BioStruct3DGLWidget* glWidget = new BioStruct3DGLWidget(bioStructObj, dnaView, getGLFrameManager(), this);
+    auto glWidget = new BioStruct3DGLWidget(bioStructObj, dnaView, getGLFrameManager(), this);
     glWidget->installEventFilter(this);
     // Add widget to splitter
     biostrucViewMap.insert(bioStructObj, glWidget);
@@ -352,7 +352,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     setBackgroundRole(QPalette::Window);
     setAutoFillBackground(true);
     registerWebUrls();
-    QHBoxLayout* layout = new QHBoxLayout();
+    auto layout = new QHBoxLayout();
     layout->setContentsMargins(10, 0, 0, 0);
     layout->setSpacing(10);
 
@@ -365,7 +365,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     toolbar->layout()->setSpacing(10);
     toolbar->layout()->setMargin(0);
 
-    QLabel* pixLabel = new QLabel(this);
+    auto pixLabel = new QLabel(this);
     QFont f = pixLabel->font();
     if (f.pixelSize() > HEADER_HEIGHT) {
         f.setPixelSize(HEADER_HEIGHT - 8);
@@ -384,7 +384,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
 
     // Build header menu
 
-    QLabel* activeWidgetLabel = new QLabel(this);
+    auto activeWidgetLabel = new QLabel(this);
     activeWidgetLabel->setText(tr("Active view:"));
     toolbar->addWidget(activeWidgetLabel);
 
@@ -526,7 +526,7 @@ void SplitterHeaderWidget::sl_bioStruct3DGLWidgetAdded(BioStruct3DGLWidget* glWi
 
     // Add show widget action
     QString actionName(tr("Show %1").arg(pdbId));
-    QAction* action = new QAction(actionName, glWidget);
+    auto action = new QAction(actionName, glWidget);
     action->setCheckable(true);
     action->setChecked(true);
     connect(action, SIGNAL(triggered(bool)), SLOT(sl_toggleBioStruct3DWidget(bool)));
@@ -678,7 +678,7 @@ void SplitterHeaderWidget::registerWebUrls() {
 
     QList<DBLink> links = linksFile.getLinks();
     foreach (const DBLink& link, links) {
-        QAction* webAction = new QAction(link.name, this);
+        auto webAction = new QAction(link.name, this);
         webActionMap.insert(webAction, link.url);
         connect(webAction, SIGNAL(triggered(bool)), this, SLOT(sl_openBioStructUrl()));
     }
