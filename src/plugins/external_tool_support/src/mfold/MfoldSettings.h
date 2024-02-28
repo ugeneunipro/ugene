@@ -49,7 +49,6 @@ struct MfoldSequenceInfo final {
     QString seqName;
     // Use the same output file name as input file.
     GUrl seqPath;
-    qint64 seqLen = -1;
     bool isCircular = false;
     bool isDna = false;
 };

@@ -39,6 +39,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U1AnnotationUtils.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -80,15 +81,25 @@ constexpr int defaultImgHeight = 1072;
 const QString DEG_SYM = QChar(0xB0);
 const QString DELTA_SYM = QChar(0x3B4);
 const QString MID_DOT_SYM = QChar(0xB7);
-}  // namespace
 
-static int getStructuresNum(const GUrl& cwd, U2OpStatus& os) {
+static int getStructuresNum(const GUrl& cwd) {
     QString path = cwd.getURLString();
     QDir dir(path);
     dir.setNameFilters({"*.ps"});
     int ans = dir.count();
-    SAFE_POINT_EXT(ans > 0, os.setError(QString(QT_TR_NOOP("No output files expected in `%1`")).arg(path)), {});
     return ans;
+}
+
+// Uses dash style.
+static QString getLocationStr(const U2Location& l) {
+    auto&& regions = l->regions;
+    auto regionToStr = [](const U2Region& region) { return QString::number(region.startPos + 1) + '-' +
+                                                           QString::number(region.endPos()); };
+    QString regionStr = ':' + regionToStr(regions[0]);
+    if (regions.size() > 1) {
+        regionStr += ',' + regionToStr(regions[1]);
+    }
+    return regionStr;
 }
 
 namespace Th {
@@ -168,32 +179,35 @@ QString parseNextTblContent(IOAdapterReader& reader, U2OpStatus& os) {
     return ans;
 }
 };  // namespace Det
+}  // namespace
 
 class MfoldTask::ReportHelper final {
-    MfoldTask& t;  // replace with const
-    IOAdapterReader& detReader;  //todo replace with pointer?
+    const MfoldTask& t;
     int structuresNum = 0;
     QVector<Th::ThermodynInfo> thInfo;
     QVector<QString> detailTables;  // empty if report is too large
     bool largeReport = false;
 
 public:
-    ReportHelper(MfoldTask& t, IOAdapterReader& detReader)
-        : t(t), detReader(detReader) {
-        structuresNum = getStructuresNum(t.cwd, t.stateInfo);
-        CHECK_OP(t.stateInfo, );
-        auto thHtmlPath = t.inpSeqPath + ".out.html";
-        thInfo = Th::parseThermodynamicInfo(thHtmlPath, t.stateInfo);
-        CHECK_OP(t.stateInfo, );
+    ReportHelper(const MfoldTask& t, U2OpStatus& os)
+        : t(t) {
+        structuresNum = getStructuresNum(t.cwd);
+        if (structuresNum <= 0) {
+            return;
+        }
+
+        auto thHtmlPath = t.tmpSeqPath + ".out.html";
+        thInfo = Th::parseThermodynamicInfo(thHtmlPath, os);
+        SAFE_POINT_OP(os, );
         SAFE_POINT_EXT(structuresNum == thInfo.size(),
-                       t.stateInfo.setError(tr("Found %1 images in `%2` and %3 thermodynamic tables in `%4`")
-                                                .arg(structuresNum)
-                                                .arg(t.cwd.getURLString())
-                                                .arg(thInfo.size())
-                                                .arg(thHtmlPath)), );
+                       os.setError(tr("Found %1 images in `%2` and %3 thermodynamic tables in `%4`")
+                                       .arg(structuresNum)
+                                       .arg(t.cwd.getURLString())
+                                       .arg(thInfo.size())
+                                       .arg(thHtmlPath)), );
     }
 
-    QString constructFileReport() {
+    QString constructFileReport(U2OpStatus& os) {
         QString seqName = toAmpersandEncode(t.seqInfo.seqName);
         QString inpSeqPath = toAmpersandEncode(t.seqInfo.seqPath.getURLString());
         QString report = "<!DOCTYPE html>"
@@ -290,58 +304,68 @@ public:
         */
         report += "</td>"
                   "</tr>"
-                  "</table>"
-                  "<h2>Found structures</h2>"
-                  "<ol>" +
-                  Th::constructTocList(thInfo) + "</ol>";
+                  "</table>";
 
-        // Dump all hairpin stat and imgs.
-        for (int i = 0; i < structuresNum; ++i) {
-            QString iStr = QString::number(i + 1);
-            const Th::ThermodynInfo& th = qAsConst(thInfo)[i];
-            report += "<h2><a id=\"structure" + iStr + "\">Structure " + iStr + "</a></h2>";
-            report += "<ul>"
-                      "<li>&delta;G = " +
-                      QString::number(th[Th::DELTA_G_KEY], 'f', 2) + " kcal/mol</li>";
-            report += "<li>&delta;H = " +
-                      QString::number(th[Th::DELTA_H_KEY], 'f', 2) + " kcal/mol</li>";
-            report += "<li>&delta;S = " +
-                      QString::number(th[Th::DELTA_S_KEY], 'f', 2) + " cal/(K&middot;mol)</li>";
-            report += "<li>T<sub>m</sub> = " +
-                      QString::number(th[Th::TM_KEY], 'f', 2) + "&deg;C</li>";
-            report += "</ul>"
-                      "<table>"
-                      "<tr>"
-                      "<td class=\"imgcell\">"
-                      "<img class=\"image\" src=\"" +
-                      toAmpersandWithoutSpaces(GUrl(t.inpSeqPath).fileName()) + '_' + iStr + ".png\" alt=\"\" />";
-            report += "</td>"
-                      "<td class=\"showinfo\">"
-                      "<details>"
-                      "<summary>"
-                      "Show structure detailed info"
-                      "</summary>"
-                      "<table class=\"dettbl\">";
-            QString detTable = Det::parseNextTblContent(detReader, t.stateInfo);
-            SAFE_POINT_EXT(!detTable.isEmpty(), t.stateInfo.setError("Unexpected EOF"), {});
-            if (!largeReport && detTable.count("</") < maxDetTableTagNum) {
-                detailTables += detTable;
-            } else {
-                largeReport = true;
-                detailTables.clear();
+        if (structuresNum > 0) {
+            QScopedPointer<IOAdapter> detIo(IOAdapterUtils::open(t.tmpSeqPath + ".det.html", os, IOAdapterMode_Read));
+            SAFE_POINT_OP(os, {});
+            SAFE_POINT_NN(detIo, {});
+            IOAdapterReader detReader(detIo.data());
+            report += "<h2>Found structures</h2>"
+                      "<ol>" +
+                      Th::constructTocList(thInfo) + "</ol>";
+
+            // Dump all hairpin stat and imgs.
+            for (int i = 0; i < structuresNum; ++i) {
+                QString iStr = QString::number(i + 1);
+                const Th::ThermodynInfo& th = qAsConst(thInfo)[i];
+                report += "<h2><a id=\"structure" + iStr + "\">Structure " + iStr + "</a></h2>";
+                report += "<ul>"
+                          "<li>&delta;G = " +
+                          QString::number(th[Th::DELTA_G_KEY], 'f', 2) + " kcal/mol</li>";
+                report += "<li>&delta;H = " +
+                          QString::number(th[Th::DELTA_H_KEY], 'f', 2) + " kcal/mol</li>";
+                report += "<li>&delta;S = " +
+                          QString::number(th[Th::DELTA_S_KEY], 'f', 2) + " cal/(K&middot;mol)</li>";
+                report += "<li>T<sub>m</sub> = " +
+                          QString::number(th[Th::TM_KEY], 'f', 2) + "&deg;C</li>";
+                QString fileNameWithoutExt = toAmpersandWithoutSpaces(GUrl(t.tmpSeqPath).fileName()) + '_' + iStr + '.';
+                report += "</ul>"
+                          "<table>"
+                          "<tr>"
+                          "<td class=\"imgcell\">"
+                          "<a href=\"" +
+                          fileNameWithoutExt + "pdf\" target=\"_blank\">";
+                report += "<img class=\"image\" src=\"" +
+                          fileNameWithoutExt + "png\" alt=\"\" />";
+                report += "</a>"
+                          "</td>"
+                          "<td class=\"showinfo\">"
+                          "<details>"
+                          "<summary>Show structure detailed info</summary>"
+                          "<table class=\"dettbl\">";
+                QString detTable = Det::parseNextTblContent(detReader, os);
+                SAFE_POINT_OP(os, {});
+                SAFE_POINT_EXT(!detTable.isEmpty(), os.setError("Unexpected EOF"), {});
+                if (!largeReport && detTable.count("</") < maxDetTableTagNum) {
+                    detailTables += detTable;
+                } else {
+                    largeReport = true;
+                    detailTables.clear();
+                }
+                report += detTable;
+                report += "</table>"
+                          "</details>"
+                          "</td>"
+                          "</tr>"
+                          "</table>";
             }
-            report += detTable;
-            report += "</table>"
-                      "</details>"
-                      "</td>"
-                      "</tr>"
-                      "</table>";
         }
-        report += "<script>"
-                  "Array.from(document.querySelectorAll(\".image\")).forEach((elem) => {"
-                  "new ImageViewer(elem);"
-                  "});"
-                  "</script>"
+        report += "<details>"
+                  "<summary>Mfold log</summary>"
+                  "<pre>" +
+                  t.log + "</pre>";
+        report += "</details>"
                   "</body>"
                   "</html>";
         if (report.size() > maxHtmlReportLen) {
@@ -350,18 +374,10 @@ public:
         return report;
     }
 
-    QString constructUgeneReport() {
-        if (largeReport) {
-            return "The report is too large to be displayed in UGENE, it is saved to the file "
-                   "`<a target=\"_blank\" href=\"" +
-                   t.outHtmlPath + "\">" + t.outHtmlPath + "</a>`";
-        }
-        SAFE_POINT_EXT(structuresNum == thInfo.size() && structuresNum == detailTables.size(),
-                       t.stateInfo.setError(tr("%1 != %2 != %3")
-                                                .arg(structuresNum)
-                                                .arg(thInfo.size())
-                                                .arg(detailTables.size())),
-                       {});
+    QString constructUgeneReport(U2OpStatus& os) {
+        CHECK_EXT(largeReport || structuresNum == detailTables.size(),
+                  os.setError(tr("%1 != %2").arg(structuresNum).arg(detailTables.size())),
+                  {});
         QString inpSeqPath = t.seqInfo.seqPath.getURLString();
         // Dump run info.
         /*
@@ -379,7 +395,8 @@ public:
 */
 
         // UGENE uses width=200 to print task info table (status, time). We mimic single style.
-        // Second column will take up the entire remaining window width plus subtract 50 pixels for padding, margins, and borders.
+        // Second column will take up the entire remaining window width plus subtract 50 pixels for padding, margins,
+        // and borders.
         // Min value is set to 300 for no reason, max is 8K UHD width.
         QString report = "<table>"
                          "<tr>"
@@ -443,64 +460,80 @@ public:
                   "</tr>"
                   "</table>"
                   "</td>"
-                  "</tr>"
-                  "<tr>"
-                  "<th align=\"left\">Output HTML report</th>"
-                  "<td>"
-                  "<a href=\"" +
-                  t.outHtmlPath + "\">" + t.outHtmlPath + "</a>";
-        // Dump structures summary: links to fast jump.
-        /*
-        1. dG=-3.84
-        2. dG=-3.58
-        */
-        report += "</td>"
-                  "</tr>"
-                  "<tr>"
-                  "<th align=\"left\">Found structures</th>"
-                  "<td>"
-                  "<ol style=\"margin-left: 12px; -qt-list-indent: 0;\">" +
-                  Th::constructTocList(thInfo);
-        // Dump all hairpin stat and imgs.
-        report += "</ol>"
-                  "</td>"
-                  "</tr>"
-                  "</table>"
-                  "<table cellpadding=\"4\" style=\"border-collapse: collapse;\">";
-        for (int i = 0; i < structuresNum; ++i) {
-            QString iStr = QString::number(i + 1);
-            const Th::ThermodynInfo& th = qAsConst(thInfo)[i];
+                  "</tr>";
+
+        if (structuresNum > 0) {
             report += "<tr>"
-                      "<th colspan=\"2\" style=\"border: 1px solid;\"><a name=\"structure" +
-                      iStr + "\">Structure " + iStr + "</a></th>";
-            report += "</tr>"
-                      "<tr>"
-                      "<td style=\"border: 1px solid;\">"
-                      "<ul style=\"margin-left: 9px; -qt-list-indent: 0; list-style: none; font-size: large;\">"
-                      "<li>" +
-                      DELTA_SYM + "G = " + QString::number(th[Th::DELTA_G_KEY], 'f', 2) + " kcal/mol</li>";
-            report += "<li>" +
-                      DELTA_SYM + "H = " +
-                      QString::number(th[Th::DELTA_H_KEY], 'f', 2) + " kcal/mol</li>";
-            report += "<li>" +
-                      DELTA_SYM + "S = " +
-                      QString::number(th[Th::DELTA_S_KEY], 'f', 2) + " cal/(K" + MID_DOT_SYM + "mol)</li>";
-            report += "<li>T<sub>m</sub> = " +
-                      QString::number(th[Th::TM_KEY], 'f', 2) + DEG_SYM + "C</li>";
-            report += "</ul>"
-                      "</td>"
-                      "<td rowspan=\"2\" style=\"border: 1px solid;\"><img src=\"" +
-                      t.inpSeqPath + "_" + iStr + ".png\" /></td>";
-            report += "</tr>"
-                      "<tr>"
-                      "<td style=\"border: 1px solid;\">"
-                      "<table border=\"1\" cellpadding=\"4\" style=\"border-collapse: collapse;\">" +
-                      detailTables[i];
-            report += "</table>"
+                      "<th align=\"left\">Output HTML report</th>"
+                      "<td>"
+                      "<a href=\"" +
+                      t.outHtmlPath + "\">" + t.outHtmlPath + "</a>";
+            report += "</td>"
+                      "</tr>";
+        }
+
+        if (!largeReport && structuresNum > 0) {
+            // Dump structures summary: links to fast jump.
+            /* 1. dG=-3.84
+               2. dG=-3.58
+            */
+            report += "<tr>"
+                      "<th align=\"left\">Found structures</th>"
+                      "<td>"
+                      "<ol style=\"margin-left: 12px; -qt-list-indent: 0;\">" +
+                      Th::constructTocList(thInfo);
+            // Dump all hairpin stat and imgs.
+            report += "</ol>"
                       "</td>"
                       "</tr>";
         }
         report += "</table>";
+
+        if (largeReport) {
+            report += "<p>The report is too large to be displayed in UGENE, it is saved to the file "
+                      "`<a target=\"_blank\" href=\"" +
+                      t.outHtmlPath + "\">" + t.outHtmlPath + "</a>`";
+            report += "</p>";
+        } else if (structuresNum > 0) {
+            report += "<table cellpadding=\"4\" style=\"border-collapse: collapse;\">";
+            for (int i = 0; i < structuresNum; ++i) {
+                QString iStr = QString::number(i + 1);
+                const Th::ThermodynInfo& th = qAsConst(thInfo)[i];
+                report += "<tr>"
+                          "<th colspan=\"2\" style=\"border: 1px solid;\"><a name=\"structure" +
+                          iStr + "\">Structure " + iStr + "</a></th>";
+                report += "</tr>"
+                          "<tr>"
+                          "<td style=\"border: 1px solid;\">"
+                          "<ul style=\"margin-left: 9px; -qt-list-indent: 0; list-style: none; font-size: large;\">"
+                          "<li>" +
+                          DELTA_SYM + "G = " + QString::number(th[Th::DELTA_G_KEY], 'f', 2) + " kcal/mol</li>";
+                report += "<li>" +
+                          DELTA_SYM + "H = " +
+                          QString::number(th[Th::DELTA_H_KEY], 'f', 2) + " kcal/mol</li>";
+                report += "<li>" +
+                          DELTA_SYM + "S = " +
+                          QString::number(th[Th::DELTA_S_KEY], 'f', 2) + " cal/(K" + MID_DOT_SYM + "mol)</li>";
+                report += "<li>T<sub>m</sub> = " +
+                          QString::number(th[Th::TM_KEY], 'f', 2) + DEG_SYM + "C</li>";
+                report += "</ul>"
+                          "</td>"
+                          "<td rowspan=\"2\" style=\"border: 1px solid;\"><img src=\"" +
+                          t.tmpSeqPath + "_" + iStr + ".png\" /></td>";
+                report += "</tr>"
+                          "<tr>"
+                          "<td style=\"border: 1px solid;\">"
+                          "<table border=\"1\" cellpadding=\"4\" style=\"border-collapse: collapse;\">" +
+                          detailTables[i];
+                report += "</table>"
+                          "</td>"
+                          "</tr>";
+            }
+            report += "</table>";
+        }
+        report += "<p>Mfold log:</p>"
+                  "<pre>" +
+                  t.log + "</pre>";
         return report;
     }
 };
@@ -512,9 +545,12 @@ MfoldTask::MfoldTask(const DNASequence& seq,
     : Task(tr("Predict and visualize hairpins with Mfold"),
            TaskFlag_PropagateSubtaskDesc | TaskFlag_CancelOnSubtaskCancel | TaskFlag_ReportingIsSupported |
                TaskFlag_ReportingIsEnabled),
-      seq(seq), settings(settings), seqInfo(seqInfo), windowWidth(windowWidth) {
-    GCOUNTER(cvar, "mfold");
+      tmpSeq(seq), settings(settings), seqInfo(seqInfo), windowWidth(windowWidth) {
+    SAFE_POINT_EXT(!tmpSeq.isNull(), setError(L10N::badArgument("tmpSeq")), );
     SAFE_POINT_EXT(!settings.region->regions.empty(), setError(L10N::badArgument("region")), );
+    SAFE_POINT_EXT(settings.outSettings.dpi > 0, setError(L10N::badArgument("dpi")), );
+    SAFE_POINT_EXT(windowWidth > 0, setError(L10N::badArgument("windowWidth")), );
+    GCOUNTER(cvar, "mfold");
 }
 
 void MfoldTask::prepare() {
@@ -530,29 +566,14 @@ void MfoldTask::prepare() {
     SAFE_POINT_OP(stateInfo, );
 
     // Save sequence in cwd.
-    inpSeqPath = constructSeqFilePath();
-    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
-    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    QScopedPointer<Document> doc(format->createNewLoadedDocument(iof, inpSeqPath, stateInfo));
+    tmpSeqPath = constructTmpSeqFilePath();
+    tmpSeq.setName(constructSeqName());
+    saveTmpSeq();
     SAFE_POINT_OP(stateInfo, );
-    const auto& regions = settings.region->regions;
-    auto regionToStr = [](const U2Region& region) { return QString::number(region.startPos + 1) + '-' +
-                                                           QString::number(region.endPos()); };
-    QString regionStr = ':' + regionToStr(regions[0]);
-    if (regions.size() > 1) {
-        regionStr += ',' + regionToStr(regions[1]);
-    }
-    QString seqName = seqInfo.seqName.left(std::min(seqInfo.seqName.size(), maxSeqNameLen - regionStr.size()));
-    seq.setName(seqName + regionStr);
-    U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), seq);
-    SAFE_POINT_OP(stateInfo, );
-    doc->addObject(new U2SequenceObject(seqName, seqRef));
-    SAFE_POINT_OP(stateInfo, );
-    format->storeDocument(doc.data(), stateInfo);
 
     // Prepare out dir.
     settings.outSettings.outPath = GUrlUtils::prepareDirLocation(constructOutPath(), stateInfo);
-    SAFE_POINT_OP(stateInfo, );
+    CHECK_OP(stateInfo, );
     settings.outSettings.outPath = GUrlUtils::getSlashEndedPath(settings.outSettings.outPath);
     outHtmlPath = settings.outSettings.outPath + "out.html";
 
@@ -569,45 +590,44 @@ void MfoldTask::prepare() {
 void MfoldTask::run() {
     SAFE_POINT_OP(stateInfo, );
     SAFE_POINT_NN(etStdoutStderrListener, );
-
-    if (hasSubtasksWithErrors()) {
-        QString log = etStdoutStderrListener->getLog();
-        report += "Mfold log:<pre>";
-        report += log;
-        report += "</pre>";
-        setError(log.contains("No foldings.") ? "No hairpins found. Nothing to show" : "Mfold tool failed");
-        return;
+    log = etStdoutStderrListener->getLog();
+    if (propagateSubtaskError() && log.contains("No foldings.")) {
+        setError("No hairpins found. Nothing to show");
     }
 
-    QScopedPointer<IOAdapter> detIo(IOAdapterUtils::open(inpSeqPath + ".det.html", stateInfo, IOAdapterMode_Read));
-    CHECK_OP(stateInfo, );
-    SAFE_POINT_NN(detIo, );
-    IOAdapterReader detReader(detIo.data());
+    U2OpStatus2Log os;
+    ReportHelper helper(*this, os);
+    SAFE_POINT_OP(os, );
 
-    ReportHelper helper(*this, detReader);
-    SAFE_POINT_OP(stateInfo, );
-
-    QString fileReport = helper.constructFileReport();
-    SAFE_POINT_OP(stateInfo, );
+    QString fileReport = helper.constructFileReport(os);
+    SAFE_POINT_OP(os, );
     QFile file(outHtmlPath);
-    CHECK_EXT(file.open(QIODevice::WriteOnly),
-              setError(QString(tr("Unable to create output file `%1`")).arg(outHtmlPath)), );
-    file.write(fileReport.toLocal8Bit());
-    file.close();
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(fileReport.toLocal8Bit());
+        file.close();
+    } else {
+        setError(QString(tr("Unable to create output file `%1`")).arg(outHtmlPath));
+    }
 
-    report = helper.constructUgeneReport();
-    SAFE_POINT_OP(stateInfo, );
+    report = helper.constructUgeneReport(os);
+    SAFE_POINT_OP(os, );
 }
 
 QString MfoldTask::generateReport() const {
     return report;
 }
 
-// todo what does this function return if tmp dir contains spaces or non-ascii
-QString MfoldTask::constructSeqFilePath() const {
+QString MfoldTask::constructTmpSeqFilePath() const {
     QString fileName = "inp";
     QString inFilePath = GUrlUtils::getSlashEndedPath(cwd.getURLString()) + fileName;
     return GUrlUtils::getLocalUrlFromUrl(inFilePath, fileName, ".fa", "");
+}
+
+QString MfoldTask::constructSeqName() const {
+    QString regionStr = getLocationStr(settings.region);
+    QString seqName = seqInfo.seqName.left(std::min(seqInfo.seqName.size(), maxSeqNameLen - regionStr.size()));
+    seqName.replace(QRegularExpression("[^\x21-\x7E]"), "_");
+    return seqName + regionStr;
 }
 
 QString MfoldTask::constructOutPath() const {
@@ -618,7 +638,7 @@ QString MfoldTask::constructOutPath() const {
 
 QStringList MfoldTask::constructEtArgs() const {
     QStringList etArgs = {
-        "SEQ=" + inpSeqPath,
+        "SEQ=" + tmpSeqPath,
         "RUN_TYPE=html",
         "NA=" + QString(seqInfo.isDna ? "DNA" : "RNA"),
         "LC=" + QString(seqInfo.isCircular ? "circular" : "linear"),
@@ -649,7 +669,8 @@ StrStrMap MfoldTask::constructEtEnv() const {
     // We must set the correct width ourselves, otherwise img will go beyond the edges of the resulting table.
     // The only problem is with the width.
 
-    // Mfold produces all images with a resolution of 792x1072 (defaultImgWidth x defaultImgHeight). So the final width should be as follows:
+    // Mfold produces all images with a resolution of 792x1072 (defaultImgWidth x defaultImgHeight).
+    // So the final width should be as follows:
     // 1. we will take the width of the image equal to 0.5 of report window width (we assume that the report window
     //     will be the same size as the SV window)
     // 2. limit it from below to 300
@@ -662,6 +683,18 @@ StrStrMap MfoldTask::constructEtEnv() const {
     envVars["U2_GS_IMG_OUT_PATH"] = settings.outSettings.outPath;
     envVars["U2_GS_IMG_DPI_FOR_OUT_REPORT"] = QString::number(settings.outSettings.dpi);
     return envVars;
+}
+
+void MfoldTask::saveTmpSeq() {
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    QScopedPointer<Document> doc(format->createNewLoadedDocument(iof, tmpSeqPath, stateInfo));
+    SAFE_POINT_OP(stateInfo, );
+    U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), tmpSeq);
+    SAFE_POINT_OP(stateInfo, );
+    doc->addObject(new U2SequenceObject(tmpSeq.getName(), seqRef));
+    SAFE_POINT_OP(stateInfo, );
+    format->storeDocument(doc.data(), stateInfo);
 }
 
 MfoldTask* createMfoldTask(U2SequenceObject* seqObj, const MfoldSettings& settings, int windowWidth, U2OpStatus& os) {

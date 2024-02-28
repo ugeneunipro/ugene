@@ -38,32 +38,40 @@ class MfoldTask final : public Task {
 
     class ReportHelper;
 
-    DNASequence seq;
+    GUrl cwd;  // tmp subfolder, all output is stored here
+    DNASequence tmpSeq;  // part of sequence for analysis
+    QString tmpSeqPath;  // tmpSeq will be saved here. Lies in cwd. Used as ET input.
+
     MfoldSettings settings;
     MfoldSequenceInfo seqInfo;  // for dumping info to HTML report
-    GUrl cwd;  // tmp subfolder, all output is stored here
-    QString inpSeqPath;  // part of sequence for analysis, saved in this file
-    QString outHtmlPath;
     int windowWidth = 0;
+
+    QString outHtmlPath;
     OutputCollector* etStdoutStderrListener = nullptr;
+    QString log;
     QString report;  // HTML report to be displayed in UGENE and saved to a file if necessary
 
     // For ET task input sequence saved in separate file in cwd. Returns this path. Expects valid cwd.
-    QString constructSeqFilePath() const;
+    QString constructTmpSeqFilePath() const;
+    // Prepare seqInfo.seqName for dumping to tmp file.
+    QString constructSeqName() const;
     // Like /dir_with_sequence/mfold/2006.01.02_15-04-05/
     QString constructOutPath() const;
 
-    // Expects valid inpSeqPath.
+    // Expects valid tmpSeqPath.
     QStringList constructEtArgs() const;
     // Expects valid outPath.
     StrStrMap constructEtEnv() const;
 
+    // Expects valid tmpSeq and tmpSeqPath.
+    void saveTmpSeq();
+
 public:
-    // seq -- sequence for analysis
+    // tmpSeq -- sequence for analysis
     // settings -- settings changed by the user inside the dialog are used as tool args
     // seqInfo -- internal sequence parameters used as tool args
     // windowWidth -- used for pretty display of HTML report
-    MfoldTask(const DNASequence& seq,
+    MfoldTask(const DNASequence& tmpSeq,
               const MfoldSettings& settings,
               const MfoldSequenceInfo& seqInfo,
               int windowWidth);
