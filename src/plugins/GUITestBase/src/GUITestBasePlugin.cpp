@@ -3529,6 +3529,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_mfold::test_0001_success);
     REGISTER_TEST(GUITest_common_scenarios_mfold::test_0002_fail);
     REGISTER_TEST(GUITest_common_scenarios_mfold::test_0003_limits);
+    REGISTER_TEST(GUITest_common_scenarios_mfold::test_0004_region);
 
     // Query designer.
     REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001);

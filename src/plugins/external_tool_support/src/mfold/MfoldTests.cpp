@@ -21,12 +21,10 @@
 #include "MfoldTests.h"
 
 #include <QDomElement>
+#include <QRegularExpression>
 
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/U2Location.h>
 #include <U2Core/U2SafePoints.h>
-
-#include <U2Formats/GenbankLocationParser.h>
 
 #include "MfoldTask.h"
 
@@ -55,14 +53,12 @@ void GTest_Mfold::init(XMLTestFormat*, const QDomElement& el) {
     checkNecessaryAttributeExistence(el, regionAttr);
     CHECK_OP(stateInfo, );
     auto regionStr = el.attribute(regionAttr);
-    auto regionBytes = regionStr.toLocal8Bit();
-    U2Location location;
-    using Genbank::LocationParser;
-    CHECK_EXT(LocationParser::parseLocation(regionBytes.constData(), regionBytes.length(), location) ==
-                  LocationParser::ParsingResult::Success,
-              wrongValue(regionStr), );
-    CHECK_EXT(location->regions.size() == 1, wrongValue(regionStr), );
-    settings.region->regions += location->regions[0];
+    QRegularExpression re("(\\d+)\\.\\.(\\d+)");
+    auto res = re.match(regionStr);
+    QString startStr = res.captured(1);
+    QString endStr = res.captured(2);
+    CHECK_EXT(!startStr.isEmpty() && !endStr.isEmpty(), wrongValue(regionStr), );
+    region = {startStr.toInt() - 1, endStr.toInt()};
 
     // shouldFail
     if (el.hasAttribute(failAttr)) {
@@ -109,6 +105,10 @@ void GTest_Mfold::init(XMLTestFormat*, const QDomElement& el) {
 void GTest_Mfold::prepare() {
     auto seqCtx = getContext<U2SequenceObject>(this, inpCtx);
     CHECK_EXT(seqCtx != nullptr, stateInfo.setError(QString("Context `%1` not found").arg(inpCtx)), );
+
+    settings.region->regions += {region.first,
+                                 static_cast<qint64>(region.second) - region.first +
+                                     (region.first <= region.second ? 0 : seqCtx->getSequenceLength())};
     settings.outSettings.outPath = env->getVar("TEMP_DATA_DIR");
 
     if (!logExpectedMessages.isEmpty()) {

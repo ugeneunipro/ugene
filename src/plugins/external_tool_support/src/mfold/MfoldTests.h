@@ -47,6 +47,7 @@ class GTest_Mfold final : public XmlTest {
     Q_OBJECT
 
     MfoldSettings settings;
+    QPair<int, int> region;  // start and end (not start and len like in U2Region)
     GTestLogHelper logHelper;
     QString inpCtx;
     QStringList logExpectedMessages;

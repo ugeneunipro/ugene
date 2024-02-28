@@ -20,6 +20,7 @@
  */
 #include "GTTestsMfold.h"
 
+#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsNotifications.h"
 #include "GTUtilsSequenceView.h"
@@ -27,6 +28,7 @@
 #include "api/GTRegionSelector.h"
 #include "base_dialogs/GTFileDialog.h"
 #include "primitives/GTDoubleSpinBox.h"
+#include "primitives/GTLineEdit.h"
 #include "primitives/GTMenu.h"
 #include "primitives/GTSpinBox.h"
 #include "primitives/GTToolbar.h"
@@ -193,6 +195,68 @@ GUI_TEST_CLASS_DEFINITION(test_0003_limits) {
         }
     };
     GTUtilsDialog::add(new AnyDialogFiller("MfoldDialog", new SpinboxChecker()));
+}
+GUI_TEST_CLASS_DEFINITION(test_0004_region) {
+    // Check error messages about wrong region.
+    // Open linear sequence. Check its appearance.
+    GTFileDialog::openFile(dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    // Select region.
+    GTUtilsSequenceView::selectSequenceRegion(50, 100);
+    // Call dialog and check that dialog sees selected region. Don't run task.
+    class StartGreaterThanEndScenario final : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            auto regionSelector = GTWidget::findExactWidget<RegionSelector*>("range_selector", dialog);
+            GTRegionSelector::setRegion(regionSelector, GTRegionSelector::RegionSelectorSettings(50, 10));
+            GTWidget::findLabelByText("Start position cannot be greater than end position", dialog);
+            GTRegionSelector::setRegion(regionSelector, GTRegionSelector::RegionSelectorSettings(50, 5000));
+            GTWidget::findLabelByText("Region cannot be larger than 3000 nucleotides", dialog);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new AnyDialogFiller("MfoldDialog", new StartGreaterThanEndScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+
+    // Open circular sequence. Check its appearance.
+    GTFileDialog::openFile(dataDir + "samples/Genbank/", "CVU55762.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    // Select region.
+    GTUtilsSequenceView::selectSeveralRegionsByDialog("4730..16");
+
+    // Call dialog and check that dialog sees selected region.
+    // Run task and check that region is completely parsed without errors.
+    class RegionChecker final : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            auto regionSelector = GTWidget::findExactWidget<RegionSelector*>("range_selector", dialog);
+            auto startLe = GTWidget::findLineEdit("start_edit_line", regionSelector);
+            auto endLe = GTWidget::findLineEdit("end_edit_line", regionSelector);
+
+            GTLineEdit::checkText(startLe, "4730");
+            GTLineEdit::checkText(endLe, "16");
+
+            GTLineEdit::clear(startLe);
+            GTWidget::findLabelByText("Start position not specified", dialog);
+            GTLineEdit::setText(startLe, "4730");
+            GTLineEdit::clear(endLe);
+            GTWidget::findLabelByText("End position not specified", dialog);
+
+            GTLineEdit::setText(endLe, "4729");
+            GTWidget::findLabelByText("Region cannot be larger than 3000 nucleotides", dialog);
+
+            GTLineEdit::setText(endLe, "16");
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new AnyDialogFiller("MfoldDialog", new RegionChecker()));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTUtilsLog::checkMessageWithWait(lt, "Sequence length is 20");
 }
 }  // namespace GUITest_common_scenarios_mfold
 }  // namespace U2
