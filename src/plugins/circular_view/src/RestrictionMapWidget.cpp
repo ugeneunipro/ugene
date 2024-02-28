@@ -88,7 +88,7 @@ void EnzymeFolderItem::removeEnzymeItem(Annotation* enzAnn) {
 RestrctionMapWidget::RestrctionMapWidget(ADVSequenceObjectContext* context, QWidget* p)
     : QWidget(p), ctx(context) {
     assert(context != nullptr);
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    auto layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
 
     treeWidget = new QTreeWidget(this);
@@ -115,7 +115,7 @@ void RestrctionMapWidget::updateTreeWidget() {
 
     QList<QTreeWidgetItem*> items;
     foreach (const QString& enzyme, selectedEnzymes) {
-        EnzymeFolderItem* item = new EnzymeFolderItem(enzyme);
+        auto item = new EnzymeFolderItem(enzyme);
         item->setIcon(0, QIcon(":circular_view/images/empty_folder.png"));
         items.append(item);
     }

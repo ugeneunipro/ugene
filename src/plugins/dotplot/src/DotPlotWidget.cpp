@@ -203,9 +203,9 @@ void DotPlotWidget::buildPopupMenu(QMenu* m) const {
     if (sequenceX && sequenceY && QRect(0, 0, width(), height()).contains(mapped)) {
         assert(!m->actions().isEmpty());
 
-        QMenu* dotPlotMenu = new QMenu(tr("Dotplot"), m);
+        auto dotPlotMenu = new QMenu(tr("Dotplot"), m);
         dotPlotMenu->menuAction()->setObjectName("Dotplot");
-        QMenu* saveMenu = new QMenu(tr("Save/Load"), dotPlotMenu);
+        auto saveMenu = new QMenu(tr("Save/Load"), dotPlotMenu);
         saveMenu->menuAction()->setObjectName("Save/Load");
 
         saveMenu->addAction(saveImageAction);

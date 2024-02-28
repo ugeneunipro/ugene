@@ -67,7 +67,7 @@ void SpadesSupport::checkIn() {
     QStringList genomeReadsFormats;
     genomeReadsFormats << BaseDocumentFormats::FASTA;
     genomeReadsFormats << BaseDocumentFormats::FASTQ;
-    GenomeAssemblyAlgorithmEnv* spadesAlgorithmEnv = new GenomeAssemblyAlgorithmEnv(SpadesSupport::ET_SPADES, new SpadesTaskFactory(), new SpadesGUIExtensionsFactory(), genomeReadsFormats);
+    auto spadesAlgorithmEnv = new GenomeAssemblyAlgorithmEnv(SpadesSupport::ET_SPADES, new SpadesTaskFactory(), new SpadesGUIExtensionsFactory(), genomeReadsFormats);
     AppContext::getGenomeAssemblyAlgRegistry()->registerAlgorithm(spadesAlgorithmEnv);
 
     LocalWorkflow::SpadesWorkerFactory::init();

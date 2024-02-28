@@ -82,7 +82,7 @@ Handle<Value> DebugStatusWrap::newObject(const Arguments& args) {
         return scope.Close(Undefined());
     }
     auto debugStatus = reinterpret_cast<WorkflowDebugStatus*>(args[0]->IntegerValue());
-    DebugStatusWrap* obj = new DebugStatusWrap(debugStatus);
+    auto obj = new DebugStatusWrap(debugStatus);
     obj->Wrap(args.This());
     return args.This();
 }

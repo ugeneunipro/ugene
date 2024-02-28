@@ -218,7 +218,7 @@ void CreateAnnotationNormalWidget::fillSaveDocumentControllerConfig(SaveDocument
 }
 
 void CreateAnnotationNormalWidget::initLayout() {
-    ShowHideSubgroupWidget* saveShowHideWidget = new ShowHideSubgroupWidget("save_params", tr("Save annotation(s) to"), saveAnnotationsInnerWidget, true);
+    auto saveShowHideWidget = new ShowHideSubgroupWidget("save_params", tr("Save annotation(s) to"), saveAnnotationsInnerWidget, true);
     saveShowHideWidget->setPermanentlyOpen(true);
     mainLayout->insertWidget(0, saveShowHideWidget);
 

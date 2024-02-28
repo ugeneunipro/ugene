@@ -330,7 +330,7 @@ QList<ExternalToolListener*> WorkflowMonitor::createWorkflowListeners(const QStr
     WorkerLogInfo& logInfo = workersLog[workerId];
     logInfo.workerRunNumber++;
     for (int i = 0; i < listenersNumber; i++) {
-        WDListener* newListener = new WDListener(this, workerId, workerName, logInfo.workerRunNumber);
+        auto newListener = new WDListener(this, workerId, workerName, logInfo.workerRunNumber);
         listeners.append(newListener);
     }
     logInfo.logs.append(listeners);

@@ -149,7 +149,7 @@ void SelectSubalignmentDialog::init() {
     endLineEdit->setValue(window.endPos());
 
     for (int i = 0; i < rowNumber; i++) {
-        QCheckBox* cb = new QCheckBox(mobj->getAlignment()->getRow(i)->getName(), this);
+        auto cb = new QCheckBox(mobj->getAlignment()->getRow(i)->getName(), this);
         cb->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         if (selectedIndexes.contains(i)) {
             cb->setChecked(true);

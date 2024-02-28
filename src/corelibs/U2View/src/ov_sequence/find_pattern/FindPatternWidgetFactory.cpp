@@ -49,7 +49,7 @@ QWidget* FindPatternWidgetFactory::createWidget(GObjectViewController* objView, 
                QString("Internal error: unable to cast object view to AnnotatedDNAView for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    FindPatternWidget* widget = new FindPatternWidget(annotatedDnaView);
+    auto widget = new FindPatternWidget(annotatedDnaView);
     widget->setObjectName("FindPatternWidget");
     return widget;
 }

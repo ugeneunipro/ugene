@@ -78,12 +78,12 @@ OutputFileDialog::OutputFileDialog(RunFileSystem* _rfs, bool _saveDir, Completio
 }
 
 void OutputFileDialog::setupSettings() {
-    QMenu* m = new QMenu(this);
-    OutputDirectoryWidget* odw = new OutputDirectoryWidget(m, true /*commitOnHide*/);
+    auto m = new QMenu(this);
+    auto odw = new OutputDirectoryWidget(m, true /*commitOnHide*/);
     connect(odw, SIGNAL(si_browsed()), settingsButton, SLOT(click()));
     odw->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
 
-    QWidgetAction* action = new QWidgetAction(m);
+    auto action = new QWidgetAction(m);
     action->setDefaultWidget(odw);
     m->addAction(action);
     settingsButton->setMenu(m);
@@ -351,7 +351,7 @@ FSItem* RFSTreeModel::toItem(const QModelIndex& index) const {
 
 QModelIndex RFSTreeModel::addDir(const QModelIndex& index, const QString& dirName) {
     FSItem* item = toItem(index);
-    FSItem* newItem = new FSItem(dirName, true);
+    auto newItem = new FSItem(dirName, true);
     int pos = item->posToInsert(newItem);
     beginInsertRows(index, pos, pos);
     item->addChild(newItem);

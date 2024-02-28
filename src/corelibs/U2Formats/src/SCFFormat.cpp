@@ -544,7 +544,7 @@ Document* SCFFormat::parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVari
     QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     hints.insert(DBI_FOLDER_HINT, folder);
     U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dna);
-    U2SequenceObject* seqObj = new U2SequenceObject(seqObjName, ref);
+    auto seqObj = new U2SequenceObject(seqObjName, ref);
     CHECK_OP(os, nullptr);
     SAFE_POINT(seqObj != nullptr, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error", nullptr);
     seqObj->setQuality(dna.quality);
@@ -556,7 +556,7 @@ Document* SCFFormat::parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVari
     objects.append(chromObj);
     objects.append(seqObj);
 
-    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
+    auto doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
     chromObj->addObjectRelation(GObjectRelation(GObjectReference(seqObj), ObjectRole_Sequence));
     return doc;
 }
@@ -1228,7 +1228,7 @@ DNASequence* SCFFormat::loadSequence(IOAdapter* io, U2OpStatus& os) {
         return nullptr;
     }
 
-    DNASequence* seq = new DNASequence();
+    auto seq = new DNASequence();
     Chromatogram cd;
 
     if (!loadSCFObjects(io, (*seq), cd, os)) {

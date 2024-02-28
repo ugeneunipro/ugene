@@ -357,17 +357,17 @@ void TopHatWorkerFactory::init() {
                       TopHatWorker::tr("The folder for temporary files."));
 
     attributes << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant(TopHatSettings::INDEX));
-    Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+    auto attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
     attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, TopHatSettings::SEQUENCE));
     attributes << attrRefGenom;
     {
-        Attribute* dirAttr = new Attribute(bowtieIndexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        auto dirAttr = new Attribute(bowtieIndexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         dirAttr->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, TopHatSettings::INDEX));
         dirAttr->addRelation(new BowtieFilesRelation(BOWTIE_INDEX_BASENAME));
         dirAttr->addRelation(new BowtieVersionRelation(BOWTIE_VERSION));
         attributes << dirAttr;
     }
-    Attribute* attrIndexBasename = new Attribute(bowtieIndexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+    auto attrIndexBasename = new Attribute(bowtieIndexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
     attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, TopHatSettings::INDEX));
     attributes << attrIndexBasename;
 
@@ -691,7 +691,7 @@ Task* TopHatWorker::runTophat() {
         settings.resultPrefix = settings.datasetName;
     }
 
-    TopHatSupportTask* topHatSupportTask = new TopHatSupportTask(settings);
+    auto topHatSupportTask = new TopHatSupportTask(settings);
     topHatSupportTask->addListeners(createLogListeners());
     connect(topHatSupportTask, SIGNAL(si_stateChanged()), SLOT(sl_topHatTaskFinished()));
     settings.cleanupReads();

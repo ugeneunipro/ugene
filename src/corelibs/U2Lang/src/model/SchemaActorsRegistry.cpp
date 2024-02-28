@@ -54,7 +54,7 @@ Schema* SchemaActorsRegistry::getSchema(const QString& protoId) {
     if (schema == nullptr) {
         return nullptr;
     }
-    Schema* copy = new Schema();
+    auto copy = new Schema();
     U2OpStatusImpl os;
     HRSchemaSerializer::deepCopy(*schema, copy, os);
     SAFE_POINT_EXT(!os.isCoR(), copy->reset(), nullptr);

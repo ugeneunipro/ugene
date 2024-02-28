@@ -222,7 +222,7 @@ QList<Task*> SubalignmentToClipboardTask::onSubTaskFinished(Task* subTask) {
     CHECK(!prepareDataTask->getStateInfo().isCoR(), result);
     QString clipboardData = prepareDataTask->resultText;
     if (formatId == "RTF") {
-        QMimeData* reportRichTextMime = new QMimeData();
+        auto reportRichTextMime = new QMimeData();
         reportRichTextMime->setHtml(clipboardData);
         reportRichTextMime->setText(clipboardData);
         QApplication::clipboard()->setMimeData(reportRichTextMime);

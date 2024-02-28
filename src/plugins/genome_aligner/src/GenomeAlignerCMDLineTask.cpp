@@ -160,7 +160,7 @@ void GenomeAlignerCMDLineTask::prepare() {
     settings.setCustomValue(GenomeAlignerTask::OPTION_BEST, bestMode);
     settings.setCustomValue(GenomeAlignerTask::OPTION_QUAL_THRESHOLD, qualityThreshold);
 
-    GenomeAlignerTask* task = new GenomeAlignerTask(settings, onlyBuildIndex);
+    auto task = new GenomeAlignerTask(settings, onlyBuildIndex);
     addSubTask(task);
 }
 

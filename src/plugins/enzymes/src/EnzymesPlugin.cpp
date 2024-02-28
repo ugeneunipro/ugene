@@ -53,7 +53,7 @@ const QString CREATE_PCR_PRODUCT_ACTION_NAME = "Create PCR product";
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    EnzymesPlugin* plug = new EnzymesPlugin();
+    auto plug = new EnzymesPlugin();
     return plug;
 }
 
@@ -177,12 +177,12 @@ EnzymesADVContext::EnzymesADVContext(QObject* p, const QList<QAction*>& actions)
 
 void EnzymesADVContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
-    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":enzymes/images/enzymes.png"), tr("Find restriction sites..."), 50);
+    auto a = new ADVGlobalAction(av, QIcon(":enzymes/images/enzymes.png"), tr("Find restriction sites..."), 50);
     a->setObjectName("Find restriction sites");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, SIGNAL(triggered()), SLOT(sl_search()));
 
-    GObjectViewAction* createPCRProductAction = new GObjectViewAction(av, av, tr("Create PCR product..."));
+    auto createPCRProductAction = new GObjectViewAction(av, av, tr("Create PCR product..."));
     createPCRProductAction->setObjectName(CREATE_PCR_PRODUCT_ACTION_NAME);
     connect(createPCRProductAction, SIGNAL(triggered()), SLOT(sl_createPCRProduct()));
     addViewAction(createPCRProductAction);
@@ -210,7 +210,7 @@ void EnzymesADVContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu
     SAFE_POINT(av != nullptr, "Invalid sequence view", );
     CHECK(av->getActiveSequenceContext()->getAlphabet()->isNucleic(), );
 
-    QMenu* cloningMenu = new QMenu(tr("Cloning"), m);
+    auto cloningMenu = new QMenu(tr("Cloning"), m);
     cloningMenu->menuAction()->setObjectName("Cloning");
     cloningMenu->addActions(cloningActions);
 

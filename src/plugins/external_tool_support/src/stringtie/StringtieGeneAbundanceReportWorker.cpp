@@ -73,7 +73,7 @@ Task* StringtieGeneAbundanceReportWorker::tick() {
                                                     FileAndDirectoryUtils::FILE_DIRECTORY,
                                                     "",
                                                     "");
-            StringtieGeneAbundanceReportTask* task = new StringtieGeneAbundanceReportTask(stringtieReports,
+            auto task = new StringtieGeneAbundanceReportTask(stringtieReports,
                                                                                           geneAbudanceReportUrl,
                                                                                           context->workingDir());
             stringtieReports.clear();

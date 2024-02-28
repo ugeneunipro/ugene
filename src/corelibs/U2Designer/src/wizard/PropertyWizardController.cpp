@@ -125,7 +125,7 @@ QWidget* DefaultPropertyController::createGUI(U2OpStatus& os) {
     if (label.isEmpty()) {
         label = attribute()->getDisplayName();
     }
-    LabeledPropertyWidget* result = new LabeledPropertyWidget(label, propWidget, nullptr);
+    auto result = new LabeledPropertyWidget(label, propWidget, nullptr);
     if (labelSize >= 0) {
         result->setLabelWidth(labelSize);
     }

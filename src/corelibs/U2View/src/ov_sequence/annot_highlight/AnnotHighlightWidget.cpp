@@ -74,7 +74,7 @@ AnnotHighlightWidget::AnnotHighlightWidget(AnnotatedDNAView* _annotatedDnaView)
 }
 
 void AnnotHighlightWidget::initLayout() {
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    auto mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(10);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -88,7 +88,7 @@ void AnnotHighlightWidget::initLayout() {
     annotTreeTitle = new QLabel(tr("Select an annotation name:"));
 
     // Tree
-    QVBoxLayout* treeLayout = new QVBoxLayout();
+    auto treeLayout = new QVBoxLayout();
     treeLayout->setContentsMargins(0, 0, 0, 10);
     treeLayout->setSpacing(0);
 
@@ -101,7 +101,7 @@ void AnnotHighlightWidget::initLayout() {
     treeLayout->addWidget(showAllLabel);
 
     // Configure settings
-    QVBoxLayout* settingsLayout = new QVBoxLayout();
+    auto settingsLayout = new QVBoxLayout();
     settingsLayout->setContentsMargins(0, 0, 0, 0);
     settingsLayout->setSpacing(0);
     settingsLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -112,7 +112,7 @@ void AnnotHighlightWidget::initLayout() {
     settingsLayout->addWidget(settingsTitle);
     settingsLayout->addWidget(annotSettingsWidget);
 
-    QHBoxLayout* buttonsLayout = new QHBoxLayout();
+    auto buttonsLayout = new QHBoxLayout();
     buttonsLayout->setContentsMargins(0, 0, 0, 0);
     buttonsLayout->setSpacing(0);
 

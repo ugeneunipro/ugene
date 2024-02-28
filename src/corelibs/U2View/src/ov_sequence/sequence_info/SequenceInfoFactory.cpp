@@ -49,7 +49,7 @@ QWidget* SequenceInfoFactory::createWidget(GObjectViewController* objView, const
                QString("Internal error: unable to cast object view to AnnotatedDNAView for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    SequenceInfo* seqInfoWidget = new SequenceInfo(annotatedDnaView);
+    auto seqInfoWidget = new SequenceInfo(annotatedDnaView);
     seqInfoWidget->setObjectName("SequenceInfo");
     return seqInfoWidget;
 }

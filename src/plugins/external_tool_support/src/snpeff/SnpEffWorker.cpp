@@ -135,7 +135,7 @@ void SnpEffFactory::init() {
         Descriptor motif(SnpEffWorker::MOTIF, SnpEffWorker::tr("Annotate TFBSs motifs"), SnpEffWorker::tr("Annotate transcription factor binding site motifs (only available for latest GRCh37)"));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        auto customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(SnpEffWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
 
@@ -235,7 +235,7 @@ Task* SnpEffWorker::tick() {
         setting.lof = getValue<bool>(LOF);
         setting.motif = getValue<bool>(MOTIF);
 
-        SnpEffTask* t = new SnpEffTask(setting);
+        auto t = new SnpEffTask(setting);
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
 
         QList<ExternalToolListener*> listeners = createLogListeners();

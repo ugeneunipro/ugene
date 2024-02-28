@@ -835,7 +835,7 @@ void BioStruct3DGLWidget::createMenus() {
 }
 
 QMenu* BioStruct3DGLWidget::createStructuralAlignmentMenu() {
-    QMenu* saMenu = new QMenu(tr("Structural Alignment"));
+    auto saMenu = new QMenu(tr("Structural Alignment"));
     saMenu->menuAction()->setObjectName("Structural Alignment");
 
     saMenu->addAction(alignWithAction);
@@ -1047,7 +1047,7 @@ void BioStruct3DGLWidget::sl_alignWith() {
         Task* task = dlg->getTask();
         assert(task && "If dialog accepded it must return valid task");
 
-        TaskSignalMapper* taskMapper = new TaskSignalMapper(task);
+        auto taskMapper = new TaskSignalMapper(task);
         connect(taskMapper, SIGNAL(si_taskFinished(Task*)), this, SLOT(sl_onAlignmentDone(Task*)));
 
         AppContext::getTaskScheduler()->registerTopLevelTask(task);

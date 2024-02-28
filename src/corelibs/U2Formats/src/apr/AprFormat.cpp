@@ -182,7 +182,7 @@ Document* AprFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, con
         os.setError(AprFormat::tr("File doesn't contain any msa objects"));
         return nullptr;
     }
-    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
+    auto doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
 
     return doc;
 }

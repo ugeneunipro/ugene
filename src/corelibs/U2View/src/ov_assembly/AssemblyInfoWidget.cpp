@@ -38,7 +38,7 @@ namespace U2 {
 
 namespace {
 QFormLayout* buildFormLayout(QWidget* w) {
-    QFormLayout* layout = new QFormLayout;
+    auto layout = new QFormLayout;
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
     w->setLayout(layout);
@@ -47,12 +47,12 @@ QFormLayout* buildFormLayout(QWidget* w) {
 
 QLabel* buildLabel(QString text, QWidget* p = nullptr) {
     text = QString("<b>%1:&nbsp;&nbsp;</b>").arg(text);
-    QLabel* label = new QLabel(text, p);
+    auto label = new QLabel(text, p);
     return label;
 }
 
 QLineEdit* buildLineEdit(QString text, QWidget* p = nullptr, const QString& objectName = QString()) {
-    QLineEdit* lineEdit = new QLineEdit(text, p);
+    auto lineEdit = new QLineEdit(text, p);
     lineEdit->setStyleSheet("border: none; background-color: transparent;");
     lineEdit->setReadOnly(true);
     lineEdit->home(false);
@@ -65,7 +65,7 @@ QLineEdit* buildLineEdit(QString text, QWidget* p = nullptr, const QString& obje
 
 AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser* browser, QWidget* p)
     : QWidget(p), savableTab(this, GObjectViewUtils::findViewByName(browser->getName())) {
-    QVBoxLayout* mainLayout = new QVBoxLayout;
+    auto mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setAlignment(Qt::AlignTop);
     mainLayout->setSpacing(0);
@@ -74,7 +74,7 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser* browser, QWidget* p)
     U2OpStatus2Log st;
     QSharedPointer<AssemblyModel> model = browser->getModel();
 
-    QWidget* asmWidget = new QWidget(this);
+    auto asmWidget = new QWidget(this);
     {
         QFormLayout* layout = buildFormLayout(asmWidget);
 
@@ -95,7 +95,7 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser* browser, QWidget* p)
         QString uri = model->getReferenceUri(st);
 
         if (!(md5 + species + uri).isEmpty()) {
-            QWidget* refWidget = new QWidget(this);
+            auto refWidget = new QWidget(this);
             QFormLayout* layout = buildFormLayout(refWidget);
             if (!md5.isEmpty()) {
                 layout->addRow(buildLabel(tr("MD5"), refWidget), buildLineEdit(QString(md5), refWidget));

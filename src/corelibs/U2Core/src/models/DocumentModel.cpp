@@ -64,7 +64,7 @@ Document* DocumentFormat::createNewLoadedDocument(IOAdapterFactory* iof, const G
     U2DbiRef tmpDbiRef = fetchDbiRef(hints, os);
     CHECK_OP(os, nullptr);
 
-    Document* doc = new Document(this, iof, url, tmpDbiRef, QList<UnloadedObjectInfo>(), hints, QString());
+    auto doc = new Document(this, iof, url, tmpDbiRef, QList<UnloadedObjectInfo>(), hints, QString());
     doc->setLoaded(true);
     doc->setDocumentOwnsDbiResources(true);
     doc->setModificationTrack(!checkFlags(DocumentFormatFlag_DirectWriteOperations));
@@ -74,7 +74,7 @@ Document* DocumentFormat::createNewLoadedDocument(IOAdapterFactory* iof, const G
 Document* DocumentFormat::createNewUnloadedDocument(IOAdapterFactory* iof, const GUrl& url, U2OpStatus& os, const QVariantMap& hints, const QList<UnloadedObjectInfo>& info, const QString& instanceModLockDesc) {
     Q_UNUSED(os);
     U2DbiRef dbiRef = (hints[DocumentFormat::DBI_REF_HINT]).value<U2DbiRef>();
-    Document* doc = new Document(this, iof, url, dbiRef, info, hints, instanceModLockDesc);
+    auto doc = new Document(this, iof, url, dbiRef, info, hints, instanceModLockDesc);
     doc->setModificationTrack(!checkFlags(DocumentFormatFlag_DirectWriteOperations));
     return doc;
 }
@@ -253,7 +253,7 @@ Document::Document(DocumentFormat* _df, IOAdapterFactory* _io, const GUrl& _url,
 }
 
 Document* Document::getSimpleCopy(DocumentFormat* df, IOAdapterFactory* io, const GUrl& url) const {
-    Document* result = new Document(df, io, url, this->dbiRef, QList<GObject*>(), this->getGHintsMap());
+    auto result = new Document(df, io, url, this->dbiRef, QList<GObject*>(), this->getGHintsMap());
     result->objects = this->objects;
     result->documentOwnsDbiResources = false;
 
@@ -671,7 +671,7 @@ void Document::setUserModLock(bool v) {
         return;
     }
     if (v) {
-        StateLock* sl = new StateLock(tr("Locked by user"));
+        auto sl = new StateLock(tr("Locked by user"));
         modLocks[DocumentModLock_USER] = sl;
         lockState(sl);
     } else {
@@ -781,7 +781,7 @@ void Document::setGHints(GHints* newHints) {
 
 void Document::addUnloadedObjects(const QList<UnloadedObjectInfo>& info) {
     foreach (const UnloadedObjectInfo& oi, info) {
-        UnloadedObject* obj = new UnloadedObject(oi);
+        auto obj = new UnloadedObject(oi);
         obj->moveToThread(thread());
         _addObjectToHierarchy(obj);
         assert(obj->getDocument() == this);
@@ -809,7 +809,7 @@ void Document::removeObjectsDataFromDbi(QList<GObject*> objects) {
     const bool removeAsynchronously = AppContext::isGUIMode() && QCoreApplication::instance()->thread() == QThread::currentThread() && !ctxState->getMap().contains(DocumentRemovalMode_Synchronous);
     if (removeAsynchronously) {
         // Do not remove objects in the main thread to prevent GUI hanging
-        DeleteObjectsTask* deleteTask = new DeleteObjectsTask(objects);
+        auto deleteTask = new DeleteObjectsTask(objects);
         AppContext::getTaskScheduler()->registerTopLevelTask(deleteTask);
     } else {
         U2OpStatus2Log os;
@@ -839,7 +839,7 @@ void Document::propagateModLocks(Document* doc) const {
     for (int i = 0; i < DocumentModLock_NUM_LOCKS; i++) {
         StateLock* lock = modLocks[i];
         if (lock != nullptr && doc->modLocks[i] != nullptr) {
-            StateLock* newLock = new StateLock(lock->getUserDesc(), lock->getFlags());
+            auto newLock = new StateLock(lock->getUserDesc(), lock->getFlags());
             doc->modLocks[i] = newLock;
             doc->lockState(newLock);
         }

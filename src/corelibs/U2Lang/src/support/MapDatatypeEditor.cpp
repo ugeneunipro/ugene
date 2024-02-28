@@ -138,7 +138,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
         Descriptor key = keys.at(i);
 
         // set key item
-        QTableWidgetItem* keyItem = new QTableWidgetItem(key.getDisplayName());
+        auto keyItem = new QTableWidgetItem(key.getDisplayName());
         keyItem->setToolTip(to->getDatatypeByDescriptor(key)->getDisplayName());
         keyItem->setData(Qt::UserRole, qVariantFromValue<Descriptor>(key));
         keyItem->setFlags(Qt::ItemIsSelectable);
@@ -154,7 +154,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
         QList<Descriptor> candidates = WorkflowUtils::findMatchingCandidates(from, to, key);
         Descriptor current = WorkflowUtils::getCurrentMatchingDescriptor(candidates, to, key, bindingsMap);
 
-        QTableWidgetItem* valueItem = new QTableWidgetItem(current.getDisplayName());
+        auto valueItem = new QTableWidgetItem(current.getDisplayName());
         valueItem->setData(Qt::UserRole, qVariantFromValue<Descriptor>(current));
         valueItem->setData(Qt::UserRole + 1, qVariantFromValue<QList<Descriptor>>(candidates));
         if (elementDatatype->isList()) {
@@ -177,14 +177,14 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     mainWidget->setSizePolicy(sizePolicy1);
     connect(mainWidget, SIGNAL(destroyed(QObject*)), SLOT(sl_widgetDestroyed()));
 
-    QVBoxLayout* verticalLayout = new QVBoxLayout(mainWidget);
+    auto verticalLayout = new QVBoxLayout(mainWidget);
     verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
     verticalLayout->setSpacing(0);
     verticalLayout->setMargin(0);
 
     const QString title = getTitle();
     if (!title.isEmpty()) {
-        QLabel* titleLabel = new QLabel(title);
+        auto titleLabel = new QLabel(title);
         titleLabel->setContentsMargins(0, 4, 0, 0);
         titleLabel->setAlignment(Qt::AlignHCenter);
         verticalLayout->addWidget(titleLabel);
@@ -339,7 +339,7 @@ bool BusPortEditor::isEmpty() const {
 QWidget* DescriptorListEditorDelegate::createEditor(QWidget* parent,
                                                     const QStyleOptionViewItem& /* option */,
                                                     const QModelIndex& /* index */) const {
-    QComboBox* editor = new QComboBox(parent);
+    auto editor = new QComboBox(parent);
     editor->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
     connect(editor, SIGNAL(currentIndexChanged(int)), SLOT(sl_commitData()));
     return editor;
@@ -350,7 +350,7 @@ static int addItems(QStandardItemModel* cm, const QList<Descriptor>& list, bool 
     int currentIdx = -1;
     int idx = startIdx;
     foreach (const Descriptor& d, list) {
-        QStandardItem* item = new QStandardItem(d.getDisplayName());
+        auto item = new QStandardItem(d.getDisplayName());
         item->setData(qVariantFromValue<Descriptor>(d));
         item->setToolTip(d.getDisplayName());
         if (isList) {
@@ -382,7 +382,7 @@ static QString getAddionalLabel() {
 }
 
 static void addSeparator(QStandardItemModel* cm) {
-    QStandardItem* item = new QStandardItem(getAddionalLabel());
+    auto item = new QStandardItem(getAddionalLabel());
     item->setFont(getAdditionalFont());
     item->setFlags(item->flags() & ~(Qt::ItemIsEnabled | Qt::ItemIsSelectable));
     cm->appendRow(item);
@@ -412,7 +412,7 @@ void DescriptorListEditorDelegate::setEditorData(QWidget* editor,
     }
 
     if (isList) {
-        QListView* vw = new QListView(combo);
+        auto vw = new QListView(combo);
         vw->setModel(cm);
         combo->setView(vw);
     } else {

@@ -300,7 +300,7 @@ QMimeData* ProjectViewModel::mimeData(const QModelIndexList& indexes) const {
     } else if ((1 == folders.size()) && objects.isEmpty() && docs.isEmpty()) {
         return new FolderMimeData(folders.first());
     } else {
-        BunchMimeData* bmd = new BunchMimeData();
+        auto bmd = new BunchMimeData();
         bmd->objects = objects;
         bmd->folders = folders;
         return bmd;
@@ -347,7 +347,7 @@ Qt::DropActions ProjectViewModel::supportedDropActions() const {
 }
 
 void ProjectViewModel::addDocument(Document* doc) {
-    DocumentFolders* f = new DocumentFolders;
+    auto f = new DocumentFolders;
     U2OpStatus2Log os;
     f->init(doc, os);
     CHECK_OP(os, );
@@ -1155,7 +1155,7 @@ void ProjectViewModel::dropObject(GObject* obj, Document* targetDoc, const QStri
         moveObject(targetDoc, obj, result);
         emit si_documentContentChanged(targetDoc);
     } else {
-        ImportObjectToDatabaseTask* task = new ImportObjectToDatabaseTask(obj, targetDoc->getDbiRef(), result);
+        auto task = new ImportObjectToDatabaseTask(obj, targetDoc->getDbiRef(), result);
         connect(task, SIGNAL(si_stateChanged()), SLOT(sl_objectImported()));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
@@ -1175,7 +1175,7 @@ void ProjectViewModel::dropFolder(const Folder& folder, Document* targetDoc, con
 void ProjectViewModel::dropDocument(Document* doc, Document* targetDoc, const QString& targetFolderPath) {
     CHECK(doc != targetDoc, );
     ImportToDatabaseOptions options;
-    ImportDocumentToDatabaseTask* task = new ImportDocumentToDatabaseTask(doc, targetDoc->getDbiRef(), targetFolderPath, options);
+    auto task = new ImportDocumentToDatabaseTask(doc, targetDoc->getDbiRef(), targetFolderPath, options);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_documentImported()));
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }

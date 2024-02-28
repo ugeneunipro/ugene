@@ -47,7 +47,7 @@ BaseWorker::BaseWorker(Actor* a, bool autoTransitBus)
     : processDone(false), actor(a) {
     foreach (Port* p, a->getPorts()) {
         if (qobject_cast<IntegralBusPort*>(p)) {
-            IntegralBus* bus = new IntegralBus(p);
+            auto bus = new IntegralBus(p);
             ports.insert(p->getId(), bus);
             p->setPeer(bus);
         }

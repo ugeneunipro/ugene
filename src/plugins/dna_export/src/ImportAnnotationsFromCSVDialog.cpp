@@ -455,7 +455,7 @@ void ImportAnnotationsFromCSVDialog::preview(bool silent) {
         const QStringList& rowData = lines.at(row);
         for (int column = 0; column < rowData.size(); column++) {
             const QString& token = rowData.at(column);
-            QTableWidgetItem* item = new QTableWidgetItem(token);
+            auto item = new QTableWidgetItem(token);
             item->setFlags(Qt::ItemIsEnabled);
             previewTable->setItem(row, column, item);
         }

@@ -215,7 +215,7 @@ ExportSelectedSeqRegionsTask::ExportSelectedSeqRegionsTask(U2SequenceObject* seq
 }
 
 void ExportSelectedSeqRegionsTask::prepare() {
-    CreateExportItemsFromSeqRegionsTask* t = new CreateExportItemsFromSeqRegionsTask(seqObject, annotations, regions, exportSettings, aminoTrans, backTrans, complTrans);
+    auto t = new CreateExportItemsFromSeqRegionsTask(seqObject, annotations, regions, exportSettings, aminoTrans, backTrans, complTrans);
     addSubTask(t);
 }
 

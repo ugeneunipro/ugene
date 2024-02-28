@@ -120,7 +120,7 @@ QList<Task*> ExportConsensusTask::onSubTaskFinished(Task* finished) {
         resultSequence = seqImporter.finalizeSequence(stateInfo);
         CHECK_OP(stateInfo, newSubTasks);
         if (settings.saveToFile) {
-            U2SequenceObject* seqObj = new U2SequenceObject(resultSequence.visualName, U2EntityRef(resultDocument->getDbiRef(), resultSequence.id));
+            auto seqObj = new U2SequenceObject(resultSequence.visualName, U2EntityRef(resultDocument->getDbiRef(), resultSequence.id));
             resultDocument->addObject(seqObj);
         }
     }

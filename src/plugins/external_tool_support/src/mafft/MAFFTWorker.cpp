@@ -179,7 +179,7 @@ Task* MAFFTWorker::tick() {
             algoLog.error(tr("An empty MSA '%1' has been supplied to MAFFT.").arg(msa->getName()));
             return nullptr;
         }
-        MAFFTSupportTask* supportTask = new MAFFTSupportTask(msa, GObjectReference(), cfg);
+        auto supportTask = new MAFFTSupportTask(msa, GObjectReference(), cfg);
         supportTask->addListeners(createLogListeners());
         Task* t = new NoFailTaskWrapper(supportTask);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
