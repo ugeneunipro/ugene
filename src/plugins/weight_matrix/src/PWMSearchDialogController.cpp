@@ -289,7 +289,7 @@ void PWMSearchDialogController::addToQueue() {
     if (queue.contains(queueElement)) {
         QMessageBox::critical(this, L10N::errorTitle(), tr("Same model with same parameters already in the search queue"));
     } else {
-        WeightMatrixQueueItem* item = new WeightMatrixQueueItem(cfg);
+        auto item = new WeightMatrixQueueItem(cfg);
         tasksTree->addTopLevelItem(item);
         queue.append(queueElement);
     }
@@ -525,7 +525,7 @@ void PWMSearchDialogController::importResults() {
 
     QList<WeightMatrixSearchResult> newResults = task->takeResults();
     foreach (const WeightMatrixSearchResult& r, newResults) {
-        WeightMatrixResultItem* item = new WeightMatrixResultItem(r);
+        auto item = new WeightMatrixResultItem(r);
         resultsTree->addTopLevelItem(item);
     }
     updateStatus();

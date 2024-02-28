@@ -106,7 +106,7 @@ public:
         int filesListId = randInt(0, files.size() - 1);
         QString randomFilePath = files[filesListId];
 
-        GTFileDialogUtils* u = new GTFileDialogUtils(randomFilePath);
+        auto u = new GTFileDialogUtils(randomFilePath);
         u->run();
     }
 

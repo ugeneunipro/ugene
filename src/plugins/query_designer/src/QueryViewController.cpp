@@ -506,7 +506,7 @@ void QueryScene::addActor(QDActor* actor, const QPointF& pos) {
     int dx = 0;
     QMap<QDSchemeUnit*, QDElement*> unit2view;
     foreach (QDSchemeUnit* su, actor->getSchemeUnits()) {
-        QDElement* uv = new QDElement(su);
+        auto uv = new QDElement(su);
         unit2view[su] = uv;
         addItem(uv);
         uv->setObjectName("QDElement");
@@ -520,7 +520,7 @@ void QueryScene::addActor(QDActor* actor, const QPointF& pos) {
         auto dc = static_cast<QDDistanceConstraint*>(c);
         if (dc) {
             QueryViewController::setupConstraintEditor(dc);
-            Footnote* fn = new Footnote(unit2view.value(dc->getSource()),
+            auto fn = new Footnote(unit2view.value(dc->getSource()),
                                         unit2view.value(dc->getDestination()),
                                         dc->distanceType(),
                                         c);
@@ -558,7 +558,7 @@ void QueryScene::addDistanceConstraint(QDElement* src, QDElement* dst, QDDistanc
         QueryViewController::setupConstraintEditor(c);
         scheme->addConstraint(c);
         connect(c->getParameters(), SIGNAL(si_modified()), ruler, SLOT(sl_updateText()));
-        Footnote* fn = new Footnote(src, dst, distType, c);
+        auto fn = new Footnote(src, dst, distType, c);
         addItem(fn);
         fn->updatePos();
         updateDescription();
@@ -674,7 +674,7 @@ QueryViewController::QueryViewController()
     palette = new QueryPalette(this);
     palette->setObjectName("palette");
     groupsEditor = new QDGroupsEditor(this);
-    QDSamplesWidget* samples = new QDSamplesWidget(scene, this);
+    auto samples = new QDSamplesWidget(scene, this);
 
     tabs = new QTabWidget(this);
     tabs->insertTab(ElementsTab, palette, tr("Elements"));
@@ -691,7 +691,7 @@ QueryViewController::QueryViewController()
     connect(tabs, SIGNAL(currentChanged(int)), samples, SLOT(sl_cancel()));
     connect(editor, SIGNAL(modified()), scene, SLOT(sl_setModified()));
 
-    QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
+    auto splitter = new QSplitter(Qt::Horizontal, this);
     splitter->addWidget(tabs);
     splitter->addWidget(sceneView);
     splitter->addWidget(editor);
@@ -701,7 +701,7 @@ QueryViewController::QueryViewController()
         palette->restoreState(settings->getValue(PALETTE_STATE));
     }
 
-    QHBoxLayout* layout = new QHBoxLayout(this);
+    auto layout = new QHBoxLayout(this);
     layout->addWidget(splitter);
     layout->setSpacing(0);
     layout->setMargin(0);
@@ -757,7 +757,7 @@ void QueryViewController::createActions() {
     connect(deleteAction, SIGNAL(triggered()), SLOT(sl_deleteItem()));
 
     {  // Delete shortcut
-        QAction* deleteShortcut = new QAction(sceneView);
+        auto deleteShortcut = new QAction(sceneView);
         deleteShortcut->setShortcuts(QKeySequence::Delete);
         deleteShortcut->setShortcutContext(Qt::WidgetShortcut);
         connect(deleteShortcut, SIGNAL(triggered()), SLOT(sl_deleteItem()));
@@ -840,8 +840,8 @@ void QueryViewController::setupMDIToolbar(QToolBar* tb) {
     tb->addAction(runAction);
     tb->addSeparator();
 
-    QToolButton* tt = new QToolButton(tb);
-    QMenu* viewModeMenu = new QMenu(tr("View Mode"), this);
+    auto tt = new QToolButton(tb);
+    auto viewModeMenu = new QMenu(tr("View Mode"), this);
     setupViewModeMenu(viewModeMenu);
     QAction* a = viewModeMenu->menuAction();
     tt->setDefaultAction(a);
@@ -849,8 +849,8 @@ void QueryViewController::setupMDIToolbar(QToolBar* tb) {
     tt->setIcon(QIcon(":query_designer/images/eye.png"));
     tb->addWidget(tt);
 
-    QToolButton* st = new QToolButton(tb);
-    QMenu* strandMenu = new QMenu(tr("Query Sequence Mode"), this);
+    auto st = new QToolButton(tb);
+    auto strandMenu = new QMenu(tr("Query Sequence Mode"), this);
     setupStrandMenu(strandMenu);
     QAction* sa = strandMenu->menuAction();
     st->setDefaultAction(sa);
@@ -871,12 +871,12 @@ void QueryViewController::setupViewMenu(QMenu* m) {
     m->addAction(runAction);
     m->addSeparator();
 
-    QMenu* viewModeMenu = new QMenu(tr("View Mode"), this);
+    auto viewModeMenu = new QMenu(tr("View Mode"), this);
     viewModeMenu->setIcon(QIcon(":query_designer/images/eye.png"));
     setupViewModeMenu(viewModeMenu);
     m->addMenu(viewModeMenu);
 
-    QMenu* querySequenceModeMenu = new QMenu(tr("Query Sequence Mode"), this);
+    auto querySequenceModeMenu = new QMenu(tr("Query Sequence Mode"), this);
     querySequenceModeMenu->setIcon((QIcon(":query_designer/images/strands.png")));
     setupQuerySequenceModeMenu(querySequenceModeMenu);
     m->addMenu(querySequenceModeMenu);
@@ -934,7 +934,7 @@ void QueryViewController::sl_loadScene() {
     LastUsedDirHelper dir(QUERY_DESIGNER_ID);
     dir.url = U2FileDialog::getOpenFileName(this, tr("Load Schema"), dir, QString("*.%1").arg(QUERY_SCHEME_EXTENSION));
     if (!dir.url.isEmpty()) {
-        QDLoadSceneTask* t = new QDLoadSceneTask(scene, dir.url);
+        auto t = new QDLoadSceneTask(scene, dir.url);
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_updateTitle()));
         AppContext::getTaskScheduler()->registerTopLevelTask(t);
         scene->setModified(false);
@@ -950,7 +950,7 @@ void QueryViewController::sl_saveScene() {
         info.path = schemeUri;
         info.schemeName = scene->getLabel();
         info.description = scene->getDescription();
-        QDSaveSceneTask* t = new QDSaveSceneTask(scene, info);
+        auto t = new QDSaveSceneTask(scene, info);
         AppContext::getTaskScheduler()->registerTopLevelTask(t);
         scene->setModified(false);
     }

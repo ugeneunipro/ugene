@@ -137,7 +137,7 @@ QString SceneSerializer::xml2scene(const QDomElement& projectElement, WorkflowSc
                 proc->setEditor(editor);
             }
         }
-        WorkflowProcessItem* it = new WorkflowProcessItem(proc);
+        auto it = new WorkflowProcessItem(proc);
         it->loadState(procElement);
         scene->addItem(it);
         if (select) {

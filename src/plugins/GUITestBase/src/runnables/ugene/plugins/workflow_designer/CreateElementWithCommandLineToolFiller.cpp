@@ -262,7 +262,7 @@ void CreateElementWithCommandLineToolFiller::processSixthPage() {
 }
 
 void CreateElementWithCommandLineToolFiller::processSeventhPage() {
-    MessageBoxDialogFiller* msbxFiller = new MessageBoxDialogFiller(settings.summaryDialogButton, "You have changed the structure of the element");
+    auto msbxFiller = new MessageBoxDialogFiller(settings.summaryDialogButton, "You have changed the structure of the element");
     GTUtilsDialog::waitForDialog(msbxFiller);
     GTUtilsWizard::clickButton(GTUtilsWizard::Finish);
     GTGlobals::sleep(1000);

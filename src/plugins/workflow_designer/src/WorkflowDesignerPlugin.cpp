@@ -65,7 +65,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    WorkflowDesignerPlugin* plug = new WorkflowDesignerPlugin();
+    auto plug = new WorkflowDesignerPlugin();
     return plug;
 }
 
@@ -170,7 +170,7 @@ void WorkflowDesignerPlugin::registerCMDLineHelp() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(cmdLineRegistry != nullptr);
 
-    CMDLineHelpProvider* taskSection = new CMDLineHelpProvider(
+    auto taskSection = new CMDLineHelpProvider(
         RUN_WORKFLOW,
         tr("Runs the specified task."),
         tr("Runs the specified task. A path to a user-defined UGENE workflow"
@@ -179,7 +179,7 @@ void WorkflowDesignerPlugin::registerCMDLineHelp() {
 
     cmdLineRegistry->registerCMDLineHelpProvider(taskSection);
 
-    CMDLineHelpProvider* printSection = new CMDLineHelpProvider(
+    auto printSection = new CMDLineHelpProvider(
         PRINT,
         tr("Prints the content of the specified slot."),
         tr("Prints the content of the specified slot. The incoming/outcoming content of"
@@ -187,7 +187,7 @@ void WorkflowDesignerPlugin::registerCMDLineHelp() {
         tr("<actor_name>.<port_name>.<slot_name>"));
     Q_UNUSED(printSection);
 
-    CMDLineHelpProvider* galaxyConfigSection = new CMDLineHelpProvider(
+    auto galaxyConfigSection = new CMDLineHelpProvider(
         GalaxyConfigTask::GALAXY_CONFIG_OPTION,
         tr("Creates new Galaxy tool config."),
         tr("Creates new Galaxy tool config from existing workflow. Paths to UGENE"
@@ -342,7 +342,7 @@ Task* WorkflowDesignerService::createServiceEnablingTask() {
 }
 
 void WorkflowDesignerService::initSampleActions() {
-    SampleActionsManager* samples = new SampleActionsManager(this);
+    auto samples = new SampleActionsManager(this);
     connect(samples, SIGNAL(si_clicked(const SampleAction&)), SLOT(sl_sampleActionClicked(const SampleAction&)));
 
     const QString externalToolsPlugin = "external_tool_support";

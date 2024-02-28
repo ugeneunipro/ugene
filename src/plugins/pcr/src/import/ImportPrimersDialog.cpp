@@ -98,13 +98,13 @@ void ImportPrimersDialog::sl_addObjectClicked() {
     ProjectTreeItemSelectorDialog::selectObjectsAndFolders(settings, this, folders, objects);
 
     foreach (const Folder& folder, folders) {
-        QListWidgetItem* item = new QListWidgetItem(QIcon(":U2Designer/images/directory.png"), folder.getFolderPath());
+        auto item = new QListWidgetItem(QIcon(":U2Designer/images/directory.png"), folder.getFolderPath());
         item2folder.insert(item, folder);
         lwObjects->addItem(item);
     }
 
     foreach (GObject* object, objects) {
-        QListWidgetItem* item = new QListWidgetItem(GObjectTypes::getTypeInfo(object->getGObjectType()).icon, object->getDocument()->getName() + ": " + object->getGObjectName());
+        auto item = new QListWidgetItem(GObjectTypes::getTypeInfo(object->getGObjectType()).icon, object->getDocument()->getName() + ": " + object->getGObjectName());
         item2object.insert(item, object);
         lwObjects->addItem(item);
     }

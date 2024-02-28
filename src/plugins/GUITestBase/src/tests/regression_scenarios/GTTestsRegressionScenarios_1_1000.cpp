@@ -547,7 +547,7 @@ GUI_TEST_CLASS_DEFINITION(test_0587) {
                 }
             }
 
-            GTFileDialogUtils* ob = new GTFileDialogUtils(testDir + "_common_data/genbank/", "NC_014267.1_cut.gb");
+            auto ob = new GTFileDialogUtils(testDir + "_common_data/genbank/", "NC_014267.1_cut.gb");
             GTUtilsDialog::waitForDialog(ob);
             GTWidget::click(GTWidget::findWidget("addRefButton", dialog));
             GTUtilsTaskTreeView::waitTaskFinished();
@@ -2811,7 +2811,7 @@ GUI_TEST_CLASS_DEFINITION(test_0958) {
       << ImportAnnotationsToCsvFiller::RoleColumnParameter(8, new ImportAnnotationsToCsvFiller::QualifierParameter("prop1"))
       << ImportAnnotationsToCsvFiller::RoleColumnParameter(9, new ImportAnnotationsToCsvFiller::QualifierParameter("prop2"));
 
-    ImportAnnotationsToCsvFiller* filler = new ImportAnnotationsToCsvFiller(sandBoxDir + "test_0958.csv", sandBoxDir + "test_0958.gb", ImportAnnotationsToCsvFiller::Genbank, true, true, ",", 1, "#", false, true, "misc_feature", r);
+    auto filler = new ImportAnnotationsToCsvFiller(sandBoxDir + "test_0958.csv", sandBoxDir + "test_0958.gb", ImportAnnotationsToCsvFiller::Genbank, true, true, ",", 1, "#", false, true, "misc_feature", r);
     GTUtilsDialog::waitForDialog(filler);
     GTUtilsDialog::waitForDialog(new PopupChooser({"action_project__export_import_menu_action", "import_annotations_from_CSV_file"}));
     GTUtilsProjectTreeView::click("human_T1.fa", Qt::RightButton);
@@ -2962,7 +2962,7 @@ GUI_TEST_CLASS_DEFINITION(test_0986) {
     GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    SmithWatermanDialogFiller* filler = new SmithWatermanDialogFiller();
+    auto filler = new SmithWatermanDialogFiller();
     filler->button = SmithWatermanDialogFiller::Cancel;
     GTUtilsDialog::waitForDialog(filler);
 
@@ -2976,7 +2976,7 @@ GUI_TEST_CLASS_DEFINITION(test_0986_1) {
     GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    SmithWatermanDialogFiller* filler = new SmithWatermanDialogFiller();
+    auto filler = new SmithWatermanDialogFiller();
     filler->button = SmithWatermanDialogFiller::Cancel;
     GTUtilsDialog::waitForDialog(filler);
 

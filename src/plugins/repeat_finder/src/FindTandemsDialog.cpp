@@ -79,7 +79,7 @@ FindTandemsDialog::FindTandemsDialog(ADVSequenceObjectContext* _sc)
     ac = new CreateAnnotationWidgetController(m, this);
 
     QWidget* caw = ac->getWidget();
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
     annotationsWidget->setLayout(l);
@@ -226,7 +226,7 @@ void FindTandemsDialog::accept() {
     settings.seqRegion = U2Region(0, seq.length());
     settings.reportSeqShift = range.startPos;
 
-    FindTandemsToAnnotationsTask* t = new FindTandemsToAnnotationsTask(settings, seq, cam.data->name, cam.groupName, cam.description, cam.annotationObjectRef);
+    auto t = new FindTandemsToAnnotationsTask(settings, seq, cam.data->name, cam.groupName, cam.description, cam.annotationObjectRef);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 
     QDialog::accept();

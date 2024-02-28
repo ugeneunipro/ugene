@@ -104,7 +104,7 @@ BreakpointManagerView::BreakpointManagerView(WorkflowDebugStatus* initDebugInfo,
     Q_ASSERT(breakpointsList != nullptr);
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    QVBoxLayout* contentLayout = new QVBoxLayout(this);
+    auto contentLayout = new QVBoxLayout(this);
     contentLayout->setSpacing(0);
     contentLayout->setMargin(0);
     contentLayout->setContentsMargins(0, 0, 0, 0);
@@ -177,7 +177,7 @@ void BreakpointManagerView::createActions() {
 }
 
 QToolBar* BreakpointManagerView::initToolBar() {
-    QToolBar* mainToolBar = new QToolBar(this);
+    auto mainToolBar = new QToolBar(this);
 
     mainToolBar->addAction(newBreakpointAction);
     mainToolBar->addAction(deleteSelectedBreakpointAction);
@@ -209,12 +209,12 @@ void BreakpointManagerView::initBreakpointsList() {
 
 void BreakpointManagerView::sl_breakpointAdded(const ActorId& actorId) {
     if (!actorConnections.values().contains(actorId)) {
-        QCheckBox* stateCheckBox = new QCheckBox();
+        auto stateCheckBox = new QCheckBox();
         stateCheckBox->setChecked(DEFAULT_BREAKPOINT_STATE);
         stateCheckBox->setAutoFillBackground(true);
 
         Actor* actor = scheme->actorById(actorId);
-        QTreeWidgetItem* item = new QTreeWidgetItem(breakpointsList, QStringList() << QString() << actor->getLabel() << tr(DEFAULT_BREAKPOINT_LABEL) << tr(DEFAULT_BREAKPOINT_CONDITION) << getNamesOfHitCounters()[ALWAYS]);
+        auto item = new QTreeWidgetItem(breakpointsList, QStringList() << QString() << actor->getLabel() << tr(DEFAULT_BREAKPOINT_LABEL) << tr(DEFAULT_BREAKPOINT_CONDITION) << getNamesOfHitCounters()[ALWAYS]);
 
         actorConnections[item] = actorId;
         breakpointsList->setItemWidget(item, BREAKPOINT_STATE_COLUMN_NUMBER, stateCheckBox);

@@ -44,7 +44,7 @@ QDLoadSamplesTask::QDLoadSamplesTask(const QStringList& _dirs)
         QStringList names(QString("*.%1").arg(QUERY_SCHEME_EXTENSION));
         foreach (const QFileInfo& fi, dir.entryInfoList(names, QDir::Files | QDir::NoSymLinks)) {
             const QString& file = fi.absoluteFilePath();
-            QDLoadDocumentTask* t = new QDLoadDocumentTask(file);
+            auto t = new QDLoadDocumentTask(file);
             addSubTask(t);
             idMap[t] = file;
         }
@@ -92,9 +92,9 @@ QDSamplesWidget::QDSamplesWidget(QueryScene* scene, QWidget* parent /* =NULL */)
 }
 
 void QDSamplesWidget::addSample(const QDSample& sample) {
-    QListWidgetItem* item = new QListWidgetItem(sample.d.getDisplayName(), this);
+    auto item = new QListWidgetItem(sample.d.getDisplayName(), this);
     item->setData(DATA_ROLE, qVariantFromValue<QDDocument*>(sample.content));
-    QTextDocument* txtDoc = new QTextDocument(this);
+    auto txtDoc = new QTextDocument(this);
     QIcon ico;
     ico.addPixmap(QDUtils::generateSnapShot(sample.content, QRect()));
     DesignerGUIUtils::setupSamplesDocument(sample.d, ico, txtDoc);

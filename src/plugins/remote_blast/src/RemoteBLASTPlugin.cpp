@@ -61,7 +61,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    RemoteBLASTPlugin* plug = new RemoteBLASTPlugin();
+    auto plug = new RemoteBLASTPlugin();
     return plug;
 }
 
@@ -106,12 +106,12 @@ const QString TRANSFORM_INTO_A_PRIMER_PAIR_NAME = "transform_into_a_primer_pair"
 
 void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
-    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":/remote_blast/images/remote_db_request.png"), tr("Query NCBI BLAST database..."), 60);
+    auto a = new ADVGlobalAction(av, QIcon(":/remote_blast/images/remote_db_request.png"), tr("Query NCBI BLAST database..."), 60);
     a->setObjectName("Query NCBI BLAST database");
     a->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
 
-    GObjectViewAction* transformIntoPrimerPair = new GObjectViewAction(av, av, tr("Transform into a primer pair"));
+    auto transformIntoPrimerPair = new GObjectViewAction(av, av, tr("Transform into a primer pair"));
     transformIntoPrimerPair->setObjectName(TRANSFORM_INTO_A_PRIMER_PAIR_NAME);
     transformIntoPrimerPair->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
     transformIntoPrimerPair->setShortcutContext(Qt::WindowShortcut);

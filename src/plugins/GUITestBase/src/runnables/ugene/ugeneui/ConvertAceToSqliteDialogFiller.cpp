@@ -47,7 +47,7 @@ void ConvertAceToSqliteDialogFiller::commonScenario() {
             button = "Cancel";
             break;
     }
-    MessageBoxDialogFiller* mbf = new MessageBoxDialogFiller(button);
+    auto mbf = new MessageBoxDialogFiller(button);
     if (NOT_SET == action) {
         // when launching filler 2 or more times messagebox is caught by wrong filler
         // GTUtilsDialog::waitForDialogWhichMayRunOrNot(mbf);

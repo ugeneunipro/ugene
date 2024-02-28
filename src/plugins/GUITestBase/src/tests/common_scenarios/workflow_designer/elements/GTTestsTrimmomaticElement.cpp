@@ -90,7 +90,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant> trailing = {{TrimmomaticDialogFiller::TrimmomaticValues::QualityThreshold, "25"}};
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::TRAILING, trailing));
 
-    TrimmomaticDialogFiller* filler = new TrimmomaticDialogFiller(steps);
+    auto filler = new TrimmomaticDialogFiller(steps);
 
     GTUtilsDialog::waitForDialog(filler);
     TrimmomaticDialogFiller::openDialog(trimmomaticElement);
@@ -116,7 +116,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, avgqual2));
     QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant> avgqual3 = {{TrimmomaticDialogFiller::TrimmomaticValues::QualityThreshold, "3"}};
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, avgqual3));
-    TrimmomaticDialogFiller* addFiller = new TrimmomaticDialogFiller(steps);
+    auto addFiller = new TrimmomaticDialogFiller(steps);
 
     GTUtilsDialog::waitForDialog(addFiller);
     TrimmomaticDialogFiller::openDialog(trimmomaticElement);
@@ -133,7 +133,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     moveSteps.append(step2);
     TrimmomaticMoveSettings step3(QPair<TrimmomaticDialogFiller::TrimmomaticSteps, int>(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, 1), TrimmomaticDialogFiller::TrimmomaticDirection::Up);
     moveSteps.append(step3);
-    TrimmomaticDialogFiller* moveFiller = new TrimmomaticDialogFiller(moveSteps);
+    auto moveFiller = new TrimmomaticDialogFiller(moveSteps);
 
     GTUtilsDialog::waitForDialog(moveFiller);
     TrimmomaticDialogFiller::openDialog(trimmomaticElement);
@@ -159,7 +159,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, avgqual2));
     QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant> avgqual3 = {{TrimmomaticDialogFiller::TrimmomaticValues::QualityThreshold, "3"}};
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, avgqual3));
-    TrimmomaticDialogFiller* addFiller = new TrimmomaticDialogFiller(steps);
+    auto addFiller = new TrimmomaticDialogFiller(steps);
 
     GTUtilsDialog::waitForDialog(addFiller);
     TrimmomaticDialogFiller::openDialog(trimmomaticElement);
@@ -172,7 +172,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     removeValues.append(step1);
     QPair<TrimmomaticDialogFiller::TrimmomaticSteps, int> step2(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, 0);
     removeValues.append(step2);
-    TrimmomaticDialogFiller* removeFiller = new TrimmomaticDialogFiller(removeValues);
+    auto removeFiller = new TrimmomaticDialogFiller(removeValues);
 
     GTUtilsDialog::waitForDialog(removeFiller);
     TrimmomaticDialogFiller::openDialog(trimmomaticElement);

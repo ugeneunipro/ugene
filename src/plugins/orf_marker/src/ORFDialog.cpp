@@ -358,7 +358,7 @@ void ORFDialog::accept() {
         const CreateAnnotationModel& m = ac->getModel();
         AnnotationTableObject* aObj = m.getAnnotationObject();
         ctx->getAnnotatedDNAView()->tryAddObject(aObj);
-        FindORFsToAnnotationsTask* orfTask = new FindORFsToAnnotationsTask(aObj, ctx->getSequenceObject()->getEntityRef(), s, m.groupName, m.description);
+        auto orfTask = new FindORFsToAnnotationsTask(aObj, ctx->getSequenceObject()->getEntityRef(), s, m.groupName, m.description);
         AppContext::getTaskScheduler()->registerTopLevelTask(orfTask);
     }
 
@@ -424,7 +424,7 @@ void ORFDialog::createAnnotationWidget() {
     acm.sequenceLen = seqObj->getSequenceLength();
     ac = new CreateAnnotationWidgetController(acm, this);
     QWidget* caw = ac->getWidget();
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
     annotationsWidget->setLayout(l);

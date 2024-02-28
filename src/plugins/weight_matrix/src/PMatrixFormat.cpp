@@ -142,7 +142,7 @@ void OpenPFMatrixViewTask::open() {
     }
     foreach (QPointer<GObject> po, selectedObjects) {
         auto o = qobject_cast<PFMatrixObject*>(po);
-        MatrixViewController* view = new MatrixViewController(o->getMatrix());
+        auto view = new MatrixViewController(o->getMatrix());
         AppContext::getMainWindow()->getMDIManager()->addMDIWindow(view);
         AppContext::getMainWindow()->getMDIManager()->activateWindow(view);
     }
@@ -257,7 +257,7 @@ void OpenPWMatrixViewTask::open() {
     }
     foreach (QPointer<GObject> po, selectedObjects) {
         auto o = qobject_cast<PWMatrixObject*>(po);
-        MatrixViewController* view = new MatrixViewController(o->getMatrix());
+        auto view = new MatrixViewController(o->getMatrix());
         AppContext::getMainWindow()->getMDIManager()->addMDIWindow(view);
         AppContext::getMainWindow()->getMDIManager()->activateWindow(view);
     }
