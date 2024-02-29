@@ -42,7 +42,7 @@ namespace BALL
 
 	TriangulatedSurface* TriangulatedSurface::createTube(unsigned int num_vertices, unsigned int subdiv, bool closed, bool out)
 	{
-		TriangulatedSurface* result = new TriangulatedSurface();
+        auto result = new TriangulatedSurface();
 
 		//Compute the number of elements
 		result->number_of_points_ = num_vertices * (subdiv + 2);
@@ -75,9 +75,9 @@ namespace BALL
 		//Create all edges and all triangles "pointing" upwards.
 		for(unsigned int j = 0; j < subdiv + 1; ++j) {
 			for(unsigned int i = 0; i < num_vertices - 1; ++i) {
-				TriangleEdge* e1 = new TriangleEdge(points[num_vertices * j + i],       points[num_vertices * j + i + 1]);
-				TriangleEdge* e2 = new TriangleEdge(points[num_vertices * j + i + 1],   points[num_vertices * (j + 1) + i + 1]);
-				TriangleEdge* e3 = new TriangleEdge(points[num_vertices * (j + 1) + i + 1], points[num_vertices * j + i]);
+                auto e1 = new TriangleEdge(points[num_vertices * j + i],       points[num_vertices * j + i + 1]);
+                auto e2 = new TriangleEdge(points[num_vertices * j + i + 1],   points[num_vertices * (j + 1) + i + 1]);
+                auto e3 = new TriangleEdge(points[num_vertices * (j + 1) + i + 1], points[num_vertices * j + i]);
 				//Store the horizontal edges
 				edges[num_vertices * j + i] = e1;
 				//Store the vertical edges
@@ -85,20 +85,20 @@ namespace BALL
 				//Store the diagonal edges
 				edges[(2*subdiv+3 + j) * num_vertices + i] = e3;
 
-				Triangle* t = new Triangle(e1, e2, e3, out);
+                auto t = new Triangle(e1, e2, e3, out);
 
 				triangles[2*num_vertices*j + 2*i] = t;
 			}
 
 			//Special case dealing with the ring closing
-			TriangleEdge* e1 = new TriangleEdge(points[num_vertices * j + num_vertices - 1], points[num_vertices * j ]);
-			TriangleEdge* e2 = new TriangleEdge(points[num_vertices * j],                    points[num_vertices * (j + 1) ]);
-			TriangleEdge* e3 = new TriangleEdge(points[num_vertices * (j + 1)],              points[num_vertices * j + num_vertices - 1]);
+            auto e1 = new TriangleEdge(points[num_vertices * j + num_vertices - 1], points[num_vertices * j ]);
+            auto e2 = new TriangleEdge(points[num_vertices * j],                    points[num_vertices * (j + 1) ]);
+            auto e3 = new TriangleEdge(points[num_vertices * (j + 1)],              points[num_vertices * j + num_vertices - 1]);
 			edges[num_vertices * j + num_vertices - 1] = e1;
 			edges[(  subdiv+2 + j) * num_vertices + num_vertices - 1] = e2;
 			edges[(2*subdiv+3 + j) * num_vertices + num_vertices - 1] = e3;
 
-			Triangle* t = new Triangle(e1, e2, e3, out);
+            auto t = new Triangle(e1, e2, e3, out);
 			e1->face_[0] = e2->face_[0] = e3->face_[0] = t;
 
 			triangles[2*num_vertices*j + 2*(num_vertices - 1)] = t;
@@ -120,7 +120,7 @@ namespace BALL
 			TriangleEdge* e2 = edges[(2*subdiv + 3 + subdiv) * num_vertices + i];
 			TriangleEdge* e3 = edges[(  subdiv + 2 + subdiv) * num_vertices + i];
 
-			Triangle* t = new Triangle(e1, e2, e3, !out);
+            auto t = new Triangle(e1, e2, e3, !out);
 
 			e1->face_[0] = e2->face_[0] = e3->face_[0] = t;
 
@@ -133,7 +133,7 @@ namespace BALL
 				TriangleEdge* e2 = edges[(2*subdiv + 3 + j - 1) * num_vertices + i];
 				TriangleEdge* e3 = edges[(  subdiv + 2 + j - 1) * num_vertices + i];
 
-				Triangle* t = new Triangle(e1, e2, e3, !out);
+                auto t = new Triangle(e1, e2, e3, !out);
 
 				e1->face_[1] = e2->face_[1] = e3->face_[1] = t;
 
@@ -145,30 +145,30 @@ namespace BALL
 
 		//Build the two endcaps if necessary
 		if(closed) {
-			TrianglePoint* p1 = new TrianglePoint(TVector3<double>(0, 0, 0), out ? TVector3<double>(0,0,-1) : TVector3<double>(0,0,1));
-			TrianglePoint* p2 = new TrianglePoint(TVector3<double>(0, 0, 1), out ? TVector3<double>(0,0,1) : TVector3<double>(0,0,-1));
+            auto p1 = new TrianglePoint(TVector3<double>(0, 0, 0), out ? TVector3<double>(0,0,-1) : TVector3<double>(0,0,1));
+            auto p2 = new TrianglePoint(TVector3<double>(0, 0, 1), out ? TVector3<double>(0,0,1) : TVector3<double>(0,0,-1));
 			result->points_.push_back(p1);
 			result->points_.push_back(p2);
 
 			//Remember
-			TriangleEdge* e_old1 = new TriangleEdge(p1, points[0]);
+            auto e_old1 = new TriangleEdge(p1, points[0]);
 			TriangleEdge* e1 = e_old1;
 			result->edges_.push_back(e1);
 
-			TriangleEdge* e_old2 = new TriangleEdge(p2, points[num_vertices * (subdiv + 1)]);
+            auto e_old2 = new TriangleEdge(p2, points[num_vertices * (subdiv + 1)]);
 			TriangleEdge* e2 = e_old2;
 			result->edges_.push_back(e2);
 			for(unsigned int i = 1; i < num_vertices; ++i) {
-				TriangleEdge* e_new1 = new TriangleEdge(p1, points[i]);
+                auto e_new1 = new TriangleEdge(p1, points[i]);
 				result->edges_.push_back(e_new1);
 
 				TriangleEdge* e_top1 = edges[i - 1];
-				Triangle* t = new Triangle(e_old1, e_top1, e_new1, !out);
+                auto t = new Triangle(e_old1, e_top1, e_new1, !out);
 				e_old1->face_[1] = e_top1->face_[1] = e_new1->face_[0] = t;
 				//The triangles belonging to the lower cap should go to the front
 				result->triangles_.push_front(t);
 
-				TriangleEdge* e_new2 = new TriangleEdge(p2, points[num_vertices * (subdiv + 1) + i]);
+                auto e_new2 = new TriangleEdge(p2, points[num_vertices * (subdiv + 1) + i]);
 				result->edges_.push_back(e_new2);
 
 				TriangleEdge* e_top2 = edges[(subdiv + 1)*num_vertices + i - 1];
@@ -185,7 +185,7 @@ namespace BALL
 			TriangleEdge* e_top1 = edges[             num_vertices - 1];
 			TriangleEdge* e_top2 = edges[(subdiv + 2)*num_vertices - 1];
 
-			Triangle* t = new Triangle(e_old1, e_top1, e1, !out);
+            auto t = new Triangle(e_old1, e_top1, e1, !out);
 			e_old1->face_[1] = e_top1->face_[1] = e1->face_[0] = t;
 			result->triangles_.push_front(t);
 
@@ -202,7 +202,7 @@ namespace BALL
 
 	TriangulatedSurface* TriangulatedSurface::createDisk(unsigned int num_vertices, bool out)
 	{
-		TriangulatedSurface* result = new TriangulatedSurface();
+        auto result = new TriangulatedSurface();
 
 		//Compute the amount of elements
 		result->number_of_points_   = num_vertices + 1;
@@ -213,28 +213,28 @@ namespace BALL
 		const TVector3<double> normal(0, 0 , out ? 1 : -1);
 
 		//Compute center vertex and store the first vertex/edge in an own variable
-		TrianglePoint* center = new TrianglePoint(TVector3<double>(0, 0, 0), normal);
+        auto center = new TrianglePoint(TVector3<double>(0, 0, 0), normal);
 		result->points_.push_back(center);
 
-		TrianglePoint* p_old = new TrianglePoint(TVector3<double>(1, 0, 0), normal);
+        auto p_old = new TrianglePoint(TVector3<double>(1, 0, 0), normal);
 		TrianglePoint* p1 = p_old;
 		result->points_.push_back(p1);
 
-		TriangleEdge* e1 = new TriangleEdge(p1, center);
+        auto e1 = new TriangleEdge(p1, center);
 		TriangleEdge* e_old = e1;
 		result->edges_.push_back(e1);
 
 		//Triangulate the disk
 		for(unsigned int i = 1; i < num_vertices; ++i) {
-			TrianglePoint* p     = new TrianglePoint(TVector3<double>(cos(i*angle), sin(i*angle), 0), normal);
+            auto p     = new TrianglePoint(TVector3<double>(cos(i*angle), sin(i*angle), 0), normal);
 			result->points_.push_back(p);
 
-			TriangleEdge*  e     = new TriangleEdge(p, center);
-			TriangleEdge*  e_top = new TriangleEdge(p, p_old);
+            auto  e     = new TriangleEdge(p, center);
+            auto  e_top = new TriangleEdge(p, p_old);
 			result->edges_.push_back(e);
 			result->edges_.push_back(e_top);
 
-			Triangle* t = new Triangle(e_old, e_top, e, !out);
+            auto t = new Triangle(e_old, e_top, e, !out);
 			e_old->face_[1] = e->face_[0] = e_top->face_[0] = t;
 			result->triangles_.push_back(t);
 
@@ -243,9 +243,9 @@ namespace BALL
 		}
 
 		//Ring closing code
-		TriangleEdge* e_top = new TriangleEdge(p1, p_old);
+        auto e_top = new TriangleEdge(p1, p_old);
 
-		Triangle* t = new Triangle(e_old, e_top, e1, !out);
+        auto t = new Triangle(e_old, e_top, e1, !out);
 		e_old->face_[1] = e1->face_[0] = e_top->face_[0] = t;
 		result->triangles_.push_back(t);
 
@@ -1106,7 +1106,7 @@ namespace BALL
 		{
 			TrianglePoint* point1 = (*e)->vertex_[0];
 			TrianglePoint* point2 = (*e)->vertex_[1];
-			TrianglePoint* new_point = new TrianglePoint;
+            auto new_point = new TrianglePoint;
 			new_point->point_ = (point1->point_+point2->point_).normalize();
 			if (out == true)
 			{
@@ -1119,7 +1119,7 @@ namespace BALL
 			TriangleEdge* new_edge1 = *e;
 			new_edge1->vertex_[0] = point1;
 			new_edge1->vertex_[1] = new_point;
-			TriangleEdge* new_edge2 = new TriangleEdge;
+            auto new_edge2 = new TriangleEdge;
 			new_edge2->vertex_[0] = point2;
 			new_edge2->vertex_[1] = new_point;
 			i = (*e)->face_[0]->index_;
@@ -1345,7 +1345,7 @@ namespace BALL
 
 		std::map<Triangle*, TrianglePoint*> new_points;
 		for(std::list<Triangle*>::iterator it = triangles_.begin(); it != triangles_.end(); ++it) {
-			TrianglePoint* p = new TrianglePoint(((*it)->vertex_[0]->point_ + (*it)->vertex_[1]->point_ + (*it)->vertex_[2]->point_).normalize());
+            auto p = new TrianglePoint(((*it)->vertex_[0]->point_ + (*it)->vertex_[1]->point_ + (*it)->vertex_[2]->point_).normalize());
 
 			p->normal_ = out ? p->point_ : -p->point_;
 
@@ -1366,7 +1366,7 @@ namespace BALL
 				TriangleEdge* e2 = getEdge_(edge_map, p1, p2);
 				TriangleEdge* e3 = getEdge_(edge_map, p2, *pt);
 
-				Triangle* tri = new Triangle(e1, e2, e3);
+                auto tri = new Triangle(e1, e2, e3);
 
 				if(e1->getTriangle(0) == 0) {
 					e1->setTriangle(0, tri);

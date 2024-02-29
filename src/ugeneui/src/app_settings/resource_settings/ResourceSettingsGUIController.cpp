@@ -33,7 +33,7 @@ ResourceSettingsGUIPageController::ResourceSettingsGUIPageController(QObject* p)
 }
 
 AppSettingsGUIPageState* ResourceSettingsGUIPageController::getSavedState() {
-    ResourceSettingsGUIPageState* state = new ResourceSettingsGUIPageState();
+    auto state = new ResourceSettingsGUIPageState();
     AppResourcePool* s = AppContext::getAppSettings()->getAppResourcePool();
     state->nCpus = s->getIdealThreadCount();
     state->nThreads = s->getMaxThreadCount();
@@ -51,7 +51,7 @@ void ResourceSettingsGUIPageController::saveState(AppSettingsGUIPageState* _stat
 }
 
 AppSettingsGUIPageWidget* ResourceSettingsGUIPageController::createWidget(AppSettingsGUIPageState* state) {
-    ResourceSettingsGUIPageWidget* r = new ResourceSettingsGUIPageWidget(this);
+    auto r = new ResourceSettingsGUIPageWidget(this);
     r->setState(state);
     return r;
 }
@@ -76,7 +76,7 @@ void ResourceSettingsGUIPageWidget::setState(AppSettingsGUIPageState* s) {
 
 AppSettingsGUIPageState* ResourceSettingsGUIPageWidget::getState(QString& err) const {
     Q_UNUSED(err);
-    ResourceSettingsGUIPageState* state = new ResourceSettingsGUIPageState();
+    auto state = new ResourceSettingsGUIPageState();
     state->nCpus = cpuBox->value();
     state->nThreads = threadBox->value();
     state->maxMem = memBox->value();

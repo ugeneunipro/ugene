@@ -43,7 +43,7 @@ WorkflowSettingsPageController::WorkflowSettingsPageController(QObject* p)
 }
 
 AppSettingsGUIPageState* WorkflowSettingsPageController::getSavedState() {
-    WorkflowSettingsPageState* state = new WorkflowSettingsPageState();
+    auto state = new WorkflowSettingsPageState();
     state->showGrid = WorkflowSettings::showGrid();
     state->snap2grid = WorkflowSettings::snap2Grid();
     state->lockRun = WorkflowSettings::monitorRun();
@@ -80,7 +80,7 @@ void WorkflowSettingsPageController::saveState(AppSettingsGUIPageState* s) {
 }
 
 AppSettingsGUIPageWidget* WorkflowSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
-    WorkflowSettingsPageWidget* r = new WorkflowSettingsPageWidget(this);
+    auto r = new WorkflowSettingsPageWidget(this);
     r->setState(state);
     return r;
 }
@@ -153,7 +153,7 @@ void WorkflowSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
 }
 
 AppSettingsGUIPageState* WorkflowSettingsPageWidget::getState(QString&) const {
-    WorkflowSettingsPageState* state = new WorkflowSettingsPageState();
+    auto state = new WorkflowSettingsPageState();
     state->showGrid = gridBox->isChecked();
     state->snap2grid = snapBox->isChecked();
     state->lockRun = lockBox->isChecked();

@@ -46,19 +46,19 @@ SplashScreen::SplashScreen(QWidget* parent /* = NULL*/)
         setWindowFlags(windowFlags() | Qt::MSWindowsFixedSizeDialogHint);
     }
     setWindowModality(Qt::ApplicationModal);
-    QHBoxLayout* mainLayout = new QHBoxLayout();
+    auto mainLayout = new QHBoxLayout();
     setLayout(mainLayout);
     setContentsMargins(0, 0, 0, 0);
     mainLayout->setMargin(0);
-    QFrame* frame = new QFrame(this);
+    auto frame = new QFrame(this);
     mainLayout->addWidget(frame);
 
-    QHBoxLayout* frameLayout = new QHBoxLayout();
+    auto frameLayout = new QHBoxLayout();
     frameLayout->setMargin(0);
     frame->setContentsMargins(0, 0, 0, 0);
     frame->setLayout(frameLayout);
 
-    SplashScreenWidget* sWidget = new SplashScreenWidget();
+    auto sWidget = new SplashScreenWidget();
 
     QVBoxLayout* aWLayout = (QVBoxLayout*)frame->layout();
     aWLayout->insertWidget(0, sWidget);

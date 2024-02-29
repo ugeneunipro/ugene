@@ -54,7 +54,7 @@ TaskViewDockWidget::TaskViewDockWidget() {
     setWindowTitle(tr("Tasks"));
     setWindowIcon(QIcon(":ugene/images/clock.png"));
 
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setSpacing(0);
     l->setMargin(0);
     l->setContentsMargins(0, 0, 0, 0);
@@ -156,8 +156,8 @@ void TaskViewDockWidget::buildTree() {
 void TaskViewDockWidget::addTopLevelTask(Task* t) {
     TVTreeItem* ti = createTaskItem(t);
     tree->addTopLevelItem(ti);
-    QWidget* w = new QWidget();
-    QHBoxLayout* l = new QHBoxLayout();
+    auto w = new QWidget();
+    auto l = new QHBoxLayout();
     l->addStretch(10);
     l->setMargin(0);
     l->setSpacing(10);
@@ -176,7 +176,7 @@ void TaskViewDockWidget::addTopLevelTask(Task* t) {
 }
 
 TVTreeItem* TaskViewDockWidget::createTaskItem(Task* task) {
-    TVTreeItem* ti = new TVTreeItem(this, task);
+    auto ti = new TVTreeItem(this, task);
 
     connect(task, SIGNAL(si_subtaskAdded(Task*)), SLOT(sl_onSubtaskAdded(Task*)));
     connect(task, SIGNAL(si_progressChanged()), SLOT(sl_onTaskProgress()));
@@ -417,7 +417,7 @@ void TaskViewDockWidget::selectTask(Task* t) {
 
 TVReportWindow::TVReportWindow(const QString& taskName, qint64 tid, const QString& report)
     : MWMDIWindow(genWindowName(taskName)), taskId(tid) {
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setMargin(0);
     setLayout(l);
 

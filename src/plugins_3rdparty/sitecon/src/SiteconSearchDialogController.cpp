@@ -349,7 +349,7 @@ void SiteconSearchDialogController::importResults() {
 
     QList<SiteconSearchResult> newResults = task->takeResults();
     foreach (const SiteconSearchResult& r, newResults) {
-        SiteconResultItem* item = new SiteconResultItem(r);
+        auto item = new SiteconResultItem(r);
         resultsTree->addTopLevelItem(item);
     }
     updateStatus();

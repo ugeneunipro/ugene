@@ -121,7 +121,7 @@ void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString& c
             const QVariant annotationsData = mapData[convertedType];
             const QList<SharedAnnotationData> annList = StorageUtils::getAnnotationTable(context->getDataStorage(), annotationsData);
 
-            AnnotationTableObject* annsObj = new AnnotationTableObject("Annotations", context->getDataStorage()->getDbiRef());
+            auto annsObj = new AnnotationTableObject("Annotations", context->getDataStorage()->getDbiRef());
             annsObj->addAnnotations(annList);
 
             ExportObjectUtils::exportAnnotations(annsObj, baseFileUrl);

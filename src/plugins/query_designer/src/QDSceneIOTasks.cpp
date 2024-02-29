@@ -351,7 +351,7 @@ const QMap<QDStrandOption, QString> QDSchemeSerializer::STRAND_MAP(initDirection
 
 QDElementStatement* QDSchemeSerializer::saveActor(QDActor* actor, QDDocument* doc) {
     /*const QString& suffix = QString::number(doc->getElements(Group).size() + 1);
-    QDElementStatement* actorElement = new QDElementStatement("A"+suffix, Group);*/
+    auto actorElement = new QDElementStatement("A"+suffix, Group);*/
     QString elementName = actor->getParameters()->getLabel();
     auto actorElement = new QDElementStatement(elementName, Group);
     bool res = doc->addElement(actorElement);

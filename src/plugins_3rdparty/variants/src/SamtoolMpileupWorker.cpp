@@ -378,13 +378,13 @@ void CallVariantsWorkerFactory::init() {
 
     attributes << new Attribute(outUrl, BaseTypes::STRING_TYPE(), true, "");
 
-    Attribute* refUrlAttr = new Attribute(refUrl, BaseTypes::STRING_TYPE(), true, "");
+    auto refUrlAttr = new Attribute(refUrl, BaseTypes::STRING_TYPE(), true, "");
     QVariantList refUrlVisibilityValues;
     refUrlVisibilityValues << QVariant(REF_SOURCE_FILE);
     refUrlAttr->addRelation(new VisibilityRelation(REF_SOURCE, refUrlVisibilityValues));
     attributes << refUrlAttr;
 
-    Attribute* refLocationAttr = new Attribute(refLocation, BaseTypes::STRING_TYPE(), false, QVariant(REF_SOURCE_FILE));
+    auto refLocationAttr = new Attribute(refLocation, BaseTypes::STRING_TYPE(), false, QVariant(REF_SOURCE_FILE));
     QVariantList refPortVisibilityValues;
     refPortVisibilityValues << QVariant(REF_SOURCE_PORT);
     refLocationAttr->addPortRelation(new PortRelationDescriptor(BasePorts::IN_SEQ_PORT_ID(), refPortVisibilityValues));
@@ -792,7 +792,7 @@ Task* CallVariantsWorker::tick() {
     // do
     if (cache.isEmpty() && !settings.refSeqUrl.isEmpty() && !settings.assemblyUrls.isEmpty()) {
         settings.variationsUrl = GUrlUtils::rollFileName(getValue<QString>(OUT_URL), "_", QSet<QString>());
-        CallVariantsTask* t = new CallVariantsTask(settings, context->getDataStorage());
+        auto t = new CallVariantsTask(settings, context->getDataStorage());
         t->addListeners(createLogListeners(3));
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
 
@@ -969,7 +969,7 @@ bool CallVariantsWorker::hasReferenceInPort() const {
 ScientificDoubleWidget::ScientificDoubleWidget(QWidget* parent)
     : PropertyWidget(parent) {
     lineEdit = new QLineEdit(this);
-    QDoubleValidator* validator = new QDoubleValidator();
+    auto validator = new QDoubleValidator();
     validator->setNotation(QDoubleValidator::ScientificNotation);
     lineEdit->setValidator(validator);
     addMainWidget(lineEdit);

@@ -44,7 +44,7 @@ In the main function of your application you need to add something like this:
 ```cpp
     QString runGuiTest = qgetenv("HI_GUI_TEST");
     if (!runGuiTest.isEmpty()) {
-        MyGUITestsLauncher* tests = new MyGUITestsLauncher();
+        auto tests = new MyGUITestsLauncher();
         tests->connect(&myMainWindow,SIGNAL(si_applicationStarted()),tests,SLOT(sl_runTest()));
     }
 ```

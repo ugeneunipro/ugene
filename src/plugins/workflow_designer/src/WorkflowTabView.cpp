@@ -106,7 +106,7 @@ int WorkflowTabView::appendDashboard(Dashboard* dashboard) {
     int idx = addTab(dashboard, dashboard->getName());
     QStringList existingIds = allIds();
 
-    CloseButton* closeButton = new CloseButton(dashboard);
+    auto closeButton = new CloseButton(dashboard);
     tabBar()->setTabButton(idx, QTabBar::RightSide, closeButton);
     if (dashboard->isWorkflowInProgress()) {
         closeButton->setEnabled(false);
@@ -313,7 +313,7 @@ bool WorkflowTabView::eventFilter(QObject* watched, QEvent* event) {
 
     if (Qt::RightButton == me->button()) {
         QMenu m(tabBar());
-        QAction* rename = new QAction(tr("Rename"), this);
+        auto rename = new QAction(tr("Rename"), this);
         rename->setData(idx);
         connect(rename, SIGNAL(triggered()), SLOT(sl_renameTab()));
         m.addAction(rename);

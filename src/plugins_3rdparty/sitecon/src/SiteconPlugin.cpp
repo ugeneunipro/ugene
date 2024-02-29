@@ -53,7 +53,7 @@ namespace U2 {
 DinucleotitePropertyRegistry SiteconPlugin::dp;
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    SiteconPlugin* plug = new SiteconPlugin();
+    auto plug = new SiteconPlugin();
     return plug;
 }
 
@@ -63,7 +63,7 @@ SiteconPlugin::SiteconPlugin()
         ctxADV = new SiteconADVContext(this);
         ctxADV->init();
 
-        QAction* buildAction = new QAction(tr("Build SITECON model..."), this);
+        auto buildAction = new QAction(tr("Build SITECON model..."), this);
         buildAction->setObjectName(ToolsMenu::TFBS_SITECON);
         connect(buildAction, SIGNAL(triggered()), SLOT(sl_build()));
         ToolsMenu::addAction(ToolsMenu::TFBS_MENU, buildAction);
@@ -113,7 +113,7 @@ SiteconADVContext::SiteconADVContext(QObject* p)
 
 void SiteconADVContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
-    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":sitecon/images/sitecon.png"), tr("Find TFBS with SITECON..."), 80);
+    auto a = new ADVGlobalAction(av, QIcon(":sitecon/images/sitecon.png"), tr("Find TFBS with SITECON..."), 80);
     a->setObjectName("SITECON");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, SIGNAL(triggered()), SLOT(sl_search()));

@@ -52,7 +52,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    Primer3Plugin* plug = new Primer3Plugin();
+    auto plug = new Primer3Plugin();
     return plug;
 }
 
@@ -94,7 +94,7 @@ Primer3ADVContext::Primer3ADVContext(QObject* p)
 
 void Primer3ADVContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
-    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":/primer3/images/primer3.png"), tr("Primer3..."), 95);
+    auto a = new ADVGlobalAction(av, QIcon(":/primer3/images/primer3.png"), tr("Primer3..."), 95);
     a->setObjectName("primer3_action");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, &ADVGlobalAction::triggered, this, &Primer3ADVContext::sl_showDialog);

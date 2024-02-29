@@ -154,7 +154,7 @@ void QDPrimerActor::sl_onAlgorithmTaskFinished(Task* t) {
             ru2->strand = U2Strand::Complementary;
             ru2->region = U2Region(pair->rightPrimer->start, pair->rightPrimer->length);
             ru2->owner = units.value(RIGHT_PRIMER_ID);
-            QDResultGroup* g = new QDResultGroup;
+            auto g = new QDResultGroup;
             g->add(ru1);
             g->add(ru2);
             results.append(g);

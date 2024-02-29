@@ -52,7 +52,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    PsipredPlugin* plug = new PsipredPlugin();
+    auto plug = new PsipredPlugin();
     return plug;
 }
 
@@ -65,7 +65,7 @@ PsipredPlugin::PsipredPlugin()
 
     // Register PsiPred annotation settings
     AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
-    AnnotationSettings* as = new AnnotationSettings(PSIPRED_ANNOTATION_NAME, true, QColor(102, 255, 0), true);
+    auto as = new AnnotationSettings(PSIPRED_ANNOTATION_NAME, true, QColor(102, 255, 0), true);
     as->showNameQuals = true;
     as->nameQuals.append(BioStruct3D::SecStructTypeQualifierName);
     asr->changeSettings(QList<AnnotationSettings*>() << as, false);

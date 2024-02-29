@@ -2265,7 +2265,7 @@ WorkflowBusItem* WorkflowView::tryBind(WorkflowPortItem* from, WorkflowPortItem*
             return nullptr;
         }
 
-        Link* link = new Link(src, dest);
+        auto link = new Link(src, dest);
         schema->addFlow(link);
         dit = scene->addFlow(from, to, link);
         removeEstimations();

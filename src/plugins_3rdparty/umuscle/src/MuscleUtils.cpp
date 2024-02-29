@@ -129,7 +129,7 @@ void convertMAlignment2SecVect(SeqVect& sv, const Msa& ma, bool fixAlpha) {
     unsigned i = 0;
     unsigned seq_count = 0;
     foreach (const MsaRow& row, ma->getRows()) {
-        Seq* ptrSeq = new Seq();
+        auto ptrSeq = new Seq();
         QByteArray name = row->getName().toLocal8Bit();
         ptrSeq->FromString(row->getCore().constData(), name.constData());
         // stripping gaps, original Seq::StripGaps fails on MSVC9
