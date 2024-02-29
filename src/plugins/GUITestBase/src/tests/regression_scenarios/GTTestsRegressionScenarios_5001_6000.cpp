@@ -4938,6 +4938,16 @@ GUI_TEST_CLASS_DEFINITION(test_5972_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5998) {
+    /*
+    * Open "data/samples/Genbank/murine.gb".
+    * Open "Search in Sequence" options panel tab.
+    * Expand "Save annotation(s) to" options group.
+    * Expected state: there is a default new document path.
+    * Select "New document" option to save annotations to.
+    * Set any non-default path.
+    * Remove the annotations table object from the project.
+    * Expected state: the widget on the options panel has been updated (existing document combobox is cleared), the custom path has not been removed.
+    */
     GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -4946,7 +4956,6 @@ GUI_TEST_CLASS_DEFINITION(test_5998) {
 
     auto newTable = GTWidget::findRadioButton("rbCreateNewTable");
     GTWidget::click(newTable, Qt::LeftButton, GTWidget::getWidgetVisibleCenter(newTable) - QPoint(60, 0));
-    //GTWidget::click(newTable);
 
     QString text = GTLineEdit::getText("leNewTablePath");
     text.replace(".gb", "22222222.gb");
