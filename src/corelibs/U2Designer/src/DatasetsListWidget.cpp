@@ -38,14 +38,14 @@ namespace U2 {
 
 DatasetsListWidget::DatasetsListWidget(DatasetsController* _ctrl)
     : QWidget(), ctrl(_ctrl) {
-    QVBoxLayout* l = new QVBoxLayout(this);
+    auto l = new QVBoxLayout(this);
     l->setMargin(0);
     tabs = new DatasetsTabWidget(this);
     l->addWidget(tabs);
 
     setObjectName("DatasetsListWidget");
 
-    QToolButton* newTabButton = new QToolButton(this);
+    auto newTabButton = new QToolButton(this);
     tabs->setCornerWidget(newTabButton, Qt::TopRightCorner);
     newTabButton->setCursor(Qt::ArrowCursor);
     newTabButton->setAutoRaise(true);
@@ -149,7 +149,7 @@ void DatasetsListWidget::sl_renameDataset() {
 
 void DatasetsListWidget::sl_contextMenu(const QPoint& p, int idx) {
     QMenu menu;
-    QAction* renameAction = new QAction(tr("Rename dataset"), &menu);
+    auto renameAction = new QAction(tr("Rename dataset"), &menu);
     renameAction->setObjectName("rename_dataset_action");
     renameAction->setProperty("idx", idx);
     connect(renameAction, SIGNAL(triggered()), SLOT(sl_renameDataset()));

@@ -297,7 +297,7 @@ void GTUtilsOptionPanelSequenceView::toggleSaveAnnotationsTo() {
 }
 
 void GTUtilsOptionPanelSequenceView::enterPatternFromFile(const QString& filePathStr, const QString& fileName) {
-    GTFileDialogUtils* ob = new GTFileDialogUtils(filePathStr, fileName, GTFileDialogUtils::Open);
+    auto ob = new GTFileDialogUtils(filePathStr, fileName, GTFileDialogUtils::Open);
     GTUtilsDialog::waitForDialog(ob);
 
     auto browse = GTWidget::findToolButton("loadFromFileToolButton");

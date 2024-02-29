@@ -405,7 +405,7 @@ void ASNFormat::BioStructLoader::loadMoleculeFromNode(AsnNode* moleculeNode, Mol
         AsnNode* idNode = resNode->getChild(0);
         int resId = idNode->value.toInt();
         // Load residue
-        ResidueData* resData = new ResidueData();
+        auto resData = new ResidueData();
         resData->chainIndex = chainId;
         StdResidue stdResidue = loadResidueFromNode(resNode, resData);
         molecule->residueMap.insert(ResidueIndex(resId, ' '), SharedResidue(resData));
@@ -481,7 +481,7 @@ void ASNFormat::BioStructLoader::loadBioStructGraph(AsnNode* graphNode, BioStruc
         QByteArray molTypeName = descrNode->findChildByName("molecule-type")->value;
         QByteArray molChainId = descrNode->findChildByName("name")->value;
         if (molTypeName == "protein" || molTypeName == "dna" || molTypeName == "rna") {
-            MoleculeData* mol = new MoleculeData();
+            auto mol = new MoleculeData();
             if (molChainId.length() == 1) {
                 mol->chainId = molChainId[0];
                 if (names.contains(mol->chainId)) {
@@ -572,7 +572,7 @@ void ASNFormat::BioStructLoader::loadBioStructFeature(AsnNode* featureNode, BioS
     int from = locatioNode->getChild(1)->value.toInt(&fromOK);
     int to = locatioNode->getChild(2)->value.toInt(&toOK);
     Q_ASSERT(idOK && fromOK && toOK);
-    SecondaryStructure* ssData = new SecondaryStructure();
+    auto ssData = new SecondaryStructure();
     ssData->chainIndex = chainId;
     ssData->type = ssType;
     ssData->startSequenceNumber = from;

@@ -54,7 +54,7 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl(const
     foreach (Actor* actor, schema.getProcesses()) {
         assert(actor != nullptr);
         int pos = procsListWidget->count();
-        QListWidgetItem* item = new QListWidgetItem(actor->getLabel());
+        auto item = new QListWidgetItem(actor->getLabel());
         procsListWidget->insertItem(pos, item);
         procListMap.insert(pos, actor->getId());
     }
@@ -141,15 +141,15 @@ void SchemaAliasesConfigurationDialogImpl::sl_procSelected(int row) {
     while (it != aliasMap.constEnd()) {
         paramAliasesTableWidget->insertRow(rowInd);
 
-        QTableWidgetItem* paramNameItem = new QTableWidgetItem(it.key().getDisplayName());
+        auto paramNameItem = new QTableWidgetItem(it.key().getDisplayName());
         paramAliasesTableWidget->setItem(rowInd, 0, paramNameItem);
         paramNameItem->setData(Qt::UserRole, QVariant::fromValue(it.key()));
         paramNameItem->setFlags(paramNameItem->flags() ^ Qt::ItemIsSelectable ^ Qt::ItemIsEditable);
 
-        QTableWidgetItem* aliasItem = new QTableWidgetItem(it.value());
+        auto aliasItem = new QTableWidgetItem(it.value());
         paramAliasesTableWidget->setItem(rowInd, 1, aliasItem);
 
-        QTableWidgetItem* helpItem = new QTableWidgetItem(model.help.value(currentActor).value(it.key()));
+        auto helpItem = new QTableWidgetItem(model.help.value(currentActor).value(it.key()));
         paramAliasesTableWidget->setItem(rowInd, 2, helpItem);
         paramAliasesTableWidget->horizontalHeader()->setStretchLastSection(true);
 

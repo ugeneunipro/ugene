@@ -51,7 +51,7 @@ QWidget* GrouperEditor::createGUI() {
         return nullptr;
     }
 
-    GrouperEditorWidget* gui = new GrouperEditorWidget(grouperModel, cfg);
+    auto gui = new GrouperEditorWidget(grouperModel, cfg);
     connect(gui, SIGNAL(si_grouperCfgChanged()), SIGNAL(si_configurationChanged()));
 
     return gui;

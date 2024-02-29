@@ -129,7 +129,7 @@ Task* CuffmergeSupportTask::createWriteTask(const Workflow::SharedDbiDataHandler
     CHECK_OP(stateInfo, nullptr);
 
     docs << doc;
-    SaveDocumentTask* task = new SaveDocumentTask(doc, doc->getIOAdapterFactory(), filePath);
+    auto task = new SaveDocumentTask(doc, doc->getIOAdapterFactory(), filePath);
     writeTasks << task;
 
     return task;

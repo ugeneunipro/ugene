@@ -95,7 +95,7 @@ GObject* PWMatrixObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const 
     CHECK_OP(os, nullptr);
 
     const U2EntityRef dstEntRef(dstDbiRef, dstObject.id);
-    PWMatrixObject* dst = new PWMatrixObject(getGObjectName(), dstEntRef, gHints.getMap());
+    auto dst = new PWMatrixObject(getGObjectName(), dstEntRef, gHints.getMap());
     dst->setIndexInfo(getIndexInfo());
     return dst;
 }

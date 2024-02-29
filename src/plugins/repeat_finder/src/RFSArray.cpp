@@ -103,7 +103,7 @@ void RFSArrayWAlgorithm::prepare() {
     for (int i = 0; i < nThreads; i++) {
         int sStart = start ? start - WINDOW_SIZE + 1 : 0;
         int sEnd = i < nThreads - 1 ? start + len : sSize;
-        RFSArrayWSubtask* t = new RFSArrayWSubtask(this, sStart, sEnd, i);
+        auto t = new RFSArrayWSubtask(this, sStart, sEnd, i);
         t->setSubtaskProgressWeight((100 - arrayPercent) / (100.0F * nThreads));
         addSubTask(t);
         start += len;

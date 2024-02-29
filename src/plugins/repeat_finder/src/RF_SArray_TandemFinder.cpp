@@ -237,7 +237,7 @@ void ConcreteTandemFinder::prepare() {
 
     if (settings.algo == TSConstants::AlgoSuffix) {
         // index with double sized match
-        CreateSArrayIndexTask* indexTask = new CreateSArrayIndexTask(sequence, seqSize, prefixLength, 'N', nuclTable, bitMaskCharBitsNum);
+        auto indexTask = new CreateSArrayIndexTask(sequence, seqSize, prefixLength, 'N', nuclTable, bitMaskCharBitsNum);
         indexTask->setSubtaskProgressWeight(arrayPercent / 100.0F);
         // TODO fix algorithm selection
         if (qobject_cast<ExactSizedTandemFinder*>(this) != nullptr) {

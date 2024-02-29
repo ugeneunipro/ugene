@@ -40,7 +40,7 @@ StartupDialog::StartupDialog(QWidget* parent)
     label->setStyleSheet(Theme::infoHintStyleSheet());
 
     outDirWidget = new OutputDirectoryWidget(this, false /*don't commitOnHide*/);
-    QVBoxLayout* l = new QVBoxLayout(box);
+    auto l = new QVBoxLayout(box);
     l->setMargin(3);
     l->addWidget(outDirWidget);
 

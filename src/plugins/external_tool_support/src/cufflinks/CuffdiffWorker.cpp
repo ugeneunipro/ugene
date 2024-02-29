@@ -340,7 +340,7 @@ Task* CuffdiffWorker::tick() {
     }
 
     if (inTranscript->hasMessage()) {
-        CuffdiffSupportTask* t = new CuffdiffSupportTask(takeSettings());
+        auto t = new CuffdiffSupportTask(takeSettings());
         t->addListeners(createLogListeners());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinished()));
         return t;

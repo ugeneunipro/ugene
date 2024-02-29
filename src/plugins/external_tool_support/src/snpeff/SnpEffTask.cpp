@@ -146,7 +146,7 @@ void SnpEffTask::prepare() {
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, );
 
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(settings.genome), settings.outDir, QStringList(), true);
+    auto etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(settings.genome), settings.outDir, QStringList(), true);
     setListenerForTask(etTask);
     etTask->setStandardOutputFile(getResFileUrl());
     addSubTask(etTask);

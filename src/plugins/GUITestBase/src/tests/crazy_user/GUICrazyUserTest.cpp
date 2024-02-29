@@ -46,7 +46,7 @@ void GTCrazyUserMonitor::checkActiveWidget() {
 
     U2OpStatus2Log os;
 
-    GTCrazyUserMonitor* monitor = new GTCrazyUserMonitor();
+    auto monitor = new GTCrazyUserMonitor();
 
     QList<GTAbstractGUIAction*> actionList = formGUIActions(widget);
     bool actionListEmpty = actionList.isEmpty();

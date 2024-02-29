@@ -312,7 +312,7 @@ bool QDDocument::findElementStatements(const QString& str) {
             } else {
                 type = Group;
             }
-            QDElementStatement* element = new QDElementStatement(id, type);
+            auto element = new QDElementStatement(id, type);
             foreach (const QString& attrName, attrsMap.keys()) {
                 const QString& val = attrsMap.value(attrName);
                 element->setAttribute(attrName, val);
@@ -332,7 +332,7 @@ bool QDDocument::findLinkStatements(const QString& str) {
             pos += reg.matchedLength();
             const QString& elemS = reg.cap(1);
             const QList<QString>& elIds = idsFromString(elemS);
-            QDLinkStatement* link = new QDLinkStatement(elIds);
+            auto link = new QDLinkStatement(elIds);
             int capCount = reg.captureCount();
             const QString& attrs = reg.cap(capCount);
             const QMap<QString, QString>& attrsMap = string2attributesMap(attrs);

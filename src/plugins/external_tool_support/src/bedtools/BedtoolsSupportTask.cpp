@@ -58,7 +58,7 @@ void BamBedConversionTask::prepare() {
     args << "-i";
     args << sourceURL.getURLString();
 
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(BedtoolsSupport::ET_BEDTOOLS_ID, args, new ExternalToolLogParser(), workingDir);
+    auto etTask = new ExternalToolRunTask(BedtoolsSupport::ET_BEDTOOLS_ID, args, new ExternalToolLogParser(), workingDir);
     etTask->setStandardOutputFile(targetUrl);
     addSubTask(etTask);
 }

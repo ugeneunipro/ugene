@@ -81,7 +81,7 @@ QDScheduler::QDScheduler(const QDRunSettings& _settings)
         loadTask = new LoadUnloadedDocumentTask(ao->getDocument(), cfg);
         addSubTask(loadTask);
     }
-    QDTask* qdt = new QDTask(currentStep, linker);
+    auto qdt = new QDTask(currentStep, linker);
     addSubTask(qdt);
 }
 
@@ -113,7 +113,7 @@ QList<Task*> QDScheduler::onSubTaskFinished(Task* subTask) {
 
     if (currentStep->hasNext()) {
         currentStep->next();
-        QDTask* t = new QDTask(currentStep, linker);
+        auto t = new QDTask(currentStep, linker);
         connect(t, SIGNAL(si_progressChanged()), SLOT(sl_updateProgress()));
         subs.append(t);
     } else {
@@ -333,7 +333,7 @@ void QDResultLinker::formGroupResults() {
             QList<QDResultGroup*> nextResults = currentGroupResults.value(selection.at(i));
             for (QDResultGroup* res : qAsConst(results)) {
                 foreach (QDResultGroup* nextRes, nextResults) {
-                    QDResultGroup* newRes = new QDResultGroup(*res);
+                    auto newRes = new QDResultGroup(*res);
                     newRes->add(nextRes->getResultsList());
                     newResults.append(newRes);
                 }
@@ -395,7 +395,7 @@ void QDResultLinker::initCandidates(int& progress) {
     int i = 0;
     foreach (QDResultGroup* actorRes, currentResults) {
         QDStrandOption candidateStrand = findResultStrand(actorRes);
-        QDResultGroup* newCandidate = new QDResultGroup(candidateStrand);
+        auto newCandidate = new QDResultGroup(candidateStrand);
         newCandidate->add(actorRes->getResultsList());
         candidates.append(newCandidate);
         progress = 100 * ++i / currentResults.size();
@@ -467,7 +467,7 @@ void QDResultLinker::updateCandidates(int& progress) {
             }
 
             if (matches) {
-                QDResultGroup* newCandidate = new QDResultGroup(*candidate);
+                auto newCandidate = new QDResultGroup(*candidate);
                 newCandidate->add(actorRes->getResultsList());
 #ifdef DEBUG
                 if (newCandidate->strand == QDStrand_DirectOnly) {
@@ -790,7 +790,7 @@ QList<Task*> QDTask::onSubTaskFinished(Task* subTask) {
         stateInfo.progress = 50;
         assert(!curActorLocation.isEmpty());
         step->getActor()->filterResults(curActorLocation);
-        QDLinkResultsTask* linkTask = new QDLinkResultsTask(step, linker);
+        auto linkTask = new QDLinkResultsTask(step, linker);
         connect(linkTask, SIGNAL(si_progressChanged()), SLOT(sl_updateProgress()));
         subs.append(linkTask);
     }

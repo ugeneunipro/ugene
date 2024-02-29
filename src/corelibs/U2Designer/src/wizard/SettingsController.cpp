@@ -68,11 +68,11 @@ void SettingsController::sl_fileSelect() {
 }
 
 QWidget* SettingsController::createUrlSettingsWidget(U2OpStatus& /*os*/) {
-    QWidget* result = new QWidget;
-    QHBoxLayout* mainLayout = new QHBoxLayout(result);
+    auto result = new QWidget;
+    auto mainLayout = new QHBoxLayout(result);
     mainLayout->setMargin(0);
 
-    QLabel* label = new QLabel(sw->label());
+    auto label = new QLabel(sw->label());
     mainLayout->addWidget(label);
 
     lineEdit = new QLineEdit;
@@ -86,7 +86,7 @@ QWidget* SettingsController::createUrlSettingsWidget(U2OpStatus& /*os*/) {
     connect(lineEdit, SIGNAL(editingFinished()), SLOT(sl_valueChanged()));
     mainLayout->addWidget(lineEdit);
 
-    QToolButton* toolButton = new QToolButton;
+    auto toolButton = new QToolButton;
     toolButton->setText("...");
     connect(toolButton, SIGNAL(clicked()), SLOT(sl_fileSelect()));
     mainLayout->addWidget(toolButton);

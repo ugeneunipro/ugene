@@ -317,7 +317,7 @@ void ADVClipboard::updateActions() {
 }
 
 void ADVClipboard::addCopyMenu(QMenu* m) {
-    QMenu* copyMenu = new QMenu(tr("Copy/Paste"), m);
+    auto copyMenu = new QMenu(tr("Copy/Paste"), m);
     copyMenu->menuAction()->setObjectName(ADV_MENU_COPY);
 
     copyMenu->addAction(copySequenceAction);
@@ -336,7 +336,7 @@ void ADVClipboard::addCopyMenu(QMenu* m) {
 }
 
 QAction* ADVClipboard::createPasteSequenceAction(QObject* parent) {
-    QAction* action = new QAction(QIcon(":/core/images/paste.png"), tr("Paste sequence"), parent);
+    auto action = new QAction(QIcon(":/core/images/paste.png"), tr("Paste sequence"), parent);
     action->setObjectName("Paste sequence");
     action->setShortcuts(QKeySequence::Paste);
     action->setShortcutContext(Qt::WidgetWithChildrenShortcut);

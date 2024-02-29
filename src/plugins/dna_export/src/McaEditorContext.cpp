@@ -51,7 +51,7 @@ void McaEditorContext::initViewContext(GObjectViewController* view) {
     SAFE_POINT(mcaEditor != nullptr, "Mca Editor is NULL", );
     CHECK(mcaEditor->getMaObject() != nullptr, );
 
-    GObjectViewAction* action = new GObjectViewAction(this, view, tr("Export alignment without chromatograms..."));
+    auto action = new GObjectViewAction(this, view, tr("Export alignment without chromatograms..."));
     connect(action, SIGNAL(triggered()), SLOT(sl_exportMca2Msa()));
     addViewAction(action);
 }

@@ -161,7 +161,7 @@ Task* BaseShortReadsAlignerWorker::tick() {
             settings.shortReadSets << toUrls(readsFetcher.takeFullDataset(), READS_URL_SLOT_ID, ShortReadSet::SingleEndReads, ShortReadSet::UpstreamMate);
         }
 
-        DnaAssemblyTaskWithConversions* t = new DnaAssemblyTaskWithConversions(settings);
+        auto t = new DnaAssemblyTaskWithConversions(settings);
         t->addListeners(createLogListeners(2));
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
@@ -324,25 +324,25 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
                           BaseShortReadsAlignerWorker::tr("Should the reads be checked for incomplete pairs?"));
 
         attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant(DnaAssemblyToRefTaskSettings::SEQUENCE));
-        Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        auto attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::SEQUENCE));
         attrs << attrRefGenom;
-        Attribute* attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        auto attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrIndexDir->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
         attrs << attrIndexDir;
-        Attribute* attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        auto attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
         attrs << attrIndexBasename;
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
         attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), true, QVariant(BASE_OUTFILE));
 
-        Attribute* libraryAttr = new Attribute(library, BaseTypes::STRING_TYPE(), false, QVariant("Single-end"));
+        auto libraryAttr = new Attribute(library, BaseTypes::STRING_TYPE(), false, QVariant("Single-end"));
         QVariantList visibilityValues;
         visibilityValues << QVariant("Paired-end");
         libraryAttr->addPortRelation(new PortRelationDescriptor(IN_PORT_DESCR_PAIRED, visibilityValues));
         attrs << libraryAttr;
 
-        Attribute* filterAttr = new Attribute(filter, BaseTypes::BOOL_TYPE(), false, true);
+        auto filterAttr = new Attribute(filter, BaseTypes::BOOL_TYPE(), false, true);
         filterAttr->addRelation(new VisibilityRelation(LIBRARY, "Paired-end"));
         attrs << filterAttr;
     }
@@ -361,7 +361,7 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
         QVariantMap libMap;
         libMap["Single-end"] = "Single-end";
         libMap["Paired-end"] = "Paired-end";
-        ComboBoxDelegate* libDelegate = new ComboBoxDelegate(libMap);
+        auto libDelegate = new ComboBoxDelegate(libMap);
         delegates[LIBRARY] = libDelegate;
 
         delegates[FILTER_UNPAIRED] = new ComboBoxWithBoolsDelegate();
@@ -394,8 +394,8 @@ QList<PortDescriptor*> BaseShortReadsAlignerWorkerFactory::getPortDescriptors() 
 
     DataTypePtr inTypeSet(new MapDataType(IN_TYPE_ID, inTypeMap));
     DataTypePtr inTypeSetPaired(new MapDataType(IN_TYPE_ID, inTypeMapPaired));
-    PortDescriptor* readsDescriptor = new PortDescriptor(inPortDesc, inTypeSet, true);
-    PortDescriptor* readsDescriptor2 = new PortDescriptor(inPortDescPaired, inTypeSetPaired, true, false, IntegralBusPort::BLIND_INPUT);
+    auto readsDescriptor = new PortDescriptor(inPortDesc, inTypeSet, true);
+    auto readsDescriptor2 = new PortDescriptor(inPortDescPaired, inTypeSetPaired, true, false, IntegralBusPort::BLIND_INPUT);
     portDescs << readsDescriptor2;
     portDescs << readsDescriptor;
 

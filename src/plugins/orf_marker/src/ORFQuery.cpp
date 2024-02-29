@@ -152,7 +152,7 @@ Task* QDORFActor::getAlgorithmTask(const QVector<U2Region>& searchLocation) {
     foreach (const U2Region& r, searchLocation) {
         ORFAlgorithmSettings stngs(settings);
         stngs.searchRegion = r;
-        ORFFindTask* sub = new ORFFindTask(stngs, scheme->getEntityRef());
+        auto sub = new ORFFindTask(stngs, scheme->getEntityRef());
         orfTasks.append(sub);
         t->addSubTask(sub);
     }

@@ -56,9 +56,9 @@ BowtieWidgetController::~BowtieWidgetController() {
 QWidget* BowtieWidgetController::createGUI(U2OpStatus& os) {
     QScopedPointer<QWidget> result(new QWidget());
 
-    QVBoxLayout* vl = new QVBoxLayout();
+    auto vl = new QVBoxLayout();
     vl->setContentsMargins(0, 0, 0, 0);
-    QHBoxLayout* hl = new QHBoxLayout(result.data());
+    auto hl = new QHBoxLayout(result.data());
     hl->setContentsMargins(0, 0, 0, 0);
     hl->addLayout(vl);
 
@@ -67,7 +67,7 @@ QWidget* BowtieWidgetController::createGUI(U2OpStatus& os) {
     vl->addWidget(nameCtrl->createGUI(os));
     CHECK_OP(os, nullptr);
 
-    QPushButton* browseButton = new QPushButton(tr("Select\nbowtie index file"), result.data());
+    auto browseButton = new QPushButton(tr("Select\nbowtie index file"), result.data());
     browseButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     connect(browseButton, SIGNAL(clicked()), SLOT(sl_browse()));
     hl->addWidget(browseButton);

@@ -34,7 +34,7 @@ QueryViewAdapter::QueryViewAdapter(QDScheme* scheme, const QPointF& topLeftCorne
     foreach (QDActor const* a, scheme->getActors()) {
         QList<QDSchemeUnit*> units = a->getSchemeUnits();
         for (QDSchemeUnit* su : qAsConst(units)) {
-            QDElement* uv = new QDElement(su);
+            auto uv = new QDElement(su);
             uv->moveBy(topLeftCorner.x(), topLeftCorner.y());
             createdElements.append(uv);
             unitMap.insertMulti(su, uv);

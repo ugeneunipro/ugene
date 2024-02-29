@@ -76,13 +76,13 @@ URLListWidget::URLListWidget(URLListController* _ctrl)
 
     connect(ui->itemsArea, SIGNAL(itemSelectionChanged()), SLOT(sl_itemChecked()));
 
-    QAction* deleteAction = new QAction(ui->itemsArea);
+    auto deleteAction = new QAction(ui->itemsArea);
     deleteAction->setShortcut(QKeySequence::Delete);
     deleteAction->setShortcutContext(Qt::WidgetShortcut);
     connect(deleteAction, SIGNAL(triggered()), SLOT(sl_deleteButton()));
     ui->itemsArea->addAction(deleteAction);
 
-    QAction* selectAction = new QAction(ui->itemsArea);
+    auto selectAction = new QAction(ui->itemsArea);
     selectAction->setShortcut(QKeySequence::SelectAll);
     selectAction->setShortcutContext(Qt::WidgetShortcut);
     connect(selectAction, SIGNAL(triggered()), SLOT(sl_selectAll()));

@@ -346,7 +346,7 @@ Task* AssemblyModel::createLoadReferenceAndAddToProjectTask(const U2CrossDatabas
 
 void AssemblyModel::startLoadReferenceTask(Task* t) {
     assert(t != nullptr);
-    TaskSignalMapper* tsm = new TaskSignalMapper(t);
+    auto tsm = new TaskSignalMapper(t);
     connect(tsm, SIGNAL(si_taskSucceeded(Task*)), SLOT(sl_referenceLoaded()));
     connect(tsm, SIGNAL(si_taskFailed(Task*)), SLOT(sl_referenceLoadingFailed()));
     loadingReference = true;

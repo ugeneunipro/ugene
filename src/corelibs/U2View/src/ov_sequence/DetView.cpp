@@ -439,7 +439,7 @@ void DetView::sl_verticalScrollBarMoved(int pos) {
 }
 
 void DetView::pack() {
-    QGridLayout* layout = new QGridLayout();
+    auto layout = new QGridLayout();
     layout->setMargin(0);
     layout->setSpacing(0);
     layout->addWidget(renderArea, 0, 0);

@@ -59,7 +59,7 @@ PropertyDelegate* SpadesDelegate::clone() {
 QWidget* SpadesDelegate::createEditor(QWidget* parent,
                                       const QStyleOptionViewItem& /*option*/,
                                       const QModelIndex& /*index*/) const {
-    SpadesPropertyWidget* editor = new SpadesPropertyWidget(parent);
+    auto editor = new SpadesPropertyWidget(parent);
     connect(editor, SIGNAL(si_valueChanged(QVariant)), SLOT(sl_commit()));
     return editor;
 }

@@ -39,7 +39,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    DNAFlexPlugin* plugin = new DNAFlexPlugin();
+    auto plugin = new DNAFlexPlugin();
     return plugin;
 }
 
@@ -94,7 +94,7 @@ void DNAFlexViewContext::initViewContext(GObjectViewController* view) {
     }
 
     // Adding the action to the Analyze menu, but not to the toolbar
-    ADVGlobalAction* action = new ADVGlobalAction(annotView,
+    auto action = new ADVGlobalAction(annotView,
                                                   QIcon(":dna_flexibility/images/flexibility.png"),
                                                   tr("Find high DNA flexibility regions..."),
                                                   2000,
@@ -115,7 +115,7 @@ void DNAFlexViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* _sequenceWidg
     }
 
     // Otherwise add the "DNA Flexibility" action to the graphs menu
-    GraphAction* graphAction = new GraphAction(graphFactory);
+    auto graphAction = new GraphAction(graphFactory);
     connect(sequenceWidget, SIGNAL(si_updateGraphView(const QStringList&, const QVariantMap&)), graphAction, SLOT(sl_updateGraphView(const QStringList&, const QVariantMap&)));
     GraphMenuAction::addGraphAction(sequenceWidget->getActiveSequenceContext(), graphAction);
 }

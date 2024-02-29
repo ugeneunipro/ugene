@@ -135,7 +135,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     outputDir.rmpath(outputDir.absolutePath());
 
     //    6. In WD press the "Validate" button
-    MessageBoxDialogFiller* filler = new MessageBoxDialogFiller(QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow).");
+    auto filler = new MessageBoxDialogFiller(QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow).");
     GTUtilsDialog::waitForDialog(filler);
     QAbstractButton* validateButton = GTAction::button("Validate workflow");
     CHECK_SET_ERR(validateButton, "Validate button wasn't found");

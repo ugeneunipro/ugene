@@ -49,7 +49,7 @@ QWidget* AnnotHighlightWidgetFactory::createWidget(GObjectViewController* objVie
                QString("Internal error: unable to cast object view to AnnotatedDNAView for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    AnnotHighlightWidget* widget = new AnnotHighlightWidget(annotatedDnaView);
+    auto widget = new AnnotHighlightWidget(annotatedDnaView);
     widget->setObjectName("AnnotHighlightWidget");
     return widget;
 }

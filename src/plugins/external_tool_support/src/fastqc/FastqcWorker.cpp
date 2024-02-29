@@ -111,7 +111,7 @@ void FastQCFactory::init() {
                                                                                                                 "be ignored."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), (Attribute::Flags)Attribute::Hidden, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        auto customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(FastQCWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
 

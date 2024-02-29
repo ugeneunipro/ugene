@@ -91,7 +91,7 @@ AssemblyReadsArea::AssemblyReadsArea(AssemblyBrowserUi* ui_, QScrollBar* hBar_, 
     bdBusyLabel.installEventFilter(this);
     bdBusyLabel.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    QVBoxLayout* coveredRegionsLayout = new QVBoxLayout();
+    auto coveredRegionsLayout = new QVBoxLayout();
     coveredRegionsLayout->addWidget(&coveredRegionsLabel);
     coveredRegionsLayout->addWidget(&bdBusyLabel);
     setLayout(coveredRegionsLayout);
@@ -169,7 +169,7 @@ void AssemblyReadsArea::createMenu() {
 }
 
 QMenu* AssemblyReadsArea::createShadowingMenu() {
-    QMenu* shadowingMenu = new QMenu(tr("Reads shadowing"));
+    auto shadowingMenu = new QMenu(tr("Reads shadowing"));
 
     disableShadowing = shadowingMenu->addAction(tr("Disabled"));
     disableShadowing->setCheckable(true);
@@ -187,7 +187,7 @@ QMenu* AssemblyReadsArea::createShadowingMenu() {
     shadowingJump->setEnabled(false);
     connect(shadowingJump, SIGNAL(triggered()), this, SLOT(sl_onShadowingJump()));
 
-    QActionGroup* modeGroup = new QActionGroup(this);
+    auto modeGroup = new QActionGroup(this);
     modeGroup->addAction(disableShadowing);
     modeGroup->addAction(shadowingModeFree);
     modeGroup->addAction(shadowingModeCentered);
@@ -915,7 +915,7 @@ void AssemblyReadsArea::exportReads(const QList<U2AssemblyRead>& reads) {
             saveFlags |= SaveDoc_OpenAfter;
         }
 
-        AddReadsToDocumentTask* addReadsTask = new AddReadsToDocumentTask(reads, doc);
+        auto addReadsTask = new AddReadsToDocumentTask(reads, doc);
         Task* saveDocTask = new SaveDocumentTask(doc, saveFlags);
 
         Task* resultTask = new SequentialMultiTask("Export short reads to file", QList<Task*>() << addReadsTask << saveDocTask);

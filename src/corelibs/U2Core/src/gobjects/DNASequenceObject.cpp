@@ -240,7 +240,7 @@ GObject* U2SequenceObject::clone(const U2DbiRef& dbiRef, U2OpStatus& os, const Q
     U2Sequence seq = U2SequenceUtils::copySequence(entityRef, dbiRef, dstFolder, os);
     CHECK_OP(os, nullptr);
 
-    U2SequenceObject* res = new U2SequenceObject(seq.visualName, U2EntityRef(dbiRef, seq.id), gHints.getMap());
+    auto res = new U2SequenceObject(seq.visualName, U2EntityRef(dbiRef, seq.id), gHints.getMap());
 
     U2AttributeUtils::copyObjectAttributes(entityRef.entityId, seq.id, srcCon.dbi->getAttributeDbi(), dstCon.dbi->getAttributeDbi(), os);
     CHECK_OP(os, nullptr);

@@ -139,7 +139,7 @@ AlignmentAlgorithmMainWidget* PairwiseAlignmentSmithWatermanGUIExtensionFactory:
     if (mainWidgets.contains(parent)) {
         return mainWidgets.value(parent, nullptr);
     }
-    PairwiseAlignmentSmithWatermanMainWidget* newMainWidget = new PairwiseAlignmentSmithWatermanMainWidget(parent, s);
+    auto newMainWidget = new PairwiseAlignmentSmithWatermanMainWidget(parent, s);
     connect(newMainWidget, SIGNAL(destroyed(QObject*)), SLOT(sl_widgetDestroyed(QObject*)));
     mainWidgets.insert(parent, newMainWidget);
     return newMainWidget;

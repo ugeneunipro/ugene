@@ -91,11 +91,11 @@ Task* QDCDDActor::getAlgorithmTask(const QVector<U2Region>& location) {
         }
     }
 
-    Task* t = new Task(tr("CDD Search"), TaskFlag_NoRun);
+    auto t = new Task(tr("CDD Search"), TaskFlag_NoRun);
     foreach (const U2Region& r, location) {
         RemoteBLASTTaskSettings s(settings);
         s.query = dnaSeq.seq.mid(r.startPos, r.length);
-        RemoteBLASTTask* sub = new RemoteBLASTTask(s);
+        auto sub = new RemoteBLASTTask(s);
         t->addSubTask(sub);
         offsetMap[sub] = r.startPos;
     }
@@ -137,7 +137,7 @@ void QDCDDActor::sl_onAlgorithmTaskFinished() {
                 ru->quals = ad->qualifiers;
                 ru->region = reg;
                 ru->owner = units.values().first();
-                QDResultGroup* g = new QDResultGroup(QDStrand_Both);
+                auto g = new QDResultGroup(QDStrand_Both);
                 g->add(ru);
                 results.append(g);
                 break;

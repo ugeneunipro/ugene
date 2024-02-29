@@ -49,7 +49,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    QueryDesignerPlugin* plug = new QueryDesignerPlugin();
+    auto plug = new QueryDesignerPlugin();
     return plug;
 }
 
@@ -152,7 +152,7 @@ bool QueryDesignerService::closeViews() {
 }
 
 void QueryDesignerService::sl_startQDPlugin() {
-    QAction* action = new QAction(QIcon(":query_designer/images/query_designer.png"), tr("Query Designer..."), this);
+    auto action = new QAction(QIcon(":query_designer/images/query_designer.png"), tr("Query Designer..."), this);
     // action->setObjectName("Query Designer");
     connect(action, SIGNAL(triggered()), SLOT(sl_showDesignerWindow()));
 
@@ -162,7 +162,7 @@ void QueryDesignerService::sl_startQDPlugin() {
 
 void QueryDesignerService::sl_showDesignerWindow() {
     assert(isEnabled());
-    QueryViewController* view = new QueryViewController;
+    auto view = new QueryViewController;
     view->setWindowIcon(QIcon(":query_designer/images/query_designer.png"));
     AppContext::getMainWindow()->getMDIManager()->addMDIWindow(view);
     AppContext::getMainWindow()->getMDIManager()->activateWindow(view);

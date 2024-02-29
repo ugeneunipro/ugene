@@ -227,7 +227,7 @@ void MaOverviewContextMenu::initOrientationSubmenu() {
 }
 
 QAction* MaOverviewContextMenu::createCheckableAction(const QString& text, QActionGroup* group) {
-    QAction* a = new QAction(text, this);
+    auto a = new QAction(text, this);
     a->setCheckable(true);
 
     if (group != nullptr) {

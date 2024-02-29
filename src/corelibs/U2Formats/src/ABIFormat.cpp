@@ -110,7 +110,7 @@ DNASequence* ABIFormat::loadSequence(IOAdapter* io, U2OpStatus& os) {
     sf.pos = 0;
     sf.size = readBuff.size();
 
-    DNASequence* seq = new DNASequence();
+    auto seq = new DNASequence();
     Chromatogram cd;
 
     if (!loadABIObjects(&sf, (*seq), cd)) {
@@ -450,7 +450,7 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
     }
     U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dna, dna.alphabet->getId());
     CHECK_OP(os, nullptr);
-    U2SequenceObject* seqObj = new U2SequenceObject(dna.getName(), ref);
+    auto seqObj = new U2SequenceObject(dna.getName(), ref);
     objects.append(seqObj);
 
     ChromatogramObject* chromObj = ChromatogramObject::createInstance(chromatogram, "Chromatogram", dbiRef, os, hints);
@@ -462,7 +462,7 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
     CHECK_OP(os, nullptr);
     objects.append(textObj);
 
-    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
+    auto doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
     chromObj->addObjectRelation(GObjectRelation(GObjectReference(seqObj), ObjectRole_Sequence));
     return doc;
 }

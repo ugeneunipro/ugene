@@ -52,11 +52,11 @@ Header::Header(QWidget* w)
     pin->installEventFilter(this);
     close->installEventFilter(this);
 
-    QLabel* label = new QLabel(this);
+    auto label = new QLabel(this);
     label->setText(tr("Notifications"));
     w->setWindowTitle(tr("Notifications"));
 
-    QHBoxLayout* hbox = new QHBoxLayout(this);
+    auto hbox = new QHBoxLayout(this);
 
     hbox->addWidget(label);
     hbox->addWidget(pin);
@@ -123,13 +123,13 @@ NotificationWidget::NotificationWidget(QWidget* w)
     scrollArea->setWidgetResizable(true);
     scrollArea->installEventFilter(this);
 
-    QVBoxLayout* vbox = new QVBoxLayout();
+    auto vbox = new QVBoxLayout();
     vbox->addWidget(header);
     vbox->setMargin(0);
     vbox->setSpacing(0);
     setLayout(vbox);
 
-    QVBoxLayout* lbox = new QVBoxLayout();
+    auto lbox = new QVBoxLayout();
     lbox->addWidget(scrollArea);
     lbox->setMargin(0);
     lbox->setSpacing(0);

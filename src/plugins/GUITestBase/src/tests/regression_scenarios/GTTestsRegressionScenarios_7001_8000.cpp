@@ -56,10 +56,12 @@
 #include <QFileInfo>
 #include <QListWidget>
 #include <QRadioButton>
+#include <QRegExp>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CMDLineUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
 
@@ -4106,6 +4108,23 @@ GUI_TEST_CLASS_DEFINITION(test_7781) {
     CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7784) {
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb/", "example-alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
+    QStringList arguments {
+        "--log-no-task-progress",
+        "--log-level-details",
+        "--task=\"" + testDir + "_common_data/scenarios/_regression/7784/7784.uwl\"",
+        "--in-assembly=\"" + testDir + "_common_data/ugenedb/example-alignment.ugenedb\""};
+    QProcess process;
+    process.start(cmdlineUgenePath, arguments);
+    process.waitForFinished(GT_OP_WAIT_MILLIS);
+    QString outStr = process.readAllStandardOutput();
+    CHECK_SET_ERR(outStr.contains("Nothing to write"),
+                  "Cmdline output doesn't contain 'Nothing to write' message");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7786) {
     GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7786/7786.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -4980,6 +4999,27 @@ GUI_TEST_CLASS_DEFINITION(test_7968) {
     GTUtilsDialog::waitForDialog(new PredictSecondaryStructureDialogFiller(new CheckButtonStateScenario()));
     GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ANALYSE, "Predict secondary structure"}));
     GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7974) {
+    GTFileDialog::openFile(testDir + "_common_data/clustal", "10000_sequences.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    class RunFastTreeScenario : public CustomScenario {
+    public:
+        void run() override {
+            auto dialog = GTWidget::getActiveModalWidget();
+            GTComboBox::selectItemByText("algorithmBox", dialog, "FastTree");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new BuildTreeDialogFiller(new RunFastTreeScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    GTUtilsTaskTreeView::cancelTask("Run FastTree tool", true, {"Calculating Phylogenetic Tree", "FastTree tree calculation"});
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 

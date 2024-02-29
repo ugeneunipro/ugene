@@ -269,7 +269,7 @@ Task* SpadesWorker::tick() {
     output->setContext(unitedPortContext, currentMetadataId);
 
     settings.listeners = createLogListeners();
-    GenomeAssemblyMultiTask* t = new GenomeAssemblyMultiTask(settings);
+    auto t = new GenomeAssemblyMultiTask(settings);
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
     return t;
 }
@@ -510,7 +510,7 @@ void SpadesWorkerFactory::init() {
         QVariantMap defaultValue;
         defaultValue.insert(IN_PORT_PAIRED_ID_LIST[0], QString("%1:%2").arg(ORIENTATION_FR).arg(TYPE_SINGLE));
         defaultValue.insert(SEQUENCING_PLATFORM_ID, PLATFORM_ILLUMINA);
-        Attribute* inputAttr = new Attribute(inputData, BaseTypes::MAP_TYPE(), false, QVariant::fromValue<QVariantMap>(defaultValue));
+        auto inputAttr = new Attribute(inputData, BaseTypes::MAP_TYPE(), false, QVariant::fromValue<QVariantMap>(defaultValue));
 
         foreach (const QString& read, IN_PORT_ID_LIST) {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(read, QVariantList() << read));

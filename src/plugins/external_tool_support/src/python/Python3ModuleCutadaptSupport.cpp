@@ -56,7 +56,7 @@ Python3ModuleCutadaptSupport::Python3ModuleCutadaptSupport()
 
     U2DataPathRegistry* dpr = AppContext::getDataPathRegistry();
     if (dpr != nullptr) {
-        U2DataPath* dp = new U2DataPath(ADAPTERS_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + ADAPTERS_DIR_NAME, "", U2DataPath::CutFileExtension);
+        auto dp = new U2DataPath(ADAPTERS_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + ADAPTERS_DIR_NAME, "", U2DataPath::CutFileExtension);
         dpr->registerEntry(dp);
     }
 

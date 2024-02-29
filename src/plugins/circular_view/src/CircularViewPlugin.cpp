@@ -51,7 +51,7 @@ namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     if (AppContext::getMainWindow()) {
-        CircularViewPlugin* plug = new CircularViewPlugin();
+        auto plug = new CircularViewPlugin();
         return plug;
     }
     return nullptr;
@@ -98,12 +98,12 @@ void CircularViewContext::initViewContext(GObjectViewController* v) {
 
     viewSettings.insert(av, new CircularViewSettings());
 
-    GObjectViewAction* exportAction = new GObjectViewAction(this, v, tr("Save circular view as image..."));
+    auto exportAction = new GObjectViewAction(this, v, tr("Save circular view as image..."));
     exportAction->setIcon(QIcon(":/core/images/cam2.png"));
     exportAction->setObjectName(EXPORT_ACTION_NAME);
     addViewAction(exportAction);
 
-    GObjectViewAction* setSequenceOriginAction = new GObjectViewAction(this, v, tr("Set new sequence origin..."));
+    auto setSequenceOriginAction = new GObjectViewAction(this, v, tr("Set new sequence origin..."));
     setSequenceOriginAction->setObjectName(NEW_SEQ_ORIGIN_ACTION_NAME);
     connect(setSequenceOriginAction, SIGNAL(triggered()), SLOT(sl_setSequenceOrigin()));
     addViewAction(setSequenceOriginAction);
@@ -115,7 +115,7 @@ void CircularViewContext::initViewContext(GObjectViewController* v) {
     connect(av, SIGNAL(si_sequenceWidgetRemoved(ADVSequenceWidget*)), SLOT(sl_sequenceWidgetRemoved(ADVSequenceWidget*)));
     connect(av, SIGNAL(si_onClose(AnnotatedDNAView*)), SLOT(sl_onDNAViewClosed(AnnotatedDNAView*)));
 
-    ADVGlobalAction* globalToggleViewAction = new ADVGlobalAction(av, QIcon(":circular_view/images/circular.png"), tr("Toggle circular views"), std::numeric_limits<int>::max(), ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_SingleSequenceOnly);  // big enough to be the last one?
+    auto globalToggleViewAction = new ADVGlobalAction(av, QIcon(":circular_view/images/circular.png"), tr("Toggle circular views"), std::numeric_limits<int>::max(), ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_SingleSequenceOnly);  // big enough to be the last one?
 
     globalToggleViewAction->addAlphabetFilter(DNAAlphabet_NUCL);
     globalToggleViewAction->setObjectName("globalToggleViewAction");
@@ -130,7 +130,7 @@ void CircularViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
         return;
     }
 
-    CircularViewAction* action = new CircularViewAction();
+    auto action = new CircularViewAction();
     action->setIcon(QIcon(":circular_view/images/circular.png"));
     action->setCheckable(true);
     action->setChecked(false);

@@ -52,7 +52,7 @@ MaSangerOverview::MaSangerOverview(MaEditor* editor, MaEditorWgt* ui)
       vScrollBar(new QScrollBar(Qt::Vertical, this)),
       renderArea(new QWidget(this)),
       completeRedraw(true) {
-    QHBoxLayout* mainLayout = new QHBoxLayout();
+    auto mainLayout = new QHBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSizeConstraint(QLayout::SetMaximumSize);

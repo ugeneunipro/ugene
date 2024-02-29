@@ -31,7 +31,7 @@ McaGeneralTab::McaGeneralTab(McaEditor* mca)
     : mca(mca) {
     setupUi(this);
 
-    ShowHideSubgroupWidget* alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"), alignmentInfoWgt, true);
+    auto alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"), alignmentInfoWgt, true);
 
     Ui_McaGeneralTab::verticalLayout->addWidget(alignmentInfo);
 

@@ -74,14 +74,14 @@ CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView* view)
 
     splitter = new QSplitter(Qt::Horizontal);
 
-    WidgetWithLocalToolbar* widgetWithToolBar = new WidgetWithLocalToolbar(this);
+    auto widgetWithToolBar = new WidgetWithLocalToolbar(this);
     widgetWithToolBar->setLocalToolBarObjectName("circular_view_local_toolbar");
     widgetWithToolBar->addActionToLocalToolbar(zoomInAction);
     widgetWithToolBar->addActionToLocalToolbar(zoomOutAction);
     widgetWithToolBar->addActionToLocalToolbar(fitInViewAction);
     widgetWithToolBar->addActionToLocalToolbar(exportAction);
     widgetWithToolBar->addActionToLocalToolbar(toggleRestrictionMapAction);
-    QVBoxLayout* layout = new QVBoxLayout();
+    auto layout = new QVBoxLayout();
     layout->setSpacing(0);
     layout->setMargin(0);
     layout->addWidget(splitter);
@@ -91,7 +91,7 @@ CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView* view)
     setBaseSize(600, 600);
     setAcceptDrops(false);
 
-    QVBoxLayout* outerLayout = new QVBoxLayout(this);
+    auto outerLayout = new QVBoxLayout(this);
     outerLayout->setSpacing(0);
     outerLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -129,7 +129,7 @@ void CircularViewSplitter::addView(CircularView* view, RestrctionMapWidget* rmap
     circularViewList.append(view);
     restrictionMapWidgets.append(rmapWidget);
 
-    QScrollArea* scrollArea = new QScrollArea(this);
+    auto scrollArea = new QScrollArea(this);
     scrollArea->setWidget(view);
     scrollArea->setFrameStyle(QFrame::NoFrame);
     scrollArea->setWidgetResizable(true);
