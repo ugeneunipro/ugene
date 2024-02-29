@@ -222,7 +222,7 @@ Task* QDRepeatActor::getAlgorithmTask(const QVector<U2Region>& location) {
     foreach (const U2Region& r, location) {
         FindRepeatsTaskSettings stngs(settings);
         stngs.seqRegion = r;
-        FindRepeatsToAnnotationsTask* st = new FindRepeatsToAnnotationsTask(stngs, dnaSeq, "repeat unit", QString(), "", GObjectReference());
+        auto st = new FindRepeatsToAnnotationsTask(stngs, dnaSeq, "repeat unit", QString(), "", GObjectReference());
         t->addSubTask(st);
         repTasks.append(st);
     }
@@ -252,7 +252,7 @@ void QDRepeatActor::sl_onAlgorithmTaskFinished() {
         ru2->owner = units.value("right");
         ru1->strand = U2Strand::Direct;
         ru2->strand = U2Strand::Direct;
-        QDResultGroup* g = new QDResultGroup(QDStrand_Both);
+        auto g = new QDResultGroup(QDStrand_Both);
         g->add(ru1);
         g->add(ru2);
         results.append(g);

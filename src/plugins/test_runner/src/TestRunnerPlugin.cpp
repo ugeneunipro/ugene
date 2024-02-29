@@ -46,7 +46,7 @@ namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     if (AppContext::getMainWindow()) {
-        TestRunnerPlugin* plug = new TestRunnerPlugin();
+        auto plug = new TestRunnerPlugin();
         return plug;
     }
     return nullptr;

@@ -143,7 +143,7 @@ void QDRunDialog::sl_run() {
         return;
     }
 
-    QDRunDialogTask* t = new QDRunDialogTask(scheme, inUri, outUri, cbAddToProj->isChecked());
+    auto t = new QDRunDialogTask(scheme, inUri, outUri, cbAddToProj->isChecked());
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
     QDialog::accept();
 }
@@ -258,7 +258,7 @@ QList<Task*> QDRunDialogTask::onSubTaskFinished(Task* subTask) {
         if (!addToProject) {
             scheme->setSequence(DNASequence());
             scheme->setEntityRef(U2EntityRef());
-            SaveDocumentTask* saveTask = new SaveDocumentTask(docWithAnnotations, SaveDoc_DestroyAfter, QSet<QString>());
+            auto saveTask = new SaveDocumentTask(docWithAnnotations, SaveDoc_DestroyAfter, QSet<QString>());
             res.append(saveTask);
         } else {
             SAFE_POINT(proj != nullptr, "Project is null", res);
@@ -428,7 +428,7 @@ void QDDialog::sl_okBtnClicked() {
     settings.viewName = advSequenceContext->getAnnotatedDNAView()->getName();
     settings.region = regionSelector->getRegion();
 
-    QDScheduler* t = new QDScheduler(settings);
+    auto t = new QDScheduler(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 
     QDDialog::accept();

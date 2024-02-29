@@ -94,7 +94,7 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext* _sc)
     ac = new CreateAnnotationWidgetController(m, this);
 
     QWidget* caw = ac->getWidget();
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
     annotationsWidget->setLayout(l);
@@ -153,7 +153,7 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext* _sc)
 
 void FindRepeatsDialog::prepareAMenu(QToolButton* tb, QLineEdit* le, const QStringList& names) {
     assert(!names.isEmpty());
-    QMenu* m = new QMenu(this);
+    auto m = new QMenu(this);
     foreach (const QString& n, names) {
         QAction* a = new SetAnnotationNameAction(n, this, le);
         connect(a, SIGNAL(triggered()), SLOT(sl_setPredefinedAnnotationName()));
@@ -303,7 +303,7 @@ void FindRepeatsDialog::accept() {
     }
     sc->getAnnotatedDNAView()->tryAddObject(cam.getAnnotationObject());
 
-    FindRepeatsToAnnotationsTask* t = new FindRepeatsToAnnotationsTask(settings, seqPart, cam.data->name, cam.groupName, cam.description, cam.annotationObjectRef);
+    auto t = new FindRepeatsToAnnotationsTask(settings, seqPart, cam.data->name, cam.groupName, cam.description, cam.annotationObjectRef);
     TaskWatchdog::trackResourceExistence(sc->getSequenceObject(), t, tr("A problem occurred during finding repeats. The sequence is no more available."));
 
     AppContext::getTaskScheduler()->registerTopLevelTask(t);

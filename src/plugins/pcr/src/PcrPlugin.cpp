@@ -57,7 +57,7 @@ PcrPlugin::PcrPlugin()
         opRegistry->registerFactory(new InSilicoPcrOPWidgetFactory());
 
         if (library != nullptr) {
-            QAction* libraryAction = new QAction(QIcon(":/core/images/database_with_arrow.png"), tr("Primer library"), this);
+            auto libraryAction = new QAction(QIcon(":/core/images/database_with_arrow.png"), tr("Primer library"), this);
             libraryAction->setObjectName(ToolsMenu::PRIMER_LIBRARY);
             connect(libraryAction, SIGNAL(triggered()), SLOT(sl_primerLibrary()));
             ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, libraryAction);

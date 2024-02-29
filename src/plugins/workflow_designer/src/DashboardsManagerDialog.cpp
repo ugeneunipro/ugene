@@ -70,7 +70,7 @@ void DashboardsManagerDialog::setupList() {
     foreach (const DashboardInfo& info, dashboardInfos) {
         QStringList data;
         data << info.name << info.dirName;
-        QTreeWidgetItem* item = new QTreeWidgetItem(listWidget, data);
+        auto item = new QTreeWidgetItem(listWidget, data);
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
         Qt::CheckState state = info.opened ? Qt::Checked : Qt::Unchecked;
         item->setCheckState(0, state);

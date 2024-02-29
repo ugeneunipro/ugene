@@ -41,7 +41,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         testDir + "_common_data/scenarios/dna_assembly/",
         "shread.fa");
 
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(&parameters);
+    auto alignShortReadsFiller = new AlignShortReadsFiller(&parameters);
 
     GTUtilsDialog::add(alignShortReadsFiller);
 

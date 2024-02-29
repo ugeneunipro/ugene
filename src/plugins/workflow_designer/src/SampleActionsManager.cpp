@@ -56,7 +56,7 @@ void SampleActionsManager::registerAction(const SampleAction& action) {
     actions.append(action);
     int id = actions.size() - 1;
 
-    QAction* a = new QAction(action.actionText, this);
+    auto a = new QAction(action.actionText, this);
     a->setObjectName(action.actionName);
     a->setProperty(ID_PROPERTY, id);
     connect(a, SIGNAL(triggered()), SLOT(sl_clicked()));
