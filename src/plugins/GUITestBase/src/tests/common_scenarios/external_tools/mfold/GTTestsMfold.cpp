@@ -189,7 +189,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_limits) {
             GTDoubleSpinbox::setValue(w, -180, GTGlobals::UseKeyBoard);
             GTDoubleSpinbox::setValue(w, 180, GTGlobals::UseKeyBoard);
 
-            checkSpinbox("dpiSpinBox", 60, 72, 4000);
+            checkSpinbox("dpiSpinBox", 60, 96, 1800);
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
@@ -257,6 +257,32 @@ GUI_TEST_CLASS_DEFINITION(test_0004_region) {
     GTUtilsDialog::waitForDialog(new AnyDialogFiller("MfoldDialog", new RegionChecker()));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
     GTUtilsLog::checkMessageWithWait(lt, "Sequence length is 20");
+}
+GUI_TEST_CLASS_DEFINITION(test_0005_large) {
+    // Check large report doesn't contain any structures info.
+    // Open linear sequence. Check its appearance.
+    GTFileDialog::openFile(dataDir + "samples/Genbank/", "CVU55762.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    // Select region.
+    GTUtilsSequenceView::selectSequenceRegion(1, 500);
+    // Call dialog and run task.
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTUtilsDialog::add(new AnyDialogFiller("MfoldDialog", QDialogButtonBox::Ok));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    // Check no "Found structures", no "Structure 1".
+    GTUtilsNotifications::clickOnNotificationWidget();
+    QWidget* reportWindow = GTUtilsMdi::checkWindowIsActive("Task report ");
+    QString html = GTWidget::findTextEdit("reportTextEdit", reportWindow)->toHtml();
+
+    doesHtmlContainRow(html, {{"Status", "Finished"}});
+    QString unexpected = "Found structures";
+    CHECK_SET_ERR(!html.contains(unexpected),
+                  QString("Message `%1` was found in `%2`, but should not").arg(unexpected, html));
+    unexpected = "Structure 1";
+    CHECK_SET_ERR(!html.contains(unexpected),
+                  QString("Message `%1` was found in `%2`, but should not").arg(unexpected, html));
 }
 }  // namespace GUITest_common_scenarios_mfold
 }  // namespace U2

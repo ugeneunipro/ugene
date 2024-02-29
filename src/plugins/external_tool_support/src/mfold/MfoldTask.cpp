@@ -489,12 +489,7 @@ public:
         }
         report += "</table>";
 
-        if (largeReport) {
-            report += "<p>The report is too large to be displayed in UGENE, it is saved to the file "
-                      "`<a target=\"_blank\" href=\"" +
-                      t.outHtmlPath + "\">" + t.outHtmlPath + "</a>`";
-            report += "</p>";
-        } else if (structuresNum > 0) {
+        if (!largeReport && structuresNum > 0) {
             report += "<table cellpadding=\"4\" style=\"border-collapse: collapse;\">";
             for (int i = 0; i < structuresNum; ++i) {
                 QString iStr = QString::number(i + 1);
