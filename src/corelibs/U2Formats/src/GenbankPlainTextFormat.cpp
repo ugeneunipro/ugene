@@ -574,66 +574,77 @@ static QString padToLen(const QString& s, int width) {
     }
 }
 
-static QString detectTopology(const QString& savedTopology, U2SequenceObject* so) {
-    CHECK(!savedTopology.isEmpty(), QString());
-    SAFE_POINT(so != nullptr, "U2SequenceObject is NULL", QString());
+static QString getLocusTopologyTag(const QString& savedTopology, U2SequenceObject* so) {
+    CHECK(!savedTopology.isEmpty(), EMBLGenbankAbstractDocument::LOCUS_TAG_LINEAR);
+    SAFE_POINT_NN(so, EMBLGenbankAbstractDocument::LOCUS_TAG_LINEAR);
+    return so->isCircular()
+               ? EMBLGenbankAbstractDocument::LOCUS_TAG_CIRCULAR
+               : EMBLGenbankAbstractDocument::LOCUS_TAG_LINEAR;
+}
 
-    if (savedTopology == EMBLGenbankAbstractDocument::LOCUS_TAG_LINEAR) {
-        if (so->isCircular()) {
-            return EMBLGenbankAbstractDocument::LOCUS_TAG_CIRCULAR;
-        } else {
-            return EMBLGenbankAbstractDocument::LOCUS_TAG_LINEAR;
-        }
-    } else {
-        if (!so->isCircular()) {
-            return EMBLGenbankAbstractDocument::LOCUS_TAG_LINEAR;
-        } else {
-            return EMBLGenbankAbstractDocument::LOCUS_TAG_CIRCULAR;
-        }
-    }
+static QString getLocusMoleculeTypeFromAlphabet(const DNAAlphabet* alphabet) {
+//    45-47      Strandedness : spaces (if not known), ss- (single-stranded),
+//        ds- (double-stranded), or ms- (mixed-stranded)
+//                                              48-53      Molecule Type: NA, DNA, RNA, tRNA (transfer RNA), rRNA (ribosomal RNA),
+//        mRNA (messenger RNA), uRNA (small nuclear RNA), cRNA (viral cRNA)
+    return "";
 }
 
 QString GenbankPlainTextFormat::genLocusString(const QList<GObject*>& aos, U2SequenceObject* so, const QString& locusStrFromAttr) {
-    QString loc, date;
-    if (so) {
-        QString len = QString::number(so->getSequenceLength());
-        loc = so->getSequenceName();
-        if (loc.isEmpty()) {
-            loc = so->getGObjectName();
-        }
-        loc = padToLen(loc.replace(QChar(' '), QChar('_')), qMax(0, 28 - len.length()));
-        loc.append(len).append(" bp ");
-        loc = padToLen(loc, 35);
-        if (so->getSequenceInfo().contains(DNAInfo::LOCUS)) {
-            DNALocusInfo loi = so->getSequenceInfo().value(DNAInfo::LOCUS).value<DNALocusInfo>();
-            assert(!loi.name.isEmpty());
-            QString& mol = loi.molecule;
-            if (mol.size() >= 3 && mol.at(2) != '-')
-                loc.append("   ");
-            loc = padToLen(loc.append(mol), 43);
-            loc = padToLen(loc.append(detectTopology(loi.topology, so)), 52);
-            loc = loc.append(loi.division);
-            date = loi.date;
-        } else if (!locusStrFromAttr.isEmpty()) {
-            QStringList tokens = locusStrFromAttr.split(" ", QString::SkipEmptyParts);
-            SAFE_POINT(tokens.size() >= 5, QString("Incorrect number of tokens for attribute %1").arg(locusStrFromAttr), loc);
-            loc = padToLen(loc.append(tokens[2]), 43);
-            loc = padToLen(loc.append(detectTopology(tokens[4], so)), 52);
-            loc = loc.append(tokens[3]);
-        } else if (so->isCircular()) {
-            loc = loc.append(" ");
-            loc = loc.append(EMBLGenbankAbstractDocument::LOCUS_TAG_CIRCULAR);
-        }
-    } else {
-        assert(!aos.isEmpty());
-        loc = !aos.isEmpty() ? aos.first()->getGObjectName() : "unknown";
+    if (so == nullptr) {
+        SAFE_POINT(!aos.isEmpty(), "Annotation object list is empty", "");
+        QString locus = !aos.isEmpty() ? aos.first()->getGObjectName() : "unknown";
+        locus = padToLen(locus, 56) + getDate();
+        return locus;
     }
-    assert(!loc.isEmpty());
+    QString molecule, topology, division, date;
+    if (so->getSequenceInfo().contains(DNAInfo::LOCUS)) {
+        DNALocusInfo locusInfo = so->getSequenceInfo().value(DNAInfo::LOCUS).value<DNALocusInfo>();
+        molecule = locusInfo.molecule;
+        topology = getLocusTopologyTag(locusInfo.topology, so);
+        division = locusInfo.division;
+        date = locusInfo.date;
+    } else if (!locusStrFromAttr.isEmpty()) {
+        QStringList tokens = locusStrFromAttr.split(" ", QString::SkipEmptyParts);
+        SAFE_POINT(tokens.size() >= 5, QString("Incorrect number of tokens for attribute %1").arg(locusStrFromAttr), "");
+        molecule = tokens[2];
+        topology = getLocusTopologyTag(tokens[4], so);
+        division = tokens[3];
+    }
+    // Name.
+    QString name = so->getSequenceName();
+    if (name.isEmpty()) {
+        name = so->getGObjectName();
+    }
+    QString locus = name;
+
+    // Length.
+    QString length = QString::number(so->getSequenceLength());
+    locus = padToLen(locus.replace(' ', '_'), qMax(0, 28 - length.length()));
+    locus.append(length).append(" bp ");
+    locus = padToLen(locus, 35);
+
+    // Molecule.
+    if (molecule.length() == 0) {
+        molecule = getLocusMoleculeTypeFromAlphabet(so->getAlphabet());
+    }
+    if (molecule.size() >= 3 && molecule.at(2) != '-') {
+        locus.append("   ");
+    }
+    locus = padToLen(locus.append(molecule), 43);
+
+    // Topology.
+    locus = padToLen(locus.append(topology), 52);
+
+    // Division.
+    locus = locus.append(division);
+
+    // Date.
     if (date.isEmpty()) {
         date = getDate();
     }
-    loc = padToLen(loc, 56) + date;
-    return loc;
+    locus = padToLen(locus, 56) + date;
+    return locus;
 }
 
 void GenbankPlainTextFormat::writeQualifier(const QString& name, const QString& val, IOAdapter* io, U2OpStatus& si, const char* spaceLine) {

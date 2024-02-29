@@ -50,7 +50,7 @@ protected:
     void readHeaderAttributes(QVariantMap& tags, DbiConnection& con, U2SequenceObject* so);
 
     void writeAnnotations(IOAdapter* io, const QList<GObject*>& aos, U2OpStatus& si);
-    QString genLocusString(const QList<GObject*>& aos, U2SequenceObject* so, const QString& locusStrFromAttr);
+    static QString genLocusString(const QList<GObject*>& aos, U2SequenceObject* so, const QString& locusStrFromAttr);
     bool writeKeyword(IOAdapter* io, U2OpStatus& os, const QString& key, const QString& value, bool wrap = true /*TODO*/);
     void writeSequence(IOAdapter* io, U2SequenceObject* ao, const QList<U2Region>& lowerCaseRegs, U2OpStatus& si);
     void prepareMultiline(QString& line, int spacesOnLineStart, bool lineBreakOnlyOnSpace = true, bool newLineAtTheEnd = true, int maxLineLen = 79);
