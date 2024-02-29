@@ -147,7 +147,7 @@ QString constructTocList(const QVector<Th::ThermodynInfo>& thInfo) {
     for (int i = 0; i < thInfo.size(); ++i) {
         QString val = QString::number(qAsConst(thInfo)[i][Th::DELTA_G_KEY]);
         ans += "<li><a href=\"#structure" + QString::number(i + 1) + "\">";
-        ans += DELTA_SYM + "G=" + val;
+        ans += "&delta;G=" + val;
         ans += "</a></li>";
     }
     return ans;
