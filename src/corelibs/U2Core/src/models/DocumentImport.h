@@ -44,7 +44,7 @@ public:
     }
 
 public slots:
-    virtual void accept();
+    void accept() override;
 
 protected:
     virtual bool isValid() {

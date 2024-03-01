@@ -60,7 +60,7 @@ public:
     PTCObjectRelationFilter(const GObjectRelation& rel, QObject* p = nullptr)
         : PTCObjectFilter(p), rel(rel) {
     }
-    bool filter(GObject* o) const;
+    bool filter(GObject* o) const override;
     GObjectRelation rel;
 };
 

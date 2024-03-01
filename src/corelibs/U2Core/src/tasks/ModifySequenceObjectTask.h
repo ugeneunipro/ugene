@@ -35,8 +35,8 @@ class U2CORE_EXPORT ModifySequenceContentTask : public Task {
 public:
     ModifySequenceContentTask(const DocumentFormatId& dfId, U2SequenceObject* seqObj, const U2Region& regionToReplace, const DNASequence& sequence2Insert, bool recalculateQualifiers = false, U1AnnotationUtils::AnnotationStrategyForResize _str = U1AnnotationUtils::AnnotationStrategyForResize_Resize, const GUrl& url = GUrl(), bool mergeAnnotations = false);
 
-    Task::ReportResult report();
-    QString generateReport() const;
+    Task::ReportResult report() override;
+    QString generateReport() const override;
 
     // Returns number of bases inserted into sequence. If sequence size is reduced the returned value is < 0
     qint64 getSequenceLengthDelta() const;

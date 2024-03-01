@@ -33,7 +33,7 @@ public:
     // Also handles situations with locked objects.
     RemoveAnnotationsTask(AnnotationTableObject* ao, const QString& groupName);
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QPointer<AnnotationTableObject> aobj;

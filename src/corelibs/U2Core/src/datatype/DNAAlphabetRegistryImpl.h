@@ -33,13 +33,13 @@ public:
     DNAAlphabetRegistryImpl(DNATranslationRegistry* tr);
     ~DNAAlphabetRegistryImpl();
 
-    virtual bool registerAlphabet(const DNAAlphabet* a);
+    bool registerAlphabet(const DNAAlphabet* a) override;
 
-    virtual void unregisterAlphabet(const DNAAlphabet* a);
+    void unregisterAlphabet(const DNAAlphabet* a) override;
 
-    virtual const DNAAlphabet* findById(const QString& id) const;
+    const DNAAlphabet* findById(const QString& id) const override;
 
-    virtual QList<const DNAAlphabet*> getRegisteredAlphabets() const {
+    QList<const DNAAlphabet*> getRegisteredAlphabets() const override {
         return alphabets;
     }
 

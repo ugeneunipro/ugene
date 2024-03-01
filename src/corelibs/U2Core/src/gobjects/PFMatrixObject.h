@@ -32,7 +32,7 @@ public:
     U2PFMatrix();
     U2PFMatrix(const U2DbiRef& dbiRef);
 
-    U2DataType getType() const;
+    U2DataType getType() const override;
 };
 
 class U2CORE_EXPORT PFMatrixObject : public GObject {
@@ -47,10 +47,10 @@ public:
     static PFMatrixObject* createInstance(const PFMatrix& matrix, const QString& objectName, const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& hintsMap = QVariantMap());
 
     const PFMatrix& getMatrix() const;
-    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const override;
 
 protected:
-    void loadDataCore(U2OpStatus& os);
+    void loadDataCore(U2OpStatus& os) override;
 
 private:
     PFMatrixObject(const PFMatrix& matrix, const QString& objectName, const U2EntityRef& matrixRef, const QVariantMap& hintsMap);

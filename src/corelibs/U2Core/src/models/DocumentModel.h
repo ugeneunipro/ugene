@@ -425,7 +425,7 @@ public:
 
     void makeClean();
 
-    void setModificationTrack(bool track);
+    void setModificationTrack(bool track) override;
 
     // avoid using this method against shared databases documents,
     // since databases allow many objects with the same name. The method returns
@@ -468,9 +468,9 @@ public:
 
     void setUserModLock(bool v);
 
-    virtual void setModified(bool modified, const QString& modType = QString());
+    void setModified(bool modified, const QString& modType = QString()) override;
 
-    virtual bool isModificationAllowed(const QString& modType);
+    bool isModificationAllowed(const QString& modType) override;
 
     bool isModified() const {
         return isTreeItemModified();
@@ -560,7 +560,7 @@ public:
         : constraints(_c) {
     }
 
-    virtual bool matches(Document* doc) const {
+    bool matches(Document* doc) const override {
         return doc->checkConstraints(constraints);
     }
 
@@ -574,10 +574,10 @@ public:
     static const QString MIME_TYPE;
     DocumentMimeData(Document* obj);
     QPointer<Document> objPtr;
-    bool hasFormat(const QString& mimeType) const {
+    bool hasFormat(const QString& mimeType) const override {
         return (mimeType == MIME_TYPE);
     }
-    QStringList formats() const {
+    QStringList formats() const override {
         return (QStringList() << MIME_TYPE);
     }
 };

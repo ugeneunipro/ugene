@@ -48,8 +48,8 @@ public:
 
     CmdlineTaskRunner(const CmdlineTaskConfig& config);
 
-    void prepare();
-    ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
 
     /*
     * Returns QString with [ERROR] level log messages separated by new line.
@@ -82,7 +82,7 @@ class U2CORE_EXPORT CmdlineTask : public Task {
     Q_OBJECT
 public:
     CmdlineTask(const QString& name, TaskFlags flags);
-    ReportResult report();
+    ReportResult report() override;
 
 protected:
     virtual QString getTaskError() const;

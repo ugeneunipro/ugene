@@ -35,7 +35,7 @@ class U2CORE_EXPORT ImportObjectToDatabaseTask : public Task {
 public:
     ImportObjectToDatabaseTask(GObject* object, const U2DbiRef& dstDbiRef, const QString& dstFolder);
 
-    void run();
+    void run() override;
 
     GObject* takeResult();
 

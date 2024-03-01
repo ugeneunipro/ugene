@@ -37,9 +37,9 @@ class U2CORE_EXPORT ImportDocumentToDatabaseTask : public Task {
 public:
     ImportDocumentToDatabaseTask(Document* document, const U2DbiRef& dstDbiRef, const QString& dstFolder, const ImportToDatabaseOptions& options);
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    ReportResult report();
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    ReportResult report() override;
 
     Document* getSourceDocument() const;
 

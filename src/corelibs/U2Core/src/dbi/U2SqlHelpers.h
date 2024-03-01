@@ -392,7 +392,7 @@ public:
     SQLiteDataIdResultSetLoader(U2DataType _type, const QByteArray& _dbExra = QByteArray())
         : type(_type), dbExtra(_dbExra) {
     }
-    U2DataId load(SQLiteQuery* q) {
+    U2DataId load(SQLiteQuery* q) override {
         return q->getDataId(0, type, dbExtra);
     }
 
@@ -406,7 +406,7 @@ public:
     SQLiteDataIdResultSetLoaderEx(const QByteArray& _dbExra = QByteArray())
         : dbExtra(_dbExra) {
     }
-    U2DataId load(SQLiteQuery* q) {
+    U2DataId load(SQLiteQuery* q) override {
         return q->getDataId(0, q->getDataType(1), dbExtra);
     }
 

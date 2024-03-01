@@ -42,7 +42,7 @@ class U2CORE_EXPORT CmdlineInOutTaskRunner : public CmdlineTaskRunner {
 public:
     CmdlineInOutTaskRunner(const CmdlineInOutTaskConfig& config);
 
-    ReportResult report();
+    ReportResult report() override;
 
     const QList<U2DataId>& getOutputObjects() const;
 
@@ -57,8 +57,8 @@ public:
 
 private:
     // CmdlineTaskRunner
-    bool isCommandLogLine(const QString& logLine) const;
-    bool parseCommandLogWord(const QString& logWord);
+    bool isCommandLogLine(const QString& logLine) const override;
+    bool parseCommandLogWord(const QString& logWord) override;
 
 private:
     CmdlineInOutTaskConfig config;
