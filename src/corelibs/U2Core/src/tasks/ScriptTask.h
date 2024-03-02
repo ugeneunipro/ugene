@@ -63,10 +63,10 @@ public:
     }
 
     // Used to run script if mainThreadScript is FALSE
-    void run();
+    void run() override;
 
     // Used to run script if mainThreadScript is TRUE
-    ReportResult report();
+    ReportResult report() override;
 
     // Runs the script using given input parameters
     // Returns the result of the script

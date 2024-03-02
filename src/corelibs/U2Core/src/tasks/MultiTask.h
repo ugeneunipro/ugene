@@ -35,8 +35,8 @@ public:
 
     QList<Task*> getTasks() const;
 
-    ReportResult report();
-    QString generateReport() const;
+    ReportResult report() override;
+    QString generateReport() const override;
 
 private:
     StateLock* l;
@@ -49,8 +49,8 @@ class U2CORE_EXPORT SequentialMultiTask : public Task {
 public:
     SequentialMultiTask(const QString& name, const QList<Task*>& taskz, TaskFlags f = TaskFlags_NR_FOSCOE);
 
-    void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     QList<Task*> getTasks() const;
 
 private:

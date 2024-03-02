@@ -149,10 +149,10 @@ public:
     virtual ~U2MemorySequenceImporter() {
     }
 
-    virtual void addBlock(const char* data, qint64 len, U2OpStatus& os);
-    virtual void addDefaultSymbolsBlock(int n, U2OpStatus& os);
+    void addBlock(const char* data, qint64 len, U2OpStatus& os) override;
+    void addDefaultSymbolsBlock(int n, U2OpStatus& os) override;
 
-    virtual qint64 getCurrentLength() const;
+    qint64 getCurrentLength() const override;
 
 private:
     void startSequence(const U2DbiRef& dbiRef, const QString& folder, const QString& visualName, bool circular, U2OpStatus& os);

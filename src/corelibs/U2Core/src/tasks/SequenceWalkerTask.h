@@ -105,7 +105,7 @@ class U2CORE_EXPORT SequenceWalkerSubtask : public Task {
 public:
     SequenceWalkerSubtask(SequenceWalkerTask* t, const U2Region& globalReg, bool lo, bool ro, const char* localSeq, int localLen, bool doCompl, bool doAmino);
 
-    void run();
+    void run() override;
 
     const char* getRegionSequence();
 

@@ -36,11 +36,11 @@ public:
     SaveDocumentStreamingTask(Document* doc, IOAdapter* io);
     ~SaveDocumentStreamingTask();
 
-    virtual void prepare();
+    void prepare() override;
 
-    virtual void run();
+    void run() override;
 
-    ReportResult report();
+    ReportResult report() override;
 
     Document* getDocument() const;
 

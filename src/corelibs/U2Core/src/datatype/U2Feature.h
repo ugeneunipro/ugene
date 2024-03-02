@@ -39,7 +39,7 @@ public:
     /** Root feature's id */
     U2DataId rootFeature;
 
-    U2DataType getType() const {
+    U2DataType getType() const override {
         return U2Type::AnnotationTable;
     }
 };

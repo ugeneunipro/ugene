@@ -59,8 +59,8 @@ public:
     Folder folder;
 
     // QMimeData
-    bool hasFormat(const QString& mimeType) const;
-    QStringList formats() const;
+    bool hasFormat(const QString& mimeType) const override;
+    QStringList formats() const override;
 
     static const QString MIME_TYPE;
 };

@@ -32,8 +32,8 @@ class U2CORE_EXPORT AddObjectsToDocumentTask : public Task {
     Q_OBJECT
 public:
     AddObjectsToDocumentTask(QList<GObject*>& _objects, Document* _doc);
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     QList<GObject*> objects;

@@ -37,9 +37,9 @@ public:
     RemoveMultipleDocumentsTask(Project* p, const QList<Document*>& docs, bool saveModifiedDocs, bool useGUI);
     ~RemoveMultipleDocumentsTask();
 
-    virtual void prepare();
+    void prepare() override;
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QPointer<Project> p;

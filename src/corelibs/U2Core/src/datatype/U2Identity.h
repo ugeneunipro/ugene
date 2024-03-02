@@ -60,7 +60,7 @@ protected:
     }
 
 public:
-    virtual bool isValid() const {
+    bool isValid() const override {
         return !id.isEmpty();
     }
 };
@@ -72,7 +72,7 @@ protected:
     }
 
 public:
-    virtual bool isValid() const {
+    bool isValid() const override {
         return id > 0;
     }
 };
