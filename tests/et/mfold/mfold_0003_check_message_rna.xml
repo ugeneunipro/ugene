@@ -1,0 +1,6 @@
+<multi-test>
+    <!-- Check that sequence alphabet is correctly passed as process argument. -->
+    <load-document index="inp_doc" url="alphabets/standard_rna_1000.fa" io="local_file" format="fasta"/>
+    <find-object-by-name index="inp" doc="inp_doc" name="seq3" type="OT_SEQUENCE"/>
+    <mfold inp="inp" region="1..30" message="RNA"/>
+</multi-test>

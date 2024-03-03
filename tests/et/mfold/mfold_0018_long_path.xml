@@ -1,0 +1,9 @@
+<multi-test>
+    <load-document index="inp_doc" url=
+        "et/mfold/достаточно длинный путь с юникодом и пробелами/хотя хотелось бы ещё длиннее/但我们有我们所拥有的/the_path_to_the_file_should_also_be_as_long_as_possible.fa"
+        io="local_file" format="fasta"/>
+    <find-object-by-name index="inp" doc="inp_doc"
+        name="gi|1314948379|gb|MG551956.1| Homo sapiens AML1-ETO fusion A5E2345 circular RNA, complete sequence"
+        type="OT_SEQUENCE"/>
+    <mfold inp="inp" region="1..30"/>
+</multi-test>

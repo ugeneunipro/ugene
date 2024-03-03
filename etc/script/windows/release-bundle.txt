@@ -1436,6 +1436,7 @@ tools/iqtree
 tools/java
 tools/kalign
 tools/mafft
+tools/mfold
 tools/mrbayes
 tools/perl5
 tools/phyml

@@ -48,6 +48,7 @@
 #include "tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h"
 #include "tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h"
 #include "tests/common_scenarios/dp_view/GTTestsDpView.h"
+#include "tests/common_scenarios/external_tools/mfold/GTTestsMfold.h"
 #include "tests/common_scenarios/fasttree/GTTestsFastTree.h"
 #include "tests/common_scenarios/genecut/GTTestsGeneCut.h"
 #include "tests/common_scenarios/iqtree/GTTestsIQTree.h"
@@ -3522,6 +3523,15 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0006);
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0008);
+
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/external_tools/mfold
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_mfold::test_0001_success);
+    REGISTER_TEST(GUITest_common_scenarios_mfold::test_0002_fail);
+    REGISTER_TEST(GUITest_common_scenarios_mfold::test_0003_limits);
+    REGISTER_TEST(GUITest_common_scenarios_mfold::test_0004_region);
+    REGISTER_TEST(GUITest_common_scenarios_mfold::test_0005_large);
 
     // Query designer.
     REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001);
