@@ -33,7 +33,7 @@ class U2ALGORITHM_EXPORT MsaColorSchemeCustomFactory : public MsaColorSchemeFact
 public:
     MsaColorSchemeCustomFactory(QObject* parent, const ColorSchemeData& scheme);
 
-    MsaColorScheme* create(QObject* p, MsaObject* obj) const;
+    MsaColorScheme* create(QObject* p, MsaObject* obj) const override;
     bool isEqualTo(const ColorSchemeData& scheme) const;
 
     void setScheme(const ColorSchemeData& scheme);

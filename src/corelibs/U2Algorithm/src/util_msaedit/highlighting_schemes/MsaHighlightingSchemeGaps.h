@@ -30,7 +30,7 @@ class MsaHighlightingSchemeGaps : public MsaHighlightingScheme {
 public:
     MsaHighlightingSchemeGaps(QObject* parent, const MsaHighlightingSchemeFactory* factory, MsaObject* maObj);
 
-    void process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const;
+    void process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const override;
 
     static const QColor gapColor;
 };
@@ -39,7 +39,7 @@ class U2ALGORITHM_EXPORT MsaHighlightingSchemeGapsFactory : public MsaHighlighti
 public:
     MsaHighlightingSchemeGapsFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets);
 
-    MsaHighlightingScheme* create(QObject* parent, MsaObject* maObj) const;
+    MsaHighlightingScheme* create(QObject* parent, MsaObject* maObj) const override;
 };
 
 }  // namespace U2

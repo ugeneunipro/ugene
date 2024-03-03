@@ -43,10 +43,10 @@ private:
     static const QString ID;
 
 public:
-    virtual bool applyFilter(QList<SmithWatermanResult>* lst);
-    virtual SmithWatermanResultFilter* clone() const;
+    bool applyFilter(QList<SmithWatermanResult>* lst) override;
+    SmithWatermanResultFilter* clone() const override;
 
-    virtual QString getId() const;
+    QString getId() const override;
 
 private:
     bool needErase(const SmithWatermanResult& currItem,
@@ -58,10 +58,10 @@ private:
     static const QString ID;
 
 public:
-    virtual bool applyFilter(QList<SmithWatermanResult>* lst);
-    virtual SmithWatermanResultFilter* clone() const;
+    bool applyFilter(QList<SmithWatermanResult>* lst) override;
+    SmithWatermanResultFilter* clone() const override;
 
-    virtual QString getId() const;
+    QString getId() const override;
 
 private:
     bool needErase(const SmithWatermanResult& currItem,

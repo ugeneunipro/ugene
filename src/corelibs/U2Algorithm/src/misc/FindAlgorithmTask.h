@@ -52,8 +52,8 @@ class U2ALGORITHM_EXPORT FindAlgorithmTask : public Task, public FindAlgorithmRe
 public:
     FindAlgorithmTask(const FindAlgorithmTaskSettings& s);
 
-    virtual void run();
-    virtual void onResult(const FindAlgorithmResult& r);
+    void run() override;
+    void onResult(const FindAlgorithmResult& r) override;
 
     QList<FindAlgorithmResult> popResults();
 
@@ -76,7 +76,7 @@ public:
     QList<QPair<QString, QString>> getNamesPatterns() {
         return namesPatterns;
     }
-    void run();
+    void run() override;
 
 private:
     Document* getDocumentFromFilePath();

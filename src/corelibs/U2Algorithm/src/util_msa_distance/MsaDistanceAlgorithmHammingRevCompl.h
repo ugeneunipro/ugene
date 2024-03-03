@@ -32,11 +32,11 @@ class U2ALGORITHM_EXPORT MsaDistanceAlgorithmFactoryHammingRevCompl : public Msa
 public:
     MsaDistanceAlgorithmFactoryHammingRevCompl(QObject* p = nullptr);
 
-    virtual MsaDistanceAlgorithm* createAlgorithm(const Msa& ma, QObject* parent);
+    MsaDistanceAlgorithm* createAlgorithm(const Msa& ma, QObject* parent) override;
 
-    virtual QString getDescription() const;
+    QString getDescription() const override;
 
-    virtual QString getName() const;
+    QString getName() const override;
 };
 
 class U2ALGORITHM_EXPORT MsaDistanceAlgorithmHammingRevCompl : public MsaDistanceAlgorithm {
@@ -46,7 +46,7 @@ public:
         : MsaDistanceAlgorithm(f, ma) {
     }
 
-    virtual void run();
+    void run() override;
 };
 
 }  // namespace U2

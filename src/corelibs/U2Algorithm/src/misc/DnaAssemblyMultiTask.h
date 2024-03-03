@@ -34,10 +34,10 @@ class U2ALGORITHM_EXPORT DnaAssemblyMultiTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     DnaAssemblyMultiTask(const DnaAssemblyToRefTaskSettings& settings, bool viewResult = false, bool justBuildIndex = false);
-    virtual void prepare();
-    virtual ReportResult report();
-    virtual QString generateReport() const;
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    ReportResult report() override;
+    QString generateReport() const override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     bool getOpenViewFlag() {
         return openView;
     }

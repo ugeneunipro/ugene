@@ -30,14 +30,14 @@ class MsaHighlightingSchemeTransitions : public MsaHighlightingScheme {
 public:
     MsaHighlightingSchemeTransitions(QObject* parent, const MsaHighlightingSchemeFactory* factory, MsaObject* maObj);
 
-    void process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const;
+    void process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const override;
 };
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeTransitionsFactory : public MsaHighlightingSchemeFactory {
 public:
     MsaHighlightingSchemeTransitionsFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets);
 
-    MsaHighlightingScheme* create(QObject* parent, MsaObject* maObj) const;
+    MsaHighlightingScheme* create(QObject* parent, MsaObject* maObj) const override;
 };
 
 }  // namespace U2

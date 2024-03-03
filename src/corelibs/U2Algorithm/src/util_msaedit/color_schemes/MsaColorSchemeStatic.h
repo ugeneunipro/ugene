@@ -45,7 +45,7 @@ class MsaColorSchemeStaticFactory : public MsaColorSchemeFactory {
 public:
     MsaColorSchemeStaticFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets, const QVector<QColor>& colorsPerChar);
 
-    MsaColorScheme* create(QObject* parent, MsaObject* maObj) const;
+    MsaColorScheme* create(QObject* parent, MsaObject* maObj) const override;
 
 private:
     QVector<QColor> colorsPerChar;
