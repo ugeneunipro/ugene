@@ -333,7 +333,7 @@ void CreateAnnotationWidgetController::initSaveController() {
     SaveDocumentControllerConfig conf;
     conf.defaultFormatId = BaseDocumentFormats::PLAIN_GENBANK;
     conf.defaultDomain = SETTINGS_LASTDIR;
-    conf.defaultFileName = defaultDir() + "/MyDocument.gb";
+    conf.defaultFileName = saveController == nullptr ? defaultDir() + "/MyDocument.gb" : saveController->getSaveFileName();
     conf.parentWidget = w;
     conf.saveTitle = tr("Save File");
     conf.rollOutProjectUrls = true;
