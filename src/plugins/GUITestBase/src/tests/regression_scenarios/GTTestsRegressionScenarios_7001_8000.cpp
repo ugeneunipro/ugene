@@ -962,6 +962,9 @@ GUI_TEST_CLASS_DEFINITION(test_7257) {
             if (isOsWindows()) {
                 pathToCheck.replace("/", "\\");
             }
+            auto rb = GTWidget::findRadioButton("1_radio", dialog);
+            GTRadioButton::click(rb);
+            GTGlobals::sleep();
             GTLineEdit::checkText(GTWidget::findLineEdit("fileNameEdit", dialog), pathToCheck);
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
