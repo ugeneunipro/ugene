@@ -1,0 +1,6 @@
+<multi-test>
+    <!-- No basename, no sequence name, no nucleotides. -->
+    <load-document index="inp_doc" url="et/mfold/.fa" io="local_file" format="fasta"/>
+    <find-object-by-name index="inp" doc="inp_doc" name="Sequence" type="OT_SEQUENCE"/>
+    <mfold inp="inp" region="1..14" shouldFail="true"/>
+</multi-test>

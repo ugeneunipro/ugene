@@ -97,6 +97,13 @@ void RegionSelector::showErrorMessage() {
     }
 }
 
+const QLineEdit* RegionSelector::getStartLineEdit() const {
+    return startEdit;
+}
+const QLineEdit* RegionSelector::getEndLineEdit() const {
+    return endEdit;
+}
+
 void RegionSelector::initLayout() {
     int w = qMax(((int)log10((double)maxLen)) * 10, 50);
 
