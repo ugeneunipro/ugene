@@ -958,6 +958,7 @@ GUI_TEST_CLASS_DEFINITION(test_7257) {
         CheckDocumentReadingModeSelectorTextScenario(const QString& pathToCheck_)
             : pathToCheck(pathToCheck_) {};
         void run() override {
+            GTGlobals::sleep();
             QWidget* dialog = GTWidget::getActiveModalWidget();
             if (isOsWindows()) {
                 pathToCheck.replace("/", "\\");
