@@ -195,7 +195,12 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task* subTask) 
         config.command = "--task=" + ALIGN_TO_REF_CMDLINE;
         QString argString = "--%1=\"%2\"";
         config.arguments << argString.arg(REF_ARG).arg(QFileInfo(settings.referenceUrl).absoluteFilePath());
-        config.arguments << argString.arg(READS_ARG).arg(settings.readUrls.join(";"));
+        // Additional semicolumn in the end is required for cases then
+        // there is only one URL and it contains commas
+        // (commas could be treated as separators too)
+        // See UGENE-7901 for details
+        auto joinedUrls = settings.readUrls.join(";") + ";";
+        config.arguments << argString.arg(READS_ARG).arg(joinedUrls);
         config.arguments << argString.arg(MIN_IDENTITY_ARG).arg(settings.minIdentity);
         config.arguments << argString.arg(ROW_NAMING_ARG).arg(settings.getRowNamingPolicyString());
         config.arguments << argString.arg(MIN_LEN_ARG).arg(settings.minLength);

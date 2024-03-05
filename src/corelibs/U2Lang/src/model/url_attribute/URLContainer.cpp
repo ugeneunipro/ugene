@@ -22,6 +22,7 @@
 #include "URLContainer.h"
 
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/L10n.h>
 
 #include <U2Lang/DbFolderScanner.h>
 #include <U2Lang/SharedDbUrlUtils.h>
@@ -55,6 +56,7 @@ URLContainer* URLContainerFactory::createUrlContainer(const QString& url) {
 
     QFileInfo info(url);
     if (!info.exists()) {
+        coreLog.error(L10N::errorFileNotFound(url));
         return nullptr;
     }
 
