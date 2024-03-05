@@ -4779,6 +4779,28 @@ GUI_TEST_CLASS_DEFINITION(test_7896) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7901) {
+    // Save sanger referense and read (only one) to a directory with commas in path
+    // Run sanger alignment using the dialog and these files
+    // Expected: alignment passed
+    QString pathWithComma = sandBoxDir + "test,7901";
+    CHECK_SET_ERR(QDir().mkpath(pathWithComma), "Failed to create dir: " + pathWithComma);
+
+    QString referenseFilePath = pathWithComma + "/reference.gb";
+    QString readFilePath = pathWithComma + "/sanger_01.ab1";
+    GTFile::copy(testDir + "_common_data/sanger/reference.gb", referenseFilePath);
+    GTFile::copy(testDir + "_common_data/sanger/sanger_01.ab1", readFilePath);
+
+    AlignToReferenceBlastDialogFiller::Settings settings;
+    settings.referenceUrl = referenseFilePath;
+    settings.readUrls = QStringList{readFilePath};
+    settings.outAlignment = sandBoxDir + "out.ugenedb";
+    GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(settings));
+    GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7923) {
     /*
      * 1. Open _common_data/gff/5k_annotation_tables.gff
