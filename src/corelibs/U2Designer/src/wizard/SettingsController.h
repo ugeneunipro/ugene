@@ -35,7 +35,7 @@ public:
     SettingsController(WizardController* wc, SettingsWidget* sw);
     virtual ~SettingsController();
 
-    virtual QWidget* createGUI(U2OpStatus& os);
+    QWidget* createGUI(U2OpStatus& os) override;
 
     static const QString TYPE_URL;
 private slots:

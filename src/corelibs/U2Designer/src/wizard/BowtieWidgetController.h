@@ -34,7 +34,7 @@ public:
     BowtieWidgetController(WizardController* wc, BowtieWidget* bw, int labelSize);
     ~BowtieWidgetController();
 
-    virtual QWidget* createGUI(U2OpStatus& os);
+    QWidget* createGUI(U2OpStatus& os) override;
 
 private slots:
     void sl_browse();

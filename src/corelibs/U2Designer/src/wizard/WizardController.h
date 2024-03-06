@@ -86,15 +86,15 @@ public:
     void clearControllers();
 
     // SchemaConfig
-    virtual RunFileSystem* getRFS();
-    QVariant getAttributeValue(const AttributeInfo& info) const;
-    void setAttributeValue(const AttributeInfo& info, const QVariant& value);
+    RunFileSystem* getRFS() override;
+    QVariant getAttributeValue(const AttributeInfo& info) const override;
+    void setAttributeValue(const AttributeInfo& info, const QVariant& value) override;
 
     Attribute* getAttribute(const AttributeInfo& info) const;
     DelegateTags* getTags(const AttributeInfo& info, bool returnNewTags = false);
     DelegateTags* getTagsWithoutController(const AttributeInfo& info) const;
 
-    bool eventFilter(QObject* watched, QEvent* event);
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
     bool rejected;
@@ -137,18 +137,18 @@ public:
     WidgetCreator(WizardController* wc);
     WidgetCreator(WizardController* wc, int labelSize);
 
-    virtual void visit(AttributeWidget* aw);
-    virtual void visit(WidgetsArea* wa);
-    virtual void visit(GroupWidget* gw);
-    virtual void visit(LogoWidget* lw);
-    virtual void visit(ElementSelectorWidget* esw);
-    virtual void visit(PairedReadsWidget* dsw);
-    virtual void visit(UrlAndDatasetWidget* dsw);
-    virtual void visit(RadioWidget* rw);
-    virtual void visit(SettingsWidget* sw);
-    virtual void visit(BowtieWidget* sw);
-    virtual void visit(TophatSamplesWidget* tsw);
-    virtual void visit(LabelWidget* lw);
+    void visit(AttributeWidget* aw) override;
+    void visit(WidgetsArea* wa) override;
+    void visit(GroupWidget* gw) override;
+    void visit(LogoWidget* lw) override;
+    void visit(ElementSelectorWidget* esw) override;
+    void visit(PairedReadsWidget* dsw) override;
+    void visit(UrlAndDatasetWidget* dsw) override;
+    void visit(RadioWidget* rw) override;
+    void visit(SettingsWidget* sw) override;
+    void visit(BowtieWidget* sw) override;
+    void visit(TophatSamplesWidget* tsw) override;
+    void visit(LabelWidget* lw) override;
 
     QWidget* getResult();
     QList<WidgetController*>& getControllers();
@@ -174,7 +174,7 @@ class PageContentCreator : public TemplatedPageVisitor {
 public:
     PageContentCreator(WizardController* wc);
 
-    virtual void visit(DefaultPageContent* content);
+    void visit(DefaultPageContent* content) override;
     void setPageTitle(const QString& title);
     void setPageSubtitle(const QString& subtitle);
 

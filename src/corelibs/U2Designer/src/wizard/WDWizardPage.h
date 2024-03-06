@@ -32,11 +32,11 @@ class WDWizardPage : public QWizardPage {
 public:
     WDWizardPage(WizardPageController* controller, QWidget* parent = nullptr);
 
-    virtual void initializePage();
-    virtual int nextId() const;
+    void initializePage() override;
+    int nextId() const override;
 
 protected:
-    virtual void showEvent(QShowEvent* event);
+    void showEvent(QShowEvent* event) override;
 
 private:
     WizardPageController* controller;
