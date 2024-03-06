@@ -37,11 +37,11 @@ public:
     NWAligner(const QByteArray& seq1, const QByteArray& seq2);
     virtual ~NWAligner();
 
-    virtual void setSeq1(const QByteArray& value);
-    virtual void setSeq2(const QByteArray& value);
-    virtual void setSeqs(const QByteArray& value1, const QByteArray& value2);
+    void setSeq1(const QByteArray& value) override;
+    void setSeq2(const QByteArray& value) override;
+    void setSeqs(const QByteArray& value1, const QByteArray& value2) override;
 
-    Msa align();
+    Msa align() override;
 
 private:
     SMatrix sMatrix;

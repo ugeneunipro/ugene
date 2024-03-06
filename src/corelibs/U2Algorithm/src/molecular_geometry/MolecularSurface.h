@@ -80,8 +80,8 @@ class U2ALGORITHM_EXPORT MolecularSurfaceCalcTask : public Task {
 public:
     MolecularSurfaceCalcTask(const QString& surfaceTypeName, const QList<SharedAtom>& atoms);
     MolecularSurface* getCalculatedSurface();
-    virtual void run();
-    virtual ReportResult report();
+    void run() override;
+    ReportResult report() override;
 };
 
 class U2ALGORITHM_EXPORT MolecularSurfaceFactory {

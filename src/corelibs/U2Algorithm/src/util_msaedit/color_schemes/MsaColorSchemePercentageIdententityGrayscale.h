@@ -35,7 +35,7 @@ class MsaColorSchemePercentageIdententityGrayscaleFactory : public MsaColorSchem
 public:
     MsaColorSchemePercentageIdententityGrayscaleFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets);
 
-    MsaColorScheme* create(QObject* parent, MsaObject* maObj) const;
+    MsaColorScheme* create(QObject* parent, MsaObject* maObj) const override;
 };
 
 }  // namespace U2
