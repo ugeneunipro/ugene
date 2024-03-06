@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/annotations/merge_2.uwl"
+            in="!common_data_dir!cmdline/annotations/merge_2_a.gb,!common_data_dir!cmdline/annotations/merge_2_b.gb"
+            out="!tmp_data_dir!merge_annotations_02.gb"/>
+
+    <load-document index="doc1" url="cmdline/annotations/merge_2_expected.gb" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="merge_annotations_02.gb" io="local_file" format="genbank" dir="temp"/>
+
+    <compare-annotations-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>
