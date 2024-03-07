@@ -567,8 +567,7 @@ static QString padToLen(const QString& s, int width) {
     }
 }
 
-static QString getLocusTopologyTag(const QString& savedTopology, U2SequenceObject* so) {
-    CHECK(!savedTopology.isEmpty(), EMBLGenbankAbstractDocument::LOCUS_TAG_LINEAR);
+static QString getLocusTopologyTag(U2SequenceObject* so) {
     SAFE_POINT_NN(so, EMBLGenbankAbstractDocument::LOCUS_TAG_LINEAR);
     return so->isCircular()
                ? EMBLGenbankAbstractDocument::LOCUS_TAG_CIRCULAR
@@ -593,18 +592,19 @@ QString GenbankPlainTextFormat::genLocusString(const QList<GObject*>& aos, U2Seq
         locus = padToLen(locus, 56) + getDate();
         return locus;
     }
-    QString molecule, topology, division, date;
+    QString molecule;
+    QString topology = getLocusTopologyTag(so);
+    QString division;
+    QString date;
     if (so->getSequenceInfo().contains(DNAInfo::LOCUS)) {
         DNALocusInfo locusInfo = so->getSequenceInfo().value(DNAInfo::LOCUS).value<DNALocusInfo>();
         molecule = locusInfo.molecule;
-        topology = getLocusTopologyTag(locusInfo.topology, so);
         division = locusInfo.division;
         date = locusInfo.date;
     } else if (!locusStrFromAttr.isEmpty()) {
         QStringList tokens = locusStrFromAttr.split(" ", QString::SkipEmptyParts);
         SAFE_POINT(tokens.size() >= 5, QString("Incorrect number of tokens for attribute %1").arg(locusStrFromAttr), "");
         molecule = tokens[2];
-        topology = getLocusTopologyTag(tokens[4], so);
         division = tokens[3];
     }
     // Name.

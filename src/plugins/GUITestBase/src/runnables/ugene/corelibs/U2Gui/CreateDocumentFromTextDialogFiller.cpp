@@ -47,7 +47,7 @@ CreateDocumentFiller::CreateDocumentFiller(
     documentAlphabet _alphabet = StandardDNA,
     bool _skipUnknownSymbols = true,
     bool _replaceUnknownSymbols = false,
-    const QString _symbol = "",
+    const QString& _symbol = "",
     const QString& _documentLocation = QString(),
     documentFormat _format = FASTA,
     const QString& _sequenceName = QString(),
