@@ -31,6 +31,7 @@
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTUtilsDialog.h>
 
 #include <QClipboard>
@@ -53,7 +54,10 @@
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
@@ -365,6 +369,38 @@ GUI_TEST_CLASS_DEFINITION(test_8049) {
     QString fileContentCircular = GTFile::readAll(fileName);
     QList<QString> linesCircular = fileContentCircular.split("\n");
     CHECK_SET_ERR(linesCircular[0].startsWith("LOCUS       8049_name                  4 bp    DNA     circular     "), "2. Unexpected LOCUS line: " + linesCircular[0]);
+}
+    
+GUI_TEST_CLASS_DEFINITION(test_8052) {
+    // Generate sequence more than 100'000'000 bases length and open it
+    // Select all
+    // Create annotation
+    // Copy annotated sequence to clipboard
+    // Expected: "Block size is too big and can't be copied into the clipboard" in the log
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "test_8052.fa");
+    model.seed = 1;
+    model.length = 100'000'100;
+    GTUtilsDialog::waitForDialog(new DNASequenceGeneratorDialogFiller(model));
+    GTMenu::clickMainMenuItem({"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller());
+    GTKeyboardUtils::selectAll();
+    GTUtilsDialog::checkNoActiveWaiters();
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            GTWidget::getActiveModalWidget();
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new Scenario));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy/Paste", "Copy annotation sequence"}));
+    GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
+    CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
 }
 
 }  // namespace GUITest_regression_scenarios

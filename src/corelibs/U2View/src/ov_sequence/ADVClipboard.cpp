@@ -183,6 +183,15 @@ void ADVClipboard::copySequenceSelection(bool complement, bool amino) {
 
 void ADVClipboard::copyAnnotationSelection(const bool amino) {
     const QList<Annotation*>& selectedAnnotationList = ctx->getAnnotationsSelection()->getAnnotations();
+    qint64 annotationsLength = 0;
+    for (auto annotation : qAsConst(selectedAnnotationList)) {
+        annotationsLength += annotation->getRegionsLen();
+    }
+    if (annotationsLength > U2Clipboard::MAX_SAFE_COPY_TO_CLIPBOARD_SIZE) {
+        uiLog.error(tr("Block size is too big and can't be copied into the clipboard"));
+        return;
+    }
+
     QByteArray resultText;
     for (auto annotation : qAsConst(selectedAnnotationList)) {
         if (!resultText.isEmpty()) {
