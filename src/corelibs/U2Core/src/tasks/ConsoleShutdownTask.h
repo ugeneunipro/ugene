@@ -32,15 +32,15 @@ class U2CORE_EXPORT ConsoleShutdownTask : public Task {
 public:
     ConsoleShutdownTask(QCoreApplication* app, bool exitAppOnTaskError = false);
 
-    void prepare();
+    void prepare() override;
 
-    ReportResult report();
+    ReportResult report() override;
 protected slots:
     void startShutdown();
     void sl_shutdownOnTaskError(Task* t);
 
 protected:
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     void registerShutdownTask();

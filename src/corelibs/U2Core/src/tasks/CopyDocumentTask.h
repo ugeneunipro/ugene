@@ -36,8 +36,8 @@ public:
     CopyDocumentTask(Document* srcDoc, const DocumentFormatId& formatId, const QString& dstUrl, bool addToProject);
     ~CopyDocumentTask();
 
-    virtual void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     Document* takeResult();
 
@@ -59,7 +59,7 @@ class CloneObjectsTask : public Task {
 public:
     CloneObjectsTask(Document* srcDoc, Document* dstDoc);
 
-    virtual void run();
+    void run() override;
 
     QList<GObject*> takeResult();
 

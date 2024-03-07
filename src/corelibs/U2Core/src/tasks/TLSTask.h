@@ -71,8 +71,8 @@ class U2CORE_EXPORT TLSTask : public Task {
 public:
     TLSTask(const QString& _name, TaskFlags _flags = TaskFlags_FOSCOE, bool deleteContext = true);
     ~TLSTask();  // tls context removed here
-    void run();
-    void prepare();
+    void run() override;
+    void prepare() override;
 
 protected:
     // Unsafe run. Use this method in derivate classes

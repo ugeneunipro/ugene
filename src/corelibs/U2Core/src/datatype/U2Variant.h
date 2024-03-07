@@ -58,7 +58,7 @@ public:
     /** File header */
     QString fileHeader;
 
-    U2DataType getType() const;
+    U2DataType getType() const override;
 
     static const QString META_INFO_ATTRIBUTE;
     static const QString HEADER_ATTRIBUTE;

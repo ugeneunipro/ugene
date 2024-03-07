@@ -1,0 +1,6 @@
+<multi-test>
+    <!-- Tool should not crash or freeze on 1800 bp circular sequence. -->
+    <load-document index="inp_doc" url="genbank/CVU55762.gb" io="local_file" format="genbank"/>
+    <find-object-by-name index="inp" doc="inp_doc" name="CVU55762" type="OT_SEQUENCE"/>
+    <mfold inp="inp" region="1..1800"/>
+</multi-test>

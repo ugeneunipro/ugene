@@ -56,7 +56,7 @@ class U2ALGORITHM_EXPORT CreateSubalignmentTask : public DocumentProviderTask {
 public:
     CreateSubalignmentTask(MsaObject* _maObj, const CreateSubalignmentSettings& settings);
 
-    virtual void prepare();
+    void prepare() override;
     const CreateSubalignmentSettings& getSettings() {
         return cfg;
     }

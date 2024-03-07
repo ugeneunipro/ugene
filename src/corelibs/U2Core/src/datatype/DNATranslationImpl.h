@@ -32,14 +32,14 @@ class DNATranslation1to1Impl : public DNATranslation {
 public:
     DNATranslation1to1Impl(const QString& id, const QString& _name, const DNAAlphabet* src, const DNAAlphabet* dst, QByteArray mapper121);
 
-    virtual qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity) const;
-    virtual int translate(char* src_and_dst, int len) const;
+    qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity) const override;
+    int translate(char* src_and_dst, int len) const override;
 
-    virtual bool isOne2One() const {
+    bool isOne2One() const override {
         return true;
     }
 
-    virtual QByteArray getOne2OneMapper() const {
+    QByteArray getOne2OneMapper() const override {
         return map;
     }
 
@@ -250,14 +250,14 @@ public:
     DNATranslation3to1Impl(const QString& _id, const QString& _name, const DNAAlphabet* src, const DNAAlphabet* dst, const QList<Mapping3To1<char>>& mapping, char defaultChar, const QMap<DNATranslationRole, QList<Triplet>>& roles);
     virtual ~DNATranslation3to1Impl();
 
-    virtual qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity) const;
-    virtual int translate(char* src_and_dst, int len) const;
+    qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity) const override;
+    int translate(char* src_and_dst, int len) const override;
 
-    virtual bool isThree2One() const {
+    bool isThree2One() const override {
         return true;
     }
 
-    char translate3to1(char c1, char c2, char c3) const {
+    char translate3to1(char c1, char c2, char c3) const override {
         return index.map(c1, c2, c3);
     }
 
@@ -328,10 +328,10 @@ public:
     virtual ~DNATranslation1to3Impl();
 
     virtual qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity, BackTranslationMode mode) const;
-    virtual qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity) const;
-    virtual int translate(char* src_and_dst, int len) const;
+    qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity) const override;
+    int translate(char* src_and_dst, int len) const override;
 
-    virtual bool isOne2Three() const {
+    bool isOne2Three() const override {
         return true;
     }
 

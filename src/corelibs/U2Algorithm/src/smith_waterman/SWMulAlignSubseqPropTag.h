@@ -34,7 +34,7 @@ public:
     };
 
     inline SWMulAlignSubseqPropTag(const QString _shorthand, const QString _label, PositionType _posType);
-    virtual QString expandTag(const QVariant& argument) const;
+    QString expandTag(const QVariant& argument) const override;
 
 private:
     PositionType posType;

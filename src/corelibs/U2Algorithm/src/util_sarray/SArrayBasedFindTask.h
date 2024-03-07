@@ -53,8 +53,8 @@ class U2ALGORITHM_EXPORT SArrayBasedFindTask : public Task {
     Q_OBJECT
 public:
     SArrayBasedFindTask(SArrayIndex* i, const SArrayBasedSearchSettings& s, bool onlyFirstMatch = false);
-    virtual void run();
-    virtual void cleanup();
+    void run() override;
+    void cleanup() override;
     const QList<int>& getResults() const {
         return results;
     }

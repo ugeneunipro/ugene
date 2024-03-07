@@ -36,8 +36,8 @@ class U2CORE_EXPORT ImportFileToDatabaseTask : public Task {
 public:
     ImportFileToDatabaseTask(const QString& srcUrl, const U2DbiRef& dstDbiRef, const QString& dstFolder, const ImportToDatabaseOptions& options);
 
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 
     const QString& getFilePath() const;
 

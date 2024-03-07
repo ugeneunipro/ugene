@@ -4937,6 +4937,37 @@ GUI_TEST_CLASS_DEFINITION(test_5972_2) {
     CHECK_SET_ERR(check, QString("files are not equal"));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5998) {
+    /*
+    * Open "data/samples/Genbank/murine.gb".
+    * Open "Search in Sequence" options panel tab.
+    * Expand "Save annotation(s) to" options group.
+    * Expected state: there is a default new document path.
+    * Select "New document" option to save annotations to.
+    * Set any non-default path.
+    * Remove the annotations table object from the project.
+    * Expected state: the widget on the options panel has been updated (existing document combobox is cleared), the custom path has not been removed.
+    */
+    GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
+    GTWidget::click(GTWidget::findWidget("ArrowHeader_Save annotation(s) to"));
+
+    auto newTable = GTWidget::findRadioButton("rbCreateNewTable");
+    GTWidget::click(newTable, Qt::LeftButton, GTWidget::getWidgetVisibleCenter(newTable) - QPoint(60, 0));
+
+    QString text = GTLineEdit::getText("leNewTablePath");
+    text.replace(".gb", "22222222.gb");
+    GTLineEdit::setText("leNewTablePath", text);
+
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    CHECK_SET_ERR(GTLineEdit::getText("leNewTablePath") == text, QString("line edit text expected: '%1', actual '%2'").arg(text).arg(GTLineEdit::getText("leNewTablePath")));
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2

@@ -28,13 +28,13 @@ namespace U2 {
 class U2ALGORITHM_EXPORT VanDerWaalsSurface : public MolecularSurface {
 public:
     VanDerWaalsSurface();
-    qint64 estimateMemoryUsage(int numberOfAtoms);
-    virtual void calculate(const QList<SharedAtom>& atoms, int& progress);
+    qint64 estimateMemoryUsage(int numberOfAtoms) override;
+    void calculate(const QList<SharedAtom>& atoms, int& progress) override;
 };
 
 class U2ALGORITHM_EXPORT VanDerWaalsSurfaceFactory : public MolecularSurfaceFactory {
 public:
-    virtual MolecularSurface* createInstance() const;
+    MolecularSurface* createInstance() const override;
 };
 
 }  // namespace U2

@@ -34,9 +34,9 @@ class MsaHighlightingSchemeConservation : public MsaHighlightingScheme {
 public:
     MsaHighlightingSchemeConservation(QObject* parent, const MsaHighlightingSchemeFactory* factory, MsaObject* maObj);
 
-    void process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const;
-    void applySettings(const QVariantMap& settings);
-    QVariantMap getSettings() const;
+    void process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const override;
+    void applySettings(const QVariantMap& settings) override;
+    QVariantMap getSettings() const override;
 
 private slots:
     void sl_resetMap();
@@ -53,7 +53,7 @@ class U2ALGORITHM_EXPORT MsaHighlightingSchemeConservationFactory : public MsaHi
 public:
     MsaHighlightingSchemeConservationFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets);
 
-    MsaHighlightingScheme* create(QObject* parent, MsaObject* maObj) const;
+    MsaHighlightingScheme* create(QObject* parent, MsaObject* maObj) const override;
 };
 
 }  // namespace U2

@@ -33,7 +33,7 @@ class U2CORE_EXPORT CopyDataTask : public Task {
 public:
     CopyDataTask(IOAdapterFactory* ioFrom, const GUrl& urlFrom, IOAdapterFactory* ioTo, const GUrl& urlTo);
 
-    virtual void run();
+    void run() override;
 
 private:
     static const int BUFFSIZE = 32 * 1024;

@@ -30,8 +30,8 @@ class U2CORE_EXPORT FolderSelection : public GSelection {
 public:
     FolderSelection(QObject* p = nullptr);
 
-    bool isEmpty() const;
-    void clear();
+    bool isEmpty() const override;
+    void clear() override;
 
     const QList<Folder>& getSelection() const;
     void setSelection(const QList<Folder>& folders);

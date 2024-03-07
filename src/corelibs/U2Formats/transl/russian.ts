@@ -2383,9 +2383,9 @@
         <translation>Невозможно конвертировать pnext в число: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="225"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="223"/>
         <source>Error checking SQLite database: %1!</source>
-        <translation>Error checking SQLite database: %1!</translation>
+        <translation>Ошибка в базе данных SQLite: %1!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="238"/>

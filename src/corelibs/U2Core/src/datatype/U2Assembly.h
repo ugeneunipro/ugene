@@ -264,7 +264,7 @@ public:
 
     U2DataId referenceId;
 
-    U2DataType getType() const {
+    U2DataType getType() const override {
         return U2Type::Assembly;
     }
 };

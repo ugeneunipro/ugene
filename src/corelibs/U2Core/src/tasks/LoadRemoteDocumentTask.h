@@ -112,12 +112,12 @@ class U2CORE_EXPORT BaseLoadRemoteDocumentTask : public DocumentProviderTask {
     Q_OBJECT
 public:
     BaseLoadRemoteDocumentTask(const QString& downloadPath = QString(), const QVariantMap& hints = QVariantMap(), TaskFlags flags = TaskFlags(TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText));
-    virtual void prepare();
+    void prepare() override;
     QString getLocalUrl() {
         return fullPath;
     }
 
-    virtual ReportResult report();
+    ReportResult report() override;
 
     static bool prepareDownloadDirectory(QString& path);
     static QString getDefaultDownloadDirectory();
@@ -161,10 +161,10 @@ public:
     }
 
 protected:
-    virtual QString getFileFormat(const QString& dbid);
-    virtual GUrl getSourceUrl();
-    virtual QString getFileName();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QString getFileFormat(const QString& dbid) override;
+    GUrl getSourceUrl() override;
+    QString getFileName() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     QString getRetType() const;
@@ -208,10 +208,10 @@ public:
                            const QString& retType,
                            const QString& fullPath);
 
-    void run();
+    void run() override;
 
 private slots:
-    void sl_replyFinished(QNetworkReply* reply);
+    void sl_replyFinished(QNetworkReply* reply) override;
     void sl_cancelCheck();
 
 private:
@@ -232,11 +232,11 @@ class U2CORE_EXPORT EntrezQueryTask : public BaseEntrezRequestTask {
 public:
     EntrezQueryTask(QXmlDefaultHandler* resultHandler, const QString& query);
 
-    void run();
+    void run() override;
     const QXmlDefaultHandler* getResultHandler() const;
 
 private slots:
-    void sl_replyFinished(QNetworkReply* reply);
+    void sl_replyFinished(QNetworkReply* reply) override;
 
 private:
     void runRequest(const QUrl& requestUrl);
@@ -256,11 +256,11 @@ class U2CORE_EXPORT ESearchResultHandler : public QXmlDefaultHandler {
 
 public:
     ESearchResultHandler();
-    bool startElement(const QString& namespaceURI, const QString& localName, const QString& qName, const QXmlAttributes& attributes);
-    bool endElement(const QString& namespaceURI, const QString& localName, const QString& qName);
-    bool characters(const QString& str);
-    bool fatalError(const QXmlParseException& exception);
-    QString errorString() const {
+    bool startElement(const QString& namespaceURI, const QString& localName, const QString& qName, const QXmlAttributes& attributes) override;
+    bool endElement(const QString& namespaceURI, const QString& localName, const QString& qName) override;
+    bool characters(const QString& str) override;
+    bool fatalError(const QXmlParseException& exception) override;
+    QString errorString() const override {
         return errorStr;
     }
     const QList<QString>& getIdList() const {
@@ -290,11 +290,11 @@ class U2CORE_EXPORT ESummaryResultHandler : public QXmlDefaultHandler {
 
 public:
     ESummaryResultHandler();
-    bool startElement(const QString& namespaceURI, const QString& localName, const QString& qName, const QXmlAttributes& attributes);
-    bool endElement(const QString& namespaceURI, const QString& localName, const QString& qName);
-    bool characters(const QString& str);
-    bool fatalError(const QXmlParseException& exception);
-    QString errorString() const {
+    bool startElement(const QString& namespaceURI, const QString& localName, const QString& qName, const QXmlAttributes& attributes) override;
+    bool endElement(const QString& namespaceURI, const QString& localName, const QString& qName) override;
+    bool characters(const QString& str) override;
+    bool fatalError(const QXmlParseException& exception) override;
+    QString errorString() const override {
         return errorStr;
     }
     const QList<EntrezSummary>& getResults() const {

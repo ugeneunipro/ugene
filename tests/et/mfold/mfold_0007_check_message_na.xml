@@ -1,0 +1,6 @@
+<multi-test>
+    <!-- Check that Na ionic concentration is correctly passed as argument. -->
+    <load-document index="inp_doc" url="abif/19_022.ab1" io="local_file" format="abi"/>
+    <find-object-by-name index="inp" doc="inp_doc" name="19" type="OT_SEQUENCE"/>
+    <mfold inp="inp" region="1..30" NA_CONC="0.55" message="NA_CONC=0.55"/>
+</multi-test>

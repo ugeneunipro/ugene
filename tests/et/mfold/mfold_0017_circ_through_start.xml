@@ -1,0 +1,6 @@
+<multi-test>
+    <!-- Circular region around junction point should work correctly. -->
+    <load-document index="inp_doc" url="et/mfold/MG551956.gb" io="local_file" format="genbank"/>
+    <find-object-by-name index="inp" doc="inp_doc" name="MG551956" type="OT_SEQUENCE"/>
+    <mfold inp="inp" region="460..440" message="Sequence length is 738"/>
+</multi-test>

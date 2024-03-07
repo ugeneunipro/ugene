@@ -34,7 +34,7 @@ class U2CORE_EXPORT DeleteObjectsTask : public Task {
 public:
     DeleteObjectsTask(const QList<GObject*>& objs);
 
-    void run();
+    void run() override;
 
 private:
     QMap<U2DbiRef, QList<U2DataId>> dbiRef2Objs;
@@ -45,7 +45,7 @@ class U2CORE_EXPORT DeleteFoldersTask : public Task {
 public:
     DeleteFoldersTask(const QList<Folder>& folders);
 
-    void run();
+    void run() override;
 
 private:
     QMultiMap<U2DbiRef, QString> dbi2Path;

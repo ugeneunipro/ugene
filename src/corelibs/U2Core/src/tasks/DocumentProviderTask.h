@@ -41,7 +41,7 @@ public:
     virtual Document* getDocument(bool mainThread = true);
     virtual Document* takeDocument(bool mainThread = true);
 
-    virtual void cleanup();
+    void cleanup() override;
     virtual QString getDocumentDescription() const {
         return documentDescription;
     }

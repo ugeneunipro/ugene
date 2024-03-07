@@ -30,7 +30,7 @@ class MsaColorSchemePercentageIdententityColoredFactory : public MsaColorSchemeF
 public:
     MsaColorSchemePercentageIdententityColoredFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets);
 
-    MsaColorScheme* create(QObject* parent, MsaObject* maObj) const;
+    MsaColorScheme* create(QObject* parent, MsaObject* maObj) const override;
 };
 
 }  // namespace U2

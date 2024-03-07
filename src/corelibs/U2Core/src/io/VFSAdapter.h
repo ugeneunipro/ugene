@@ -32,22 +32,22 @@ class U2CORE_EXPORT VFSAdapterFactory : public IOAdapterFactory {
 public:
     VFSAdapterFactory(QObject* p = nullptr);
 
-    virtual IOAdapter* createIOAdapter();
+    IOAdapter* createIOAdapter() override;
 
-    virtual IOAdapterId getAdapterId() const {
+    IOAdapterId getAdapterId() const override {
         return BaseIOAdapters::VFS_FILE;
     }
 
-    virtual const QString& getAdapterName() const {
+    const QString& getAdapterName() const override {
         return name;
     }
 
-    virtual bool isIOModeSupported(IOAdapterMode m) const {
+    bool isIOModeSupported(IOAdapterMode m) const override {
         Q_UNUSED(m);
         return true;
     }  // files can be read and be written
 
-    virtual TriState isResourceAvailable(const GUrl& url) const {
+    TriState isResourceAvailable(const GUrl& url) const override {
         assert(url.isVFSFile());
         Q_UNUSED(url);
         return TriState_Yes;
@@ -66,31 +66,31 @@ public:
             close();
     }
 
-    virtual bool open(const GUrl& url, IOAdapterMode m);
+    bool open(const GUrl& url, IOAdapterMode m) override;
 
-    virtual bool isOpen() const {
+    bool isOpen() const override {
         return buffer != nullptr;
     }
 
-    virtual void close();
+    void close() override;
 
-    virtual qint64 readBlock(char* data, qint64 maxSize);
+    qint64 readBlock(char* data, qint64 maxSize) override;
 
-    virtual qint64 writeBlock(const char* data, qint64 size);
+    qint64 writeBlock(const char* data, qint64 size) override;
 
-    virtual bool skip(qint64 nBytes);
+    bool skip(qint64 nBytes) override;
 
-    virtual qint64 left() const;
+    qint64 left() const override;
 
-    virtual int getProgress() const;
+    int getProgress() const override;
 
-    virtual qint64 bytesRead() const;
+    qint64 bytesRead() const override;
 
-    virtual GUrl getURL() const {
+    GUrl getURL() const override {
         return url;
     }
 
-    virtual QString errorString() const;
+    QString errorString() const override;
 
 private:
     GUrl url;
