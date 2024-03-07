@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <QTreeWidgetItem>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/PluginModel.h>
 
@@ -31,8 +33,6 @@
 #include "RemoteBLASTTask.h"
 #include "RemoteBLASTWorker.h"
 #include "SendSelectionDialog.h"
-
-#include <QTreeWidgetItem>
 
 namespace U2 {
 
@@ -71,9 +71,9 @@ private:
     // Check annotation selection and if some primer pairs group(s) if (are) selected
     // (or its (their) parent, which named "top_primers"), than we should blast these primer pairs
     static const QList<QPair<Annotation*, Annotation*>> getSelectedPrimerPairs(AnnotationGroupSelection* ags);
-    // Check, that two selected annotations could be tranformed into a primer pair
-    static const bool isTransformIntoPrimerPairEnabled(const QList<QTreeWidgetItem*>& items);
-    static const int calculateExistedPrimerPairsNumber(AnnotationTableObject* ato);
+    // Check, that two selected annotations could be transformed into a primer pair.
+    static bool isTransformIntoPrimerPairEnabled(const QList<QTreeWidgetItem*>& items);
+    static int calculateExistedPrimerPairsNumber(AnnotationTableObject* ato);
 };
 
 class RemoteBLASTPluginTests {

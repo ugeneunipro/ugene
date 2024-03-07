@@ -21,9 +21,7 @@
 
 #include "RemoteBLASTPlugin.h"
 
-#include <QCoreApplication>
 #include <QDir>
-#include <QDirIterator>
 #include <QMenu>
 #include <QMessageBox>
 
@@ -32,8 +30,6 @@
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/CreateAnnotationTask.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DataBaseRegistry.h>
 #include <U2Core/GAutoDeleteList.h>
@@ -46,7 +42,6 @@
 
 #include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
-#include <U2Test/XMLTestFormat.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
@@ -182,7 +177,6 @@ void RemoteBLASTViewContext::sl_showDialog() {
     DNATranslation* complT = dlg->translateToAmino ? seqCtx->getComplementTT() : 0;
     cfg.complT = complT;
 
-
     if (selectedPrimerPairs.isEmpty()) {
         DNASequenceSelection* s = seqCtx->getSequenceSelection();
         QVector<U2Region> regions;
@@ -310,7 +304,7 @@ const QList<QPair<Annotation*, Annotation*>> RemoteBLASTViewContext::getSelected
     return primerAnnotationPairs;
 }
 
-const bool RemoteBLASTViewContext::isTransformIntoPrimerPairEnabled(const QList<QTreeWidgetItem*>& items) {
+bool RemoteBLASTViewContext::isTransformIntoPrimerPairEnabled(const QList<QTreeWidgetItem*>& items) {
     // There are two primers - the left one and the right one.
     CHECK(items.size() == 2, false);
 
@@ -345,7 +339,7 @@ const bool RemoteBLASTViewContext::isTransformIntoPrimerPairEnabled(const QList<
     return true;
 }
 
-const int RemoteBLASTViewContext::calculateExistedPrimerPairsNumber(AnnotationTableObject* ato) {
+int RemoteBLASTViewContext::calculateExistedPrimerPairsNumber(AnnotationTableObject* ato) {
     int movedPairsNumber = 0;
     auto rootGroup = ato->getRootGroup();
     SAFE_POINT_NN(rootGroup, 0);
@@ -368,7 +362,6 @@ const int RemoteBLASTViewContext::calculateExistedPrimerPairsNumber(AnnotationTa
 
     return movedPairsNumber;
 }
-
 
 QList<XMLTestFactory*> RemoteBLASTPluginTests::createTestFactories() {
     QList<XMLTestFactory*> res;
