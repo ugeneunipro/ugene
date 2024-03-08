@@ -68,7 +68,6 @@ public:
     static bool validate(const Workflow::Schema& s, QStringList& errs);
 
     static QList<Descriptor> findMatchingTypes(DataTypePtr set, DataTypePtr elementDataType);
-    static QStringList findMatchingTypesAsStringList(DataTypePtr set, DataTypePtr elementDatatype);
     static QStringList candidatesAsStringList(const QList<Descriptor>& candidates);
     static QList<Descriptor> findMatchingCandidates(DataTypePtr from, DataTypePtr to, const Descriptor& key);
     static QList<Descriptor> findMatchingCandidates(DataTypePtr from, DataTypePtr elementDatatype);
@@ -94,8 +93,6 @@ public:
     static QString generateIdFromName(const QString& name);
 
     static void print(const QString& slotString, const QVariant& data, DataTypePtr type, WorkflowContext* context);
-
-    static bool validateSchemaForIncluding(const Schema& s, QString& error);
 
     static void extractPathsFromBindings(StrStrMap& busMap, SlotPathMap& pathMap);
 
@@ -189,7 +186,6 @@ public:
     static const QString ID_ACCEPTABLE_SYMBOLS_TEMPLATE;
 
     static const QRegularExpression ACCEPTABLE_NAME;
-    static const QRegularExpression INACCEPTABLE_SYMBOL_IN_NAME;
     static const QRegularExpression ACCEPTABLE_ID;
     static const QRegularExpression INACCEPTABLE_SYMBOLS_IN_ID;
 };
