@@ -208,7 +208,6 @@ void ADVClipboard::copyAnnotationSelection(const bool amino) {
         }
         DNATranslation* complTT = annotation->getStrand().isComplementary() ? seqCtx->getComplementTT() : nullptr;
         DNATranslation* aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
-        U2OpStatus2Log os;
         // BUG528: add alphabet symbol role: insertion mark and use it instead of the U2Msa::GAP_CHAR
         const U2EntityRef& sequenceObjectRef = seqCtx->getSequenceRef();
         QByteArray annotationSequence = AnnotationSelection::getSequenceUnderAnnotation(sequenceObjectRef, annotation, complTT, aminoTT, os);

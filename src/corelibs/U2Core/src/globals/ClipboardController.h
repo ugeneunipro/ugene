@@ -50,7 +50,7 @@ public:
      * Check if text of .@clipboardSize could be copied to clipboard or not.
      * Set error to @os if not.
      **/
-    static const void checkCopyToClipboardSize(qint64 clipboardSize, U2OpStatus& os) {
+    static void checkCopyToClipboardSize(qint64 clipboardSize, U2OpStatus& os) {
         bool isGuiMode = qgetenv("UGENE_GUI_TEST") == "1";
         if (clipboardSize > (isGuiMode ? U2Clipboard::UGENE_GUI_TEST_MAX_SAFE_COPY_TO_CLIPBOARD_SIZE
                                       : U2Clipboard::MAX_SAFE_COPY_TO_CLIPBOARD_SIZE)) {
