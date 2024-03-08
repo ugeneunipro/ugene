@@ -191,10 +191,13 @@ void MaEditorNameList::sl_copyWholeRow() {
     for (const QRect& selectedRect : qAsConst(selectedRects)) {
         estimatedResultLength += selectedRect.height() * maLength;
     }
-    if (estimatedResultLength > U2Clipboard::MAX_SAFE_COPY_TO_CLIPBOARD_SIZE) {
-        uiLog.error(tr("Block size is too big and can't be copied into the clipboard"));
+    U2OpStatus2Log os;
+    U2Clipboard::checkCopyToClipboardSize(estimatedResultLength, os);
+    if (os.hasError()) {
+        NotificationStack::addNotification(os.getError(), NotificationType::Error_Not);
         return;
     }
+
     QString resultText;
     for (const QRect& selectedRect : qAsConst(selectedRects)) {
         for (int viewRowIndex = selectedRect.top(); viewRowIndex <= selectedRect.bottom(); viewRowIndex++) {
@@ -204,7 +207,6 @@ void MaEditorNameList::sl_copyWholeRow() {
             if (!resultText.isEmpty()) {
                 resultText += "\n";
             }
-            U2OpStatus2Log os;
             QByteArray sequence = row->toByteArray(os, maObject->getLength());
             CHECK_OP_EXT(os, uiLog.error(os.getError()), );
             resultText.append(QString::fromLatin1(sequence));

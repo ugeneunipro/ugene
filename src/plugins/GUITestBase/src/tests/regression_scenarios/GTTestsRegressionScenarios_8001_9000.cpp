@@ -46,6 +46,7 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsLog.h"
+#include "GTUtilsNotifications.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
@@ -372,17 +373,15 @@ GUI_TEST_CLASS_DEFINITION(test_8049) {
 }
     
 GUI_TEST_CLASS_DEFINITION(test_8052) {
-    // Generate sequence more than 100'000'000 bases length and open it
+    // UGENE_GUI_TEST=1 env variable is required for this test
+    // Open _common_data/fasta/5mbf.fa.gz
     // Select all
     // Create annotation
     // Copy annotated sequence to clipboard
-    // Expected: "Block size is too big and can't be copied into the clipboard" in the log
-    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "test_8052.fa");
-    model.seed = 1;
-    model.length = 100'000'100;
-    GTUtilsDialog::waitForDialog(new DNASequenceGeneratorDialogFiller(model));
-    GTMenu::clickMainMenuItem({"Tools", "Random sequence generator..."});
-    GTUtilsTaskTreeView::waitTaskFinished();
+    // Expected: Notification "Block size is too big and can't be copied into the clipboard" appeared
+    GTFileDialog::openFile(testDir + "_common_data/fasta/5mbf.fa.gz");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller());
     GTKeyboardUtils::selectAll();
     GTUtilsDialog::checkNoActiveWaiters();
@@ -396,11 +395,9 @@ GUI_TEST_CLASS_DEFINITION(test_8052) {
 
     GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new Scenario));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-
-    GTLogTracer lt;
+    GTUtilsNotifications::waitForNotification(true, "Block size is too big and can't be copied into the clipboard");
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy/Paste", "Copy annotation sequence"}));
     GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
-    CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
 }
 
 }  // namespace GUITest_regression_scenarios

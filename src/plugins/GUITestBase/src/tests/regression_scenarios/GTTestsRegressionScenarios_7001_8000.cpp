@@ -2106,22 +2106,19 @@ GUI_TEST_CLASS_DEFINITION(test_7476) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7482) {
-    // Generate sequence more than 100'000'000 bases length and open it
+    // UGENE_GUI_TEST=1 env variable is required for this test
+    // Open _common_data/fasta/5mbf.fa.gz
     // Select all
     // Copy to clipboard
-    // Expected: "Block size is too big and can't be copied into the clipboard" in the log
-    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "test_7403.fa");
-    model.seed = 1;
-    model.length = 100'000'100;
-    GTUtilsDialog::waitForDialog(new DNASequenceGeneratorDialogFiller(model));
-    GTMenu::clickMainMenuItem({"Tools", "Random sequence generator..."});
-    GTUtilsTaskTreeView::waitTaskFinished();
+    // Expected: Notification "Block size is too big and can't be copied into the clipboard" appeared
+    GTFileDialog::openFile(testDir + "_common_data/fasta/5mbf.fa.gz");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller());
     GTKeyboardUtils::selectAll();
     GTUtilsDialog::checkNoActiveWaiters();
-    GTLogTracer lt;
+    GTUtilsNotifications::waitForNotification(true, "Block size is too big and can't be copied into the clipboard");
     GTKeyboardUtils::copy();
-    CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7487_1) {
@@ -4736,20 +4733,16 @@ GUI_TEST_CLASS_DEFINITION(test_7867) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7885) {
-    // Open _common_data/scenarios/_regression/7885/test_7885.aln
+    // UGENE_GUI_TEST=1 env variable is required for this test
+    // Open _common_data/scenarios/_regression/7885/test_7885_1.aln
     // Select sequencef from 2 to the last one
     // Click Ctrl + x
-    // Expected: nothing has been cut, error in the log
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7885/", "test_7885.aln");
+    // Expected: Notification "Block size is too big and can't be copied into the clipboard" appeared
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7885/", "test_7885_1.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsMsaEditor::clickSequenceName("seq2");
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTKeyboardDriver::keyClick(Qt::Key_PageDown);
-    GTUtilsMsaEditor::clickSequenceName("seq2_1_5_2_1_1");
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTLogTracer lt;
+    GTUtilsMsaEditor::clickSequenceName("default");
+    GTUtilsNotifications::waitForNotification(true, "Block size is too big and can't be copied into the clipboard");
     GTKeyboardUtils::cut();
-    CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum() != 0, "No selected sequences");
 }
 
