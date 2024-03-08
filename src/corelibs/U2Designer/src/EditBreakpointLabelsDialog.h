@@ -42,7 +42,7 @@ public:
     ~EditBreakpointLabelsDialog();
 
 protected:
-    virtual void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent(QKeyEvent* event) override;
 
 signals:
     void si_labelsCreated(QStringList newLabels);

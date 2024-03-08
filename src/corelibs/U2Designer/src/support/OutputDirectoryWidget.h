@@ -48,7 +48,7 @@ private slots:
     void sl_browse();
 
 protected:
-    void hideEvent(QHideEvent* event);
+    void hideEvent(QHideEvent* event) override;
 
 private:
     bool commitOnHide;

@@ -38,7 +38,7 @@ class TophatSamplesWidgetController : public WidgetController {
 public:
     TophatSamplesWidgetController(WizardController* wc, TophatSamplesWidget* tsw);
 
-    virtual QWidget* createGUI(U2OpStatus& os);
+    QWidget* createGUI(U2OpStatus& os) override;
 
     void renameSample(int pos, const QString& newName, U2OpStatus& os);
     bool removeSample(int pos, QStringList& insertToFirst, QList<TophatSample>& append);

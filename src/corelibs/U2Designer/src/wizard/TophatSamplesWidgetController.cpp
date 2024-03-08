@@ -248,7 +248,7 @@ public:
     }
 
 protected:
-    void focusOutEvent(QFocusEvent* e) {
+    void focusOutEvent(QFocusEvent* e) override {
         bool renamed = samples->rename(this);
         if (!renamed) {
             setText(initialName);

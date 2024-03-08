@@ -40,9 +40,9 @@ public:
         : ActorConfigurationEditor(), grouperModel(nullptr) {
     }
     virtual ~GrouperEditor();
-    virtual QWidget* getWidget();
-    virtual void setConfiguration(Actor* actor);
-    virtual ConfigurationEditor* clone() {
+    QWidget* getWidget() override;
+    void setConfiguration(Actor* actor) override;
+    ConfigurationEditor* clone() override {
         return new GrouperEditor(*this);
     }
 

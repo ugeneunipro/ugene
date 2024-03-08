@@ -160,43 +160,43 @@ public:
     WidgetDefaulter(WizardController* wc)
         : wc(wc) {
     }
-    void visit(AttributeWidget* aw) {
+    void visit(AttributeWidget* aw) override {
         Attribute* attr = wc->getAttribute(aw->getInfo());
         CHECK(attr != nullptr, );
         wc->setAttributeValue(aw->getInfo(), attr->getDefaultPureValue());
     }
-    void visit(WidgetsArea* wa) {
+    void visit(WidgetsArea* wa) override {
         foreach (WizardWidget* w, wa->getWidgets()) {
             WidgetDefaulter defaulter(wc);
             w->accept(&defaulter);
         }
     }
-    void visit(GroupWidget* gw) {
+    void visit(GroupWidget* gw) override {
         visit((WidgetsArea*)gw);
     }
-    void visit(LogoWidget*) {
+    void visit(LogoWidget*) override {
     }
-    void visit(ElementSelectorWidget*) {
+    void visit(ElementSelectorWidget*) override {
     }
-    void visit(PairedReadsWidget* prw) {
+    void visit(PairedReadsWidget* prw) override {
         foreach (const AttributeInfo& info, prw->getInfos()) {
             Attribute* attr = wc->getAttribute(info);
             CHECK(attr != nullptr, );
             wc->setAttributeValue(info, attr->getDefaultPureValue());
         }
     }
-    void visit(UrlAndDatasetWidget* udw) {
+    void visit(UrlAndDatasetWidget* udw) override {
         foreach (const AttributeInfo& info, udw->getInfos()) {
             Attribute* attr = wc->getAttribute(info);
             CHECK(attr != nullptr, );
             wc->setAttributeValue(info, attr->getDefaultPureValue());
         }
     }
-    void visit(RadioWidget*) {
+    void visit(RadioWidget*) override {
     }
-    void visit(SettingsWidget*) {
+    void visit(SettingsWidget*) override {
     }
-    void visit(BowtieWidget* bw) {
+    void visit(BowtieWidget* bw) override {
         Attribute* dirAttr = wc->getAttribute(bw->idxDir);
         CHECK(dirAttr != nullptr, );
         wc->setAttributeValue(bw->idxDir, dirAttr->getDefaultPureValue());
@@ -206,7 +206,7 @@ public:
         wc->setAttributeValue(bw->idxName, nameAttr->getDefaultPureValue());
     }
 
-    void visit(TophatSamplesWidget* tsw) {
+    void visit(TophatSamplesWidget* tsw) override {
         QList<TophatSample> defSamples;
         defSamples << TophatSample("Sample1", QStringList());
         defSamples << TophatSample("Sample2", QStringList());
@@ -214,7 +214,7 @@ public:
         wc->setAttributeValue(tsw->samplesAttr, defaultSamples);
     }
 
-    void visit(LabelWidget*) {
+    void visit(LabelWidget*) override {
     }
 
 private:
@@ -226,7 +226,7 @@ public:
     PageDefaulter(WizardController* wc)
         : wc(wc) {
     }
-    virtual void visit(DefaultPageContent* dp) {
+    void visit(DefaultPageContent* dp) override {
         WidgetDefaulter defaulter(wc);
         dp->getParamsArea()->accept(&defaulter);
     }
