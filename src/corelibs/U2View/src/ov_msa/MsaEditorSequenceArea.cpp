@@ -230,7 +230,7 @@ void MsaEditorSequenceArea::copySelection(U2OpStatus& os) {
         estimatedResultLength += selectionRect.width() * selectionRect.height();
     }
     U2Clipboard::checkCopyToClipboardSize(estimatedResultLength, os);
-    CHECK_OP(os);
+    CHECK_OP(os, );
 
     for (const QRect& selectionRect : qAsConst(selectionRects)) {
         for (int viewRowIndex = selectionRect.top(); viewRowIndex <= selectionRect.bottom() && !os.hasError(); viewRowIndex++) {
