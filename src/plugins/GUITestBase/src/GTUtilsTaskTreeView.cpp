@@ -30,7 +30,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Task.h>
-#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -44,21 +43,25 @@ using namespace HI;
 
 const QString GTUtilsTaskTreeView::widgetName = DOCK_TASK_TREE_VIEW;
 
-void GTUtilsTaskTreeView::waitTaskFinished(long timeoutMillis) {
+void GTUtilsTaskTreeView::waitTaskFinished(int timeoutMillis) {
     TaskScheduler* scheduler = AppContext::getTaskScheduler();
-    if (scheduler->getTopLevelTasks().isEmpty() && !GTThread::isMainThread()) {
+    QList<Task*> topLevelTasks = scheduler->getTopLevelTasks();
+    if (topLevelTasks.isEmpty() && !GTThread::isMainThread()) {
         // Give QT a chance to process all events first.
         // The result of this processing may be new tasks we will wait for.
         GTThread::waitForMainThread();
+        topLevelTasks = scheduler->getTopLevelTasks();
     }
 
     // Wait up to 'timeoutMillis' for all tasks to finish.
-    for (int time = 0; time < timeoutMillis && !scheduler->getTopLevelTasks().isEmpty(); time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
-    }
 
-    GT_CHECK_RESULT(scheduler->getTopLevelTasks().isEmpty(),
-                    "waitTaskFinished active tasks count: " + getTasksInfo(scheduler->getTopLevelTasks(), 0), );
+    for (int time = 0; time < timeoutMillis && !topLevelTasks.isEmpty(); time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+        topLevelTasks = scheduler->getTopLevelTasks();
+    }
+    if (!topLevelTasks.isEmpty()) {
+        GT_FAIL("waitTaskFinished tasks: " + getTasksInfo(topLevelTasks, 0), );
+    }
 }
 
 QString GTUtilsTaskTreeView::getTasksInfo(QList<Task*> tasks, int level) {
@@ -236,29 +239,6 @@ QString GTUtilsTaskTreeView::getTaskStatus(const QString& itemName) {
     openView();
     GTGlobals::sleep(500);
     return getTreeWidgetItem(itemName)->text(1);
-}
-
-int GTUtilsTaskTreeView::getTaskProgress(const QString& itemName, bool failIfNotFound) {
-    if (!isViewOpened()) {
-        openView();
-    }
-    auto item = getTreeWidgetItem(itemName, failIfNotFound);
-    CHECK(item != nullptr, -1);
-
-    auto itemText = item->text(2);
-    bool ok = false;
-    auto number = itemText.remove("%").toInt(&ok);
-    CHECK(ok, -2);
-
-    return number;
-}
-
-void GTUtilsTaskTreeView::waitTaskProgressMoreThan(const QString& itemName, int taskProgress) {
-    int progress = -1;
-    for (int time = 0; time < GT_OP_WAIT_MILLIS && progress <= taskProgress; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        progress = GTUtilsTaskTreeView::getTaskProgress(itemName, false);
-    }
 }
 
 SchedulerListener::SchedulerListener()
