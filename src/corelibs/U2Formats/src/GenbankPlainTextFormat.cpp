@@ -624,9 +624,6 @@ QString GenbankPlainTextFormat::genLocusString(const QList<GObject*>& aos, U2Seq
     if (molecule.length() == 0) {
         molecule = getLocusMoleculeTypeFromAlphabet(so);
     }
-    if (molecule.size() >= 3 && molecule.at(2) != '-') {
-        locus.append("   ");
-    }
     locus = padToLen(locus.append(molecule), 43);
 
     // Topology.

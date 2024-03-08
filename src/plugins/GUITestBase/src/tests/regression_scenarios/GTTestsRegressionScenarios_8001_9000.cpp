@@ -356,7 +356,7 @@ GUI_TEST_CLASS_DEFINITION(test_8049) {
 
     QString fileContentLinear = GTFile::readAll(fileName);
     QList<QString> linesLinear = fileContentLinear.split("\n");
-    CHECK_SET_ERR(linesLinear[0].startsWith("LOCUS       8049_name                  4 bp       DNA  linear       "), "Unexpected LOCUS line: " + linesLinear[0]);
+    CHECK_SET_ERR(linesLinear[0].startsWith("LOCUS       8049_name                  4 bp    DNA     linear       "), "1. Unexpected LOCUS line: " + linesLinear[0]);
 
     GTUtilsProjectTreeView::markSequenceAsCircular("8049_name");
     GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
@@ -364,7 +364,7 @@ GUI_TEST_CLASS_DEFINITION(test_8049) {
 
     QString fileContentCircular = GTFile::readAll(fileName);
     QList<QString> linesCircular = fileContentCircular.split("\n");
-    CHECK_SET_ERR(linesCircular[0].startsWith("LOCUS       8049_name                  4 bp       DNA  circular     "), "Unexpected LOCUS line: " + linesCircular[0]);
+    CHECK_SET_ERR(linesCircular[0].startsWith("LOCUS       8049_name                  4 bp    DNA     circular     "), "2. Unexpected LOCUS line: " + linesCircular[0]);
 }
 
 }  // namespace GUITest_regression_scenarios
