@@ -24,11 +24,9 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/QVariantUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -113,7 +111,7 @@ void VectorNtiSequenceFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, 
 
     // write mandatory locus string
     QString locusString = genLocusString(anns, seq, locusFromAttributes);
-    if (!writeKeyword(io, os, DNAInfo::LOCUS, locusString, false)) {
+    if (!writeKeyword(io, os, DNAInfo::LOCUS, locusString)) {
         return;
     }
     // write other keywords
@@ -128,12 +126,12 @@ void VectorNtiSequenceFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, 
 
     if (!annsAndSeqObjs.isEmpty()) {
         QString unimark = annsAndSeqObjs[0]->getGObjectName();
-        if (!writeKeyword(io, os, UGENE_MARK, unimark, false)) {
+        if (!writeKeyword(io, os, UGENE_MARK, unimark)) {
             return;
         }
 
         for (int x = 1; x < annsAndSeqObjs.size(); x++) {
-            if (!writeKeyword(io, os, QString(), annsAndSeqObjs[x]->getGObjectName(), false)) {
+            if (!writeKeyword(io, os, QString(), annsAndSeqObjs[x]->getGObjectName())) {
                 return;
             }
         }
@@ -209,7 +207,7 @@ U2FeatureType VectorNtiSequenceFormat::getFeatureType(const QString& typeString)
     }
 }
 
-QString VectorNtiSequenceFormat::getFeatureTypeString(U2FeatureType featureType, bool isAmino) const {
+QString VectorNtiSequenceFormat::getFeatureTypeString(U2FeatureType featureType, bool isAmino) {
     if (isAmino) {
         return proteinFeatureType2StringMap.value(proteinFeatureTypesMap.value(featureType, ProteinMiscFeature), DEFAULT_FEATURE_TYPE_NAME);
     } else {
@@ -217,7 +215,7 @@ QString VectorNtiSequenceFormat::getFeatureTypeString(U2FeatureType featureType,
     }
 }
 
-StrStrMap VectorNtiSequenceFormat::parseComments(const QStringList& comments) const {
+StrStrMap VectorNtiSequenceFormat::parseComments(const QStringList& comments) {
     // TODO: not all comment keys are precessed
     StrStrMap result;
     int commentsCounter = 1;
@@ -302,9 +300,7 @@ void VectorNtiSequenceFormat::writeAnnotations(IOAdapter* io, const QList<GObjec
     QList<SharedAnnotationData> sortedAnnotations = prepareAnnotations(aos, isAmino, os);
     CHECK_OP(os, );
 
-    for (int i = 0; i < sortedAnnotations.size(); ++i) {
-        const SharedAnnotationData& a = sortedAnnotations.at(i);
-
+    for (const auto & a : sortedAnnotations) {
         if (a->name == U1AnnotationUtils::lowerCaseAnnotationName || a->name == U1AnnotationUtils::upperCaseAnnotationName || a->name == "comment") {
             continue;
         }
@@ -336,7 +332,7 @@ void VectorNtiSequenceFormat::writeAnnotations(IOAdapter* io, const QList<GObjec
     }
 }
 
-void VectorNtiSequenceFormat::prepareQualifiersToWrite(QMap<AnnotationGroup*, QList<SharedAnnotationData>>& annotationsByGroups, bool isAmino) const {
+void VectorNtiSequenceFormat::prepareQualifiersToWrite(QMap<AnnotationGroup*, QList<SharedAnnotationData>>& annotationsByGroups, bool isAmino) {
     foreach (AnnotationGroup* group, annotationsByGroups.keys()) {
         QList<SharedAnnotationData>& annotations = annotationsByGroups[group];
         for (int i = 0; i < annotations.size(); i++) {

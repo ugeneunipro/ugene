@@ -30,6 +30,7 @@
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
+#include <system/GTFile.h>
 #include <utils/GTUtilsDialog.h>
 
 #include <QClipboard>
@@ -59,6 +60,7 @@
 #include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
+#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 
 namespace U2 {
 
@@ -333,6 +335,36 @@ GUI_TEST_CLASS_DEFINITION(test_8040) {
     CHECK_SET_ERR(lt.getJoinedErrorString().contains("The file was created with a newer version of UGENE"), "Expected message is not found");
     GTUtilsProjectTreeView::checkItem("8040.ugenedb");
     CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded("8040.ugenedb"), "Document must be unloaded");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8049) {
+    // Create a new Genbank document from text and check that its locus line contains
+    // a correct alphabet and molecular topology.
+    QString fileName = testDir + "_common_data/scenarios/sandbox/8049.gb";
+    auto filler = new CreateDocumentFiller(
+        "ACGT",
+        false,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        fileName,
+        CreateDocumentFiller::Genbank,
+        "8049_name");
+    GTUtilsDialog::waitForDialog(filler);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+
+    QString fileContentLinear = GTFile::readAll(fileName);
+    QList<QString> linesLinear = fileContentLinear.split("\n");
+    CHECK_SET_ERR(linesLinear[0].startsWith("LOCUS       8049_name                  4 bp    DNA     linear       "), "1. Unexpected LOCUS line: " + linesLinear[0]);
+
+    GTUtilsProjectTreeView::markSequenceAsCircular("8049_name");
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_MAIN, "Save all");
+
+    QString fileContentCircular = GTFile::readAll(fileName);
+    QList<QString> linesCircular = fileContentCircular.split("\n");
+    CHECK_SET_ERR(linesCircular[0].startsWith("LOCUS       8049_name                  4 bp    DNA     circular     "), "2. Unexpected LOCUS line: " + linesCircular[0]);
 }
 
 }  // namespace GUITest_regression_scenarios
