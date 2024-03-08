@@ -298,7 +298,7 @@ bool WorkflowUtils::validate(const Schema& schema, QList<QListWidgetItem*>& info
     bool good = validate(schema, notifications);
 
     foreach (const WorkflowNotification& notification, notifications) {
-        QListWidgetItem* item = nullptr;
+        QListWidgetItem* item;
         Actor* a = nullptr;
         if (notification.actorId.isEmpty()) {
             item = new QListWidgetItem(notification.message);
@@ -525,8 +525,7 @@ Descriptor WorkflowUtils::getSlotDescOfDatatype(const DataTypePtr& dt) {
     if (dtId == BaseTypes::STRING_TYPE()->getId()) {
         return BaseSlots::TEXT_SLOT();
     }
-    SAFE_POINT(false, "Unexpected slot type", Descriptor());
-    return Descriptor();
+    FAIL("Unexpected slot type", {});
 }
 
 static QStringList initLowerToUpperList() {
@@ -1245,16 +1244,6 @@ QScriptValue WorkflowUtils::datasetsToScript(const QList<Dataset>& sets, QScript
     return setsArray;
 }
 
-QString WorkflowUtils::getDatasetSplitter(const QString& filePaths) {
-    static const QString defaultSplitter = ";";
-    static const QString additionalSplitter = ",";
-
-    if (filePaths.contains(defaultSplitter)) {
-        return defaultSplitter;
-    }
-    return additionalSplitter;
-}
-
 QString WorkflowUtils::packSamples(const QList<TophatSample>& samples) {
     QStringList result;
     foreach (const TophatSample& sample, samples) {
@@ -1277,6 +1266,23 @@ QList<TophatSample> WorkflowUtils::unpackSamples(const QString& samplesStr, U2Op
     }
     return result;
 }
+
+QList<QString> WorkflowUtils::unpackListOfDatasets(const QString& textWithMultipleDatasets) {
+    return textWithMultipleDatasets.split("|");
+}
+
+QString WorkflowUtils::packListOfDatasets(const QList<QString>& datasetStrings) {
+    return datasetStrings.join("|");
+}
+
+QList<QString> WorkflowUtils::unpackListOfUrls(const QString& datasetString) {
+    return datasetString.split(";");
+}
+
+QString WorkflowUtils::packListOfUrls(const QList<QString>& urls) {
+    return urls.join(";");
+}
+
 
 const QString WorkflowEntityValidator::NAME_INACCEPTABLE_SYMBOLS_TEMPLATE = "=\\\"";
 const QString WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE = "a-zA-Z0-9\\-_";

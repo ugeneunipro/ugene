@@ -169,10 +169,14 @@ public:
 
     static QScriptValue datasetsToScript(const QList<Dataset>& sets, QScriptEngine& engine);
 
-    static QString getDatasetSplitter(const QString& filePaths);
-
     static QString packSamples(const QList<TophatSample>& samples);
     static QList<TophatSample> unpackSamples(const QString& samplesStr, U2OpStatus& os);
+
+    static QList<QString> unpackListOfDatasets(const QString& textWithMultipleDatasets);
+    static QString packListOfDatasets(const QList<QString>& datasetStrings);
+
+    static QList<QString> unpackListOfUrls(const QString& datasetString);
+    static QString packListOfUrls(const QList<QString>& urls);
 
 private:
     static QStringList initExtensions();
