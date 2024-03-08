@@ -44,9 +44,9 @@ public:
         : ActorConfigurationEditor(), markerModel(nullptr) {
     }
     virtual ~MarkerEditor();
-    virtual QWidget* getWidget();
-    virtual void setConfiguration(Actor* actor);
-    virtual ConfigurationEditor* clone() {
+    QWidget* getWidget() override;
+    void setConfiguration(Actor* actor) override;
+    ConfigurationEditor* clone() override {
         return new MarkerEditor(*this);
     }
 
@@ -67,13 +67,13 @@ class MarkerGroupListCfgModel : public QAbstractTableModel {
 public:
     MarkerGroupListCfgModel(QObject* parent, QList<Marker*>& markers);
 
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
-    int columnCount(const QModelIndex&) const;
-    int rowCount(const QModelIndex&) const;
-    Qt::ItemFlags flags(const QModelIndex& index) const;
-    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex());
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    int columnCount(const QModelIndex&) const override;
+    int rowCount(const QModelIndex&) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
     Marker* getMarker(int row) const;
     Marker* getMarker(const QString& markerName) const;

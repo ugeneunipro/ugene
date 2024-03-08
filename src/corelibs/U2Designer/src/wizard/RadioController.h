@@ -35,7 +35,7 @@ public:
     RadioController(WizardController* wc, RadioWidget* rw);
     virtual ~RadioController();
 
-    virtual QWidget* createGUI(U2OpStatus& os);
+    QWidget* createGUI(U2OpStatus& os) override;
 
 private slots:
     void sl_buttonClicked(QAbstractButton* button);

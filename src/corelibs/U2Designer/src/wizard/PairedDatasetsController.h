@@ -35,7 +35,7 @@ public:
     PairedDatasetsController(WizardController* wc, PairedReadsWidget* widget);
     virtual ~PairedDatasetsController();
 
-    virtual QWidget* createGUI(U2OpStatus& os);
+    QWidget* createGUI(U2OpStatus& os) override;
 
 private slots:
     void sl_datasetsChanged();

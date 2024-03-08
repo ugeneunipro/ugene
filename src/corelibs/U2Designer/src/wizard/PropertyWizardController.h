@@ -42,7 +42,7 @@ public:
     PropertyWizardController(WizardController* wc, AttributeWidget* widget);
     virtual ~PropertyWizardController();
 
-    virtual QWidget* createGUI(U2OpStatus& os) = 0;
+    QWidget* createGUI(U2OpStatus& os) override = 0;
 
     void updateGUI(const QVariant& newValue);
     void updateVisibility(bool);
@@ -77,7 +77,7 @@ public:
     InUrlDatasetsController(WizardController* wc, AttributeWidget* widget);
     virtual ~InUrlDatasetsController();
 
-    virtual QWidget* createGUI(U2OpStatus& os);
+    QWidget* createGUI(U2OpStatus& os) override;
 
 private:
     AttributeDatasetsController* dsc;
@@ -94,7 +94,7 @@ public:
     DefaultPropertyController(WizardController* wc, AttributeWidget* widget, int labelSize);
     virtual ~DefaultPropertyController();
 
-    virtual QWidget* createGUI(U2OpStatus& os);
+    QWidget* createGUI(U2OpStatus& os) override;
     void setNoDelegate(bool value);
 
 private:
