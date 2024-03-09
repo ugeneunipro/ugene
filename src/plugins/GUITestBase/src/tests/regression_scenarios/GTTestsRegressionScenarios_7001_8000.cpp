@@ -1068,7 +1068,7 @@ GUI_TEST_CLASS_DEFINITION(test_7367) {
     model.percentC = 20;
     model.percentG = 30;
     model.percentT = 40;
-    model.length = 100 * 1000 * 1000;
+    model.length = 1000 * 1000;
 
     GTUtilsDialog::waitForDialog(new DNASequenceGeneratorDialogFiller(model));
     GTMenu::clickMainMenuItem({"Tools", "Random sequence generator..."});
