@@ -1,7 +1,7 @@
 <multi-test>
     <run-cmdline
             task="!common_data_dir!cmdline/read-write/test_separator.uwl"
-            in="!common_data_dir!fastq/eas.fastq,!common_data_dir!fastq/eas.fastq"
+            in="!common_data_dir!fastq/eas.fastq;!common_data_dir!fastq/eas.fastq"
             out_dir="!tmp_data_dir!"
             out_name="separator_test.fastq"
     />
