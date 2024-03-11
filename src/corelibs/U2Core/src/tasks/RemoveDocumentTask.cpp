@@ -94,7 +94,6 @@ Task::ReportResult RemoveMultipleDocumentsTask::report() {
                 setError(tr("Cannot remove document %1, since it is locked by some task.").arg(doc->getName()));
                 continue;
             } else {
-                doc->getGHints()->set(DocumentRemovalMode_Synchronous, true);
                 p->removeDocument(doc);
             }
         }
