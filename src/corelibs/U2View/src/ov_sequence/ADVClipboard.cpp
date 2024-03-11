@@ -40,6 +40,7 @@
 #include <U2Core/U2SequenceUtils.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/Notification.h>
 
 #include "ADVConstants.h"
 #include "ADVSequenceObjectContext.h"
@@ -163,15 +164,16 @@ void ADVClipboard::copySequenceSelection(bool complement, bool amino) {
     for (const auto& region : qAsConst(regions)) {
         estimatedResultLength += region.length;
     }
-    if (estimatedResultLength > U2Clipboard::MAX_SAFE_COPY_TO_CLIPBOARD_SIZE) {
-        uiLog.error(tr("Block size is too big and can't be copied into the clipboard"));
+    U2OpStatus2Log os;
+    U2Clipboard::checkCopyToClipboardSize(estimatedResultLength, os);
+    if (os.hasError()) {
+        NotificationStack::addNotification(os.getError(), NotificationType::Error_Not);
         return;
     }
 
     U2SequenceObject* seqObj = seqCtx->getSequenceObject();
     DNATranslation* complTT = complement ? seqCtx->getComplementTT() : nullptr;
     DNATranslation* aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
-    U2OpStatus2Log os;
     QList<QByteArray> seqParts = U2SequenceUtils::extractRegions(seqObj->getSequenceRef(), regions, complTT, aminoTT, false, os);
     if (os.hasError()) {
         QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), tr("An error occurred during getting sequence data: %1").arg(os.getError()));
@@ -183,6 +185,17 @@ void ADVClipboard::copySequenceSelection(bool complement, bool amino) {
 
 void ADVClipboard::copyAnnotationSelection(const bool amino) {
     const QList<Annotation*>& selectedAnnotationList = ctx->getAnnotationsSelection()->getAnnotations();
+    qint64 annotationsLength = 0;
+    for (auto annotation : qAsConst(selectedAnnotationList)) {
+        annotationsLength += annotation->getRegionsLen();
+    }
+    U2OpStatus2Log os;
+    U2Clipboard::checkCopyToClipboardSize(annotationsLength, os);
+    if (os.hasError()) {
+        NotificationStack::addNotification(os.getError(), NotificationType::Error_Not);
+        return;
+    }
+
     QByteArray resultText;
     for (auto annotation : qAsConst(selectedAnnotationList)) {
         if (!resultText.isEmpty()) {
@@ -195,7 +208,6 @@ void ADVClipboard::copyAnnotationSelection(const bool amino) {
         }
         DNATranslation* complTT = annotation->getStrand().isComplementary() ? seqCtx->getComplementTT() : nullptr;
         DNATranslation* aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
-        U2OpStatus2Log os;
         // BUG528: add alphabet symbol role: insertion mark and use it instead of the U2Msa::GAP_CHAR
         const U2EntityRef& sequenceObjectRef = seqCtx->getSequenceRef();
         QByteArray annotationSequence = AnnotationSelection::getSequenceUnderAnnotation(sequenceObjectRef, annotation, complTT, aminoTT, os);
