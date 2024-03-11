@@ -469,9 +469,9 @@
         <translation>Обнаружено неожиданное значение оператора функции.</translation>
     </message>
     <message>
-        <location filename="../src/util/MultipleSequenceAlignmentImporter.cpp" line="44"/>
-        <source>Unexpected number of sequences in a multiple alignment</source>
-        <translation>Неожиданное количество последовательностей в множественном выравнивании</translation>
+        <location filename="../src/globals/ClipboardController.h" line="57"/>
+        <source>Block size is too big and can&apos;t be copied into the clipboard</source>
+        <translation>Размер блока слишком большой и не может быть скопирован в буфер обмена</translation>
     </message>
 </context>
 <context>
@@ -1293,12 +1293,12 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DocumentUtils</name>
     <message>
-        <location filename="../src/models/DocumentUtils.cpp" line="252"/>
+        <location filename="../src/models/DocumentUtils.cpp" line="248"/>
         <source>Format does not support writing of alignments</source>
         <translation>Формат не поддерживает запись выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentUtils.cpp" line="262"/>
+        <location filename="../src/models/DocumentUtils.cpp" line="258"/>
         <source>File content was merged</source>
         <translation>Содержимое файла было соединено</translation>
     </message>
@@ -1314,7 +1314,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ExportSequencesTask</name>
     <message>
-        <location filename="../src/tasks/ExportSequencesTask.cpp" line="46"/>
+        <location filename="../src/tasks/ExportSequencesTask.cpp" line="47"/>
         <source>Export selected sequences from alignment</source>
         <translation>Экспорт выделенных последовательностей из выравнивания</translation>
     </message>
@@ -2092,17 +2092,17 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Документ не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="467"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="466"/>
         <source>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</source>
         <translation>Максимальное количество объектов в документе достигнуто для %1. Попробуйте другие способы для открытия документа!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="498"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="497"/>
         <source>Object not found: %1</source>
         <translation>Объект не найден: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="506"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="505"/>
         <source>Can&apos;t add object. Document format constraints check failed: %1</source>
         <translation>Невозможно добавить объект. Проверка ограничений формата завершилась неудачно: %1</translation>
     </message>
@@ -2182,48 +2182,16 @@ The session database file is removed after closing of UGENE.</source>
     </message>
 </context>
 <context>
-    <name>U2::MSAUtils</name>
-    <message>
-        <location filename="../src/util/MSAUtils.cpp" line="243"/>
-        <source>Invalid column region</source>
-        <translation>Неверный регион</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MSAUtils.cpp" line="268"/>
-        <location filename="../src/util/MSAUtils.cpp" line="273"/>
-        <source>Alignment is empty!</source>
-        <translation>Выравнивание пусто!</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MSAUtils.cpp" line="279"/>
-        <source>Sequences in alignment have different sizes!</source>
-        <translation>Последовательности в выравнивании имеют разный размер!</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MSAUtils.cpp" line="406"/>
-        <source>Failed to map result MSA rows into original MSA rows. Removed: %1, added: %2</source>
-        <translation>Не удалось сопоставить результирующие строки MSA с исходными строками MSA. Удалено: %1, добавлено: %2</translation>
-    </message>
-</context>
-<context>
     <name>U2::MaDbiUtils</name>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="132"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="134"/>
         <source>Can&apos;t rename an alignment to an empty name!</source>
         <translation>Невозможно переименовать выравнивание, т.к. имя пустое!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="172"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="174"/>
         <source>Can&apos;t rename a row to an empty name!</source>
         <translation>Не удалось переименовать строку, т.к. имя пустое!</translation>
-    </message>
-</context>
-<context>
-    <name>U2::McaDbiUtils</name>
-    <message>
-        <location filename="../src/util/McaDbiUtils.cpp" line="296"/>
-        <source>Invalid range: %1 %2</source>
-        <translation>Неверный диапазон: %1 %2</translation>
     </message>
 </context>
 <context>
@@ -2282,38 +2250,62 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::MsaDbiUtils</name>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="864"/>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="871"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="868"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="875"/>
         <source>Failed to insert gaps into an alignment!</source>
         <translation>Не удалось вставить пробелы в выравнивание!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="991"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1015"/>
         <source>Invalid range: %1 %2</source>
         <translation>Неверный диапазон: %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1106"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1149"/>
         <source>Invalid crop column range: %1..%2</source>
         <translation>Неверный диапазон столбцов: %1..%2</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1111"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1154"/>
         <source>List of ids to crop is empty</source>
         <translation>Список пуст</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1116"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1159"/>
         <source>Invalid crop row ids</source>
         <translation>Неверные названия строк</translation>
     </message>
 </context>
 <context>
-    <name>U2::MultipleSequenceAlignmentObject</name>
+    <name>U2::MsaObject</name>
     <message>
-        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="100"/>
+        <location filename="../src/util/MsaWalker.cpp" line="100"/>
         <source> Incorrect gap splitting</source>
         <translation> Неправильное разделение гэпа</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MsaUtils</name>
+    <message>
+        <location filename="../src/util/MsaUtils.cpp" line="244"/>
+        <source>Invalid column region</source>
+        <translation>Неверный регион</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MsaUtils.cpp" line="269"/>
+        <location filename="../src/util/MsaUtils.cpp" line="274"/>
+        <source>Alignment is empty!</source>
+        <translation>Выравнивание пусто!</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MsaUtils.cpp" line="280"/>
+        <source>Sequences in alignment have different sizes!</source>
+        <translation>Последовательности в выравнивании имеют разный размер!</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MsaUtils.cpp" line="388"/>
+        <source>Failed to map result MSA rows into original MSA rows. Removed: %1, added: %2</source>
+        <translation>Не удалось сопоставить результирующие строки MSA с исходными строками MSA. Удалено: %1, добавлено: %2</translation>
     </message>
 </context>
 <context>
@@ -2402,37 +2394,37 @@ The session database file is removed after closing of UGENE.</source>
         <translation>обратный праймер имеет %1.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="259"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="319"/>
         <source>&amp;gt;=%1 G or C at 3&apos; end</source>
         <translation>&amp;gt;=%1 G или C на 3&apos; конце</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="260"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="321"/>
         <source>&amp;lt;=%1 mononucleotide repeat length</source>
         <translation>&amp;lt;=%1 длина мононуклеотидного повтора</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="312"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="310"/>
         <source>Criteria</source>
         <translation>Критерий</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="313"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="311"/>
         <source>Valid Values</source>
         <translation>Допустимые значения</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="314"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="312"/>
         <source>Forward</source>
         <translation>Прямой</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="315"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="313"/>
         <source>Reverse</source>
         <translation>Обратный</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="321"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="320"/>
         <source>GC Clamp</source>
         <translation>Зажим GC</translation>
     </message>
@@ -2470,22 +2462,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::RelocateDocumentTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="356"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="360"/>
         <source>Relocate document %1 -&gt; %2</source>
         <translation>Перемещение документа %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="362"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="366"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="366"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="370"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="375"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="379"/>
         <source>Only unloaded objects can be relocated</source>
         <translation>Можно перемещать только выгруженные документы</translation>
     </message>
@@ -2543,22 +2535,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveCopyAndAddToProjectTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="317"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="321"/>
         <source>Save a copy %1</source>
         <translation>Сохранение копии %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="334"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="338"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="335"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="339"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="339"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="343"/>
         <source>Document is already added to the project %1</source>
         <translation>Документ уже добавлен в проект: %1</translation>
     </message>
@@ -2574,50 +2566,50 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveDocumentTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="54"/>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="65"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="55"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="69"/>
         <source>Save document</source>
         <translation>Сохранение документа</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="76"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="80"/>
         <source>No permission to write to &apos;%1&apos; file.</source>
         <translation>Нет прав на запись в &apos;%1&apos; файл.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="80"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="84"/>
         <source>Document was removed</source>
         <translation>Документ был удалён</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="92"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="96"/>
         <source>Saving document %1
 </source>
         <translation>Сохранение документа: %1
 </translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="124"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="128"/>
         <source>Can&apos;t create tmp file</source>
         <translation>Невозможно создать временный файл</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="129"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="133"/>
         <source>Can&apos;t copy file to tmp file while trying to save document by append</source>
         <translation>Невозможно скопировать скопировать файл во временный файл при попытке сохранения файла при добавлении</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="145"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="149"/>
         <source>Can&apos;t rename saved tmp file to original file: %1</source>
         <translation>Невозможно переименовать временный файл в исходный файл: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="183"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="187"/>
         <source>Document &apos;%1&apos; can&apos;t be unloaded: </source>
         <translation>Документ &apos;%1&apos; не может быть выгружен: </translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="183"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="187"/>
         <source>unexpected error</source>
         <translation>неожиданная ошибка</translation>
     </message>
@@ -2625,34 +2617,34 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveMultipleDocuments</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="210"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="214"/>
         <source>Save multiple documents</source>
         <translation>Сохранение нескольких документов</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="221"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="225"/>
         <source>Question?</source>
         <translation>Вопрос?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="222"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="226"/>
         <source>Save document: %1</source>
         <translation>Сохранить документ: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="277"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="281"/>
         <source>You have no permission to write to &apos;%1&apos; file.
 UGENE contains unsaved modifications.</source>
         <translation>У вас недостаточно прав для записи в &apos;%1&apos; файл.
 UGENE содержит несохраненные изменения.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="278"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="282"/>
         <source>Do you want to save changes to another file?</source>
         <translation>Хотите сохранить изменения в другой файл?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="292"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="296"/>
         <source>Save as</source>
         <translation>Сохранить как</translation>
     </message>
@@ -2764,58 +2756,58 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2DbiL10n</name>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="61"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="62"/>
         <source>Error querying database: %1</source>
         <translation>Ошибка запроса базы данных: %1</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="65"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="66"/>
         <source>Found more results than expected!</source>
         <translation>Найдено больше результатов чем ожидалось!</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="170"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="171"/>
         <source>Unexpected query result code: %1 (%2)</source>
         <translation>Неожиданный результат запроса: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="188"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="189"/>
         <source>Error binding NULL value! Query: &apos;%1&apos;, idx: %2</source>
         <translation>Ошибка связывания значения NULL! Запрос: &apos;%1&apos;, idx: %2</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="298"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="303"/>
         <source>Error binding text value! Query: &apos;%1&apos;, idx: %2, value: &apos;%3&apos;</source>
         <translation>Ошибка связывания текстового значения! Запрос: &apos;%1&apos;, idx: %2, значение: &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="310"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="315"/>
         <source>Error binding int32 value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Ошибка связывания int32 значения! Запрос: &apos;%1&apos;, idx: %2, значение: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="322"/>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="334"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="327"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="339"/>
         <source>Error binding int64 value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Ошибка связывания int64 значения! Запрос: &apos;%1&apos;, idx: %2, значение: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="347"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="352"/>
         <source>Error binding boolean value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Ошибка связывания логического значения! Запрос: &apos;%1&apos;, idx: %2, значение: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="364"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="369"/>
         <source>Error binding blob value! Query: &apos;%1&apos;, idx: %2, size: %3</source>
         <translation>Ошибка связывания значения blob! Запрос: &apos;%1&apos;, idx: %2, размер: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="376"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="381"/>
         <source>Error binding blob value! Query: &apos;%1&apos;, idx: %2</source>
         <translation>Ошибка связывания значения blob! Запрос: &apos;%1&apos;, idx: %2</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="389"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="394"/>
         <source>Unexpected row count! Query: &apos;%1&apos;, rows: %2</source>
         <translation>Значение неожиданной строки! Запрос &apos;%1&apos;, строки: %2</translation>
     </message>

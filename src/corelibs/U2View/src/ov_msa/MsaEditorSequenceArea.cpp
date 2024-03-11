@@ -229,10 +229,8 @@ void MsaEditorSequenceArea::copySelection(U2OpStatus& os) {
     for (const QRect& selectionRect : qAsConst(selectionRects)) {
         estimatedResultLength += selectionRect.width() * selectionRect.height();
     }
-    if (estimatedResultLength > U2Clipboard::MAX_SAFE_COPY_TO_CLIPBOARD_SIZE) {
-        os.setError(tr("Block size is too big and can't be copied into the clipboard"));
-        return;
-    }
+    U2Clipboard::checkCopyToClipboardSize(estimatedResultLength, os);
+    CHECK_OP(os, );
 
     for (const QRect& selectionRect : qAsConst(selectionRects)) {
         for (int viewRowIndex = selectionRect.top(); viewRowIndex <= selectionRect.bottom() && !os.hasError(); viewRowIndex++) {
@@ -242,6 +240,8 @@ void MsaEditorSequenceArea::copySelection(U2OpStatus& os) {
             int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
             const MsaRow& row = maObj->getRow(maRowIndex);
             QByteArray sequence = row->mid(selectionRect.x(), selectionRect.width(), os)->toByteArray(os, selectionRect.width());
+            CHECK_OP(os, );
+
             ugeneMimeContent.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
                 .append(row.data()->getName())
                 .append('\n')
@@ -525,6 +525,9 @@ void MsaEditorSequenceArea::sl_modelChanged() {
 void MsaEditorSequenceArea::sl_copySelection() {
     U2OpStatus2Log os;
     copySelection(os);
+    if (os.hasError()) {
+        NotificationStack::addNotification(os.getError(), NotificationType::Error_Not);
+    }
 }
 
 void MsaEditorSequenceArea::sl_copySelectionFormatted() {
@@ -611,7 +614,10 @@ void MsaEditorSequenceArea::sl_cutSelection() {
 
     U2OpStatus2Log os;
     copySelection(os);
-    CHECK_OP(os, );
+    if (os.hasError()) {
+        NotificationStack::addNotification(os.getError(), NotificationType::Error_Not);
+        return;
+    }
 
     sl_delCurrentSelection();
 }
