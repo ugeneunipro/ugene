@@ -38,8 +38,8 @@ public:
     /** Converts only one assembly object to a SAM file */
     ConvertAssemblyToSamTask(const U2EntityRef& entityRef, GUrl samFileUrl);
 
-    void run();
-    QString generateReport() const;
+    void run() override;
+    QString generateReport() const override;
 
 private:
     GUrl dbFileUrl;

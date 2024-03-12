@@ -52,10 +52,10 @@ class SQLiteBlobInputStream : public InputStream, public SQLiteBlobStream {
 public:
     SQLiteBlobInputStream(DbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, U2OpStatus& os);
 
-    qint64 available();
-    void close();
-    int read(char* buffer, int length, U2OpStatus& os);
-    qint64 skip(qint64 n, U2OpStatus& os);
+    qint64 available() override;
+    void close() override;
+    int read(char* buffer, int length, U2OpStatus& os) override;
+    qint64 skip(qint64 n, U2OpStatus& os) override;
 };
 
 }  // namespace U2

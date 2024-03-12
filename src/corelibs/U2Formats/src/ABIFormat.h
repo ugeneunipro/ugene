@@ -36,12 +36,12 @@ class U2FORMATS_EXPORT ABIFormat : public DocumentFormat {
 public:
     ABIFormat(QObject* p);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
-    virtual DNASequence* loadSequence(IOAdapter* io, U2OpStatus& ti);
+    DNASequence* loadSequence(IOAdapter* io, U2OpStatus& ti) override;
 
 private:
     Document* parseABI(const U2DbiRef& dbiRef, SeekableBuf*, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);

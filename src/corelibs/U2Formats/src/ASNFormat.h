@@ -73,10 +73,10 @@ class U2FORMATS_EXPORT ASNFormat : public DocumentFormat {
 public:
     ASNFormat(QObject* p);
     ~ASNFormat();
-    virtual FormatCheckResult checkRawData(const QByteArray& data, const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawData(const QByteArray& data, const GUrl& = GUrl()) const override;
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
 public:
     class U2FORMATS_EXPORT AsnParser {

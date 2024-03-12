@@ -36,9 +36,9 @@ class U2FORMATS_EXPORT SAMFormat : public TextDocumentFormatDeprecated {
 public:
     SAMFormat(QObject* p = nullptr);
 
-    virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
+    void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) override;
 
-    virtual void storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os);
+    void storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) override;
 
     bool storeHeader(IOAdapter* io, const QVector<QByteArray>& names, const QVector<int>& lengths, bool coordinateSorted);
 
@@ -64,9 +64,9 @@ public:
     };
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
 
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
 private:
     static bool getSectionTags(QByteArray& line, const QByteArray& sectionName, QList<QByteArray>& tags);

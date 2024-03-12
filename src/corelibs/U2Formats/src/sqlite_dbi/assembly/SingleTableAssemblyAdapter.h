@@ -32,26 +32,26 @@ class SingleTableAssemblyAdapter : public SQLiteAssemblyAdapter {
 public:
     SingleTableAssemblyAdapter(SQLiteDbi* dbi, const U2DataId& assemblyId, char tablePrefix, const QString& tableSuffix, const AssemblyCompressor* compressor, DbRef* ref, U2OpStatus& os);
 
-    virtual void createReadsTables(U2OpStatus& os);
-    virtual void createReadsIndexes(U2OpStatus& os);
+    void createReadsTables(U2OpStatus& os) override;
+    void createReadsIndexes(U2OpStatus& os) override;
 
-    virtual qint64 countReads(const U2Region& r, U2OpStatus& os);
+    qint64 countReads(const U2Region& r, U2OpStatus& os) override;
     virtual qint64 countReadsPrecise(const U2Region& r, U2OpStatus& os);
 
-    virtual qint64 getMaxPackedRow(const U2Region& r, U2OpStatus& os);
-    virtual qint64 getMaxEndPos(U2OpStatus& os);
+    qint64 getMaxPackedRow(const U2Region& r, U2OpStatus& os) override;
+    qint64 getMaxEndPos(U2OpStatus& os) override;
 
-    virtual U2DbiIterator<U2AssemblyRead>* getReads(const U2Region& r, U2OpStatus& os, bool sortedHint = false);
-    virtual U2DbiIterator<U2AssemblyRead>* getReadsByRow(const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os);
-    virtual U2DbiIterator<U2AssemblyRead>* getReadsByName(const QByteArray& name, U2OpStatus& os);
+    U2DbiIterator<U2AssemblyRead>* getReads(const U2Region& r, U2OpStatus& os, bool sortedHint = false) override;
+    U2DbiIterator<U2AssemblyRead>* getReadsByRow(const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) override;
+    U2DbiIterator<U2AssemblyRead>* getReadsByName(const QByteArray& name, U2OpStatus& os) override;
 
-    virtual void addReads(U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os);
-    virtual void removeReads(const QList<U2DataId>& readIds, U2OpStatus& os);
-    virtual void dropReadsTables(U2OpStatus& os);
+    void addReads(U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os) override;
+    void removeReads(const QList<U2DataId>& readIds, U2OpStatus& os) override;
+    void dropReadsTables(U2OpStatus& os) override;
 
-    virtual void pack(U2AssemblyPackStat& stat, U2OpStatus& os);
+    void pack(U2AssemblyPackStat& stat, U2OpStatus& os) override;
 
-    virtual void calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
+    void calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os) override;
 
     const QString& getReadsTableName() const {
         return readsTable;
@@ -89,8 +89,8 @@ public:
     }
     ~SingleTablePackAlgorithmAdapter();
 
-    virtual U2DbiIterator<PackAlgorithmData>* selectAllReads(U2OpStatus& os);
-    virtual void assignProw(const U2DataId& readId, qint64 prow, U2OpStatus& os);
+    U2DbiIterator<PackAlgorithmData>* selectAllReads(U2OpStatus& os) override;
+    void assignProw(const U2DataId& readId, qint64 prow, U2OpStatus& os) override;
 
     void releaseDbResources();
 

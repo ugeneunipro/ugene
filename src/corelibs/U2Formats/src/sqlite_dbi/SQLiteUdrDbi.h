@@ -32,19 +32,19 @@ public:
     void undo(const U2SingleModStep& modStep, U2OpStatus& os);
     void redo(const U2SingleModStep& modStep, U2OpStatus& os);
 
-    UdrRecordId addRecord(const UdrSchemaId& schemaId, const QList<UdrValue>& data, U2OpStatus& os);
-    void updateRecord(const UdrRecordId& recordId, const QList<UdrValue>& data, U2OpStatus& os);
-    UdrRecord getRecord(const UdrRecordId& recordId, U2OpStatus& os);
-    void createObject(const UdrSchemaId& schemaId, U2Object& udrObject, const QString& folder, U2OpStatus& os);
-    QList<UdrRecord> getObjectRecords(const UdrSchemaId& schemaId, const U2DataId& objectId, U2OpStatus& os);
-    QList<UdrRecord> getRecords(const UdrSchemaId& schemaId, U2OpStatus& os);
-    void removeRecord(const UdrRecordId& recordId, U2OpStatus& os);
-    InputStream* createInputStream(const UdrRecordId& recordId, int fieldNum, U2OpStatus& os);
-    OutputStream* createOutputStream(const UdrRecordId& recordId, int fieldNum, qint64 size, U2OpStatus& os);
+    UdrRecordId addRecord(const UdrSchemaId& schemaId, const QList<UdrValue>& data, U2OpStatus& os) override;
+    void updateRecord(const UdrRecordId& recordId, const QList<UdrValue>& data, U2OpStatus& os) override;
+    UdrRecord getRecord(const UdrRecordId& recordId, U2OpStatus& os) override;
+    void createObject(const UdrSchemaId& schemaId, U2Object& udrObject, const QString& folder, U2OpStatus& os) override;
+    QList<UdrRecord> getObjectRecords(const UdrSchemaId& schemaId, const U2DataId& objectId, U2OpStatus& os) override;
+    QList<UdrRecord> getRecords(const UdrSchemaId& schemaId, U2OpStatus& os) override;
+    void removeRecord(const UdrRecordId& recordId, U2OpStatus& os) override;
+    InputStream* createInputStream(const UdrRecordId& recordId, int fieldNum, U2OpStatus& os) override;
+    OutputStream* createOutputStream(const UdrRecordId& recordId, int fieldNum, qint64 size, U2OpStatus& os) override;
     void createTable(const UdrSchemaId& schemaId, U2OpStatus& os) override;
-    void initSqlSchema(U2OpStatus& os);
+    void initSqlSchema(U2OpStatus& os) override;
 
-    ModificationAction* getModificationAction(const U2DataId& id);
+    ModificationAction* getModificationAction(const U2DataId& id) override;
 
 private:
     void initSchema(const UdrSchema* schema, U2OpStatus& os);

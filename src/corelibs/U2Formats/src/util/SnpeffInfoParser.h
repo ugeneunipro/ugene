@@ -89,9 +89,9 @@ public:
     static const QString KEY_WORD;
 
 private:
-    QStringList getQualifierNames() const;
-    QStringList getValues(const QString& entry) const;
-    QList<U2Qualifier> processValue(const QString& qualifierName, const QString& value) const;
+    QStringList getQualifierNames() const override;
+    QStringList getValues(const QString& entry) const override;
+    QList<U2Qualifier> processValue(const QString& qualifierName, const QString& value) const override;
 
     static const QString VALUES_SEPARATOR;
     static const QString EFFECTS_SEPARATOR;
@@ -108,9 +108,9 @@ public:
     static const QString KEY_WORD;
 
 private:
-    QStringList getQualifierNames() const;
-    QStringList getValues(const QString& entry) const;
-    QList<U2Qualifier> processValue(const QString& qualifierName, const QString& value) const;
+    QStringList getQualifierNames() const override;
+    QStringList getValues(const QString& entry) const override;
+    QList<U2Qualifier> processValue(const QString& qualifierName, const QString& value) const override;
 
     static const QString EFFECT_DATA_SEPARATOR;
     static const QString EFFECT;
@@ -126,8 +126,8 @@ public:
     static const QString KEY_WORD;
 
 private:
-    QStringList getQualifierNames() const;
-    QStringList getValues(const QString& entry) const;
+    QStringList getQualifierNames() const override;
+    QStringList getValues(const QString& entry) const override;
 
     static const QString VALUES_SEPARATOR;
 };
@@ -139,8 +139,8 @@ public:
     static const QString KEY_WORD;
 
 private:
-    QStringList getQualifierNames() const;
-    QStringList getValues(const QString& entry) const;
+    QStringList getQualifierNames() const override;
+    QStringList getValues(const QString& entry) const override;
 
     static const QString VALUES_SEPARATOR;
 };

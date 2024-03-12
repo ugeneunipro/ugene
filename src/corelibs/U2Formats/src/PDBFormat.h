@@ -49,8 +49,8 @@ public:
     static Document* createDocumentFromBioStruct3D(const U2DbiRef& dbi, BioStruct3D& bioStruct, DocumentFormat* format, IOAdapterFactory* iof, const GUrl& url, U2OpStatus& ti, const QVariantMap& fs);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
+    Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
 private:
     static QHash<QByteArray, int> atomNumMap;

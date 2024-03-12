@@ -80,7 +80,7 @@ void SQLiteFeatureDbi::initSqlSchema(U2OpStatus& os) {
 
 class SqlFeatureRSLoader : public SQLiteResultSetLoader<U2Feature> {
 public:
-    U2Feature load(SQLiteQuery* q) {
+    U2Feature load(SQLiteQuery* q) override {
         return loadStatic(q);
     }
 
@@ -107,7 +107,7 @@ public:
         nameToFilter = name;
         seqId = _seqId;
     }
-    bool filter(const U2Feature& f) {
+    bool filter(const U2Feature& f) override {
         if ((nameToFilter.isEmpty() || f.name == nameToFilter) && (seqId.isEmpty() || seqId == f.sequenceId)) {
             return true;
         }
