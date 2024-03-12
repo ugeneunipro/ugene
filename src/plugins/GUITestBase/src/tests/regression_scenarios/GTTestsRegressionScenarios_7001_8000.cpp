@@ -120,6 +120,7 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
+#include "runnables/ugene/plugins/cap3/CAP3SupportDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
@@ -4884,6 +4885,40 @@ GUI_TEST_CLASS_DEFINITION(test_7947) {
     GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea();
     GTUtilsSequenceView::clickAnnotationPan("misc_feature", 100'000, 0, true);
     CHECK_SET_ERR(!GTUtilsSequenceView::getSelection().isEmpty(), "No selected regions, but should be");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7956) {
+    /*
+    * 1. Click "Tools -> Sanger data analysis -> Reads de novo assembly (with CAP3)..."
+    * 2. Set "_common_data/scenarios/_regression/7957/Sunisa_test_CRLF.fasta" as input.
+    * 3. Click "OK".
+    * 4. Open the result file as Multiple Alignment or Assembly (that does not matter).
+    * Expected state: ace file opened, no errors in the log
+    */
+    QString fastaFile = testDir + "_common_data/scenarios/_regression/7957/Sunisa_test_CRLF.fasta";
+    /* 
+    QString fastaFile = testDir + "_common_data/scenarios/_regression/7957/Sunisa_test_LF.fasta";
+    QFile file(fastaFile);
+    CHECK_SET_ERR(!file.open(QFile::ReadOnly), QString("unable to open file %1 in read mode").arg(fastaFile));
+    QByteArray content = file.readAll();
+    file.close();
+    if (!content.contains('\r\n')) {
+        content.replace("\n", "\r\n");
+        QString fixedFasta = testDir + "_common_data/scenarios/_regression/7957/fixed.fasta";
+        QFile fixedFile(fixedFasta);
+        CHECK_SET_ERR(!fixedFile.open(QFile::WriteOnly), QString("unable to open file %1 in write mode").arg(fixedFasta));
+        fixedFile.write(content);
+        fixedFile.close();
+        fastaFile = fixedFasta;
+    }
+    */
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new ImportACEFileFiller(false, sandBoxDir + "test_7957.ugenedb"));
+    GTUtilsDialog::waitForDialog(new CAP3SupportDialogFiller({fastaFile}, sandBoxDir + "test_7957.ace"));
+    GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Reads de novo assembly (with CAP3)..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasMessage("Line endings were changed in target file"), "Expected warning message about line endings not found");
+    CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle() == "Contig1 [test_7957.ugenedb]", "Unexpected tab title: " + GTUtilsMdi::activeWindowTitle());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7957) {
