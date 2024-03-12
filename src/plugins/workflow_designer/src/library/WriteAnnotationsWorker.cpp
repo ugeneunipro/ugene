@@ -249,12 +249,11 @@ void WriteAnnotationsWorker::mergeAnnTablesIfNecessary(QList<AnnotationTableObje
     CHECK(getMergeAttribute() == true, );
 
     auto mergedTable = new AnnotationTableObject(getAnnotationTableName(), context->getDataStorage()->getDbiRef());
+    QMap<AnnotationGroup*, SharedAnnotationData> annotationsGroupAndDataMap;
     for (AnnotationTableObject* annTable : qAsConst(annTables)) {
-        QList<SharedAnnotationData> anns;
         foreach (Annotation* annotation, annTable->getAnnotations()) {
-            anns.append(annotation->getData());
+            mergedTable->addAnnotations({annotation->getData()}, annotation->getGroup()->getName());
         }
-        mergedTable->addAnnotations(anns);
     }
 
     qDeleteAll(annTables);
