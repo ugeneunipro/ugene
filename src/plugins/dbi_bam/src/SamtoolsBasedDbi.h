@@ -76,6 +76,15 @@ public:
     U2AssemblyRead next() override;
     U2AssemblyRead peek() override;
 
+protected:
+    SamtoolsBasedReadsIterator(int assemblyId, SamtoolsBasedDbi& dbi);
+
+    virtual void fetchReads();
+    void fetchNextChunk();
+    void applyNameFilter();
+
+    QList<U2AssemblyRead> reads;
+
 private:
     int assemblyId = 0;
     U2Region r;
@@ -84,7 +93,6 @@ private:
 
     qint64 nextPosToRead = 0;
     std::shared_ptr<BGZF> bamFile;
-    QList<U2AssemblyRead> reads;
     QList<U2AssemblyRead>::Iterator current;
 
     QList<U2DataId> borderReadIds;
@@ -93,8 +101,6 @@ private:
     static const int BUFFERED_INTERVAL_SIZE;
 
 private:
-    void fetchNextChunk();
-    void applyNameFilter();
 };  // SamtoolsBasedReadsIterator
 
 class SamtoolsBasedAssemblyDbi : public U2SimpleAssemblyDbi {

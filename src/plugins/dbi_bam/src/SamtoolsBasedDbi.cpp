@@ -38,6 +38,7 @@
 #include "Exception.h"
 #include "IOException.h"
 #include "SamtoolsBasedDbi.h"
+#include "SamtoolsBasedAllReadsIterator.h"
 
 namespace U2 {
 namespace BAM {
@@ -436,11 +437,8 @@ bool SamtoolsBasedReadsIterator::hasNext() {
 
     reads.clear();
     current = reads.begin();
-    qint64 endPosExc = r.endPos();
-    while (reads.isEmpty() && nextPosToRead < endPosExc) {
-        fetchNextChunk();
-        applyNameFilter();
-    }
+
+    fetchReads();
 
     if (!reads.isEmpty()) {
         return true;
@@ -479,6 +477,21 @@ U2AssemblyRead SamtoolsBasedReadsIterator::peek() {
         return res;
     }
     return U2AssemblyRead();
+}
+
+SamtoolsBasedReadsIterator::SamtoolsBasedReadsIterator(
+    int assemblyId,
+    SamtoolsBasedDbi& _dbi)
+    : U2DbiIterator<U2AssemblyRead>(), assemblyId(assemblyId), dbi(_dbi) {
+    current = reads.begin();
+}
+
+void SamtoolsBasedReadsIterator::fetchReads() {
+    qint64 endPosExc = r.endPos();
+    while (reads.isEmpty() && nextPosToRead < endPosExc) {
+        fetchNextChunk();
+        applyNameFilter();
+    }
 }
 
 static const int NAME_COL = 0;
@@ -648,12 +661,22 @@ qint64 SamtoolsBasedAssemblyDbi::getMaxEndPos(const U2DataId& assemblyId, U2OpSt
     CHECK_EXT(id < header->n_targets, os.setError("Unknown assembly id"), 0);
 
     qint64 targetLength = header->target_len[id];
+
+    // header was generated automatically and does not contain consensus length
+    if (targetLength == 0) {
+        SamtoolsBasedAllReadsIterator sbri(id, dbi);
+        targetLength = sbri.calculateMaxEndPos();
+        header->target_len[id] = targetLength;
+    }
+
     // Avoid returning '-1' (object-not-found) for empty assemblies.
-    return targetLength == 0 ? 0 : targetLength - 1;
+    SAFE_POINT(targetLength >= 0, "Incorrect target length", 0);
+
+    return targetLength;
 }
 
 U2Region SamtoolsBasedAssemblyDbi::getCorrectRegion(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) {
-    qint64 assemblyLength = getMaxEndPos(assemblyId, os) + 1;
+    qint64 assemblyLength = getMaxEndPos(assemblyId, os);
     CHECK_OP(os, U2Region());
     qint64 startPos = r.startPos;
     qint64 endPos = r.endPos() - 1;
