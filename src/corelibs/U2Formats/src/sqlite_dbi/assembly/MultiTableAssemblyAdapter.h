@@ -49,23 +49,23 @@ public:
 
     ~MultiTableAssemblyAdapter();
 
-    virtual qint64 countReads(const U2Region& r, U2OpStatus& os);
+    qint64 countReads(const U2Region& r, U2OpStatus& os) override;
 
-    virtual qint64 getMaxPackedRow(const U2Region& r, U2OpStatus& os);
-    virtual qint64 getMaxEndPos(U2OpStatus& os);
+    qint64 getMaxPackedRow(const U2Region& r, U2OpStatus& os) override;
+    qint64 getMaxEndPos(U2OpStatus& os) override;
 
-    virtual U2DbiIterator<U2AssemblyRead>* getReads(const U2Region& r, U2OpStatus& os, bool sortedHint = false);
-    virtual U2DbiIterator<U2AssemblyRead>* getReadsByRow(const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os);
-    virtual U2DbiIterator<U2AssemblyRead>* getReadsByName(const QByteArray& name, U2OpStatus& os);
+    U2DbiIterator<U2AssemblyRead>* getReads(const U2Region& r, U2OpStatus& os, bool sortedHint = false) override;
+    U2DbiIterator<U2AssemblyRead>* getReadsByRow(const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) override;
+    U2DbiIterator<U2AssemblyRead>* getReadsByName(const QByteArray& name, U2OpStatus& os) override;
 
-    virtual void addReads(U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os);
-    virtual void removeReads(const QList<U2DataId>& readIds, U2OpStatus& os);
-    virtual void dropReadsTables(U2OpStatus& os);
+    void addReads(U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os) override;
+    void removeReads(const QList<U2DataId>& readIds, U2OpStatus& os) override;
+    void dropReadsTables(U2OpStatus& os) override;
 
-    virtual void pack(U2AssemblyPackStat& stat, U2OpStatus& os);
-    virtual void calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
+    void pack(U2AssemblyPackStat& stat, U2OpStatus& os) override;
+    void calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os) override;
 
-    virtual void createReadsIndexes(U2OpStatus& os);
+    void createReadsIndexes(U2OpStatus& os) override;
 
     int getElenRangePosByLength(qint64 readLength) const;
     int getElenRangePosById(const U2DataId& id) const;
@@ -159,8 +159,8 @@ public:
     MultiTablePackAlgorithmAdapter(MultiTableAssemblyAdapter* a);
     ~MultiTablePackAlgorithmAdapter();
 
-    virtual U2DbiIterator<PackAlgorithmData>* selectAllReads(U2OpStatus& os);
-    virtual void assignProw(const U2DataId& readId, qint64 prow, U2OpStatus& os);
+    U2DbiIterator<PackAlgorithmData>* selectAllReads(U2OpStatus& os) override;
+    void assignProw(const U2DataId& readId, qint64 prow, U2OpStatus& os) override;
 
     void releaseDbResources();
     void migrateAll(U2OpStatus& os);
@@ -182,11 +182,11 @@ public:
 
     virtual ~MTAReadsIterator();
 
-    virtual bool hasNext();
+    bool hasNext() override;
 
-    virtual U2AssemblyRead next();
+    U2AssemblyRead next() override;
 
-    virtual U2AssemblyRead peek();
+    U2AssemblyRead peek() override;
 
 private:
     QVector<U2DbiIterator<U2AssemblyRead>*> iterators;
@@ -202,11 +202,11 @@ public:
 
     virtual ~MTAPackAlgorithmDataIterator();
 
-    virtual bool hasNext();
+    bool hasNext() override;
 
-    virtual PackAlgorithmData next();
+    PackAlgorithmData next() override;
 
-    virtual PackAlgorithmData peek();
+    PackAlgorithmData peek() override;
 
 private:
     void fetchNextData();

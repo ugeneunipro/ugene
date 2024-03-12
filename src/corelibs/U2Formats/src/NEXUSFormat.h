@@ -40,11 +40,11 @@ class U2FORMATS_EXPORT NEXUSFormat : public TextDocumentFormatDeprecated {
 public:
     NEXUSFormat(QObject* p);
 
-    virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
+    void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) override;
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
+    Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
 private:
     QList<GObject*> loadObjects(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& ti);

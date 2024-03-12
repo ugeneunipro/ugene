@@ -36,8 +36,8 @@ class ConvertAceToSqliteTask : public Task {
 public:
     ConvertAceToSqliteTask(const GUrl& sourceUrl, const U2DbiRef& dstDbiRef);
 
-    virtual void run();
-    virtual ReportResult report();
+    void run() override;
+    ReportResult report() override;
 
     GUrl getDestinationUrl() const;
     QMap<U2Sequence, U2Assembly> getImportedObjects() const;

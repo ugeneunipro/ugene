@@ -39,11 +39,11 @@ class U2FORMATS_EXPORT AprFormat : public TextDocumentFormatDeprecated {
 public:
     AprFormat(QObject* p);
 
-    virtual QString getRadioButtonText() const;
+    QString getRadioButtonText() const override;
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& url = GUrl()) const;
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& url = GUrl()) const override;
+    Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
 private:
     void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& ti);

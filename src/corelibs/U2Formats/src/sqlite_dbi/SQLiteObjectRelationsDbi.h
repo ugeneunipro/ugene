@@ -31,14 +31,14 @@ class SQLiteObjectRelationsDbi : public U2ObjectRelationsDbi, public SQLiteChild
 public:
     SQLiteObjectRelationsDbi(SQLiteDbi* dbi);
 
-    void initSqlSchema(U2OpStatus& os);
+    void initSqlSchema(U2OpStatus& os) override;
 
-    void createObjectRelation(U2ObjectRelation& relation, U2OpStatus& os);
-    QList<U2ObjectRelation> getObjectRelations(const U2DataId& object, U2OpStatus& os);
-    QList<U2DataId> getReferenceRelatedObjects(const U2DataId& reference, GObjectRelationRole relationRole, U2OpStatus& os);
-    void removeObjectRelation(U2ObjectRelation& relation, U2OpStatus& os);
-    void removeAllObjectRelations(const U2DataId& object, U2OpStatus& os);
-    void removeReferencesForObject(const U2DataId& object, U2OpStatus& os);
+    void createObjectRelation(U2ObjectRelation& relation, U2OpStatus& os) override;
+    QList<U2ObjectRelation> getObjectRelations(const U2DataId& object, U2OpStatus& os) override;
+    QList<U2DataId> getReferenceRelatedObjects(const U2DataId& reference, GObjectRelationRole relationRole, U2OpStatus& os) override;
+    void removeObjectRelation(U2ObjectRelation& relation, U2OpStatus& os) override;
+    void removeAllObjectRelations(const U2DataId& object, U2OpStatus& os) override;
+    void removeReferencesForObject(const U2DataId& object, U2OpStatus& os) override;
 };
 
 }  // namespace U2

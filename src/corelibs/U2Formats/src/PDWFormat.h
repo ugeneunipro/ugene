@@ -40,10 +40,10 @@ public:
     PDWFormat(QObject* p);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData,
-                                               const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawTextData(const QByteArray& rawData,
+                                               const GUrl& = GUrl()) const override;
 
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
 private:
     static QByteArray parseSequence(IOAdapter* io, U2OpStatus& ti);

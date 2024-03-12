@@ -56,9 +56,9 @@ public:
     static QString genObjectName(QSet<QString>& usedNames, const QString& name, const QVariantMap& info, int n, const GObjectType& t);
 
 protected:
-    virtual DNASequence* loadTextSequence(IOAdapter*, U2OpStatus& os);
+    DNASequence* loadTextSequence(IOAdapter*, U2OpStatus& os) override;
 
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
     int readMultilineQualifier(IOAdapter* io, char* cbuff, int maxSize, bool prevLineHasMaxSize, int lenFirstQualLine, U2OpStatus& os);
 
