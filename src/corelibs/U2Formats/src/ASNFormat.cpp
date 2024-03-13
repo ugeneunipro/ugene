@@ -205,9 +205,10 @@ QString ASNFormat::getAsnNodeTypeName(const AsnNode* node) {
     return QString("");
 }
 
-void ASNFormat::BioStructLoader::loadBioStructPdbId(AsnNode* rootNode, BioStruct3D& struc) {
+void ASNFormat::BioStructLoader::loadBioStructPdbId(AsnNode* rootNode, BioStruct3D& struc, U2OpStatus& os) {
     AsnNode* nameNode = ASNFormat::findFirstNodeByName(rootNode, "name");
-    SAFE_POINT(nameNode != nullptr, "nameNode == NULL?", );
+    CHECK_EXT(nameNode != nullptr, os.setError(tr("No \"name\" node found, possibly, the file is corrupted")), );
+
     struc.pdbId = nameNode->value;
 }
 
@@ -224,7 +225,8 @@ void ASNFormat::BioStructLoader::loadBioStructFromAsnTree(AsnNode* rootNode, Bio
         localDictionary.reset(StdResidueDictionary::createFromAsnTree(rootNode));
 
         // Load pdb Id
-        loadBioStructPdbId(rootNode, struc);
+        loadBioStructPdbId(rootNode, struc, ti);
+        CHECK_OP(ti, );
 
         // Load biostruct molecules
         AsnNode* graphNode = findFirstNodeByName(rootNode, "chemical-graph");
