@@ -91,27 +91,27 @@
 <context>
     <name>U2::ABIFormat</name>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="51"/>
+        <location filename="../src/ABIFormat.cpp" line="48"/>
         <source>ABIF</source>
         <translation>ABIF</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="52"/>
+        <location filename="../src/ABIFormat.cpp" line="49"/>
         <source>A chromatogram file format</source>
         <translation>Формат типа хромотограмма</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="93"/>
+        <location filename="../src/ABIFormat.cpp" line="90"/>
         <source>Not a valid ABIF file: %1</source>
         <translation>Некорректный ABIF файл: %1</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="120"/>
+        <location filename="../src/ABIFormat.cpp" line="117"/>
         <source>Failed to load sequence from ABI file %1</source>
         <translation>Невозможно загрузить последоватлеьность из ABI файла %1</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="452"/>
+        <location filename="../src/ABIFormat.cpp" line="449"/>
         <source>Undefined sequence alphabet</source>
         <translation>Неизвестный алфавит</translation>
     </message>
@@ -261,23 +261,28 @@
         <translation>ASN это формат используемый Molecular Modeling Database (MMDB)</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="259"/>
-        <location filename="../src/ASNFormat.cpp" line="657"/>
+        <location filename="../src/ASNFormat.cpp" line="210"/>
+        <source>No &quot;name&quot; node found, possibly, the file is corrupted</source>
+        <translation>Узел &quot;name&quot; не найден, вероятно, файл поврежден</translation>
+    </message>
+    <message>
+        <location filename="../src/ASNFormat.cpp" line="260"/>
+        <location filename="../src/ASNFormat.cpp" line="658"/>
         <source>Unknown error occurred</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="643"/>
+        <location filename="../src/ASNFormat.cpp" line="644"/>
         <source>no root element</source>
         <translation>Отсутствует корневой элемент</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="649"/>
+        <location filename="../src/ASNFormat.cpp" line="650"/>
         <source>states stack is not empty</source>
         <translation>Стек состояний не пуст</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="672"/>
+        <location filename="../src/ASNFormat.cpp" line="673"/>
         <source>First line is too long</source>
         <translation>Первая строка слишком длинная</translation>
     </message>
@@ -1102,7 +1107,7 @@
     </message>
     <message>
         <location filename="../src/EMBLPlainTextFormat.cpp" line="228"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="266"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="264"/>
         <location filename="../src/SwissProtPlainTextFormat.cpp" line="229"/>
         <source>Record is truncated.</source>
         <translation>Данные повреждены.</translation>
@@ -1144,12 +1149,12 @@
 <context>
     <name>U2::ExportAlignmentTask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="54"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="52"/>
         <source>Export alignment to %1</source>
         <translation>Экспортировать выравнивание в %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="58"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="56"/>
         <source>Nothing to export: multiple alignment is empty</source>
         <translation>Нечего экспортировать: выравнивание пустое</translation>
     </message>
@@ -1157,7 +1162,7 @@
 <context>
     <name>U2::ExportDNAChromatogramTask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="206"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="204"/>
         <source>Export chromatogram to SCF</source>
         <translation>Экспортировать хроматограмму а SCF</translation>
     </message>
@@ -1165,12 +1170,12 @@
 <context>
     <name>U2::ExportMSA2MSATask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="139"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="137"/>
         <source>Export alignment as alignment to %1</source>
         <translation>Экспортировать выравнивание в выравнивание в %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="145"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="143"/>
         <source>Nothing to export: multiple alignment is empty</source>
         <translation>Нечего экспортировать: выравнивание пустое</translation>
     </message>
@@ -1178,7 +1183,7 @@
 <context>
     <name>U2::ExportMSA2SequencesTask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="89"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="87"/>
         <source>Export alignment as sequence to %1</source>
         <translation>Экспортировать выравнивание в последовательность в %1</translation>
     </message>
@@ -1596,40 +1601,40 @@
 <context>
     <name>U2::GenbankPlainTextFormat</name>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="408"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="642"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="647"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="653"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="401"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="646"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="651"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="657"/>
         <location filename="../src/GenbankPlainTextFormat.cpp" line="799"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="828"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="835"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="842"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="852"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="827"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="834"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="841"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="851"/>
         <source>Error writing document</source>
         <translation>Ошибка записи</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="48"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="46"/>
         <source>GenBank</source>
         <translation>GenBank</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="49"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="47"/>
         <source>GenBank Flat File Format is a rich format for storing sequences and associated annotations</source>
         <translation>GenBank Flat File Format это формат для хранения последовательностей и их аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="103"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="101"/>
         <source>LOCUS is not the first line</source>
         <translation>Строка локуса должна идти первой</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="123"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="121"/>
         <source>Error parsing LOCUS line</source>
         <translation>Ошибка чтения локуса</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="188"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="186"/>
         <source>incomplete SOURCE record</source>
         <translation>Данные повреждены: запись SOURCE</translation>
     </message>
@@ -1922,17 +1927,17 @@
         <translation>Некоторые обязательные записи отсутствуют</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="417"/>
+        <location filename="../src/PDBFormat.cpp" line="416"/>
         <source>PDB warning: unknown residue name: %1</source>
         <translation>PDB предупреждение: неизвестное имя остатка: %1</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="504"/>
+        <location filename="../src/PDBFormat.cpp" line="503"/>
         <source>Invalid secondary structure record</source>
         <translation>Неверная запись вторичной структуры</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="538"/>
+        <location filename="../src/PDBFormat.cpp" line="537"/>
         <source>Invalid SEQRES: less then 24 characters</source>
         <translation>Неверный SEQRES: меньше чем 24 символа</translation>
     </message>
@@ -2388,57 +2393,57 @@
         <translation>Ошибка в базе данных SQLite: %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="238"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="236"/>
         <source>Error creating table: %1, error: %2</source>
         <translation>Error creating table: %1, error: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="270"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="268"/>
         <source>Not a %1 SQLite database: %2</source>
         <translation>Not a %1 SQLite database: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="275"/>
-        <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
-        <translation>Предупреждение! База данных создана с более новой версией %1: %2. Не все функции базы данных могут поддерживаться! Текущая версия %1: %3.</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="328"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="333"/>
         <source>Database is already opened!</source>
         <translation>База данных уже открыта!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="332"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="337"/>
         <source>Illegal database state: %1</source>
         <translation>Недопустимое состояние базы данных: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="338"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="343"/>
         <source>URL is not specified</source>
         <translation>Не задан путь</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="352"/>
-        <source>Error opening SQLite database: %1!</source>
-        <translation>Error opening SQLite database: %1!</translation>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="274"/>
+        <source>The file was created with a newer version of UGENE. Current version: %1, minimum version required by database: %2. File: %3.</source>
+        <translation>Файл был создан с более новой версией UGENE. Текущая версия: %1, минимальная версия, требуемая базой данных: %2. Файл: %3.</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="404"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="357"/>
+        <source>Error opening SQLite database: &apos;%1&apos;. Error: %2</source>
+        <translation>Ошибка при открытии базы данных SQLite: &apos;%1&apos;. Ошибка: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="411"/>
         <source>Database is already closed!</source>
         <translation>База данных уже закрыта!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="408"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="415"/>
         <source>Illegal database state %1!</source>
         <translation>Illegal database state %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="414"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="421"/>
         <source>Can&apos;t synchronize database state</source>
         <translation>Не удается синхронизировать состояние базы данных</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="433"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="440"/>
         <source>Failed to close database: %1, err: %2</source>
         <translation>Failed to close database: %1, err: %2</translation>
     </message>
@@ -2453,27 +2458,27 @@
         <translation>An object single modification step not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="390"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="391"/>
         <source>Msa object not found</source>
         <translation>Объект MSA не найден</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="542"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="557"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="747"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="526"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="541"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="710"/>
         <source>Msa object not found!</source>
         <translation>Msa object not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="640"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="805"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="842"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="616"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="764"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="801"/>
         <source>Msa row not found!</source>
         <translation>Msa row not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1319"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1329"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1251"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1261"/>
         <source>An error occurred during updating an msa length</source>
         <translation>Произошла ошибка при обновлении длины msa</translation>
     </message>
@@ -2503,13 +2508,13 @@
         <translation>Object not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="942"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="932"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="945"/>
         <source>Object not found.</source>
         <translation>Object not found.</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="979"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="982"/>
         <source>Folder not found: %1</source>
         <translation>Folder not found: %1</translation>
     </message>
@@ -2539,21 +2544,21 @@
 <context>
     <name>U2::VectorNtiSequenceFormat</name>
     <message>
-        <location filename="../src/VectorNtiSequenceFormat.cpp" line="46"/>
+        <location filename="../src/VectorNtiSequenceFormat.cpp" line="44"/>
         <source>Vector NTI sequence</source>
         <translation>Последовательность Vector NTI</translation>
     </message>
     <message>
-        <location filename="../src/VectorNtiSequenceFormat.cpp" line="47"/>
+        <location filename="../src/VectorNtiSequenceFormat.cpp" line="45"/>
         <source>Vector NTI sequence format is a rich format based on NCBI GenBank format for storing sequences and associated annotations</source>
         <translation>Формат Vector NTI это формат основанный на формате NCBI GenBank для хранения последовательностей и аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/VectorNtiSequenceFormat.cpp" line="298"/>
+        <location filename="../src/VectorNtiSequenceFormat.cpp" line="296"/>
+        <location filename="../src/VectorNtiSequenceFormat.cpp" line="310"/>
         <location filename="../src/VectorNtiSequenceFormat.cpp" line="314"/>
-        <location filename="../src/VectorNtiSequenceFormat.cpp" line="318"/>
-        <location filename="../src/VectorNtiSequenceFormat.cpp" line="323"/>
-        <location filename="../src/VectorNtiSequenceFormat.cpp" line="329"/>
+        <location filename="../src/VectorNtiSequenceFormat.cpp" line="319"/>
+        <location filename="../src/VectorNtiSequenceFormat.cpp" line="325"/>
         <source>Error writing document</source>
         <translation>Ошибка записи</translation>
     </message>

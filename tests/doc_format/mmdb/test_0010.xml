@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-broken-document index="doc" url="mmdb/asn_parser/test04.prt" io="local_file" format="mmdb" message="possibly, the file is corrupted"/>
+
+</multi-test>

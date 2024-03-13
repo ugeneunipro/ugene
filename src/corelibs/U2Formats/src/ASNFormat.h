@@ -177,7 +177,8 @@ private:
     private:
         void loadBioStructModels(QList<AsnNode*> models, BioStruct3D& struc);
         void loadBioStructGraph(AsnNode* graphNode, BioStruct3D& struc);
-        void loadBioStructPdbId(AsnNode* rootNode, BioStruct3D& struc);
+        /* Find the Id node in @struc and assign to @rootNode. Set error to @os if not found.  */
+        void loadBioStructPdbId(AsnNode* rootNode, BioStruct3D& struc, U2OpStatus& os);
         void loadBioStructSecondaryStruct(AsnNode* rootNode, BioStruct3D& struc);
         void loadBioStructFeature(AsnNode* featureNode, BioStruct3D& struc);
         void loadModelCoordsFromNode(AsnNode* node, AtomCoordSet& coordSet, QMap<int, Molecule3DModel>& molModels, const BioStruct3D& struc);
