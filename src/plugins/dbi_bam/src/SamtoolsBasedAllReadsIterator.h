@@ -27,13 +27,21 @@ namespace U2 {
 
 namespace BAM {
 
-/* @SamtoolsBasedAllReadsIterator allouw one to iterate through all assembly reads
- *
+/*
+ * @SamtoolsBasedAllReadsIterator allows one to iterate through all assembly reads
+ * without caching more than one read at the time.
+ * It allows one to handle all reads and find some required information
+ * (for example, to calculate maximum possible read end position)
+ * and prevents memory overflow.
  **/
 class SamtoolsBasedAllReadsIterator : public SamtoolsBasedReadsIterator {
 public:
     SamtoolsBasedAllReadsIterator(int assemblyId, SamtoolsBasedDbi& dbi);
 
+    /*
+     * Returns next assembly read.
+     * This function is forbidden here to prevent memory overflow.
+     **/
     U2AssemblyRead next() override;
 
     /* Compares end positions of each read and returns the maximum one */
