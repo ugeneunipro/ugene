@@ -33,7 +33,7 @@ public:
     GenbankLocationValidator(QPushButton* okButton, int length, bool isCircular, QLineEdit* le);
     ~GenbankLocationValidator();
 
-    State validate(QString& str, int& ii) const;
+    State validate(QString& str, int& ii) const override;
 
 private:
     State failValidate() const;

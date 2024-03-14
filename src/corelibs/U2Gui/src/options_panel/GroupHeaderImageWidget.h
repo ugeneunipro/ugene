@@ -51,7 +51,7 @@ signals:
     void si_groupHeaderPressed(QString groupId);
 
 protected:
-    virtual void mousePressEvent(QMouseEvent*);
+    void mousePressEvent(QMouseEvent*) override;
 
 private:
     QString groupId;

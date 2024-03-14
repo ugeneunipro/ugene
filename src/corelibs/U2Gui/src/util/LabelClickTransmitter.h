@@ -33,7 +33,7 @@ public:
     LabelClickTransmitter(QLabel* label, QAbstractButton* button);
 
 private:
-    bool eventFilter(QObject* object, QEvent* event);
+    bool eventFilter(QObject* object, QEvent* event) override;
 
     QLabel* label;
     QAbstractButton* button;

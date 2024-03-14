@@ -35,7 +35,7 @@ class FeatureKeyFilterTask : public AbstractProjectFilterTask {
 public:
     FeatureKeyFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs);
 
-    void run();
+    void run() override;
 
 private:
     void filterDocument(Document* doc);
@@ -48,7 +48,7 @@ private:
 class U2GUI_EXPORT FeatureKeyFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
     AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings,
-                                             const QList<QPointer<Document>>& docs) const;
+                                             const QList<QPointer<Document>>& docs) const override;
 };
 
 }  // namespace U2

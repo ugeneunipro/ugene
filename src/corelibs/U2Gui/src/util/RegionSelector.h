@@ -44,8 +44,8 @@ public:
     }
 
 protected:
-    void focusOutEvent(QFocusEvent* event);
-    void contextMenuEvent(QContextMenuEvent*);
+    void focusOutEvent(QFocusEvent* event) override;
+    void contextMenuEvent(QContextMenuEvent*) override;
 
 private slots:
     void sl_onSetMinMaxValue();

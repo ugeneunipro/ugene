@@ -81,7 +81,7 @@ private slots:
     void sl_showProgress();
 
 private:
-    virtual void mousePressEvent(QMouseEvent*);
+    void mousePressEvent(QMouseEvent*) override;
 
     bool isOpened;
     QLabel* arrow;

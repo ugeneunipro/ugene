@@ -53,7 +53,7 @@ signals:
     void si_enterPressed();
 
 protected:
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 };
 
 struct U2GUI_EXPORT EditSequencDialogConfig {
@@ -71,7 +71,7 @@ public:
     EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
     ~EditSequenceDialogController();
 
-    void accept();
+    void accept() override;
 
     DNASequence getNewSequence() const;
     GUrl getDocumentPath() const;

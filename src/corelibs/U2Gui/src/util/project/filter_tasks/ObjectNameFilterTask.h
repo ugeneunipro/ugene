@@ -34,7 +34,7 @@ public:
     ObjectNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs);
 
 protected:
-    bool filterAcceptsObject(GObject* obj);
+    bool filterAcceptsObject(GObject* obj) override;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ protected:
 
 class U2GUI_EXPORT ObjectNameFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
-    AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
+    AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const override;
 };
 
 }  // namespace U2

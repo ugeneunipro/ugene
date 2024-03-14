@@ -47,8 +47,8 @@ public:
 
     ObjectViewTask(GObjectViewFactoryId fid, const QString& viewName = QString(), const QVariantMap& s = QVariantMap());
 
-    virtual void prepare();
-    virtual ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
 
     virtual void open() {};
     virtual void update() {};
@@ -78,7 +78,7 @@ class U2GUI_EXPORT AddToViewTask : public Task {
     Q_OBJECT
 public:
     AddToViewTask(GObjectViewController* v, GObject* obj);
-    ReportResult report();
+    ReportResult report() override;
 
     QPointer<GObjectViewController> objView;
     QString viewName;
