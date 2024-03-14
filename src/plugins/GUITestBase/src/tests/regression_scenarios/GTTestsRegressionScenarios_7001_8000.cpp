@@ -4908,8 +4908,6 @@ GUI_TEST_CLASS_DEFINITION(test_7956) {
     * Expected state: ace file opened, no errors in the log
     */
     QString fastaFile = testDir + "_common_data/scenarios/_regression/7957/Sunisa_test_CRLF.fasta";
-    /* 
-    QString fastaFile = testDir + "_common_data/scenarios/_regression/7957/Sunisa_test_LF.fasta";
     QFile file(fastaFile);
     CHECK_SET_ERR(!file.open(QFile::ReadOnly), QString("unable to open file %1 in read mode").arg(fastaFile));
     QByteArray content = file.readAll();
@@ -4922,8 +4920,7 @@ GUI_TEST_CLASS_DEFINITION(test_7956) {
         fixedFile.write(content);
         fixedFile.close();
         fastaFile = fixedFasta;
-    }
-    */
+    }    
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(new ImportACEFileFiller(false, sandBoxDir + "test_7957.ugenedb"));
     GTUtilsDialog::waitForDialog(new CAP3SupportDialogFiller({fastaFile}, sandBoxDir + "test_7957.ace"));
