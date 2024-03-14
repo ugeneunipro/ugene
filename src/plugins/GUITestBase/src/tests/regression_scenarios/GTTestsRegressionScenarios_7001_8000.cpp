@@ -886,6 +886,42 @@ GUI_TEST_CLASS_DEFINITION(test_7234) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7242) {
+    // Open data/samples/FASTA/human_T1.fa, _common_data/fasta/100bp.fa.
+    // Open "Search in Sequence" options panel tab for both sequences.
+    // For human_T1 set "TTGTCAG" as the pattern, for 100bp – "AA".
+    // Create annotations first for human_T1, then 100bp.
+    // Expected: Error: Document is already added to the project
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Tabs::Search);
+    GTClipboard::setText("TTGTCAG");
+    GTKeyboardUtils::paste();
+
+    GTFileDialog::openFile(testDir + "_common_data/fasta/100bp.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Tabs::Search);
+    GTClipboard::setText("AA");
+    GTKeyboardUtils::paste();
+
+    GTUtilsProjectTreeView::doubleClickItem("human_T1.fa");
+    GTUtilsOptionPanelSequenceView::clickGetAnnotation(GTWidget::findWidget("human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]"));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsProjectTreeView::doubleClickItem("100bp.fa");
+    auto secondSequenceParent = GTWidget::findWidget("100bp [100bp.fa]");
+    GTUtilsOptionPanelSequenceView::clickGetAnnotation(secondSequenceParent);
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    auto errorLabel = GTWidget::findLabel("lblErrorMessage", secondSequenceParent);
+    auto errorText = errorLabel->text();
+    CHECK_SET_ERR(errorText.contains("Error: Document is already added to the project"), QString("Incoorect error message: %1").arg(errorText));
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7246) {
     GTFileDialog::openFile(testDir + "_common_data/clustal/RAW.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
