@@ -35,10 +35,10 @@ class U2GUI_EXPORT PasteTaskImpl : public PasteTask {
 public:
     PasteTaskImpl(bool addToProject);
 
-    QList<GUrl> getUrls() const {
+    QList<GUrl> getUrls() const override {
         return urls;
     }
-    QList<Document*> getDocuments() const {
+    QList<Document*> getDocuments() const override {
         return documents;
     }
 
@@ -48,7 +48,7 @@ protected:
     QList<Document*> documents;
 
 protected:
-    QList<Task*> onSubTaskFinished(Task* task);
+    QList<Task*> onSubTaskFinished(Task* task) override;
 };
 
 class U2GUI_EXPORT PasteFactoryImpl : public PasteFactory {

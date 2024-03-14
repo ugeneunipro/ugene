@@ -45,7 +45,7 @@ public:
     QString getFullDbiUrl() const;
 
 public slots:
-    void accept();
+    void accept() override;
 
 private:
     void init(const QString& dbiUrl, const QString& connectionName, const QString& userName);

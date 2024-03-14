@@ -42,7 +42,7 @@ class U2GUI_EXPORT UnloadDocumentTask : public Task {
     Q_OBJECT
 public:
     UnloadDocumentTask(Document* doc, bool save);
-    ReportResult report();
+    ReportResult report() override;
 
     static QList<Task*> runUnloadTaskHelper(const QList<Document*>& docs, UnloadDocumentTask_SaveMode sm);
     static QString checkSafeUnload(Document* d);
@@ -58,8 +58,8 @@ class U2GUI_EXPORT ReloadDocumentTask : public Task {
     Q_OBJECT
 public:
     ReloadDocumentTask(Document* d);
-    virtual void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     void saveObjectRelationsFromDoc();

@@ -63,8 +63,8 @@ class ProjectParser10 : public ProjectParser {
     Q_OBJECT
 public:
     ProjectParser10() {};
-    Project* createProjectFromXMLModel(const QString& url, const QDomDocument& xmlDoc, U2OpStatus& si);
-    QString getVersion() {
+    Project* createProjectFromXMLModel(const QString& url, const QDomDocument& xmlDoc, U2OpStatus& si) override;
+    QString getVersion() override {
         return QString("1.0");
     };
 };

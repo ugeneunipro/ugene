@@ -34,7 +34,7 @@ public:
         : ImageExportTask(settings),
           widget(widget) {
     }
-    virtual void run() = 0;
+    void run() override = 0;
 
 protected:
     QWidget* widget;
@@ -46,7 +46,7 @@ public:
     WidgetScreenshotExportToSvgTask(QWidget* widget, const ImageExportTaskSettings& settings)
         : WidgetScreenshotExportTask(widget, settings) {
     }
-    void run();
+    void run() override;
 };
 
 class WidgetScreenshotExportToPdfTask : public WidgetScreenshotExportTask {
@@ -54,7 +54,7 @@ public:
     WidgetScreenshotExportToPdfTask(QWidget* widget, const ImageExportTaskSettings& settings)
         : WidgetScreenshotExportTask(widget, settings) {
     }
-    void run();
+    void run() override;
 };
 
 class WidgetScreenshotExportToBitmapTask : public WidgetScreenshotExportTask {
@@ -62,7 +62,7 @@ public:
     WidgetScreenshotExportToBitmapTask(QWidget* widget, const ImageExportTaskSettings& settings)
         : WidgetScreenshotExportTask(widget, settings) {
     }
-    void run();
+    void run() override;
 };
 
 class WidgetScreenshotImageExportController : public ImageExportController {
@@ -70,16 +70,16 @@ class WidgetScreenshotImageExportController : public ImageExportController {
 public:
     WidgetScreenshotImageExportController(QWidget* widget);
 
-    int getImageWidth() const;
-    int getImageHeight() const;
+    int getImageWidth() const override;
+    int getImageHeight() const override;
 
 protected:
-    void initSettingsWidget() {
+    void initSettingsWidget() override {
     }
 
-    Task* getExportToSvgTask(const ImageExportTaskSettings& settings) const;
-    Task* getExportToPdfTask(const ImageExportTaskSettings& settings) const;
-    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const;
+    Task* getExportToSvgTask(const ImageExportTaskSettings& settings) const override;
+    Task* getExportToPdfTask(const ImageExportTaskSettings& settings) const override;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const override;
 
 private:
     QWidget* widget;

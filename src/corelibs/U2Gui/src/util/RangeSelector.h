@@ -83,7 +83,7 @@ public:
 
     ~MultipleRangeSelector();
 
-    virtual void accept();
+    void accept() override;
 
     QVector<U2Region> getSelectedRegions();
 

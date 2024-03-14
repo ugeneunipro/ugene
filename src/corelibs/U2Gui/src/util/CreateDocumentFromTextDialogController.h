@@ -40,7 +40,7 @@ public:
     CreateDocumentFromTextDialogController(QWidget* p = nullptr);
     ~CreateDocumentFromTextDialogController();
 
-    void accept();
+    void accept() override;
 
 private slots:
     void sl_filepathTextChanged();

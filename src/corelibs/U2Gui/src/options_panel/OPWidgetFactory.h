@@ -85,13 +85,13 @@ public:
         : OPFactoryFilterVisitorInterface(), objectViewType(_objectViewType), objectAlphabetType(DNAAlphabet_RAW), objectAlphabets(_objectListAlphabet) {
     }
 
-    virtual bool typePass(ObjectViewType factoryViewType) {
+    bool typePass(ObjectViewType factoryViewType) override {
         return factoryViewType == objectViewType;
     }
-    virtual bool alphabetPass(DNAAlphabetType factoryAlphabetType) {
+    bool alphabetPass(DNAAlphabetType factoryAlphabetType) override {
         return factoryAlphabetType == objectAlphabetType;
     }
-    virtual bool atLeastOneAlphabetPass(DNAAlphabetType factoryAlphabetType);
+    bool atLeastOneAlphabetPass(DNAAlphabetType factoryAlphabetType) override;
 
 private:
     ObjectViewType objectViewType;
