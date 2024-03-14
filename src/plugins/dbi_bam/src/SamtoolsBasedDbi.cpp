@@ -38,7 +38,6 @@
 #include "Exception.h"
 #include "IOException.h"
 #include "SamtoolsBasedDbi.h"
-#include "SamtoolsBasedAllReadsIterator.h"
 
 namespace U2 {
 namespace BAM {
@@ -422,6 +421,13 @@ SamtoolsBasedReadsIterator::SamtoolsBasedReadsIterator(
     SAFE_POINT(!errorRegion, QString("Bad region for samtools reads fetching: %1 - %2").arg(_r.startPos).arg(_r.endPos()), );
 }
 
+SamtoolsBasedReadsIterator::SamtoolsBasedReadsIterator(
+    int assemblyId,
+    SamtoolsBasedDbi& _dbi)
+    : U2DbiIterator<U2AssemblyRead>(), assemblyId(assemblyId), dbi(_dbi) {
+    current = reads.begin();
+}
+
 bool SamtoolsBasedReadsIterator::hasNext() {
     applyNameFilter();
 
@@ -438,7 +444,15 @@ bool SamtoolsBasedReadsIterator::hasNext() {
     reads.clear();
     current = reads.begin();
 
-    fetchReads();
+    if (r.isEmpty()) {
+        fetchNextChunk();
+    } else {
+        qint64 endPosExc = r.endPos();
+        while (reads.isEmpty() && nextPosToRead < endPosExc) {
+            fetchNextChunk();
+            applyNameFilter();
+        }
+    }
 
     if (!reads.isEmpty()) {
         return true;
@@ -477,21 +491,6 @@ U2AssemblyRead SamtoolsBasedReadsIterator::peek() {
         return res;
     }
     return U2AssemblyRead();
-}
-
-SamtoolsBasedReadsIterator::SamtoolsBasedReadsIterator(
-    int assemblyId,
-    SamtoolsBasedDbi& _dbi)
-    : U2DbiIterator<U2AssemblyRead>(), assemblyId(assemblyId), dbi(_dbi) {
-    current = reads.begin();
-}
-
-void SamtoolsBasedReadsIterator::fetchReads() {
-    qint64 endPosExc = r.endPos();
-    while (reads.isEmpty() && nextPosToRead < endPosExc) {
-        fetchNextChunk();
-        applyNameFilter();
-    }
 }
 
 static const int NAME_COL = 0;
@@ -664,8 +663,13 @@ qint64 SamtoolsBasedAssemblyDbi::getMaxEndPos(const U2DataId& assemblyId, U2OpSt
 
     // header was generated automatically and does not contain consensus length
     if (targetLength == 0) {
-        SamtoolsBasedAllReadsIterator sbri(id, dbi);
-        targetLength = sbri.calculateMaxEndPos();
+        SamtoolsBasedReadsIterator sbri(id, dbi);
+        auto read = sbri.next();
+        while (read != nullptr) {
+            targetLength = qMax(targetLength, read->leftmostPos + read->effectiveLen);
+            read = sbri.next();
+        }
+
         header->target_len[id] = targetLength;
     }
 

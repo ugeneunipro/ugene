@@ -70,20 +70,15 @@ class SamtoolsBasedReadsIterator : public U2DbiIterator<U2AssemblyRead> {
     friend int bamFetchFunction(const bam1_t* b, void* data);
 
 public:
+    /* This constructor creates instance, which iterates through reads of some certain region @r. */
     SamtoolsBasedReadsIterator(int assemblyId, const U2Region& r, SamtoolsBasedDbi& dbi, const QByteArray& nameFilter = "");
+
+    /* This constructor creates instance, which iterates through all reads of assembly. */
+    SamtoolsBasedReadsIterator(int assemblyId, SamtoolsBasedDbi& dbi);
 
     bool hasNext() override;
     U2AssemblyRead next() override;
     U2AssemblyRead peek() override;
-
-protected:
-    SamtoolsBasedReadsIterator(int assemblyId, SamtoolsBasedDbi& dbi);
-
-    virtual void fetchReads();
-    void fetchNextChunk();
-    void applyNameFilter();
-
-    QList<U2AssemblyRead> reads;
 
 private:
     int assemblyId = 0;
@@ -93,6 +88,7 @@ private:
 
     qint64 nextPosToRead = 0;
     std::shared_ptr<BGZF> bamFile;
+    QList<U2AssemblyRead> reads;
     QList<U2AssemblyRead>::Iterator current;
 
     QList<U2DataId> borderReadIds;
@@ -101,6 +97,8 @@ private:
     static const int BUFFERED_INTERVAL_SIZE;
 
 private:
+    void fetchNextChunk();
+    void applyNameFilter();
 };  // SamtoolsBasedReadsIterator
 
 class SamtoolsBasedAssemblyDbi : public U2SimpleAssemblyDbi {

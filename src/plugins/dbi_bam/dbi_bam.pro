@@ -22,7 +22,6 @@ HEADERS += src/Alignment.h \
            src/PrepareToImportTask.h \
            src/Reader.h \
            src/SamReader.h \
-           src/SamtoolsBasedAllReadsIterator.h \
            src/SamtoolsBasedDbi.h \
            src/VirtualOffset.h
 FORMS += src/ConvertToSQLiteDialog.ui
@@ -47,6 +46,5 @@ SOURCES += src/Alignment.cpp \
            src/PrepareToImportTask.cpp \
            src/Reader.cpp \
            src/SamReader.cpp \
-           src/SamtoolsBasedAllReadsIterator.cpp \
            src/SamtoolsBasedDbi.cpp \
            src/VirtualOffset.cpp
