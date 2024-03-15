@@ -66,8 +66,8 @@ public:
     DatasetFilesIterator(const QList<Dataset>& exps);
     virtual ~DatasetFilesIterator();
 
-    virtual QString getNextFile();
-    virtual bool hasNext();
+    QString getNextFile() override;
+    bool hasNext() override;
 
     QString getLastDatasetName() const;
     void tryEmitDatasetEnded();

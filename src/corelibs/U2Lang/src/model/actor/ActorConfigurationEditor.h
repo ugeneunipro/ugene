@@ -38,7 +38,7 @@ public:
     ActorConfigurationEditor(const ActorConfigurationEditor& other);
 
     virtual void setConfiguration(Actor* actor);
-    virtual ConfigurationEditor* clone();
+    ConfigurationEditor* clone() override;
 
 protected:
     Actor* cfg;

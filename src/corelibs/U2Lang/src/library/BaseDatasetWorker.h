@@ -31,8 +31,8 @@ class U2LANG_EXPORT BaseDatasetWorker : public BaseOneOneWorker {
 public:
     BaseDatasetWorker(Actor* a, const QString& inPortId, const QString& outPortId);
 
-    void init();
-    void cleanup();
+    void init() override;
+    void cleanup() override;
 
 protected:
     // BaseOneOneWorker

@@ -29,11 +29,11 @@ namespace U2 {
 class U2LANG_EXPORT MarkerAttribute : public Attribute {
 public:
     MarkerAttribute(const Descriptor& d, const DataTypePtr type, bool required = false, const QVariant& defaultValue = QVariant());
-    virtual void setAttributeValue(const QVariant& newVal);
-    virtual const QVariant& getAttributePureValue() const;
-    virtual bool isDefaultValue() const;
-    virtual Attribute* clone();
-    virtual AttributeGroup getGroup();
+    void setAttributeValue(const QVariant& newVal) override;
+    const QVariant& getAttributePureValue() const override;
+    bool isDefaultValue() const override;
+    Attribute* clone() override;
+    AttributeGroup getGroup() override;
 
     QList<Marker*>& getMarkers();
     bool contains(const QString& markerId) const;

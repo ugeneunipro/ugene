@@ -89,7 +89,7 @@ class DbiScriptClass : public QObject, public QScriptClass {
 public:
     DbiScriptClass(QScriptEngine* engine);
 
-    QScriptValue prototype() const;
+    QScriptValue prototype() const override;
     QScriptValue newInstance(const Workflow::SharedDbiDataHandler& id);
 
     /** Virtual copy constructor for dbi types */

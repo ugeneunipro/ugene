@@ -204,7 +204,7 @@ public:
         return url.indexOf(QRegExp("[*?\\[\\]]")) >= 0;
     }
 
-    virtual ActorDocument* createDescription(Actor*) = 0;
+    ActorDocument* createDescription(Actor*) override = 0;
 
     QString getURL(const QString& id, bool* empty = nullptr, const QString& onEmpty = "", const QString& defaultValue = "");
     QString getScreenedURL(IntegralBusPort* input, const QString& id, const QString& slot, const QString& onEmpty = "");
@@ -217,7 +217,7 @@ public:
     static QString getHyperlink(const QString& id, qreal val);
 
     virtual QString composeRichDoc() = 0;
-    virtual void update(const QVariantMap& cfg) {
+    void update(const QVariantMap& cfg) override {
         map = cfg;
         sl_actorModified();
     }
@@ -244,7 +244,7 @@ public:
         : PrompterBaseImpl(p), listenInputs(listenInputs) {
     }
     virtual ~PrompterBase() = default;
-    virtual ActorDocument* createDescription(Actor* a) {
+    ActorDocument* createDescription(Actor* a) override {
         auto doc = new T(a);
         doc->connect(a, SIGNAL(si_labelChanged()), SLOT(sl_actorModified()));
         doc->connect(a, SIGNAL(si_modified()), SLOT(sl_actorModified()));

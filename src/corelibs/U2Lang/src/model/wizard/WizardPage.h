@@ -90,8 +90,8 @@ public:
     DefaultPageContent();
     virtual ~DefaultPageContent();
 
-    virtual void accept(TemplatedPageVisitor* visitor);
-    virtual void validate(const QList<Workflow::Actor*>& actors, U2OpStatus& os) const;
+    void accept(TemplatedPageVisitor* visitor) override;
+    void validate(const QList<Workflow::Actor*>& actors, U2OpStatus& os) const override;
 
     void addParamWidget(WizardWidget* widget);
     void setLogoPath(const QString& path);

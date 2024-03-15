@@ -82,8 +82,8 @@ public:
     QDDistanceType distanceType() const {
         return distType;
     }
-    QString getText(QDSchemeUnit*, QDSchemeUnit*) const;
-    bool drawArrow(QDSchemeUnit*, QDSchemeUnit*) const {
+    QString getText(QDSchemeUnit*, QDSchemeUnit*) const override;
+    bool drawArrow(QDSchemeUnit*, QDSchemeUnit*) const override {
         return true;
     }
     void invert();

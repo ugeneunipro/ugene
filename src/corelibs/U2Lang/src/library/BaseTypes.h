@@ -55,8 +55,8 @@ public:
  */
 class StringTypeValueFactory : public DataTypeValueFactory {
 public:
-    virtual QVariant getValueFromString(const QString& str, bool* ok = nullptr) const;
-    virtual QString getId() const {
+    QVariant getValueFromString(const QString& str, bool* ok = nullptr) const override;
+    QString getId() const override {
         return BaseTypes::STRING_TYPE()->getId();
     }
 
@@ -67,8 +67,8 @@ public:
  */
 class StringListTypeValueFactory : public DataTypeValueFactory {
 public:
-    virtual QVariant getValueFromString(const QString& str, bool* ok = nullptr) const;
-    virtual QString getId() const {
+    QVariant getValueFromString(const QString& str, bool* ok = nullptr) const override;
+    QString getId() const override {
         return BaseTypes::STRING_LIST_TYPE()->getId();
     }
 
@@ -79,8 +79,8 @@ public:
  */
 class MapTypeValueFactory : public DataTypeValueFactory {
 public:
-    virtual QVariant getValueFromString(const QString& str, bool* ok = nullptr) const;
-    virtual QString getId() const {
+    QVariant getValueFromString(const QString& str, bool* ok = nullptr) const override;
+    QString getId() const override {
         return BaseTypes::MAP_TYPE()->getId();
     }
 
@@ -99,8 +99,8 @@ public:
     static const QString NIL_STR;
 
 public:
-    virtual QVariant getValueFromString(const QString& str, bool* ok = nullptr) const;
-    virtual QString getId() const {
+    QVariant getValueFromString(const QString& str, bool* ok = nullptr) const override;
+    QString getId() const override {
         return BaseTypes::BOOL_TYPE()->getId();
     }
 
@@ -111,8 +111,8 @@ public:
  */
 class NumTypeValueFactory : public DataTypeValueFactory {
 public:
-    virtual QVariant getValueFromString(const QString& str, bool* ok = nullptr) const;
-    virtual QString getId() const {
+    QVariant getValueFromString(const QString& str, bool* ok = nullptr) const override;
+    QString getId() const override {
         return BaseTypes::NUM_TYPE()->getId();
     }
 
@@ -123,8 +123,8 @@ public:
  */
 class UrlTypeValueFactory : public DataTypeValueFactory {
 public:
-    virtual QVariant getValueFromString(const QString& str, bool* ok = nullptr) const;
-    virtual QString getId() const;
+    QVariant getValueFromString(const QString& str, bool* ok = nullptr) const override;
+    QString getId() const override;
 };  // UrlTypeValueFactory
 
 }  // namespace U2

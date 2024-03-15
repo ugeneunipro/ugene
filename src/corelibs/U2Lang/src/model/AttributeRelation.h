@@ -79,15 +79,15 @@ public:
     VisibilityRelation(const QString& relatedAttrId, const QVariantList& visibilityValues, bool invertVisibilityRules = false);
     VisibilityRelation(const QString& relatedAttrId, const QVariant& visibilityValue, bool invertVisibilityRules = false);
 
-    virtual QVariant getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags* depTags) const;
-    virtual RelationType getType() const {
+    QVariant getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags* depTags) const override;
+    RelationType getType() const override {
         return VISIBILITY;
     }
-    virtual bool valueChangingRelation() const {
+    bool valueChangingRelation() const override {
         return false;
     }
 
-    VisibilityRelation* clone() const;
+    VisibilityRelation* clone() const override;
 
 private:
     QVariantList visibilityValues;
@@ -103,13 +103,13 @@ public:
         : AttributeRelation(relatedAttrId) {
     }
 
-    virtual QVariant getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags* depTags) const;
-    virtual void updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const;
-    virtual RelationType getType() const {
+    QVariant getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags* depTags) const override;
+    void updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const override;
+    RelationType getType() const override {
         return FILE_EXTENSION;
     }
 
-    FileExtensionRelation* clone() const;
+    FileExtensionRelation* clone() const override;
 };
 
 /**
@@ -120,14 +120,14 @@ public:
     ValuesRelation(const QString& relatedAttrId, const QVariantMap& _dependencies)
         : AttributeRelation(relatedAttrId), dependencies(_dependencies) {
     }
-    virtual RelationType getType() const {
+    RelationType getType() const override {
         return CUSTOM_VALUE_CHANGER;
     }
 
-    virtual QVariant getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags* depTags) const;
-    virtual void updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const;
+    QVariant getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags* depTags) const override;
+    void updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const override;
 
-    ValuesRelation* clone() const;
+    ValuesRelation* clone() const override;
 
 private:
     QVariantMap dependencies;

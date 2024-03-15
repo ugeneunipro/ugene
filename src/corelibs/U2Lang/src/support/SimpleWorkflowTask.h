@@ -64,8 +64,8 @@ class U2LANG_EXPORT SimpleInOutWorkflowTask : public DocumentProviderTask {
     Q_OBJECT
 public:
     SimpleInOutWorkflowTask(const SimpleInOutWorkflowTaskConfig& conf);
-    void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     void prepareTmpFile(QTemporaryFile& tmpFile, const QString& tmpl);
@@ -98,8 +98,8 @@ class U2LANG_EXPORT SimpleMSAWorkflow4GObjectTask : public Task {
 public:
     SimpleMSAWorkflow4GObjectTask(const QString& taskName, MsaObject* maObj, const SimpleMSAWorkflowTaskConfig& conf);
 
-    void prepare();
-    ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
     Msa getResult();
 
 private:
