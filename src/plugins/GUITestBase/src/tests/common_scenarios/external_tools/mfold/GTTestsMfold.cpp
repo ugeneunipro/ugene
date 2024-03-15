@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 #include "GTTestsMfold.h"
+#include <random>
 
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -31,8 +32,10 @@
 #include "primitives/GTLineEdit.h"
 #include "primitives/GTMenu.h"
 #include "primitives/GTSpinBox.h"
+#include "primitives/GTTextEdit.h"
 #include "primitives/GTToolbar.h"
 #include "primitives/GTWidget.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 namespace U2 {
@@ -283,6 +286,57 @@ GUI_TEST_CLASS_DEFINITION(test_0005_large) {
     unexpected = "Structure 1";
     CHECK_SET_ERR(!html.contains(unexpected),
                   QString("Message `%1` was found in `%2`, but should not").arg(unexpected, html));
+}
+GUI_TEST_CLASS_DEFINITION(test_0006_fuzzing_name) {
+    // Create sequence with random name from valid characters and check that mfold completed successfully.
+    QString validChars = " !\"#$%&'()*+,-./01:;<=>?@AB[\\]^_`yz{|}";
+    std::mt19937 gen(std::random_device {}());
+    std::uniform_int_distribution<int> dist(0, static_cast<int>(validChars.size()) - 1);
+    QString seqName;
+    for (int i = 0; i < 100; ++i) {
+        seqName.push_back(validChars[dist(gen)]);
+    }
+
+    // Create sequence with random name. Check its appearance.
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller("TTGTCAGATTCACCAAAGTTGAAATGAAGGAAAAAATGCTAAGGGCAGCC",
+                                                          false,
+                                                          CreateDocumentFiller::StandardDNA,
+                                                          true,
+                                                          false,
+                                                          "",
+                                                          sandBoxDir + "inp.fa",
+                                                          CreateDocumentFiller::FASTA,
+                                                          seqName));
+    GTMenu::clickMainMenuItem({"File", "New document from text..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTLogTracer lt;
+    // Call dialog and run task.
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTUtilsDialog::add(new AnyDialogFiller("MfoldDialog", QDialogButtonBox::Ok));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    // Check task finished successfully.
+    CHECK_SET_ERR(!lt.hasErrors(), "Mfold doesn't work on sequence named `" + seqName + '`');
+}
+GUI_TEST_CLASS_DEFINITION(test_0007_html_name) {
+    // Check that mfold report for sequences with strange names looks good.
+    // Open sequence. Check its appearance.
+    GTFileDialog::openFile(testDir + "_common_data/et/mfold/bad_names", "&quote;&amp;&lt;.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    // Call dialog and run task.
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTUtilsDialog::add(new AnyDialogFiller("MfoldDialog", QDialogButtonBox::Ok));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    // Check that name in report is the same as sequence name.
+    GTUtilsNotifications::clickOnNotificationWidget();
+    auto reportEdit = GTWidget::findTextEdit("reportTextEdit");
+    GTTextEdit::containsString(reportEdit, "&quote;&amp;&lt;");
+    GTTextEdit::containsString(reportEdit, "_common_data/et/mfold/bad_names/&quote;&amp;&lt;");
 }
 }  // namespace GUITest_common_scenarios_mfold
 }  // namespace U2

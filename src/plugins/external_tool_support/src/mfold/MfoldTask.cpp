@@ -47,18 +47,29 @@
 #include "MfoldSupport.h"
 #include "utils/OutputCollector.h"
 
+// Replaces "&< character with HTML code (ampersand escaped).
+static QString replaceNonValid(const QString& str) {
+    QString encoded = str;
+    encoded.replace('"', "&quot;");
+    encoded.replace('&', "&amp;");
+    encoded.replace('<', "&lt;");
+    return encoded;
+}
 // https://stackoverflow.com/a/13993058
-static QString toAmpersandEncode(const QString& string) {
+// Replaces non-valid ("&<) and unicode characters with HTML encoded (ampersand escaped).
+static QString toValidHtml(const QString& str) {
+    QString fixedStr = replaceNonValid(str);
     QString encoded;
-    for (int i = 0; i < string.size(); ++i) {
-        QChar ch = string.at(i);
+    for (int i = 0; i < fixedStr.size(); ++i) {
+        QChar ch = fixedStr.at(i);
         ushort unicode = ch.unicode();
         encoded += unicode > 255 ? QString("&#%1;").arg((int)unicode) : ch;
     }
     return encoded;
 }
-static QString toAmpersandWithoutSpaces(const QString& string) {
-    return toAmpersandEncode(string).replace(' ', "%20");
+// Replaces spaces with percent escaped.
+static QString replaceSpaces(const QString& str) {
+    return QString(str).replace(' ', "%20");
 }
 
 namespace U2 {
@@ -208,8 +219,8 @@ public:
     }
 
     QString constructFileReport(U2OpStatus& os) {
-        QString seqName = toAmpersandEncode(t.seqInfo.seqName);
-        QString inpSeqPath = toAmpersandEncode(t.seqInfo.seqPath.getURLString());
+        QString seqName = toValidHtml(t.seqInfo.seqName);
+        QString inpSeqPath = toValidHtml(t.seqInfo.seqPath.getURLString());
         QString report = "<!DOCTYPE html>"
                          "<html lang=\"en\">"
                          "<head>"
@@ -329,7 +340,8 @@ public:
                           QString::number(th[Th::DELTA_S_KEY], 'f', 2) + " cal/(K&middot;mol)</li>";
                 report += "<li>T<sub>m</sub> = " +
                           QString::number(th[Th::TM_KEY], 'f', 2) + "&deg;C</li>";
-                QString fileNameWithoutExt = toAmpersandWithoutSpaces(GUrl(t.tmpSeqPath).fileName()) + '_' + iStr + '.';
+                QString fileNameWithoutExt = replaceSpaces(toValidHtml(GUrl(t.tmpSeqPath).fileName())) + '_' + iStr +
+                                             '.';
                 report += "</ul>"
                           "<table>"
                           "<tr>"
@@ -408,12 +420,12 @@ public:
                   "<tr>"
                   "<td style=\"padding-right: 10px;\">Sequence name:</td>"
                   "<td>" +
-                  t.seqInfo.seqName + "</td>";
+                  replaceNonValid(t.seqInfo.seqName) + "</td>";
         report += "</tr>"
                   "<tr>"
                   "<td style=\"padding-right: 10px;\">Sequence path:</td>"
                   "<td>" +
-                  inpSeqPath + "</td>";
+                  replaceNonValid(inpSeqPath) + "</td>";
         report += "</tr>"
                   "<tr>"
                   "<td style=\"padding-right: 10px;\">Region:</td>"
@@ -463,11 +475,12 @@ public:
                   "</tr>";
 
         if (structuresNum > 0) {
+            QString outPath = replaceNonValid(t.outHtmlPath);
             report += "<tr>"
                       "<th align=\"left\">Output HTML report</th>"
                       "<td>"
                       "<a href=\"" +
-                      t.outHtmlPath + "\">" + t.outHtmlPath + "</a>";
+                      outPath + "\">" + outPath + "</a>";
             report += "</td>"
                       "</tr>";
         }
@@ -620,8 +633,20 @@ QString MfoldTask::constructTmpSeqFilePath() const {
 
 QString MfoldTask::constructSeqName() const {
     QString regionStr = getLocationStr(settings.region);
-    QString seqName = seqInfo.seqName.left(std::min(seqInfo.seqName.size(), maxSeqNameLen - regionStr.size()));
-    seqName.replace(QRegularExpression("[^\x21-\x7E]"), "_");
+    QString seqName = seqInfo.seqName;
+    // Replace non-printable ASCII and non-ASCII characters with _
+    seqName.replace(QRegularExpression("[^\x20-\x7E]"), "_");
+    // Replace all backslashes with double backslashes because in seqName backslash is the backslash, but in ps file
+    // backslash escapes the next character(s). See page 29 of
+    // https://web.archive.org/web/20060614215453/http://partners.adobe.com/public/developer/en/ps/PLRM.pdf
+    seqName.replace('\\', "\\\\");
+    // Unbalanced parentheses are also prohibited, see ps specification linked above. Escaping the parentheses helps.
+    seqName.replace('(', "\\(");
+    seqName.replace(')', "\\)");
+    // Name with two or more dots also won't work. Proof: formid.f:88
+    seqName.replace(QRegularExpression("\\.\\.+"), ".");
+
+    seqName = seqName.left(std::min(seqName.size(), maxSeqNameLen - regionStr.size()));
     return seqName + regionStr;
 }
 
