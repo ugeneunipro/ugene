@@ -8,7 +8,7 @@
             in="!common_data_dir!fasta/pcr_test.fa"
             primers="!common_data_dir!cmdline/pcr/primers_long1.fa"
             working-dir="pcr_0005"
-            message="Primer sequence is too long"
+            message="The forward primer length should be between 15 and 200 bp. Unable to calculate primer statistics."
     />
 
     <check-temp-file url="pcr_0005/pcr_test_pIB2-SEC13_1_fr_3-3396.gb" exists="1"/>

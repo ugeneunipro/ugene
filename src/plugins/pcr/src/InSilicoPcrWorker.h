@@ -46,6 +46,7 @@ public:
     Worker* createWorker(Actor* a);
 
     static const QString ACTOR_ID;
+    static const QString TEMPERATURE_SETTINGS_ID;
     static void init();
 };
 
@@ -94,7 +95,7 @@ protected:
 
 private:
     void fetchPrimers(const QList<GObject*>& objects, U2OpStatus& os);
-    Primer createPrimer(GObject* object, bool& skipped, U2OpStatus& os);
+    Primer createPrimer(GObject* object, U2OpStatus& os);
     int createMetadata(int sequenceLength, const U2Region& productRegion, int pairNumber);
     QByteArray createReport() const;
     QVariant fetchSequence(Document* doc);
