@@ -118,11 +118,10 @@ void GTest_RunCMDLine::setArgs(const QDomElement& el) {
 
 QString GTest_RunCMDLine::splitVal(const QString& val, const QString& prefValue, const QString& prefix, bool isTmp) {
     int midSize = prefValue.size();
-    const QString splitter = WorkflowUtils::getDatasetSplitter(val);
-    QStringList dsVals = val.split(splitter + splitter);
+    QStringList dsVals = WorkflowUtils::unpackListOfDatasets(val);
     QStringList result;
     foreach (const QString& dsVal, dsVals) {
-        QStringList realVals = dsVal.split(splitter);
+        QStringList realVals = WorkflowUtils::unpackListOfUrls(dsVal);
         QStringList dsResult;
         for (QString s : qAsConst(realVals)) {
             if (s.startsWith(prefValue)) {
@@ -134,9 +133,9 @@ QString GTest_RunCMDLine::splitVal(const QString& val, const QString& prefValue,
                 tmpFiles << filename;
             }
         }
-        result << dsResult.join(";");
+        result << WorkflowUtils::packListOfUrls(dsResult);
     }
-    return result.join(";;");
+    return WorkflowUtils::packListOfDatasets(result);
 }
 
 QString GTest_RunCMDLine::getVal(const QString& val) {

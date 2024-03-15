@@ -1,7 +1,7 @@
 <multi-test>
     <run-cmdline
             task="!workflow_samples!Scenarios/intersect_annotations.uwl"
-            in-A="!common_data_dir!bedtools/mutation.gff,bedtools/introns.bed"
+            in-A="!common_data_dir!bedtools/mutation.gff;bedtools/introns.bed"
             in-B="!common_data_dir!bedtools/out01.bed"
             out-file="!tmp_data_dir!bedtools_test_00021_intersect.gff"
             out-format="gff"
