@@ -25,7 +25,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/ElapsedTimeUpdater.h>
-#include <U2Lang/WorkflowDebugStatus.h>
 #include <U2Lang/WorkflowMonitor.h>
 
 namespace U2 {
@@ -68,16 +67,6 @@ inline ActorId LastReadyScheduler::actorId() const {
     return lastWorker->getActor()->getId();
 }
 
-inline bool LastReadyScheduler::hasValidFinishedTask() const {
-    return (lastWorker != nullptr) && (lastTask != nullptr) && (lastTask->isFinished());
-}
-
-inline qint64 LastReadyScheduler::lastTaskTimeSec() const {
-    qint64 startMks = lastTask->getTimeInfo().startTime;
-    qint64 endMks = lastTask->getTimeInfo().finishTime;
-    return endMks - startMks;
-}
-
 inline void LastReadyScheduler::measuredTick() {
     CHECK(lastWorker != nullptr, );
     lastWorker->deleteBackupMessagesFromPreviousTick();
@@ -102,7 +91,9 @@ Task* LastReadyScheduler::tick() {
                 if (requestedActorForNextTick.isEmpty() || actor->getId() == requestedActorForNextTick) {
                     lastWorker = actor->castPeer<BaseWorker>();
                     measuredTick();
-                    debugInfo->checkActorForBreakpoint(actor);
+                    if (!debugInfo.isNull()) {
+                        debugInfo->checkActorForBreakpoint(actor);
+                    }
                     if (!requestedActorForNextTick.isEmpty()) {
                         requestedActorForNextTick = ActorId();
                     }

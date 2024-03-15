@@ -127,7 +127,7 @@ private:
     QMap<ActorId, ActorId> rmap;
     QMap<QString, CommunicationChannel*> lmap;
 
-    WorkflowDebugStatus* debugInfo = nullptr;
+    QPointer<WorkflowDebugStatus> debugInfo;
     bool nextTickRestoring = false;
     bool contextInitialized = false;
 };
