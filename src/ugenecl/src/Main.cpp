@@ -248,7 +248,6 @@ int main(int argc, char** argv) {
     // Set translations if needed: use value in the settings or cmd-line parameter override.
     // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.
     QTranslator translator;
-    QStringList failedToLoadTranslatorFiles;  // List of translators file names tried but failed to load/not found.
     QStringList translationFileList = {
         "transl_" + cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION),
         userAppSettings->getTranslationFile(),
@@ -263,7 +262,6 @@ int main(int argc, char** argv) {
         if (translationFile == "transl_en" || translator.load(translationFile, AppContext::getWorkingDirectoryPath())) {
             break;
         }
-        failedToLoadTranslatorFiles << translationFile;
     }
     if (!translator.isEmpty()) {
         QCoreApplication::installTranslator(&translator);
@@ -274,10 +272,6 @@ int main(int argc, char** argv) {
     ConsoleLogDriver logs;
     Q_UNUSED(logs);
     coreLog.details(AppContextImpl::tr("UGENE initialization started"));
-    for (const QString& fileName : failedToLoadTranslatorFiles) {
-        coreLog.trace(QObject::tr("Translation file not found: %1").arg(fileName));
-    }
-
     auto resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);
 
