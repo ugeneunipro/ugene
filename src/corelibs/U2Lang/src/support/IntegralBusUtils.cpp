@@ -136,14 +136,14 @@ public:
         : CandidatesSplitter(ID) {
     }
 
-    bool canSplit(const Descriptor& /*toDesc*/, DataTypePtr /*toDatatype*/) {
+    bool canSplit(const Descriptor& /*toDesc*/, DataTypePtr /*toDatatype*/) override {
         return true;
     }
 
     static const QString ID;
 
 protected:
-    bool isMain(const QString& /*candidateSlotId*/) {
+    bool isMain(const QString& /*candidateSlotId*/) override {
         return true;
     }
 };
@@ -156,14 +156,14 @@ public:
         : CandidatesSplitter(ID) {
     }
 
-    bool canSplit(const Descriptor& /*toDesc*/, DataTypePtr toDatatype) {
+    bool canSplit(const Descriptor& /*toDesc*/, DataTypePtr toDatatype) override {
         return (BaseTypes::STRING_TYPE() == toDatatype);
     }
 
     static const QString ID;
 
 protected:
-    bool isMain(const QString& candidateSlotId) {
+    bool isMain(const QString& candidateSlotId) override {
         return (BaseSlots::URL_SLOT().getId() != candidateSlotId && BaseSlots::DATASET_SLOT().getId() != candidateSlotId);
     }
 };
@@ -175,14 +175,14 @@ public:
         : CandidatesSplitter(ID) {
     }
 
-    bool canSplit(const Descriptor& toDesc, DataTypePtr toDatatype) {
+    bool canSplit(const Descriptor& toDesc, DataTypePtr toDatatype) override {
         return ((BaseTypes::STRING_TYPE() == toDatatype) && isDatasetSlot(toDesc));
     }
 
     static const QString ID;
 
 protected:
-    bool isMain(const QString& candidateSlotId) {
+    bool isMain(const QString& candidateSlotId) override {
         return (BaseSlots::DATASET_SLOT().getId() == candidateSlotId);
     }
 };
@@ -195,14 +195,14 @@ public:
         : CandidatesSplitter(ID) {
     }
 
-    bool canSplit(const Descriptor& toDesc, DataTypePtr toDatatype) {
+    bool canSplit(const Descriptor& toDesc, DataTypePtr toDatatype) override {
         return ((BaseTypes::STRING_TYPE() == toDatatype) && isUrlSlot(toDesc));
     }
 
     static const QString ID;
 
 protected:
-    bool isMain(const QString& candidateSlotId) {
+    bool isMain(const QString& candidateSlotId) override {
         return (BaseSlots::URL_SLOT().getId() == candidateSlotId);
     }
 };

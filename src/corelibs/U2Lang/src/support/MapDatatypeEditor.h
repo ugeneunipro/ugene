@@ -43,8 +43,8 @@ public:
     MapDatatypeEditor(Configuration* cfg, const QString& prop, DataTypePtr from, DataTypePtr to);
     virtual ~MapDatatypeEditor() {
     }
-    virtual QWidget* getWidget();
-    virtual void commit();
+    QWidget* getWidget() override;
+    void commit() override;
     virtual QMap<QString, QString> getBindingsMap();
     int getOptimalHeight();
 
@@ -89,13 +89,13 @@ public:
     BusPortEditor(Workflow::IntegralBusPort* p);
     virtual ~BusPortEditor() {
     }
-    virtual void commit();
-    virtual QMap<QString, QString> getBindingsMap();
-    virtual bool isEmpty() const;
+    void commit() override;
+    QMap<QString, QString> getBindingsMap() override;
+    bool isEmpty() const override;
 
 protected:
-    virtual QWidget* createGUI(DataTypePtr from, DataTypePtr to);
-    QString getTitle() const;
+    QWidget* createGUI(DataTypePtr from, DataTypePtr to) override;
+    QString getTitle() const override;
 
     Workflow::IntegralBusPort* port;
 
@@ -112,9 +112,9 @@ public:
     virtual ~DescriptorListEditorDelegate() {
     }
 
-    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
 private slots:
     void sl_commitData();
@@ -123,7 +123,7 @@ private slots:
 class ItemDelegateForHeaders : public QItemDelegate {
 public:
     ItemDelegateForHeaders(QObject* parent = 0);
-    virtual void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 };
 
 }  // namespace U2

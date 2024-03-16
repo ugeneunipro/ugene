@@ -140,9 +140,9 @@ public:
     SequenceMarker(const QString& markerType, const QString& markerName)
         : Marker(markerType, markerName) {
     }
-    virtual QString getMarkingResult(const QVariant& object);
-    virtual MarkerGroup getGroup();
-    virtual Marker* clone();
+    QString getMarkingResult(const QVariant& object) override;
+    MarkerGroup getGroup() override;
+    Marker* clone() override;
 };
 
 /************************************************************************/
@@ -154,13 +154,13 @@ public:
     QualifierMarker(const QString& markerType, const QString& markerName, const QString& qualName)
         : Marker(markerType, markerName), qualName(qualName) {
     }
-    virtual QString getMarkingResult(const QVariant& object);
-    virtual MarkerGroup getGroup();
-    virtual Marker* clone();
-    virtual ParameterState hasAdditionalParameter();
-    virtual void setAdditionalParameter(const QVariant& param);
-    virtual QVariant getAdditionalParameter();
-    virtual QString getAdditionalParameterName();
+    QString getMarkingResult(const QVariant& object) override;
+    MarkerGroup getGroup() override;
+    Marker* clone() override;
+    ParameterState hasAdditionalParameter() override;
+    void setAdditionalParameter(const QVariant& param) override;
+    QVariant getAdditionalParameter() override;
+    QString getAdditionalParameterName() override;
 
     const QString& getQualifierName() const;
 
@@ -177,13 +177,13 @@ public:
     AnnotationMarker(const QString& markerType, const QString& markerName, const QString& annName)
         : Marker(markerType, markerName), annName(annName) {
     }
-    virtual QString getMarkingResult(const QVariant& object);
-    virtual MarkerGroup getGroup();
-    virtual Marker* clone();
-    virtual ParameterState hasAdditionalParameter();
-    virtual void setAdditionalParameter(const QVariant& param);
-    virtual QVariant getAdditionalParameter();
-    virtual QString getAdditionalParameterName();
+    QString getMarkingResult(const QVariant& object) override;
+    MarkerGroup getGroup() override;
+    Marker* clone() override;
+    ParameterState hasAdditionalParameter() override;
+    void setAdditionalParameter(const QVariant& param) override;
+    QVariant getAdditionalParameter() override;
+    QString getAdditionalParameterName() override;
 
     const QString& getAnnotationName() const;
 
@@ -200,9 +200,9 @@ public:
     TextMarker(const QString& markerType, const QString& markerName)
         : Marker(markerType, markerName) {
     }
-    virtual QString getMarkingResult(const QVariant& object);
-    virtual MarkerGroup getGroup();
-    virtual Marker* clone();
+    QString getMarkingResult(const QVariant& object) override;
+    MarkerGroup getGroup() override;
+    Marker* clone() override;
 };
 
 }  // namespace U2

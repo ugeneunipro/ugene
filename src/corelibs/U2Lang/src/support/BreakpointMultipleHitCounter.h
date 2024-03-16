@@ -29,9 +29,9 @@ class BreakpointMultipleHitCounter : public BaseBreakpointHitCounter {
 public:
     BreakpointMultipleHitCounter(BreakpointHitCountCondition initCondition,
                                  quint32 initMultiple);
-    virtual bool hit();
-    virtual quint32 getHitCountParameter() const;
-    virtual void setHitCountParameter(quint32 newParameter);
+    bool hit() override;
+    quint32 getHitCountParameter() const override;
+    void setHitCountParameter(quint32 newParameter) override;
 
 protected:
     quint32 multiple;

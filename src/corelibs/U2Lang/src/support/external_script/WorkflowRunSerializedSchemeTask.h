@@ -52,7 +52,7 @@ public:
     WorkflowRunSerializedSchemeTask(const QString& pathToScheme,
                                     ScriptableScheduler* scheduler,
                                     QStringList& outputFiles);
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     QStringList getWorkflowOutputFiles() const;
 
 private:

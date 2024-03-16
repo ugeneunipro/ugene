@@ -74,29 +74,29 @@ public:
     ~IntegralBus();
 
     // reimplemented from CommunicationSubject
-    virtual bool addCommunication(const QString& id, CommunicationChannel* ch);
-    virtual CommunicationChannel* getCommunication(const QString& id);
+    bool addCommunication(const QString& id, CommunicationChannel* ch) override;
+    CommunicationChannel* getCommunication(const QString& id) override;
 
     void putWithoutContext(const Message& m);
 
     // reimplemented from CommunicationChannel
-    virtual Message get();
-    virtual Message look() const;
-    virtual void put(const Message& m, bool isMessageRestored = false);
+    Message get() override;
+    Message look() const override;
+    void put(const Message& m, bool isMessageRestored = false) override;
     // put incoming context to the output channels
     virtual void transit();
-    virtual int hasMessage() const;
-    virtual int takenMessages() const;
-    virtual int hasRoom(const DataType* t = nullptr) const;
-    virtual bool isEnded() const;
-    virtual void setEnded();
-    virtual int capacity() const {
+    int hasMessage() const override;
+    int takenMessages() const override;
+    int hasRoom(const DataType* t = nullptr) const override;
+    bool isEnded() const override;
+    void setEnded() override;
+    int capacity() const override {
         return 1;
     }
-    virtual void setCapacity(int) {
+    void setCapacity(int) override {
     }
     virtual Message lookMessage() const;
-    virtual QQueue<Message> getMessages(int startIndex, int endIndex) const;
+    QQueue<Message> getMessages(int startIndex, int endIndex) const override;
 
     QVariantMap getContext() const {
         return context;

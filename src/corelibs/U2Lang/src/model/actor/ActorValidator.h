@@ -34,7 +34,7 @@ public:
     virtual ~ActorValidator() {
     }
 
-    virtual bool validate(const Configuration* cfg, NotificationsList& notificationList) const;
+    bool validate(const Configuration* cfg, NotificationsList& notificationList) const override;
     virtual bool validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const = 0;
 
 protected:

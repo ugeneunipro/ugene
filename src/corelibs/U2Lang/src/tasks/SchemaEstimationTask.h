@@ -44,7 +44,7 @@ class U2LANG_EXPORT SchemaEstimationTask : public Task {
 public:
     SchemaEstimationTask(const QSharedPointer<const Schema>& schema, const Metadata* meta);
 
-    void run();
+    void run() override;
 
     EstimationResult result() const;
 

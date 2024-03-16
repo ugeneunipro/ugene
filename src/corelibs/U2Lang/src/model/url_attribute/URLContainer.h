@@ -60,22 +60,22 @@ class U2LANG_EXPORT FileUrlContainer : public URLContainer {
 public:
     FileUrlContainer(const QString& url);
 
-    virtual FilesIterator* getFileUrls();
-    virtual URLContainer* clone();
-    virtual void accept(URLContainerVisitor* visitor);
+    FilesIterator* getFileUrls() override;
+    URLContainer* clone() override;
+    void accept(URLContainerVisitor* visitor) override;
 
-    virtual bool validateUrl(NotificationsList& notificationList);
+    bool validateUrl(NotificationsList& notificationList) override;
 };
 
 class U2LANG_EXPORT DbObjUrlContainer : public URLContainer {
 public:
     DbObjUrlContainer(const QString& url);
 
-    virtual FilesIterator* getFileUrls();
-    virtual URLContainer* clone();
-    virtual void accept(URLContainerVisitor* visitor);
+    FilesIterator* getFileUrls() override;
+    URLContainer* clone() override;
+    void accept(URLContainerVisitor* visitor) override;
 
-    virtual bool validateUrl(NotificationsList& notificationList);
+    bool validateUrl(NotificationsList& notificationList) override;
 };
 
 class U2LANG_EXPORT DirUrlContainer : public URLContainer {
@@ -83,15 +83,15 @@ public:
     DirUrlContainer(const QString& url);
     DirUrlContainer(const QString& url, const QString& incFilter, const QString& excFilter, bool recursive);
 
-    virtual FilesIterator* getFileUrls();
-    virtual URLContainer* clone();
-    virtual void accept(URLContainerVisitor* visitor);
+    FilesIterator* getFileUrls() override;
+    URLContainer* clone() override;
+    void accept(URLContainerVisitor* visitor) override;
 
     /**
      * Validates filtered files inside the folder
      * are present and accessible for reading.
      */
-    virtual bool validateUrl(NotificationsList& notificationList);
+    bool validateUrl(NotificationsList& notificationList) override;
 
     const QString& getIncludeFilter() const;
     const QString& getExcludeFilter() const;
@@ -112,11 +112,11 @@ public:
     DbFolderUrlContainer(const QString& url);
     DbFolderUrlContainer(const QString& url, const QString& accFilter, const QString& objNameFilter, bool recursive);
 
-    virtual FilesIterator* getFileUrls();
-    virtual URLContainer* clone();
-    virtual void accept(URLContainerVisitor* visitor);
+    FilesIterator* getFileUrls() override;
+    URLContainer* clone() override;
+    void accept(URLContainerVisitor* visitor) override;
 
-    virtual bool validateUrl(NotificationsList& notificationList);
+    bool validateUrl(NotificationsList& notificationList) override;
 
     void setSequenceAccFilter(const QString& acc);
     void setObjNameFilter(const QString& name);

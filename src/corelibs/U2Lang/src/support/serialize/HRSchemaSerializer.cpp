@@ -1460,11 +1460,11 @@ public:
         : tabCount(_tabCount) {
     }
 
-    virtual void visit(FileUrlContainer* url) {
+    void visit(FileUrlContainer* url) override {
         result = HRSchemaSerializer::makeEqualsPair(Constants::FILE_URL, url->getUrl(), tabCount);
     }
 
-    virtual void visit(DirUrlContainer* url) {
+    void visit(DirUrlContainer* url) override {
         if (url->getIncludeFilter().isEmpty() && url->getExcludeFilter().isEmpty() && !url->isRecursive()) {
             result = HRSchemaSerializer::makeEqualsPair(Constants::DIRECTORY_URL, url->getUrl(), tabCount);
             return;
@@ -1478,7 +1478,7 @@ public:
         result = HRSchemaSerializer::makeBlock(Constants::DIRECTORY_URL, Constants::NO_NAME, res, tabCount);
     }
 
-    virtual void visit(DbObjUrlContainer* url) {
+    void visit(DbObjUrlContainer* url) override {
         const QString dbObjUrl = url->getUrl();
 
         QString res;
@@ -1490,7 +1490,7 @@ public:
         result = HRSchemaSerializer::makeBlock(Constants::DB_SELECT, Constants::NO_NAME, res, tabCount);
     }
 
-    virtual void visit(DbFolderUrlContainer* url) {
+    void visit(DbFolderUrlContainer* url) override {
         const QString dbFolderUrl = url->getUrl();
 
         QString res;

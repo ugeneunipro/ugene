@@ -30,8 +30,8 @@ class U2LANG_EXPORT DbFolderScanner : public FilesIterator {
 public:
     DbFolderScanner(const QString& url, const QString& accFilter, const QString& objNameFilter, bool recursive);
 
-    virtual QString getNextFile();
-    virtual bool hasNext();
+    QString getNextFile() override;
+    bool hasNext() override;
 
 private:
     void initTargetObjectList(const QSet<QString>& paths, const QString& objNameFilter, U2OpStatus& os);

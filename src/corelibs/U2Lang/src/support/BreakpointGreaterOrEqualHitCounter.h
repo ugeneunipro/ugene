@@ -31,7 +31,7 @@ class BreakpointGreaterOrEqualHitCounter : public BreakpointEqualHitCounter {
 public:
     BreakpointGreaterOrEqualHitCounter(BreakpointHitCountCondition initCondition,
                                        quint32 initHitCount);
-    virtual bool hit();
+    bool hit() override;
 };
 
 }  // namespace U2
