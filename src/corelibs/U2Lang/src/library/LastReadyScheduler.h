@@ -53,8 +53,6 @@ public:
 protected:
     virtual WorkerState getWorkerState(const Actor* a);
     ActorId actorId() const;
-    bool hasValidFinishedTask() const;
-    qint64 lastTaskTimeSec() const;
     void measuredTick();
 
     QMap<int, QList<Actor*>> topologicSortedGraph;

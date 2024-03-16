@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <assert.h>
-
 #include <QList>
 #include <QMap>
 #include <QObject>
@@ -36,9 +34,9 @@
 #include <U2Lang/WorkflowContext.h>
 #include <U2Lang/WorkflowTransport.h>
 
-namespace U2 {
+#include "../support/WorkflowDebugStatus.h"
 
-class WorkflowDebugStatus;
+namespace U2 {
 
 namespace Workflow {
 
@@ -100,14 +98,13 @@ public:
     virtual bool cancelCurrentTaskIfAllowed() = 0;
     virtual void makeOneTick(const ActorId&) = 0;
     virtual void setDebugInfo(WorkflowDebugStatus* newDebugInfo) {
-        Q_ASSERT(newDebugInfo != nullptr);
         debugInfo = newDebugInfo;
     }
 
 protected:
-    Schema* schema;
-    Task* lastTask;
-    WorkflowDebugStatus* debugInfo;
+    Schema* schema = nullptr;
+    Task* lastTask = nullptr;
+    QPointer<WorkflowDebugStatus> debugInfo;
 
     virtual WorkerState getWorkerState(const Actor*) = 0;
 };  // Scheduler
@@ -128,8 +125,7 @@ public:
     DomainFactory(const QString& id)
         : Descriptor(id) {
     }
-    virtual ~DomainFactory() {
-    }
+    ~DomainFactory() override = default;
 
     // computational tasks domain
     virtual Worker* createWorker(Actor*) = 0;
