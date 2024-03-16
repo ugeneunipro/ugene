@@ -450,11 +450,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Main.cpp" line="532"/>
-        <source>Translation file not found: %1</source>
-        <translation>Çeviri dosyası bulunamadı: %1</translation>
-    </message>
-    <message>
         <location filename="../src/Main.cpp" line="846"/>
         <source>UGENE started</source>
         <translation>UGENE başladı</translation>
