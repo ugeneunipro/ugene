@@ -958,6 +958,7 @@ GUI_TEST_CLASS_DEFINITION(test_7257) {
         CheckDocumentReadingModeSelectorTextScenario(const QString& pathToCheck_)
             : pathToCheck(pathToCheck_) {};
         void run() override {
+            pathToCheck = QFileInfo(pathToCheck).absolutePath() + "/" + QFileInfo(pathToCheck).fileName();
             GTGlobals::sleep();
             QWidget* dialog = GTWidget::getActiveModalWidget();
             if (isOsWindows()) {
