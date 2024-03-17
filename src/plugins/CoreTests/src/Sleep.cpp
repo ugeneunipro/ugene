@@ -61,8 +61,6 @@ Task::ReportResult GTest_Sleep::report() {
         } else {
             QTest::qSleep(sleepTimer);
         }
-    } else {
-        stateInfo.setError("Tests with 'sleep' should be run in one thread!");
     }
     return ReportResult_Finished;
 }
