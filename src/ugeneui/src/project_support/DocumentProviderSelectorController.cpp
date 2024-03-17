@@ -24,6 +24,7 @@
 #include <QButtonGroup>
 #include <QFileInfo>
 #include <QLabel>
+#include <QMainWindow>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QRadioButton>
@@ -58,7 +59,7 @@ int DocumentProviderSelectorController::selectResult(const GUrl& url, QList<Form
         return 0;
     }
 
-    QObjectScopedPointer<DocumentProviderSelectorController> d = new DocumentProviderSelectorController(url, results, QApplication::activeModalWidget());
+    QObjectScopedPointer<DocumentProviderSelectorController> d = new DocumentProviderSelectorController(url, results, AppContext::getMainWindow()->getQMainWindow());
 
     const int rc = d->exec();
     CHECK(!d.isNull(), -1);
