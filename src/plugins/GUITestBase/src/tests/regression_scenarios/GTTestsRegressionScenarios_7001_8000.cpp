@@ -953,6 +953,7 @@ GUI_TEST_CLASS_DEFINITION(test_7247) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7257) {
+    /*
     class CheckDocumentReadingModeSelectorTextScenario : public CustomScenario {
     public:
         CheckDocumentReadingModeSelectorTextScenario(const QString& pathToCheck_)
@@ -972,19 +973,19 @@ GUI_TEST_CLASS_DEFINITION(test_7257) {
         }
         QString pathToCheck;
     };
-    
+    */
+
     QDir().mkpath(sandBoxDir + "read_only_dir/test_7257");
     GTFile::copy(dataDir + "samples/ACE/BL060C3.ace", sandBoxDir + "read_only_dir/test_7257/BL060C3.ace");
 
-    GTUtilsDialog::waitForDialog(new ImportACEFileFiller(new CheckDocumentReadingModeSelectorTextScenario(sandBoxDir + "read_only_dir/test_7257/BL060C3.ace.ugenedb")));
+    GTUtilsDialog::waitForDialog(new ImportACEFileCheckPathFiller(sandBoxDir + "read_only_dir/test_7257/BL060C3.ace.ugenedb"));
     GTFileDialog::openFile(sandBoxDir + "read_only_dir/test_7257/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished();
     
     GTFile::setReadOnly(sandBoxDir + "read_only_dir/test_7257");
 
-    GTUtilsDialog::waitForDialog(new ImportACEFileFiller(
-        new CheckDocumentReadingModeSelectorTextScenario(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() 
-            + "/BL060C3.ace.ugenedb")));
+    GTUtilsDialog::waitForDialog(new ImportACEFileCheckPathFiller(
+        AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/BL060C3.ace.ugenedb"));
     GTFileDialog::openFile(sandBoxDir + "read_only_dir/test_7257/BL060C3.ace");
     GTUtilsDialog::checkNoActiveWaiters();
     GTFile::setReadWrite(sandBoxDir + "read_only_dir/test_7257");

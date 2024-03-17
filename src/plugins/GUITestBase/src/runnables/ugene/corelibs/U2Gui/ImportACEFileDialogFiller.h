@@ -43,4 +43,16 @@ private:
     const QString destinationUrl;
 };
 
+class ImportACEFileCheckPathFiller : public Filler {
+public:
+    ImportACEFileCheckPathFiller(
+        const QString& pathToCheck,
+        int timeoutMs = 120000);
+
+    virtual void commonScenario();
+
+private:
+    QString pathToCheck;
+};
+
 }  // namespace U2
