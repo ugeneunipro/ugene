@@ -180,6 +180,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     SAFE_POINT(guiTestBase != nullptr, "guiTestBase is null!", );
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7257);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2292);
     return;
 
     //////////////////////////////////////////////////////////////////////////

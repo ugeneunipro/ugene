@@ -58,7 +58,7 @@ int DocumentProviderSelectorController::selectResult(const GUrl& url, QList<Form
         return 0;
     }
 
-    QObjectScopedPointer<DocumentProviderSelectorController> d = new DocumentProviderSelectorController(url, results, QApplication::activeWindow());
+    QObjectScopedPointer<DocumentProviderSelectorController> d = new DocumentProviderSelectorController(url, results, QApplication::activeModalWidget());
 
     const int rc = d->exec();
     CHECK(!d.isNull(), -1);
