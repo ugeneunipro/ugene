@@ -161,7 +161,7 @@ ImportWidget* DocumentProviderSelectorController::getRadioButtonWgt(const Format
             wgt = result.importer->createImportWidget(url, settings);
         } else {
             QString userDirSavePath = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() +
-                                      "\\" + fi.fileName();
+                                      "/" + fi.fileName();
             wgt = result.importer->createImportWidget(GUrl(userDirSavePath), settings);
         }
         if (selectedFormat == formatId) {
