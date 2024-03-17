@@ -1,5 +1,6 @@
 <!-- By datasets -->
 <multi-test>
+    <sleep />
     <remove-temp-dir url="ncbi_metadata_0002"/>
     <create-temp-dir url="ncbi_metadata_0002"/>
 

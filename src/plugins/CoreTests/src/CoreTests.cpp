@@ -53,6 +53,7 @@
 #include "SMatrixTests.h"
 #include "SecStructPredictTests.h"
 #include "SequenceWalkerTests.h"
+#include "Sleep.h"
 #include "TaskTests.h"
 #include "TextObjectTests.h"
 #include "UtilTestActions.h"
@@ -165,6 +166,8 @@ void CoreTests::registerFactories() {
     registerFactory<AnnotationUtilsTests>(xmlTestFormat);
 
     registerFactory<DnaStatisticsTests>(xmlTestFormat);
+
+    registerFactory<SleepTests>(xmlTestFormat);
 }
 
 }  // namespace U2

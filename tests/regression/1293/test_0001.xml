@@ -1,4 +1,5 @@
 <multi-test>
+    <sleep />
     <run-cmdline
             task="!common_data_dir!regression/1293/promoters_full.uwl"
             id="NC_001497"

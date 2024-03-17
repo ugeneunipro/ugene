@@ -1,5 +1,6 @@
 <!-- By files -->
 <multi-test>
+    <sleep />
     <remove-temp-dir url="ncbi_metadata_0001"/>
     <create-temp-dir url="ncbi_metadata_0001"/>
 

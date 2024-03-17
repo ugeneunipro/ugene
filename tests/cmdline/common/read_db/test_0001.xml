@@ -1,4 +1,5 @@
 <multi-test>
+    <sleep />
     <run-cmdline
             task="!common_data_dir!cmdline/read-write/read_db_write_gen.uws"
             db="NCBI GenBank (DNA sequence)"

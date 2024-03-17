@@ -26,6 +26,7 @@ HEADERS += src/AnnotationTableObjectTest.h \
            src/SMatrixTests.h \
            src/SecStructPredictTests.h \
            src/SequenceWalkerTests.h \
+           src/Sleep.h \
            src/TaskTests.h \
            src/TextObjectTests.h \
            src/UtilTestActions.h
@@ -56,6 +57,7 @@ SOURCES += src/AnnotationTableObjectTest.cpp \
            src/SMatrixTests.cpp \
            src/SecStructPredictTests.cpp \
            src/SequenceWalkerTests.cpp \
+           src/Sleep.cpp \
            src/TaskTests.cpp \
            src/TextObjectTests.cpp \
            src/UtilTestActions.cpp
