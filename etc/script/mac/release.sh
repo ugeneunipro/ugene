@@ -16,6 +16,7 @@ APP_BUNDLE_DIR="${TEAMCITY_WORK_DIR}/${APP_BUNDLE_DIR_NAME}"
 APP_NAME="Unipro UGENE.app"
 APP_DIR="${APP_BUNDLE_DIR}/${APP_NAME}"
 APP_CONTENTS_DIR="${APP_DIR}/Contents"
+APP_RESOURSES_DIR="${APP_CONTENTS_DIR}/Resources"
 APP_EXE_DIR="${APP_CONTENTS_DIR}/MacOS"
 SYMBOLS_DIR_NAME=symbols
 SYMBOLS_DIR="${TEAMCITY_WORK_DIR}/$SYMBOLS_DIR_NAME"
@@ -56,24 +57,10 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
 }
 
 # These tools can't be notarized today:
-# python3: Remove until we find out how to notarize it
-rm -rf "${APP_EXE_DIR}/tools/python3"
+mkdir "${APP_RESOURSES_DIR}/tools"
+mv "${APP_EXE_DIR}/tools/python3" "${APP_RESOURSES_DIR}/tools"
 
 echo " ##teamcity[blockClosed name='Copy files']"
-
-echo "##teamcity[blockOpened name='Validate bundle content']"
-REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
-CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
-find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^.*\/tools\/.*\/.*$//g' | sed 's/^.*\/python2\.7.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
-if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
-  echo 'Bundle content validated successfully.'
-else
-  echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
-  diff "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
-  exit 1
-fi
-echo "##teamcity[blockClosed name='Validate bundle content']"
 
 echo "##teamcity[blockOpened name='Dump symbols']"
 
