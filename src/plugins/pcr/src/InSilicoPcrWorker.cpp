@@ -212,6 +212,7 @@ void InSilicoPcrWorker::onPrepared(Task* task, U2OpStatus& os) {
     CHECK_OP(os, );
 
     auto TmCalculator = AppContext::getTmCalculatorRegistry()->createTmCalculator(getValue<QVariantMap>(InSilicoPcrWorkerFactory::TEMPERATURE_SETTINGS_ID));
+    QList<QPair<Primer, Primer>> primersToExclude;
     for (const auto& primerPair : qAsConst(primers)) {
         bool isCriticalError = false;
         QString message = PrimerStatistics::checkPcrPrimersPair(primerPair.first.sequence.toLocal8Bit(),
@@ -221,7 +222,10 @@ void InSilicoPcrWorker::onPrepared(Task* task, U2OpStatus& os) {
         CHECK_CONTINUE(isCriticalError);
 
         coreLog.error(message);
-        primers.removeOne(primerPair);
+        primersToExclude << primerPair;
+    }
+    for (const auto& primerToExclude : qAsConst(primersToExclude)) {
+        primers.removeOne(primerToExclude);
     }
     if (primers.isEmpty()) {
         os.setError(tr("All primer pairs have been filtered, see log for details."));
