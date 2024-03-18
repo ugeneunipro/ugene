@@ -19,7 +19,6 @@
  * MA 02110-1301, USA.
  */
 #include "GTTestsMfold.h"
-#include <random>
 
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -35,7 +34,6 @@
 #include "primitives/GTTextEdit.h"
 #include "primitives/GTToolbar.h"
 #include "primitives/GTWidget.h"
-#include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 namespace U2 {
