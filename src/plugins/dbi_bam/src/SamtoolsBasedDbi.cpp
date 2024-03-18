@@ -390,11 +390,11 @@ void SamtoolsBasedObjectDbi::setParent(const U2DataId& /*parentId*/, const U2Dat
 const int SamtoolsBasedReadsIterator::BUFFERED_INTERVAL_SIZE = 1000;
 
 SamtoolsBasedReadsIterator::SamtoolsBasedReadsIterator(
-    int assemblyId,
+    int _assemblyId,
     const U2Region& _r,
     SamtoolsBasedDbi& _dbi,
     const QByteArray& _nameFilter)
-    : U2DbiIterator<U2AssemblyRead>(), assemblyId(assemblyId), dbi(_dbi), nameFilter(_nameFilter) {
+    : U2DbiIterator<U2AssemblyRead>(), assemblyId(_assemblyId), dbi(_dbi), nameFilter(_nameFilter) {
     current = reads.begin();
     bool errorRegion = false;
     qint64 startPos = _r.startPos;
@@ -422,9 +422,9 @@ SamtoolsBasedReadsIterator::SamtoolsBasedReadsIterator(
 }
 
 SamtoolsBasedReadsIterator::SamtoolsBasedReadsIterator(
-    int assemblyId,
+    int _assemblyId,
     SamtoolsBasedDbi& _dbi)
-    : U2DbiIterator<U2AssemblyRead>(), assemblyId(assemblyId), dbi(_dbi) {
+    : U2DbiIterator<U2AssemblyRead>(), assemblyId(_assemblyId), dbi(_dbi) {
     current = reads.begin();
 }
 
