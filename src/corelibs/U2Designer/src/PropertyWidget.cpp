@@ -40,6 +40,7 @@
 #include <U2Lang/WorkflowUtils.h>
 
 #include "OutputFileDialog.h"
+#include "WorkflowGUIUtils.h"
 
 namespace U2 {
 
@@ -363,12 +364,20 @@ void ComboBoxWithUrlWidget::sl_browse() {
     if (isPath) {
         lod.dir = name = U2FileDialog::getExistingDirectory(nullptr, tr("Select a folder"), lastDir);
         if (!name.isEmpty()) {
-            setValue(name);
+            if (name.contains(";")) {
+                DesignerGUIUtils::semicolonWarning();
+            } else {
+                setValue(name);
+            }
         }
     } else {
         lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir);
         if (!name.isEmpty()) {
-            setValue(name);
+            if (name.contains(";")) {
+                DesignerGUIUtils::semicolonWarning();
+            } else {
+                setValue(name);
+            }
         }
     }
 

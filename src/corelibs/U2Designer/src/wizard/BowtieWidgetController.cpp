@@ -29,6 +29,7 @@
 #include <U2Gui/U2FileDialog.h>
 
 #include "PropertyWidget.h"
+#include "WorkflowGUIUtils.h"
 
 namespace U2 {
 
@@ -80,6 +81,10 @@ void BowtieWidgetController::sl_browse() {
     QString lastDir = lod.dir;
     QString url = U2FileDialog::getOpenFileName(nullptr, tr("Select one of Bowtie index files"), lastDir);
     if (url.isEmpty()) {
+        return;
+    }
+    if (url.contains(";")) {
+        DesignerGUIUtils::semicolonWarning();
         return;
     }
     lod.url = url;

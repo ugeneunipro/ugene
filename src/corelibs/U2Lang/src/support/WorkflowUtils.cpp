@@ -905,6 +905,10 @@ bool WorkflowUtils::validateInputFiles(QString urls, NotificationsList& notifica
     foreach (const QString& url, urlsList) {
         QFileInfo fi(url);
         if (!fi.exists()) {
+            QFileInfo fi(url);
+            if (fi.completeSuffix().isEmpty()) {
+                notificationList << WorkflowNotification(tr("It seems like you use ';' symbol in file paths. Please move/rename corresponding file(s)."));
+            }
             notificationList << WorkflowNotification(L10N::errorFileNotFound(url));
             res = false;
         } else if (!fi.isFile()) {
