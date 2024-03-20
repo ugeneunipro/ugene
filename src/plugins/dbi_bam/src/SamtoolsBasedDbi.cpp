@@ -676,11 +676,11 @@ qint64 SamtoolsBasedAssemblyDbi::getMaxEndPos(const U2DataId& assemblyId, U2OpSt
     // Avoid returning '-1' (object-not-found) for empty assemblies.
     SAFE_POINT(targetLength >= 0, "Incorrect target length", 0);
 
-    return targetLength;
+    return targetLength - 1;
 }
 
 U2Region SamtoolsBasedAssemblyDbi::getCorrectRegion(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) {
-    qint64 assemblyLength = getMaxEndPos(assemblyId, os);
+    qint64 assemblyLength = getMaxEndPos(assemblyId, os) + 1;
     CHECK_OP(os, U2Region());
     qint64 startPos = r.startPos;
     qint64 endPos = r.endPos() - 1;

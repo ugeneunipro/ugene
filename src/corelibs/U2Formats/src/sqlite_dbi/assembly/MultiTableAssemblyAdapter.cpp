@@ -287,11 +287,11 @@ qint64 MultiTableAssemblyAdapter::getMaxPackedRow(const U2Region& r, U2OpStatus&
     return max;
 }
 
-qint64 MultiTableAssemblyAdapter::getMaxEndPos(U2OpStatus& os) {
+qint64 MultiTableAssemblyAdapter::getAssemblyLength(U2OpStatus& os) {
     // TODO: optimize by using gstart + maxReadLen for first n-1 tables
     qint64 max = 0;
     foreach (MTASingleTableAdapter* a, adapters) {
-        qint64 n = a->singleTableAdapter->getMaxEndPos(os);
+        qint64 n = a->singleTableAdapter->getAssemblyLength(os);
         if (os.hasError()) {
             break;
         }

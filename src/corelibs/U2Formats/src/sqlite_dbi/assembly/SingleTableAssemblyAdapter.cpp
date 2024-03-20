@@ -132,7 +132,7 @@ qint64 SingleTableAssemblyAdapter::getMaxPackedRow(const U2Region& r, U2OpStatus
     return q.selectInt64();
 }
 
-qint64 SingleTableAssemblyAdapter::getMaxEndPos(U2OpStatus& os) {
+qint64 SingleTableAssemblyAdapter::getAssemblyLength(U2OpStatus& os) {
     return SQLiteReadQuery(QString("SELECT MAX(gstart + elen) FROM %1").arg(readsTable), db, os).selectInt64();
 }
 
