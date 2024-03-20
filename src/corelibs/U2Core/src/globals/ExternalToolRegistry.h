@@ -79,6 +79,7 @@ public:
     virtual QStringList getToolRunnerAdditionalOptions() const;
     const QString& getExecutableFileName() const;
     const QString& getVersion() const;
+    virtual const QString& geVersionFromToolPath(const QString& toolPath) const;
     const QString& getPredefinedVersion() const;
     const QRegExp& getVersionRegExp() const;
     const QString& getToolKitName() const;
