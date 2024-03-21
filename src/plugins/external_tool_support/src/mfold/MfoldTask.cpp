@@ -47,29 +47,26 @@
 #include "MfoldSupport.h"
 #include "utils/OutputCollector.h"
 
-// Replaces "&< character with HTML code (ampersand escaped).
-static QString replaceNonValid(const QString& str) {
-    QString encoded = str;
-    encoded.replace('"', "&quot;");
-    encoded.replace('&', "&amp;");
-    encoded.replace('<', "&lt;");
-    return encoded;
-}
 // https://stackoverflow.com/a/13993058
-// Replaces non-valid ("&<) and unicode characters with HTML encoded (ampersand escaped).
-static QString toValidHtml(const QString& str) {
-    QString fixedStr = replaceNonValid(str);
-    QString encoded;
-    for (int i = 0; i < fixedStr.size(); ++i) {
-        QChar ch = fixedStr.at(i);
-        ushort unicode = ch.unicode();
-        encoded += unicode > 255 ? QString("&#%1;").arg((int)unicode) : ch;
+static QString encodeToHtmlEntities(const QString& input) {
+    QString output;
+    for (const QChar& ch : qAsConst(input)) {
+        ushort uni = ch.unicode();
+        if (ch == '"') {
+            output.append("&quot;");
+        } else if (ch == '&') {
+            output.append("&amp;");
+        } else if (ch == '<') {
+            output.append("&lt;");
+        } else if (ch == '>') {
+            output.append("&gt;");
+        } else if (uni > 127) {  // For non-ASCII characters.
+            output.append("&#" + QString::number(uni) + ";");
+        } else {
+            output.append(ch);
+        }
     }
-    return encoded;
-}
-// Replaces spaces with percent escaped.
-static QString replaceSpaces(const QString& str) {
-    return QString(str).replace(' ', "%20");
+    return output;
 }
 
 namespace U2 {
@@ -219,8 +216,8 @@ public:
     }
 
     QString constructFileReport(U2OpStatus& os) {
-        QString seqName = toValidHtml(t.seqInfo.seqName);
-        QString inpSeqPath = toValidHtml(t.seqInfo.seqPath.getURLString());
+        QString seqName = encodeToHtmlEntities(t.seqInfo.seqName);
+        QString inpSeqPath = encodeToHtmlEntities(t.seqInfo.seqPath.getURLString());
         QString report = "<!DOCTYPE html>"
                          "<html lang=\"en\">"
                          "<head>"
@@ -340,8 +337,7 @@ public:
                           QString::number(th[Th::DELTA_S_KEY], 'f', 2) + " cal/(K&middot;mol)</li>";
                 report += "<li>T<sub>m</sub> = " +
                           QString::number(th[Th::TM_KEY], 'f', 2) + "&deg;C</li>";
-                QString fileNameWithoutExt = replaceSpaces(toValidHtml(GUrl(t.tmpSeqPath).fileName())) + '_' + iStr +
-                                             '.';
+                auto fileNameWithoutExt = GUrl(t.tmpSeqPath).fileName().replace(' ', "%20") + '_' + iStr + '.';
                 report += "</ul>"
                           "<table>"
                           "<tr>"
@@ -420,12 +416,12 @@ public:
                   "<tr>"
                   "<td style=\"padding-right: 10px;\">Sequence name:</td>"
                   "<td>" +
-                  replaceNonValid(t.seqInfo.seqName) + "</td>";
+                  t.seqInfo.seqName.toHtmlEscaped() + "</td>";
         report += "</tr>"
                   "<tr>"
                   "<td style=\"padding-right: 10px;\">Sequence path:</td>"
                   "<td>" +
-                  replaceNonValid(inpSeqPath) + "</td>";
+                  inpSeqPath.toHtmlEscaped() + "</td>";
         report += "</tr>"
                   "<tr>"
                   "<td style=\"padding-right: 10px;\">Region:</td>"
@@ -475,7 +471,7 @@ public:
                   "</tr>";
 
         if (structuresNum > 0) {
-            QString outPath = replaceNonValid(t.outHtmlPath);
+            QString outPath = t.outHtmlPath.toHtmlEscaped();
             report += "<tr>"
                       "<th align=\"left\">Output HTML report</th>"
                       "<td>"
@@ -700,7 +696,7 @@ StrStrMap MfoldTask::constructEtEnv() const {
     imgSize.setWidth(qBound(300, windowWidth / 2, defaultImgWidth));
     imgSize.setHeight(imgSize.width() * defaultImgHeight / defaultImgWidth);
     envVars["U2_GS_IMG_SIZE_FOR_UGENE_REPORT"] = QString("%1x%2").arg(imgSize.width()).arg(imgSize.height());
-    envVars["U2_GS_IMG_OUT_PATH"] = settings.outSettings.outPath;
+    envVars["U2_GS_IMG_OUT_PATH"] = QString(settings.outSettings.outPath).replace('%', "%%");
     envVars["U2_GS_IMG_DPI_FOR_OUT_REPORT"] = QString::number(settings.outSettings.dpi);
     return envVars;
 }
