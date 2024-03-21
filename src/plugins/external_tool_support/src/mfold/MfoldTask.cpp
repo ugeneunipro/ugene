@@ -337,7 +337,7 @@ public:
                           QString::number(th[Th::DELTA_S_KEY], 'f', 2) + " cal/(K&middot;mol)</li>";
                 report += "<li>T<sub>m</sub> = " +
                           QString::number(th[Th::TM_KEY], 'f', 2) + "&deg;C</li>";
-                auto fileNameWithoutExt = GUrl(t.tmpSeqPath).fileName().replace(' ', "%20") + '_' + iStr + '.';
+                auto fileNameWithoutExt = QUrl(GUrl(t.tmpSeqPath).fileName()).toEncoded() + '_' + iStr + '.';
                 report += "</ul>"
                           "<table>"
                           "<tr>"
