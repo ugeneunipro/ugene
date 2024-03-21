@@ -68,7 +68,7 @@ VcfConsensusSupport::VcfConsensusSupport()
     }
 }
 
-const QString& VcfConsensusSupport::geVersionFromToolPath(const QString& toolPath) const {
+const QString VcfConsensusSupport::getVersionFromToolPath(const QString& toolPath) const {
     QFileInfo toolPathFi(toolPath);
     QString versionPath = toolPathFi.absoluteDir().absolutePath() + "/version.txt";
     QFile f(versionPath);

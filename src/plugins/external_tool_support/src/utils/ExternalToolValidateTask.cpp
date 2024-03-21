@@ -256,7 +256,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
 
 void ExternalToolJustValidateTask::checkVersion(const QString& partOfLog) {
     if (checkVersionRegExp.isEmpty()) {
-        version = tool->geVersionFromToolPath(toolPath);
+        version = tool->getVersionFromToolPath(toolPath);
         if (version.isEmpty()) {
             version = tool->getPredefinedVersion();
         }

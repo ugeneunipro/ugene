@@ -30,7 +30,7 @@ class VcfConsensusSupport : public ExternalTool {
 public:
     VcfConsensusSupport();
 
-    virtual const QString& geVersionFromToolPath(const QString& toolPath) const override;
+    virtual const QString getVersionFromToolPath(const QString& toolPath) const override;
 
     static const QString ET_VCF_CONSENSUS;
     static const QString ET_VCF_CONSENSUS_ID;
