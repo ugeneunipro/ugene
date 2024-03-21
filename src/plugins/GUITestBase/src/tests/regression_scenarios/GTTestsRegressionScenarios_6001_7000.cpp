@@ -2260,6 +2260,7 @@ GUI_TEST_CLASS_DEFINITION(test_6485) {
     * Expected state: message box with warning appeared, element is not removed
     */
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::setCurrentTab(GTUtilsWorkflowDesigner::algorithms);
 
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "el_6485";
@@ -2285,7 +2286,8 @@ GUI_TEST_CLASS_DEFINITION(test_6485) {
     QAbstractButton* createElement = GTAction::button("createElementWithCommandLineTool");
     GTWidget::click(createElement);
 
-    GTUtilsWorkflowDesigner::openWorkflowDesigner();    
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::setCurrentTab(GTUtilsWorkflowDesigner::algorithms);
     treeItem = GTUtilsWorkflowDesigner::findTreeItem(settings.elementName, GTUtilsWorkflowDesigner::algorithms);
     CHECK_SET_ERR(treeItem != nullptr, "Element not found");
     
