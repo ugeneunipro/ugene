@@ -77,7 +77,7 @@ const QString VcfConsensusSupport::getVersionFromToolPath(const QString& toolPat
     }
 
     QTextStream s1(&f);
-    return QString().append(s1.readAll());
+    return QString().append(s1.readLine());
 }
 
 }  // namespace U2
