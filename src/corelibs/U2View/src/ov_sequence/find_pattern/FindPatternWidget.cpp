@@ -758,6 +758,12 @@ QString FindPatternWidget::buildErrorLabelHtml() const {
                 GUIUtils::setWidgetWarningStyle(textPattern, true);
                 break;
             }
+            case CreateAnnotationControllerValidaitionError: {
+                SAFE_POINT(!customErrorMessage.isEmpty(), "CreateAnnotationController must provide a valid error message.", "");
+
+                text += tr("<b><font color=%1>Error: %2</font><br></br></b>").arg(errorColor).arg(customErrorMessage);
+                break;
+            }
             default:
                 FAIL("Unexpected value of the error flag in show/hide error message for pattern!", "");
         }
@@ -1310,12 +1316,20 @@ QList<NamePattern> FindPatternWidget::updateNamePatterns() {
 }
 
 void FindPatternWidget::sl_getAnnotationsButtonClicked() {
+    QString validationError = createAnnotationController->validate();
+    if (!validationError.isEmpty()) {
+        setMessageFlag(CreateAnnotationControllerValidaitionError, true, validationError);
+        return;
+    } else {
+        setMessageFlag(CreateAnnotationControllerValidaitionError, false);
+    }
+
     if (!annotationModelIsPrepared) {
         bool objectPrepared = createAnnotationController->prepareAnnotationObject();
         SAFE_POINT(objectPrepared, "Cannot create an annotation object. Please check settings", );
         annotationModelIsPrepared = true;
     }
-    QString validationError = createAnnotationController->validate();
+    validationError = createAnnotationController->validate();
     SAFE_POINT(validationError.isEmpty(), "Annotation names are invalid", );
 
     const CreateAnnotationModel& annotationModel = createAnnotationController->getModel();

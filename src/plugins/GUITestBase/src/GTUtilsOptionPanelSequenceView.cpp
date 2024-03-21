@@ -140,8 +140,8 @@ void GTUtilsOptionPanelSequenceView::clickPrev() {
     GTWidget::click(prev);
 }
 
-void GTUtilsOptionPanelSequenceView::clickGetAnnotation() {
-    auto getAnnotations = GTWidget::findPushButton("getAnnotationsPushButton");
+void GTUtilsOptionPanelSequenceView::clickGetAnnotation(QWidget* parent) {
+    auto getAnnotations = GTWidget::findPushButton("getAnnotationsPushButton", parent);
     GTWidget::click(getAnnotations);
     GTThread::waitForMainThread();
 }
