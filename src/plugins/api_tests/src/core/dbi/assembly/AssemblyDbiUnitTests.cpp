@@ -405,7 +405,7 @@ void AssemblyDbiUnitTests_getMaxPackedRowInvalid::Test() {
 void AssemblyDbiUnitTests_getMaxEndPos::Test() {
     U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
     APITestData testData;
-    testData.addValue(MAX_END_POS, qint64(146));
+    testData.addValue(MAX_END_POS, qint64(145));
 
     U2DataId id = AssemblyTestData::getAssemblyIds()->first();
     U2OpStatusImpl os;
