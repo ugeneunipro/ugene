@@ -75,7 +75,7 @@ public:
 
     DNASequence getNewSequence() const;
     GUrl getDocumentPath() const;
-    int getPosToInsert() const;
+    qint64 getPosToInsert() const;
     U1AnnotationUtils::AnnotationStrategyForResize getAnnotationStrategy() const;
     bool mergeAnnotations() const;
     bool recalculateQualifiers() const;
@@ -95,13 +95,13 @@ private:
     void initSaveController();
 
     QString filter;
-    int pos;
+    qint64 pos = 1;
     SeqPasterWidgetController* w;
     SaveDocumentController* saveController;
     EditSequencDialogConfig config;
     Ui_EditSequenceDialog* ui;
 
-    int seqEndPos;
+    qint64 seqEndPos = 0;
 };
 
 }  // namespace U2
