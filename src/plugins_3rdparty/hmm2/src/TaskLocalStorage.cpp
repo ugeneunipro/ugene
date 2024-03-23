@@ -54,7 +54,7 @@ HMMERTaskLocalData* TaskLocalData::current() {
 HMMERTaskLocalData* TaskLocalData::createHMMContext(qint64 contextId, bool bindThreadToContext) {
     QMutexLocker ml(&mutex);
     assert(!data.contains(contextId));
-    HMMERTaskLocalData* ctx = new HMMERTaskLocalData();
+    auto ctx = new HMMERTaskLocalData();
     data[contextId] = ctx;
 
     if (bindThreadToContext) {
@@ -77,7 +77,7 @@ void TaskLocalData::freeHMMContext(qint64 contextId) {
 void TaskLocalData::bindToHMMContext(qint64 contextId) {
     assert(!tls.hasLocalData());
 
-    ContextIdContainer* idc = new ContextIdContainer(contextId);
+    auto idc = new ContextIdContainer(contextId);
     tls.setLocalData(idc);
 }
 

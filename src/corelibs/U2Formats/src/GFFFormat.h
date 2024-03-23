@@ -35,12 +35,12 @@ class U2FORMATS_EXPORT GFFFormat : public TextDocumentFormatDeprecated {
 public:
     GFFFormat(QObject* p);
 
-    virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
+    void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) override;
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
 
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
 private:
     void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& si);

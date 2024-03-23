@@ -424,7 +424,7 @@ void logError(const QString& error) {
 CmdlineTask::CmdlineTask(const QString& name, TaskFlags flags)
     : Task(name, flags) {
     if (AppContext::getCMDLineRegistry()->hasParameter(OUTPUT_PROGRESS_ARG)) {
-        QTimer* timer = new QTimer(this);
+        auto timer = new QTimer(this);
         connect(timer, SIGNAL(timeout()), SLOT(sl_outputProgressAndState()));
         timer->start(UPDATE_PROGRESS_INTERVAL);
     }

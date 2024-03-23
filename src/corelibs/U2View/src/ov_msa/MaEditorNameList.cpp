@@ -82,8 +82,8 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
         changeTracker = new MsaEditorUserModStepController(editor->getMaObject()->getEntityRef());
     }
 
-    connect(this, SIGNAL(si_startMaChanging()), ui, SIGNAL(si_startMaChanging()));
-    connect(this, SIGNAL(si_stopMaChanging(bool)), ui, SIGNAL(si_stopMaChanging(bool)));
+    connect(this, &MaEditorNameList::si_startMaChanging, ui, &MaEditorWgt::si_startMaChanging);
+    connect(this, &MaEditorNameList::si_stopMaChanging, ui, &MaEditorWgt::si_stopMaChanging);
 
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
@@ -102,7 +102,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     nhBar->setVisible(false);
     sl_updateActions();
 
-    QObject* labelsParent = new QObject(this);
+    auto labelsParent = new QObject(this);
     labelsParent->setObjectName("labels_parent");
     labels = new QObject(labelsParent);
 }
@@ -191,10 +191,13 @@ void MaEditorNameList::sl_copyWholeRow() {
     for (const QRect& selectedRect : qAsConst(selectedRects)) {
         estimatedResultLength += selectedRect.height() * maLength;
     }
-    if (estimatedResultLength > U2Clipboard::MAX_SAFE_COPY_TO_CLIPBOARD_SIZE) {
-        uiLog.error(tr("Block size is too big and can't be copied into the clipboard"));
+    U2OpStatus2Log os;
+    U2Clipboard::checkCopyToClipboardSize(estimatedResultLength, os);
+    if (os.hasError()) {
+        NotificationStack::addNotification(os.getError(), NotificationType::Error_Not);
         return;
     }
+
     QString resultText;
     for (const QRect& selectedRect : qAsConst(selectedRects)) {
         for (int viewRowIndex = selectedRect.top(); viewRowIndex <= selectedRect.bottom(); viewRowIndex++) {
@@ -204,7 +207,6 @@ void MaEditorNameList::sl_copyWholeRow() {
             if (!resultText.isEmpty()) {
                 resultText += "\n";
             }
-            U2OpStatus2Log os;
             QByteArray sequence = row->toByteArray(os, maObject->getLength());
             CHECK_OP_EXT(os, uiLog.error(os.getError()), );
             resultText.append(QString::fromLatin1(sequence));
@@ -848,7 +850,7 @@ void MaEditorNameList::sl_editSequenceName() {
     bool isMca = maObj->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     QString title = isMca ? tr("Rename Read") : tr("Rename Sequence");
     bool ok = false;
-    QString newName = QInputDialog::getText(editor->getUI(), title, tr("New name:"), QLineEdit::Normal, curName, &ok);
+    QString newName = QInputDialog::getText(editor->getWidget(), title, tr("New name:"), QLineEdit::Normal, curName, &ok);
 
     if (ok && !newName.isEmpty() && curName != newName) {
         emit si_sequenceNameChanged(curName, newName);

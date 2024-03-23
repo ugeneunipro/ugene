@@ -138,7 +138,7 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(const QString& rowName,
     int viewRowIndex = getVisibleNames().indexOf(rowName);
     GT_CHECK(viewRowIndex != -1, "sequence not found in nameList");
     auto nameList = GTWidget::findWidget("mca_editor_name_list");
-    RowHeightController* rowHeightController = mcaEditArea->getEditor()->getMaEditorWgt(0)->getRowHeightController();
+    RowHeightController* rowHeightController = mcaEditArea->getEditor()->getLineWidget(0)->getRowHeightController();
     int yPos = rowHeightController->getScreenYRegionByViewRowIndex(viewRowIndex).startPos + rowHeightController->getRowHeightByViewRowIndex(viewRowIndex) / 2;
     if (showChromatogram) {
         yPos -= 65;
@@ -154,7 +154,7 @@ bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(const QString& rowName) {
     auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>("mca_editor_sequence_area");
     int rowNum = GTUtilsMcaEditor::getReadsNames().indexOf(rowName);
     GT_CHECK_RESULT(rowNum != -1, "sequence not found in nameList", false);
-    int rowHeight = mcaEditArea->getEditor()->getMaEditorWgt(0)->getRowHeightController()->getRowHeightByViewRowIndex(rowNum);
+    int rowHeight = mcaEditArea->getEditor()->getLineWidget(0)->getRowHeightController()->getRowHeightByViewRowIndex(rowNum);
     bool isChromatogramShown = rowHeight > 100;
     return isChromatogramShown;
 }

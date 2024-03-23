@@ -37,8 +37,8 @@ public:
     CreateSequenceFromTextAndOpenViewTask(const QList<DNASequence>& sequences, const QString& formatId, const GUrl& saveToPath);
 
 private:
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     QList<Task*> prepareImportSequenceTasks();
     Document* createEmptyDocument();

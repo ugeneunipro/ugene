@@ -83,7 +83,11 @@ public:
 
     static void clickNext();
     static void clickPrev();
-    static void clickGetAnnotation();
+    /*
+     * Click on the "Create annotations" button.
+     * \param parent parent widget
+     */
+    static void clickGetAnnotation(QWidget* parent = nullptr);
     static bool isPrevNextEnabled();
     static bool isGetAnnotationsEnabled();
 

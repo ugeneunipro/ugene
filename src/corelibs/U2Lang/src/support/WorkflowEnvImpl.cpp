@@ -45,23 +45,23 @@ DataTypeRegistry* WorkflowEnvImpl::initDataRegistry() {
     qRegisterMetaType<Monitor::LogEntry>("Monitor::LogEntry");
     qRegisterMetaType<ActorId>("ActorId");
 
-    DataTypeRegistry* r = new DataTypeRegistry();
+    auto r = new DataTypeRegistry();
 
     return r;
 }
 
 DomainFactoryRegistry* WorkflowEnvImpl::initDomainRegistry() {
-    DomainFactoryRegistry* r = new DomainFactoryRegistry();
+    auto r = new DomainFactoryRegistry();
     return r;
 }
 
 ActorPrototypeRegistry* WorkflowEnvImpl::initProtoRegistry() {
-    ActorPrototypeRegistry* r = new ActorPrototypeRegistry();
+    auto r = new ActorPrototypeRegistry();
     return r;
 }
 
 DataTypeValueFactoryRegistry* WorkflowEnvImpl::initDataTypeValueFactoryRegistry() {
-    DataTypeValueFactoryRegistry* ret = new DataTypeValueFactoryRegistry();
+    auto ret = new DataTypeValueFactoryRegistry();
     ret->registerEntry(new StringTypeValueFactory());
     ret->registerEntry(new StringListTypeValueFactory());
     ret->registerEntry(new MapTypeValueFactory());
@@ -80,22 +80,22 @@ WorkflowEnvImpl::~WorkflowEnvImpl() {
 }
 
 ExternalToolCfgRegistry* WorkflowEnvImpl::initExternalToolCfgRegistry() {
-    ExternalToolCfgRegistry* ecfgReg = new ExternalToolCfgRegistry();
+    auto ecfgReg = new ExternalToolCfgRegistry();
     return ecfgReg;
 }
 
 SchemaActorsRegistry* WorkflowEnvImpl::initSchemaActorsRegistry() {
-    SchemaActorsRegistry* actorsRegistry = new SchemaActorsRegistry();
+    auto actorsRegistry = new SchemaActorsRegistry();
     return actorsRegistry;
 }
 
 WorkflowTasksRegistry* WorkflowEnvImpl::initWorkflowTasksRegistry() {
-    WorkflowTasksRegistry* workflowTasksRegistry = new WorkflowTasksRegistry();
+    auto workflowTasksRegistry = new WorkflowTasksRegistry();
     return workflowTasksRegistry;
 }
 
 ActorValidatorRegistry* WorkflowEnvImpl::initActorValidatorRegistry() {
-    ActorValidatorRegistry* actorValidatorRegistry = new ActorValidatorRegistry();
+    auto actorValidatorRegistry = new ActorValidatorRegistry();
     return actorValidatorRegistry;
 }
 

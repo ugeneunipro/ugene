@@ -35,8 +35,8 @@ public:
     DbFolderItem(const QString& url, QListWidget* parent = nullptr);
     ~DbFolderItem();
 
-    virtual void accept(UrlItemVisitor* visitor);
-    virtual QWidget* getOptionsWidget();
+    void accept(UrlItemVisitor* visitor) override;
+    QWidget* getOptionsWidget() override;
 
     void setRecursive(bool value);
     bool isRecursive() const;

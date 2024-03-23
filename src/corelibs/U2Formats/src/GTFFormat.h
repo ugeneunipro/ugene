@@ -151,12 +151,12 @@ class U2FORMATS_EXPORT GTFFormat : public TextDocumentFormatDeprecated {
 public:
     GTFFormat(QObject* parent);
 
-    virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
+    void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) override;
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
 
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os);
+    Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 
 private:
     GTFLineData parseAndValidateLine(QString line, GTFLineValidateFlags& status) const;

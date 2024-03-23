@@ -320,14 +320,14 @@ void RemoteDBFetcherFactory::init() {
         Descriptor sourceFileDesc(SOURCE_FILE_ID,
                                   RemoteDBFetcherWorker::tr("File with resource IDs"),
                                   RemoteDBFetcherWorker::tr("A file with a list of resource ID`s in the database (one per line)."));
-        Attribute* sourceFileAttr = new Attribute(sourceFileDesc, BaseTypes::STRING_TYPE(), true, "");
+        auto sourceFileAttr = new Attribute(sourceFileDesc, BaseTypes::STRING_TYPE(), true, "");
         sourceFileAttr->addRelation(new VisibilityRelation(SOURCE_CHOOSER_ID, localFileString));
         attrs << sourceFileAttr;
 
         Descriptor seqidd(SEQID_ID,
                           RemoteDBFetcherWorker::tr("Resource ID(s)"),
                           RemoteDBFetcherWorker::tr("Semicolon-separated list of resource ID`s in the database."));
-        Attribute* idsListAttr = new Attribute(seqidd, BaseTypes::STRING_TYPE(), true, "");
+        auto idsListAttr = new Attribute(seqidd, BaseTypes::STRING_TYPE(), true, "");
         idsListAttr->addRelation(new VisibilityRelation(SOURCE_CHOOSER_ID, idsListString));
         attrs << idsListAttr;
 

@@ -248,7 +248,7 @@ public:
     }
 
 protected:
-    void focusOutEvent(QFocusEvent* e) {
+    void focusOutEvent(QFocusEvent* e) override {
         bool renamed = samples->rename(this);
         if (!renamed) {
             setText(initialName);
@@ -270,10 +270,10 @@ TophatSamples::TophatSamples(const QList<TophatSample>& samples, TophatSamplesWi
 }
 
 void TophatSamples::init(const QList<TophatSample>& samples) {
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    auto mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
 
-    QLabel* hint = new QLabel(this);
+    auto hint = new QLabel(this);
     mainLayout->addWidget(hint);
     {
         hint->setWordWrap(true);
@@ -294,7 +294,7 @@ void TophatSamples::init(const QList<TophatSample>& samples) {
         hint->setStyleSheet(style);
     }
 
-    QHBoxLayout* hl = new QHBoxLayout();
+    auto hl = new QHBoxLayout();
     mainLayout->addLayout(hl);
     hl->setContentsMargins(0, 0, 0, 0);
 
@@ -321,10 +321,10 @@ void TophatSamples::appendSample(const TophatSample& sample) {
 
 QWidget* TophatSamples::initSample(const QString& sampleName, const QStringList& datasets) {
     QWidget* result = new QGroupBox(this);
-    QVBoxLayout* vl = new QVBoxLayout(result);
+    auto vl = new QVBoxLayout(result);
     vl->setContentsMargins(5, 5, 5, 5);
 
-    QHBoxLayout* hl = new QHBoxLayout();
+    auto hl = new QHBoxLayout();
     {  // header
         hl->setContentsMargins(0, 0, 0, 0);
         QToolButton* removeButton = createButton(this, ":U2Designer/images/exit.png");
@@ -334,7 +334,7 @@ QWidget* TophatSamples::initSample(const QString& sampleName, const QStringList&
     }
     vl->addLayout(hl);
 
-    QListWidget* datasetsList = new QListWidget(this);
+    auto datasetsList = new QListWidget(this);
     datasetsList->setObjectName(sampleName + " datasetsList");
     {  // datasets
         foreach (const QString& dataset, datasets) {
@@ -508,7 +508,7 @@ QListWidget* TophatSamples::getListWidget(int pos) const {
 }
 
 QToolButton* TophatSamples::createButton(QWidget* parent, const QString& icon) const {
-    QToolButton* result = new QToolButton(parent);
+    auto result = new QToolButton(parent);
     result->setIcon(QIcon(icon));
     result->setAutoRaise(true);
     return result;
@@ -516,7 +516,7 @@ QToolButton* TophatSamples::createButton(QWidget* parent, const QString& icon) c
 
 QScrollArea* TophatSamples::createScrollArea() {
     scrollArea = new QScrollArea(this);
-    QWidget* scrollable = new QWidget(scrollArea);
+    auto scrollable = new QWidget(scrollArea);
     scrollArea->setWidget(scrollable);
     scrollArea->setWidgetResizable(true);
     scrollArea->setFrameShape(QFrame::NoFrame);
@@ -528,7 +528,7 @@ QScrollArea* TophatSamples::createScrollArea() {
 }
 
 QVBoxLayout* TophatSamples::createControlButtonsLayout() {
-    QVBoxLayout* result = new QVBoxLayout();
+    auto result = new QVBoxLayout();
     result->setContentsMargins(0, 0, 0, 0);
     result->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Maximum, QSizePolicy::Minimum));
     result->addLayout(createControlButtons());
@@ -537,7 +537,7 @@ QVBoxLayout* TophatSamples::createControlButtonsLayout() {
 }
 
 QVBoxLayout* TophatSamples::createControlButtons() {
-    QVBoxLayout* result = new QVBoxLayout();
+    auto result = new QVBoxLayout();
     result->setContentsMargins(0, 0, 0, 0);
 
     QToolButton* addButton = createButton(this, ":U2Designer/images/add.png");

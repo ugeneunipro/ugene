@@ -123,7 +123,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
 }
 
 void ChromatogramView::pack() {
-    QHBoxLayout* layout = new QHBoxLayout();
+    auto layout = new QHBoxLayout();
     layout->setMargin(0);
     layout->addWidget(renderArea);
     layout->addWidget(scaleBar);
@@ -307,7 +307,7 @@ void ChromatogramView::sl_onAddExistingSequenceObject() {
             assert(err.isEmpty());
             indexOfChangedChars.clear();
         } else if (go->getGObjectType() == GObjectTypes::UNLOADED) {
-            LoadUnloadedDocumentTask* t = new LoadUnloadedDocumentTask(go->getDocument(),
+            auto t = new LoadUnloadedDocumentTask(go->getDocument(),
                                                                        LoadDocumentTaskConfig(false, GObjectReference(go)));
             connect(new TaskSignalMapper(t), SIGNAL(si_taskSucceeded(Task*)), SLOT(sl_onSequenceObjectLoaded(Task*)));
             AppContext::getTaskScheduler()->registerTopLevelTask(t);
@@ -370,7 +370,7 @@ void ChromatogramView::sl_onObjectRemoved(GObjectViewController* view, GObject* 
 }
 
 QAction* ChromatogramView::createToggleTraceAction(const QString& actionName) {
-    QAction* showTraceAction = new QAction(actionName, this);
+    auto showTraceAction = new QAction(actionName, this);
     showTraceAction->setCheckable(true);
     showTraceAction->setChecked(true);
     showTraceAction->setEnabled(true);

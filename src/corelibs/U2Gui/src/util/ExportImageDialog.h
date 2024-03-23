@@ -77,7 +77,7 @@ public:
     int getQuality() const;
 
 public slots:
-    void accept();
+    void accept() override;
 
 private slots:
     void sl_onFormatsBoxItemChanged(const QString& newFormat);

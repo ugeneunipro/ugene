@@ -697,7 +697,7 @@ namespace BALL
         }
         if (contour.size() != face->edge_.size())
         {
-            SESFace* new_face = new SESFace(*face,true);
+            auto new_face = new SESFace(*face,true);
             for (e = contour.begin(); e != contour.end(); e++)
             {
                 new_face->edge_.remove(*e);
@@ -1215,7 +1215,7 @@ namespace BALL
          Index							index)
 
     {
-        SESVertex* vertex = new SESVertex;
+        auto vertex = new SESVertex;
         TSphere3<double>* atom = &(ses_->reduced_surface_->atom_[index]);
         // get the position of the new vertex
         getPoint(atom->p,probe_center,atom->radius,vertex->point_);
@@ -1234,7 +1234,7 @@ namespace BALL
          const double&			radius_of_probe)
 
     {
-        SESEdge* edge = new SESEdge;
+        auto edge = new SESEdge;
         // set the vertices of the edge
         std::list<SESVertex*>::iterator v = face->vertex_.begin();
         for (Position i = 0; i < p1; i++)
@@ -1319,7 +1319,7 @@ namespace BALL
 
     SESEdge* SESComputer::createConvexEdge(SESFace*	face, RSVertex*	rsvertex)
     {
-        SESEdge* edge = new SESEdge;
+        auto edge = new SESEdge;
         Index atom = rsvertex->atom_;
         Index index = rsvertex->index_;
         // find the first vertex of the toric face
@@ -1405,9 +1405,9 @@ namespace BALL
         TCircle3<double> intersection_circle;
         GetIntersection(probe1,probe2,intersection_circle);
         // create the new edges
-        SESEdge* new_edge0 = new SESEdge(*edge[0],true);
-        SESEdge* new_edge2 = new SESEdge(*edge[2],true);
-        SESEdge* new_edge = new SESEdge(NULL,NULL,neighbour0,neighbour2,
+        auto new_edge0 = new SESEdge(*edge[0],true);
+        auto new_edge2 = new SESEdge(*edge[2],true);
+        auto new_edge = new SESEdge(NULL,NULL,neighbour0,neighbour2,
                                                                                         intersection_circle,face->rsedge_,
                                                                                         SESEdge::TYPE_SINGULAR,-1);
         // create the new points
@@ -1537,7 +1537,7 @@ namespace BALL
         TCircle3<double> circle2(face->rsedge_->circle1_);
         Index index1(face->rsedge_->vertex_[0]->index_);
         Index index2(face->rsedge_->vertex_[1]->index_);
-        SESEdge* edge = new SESEdge;
+        auto edge = new SESEdge;
             edge->type_ = SESEdge::TYPE_CONVEX;
             edge->vertex_[0] = NULL;
             edge->vertex_[1] = NULL;
@@ -2492,7 +2492,7 @@ namespace BALL
                 vertex_grid_->insert(pos,new_vertex->index_);
                 ses_->number_of_vertices_++;
             }
-            SESEdge* new_edge = new SESEdge;
+            auto new_edge = new SESEdge;
             new_edge->vertex_[0] = vertex;
             new_edge->vertex_[1] = new_vertex;
             new_edge->face_[0] = spheric_face1;
@@ -2581,7 +2581,7 @@ namespace BALL
                                  ses_->reduced_surface_->probe_radius_);
             if (GetIntersection(s1,s2,s3,point1,point2,false))
             {
-                ProbeIntersection* intersection = new ProbeIntersection;
+                auto intersection = new ProbeIntersection;
                 intersection->point[0] = point1;
                 intersection->point[1] = point2;
                 probe_intersections_[face1][face2][face3] = intersection;

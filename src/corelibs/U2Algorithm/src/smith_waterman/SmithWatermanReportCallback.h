@@ -49,7 +49,7 @@ public:
                                          bool addPatternSubseqToQual,
                                          QObject* pOwn = nullptr);
 
-    QString report(const QList<SmithWatermanResult>& result);
+    QString report(const QList<SmithWatermanResult>& result) override;
     const QList<SharedAnnotationData>& getAnotations() const;
 
 private:
@@ -114,7 +114,7 @@ public:
         const U2EntityRef& sourceMsaRef,
         WhatDoYouWantFromMe plan = MSA_Alignment_InCurrentWindow);
 
-    virtual QString report(const QList<SmithWatermanResult>& results);
+    QString report(const QList<SmithWatermanResult>& results) override;
     static void alignSequences(QByteArray& refSequenceData,
                                QByteArray& ptrnSequence,
                                const QByteArray& pairwiseAlignment);

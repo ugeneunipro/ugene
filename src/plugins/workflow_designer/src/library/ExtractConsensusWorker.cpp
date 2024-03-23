@@ -197,7 +197,7 @@ AssemblyModel* ExtractConsensusTaskHelper::createModel() {
     const U2Assembly object = dbi->getAssemblyObject(assembly.entityId, stateInfo);
     CHECK_OP(stateInfo, nullptr);
 
-    AssemblyModel* model = new AssemblyModel(con);
+    auto model = new AssemblyModel(con);
     model->setAssembly(dbi, object);
 
     return model;

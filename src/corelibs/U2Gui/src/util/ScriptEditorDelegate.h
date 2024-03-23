@@ -62,9 +62,9 @@ class LineEditDelegate : public AbstractScriptEditorDelegate {
 public:
     LineEditDelegate(QWidget* parent);
 
-    void setText(const QString& text);
-    QString text() const;
-    int cursorLineNumber() const;
+    void setText(const QString& text) override;
+    QString text() const override;
+    int cursorLineNumber() const override;
 
 private:
     QLineEdit* edit;
@@ -75,10 +75,10 @@ class TextEditDelegate : public AbstractScriptEditorDelegate {
 public:
     TextEditDelegate(QWidget* parent);
 
-    void setText(const QString& text);
-    QString text() const;
-    int cursorLineNumber() const;
-    void installScriptHighlighter() const;
+    void setText(const QString& text) override;
+    QString text() const override;
+    int cursorLineNumber() const override;
+    void installScriptHighlighter() const override;
 
 private:
     QTextEdit* edit;

@@ -63,7 +63,7 @@ QString QDFindActor::getText() const {
 }
 
 Task* QDFindActor::getAlgorithmTask(const QVector<U2Region>& location) {
-    Task* t = new Task(tr("Find"), TaskFlag_NoRun);
+    auto t = new Task(tr("Find"), TaskFlag_NoRun);
     settings.sequence = scheme->getSequence().seq;
     settings.pattern = cfg->getParameter(PATTERN_ATTR)->getAttributeValueWithoutScript<QString>().toLatin1().toUpper();
     settings.maxResult2Find = FindAlgorithmSettings::MAX_RESULT_TO_FIND_UNLIMITED;
@@ -107,7 +107,7 @@ Task* QDFindActor::getAlgorithmTask(const QVector<U2Region>& location) {
     foreach (const U2Region& r, location) {
         FindAlgorithmTaskSettings s(settings);
         s.searchRegion = r;
-        FindAlgorithmTask* findTask = new FindAlgorithmTask(s);
+        auto findTask = new FindAlgorithmTask(s);
         connect(new TaskSignalMapper(findTask), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onFindTaskFinished(Task*)));
         t->addSubTask(findTask);
     }
@@ -122,7 +122,7 @@ void QDFindActor::sl_onFindTaskFinished(Task* t) {
         ru->strand = r.strand;
         ru->region = r.region;
         ru->owner = units.value("find");
-        QDResultGroup* g = new QDResultGroup(QDStrand_DirectOnly);
+        auto g = new QDResultGroup(QDStrand_DirectOnly);
         g->add(ru);
         results.append(g);
     }

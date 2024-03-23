@@ -63,7 +63,7 @@ private slots:
     void sl_removeClicked();
     void sl_taskFinished();
 
-    void accept();
+    void accept() override;
 
 private:
     void init();

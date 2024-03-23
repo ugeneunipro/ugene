@@ -1,0 +1,6 @@
+<multi-test>
+    <!-- Region consists of N only. -->
+    <load-document index="inp_doc" url="bwa/NC_000021.gbk.fa" io="local_file" format="fasta"/>
+    <find-object-by-name index="inp" doc="inp_doc" name="NC_000021" type="OT_SEQUENCE"/>
+    <mfold inp="inp" region="1..1000" shouldFail="true"/>
+</multi-test>

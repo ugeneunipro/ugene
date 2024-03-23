@@ -37,25 +37,25 @@ public:
     ZlibAdapter(IOAdapter* io);
     ~ZlibAdapter();
 
-    virtual bool open(const GUrl& url, IOAdapterMode m_);
+    bool open(const GUrl& url, IOAdapterMode m_) override;
 
-    virtual bool isOpen() const;
+    bool isOpen() const override;
 
-    virtual void close();
+    void close() override;
 
-    virtual qint64 readBlock(char* data, qint64 maxSize);
+    qint64 readBlock(char* data, qint64 maxSize) override;
 
-    virtual qint64 writeBlock(const char* data, qint64 size);
+    qint64 writeBlock(const char* data, qint64 size) override;
 
-    virtual bool skip(qint64 nBytes);
+    bool skip(qint64 nBytes) override;
 
-    virtual qint64 left() const;
+    qint64 left() const override;
 
-    virtual int getProgress() const;
+    int getProgress() const override;
 
-    virtual qint64 bytesRead() const;
+    qint64 bytesRead() const override;
 
-    virtual GUrl getURL() const;
+    GUrl getURL() const override;
 
     /**
      * should be invoked after open() ( needs z not null )
@@ -67,7 +67,7 @@ public:
      */
     static qint64 getUncompressedFileSizeInBytes(const GUrl& url);
 
-    virtual QString errorString() const;
+    QString errorString() const override;
 
 private:
     static const int BUFLEN = 32768;

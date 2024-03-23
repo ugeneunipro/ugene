@@ -21,9 +21,7 @@
 
 #include "RemoteBLASTPlugin.h"
 
-#include <QCoreApplication>
 #include <QDir>
-#include <QDirIterator>
 #include <QMenu>
 #include <QMessageBox>
 
@@ -31,8 +29,7 @@
 
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequenceObject.h>
+#include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DataBaseRegistry.h>
 #include <U2Core/GAutoDeleteList.h>
@@ -45,7 +42,6 @@
 
 #include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
-#include <U2Test/XMLTestFormat.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
@@ -60,7 +56,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    RemoteBLASTPlugin* plug = new RemoteBLASTPlugin();
+    auto plug = new RemoteBLASTPlugin();
     return plug;
 }
 
@@ -101,12 +97,44 @@ RemoteBLASTViewContext::RemoteBLASTViewContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
+const QString TRANSFORM_INTO_A_PRIMER_PAIR_NAME = "transform_into_a_primer_pair";
+
 void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
-    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":/remote_blast/images/remote_db_request.png"), tr("Query NCBI BLAST database..."), 60);
+    auto a = new ADVGlobalAction(av, QIcon(":/remote_blast/images/remote_db_request.png"), tr("Query NCBI BLAST database..."), 60);
     a->setObjectName("Query NCBI BLAST database");
     a->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
+
+    auto transformIntoPrimerPair = new GObjectViewAction(av, av, tr("Transform into a primer pair"));
+    transformIntoPrimerPair->setObjectName(TRANSFORM_INTO_A_PRIMER_PAIR_NAME);
+    transformIntoPrimerPair->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
+    transformIntoPrimerPair->setShortcutContext(Qt::WindowShortcut);
+    connect(transformIntoPrimerPair, &QAction::triggered, this, &RemoteBLASTViewContext::sl_transformIntoPrimerPair);
+    addViewAction(transformIntoPrimerPair);
+}
+
+void RemoteBLASTViewContext::buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) {
+    auto av = qobject_cast<AnnotatedDNAView*>(view);
+    SAFE_POINT_NN(av, );
+    CHECK(av->getActiveSequenceContext()->getAlphabet()->isNucleic(), );
+
+    auto atv = av->getAnnotationsView();
+    SAFE_POINT_NN(atv, );
+
+    auto atvw = atv->getTreeWidget();
+    SAFE_POINT_NN(atvw, );
+
+    auto items = atvw->selectedItems();
+    CHECK(isTransformIntoPrimerPairEnabled(items), );
+
+    auto transformIntoPrimerPair = findViewAction(view, TRANSFORM_INTO_A_PRIMER_PAIR_NAME);
+    SAFE_POINT_NN(transformIntoPrimerPair, );
+
+    auto editMenu = GUIUtils::findSubMenu(menu, ADV_MENU_EDIT);
+    SAFE_POINT_NN(editMenu, );
+
+    editMenu->addAction(transformIntoPrimerPair);
 }
 
 /*
@@ -149,7 +177,6 @@ void RemoteBLASTViewContext::sl_showDialog() {
     DNATranslation* complT = dlg->translateToAmino ? seqCtx->getComplementTT() : 0;
     cfg.complT = complT;
 
-
     if (selectedPrimerPairs.isEmpty()) {
         DNASequenceSelection* s = seqCtx->getSequenceSelection();
         QVector<U2Region> regions;
@@ -185,6 +212,70 @@ void RemoteBLASTViewContext::sl_showDialog() {
     }
 }
 
+static const QString TOP_PRIMERS_ANNOTATIONS_GROUP_NAME = "top_primers";
+static const QString PAIR_NAME_BEGINNING = "pair ";
+
+void RemoteBLASTViewContext::sl_transformIntoPrimerPair() {
+    auto action = qobject_cast<GObjectViewAction*>(sender());
+    SAFE_POINT_NN(action, );
+
+    auto av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    SAFE_POINT_NN(av, );
+
+    auto atv = av->getAnnotationsView();
+    SAFE_POINT_NN(atv, );
+
+    auto atvw = atv->getTreeWidget();
+    SAFE_POINT_NN(atvw, );
+
+    auto items = atvw->selectedItems();
+    SAFE_POINT(items.size() == 2, "Should be two selected items", );
+
+    AVAnnotationItem* firstAvItem = static_cast<AVAnnotationItem*>(items.first());
+    SAFE_POINT_NN(firstAvItem, );
+
+    AVAnnotationItem* secondAvItem = static_cast<AVAnnotationItem*>(items.last());
+    SAFE_POINT_NN(secondAvItem, );
+
+    // To simplify the case, primers should be in the same Annotation Table
+    auto ato = firstAvItem->getAnnotationTableObject();
+    SAFE_POINT_NN(ato, );
+
+    auto secondAto = secondAvItem->getAnnotationTableObject();
+    SAFE_POINT_NN(secondAto, );
+
+    if (ato != secondAto) {
+        coreLog.error(tr("Selected annotations belongs to different tables"));
+        return;
+    }
+
+    auto createPrimerAnnotation = [](const SharedAnnotationData& originalAnnotation) -> SharedAnnotationData {
+        SharedAnnotationData result(originalAnnotation);
+        result->name = TOP_PRIMERS_ANNOTATIONS_GROUP_NAME;
+        result->type = U2FeatureTypes::Primer;
+
+        return result;
+    };
+
+    auto forwardAnnData = createPrimerAnnotation(firstAvItem->annotation->getData());
+    auto reverseAnnData = createPrimerAnnotation(secondAvItem->annotation->getData());
+    // Make primers "looks to each other"
+    if (forwardAnnData->getRegions().first().endPos() < reverseAnnData->getRegions().first().startPos) {
+        forwardAnnData->setStrand(U2Strand::Direct);
+        reverseAnnData->setStrand(U2Strand::Complementary);
+    } else {
+        forwardAnnData->setStrand(U2Strand::Complementary);
+        reverseAnnData->setStrand(U2Strand::Direct);
+    }
+    // Calculate the correct pair number
+    int existedPairNumber = calculateExistedPrimerPairsNumber(ato);
+    QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
+    QString movedPrimersGroupName = TOP_PRIMERS_ANNOTATIONS_GROUP_NAME + "/" + PAIR_NAME_BEGINNING + QString::number(existedPairNumber + 1);
+    resultAnnotations.insert(movedPrimersGroupName, {forwardAnnData, reverseAnnData});
+    auto cat = new CreateAnnotationsTask(ato, resultAnnotations);
+    AppContext::getTaskScheduler()->registerTopLevelTask(cat);
+}
+
 const QList<QPair<Annotation*, Annotation*>> RemoteBLASTViewContext::getSelectedPrimerPairs(AnnotationGroupSelection* ags) {
     auto annGroups = ags->getSelection();
     QList<QPair<Annotation*, Annotation*>> primerAnnotationPairs;
@@ -213,6 +304,64 @@ const QList<QPair<Annotation*, Annotation*>> RemoteBLASTViewContext::getSelected
     return primerAnnotationPairs;
 }
 
+bool RemoteBLASTViewContext::isTransformIntoPrimerPairEnabled(const QList<QTreeWidgetItem*>& items) {
+    // There are two primers - the left one and the right one.
+    CHECK(items.size() == 2, false);
+
+    // The selected item should be an annotations (not a group or a qualifier)
+    // and shouldn't already be a primer.
+    // Also, to simplify everything, only writable objects are supported.
+    auto getAvItem = [](QTreeWidgetItem* item) -> AVAnnotationItem* {
+        auto avAnnItem = static_cast<AVAnnotationItem*>(item);
+        CHECK(!avAnnItem->isReadonly(), nullptr);
+        CHECK(avAnnItem->type == AVItemType::AVItemType_Annotation, nullptr);
+        CHECK(avAnnItem->annotation->getName() != "top_primers", nullptr);
+
+        return avAnnItem;
+    };
+
+    auto firstItem = getAvItem(items.first());
+    CHECK(firstItem != nullptr, false);
+
+    auto secondItem = getAvItem(items.last());
+    CHECK(secondItem != nullptr, false);
+
+    // Primers have only one region and never intersects each other
+    auto regionsAreOk = [](const QVector<U2Region>& firstRegions, const QVector<U2Region>& secondRegions) -> bool {
+        CHECK(firstRegions.size() == 1 && secondRegions.size() == 1, false);
+
+        return !firstRegions.first().intersects(secondRegions.first());
+    };
+    auto firstRegions = firstItem->annotation->getRegions();
+    auto secondRegions = secondItem->annotation->getRegions();
+    CHECK(regionsAreOk(firstRegions, secondRegions), false);
+
+    return true;
+}
+
+int RemoteBLASTViewContext::calculateExistedPrimerPairsNumber(AnnotationTableObject* ato) {
+    int movedPairsNumber = 0;
+    auto rootGroup = ato->getRootGroup();
+    SAFE_POINT_NN(rootGroup, 0);
+
+    auto primer3ResultsGroup = rootGroup->getSubgroup(TOP_PRIMERS_ANNOTATIONS_GROUP_NAME, false);
+    if (primer3ResultsGroup != nullptr) {
+        auto pairGroups = primer3ResultsGroup->getSubgroups();
+        for (auto pairGroup : qAsConst(pairGroups)) {
+            auto name = pairGroup->getName();
+            CHECK_CONTINUE(name.startsWith(PAIR_NAME_BEGINNING));
+
+            auto orderNumberString = name.mid(PAIR_NAME_BEGINNING.size());
+            bool ok = false;
+            int orderNumber = orderNumberString.toInt(&ok);
+            CHECK_CONTINUE(ok);
+
+            movedPairsNumber = qMax(movedPairsNumber, orderNumber);
+        }
+    }
+
+    return movedPairsNumber;
+}
 
 QList<XMLTestFactory*> RemoteBLASTPluginTests::createTestFactories() {
     QList<XMLTestFactory*> res;

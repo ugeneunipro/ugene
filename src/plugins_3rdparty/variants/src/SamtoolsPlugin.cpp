@@ -28,7 +28,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    SamtoolsPlugin* plug = new SamtoolsPlugin();
+    auto plug = new SamtoolsPlugin();
     return plug;
 }
 

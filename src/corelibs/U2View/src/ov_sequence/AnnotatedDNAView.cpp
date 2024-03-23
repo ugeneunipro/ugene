@@ -221,7 +221,7 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
 
     for (int i = 0; i < seqContexts.size(); ++i) {
         ADVSequenceObjectContext* seqCtx = seqContexts[i];
-        ADVSingleSequenceWidget* block = new ADVSingleSequenceWidget(seqCtx, this);
+        auto block = new ADVSingleSequenceWidget(seqCtx, this);
         connect(block, SIGNAL(si_titleClicked(ADVSequenceWidget*)), SLOT(sl_onSequenceWidgetTitleClicked(ADVSequenceWidget*)));
         connect(seqCtx, SIGNAL(si_aminoTranslationChanged()), SLOT(sl_aminoTranslationChanged()));
         block->setObjectName("ADV_single_sequence_widget_" + QString::number(i));
@@ -900,11 +900,11 @@ QString AnnotatedDNAView::addObject(GObject* o) {
         if (!dnaObj->isValidDbiObject(status)) {
             return "";
         }
-        ADVSequenceObjectContext* sc = new ADVSequenceObjectContext(this, dnaObj);
+        auto sc = new ADVSequenceObjectContext(this, dnaObj);
         seqContexts.append(sc);
         // if mainSplitter==NULL -> its view initialization and widgets will be added later
         if (mainSplitter != nullptr && !isChildWidgetObject(dnaObj)) {
-            ADVSingleSequenceWidget* block = new ADVSingleSequenceWidget(sc, this);
+            auto block = new ADVSingleSequenceWidget(sc, this);
             connect(block, SIGNAL(si_titleClicked(ADVSequenceWidget*)), SLOT(sl_onSequenceWidgetTitleClicked(ADVSequenceWidget*)));
             block->setObjectName("ADV_single_sequence_widget_" + QString::number(seqViews.count()));
             addSequenceWidget(block);
@@ -953,7 +953,7 @@ void AnnotatedDNAView::sl_onShowPosSelectorRequest() {
     dlg->setModal(true);
     dlg->setWindowTitle(tr("Go to Position"));
 
-    PositionSelector* ps = new PositionSelector(dlg.data(), 1, seqCtx->getSequenceLength(), true);
+    auto ps = new PositionSelector(dlg.data(), 1, seqCtx->getSequenceLength(), true);
     connect(ps, SIGNAL(si_positionChanged(int)), SLOT(sl_onPosChangeRequest(int)));
 
     dlg->exec();
@@ -1029,14 +1029,14 @@ void AnnotatedDNAView::addRelatedAnnotations(ADVSequenceObjectContext* seqCtx) {
 }
 
 void AnnotatedDNAView::addAutoAnnotations(ADVSequenceObjectContext* seqCtx) {
-    AutoAnnotationObject* aa = new AutoAnnotationObject(seqCtx->getSequenceObject(), seqCtx->getAminoTT(), seqCtx);
+    auto aa = new AutoAnnotationObject(seqCtx->getSequenceObject(), seqCtx->getAminoTT(), seqCtx);
     seqCtx->addAutoAnnotationObject(aa->getAnnotationObject());
     autoAnnotationsMap.insert(seqCtx, aa);
 
     emit si_annotationObjectAdded(aa->getAnnotationObject());
 
     foreach (ADVSequenceWidget* w, seqCtx->getSequenceWidgets()) {
-        AutoAnnotationsADVAction* aaAction = new AutoAnnotationsADVAction(w, aa);
+        auto aaAction = new AutoAnnotationsADVAction(w, aa);
         w->addADVSequenceWidgetAction(aaAction);
     }
 }
@@ -1078,7 +1078,7 @@ void AnnotatedDNAView::addGraphs(ADVSequenceObjectContext* seqCtx) {
     foreach (ADVSequenceWidget* seqWidget, seqCtx->getSequenceWidgets()) {
         auto singleSeqWidget = qobject_cast<ADVSingleSequenceWidget*>(seqWidget);
         SAFE_POINT(singleSeqWidget != nullptr, "singleSeqWidget is NULL", );
-        GraphMenuAction* graphMenuAction = new GraphMenuAction(singleSeqWidget->getSequenceObject()->getAlphabet());
+        auto graphMenuAction = new GraphMenuAction(singleSeqWidget->getSequenceObject()->getAlphabet());
         if (singleSeqWidget != nullptr) {
             singleSeqWidget->addADVSequenceWidgetActionToViewsToolbar(graphMenuAction);
         } else {

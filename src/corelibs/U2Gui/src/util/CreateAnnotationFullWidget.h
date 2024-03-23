@@ -32,55 +32,55 @@ public:
     CreateAnnotationFullWidget(qint64 seqLen, QWidget* parent = nullptr);
     ~CreateAnnotationFullWidget();
 
-    void setGroupNameVisible(bool visible);
-    void setLocationVisible(bool visible);
-    void setAnnotationParametersVisible(bool visible);
-    void setAnnotationTypeVisible(bool visible);
-    void setAnnotationNameVisible(bool visible);
-    void setAutoTableOptionVisible(bool visible);
-    void setDescriptionVisible(bool visible);
-    void setUsePatternNamesVisible(bool visible);
-    void setAnnotationTableOptionVisible(bool visible);
+    void setGroupNameVisible(bool visible) override;
+    void setLocationVisible(bool visible) override;
+    void setAnnotationParametersVisible(bool visible) override;
+    void setAnnotationTypeVisible(bool visible) override;
+    void setAnnotationNameVisible(bool visible) override;
+    void setAutoTableOptionVisible(bool visible) override;
+    void setDescriptionVisible(bool visible) override;
+    void setUsePatternNamesVisible(bool visible) override;
+    void setAnnotationTableOptionVisible(bool visible) override;
 
-    void setAnnotationNameEnabled(bool enable);
+    void setAnnotationNameEnabled(bool enable) override;
 
-    void useAminoAnnotationTypes(bool useAmino);
+    void useAminoAnnotationTypes(bool useAmino) override;
 
-    void focusGroupName();
-    void focusAnnotationType();
-    void focusAnnotationName();
-    void focusLocation();
+    void focusGroupName() override;
+    void focusAnnotationType() override;
+    void focusAnnotationName() override;
+    void focusLocation() override;
 
-    void setNewTablePath(const QString& path);
-    void setGroupName(const QString& name);
-    void setAnnotationType(U2FeatureType type);
-    void setAnnotationName(const QString& name);
-    void setLocation(const U2Location& location);
-    void setDescription(const QString& description);
+    void setNewTablePath(const QString& path) override;
+    void setGroupName(const QString& name) override;
+    void setAnnotationType(U2FeatureType type) override;
+    void setAnnotationName(const QString& name) override;
+    void setLocation(const U2Location& location) override;
+    void setDescription(const QString& description) override;
 
-    QString getAnnotationTypeString() const;
-    QString getGroupName() const;
-    QString getAnnotationName() const;
-    QString getDescription() const;
-    QString getLocationString() const;
-    bool isUsePatternNamesChecked() const;
+    QString getAnnotationTypeString() const override;
+    QString getGroupName() const override;
+    QString getAnnotationName() const override;
+    QString getDescription() const override;
+    QString getLocationString() const override;
+    bool isUsePatternNamesChecked() const override;
 
-    bool isExistingTablesListEmpty() const;
+    bool isExistingTablesListEmpty() const override;
 
-    void selectNewTableOption();
-    void selectAutoTableOption();
+    void selectNewTableOption() override;
+    void selectAutoTableOption() override;
 
-    void setExistingTableOptionEnable(bool enable);
+    void setExistingTableOptionEnable(bool enable) override;
 
-    bool isNewTableOptionSelected() const;
-    bool isExistingTableOptionSelected() const;
-    bool isAutoTableOptionSelected() const;
+    bool isNewTableOptionSelected() const override;
+    bool isExistingTableOptionSelected() const override;
+    bool isAutoTableOptionSelected() const override;
 
-    void showSelectGroupMenu(QMenu& menu);
-    GObjectComboBoxController* createGObjectComboBoxController(const GObjectComboBoxControllerConstraints& constraints);
+    void showSelectGroupMenu(QMenu& menu) override;
+    GObjectComboBoxController* createGObjectComboBoxController(const GObjectComboBoxControllerConstraints& constraints) override;
 
-    void countDescriptionUsage() const;
-    void fillSaveDocumentControllerConfig(SaveDocumentControllerConfig& config) const;
+    void countDescriptionUsage() const override;
+    void fillSaveDocumentControllerConfig(SaveDocumentControllerConfig& config) const override;
 
 private slots:
     void sl_regionChanged();

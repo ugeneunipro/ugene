@@ -25,6 +25,7 @@
 #include <QDir>
 #include <QHeaderView>
 #include <QMenu>
+#include <QMessageBox>
 #include <QUrl>
 #include <QVBoxLayout>
 
@@ -54,7 +55,7 @@ TaskViewDockWidget::TaskViewDockWidget() {
     setWindowTitle(tr("Tasks"));
     setWindowIcon(QIcon(":ugene/images/clock.png"));
 
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setSpacing(0);
     l->setMargin(0);
     l->setContentsMargins(0, 0, 0, 0);
@@ -156,8 +157,8 @@ void TaskViewDockWidget::buildTree() {
 void TaskViewDockWidget::addTopLevelTask(Task* t) {
     TVTreeItem* ti = createTaskItem(t);
     tree->addTopLevelItem(ti);
-    QWidget* w = new QWidget();
-    QHBoxLayout* l = new QHBoxLayout();
+    auto w = new QWidget();
+    auto l = new QHBoxLayout();
     l->addStretch(10);
     l->setMargin(0);
     l->setSpacing(10);
@@ -176,7 +177,7 @@ void TaskViewDockWidget::addTopLevelTask(Task* t) {
 }
 
 TVTreeItem* TaskViewDockWidget::createTaskItem(Task* task) {
-    TVTreeItem* ti = new TVTreeItem(this, task);
+    auto ti = new TVTreeItem(this, task);
 
     connect(task, SIGNAL(si_subtaskAdded(Task*)), SLOT(sl_onSubtaskAdded(Task*)));
     connect(task, SIGNAL(si_progressChanged()), SLOT(sl_onTaskProgress()));
@@ -417,7 +418,7 @@ void TaskViewDockWidget::selectTask(Task* t) {
 
 TVReportWindow::TVReportWindow(const QString& taskName, qint64 tid, const QString& report)
     : MWMDIWindow(genWindowName(taskName)), taskId(tid) {
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setMargin(0);
     setLayout(l);
 
@@ -463,6 +464,35 @@ QString TVReportWindow::prepareReportHTML(Task* t) {
     return report;
 }
 
+static void checkPathAndShowErrorOrOpen(const QString& url, QWidget* parent) {
+    QFileInfo finfo(url);
+    QString error;
+    if (!finfo.exists()) {
+        error = QT_TR_NOOP("Path doesn't exist: ");
+    } else if (finfo.isFile() && finfo.size() == 0) {
+        error = QT_TR_NOOP("File is empty: ");
+    }
+
+    if (!error.isEmpty()) {
+        QMessageBox::critical(parent, L10N::errorTitle(), error + url);
+        return;
+    }
+
+    QString preparedUrl = "file:///" + url;
+    if (isOsUnix()) {
+        // 3 slashes from file prefix + 1 slash from root = 4 slashes, but there should be 3 slashes totally
+        preparedUrl.replace(QRegularExpression("\\/{3,}"), "///");
+    } else {
+        // 2 situations:
+        //      1. Normal path C:/... -> file:///C:/... i.e. 3 slashes
+        //      2. UNC or possible long path
+        //         3 slashes from file prefix + 2 slashes at the beginning of path = 5 slashes, but this doesn't work,
+        //         there should be 4 slashes.
+        preparedUrl.replace(QRegularExpression("\\/{4,}"), "////");
+    }
+    QDesktopServices::openUrl(QUrl(preparedUrl));
+}
+
 bool TVReportWindow::eventFilter(QObject*, QEvent* e) {
     if (e->type() == QEvent::MouseButtonPress) {
         auto me = static_cast<QMouseEvent*>(e);
@@ -470,15 +500,19 @@ bool TVReportWindow::eventFilter(QObject*, QEvent* e) {
         if (!url.isEmpty()) {
             bool internetUrl = url.startsWith("http");
             if (me->button() == Qt::LeftButton) {
-                if (internetUrl) {
+                if (url.startsWith("#")) {
+                    textEdit->scrollToAnchor(url.mid(1));
+                } else if (internetUrl) {
                     QDesktopServices::openUrl(QUrl(url));
+                } else if (url.endsWith(".html")) {
+                    checkPathAndShowErrorOrOpen(url, this);
                 } else {
                     Task* t = AppContext::getProjectLoader()->openWithProjectTask(url);
                     if (t) {
                         AppContext::getTaskScheduler()->registerTopLevelTask(t);
                     }
                 }
-            } else if (me->button() == Qt::RightButton) {
+            } else if (me->button() == Qt::RightButton && !url.startsWith("#")) {
                 showContextMenu(me->globalPos(), url);
             }
         }
@@ -535,6 +569,10 @@ void TVReportWindow::sl_open() {
 
     QString url = dirAction->data().toString();
     bool internetUrl = url.startsWith("http");
+    if (!internetUrl && (url.endsWith(".html") || QFileInfo(url).isDir() || !QFileInfo(url).exists())) {
+        checkPathAndShowErrorOrOpen(url, this);
+        return;
+    }
     QDesktopServices::openUrl(QUrl(!internetUrl ? "file:///" : "" + url));
 }
 

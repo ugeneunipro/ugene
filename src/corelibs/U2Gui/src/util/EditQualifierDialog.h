@@ -36,14 +36,14 @@ public:
     EditQualifierDialog(QWidget* p, const U2Qualifier& q, bool ro, bool existingQualifier);
     ~EditQualifierDialog();
 
-    virtual void accept();
+    void accept() override;
 
     const U2Qualifier& getModifiedQualifier() const {
         return q;
     }
 
 protected:
-    bool eventFilter(QObject* obj, QEvent* e);
+    bool eventFilter(QObject* obj, QEvent* e) override;
 
 private:
     U2Qualifier q;

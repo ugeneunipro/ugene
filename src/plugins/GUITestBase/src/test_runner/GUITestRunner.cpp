@@ -92,7 +92,7 @@ void GUITestRunner::sl_runSelected() {
             QString suite = item->parent()->text(0);
             QString name = item->text(0);
             GUITest* test = guiTestBase->getTest(suite, name);
-            GUITestThread* testThread = new GUITestThread(test, false);
+            auto testThread = new GUITestThread(test, false);
             connect(testThread, SIGNAL(finished()), this, SLOT(sl_testFinished()));
             hide();
             testThread->start();

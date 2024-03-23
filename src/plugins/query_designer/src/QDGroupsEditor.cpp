@@ -75,7 +75,7 @@ void QDGroupsEditor::rebuild() {
                                .arg(reqNum)
                                .arg(grpSize);
         grpItemTexts << group << countLbl;
-        QTreeWidgetItem* groupItem = new QTreeWidgetItem(this, grpItemTexts);
+        auto groupItem = new QTreeWidgetItem(this, grpItemTexts);
         addTopLevelItem(groupItem);
         for (const QDActor* actor : qAsConst(actors)) {
             const QString& actorLabel = actor->getParameters()->getLabel();

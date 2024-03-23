@@ -1,0 +1,3 @@
+<suite name="ET tests">
+    <test-dir path="et" test-format="XML" test-ext="*.xml"/>
+</suite>

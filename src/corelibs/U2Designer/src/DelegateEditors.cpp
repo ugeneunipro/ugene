@@ -24,6 +24,7 @@
 #include <QApplication>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -313,7 +314,7 @@ PropertyWidget* ComboBoxWithUrlsDelegate::createWizardWidget(U2OpStatus& /*os*/,
 QWidget* ComboBoxWithUrlsDelegate::createEditor(QWidget* parent,
                                                 const QStyleOptionViewItem& /* option */,
                                                 const QModelIndex& /* index */) const {
-    ComboBoxWithUrlWidget* editor = new ComboBoxWithUrlWidget(items, isPath, parent);
+    auto editor = new ComboBoxWithUrlWidget(items, isPath, parent);
     connect(editor, SIGNAL(valueChanged(const QString&)), SLOT(sl_valueChanged(const QString&)));
     return editor;
 }
@@ -353,7 +354,7 @@ PropertyWidget* ComboBoxEditableDelegate::createWizardWidget(U2OpStatus& /*os*/,
 QWidget* ComboBoxEditableDelegate::createEditor(QWidget* parent,
                                                 const QStyleOptionViewItem& /* option */,
                                                 const QModelIndex& /* index */) const {
-    ComboBoxEditableWidget* editor = new ComboBoxEditableWidget(items, parent);
+    auto editor = new ComboBoxEditableWidget(items, parent);
     connect(editor, SIGNAL(valueChanged(const QString&)), SLOT(sl_valueChanged(const QString&)));
     return editor;
 }
@@ -400,7 +401,7 @@ PropertyWidget* ComboBoxWithChecksDelegate::createWizardWidget(U2OpStatus& /*os*
 QWidget* ComboBoxWithChecksDelegate::createEditor(QWidget* parent,
                                                   const QStyleOptionViewItem& /* option */,
                                                   const QModelIndex& /* index */) const {
-    ComboBoxWithChecksWidget* editor = new ComboBoxWithChecksWidget(items, parent, itemTextFormatter, isSorted);
+    auto editor = new ComboBoxWithChecksWidget(items, parent, itemTextFormatter, isSorted);
     connect(editor, SIGNAL(valueChanged(const QString&)), this, SIGNAL(si_valueChanged(const QString&)));
     connect(editor, SIGNAL(si_valueChanged(const QVariant&)), SLOT(sl_commit()));
     return editor;
@@ -649,6 +650,7 @@ void ScriptSelectionWidget::sl_comboCurrentIndexChanged(int itemId) {
             return;
         }
         case USER_SCRIPT_ITEM_ID: {
+            GCOUNTER(cvar, "Script. Run Edit script of the element dialog for parameter");
             AttributeScript attrScript = combobox->property(SCRIPT_PROPERTY.toLatin1().constData()).value<AttributeScript>();
             QObjectScopedPointer<ScriptEditorDialog> dlg = new ScriptEditorDialog(QApplication::activeWindow(), AttributeScriptDelegate::createScriptHeader(attrScript));
             dlg->setScriptText(attrScript.getScriptText());
@@ -658,7 +660,11 @@ void ScriptSelectionWidget::sl_comboCurrentIndexChanged(int itemId) {
             if (rc != QDialog::Accepted) {
                 combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
             } else {
-                attrScript.setScriptText(dlg->getScriptText());
+                auto scriptText = dlg->getScriptText();
+                if (!scriptText.isEmpty()) {
+                    GCOUNTER(cvar1, "Script. Done Edit script of the element dialog for parameter with new script");
+                }
+                attrScript.setScriptText(scriptText);
                 combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
             }
 
@@ -687,7 +693,7 @@ void AttributeScriptDelegate::sl_commit() {
 }
 
 QWidget* AttributeScriptDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem&, const QModelIndex&) const {
-    ScriptSelectionWidget* editor = new ScriptSelectionWidget(parent);
+    auto editor = new ScriptSelectionWidget(parent);
     connect(editor, SIGNAL(si_finished()), SLOT(sl_commit()));
     return editor;
 }
@@ -725,23 +731,23 @@ void StingListEdit::sl_onExpand() {
     QObjectScopedPointer<QDialog> editor = new QDialog(this);
     editor->setWindowTitle(StringListDelegate::tr("Enter items"));
 
-    QPushButton* accept = new QPushButton(StringListDelegate::tr("OK"), editor.data());
+    auto accept = new QPushButton(StringListDelegate::tr("OK"), editor.data());
     connect(accept, SIGNAL(clicked()), editor.data(), SLOT(accept()));
-    QPushButton* reject = new QPushButton(StringListDelegate::tr("Cancel"), editor.data());
+    auto reject = new QPushButton(StringListDelegate::tr("Cancel"), editor.data());
     connect(reject, SIGNAL(clicked()), editor.data(), SLOT(reject()));
 
-    QHBoxLayout* buttonsLayout = new QHBoxLayout(0);
+    auto buttonsLayout = new QHBoxLayout(0);
     buttonsLayout->addStretch();
     buttonsLayout->addWidget(accept);
     buttonsLayout->addWidget(reject);
 
-    QTextEdit* edit = new QTextEdit("", editor.data());
+    auto edit = new QTextEdit("", editor.data());
 
     foreach (const QString& item, text().split(";", QString::SkipEmptyParts)) {
         edit->append(item.trimmed());
     }
 
-    QVBoxLayout* layout = new QVBoxLayout(editor.data());
+    auto layout = new QVBoxLayout(editor.data());
     layout->addWidget(edit);
     layout->addLayout(buttonsLayout);
 

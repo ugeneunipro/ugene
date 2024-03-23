@@ -32,8 +32,8 @@ class U2LANG_EXPORT ElementSelectorWidget : public WizardWidget {
 public:
     ElementSelectorWidget();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
-    virtual void validate(const QList<Actor*>& actors, U2OpStatus& os) const;
+    void accept(WizardWidgetVisitor* visitor) override;
+    void validate(const QList<Actor*>& actors, U2OpStatus& os) const override;
 
     void setActorId(const QString& value);
     void addValue(const SelectorValue& value);

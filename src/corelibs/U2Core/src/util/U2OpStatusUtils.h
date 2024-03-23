@@ -54,50 +54,50 @@ public:
     }
 #endif
 
-    virtual void setError(const QString& err) {
+    void setError(const QString& err) override {
         error = err;
     }
-    virtual QString getError() const {
+    QString getError() const override {
         markChecked();
         return error;
     }
 
-    virtual bool hasError() const {
+    bool hasError() const override {
         markChecked();
         return !error.isEmpty();
     }
 
-    virtual bool isCanceled() const {
+    bool isCanceled() const override {
         return cancelFlag != 0;
     }
-    virtual void setCanceled(bool v) {
+    void setCanceled(bool v) override {
         cancelFlag = v;
     }
 
-    virtual int getProgress() const {
+    int getProgress() const override {
         return progress;
     }
-    virtual void setProgress(int v) {
+    void setProgress(int v) override {
         progress = v;
     }
 
-    virtual QString getDescription() const {
+    QString getDescription() const override {
         return statusDesc;
     }
-    virtual void setDescription(const QString& desc) {
+    void setDescription(const QString& desc) override {
         statusDesc = desc;
     }
 
-    virtual bool hasWarnings() const {
+    bool hasWarnings() const override {
         return !warnings.isEmpty();
     }
-    virtual void addWarning(const QString& w) {
+    void addWarning(const QString& w) override {
         warnings << w;
     }
-    virtual QStringList getWarnings() const {
+    QStringList getWarnings() const override {
         return warnings;
     }
-    virtual void addWarnings(const QStringList& wList) {
+    void addWarnings(const QStringList& wList) override {
         warnings << wList;
     }
 
@@ -136,7 +136,7 @@ public:
     U2OpStatus2Log(LogLevel l = LogLevel_ERROR)
         : level(l) {
     }
-    virtual void setError(const QString& err) {
+    void setError(const QString& err) override {
         U2OpStatusImpl::setError(err);
         coreLog.message(level, err);
     }
@@ -159,29 +159,29 @@ public:
     U2OpStatusChildImpl(U2OpStatus* _parent = 0, const U2OpStatusMapping& _mapping = U2OpStatusMapping(0, 100))
         : parent(_parent), mapping(_mapping) {
     }
-    virtual void setError(const QString& err) {
+    void setError(const QString& err) override {
         parent->setError(err);
         error = err;
     }
 
-    virtual bool hasError() const {
+    bool hasError() const override {
         return parent->hasError() || !error.isEmpty();
     }
 
-    virtual bool isCanceled() const {
+    bool isCanceled() const override {
         return parent->isCanceled() || cancelFlag != 0;
     }
-    virtual void setCanceled(bool v) {
+    void setCanceled(bool v) override {
         parent->setCanceled(v);
         cancelFlag = v;
     }
 
-    virtual void setProgress(int v) {
+    void setProgress(int v) override {
         parent->setProgress(mapping.start + v * mapping.len / 100);
         progress = v;
     }
 
-    virtual void setDescription(const QString& desc) {
+    void setDescription(const QString& desc) override {
         parent->setDescription(desc);
         statusDesc = desc;
     }

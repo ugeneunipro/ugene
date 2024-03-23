@@ -44,7 +44,7 @@ void ShowHideSubgroupWidget::init(const QString& subgroupId, const QString& capt
     this->subgroupId = subgroupId;
     this->innerWidget = innerWidget;
 
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    auto mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(0, 0, 0, 10);
     mainLayout->setSpacing(0);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -97,7 +97,7 @@ void ShowHideSubgroupWidget::setPermanentlyOpen(bool isOpened) {
 
 ArrowHeaderWidget::ArrowHeaderWidget(const QString& caption, bool _isOpened)
     : isOpened(_isOpened) {
-    QHBoxLayout* arrowHeaderLayout = new QHBoxLayout();
+    auto arrowHeaderLayout = new QHBoxLayout();
     arrowHeaderLayout->setContentsMargins(0, 0, 0, 0);
     arrowHeaderLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
@@ -111,7 +111,7 @@ ArrowHeaderWidget::ArrowHeaderWidget(const QString& caption, bool _isOpened)
 
     arrow->setMaximumSize(10, 10);
 
-    QLabel* captionLabel = new QLabel(caption);
+    auto captionLabel = new QLabel(caption);
     captionLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     progressMovieLabel = new QLabel();
@@ -138,7 +138,7 @@ ArrowHeaderWidget::~ArrowHeaderWidget() {
 }
 
 void ArrowHeaderWidget::showProgressWithTimeout() {
-    QTimer* timeoutToStartProgress = new QTimer(this);
+    auto timeoutToStartProgress = new QTimer(this);
     connect(timeoutToStartProgress, SIGNAL(timeout()), SLOT(sl_showProgress()));
     timeoutToStartProgress->start(TIMEOUT);
     canStartProgress = true;

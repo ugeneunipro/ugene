@@ -104,11 +104,11 @@ void MsaEditorTreeManager::buildTreeWithDialog() {
     QStringList phyTreeGeneratorNameList = AppContext::getPhyTreeGeneratorRegistry()->getNameList();
     addExistingTree = false;
     if (phyTreeGeneratorNameList.isEmpty()) {
-        QMessageBox::information(editor->getUI(), tr("Calculate phy tree"), tr("No algorithms for building phylogenetic tree are available."));
+        QMessageBox::information(editor->getMainWidget(), tr("Calculate phy tree"), tr("No algorithms for building phylogenetic tree are available."));
         return;
     }
 
-    QObjectScopedPointer<CreatePhyTreeDialogController> dlg = new CreatePhyTreeDialogController(editor->getUI(), msaObject, settings);
+    QObjectScopedPointer<CreatePhyTreeDialogController> dlg = new CreatePhyTreeDialogController(editor->getMainWidget(), msaObject, settings);
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
     CHECK(rc == QDialog::Accepted, );
@@ -272,7 +272,7 @@ void MsaEditorTreeManager::sl_openTreeTaskFinished(Task* task) {
     auto viewWindow = new GObjectViewWindow(treeViewer, editor->getName(), !createTreeViewerTask->getStateData().isEmpty());
     connect(viewWindow, SIGNAL(si_windowClosed(GObjectViewWindow*)), this, SLOT(sl_onWindowClosed(GObjectViewWindow*)));
 
-    auto msaUI = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI(0));
+    auto msaUI = qobject_cast<MsaEditorWgt*>(editor->getLineWidget(0));
     msaUI->addTreeView(viewWindow);
 
     // Once tree is added to the splitter make the tree-view viewport state consistent:
@@ -363,7 +363,7 @@ void MsaEditorTreeManager::sl_onWindowClosed(GObjectViewWindow* viewWindow) {
 
 MsaEditorMultiTreeViewer* MsaEditorTreeManager::getMultiTreeViewer() const {
     SAFE_POINT(editor != nullptr, "Incorrect reference to the MSAEditor", nullptr);
-    auto mui = qobject_cast<MsaEditorMultilineWgt*>(editor->getUI());
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(editor->getMainWidget());
     SAFE_POINT(mui != nullptr, "Incorrect reference to the MSAEditor", nullptr);
     return mui->getPhylTreeWidget();
 }

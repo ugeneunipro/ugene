@@ -78,7 +78,7 @@ QStringList SnpEffSupport::getToolRunnerAdditionalOptions() const {
 
 void SnpEffSupport::sl_validationStatusChanged(bool isValid) {
     if (isValid) {
-        SnpEffDatabaseListTask* task = new SnpEffDatabaseListTask();
+        auto task = new SnpEffDatabaseListTask();
         connect(task, SIGNAL(si_stateChanged()), SLOT(sl_databaseListIsReady()));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }

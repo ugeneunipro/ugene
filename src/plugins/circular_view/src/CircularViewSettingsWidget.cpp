@@ -122,18 +122,18 @@ void CircularViewSettingsWidget::initLayout() {
     }
 
     settingsWidget = new QWidget(this);
-    QVBoxLayout* settingsLayout = new QVBoxLayout(settingsWidget);
+    auto settingsLayout = new QVBoxLayout(settingsWidget);
     settingsLayout->setMargin(0);
     settingsLayout->setSpacing(0);
     settingsWidget->setLayout(settingsLayout);
 
-    ShowHideSubgroupWidget* titleGroup = new ShowHideSubgroupWidget("CV_TITLE", tr("Title"), titleWidget, true);
+    auto titleGroup = new ShowHideSubgroupWidget("CV_TITLE", tr("Title"), titleWidget, true);
     settingsLayout->addWidget(titleGroup);
 
-    ShowHideSubgroupWidget* rulerGroup = new ShowHideSubgroupWidget("CV_RULER", tr("Ruler"), rulerWidget, true);
+    auto rulerGroup = new ShowHideSubgroupWidget("CV_RULER", tr("Ruler"), rulerWidget, true);
     settingsLayout->addWidget(rulerGroup);
 
-    ShowHideSubgroupWidget* annotationGroup = new ShowHideSubgroupWidget("CV_ANNOTATION", tr("Annotations"), annotationLabelWidget, true);
+    auto annotationGroup = new ShowHideSubgroupWidget("CV_ANNOTATION", tr("Annotations"), annotationLabelWidget, true);
     settingsLayout->addWidget(annotationGroup);
 
     cvSettingsMainLayout->addWidget(settingsWidget);

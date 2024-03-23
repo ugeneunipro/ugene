@@ -214,7 +214,7 @@ void OpenSavedMaEditorTask::open() {
     CHECK_OP(stateInfo, );
     SAFE_POINT(maEditor != nullptr, "MaEditor is null!", );
 
-    GObjectViewWindow* w = new GObjectViewWindow(maEditor, viewName, true);
+    auto w = new GObjectViewWindow(maEditor, viewName, true);
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
 
@@ -331,10 +331,9 @@ ExtractConsensusTask::~ExtractConsensusTask() {
 }
 
 void ExtractConsensusTask::run() {
-    CHECK(ma->getUI(), );
-    CHECK(ma->getMaEditorWgt(0), );
-    CHECK(ma->getMaEditorWgt(0)->getConsensusArea(), );
-    CHECK(ma->getMaEditorWgt(0)->getConsensusArea()->getConsensusCache(), );
+    CHECK(ma->getLineWidget(0), );
+    CHECK(ma->getLineWidget(0)->getConsensusArea(), );
+    CHECK(ma->getLineWidget(0)->getConsensusArea()->getConsensusCache(), );
 
     const Msa alignment = ma->getMaObject()->getAlignment()->getCopy();
     for (int i = 0, n = alignment->getLength(); i < n; i++) {

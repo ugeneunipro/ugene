@@ -32,7 +32,7 @@ namespace U2 {
 void ConvertAssemblyToSAMDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTFileDialogUtils* ob = new GTFileDialogUtils(databasePath, databaseFileName);
+    auto ob = new GTFileDialogUtils(databasePath, databaseFileName);
     GTUtilsDialog::waitForDialog(ob);
     GTWidget::click(GTWidget::findWidget("setDbPathButton", dialog));
 

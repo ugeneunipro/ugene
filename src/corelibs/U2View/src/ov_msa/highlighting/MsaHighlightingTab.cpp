@@ -34,10 +34,8 @@
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/GroupedComboBoxDelegate.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -50,7 +48,7 @@ static const int ITEMS_SPACING = 6;
 static const int TITLE_SPACING = 1;
 
 static inline QVBoxLayout* initVBoxLayout(QWidget* w) {
-    QVBoxLayout* layout = new QVBoxLayout;
+    auto layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(5);
 
@@ -59,7 +57,7 @@ static inline QVBoxLayout* initVBoxLayout(QWidget* w) {
 }
 
 static inline QHBoxLayout* initHBoxLayout(QWidget* w) {
-    QHBoxLayout* layout = new QHBoxLayout;
+    auto layout = new QHBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
 
     w->setLayout(layout);
@@ -67,7 +65,7 @@ static inline QHBoxLayout* initHBoxLayout(QWidget* w) {
 }
 
 QWidget* MsaHighlightingTab::createColorGroup() {
-    QWidget* group = new QWidget(this);
+    auto group = new QWidget(this);
 
     QVBoxLayout* layout = initVBoxLayout(group);
     colorSchemeController = new MsaSchemeComboBoxController<MsaColorSchemeFactory, MsaColorSchemeRegistry>(msa, AppContext::getMsaColorSchemeRegistry(), this);
@@ -90,7 +88,7 @@ QWidget* MsaHighlightingTab::createColorGroup() {
     colorSpinBox->setDecimals(1);
     colorSpinBox->setObjectName("colorSpinBox");
 
-    QHBoxLayout* horizontalLayout = new QHBoxLayout();
+    auto horizontalLayout = new QHBoxLayout();
     horizontalLayout->addWidget(colorThresholdSlider);
     horizontalLayout->addWidget(colorSpinBox);
     horizontalLayout->setSpacing(10);
@@ -107,7 +105,7 @@ QWidget* MsaHighlightingTab::createColorGroup() {
 }
 
 QWidget* MsaHighlightingTab::createHighlightingGroup() {
-    QWidget* group = new QWidget(this);
+    auto group = new QWidget(this);
 
     QVBoxLayout* layout = initVBoxLayout(group);
     highlightingSchemeController = new MsaSchemeComboBoxController<MsaHighlightingSchemeFactory, MsaHighlightingSchemeRegistry>(msa, AppContext::getMsaHighlightingSchemeRegistry(), this);
@@ -126,7 +124,7 @@ QWidget* MsaHighlightingTab::createHighlightingGroup() {
     exportHighlightning->setMinimumWidth(198);
     exportHighlightning->setMinimumHeight(23);
 
-    QWidget* buttonAndSpacer = new QWidget(this);
+    auto buttonAndSpacer = new QWidget(this);
     QHBoxLayout* layout2 = initHBoxLayout(buttonAndSpacer);
     layout2->addWidget(exportHighlightning);
     // layout2->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
@@ -179,7 +177,7 @@ MsaHighlightingTab::MsaHighlightingTab(MsaEditor* m)
     QWidget* highlightingGroup = new ShowHideSubgroupWidget("HIGHLIGHTING", tr("Highlighting"), createHighlightingGroup(), true);
     mainLayout->addWidget(highlightingGroup);
 
-    seqArea = msa->getMaEditorWgt()->getSequenceArea();
+    seqArea = msa->getLineWidget(0)->getSequenceArea();
 
     savableTab.disableSavingForWidgets(QStringList()
                                        << highlightingThresholdSlider->objectName()
@@ -191,8 +189,8 @@ MsaHighlightingTab::MsaHighlightingTab(MsaEditor* m)
 
     sl_sync();
 
-    connect(colorSchemeController, SIGNAL(si_dataChanged(const QString&)), msa->getUI(), SLOT(sl_changeColorSchemeOutside(const QString&)));
-    connect(highlightingSchemeController, SIGNAL(si_dataChanged(const QString&)), msa->getUI(), SLOT(sl_changeColorSchemeOutside(const QString&)));
+    connect(colorSchemeController, SIGNAL(si_dataChanged(const QString&)), msa->getMainWidget(), SLOT(sl_changeColorSchemeOutside(const QString&)));
+    connect(highlightingSchemeController, SIGNAL(si_dataChanged(const QString&)), msa->getMainWidget(), SLOT(sl_changeColorSchemeOutside(const QString&)));
 
     MsaColorSchemeRegistry* msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_refreshSchemes()));
@@ -216,16 +214,16 @@ MsaHighlightingTab::MsaHighlightingTab(MsaEditor* m)
 
     initSeqArea();
     // MaEditor UI changed it's state, for example multiline mode, we need to re-init some internals
-    connect(m->getUI(), &MaEditorMultilineWgt::si_maEditorUIChanged, this, [this]() {
+    connect(m->getMainWidget(), &MsaEditorMultilineWgt::si_maEditorUIChanged, this, [this]() {
         initSeqArea();
         sl_sync();
     });
 }
 
 void MsaHighlightingTab::initSeqArea() {
-    seqArea = msa->getMaEditorWgt()->getSequenceArea();
+    seqArea = msa->getLineWidget(0)->getSequenceArea();
 
-    connect(useDots, SIGNAL(stateChanged(int)), msa->getUI(), SLOT(sl_triggerUseDots(int)));
+    connect(useDots, SIGNAL(stateChanged(int)), msa->getMainWidget(), SLOT(sl_triggerUseDots(int)));
     connect(seqArea, SIGNAL(si_highlightingChanged()), SLOT(sl_sync()));
     connect(this, SIGNAL(si_colorSchemeChanged()), seqArea, SLOT(sl_completeRedraw()));
 }
@@ -357,9 +355,9 @@ void MsaHighlightingTab::sl_highlightingParametersChanged() {
     highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
     s->applySettings(highlightingSettings);
 
-    MaEditorMultilineWgt* mui = msa->getMaEditorMultilineWgt();
-    for (int i = 0; i < mui->getChildrenCount(); i++) {
-        MaEditorSequenceArea* sequence = msa->getMaEditorWgt(i)->getSequenceArea();
+    MsaEditorMultilineWgt* mui = msa->getMainWidget();
+    for (int i = 0; i < mui->getLineWidgetCount(); i++) {
+        MaEditorSequenceArea* sequence = msa->getLineWidget(i)->getSequenceArea();
         sequence->sl_changeColorSchemeOutside(colorSchemeController->getComboBox()->currentData().toString());
     }
 }

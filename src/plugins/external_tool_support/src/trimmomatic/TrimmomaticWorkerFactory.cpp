@@ -187,16 +187,16 @@ void TrimmomaticWorkerFactory::init() {
                                      TrimmomaticPrompter::tr("Number of threads"),
                                      TrimmomaticPrompter::tr("Use multiple threads (-threads)."));
 
-        Attribute* inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, TrimmomaticTaskSettings::SINGLE_END);
-        Attribute* trimmingStepsAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_LIST_TYPE(), true);
-        Attribute* seOutputUrlAttribute = new Attribute(seOutputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute* pairedOutputUrl1Attribute = new Attribute(pairedOutputUrl1Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute* pairedOutputUrl2Attribute = new Attribute(pairedOutputUrl2Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute* unpairedOutputUrl1Attribute = new Attribute(unpairedOutputUrl1Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute* unpairedOutputUrl2Attribute = new Attribute(unpairedOutputUrl2Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute* generateLogAttribute = new Attribute(generateLogDesc, BaseTypes::BOOL_TYPE(), Attribute::None, false);
-        Attribute* logUrlAttribute = new Attribute(logUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute* threadsAttribute = new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+        auto inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, TrimmomaticTaskSettings::SINGLE_END);
+        auto trimmingStepsAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_LIST_TYPE(), true);
+        auto seOutputUrlAttribute = new Attribute(seOutputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        auto pairedOutputUrl1Attribute = new Attribute(pairedOutputUrl1Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        auto pairedOutputUrl2Attribute = new Attribute(pairedOutputUrl2Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        auto unpairedOutputUrl1Attribute = new Attribute(unpairedOutputUrl1Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        auto unpairedOutputUrl2Attribute = new Attribute(unpairedOutputUrl2Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        auto generateLogAttribute = new Attribute(generateLogDesc, BaseTypes::BOOL_TYPE(), Attribute::None, false);
+        auto logUrlAttribute = new Attribute(logUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        auto threadsAttribute = new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 
         seOutputUrlAttribute->addRelation(new VisibilityRelation(INPUT_DATA_ATTR_ID, TrimmomaticTaskSettings::SINGLE_END));
         pairedOutputUrl1Attribute->addRelation(new VisibilityRelation(INPUT_DATA_ATTR_ID, TrimmomaticTaskSettings::PAIRED_END));

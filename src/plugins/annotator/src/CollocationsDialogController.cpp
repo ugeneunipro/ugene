@@ -54,7 +54,7 @@ CollocationsDialogController::CollocationsDialogController(QStringList _names, A
 
     QStringList list;
     list.append(tr("<<click '+' button to add new annotation>>"));
-    QTreeWidgetItem* item = new QTreeWidgetItem(annotationsTree, list);
+    auto item = new QTreeWidgetItem(annotationsTree, list);
     plusButton = new QToolButton(annotationsTree);
     plusButton->setText("+");
     annotationsTree->addTopLevelItem(item);
@@ -141,10 +141,10 @@ void CollocationsDialogController::sl_addName() {
     AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
     QColor c = asr->getAnnotationSettings(name)->color;
 
-    QTreeWidgetItem* item = new QTreeWidgetItem();
+    auto item = new QTreeWidgetItem();
     item->setText(0, name);
     item->setIcon(0, GUIUtils::createSquareIcon(c, 10));
-    QToolButton* minusButton = new QToolButton(annotationsTree);
+    auto minusButton = new QToolButton(annotationsTree);
     minusButton->setMinimumSize(plusButton->size());
     minusButton->setText("-");
     minusButton->setObjectName(name);
@@ -153,7 +153,7 @@ void CollocationsDialogController::sl_addName() {
 
     // UGENE-2318
     if (remove) {
-        QTreeWidgetItem* ii = new QTreeWidgetItem();
+        auto ii = new QTreeWidgetItem();
         int index = annotationsTree->topLevelItemCount() - 1;
         annotationsTree->insertTopLevelItem(index, ii);
         annotationsTree->takeTopLevelItem(index);
@@ -279,7 +279,7 @@ void CollocationsDialogController::importResults() {
     QVector<U2Region> newResults = task->popResults();
 
     foreach (const U2Region& r, newResults) {
-        CDCResultItem* item = new CDCResultItem(r);
+        auto item = new CDCResultItem(r);
         bool inserted = false;
         for (int i = 0, n = resultsList->count(); i < n; i++) {
             auto tmp = static_cast<CDCResultItem*>(resultsList->item(i));

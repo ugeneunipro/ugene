@@ -38,8 +38,8 @@ enum QDStrandOption { QDStrand_DirectOnly,
 class U2LANG_EXPORT QDParameters : public QObject, public Configuration {
     Q_OBJECT
 public:
-    virtual void setParameter(const QString& name, const QVariant& val);
-    virtual void remap(const QMap<ActorId, ActorId>&) {
+    void setParameter(const QString& name, const QVariant& val) override;
+    void remap(const QMap<ActorId, ActorId>&) override {
     }
 signals:
     void si_modified();

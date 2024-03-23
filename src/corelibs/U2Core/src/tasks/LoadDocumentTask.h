@@ -63,9 +63,9 @@ class U2CORE_EXPORT LoadUnloadedDocumentTask : public DocumentProviderTask {
 public:
     LoadUnloadedDocumentTask(Document* d, const LoadDocumentTaskConfig& config = LoadDocumentTaskConfig());
 
-    virtual void prepare();
-    virtual ReportResult report();
-    virtual Document* getDocument(bool mainThread = true);
+    void prepare() override;
+    ReportResult report() override;
+    Document* getDocument(bool mainThread = true) override;
 
     static QString getResourceName(Document* d);
 

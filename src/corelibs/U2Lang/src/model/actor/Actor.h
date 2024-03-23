@@ -69,7 +69,7 @@ public:
     QList<Port*> getEnabledOutputPorts() const;
 
     // reimplemented: Configuration::setParameter
-    virtual void setParameter(const QString& name, const QVariant& val);
+    void setParameter(const QString& name, const QVariant& val) override;
 
     // NULL if description not set by user
     ActorDocument* getDescription() const;
@@ -84,7 +84,7 @@ public:
     bool hasAliasHelp() const;
 
     // reimplemented: Configuration::remap
-    virtual void remap(const QMap<ActorId, ActorId>&);
+    void remap(const QMap<ActorId, ActorId>&) override;
 
     AttributeScript* getScript() const;
     void setScript(AttributeScript* _script);
@@ -110,7 +110,7 @@ public:
 
     void addCustomValidator(const ValidatorDesc& desc);
     const QList<ValidatorDesc>& getCustomValidators() const;
-    virtual bool validate(NotificationsList& notificationList) const;
+    bool validate(NotificationsList& notificationList) const override;
 
 signals:
     void si_labelChanged();

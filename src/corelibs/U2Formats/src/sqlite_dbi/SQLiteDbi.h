@@ -74,51 +74,51 @@ public:
     special flags
     "assembly-reads-compression=1" - enables reads compression for assembly. Affects new DB only
     */
-    virtual void init(const QHash<QString, QString>& properties, const QVariantMap& persistentData, U2OpStatus& os);
+    void init(const QHash<QString, QString>& properties, const QVariantMap& persistentData, U2OpStatus& os) override;
 
     /** Stops the database and frees up used resources. */
-    virtual QVariantMap shutdown(U2OpStatus& os);
+    QVariantMap shutdown(U2OpStatus& os) override;
 
     /**
     Ensures that dbi state is synchronized with storage
     Return 'true' of operation is successful
     */
-    virtual bool flush(U2OpStatus& os);
+    bool flush(U2OpStatus& os) override;
 
     /** Unique database id. Used for cross-database references. */
-    virtual QString getDbiId() const;
+    QString getDbiId() const override;
 
-    virtual bool isInitialized(U2OpStatus& os);
+    bool isInitialized(U2OpStatus& os) override;
 
-    virtual void populateDefaultSchema(U2OpStatus& os);
+    void populateDefaultSchema(U2OpStatus& os) override;
 
     /** Returns database meta-info. Any set of properties to be shown to user */
-    virtual QHash<QString, QString> getDbiMetaInfo(U2OpStatus& os);
+    QHash<QString, QString> getDbiMetaInfo(U2OpStatus& os) override;
 
     /** Returns type of the entity referenced by the given ID */
-    virtual U2DataType getEntityTypeById(const U2DataId& id) const;
+    U2DataType getEntityTypeById(const U2DataId& id) const override;
 
-    virtual U2ObjectDbi* getObjectDbi();
+    U2ObjectDbi* getObjectDbi() override;
 
-    virtual U2ObjectRelationsDbi* getObjectRelationsDbi();
+    U2ObjectRelationsDbi* getObjectRelationsDbi() override;
 
-    virtual U2SequenceDbi* getSequenceDbi();
+    U2SequenceDbi* getSequenceDbi() override;
 
-    virtual U2MsaDbi* getMsaDbi();
+    U2MsaDbi* getMsaDbi() override;
 
-    virtual U2AssemblyDbi* getAssemblyDbi();
+    U2AssemblyDbi* getAssemblyDbi() override;
 
-    virtual U2CrossDatabaseReferenceDbi* getCrossDatabaseReferenceDbi();
+    U2CrossDatabaseReferenceDbi* getCrossDatabaseReferenceDbi() override;
 
-    virtual U2AttributeDbi* getAttributeDbi();
+    U2AttributeDbi* getAttributeDbi() override;
 
-    virtual U2VariantDbi* getVariantDbi();
+    U2VariantDbi* getVariantDbi() override;
 
-    virtual U2FeatureDbi* getFeatureDbi();
+    U2FeatureDbi* getFeatureDbi() override;
 
-    virtual U2ModDbi* getModDbi();
+    U2ModDbi* getModDbi() override;
 
-    virtual UdrDbi* getUdrDbi();
+    UdrDbi* getUdrDbi() override;
 
     DbRef* getDbRef() const {
         return db;
@@ -139,23 +139,23 @@ public:
     SQLiteFeatureDbi* getSQLiteFeatureDbi() const;
 
     /** Returns properties used to initialized the database */
-    virtual QHash<QString, QString> getInitProperties() const {
+    QHash<QString, QString> getInitProperties() const override {
         return initProperties;
     }
 
-    virtual QString getProperty(const QString& name, const QString& defaultValue, U2OpStatus& os);
+    QString getProperty(const QString& name, const QString& defaultValue, U2OpStatus& os) override;
 
-    virtual void setProperty(const QString& name, const QString& value, U2OpStatus& os);
+    void setProperty(const QString& name, const QString& value, U2OpStatus& os) override;
 
-    virtual void startOperationsBlock(U2OpStatus& os);
+    void startOperationsBlock(U2OpStatus& os) override;
 
-    virtual void stopOperationBlock(U2OpStatus& os);
+    void stopOperationBlock(U2OpStatus& os) override;
 
-    QMutex* getDbMutex() const;
+    QMutex* getDbMutex() const override;
 
-    virtual bool isReadOnly() const;
+    bool isReadOnly() const override;
 
-    bool isTransactionActive() const;
+    bool isTransactionActive() const override;
 
     static const int BIND_PARAMETERS_LIMIT;
 
@@ -165,6 +165,8 @@ private:
     void setState(U2DbiState state);
 
     void internalInit(const QHash<QString, QString>& props, U2OpStatus& os);
+
+    void testDatabaseLocked(U2OpStatus& os);
 
     QString url;
     DbRef* db;
@@ -196,19 +198,19 @@ public:
     SQLiteDbiFactory();
 
     /** Creates new DBI instance */
-    virtual U2Dbi* createDbi();
+    U2Dbi* createDbi() override;
 
     /** Returns DBI type ID */
-    virtual U2DbiFactoryId getId() const;
+    U2DbiFactoryId getId() const override;
 
     /** Checks that data pointed by properties is a valid DBI resource */
-    virtual FormatCheckResult isValidDbi(const QHash<QString, QString>& properties, const QByteArray& rawData, U2OpStatus& os) const;
+    FormatCheckResult isValidDbi(const QHash<QString, QString>& properties, const QByteArray& rawData, U2OpStatus& os) const override;
 
-    virtual GUrl id2Url(const U2DbiId& id) const {
+    GUrl id2Url(const U2DbiId& id) const override {
         return GUrl(id, GUrl_File);
     }
 
-    virtual bool isDbiExists(const U2DbiId& id) const;
+    bool isDbiExists(const U2DbiId& id) const override;
 
 public:
     static const U2DbiFactoryId ID;

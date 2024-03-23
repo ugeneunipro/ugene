@@ -178,7 +178,7 @@ void CreateFragmentDialog::setupAnnotationsWidget() {
     acm.sequenceLen = seqObj->getSequenceLength();
     ac = new CreateAnnotationWidgetController(acm, this);
     QWidget* caw = ac->getWidget();
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
     l->addStretch();

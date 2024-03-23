@@ -43,7 +43,7 @@ public:
     const QMap<QString, QList<SharedAnnotationData>>& getAnnotationsData() const;
 
 private:
-    void run();
+    void run() override;
 
     const QList<VariantTrackObject*> variantTrackObjects;
     QMap<QString, QList<SharedAnnotationData>> annotationTablesData;
@@ -65,8 +65,8 @@ public:
     const QString& getResultUrl() const;
 
 private:
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     Document* prepareDocument();
     void prepareSaveTask();

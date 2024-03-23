@@ -35,7 +35,7 @@ PhylipTask::PhylipTask(const U2EntityRef& msaRef, const U2DbiRef& outDbiRef, con
 }
 
 void PhylipTask::prepare() {
-    MsaObject* msaObject = new MsaObject("msa", msaRef);
+    auto msaObject = new MsaObject("msa", msaRef);
     msaObject->setParent(this);
 
     treeTask = new NeighborJoinCalculateTreeTask(msaObject->getAlignment(), settings);

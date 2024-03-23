@@ -44,8 +44,8 @@ public:
     }
 
 protected:
-    void focusOutEvent(QFocusEvent* event);
-    void contextMenuEvent(QContextMenuEvent*);
+    void focusOutEvent(QFocusEvent* event) override;
+    void contextMenuEvent(QContextMenuEvent*) override;
 
 private slots:
     void sl_onSetMinMaxValue();
@@ -70,6 +70,10 @@ public:
     void removePreset(const QString& itemName);
 
     void showErrorMessage();
+
+    // Returns internal line edit widgets. Can be used for region validation.
+    const QLineEdit* getStartLineEdit() const;
+    const QLineEdit* getEndLineEdit() const;
 
 signals:
     void si_regionChanged(const U2Region& newRegion);

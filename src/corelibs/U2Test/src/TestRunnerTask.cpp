@@ -52,7 +52,7 @@ TestRunnerTask::TestRunnerTask(const QList<GTestState*>& tests, const GTestEnvir
     }
     for (int i = 0; !awaitingTests.isEmpty() && i < sizeToRun; i++) {
         GTestState* t = awaitingTests.takeFirst();
-        LoadTestTask* lt = new LoadTestTask(t);
+        auto lt = new LoadTestTask(t);
         addSubTask(lt);
     }
 }

@@ -28,6 +28,7 @@
 #include <QTextStream>
 
 #include <U2Core/AnnotationSelection.h>
+#include <U2Core/ClipboardController.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -39,6 +40,7 @@
 #include <U2Core/U2SequenceUtils.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/Notification.h>
 
 #include "ADVConstants.h"
 #include "ADVSequenceObjectContext.h"
@@ -156,23 +158,44 @@ void ADVClipboard::copySequenceSelection(bool complement, bool amino) {
 
     QString res;
     QVector<U2Region> regions = seqCtx->getSequenceSelection()->getSelectedRegions();
-    if (!regions.isEmpty()) {
-        U2SequenceObject* seqObj = seqCtx->getSequenceObject();
-        DNATranslation* complTT = complement ? seqCtx->getComplementTT() : nullptr;
-        DNATranslation* aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
-        U2OpStatus2Log os;
-        QList<QByteArray> seqParts = U2SequenceUtils::extractRegions(seqObj->getSequenceRef(), regions, complTT, aminoTT, false, os);
-        if (os.hasError()) {
-            QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), tr("An error occurred during getting sequence data: %1").arg(os.getError()));
-            return;
-        }
-        res = U1SequenceUtils::joinRegions(seqParts);
+    CHECK(!regions.isEmpty(), );
+
+    qint64 estimatedResultLength = 0;
+    for (const auto& region : qAsConst(regions)) {
+        estimatedResultLength += region.length;
     }
+    U2OpStatus2Log os;
+    U2Clipboard::checkCopyToClipboardSize(estimatedResultLength, os);
+    if (os.hasError()) {
+        NotificationStack::addNotification(os.getError(), NotificationType::Error_Not);
+        return;
+    }
+
+    U2SequenceObject* seqObj = seqCtx->getSequenceObject();
+    DNATranslation* complTT = complement ? seqCtx->getComplementTT() : nullptr;
+    DNATranslation* aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
+    QList<QByteArray> seqParts = U2SequenceUtils::extractRegions(seqObj->getSequenceRef(), regions, complTT, aminoTT, false, os);
+    if (os.hasError()) {
+        QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), tr("An error occurred during getting sequence data: %1").arg(os.getError()));
+        return;
+    }
+    res = U1SequenceUtils::joinRegions(seqParts);
     putIntoClipboard(res);
 }
 
 void ADVClipboard::copyAnnotationSelection(const bool amino) {
     const QList<Annotation*>& selectedAnnotationList = ctx->getAnnotationsSelection()->getAnnotations();
+    qint64 annotationsLength = 0;
+    for (auto annotation : qAsConst(selectedAnnotationList)) {
+        annotationsLength += annotation->getRegionsLen();
+    }
+    U2OpStatus2Log os;
+    U2Clipboard::checkCopyToClipboardSize(annotationsLength, os);
+    if (os.hasError()) {
+        NotificationStack::addNotification(os.getError(), NotificationType::Error_Not);
+        return;
+    }
+
     QByteArray resultText;
     for (auto annotation : qAsConst(selectedAnnotationList)) {
         if (!resultText.isEmpty()) {
@@ -185,7 +208,6 @@ void ADVClipboard::copyAnnotationSelection(const bool amino) {
         }
         DNATranslation* complTT = annotation->getStrand().isComplementary() ? seqCtx->getComplementTT() : nullptr;
         DNATranslation* aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
-        U2OpStatus2Log os;
         // BUG528: add alphabet symbol role: insertion mark and use it instead of the U2Msa::GAP_CHAR
         const U2EntityRef& sequenceObjectRef = seqCtx->getSequenceRef();
         QByteArray annotationSequence = AnnotationSelection::getSequenceUnderAnnotation(sequenceObjectRef, annotation, complTT, aminoTT, os);
@@ -307,7 +329,7 @@ void ADVClipboard::updateActions() {
 }
 
 void ADVClipboard::addCopyMenu(QMenu* m) {
-    QMenu* copyMenu = new QMenu(tr("Copy/Paste"), m);
+    auto copyMenu = new QMenu(tr("Copy/Paste"), m);
     copyMenu->menuAction()->setObjectName(ADV_MENU_COPY);
 
     copyMenu->addAction(copySequenceAction);
@@ -326,7 +348,7 @@ void ADVClipboard::addCopyMenu(QMenu* m) {
 }
 
 QAction* ADVClipboard::createPasteSequenceAction(QObject* parent) {
-    QAction* action = new QAction(QIcon(":/core/images/paste.png"), tr("Paste sequence"), parent);
+    auto action = new QAction(QIcon(":/core/images/paste.png"), tr("Paste sequence"), parent);
     action->setObjectName("Paste sequence");
     action->setShortcuts(QKeySequence::Paste);
     action->setShortcutContext(Qt::WidgetWithChildrenShortcut);

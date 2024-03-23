@@ -41,7 +41,7 @@ namespace U2 {
 using namespace Workflow;
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    WorkflowDumpPlugin* plug = new WorkflowDumpPlugin();
+    auto plug = new WorkflowDumpPlugin();
     return plug;
 }
 
@@ -49,7 +49,7 @@ WorkflowDumpPlugin::WorkflowDumpPlugin()
     : Plugin(tr("Workflow Dump"), tr("Workflow Dump exports workflow data.")) {
 #ifdef WORKFLOW_DUMP
     if (AppContext::getMainWindow()) {
-        QAction* dumpAction = new QAction(tr("Dump workers"), this);
+        auto dumpAction = new QAction(tr("Dump workers"), this);
         QMenu* tools = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS);
         tools->addAction(dumpAction);
         connect(dumpAction, SIGNAL(triggered()), SLOT(sl_dumpWorkers()));

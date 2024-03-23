@@ -286,13 +286,13 @@ void FindPatternMsaWidget::initMaxResultLenContainer() {
     layoutRegExpLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
     useMaxResultLenContainer->setLayout(layoutRegExpLen);
 
-    QHBoxLayout* layoutUseMaxResultLen = new QHBoxLayout();
+    auto layoutUseMaxResultLen = new QHBoxLayout();
     layoutUseMaxResultLen->setSpacing(10);
     layoutUseMaxResultLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
     boxUseMaxResultLen = new QCheckBox();
     boxUseMaxResultLen->setObjectName("boxUseMaxResultLen");
-    QLabel* labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
+    auto labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
     labelUseMaxResultLen->setWordWrap(true);
     layoutUseMaxResultLen->addWidget(boxUseMaxResultLen, 0);
     layoutUseMaxResultLen->addWidget(labelUseMaxResultLen, 1);
@@ -901,12 +901,12 @@ void FindPatternMsaWidget::selectCurrentResult() {
     CHECK(currentResultIndex >= 0 && currentResultIndex < visibleSearchResults.length(), );
     const FindPatternWidgetResult& result = visibleSearchResults[currentResultIndex];
 
-    auto mui = qobject_cast<MsaEditorMultilineWgt*>(msaEditor->getUI());
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(msaEditor->getMainWidget());
     SAFE_POINT(mui != nullptr, "FindPatternMsaWidget: MsaEditorMultilineWgt is not found", );
     QRect selection(result.region.startPos, result.viewRowIndex, result.region.length, 1);
-    MaEditorSequenceArea* seqArea = mui->getUI(0)->getSequenceArea();
+    MaEditorSequenceArea* seqArea = mui->getLineWidget(0)->getSequenceArea();
     seqArea->setSelectionRect(selection);
-    if (msaEditor->getUI()->getMultilineMode()) {
+    if (msaEditor->getMainWidget()->isWrapMode()) {
         // mui->getScrollController()->setCenterVisibleBase(selection.topLeft().x());
         mui->getScrollController()->scrollToPoint(selection.topLeft());
     } else {
@@ -1049,7 +1049,7 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     CHECK(!maObject->isStateLocked(), );
 
     // Switch to the Original row order mode.
-    msaEditor->getUI()->sl_toggleSequenceRowOrder(false);
+    msaEditor->getMainWidget()->sl_toggleSequenceRowOrder(false);
 
     QSet<qint64> resultUidSet;
     for (const FindPatternWidgetResult& result : qAsConst(allSearchResults)) {

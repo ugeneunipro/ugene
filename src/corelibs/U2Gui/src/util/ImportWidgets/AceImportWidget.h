@@ -35,7 +35,7 @@ class AceImportWidget : public ImportWidget, public Ui_AceImportWidget {
 public:
     AceImportWidget(const GUrl& url);
 
-    virtual QVariantMap getSettings() const;
+    QVariantMap getSettings() const override;
 
 private:
     void initSaveController(const GUrl& url);

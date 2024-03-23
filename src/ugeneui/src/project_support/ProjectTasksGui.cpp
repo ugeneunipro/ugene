@@ -108,7 +108,7 @@ void OpenProjectTask::prepare() {
         loadProjectTask = new LoadProjectTask(url);
         addSubTask(loadProjectTask);
     } else {
-        ProjectImpl* p = new ProjectImpl(name, url);
+        auto p = new ProjectImpl(name, url);
         addSubTask(new RegisterProjectServiceTask(p));
         //     addSubTask(new SaveProjectTask(SaveProjectTaskKind_SaveProjectOnly, p));
     }
@@ -324,7 +324,7 @@ RegisterProjectServiceTask::RegisterProjectServiceTask(Project* _proj)
 }
 
 void RegisterProjectServiceTask::prepare() {
-    ProjectServiceImpl* ps = new ProjectServiceImpl(proj);
+    auto ps = new ProjectServiceImpl(proj);
     addSubTask(AppContext::getServiceRegistry()->registerServiceTask(ps));
 }
 

@@ -464,7 +464,7 @@ void GTest_PDBFormatStressTest::init(XMLTestFormat*, const QDomElement&) {
 
     for (int i = 0; i < fileList.size(); ++i) {
         QFileInfo fileInfo = fileList.at(i);
-        LoadDocumentTask* task = new LoadDocumentTask(format, fileInfo.absoluteFilePath(), iof);
+        auto task = new LoadDocumentTask(format, fileInfo.absoluteFilePath(), iof);
         addSubTask(task);
         fileNames.insert(task, fileInfo.fileName());
     }
@@ -518,7 +518,7 @@ void GTest_ASNFormatStressTest::init(XMLTestFormat*, const QDomElement&) {
 
     for (int i = 0; i < fileList.size(); ++i) {
         QFileInfo fileInfo = fileList.at(i);
-        LoadDocumentTask* task = new LoadDocumentTask(format, fileInfo.absoluteFilePath(), iof);
+        auto task = new LoadDocumentTask(format, fileInfo.absoluteFilePath(), iof);
         addSubTask(task);
         fileNames.insert(task, fileInfo.fileName());
     }

@@ -57,8 +57,8 @@ class U2GUI_EXPORT ImageExportTask : public Task {
     Q_OBJECT
 public:
     ImageExportTask(const ImageExportTaskSettings& settings);
-    virtual void run() = 0;
-    ReportResult report();
+    void run() override = 0;
+    ReportResult report() override;
 
 protected:
     ImageExportTaskSettings settings;

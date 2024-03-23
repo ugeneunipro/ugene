@@ -49,17 +49,17 @@ public:
     void updateData(const QModelIndex& index);
 
     // QAbstractItemModel
-    int columnCount(const QModelIndex& parent) const;
-    QVariant data(const QModelIndex& index, int role) const;
-    QModelIndex index(int row, int column, const QModelIndex& parent) const;
-    QModelIndex parent(const QModelIndex& index) const;
-    int rowCount(const QModelIndex& parent) const;
-    Qt::ItemFlags flags(const QModelIndex& index) const;
-    QMimeData* mimeData(const QModelIndexList& indexes) const;
-    QStringList mimeTypes() const;
-    bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent);
-    Qt::DropActions supportedDropActions() const;
-    bool setData(const QModelIndex& index, const QVariant& value, int role);
+    int columnCount(const QModelIndex& parent) const override;
+    QVariant data(const QModelIndex& index, int role) const override;
+    QModelIndex index(int row, int column, const QModelIndex& parent) const override;
+    QModelIndex parent(const QModelIndex& index) const override;
+    int rowCount(const QModelIndex& parent) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    QMimeData* mimeData(const QModelIndexList& indexes) const override;
+    QStringList mimeTypes() const override;
+    bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent) override;
+    Qt::DropActions supportedDropActions() const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 
     void addDocument(Document* doc);
     void removeDocument(Document* doc);

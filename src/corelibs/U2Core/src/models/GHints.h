@@ -53,27 +53,27 @@ public:
     GHintsDefaultImpl(const QVariantMap& _map = QVariantMap())
         : map(_map) {
     }
-    virtual QVariantMap getMap() const {
+    QVariantMap getMap() const override {
         return map;
     }
 
-    virtual void setMap(const QVariantMap& _map) {
+    void setMap(const QVariantMap& _map) override {
         map = _map;
     }
 
-    virtual QVariant get(const QString& key) const {
+    QVariant get(const QString& key) const override {
         return map.value(key);
     }
 
-    virtual QVariant get(const QString& key, const QVariant& defaultValue) const {
+    QVariant get(const QString& key, const QVariant& defaultValue) const override {
         return map.value(key, defaultValue);
     }
 
-    virtual void set(const QString& key, const QVariant& val) {
+    void set(const QString& key, const QVariant& val) override {
         map[key] = val;
     }
 
-    virtual int remove(const QString& key) {
+    int remove(const QString& key) override {
         return map.remove(key);
     }
 
@@ -89,11 +89,11 @@ public:
         : GHintsDefaultImpl(_map), p(_p), topParentMode(_topParentMode) {
     }
 
-    virtual void setMap(const QVariantMap& _map);
+    void setMap(const QVariantMap& _map) override;
 
-    virtual void set(const QString& key, const QVariant& val);
+    void set(const QString& key, const QVariant& val) override;
 
-    virtual int remove(const QString& key);
+    int remove(const QString& key) override;
 
 private:
     void setModified();

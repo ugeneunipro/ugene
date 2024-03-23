@@ -189,7 +189,7 @@ ReadAnnotationsProto::ReadAnnotationsProto()
     attrs << new Attribute(md, BaseTypes::NUM_TYPE(), true, SPLIT);
 
     Descriptor annTableNameDesc(ANN_TABLE_NAME_ATTR, ReadAnnotationsWorker::tr("Annotation table name"), ReadAnnotationsWorker::tr("The name for the result annotation table that contains merged annotation data from file or dataset."));
-    Attribute* objNameAttr = new Attribute(annTableNameDesc, BaseTypes::STRING_TYPE(), false, ANN_TABLE_DEFAULT_NAME);
+    auto objNameAttr = new Attribute(annTableNameDesc, BaseTypes::STRING_TYPE(), false, ANN_TABLE_DEFAULT_NAME);
     objNameAttr->addRelation(new VisibilityRelation(MODE_ATTR, QVariantList() << MERGE << MERGE_FILES));
 
     attrs << objNameAttr;

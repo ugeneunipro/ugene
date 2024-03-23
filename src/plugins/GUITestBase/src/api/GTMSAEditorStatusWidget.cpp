@@ -33,7 +33,7 @@ namespace U2 {
 
 QWidget* GTMSAEditorStatusWidget::getStatusWidget() {
     MsaEditorWgt* editor = GTUtilsMsaEditor::getEditorUi();
-    QWidget* mainUI = editor->getEditor()->getUI();
+    QWidget* mainUI = editor->getEditor()->getMainWidget();
     return GTWidget::findExactWidget<QWidget*>("msa_editor_status_bar", mainUI);
 }
 

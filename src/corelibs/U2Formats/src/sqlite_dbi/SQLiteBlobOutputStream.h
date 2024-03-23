@@ -32,8 +32,8 @@ class SQLiteBlobOutputStream : public OutputStream, public SQLiteBlobStream {
 public:
     SQLiteBlobOutputStream(DbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, int size, U2OpStatus& os);
 
-    void close();
-    void write(const char* buffer, int length, U2OpStatus& os);
+    void close() override;
+    void write(const char* buffer, int length, U2OpStatus& os) override;
 
 private:
     void update(DbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, int size, U2OpStatus& os);

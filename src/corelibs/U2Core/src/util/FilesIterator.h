@@ -56,8 +56,8 @@ class U2CORE_EXPORT DirectoryScanner : public FilesIterator {
 public:
     DirectoryScanner(const QStringList& dirs, const QString& includeFilter, const QString& excludeFilter, bool recursive);
 
-    virtual QString getNextFile();
-    virtual bool hasNext();
+    QString getNextFile() override;
+    bool hasNext() override;
 
 private:
     QString includeFilter;
@@ -80,8 +80,8 @@ class U2CORE_EXPORT FileList : public FilesIterator {
 public:
     FileList(const QStringList& files);
 
-    virtual QString getNextFile();
-    virtual bool hasNext();
+    QString getNextFile() override;
+    bool hasNext() override;
 
 private:
     QStringList files;

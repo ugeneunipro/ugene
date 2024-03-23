@@ -79,7 +79,7 @@ WizardController::~WizardController() {
 }
 
 QWizard* WizardController::createGui() {
-    QWizard* result = new QWizard((QWidget*)AppContext::getMainWindow()->getQMainWindow());
+    auto result = new QWizard((QWidget*)AppContext::getMainWindow()->getQMainWindow());
     result->setAttribute(Qt::WA_DeleteOnClose);
     setupButtons(result);
 
@@ -160,43 +160,43 @@ public:
     WidgetDefaulter(WizardController* wc)
         : wc(wc) {
     }
-    void visit(AttributeWidget* aw) {
+    void visit(AttributeWidget* aw) override {
         Attribute* attr = wc->getAttribute(aw->getInfo());
         CHECK(attr != nullptr, );
         wc->setAttributeValue(aw->getInfo(), attr->getDefaultPureValue());
     }
-    void visit(WidgetsArea* wa) {
+    void visit(WidgetsArea* wa) override {
         foreach (WizardWidget* w, wa->getWidgets()) {
             WidgetDefaulter defaulter(wc);
             w->accept(&defaulter);
         }
     }
-    void visit(GroupWidget* gw) {
+    void visit(GroupWidget* gw) override {
         visit((WidgetsArea*)gw);
     }
-    void visit(LogoWidget*) {
+    void visit(LogoWidget*) override {
     }
-    void visit(ElementSelectorWidget*) {
+    void visit(ElementSelectorWidget*) override {
     }
-    void visit(PairedReadsWidget* prw) {
+    void visit(PairedReadsWidget* prw) override {
         foreach (const AttributeInfo& info, prw->getInfos()) {
             Attribute* attr = wc->getAttribute(info);
             CHECK(attr != nullptr, );
             wc->setAttributeValue(info, attr->getDefaultPureValue());
         }
     }
-    void visit(UrlAndDatasetWidget* udw) {
+    void visit(UrlAndDatasetWidget* udw) override {
         foreach (const AttributeInfo& info, udw->getInfos()) {
             Attribute* attr = wc->getAttribute(info);
             CHECK(attr != nullptr, );
             wc->setAttributeValue(info, attr->getDefaultPureValue());
         }
     }
-    void visit(RadioWidget*) {
+    void visit(RadioWidget*) override {
     }
-    void visit(SettingsWidget*) {
+    void visit(SettingsWidget*) override {
     }
-    void visit(BowtieWidget* bw) {
+    void visit(BowtieWidget* bw) override {
         Attribute* dirAttr = wc->getAttribute(bw->idxDir);
         CHECK(dirAttr != nullptr, );
         wc->setAttributeValue(bw->idxDir, dirAttr->getDefaultPureValue());
@@ -206,7 +206,7 @@ public:
         wc->setAttributeValue(bw->idxName, nameAttr->getDefaultPureValue());
     }
 
-    void visit(TophatSamplesWidget* tsw) {
+    void visit(TophatSamplesWidget* tsw) override {
         QList<TophatSample> defSamples;
         defSamples << TophatSample("Sample1", QStringList());
         defSamples << TophatSample("Sample2", QStringList());
@@ -214,7 +214,7 @@ public:
         wc->setAttributeValue(tsw->samplesAttr, defaultSamples);
     }
 
-    void visit(LabelWidget*) {
+    void visit(LabelWidget*) override {
     }
 
 private:
@@ -226,7 +226,7 @@ public:
     PageDefaulter(WizardController* wc)
         : wc(wc) {
     }
-    virtual void visit(DefaultPageContent* dp) {
+    void visit(DefaultPageContent* dp) override {
         WidgetDefaulter defaulter(wc);
         dp->getParamsArea()->accept(&defaulter);
     }
@@ -338,7 +338,7 @@ const QList<Actor*>& WizardController::getCurrentActors() const {
 DelegateTags* WizardController::getTags(const AttributeInfo& info, bool returnNewTags) {
     if (!propertyControllers.contains(info.toString())) {
         if (returnNewTags) {
-            DelegateTags* t = new DelegateTags();
+            auto t = new DelegateTags();
             tagsWithoutController[info.toString()] = t;
             return t;
         } else {
@@ -363,8 +363,8 @@ Attribute* WizardController::getAttribute(const AttributeInfo& info) const {
 }
 
 QWizardPage* WizardController::createPage(WizardPage* page) {
-    WizardPageController* controller = new WizardPageController(this, page);
-    WDWizardPage* result = new WDWizardPage(controller);
+    auto controller = new WizardPageController(this, page);
+    auto result = new WDWizardPage(controller);
 
     pageControllers << controller;
 
@@ -491,7 +491,7 @@ void WizardController::clearControllers() {
 }
 
 RunFileSystem* WizardController::getRFS() {
-    RunFileSystem* result = new RunFileSystem(this);
+    auto result = new RunFileSystem(this);
     RFSUtils::initRFS(*result, schema->getProcesses(), this);
     return result;
 }
@@ -590,7 +590,7 @@ void WidgetCreator::visit(AttributeWidget* aw) {
 }
 
 void WidgetCreator::visit(WidgetsArea* wa) {
-    QWidget* scrollContent = new QWidget();
+    auto scrollContent = new QWidget();
     layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
     scrollContent->setLayout(layout);
@@ -614,7 +614,7 @@ void WidgetCreator::visit(WidgetsArea* wa) {
         }
     }
     if (!fullWidth) {
-        QSpacerItem* spacer = new QSpacerItem(0, 0, QSizePolicy::Maximum, QSizePolicy::Minimum);
+        auto spacer = new QSpacerItem(0, 0, QSizePolicy::Maximum, QSizePolicy::Minimum);
         layout->addSpacerItem(spacer);
     }
     setupScrollArea(scrollContent);
@@ -637,7 +637,7 @@ void WidgetCreator::visit(GroupWidget* gw) {
     widgetsArea = nullptr;
 
     bool collapsible = (gw->getType() == GroupWidget::HIDEABLE);
-    GroupBox* gb = new GroupBox(collapsible, gw->getTitle(), fullWidth);
+    auto gb = new GroupBox(collapsible, gw->getTitle(), fullWidth);
     setGroupBoxLayout(gb);
 }
 
@@ -647,7 +647,7 @@ void WidgetCreator::visit(LogoWidget* lw) {
     layout->setContentsMargins(0, 0, 0, 0);
     result->setLayout(layout);
 
-    QLabel* label = new QLabel(result);
+    auto label = new QLabel(result);
     QPixmap pix;
     if (lw->isDefault()) {
         pix = QPixmap(QString(":U2Designer/images/logo.png"));
@@ -661,14 +661,14 @@ void WidgetCreator::visit(LogoWidget* lw) {
 }
 
 void WidgetCreator::visit(ElementSelectorWidget* esw) {
-    ElementSelectorController* controller = new ElementSelectorController(wc, esw, labelSize);
+    auto controller = new ElementSelectorController(wc, esw, labelSize);
     controllers << controller;
     U2OpStatusImpl os;
     result = controller->createGUI(os);
 }
 
 void WidgetCreator::visit(PairedReadsWidget* dsw) {
-    PairedDatasetsController* controller = new PairedDatasetsController(wc, dsw);
+    auto controller = new PairedDatasetsController(wc, dsw);
     controllers << controller;
     U2OpStatusImpl os;
     result = controller->createGUI(os);
@@ -676,7 +676,7 @@ void WidgetCreator::visit(PairedReadsWidget* dsw) {
 }
 
 void WidgetCreator::visit(UrlAndDatasetWidget* ldsw) {
-    UrlAndDatasetWizardController* controller = new UrlAndDatasetWizardController(wc, ldsw);
+    auto controller = new UrlAndDatasetWizardController(wc, ldsw);
     controllers << controller;
     U2OpStatusImpl os;
     result = controller->createGUI(os);
@@ -684,28 +684,28 @@ void WidgetCreator::visit(UrlAndDatasetWidget* ldsw) {
 }
 
 void WidgetCreator::visit(RadioWidget* rw) {
-    RadioController* controller = new RadioController(wc, rw);
+    auto controller = new RadioController(wc, rw);
     controllers << controller;
     U2OpStatusImpl os;
     result = controller->createGUI(os);
 }
 
 void WidgetCreator::visit(SettingsWidget* sw) {
-    SettingsController* controller = new SettingsController(wc, sw);
+    auto controller = new SettingsController(wc, sw);
     controllers << controller;
     U2OpStatusImpl os;
     result = controller->createGUI(os);
 }
 
 void WidgetCreator::visit(BowtieWidget* bw) {
-    BowtieWidgetController* controller = new BowtieWidgetController(wc, bw, labelSize);
+    auto controller = new BowtieWidgetController(wc, bw, labelSize);
     controllers << controller;
     U2OpStatusImpl os;
     result = controller->createGUI(os);
 }
 
 void WidgetCreator::visit(TophatSamplesWidget* tsw) {
-    TophatSamplesWidgetController* controller = new TophatSamplesWidgetController(wc, tsw);
+    auto controller = new TophatSamplesWidgetController(wc, tsw);
     controllers << controller;
     U2OpStatusImpl os;
     result = controller->createGUI(os);
@@ -715,7 +715,7 @@ void WidgetCreator::visit(TophatSamplesWidget* tsw) {
 void WidgetCreator::visit(LabelWidget* lw) {
     QString text = lw->text;
     text.replace("\\n", "\n");
-    QLabel* label = new QLabel(text);
+    auto label = new QLabel(text);
     QString style = "\
                     border-width: 0px;\
                     border-style: solid;\
@@ -764,9 +764,9 @@ PageContentCreator::PageContentCreator(WizardController* _wc)
 }
 
 void PageContentCreator::visit(DefaultPageContent* content) {
-    QHBoxLayout* layout = new QHBoxLayout();
+    auto layout = new QHBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
-    QVBoxLayout* contentLayout = new QVBoxLayout();
+    auto contentLayout = new QVBoxLayout();
     contentLayout->setContentsMargins(0, 0, 0, 0);
     int paramsHeight = content->getPageDefaultHeight();
     int paramsWidth = content->getPageWidth();
@@ -790,7 +790,7 @@ void PageContentCreator::visit(DefaultPageContent* content) {
         content->getParamsArea()->accept(&paramsWC);
         if (paramsWC.getResult() != nullptr) {
             if (paramsWC.getLayout() != nullptr && !paramsWC.hasFullWidth()) {
-                QSpacerItem* spacer = new QSpacerItem(0, 0, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding);
+                auto spacer = new QSpacerItem(0, 0, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding);
                 paramsWC.getLayout()->addSpacerItem(spacer);
             }
             contentLayout->addWidget(paramsWC.getResult());
@@ -865,7 +865,7 @@ GroupBox::GroupBox(bool collapsible, const QString& title, bool fullWidth)
     ui = new QWidget(this);
     QSizePolicy::Policy vPolicy = fullWidth ? QSizePolicy::MinimumExpanding : QSizePolicy::Maximum;
     ui->setSizePolicy(QSizePolicy::Minimum, vPolicy);
-    QVBoxLayout* layout = new QVBoxLayout();
+    auto layout = new QVBoxLayout();
     QGroupBox::setLayout(layout);
 
 #ifdef Q_OS_DARWIN

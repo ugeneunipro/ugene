@@ -125,7 +125,7 @@ void AppSettingsDialogFiller::setExternalToolPath(const QString& toolName, const
         if (item->text(0) == toolName) {
             treeWidget->scrollToItem(item);
             GTThread::waitForMainThread();
-            GTFileDialogUtils* ob = new GTFileDialogUtils(path, name, (GTFileDialogUtils::Button)GTFileDialog::Open, GTGlobals::UseMouse);
+            auto ob = new GTFileDialogUtils(path, name, (GTFileDialogUtils::Button)GTFileDialog::Open, GTGlobals::UseMouse);
             GTUtilsDialog::waitForDialog(ob);
 
             QWidget* itemWid = treeWidget->itemWidget(item, 1);

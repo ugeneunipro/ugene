@@ -191,7 +191,7 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) {
 #ifdef UGENE_HAS_SSE_SW
     SmithWatermanAlgorithm* sw = algType == SW_sse2 ? new SmithWatermanAlgorithmSSE2() : new SmithWatermanAlgorithm();
 #else
-    SmithWatermanAlgorithm* sw = new SmithWatermanAlgorithm();
+    auto sw = new SmithWatermanAlgorithm();
 #endif
 
     // this substitution is needed for the case when annotation are required as result
@@ -459,7 +459,7 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask* t, Task
 #ifdef UGENE_HAS_SSE_SW
     SmithWatermanAlgorithm* sw = algType == SW_sse2 ? new SmithWatermanAlgorithmSSE2() : new SmithWatermanAlgorithm();
 #else
-    SmithWatermanAlgorithm* sw = new SmithWatermanAlgorithm();
+    auto sw = new SmithWatermanAlgorithm();
 #endif
 
     qint64 t1 = GTimer::currentTimeMicros();

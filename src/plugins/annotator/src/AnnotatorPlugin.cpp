@@ -46,7 +46,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    AnnotatorPlugin* plug = new AnnotatorPlugin();
+    auto plug = new AnnotatorPlugin();
     return plug;
 }
 
@@ -58,7 +58,7 @@ AnnotatorPlugin::AnnotatorPlugin()
         SharedFeatureStore store(new FeatureStore(PLASMID_FEATURES_GROUP_NAME, plasmidFeaturesPath));
         store->load();
         if (store->isLoaded()) {
-            CustomPatternAutoAnnotationUpdater* aaUpdater = new CustomPatternAutoAnnotationUpdater(store);
+            auto aaUpdater = new CustomPatternAutoAnnotationUpdater(store);
             AppContext::getAutoAnnotationsSupport()->registerAutoAnnotationsUpdater(aaUpdater);
         }
 
@@ -89,11 +89,11 @@ AnnotatorViewContext::AnnotatorViewContext(QObject* p, bool customAutoAnnotation
 
 void AnnotatorViewContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
-    ADVGlobalAction* findRegionsAction = new ADVGlobalAction(av, QIcon(":annotator/images/regions.png"), tr("Find annotated regions..."), 30);
+    auto findRegionsAction = new ADVGlobalAction(av, QIcon(":annotator/images/regions.png"), tr("Find annotated regions..."), 30);
     connect(findRegionsAction, SIGNAL(triggered()), SLOT(sl_showCollocationDialog()));
 
     if (customFeaturesAvailable) {
-        ADVGlobalAction* annotatePlasmidAction = new ADVGlobalAction(av, QIcon(":annotator/images/plasmid_features.png"), tr("Annotate plasmid..."), 31);
+        auto annotatePlasmidAction = new ADVGlobalAction(av, QIcon(":annotator/images/plasmid_features.png"), tr("Annotate plasmid..."), 31);
         annotatePlasmidAction->addAlphabetFilter(DNAAlphabet_NUCL);
         connect(annotatePlasmidAction, SIGNAL(triggered()), SLOT(sl_showCustomAutoAnnotationDialog()));
     }

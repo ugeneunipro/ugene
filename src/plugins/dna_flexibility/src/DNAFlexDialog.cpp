@@ -118,7 +118,7 @@ void DNAFlexDialog::accept() {
     U2OpStatusImpl os;
     QByteArray seqData = ctx->getSequenceObject()->getWholeSequenceData(os);
     CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );
-    DNAFlexTask* task = new DNAFlexTask(
+    auto task = new DNAFlexTask(
         settings,
         annotModel.getAnnotationObject(),
         annotName,

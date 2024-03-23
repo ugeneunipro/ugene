@@ -41,7 +41,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    PhylipPlugin* plug = new PhylipPlugin();
+    auto plug = new PhylipPlugin();
     return plug;
 }
 

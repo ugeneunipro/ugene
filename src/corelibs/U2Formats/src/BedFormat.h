@@ -98,14 +98,14 @@ class U2FORMATS_EXPORT BedFormat : public TextDocumentFormatDeprecated {
 public:
     BedFormat(QObject* parent);
 
-    virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
+    void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) override;
 
     /** Gets annotation data from a BED file, but doesn't create an annotation table */
     static QList<SharedAnnotationData> getAnnotData(IOAdapter* io, U2OpStatus& os);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
+    Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
     /**
      * A common method for parsing and validating an input file.

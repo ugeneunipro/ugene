@@ -112,7 +112,7 @@ void SpideySupportContext::initViewContext(GObjectViewController* view) {
 
     // add spidey action
     QString spideyTitle = tr("Align sequence to mRNA");
-    ADVGlobalAction* alignAction = new ADVGlobalAction(dnaView, QIcon(), spideyTitle, 1000 * 2000, ADVGlobalActionFlags(ADVGlobalActionFlag_SingleSequenceOnly));
+    auto alignAction = new ADVGlobalAction(dnaView, QIcon(), spideyTitle, 1000 * 2000, ADVGlobalActionFlags(ADVGlobalActionFlag_SingleSequenceOnly));
     alignAction->setObjectName("Align sequence to mRNA");
     addViewAction(alignAction);
 
@@ -188,7 +188,7 @@ void SpideySupportContext::sl_align_with_Spidey() {
         }
 
         SplicedAlignmentTaskConfig cfg(rnaObj, dnaObj);
-        SpideySupportTask* spideyTask = new SpideySupportTask(cfg, m.getAnnotationObject(), m.description);
+        auto spideyTask = new SpideySupportTask(cfg, m.getAnnotationObject(), m.description);
         AppContext::getTaskScheduler()->registerTopLevelTask(spideyTask);
     }
 }

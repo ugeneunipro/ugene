@@ -80,7 +80,7 @@ void DinucleotitePropertyRegistry::registerProperty(const QString& str) {
 
     assert(std::count((float*)data, data + 16, defVal) == 0);
 
-    DiPropertySitecon* p = new DiPropertySitecon();
+    auto p = new DiPropertySitecon();
     p->keys = keys;
     std::copy((float*)data, data + 16, (float*)p->original);
     normalize(p);

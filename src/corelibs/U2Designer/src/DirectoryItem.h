@@ -34,8 +34,8 @@ public:
     DirectoryItem(const QString& url, QListWidget* parent = nullptr);
     virtual ~DirectoryItem();
 
-    virtual void accept(UrlItemVisitor* visitor);
-    virtual QWidget* getOptionsWidget();
+    void accept(UrlItemVisitor* visitor) override;
+    QWidget* getOptionsWidget() override;
 
     void setIncludeFilter(const QString& value);
     void setExcludeFilter(const QString& value);

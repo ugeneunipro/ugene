@@ -34,11 +34,11 @@ class U2ALGORITHM_EXPORT GenomeAssemblyMultiTask : public Task {
     Q_OBJECT
 public:
     GenomeAssemblyMultiTask(const GenomeAssemblyTaskSettings& settings);
-    virtual void prepare();
-    virtual ReportResult report();
-    virtual QString generateReport() const;
+    void prepare() override;
+    ReportResult report() override;
+    QString generateReport() const override;
     QString getResultUrl() const;
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     const GenomeAssemblyTaskSettings& getSettings() const {
         return settings;
     }

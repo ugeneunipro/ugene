@@ -31,8 +31,8 @@ class U2CORE_EXPORT TmpDirChecker : public Task {
     Q_OBJECT
 public:
     TmpDirChecker();
-    void run();
-    ReportResult report();
+    void run() override;
+    ReportResult report() override;
     bool checkPath(QString& path);
 
     static QString getNewFilePath(const QString& dirPath, const QString& baseName);

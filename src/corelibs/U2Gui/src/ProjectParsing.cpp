@@ -413,7 +413,7 @@ Project* ProjectParser10::createProjectFromXMLModel(const QString& pURL, const Q
         QString viewName = viewElement.attribute("viewName");
         QString stateName = viewElement.attribute("stateName");
         QVariantMap map = string2Map(viewElement.text(), false);
-        GObjectViewState* state = new GObjectViewState(id, viewName, stateName, map);
+        auto state = new GObjectViewState(id, viewName, stateName, map);
         states.append(state);
     }
     Project* project = AppContext::getProjectLoader()->createProject(name, pURL, documents, states);

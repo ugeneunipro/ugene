@@ -46,7 +46,7 @@ GObject* AssemblyObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const 
 
     U2EntityRef dstEntityRef = AssemblyObject::dbi2dbiClone(this, dstDbiRef, os, gHints.getMap());
     CHECK_OP(os, nullptr);
-    AssemblyObject* dstObj = new AssemblyObject(this->getGObjectName(), dstEntityRef, gHints.getMap());
+    auto dstObj = new AssemblyObject(this->getGObjectName(), dstEntityRef, gHints.getMap());
 
     return dstObj;
 }

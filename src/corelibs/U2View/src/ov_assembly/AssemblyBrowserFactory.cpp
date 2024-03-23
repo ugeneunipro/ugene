@@ -125,7 +125,7 @@ Task* AssemblyBrowserFactory::createViewTask(const MultiGSelection& multiSelecti
         return resTasks.first();
     }
 
-    Task* result = new Task(tr("Open multiple views"), TaskFlag_NoRun);
+    auto result = new Task(tr("Open multiple views"), TaskFlag_NoRun);
     foreach (Task* t, resTasks) {
         result->addSubTask(t);
     }

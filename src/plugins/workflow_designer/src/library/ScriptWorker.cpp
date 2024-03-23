@@ -24,6 +24,7 @@
 #include <QScriptEngineDebugger>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/FailTask.h>
@@ -57,6 +58,7 @@ static const QString OUT_PORT_ID("out");
 
 ScriptWorkerTask::ScriptWorkerTask(WorkflowScriptEngine* _engine, AttributeScript* _script)
     : Task(tr("Script worker task"), AppContext::isGUIMode() ? TaskFlag_RunInMainThread : TaskFlag_None), engine(_engine), script(_script) {
+    GCOUNTER(cvar, "Script. Script worker task");
     WorkflowScriptLibrary::initEngine(engine);
 }
 
@@ -126,7 +128,7 @@ void ScriptWorker::init() {
     engine = new WorkflowScriptEngine(context);
     if (AppContext::isGUIMode()) {  // add script debugger
         engine->setProcessEventsInterval(50);
-        QScriptEngineDebugger* scriptDebugger = new QScriptEngineDebugger(engine);
+        auto scriptDebugger = new QScriptEngineDebugger(engine);
         scriptDebugger->setAutoShowStandardWindow(true);
         scriptDebugger->attachTo(engine);
     }

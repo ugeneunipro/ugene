@@ -44,7 +44,6 @@
 #include <U2Core/MsaObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -167,7 +166,7 @@ bool MsaEditorSequenceArea::hasAminoAlphabet() {
     SAFE_POINT(maObj != nullptr, "MultipleAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()", false);
     const DNAAlphabet* alphabet = maObj->getAlphabet();
     SAFE_POINT(maObj != nullptr, "DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()", false);
-    return DNAAlphabet_AMINO == alphabet->getType();
+    return alphabet->getType() == DNAAlphabet_AMINO;
 }
 
 QSize MsaEditorSequenceArea::sizeHint() const {
@@ -230,10 +229,8 @@ void MsaEditorSequenceArea::copySelection(U2OpStatus& os) {
     for (const QRect& selectionRect : qAsConst(selectionRects)) {
         estimatedResultLength += selectionRect.width() * selectionRect.height();
     }
-    if (estimatedResultLength > U2Clipboard::MAX_SAFE_COPY_TO_CLIPBOARD_SIZE) {
-        os.setError(tr("Block size is too big and can't be copied into the clipboard"));
-        return;
-    }
+    U2Clipboard::checkCopyToClipboardSize(estimatedResultLength, os);
+    CHECK_OP(os, );
 
     for (const QRect& selectionRect : qAsConst(selectionRects)) {
         for (int viewRowIndex = selectionRect.top(); viewRowIndex <= selectionRect.bottom() && !os.hasError(); viewRowIndex++) {
@@ -243,6 +240,8 @@ void MsaEditorSequenceArea::copySelection(U2OpStatus& os) {
             int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
             const MsaRow& row = maObj->getRow(maRowIndex);
             QByteArray sequence = row->mid(selectionRect.x(), selectionRect.width(), os)->toByteArray(os, selectionRect.width());
+            CHECK_OP(os, );
+
             ugeneMimeContent.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
                 .append(row.data()->getName())
                 .append('\n')
@@ -260,7 +259,7 @@ void MsaEditorSequenceArea::copySelection(U2OpStatus& os) {
 void MsaEditorSequenceArea::sl_buildStaticToolbar(GObjectViewController* v, QToolBar* t) {
     Q_UNUSED(v);
 
-    MaEditorWgt* child0 = editor->getMaEditorMultilineWgt()->getUI(0);
+    MaEditorWgt* child0 = editor->getLineWidget(0);
     if (child0 != ui) {
         return;
     }
@@ -275,7 +274,7 @@ void MsaEditorSequenceArea::sl_buildStaticToolbar(GObjectViewController* v, QToo
 }
 
 void MsaEditorSequenceArea::sl_buildMenu(GObjectViewController*, QMenu* m, const QString& menuType) {
-    if (editor->getMaEditorMultilineWgt()->getActiveChild() != ui) {
+    if (getEditor()->getMainWidget()->getActiveChild() != ui) {
         return;
     }
     bool isContextMenu = menuType == MsaEditorMenuType::CONTEXT;
@@ -392,7 +391,7 @@ void MsaEditorSequenceArea::sl_updateActions() {
 }
 
 void MsaEditorSequenceArea::sl_delCol() {
-    QObjectScopedPointer<DeleteGapsDialog> dlg = new DeleteGapsDialog(editor->getUI(), editor->getMaObject()->getRowCount());
+    QObjectScopedPointer<DeleteGapsDialog> dlg = new DeleteGapsDialog(getEditor()->getMainWidget(), editor->getMaObject()->getRowCount());
     dlg->exec();
     CHECK(!dlg.isNull(), );
 
@@ -439,7 +438,7 @@ void MsaEditorSequenceArea::sl_delCol() {
 void MsaEditorSequenceArea::sl_onPosChangeRequest(int position) {
     ui->getScrollController()->centerBase(position, width());
     // Keep the vertical part of the selection but limit the horizontal to the given position.
-    // In case of 1-row selection it will procude a single cell selection as the result.
+    // In case of 1-row selection it will produce a single cell selection as the result.
     // If there is no active selection - select a cell of the first visible row on the screen.
     int selectedBaseIndex = position - 1;
     QList<QRect> selectedRects = editor->getSelection().getRectList();
@@ -499,7 +498,7 @@ void MsaEditorSequenceArea::sl_createSubalignment() {
                                ? U2Region(0, msaObject->getLength())  // Whole alignment.
                                : U2Region::fromXRange(selection.getRectList().first());
 
-    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(msaObject, maRowIds, columnRange, editor->getUI());
+    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(msaObject, maRowIds, columnRange, getEditor()->getMainWidget());
     dialog->exec();
     CHECK(!dialog.isNull(), );
 
@@ -526,6 +525,9 @@ void MsaEditorSequenceArea::sl_modelChanged() {
 void MsaEditorSequenceArea::sl_copySelection() {
     U2OpStatus2Log os;
     copySelection(os);
+    if (os.hasError()) {
+        NotificationStack::addNotification(os.getError(), NotificationType::Error_Not);
+    }
 }
 
 void MsaEditorSequenceArea::sl_copySelectionFormatted() {
@@ -612,7 +614,10 @@ void MsaEditorSequenceArea::sl_cutSelection() {
 
     U2OpStatus2Log os;
     copySelection(os);
-    CHECK_OP(os, );
+    if (os.hasError()) {
+        NotificationStack::addNotification(os.getError(), NotificationType::Error_Not);
+        return;
+    }
 
     sl_delCurrentSelection();
 }
@@ -624,7 +629,7 @@ void MsaEditorSequenceArea::sl_addSeqFromFile() {
     QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
 
     LastUsedDirHelper lod;
-    QStringList urls = U2FileDialog::getOpenFileNames(editor->getUI(), tr("Open file with sequences"), lod.dir, filter);
+    QStringList urls = U2FileDialog::getOpenFileNames(getEditor()->getMainWidget(), tr("Open file with sequences"), lod.dir, filter);
 
     if (!urls.isEmpty()) {
         lod.url = urls.first();
@@ -650,7 +655,7 @@ void MsaEditorSequenceArea::sl_addSeqFromProject() {
     ProjectTreeControllerModeSettings settings;
     settings.objectTypesToShow.insert(GObjectTypes::SEQUENCE);
 
-    QList<GObject*> objects = ProjectTreeItemSelectorDialog::selectObjects(settings, editor->getUI());
+    QList<GObject*> objects = ProjectTreeItemSelectorDialog::selectObjects(settings, getEditor()->getMainWidget());
     QList<DNASequence> objectsToAdd;
     U2OpStatus2Log os;
     foreach (GObject* obj, objects) {
@@ -913,7 +918,7 @@ QString ExportHighlightingTask::generateExportHighlightingReport() const {
 
             QColor unused;
             bool highlight = false;
-            MaEditorSequenceArea* sequenceArea = msaEditor->getMaEditorWgt()->getSequenceArea();
+            MaEditorSequenceArea* sequenceArea = msaEditor->getLineWidget(0)->getSequenceArea();
             MsaHighlightingScheme* scheme = sequenceArea->getCurrentHighlightingScheme();
             scheme->setUseDots(sequenceArea->getUseDotsCheckedState());
             scheme->process(refChar, c, unused, highlight, pos, seq);

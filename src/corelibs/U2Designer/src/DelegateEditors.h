@@ -64,20 +64,20 @@ public:
     virtual ~DelegateEditor() {
         qDeleteAll(delegates.values());
     }
-    virtual PropertyDelegate* getDelegate(const QString& name) {
+    PropertyDelegate* getDelegate(const QString& name) override {
         return delegates.value(name);
     }
-    virtual PropertyDelegate* removeDelegate(const QString& name) {
+    PropertyDelegate* removeDelegate(const QString& name) override {
         return delegates.take(name);
     }
-    virtual void updateDelegates();
-    virtual void updateDelegate(const QString& name);
-    virtual void addDelegate(PropertyDelegate* del, const QString& name) {
+    void updateDelegates() override;
+    void updateDelegate(const QString& name) override;
+    void addDelegate(PropertyDelegate* del, const QString& name) override {
         delegates.insert(name, del);
     }
-    virtual void commit() {
+    void commit() override {
     }
-    virtual ConfigurationEditor* clone() {
+    ConfigurationEditor* clone() override {
         return new DelegateEditor(*this);
     }
 
@@ -115,16 +115,16 @@ public:
     URLDelegate(const QString& filter, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject* parent = nullptr, const QString& format = "", bool noFilesMode = false, bool doNotUseWorkflowOutputFolder = false);
     URLDelegate(const DelegateTags& tags, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject* parent = nullptr, bool noFilesMode = false, bool doNotUseWorkflowOutputFolder = false);
 
-    QVariant getDisplayValue(const QVariant& v) const;
+    QVariant getDisplayValue(const QVariant& v) const override;
 
-    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const override;
 
-    virtual void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
-    virtual PropertyDelegate* clone();
-    virtual Type type() const;
+    PropertyDelegate* clone() override;
+    Type type() const override;
 
 private slots:
     void sl_commit();
@@ -146,20 +146,20 @@ public:
     virtual ~SpinBoxDelegate() {
     }
 
-    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const override;
 
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
-    QVariant getDisplayValue(const QVariant&) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
+    QVariant getDisplayValue(const QVariant&) const override;
 
     void setEditorProperty(const char* name, const QVariant& val);
 
-    virtual PropertyDelegate* clone() {
+    PropertyDelegate* clone() override {
         return new SpinBoxDelegate(spinProperties, parent());
     }
 
-    void getItems(QVariantMap& items) const;
+    void getItems(QVariantMap& items) const override;
 
     QVariantMap getProperties() const;
 
@@ -233,16 +233,16 @@ public:
     ComboBoxDelegate(const QVariantMap& comboItems, QObject* parent = 0);  // items: visible name -> value
     ComboBoxDelegate(const QList<ComboItem>& comboItems, QObject* parent = 0);  // items: visible name -> value
 
-    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const override;
 
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
-    QVariant getDisplayValue(const QVariant&) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
+    QVariant getDisplayValue(const QVariant&) const override;
 
     PropertyDelegate* clone() override;
 
-    void getItems(QVariantMap& items) const;
+    void getItems(QVariantMap& items) const override;
 
 protected:
     QVariantMap getAvailableItems() const;
@@ -266,15 +266,15 @@ public:
     virtual ~ComboBoxEditableDelegate() {
     }
 
-    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const override;
 
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
-    QVariant getDisplayValue(const QVariant&) const;
+    QVariant getDisplayValue(const QVariant&) const override;
 
-    virtual PropertyDelegate* clone() {
+    PropertyDelegate* clone() override {
         return new ComboBoxEditableDelegate(items, parent());
     }
 
@@ -297,14 +297,14 @@ public:
     virtual ~ComboBoxWithUrlsDelegate() {
     }
 
-    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const override;
 
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
-    QVariant getDisplayValue(const QVariant&) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
+    QVariant getDisplayValue(const QVariant&) const override;
 
-    virtual PropertyDelegate* clone() {
+    PropertyDelegate* clone() override {
         return new ComboBoxWithUrlsDelegate(items, isPath, parent());
     }
 
@@ -324,16 +324,16 @@ class U2DESIGNER_EXPORT ComboBoxWithChecksDelegate : public ComboBoxBaseDelegate
 public:
     ComboBoxWithChecksDelegate(const QVariantMap& items, QObject* parent = 0);
 
-    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const override;
 
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
-    QVariant getDisplayValue(const QVariant&) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
+    QVariant getDisplayValue(const QVariant&) const override;
 
     PropertyDelegate* clone() override;
 
-    void getItems(QVariantMap& items) const;
+    void getItems(QVariantMap& items) const override;
 
 signals:
     void si_valueChanged(const QString& newVal) const;
@@ -349,7 +349,7 @@ class U2DESIGNER_EXPORT ComboBoxWithBoolsDelegate : public ComboBoxDelegate {
     Q_OBJECT
 public:
     ComboBoxWithBoolsDelegate(QObject* parent = 0);
-    virtual PropertyDelegate* clone() {
+    PropertyDelegate* clone() override {
         return new ComboBoxWithBoolsDelegate(parent());
     }
 
@@ -363,7 +363,7 @@ public:
     virtual ~FileModeDelegate() {
     }
 
-    virtual PropertyDelegate* clone() {
+    PropertyDelegate* clone() override {
         return new FileModeDelegate(3 == comboItems.size(), parent());
     }
 };
@@ -379,7 +379,7 @@ public:
     virtual ~SchemaRunModeDelegate() {
     }
 
-    virtual PropertyDelegate* clone() {
+    PropertyDelegate* clone() override {
         return new SchemaRunModeDelegate(parent());
     }
 
@@ -395,10 +395,10 @@ class ScriptSelectionWidget : public PropertyWidget {
     Q_OBJECT
 public:
     ScriptSelectionWidget(QWidget* parent = nullptr);
-    QVariant value();
+    QVariant value() override;
 
 public slots:
-    void setValue(const QVariant& value);
+    void setValue(const QVariant& value) override;
 
 private slots:
     void sl_comboCurrentIndexChanged(int itemId);
@@ -416,14 +416,14 @@ public:
     AttributeScriptDelegate(QObject* parent = 0);
     virtual ~AttributeScriptDelegate();
 
-    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
-    QVariant getDisplayValue(const QVariant&) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
+    QVariant getDisplayValue(const QVariant&) const override;
 
     static QString createScriptHeader(const AttributeScript& attrScript);
 
-    virtual PropertyDelegate* clone() {
+    PropertyDelegate* clone() override {
         return new AttributeScriptDelegate(parent());
     }
 
@@ -440,7 +440,7 @@ public:
     }
 
 protected:
-    void focusOutEvent(QFocusEvent* event);
+    void focusOutEvent(QFocusEvent* event) override;
 
 signals:
     void si_finished();
@@ -453,9 +453,9 @@ class StingListWidget : public PropertyWidget {
     Q_OBJECT
 public:
     StingListWidget(QWidget* parent = nullptr);
-    virtual QVariant value();
-    virtual void setValue(const QVariant& value);
-    virtual void setRequired();
+    QVariant value() override;
+    void setValue(const QVariant& value) override;
+    void setRequired() override;
 
 signals:
     void finished();
@@ -474,13 +474,13 @@ public:
     virtual ~StringListDelegate() {
     }
 
-    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const override;
 
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
-    virtual PropertyDelegate* clone() {
+    PropertyDelegate* clone() override {
         return new StringListDelegate(parent());
     }
 
@@ -506,12 +506,12 @@ public:
     virtual ~StringSelectorDelegate() {
     }
 
-    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
-    virtual PropertyDelegate* clone() {
+    PropertyDelegate* clone() override {
         return new StringSelectorDelegate(initValue, f, parent());
     }
 
@@ -536,12 +536,12 @@ public:
     virtual ~CharacterDelegate() {
     }
 
-    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
-    virtual void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const override;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
-    virtual PropertyDelegate* clone() {
+    PropertyDelegate* clone() override {
         return new CharacterDelegate(parent());
     }
 
@@ -556,7 +556,7 @@ public:
     void setEditorData(QWidget* editor, const QModelIndex& index) const override;
     void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
-    virtual LineEditWithValidatorDelegate* clone() override;
+    LineEditWithValidatorDelegate* clone() override;
 
 private slots:
     void sl_valueChanged();

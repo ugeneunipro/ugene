@@ -33,12 +33,12 @@ class U2LANG_EXPORT NoFailTaskWrapper : public Task {
     Q_OBJECT
 public:
     NoFailTaskWrapper(Task* task);
-    virtual void prepare();
+    void prepare() override;
 
     Task* originalTask() const;
 
-    virtual bool hasWarning() const;
-    virtual QStringList getWarnings() const;
+    bool hasWarning() const override;
+    QStringList getWarnings() const override;
 
 private:
     Task* subTask;

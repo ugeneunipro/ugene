@@ -81,9 +81,9 @@ public:
 
     SequenceScriptClass(QScriptEngine* engine);
 
-    QString name() const;
+    QString name() const override;
     QScriptValue newInstance(const QString& data, const QString& name);
-    QScriptValue newInstance(const ScriptDbiData& id, bool deepCopy);
+    QScriptValue newInstance(const ScriptDbiData& id, bool deepCopy) override;
 
     static QScriptValue constructor(QScriptContext* ctx, QScriptEngine* engine);
     static const QString CLASS_NAME;

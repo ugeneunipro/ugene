@@ -62,7 +62,7 @@ bool StdResidueDictionary::load(const QString& fileName) {
 #define STD_DICT_FILE_NAME ":format/datafiles/MMDBStdResidueDict"
 
 StdResidueDictionary* StdResidueDictionary::createStandardDictionary() {
-    StdResidueDictionary* stdDictionary = new StdResidueDictionary();
+    auto stdDictionary = new StdResidueDictionary();
     if (!stdDictionary->load(STD_DICT_FILE_NAME)) {
         return nullptr;
     }
@@ -231,7 +231,7 @@ StdResidueDictionary* StdResidueDictionary::createFromAsnTree(AsnNode* rootElem)
         return nullptr;
     }
 
-    StdResidueDictionary* localDictionary = new StdResidueDictionary();
+    auto localDictionary = new StdResidueDictionary();
     // Load residues
     for (AsnNode* child : qAsConst(resGraphsNode->getChildren())) {
         bool ok = false;

@@ -38,11 +38,11 @@ public:
         return selectedObjects;
     }
 
-    virtual bool isEmpty() const {
+    bool isEmpty() const override {
         return selectedObjects.isEmpty();
     }
 
-    virtual void clear();
+    void clear() override;
 
     void setSelection(const QList<GObject*>& objs);
 

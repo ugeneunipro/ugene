@@ -45,8 +45,8 @@ class U2CORE_EXPORT ExtractAnnotatedRegionTask : public Task {
     Q_OBJECT
 public:
     ExtractAnnotatedRegionTask(const DNASequence& sequence, const SharedAnnotationData& sd, const ExtractAnnotatedRegionTaskSettings& cfg);
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
     const QList<DNASequence>& getResultedSequences() const;
     const SharedAnnotationData& getInputAnnotation() const;
 

@@ -37,7 +37,7 @@ class U2GUI_EXPORT RemovePartFromSequenceDialogController : public QDialog {
 public:
     RemovePartFromSequenceDialogController(U2Region _toDelete, U2Region _source, const QString& docUrl, QWidget* p = nullptr);
     ~RemovePartFromSequenceDialogController();
-    void accept();
+    void accept() override;
 
     bool modifyCurrentDocument() const;
     QString getNewDocumentPath() const;

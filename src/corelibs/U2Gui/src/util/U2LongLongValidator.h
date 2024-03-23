@@ -32,7 +32,7 @@ class U2GUI_EXPORT U2LongLongValidator : public QValidator {
 public:
     U2LongLongValidator(qint64 minimum, qint64 maximum, QObject* parent = 0);
 
-    State validate(QString& input, int& pos) const;
+    State validate(QString& input, int& pos) const override;
 
 private:
     qint64 minimum;

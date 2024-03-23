@@ -36,7 +36,7 @@ class NewGrouperSlotDialog : public QDialog, public Ui_NewGrouperSlotDialog {
     Q_OBJECT
 public:
     NewGrouperSlotDialog(QWidget* parent, QList<Descriptor>& inSlots, QStringList& names);
-    void accept();
+    void accept() override;
 
     QString getInSlotId() const;
     QString getOutSlotName() const;
@@ -62,28 +62,28 @@ class AnnsActionDialog : public ActionDialog, public Ui_AnnsActionDialog {
     Q_OBJECT
 public:
     AnnsActionDialog(QWidget* parent, GrouperSlotAction* action, QStringList mergeSeqSlots);
-    virtual GrouperSlotAction getAction() const;
+    GrouperSlotAction getAction() const override;
 };
 
 class SequeceActionDialog : public ActionDialog, public Ui_SequeceActionDialog {
     Q_OBJECT
 public:
     SequeceActionDialog(QWidget* parent, GrouperSlotAction* action);
-    virtual GrouperSlotAction getAction() const;
+    GrouperSlotAction getAction() const override;
 };
 
 class MsaActionDialog : public ActionDialog, public Ui_MsaActionDialog {
     Q_OBJECT
 public:
     MsaActionDialog(QWidget* parent, GrouperSlotAction* action);
-    virtual GrouperSlotAction getAction() const;
+    GrouperSlotAction getAction() const override;
 };
 
 class StringActionDialog : public ActionDialog, public Ui_StringActionDialog {
     Q_OBJECT
 public:
     StringActionDialog(QWidget* parent, GrouperSlotAction* action);
-    virtual GrouperSlotAction getAction() const;
+    GrouperSlotAction getAction() const override;
 };
 
 }  // namespace U2

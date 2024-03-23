@@ -79,11 +79,11 @@ class U2GUI_EXPORT SpinBoxController : public InputWidgetController {
     Q_OBJECT
 public:
     SpinBoxController(QSpinBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue);
-    void setWidgetEnabled(bool isEnabled);
+    void setWidgetEnabled(bool isEnabled) override;
 
 protected:
-    void setWidgetValue(const QVariant& newValue);
-    QVariant getWidgetValue();
+    void setWidgetValue(const QVariant& newValue) override;
+    QVariant getWidgetValue() override;
 
 private:
     QSpinBox* inputWidget;
@@ -94,11 +94,11 @@ class U2GUI_EXPORT DoubleSpinBoxController : public InputWidgetController {
     Q_OBJECT
 public:
     DoubleSpinBoxController(QDoubleSpinBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue);
-    void setWidgetEnabled(bool isEnabled);
+    void setWidgetEnabled(bool isEnabled) override;
 
 protected:
-    void setWidgetValue(const QVariant& newValue);
-    QVariant getWidgetValue();
+    void setWidgetValue(const QVariant& newValue) override;
+    QVariant getWidgetValue() override;
 
 private:
     QDoubleSpinBox* inputWidget;
@@ -109,11 +109,11 @@ class U2GUI_EXPORT CheckBoxController : public InputWidgetController {
 public:
     CheckBoxController(QCheckBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue);
 
-    void addDependentParameter(ParameterDependence dependence);
+    void addDependentParameter(ParameterDependence dependence) override;
 
 protected:
-    void setWidgetValue(const QVariant& newValue);
-    QVariant getWidgetValue();
+    void setWidgetValue(const QVariant& newValue) override;
+    QVariant getWidgetValue() override;
 private slots:
     void stateChanged(int newState);
 
@@ -128,8 +128,8 @@ public:
     RadioButtonController(QRadioButton* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue);
 
 protected:
-    void setWidgetValue(const QVariant& newValue);
-    QVariant getWidgetValue();
+    void setWidgetValue(const QVariant& newValue) override;
+    QVariant getWidgetValue() override;
 
 private:
     QRadioButton* inputWidget;
@@ -140,11 +140,11 @@ class U2GUI_EXPORT ComboBoxController : public InputWidgetController {
 public:
     ComboBoxController(QComboBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue, const QStringList& parameters = QStringList());
 
-    void addParameterToCmdLineSettings(QStringList& settings);
+    void addParameterToCmdLineSettings(QStringList& settings) override;
 
 protected:
-    void setWidgetValue(const QVariant& newValue);
-    QVariant getWidgetValue();
+    void setWidgetValue(const QVariant& newValue) override;
+    QVariant getWidgetValue() override;
 
 private:
     QComboBox* inputWidget;
@@ -157,8 +157,8 @@ public:
     LineEditController(QLineEdit* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue);
 
 protected:
-    void setWidgetValue(const QVariant& newValue);
-    QVariant getWidgetValue();
+    void setWidgetValue(const QVariant& newValue) override;
+    QVariant getWidgetValue() override;
 
 private:
     QLineEdit* inputWidget;

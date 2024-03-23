@@ -38,10 +38,10 @@ class SequenceContentFilterTask : public AbstractProjectFilterTask, public FindA
 public:
     SequenceContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs);
 
-    void onResult(const FindAlgorithmResult& r);
+    void onResult(const FindAlgorithmResult& r) override;
 
 protected:
-    bool filterAcceptsObject(GObject* obj);
+    bool filterAcceptsObject(GObject* obj) override;
 
 private:
     bool sequenceContainsPattern(U2SequenceObject* seqObject, const QString& pattern, const FindAlgorithmSettings& findSettings);
@@ -62,7 +62,7 @@ private:
 class U2ALGORITHM_EXPORT SequenceContentFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
     AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings,
-                                             const QList<QPointer<Document>>& docs) const;
+                                             const QList<QPointer<Document>>& docs) const override;
 };
 
 }  // namespace U2

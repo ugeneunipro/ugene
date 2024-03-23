@@ -217,8 +217,8 @@ void OpenAnnotatedDNAViewTask::open() {
         return;
     }
     QString viewName = deriveViewName(seqObjects);
-    AnnotatedDNAView* v = new AnnotatedDNAView(viewName, seqObjects);
-    GObjectViewWindow* w = new GObjectViewWindow(v, viewName, false);
+    auto v = new AnnotatedDNAView(viewName, seqObjects);
+    auto w = new GObjectViewWindow(v, viewName, false);
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
 
@@ -308,8 +308,8 @@ void OpenSavedAnnotatedDNAViewTask::open() {
         auto dnaObj = qobject_cast<U2SequenceObject*>(obj);
         sequenceObjects.append(dnaObj);
     }
-    AnnotatedDNAView* v = new AnnotatedDNAView(viewName, sequenceObjects);
-    GObjectViewWindow* w = new GObjectViewWindow(v, viewName, true);
+    auto v = new AnnotatedDNAView(viewName, sequenceObjects);
+    auto w = new GObjectViewWindow(v, viewName, true);
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
     v->updateState(state);

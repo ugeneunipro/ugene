@@ -373,7 +373,7 @@ bool SwissProtPlainTextFormat::isNewAnnotationFormat(const QVariant& dateList, U
 #define K_COL 5
 
 SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter* io, char* cbuff, int len, int READ_BUFF_SIZE, U2OpStatus& si, int offset) {
-    AnnotationData* a = new AnnotationData();
+    auto a = new AnnotationData();
     SharedAnnotationData f(a);
     QString key = QString::fromLatin1(cbuff + 5, 10).trimmed();
     if (key.isEmpty()) {
@@ -461,7 +461,7 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
 }
 
 SharedAnnotationData SwissProtPlainTextFormat::readAnnotationNewFormat(char* cbuff, U2OpStatus& si, int offset) {
-    AnnotationData* a = new AnnotationData();
+    auto a = new AnnotationData();
     SharedAnnotationData f(a);
 
     QRegularExpression re(QString("^%1\\r?\\n?(%2\\r?\\n?)+").arg(ANNOTATION_HEADER_REGEXP).arg(ANNOTATION_QUALIFIERS_REGEXP));

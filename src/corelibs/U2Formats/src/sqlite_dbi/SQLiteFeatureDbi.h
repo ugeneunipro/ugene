@@ -32,128 +32,128 @@ class SQLiteFeatureDbi : public U2FeatureDbi, public SQLiteChildDBICommon {
 public:
     SQLiteFeatureDbi(SQLiteDbi* dbi);
 
-    void initSqlSchema(U2OpStatus& os);
+    void initSqlSchema(U2OpStatus& os) override;
     /**
      * Creates a DB representation of AnnotationTableObject
      * @table has to be fully initialized except of the id field.
      */
-    void createAnnotationTableObject(U2AnnotationTable& table, const QString& folder, U2OpStatus& os);
+    void createAnnotationTableObject(U2AnnotationTable& table, const QString& folder, U2OpStatus& os) override;
     /**
      * Returns a DB representation of AnnotationTableObject having supplied @tableId.
      */
-    U2AnnotationTable getAnnotationTableObject(const U2DataId& tableId, U2OpStatus& os);
+    U2AnnotationTable getAnnotationTableObject(const U2DataId& tableId, U2OpStatus& os) override;
     /**
      * Removes a DB representation of AnnotationTableObject having supplied @tableId.
      */
-    void removeAnnotationTableData(const U2DataId& tableId, U2OpStatus& os);
+    void removeAnnotationTableData(const U2DataId& tableId, U2OpStatus& os) override;
     /**
      * Reads feature data by id
      */
-    U2Feature getFeature(const U2DataId& featureId, U2OpStatus& os);
+    U2Feature getFeature(const U2DataId& featureId, U2OpStatus& os) override;
     /**
      * Counts features that matched the query
      */
-    qint64 countFeatures(const FeatureQuery& fq, U2OpStatus& os);
+    qint64 countFeatures(const FeatureQuery& fq, U2OpStatus& os) override;
     /**
      * Returns features that matched the query. Returns NULL if error occurs
      */
-    U2DbiIterator<U2Feature>* getFeatures(const FeatureQuery& q, U2OpStatus& os);
+    U2DbiIterator<U2Feature>* getFeatures(const FeatureQuery& q, U2OpStatus& os) override;
     /**
      * Returns all keys of a specified feature
      */
-    QList<U2FeatureKey> getFeatureKeys(const U2DataId& featureId, U2OpStatus& os);
+    QList<U2FeatureKey> getFeatureKeys(const U2DataId& featureId, U2OpStatus& os) override;
     /**
      * Returns all the features and keys belonging to the same annotation table with @rootFeatureId as a root feature
      */
-    QList<FeatureAndKey> getFeatureTable(const U2DataId& rootFeatureId, U2OpStatus& os);
+    QList<FeatureAndKey> getFeatureTable(const U2DataId& rootFeatureId, U2OpStatus& os) override;
     /**
      * Creates new feature in database. Uses all fields in 'feature' param
      * and assign database id to it as the result
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void createFeature(U2Feature& feature, const QList<U2FeatureKey>& keys, U2OpStatus& os);
+    void createFeature(U2Feature& feature, const QList<U2FeatureKey>& keys, U2OpStatus& os) override;
     /**
      * Adds key to feature
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void addKey(const U2DataId& featureId, const U2FeatureKey& key, U2OpStatus& os);
+    void addKey(const U2DataId& featureId, const U2FeatureKey& key, U2OpStatus& os) override;
     /**
      * Removes all feature keys with a specified name
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void removeAllKeys(const U2DataId& featureId, const QString& keyName, U2OpStatus& os);
+    void removeAllKeys(const U2DataId& featureId, const QString& keyName, U2OpStatus& os) override;
     /**
      * Removes all feature keys with a specified name and value
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void removeKey(const U2DataId& featureId, const U2FeatureKey& key, U2OpStatus& os);
+    void removeKey(const U2DataId& featureId, const U2FeatureKey& key, U2OpStatus& os) override;
     /**
      * Updates feature key.
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void updateKeyValue(const U2DataId& featureId, const U2FeatureKey& key, U2OpStatus& os);
+    void updateKeyValue(const U2DataId& featureId, const U2FeatureKey& key, U2OpStatus& os) override;
     /**
      * After the invocation @key.value contains the value of a feature's key with name @key.name.
      * Returning value specifies whether the key with name @key.name exists for a given feature.
      */
-    bool getKeyValue(const U2DataId& featureId, U2FeatureKey& key, U2OpStatus& os);
+    bool getKeyValue(const U2DataId& featureId, U2FeatureKey& key, U2OpStatus& os) override;
     /**
      * Updates feature location. Features with U2Region(0,0) have no specified location
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void updateLocation(const U2DataId& featureId, const U2FeatureLocation& location, U2OpStatus& os);
+    void updateLocation(const U2DataId& featureId, const U2FeatureLocation& location, U2OpStatus& os) override;
     /**
      * Updates feature type
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void updateType(const U2DataId& featureId, U2FeatureType newType, U2OpStatus& os);
+    void updateType(const U2DataId& featureId, U2FeatureType newType, U2OpStatus& os) override;
     /**
      * Updates feature name
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void updateName(const U2DataId& featureId, const QString& newName, U2OpStatus& os);
+    void updateName(const U2DataId& featureId, const QString& newName, U2OpStatus& os) override;
     /**
      * Updates feature parent
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void updateParentId(const U2DataId& featureId, const U2DataId& parentId, U2OpStatus& os);
+    void updateParentId(const U2DataId& featureId, const U2DataId& parentId, U2OpStatus& os) override;
     /**
      * Updates feature sequence
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void updateSequenceId(const U2DataId& featureId, const U2DataId& seqId, U2OpStatus& os);
+    void updateSequenceId(const U2DataId& featureId, const U2DataId& seqId, U2OpStatus& os) override;
     /**
      * Removes the feature from database
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void removeFeature(const U2DataId& featureId, U2OpStatus& os);
+    void removeFeature(const U2DataId& featureId, U2OpStatus& os) override;
     /**
      * Removes subfeatures along with their parent feature from database
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void removeFeaturesByParent(const U2DataId& parentId, U2OpStatus& os, SubfeatureSelectionMode mode);
+    void removeFeaturesByParent(const U2DataId& parentId, U2OpStatus& os, SubfeatureSelectionMode mode) override;
     /**
      * Removes subfeatures along with their parent features from database
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void removeFeaturesByParents(const QList<U2DataId>& parentIds, U2OpStatus& os);
+    void removeFeaturesByParents(const QList<U2DataId>& parentIds, U2OpStatus& os) override;
     /**
      * Removes subfeatures along with their root feature from database
      * Requires: U2DbiFeature_WriteFeature feature support
      */
-    void removeFeaturesByRoot(const U2DataId& rootId, U2OpStatus& os, SubfeatureSelectionMode mode);
+    void removeFeaturesByRoot(const U2DataId& rootId, U2OpStatus& os, SubfeatureSelectionMode mode) override;
     /**
      * Returns features that matched the query. Returns NULL if error occurs
      */
-    U2DbiIterator<U2Feature>* getFeaturesByRegion(const U2Region& reg, const U2DataId& rootId, const QString& featureName, const U2DataId& seqId, U2OpStatus& os, bool contains);
+    U2DbiIterator<U2Feature>* getFeaturesByRegion(const U2Region& reg, const U2DataId& rootId, const QString& featureName, const U2DataId& seqId, U2OpStatus& os, bool contains) override;
 
-    U2DbiIterator<U2Feature>* getFeaturesByParent(const U2DataId& parentId, const QString& featureName, const U2DataId& seqId, U2OpStatus& os, SubfeatureSelectionMode includeParent);
+    U2DbiIterator<U2Feature>* getFeaturesByParent(const U2DataId& parentId, const QString& featureName, const U2DataId& seqId, U2OpStatus& os, SubfeatureSelectionMode includeParent) override;
 
-    U2DbiIterator<U2Feature>* getFeaturesByRoot(const U2DataId& rootId, const FeatureFlags& types, U2OpStatus& os);
+    U2DbiIterator<U2Feature>* getFeaturesByRoot(const U2DataId& rootId, const FeatureFlags& types, U2OpStatus& os) override;
 
-    U2DbiIterator<U2Feature>* getFeaturesBySequence(const QString& featureName, const U2DataId& seqId, U2OpStatus& os);
+    U2DbiIterator<U2Feature>* getFeaturesBySequence(const QString& featureName, const U2DataId& seqId, U2OpStatus& os) override;
 
-    U2DbiIterator<U2Feature>* getFeaturesByName(const U2DataId& rootId, const QString& name, const FeatureFlags& types, U2OpStatus& os);
+    U2DbiIterator<U2Feature>* getFeaturesByName(const U2DataId& rootId, const QString& name, const FeatureFlags& types, U2OpStatus& os) override;
 
     QMap<U2DataId, QStringList> getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& objectIdsToSearch) override;
 

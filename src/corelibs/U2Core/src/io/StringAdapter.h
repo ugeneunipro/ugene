@@ -30,22 +30,22 @@ class U2CORE_EXPORT StringAdapterFactory : public IOAdapterFactory {
 public:
     StringAdapterFactory(QObject* p = nullptr);
 
-    virtual IOAdapter* createIOAdapter();
+    IOAdapter* createIOAdapter() override;
 
-    virtual IOAdapterId getAdapterId() const {
+    IOAdapterId getAdapterId() const override {
         return BaseIOAdapters::STRING;
     }
 
-    virtual const QString& getAdapterName() const {
+    const QString& getAdapterName() const override {
         return name;
     }
 
-    virtual bool isIOModeSupported(IOAdapterMode m) const {
+    bool isIOModeSupported(IOAdapterMode m) const override {
         Q_UNUSED(m);
         return true;
     }  // data can be read and be written
 
-    virtual TriState isResourceAvailable(const GUrl& url) const {
+    TriState isResourceAvailable(const GUrl& url) const override {
         Q_UNUSED(url);
         return TriState_Yes;
     }
@@ -59,7 +59,7 @@ class U2CORE_EXPORT StringAdapterFactoryWithStringData : public StringAdapterFac
 public:
     StringAdapterFactoryWithStringData(const QString& data, QObject* parent = nullptr);
 
-    virtual IOAdapter* createIOAdapter();
+    IOAdapter* createIOAdapter() override;
 
 private:
     const QString data;
@@ -77,33 +77,33 @@ public:
     /** Creates opened adapter */
     StringAdapter(const QByteArray& data, StringAdapterFactory* f);
 
-    virtual bool open(const GUrl& url, IOAdapterMode m);
+    bool open(const GUrl& url, IOAdapterMode m) override;
 
-    virtual bool isOpen() const {
+    bool isOpen() const override {
         return opened;
     }
 
-    virtual void close();
+    void close() override;
 
-    virtual qint64 readBlock(char* data, qint64 maxSize);
+    qint64 readBlock(char* data, qint64 maxSize) override;
 
-    virtual qint64 writeBlock(const char* data, qint64 size);
+    qint64 writeBlock(const char* data, qint64 size) override;
 
-    virtual bool skip(qint64 nBytes);
+    bool skip(qint64 nBytes) override;
 
-    virtual qint64 left() const;
+    qint64 left() const override;
 
-    virtual int getProgress() const;
+    int getProgress() const override;
 
-    virtual qint64 bytesRead() const;
+    qint64 bytesRead() const override;
 
-    virtual GUrl getURL() const;
+    GUrl getURL() const override;
 
     const QByteArray& getBuffer() {
         return buffer;
     }
 
-    virtual QString errorString() const;
+    QString errorString() const override;
 
 private:
     bool opened;

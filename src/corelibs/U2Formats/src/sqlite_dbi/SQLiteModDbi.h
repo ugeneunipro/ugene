@@ -56,10 +56,10 @@ public:
     SQLiteModDbi(SQLiteDbi* dbi);
 
     /** Creates all required tables */
-    virtual void initSqlSchema(U2OpStatus& os);
+    void initSqlSchema(U2OpStatus& os) override;
 
     /** Returns a modification step with the specified version for the object */
-    virtual U2SingleModStep getModStep(const U2DataId& objectId, qint64 trackVersion, U2OpStatus& os);
+    U2SingleModStep getModStep(const U2DataId& objectId, qint64 trackVersion, U2OpStatus& os) override;
 
     /** Returns single steps of the master object ID of the specified version, divided bu multi steps */
     QList<QList<U2SingleModStep>> getModSteps(const U2DataId& masterObjId, qint64 version, U2OpStatus& os);
@@ -87,20 +87,20 @@ public:
     void removeDuplicateUserStep(const U2DataId& masterObjId, qint64 masterObjVersion, U2OpStatus& os);
 
     /** Removes all modification tracks and steps for the object */
-    virtual void removeObjectMods(const U2DataId& objectId, U2OpStatus& os);
+    void removeObjectMods(const U2DataId& objectId, U2OpStatus& os) override;
 
     /**
      * Starts a common user modifications step.
      * Do not use this method, create a "U2UseCommonUserModStep" instance instead!
      */
-    virtual void startCommonUserModStep(const U2DataId& masterObjId, U2OpStatus& os);
+    void startCommonUserModStep(const U2DataId& masterObjId, U2OpStatus& os) override;
 
     /**
      * Ends a common user modifications step.
      * Deletes the user modifications step if it doesn't contain any multi modification steps.
      * Do not use this method, use "U2UseCommonUserModStep" instead!
      */
-    virtual void endCommonUserModStep(const U2DataId& masterObjId, U2OpStatus& os);
+    void endCommonUserModStep(const U2DataId& masterObjId, U2OpStatus& os) override;
 
     /**
      * Starts a common multiple modifications step.

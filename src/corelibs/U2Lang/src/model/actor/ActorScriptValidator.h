@@ -28,7 +28,7 @@ namespace Workflow {
 
 class ActorScriptValidator : public ActorValidator {
 public:
-    virtual bool validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const;
+    bool validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const override;
 };
 
 class ValidationContext : public QObject {

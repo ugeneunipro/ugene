@@ -37,7 +37,7 @@ public:
     ElementSelectorController(WizardController* wc, ElementSelectorWidget* widget, int labelSize);
     virtual ~ElementSelectorController();
 
-    virtual QWidget* createGUI(U2OpStatus& os);
+    QWidget* createGUI(U2OpStatus& os) override;
 
 private:
     ElementSelectorWidget* widget;

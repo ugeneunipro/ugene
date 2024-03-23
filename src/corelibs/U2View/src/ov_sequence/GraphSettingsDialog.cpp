@@ -56,7 +56,7 @@ GraphSettingsDialog::GraphSettingsDialog(GSequenceGraphDrawer* d, const U2Region
 
     QFormLayout* form = wss->getFormLayout();
     foreach (const QString& key, colorMap.keys()) {
-        QPushButton* colorChangeButton = new QPushButton();
+        auto colorChangeButton = new QPushButton();
         colorChangeButton->setObjectName(key);
         connect(colorChangeButton, SIGNAL(clicked()), SLOT(sl_onPickColorButtonClicked()));
         QColor color = colorMap.value(key);
@@ -70,14 +70,14 @@ GraphSettingsDialog::GraphSettingsDialog(GSequenceGraphDrawer* d, const U2Region
         form->addRow(QString("%1:").arg(key), colorChangeButton);
     }
 
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     buttonBox->setObjectName("buttonBox");
 
-    QHBoxLayout* buttonsLayout = new QHBoxLayout();
+    auto buttonsLayout = new QHBoxLayout();
     buttonsLayout->addStretch(10);
     buttonsLayout->addWidget(buttonBox);
 
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setSizeConstraint(QLayout::SetFixedSize);
     l->addWidget(wss);
     l->addWidget(mms);

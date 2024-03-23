@@ -319,12 +319,11 @@ QVariant NumTypeValueFactory::getValueFromString(const QString& str, bool* okArg
 /* UrlTypeValueFactory */
 /************************************************************************/
 QVariant UrlTypeValueFactory::getValueFromString(const QString& str, bool* ok) const {
-    const QString splitter = WorkflowUtils::getDatasetSplitter(str);
-    QStringList datasetStrs = str.split(splitter + splitter, QString::SkipEmptyParts);
+    QStringList datasetStrs = WorkflowUtils::unpackListOfDatasets(str);
     QList<Dataset> sets;
     int count = 0;
     for (const QString& datasetStr : qAsConst(datasetStrs)) {
-        QStringList urls = datasetStr.split(splitter, QString::SkipEmptyParts);
+        QStringList urls = WorkflowUtils::unpackListOfUrls(datasetStr);
         count++;
         Dataset dSet(QString("Dataset %1").arg(count));
         for (const QString& url : qAsConst(urls)) {

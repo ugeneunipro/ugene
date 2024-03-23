@@ -47,7 +47,7 @@ TmCalculatorSelectorWidget::TmCalculatorSelectorWidget(QWidget* parent, bool sho
     cbAlgorithm = new QComboBox(this);
     cbAlgorithm->setObjectName("cbAlgorithm");
 
-    QLabel* lengthHintLabel = new QLabel(tr("Hint: UGENE computes Tm for sequence regions from %1 up to %2 bp")
+    auto lengthHintLabel = new QLabel(tr("Hint: UGENE computes Tm for sequence regions from %1 up to %2 bp")
                                              .arg(DNAStatisticsTask::TM_MIN_LENGTH_LIMIT)
                                              .arg(DNAStatisticsTask::TM_MAX_LENGTH_LIMIT));
     lengthHintLabel->setStyleSheet("QLabel{font-size: 12px; padding-top: 5px; padding-bottom: 5px; color: #333333;}");

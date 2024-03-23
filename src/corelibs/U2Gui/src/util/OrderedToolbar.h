@@ -34,10 +34,10 @@ public:
 
     void setButtonTabOrderList(QList<QString>* buttonNamesInNeededOrder);
 
-    virtual void setVisible(bool visible);
+    void setVisible(bool visible) override;
 
 protected:
-    void paintEvent(QPaintEvent*) {
+    void paintEvent(QPaintEvent*) override {
         // do not draw any special toolbar control -> make is merged with parent widget
     }
 

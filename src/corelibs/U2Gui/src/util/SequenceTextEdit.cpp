@@ -52,7 +52,7 @@ void SequenceTextEdit::insertFromMimeData(const QMimeData* source) {
             splitter += PARAGRAPH_SIZE + 1;
         }
 
-        QMimeData* mimeData = new QMimeData();
+        auto mimeData = new QMimeData();
         mimeData->setText(data);
         QPlainTextEdit::insertFromMimeData(mimeData);
         delete mimeData;

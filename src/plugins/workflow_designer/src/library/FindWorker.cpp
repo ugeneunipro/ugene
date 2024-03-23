@@ -347,10 +347,10 @@ Task* FindWorker::tick() {
         if (!patternFilePath.isEmpty()) {
             QList<Task*> subs;
 
-            LoadPatternsFileTask* loadPatternTask = new LoadPatternsFileTask(patternFilePath);
+            auto loadPatternTask = new LoadPatternsFileTask(patternFilePath);
             subs.append(loadPatternTask);
 
-            MultiTask* multiFind = new MultiTask(tr("Load file with patterns"), subs);
+            auto multiFind = new MultiTask(tr("Load file with patterns"), subs);
             connect(new TaskSignalMapper(multiFind), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             return multiFind;
         }
@@ -444,7 +444,7 @@ Task* FindWorker::tick() {
 
         assert(!subs.isEmpty());
 
-        MultiTask* multiFind = new MultiTask(tr("Find algorithm subtasks"), subs);
+        auto multiFind = new MultiTask(tr("Find algorithm subtasks"), subs);
         connect(new TaskSignalMapper(multiFind), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return multiFind;
     } else if (input->isEnded()) {

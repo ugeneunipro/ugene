@@ -257,7 +257,7 @@ ExternalToolRunTask* TopHatSupportTask::runTophat() {
     additionalPaths << QFileInfo(settings.bowtiePath).dir().absolutePath();
     additionalPaths << QFileInfo(settings.samtoolsPath).dir().absolutePath();
 
-    ExternalToolRunTask* runTask = new ExternalToolRunTask(TopHatSupport::ET_TOPHAT_ID,
+    auto runTask = new ExternalToolRunTask(TopHatSupport::ET_TOPHAT_ID,
                                                            arguments,
                                                            new ExternalToolLogParser(),
                                                            workingDirectory,

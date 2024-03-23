@@ -10,6 +10,7 @@ doc_format_suite.xml
 edit_alignment_suite.xml
 edit_sequence_suite.xml
 enzymes_suite.xml
+et_suite.xml
 find_algorithm_suite.xml
 find_pattern_in_alignment.xml
 format_detection_suite.xml

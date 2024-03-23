@@ -134,7 +134,7 @@ void ConvertFilesFormatWorkerFactory::init() {
 
         a << new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true);
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(OutDirectory::WORKFLOW_INTERNAL));
-        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        auto customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(OUT_MODE_ID, OutDirectory::CUSTOM));
         a << customDirAttr;
         a << new Attribute(excludedFormats, BaseTypes::STRING_TYPE(), false);

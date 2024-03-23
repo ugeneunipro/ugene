@@ -75,7 +75,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, const QStrin
     d->optionsBox->setTitle(tr("Options for %1").arg(url.fileName()));
     d->previewEdit->setPlainText(rawDataPreview);
 
-    QVBoxLayout* vbox = new QVBoxLayout();
+    auto vbox = new QVBoxLayout();
     QList<DocumentFormatId> detectedIds;
     for (int i = 0; i < results.size(); i++) {
         const FormatDetectionResult& r = results[i];
@@ -95,18 +95,18 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, const QStrin
             assert(0);
             continue;
         }
-        QHBoxLayout* hbox = new QHBoxLayout();
-        QRadioButton* rb = new QRadioButton();
+        auto hbox = new QHBoxLayout();
+        auto rb = new QRadioButton();
         rb->setObjectName(objName);
         rb->setChecked(i == 0);
 
-        QLabel* label = new QLabel(text);
+        auto label = new QLabel(text);
         label->setObjectName(QString("label_%1").arg(i + 1));
         label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         label->setSizePolicy(QSizePolicy::Expanding, label->sizePolicy().verticalPolicy());
         label->installEventFilter(new LabelClickProvider(label, rb));
 
-        QToolButton* moreButton = new QToolButton();
+        auto moreButton = new QToolButton();
         moreButton->setText(tr("more.."));
         moreButton->setEnabled(!r.getFormatDescriptionText().isEmpty());
         d->moreButtons << moreButton;
@@ -122,11 +122,11 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, const QStrin
     // additional option: user selecting format
     {
         QString text(tr("Choose format manually"));
-        QHBoxLayout* hbox = new QHBoxLayout();
-        QRadioButton* rb = new QRadioButton();
+        auto hbox = new QHBoxLayout();
+        auto rb = new QRadioButton();
         rb->setObjectName("chooseFormatManuallyRadio");
 
-        QLabel* label = new QLabel(text);
+        auto label = new QLabel(text);
         label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         label->setSizePolicy(QSizePolicy::Expanding, label->sizePolicy().verticalPolicy());
         label->installEventFilter(new LabelClickProvider(label, rb));
@@ -168,7 +168,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, const QStrin
     }
     int idx = d->getSelectedFormatIdx();
     if (idx == results.size()) {
-        FormatDetectionResult* r = new FormatDetectionResult();
+        auto r = new FormatDetectionResult();
         DocumentFormatId id = d->userSelectedFormat->itemData(d->userSelectedFormat->currentIndex()).toString();
         r->format = AppContext::getDocumentFormatRegistry()->getFormatById(id);
         results.insert(idx, *r);

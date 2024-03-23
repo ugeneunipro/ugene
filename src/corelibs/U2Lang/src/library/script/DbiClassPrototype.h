@@ -89,7 +89,7 @@ class DbiScriptClass : public QObject, public QScriptClass {
 public:
     DbiScriptClass(QScriptEngine* engine);
 
-    QScriptValue prototype() const;
+    QScriptValue prototype() const override;
     QScriptValue newInstance(const Workflow::SharedDbiDataHandler& id);
 
     /** Virtual copy constructor for dbi types */
@@ -111,7 +111,7 @@ namespace U2 {
 
 template<class T>
 void DbiClassPrototype::registerScriptClass(QScriptEngine* engine) {
-    T* sClass = new T(engine);
+    auto sClass = new T(engine);
     QScriptValue constructorFun = engine->newFunction(T::constructor, sClass->prototype());
     constructorFun.setData(qScriptValueFromValue(engine, sClass));
     engine->globalObject().setProperty(sClass->name(), constructorFun);

@@ -45,7 +45,7 @@ PWMJASPARDialogController::PWMJASPARDialogController(QWidget* w)
         QString filename = jasparDir;
         filename.append("/").append(list[i]).append("/matrix_list.txt");
         if (QFile::exists(filename)) {
-            JasparGroupTreeItem* gti = new JasparGroupTreeItem(list[i]);
+            auto gti = new JasparGroupTreeItem(list[i]);
             gti->setFlags(gti->flags() & ~Qt::ItemIsSelectable);
             jasparTree->addTopLevelItem(gti);
             QFile base(filename);
@@ -53,7 +53,7 @@ PWMJASPARDialogController::PWMJASPARDialogController(QWidget* w)
             while (!base.atEnd()) {
                 QString curr = base.readLine();
                 JasparInfo info = (curr);
-                JasparTreeItem* ti = new JasparTreeItem(info);
+                auto ti = new JasparTreeItem(info);
                 gti->addChild(ti);
             }
             base.close();

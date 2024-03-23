@@ -62,13 +62,13 @@ class GrouperSlotsCfgModel : public QAbstractTableModel {
 public:
     GrouperSlotsCfgModel(QObject* parent, QList<GrouperOutSlot>& outSlots);
 
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
-    int columnCount(const QModelIndex&) const;
-    int rowCount(const QModelIndex&) const;
-    Qt::ItemFlags flags(const QModelIndex& index) const;
-    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex());
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    int columnCount(const QModelIndex&) const override;
+    int rowCount(const QModelIndex&) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
     QStringList getMergeSeqSlotsNames() const;
     GrouperSlotAction* getSlotAction(const QString& outSlotName) const;

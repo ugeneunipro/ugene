@@ -223,21 +223,21 @@ namespace BALL
 		
 		for (Position i = 0; i < number_of_vertices_; i++)
 		{
-			SASVertex* vertex = new SASVertex;
+            auto vertex = new SASVertex;
 			vertex->index_ = i;
 			vertices_.push_back(vertex);
 		}
 
 		for (Position i = 0; i < number_of_edges_; i++)
 		{
-			SASEdge* edge = new SASEdge;
+            auto edge = new SASEdge;
 			edge->index_ = i;
 			edges_.push_back(edge);
 		}
 
 		for (Position i = 0; i < number_of_faces_; i++)
 		{
-			SASFace* face = new SASFace;
+            auto face = new SASFace;
 			face->index_ = i;
 			faces_.push_back(face);
 		}

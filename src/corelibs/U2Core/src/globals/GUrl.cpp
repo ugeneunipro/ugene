@@ -137,7 +137,13 @@ GUrl::GUrl(const QString& _urlString, const GUrlType& _type) {
 }
 
 bool GUrl::operator==(const GUrl& url) const {
-    return urlString == url.getURLString();
+    if(isLocalFile() && url.isLocalFile()) {
+        return QFileInfo(urlString) == QFileInfo(url.getURLString());
+    } else if(type == GUrl_Http && url.type == GUrl_Http) {
+        return urlString.toLower() == url.getURLString().toLower();
+    } else {
+        return urlString == url.getURLString();
+    }    
 }
 
 bool GUrl::operator!=(const GUrl& url) const {

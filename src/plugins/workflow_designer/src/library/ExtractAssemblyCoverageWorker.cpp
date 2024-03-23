@@ -183,11 +183,11 @@ void ExtractAssemblyCoverageWorkerFactory::init() {
                                        ExtractAssemblyCoverageWorker::tr("The minimum coverage value to export."));
         attrs << new Attribute(BaseAttributes::URL_OUT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true, "assembly_coverage." + ExportCoverageSettings::BEDGRAPH_EXTENSION);
 
-        Attribute* formatAttribute = new Attribute(formatDesc, BaseTypes::NUM_TYPE(), false, ExportCoverageSettings::Bedgraph);
+        auto formatAttribute = new Attribute(formatDesc, BaseTypes::NUM_TYPE(), false, ExportCoverageSettings::Bedgraph);
         formatAttribute->addRelation(new ExtractAssemblyCoverageFileExtensionRelation(BaseAttributes::URL_OUT_ATTRIBUTE().getId()));
         attrs << formatAttribute;
 
-        Attribute* exportTypeAttribute = new Attribute(exportTypeDesc, BaseTypes::STRING_TYPE(), true, EXPORT_COVERAGE);
+        auto exportTypeAttribute = new Attribute(exportTypeDesc, BaseTypes::STRING_TYPE(), true, EXPORT_COVERAGE);
         exportTypeAttribute->addRelation(new VisibilityRelation(formatAttribute->getId(), ExportCoverageSettings::PerBase));
         attrs << exportTypeAttribute;
 

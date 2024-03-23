@@ -116,7 +116,7 @@ void RmdupBamWorkerFactory::init() {
         Descriptor treatReads(TREAT_READS_ID, RmdupBamWorker::tr("Treat as single-end"), RmdupBamWorker::tr("Treat paired-end reads and single-end reads (-S)."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        auto customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(DEFAULT_NAME));
@@ -180,7 +180,7 @@ Task* RmdupBamWorker::tick() {
             setting.removeSingleEnd = getValue<bool>(REMOVE_SINGLE_END_ID);
             setting.treatReads = getValue<bool>(TREAT_READS_ID);
 
-            SamtoolsRmdupTask* t = new SamtoolsRmdupTask(setting);
+            auto t = new SamtoolsRmdupTask(setting);
             t->addListeners(createLogListeners());
             connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             return t;

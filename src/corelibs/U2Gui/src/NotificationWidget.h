@@ -48,9 +48,9 @@ public:
     bool isFixed() const;
 
 protected:
-    void mousePressEvent(QMouseEvent* me);
-    void mouseMoveEvent(QMouseEvent* me);
-    bool eventFilter(QObject*, QEvent*);
+    void mousePressEvent(QMouseEvent* me) override;
+    void mouseMoveEvent(QMouseEvent* me) override;
+    bool eventFilter(QObject*, QEvent*) override;
 
 private:
     QLabel* close;
@@ -74,7 +74,7 @@ public:
     void setFixed(bool val);
 
 protected:
-    bool event(QEvent* event);
+    bool event(QEvent* event) override;
 
 private:
     QScrollArea* scrollArea = nullptr;

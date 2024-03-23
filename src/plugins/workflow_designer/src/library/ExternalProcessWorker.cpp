@@ -113,7 +113,7 @@ static AnnotationTableObject* toAnotations(const QVariantMap& data, WorkflowCont
     const QVariant annotationsData = data[slot];
     const QList<SharedAnnotationData> annList = StorageUtils::getAnnotationTable(context->getDataStorage(), annotationsData);
 
-    AnnotationTableObject* annsObj = new AnnotationTableObject("Annotations", context->getDataStorage()->getDbiRef());
+    auto annsObj = new AnnotationTableObject("Annotations", context->getDataStorage()->getDbiRef());
     annsObj->addAnnotations(annList);
 
     return annsObj;
@@ -375,7 +375,7 @@ Task* ExternalProcessWorker::tick() {
     const QString externalProcessWorkingDir = GUrlUtils::createDirectory(workingDirectory + externalProcessFolder, "_", os);
     CHECK_OP(os, new FailTask(os.getError()));
 
-    LaunchExternalToolTask* task = new LaunchExternalToolTask(execString, externalProcessWorkingDir, outputUrls);
+    auto task = new LaunchExternalToolTask(execString, externalProcessWorkingDir, outputUrls);
     QList<ExternalToolListener*> listeners(createLogListeners());
     task->addListeners(listeners);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinishied()));
@@ -685,7 +685,7 @@ LaunchExternalToolTask::~LaunchExternalToolTask() {
 
 void LaunchExternalToolTask::run() {
     GCOUNTER(cvar, "A task for an element with external tool is launched");
-    QProcess* externalProcess = new QProcess();
+    auto externalProcess = new QProcess();
     externalProcess->setWorkingDirectory(workingDir);
     if (execString.contains(">")) {
         QString output = execString.split(">").last();

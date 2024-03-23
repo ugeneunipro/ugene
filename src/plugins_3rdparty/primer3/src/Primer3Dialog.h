@@ -83,7 +83,7 @@ private slots:
 private:
     void updateNoSequenceDialogState();
     void saveSettings(const QString& filePath);
-    void loadSettings(const QString& filePath);
+    bool loadSettings(const QString& filePath);
 
     U2Region selection;
     QList<QPair<QString, QByteArray>> repeatLibraries;
@@ -99,6 +99,7 @@ private:
 
     const Primer3TaskSettings defaultSettings;
     const QByteArray primer3DataDirectory;
+    const QList<QPair<QString, QString>> presetNamesMap;
 
     static const QStringList LINE_EDIT_PARAMETERS;
     static const QRegularExpression MUST_MATCH_END_REGEX;

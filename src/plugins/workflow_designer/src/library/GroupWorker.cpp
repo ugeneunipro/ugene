@@ -198,7 +198,7 @@ void GroupWorkerFactory::init() {
         Attribute* groupAttr = new GroupSlotAttribute(groupDesc, BaseTypes::STRING_TYPE(), false);
 
         Descriptor opDesc(OPER_ATTR_ID, GroupWorker::tr("Group operation"), GroupWorker::tr("Group operation"));
-        Attribute* opAttr = new Attribute(opDesc, BaseTypes::STRING_TYPE(), true);
+        auto opAttr = new Attribute(opDesc, BaseTypes::STRING_TYPE(), true);
 
         attrs << slotsAttr;
         attrs << groupAttr;

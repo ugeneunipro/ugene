@@ -33,7 +33,7 @@ namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     if (AppContext::getMainWindow()) {
-        PerfMonitorPlugin* plug = new PerfMonitorPlugin();
+        auto plug = new PerfMonitorPlugin();
         return plug;
     }
     return nullptr;

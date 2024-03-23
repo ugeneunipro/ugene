@@ -91,7 +91,7 @@ inline QList<QPushButton*>* SWMulAlignResultNamesTagsRegistry::getTagsButtons() 
     QList<SWMulAlignResultNamesTag*>* arrangedTags = getTagsWithCorrectOrder();
 
     foreach (SWMulAlignResultNamesTag* tag, *arrangedTags) {
-        QPushButton* button = new QPushButton(OPEN_SQUARE_BRACKET + tag->getShorthand() +
+        auto button = new QPushButton(OPEN_SQUARE_BRACKET + tag->getShorthand() +
                                               CLOSE_SQUARE_BRACKET + SHORTHAND_AND_LABEL_SEPARATOR + tag->getLabel());
         button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         tagsButtons->append(button);
@@ -108,7 +108,7 @@ inline SWMulAlignResultNamesTagsRegistry::~SWMulAlignResultNamesTagsRegistry() {
 }
 
 inline QBitArray* SWMulAlignResultNamesTagsRegistry::getBitmapOfTagsApplicability() const {
-    QBitArray* bitmap = new QBitArray(tags.count());
+    auto bitmap = new QBitArray(tags.count());
     quint8 counter = 0;
 
     foreach (SWMulAlignResultNamesTag* tag, tags.values()) {
@@ -132,7 +132,7 @@ inline void SWMulAlignResultNamesTagsRegistry::resetCounters() {
 }
 
 inline QStringList* SWMulAlignResultNamesTagsRegistry::getDefaultTagsForMobjectsNames() const {
-    QStringList* result = new QStringList();
+    auto result = new QStringList();
     result->append(PTRN_NAME_PREFIX_TAG_SHORTHAND);
     result->append(SEQ_NAME_PREFIX_TAG_SHORTHAND);
     result->append(COUNTER_TAG_SHORTHAND);
@@ -141,7 +141,7 @@ inline QStringList* SWMulAlignResultNamesTagsRegistry::getDefaultTagsForMobjects
 }
 
 inline QStringList* SWMulAlignResultNamesTagsRegistry::getDefaultTagsForRefSubseqNames() const {
-    QStringList* result = new QStringList();
+    auto result = new QStringList();
     result->append(SEQ_NAME_PREFIX_TAG_SHORTHAND);
     result->append(SUBSEQ_START_POS_TAG_SHORTHAND);
     result->append(SUBSEQ_END_POS_TAG_SHORTHAND);
@@ -150,7 +150,7 @@ inline QStringList* SWMulAlignResultNamesTagsRegistry::getDefaultTagsForRefSubse
 }
 
 inline QStringList* SWMulAlignResultNamesTagsRegistry::getDefaultTagsForPtrnSubseqNames() const {
-    QStringList* result = new QStringList();
+    auto result = new QStringList();
     result->append(PTRN_NAME_PREFIX_TAG_SHORTHAND);
     result->append(SUBSEQ_START_POS_TAG_SHORTHAND);
     result->append(SUBSEQ_END_POS_TAG_SHORTHAND);

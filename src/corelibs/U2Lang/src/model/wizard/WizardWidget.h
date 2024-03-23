@@ -54,7 +54,7 @@ public:
     LogoWidget(const QString& logoPath = "");
     virtual ~LogoWidget();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
+    void accept(WizardWidgetVisitor* visitor) override;
 
     void setLogoPath(const QString& value);
     const QString& getLogoPath() const;
@@ -75,8 +75,8 @@ public:
     WidgetsArea(const QString& name, const QString& title);
     virtual ~WidgetsArea();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
-    virtual void validate(const QList<Actor*>& actors, U2OpStatus& os) const;
+    void accept(WizardWidgetVisitor* visitor) override;
+    void validate(const QList<Actor*>& actors, U2OpStatus& os) const override;
 
     void addWidget(WizardWidget* widget);
     const QList<WizardWidget*>& getWidgets() const;
@@ -111,7 +111,7 @@ public:
     GroupWidget(const QString& title, Type type);
     virtual ~GroupWidget();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
+    void accept(WizardWidgetVisitor* visitor) override;
 
     void setType(Type value);
     Type getType() const;
@@ -132,8 +132,8 @@ public:
     AttributeWidget();
     virtual ~AttributeWidget();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
-    virtual void validate(const QList<Actor*>& actors, U2OpStatus& os) const;
+    void accept(WizardWidgetVisitor* visitor) override;
+    void validate(const QList<Actor*>& actors, U2OpStatus& os) const override;
 
     QString getActorId() const;
     QString getAttributeId() const;
@@ -156,8 +156,8 @@ class U2LANG_EXPORT PairedReadsWidget : public WizardWidget {
 public:
     PairedReadsWidget();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
-    virtual void validate(const QList<Actor*>& actors, U2OpStatus& os) const;
+    void accept(WizardWidgetVisitor* visitor) override;
+    void validate(const QList<Actor*>& actors, U2OpStatus& os) const override;
 
     void addInfo(const AttributeInfo& value);
 
@@ -177,8 +177,8 @@ class U2LANG_EXPORT UrlAndDatasetWidget : public WizardWidget {
 public:
     UrlAndDatasetWidget();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
-    virtual void validate(const QList<Actor*>& actors, U2OpStatus& os) const;
+    void accept(WizardWidgetVisitor* visitor) override;
+    void validate(const QList<Actor*>& actors, U2OpStatus& os) const override;
 
     void addInfo(const AttributeInfo& value);
 
@@ -205,7 +205,7 @@ public:
 
     RadioWidget();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
+    void accept(WizardWidgetVisitor* visitor) override;
 
     const QString& var() const;
     void setVar(const QString& value);
@@ -227,7 +227,7 @@ class U2LANG_EXPORT SettingsWidget : public WizardWidget {
 public:
     SettingsWidget();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
+    void accept(WizardWidgetVisitor* visitor) override;
 
     const QString& var() const;
     void setVar(const QString& value);
@@ -254,8 +254,8 @@ class U2LANG_EXPORT BowtieWidget : public WizardWidget {
 public:
     BowtieWidget();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
-    virtual void validate(const QList<Actor*>& actors, U2OpStatus& os) const;
+    void accept(WizardWidgetVisitor* visitor) override;
+    void validate(const QList<Actor*>& actors, U2OpStatus& os) const override;
 
     static const QString ID;
 
@@ -271,8 +271,8 @@ class U2LANG_EXPORT TophatSamplesWidget : public WizardWidget {
 public:
     TophatSamplesWidget();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
-    virtual void validate(const QList<Actor*>& actors, U2OpStatus& os) const;
+    void accept(WizardWidgetVisitor* visitor) override;
+    void validate(const QList<Actor*>& actors, U2OpStatus& os) const override;
 
     static const QString ID;
 
@@ -288,7 +288,7 @@ class U2LANG_EXPORT LabelWidget : public WizardWidget {
 public:
     LabelWidget();
 
-    virtual void accept(WizardWidgetVisitor* visitor);
+    void accept(WizardWidgetVisitor* visitor) override;
 
     static const QString ID;
     static const QString DEFAULT_BG_COLOR;

@@ -39,7 +39,7 @@ public:
     SequenceTextEdit(QWidget* p = nullptr);
 
 protected:
-    virtual void insertFromMimeData(const QMimeData* source);
+    void insertFromMimeData(const QMimeData* source) override;
 
     static const int PARAGRAPH_SIZE = 5120;
     static const int NO_QUESTION_LIMIT = 5000000;

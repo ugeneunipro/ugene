@@ -46,7 +46,7 @@ public:
     UnloadedObject(const QString& objectName, const GObjectType& loadedObjectType, const U2EntityRef& entityRef, const QVariantMap& hintsMap = QVariantMap());
     UnloadedObject(const UnloadedObjectInfo& info);
 
-    virtual GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const override;
 
     GObjectType getLoadedObjectType() const {
         return loadedObjectType;

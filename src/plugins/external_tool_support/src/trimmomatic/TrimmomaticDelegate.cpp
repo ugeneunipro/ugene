@@ -64,7 +64,7 @@ PropertyDelegate* TrimmomaticDelegate::clone() {
 QWidget* TrimmomaticDelegate::createEditor(QWidget* parent,
                                            const QStyleOptionViewItem&,
                                            const QModelIndex&) const {
-    TrimmomaticPropertyWidget* editor = new TrimmomaticPropertyWidget(parent);
+    auto editor = new TrimmomaticPropertyWidget(parent);
     connect(editor, SIGNAL(si_valueChanged(QVariant)), SLOT(sl_commit()));
     return editor;
 }
@@ -183,7 +183,7 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString& value,
     new MultiClickMenu(menu);
 
     foreach (TrimmomaticStepFactory* factory, TrimmomaticStepsRegistry::getInstance()->getAllEntries()) {
-        QAction* step = new QAction(factory->getId(), menu->menuAction());
+        auto step = new QAction(factory->getId(), menu->menuAction());
         step->setObjectName(factory->getId());
         menu->addAction(step);
     }

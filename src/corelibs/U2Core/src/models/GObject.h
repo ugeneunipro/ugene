@@ -162,7 +162,7 @@ protected:
     U2EntityRef entityRef;
 
 private:
-    virtual void setParentStateLockItem(StateLockableTreeItem* p);
+    void setParentStateLockItem(StateLockableTreeItem* p) override;
     void setRelationsInDb(QList<GObjectRelation>& list) const;
     void setupHints(QVariantMap hintsMap);
 
@@ -190,8 +190,8 @@ public:
     QPointer<GObject> objPtr;
 
     // QMimeData
-    bool hasFormat(const QString& mimeType) const;
-    QStringList formats() const;
+    bool hasFormat(const QString& mimeType) const override;
+    QStringList formats() const override;
 
     static const QString MIME_TYPE;
 };

@@ -67,7 +67,7 @@ SyncHttp::~SyncHttp() {
     loop = nullptr;
 }
 void SyncHttp::runStateCheckTimer() {
-    QTimer* timer = new QTimer(this);
+    auto timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(sl_taskCancellingCheck()));
     timer->start(500);
 }

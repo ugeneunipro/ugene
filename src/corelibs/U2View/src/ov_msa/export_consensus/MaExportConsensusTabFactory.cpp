@@ -75,18 +75,18 @@ QWidget* McaExportConsensusTabFactory::createWidget(GObjectViewController* objVi
                QString("Internal error: unable to cast object view to MaEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    QWidget* widget = new QWidget(objView->getWidget());
-    QVBoxLayout* layout = new QVBoxLayout();
+    auto widget = new QWidget(objView->getWidget());
+    auto layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
     widget->setLayout(layout);
 
-    MaConsensusModeWidget* consensusModeWgt = new MaConsensusModeWidget(widget);
-    consensusModeWgt->init(ma->getMaObject(), ma->getMaEditorWgt(0)->getConsensusArea());
-    ShowHideSubgroupWidget* consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWgt, true);
+    auto consensusModeWgt = new MaConsensusModeWidget(widget);
+    consensusModeWgt->init(ma->getMaObject(), ma->getLineWidget(0)->getConsensusArea());
+    auto consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWgt, true);
 
-    MaExportConsensusWidget* exportWidget = new MaExportConsensusWidget(ma, widget);
+    auto exportWidget = new MaExportConsensusWidget(ma, widget);
     exportWidget->layout()->setContentsMargins(9, 9, 9, 9);
-    ShowHideSubgroupWidget* exportConsensus = new ShowHideSubgroupWidget("EXPORT_CONSENSUS", tr("Export consensus"), exportWidget, true);
+    auto exportConsensus = new ShowHideSubgroupWidget("EXPORT_CONSENSUS", tr("Export consensus"), exportWidget, true);
 
     layout->addWidget(consensusMode);
     layout->addWidget(exportConsensus);

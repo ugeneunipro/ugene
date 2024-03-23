@@ -392,7 +392,7 @@ void ObjectViewTreeController::sl_addState() {
 
     QString stateName = GObjectViewUtils::genUniqueStateName(tr("New bookmark"));  // todo: avoid localization here?
     QVariantMap state = vi->viewWindow->getObjectView()->saveState();
-    GObjectViewState* s = new GObjectViewState(vi->viewWindow->getViewFactoryId(), vi->viewWindow->getViewName(), stateName, state);
+    auto s = new GObjectViewState(vi->viewWindow->getViewFactoryId(), vi->viewWindow->getViewName(), stateName, state);
     AppContext::getProject()->addGObjectViewState(s);
 
     vi->setExpanded(true);

@@ -48,7 +48,7 @@ public:
     void disableLogin();
 
 private slots:
-    void accept();
+    void accept() override;
 
 private:
     Ui_AuthenticationDialog* ui;

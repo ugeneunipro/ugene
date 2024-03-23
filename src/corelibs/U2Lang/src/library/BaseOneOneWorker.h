@@ -34,8 +34,8 @@ class U2LANG_EXPORT BaseOneOneWorker : public BaseWorker {
 public:
     BaseOneOneWorker(Actor* a, bool autoTransitBus, const QString& inPortId, const QString& outPortId);
 
-    void init();
-    Task* tick();
+    void init() override;
+    Task* tick() override;
 
 protected:
     virtual Task* createPrepareTask(U2OpStatus& os) const;

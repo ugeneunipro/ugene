@@ -68,7 +68,7 @@ namespace U2 {
 namespace BAM {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    BAMDbiPlugin* plug = new BAMDbiPlugin();
+    auto plug = new BAMDbiPlugin();
     return plug;
 }
 
@@ -225,7 +225,7 @@ void BAMImporterTask::initPrepareToImportTask() {
         QDir().mkpath(tmpDir);
 
         const QString pattern = tmpDir + "XXXXXX.ugenedb";
-        QTemporaryFile* tempLocalDb = new QTemporaryFile(pattern, this);
+        auto tempLocalDb = new QTemporaryFile(pattern, this);
 
         tempLocalDb->open();
         const QString filePath = tempLocalDb->fileName();
@@ -298,7 +298,7 @@ void BAMImporterTask::initConvertToSqliteTask() {
 void BAMImporterTask::initCloneObjectTasks() {
     QList<U2Assembly> assemblies = convertTask->getAssemblies();
     foreach (const U2Assembly& assembly, assemblies) {
-        AssemblyObject* object = new AssemblyObject(assembly.visualName, U2EntityRef(localDbiRef, assembly.id));
+        auto object = new AssemblyObject(assembly.visualName, U2EntityRef(localDbiRef, assembly.id));
         cloneTasks << new CloneObjectTask(object, hintedDbiRef, hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString());
     }
 }

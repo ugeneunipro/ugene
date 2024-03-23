@@ -262,7 +262,7 @@ void MultipleDocumentsReadingModeDialog::sl_onMoveUp() {
         return;
     }
 
-    QListWidgetItem* newCurrent = new QListWidgetItem(item->text());
+    auto newCurrent = new QListWidgetItem(item->text());
     listDocuments->insertItem(row - 1, newCurrent);
     listDocuments->removeItemWidget(item);
     delete item;
@@ -281,7 +281,7 @@ void MultipleDocumentsReadingModeDialog::sl_onMoveDown() {
         return;
     }
 
-    QListWidgetItem* newCurrent = new QListWidgetItem(item->text());
+    auto newCurrent = new QListWidgetItem(item->text());
     listDocuments->insertItem(row + 2, newCurrent);
     listDocuments->removeItemWidget(item);
     delete item;

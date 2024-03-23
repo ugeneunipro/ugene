@@ -141,7 +141,7 @@ void ReportSender::parse(const QString& htmlReport, const QString& dumpUrl) {
 bool ReportSender::send(const QString& additionalInfo, const QString& dumpUrl) {
     report += additionalInfo;
 
-    QNetworkAccessManager* netManager = new QNetworkAccessManager(this);
+    auto netManager = new QNetworkAccessManager(this);
     QNetworkProxy proxy = QNetworkProxy::applicationProxy();
     netManager->setProxy(proxy);
 
@@ -162,7 +162,7 @@ bool ReportSender::send(const QString& additionalInfo, const QString& dumpUrl) {
     QString data = QUrl::toPercentEncoding(report);
     QNetworkRequest request(reportsPath);
 
-    QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+    auto multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
     QHttpPart logPart;
     logPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"log\""));
@@ -172,7 +172,7 @@ bool ReportSender::send(const QString& additionalInfo, const QString& dumpUrl) {
     if (QFile::exists(dumpUrl)) {
         QHttpPart dumpPart;
 
-        QFile* file = new QFile(dumpUrl);
+        auto file = new QFile(dumpUrl);
         file->setParent(multiPart);
         file->open(QIODevice::ReadOnly);
         dumpPart.setBodyDevice(file);
