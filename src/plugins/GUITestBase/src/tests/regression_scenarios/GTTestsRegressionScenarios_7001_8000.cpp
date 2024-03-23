@@ -1007,6 +1007,21 @@ GUI_TEST_CLASS_DEFINITION(test_7279) {
                   "Expected error message is not found");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7290) {
+    class CheckVersion : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
+            CHECK_SET_ERR(!AppSettingsDialogFiller::isToolDescriptionContainsString("vcf-consensus", "Version: unknown"), "vcf-consensus version should not be 'unknown'.");
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    // 1. Open "UGENE Application Settings", select "External Tools" tab.
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new CheckVersion()));
+    GTMenu::clickMainMenuItem({"Settings", "Preferences..."}, GTGlobals::UseMouse);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7293) {
     // Open a multibyte unicode file that triggers format selection dialog with a raw data preview.
     // Check that raw data is shown correctly for both Open... & Open As... dialog (these are 2 different dialogs).

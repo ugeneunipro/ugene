@@ -23,12 +23,12 @@
 
 #include <QDir>
 #include <QFileInfo>
-#include <QTextStream>
 
 #include "samtools/TabixSupport.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRunTask.h>
+#include <U2Core/IOAdapterUtils.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -69,15 +69,7 @@ VcfConsensusSupport::VcfConsensusSupport()
 }
 
 const QString VcfConsensusSupport::getVersionFromToolPath(const QString& toolPath) const {
-    QFileInfo toolPathFi(toolPath);
-    QString versionPath = toolPathFi.absoluteDir().absolutePath() + "/version.txt";
-    QFile f(versionPath);
-    if (!f.open(QIODevice::ReadOnly)) {
-        return "";
-    }
-
-    QTextStream s1(&f);
-    return QString().append(s1.readLine());
+    return IOAdapterUtils::readTextFile(QFileInfo(toolPath).absoluteDir().absolutePath() + "/version.txt");
 }
 
 }  // namespace U2
