@@ -101,6 +101,7 @@ const QString& ExternalTool::getVersion() const {
 }
 
 const QString ExternalTool::getVersionFromToolPath(const QString& toolPath) const {
+    Q_UNUSED(toolPath);
     return QString();
 }
 
