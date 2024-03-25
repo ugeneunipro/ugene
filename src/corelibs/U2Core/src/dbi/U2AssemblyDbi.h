@@ -146,6 +146,7 @@ public:
 
     /**
         Count 'length of assembly' - position of the rightmost base of all reads.
+        This function returns index - whick means, that it is 'length minus one'.
         If there is no assembly object with the specified id returns -1.
     */
     virtual qint64 getMaxEndPos(const U2DataId& assemblyId, U2OpStatus& os) = 0;

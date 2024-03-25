@@ -185,10 +185,10 @@ qint64 SQLiteAssemblyDbi::getMaxEndPos(const U2DataId& assemblyId, U2OpStatus& o
     if (a == nullptr) {
         return -1;
     }
-    quint64 res = a->getMaxEndPos(os);
+    quint64 res = a->getAssemblyLength(os);
 
     perfLog.trace(QString("Assembly: get max end pos: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / (1000 * 1000)));
-    return res;
+    return res - 1;
 }
 
 void SQLiteAssemblyDbi::createAssemblyObject(U2Assembly& assembly, const QString& folder, U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& importInfo, U2OpStatus& os) {

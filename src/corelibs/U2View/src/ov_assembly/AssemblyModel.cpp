@@ -189,7 +189,7 @@ qint64 AssemblyModel::getModelLength(U2OpStatus& os) {
         // If we can't get 'cachedModelLength' from the attributes -> set from the reference or max end pos.
         if (cachedModelLength == NO_VAL) {
             qint64 refLen = hasReference() ? refObj->getSequenceLength() : 0;
-            qint64 assLen = assemblyDbi->getMaxEndPos(assembly.id, os);
+            qint64 assLen = assemblyDbi->getMaxEndPos(assembly.id, os) + 1;
             LOG_OP(os);
             cachedModelLength = qMax(refLen, assLen);
 
