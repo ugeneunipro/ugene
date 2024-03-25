@@ -54,6 +54,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 const QString InSilicoPcrWorkerFactory::ACTOR_ID = "in-silico-pcr";
+const QString InSilicoPcrWorkerFactory::TEMPERATURE_SETTINGS_ID = "temperature-settings";
 namespace {
 const QString OUT_PORT_ID = "out";
 const QString PRIMERS_ATTR_ID = "primers-url";
@@ -63,7 +64,6 @@ const QString PERFECT_ATTR_ID = "perfect-match";
 const QString MAX_PRODUCT_ATTR_ID = "max-product";
 const QString USE_AMBIGUOUS_BASES_ID = "use-ambiguous-bases";
 const QString EXTRACT_ANNOTATIONS_ATTR_ID = "extract-annotations";
-const QString TEMPERATURE_SETTINGS_ID = "temperature-settings";
 
 const char* PAIR_NUMBER_PROP_ID = "pair-number";
 }  // namespace
@@ -209,36 +209,45 @@ void InSilicoPcrWorker::onPrepared(Task* task, U2OpStatus& os) {
     CHECK_EXT(0 == objects.size() % 2, os.setError(tr("There is the odd number of primers in the file: ") + loadTask->getURLString()), );
 
     fetchPrimers(objects, os);
+    CHECK_OP(os, );
+
+    auto TmCalculator = AppContext::getTmCalculatorRegistry()->createTmCalculator(getValue<QVariantMap>(InSilicoPcrWorkerFactory::TEMPERATURE_SETTINGS_ID));
+    QList<QPair<Primer, Primer>> primersToExclude;
+    for (const auto& primerPair : qAsConst(primers)) {
+        bool isCriticalError = false;
+        QString message = PrimerStatistics::checkPcrPrimersPair(primerPair.first.sequence.toLocal8Bit(),
+                                                                primerPair.second.sequence.toLocal8Bit(),
+                                                                TmCalculator,
+                                                                isCriticalError);
+        CHECK_CONTINUE(isCriticalError);
+
+        coreLog.error(message);
+        primersToExclude << primerPair;
+    }
+    for (const auto& primerToExclude : qAsConst(primersToExclude)) {
+        primers.removeOne(primerToExclude);
+    }
+    if (primers.isEmpty()) {
+        os.setError(tr("All primer pairs have been filtered, see log for details."));
+    }
 }
 
 void InSilicoPcrWorker::fetchPrimers(const QList<GObject*>& objects, U2OpStatus& os) {
     for (int i = 0; i < objects.size() / 2; i++) {
-        bool skipped = false;
-
-        Primer forward = createPrimer(objects[2 * i], skipped, os);
+        Primer forward = createPrimer(objects[2 * i], os);
         CHECK_OP(os, );
 
-        Primer reverse = createPrimer(objects[2 * i + 1], skipped, os);
+        Primer reverse = createPrimer(objects[2 * i + 1], os);
         CHECK_OP(os, );
-
-        if (skipped) {
-            continue;
-        }
 
         primers << QPair<Primer, Primer>(forward, reverse);
     }
 }
 
-Primer InSilicoPcrWorker::createPrimer(GObject* object, bool& skipped, U2OpStatus& os) {
+Primer InSilicoPcrWorker::createPrimer(GObject* object, U2OpStatus& os) {
     Primer result;
     auto primerSeq = qobject_cast<U2SequenceObject*>(object);
     CHECK_EXT(primerSeq != nullptr, os.setError(L10N::nullPointerError("Primer sequence")), result);
-
-    if (primerSeq->getSequenceLength() > Primer::MAX_LEN) {
-        skipped = true;
-        coreLog.details(tr("Primer sequence is too long: %1. The pair is skipped").arg(primerSeq->getSequenceName()));
-        return result;
-    }
 
     result.name = primerSeq->getSequenceName();
     result.sequence = primerSeq->getWholeSequenceData(os);
@@ -324,7 +333,7 @@ int InSilicoPcrWorker::createMetadata(int sequenceLength, const U2Region& produc
 Task* InSilicoPcrWorker::onInputEnded() {
     CHECK(!reported, nullptr);
     reported = true;
-    QVariantMap tmAlgorithmSettings = getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID);
+    QVariantMap tmAlgorithmSettings = getValue<QVariantMap>(InSilicoPcrWorkerFactory::TEMPERATURE_SETTINGS_ID);
     if (tmAlgorithmSettings.isEmpty()) {
         tmAlgorithmSettings = AppContext::getTmCalculatorRegistry()->getDefaultTmCalculatorFactory()->createDefaultSettings();
     }
@@ -371,7 +380,7 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
         pcrSettings->useAmbiguousBases = getValue<bool>(USE_AMBIGUOUS_BASES_ID);
         pcrSettings->perfectMatch = getValue<int>(PERFECT_ATTR_ID);
         pcrSettings->sequenceName = seq->getSequenceName();
-        QVariantMap tmAlgorithmSettings = getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID);
+        QVariantMap tmAlgorithmSettings = getValue<QVariantMap>(InSilicoPcrWorkerFactory::TEMPERATURE_SETTINGS_ID);
         TmCalculatorRegistry* tmRegistry = AppContext::getTmCalculatorRegistry();
         pcrSettings->temperatureCalculator = tmRegistry->createTmCalculator(tmAlgorithmSettings);
         CHECK(pcrSettings->temperatureCalculator != nullptr,
@@ -382,7 +391,7 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
         tasks << pcrTask;
     }
     sequences << seqId;
-    CHECK(!tasks.isEmpty(), new FailTask(tr("Primers specified in \"%1\" are too long.").arg(QFileInfo(getValue<QString>(PRIMERS_ATTR_ID)).fileName())));
+    SAFE_POINT(!tasks.isEmpty(), "Tasks shouldn't be empty", new FailTask("Tasks shouldn't be empty"));
 
     return new MultiTask(tr("Multiple In Silico PCR"), tasks);
 }
