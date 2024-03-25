@@ -79,6 +79,8 @@ public:
     virtual QStringList getToolRunnerAdditionalOptions() const;
     const QString& getExecutableFileName() const;
     const QString& getVersion() const;
+    /** Returns the tool version for the tool located by the specified path without running the tool. 
+      * Returns an empty string if can't derive the tool version by the path. */
     virtual const QString getVersionFromToolPath(const QString& toolPath) const;
     const QString& getPredefinedVersion() const;
     const QRegExp& getVersionRegExp() const;
