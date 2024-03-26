@@ -29,6 +29,7 @@ GUI_TEST_CLASS_DECLARATION(test_0002_fail)
 GUI_TEST_CLASS_DECLARATION(test_0003_limits)
 GUI_TEST_CLASS_DECLARATION(test_0004_region)
 GUI_TEST_CLASS_DECLARATION(test_0005_large)
+GUI_TEST_CLASS_DECLARATION(test_0006_html_name)
 #undef GUI_TEST_SUITE
 }  // namespace GUITest_common_scenarios_mfold
 }  // namespace U2

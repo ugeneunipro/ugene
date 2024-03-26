@@ -1,0 +1,5 @@
+<multi-test>
+    <load-document index="inp_doc" url="et/mfold/bad_names/unicode.fa" io="local_file" format="fasta"/>
+    <find-object-by-name index="inp" doc="inp_doc" name="какая-то последовательность?" type="OT_SEQUENCE"/>
+    <mfold inp="inp" region="1..50"/>
+</multi-test>
