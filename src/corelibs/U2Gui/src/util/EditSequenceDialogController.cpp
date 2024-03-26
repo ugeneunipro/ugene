@@ -63,7 +63,6 @@ SeqPasterEventFilter::SeqPasterEventFilter(QObject* parent)
 EditSequenceDialogController::EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p)
     : QDialog(p),
       filter(""),
-      pos(1),
       saveController(nullptr),
       config(cfg) {
     ui = new Ui_EditSequenceDialog;
@@ -86,12 +85,13 @@ EditSequenceDialogController::EditSequenceDialogController(const EditSequencDial
 
     seqEndPos = cfg.source.length + 1;
 
-    ui->insertPositionSpin->setMinimum(1);
-    ui->insertPositionSpin->setMaximum(seqEndPos);
+    ui->insertPositionLineEdit->setValidator(new QIntValidator(1, seqEndPos, ui->insertPositionLineEdit));
 
+    qint64 initValue = 1;
     if ((1 < cfg.position) && (cfg.position < seqEndPos)) {
-        ui->insertPositionSpin->setValue(cfg.position);
+        initValue = cfg.position;
     }
+    ui->insertPositionLineEdit->setText(QString::number(initValue));
 
     if (cfg.mode == EditSequenceMode_Insert) {
         setWindowTitle(tr("Insert Sequence"));
@@ -148,7 +148,22 @@ void EditSequenceDialogController::accept() {
             return;
         }
     }
-    pos = ui->insertPositionSpin->value() - 1;
+
+    auto insertPositionText = ui->insertPositionLineEdit->text();
+    int posUnused = 0; // Not used by this validator
+    auto state = ui->insertPositionLineEdit->validator()->validate(insertPositionText, posUnused);
+    if (state != QValidator::State::Acceptable) {
+        QMessageBox::critical(this, this->windowTitle(), tr("Incorrect position to insert, should be from 1 to %1").arg(seqEndPos));
+        return;
+    }
+
+    CHECK(state == QValidator::State::Acceptable, )
+
+    bool ok = false;
+    qint64 value = insertPositionText.toULongLong(&ok);
+    SAFE_POINT(ok, "Should be number", QDialog::reject());
+
+    pos = value - 1;
 
     QDialog::accept();
 }
@@ -158,7 +173,7 @@ void EditSequenceDialogController::addSeqpasterWidget() {
     ui->globalLayout->insertWidget(0, w);
 }
 
-int EditSequenceDialogController::getPosToInsert() const {
+qint64 EditSequenceDialogController::getPosToInsert() const {
     return pos;
 }
 
@@ -235,23 +250,23 @@ void EditSequenceDialogController::initSaveController() {
 }
 
 void EditSequenceDialogController::sl_startPositionliClicked() {
-    ui->insertPositionSpin->setValue(1);
+    ui->insertPositionLineEdit->setText(QString::number(1));
 }
 
 void EditSequenceDialogController::sl_endPositionliClicked() {
-    ui->insertPositionSpin->setValue(seqEndPos);
+    ui->insertPositionLineEdit->setText(QString::number(seqEndPos));
 }
 
 void EditSequenceDialogController::sl_beforeSlectionClicked() {
     SAFE_POINT(!config.selectionRegions.isEmpty(), "No selection", );
     U2Region containingregion = U2Region::containingRegion(config.selectionRegions);
-    ui->insertPositionSpin->setValue(containingregion.startPos + 1);
+    ui->insertPositionLineEdit->setText(QString::number(containingregion.startPos + 1));
 }
 
 void EditSequenceDialogController::sl_afterSlectionClicked() {
     SAFE_POINT(!config.selectionRegions.isEmpty(), "No selection", );
     U2Region containingregion = U2Region::containingRegion(config.selectionRegions);
-    ui->insertPositionSpin->setValue(containingregion.endPos() + 1);
+    ui->insertPositionLineEdit->setText(QString::number(containingregion.endPos() + 1));
 }
 
 void EditSequenceDialogController::sl_enterPressed() {

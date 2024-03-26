@@ -43,10 +43,20 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::insertSequenceFiller"
-InsertSequenceFiller::InsertSequenceFiller(const QString& _pasteDataHere, RegionResolvingMode _regionResolvingMode, int _insertPosition, const QString& _documentLocation, documentFormat _format, bool _saveToNewFile, bool _mergeAnnotations, GTGlobals::UseMethod method, bool _wrongInput, bool recalculateQuals)
+InsertSequenceFiller::InsertSequenceFiller(const QString& _pasteDataHere,
+                                           RegionResolvingMode _regionResolvingMode,
+                                           qint64 _insertPosition,
+                                           const QString& _documentLocation,
+                                           documentFormat _format,
+                                           bool _saveToNewFile,
+                                           bool _mergeAnnotations,
+                                           GTGlobals::UseMethod method,
+                                           bool _wrongInput,
+                                           bool recalculateQuals,
+                                           bool _cancelIfWrongInput)
     : Filler("EditSequenceDialog"), pasteDataHere(_pasteDataHere), regionResolvingMode(_regionResolvingMode), insertPosition(_insertPosition),
       documentLocation(_documentLocation), format(_format), saveToNewFile(_saveToNewFile), mergeAnnotations(_mergeAnnotations),
-      useMethod(method), wrongInput(_wrongInput), recalculateQuals(recalculateQuals) {
+      useMethod(method), wrongInput(_wrongInput), recalculateQuals(recalculateQuals), cancelIfWrongInput(_cancelIfWrongInput) {
     if (!documentLocation.isEmpty()) {
         documentLocation = GTFileDialog::toAbsoluteNativePath(documentLocation);
     }
@@ -82,8 +92,8 @@ void InsertSequenceFiller::commonScenario() {
     auto regionResolvingMode = GTWidget::findRadioButton(radioButtonName, dialog);  //"regionResolvingMode");
     GTRadioButton::click(regionResolvingMode);
 
-    auto insertPositionSpin = GTWidget::findSpinBox("insertPositionSpin", dialog);
-    GTSpinBox::setValue(insertPositionSpin, insertPosition, GTGlobals::UseKeyBoard);
+    auto insertPositionLineEdit = GTWidget::findLineEdit("insertPositionLineEdit", dialog);
+    GTLineEdit::setText(insertPositionLineEdit, QString::number(insertPosition), GTGlobals::UseKeyBoard);
 
     auto checkButton = GTWidget::findGroupBox("saveToAnotherBox", dialog);
 
@@ -123,6 +133,10 @@ void InsertSequenceFiller::commonScenario() {
         GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
     }
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+
+    if (cancelIfWrongInput) {
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+    }
 }
 
 #undef GT_CLASS_NAME

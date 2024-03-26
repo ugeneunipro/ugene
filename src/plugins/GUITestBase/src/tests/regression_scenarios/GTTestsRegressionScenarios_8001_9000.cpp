@@ -57,6 +57,7 @@
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
@@ -398,6 +399,18 @@ GUI_TEST_CLASS_DEFINITION(test_8052) {
     GTUtilsNotifications::waitForNotification(true, "Block size is too big and can't be copied into the clipboard");
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy/Paste", "Copy annotation sequence"}));
     GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8058) {
+    // Open human_T1.fa
+    // Open the "Insert sequence" dialog
+    // Set pos to insert more than sequence length
+    // Click OK
+    // Error appeared
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsDialog::waitForDialog(new InsertSequenceFiller("AAA", InsertSequenceFiller::Resize, 999999, "", InsertSequenceFiller::FASTA, false, false, GTGlobals::UseKey, true, false, true));
+    GTMenu::clickMainMenuItem({"Actions", "Edit", "Insert subsequence..."}, GTGlobals::UseMouse);
 }
 
 }  // namespace GUITest_regression_scenarios
