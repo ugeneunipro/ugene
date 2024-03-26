@@ -79,7 +79,7 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
     buttonBox->button(QDialogButtonBox::Ok)->setAutoDefault(true);
     buttonBox->button(QDialogButtonBox::Ok)->setDefault(true);
 
-    QButtonGroup* bg = new QButtonGroup();
+    auto bg = new QButtonGroup();
     connect(bg, SIGNAL(buttonClicked(int)), SLOT(sl_enableConvertInfo(int)));
 
     int size = formatDetectionResults.size();
@@ -168,7 +168,7 @@ void DocumentProviderSelectorController::addFormatRadioButton(const GUrl& url, Q
     QString text;
     ImportWidget* wgt = getRadioButtonWgt(result, text, url, it);
 
-    QRadioButton* rbFormat = new QRadioButton(text);
+    auto rbFormat = new QRadioButton(text);
     QString name = QString::number(it) + "_radio";
     rbFormat->setObjectName(name);
     formatsRadioButtons << rbFormat;

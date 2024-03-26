@@ -305,16 +305,16 @@ public:
         return viewController;
     }
 
-    virtual void closeView();
+    void closeView() override;
 
     GObjectViewFactory* getViewFactory() const;
 
-    virtual void setupMDIToolbar(QToolBar* tb);
+    void setupMDIToolbar(QToolBar* tb) override;
 
-    virtual void setupViewMenu(QMenu* n);
+    void setupViewMenu(QMenu* n) override;
 
 protected:
-    virtual bool onCloseEvent();
+    bool onCloseEvent() override;
 
 signals:
     void si_persistentStateChanged(GObjectViewWindow* thiz);

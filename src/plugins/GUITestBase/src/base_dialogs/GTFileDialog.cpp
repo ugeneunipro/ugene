@@ -320,7 +320,7 @@ void GTFileDialog::openFileList(const QString& path, const QStringList& fileName
 }
 
 void GTFileDialog::openFileList(const QStringList& filePaths) {
-    GTFileDialogUtils_list* openFileDialogFiller = new GTFileDialogUtils_list(filePaths);
+    auto openFileDialogFiller = new GTFileDialogUtils_list(filePaths);
     GTUtilsDialog::waitForDialog(openFileDialogFiller);
     openFileDialogFiller->openFileDialog();
 }

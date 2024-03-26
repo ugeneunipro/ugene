@@ -37,8 +37,8 @@ class U2FORMATS_EXPORT AprImporterTask : public DocumentProviderTask {
 public:
     AprImporterTask(const GUrl& url, const QVariantMap& _settings);
 
-    virtual void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     QVariantMap settings;
@@ -54,9 +54,9 @@ class U2FORMATS_EXPORT AprImporter : public DocumentImporter {
 public:
     AprImporter();
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url);
-    virtual DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showGui, const QVariantMap& hints);
-    virtual QString getRadioButtonText() const;
+    FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url) override;
+    DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showGui, const QVariantMap& hints) override;
+    QString getRadioButtonText() const override;
 
     static const QString ID;
     static const QString SRC_URL;

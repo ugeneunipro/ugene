@@ -42,13 +42,13 @@ public:
                          documentAlphabet _alphabet,
                          bool skipUnknownSymbols,
                          bool replaceUnknownSymbols,
-                         const QString symbol,
+                         const QString& symbol,
                          const QString& _documentLocation,
                          documentFormat _format,
                          const QString& _sequenceName,
                          GTGlobals::UseMethod method = GTGlobals::UseMouse);
     CreateDocumentFiller(CustomScenario* scenario);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString pasteDataHere;

@@ -36,8 +36,8 @@ class U2ALGORITHM_EXPORT ORFFindTask : public Task, public ORFFindResultsListene
 public:
     ORFFindTask(const ORFAlgorithmSettings& s, const U2EntityRef& entityRef);
 
-    virtual void run();
-    virtual void onResult(const ORFFindResult& r, U2OpStatus& oss);
+    void run() override;
+    void onResult(const ORFFindResult& r, U2OpStatus& oss) override;
 
     QList<ORFFindResult> popResults();
 

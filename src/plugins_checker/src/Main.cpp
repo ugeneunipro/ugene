@@ -97,17 +97,17 @@ int main(int argc, char** argv) {
 
     QCoreApplication::addLibraryPath(AppContext::getWorkingDirectoryPath());
     // parse all cmdline arguments
-    CMDLineRegistry* cmdLineRegistry = new CMDLineRegistry(app.arguments());
+    auto cmdLineRegistry = new CMDLineRegistry(app.arguments());
     appContext->setCMDLineRegistry(cmdLineRegistry);
 
     // 1 create settings
-    SettingsImpl* globalSettings = new SettingsImpl(QSettings::SystemScope);
+    auto globalSettings = new SettingsImpl(QSettings::SystemScope);
     appContext->setGlobalSettings(globalSettings);
 
-    SettingsImpl* settings = new SettingsImpl(QSettings::UserScope);
+    auto settings = new SettingsImpl(QSettings::UserScope);
     appContext->setSettings(settings);
 
-    AppSettings* appSettings = new AppSettingsImpl();
+    auto appSettings = new AppSettingsImpl();
     appContext->setAppSettings(appSettings);
 
     UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
@@ -129,16 +129,16 @@ int main(int argc, char** argv) {
     }
     // 2 create functional components of ugene
 
-    ResourceTracker* resTrack = new ResourceTracker();
+    auto resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);
 
-    TaskSchedulerImpl* ts = new TaskSchedulerImpl(appSettings->getAppResourcePool());
+    auto ts = new TaskSchedulerImpl(appSettings->getAppResourcePool());
     appContext->setTaskScheduler(ts);
 
-    PluginSupportImpl* psp = new PluginSupportImpl();
+    auto psp = new PluginSupportImpl();
     appContext->setPluginSupport(psp);
 
-    ServiceRegistryImpl* sreg = new ServiceRegistryImpl();
+    auto sreg = new ServiceRegistryImpl();
     appContext->setServiceRegistry(sreg);
 
     registerCoreServices();

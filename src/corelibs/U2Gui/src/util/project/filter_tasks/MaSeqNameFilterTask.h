@@ -34,7 +34,7 @@ public:
     MsaSeqNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs);
 
 protected:
-    bool filterAcceptsObject(GObject* obj);
+    bool filterAcceptsObject(GObject* obj) override;
 };
 
 class McaReadNameFilterTask : public AbstractProjectFilterTask {
@@ -42,7 +42,7 @@ public:
     McaReadNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs);
 
 protected:
-    bool filterAcceptsObject(GObject* obj);
+    bool filterAcceptsObject(GObject* obj) override;
 };
 
 class McaReferenceNameFilterTask : public AbstractProjectFilterTask {
@@ -50,7 +50,7 @@ public:
     McaReferenceNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs);
 
 protected:
-    bool filterAcceptsObject(GObject* obj);
+    bool filterAcceptsObject(GObject* obj) override;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,17 +59,17 @@ protected:
 
 class U2GUI_EXPORT MsaSeqNameFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
-    AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
+    AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const override;
 };
 
 class U2GUI_EXPORT McaReadNameFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
-    AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
+    AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const override;
 };
 
 class U2GUI_EXPORT McaReferenceNameFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
-    AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
+    AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const override;
 };
 
 }  // namespace U2

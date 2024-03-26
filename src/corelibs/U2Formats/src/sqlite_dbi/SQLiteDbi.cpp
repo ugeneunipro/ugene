@@ -270,11 +270,12 @@ void SQLiteDbi::internalInit(const QHash<QString, QString>& props, U2OpStatus& o
             Version dbAppVersion = Version::parseVersion(appVersionText);
             Version currentVersion = Version::appVersion();
             if (dbAppVersion > currentVersion) {
-                coreLog.info(U2DbiL10n::tr("Warning! The database was created with a newer %1 version: "
-                                           "%2. Not all database features may be supported! Current %1 version: %3.")
-                                 .arg(U2_PRODUCT_NAME)
-                                 .arg(dbAppVersion.toString())
-                                 .arg(currentVersion.toString()));
+                os.setError(
+                    U2DbiL10n::tr("The file was created with a newer version of UGENE. Current version: %1, minimum version required by database: %2. File: %3.")
+                        .arg(currentVersion.toString())
+                        .arg(dbAppVersion.toString())
+                        .arg(url));
+                return;
             }
         }
 
@@ -310,6 +311,12 @@ void SQLiteDbi::internalInit(const QHash<QString, QString>& props, U2OpStatus& o
     features.insert(U2DbiFeature_WriteModifications);
     features.insert(U2DbiFeature_ReadUdr);
     features.insert(U2DbiFeature_WriteUdr);
+}
+
+void SQLiteDbi::testDatabaseLocked(U2OpStatus& os) {
+    SQLiteWriteQuery("BEGIN EXCLUSIVE;", db, os).execute();
+    CHECK_OP(os, );
+    SQLiteWriteQuery("COMMIT;", db, os).execute();
 }
 
 void SQLiteDbi::setState(U2DbiState s) {
@@ -387,6 +394,8 @@ void SQLiteDbi::init(const QHash<QString, QString>& props, const QVariantMap&, U
             ioLog.trace(QString("SQLite: initialized: %1\n").arg(url));
         }
     } while (false);
+
+    testDatabaseLocked(os);
 
     if (os.hasError()) {
         sqlite3_close(db->handle);

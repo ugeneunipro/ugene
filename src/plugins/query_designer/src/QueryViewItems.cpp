@@ -354,7 +354,7 @@ void QDElement::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
     int serialNum = actors.indexOf(getActor());
 
     QMenu menu;
-    QMenu* orderMenu = new QMenu(tr("Set order"), &menu);
+    auto orderMenu = new QMenu(tr("Set order"), &menu);
     for (int i = 0; i < actors.size(); i++) {
         QDActor* actor = actors.at(i);
         QAction* a = orderMenu->addAction(QString("%1 %2")

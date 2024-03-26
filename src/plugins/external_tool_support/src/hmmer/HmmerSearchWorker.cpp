@@ -100,10 +100,10 @@ void HmmerSearchWorkerFactory::init() {
         Descriptor ded(DOM_E_ATTR, HmmerSearchWorker::tr("Filter by high E-value"), HmmerSearchWorker::tr("Report domains with e-value less than."));
         Descriptor dtd(DOM_T_ATTR, HmmerSearchWorker::tr("Filter by low score"), HmmerSearchWorker::tr("Report domains with score greater than."));
 
-        Attribute* evalue = new Attribute(ded, BaseTypes::NUM_TYPE(), false, QVariant((double)10.0));
-        Attribute* score = new Attribute(dtd, BaseTypes::NUM_TYPE(), false, QVariant((double)0.0));
+        auto evalue = new Attribute(ded, BaseTypes::NUM_TYPE(), false, QVariant((double)10.0));
+        auto score = new Attribute(dtd, BaseTypes::NUM_TYPE(), false, QVariant((double)0.0));
 
-        Attribute* filterBy = new Attribute(filterByDesc, BaseTypes::STRING_TYPE(), true, FILTER_BY_NONE);
+        auto filterBy = new Attribute(filterByDesc, BaseTypes::STRING_TYPE(), true, FILTER_BY_NONE);
         a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, QVariant("hmm_signal"));
         a << filterBy;
         a << new Attribute(nsd, BaseTypes::NUM_TYPE(), false, QVariant(42));
@@ -272,7 +272,7 @@ Task* HmmerSearchWorker::tick() {
                 settings.sequence = seqObj.data();
                 settings.pattern.annotationName = resultName;
                 settings.annotationTable = new AnnotationTableObject("Annotation table", context->getDataStorage()->getDbiRef());
-                HmmerSearchTask* searchTask = new HmmerSearchTask(settings);
+                auto searchTask = new HmmerSearchTask(settings);
                 settings.annotationTable->setParent(searchTask);
                 searchTask->addListeners(createLogListeners());
                 subtasks << searchTask;

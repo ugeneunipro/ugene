@@ -35,12 +35,12 @@ class U2LANG_EXPORT BaseThroughWorker : public BaseOneOneWorker {
 public:
     BaseThroughWorker(Actor* a, const QString& inPortId, const QString& outPortId);
 
-    void cleanup();
+    void cleanup() override;
 
 protected:
     // BaseOneOneWorker
-    Task* processNextInputMessage();
-    Task* onInputEnded();
+    Task* processNextInputMessage() override;
+    Task* onInputEnded() override;
     Message composeMessage(const QVariantMap& data);
 
     virtual Task* createTask(const Message& message, U2OpStatus& os) = 0;

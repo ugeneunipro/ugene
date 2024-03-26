@@ -648,6 +648,35 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     CHECK_SET_ERR(sequence == EXPECTED_SEQ, "Unexpected sequence");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0027) {
+    GTFileDialog::openFile(testDir + "_common_data/primer3", "human.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    class Scenario : public Filler {
+    public:
+        Scenario()
+            : Filler("Primer3Dialog") {
+        }
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            static QStringList PRESETS = {"Default2", "qPCR", "Cloning Primers", "Annealing Temp", "Secondary Structures", "Probe"};
+            for (const auto& preset : qAsConst(PRESETS)) {
+                GTComboBox::selectItemByText("cbPreset", dialog, preset);
+                QString presetSavedParamsFileName = "test_0025_" + preset + ".txt";
+                GTUtilsDialog::add(new GTFileDialogUtils(sandBoxDir, presetSavedParamsFileName, GTFileDialogUtils::Save));
+                GTWidget::click(GTWidget::findWidget("saveSettingsButton", dialog));
+                CHECK_SET_ERR(GTFile::equals(testDir + "_common_data/primer3/presets/" + preset + ".txt", sandBoxDir + presetSavedParamsFileName, true), QString("%1 settings are not equal").arg(preset));
+            }
+
+            GTWidget::click(GTWidget::findWidget("closeButton", dialog));
+        }
+    };
+
+    GTUtilsDialog::add(new Scenario());
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
+}
+
 
 }  // namespace GUITest_common_scenarios_primer3
 }  // namespace U2

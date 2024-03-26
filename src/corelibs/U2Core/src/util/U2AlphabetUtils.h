@@ -55,7 +55,7 @@ public:
         assert(al1 == al2);
     }
 
-    virtual bool equals(char c1, char c2) const {
+    bool equals(char c1, char c2) const override {
         return c1 == c2 && c1 != 'N' && c2 != 'N';
     }
 };
@@ -68,7 +68,7 @@ public:
         assert(al1 == al2);
     }
 
-    virtual bool equals(char c1, char c2) const {
+    bool equals(char c1, char c2) const override {
         return c1 == c2;
     }
 };
@@ -81,7 +81,7 @@ public:
         assert(al1 == al2);
     }
 
-    virtual bool equals(char c1, char c2) const {
+    bool equals(char c1, char c2) const override {
         return c1 == c2 || c1 == 'N';
     }
 };
@@ -94,7 +94,7 @@ public:
         assert(al1 == al2);
     }
 
-    virtual bool equals(char c1, char c2) const {
+    bool equals(char c1, char c2) const override {
         return c1 == c2 || c1 == 'N' || c2 == 'N';
     }
 };
@@ -105,7 +105,7 @@ public:
 class U2CORE_EXPORT ExtendedDNAlphabetComparator : public DNAAlphabetComparator {
 public:
     ExtendedDNAlphabetComparator(const DNAAlphabet* _al1, const DNAAlphabet* _al2);
-    virtual bool equals(char c1, char c2) const;
+    bool equals(char c1, char c2) const override;
 
 private:
     inline void buildIndex();

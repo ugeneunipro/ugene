@@ -74,7 +74,7 @@ Task* HMM2QDActor::getAlgorithmTask(const QVector<U2Region>& location) {
     QString hmmFileStr = params.value(PROFILE_ATTR)->getAttributeValueWithoutScript<QString>();
     QStringList hmmFiles = hmmFileStr.split(QRegExp("\\s*;\\s*"));
 
-    Task* t = new Task(tr("QD HMM2 search"), TaskFlag_NoRun);
+    auto t = new Task(tr("QD HMM2 search"), TaskFlag_NoRun);
 
     UHMMSearchSettings stngs;
 
@@ -93,7 +93,7 @@ Task* HMM2QDActor::getAlgorithmTask(const QVector<U2Region>& location) {
             sequence.seq = QByteArray(seq + r.startPos, r.length);
             sequence.alphabet = dnaSeq.alphabet;
 
-            HMMSearchTask* st = new HMMSearchTask(hmmFile, sequence, stngs);
+            auto st = new HMMSearchTask(hmmFile, sequence, stngs);
             t->addSubTask(st);
             offsets[st] = r.startPos;
         }

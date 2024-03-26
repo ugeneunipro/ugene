@@ -55,7 +55,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    MusclePlugin* plug = new MusclePlugin();
+    auto plug = new MusclePlugin();
     return plug;
 }
 
@@ -68,7 +68,7 @@ MusclePlugin::MusclePlugin()
         ctx->init();
 
         // Add to tools menu for fast run
-        QAction* muscleAction = new QAction(tr("Align with MUSCLE…"), this);
+        auto muscleAction = new QAction(tr("Align with MUSCLE…"), this);
         muscleAction->setIcon(QIcon(":umuscle/images/muscle_16.png"));
         muscleAction->setObjectName(ToolsMenu::MALIGN_MUSCLE);
         connect(muscleAction, SIGNAL(triggered()), SLOT(sl_runWithExtFileSpecify()));
@@ -104,7 +104,7 @@ void MusclePlugin::sl_runWithExtFileSpecify() {
     }
     SAFE_POINT(!settings.inputFilePath.isEmpty(), "sl_runWithExtFileSpecify: no inputFilePath", );
 
-    MuscleWithExtFileSpecifySupportTask* muscleTask = new MuscleWithExtFileSpecifySupportTask(settings);
+    auto muscleTask = new MuscleWithExtFileSpecifySupportTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(muscleTask);
 }
 

@@ -30,7 +30,7 @@ class U2CORE_EXPORT CleanupFileStorageTask : public Task {
 public:
     CleanupFileStorageTask();
 
-    virtual void run();
+    void run() override;
 };
 
 }  // namespace U2

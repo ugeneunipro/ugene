@@ -99,7 +99,7 @@ GObject* ChromatogramObject::clone(const U2DbiRef& dstRef, U2OpStatus& os, const
     CHECK_OP(os, nullptr);
 
     U2EntityRef dstEntRef(dstRef, dstObject.id);
-    ChromatogramObject* dst = new ChromatogramObject(getGObjectName(), dstEntRef, gHints.getMap());
+    auto dst = new ChromatogramObject(getGObjectName(), dstEntRef, gHints.getMap());
     dst->setIndexInfo(getIndexInfo());
     return dst;
 }

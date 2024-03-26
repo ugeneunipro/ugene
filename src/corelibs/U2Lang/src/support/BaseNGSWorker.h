@@ -46,9 +46,9 @@ class U2LANG_EXPORT BaseNGSWorker : public BaseWorker {
     Q_OBJECT
 public:
     BaseNGSWorker(Actor* a);
-    void init();
-    Task* tick();
-    void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
     static const QString INPUT_PORT;
     static const QString OUTPUT_PORT;
@@ -82,8 +82,8 @@ class U2LANG_EXPORT BaseNGSParser : public ExternalToolLogParser {
 public:
     BaseNGSParser();
 
-    void parseOutput(const QString& partOfLog);
-    void parseErrOutput(const QString& partOfLog);
+    void parseOutput(const QString& partOfLog) override;
+    void parseErrOutput(const QString& partOfLog) override;
 
 private:
     QString lastErrLine;
@@ -94,8 +94,8 @@ class U2LANG_EXPORT BaseNGSTask : public Task {
 public:
     BaseNGSTask(const BaseNGSSetting& settings);
 
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 
     QString getResult() {
         return resultUrl;

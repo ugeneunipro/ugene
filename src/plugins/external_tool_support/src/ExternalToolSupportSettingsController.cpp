@@ -61,7 +61,7 @@ void ExternalToolSupportSettingsPageController::saveState(AppSettingsGUIPageStat
 }
 
 AppSettingsGUIPageWidget* ExternalToolSupportSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
-    ExternalToolSupportSettingsPageWidget* r = new ExternalToolSupportSettingsPageWidget(this);
+    auto r = new ExternalToolSupportSettingsPageWidget(this);
     r->setState(state);
     return r;
 }
@@ -136,9 +136,9 @@ ExternalToolSupportSettingsPageWidget::~ExternalToolSupportSettingsPageWidget() 
 }
 
 QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent, const QString& path) const {
-    QWidget* widget = new QWidget(parent);
+    auto widget = new QWidget(parent);
 
-    PathLineEdit* toolPathEdit = new PathLineEdit("", "executable", false, widget);
+    auto toolPathEdit = new PathLineEdit("", "executable", false, widget);
     toolPathEdit->setObjectName("PathLineEdit");
     toolPathEdit->setFrame(false);
     toolPathEdit->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
@@ -148,7 +148,7 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
     connect(toolPathEdit, SIGNAL(si_focusIn()), this, SLOT(sl_onPathEditWidgetClick()));
     connect(toolPathEdit, SIGNAL(editingFinished()), this, SLOT(sl_toolPathChanged()));
 
-    QToolButton* selectToolPathButton = new QToolButton(widget);
+    auto selectToolPathButton = new QToolButton(widget);
     selectToolPathButton->setObjectName("ResetExternalTool");
     selectToolPathButton->setVisible(true);
     selectToolPathButton->setText("...");
@@ -157,7 +157,7 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
     connect(selectToolPathButton, SIGNAL(clicked()), this, SLOT(sl_onPathEditWidgetClick()));
     connect(selectToolPathButton, SIGNAL(clicked()), toolPathEdit, SLOT(sl_onBrowse()));
 
-    QToolButton* clearToolPathButton = new QToolButton(widget);
+    auto clearToolPathButton = new QToolButton(widget);
     clearToolPathButton->setObjectName("ClearToolPathButton");
     clearToolPathButton->setVisible(true);
     clearToolPathButton->setIcon(QIcon(":external_tool_support/images/cancel.png"));
@@ -167,12 +167,12 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
     connect(clearToolPathButton, SIGNAL(clicked()), this, SLOT(sl_onPathEditWidgetClick()));
     connect(clearToolPathButton, SIGNAL(clicked()), toolPathEdit, SLOT(sl_clear()));
 
-    QHBoxLayout* layout = new QHBoxLayout(widget);
+    auto layout = new QHBoxLayout(widget);
     layout->setSpacing(0);
     layout->setMargin(0);
     layout->addWidget(toolPathEdit);
 
-    QHBoxLayout* buttonsLayout = new QHBoxLayout();
+    auto buttonsLayout = new QHBoxLayout();
     buttonsLayout->addWidget(selectToolPathButton);
     buttonsLayout->addWidget(clearToolPathButton);
 
@@ -185,14 +185,14 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
 }
 
 QTreeWidgetItem* ExternalToolSupportSettingsPageWidget::createToolkitItem(QTreeWidget* treeWidget, const QString& toolkitName, const QIcon& icon) {
-    QTreeWidgetItem* toolkitItem = new QTreeWidgetItem({toolkitName}, TOOLKIT_TYPE);
+    auto toolkitItem = new QTreeWidgetItem({toolkitName}, TOOLKIT_TYPE);
     toolkitItem->setData(0, Qt::ItemDataRole::UserRole, toolkitName);
     toolkitItem->setIcon(0, icon);
     treeWidget->addTopLevelItem(toolkitItem);
 
     // draw widget for path select button
-    QWidget* widget = new QWidget(treeWidget);
-    QToolButton* selectToolKitPathButton = new QToolButton(widget);
+    auto widget = new QWidget(treeWidget);
+    auto selectToolKitPathButton = new QToolButton(widget);
     selectToolKitPathButton->setVisible(true);
     selectToolKitPathButton->setText("...");
     selectToolKitPathButton->setMinimumWidth(buttonsWidth);
@@ -201,7 +201,7 @@ QTreeWidgetItem* ExternalToolSupportSettingsPageWidget::createToolkitItem(QTreeW
     connect(selectToolKitPathButton, SIGNAL(clicked()), this, SLOT(sl_onPathEditWidgetClick()));
     connect(selectToolKitPathButton, SIGNAL(clicked()), this, SLOT(sl_onBrowseToolKitPath()));
 
-    QHBoxLayout* layout = new QHBoxLayout(widget);
+    auto layout = new QHBoxLayout(widget);
     layout->setSpacing(0);
     layout->setMargin(0);
     layout->addStretch();
@@ -387,7 +387,7 @@ void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState* s)
 }
 
 QTreeWidgetItem* ExternalToolSupportSettingsPageWidget::appendToolItem(QTreeWidgetItem* rootItem, const ExternalTool* tool, bool isModule) {
-    QTreeWidgetItem* item = new QTreeWidgetItem(QStringList() << tool->getName());
+    auto item = new QTreeWidgetItem(QStringList() << tool->getName());
     item->setData(0, Qt::ItemDataRole::UserRole, tool->getId());
 
     externalToolsItems.insert(tool->getId(), item);
@@ -617,7 +617,7 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
             ExternalToolManager* etManager = AppContext::getExternalToolRegistry()->getManager();
             SAFE_POINT(etManager != nullptr, "External tool manager is null", );
 
-            ExternalToolValidationListener* listener = new ExternalToolValidationListener(toolId);
+            auto listener = new ExternalToolValidationListener(toolId);
             connect(listener, SIGNAL(si_validationComplete()), SLOT(sl_validationComplete()));
             StrStrMap pathMap;
             pathMap[toolId] = path;
@@ -747,7 +747,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath() {
         if (!toolIds.isEmpty()) {
             emit si_setLockState(true);
             ExternalToolManager* etManager = AppContext::getExternalToolRegistry()->getManager();
-            ExternalToolValidationListener* listener = new ExternalToolValidationListener(toolIds);
+            auto listener = new ExternalToolValidationListener(toolIds);
             connect(listener, SIGNAL(si_validationComplete()), SLOT(sl_validationComplete()));
             etManager->validate(toolIds, toolPaths, listener);
         }
@@ -813,7 +813,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
         if (!toolIds.isEmpty()) {
             emit si_setLockState(true);
             ExternalToolManager* etManager = AppContext::getExternalToolRegistry()->getManager();
-            ExternalToolValidationListener* listener = new ExternalToolValidationListener(toolIds);
+            auto listener = new ExternalToolValidationListener(toolIds);
             connect(listener, SIGNAL(si_validationComplete()), SLOT(sl_validationComplete()));
             etManager->validate(toolIds, toolPaths, listener);
         }

@@ -233,7 +233,7 @@ void GTest_uHMMERSearch::prepare() {
     assert(aDoc == NULL);
     aDoc = df->createNewLoadedDocument(iof, url, stateInfo);
     CHECK_OP(stateInfo, );
-    AnnotationTableObject* ao = new AnnotationTableObject("Annotations", aDoc->getDbiRef());
+    auto ao = new AnnotationTableObject("Annotations", aDoc->getDbiRef());
     aDoc->addObject(ao);
     DNASequence dnaSequence = mySequence->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, );

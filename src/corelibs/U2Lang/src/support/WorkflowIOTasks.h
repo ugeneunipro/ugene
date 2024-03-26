@@ -37,8 +37,8 @@ class U2LANG_EXPORT LoadWorkflowTask : public Task {
     Q_OBJECT
 public:
     LoadWorkflowTask(const QSharedPointer<Schema>& schema, Metadata* meta, const QString& url);
-    virtual void run();
-    Task::ReportResult report();
+    void run() override;
+    Task::ReportResult report() override;
     QSharedPointer<Schema> getSchema() const {
         return schema;
     }
@@ -73,8 +73,8 @@ class U2LANG_EXPORT SaveWorkflowTask : public Task {
     Q_OBJECT
 public:
     SaveWorkflowTask(Schema* schema, const Metadata& meta, bool copyMode);
-    Task::ReportResult report();
-    virtual void run();
+    Task::ReportResult report() override;
+    void run() override;
 
 private:
     QString rawData;

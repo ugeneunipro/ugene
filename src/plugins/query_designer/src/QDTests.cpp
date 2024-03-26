@@ -100,7 +100,7 @@ void GTest_QDSchedulerTest::prepare() {
         return;
     }
 
-    QDDocument* doc = new QDDocument;
+    auto doc = new QDDocument;
     QFile f(schemaUri);
     if (!f.open(QIODevice::ReadOnly)) {
         stateInfo.setError("can't read result");

@@ -59,7 +59,7 @@ public:
 
     void setWholeSequence(const DNASequence& seq);
 
-    virtual void setGObjectName(const QString& newName);
+    void setGObjectName(const QString& newName) override;
 
     bool isCircular() const;
 
@@ -72,9 +72,9 @@ public:
 
     void removeRegion(U2OpStatus& os, const U2Region& region);
 
-    GObject* clone(const U2DbiRef& ref, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& ref, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const override;
 
-    bool checkConstraints(const GObjectConstraints* c) const;
+    bool checkConstraints(const GObjectConstraints* c) const override;
 
     void setQuality(const DNAQuality& q);
 

@@ -41,12 +41,12 @@ public:
 
 class AceImportWidgetFactory : public ImportWidgetFactory {
 public:
-    virtual ImportWidget* getWidget(const GUrl& url, const QVariantMap& settings) const;
+    ImportWidget* getWidget(const GUrl& url, const QVariantMap& settings) const override;
 };
 
 class AprImportWidgetFactory : public ImportWidgetFactory {
 public:
-    virtual ImportWidget* getWidget(const GUrl& url, const QVariantMap& settings) const;
+    ImportWidget* getWidget(const GUrl& url, const QVariantMap& settings) const override;
 };
 
 }  // namespace U2

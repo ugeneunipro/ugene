@@ -67,7 +67,7 @@ void RFSArrayWKAlgorithm::prepare() {
     setMaxParallelSubtasks(1);
 
     for (int i = 0; i < nThreads; i++) {
-        RFSArrayWKSubtask* t = new RFSArrayWKSubtask(this, i);
+        auto t = new RFSArrayWKSubtask(this, i);
         t->setSubtaskProgressWeight((100 - arrayPercent) / (100.0F * nThreads));
         addSubTask(t);
     }

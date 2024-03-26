@@ -44,7 +44,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         "e_coli_1000.gff",
         AlignShortReadsFiller::Parameters::Bowtie2);
 
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(&parameters);
+    auto alignShortReadsFiller = new AlignShortReadsFiller(&parameters);
 
     GTUtilsDialog::add(alignShortReadsFiller);
 
@@ -70,7 +70,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         "e_coli_1000.fastq",
         AlignShortReadsFiller::Parameters::Bowtie);
 
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(&parameters);
+    auto alignShortReadsFiller = new AlignShortReadsFiller(&parameters);
 
     GTUtilsDialog::add(alignShortReadsFiller);
 

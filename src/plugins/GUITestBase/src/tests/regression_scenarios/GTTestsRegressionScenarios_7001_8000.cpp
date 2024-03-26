@@ -56,10 +56,12 @@
 #include <QFileInfo>
 #include <QListWidget>
 #include <QRadioButton>
+#include <QRegExp>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CMDLineUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
 
@@ -118,6 +120,7 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
+#include "runnables/ugene/plugins/cap3/CAP3SupportDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
@@ -883,6 +886,42 @@ GUI_TEST_CLASS_DEFINITION(test_7234) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7242) {
+    // Open data/samples/FASTA/human_T1.fa, _common_data/fasta/100bp.fa.
+    // Open "Search in Sequence" options panel tab for both sequences.
+    // For human_T1 set "TTGTCAG" as the pattern, for 100bp – "AA".
+    // Create annotations first for human_T1, then 100bp.
+    // Expected: Error: Document is already added to the project
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Tabs::Search);
+    GTClipboard::setText("TTGTCAG");
+    GTKeyboardUtils::paste();
+
+    GTFileDialog::openFile(testDir + "_common_data/fasta/100bp.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Tabs::Search);
+    GTClipboard::setText("AA");
+    GTKeyboardUtils::paste();
+
+    GTUtilsProjectTreeView::doubleClickItem("human_T1.fa");
+    GTUtilsOptionPanelSequenceView::clickGetAnnotation(GTWidget::findWidget("human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]"));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsProjectTreeView::doubleClickItem("100bp.fa");
+    auto secondSequenceParent = GTWidget::findWidget("100bp [100bp.fa]");
+    GTUtilsOptionPanelSequenceView::clickGetAnnotation(secondSequenceParent);
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    auto errorLabel = GTWidget::findLabel("lblErrorMessage", secondSequenceParent);
+    auto errorText = errorLabel->text();
+    CHECK_SET_ERR(errorText.contains("Error: Document is already added to the project"), QString("Incoorect error message: %1").arg(errorText));
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7246) {
     GTFileDialog::openFile(testDir + "_common_data/clustal/RAW.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
@@ -1066,7 +1105,7 @@ GUI_TEST_CLASS_DEFINITION(test_7367) {
     model.percentC = 20;
     model.percentG = 30;
     model.percentT = 40;
-    model.length = 100 * 1000 * 1000;
+    model.length = 1000 * 1000;
 
     GTUtilsDialog::waitForDialog(new DNASequenceGeneratorDialogFiller(model));
     GTMenu::clickMainMenuItem({"Tools", "Random sequence generator..."});
@@ -2101,6 +2140,22 @@ GUI_TEST_CLASS_DEFINITION(test_7476) {
 
     // Check that tree view is opened.
     GTUtilsPhyTree::checkTreeViewerWindowIsActive("collapse_mode_");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7482) {
+    // UGENE_GUI_TEST=1 env variable is required for this test
+    // Open _common_data/fasta/5mbf.fa.gz
+    // Select all
+    // Copy to clipboard
+    // Expected: Notification "Block size is too big and can't be copied into the clipboard" appeared
+    GTFileDialog::openFile(testDir + "_common_data/fasta/5mbf.fa.gz");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller());
+    GTKeyboardUtils::selectAll();
+    GTUtilsDialog::checkNoActiveWaiters();
+    GTUtilsNotifications::waitForNotification(true, "Block size is too big and can't be copied into the clipboard");
+    GTKeyboardUtils::copy();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7487_1) {
@@ -3708,6 +3763,30 @@ GUI_TEST_CLASS_DEFINITION(test_7680) {
                   QString("Height of the node changed: %1 vs %2").arg(viewRectBefore.height()).arg(viewRectAfter.height()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7681) {
+    /*
+    * 1. Open ..\samples\Assembly\chrM.sorted.bam
+    * 2. "Import Bam File" dialog appears
+    * 2. Set destination url equal to the same as input url: ..\samples\Assembly\chrM.sorted.bam
+    * 3. Push Import button
+    * Expected state: message box about the same location of source and destination files appears
+    */
+    class SameSrcAndDestUrls : public CustomScenario {
+        void run() override {
+            const QString destinationUrl = testDir + "_common_data/bam/chrM.sorted.bam";
+            const QString expectedMessage = QString("Destination file '%1' can not be the same as source file. Please select another file.").arg(destinationUrl);
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
+            GTLineEdit::setText("destinationUrlEdit", destinationUrl, dialog);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(new SameSrcAndDestUrls));
+    GTFileDialog::openFile(testDir + "_common_data/bam", "chrM.sorted.bam");
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7682) {
     // Check 'curvature' controls for rectangular branches.
     GTFileDialog::openFile(dataDir + "/samples/Newick/COI.nwk");
@@ -3900,8 +3979,8 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     GTUtilsMsaEditor::setMultilineMode(true);
     GTGlobals::sleep(2000);
 
-    MaEditorMultilineWgt* uiWidget = GTUtilsMsaEditor::getEditor()->getUI();
-    auto handle = GTWidget::findSplitter("name_and_sequence_areas_splitter", uiWidget->getUI(0))->handle(1);
+    MsaEditorMultilineWgt* uiWidget = GTUtilsMsaEditor::getEditor()->getMainWidget();
+    auto handle = GTWidget::findSplitter("name_and_sequence_areas_splitter", uiWidget->getLineWidget(0))->handle(1);
 
     int baseWidth = GTUtilsMSAEditorSequenceArea::getBaseWidth();
     int sequenceLength = GTUtilsMsaEditor::getEditor()->getAlignmentLen();
@@ -4040,28 +4119,6 @@ GUI_TEST_CLASS_DEFINITION(test_7751) {
     GTUtilsPhyTree::getNodeByBranchText("0.009", "0.026");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7753) {
-    // 1. Open "data/samples/Assembly/chrM.sorted.bam".
-    // 2. Delete bam file
-    // 3. Press 'imort' button in dialog
-    // Expected state: you got message box with error and error in log
-    class DeleteFileBeforeImport : public CustomScenario {
-        void run() override {
-            QFile::remove(sandBoxDir + "test_7753/chrM.sorted.bam");
-            GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
-        }
-    };
-    GTLogTracer lt;
-    QString sandboxFilePath = sandBoxDir + "test_7753/chrM.sorted.bam";
-    QDir().mkpath(sandBoxDir + "test_7753");
-    GTFile::copy(dataDir + "samples/Assembly/chrM.sorted.bam", sandboxFilePath);
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
-    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(new DeleteFileBeforeImport()));
-    GTFileDialog::openFile(sandboxFilePath);
-    GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(lt.hasError(QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath())), "Expected error not found");
-}
-
 GUI_TEST_CLASS_DEFINITION(test_7770) {
     GTUtilsDialog::waitForDialog(new SiteconBuildDialogFiller(testDir + "_common_data/clustal/1000_sequences.aln", sandBoxDir + "/test_7770.sitecon"));
     GTMenu::clickMainMenuItem({"Tools", "Search for TFBS", "Build SITECON model..."});
@@ -4083,6 +4140,23 @@ GUI_TEST_CLASS_DEFINITION(test_7781) {
     CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
     CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
     CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7784) {
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb/", "example-alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
+    QStringList arguments {
+        "--log-no-task-progress",
+        "--log-level-details",
+        "--task=\"" + testDir + "_common_data/scenarios/_regression/7784/7784.uwl\"",
+        "--in-assembly=\"" + testDir + "_common_data/ugenedb/example-alignment.ugenedb\""};
+    QProcess process;
+    process.start(cmdlineUgenePath, arguments);
+    process.waitForFinished(GT_OP_WAIT_MILLIS);
+    QString outStr = process.readAllStandardOutput();
+    CHECK_SET_ERR(outStr.contains("Nothing to write"),
+                  "Cmdline output doesn't contain 'Nothing to write' message");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7786) {
@@ -4696,20 +4770,16 @@ GUI_TEST_CLASS_DEFINITION(test_7867) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7885) {
-    // Open _common_data/scenarios/_regression/7885/test_7885.aln
+    // UGENE_GUI_TEST=1 env variable is required for this test
+    // Open _common_data/scenarios/_regression/7885/test_7885_1.aln
     // Select sequencef from 2 to the last one
     // Click Ctrl + x
-    // Expected: nothing has been cut, error in the log
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7885/", "test_7885.aln");
+    // Expected: Notification "Block size is too big and can't be copied into the clipboard" appeared
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7885/", "test_7885_1.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsMsaEditor::clickSequenceName("seq2");
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTKeyboardDriver::keyClick(Qt::Key_PageDown);
-    GTUtilsMsaEditor::clickSequenceName("seq2_1_5_2_1_1");
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTLogTracer lt;
+    GTUtilsMsaEditor::clickSequenceName("default");
+    GTUtilsNotifications::waitForNotification(true, "Block size is too big and can't be copied into the clipboard");
     GTKeyboardUtils::cut();
-    CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum() != 0, "No selected sequences");
 }
 
@@ -4736,6 +4806,26 @@ GUI_TEST_CLASS_DEFINITION(test_7896) {
     GTMenu::clickMainMenuItem({"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7901) {
+    // Save sanger reference and read (only one) to a directory with commas in path.
+    QString pathWithComma = sandBoxDir + "test,7901";
+    CHECK_SET_ERR(QDir().mkpath(pathWithComma), "Failed to create dir: " + pathWithComma);
+
+    QString referenceFilePath = pathWithComma + "/reference.gb";
+    QString readFilePath = pathWithComma + "/sanger_01.ab1";
+    GTFile::copy(testDir + "_common_data/sanger/reference.gb", referenceFilePath);
+    GTFile::copy(testDir + "_common_data/sanger/sanger_01.ab1", readFilePath);
+
+    AlignToReferenceBlastDialogFiller::Settings settings;
+    settings.referenceUrl = referenceFilePath;
+    settings.readUrls = QStringList{readFilePath};
+    settings.outAlignment = sandBoxDir + "out.ugenedb";
+    GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(settings));
+    GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7923) {
@@ -4853,6 +4943,37 @@ GUI_TEST_CLASS_DEFINITION(test_7947) {
     CHECK_SET_ERR(!GTUtilsSequenceView::getSelection().isEmpty(), "No selected regions, but should be");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7956) {
+    /*
+    * 1. Click "Tools -> Sanger data analysis -> Reads de novo assembly (with CAP3)..."
+    * 2. Set "_common_data/scenarios/_regression/7957/Sunisa_test_CRLF.fasta" as input.
+    * 3. Click "OK".
+    * 4. Open the result file as Multiple Alignment or Assembly (that does not matter).
+    * Expected state: ace file opened, no errors in the log
+    */
+    QString fastaFile = testDir + "_common_data/scenarios/_regression/7957/Sunisa_test_CRLF.fasta";
+    QFile file(fastaFile);
+    CHECK_SET_ERR(!file.open(QFile::ReadOnly), QString("unable to open file %1 in read mode").arg(fastaFile));
+    QByteArray content = file.readAll();
+    file.close();
+    if (!content.contains('\r\n')) {
+        content.replace("\n", "\r\n");
+        QString fixedFasta = testDir + "_common_data/scenarios/_regression/7957/fixed.fasta";
+        QFile fixedFile(fixedFasta);
+        CHECK_SET_ERR(!fixedFile.open(QFile::WriteOnly), QString("unable to open file %1 in write mode").arg(fixedFasta));
+        fixedFile.write(content);
+        fixedFile.close();
+        fastaFile = fixedFasta;
+    }    
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new ImportACEFileFiller(false, sandBoxDir + "test_7957.ugenedb"));
+    GTUtilsDialog::waitForDialog(new CAP3SupportDialogFiller({fastaFile}, sandBoxDir + "test_7957.ace"));
+    GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Reads de novo assembly (with CAP3)..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasMessage("Line endings were changed in target file"), "Expected warning message about line endings not found");
+    CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle() == "Contig1 [test_7957.ugenedb]", "Unexpected tab title: " + GTUtilsMdi::activeWindowTitle());
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7957) {
     class Scenario : public Filler {
     public:
@@ -4962,6 +5083,27 @@ GUI_TEST_CLASS_DEFINITION(test_7968) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7974) {
+    GTFileDialog::openFile(testDir + "_common_data/clustal", "10000_sequences.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    class RunFastTreeScenario : public CustomScenario {
+    public:
+        void run() override {
+            auto dialog = GTWidget::getActiveModalWidget();
+            GTComboBox::selectItemByText("algorithmBox", dialog, "FastTree");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new BuildTreeDialogFiller(new RunFastTreeScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    GTUtilsTaskTreeView::cancelTask("Run FastTree tool", true, {"Calculating Phylogenetic Tree", "FastTree tree calculation"});
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7979) {
     /*
     * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
@@ -4974,6 +5116,8 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     * 6. Press "Lock scales" button
     * 7. Activate "Lock scales: selected annotation" menu item in "Lock scales" menu
     * Expected state: "Lock scales: selected annotation" menu item checked in "Lock scales" menu, other items are not checked
+    * 8. Press "Lock scales" button
+    * Expected state: "Lock scales" button is not pressed, no menu items selected
     */
     GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Separate;
     GTUtilsDialog::waitForDialog(new GTSequenceReadingModeDialogUtils());
@@ -4993,8 +5137,18 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
         };
         void run() override {
             QMenu* activePopupMenu = GTWidget::getActivePopupMenu();
-            QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
-            CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));            
+            if (menuItemNameToCheck.isEmpty()) {
+                QList<QAction*> menuActions = activePopupMenu->actions();
+                QList<QAction*> checkedActions;
+                for (QAction* menuAction : qAsConst(menuActions)) {
+                    if (menuAction->isCheckable() && menuAction->isChecked()) {
+                        GT_FAIL( QString("Item %1 checked but should not!").arg(menuAction->objectName()), );
+                    }
+                }
+            } else {
+                QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
+                CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));
+            }
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
 
@@ -5030,6 +5184,11 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("Lock scales: selected annotation")));
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
+
+    GTWidget::click(lockScalesButton);
+    CHECK_SET_ERR(!lockScalesButton->isDown(), "'Lock scales' button should be down");
+    GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("")));
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 }
 

@@ -32,37 +32,37 @@ public:
     // Read methods for objects
 
     /**  Returns number of top-level U2Objects in database */
-    virtual qint64 countObjects(U2OpStatus& os);
+    qint64 countObjects(U2OpStatus& os) override;
 
     /**  Returns number of top-level U2Objects with the specified type in database */
-    virtual qint64 countObjects(U2DataType type, U2OpStatus& os);
+    qint64 countObjects(U2DataType type, U2OpStatus& os) override;
 
     /**
      Retrieves U2Object fields from database entry with 'id'
      and sets these fields for 'object'
     */
-    virtual U2DataType getObject(U2Object& object, const U2DataId& id, U2OpStatus& os);
+    U2DataType getObject(U2Object& object, const U2DataId& id, U2OpStatus& os) override;
 
     /**
     Retrieves database object by objectId.
     */
-    virtual U2DataId getObject(qint64 objectId, U2OpStatus& os);
+    U2DataId getObject(qint64 objectId, U2OpStatus& os) override;
 
-    virtual QHash<U2DataId, QString> getObjectNames(qint64 offset, qint64 count, U2OpStatus& os);
+    QHash<U2DataId, QString> getObjectNames(qint64 offset, qint64 count, U2OpStatus& os) override;
 
     /** Lists database top-level objects, starts with 'offset' and limits by 'count' */
-    virtual QList<U2DataId> getObjects(qint64 offset, qint64 count, U2OpStatus& os);
+    QList<U2DataId> getObjects(qint64 offset, qint64 count, U2OpStatus& os) override;
 
     /** Lists database top-level objects of the specified type, starts with 'offset' and limits by 'count' */
-    virtual QList<U2DataId> getObjects(U2DataType type, qint64 offset, qint64 count, U2OpStatus& os);
+    QList<U2DataId> getObjects(U2DataType type, qint64 offset, qint64 count, U2OpStatus& os) override;
 
     /**  Returns parents for entity.
         If entity is object, returns other object this object is a part of
         If object is not a part of any other object and does not belongs to any folder - it's automatically removed.
      */
-    virtual QList<U2DataId> getParents(const U2DataId& entityId, U2OpStatus& os);
+    QList<U2DataId> getParents(const U2DataId& entityId, U2OpStatus& os) override;
 
-    virtual U2DbiIterator<U2DataId>* getObjectsByVisualName(const QString& visualName, U2DataType type, U2OpStatus& os);
+    U2DbiIterator<U2DataId>* getObjectsByVisualName(const QString& visualName, U2DataType type, U2OpStatus& os) override;
 
     // Read methods for folders
 
@@ -70,42 +70,42 @@ public:
         Folders are separated by '/' character.
         At least one root folder is required.
     */
-    virtual QStringList getFolders(U2OpStatus& os);
-    virtual QHash<U2Object, QString> getObjectFolders(U2OpStatus& os);
-    virtual void renameFolder(const QString& oldPath, const QString& newPath, U2OpStatus& os);
+    QStringList getFolders(U2OpStatus& os) override;
+    QHash<U2Object, QString> getObjectFolders(U2OpStatus& os) override;
+    void renameFolder(const QString& oldPath, const QString& newPath, U2OpStatus& os) override;
 
     /** Returns the folder's previous path if it is set or an empty string if folder has not been moved.
      *  The operation is not supported now to avoid the useless database upgrade;
      */
-    virtual QString getFolderPreviousPath(const QString& currentPath, U2OpStatus& os);
+    QString getFolderPreviousPath(const QString& currentPath, U2OpStatus& os) override;
 
     /** Returns number of top-level U2Objects in folder */
-    virtual qint64 countObjects(const QString& folder, U2OpStatus& os);
+    qint64 countObjects(const QString& folder, U2OpStatus& os) override;
 
     /** Lists database top-level objects of the specified type, starts with 'offset' and limits by 'count' */
-    virtual QList<U2DataId> getObjects(const QString& folder, qint64 offset, qint64 count, U2OpStatus& os);
+    QList<U2DataId> getObjects(const QString& folder, qint64 offset, qint64 count, U2OpStatus& os) override;
 
     /**  Returns all folders this object must be shown in  */
-    virtual QStringList getObjectFolders(const U2DataId& objectId, U2OpStatus& os);
+    QStringList getObjectFolders(const U2DataId& objectId, U2OpStatus& os) override;
 
     /** Returns object rank of the given object */
-    virtual U2DbiObjectRank getObjectRank(const U2DataId& objectId, U2OpStatus& os);
+    U2DbiObjectRank getObjectRank(const U2DataId& objectId, U2OpStatus& os) override;
 
     // Write methods for objects
 
     /**
         Removes the object from the database.
     */
-    virtual bool removeObject(const U2DataId& dataId, bool force, U2OpStatus& os);
-    virtual bool removeObject(const U2DataId& dataId, U2OpStatus& os);
+    bool removeObject(const U2DataId& dataId, bool force, U2OpStatus& os) override;
+    bool removeObject(const U2DataId& dataId, U2OpStatus& os) override;
 
     /**
         Removes collection of objects from the database
     */
-    virtual bool removeObjects(const QList<U2DataId>& dataIds, bool force, U2OpStatus& os);
-    virtual bool removeObjects(const QList<U2DataId>& dataIds, U2OpStatus& os);
+    bool removeObjects(const QList<U2DataId>& dataIds, bool force, U2OpStatus& os) override;
+    bool removeObjects(const QList<U2DataId>& dataIds, U2OpStatus& os) override;
 
-    virtual void renameObject(const U2DataId& id, const QString& newName, U2OpStatus& os);
+    void renameObject(const U2DataId& id, const QString& newName, U2OpStatus& os) override;
 
     // Write methods for folders
 
@@ -113,28 +113,28 @@ public:
         If the specified path is already presented in the database, nothing will be done.
         It is not required that parent folders must exist, they are created automatically.
     */
-    virtual void createFolder(const QString& path, U2OpStatus& os);
+    void createFolder(const QString& path, U2OpStatus& os) override;
 
     /** Removes folder. The folder must be existing path. Runs GC check for all objects in the folder */
-    virtual bool removeFolder(const QString& folder, U2OpStatus& os);
+    bool removeFolder(const QString& folder, U2OpStatus& os) override;
 
     /** Returns version of the folder.
         The folder version increases if new object(s)/subfolder(s) are added into this folder
         Note that if object(s)/folder(s) are added into one of the subfolders the folder version is not changed
     */
-    virtual qint64 getFolderLocalVersion(const QString& folder, U2OpStatus& os);
+    qint64 getFolderLocalVersion(const QString& folder, U2OpStatus& os) override;
 
     /** Returns version of the folder that changes every time object(s)/folder(s) added
         to the specified folder or any of its child folders
     */
-    virtual qint64 getFolderGlobalVersion(const QString& folder, U2OpStatus& os);
+    qint64 getFolderGlobalVersion(const QString& folder, U2OpStatus& os) override;
 
     /** Updates object rank, e.g. a top-level object can be transmuted into a child object */
-    void setObjectRank(const U2DataId& objectId, U2DbiObjectRank newRank, U2OpStatus& os);
+    void setObjectRank(const U2DataId& objectId, U2DbiObjectRank newRank, U2OpStatus& os) override;
 
     /** Adds objects to the specified folder.
     All objects must exist and have a top-level type.*/
-    virtual void addObjectsToFolder(const QList<U2DataId>& objectIds, const QString& toFolder, U2OpStatus& os);
+    void addObjectsToFolder(const QList<U2DataId>& objectIds, const QString& toFolder, U2OpStatus& os) override;
 
     /** Moves objects between folders.
     'fromFolder' must be existing path containing all specified objects.
@@ -143,19 +143,19 @@ public:
     deletes non-top-level objects without parents, if any appear in the specified list.
     Otherwise, moves the specified objects between the specified folders, omitting duplicates.
     */
-    virtual void moveObjects(const QList<U2DataId>& objectIds, const QString& fromFolder, const QString& toFolder, U2OpStatus& os, bool saveFromFolder = false);
+    void moveObjects(const QList<U2DataId>& objectIds, const QString& fromFolder, const QString& toFolder, U2OpStatus& os, bool saveFromFolder = false) override;
 
-    virtual QStringList restoreObjects(const QList<U2DataId>& objectIds, U2OpStatus& os);
+    QStringList restoreObjects(const QList<U2DataId>& objectIds, U2OpStatus& os) override;
 
     /** Undo the last update operation for the object. */
-    virtual void undo(const U2DataId& objId, U2OpStatus& os);
+    void undo(const U2DataId& objId, U2OpStatus& os) override;
 
     /** Redo the last update operation for the object. */
-    virtual void redo(const U2DataId& objId, U2OpStatus& os);
+    void redo(const U2DataId& objId, U2OpStatus& os) override;
 
     /** Returns "true", if there are steps to undo/redo modifications of the object*/
-    virtual bool canUndo(const U2DataId& objId, U2OpStatus& os);
-    virtual bool canRedo(const U2DataId& objId, U2OpStatus& os);
+    bool canUndo(const U2DataId& objId, U2OpStatus& os) override;
+    bool canRedo(const U2DataId& objId, U2OpStatus& os) override;
 
     //////////////////////////////////////////////////////////////////////////
     // Helper methods
@@ -184,13 +184,13 @@ public:
     static void incrementVersion(const U2DataId& id, DbRef* db, U2OpStatus& os);
 
     /** Returns version of the given object */
-    virtual qint64 getObjectVersion(const U2DataId& objectId, U2OpStatus& os);
+    qint64 getObjectVersion(const U2DataId& objectId, U2OpStatus& os) override;
 
     /** Specified whether modifications in object must be tracked or not */
-    virtual void setTrackModType(const U2DataId& objectId, U2TrackModType trackModType, U2OpStatus& os);
+    void setTrackModType(const U2DataId& objectId, U2TrackModType trackModType, U2OpStatus& os) override;
 
     /** Gets the trackMod value for the object */
-    virtual U2TrackModType getTrackModType(const U2DataId& objectId, U2OpStatus& os);
+    U2TrackModType getTrackModType(const U2DataId& objectId, U2OpStatus& os) override;
 
     /**
         Removes objects parent relation.
@@ -200,9 +200,9 @@ public:
     void removeParent(const U2DataId& parentId, const U2DataId& childId, bool removeDeadChild, U2OpStatus& os);
 
     /** Adds a record, representing parent-child relationship between entities, to a DB */
-    void setParent(const U2DataId& parentId, const U2DataId& childId, U2OpStatus& os);
+    void setParent(const U2DataId& parentId, const U2DataId& childId, U2OpStatus& os) override;
 
-    virtual void initSqlSchema(U2OpStatus& os);
+    void initSqlSchema(U2OpStatus& os) override;
 
 private:
     /** Updates database entry for 'obj'. It does not increment its version. */
@@ -249,26 +249,26 @@ public:
         Sets local object id assigned to the new value
         Requires: U2DbiFeature_WriteCrossDatabaseReferences
     */
-    virtual void createCrossReference(U2CrossDatabaseReference& reference, const QString& folder, U2OpStatus& os);
+    void createCrossReference(U2CrossDatabaseReference& reference, const QString& folder, U2OpStatus& os) override;
 
     /**
         Removes a DB representation of CrossDatabaseReference
     */
-    virtual void removeCrossReferenceData(const U2DataId& referenceId, U2OpStatus& os);
+    void removeCrossReferenceData(const U2DataId& referenceId, U2OpStatus& os) override;
 
     /**
         Loads remote object information from DB
         Requires: U2DbiFeature_ReadCrossDatabaseReferences
     */
-    virtual U2CrossDatabaseReference getCrossReference(const U2DataId& objectId, U2OpStatus& os);
+    U2CrossDatabaseReference getCrossReference(const U2DataId& objectId, U2OpStatus& os) override;
 
     /**
         Updates all fields of cross database reference object
         Requires: U2DbiFeature_WriteCrossDatabaseReferences
     */
-    virtual void updateCrossReference(const U2CrossDatabaseReference& reference, U2OpStatus& os);
+    void updateCrossReference(const U2CrossDatabaseReference& reference, U2OpStatus& os) override;
 
-    virtual void initSqlSchema(U2OpStatus& os);
+    void initSqlSchema(U2OpStatus& os) override;
 };
 
 /** Helper class to track info about an object */
@@ -282,19 +282,19 @@ public:
         If there are tracking steps with greater or equal version (e.g. left from "undo"), removes these records.
         Returns the type of modifications  tracking for the object.
      */
-    U2TrackModType prepare(U2OpStatus& os);
+    U2TrackModType prepare(U2OpStatus& os) override;
 
     /**
         Adds the object ID to the object IDs set.
         If tracking is enabled, adds a new single step to the list.
      */
-    void addModification(const U2DataId& objId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os);
+    void addModification(const U2DataId& objId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os) override;
 
     /**
         If tracking is enabled, creates modification steps in the database.
         Increments version of all objects in the set.
      */
-    void complete(U2OpStatus& os);
+    void complete(U2OpStatus& os) override;
 
 private:
     SQLiteDbi* getDbi() const;

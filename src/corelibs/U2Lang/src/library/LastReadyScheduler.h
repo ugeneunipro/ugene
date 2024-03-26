@@ -39,22 +39,20 @@ public:
     virtual ~LastReadyScheduler();
 
     // reimplemented from Worker
-    virtual void init();
-    virtual bool isReady() const;
-    virtual Task* tick();
-    virtual bool isDone() const;
-    virtual void cleanup();
+    void init() override;
+    bool isReady() const override;
+    Task* tick() override;
+    bool isDone() const override;
+    void cleanup() override;
 
-    virtual WorkerState getWorkerState(const ActorId& actor);
-    virtual Task* replayLastWorkerTick();
-    virtual bool cancelCurrentTaskIfAllowed();
-    virtual void makeOneTick(const ActorId& actor);
+    WorkerState getWorkerState(const ActorId& actor) override;
+    Task* replayLastWorkerTick() override;
+    bool cancelCurrentTaskIfAllowed() override;
+    void makeOneTick(const ActorId& actor) override;
 
 protected:
-    virtual WorkerState getWorkerState(const Actor* a);
+    WorkerState getWorkerState(const Actor* a) override;
     ActorId actorId() const;
-    bool hasValidFinishedTask() const;
-    qint64 lastTaskTimeSec() const;
     void measuredTick();
 
     QMap<int, QList<Actor*>> topologicSortedGraph;

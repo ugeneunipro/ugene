@@ -35,7 +35,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -69,20 +69,41 @@
          <item>
           <widget class="QComboBox" name="cbPreset">
            <property name="toolTip">
-            <string>&lt;html&gt;
-   &lt;head/&gt;
-   &lt;body&gt;
-      &lt;p&gt;Specifies the Primer3 parameters set. Following presets are available:&lt;/p&gt;
-      &lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Default&lt;/span&gt;&lt;/p&gt;
-      &lt;p&gt;Primer3 default parameters.&lt;/p&gt;
-      &lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Recombinase Polymerase Amplification&lt;/span&gt;&lt;/p&gt;
-      &lt;p&gt;Preset with weaker temperature bounds, longer primer and product lengths. Also, this parameter enables &quot;Check complementary&quot; by default (see the &quot;Posterior Actions&quot; tab).&lt;/p&gt;
-   &lt;/body&gt;
-&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specifies the Primer3 parameters set. Following presets are available: &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Default&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Primer3 default parameters. &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Default2&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Primer3 default parameters with advanced thermodynamics. &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;qPCR&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Primer3 parameters for Quantitative Polymerase Chain Reaction. &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Cloning Primers&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Primer3 parameters for cloning primers picking. &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Annealing Temp&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Primer3 parameters for annealing.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Secondary Structures&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Primer3 parameters for secondary structures estimation.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Probe&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Primer3 parameters for probe calculation.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Recombinase Polymerase Amplification&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Preset with weaker temperature bounds, longer primer and product lengths. Also, this parameter enables &amp;quot;Check complementary&amp;quot; by default (see the &amp;quot;Posterior Actions&amp;quot; tab). &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <item>
             <property name="text">
              <string>Default</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Default2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>qPCR</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Cloning Primers</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Annealing Temp</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Secondary Structures</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Probe</string>
             </property>
            </item>
            <item>
@@ -1848,7 +1869,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
               <string>Use Thermodynamic Oligo Alignment</string>
              </property>
              <property name="checked">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
             </widget>
            </item>

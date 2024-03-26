@@ -38,7 +38,7 @@ public:
     GUrl getSourceURL() const;
     QString getResult() const;
 
-    void run();
+    void run() override;
 
 protected:
     GUrl sourceURL;
@@ -56,8 +56,8 @@ public:
     DefaultConvertFileTask(const GUrl& sourceUrl, const QString& detectedFormat, const QString& targetUrl, const QString& targetFormat, const QString& dir);
 
 private:
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     LoadDocumentTask* loadTask;
     SaveDocumentTask* saveTask;
@@ -70,8 +70,8 @@ public:
     BamSamConversionTask(const GUrl& sourceURL, const QString& detectedFormat, const QString& targetFormat, const QString& dir);
 
 protected:
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 
 private:
     bool samToBam;
@@ -90,8 +90,8 @@ public:
 
 class U2FORMATS_EXPORT BAMConvertFactory : public ConvertFileFactory {
 public:
-    virtual bool isCustomFormatTask(const QString& detectedFormat, const QString& targetFormat);
-    virtual ConvertFileTask* getTask(const GUrl& sourceURL, const QString& detectedFormat, const QString& targetFormat, const QString& dir) {
+    bool isCustomFormatTask(const QString& detectedFormat, const QString& targetFormat) override;
+    ConvertFileTask* getTask(const GUrl& sourceURL, const QString& detectedFormat, const QString& targetFormat, const QString& dir) override {
         return new BamSamConversionTask(sourceURL, detectedFormat, targetFormat, dir);
     }
 };

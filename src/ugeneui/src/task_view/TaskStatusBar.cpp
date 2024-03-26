@@ -127,7 +127,7 @@ void TaskStatusBar::sl_newReport(Task* task) {
         if (task->isNotificationReport()) {
             NotificationStack::addNotification(tr("The task '%1' has been finished").arg(task->getTaskName()), nType);
         } else {
-            QAction* action = new QAction("action", this);
+            auto action = new QAction("action", this);
             action->setData(QVariant(task->getTaskName() + "|" + QString::number(task->getTaskId()) + "|" + TVReportWindow::prepareReportHTML(task)));
             connect(action, SIGNAL(triggered()), SLOT(sl_showReport()));
             NotificationStack::addNotification(tr("Report for task: '%1'").arg(task->getTaskName()), nType, action);

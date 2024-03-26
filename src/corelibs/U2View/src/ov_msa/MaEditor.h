@@ -122,9 +122,9 @@ public:
 public:
     MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewName, MsaObject* obj);
 
-    virtual QVariantMap saveState();
+    QVariantMap saveState() override;
 
-    virtual Task* updateViewTask(const QString& stateName, const QVariantMap& stateData);
+    Task* updateViewTask(const QString& stateName, const QVariantMap& stateData) override;
 
     virtual QString getSettingsRoot() const = 0;
 
@@ -134,13 +134,7 @@ public:
 
     QList<qint64> getMaRowIds() const;
 
-    virtual QWidget* getUI() const {
-        return ui;
-    }
-
-    virtual MaEditorWgt* getMaEditorWgt(int) const = 0;
-
-    virtual MaEditorMultilineWgt* getMaEditorMultilineWgt() const = 0;
+    virtual MaEditorWgt* getLineWidget(int lineIndex) const = 0;
 
     const QFont& getFont() const {
         return font;
@@ -293,8 +287,7 @@ protected:
 
     virtual void updateActions();
 
-    MsaObject* maObject;
-    QWidget* ui = nullptr;
+    MsaObject* maObject = nullptr;
 
     QFont font;
     ResizeMode resizeMode;

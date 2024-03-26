@@ -514,7 +514,7 @@ QString GUITestLauncher::getScreenRecorderString(const QString& testName) {
         QString display = qgetenv("DISPLAY");
         result = QString("ffmpeg -video_size %1x%2 -framerate 5 -f x11grab -i %3.0 %4").arg(width).arg(height).arg(display).arg(videoFilePath);
     } else if (isOsMac()) {
-        result = QString("ffmpeg -f avfoundation -r 5 -i \"1:none\" \"%1\"").arg(videoFilePath);
+        result = QString(R"(ffmpeg -f avfoundation -r 5 -i "0:none" "%1")").arg(videoFilePath);
     } else if (isOsWindows()) {
         result = QString("ffmpeg -f dshow -i video=\"UScreenCapture\" -r 5 %1").arg(videoFilePath);
     }

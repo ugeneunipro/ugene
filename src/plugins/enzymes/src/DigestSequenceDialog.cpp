@@ -168,7 +168,7 @@ void DigestSequenceDialog::accept() {
         seqCtx->getAnnotatedDNAView()->tryAddObject(aObj);
     }
 
-    DigestSequenceTask* task = new DigestSequenceTask(dnaObj, sourceObj, aObj, cfg);
+    auto task = new DigestSequenceTask(dnaObj, sourceObj, aObj, cfg);
 
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 
@@ -186,7 +186,7 @@ void DigestSequenceDialog::addAnnotationWidget() {
     acm.data->name = ANNOTATION_GROUP_FRAGMENTS;
     ac = new CreateAnnotationWidgetController(acm, this);
     QWidget* caw = ac->getWidget();
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
     l->addStretch(1);
@@ -333,7 +333,7 @@ void DigestSequenceDialog::sl_addAnnBtnClicked() {
     QObjectScopedPointer<QDialog> dlg = new QDialog(this);
     dlg->setObjectName("select_annotations_dialog");
     dlg->setWindowTitle(tr("Select annotations"));
-    QVBoxLayout* layout = new QVBoxLayout(dlg.data());
+    auto layout = new QVBoxLayout(dlg.data());
     QListWidget* listWidget(new QListWidget(dlg.data()));
     QSet<AnnotationTableObject*> aObjs = seqCtx->getAnnotationObjects(false);
     foreach (AnnotationTableObject* aObj, aObjs) {
@@ -350,7 +350,7 @@ void DigestSequenceDialog::sl_addAnnBtnClicked() {
     }
     listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     layout->addWidget(listWidget);
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dlg.data());
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dlg.data());
     buttonBox->setObjectName("buttonBox");
     connect(buttonBox, SIGNAL(accepted()), dlg.data(), SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), dlg.data(), SLOT(reject()));

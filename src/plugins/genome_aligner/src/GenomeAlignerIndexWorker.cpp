@@ -196,7 +196,7 @@ Task* GenomeAlignerIndexReaderWorker::tick() {
         algoLog.trace(GenomeAlignerIndexReaderWorker::tr("Index URL is empty"));
         return nullptr;
     }
-    Task* t = new Task("Genome aligner index reader", TaskFlags_NR_FOSCOE);
+    auto t = new Task("Genome aligner index reader", TaskFlags_NR_FOSCOE);
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
     return t;
 }

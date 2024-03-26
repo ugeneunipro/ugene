@@ -32,7 +32,7 @@ public:
     U2PWMatrix();
     U2PWMatrix(const U2DbiRef& dbiRef);
 
-    U2DataType getType() const;
+    U2DataType getType() const override;
 };
 
 class U2CORE_EXPORT PWMatrixObject : public GObject {
@@ -47,10 +47,10 @@ public:
     static PWMatrixObject* createInstance(const PWMatrix& matrix, const QString& objectName, const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& hintsMap = QVariantMap());
 
     const PWMatrix& getMatrix() const;
-    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const override;
 
 protected:
-    void loadDataCore(U2OpStatus& os);
+    void loadDataCore(U2OpStatus& os) override;
 
 private:
     PWMatrixObject(const PWMatrix& matrix, const QString& objectName, const U2EntityRef& matrixRef, const QVariantMap& hintsMap);

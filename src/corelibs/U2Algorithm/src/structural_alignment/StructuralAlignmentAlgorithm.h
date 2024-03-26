@@ -99,9 +99,9 @@ class U2ALGORITHM_EXPORT StructuralAlignmentTask : public Task {
 public:
     StructuralAlignmentTask(StructuralAlignmentAlgorithm* algorithm, const StructuralAlignmentTaskSettings& settings);
 
-    virtual void run();
-    Task::ReportResult report();
-    QString generateReport() const;
+    void run() override;
+    Task::ReportResult report() override;
+    QString generateReport() const override;
 
     StructuralAlignment getResult() const {
         return result;

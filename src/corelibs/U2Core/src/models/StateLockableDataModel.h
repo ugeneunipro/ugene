@@ -167,13 +167,13 @@ public:
 
     virtual ~StateLockableTreeItem();
 
-    virtual bool isStateLocked() const;
+    bool isStateLocked() const override;
 
-    virtual void lockState(StateLock* lock);
+    void lockState(StateLock* lock) override;
 
-    virtual void unlockState(StateLock* lock);
+    void unlockState(StateLock* lock) override;
 
-    virtual void setModified(bool modified, const QString& modType = QString());
+    void setModified(bool modified, const QString& modType = QString()) override;
 
     virtual bool isTreeItemModified() const;
 
@@ -195,9 +195,9 @@ public:
 
     QList<StateLock*> findLocks(StateLockableTreeItemBranchFlags treeFlags, StateLockFlag lockFlag = StateLockFlag_AnyFlags) const;
 
-    virtual bool isMainThreadModificationOnly() const;
+    bool isMainThreadModificationOnly() const override;
 
-    virtual void setModificationTrack(bool track);
+    void setModificationTrack(bool track) override;
 
 protected:
     static void setParentStateLockItem_static(StateLockableTreeItem* child, StateLockableTreeItem* newParent) {

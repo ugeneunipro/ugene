@@ -216,11 +216,11 @@ MTASingleTableAdapter* MultiTableAssemblyAdapter::createAdapter(int rowPos, int 
     assert(adaptersGrid.at(rowPos).at(elenPos) == nullptr);
 
     QString suffix = getTableSuffix(rowPos, elenPos);
-    SingleTableAssemblyAdapter* sa = new SingleTableAssemblyAdapter(dbi, assemblyId, 'M', suffix, compressor, db, os);
+    auto sa = new SingleTableAssemblyAdapter(dbi, assemblyId, 'M', suffix, compressor, db, os);
     const U2Region& elenRange = elenRanges.at(elenPos);
     sa->enableRangeTableMode(elenRange.startPos, elenRange.endPos());
     QByteArray idExtra = getIdExtra(rowPos, elenPos);
-    MTASingleTableAdapter* ma = new MTASingleTableAdapter(sa, rowPos, elenPos, idExtra);
+    auto ma = new MTASingleTableAdapter(sa, rowPos, elenPos, idExtra);
     ma->singleTableAdapter->createReadsTables(os);
     adapters << ma;
     idExtras << idExtra;
@@ -574,7 +574,7 @@ MultiTablePackAlgorithmAdapter::MultiTablePackAlgorithmAdapter(MultiTableAssembl
     int nElens = multiTableAdapter->getNumberOfElenRanges();
     ensureGridSize(nElens);
     foreach (MTASingleTableAdapter* a, multiTableAdapter->getAdapters()) {
-        SingleTablePackAlgorithmAdapter* sa = new SingleTablePackAlgorithmAdapter(db, a->singleTableAdapter->getReadsTableName());
+        auto sa = new SingleTablePackAlgorithmAdapter(db, a->singleTableAdapter->getReadsTableName());
         packAdapters << sa;
         if (packAdaptersGrid.size() <= a->rowPos) {
             packAdaptersGrid.resize(a->rowPos + 1);

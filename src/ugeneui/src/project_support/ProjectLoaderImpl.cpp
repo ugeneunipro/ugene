@@ -149,17 +149,17 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
     recentItemsMenu->menuAction()->setObjectName("recent_docs_menu_action");
     updateRecentItemsMenu();
 
-    QAction* newSectionSeparator = new QAction("", this);
+    auto newSectionSeparator = new QAction("", this);
     newSectionSeparator->setSeparator(true);
     newSectionSeparator->setObjectName(ACTION_PROJECTSUPPORT__NEW_SECTION_SEPARATOR);
 
-    QAction* openSectionSeparator = new QAction("", this);
+    auto openSectionSeparator = new QAction("", this);
     openSectionSeparator->setSeparator(true);
 
-    QAction* remoteSectionSeparator = new QAction("", this);
+    auto remoteSectionSeparator = new QAction("", this);
     remoteSectionSeparator->setSeparator(true);
 
-    QAction* recentSectionSeparator = new QAction("", this);
+    auto recentSectionSeparator = new QAction("", this);
     recentSectionSeparator->setSeparator(true);
 
     QList<QAction*> actions;
@@ -986,7 +986,7 @@ void ProjectDialogController::accept() {
 }
 
 Project* ProjectLoaderImpl::createProject(const QString& name, const QString& url, QList<Document*>& documents, QList<GObjectViewState*>& states) {
-    ProjectImpl* pi = new ProjectImpl(name, url, documents, states);
+    auto pi = new ProjectImpl(name, url, documents, states);
     return pi;
 }
 

@@ -56,7 +56,7 @@ public:
 public:
     IntegralBusPort(const PortDescriptor& d, Actor* p);
 
-    virtual DataTypePtr getType() const;
+    DataTypePtr getType() const override;
     DataTypePtr getOwnType() const {
         return type;
     }
@@ -74,12 +74,12 @@ public:
     // find matching data and assign it
     void setupBusMap();
 
-    virtual bool validate(NotificationsList& notificationList) const;
+    bool validate(NotificationsList& notificationList) const override;
     // reimplemented from Configuration
-    virtual void remap(const QMap<ActorId, ActorId>&);
-    virtual void updateBindings(const QMap<ActorId, ActorId>& actorsMapping);
-    virtual void replaceActor(Actor* oldActor, Actor* newActor, const QList<PortMapping>& mappings);
-    virtual void setVisibleSlot(const QString& slotId, const bool isVisible);
+    void remap(const QMap<ActorId, ActorId>&) override;
+    void updateBindings(const QMap<ActorId, ActorId>& actorsMapping) override;
+    void replaceActor(Actor* oldActor, Actor* newActor, const QList<PortMapping>& mappings) override;
+    void setVisibleSlot(const QString& slotId, const bool isVisible) override;
 
     // used when loading schema
     void setBusMapValue(const QString& slotId, const QString& value);
@@ -115,7 +115,7 @@ public:
         : ActorPrototype(desc, ports, attrs) {
     }
 
-    virtual Port* createPort(const PortDescriptor& d, Actor* p) {
+    Port* createPort(const PortDescriptor& d, Actor* p) override {
         return new IntegralBusPort(d, p);
     }
 
@@ -133,7 +133,7 @@ public:
         : screenedSlots(slotList) {
     }
     static bool validate(const QStringList& screenedSlots, const IntegralBusPort*, NotificationsList& notificationList);
-    virtual bool validate(const Configuration*, NotificationsList& notificationList) const;
+    bool validate(const Configuration*, NotificationsList& notificationList) const override;
 
 protected:
     QStringList screenedSlots;
@@ -150,7 +150,7 @@ public:
     virtual ~ScreenedParamValidator() {
     }
 
-    virtual bool validate(const Configuration*, NotificationsList& notificationList) const;
+    bool validate(const Configuration*, NotificationsList& notificationList) const override;
     QString validate(const Configuration* cfg) const;
 
     QString getId() const {
@@ -200,7 +200,7 @@ private:
 
 class U2LANG_EXPORT PortValidator : public ConfigurationValidator {
 public:
-    virtual bool validate(const Configuration* cfg, NotificationsList& notificationList) const;
+    bool validate(const Configuration* cfg, NotificationsList& notificationList) const override;
     virtual bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const = 0;
 
 public:

@@ -225,7 +225,7 @@ void SWWorkerFactory::init() {
         delegates[MATRIX_ATTR] = new ComboBoxDelegate(m);
     }
 
-    SWAlgoEditor* aled = new SWAlgoEditor(proto);
+    auto aled = new SWAlgoEditor(proto);
     aled->connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(populate()));
     delegates[ALGO_ATTR] = aled;
     proto->setEditor(new DelegateEditor(delegates));
@@ -492,7 +492,7 @@ Task* SWWorker::tick() {
                                          ->getAttributeValue<bool>(context)
                                      ? patternNames.value(p, defaultName)
                                      : defaultName;
-            SmithWatermanReportCallbackAnnotImpl* rcb = new SmithWatermanReportCallbackAnnotImpl(
+            auto rcb = new SmithWatermanReportCallbackAnnotImpl(
                 nullptr, U2FeatureTypes::MiscFeature, resultName, QString(), "", false);
             config.resultCallback = rcb;
             config.resultListener = new SmithWatermanResultListener();
@@ -504,7 +504,7 @@ Task* SWWorker::tick() {
         }
         assert(!subs.isEmpty());
 
-        MultiTask* multiSw = new MultiTask(tr("Smith waterman subtasks"), subs);
+        auto multiSw = new MultiTask(tr("Smith waterman subtasks"), subs);
         connect(new TaskSignalMapper(multiSw), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return multiSw;
     } else if (input->isEnded()) {

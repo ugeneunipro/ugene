@@ -137,7 +137,7 @@ public:
         : Task(tr("Find resultLocation"), TaskFlag_None), step(_step), linker(_linker) {
     }
 
-    void run();
+    void run() override;
     QVector<U2Region> getSearchLocation() {
         return searchLocation;
     }
@@ -163,7 +163,7 @@ public:
         tpm = Progress_Manual;
     }
 
-    void run() {
+    void run() override {
         linker->updateCandidates(step, stateInfo.progress);
     }
 
@@ -176,7 +176,7 @@ class QDTask : public Task {
     Q_OBJECT
 public:
     QDTask(QDStep* _step, QDResultLinker* _linker);
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 private slots:
     void sl_updateProgress();
 
@@ -195,7 +195,7 @@ public:
         : Task(tr("Prepare annotations task"), TaskFlag_None), linker(linker) {
     }
 
-    void run() {
+    void run() override {
         linker->prepareAnnotations();
     }
 
@@ -208,14 +208,14 @@ class U2DESIGNER_EXPORT QDScheduler : public Task {
 public:
     QDScheduler(const QDRunSettings& settings);
     ~QDScheduler();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     const QDRunSettings& getSettings() const {
         return settings;
     }
     QDResultLinker* getLinker() const {
         return linker;
     }
-    Task::ReportResult report();
+    Task::ReportResult report() override;
 private slots:
     void sl_updateProgress();
 

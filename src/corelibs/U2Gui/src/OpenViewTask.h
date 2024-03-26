@@ -40,7 +40,7 @@ public:
     Document* getDocument();
 
 protected:
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     void clearResourceUse();
@@ -63,7 +63,7 @@ public:
     QString generateReport() const override;
 
 protected:
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     QString accNumber;
@@ -84,7 +84,7 @@ public:
     static const int MAX_DOC_NUMBER_TO_OPEN_VIEWS;
 
 protected:
-    void prepare();
+    void prepare() override;
 
 private:
     Document* doc;
@@ -97,7 +97,7 @@ public:
     AddDocumentAndOpenViewTask(DocumentProviderTask* d, const AddDocumentTaskConfig& conf = AddDocumentTaskConfig());
 
 protected:
-    QList<Task*> onSubTaskFinished(Task* t);
+    QList<Task*> onSubTaskFinished(Task* t) override;
 };
 
 }  // namespace U2

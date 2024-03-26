@@ -71,7 +71,7 @@ class U2DESIGNER_EXPORT DashboardPopupMenu : public QMenu {
     Q_OBJECT
 public:
     explicit DashboardPopupMenu(QAbstractButton* button, QWidget* parent = 0);
-    void showEvent(QShowEvent* event);
+    void showEvent(QShowEvent* event) override;
 
 private:
     QAbstractButton* button;

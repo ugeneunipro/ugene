@@ -96,7 +96,7 @@ public:
     int getWidth() const;
 
     // reimplemented Configuration::setParameter
-    virtual void setParameter(const QString& name, const QVariant& val);
+    void setParameter(const QString& name, const QVariant& val) override;
 
     // simple check if one port can be binded to other
     // port types doesn't check here
@@ -104,7 +104,7 @@ public:
 
     // reimplemented Configuration::remap
     // empty implementation
-    virtual void remap(const QMap<ActorId, ActorId>&);
+    void remap(const QMap<ActorId, ActorId>&) override;
     virtual void updateBindings(const QMap<ActorId, ActorId>&);
     virtual void replaceActor(Actor* oldActor, Actor* newActor, const QList<PortMapping>& mappings);
 

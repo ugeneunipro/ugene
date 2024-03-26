@@ -172,7 +172,7 @@ void CoreLib::init() {
 
         Descriptor acd(CoreLibConstants::READ_TEXT_PROTO_ID, tr("Read Plain Text"), tr("Input one or several text files. The element outputs text message(s), read from the file(s)."));
         p << new PortDescriptor(Descriptor(BasePorts::OUT_TEXT_PORT_ID(), tr("Plain text"), ""), dtl, false, true);
-        ReadDocActorProto* proto = new ReadDocActorProto(BaseDocumentFormats::PLAIN_TEXT, acd, p, a);
+        auto proto = new ReadDocActorProto(BaseDocumentFormats::PLAIN_TEXT, acd, p, a);
         proto->setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::TEXT);
         proto->setPrompter(new ReadDocPrompter(tr("Reads text from <u>%1</u>.")));
 
@@ -195,7 +195,7 @@ void CoreLib::init() {
                                                                                          " to the specified text file(s)."));
         Descriptor pd(BasePorts::IN_TEXT_PORT_ID(), tr("Plain text"), tr("Plain text"));
         p << new PortDescriptor(pd, dtl, true);
-        Attribute* accumulateObjsAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
+        auto accumulateObjsAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
         accumulateObjsAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
         a << accumulateObjsAttr;
         IntegralBusActorPrototype* proto = new WriteDocActorProto(BaseDocumentFormats::PLAIN_TEXT, acd, p, pd.getId(), a, true, false);
@@ -218,9 +218,9 @@ void CoreLib::init() {
                                                                                            " in one of the multiple sequence alignment formats, supported by UGENE (ClustalW, FASTA, etc.)."));
             Descriptor pd(BasePorts::IN_MSA_PORT_ID(), tr("Multiple sequence alignment"), tr("Multiple sequence alignment"));
             p << new PortDescriptor(pd, writeMAType, true);
-            Attribute* docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, format);
+            auto docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, format);
             a << docFormatAttr;
-            WriteDocActorProto* proto = new WriteDocActorProto(format, acd, p, pd.getId(), a, true, false);
+            auto proto = new WriteDocActorProto(format, acd, p, pd.getId(), a, true, false);
             docFormatAttr->addRelation(new FileExtensionRelation(proto->getUrlAttr()->getId()));
             docFormatAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
 
@@ -258,16 +258,16 @@ void CoreLib::init() {
                                                                                           " (GenBank, FASTA, etc.)."));
             Descriptor pd(BasePorts::IN_SEQ_PORT_ID(), tr("Sequence"), tr("Sequence"));
             p << new PortDescriptor(pd, typeSet, true);
-            Attribute* accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
+            auto accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
             a << accumulateAttr;
             accumulateAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
-            Attribute* docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true, format);
+            auto docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true, format);
             a << docFormatAttr;
-            Attribute* splitAttr = new Attribute(BaseAttributes::SPLIT_SEQ_ATTRIBUTE(), BaseTypes::NUM_TYPE(), false, 1);
+            auto splitAttr = new Attribute(BaseAttributes::SPLIT_SEQ_ATTRIBUTE(), BaseTypes::NUM_TYPE(), false, 1);
             splitAttr->addRelation(new VisibilityRelation(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId(), BaseDocumentFormats::FASTA));
             splitAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
             a << splitAttr;
-            WriteDocActorProto* proto = new WriteDocActorProto(format, acd, p, pd.getId(), a, true, false, false);
+            auto proto = new WriteDocActorProto(format, acd, p, pd.getId(), a, true, false, false);
             proto->setPortValidator(pd.getId(), new WriteSequencePortValidator());
             proto->setValidator(new WriteSequenceValidator(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BasePorts::IN_SEQ_PORT_ID(), BaseSlots::URL_SLOT().getId()));
             docFormatAttr->addRelation(new FileExtensionRelation(proto->getUrlAttr()->getId()));
@@ -278,12 +278,12 @@ void CoreLib::init() {
                 m[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
             }
 
-            ComboBoxDelegate* comboDelegate = new ComboBoxDelegate(m);
+            auto comboDelegate = new ComboBoxDelegate(m);
 
             QVariantMap lenMap;
             lenMap["minimum"] = QVariant(1);
             lenMap["maximum"] = QVariant(100);
-            SpinBoxDelegate* spinDelegate = new SpinBoxDelegate(lenMap);
+            auto spinDelegate = new SpinBoxDelegate(lenMap);
 
             proto->getEditor()->addDelegate(comboDelegate, BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
             proto->getEditor()->addDelegate(spinDelegate, BaseAttributes::SPLIT_SEQ_ATTRIBUTE().getId());
@@ -423,7 +423,7 @@ void CoreLib::initIncludedWorkers() {
         // parse schema from data
         QList<QString> urlList;
         urlList << url;
-        Schema* schema = new Schema();
+        auto schema = new Schema();
         QMap<ActorId, ActorId> procMap;
         QString error = HRSchemaSerializer::string2Schema(data, schema, nullptr, &procMap, urlList);
 

@@ -102,7 +102,7 @@ QList<SequenceDbiWalkerSubtask*> SequenceDbiWalkerTask::createSubs(const QVector
         const U2Region& chunk = chunks[i];
         bool lo = config.overlapSize > 0 && i > 0;
         bool ro = config.overlapSize > 0 && i + 1 < n;
-        SequenceDbiWalkerSubtask* t = new SequenceDbiWalkerSubtask(this, chunk, lo, ro, config.seqRef, doCompl, doAmino);
+        auto t = new SequenceDbiWalkerSubtask(this, chunk, lo, ro, config.seqRef, doCompl, doAmino);
         res.append(t);
     }
     return res;

@@ -51,11 +51,11 @@ void ImportDirToDatabaseTask::prepare() {
     foreach (QFileInfo subentryInfo, subentriesInfo) {
         if (options.processFoldersRecursively && subentryInfo.isDir()) {
             const QString dstDirFolder = dstFolder + (options.keepFoldersStructure ? U2ObjectDbi::PATH_SEP + subentryInfo.fileName() : "");
-            ImportDirToDatabaseTask* importSubdirTask = new ImportDirToDatabaseTask(subentryInfo.filePath(), dstDbiRef, dstDirFolder, options);
+            auto importSubdirTask = new ImportDirToDatabaseTask(subentryInfo.filePath(), dstDbiRef, dstDirFolder, options);
             importSubdirsTasks << importSubdirTask;
             addSubTask(importSubdirTask);
         } else if (subentryInfo.isFile()) {
-            ImportFileToDatabaseTask* importSubfileTask = new ImportFileToDatabaseTask(subentryInfo.filePath(), dstDbiRef, dstFolder, options);
+            auto importSubfileTask = new ImportFileToDatabaseTask(subentryInfo.filePath(), dstDbiRef, dstFolder, options);
             importSubfilesTasks << importSubfileTask;
             addSubTask(importSubfileTask);
         }

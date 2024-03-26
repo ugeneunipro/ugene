@@ -43,7 +43,7 @@ class EditMarkerGroupDialog : public QDialog, public Ui_EditMarkerGroupDialog {
 public:
     EditMarkerGroupDialog(bool isNew, Marker* marker, Workflow::MarkerGroupListCfgModel* allModel, QWidget* parent);
     ~EditMarkerGroupDialog();
-    void accept();
+    void accept() override;
 
     bool checkEditMarkerResult(const QString& oldName, const QString& newName, const QString& newValue, QString& message);
     bool checkAddMarkerResult(const QString& newName, const QString& newValue, QString& message);
@@ -79,13 +79,13 @@ class MarkerListCfgModel : public QAbstractTableModel {
 public:
     MarkerListCfgModel(QObject* parent, Marker* marker);
 
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
-    int columnCount(const QModelIndex&) const;
-    int rowCount(const QModelIndex&) const;
-    Qt::ItemFlags flags(const QModelIndex& index) const;
-    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex());
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    int columnCount(const QModelIndex&) const override;
+    int rowCount(const QModelIndex&) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
     void addMarker(const QString& valueString, const QString& name);
 
@@ -108,7 +108,7 @@ public:
     QVariantList getValues() {
         return values;
     }
-    void accept();
+    void accept() override;
 
 private:
     bool isNew;
@@ -139,7 +139,7 @@ class EditIntegerMarkerWidget : public EditTypedMarkerWidget, public Ui_EditInte
 public:
     EditIntegerMarkerWidget(bool isNew, const QVariantList& values, QWidget* parent);
 
-    virtual QVariantList getValues();
+    QVariantList getValues() override;
 };
 
 class EditFloatMarkerWidget : public EditTypedMarkerWidget, public Ui_EditFloatMarkerWidget {
@@ -147,7 +147,7 @@ class EditFloatMarkerWidget : public EditTypedMarkerWidget, public Ui_EditFloatM
 public:
     EditFloatMarkerWidget(bool isNew, const QVariantList& values, QWidget* parent);
 
-    virtual QVariantList getValues();
+    QVariantList getValues() override;
 };
 
 class EditStringMarkerWidget : public EditTypedMarkerWidget, public Ui_EditStringMarkerWidget {
@@ -155,7 +155,7 @@ class EditStringMarkerWidget : public EditTypedMarkerWidget, public Ui_EditStrin
 public:
     EditStringMarkerWidget(bool isNew, const QVariantList& values, QWidget* parent);
 
-    virtual QVariantList getValues();
+    QVariantList getValues() override;
 };
 
 }  // namespace U2

@@ -74,7 +74,7 @@ Handle<Value> ActorWrap::newObject(const Arguments& args) {
     }
     auto actor = reinterpret_cast<Workflow::Actor*>(args[0]->IntegerValue());
     Q_ASSERT(actor != nullptr);
-    ActorWrap* obj = new ActorWrap(actor);
+    auto obj = new ActorWrap(actor);
     obj->Wrap(args.This());
     return args.This();
 }

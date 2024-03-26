@@ -50,19 +50,6 @@ class SequenceAreaRenderer;
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
-class U2VIEW_EXPORT MaEditorWgtEventFilter : public QObject {
-    Q_OBJECT
-public:
-    MaEditorWgtEventFilter(QObject* own, MaEditorWgt* maeditorwgt)
-        : QObject(own), maEditorWgt(maeditorwgt) {
-    }
-
-    bool eventFilter(QObject* obj, QEvent* event) override;
-
-private:
-    MaEditorWgt* maEditorWgt;
-};
-
 class U2VIEW_EXPORT MaEditorWgt : public QWidget {
     Q_OBJECT
 public:
@@ -106,10 +93,6 @@ public:
     QWidget* getHeaderWidget() const;
 
     QSplitter* getMainSplitter() const;
-
-    MaEditorWgtEventFilter* getEventFilter() const {
-        return eventFilter;
-    };
 
     QSplitter* getNameAndSequenceAreasSplitter() {
         return nameAndSequenceAreasSplitter;
@@ -157,8 +140,6 @@ protected:
     BaseWidthController* baseWidthController;
     RowHeightController* rowHeightController;
     DrawHelper* drawHelper;
-
-    MaEditorWgtEventFilter* eventFilter;
 
 public:
     QAction* delSelectionAction;

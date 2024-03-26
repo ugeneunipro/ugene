@@ -46,7 +46,7 @@ public:
     bool relationIsSet;
 
 public slots:
-    virtual void accept();
+    void accept() override;
 
 private:
     Ui_CreateObjectRelationDialog* ui;

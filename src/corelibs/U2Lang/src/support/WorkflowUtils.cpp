@@ -298,7 +298,7 @@ bool WorkflowUtils::validate(const Schema& schema, QList<QListWidgetItem*>& info
     bool good = validate(schema, notifications);
 
     foreach (const WorkflowNotification& notification, notifications) {
-        QListWidgetItem* item = nullptr;
+        QListWidgetItem* item;
         Actor* a = nullptr;
         if (notification.actorId.isEmpty()) {
             item = new QListWidgetItem(notification.message);
@@ -373,11 +373,6 @@ QStringList WorkflowUtils::candidatesAsStringList(const QList<Descriptor>& descL
     return res;
 }
 
-QStringList WorkflowUtils::findMatchingTypesAsStringList(DataTypePtr set, DataTypePtr elementDatatype) {
-    QList<Descriptor> descList = findMatchingTypes(set, elementDatatype);
-    return candidatesAsStringList(descList);
-}
-
 Descriptor newEmptyValuesDesc() {
     return Descriptor("", QObject::tr("<empty>"), QObject::tr("Default value"));
 }
@@ -419,7 +414,7 @@ DataTypePtr WorkflowUtils::getToDatatypeForBusport(IntegralBusPort* p) {
         QMap<Descriptor, DataTypePtr> map;
         map.insert(*p, t);
         to = new MapDataType(Descriptor(), map);
-        // IntegralBusType* bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
+        // auto bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
         // bt->addOutput(t, p);
     }
     return to;
@@ -434,7 +429,7 @@ DataTypePtr WorkflowUtils::getFromDatatypeForBusport(IntegralBusPort* p, DataTyp
         from = to;
     } else {
         // port is input and has links, go editing mode
-        IntegralBusType* bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
+        auto bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
         bt->addInputs(p, false);
         from = bt;
     }
@@ -525,8 +520,7 @@ Descriptor WorkflowUtils::getSlotDescOfDatatype(const DataTypePtr& dt) {
     if (dtId == BaseTypes::STRING_TYPE()->getId()) {
         return BaseSlots::TEXT_SLOT();
     }
-    SAFE_POINT(false, "Unexpected slot type", Descriptor());
-    return Descriptor();
+    FAIL("Unexpected slot type", {});
 }
 
 static QStringList initLowerToUpperList() {
@@ -638,55 +632,6 @@ void WorkflowUtils::print(const QString& slotString, const QVariant& data, DataT
         text += "Can not print data of this type: " + type->getDisplayName();
     }
     printf("\n%s\n", text.toLatin1().data());
-}
-
-bool WorkflowUtils::validateSchemaForIncluding(const Schema& s, QString& error) {
-    // TEMPORARY disallow filter and grouper elements in includes
-    static QString errorStr = tr("The %1 element is a %2. Sorry, but current version of "
-                                 "UGENE doesn't support of filters and groupers in the includes.");
-    foreach (Actor* actor, s.getProcesses()) {
-        ActorPrototype* proto = actor->getProto();
-        if (proto->getInfluenceOnPathFlag() || CoreLibConstants::GROUPER_ID == proto->getId()) {
-            error = errorStr;
-            error = error.arg(actor->getLabel());
-            if (proto->getInfluenceOnPathFlag()) {
-                error = error.arg(tr("filter"));
-            } else {
-                error = error.arg(tr("grouper"));
-            }
-            return false;
-        }
-    }
-
-    QList<Actor*> processes = s.getProcesses();
-    for (Actor* actor : qAsConst(processes)) {
-        // check that free input ports are aliased
-        foreach (Port* port, actor->getPorts()) {
-            if (!port->isInput()) {
-                continue;
-            }
-            if (!port->getLinks().isEmpty()) {
-                continue;
-            }
-        }
-
-        // check that every required attribute is aliased or has set value
-        const QMap<QString, QString>& paramAliases = actor->getParamAliases();
-        foreach (const QString& attrName, actor->getParameters().keys()) {
-            Attribute* attr = actor->getParameters().value(attrName);
-            if (attr->isRequiredAttribute() && !attr->canBeEmpty()) {
-                if (!paramAliases.contains(attr->getId())) {
-                    QVariant val = attr->getAttributeValueWithoutScript<QVariant>();
-                    if (val.isNull()) {
-                        error = tr("The required parameter %1.%2 is empty and not aliased").arg(actor->getLabel()).arg(attr->getDisplayName());
-                        return false;
-                    }
-                }
-            }
-        }
-    }
-
-    return true;
 }
 
 void WorkflowUtils::extractPathsFromBindings(StrStrMap& busMap, SlotPathMap& pathMap) {
@@ -1245,16 +1190,6 @@ QScriptValue WorkflowUtils::datasetsToScript(const QList<Dataset>& sets, QScript
     return setsArray;
 }
 
-QString WorkflowUtils::getDatasetSplitter(const QString& filePaths) {
-    static const QString defaultSplitter = ";";
-    static const QString additionalSplitter = ",";
-
-    if (filePaths.contains(defaultSplitter)) {
-        return defaultSplitter;
-    }
-    return additionalSplitter;
-}
-
 QString WorkflowUtils::packSamples(const QList<TophatSample>& samples) {
     QStringList result;
     foreach (const TophatSample& sample, samples) {
@@ -1278,11 +1213,26 @@ QList<TophatSample> WorkflowUtils::unpackSamples(const QString& samplesStr, U2Op
     return result;
 }
 
+QList<QString> WorkflowUtils::unpackListOfDatasets(const QString& textWithMultipleDatasets) {
+    return textWithMultipleDatasets.split(";;", QString::SkipEmptyParts);
+}
+
+QString WorkflowUtils::packListOfDatasets(const QList<QString>& datasetStrings) {
+    return datasetStrings.join(";;");
+}
+
+QList<QString> WorkflowUtils::unpackListOfUrls(const QString& datasetString) {
+    return datasetString.split(";", QString::SkipEmptyParts);
+}
+
+QString WorkflowUtils::packListOfUrls(const QList<QString>& urls) {
+    return urls.join(";");
+}
+
 const QString WorkflowEntityValidator::NAME_INACCEPTABLE_SYMBOLS_TEMPLATE = "=\\\"";
 const QString WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE = "a-zA-Z0-9\\-_";
 
 const QRegularExpression WorkflowEntityValidator::ACCEPTABLE_NAME("[^" + NAME_INACCEPTABLE_SYMBOLS_TEMPLATE + "]*");
-const QRegularExpression WorkflowEntityValidator::INACCEPTABLE_SYMBOL_IN_NAME("[" + NAME_INACCEPTABLE_SYMBOLS_TEMPLATE + "]");
 const QRegularExpression WorkflowEntityValidator::ACCEPTABLE_ID("[" + ID_ACCEPTABLE_SYMBOLS_TEMPLATE + "]*");
 const QRegularExpression WorkflowEntityValidator::INACCEPTABLE_SYMBOLS_IN_ID("[^" + ID_ACCEPTABLE_SYMBOLS_TEMPLATE + "]");
 

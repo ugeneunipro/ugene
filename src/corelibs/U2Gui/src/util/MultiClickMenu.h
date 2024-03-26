@@ -36,7 +36,7 @@ public:
     MultiClickMenu(QMenu* menu);
 
 private:
-    bool eventFilter(QObject* watched, QEvent* event);
+    bool eventFilter(QObject* watched, QEvent* event) override;
     bool isSelectEvent(QEvent* event);
 
     QMenu* menu;

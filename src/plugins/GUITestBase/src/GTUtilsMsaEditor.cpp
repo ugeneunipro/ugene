@@ -102,7 +102,7 @@ MsaEditorWgt* GTUtilsMsaEditor::getEditorUi() {
     }
     GT_CHECK_RESULT(msaEditorWgt != nullptr, "MSA Editor widget is not found", nullptr);
     // Get #0 editor widget
-    return qobject_cast<MsaEditorWgt*>(msaEditorWgt->getEditor()->getMaEditorWgt(0));
+    return qobject_cast<MsaEditorWgt*>(msaEditorWgt->getEditor()->getLineWidget(0));
 }
 
 QWidget* GTUtilsMsaEditor::getOverviewArea() {
@@ -139,7 +139,7 @@ void GTUtilsMsaEditor::checkNoTreeView() {
 
 MaEditorNameList* GTUtilsMsaEditor::getNameListArea() {
     // There are more than one msa_editor_name_list in multiline mode, so at first we get line #0 widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(0);
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getLineWidget(0);
     auto result = GTWidget::findExactWidget<MaEditorNameList*>("msa_editor_name_list", activeWindow);
     GT_CHECK_RESULT(result != nullptr, "MaGraphOverview is not found", nullptr);
     return result;
@@ -178,7 +178,7 @@ QRect GTUtilsMsaEditor::getColumnHeaderRect(int column) {
     MsaEditor* editor = getEditor();
     GT_CHECK_RESULT(editor != nullptr, "MSA Editor is NULL", QRect());
 
-    BaseWidthController* baseWidthController = editor->getUI()->getUI(0)->getBaseWidthController();
+    BaseWidthController* baseWidthController = editor->getLineWidget(0)->getBaseWidthController();
     return QRect(consensusArea->mapToGlobal(QPoint(baseWidthController->getBaseScreenOffset(column),
                                                    consensusArea->geometry().top())),
                  QSize(baseWidthController->getBaseWidth(),

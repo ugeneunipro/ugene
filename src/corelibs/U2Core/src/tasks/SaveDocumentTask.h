@@ -115,7 +115,7 @@ class U2CORE_EXPORT SaveCopyAndAddToProjectTask : public Task {
     Q_OBJECT
 public:
     SaveCopyAndAddToProjectTask(Document* doc, IOAdapterFactory* iof, const GUrl& url);
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     SaveDocumentTask* saveTask;
@@ -130,7 +130,7 @@ class U2CORE_EXPORT RelocateDocumentTask : public Task {
     Q_OBJECT
 public:
     RelocateDocumentTask(const GUrl& fromURL, const GUrl& toURL);
-    ReportResult report();
+    ReportResult report() override;
 
 public:
     GUrl fromURL;

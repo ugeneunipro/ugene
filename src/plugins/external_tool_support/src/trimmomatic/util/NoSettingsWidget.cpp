@@ -28,7 +28,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 NoSettingsWidget::NoSettingsWidget() {
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    auto mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(mainLayout);
     mainLayout->addWidget(new QLabel(tr("There are no settings for this step.")));

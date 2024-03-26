@@ -324,7 +324,7 @@ inline static U2SequenceObject* getCopiedSequenceObject(const QVariantMap& data,
         U2EntityRef seqRef = U2SequenceUtils::import(os, context->getDataStorage()->getDbiRef(), seq);
         CHECK_OP(os, nullptr);
 
-        U2SequenceObject* clonedSeqObj = new U2SequenceObject(seqObj->getSequenceName(), seqRef);
+        auto clonedSeqObj = new U2SequenceObject(seqObj->getSequenceName(), seqRef);
         U2AttributeUtils::copyObjectAttributes(seqObj->getEntityRef(), clonedSeqObj->getEntityRef(), os);
 
         return clonedSeqObj;
@@ -588,7 +588,7 @@ void GenbankWriter::streamingStoreEntry(DocumentFormat* format, IOAdapter* io, c
             if (annotationName.isEmpty()) {
                 annotationName = QString("unknown features %1").arg(entryNum);
             }
-            AnnotationTableObject* att = new AnnotationTableObject(annotationName, context->getDataStorage()->getDbiRef());
+            auto att = new AnnotationTableObject(annotationName, context->getDataStorage()->getDbiRef());
             anObjList << att;
             att->addAnnotations(atl);
         }
@@ -754,7 +754,7 @@ GObject* SeqWriter::getAnnObject(const QVariantMap& data, WorkflowContext* conte
     if (!seqObj.isNull()) {
         seqName = seqObj->getSequenceName();
     }
-    AnnotationTableObject* annObj = new AnnotationTableObject(seqName + " features", context->getDataStorage()->getDbiRef());
+    auto annObj = new AnnotationTableObject(seqName + " features", context->getDataStorage()->getDbiRef());
     annObj->addAnnotations(anns);
     return annObj;
 }
@@ -995,7 +995,7 @@ Worker* DataWorkerFactory::createWorker(Actor* a) {
     BaseWorker* w = nullptr;
     QString protoId = a->getProto()->getId();
     if (CoreLibConstants::READ_TEXT_PROTO_ID == protoId) {
-        TextReader* t = new TextReader(a);
+        auto t = new TextReader(a);
         w = t;
     } else if (CoreLibConstants::WRITE_TEXT_PROTO_ID == protoId) {
         w = new TextWriter(a);

@@ -223,6 +223,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h \
             src/tests/common_scenarios/dp_view/GTTestsDpView.h \
+            src/tests/common_scenarios/external_tools/mfold/GTTestsMfold.h \
             src/tests/common_scenarios/fasttree/GTTestsFastTree.h \
             src/tests/common_scenarios/genecut/GTTestsGeneCut.h \
             src/tests/common_scenarios/iqtree/GTTestsIQTree.h \
@@ -510,6 +511,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.cpp \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.cpp \
             src/tests/common_scenarios/dp_view/GTTestsDpView.cpp \
+            src/tests/common_scenarios/external_tools/mfold/GTTestsMfold.cpp \
             src/tests/common_scenarios/fasttree/GTTestsFastTree.cpp \
             src/tests/common_scenarios/genecut/GTTestsGeneCut.cpp \
             src/tests/common_scenarios/iqtree/GTTestsIQTree.cpp \

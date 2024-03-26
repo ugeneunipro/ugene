@@ -30,9 +30,9 @@ public:
     BreakpointEqualHitCounter(BreakpointHitCountCondition
                                   initCondition,
                               quint32 initHitCount);
-    virtual bool hit();
-    virtual quint32 getHitCountParameter() const;
-    virtual void setHitCountParameter(quint32 newParameter);
+    bool hit() override;
+    quint32 getHitCountParameter() const override;
+    void setHitCountParameter(quint32 newParameter) override;
 
 protected:
     quint32 targetHitCount;

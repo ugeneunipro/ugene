@@ -73,7 +73,7 @@ class U2DESIGNER_EXPORT ExternalToolsTreeNode : public QWidget {
 public:
     ExternalToolsTreeNode(int kind, const QString& objectName, const QString& content, ExternalToolsTreeNode* parent, bool isImportant = false);
 
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent* event) override;
 
     QString toHtml() const;
 

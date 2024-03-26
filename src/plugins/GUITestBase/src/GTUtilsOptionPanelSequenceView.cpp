@@ -140,8 +140,8 @@ void GTUtilsOptionPanelSequenceView::clickPrev() {
     GTWidget::click(prev);
 }
 
-void GTUtilsOptionPanelSequenceView::clickGetAnnotation() {
-    auto getAnnotations = GTWidget::findPushButton("getAnnotationsPushButton");
+void GTUtilsOptionPanelSequenceView::clickGetAnnotation(QWidget* parent) {
+    auto getAnnotations = GTWidget::findPushButton("getAnnotationsPushButton", parent);
     GTWidget::click(getAnnotations);
     GTThread::waitForMainThread();
 }
@@ -297,7 +297,7 @@ void GTUtilsOptionPanelSequenceView::toggleSaveAnnotationsTo() {
 }
 
 void GTUtilsOptionPanelSequenceView::enterPatternFromFile(const QString& filePathStr, const QString& fileName) {
-    GTFileDialogUtils* ob = new GTFileDialogUtils(filePathStr, fileName, GTFileDialogUtils::Open);
+    auto ob = new GTFileDialogUtils(filePathStr, fileName, GTFileDialogUtils::Open);
     GTUtilsDialog::waitForDialog(ob);
 
     auto browse = GTWidget::findToolButton("loadFromFileToolButton");

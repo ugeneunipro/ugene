@@ -30,11 +30,11 @@ class U2LANG_EXPORT URLAttribute : public Attribute {
 public:
     URLAttribute(const Descriptor& d, const DataTypePtr type, bool required = false);
 
-    virtual void setAttributeValue(const QVariant& newVal);
-    virtual bool isDefaultValue() const;
-    virtual bool isEmpty() const;
-    virtual URLAttribute* clone();
-    virtual bool validate(NotificationsList& notificationList);
+    void setAttributeValue(const QVariant& newVal) override;
+    bool isDefaultValue() const override;
+    bool isEmpty() const override;
+    URLAttribute* clone() override;
+    bool validate(NotificationsList& notificationList) override;
 
     virtual const QSet<GObjectType>& getCompatibleObjectTypes() const;
     virtual void setCompatibleObjectTypes(const QSet<GObjectType>& types);

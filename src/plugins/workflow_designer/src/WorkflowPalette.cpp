@@ -218,7 +218,7 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, Sc
 }
 
 QMenu* WorkflowPaletteElements::createMenu(const QString& name) {
-    QMenu* menu = new QMenu(name, this);
+    auto menu = new QMenu(name, this);
     createMenu(menu);
     return menu;
 }
@@ -232,7 +232,7 @@ void WorkflowPaletteElements::createMenu(QMenu* menu) {
     QMapIterator<QString, QList<QAction*>> it(categoryMap);
     while (it.hasNext()) {
         it.next();
-        QMenu* grpMenu = new QMenu(it.key(), menu);
+        auto grpMenu = new QMenu(it.key(), menu);
         QMap<QString, QAction*> map;
         foreach (QAction* a, it.value()) {
             map[a->text()] = a;
@@ -241,7 +241,7 @@ void WorkflowPaletteElements::createMenu(QMenu* menu) {
         while (jt.hasNext()) {
             jt.next();
             QAction* elementAction = jt.value();
-            QAction* menuAction = new QAction(elementAction->icon(), elementAction->text(), elementAction);
+            auto menuAction = new QAction(elementAction->icon(), elementAction->text(), elementAction);
             menuAction->setData(MENU_ACTION_MARKER);
             connect(menuAction, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
             grpMenu->addAction(menuAction);
@@ -389,7 +389,7 @@ void WorkflowPaletteElements::sortTree() {
 }
 
 QTreeWidgetItem* WorkflowPaletteElements::createItemWidget(QAction* a) {
-    QTreeWidgetItem* item = new QTreeWidgetItem();
+    auto item = new QTreeWidgetItem();
     item->setToolTip(0, a->toolTip());
     item->setData(0, Qt::UserRole, QVariant::fromValue(a));
     actionMap[a] = item;
@@ -400,7 +400,7 @@ QTreeWidgetItem* WorkflowPaletteElements::createItemWidget(QAction* a) {
 }
 
 QAction* WorkflowPaletteElements::createItemAction(ActorPrototype* item) {
-    QAction* a = new QAction(item->getDisplayName(), this);
+    auto a = new QAction(item->getDisplayName(), this);
     a->setToolTip(item->getDocumentation());
     a->setCheckable(true);
     if (item->getIcon().isNull()) {
@@ -626,10 +626,10 @@ void WorkflowPaletteElements::mouseMoveEvent(QMouseEvent* event) {
             return;
         ActorPrototype* proto = action->data().value<ActorPrototype*>();
         assert(proto);
-        QMimeData* mime = new QMimeData();
+        auto mime = new QMimeData();
         mime->setData(WorkflowPalette::MIME_TYPE, proto->getId().toLatin1());
         mime->setText(proto->getId());
-        QDrag* drag = new QDrag(this);
+        auto drag = new QDrag(this);
         drag->setMimeData(mime);
         drag->setPixmap(action->icon().pixmap(QSize(44, 44)));
 

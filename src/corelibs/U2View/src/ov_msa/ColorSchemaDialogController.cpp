@@ -358,7 +358,7 @@ AppSettingsGUIPageState* ColorSchemaSettingsPageWidget::getState(QString& err) c
         err = os.getError();
         return nullptr;
     }
-    ColorSchemaSettingsPageState* state = new ColorSchemaSettingsPageState();
+    auto state = new ColorSchemaSettingsPageState();
     state->colorsDir = colorsDir;
     state->customSchemas = customSchemas;
     state->removedCustomSchemas = removedCustomSchemas;

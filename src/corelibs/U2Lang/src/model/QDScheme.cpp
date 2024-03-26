@@ -323,7 +323,7 @@ QList<QDPath*> QDScheme::findPaths(QDSchemeUnit* src, QDSchemeUnit* dst) {
 
             if (paths.isEmpty()) {
                 for (QDDistanceConstraint* dc : qAsConst(jointCons)) {
-                    QDPath* newPath = new QDPath;
+                    auto newPath = new QDPath;
                     bool ok = newPath->addConstraint(dc);
                     assert(ok);
                     Q_UNUSED(ok);
@@ -403,7 +403,7 @@ QDPath::~QDPath() {
 }
 
 QDPath* QDPath::clone() const {
-    QDPath* cln = new QDPath;
+    auto cln = new QDPath;
     cln->constraints = constraints;
     cln->pathSrc = pathSrc;
     cln->pathDst = pathDst;
@@ -768,7 +768,7 @@ void QDResultGroup::add(const QList<QDResultUnit>& res) {
 
 void QDResultGroup::buildGroupFromSingleResult(const QDResultUnit& ru, QList<QDResultGroup*>& results) {
     QDStrandOption groupStrand = ru->strand == U2Strand::Direct ? QDStrand_DirectOnly : QDStrand_ComplementOnly;
-    QDResultGroup* g = new QDResultGroup(groupStrand);
+    auto g = new QDResultGroup(groupStrand);
     g->add(ru);
     results.append(g);
 }

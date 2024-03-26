@@ -38,11 +38,11 @@ class IOAdapterWriter;
 class U2FORMATS_EXPORT TextDocumentFormatDeprecated : public DocumentFormat {
 public:
     TextDocumentFormatDeprecated(QObject* p, const DocumentFormatId& id, DocumentFormatFlags _flags, const QStringList& fileExts = QStringList());
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
 
 protected:
-    virtual DNASequence* loadSequence(IOAdapter* io, U2OpStatus& ti);
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    DNASequence* loadSequence(IOAdapter* io, U2OpStatus& ti) override;
+    Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
     virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const = 0;
     virtual DNASequence* loadTextSequence(IOAdapter* io, U2OpStatus& ti);
     virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) = 0;

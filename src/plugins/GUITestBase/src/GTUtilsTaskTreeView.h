@@ -46,9 +46,9 @@ private:
 
 class GTUtilsTaskTreeView {
 public:
-    static void waitTaskFinished(long timeoutMillis = 180000);
+    static void waitTaskFinished(int timeoutMillis = 180000);
     static void click(const QString& itemName, Qt::MouseButton b = Qt::LeftButton);
-    // Double click on the item with @itemName. This tree item will be expanded
+    // Double-click on the item with @itemName. This tree item will be expanded
     static void doubleClick(const QString& itemName);
 
     /** Opens view if it is not opened and returns tree widget. */
@@ -80,16 +80,6 @@ public:
 
     static int countTasks(const QString& itemName);
     static QString getTaskStatus(const QString& itemName);
-    /*
-     * Returns progress of the @itemName task. if @failIfNotFound is true, fails if the task with @@itemName wasn't found
-     * Returns the percentage value if the task is running;
-     * -1 if the task wasn't found; -2 if the task exists, but still not int the running state
-     */
-    static int getTaskProgress(const QString& itemName, bool failIfNotFound = true);
-    /*
-     * Waits until task with the name @itemName has progress more than @taskProgress
-     */
-    static void waitTaskProgressMoreThan(const QString& itemName, int taskProgress);
 
     static const QString widgetName;
 

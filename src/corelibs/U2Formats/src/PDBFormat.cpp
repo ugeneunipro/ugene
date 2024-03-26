@@ -847,7 +847,7 @@ Document* PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef& dbiRef, BioSt
         dnaSeq.info.insert(DNAInfo::COMMENT, bioStruct.descr);
         dnaSeq.info.insert(DNAInfo::CHAIN_ID, key);
         U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dnaSeq, dnaSeq.alphabet->getId());
-        U2SequenceObject* seqObj = new U2SequenceObject(dnaSeq.getName(), ref);
+        auto seqObj = new U2SequenceObject(dnaSeq.getName(), ref);
         SAFE_POINT(seqObj, QString("Got NULL object from DocumentFormatUtils addSequenceObjectDeprecated, os.error = %1").arg(os.getError()), nullptr);
         objects.append(seqObj);
         dbiObjects.objects << seqObj->getSequenceRef().entityId;
@@ -862,7 +862,7 @@ Document* PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef& dbiRef, BioSt
         } else {
             annotationTableName = QString(bioStruct.pdbId) + QString(" chain %1 annotation").arg(key);
         }
-        AnnotationTableObject* aObj = new AnnotationTableObject(annotationTableName, dbiRef, hints);
+        auto aObj = new AnnotationTableObject(annotationTableName, dbiRef, hints);
         aObj->addAnnotations(anns.value(key));
 
         objects.append(aObj);
@@ -871,7 +871,7 @@ Document* PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef& dbiRef, BioSt
     CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
     objects.append(biostrucObj);
-    Document* doc = new Document(format, iof, url, dbiRef, objects, fs);
+    auto doc = new Document(format, iof, url, dbiRef, objects, fs);
 
     // set object relations
     QMap<AnnotationTableObject*, U2SequenceObject*>::const_iterator i;

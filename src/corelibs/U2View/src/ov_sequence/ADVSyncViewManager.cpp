@@ -275,9 +275,9 @@ void ADVSyncViewManager::sl_lock() {
         m = SyncMode_SeqSel;
     } else if (s == lockByAnnSelAction) {
         m = SyncMode_AnnSel;
-    } else if (buttonClicked) {
+    } else if (buttonClicked && !lockButton->isChecked()) {
         m = detectSyncMode();
-    }
+    }    
     if (lockButton->isChecked()) {
         unlock();
     } else {
@@ -557,7 +557,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
     QSet<QString> actionNames = aaActionMap.keys().toSet();
 
     foreach (const QString& aName, actionNames) {
-        QAction* action = new QAction(toggleAutoAnnotationsMenu);
+        auto action = new QAction(toggleAutoAnnotationsMenu);
         action->setObjectName(aName);
         connect(action, SIGNAL(triggered()), SLOT(sl_toggleAutoAnnotationHighlighting()));
         toggleAutoAnnotationsMenu->addAction(action);

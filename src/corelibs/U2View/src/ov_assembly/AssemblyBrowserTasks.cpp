@@ -114,13 +114,13 @@ void OpenAssemblyBrowserTask::updateTitle(AssemblyBrowser* ab) {
 }
 
 AssemblyBrowser* OpenAssemblyBrowserTask::openBrowserForObject(AssemblyObject* obj, const QString& viewName, bool persistent) {
-    AssemblyBrowser* v = new AssemblyBrowser(viewName, obj);
+    auto v = new AssemblyBrowser(viewName, obj);
     U2OpStatus2Notification os;
     if (!v->checkValid(os)) {
         delete v;
         return nullptr;
     }
-    GObjectViewWindow* w = new GObjectViewWindow(v, viewName, persistent);
+    auto w = new GObjectViewWindow(v, viewName, persistent);
     AppContext::getMainWindow()->getMDIManager()->addMDIWindow(w);
     return v;
 }

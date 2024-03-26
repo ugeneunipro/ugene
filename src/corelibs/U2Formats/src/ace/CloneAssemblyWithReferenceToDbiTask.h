@@ -38,8 +38,8 @@ public:
                                         const U2DbiRef& dstDbiRef,
                                         const QVariantMap& hints);
 
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 
 private:
     U2Assembly assembly;

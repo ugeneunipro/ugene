@@ -116,9 +116,9 @@ void WriteDocActorProto::construct(bool canWriteToSharedDb, bool addValidator, b
 
     urlAttr = new Attribute(BaseAttributes::URL_OUT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false);
     attrs << urlAttr;
-    Attribute* suffixAttr = new Attribute(BaseAttributes::URL_SUFFIX(), BaseTypes::STRING_TYPE(), false);
+    auto suffixAttr = new Attribute(BaseAttributes::URL_SUFFIX(), BaseTypes::STRING_TYPE(), false);
     attrs << suffixAttr;
-    Attribute* fileModeAttr = new Attribute(BaseAttributes::FILE_MODE_ATTRIBUTE(), BaseTypes::NUM_TYPE(), false, SaveDoc_Roll);
+    auto fileModeAttr = new Attribute(BaseAttributes::FILE_MODE_ATTRIBUTE(), BaseTypes::NUM_TYPE(), false, SaveDoc_Roll);
     attrs << fileModeAttr;
 
     if (canWriteToSharedDb) {
@@ -204,7 +204,7 @@ QString WriteFastaPrompter::composeRichDoc() {
 }
 
 ActorDocument* WriteFastaPrompter::createDescription(Actor* a) {
-    WriteFastaPrompter* doc = new WriteFastaPrompter(format, a);
+    auto doc = new WriteFastaPrompter(format, a);
     doc->connect(a, SIGNAL(si_labelChanged()), SLOT(sl_actorModified()));
     doc->connect(a, SIGNAL(si_modified()), SLOT(sl_actorModified()));
     foreach (Workflow::Port* input, a->getInputPorts()) {

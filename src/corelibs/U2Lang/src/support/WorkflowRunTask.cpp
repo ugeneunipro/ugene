@@ -57,13 +57,6 @@ WorkflowRunTask::WorkflowRunTask(const Schema& sh, const QMap<ActorId, ActorId>&
                              TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_OnlyNotificationReport),
       rmap(remap), flows(sh.getFlows()) {
     GCOUNTER(cvar, "WorkflowRunTask");
-    if (debugInfo == nullptr) {
-        debugInfo = new WorkflowDebugStatus();
-    }
-    if (debugInfo->parent() == nullptr) {
-        debugInfo->setParent(this);
-    }
-
     auto t = new WorkflowIterationRunTask(sh, debugInfo);
     WorkflowMonitor* m = t->getMonitor();
     if (m != nullptr) {
@@ -178,11 +171,13 @@ WorkflowIterationRunTask::WorkflowIterationRunTask(const Schema& sh,
         return;
     }
 
-    connect(debugInfo, SIGNAL(si_pauseStateChanged(bool)), SLOT(sl_pauseStateChanged(bool)));
-    connect(debugInfo, SIGNAL(si_singleStepIsRequested(const ActorId&)), SLOT(sl_singleStepIsRequested(const ActorId&)));
-    connect(debugInfo, SIGNAL(si_busInvestigationIsRequested(const Workflow::Link*, int)), SLOT(sl_busInvestigationIsRequested(const Workflow::Link*, int)));
-    connect(debugInfo, SIGNAL(si_busCountOfMessagesIsRequested(const Workflow::Link*)), SLOT(sl_busCountOfMessagesRequested(const Workflow::Link*)));
-    connect(debugInfo, SIGNAL(si_convertMessages2Documents(const Workflow::Link*, const QString&, int, const QString&)), SLOT(sl_convertMessages2Documents(const Workflow::Link*, const QString&, int, const QString&)));
+    if (!debugInfo.isNull()) {
+        connect(debugInfo, SIGNAL(si_pauseStateChanged(bool)), SLOT(sl_pauseStateChanged(bool)));
+        connect(debugInfo, SIGNAL(si_singleStepIsRequested(const ActorId&)), SLOT(sl_singleStepIsRequested(const ActorId&)));
+        connect(debugInfo, SIGNAL(si_busInvestigationIsRequested(const Workflow::Link*, int)), SLOT(sl_busInvestigationIsRequested(const Workflow::Link*, int)));
+        connect(debugInfo, SIGNAL(si_busCountOfMessagesIsRequested(const Workflow::Link*)), SLOT(sl_busCountOfMessagesRequested(const Workflow::Link*)));
+        connect(debugInfo, SIGNAL(si_convertMessages2Documents(const Workflow::Link*, const QString&, int, const QString&)), SLOT(sl_convertMessages2Documents(const Workflow::Link*, const QString&, int, const QString&)));
+    }
 
     auto m = new WorkflowMonitor(this, schema);
     context = new WorkflowContext(schema->getProcesses(), m);
@@ -252,7 +247,9 @@ void WorkflowIterationRunTask::prepare() {
         stateInfo.setError(tr("Failed to create a workflow context"));
         return;
     }
-    debugInfo->setContext(context);
+    if (!debugInfo.isNull()) {
+        debugInfo->setContext(context);
+    }
     scheduler = df->createScheduler(schema);
     if (!scheduler) {
         stateInfo.setError(tr("Failed to create scheduler in domain %1").arg(df->getDisplayName()));
@@ -274,7 +271,7 @@ void WorkflowIterationRunTask::prepare() {
 QList<Task*> WorkflowIterationRunTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> tasks;
     // handle the situation when pause signal was not delivered to the current thread
-    while (debugInfo->isPaused() && !isCanceled()) {
+    while (!debugInfo.isNull() && debugInfo->isPaused() && !isCanceled()) {
         QCoreApplication::processEvents();
     }
     if (scheduler->isReady() && nextTickRestoring) {
@@ -342,7 +339,7 @@ Task::ReportResult WorkflowIterationRunTask::report() {
 WorkerState WorkflowIterationRunTask::getState(const ActorId& id) {
     if (scheduler) {
         const WorkerState currentState = scheduler->getWorkerState(rmap.value(id));
-        return (debugInfo->isPaused() && Workflow::WorkerRunning == currentState) ? Workflow::WorkerPaused : currentState;
+        return (!debugInfo.isNull() && debugInfo->isPaused() && Workflow::WorkerRunning == currentState) ? Workflow::WorkerPaused : currentState;
     }
     return WorkerWaiting;
 }
@@ -407,7 +404,7 @@ int WorkflowIterationRunTask::getDataProduced(const ActorId& actor) {
 
 void WorkflowIterationRunTask::sl_pauseStateChanged(bool isPaused) {
     if (isPaused) {
-        if (!debugInfo->isCurrentStepIsolated()) {
+        if (!debugInfo.isNull() && !debugInfo->isCurrentStepIsolated()) {
             nextTickRestoring = scheduler->cancelCurrentTaskIfAllowed();
         }
         if (AppContext::isGUIMode()) {
@@ -421,7 +418,7 @@ void WorkflowIterationRunTask::sl_pauseStateChanged(bool isPaused) {
 void WorkflowIterationRunTask::sl_busInvestigationIsRequested(const Workflow::Link* bus,
                                                               int messageNumber) {
     CommunicationChannel* channel = lmap.value(getKey(bus));
-    if (channel != nullptr && debugInfo->isPaused()) {
+    if (channel != nullptr && !debugInfo.isNull() && debugInfo->isPaused()) {
         QQueue<Message> messages = channel->getMessages(messageNumber, messageNumber);
         WorkflowDebugMessageParser* parser = debugInfo->getMessageParser();
         SAFE_POINT(parser != nullptr, "Invalid debug message parser!", );
@@ -432,11 +429,13 @@ void WorkflowIterationRunTask::sl_busInvestigationIsRequested(const Workflow::Li
 }
 
 void WorkflowIterationRunTask::sl_busCountOfMessagesRequested(const Workflow::Link* bus) {
-    debugInfo->respondMessagesCount(bus, getMsgNum(bus));
+    if (!debugInfo.isNull()) {
+        debugInfo->respondMessagesCount(bus, getMsgNum(bus));
+    }
 }
 
 void WorkflowIterationRunTask::sl_singleStepIsRequested(const ActorId& actor) {
-    if (debugInfo->isPaused()) {
+    if (!debugInfo.isNull() && debugInfo->isPaused()) {
         scheduler->makeOneTick(actor);
     }
 }
@@ -446,7 +445,7 @@ void WorkflowIterationRunTask::sl_convertMessages2Documents(const Workflow::Link
                                                             int messageNumber,
                                                             const QString& schemeName) {
     CommunicationChannel* channel = lmap.value(getKey(bus));
-    if (channel != nullptr && debugInfo->isPaused()) {
+    if (channel != nullptr && !debugInfo.isNull() && debugInfo->isPaused()) {
         QQueue<Message> messages = channel->getMessages(messageNumber, messageNumber);
         if (!messages.isEmpty()) {
             WorkflowDebugMessageParser* parser = debugInfo->getMessageParser();

@@ -181,13 +181,13 @@ void WriteAssemblyWorkerFactory::init() {
                               BaseWriteAssemblyWorker::tr("Build index (BAM only)"),
                               BaseWriteAssemblyWorker::tr("Build BAM index for the target BAM file. The file .bai will be created in the same folder."));
 
-        Attribute* indexAttr = new Attribute(indexDescr, BaseTypes::BOOL_TYPE(), false, true);
+        auto indexAttr = new Attribute(indexDescr, BaseTypes::BOOL_TYPE(), false, true);
         indexAttr->addRelation(new VisibilityRelation(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId(), BaseDocumentFormats::BAM));
         indexAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
         attrs << indexAttr;
     }
 
-    WriteDocActorProto* proto = new WriteDocActorProto(format, protoDesc, portDescs, inDesc.getId(), attrs, true, false);
+    auto proto = new WriteDocActorProto(format, protoDesc, portDescs, inDesc.getId(), attrs, true, false);
     docFormatAttr->addRelation(new FileExtensionRelation(proto->getUrlAttr()->getId()));
 
     // set up delegates

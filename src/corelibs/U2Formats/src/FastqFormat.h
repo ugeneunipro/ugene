@@ -38,22 +38,22 @@ class U2FORMATS_EXPORT FastqFormat : public TextDocumentFormatDeprecated {
 public:
     FastqFormat(QObject* p);
 
-    virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
+    void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) override;
 
-    virtual bool isStreamingSupport() {
+    bool isStreamingSupport() override {
         return true;
     }
 
-    virtual void storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os);
+    void storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) override;
 
     static void writeEntry(const QString& seqName, const DNASequence& seq, IOAdapter* io, const QString& errorMessage, U2OpStatus& os, bool cutLines = true);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
 
-    virtual DNASequence* loadTextSequence(IOAdapter* io, U2OpStatus& os);
+    DNASequence* loadTextSequence(IOAdapter* io, U2OpStatus& os) override;
 
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 };
 
 }  // namespace U2

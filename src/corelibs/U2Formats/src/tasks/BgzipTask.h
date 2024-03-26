@@ -30,9 +30,9 @@ class U2FORMATS_EXPORT BgzipTask : public Task {
     Q_OBJECT
 public:
     BgzipTask(const GUrl& fileUrl, const GUrl& bgzfUrl = GUrl());
-    void run();
-    QString generateReport() const;
-    ReportResult report();
+    void run() override;
+    QString generateReport() const override;
+    ReportResult report() override;
 
     static bool checkBgzf(const GUrl& fileUrl);
 
@@ -45,9 +45,9 @@ class U2FORMATS_EXPORT GzipDecompressTask : public Task {
     Q_OBJECT
 public:
     GzipDecompressTask(const GUrl& zippedUrl, const GUrl& unzippedUrl = GUrl());
-    void run();
-    QString generateReport() const;
-    ReportResult report();
+    void run() override;
+    QString generateReport() const override;
+    ReportResult report() override;
 
     static bool checkZipped(const GUrl& fileUrl);
 

@@ -55,7 +55,7 @@ public:
     QString getDBId() const;
     QString getResourceId() const;
     QString getFullpath() const;
-    virtual void accept();
+    void accept() override;
 
 private:
     void setSaveFilename();

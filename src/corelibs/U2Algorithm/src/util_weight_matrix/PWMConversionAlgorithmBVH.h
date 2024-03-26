@@ -35,11 +35,11 @@ class U2ALGORITHM_EXPORT PWMConversionAlgorithmFactoryBVH : public PWMConversion
 public:
     PWMConversionAlgorithmFactoryBVH(QObject* p = nullptr);
 
-    virtual PWMConversionAlgorithm* createAlgorithm(QObject* parent);
+    PWMConversionAlgorithm* createAlgorithm(QObject* parent) override;
 
-    virtual QString getDescription() const;
+    QString getDescription() const override;
 
-    virtual QString getName() const;
+    QString getName() const override;
 };
 
 class U2ALGORITHM_EXPORT PWMConversionAlgorithmBVH : public PWMConversionAlgorithm {
@@ -47,7 +47,7 @@ class U2ALGORITHM_EXPORT PWMConversionAlgorithmBVH : public PWMConversionAlgorit
 public:
     PWMConversionAlgorithmBVH(PWMConversionAlgorithmFactory* factory, QObject* p = nullptr);
 
-    virtual PWMatrix convert(const PFMatrix& matrix);
+    PWMatrix convert(const PFMatrix& matrix) override;
 };
 
 }  // namespace U2

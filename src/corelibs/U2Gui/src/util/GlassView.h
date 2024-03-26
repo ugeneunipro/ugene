@@ -36,7 +36,7 @@ public:
         : QWidget(parent) {
     }
     virtual void paint(QPainter*) = 0;
-    virtual bool eventFilter(QObject*, QEvent* e) {
+    bool eventFilter(QObject*, QEvent* e) override {
         return this->event(e);
     }
 };
@@ -52,9 +52,9 @@ public slots:
     void setGlass(GlassPane*);
 
 protected:
-    bool viewportEvent(QEvent* event);
-    void paintEvent(QPaintEvent*);
-    void scrollContentsBy(int dx, int dy);
+    bool viewportEvent(QEvent* event) override;
+    void paintEvent(QPaintEvent*) override;
+    void scrollContentsBy(int dx, int dy) override;
 
     GlassPane* glass;
 };

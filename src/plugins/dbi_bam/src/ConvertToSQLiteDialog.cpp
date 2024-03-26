@@ -93,11 +93,11 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl& _sourceUrl, BAMInfo& _b
         {
             int i = 0;
             foreach (const Header::Reference& ref, bamInfo.getHeader().getReferences()) {
-                QTableWidgetItem* checkbox = new QTableWidgetItem();
+                auto checkbox = new QTableWidgetItem();
                 checkbox->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
                 checkbox->setText(ref.getName());
                 ui.tableWidget->setItem(i, 0, checkbox);
-                QTableWidgetItem* item = new QTableWidgetItem(FormatUtils::formatNumberWithSeparators(ref.getLength()));
+                auto item = new QTableWidgetItem(FormatUtils::formatNumberWithSeparators(ref.getLength()));
                 item->setFlags(Qt::ItemIsEnabled);
                 ui.tableWidget->setItem(i, 1, item);
                 ui.tableWidget->setCellWidget(i, 2, new QLabel("<a href=\"" + ref.getUri() + "\">" + ref.getUri() + "</a>"));
@@ -161,7 +161,7 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
     dialog->setLayout(new QVBoxLayout());
 
     {
-        QTableWidget* table = new QTableWidget();
+        auto table = new QTableWidget();
         table->setColumnCount(2);
         table->setHorizontalHeaderLabels(QStringList() << BAMDbiPlugin::tr("Property name") << BAMDbiPlugin::tr("Value"));
         table->horizontalHeader()->setStretchLastSection(true);
@@ -192,7 +192,7 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
         {
             for (int i = 0; i < list.count(); i++) {
                 const QPair<QString, QString>& pair = list.at(i);
-                QTableWidgetItem* item = new QTableWidgetItem(pair.first);
+                auto item = new QTableWidgetItem(pair.first);
                 item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
                 table->setItem(i, 0, item);
                 item = new QTableWidgetItem(pair.second);
@@ -204,7 +204,7 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
     }
 
     {
-        QTableWidget* table = new QTableWidget();
+        auto table = new QTableWidget();
         table->setColumnCount(9);
         table->setHorizontalHeaderLabels(QStringList() << BAMDbiPlugin::tr("Sequencing center") << BAMDbiPlugin::tr("Description") << BAMDbiPlugin::tr("Date")
                                                        << BAMDbiPlugin::tr("Library") << BAMDbiPlugin::tr("Programs") << BAMDbiPlugin::tr("Predicted median insert size") << BAMDbiPlugin::tr("Platform/technology")
@@ -230,7 +230,7 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
     }
 
     {
-        QTableWidget* table = new QTableWidget();
+        auto table = new QTableWidget();
         table->setColumnCount(4);
         table->setHorizontalHeaderLabels(QStringList() << BAMDbiPlugin::tr("Name") << BAMDbiPlugin::tr("Version") << BAMDbiPlugin::tr("Command") << BAMDbiPlugin::tr("Previous ID"));
         table->horizontalHeader()->setStretchLastSection(true);
@@ -368,6 +368,11 @@ void ConvertToSQLiteDialog::accept() {
         if (!destinationDir.isWritable()) {
             ui.destinationUrlEdit->setFocus(Qt::OtherFocusReason);
             QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("Destination folder '%1' is not writable, please choose different destination URL").arg(destinationDir.absoluteFilePath()));
+            return;
+        }
+
+        if (destinationUrl == sourceUrl) {
+            QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("Destination file '%1' can not be the same as source file. Please select another file.").arg(destinationUrl.getURLString()));
             return;
         }
 

@@ -119,18 +119,18 @@ public:
                        QMap<QString, Variable>& vars,
                        U2OpStatus& os);
 
-    virtual void visit(AttributeWidget* aw);
-    virtual void visit(WidgetsArea* w);
-    virtual void visit(LogoWidget* lw);
-    virtual void visit(GroupWidget* gw);
-    virtual void visit(ElementSelectorWidget* esw);
-    virtual void visit(PairedReadsWidget* dsw);
-    virtual void visit(UrlAndDatasetWidget* ldsw);
-    virtual void visit(RadioWidget* rw);
-    virtual void visit(SettingsWidget* sw);
-    virtual void visit(BowtieWidget* bw);
-    virtual void visit(TophatSamplesWidget* tsw);
-    virtual void visit(LabelWidget* lw);
+    void visit(AttributeWidget* aw) override;
+    void visit(WidgetsArea* w) override;
+    void visit(LogoWidget* lw) override;
+    void visit(GroupWidget* gw) override;
+    void visit(ElementSelectorWidget* esw) override;
+    void visit(PairedReadsWidget* dsw) override;
+    void visit(UrlAndDatasetWidget* ldsw) override;
+    void visit(RadioWidget* rw) override;
+    void visit(SettingsWidget* sw) override;
+    void visit(BowtieWidget* bw) override;
+    void visit(TophatSamplesWidget* tsw) override;
+    void visit(LabelWidget* lw) override;
 
 private:
     QString title;
@@ -160,7 +160,7 @@ public:
                       QMap<QString, Variable>& vars,
                       U2OpStatus& os);
 
-    virtual void visit(DefaultPageContent* content);
+    void visit(DefaultPageContent* content) override;
 
 private:
     ParsedPairs& pairs;
@@ -176,18 +176,18 @@ class WizardWidgetSerializer : public WizardWidgetVisitor {
 public:
     WizardWidgetSerializer(int depth);
 
-    virtual void visit(AttributeWidget* aw);
-    virtual void visit(WidgetsArea* wa);
-    virtual void visit(GroupWidget* gw);
-    virtual void visit(LogoWidget* lw);
-    virtual void visit(ElementSelectorWidget* esw);
-    virtual void visit(PairedReadsWidget* dsw);
-    virtual void visit(UrlAndDatasetWidget* ldsw);
-    virtual void visit(RadioWidget* rw);
-    virtual void visit(SettingsWidget* sw);
-    virtual void visit(BowtieWidget* bw);
-    virtual void visit(TophatSamplesWidget* tsw);
-    virtual void visit(LabelWidget* lw);
+    void visit(AttributeWidget* aw) override;
+    void visit(WidgetsArea* wa) override;
+    void visit(GroupWidget* gw) override;
+    void visit(LogoWidget* lw) override;
+    void visit(ElementSelectorWidget* esw) override;
+    void visit(PairedReadsWidget* dsw) override;
+    void visit(UrlAndDatasetWidget* ldsw) override;
+    void visit(RadioWidget* rw) override;
+    void visit(SettingsWidget* sw) override;
+    void visit(BowtieWidget* bw) override;
+    void visit(TophatSamplesWidget* tsw) override;
+    void visit(LabelWidget* lw) override;
 
     const QString& getResult();
 
@@ -207,7 +207,7 @@ class PageContentSerializer : public TemplatedPageVisitor {
 public:
     PageContentSerializer(int depth);
 
-    virtual void visit(DefaultPageContent* content);
+    void visit(DefaultPageContent* content) override;
 
     const QString& getResult() const;
 

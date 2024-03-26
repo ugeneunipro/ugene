@@ -29,10 +29,10 @@ class U2ALGORITHM_EXPORT AssemblyConsensusAlgorithmFactoryDefault : public Assem
     Q_OBJECT
 public:
     AssemblyConsensusAlgorithmFactoryDefault();
-    virtual QString getDescription() const;
-    virtual QString getName() const;
+    QString getDescription() const override;
+    QString getName() const override;
 
-    virtual AssemblyConsensusAlgorithm* createAlgorithm();
+    AssemblyConsensusAlgorithm* createAlgorithm() override;
 };
 
 class U2ALGORITHM_EXPORT AssemblyConsensusAlgorithmDefault : public AssemblyConsensusAlgorithm {
@@ -41,7 +41,7 @@ public:
         : AssemblyConsensusAlgorithm(factory) {
     }
 
-    virtual QByteArray getConsensusRegion(const U2Region& region, U2DbiIterator<U2AssemblyRead>* reads, QByteArray referenceFragment, U2OpStatus& os);
+    QByteArray getConsensusRegion(const U2Region& region, U2DbiIterator<U2AssemblyRead>* reads, QByteArray referenceFragment, U2OpStatus& os) override;
 };
 
 }  // namespace U2

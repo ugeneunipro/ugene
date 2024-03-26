@@ -214,7 +214,7 @@ void CreateAnnotationOptionsPanelWidget::fillSaveDocumentControllerConfig(SaveDo
 }
 
 void CreateAnnotationOptionsPanelWidget::initLayout() {
-    ShowHideSubgroupWidget* saveShowHideWidget = new ShowHideSubgroupWidget("save_params", tr("Save annotation(s) to"), saveAnnotationsInnerWidget, false);
+    auto saveShowHideWidget = new ShowHideSubgroupWidget("save_params", tr("Save annotation(s) to"), saveAnnotationsInnerWidget, false);
     mainLayout->insertWidget(0, saveShowHideWidget);
 
     annotationParametersWidget = new ShowHideSubgroupWidget("annotparams", tr("Annotation parameters"), annotationParametersInnerWidget, false);

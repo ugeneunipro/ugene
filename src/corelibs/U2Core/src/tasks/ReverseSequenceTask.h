@@ -52,7 +52,7 @@ public:
     ReverseSequenceTask(U2SequenceObject* seqObj,
                         const QList<AnnotationTableObject*>& annotations,
                         DNASequenceSelection* selection);
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     U2SequenceObject* seqObj;
@@ -67,7 +67,7 @@ public:
                            const QList<AnnotationTableObject*>& annotations,
                            DNASequenceSelection* selection,
                            DNATranslation* complTT);
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     U2SequenceObject* seqObj;

@@ -39,6 +39,18 @@ public:
 
     /** Maximum text data size UGENE can put into clipboard safely: 100mb. */
     static constexpr qint64 MAX_SAFE_COPY_TO_CLIPBOARD_SIZE = 100 * 1000 * 1000;
+
+    /*
+     * Maximum text data size UGENE can put into clipboard safely for GUI test mode.
+     * Using lower value then MAX_SAFE_COPY_TO_CLIPBOARD_SIZE helps to speed up GUI tests.
+    **/
+    static constexpr qint64 UGENE_GUI_TEST_MAX_SAFE_COPY_TO_CLIPBOARD_SIZE = MAX_SAFE_COPY_TO_CLIPBOARD_SIZE / 100;
+
+    /*
+     * Check if text of .@clipboardSize could be copied to clipboard or not.
+     * Set error to @os if not.
+     **/
+    static void checkCopyToClipboardSize(qint64 clipboardSize, U2OpStatus& os);
 };
 
 class U2CORE_EXPORT PasteTask : public Task {

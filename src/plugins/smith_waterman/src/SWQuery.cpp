@@ -201,7 +201,7 @@ Task* QDSWActor::getAlgorithmTask(const QVector<U2Region>& searchLocation) {
     task = new Task(tr("SSearch"), TaskFlag_NoRun);
     foreach (const U2Region& r, searchLocation) {
         SmithWatermanSettings stngs(settings);
-        SmithWatermanReportCallbackAnnotImpl* rcb = new SmithWatermanReportCallbackAnnotImpl(nullptr,
+        auto rcb = new SmithWatermanReportCallbackAnnotImpl(nullptr,
                                                                                              U2FeatureTypes::MiscFeature,
                                                                                              QString(),
                                                                                              QString(),
@@ -261,7 +261,7 @@ SWQDActorFactory::SWQDActorFactory() {
 
     attributes << new Attribute(pd, BaseTypes::STRING_TYPE(), true);
     attributes << new Attribute(mxd, BaseTypes::STRING_TYPE(), true, QString("---"));
-    Attribute* algAttr = new Attribute(ald, BaseTypes::STRING_TYPE(), true);
+    auto algAttr = new Attribute(ald, BaseTypes::STRING_TYPE(), true);
     attributes << algAttr;
     attributes << new Attribute(frd, BaseTypes::STRING_TYPE(), false, defFilter);
     attributes << new Attribute(scd, BaseTypes::NUM_TYPE(), false, 90);
@@ -302,7 +302,7 @@ SWQDActorFactory::SWQDActorFactory() {
         delegates[MATRIX_ATTR] = new ComboBoxDelegate(m);
     }
 
-    SWAlgoEditor* aled = new SWAlgoEditor(algAttr);
+    auto aled = new SWAlgoEditor(algAttr);
     aled->connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(populate()));
     aled->populate();
     delegates[ALGO_ATTR] = aled;

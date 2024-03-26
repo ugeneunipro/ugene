@@ -41,8 +41,8 @@ public:
     CreateSArrayIndexTask(const char* seq, quint32 size, quint32 w, char unknownChar = 0, const quint32* bitTable = nullptr, quint32 bitCharLen = 0, quint32 skipGap = 0, quint32 _gapOffset = 0);
     ~CreateSArrayIndexTask();
 
-    void run();
-    void cleanup();
+    void run() override;
+    void cleanup() override;
 
     SArrayIndex* index;
 

@@ -56,7 +56,7 @@ AbstractAlignmentTask* PairwiseAlignmentSmithWatermanTaskFactory::getTaskInstanc
     SAFE_POINT(pairwiseSettings != nullptr,
                "Pairwise alignment: incorrect settings",
                nullptr);
-    PairwiseAlignmentSmithWatermanTaskSettings* settings = new PairwiseAlignmentSmithWatermanTaskSettings(*pairwiseSettings);
+    auto settings = new PairwiseAlignmentSmithWatermanTaskSettings(*pairwiseSettings);
     SAFE_POINT(false == settings->inNewWindow || false == settings->resultFileName.isEmpty(),
                "Pairwise alignment: incorrect settings, empty output file name",
                nullptr);

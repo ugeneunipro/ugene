@@ -407,7 +407,7 @@ void FindPatternWidget::initResultsLimit() {
 void FindPatternWidget::initUseAmbiguousBasesContainer() {
     useAmbiguousBasesContainer = new QWidget();
 
-    QHBoxLayout* useAmbiguousBasesLayout = new QHBoxLayout();
+    auto useAmbiguousBasesLayout = new QHBoxLayout();
     useAmbiguousBasesLayout->setContentsMargins(0, 0, 0, 0);
     useAmbiguousBasesLayout->setSpacing(10);
     useAmbiguousBasesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -415,7 +415,7 @@ void FindPatternWidget::initUseAmbiguousBasesContainer() {
 
     useAmbiguousBasesBox = new QCheckBox();
     useAmbiguousBasesBox->setObjectName("useAmbiguousBasesBox");
-    QLabel* useAmbiguousBasesLabel = new QLabel(tr("Search with ambiguous bases"));
+    auto useAmbiguousBasesLabel = new QLabel(tr("Search with ambiguous bases"));
     useAmbiguousBasesLabel->setWordWrap(true);
 
     useAmbiguousBasesLayout->addWidget(useAmbiguousBasesBox, 0);
@@ -432,13 +432,13 @@ void FindPatternWidget::initMaxResultLenContainer() {
     layoutRegExpLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
     useMaxResultLenContainer->setLayout(layoutRegExpLen);
 
-    QHBoxLayout* layoutUseMaxResultLen = new QHBoxLayout();
+    auto layoutUseMaxResultLen = new QHBoxLayout();
     layoutUseMaxResultLen->setSpacing(10);
     layoutUseMaxResultLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
     boxUseMaxResultLen = new QCheckBox();
     boxUseMaxResultLen->setObjectName("boxUseMaxResultLen");
-    QLabel* labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
+    auto labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
     labelUseMaxResultLen->setWordWrap(true);
     layoutUseMaxResultLen->addWidget(boxUseMaxResultLen, 0);
     layoutUseMaxResultLen->addWidget(labelUseMaxResultLen, 1);
@@ -756,6 +756,12 @@ QString FindPatternWidget::buildErrorLabelHtml() const {
                 QString message = tr("Warning: the input regular expression is invalid! ");
                 text += tr("<b><font color=%1>%2</font><br></br></b>").arg(errorColor).arg(message);
                 GUIUtils::setWidgetWarningStyle(textPattern, true);
+                break;
+            }
+            case CreateAnnotationControllerValidaitionError: {
+                SAFE_POINT(!customErrorMessage.isEmpty(), "CreateAnnotationController must provide a valid error message.", "");
+
+                text += tr("<b><font color=%1>Error: %2</font><br></br></b>").arg(errorColor).arg(customErrorMessage);
                 break;
             }
             default:
@@ -1310,12 +1316,20 @@ QList<NamePattern> FindPatternWidget::updateNamePatterns() {
 }
 
 void FindPatternWidget::sl_getAnnotationsButtonClicked() {
+    QString validationError = createAnnotationController->validate();
+    if (!validationError.isEmpty()) {
+        setMessageFlag(CreateAnnotationControllerValidaitionError, true, validationError);
+        return;
+    } else {
+        setMessageFlag(CreateAnnotationControllerValidaitionError, false);
+    }
+
     if (!annotationModelIsPrepared) {
         bool objectPrepared = createAnnotationController->prepareAnnotationObject();
         SAFE_POINT(objectPrepared, "Cannot create an annotation object. Please check settings", );
         annotationModelIsPrepared = true;
     }
-    QString validationError = createAnnotationController->validate();
+    validationError = createAnnotationController->validate();
     SAFE_POINT(validationError.isEmpty(), "Annotation names are invalid", );
 
     const CreateAnnotationModel& annotationModel = createAnnotationController->getModel();

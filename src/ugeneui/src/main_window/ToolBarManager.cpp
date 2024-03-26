@@ -60,7 +60,7 @@ QToolBar* MWToolBarManagerImpl::getToolbar(const QString& sysName) const {
 }
 
 QToolBar* MWToolBarManagerImpl::createToolBar(const QString& sysName) {
-    QToolBar* tb = new QToolBar(mw);
+    auto tb = new QToolBar(mw);
     // tb->setMinimumHeight(28);
     tb->setObjectName(sysName);
     tb->setAllowedAreas(Qt::TopToolBarArea);

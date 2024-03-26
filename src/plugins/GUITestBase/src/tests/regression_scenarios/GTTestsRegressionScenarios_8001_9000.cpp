@@ -26,11 +26,12 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTMainWindow.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
+#include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTUtilsDialog.h>
 
 #include <QClipboard>
@@ -45,6 +46,7 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsLog.h"
+#include "GTUtilsNotifications.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
@@ -52,17 +54,18 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "GTUtilsOptionPanelSequenceView.h"
-
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
-
+#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 
 namespace U2 {
 
@@ -88,7 +91,7 @@ GUI_TEST_CLASS_DEFINITION(test_8001) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTPlainTextEdit::setText(GTWidget::findPlainTextEdit("sequenceEdit", dialog), "ACGT");
             GTLineEdit::setText(GTWidget::findLineEdit("filepathEdit", dialog), sandBoxDir + "test_8001.fa");
@@ -111,7 +114,7 @@ GUI_TEST_CLASS_DEFINITION(test_8002) {
     // Open murine.gb
     // Open the "Statistics" tab
     // Hide "Common statistics"
-    // Double click on the first annotation
+    // Double-click on the first annotation
     // Show "Common statistics"
     // Expected: Length = 589
 
@@ -128,11 +131,11 @@ GUI_TEST_CLASS_DEFINITION(test_8002) {
 
 GUI_TEST_CLASS_DEFINITION(test_8004) {
     /*
-    * 1. Open human_T1.fa
-    * 2. Remove sequence object from document
-    * 3. Open context menu on document
-    * Expected state: submenu 'BLAST' not present in context menu
-    */
+     * 1. Open human_T1.fa
+     * 2. Remove sequence object from document
+     * 3. Open context menu on document
+     * Expected state: submenu 'BLAST' not present in context menu
+     */
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
@@ -140,7 +143,7 @@ GUI_TEST_CLASS_DEFINITION(test_8004) {
         void run() override {
             auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
             CHECK_SET_ERR(activePopupMenu != nullptr, "Active popup menu is NULL");
-            
+
             QAction* showCircular = GTMenu::getMenuItem(activePopupMenu, "BLAST", false);
             CHECK_SET_ERR(showCircular == nullptr, "'BLAST' menu item should be NULL");
 
@@ -154,7 +157,7 @@ GUI_TEST_CLASS_DEFINITION(test_8004) {
 
     GTUtilsDialog::waitForDialog(new PopupChecker(new BLASTMenuItemChecker));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("human_T1.fa"));
-    GTMouseDriver::click(Qt::RightButton);    
+    GTMouseDriver::click(Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8009) {
@@ -312,7 +315,7 @@ GUI_TEST_CLASS_DEFINITION(test_8037) {
 
             GTWidget::click(GTWidget::findPushButton("pbNone"));
             checked = GTWidget::findChildren<QCheckBox>(dialog, [](QCheckBox* checkBox) { return checkBox->isChecked(); });
-            CHECK_SET_ERR(checked.size() == 0, QString("Unexpected checked size, expected: 0, current: %1").arg(checked.size()));
+            CHECK_SET_ERR(checked.isEmpty(), QString("Unexpected checked size, expected: 0, current: %1").arg(checked.size()));
 
             GTCheckBox::setChecked("promotersBox", dialog);
             GTCheckBox::setChecked("regulatoryBox", dialog);
@@ -326,8 +329,75 @@ GUI_TEST_CLASS_DEFINITION(test_8037) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(new AnyDialogFiller("CustomAutoAnnotationDialog",  new Scenario()));
+    GTUtilsDialog::waitForDialog(new AnyDialogFiller("CustomAutoAnnotationDialog", new Scenario()));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Annotate plasmid");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8040) {
+    GTLogTracer lt;
+    GTFileDialog::openFile(testDir + "_common_data/regression/8040/8040.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.getJoinedErrorString().contains("The file was created with a newer version of UGENE"), "Expected message is not found");
+    GTUtilsProjectTreeView::checkItem("8040.ugenedb");
+    CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded("8040.ugenedb"), "Document must be unloaded");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8049) {
+    // Create a new Genbank document from text and check that its locus line contains
+    // a correct alphabet and molecular topology.
+    QString fileName = testDir + "_common_data/scenarios/sandbox/8049.gb";
+    auto filler = new CreateDocumentFiller(
+        "ACGT",
+        false,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        fileName,
+        CreateDocumentFiller::Genbank,
+        "8049_name");
+    GTUtilsDialog::waitForDialog(filler);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+
+    QString fileContentLinear = GTFile::readAll(fileName);
+    QList<QString> linesLinear = fileContentLinear.split("\n");
+    CHECK_SET_ERR(linesLinear[0].startsWith("LOCUS       8049_name                  4 bp    DNA     linear       "), "1. Unexpected LOCUS line: " + linesLinear[0]);
+
+    GTUtilsProjectTreeView::markSequenceAsCircular("8049_name");
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_MAIN, "Save all");
+
+    QString fileContentCircular = GTFile::readAll(fileName);
+    QList<QString> linesCircular = fileContentCircular.split("\n");
+    CHECK_SET_ERR(linesCircular[0].startsWith("LOCUS       8049_name                  4 bp    DNA     circular     "), "2. Unexpected LOCUS line: " + linesCircular[0]);
+}
+    
+GUI_TEST_CLASS_DEFINITION(test_8052) {
+    // UGENE_GUI_TEST=1 env variable is required for this test
+    // Open _common_data/fasta/5mbf.fa.gz
+    // Select all
+    // Create annotation
+    // Copy annotated sequence to clipboard
+    // Expected: Notification "Block size is too big and can't be copied into the clipboard" appeared
+    GTFileDialog::openFile(testDir + "_common_data/fasta/5mbf.fa.gz");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller());
+    GTKeyboardUtils::selectAll();
+    GTUtilsDialog::checkNoActiveWaiters();
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            GTWidget::getActiveModalWidget();
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new Scenario));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+    GTUtilsNotifications::waitForNotification(true, "Block size is too big and can't be copied into the clipboard");
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy/Paste", "Copy annotation sequence"}));
+    GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
 }
 
 }  // namespace GUITest_regression_scenarios

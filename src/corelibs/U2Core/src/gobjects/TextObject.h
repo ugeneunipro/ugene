@@ -32,7 +32,7 @@ public:
     U2Text();
     U2Text(const U2DbiRef& dbiRef);
 
-    U2DataType getType() const;
+    U2DataType getType() const override;
 };
 
 class U2CORE_EXPORT TextObject : public GObject {
@@ -46,7 +46,7 @@ public:
 
     void setText(const QString& newText);
 
-    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const override;
 
 private:
     void commitTextToDB(const QString& newText);

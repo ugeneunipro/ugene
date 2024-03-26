@@ -776,7 +776,7 @@ void GTUtilsWorkflowDesigner::setDatasetInputFile(const QString& filePath, bool 
 
     GTFileDialogUtils::TextInput t = pastePath ? GTFileDialogUtils::CopyPaste : GTFileDialogUtils::Typing;
 
-    GTFileDialogUtils* ob = new GTFileDialogUtils(filePath, GTGlobals::UseMouse, GTFileDialogUtils::Open, t);
+    auto ob = new GTFileDialogUtils(filePath, GTGlobals::UseMouse, GTFileDialogUtils::Open, t);
     GTUtilsDialog::waitForDialog(ob);
 
     GTWidget::click(addFileButton);
@@ -812,7 +812,7 @@ void GTUtilsWorkflowDesigner::setDatasetInputFolder(const QString& filePath, QWi
 
     auto addDirButton = GTWidget::findWidget("addDirButton", currentDatasetWidget);
 
-    GTFileDialogUtils* ob = new GTFileDialogUtils(filePath, "", GTFileDialogUtils::Choose, GTGlobals::UseMouse);
+    auto ob = new GTFileDialogUtils(filePath, "", GTFileDialogUtils::Choose, GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(ob);
 
     GTWidget::click(addDirButton);

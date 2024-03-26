@@ -306,7 +306,7 @@ void AssemblyVariantRowManager::sl_trackAdded(VariantTrackObject* newTrackObj) {
     auto vertLayout = qobject_cast<QVBoxLayout*>(layout);
     SAFE_POINT(vertLayout != nullptr, "Internal error: layout problems", );
 
-    AssemblyVariantRow* row = new AssemblyVariantRow(annsArea, newTrackObj, browser);
+    auto row = new AssemblyVariantRow(annsArea, newTrackObj, browser);
     vertLayout->addWidget(row);
 
     connect(browser, SIGNAL(si_zoomOperationPerformed()), row, SLOT(sl_zoomPerformed()));

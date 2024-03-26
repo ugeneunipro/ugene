@@ -32,7 +32,7 @@ public:
     U2BioStruct3D();
     U2BioStruct3D(const U2DbiRef& dbiRef);
 
-    U2DataType getType() const;
+    U2DataType getType() const override;
 };
 
 class U2CORE_EXPORT BioStruct3DObject : public GObject {
@@ -42,10 +42,10 @@ public:
     BioStruct3DObject(const QString& objectName, const U2EntityRef& structRef, const QVariantMap& hintsMap = QVariantMap());
 
     const BioStruct3D& getBioStruct3D() const;
-    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const override;
 
 protected:
-    void loadDataCore(U2OpStatus& os);
+    void loadDataCore(U2OpStatus& os) override;
 
 private:
     BioStruct3DObject(const BioStruct3D& bioStruct3D, const QString& objectName, const U2EntityRef& structRef, const QVariantMap& hintsMap);

@@ -74,7 +74,7 @@ public:
     static void set(QNetworkReply* reply, int timeoutMillis);
 
 protected:
-    void timerEvent(QTimerEvent* timerEvent);
+    void timerEvent(QTimerEvent* timerEvent) override;
 
 private:
     QBasicTimer timer;

@@ -39,7 +39,7 @@ AboutDialogController::AboutDialogController(QAction* visitWebAction, QWidget* p
     : QDialog(p) {
     setupUi(this);
 
-    QHBoxLayout* l = new QHBoxLayout();
+    auto l = new QHBoxLayout();
     l->setMargin(0);
     l->addStretch(1);
     l->addStretch(1);
@@ -56,7 +56,7 @@ AboutDialogController::AboutDialogController(QAction* visitWebAction, QWidget* p
 
 void AboutDialogController::installAWidget() {
     assert(tWidget == nullptr);
-    AWidget* aWidget = new AWidget();
+    auto aWidget = new AWidget();
     QVBoxLayout* l = (QVBoxLayout*)frame->layout();
     l->insertWidget(0, aWidget);
     l->setStretchFactor(aWidget, 100);
@@ -68,11 +68,11 @@ void AboutDialogController::installTWidget() {
     QLabel* npLabel = new NextPieceLabel(tWidget);
     tWidget->setNextPieceLabel(npLabel);
 
-    QWidget* pan = new QWidget();
-    QVBoxLayout* vl = new QVBoxLayout(pan);
-    QLabel* topRecLabel = new QLabel(tr("Max score: %1").arg(tWidget->getMaxScore()));
-    QLabel* scoreLabel = new QLabel(pan);
-    QLabel* levelLabel = new QLabel(pan);
+    auto pan = new QWidget();
+    auto vl = new QVBoxLayout(pan);
+    auto topRecLabel = new QLabel(tr("Max score: %1").arg(tWidget->getMaxScore()));
+    auto scoreLabel = new QLabel(pan);
+    auto levelLabel = new QLabel(pan);
     vl->addStretch();
     vl->addWidget(topRecLabel);
     vl->addStretch();
@@ -170,9 +170,9 @@ AWidget::AWidget() {
 
     density = 5;
     page = 0;
-    QObject* parent = new QObject(this);
+    auto parent = new QObject(this);
     parent->setObjectName("parent");
-    QObject* child = new QObject(parent);
+    auto child = new QObject(parent);
     child->setObjectName(text);
     startTimer(15);
 }

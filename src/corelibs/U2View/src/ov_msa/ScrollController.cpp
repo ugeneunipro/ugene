@@ -415,10 +415,9 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
     maEditor->multilineViewAction->setEnabled(!maEditor->isAlignmentEmpty() || maEditor->isMultilineMode());
     CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
 
-    const int alignmentLength = maEditor->getAlignmentLen();
-    const int columnWidth = maEditor->getColumnWidth();
-    const int sequenceAreaWidth = qMax(1,
-                                       ui->getSequenceArea()->width() - ui->getSequenceArea()->width() % columnWidth);
+    int alignmentLength = maEditor->getAlignmentLen();
+    int columnWidth = maEditor->getColumnWidth();
+    int sequenceAreaWidth = qMax(1, ui->getSequenceArea()->width() - ui->getSequenceArea()->width() % columnWidth);
 
     maEditor->multilineViewAction->setEnabled(true);
 
@@ -449,9 +448,9 @@ void ScrollController::updateVerticalScrollBarPrivate() {
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), vScrollBar->setVisible(false), );
 
-    const int viewRowCount = ui->getSequenceArea()->getViewRowCount();
-    const int sequenceAreaHeight = ui->getSequenceArea()->height();
-    const int totalAlignmentHeight = ui->getRowHeightController()->getTotalAlignmentHeight();
+    int viewRowCount = ui->getSequenceArea()->getViewRowCount();
+    int sequenceAreaHeight = ui->getSequenceArea()->height();
+    int totalAlignmentHeight = ui->getRowHeightController()->getTotalAlignmentHeight();
 
     vScrollBar->setMinimum(0);
     vScrollBar->setMaximum(qMax(0, totalAlignmentHeight - sequenceAreaHeight));
@@ -484,18 +483,6 @@ QPoint ScrollController::getViewPosByScreenPoint(const QPoint& point, bool repor
 
 void ScrollController::setHScrollBarVisible(bool visible) {
     hScrollBarVisible = visible;
-}
-
-bool ScrollController::getHScrollBarVisible() const {
-    return hScrollBarVisible;
-}
-
-void ScrollController::setVScrollBarVisible(bool visible) {
-    vScrollBarVisible = visible;
-}
-
-bool ScrollController::getVScrollBarVisible() const {
-    return vScrollBarVisible;
 }
 
 }  // namespace U2

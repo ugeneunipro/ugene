@@ -34,7 +34,7 @@ public:
     QString getTargetFilePath() const;
 
 private:
-    void run();
+    void run() override;
 
     const QString sourceFilePath;
     const QString targetFilePath;

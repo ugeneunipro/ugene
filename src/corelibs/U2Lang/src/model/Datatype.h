@@ -101,10 +101,10 @@ public:
     MapDataType(const Descriptor& d, const QMap<Descriptor, DataTypePtr>& m);
 
     // reimplemented from Datatype
-    virtual DataType::Kind kind() const;
-    virtual DataTypePtr getDatatypeByDescriptor(const Descriptor& d) const;
-    virtual QList<Descriptor> getAllDescriptors() const;
-    virtual QMap<Descriptor, DataTypePtr> getDatatypesMap() const;
+    DataType::Kind kind() const override;
+    DataTypePtr getDatatypeByDescriptor(const Descriptor& d) const override;
+    QList<Descriptor> getAllDescriptors() const override;
+    QMap<Descriptor, DataTypePtr> getDatatypesMap() const override;
 
 protected:
     // types map
@@ -121,8 +121,8 @@ public:
     ListDataType(const Descriptor& d, DataTypePtr el);
 
     // reimplemented from Datatype
-    virtual DataType::Kind kind() const;
-    virtual DataTypePtr getDatatypeByDescriptor(const Descriptor& idd = Descriptor(QString())) const;
+    DataType::Kind kind() const override;
+    DataTypePtr getDatatypeByDescriptor(const Descriptor& idd = Descriptor(QString())) const override;
 
 protected:
     //

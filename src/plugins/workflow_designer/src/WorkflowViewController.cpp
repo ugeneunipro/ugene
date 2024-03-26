@@ -243,6 +243,7 @@ WorkflowView* WorkflowView::createInstance(WorkflowGObject* go) {
     view->setWindowIcon(QIcon(":/workflow_designer/images/wd.png"));
     mdiManager->addMDIWindow(view);
     mdiManager->activateWindow(view);
+    view->startFirstAutoRunWizard();
     return view;
 }
 
@@ -799,11 +800,13 @@ void WorkflowView::sl_findPrototype() {
 }
 
 void WorkflowView::sl_createScript() {
+    GCOUNTER(cvar, "Script. Run Create Element with Script dialog");
     QObjectScopedPointer<CreateScriptElementDialog> dlg = new CreateScriptElementDialog(this);
     dlg->exec();
     CHECK(!dlg.isNull(), );
 
     if (dlg->result() == QDialog::Accepted) {
+        GCOUNTER(cvar1, "Script. A new Element with Script created");
         QList<DataTypePtr> input = dlg->getInput();
         QList<DataTypePtr> output = dlg->getOutput();
         QList<Attribute*> attrs = dlg->getAttributes();
@@ -895,12 +898,17 @@ void WorkflowView::sl_editScript() {
         Actor* scriptActor = selectedActors.first();
         AttributeScript* script = scriptActor->getScript();
         if (script != nullptr) {
+            GCOUNTER(cvar, "Script. Run Edit script of the element dialog for element");
             QObjectScopedPointer<ScriptEditorDialog> scriptDlg = new ScriptEditorDialog(this, AttributeScriptDelegate::createScriptHeader(*script), script->getScriptText());
             scriptDlg->exec();
             CHECK(!scriptDlg.isNull(), );
 
             if (scriptDlg->result() == QDialog::Accepted) {
-                script->setScriptText(scriptDlg->getScriptText());
+                auto scriptText = scriptDlg->getScriptText();
+                if (!scriptText.isEmpty()) {
+                    GCOUNTER(cvar1, "Script. Done Edit script of the element dialog for element with new script");
+                }
+                script->setScriptText(scriptText);
                 scriptActor->setScript(script);
             }
         }
@@ -962,6 +970,9 @@ void WorkflowView::addProcess(Actor* proc, const QPointF& pos) {
     uiLog.trace(addedProto->getDisplayName() + " added");
     if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(addedProto->getId()) != nullptr) {
         GCOUNTER(cvar, "Element with external tool is added to the scene");
+    }
+    if (WorkflowEnv::getProtoRegistry()->getProto(LocalWorkflow::ScriptWorkerFactory::ACTOR_ID + addedProto->getDisplayName())) {
+        GCOUNTER(cvar, "Script. Add Element with Script to the scene");
     }
 
     update();
@@ -1394,6 +1405,7 @@ void WorkflowView::localHostLaunch() {
 
     if (WorkflowSettings::isDebuggerEnabled()) {
         GCounter::increment(meta.name, "Worklow started with enabled debugger");
+        GCOUNTER(cvar, "Script. Worklow started with enabled debugger");
     }
 
     foreach (const Actor* actor, schema->getProcesses()) {
@@ -2253,7 +2265,7 @@ WorkflowBusItem* WorkflowView::tryBind(WorkflowPortItem* from, WorkflowPortItem*
             return nullptr;
         }
 
-        Link* link = new Link(src, dest);
+        auto link = new Link(src, dest);
         schema->addFlow(link);
         dit = scene->addFlow(from, to, link);
         removeEstimations();

@@ -35,9 +35,9 @@ class U2CORE_EXPORT ImportToDatabaseTask : public MultiTask {
 public:
     ImportToDatabaseTask(QList<Task*> tasks, int maxParallelSubtasks = 1);
 
-    void run();
-    QString generateReport() const;
-    ReportResult report();
+    void run() override;
+    QString generateReport() const override;
+    ReportResult report() override;
 
 private:
     void sortSubtasks() const;

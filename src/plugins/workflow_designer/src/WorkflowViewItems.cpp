@@ -104,7 +104,7 @@ void WorkflowProcessItem::createPorts() {
     int i = 1;
     QGraphicsScene* sc = scene();
     foreach (Port* port, process->getInputPorts()) {
-        WorkflowPortItem* pit = new WorkflowPortItem(this, port);
+        auto pit = new WorkflowPortItem(this, port);
         connect(port, SIGNAL(si_enabledChanged(bool)), pit, SLOT(sl_onVisibleChanged(bool)));
         ports << pit;
         pit->setOrientation(90 + pie * i++);
@@ -117,7 +117,7 @@ void WorkflowProcessItem::createPorts() {
     pie = 180.0 / num;
     i = 1;
     foreach (Port* port, process->getOutputPorts()) {
-        WorkflowPortItem* pit = new WorkflowPortItem(this, port);
+        auto pit = new WorkflowPortItem(this, port);
         connect(port, SIGNAL(si_enabledChanged(bool)), pit, SLOT(sl_onVisibleChanged(bool)));
         ports << pit;
         pit->setOrientation(270 + pie * i++);

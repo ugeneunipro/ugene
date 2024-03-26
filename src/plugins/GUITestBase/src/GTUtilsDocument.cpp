@@ -145,7 +145,7 @@ void GTUtilsDocument::unloadDocument(const QString& documentName, bool waitForMe
     Runnable* popupChooser = new PopupChooser({ACTION_PROJECT__UNLOAD_SELECTED}, GTGlobals::UseMouse);
 
     if (waitForMessageBox) {
-        MessageBoxDialogFiller* filler = new MessageBoxDialogFiller("Yes");
+        auto filler = new MessageBoxDialogFiller("Yes");
         GTUtilsDialog::waitForDialog(filler);
     }
 

@@ -109,7 +109,7 @@ void CAP3Support::sl_runWithExtFileSpecify() {
 
     assert(!settings.inputFiles.isEmpty());
 
-    RunCap3AndOpenResultTask* task = new RunCap3AndOpenResultTask(settings);
+    auto task = new RunCap3AndOpenResultTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 

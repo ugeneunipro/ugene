@@ -192,7 +192,7 @@ void SamplesWidget::revisible(const QString& nameFilter) {
 }
 
 void SamplesWidget::addCategory(const SampleCategory& cat) {
-    QTreeWidgetItem* ci = new QTreeWidgetItem(this, QStringList(cat.d.getDisplayName()));
+    auto ci = new QTreeWidgetItem(this, QStringList(cat.d.getDisplayName()));
     ci->setFlags(Qt::ItemIsEnabled);
     QFont cf;
     cf.setBold(true);
@@ -200,10 +200,10 @@ void SamplesWidget::addCategory(const SampleCategory& cat) {
     ci->setData(0, Qt::BackgroundRole, QColor(255, 255, 160, 127));
 
     foreach (const Sample& item, cat.items) {
-        QTreeWidgetItem* ib = new QTreeWidgetItem(ci, QStringList(item.d.getDisplayName()));
+        auto ib = new QTreeWidgetItem(ci, QStringList(item.d.getDisplayName()));
         ib->setData(0, DATA_ROLE, item.content);
         ib->setData(0, ID_ROLE, item.id);
-        QTextDocument* doc = new QTextDocument(this);
+        auto doc = new QTextDocument(this);
         ib->setData(0, DOC_ROLE, qVariantFromValue<QTextDocument*>(doc));
         Descriptor d = item.d;
         QIcon ico = item.ico;
@@ -361,7 +361,7 @@ NameFilterLayout::NameFilterLayout(QWidget* parent)
     nameEdit->setObjectName("nameFilterLineEdit");
     nameEdit->setPlaceholderText(tr("Type to filter by name..."));
 
-    QLabel* label = new QLabel(tr("Name filter:"));
+    auto label = new QLabel(tr("Name filter:"));
     label->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     nameEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     addWidget(label);
@@ -394,10 +394,10 @@ bool NameFilterLayout::filterMatched(const QString& nameFilter, const QString& n
 /************************************************************************/
 SamplesWrapper::SamplesWrapper(SamplesWidget* samples, QWidget* parent)
     : QWidget(parent) {
-    QVBoxLayout* vl = new QVBoxLayout(this);
+    auto vl = new QVBoxLayout(this);
     vl->setContentsMargins(0, 3, 0, 0);
     vl->setSpacing(3);
-    NameFilterLayout* hl = new NameFilterLayout(nullptr);
+    auto hl = new NameFilterLayout(nullptr);
     vl->addLayout(hl);
     vl->addWidget(samples);
 

@@ -110,7 +110,7 @@ void setTableWidgetContent(QTableWidget* tableWidget, const QVector<QVector<QStr
 
     for (int i = 0; i < rowCount; ++i) {
         for (int j = 0; j < columnCount; ++j) {
-            QTableWidgetItem* newItem = new QTableWidgetItem(content[i][j]);
+            auto newItem = new QTableWidgetItem(content[i][j]);
             tableWidget->setItem(i, j, newItem);
         }
     }

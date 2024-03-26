@@ -105,7 +105,7 @@ GObject* BioStruct3DObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, con
     CHECK_OP(os, nullptr);
 
     U2EntityRef dstEntRef(dstDbiRef, dstObject.id);
-    BioStruct3DObject* dst = new BioStruct3DObject(getGObjectName(), dstEntRef, gHints.getMap());
+    auto dst = new BioStruct3DObject(getGObjectName(), dstEntRef, gHints.getMap());
     dst->setIndexInfo(getIndexInfo());
     return dst;
 }

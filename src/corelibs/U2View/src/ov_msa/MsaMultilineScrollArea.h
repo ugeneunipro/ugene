@@ -15,7 +15,7 @@ class U2VIEW_EXPORT MsaMultilineScrollArea : public QScrollArea {
     Q_OBJECT
 
 public:
-    MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMultilineWgt* ui);
+    MsaMultilineScrollArea(MsaEditor* maEditor, MsaEditorMultilineWgt* ui);
     // wheel arg signals that this is non scrollbar scrolling
     void scrollVert(const MultilineScrollController::Directions& directions,
                     bool byStep,
@@ -26,8 +26,8 @@ protected:
     void wheelEvent(QWheelEvent* we) override;
 
 private:
-    MaEditor* maEditor;
-    MaEditorMultilineWgt* maEditorUi;
+    MsaEditor* maEditor;
+    MsaEditorMultilineWgt* maEditorUi;
 
     void moveVSlider(int currPos,
                      int newPos,

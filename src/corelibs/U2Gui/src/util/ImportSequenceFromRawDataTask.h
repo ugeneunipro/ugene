@@ -36,7 +36,7 @@ public:
     const U2EntityRef& getEntityRef() const;
 
 private:
-    void run();
+    void run() override;
 
     U2EntityRef sequenceRef;
 

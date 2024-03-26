@@ -41,7 +41,7 @@ GObject* QDGObject::clone(const U2DbiRef&, U2OpStatus&, const QVariantMap& hints
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
 
-    QDGObject* copy = new QDGObject(getGObjectName(), serializedScene, gHints.getMap());
+    auto copy = new QDGObject(getGObjectName(), serializedScene, gHints.getMap());
     return copy;
 }
 
@@ -168,7 +168,7 @@ void OpenQDViewTask::open() {
     foreach (QPointer<GObject> po, selectedObjects) {
         auto o = qobject_cast<QDGObject*>(po);
         assert(o && !o->getScene());
-        QueryViewController* view = new QueryViewController;
+        auto view = new QueryViewController;
         view->loadScene(o->getSceneRawData());
         view->setSchemeUri(document->getURL().getURLString());
         AppContext::getMainWindow()->getMDIManager()->addMDIWindow(view);

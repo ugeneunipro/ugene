@@ -37,14 +37,14 @@ class U2FORMATS_EXPORT SCFFormat : public DocumentFormat {
 public:
     SCFFormat(QObject* p);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
 
     static void exportDocumentToSCF(const QString& fileName, const Chromatogram& cd, const QByteArray& seq, U2OpStatus& ts);
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
-    virtual DNASequence* loadSequence(IOAdapter* io, U2OpStatus& ti);
+    DNASequence* loadSequence(IOAdapter* io, U2OpStatus& ti) override;
 
 private:
     Document* parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);

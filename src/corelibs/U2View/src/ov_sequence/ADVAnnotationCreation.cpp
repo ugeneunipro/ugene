@@ -122,7 +122,7 @@ void ADVAnnotationCreation::sl_createAnnotation() {
 
     QList<SharedAnnotationData> data;
     data << m.data;
-    ADVCreateAnnotationsTask* t = new ADVCreateAnnotationsTask(ctx, m.annotationObjectRef, m.groupName, data);
+    auto t = new ADVCreateAnnotationsTask(ctx, m.annotationObjectRef, m.groupName, data);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

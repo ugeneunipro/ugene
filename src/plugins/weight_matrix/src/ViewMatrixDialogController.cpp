@@ -199,7 +199,7 @@ void ViewMatrixDialogController::sl_onCloseButton() {
 MatrixViewController::MatrixViewController(PFMatrix matrix)
     : MWMDIWindow(tr("Matrix viewer")) {
     d = new MatrixAndLogoController(matrix, this);
-    QGridLayout* layout = new QGridLayout(this);
+    auto layout = new QGridLayout(this);
     layout->addWidget(d);
     setMinimumSize(d->minimumSize());
     setLayout(layout);
@@ -208,7 +208,7 @@ MatrixViewController::MatrixViewController(PFMatrix matrix)
 MatrixViewController::MatrixViewController(PWMatrix matrix)
     : MWMDIWindow(tr("Matrix viewer")) {
     d = new MatrixAndLogoController(matrix, this);
-    QGridLayout* layout = new QGridLayout(this);
+    auto layout = new QGridLayout(this);
     layout->addWidget(d);
     setMinimumSize(d->minimumSize());
     setLayout(layout);

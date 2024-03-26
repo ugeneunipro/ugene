@@ -153,7 +153,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0001) {
     int lastWgtIndex = 0;
     MaEditorWgt* lastWgt = nullptr;
     for (int i = 0; i < 30; i++) {
-        MaEditorWgt* w = GTUtilsMsaEditor::getEditor()->getUI()->getUI(i);
+        MaEditorWgt* w = GTUtilsMsaEditor::getEditor()->getLineWidget(i);
         if (w == nullptr)
             break;
         lastWgt = w;
@@ -209,7 +209,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002) {
     int lastWgtIndex = 0;
     MaEditorWgt* lastWgt = nullptr;
     for (int i = 0; i < 30; i++) {
-        MaEditorWgt* w = GTUtilsMsaEditor::getEditor()->getUI()->getUI(i);
+        MaEditorWgt* w = GTUtilsMsaEditor::getEditor()->getLineWidget(i);
         if (w == nullptr) {
             break;
         }
@@ -238,7 +238,7 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001) {
     int lastWgtIndex = 0;
     MaEditorWgt* lastWgt = nullptr;
     for (int i = 0; i < 30; i++) {
-        MaEditorWgt* w = GTUtilsMsaEditor::getEditor()->getUI()->getUI(i);
+        MaEditorWgt* w = GTUtilsMsaEditor::getEditor()->getLineWidget(i);
         if (w == nullptr)
             break;
         lastWgt = w;

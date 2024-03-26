@@ -2484,9 +2484,9 @@ GUI_TEST_CLASS_DEFINITION(test_1252) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     //    4. Delete created annotations document
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
-    QList<QString> keys = GTUtilsProjectTreeView::getDocuments().keys();
     QString name;
-    foreach (const QString& key, keys) {
+    auto keys = GTUtilsProjectTreeView::getDocuments().keys();
+    for (const QString& key : qAsConst(keys)) {
         if (key.startsWith("MyDocument")) {
             name = key;
             break;
@@ -2505,6 +2505,13 @@ GUI_TEST_CLASS_DEFINITION(test_1252) {
     item = GTUtilsAnnotationsTreeView::findItem("misc_feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(item));
     // delete annotations manually to cache MessageBox
+    keys = GTUtilsProjectTreeView::getDocuments().keys();
+    for (const QString& key : qAsConst(keys)) {
+        if (key.startsWith("MyDocument")) {
+            name = key;
+            break;
+        }
+    }
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(name));
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_PROJECT__REMOVE_SELECTED}));
@@ -2530,9 +2537,9 @@ GUI_TEST_CLASS_DEFINITION(test_1252_1) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     //    4. Delete created annotations document
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
-    QList<QString> keys = GTUtilsProjectTreeView::getDocuments().keys();
     QString name;
-    foreach (const QString& key, keys) {
+    auto keys = GTUtilsProjectTreeView::getDocuments().keys();
+    for (const QString& key : qAsConst(keys)) {
         if (key.startsWith("MyDocument")) {
             name = key;
             break;
@@ -2550,6 +2557,13 @@ GUI_TEST_CLASS_DEFINITION(test_1252_1) {
     item = GTUtilsAnnotationsTreeView::findItem("misc_feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(item));
     // delete annotations manually to cache MessageBox
+    keys = GTUtilsProjectTreeView::getDocuments().keys();
+    for (const QString& key : qAsConst(keys)) {
+        if (key.startsWith("MyDocument")) {
+            name = key;
+            break;
+        }
+    }
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(name));
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_PROJECT__REMOVE_SELECTED}));
@@ -2671,9 +2685,9 @@ GUI_TEST_CLASS_DEFINITION(test_1262) {
     GTWidget::click(GTWidget::findWidget("getAnnotationsPushButton"));
 
     // 3. Delete created annotations document
-    QList<QString> keys = GTUtilsProjectTreeView::getDocuments().keys();
     QString name;
-    foreach (const QString& key, keys) {
+    auto keys = GTUtilsProjectTreeView::getDocuments().keys();
+    for (const QString& key : qAsConst(keys)) {
         if (key.startsWith("MyDocument")) {
             name = key;
             break;
@@ -2688,6 +2702,13 @@ GUI_TEST_CLASS_DEFINITION(test_1262) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("Annotations"));
     GTUtilsTaskTreeView::waitTaskFinished();
     QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem("misc_feature");
+    keys = GTUtilsProjectTreeView::getDocuments().keys();
+    for (const QString& key : qAsConst(keys)) {
+        if (key.startsWith("MyDocument")) {
+            name = key;
+            break;
+        }
+    }
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(item));
 
     // delete new doc
@@ -7318,6 +7339,8 @@ GUI_TEST_CLASS_DEFINITION(test_1821) {
     // 6. Open the file containing the saved scheme using "Open" button
     GTFileDialog::openFile(workflowOutputDirPath, "test.uwl");
 
+    GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
+
     // Expected state: scheme is opened in WD, its scale is 75%
     scaleCombo = dynamic_cast<QComboBox*>(GTWidget::findWidget("wdScaleCombo"));
     CHECK_SET_ERR(scaleCombo != nullptr, "Unable to find scale combobox!");
@@ -7349,6 +7372,7 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
 
     // 3) Reopen UGENE WD.
     GTFileDialog::openFile(sandBoxDir, "test.uwl");
+    GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected: the state is saved.

@@ -82,7 +82,7 @@ bool RefineTask::RefineVertP(MSA* msaIn, unsigned uIters) {
     FindAnchorCols(*msaIn, AnchorCols, &uAnchorColCount);
 
     const unsigned uRangeCount = uAnchorColCount + 1;
-    Range* Ranges = new Range[uRangeCount];
+    auto Ranges = new Range[uRangeCount];
 
     ColsToRanges(AnchorCols, uAnchorColCount, uColCountIn, Ranges);
     ListVertSavings(uColCountIn, uAnchorColCount, Ranges, uRangeCount);

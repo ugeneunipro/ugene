@@ -30,7 +30,7 @@ class U2ALGORITHM_EXPORT SecStructPredictTask : public Task {
     Q_OBJECT
 public:
     SecStructPredictTask(const QByteArray& seq);
-    void prepare();
+    void prepare() override;
     const QList<SharedAnnotationData>& getResults() const {
         return results;
     }

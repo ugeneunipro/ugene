@@ -37,7 +37,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    PToolsPlugin* plug = new PToolsPlugin();
+    auto plug = new PToolsPlugin();
     return plug;
 }
 

@@ -440,7 +440,7 @@ void saveExportItems2Doc(const QList<ExportSequenceItem>& items, const QString& 
         bool annotationsSupported = doc->checkConstraints(c);
         if (annotationsSupported && !ri.annotations.isEmpty()) {
             const QString aName = ExportUtils::genUniqueName(usedNames, name + " annotations");
-            AnnotationTableObject* annObj = new AnnotationTableObject(aName, doc->getDbiRef());
+            auto annObj = new AnnotationTableObject(aName, doc->getDbiRef());
             usedNames.insert(aName);
             auto groupPaths = ri.annotations.keys();
             for (const auto& groupPath : qAsConst(groupPaths)) {

@@ -33,12 +33,12 @@ public:
     SwissProtPlainTextFormat(QObject* p);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
 
     bool readIdLine(ParserState*);
-    bool readEntry(ParserState*, U2SequenceImporter&, int& seqSize, int& fullSeqSize, bool merge, int gapSize, U2OpStatus&);
-    bool readSequence(ParserState*, U2SequenceImporter&, int&, int&, U2OpStatus&);
-    void readAnnotations(ParserState*, int offset);
+    bool readEntry(ParserState*, U2SequenceImporter&, int& seqSize, int& fullSeqSize, bool merge, int gapSize, U2OpStatus&) override;
+    bool readSequence(ParserState*, U2SequenceImporter&, int&, int&, U2OpStatus&) override;
+    void readAnnotations(ParserState*, int offset) override;
     // SWISS-PROT presented new format rules 11.12.2019
     // If the file has been changed since this date, the following function will return true
     // Otherwise - false

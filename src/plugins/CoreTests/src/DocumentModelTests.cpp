@@ -117,7 +117,7 @@ void GTest_LoadDocument::init(XMLTestFormat*, const QDomElement& el) {
     } else {
         if (format == BaseDocumentFormats::SAM) {
             // SAM format is temporarily removed from base formats list -> create it manually
-            SAMFormat* samFormat = new SAMFormat();
+            auto samFormat = new SAMFormat();
             loadTask = new LoadDocumentTask(samFormat, url, iof, hints);
             samFormat->setParent(loadTask);
         } else {

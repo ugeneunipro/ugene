@@ -122,7 +122,7 @@ DnaAssemblyDialog::DnaAssemblyDialog(QWidget* p, const QStringList& shortReadsUr
 
     QStringList activeShortReadsUrl = shortReadsUrls.isEmpty() ? lastShortReadsUrls : shortReadsUrls;
     foreach (const QString& read, activeShortReadsUrl) {
-        ShortReadsTableItem* item = new ShortReadsTableItem(shortReadsTable, read);
+        auto item = new ShortReadsTableItem(shortReadsTable, read);
         ShortReadsTableItem::addItemToTable(item, shortReadsTable);
     }
 }
@@ -140,7 +140,7 @@ void DnaAssemblyDialog::sl_onAddShortReadsButtonClicked() {
     lod.url = fileNames.at(fileNames.count() - 1);
 
     foreach (const QString& f, fileNames) {
-        ShortReadsTableItem* item = new ShortReadsTableItem(shortReadsTable, f);
+        auto item = new ShortReadsTableItem(shortReadsTable, f);
         item->setLibraryType(libraryComboBox->currentIndex() == 0 ? LIBRARY_TYPE_SINGLE : LIBRARY_TYPE_PAIRED);
         ShortReadsTableItem::addItemToTable(item, shortReadsTable);
     }

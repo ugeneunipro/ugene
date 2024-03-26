@@ -60,7 +60,7 @@ public:
         return appGlobalCache;
     }
 
-    virtual void onMessage(const LogMessage& msg);
+    void onMessage(const LogMessage& msg) override;
     QList<LogMessage> getLastMessages(int count = -1);
 
 private:
@@ -97,7 +97,7 @@ public:
         return QFileInfo(file).canonicalFilePath();
     }
 
-    virtual void onMessage(const LogMessage& msg);
+    void onMessage(const LogMessage& msg) override;
 
 private:
     bool consoleEnabled;

@@ -206,7 +206,7 @@ void AminoTranslationWorkerFactory::init() {
                                                " . Output a sequence."));
 
     Descriptor ttd(ID_ATTR, AminoTranslationWorker::tr("Genetic code"), AminoTranslationWorker::tr("Which genetic code should be used for translating the input nucleotide sequence."));
-    Attribute* translAttribute = new Attribute(ttd, BaseTypes::STRING_TYPE(), false, QVariant(DNATranslationID(1)));
+    auto translAttribute = new Attribute(ttd, BaseTypes::STRING_TYPE(), false, QVariant(DNATranslationID(1)));
 
     translAttribute->addRelation(new VisibilityRelation(AUTO_TRANSLATION_ATTR, QVariant(false)));
     a << translAttribute;
@@ -354,7 +354,7 @@ Task* AminoTranslationWorker::tick() {
 
         DbiDataStorage* storage = context->getDataStorage();
         SAFE_POINT(storage != nullptr, "Invalid workflow data storage!", nullptr);
-        TranslateSequence2AminoTask* transTask = new TranslateSequence2AminoTask(config,
+        auto transTask = new TranslateSequence2AminoTask(config,
                                                                                  storage->getDbiRef());
 
         connect(transTask, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));

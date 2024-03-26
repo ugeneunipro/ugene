@@ -964,8 +964,14 @@ Unipro UGENE.app/Contents/MacOS/data/primer3
 Unipro UGENE.app/Contents/MacOS/data/primer3/drosophila.w.transposons.txt
 Unipro UGENE.app/Contents/MacOS/data/primer3/humrep_and_simple.txt
 Unipro UGENE.app/Contents/MacOS/data/primer3/presets
+Unipro UGENE.app/Contents/MacOS/data/primer3/presets/Annealing Temp.txt
+Unipro UGENE.app/Contents/MacOS/data/primer3/presets/Cloning Primers.txt
 Unipro UGENE.app/Contents/MacOS/data/primer3/presets/Default.txt
-Unipro UGENE.app/Contents/MacOS/data/primer3/presets/RPA.txt
+Unipro UGENE.app/Contents/MacOS/data/primer3/presets/Default2.txt
+Unipro UGENE.app/Contents/MacOS/data/primer3/presets/Probe.txt
+Unipro UGENE.app/Contents/MacOS/data/primer3/presets/Recombinase Polymerase Amplification.txt
+Unipro UGENE.app/Contents/MacOS/data/primer3/presets/Secondary Structures.txt
+Unipro UGENE.app/Contents/MacOS/data/primer3/presets/qPCR.txt
 Unipro UGENE.app/Contents/MacOS/data/primer3/rodent_ref.txt
 Unipro UGENE.app/Contents/MacOS/data/primer3/rodrep_and_simple.txt
 Unipro UGENE.app/Contents/MacOS/data/query_samples
@@ -1450,6 +1456,7 @@ Unipro UGENE.app/Contents/MacOS/tools/iqtree
 Unipro UGENE.app/Contents/MacOS/tools/java
 Unipro UGENE.app/Contents/MacOS/tools/kalign
 Unipro UGENE.app/Contents/MacOS/tools/mafft
+Unipro UGENE.app/Contents/MacOS/tools/mfold
 Unipro UGENE.app/Contents/MacOS/tools/mrbayes
 Unipro UGENE.app/Contents/MacOS/tools/phyml
 Unipro UGENE.app/Contents/MacOS/tools/samtools

@@ -173,7 +173,7 @@ void SQLiteVariantDbi::updateVariantTrack(U2VariantTrack& track, U2OpStatus& os)
 
 class SqliteVariantLoader : public SQLiteResultSetLoader<U2Variant> {
 public:
-    U2Variant load(SQLiteQuery* q) {
+    U2Variant load(SQLiteQuery* q) override {
         U2Variant res;
         res.id = q->getDataId(0, U2Type::VariantType);
         res.startPos = q->getInt64(1);
@@ -205,7 +205,7 @@ U2DbiIterator<U2Variant>* SQLiteVariantDbi::getVariants(const U2DataId& trackId,
 }
 
 class SimpleVariantTrackLoader : public SQLiteResultSetLoader<U2VariantTrack> {
-    U2VariantTrack load(SQLiteQuery* q) {
+    U2VariantTrack load(SQLiteQuery* q) override {
         U2VariantTrack track;
         track.id = q->getDataId(0, U2Type::VariantTrack);
         track.sequence = q->getDataId(1, U2Type::Sequence);
@@ -220,7 +220,7 @@ public:
     SimpleVariantTrackFilter(VariantTrackType _trackType) {
         trackType = _trackType;
     }
-    bool filter(const U2VariantTrack& track) {
+    bool filter(const U2VariantTrack& track) override {
         if (trackType == TrackType_All || trackType == track.trackType) {
             return true;
         }

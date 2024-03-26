@@ -36,15 +36,15 @@ namespace U2 {
 class U2GUI_EXPORT RangeSelector : public QWidget {
     Q_OBJECT
 public:
-    RangeSelector(QDialog* dialog, int rangeStart, int rangeEnd, int len, bool autoClose);
+    RangeSelector(QDialog* dialog, qint64 rangeStart, qint64 rangeEnd, qint64 len, bool autoClose);
 
-    int getStart() const;
+    qint64 getStart() const;
 
-    int getEnd() const;
+    qint64 getEnd() const;
 
 signals:
 
-    void si_rangeChanged(int startPos, int endPos);
+    void si_rangeChanged(qint64 startPos, qint64 endPos);
 
 private slots:
 
@@ -61,9 +61,9 @@ private:
 
     void exec();
 
-    int rangeStart;
-    int rangeEnd;
-    int len;
+    qint64 rangeStart = 0;
+    qint64 rangeEnd = 0;
+    qint64 len = 0;
 
     QLineEdit* startEdit;
     QLineEdit* endEdit;
@@ -79,16 +79,16 @@ private:
 class U2GUI_EXPORT MultipleRangeSelector : public QDialog {
     Q_OBJECT
 public:
-    MultipleRangeSelector(QWidget* parent, const QVector<U2Region>& _regions, int _seqLen, bool isCircular);
+    MultipleRangeSelector(QWidget* parent, const QVector<U2Region>& _regions, qint64 _seqLen, bool isCircular);
 
     ~MultipleRangeSelector();
 
-    virtual void accept();
+    void accept() override;
 
     QVector<U2Region> getSelectedRegions();
 
 private:
-    int seqLen;
+    qint64 seqLen = 0;
     QVector<U2Region> selectedRanges;
     bool isCircular;
     QPalette normalPalette;

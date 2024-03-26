@@ -63,19 +63,19 @@
 namespace U2 {
 
 DnaAssemblySupport::DnaAssemblySupport() {
-    QAction* convertAssemblyToSamAction = new QAction(tr("Convert UGENE assembly database to SAM..."), this);
+    auto convertAssemblyToSamAction = new QAction(tr("Convert UGENE assembly database to SAM..."), this);
     convertAssemblyToSamAction->setObjectName(ToolsMenu::NGS_CONVERT_SAM);
     convertAssemblyToSamAction->setIcon(QIcon(":core/images/align.png"));
     connect(convertAssemblyToSamAction, SIGNAL(triggered()), SLOT(sl_showConvertToSamDialog()));
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, convertAssemblyToSamAction);
 
-    QAction* dnaAssemblyAction = new QAction(tr("Map reads to reference..."), this);
+    auto dnaAssemblyAction = new QAction(tr("Map reads to reference..."), this);
     dnaAssemblyAction->setObjectName(ToolsMenu::NGS_MAP);
     dnaAssemblyAction->setIcon(QIcon(":core/images/align.png"));
     connect(dnaAssemblyAction, SIGNAL(triggered()), SLOT(sl_showDnaAssemblyDialog()));
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, dnaAssemblyAction);
 
-    QAction* buildIndexAction = new QAction(tr("Build index for reads mapping..."), this);
+    auto buildIndexAction = new QAction(tr("Build index for reads mapping..."), this);
     buildIndexAction->setObjectName(ToolsMenu::NGS_INDEX);
     buildIndexAction->setIcon(QIcon(":core/images/align.png"));
     connect(buildIndexAction, SIGNAL(triggered()), SLOT(sl_showBuildIndexDialog()));

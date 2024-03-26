@@ -35,7 +35,7 @@ class AddNewDocumentDialogImpl : public QDialog, public Ui_AddNewDocumentDialog 
     friend class AddNewDocumentDialogController;
 
 public slots:
-    void accept();
+    void accept() override;
 
 private:
     SaveDocumentController* saveController;

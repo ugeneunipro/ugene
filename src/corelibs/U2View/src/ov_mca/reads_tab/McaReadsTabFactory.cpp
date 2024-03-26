@@ -51,13 +51,13 @@ QWidget* McaReadsTabFactory::createWidget(GObjectViewController* objView, const 
                QString("Internal error: unable to cast object view to MaEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    QWidget* widget = new QWidget(objView->getWidget());
-    QVBoxLayout* layout = new QVBoxLayout();
+    auto widget = new QWidget(objView->getWidget());
+    auto layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
     widget->setLayout(layout);
 
     auto alternativeMutationsWgt = new McaAlternativeMutationsWidget(widget);
-    auto ui = ma->getMaEditorWgt(0);
+    auto ui = ma->getLineWidget(0);
     SAFE_POINT(ui != nullptr, "UI isn't found", nullptr);
 
     alternativeMutationsWgt->init(ma->getMaObject(), ui->getSequenceArea(), ui->getStatusBar());

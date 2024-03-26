@@ -38,7 +38,7 @@ namespace U2 {
 
 DockWrapWidget::DockWrapWidget(QWidget* _w)
     : w(_w) {
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setMargin(0);
     l->setSpacing(0);
     setLayout(l);
@@ -86,7 +86,7 @@ MWDockManagerImpl::MWDockManagerImpl(MainWindowImpl* _mw)
 
     readLastActiveDocksState();
 
-    QAction* tga = new QAction(this);
+    auto tga = new QAction(this);
     tga->setShortcut(QKeySequence("Alt+`"));
     tga->setShortcutContext(Qt::ApplicationShortcut);
     connect(tga, SIGNAL(triggered()), SLOT(sl_toggleDocks()));
@@ -144,7 +144,7 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* w, const QKey
     bool showDock = w->objectName() == lastActiveDocksState[area];
 
     QToolBar* tb = getDockBar(area);
-    DockData* data = new DockData();
+    auto data = new DockData();
     data->area = area;
     data->label = new QLabel(tb);
     data->wrapWidget = new DockWrapWidget(w);

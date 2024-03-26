@@ -478,7 +478,7 @@ int main(int argc, char** argv) {
     auto settings = new SettingsImpl(QSettings::UserScope);
     appContext->setSettings(settings);
 
-    AppSettings* appSettings = new AppSettingsImpl();
+    auto appSettings = new AppSettingsImpl();
     appContext->setAppSettings(appSettings);
 
     UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
@@ -502,15 +502,11 @@ int main(int argc, char** argv) {
     // Set translations if needed: use value in the settings or environment variables to override.
     // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.
     QTranslator translator;
-    QStringList failedToLoadTranslatorFiles;  // List of translators file names tried but failed to load/not found.
 
     // The file specified by user has the highest priority in the translations lookup order.
     QStringList envList = QProcess::systemEnvironment();
     QString envTranslationFile = findKey(envList, "UGENE_TRANSLATION_FILE");
     if (envTranslationFile.isEmpty() || !translator.load(envTranslationFile)) {
-        if (!envTranslationFile.isEmpty()) {
-            failedToLoadTranslatorFiles << envTranslationFile;
-        }
         QStringList translationFileList = {
             "transl_" + findKey(envList, "UGENE_TRANSLATION"),
             userAppSettings->getTranslationFile(),
@@ -525,7 +521,6 @@ int main(int argc, char** argv) {
             if (translationFile == "transl_en" || translator.load(translationFile, AppContext::getWorkingDirectoryPath())) {
                 break;
             }
-            failedToLoadTranslatorFiles << translationFile;
         }
     }
     if (!translator.isEmpty()) {
@@ -542,9 +537,6 @@ int main(int argc, char** argv) {
     LogCache::setAppGlobalInstance(&logsCache);
     app.installEventFilter(new UserActionsWriter());
     coreLog.details(UserAppsSettings::tr("UGENE initialization started"));
-    for (const QString& fileName : failedToLoadTranslatorFiles) {
-        coreLog.trace(QObject::tr("Translation file not found: %1").arg(fileName));
-    }
 
     int ugeneArch = getUgeneBinaryArch();
     QString ugeneArchCounterSuffix = ugeneArch == UGENE_ARCH_X86_64   ? "Ugene 64-bit"
@@ -630,7 +622,7 @@ int main(int argc, char** argv) {
     }
     QObject::connect(UgeneUpdater::getInstance(), SIGNAL(si_update()), mw, SLOT(sl_exitAction()));
 
-    AppSettingsGUI* appSettingsGUI = new AppSettingsGUIImpl();
+    auto appSettingsGUI = new AppSettingsGUIImpl();
     appContext->setAppSettingsGUI(appSettingsGUI);
 
     AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, new TaskViewDockWidget(), QKeySequence(Qt::ALT | Qt::Key_2));
@@ -660,7 +652,7 @@ int main(int argc, char** argv) {
     auto dtr = new DNATranslationRegistry();
     appContext->setDNATranslationRegistry(dtr);
 
-    DNAAlphabetRegistry* dal = new DNAAlphabetRegistryImpl(dtr);
+    auto dal = new DNAAlphabetRegistryImpl(dtr);
     appContext->setDNAAlphabetRegistry(dal);
 
     auto dbxr = new DBXRefRegistry();
@@ -758,7 +750,7 @@ int main(int argc, char** argv) {
     auto dpr = new U2DataPathRegistry();
     appContext->setDataPathRegistry(dpr);
 
-    CredentialsAsker* credentialsAsker = new CredentialsAskerGui();
+    auto credentialsAsker = new CredentialsAskerGui();
     appContext->setCredentialsAsker(credentialsAsker);
 
     auto passwordStorage = new PasswordStorage();
@@ -775,7 +767,7 @@ int main(int argc, char** argv) {
     appContext->setProjectFilterTaskRegistry(projectFilterTaskRegistry);
     initProjectFilterTaskRegistry();
 
-    PasteFactory* pasteFactory = new PasteFactoryImpl;
+    auto pasteFactory = new PasteFactoryImpl;
     appContext->setPasteFactory(pasteFactory);
 
     auto dashboardInfoRegistry = new DashboardInfoRegistry;
