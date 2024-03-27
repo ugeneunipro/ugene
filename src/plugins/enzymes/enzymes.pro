@@ -1,7 +1,9 @@
 include (enzymes.pri)
 
 # Input
-HEADERS += src/CloningUtilTasks.h \
+HEADERS += src/insert/InsertEnzymeDialog.h \
+           src/insert/InsertEnzymeWidget.h \
+           src/CloningUtilTasks.h \
            src/ConstructMoleculeDialog.h \
            src/CreateFragmentDialog.h \
            src/DigestSequenceDialog.h \
@@ -13,16 +15,18 @@ HEADERS += src/CloningUtilTasks.h \
            src/EnzymesTests.h \
            src/FindEnzymesAlgorithm.h \
            src/FindEnzymesDialog.h \
-           src/FindEnzymesTask.h \
-		   src/InsertEnzymeDialog.h
-FORMS += src/ConstructMoleculeDialog.ui \
+           src/FindEnzymesTask.h
+FORMS += src/insert/InsertEnzymeWidget.ui \
+         src/ConstructMoleculeDialog.ui \
          src/CreateFragmentDialog.ui \
          src/DigestSequenceDialog.ui \
          src/EditFragmentDialog.ui \
          src/EnzymesSelectorDialog.ui \
          src/EnzymesSelectorWidget.ui \
          src/FindEnzymesDialog.ui
-SOURCES += src/CloningUtilTasks.cpp \
+SOURCES += src/insert/InsertEnzymeDialog.cpp \
+           src/insert/InsertEnzymeWidget.cpp \
+           src/CloningUtilTasks.cpp \
            src/ConstructMoleculeDialog.cpp \
            src/CreateFragmentDialog.cpp \
            src/DigestSequenceDialog.cpp \
@@ -33,7 +37,6 @@ SOURCES += src/CloningUtilTasks.cpp \
            src/EnzymesQuery.cpp \
            src/EnzymesTests.cpp \
            src/FindEnzymesDialog.cpp \
-           src/FindEnzymesTask.cpp \
-		   src/InsertEnzymeDialog.cpp
+           src/FindEnzymesTask.cpp
 RESOURCES += enzymes.qrc
 TRANSLATIONS += transl/russian.ts

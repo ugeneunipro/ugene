@@ -25,7 +25,7 @@
 
 #include <QSharedPointer>
 
-#include "FindEnzymesDialog.h"
+#include "InsertEnzymeWidget.h"
 
 namespace U2 {
 
@@ -33,10 +33,13 @@ class InsertEnzymeDialog : public EditSequenceDialogVirtualController {
 public:
     InsertEnzymeDialog(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
 
+    void accept() override;
+
     DNASequence getNewSequence() const override;
 
 private:
-    EnzymesSelectorWidget* enzymesSelectorWidget = nullptr;
+    InsertEnzymeWidget* insertEnzymeWidget = nullptr;
+    QString enzymeSequence;
 };
 
 }

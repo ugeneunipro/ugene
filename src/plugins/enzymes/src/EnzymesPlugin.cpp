@@ -27,6 +27,7 @@
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/GAutoDeleteList.h>
+#include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -48,7 +49,7 @@
 #include "EnzymesTests.h"
 #include "FindEnzymesDialog.h"
 #include "FindEnzymesTask.h"
-#include "InsertEnzymeDialog.h"
+#include "insert/InsertEnzymeDialog.h"
 
 const QString CREATE_PCR_PRODUCT_ACTION_NAME = "Create PCR product";
 
@@ -315,6 +316,19 @@ void EnzymesADVContext::sl_insertRestrictionSite() {
     const int result = dialog->exec();
     CHECK(!dialog.isNull(), );
     CHECK(result == QDialog::Accepted, );
+
+    Task* t = new ModifySequenceContentTask(dialog->getDocumentFormatId(),
+                                            context->getSequenceObject(),
+                                            U2Region(dialog->getPosToInsert(), 0),
+                                            dialog->getNewSequence(),
+                                            dialog->recalculateQualifiers(),
+                                            dialog->getAnnotationStrategy(),
+                                            dialog->getDocumentPath(),
+                                            dialog->mergeAnnotations());
+
+    connect(t, &Task::si_stateChanged, av, &AnnotatedDNAView::sl_sequenceModifyTaskStateChanged);
+    AppContext::getTaskScheduler()->registerTopLevelTask(t);
+    context->getSequenceSelection()->clear();
 }
 
 }  // namespace U2

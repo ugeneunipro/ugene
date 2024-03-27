@@ -21,6 +21,11 @@
 
 #include "InsertEnzymeDialog.h"
 
+#include <U2Core/U2AlphabetUtils.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <QMessageBox>
+
 namespace U2 {
 
 InsertEnzymeDialog::InsertEnzymeDialog(const EditSequencDialogConfig& cfg, QWidget* p)
@@ -28,12 +33,28 @@ InsertEnzymeDialog::InsertEnzymeDialog(const EditSequencDialogConfig& cfg, QWidg
 
     setWindowTitle(tr("Insert Restriction Site"));
 
-    enzymesSelectorWidget = new EnzymesSelectorWidget(nullptr, this);
-    addInputDataWidgetToLayout(enzymesSelectorWidget);
+    insertEnzymeWidget = new InsertEnzymeWidget(this, config.alphabet);
+    addInputDataWidgetToLayout(insertEnzymeWidget);
+    resize(minimumWidth(), 500);
+}
+
+void InsertEnzymeDialog::accept() {
+    auto seq = insertEnzymeWidget->getEnzymeSequence();
+    if (seq.isEmpty()) {
+        QMessageBox::critical(this, this->windowTitle(), tr("Invalid enzyme choosen"));
+        return;
+    }
+
+    enzymeSequence = seq;
+    EditSequenceDialogVirtualController::accept();
 }
 
 DNASequence InsertEnzymeDialog::getNewSequence() const {
-    return DNASequence();
+    SAFE_POINT(!enzymeSequence.isEmpty(), "Sequence shouldn't be empty", DNASequence())
+
+    auto baSeq = enzymeSequence.toLocal8Bit();
+    auto bestAlphabet = U2AlphabetUtils::findBestAlphabet(baSeq);
+    return DNASequence(baSeq, bestAlphabet);
 }
 
 }  // namespace U2

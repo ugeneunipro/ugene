@@ -168,7 +168,6 @@ private:
         Organism,
     };
 
-    QString generateEnzymeTooltip() const;
     QString getTypeInfo() const;
 };
 

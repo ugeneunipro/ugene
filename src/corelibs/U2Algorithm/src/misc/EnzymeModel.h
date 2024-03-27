@@ -124,6 +124,7 @@ public:
      */
     int getFullLength() const;
 
+    QString generateEnzymeTooltip() const;
 };
 
 typedef QSharedDataPointer<EnzymeData> SEnzymeData;
