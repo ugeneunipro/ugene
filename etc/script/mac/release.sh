@@ -140,5 +140,26 @@ codesign --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime --s
 echo " ##teamcity[blockClosed name='Pack']"
 
 echo "##teamcity[blockOpened name='Notarize']"
-bash "${SOURCE_DIR}/etc/script/mac/notarize.sh" -n "${RELEASE_FILE_NAME}" || exit 1
+NOTARYTOOL_OUTPUT=$(xcrun notarytool submit "${RELEASE_FILE_NAME}" --keychain-profile "UGENE" || exit 1)
+NOTARYTOOL_JOB_UUID=$(echo "${NOTARYTOOL_OUTPUT}" | grep 'id:' | awk '{print $2}')
 echo "##teamcity[blockClosed name='Notarize']"
+
+echo "##teamcity[blockOpened name='Check notarize']"
+END_TIME=$((SECONDS+1200))  # 1200 seconds = 20 minutes
+while [ $SECONDS -lt $END_TIME ]; do
+    status=$(xcrun notarytool info $NOTARYTOOL_JOB_UUID --keychain-profile "UGENE")
+    if echo "$status" | grep -q "Status: Accepted"; then
+        echo "Notarization successful!"
+        break
+    elif echo "$status" | grep -q "Status: Rejected"; then
+        echo "Notarization failed."
+        exit 1
+    elif echo "$status" | grep -q "Status: In Progress"; then
+        echo "Notarization still in progress..."
+    else
+        echo "Unexpected status. Exiting."
+        exit 1
+    fi
+    sleep 30  # Wait for 30 seconds before the next check.
+done
+echo "##teamcity[blockClosed name='Check notarize']"
