@@ -45,7 +45,7 @@ class RegionSelectorWithExcludedRegion;
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
 public:
-    EnzymesSelectorWidget(const QPointer<ADVSequenceObjectContext>& advSequenceContext = nullptr);
+    EnzymesSelectorWidget(const QPointer<ADVSequenceObjectContext>& advSequenceContext = nullptr, QWidget* parent = nullptr);
     ~EnzymesSelectorWidget() override;
 
     static void setupSettings();

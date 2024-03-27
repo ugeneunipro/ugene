@@ -37,6 +37,7 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSequenceWidget.h>
+#include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/ADVUtils.h>
 #include <U2View/AnnotatedDNAView.h>
 
@@ -47,6 +48,7 @@
 #include "EnzymesTests.h"
 #include "FindEnzymesDialog.h"
 #include "FindEnzymesTask.h"
+#include "InsertEnzymeDialog.h"
 
 const QString CREATE_PCR_PRODUCT_ACTION_NAME = "Create PCR product";
 
@@ -175,6 +177,8 @@ EnzymesADVContext::EnzymesADVContext(QObject* p, const QList<QAction*>& actions)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID), cloningActions(actions) {
 }
 
+const QString INSERT_RESTRICTION_SITE_NAME = "insert_restriction_site";
+
 void EnzymesADVContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
     auto a = new ADVGlobalAction(av, QIcon(":enzymes/images/enzymes.png"), tr("Find restriction sites..."), 50);
@@ -186,6 +190,13 @@ void EnzymesADVContext::initViewContext(GObjectViewController* view) {
     createPCRProductAction->setObjectName(CREATE_PCR_PRODUCT_ACTION_NAME);
     connect(createPCRProductAction, SIGNAL(triggered()), SLOT(sl_createPCRProduct()));
     addViewAction(createPCRProductAction);
+
+    auto insertRestrictionSite = new GObjectViewAction(av, av, tr("Insert restriction site..."));
+    insertRestrictionSite->setObjectName(INSERT_RESTRICTION_SITE_NAME);
+    insertRestrictionSite->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_I));
+    insertRestrictionSite->setShortcutContext(Qt::WindowShortcut);
+    connect(insertRestrictionSite, &QAction::triggered, this, &EnzymesADVContext::sl_insertRestrictionSite);
+    addViewAction(insertRestrictionSite);
 }
 
 void EnzymesADVContext::sl_search() {
@@ -229,6 +240,14 @@ void EnzymesADVContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu
             cloningMenu->addAction(createPcrAction);
         }
     }
+
+    auto editMenu = GUIUtils::findSubMenu(m, ADV_MENU_EDIT);
+    SAFE_POINT_NN(editMenu, );
+
+    auto insertRestrictionSite = findViewAction(v, INSERT_RESTRICTION_SITE_NAME);
+    SAFE_POINT_NN(insertRestrictionSite, );
+
+    editMenu->addAction(insertRestrictionSite);
 }
 
 void EnzymesADVContext::sl_createPCRProduct() {
@@ -257,6 +276,45 @@ void EnzymesADVContext::sl_createPCRProduct() {
         dlg->setWindowTitle("Create PCR product");
         dlg->exec();
     }
+}
+
+void EnzymesADVContext::sl_insertRestrictionSite() {
+    EditSequencDialogConfig cfg;
+
+    cfg.mode = EditSequenceMode_Insert;
+    auto action = qobject_cast<GObjectViewAction*>(sender());
+    SAFE_POINT_NN(action, );
+
+    auto av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    SAFE_POINT_NN(av, );
+
+    auto context = av->getActiveSequenceContext();
+    SAFE_POINT_NN(context, );
+
+    cfg.source = U2Region(0, context->getSequenceLength());
+    cfg.alphabet = context->getAlphabet();
+    cfg.position = 1;
+
+    auto asWgt = av->getActiveSequenceWidget();
+    SAFE_POINT_NN(asWgt, );
+
+    auto wgt = qobject_cast<ADVSingleSequenceWidget*>(asWgt);
+    if (wgt != nullptr) {
+        QList<GSequenceLineView*> views = wgt->getLineViews();
+        foreach (GSequenceLineView* v, views) {
+            if (v->hasFocus()) {
+                cfg.position = v->getLastPressPos();
+                break;
+            }
+        }
+    }
+
+    cfg.selectionRegions = context->getSequenceSelection()->getSelectedRegions();
+
+    QObjectScopedPointer<InsertEnzymeDialog> dialog = new InsertEnzymeDialog(cfg, asWgt);
+    const int result = dialog->exec();
+    CHECK(!dialog.isNull(), );
+    CHECK(result == QDialog::Accepted, );
 }
 
 }  // namespace U2

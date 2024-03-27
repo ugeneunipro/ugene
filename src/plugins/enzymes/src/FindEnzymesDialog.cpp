@@ -61,8 +61,8 @@ QList<SEnzymeData> EnzymesSelectorWidget::loadedEnzymes;
 QSet<QString> EnzymesSelectorWidget::lastSelection;
 QStringList EnzymesSelectorWidget::loadedSuppliers;
 
-EnzymesSelectorWidget::EnzymesSelectorWidget(const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
-    : advSequenceContext(_advSequenceContext) {
+EnzymesSelectorWidget::EnzymesSelectorWidget(const QPointer<ADVSequenceObjectContext>& _advSequenceContext, QWidget* parent)
+    : QWidget(parent), advSequenceContext(_advSequenceContext) {
     setupUi(this);
     ignoreItemChecks = false;
 
@@ -659,7 +659,7 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
     initSettings();
 
     auto vl = new QVBoxLayout();
-    enzSel = new EnzymesSelectorWidget(advSequenceContext);
+    enzSel = new EnzymesSelectorWidget(advSequenceContext, this);
     vl->setMargin(0);
     vl->addWidget(enzSel);
     enzymesSelectorWidget->setLayout(vl);

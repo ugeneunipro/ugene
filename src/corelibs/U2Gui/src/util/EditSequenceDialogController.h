@@ -65,15 +65,14 @@ struct U2GUI_EXPORT EditSequencDialogConfig {
     int position;
 };
 
-class U2GUI_EXPORT EditSequenceDialogController : public QDialog {
+class U2GUI_EXPORT EditSequenceDialogVirtualController : public QDialog  {
     Q_OBJECT
 public:
-    EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
-    ~EditSequenceDialogController();
+    EditSequenceDialogVirtualController(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
 
     void accept() override;
 
-    DNASequence getNewSequence() const;
+    virtual DNASequence getNewSequence() const = 0;
     GUrl getDocumentPath() const;
     qint64 getPosToInsert() const;
     U1AnnotationUtils::AnnotationStrategyForResize getAnnotationStrategy() const;
@@ -81,27 +80,45 @@ public:
     bool recalculateQualifiers() const;
     DocumentFormatId getDocumentFormatId() const;
 
+protected slots:
+    void sl_enterPressed();
+
+protected:
+    void addInputDataWidgetToLayout(QWidget* w);
+
+    EditSequencDialogConfig config;
+
 private slots:
     void sl_mergeAnnotationsToggled();
     void sl_startPositionliClicked();
     void sl_endPositionliClicked();
     void sl_beforeSlectionClicked();
     void sl_afterSlectionClicked();
-    void sl_enterPressed();
 
 private:
-    void addSeqpasterWidget();
     bool modifyCurrentDocument() const;
     void initSaveController();
 
     QString filter;
     qint64 pos = 1;
-    SeqPasterWidgetController* w;
-    SaveDocumentController* saveController;
-    EditSequencDialogConfig config;
     Ui_EditSequenceDialog* ui;
+    SaveDocumentController* saveController;
 
     qint64 seqEndPos = 0;
 };
+
+class U2GUI_EXPORT EditSequenceDialogController : public EditSequenceDialogVirtualController {
+    Q_OBJECT
+public:
+    EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
+
+    void accept() override;
+
+    DNASequence getNewSequence() const override;
+
+private:
+    SeqPasterWidgetController* seqPasterWidgetController = nullptr;
+};
+
 
 }  // namespace U2

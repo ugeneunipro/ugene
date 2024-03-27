@@ -13,7 +13,8 @@ HEADERS += src/CloningUtilTasks.h \
            src/EnzymesTests.h \
            src/FindEnzymesAlgorithm.h \
            src/FindEnzymesDialog.h \
-           src/FindEnzymesTask.h
+           src/FindEnzymesTask.h \
+		   src/InsertEnzymeDialog.h
 FORMS += src/ConstructMoleculeDialog.ui \
          src/CreateFragmentDialog.ui \
          src/DigestSequenceDialog.ui \
@@ -32,6 +33,7 @@ SOURCES += src/CloningUtilTasks.cpp \
            src/EnzymesQuery.cpp \
            src/EnzymesTests.cpp \
            src/FindEnzymesDialog.cpp \
-           src/FindEnzymesTask.cpp
+           src/FindEnzymesTask.cpp \
+		   src/InsertEnzymeDialog.cpp
 RESOURCES += enzymes.qrc
 TRANSLATIONS += transl/russian.ts
