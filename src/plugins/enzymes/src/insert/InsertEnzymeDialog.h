@@ -29,6 +29,9 @@
 
 namespace U2 {
 
+/**
+ * The dialog, which sets the restriction site to paste to the sequence.
+ */
 class InsertEnzymeDialog : public EditSequenceDialogVirtualController {
 public:
     InsertEnzymeDialog(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);

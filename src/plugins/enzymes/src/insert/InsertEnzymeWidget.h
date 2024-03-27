@@ -29,6 +29,10 @@
 
 namespace U2 {
 
+/**
+ * This widget contains restriction sites combobox, where you need to choose one.
+ * The choosen site will be drawn schematically.
+ */
 class InsertEnzymeWidget : public QWidget, private Ui_InsertEnzymeWidget {
 public:
     InsertEnzymeWidget(QWidget* parent, const DNAAlphabet* alphabet);

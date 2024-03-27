@@ -124,6 +124,13 @@ public:
      */
     int getFullLength() const;
 
+    /*
+     * Generate full enzume sequence in HTML with cuts.
+     * How it looks like (for DdeI, without UNICODE bases):
+     * 3'  C T N A G  5'
+     * 5'  G A N T C  3'
+     * \return HTML representation of enzyme.
+     */
     QString generateEnzymeTooltip() const;
 };
 

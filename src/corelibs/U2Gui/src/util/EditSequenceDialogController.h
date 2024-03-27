@@ -65,6 +65,13 @@ struct U2GUI_EXPORT EditSequencDialogConfig {
     int position;
 };
 
+/**
+ * This is an abstract class for dialog to edit the sequence.
+ * It has setting about "where to insert", "how handle the annotations", etc.
+ * In the inherited class you need to add widget, which allows you to add new data.
+ * For example, it could be the field for the new sequence (EditSequenceDialogController)
+ * or popup menu, where you can choose a restriction enzyme to paste (InsertEnzymeDialog)
+ */
 class U2GUI_EXPORT EditSequenceDialogVirtualController : public QDialog  {
     Q_OBJECT
 public:
@@ -72,6 +79,9 @@ public:
 
     void accept() override;
 
+    /**
+     * Here you need to create a new DNASequence to paste.
+     */
     virtual DNASequence getNewSequence() const = 0;
     GUrl getDocumentPath() const;
     qint64 getPosToInsert() const;
@@ -107,6 +117,9 @@ private:
     qint64 seqEndPos = 0;
 };
 
+/**
+ * Paste or replace some sequence.
+ */
 class U2GUI_EXPORT EditSequenceDialogController : public EditSequenceDialogVirtualController {
     Q_OBJECT
 public:
