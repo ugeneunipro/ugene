@@ -144,7 +144,7 @@ NOTARYTOOL_OUTPUT=$(xcrun notarytool submit "${RELEASE_FILE_NAME}" --keychain-pr
 NOTARYTOOL_JOB_UUID=$(echo "${NOTARYTOOL_OUTPUT}" | grep 'id:' | awk '{print $2}')
 echo "##teamcity[blockClosed name='Notarize']"
 
-echo "##teamcity[blockOpened name='Check notarize']"
+echo "##teamcity[blockOpened name='Check Notarization']"
 END_TIME=$((SECONDS+1200))  # 1200 seconds = 20 minutes
 while [ $SECONDS -lt $END_TIME ]; do
     status=$(xcrun notarytool info $NOTARYTOOL_JOB_UUID --keychain-profile "UGENE")
@@ -162,4 +162,4 @@ while [ $SECONDS -lt $END_TIME ]; do
     fi
     sleep 30  # Wait for 30 seconds before the next check.
 done
-echo "##teamcity[blockClosed name='Check notarize']"
+echo "##teamcity[blockClosed name='Check Notarization']"
