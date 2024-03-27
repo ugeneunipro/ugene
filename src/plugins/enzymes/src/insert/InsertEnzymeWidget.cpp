@@ -62,13 +62,14 @@ void InsertEnzymeWidget::updateEnzymesList(bool showEnzymesWithUndefinedSupplier
     cbChooseEnzyme->clear();
     items.clear();
     for (const auto& enzyme : qAsConst(enzymeList)) {
-        CHECK_CONTINUE(enzyme->suppliers.contains(tr(EnzymesIO::NOT_DEFINED_SIGN)) == showEnzymesWithUndefinedSuppliers);
+        static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+        CHECK_CONTINUE(enzyme->suppliers.contains(notDefinedTr) == showEnzymesWithUndefinedSuppliers);
         CHECK_CONTINUE(U2AlphabetUtils::matches(alphabet, enzyme->seq, enzyme->seq.size()));
 
         cbChooseEnzyme->addItem(enzyme->id, enzyme->seq);
         items << enzyme->id;
     }
-    lbEnzymesNumber->setText(tr("%1 enzymes").arg(items.size()));
+    lbEnzymesNumber->setText(tr("%n enzyme(s)", "", items.size()));
 }
 
 }  // namespace U2

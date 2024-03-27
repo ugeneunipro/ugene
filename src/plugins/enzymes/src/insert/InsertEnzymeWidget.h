@@ -34,6 +34,7 @@ namespace U2 {
  * The choosen site will be drawn schematically.
  */
 class InsertEnzymeWidget : public QWidget, private Ui_InsertEnzymeWidget {
+    Q_OBJECT
 public:
     InsertEnzymeWidget(QWidget* parent, const DNAAlphabet* alphabet);
 
