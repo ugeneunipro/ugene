@@ -44,7 +44,7 @@ private:
     void updateEnzymesList(bool showEnzymesWithUndefinedSuppliers);
 
     const DNAAlphabet* alphabet = nullptr;
-    QStringList items;
+    QSet<QString> items;
 };
 
 }

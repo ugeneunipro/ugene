@@ -23,6 +23,7 @@
 
 #include <QByteArray>
 #include <QFlags>
+#include <QMetatype>
 #include <QSharedData>
 #include <QSharedDataPointer>
 #include <QString>
@@ -139,3 +140,5 @@ typedef QSharedDataPointer<EnzymeData> SEnzymeData;
 }  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::EnzymeData::OverhangTypes)
+Q_DECLARE_METATYPE(U2::EnzymeData)
+Q_DECLARE_METATYPE(QSharedDataPointer<U2::EnzymeData>)

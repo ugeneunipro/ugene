@@ -25,6 +25,8 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include <QKeyEvent>
+
 #include <algorithm>
 
 namespace U2 {
@@ -34,27 +36,30 @@ InsertEnzymeWidget::InsertEnzymeWidget(QWidget* parent, const DNAAlphabet* _alph
     setupUi(this);
 
     updateEnzymesList(false);
-    cbChooseEnzyme->setCurrentText("");
 
     connect(cbShowEnzymesWithUndefinedShuppliers, &QCheckBox::stateChanged, this, [this](bool state) {
         updateEnzymesList(state);
     });
 
     connect(cbChooseEnzyme, QOverload<int>::of(&QComboBox::currentIndexChanged), [this](int /*index*/) {
-        auto enzymeId = cbChooseEnzyme->currentText();
-        auto enzymeList = EnzymesIO::getDefaultEnzymesList();
-        auto enzyme = std::find_if(enzymeList.begin(), enzymeList.end(), [&enzymeId](const SEnzymeData& enzyme) {
-            return enzyme->id == enzymeId;
-        });
-        teChoosedEnzymeInfo->setText(enzyme->constData()->generateEnzymeTooltip());
+        auto enzyme = cbChooseEnzyme->currentData().value<SEnzymeData>();
+        CHECK(enzyme != nullptr, );
+
+        teChoosedEnzymeInfo->setText(enzyme->generateEnzymeTooltip());
     });
+
+    cbChooseEnzyme->setCurrentIndex(-1);
+
 }
 
 QString InsertEnzymeWidget::getEnzymeSequence() const {
     auto text = cbChooseEnzyme->currentText();
     CHECK(items.contains(text), QString());
 
-    return cbChooseEnzyme->currentData().toString();
+    auto enzyme = cbChooseEnzyme->currentData().value<SEnzymeData>();
+    SAFE_POINT_NN(enzyme, QString());
+
+    return enzyme->seq;
 }
 
 void InsertEnzymeWidget::updateEnzymesList(bool showEnzymesWithUndefinedSuppliers) {
@@ -66,9 +71,10 @@ void InsertEnzymeWidget::updateEnzymesList(bool showEnzymesWithUndefinedSupplier
         CHECK_CONTINUE(enzyme->suppliers.contains(notDefinedTr) == showEnzymesWithUndefinedSuppliers);
         CHECK_CONTINUE(U2AlphabetUtils::matches(alphabet, enzyme->seq, enzyme->seq.size()));
 
-        cbChooseEnzyme->addItem(enzyme->id, enzyme->seq);
+        cbChooseEnzyme->addItem(enzyme->id, QVariant::fromValue(enzyme));
         items << enzyme->id;
     }
+
     lbEnzymesNumber->setText(tr("%n enzyme(s)", "", items.size()));
 }
 
