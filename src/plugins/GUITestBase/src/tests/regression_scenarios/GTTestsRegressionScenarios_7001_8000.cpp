@@ -60,10 +60,12 @@
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CMDLineUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/Notification.h>
 
@@ -985,6 +987,45 @@ GUI_TEST_CLASS_DEFINITION(test_7247) {
     GTUtilsDialog::add(new MessageBoxDialogFiller("Save"));
     GTUtilsDialog::add(new WorkflowMetaDialogFiller(testDir + "_common_data/scenarios/sandbox/7247.uwl", "7247"));
     GTUtilsMdi::click(GTGlobals::Close);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7257) {
+    /*
+    class CheckDocumentReadingModeSelectorTextScenario : public CustomScenario {
+    public:
+        CheckDocumentReadingModeSelectorTextScenario(const QString& pathToCheck_)
+            : pathToCheck(pathToCheck_) {};
+        void run() override {
+            pathToCheck = QFileInfo(pathToCheck).absolutePath() + "/" + QFileInfo(pathToCheck).fileName();
+            GTGlobals::sleep();
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            if (isOsWindows()) {
+                pathToCheck.replace("/", "\\");
+            }
+            auto rb = GTWidget::findRadioButton("1_radio", dialog);
+            GTRadioButton::click(rb);
+            GTGlobals::sleep();
+            GTLineEdit::checkText(GTWidget::findLineEdit("fileNameEdit", dialog), pathToCheck);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+        QString pathToCheck;
+    };
+    */
+
+    QDir().mkpath(sandBoxDir + "read_only_dir/test_7257");
+    GTFile::copy(dataDir + "samples/ACE/BL060C3.ace", sandBoxDir + "read_only_dir/test_7257/BL060C3.ace");
+
+    GTUtilsDialog::waitForDialog(new ImportACEFileCheckPathFiller(sandBoxDir + "read_only_dir/test_7257/BL060C3.ace.ugenedb"));
+    GTFileDialog::openFile(sandBoxDir + "read_only_dir/test_7257/BL060C3.ace");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    
+    GTFile::setReadOnly(sandBoxDir + "read_only_dir/test_7257");
+
+    GTUtilsDialog::waitForDialog(new ImportACEFileCheckPathFiller(
+        AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/BL060C3.ace.ugenedb"));
+    GTFileDialog::openFile(sandBoxDir + "read_only_dir/test_7257/BL060C3.ace");
+    GTUtilsDialog::checkNoActiveWaiters();
+    GTFile::setReadWrite(sandBoxDir + "read_only_dir/test_7257");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7276) {

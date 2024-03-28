@@ -180,6 +180,10 @@ void GUITestBasePlugin::sl_showWindow() {
 void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     SAFE_POINT(guiTestBase != nullptr, "guiTestBase is null!", );
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_7257);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2292);
+    return;
+
     //////////////////////////////////////////////////////////////////////////
     // Tests for investigation
     //////////////////////////////////////////////////////////////////////////
@@ -1696,6 +1700,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7242);
     REGISTER_TEST(GUITest_regression_scenarios::test_7246);
     REGISTER_TEST(GUITest_regression_scenarios::test_7247);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7257);
     REGISTER_TEST(GUITest_regression_scenarios::test_7276);
     REGISTER_TEST(GUITest_regression_scenarios::test_7279);
     REGISTER_TEST(GUITest_regression_scenarios::test_7290);

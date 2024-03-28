@@ -23,7 +23,10 @@
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTWidget.h>
 
+#include <U2Core/global.h>
+
 #include <QApplication>
+#include <QFileInfo>
 
 #include "ImportACEFileDialogFiller.h"
 
@@ -71,6 +74,27 @@ void ImportACEFileFiller::commonScenario() {
     }
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+}
+
+ImportACEFileCheckPathFiller::ImportACEFileCheckPathFiller(const QString& _pathToCheck, int timeoutMs)
+    : Filler("Select Document Format"),
+      pathToCheck(_pathToCheck) {
+    settings.timeout = timeoutMs;
+}
+
+void ImportACEFileCheckPathFiller::commonScenario() {
+    GTGlobals::sleep(500);
+    pathToCheck = QFileInfo(pathToCheck).absolutePath() + "/" + QFileInfo(pathToCheck).fileName();
+    if (isOsWindows()) {
+        pathToCheck.replace("/", "\\");
+    }
+    GTGlobals::sleep();
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+    auto rb = GTWidget::findRadioButton("1_radio", dialog);
+    GTRadioButton::click(rb);
+    GTGlobals::sleep();
+    GTLineEdit::checkText(GTWidget::findLineEdit("fileNameEdit", dialog), pathToCheck);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
 }
 
 #undef GT_CLASS_NAME
