@@ -142,7 +142,8 @@ echo " ##teamcity[blockClosed name='Pack']"
 echo "##teamcity[blockOpened name='Notarize']"
 NOTARYTOOL_OUTPUT=$(xcrun notarytool submit "${RELEASE_FILE_NAME}" --keychain-profile "UGENE" || exit 1)
 echo "Notary tool output: ${NOTARYTOOL_OUTPUT}"
-NOTARYTOOL_JOB_UUID=$(echo "${NOTARYTOOL_OUTPUT}" | grep 'id:' | awk '{print $2}')
+NOTARYTOOL_JOB_UUID=$(echo "${NOTARYTOOL_OUTPUT}" | grep 'id:' | head -n 1 | awk '{print $2}')
+echo "Got submission id: (${NOTARYTOOL_JOB_UUID})"
 echo "##teamcity[blockClosed name='Notarize']"
 
 echo "##teamcity[blockOpened name='Check Notarization']"
