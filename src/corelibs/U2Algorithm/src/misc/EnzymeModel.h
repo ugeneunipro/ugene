@@ -23,6 +23,7 @@
 
 #include <QByteArray>
 #include <QFlags>
+#include <QMetaType>
 #include <QSharedData>
 #include <QSharedDataPointer>
 #include <QString>
@@ -124,6 +125,14 @@ public:
      */
     int getFullLength() const;
 
+    /*
+     * Generate full enzume sequence in HTML with cuts.
+     * How it looks like (for DdeI, without UNICODE bases):
+     * 3'  C T N A G  5'
+     * 5'  G A N T C  3'
+     * \return HTML representation of enzyme.
+     */
+    QString generateEnzymeTooltip() const;
 };
 
 typedef QSharedDataPointer<EnzymeData> SEnzymeData;
@@ -131,3 +140,5 @@ typedef QSharedDataPointer<EnzymeData> SEnzymeData;
 }  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::EnzymeData::OverhangTypes)
+Q_DECLARE_METATYPE(U2::EnzymeData)
+Q_DECLARE_METATYPE(QSharedDataPointer<U2::EnzymeData>)

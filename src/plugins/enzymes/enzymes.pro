@@ -1,7 +1,9 @@
 include (enzymes.pri)
 
 # Input
-HEADERS += src/CloningUtilTasks.h \
+HEADERS += src/insert/InsertEnzymeDialog.h \
+           src/insert/InsertEnzymeWidget.h \
+           src/CloningUtilTasks.h \
            src/ConstructMoleculeDialog.h \
            src/CreateFragmentDialog.h \
            src/DigestSequenceDialog.h \
@@ -14,14 +16,17 @@ HEADERS += src/CloningUtilTasks.h \
            src/FindEnzymesAlgorithm.h \
            src/FindEnzymesDialog.h \
            src/FindEnzymesTask.h
-FORMS += src/ConstructMoleculeDialog.ui \
+FORMS += src/insert/InsertEnzymeWidget.ui \
+         src/ConstructMoleculeDialog.ui \
          src/CreateFragmentDialog.ui \
          src/DigestSequenceDialog.ui \
          src/EditFragmentDialog.ui \
          src/EnzymesSelectorDialog.ui \
          src/EnzymesSelectorWidget.ui \
          src/FindEnzymesDialog.ui
-SOURCES += src/CloningUtilTasks.cpp \
+SOURCES += src/insert/InsertEnzymeDialog.cpp \
+           src/insert/InsertEnzymeWidget.cpp \
+           src/CloningUtilTasks.cpp \
            src/ConstructMoleculeDialog.cpp \
            src/CreateFragmentDialog.cpp \
            src/DigestSequenceDialog.cpp \
