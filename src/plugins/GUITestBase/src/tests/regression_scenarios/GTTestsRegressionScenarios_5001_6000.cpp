@@ -125,6 +125,7 @@
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/HmmerSearchDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
@@ -2601,6 +2602,16 @@ GUI_TEST_CLASS_DEFINITION(test_5657) {
     GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok,
                                                   "Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from Raw alphabet to DNA, RNA or Amino and try again."));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
+
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::General);
+    GTWidget::click(GTWidget::findToolButton("convertNucleicAlphabetButton"));
+    
+    GTLogTracer lt;
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
+    GTUtilsDialog::add(new KalignDialogFiller());
+    GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(!lt.hasErrors(), "No errors is expected in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5659) {
