@@ -23,7 +23,7 @@
 
 #include <QByteArray>
 #include <QFlags>
-#include <QMetatype>
+#include <QMetaType>
 #include <QSharedData>
 #include <QSharedDataPointer>
 #include <QString>
