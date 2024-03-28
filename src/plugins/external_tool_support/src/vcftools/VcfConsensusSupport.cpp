@@ -21,10 +21,14 @@
 
 #include "VcfConsensusSupport.h"
 
+#include <QDir>
+#include <QFileInfo>
+
 #include "samtools/TabixSupport.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRunTask.h>
+#include <U2Core/IOAdapterUtils.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -50,7 +54,6 @@ VcfConsensusSupport::VcfConsensusSupport()
     validationArguments << "-help";
     validationMessageRegExp = "vcf-consensus";
     description = tr("Apply VCF variants to a fasta file to create consensus sequence.");
-    versionRegExp = QRegExp("Version: (\\d+.\\d+.\\d+)");
     toolKitName = "VCFtools";
 
     toolRunnerProgram = PerlSupport::ET_PERL_ID;
@@ -63,6 +66,10 @@ VcfConsensusSupport::VcfConsensusSupport()
                    << ExternalTool::PathChecks::NonLatinArguments
                    << ExternalTool::PathChecks::SpacesArguments;
     }
+}
+
+const QString VcfConsensusSupport::getVersionFromToolPath(const QString& toolPath) const {
+    return IOAdapterUtils::readTextFile(QFileInfo(toolPath).absoluteDir().absolutePath() + "/version.txt");
 }
 
 }  // namespace U2

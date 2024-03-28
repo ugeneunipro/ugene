@@ -35,13 +35,23 @@ public:
                                SplitJoin,
                                SplitSeparate };
 
-    InsertSequenceFiller(const QString& _pasteDataHere, RegionResolvingMode _regionResolvingMode = Resize, int _insertPosition = 1, const QString& _documentLocation = "", documentFormat _format = FASTA, bool _saveToNewFile = false, bool _mergeAnnotations = false, GTGlobals::UseMethod method = GTGlobals::UseMouse, bool _wrongInput = false, bool recalculateQuals = false);
+    InsertSequenceFiller(const QString& _pasteDataHere,
+                         RegionResolvingMode _regionResolvingMode = Resize,
+                         qint64 _insertPosition = 1,
+                         const QString& _documentLocation = "",
+                         documentFormat _format = FASTA,
+                         bool _saveToNewFile = false,
+                         bool _mergeAnnotations = false,
+                         GTGlobals::UseMethod method = GTGlobals::UseMouse,
+                         bool _wrongInput = false,
+                         bool recalculateQuals = false,
+                         bool cancelIfWrongInput = false);
     void commonScenario();
 
 private:
     QString pasteDataHere;
     RegionResolvingMode regionResolvingMode;
-    int insertPosition;
+    qint64 insertPosition = 1;
     QString documentLocation;
     documentFormat format;
     bool saveToNewFile;
@@ -49,6 +59,7 @@ private:
     GTGlobals::UseMethod useMethod;
     bool wrongInput;
     bool recalculateQuals;
+    bool cancelIfWrongInput = false;
 
     QMap<documentFormat, QString> comboBoxItems;
 };

@@ -31,6 +31,7 @@
 #include "primitives/GTLineEdit.h"
 #include "primitives/GTMenu.h"
 #include "primitives/GTSpinBox.h"
+#include "primitives/GTTextEdit.h"
 #include "primitives/GTToolbar.h"
 #include "primitives/GTWidget.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
@@ -283,6 +284,24 @@ GUI_TEST_CLASS_DEFINITION(test_0005_large) {
     unexpected = "Structure 1";
     CHECK_SET_ERR(!html.contains(unexpected),
                   QString("Message `%1` was found in `%2`, but should not").arg(unexpected, html));
+}
+GUI_TEST_CLASS_DEFINITION(test_0006_html_name) {
+    // Check that mfold report for sequences with strange names looks good.
+    // Open sequence. Check its appearance.
+    GTFileDialog::openFile(testDir + "_common_data/et/mfold/bad_names", "&quote;&amp;&lt;.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    // Call dialog and run task.
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTUtilsDialog::add(new AnyDialogFiller("MfoldDialog", QDialogButtonBox::Ok));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    // Check that name in report is the same as sequence name.
+    GTUtilsNotifications::clickOnNotificationWidget();
+    auto reportEdit = GTWidget::findTextEdit("reportTextEdit");
+    GTTextEdit::containsString(reportEdit, "&quote;&amp;&lt;");
+    GTTextEdit::containsString(reportEdit, "_common_data/et/mfold/bad_names/&quote;&amp;&lt;");
 }
 }  // namespace GUITest_common_scenarios_mfold
 }  // namespace U2

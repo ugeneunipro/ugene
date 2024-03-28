@@ -98,6 +98,10 @@ void GTest_RunCMDLine::setArgs(const QDomElement& el) {
             expectedMessage = node.nodeValue();
             continue;
         }
+        if (nodeName == "message2") {
+            expectedMessage2 = node.nodeValue();
+            continue;
+        }
         if (nodeName == "nomessage") {
             unexpectedMessage = node.nodeValue();
             continue;
@@ -212,6 +216,12 @@ Task::ReportResult GTest_RunCMDLine::report() {
     if (!expectedMessage.isEmpty()) {
         cmdLog.error(output);
         if (!output.contains(expectedMessage, Qt::CaseSensitive)) {
+            stateInfo.setError(QString("Expected message not found in output"));
+        }
+    }
+    if (!expectedMessage2.isEmpty()) {
+        cmdLog.error(output);
+        if (!output.contains(expectedMessage2, Qt::CaseSensitive)) {
             stateInfo.setError(QString("Expected message not found in output"));
         }
     }

@@ -1,13 +1,13 @@
 <multi-test>
 
-    <remove-temp-dir url="pcr_0008"/>
-    <create-temp-dir url="pcr_0008"/>
+    <remove-temp-dir url="pcr_0009"/>
+    <create-temp-dir url="pcr_0009"/>
 
     <run-cmdline
             task="!common_data_dir!cmdline/pcr/pcr.uwl"
             in="!common_data_dir!genbank/CVU55762.gb"
-            primers="!common_data_dir!cmdline/pcr/long_primers.fa"
-            working-dir="pcr_0008"
+            primers="!common_data_dir!cmdline/pcr/TooSmallPrimers.txt"
+            working-dir="pcr_0009"
             message="The forward primer length should be between 15 and 200 bp. Unable to calculate primer statistics."
             message2="All primer pairs have been filtered, see log for details."
     />

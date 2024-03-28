@@ -49,6 +49,7 @@ private:
 
 private:
     QString expectedMessage;
+    QString expectedMessage2;
     QString unexpectedMessage;
     QStringList args;
     QProcess* proc = nullptr;
