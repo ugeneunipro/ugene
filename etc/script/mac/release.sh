@@ -163,3 +163,12 @@ while [ $SECONDS -lt $END_TIME ]; do
     sleep 30  # Wait for 30 seconds before the next check.
 done
 echo "##teamcity[blockClosed name='Check Notarization']"
+
+echo "##teamcity[blockOpened name='Staple']"
+xcrun stapler staple "${RELEASE_FILE_NAME}" || exit 1
+echo "##teamcity[blockClosed name='Staple']"
+
+echo "##teamcity[blockOpened name='Check Staple']"
+xcrun stapler validate "${RELEASE_FILE_NAME}" || exit 1
+echo "##teamcity[blockClosed name='Check Staple']"
+
