@@ -299,17 +299,6 @@ void EnzymesADVContext::sl_insertRestrictionSite() {
     auto asWgt = av->getActiveSequenceWidget();
     SAFE_POINT_NN(asWgt, );
 
-    auto wgt = qobject_cast<ADVSingleSequenceWidget*>(asWgt);
-    if (wgt != nullptr) {
-        QList<GSequenceLineView*> views = wgt->getLineViews();
-        foreach (GSequenceLineView* v, views) {
-            if (v->hasFocus()) {
-                cfg.position = v->getLastPressPos();
-                break;
-            }
-        }
-    }
-
     cfg.selectionRegions = context->getSequenceSelection()->getSelectedRegions();
 
     QObjectScopedPointer<InsertEnzymeDialog> dialog = new InsertEnzymeDialog(cfg, asWgt);
