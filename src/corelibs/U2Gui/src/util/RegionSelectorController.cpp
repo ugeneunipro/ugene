@@ -28,6 +28,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/U2LongLongValidator.h>
 
 namespace U2 {
 
@@ -289,11 +290,11 @@ void RegionSelectorController::init() {
 
     int w = qMax(((int)log10((double)settings.maxLen)) * 10, 50);
 
-    gui.startLineEdit->setValidator(new QIntValidator(1, settings.maxLen, gui.startLineEdit));
+    gui.startLineEdit->setValidator(new U2LongLongValidator(1, settings.maxLen, gui.startLineEdit));
     gui.startLineEdit->setMinimumWidth(w);
     gui.startLineEdit->setAlignment(Qt::AlignRight);
 
-    gui.endLineEdit->setValidator(new QIntValidator(1, settings.maxLen, gui.endLineEdit));
+    gui.endLineEdit->setValidator(new U2LongLongValidator(1, settings.maxLen, gui.endLineEdit));
     gui.endLineEdit->setMinimumWidth(w);
     gui.endLineEdit->setAlignment(Qt::AlignRight);
 
