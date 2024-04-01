@@ -21,6 +21,8 @@
 #pragma once
 #include <QDialog>
 
+#include <U2Gui/U2SavableWidget.h>
+
 #include "MfoldSettings.h"
 #include "ui_MfoldDialog.h"
 
@@ -45,6 +47,8 @@ class MfoldDialog final : public QDialog {
     // To check the correctness of a region.
     qint64 seqLen = 0;
     bool isCircular = false;
+
+    U2SavableWidget savableWidget;
 
     // Called once in ctor to create RegionSelector and bind signals.
     // DNASequenceSelection required for RegionSelector ctor.
