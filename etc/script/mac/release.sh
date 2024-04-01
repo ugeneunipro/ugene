@@ -151,13 +151,13 @@ END_TIME=$((SECONDS+1200))  # 1200 seconds = 20 minutes
 while [ $SECONDS -lt $END_TIME ]; do
     NOTARYTOOL_JOB_INFO_OUTPUT=$(xcrun notarytool info "${NOTARYTOOL_JOB_UUID}" --keychain-profile "UGENE")
     echo "Notary tool job info output: ${NOTARYTOOL_JOB_INFO_OUTPUT}"
-    if echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "Status: Accepted"; then
+    if echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "status: Accepted"; then
         echo "Notarization successful!"
         break
-    elif echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "Status: Rejected"; then
+    elif echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "status: Rejected"; then
         echo "Notarization failed."
         exit 1
-    elif echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "Status: In Progress"; then
+    elif echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "status: In Progress"; then
         echo "Notarization still in progress..."
     else
         echo "Unexpected output. Exiting."
