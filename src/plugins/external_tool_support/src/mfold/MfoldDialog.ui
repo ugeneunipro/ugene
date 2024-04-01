@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string notr="true">Mfold</string>
+   <string notr="true">mfold</string>
   </property>
   <layout class="QVBoxLayout" name="mainLayout">
    <item>
@@ -27,21 +27,21 @@
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Mfold settings</string>
+       <string>mfold settings</string>
       </attribute>
       <layout class="QVBoxLayout" name="mfoldTabLayout">
        <item>
         <widget class="QGroupBox" name="gridGroupBox">
          <property name="title">
-          <string>Settings</string>
+          <string>Algorithm settings</string>
          </property>
          <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
            <widget class="QWidget" name="horizontalWidget" native="true">
             <property name="toolTip">
-             <string>Folding temperature (between 0° and 100° C).</string>
+             <string>Folding temperature (between 0 and 100 °C).</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout">
+            <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,4">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -88,7 +88,7 @@
             <property name="toolTip">
              <string>The concentrations of Sodium and Magnesium ions. DNA only.</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1">
+            <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,4">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -113,13 +113,16 @@
                <item row="0" column="1">
                 <widget class="QDoubleSpinBox" name="naDoubleSpinBox">
                  <property name="suffix">
-                  <string notr="true"> M</string>
+                  <string> M</string>
                  </property>
                  <property name="decimals">
                   <number>4</number>
                  </property>
                  <property name="minimum">
                   <double>0.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>1.500000000000000</double>
                  </property>
                  <property name="singleStep">
                   <double>0.100000000000000</double>
@@ -152,10 +155,13 @@
                <item row="1" column="1">
                 <widget class="QDoubleSpinBox" name="mgDoubleSpinBox">
                  <property name="suffix">
-                  <string notr="true"> M</string>
+                  <string> M</string>
                  </property>
                  <property name="decimals">
                   <number>4</number>
+                 </property>
+                 <property name="maximum">
+                  <double>1.500000000000000</double>
                  </property>
                  <property name="singleStep">
                   <double>0.100000000000000</double>
@@ -170,9 +176,9 @@
           <item row="2" column="0">
            <widget class="QWidget" name="horizontalWidget_3" native="true">
             <property name="toolTip">
-             <string>This parameter controls the value of the free energy increment, ΔΔG. If this number is set to p, then only foldings within p% from the minimum free energy will be computed.</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter controls the value of the free energy increment, &lt;span style=&quot; font-style:italic;&quot;&gt;δδG&lt;/span&gt;. If this number is set to &lt;span style=&quot; font-style:italic;&quot;&gt;p&lt;/span&gt;, then only foldings within &lt;span style=&quot; font-style:italic;&quot;&gt;p%&lt;/span&gt; from the minimum free energy will be computed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="5,4">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -200,6 +206,9 @@
                <property name="suffix">
                 <string notr="true">%</string>
                </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
                 <number>100</number>
                </property>
@@ -216,7 +225,7 @@
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum number of foldings to be computed. The folding algorithm automatically computes a selection of secondary structures within the prescribed energy increment and stops when no more &lt;span style=&quot; font-style:italic;&quot;&gt;sufficiently different&lt;/span&gt; foldings can be found.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="5,4">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -248,7 +257,7 @@
                 <number>100</number>
                </property>
                <property name="value">
-                <number>100</number>
+                <number>50</number>
                </property>
               </widget>
              </item>
@@ -260,7 +269,7 @@
             <property name="toolTip">
              <string>The window parameter controls the number of foldings that are calculated and how different they will be from each other. It can be considered as a distance parameter. A smaller value for this parameter will usually result in a larger number of foldings being calculated, which may be very similar to each other. The default value is calculated based on the length of the sequence region.</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="5,4">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -292,7 +301,7 @@
                 <number>-1</number>
                </property>
                <property name="maximum">
-                <number>50000</number>
+                <number>50</number>
                </property>
                <property name="value">
                 <number>-1</number>
@@ -305,9 +314,9 @@
           <item row="5" column="0">
            <widget class="QWidget" name="horizontalWidget_6" native="true">
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A base pair &lt;span style=&quot; font-style:italic;&quot;&gt;i.j&lt;/span&gt; will not be allowed to form (in linear sequence) if &lt;span style=&quot; font-style:italic;&quot;&gt;j-i &amp;gt; MAXBP&lt;/span&gt;. For circular sequence, a base pair &lt;span style=&quot; font-style:italic;&quot;&gt;i,j&lt;/span&gt; cannot form if &lt;span style=&quot; font-style:italic;&quot;&gt;min{j-i, n+i-j} &amp;gt; MAXBP&lt;/span&gt;. Thus small values of &lt;span style=&quot; font-style:italic;&quot;&gt;MAXBP&lt;/span&gt; ensure that only short range base pairs will be predicted. By default there are no restrictions, i.e. &lt;span style=&quot; font-style:italic;&quot;&gt;MAXBP=∞&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the parameter &lt;span style=&quot; font-style:italic;&quot;&gt;maxbp&lt;/span&gt; of the maximum distance between paired bases is specified, then any base pair &lt;span style=&quot; font-style:italic;&quot;&gt;{r&lt;/span&gt;&lt;span style=&quot; font-style:italic; vertical-align:sub;&quot;&gt;i&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;, r&lt;/span&gt;&lt;span style=&quot; font-style:italic; vertical-align:sub;&quot;&gt;j&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;}&lt;/span&gt; in a folding of a linear molecule must satisfy the condition &lt;span style=&quot; font-style:italic;&quot;&gt;j-i≤maxbp&lt;/span&gt;. In a circular molecule, the condition becomes &lt;span style=&quot; font-style:italic;&quot;&gt;min{j-i, N+i-j}≤maxbp&lt;/span&gt;, where &lt;span style=&quot; font-style:italic;&quot;&gt;N&lt;/span&gt; is the length of the region. Thus, small maxbp values ensure that only short range base pairs are predicted. By default there are no restrictions, i.e. &lt;span style=&quot; font-style:italic;&quot;&gt;maxbp=∞&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="5,4">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -349,7 +358,7 @@
        <item>
         <widget class="QGroupBox" name="gridGroupBox_2">
          <property name="title">
-          <string>Extended</string>
+          <string>Display settings</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
           <property name="leftMargin">
@@ -367,9 +376,9 @@
           <item row="0" column="0">
            <widget class="QWidget" name="horizontalWidget_7" native="true">
             <property name="toolTip">
-             <string>Individual structures are numbered, starting at some number N, and continuing with every multiple of N. When N=0, there is no structure numbering. The default value is calculated based on the length of the sequence region.</string>
+             <string>The frequency at which the bases in the image will be numbered. The default value is calculated based on the length of the sequence region.</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="5,4">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -414,9 +423,9 @@
           <item row="1" column="0">
            <widget class="QWidget" name="horizontalWidget_8" native="true">
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of rotation of the constructed structures. The default value means that the angle is chosen automatically by the structure drawing program. Otherwise, the specified positive or negative number rotates the structures counterclockwise or clockwise, respectively.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of rotation of the constructed structures. The default value means that the angle is chosen automatically by the structure drawing program. Otherwise, the structure is rotated by the modulo number of degrees specified, counterclockwise if the number is positive, or clockwise if the number is negative.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="5,4">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -442,13 +451,13 @@
              <item>
               <widget class="QDoubleSpinBox" name="rotAngDoubleSpinBox">
                <property name="suffix">
-                <string>°</string>
+                <string notr="true">°</string>
                </property>
                <property name="minimum">
-                <double>-180000.000000000000000</double>
+                <double>-180.000000000000000</double>
                </property>
                <property name="maximum">
-                <double>180000.000000000000000</double>
+                <double>180.000000000000000</double>
                </property>
               </widget>
              </item>
@@ -493,7 +502,7 @@
           </sizepolicy>
          </property>
          <property name="title">
-          <string>Save Settings</string>
+          <string>Output settings</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="3" column="0">
@@ -513,6 +522,9 @@
            <widget class="QLabel" name="label_12">
             <property name="text">
              <string>Save output to</string>
+            </property>
+            <property name="buddy">
+             <cstring>outPathLineEdit</cstring>
             </property>
            </widget>
           </item>
@@ -560,7 +572,10 @@
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dots per inch (DPI) is a measure of spatial printing, in particular the number of individual dots that can be placed in a line within the span of 1 inch (2.54 cm). The more dots per inch an image has, the more detail you'll see when saved.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
-             <string>DPI</string>
+             <string notr="true">DPI</string>
+            </property>
+            <property name="buddy">
+             <cstring>dpiSpinBox</cstring>
             </property>
            </widget>
           </item>
@@ -579,7 +594,7 @@
              </size>
             </property>
             <property name="text">
-             <string>...</string>
+             <string notr="true">...</string>
             </property>
            </widget>
           </item>
@@ -587,12 +602,6 @@
            <widget class="QLineEdit" name="outPathLineEdit">
             <property name="styleSheet">
              <string notr="true"/>
-            </property>
-            <property name="text">
-             <string>C:/Users/user/Documents/UGENE_Data/mfold/run1</string>
-            </property>
-            <property name="cursorPosition">
-             <number>45</number>
             </property>
            </widget>
           </item>
@@ -609,12 +618,27 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>tSpinBox</tabstop>
+  <tabstop>naDoubleSpinBox</tabstop>
+  <tabstop>mgDoubleSpinBox</tabstop>
+  <tabstop>pSpinBox</tabstop>
+  <tabstop>maxSpinBox</tabstop>
+  <tabstop>wSpinBox</tabstop>
+  <tabstop>maxBpSpinBox</tabstop>
+  <tabstop>labFrSpinBox</tabstop>
+  <tabstop>rotAngDoubleSpinBox</tabstop>
+  <tabstop>outPathLineEdit</tabstop>
+  <tabstop>browsePushButton</tabstop>
+  <tabstop>dpiSpinBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

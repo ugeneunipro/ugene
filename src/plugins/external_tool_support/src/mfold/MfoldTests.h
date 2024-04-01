@@ -37,9 +37,9 @@ namespace U2 {
 //   - optional:
 //     - shouldFail -- boolean attribute. By default, this attribute is not set, so it will check that task completes
 //         successfully. If set, task failure will be checked.
-//     - "T", "P", "MAX", "W", "MAXBP", "LAB_FR" -- internal parameters of Mfold script, type int.
+//     - "T", "P", "MAX", "W", "MAXBP", "LAB_FR" -- internal parameters of mfold script, type int.
 //         Restrictions on parameters can be found in GUI dialog.
-//     - "NA_CONC", "MG_CONC", "ROT_ANG"-- internal parameters of Mfold script, type double.
+//     - "NA_CONC", "MG_CONC", "ROT_ANG"-- internal parameters of mfold script, type double.
 //         Restrictions on parameters can be found in GUI dialog.
 //     - "message" -- check that log contains specified line.
 // Output folder like mfold/2006.01.02_15-04-05 is saved in temporary directory of test suite.
