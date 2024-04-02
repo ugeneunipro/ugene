@@ -401,18 +401,6 @@ GUI_TEST_CLASS_DEFINITION(test_8052) {
     GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
 }
 
-GUI_TEST_CLASS_DEFINITION(test_8058) {
-    // Open human_T1.fa
-    // Open the "Insert sequence" dialog
-    // Set pos to insert more than sequence length
-    // Click OK
-    // Error appeared
-    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
-    GTUtilsDialog::waitForDialog(new InsertSequenceFiller("AAA", InsertSequenceFiller::Resize, 999999, "", InsertSequenceFiller::FASTA, false, false, GTGlobals::UseKey, true, false, true));
-    GTMenu::clickMainMenuItem({"Actions", "Edit", "Insert subsequence..."}, GTGlobals::UseMouse);
-}
-
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2

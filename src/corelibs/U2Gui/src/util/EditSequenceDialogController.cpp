@@ -36,6 +36,7 @@
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
+#include <U2Gui/U2LongLongValidator.h>
 
 #include "ui_EditSequenceDialog.h"
 
@@ -81,7 +82,7 @@ EditSequenceDialogVirtualController::EditSequenceDialogVirtualController(const E
 
     seqEndPos = cfg.source.length + 1;
 
-    ui->insertPositionLineEdit->setValidator(new QIntValidator(1, seqEndPos, ui->insertPositionLineEdit));
+    ui->insertPositionLineEdit->setValidator(new U2LongLongValidator(1, seqEndPos, ui->insertPositionLineEdit));
 
     qint64 initValue = 1;
     if ((1 < cfg.position) && (cfg.position < seqEndPos)) {
