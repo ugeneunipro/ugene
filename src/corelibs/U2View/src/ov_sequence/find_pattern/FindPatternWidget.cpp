@@ -55,6 +55,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/U2LongLongValidator.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
@@ -389,8 +390,8 @@ void FindPatternWidget::initRegionSelection() {
 
     setRegionToWholeSequence();
 
-    editStart->setValidator(new QIntValidator(1, activeContext->getSequenceLength(), editStart));
-    editEnd->setValidator(new QIntValidator(1, activeContext->getSequenceLength(), editEnd));
+    editStart->setValidator(new U2LongLongValidator(1, activeContext->getSequenceLength(), editStart));
+    editEnd->setValidator(new U2LongLongValidator(1, activeContext->getSequenceLength(), editEnd));
 
     trackedSelection = annotatedDnaView->getActiveSequenceContext()->getSequenceSelection();
 

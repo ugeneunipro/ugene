@@ -26,7 +26,6 @@
 #include <QComboBox>
 #include <QContextMenuEvent>
 #include <QGroupBox>
-#include <QIntValidator>
 #include <QLabel>
 #include <QMenu>
 #include <QMessageBox>
@@ -40,6 +39,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/U2LongLongValidator.h>
 
 #include "RegionSelector.h"
 
@@ -110,12 +110,12 @@ void RegionSelector::initLayout() {
     comboBox = new QComboBox(this);
 
     startEdit = new RegionLineEdit(this, tr("Set minimum"), 1);
-    startEdit->setValidator(new QIntValidator(1, maxLen, startEdit));
+    startEdit->setValidator(new U2LongLongValidator(1, maxLen, startEdit));
     startEdit->setMinimumWidth(w);
     startEdit->setAlignment(Qt::AlignRight);
 
     endEdit = new RegionLineEdit(this, tr("Set maximum"), maxLen);
-    endEdit->setValidator(new QIntValidator(1, maxLen, endEdit));
+    endEdit->setValidator(new U2LongLongValidator(1, maxLen, endEdit));
     endEdit->setMinimumWidth(w);
     endEdit->setAlignment(Qt::AlignRight);
 

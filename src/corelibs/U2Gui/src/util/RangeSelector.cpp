@@ -22,7 +22,6 @@
 #include <math.h>
 
 #include <QHBoxLayout>
-#include <QIntValidator>
 #include <QLabel>
 #include <QPushButton>
 #include <QToolButton>
@@ -33,6 +32,7 @@
 #include <U2Formats/GenbankLocationParser.h>
 
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/U2LongLongValidator.h>
 
 #include "GenbankLocationValidator.h"
 #include "RangeSelector.h"
@@ -43,7 +43,7 @@ namespace U2 {
 void RangeSelector::init() {
     int w = qMax(((int)log10((double)rangeEnd)) * 10, 70);
     startEdit = new QLineEdit(this);
-    startEdit->setValidator(new QIntValidator(1, len, startEdit));
+    startEdit->setValidator(new U2LongLongValidator(1, len, startEdit));
     if (dialog == nullptr) {
         startEdit->setFixedWidth(w);
     } else {
@@ -55,7 +55,7 @@ void RangeSelector::init() {
     connect(startEdit, SIGNAL(returnPressed()), SLOT(sl_onReturnPressed()));
 
     endEdit = new QLineEdit(this);
-    endEdit->setValidator(new QIntValidator(1, len, endEdit));
+    endEdit->setValidator(new U2LongLongValidator(1, len, endEdit));
     if (dialog == nullptr) {
         endEdit->setFixedWidth(w);
     } else {
@@ -198,8 +198,8 @@ MultipleRangeSelector::MultipleRangeSelector(QWidget* _parent, const QVector<U2R
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Go"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    ui->startEdit->setValidator(new QIntValidator(1, seqLen, ui->startEdit));
-    ui->endEdit->setValidator(new QIntValidator(1, seqLen, ui->endEdit));
+    ui->startEdit->setValidator(new U2LongLongValidator(1, seqLen, ui->startEdit));
+    ui->endEdit->setValidator(new U2LongLongValidator(1, seqLen, ui->endEdit));
 
     int w = qMax(((int)log10((double)seqLen)) * 10, 70);
 
