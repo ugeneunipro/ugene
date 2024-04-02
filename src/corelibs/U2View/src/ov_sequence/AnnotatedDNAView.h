@@ -200,6 +200,7 @@ signals:
 
 public slots:
     void sl_onPosChangeRequest(int pos);
+    void sl_sequenceModifyTaskStateChanged();
 
 private slots:
     void sl_onContextMenuRequested();
@@ -213,7 +214,6 @@ private slots:
     void sl_addSequencePart();
     void sl_removeSequencePart();
     void sl_replaceSequencePart();
-    void sl_sequenceModifyTaskStateChanged();
 
     void sl_paste();
 
