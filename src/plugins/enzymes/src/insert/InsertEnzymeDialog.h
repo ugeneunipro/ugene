@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,34 +18,32 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#pragma once
-#include <U2Core/ExternalToolRegistry.h>
 
-#include <U2Gui/ObjectViewModel.h>
+#pragma once
+
+#include <U2Gui/EditSequenceDialogController.h>
+
+#include <QSharedPointer>
+
+#include "InsertEnzymeWidget.h"
 
 namespace U2 {
 
-// Initializes mfold tool.
-class MfoldSupport final : public ExternalTool {
+/**
+ * The dialog, which sets the restriction site to paste to the sequence.
+ */
+class InsertEnzymeDialog : public EditSequenceDialogVirtualController {
     Q_OBJECT
-    GObjectViewWindowContext* viewCtx = nullptr;
-
 public:
-    MfoldSupport();
-    GObjectViewWindowContext* getViewContext() const;
-    static const QString ET_MFOLD_ID;
+    InsertEnzymeDialog(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
+
+    void accept() override;
+
+    DNASequence getNewSequence() const override;
+
+private:
+    InsertEnzymeWidget* insertEnzymeWidget = nullptr;
+    QString enzymeSequence;
 };
 
-// Responsible for starting dialog and task.
-class MfoldContext final : public GObjectViewWindowContext {
-    Q_OBJECT
-private slots:
-    void sl_showDialog();
-
-public:
-    explicit MfoldContext(QObject* p);
-
-protected:
-    void initViewContext(GObjectViewController*) override;
-};
-}  // namespace U2
+}

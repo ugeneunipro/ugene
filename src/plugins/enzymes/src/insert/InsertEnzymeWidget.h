@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,34 +18,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#pragma once
-#include <U2Core/ExternalToolRegistry.h>
 
-#include <U2Gui/ObjectViewModel.h>
+#pragma once
+
+#include <QWidget>
+
+#include "ui_InsertEnzymeWidget.h"
+
+#include <U2Core/U2AlphabetUtils.h>
 
 namespace U2 {
 
-// Initializes mfold tool.
-class MfoldSupport final : public ExternalTool {
+/**
+ * This widget contains restriction sites combobox, where you need to choose one.
+ * The choosen site will be drawn schematically.
+ */
+class InsertEnzymeWidget : public QWidget, private Ui_InsertEnzymeWidget {
     Q_OBJECT
-    GObjectViewWindowContext* viewCtx = nullptr;
-
 public:
-    MfoldSupport();
-    GObjectViewWindowContext* getViewContext() const;
-    static const QString ET_MFOLD_ID;
+    InsertEnzymeWidget(QWidget* parent, const DNAAlphabet* alphabet);
+
+    QString getEnzymeSequence() const;
+
+private:
+    void updateEnzymesList(bool showEnzymesWithUndefinedSuppliers);
+
+    const DNAAlphabet* alphabet = nullptr;
+    QSet<QString> items;
 };
 
-// Responsible for starting dialog and task.
-class MfoldContext final : public GObjectViewWindowContext {
-    Q_OBJECT
-private slots:
-    void sl_showDialog();
-
-public:
-    explicit MfoldContext(QObject* p);
-
-protected:
-    void initViewContext(GObjectViewController*) override;
-};
-}  // namespace U2
+}

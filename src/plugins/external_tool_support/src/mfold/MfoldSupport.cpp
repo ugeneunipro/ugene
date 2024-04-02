@@ -54,7 +54,7 @@ MfoldSupport::MfoldSupport()
     description = tr(
         "The <i>mfold</i> software computes a collection of optimal and suboptimal foldings "
         "<a href=\"http://www.unafold.org/\">http://www.unafold.org/</a>.<br>"
-        "Bitmap images of secondary structures are generated using Ghostscript "
+        "Secondary structure images are generated using Ghostscript "
         "<a href=\"https://ghostscript.com/\">https://ghostscript.com/</a>.");
     executableFileName = "mfold" + QString(isOsWindows() ? ".bat" : ".sh");
     validationArguments += "-v";
@@ -84,7 +84,7 @@ void MfoldContext::initViewContext(GObjectViewController* controller) {
     SAFE_POINT_NN(adv, );
     ADVGlobalAction* a = new ADVGlobalAction(adv,
                                              QIcon(":/external_tool_support/images/mfold.png"),
-                                             tr("Mfold..."),
+                                             "Mfold...",
                                              2002,
                                              ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) |
                                                  ADVGlobalActionFlag_AddToAnalyseMenu);
@@ -96,8 +96,8 @@ void MfoldContext::initViewContext(GObjectViewController* controller) {
 void MfoldContext::sl_showDialog() {
     if (AppContext::getExternalToolRegistry()->getById(MfoldSupport::ET_MFOLD_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("Mfold");
-        msgBox->setText(tr("Path for Mfold tool not selected."));
+        msgBox->setWindowTitle("mfold");
+        msgBox->setText(tr("Path for mfold tool not selected."));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);

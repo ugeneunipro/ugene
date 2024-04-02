@@ -67,7 +67,7 @@ void GTest_Mfold::init(XMLTestFormat*, const QDomElement& el) {
         shouldFail = el.attribute(failAttr) == "true";
     }
 
-    // Mfold script parameters parsing.
+    // mfold script parameters parsing.
     if (el.hasAttribute(temperatureSetting)) {
         settings.algoSettings.temperature = getInt(el, temperatureSetting);
     }
@@ -123,11 +123,11 @@ void GTest_Mfold::prepare() {
 
 QList<Task*> GTest_Mfold::onSubTaskFinished(Task* subTask) {
     if (!shouldFail && subTask->hasError()) {
-        setError(QString("Mfold failed with error `%1`, but it shouldn't").arg(subTask->getError()));
+        setError(QString("mfold failed with error `%1`, but it shouldn't").arg(subTask->getError()));
         return {};
     }
     if (shouldFail && !subTask->hasError()) {
-        setError(QString("Mfold completed successfully, but failure was expected").arg(subTask->getError()));
+        setError(QString("mfold completed successfully, but failure was expected").arg(subTask->getError()));
         return {};
     }
     if (!logExpectedMessages.isEmpty() && logHelper.verifyStatus() != GTest_LogHelper_Valid) {

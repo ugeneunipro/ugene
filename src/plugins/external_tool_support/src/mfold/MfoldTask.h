@@ -30,7 +30,7 @@ namespace U2 {
 class OutputCollector;
 class U2SequenceObject;
 
-// For a given sequence fragment, task runs external script Mfold, which calculates foldings and saves imgs
+// For a given sequence fragment, task runs external script mfold, which calculates foldings and saves imgs
 // of found hairpins. Output files are saved in temporary dir by default, but the most important files are saved in
 // a user-specified dir. As a report, it displays HTML table with folding data and hairpin imgs.
 class MfoldTask final : public Task {
