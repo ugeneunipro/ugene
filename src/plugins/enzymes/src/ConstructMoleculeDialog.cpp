@@ -21,17 +21,21 @@
 
 #include "ConstructMoleculeDialog.h"
 
+#include <QKeyEvent>
 #include <QMessageBox>
 #include <QScopedPointer>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
@@ -87,7 +91,10 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
     connect(makeCircularBox, SIGNAL(clicked()), SLOT(sl_makeCircularBoxClicked()));
     connect(makeBluntBox, SIGNAL(clicked()), SLOT(sl_forceBluntBoxClicked()));
     connect(editFragmentButton, SIGNAL(clicked()), SLOT(sl_onEditFragmentButtonClicked()));
+    connect(molConstructWidget, &QTreeWidget::itemDoubleClicked, this, &ConstructMoleculeDialog::sl_onEditFragmentButtonClicked);
     connect(molConstructWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), SLOT(sl_onItemClicked(QTreeWidgetItem*, int)));
+    connect(tbAdjustLeft, &QToolButton::clicked, this, &ConstructMoleculeDialog::sl_adjustLeftEnd);
+    connect(tbAdjustRight, &QToolButton::clicked, this, &ConstructMoleculeDialog::sl_adjustRightEnd);
 
     molConstructWidget->installEventFilter(this);
 }
@@ -310,15 +317,30 @@ void ConstructMoleculeDialog::sl_onEditFragmentButtonClicked() {
 }
 
 bool ConstructMoleculeDialog::eventFilter(QObject* obj, QEvent* event) {
-    if (obj == molConstructWidget && event->type() == QEvent::FocusOut) {
-        molConstructWidget->clearSelection();
+    if (obj == molConstructWidget) {
+        switch (event->type()) {
+        case QEvent::FocusOut:
+            molConstructWidget->clearSelection();
+            break;
+        case QEvent::KeyPress:
+            QKeyEvent* ke = (QKeyEvent*)event;
+            if (ke->key() == Qt::Key_Delete) {
+                sl_onRemoveButtonClicked();
+            }
+        }
     }
 
     return QDialog::eventFilter(obj, event);
 }
 
 void ConstructMoleculeDialog::sl_onItemClicked(QTreeWidgetItem* item, int column) {
-    if (column == 3) {
+    static constexpr int FIVE_END_COLUMN = 0;
+    static constexpr int THREE_END_COLUMN = 2;
+    static constexpr int INVERTED_COLUMN = 3;
+
+    bool adjustLeftIsActive = true;
+    bool adjustRightIsActive = true;
+    if (column == INVERTED_COLUMN) {
         int idx = molConstructWidget->indexOfTopLevelItem(item);
         DNAFragment& fragment = fragments[selected[idx]];
         if (item->checkState(column) == Qt::Checked) {
@@ -328,6 +350,88 @@ void ConstructMoleculeDialog::sl_onItemClicked(QTreeWidgetItem* item, int column
         }
         update();
     }
+    if (molConstructWidget->itemAbove(item) == nullptr) {
+        adjustLeftIsActive = makeCircularBox->isChecked();
+    }
+    if (molConstructWidget->itemBelow(item) == nullptr) {
+        adjustRightIsActive = makeCircularBox->isChecked();
+    }
+
+    tbAdjustLeft->setEnabled(adjustLeftIsActive);
+    tbAdjustRight->setEnabled(adjustRightIsActive);
+}
+
+void ConstructMoleculeDialog::sl_adjustLeftEnd() {
+    auto selectedItem = molConstructWidget->currentItem();
+    SAFE_POINT_NN(selectedItem, );
+
+    int idx = molConstructWidget->indexOfTopLevelItem(selectedItem);
+    DNAFragment& fragment = fragments[selected[idx]];
+
+    auto itemAbove = molConstructWidget->itemAbove(selectedItem);
+    if (itemAbove == nullptr) {
+        SAFE_POINT(makeCircularBox->isChecked(), "Should be circular", );
+
+        auto downItem = molConstructWidget->itemBelow(selectedItem);
+        while (molConstructWidget->itemBelow(downItem) != nullptr) {
+            downItem = molConstructWidget->itemBelow(downItem);
+        }
+        itemAbove = downItem;
+    }
+    SAFE_POINT_NN(itemAbove, );
+
+    int idx2 = molConstructWidget->indexOfTopLevelItem(itemAbove);
+    const DNAFragment& fragmentAbove = fragments[selected[idx2]];
+    const auto& rightTerm = fragmentAbove.getRightTerminus();
+    QByteArray overhang;
+    if (rightTerm.type == OVERHANG_TYPE_STICKY) {
+        overhang = rightTerm.overhang;
+    }
+    fragment.setLeftOverhang(overhang);
+    fragment.setLeftTermType(overhang.isEmpty() ? OVERHANG_TYPE_BLUNT : OVERHANG_TYPE_STICKY);
+    fragment.setLeftOverhangStrand(!rightTerm.isDirect);
+
+    tbAdjustLeft->setEnabled(false);
+    tbAdjustRight->setEnabled(false);
+    update();
+}
+
+void ConstructMoleculeDialog::sl_adjustRightEnd() {
+    auto selectedItem = molConstructWidget->currentItem();
+    SAFE_POINT_NN(selectedItem, );
+
+    int idx = molConstructWidget->indexOfTopLevelItem(selectedItem);
+    DNAFragment& fragment = fragments[selected[idx]];
+
+    auto itemBelow = molConstructWidget->itemBelow(selectedItem);
+    if (itemBelow == nullptr) {
+        SAFE_POINT(makeCircularBox->isChecked(), "Should be circular", );
+
+        auto topItem = molConstructWidget->itemAbove(selectedItem);
+        while (molConstructWidget->itemAbove(topItem) != nullptr) {
+            topItem = molConstructWidget->itemAbove(topItem);
+        }
+        itemBelow = topItem;
+    }
+    SAFE_POINT_NN(itemBelow, );
+
+    int idx2 = molConstructWidget->indexOfTopLevelItem(itemBelow);
+    const DNAFragment& fragmentBelow = fragments[selected[idx2]];
+    const auto& leftTerm = fragmentBelow.getLeftTerminus();
+    QByteArray overhang;
+    if (leftTerm.type == OVERHANG_TYPE_STICKY) {
+        overhang = leftTerm.overhang;
+        if (leftTerm.isDirect) {
+            overhang = DNASequenceUtils::reverseComplement(overhang, U2AlphabetUtils::findBestAlphabet(overhang));
+        }
+    }
+    fragment.setRightOverhang(overhang);
+    fragment.setRightTermType(overhang.isEmpty() ? OVERHANG_TYPE_BLUNT : OVERHANG_TYPE_STICKY);
+    fragment.setRightOverhangStrand(!leftTerm.isDirect);
+
+    tbAdjustLeft->setEnabled(false);
+    tbAdjustRight->setEnabled(false);
+    update();
 }
 
 void ConstructMoleculeDialog::sl_onAddFromProjectButtonClicked() {

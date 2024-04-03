@@ -193,6 +193,26 @@
           </widget>
          </item>
          <item>
+          <widget class="QToolButton" name="tbAdjustLeft">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Adjust left end</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbAdjustRight">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Adjust right end</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QToolButton" name="clearButton">
            <property name="toolTip">
             <string>Clear molecule contents</string>
