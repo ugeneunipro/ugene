@@ -334,8 +334,6 @@ bool ConstructMoleculeDialog::eventFilter(QObject* obj, QEvent* event) {
 }
 
 void ConstructMoleculeDialog::sl_onItemClicked(QTreeWidgetItem* item, int column) {
-    static constexpr int FIVE_END_COLUMN = 0;
-    static constexpr int THREE_END_COLUMN = 2;
     static constexpr int INVERTED_COLUMN = 3;
 
     bool adjustLeftIsActive = true;
