@@ -104,42 +104,32 @@
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="201"/>
-        <source>Adjust left end</source>
-        <translation>Подогнать левый конец</translation>
-    </message>
-    <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="211"/>
-        <source>Adjust right end</source>
-        <translation>Подогнать правый конец</translation>
-    </message>
-    <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="218"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="227"/>
         <source>Clear molecule contents</source>
         <translation>Убрать все фрагменты</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="221"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="230"/>
         <source>Clear All</source>
         <translation>Очистить все</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="243"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="252"/>
         <source>Annotate fragments in new molecule</source>
         <translation>Аннотировать фрагменты в новой молекуле</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="262"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="271"/>
         <source>Force &quot;blunt&quot; and omit all overhangs</source>
         <translation>Не учитывать липкие концы и исключить их</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="278"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="287"/>
         <source>Make circular</source>
         <translation>Сделать круговой</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="256"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="265"/>
         <source>Setting this option checked will result in ignoring overhangs while constructing new molecule.</source>
         <translation>Включение опции позволяет не учитывать липкие концы фрагментов при создании новой молекулы.</translation>
     </message>
@@ -150,36 +140,61 @@
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="191"/>
+        <source>Open the &quot;Edit Molecule Fragment&quot; dialog</source>
+        <translation>Откройте диалоговое окно &quot;Редактировать фрагмент&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="194"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="275"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="204"/>
+        <source>Automatically edit selected fragment&apos;s 5&apos; end and fit it to the 3&apos; end of the fragment above</source>
+        <translation>Автоматически отредактировать 5&apos; конец выделенного фрагмента таким образом, чтобы он подходил к 3&apos; концу фрагмента выше</translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="207"/>
+        <source>Adjust 5&apos; end</source>
+        <translation>Подогнать 5&apos; конец</translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="217"/>
+        <source>Automatically edit selected fragment&apos;s 3&apos; end and fit it to the 5&apos; end of the fragment below</source>
+        <translation>Автоматически отредактировать 3&apos; конец выделенного фрагмента таким образом, чтобы он подходил к 5&apos; концу фрагмента ниже</translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="220"/>
+        <source>Adjust 3&apos; end</source>
+        <translation>Подогнать 3&apos; конец</translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="284"/>
         <source>Circulirize result molecule</source>
         <translation>Сделать создаваемую молекулу круговой</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="286"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="295"/>
         <source>Output</source>
         <translation>Выходные параметры</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="294"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="303"/>
         <source>Path to file:</source>
         <translation>Путь к файлу:</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="304"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="313"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="316"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="325"/>
         <source>Open view for new molecule</source>
         <translation>Загрузить созданную молекулу</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="329"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="338"/>
         <source>Save immediately</source>
         <translation>Сохранить сразу</translation>
     </message>
@@ -337,14 +352,6 @@
         <translation>Левый конец</translation>
     </message>
     <message>
-        <source>Overhang</source>
-        <translation type="vanished">Выступ</translation>
-    </message>
-    <message>
-        <source>Custom overhang</source>
-        <translation type="vanished">Задать выступ</translation>
-    </message>
-    <message>
         <location filename="../src/EditFragmentDialog.ui" line="56"/>
         <location filename="../src/EditFragmentDialog.ui" line="133"/>
         <source>5&apos;-3&apos;</source>
@@ -377,10 +384,6 @@
         <location filename="../src/EditFragmentDialog.ui" line="169"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
-    </message>
-    <message>
-        <source>Blunt</source>
-        <translation type="vanished">Срез</translation>
     </message>
 </context>
 <context>

@@ -384,7 +384,7 @@ void ConstructMoleculeDialog::sl_adjustLeftEnd() {
     if (itemAbove == nullptr) {
         SAFE_POINT(makeCircularBox->isChecked(), "Should be circular", );
 
-        auto downItem = molConstructWidget->itemBelow(selectedItem);
+        auto downItem = selectedItem;
         while (molConstructWidget->itemBelow(downItem) != nullptr) {
             downItem = molConstructWidget->itemBelow(downItem);
         }
@@ -419,7 +419,7 @@ void ConstructMoleculeDialog::sl_adjustRightEnd() {
     if (itemBelow == nullptr) {
         SAFE_POINT(makeCircularBox->isChecked(), "Should be circular", );
 
-        auto topItem = molConstructWidget->itemAbove(selectedItem);
+        auto topItem = selectedItem;
         while (molConstructWidget->itemAbove(topItem) != nullptr) {
             topItem = molConstructWidget->itemAbove(topItem);
         }
