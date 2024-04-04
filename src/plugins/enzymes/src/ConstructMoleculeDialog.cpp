@@ -288,6 +288,17 @@ void ConstructMoleculeDialog::initSaveController() {
     saveController = new SaveDocumentController(config, formats, this);
 }
 
+const QString ConstructMoleculeDialog::createEndSign(const DNAFragmentTerm& term) {
+    QString result;
+    if (term.type == OVERHANG_TYPE_STICKY) {
+        result = QString("%1 (%2)").arg(QString(term.overhang)).arg(term.isDirect ? tr("Fwd") : tr("Rev"));
+    } else {
+        result = tr("Blunt");
+    }
+
+    return result;
+}
+
 void ConstructMoleculeDialog::sl_makeCircularBoxClicked() {
     update();
 }
@@ -359,6 +370,9 @@ void ConstructMoleculeDialog::sl_onItemClicked(QTreeWidgetItem* item, int column
     tbAdjustRight->setEnabled(adjustRightIsActive);
 }
 
+static constexpr int LEFT_END_COLUMN = 0;
+static constexpr int RIGHT_END_COLUMN = 2;
+
 void ConstructMoleculeDialog::sl_adjustLeftEnd() {
     auto selectedItem = molConstructWidget->currentItem();
     SAFE_POINT_NN(selectedItem, );
@@ -389,9 +403,9 @@ void ConstructMoleculeDialog::sl_adjustLeftEnd() {
     fragment.setLeftTermType(overhang.isEmpty() ? OVERHANG_TYPE_BLUNT : OVERHANG_TYPE_STICKY);
     fragment.setLeftOverhangStrand(!rightTerm.isDirect);
 
-    tbAdjustLeft->setEnabled(false);
-    tbAdjustRight->setEnabled(false);
-    update();
+    selectedItem->setText(LEFT_END_COLUMN, createEndSign(fragment.getLeftTerminus()));
+    selectedItem->setTextColor(LEFT_END_COLUMN, Qt::green);
+    itemAbove->setTextColor(RIGHT_END_COLUMN, Qt::green);
 }
 
 void ConstructMoleculeDialog::sl_adjustRightEnd() {
@@ -427,9 +441,9 @@ void ConstructMoleculeDialog::sl_adjustRightEnd() {
     fragment.setRightTermType(overhang.isEmpty() ? OVERHANG_TYPE_BLUNT : OVERHANG_TYPE_STICKY);
     fragment.setRightOverhangStrand(!leftTerm.isDirect);
 
-    tbAdjustLeft->setEnabled(false);
-    tbAdjustRight->setEnabled(false);
-    update();
+    selectedItem->setText(RIGHT_END_COLUMN, createEndSign(fragment.getRightTerminus()));
+    selectedItem->setTextColor(RIGHT_END_COLUMN, Qt::green);
+    itemBelow->setTextColor(LEFT_END_COLUMN, Qt::green);
 }
 
 void ConstructMoleculeDialog::sl_onAddFromProjectButtonClicked() {

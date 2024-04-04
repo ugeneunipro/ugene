@@ -59,6 +59,8 @@ private:
     void update();
     void initSaveController();
 
+    static const QString createEndSign(const DNAFragmentTerm& term);
+
     QList<DNAFragment> fragments;
     QList<int> selected;
     SaveDocumentController* saveController;
