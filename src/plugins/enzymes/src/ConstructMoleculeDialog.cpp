@@ -333,11 +333,14 @@ bool ConstructMoleculeDialog::eventFilter(QObject* obj, QEvent* event) {
         case QEvent::FocusOut:
             molConstructWidget->clearSelection();
             break;
-        case QEvent::KeyPress:
+        case QEvent::KeyPress: {
             QKeyEvent* ke = (QKeyEvent*)event;
             if (ke->key() == Qt::Key_Delete) {
                 sl_onRemoveButtonClicked();
             }
+        }
+        default:
+            break;
         }
     }
 
@@ -353,21 +356,26 @@ void ConstructMoleculeDialog::sl_onItemClicked(QTreeWidgetItem* item, int column
         int idx = molConstructWidget->indexOfTopLevelItem(item);
         DNAFragment& fragment = fragments[selected[idx]];
         if (item->checkState(column) == Qt::Checked) {
+            CHECK(!fragment.isInverted(), );
+
             fragment.setInverted(true);
         } else {
+            CHECK(fragment.isInverted(), );
+
             fragment.setInverted(false);
         }
         update();
-    }
-    if (molConstructWidget->itemAbove(item) == nullptr) {
-        adjustLeftIsActive = makeCircularBox->isChecked();
-    }
-    if (molConstructWidget->itemBelow(item) == nullptr) {
-        adjustRightIsActive = makeCircularBox->isChecked();
-    }
+    } else {
+        if (molConstructWidget->itemAbove(item) == nullptr) {
+            adjustLeftIsActive = makeCircularBox->isChecked();
+        }
+        if (molConstructWidget->itemBelow(item) == nullptr) {
+            adjustRightIsActive = makeCircularBox->isChecked();
+        }
 
-    tbAdjustLeft->setEnabled(adjustLeftIsActive);
-    tbAdjustRight->setEnabled(adjustRightIsActive);
+        tbAdjustLeft->setEnabled(adjustLeftIsActive);
+        tbAdjustRight->setEnabled(adjustRightIsActive);
+    }
 }
 
 static constexpr int LEFT_END_COLUMN = 0;
