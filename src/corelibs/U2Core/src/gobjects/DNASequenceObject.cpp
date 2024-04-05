@@ -417,6 +417,7 @@ void U2SequenceObject::setGObjectName(const QString& newName) {
 
     GObject::setGObjectName(newName);
     cachedName = GObject::getGObjectName();
+    setModified(true);
 }
 
 }  // namespace U2

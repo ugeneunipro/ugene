@@ -987,6 +987,27 @@ GUI_TEST_CLASS_DEFINITION(test_7247) {
     GTUtilsMdi::click(GTGlobals::Close);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7267) {
+    // Copy "samples/Genbank/murine.gb" to sandbox
+    // Open the copied file
+    // Rename sequence object to "test_7267"
+    // Save file
+    // Close project
+    // Open file again
+    // Expected: file name is "test_7267"
+    GTFile::copy(dataDir + "samples/Genbank/murine.gb", sandBoxDir + "test_7267.gb");
+    GTFileDialog::openFile(sandBoxDir, "test_7267.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsProjectTreeView::rename("NC_001363", "test_7267");
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProject::closeProject(false);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFileDialog::openFile(sandBoxDir, "test_7267.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsProjectTreeView::checkItem("test_7267");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7276) {
     // Check that selection and sequence order does not change after KAlign alignment.
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
