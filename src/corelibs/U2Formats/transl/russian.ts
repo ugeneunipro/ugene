@@ -129,22 +129,22 @@
         <translation>Строка слишком длинная</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="350"/>
+        <location filename="../src/ace/AceFormat.cpp" line="351"/>
         <source>A name is not match with AF names</source>
         <translation>Имя не совпадает с именами AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="389"/>
+        <location filename="../src/ace/AceFormat.cpp" line="382"/>
         <source>First line is not an ace header</source>
         <translation>Первая строка не является заголовком ACE</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="392"/>
+        <location filename="../src/ace/AceFormat.cpp" line="385"/>
         <source>No contig count tag in the header line</source>
         <translation>Отсутствует тег числа контигов в строке заголовка</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="405"/>
+        <location filename="../src/ace/AceFormat.cpp" line="398"/>
         <source>Must be CO keyword</source>
         <translation>Ожидается ключевое слово CO</translation>
     </message>
@@ -154,7 +154,7 @@
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="415"/>
+        <location filename="../src/ace/AceFormat.cpp" line="408"/>
         <source>There is no note about reads count</source>
         <translation>Отсуствтует информация о числе считываний</translation>
     </message>
@@ -171,7 +171,6 @@
     </message>
     <message>
         <location filename="../src/ace/AceFormat.cpp" line="225"/>
-        <location filename="../src/ace/AceFormat.cpp" line="282"/>
         <source>A name is duplicated</source>
         <translation>Повторные вхождения имени</translation>
     </message>
@@ -228,12 +227,17 @@
         <translation>Некорректные данные в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="463"/>
+        <location filename="../src/ace/AceFormat.cpp" line="442"/>
+        <source>RD line has read &quot;%1&quot;, but it wasn&apos;t presented in AF</source>
+        <translation>Тэг RD содержит прочтение с именем &quot;%1&quot;, которое не было представлено в тэгах AF</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceFormat.cpp" line="464"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="489"/>
+        <location filename="../src/ace/AceFormat.cpp" line="490"/>
         <source>File doesn&apos;t contain any msa objects</source>
         <translation>Файл не содержит msa объектов</translation>
     </message>
@@ -266,23 +270,23 @@
         <translation>Узел &quot;name&quot; не найден, вероятно, файл поврежден</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="260"/>
-        <location filename="../src/ASNFormat.cpp" line="658"/>
+        <location filename="../src/ASNFormat.cpp" line="261"/>
+        <location filename="../src/ASNFormat.cpp" line="659"/>
         <source>Unknown error occurred</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="644"/>
+        <location filename="../src/ASNFormat.cpp" line="645"/>
         <source>no root element</source>
         <translation>Отсутствует корневой элемент</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="650"/>
+        <location filename="../src/ASNFormat.cpp" line="651"/>
         <source>states stack is not empty</source>
         <translation>Стек состояний не пуст</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="673"/>
+        <location filename="../src/ASNFormat.cpp" line="674"/>
         <source>First line is too long</source>
         <translation>Первая строка слишком длинная</translation>
     </message>
@@ -876,13 +880,18 @@
         <translation>В файле нет сборок</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="156"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="154"/>
         <source>There are not enough assemblies</source>
         <translation>Недостаточно сборок</translation>
     </message>
     <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="175"/>
+        <source>Expected %1 reads, but only %2 AF tags found</source>
+        <translation>Ожидается %1 прочтений, но только %2 тэгов AF было найдено</translation>
+    </message>
+    <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="212"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="464"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="463"/>
         <source>Unexpected end of file</source>
         <translation>Неожиданный конец файла</translation>
     </message>
@@ -942,45 +951,40 @@
         <translation>Не указано имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="371"/>
-        <source>A name is duplicated: %1</source>
-        <translation>Повторные вхождения имени: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="377"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="376"/>
         <source>Not all reads were found</source>
         <translation>Не все риды были найдены</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="386"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="390"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="422"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="434"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="385"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="389"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="421"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="433"/>
         <source>Bad AF note</source>
         <translation>Плохое примечание AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="460"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="459"/>
         <source>There is no read note</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="473"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="472"/>
         <source>Invalid RD part</source>
         <translation>Неверная часть RD</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="483"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="482"/>
         <source>QA keyword hasn&apos;t been found</source>
         <translation>Ключевое слово QA не было найдено</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="492"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="491"/>
         <source>QA error bad range</source>
         <translation>Ошибка QA: плохой регион</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="495"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="494"/>
         <source>Unexpected symbols in sequence data</source>
         <translation>Неоижданные символы в последовательности</translation>
     </message>
@@ -990,27 +994,27 @@
         <translation>Имя не совпадает с именами AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="504"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="503"/>
         <source>Can&apos;t find clear range start in current line</source>
         <translation>Невозможно найти начало диапазона в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="505"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="504"/>
         <source>Clear range start is invalid</source>
         <translation>Неверное начало диапазона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="512"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="511"/>
         <source>Can&apos;t find clear range end in current line</source>
         <translation>Невозможно найти конец диапазона в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="513"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="512"/>
         <source>Clear range end is invalid</source>
         <translation>Неверный конец диапазона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="537"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="536"/>
         <source>There is no next element</source>
         <translation>Отсутствует следующий элемент</translation>
     </message>

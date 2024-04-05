@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-document url="ace/xyz.cap.ace" io="local_file" format="ace"/>
+
+</multi-test>

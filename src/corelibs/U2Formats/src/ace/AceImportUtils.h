@@ -39,6 +39,13 @@ public:
             return !name.isEmpty() && offset >= 0;
         }
 
+        bool operator==(const Sequence& second) {
+            return data == second.data &&
+                   name == second.name &&
+                   offset == second.offset &&
+                   isComplemented == second.isComplemented;
+        }
+
         QByteArray data;
         QByteArray name;
         int offset;
@@ -83,16 +90,16 @@ private:
     int getContigCount(const QByteArray& cur_line);
     int getSubString(QByteArray& line, int pos);
     int getReadsCount(const QByteArray& cur_line);
-    void parseConsensus(IOAdapter* io, char* buff, QSet<QByteArray>& names, QByteArray& headerLine, Assembly::Sequence& consensus);
+    void parseConsensus(IOAdapter* io, char* buff, QList<QByteArray>& names, QByteArray& headerLine, Assembly::Sequence& consensus);
     QByteArray getName(const QByteArray& line);
     bool checkSeq(const QByteArray& seq);
-    void parseAfTag(IOAdapter* io, char* buff, int count, QMap<QByteArray, int>& posMap, QMap<QByteArray, bool>& complMap, QSet<QByteArray>& names);
+    void parseAfTag(IOAdapter* io, char* buff, int count, QList<Assembly::Sequence>& reads, QList<QByteArray>& names);
     int readsPos(const QByteArray& cur_line);
     int prepareLine(QByteArray& line, int pos);
     int readsComplement(const QByteArray& cur_line);
     int paddedStartCons(const QByteArray& cur_line);
-    int getSmallestOffset(const QMap<QByteArray, int>& posMap);
-    void parseRdAndQaTag(U2::IOAdapter* io, char* buff, QSet<QByteArray>& names, Assembly::Sequence& read);
+    int getSmallestOffset(const QList<Assembly::Sequence>& reads);
+    void parseRdAndQaTag(U2::IOAdapter* io, char* buff, QList<QByteArray>& names, Assembly::Sequence& read);
     int getClearRangeStart(const QByteArray& cur_line);
     int getClearRangeEnd(const QByteArray& cur_line);
     void formatSequence(QByteArray& data);

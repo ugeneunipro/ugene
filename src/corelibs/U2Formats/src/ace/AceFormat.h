@@ -28,6 +28,8 @@
 
 #include "../TextDocumentFormat.h"
 
+#include "AceImportUtils.h"
+
 namespace U2 {
 
 class IOAdapter;
@@ -42,6 +44,15 @@ protected:
     Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
 private:
+    static void parseAFTag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, int count, QList<Assembly::Sequence>& reads, QList<QString>& names);
+    static void parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QList<QString>& names, QString& name, QByteArray& sequence);
+
+    /**
+     * Offsets in an ACE file are specified relatively to the reference sequence,
+     * so "pos" can be negative.
+     */
+    static int getSmallestOffset(const QList<Assembly::Sequence>& reads);
+
     void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& ti);
 
     static const QString CO;
