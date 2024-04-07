@@ -75,7 +75,7 @@ public:
     static void returnToWorkflow();
 
     // returns item from samples or algorithms tab
-    static QTreeWidgetItem* findTreeItem(const QString& itemName, tab t, bool exactMatch = false, bool failIfNULL = true, bool returnAnyIfMany = false);
+    static QTreeWidgetItem* findTreeItem(const QString& itemName, tab t, bool exactMatch = false, bool failIfNULL = true);
 
     // expands samples/Elements tabwidget if collapsed
     static void expandTabs(QWidget* parentWidget = nullptr);

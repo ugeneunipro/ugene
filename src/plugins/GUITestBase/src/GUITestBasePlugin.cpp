@@ -3560,6 +3560,7 @@ void GUITestBasePlugin::registerAdditionalActions(UGUITestBase* guiTestBase) {
     guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0002, UGUITestBase::PostAction);
     guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0003, UGUITestBase::PostAction);
     guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0004, UGUITestBase::PostAction);
+    guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0005, UGUITestBase::PostAction);
 }
 
 }  // namespace U2

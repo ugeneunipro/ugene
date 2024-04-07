@@ -34,6 +34,8 @@
 
 #include <U2Core/AppContext.h>
 
+#include <U2Lang/WorkflowSettings.h>
+
 #include "GTUtilsTask.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsProjectTreeView.h"
@@ -123,6 +125,15 @@ POSTERIOR_ACTION_DEFINITION(post_action_0004) {
         for (const QString& path : qAsConst(entryList)) {
             GTFile::removeDir(sandBox.absolutePath() + "/" + path);
         }
+    }
+}
+
+POSTERIOR_ACTION_DEFINITION(post_action_0005) {
+    // Remove test related custom WD workers
+
+    QDir dir(WorkflowSettings::getExternalToolDirectory(), {"el_6485*"});
+    for (const QString& filename : dir.entryList()) {
+        dir.remove(filename);
     }
 }
 

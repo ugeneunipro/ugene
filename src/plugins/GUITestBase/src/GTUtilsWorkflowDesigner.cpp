@@ -157,7 +157,7 @@ static bool compare(const QString& s1, const QString& s2, bool isExactMatch) {
     return isExactMatch ? s1 == s2 : s1.toLower().contains(s2.toLower());
 }
 
-QTreeWidgetItem* GTUtilsWorkflowDesigner::findTreeItem(const QString& itemName, tab t, bool exactMatch, bool failIfNULL, bool returnFirst) {
+QTreeWidgetItem* GTUtilsWorkflowDesigner::findTreeItem(const QString& itemName, tab t, bool exactMatch, bool failIfNULL) {
     auto wdWindow = getActiveWorkflowDesignerWindow();
     auto treeWidget = GTWidget::findTreeWidget(t == algorithms ? "WorkflowPaletteElements" : "samples", wdWindow);
 
@@ -184,13 +184,6 @@ QTreeWidgetItem* GTUtilsWorkflowDesigner::findTreeItem(const QString& itemName, 
                     foundItem = item;
                 }
             }
-            if (returnFirst && foundItem != nullptr) {
-                break;
-            }
-        }
-
-        if (returnFirst && foundItem != nullptr) {
-            break;
         }
     }
     GT_CHECK_RESULT(!failIfNULL || foundItem != nullptr, "Item \"" + itemName + "\" not found in treeWidget", nullptr);
