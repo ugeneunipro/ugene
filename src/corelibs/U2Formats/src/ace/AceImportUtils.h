@@ -31,24 +31,15 @@ class Assembly {
 public:
     class Sequence {  // it is consensus in the ACE format specification
     public:
-        Sequence()
-            : offset(0), isComplemented(false) {
-        }
+        Sequence();
 
-        bool isValid() const {
-            return !name.isEmpty() && offset >= 0;
-        }
+        bool isValid() const;
 
-        bool operator==(const Sequence& second) {
-            return data == second.data &&
-                   name == second.name &&
-                   offset == second.offset &&
-                   isComplemented == second.isComplemented;
-        }
+        bool operator==(const Sequence& second) const;
 
         QByteArray data;
         QByteArray name;
-        int offset;
+        qint64 offset;
         bool isComplemented;
     };
 

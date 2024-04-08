@@ -44,14 +44,40 @@ protected:
     Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
 private:
+    /*
+     * Parses the AF tag of the format. This tag has the following structure:
+     * AF <read name> <C or U> <padded start consensus position>
+     * C or U means complemented or uncomplemented (direct, in UGENE terms).
+     * The <read name> is the true read name.
+     *
+     * \param io the input-ouput adapter instance.
+     * \param ti the state information handler instance.
+     * \param buff buffer, whuch contains text, read from the file.
+     * \param count the number of reads, read from header of the file.
+     * \param reads reads representation.All information, except sequence itself, should be filled in this function.
+     * \param names the list of all reads in the current contig.
+     * This value will be used further to check, that AF and RD tags has comparable reads.
+     **/
     static void parseAFTag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, int count, QList<Assembly::Sequence>& reads, QList<QString>& names);
+    /*
+     * Parses RD and QA tags of the format. These tags have the following structures:
+     * RD <read name> <# of padded bases> <# of whole read info items> <# of read tags>
+     * QA <qual clipping start> <qual clipping end> <align clipping start> <align clipping end>
+     *
+     * \param io the input-ouput adapter instance.
+     * \param ti the state information handler instance.
+     * \param buff buffer, whuch contains text, read from the file.
+     * \param names the list of all reads in the current contig.
+     * \param name name of the considerable read.
+     * \param sequence considerable read's sequence.
+     **/
     static void parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QList<QString>& names, QString& name, QByteArray& sequence);
 
     /**
      * Offsets in an ACE file are specified relatively to the reference sequence,
      * so "pos" can be negative.
      */
-    static int getSmallestOffset(const QList<Assembly::Sequence>& reads);
+    static qint64 getSmallestOffset(const QList<Assembly::Sequence>& reads);
 
     void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& ti);
 

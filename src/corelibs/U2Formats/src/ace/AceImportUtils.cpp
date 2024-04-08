@@ -32,6 +32,25 @@
 namespace U2 {
 
 ///////////////////////////////////
+//// Assembly::Sequence
+///////////////////////////////////
+
+Assembly::Sequence::Sequence()
+    : offset(0), isComplemented(false) {
+}
+
+bool Assembly::Sequence::isValid() const {
+    return !name.isEmpty() && offset >= 0;
+}
+
+bool Assembly::Sequence::operator==(const Sequence& second) const {
+    return data == second.data &&
+           name == second.name &&
+           offset == second.offset &&
+           isComplemented == second.isComplemented;
+}
+
+///////////////////////////////////
 //// Assembly
 ///////////////////////////////////
 
@@ -438,7 +457,7 @@ int AceReader::paddedStartCons(const QByteArray& cur_line) {
 int AceReader::getSmallestOffset(const QList<Assembly::Sequence>& reads) {
     int smallestOffset = 0;
     for (const auto& read : qAsConst(reads)) {
-        smallestOffset = qMin(smallestOffset, read.offset - 1);
+        smallestOffset = qMin(smallestOffset, (int)read.offset - 1);
     }
 
     return smallestOffset;

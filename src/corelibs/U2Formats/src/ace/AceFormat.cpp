@@ -53,13 +53,13 @@ ACEFormat::ACEFormat(QObject* p)
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
-static int modifyLine(QString& line, int pos) {
+static qint64 modifyLine(QString& line, qint64 pos) {
     int curIdx = 0;
     char space = ' ';
 
     line = line.simplified();
 
-    for (int i = 0; i < pos; i++) {
+    for (qint64 i = 0; i < pos; i++) {
         curIdx = line.indexOf(space);
         if (-1 == curIdx) {
             return 0;
@@ -75,7 +75,7 @@ static int modifyLine(QString& line, int pos) {
     line = line.mid(0, curIdx);
 
     bool ok = false;
-    int result = line.toInt(&ok);
+    qint64 result = line.toLongLong(&ok);
     if (ok == false) {
         return -1;
     } else {
@@ -114,47 +114,47 @@ static int contigCount(const QString& cur_line) {
 }
 
 #define LAST_QA_POS 4
-static int clearRange(const QString& cur_line) {
+static qint64 clearRange(const QString& cur_line) {
     QString line = cur_line;
     modifyLine(line, LAST_QA_POS);
 
     bool ok = true;
-    int result = line.toInt(&ok);
+    qint64 result = line.toLongLong(&ok);
     if (!ok) {
-        return INT_MAX;
+        return LLONG_MAX;
     } else {
         return result;
     }
 }
 #define PADDED_START_POS 3
-static int paddedStartCons(const QString& cur_line) {
+static qint64 paddedStartCons(const QString& cur_line) {
     QString line = cur_line;
     modifyLine(line, PADDED_START_POS);
 
     bool ok = true;
-    int result = line.toInt(&ok);
+    qint64 result = line.toLongLong(&ok);
     if (!ok) {
-        return INT_MAX;
+        return LLONG_MAX;
     } else {
         return result;
     }
 }
 
 #define READS_POS 3
-static int readsPos(const QString& cur_line) {
+static qint64 readsPos(const QString& cur_line) {
     QString line = cur_line;
     prepareLine(line, READS_POS);
 
     if (-1 != line.indexOf(' ')) {
-        return INT_MAX;
+        return LLONG_MAX;
     }
 
     line = line.mid(0, line.length());
 
     bool ok = true;
-    int result = line.toInt(&ok);
+    qint64 result = line.toLongLong(&ok);
     if (!ok) {
-        return INT_MAX;
+        return LLONG_MAX;
     } else {
         return result;
     }
@@ -268,15 +268,15 @@ void ACEFormat::parseAFTag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, int co
             return;
         }
 
-        int readPos = readsPos(readLine);
+        qint64 readPos = readsPos(readLine);
         int complStrand = readsComplement(readLine);
-        if ((INT_MAX == readPos) || (-1 == complStrand)) {
+        if ((LLONG_MAX == readPos) || (-1 == complStrand)) {
             ti.setError(ACEFormat::tr("Bad AF note"));
             return;
         }
 
-        int paddedStart = paddedStartCons(readLine);
-        CHECK_EXT(paddedStart != INT_MAX, ti.setError(ACEFormat::tr("Bad AF note")), );
+        qint64 paddedStart = paddedStartCons(readLine);
+        CHECK_EXT(paddedStart != LLONG_MAX, ti.setError(ACEFormat::tr("Bad AF note")), );
 
         Assembly::Sequence read;
         read.name = name.toLocal8Bit();
@@ -328,8 +328,8 @@ void ACEFormat::parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, Q
     line = QString(QByteArray(buff, len)).trimmed();
     CHECK_EXT(line.startsWith("QA"), ti.setError(ACEFormat::tr("QA keyword hasn't been found")), );
 
-    int clearRangeStart = 0;
-    int clearRangeEnd = 0;
+    qint64 clearRangeStart = 0;
+    qint64 clearRangeEnd = 0;
 
     clearRangeStart = readsCount(line);
     CHECK_EXT(clearRangeStart != -1, ti.setError(ACEFormat::tr("QA error no clear range")), );
@@ -357,8 +357,8 @@ void ACEFormat::parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, Q
     sequence.replace('X', U2Msa::GAP_CHAR);
 }
 
-int ACEFormat::getSmallestOffset(const QList<Assembly::Sequence>& reads) {
-    int smallestOffset = 0;
+qint64 ACEFormat::getSmallestOffset(const QList<Assembly::Sequence>& reads) {
+    qint64 smallestOffset = 0;
     for (const auto& read : qAsConst(reads)) {
         smallestOffset = qMin(smallestOffset, read.offset - 1);
     }
@@ -424,7 +424,7 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         parseAFTag(io, os, buff, count, reads, names);
         CHECK_OP(os, );
 
-        int smallestOffset = getSmallestOffset(reads);
+        qint64 smallestOffset = getSmallestOffset(reads);
         if (smallestOffset < 0) {
             al->insertGaps(0, 0, qAbs(smallestOffset), os);
             CHECK_OP(os, );
@@ -443,7 +443,7 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
             auto res = *resIt;
             reads.removeOne(res);
-            int pos = res.offset - 1;
+            qint64 pos = res.offset - 1;
             if (smallestOffset < 0) {
                 pos += qAbs(smallestOffset);
             }
