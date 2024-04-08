@@ -2276,8 +2276,36 @@ GUI_TEST_CLASS_DEFINITION(test_6485) {
     * 3. Open context menu for created cmdline element on palette. Choose 'Remove' item.
     * Expected state: message box with warning appeared, element is not removed
     */
+    QTreeWidgetItem* el = nullptr;
+    auto findEl_6485 = [&]() {
+        auto wdWindow = GTUtilsWorkflowDesigner::getActiveWorkflowDesignerWindow();
+        auto treeWidget = GTWidget::findTreeWidget("WorkflowPaletteElements", wdWindow);
+        QList<QTreeWidgetItem*> outerList = treeWidget->findItems("", Qt::MatchContains);
+        for (int i = 0; i < outerList.count(); i++) {
+            QList<QTreeWidgetItem*> innerList;
+            for (int j = 0; j < outerList.value(i)->childCount(); j++) {
+                innerList.append(outerList.value(i)->child(j));
+            }
+            for (QTreeWidgetItem* item : qAsConst(innerList)) {
+                QString s = item->data(0, Qt::UserRole).value<QAction*>()->text();
+                if (s.startsWith("el_6485")) {
+                    el = item;
+                    return;
+                }
+            }
+        }
+        el = nullptr;
+    };
+
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsWorkflowDesigner::setCurrentTab(GTUtilsWorkflowDesigner::algorithms);
+
+    for (findEl_6485(); el != nullptr; findEl_6485()) {
+        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "", "Remove element"));
+        GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove"}));
+        GTTreeWidget::click(el);
+        GTMouseDriver::click(Qt::RightButton);
+    }
 
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "el_6485";

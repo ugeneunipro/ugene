@@ -34,8 +34,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
 
-#include <U2Lang/WorkflowSettings.h>
-
 #include "GTUtilsTaskTreeView.h"
 #include "PreliminaryActions.h"
 
@@ -114,15 +112,6 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0005) {
     CHECK_SET_ERR(mw != nullptr, "main window is NULL");
     if (isOsMac() || isOsWindows()) {
         GTWidget::click(mw, Qt::LeftButton, QPoint(200, 200));
-    }
-}
-
-PRELIMINARY_ACTION_DEFINITION(pre_action_0006) {
-    // Remove test related custom WD workers
-
-    QDir dir(WorkflowSettings::getExternalToolDirectory(), {"el_6485*"});
-    for (const QString& filename : dir.entryList()) {
-        dir.remove(filename);
     }
 }
 
