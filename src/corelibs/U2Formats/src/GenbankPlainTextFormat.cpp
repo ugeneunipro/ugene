@@ -207,7 +207,7 @@ bool GenbankPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqI
                 commentSection.append(st->value());
             }
             if (!commentSection.isEmpty()) {
-                st->entry->tags[DNAInfo::COMMENT] = st->entry->tags[DNAInfo::COMMENT].toStringList() << commentSection.join("\n");
+                st->entry->tags[DNAInfo::COMMENT] = st->entry->tags[DNAInfo::COMMENT].toStringList() << commentSection.join(" ");
             }
             hasLine = true;
             continue;
