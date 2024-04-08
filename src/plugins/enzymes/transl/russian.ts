@@ -104,32 +104,32 @@
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="198"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="227"/>
         <source>Clear molecule contents</source>
         <translation>Убрать все фрагменты</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="201"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="230"/>
         <source>Clear All</source>
         <translation>Очистить все</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="223"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="252"/>
         <source>Annotate fragments in new molecule</source>
         <translation>Аннотировать фрагменты в новой молекуле</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="242"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="271"/>
         <source>Force &quot;blunt&quot; and omit all overhangs</source>
         <translation>Не учитывать липкие концы и исключить их</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="258"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="287"/>
         <source>Make circular</source>
         <translation>Сделать круговой</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="236"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="265"/>
         <source>Setting this option checked will result in ignoring overhangs while constructing new molecule.</source>
         <translation>Включение опции позволяет не учитывать липкие концы фрагментов при создании новой молекулы.</translation>
     </message>
@@ -140,36 +140,61 @@
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="191"/>
+        <source>Open the &quot;Edit Molecule Fragment&quot; dialog</source>
+        <translation>Откройте диалоговое окно &quot;Редактировать фрагмент&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="194"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="255"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="204"/>
+        <source>Automatically edit selected fragment&apos;s 5&apos; end and fit it to the 3&apos; end of the fragment above</source>
+        <translation>Автоматически отредактировать 5&apos; конец выделенного фрагмента таким образом, чтобы он подходил к 3&apos; концу фрагмента выше</translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="207"/>
+        <source>Adjust 5&apos; end</source>
+        <translation>Подогнать 5&apos; конец</translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="217"/>
+        <source>Automatically edit selected fragment&apos;s 3&apos; end and fit it to the 5&apos; end of the fragment below</source>
+        <translation>Автоматически отредактировать 3&apos; конец выделенного фрагмента таким образом, чтобы он подходил к 5&apos; концу фрагмента ниже</translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="220"/>
+        <source>Adjust 3&apos; end</source>
+        <translation>Подогнать 3&apos; конец</translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="284"/>
         <source>Circulirize result molecule</source>
         <translation>Сделать создаваемую молекулу круговой</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="266"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="295"/>
         <source>Output</source>
         <translation>Выходные параметры</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="274"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="303"/>
         <source>Path to file:</source>
         <translation>Путь к файлу:</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="284"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="313"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="296"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="325"/>
         <source>Open view for new molecule</source>
         <translation>Загрузить созданную молекулу</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="309"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="338"/>
         <source>Save immediately</source>
         <translation>Сохранить сразу</translation>
     </message>
@@ -327,56 +352,38 @@
         <translation>Левый конец</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="43"/>
-        <location filename="../src/EditFragmentDialog.ui" line="135"/>
-        <source>Overhang</source>
-        <translation>Выступ</translation>
-    </message>
-    <message>
-        <location filename="../src/EditFragmentDialog.ui" line="63"/>
-        <location filename="../src/EditFragmentDialog.ui" line="155"/>
-        <source>Custom overhang</source>
-        <translation>Задать выступ</translation>
-    </message>
-    <message>
-        <location filename="../src/EditFragmentDialog.ui" line="77"/>
-        <location filename="../src/EditFragmentDialog.ui" line="169"/>
+        <location filename="../src/EditFragmentDialog.ui" line="56"/>
+        <location filename="../src/EditFragmentDialog.ui" line="133"/>
         <source>5&apos;-3&apos;</source>
         <translation>5&apos;-3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="94"/>
-        <location filename="../src/EditFragmentDialog.ui" line="186"/>
+        <location filename="../src/EditFragmentDialog.ui" line="73"/>
+        <location filename="../src/EditFragmentDialog.ui" line="150"/>
         <source>3&apos;-5&apos;</source>
         <translation>3&apos;-5&apos;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="123"/>
+        <location filename="../src/EditFragmentDialog.ui" line="105"/>
         <source>Right End</source>
         <translation>Правый конец</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="34"/>
-        <location filename="../src/EditFragmentDialog.ui" line="129"/>
+        <location filename="../src/EditFragmentDialog.ui" line="36"/>
+        <location filename="../src/EditFragmentDialog.ui" line="113"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="220"/>
+        <location filename="../src/EditFragmentDialog.ui" line="184"/>
         <source>Preview:</source>
         <translation>Предварительный просмотр:</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="110"/>
-        <location filename="../src/EditFragmentDialog.ui" line="205"/>
+        <location filename="../src/EditFragmentDialog.ui" line="92"/>
+        <location filename="../src/EditFragmentDialog.ui" line="169"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
-    </message>
-    <message>
-        <location filename="../src/EditFragmentDialog.ui" line="53"/>
-        <location filename="../src/EditFragmentDialog.ui" line="145"/>
-        <source>Blunt</source>
-        <translation>Срез</translation>
     </message>
 </context>
 <context>
@@ -719,71 +726,74 @@
 <context>
     <name>U2::ConstructMoleculeDialog</name>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="97"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="104"/>
         <source>No fragments are selected!
  Please construct molecule from available fragments.</source>
         <translation>Выберите фрагменты, составляющие новую молекулу.</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="276"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="283"/>
         <source>Set new molecule file name</source>
         <translation>Задайте имя файла</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="62"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="66"/>
         <source>core length</source>
         <translation>длина ядра</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="203"/>
         <location filename="../src/ConstructMoleculeDialog.cpp" line="210"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="217"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="296"/>
         <source>Blunt</source>
         <translation>&quot;Срез&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="201"/>
         <location filename="../src/ConstructMoleculeDialog.cpp" line="208"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="215"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="294"/>
         <source>Fwd</source>
         <translation>Прям</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="58"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="62"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="59"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="63"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="201"/>
         <location filename="../src/ConstructMoleculeDialog.cpp" line="208"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="215"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="294"/>
         <source>Rev</source>
         <translation>Обр</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="205"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="212"/>
         <source>Left end</source>
         <translation>Левый конец</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="212"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="219"/>
         <source>Right end</source>
         <translation>Правый конец</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="214"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="221"/>
         <source>yes</source>
         <translation>да</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="214"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="221"/>
         <source>no</source>
         <translation>нет</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="215"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="222"/>
         <source>Make fragment reverse complement</source>
         <translation>Сделать фрагмент обратно-комплементарным</translation>
     </message>
@@ -920,52 +930,62 @@ Choose another region.</translation>
 <context>
     <name>U2::EditFragmentDialog</name>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="46"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="45"/>
+        <source>Blunt</source>
+        <translation>Прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/EditFragmentDialog.cpp" line="45"/>
+        <source>Sticky</source>
+        <translation>Липкий</translation>
+    </message>
+    <message>
+        <location filename="../src/EditFragmentDialog.cpp" line="48"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="47"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="49"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="127"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="154"/>
         <source>Left overhang is empty. Please enter the overhang or set blunt left end.</source>
         <translation>Левый выступ не задан. Задайте выступ или уставновите срез.</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="131"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="158"/>
         <source>Invalid left overhang: unsupported alphabet!</source>
         <translation>Недопустимое левый конец: неподдерживаемый алфавит!</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="150"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="177"/>
         <source>Right overhang is empty. Please enter the overhang or set blunt right end.</source>
         <translation>Правый выступ не задан. Задайте выступ или уставновите срез.</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="154"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="181"/>
         <source>Invalid right overhang: unsupported alphabet!</source>
         <translation>Недопустимое правый конец: неподдерживаемый алфавит!</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="173"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="200"/>
         <source> (INVERTED)</source>
         <translation> (ИНВЕРТИРОВАН)</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="175"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="202"/>
         <source>Fragment of %1%2&lt;br&gt;</source>
         <translation>Фрагмент %1%2&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="189"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="216"/>
         <source>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt; &lt;/tr&gt;</source>
         <translation>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt; &lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="193"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="220"/>
         <source>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt; &lt;/tr&gt;</source>
         <translation>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt; &lt;/tr&gt;</translation>
     </message>
@@ -1398,7 +1418,7 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::InsertEnzymeWidget</name>
     <message numerus="yes">
-        <location filename="../src/insert/InsertEnzymeWidget.cpp" line="71"/>
+        <location filename="../src/insert/InsertEnzymeWidget.cpp" line="78"/>
         <source>%n enzyme(s)</source>
         <translation>
             <numerusform>%n сайт</numerusform>

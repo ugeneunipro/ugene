@@ -3420,6 +3420,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     // common_scenarios/cloning
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_cloning::test_0011);
+    REGISTER_TEST(GUITest_common_scenarios_cloning::test_0012);
+    REGISTER_TEST(GUITest_common_scenarios_cloning::test_0013);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/options_panel/sequence_view

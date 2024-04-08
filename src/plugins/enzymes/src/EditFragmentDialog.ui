@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>488</width>
-    <height>567</height>
+    <height>565</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Edit Molecule Fragment</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_7">
+  <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -27,45 +27,24 @@
        <property name="title">
         <string>Left End</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="title">
-           <string>Type</string>
-          </property>
-          <property name="checkable">
-           <bool>false</bool>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
-            <widget class="QRadioButton" name="lStickyButton">
-             <property name="text">
-              <string>Overhang</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="lBluntButton">
-             <property name="text">
-              <string>Blunt</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
+         <layout class="QFormLayout" name="formLayout_3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Type</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="cbLeftEndType"/>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QGroupBox" name="lCustomOverhangBox">
-          <property name="title">
-           <string>Custom overhang</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
+         <widget class="QWidget" name="lStickyWidget" native="true">
+          <property name="enabled">
            <bool>false</bool>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -97,6 +76,9 @@
              </item>
              <item row="1" column="1">
               <widget class="QLineEdit" name="lComplOverhangEdit">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="maxLength">
                 <number>15</number>
                </property>
@@ -122,45 +104,27 @@
        <property name="title">
         <string>Right End</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_6">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QGroupBox" name="groupBox_4">
-          <property name="title">
-           <string>Type</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <widget class="QRadioButton" name="rStickyButton">
-             <property name="text">
-              <string>Overhang</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="rBluntButton">
-             <property name="text">
-              <string>Blunt</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
+         <layout class="QFormLayout" name="formLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Type</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="cbRightEndType"/>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QGroupBox" name="rCustomOverhangBox">
-          <property name="title">
-           <string>Custom overhang</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
+         <widget class="QWidget" name="rStickyWidget" native="true">
+          <property name="enabled">
            <bool>false</bool>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
+          <layout class="QVBoxLayout" name="verticalLayout">
            <item>
             <layout class="QGridLayout" name="gridLayout_2">
              <item row="0" column="0">
@@ -304,34 +268,130 @@
    </hints>
   </connection>
   <connection>
-   <sender>lBluntButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lCustomOverhangBox</receiver>
+   <sender>lDirectRadioButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>lComplOverhangEdit</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>125</x>
-     <y>90</y>
+     <x>53</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>125</x>
-     <y>160</y>
+     <x>151</x>
+     <y>131</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>rBluntButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>rCustomOverhangBox</receiver>
+   <sender>lComplRadioButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>lDirectOverhangEdit</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>362</x>
-     <y>90</y>
+     <x>53</x>
+     <y>131</y>
     </hint>
     <hint type="destinationlabel">
-     <x>362</x>
-     <y>173</y>
+     <x>151</x>
+     <y>103</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lComplRadioButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>lComplOverhangEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>53</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>151</x>
+     <y>131</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lDirectRadioButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>lDirectOverhangEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>53</x>
+     <y>103</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>151</x>
+     <y>103</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rComplRadioButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>rDirectOverhangEdit</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>290</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>388</x>
+     <y>103</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rDirectRadioButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>rComplOverhangEdit</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>290</x>
+     <y>103</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>388</x>
+     <y>114</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rComplRadioButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>rComplOverhangEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>290</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>388</x>
+     <y>131</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rDirectRadioButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>rDirectOverhangEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>290</x>
+     <y>103</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>388</x>
+     <y>86</y>
     </hint>
    </hints>
   </connection>

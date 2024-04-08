@@ -29,8 +29,8 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTListWidget"
 
-void GTListWidget::click(QListWidget* listWidget, const QString& text, Qt::MouseButton button, int foundItemsNum) {
-    QList<QListWidgetItem*> list = listWidget->findItems(text, Qt::MatchExactly);
+void GTListWidget::click(QListWidget* listWidget, const QString& text, Qt::MouseButton button, int foundItemsNum, const GTGlobals::FindOptions& options) {
+    QList<QListWidgetItem*> list = listWidget->findItems(text, options.matchPolicy);
     GT_CHECK(0 <= foundItemsNum && foundItemsNum < list.size(), QString("item %1 not found").arg(text));
 
     QListWidgetItem* item = list.at(foundItemsNum);
