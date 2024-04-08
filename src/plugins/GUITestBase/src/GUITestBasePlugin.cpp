@@ -3552,6 +3552,7 @@ void GUITestBasePlugin::registerAdditionalActions(UGUITestBase* guiTestBase) {
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0003, UGUITestBase::PreCheck);
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0004, UGUITestBase::PreCheck);
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0005, UGUITestBase::PreCheck);
+    guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0006, UGUITestBase::PreCheck);
 
     guiTestBase->registerTest(new GUITest_posterior_checks::post_check_0000, UGUITestBase::PostCheck);
 
@@ -3560,7 +3561,6 @@ void GUITestBasePlugin::registerAdditionalActions(UGUITestBase* guiTestBase) {
     guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0002, UGUITestBase::PostAction);
     guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0003, UGUITestBase::PostAction);
     guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0004, UGUITestBase::PostAction);
-    guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0005, UGUITestBase::PostAction);
 }
 
 }  // namespace U2
