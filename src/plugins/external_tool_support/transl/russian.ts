@@ -2552,6 +2552,141 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>MfoldDialog</name>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="30"/>
+        <source>mfold settings</source>
+        <translation>Настройки mfold</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="36"/>
+        <source>Algorithm settings</source>
+        <translation>Настройки алгоритма</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="42"/>
+        <source>Folding temperature (between 0 and 100 °C).</source>
+        <translation>Температура укладки (от 0 до 100 °C).</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="60"/>
+        <source>Temperature</source>
+        <translation>Температура</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="89"/>
+        <source>The concentrations of Sodium and Magnesium ions. DNA only.</source>
+        <translation>Концентрации ионов натрия и магния. Настройка учитывается только для ДНК.</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="107"/>
+        <source>Ionic conditions</source>
+        <translation>Ионные условия</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="116"/>
+        <location filename="../src/mfold/MfoldDialog.ui" line="158"/>
+        <source> M</source>
+        <translation> М</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="197"/>
+        <source>Percent suboptimality</source>
+        <translation>Процент субоптимальности</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="226"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum number of foldings to be computed. The folding algorithm automatically computes a selection of secondary structures within the prescribed energy increment and stops when no more &lt;span style=&quot; font-style:italic;&quot;&gt;sufficiently different&lt;/span&gt; foldings can be found.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальное количество укладок, которое необходимо вычислить. Алгоритм укладки автоматически вычисляет выборку вторичных структур в пределах заданного приращения энергии Гиббса и останавливается, когда больше не удаётся найти &lt;span style=&quot; font-style:italic;&quot;&gt;достаточно различных&lt;/span&gt; укладок.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="244"/>
+        <source>Max num of foldings</source>
+        <translation>Макс. количество укладок</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="288"/>
+        <source>Window</source>
+        <translation>Окно</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="298"/>
+        <location filename="../src/mfold/MfoldDialog.ui" line="407"/>
+        <source>default</source>
+        <translation>по умолчанию</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="379"/>
+        <source>The frequency at which the bases in the image will be numbered. The default value is calculated based on the length of the sequence region.</source>
+        <translation>Частота, с которой будут нумероваться основания на изображении. Значение по умолчанию основано на длине региона.</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="270"/>
+        <source>The window parameter controls the number of foldings that are calculated and how different they will be from each other. It can be considered as a distance parameter. A smaller value for this parameter will usually result in a larger number of foldings being calculated, which may be very similar to each other. The default value is calculated based on the length of the sequence region.</source>
+        <translation>Окно управляет количеством рассчитываемых укладок и тем, насколько сильно они будут отличаться друг от друга. Его можно рассматривать как параметр расстояния. Меньшее значение этого параметра обычно приводит к расчету большего количества укладок, которые могут быть очень похожи друг на друга. Значение по умолчанию основано на длине региона.</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="179"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter controls the value of the free energy increment, &lt;span style=&quot; font-style:italic;&quot;&gt;δδG&lt;/span&gt;. If this number is set to &lt;span style=&quot; font-style:italic;&quot;&gt;p&lt;/span&gt;, then only foldings within &lt;span style=&quot; font-style:italic;&quot;&gt;p%&lt;/span&gt; from the minimum free energy will be computed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Величина приращения свободной энергии Гиббса &lt;span style=&quot; font-style:italic;&quot;&gt;δδG&lt;/span&gt;. Если это значение равно &lt;span style=&quot; font-style:italic;&quot;&gt;p&lt;/span&gt;, то будут рассчитываться только укладки в пределах &lt;span style=&quot; font-style:italic;&quot;&gt;p%&lt;/span&gt; от минимальной энергии Гиббса.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="317"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the parameter &lt;span style=&quot; font-style:italic;&quot;&gt;maxbp&lt;/span&gt; of the maximum distance between paired bases is specified, then any base pair &lt;span style=&quot; font-style:italic;&quot;&gt;{r&lt;/span&gt;&lt;span style=&quot; font-style:italic; vertical-align:sub;&quot;&gt;i&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;, r&lt;/span&gt;&lt;span style=&quot; font-style:italic; vertical-align:sub;&quot;&gt;j&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;}&lt;/span&gt; in a folding of a linear molecule must satisfy the condition &lt;span style=&quot; font-style:italic;&quot;&gt;j-i≤maxbp&lt;/span&gt;. In a circular molecule, the condition becomes &lt;span style=&quot; font-style:italic;&quot;&gt;min{j-i, N+i-j}≤maxbp&lt;/span&gt;, where &lt;span style=&quot; font-style:italic;&quot;&gt;N&lt;/span&gt; is the length of the region. Thus, small maxbp values ensure that only short range base pairs are predicted. By default there are no restrictions, i.e. &lt;span style=&quot; font-style:italic;&quot;&gt;maxbp=∞&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если задан параметр максимального расстояния между парами оснований &lt;span style=&quot; font-style:italic;&quot;&gt;maxbp&lt;/span&gt;, то любая пара оснований &lt;span style=&quot; font-style:italic;&quot;&gt;{r&lt;/span&gt;&lt;span style=&quot; font-style:italic; vertical-align:sub;&quot;&gt;i&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;, r&lt;/span&gt;&lt;span style=&quot; font-style:italic; vertical-align:sub;&quot;&gt;j&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;}&lt;/span&gt; в укладке линейной молекулы должна удовлетворять условию &lt;span style=&quot; font-style:italic;&quot;&gt;j-i≤maxbp&lt;/span&gt;. Для круговой молекулы условие принимает вид &lt;span style=&quot; font-style:italic;&quot;&gt;min{j-i, N+i-j}≤maxbp&lt;/span&gt;, где &lt;span style=&quot; font-style:italic;&quot;&gt;N&lt;/span&gt; — длина региона. Таким образом, небольшие значения maxbp гарантируют, что будут предсказаны только пары оснований с коротким диапазоном. По умолчанию ограничений нет, т.е. &lt;span style=&quot; font-style:italic;&quot;&gt;maxbp=∞&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="335"/>
+        <source>Max base pair distance</source>
+        <translation>Макс. расст. пар оснований</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="345"/>
+        <source>default (∞)</source>
+        <translation>по умолчанию (∞)</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="361"/>
+        <source>Display settings</source>
+        <translation>Настройки отображения</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="397"/>
+        <source>Base numbering frequency</source>
+        <translation>Частота нумерации оснований</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="426"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of rotation of the constructed structures. The default value means that the angle is chosen automatically by the structure drawing program. Otherwise, the structure is rotated by the modulo number of degrees specified, counterclockwise if the number is positive, or clockwise if the number is negative.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Угол поворота предсказанных структур. Значение по умолчанию означает, что угол выбирается автоматически программой рисования структур. В противном случае структура поворачивается на указанное по модулю количество градусов против часовой стрелки, если число положительное, или по часовой, если отрицательное.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="444"/>
+        <source>Rotation angle</source>
+        <translation>Угол поворота</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="490"/>
+        <source>Output</source>
+        <translation>Настройки сохранения</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="505"/>
+        <source>Output settings</source>
+        <translation>Выходные настройки</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="524"/>
+        <source>Save output to</source>
+        <translation>Сохранить в</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="572"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dots per inch (DPI) is a measure of spatial printing, in particular the number of individual dots that can be placed in a line within the span of 1 inch (2.54 cm). The more dots per inch an image has, the more detail you&apos;ll see when saved.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;DPI — количество точек на дюйм — мера разрешающей способности при вводе/выводе графической информации. Измеряется числом точек, приходящихся на линейный дюйм поверхности (1 дюйм=2,54 см). Чем больше DPI имеет изображение, тем больше деталей Вы увидите при сохранении.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+</context>
+<context>
     <name>MrBayesDialog</name>
     <message>
         <location filename="../src/mrbayes/MrBayesDialog.ui" line="60"/>
@@ -11480,6 +11615,229 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <location filename="../src/blast/MakeBlastDbTask.cpp" line="168"/>
         <source>Input file set is empty.</source>
         <translation>Входной файл не выбран.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MfoldContext</name>
+    <message>
+        <location filename="../src/mfold/MfoldSupport.cpp" line="100"/>
+        <source>Path for mfold tool not selected.</source>
+        <translation>Путь для mfold не указан.</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldSupport.cpp" line="101"/>
+        <source>Do you want to select it now?</source>
+        <translation>Выбрать сейчас?</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MfoldDialog</name>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="54"/>
+        <source>Region cannot be larger than %1 nucleotides</source>
+        <translation>Длина региона должна быть не более %1 нуклеотидов</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="66"/>
+        <source>Reset settings</source>
+        <translation>Сбросить настройки</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="67"/>
+        <source>Run</source>
+        <translation>Запустить</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="68"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="108"/>
+        <source>Select a folder</source>
+        <translation>Выберите папку</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="128"/>
+        <source>Start position not specified</source>
+        <translation>Начальная позиция не указана</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="130"/>
+        <source>End position not specified</source>
+        <translation>Конечная позиция не указана</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="132"/>
+        <source>Invalid start position</source>
+        <translation>Недопустимая начальная позиция</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="134"/>
+        <source>Invalid end position</source>
+        <translation>Недопустимая конечная позиция</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="136"/>
+        <source>Start position cannot be greater than end position</source>
+        <translation>Начало не может быть больше конца</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="173"/>
+        <source>Invalid sequence region!</source>
+        <translation>Недопустимый регион последовательности!</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="188"/>
+        <source>Invalid out path!</source>
+        <translation>Недопустимый выходной путь!</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="191"/>
+        <source>Output dir is read-only</source>
+        <translation>Выходная директория доступна только для чтения</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MfoldSupport</name>
+    <message>
+        <location filename="../src/mfold/MfoldSupport.cpp" line="54"/>
+        <source>The &lt;i&gt;mfold&lt;/i&gt; software computes a collection of optimal and suboptimal foldings &lt;a href=&quot;http://www.unafold.org/&quot;&gt;http://www.unafold.org/&lt;/a&gt;.&lt;br&gt;Secondary structure images are generated using Ghostscript &lt;a href=&quot;https://ghostscript.com/&quot;&gt;https://ghostscript.com/&lt;/a&gt;.</source>
+        <translation>Программное обеспечение &lt;i&gt;mfold&lt;/i&gt; вычисляет набор оптимальных и субоптимальных укладок &lt;a href=&quot;http://www.unafold.org/&quot;&gt;http://www.unafold.org/&lt;/a&gt;.&lt;br&gt;Изображения вторичных структур генерируются с помощью Ghostscript &lt;a href=&quot;https://ghostscript.com/&quot;&gt;https://ghostscript.com/&lt;/a&gt;.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MfoldTask</name>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="138"/>
+        <source>Error parsing `%1` param</source>
+        <translation>Ошибка парсинга параметра `%1`</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="178"/>
+        <source>Unexpected EOF</source>
+        <translation>Неожиданный EOF</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="203"/>
+        <source>Found %1 images in `%2` and %3 thermodynamic tables in `%4`</source>
+        <translation>Найдено %1 изображения(-ий) в `%2` и %3 термодинамических таблиц(ы) в `%4`</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="404"/>
+        <source>Parameters</source>
+        <translation>Параметры</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="411"/>
+        <source>Sequence name</source>
+        <translation>Имя последовательности</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="416"/>
+        <source>Sequence path</source>
+        <translation>Входная последовательность</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="422"/>
+        <source>Region</source>
+        <translation>Регион</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="428"/>
+        <source>Sequence type</source>
+        <translation>Тип последовательности</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="429"/>
+        <source>Circular</source>
+        <translation>Круговая</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="429"/>
+        <source>Linear</source>
+        <translation>Линейная</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="430"/>
+        <source>DNA</source>
+        <translation>ДНК</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="430"/>
+        <source>RNA</source>
+        <translation>РНК</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="434"/>
+        <source>Temperature</source>
+        <translation>Температура</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="440"/>
+        <source>Percent suboptimality</source>
+        <translation>Процент субоптимальности</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="446"/>
+        <source>Ionic conditions</source>
+        <translation>Ионные условия</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="456"/>
+        <source>Window</source>
+        <translation>Окно</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="459"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="466"/>
+        <source>default</source>
+        <translation>по умолчанию</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="464"/>
+        <source>Maximum distance between paired bases</source>
+        <translation>Максимальное расстояние между парами оснований</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="476"/>
+        <source>Output HTML report</source>
+        <translation>Выходной HTML отчёт</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="491"/>
+        <source>Found structures</source>
+        <translation>Найденные структуры</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="509"/>
+        <source>Structure</source>
+        <translation>Структура</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="539"/>
+        <source>mfold log</source>
+        <translation>Лог mfold</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="549"/>
+        <source>Predict and visualize hairpins with mfold</source>
+        <translation>Предсказание и визуализация шпилек с помощью mfold</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="566"/>
+        <source>mfold tool is invalid, check it in settings</source>
+        <translation>Инструмент mfold недействителен, проверьте его в настройках</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="599"/>
+        <source>No hairpins found. Nothing to show</source>
+        <translation>Шпильки не найдены. Нечего отображать</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="613"/>
+        <source>Unable to create output file `%1`</source>
+        <translation>Невозможно создать выходной файл `%1`</translation>
     </message>
 </context>
 <context>

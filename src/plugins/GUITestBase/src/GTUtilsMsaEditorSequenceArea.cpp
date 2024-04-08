@@ -208,6 +208,21 @@ void GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu() {
 }
 
 void GTUtilsMSAEditorSequenceArea::scrollToPosition(const QPoint& position) {
+    if (GTUtilsMsaEditor::getMultilineMode()) {
+        class ScrollInMainThread : public CustomScenario {
+        public:
+            ScrollInMainThread(const QPoint& _p)
+                : p(_p) {
+            }
+            void run() override {
+                auto ui = GTUtilsMsaEditor::getEditor()->getMainWidget();
+                ui->getScrollController()->scrollToPoint(p);
+            }
+            QPoint p;
+        };
+        GTThread::runInMainThread(new ScrollInMainThread(position));
+        return;
+    }
     auto msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(0);
     CHECK_SET_ERR_RESULT(msaSeqArea != nullptr,
                          QString("Can't find sequence area #%1").arg(0), );
@@ -310,11 +325,7 @@ void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(const QPoint& globalMaPos
     QPoint positionCenter;
     uint muiCount = msaSeqArea->getEditor()->getMainWidget()->getLineWidgetCount();
     uint multilineIndex = 0;
-    if (GTUtilsMsaEditor::getMultilineMode()) {
-        ui->getScrollController()->scrollToPoint(globalMaPosition);
-    } else {
-        scrollToPosition(globalMaPosition);
-    }
+    scrollToPosition(globalMaPosition);
     do {
         msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(multilineIndex);
         MaEditorWgt* mui = ui->getLineWidget(multilineIndex);

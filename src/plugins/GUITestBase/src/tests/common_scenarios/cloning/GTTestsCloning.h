@@ -30,6 +30,8 @@ namespace GUITest_common_scenarios_cloning {
 #define GUI_TEST_SUITE "GUITest_common_scenarios_cloning"
 
 GUI_TEST_CLASS_DECLARATION(test_0011)
+GUI_TEST_CLASS_DECLARATION(test_0012)
+GUI_TEST_CLASS_DECLARATION(test_0013)
 
 #undef GUI_TEST_SUITE
 }  // namespace GUITest_common_scenarios_cloning

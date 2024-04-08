@@ -1699,6 +1699,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7247);
     REGISTER_TEST(GUITest_regression_scenarios::test_7276);
     REGISTER_TEST(GUITest_regression_scenarios::test_7279);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7290);
     REGISTER_TEST(GUITest_regression_scenarios::test_7293);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7338);
@@ -2120,6 +2121,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0016_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0016_2);
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0017);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0018);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0019);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0020);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0021_1);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0021_2);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0021_3);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/sequence edit mode/
@@ -3414,6 +3421,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     // common_scenarios/cloning
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_cloning::test_0011);
+    REGISTER_TEST(GUITest_common_scenarios_cloning::test_0012);
+    REGISTER_TEST(GUITest_common_scenarios_cloning::test_0013);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/options_panel/sequence_view
@@ -3538,6 +3547,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_mfold::test_0003_limits);
     REGISTER_TEST(GUITest_common_scenarios_mfold::test_0004_region);
     REGISTER_TEST(GUITest_common_scenarios_mfold::test_0005_large);
+    REGISTER_TEST(GUITest_common_scenarios_mfold::test_0006_html_name);
+    REGISTER_TEST(GUITest_common_scenarios_mfold::test_0007_save_dialog);
+    REGISTER_TEST(GUITest_common_scenarios_mfold::test_0008_save_dialog);
 
     // Query designer.
     REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001);

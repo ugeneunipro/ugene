@@ -35,6 +35,7 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/RegionSelector.h>
 #include <U2Gui/U2FileDialog.h>
+#include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
@@ -49,17 +50,37 @@ namespace {
 // 5. This bugfix differentiates UGENE from the original http://www.unafold.org/ tool,
 //      as some users enter large sequences and break the server.
 constexpr int maxRegionLen = 3000;
-const QString tooLongRegionStr = QString(QT_TR_NOOP("Region cannot be larger than %1 nucleotides")).arg(maxRegionLen);
+static QString getLongRegionErr() {
+    return MfoldDialog::tr("Region cannot be larger than %1 nucleotides").arg(maxRegionLen);
+}
 }  // namespace
 
 MfoldDialog::MfoldDialog(const ADVSequenceObjectContext& ctx)
     : QDialog(ctx.getAnnotatedDNAView()->getWidget()), seqLen(ctx.getSequenceLength()),
-      isCircular(ctx.getSequenceObject()->isCircular()) {
+      isCircular(ctx.getSequenceObject()->isCircular()),
+      savableWidget(this, GObjectViewUtils::getActiveObjectViewWindow(), {"range_selector"}) {
     ui.setupUi(this);
     initRegionSelector(ctx.getSequenceSelection());
     initOutputTab(ctx.getSequenceGObject()->getDocument()->getURL().dirPath());
+
+    ui.buttonBox->button(QDialogButtonBox::RestoreDefaults)->setText(tr("Reset settings"));
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
+    ui.buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    connect(ui.buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked, this, [this]() {
+        MfoldAlgoSettings defaultSettings;
+        ui.tSpinBox->setValue(defaultSettings.temperature);
+        ui.naDoubleSpinBox->setValue(defaultSettings.naConc);
+        ui.mgDoubleSpinBox->setValue(defaultSettings.mgConc);
+        ui.pSpinBox->setValue(defaultSettings.percent);
+        ui.wSpinBox->setValue(defaultSettings.window);
+        ui.maxBpSpinBox->setValue(defaultSettings.maxBp);
+        ui.maxSpinBox->setValue(defaultSettings.maxFold);
+        ui.labFrSpinBox->setValue(defaultSettings.labFr);
+        ui.rotAngDoubleSpinBox->setValue(defaultSettings.rotAng);
+    });
     new HelpButton(this, ui.buttonBox, "96666238");
+
+    U2WidgetStateStorage::restoreWidgetState(savableWidget);
 }
 
 void MfoldDialog::initRegionSelector(DNASequenceSelection* seqSelection) {
@@ -114,7 +135,7 @@ void MfoldDialog::validateRegionAndShowError() {
     } else if (!isCircular && startVal > endVal) {
         err = tr("Start position cannot be greater than end position");
     } else if (getRegionLen(startVal, endVal) > maxRegionLen) {
-        err = tooLongRegionStr;
+        err = getLongRegionErr();
     } else {
         err = "";
     }
@@ -152,7 +173,7 @@ void MfoldDialog::accept() {
                                                                    tr("Invalid sequence region!"),
                                                                    QMessageBox::Ok,
                                                                    this);
-        msgBox->setInformativeText(tooLongRegionStr);
+        msgBox->setInformativeText(getLongRegionErr());
         msgBox->exec();
         regionSelector->setFocus(Qt::OtherFocusReason);
         return;

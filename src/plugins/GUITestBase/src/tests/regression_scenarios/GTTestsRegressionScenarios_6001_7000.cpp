@@ -1647,6 +1647,11 @@ GUI_TEST_CLASS_DEFINITION(test_6298) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6301) {
+    /*
+    * 1. Open menu "Settings"->"Preferences..."
+    * 2. Open tab "External tools"
+    * Expected state: tool "vcf-consensus" have a valuable version in it description
+    */
     class Custom : public CustomScenario {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();

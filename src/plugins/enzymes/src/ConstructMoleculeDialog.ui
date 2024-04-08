@@ -187,8 +187,37 @@
          </item>
          <item>
           <widget class="QToolButton" name="editFragmentButton">
+           <property name="toolTip">
+            <string>Open the &quot;Edit Molecule Fragment&quot; dialog</string>
+           </property>
            <property name="text">
             <string>Edit</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbAdjustLeft">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>Automatically edit selected fragment's 5' end and fit it to the 3' end of the fragment above</string>
+           </property>
+           <property name="text">
+            <string>Adjust 5' end</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbAdjustRight">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>Automatically edit selected fragment's 3' end and fit it to the 5' end of the fragment below</string>
+           </property>
+           <property name="text">
+            <string>Adjust 3' end</string>
            </property>
           </widget>
          </item>

@@ -41,6 +41,7 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/SaveDocumentController.h>
+#include <U2Gui/U2LongLongValidator.h>
 
 namespace U2 {
 
@@ -53,8 +54,8 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MsaObject
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    startLineEdit->setValidator(new QIntValidator(1, msaObject->getLength(), startLineEdit));
-    endLineEdit->setValidator(new QIntValidator(1, msaObject->getLength(), endLineEdit));
+    startLineEdit->setValidator(new U2LongLongValidator(1, msaObject->getLength(), startLineEdit));
+    endLineEdit->setValidator(new U2LongLongValidator(1, msaObject->getLength(), endLineEdit));
 
     connect(allButton, SIGNAL(clicked()), SLOT(sl_allButtonClicked()));
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));

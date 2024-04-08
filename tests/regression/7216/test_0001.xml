@@ -5,7 +5,7 @@ task="!common_data_dir!cmdline/pcr/pcr.uwl"
 in="!common_data_dir!fasta/pcr_test.fa"
 primers="!common_data_dir!primer3/not_for_production_2.lib"
 out="!tmp_data_dir!7216_out.gb"
-message="An error 'Unexpected symbol: Y' has occurred during processing file with primers"
+message="The reverse primer contains a character from the Extended DNA alphabet. Unable to calculate primer statistics."
 />
 
 </multi-test>

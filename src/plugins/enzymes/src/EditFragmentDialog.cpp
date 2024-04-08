@@ -40,11 +40,21 @@
 namespace U2 {
 
 EditFragmentDialog::EditFragmentDialog(DNAFragment& fragment, QWidget* p)
-    : QDialog(p), dnaFragment(fragment) {
+    : QDialog(p),
+      dnaFragment(fragment),
+      comboBoxItems({{tr("Blunt"), OverhangType::Blunt}, {tr("Sticky"), OverhangType::Sticky}}) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930769");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+
+    QList<QComboBox*> cbList = {cbLeftEndType, cbRightEndType};
+    const auto& cbItemKeys = comboBoxItems.keys();
+    for (auto comboBox : qAsConst(cbList)) {
+        for (const auto& key : qAsConst(cbItemKeys)) {
+            comboBox->addItem(key, QVariant((int)comboBoxItems[key]));
+        }
+    }
 
     static const int REGION_LEN = 10;
 
@@ -73,32 +83,39 @@ EditFragmentDialog::EditFragmentDialog(DNAFragment& fragment, QWidget* p)
     if (leftTerm.isDirect) {
         lDirectRadioButton->setChecked(true);
         lDirectOverhangEdit->setText(leftTerm.overhang);
+        lDirectOverhangEdit->setEnabled(true);
+        lComplOverhangEdit->setEnabled(false);
     } else {
         lComplRadioButton->setChecked(true);
         QByteArray buf = leftTerm.overhang;
         transl->translate(buf.data(), buf.length());
         lComplOverhangEdit->setText(buf);
+        lDirectOverhangEdit->setEnabled(false);
+        lComplOverhangEdit->setEnabled(true);
     }
 
     if (rightTerm.isDirect) {
         rDirectRadioButton->setChecked(true);
         rDirectOverhangEdit->setText(rightTerm.overhang);
+        rDirectOverhangEdit->setEnabled(true);
+        rComplOverhangEdit->setEnabled(false);
     } else {
         rComplRadioButton->setChecked(true);
         QByteArray buf = rightTerm.overhang;
         transl->translate(buf.data(), buf.size());
         rComplOverhangEdit->setText(buf);
+        rDirectOverhangEdit->setEnabled(false);
+        rComplOverhangEdit->setEnabled(true);
     }
 
-    leftTerm.type == OVERHANG_TYPE_BLUNT ? lBluntButton->toggle() : lStickyButton->toggle();
-    rightTerm.type == OVERHANG_TYPE_BLUNT ? rBluntButton->toggle() : rStickyButton->toggle();
-
-    updatePreview();
-
-    connect(rStickyButton, SIGNAL(clicked()), SLOT(sl_updatePreview()));
-    connect(rBluntButton, SIGNAL(clicked()), SLOT(sl_updatePreview()));
-    connect(lStickyButton, SIGNAL(clicked()), SLOT(sl_updatePreview()));
-    connect(lBluntButton, SIGNAL(clicked()), SLOT(sl_updatePreview()));
+    connect(cbLeftEndType, QOverload<int>::of(&QComboBox::currentIndexChanged), [this](int index) {
+        lStickyWidget->setEnabled((OverhangType)index == OverhangType::Sticky);
+        sl_updatePreview();
+    });
+    connect(cbRightEndType, QOverload<int>::of(&QComboBox::currentIndexChanged), [this](int index) {
+        rStickyWidget->setEnabled((OverhangType)index == OverhangType::Sticky);
+        sl_updatePreview();
+    });
     connect(lDirectRadioButton, SIGNAL(clicked()), SLOT(sl_updatePreview()));
     connect(lComplRadioButton, SIGNAL(clicked()), SLOT(sl_updatePreview()));
     connect(rDirectRadioButton, SIGNAL(clicked()), SLOT(sl_updatePreview()));
@@ -110,16 +127,26 @@ EditFragmentDialog::EditFragmentDialog(DNAFragment& fragment, QWidget* p)
     connect(lComplOverhangEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_updatePreview()));
     connect(rDirectOverhangEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_updatePreview()));
     connect(rComplOverhangEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_updatePreview()));
+
+    bool isLeftSticky = leftTerm.type == OVERHANG_TYPE_STICKY;
+    cbLeftEndType->setCurrentIndex(isLeftSticky ? (int)OverhangType::Sticky : (int)OverhangType::Blunt);
+
+    bool isRightSticky = rightTerm.type == OVERHANG_TYPE_STICKY;
+    cbRightEndType->setCurrentIndex(isRightSticky ? (int)OverhangType::Sticky : (int)OverhangType::Blunt);
+
+    updatePreview();
 }
 
 void EditFragmentDialog::accept() {
-    QByteArray lTermType = lBluntButton->isChecked() ? OVERHANG_TYPE_BLUNT : OVERHANG_TYPE_STICKY;
+    bool leftSticky = cbLeftEndType->currentIndex() == (int)OverhangType::Sticky;
+    QByteArray lTermType = leftSticky ? OVERHANG_TYPE_STICKY : OVERHANG_TYPE_BLUNT;
     dnaFragment.setLeftTermType(lTermType);
 
-    QByteArray rTermType = rBluntButton->isChecked() ? OVERHANG_TYPE_BLUNT : OVERHANG_TYPE_STICKY;
+    bool rightSticky = cbRightEndType->currentIndex() == (int)OverhangType::Sticky;
+    QByteArray rTermType = rightSticky ? OVERHANG_TYPE_STICKY : OVERHANG_TYPE_BLUNT;
     dnaFragment.setRightTermType(rTermType);
 
-    if (lCustomOverhangBox->isChecked() && lStickyButton->isChecked()) {
+    if (leftSticky) {
         QLineEdit* lCustomOverhangEdit = lDirectRadioButton->isChecked() ? lDirectOverhangEdit : lComplOverhangEdit;
         QString leftOverhang = lCustomOverhangEdit->text();
 
@@ -142,7 +169,7 @@ void EditFragmentDialog::accept() {
         dnaFragment.setLeftOverhangStrand(lDirectRadioButton->isChecked());
     }
 
-    if (rCustomOverhangBox->isChecked() && rStickyButton->isChecked()) {
+    if (rightSticky) {
         QLineEdit* rCustomOverhangEdit = rDirectRadioButton->isChecked() ? rDirectOverhangEdit : rComplOverhangEdit;
         QString rightOverhang = rCustomOverhangEdit->text();
 
@@ -176,12 +203,12 @@ void EditFragmentDialog::updatePreview() {
 
     QString uLeftOverhang, bLeftOverhang, uRightOverhang, bRightOverhang;
 
-    if (!lBluntButton->isChecked()) {
+    if (cbLeftEndType->currentIndex() == (int)OverhangType::Sticky) {
         uLeftOverhang = lDirectRadioButton->isChecked() ? lDirectOverhangEdit->text().toUpper() : QByteArray();
         bLeftOverhang = lComplRadioButton->isChecked() ? lComplOverhangEdit->text().toUpper() : QByteArray();
     }
 
-    if (!rBluntButton->isChecked()) {
+    if (cbRightEndType->currentIndex() == (int)OverhangType::Sticky) {
         uRightOverhang = rDirectRadioButton->isChecked() ? rDirectOverhangEdit->text().toUpper() : QByteArray();
         bRightOverhang = rComplRadioButton->isChecked() ? rComplOverhangEdit->text().toUpper() : QByteArray();
     }

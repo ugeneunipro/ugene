@@ -28,7 +28,7 @@ namespace HI {
 
 class HI_EXPORT GTListWidget {
 public:
-    static void click(QListWidget* listWidget, const QString& text, Qt::MouseButton button = Qt::LeftButton, int foundItemsNum = 0);
+    static void click(QListWidget* listWidget, const QString& text, Qt::MouseButton button = Qt::LeftButton, int foundItemsNum = 0, const GTGlobals::FindOptions& options = {});
     static bool isItemChecked(QListWidget* listWidget, const QString& text);
     static void checkItem(QListWidget* listWidget, const QString& text, bool newState);
     static void checkAllItems(QListWidget* listWidget, bool newState);

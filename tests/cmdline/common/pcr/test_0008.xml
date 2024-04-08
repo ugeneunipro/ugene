@@ -5,10 +5,11 @@
 
     <run-cmdline
             task="!common_data_dir!cmdline/pcr/pcr.uwl"
-            in="!sample_data_dir!FASTA/human_T1.fa"
+            in="!common_data_dir!genbank/CVU55762.gb"
             primers="!common_data_dir!cmdline/pcr/long_primers.fa"
             working-dir="pcr_0008"
-            message="Primers specified in &quot;long_primers.fa&quot; are too long."
+            message="The forward primer length should be between 15 and 200 bp. Unable to calculate primer statistics."
+            message2="All primer pairs have been filtered, see log for details."
     />
 
 </multi-test>

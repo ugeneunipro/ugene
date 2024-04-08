@@ -49,6 +49,8 @@ private slots:
     void sl_forceBluntBoxClicked();
     void sl_onEditFragmentButtonClicked();
     void sl_onItemClicked(QTreeWidgetItem* item, int column);
+    void sl_adjustLeftEnd();
+    void sl_adjustRightEnd();
 
 protected:
     bool eventFilter(QObject* obj, QEvent* event);
@@ -56,6 +58,8 @@ protected:
 private:
     void update();
     void initSaveController();
+
+    static const QString createEndSign(const DNAFragmentTerm& term);
 
     QList<DNAFragment> fragments;
     QList<int> selected;

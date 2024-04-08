@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-// Mfold specific params for script args. Default values are the same as in Mfold script.
+// mfold specific params for script args. Default values are the same as in mfold script.
 struct MfoldAlgoSettings final {
     int temperature = 37;
     double naConc = 1;
@@ -34,7 +34,7 @@ struct MfoldAlgoSettings final {
     int percent = 5;
     int window = -1;  // -1=depends on sequence len, see mfold:338
     int maxBp = 0;  // 0=inf i.e. no limit
-    int maxFold = 100;
+    int maxFold = 50;
     int labFr = -1;  // -1=depends on sequence len, see mfold:551
     double rotAng = 0;
 };

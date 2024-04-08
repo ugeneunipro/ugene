@@ -19,6 +19,6 @@ echo "    ##teamcity[blockOpened name='Building NSIS binary']"
 echo "    ##teamcity[blockClosed name='Building NSIS binary']"
 
 echo "    ##teamcity[blockOpened name='Signing installer']"
-    signtool.exe sign /a /t http://timestamp.digicert.com /s MY /n "NCIT UNIPRO LLC" /debug  /v %TEAMCITY_WORK_DIR%\%UGENE_DISTRIB_FILE_NAME%
+    signtool.exe sign /a /tr http://timestamp.globalsign.com/tsa/r6advanced1 /td SHA256 /fd SHA256 /n "NTSIT UNIPRO LLC" /debug /v %TEAMCITY_WORK_DIR%\%UGENE_DISTRIB_FILE_NAME%
 echo "    ##teamcity[blockClosed name='Signing installer']"
 
