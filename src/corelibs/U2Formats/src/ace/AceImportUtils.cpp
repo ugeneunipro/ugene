@@ -181,13 +181,13 @@ Assembly AceReader::getAssembly() {
     readsCount = getReadsCount(headerLine);
     CHECK_OP((*os), result);
 
-    QList<QByteArray> names;
     // consensus, is set as reference in assembly
-    parseConsensus(io, buff, names, headerLine, reference);
+    parseConsensus(io, buff, headerLine, reference);
     CHECK_OP((*os), result);
 
     // read AF tag
     QList<Assembly::Sequence> reads;
+    QList<QByteArray> names;
     parseAfTag(io, buff, readsCount, reads, names);
     CHECK_OP((*os), result);
     CHECK_EXT(readsCount == reads.size(),
@@ -271,7 +271,7 @@ int AceReader::getReadsCount(const QByteArray& cur_line) {
     return readsCount;
 }
 
-void AceReader::parseConsensus(IOAdapter* io, char* buff, QList<QByteArray>& names, QByteArray& headerLine, Assembly::Sequence& consensus) {
+void AceReader::parseConsensus(IOAdapter* io, char* buff, QByteArray& headerLine, Assembly::Sequence& consensus) {
     char aceBStartChar = 'B';
     QBitArray aceBStart = TextUtils::createBitMap(aceBStartChar);
     qint64 len = 0;
@@ -279,9 +279,6 @@ void AceReader::parseConsensus(IOAdapter* io, char* buff, QList<QByteArray>& nam
     QByteArray line;
 
     consensus.name = getName(headerLine);
-    CHECK_EXT(!names.contains(consensus.name), os->setError(DocumentFormatUtils::tr("A name is duplicated")), );
-
-    names << consensus.name;
     consensus.name += "_ref";
 
     do {

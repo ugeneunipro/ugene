@@ -214,7 +214,7 @@ static inline void skipBreaks(U2::IOAdapter* io, U2OpStatus& ti, char* buff, qin
     CHECK_EXT(lineOk, ti.setError(ACEFormat::tr("Line is too long")), );
 }
 
-static inline void parseConsensus(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QString& consName, QList<QString>& names, QString& headerLine, QByteArray& consensus) {
+static inline void parseConsensus(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QString& consName, QString& headerLine, QByteArray& consensus) {
     char aceBStartChar = 'B';
     QBitArray aceBStart = TextUtils::createBitMap(aceBStartChar);
     qint64 len = 0;
@@ -222,9 +222,7 @@ static inline void parseConsensus(U2::IOAdapter* io, U2OpStatus& ti, char* buff,
     QString line;
     consName = getName(headerLine);
     CHECK_EXT(!consName.isEmpty(), ti.setError(ACEFormat::tr("There is no AF note")), );
-    CHECK_EXT(!names.contains(consName), ti.setError(ACEFormat::tr("A name is duplicated")), );
 
-    names << consName;
     consensus.clear();
     do {
         len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, aceBStart, IOAdapter::Term_Exclude, &ok);
@@ -407,13 +405,11 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         int count = readsCount(headerLine);
         CHECK_EXT(count != -1, os.setError(ACEFormat::tr("There is no note about reads count")), );
 
-        QList<QString> names;
-
         // consensus
         QByteArray consensus;
         QString consName;
 
-        parseConsensus(io, os, buff, consName, names, headerLine, consensus);
+        parseConsensus(io, os, buff, consName, headerLine, consensus);
         CHECK_OP(os, );
 
         Msa al(consName);
@@ -421,6 +417,7 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
         // AF
         QList<Assembly::Sequence> reads;
+        QList<QString> names;
         parseAFTag(io, os, buff, count, reads, names);
         CHECK_OP(os, );
 

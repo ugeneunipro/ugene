@@ -81,7 +81,7 @@ private:
     int getContigCount(const QByteArray& cur_line);
     int getSubString(QByteArray& line, int pos);
     int getReadsCount(const QByteArray& cur_line);
-    void parseConsensus(IOAdapter* io, char* buff, QList<QByteArray>& names, QByteArray& headerLine, Assembly::Sequence& consensus);
+    void parseConsensus(IOAdapter* io, char* buff, QByteArray& headerLine, Assembly::Sequence& consensus);
     QByteArray getName(const QByteArray& line);
     bool checkSeq(const QByteArray& seq);
     void parseAfTag(IOAdapter* io, char* buff, int count, QList<Assembly::Sequence>& reads, QList<QByteArray>& names);
