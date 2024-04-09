@@ -2281,34 +2281,30 @@ GUI_TEST_CLASS_DEFINITION(test_6485) {
     * 3. Open context menu for created cmdline element on palette. Choose 'Remove' item.
     * Expected state: message box with warning appeared, element is not removed
     */
-    QTreeWidgetItem* el = nullptr;
-    auto findEl_6485 = [&]() {
+    auto findEl_6485 = []() -> QTreeWidgetItem* {
         auto wdWindow = GTUtilsWorkflowDesigner::getActiveWorkflowDesignerWindow();
         auto treeWidget = GTWidget::findTreeWidget("WorkflowPaletteElements", wdWindow);
-        QList<QTreeWidgetItem*> outerList = treeWidget->findItems("", Qt::MatchContains);
-        for (int i = 0; i < outerList.count(); i++) {
-            QList<QTreeWidgetItem*> innerList;
-            for (int j = 0; j < outerList.value(i)->childCount(); j++) {
-                innerList.append(outerList.value(i)->child(j));
-            }
-            for (QTreeWidgetItem* item : qAsConst(innerList)) {
+        QTreeWidgetItemIterator it(treeWidget);
+        while (*it) {
+            for (int j = 0; j < (*it)->childCount(); j++) {
+                QTreeWidgetItem* item = (*it)->child(j);
                 QString s = item->data(0, Qt::UserRole).value<QAction*>()->text();
                 if (s.startsWith("el_6485")) {
-                    el = item;
-                    return;
+                    return item;
                 }
             }
-        }
-        el = nullptr;
+            it++;
+        };
+        return nullptr;
     };
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsWorkflowDesigner::setCurrentTab(GTUtilsWorkflowDesigner::algorithms);
 
-    for (findEl_6485(); el != nullptr; findEl_6485()) {
+    while (findEl_6485() != nullptr) {
         GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "", "Remove element"));
         GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove"}));
-        GTTreeWidget::click(el);
+        GTTreeWidget::click(findEl_6485());
         GTMouseDriver::click(Qt::RightButton);
     }
 
