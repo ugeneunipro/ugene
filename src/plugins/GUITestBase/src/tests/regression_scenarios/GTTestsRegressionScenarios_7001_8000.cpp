@@ -1001,7 +1001,7 @@ GUI_TEST_CLASS_DEFINITION(test_7267) {
     GTUtilsProjectTreeView::rename("NC_001363", "test_7267");
     GTMenu::clickMainMenuItem({"File", "Save all"});
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsProject::closeProject(false);
+    GTUtilsProject::closeProject(true);
     GTUtilsTaskTreeView::waitTaskFinished();
     GTFileDialog::openFile(sandBoxDir, "test_7267.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
