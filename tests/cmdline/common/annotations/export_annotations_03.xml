@@ -3,8 +3,8 @@
             task="!common_data_dir!cmdline/annotations/export.uwl"
             in="!common_data_dir!genbank/murine_cut.gb"
             format="GTF"
-            out="!tmp_data_dir!export_annotations_03.gbk"/>
+            out="!tmp_data_dir!export_annotations_03.gtf"/>
 
-    <load-document index="doc2" url="export_annotations_03.gbk" io="local_file" format="GTF" dir="temp"/>
+    <load-document index="doc2" url="export_annotations_03.gtf" io="local_file" format="GTF" dir="temp"/>
 
 </multi-test>
