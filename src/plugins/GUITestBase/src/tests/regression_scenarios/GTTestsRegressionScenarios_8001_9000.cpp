@@ -408,17 +408,14 @@ GUI_TEST_CLASS_DEFINITION(test_8064) {
 
     GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);  // Close wizard.
-    GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsWorkflowDesigner::click("Read alignment");
     GTUtilsWorkflowDesigner::addInputFile("Read alignment", dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsWorkflowDesigner::setBreakpoint("Write alignment");
-
     GTUtilsWorkflowDesigner::removeItem("Write alignment");
 
     GTUtilsWorkflowDesigner::addElement("Write Alignment");
-
     GTUtilsWorkflowDesigner::connect(GTUtilsWorkflowDesigner::getWorker("Align with MUSCLE"), GTUtilsWorkflowDesigner::getWorker("Write Alignment"));
 
 
