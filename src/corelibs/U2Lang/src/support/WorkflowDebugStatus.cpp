@@ -91,7 +91,7 @@ void WorkflowDebugStatus::addBreakpointToActor(const ActorId& actor) {
 
 void WorkflowDebugStatus::removeBreakpointFromActor(const ActorId& actor) {
     WorkflowBreakpoint* breakpoint = getBreakpointForActor(actor);
-    Q_ASSERT(breakpoint != nullptr);
+    CHECK(breakpoint != nullptr, );
     removeBreakpoint(breakpoint);
 }
 
