@@ -52,7 +52,10 @@ class Version;
 
 class U2CORE_EXPORT U2DbiOptions {
 public:
-    /** Application version number that is supposed to be minimum version required to make use of the database */
+    /**
+     * Minimum compatible version of UGENE that can work with the database correctly.
+     * By historical reasons is formatted like "1.${UGENE-MAJOR-VERSION}.${UGENE-MINOR-VERSION}".
+     */
     static const QString APP_MIN_COMPATIBLE_VERSION;
 
     /** A constant to retrieve all available data. */
@@ -354,11 +357,6 @@ public:
     virtual bool isReadOnly() const = 0;
 
     virtual bool isTransactionActive() const = 0;
-
-protected:
-    /** Stores to database the following properties:
-        U2DbiOptions::APP_MIN_COMPATIBLE_VERSION */
-    void setVersionProperties(const Version& minVersion, U2OpStatus& os);
 };
 
 /**

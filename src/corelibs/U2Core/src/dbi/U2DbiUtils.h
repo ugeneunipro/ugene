@@ -127,8 +127,6 @@ public:
     template<class T>
     static QList<T> toList(U2DbiIterator<T>* it);
 
-    static U2DbiRef toRef(U2Dbi* dbi);
-
     /** Adds limit operator to the sql query */
     static void addLimit(QString& sql, qint64 offset, qint64 count);
 
@@ -160,16 +158,11 @@ public:
     static QString createFullDbiUrl(const QString& userName, const QString& dbiUrl);
 
     static bool parseDbiUrl(const QString& dbiUrl, QString& host, int& port, QString& dbName);
-    static bool parseFullDbiUrl(const QString& dbiUrl, QString& userName, QString& host, int& port, QString& dbName);
-
     static QString full2shortDbiUrl(const QString& fullDbiUrl, QString& userName);
 
     static QString makeFolderCanonical(const QString& folder);
 
     static bool isDbiReadOnly(const U2DbiRef& dbiRef);
-    static Version getDbMinRequiredVersion(const U2DbiRef& dbiRef, U2OpStatus& os);
-    static bool isDatabaseTooNew(const U2DbiRef& dbiRef, const Version& ugeneVersion, QString& minRequiredVersionString, U2OpStatus& os);
-    static bool isDatabaseTooOld(const U2DbiRef& dbiRef, const Version& ugeneVersion, U2OpStatus& os);
 
     static const QString PUBLIC_DATABASE_NAME;
     static const QString PUBLIC_DATABASE_URL;
