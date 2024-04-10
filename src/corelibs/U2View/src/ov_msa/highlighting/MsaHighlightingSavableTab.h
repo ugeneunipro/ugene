@@ -35,7 +35,7 @@ public:
     void disableSavingForWidgets(const QStringList& s);
 
 protected:
-    bool childCanBeSaved(QWidget* child) const;
+    bool childCanBeSaved(QWidget* child) const override;
 
 private:
     QStringList widgetsNotToSave;

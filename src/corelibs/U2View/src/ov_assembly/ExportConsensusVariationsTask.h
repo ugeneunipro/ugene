@@ -46,18 +46,18 @@ class ExportConsensusVariationsTask : public DocumentProviderTask, ConsensusSett
 public:
     ExportConsensusVariationsTask(const ExportConsensusVariationsTaskSettings& settings_);
 
-    virtual void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     // implement ConsensusSettingsQueue interface
-    virtual int count() {
+    int count() override {
         return consensusRegions.count();
     }
-    virtual bool hasNext() {
+    bool hasNext() override {
         return !consensusRegions.isEmpty();
     }
-    virtual AssemblyConsensusTaskSettings getNextSettings();
-    virtual void reportResult(const ConsensusInfo& result);
+    AssemblyConsensusTaskSettings getNextSettings() override;
+    void reportResult(const ConsensusInfo& result) override;
 
 private:
     ExportConsensusVariationsTaskSettings settings;

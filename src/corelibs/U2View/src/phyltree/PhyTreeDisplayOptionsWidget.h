@@ -32,9 +32,9 @@ public:
     PhyTreeDisplayOptionsWidget(QWidget* parent = nullptr);
     ~PhyTreeDisplayOptionsWidget();
 
-    void fillSettings(CreatePhyTreeSettings& settings);
-    void storeSettings();
-    void restoreDefault();
+    void fillSettings(CreatePhyTreeSettings& settings) override;
+    void storeSettings() override;
+    void restoreDefault() override;
 
 private:
     Ui_PhyTreeDisplayOptionsWidget* ui;

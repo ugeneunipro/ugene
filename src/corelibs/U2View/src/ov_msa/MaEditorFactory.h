@@ -41,15 +41,15 @@ class U2VIEW_EXPORT MaEditorFactory : public GObjectViewFactory {
 public:
     MaEditorFactory(GObjectType type, GObjectViewFactoryId id);
 
-    virtual bool canCreateView(const MultiGSelection& multiSelection);
+    bool canCreateView(const MultiGSelection& multiSelection) override;
 
-    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
+    Task* createViewTask(const MultiGSelection& multiSelection, bool single = false) override;
 
-    virtual bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData);
+    bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData) override;
 
-    virtual Task* createViewTask(const QString& viewName, const QVariantMap& stateData);
+    Task* createViewTask(const QString& viewName, const QVariantMap& stateData) override;
 
-    virtual bool supportsSavedStates() const;
+    bool supportsSavedStates() const override;
 
     virtual MaEditor* getEditor(const QString& viewName, GObject* obj, U2OpStatus& os) = 0;
 
@@ -80,9 +80,9 @@ public:
     void registerMsaEditorViewFeatures();
 
 private:
-    OpenMaEditorTask* getOpenMaEditorTask(MsaObject* obj);
-    OpenMaEditorTask* getOpenMaEditorTask(UnloadedObject* obj);
-    OpenMaEditorTask* getOpenMaEditorTask(Document* doc);
+    OpenMaEditorTask* getOpenMaEditorTask(MsaObject* obj) override;
+    OpenMaEditorTask* getOpenMaEditorTask(UnloadedObject* obj) override;
+    OpenMaEditorTask* getOpenMaEditorTask(Document* doc) override;
 };
 
 /************************************************************************/
@@ -98,9 +98,9 @@ public:
     static const GObjectViewFactoryId ID;
 
 private:
-    OpenMaEditorTask* getOpenMaEditorTask(MsaObject* obj);
-    OpenMaEditorTask* getOpenMaEditorTask(UnloadedObject* obj);
-    OpenMaEditorTask* getOpenMaEditorTask(Document* doc);
+    OpenMaEditorTask* getOpenMaEditorTask(MsaObject* obj) override;
+    OpenMaEditorTask* getOpenMaEditorTask(UnloadedObject* obj) override;
+    OpenMaEditorTask* getOpenMaEditorTask(Document* doc) override;
 };
 
 }  // namespace U2

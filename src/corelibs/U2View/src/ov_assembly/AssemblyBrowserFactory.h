@@ -33,15 +33,15 @@ class U2VIEW_EXPORT AssemblyBrowserFactory : public GObjectViewFactory {
 public:
     AssemblyBrowserFactory(QObject* parent = 0);
 
-    virtual bool canCreateView(const MultiGSelection& multiSelection);
+    bool canCreateView(const MultiGSelection& multiSelection) override;
 
-    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
+    Task* createViewTask(const MultiGSelection& multiSelection, bool single = false) override;
 
-    virtual bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData);
+    bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData) override;
 
-    virtual Task* createViewTask(const QString& viewName, const QVariantMap& stateData);
+    Task* createViewTask(const QString& viewName, const QVariantMap& stateData) override;
 
-    virtual bool supportsSavedStates() const {
+    bool supportsSavedStates() const override {
         return true;
     }
 

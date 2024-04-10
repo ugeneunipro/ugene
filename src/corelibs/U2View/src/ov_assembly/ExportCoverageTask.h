@@ -70,7 +70,7 @@ public:
         : Task(tr("Get visible name of Assembly"), TaskFlag_None), dbiRef(dbiRef), assemblyId(assemblyId) {
     }
 
-    void run();
+    void run() override;
 
     const QString& getAssemblyVisibleName() const {
         return assemblyName;
@@ -87,9 +87,9 @@ class U2VIEW_EXPORT ExportCoverageTask : public Task {
 public:
     ExportCoverageTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const ExportCoverageSettings& settings, TaskFlags flags = TaskFlags_NR_FOSE_COSC);
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    ReportResult report();
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    ReportResult report() override;
 
     const QString& getUrl() const;
 
@@ -122,10 +122,10 @@ class U2VIEW_EXPORT ExportCoverageHistogramTask : public ExportCoverageTask {
 public:
     ExportCoverageHistogramTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const ExportCoverageSettings& settings);
 
-    void run();
+    void run() override;
 
 protected:
-    void processRegion(const QVector<CoveragePerBaseInfo>* data);
+    void processRegion(const QVector<CoveragePerBaseInfo>* data) override;
 
 private:
     QByteArray toByteArray(int coverage, qint64 assemblyLength) const;
@@ -140,8 +140,8 @@ public:
     // void prepare();
 
 protected:
-    void processRegion(const QVector<CoveragePerBaseInfo>* data);
-    void writeHeader();
+    void processRegion(const QVector<CoveragePerBaseInfo>* data) override;
+    void writeHeader() override;
 
 private:
     QByteArray toByteArray(const CoveragePerBaseInfo& info, int pos) const;  // pos - 1-based position
@@ -153,11 +153,11 @@ public:
     ExportCoverageBedgraphTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const ExportCoverageSettings& settings);
 
     // void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 protected:
-    void processRegion(const QVector<CoveragePerBaseInfo>* data);
-    void writeHeader();
+    void processRegion(const QVector<CoveragePerBaseInfo>* data) override;
+    void writeHeader() override;
 
 private:
     QByteArray toByteArray() const;  // startpos - 0-based position, endpos - next after real end

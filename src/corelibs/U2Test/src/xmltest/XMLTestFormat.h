@@ -52,7 +52,7 @@ public:
     XMLTestFormat();
     virtual ~XMLTestFormat();
 
-    virtual GTest* createTest(const QString& name, GTest* cp, const GTestEnvironment* env, const QByteArray& testData, QString& err);
+    GTest* createTest(const QString& name, GTest* cp, const GTestEnvironment* env, const QByteArray& testData, QString& err) override;
 
     virtual GTest* createTest(const QString& name, GTest* cp, const GTestEnvironment* env, const QDomElement& el, QString& err);
 

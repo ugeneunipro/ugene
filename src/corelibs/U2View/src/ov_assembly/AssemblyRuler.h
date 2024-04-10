@@ -47,8 +47,8 @@ public:
     bool getShowCoverageOnRuler() const;
 
 protected:
-    void paintEvent(QPaintEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
+    void paintEvent(QPaintEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
 
 public slots:
     void sl_handleMoveToPos(const QPoint&);

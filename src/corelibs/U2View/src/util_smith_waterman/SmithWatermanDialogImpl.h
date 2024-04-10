@@ -49,7 +49,7 @@ public:
                         ADVSequenceObjectContext* ctx,
                         SWDialogConfig* dialogConfig);
     ~SmithWatermanDialog();
-    virtual bool eventFilter(QObject* object, QEvent* event);
+    bool eventFilter(QObject* object, QEvent* event) override;
 
 private slots:
     void sl_bttnViewMatrix();

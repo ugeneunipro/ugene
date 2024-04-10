@@ -48,18 +48,18 @@ class U2VIEW_EXPORT ExportConsensusTask : public DocumentProviderTask, Consensus
 public:
     ExportConsensusTask(const ExportConsensusTaskSettings& settings_);
 
-    virtual void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     // implement ConsensusSettingsQueue interface
-    virtual int count() {
+    int count() override {
         return consensusRegions.count();
     }
-    virtual bool hasNext() {
+    bool hasNext() override {
         return !consensusRegions.isEmpty();
     }
-    virtual AssemblyConsensusTaskSettings getNextSettings();
-    virtual void reportResult(const ConsensusInfo& result);
+    AssemblyConsensusTaskSettings getNextSettings() override;
+    void reportResult(const ConsensusInfo& result) override;
 
     U2Sequence getResult() const;
 

@@ -50,7 +50,7 @@ signals:
     void si_showAllStateChanged();
 
 private:
-    virtual void mousePressEvent(QMouseEvent*);
+    void mousePressEvent(QMouseEvent*) override;
 
     bool showAllIsSelected;
 };

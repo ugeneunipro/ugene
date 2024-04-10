@@ -55,11 +55,11 @@ public:
     bool isAnnotationSelectionInVisibleRange() const;
 
 protected:
-    void mousePressEvent(QMouseEvent* e);
+    void mousePressEvent(QMouseEvent* e) override;
 
-    void mouseDoubleClickEvent(QMouseEvent* me);
+    void mouseDoubleClickEvent(QMouseEvent* me) override;
 
-    virtual bool event(QEvent* e);
+    bool event(QEvent* e) override;
 
     /** Creates a tooltip for the given render area coordinate. */
     virtual QString createToolTip(const QPoint& renderAreaPoint);
@@ -116,7 +116,7 @@ public:
     virtual QList<Annotation*> findAnnotationsByCoord(const QPoint& coord) const = 0;
 
 protected:
-    virtual void drawAll(QPaintDevice* pd) = 0;
+    void drawAll(QPaintDevice* pd) override = 0;
 
     GSequenceLineViewAnnotated* const sequenceLineViewAnnotated;
 
@@ -171,8 +171,8 @@ public:
     ClearAnnotationsTask(const QList<Annotation*>& list,
                          GSequenceLineViewAnnotated* view);
 
-    void run();
-    Task::ReportResult report();
+    void run() override;
+    Task::ReportResult report() override;
 
 private:
     QList<Annotation*> l;

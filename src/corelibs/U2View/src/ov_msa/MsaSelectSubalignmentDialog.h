@@ -35,7 +35,7 @@ class SelectSubalignmentDialog : public QDialog, Ui_SelectSubalignmentDialog {
 public:
     SelectSubalignmentDialog(MaEditor* editor, const U2Region& region = U2Region(), const QList<int>& selectedIndexes = QList<int>(), QWidget* p = nullptr);
 
-    void accept();
+    void accept() override;
 
     const U2Region getRegion() const {
         return window;

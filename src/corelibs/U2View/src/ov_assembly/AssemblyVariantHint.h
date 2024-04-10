@@ -34,8 +34,8 @@ public:
     void setData(const QList<U2Variant>& varList);
 
 protected:
-    virtual void leaveEvent(QEvent* event);
-    virtual void mouseMoveEvent(QMouseEvent* event);
+    void leaveEvent(QEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
 };
 
 }  // namespace U2

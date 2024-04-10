@@ -46,7 +46,7 @@ public:
         : Task(tr("Get length of Assembly"), TaskFlag_None), dbiRef(dbiRef), assemblyId(assemblyId) {
     }
 
-    void run();
+    void run() override;
 
     qint64 getAssemblyLength() const {
         return length;
@@ -64,7 +64,7 @@ public:
     CalculateCoveragePerBaseOnRegionTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const U2Region& region);
     ~CalculateCoveragePerBaseOnRegionTask();
 
-    void run();
+    void run() override;
 
     const U2Region& getRegion() const;
     QVector<CoveragePerBaseInfo>* takeResult();
@@ -85,8 +85,8 @@ public:
     CalculateCoveragePerBaseTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId);
     ~CalculateCoveragePerBaseTask();
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     bool isResultReady(qint64 startPos) const;
     bool areThereUnprocessedResults() const;

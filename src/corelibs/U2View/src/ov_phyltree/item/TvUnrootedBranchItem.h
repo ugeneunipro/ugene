@@ -38,7 +38,7 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
-    void updateLabelPositions() final override;
+    void updateLabelPositions() final ;
 };
 
 }  // namespace U2

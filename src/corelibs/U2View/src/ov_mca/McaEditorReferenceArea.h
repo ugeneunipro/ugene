@@ -53,11 +53,11 @@ private slots:
 
 private:
     void setReferenceSelection(QMouseEvent* e);
-    void mousePressEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent* e);
-    void keyPressEvent(QKeyEvent* event);
-    void updateScrollBar();
+    void mousePressEvent(QMouseEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
+    void mouseReleaseEvent(QMouseEvent* e) override;
+    void keyPressEvent(QKeyEvent* event) override;
+    void updateScrollBar() override;
 
     McaEditor* editor;
     McaEditorWgt* ui;
@@ -79,7 +79,7 @@ class McaEditorReferenceRenderAreaFactory : public PanViewRenderAreaFactory {
 public:
     McaEditorReferenceRenderAreaFactory(McaEditorWgt* _ui, McaEditor* _editor);
 
-    PanViewRenderArea* createRenderArea(PanView* panView) const;
+    PanViewRenderArea* createRenderArea(PanView* panView) const override;
 
 private:
     McaEditorWgt* ui;

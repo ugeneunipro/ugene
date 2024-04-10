@@ -42,7 +42,7 @@ class ExportReadsDialog : public QDialog, Ui_ExportReadsDialog {
 public:
     ExportReadsDialog(QWidget* p, const QList<DocumentFormatId>& formats);
 
-    void accept();
+    void accept() override;
 
     ExportReadsDialogModel getModel() const;
 

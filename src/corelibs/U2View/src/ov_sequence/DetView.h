@@ -93,7 +93,7 @@ protected slots:
     void sl_showAllFrames();
 
 protected:
-    virtual void pack() override;
+    void pack() override;
 
     void showEvent(QShowEvent* e) override;
     void hideEvent(QHideEvent* e) override;
@@ -129,7 +129,7 @@ private:
     void setupTranslationsMenu();
     void setupGeneticCodeMenu();
     QPoint getRenderAreaPointAfterAutoScroll(const QPoint& pos);
-    void moveBorder(const QPoint& p);
+    void moveBorder(const QPoint& p) override;
 
     /** Returns whole rendering area height region for the normal mode & limited Y range for the wrap mode. */
     U2Region getCapturingRenderAreaYRegionForPos(qint64 pos) const override;

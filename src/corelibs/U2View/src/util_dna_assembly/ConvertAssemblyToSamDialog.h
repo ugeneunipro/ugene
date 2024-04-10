@@ -42,8 +42,8 @@ public:
 
 private slots:
     void sl_onSetDbPathButtonClicked();
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
 
 private:
     void buildSamUrl(const GUrl& dbUrl);

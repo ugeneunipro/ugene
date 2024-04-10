@@ -34,8 +34,8 @@ class MaSangerOverview : public MaOverview {
 public:
     MaSangerOverview(MaEditor* editor, MaEditorWgt* ui);
 
-    bool isValid() const;
-    QPixmap getView();
+    bool isValid() const override;
+    QPixmap getView() override;
 
 private slots:
     void sl_updateScrollBar();
@@ -44,20 +44,20 @@ private slots:
     void sl_screenMoved();
 
 private:
-    bool eventFilter(QObject* object, QEvent* event);
-    void resizeEvent(QResizeEvent* event);
+    bool eventFilter(QObject* object, QEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
-    void drawOverview(QPainter& painter);
-    void drawVisibleRange(QPainter& painter);
+    void drawOverview(QPainter& painter) override;
+    void drawVisibleRange(QPainter& painter) override;
     void drawReference();
     void drawReads();
 
-    void moveVisibleRange(QPoint pos);
+    void moveVisibleRange(QPoint pos) override;
 
     McaEditor* getEditor() const;
 
-    int getContentWidgetWidth() const;
-    int getContentWidgetHeight() const;
+    int getContentWidgetWidth() const override;
+    int getContentWidgetHeight() const override;
     int getReadsHeight() const;
     int getReferenceHeight() const;
     int getScrollBarValue() const;

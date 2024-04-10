@@ -75,7 +75,7 @@ private slots:
 private:
     void updateState();
     void addGuiExtension();
-    void accept();
+    void accept() override;
 
     const GenomeAssemblyAlgRegistry* assemblyRegistry;
     GenomeAssemblyAlgorithmMainWidget* customGUI;

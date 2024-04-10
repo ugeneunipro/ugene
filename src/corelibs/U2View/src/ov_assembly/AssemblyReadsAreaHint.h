@@ -41,9 +41,9 @@ public:
     void setData(U2AssemblyRead r, QList<U2AssemblyRead> mates);
 
 protected:
-    virtual bool eventFilter(QObject*, QEvent*);
-    virtual void leaveEvent(QEvent* e);
-    virtual void mouseMoveEvent(QMouseEvent* e);
+    bool eventFilter(QObject*, QEvent*) override;
+    void leaveEvent(QEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
 
     QLabel* label;
 

@@ -78,17 +78,17 @@ protected:
 public:
     SequenceViewAnnotatedRenderer(SequenceObjectContext* ctx);
 
-    virtual qint64 coordToPos(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const = 0;
+    qint64 coordToPos(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const override = 0;
 
-    virtual double getCurrentScale() const = 0;
+    double getCurrentScale() const override = 0;
 
     /** Returns Y range of the cut-site for an annotation on the given strand. */
     virtual U2Region getCutSiteYRange(const U2Strand& mStrand, int availableHeight) const = 0;
 
-    virtual int getMinimumHeight() const = 0;
+    int getMinimumHeight() const override = 0;
 
-    virtual void drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) = 0;
-    virtual void drawSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) = 0;
+    void drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) override = 0;
+    void drawSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) override = 0;
 
     virtual void drawAnnotations(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, const AnnotationDisplaySettings& displaySettings);
     virtual void drawAnnotationSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, const AnnotationDisplaySettings& displaySettings);

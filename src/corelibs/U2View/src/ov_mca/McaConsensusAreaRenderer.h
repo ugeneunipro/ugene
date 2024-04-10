@@ -32,7 +32,7 @@ public:
     McaConsensusAreaRenderer(MaEditorConsensusArea* area);
 
 private:
-    void drawRuler(QPainter& painter, const ConsensusRenderSettings& settings);
+    void drawRuler(QPainter& painter, const ConsensusRenderSettings& settings) override;
 
     McaReferenceCharController* refCharController;
 };

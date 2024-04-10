@@ -76,9 +76,9 @@ public:
         return detView;
     }
 
-    virtual void centerPosition(int pos, QWidget* skipView = nullptr);
+    void centerPosition(int pos, QWidget* skipView = nullptr) override;
 
-    ADVSequenceObjectContext* getActiveSequenceContext() const {
+    ADVSequenceObjectContext* getActiveSequenceContext() const override {
         return (seqContexts.isEmpty()) ? nullptr : seqContexts.first();
     }
     ADVSequenceObjectContext* getSequenceContext() const {
@@ -99,11 +99,11 @@ public:
 
     U2SequenceObject* getSequenceObject() const;
 
-    virtual void buildPopupMenu(QMenu& m);
+    void buildPopupMenu(QMenu& m) override;
 
-    virtual bool isWidgetOnlyObject(GObject* o) const;
+    bool isWidgetOnlyObject(GObject* o) const override;
 
-    virtual void addADVSequenceWidgetAction(ADVSequenceWidgetAction* action);
+    void addADVSequenceWidgetAction(ADVSequenceWidgetAction* action) override;
 
     void addADVSequenceWidgetActionToViewsToolbar(ADVSequenceWidgetAction* action);
 
@@ -120,27 +120,27 @@ public:
     void setOverviewCollapsed(bool collapsed);
     bool isOverviewCollapsed() const;
 
-    virtual void updateState(const QVariantMap& m);
+    void updateState(const QVariantMap& m) override;
     virtual void updateSelectionActions();
     QVector<U2Region> getSelectedAnnotationRegions(int max);
 
-    virtual void saveState(QVariantMap& m);
+    void saveState(QVariantMap& m) override;
 
     void closeView();
 
-    virtual U2Region getVisibleRange() const;
+    U2Region getVisibleRange() const override;
 
-    virtual void setVisibleRange(const U2Region& r);
+    void setVisibleRange(const U2Region& r) override;
 
-    virtual int getNumBasesVisible() const;
+    int getNumBasesVisible() const override;
 
-    virtual void setNumBasesVisible(qint64 n);
+    void setNumBasesVisible(qint64 n) override;
 
     QAction* getSelectRangeAction() const {
         return selectRangeAction1;
     }
 
-    virtual void onSequenceObjectRenamed(const QString& oldName);
+    void onSequenceObjectRenamed(const QString& oldName) override;
 
 signals:
     void si_titleClicked(ADVSequenceWidget*);
@@ -173,7 +173,7 @@ private slots:
 
 protected:
     void init();
-    bool eventFilter(QObject* o, QEvent* e);
+    bool eventFilter(QObject* o, QEvent* e) override;
 
 private:
     virtual void updateMinMaxHeight();
@@ -241,8 +241,8 @@ public:
     void updateTitle();
 
 protected:
-    virtual void mouseDoubleClickEvent(QMouseEvent* e);
-    virtual void paintEvent(QPaintEvent* e);
+    void mouseDoubleClickEvent(QMouseEvent* e) override;
+    void paintEvent(QPaintEvent* e) override;
 
 protected slots:
     /** Toggles header active/inactive visual state if the old or the new widget is related to the header. */

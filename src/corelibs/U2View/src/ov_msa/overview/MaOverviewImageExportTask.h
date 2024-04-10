@@ -46,7 +46,7 @@ class MaOverviewImageExportToBitmapTask : public ImageExportTask {
     Q_OBJECT
 public:
     MaOverviewImageExportToBitmapTask(MaSimpleOverview* simpleOverview, MaGraphOverview* graphOverview, const MaOverviewImageExportSettings& overviewSettings, const ImageExportTaskSettings& settings);
-    void run();
+    void run() override;
 
 private:
     MaSimpleOverview* simpleOverview;
@@ -59,13 +59,13 @@ class MaOverviewImageExportController : public ImageExportController {
 public:
     MaOverviewImageExportController(MaSimpleOverview* simpleOverview, MaGraphOverview* graphOverview);
 
-    int getImageWidth() const;
-    int getImageHeight() const;
+    int getImageWidth() const override;
+    int getImageHeight() const override;
 
 protected:
-    void initSettingsWidget();
+    void initSettingsWidget() override;
 
-    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const override;
 
 private:
     MaSimpleOverview* simpleOverview;

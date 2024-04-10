@@ -56,11 +56,11 @@ signals:
     void si_removeRow();
 
 protected:
-    virtual void paintEvent(QPaintEvent* event);
-    virtual void resizeEvent(QResizeEvent* event);
-    virtual void mouseMoveEvent(QMouseEvent* event);
-    virtual void leaveEvent(QEvent* event);
-    virtual void mousePressEvent(QMouseEvent* event);
+    void paintEvent(QPaintEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void leaveEvent(QEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
 
 private:
     VariantTrackObject* trackObj;

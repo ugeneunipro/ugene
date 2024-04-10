@@ -100,7 +100,7 @@ class XMLMultiTest : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(XMLMultiTest, "multi-test")
-    ReportResult report();
+    ReportResult report() override;
 
     static const QString FAIL_ON_SUBTEST_FAIL;  // it defines whether the test should stop execution after the first error; is "true" by default
 };
@@ -109,7 +109,7 @@ class GTest_Fail : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Fail, "fail", TaskFlag_NoRun)
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QString msg;
@@ -119,7 +119,7 @@ class GTest_DeleteTmpFile : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_DeleteTmpFile, "delete", TaskFlag_NoRun)
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QString url;
@@ -129,7 +129,7 @@ class GTest_CreateTmpFolder : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_CreateTmpFolder, "create-folder", TaskFlag_NoRun)
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QString url;
