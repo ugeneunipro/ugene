@@ -187,8 +187,7 @@ Assembly AceReader::getAssembly() {
 
     // read AF tag
     QList<Assembly::Sequence> reads;
-    QList<QByteArray> names;
-    parseAfTag(io, buff, readsCount, reads, names);
+    parseAfTag(io, buff, readsCount, reads);
     CHECK_OP((*os), result);
     CHECK_EXT(readsCount == reads.size(),
              os->setError(DocumentFormatUtils::tr("Expected %1 reads, but only %2 AF tags found").arg(readsCount).arg(reads.size())),
@@ -205,7 +204,7 @@ Assembly AceReader::getAssembly() {
     // read RD and QA tags
     for (int i = 0; i < readsCount; i++) {
         auto& read = reads[i];
-        parseRdAndQaTag(io, buff, names, read);
+        parseRdAndQaTag(io, buff, read);
         CHECK_OP((*os), result);
 
         read.offset = read.offset - 1;
@@ -330,7 +329,7 @@ bool AceReader::checkSeq(const QByteArray& seq) {
     return al->containsAll(seq.constData(), seq.length());
 }
 
-void AceReader::parseAfTag(U2::IOAdapter* io, char* buff, int count, QList<Assembly::Sequence>& reads, QList<QByteArray>& names) {
+void AceReader::parseAfTag(U2::IOAdapter* io, char* buff, int count, QList<Assembly::Sequence>& reads) {
     int readsCount = count;
     QByteArray afBlock;
     QByteArray readLine;
@@ -383,8 +382,6 @@ void AceReader::parseAfTag(U2::IOAdapter* io, char* buff, int count, QList<Assem
         read.offset = readPos;
         read.isComplemented = (complStrand == 1);
         reads << read;
-
-        names << name;
 
         readsCount--;
     }
@@ -460,7 +457,7 @@ int AceReader::getSmallestOffset(const QList<Assembly::Sequence>& reads) {
     return smallestOffset;
 }
 
-void AceReader::parseRdAndQaTag(U2::IOAdapter* io, char* buff, QList<QByteArray>& names, Assembly::Sequence& read) {
+void AceReader::parseRdAndQaTag(U2::IOAdapter* io, char* buff, Assembly::Sequence& read) {
     QByteArray rdBlock;
     qint64 len = 0;
     bool ok = true;
@@ -508,9 +505,6 @@ void AceReader::parseRdAndQaTag(U2::IOAdapter* io, char* buff, QList<QByteArray>
 
     formatSequence(read.data);
     CHECK_EXT(checkSeq(read.data), os->setError(DocumentFormatUtils::tr("Unexpected symbols in sequence data")), );
-
-    bool removed = names.removeOne(read.name);
-    CHECK_EXT(removed, os->setError(DocumentFormatUtils::tr("A name is not match with AF names")), );
 }
 
 int AceReader::getClearRangeStart(const QByteArray& cur_line) {

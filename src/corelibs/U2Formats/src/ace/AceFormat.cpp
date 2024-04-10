@@ -247,7 +247,7 @@ static inline void parseConsensus(U2::IOAdapter* io, U2OpStatus& ti, char* buff,
     consensus.replace('*', U2Msa::GAP_CHAR);
 }
 
-void ACEFormat::parseAFTag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, int count, QList<Assembly::Sequence>& reads, QList<QString>& names) {
+void ACEFormat::parseAFTag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, int count, QList<Assembly::Sequence>& reads) {
     int count1 = count;
     QString readLine;
     QString name;
@@ -282,14 +282,12 @@ void ACEFormat::parseAFTag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, int co
         read.isComplemented = (complStrand == 1);
         reads << read;
 
-        names << name;
-
         count1--;
         ti.setProgress(io->getProgress());
     }
 }
 
-void ACEFormat::parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QList<QString>& names, QString& name, QByteArray& sequence) {
+void ACEFormat::parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QString& name, QByteArray& sequence) {
     QString line;
     qint64 len = 0;
     bool ok = true;
@@ -343,12 +341,6 @@ void ACEFormat::parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, Q
 
     sequence = sequence.toUpper();
     CHECK_EXT(checkSeq(sequence), ti.setError(ACEFormat::tr("Bad sequence data")), );
-
-    bool removed = names.removeOne(name);
-    if (!removed) {
-        ti.setError(ACEFormat::tr("A name is not match with AF names"));
-        return;
-    }
 
     sequence.replace('*', U2Msa::GAP_CHAR);
     sequence.replace('N', U2Msa::GAP_CHAR);
@@ -417,8 +409,7 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
         // AF
         QList<Assembly::Sequence> reads;
-        QList<QString> names;
-        parseAFTag(io, os, buff, count, reads, names);
+        parseAFTag(io, os, buff, count, reads);
         CHECK_OP(os, );
 
         qint64 smallestOffset = getSmallestOffset(reads);
@@ -430,7 +421,7 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         // RD and QA
         while (!os.isCoR() && count > 0) {
             QString name;
-            parseRDandQATag(io, os, buff, names, name, sequence);
+            parseRDandQATag(io, os, buff, name, sequence);
             CHECK_OP(os, );
 
             auto resIt = std::find_if(reads.begin(), reads.end(), [&name](const Assembly::Sequence& pair) {

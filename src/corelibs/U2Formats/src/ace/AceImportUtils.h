@@ -84,13 +84,13 @@ private:
     void parseConsensus(IOAdapter* io, char* buff, QByteArray& headerLine, Assembly::Sequence& consensus);
     QByteArray getName(const QByteArray& line);
     bool checkSeq(const QByteArray& seq);
-    void parseAfTag(IOAdapter* io, char* buff, int count, QList<Assembly::Sequence>& reads, QList<QByteArray>& names);
+    void parseAfTag(IOAdapter* io, char* buff, int count, QList<Assembly::Sequence>& reads);
     int readsPos(const QByteArray& cur_line);
     int prepareLine(QByteArray& line, int pos);
     int readsComplement(const QByteArray& cur_line);
     int paddedStartCons(const QByteArray& cur_line);
     int getSmallestOffset(const QList<Assembly::Sequence>& reads);
-    void parseRdAndQaTag(U2::IOAdapter* io, char* buff, QList<QByteArray>& names, Assembly::Sequence& read);
+    void parseRdAndQaTag(U2::IOAdapter* io, char* buff, Assembly::Sequence& read);
     int getClearRangeStart(const QByteArray& cur_line);
     int getClearRangeEnd(const QByteArray& cur_line);
     void formatSequence(QByteArray& data);
