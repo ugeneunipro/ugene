@@ -48,6 +48,10 @@ namespace U2 {
 
 const int SQLiteDbi::BIND_PARAMETERS_LIMIT = 999;
 
+/**
+ * Minimum compatible version of UGENE to open the database safely.
+ * By historical reasons is formatted like "1.${UGENE-MAJOR-VERSION}.${UGENE-MINOR-VERSION}".
+ */
 const Version SQLiteDbi::MIN_COMPATIBLE_UGENE_VERSION = Version(1, 50);
 
 SQLiteDbi::SQLiteDbi()
@@ -255,19 +259,25 @@ void SQLiteDbi::populateDefaultSchema(U2OpStatus& os) {
     modDbi->initSqlSchema(os);
     udrDbi->initSqlSchema(os);
 
-    setVersionProperties(MIN_COMPATIBLE_UGENE_VERSION, os);
+    setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, MIN_COMPATIBLE_UGENE_VERSION.toString(), os);
 }
 
 void SQLiteDbi::internalInit(const QHash<QString, QString>& props, U2OpStatus& os) {
     if (isInitialized(os)) {
-        const QString appVersionText = getProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "", os);
+        QString minCompatibleUgeneDbVersion = getProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "", os);
         CHECK_OP(os, );
+        // APP_MIN_COMPATIBLE_VERSION starts with "1." (like 1.50.0)
+        // while Version::appVersion() starts with the real major version (like 50.0).
+        // See docs for 'U2DbiOptions::APP_MIN_COMPATIBLE_VERSION'.
+        if (minCompatibleUgeneDbVersion.startsWith("1.")) {
+            minCompatibleUgeneDbVersion = minCompatibleUgeneDbVersion.mid(2);
+        }
 
-        if (appVersionText.isEmpty()) {
+        if (minCompatibleUgeneDbVersion.isEmpty()) {
             // Not an error since other databases might be opened with this interface
             coreLog.info(U2DbiL10n::tr("Not a %1 SQLite database: %2").arg(U2_PRODUCT_NAME).arg(url));
         } else {
-            Version dbAppVersion = Version::parseVersion(appVersionText);
+            Version dbAppVersion = Version::parseVersion(minCompatibleUgeneDbVersion);
             Version currentVersion = Version::appVersion();
             if (dbAppVersion > currentVersion) {
                 os.setError(
