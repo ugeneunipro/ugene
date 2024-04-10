@@ -29,7 +29,6 @@
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/Version.h>
 
 namespace U2 {
 
@@ -58,13 +57,6 @@ void U2DbiUtils::logNotSupported(U2DbiFeature f, U2Dbi* dbi, U2OpStatus& os) {
     }
     assert(0);
 #endif
-}
-
-U2DbiRef U2DbiUtils::toRef(U2Dbi* dbi) {
-    if (dbi == nullptr) {
-        return U2DbiRef();
-    }
-    return U2DbiRef(dbi->getFactoryId(), dbi->getDbiId());
 }
 
 void U2DbiUtils::addLimit(QString& sql, qint64 offset, qint64 count) {
@@ -168,10 +160,6 @@ bool U2DbiUtils::parseDbiUrl(const QString& dbiUrl, QString& host, int& port, QS
     return true;
 }
 
-bool U2DbiUtils::parseFullDbiUrl(const QString& dbiUrl, QString& userName, QString& host, int& port, QString& dbName) {
-    return parseDbiUrl(full2shortDbiUrl(dbiUrl, userName), host, port, dbName);
-}
-
 QString U2DbiUtils::full2shortDbiUrl(const QString& fullDbiUrl, QString& userName) {
     int sepIndex = fullDbiUrl.indexOf("@");
     if (-1 == sepIndex) {
@@ -204,27 +192,6 @@ bool U2DbiUtils::isDbiReadOnly(const U2DbiRef& dbiRef) {
     CHECK_OP(os, true);
 
     return con.dbi->isReadOnly();
-}
-
-Version U2DbiUtils::getDbMinRequiredVersion(const U2DbiRef& dbiRef, U2OpStatus& os) {
-    DbiConnection con(dbiRef, os);
-    CHECK_OP(os, {});
-    QString minCompatibleVersionFromDb = con.dbi->getProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "", os);
-    CHECK_OP(os, {});
-    return Version::parseVersion(minCompatibleVersionFromDb);
-}
-
-bool U2DbiUtils::isDatabaseTooNew(const U2DbiRef& dbiRef, const Version& ugeneVersion, QString& minRequiredVersionString, U2OpStatus& os) {
-    Version minRequiredVersion = getDbMinRequiredVersion(dbiRef, os);
-    CHECK_OP(os, false);
-    minRequiredVersionString = minRequiredVersion.toString();
-    return minRequiredVersion > ugeneVersion;
-}
-
-bool U2DbiUtils::isDatabaseTooOld(const U2DbiRef& dbiRef, const Version& ugeneVersion, U2OpStatus& os) {
-    Version minRequiredVersion = getDbMinRequiredVersion(dbiRef, os);
-    CHECK_OP(os, false);
-    return minRequiredVersion < ugeneVersion;
 }
 
 //////////////////////////////////////////////////////////////////////////
