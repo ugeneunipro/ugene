@@ -484,7 +484,9 @@ void AceReader::parseRdAndQaTag(U2::IOAdapter* io, char* buff, Assembly::Sequenc
     // Magic numbers: RD tag, name, three numbers, sequence data
     CHECK_EXT(6 <= rdSplitted.count(), os->setError(DocumentFormatUtils::tr("Invalid RD part")), );
     SAFE_POINT_EXT(RD == rdSplitted[0], os->setError("Can't find the RD tag"), );
-    read.name = rdSplitted[1];
+
+    QByteArray name = rdSplitted[1];
+    CHECK_EXT(read.name == name, os->setError(DocumentFormatUtils::tr("A name is not match with AF names")), );
 
     for (int chain = 5; chain < rdSplitted.count(); chain++) {
         read.data += rdSplitted[chain];
