@@ -54,6 +54,7 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
@@ -399,6 +400,26 @@ GUI_TEST_CLASS_DEFINITION(test_8052) {
     GTUtilsNotifications::waitForNotification(true, "Block size is too big and can't be copied into the clipboard");
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy/Paste", "Copy annotation sequence"}));
     GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8064) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);  // Close wizard.
+
+    GTUtilsWorkflowDesigner::click("Read alignment");
+    GTUtilsWorkflowDesigner::addInputFile("Read alignment", dataDir + "samples/CLUSTALW/COI.aln");
+
+    GTUtilsWorkflowDesigner::setBreakpoint("Write alignment");
+    GTUtilsWorkflowDesigner::removeItem("Write alignment");
+
+    GTUtilsWorkflowDesigner::addElement("Write Alignment");
+    GTUtilsWorkflowDesigner::connect(GTUtilsWorkflowDesigner::getWorker("Align with MUSCLE"), GTUtilsWorkflowDesigner::getWorker("Write Alignment"));
+
+
+    GTUtilsWorkflowDesigner::runWorkflow();
 }
 
 }  // namespace GUITest_regression_scenarios
