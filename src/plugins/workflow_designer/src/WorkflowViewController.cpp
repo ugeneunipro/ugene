@@ -296,21 +296,21 @@ WorkflowView::WorkflowView(WorkflowGObject* go)
 
 WorkflowView::~WorkflowView() {
     // Remove all breakpoints and resume workflow execution.
-//    QList<ActorId> actorsWithBreakpoint = debugInfo->getActorsWithBreakpoints();
-//    for (const auto& actorId : qAsConst(actorsWithBreakpoint)) {
-//        debugInfo->removeBreakpointFromActor(actorId);
-//    }
-//    auto context = debugInfo->getContext();
-//    auto monitor = context == nullptr ? nullptr : context->getMonitor();
-//    if (debugInfo->isPaused()) {
-//        if (monitor != nullptr) {
-//            monitor->resume();
-//        }
-//    }
-//    if (monitor != nullptr) {
-//        // Give up the parentship.
-//        debugInfo->setParent(monitor);
-//    }
+    //    QList<ActorId> actorsWithBreakpoint = debugInfo->getActorsWithBreakpoints();
+    //    for (const auto& actorId : qAsConst(actorsWithBreakpoint)) {
+    //        debugInfo->removeBreakpointFromActor(actorId);
+    //    }
+    //    auto context = debugInfo->getContext();
+    //    auto monitor = context == nullptr ? nullptr : context->getMonitor();
+    //    if (debugInfo->isPaused()) {
+    //        if (monitor != nullptr) {
+    //            monitor->resume();
+    //        }
+    //    }
+    //    if (monitor != nullptr) {
+    //        // Give up the parentship.
+    //        debugInfo->setParent(monitor);
+    //    }
 
     // Deallocate resources.
     if (!loadWorkflowSceneTask.isNull()) {
@@ -979,7 +979,10 @@ void WorkflowView::addProcess(Actor* proc, const QPointF& pos) {
 
 void WorkflowView::removeProcessItem(WorkflowProcessItem* item) {
     CHECK(item != nullptr, );
+
     Actor* actor = item->getProcess();
+    debugInfo->removeBreakpointFromActor(actor->getId());
+
     scene->removeItem(item);
     delete item;
 
