@@ -53,13 +53,13 @@ ACEFormat::ACEFormat(QObject* p)
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
-static int modifyLine(QString& line, int pos) {
+static qint64 modifyLine(QString& line, qint64 pos) {
     int curIdx = 0;
     char space = ' ';
 
     line = line.simplified();
 
-    for (int i = 0; i < pos; i++) {
+    for (qint64 i = 0; i < pos; i++) {
         curIdx = line.indexOf(space);
         if (-1 == curIdx) {
             return 0;
@@ -75,7 +75,7 @@ static int modifyLine(QString& line, int pos) {
     line = line.mid(0, curIdx);
 
     bool ok = false;
-    int result = line.toInt(&ok);
+    qint64 result = line.toLongLong(&ok);
     if (ok == false) {
         return -1;
     } else {
@@ -114,47 +114,47 @@ static int contigCount(const QString& cur_line) {
 }
 
 #define LAST_QA_POS 4
-static int clearRange(const QString& cur_line) {
+static qint64 clearRange(const QString& cur_line) {
     QString line = cur_line;
     modifyLine(line, LAST_QA_POS);
 
     bool ok = true;
-    int result = line.toInt(&ok);
+    qint64 result = line.toLongLong(&ok);
     if (!ok) {
-        return INT_MAX;
+        return LLONG_MAX;
     } else {
         return result;
     }
 }
 #define PADDED_START_POS 3
-static int paddedStartCons(const QString& cur_line) {
+static qint64 paddedStartCons(const QString& cur_line) {
     QString line = cur_line;
     modifyLine(line, PADDED_START_POS);
 
     bool ok = true;
-    int result = line.toInt(&ok);
+    qint64 result = line.toLongLong(&ok);
     if (!ok) {
-        return INT_MAX;
+        return LLONG_MAX;
     } else {
         return result;
     }
 }
 
 #define READS_POS 3
-static int readsPos(const QString& cur_line) {
+static qint64 readsPos(const QString& cur_line) {
     QString line = cur_line;
     prepareLine(line, READS_POS);
 
     if (-1 != line.indexOf(' ')) {
-        return INT_MAX;
+        return LLONG_MAX;
     }
 
     line = line.mid(0, line.length());
 
     bool ok = true;
-    int result = line.toInt(&ok);
+    qint64 result = line.toLongLong(&ok);
     if (!ok) {
-        return INT_MAX;
+        return LLONG_MAX;
     } else {
         return result;
     }
@@ -214,7 +214,7 @@ static inline void skipBreaks(U2::IOAdapter* io, U2OpStatus& ti, char* buff, qin
     CHECK_EXT(lineOk, ti.setError(ACEFormat::tr("Line is too long")), );
 }
 
-static inline void parseConsensus(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QString& consName, QSet<QString>& names, QString& headerLine, QByteArray& consensus) {
+static inline void parseConsensus(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QString& consName, QString& headerLine, QByteArray& consensus) {
     char aceBStartChar = 'B';
     QBitArray aceBStart = TextUtils::createBitMap(aceBStartChar);
     qint64 len = 0;
@@ -222,9 +222,7 @@ static inline void parseConsensus(U2::IOAdapter* io, U2OpStatus& ti, char* buff,
     QString line;
     consName = getName(headerLine);
     CHECK_EXT(!consName.isEmpty(), ti.setError(ACEFormat::tr("There is no AF note")), );
-    CHECK_EXT(!names.contains(consName), ti.setError(ACEFormat::tr("A name is duplicated")), );
 
-    names.insert(consName);
     consensus.clear();
     do {
         len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, aceBStart, IOAdapter::Term_Exclude, &ok);
@@ -249,7 +247,7 @@ static inline void parseConsensus(U2::IOAdapter* io, U2OpStatus& ti, char* buff,
     consensus.replace('*', U2Msa::GAP_CHAR);
 }
 
-static inline void parseAFTag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, int count, QMap<QString, int>& posMap, QMap<QString, bool>& complMap, QSet<QString>& names) {
+void ACEFormat::parseAFTag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, int count, QList<Assembly::Sequence>& reads) {
     int count1 = count;
     QString readLine;
     QString name;
@@ -268,30 +266,28 @@ static inline void parseAFTag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, int
             return;
         }
 
-        int readPos = readsPos(readLine);
+        qint64 readPos = readsPos(readLine);
         int complStrand = readsComplement(readLine);
-        if ((INT_MAX == readPos) || (-1 == complStrand)) {
+        if ((LLONG_MAX == readPos) || (-1 == complStrand)) {
             ti.setError(ACEFormat::tr("Bad AF note"));
             return;
         }
 
-        int paddedStart = paddedStartCons(readLine);
-        CHECK_EXT(paddedStart != INT_MAX, ti.setError(ACEFormat::tr("Bad AF note")), );
+        qint64 paddedStart = paddedStartCons(readLine);
+        CHECK_EXT(paddedStart != LLONG_MAX, ti.setError(ACEFormat::tr("Bad AF note")), );
 
-        posMap.insert(name, paddedStart);
-        CHECK_EXT(!names.contains(name), ti.setError(ACEFormat::tr("A name is duplicated")), );
-
-        bool cur_compl = (complStrand == 1);
-        complMap.insert(name, cur_compl);
-
-        names.insert(name);
+        Assembly::Sequence read;
+        read.name = name.toLocal8Bit();
+        read.offset = paddedStart;
+        read.isComplemented = (complStrand == 1);
+        reads << read;
 
         count1--;
         ti.setProgress(io->getProgress());
     }
 }
 
-static inline void parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QSet<QString>& names, QString& name, QByteArray& sequence) {
+void ACEFormat::parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QString& name, QByteArray& sequence) {
     QString line;
     qint64 len = 0;
     bool ok = true;
@@ -328,8 +324,8 @@ static inline void parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff
     line = QString(QByteArray(buff, len)).trimmed();
     CHECK_EXT(line.startsWith("QA"), ti.setError(ACEFormat::tr("QA keyword hasn't been found")), );
 
-    int clearRangeStart = 0;
-    int clearRangeEnd = 0;
+    qint64 clearRangeStart = 0;
+    qint64 clearRangeEnd = 0;
 
     clearRangeStart = readsCount(line);
     CHECK_EXT(clearRangeStart != -1, ti.setError(ACEFormat::tr("QA error no clear range")), );
@@ -346,26 +342,15 @@ static inline void parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff
     sequence = sequence.toUpper();
     CHECK_EXT(checkSeq(sequence), ti.setError(ACEFormat::tr("Bad sequence data")), );
 
-    if (!names.contains(name)) {
-        ti.setError(ACEFormat::tr("A name is not match with AF names"));
-        return;
-    } else {
-        names.remove(name);
-    }
-
     sequence.replace('*', U2Msa::GAP_CHAR);
     sequence.replace('N', U2Msa::GAP_CHAR);
     sequence.replace('X', U2Msa::GAP_CHAR);
 }
 
-/**
- * Offsets in an ACE file are specified relatively to the reference sequence,
- * so "pos" can be negative.
- */
-static inline int getSmallestOffset(const QMap<QString, int>& posMap) {
-    int smallestOffset = 0;
-    foreach (int value, posMap) {
-        smallestOffset = qMin(smallestOffset, value - 1);
+qint64 ACEFormat::getSmallestOffset(const QList<Assembly::Sequence>& reads) {
+    qint64 smallestOffset = 0;
+    for (const auto& read : qAsConst(reads)) {
+        smallestOffset = qMin(smallestOffset, read.offset - 1);
     }
 
     return smallestOffset;
@@ -377,8 +362,6 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     qint64 len = 0;
 
     QByteArray sequence;
-    QSet<QString> names;
-    QMap<QString, bool> complMap;
 
     // skip leading whites if present
     bool lineOk = true;
@@ -415,22 +398,21 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         CHECK_EXT(count != -1, os.setError(ACEFormat::tr("There is no note about reads count")), );
 
         // consensus
-        QString name;
         QByteArray consensus;
         QString consName;
 
-        parseConsensus(io, os, buff, consName, names, headerLine, consensus);
+        parseConsensus(io, os, buff, consName, headerLine, consensus);
         CHECK_OP(os, );
 
         Msa al(consName);
         al->addRow(consName, consensus);
 
         // AF
-        QMap<QString, int> posMap;
-        parseAFTag(io, os, buff, count, posMap, complMap, names);
+        QList<Assembly::Sequence> reads;
+        parseAFTag(io, os, buff, count, reads);
         CHECK_OP(os, );
 
-        int smallestOffset = getSmallestOffset(posMap);
+        qint64 smallestOffset = getSmallestOffset(reads);
         if (smallestOffset < 0) {
             al->insertGaps(0, 0, qAbs(smallestOffset), os);
             CHECK_OP(os, );
@@ -438,16 +420,23 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
         // RD and QA
         while (!os.isCoR() && count > 0) {
-            parseRDandQATag(io, os, buff, names, name, sequence);
+            QString name;
+            parseRDandQATag(io, os, buff, name, sequence);
             CHECK_OP(os, );
 
-            bool isComplement = complMap.take(name);
-            int pos = posMap.value(name) - 1;
+            auto resIt = std::find_if(reads.begin(), reads.end(), [&name](const Assembly::Sequence& pair) {
+                return pair.name == name.toLocal8Bit();
+            });
+            CHECK_EXT(resIt != reads.end(), ACEFormat::tr("RD line has read \"%1\", but it wasn't presented in AF"), );
+
+            auto res = *resIt;
+            reads.removeOne(res);
+            qint64 pos = res.offset - 1;
             if (smallestOffset < 0) {
                 pos += qAbs(smallestOffset);
             }
             QString rowName(name);
-            if (isComplement) {
+            if (res.isComplemented) {
                 rowName.append("(rev-compl)");
             }
 
