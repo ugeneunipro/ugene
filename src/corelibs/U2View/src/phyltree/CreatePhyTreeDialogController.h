@@ -43,7 +43,7 @@ public:
     ~CreatePhyTreeDialogController();
 
 private slots:
-    void accept();
+    void accept() override;
     void sl_comboIndexChanged(int index);
     void sl_onStoreSettings();
     void sl_onRestoreDefault();

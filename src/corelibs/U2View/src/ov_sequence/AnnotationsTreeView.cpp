@@ -788,13 +788,13 @@ public:
         : changedSettings(cs) {
     }
 
-    bool isChildVisitRequired(QTreeWidgetItem* ti) {
+    bool isChildVisitRequired(QTreeWidgetItem* ti) override {
         auto item = static_cast<AVItem*>(ti);
         assert(item->type != AVItemType_Qualifier);
         return item->type == AVItemType_Group;  // visit children only for group items
     }
 
-    void visit(QTreeWidgetItem* ti) {
+    void visit(QTreeWidgetItem* ti) override {
         auto item = static_cast<AVItem*>(ti);
         if (item->type == AVItemType_Group) {
             auto gi = static_cast<AVGroupItem*>(item);

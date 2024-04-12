@@ -54,9 +54,9 @@ protected:
     void setNormalCellRenderer();
     void setDiffCellRenderer();
 
-    void paintEvent(QPaintEvent* e);
-    void resizeEvent(QResizeEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
+    void paintEvent(QPaintEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
 
 signals:
     void si_mouseMovedToPos(const QPoint&);
@@ -93,11 +93,11 @@ public:
     AssemblyReferenceArea(AssemblyBrowserUi* ui);
 
 protected:
-    virtual QByteArray getSequenceRegion(U2OpStatus& os);
-    virtual bool canDrawSequence();
-    virtual void drawSequence(QPainter& p);
+    QByteArray getSequenceRegion(U2OpStatus& os) override;
+    bool canDrawSequence() override;
+    void drawSequence(QPainter& p) override;
 
-    void mousePressEvent(QMouseEvent* e);
+    void mousePressEvent(QMouseEvent* e) override;
 
 signals:
     void si_unassociateReference();

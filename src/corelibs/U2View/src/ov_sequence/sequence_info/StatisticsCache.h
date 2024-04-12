@@ -41,7 +41,7 @@ public:
 
     bool isValid(const QVector<U2Region>& regionsToMatch) const;
 
-    void sl_invalidate();
+    void sl_invalidate() override;
 
 private:
     T statistics;

@@ -77,12 +77,12 @@ public:
                      const MaEditorConsensusAreaSettings& consensusAreaSettings);
 
 protected:
-    bool event(QEvent* e);
-    void paintEvent(QPaintEvent*);
-    void resizeEvent(QResizeEvent*);
-    void mousePressEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent* e);
+    bool event(QEvent* e) override;
+    void paintEvent(QPaintEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
+    void mousePressEvent(QMouseEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
+    void mouseReleaseEvent(QMouseEvent* e) override;
 
     virtual QString getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const = 0;
 

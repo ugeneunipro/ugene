@@ -43,14 +43,14 @@ public:
     SingleSequenceImageExportController(ADVSingleSequenceWidget* sequenceWidget);
 
 protected:
-    void initSettingsWidget();
+    void initSettingsWidget() override;
 
-    Task* getExportToSvgTask(const ImageExportTaskSettings& imageSettings) const;
-    Task* getExportToPdfTask(const ImageExportTaskSettings& imageSettings) const;
-    Task* getExportToBitmapTask(const ImageExportTaskSettings& imageSettings) const;
+    Task* getExportToSvgTask(const ImageExportTaskSettings& imageSettings) const override;
+    Task* getExportToPdfTask(const ImageExportTaskSettings& imageSettings) const override;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& imageSettings) const override;
 
 public slots:
-    void sl_onFormatChanged(const QString& format);
+    void sl_onFormatChanged(const QString& format) override;
     void sl_customSettingsChanged();
 
 private:

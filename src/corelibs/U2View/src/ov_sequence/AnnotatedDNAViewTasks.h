@@ -36,7 +36,7 @@ public:
     // opens a single view for all sequence object in the list of sequence objects related to the objects in the list
     OpenAnnotatedDNAViewTask(const QList<GObject*>& objects);
 
-    virtual void open();
+    void open() override;
 
     static void updateTitle(AnnotatedDNAView* v);
 
@@ -50,14 +50,14 @@ class OpenSavedAnnotatedDNAViewTask : public ObjectViewTask {
     Q_OBJECT
 public:
     OpenSavedAnnotatedDNAViewTask(const QString& viewName, const QVariantMap& stateData);
-    virtual void open();
+    void open() override;
 };
 
 class UpdateAnnotatedDNAViewTask : public ObjectViewTask {
 public:
     UpdateAnnotatedDNAViewTask(AnnotatedDNAView* v, const QString& stateName, const QVariantMap& stateData);
 
-    virtual void update();
+    void update() override;
 };
 
 }  // namespace U2

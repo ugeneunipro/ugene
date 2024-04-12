@@ -49,9 +49,9 @@ class ExtractAssemblyRegionAndOpenViewTask : public Task {
 public:
     ExtractAssemblyRegionAndOpenViewTask(const ExtractAssemblyRegionTaskSettings& settings);
 
-    void prepare();
+    void prepare() override;
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     ExtractAssemblyRegionTaskSettings settings;
@@ -63,7 +63,7 @@ class ExtractAssemblyRegionTask : public Task {
 public:
     ExtractAssemblyRegionTask(const ExtractAssemblyRegionTaskSettings& settings);
 
-    void run();
+    void run() override;
 
 private:
     ExtractAssemblyRegionTaskSettings settings;

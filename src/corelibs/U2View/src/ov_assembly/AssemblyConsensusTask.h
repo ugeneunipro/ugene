@@ -50,7 +50,7 @@ class AssemblyConsensusTask : public BackgroundTask<ConsensusInfo> {
     Q_OBJECT
 public:
     AssemblyConsensusTask(const AssemblyConsensusTaskSettings& settings);
-    virtual void run();
+    void run() override;
 
 private:
     AssemblyConsensusTaskSettings settings;
@@ -75,7 +75,7 @@ class AssemblyConsensusWorker : public Task {
     Q_OBJECT
 public:
     AssemblyConsensusWorker(ConsensusSettingsQueue* settingsQueue);
-    virtual void run();
+    void run() override;
 
 private:
     ConsensusSettingsQueue* settingsQueue;

@@ -107,7 +107,7 @@ public:
     ~SearchQualifierDialog();
 
 protected:
-    bool eventFilter(QObject* obj, QEvent* e);
+    bool eventFilter(QObject* obj, QEvent* e) override;
     void clearPrevResults();
 
 protected slots:

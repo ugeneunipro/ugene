@@ -37,8 +37,8 @@ public:
     AssemblyCoverageGraph(AssemblyBrowserUi* ui);
 
 protected:
-    void paintEvent(QPaintEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
+    void paintEvent(QPaintEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
 
 signals:
     void si_mouseMovedToPos(const QPoint&);

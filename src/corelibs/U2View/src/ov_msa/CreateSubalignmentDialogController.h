@@ -76,7 +76,7 @@ class U2VIEW_EXPORT CreateSubalignmentAndOpenViewTask : public Task {
     Q_OBJECT
 public:
     CreateSubalignmentAndOpenViewTask(MsaObject* mobj, const CreateSubalignmentSettings& settings);
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     CreateSubalignmentTask* csTask;

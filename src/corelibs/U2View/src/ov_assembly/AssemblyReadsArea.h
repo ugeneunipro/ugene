@@ -74,18 +74,18 @@ public:
     static const QString ZOOM_LINK;
 
 protected:
-    void paintEvent(QPaintEvent* e);
-    void resizeEvent(QResizeEvent* e);
-    void wheelEvent(QWheelEvent* e);
-    void mousePressEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
-    void leaveEvent(QEvent* e);
-    void hideEvent(QHideEvent* e);
-    bool event(QEvent* e);
-    void keyPressEvent(QKeyEvent* e);
-    void mouseDoubleClickEvent(QMouseEvent* e);
-    bool eventFilter(QObject* obj, QEvent* ev);
+    void paintEvent(QPaintEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
+    void wheelEvent(QWheelEvent* e) override;
+    void mousePressEvent(QMouseEvent* e) override;
+    void mouseReleaseEvent(QMouseEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
+    void leaveEvent(QEvent* e) override;
+    void hideEvent(QHideEvent* e) override;
+    bool event(QEvent* e) override;
+    void keyPressEvent(QKeyEvent* e) override;
+    void mouseDoubleClickEvent(QMouseEvent* e) override;
+    bool eventFilter(QObject* obj, QEvent* ev) override;
 
 private:
     void initRedraw();

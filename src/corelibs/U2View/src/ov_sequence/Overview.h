@@ -53,16 +53,16 @@ protected slots:
     void sl_onAnnotationSettingsChanged(const QStringList& changedSettings);
     void sl_annotationObjectAdded(AnnotationTableObject* obj);
     void sl_annotationObjectRemoved(AnnotationTableObject* obj);
-    void sl_sequenceChanged();
+    void sl_sequenceChanged() override;
 
 protected:
-    void pack();
-    virtual bool event(QEvent* e);
-    void mousePressEvent(QMouseEvent* me);
-    void mouseMoveEvent(QMouseEvent* me);
-    void mouseDoubleClickEvent(QMouseEvent* me);
-    void mouseReleaseEvent(QMouseEvent* me);
-    void wheelEvent(QWheelEvent* we);
+    void pack() override;
+    bool event(QEvent* e) override;
+    void mousePressEvent(QMouseEvent* me) override;
+    void mouseMoveEvent(QMouseEvent* me) override;
+    void mouseDoubleClickEvent(QMouseEvent* me) override;
+    void mouseReleaseEvent(QMouseEvent* me) override;
+    void wheelEvent(QWheelEvent* we) override;
 
     /** Creates a tool tip string for the given 'X' offset in the render area. */
     QString createToolTip(int renderAreaXOffset);
@@ -115,7 +115,7 @@ public:
     }
 
 protected:
-    void drawAll(QPaintDevice* pd);
+    void drawAll(QPaintDevice* pd) override;
 
 private:
     void drawRuler(QPainter& p);

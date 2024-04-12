@@ -29,7 +29,7 @@ class OpenSimpleTextObjectViewTask : public ObjectViewTask {
     Q_OBJECT
 public:
     OpenSimpleTextObjectViewTask(const QList<GObject*>& objects);
-    virtual void open();
+    void open() override;
 
 private:
     QList<GObject*> objects;
@@ -39,7 +39,7 @@ class OpenSavedTextObjectViewTask : public ObjectViewTask {
     Q_OBJECT
 public:
     OpenSavedTextObjectViewTask(const QString& viewName, const QVariantMap& stateData);
-    virtual void open();
+    void open() override;
 
 private:
     QPointer<Document> doc;
@@ -49,7 +49,7 @@ class UpdateSimpleTextObjectViewTask : public ObjectViewTask {
 public:
     UpdateSimpleTextObjectViewTask(GObjectViewController* v, const QString& stateName, const QVariantMap& stateData);
 
-    virtual void update();
+    void update() override;
 };
 
 }  // namespace U2

@@ -67,7 +67,7 @@ public:
     QMap<QString, QVariant> getCustomSettings();
 
 protected:
-    bool eventFilter(QObject*, QEvent*);
+    bool eventFilter(QObject*, QEvent*) override;
 
 private slots:
     void sl_onAddRefButtonClicked();
@@ -81,7 +81,7 @@ private slots:
 private:
     void updateState();
     void addGuiExtension();
-    void accept();
+    void accept() override;
     void initSaveController();
     void buildResultUrl(const QString& refUrl);
 

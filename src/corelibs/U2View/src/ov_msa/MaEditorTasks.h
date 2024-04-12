@@ -44,7 +44,7 @@ public:
     OpenMaEditorTask(UnloadedObject* obj, GObjectViewFactoryId fid, GObjectType type);
     OpenMaEditorTask(Document* doc, GObjectViewFactoryId fid, GObjectType type);
 
-    virtual void open();
+    void open() override;
 
     static void updateTitle(MsaEditor* msaEd);
 
@@ -66,7 +66,7 @@ public:
     OpenMsaEditorTask(UnloadedObject* obj);
     OpenMsaEditorTask(Document* doc);
 
-    MaEditor* getEditor(const QString& viewName, GObject* obj);
+    MaEditor* getEditor(const QString& viewName, GObject* obj) override;
 };
 
 /*!
@@ -79,14 +79,14 @@ public:
     OpenMcaEditorTask(UnloadedObject* obj);
     OpenMcaEditorTask(Document* doc);
 
-    MaEditor* getEditor(const QString& viewName, GObject* obj);
+    MaEditor* getEditor(const QString& viewName, GObject* obj) override;
 };
 
 class OpenSavedMaEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
     OpenSavedMaEditorTask(GObjectType type, MaEditorFactory* factory, const QString& viewName, const QVariantMap& stateData);
-    virtual void open();
+    void open() override;
 
     static void updateRanges(const QVariantMap& stateData, MaEditor* ctx);
 
@@ -99,7 +99,7 @@ class UpdateMaEditorTask : public ObjectViewTask {
 public:
     UpdateMaEditorTask(GObjectViewController* v, const QString& stateName, const QVariantMap& stateData);
 
-    virtual void update();
+    void update() override;
 };
 
 class ExportMaConsensusTaskSettings {
@@ -119,7 +119,7 @@ class ExtractConsensusTask : public Task {
 public:
     ExtractConsensusTask(bool keepGaps, MaEditor* ma, MsaConsensusAlgorithm* algorithm);
     ~ExtractConsensusTask();
-    void run();
+    void run() override;
     const QByteArray& getExtractedConsensus() const;
 
 private:

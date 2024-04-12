@@ -43,7 +43,7 @@ class MaGraphCalculationTask : public BackgroundTask<QPolygonF> {
 public:
     MaGraphCalculationTask(MsaObject* msa, int width, int height);
 
-    void run();
+    void run() override;
 signals:
     void si_calculationStarted();
     void si_calculationStoped();
@@ -70,7 +70,7 @@ public:
                                        int height);
 
 private:
-    int getGraphValue(int pos) const;
+    int getGraphValue(int pos) const override;
 
     MsaConsensusAlgorithm* algorithm;
 };
@@ -83,7 +83,7 @@ public:
                                  int height);
 
 private:
-    int getGraphValue(int pos) const;
+    int getGraphValue(int pos) const override;
 };
 
 class MaClustalOverviewCalculationTask : public MaGraphCalculationTask {
@@ -94,7 +94,7 @@ public:
                                      int height);
 
 private:
-    int getGraphValue(int pos) const;
+    int getGraphValue(int pos) const override;
 
     MsaConsensusAlgorithm* algorithm;
 };
@@ -119,7 +119,7 @@ public:
     static bool isEmptyScheme(const QString& schemeId);
 
 private:
-    int getGraphValue(int pos) const;
+    int getGraphValue(int pos) const override;
 
     bool isCellHighlighted(int seq, int pos) const;
 

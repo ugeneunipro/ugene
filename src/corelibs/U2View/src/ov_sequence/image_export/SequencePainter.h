@@ -71,9 +71,9 @@ public:
           seqWidget(seqWidget) {
     }
 
-    void paint(QPainter& p, CustomExportSettings* settings) const;
-    QSize getImageSize(CustomExportSettings* settings) const;
-    bool canPaintSvg(CustomExportSettings* settings, U2OpStatus& os) const;
+    void paint(QPainter& p, CustomExportSettings* settings) const override;
+    QSize getImageSize(CustomExportSettings* settings) const override;
+    bool canPaintSvg(CustomExportSettings* settings, U2OpStatus& os) const override;
 
 private:
     ADVSingleSequenceWidget* seqWidget;
@@ -86,9 +86,9 @@ class ZoomedViewPainter : public ExportImagePainter {
 public:
     ZoomedViewPainter(PanView* panView);
 
-    void paint(QPainter& p, CustomExportSettings* settings) const;
-    QSize getImageSize(CustomExportSettings* settings) const;
-    bool canPaintSvg(CustomExportSettings* settings, U2OpStatus& os) const;
+    void paint(QPainter& p, CustomExportSettings* settings) const override;
+    QSize getImageSize(CustomExportSettings* settings) const override;
+    bool canPaintSvg(CustomExportSettings* settings, U2OpStatus& os) const override;
 
 private:
     PanView* panView;
@@ -102,9 +102,9 @@ class DetailsViewPainter : public ExportImagePainter {
 public:
     DetailsViewPainter(DetView* detView);
 
-    void paint(QPainter& p, CustomExportSettings* settings) const;
-    QSize getImageSize(CustomExportSettings* settings) const;
-    bool canPaintSvg(CustomExportSettings* /*settings*/, U2OpStatus& /*os*/) const {
+    void paint(QPainter& p, CustomExportSettings* settings) const override;
+    QSize getImageSize(CustomExportSettings* settings) const override;
+    bool canPaintSvg(CustomExportSettings* /*settings*/, U2OpStatus& /*os*/) const override {
         return true;
     }
 

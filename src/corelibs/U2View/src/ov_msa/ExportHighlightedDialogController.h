@@ -37,7 +37,7 @@ public:
     ExportHighligtingDialogController(MaEditorWgt* msaui_, QWidget* p);
     ~ExportHighligtingDialogController();
 
-    virtual void accept();
+    void accept() override;
     void lockKeepGaps();
 
     int startPos;

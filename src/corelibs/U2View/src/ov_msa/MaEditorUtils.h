@@ -46,8 +46,8 @@ protected slots:
     void sl_fontChanged();
 
 protected:
-    virtual void mousePressEvent(QMouseEvent* e);
-    virtual void paintEvent(QPaintEvent* e);
+    void mousePressEvent(QMouseEvent* e) override;
+    void paintEvent(QPaintEvent* e) override;
 
     MaEditorWgt* ui;
     QWidget* heightWidget;
@@ -64,10 +64,10 @@ public:
     MaLabelWidget(MaEditorWgt* ui, QWidget* heightWidget, const QString& text, Qt::Alignment alignment, bool proxyMouseEventsToNameList = true);
 
 protected:
-    void paintEvent(QPaintEvent* e);
-    void mousePressEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
+    void paintEvent(QPaintEvent* e) override;
+    void mousePressEvent(QMouseEvent* e) override;
+    void mouseReleaseEvent(QMouseEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
 
 private:
     void sendEventToNameList(QMouseEvent* e) const;

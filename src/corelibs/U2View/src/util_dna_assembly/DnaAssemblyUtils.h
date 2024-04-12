@@ -49,7 +49,7 @@ class FilterUnpairedReadsTask : public Task {
     Q_OBJECT
 public:
     FilterUnpairedReadsTask(const DnaAssemblyToRefTaskSettings& settings);
-    void run();
+    void run() override;
     const QList<ShortReadSet>& getFilteredReadList() const {
         return filteredReads;
     }
@@ -68,10 +68,10 @@ class U2VIEW_EXPORT DnaAssemblyTaskWithConversions : public ExternalToolSupportT
 public:
     DnaAssemblyTaskWithConversions(const DnaAssemblyToRefTaskSettings& settings, bool viewResult = false, bool justBuildIndex = false);
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     const DnaAssemblyToRefTaskSettings& getSettings() const;
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     DnaAssemblyToRefTaskSettings settings;

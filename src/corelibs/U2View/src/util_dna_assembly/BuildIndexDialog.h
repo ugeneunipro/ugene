@@ -49,7 +49,7 @@ private:
     void buildIndexUrl(const GUrl& url);
     void updateState();
     void addGuiExtension();
-    void accept();
+    void accept() override;
 
 private slots:
     void sl_onAddRefButtonClicked();

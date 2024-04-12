@@ -40,7 +40,7 @@ class ExtractAssemblyRegionDialog : public QDialog, public Ui_ExtractAssemblyReg
 public:
     ExtractAssemblyRegionDialog(QWidget* p, ExtractAssemblyRegionTaskSettings* settings);
 
-    virtual void accept();
+    void accept() override;
 
 private slots:
     void sl_regionChanged(const U2Region& newRegion);

@@ -56,7 +56,7 @@ public:
                                   customSettings,
                                   settings) {
     }
-    void run();
+    void run() override;
 };
 
 /************************************************************************/
@@ -71,7 +71,7 @@ public:
                                   customSettings,
                                   settings) {
     }
-    void run();
+    void run() override;
 };
 
 /************************************************************************/
@@ -86,7 +86,7 @@ public:
                                   customSettings,
                                   settings) {
     }
-    void run();
+    void run() override;
 };
 
 }  // namespace U2
