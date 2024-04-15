@@ -22,7 +22,6 @@
 #include <math.h>
 
 #include <QHBoxLayout>
-#include <QIntValidator>
 #include <QLabel>
 #include <QPushButton>
 #include <QToolButton>
@@ -33,6 +32,7 @@
 #include <U2Formats/GenbankLocationParser.h>
 
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/U2LongLongValidator.h>
 
 #include "GenbankLocationValidator.h"
 #include "RangeSelector.h"
@@ -43,7 +43,7 @@ namespace U2 {
 void RangeSelector::init() {
     int w = qMax(((int)log10((double)rangeEnd)) * 10, 70);
     startEdit = new QLineEdit(this);
-    startEdit->setValidator(new QIntValidator(1, len, startEdit));
+    startEdit->setValidator(new U2LongLongValidator(1, len, startEdit));
     if (dialog == nullptr) {
         startEdit->setFixedWidth(w);
     } else {
@@ -55,7 +55,7 @@ void RangeSelector::init() {
     connect(startEdit, SIGNAL(returnPressed()), SLOT(sl_onReturnPressed()));
 
     endEdit = new QLineEdit(this);
-    endEdit->setValidator(new QIntValidator(1, len, endEdit));
+    endEdit->setValidator(new U2LongLongValidator(1, len, endEdit));
     if (dialog == nullptr) {
         endEdit->setFixedWidth(w);
     } else {
@@ -106,7 +106,7 @@ void RangeSelector::init() {
     setLayout(l);
 }
 
-RangeSelector::RangeSelector(QDialog* dialog, int rangeStart, int rangeEnd, int len, bool autoClose)
+RangeSelector::RangeSelector(QDialog* dialog, qint64 rangeStart, qint64 rangeEnd, qint64 len, bool autoClose)
     : QWidget(dialog), rangeStart(rangeStart), rangeEnd(rangeEnd), len(len), startEdit(nullptr), endEdit(nullptr),
       minButton(nullptr), maxButton(nullptr), rangeLabel(nullptr), dialog(dialog), autoClose(autoClose) {
     init();
@@ -150,11 +150,11 @@ void RangeSelector::sl_onReturnPressed() {
 
 void RangeSelector::exec() {
     bool ok = false;
-    int v1 = startEdit->text().toInt(&ok);
+    qint64 v1 = startEdit->text().toLongLong(&ok);
     if (!ok || v1 < 1 || v1 > len) {
         return;
     }
-    int v2 = endEdit->text().toInt(&ok);
+    qint64 v2 = endEdit->text().toLongLong(&ok);
     if (!ok || v2 < v1 || v2 > len) {
         return;
     }
@@ -176,21 +176,21 @@ void RangeSelector::sl_onMaxButtonClicked(bool checked) {
     endEdit->setText(QString::number(len));
 }
 
-int RangeSelector::getStart() const {
+qint64 RangeSelector::getStart() const {
     bool ok = false;
-    int v = startEdit->text().toInt(&ok);
+    qint64 v = startEdit->text().toLongLong(&ok);
     assert(ok);
     return v;
 }
 
-int RangeSelector::getEnd() const {
+qint64 RangeSelector::getEnd() const {
     bool ok = false;
-    int v = endEdit->text().toInt(&ok);
+    qint64 v = endEdit->text().toLongLong(&ok);
     assert(ok);
     return v;
 }
 
-MultipleRangeSelector::MultipleRangeSelector(QWidget* _parent, const QVector<U2Region>& _regions, int _seqLen, bool _isCircular)
+MultipleRangeSelector::MultipleRangeSelector(QWidget* _parent, const QVector<U2Region>& _regions, qint64 _seqLen, bool _isCircular)
     : QDialog(_parent), seqLen(_seqLen), selectedRanges(_regions), isCircular(_isCircular) {
     ui = new Ui_RangeSelectionDialog;
     ui->setupUi(this);
@@ -198,8 +198,8 @@ MultipleRangeSelector::MultipleRangeSelector(QWidget* _parent, const QVector<U2R
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Go"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    ui->startEdit->setValidator(new QIntValidator(1, seqLen, ui->startEdit));
-    ui->endEdit->setValidator(new QIntValidator(1, seqLen, ui->endEdit));
+    ui->startEdit->setValidator(new U2LongLongValidator(1, seqLen, ui->startEdit));
+    ui->endEdit->setValidator(new U2LongLongValidator(1, seqLen, ui->endEdit));
 
     int w = qMax(((int)log10((double)seqLen)) * 10, 70);
 
@@ -251,11 +251,11 @@ MultipleRangeSelector::~MultipleRangeSelector() {
 void MultipleRangeSelector::accept() {
     if (ui->singleButton->isChecked()) {
         bool ok = false;
-        int v1 = ui->startEdit->text().toInt(&ok);
+        qint64 v1 = ui->startEdit->text().toLongLong(&ok);
         if (!ok || v1 < 1 || v1 > seqLen) {
             return;
         }
-        int v2 = ui->endEdit->text().toInt(&ok);
+        qint64 v2 = ui->endEdit->text().toLongLong(&ok);
         if (!ok || (v2 < v1 && !isCircular) || v2 > seqLen) {
             return;
         }
@@ -275,8 +275,8 @@ void MultipleRangeSelector::accept() {
 }
 
 void MultipleRangeSelector::sl_textEdited(const QString&) {
-    int min = ui->startEdit->text().toInt();
-    int max = ui->endEdit->text().toInt();
+    qint64 min = ui->startEdit->text().toLongLong();
+    qint64 max = ui->endEdit->text().toLongLong();
     QPalette p = normalPalette;
     if (min > max && !isCircular) {
         p.setColor(QPalette::Base, QColor(255, 200, 200));
@@ -307,10 +307,10 @@ QVector<U2Region> MultipleRangeSelector::getSelectedRegions() {
 
     if (ui->singleButton->isChecked()) {
         bool ok = false;
-        int st = ui->startEdit->text().toInt(&ok);
+        qint64 st = ui->startEdit->text().toLongLong(&ok);
         CHECK(ok, currentRegions);
 
-        int en = ui->endEdit->text().toInt(&ok);
+        qint64 en = ui->endEdit->text().toLongLong(&ok);
         CHECK(ok, currentRegions);
 
         if (isCircular && st > en) {

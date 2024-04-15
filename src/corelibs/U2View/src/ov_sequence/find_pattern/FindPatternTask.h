@@ -37,13 +37,13 @@ class U2VIEW_EXPORT FindPatternTask : public Task {
 public:
     FindPatternTask(const FindAlgorithmTaskSettings& settings, bool removeOverlaps);
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     bool hasNoResults() {
         return noResults;
     }
     const QList<SharedAnnotationData>& getResults() const;
 
-    void prepare();
+    void prepare() override;
 
 private:
     void removeOverlappedResults(QList<FindAlgorithmResult>& results);

@@ -29,8 +29,13 @@ using namespace HI;
 class ConstructMoleculeDialogFiller : public Filler {
 public:
     enum ActionType {  // an appropriate action data
+        AddFragment,  // QString with a part of the fragment name, if several fragments match this part, the first one will be selected
         AddAllFragments,  // ignored
+        SelectAddedFragment,  // QString with a part of the fragment name, if several fragments match this part, the first one will be selected
         InvertAddedFragment,  // QString with a part of the fragment name, if several fragments match this part, the first one will be inverted
+        CheckMakeCircular,  // Check state, true if ignored
+        ClickAdjustLeft,  // ignored
+        ClickAdjustRight,  // ignored
         ClickCancel,  // ignored
         ClickOk
     };
@@ -42,8 +47,13 @@ public:
     void commonScenario();
 
 private:
+    void addFragment(const QVariant& actionData);
     void addAllFragments();
+    void selectFragment(const QVariant& actionData);
     void invertAddedFragment(const QVariant& actionData);
+    void checkMakeCircular(const QVariant& actionData);
+    void clickAdjustLeft();
+    void clickAdjustRight();
     void clickCancel();
     void clickOk();
 

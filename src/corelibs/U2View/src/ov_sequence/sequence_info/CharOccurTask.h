@@ -61,7 +61,7 @@ public:
      * Calculates the characters occurrence (in a different thread).
      * Assumes that the sequence consists of characters from the passed alphabet.
      */
-    virtual void run();
+    void run() override;
 
 private:
     const DNAAlphabet* alphabet;

@@ -38,12 +38,12 @@ class U2VIEW_EXPORT CodonTableView : public ADVSplitWidget {
 public:
     CodonTableView(AnnotatedDNAView* view);
 
-    virtual bool acceptsGObject(GObject*) {
+    bool acceptsGObject(GObject*) override {
         return false;
     }
-    virtual void updateState(const QVariantMap&) {
+    void updateState(const QVariantMap&) override {
     }
-    virtual void saveState(QVariantMap&) {
+    void saveState(QVariantMap&) override {
     }
 
     static const QColor NONPOLAR_COLOR;

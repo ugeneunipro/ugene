@@ -32,8 +32,8 @@ class AddReadsToDocumentTask : public Task {
 public:
     AddReadsToDocumentTask(const QList<U2AssemblyRead>& reads, const QPointer<Document>& doc);
 
-    void run();
-    ReportResult report();
+    void run() override;
+    ReportResult report() override;
 
 private:
     const QList<U2AssemblyRead> reads;

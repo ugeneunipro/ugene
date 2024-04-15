@@ -38,7 +38,7 @@ public:
     OpenAssemblyBrowserTask(AssemblyObject* obj);
     OpenAssemblyBrowserTask(UnloadedObject* obj);
     OpenAssemblyBrowserTask(Document* doc);
-    virtual void open();
+    void open() override;
     static void updateTitle(AssemblyBrowser* ab);
     static AssemblyBrowser* openBrowserForObject(AssemblyObject* obj, const QString& viewName, bool persistent);
 
@@ -50,7 +50,7 @@ class OpenSavedAssemblyBrowserTask : public ObjectViewTask {
     Q_OBJECT
 public:
     OpenSavedAssemblyBrowserTask(const QString& viewName, const QVariantMap& stateData);
-    virtual void open();
+    void open() override;
 };
 
 class UpdateAssemblyBrowserTask : public ObjectViewTask {
@@ -60,7 +60,7 @@ public:
         : ObjectViewTask(v, stateName, stateData) {
     }
 
-    virtual void update();
+    void update() override;
 };
 
 }  // namespace U2

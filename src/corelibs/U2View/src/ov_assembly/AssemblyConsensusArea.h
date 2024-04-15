@@ -48,14 +48,14 @@ public slots:
     void sl_exportConsensusVariations();
 
 protected:
-    virtual QByteArray getSequenceRegion(U2OpStatus& os);
-    virtual bool canDrawSequence();
-    virtual void drawSequence(QPainter& p);
-    virtual void mousePressEvent(QMouseEvent* e);
+    QByteArray getSequenceRegion(U2OpStatus& os) override;
+    bool canDrawSequence() override;
+    void drawSequence(QPainter& p) override;
+    void mousePressEvent(QMouseEvent* e) override;
 
 protected slots:
-    virtual void sl_offsetsChanged();
-    virtual void sl_zoomPerformed();
+    void sl_offsetsChanged() override;
+    void sl_zoomPerformed() override;
 
 private slots:
     void sl_consensusAlgorithmChanged(QAction* a);

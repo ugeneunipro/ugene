@@ -390,11 +390,11 @@ void SamtoolsBasedObjectDbi::setParent(const U2DataId& /*parentId*/, const U2Dat
 const int SamtoolsBasedReadsIterator::BUFFERED_INTERVAL_SIZE = 1000;
 
 SamtoolsBasedReadsIterator::SamtoolsBasedReadsIterator(
-    int assemblyId,
+    int _assemblyId,
     const U2Region& _r,
     SamtoolsBasedDbi& _dbi,
     const QByteArray& _nameFilter)
-    : U2DbiIterator<U2AssemblyRead>(), assemblyId(assemblyId), dbi(_dbi), nameFilter(_nameFilter) {
+    : U2DbiIterator<U2AssemblyRead>(), assemblyId(_assemblyId), dbi(_dbi), nameFilter(_nameFilter) {
     current = reads.begin();
     bool errorRegion = false;
     qint64 startPos = _r.startPos;
@@ -421,6 +421,13 @@ SamtoolsBasedReadsIterator::SamtoolsBasedReadsIterator(
     SAFE_POINT(!errorRegion, QString("Bad region for samtools reads fetching: %1 - %2").arg(_r.startPos).arg(_r.endPos()), );
 }
 
+SamtoolsBasedReadsIterator::SamtoolsBasedReadsIterator(
+    int _assemblyId,
+    SamtoolsBasedDbi& _dbi)
+    : U2DbiIterator<U2AssemblyRead>(), assemblyId(_assemblyId), dbi(_dbi) {
+    current = reads.begin();
+}
+
 bool SamtoolsBasedReadsIterator::hasNext() {
     applyNameFilter();
 
@@ -436,10 +443,15 @@ bool SamtoolsBasedReadsIterator::hasNext() {
 
     reads.clear();
     current = reads.begin();
-    qint64 endPosExc = r.endPos();
-    while (reads.isEmpty() && nextPosToRead < endPosExc) {
+
+    if (r.isEmpty()) {
         fetchNextChunk();
-        applyNameFilter();
+    } else {
+        qint64 endPosExc = r.endPos();
+        while (reads.isEmpty() && nextPosToRead < endPosExc) {
+            fetchNextChunk();
+            applyNameFilter();
+        }
     }
 
     if (!reads.isEmpty()) {
@@ -648,8 +660,23 @@ qint64 SamtoolsBasedAssemblyDbi::getMaxEndPos(const U2DataId& assemblyId, U2OpSt
     CHECK_EXT(id < header->n_targets, os.setError("Unknown assembly id"), 0);
 
     qint64 targetLength = header->target_len[id];
+
+    // header was generated automatically and does not contain consensus length
+    if (targetLength == 0) {
+        SamtoolsBasedReadsIterator sbri(id, dbi);
+        auto read = sbri.next();
+        while (read != nullptr) {
+            targetLength = qMax(targetLength, read->leftmostPos + read->effectiveLen);
+            read = sbri.next();
+        }
+
+        header->target_len[id] = targetLength;
+    }
+
     // Avoid returning '-1' (object-not-found) for empty assemblies.
-    return targetLength == 0 ? 0 : targetLength - 1;
+    SAFE_POINT(targetLength >= 0, "Incorrect target length", 0);
+
+    return targetLength - 1;
 }
 
 U2Region SamtoolsBasedAssemblyDbi::getCorrectRegion(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) {

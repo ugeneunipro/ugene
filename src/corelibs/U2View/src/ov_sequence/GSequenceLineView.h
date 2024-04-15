@@ -151,22 +151,22 @@ public:
         return false;
     }
 
-    virtual bool eventFilter(QObject* watched, QEvent* event);
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 signals:
     void si_visibleRangeChanged();
     void si_centerPosition(qint64 pos);
 
 protected:
-    void resizeEvent(QResizeEvent* e);
-    void mousePressEvent(QMouseEvent* me);
-    void mouseReleaseEvent(QMouseEvent* me);
-    void mouseMoveEvent(QMouseEvent* me);
-    void mouseDoubleClickEvent(QMouseEvent* me);
-    void wheelEvent(QWheelEvent* we);
-    void focusInEvent(QFocusEvent* fe);
-    void focusOutEvent(QFocusEvent* fe);
-    void keyPressEvent(QKeyEvent* e);
+    void resizeEvent(QResizeEvent* e) override;
+    void mousePressEvent(QMouseEvent* me) override;
+    void mouseReleaseEvent(QMouseEvent* me) override;
+    void mouseMoveEvent(QMouseEvent* me) override;
+    void mouseDoubleClickEvent(QMouseEvent* me) override;
+    void wheelEvent(QWheelEvent* we) override;
+    void focusInEvent(QFocusEvent* fe) override;
+    void focusOutEvent(QFocusEvent* fe) override;
+    void keyPressEvent(QKeyEvent* e) override;
     virtual void onVisibleRangeChanged(bool signal = true);
 
 public slots:

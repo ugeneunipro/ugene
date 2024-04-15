@@ -619,27 +619,27 @@
 <context>
     <name>U2::LocalWorkflow::InSilicoPcrReportTask</name>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="398"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="409"/>
         <source>Generate In Silico PCR report</source>
         <translation>Generate In Silico PCR report</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="431"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="442"/>
         <source>Sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="447"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="458"/>
         <source>Products count table</source>
         <translation>Таблица продуктов</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="456"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="467"/>
         <source>An error &apos;%1&apos; has occurred during processing file with primers &apos;%2&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="463"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="474"/>
         <source>Primer pair details</source>
         <translation>Информация о парах праймеров</translation>
     </message>
@@ -792,42 +792,37 @@
         <translation>There is the odd number of primers in the file: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="239"/>
-        <source>Primer sequence is too long: %1. The pair is skipped</source>
-        <translation>Primer sequence is too long: %1. The pair is skipped</translation>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="227"/>
+        <source>All primer pairs have been filtered, see log for details.</source>
+        <translation>Все пары праймеров были отфильтрованы, детали вычисления смотрите в логе.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="296"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="307"/>
         <source>Wrong sequence objects count</source>
         <translation>Wrong sequence objects count</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="306"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="317"/>
         <source>Wrong annotations objects count</source>
         <translation>Wrong annotations objects count</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="340"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="351"/>
         <source>The input file &quot;%1&quot; doesn&apos;t contain a valid sequence.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="344"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="355"/>
         <source>The sequence is too long: </source>
         <translation>The sequence is too long: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="378"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="389"/>
         <source>Failed to find TM algorithm with id &apos;%1&apos;.</source>
         <translation>Не удалось найти алгоритм расчета температуры плавления с ID %1.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="385"/>
-        <source>Primers specified in &quot;%1&quot; are too long.</source>
-        <translation>Праймеры указанные в &quot;%1&quot; слишком длинные.</translation>
-    </message>
-    <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="387"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="398"/>
         <source>Multiple In Silico PCR</source>
         <translation>Multiple In Silico PCR</translation>
     </message>

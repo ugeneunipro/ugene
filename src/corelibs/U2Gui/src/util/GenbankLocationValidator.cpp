@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-GenbankLocationValidator::GenbankLocationValidator(QPushButton* _okButton, int length, bool _isCircular, QLineEdit* _le)
+GenbankLocationValidator::GenbankLocationValidator(QPushButton* _okButton, qint64 length, bool _isCircular, QLineEdit* _le)
     : QValidator(),
       okButton(_okButton),
       isCircular(_isCircular),

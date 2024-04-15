@@ -65,21 +65,38 @@ struct U2GUI_EXPORT EditSequencDialogConfig {
     int position;
 };
 
-class U2GUI_EXPORT EditSequenceDialogController : public QDialog {
+/**
+ * This is an abstract class for dialog to edit the sequence.
+ * It has setting about "where to insert", "how handle the annotations", etc.
+ * In the inherited class you need to add widget, which allows you to add new data.
+ * For example, it could be the field for the new sequence (EditSequenceDialogController)
+ * or popup menu, where you can choose a restriction enzyme to paste (InsertEnzymeDialog)
+ */
+class U2GUI_EXPORT EditSequenceDialogVirtualController : public QDialog  {
     Q_OBJECT
 public:
-    EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
-    ~EditSequenceDialogController();
+    EditSequenceDialogVirtualController(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
 
     void accept() override;
 
-    DNASequence getNewSequence() const;
+    /**
+     * Here you need to create a new DNASequence to paste.
+     */
+    virtual DNASequence getNewSequence() const = 0;
     GUrl getDocumentPath() const;
-    int getPosToInsert() const;
+    qint64 getPosToInsert() const;
     U1AnnotationUtils::AnnotationStrategyForResize getAnnotationStrategy() const;
     bool mergeAnnotations() const;
     bool recalculateQualifiers() const;
     DocumentFormatId getDocumentFormatId() const;
+
+protected slots:
+    void sl_enterPressed();
+
+protected:
+    void addInputDataWidgetToLayout(QWidget* w);
+
+    EditSequencDialogConfig config;
 
 private slots:
     void sl_mergeAnnotationsToggled();
@@ -87,21 +104,34 @@ private slots:
     void sl_endPositionliClicked();
     void sl_beforeSlectionClicked();
     void sl_afterSlectionClicked();
-    void sl_enterPressed();
 
 private:
-    void addSeqpasterWidget();
     bool modifyCurrentDocument() const;
     void initSaveController();
 
     QString filter;
-    int pos;
-    SeqPasterWidgetController* w;
-    SaveDocumentController* saveController;
-    EditSequencDialogConfig config;
+    qint64 pos = 1;
     Ui_EditSequenceDialog* ui;
+    SaveDocumentController* saveController;
 
-    int seqEndPos;
+    qint64 seqEndPos = 0;
 };
+
+/**
+ * Paste or replace some sequence.
+ */
+class U2GUI_EXPORT EditSequenceDialogController : public EditSequenceDialogVirtualController {
+    Q_OBJECT
+public:
+    EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
+
+    void accept() override;
+
+    DNASequence getNewSequence() const override;
+
+private:
+    SeqPasterWidgetController* seqPasterWidgetController = nullptr;
+};
+
 
 }  // namespace U2

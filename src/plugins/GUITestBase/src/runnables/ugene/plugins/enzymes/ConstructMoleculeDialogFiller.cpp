@@ -20,6 +20,8 @@
  */
 
 #include "ConstructMoleculeDialogFiller.h"
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTListWidget.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 
@@ -44,11 +46,26 @@ void ConstructMoleculeDialogFiller::commonScenario() {
 
     foreach (const Action& action, actions) {
         switch (action.first) {
+            case AddFragment:
+                addFragment(action.second);
+                break;
             case AddAllFragments:
                 addAllFragments();
                 break;
+            case SelectAddedFragment:
+                selectFragment(action.second);
+                break;
             case InvertAddedFragment:
                 invertAddedFragment(action.second);
+                break;
+            case CheckMakeCircular:
+                checkMakeCircular(action.second);
+                break;
+            case ClickAdjustLeft:
+                clickAdjustLeft();
+                break;
+            case ClickAdjustRight:
+                clickAdjustRight();
                 break;
             case ClickCancel:
                 clickCancel();
@@ -62,18 +79,55 @@ void ConstructMoleculeDialogFiller::commonScenario() {
     }
 }
 
+void ConstructMoleculeDialogFiller::addFragment(const QVariant& actionData) {
+    GT_CHECK(actionData.canConvert<QString>(), "Can't get a fragment name's part from the action data");
+
+    auto fragmentListWidget = GTWidget::findListWidget("fragmentListWidget", dialog);
+    GTGlobals::FindOptions options;
+    options.matchPolicy = Qt::MatchContains;
+    GTListWidget::click(fragmentListWidget, actionData.toString(), Qt::LeftButton, 0, options);
+    GTWidget::click(GTWidget::findPushButton("takeButton", dialog));
+}
+
 void ConstructMoleculeDialogFiller::addAllFragments() {
     GTWidget::click(GTWidget::findWidget("takeAllButton", dialog));
     GTGlobals::sleep();
 }
 
+void ConstructMoleculeDialogFiller::selectFragment(const QVariant& actionData) {
+    GT_CHECK(actionData.canConvert<QString>(), "Can't get a fragment name's part from the action data");
+    GTGlobals::FindOptions options;
+    options.matchPolicy = Qt::MatchContains;
+    QTreeWidgetItem* item = GTTreeWidget::findItem(GTWidget::findTreeWidget("molConstructWidget", dialog), actionData.toString(), nullptr, 1, options);
+    GTTreeWidget::click(item, 1);
+}
+
 void ConstructMoleculeDialogFiller::invertAddedFragment(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<QString>(), "Can't get a fragment name's part from the action data");
+
     GTGlobals::FindOptions options;
     options.matchPolicy = Qt::MatchContains;
     QTreeWidgetItem* item = GTTreeWidget::findItem(GTWidget::findTreeWidget("molConstructWidget", dialog), actionData.toString(), nullptr, 1, options);
     bool isCheck = item->data(3, Qt::CheckStateRole).toInt() == Qt::Unchecked;
     GTTreeWidget::checkItem(item, 3, GTGlobals::UseMouse, isCheck, false);  // Do not validate the result. The item is replaced on toggle.
+}
+
+void ConstructMoleculeDialogFiller::checkMakeCircular(const QVariant& actionData) {
+    bool check = true;
+    if (!actionData.isValid()) {
+        GT_CHECK(actionData.canConvert<bool>(), "Can't convert to bool");
+        check = actionData.toBool();
+    }
+
+    GTCheckBox::setChecked("makeCircularBox", check);
+}
+
+void ConstructMoleculeDialogFiller::clickAdjustLeft() {
+    GTWidget::click(GTWidget::findToolButton("tbAdjustLeft", dialog));
+}
+
+void ConstructMoleculeDialogFiller::clickAdjustRight() {
+    GTWidget::click(GTWidget::findToolButton("tbAdjustRight", dialog));
 }
 
 void ConstructMoleculeDialogFiller::clickCancel() {

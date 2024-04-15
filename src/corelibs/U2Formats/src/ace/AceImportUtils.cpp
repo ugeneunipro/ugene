@@ -32,6 +32,25 @@
 namespace U2 {
 
 ///////////////////////////////////
+//// Assembly::Sequence
+///////////////////////////////////
+
+Assembly::Sequence::Sequence()
+    : offset(0), isComplemented(false) {
+}
+
+bool Assembly::Sequence::isValid() const {
+    return !name.isEmpty() && offset >= 0;
+}
+
+bool Assembly::Sequence::operator==(const Sequence& second) const {
+    return data == second.data &&
+           name == second.name &&
+           offset == second.offset &&
+           isComplemented == second.isComplemented;
+}
+
+///////////////////////////////////
 //// Assembly
 ///////////////////////////////////
 
@@ -150,8 +169,6 @@ Assembly AceReader::getAssembly() {
     int readsCount = 0;
     QByteArray headerLine;
 
-    QSet<QByteArray> names;
-    QMap<QByteArray, bool> complMap;
 
     CHECK_EXT(currentContig < contigsCount, os->setError(DocumentFormatUtils::tr("There are not enough assemblies")), result);
 
@@ -165,36 +182,37 @@ Assembly AceReader::getAssembly() {
     CHECK_OP((*os), result);
 
     // consensus, is set as reference in assembly
-    parseConsensus(io, buff, names, headerLine, reference);
+    parseConsensus(io, buff, headerLine, reference);
     CHECK_OP((*os), result);
 
     // read AF tag
-    QMap<QByteArray, int> posMap;
-    parseAfTag(io, buff, readsCount, posMap, complMap, names);
+    QList<Assembly::Sequence> reads;
+    parseAfTag(io, buff, readsCount, reads);
     CHECK_OP((*os), result);
+    CHECK_EXT(readsCount == reads.size(),
+             os->setError(DocumentFormatUtils::tr("Expected %1 reads, but only %2 AF tags found").arg(readsCount).arg(reads.size())),
+             result);
 
-    int smallestOffset = getSmallestOffset(posMap);
+    int smallestOffset = getSmallestOffset(reads);
     if (smallestOffset < 0) {
         QByteArray gaps(qAbs(smallestOffset), '*');
         reference.data.prepend(gaps);
     }
     result.setReference(reference);
 
-    // read RD and QA tags
-    while (readsCount > 0) {
-        Assembly::Sequence read;
 
-        parseRdAndQaTag(io, buff, names, read);
+    // read RD and QA tags
+    for (int i = 0; i < readsCount; i++) {
+        auto& read = reads[i];
+        parseRdAndQaTag(io, buff, read);
         CHECK_OP((*os), result);
 
-        read.isComplemented = complMap.take(read.name);
-        read.offset = posMap.value(read.name) - 1;
+        read.offset = read.offset - 1;
         if (smallestOffset < 0) {
             read.offset += qAbs(smallestOffset);
         }
 
         result.addRead(read);
-        readsCount--;
     }
 
     currentContig++;
@@ -252,7 +270,7 @@ int AceReader::getReadsCount(const QByteArray& cur_line) {
     return readsCount;
 }
 
-void AceReader::parseConsensus(IOAdapter* io, char* buff, QSet<QByteArray>& names, QByteArray& headerLine, Assembly::Sequence& consensus) {
+void AceReader::parseConsensus(IOAdapter* io, char* buff, QByteArray& headerLine, Assembly::Sequence& consensus) {
     char aceBStartChar = 'B';
     QBitArray aceBStart = TextUtils::createBitMap(aceBStartChar);
     qint64 len = 0;
@@ -260,9 +278,6 @@ void AceReader::parseConsensus(IOAdapter* io, char* buff, QSet<QByteArray>& name
     QByteArray line;
 
     consensus.name = getName(headerLine);
-    CHECK_EXT(!names.contains(consensus.name), os->setError(DocumentFormatUtils::tr("A name is duplicated")), );
-
-    names.insert(consensus.name);
     consensus.name += "_ref";
 
     do {
@@ -314,7 +329,7 @@ bool AceReader::checkSeq(const QByteArray& seq) {
     return al->containsAll(seq.constData(), seq.length());
 }
 
-void AceReader::parseAfTag(U2::IOAdapter* io, char* buff, int count, QMap<QByteArray, int>& posMap, QMap<QByteArray, bool>& complMap, QSet<QByteArray>& names) {
+void AceReader::parseAfTag(U2::IOAdapter* io, char* buff, int count, QList<Assembly::Sequence>& reads) {
     int readsCount = count;
     QByteArray afBlock;
     QByteArray readLine;
@@ -358,18 +373,15 @@ void AceReader::parseAfTag(U2::IOAdapter* io, char* buff, int count, QMap<QByteA
 
         int readPos = readsPos(afLine);
         CHECK_OP((*os), );
+
         int complStrand = readsComplement(afLine);
         CHECK_OP((*os), );
 
-        posMap.insert(name, readPos);
-
-        bool cur_compl = (complStrand == 1);
-        complMap.insert(name, cur_compl);
-
-        QList<QByteArray> b = names.toList();
-
-        CHECK_EXT(!names.contains(name), os->setError(DocumentFormatUtils::tr("A name is duplicated: %1").arg(QString(name))), );
-        names.insert(name);
+        Assembly::Sequence read;
+        read.name = name;
+        read.offset = readPos;
+        read.isComplemented = (complStrand == 1);
+        reads << read;
 
         readsCount--;
     }
@@ -436,16 +448,16 @@ int AceReader::paddedStartCons(const QByteArray& cur_line) {
     return result;
 }
 
-int AceReader::getSmallestOffset(const QMap<QByteArray, int>& posMap) {
+int AceReader::getSmallestOffset(const QList<Assembly::Sequence>& reads) {
     int smallestOffset = 0;
-    foreach (int value, posMap) {
-        smallestOffset = qMin(smallestOffset, value - 1);
+    for (const auto& read : qAsConst(reads)) {
+        smallestOffset = qMin(smallestOffset, (int)read.offset - 1);
     }
 
     return smallestOffset;
 }
 
-void AceReader::parseRdAndQaTag(U2::IOAdapter* io, char* buff, QSet<QByteArray>& names, Assembly::Sequence& read) {
+void AceReader::parseRdAndQaTag(U2::IOAdapter* io, char* buff, Assembly::Sequence& read) {
     QByteArray rdBlock;
     qint64 len = 0;
     bool ok = true;
@@ -472,7 +484,9 @@ void AceReader::parseRdAndQaTag(U2::IOAdapter* io, char* buff, QSet<QByteArray>&
     // Magic numbers: RD tag, name, three numbers, sequence data
     CHECK_EXT(6 <= rdSplitted.count(), os->setError(DocumentFormatUtils::tr("Invalid RD part")), );
     SAFE_POINT_EXT(RD == rdSplitted[0], os->setError("Can't find the RD tag"), );
-    read.name = rdSplitted[1];
+
+    QByteArray name = rdSplitted[1];
+    CHECK_EXT(read.name == name, os->setError(DocumentFormatUtils::tr("A name is not match with AF names")), );
 
     for (int chain = 5; chain < rdSplitted.count(); chain++) {
         read.data += rdSplitted[chain];
@@ -493,9 +507,6 @@ void AceReader::parseRdAndQaTag(U2::IOAdapter* io, char* buff, QSet<QByteArray>&
 
     formatSequence(read.data);
     CHECK_EXT(checkSeq(read.data), os->setError(DocumentFormatUtils::tr("Unexpected symbols in sequence data")), );
-
-    CHECK_EXT(names.contains(read.name), os->setError(DocumentFormatUtils::tr("A name is not match with AF names")), );
-    names.remove(read.name);
 }
 
 int AceReader::getClearRangeStart(const QByteArray& cur_line) {

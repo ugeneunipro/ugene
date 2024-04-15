@@ -39,7 +39,7 @@ public:
     ExportCoverageSettings getSettings() const;
 
 public slots:
-    void accept();
+    void accept() override;
 
 private slots:
     void sl_formatChanged(const QString& format);

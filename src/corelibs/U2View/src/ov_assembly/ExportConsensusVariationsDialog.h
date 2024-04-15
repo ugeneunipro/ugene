@@ -37,7 +37,7 @@ class ExportConsensusVariationsDialog : public QDialog, private Ui_ExportConsens
 public:
     ExportConsensusVariationsDialog(QWidget* p, const ExportConsensusVariationsTaskSettings& settings, const U2Region& visibleRegion);
 
-    virtual void accept();
+    void accept() override;
 
     const ExportConsensusVariationsTaskSettings& getSettings() const;
 

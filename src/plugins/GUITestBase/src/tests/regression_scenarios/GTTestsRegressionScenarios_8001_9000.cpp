@@ -54,13 +54,17 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "GTUtilsWizard.h"
+#include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
@@ -398,6 +402,57 @@ GUI_TEST_CLASS_DEFINITION(test_8052) {
     GTUtilsNotifications::waitForNotification(true, "Block size is too big and can't be copied into the clipboard");
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy/Paste", "Copy annotation sequence"}));
     GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8064) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);  // Close wizard.
+
+    GTUtilsWorkflowDesigner::click("Read alignment");
+    GTUtilsWorkflowDesigner::addInputFile("Read alignment", dataDir + "samples/CLUSTALW/COI.aln");
+
+    GTUtilsWorkflowDesigner::setBreakpoint("Write alignment");
+    GTUtilsWorkflowDesigner::removeItem("Write alignment");
+
+    GTUtilsWorkflowDesigner::addElement("Write Alignment");
+    GTUtilsWorkflowDesigner::connect(GTUtilsWorkflowDesigner::getWorker("Align with MUSCLE"), GTUtilsWorkflowDesigner::getWorker("Write Alignment"));
+
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8069) {
+    /*
+    * 1. Open WD.
+    * 2. Samples->Scenarios->In silico PCR.
+    * 3. Set human_T1 (or any other valid input) as input and chrM.sorted.bam (or any other invalid input) as Primers URL.
+    * 4. Run the workflow.
+    * Expected: a task error about inappropriate primer file.
+    */
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+
+    class SetBinaryFileAsPrimerFile : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* wizard = GTWidget::getActiveModalWidget();
+            GTWidget::click(wizard);
+            GTUtilsWizard::setInputFiles({{dataDir + "samples/Assembly/chrM.fa"}});
+            GTUtilsWizard::clickButton(GTUtilsWizard::Next);
+            GTUtilsWizard::setParameter("Primers URL", dataDir + "samples/Assembly/chrM.sorted.bam");
+            GTUtilsWizard::clickButton(GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(GTUtilsWizard::Run);
+        }
+    };
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new WizardFiller("In Silico PCR", new SetBinaryFileAsPrimerFile()));
+    GTUtilsWorkflowDesigner::addSample("In silico PCR");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasMessage("Can not read the primers file"), "Expected message 'Can not read the primers file' not found!");
+    CHECK_SET_ERR(lt.hasMessage("Nothing to write"), "Expected message 'Nothing to write' not found!");
 }
 
 }  // namespace GUITest_regression_scenarios

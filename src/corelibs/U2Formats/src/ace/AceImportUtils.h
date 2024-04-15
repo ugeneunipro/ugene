@@ -31,17 +31,15 @@ class Assembly {
 public:
     class Sequence {  // it is consensus in the ACE format specification
     public:
-        Sequence()
-            : offset(0), isComplemented(false) {
-        }
+        Sequence();
 
-        bool isValid() const {
-            return !name.isEmpty() && offset >= 0;
-        }
+        bool isValid() const;
+
+        bool operator==(const Sequence& second) const;
 
         QByteArray data;
         QByteArray name;
-        int offset;
+        qint64 offset;
         bool isComplemented;
     };
 
@@ -83,16 +81,16 @@ private:
     int getContigCount(const QByteArray& cur_line);
     int getSubString(QByteArray& line, int pos);
     int getReadsCount(const QByteArray& cur_line);
-    void parseConsensus(IOAdapter* io, char* buff, QSet<QByteArray>& names, QByteArray& headerLine, Assembly::Sequence& consensus);
+    void parseConsensus(IOAdapter* io, char* buff, QByteArray& headerLine, Assembly::Sequence& consensus);
     QByteArray getName(const QByteArray& line);
     bool checkSeq(const QByteArray& seq);
-    void parseAfTag(IOAdapter* io, char* buff, int count, QMap<QByteArray, int>& posMap, QMap<QByteArray, bool>& complMap, QSet<QByteArray>& names);
+    void parseAfTag(IOAdapter* io, char* buff, int count, QList<Assembly::Sequence>& reads);
     int readsPos(const QByteArray& cur_line);
     int prepareLine(QByteArray& line, int pos);
     int readsComplement(const QByteArray& cur_line);
     int paddedStartCons(const QByteArray& cur_line);
-    int getSmallestOffset(const QMap<QByteArray, int>& posMap);
-    void parseRdAndQaTag(U2::IOAdapter* io, char* buff, QSet<QByteArray>& names, Assembly::Sequence& read);
+    int getSmallestOffset(const QList<Assembly::Sequence>& reads);
+    void parseRdAndQaTag(U2::IOAdapter* io, char* buff, Assembly::Sequence& read);
     int getClearRangeStart(const QByteArray& cur_line);
     int getClearRangeEnd(const QByteArray& cur_line);
     void formatSequence(QByteArray& data);

@@ -72,8 +72,8 @@ class ExportAutoAnnotationsGroupTask : public Task {
     Q_OBJECT
 public:
     ExportAutoAnnotationsGroupTask(AnnotationGroup* ag, GObjectReference& aRef, ADVSequenceObjectContext* seqCtx, const QString& annDescription = "");
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     AnnotationGroup* aGroup;

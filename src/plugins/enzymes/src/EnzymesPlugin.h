@@ -56,6 +56,7 @@ public:
 protected slots:
     void sl_search();
     void sl_createPCRProduct();
+    void sl_insertRestrictionSite();
 
 protected:
     void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) override;

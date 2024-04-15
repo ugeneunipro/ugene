@@ -34,7 +34,7 @@ mkdir "${SYMBOLS_DIR}"
 echo "##teamcity[blockOpened name='Get version']"
 VERSION=$("${APP_EXE_DIR}/ugenecl" --version | grep 'version of UGENE' | sed -n "s/.*version of UGENE \([0-9\.A-Za-z-]*\).*/\1/p")
 if [ -z "${VERSION}" ]; then
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to get version of UGENE']"
+  echo "##teamcity[buildStatus NOTARYTOOL_JOB_INFO_OUTPUT='FAILURE' text='{build.NOTARYTOOL_JOB_INFO_OUTPUT.text}. Failed to get version of UGENE']"
   exit 1
 fi
 echo "Version of UGENE: ${VERSION}"
@@ -52,7 +52,7 @@ rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
 
 # Copy UGENE files & tools into 'bundle' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
+  echo "##teamcity[buildStatus NOTARYTOOL_JOB_INFO_OUTPUT='FAILURE' text='{build.NOTARYTOOL_JOB_INFO_OUTPUT.text}. Failed to copy tools dir']"
 }
 
 # These tools can't be notarized today:
@@ -70,7 +70,7 @@ if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
 else
   echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
   diff "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
+  echo "##teamcity[buildStatus NOTARYTOOL_JOB_INFO_OUTPUT='FAILURE' text='{build.NOTARYTOOL_JOB_INFO_OUTPUT.text}. Failed to validate release bundle content']"
   exit 1
 fi
 echo "##teamcity[blockClosed name='Validate bundle content']"
@@ -140,5 +140,38 @@ codesign --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime --s
 echo " ##teamcity[blockClosed name='Pack']"
 
 echo "##teamcity[blockOpened name='Notarize']"
-bash "${SOURCE_DIR}/etc/script/mac/notarize.sh" -n "${RELEASE_FILE_NAME}" || exit 1
+NOTARYTOOL_OUTPUT=$(xcrun notarytool submit "${RELEASE_FILE_NAME}" --keychain-profile "UGENE" || exit 1)
+echo "Notary tool output: ${NOTARYTOOL_OUTPUT}"
+NOTARYTOOL_JOB_UUID=$(echo "${NOTARYTOOL_OUTPUT}" | grep 'id:' | head -n 1 | awk '{print $2}')
+echo "Got submission id: (${NOTARYTOOL_JOB_UUID})"
 echo "##teamcity[blockClosed name='Notarize']"
+
+echo "##teamcity[blockOpened name='Check Notarization']"
+END_TIME=$((SECONDS+1200))  # 1200 seconds = 20 minutes
+while [ $SECONDS -lt $END_TIME ]; do
+    NOTARYTOOL_JOB_INFO_OUTPUT=$(xcrun notarytool info "${NOTARYTOOL_JOB_UUID}" --keychain-profile "UGENE")
+    echo "Notary tool job info output: ${NOTARYTOOL_JOB_INFO_OUTPUT}"
+    if echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "status: Accepted"; then
+        echo "Notarization successful!"
+        break
+    elif echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "status: Rejected"; then
+        echo "Notarization failed."
+        exit 1
+    elif echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "status: In Progress"; then
+        echo "Notarization still in progress..."
+    else
+        echo "Unexpected output. Exiting."
+        exit 1
+    fi
+    sleep 30  # Wait for 30 seconds before the next check.
+done
+echo "##teamcity[blockClosed name='Check Notarization']"
+
+echo "##teamcity[blockOpened name='Staple']"
+xcrun stapler staple "${RELEASE_FILE_NAME}" || exit 1
+echo "##teamcity[blockClosed name='Staple']"
+
+echo "##teamcity[blockOpened name='Check Staple']"
+xcrun stapler validate "${RELEASE_FILE_NAME}" || exit 1
+echo "##teamcity[blockClosed name='Check Staple']"
+

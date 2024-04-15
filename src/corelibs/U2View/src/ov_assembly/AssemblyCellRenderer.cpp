@@ -124,11 +124,11 @@ public:
     virtual ~NucleotideColorsRenderer() {
     }
 
-    virtual void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font);
+    void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font) override;
 
-    virtual QPixmap cellImage(char c);
-    virtual QPixmap cellImage(const U2AssemblyRead& read, char c);
-    virtual QPixmap cellImage(const U2AssemblyRead& read, char c, char ref);
+    QPixmap cellImage(char c) override;
+    QPixmap cellImage(const U2AssemblyRead& read, char c) override;
+    QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
     void update();
@@ -204,11 +204,11 @@ public:
     virtual ~ComplementColorsRenderer() {
     }
 
-    virtual void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font);
+    void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font) override;
 
-    virtual QPixmap cellImage(char c);
-    virtual QPixmap cellImage(const U2AssemblyRead& read, char c);
-    virtual QPixmap cellImage(const U2AssemblyRead& read, char c, char ref);
+    QPixmap cellImage(char c) override;
+    QPixmap cellImage(const U2AssemblyRead& read, char c) override;
+    QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
     void update();
@@ -293,11 +293,11 @@ public:
     virtual ~DiffNucleotideColorsRenderer() {
     }
 
-    virtual void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font);
+    void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font) override;
 
-    virtual QPixmap cellImage(char c);
-    virtual QPixmap cellImage(const U2AssemblyRead& read, char c);
-    virtual QPixmap cellImage(const U2AssemblyRead& read, char c, char ref);
+    QPixmap cellImage(char c) override;
+    QPixmap cellImage(const U2AssemblyRead& read, char c) override;
+    QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
     void update();
@@ -328,11 +328,11 @@ public:
     virtual ~PairedColorsRenderer() {
     }
 
-    virtual void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font);
+    void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font) override;
 
-    virtual QPixmap cellImage(char c);
-    virtual QPixmap cellImage(const U2AssemblyRead& read, char c);
-    virtual QPixmap cellImage(const U2AssemblyRead& read, char c, char ref);
+    QPixmap cellImage(char c) override;
+    QPixmap cellImage(const U2AssemblyRead& read, char c) override;
+    QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
     void update();
@@ -497,7 +497,7 @@ public:
         : AssemblyCellRendererFactory(_id, _name) {
     }
 
-    virtual AssemblyCellRenderer* create() {
+    AssemblyCellRenderer* create() override {
         return new NucleotideColorsRenderer();
     }
 };
@@ -508,7 +508,7 @@ public:
         : AssemblyCellRendererFactory(_id, _name) {
     }
 
-    virtual AssemblyCellRenderer* create() {
+    AssemblyCellRenderer* create() override {
         return new DiffNucleotideColorsRenderer();
     }
 };
@@ -519,7 +519,7 @@ public:
         : AssemblyCellRendererFactory(_id, _name) {
     }
 
-    virtual AssemblyCellRenderer* create() {
+    AssemblyCellRenderer* create() override {
         return new ComplementColorsRenderer();
     }
 };
@@ -530,7 +530,7 @@ public:
         : AssemblyCellRendererFactory(_id, _name) {
     }
 
-    virtual AssemblyCellRenderer* create() {
+    AssemblyCellRenderer* create() override {
         return new PairedColorsRenderer();
     }
 };

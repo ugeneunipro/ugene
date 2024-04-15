@@ -55,6 +55,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/U2LongLongValidator.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
@@ -389,8 +390,8 @@ void FindPatternWidget::initRegionSelection() {
 
     setRegionToWholeSequence();
 
-    editStart->setValidator(new QIntValidator(1, activeContext->getSequenceLength(), editStart));
-    editEnd->setValidator(new QIntValidator(1, activeContext->getSequenceLength(), editEnd));
+    editStart->setValidator(new U2LongLongValidator(1, activeContext->getSequenceLength(), editStart));
+    editEnd->setValidator(new U2LongLongValidator(1, activeContext->getSequenceLength(), editEnd));
 
     trackedSelection = annotatedDnaView->getActiveSequenceContext()->getSequenceSelection();
 
@@ -756,6 +757,12 @@ QString FindPatternWidget::buildErrorLabelHtml() const {
                 QString message = tr("Warning: the input regular expression is invalid! ");
                 text += tr("<b><font color=%1>%2</font><br></br></b>").arg(errorColor).arg(message);
                 GUIUtils::setWidgetWarningStyle(textPattern, true);
+                break;
+            }
+            case CreateAnnotationControllerValidaitionError: {
+                SAFE_POINT(!customErrorMessage.isEmpty(), "CreateAnnotationController must provide a valid error message.", "");
+
+                text += tr("<b><font color=%1>Error: %2</font><br></br></b>").arg(errorColor).arg(customErrorMessage);
                 break;
             }
             default:
@@ -1310,12 +1317,20 @@ QList<NamePattern> FindPatternWidget::updateNamePatterns() {
 }
 
 void FindPatternWidget::sl_getAnnotationsButtonClicked() {
+    QString validationError = createAnnotationController->validate();
+    if (!validationError.isEmpty()) {
+        setMessageFlag(CreateAnnotationControllerValidaitionError, true, validationError);
+        return;
+    } else {
+        setMessageFlag(CreateAnnotationControllerValidaitionError, false);
+    }
+
     if (!annotationModelIsPrepared) {
         bool objectPrepared = createAnnotationController->prepareAnnotationObject();
         SAFE_POINT(objectPrepared, "Cannot create an annotation object. Please check settings", );
         annotationModelIsPrepared = true;
     }
-    QString validationError = createAnnotationController->validate();
+    validationError = createAnnotationController->validate();
     SAFE_POINT(validationError.isEmpty(), "Annotation names are invalid", );
 
     const CreateAnnotationModel& annotationModel = createAnnotationController->getModel();

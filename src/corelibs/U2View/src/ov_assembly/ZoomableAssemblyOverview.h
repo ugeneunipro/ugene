@@ -56,13 +56,13 @@ signals:
     void si_coverageReady();
 
 protected:
-    void paintEvent(QPaintEvent* e);
-    void resizeEvent(QResizeEvent* e);
-    void mousePressEvent(QMouseEvent* me);
-    void mouseMoveEvent(QMouseEvent* me);
-    void mouseReleaseEvent(QMouseEvent* me);
-    void wheelEvent(QWheelEvent* e);
-    void contextMenuEvent(QContextMenuEvent* e);
+    void paintEvent(QPaintEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
+    void mousePressEvent(QMouseEvent* me) override;
+    void mouseMoveEvent(QMouseEvent* me) override;
+    void mouseReleaseEvent(QMouseEvent* me) override;
+    void wheelEvent(QWheelEvent* e) override;
+    void contextMenuEvent(QContextMenuEvent* e) override;
 
 private slots:
     void sl_visibleAreaChanged();

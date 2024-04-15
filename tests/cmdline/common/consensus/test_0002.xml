@@ -1,0 +1,17 @@
+<!-- UGENE-7236 -->
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/consensus/consensus.uwl"
+            in="!sample_data_dir!/Assembly/chrM.sam"
+            out="!tmp_data_dir!consensus_0002.gff"
+            algo="Default"
+            format="GFF"
+            gaps="true"
+    />
+
+    <load-document index="actual" url="consensus_0002.gff" io="local_file" format="gff" dir="temp"/>
+    <load-document index="expected" url="cmdline/consensus/chrM.gff" io="local_file" format="gff"/>
+    <compare-sequences-in-two-objects doc="actual" value="expected"/>
+
+</multi-test>

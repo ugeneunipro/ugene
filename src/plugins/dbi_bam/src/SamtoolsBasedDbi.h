@@ -70,7 +70,11 @@ class SamtoolsBasedReadsIterator : public U2DbiIterator<U2AssemblyRead> {
     friend int bamFetchFunction(const bam1_t* b, void* data);
 
 public:
+    /* This constructor creates instance, which iterates through reads of some certain region @r. */
     SamtoolsBasedReadsIterator(int assemblyId, const U2Region& r, SamtoolsBasedDbi& dbi, const QByteArray& nameFilter = "");
+
+    /* This constructor creates instance, which iterates through all reads of assembly. */
+    SamtoolsBasedReadsIterator(int assemblyId, SamtoolsBasedDbi& dbi);
 
     bool hasNext() override;
     U2AssemblyRead next() override;

@@ -188,7 +188,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002) {
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(true);
 
-    GScrollBar* vscroll = GTWidget::findExactWidget<GScrollBar*>("multiline_vertical_sequence_scroll");
+    auto vscroll = GTWidget::findExactWidget<GScrollBar*>("multiline_vertical_sequence_scroll");
     CHECK_SET_ERR(vscroll != nullptr, QString("Can't find vertical scroll bar"));
     CHECK_SET_ERR(vscroll->isVisible(), QString("Vertical scroll is not visible"));
     CHECK_SET_ERR(vscroll->isEnabled(), QString("Vertical scroll is disabled"));

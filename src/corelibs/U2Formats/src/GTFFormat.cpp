@@ -559,15 +559,16 @@ void GTFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
                 QString transcriptIdAttributeStr;
                 QString otherAttributesStr;
                 for (const U2Qualifier& qualifier : qAsConst(annotQualifiers)) {
+                    auto qualValue = QString(qualifier.value).replace('\n', " ");
                     if (qualifier.name == SOURCE_QUALIFIER_NAME) {
-                        lineFields[GTF_SOURCE_INDEX] = qualifier.value;
+                        lineFields[GTF_SOURCE_INDEX] = qualValue;
                     } else if (qualifier.name == SCORE_QUALIFIER_NAME) {
-                        lineFields[GTF_SCORE_INDEX] = qualifier.value;
+                        lineFields[GTF_SCORE_INDEX] = qualValue;
                     } else if (qualifier.name == FRAME_QUALIFIER_NAME) {
-                        lineFields[GTF_FRAME_INDEX] = qualifier.value;
+                        lineFields[GTF_FRAME_INDEX] = qualValue;
                     } else {
                         // All other qualifiers are saved as attributes
-                        QString attrStr = qualifier.name + " \"" + qualifier.value + "\";";
+                        QString attrStr = qualifier.name + " \"" + qualValue + "\";";
                         if (qualifier.name == GENE_ID_QUALIFIER_NAME) {
                             geneIdAttributeStr = attrStr;
                         } else {

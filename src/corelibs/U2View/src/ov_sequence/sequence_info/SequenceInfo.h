@@ -76,7 +76,7 @@ private slots:
     /** A subgroup (e.g. characters occurrence subgroup) has been opened/closed */
     void sl_subgroupStateChanged(const QString& subgroupId);
 
-    bool eventFilter(QObject* object, QEvent* event);
+    bool eventFilter(QObject* object, QEvent* event) override;
 
     void statisticLabelLinkActivated(const QString& link);
 

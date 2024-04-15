@@ -120,8 +120,8 @@ public:
     void replaceSettings(const AlignmentLogoSettings& s);
 
 protected:
-    virtual void paintEvent(QPaintEvent* e);
-    virtual void resizeEvent(QResizeEvent* e);
+    void paintEvent(QPaintEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
 
     void evaluateHeights();
     void sortCharsByHeight();
@@ -151,8 +151,8 @@ class AlignmentLogoItem : public QGraphicsItem {
 public:
     AlignmentLogoItem(char _ch, QPointF _baseline, int _charWidth, int _charHeight, QFont _font, QColor _color = Qt::black);
 
-    QRectF boundingRect() const;
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget /* = 0 */);
+    QRectF boundingRect() const override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget /* = 0 */) override;
 
 private:
     char ch;

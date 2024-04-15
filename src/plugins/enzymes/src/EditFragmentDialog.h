@@ -36,6 +36,11 @@ public:
     void accept() override;
 
 private:
+    enum class OverhangType {
+        Blunt,
+        Sticky
+    };
+
     DNAFragment& dnaFragment;
     DNATranslation* transl;
     QString seq, trseq;
@@ -43,6 +48,8 @@ private:
     void resetLeftOverhang();
     void resetRightOverhang();
     bool isValidOverhang(const QString& text);
+
+    QMap<QString, OverhangType> comboBoxItems;
 private slots:
     void sl_updatePreview();
     void sl_onLeftResetClicked();

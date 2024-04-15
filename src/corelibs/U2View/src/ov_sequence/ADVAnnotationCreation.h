@@ -61,7 +61,7 @@ public:
                              const QList<SharedAnnotationData>& data,
                              bool selectNewAnnotations = true);
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QPointer<AnnotatedDNAView> sequenceView;

@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-document url="ace/ace_test_duplicated_consensus_names.ace" io="local_file" format="ace"/>
+
+</multi-test>

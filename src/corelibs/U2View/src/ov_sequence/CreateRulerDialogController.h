@@ -40,7 +40,7 @@ public:
         int defaultOffset,
         QWidget* p = nullptr);
 
-    virtual void accept();
+    void accept() override;
 
 private slots:
     void sl_colorButtonClicked();

@@ -21,6 +21,7 @@
 
 #include "EditFragmentDialogFiller.h"
 #include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
@@ -42,9 +43,8 @@ void EditFragmentDialogFiller::commonScenario() {
 
     // GUITest_regression_scenarios_test_0574
     if (parameters.checkRComplText) {
-        GTRadioButton::click(GTWidget::findRadioButton("rStickyButton", dialog));
-        auto rCustomOverhangBox = GTWidget::findGroupBox("rCustomOverhangBox", dialog);
-        GTGroupBox::setChecked(rCustomOverhangBox, true);
+        auto cbRightEndType = GTWidget::findComboBox("cbRightEndType", dialog);
+        GTComboBox::selectItemByText(cbRightEndType, "Sticky");
         GTRadioButton::click(GTWidget::findRadioButton("rComplRadioButton", dialog));
         GT_CHECK(GTLineEdit::getText("rComplOverhangEdit", dialog) == parameters.rComplText, "Wrong rComplTextEdit text");
         GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
@@ -52,11 +52,8 @@ void EditFragmentDialogFiller::commonScenario() {
     }
 
     if (parameters.lSticky) {
-        auto lStickyButton = GTWidget::findRadioButton("lStickyButton", dialog);
-        GTRadioButton::click(lStickyButton);
-
-        auto lCustomOverhangBox = GTWidget::findGroupBox("lCustomOverhangBox", dialog);
-        GTGroupBox::setChecked(lCustomOverhangBox, parameters.lCustom);
+        auto cbLeftEndType = GTWidget::findComboBox("cbLeftEndType", dialog);
+        GTComboBox::selectItemByText(cbLeftEndType, "Sticky");
 
         if (parameters.lCustom) {
             if (parameters.lDirect) {
@@ -72,16 +69,13 @@ void EditFragmentDialogFiller::commonScenario() {
             }
         }
     } else {
-        auto lBluntButton = GTWidget::findRadioButton("lBluntButton", dialog);
-        GTRadioButton::click(lBluntButton);
+        auto cbLeftEndType = GTWidget::findComboBox("cbLeftEndType", dialog);
+        GTComboBox::selectItemByText(cbLeftEndType, "Blunt");
     }
 
     if (parameters.rSticky) {
-        auto rStickyButton = GTWidget::findRadioButton("rStickyButton", dialog);
-        GTRadioButton::click(rStickyButton);
-
-        auto rCustomOverhangBox = GTWidget::findGroupBox("rCustomOverhangBox", dialog);
-        GTGroupBox::setChecked(rCustomOverhangBox, parameters.rCustom);
+        auto cbRightEndType = GTWidget::findComboBox("cbRightEndType", dialog);
+        GTComboBox::selectItemByText(cbRightEndType, "Sticky");
 
         if (parameters.rCustom) {
             if (parameters.rDirect) {
@@ -97,8 +91,8 @@ void EditFragmentDialogFiller::commonScenario() {
             }
         }
     } else {
-        auto rBluntButton = GTWidget::findRadioButton("rBluntButton", dialog);
-        GTRadioButton::click(rBluntButton);
+        auto cbRightEndType = GTWidget::findComboBox("cbRightEndType", dialog);
+        GTComboBox::selectItemByText(cbRightEndType, "Blunt");
     }
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);

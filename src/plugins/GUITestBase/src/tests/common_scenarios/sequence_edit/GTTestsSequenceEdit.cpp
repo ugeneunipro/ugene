@@ -50,6 +50,7 @@
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RemovePartFromSequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/InsertRestrictionSiteDialogFiller.h"
 #include "system/GTClipboard.h"
 #include "utils/GTKeyboardUtils.h"
 
@@ -669,6 +670,134 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsAnnotationsTreeView::checkAnnotationRegions("pair 1  (0, 2)", {{50, 79}, {400, 435}});
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0018) {
+    // Open the "Insert restriction enzyme" dialog
+    // Choose "AccII" site
+    // Insert to the beginning
+    // Check, that is was inserted
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    InsertRestrictionSiteDialogFiller::InsertRestrictionSiteDialogFillerSettings settings;
+    settings.enzymeName = "AccII";
+    GTUtilsDialog::waitForDialog(new InsertRestrictionSiteDialogFiller(settings));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Edit", "Insert restriction site..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::selectSequenceRegion(1, 4);
+    GTKeyboardUtils::copy();
+    auto text = GTClipboard::text();
+    CHECK_SET_ERR(text == "CGCG", QString("Expected 'CGCG', current: %1").arg(text));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0019) {
+    // Open the "Insert restriction enzyme" dialog
+    // Choose "AccII" site
+    // Insert to the beginning
+    // Check, that is was inserted
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    InsertRestrictionSiteDialogFiller::InsertRestrictionSiteDialogFillerSettings settings;
+    settings.enzymeName = "DdeII";
+    settings.showUnknownSuppliers = true;
+    GTUtilsDialog::waitForDialog(new InsertRestrictionSiteDialogFiller(settings));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Edit", "Insert restriction site..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::selectSequenceRegion(1, 6);
+    GTKeyboardUtils::copy();
+    auto text = GTClipboard::text();
+    CHECK_SET_ERR(text == "CTCGAG", QString("Expected 'CTCGAG', current: %1").arg(text));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0020) {
+    // Open the "Insert restriction enzyme" dialog
+    // Select region from 10 to 20
+    // Choose "AccII" site
+    // Insert to the beginning
+    // Check, that is was inserted before 10th base
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsSequenceView::selectSequenceRegion(10, 20);
+
+    InsertRestrictionSiteDialogFiller::InsertRestrictionSiteDialogFillerSettings settings;
+    settings.enzymeName = "AccII";
+    GTUtilsDialog::waitForDialog(new InsertRestrictionSiteDialogFiller(settings));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Edit", "Insert restriction site..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::selectSequenceRegion(10, 13);
+    GTKeyboardUtils::copy();
+    auto text = GTClipboard::text();
+    CHECK_SET_ERR(text == "CGCG", QString("Expected 'CGCG', current: %1").arg(text));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0021_1) {
+    // Open the "Insert restriction enzyme" dialog
+    // Choose "AccII" site
+    // Insert to the beginning
+    // Check, that annotation was expanded
+    GTFileDialog::openFile(testDir + "_common_data/genbank", "7839.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsSequenceView::selectSequenceRegion(10, 20);
+
+    InsertRestrictionSiteDialogFiller::InsertRestrictionSiteDialogFillerSettings settings;
+    settings.enzymeName = "AccII";
+    GTUtilsDialog::waitForDialog(new InsertRestrictionSiteDialogFiller(settings));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Edit", "Insert restriction site..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions("misc_feature  (0, 1)", {{8, 16}});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0021_2) {
+    // Open the "Insert restriction enzyme" dialog
+    // Choose "AccII" site
+    // Insert to the beginning
+    // Check, that annotation was removed
+    GTFileDialog::openFile(testDir + "_common_data/genbank", "7839.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsSequenceView::selectSequenceRegion(10, 20);
+
+    InsertRestrictionSiteDialogFiller::InsertRestrictionSiteDialogFillerSettings settings;
+    settings.enzymeName = "AccII";
+    settings.regionResolvingMode = InsertRestrictionSiteDialogFiller::Remove;
+    GTUtilsDialog::waitForDialog(new InsertRestrictionSiteDialogFiller(settings));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Edit", "Insert restriction site..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().isEmpty(), "Annotation should be removed");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0021_3) {
+    // Open the "Insert restriction enzyme" dialog
+    // Choose "AccII" site
+    // Insert to the beginning
+    // Check, that annotation was split
+    GTFileDialog::openFile(testDir + "_common_data/genbank", "7839.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsSequenceView::selectSequenceRegion(10, 20);
+
+    InsertRestrictionSiteDialogFiller::InsertRestrictionSiteDialogFillerSettings settings;
+    settings.enzymeName = "AccII";
+    settings.regionResolvingMode = InsertRestrictionSiteDialogFiller::SplitSeparate;
+    GTUtilsDialog::waitForDialog(new InsertRestrictionSiteDialogFiller(settings));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Edit", "Insert restriction site..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions("misc_feature  (0, 2)", {{8, 9}, {14, 16}});
+}
+
+
 
 }  // namespace GUITest_common_scenarios_sequence_edit
 

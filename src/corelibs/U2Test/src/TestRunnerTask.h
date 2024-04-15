@@ -39,14 +39,14 @@ class U2TEST_EXPORT TestRunnerTask : public Task {
 public:
     TestRunnerTask(const QList<GTestState*>& tests, const GTestEnvironment* env, int testSizeToRun = 5);
 
-    virtual void cleanup();
+    void cleanup() override;
 
     const QMap<GTest*, GTestState*>& getStateByTestMap() const {
         return stateByTest;
     }
 
 protected:
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     QMap<GTest*, GTestState*> stateByTest;
     const GTestEnvironment* env;
@@ -64,7 +64,7 @@ class U2TEST_EXPORT LoadTestTask : public Task {
 public:
     LoadTestTask(GTestState* test);
 
-    void run();
+    void run() override;
 
     GTestState* testState;
 

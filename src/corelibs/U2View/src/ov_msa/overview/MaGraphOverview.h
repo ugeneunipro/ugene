@@ -101,7 +101,7 @@ signals:
     void si_renderingStateChanged(bool isRendering);
 
 public slots:
-    void sl_redraw() override final;
+    void sl_redraw() final;
     void sl_highlightingChanged();
 
     void sl_graphOrientationChanged(const MaGraphOverviewDisplaySettings::OrientationMode& orientation);

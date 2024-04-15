@@ -31,7 +31,7 @@ public:
     ~MsaOpSavableTab();
 
 protected:
-    QSet<QWidget*> getCompoundChildren() const;
+    QSet<QWidget*> getCompoundChildren() const override;
 };
 
 }  // namespace U2

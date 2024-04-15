@@ -162,7 +162,7 @@ private slots:
     void sl_sequenceRemoved(ADVSequenceObjectContext* advContext);
 
 protected:
-    bool eventFilter(QObject* o, QEvent* e);
+    bool eventFilter(QObject* o, QEvent* e) override;
 
 signals:
     void si_setCopyQualifierActionStatus(bool isEnabled, QString text);
@@ -303,12 +303,12 @@ public:
 
     static const QIcon& getGroupIcon();
     static const QIcon& getDocumentIcon();
-    virtual AnnotationsTreeView* getAnnotationTreeView() const {
+    AnnotationsTreeView* getAnnotationTreeView() const override {
         return atv;
     }
-    virtual bool isReadonly() const;
-    virtual AnnotationTableObject* getAnnotationTableObject() const;
-    virtual AnnotationGroup* getAnnotationGroup();
+    bool isReadonly() const override;
+    AnnotationTableObject* getAnnotationTableObject() const override;
+    AnnotationGroup* getAnnotationGroup() override;
 
     AnnotationGroup* group;
     AnnotationsTreeView* atv;
@@ -321,9 +321,9 @@ public:
     Annotation* annotation;
     mutable QString locationString;
 
-    virtual QVariant data(int column, int role) const;
+    QVariant data(int column, int role) const override;
     void updateVisual(ATVAnnUpdateFlags flags);
-    virtual bool operator<(const QTreeWidgetItem& other) const;
+    bool operator<(const QTreeWidgetItem& other) const override;
     bool isColumnNumeric(int col) const;
     double getNumericVal(int col) const;
 

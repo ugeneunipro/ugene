@@ -47,8 +47,8 @@ public:
     int adjustAlphabetColors();
 
 protected:
-    void mouseReleaseEvent(QMouseEvent*);
-    void paintEvent(QPaintEvent*);
+    void mouseReleaseEvent(QMouseEvent*) override;
+    void paintEvent(QPaintEvent*) override;
 private slots:
     void sl_onClear();
     void sl_onRestore();
@@ -73,9 +73,9 @@ class ColorSchemaSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui
 public:
     ColorSchemaSettingsPageWidget(ColorSchemaSettingsPageController* ctrl);
 
-    virtual void setState(AppSettingsGUIPageState* state);
+    void setState(AppSettingsGUIPageState* state) override;
 
-    virtual AppSettingsGUIPageState* getState(QString& err) const;
+    AppSettingsGUIPageState* getState(QString& err) const override;
 
 private slots:
     void sl_onColorsDirButton();

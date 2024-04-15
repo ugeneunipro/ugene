@@ -256,7 +256,10 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
 
 void ExternalToolJustValidateTask::checkVersion(const QString& partOfLog) {
     if (checkVersionRegExp.isEmpty()) {
-        version = tool->getPredefinedVersion();
+        version = tool->getVersionFromToolPath(toolPath);
+        if (version.isEmpty()) {
+            version = tool->getPredefinedVersion();
+        }
     } else {
         QStringList lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
         foreach (QString buf, lastPartOfLog) {

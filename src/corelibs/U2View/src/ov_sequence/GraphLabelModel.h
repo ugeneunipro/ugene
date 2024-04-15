@@ -38,7 +38,7 @@ public:
     GraphLabelTextBox(QWidget* parent);
 
 private:
-    void paintEvent(QPaintEvent* e);
+    void paintEvent(QPaintEvent* e) override;
 };
 
 class GraphLabelDot : public QWidget {

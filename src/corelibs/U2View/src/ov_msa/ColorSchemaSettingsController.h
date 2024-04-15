@@ -34,13 +34,13 @@ class U2VIEW_EXPORT ColorSchemaSettingsPageController : public AppSettingsGUIPag
 public:
     ColorSchemaSettingsPageController(MsaColorSchemeRegistry* mcsr, QObject* p = nullptr);
 
-    virtual AppSettingsGUIPageState* getSavedState();
+    AppSettingsGUIPageState* getSavedState() override;
 
-    virtual void saveState(AppSettingsGUIPageState* s);
+    void saveState(AppSettingsGUIPageState* s) override;
 
-    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
+    AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data) override;
 
-    const QString& getHelpPageId() const {
+    const QString& getHelpPageId() const override {
         return helpPageId;
     };
 

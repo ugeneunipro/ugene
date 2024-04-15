@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-// Initializes Mfold tool.
+// Initializes mfold tool.
 class MfoldSupport final : public ExternalTool {
     Q_OBJECT
     GObjectViewWindowContext* viewCtx = nullptr;

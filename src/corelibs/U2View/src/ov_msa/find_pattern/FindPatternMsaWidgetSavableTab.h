@@ -32,7 +32,7 @@ public:
     FindPatternMsaWidgetSavableTab(QWidget* wrappedWidget, MWMDIWindow* contextWindow);
     ~FindPatternMsaWidgetSavableTab();
 
-    void setChildValue(const QString& childId, const QVariant& value);
+    void setChildValue(const QString& childId, const QVariant& value) override;
     void setRegionWidgetIds(const QStringList& s);
 
 private:

@@ -50,7 +50,7 @@ public:
     virtual qint64 countReads(const U2Region& r, U2OpStatus& os) = 0;
 
     virtual qint64 getMaxPackedRow(const U2Region& r, U2OpStatus& os) = 0;
-    virtual qint64 getMaxEndPos(U2OpStatus& os) = 0;
+    virtual qint64 getAssemblyLength(U2OpStatus& os) = 0;
 
     virtual U2DbiIterator<U2AssemblyRead>* getReads(const U2Region& r, U2OpStatus& os, bool sortedHint = false) = 0;
     virtual U2DbiIterator<U2AssemblyRead>* getReadsByRow(const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) = 0;

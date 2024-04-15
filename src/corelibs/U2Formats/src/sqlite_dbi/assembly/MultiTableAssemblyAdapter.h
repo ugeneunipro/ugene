@@ -52,7 +52,8 @@ public:
     qint64 countReads(const U2Region& r, U2OpStatus& os) override;
 
     qint64 getMaxPackedRow(const U2Region& r, U2OpStatus& os) override;
-    qint64 getMaxEndPos(U2OpStatus& os) override;
+    /* Returns length of the assembly */
+    qint64 getAssemblyLength(U2OpStatus& os) override;
 
     U2DbiIterator<U2AssemblyRead>* getReads(const U2Region& r, U2OpStatus& os, bool sortedHint = false) override;
     U2DbiIterator<U2AssemblyRead>* getReadsByRow(const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) override;

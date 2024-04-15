@@ -34,10 +34,10 @@ public:
         return view;
     }
 
-    AnnotationSelection* getAnnotationsSelection() const;
+    AnnotationSelection* getAnnotationsSelection() const override;
 
 protected slots:
-    void sl_onAnnotationRelationChange();
+    void sl_onAnnotationRelationChange() override;
 
 private:
     AnnotatedDNAView* view;

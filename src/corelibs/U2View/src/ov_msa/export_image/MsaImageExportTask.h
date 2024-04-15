@@ -104,7 +104,7 @@ public slots:
     void sl_regionTypeChanged(int newRegionIndex);
 
 protected:
-    void initSettingsWidget() final override;
+    void initSettingsWidget() final ;
 
     Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const override;
     Task* getExportToSvgTask(const ImageExportTaskSettings&) const override;
