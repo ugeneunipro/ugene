@@ -22,17 +22,12 @@
 #include "WorkflowGUIUtils.h"
 
 #include <QAbstractTextDocumentLayout>
-#include <QMainWindow>
-#include <QMessageBox>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPalette>
 #include <QTextDocument>
 #include <QUrl>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/L10n.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Lang/Descriptor.h>
 
 namespace U2 {
@@ -163,12 +158,6 @@ void DesignerGUIUtils::setupSamplesDocument(const Descriptor& d, const QIcon& ic
     // f.setFamily("Times New Roman");
     f.setPointSizeF(12);
     doc->setDefaultFont(f);
-}
-
-void DesignerGUIUtils::semicolonWarning() {
-    QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()), L10N::errorTitle(), QObject::tr("One of selected paths or filenames contains ';' symbol.\r\n"
-                                                "Workflow designer can't process it correctly.\r\n"
-                                                "Please change it, then try to add it again."));
 }
 
 }  // namespace U2

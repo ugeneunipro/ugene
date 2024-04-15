@@ -37,7 +37,6 @@ public:
     static void paintSamplesArrow(QPainter* painter);
     static void paintSamplesDocument(QPainter* painter, QTextDocument* doc, int pageWidth, int pageHeight, const QPalette& pal);
     static void setupSamplesDocument(const Descriptor& d, const QIcon& ico, QTextDocument* res);
-    static void semicolonWarning();
 };
 
 }  // namespace U2

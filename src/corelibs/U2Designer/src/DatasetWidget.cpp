@@ -44,7 +44,6 @@
 #include <U2Lang/SharedDbUrlUtils.h>
 
 #include "ui_DatasetWidget.h"
-#include "WorkflowGUIUtils.h"
 
 namespace U2 {
 
@@ -111,10 +110,6 @@ void URLListWidget::sl_addFileButton() {
         files = U2FileDialog::getOpenFileNames(nullptr, tr("Select file"), lod.dir);
     }
     for (const QString& file : qAsConst(files)) {
-        if (file.contains(";")) {
-            DesignerGUIUtils::semicolonWarning();
-            continue;
-        }
         lod.url = file;
         addUrl(file);
     }
@@ -124,10 +119,6 @@ void URLListWidget::sl_addDirButton() {
     LastUsedDirHelper lod;
     QString dir = U2FileDialog::getExistingDirectory(nullptr, tr("Select a folder"), lod.dir);
     if (!dir.isEmpty()) {
-        if (dir.contains(";")) {
-            DesignerGUIUtils::semicolonWarning();
-            return;
-        }
         lod.dir = dir;
         addUrl(dir);
     }

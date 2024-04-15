@@ -33,7 +33,6 @@
 #include <U2Gui/U2FileDialog.h>
 
 #include "PropertyWidget.h"
-#include "WorkflowGUIUtils.h"
 
 namespace U2 {
 
@@ -186,13 +185,6 @@ void URLLineEdit::browse(bool addFiles) {
             lst = U2FileDialog::getOpenFileNames(nullptr, tr("Select file(s)"), lastDir, FileFilter);
         }
 
-        if (lst.contains(";")) {
-            DesignerGUIUtils::semicolonWarning();
-            setFocus();
-            emit si_finished();
-            return;
-        }
-
         if (addFiles) {
             name = this->text();
             if (!lst.isEmpty()) {
@@ -209,12 +201,6 @@ void URLLineEdit::browse(bool addFiles) {
             this->checkExtension(name);
         } else {
             lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir, FileFilter);
-        }
-        if (name.contains(";")) {
-            DesignerGUIUtils::semicolonWarning();
-            setFocus();
-            emit si_finished();
-            return;
         }
     }
     if (!name.isEmpty()) {
