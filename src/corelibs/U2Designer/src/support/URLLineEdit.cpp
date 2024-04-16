@@ -33,6 +33,7 @@
 #include <U2Gui/U2FileDialog.h>
 
 #include "PropertyWidget.h"
+#include "WorkflowGUIUtils.h"
 
 namespace U2 {
 
@@ -204,10 +205,14 @@ void URLLineEdit::browse(bool addFiles) {
         }
     }
     if (!name.isEmpty()) {
-        if (name.length() > this->maxLength()) {
-            this->setMaxLength(name.length() + this->maxLength());
+        if (name.contains(";")) {
+            DesignerGUIUtils::semicolonWarning();
+        } else {
+            if (name.length() > this->maxLength()) {
+                this->setMaxLength(name.length() + this->maxLength());
+            }
+            setText(name);
         }
-        setText(name);
     }
     setFocus();
     emit si_finished();

@@ -462,7 +462,7 @@ static bool validateUrlAttribute(Attribute* attr, UrlAttributeType urlType, Noti
             res = WorkflowUtils::validateInputFiles(urls, infoList);
             break;
         case InputDir:
-            res = WorkflowUtils::validateInputDirs(urls, infoList);
+            res = WorkflowUtils::validateInputDir(urls, infoList);
             break;
         case OutputFile:
             res = WorkflowUtils::validateOutputFile(urls, infoList);

@@ -895,53 +895,33 @@ static void normalizeUrls(QString& urls) {
 
 bool WorkflowUtils::validateInputFiles(QString urls, NotificationsList& notificationList) {
     normalizeUrls(urls);
-    if (urls.isEmpty()) {
-        return true;
-    }
-
+    CHECK(!urls.isEmpty(), true);
     // Verify each URL
-    QStringList urlsList = urls.split(';');
     bool res = true;
-    foreach (const QString& url, urlsList) {
-        QFileInfo fi(url);
-        if (!fi.exists()) {
-            notificationList << WorkflowNotification(L10N::errorFileNotFound(url));
-            res = false;
-        } else if (!fi.isFile()) {
-            notificationList << WorkflowNotification(L10N::errorIsNotAFile(url));
-            res = false;
-        } else {
-            QFile testReadAccess(url);
-            if (testReadAccess.open(QIODevice::ReadOnly)) {
-                testReadAccess.close();
-            } else {
-                notificationList << WorkflowNotification(L10N::errorOpeningFileRead(url));
-                res = false;
-            }
-        }
+    const QStringList urlsList = urls.split(';');
+    for (const QString& url : qAsConst(urlsList)) {
+        CHECK_EXT_CONTINUE(validateInputFile(url, notificationList));
+        res = false;
     }
     return res;
 }
 
-bool WorkflowUtils::validateInputDirs(QString urls, NotificationsList& notificationList) {
-    normalizeUrls(urls);
-    if (urls.isEmpty()) {
-        return true;
-    }
+bool WorkflowUtils::validateInputFile(QString url, NotificationsList& notificationList) {
+    QFileInfo fi(url);
+    CHECK_EXT(fi.exists(), notificationList << WorkflowNotification(L10N::errorFileNotFound(url)), false);
+    CHECK_EXT(fi.isFile(), notificationList << WorkflowNotification(L10N::errorIsNotAFile(url)), false);
+    QFile testReadAccess(url);
+    CHECK_EXT(testReadAccess.open(QIODevice::ReadOnly), notificationList << WorkflowNotification(L10N::errorOpeningFileRead(url)), false);
+    return true;
+}
 
-    QStringList urlsList = urls.split(';');
-    bool res = true;
-    foreach (const QString& url, urlsList) {
-        QFileInfo fi(url);
-        if (!fi.exists()) {
-            notificationList << WorkflowNotification(L10N::errorDirNotFound(url));
-            res = false;
-        } else if (!fi.isDir()) {
-            notificationList << WorkflowNotification(L10N::errorIsNotADir(url));
-            res = false;
-        }
-    }
-    return res;
+bool WorkflowUtils::validateInputDir(QString url, NotificationsList& notificationList) {
+    normalizeUrls(url);
+    CHECK(!url.isEmpty(), true);
+    QFileInfo fi(url);
+    CHECK_EXT(fi.exists(), notificationList << WorkflowNotification(L10N::errorDirNotFound(url)), false);
+    CHECK_EXT(fi.isFile(), notificationList << WorkflowNotification(L10N::errorIsNotADir(url)), false);
+    return true;
 }
 
 namespace {
