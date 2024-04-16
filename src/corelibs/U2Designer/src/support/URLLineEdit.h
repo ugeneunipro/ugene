@@ -63,6 +63,7 @@ public:
 
 private:
     void browse(bool addFiles = false);
+    bool checkNameForSemicolon(const QString& name);
     void checkExtension(QString& name) const;
 };
 

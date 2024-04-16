@@ -185,7 +185,7 @@ void URLLineEdit::browse(bool addFiles) {
         } else {
             lst = U2FileDialog::getOpenFileNames(nullptr, tr("Select file(s)"), lastDir, FileFilter);
         }
-
+        CHECK(!checkNameForSemicolon(name), );
         if (addFiles) {
             name = this->text();
             if (!lst.isEmpty()) {
@@ -203,19 +203,24 @@ void URLLineEdit::browse(bool addFiles) {
         } else {
             lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir, FileFilter);
         }
+        CHECK(!checkNameForSemicolon(name), );
     }
     if (!name.isEmpty()) {
-        if (name.contains(";")) {
-            DesignerGUIUtils::semicolonWarning();
-        } else {
-            if (name.length() > this->maxLength()) {
-                this->setMaxLength(name.length() + this->maxLength());
-            }
-            setText(name);
+        if (name.length() > this->maxLength()) {
+            this->setMaxLength(name.length() + this->maxLength());
         }
+        setText(name);
     }
     setFocus();
     emit si_finished();
+}
+
+bool URLLineEdit::checkNameForSemicolon(const QString& name) {
+    CHECK(name.contains(";"), true);
+    DesignerGUIUtils::semicolonWarning();
+    setFocus();
+    emit si_finished();
+    return false;
 }
 
 void URLLineEdit::checkExtension(QString& name) const {
