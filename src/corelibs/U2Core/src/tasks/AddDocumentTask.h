@@ -45,9 +45,9 @@ public:
     AddDocumentTask(Document* d, const AddDocumentTaskConfig& c = AddDocumentTaskConfig());
     AddDocumentTask(DocumentProviderTask* dp, const AddDocumentTaskConfig& c = AddDocumentTaskConfig());
 
-    ReportResult report();
+    ReportResult report() override;
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     Document* getDocument() {
         return document;
     }

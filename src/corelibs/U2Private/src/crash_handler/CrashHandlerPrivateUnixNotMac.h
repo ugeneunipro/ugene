@@ -35,11 +35,11 @@ public:
     CrashHandlerPrivateUnixNotMac();
     ~CrashHandlerPrivateUnixNotMac();
 
-    void setupHandler();
-    void shutdown();
+    void setupHandler() override;
+    void shutdown() override;
 
-    void storeStackTrace();
-    QString getAdditionalInfo() const;
+    void storeStackTrace() override;
+    QString getAdditionalInfo() const override;
 
 private:
     static bool breakpadCallback(const google_breakpad::MinidumpDescriptor& descriptor,

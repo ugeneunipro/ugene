@@ -53,7 +53,7 @@ public:
     ConsoleLogDriver();
     virtual ~ConsoleLogDriver();
 
-    void onMessage(const LogMessage& msg);
+    void onMessage(const LogMessage& msg) override;
 
 private:
     void setCmdLineSettings();

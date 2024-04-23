@@ -71,7 +71,7 @@ public:
     /**
      * Reimplemented from GObject
      */
-    GObject* clone(const U2DbiRef& ref, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& ref, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const override;
     /**
      * Returns list of annotations having @name
      */
@@ -94,8 +94,8 @@ public:
     /**
      * Reimplemented from GObject
      */
-    bool checkConstraints(const GObjectConstraints* c) const;
-    void setGObjectName(const QString& newName);
+    bool checkConstraints(const GObjectConstraints* c) const override;
+    void setGObjectName(const QString& newName) override;
     /**
      * Returns the root feature
      */
@@ -123,7 +123,7 @@ signals:
     void si_onGroupRenamed(AnnotationGroup* g);
 
 protected:
-    void loadDataCore(U2OpStatus& os);
+    void loadDataCore(U2OpStatus& os) override;
 
 private:
     AnnotationGroup* rootGroup;

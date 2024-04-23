@@ -34,25 +34,25 @@ public:
     SettingsImpl(QSettings::Scope scope);
     ~SettingsImpl();
 
-    QStringList getAllKeys(const QString& path) const;
-    QStringList getChildGroups(const QString& path) const;
-    void cleanSection(const QString& path);
+    QStringList getAllKeys(const QString& path) const override;
+    QStringList getChildGroups(const QString& path) const override;
+    void cleanSection(const QString& path) override;
 
-    virtual bool contains(const QString& key) const;
-    virtual void remove(const QString& key);
+    bool contains(const QString& key) const override;
+    void remove(const QString& key) override;
 
-    virtual QVariant getValue(const QString& key, const QVariant& defaultValue = QVariant(), bool versionedValue = false, bool pathValue = false) const;
-    virtual void setValue(const QString& key, const QVariant& value, bool versionedValue = false, bool pathValue = false);
+    QVariant getValue(const QString& key, const QVariant& defaultValue = QVariant(), bool versionedValue = false, bool pathValue = false) const override;
+    void setValue(const QString& key, const QVariant& value, bool versionedValue = false, bool pathValue = false) override;
 
-    virtual QString toVersionKey(const QString& key) const;
-    virtual QString toMinorVersionKey(const QString& key) const;
+    QString toVersionKey(const QString& key) const override;
+    QString toMinorVersionKey(const QString& key) const override;
 
     /* Add current ugene working directory path to key */
-    virtual QString toPathKey(const QString& key) const;
+    QString toPathKey(const QString& key) const override;
 
-    virtual void sync();
+    void sync() override;
 
-    virtual QString fileName() const;
+    QString fileName() const override;
 
 private:
     mutable QMutex threadSafityLock;
