@@ -107,9 +107,11 @@ GUI_TEST_CLASS_DEFINITION(test_8001) {
     };
 
     GTLogTracer lt;
+
     GTUtilsDialog::waitForDialog(new CreateDocumentFiller(new Scenario));
     GTMenu::clickMainMenuItem({"File", "New document from text..."});
     GTUtilsTaskTreeView::waitTaskFinished();
+    GTGlobals::sleep(1000);  // Wait at least 1 second: UGENE does not detect file changes within 1 second interval.
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "Do you want to reload it?"));
     CHECK_SET_ERR(!lt.hasErrors(), "Expected no errors");
 }
