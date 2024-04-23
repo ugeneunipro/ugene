@@ -74,7 +74,7 @@ void PrepareToImportTask::run() {
         checkReferenceFile();
         CHECK_OP(stateInfo, );
 
-        BAMUtils::convertSamToBam(stateInfo, sourceURL.getURLString(), bamUrl, refUrl);
+        BAMUtils::convertSamToBam(stateInfo, sourceURL.getURLString(), bamUrl/*, refUrl*/);
         CHECK_OP(stateInfo, );
     }
     stateInfo.setProgress(33);

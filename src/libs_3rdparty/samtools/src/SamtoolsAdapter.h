@@ -23,7 +23,7 @@
 #define _SAMTOOLS_ADAPTER_H_
 
 extern "C" {
-#include <bam.h>
+#include "samtools_core/bam.h"
 }
 #include <QVector>
 

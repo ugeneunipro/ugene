@@ -47,8 +47,15 @@ static const QByteArray ATTRIBUTE_SEP(":~!ugene-attribute!~:");
 /** Closes BAM file previously opened with openNewBamFileHandler. */
 static void closeBamFileHandler(BGZF* file) {
     CHECK(file != nullptr, );
-    SAFE_POINT(file->owned_file == 1, "Invalid owned_file flag", );
+    //SAFE_POINT(file->owned_file == 1, "Invalid owned_file flag", );
     int rc = bgzf_close(file);
+    SAFE_POINT(rc == 0, "Failed to close BAM file", );
+}
+
+static void closeSamFile(samFile* file) {
+    CHECK(file != nullptr, );
+
+    int rc = sam_close(file);
     SAFE_POINT(rc == 0, "Failed to close BAM file", );
 }
 
@@ -111,7 +118,7 @@ void SamtoolsBasedDbi::init(const QHash<QString, QString>& properties, const QVa
 
 bool SamtoolsBasedDbi::initBamStructures(const GUrl& fileName) {
     QString filePath = fileName.getURLString();
-    std::shared_ptr<BGZF> bamFile(openNewBamFileHandler(), [](BGZF* f) { closeBamFileHandler(f); });
+    std::shared_ptr<BGZF> bamFile(openNewBgzfHandler(), [](BGZF* f) { closeBamFileHandler(f); });
     if (bamFile == nullptr) {
         throw IOException(BAMDbiPlugin::tr("Can't open file '%1'").arg(filePath));
     }
@@ -119,12 +126,12 @@ bool SamtoolsBasedDbi::initBamStructures(const GUrl& fileName) {
     if (!indexed) {
         throw Exception("Only indexed sorted BAM files could be used by this DBI");
     }
-    index = (bam_index_t*)BAMUtils::loadIndex(filePath);
+    index = (hts_idx_t*)BAMUtils::loadIndex(filePath);
     if (index == nullptr) {
         throw IOException(BAMDbiPlugin::tr("Can't load index file for '%1'").arg(filePath));
     }
 
-    header = bam_header_read(bamFile.get());
+    header = bam_hdr_read(bamFile.get());
     if (header == nullptr) {
         throw IOException(BAMDbiPlugin::tr("Can't read header from file '%1'").arg(filePath));
     }
@@ -136,11 +143,11 @@ void SamtoolsBasedDbi::cleanup() {
     objectDbi.reset();
     attributeDbi.reset();
     if (header != nullptr) {
-        bam_header_destroy(header);
+        bam_hdr_destroy(header);
         header = nullptr;
     }
     if (index != nullptr) {
-        bam_index_destroy(index);
+        hts_idx_destroy(index);
         index = nullptr;
     }
     state = U2DbiState_Void;
@@ -172,21 +179,22 @@ U2DataType SamtoolsBasedDbi::getEntityTypeById(const U2DataId& id) const {
     }
 }
 
-bamFile SamtoolsBasedDbi::openNewBamFileHandler() const {
+BGZF* SamtoolsBasedDbi::openNewBgzfHandler() const {
     QString filePath = url.getURLString();
-    NP<FILE> file = BAMUtils::openFile(filePath, "rb");
-    bamFile bFile = file != nullptr ? bgzf_fdopen(file, "r") : nullptr;
-    CHECK_EXT(bFile != nullptr, BAMUtils::closeFileIfOpen(file), nullptr);
+    return bgzf_open(filePath.toLocal8Bit(), "r");
+    //NP<FILE> file = BAMUtils::openFile(filePath, "rb");
+    //BGZF* bFile = file != nullptr ? bgzf_dopen(file, "r") : nullptr;
+    //CHECK_EXT(bFile != nullptr, BAMUtils::closeFileIfOpen(file), nullptr);
 
-    bFile->owned_file = 1;
-    return bFile;
+    //bFile->owned_file = 1;
+    //return bFile;
 }
 
-const bam_header_t* SamtoolsBasedDbi::getHeader() const {
+const bam_hdr_t* SamtoolsBasedDbi::getHeader() const {
     return header;
 }
 
-const bam_index_t* SamtoolsBasedDbi::getIndex() const {
+const hts_idx_t* SamtoolsBasedDbi::getIndex() const {
     return index;
 }
 
@@ -507,8 +515,12 @@ int bamFetchFunction(const bam1_t* b, void* data) {
 
     U2AssemblyRead read(new U2AssemblyReadData());
     {
-        char* samStr = bam_format1(dbi.getHeader(), b);
-        QByteArray samArr(samStr);
+        kstring_t str;
+        str.l = 0;
+        str.m = 0;
+        str.s = nullptr;
+        int res = sam_format1(dbi.getHeader(), b, &str);
+        QByteArray samArr(str.s);
         QList<QByteArray> values = samArr.split('\t');
 
         read->name = values[NAME_COL];
@@ -525,12 +537,11 @@ int bamFetchFunction(const bam1_t* b, void* data) {
             read->quality = values[QUAL_COL];
         }
         read->effectiveLen = Alignment::computeLength(read->cigar);
-        delete[] samStr;
         read->id = read->name + ";" + QByteArray::number(read->leftmostPos) + ";" + QByteArray::number(read->effectiveLen);
         read->rnext = values[RNEXT_COL];
         read->pnext = b->core.mpos;
-        QByteArray auxStr((const char*)bam1_aux(b), b->l_aux);
-        read->aux = SamtoolsAdapter::string2aux(auxStr);
+        /*QByteArray auxStr((const char*)bam_get_aux(b), b->l_aux);
+        read->aux = SamtoolsAdapter::string2aux(auxStr);*/
     }
 
     // add new border intersected reads
@@ -545,13 +556,28 @@ int bamFetchFunction(const bam1_t* b, void* data) {
     return 0;
 }
 
+typedef int (*bam_fetch_f)(const bam1_t* b, void* data);
+static int bam_fetch(samFile* fp, const hts_idx_t* idx, int tid, int beg, int end, void* data, bam_fetch_f func) {
+    int ret;
+    hts_itr_t* iter;
+    bam1_t* b = bam_init1();
+    iter = bam_itr_queryi(idx, tid, beg, end);
+    //iter = sam_itr_query(idx, tid, beg, end);
+    while ((ret = bam_itr_next(fp, iter, b)) >= 0)
+        func(b, data);
+    bam_itr_destroy(iter);
+    bam_destroy1(b);
+    return (ret == -1) ? 0 : ret;
+}
+
 void SamtoolsBasedReadsIterator::fetchNextChunk() {
     if (bamFile.get() == nullptr) {
-        bamFile.reset(dbi.openNewBamFileHandler(), [](BGZF* f) { closeBamFileHandler(f); });
+        auto sam = sam_open(dbi.getUrl().getURLString().toLocal8Bit(), "r");
+        bamFile.reset(sam, [](samFile* f) { closeSamFile(f); });
     }
     SAFE_POINT(bamFile != nullptr, nextPosToRead = INT_MAX, );
 
-    const bam_index_t* idx = dbi.getIndex();
+    const hts_idx_t* idx = dbi.getIndex();
     SAFE_POINT_EXT(idx != nullptr, nextPosToRead = INT_MAX, );
 
     void* data = (void*)(this);
@@ -585,7 +611,7 @@ U2Assembly SamtoolsBasedAssemblyDbi::getAssemblyObject(const U2DataId& id, U2OpS
               os.setError(BAMDbiPlugin::tr("Invalid samtools DBI state")),
               U2Assembly());
 
-    const bam_header_t* header = dbi.getHeader();
+    const bam_hdr_t* header = dbi.getHeader();
     SAFE_POINT(header != nullptr, "NULL BAM header", U2Assembly());
 
     CHECK_EXT(U2Type::Assembly == dbi.getEntityTypeById(id),
@@ -620,7 +646,8 @@ qint64 SamtoolsBasedAssemblyDbi::countReads(const U2DataId& assemblyId, const U2
     CHECK_OP(os, 0);
     qint64 endPos = targetReg.endPos() - 1;
 
-    std::shared_ptr<BGZF> bamFile(dbi.openNewBamFileHandler(), [](BGZF* f) { closeBamFileHandler(f); });
+    auto sam = sam_open(dbi.getUrl().getURLString().toLocal8Bit(), "r");
+    std::shared_ptr<samFile> bamFile(sam, [](samFile* f) { closeSamFile(f); });
     SAFE_POINT(bamFile != nullptr, "Failed to open BAM file", result);
     bam_fetch(bamFile.get(), dbi.getIndex(), id, (int)targetReg.startPos, (int)endPos, data, bamCountFunction);
 
@@ -655,7 +682,7 @@ qint64 SamtoolsBasedAssemblyDbi::getMaxEndPos(const U2DataId& assemblyId, U2OpSt
     int id = SamtoolsBasedAssemblyDbi::toSamtoolsId(assemblyId, os);
     CHECK_OP(os, 0);
 
-    const bam_header_t* header = dbi.getHeader();
+    const bam_hdr_t* header = dbi.getHeader();
     CHECK_EXT(header != nullptr, os.setError("NULL header"), 0);
     CHECK_EXT(id < header->n_targets, os.setError("Unknown assembly id"), 0);
 
@@ -746,7 +773,7 @@ U2IntegerAttribute SamtoolsBasedAttributeDbi::getIntegerAttribute(const U2DataId
         int id = SamtoolsBasedAssemblyDbi::toSamtoolsId(objIdStr, os);
         CHECK_OP(os, result);
 
-        const bam_header_t* header = dbi.getHeader();
+        const bam_hdr_t* header = dbi.getHeader();
         CHECK_EXT(header != nullptr, os.setError("NULL header"), result);
         CHECK_EXT(id < header->n_targets, os.setError("Unknown assembly id"), result);
         qint64 length = header->target_len[id];
