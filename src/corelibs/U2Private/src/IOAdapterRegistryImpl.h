@@ -32,15 +32,15 @@ public:
         init();
     }
 
-    virtual bool registerIOAdapter(IOAdapterFactory* io);
+    bool registerIOAdapter(IOAdapterFactory* io) override;
 
-    virtual bool unregisterIOAdapter(IOAdapterFactory* io);
+    bool unregisterIOAdapter(IOAdapterFactory* io) override;
 
-    virtual const QList<IOAdapterFactory*>& getRegisteredIOAdapters() const {
+    const QList<IOAdapterFactory*>& getRegisteredIOAdapters() const override {
         return adapters;
     }
 
-    virtual IOAdapterFactory* getIOAdapterFactoryById(IOAdapterId id) const;
+    IOAdapterFactory* getIOAdapterFactoryById(IOAdapterId id) const override;
 
 private:
     void init();

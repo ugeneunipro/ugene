@@ -119,7 +119,7 @@ public:
     }
 
 private:
-    virtual void sl_finished() {
+    void sl_finished() override {
         auto senderr = dynamic_cast<BackgroundTask<Result>*>(sender());
         SAFE_POINT(senderr != nullptr, "sender is not BackgroundTask", );
         if (task != senderr) {

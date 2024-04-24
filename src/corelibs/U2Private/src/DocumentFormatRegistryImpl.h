@@ -35,19 +35,19 @@ public:
     }
     ~DocumentFormatRegistryImpl() override;
 
-    virtual bool registerFormat(DocumentFormat* dfs) override;
+    bool registerFormat(DocumentFormat* dfs) override;
 
-    virtual bool unregisterFormat(DocumentFormat* dfs) override;
+    bool unregisterFormat(DocumentFormat* dfs) override;
 
-    virtual QList<DocumentFormatId> getRegisteredFormats() const override;
+    QList<DocumentFormatId> getRegisteredFormats() const override;
 
-    virtual DocumentFormat* getFormatById(DocumentFormatId id) const override;
+    DocumentFormat* getFormatById(DocumentFormatId id) const override;
 
-    virtual DocumentFormat* selectFormatByFileExtension(const QString& fileExt) const override;
+    DocumentFormat* selectFormatByFileExtension(const QString& fileExt) const override;
 
-    virtual QList<DocumentFormatId> selectFormats(const DocumentFormatConstraints& c) const override;
+    QList<DocumentFormatId> selectFormats(const DocumentFormatConstraints& c) const override;
 
-    virtual DocumentImportersRegistry* getImportSupport() override {
+    DocumentImportersRegistry* getImportSupport() override {
         return &importSupport;
     }
 

@@ -48,9 +48,9 @@ public:
 
     void remove(Annotation* a);
 
-    bool isEmpty() const;
+    bool isEmpty() const override;
 
-    void clear();
+    void clear() override;
 
     void removeObjectAnnotations(const AnnotationTableObject* obj);
 
@@ -88,9 +88,9 @@ public:
 
     void removeFromSelection(AnnotationGroup* g);
 
-    bool isEmpty() const;
+    bool isEmpty() const override;
 
-    void clear();
+    void clear() override;
 
     bool contains(AnnotationGroup* g) const;
 

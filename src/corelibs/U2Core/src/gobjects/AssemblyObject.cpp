@@ -58,7 +58,7 @@ public:
         chunkSize = readsCount / 100;
     }
 
-    void onReadImported() {
+    void onReadImported() override {
         addedCount++;
         currentChunkSize++;
         if (currentChunkSize >= chunkSize) {

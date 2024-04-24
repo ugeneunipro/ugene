@@ -37,7 +37,7 @@ public:
     CloneObjectTask(GObject* srcObj, Document* dstDoc, const QString& dstFolder);
     CloneObjectTask(GObject* srcObj, const U2DbiRef& dstDbiRef, const QString& dstFolder);
     ~CloneObjectTask();
-    void run();
+    void run() override;
 
     GObject* takeResult();
     const QString& getFolder() const;

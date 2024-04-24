@@ -58,11 +58,11 @@ public:
     PluginSupportImpl();
     ~PluginSupportImpl();
 
-    virtual const QList<Plugin*>& getPlugins() {
+    const QList<Plugin*>& getPlugins() override {
         return plugins;
     }
 
-    virtual void setLicenseAccepted(Plugin* p);
+    void setLicenseAccepted(Plugin* p) override;
 
     static bool isDefaultPluginsDir(const QString& url);
     static QDir getDefaultPluginsDir();
@@ -70,7 +70,7 @@ public:
     PluginRef* findRef(Plugin* p) const;
     PluginRef* findRefById(const QString& pluginId) const;
 
-    virtual bool isAllPluginsLoaded() const;
+    bool isAllPluginsLoaded() const override;
 
     bool allLoaded;
 
@@ -93,8 +93,8 @@ class AddPluginTask : public Task {
     Q_OBJECT
 public:
     AddPluginTask(PluginSupportImpl* ps, const PluginDesc& desc, bool forceVerificatoin = false);
-    void prepare();
-    ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
 
 private:
     bool verifyPlugin();
@@ -112,7 +112,7 @@ class VerifyPluginTask : public Task {
     Q_OBJECT
 public:
     VerifyPluginTask(PluginSupportImpl* ps, const PluginDesc& desc);
-    void run();
+    void run() override;
     bool isCorrectPlugin() const {
         return pluginIsCorrect;
     }
@@ -132,8 +132,8 @@ class LoadAllPluginsTask : public Task {
     Q_OBJECT
 public:
     LoadAllPluginsTask(PluginSupportImpl* ps, const QStringList& pluginFiles);
-    void prepare();
-    ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
 
 private:
     void addToOrderingQueue(const QString& url);
