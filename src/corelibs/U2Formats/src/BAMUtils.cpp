@@ -41,6 +41,7 @@ extern "C" {
 #    pragma warning(pop)
 #endif
 
+#include <samtools_core/htslib/faidx.h>
 #include <samtools_core/htslib/kseq.h>
 }
 
@@ -137,12 +138,16 @@ void BAMUtils::convertBamToSam(U2OpStatus& os, const QString& bamPath, const QSt
     closeFiles(in, out);
 }
 
-void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath/*, const QString& referencePath*/) {
+void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath, const QString& referencePath) {
     samFile* in = nullptr;
     samFile* out = nullptr;
     in = sam_open(samPath.toLocal8Bit(), "r");
     SAMTOOL_CHECK(in != nullptr, openFileError(samPath), );
 
+    QString faiPath = hasValidFastaIndex(referencePath) ? referencePath + ".fai" : "";
+    if (!faiPath.isEmpty()) {
+        hts_set_fai_filename(in, faiPath.toLocal8Bit());
+    }
     in->bam_header = sam_hdr_read(in);
     SAMTOOL_CHECK(in->bam_header != nullptr, headerReadError(samPath), );
     if (in->bam_header->n_targets == 0) {
@@ -252,7 +257,7 @@ GUrl BAMUtils::sortBam(const QString& bamUrl, const QString& sortedBamFilePath, 
                                           : sortedBamFilePath;
     coreLog.trace(BAMUtils::tr("Sorting \"%1\" and saving the result to \"%2\"").arg(bamUrl).arg(sortedBamFilePath));
 
-    size_t max_mem = 100 * 1000 * 1000;
+    static constexpr size_t max_mem = 100 * 1000 * 1000;
     int ret = bam_sort_core(0, bamUrl.toLocal8Bit(), sortedBamFilePathPrefix.toLocal8Bit(), max_mem);
     CHECK_EXT(ret == 0, os.setError(BAMUtils::tr("Cannot sort \"%1\", abort").arg(bamUrl)), "")
 
@@ -863,17 +868,6 @@ inline QByteArray readLine(IOAdapter* io, char* buffer, int maxLineLength) {
     } while (!terminatorFound);
     return result;
 }
-
-
-//inline QByteArray parseReferenceName(const QByteArray& line) {
-//    QList<QByteArray> columns = line.split('\t');
-//    if (columns.size() <= referenceColumn) {
-//        coreLog.error(BAMUtils::tr("Wrong line in a SAM file."));
-//        return "*";
-//    }
-//    return columns[referenceColumn];
-//}
-
 
 }  // namespace
 

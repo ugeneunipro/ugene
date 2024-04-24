@@ -43,7 +43,7 @@ public:
     static void convertBamToSam(U2OpStatus& os, const QString& bamPath, const QString& samPath);
 
     /** Converts SAM file to BAM file. */
-    static void convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath/*, const QString& referencePath = ""*/);
+    static void convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath, const QString& referencePath = "");
 
     static bool isSortedBam(const QString& bamUrl, U2OpStatus& os);
 
