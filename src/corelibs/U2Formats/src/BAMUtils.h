@@ -59,6 +59,10 @@ public:
 
     static bool hasValidFastaIndex(const QString& fastaUrl);
 
+    /**
+     * Builds and saves index for BAM file.
+     * Index file will be saved to "@bamUrl + .bai".
+     */
     static void createBamIndex(const QString& bamUrl, U2OpStatus& os);
 
     static GUrl getBamIndexUrl(const QString& bamUrl);
@@ -70,9 +74,19 @@ public:
     static bool isEqualByLength(const QString& fileUrl1, const QString& fileUrl2, U2OpStatus& os);
 
     /**
+     * Returns the map, which contains reference names as keys and their alignments lengths as values.
+     */
+    static QMap<QString, int> scanSamForReferenceInfo(const GUrl& samUrl, U2OpStatus& os);
+
+    /**
      * Returns the list of names of references (despite "*") found among reads.
      */
-    static QStringList scanSamForReferenceNames(const GUrl& samUrl, U2OpStatus& os);
+    //static QStringList scanSamForReferenceNames(const GUrl& samUrl, U2OpStatus& os);
+
+    /**
+     * Saves the list of references to the file in the SAMtools fai format.
+     */
+    static void createReferenceDataFile(const GUrl& faiUrl, const QMap<QString, int>& references, U2OpStatus& os);
 
     /**
      * Saves the list of references to the file in the SAMtools fai format.
@@ -85,7 +99,7 @@ public:
     /** Calls FileAndDirectoryUtils::closeFileIfOpen(). Kept here for compatibility. */
     static void closeFileIfOpen(FILE* file);
 
-    /** Loads BAM index from the file (bam_index_t*). Returns nullptr of error. */
+    /** Loads HTS index from the file (hts_idx_t*). Returns nullptr of error. */
     static void* loadIndex(const QString& path);
 
     /**
