@@ -7373,7 +7373,7 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     // 3) Reopen UGENE WD.
     GTFileDialog::openFile(sandBoxDir, "test.uwl");
     GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::checkNoModalWidget();
 
     // Expected: the state is saved.
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isWorkerExtended("Align with MUSCLE"), "\"Align with MUSCLE\" unexpectedly has extended style");

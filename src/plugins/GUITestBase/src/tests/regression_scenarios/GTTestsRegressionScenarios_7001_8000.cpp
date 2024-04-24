@@ -4983,7 +4983,7 @@ GUI_TEST_CLASS_DEFINITION(test_7956) {
     CHECK_SET_ERR(!file.open(QFile::ReadOnly), QString("unable to open file %1 in read mode").arg(fastaFile));
     QByteArray content = file.readAll();
     file.close();
-    if (!content.contains('\r\n')) {
+    if (!content.contains("\r\n")) {
         content.replace("\n", "\r\n");
         QString fixedFasta = testDir + "_common_data/scenarios/_regression/7957/fixed.fasta";
         QFile fixedFile(fixedFasta);

@@ -31,7 +31,6 @@
 #include "utils/GTThread.h"
 
 namespace HI {
-
 #define GT_CLASS_NAME "GUIDialogWaiter"
 
 /** Check for dialog twice as fast as ACTIVATION_TIME. */
@@ -79,21 +78,21 @@ void GUIDialogWaiter::checkDialog() {
             widget = QApplication::activePopupWidget();
             break;
         default:
-            GT_FAIL("Unexpected dialog type: " + QString::number((int)settings.dialogType), );
+            GT_FAIL("Unexpected dialog type: " + QString::number((int)settings.dialogType),);
     }
 
     QString currentWidgetObjectName = widget != nullptr ? widget->objectName() : "";
     bool isDialogMatched = widget != nullptr && checkDialogNameMatches(currentWidgetObjectName, settings.objectName);
     GT_LOG(QString("checkDialog: tick: waiterId: %1, waiting for: '%2' ('%3'), current widget: '%4'")
-               .arg(waiterId)
-               .arg(settings.objectName)
-               .arg(settings.logName)
-               .arg(widget == nullptr ? "nullptr" : currentWidgetObjectName));
+        .arg(waiterId)
+        .arg(settings.objectName)
+        .arg(settings.logName)
+        .arg(widget == nullptr ? "nullptr" : currentWidgetObjectName));
     if (isDialogMatched) {
         GT_LOG(QString("checkDialog: MATCH: waiterId: %1, objectName: '%2' ('%3')")
-                   .arg(waiterId)
-                   .arg(settings.objectName)
-                   .arg(settings.logName));
+            .arg(waiterId)
+            .arg(settings.objectName)
+            .arg(settings.logName));
         timer.stop();
         GTUtilsDialog::waiterList.removeOne(this);
         GTThread::waitForMainThread();
@@ -104,10 +103,10 @@ void GUIDialogWaiter::checkDialog() {
             timer.stop();
             GTUtilsDialog::waiterList.removeOne(this);
             GT_FAIL(QString("checkDialog: TIMEOUT: waiterId: %1, objectName: '%2' ('%3'), timeout: '%4')")
-                        .arg(waiterId)
-                        .arg(settings.objectName)
-                        .arg(settings.logName)
-                        .arg(settings.timeout), );
+                .arg(waiterId)
+                .arg(settings.objectName)
+                .arg(settings.logName)
+                .arg(settings.timeout),);
         }
     }
 }
@@ -141,7 +140,7 @@ void GTUtilsDialog::clickButtonBox(QWidget* dialog, QDialogButtonBox::StandardBu
         }
         GTGlobals::sleep(GT_OP_CHECK_MILLIS, "waiting for a button in GTUtilsDialog::clickButtonBox");
     }
-    GT_FAIL("Button was not enabled. " + Filler::generateFillerStackInfo(), );
+    GT_FAIL("Button was not enabled. " + Filler::generateFillerStackInfo(),);
 }
 
 void GTUtilsDialog::waitForDialog(Runnable* r, const GUIDialogWaiter::WaitSettings& settings, bool isPrependToList) {
@@ -181,11 +180,25 @@ void GTUtilsDialog::checkNoActiveWaiters(int timeoutMillis) {
     if (notFinishedWaiter != nullptr && !GTGlobals::getOpStatus().hasError()) {
         const GUIDialogWaiter::WaitSettings& settings = notFinishedWaiter->getSettings();
         GT_FAIL(QString("There are active waiters after: %1ms. First waiter details: %2 (%3)")
-                    .arg(timeoutMillis)
-                    .arg(settings.objectName)
-                    .arg(settings.logName), );
+            .arg(timeoutMillis)
+            .arg(settings.objectName)
+            .arg(settings.logName),);
     }
     GT_LOG("checkNoActiveWaiters found no active waiters");
+}
+
+void GTUtilsDialog::checkNoModalWidget(int timeoutMillis) {
+    QWidget* modalWidget = QApplication::activeModalWidget();
+    for (int time = 0; time < timeoutMillis && modalWidget != nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS, "checkNoActiveWaiters");
+        modalWidget = QApplication::activeModalWidget();
+    }
+    if (modalWidget) {
+        GT_FAIL(QString("There is an active modal widget: %1ms. Object name: %2")
+            .arg(timeoutMillis)
+            .arg(modalWidget->objectName()), );
+    }
+    GT_LOG("checkNoModalWidget: found no active modal widget");
 }
 
 void GTUtilsDialog::removeRunnable(Runnable* runnable) {
@@ -240,5 +253,4 @@ void Filler::run() {
     activeFillerLogNamesStack.pop();
     GTThread::waitForMainThread();
 }
-
-}  // namespace HI
+} // namespace HI
