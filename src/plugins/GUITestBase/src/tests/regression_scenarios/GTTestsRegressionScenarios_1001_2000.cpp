@@ -7372,8 +7372,8 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
 
     // 3) Reopen UGENE WD.
     GTFileDialog::openFile(sandBoxDir, "test.uwl");
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTUtilsTaskTreeView::waitTaskFinished();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // Expected: the state is saved.
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isWorkerExtended("Align with MUSCLE"), "\"Align with MUSCLE\" unexpectedly has extended style");
