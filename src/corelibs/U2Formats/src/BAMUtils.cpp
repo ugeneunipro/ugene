@@ -122,14 +122,20 @@ static void checkFileReadState(int read, U2OpStatus& os, const QString& fileName
 void BAMUtils::convertBamToSam(U2OpStatus& os, const QString& bamPath, const QString& samPath) {
     samFile* in = sam_open(bamPath.toLocal8Bit(), "rb");
     samFile* out = nullptr;
-    SAMTOOL_CHECK(in != nullptr, openFileError(bamPath), );
-    SAMTOOL_CHECK(in->bam_header != nullptr, headerReadError(bamPath), );
+    SAMTOOL_CHECK(in != nullptr, openFileError(bamPath), )
+
+    in->bam_header = sam_hdr_read(in);
+    SAMTOOL_CHECK(in->bam_header != nullptr, headerReadError(samPath), );
 
     out = sam_open(samPath.toLocal8Bit(), "w");
     SAMTOOL_CHECK(out != nullptr, openFileError(samPath), );
 
-    bam1_t* b = bam_init1();
     int r = 0;
+    r = sam_hdr_write(out, in->bam_header);
+    SAMTOOL_CHECK(r == 0, headerWriteError(samPath), );
+
+    bam1_t* b = bam_init1();
+    r = 0;
     while ((r = bam_read1(in->fp.bgzf, b)) >= 0) {  // read one alignment from `in'
         sam_write1(out, in->bam_header, b);  // write the alignment to `out'.
     }
@@ -689,7 +695,7 @@ static QMap<QString, int> getNumMap(const QList<GObject*>& objects, U2OpStatus& 
 }
 
 static void writeObjectsWithSamtools(samFile* out, const QList<GObject*>& objects, U2OpStatus& os, const U2Region& desiredRegion) {
-    foreach (GObject* obj, objects) {
+    for (auto obj : qAsConst(objects)) {
         auto assemblyObj = dynamic_cast<AssemblyObject*>(obj);
         SAFE_POINT_EXT(assemblyObj != nullptr, os.setError("NULL assembly object"), );
 
@@ -731,7 +737,6 @@ void BAMUtils::writeDocument(Document* doc, U2OpStatus& os) {
 
 void BAMUtils::writeObjects(const QList<GObject*>& objects, const QString& url, const DocumentFormatId& formatId, U2OpStatus& os, const U2Region& desiredRegion) {
     CHECK_EXT(!objects.isEmpty(), os.setError("No assembly objects"), );
-
     CHECK_EXT(!url.isEmpty(), os.setError("Empty file url"), );
 
     QByteArray openMode("w");
@@ -751,9 +756,9 @@ void BAMUtils::writeObjects(const QList<GObject*>& objects, const QString& url, 
         return;
     }
 
-    htsFormat format;
-    hts_parse_format(&format, formatId.toLocal8Bit());
-    samFile* out = sam_open_format(url.toLocal8Bit(), openMode.constData(), &format);
+    /*htsFormat format;
+    hts_parse_format(&format, formatId.toLocal8Bit());*/
+    samFile* out = sam_open(url.toLocal8Bit(), openMode.constData());
     CHECK_EXT(out != nullptr, os.setError(QString("Can not open file for writing: %1").arg(url)), );
 
     if (openMode.contains('b')) {  // binary

@@ -53,7 +53,6 @@ HEADERS += src/samtools_core/cram/cram.h \
            src/samtools_core/htslib/sam.h \
            src/samtools_core/htslib/tbx.h \
            src/samtools_core/htslib/thread_pool.h \
-           src/samtools_core/os/rand.h \
            src/samtools_core/bam.h \
            src/samtools_core/bam_lpileup.h \
            src/samtools_core/bam_plbuf.h \
@@ -112,7 +111,6 @@ SOURCES += src/samtools_core/cram/cram_codecs.c \
            src/samtools_core/htscodecs/htscodecs/rle.c \
            src/samtools_core/htscodecs/htscodecs/tokenise_name3.c \
            src/samtools_core/htscodecs/htscodecs/utils.c \
-           src/samtools_core/os/rand.c \
            src/samtools_core/bam.c \
            src/samtools_core/bam_aux.c \
            src/samtools_core/bam_lpileup.c \
