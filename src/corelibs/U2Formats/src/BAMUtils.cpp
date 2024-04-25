@@ -486,7 +486,7 @@ static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, U2Op
         qstrncpy(header->text, headerText.constData(), headerText.length() + 1);
         header->text[headerText.length()] = 0;
         header->l_text = headerText.length();
-        //header->dict = sam_hdr_parse(header->text);
+        header->sdict = sam_hdr_parse(header->l_text, header->text);
     }
 }
 
@@ -566,8 +566,6 @@ void BAMUtils::writeObjects(const QList<GObject*>& objects, const QString& url, 
         return;
     }
 
-    /*htsFormat format;
-    hts_parse_format(&format, formatId.toLocal8Bit());*/
     samFile* out = sam_open(url.toLocal8Bit(), openMode.constData());
     CHECK_EXT(out != nullptr, os.setError(QString("Can not open file for writing: %1").arg(url)), );
 
