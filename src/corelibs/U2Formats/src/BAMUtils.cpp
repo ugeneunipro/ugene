@@ -486,7 +486,6 @@ static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, U2Op
         qstrncpy(header->text, headerText.constData(), headerText.length() + 1);
         header->text[headerText.length()] = 0;
         header->l_text = headerText.length();
-        header->sdict = sam_hdr_parse(header->l_text, header->text);
     }
 }
 
@@ -569,31 +568,14 @@ void BAMUtils::writeObjects(const QList<GObject*>& objects, const QString& url, 
     samFile* out = sam_open(url.toLocal8Bit(), openMode.constData());
     CHECK_EXT(out != nullptr, os.setError(QString("Can not open file for writing: %1").arg(url)), );
 
+    out->bam_header = header;
     if (openMode.contains('b')) {  // binary
-        char bmode[3];
-        int compress_level = -1;
-        int i;
-        for (i = 0; openMode[i]; ++i) {
-            if (openMode[i] >= '0' && openMode[i] <= '9') {
-                break;
-            }
-        }
-        if (openMode[i]) {
-            compress_level = openMode[i] - '0';
-        }
-        if (openMode.contains('u')) {
-            compress_level = 0;
-        }
-        bmode[0] = 'w';
-        bmode[1] = compress_level < 0 ? 0 : compress_level + '0';
-        bmode[2] = 0;
         out->is_bin = 1;
-        bam_hdr_write(out->fp.bgzf, header);
+        bam_hdr_write(out->fp.bgzf, out->bam_header);
     } else {
-        //sam_hdr_parse
-        //TODO: write SAM header
+        out->is_bin = 0;
+        sam_hdr_write(out, out->bam_header);
     }
-    bam_hdr_destroy(header);
 
     writeObjectsWithSamtools(out, objects, os, desiredRegion);
     sam_close(out);
