@@ -98,10 +98,6 @@ static QString headerWriteError(const QString& file) {
     return QObject::tr("Fail to write the header to the file: \"%1\"").arg(file);
 }
 
-static QString readsError(const QString& file) {
-    return QObject::tr("Error parsing the reads from the file: \"%1\"").arg(file);
-}
-
 static QString truncatedError(const QString& file) {
     return QObject::tr("Truncated file: \"%1\"").arg(file);
 }
