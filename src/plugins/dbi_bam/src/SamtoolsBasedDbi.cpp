@@ -47,7 +47,7 @@ static const QByteArray ATTRIBUTE_SEP(":~!ugene-attribute!~:");
 /** Closes BAM file previously opened with openNewBamFileHandler. */
 static void closeBamFileHandler(BGZF* file) {
     CHECK(file != nullptr, );
-    //SAFE_POINT(file->owned_file == 1, "Invalid owned_file flag", );
+
     int rc = bgzf_close(file);
     SAFE_POINT(rc == 0, "Failed to close BAM file", );
 }
@@ -180,14 +180,7 @@ U2DataType SamtoolsBasedDbi::getEntityTypeById(const U2DataId& id) const {
 }
 
 BGZF* SamtoolsBasedDbi::openNewBgzfHandler() const {
-    QString filePath = url.getURLString();
-    return bgzf_open(filePath.toLocal8Bit(), "r");
-    //NP<FILE> file = BAMUtils::openFile(filePath, "rb");
-    //BGZF* bFile = file != nullptr ? bgzf_dopen(file, "r") : nullptr;
-    //CHECK_EXT(bFile != nullptr, BAMUtils::closeFileIfOpen(file), nullptr);
-
-    //bFile->owned_file = 1;
-    //return bFile;
+    return bgzf_open(url.getURLString().toLocal8Bit(), "r");
 }
 
 const bam_hdr_t* SamtoolsBasedDbi::getHeader() const {
@@ -540,8 +533,6 @@ int bamFetchFunction(const bam1_t* b, void* data) {
         read->id = read->name + ";" + QByteArray::number(read->leftmostPos) + ";" + QByteArray::number(read->effectiveLen);
         read->rnext = values[RNEXT_COL];
         read->pnext = b->core.mpos;
-        /*QByteArray auxStr((const char*)bam_get_aux(b), b->l_aux);
-        read->aux = SamtoolsAdapter::string2aux(auxStr);*/
     }
 
     // add new border intersected reads
@@ -562,7 +553,6 @@ static int bam_fetch(samFile* fp, const hts_idx_t* idx, int tid, int beg, int en
     hts_itr_t* iter;
     bam1_t* b = bam_init1();
     iter = bam_itr_queryi(idx, tid, beg, end);
-    //iter = sam_itr_query(idx, tid, beg, end);
     while ((ret = bam_itr_next(fp, iter, b)) >= 0)
         func(b, data);
     bam_itr_destroy(iter);
