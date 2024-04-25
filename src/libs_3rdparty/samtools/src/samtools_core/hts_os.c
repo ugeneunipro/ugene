@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.  */
 
 // Windows (maybe more) lack a drand48 implementation.
 #ifndef HAVE_DRAND48
-#include "os/rand.h"
+#include "os/rand.c"
 #else
 #include <stdlib.h>
 HTSLIB_EXPORT
