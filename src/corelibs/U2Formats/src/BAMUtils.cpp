@@ -144,6 +144,80 @@ void BAMUtils::convertBamToSam(U2OpStatus& os, const QString& bamPath, const QSt
     closeFiles(in, out);
 }
 
+namespace {
+static constexpr int BUFFER_SIZE = 1024 * 1024;  // 1 Mb
+static constexpr int REFERENCE_NAME_COLUMN = 2;
+static constexpr int FIRST_BASE_POS_COLUMN = 3;
+static constexpr int READ_COLUMN = 9;
+
+inline QByteArray readLine(IOAdapter* io, char* buffer, int maxLineLength) {
+    QByteArray result;
+    bool terminatorFound = false;
+    do {
+        qint64 length = io->readLine(buffer, maxLineLength, &terminatorFound);
+        CHECK(-1 != length, result);
+        result += QByteArray(buffer, length);
+    } while (!terminatorFound);
+    return result;
+}
+
+/**
+ * Returns the map, which contains reference names as keys and their alignments lengths as values.
+ */
+static QMap<QString, int> scanSamForReferenceInfo(const GUrl& samUrl, U2OpStatus& os) {
+    QMap<QString, int> result;
+    QScopedPointer<IOAdapter> io(IOAdapterUtils::open(samUrl, os));
+    CHECK_OP(os, result);
+
+    QByteArray buffer(BUFFER_SIZE, 0);
+    char* bufferData = buffer.data();
+    do {
+        QByteArray line = readLine(io.data(), bufferData, BUFFER_SIZE);
+        CHECK_CONTINUE(!line.isEmpty());
+        CHECK_CONTINUE(!line.startsWith("@"));
+
+        QList<QByteArray> columns = line.split('\t');
+        if (columns.size() <= READ_COLUMN) {
+            coreLog.error(BAMUtils::tr("Wrong line in a SAM file: \"%1\". Skipped").arg(QString(line)));
+        }
+
+        bool ok = false;
+        // From the SAM specification: reference sequence length. Range: [1, 2^31 - 1]
+        const auto& firstBasePos = columns[FIRST_BASE_POS_COLUMN].toInt(&ok);
+        if (!ok) {
+            coreLog.error(BAMUtils::tr("Wrong left base position format: \"%1\". Line has been skipped.")
+                              .arg(QString(line)));
+            continue;
+        }
+
+        const auto& readLength = columns[READ_COLUMN].size();
+        int alignmentLength = firstBasePos + readLength;
+        const auto& referenceName = QString(columns[REFERENCE_NAME_COLUMN]);
+        result[referenceName] = qMax(result.value(referenceName, 0), alignmentLength);
+
+    } while (!io->isEof());
+    return result;
+}
+
+/**
+ * Saves the list of references to the file in the SAMtools fai format.
+ */
+void createReferenceDataFile(const GUrl& faiUrl, const QMap<QString, int>& referenceData, U2OpStatus& os) {
+    QScopedPointer<IOAdapter> io(IOAdapterUtils::open(faiUrl, os, IOAdapterMode_Write));
+    CHECK_OP(os, );
+
+    const auto& references = referenceData.keys();
+    // Example:
+    // @SQ SN:ref LN:45
+    for (const auto& reference : qAsConst(references)) {
+        int length = referenceData[reference];
+        QString line = "@SQ\tSN:" + reference + "\tLN:" + QString::number(length) + "\n";
+        io->writeBlock(line.toLocal8Bit());
+    }
+}
+
+}  // namespace
+
 void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath, const QString& referencePath) {
     samFile* in = nullptr;
     samFile* out = nullptr;
@@ -159,14 +233,14 @@ void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QSt
     if (in->bam_header->n_targets == 0) {
         coreLog.details(tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.").arg(samPath));
 
-        auto referenceMap = BAMUtils::scanSamForReferenceInfo(samPath, os);
+        auto referenceMap = scanSamForReferenceInfo(samPath, os);
         CHECK_OP(os, );
         CHECK_EXT(!referenceMap.empty(), os.setError(BAMUtils::tr("No reference data in the SAM file")), );
 
         QTemporaryFile referenceDataFile;
         referenceDataFile.open();
         QString referenceDataFileUrl = referenceDataFile.fileName();
-        BAMUtils::createReferenceDataFile(referenceDataFileUrl, referenceMap, os);
+        createReferenceDataFile(referenceDataFileUrl, referenceMap, os);
         CHECK_OP(os, );
 
         samFile* tmp = sam_open(referenceDataFileUrl.toLocal8Bit(), "r");
@@ -275,8 +349,17 @@ GUrl BAMUtils::mergeBam(const QStringList& bamUrls, const QString& mergedBamTarg
                         .arg(QString(bamUrls.join(",")))
                         .arg(QString(mergedBamTargetUrl)));
 
-    int rc = bamMergeCore(mergedBamTargetUrl, bamUrls);
+    int buSize = bamUrls.size();
+    char** files = new char*[buSize + 1];
+    for (int i = 0; i < buSize; i++) {
+        files[i] = _strdup(bamUrls[i].toStdString().c_str());
+    }
+    files[buSize] = nullptr;
+
+    int rc = bam_merge_core(0, mergedBamTargetUrl.toLocal8Bit(), nullptr, buSize, files, 0, nullptr);
+    delete[] files;
     CHECK_EXT(rc >= 0, os.setError(tr("Failed to merge BAM files: %1 into %2").arg(bamUrls.join(",")).arg(mergedBamTargetUrl)), {});
+
     return mergedBamTargetUrl;
 }
 
@@ -289,279 +372,6 @@ static void swapHeaderTargets(bam_hdr_t* h1, bam_hdr_t* h2) {
     t.n_targets = h1->n_targets, h1->n_targets = h2->n_targets, h2->n_targets = t.n_targets;
     t.target_name = h1->target_name, h1->target_name = h2->target_name, h2->target_name = t.target_name;
     t.target_len = h1->target_len, h1->target_len = h2->target_len, h2->target_len = t.target_len;
-}
-
-static int localBamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge) {
-    bam_hdr_t* hout = nullptr;
-    int n = filesToMerge.length();
-    trans_tbl_t* translation_tbl = (trans_tbl_t*)calloc(n, sizeof(trans_tbl_t));
-    merged_header_t* merged_hdr = init_merged_header();
-    auto fp = (samFile**)calloc(n, sizeof(samFile*));
-    auto heap = (heap1_t*)calloc(n, sizeof(heap1_t));
-    // read the first
-    for (int i = 0; i != n; ++i) {
-        //NP<FILE> file = BAMUtils::openFile(filesToMerge[i], "r");
-        fp[i] = sam_open(filesToMerge[i].toLocal8Bit(), "r");
-        //fp[i] = bgzf_open(filesToMerge[i].toLocal8Bit(), "r");
-        if (fp[i] == nullptr) {
-            coreLog.error(BAMUtils::tr("[bam_merge_core] fail to open file %1").arg(filesToMerge[i]));
-            //BAMUtils::closeFileIfOpen(file.getNullable());
-            for (int j = 0; j < i; ++j) {
-                sam_close(fp[j]);
-                //bgzf_close(fp[j]);
-            }
-            free(fp);
-            free(heap);
-            return -1;
-        }
-
-        hts_set_opt(fp[i], HTS_OPT_BLOCK_SIZE, BAM_BLOCK_SIZE);
-        //fp[i]->owned_file = 1;
-        bam_hdr_t* hin = bam_hdr_read(fp[i]->fp.bgzf);
-        if (hin == nullptr) {
-            coreLog.error(BAMUtils::tr("[bam_merge_core] failed to read header from %1").arg(filesToMerge[i]));
-            for (int j = 0; j < i; ++j) {
-                sam_close(fp[j]);
-            }
-            free(fp);
-            free(heap);
-            return -1;
-        }
-
-        /*if (trans_tbl_init(merged_hdr, hin, translation_tbl + i, MERGE_COMBINE_RG, MERGE_COMBINE_PG, (MERGE_FIRST_CO) ? (i == 0) : true, RG[i])) {
-
-        }*/
-
-        if (i == 0) {  // the first BAM
-            hout = hin;
-        } else {  // validate multiple baf
-            int min_n_targets = hout->n_targets;
-            if (hin->n_targets < min_n_targets) {
-                min_n_targets = hin->n_targets;
-            }
-
-            for (int j = 0; j < min_n_targets; ++j) {
-                if (strcmp(hout->target_name[j], hin->target_name[j]) != 0) {
-                    coreLog.error(BAMUtils::tr("[bam_merge_core] different target sequence name: '%1' != '%2' in file '%3'\n")
-                                      .arg(hout->target_name[j])
-                                      .arg(hin->target_name[j])
-                                      .arg(filesToMerge[i]));
-                    for (int m = 0; m <= i; m++) {
-                        sam_close(fp[m]);
-                    }
-                    free(fp);
-                    free(heap);
-                    return -1;
-                }
-            }
-
-            // If this input file has additional target reference sequences,
-            // add them to the headers to be output
-            if (hin->n_targets > hout->n_targets) {
-                swapHeaderTargets(hout, hin);
-            }
-            bam_hdr_destroy(hin);
-        }
-    }
-
-    uint64_t idx = 0;
-    auto iter = (hts_itr_t**)calloc(n, sizeof(hts_itr_t*));
-    for (int i = 0; i < n; ++i) {
-        heap1_t* h = heap + i;
-        h->i = i;
-        h->entry.bam_record = bam_init1();
-        h->entry.u.tag = nullptr;
-        CHECK(h->entry.bam_record != nullptr, -1);
-
-        int res = iter[i] ? bam_itr_next(fp[i], iter[i], h->entry.bam_record) : bam_read1(fp[i]->fp.bgzf, h->entry.bam_record);
-        if (res >= 0) {
-            //bam_translate(h->entry.bam_record, translation_tbl + i);
-            h->tid = h->entry.bam_record->core.tid;
-            h->pos = (uint64_t)(h->entry.bam_record->core.pos + 1);
-            h->rev = bam_is_rev(h->entry.bam_record);
-            h->idx = idx++;
-            h->entry.u.tag = NULL;
-        } else if (res == -1 && (!iter[i] || iter[i]->finished)) {
-            h->pos = HEAP_EMPTY;
-            bam_destroy1(h->entry.bam_record);
-            h->entry.bam_record = NULL;
-            h->entry.u.tag = NULL;
-            h->entry.u.key = NULL;
-        } else {
-            coreLog.error(BAMUtils::tr("[bam_merge_core] failed to read first record from %1").arg(filesToMerge[i]));
-            for (int j = 0; j <= i; j++) {
-                sam_close(fp[j]);
-            }
-            free(fp);
-            free(heap);
-            return -1;
-        }
-    }
-
-    samFile* fpout = sam_open(outFileName.toLocal8Bit(), "wb");
-    if (fpout == nullptr) {
-        coreLog.error(BAMUtils::tr("Failed to create the output file: %1").arg(outFileName));
-        for (int i = 0; i < n; ++i) {
-            bam_itr_destroy(iter[i]);
-            sam_close(fp[i]);
-        }
-        free(fp);
-        free(heap);
-        return -1;
-    }
-    hts_set_opt(fpout, HTS_OPT_BLOCK_SIZE, BAM_BLOCK_SIZE);
-
-    if (bam_hdr_write(fpout->fp.bgzf, hout) != 0) {
-        coreLog.error(BAMUtils::tr("Failed to write header to: %1").arg(outFileName));
-        for (int i = 0; i < n; ++i) {
-            bam_itr_destroy(iter[i]);
-            sam_close(fp[i]);
-        }
-        free(fp);
-        free(heap);
-        sam_close(fpout);
-        return -1;
-    }
-    //bam_hdr_destroy(hout);
-    ks_heapmake(heap, n, heap);
-    while (heap->pos != HEAP_EMPTY) {
-        bam1_t* b = heap->entry.bam_record;
-        /*if (flag & MERGE_RG) {
-            uint8_t* rg = bam_aux_get(b, "RG");
-            if (rg)
-                bam_aux_del(b, rg);
-            bam_aux_append(b, "RG", 'Z', RG_len[heap->i] + 1, (uint8_t*)RG[heap->i]);
-        }*/
-        if (sam_write1(fpout, hout, b) < 0) {
-            coreLog.error(BAMUtils::tr("Failed writing to: %1").arg(outFileName));
-            for (int i = 0; i < n; ++i) {
-                bam_itr_destroy(iter[i]);
-                sam_close(fp[i]);
-            }
-            free(fp);
-            free(heap);
-            sam_close(fpout);
-            return -1;
-        }
-        int j;
-        if ((j = (iter[heap->i] ? sam_itr_next(fp[heap->i], iter[heap->i], b) : sam_read1(fp[heap->i], /*hdr[heap->i]*/nullptr, b))) >= 0) {
-            //bam_translate(b, translation_tbl + heap->i);
-            heap->tid = b->core.tid;
-            heap->pos = (uint64_t)(b->core.pos + 1);
-            heap->rev = bam_is_rev(b);
-            heap->idx = idx++;
-            heap->entry.u.tag = NULL;
-        } else if (j == -1 && (!iter[heap->i] || iter[heap->i]->finished)) {
-            heap->pos = HEAP_EMPTY;
-            bam_destroy1(heap->entry.bam_record);
-            heap->entry.bam_record = NULL;
-            heap->entry.u.tag = NULL;
-        } else {
-            coreLog.error(BAMUtils::tr("[bam_merge_core] '%1' is truncated. Continue anyway.").arg(filesToMerge[heap->i]));
-        }
-        ks_heapadjust(heap, 0, n, heap);
-    }
-
-    for (int i = 0; i != n; ++i) {
-        bam_itr_destroy(iter[i]);
-        sam_close(fp[i]);
-    }
-    sam_close(fpout);
-    free(fp);
-    free(heap);
-    free(iter);
-
-    return 0;
-
-    /*NP<FILE> outFile = BAMUtils::openFile(outFileName, "wb");
-    bamFile fpout = bgzf_fdopen(outFile.getNullable(), "w");
-    if (fpout == nullptr) {
-        coreLog.error(BAMUtils::tr("Failed to create the output file: %1").arg(outFileName));
-        BAMUtils::closeFileIfOpen(outFile.getNullable());
-        for (int i = 0; i < n; ++i) {
-            bam_iter_destroy(iter[i]);
-            bgzf_close(fp[i]);
-        }
-        free(fp);
-        free(heap);
-        return -1;
-    }
-    fpout->owned_file = 1;
-    bam_header_write(fpout, hout);
-    bam_header_destroy(hout);
-
-    ks_heapmake(heap, n, heap);
-    while (heap->pos != HEAP_EMPTY) {
-        bam1_t* b = heap->b;
-        bam_write1_core(fpout, &b->core, b->data_len, b->data);
-        int j = bam_iter_read(fp[heap->i], iter[heap->i], b);
-        if (j >= 0) {
-            heap->pos = ((uint64_t)b->core.tid << 32) | (uint32_t)((int)b->core.pos + 1) << 1 | bam1_strand(b);
-            heap->idx = idx++;
-        } else if (j == -1) {
-            heap->pos = HEAP_EMPTY;
-            free(heap->b->data);
-            free(heap->b);
-            heap->b = nullptr;
-        } else {
-            coreLog.error(BAMUtils::tr("[bam_merge_core] '%1' is truncated. Continue anyway.").arg(filesToMerge[heap->i]));
-        }
-        ks_heapadjust(heap, 0, n, heap);
-    }
-
-    for (int i = 0; i != n; ++i) {
-        bam_iter_destroy(iter[i]);
-        bgzf_close(fp[i]);
-    }
-    bgzf_close(fpout);
-    free(fp);
-    free(heap);
-    free(iter);*/
-}
-
-static constexpr int MAX_FILES_OPENED = 100;
-static int recursiveBamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge) {
-    int size = filesToMerge.size();
-    CHECK(size != 0, -1);
-
-    auto mergeSplit = U2Region::split({ 0, size }, MAX_FILES_OPENED);
-    if (mergeSplit.size() == 1) {
-        return localBamMergeCore(outFileName, filesToMerge);
-    }
-
-    U2OpStatus2Log os;
-    auto temporaryDir = AppContext::getAppSettings()->getUserAppsSettings()->createCurrentProcessTemporarySubDir(os);
-    CHECK_OP(os, -1);
-
-    QStringList newOutFileNameList;
-    for (int i = 0; i < mergeSplit.size(); i++) {
-        const auto& currentRange = mergeSplit.at(i);
-        QList<QString> newFilesToMerge = filesToMerge.mid(currentRange.startPos, MAX_FILES_OPENED);
-        QString newOutFileName = newFilesToMerge.first();
-        // Remove ".bam" from the end
-        auto baseFileName = QFileInfo(newOutFileName).baseName();
-        auto uuid = QUuid::createUuid().toString();
-        uuid = uuid.mid(1, uuid.size() - 2);
-        newOutFileName = temporaryDir + "/" + baseFileName + uuid + ".bam";
-        newOutFileNameList << newOutFileName;
-        int res = localBamMergeCore(newOutFileName, newFilesToMerge);
-        CHECK(res >= 0, res);
-
-    }
-    int res = recursiveBamMergeCore(outFileName, newOutFileNameList);
-
-    for (const auto& fileName : qAsConst(newOutFileNameList)) {
-        CHECK_CONTINUE(!QFile::remove(fileName));
-
-        coreLog.error(BAMUtils::tr("Can't remove temporary file: %1").arg(fileName));
-    }
-    return res;
-}
-
-int BAMUtils::bamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge) {
-    coreLog.trace("bamMergeCore: " + filesToMerge.join(",") + " to " + outFileName);
-
-    return recursiveBamMergeCore(outFileName, filesToMerge);
 }
 
 bool BAMUtils::hasValidBamIndex(const QString& bamUrl) {
@@ -855,104 +665,6 @@ bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2,
     closeFiles(in, out);
 
     return !os.hasError();
-}
-
-namespace {
-static constexpr int BUFFER_SIZE = 1024 * 1024;  // 1 Mb
-static constexpr int REFERENCE_NAME_COLUMN = 2;
-static constexpr int FIRST_BASE_POS_COLUMN = 3;
-static constexpr int READ_COLUMN = 9;
-
-inline QByteArray readLine(IOAdapter* io, char* buffer, int maxLineLength) {
-    QByteArray result;
-    bool terminatorFound = false;
-    do {
-        qint64 length = io->readLine(buffer, maxLineLength, &terminatorFound);
-        CHECK(-1 != length, result);
-        result += QByteArray(buffer, length);
-    } while (!terminatorFound);
-    return result;
-}
-
-}  // namespace
-
-QMap<QString, int> BAMUtils::scanSamForReferenceInfo(const GUrl& samUrl, U2OpStatus& os) {
-    QMap<QString, int> result;
-    QScopedPointer<IOAdapter> io(IOAdapterUtils::open(samUrl, os));
-    CHECK_OP(os, result);
-
-    QByteArray buffer(BUFFER_SIZE, 0);
-    char* bufferData = buffer.data();
-    do {
-        QByteArray line = readLine(io.data(), bufferData, BUFFER_SIZE);
-        CHECK_CONTINUE(!line.isEmpty());
-        CHECK_CONTINUE(!line.startsWith("@"));
-
-        QList<QByteArray> columns = line.split('\t');
-        if (columns.size() <= READ_COLUMN) {
-            coreLog.error(BAMUtils::tr("Wrong line in a SAM file: \"%1\". Skipped").arg(QString(line)));
-        }
-
-        bool ok = false;
-        // From the SAM specification: reference sequence length. Range: [1, 2^31 - 1]
-        const auto& firstBasePos = columns[FIRST_BASE_POS_COLUMN].toInt(&ok);
-        if (!ok) {
-            coreLog.error(BAMUtils::tr("Wrong left base position format: \"%1\". Line has been skipped.")
-                              .arg(QString(line)));
-            continue;
-        }
-
-        const auto& readLength = columns[READ_COLUMN].size();
-        int alignmentLength = firstBasePos + readLength;
-        const auto& referenceName = QString(columns[REFERENCE_NAME_COLUMN]);
-        result[referenceName] = qMax(result.value(referenceName, 0), alignmentLength);
-
-    } while (!io->isEof());
-    return result;
-}
-
-
-//QStringList BAMUtils::scanSamForReferenceNames(const GUrl& samUrl, U2OpStatus& os) {
-//    QStringList result;
-//    QScopedPointer<IOAdapter> io(IOAdapterUtils::open(samUrl, os));
-//    CHECK_OP(os, result);
-//
-//    QByteArray buffer(bufferSize, 0);
-//    char* bufferData = buffer.data();
-//    do {
-//        QByteArray line = readLine(io.data(), bufferData, bufferSize);
-//        if (line.isEmpty() || line.startsWith("@")) {
-//            continue;
-//        }
-//        QByteArray referenceName = parseReferenceName(line);
-//        if ("*" != referenceName && !result.contains(referenceName)) {
-//            result << referenceName;
-//        }
-//    } while (!io->isEof());
-//    return result;
-//}
-
-void BAMUtils::createFai(const GUrl& faiUrl, const QStringList& references, U2OpStatus& os) {
-    QScopedPointer<IOAdapter> io(IOAdapterUtils::open(faiUrl, os, IOAdapterMode_Write));
-    CHECK_OP(os, );
-    for (const QString& reference : qAsConst(references)) {
-        QString line = reference + "\n";
-        io->writeBlock(line.toLocal8Bit());
-    }
-}
-
-void BAMUtils::createReferenceDataFile(const GUrl& faiUrl, const QMap<QString, int>& referenceData, U2OpStatus& os) {
-    QScopedPointer<IOAdapter> io(IOAdapterUtils::open(faiUrl, os, IOAdapterMode_Write));
-    CHECK_OP(os, );
-
-    const auto& references = referenceData.keys();
-    // Example:
-    // @SQ SN:ref LN:45
-    for (const auto& reference : qAsConst(references)) {
-        int length = referenceData[reference];
-        QString line = "@SQ\tSN:" + reference + "\tLN:" + QString::number(length) + "\n";
-        io->writeBlock(line.toLocal8Bit());
-    }
 }
 
 /////////////////////////////////////////////////
