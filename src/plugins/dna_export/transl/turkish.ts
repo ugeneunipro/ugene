@@ -1362,7 +1362,7 @@
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="110"/>
-        <source>Convertion options</source>
+        <source>Conversion options</source>
         <translation>Dönüştürme seçenekleri</translation>
     </message>
     <message>

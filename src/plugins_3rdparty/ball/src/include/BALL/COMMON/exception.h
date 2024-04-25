@@ -96,10 +96,10 @@ namespace BALL
 			/// Modify the exception's error message
 			void setMessage(const std::string& message);
 
-			/// Returns the line number where it occured
+			/// Returns the line number where it occurred
 			int getLine() const;
 	
-			/// Returns the file where it occured
+			/// Returns the file where it occurred
 			const char* getFile() const;
 			//@}
 

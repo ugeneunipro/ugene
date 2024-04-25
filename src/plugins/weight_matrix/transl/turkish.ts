@@ -879,7 +879,7 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
     </message>
     <message>
         <location filename="../src/PWMBuildDialogController.cpp" line="264"/>
-        <source>Build finished successfuly</source>
+        <source>Build finished successfully</source>
         <translation>Derleme başarıyla tamamlandı</translation>
     </message>
     <message>

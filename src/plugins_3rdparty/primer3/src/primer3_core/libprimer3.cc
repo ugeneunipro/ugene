@@ -5626,7 +5626,7 @@ oligo_repeat_library_mispriming(primer_rec *h,
       if (w > SHRT_MAX || w < SHRT_MIN) {
         /* This check is necessary for the next 9 lines */
         pr_append_new_chunk( error,
-         "Out of range error occured calculating match to repeat library");
+         "Out of range error occurred calculating match to repeat library");
         return;
       }
       h->repeat_sim.score[i] = w;
@@ -9447,7 +9447,7 @@ p3_get_ol_problem_string(const primer_rec *oligo) {
     ADD_OP_STR(OP_HIGH_SELF_ANY,
                " Similarity to self too high;")
     ADD_OP_STR(OP_HIGH_SELF_END,
-               " Similary to 3' end of self too high;")
+               " Similarity to 3' end of self too high;")
     ADD_OP_STR(OP_HIGH_HAIRPIN,
                " Hairpin stability too high;")
     ADD_OP_STR(OP_NO_GC_CLAMP,

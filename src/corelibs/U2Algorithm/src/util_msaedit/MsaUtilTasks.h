@@ -73,7 +73,7 @@ protected:
 
 /**
  Multi task converts alignment object to amino representation if possible.
- This allows to:
+ This allows one to:
  1) speed up alignment
  2) avoid errors of inserting gaps within codon boundaries
 */

@@ -3339,7 +3339,7 @@ GUI_TEST_CLASS_DEFINITION(test_1326) {
             QSizePolicy actualPolicy = dialog->sizePolicy();
             QSizePolicy expectedPolicy = QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
             QPoint bottomRight = dialog->mapToGlobal(dialog->rect().bottomRight());
-            CHECK_SET_ERR(actualPolicy == expectedPolicy, "size policy dont match");
+            CHECK_SET_ERR(actualPolicy == expectedPolicy, "size policy don't match");
             QSize prevSize = dialog->size();
             QPoint newBottomRight = QPoint(bottomRight.x() + 5, bottomRight.y() + 5);
             GTMouseDriver::moveTo(bottomRight);
@@ -5923,7 +5923,7 @@ GUI_TEST_CLASS_DEFINITION(test_1645) {
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_PROJECT__UNLOAD_SELECTED}));
     GTMouseDriver::click(Qt::RightButton);
-    CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded("base_ext_nucl_all_symb.fa"), "Document should't be loaded");
+    CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded("base_ext_nucl_all_symb.fa"), "Document shouldn't be loaded");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1651) {

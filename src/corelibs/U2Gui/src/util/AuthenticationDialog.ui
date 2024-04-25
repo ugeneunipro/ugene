@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Authetication</string>
+   <string>Authentication</string>
   </property>
   <property name="modal">
    <bool>true</bool>

@@ -127,7 +127,7 @@
     <name>AuthenticationDialog</name>
     <message>
         <location filename="../src/util/AuthenticationDialog.ui" line="23"/>
-        <source>Authetication</source>
+        <source>Authentication</source>
         <translation>Аутентификация</translation>
     </message>
 </context>

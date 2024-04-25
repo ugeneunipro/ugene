@@ -895,7 +895,7 @@ void TaskSchedulerImpl::updateTaskProgressAndDesc(TaskInfo* ti) {
             emit_taskProgressChanged(task);
         }
     } else {
-        SAFE_POINT(task->getProgressManagementType() == Task::Progress_SubTasksBased, QString("Progress managment type for %1 task is not 'subtask based'.").arg(task->getTaskName()), );
+        SAFE_POINT(task->getProgressManagementType() == Task::Progress_SubTasksBased, QString("Progress management type for %1 task is not 'subtask based'.").arg(task->getTaskName()), );
         const QList<QPointer<Task>>& subs = task->getSubtasks();
         int nsubs = subs.size();
         if (nsubs > 0 && !task->isCanceled()) {

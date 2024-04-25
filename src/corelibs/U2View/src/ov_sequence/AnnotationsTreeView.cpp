@@ -2504,7 +2504,7 @@ bool AVAnnotationItem::operator<(const QTreeWidgetItem& other) const {
         const SharedAnnotationData& aData2 = ai.annotation->getData();
         if (aData1->name == aData2->name) {
             // for annotations with equal names we compare locations
-            // this allows to avoid resorting on lazy qualifier loading
+            // this allows one to avoid resorting on lazy qualifier loading
             return aData1->location->regions[0] < aData2->location->regions[0];
         }
         return aData1->name < aData2->name;

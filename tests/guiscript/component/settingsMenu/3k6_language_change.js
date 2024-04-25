@@ -56,15 +56,15 @@ CheckCheckBox = function (currentCheckBox) {
             QTest.mouseMove(currentCheckBox, new QPoint(0, 0), main_delay);
             QTest.mouseClick(currentCheckBox, 1, 0, 0, main_delay);
             if (currentCheckBox.checkState() == 2) {
-                print(currentCheckBox.objectName + " cheked");
-                throw currentCheckBox.objectName + " cheked";
+                print(currentCheckBox.objectName + " checked");
+                throw currentCheckBox.objectName + " checked";
             }
         } else {
             QTest.mouseMove(currentCheckBox, new QPoint(0, 0), main_delay);
             QTest.mouseClick(currentCheckBox, 1, 0, 0, main_delay);
             if (currentCheckBox.checkState() != 2) {
-                print(currentCheckBox.objectName + " not cheked");
-                throw currentCheckBox.objectName + " not cheked";
+                print(currentCheckBox.objectName + " not checked");
+                throw currentCheckBox.objectName + " not checked";
             }
         }
     }

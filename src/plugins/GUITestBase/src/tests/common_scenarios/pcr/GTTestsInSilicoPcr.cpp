@@ -663,7 +663,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     // Reverse-complement for the extended DNA alphabet
     // 1. Open the PCT OP
     // 2. Enter primer with whitespaces
-    // Expected state: whitespaces removed successfuly
+    // Expected state: whitespaces removed successfully
     GTUtilsPcr::clearPcrDir();
 
     GTFileDialog::openFile(testDir + "_common_data/fasta", "pcr_test.fa");
