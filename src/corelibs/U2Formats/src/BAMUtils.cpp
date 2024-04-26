@@ -363,13 +363,6 @@ void* BAMUtils::loadIndex(const QString& filePath) {
     return hts_idx_load(filePath.toLocal8Bit(), HTS_FMT_BAI);
 }
 
-static void swapHeaderTargets(bam_hdr_t* h1, bam_hdr_t* h2) {
-    bam_hdr_t t;
-    t.n_targets = h1->n_targets, h1->n_targets = h2->n_targets, h2->n_targets = t.n_targets;
-    t.target_name = h1->target_name, h1->target_name = h2->target_name, h2->target_name = t.target_name;
-    t.target_len = h1->target_len, h1->target_len = h2->target_len, h2->target_len = t.target_len;
-}
-
 bool BAMUtils::hasValidBamIndex(const QString& bamUrl) {
     auto index = (hts_idx_t*)loadIndex(bamUrl);
     CHECK(index != nullptr, false);
