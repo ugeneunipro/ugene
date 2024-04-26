@@ -179,12 +179,14 @@ static QMap<QString, int> scanSamForReferenceInfo(const GUrl& samUrl, U2OpStatus
 
         bool ok = false;
         // From the SAM specification: reference sequence length. Range: [1, 2^31 - 1]
-        const auto& firstBasePos = columns[FIRST_BASE_POS_COLUMN].toInt(&ok);
+        auto firstBasePos = columns[FIRST_BASE_POS_COLUMN].toInt(&ok);
         if (!ok) {
             coreLog.error(BAMUtils::tr("Wrong left base position format: \"%1\". Line has been skipped.")
                               .arg(QString(line)));
             continue;
         }
+        // Positions start from 0 in UGENE, but SAM has 1 base first
+        firstBasePos--;
 
         const auto& readLength = columns[READ_COLUMN].size();
         int alignmentLength = firstBasePos + readLength;
