@@ -335,7 +335,7 @@ GUrl BAMUtils::sortBam(const QString& bamUrl, const QString& sortedBamFilePath, 
 
     static constexpr size_t max_mem = 100 * 1000 * 1000;
     int ret = bam_sort_core(0, bamUrl.toLocal8Bit(), sortedBamFilePathPrefix.toLocal8Bit(), max_mem);
-    CHECK_EXT(ret == 0, os.setError(BAMUtils::tr("Cannot sort \"%1\", abort").arg(bamUrl)), "")
+    CHECK_EXT(ret == 0, os.setError(BAMUtils::tr("Cannot sort \"%1\", abort").arg(bamUrl)), {})
 
     return sortedBamFilePathPrefix + ".bam";
 }
@@ -348,7 +348,7 @@ GUrl BAMUtils::mergeBam(const QStringList& bamUrls, const QString& mergedBamTarg
     int buSize = bamUrls.size();
     char** files = new char*[buSize + 1];
     for (int i = 0; i < buSize; i++) {
-        files[i] = _strdup(bamUrls[i].toStdString().c_str());
+        files[i] = strdup(bamUrls[i].toStdString().c_str());
     }
     files[buSize] = nullptr;
 

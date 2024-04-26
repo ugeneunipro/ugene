@@ -1670,7 +1670,8 @@ int bam_merge(int argc, char *argv[])
         }
     }
 
-    int nargcfiles = 0;
+    int nargcfiles;
+    nargcfiles = 0;
     if (has_index_file) { // Calculate # of input BAM files
         if ((argc - optind) % 2 != 0) {
             fprintf(stderr, "Odd number of filenames detected! Each BAM file should have an index file\n");
@@ -2431,7 +2432,7 @@ static uint64_t minhash(bam1_t *b, int kmer, int window, int *curr_pos,
     uint64_t mask = (1L<<(2*kmer))-1;
     uint8_t *seq = bam_get_seq(b);
     int len = b->core.l_qseq;
-    uint64_t xor = XOR & mask;
+    uint64_t xor1 = XOR & mask;
 
     if (is_rev) *is_rev = 0;
 
@@ -2509,8 +2510,8 @@ static uint64_t minhash(bam1_t *b, int kmer, int window, int *curr_pos,
             for (; i < i_end; i++) {
                 int base = bam_seqi(seq, i);
                 hashr =  (hashr>>2) | R[base];
-                if (minhashr > (hashr^xor))
-                    minhashr = (hashr^xor), minhashpr = len-i+kmer-2;
+                if (minhashr > (hashr^xor1))
+                    minhashr = (hashr^xor1), minhashpr = len-i+kmer-2;
             }
         } else {
             for (; i < i_end; i++) {
@@ -2518,8 +2519,8 @@ static uint64_t minhash(bam1_t *b, int kmer, int window, int *curr_pos,
                 if (last_base != base) {
                     last_base = base;
                     hashr =  (hashr>>2) | R[base];
-                    if (minhashr > (hashr^xor))
-                        minhashr = (hashr^xor), minhashpr = len-i+kmer-2;
+                    if (minhashr > (hashr^xor1))
+                        minhashr = (hashr^xor1), minhashpr = len-i+kmer-2;
                 }
             }
         }
@@ -2566,7 +2567,8 @@ static int build_minhash_index(char *fn, int kmer, int window, int no_squash) {
         goto err;
 
     int r;
-    uint64_t tpos = 0;
+    uint64_t tpos;
+    tpos = 0;
     while ((r = sam_read1(in, h, b)) >= 0) {
         //fprintf(stderr, "LEN\t%d\t%s\n", b->core.l_qseq, bam_get_qname(b));
         uint64_t hashf;
@@ -2635,7 +2637,7 @@ static uint64_t minhash_with_idx(bam1_t *b, int kmer, int *pos, int *rev,
     uint64_t mask = (1L<<(2*kmer))-1;
     unsigned char *seq = bam_get_seq(b);
     int len = b->core.l_qseq;
-    const uint64_t xor = XOR & mask;
+    const uint64_t xor1 = XOR & mask;
 
     // Lookup tables for bam_seqi to 0123 fwd/rev hashes
     // =ACM GRSV TWYH KDBN
@@ -2660,7 +2662,7 @@ static uint64_t minhash_with_idx(bam1_t *b, int kmer, int *pos, int *rev,
     for (; i < len; i++) {
         int base = bam_seqi(seq, i);
         hashf = ((hashf<<2) | L[base]) & mask;
-        const uint64_t hashfx = hashf^xor;
+        const uint64_t hashfx = hashf^xor1;
 
         // Priority for sorting
         // 1. Unique key in index
@@ -2702,7 +2704,7 @@ static uint64_t minhash_with_idx(bam1_t *b, int kmer, int *pos, int *rev,
         for (; i < len; i++) {
             int base = bam_seqi(seq, i);
             hashr =  (hashr>>2) | R[base];
-            const uint64_t hashrx = hashr^xor;
+            const uint64_t hashrx = hashr^xor1;
 
             int index = 0;
             if (minhashri > hashrx || (found_r < 2 && minhashrd > hashrx)) {
@@ -2771,7 +2773,7 @@ static uint64_t minhash_with_idx_squash(bam1_t *b, int kmer, int *pos,
     uint64_t mask = (1L<<(2*kmer))-1;
     unsigned char *seq = bam_get_seq(b);
     int len = b->core.l_qseq;
-    const uint64_t xor = XOR & mask;
+    const uint64_t xor1 = XOR & mask;
 
     // Lookup tables for bam_seqi to 0123 fwd/rev hashes
     // =ACM GRSV TWYH KDBN
@@ -2804,7 +2806,7 @@ static uint64_t minhash_with_idx_squash(bam1_t *b, int kmer, int *pos,
             continue;
         last_base = base;
         hashf = ((hashf<<2) | L[base]) & mask;
-        const uint64_t hashfx = hashf^xor;
+        const uint64_t hashfx = hashf^xor1;
 
         // Priority for sorting
         // 1. Unique key in index
@@ -2854,7 +2856,7 @@ static uint64_t minhash_with_idx_squash(bam1_t *b, int kmer, int *pos,
                 continue;
             last_base = base;
             hashr =  (hashr>>2) | R[base];
-            const uint64_t hashrx = hashr^xor;
+            const uint64_t hashrx = hashr^xor1;
 
             int index = 0;
             if (minhashri > hashrx || (found_r < 2 && minhashrd > hashrx)) {
@@ -3390,7 +3392,8 @@ int bam_sort_core_ext(SamOrder sam_order, char* sort_tag, int minimiser_kmer,
 
     // write sub files
     k = max_k = bam_mem_offset = 0;
-    size_t name_len = strlen(prefix) + 30;
+    size_t name_len;
+    name_len = strlen(prefix) + 30;
     while ((res = sam_read1(fp, header, b)) >= 0) {
         int mem_full = 0;
 
