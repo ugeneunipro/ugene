@@ -581,8 +581,12 @@ bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2,
         in = sam_open(fileUrl1.toLocal8Bit(), readMode1);
         SAMTOOL_CHECK(in != nullptr, openFileError(fileUrl1), false);
 
+        in->bam_header = sam_hdr_read(in);
+
         out = sam_open(fileUrl2.toLocal8Bit(), readMode2);
         SAMTOOL_CHECK(out != nullptr, openFileError(fileUrl2), false);
+
+        out->bam_header = sam_hdr_read(out);
 
         if (in->bam_header != out->bam_header) {
             SAMTOOL_CHECK(out->bam_header != nullptr, headerReadError(fileUrl2), false);
