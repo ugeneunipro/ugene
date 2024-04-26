@@ -1822,10 +1822,12 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     //    2. Open tree settings option panel tab. build tree
+    GTUtilsProjectTreeView::toggleView();  // Close opened project tree view to make all icons on the toolbar visible with no overflow.
+
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::waitForDialog(new BuildTreeDialogFiller("default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton();
-    GTThread::waitForMainThread();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsPhyTree::setBranchColor(255, 0, 0);
 
