@@ -7025,7 +7025,7 @@ GUI_TEST_CLASS_DEFINITION(test_1747) {
     CHECK_SET_ERR(progress >= 0 && progress <= 100, QString("Incorrect progress: %1").arg(progress));
     int oldProgress = progress;
 
-    GTGlobals::sleep(5000);
+    GTGlobals::sleep(1000);
     text = taskProgressBar->text();
     CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
     text = text.left(text.length() - 1);
@@ -7034,7 +7034,7 @@ GUI_TEST_CLASS_DEFINITION(test_1747) {
     CHECK_SET_ERR(isNumber, QString("The progress must be a number: %1").arg(text));
     CHECK_SET_ERR(progress >= 0 && progress <= 100, QString("Incorrect progress: %1").arg(progress));
 
-    CHECK_SET_ERR(progress > oldProgress, "Progress didn't change");
+    CHECK_SET_ERR(progress > oldProgress, QString("Progress didn't change: old progress: %1, new progress: %2").arg(oldProgress).arg(progress));
     GTUtilsTask::cancelAllTasks();  // Cancel long running task.
 }
 
