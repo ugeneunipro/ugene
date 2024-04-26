@@ -524,7 +524,7 @@ The default is instead to generate sequences with a variety of different lengths
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="160"/>
-        <source>HMM build finished successfuly!</source>
+        <source>HMM build finished successfully!</source>
         <translation>HMM профайл успешно построен!</translation>
     </message>
     <message>
@@ -691,7 +691,7 @@ The default is instead to generate sequences with a variety of different lengths
     </message>
     <message>
         <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="143"/>
-        <source>Calibration finished successfuly!</source>
+        <source>Calibration finished successfully!</source>
         <translation>Калибровка успешно завершена!</translation>
     </message>
     <message>
@@ -942,7 +942,7 @@ The default is instead to generate sequences with a variety of different lengths
     </message>
     <message>
         <location filename="../src/u_search/HMMSearchDialogController.cpp" line="190"/>
-        <source>HMM search finished successfuly!</source>
+        <source>HMM search finished successfully!</source>
         <translation>HMM профайл успешно построен!</translation>
     </message>
     <message>

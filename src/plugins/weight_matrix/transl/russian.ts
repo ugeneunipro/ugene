@@ -879,7 +879,7 @@ Maybe model data are not enough for selected algorithm</translation>
     </message>
     <message>
         <location filename="../src/PWMBuildDialogController.cpp" line="261"/>
-        <source>Build finished successfuly</source>
+        <source>Build finished successfully</source>
         <translation>Построение завершено успешно</translation>
     </message>
     <message>

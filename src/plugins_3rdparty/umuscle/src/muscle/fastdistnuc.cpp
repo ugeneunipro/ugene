@@ -24,7 +24,7 @@ static unsigned char Count2[TUPLE_COUNT];
 // 2 =  G
 // 3 =  T
 // 4 =  other
-//WARN: dont mess with global ResidueGroup
+//WARN: don't mess with global ResidueGroup
 static unsigned ResidueGroup_[] =
 	{
 	0,		// NX_A,

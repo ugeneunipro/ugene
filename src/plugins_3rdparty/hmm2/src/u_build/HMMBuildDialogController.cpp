@@ -157,7 +157,7 @@ void HMMBuildDialogController::sl_onStateChanged() {
     } else if (task->isCanceled()) {
         statusLabel->setText(tr("HMM build canceled"));
     } else {
-        statusLabel->setText(tr("HMM build finished successfuly!"));
+        statusLabel->setText(tr("HMM build finished successfully!"));
     }
     okButton->setText(tr("Build"));
     cancelButton->setText(tr("Close"));

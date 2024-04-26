@@ -156,7 +156,7 @@
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="text">
-               <string>Gap extention penalty (-r)</string>
+               <string>Gap extension penalty (-r)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

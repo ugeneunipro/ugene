@@ -2348,7 +2348,7 @@ GUI_TEST_CLASS_DEFINITION(test_0888) {
         }
     }
 
-    CHECK_SET_ERR(8 == count, QString("Unexpected count of '#' symbols: expet %1, got %2").arg(8).arg(count));
+    CHECK_SET_ERR(8 == count, QString("Unexpected count of '#' symbols: expected %1, got %2").arg(8).arg(count));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0889) {
@@ -2779,7 +2779,7 @@ GUI_TEST_CLASS_DEFINITION(test_0952) {
 GUI_TEST_CLASS_DEFINITION(test_0958) {
     //    1. Create *.csv file with the following content
     //    "Name","Start","End","Length","Complementary","Gene","desc","property","prop1","prop2"
-    //    "test01","1","400","400","no","tEs01","unknown funtion","blablabla","",""
+    //    "test01","1","400","400","no","tEs01","unknown function","blablabla","",""
     //    "test02","60108","71020","10913","yes","","","","kobietghiginua","addsomethinghere"
     //    2. Open data/samples/FASTA/human_T1.fa.
     //    3. In the project tree's context menu choose option "Import" > "Import annotations from CSV file".
@@ -2792,7 +2792,7 @@ GUI_TEST_CLASS_DEFINITION(test_0958) {
     QFile file(sandBoxDir + "test_0958.csv");
     file.open(QFile::WriteOnly);
     file.write("\"Name\",\"Start\",\"End\",\"Length\",\"Complementary\",\"Gene\",\"desc\",\"property\",\"prop1\",\"prop2\"\n"
-               "\"test01\",\"1\",\"400\",\"400\",\"no\",\"tEs01\",\"unknown funtion\",\"blablabla\",\"\",\"\"\n"
+               "\"test01\",\"1\",\"400\",\"400\",\"no\",\"tEs01\",\"unknown function\",\"blablabla\",\"\",\"\"\n"
                "\"test02\",\"60108\",\"71020\",\"110913\",\"yes\",\"\",\"\",\"\",\"kobietghiginua\",\"addsomethinghere\"\n");
     file.close();
 
@@ -2821,7 +2821,7 @@ GUI_TEST_CLASS_DEFINITION(test_0958) {
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem("test01") != nullptr, "Annotation item not found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotationRegionString("test01") == "1..400", "Annotation region was improted incorrectly")
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue("Gene", "test01") == "tEs01", "Qualifier Gene was improted incorrectly");
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue("desc", "test01") == "unknown funtion", "Qualifier desc was improted incorrectly");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue("desc", "test01") == "unknown function", "Qualifier desc was improted incorrectly");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue("property", "test01") == "blablabla", "Qualifier property was improted incorrectly");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue("prop1", "test01") == "", "Qualifier prop1 was improted incorrectly");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue("prop2", "test01") == "", "Qualifier prop2 was improted incorrectly");
