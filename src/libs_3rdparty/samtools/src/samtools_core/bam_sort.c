@@ -2498,12 +2498,12 @@ static uint64_t minhash(bam1_t *b, int kmer, int window, int *curr_pos,
     if (try_rev) {
         uint64_t hashr = 0, minhashr = UINT64_MAX;
         int minhashpr = *curr_pos;
-        int last_base = -1;
+        int last_base1 = -1;
 
         for (i = i_start, j = 0; j < kmer-1 && i < len; i++) {
             int base = bam_seqi(seq, i);
-            if (no_squash || last_base != base) {
-                last_base = base;
+            if (no_squash || last_base1 != base) {
+                last_base1 = base;
                 hashr = (hashr>>2) | R[base];
                 j++;
             }
@@ -2519,8 +2519,8 @@ static uint64_t minhash(bam1_t *b, int kmer, int window, int *curr_pos,
         } else {
             for (; i < i_end; i++) {
                 int base = bam_seqi(seq, i);
-                if (last_base != base) {
-                    last_base = base;
+                if (last_base1 != base) {
+                    last_base1 = base;
                     hashr =  (hashr>>2) | R[base];
                     if (minhashr > (hashr^xor1))
                         minhashr = (hashr^xor1), minhashpr = len-i+kmer-2;
@@ -2577,7 +2577,7 @@ static int build_minhash_index(char *fn, int kmer, int window, int no_squash) {
         uint64_t hashf;
         int pos = 0, end = 0;
         khiter_t k;
-        int ret;
+        int ret1;
 
         if (b->core.l_qseq < window)
             continue;
@@ -2587,8 +2587,8 @@ static int build_minhash_index(char *fn, int kmer, int window, int no_squash) {
             int last_pos = pos;
             hashf = minhash(b, kmer, window, &pos, &end, NULL, 1, 0,
                             no_squash);
-            k = kh_put(kmer, kmer_h, hashf, &ret);
-            kh_value(kmer_h, k) = tpos+pos + (((uint64_t)!ret)<<UNIQ_BIT);
+            k = kh_put(kmer, kmer_h, hashf, &ret1);
+            kh_value(kmer_h, k) = tpos+pos + (((uint64_t)!ret1)<<UNIQ_BIT);
             pos = MAX(last_pos+kmer, pos+1);
             //pos++;  Slower, but indexes a bit better?
         }
@@ -2605,8 +2605,8 @@ static int build_minhash_index(char *fn, int kmer, int window, int no_squash) {
 //        while (!end) {
 //            hashf = minhash(b, kmer, window, &pos, &end, NULL, 0, 1,
 //                            no_squash);
-//            k = kh_put(kmer, kmer_h, hashf, &ret);
-//            kh_value(kmer_h, k) = tpos+pos + (((uint64_t)!ret)<<UNIQ_BIT);
+//            k = kh_put(kmer, kmer_h, hashf, &ret1);
+//            kh_value(kmer_h, k) = tpos+pos + (((uint64_t)!ret1)<<UNIQ_BIT);
 //            pos++;
 //        }
 //
