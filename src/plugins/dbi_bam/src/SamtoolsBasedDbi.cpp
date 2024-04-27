@@ -533,6 +533,8 @@ int bamFetchFunction(const bam1_t* b, void* data) {
         read->id = read->name + ";" + QByteArray::number(read->leftmostPos) + ";" + QByteArray::number(read->effectiveLen);
         read->rnext = values[RNEXT_COL];
         read->pnext = b->core.mpos;
+        QByteArray auxStr((const char*)bam_get_aux(b));
+        read->aux = SamtoolsAdapter::string2aux(auxStr);
     }
 
     // add new border intersected reads
