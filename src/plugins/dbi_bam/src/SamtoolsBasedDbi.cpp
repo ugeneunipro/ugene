@@ -512,7 +512,7 @@ int bamFetchFunction(const bam1_t* b, void* data) {
         str.l = 0;
         str.m = 0;
         str.s = nullptr;
-        int res = sam_format1(dbi.getHeader(), b, &str);
+        sam_format1(dbi.getHeader(), b, &str);
         QByteArray samArr(str.s);
         QList<QByteArray> values = samArr.split('\t');
 
@@ -533,7 +533,7 @@ int bamFetchFunction(const bam1_t* b, void* data) {
         read->id = read->name + ";" + QByteArray::number(read->leftmostPos) + ";" + QByteArray::number(read->effectiveLen);
         read->rnext = values[RNEXT_COL];
         read->pnext = b->core.mpos;
-        QByteArray auxStr((const char*)bam_get_aux(b));
+        QByteArray auxStr((const char*)bam_get_aux(b), bam_get_l_aux(b));
         read->aux = SamtoolsAdapter::string2aux(auxStr);
     }
 

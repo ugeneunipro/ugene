@@ -430,7 +430,6 @@ void SamtoolsAdapter::read2samtools(const U2AssemblyRead& r, U2OpStatus& os, bam
     copyQuality(dest, quality);
     copyArray(dest, aux);
 
-    //resRead.l_aux = aux.length();
     resRead.l_data = resRead.m_data = dataLen;
     resRead.data = data;
 
