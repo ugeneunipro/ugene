@@ -73,11 +73,9 @@ void BgzipTask::run() {
         bgzfUrl = GUrl(fileUrl.getURLString() + ".gz");
     }
 
-    //NP<FILE> outFile = FileAndDirectoryUtils::openFile(bgzfUrl.getURLString(), "w");
     BGZF* out = bgzf_open(bgzfUrl.getURLString().toLocal8Bit(), "w");
     if (out == nullptr) {
         Task::setError(tr("Can not open output file '%2'").arg(bgzfUrl.getURLString()));
-        //FileAndDirectoryUtils::closeFileIfOpen(outFile.getNullable());
         return;
     }
     BGZF_wrapper out_wr(out);
@@ -122,34 +120,8 @@ Task::ReportResult BgzipTask::report() {
     return ReportResult_Finished;
 }
 
-//int bgzf_check_bgzf(const QString& fileUrl) {
-//    BGZF* fp;
-//    uint8_t qwe[1] = "\037";
-//    uint8_t buf[10], magic[10] = "\037\213\010\4\0\0\0\0\0\377";
-//    int n;
-//
-//    if ((fp = bgzf_open(fileUrl.toLocal8Bit(), "r")) == 0) {
-//        fprintf(stderr, "[bgzf_check_bgzf] failed to open the file\n");
-//        return -1;
-//    }
-//
-//    n = fread(buf, 1, 10, fp->file);
-//    bgzf_close(fp);
-//
-//    if (n != 10)
-//        return -1;
-//
-//    if (!memcmp(magic, buf, 10))
-//        return 1;
-//    return 0;
-//}
-
 bool BgzipTask::checkBgzf(const GUrl& fileUrl) {
-    /*NP<FILE> file = FileAndDirectoryUtils::openFile(fileUrl.getURLString(), "r");
-    int checkResult = file == nullptr ? -1 : bgzf_check_bgzf(file);
-    FileAndDirectoryUtils::closeFileIfOpen(file);
-    return checkResult;*/  // TODO: method returns incorrect type and the logic looks inverted from the normal.
-    return 1;
+    return bgzf_is_bgzf(fileUrl.getURLString().toLocal8Bit());
 }
 
 GzipDecompressTask::GzipDecompressTask(const GUrl& zipUrl, const GUrl& fileUrl)
