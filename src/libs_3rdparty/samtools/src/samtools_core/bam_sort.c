@@ -3785,7 +3785,7 @@ int bam_sort(int argc, char *argv[])
         }
     }
     if (stat(tmpprefix.s, &st) == 0 && S_ISDIR(st.st_mode)) {
-        unsigned t = ((unsigned) time(NULL)) ^ ((unsigned) clock());
+        //unsigned t = ((unsigned) time(NULL)) ^ ((unsigned) clock());
         if (tmpprefix.s[tmpprefix.l-1] != '/') kputc('/', &tmpprefix);
         //ksprintf(&tmpprefix, "samtools.%d.%u.tmp", (int) getpid(), t % 10000);
     }
