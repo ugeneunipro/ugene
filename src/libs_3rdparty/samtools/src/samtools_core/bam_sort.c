@@ -60,7 +60,7 @@ DEALINGS IN THE SOFTWARE.  */
 #include <unistd.h>
 #endif
 
-
+#define SAMTOOLS_UNUSED(x) (void)(x)
 //#define DEBUG_MINHASH
 
 #define BAM_BLOCK_SIZE 2*1024*1024
@@ -99,6 +99,7 @@ static template_coordinate_key_t* template_coordinate_keys_get(template_coordina
 
 // Rellocates the buffers to hold at least max_k entries
 static int template_coordinate_keys_realloc(template_coordinate_keys_t *keys, int max_k) {
+    SAMTOOLS_UNUSED(max_k);
     size_t cur_m = keys->m;
     keys->m += 0x100;
     //assert(keys->m > cur_m);
@@ -1186,26 +1187,26 @@ int bam_merge_core2(SamOrder sam_order, char* sort_tag, const char *out, const c
 
     // open and read the header from each file
     for (i = 0; i < n; ++i) {
-        sam_hdr_t *hin;
+        sam_hdr_t *hin1;
         fp[i] = sam_open_format(fn[i], "r", in_fmt);
         if (fp[i] == NULL) {
             print_error_errno(cmd, "fail to open \"%s\"", fn[i]);
             goto fail;
         }
         hts_set_opt(fp[i], HTS_OPT_BLOCK_SIZE, BAM_BLOCK_SIZE);
-        hin = sam_hdr_read(fp[i]);
-        if (hin == NULL) {
+        hin1 = sam_hdr_read(fp[i]);
+        if (hin1 == NULL) {
             print_error(cmd, "failed to read header from \"%s\"", fn[i]);
             goto fail;
         }
 
-        if (trans_tbl_init(merged_hdr, hin, translation_tbl+i,
+        if (trans_tbl_init(merged_hdr, hin1, translation_tbl + i,
                            flag & MERGE_COMBINE_RG, flag & MERGE_COMBINE_PG,
                            (flag & MERGE_FIRST_CO)? (i == 0) : true,
                            RG[i]))
             goto fail;
 
-        hdr[i] = hin;
+        hdr[i] = hin1;
 
         int order_ok = 1;
         if ((translation_tbl+i)->lost_coord_sort && (sam_order == Coordinate || sam_order == MinHash)) {
@@ -1747,6 +1748,7 @@ static inline int heap_add_read(heap1_t *heap, int nfiles, samFile **fp,
                                 bam1_tag *buf, template_coordinate_keys_t *keys,
                                 uint64_t *idx, sam_hdr_t *hout,
                                 khash_t(const_c2c) *lib_lookup) {
+    SAMTOOLS_UNUSED(num_in_mem);
     int i = heap->i, res;
     if (i < nfiles) { // read from file
         res = sam_read1(fp[i], hout, heap->entry.bam_record);
@@ -2129,6 +2131,7 @@ static inline int template_coordinate_key_compare_mid(const char* mid1, const ch
 // Builds a key use to sort in TemplateCoordinate order.  Returns NULL if the key could not be created (e.g. MC
 // tag is missing), otherwise the pointer to the provided key.
 static template_coordinate_key_t* template_coordinate_key(bam1_t *b, template_coordinate_key_t *key, sam_hdr_t *hdr, khash_t(const_c2c) *lib_lookup) {
+    SAMTOOLS_UNUSED(hdr);
     uint8_t *data;
     char *rg;
     khiter_t k;
@@ -2840,21 +2843,21 @@ static uint64_t minhash_with_idx_squash(bam1_t *b, int kmer, int *pos,
         uint64_t hashr = 0, minhashr = UINT64_MAX, minhashri = UINT64_MAX;
         uint64_t minhashrd = UINT64_MAX;
         int minhashpr = 0, minhashpri = 0, minhashprd = 0;
-        int last_base = -1;
+        int last_base1 = -1;
 
         for (i = j = 0; j < kmer-1 && i < len; i++) {
             int base = bam_seqi(seq, i);
-            if (base == last_base)
+            if (base == last_base1)
                 continue;
-            last_base = base;
+            last_base1 = base;
             j++;
             hashr = (hashr>>2) | R[base];
         }
         for (; i < len; i++) {
             int base = bam_seqi(seq, i);
-            if (base == last_base)
+            if (base == last_base1)
                 continue;
-            last_base = base;
+            last_base1 = base;
             hashr =  (hashr>>2) | R[base];
             const uint64_t hashrx = hashr^xor1;
 
