@@ -91,7 +91,7 @@ static QString openFileError(const QString& file) {
 }
 
 static QString headerReadError(const QString& file) {
-    return QObject::tr("Fail to read the header from the file: \"%1\"").arg(file);
+    return QObject::tr("Fail to read the header from the file, probably, not an assembly format: \"%1\"").arg(file);
 }
 
 static QString headerWriteError(const QString& file) {
@@ -115,30 +115,6 @@ static void checkFileReadState(int read, U2OpStatus& os, const QString& fileName
         return ret; \
     }
 
-void BAMUtils::convertBamToSam(U2OpStatus& os, const QString& bamPath, const QString& samPath) {
-    samFile* in = sam_open(bamPath.toLocal8Bit(), "rb");
-    samFile* out = nullptr;
-    SAMTOOL_CHECK(in != nullptr, openFileError(bamPath), )
-
-    in->bam_header = sam_hdr_read(in);
-    SAMTOOL_CHECK(in->bam_header != nullptr, headerReadError(samPath), );
-
-    out = sam_open(samPath.toLocal8Bit(), "w");
-    SAMTOOL_CHECK(out != nullptr, openFileError(samPath), );
-
-    int r = 0;
-    r = sam_hdr_write(out, in->bam_header);
-    SAMTOOL_CHECK(r == 0, headerWriteError(samPath), );
-
-    bam1_t* b = bam_init1();
-    r = 0;
-    while ((r = bam_read1(in->fp.bgzf, b)) >= 0) {  // read one alignment from `in'
-        sam_write1(out, in->bam_header, b);  // write the alignment to `out'.
-    }
-    checkFileReadState(r, os, bamPath);
-    bam_destroy1(b);
-    closeFiles(in, out);
-}
 
 namespace {
 static constexpr int BUFFER_SIZE = 1024 * 1024;  // 1 Mb
@@ -151,10 +127,27 @@ inline QByteArray readLine(IOAdapter* io, char* buffer, int maxLineLength) {
     bool terminatorFound = false;
     do {
         qint64 length = io->readLine(buffer, maxLineLength, &terminatorFound);
-        CHECK(-1 != length, result);
+        CHECK(length > 0, result);
         result += QByteArray(buffer, length);
     } while (!terminatorFound);
     return result;
+}
+
+/**
+ * Saves the list of references to the file in the SAMtools fai format.
+ */
+void createReferenceDataFile(const GUrl& faiUrl, const QMap<QString, int>& referenceData, U2OpStatus& os) {
+    QScopedPointer<IOAdapter> io(IOAdapterUtils::open(faiUrl, os, IOAdapterMode_Write));
+    CHECK_OP(os, );
+
+    const auto& references = referenceData.keys();
+    // Example:
+    // @SQ SN:ref LN:45
+    for (const auto& reference : qAsConst(references)) {
+        int length = referenceData[reference];
+        QString line = "@SQ\tSN:" + reference + "\tLN:" + QString::number(length) + "\n";
+        io->writeBlock(line.toLocal8Bit());
+    }
 }
 
 /**
@@ -197,59 +190,98 @@ static QMap<QString, int> scanSamForReferenceInfo(const GUrl& samUrl, U2OpStatus
     return result;
 }
 
-/**
- * Saves the list of references to the file in the SAMtools fai format.
- */
-void createReferenceDataFile(const GUrl& faiUrl, const QMap<QString, int>& referenceData, U2OpStatus& os) {
-    QScopedPointer<IOAdapter> io(IOAdapterUtils::open(faiUrl, os, IOAdapterMode_Write));
-    CHECK_OP(os, );
+QByteArray getFileFormatName(const QString& filePath) {
+    FormatDetectionConfig cfg;
+    cfg.excludeHiddenFormats = false;
+    auto formats = DocumentUtils::detectFormat(filePath, cfg);
+    CHECK(!formats.empty(), QFileInfo(filePath).completeSuffix().toLocal8Bit());
 
-    const auto& references = referenceData.keys();
-    // Example:
-    // @SQ SN:ref LN:45
-    for (const auto& reference : qAsConst(references)) {
-        int length = referenceData[reference];
-        QString line = "@SQ\tSN:" + reference + "\tLN:" + QString::number(length) + "\n";
-        io->writeBlock(line.toLocal8Bit());
-    }
+    return formats.first().format->getFormatId().toLocal8Bit();
 }
+
 
 }  // namespace
 
-void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath, const QString& referencePath) {
-    samFile* in = nullptr;
-    samFile* out = nullptr;
-    in = sam_open(samPath.toLocal8Bit(), "r");
-    SAMTOOL_CHECK(in != nullptr, openFileError(samPath), );
 
-    QString faiPath = hasValidFastaIndex(referencePath) ? referencePath + ".fai" : "";
-    if (!faiPath.isEmpty()) {
-        hts_set_fai_filename(in, faiPath.toLocal8Bit());
+#define SAMTOOL_READ_CHECK(cond, msg) \
+    if (!(cond)) { \
+        os.setError(msg); \
+        sam_close(res); \
+        return nullptr; \
     }
-    in->bam_header = sam_hdr_read(in);
-    SAMTOOL_CHECK(in->bam_header != nullptr, headerReadError(samPath), );
-    if (in->bam_header->n_targets == 0) {
-        coreLog.details(tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.").arg(samPath));
 
-        auto referenceMap = scanSamForReferenceInfo(samPath, os);
-        CHECK_OP(os, );
-        CHECK_EXT(!referenceMap.empty(), os.setError(BAMUtils::tr("No reference data in the SAM file")), );
+samFile* openForRead(const QString& path, U2OpStatus& os, const QString& referencePath = "") {
+    samFile* res = sam_open(path.toLocal8Bit(), "r");
+    SAMTOOL_READ_CHECK(res != nullptr, openFileError(path));
+
+    QString faiPath = BAMUtils::hasValidFastaIndex(referencePath) ? referencePath + ".fai" : "";
+    if (!faiPath.isEmpty()) {
+        hts_set_fai_filename(res, faiPath.toLocal8Bit());
+    }
+
+    if (res->bam_header == nullptr) {
+        auto format = getFileFormatName(path);
+        hts_parse_format(&res->format, format);
+    }
+    res->bam_header = sam_hdr_read(res);
+    SAMTOOL_READ_CHECK(res->bam_header != nullptr, headerReadError(path));
+
+    if (res->bam_header->n_targets == 0) {
+        coreLog.details(BAMUtils::tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.").arg(path));
+
+        auto referenceMap = scanSamForReferenceInfo(path, os);
+        SAMTOOL_READ_CHECK(!os.isCoR(), os.getError());
+        SAMTOOL_READ_CHECK(!referenceMap.empty(), BAMUtils::tr("No reference data in the file: %1").arg(path));
 
         QTemporaryFile referenceDataFile;
         referenceDataFile.open();
         QString referenceDataFileUrl = referenceDataFile.fileName();
         createReferenceDataFile(referenceDataFileUrl, referenceMap, os);
-        CHECK_OP(os, );
+        SAMTOOL_READ_CHECK(!os.isCoR(), os.getError());
 
         samFile* tmp = sam_open(referenceDataFileUrl.toLocal8Bit(), "r");
-        SAMTOOL_CHECK(tmp != nullptr, openFileError(referenceDataFileUrl), );
+        SAMTOOL_READ_CHECK(tmp != nullptr, openFileError(referenceDataFileUrl));
 
         hts_parse_format(&tmp->format, BaseDocumentFormats::SAM.toLocal8Bit());
-        in->bam_header = sam_hdr_read(tmp);
+        res->bam_header = sam_hdr_read(tmp);
         sam_close(tmp);
-        SAMTOOL_CHECK(in->bam_header != nullptr, headerReadError(referenceDataFileUrl), );
-        SAMTOOL_CHECK(in->bam_header->n_targets != 0, headerReadError(referenceDataFileUrl), );
+        SAMTOOL_READ_CHECK(res->bam_header != nullptr, headerReadError(referenceDataFileUrl));
+        SAMTOOL_READ_CHECK(res->bam_header->n_targets != 0, headerReadError(referenceDataFileUrl));
     }
+
+    return res;
+}
+
+void BAMUtils::convertBamToSam(U2OpStatus& os, const QString& bamPath, const QString& samPath) {
+    samFile* in = nullptr;
+    samFile* out = nullptr;
+
+    in = openForRead(bamPath, os);
+    CHECK_OP(os, );
+
+    out = sam_open(samPath.toLocal8Bit(), "w");
+    SAMTOOL_CHECK(out != nullptr, openFileError(samPath), );
+
+    int r = 0;
+    r = sam_hdr_write(out, in->bam_header);
+    SAMTOOL_CHECK(r == 0, headerWriteError(samPath), );
+
+    bam1_t* b = bam_init1();
+    r = 0;
+    while ((r = bam_read1(in->fp.bgzf, b)) >= 0) {  // read one alignment from `in'
+        sam_write1(out, in->bam_header, b);  // write the alignment to `out'.
+    }
+    checkFileReadState(r, os, bamPath);
+    bam_destroy1(b);
+    closeFiles(in, out);
+}
+
+void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath, const QString& referencePath) {
+    samFile* in = nullptr;
+    samFile* out = nullptr;
+
+    in = openForRead(bamPath, os);
+    CHECK_OP(os, );
 
     out = sam_open(bamPath.toLocal8Bit(), "wb");
     SAMTOOL_CHECK(out != nullptr, openFileError(bamPath), );
@@ -580,15 +612,11 @@ bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2,
     const char* readMode1 = fileUrl1.endsWith(".bam", Qt::CaseInsensitive) ? "rb" : "r";
     const char* readMode2 = fileUrl2.endsWith(".bam", Qt::CaseInsensitive) ? "rb" : "r";
     {
-        in = sam_open(fileUrl1.toLocal8Bit(), readMode1);
-        SAMTOOL_CHECK(in != nullptr, openFileError(fileUrl1), false);
+        in = openForRead(fileUrl1, os);
+        CHECK_OP(os, false);
 
-        in->bam_header = sam_hdr_read(in);
-
-        out = sam_open(fileUrl2.toLocal8Bit(), readMode2);
-        SAMTOOL_CHECK(out != nullptr, openFileError(fileUrl2), false);
-
-        out->bam_header = sam_hdr_read(out);
+        out = openForRead(fileUrl2, os);
+        CHECK_OP(os, false);
 
         if (in->bam_header != out->bam_header) {
             SAMTOOL_CHECK(out->bam_header != nullptr, headerReadError(fileUrl2), false);
