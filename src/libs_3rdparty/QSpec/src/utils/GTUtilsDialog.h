@@ -138,7 +138,10 @@ public:
     static void add(Runnable* r, int timeout = 0);
 
     /** Waits up to 'timeout' millis that all dialogs (runnables) are finished: the pool of GUIDialogWaiters is empty. */
-    static void checkNoActiveWaiters(int timeout = UGENE_DEFAULT_DIALOG_WAIT_TIME_TIMEOUT);
+    static void checkNoActiveWaiters(int timeout = UGENE_DEFAULT_DIALOG_WAIT_TIME_TIMEOUT);\
+
+    /** Waits up to 'timeout' millis until there is no modal widget found. */
+    static void checkNoModalWidget(int timeout = UGENE_DEFAULT_DIALOG_WAIT_TIME_TIMEOUT);
 
     static void removeRunnable(Runnable* runnable);
 

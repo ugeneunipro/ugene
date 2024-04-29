@@ -50,7 +50,7 @@ public:
     ~ServiceRegistryImpl();
 
     /// Returns list of all registered services
-    virtual const QList<Service*>& getServices() const {
+    const QList<Service*>& getServices() const override {
         return services;
     }
 

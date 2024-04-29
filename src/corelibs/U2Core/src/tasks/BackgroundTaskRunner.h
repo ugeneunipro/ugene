@@ -30,7 +30,7 @@
 namespace U2 {
 
 /**
- * Simple template task which allows to grab its result.
+ * Simple template task which allows one to grab its result.
  * Intended to be used as a base class for tasks for BackgroundTaskRunner.
  */
 template<class Result>
@@ -119,7 +119,7 @@ public:
     }
 
 private:
-    virtual void sl_finished() {
+    void sl_finished() override {
         auto senderr = dynamic_cast<BackgroundTask<Result>*>(sender());
         SAFE_POINT(senderr != nullptr, "sender is not BackgroundTask", );
         if (task != senderr) {

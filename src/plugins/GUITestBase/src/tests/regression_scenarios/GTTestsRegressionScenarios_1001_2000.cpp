@@ -3339,7 +3339,7 @@ GUI_TEST_CLASS_DEFINITION(test_1326) {
             QSizePolicy actualPolicy = dialog->sizePolicy();
             QSizePolicy expectedPolicy = QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
             QPoint bottomRight = dialog->mapToGlobal(dialog->rect().bottomRight());
-            CHECK_SET_ERR(actualPolicy == expectedPolicy, "size policy dont match");
+            CHECK_SET_ERR(actualPolicy == expectedPolicy, "size policy don't match");
             QSize prevSize = dialog->size();
             QPoint newBottomRight = QPoint(bottomRight.x() + 5, bottomRight.y() + 5);
             GTMouseDriver::moveTo(bottomRight);
@@ -5923,7 +5923,7 @@ GUI_TEST_CLASS_DEFINITION(test_1645) {
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_PROJECT__UNLOAD_SELECTED}));
     GTMouseDriver::click(Qt::RightButton);
-    CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded("base_ext_nucl_all_symb.fa"), "Document should't be loaded");
+    CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded("base_ext_nucl_all_symb.fa"), "Document shouldn't be loaded");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1651) {
@@ -7025,7 +7025,7 @@ GUI_TEST_CLASS_DEFINITION(test_1747) {
     CHECK_SET_ERR(progress >= 0 && progress <= 100, QString("Incorrect progress: %1").arg(progress));
     int oldProgress = progress;
 
-    GTGlobals::sleep(5000);
+    GTGlobals::sleep(1000);
     text = taskProgressBar->text();
     CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
     text = text.left(text.length() - 1);
@@ -7034,7 +7034,7 @@ GUI_TEST_CLASS_DEFINITION(test_1747) {
     CHECK_SET_ERR(isNumber, QString("The progress must be a number: %1").arg(text));
     CHECK_SET_ERR(progress >= 0 && progress <= 100, QString("Incorrect progress: %1").arg(progress));
 
-    CHECK_SET_ERR(progress > oldProgress, "Progress didn't change");
+    CHECK_SET_ERR(progress > oldProgress, QString("Progress didn't change: old progress: %1, new progress: %2").arg(oldProgress).arg(progress));
     GTUtilsTask::cancelAllTasks();  // Cancel long running task.
 }
 
@@ -7373,7 +7373,7 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     // 3) Reopen UGENE WD.
     GTFileDialog::openFile(sandBoxDir, "test.uwl");
     GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::checkNoModalWidget();
 
     // Expected: the state is saved.
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isWorkerExtended("Align with MUSCLE"), "\"Align with MUSCLE\" unexpectedly has extended style");

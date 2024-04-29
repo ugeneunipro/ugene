@@ -1239,9 +1239,9 @@ GUI_TEST_CLASS_DEFINITION(test_3270) {
     GTUtilsAnnotationsTreeView::findItem("pattern2");
 
     //    6. Set next pattern:
-    //    >gi|92133205|dbj|BD295338.1| A method for providing and controling the rice fertility, and discerning the presence of the rice restorer gene by using the rice restorer gene to the rice BT type cytoplasmic male sterility
+    //    >gi|92133205|dbj|BD295338.1| A method for providing and controlling the rice fertility, and discerning the presence of the rice restorer gene by using the rice restorer gene to the rice BT type cytoplasmic male sterility
     //    TGGGGATTCT
-    pattern = ">gi|92133205|dbj|BD295338.1| A method for providing and controling the rice fertility, and discerning the presence of the rice restorer gene by using the rice restorer gene to the rice BT type cytoplasmic male sterility"
+    pattern = ">gi|92133205|dbj|BD295338.1| A method for providing and controlling the rice fertility, and discerning the presence of the rice restorer gene by using the rice restorer gene to the rice BT type cytoplasmic male sterility"
               "\n"
               "TGGGGATTCT";
     GTUtilsOptionPanelSequenceView::enterPattern(pattern, true);
@@ -1254,9 +1254,9 @@ GUI_TEST_CLASS_DEFINITION(test_3270) {
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsOptionPanelSequenceView::clickGetAnnotation();
 
-    //    Expected state: there is an additional annotation with name "gi|92133205|dbj|BD295338.1| A method for providing and controling the rice fertility, and discerning the presence of the rice restorer gene by using the rice restorer gene to the rice BT type cytoplasmic male sterility".
+    //    Expected state: there is an additional annotation with name "gi|92133205|dbj|BD295338.1| A method for providing and controlling the rice fertility, and discerning the presence of the rice restorer gene by using the rice restorer gene to the rice BT type cytoplasmic male sterility".
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsAnnotationsTreeView::findItem("gi|92133205|dbj|BD295338.1| A method for providing and controling the rice fertility, and discerning the presence of the rice restorer gene by using the rice restorer gene to the rice BT type cytoplasmic male sterility");
+    GTUtilsAnnotationsTreeView::findItem("gi|92133205|dbj|BD295338.1| A method for providing and controlling the rice fertility, and discerning the presence of the rice restorer gene by using the rice restorer gene to the rice BT type cytoplasmic male sterility");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3274) {
@@ -2064,7 +2064,7 @@ GUI_TEST_CLASS_DEFINITION(test_3439) {
     // Validate workflow
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
     GTWidget::click(GTAction::button("Validate workflow"));
-    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList("Write Alignment") == 1, "Errors count dont match, should be 1 validation error");
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList("Write Alignment") == 1, "Errors count don't match, should be 1 validation error");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3441) {

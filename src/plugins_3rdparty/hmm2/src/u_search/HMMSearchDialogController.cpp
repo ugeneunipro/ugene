@@ -187,7 +187,7 @@ void HMMSearchDialogController::sl_onStateChanged() {
     if (si.hasError()) {
         statusLabel->setText(tr("HMM search finished with error: %1").arg(si.getError()));
     } else {
-        statusLabel->setText(tr("HMM search finished successfuly!"));
+        statusLabel->setText(tr("HMM search finished successfully!"));
     }
     okButton->setText(tr("Search"));
     cancelButton->setText(tr("Close"));

@@ -129,7 +129,7 @@ void AssemblyDbiUnitTests_getAssemblyObject::Test() {
     U2OpStatusImpl os;
     U2Assembly assembly = assemblyDbi->getAssemblyObject(id, os);
     CHECK_NO_ERROR(os);
-    CHECK_EQUAL(id, assembly.id, "assembly id is not equals to oiginal id");
+    CHECK_EQUAL(id, assembly.id, "assembly id is not equals to original id");
 }
 
 void AssemblyDbiUnitTests_getAssemblyObjectInvalid::Test() {

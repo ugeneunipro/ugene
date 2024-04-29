@@ -1792,7 +1792,7 @@ GUI_TEST_CLASS_DEFINITION(test_4194) {
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
     GTWidget::click(GTAction::button("Validate workflow"));
     int countErrors = GTUtilsWorkflowDesigner::checkErrorList("At least one of these parameters must be set");
-    CHECK_SET_ERR(countErrors == 1, QString("Errors count dont match, should be 1 validation error, but %1 errors now").arg(countErrors));
+    CHECK_SET_ERR(countErrors == 1, QString("Errors count don't match, should be 1 validation error, but %1 errors now").arg(countErrors));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4209) {
@@ -2781,7 +2781,7 @@ GUI_TEST_CLASS_DEFINITION(test_4400) {
     QTreeWidgetItem* commentItem = GTUtilsAnnotationsTreeView::findItem("comment");
     GTUtilsAnnotationsTreeView::selectItemsByName({"comment"});
     QString qualValue = GTUtilsAnnotationsTreeView::getQualifierValue("Original database", commentItem);
-    CHECK_SET_ERR(qualValue == "GenBank", "ORIGDB comment was parced incorreclty");
+    CHECK_SET_ERR(qualValue == "GenBank", "ORIGDB comment was parced incorrectly");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4434) {

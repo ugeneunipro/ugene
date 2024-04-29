@@ -1342,7 +1342,7 @@
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="119"/>
-        <source>Convertion options</source>
+        <source>Conversion options</source>
         <translation>Опции конвертации</translation>
     </message>
     <message>

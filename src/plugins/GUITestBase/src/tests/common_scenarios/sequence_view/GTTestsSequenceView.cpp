@@ -2596,7 +2596,7 @@ GUI_TEST_CLASS_DEFINITION(test_0085) {
             SchedulerListener l;
             GTKeyboardDriver::keyClick(Qt::Key_Up);
             int tc = l.getRegisteredTaskCount();
-            CHECK_SET_ERR(tc == 0, "No tasks should be registred");
+            CHECK_SET_ERR(tc == 0, "No tasks should be registered");
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }

@@ -107,9 +107,6 @@ linux-g++ {
         versionAtLeast(GCC_VERSION, 9.1) {
             QMAKE_CXXFLAGS += -Werror=deprecated-copy
         }
-        versionAtLeast(GCC_VERSION, 13.1) {
-            QMAKE_CXXFLAGS += -Werror=dangling-reference
-        }
     }
 
     # Check for undefined symbols during the build.

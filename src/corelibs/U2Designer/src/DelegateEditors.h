@@ -92,8 +92,8 @@ private:
  * filter - a file filter string in the format for QFileDialog.
  * type - the domain name for the LastUsedDirHelper
  * multi - allow to select several files. Ignored, if isPath is true.
- * isPath - if it is true, allows to select only existing directory. Otherwise, files can be selected (existing or not).
- * saveFile - if it is true, allows to select file to save. File can be existing or not. Ignored, if isPath or multi is true.
+ * isPath - if it is true, allows one to select only existing directory. Otherwise, files can be selected (existing or not).
+ * saveFile - if it is true, allows one to select file to save. File can be existing or not. Ignored, if isPath or multi is true.
  * format - the format ID. It is used only if saveFile is true. The selected file will have an appropriate extension.
  * noFilesMode - user can select files, but the directory will be commited as the selected item. It is not possible to select the directory in this mode, isPath is ignored.
  */
@@ -102,9 +102,9 @@ class U2DESIGNER_EXPORT URLDelegate : public PropertyDelegate {
 public:
     enum Option {
         None = 0,
-        AllowSelectSeveralFiles = 1 << 0,  // allows to select several files. Ignored, if AllowSelectOnlyExistingDir is set.
-        AllowSelectOnlyExistingDir = 1 << 1,  // allows to select only existing directory. Otherwise, files can be selected (existing or not).
-        SelectFileToSave = 1 << 2,  // allows to select file to save. File can be existing or not. Ignored, if AllowSelectOnlyExistingDir or AllowSelectSeveralFiles is set.
+        AllowSelectSeveralFiles = 1 << 0,  // allows one to select several files. Ignored, if AllowSelectOnlyExistingDir is set.
+        AllowSelectOnlyExistingDir = 1 << 1,  // allows one to select only existing directory. Otherwise, files can be selected (existing or not).
+        SelectFileToSave = 1 << 2,  // allows one to select file to save. File can be existing or not. Ignored, if AllowSelectOnlyExistingDir or AllowSelectSeveralFiles is set.
         SelectParentDirInsteadSelectedFile = 1 << 3,  // user can select files, but the directory will be committed as the selected item. It is not possible to select the directory in this mode, AllowSelectOnlyExistingDir flag is ignored.
         DoNotUseWorkflowOutputFolder = 1 << 4  // do not offer to save file to the workflow output folder, show the default save dialog. Only if SelectFileToSave flag is set.
     };

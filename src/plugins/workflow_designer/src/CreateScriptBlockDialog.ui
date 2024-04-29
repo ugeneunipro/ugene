@@ -161,7 +161,7 @@ p, li { white-space: pre-wrap; }
          <number>1</number>
         </property>
         <property name="text">
-         <string>Error occured while saving new actor. Can't write to current directory. Choose another directory for store user's elements</string>
+         <string>Error occurred while saving new actor. Can't write to current directory. Choose another directory for store user's elements</string>
         </property>
         <property name="scaledContents">
          <bool>false</bool>

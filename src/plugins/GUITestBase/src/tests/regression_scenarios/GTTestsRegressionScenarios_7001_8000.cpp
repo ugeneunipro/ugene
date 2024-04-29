@@ -2710,6 +2710,18 @@ GUI_TEST_CLASS_DEFINITION(test_7540) {
     GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::AnnotationsHighlighting);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7542) {
+    // Open "samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTLogTracer lt;
+    GTUtilsDialog::add(new PopupChooserByText({"Remove selected items"}));
+    GTUtilsProjectTreeView::click("human_T1.fa", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    lt.checkMessage("Registering new task: Delete objects");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7546) {
     // Check that tree or msa with ambiguous names can't be synchronized.
     GTFileDialog::openFile(testDir + "_common_data/clustal/same_name_sequences.aln");
@@ -4971,7 +4983,7 @@ GUI_TEST_CLASS_DEFINITION(test_7956) {
     CHECK_SET_ERR(!file.open(QFile::ReadOnly), QString("unable to open file %1 in read mode").arg(fastaFile));
     QByteArray content = file.readAll();
     file.close();
-    if (!content.contains('\r\n')) {
+    if (!content.contains("\r\n")) {
         content.replace("\n", "\r\n");
         QString fixedFasta = testDir + "_common_data/scenarios/_regression/7957/fixed.fasta";
         QFile fixedFile(fixedFasta);

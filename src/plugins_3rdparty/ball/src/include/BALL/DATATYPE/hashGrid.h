@@ -1508,7 +1508,7 @@ namespace BALL
 		float y = (vector.y - origin_.y) / unit_.y;
 		float z = (vector.z - origin_.z) / unit_.z;
 
-		// workaround for MSVC 7, dont change this !!!
+		// workaround for MSVC 7, don't change this !!!
 		Index x1 = (Index) Maths::floor(x);
 		Index y1 = (Index) Maths::floor(y);
 		Index z1 = (Index) Maths::floor(z);

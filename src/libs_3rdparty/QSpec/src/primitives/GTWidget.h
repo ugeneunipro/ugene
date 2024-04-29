@@ -103,7 +103,7 @@ public:
 
     /**
      * Returns image of the widget using widget->grab() method.
-     * If useGrabWindow is true calls QPixmap::grabWindow method: it allows to capture non-QT (like OpenGL) images.
+     * If useGrabWindow is true calls QPixmap::grabWindow method: it allows one to capture non-QT (like OpenGL) images.
      */
     static QImage getImage(QWidget* widget, bool useGrabWindow = false);
 
