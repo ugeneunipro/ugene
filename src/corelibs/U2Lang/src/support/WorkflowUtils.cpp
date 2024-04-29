@@ -900,7 +900,7 @@ bool WorkflowUtils::validateInputFiles(QString urls, NotificationsList& notifica
     bool res = true;
     const QStringList urlsList = urls.split(';');
     for (const QString& url : qAsConst(urlsList)) {
-        CHECK_EXT_CONTINUE(validateInputFile(url, notificationList), );
+        CHECK_EXT_CONTINUE(!validateInputFile(url, notificationList), );
         res = false;
     }
     return res;
