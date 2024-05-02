@@ -196,7 +196,13 @@ QByteArray getFileFormatName(const QString& filePath) {
     auto formats = DocumentUtils::detectFormat(filePath, cfg);
     CHECK(!formats.empty(), QFileInfo(filePath).completeSuffix().toLocal8Bit());
 
-    return formats.first().format->getFormatId().toLocal8Bit();
+    auto format = formats.first().format->getFormatId().toLocal8Bit();
+    if (format == BaseDocumentFormats::SAM &&
+        IOAdapterUtils::url2io(filePath) == BaseIOAdapters::GZIPPED_LOCAL_FILE) {
+        format.append(".gz");
+    }
+
+    return format;
 }
 
 
