@@ -211,7 +211,8 @@ QByteArray getFileFormatName(const QString& filePath) {
     }
 
 samFile* openForRead(const QString& path, U2OpStatus& os, const QString& referencePath = "") {
-    samFile* res = sam_open(path.toLocal8Bit(), "r");
+    auto format = getFileFormatName(path);
+    samFile* res = sam_open(path.toLocal8Bit(), format  == BaseDocumentFormats::BAM ? "rb" : "r");
     SAMTOOL_READ_CHECK(res != nullptr, openFileError(path));
 
     QString faiPath = BAMUtils::hasValidFastaIndex(referencePath) ? referencePath + ".fai" : "";
@@ -220,7 +221,6 @@ samFile* openForRead(const QString& path, U2OpStatus& os, const QString& referen
     }
 
     if (res->bam_header == nullptr) {
-        auto format = getFileFormatName(path);
         hts_parse_format(&res->format, format);
     }
     res->bam_header = sam_hdr_read(res);
@@ -280,7 +280,7 @@ void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QSt
     samFile* in = nullptr;
     samFile* out = nullptr;
 
-    in = openForRead(bamPath, os);
+    in = openForRead(samPath, os, referencePath);
     CHECK_OP(os, );
 
     out = sam_open(bamPath.toLocal8Bit(), "wb");
@@ -609,19 +609,17 @@ bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2,
     samFile* in = nullptr;
     samFile* out = nullptr;
 
-    const char* readMode1 = fileUrl1.endsWith(".bam", Qt::CaseInsensitive) ? "rb" : "r";
-    const char* readMode2 = fileUrl2.endsWith(".bam", Qt::CaseInsensitive) ? "rb" : "r";
-    {
-        in = openForRead(fileUrl1, os);
-        CHECK_OP(os, false);
+    in = openForRead(fileUrl1, os);
+    SAMTOOL_CHECK(in != nullptr, openFileError(fileUrl1), false);
+    CHECK_OP(os, false);
 
-        out = openForRead(fileUrl2, os);
-        CHECK_OP(os, false);
+    out = openForRead(fileUrl2, os);
+    SAMTOOL_CHECK(out != nullptr, openFileError(fileUrl2), false);
+    CHECK_OP(os, false);
 
-        if (in->bam_header != out->bam_header) {
-            SAMTOOL_CHECK(out->bam_header != nullptr, headerReadError(fileUrl2), false);
-            SAMTOOL_CHECK(in->bam_header != nullptr, headerReadError(fileUrl1), false);
-        }
+    if (in->bam_header != out->bam_header) {
+        SAMTOOL_CHECK(out->bam_header != nullptr, headerReadError(fileUrl2), false);
+        SAMTOOL_CHECK(in->bam_header != nullptr, headerReadError(fileUrl1), false);
     }
 
     if (in->bam_header != nullptr && in->bam_header->target_len && out->bam_header->target_len) {
