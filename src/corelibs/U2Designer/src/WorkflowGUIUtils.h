@@ -38,7 +38,7 @@ public:
     static void paintSamplesDocument(QPainter* painter, QTextDocument* doc, int pageWidth, int pageHeight, const QPalette& pal);
     static void setupSamplesDocument(const Descriptor& d, const QIcon& ico, QTextDocument* res);
     /* Display messagebox with warning about semicolons in  file path/name */
-    static void semicolonWarning();
+    static void semicolonWarning(bool possibleNotExists);
 };
 
 }  // namespace U2

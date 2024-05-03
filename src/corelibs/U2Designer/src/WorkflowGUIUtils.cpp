@@ -165,11 +165,18 @@ void DesignerGUIUtils::setupSamplesDocument(const Descriptor& d, const QIcon& ic
     doc->setDefaultFont(f);
 }
 
-void DesignerGUIUtils::semicolonWarning() {
-    QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()), L10N::errorTitle(), 
-                          QObject::tr("One file paths or filenames contains ';' symbol.\r\n"
-                                      "That kind of file path/name can't be correctly handled by this element.\r\n"
-                                      "Please rename the file or move it to directory which not contain ';' in it path."));
+void DesignerGUIUtils::semicolonWarning(bool possibleNotExists) {
+    QString message;
+    if (possibleNotExists) {
+        message = QObject::tr("File not exist or it path or name contains ';' symbol.\r\n"
+                              "That kind of file path/name can't be correctly handled by this element.\r\n"
+                              "Please rename the file or move it to directory which not contain ';' in it path.");
+    } else {
+        message = QObject::tr("File path or name contains ';' symbol.\r\n"
+                              "That kind of file path/name can't be correctly handled by this element.\r\n"
+                              "Please rename the file or move it to directory which not contain ';' in it path.");
+    }
+    QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()), L10N::errorTitle(), message);
 }
 
 

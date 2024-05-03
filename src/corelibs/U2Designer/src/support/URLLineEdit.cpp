@@ -140,6 +140,7 @@ URLLineEdit::URLLineEdit(const QString& type,
         new BaseCompleter(new FilenameCompletionFiller(parent), this);
     }
     setPlaceholderText(DelegateTags::getString(parent->tags(), DelegateTags::PLACEHOLDER_TEXT));
+    connect(this, &QLineEdit::editingFinished, this, &URLLineEdit::sl_editingFinished);
 }
 
 CompletionFiller* URLLineEdit::getCompletionFillerInstance() const {
@@ -155,6 +156,22 @@ void URLLineEdit::sl_onBrowse() {
 
 void URLLineEdit::sl_onBrowseWithAdding() {
     this->browse(true);
+}
+
+void URLLineEdit::sl_editingFinished() {
+    CHECK(!saveFile, );
+    QString currentText = text();
+    CHECK(currentText.contains(";"), );
+    const QStringList urlsList = currentText.split(';');
+    for (const QString& url : qAsConst(urlsList)) {
+        QFileInfo fi(url);
+        if (!fi.exists()) {
+            disconnect(this);
+            DesignerGUIUtils::semicolonWarning(true);
+            setText("");
+            return;
+        }
+    }
 }
 
 void URLLineEdit::browse(bool addFiles) {
@@ -177,7 +194,7 @@ void URLLineEdit::browse(bool addFiles) {
     }
 
     QString name;
-    bool filePathWithSemocolons = false;
+    bool filePathIsOk = true;
     if (isPath || multi) {
         QStringList lst;
         if (isPath) {
@@ -186,7 +203,7 @@ void URLLineEdit::browse(bool addFiles) {
         } else {
             lst = U2FileDialog::getOpenFileNames(nullptr, tr("Select file(s)"), lastDir, FileFilter);
         }
-        filePathWithSemocolons = checkNameForSemicolon(name);
+        filePathIsOk = checkNameForSemicolon(name);
         if (addFiles) {
             name = this->text();
             if (!lst.isEmpty()) {
@@ -203,10 +220,10 @@ void URLLineEdit::browse(bool addFiles) {
             this->checkExtension(name);
         } else {
             lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir, FileFilter);
+            filePathIsOk = checkNameForSemicolon(name);
         }
-        filePathWithSemocolons = checkNameForSemicolon(name);
     }
-    if (!name.isEmpty() && !filePathWithSemocolons) {
+    if (!name.isEmpty() && filePathIsOk) {
         if (name.length() > this->maxLength()) {
             this->setMaxLength(name.length() + this->maxLength());
         }
@@ -218,7 +235,7 @@ void URLLineEdit::browse(bool addFiles) {
 
 bool URLLineEdit::checkNameForSemicolon(const QString& name) {
     CHECK(name.contains(";"), true);
-    DesignerGUIUtils::semicolonWarning();
+    DesignerGUIUtils::semicolonWarning(false);
     return false;
 }
 

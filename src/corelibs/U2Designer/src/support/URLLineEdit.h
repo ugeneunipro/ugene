@@ -49,6 +49,7 @@ public slots:
 
 private slots:
     void sl_onBrowseWithAdding();
+    void sl_editingFinished();
 
 signals:
     void si_finished();
