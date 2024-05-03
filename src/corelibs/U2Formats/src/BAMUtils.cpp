@@ -416,11 +416,7 @@ bool BAMUtils::hasValidBamIndex(const QString& bamUrl) {
     }
     QFileInfo bamFileInfo(bamUrl);
 
-    if (idxFileInfo.lastModified() < bamFileInfo.lastModified()) {
-        return false;
-    }
-
-    return true;
+    return idxFileInfo.lastModified() >= bamFileInfo.lastModified();
 }
 
 bool BAMUtils::hasValidFastaIndex(const QString& fastaUrl) {

@@ -1,6 +1,20 @@
 <unittest>
 
     BAMUtilsUnitTests
-    + bamMergeCore
+    + convertBamToSam
+    + convertSamToBamHeaderNoReference
+    + convertSamToBamNoHeaderNoReference
+    + convertSamToBamNoHeaderReference
+    + isSortedTrue
+    + isSortedFalse
+    + sortBam
+    + mergeBam
+    + hasValidBamIndex
+    + hasValidFastaIndex
+    + createBamIndex
+    + getBamIndexUrl
+    + isEqualByLengthTrue
+    + isEqualByLengthFalse
+    + loadIndex
 
 </unittest>
