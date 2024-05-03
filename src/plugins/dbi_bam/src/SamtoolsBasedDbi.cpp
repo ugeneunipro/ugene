@@ -45,7 +45,7 @@ namespace BAM {
 static const QByteArray ATTRIBUTE_SEP(":~!ugene-attribute!~:");
 
 /** Closes BAM file previously opened with openNewBamFileHandler. */
-static void closeBamFileHandler(BGZF* file) {
+static void closeBgzfHandler(BGZF* file) {
     CHECK(file != nullptr, );
 
     int rc = bgzf_close(file);
@@ -118,7 +118,7 @@ void SamtoolsBasedDbi::init(const QHash<QString, QString>& properties, const QVa
 
 bool SamtoolsBasedDbi::initBamStructures(const GUrl& fileName) {
     QString filePath = fileName.getURLString();
-    std::shared_ptr<BGZF> bamFile(openNewBgzfHandler(), [](BGZF* f) { closeBamFileHandler(f); });
+    std::shared_ptr<BGZF> bamFile(openNewBgzfHandler(), [](BGZF* f) { closeBgzfHandler(f); });
     if (bamFile == nullptr) {
         throw IOException(BAMDbiPlugin::tr("Can't open file '%1'").arg(filePath));
     }
