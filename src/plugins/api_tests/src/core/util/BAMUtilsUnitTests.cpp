@@ -209,7 +209,11 @@ IMPLEMENT_TEST(BAMUtilsUnitTests, getBamIndexUrl) {
     TestRunnerSettings* trs = AppContext::getAppSettings()->getTestRunnerSettings();
     QString bamFile = trs->getVar("COMMON_DATA_DIR") + "/unit_tests/bam_utils/get_bam_index_url/input.bam";
     auto indexUrl = BAMUtils::getBamIndexUrl(bamFile);
-    CHECK_TRUE(indexUrl.getURLString() == bamFile + ".bai", "Not an index fix");
+    auto indexUrlString = indexUrl.getURLString();
+    coreLog.details(BAMUtils::tr("Current index urls string: \"%1\"").arg(indexUrlString));
+    auto baiExpectedString = bamFile + ".bai";
+    coreLog.details(BAMUtils::tr("Expected index urls string: \"%1\"").arg(baiExpectedString));
+    CHECK_TRUE(indexUrlString == baiExpectedString, "Not an index fix");
 }
 
 static void isEqualByLength(bool equal, U2OpStatus& os) {
