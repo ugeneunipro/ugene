@@ -38,7 +38,7 @@ namespace U2 {
 MsaEditorTreeTab::MsaEditorTreeTab(MsaEditor* msaEditor, QWidget* parent)
     : QTabWidget(parent), editor(msaEditor), addTabButton(nullptr) {
     setObjectName("MsaEditorTreeTab");
-    addTabButton = new QPushButton(QIcon(":/core/images/add_tree.png"), "", this);
+    addTabButton = new QPushButton(QIcon(":/core/images/add_tree.ico"), "", this);
     addTabButton->setToolTip(tr("Add existing tree"));
     setCornerWidget(addTabButton);
     connect(addTabButton, SIGNAL(clicked(bool)), this, SLOT(sl_addTabTriggered()));
