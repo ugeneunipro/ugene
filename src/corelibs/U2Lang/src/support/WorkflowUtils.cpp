@@ -920,7 +920,7 @@ bool WorkflowUtils::validateInputDir(QString url, NotificationsList& notificatio
     CHECK(!url.isEmpty(), true);
     QFileInfo fi(url);
     CHECK_EXT(fi.exists(), notificationList << WorkflowNotification(L10N::errorDirNotFound(url)), false);
-    CHECK_EXT(fi.isFile(), notificationList << WorkflowNotification(L10N::errorIsNotADir(url)), false);
+    CHECK_EXT(fi.isDir(), notificationList << WorkflowNotification(L10N::errorIsNotADir(url)), false);
     return true;
 }
 
