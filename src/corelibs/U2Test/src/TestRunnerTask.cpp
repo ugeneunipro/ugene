@@ -151,9 +151,10 @@ QList<Task*> TestRunnerTask::onSubTaskFinished(Task* subTask) {
 
                 QString ugeneDataPath = QFileInfo(QCoreApplication::applicationDirPath(), "data").absoluteFilePath();
                 if (!QDir(ugeneDataPath).exists()) {
+                    QString prevTriedPath = ugeneDataPath;
                     ugeneDataPath = QFileInfo(QCoreApplication::applicationDirPath() + "/../../", "data").absoluteFilePath();
                     if (!QDir(ugeneDataPath).exists()) {
-                        taskLog.info(QString("Cant locate ugene data dir").arg(ugeneDataPath));
+                        taskLog.info(QString("Cant locate ugene data dir, paths tried: %1, %2").arg(ugeneDataPath).arg(prevTriedPath));
                     }
                 }
                 QString workflowSamplePath = ugeneDataPath + "/workflow_samples/";
