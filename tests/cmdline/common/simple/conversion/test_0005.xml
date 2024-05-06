@@ -10,7 +10,7 @@
             working-dir="conversion_0005_1"
     />
 
-    <compare-docs doc1="cmdline/conversion/scerevisiae.sam.bam"
+    <compare-docs doc1="cmdline/conversion/scerevisiae.sam_2.bam"
                   doc2="conversion_0005_1/Converted_files/scerevisiae.sam.bam" temp="2" by_lines="true"/>
 
 </multi-test>
