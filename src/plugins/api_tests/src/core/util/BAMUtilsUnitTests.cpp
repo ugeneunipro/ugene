@@ -62,7 +62,7 @@ bool equals(const QString& path1, const QString& path2, U2OpStatus& os) {
 IMPLEMENT_TEST(BAMUtilsUnitTests, convertBamToSam) {
     TestRunnerSettings* trs = AppContext::getAppSettings()->getTestRunnerSettings();
     QString unitTestDataDir = trs->getVar("COMMON_DATA_DIR") + "/unit_tests/bam_utils/bam_to_sam/";
-    QString bamFile = unitTestDataDir + "input.bam ";
+    QString bamFile = unitTestDataDir + "input.bam";
     auto tempDir = getTmpDir();
     CHECK_TRUE(!tempDir.isEmpty(), "Can't create tmp dir");
 
@@ -82,7 +82,7 @@ static void convertSamToBam(const QString& directory, bool hasReference, U2OpSta
 
     TestRunnerSettings* trs = AppContext::getAppSettings()->getTestRunnerSettings();
     QString unitTestDataDir = trs->getVar("COMMON_DATA_DIR") + "/unit_tests/bam_utils/" + directory + "/";
-    QString samFile = unitTestDataDir + "input.sam ";
+    QString samFile = unitTestDataDir + "input.sam";
     QString samReferenceFile;
     if (hasReference) {
         samReferenceFile = unitTestDataDir + "reference.fa";
