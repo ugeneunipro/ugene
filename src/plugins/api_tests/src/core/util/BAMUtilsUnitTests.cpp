@@ -213,7 +213,8 @@ IMPLEMENT_TEST(BAMUtilsUnitTests, getBamIndexUrl) {
     coreLog.details(BAMUtils::tr("Current index urls string: \"%1\"").arg(indexUrlString));
     auto baiExpectedString = bamFile + ".bai";
     coreLog.details(BAMUtils::tr("Expected index urls string: \"%1\"").arg(baiExpectedString));
-    CHECK_TRUE(indexUrlString == baiExpectedString, "Not an index fix");
+    CHECK_TRUE(QDir::toNativeSeparators(indexUrlString) ==
+               QDir::toNativeSeparators(baiExpectedString), "Not an index fix");
 }
 
 static void isEqualByLength(bool equal, U2OpStatus& os) {
