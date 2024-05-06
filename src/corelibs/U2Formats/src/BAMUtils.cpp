@@ -192,7 +192,11 @@ static QMap<QString, int> scanSamForReferenceInfo(const GUrl& samUrl, U2OpStatus
 
 QByteArray getFileFormatName(const QString& filePath) {
     FormatDetectionConfig cfg;
+    // SAM/BAM formats are hidden
     cfg.excludeHiddenFormats = false;
+    // To avoid VCF format confusion (e.g. when data are pasted from clipboard)
+    // GUITest_common_scenarios_project_test_0058
+    cfg.useExtensionBonus = false;
     auto formats = DocumentUtils::detectFormat(filePath, cfg);
     CHECK(!formats.empty(), QFileInfo(filePath).completeSuffix().toLocal8Bit());
 
