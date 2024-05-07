@@ -313,3 +313,4 @@ win32 : SOURCES += src/samtools_core/win/pcre/pcre2_auto_possess.c \
                    src/samtools_core/win/sys/time.c \
                    src/samtools_core/win/unistd.c
 
+TRANSLATIONS += transl/russian.ts
