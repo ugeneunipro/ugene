@@ -65,7 +65,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_success) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Call dialog. Set region 1..100 and run.
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
     class SimpleScenario : public CustomScenario {
     public:
         void run() override {
@@ -108,7 +108,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_fail) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Run mfold.
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
     GTUtilsDialog::add(new AnyDialogFiller("MfoldDialog", QDialogButtonBox::Ok));
     GTUtilsTaskTreeView::waitTaskFinished();
     QString html = clickNotificationAndGetHtml();
@@ -123,7 +123,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_limits) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Call dialog and check. Don't run task.
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
     class SpinboxChecker final : public CustomScenario {
     public:
         void run() override {
@@ -223,7 +223,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_region) {
         }
     };
     GTUtilsDialog::waitForDialog(new AnyDialogFiller("MfoldDialog", new StartGreaterThanEndScenario()));
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
 
     // Open circular sequence. Check its appearance.
     GTFileDialog::openFile(dataDir + "samples/Genbank/", "CVU55762.gb");
@@ -260,7 +260,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_region) {
     };
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(new AnyDialogFiller("MfoldDialog", new RegionChecker()));
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
     GTUtilsLog::checkMessageWithWait(lt, "Sequence length is 20");
 }
 GUI_TEST_CLASS_DEFINITION(test_0005_large) {
@@ -272,7 +272,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_large) {
     // Select region.
     GTUtilsSequenceView::selectSequenceRegion(1, 500);
     // Call dialog and run task.
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
     GTUtilsDialog::add(new AnyDialogFiller("MfoldDialog", QDialogButtonBox::Ok));
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -297,7 +297,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_html_name) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Call dialog and run task.
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
     GTUtilsDialog::add(new AnyDialogFiller("MfoldDialog", QDialogButtonBox::Ok));
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -440,7 +440,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_save_dialog) {
         }
     };
     GTUtilsDialog::waitForDialog(new AnyDialogFiller("MfoldDialog", new ChangeSettings(randSettings)));
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
 
     // 1. Call dialog and compare settings with already entered. The region must be equal to selected one.
     // 2. Then reset settings and check that they're equal to default. Region and output settings shouldn't change!
@@ -477,7 +477,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_save_dialog) {
         }
     };
     GTUtilsDialog::waitForDialog(new AnyDialogFiller("MfoldDialog", new CompareAndRestore(randSettings)));
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
 }
 GUI_TEST_CLASS_DEFINITION(test_0008_save_dialog) {
     // 1. Check that dialog states are different for different windows.
@@ -505,7 +505,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_save_dialog) {
         }
     };
     GTUtilsDialog::waitForDialog(new AnyDialogFiller("MfoldDialog", new ChangeSettings(randStateCvu)));
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
     GTUtilsSequenceView::selectSequenceRegion(randStateCvu.region.first, randStateCvu.region.second);
 
     // Settings for murine shouldn't change.
@@ -526,7 +526,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_save_dialog) {
         }
     };
     GTUtilsDialog::waitForDialog(new AnyDialogFiller("MfoldDialog", new CompareDefaultAndChangeMurine));
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
 
     // Reset murine settings.
     class RestoreMurine final : public CustomScenario {
@@ -538,7 +538,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_save_dialog) {
         }
     };
     GTUtilsDialog::waitForDialog(new AnyDialogFiller("MfoldDialog", new RestoreMurine));
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
 
     // Check that CVU55762 settings are the same.
     GTUtilsMdi::activateWindow("CVU55762");
@@ -556,7 +556,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_save_dialog) {
         }
     };
     GTUtilsDialog::waitForDialog(new AnyDialogFiller("MfoldDialog", new ComparePrevious(randStateCvu)));
-    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Mfold");
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Mfold..."});
 }
 }  // namespace GUITest_common_scenarios_mfold
 }  // namespace U2
