@@ -295,9 +295,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
 
     U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, nullptr, hints);
     objects << new U2SequenceObject(seq.visualName, U2EntityRef(dbiRef, seq.id));
-    if (headers.size() < 1'000'000) {
-        objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, headers, mergedMapping, hints);
-    }
+    objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, headers, mergedMapping, hints);
     if (headers.size() > 1) {
         writeLockReason = QObject::tr("Document sequences were merged");
     }
