@@ -45,14 +45,6 @@
         <translation>Невозможно открыть &quot;%1&quot; для чтения</translation>
     </message>
     <message>
-        <source>Fail to read the header from the file: &quot;%1&quot;</source>
-        <translation type="vanished">Невозможно прочитать заголовок файла: &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <source>Error parsing the reads from the file: &quot;%1&quot;</source>
-        <translation type="vanished">Ошибка чтения ридов из файла: &quot;%1&quot;</translation>
-    </message>
-    <message>
         <location filename="../src/BAMUtils.cpp" line="94"/>
         <source>Fail to read the header from the file, probably, not an assembly format: &quot;%1&quot;</source>
         <translation>Не удалось считать заголовок из файла, вероятно, это не формат сборки: &quot;%1&quot;</translation>
@@ -137,10 +129,6 @@
         <translation>Строка слишком длинная</translation>
     </message>
     <message>
-        <source>A name is not match with AF names</source>
-        <translation type="vanished">Имя не совпадает с именами AF</translation>
-    </message>
-    <message>
         <location filename="../src/ace/AceFormat.cpp" line="372"/>
         <source>First line is not an ace header</source>
         <translation>Первая строка не является заголовком ACE</translation>
@@ -175,10 +163,6 @@
         <location filename="../src/ace/AceFormat.cpp" line="52"/>
         <source>ACE is a format used for storing information about genomic confgurations</source>
         <translation>ACE это формат используемый для хранения информации о геномных конфигурациях</translation>
-    </message>
-    <message>
-        <source>A name is duplicated</source>
-        <translation type="vanished">Повторные вхождения имени</translation>
     </message>
     <message>
         <location filename="../src/ace/AceFormat.cpp" line="230"/>
@@ -458,43 +442,9 @@
         <translation>Слияние BAM файлов: &quot;%1&quot;. Соединенный файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <source>[sort_blocks] fail to create file %1</source>
-        <translation type="vanished">[sort_blocks] не удалось создать файл %1</translation>
-    </message>
-    <message>
-        <source>Failed to open file: %1</source>
-        <translation type="vanished">Не удалось открыть файл: %1</translation>
-    </message>
-    <message>
-        <source>[bam_sort_core] fail to open file</source>
-        <translation type="vanished">bam_sort_core] не удалось открыть файл</translation>
-    </message>
-    <message>
-        <source>[bam_merge_core] fail to open file %1</source>
-        <translation type="vanished">bam_merge_core] не удалось открыть файл %1</translation>
-    </message>
-    <message>
-        <source>[bam_merge_core] different target sequence name: &apos;%1&apos; != &apos;%2&apos; in file &apos;%3&apos;
-</source>
-        <translation type="vanished">[bam_merge_core] разные имена целевой последовательности: &apos;%1&apos; != &apos;%2&apos; в файле &apos;%3
-</translation>
-    </message>
-    <message>
-        <source>Failed to create the output file: %1</source>
-        <translation type="vanished">Не удалось создать выходной файл: %1</translation>
-    </message>
-    <message>
-        <source>[bam_merge_core] &apos;%1&apos; is truncated. Continue anyway.</source>
-        <translation type="vanished">[bam_merge_core] &apos;%1&apos; усечен. Продолжить в любом случае.</translation>
-    </message>
-    <message>
         <location filename="../src/BAMUtils.cpp" line="401"/>
         <source>Failed to merge BAM files: %1 into %2</source>
         <translation>Не удалось объединить файлы BAM: %1 в %2</translation>
-    </message>
-    <message>
-        <source>Can&apos;t remove temporary file: %1</source>
-        <translation type="vanished">Не удается удалить временный файл: %1</translation>
     </message>
     <message>
         <location filename="../src/BAMUtils.cpp" line="437"/>
@@ -505,10 +455,6 @@
         <location filename="../src/BAMUtils.cpp" line="439"/>
         <source>Can&apos;t build the index: %1</source>
         <translation>Невозможно посмтроить индекс: %1</translation>
-    </message>
-    <message>
-        <source>Wrong line in a SAM file.</source>
-        <translation type="vanished">Неправильная строка в файле SAM.</translation>
     </message>
 </context>
 <context>
@@ -941,10 +887,6 @@
         <location filename="../src/ace/AceImportUtils.cpp" line="269"/>
         <source>There is no note about reads count</source>
         <translation>Отсуствтует информация о числе считываний</translation>
-    </message>
-    <message>
-        <source>A name is duplicated</source>
-        <translation type="vanished">Повторные вхождения имени</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="285"/>
