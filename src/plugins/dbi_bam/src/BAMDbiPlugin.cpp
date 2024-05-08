@@ -301,11 +301,16 @@ void BAMImporterTask::initConvertToSqliteTask() {
             bamInfo.setUnmappedSelected(bamInfoWithDialogSettings.isUnmappedSelected());
             auto& currentBamSelected = bamInfo.getSelected();
             const auto& selectedWithDialog = bamInfoWithDialogSettings.getSelected();
-            SAFE_POINT_EXT(currentBamSelected.size() == selectedWithDialog.size(),
-                           setError("Original and sorted files have different number of scaffolds"), );
+            if (!selectedWithDialog.isEmpty()) {
+                // Empty list of selected scaffolds in the original file means,
+                // that this file doesn't have header (it is possible, if the original file has SAM format)
+                // Overwise, number of scaffolds in orginal and in sorted files should be equal
+                SAFE_POINT_EXT(currentBamSelected.size() == selectedWithDialog.size(),
+                               setError("Original and sorted files have different number of scaffolds"), );
 
-            for (int i = 0; i < currentBamSelected.size(); i++) {
-                currentBamSelected[i] = selectedWithDialog[i];
+                for (int i = 0; i < currentBamSelected.size(); i++) {
+                    currentBamSelected[i] = selectedWithDialog[i];
+                }
             }
         }
     } else {
