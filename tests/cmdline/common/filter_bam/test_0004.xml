@@ -7,5 +7,5 @@
             format="sam"
             F="Read is the second in a pair"
     />
-    <compare-sam-by-length file1="bam_filter_test_0004.sam" file2="cmdline/filter_bam/out4.sam"/>
+    <compare-sam-by-length file1="bam_filter_test_0004.sam" file2="cmdline/filter_bam/out4_2.sam"/>
 </multi-test>

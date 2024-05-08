@@ -27,6 +27,10 @@
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 
+extern "C" {
+#include "samtools_core/cram/cram_samtools.h"
+}
+
 namespace U2 {
 
 static quint8 cigarOp2samtools(U2CigarOp op, U2OpStatus& os) {
@@ -83,9 +87,9 @@ QByteArray SamtoolsAdapter::sequence2samtools(QByteArray sequence, U2OpStatus& o
     int packedLength = (sequence.length() + 1) / 2;
     QByteArray samtoolsSequence(packedLength, 0);
     for (int i = 0; i < packedLength; ++i) {
-        qint8 value = bam_nt16_table[(int)sequence[2 * i]] << 4;
+        qint8 value = seq_nt16_table[(int)sequence[2 * i]] << 4;
         if (2 * i + 1 < sequence.length()) {
-            value |= bam_nt16_table[(int)sequence[2 * i + 1]] & 0xf;
+            value |= seq_nt16_table[(int)sequence[2 * i + 1]] & 0xf;
         }
         CHECK_OP(os, samtoolsSequence);
         samtoolsSequence[i] = value;
@@ -426,8 +430,7 @@ void SamtoolsAdapter::read2samtools(const U2AssemblyRead& r, U2OpStatus& os, bam
     copyQuality(dest, quality);
     copyArray(dest, aux);
 
-    resRead.l_aux = aux.length();
-    resRead.data_len = resRead.m_data = dataLen;
+    resRead.l_data = resRead.m_data = dataLen;
     resRead.data = data;
 
     CHECK_OP(os, );
