@@ -577,7 +577,7 @@ p, li { white-space: pre-wrap; }
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="text">
-               <string>Gap extention penalty (-E)</string>
+               <string>Gap extension penalty (-E)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

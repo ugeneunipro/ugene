@@ -258,7 +258,7 @@ void PWMBuildDialogController::sl_onStateChanged() {
         statusLabel->setText(tr("Build canceled"));
         lastURL = "";
     } else {
-        statusLabel->setText(tr("Build finished successfuly"));
+        statusLabel->setText(tr("Build finished successfully"));
         lastURL = saveController->getSaveFileName();
     }
     okButton->setText(tr("Start"));

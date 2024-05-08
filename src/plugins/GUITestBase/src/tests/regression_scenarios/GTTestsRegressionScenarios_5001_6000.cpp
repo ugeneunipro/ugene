@@ -2487,7 +2487,7 @@ GUI_TEST_CLASS_DEFINITION(test_5622) {
     GTUtilsMcaEditorSequenceArea::callContextMenu();
     GTUtilsTaskTreeView::waitTaskFinished();
     qint64 refLengthAfterGapsRemove = GTUtilsMcaEditorSequenceArea::getReferenceLength();
-    CHECK_SET_ERR(refLengthBeforeGapsRemove == refLengthAfterGapsRemove, QString("Equals befor adn after gaps removing not equal, length before: %1, length after: %2").arg(QString::number(refLengthBeforeGapsRemove)).arg(QString::number(refLengthAfterGapsRemove)));
+    CHECK_SET_ERR(refLengthBeforeGapsRemove == refLengthAfterGapsRemove, QString("Equals before adn after gaps removing not equal, length before: %1, length after: %2").arg(QString::number(refLengthBeforeGapsRemove)).arg(QString::number(refLengthAfterGapsRemove)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5636) {
@@ -2512,11 +2512,11 @@ GUI_TEST_CLASS_DEFINITION(test_5637) {
     GTFile::copy(filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(sandBoxDir, fileName);
 
-    // Expected: row length must be equal or lesser then reference length
+    // Expected: row length must be equal or lesser than reference length
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
     MsaRowData* row = GTUtilsMcaEditor::getMcaRow(0);
     qint64 rowLength = row->getRowLengthWithoutTrailing();
-    CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser then reference length, current: row lenght = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
+    CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser than reference length, current: row length = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
 
     // 2. Select a char in the first row
     QPoint p(5500, 0);
@@ -2533,7 +2533,7 @@ GUI_TEST_CLASS_DEFINITION(test_5637) {
     refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
     row = GTUtilsMcaEditor::getMcaRow(1);
     rowLength = row->getRowLengthWithoutTrailing();
-    CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser then reference length, current: row lenght = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
+    CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser then reference length, current: row length = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5638) {
@@ -3642,7 +3642,7 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
     GTUtilsMcaEditorSequenceArea::clickCollapseTriangle("SZYD_Cas9_CR66", isShownFirstState);
     bool isShownSecondState = GTUtilsMcaEditorSequenceArea::isChromatogramShown("SZYD_Cas9_CR66");
 
-    // Expected: States befor and aftef changing are different
+    // Expected: States before and aftef changing are different
     CHECK_SET_ERR(isShownFirstState != isShownSecondState, "Incorrect state");
 }
 
@@ -4368,12 +4368,12 @@ GUI_TEST_CLASS_DEFINITION(test_5833) {
     QString referenceLengthString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString();
     QString readPositionString = GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString();
     QString readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString();
-    CHECK_SET_ERR("2" == rowNumberString, QString("Unexepected row number label: expected '%1', got '%2'").arg("2").arg(rowNumberString));
-    CHECK_SET_ERR("16" == rowsCountString, QString("Unexepected rows count label: expected '%1', got '%2'").arg("16").arg(rowsCountString));
-    CHECK_SET_ERR("2500" == referencePositionString, QString("Unexepected reference position label: expected '%1', got '%2'").arg("2500").arg(referencePositionString));
-    CHECK_SET_ERR("11878" == referenceLengthString, QString("Unexepected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
-    CHECK_SET_ERR("440" == readPositionString, QString("Unexepected read position label: expected '%1', got '%2'").arg("440").arg(readPositionString));
-    CHECK_SET_ERR("1173" == readLengthString, QString("Unexepected read length label: expected '%1', got '%2'").arg("1173").arg(readLengthString));
+    CHECK_SET_ERR("2" == rowNumberString, QString("Unexpected row number label: expected '%1', got '%2'").arg("2").arg(rowNumberString));
+    CHECK_SET_ERR("16" == rowsCountString, QString("Unexpected rows count label: expected '%1', got '%2'").arg("16").arg(rowsCountString));
+    CHECK_SET_ERR("2500" == referencePositionString, QString("Unexpected reference position label: expected '%1', got '%2'").arg("2500").arg(referencePositionString));
+    CHECK_SET_ERR("11878" == referenceLengthString, QString("Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
+    CHECK_SET_ERR("440" == readPositionString, QString("Unexpected read position label: expected '%1', got '%2'").arg("440").arg(readPositionString));
+    CHECK_SET_ERR("1173" == readLengthString, QString("Unexpected read length label: expected '%1', got '%2'").arg("1173").arg(readLengthString));
 
     //    3. Call a context menu, select "Edit" -> "Insert character/gap" menu item.
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Edit", "Insert character/gap"}));
@@ -4390,12 +4390,12 @@ GUI_TEST_CLASS_DEFINITION(test_5833) {
     referenceLengthString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString();
     readPositionString = GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString();
     readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString();
-    CHECK_SET_ERR("2" == rowNumberString, QString("Unexepected row number label: expected '%1', got '%2'").arg("2").arg(rowNumberString));
-    CHECK_SET_ERR("16" == rowsCountString, QString("Unexepected rows count label: expected '%1', got '%2'").arg("16").arg(rowsCountString));
-    CHECK_SET_ERR("gap" == referencePositionString, QString("Unexepected reference position label: expected '%1', got '%2'").arg("gap").arg(referencePositionString));
-    CHECK_SET_ERR("11878" == referenceLengthString, QString("Unexepected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
-    CHECK_SET_ERR("440" == readPositionString, QString("Unexepected read position label: expected '%1', got '%2'").arg("440").arg(readPositionString));
-    CHECK_SET_ERR("1174" == readLengthString, QString("Unexepected read length label: expected '%1', got '%2'").arg("1174").arg(readLengthString));
+    CHECK_SET_ERR("2" == rowNumberString, QString("Unexpected row number label: expected '%1', got '%2'").arg("2").arg(rowNumberString));
+    CHECK_SET_ERR("16" == rowsCountString, QString("Unexpected rows count label: expected '%1', got '%2'").arg("16").arg(rowsCountString));
+    CHECK_SET_ERR("gap" == referencePositionString, QString("Unexpected reference position label: expected '%1', got '%2'").arg("gap").arg(referencePositionString));
+    CHECK_SET_ERR("11878" == referenceLengthString, QString("Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
+    CHECK_SET_ERR("440" == readPositionString, QString("Unexpected read position label: expected '%1', got '%2'").arg("440").arg(readPositionString));
+    CHECK_SET_ERR("1174" == readLengthString, QString("Unexpected read length label: expected '%1', got '%2'").arg("1174").arg(readLengthString));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5837) {

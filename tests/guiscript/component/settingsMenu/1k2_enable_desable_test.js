@@ -51,23 +51,23 @@ SettingsTime = function (settingBox) {
                 QTest.mouseMove(NetworkSettingsW.proxyGroup.proxyExceptionsCheck, new QPoint(0, 0), main_delay);
                 QTest.mouseClick(NetworkSettingsW.proxyGroup.proxyExceptionsCheck, 1, 0, 0, main_delay);
                 if (NetworkSettingsW.proxyGroup.proxyExceptionsCheck.checkState() != 2) {
-                    print("proxyExceptionsCheck not cheked");
-                    throw "proxyExceptionsCheck not cheked";
+                    print("proxyExceptionsCheck not checked");
+                    throw "proxyExceptionsCheck not checked";
                 }
                 if (!NetworkSettingsW.proxyGroup.proxyExceptionsEdit.enabled) {
-                    print("proxyExceptionsEdit not enabled after cheked");
-                    throw "proxyExceptionsEdit not enabled after cheked";
+                    print("proxyExceptionsEdit not enabled after checked");
+                    throw "proxyExceptionsEdit not enabled after checked";
                 }
             } else {
                 QTest.mouseMove(NetworkSettingsW.proxyGroup.proxyExceptionsCheck, new QPoint(0, 0), main_delay);
                 QTest.mouseClick(NetworkSettingsW.proxyGroup.proxyExceptionsCheck, 1, 0, 0, main_delay);
                 if (NetworkSettingsW.proxyGroup.proxyExceptionsCheck.checkState() == 2) {
-                    print("proxyExceptionsCheck not cheked");
-                    throw "proxyExceptionsCheck not cheked";
+                    print("proxyExceptionsCheck not checked");
+                    throw "proxyExceptionsCheck not checked";
                 }
                 if (NetworkSettingsW.proxyGroup.proxyExceptionsEdit.enabled) {
-                    print("proxyExceptionsEdit not desabled after cheked");
-                    throw "proxyExceptionsEdit not desabled after cheked";
+                    print("proxyExceptionsEdit not desabled after checked");
+                    throw "proxyExceptionsEdit not desabled after checked";
                 }
             }
         }

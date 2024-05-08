@@ -56,7 +56,7 @@
     </message>
     <message>
         <location filename="../src/MuscleAlignDialog.ui" line="225"/>
-        <source>Translating alignment to amino allows to avoid errors of inserting gaps within codon boundaries.</source>
+        <source>Translating alignment to amino allows one to avoid errors of inserting gaps within codon boundaries.</source>
         <translation>Hizalamanın aminoya çevrilmesi, kodon sınırları içine boşluklar yerleştirme hatalarından kaçınmaya izin verir.</translation>
     </message>
     <message>

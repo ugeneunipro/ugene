@@ -57,8 +57,8 @@ SettingsTime = function (settingBox) {
                 QTest.mouseMove(NetworkSettingsW.proxyGroup.proxyExceptionsCheck, new QPoint(0, 0), main_delay);
                 QTest.mouseClick(NetworkSettingsW.proxyGroup.proxyExceptionsCheck, 1, 0, 0, main_delay);
                 if (NetworkSettingsW.proxyGroup.proxyExceptionsCheck.checkState() != 2) {
-                    print("proxyExceptionsCheck not cheked");
-                    throw "proxyExceptionsCheck not cheked";
+                    print("proxyExceptionsCheck not checked");
+                    throw "proxyExceptionsCheck not checked";
                 }
             } else {
                 checkedFlag = 2;
@@ -95,15 +95,15 @@ SettingsTime = function (settingBox) {
         }
         if (checkedFlag != 0) {
             if (NetworkSettingsW.proxyGroup.proxyExceptionsCheck.checkState() != 2) {
-                print("proxyExceptionsCheck not cheked");
-                throw "proxyExceptionsCheck not cheked";
+                print("proxyExceptionsCheck not checked");
+                throw "proxyExceptionsCheck not checked";
             }
             if (checkedFlag == 1 && ni) {
                 QTest.mouseMove(NetworkSettingsW.proxyGroup.proxyExceptionsCheck, new QPoint(0, 0), main_delay);
                 QTest.mouseClick(NetworkSettingsW.proxyGroup.proxyExceptionsCheck, 1, 0, 0, main_delay);
                 if (NetworkSettingsW.proxyGroup.proxyExceptionsCheck.checkState() == 2) {
-                    print("proxyExceptionsCheck cheked");
-                    throw "proxyExceptionsCheck cheked";
+                    print("proxyExceptionsCheck checked");
+                    throw "proxyExceptionsCheck checked";
                 }
             }
         }

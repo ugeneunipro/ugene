@@ -64,7 +64,7 @@ public:
 /**
  *
  * Class provides stream writing for DNA short reads.
- * It currently supports FASTA formats and allows to write quality in separate file.
+ * It currently supports FASTA formats and allows one to write quality in separate file.
  *
  */
 

@@ -254,7 +254,7 @@ typedef struct args_for_one_oligo_or_primer {
   char *must_match_five_prime;
   char *must_match_three_prime;
   /* Primers and Oligos must match this 5 prime and 3 prime sequences.
-     This allows to select a set of primer pair with an identical 3' end
+     This allows one to select a set of primer pair with an identical 3' end
      to avoid primer dimers. On the 5 prime end bases quenching
      flourochromes can be avoided.
      The sequence must be 5 nucletides long and can contain the following letters:

@@ -304,7 +304,7 @@ void GTest_CheckFilesNum::init(XMLTestFormat*, const QDomElement& el) {
     bool ok;
     expectedNum = num_string.toInt(&ok);
     if (!ok) {
-        setError("<expected> tab sould be integer");
+        setError("<expected> tab should be integer");
     }
 }
 

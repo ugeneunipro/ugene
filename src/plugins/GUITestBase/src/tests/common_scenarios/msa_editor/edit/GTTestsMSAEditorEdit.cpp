@@ -833,7 +833,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
                 if (list.contains(box->text())) {
                     CHECK_SET_ERR(!box->isChecked(), QString("box '%1' is checked. It must be unchecked").arg(box->text()));
                 } else {
-                    CHECK_SET_ERR(box->isChecked(), QString("box '%1' is unchecked. It must be cheked").arg(box->text()));
+                    CHECK_SET_ERR(box->isChecked(), QString("box '%1' is unchecked. It must be checked").arg(box->text()));
                 }
             }
 

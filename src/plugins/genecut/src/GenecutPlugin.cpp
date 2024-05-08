@@ -37,8 +37,8 @@ extern "C" Q_DECL_EXPORT Plugin * U2_PLUGIN_INIT_FUNC() {
 }
 
 GenecutPlugin::GenecutPlugin()
-    : Plugin(tr("Desktop acess to GeneCut calculation results"),
-             tr("Desktop acess to GeneCut calculation results")) {
+    : Plugin(tr("Desktop access to GeneCut calculation results"),
+             tr("Desktop access to GeneCut calculation results")) {
     if (AppContext::getMainWindow() != nullptr) {
         OPWidgetFactoryRegistry* opRegistry = AppContext::getOPWidgetFactoryRegistry();
         SAFE_POINT_NN(opRegistry, );

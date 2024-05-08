@@ -140,7 +140,7 @@ void HMMCalibrateDialogController::sl_onStateChanged() {
     } else if (task->isCanceled()) {
         statusLabel->setText(tr("Calibration was cancelled"));
     } else {
-        statusLabel->setText(tr("Calibration finished successfuly!"));
+        statusLabel->setText(tr("Calibration finished successfully!"));
     }
     okButton->setText(tr("Calibrate"));
     cancelButton->setText(tr("Close"));

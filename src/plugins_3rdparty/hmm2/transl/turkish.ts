@@ -522,7 +522,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="161"/>
-        <source>HMM build finished successfuly!</source>
+        <source>HMM build finished successfully!</source>
         <translation>HMM derlemesi başarıyla tamamlandı!</translation>
     </message>
     <message>
@@ -689,7 +689,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
     </message>
     <message>
         <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="143"/>
-        <source>Calibration finished successfuly!</source>
+        <source>Calibration finished successfully!</source>
         <translation>Kalibrasyon başarıyla tamamlandı!</translation>
     </message>
     <message>
@@ -940,7 +940,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
     </message>
     <message>
         <location filename="../src/u_search/HMMSearchDialogController.cpp" line="190"/>
-        <source>HMM search finished successfuly!</source>
+        <source>HMM search finished successfully!</source>
         <translation>HMM araması başarıyla tamamlandı!</translation>
     </message>
     <message>

@@ -48,7 +48,7 @@ public:
 
     QString rollSuffix;
     bool rollFileName;  // roll filename
-    bool rollOutProjectUrls;  // filename roll policy, that allows to create project-unique URLs
+    bool rollOutProjectUrls;  // filename roll policy, that allows one to create project-unique URLs
 };
 
 class U2GUI_EXPORT SaveDocumentController : public QObject {

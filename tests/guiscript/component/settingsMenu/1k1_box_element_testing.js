@@ -59,8 +59,8 @@ SettingsTime = function (settingBox) {
                 QTest.mouseMove(NetworkSettingsW.proxyGroup.httpProxyCheck, new QPoint(0, 0), main_delay);
                 QTest.mouseClick(NetworkSettingsW.proxyGroup.httpProxyCheck, 1, 0, 0, main_delay);
                 if (NetworkSettingsW.proxyGroup.httpProxyCheck.checkState() != 2) {
-                    print("httpProxyCheck not cheked");
-                    throw "httpProxyCheck not cheked";
+                    print("httpProxyCheck not checked");
+                    throw "httpProxyCheck not checked";
                 }
             } else {
                 checkedFlag = 2;
@@ -122,15 +122,15 @@ SettingsTime = function (settingBox) {
         }
         if (checkedFlag != 0 && ni) {
             if (NetworkSettingsW.proxyGroup.httpProxyCheck.checkState() != 2) {
-                print("httpProxyCheck not cheked");
-                throw "httpProxyCheck not cheked";
+                print("httpProxyCheck not checked");
+                throw "httpProxyCheck not checked";
             }
             if (checkedFlag == 1) {
                 QTest.mouseMove(NetworkSettingsW.proxyGroup.httpProxyCheck, new QPoint(0, 0), main_delay);
                 QTest.mouseClick(NetworkSettingsW.proxyGroup.httpProxyCheck, 1, 0, 0, main_delay);
                 if (NetworkSettingsW.proxyGroup.httpProxyCheck.checkState() == 2) {
-                    print("httpProxyCheck cheked");
-                    throw "httpProxyCheck cheked";
+                    print("httpProxyCheck checked");
+                    throw "httpProxyCheck checked";
                 }
             }
         }

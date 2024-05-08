@@ -1473,7 +1473,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     int finOffset = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex();
-    CHECK_SET_ERR(initOffset >= (finOffset * 2 - 8), "inital offset: " + QString().setNum(initOffset) + " final offset: " + QString().setNum(finOffset));
+    CHECK_SET_ERR(initOffset >= (finOffset * 2 - 8), "initial offset: " + QString().setNum(initOffset) + " final offset: " + QString().setNum(finOffset));
     // Expected state: MSA is zoomed
 
     // 4. press toolbar button "Reset zoom"

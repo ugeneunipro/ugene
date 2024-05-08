@@ -40,7 +40,7 @@ QModelIndex GTTreeView::findIndex(QTreeView* tree, QVariant data, QModelIndex pa
     QModelIndexList foundIndexes = findIndexes(tree, data, role, parent, 0, options);
     if (foundIndexes.isEmpty()) {
         if (options.failIfNotFound) {
-            GT_CHECK_RESULT(foundIndexes.size() != 0, QString("Item whith name %1 not found").arg(data.toString()), QModelIndex());
+            GT_CHECK_RESULT(foundIndexes.size() != 0, QString("Item with name %1 not found").arg(data.toString()), QModelIndex());
         } else {
             return QModelIndex();
         }

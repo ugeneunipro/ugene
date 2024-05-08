@@ -1,5 +1,5 @@
 #@UGENE_WORKFLOW
-#This schema allows to analyze sequence with Query and save results as alignment of selected features.
+#This schema allows one to analyze sequence with Query and save results as alignment of selected features.
 #To execute the workflow do the following:
 #1) Select "Sequence Reader" task and specify source file at "URL" field in the Property Editor.
 #2) Select "Annotate with UQL" task and specify the URL of the UQL schema file.

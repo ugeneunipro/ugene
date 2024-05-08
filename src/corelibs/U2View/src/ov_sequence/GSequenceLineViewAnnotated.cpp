@@ -70,7 +70,7 @@ void GSequenceLineViewAnnotated::connectAnnotationObject(const AnnotationTableOb
 
 int GSequenceLineViewAnnotated::getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseIndex) {
     QVector<U2Region> annotationRegions = ann->getRegions();
-    SAFE_POINT(!annotationRegions.isEmpty(), "At leat one annotation region should be presented", 0);
+    SAFE_POINT(!annotationRegions.isEmpty(), "At least one annotation region should be presented", 0);
 
     auto getDistanceBetweenBaseNumberAndRegion = [baseIndex](const U2Region& region) {
         return qMin(qAbs(region.startPos - baseIndex), qAbs(region.endPos() - baseIndex));

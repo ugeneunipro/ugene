@@ -373,7 +373,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/CreateScriptBlockDialog.ui" line="164"/>
-        <source>Error occured while saving new actor. Can&apos;t write to current directory. Choose another directory for store user&apos;s elements</source>
+        <source>Error occurred while saving new actor. Can&apos;t write to current directory. Choose another directory for store user&apos;s elements</source>
         <translation>Yeni oyuncu kaydedilirken hata oluştu. Mevcut dizine yazılamıyor. Mağaza kullanıcısının öğeleri için başka bir dizin seçin</translation>
     </message>
     <message>

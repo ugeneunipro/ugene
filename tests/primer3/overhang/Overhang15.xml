@@ -24,7 +24,7 @@
 			PRIMER_INTERNAL_NUM_RETURNED="0" 
 			PRIMER_PAIR_NUM_RETURNED="0" 
 			PRIMER_RIGHT_0_PENALTY="11.084015" 
-			PRIMER_RIGHT_0_PROBLEMS=" Temperature too low; Similary to 3' end of self too high;" 
+			PRIMER_RIGHT_0_PROBLEMS=" Temperature too low; Similarity to 3' end of self too high;"
 			PRIMER_RIGHT_0_SEQUENCE="TAAGGATTTGACTACCAGTCCACTTTAAG" 
 			PRIMER_RIGHT_0="929,20" 
 			PRIMER_RIGHT_0_TM="48.916" 

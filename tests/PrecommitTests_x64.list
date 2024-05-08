@@ -41,3 +41,4 @@ task_suite.xml
 umuscle_parallel_suite.xml
 umuscle_serial_suite.xml
 unit_tests/dbi-suite.xml
+vcf_consensus_suite.xml

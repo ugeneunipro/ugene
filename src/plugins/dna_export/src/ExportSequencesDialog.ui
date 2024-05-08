@@ -116,7 +116,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Convertion options</string>
+      <string>Conversion options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>

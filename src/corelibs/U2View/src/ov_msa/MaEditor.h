@@ -92,14 +92,14 @@ enum class MaEditorRowOrderMode {
      * Sequences with the equal content are joined into collapsible groups.
      * This mode is managed/supported internally by MA editor: MA editor automatically rebuilds groups when MA content changes.
      * The order is not saved to the file and is kept in the view memory only.
-     * This mode allows to re-order read-only MA objects.
+     * This mode allows one to re-order read-only MA objects.
      */
     Sequence,
 
     /**
      * Sequences are ordered by some external manager (e.g. tree-view) and can be re-ordered by user (e.g. drag & drop).
      * The order is not saved to the file and is kept in the view memory only.
-     * This mode allows to re-order read-only MA objects.
+     * This mode allows one to re-order read-only MA objects.
      */
     Free
 };
@@ -260,7 +260,7 @@ protected slots:
     void sl_gotoSelectedRead();
 
     virtual void sl_multilineViewAction() {
-        SAFE_POINT(false, "The function sl_multilineViewAction() must be overriden", );
+        SAFE_POINT(false, "The function sl_multilineViewAction() must be overridden", );
     };
 
 private slots:

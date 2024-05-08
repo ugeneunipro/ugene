@@ -1,4 +1,47 @@
 <suite name="Vcf-Consensus tests">
 
     <test-dir test-ext="*.xml" path="vcf_consensus" test-format="XML"/>
+
+   <!-- Win exclude -->
+   <excluded test="unix/test_0001.xml" platform="windows" reason="Test for unix-like OS"/>
+   <excluded test="unix/test_0002.xml" platform="windows" reason="Test for unix-like OS"/>
+   <excluded test="unix/test_0003.xml" platform="windows" reason="Test for unix-like OS"/>
+   <excluded test="unix/test_0004.xml" platform="windows" reason="Test for unix-like OS"/>
+   <excluded test="unix/test_0005.xml" platform="windows" reason="Test for unix-like OS"/>
+   <excluded test="unix/test_0006.xml" platform="windows" reason="Test for unix-like OS"/>
+   <excluded test="unix/test_0007.xml" platform="windows" reason="Test for unix-like OS"/>
+   
+   <excluded test="unix/negative/test_0001.xml" platform="windows" reason="Test for unix-like OS"/>
+   <excluded test="unix/negative/test_0002.xml" platform="windows" reason="Test for unix-like OS"/>
+   <excluded test="unix/negative/test_0003.xml" platform="windows" reason="Test for unix-like OS"/>
+   <excluded test="unix/negative/test_0004.xml" platform="windows" reason="Test for unix-like OS"/>
+   
+   <!-- Linux exclude -->
+   <excluded test="windows/test_0001.xml" platform="linux" reason="Test for windows"/>
+   <excluded test="windows/test_0002.xml" platform="linux" reason="Test for windows"/>
+   <excluded test="windows/test_0003.xml" platform="linux" reason="Test for windows"/>
+   <excluded test="windows/test_0004.xml" platform="linux" reason="Test for windows"/>
+   <excluded test="windows/test_0005.xml" platform="linux" reason="Test for windows"/>
+   <excluded test="windows/test_0006.xml" platform="linux" reason="Test for windows"/>
+   <excluded test="windows/test_0007.xml" platform="linux" reason="Test for windows"/>
+   
+   <excluded test="windows/negative/test_0001.xml" platform="linux" reason="Test for windows"/>
+   <excluded test="windows/negative/test_0002.xml" platform="linux" reason="Test for windows"/>
+   <excluded test="windows/negative/test_0003.xml" platform="linux" reason="Test for windows"/>
+   <excluded test="windows/negative/test_0004.xml" platform="linux" reason="Test for windows"/>
+   
+   <!-- Mac exclude -->
+   <excluded test="windows/test_0001.xml" platform="mac" reason="Test for windows"/>
+   <excluded test="windows/test_0002.xml" platform="mac" reason="Test for windows"/>
+   <excluded test="windows/test_0003.xml" platform="mac" reason="Test for windows"/>
+   <excluded test="windows/test_0004.xml" platform="mac" reason="Test for windows"/>
+   <excluded test="windows/test_0005.xml" platform="mac" reason="Test for windows"/>
+   <excluded test="windows/test_0006.xml" platform="mac" reason="Test for windows"/>
+   <excluded test="windows/test_0007.xml" platform="mac" reason="Test for windows"/>
+   
+   <excluded test="windows/negative/test_0001.xml" platform="mac" reason="Test for windows"/>
+   <excluded test="windows/negative/test_0002.xml" platform="mac" reason="Test for windows"/>
+   <excluded test="windows/negative/test_0003.xml" platform="mac" reason="Test for windows"/>
+   <excluded test="windows/negative/test_0004.xml" platform="mac" reason="Test for windows"/>
+   
 </suite>

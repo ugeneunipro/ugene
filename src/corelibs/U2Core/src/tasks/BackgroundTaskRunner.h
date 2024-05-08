@@ -30,7 +30,7 @@
 namespace U2 {
 
 /**
- * Simple template task which allows to grab its result.
+ * Simple template task which allows one to grab its result.
  * Intended to be used as a base class for tasks for BackgroundTaskRunner.
  */
 template<class Result>

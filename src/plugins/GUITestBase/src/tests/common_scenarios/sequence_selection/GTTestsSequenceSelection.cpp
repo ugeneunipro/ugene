@@ -150,7 +150,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     //    The Details View has been scrolled to the annotation location.The annotation has wide border.There is dashed selection of the region.
     //    The "CDS" group in the Annotations Editor has been opened.The annotation is selected in the tree view.
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems("CDS");
-    CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expcted: 4, current: %1").arg(items.size()));
+    CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expected: 4, current: %1").arg(items.size()));
     CHECK_SET_ERR(items[2]->isSelected(), "Item is not selected");
     QTreeWidgetItem* par = items[2]->parent();
     while (par != nullptr) {
@@ -238,7 +238,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0001) {
 
     //    In the Annotations Editor : both annotations are selected in the tree view.
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems("CDS");
-    CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expcted: 4, current: %1").arg(items.size()));
+    CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expected: 4, current: %1").arg(items.size()));
     CHECK_SET_ERR(items[0]->isSelected(), "First item in the annotation tree view is not selected");
     CHECK_SET_ERR(items[1]->isSelected(), "Second item in the annotation tree view is not selected");
 
@@ -626,7 +626,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     //    The Details View has been scrolled to the annotation location.The annotation has wide border.
     //    The "CDS" group in the Annotations Editor has been opened.The annotation is selected in the tree view.
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems("CDS");
-    CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expcted: 4, current: %1").arg(items.size()));
+    CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expected: 4, current: %1").arg(items.size()));
     CHECK_SET_ERR(items[2]->isSelected(), "Item is not selected");
     QTreeWidgetItem* par = items[2]->parent();
     while (par != nullptr) {

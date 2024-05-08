@@ -5,7 +5,7 @@
 //#exitOnException=true
 //#exitOnEnding=true
 print("Start testing...")
-print("Test: setting menu -> User settings, cheked  CheckBox's save it's status after close settins")
+print("Test: setting menu -> User settings, checked  CheckBox's save it's status after close settins")
 Test_path = TestHelper.getEnvValue("TEST_PATH");
 print(Test_path);
 TestHelper.isDebug = true;
@@ -17,12 +17,12 @@ CheckCheckBox = function (currentCheckBox) {
     for (i = 0; i != 1; i++) {
         if (checketFlag != 0) {
             if (currentCheckBox.checkState() == 2 && checketFlag == 2) {
-                print(currentCheckBox.objectName + " cheked");
-                throw currentCheckBox.objectName + " cheked";
+                print(currentCheckBox.objectName + " checked");
+                throw currentCheckBox.objectName + " checked";
             } else {
                 if (checketFlag == 1) {
-                    print(currentCheckBox.objectName + " not cheked");
-                    throw currentCheckBox.objectName + " not cheked";
+                    print(currentCheckBox.objectName + " not checked");
+                    throw currentCheckBox.objectName + " not checked";
                 }
             }
         }
@@ -30,15 +30,15 @@ CheckCheckBox = function (currentCheckBox) {
             QTest.mouseMove(currentCheckBox, new QPoint(1, 1), main_delay);
             QTest.mouseClick(currentCheckBox, 1, 0, new QPoint(1, 1), main_delay);
             if (currentCheckBox.checkState() == 2) {
-                print(currentCheckBox.objectName + " cheked");
-                throw currentCheckBox.objectName + " cheked";
+                print(currentCheckBox.objectName + " checked");
+                throw currentCheckBox.objectName + " checked";
             }
         } else {
             QTest.mouseMove(currentCheckBox, new QPoint(1, 1), main_delay);
             QTest.mouseClick(currentCheckBox, 1, 0, new QPoint(1, 1), main_delay);
             if (currentCheckBox.checkState() != 2) {
-                print(currentCheckBox.objectName + " not cheked");
-                throw currentCheckBox.objectName + " not cheked";
+                print(currentCheckBox.objectName + " not checked");
+                throw currentCheckBox.objectName + " not checked";
             }
         }
     }

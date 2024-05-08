@@ -241,7 +241,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::GenecutPlugin</name>
     <message>
-        <source>Desktop acess to GeneCut calculation results</source>
+        <source>Desktop access to GeneCut calculation results</source>
         <translation>Доступ из рабочего стола к расчетам, произведенным в GeneCut</translation>
     </message>
 </context>

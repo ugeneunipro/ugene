@@ -59,7 +59,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     // 3. Type to the project filter field "polyprotein"
     GTUtilsProjectTreeView::openView();
-    GTLineEdit::setText("nameFilterEdit", "polyprotein");
+    GTUtilsProjectTreeView::filterProject("polyprotein");
 
     // Expected state: Project filter clear button is visible
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -74,7 +74,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     CHECK_SET_ERR(!clearButton->isVisible(), "Project filter clear button is unexpectedly visible");
 
     // 5. Type to the project filter field "AAA"
-    GTLineEdit::setText("nameFilterEdit", "AAA");
+    GTUtilsProjectTreeView::filterProject("AAA");
     GTUtilsTaskTreeView::waitTaskFinished();
     // Expected state: Project filter clear button is visible
     CHECK_SET_ERR(clearButton->isVisible(), "Project filter clear button is unexpectedly invisible");

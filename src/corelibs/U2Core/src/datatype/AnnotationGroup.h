@@ -40,7 +40,7 @@ public:
     ~AnnotationGroup();
     /*
      * Returning value specifies whether the @name may be used as an annotation name or not.
-     * @pathMode allows to take into account group path separation symbol (currently "/")
+     * @pathMode allows one to take into account group path separation symbol (currently "/")
      * I.e. if @pathMode is true then that symbol is allowed, otherwise it is not.
      */
     static bool isValidGroupName(const QString& name, bool pathMode);

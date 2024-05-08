@@ -1057,7 +1057,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
     <message>
         <location filename="../src/bwa/BwaMemSettings.ui" line="580"/>
-        <source>Gap extention penalty (-E)</source>
+        <source>Gap extension penalty (-E)</source>
         <translation>Штраф за расширение пробела (-E)</translation>
     </message>
     <message>
@@ -1356,7 +1356,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/bwa/BwaSwSettings.ui" line="159"/>
-        <source>Gap extention penalty (-r)</source>
+        <source>Gap extension penalty (-r)</source>
         <translation>Штраф за расширение пробела (-r)</translation>
     </message>
     <message>
@@ -1417,7 +1417,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sequences in FASTA or FASTQ formats are supported. &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The quality scores for FASTA sequences can be provided in an additional file. The file must be located in the same folder as the original sequences and have the same name as FASTA file, but another extention: &lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;.qual&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The quality scores for FASTA sequences can be provided in an additional file. The file must be located in the same folder as the original sequences and have the same name as FASTA file, but another extension: &lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;.qual&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
