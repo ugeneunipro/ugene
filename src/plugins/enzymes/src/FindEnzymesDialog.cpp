@@ -145,7 +145,7 @@ EnzymeTreeItem* EnzymesSelectorWidget::getEnzymeTreeItemByEnzymeData(const SEnzy
     return nullptr;
 }
 
-QList<SEnzymeData> EnzymesSelectorWidget::getLoadedEnzymes() {
+const QList<SEnzymeData>& EnzymesSelectorWidget::getLoadedEnzymes() {
     if (loadedEnzymes.isEmpty()) {
         U2OpStatus2Log os;
         QString lastUsedFile = AppContext::getSettings()->getValue(EnzymeSettings::DATA_FILE_KEY).toString();
@@ -157,7 +157,7 @@ QList<SEnzymeData> EnzymesSelectorWidget::getLoadedEnzymes() {
     return loadedEnzymes;
 }
 
-QStringList EnzymesSelectorWidget::getLoadedSuppliers() {
+const QStringList& EnzymesSelectorWidget::getLoadedSuppliers() {
     return loadedSuppliers;
 }
 
@@ -686,8 +686,18 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
     sl_onSelectionModified(enzSel->getTotalNumber(), enzSel->getNumSelected());
 }
 
-void FindEnzymesDialog::sl_onSelectionModified(int total, int nChecked) {
-    statusLabel->setText(tr("Total number of enzymes: %1, selected %2").arg(total).arg(nChecked));
+void FindEnzymesDialog::sl_onSelectionModified(int visible, int selected) {
+    int total = EnzymesSelectorWidget::getLoadedEnzymes().size();
+    int hidden = total - visible;
+    QString text = tr("Total number of enzymes: %1, visible: %2, hidden: %3, selected: %4. ")
+                       .arg(total)
+                       .arg(visible)
+                       .arg(hidden)
+                       .arg(selected);
+    if (hidden != 0) {
+        text += tr("Some enzymes are hidden due to \"Enzyme table filter\" settings.");
+    }
+    statusLabel->setText(text);
 }
 
 void FindEnzymesDialog::sl_updateVisibleEnzymes() {
@@ -696,7 +706,7 @@ void FindEnzymesDialog::sl_updateVisibleEnzymes() {
     int max = cbMaxLength->itemData(cbMaxLength->currentIndex()).toInt();
     U2Region region(min, max - min + 1);
     auto overhangType = static_cast<EnzymeData::OverhangTypes>(cbOverhangType->itemData(cbOverhangType->currentIndex()).toInt());
-    const auto enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
+    const auto& enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
     QList<SEnzymeData> visibleEnzymes;
     for (const auto& enzyme : qAsConst(enzymes)) {
         bool okSupplier = std::find_if(enzyme->suppliers.begin(), enzyme->suppliers.end(), [&checkedSuppliers](const QString& s) {
