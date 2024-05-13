@@ -22,10 +22,14 @@
 #include "URLLineEdit.h"
 
 #include <QFocusEvent>
+#include <QMainWindow>
+#include <QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
+#include <U2Gui/MainWindow.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
@@ -162,13 +166,27 @@ void URLLineEdit::sl_editingFinished() {
     CHECK(!saveFile, );
     QString currentText = text();
     CHECK(currentText.contains(";"), );
+    auto tearDown = [&]() {
+        disconnect(this);
+        setText("");
+    };
     const QStringList urlsList = currentText.split(';');
     for (const QString& url : qAsConst(urlsList)) {
         QFileInfo fi(url);
         if (!fi.exists()) {
-            disconnect(this);
-            DesignerGUIUtils::semicolonWarning(true);
-            setText("");
+            tearDown();
+            QString message = QObject::tr("File %1 not exists or it path or name contains ';' symbol.\r\n"
+                                  "That kind of file path/name can't be correctly handled by this element.\r\n"
+                                  "Please rename the file or move it to directory which not contain ';' in it path.").arg(url);
+            QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
+                                  L10N::errorTitle(),
+                                  message);
+            return;
+        }
+        QFile testReadAccess(url);
+        if (!testReadAccess.open(QIODevice::ReadOnly)) {
+            QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()), 
+                                  L10N::errorTitle(), L10N::errorOpeningFileRead(url));
             return;
         }
     }
@@ -203,7 +221,10 @@ void URLLineEdit::browse(bool addFiles) {
         } else {
             lst = U2FileDialog::getOpenFileNames(nullptr, tr("Select file(s)"), lastDir, FileFilter);
         }
-        filePathIsOk = checkNameForSemicolon(name);
+        for (const QString& name : qAsConst(lst)) {
+            filePathIsOk = checkNameNoSemicolon(name);
+            CHECK_BREAK(filePathIsOk);
+        }
         if (addFiles) {
             name = this->text();
             if (!lst.isEmpty()) {
@@ -220,7 +241,7 @@ void URLLineEdit::browse(bool addFiles) {
             this->checkExtension(name);
         } else {
             lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir, FileFilter);
-            filePathIsOk = checkNameForSemicolon(name);
+            filePathIsOk = checkNameNoSemicolon(name);
         }
     }
     if (!name.isEmpty() && filePathIsOk) {
@@ -233,9 +254,14 @@ void URLLineEdit::browse(bool addFiles) {
     emit si_finished();
 }
 
-bool URLLineEdit::checkNameForSemicolon(const QString& name) {
+bool URLLineEdit::checkNameNoSemicolon(const QString& name) {
     CHECK(name.contains(";"), true);
-    DesignerGUIUtils::semicolonWarning(false);
+    QString message = QObject::tr("File path or name contains ';' symbol.\r\n"
+                                  "That kind of file path/name can't be correctly handled by this element.\r\n"
+                                  "Please rename the file or move it to directory which not contain ';' in it path.");
+    QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
+                          L10N::errorTitle(),
+                          message);
     return false;
 }
 

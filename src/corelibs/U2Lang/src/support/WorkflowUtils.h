@@ -141,7 +141,7 @@ public:
      * For each folder from a database: DB URL must be available, folder must exist
      */
     static bool validateInputFiles(QString urls, NotificationsList& notificationList);
-    static bool validateInputFile(QString url, NotificationsList& notificationList);
+    static bool validateInputFile(const QString& url, NotificationsList& notificationList);
     static bool validateInputDir(QString url, NotificationsList& notificationList);
 
     static bool validateInputDbObject(const QString& url, NotificationsList& notificationList);

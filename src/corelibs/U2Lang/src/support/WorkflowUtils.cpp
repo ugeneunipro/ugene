@@ -906,7 +906,7 @@ bool WorkflowUtils::validateInputFiles(QString urls, NotificationsList& notifica
     return res;
 }
 
-bool WorkflowUtils::validateInputFile(QString url, NotificationsList& notificationList) {
+bool WorkflowUtils::validateInputFile(const QString& url, NotificationsList& notificationList) {
     QFileInfo fi(url);
     CHECK_EXT(fi.exists(), notificationList << WorkflowNotification(L10N::errorFileNotFound(url)), false);
     CHECK_EXT(fi.isFile(), notificationList << WorkflowNotification(L10N::errorIsNotAFile(url)), false);

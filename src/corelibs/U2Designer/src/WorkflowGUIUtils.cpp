@@ -22,17 +22,12 @@
 #include "WorkflowGUIUtils.h"
 
 #include <QAbstractTextDocumentLayout>
-#include <QMainWindow>
-#include <QMessageBox>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPalette>
 #include <QTextDocument>
 #include <QUrl>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/L10n.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Lang/Descriptor.h>
 
 namespace U2 {
@@ -164,20 +159,5 @@ void DesignerGUIUtils::setupSamplesDocument(const Descriptor& d, const QIcon& ic
     f.setPointSizeF(12);
     doc->setDefaultFont(f);
 }
-
-void DesignerGUIUtils::semicolonWarning(bool possibleNotExists) {
-    QString message;
-    if (possibleNotExists) {
-        message = QObject::tr("File not exist or it path or name contains ';' symbol.\r\n"
-                              "That kind of file path/name can't be correctly handled by this element.\r\n"
-                              "Please rename the file or move it to directory which not contain ';' in it path.");
-    } else {
-        message = QObject::tr("File path or name contains ';' symbol.\r\n"
-                              "That kind of file path/name can't be correctly handled by this element.\r\n"
-                              "Please rename the file or move it to directory which not contain ';' in it path.");
-    }
-    QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()), L10N::errorTitle(), message);
-}
-
 
 }  // namespace U2
