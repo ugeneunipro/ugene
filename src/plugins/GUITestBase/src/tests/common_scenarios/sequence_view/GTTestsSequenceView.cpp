@@ -2324,7 +2324,7 @@ GUI_TEST_CLASS_DEFINITION(test_0079_1) {
             GTComboBoxWithCheckBoxes::selectItemByText("cbSuppliers", dialog, {"Not defined"}, GTGlobals::UseMouse);
 
             auto text = GTLabel::getText("statusLabel", dialog);
-            CHECK_SET_ERR(text.contains("Total number of enzymes: 15510, selected 0"), QString("Unexpected text: %1").arg(text));
+            CHECK_SET_ERR(text.contains("Total number of enzymes: 16166, visible: 15510, hidden: 656, selected: 0"), QString("Unexpected text: %1").arg(text));
 
             auto chekedValues = GTComboBoxWithCheckBoxes::getCheckedItemsTexts("cbSuppliers", dialog);
             CHECK_SET_ERR(chekedValues.size() == 1, QString("Current checked size: %1").arg(chekedValues.size()));
