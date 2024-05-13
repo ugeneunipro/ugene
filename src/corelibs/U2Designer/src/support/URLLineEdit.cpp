@@ -164,18 +164,17 @@ void URLLineEdit::sl_onBrowseWithAdding() {
 
 void URLLineEdit::sl_editingFinished() {
     CHECK(!saveFile, );
-    QString currentText = text();
-    CHECK(currentText.contains(";"), );
     auto tearDown = [&]() {
         disconnect(this);
         setText("");
     };
-    const QStringList urlsList = currentText.split(';');
+    const QStringList urlsList = text().split(';');
     for (const QString& url : qAsConst(urlsList)) {
+        CHECK_CONTINUE(!url.isEmpty())
         QFileInfo fi(url);
         if (!fi.exists()) {
             tearDown();
-            QString message = QObject::tr("File %1 not exists or it path or name contains ';' symbol.\r\n"
+            QString message = URLLineEdit::tr("File %1 not exists or it path/name contains ';' symbol.\r\n"
                                   "That kind of file path/name can't be correctly handled by this element.\r\n"
                                   "Please rename the file or move it to directory which not contain ';' in it path.").arg(url);
             QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
@@ -185,6 +184,7 @@ void URLLineEdit::sl_editingFinished() {
         }
         QFile testReadAccess(url);
         if (!testReadAccess.open(QIODevice::ReadOnly)) {
+            tearDown();
             QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()), 
                                   L10N::errorTitle(), L10N::errorOpeningFileRead(url));
             return;
@@ -256,7 +256,7 @@ void URLLineEdit::browse(bool addFiles) {
 
 bool URLLineEdit::checkNameNoSemicolon(const QString& name) {
     CHECK(name.contains(";"), true);
-    QString message = QObject::tr("File path or name contains ';' symbol.\r\n"
+    QString message = URLLineEdit::tr("File path/name contains ';' symbol.\r\n"
                                   "That kind of file path/name can't be correctly handled by this element.\r\n"
                                   "Please rename the file or move it to directory which not contain ';' in it path.");
     QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
