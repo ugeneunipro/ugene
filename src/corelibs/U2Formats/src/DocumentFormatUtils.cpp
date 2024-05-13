@@ -40,6 +40,11 @@
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
+namespace {
+constexpr const char CONTIG_ANNOT_NAME[] = "contig";
+constexpr const char NAME_ANNOT_QUALIFIER[] = "name";
+constexpr const char NUMBER_ANNOT_QUALIFIER[] = "number";
+}  // namespace
 
 static int getIntSettings(const QVariantMap& fs, const char* sName, int defVal) {
     QVariant v = fs.value(sName);
@@ -65,17 +70,60 @@ AnnotationTableObject* DocumentFormatUtils::addAnnotationsForMergedU2Sequence(co
 
     // save mapping info as annotations
     QStringList::const_iterator it = contigNames.begin();
-    QList<SharedAnnotationData> resultData;
+    QVector<SharedAnnotationData> resultData;
     for (int i = 0; it != contigNames.end(); i++, it++) {
         SharedAnnotationData d(new AnnotationData);
-        d->name = QString("contig");
+        d->name = CONTIG_ANNOT_NAME;
         d->location->regions << mergedMapping[i];
-        d->qualifiers << U2Qualifier("name", *it);
-        d->qualifiers << U2Qualifier("number", QString("%1").arg(i));
+        d->qualifiers << U2Qualifier(NAME_ANNOT_QUALIFIER, *it);
+        d->qualifiers << U2Qualifier(NUMBER_ANNOT_QUALIFIER, QString("%1").arg(i));
         resultData.append(d);
     }
-    ao->addAnnotations(resultData);
+    ao->addAnnotations(resultData.cbegin(), resultData.cend());
     return ao;
+}
+
+AnnotationTableObject* DocumentFormatUtils::addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
+                                                                              const U2DbiRef& dbiRef,
+                                                                              const QVector<QString>& contigNames,
+                                                                              const QVector<U2Region>& mergedMapping,
+                                                                              const QVariantMap& hints) {
+    QVariantMap objectHints;
+    objectHints.insert(DocumentFormat::DBI_FOLDER_HINT, hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
+    auto ao = new AnnotationTableObject("Contigs", dbiRef, objectHints);
+
+    // save relation if mergedSequenceRef is valid
+    if (mergedSequenceRef.isValid()) {
+        ao->addObjectRelation(GObjectRelation(mergedSequenceRef, ObjectRole_Sequence));
+    }
+
+    // save mapping info as annotations
+    QVector<QString>::const_iterator it = contigNames.begin();
+    QVector<SharedAnnotationData> resultData;
+    for (int i = 0; it != contigNames.end(); i++, it++) {
+        SharedAnnotationData d(new AnnotationData);
+        d->name = CONTIG_ANNOT_NAME;
+        d->location->regions << mergedMapping[i];
+        d->qualifiers << U2Qualifier(NAME_ANNOT_QUALIFIER, *it);
+        d->qualifiers << U2Qualifier(NUMBER_ANNOT_QUALIFIER, QString("%1").arg(i));
+        resultData.append(d);
+    }
+    ao->addAnnotations(resultData.cbegin(), resultData.cend());
+    return ao;
+}
+
+std::uint64_t DocumentFormatUtils::calcMemAmountForMergedSeqAnnots(const QVector<QString>& contigs) {
+    // count amount of inner AnnotationData heap usage
+    std::uint64_t annotationDataName = sizeof(CONTIG_ANNOT_NAME);
+    std::uint64_t annotationDataLocation = sizeof(U2LocationData) + (  // LocationData heap size
+                                                                        sizeof(U2Region)  // only one region for each sequence -- exactly sequence region when sequence lies
+                                                                    );
+    std::uint64_t annotationDataQualifiers = std::max(sizeof(NAME_ANNOT_QUALIFIER), sizeof(NUMBER_ANNOT_QUALIFIER));  // U2Qualifier.name
+
+    std::uint64_t sumOfQualifierValue = std::accumulate(contigs.cbegin(), contigs.cend(), 0, [](std::uint64_t sum, const QString& s) { return sum += s.size(); });
+    std::uint64_t ans = (sizeof(SharedAnnotationData) + sizeof(AnnotationData) + annotationDataName + annotationDataLocation + annotationDataQualifiers) * contigs.size() + sumOfQualifierValue;
+
+    return ans;
 }
 
 QList<DocumentFormatId> DocumentFormatUtils::toIds(const QList<DocumentFormat*>& formats) {

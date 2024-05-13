@@ -65,6 +65,12 @@ public:
      */
     QList<Annotation*> addAnnotations(const QList<SharedAnnotationData>& annotations, const QString& groupName = QString());
     /**
+     * The same as the previous one, but ignores return value and creates new group. Takes two iterators of a container
+     * with annotations. STL-style.
+     */
+    void addAnnotations(QVector<SharedAnnotationData>::const_iterator first,
+                        QVector<SharedAnnotationData>::const_iterator last);
+    /**
      * Removes features corresponding to @annotations from DB
      */
     void removeAnnotations(const QList<Annotation*>& annotations);

@@ -286,7 +286,7 @@ public:
     }
 
 private:
-    int value;
+    std::int8_t value;
 };
 
 }  // namespace U2

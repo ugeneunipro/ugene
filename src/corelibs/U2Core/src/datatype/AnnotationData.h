@@ -58,11 +58,11 @@ public:
 
     const QVector<U2Region>& getRegions() const;
 
+    bool caseAnnotation;
+    U2FeatureType type;
     QString name;
     U2Location location;
     QVector<U2Qualifier> qualifiers;
-    bool caseAnnotation;
-    U2FeatureType type;
 };
 
 typedef QSharedDataPointer<AnnotationData> SharedAnnotationData;

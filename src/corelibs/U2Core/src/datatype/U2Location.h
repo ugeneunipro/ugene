@@ -31,7 +31,7 @@ namespace U2 {
 /**
     For annotation with multiple regions this flag indicates how to process joins
 */
-enum U2LocationOperator {
+enum U2LocationOperator : std::int8_t {
     /** Location elements must be joined */
     U2LocationOperator_Join = 1,
     /** No need to join location elements */
@@ -43,7 +43,7 @@ enum U2LocationOperator {
 /**
     Type of location region
 */
-enum U2LocationRegionType {
+enum U2LocationRegionType : std::int8_t {
 
     /** default */
     U2LocationRegionType_Default = 0,

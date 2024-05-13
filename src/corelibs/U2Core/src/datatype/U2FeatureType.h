@@ -29,7 +29,7 @@ namespace U2 {
 
 class U2CORE_EXPORT U2FeatureTypes {
 public:
-    enum U2FeatureType {
+    enum U2FeatureType : std::uint8_t {
         Invalid = 0,
         AaRich = 1,
         Acetylation = 2,

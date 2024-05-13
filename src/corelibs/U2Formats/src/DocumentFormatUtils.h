@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QStringList>
+#include <QVector>
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/Msa.h>
@@ -64,6 +65,12 @@ public:
                                                                     const QStringList& contigs,
                                                                     const QVector<U2Region>& mergedMapping,
                                                                     const QVariantMap& hints);
+    static AnnotationTableObject* addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
+                                                                    const U2DbiRef& dbiRef,
+                                                                    const QVector<QString>& contigs,
+                                                                    const QVector<U2Region>& mergedMapping,
+                                                                    const QVariantMap& hints);
+    static std::uint64_t calcMemAmountForMergedSeqAnnots(const QVector<QString>& contigs);
 
     static QString getFormatNameById(const DocumentFormatId& formatId);
 };

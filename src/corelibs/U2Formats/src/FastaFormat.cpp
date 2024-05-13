@@ -37,6 +37,7 @@
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 
@@ -158,7 +159,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
     QString buf(DocumentFormat::READ_BUFF_SIZE + 1, '\0');
     bool mergeIntoSingleSequence = gapSize != -1;
 
-    QStringList headers;
+    QVector<QString> headers;
     QSet<QString> uniqueNames;
     QVector<U2Region> mergedMapping;
 
@@ -231,7 +232,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
         }
 
         if (mergeIntoSingleSequence) {
-            memoryLocker.tryAcquire(header.size());
+            memoryLocker.tryAcquire(header.size() + sizeof(U2Region));
             CHECK_OP_BREAK(os);
             headers.append(header);
             mergedMapping.append(U2Region(sequenceStart, sequenceLen));
@@ -295,7 +296,18 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
 
     U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, nullptr, hints);
     objects << new U2SequenceObject(seq.visualName, U2EntityRef(dbiRef, seq.id));
-    objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, headers, mergedMapping, hints);
+
+    {  // Add annotations of merged sequences.
+        U2OpStatus2Log osWarning {LogLevel_INFO};
+        MemoryLocker annotationMemoryLocker(osWarning);
+        CHECK_OP(osWarning, );
+        bool ok = annotationMemoryLocker.tryAcquire(DocumentFormatUtils::calcMemAmountForMergedSeqAnnots(headers));
+        if (ok) {
+            objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, headers, mergedMapping, hints);
+        } else {
+            os.addWarning(osWarning.getError());
+        }
+    };
     if (headers.size() > 1) {
         writeLockReason = QObject::tr("Document sequences were merged");
     }

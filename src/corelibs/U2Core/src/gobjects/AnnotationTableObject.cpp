@@ -110,6 +110,25 @@ QList<Annotation*> AnnotationTableObject::addAnnotations(const QList<SharedAnnot
     return result;
 }
 
+void AnnotationTableObject::addAnnotations(QVector<SharedAnnotationData>::const_iterator first,
+                                           const QVector<SharedAnnotationData>::const_iterator last) {
+    CHECK(first != last, );
+    ensureDataLoaded();
+
+    QMap<QString, AnnotationGroupData> group2Annotations;
+    for (; first != last; ++first) {
+        const SharedAnnotationData& a = *first;
+        if (!group2Annotations.contains(a->name)) {
+            AnnotationGroup* group = rootGroup->getSubgroup(a->name, true);
+            group2Annotations[a->name].first = group;
+        }
+        group2Annotations[a->name].second.append(a);
+    }
+    for (const AnnotationGroupData& groupData : qAsConst(group2Annotations)) {
+        groupData.first->addAnnotations(groupData.second);
+    }
+}
+
 void AnnotationTableObject::removeAnnotations(const QList<Annotation*>& annotations) {
     CHECK(!annotations.isEmpty(), );
 
