@@ -221,8 +221,8 @@ void URLLineEdit::browse(bool addFiles) {
         } else {
             lst = U2FileDialog::getOpenFileNames(nullptr, tr("Select file(s)"), lastDir, FileFilter);
         }
-        for (const QString& name : qAsConst(lst)) {
-            filePathIsOk = checkNameNoSemicolon(name);
+        for (const QString& nameStr : qAsConst(lst)) {
+            filePathIsOk = checkNameNoSemicolon(nameStr);
             CHECK_BREAK(filePathIsOk);
         }
         if (addFiles) {
