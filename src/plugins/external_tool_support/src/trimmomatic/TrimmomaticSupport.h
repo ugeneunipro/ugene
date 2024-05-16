@@ -31,6 +31,8 @@ public:
     TrimmomaticSupport();
     ~TrimmomaticSupport();
 
+    const QString getVersionFromToolPath(const QString& toolPath) const override;
+
     static const QString ET_TRIMMOMATIC;
     static const QString ET_TRIMMOMATIC_ID;
 
