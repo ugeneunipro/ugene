@@ -49,6 +49,7 @@ public:
     virtual U2AssemblyDbi* getAssemblyDbi();
 
     virtual bool isReadOnly() const;
+    void clean(U2OpStatus&) override {}
 
 private:
     void buildIndex(U2OpStatus& os);

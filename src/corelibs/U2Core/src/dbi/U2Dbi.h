@@ -357,6 +357,7 @@ public:
     virtual bool isReadOnly() const = 0;
 
     virtual bool isTransactionActive() const = 0;
+    virtual void clean(U2OpStatus& os) = 0;
 };
 
 /**

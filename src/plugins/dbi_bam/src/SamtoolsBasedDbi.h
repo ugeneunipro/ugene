@@ -171,6 +171,8 @@ public:
      * Caller is responsible for closing the file.
      */
     bamFile openNewBamFileHandler() const;
+    void clean(U2OpStatus&) override {
+    }
 
 private:
     GUrl url;

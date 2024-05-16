@@ -338,6 +338,9 @@ QString SQLiteDbi::getLastErrorMessage(int rc) {
     return err;
 }
 
+void SQLiteDbi::clean(U2OpStatus& os) {
+    SQLiteWriteQuery("PRAGMA shrink_memory", db, os).execute();
+}
 void SQLiteDbi::init(const QHash<QString, QString>& props, const QVariantMap&, U2OpStatus& os) {
     if (db->handle != nullptr) {
         os.setError(U2DbiL10n::tr("Database is already opened!"));

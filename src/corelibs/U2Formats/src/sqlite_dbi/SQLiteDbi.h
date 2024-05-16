@@ -75,6 +75,7 @@ public:
     "assembly-reads-compression=1" - enables reads compression for assembly. Affects new DB only
     */
     void init(const QHash<QString, QString>& properties, const QVariantMap& persistentData, U2OpStatus& os) override;
+    void clean(U2OpStatus& os) override;
 
     /** Stops the database and frees up used resources. */
     QVariantMap shutdown(U2OpStatus& os) override;

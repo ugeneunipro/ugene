@@ -350,6 +350,8 @@ void U2DbiPool::releaseDbi(U2Dbi* dbi, U2OpStatus& os) {
     QMutexLocker m(&lock);
     Q_UNUSED(m);
 
+    dbi->clean(os);
+    SAFE_POINT_OP(os, );
     const QString id = getId(dbi->getDbiRef(), os);
     SAFE_POINT_OP(os, );
 
