@@ -51,8 +51,8 @@ public:
     static void setupSettings();
     static void saveSettings();
     static void initSelection();
-    static QList<SEnzymeData> getLoadedEnzymes();
-    static QStringList getLoadedSuppliers();
+    static const QList<SEnzymeData>& getLoadedEnzymes();
+    static const QStringList& getLoadedSuppliers();
     QList<SEnzymeData> getSelectedEnzymes();
     /*
      * Get enzyme tree item by this enzyme.
@@ -114,7 +114,7 @@ public:
     void accept() override;
 
 private slots:
-    void sl_onSelectionModified(int total, int nChecked);
+    void sl_onSelectionModified(int visible, int selected);
     void sl_updateVisibleEnzymes();
     void sl_updateEnzymesVisibilityWidgets();
     void sl_selectAll();
