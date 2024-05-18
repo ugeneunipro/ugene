@@ -467,9 +467,8 @@ GUI_TEST_CLASS_DEFINITION(test_8090) {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
             
-            QString toolName = "Spidey";
-            if (!isOsMac() && AppSettingsDialogFiller::isToolDescriptionContainsString(toolName, "unknown")) {
-                GT_FAIL("Unknown " + toolName + " version!", );
+            if (!isOsMac() && AppSettingsDialogFiller::isToolDescriptionContainsString("Spidey", "unknown")) {
+                GT_FAIL("Unknown Spidey version!", );
             }
 
             for (const QString& toolName : {"vcf-consensus", "Trimmomatic", "SnpEff", "Kalign", "BlastN"}) {
