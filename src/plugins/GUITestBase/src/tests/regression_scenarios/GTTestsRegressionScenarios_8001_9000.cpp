@@ -25,6 +25,7 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTLabel.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
@@ -63,6 +64,7 @@
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
@@ -483,6 +485,37 @@ GUI_TEST_CLASS_DEFINITION(test_8090) {
 
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new CheckNotUnknownVersion));
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."}, GTGlobals::UseMouse);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8093) {
+    // Open any sequence file
+    // Open "Find enzymes" dialog
+    // Expected: there is an information about enzymes hidden
+    // Enable all suppliers
+    // Expected: no hidden enzymes and no info about it
+    GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class custom : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            auto text = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(text.contains("Some enzymes are hidden due to \"Enzyme table filter\" settings."), QString("Unexpected text: %1").arg(text));
+
+            GTWidget::click(GTWidget::findPushButton("pbSelectAll", dialog));
+            text = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(!text.contains("Some enzymes are hidden due to \"Enzyme table filter\" settings."), QString("Unexpected text: %1").arg(text));
+            CHECK_SET_ERR(text.contains("hidden: 0"), QString("Unexpected text: %1").arg(text));
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find restriction sites");
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 }  // namespace GUITest_regression_scenarios
