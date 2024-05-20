@@ -1429,15 +1429,6 @@ Set up the folder:</source>
 <context>
     <name>U2::URLLineEdit</name>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="177"/>
-        <source>File %1 not exists or it path or name contains &apos;;&apos; symbol.<byte value="xd"/>
-That kind of file path/name can&apos;t be correctly handled by this element.<byte value="xd"/>
-Please rename the file or move it to directory which not contain &apos;;&apos; in it path.</source>
-        <translation>Файл %1 не существует или его путь/имя содержит символ &apos;;&apos;.
-Такой путь/имя файла не могут быть корректно обработаны этим элементом.
-Пожалуйста, переименуйте/переместите файл в папку путь до которой не содержит &apos;;&apos;.</translation>
-    </message>
-    <message>
         <location filename="../src/support/URLLineEdit.cpp" line="219"/>
         <source>Select a folder</source>
         <translation>Укажите папку</translation>
@@ -1449,7 +1440,7 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
         <translation>Выберите файл</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="259"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="256"/>
         <source>File path or name contains &apos;;&apos; symbol.<byte value="xd"/>
 That kind of file path/name can&apos;t be correctly handled by this element.<byte value="xd"/>
 Please rename the file or move it to directory which not contain &apos;;&apos; in it path.</source>

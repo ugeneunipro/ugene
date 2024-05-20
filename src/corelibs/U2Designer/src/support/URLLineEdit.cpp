@@ -174,12 +174,9 @@ void URLLineEdit::sl_editingFinished() {
         QFileInfo fi(url);
         if (!fi.exists()) {
             tearDown();
-            QString message = URLLineEdit::tr("File %1 not exists or it path/name contains ';' symbol.\r\n"
-                                  "That kind of file path/name can't be correctly handled by this element.\r\n"
-                                  "Please rename the file or move it to directory which not contain ';' in it path.").arg(url);
             QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
                                   L10N::errorTitle(),
-                                  message);
+                                  L10N::errorFileNotFound(url));
             return;
         }
         QFile testReadAccess(url);
