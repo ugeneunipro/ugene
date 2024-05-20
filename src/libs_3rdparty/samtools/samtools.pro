@@ -70,15 +70,7 @@ HEADERS += src/samtools_core/cram/cram.h \
            src/samtools_core/thread_pool_internal.h \
            src/SamtoolsAdapter.h
 
-win32 : HEADERS += src/samtools_core/win/pcre/config.h \
-                   src/samtools_core/win/pcre/pcre2.h \
-                   src/samtools_core/win/pcre/pcre2_internal.h \
-                   src/samtools_core/win/pcre/pcre2_intmodedep.h \
-                   src/samtools_core/win/pcre/pcre2_jit_neon_inc.h \
-                   src/samtools_core/win/pcre/pcre2_jit_simd_inc.h \
-                   src/samtools_core/win/pcre/pcre2_ucp.h \
-                   src/samtools_core/win/pcre/pcre2posix.h \
-                   src/samtools_core/win/pthread/config.h \
+win32 : HEADERS += src/samtools_core/win/pthread/config.h \
                    src/samtools_core/win/pthread/context.h \
                    src/samtools_core/win/pthread/implement.h \
                    src/samtools_core/win/pthread/need_errno.h \
@@ -141,34 +133,7 @@ SOURCES += src/samtools_core/cram/cram_codecs.c \
            src/samtools_core/thread_pool.c \
            src/SamtoolsAdapter.cpp
 
-win32 : SOURCES += src/samtools_core/win/pcre/pcre2_auto_possess.c \
-                   src/samtools_core/win/pcre/pcre2_chartables.c \
-                   src/samtools_core/win/pcre/pcre2_compile.c \
-                   src/samtools_core/win/pcre/pcre2_config.c \
-                   src/samtools_core/win/pcre/pcre2_context.c \
-                   src/samtools_core/win/pcre/pcre2_dfa_match.c \
-                   src/samtools_core/win/pcre/pcre2_error.c \
-                   src/samtools_core/win/pcre/pcre2_extuni.c \
-                   src/samtools_core/win/pcre/pcre2_find_bracket.c \
-                   src/samtools_core/win/pcre/pcre2_jit_compile.c \
-                   src/samtools_core/win/pcre/pcre2_maketables.c \
-                   src/samtools_core/win/pcre/pcre2_match.c \
-                   src/samtools_core/win/pcre/pcre2_match_data.c \
-                   src/samtools_core/win/pcre/pcre2_newline.c \
-                   src/samtools_core/win/pcre/pcre2_ord2utf.c \
-                   src/samtools_core/win/pcre/pcre2_pattern_info.c \
-                   src/samtools_core/win/pcre/pcre2_script_run.c \
-                   src/samtools_core/win/pcre/pcre2_serialize.c \
-                   src/samtools_core/win/pcre/pcre2_string_utils.c \
-                   src/samtools_core/win/pcre/pcre2_study.c \
-                   src/samtools_core/win/pcre/pcre2_substitute.c \
-                   src/samtools_core/win/pcre/pcre2_substring.c \
-                   src/samtools_core/win/pcre/pcre2_tables.c \
-                   src/samtools_core/win/pcre/pcre2_ucd.c \
-                   src/samtools_core/win/pcre/pcre2_valid_utf.c \
-                   src/samtools_core/win/pcre/pcre2_xclass.c \
-                   src/samtools_core/win/pcre/pcre2posix.c \
-                   src/samtools_core/win/pthread/autostatic.c \
+win32 : SOURCES += src/samtools_core/win/pthread/autostatic.c \
                    src/samtools_core/win/pthread/cleanup.c \
                    src/samtools_core/win/pthread/create.c \
                    src/samtools_core/win/pthread/dll.c \

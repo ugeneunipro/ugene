@@ -28,6 +28,7 @@ DEALINGS IN THE SOFTWARE.  */
 #define _CRT_SECURE_NO_WARNINGS
 #define HTS_BUILDING_LIBRARY // Enables HTSLIB_EXPORT, see htslib/hts_defs.h
 
+#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -41,11 +42,11 @@ DEALINGS IN THE SOFTWARE.  */
 #include "htslib/bgzf.h"
 #include "textutils_internal.h"
 
-#ifndef OS_WIN
-#include <regex.h>
-#else
-#include "win/pcre/pcre2posix.h"
-#endif
+//#ifndef OS_WIN
+//#include <regex.h>
+//#else
+//#include "win/pcre/pcre2posix.h"
+//#endif
 
 
 // Could also cache hts_expr_val_t stack here for kstring reuse?
@@ -54,7 +55,7 @@ struct hts_filter_t {
     char *str;
     int parsed;
     int curr_regex, max_regex;
-    regex_t preg[MAX_REGEX];
+    //regex_t preg[MAX_REGEX];
 };
 
 /*
@@ -745,34 +746,35 @@ static int eq_expr(hts_filter_t *filt, void *data, hts_expr_sym_func *fn,
             return -1;
         }
         if (val.s.s && res->s.s && val.is_true >= 0 && res->is_true >= 0) {
-            regex_t preg_, *preg;
-            if (filt->curr_regex >= filt->max_regex) {
-                // Compile regex if not seen before
-                if (filt->curr_regex >= MAX_REGEX) {
-                    preg = &preg_;
-                } else {
-                    preg = &filt->preg[filt->curr_regex];
-                    filt->max_regex++;
-                }
+            assert(0);
+            //regex_t preg_, *preg;
+            //if (filt->curr_regex >= filt->max_regex) {
+            //    // Compile regex if not seen before
+            //    if (filt->curr_regex >= MAX_REGEX) {
+            //        preg = &preg_;
+            //    } else {
+            //        preg = &filt->preg[filt->curr_regex];
+            //        filt->max_regex++;
+            //    }
 
-                int ec = regcomp(preg, val.s.s, REG_EXTENDED | REG_NOSUB);
-                if (ec != 0) {
-                    char errbuf[1024];
-                    regerror(ec, preg, errbuf, 1024);
-                    fprintf(stderr, "Failed regex: %.1024s\n", errbuf);
-                    hts_expr_val_free(&val);
-                    return -1;
-                }
-            } else {
-                preg = &filt->preg[filt->curr_regex];
-            }
-            res->is_true = res->d = regexec(preg, res->s.s, 0, NULL, 0) == 0
-                ? *str == '='  // matcn
-                : *str == '!'; // no-match
-            if (preg == &preg_)
-                regfree(preg);
+            //    int ec = regcomp(preg, val.s.s, REG_EXTENDED | REG_NOSUB);
+            //    if (ec != 0) {
+            //        char errbuf[1024];
+            //        regerror(ec, preg, errbuf, 1024);
+            //        fprintf(stderr, "Failed regex: %.1024s\n", errbuf);
+            //        hts_expr_val_free(&val);
+            //        return -1;
+            //    }
+            //} else {
+            //    preg = &filt->preg[filt->curr_regex];
+            //}
+            //res->is_true = res->d = regexec(preg, res->s.s, 0, NULL, 0) == 0
+            //    ? *str == '='  // matcn
+            //    : *str == '!'; // no-match
+            //if (preg == &preg_)
+            //    regfree(preg);
 
-            filt->curr_regex++;
+            //filt->curr_regex++;
         } else {
             // nul regexp or input is considered false
             res->is_true = 0;
@@ -866,8 +868,8 @@ void hts_filter_free(hts_filter_t *filt) {
         return;
 
     int i;
-    for (i = 0; i < filt->max_regex; i++)
-        regfree(&filt->preg[i]);
+    /*for (i = 0; i < filt->max_regex; i++)
+        regfree(&filt->preg[i]);*/
 
     free(filt->str);
     free(filt);
