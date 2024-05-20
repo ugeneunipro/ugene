@@ -806,11 +806,11 @@ QPair<ChromatogramData::TraceAndValue, ChromatogramData::TraceAndValue>
 
     auto peaksKeys = PEAKS.keys();
     const ChromatogramData& chromatogramData = *chromatogram;
-    ushort maxPeakValue = 0;
+    ushort maxTraceValue = 0;
     for (auto peak : qAsConst(peaksKeys)) {
         const QVector<ushort>& chromatogramBaseCallVector = chromatogramData.*PEAKS.value(peak);
         ushort peakValue = chromatogramBaseCallVector[baseCall];
-        maxPeakValue = qMax(maxPeakValue, peakValue);
+        maxTraceValue = qMax(maxTraceValue, peakValue);
         int startOfCharacterBaseCall = baseCall - ((baseCall - previousBaseCall) / 2);
         int startValue = chromatogramBaseCallVector[startOfCharacterBaseCall];
         if (previousBaseCall == baseCall) {
@@ -837,7 +837,7 @@ QPair<ChromatogramData::TraceAndValue, ChromatogramData::TraceAndValue>
               [](const auto& first, const auto& second) {
                   return first.value > second.value;
               });
-    if (peaks[0].value != maxPeakValue) {
+    if (peaks[0].value != maxTraceValue) {
         hasTwoPeaks = false;
         return {{ChromatogramData::Trace::Trace_A, 0}, {ChromatogramData::Trace::Trace_C, 0}};
     }
