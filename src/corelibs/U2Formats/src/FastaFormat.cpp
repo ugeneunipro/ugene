@@ -54,6 +54,10 @@ FastaFormat::FastaFormat(QObject* p)
                            "The format also allows for sequence names and comments to precede the sequences.");
 }
 
+bool FastaFormat::hasModifiableName() const {
+    return true;
+}
+
 /** Returns FormatDetectionResult properties (hints) for the given data. */
 static QVariantMap buildFormatDetectionHints(const QString& data) {
     bool hasGaps = false;

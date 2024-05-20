@@ -533,11 +533,6 @@
         <source>Sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
-    <message>
-        <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="65"/>
-        <source>Save file immediately</source>
-        <translation>Записать файл на диск</translation>
-    </message>
 </context>
 <context>
     <name>CreateObjectRelationDialog</name>
@@ -704,77 +699,77 @@
         <translation>Позиция для вставки</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="82"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="134"/>
         <source>Press to insert before the start of the sequence</source>
         <translation>Нажмите для вставки в начало последовательности</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="85"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="137"/>
         <source>start</source>
         <translation>начало</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="99"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="82"/>
         <source>Press to insert to the end of the sequence</source>
         <translation>Нажмите для вставки в конец последовательности</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="102"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="85"/>
         <source>end</source>
         <translation>конец</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="122"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="95"/>
         <source>Selection</source>
         <translation>Участок</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="128"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="101"/>
         <source>Press to insert before the selection</source>
         <translation>Нажмите для вставки до участка</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="131"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="104"/>
         <source>before</source>
         <translation>до</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="138"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="111"/>
         <source>Press to insert after the selection</source>
         <translation>Нажмите для вставки после участка</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="141"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="114"/>
         <source>after</source>
         <translation>после</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="148"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="121"/>
         <source>To change the regsion select it on a sequence</source>
         <translation>Чтобы изменить регион выделите его в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="169"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="165"/>
         <source>Save to new file</source>
         <translation>Сохранить в новый файл</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="183"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="179"/>
         <source>Document location:</source>
         <translation>Расположение документа:</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="193"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="189"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="200"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="196"/>
         <source>Document format:</source>
         <translation>Формат документа:</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="212"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="208"/>
         <source>Merge annotations to this file</source>
         <translation>Соединить и сохранить аннотации</translation>
     </message>
@@ -1187,32 +1182,32 @@
 <context>
     <name>RegionSelectorController</name>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="71"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="72"/>
         <source>Whole sequence</source>
         <translation>Вся последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="75"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="76"/>
         <source>Selected region</source>
         <translation>Выбранный регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="79"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="80"/>
         <source>Custom region</source>
         <translation>Заданный регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="181"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="182"/>
         <source>Invalid Start position of region</source>
         <translation>Некорректная стартовая позиция в регионе</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="182"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="183"/>
         <source>Invalid End position of region</source>
         <translation>Некорректная конечная позиция в регионе</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="183"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="184"/>
         <source>Start position is greater than End position</source>
         <translation>Начальная позичия больше чем конечная</translation>
     </message>
@@ -1672,7 +1667,7 @@ complement(5..15)</translation>
 <context>
     <name>U2::CreateDocumentFromTextDialogController</name>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="151"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="146"/>
         <source>Select file to save...</source>
         <translation>Сохранение файла...</translation>
     </message>
@@ -1692,12 +1687,12 @@ complement(5..15)</translation>
         <translation>Путь не задан</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="103"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="100"/>
         <source>A sequence, associated with the specified path, is already opened. Do you want to remove it from the project and replace with the current sequence? Data may be lost.</source>
         <translation>Последовательность, ассоциированная с заданным путём к файлу, уже открыта. Вы хотите удалить её из проекта и заменить текущей последовательностью? Данные могут быть утеряны.</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="117"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="112"/>
         <source>Sequence name is empty</source>
         <translation>Имя последовательности пусто</translation>
     </message>
@@ -1738,7 +1733,7 @@ complement(5..15)</translation>
         <translation>Create sequence from raw data</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateSequenceFromTextAndOpenViewTask.cpp" line="56"/>
+        <location filename="../src/util/CreateSequenceFromTextAndOpenViewTask.cpp" line="55"/>
         <source>Can&apos;t create a project</source>
         <translation>Can&apos;t create a project</translation>
     </message>
@@ -1867,7 +1862,7 @@ Are you sure you want to open all of them?</source>
     </message>
 </context>
 <context>
-    <name>U2::EditSequenceDialogController</name>
+    <name>U2::EditSequenceDialogVirtualController</name>
     <message>
         <location filename="../src/util/EditSequenceDialogController.cpp" line="72"/>
         <source>OK</source>
@@ -1879,34 +1874,39 @@ Are you sure you want to open all of them?</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="97"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="94"/>
         <source>Insert Sequence</source>
         <translation>Вставить последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="103"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="100"/>
         <source>Replace sequence</source>
         <translation>Заменить последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="139"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="119"/>
         <source>Folder to save is not exists</source>
         <translation>Папка не существует</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="143"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="123"/>
         <source>Entered path is empty</source>
         <translation>Не задан путь</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="147"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="127"/>
         <source>Filename is empty</source>
         <translation>Не задано имя файла</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="229"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="136"/>
+        <source>Incorrect position to insert, should be from 1 to %1</source>
+        <translation>Некорректная позиция для вставки, должна быть с 1 до %1</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="215"/>
         <source>Select file to save...</source>
-        <translation>Файл для сохранения...</translation>
+        <translation>Выберите файлы для сохранения...</translation>
     </message>
 </context>
 <context>
@@ -2702,31 +2702,36 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectViewModel</name>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="900"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="901"/>
         <source>[unloaded] </source>
         <translation>[выгружен] </translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="903"/>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="994"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="904"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="995"/>
         <source>[loading] </source>
         <translation>[загрузка] </translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="905"/>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="996"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="906"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="997"/>
         <source>[loading %1%] </source>
         <translation>[загрузка %1%] </translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="926"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="927"/>
         <source>Locks:</source>
         <translation>Блокировки:</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="929"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="930"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1123"/>
+        <source>The object has been renamed, but as far as the &quot;%1&quot; format could not store this information, name will not be saved to the corresponding file</source>
+        <translation>Объект был переименован, но, поскольку формат &quot;%1&quot; не может хранить подобную информацию, имя не будет сохранено в соответствующий файл</translation>
     </message>
 </context>
 <context>
@@ -2778,24 +2783,24 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::RegionSelector</name>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="105"/>
+        <location filename="../src/util/RegionSelector.cpp" line="112"/>
         <source>Set minimum</source>
         <translation>Установить минимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="110"/>
+        <location filename="../src/util/RegionSelector.cpp" line="117"/>
         <source>Set maximum</source>
         <translation>Установить максимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="117"/>
-        <location filename="../src/util/RegionSelector.cpp" line="139"/>
+        <location filename="../src/util/RegionSelector.cpp" line="124"/>
+        <location filename="../src/util/RegionSelector.cpp" line="146"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="125"/>
-        <location filename="../src/util/RegionSelector.cpp" line="145"/>
+        <location filename="../src/util/RegionSelector.cpp" line="132"/>
+        <location filename="../src/util/RegionSelector.cpp" line="152"/>
         <source>-</source>
         <translation>-</translation>
     </message>

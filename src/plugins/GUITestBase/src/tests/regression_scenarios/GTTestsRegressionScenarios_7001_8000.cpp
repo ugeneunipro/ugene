@@ -987,6 +987,115 @@ GUI_TEST_CLASS_DEFINITION(test_7247) {
     GTUtilsMdi::click(GTGlobals::Close);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7267_1) {
+    GTFile::copy(dataDir + "samples/Genbank/murine.gb", sandBoxDir + "/" + "test_7267_1.gb");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_1.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsProjectTreeView::rename("NC_001363", "test_7267_1");
+    GTUtilsProjectTreeView::rename("NC_001363 features", "test_7267_1");
+    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTFileDialog::openFile(sandBoxDir, "test_7267_1.gb");
+    GTUtilsProjectTreeView::click("test_7267_1");
+    GTUtilsProjectTreeView::click("test_7267_1 features");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_2) {
+    GTFile::copy(testDir + "_common_data/cmdline/pcr/pcr_check_ambiguous.seq", sandBoxDir + "/" + "test_7267_2.seq");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_2.seq");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
+    GTUtilsProjectTreeView::rename("test_7267_2", "test_7267_2_new");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_3) {
+    GTFile::copy(dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "/" + "test_7267_3.fa");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_3.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsProjectTreeView::rename("human_T1 (UCSC April 2002 chr7:115977709-117855134)", "test_7267_3");
+    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTFileDialog::openFile(sandBoxDir, "test_7267_3.fa");
+    GTUtilsProjectTreeView::click("test_7267_3");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_4) {
+    GTFile::copy(testDir + "_common_data/fastq/90-JRI-07.fastq", sandBoxDir + "/" + "test_7267_4.fastq");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_4.fastq");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsProjectTreeView::rename("90-JRI-07 sequence", "test_7267_4");
+    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTFileDialog::openFile(sandBoxDir, "test_7267_4.fastq");
+    GTUtilsProjectTreeView::click("test_7267_4");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_5) {
+    GTFile::copy(testDir + "_common_data/bed/valid_input/fields_num_3.bed", sandBoxDir + "/" + "test_7267_5.bed");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_5.bed");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::rename("test_chromosome features", "test_7267_5");
+    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTFileDialog::openFile(sandBoxDir, "test_7267_5.fastq");
+    GTUtilsProjectTreeView::click("test_7267_5 features");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_6) {
+    GTFile::copy(testDir + "_common_data/gff/comments.gff", sandBoxDir + "/" + "test_7267_6.gff");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_6.gff");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::rename("chr22 features", "test_7267_6");
+    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTFileDialog::openFile(sandBoxDir, "test_7267_6.gff");
+    GTUtilsProjectTreeView::click("test_7267_6 features");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_7) {
+    GTFile::copy(testDir + "_common_data/gtf/comments.gtf", sandBoxDir + "/" + "test_7267_7.gtf");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_7.gtf");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::rename("annotationtablename features", "test_7267_7");
+    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTFileDialog::openFile(sandBoxDir, "test_7267_7.gtf");
+    GTUtilsProjectTreeView::click("test_7267_7 features");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_8) {
+    GTFile::copy(dataDir + "samples/CLUSTALW/COI.aln", sandBoxDir + "/" + "test_7267_8.aln");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_8.aln");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
+    GTUtilsProjectTreeView::rename("COI", "test_7267_8");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_9) {
+    GTFile::copy(dataDir + "samples/Newick/COI.nwk", sandBoxDir + "/" + "test_7267_9.nwk");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_9.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
+    GTUtilsProjectTreeView::rename("Tree", "test_7267_9");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_10) {
+    GTFile::copy(testDir + "_common_data/vcf/valid.vcf", sandBoxDir + "/" + "test_7267_10.vcf");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_10.vcf");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
+    GTUtilsProjectTreeView::rename("II", "test_7267_10");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_11) {
+    GTFile::copy(testDir + "_common_data/text/text.txt", sandBoxDir + "/" + "test_7267_11.txt");
+    GTUtilsDialog::waitForDialog(new DocumentFormatSelectorDialogFiller("Plain text"));
+    GTUtilsProject::openFile(sandBoxDir + "/" + "test_7267_11.txt");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
+    GTUtilsProjectTreeView::rename("text", "test_7267_11");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7276) {
     // Check that selection and sequence order does not change after KAlign alignment.
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");

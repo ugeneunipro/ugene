@@ -145,6 +145,7 @@ signals:
     void si_nameChanged(const QString& oldName);
     void si_relationChanged(const QList<GObjectRelation>& previousRelations);
     void si_relatedObjectRelationChanged();
+    void si_failedModifyObjectName();
 
 protected:
     void setGObjectNameNotDbi(const QString& newName);

@@ -55,6 +55,8 @@ public:
 
     GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const override;
 
+    void setGObjectName(const QString& newName) override;
+
     // Utility functions
     // Compares number of nodes and nodes with names (how many nodes etc.)
     // TODO: document the algorithm and usage.

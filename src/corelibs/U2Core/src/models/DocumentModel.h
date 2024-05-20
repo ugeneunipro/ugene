@@ -249,6 +249,8 @@ public:
 
     virtual QString getRadioButtonText() const;
 
+    virtual bool hasModifiableName() const;
+
 protected:
     /* io - opened IOAdapter.
      * if document format supports streaming reading it must correctly process DocumentLoadMode

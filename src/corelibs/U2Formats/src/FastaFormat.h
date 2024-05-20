@@ -35,6 +35,8 @@ class U2FORMATS_EXPORT FastaFormat : public TextDocumentFormat {
 public:
     FastaFormat(QObject* parent);
 
+    bool hasModifiableName() const override;
+
     /** First header-line symbol for every sequence block in FASTA files. */
     static constexpr char FASTA_HEADER_START_SYMBOL = '>';
 

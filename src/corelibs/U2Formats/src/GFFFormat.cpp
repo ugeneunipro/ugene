@@ -719,6 +719,10 @@ void GFFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
     }
 }
 
+bool GFFFormat::hasModifiableName() const {
+    return true;
+}
+
 QString GFFFormat::extractSeqObjectName(QString& fastaHeaderName, const QStringList& words, QSet<QString>& names, bool& isNameModified) {
     fastaHeaderName = words.join(" ").remove(">");
     bool addSeqTag = true;

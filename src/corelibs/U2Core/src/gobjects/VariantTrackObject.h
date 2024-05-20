@@ -44,6 +44,8 @@ public:
     void addVariants(const QList<U2Variant>& variants, U2OpStatus& os);
 
     U2VariantTrack getVariantTrack(U2OpStatus& os) const;
+
+    void setGObjectName(const QString& newName);
 };
 
 }  // namespace U2

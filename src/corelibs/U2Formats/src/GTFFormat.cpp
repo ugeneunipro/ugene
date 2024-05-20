@@ -534,6 +534,11 @@ void GTFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
                 annotTableName.chop(QString(FEATURES_TAG).size());
             }
         }
+        annotTableName.replace(' ', '_');
+        if (annotTableName.isEmpty()) {
+            ioLog.trace(tr("Can not detect chromosome name. 'Chr' name will be used."));
+            annotTableName = "chr";
+        }
 
         for (Annotation* annot : qAsConst(annotationsList)) {
             QString annotName = annot->getName();
@@ -599,6 +604,10 @@ void GTFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
         ioLog.info(QString("The '%1' file GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers.")
                        .arg(io->getURL().getURLString()));
     }
+}
+
+bool GTFFormat::hasModifiableName() const {
+    return true;
 }
 
 }  // namespace U2

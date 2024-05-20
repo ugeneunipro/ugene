@@ -94,6 +94,13 @@ GObject* TextObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVar
     return dst;
 }
 
+void TextObject::setGObjectName(const QString& newName) {
+    CHECK(GObject::getGObjectName() != newName, );
+
+    GObject::setGObjectName(newName);
+    emit si_failedModifyObjectName();
+}
+
 void TextObject::commitTextToDB(const QString& newText) {
     U2OpStatus2Log os;
     RawDataUdrSchema::writeContent(newText.toUtf8(), entityRef, os);

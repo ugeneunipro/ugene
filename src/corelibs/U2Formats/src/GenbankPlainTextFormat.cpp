@@ -528,6 +528,10 @@ void GenbankPlainTextFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, Q
     }
 }
 
+bool GenbankPlainTextFormat::hasModifiableName() const {
+    return true;
+}
+
 bool GenbankPlainTextFormat::checkCircularity(const GUrl& filePath, U2OpStatus& os) {
     SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != nullptr, os.setError("There is no IOAdapter registry yet"), false);
     IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);

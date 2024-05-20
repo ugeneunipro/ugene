@@ -612,6 +612,11 @@ void BedFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
 
     ioLog.trace(tr("Finished BED saving: '%1'").arg(doc->getURLString()));
 }
+
+bool BedFormat::hasModifiableName() const {
+    return true;
+}
+
 //-------------------------------------------------------------------
 //  BedFormatParser
 //-------------------------------------------------------------------

@@ -522,6 +522,10 @@ void FastqFormat::writeEntry(const QString& sequenceName, const DNASequence& who
     writeSequence(os, io, qualityData, wholeSeq.length(), errorMessage, cutLines);
 }
 
+bool FastqFormat::hasModifiableName() const {
+    return true;
+}
+
 void FastqFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) {
     SAFE_POINT(objectsMap.contains(GObjectTypes::SEQUENCE), "Fastq entry storing: no sequences", );
     const QList<GObject*>& seqs = objectsMap[GObjectTypes::SEQUENCE];

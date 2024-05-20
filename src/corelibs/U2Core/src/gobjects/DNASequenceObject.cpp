@@ -417,6 +417,17 @@ void U2SequenceObject::setGObjectName(const QString& newName) {
 
     GObject::setGObjectName(newName);
     cachedName = GObject::getGObjectName();
+
+    // In case of exporting we set GObject name,
+    // but it is not connected to document yet
+    auto doc = getDocument();
+    CHECK(doc != nullptr, );
+
+    if (doc->getDocumentFormat()->hasModifiableName()) {
+        setModified(true);
+    } else {
+        emit si_failedModifyObjectName();
+    }
 }
 
 }  // namespace U2
