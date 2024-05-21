@@ -30,7 +30,7 @@
 #include <U2Core/U2SafePoints.h>
 
 extern "C" {
-#include <samtools_core/htslib/bgzf.h>
+#include <samtools_core/htslib/htslib/bgzf.h>
 }
 
 namespace U2 {

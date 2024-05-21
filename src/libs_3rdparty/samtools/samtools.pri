@@ -2,7 +2,7 @@ include( ../../ugene_globals.pri )
 
 TEMPLATE = lib
 CONFIG +=thread debug_and_release staticlib warn_off
-INCLUDEPATH += src src/samtools ../../include
+INCLUDEPATH += src src/samtools_core/htslib ../../include
 # samtools specific
 DEFINES += "_FILE_OFFSET_BITS=64" PCRE2_CODE_UNIT_WIDTH=16 HAVE_CONFIG_H
 # pthread specific

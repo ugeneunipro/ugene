@@ -23,8 +23,8 @@
 
 extern "C" {
 #include <samtools_core/bam.h>
-#include <samtools_core/htslib/bgzf.h>
-#include <samtools_core/htslib/sam.h>
+#include <samtools_core/htslib/htslib/bgzf.h>
+#include <samtools_core/htslib/htslib/sam.h>
 }
 
 #include <U2Core/U2AbstractDbi.h>

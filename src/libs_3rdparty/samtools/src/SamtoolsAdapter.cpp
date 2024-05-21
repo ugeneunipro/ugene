@@ -28,7 +28,7 @@
 #include <U2Core/U2SafePoints.h>
 
 extern "C" {
-#include "samtools_core/cram/cram_samtools.h"
+#include "samtools_core/htslib/cram/cram_samtools.h"
 }
 
 namespace U2 {

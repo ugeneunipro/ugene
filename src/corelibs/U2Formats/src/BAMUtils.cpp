@@ -34,14 +34,14 @@ extern "C" {
 #    pragma warning(disable : 4018)
 #endif
 
-#include <samtools_core/htslib/sam.h>
+#include <htslib/sam.h>
 
 #ifdef _MSC_VER
 #    pragma warning(pop)
 #endif
 
-#include <samtools_core/htslib/faidx.h>
-#include <samtools_core/htslib/kseq.h>
+#include <htslib/faidx.h>
+#include <htslib/kseq.h>
 }
 
 #include <3rdparty/zlib/zlib.h>
