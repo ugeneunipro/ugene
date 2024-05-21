@@ -76,13 +76,6 @@ U2VariantTrack VariantTrackObject::getVariantTrack(U2OpStatus& os) const {
     return vdbi->getVariantTrack(entityRef.entityId, os);
 }
 
-void VariantTrackObject::setGObjectName(const QString& newName) {
-    CHECK(GObject::getGObjectName() != newName, );
-
-    GObject::setGObjectName(newName);
-    emit si_failedModifyObjectName();
-}
-
 GObject* VariantTrackObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     CHECK_OP(os, nullptr);

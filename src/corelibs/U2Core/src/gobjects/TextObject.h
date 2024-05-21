@@ -48,8 +48,6 @@ public:
 
     GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const override;
 
-    void setGObjectName(const QString& newName) override;
-
 private:
     void commitTextToDB(const QString& newText);
 };

@@ -1079,7 +1079,7 @@ GUI_TEST_CLASS_DEFINITION(test_7267_7) {
 GUI_TEST_CLASS_DEFINITION(test_7267_8) {
     GTFile::copy(dataDir + "samples/CLUSTALW/COI.aln", sandBoxDir + "/" + "test_7267_8.aln");
     GTFileDialog::openFile(sandBoxDir, "test_7267_8.aln");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
     GTUtilsProjectTreeView::rename("test_7267_8", "test_7267_8_new");
 }

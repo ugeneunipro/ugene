@@ -130,13 +130,6 @@ GObject* PhyTreeObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const Q
     return cln;
 }
 
-void PhyTreeObject::setGObjectName(const QString& newName) {
-    CHECK(GObject::getGObjectName() != newName, );
-
-    GObject::setGObjectName(newName);
-    emit si_failedModifyObjectName();
-}
-
 void PhyTreeObject::setTree(const PhyTree& _tree) {
     tree = _tree;
     onTreeChanged();

@@ -271,17 +271,6 @@ void AnnotationTableObject::setGObjectName(const QString& newName) {
 
     ensureDataLoaded();
     GObject::setGObjectName(newName);
-
-    // In case of exporting we set GObject name,
-    // but it is not connected to document yet
-    auto doc = getDocument();
-    CHECK(doc != nullptr, );
-
-    if (doc->getDocumentFormat()->hasModifiableName()) {
-        setModified(true);
-    } else {
-        emit si_failedModifyObjectName();
-    }
 }
 
 U2DataId AnnotationTableObject::getRootFeatureId() const {
