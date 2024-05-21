@@ -993,8 +993,10 @@ GUI_TEST_CLASS_DEFINITION(test_7267_1) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
     GTUtilsProjectTreeView::rename("NC_001363", "test_7267_1");
     GTUtilsProjectTreeView::rename("NC_001363 features", "test_7267_1");
-    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
-    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
     GTFileDialog::openFile(sandBoxDir, "test_7267_1.gb");
     GTUtilsProjectTreeView::click("test_7267_1");
     GTUtilsProjectTreeView::click("test_7267_1 features");
@@ -1013,8 +1015,10 @@ GUI_TEST_CLASS_DEFINITION(test_7267_3) {
     GTFileDialog::openFile(sandBoxDir, "test_7267_3.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
     GTUtilsProjectTreeView::rename("human_T1 (UCSC April 2002 chr7:115977709-117855134)", "test_7267_3");
-    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
-    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
     GTFileDialog::openFile(sandBoxDir, "test_7267_3.fa");
     GTUtilsProjectTreeView::click("test_7267_3");
 }
@@ -1024,8 +1028,11 @@ GUI_TEST_CLASS_DEFINITION(test_7267_4) {
     GTFileDialog::openFile(sandBoxDir, "test_7267_4.fastq");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
     GTUtilsProjectTreeView::rename("90-JRI-07 sequence", "test_7267_4");
-    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
-    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
+
     GTFileDialog::openFile(sandBoxDir, "test_7267_4.fastq");
     GTUtilsProjectTreeView::click("test_7267_4");
 }
@@ -1035,8 +1042,10 @@ GUI_TEST_CLASS_DEFINITION(test_7267_5) {
     GTFileDialog::openFile(sandBoxDir, "test_7267_5.bed");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::rename("test_chromosome features", "test_7267_5");
-    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
-    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
     GTFileDialog::openFile(sandBoxDir, "test_7267_5.fastq");
     GTUtilsProjectTreeView::click("test_7267_5 features");
 }
@@ -1046,8 +1055,10 @@ GUI_TEST_CLASS_DEFINITION(test_7267_6) {
     GTFileDialog::openFile(sandBoxDir, "test_7267_6.gff");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::rename("chr22 features", "test_7267_6");
-    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
-    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
     GTFileDialog::openFile(sandBoxDir, "test_7267_6.gff");
     GTUtilsProjectTreeView::click("test_7267_6 features");
 }
@@ -1057,8 +1068,10 @@ GUI_TEST_CLASS_DEFINITION(test_7267_7) {
     GTFileDialog::openFile(sandBoxDir, "test_7267_7.gtf");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::rename("annotationtablename features", "test_7267_7");
-    GTMenu::clickMainMenuItem({"File", "Save all"}, GTGlobals::UseKey);
-    GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseKey);
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
     GTFileDialog::openFile(sandBoxDir, "test_7267_7.gtf");
     GTUtilsProjectTreeView::click("test_7267_7 features");
 }
@@ -1068,7 +1081,7 @@ GUI_TEST_CLASS_DEFINITION(test_7267_8) {
     GTFileDialog::openFile(sandBoxDir, "test_7267_8.aln");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
     GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
-    GTUtilsProjectTreeView::rename("COI", "test_7267_8");
+    GTUtilsProjectTreeView::rename("test_7267_8", "test_7267_8_new");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7267_9) {
@@ -1093,7 +1106,7 @@ GUI_TEST_CLASS_DEFINITION(test_7267_11) {
     GTUtilsProject::openFile(sandBoxDir + "/" + "test_7267_11.txt");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
-    GTUtilsProjectTreeView::rename("text", "test_7267_11");
+    GTUtilsProjectTreeView::rename("test_7267_11", "test_7267_11_new");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7276) {
