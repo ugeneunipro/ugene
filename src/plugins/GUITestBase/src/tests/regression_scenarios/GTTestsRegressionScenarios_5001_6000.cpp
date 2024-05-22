@@ -819,6 +819,46 @@ GUI_TEST_CLASS_DEFINITION(test_5231) {
     CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5239) {
+    /*
+    * 1. Open BLAST make database dialog Tools->BLAST->BLAST make database...
+    * 2. Fill all fields with valid data, except "database path" - set not existed directory
+    * Expected state: Build button is disabled
+    * 3. Set valid "database path" directory
+    * Expected state: Build button is enabled
+    */
+
+    class MakeBlastDbDialogTestPathsFiller : public MakeBlastDbDialogFiller {
+    public:
+        MakeBlastDbDialogTestPathsFiller()
+            : MakeBlastDbDialogFiller(MakeBlastDbDialogFiller::Parameters()){};
+        void commonScenario() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            auto inputFilesRadioButton = GTWidget::findRadioButton("inputFilesRadioButton", dialog);
+            GTWidget::findLineEdit("inputFilesLineEdit", dialog);
+
+            GTRadioButton::click(inputFilesRadioButton);
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list(dataDir + "/samples/Genbank/", {"murine.gb"}));
+            GTWidget::click(GTWidget::findWidget("inputFilesToolButton"));            
+
+            GTLineEdit::setText(GTWidget::findLineEdit("baseNamelineEdit", dialog), "name");
+            GTLineEdit::setText(GTWidget::findLineEdit("databaseTitleLineEdit", dialog), "name");
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), "~/", false, true);
+            auto buildButton = GTWidget::findButtonByText("Build", GTUtilsDialog::buttonBox(dialog));
+            CHECK_SET_ERR(!buildButton->isEnabled(), "Build button should be disabled!");
+
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), dataDir);
+            CHECK_SET_ERR(buildButton->isEnabled(), "Build button should be enabled!");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new MakeBlastDbDialogTestPathsFiller);
+    GTMenu::clickMainMenuItem({"Tools", "BLAST", "BLAST make database..."});
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5246) {
     // 1. Open file human_t1.fa
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
