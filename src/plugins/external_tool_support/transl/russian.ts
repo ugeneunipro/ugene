@@ -11552,6 +11552,11 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <source>Output database path contain space characters.</source>
         <translation>Путь до базы данных содержит пробелы.</translation>
     </message>
+    <message>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="118"/>
+        <source>Output database path not exists.</source>
+        <translation>Путь до базы данных .не существует.</translation>
+    </message>
 </context>
 <context>
     <name>U2::MakeBlastDbTask</name>

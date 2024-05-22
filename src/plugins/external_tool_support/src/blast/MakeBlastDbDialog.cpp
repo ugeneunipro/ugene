@@ -108,11 +108,16 @@ void MakeBlastDbDialog::sl_onBrowseDatabasePath() {
     }
     databasePathLineEdit->setFocus();
 }
+
 void MakeBlastDbDialog::sl_lineEditChanged() {
-    bool hasSpacesInInputFiles = false;
-    bool pathWarning = databasePathLineEdit->text().contains(' ');
-    QString pathTooltip = pathWarning ? tr("Output database path contain space characters.") : "";
-    GUIUtils::setWidgetWarningStyle(databasePathLineEdit, pathWarning);
+    QString dbPath = databasePathLineEdit->text();
+    QString pathTooltip;
+    if (dbPath.contains(' ')) {
+        pathTooltip = tr("Output database path contain space characters.");
+    } else if (!QDir(dbPath).exists()) {
+        pathTooltip = tr("Output database path not exists.");
+    }    
+    GUIUtils::setWidgetWarningStyle(databasePathLineEdit, !pathTooltip.isEmpty());    
     databasePathLineEdit->setToolTip(pathTooltip);
 
     bool nameWarning = baseNamelineEdit->text().contains(' ');
@@ -120,20 +125,15 @@ void MakeBlastDbDialog::sl_lineEditChanged() {
     GUIUtils::setWidgetWarningStyle(baseNamelineEdit, nameWarning);
     baseNamelineEdit->setToolTip(nameTooltip);
 
-    bool hasSpacesInOutputDBPath = pathWarning || nameWarning;
-
+    bool IoPathsProblem = !pathTooltip.isEmpty() || nameWarning;
     bool isFilledInputFilesOrDirLineEdit =
         (!inputFilesLineEdit->text().isEmpty() && inputFilesRadioButton->isChecked()) ||
         (!inputDirLineEdit->text().isEmpty() && inputDirRadioButton->isChecked());
-    bool isFilledDatabasePathLineEdit = !databasePathLineEdit->text().isEmpty();
-    bool isFilledDatabaseTitleLineEdit = !databaseTitleLineEdit->text().isEmpty();
-    bool isFilledBaseNameLineEdit = !baseNamelineEdit->text().isEmpty();
-    makeButton->setEnabled(isFilledBaseNameLineEdit &&
-                           isFilledDatabasePathLineEdit &&
-                           isFilledDatabaseTitleLineEdit &&
+    makeButton->setEnabled(!baseNamelineEdit->text().isEmpty() &&
+                           !dbPath.isEmpty() &&
+                           !databaseTitleLineEdit->text().isEmpty() &&
                            isFilledInputFilesOrDirLineEdit &&
-                           !hasSpacesInInputFiles &&
-                           !hasSpacesInOutputDBPath);
+                           !IoPathsProblem);
 }
 
 QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter = true);
