@@ -3532,6 +3532,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0025);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0026);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0027);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0028);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/start_page

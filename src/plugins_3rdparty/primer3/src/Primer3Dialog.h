@@ -67,7 +67,7 @@ public:
 private:
     void reset();
     bool doDataExchange();
-    bool updateErrorState(const QMap<QWidget*, bool>& widgetStates, const QStringList& errors);
+    bool updateErrorState(const QMap<QWidget*, bool>& widgetStates, const QStringList& errors, const QStringList& criticals);
     QString getWidgetTemplateError(QWidget* wgt, const QString& errorWgtLabel = QString()) const;
 
 private slots:

@@ -677,6 +677,34 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0028) {
+    // Open _common_data/scenarios/_regression/8094/8094.fa
+    // Run the Primer3 dialog
+    // Click "Pick primers"
+    // Expected: "The priming sequence is too long, please, decrease the region" dialog appeared
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/8094", "8094.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    class Scenario : public Filler {
+    public:
+        Scenario()
+            : Filler("Primer3Dialog") {
+        }
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "The priming sequence is too long, please, decrease the region."));
+            GTWidget::click(GTWidget::findWidget("pickPrimersButton", dialog));
+            GTWidget::click(GTWidget::findWidget("closeButton", dialog));
+        }
+    };
+
+    GTUtilsDialog::add(new Scenario());
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
+
+
+}
+
+
 
 }  // namespace GUITest_common_scenarios_primer3
 }  // namespace U2
