@@ -1182,13 +1182,13 @@ GUI_TEST_CLASS_DEFINITION(test_5281) {
 GUI_TEST_CLASS_DEFINITION(test_5291) {
     /*
     * 1. Open schema _common_data/scenarios/_regression/5291/5291.uwl
-    * 2. Set input file with ';' in path to Read Annotations worker
-    * 3. Set parameter "Annotation names file" in "Filter Annotations by Name" worker by selecting file with browse button. File should contain ';' in path.
+    * 2. Set parameter "Annotation names file" in "Filter Annotations by Name" worker by selecting file with browse button. File should contain ';' in path.
     * Expected state: Error message box appears
+    * 3. Set input file with ';' in path to Read Annotations worker
     * 4. Set parameter "Annotation names file" in "Filter Annotations by Name" worker by editing line edit. File should contain ';' in path to Filter Annotations by Name worker
     * Expected state: Error message box appears
     * 5. Fill parameter "Annotation names file" in "Filter Annotations by Name" with correct data.
-    * 6. Run wirkflow.
+    * 6. Run workflow.
     * Expected state: no errors in the log.
     */
     
@@ -1196,18 +1196,14 @@ GUI_TEST_CLASS_DEFINITION(test_5291) {
     GTUtilsWorkflowDesigner::loadWorkflow(testDir + "_common_data/scenarios/_regression/5291/5291.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsWorkflowDesigner::click("Read Annotations");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/scenarios/_regression/5291/CV;;U5576;;2.gb");    
-
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "File path/name contains ';' symbol."));
     GTUtilsWorkflowDesigner::click("Filter Annotations by Name");
     GTUtilsWorkflowDesigner::setParameter("Annotation names file", testDir + "_common_data/scenarios/_regression/5291/A;;nnota;;tio;n_names.txt", GTUtilsWorkflowDesigner::comboWithFileSelector);
 
-    //We need this switch between workers because setParameter won't work without it
-    //I think it is because of QMessageBox ruining focus
     GTUtilsWorkflowDesigner::click("Read Annotations");
-    GTUtilsWorkflowDesigner::click("Filter Annotations by Name");
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/scenarios/_regression/5291/CV;;U5576;;2.gb");
+
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "File not found:"));
     GTUtilsWorkflowDesigner::click("Filter Annotations by Name");
     GTUtilsWorkflowDesigner::setParameter("Annotation names file", testDir + "_common_data/scenarios/_regression/5291/A;;nnota;;tio;n_names.txt", GTUtilsWorkflowDesigner::textValue);
 
