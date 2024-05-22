@@ -11554,8 +11554,13 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/blast/MakeBlastDbDialog.cpp" line="118"/>
-        <source>Output database path not exists.</source>
-        <translation>Путь до базы данных .не существует.</translation>
+        <source>Output database path does not exist.</source>
+        <translation>Путь до базы данных не существует.</translation>
+    </message> 
+    <message>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="120"/>
+        <source>Output database path is read only.</source>
+        <translation>Путь до базы только для чтения.</translation>
     </message>
 </context>
 <context>

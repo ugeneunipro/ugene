@@ -823,8 +823,10 @@ GUI_TEST_CLASS_DEFINITION(test_5239) {
     /*
     * 1. Open BLAST make database dialog Tools->BLAST->BLAST make database...
     * 2. Fill all fields with valid data, except "database path" - set not existed directory
-    * Expected state: Build button is disabled
-    * 3. Set valid "database path" directory
+    * Expected state: Build button is disabled, corresponding tooltip appeared
+    * 3. Fill all fields with valid data, except "database path" - set read only directory
+    * Expected state: Build button is disabled, corresponding tooltip appeared
+    * 4. Set valid "database path" directory
     * Expected state: Build button is enabled
     */
 
@@ -845,7 +847,12 @@ GUI_TEST_CLASS_DEFINITION(test_5239) {
             GTLineEdit::setText(GTWidget::findLineEdit("baseNamelineEdit", dialog), "name");
             GTLineEdit::setText(GTWidget::findLineEdit("databaseTitleLineEdit", dialog), "name");
             GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), "~/", false, true);
+            CHECK_SET_ERR(GTWidget::findLineEdit("databasePathLineEdit", dialog)->toolTip() == "Output database path does not exist.", "Not expected tooltip");
             auto buildButton = GTWidget::findButtonByText("Build", GTUtilsDialog::buttonBox(dialog));
+            CHECK_SET_ERR(!buildButton->isEnabled(), "Build button should be disabled!");
+
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), sandBoxDir + "read_only_dir");
+            CHECK_SET_ERR(GTWidget::findLineEdit("databasePathLineEdit", dialog)->toolTip() == "Output database path is read only.", "Not expected tooltip");
             CHECK_SET_ERR(!buildButton->isEnabled(), "Build button should be disabled!");
 
             GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), dataDir);
@@ -854,6 +861,9 @@ GUI_TEST_CLASS_DEFINITION(test_5239) {
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
+
+    QDir().mkpath(sandBoxDir + "read_only_dir");
+    GTFile::setReadOnly(sandBoxDir + "read_only_dir");
 
     GTUtilsDialog::waitForDialog(new MakeBlastDbDialogTestPathsFiller);
     GTMenu::clickMainMenuItem({"Tools", "BLAST", "BLAST make database..."});

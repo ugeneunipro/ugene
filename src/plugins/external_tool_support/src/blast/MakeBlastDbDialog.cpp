@@ -21,6 +21,7 @@
 
 #include "MakeBlastDbDialog.h"
 
+#include <QTemporaryFile>
 #include <QToolButton>
 
 #include <U2Core/DNAAlphabet.h>
@@ -115,7 +116,9 @@ void MakeBlastDbDialog::sl_lineEditChanged() {
     if (dbPath.contains(' ')) {
         pathTooltip = tr("Output database path contain space characters.");
     } else if (!QDir(dbPath).exists()) {
-        pathTooltip = tr("Output database path not exists.");
+        pathTooltip = tr("Output database path does not exist.");
+    } else if (!QFileInfo(dbPath).permission(QFile::WriteOwner | QFile::WriteGroup | QFile::WriteUser) && !dbPath.isEmpty()) {
+        pathTooltip = tr("Output database path is read only.");
     }    
     GUIUtils::setWidgetWarningStyle(databasePathLineEdit, !pathTooltip.isEmpty());    
     databasePathLineEdit->setToolTip(pathTooltip);
