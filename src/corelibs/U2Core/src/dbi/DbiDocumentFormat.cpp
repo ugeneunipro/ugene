@@ -219,4 +219,8 @@ FormatCheckResult DbiDocumentFormat::checkRawData(const QByteArray& rawData, con
     return FormatDetection_NotMatched;
 }
 
+bool DbiDocumentFormat::hasModifiableName() const {
+    return true;
+}
+
 }  // namespace U2

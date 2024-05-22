@@ -160,16 +160,20 @@ void MsaObject::setGObjectName(const QString& newName) {
     ensureDataLoaded();
     CHECK(cachedMa->getName() != newName, );
 
-    GObject::setGObjectName(newName);
-    cachedMa->setName(newName);
-
     if (!isStateLocked()) {
         U2OpStatus2Log os;
         MaDbiUtils::renameMa(entityRef, newName, os);
         CHECK_OP(os, );
 
         updateCachedMultipleAlignment();
-        setModified(false);
+
+        if (type == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
+            setModified(false);
+            emit si_failedModifyObjectName();
+        }
+    } else {
+        GObject::setGObjectName(newName);
+        cachedMa->setName(newName);
     }
 }
 
