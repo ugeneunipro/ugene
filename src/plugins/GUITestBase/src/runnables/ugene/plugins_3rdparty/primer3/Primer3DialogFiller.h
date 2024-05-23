@@ -50,6 +50,8 @@ public:
         bool pickInternal = false;
         // If there are some validation errors expected set true
         bool hasValidationErrors = false;
+        // If there are some critical errors expected set true
+        bool hasValidationCriticals = false;
         // Subsequence of the validateion error text
         QString validationErrorsText;
         // Continue calculation even if errors exists

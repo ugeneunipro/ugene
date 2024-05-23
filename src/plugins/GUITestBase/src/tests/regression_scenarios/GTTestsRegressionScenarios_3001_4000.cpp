@@ -4138,7 +4138,7 @@ GUI_TEST_CLASS_DEFINITION(test_3821) {
     GTWidget::click(GTUtilsSequenceView::getSeqWidgetByNumber()->getDetView(), Qt::RightButton);
 
     Primer3DialogFiller::Primer3Settings settings;
-    settings.hasValidationErrors = true;
+    settings.hasValidationCriticals = true;
     GTUtilsDialog::waitForDialog(new Primer3DialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("primer3_action_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();

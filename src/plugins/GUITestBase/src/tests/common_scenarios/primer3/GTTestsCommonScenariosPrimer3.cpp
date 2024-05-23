@@ -611,18 +611,18 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
             auto cbPickRight = GTWidget::findCheckBox("checkbox_PRIMER_PICK_RIGHT_PRIMER", dialog);
             GTCheckBox::setChecked(cbPickRight, false);
 
-            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Cancel, "At least one primer on the \"Main\" settings page should be enabled - this is required by the \"check_primers\" task."));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "At least one primer on the \"Main\" settings page should be enabled - this is required by the \"check_primers\" task."));
 
             auto pick = GTWidget::findPushButton("pickPrimersButton", dialog);
             GTWidget::click(pick);
 
             GTCheckBox::setChecked(cbPickLeft, true);
-            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Cancel, "The left primer on the \"Main\" settings page is enabled, but not set."));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "The left primer on the \"Main\" settings page is enabled, but not set."));
             GTWidget::click(pick);
 
             GTCheckBox::setChecked(cbPickLeft, false);
             GTCheckBox::setChecked(cbPickRight, true);
-            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Cancel, "The right primer on the \"Main\" settings page is enabled, but not set."));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "The right primer on the \"Main\" settings page is enabled, but not set."));
             GTWidget::click(pick);
 
             GTCheckBox::setChecked(cbPickLeft, true);
