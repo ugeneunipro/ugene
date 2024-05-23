@@ -1046,7 +1046,7 @@ GUI_TEST_CLASS_DEFINITION(test_7267_5) {
     GTMenu::clickMainMenuItem({"File", "Save all"});
     GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
     GTMenu::clickMainMenuItem({"File", "Close project"});
-    GTFileDialog::openFile(sandBoxDir, "test_7267_5.fastq");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_5.bed");
     GTUtilsProjectTreeView::click("test_7267_5 features");
 }
 
