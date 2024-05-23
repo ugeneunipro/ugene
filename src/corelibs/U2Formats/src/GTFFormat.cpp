@@ -93,7 +93,9 @@ const QString GTFFormat::GENE_ID_QUALIFIER_NAME = "gene_id";
 const QString GTFFormat::TRANSCRIPT_ID_QUALIFIER_NAME = "transcript_id";
 
 GTFFormat::GTFFormat(QObject* parent)
-    : TextDocumentFormatDeprecated(parent, BaseDocumentFormats::GTF, DocumentFormatFlag_SupportWriting, QStringList("gtf")) {
+    : TextDocumentFormatDeprecated(parent, BaseDocumentFormats::GTF,
+                                   DocumentFormatFlag_SupportWriting | DocumentFormatFlag_HasModifiableName,
+                                   QStringList("gtf")) {
     formatName = tr("GTF");
     formatDescription = tr("The Gene transfer format (GTF) is a file format used to hold"
                            " information about gene structure.");
@@ -604,10 +606,6 @@ void GTFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
         ioLog.info(QString("The '%1' file GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers.")
                        .arg(io->getURL().getURLString()));
     }
-}
-
-bool GTFFormat::hasModifiableName() const {
-    return true;
 }
 
 }  // namespace U2

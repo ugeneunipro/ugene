@@ -49,8 +49,10 @@ namespace U2 {
 static const int PROGRESS_UPDATE_STEP = 1000;
 
 FastqFormat::FastqFormat(QObject* p)
-    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::FASTQ, DocumentFormatFlags_SW | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "fastq"
-                                                                                                                                                       << "fq") {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::FASTQ, DocumentFormatFlags_SW |
+                                                                  DocumentFormatFlag_LockedIfNotCreatedByUGENE |
+                                                                  DocumentFormatFlag_HasModifiableName, QStringList() << "fastq"
+                                                                                                                      << "fq") {
     supportedObjectTypes += GObjectTypes::SEQUENCE;
     formatName = tr("FASTQ");
     formatDescription = tr("FASTQ format is a text-based format for storing both a biological sequence (usually nucleotide sequence) "
@@ -520,10 +522,6 @@ void FastqFormat::writeEntry(const QString& sequenceName, const DNASequence& who
     }
 
     writeSequence(os, io, qualityData, wholeSeq.length(), errorMessage, cutLines);
-}
-
-bool FastqFormat::hasModifiableName() const {
-    return true;
 }
 
 void FastqFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) {

@@ -45,17 +45,14 @@
 namespace U2 {
 
 FastaFormat::FastaFormat(QObject* p)
-    : TextDocumentFormat(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW, {"fa", "mpfa", "fna", "fsa", "fas", "fasta", "sef", "seq", "seqs"}) {
+    : TextDocumentFormat(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW | DocumentFormatFlag_HasModifiableName,
+                         {"fa", "mpfa", "fna", "fsa", "fas", "fasta", "sef", "seq", "seqs"}) {
     formatName = tr("FASTA");
     supportedObjectTypes += GObjectTypes::SEQUENCE;
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatDescription = tr("FASTA format is a text-based format for representing either nucleotide sequences or peptide sequences, "
                            "in which base pairs or amino acids are represented using single-letter codes. "
                            "The format also allows for sequence names and comments to precede the sequences.");
-}
-
-bool FastaFormat::hasModifiableName() const {
-    return true;
 }
 
 /** Returns FormatDetectionResult properties (hints) for the given data. */

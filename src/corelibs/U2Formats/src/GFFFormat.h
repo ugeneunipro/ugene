@@ -37,8 +37,6 @@ public:
 
     void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) override;
 
-    bool hasModifiableName() const override;
-
 protected:
     FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
 

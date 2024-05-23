@@ -38,8 +38,6 @@ public:
 
     void storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) override;
 
-    bool hasModifiableName() const override;
-
     static bool checkCircularity(const GUrl& filePath, U2OpStatus& os);
 
 protected:

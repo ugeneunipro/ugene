@@ -190,10 +190,6 @@ QString DocumentFormat::getRadioButtonText() const {
     return QString();
 }
 
-bool DocumentFormat::hasModifiableName() const {
-    return false;
-}
-
 bool DocumentFormat::isObjectOpSupported(const Document* d, DocObjectOp op, GObjectType t) const {
     assert(d->getDocumentFormat() == this);
 

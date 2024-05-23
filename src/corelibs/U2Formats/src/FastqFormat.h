@@ -48,8 +48,6 @@ public:
 
     static void writeEntry(const QString& seqName, const DNASequence& seq, IOAdapter* io, const QString& errorMessage, U2OpStatus& os, bool cutLines = true);
 
-    bool hasModifiableName() const override;
-
 protected:
     FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const override;
 

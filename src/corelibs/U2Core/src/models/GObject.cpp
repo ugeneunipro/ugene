@@ -84,7 +84,7 @@ void GObject::setGObjectName(const QString& newName) {
     auto doc = getDocument();
     CHECK(doc != nullptr, );
 
-    if (doc->getDocumentFormat()->hasModifiableName()) {
+    if (doc->getDocumentFormat()->checkFlags(DocumentFormatFlag_HasModifiableName)) {
         setModified(true);
     } else {
         emit si_failedModifyObjectName();

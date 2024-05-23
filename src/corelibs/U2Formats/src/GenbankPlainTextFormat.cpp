@@ -43,7 +43,8 @@
 namespace U2 {
 
 GenbankPlainTextFormat::GenbankPlainTextFormat(QObject* p)
-    : EMBLGenbankAbstractDocument(BaseDocumentFormats::PLAIN_GENBANK, tr("GenBank"), 79, DocumentFormatFlags_SW, p) {
+    : EMBLGenbankAbstractDocument(BaseDocumentFormats::PLAIN_GENBANK, tr("GenBank"), 79,
+                                  DocumentFormatFlags_SW | DocumentFormatFlag_HasModifiableName, p) {
     formatDescription = tr("GenBank Flat File Format is a rich format for storing sequences and associated annotations");
     fileExtensions << "gb"
                    << "gbk"
@@ -526,10 +527,6 @@ void GenbankPlainTextFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, Q
         os.setError(L10N::errorWritingFile(io->getURL()));
         return;
     }
-}
-
-bool GenbankPlainTextFormat::hasModifiableName() const {
-    return true;
 }
 
 bool GenbankPlainTextFormat::checkCircularity(const GUrl& filePath, U2OpStatus& os) {

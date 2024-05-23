@@ -100,8 +100,6 @@ public:
 
     void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) override;
 
-    bool hasModifiableName() const override;
-
     /** Gets annotation data from a BED file, but doesn't create an annotation table */
     static QList<SharedAnnotationData> getAnnotData(IOAdapter* io, U2OpStatus& os);
 

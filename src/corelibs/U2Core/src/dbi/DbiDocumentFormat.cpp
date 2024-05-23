@@ -46,6 +46,7 @@ DbiDocumentFormat::DbiDocumentFormat(const U2DbiFactoryId& _id, const DocumentFo
     formatFlags |= DocumentFormatFlag_NoPack;
     formatFlags |= DocumentFormatFlag_NoFullMemoryLoad;
     formatFlags |= DocumentFormatFlag_DirectWriteOperations;
+    formatFlags |= DocumentFormatFlag_HasModifiableName;
 }
 
 static void renameObjectsIfNamesEqual(QList<GObject*>& objs) {
@@ -217,10 +218,6 @@ FormatCheckResult DbiDocumentFormat::checkRawData(const QByteArray& rawData, con
         }
     }
     return FormatDetection_NotMatched;
-}
-
-bool DbiDocumentFormat::hasModifiableName() const {
-    return true;
 }
 
 }  // namespace U2

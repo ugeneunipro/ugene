@@ -37,8 +37,6 @@ public:
 
     FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url = GUrl()) const override;
 
-    bool hasModifiableName() const override;
-
 protected:
     Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
