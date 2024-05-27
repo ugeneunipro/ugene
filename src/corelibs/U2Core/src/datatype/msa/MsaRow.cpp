@@ -806,11 +806,11 @@ QPair<ChromatogramData::TraceAndValue, ChromatogramData::TraceAndValue>
 
     auto peaksKeys = PEAKS.keys();
     const ChromatogramData& chromatogramData = *chromatogram;
-    ushort maxTraceValue = 0;
+    QList<ushort> allTraceValues;
     for (auto peak : qAsConst(peaksKeys)) {
         const QVector<ushort>& chromatogramBaseCallVector = chromatogramData.*PEAKS.value(peak);
         ushort peakValue = chromatogramBaseCallVector[baseCall];
-        maxTraceValue = qMax(maxTraceValue, peakValue);
+        allTraceValues << peakValue;
         int startOfCharacterBaseCall = baseCall - ((baseCall - previousBaseCall) / 2);
         int startValue = chromatogramBaseCallVector[startOfCharacterBaseCall];
         if (previousBaseCall == baseCall) {
@@ -832,12 +832,13 @@ QPair<ChromatogramData::TraceAndValue, ChromatogramData::TraceAndValue>
         return {{ChromatogramData::Trace::Trace_A, 0}, {ChromatogramData::Trace::Trace_C, 0}};
     }
 
+    std::sort(allTraceValues.begin(), allTraceValues.end(), std::greater<>());
     std::sort(peaks.begin(),
               peaks.end(),
               [](const auto& first, const auto& second) {
                   return first.value > second.value;
               });
-    if (peaks[0].value != maxTraceValue) {
+    if (peaks[0].value != allTraceValues[0] && peaks[1].value != allTraceValues[1]) {
         hasTwoPeaks = false;
         return {{ChromatogramData::Trace::Trace_A, 0}, {ChromatogramData::Trace::Trace_C, 0}};
     }
