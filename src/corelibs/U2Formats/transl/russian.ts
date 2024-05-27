@@ -40,27 +40,27 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="243"/>
+        <location filename="../src/BAMUtils.cpp" line="90"/>
         <source>Fail to open &quot;%1&quot; for reading</source>
         <translation>Невозможно открыть &quot;%1&quot; для чтения</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="247"/>
-        <source>Fail to read the header from the file: &quot;%1&quot;</source>
-        <translation>Невозможно прочитать заголовок файла: &quot;%1&quot;</translation>
+        <location filename="../src/BAMUtils.cpp" line="94"/>
+        <source>Fail to read the header from the file, probably, not an assembly format: &quot;%1&quot;</source>
+        <translation>Не удалось считать заголовок из файла, вероятно, это не формат сборки: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="251"/>
-        <source>Error parsing the reads from the file: &quot;%1&quot;</source>
-        <translation>Ошибка чтения ридов из файла: &quot;%1&quot;</translation>
+        <location filename="../src/BAMUtils.cpp" line="98"/>
+        <source>Fail to write the header to the file: &quot;%1&quot;</source>
+        <translation>Не удалось записать заголовок в файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="255"/>
+        <location filename="../src/BAMUtils.cpp" line="102"/>
         <source>Truncated file: &quot;%1&quot;</source>
         <translation>Обрезанный файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="1058"/>
+        <location filename="../src/BAMUtils.cpp" line="700"/>
         <source>Can&apos;t open file with given url: %1.</source>
         <translation>Не удается открыть файл по указанному URL: %1.</translation>
     </message>
@@ -129,22 +129,17 @@
         <translation>Строка слишком длинная</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="351"/>
-        <source>A name is not match with AF names</source>
-        <translation>Имя не совпадает с именами AF</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceFormat.cpp" line="382"/>
+        <location filename="../src/ace/AceFormat.cpp" line="372"/>
         <source>First line is not an ace header</source>
         <translation>Первая строка не является заголовком ACE</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="385"/>
+        <location filename="../src/ace/AceFormat.cpp" line="375"/>
         <source>No contig count tag in the header line</source>
         <translation>Отсутствует тег числа контигов в строке заголовка</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="398"/>
+        <location filename="../src/ace/AceFormat.cpp" line="388"/>
         <source>Must be CO keyword</source>
         <translation>Ожидается ключевое слово CO</translation>
     </message>
@@ -154,13 +149,13 @@
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="408"/>
+        <location filename="../src/ace/AceFormat.cpp" line="398"/>
         <source>There is no note about reads count</source>
         <translation>Отсуствтует информация о числе считываний</translation>
     </message>
     <message>
         <location filename="../src/ace/AceFormat.cpp" line="224"/>
-        <location filename="../src/ace/AceFormat.cpp" line="267"/>
+        <location filename="../src/ace/AceFormat.cpp" line="265"/>
         <source>There is no AF note</source>
         <translation>Отсутствует</translation>
     </message>
@@ -170,74 +165,69 @@
         <translation>ACE это формат используемый для хранения информации о геномных конфигурациях</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="225"/>
-        <source>A name is duplicated</source>
-        <translation>Повторные вхождения имени</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceFormat.cpp" line="232"/>
+        <location filename="../src/ace/AceFormat.cpp" line="230"/>
         <source>No consensus</source>
         <translation>Отсутствует консенсус</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="244"/>
+        <location filename="../src/ace/AceFormat.cpp" line="242"/>
         <source>BQ keyword hasn&apos;t been found</source>
         <translation>Не найдено ключевое слово BQ</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="247"/>
+        <location filename="../src/ace/AceFormat.cpp" line="245"/>
         <source>Bad consensus data</source>
         <translation>Плохие данные в консенсусе</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="274"/>
-        <location filename="../src/ace/AceFormat.cpp" line="279"/>
+        <location filename="../src/ace/AceFormat.cpp" line="272"/>
+        <location filename="../src/ace/AceFormat.cpp" line="277"/>
         <source>Bad AF note</source>
         <translation>Плохое примечание AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="309"/>
+        <location filename="../src/ace/AceFormat.cpp" line="305"/>
         <source>There is no read note</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="317"/>
+        <location filename="../src/ace/AceFormat.cpp" line="313"/>
         <source>No sequence</source>
         <translation>Нет последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="329"/>
+        <location filename="../src/ace/AceFormat.cpp" line="325"/>
         <source>QA keyword hasn&apos;t been found</source>
         <translation>Ключевое слово QA не было найдено</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="335"/>
-        <location filename="../src/ace/AceFormat.cpp" line="338"/>
+        <location filename="../src/ace/AceFormat.cpp" line="331"/>
+        <location filename="../src/ace/AceFormat.cpp" line="334"/>
         <source>QA error no clear range</source>
         <translation>Ошибка QA нет четкого региона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="342"/>
+        <location filename="../src/ace/AceFormat.cpp" line="338"/>
         <source>QA error bad range</source>
         <translation>Ошибка QA: плохой регион</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="347"/>
+        <location filename="../src/ace/AceFormat.cpp" line="343"/>
         <source>Bad sequence data</source>
         <translation>Некорректные данные в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="442"/>
+        <location filename="../src/ace/AceFormat.cpp" line="430"/>
         <source>RD line has read &quot;%1&quot;, but it wasn&apos;t presented in AF</source>
         <translation>Тэг RD содержит прочтение с именем &quot;%1&quot;, которое не было представлено в тэгах AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="464"/>
+        <location filename="../src/ace/AceFormat.cpp" line="452"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="490"/>
+        <location filename="../src/ace/AceFormat.cpp" line="478"/>
         <source>File doesn&apos;t contain any msa objects</source>
         <translation>Файл не содержит msa объектов</translation>
     </message>
@@ -417,76 +407,54 @@
 <context>
     <name>U2::BAMUtils</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="299"/>
+        <location filename="../src/BAMUtils.cpp" line="170"/>
+        <source>Wrong line in a SAM file: &quot;%1&quot;. Skipped</source>
+        <translation>Неверная строка в SAM файле: &quot;%1&quot;. Пропущена</translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="177"/>
+        <source>Wrong left base position format: &quot;%1&quot;. Line has been skipped.</source>
+        <translation>Неверный формат позиции левого символа: &quot;%1&quot;. Строка была пропущена.</translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="240"/>
         <source>There is no header in the SAM file &quot;%1&quot;. The header information will be generated automatically.</source>
         <translation>Нет заголовка в SAM файле &quot;%1&quot;. Необходимая информация будет сгенерирована автоматически.</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="501"/>
+        <location filename="../src/BAMUtils.cpp" line="244"/>
+        <source>No reference data in the file: %1</source>
+        <translation>Файл не содержит референсных данныз: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="378"/>
+        <source>Sorting &quot;%1&quot; and saving the result to &quot;%2&quot;</source>
+        <translation>Сортировка &quot;%1&quot; и сохранение результата в &quot;%2&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="382"/>
+        <source>Cannot sort &quot;%1&quot;, abort</source>
+        <translation>Невозможно провести сортировку &quot;%1&quot;, отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="388"/>
         <source>Merging BAM files: &quot;%1&quot;. Resulting merged file is: &quot;%2&quot;</source>
         <translation>Слияние BAM файлов: &quot;%1&quot;. Соединенный файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="417"/>
-        <source>[sort_blocks] fail to create file %1</source>
-        <translation>[sort_blocks] не удалось создать файл %1</translation>
-    </message>
-    <message>
-        <location filename="../src/BAMUtils.cpp" line="431"/>
-        <source>Failed to open file: %1</source>
-        <translation>Не удалось открыть файл: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/BAMUtils.cpp" line="435"/>
-        <source>[bam_sort_core] fail to open file</source>
-        <translation>bam_sort_core] не удалось открыть файл</translation>
-    </message>
-    <message>
-        <location filename="../src/BAMUtils.cpp" line="533"/>
-        <source>[bam_merge_core] fail to open file %1</source>
-        <translation>bam_merge_core] не удалось открыть файл %1</translation>
-    </message>
-    <message>
-        <location filename="../src/BAMUtils.cpp" line="555"/>
-        <source>[bam_merge_core] different target sequence name: &apos;%1&apos; != &apos;%2&apos; in file &apos;%3&apos;
-</source>
-        <translation>[bam_merge_core] разные имена целевой последовательности: &apos;%1&apos; != &apos;%2&apos; в файле &apos;%3
-</translation>
-    </message>
-    <message>
-        <location filename="../src/BAMUtils.cpp" line="593"/>
-        <source>Failed to create the output file: %1</source>
-        <translation>Не удалось создать выходной файл: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/BAMUtils.cpp" line="621"/>
-        <source>[bam_merge_core] &apos;%1&apos; is truncated. Continue anyway.</source>
-        <translation>[bam_merge_core] &apos;%1&apos; усечен. Продолжить в любом случае.</translation>
-    </message>
-    <message>
-        <location filename="../src/BAMUtils.cpp" line="506"/>
+        <location filename="../src/BAMUtils.cpp" line="401"/>
         <source>Failed to merge BAM files: %1 into %2</source>
         <translation>Не удалось объединить файлы BAM: %1 в %2</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="671"/>
-        <source>Can&apos;t remove temporary file: %1</source>
-        <translation>Не удается удалить временный файл: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/BAMUtils.cpp" line="743"/>
+        <location filename="../src/BAMUtils.cpp" line="437"/>
         <source>Build index for bam file: &quot;%1&quot;</source>
         <translation>Построение индекса для bam файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="746"/>
+        <location filename="../src/BAMUtils.cpp" line="439"/>
         <source>Can&apos;t build the index: %1</source>
         <translation>Невозможно посмтроить индекс: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/BAMUtils.cpp" line="999"/>
-        <source>Wrong line in a SAM file.</source>
-        <translation>Неправильная строка в файле SAM.</translation>
     </message>
 </context>
 <context>
@@ -610,22 +578,22 @@
 <context>
     <name>U2::BgzipTask</name>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="50"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="52"/>
         <source>Bgzip Compression task</source>
         <translation>Задача по сжатию с использованием Bgzip</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="56"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="58"/>
         <source>Start bgzip compression &apos;%1&apos;</source>
         <translation>Начало сжатия bgzip &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="67"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="69"/>
         <source>Can not open input file &apos;%1&apos;</source>
         <translation>Не удается открыть входной файл &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="77"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="78"/>
         <source>Can not open output file &apos;%2&apos;</source>
         <translation>Невозможно открыть выходной файл &apos;%2&apos;</translation>
     </message>
@@ -870,151 +838,146 @@
 <context>
     <name>U2::DocumentFormatUtils</name>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="136"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="155"/>
         <source>First line is not an ace header</source>
         <translation>Первая строка не является заголовком ACE</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="140"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="159"/>
         <source>There is no assemblies in input file</source>
         <translation>В файле нет сборок</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="154"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="173"/>
         <source>There are not enough assemblies</source>
         <translation>Недостаточно сборок</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="175"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="193"/>
         <source>Expected %1 reads, but only %2 AF tags found</source>
         <translation>Ожидается %1 прочтений, но только %2 тэгов AF было найдено</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="212"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="463"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="230"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="476"/>
         <source>Unexpected end of file</source>
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="213"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="231"/>
         <source>Line is too long</source>
         <translation>Строка слишком длинная</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="220"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="238"/>
         <source>No contig count tag in the header line</source>
         <translation>Отсутствует тег числа контигов в строке заголовка</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="232"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="250"/>
         <source>Not enough parameters in current line</source>
         <translation>Недостаточно параметров в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="243"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="261"/>
         <source>Parameter is not a digit</source>
         <translation>Параметр не является цифрой</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="251"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="269"/>
         <source>There is no note about reads count</source>
         <translation>Отсуствтует информация о числе считываний</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="263"/>
-        <source>A name is duplicated</source>
-        <translation>Повторные вхождения имени</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="270"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="285"/>
         <source>No consensus</source>
         <translation>Отсутствует консенсус</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="280"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="295"/>
         <source>BQ keyword hasn&apos;t been found</source>
         <translation>Не найдено ключевое слово BQ</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="283"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="298"/>
         <source>Unexpected symbols in consensus data</source>
         <translation>Неоижданные символы в консенсусе</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="294"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="309"/>
         <source>Can&apos;t find a sequence name in current line</source>
         <translation>Невозможно найти имя последовательности в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="304"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="319"/>
         <source>An empty sequence name</source>
         <translation>Не указано имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="376"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="389"/>
         <source>Not all reads were found</source>
         <translation>Не все риды были найдены</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="385"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="389"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="421"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="433"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="398"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="402"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="434"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="446"/>
         <source>Bad AF note</source>
         <translation>Плохое примечание AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="459"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="472"/>
         <source>There is no read note</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="472"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="485"/>
         <source>Invalid RD part</source>
         <translation>Неверная часть RD</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="482"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="497"/>
         <source>QA keyword hasn&apos;t been found</source>
         <translation>Ключевое слово QA не было найдено</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="491"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="506"/>
         <source>QA error bad range</source>
         <translation>Ошибка QA: плохой регион</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="494"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="509"/>
         <source>Unexpected symbols in sequence data</source>
         <translation>Неоижданные символы в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="497"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="489"/>
         <source>A name is not match with AF names</source>
         <translation>Имя не совпадает с именами AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="503"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="515"/>
         <source>Can&apos;t find clear range start in current line</source>
         <translation>Невозможно найти начало диапазона в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="504"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="516"/>
         <source>Clear range start is invalid</source>
         <translation>Неверное начало диапазона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="511"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="523"/>
         <source>Can&apos;t find clear range end in current line</source>
         <translation>Невозможно найти конец диапазона в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="512"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="524"/>
         <source>Clear range end is invalid</source>
         <translation>Неверный конец диапазона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="536"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="548"/>
         <source>There is no next element</source>
         <translation>Отсутствует следующий элемент</translation>
     </message>
@@ -1651,52 +1614,52 @@
 <context>
     <name>U2::GzipDecompressTask</name>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="131"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="128"/>
         <source>Decompression task</source>
         <translation>Задача разархивации</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="135"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="132"/>
         <source>&apos;%1&apos; is not zipped file</source>
         <translation>&apos;%1&apos; не является zip файлом</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="140"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="137"/>
         <source>Start decompression &apos;%1&apos;</source>
         <translation>Начало разархивации &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="165"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="162"/>
         <source>Can not open output file &apos;%1&apos;</source>
         <translation>Невозможно открыть выходной файл &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="171"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="168"/>
         <source>Can not open input file &apos;%1&apos;</source>
         <translation>Can not open input file &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="186"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="183"/>
         <source>Error reading file</source>
         <translation>Ошибка чтения файла</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="192"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="189"/>
         <source>Error writing to file</source>
         <translation>Ошибка записи в файл</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="197"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="194"/>
         <source>Decompression finished</source>
         <translation>Разархивация завершена</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="202"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="199"/>
         <source>Decompression task was finished with an error: %1</source>
         <translation>Задача разархивации завершилась с ошибкой : %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="204"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="201"/>
         <source>Decompression task was finished. A new decompressed file is: &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Задача разархивации завершена. Новый файл: &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
@@ -2392,62 +2355,62 @@
         <translation>Невозможно конвертировать pnext в число: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="223"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="227"/>
         <source>Error checking SQLite database: %1!</source>
         <translation>Ошибка в базе данных SQLite: %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="236"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="240"/>
         <source>Error creating table: %1, error: %2</source>
         <translation>Error creating table: %1, error: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="268"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="278"/>
         <source>Not a %1 SQLite database: %2</source>
         <translation>Not a %1 SQLite database: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="333"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="343"/>
         <source>Database is already opened!</source>
         <translation>База данных уже открыта!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="337"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="347"/>
         <source>Illegal database state: %1</source>
         <translation>Недопустимое состояние базы данных: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="343"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="353"/>
         <source>URL is not specified</source>
         <translation>Не задан путь</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="274"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="284"/>
         <source>The file was created with a newer version of UGENE. Current version: %1, minimum version required by database: %2. File: %3.</source>
         <translation>Файл был создан с более новой версией UGENE. Текущая версия: %1, минимальная версия, требуемая базой данных: %2. Файл: %3.</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="357"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="367"/>
         <source>Error opening SQLite database: &apos;%1&apos;. Error: %2</source>
         <translation>Ошибка при открытии базы данных SQLite: &apos;%1&apos;. Ошибка: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="411"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="421"/>
         <source>Database is already closed!</source>
         <translation>База данных уже закрыта!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="415"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="425"/>
         <source>Illegal database state %1!</source>
         <translation>Illegal database state %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="421"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="431"/>
         <source>Can&apos;t synchronize database state</source>
         <translation>Не удается синхронизировать состояние базы данных</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="440"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="450"/>
         <source>Failed to close database: %1, err: %2</source>
         <translation>Failed to close database: %1, err: %2</translation>
     </message>

@@ -389,12 +389,12 @@
 <context>
     <name>EnzymeTreeItem</name>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="951"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="961"/>
         <source> (&gt;%1 sites)</source>
         <translation> (&gt;%1 сайтов)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/FindEnzymesDialog.cpp" line="953"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="963"/>
         <source>%n sites</source>
         <translation>
             <numerusform>%n сайт</numerusform>
@@ -403,32 +403,32 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="970"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="980"/>
         <source>An orphan methylase,&lt;br&gt;not associated with a restriction enzyme or specificity subunit</source>
         <translation>Ничейная (orphan) метилаза,&lt;br&gt;не ассоциированная с сайтом рестрикции или чем-то еще</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="974"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="984"/>
         <source>An intron-encoded (homing) endonuclease</source>
         <translation>Интрон-кодируемая (homing) эндонуклеаза</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="976"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="986"/>
         <source>Type %1 restriction enzyme</source>
         <translation>Сайт рестрикции %1 типа</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="978"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="988"/>
         <source>Type %1 methylase</source>
         <translation>Метилаза %1 типа</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="982"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="992"/>
         <source>Type %1 restriction enzyme,&lt;br&gt;but only recognizes the sequence when it is methylated</source>
         <translation>Сайт рестрикции %1 типа,&lt;br&gt;распознающий только метилированную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="984"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="994"/>
         <source>Type %1 enzyme, which acts as both -&lt;br&gt;a restriction enzyme and a methylase</source>
         <translation>Сайт %1 типа, действующий как&lt;br&gt; сайт рестрикции, так и как метилаза</translation>
     </message>
@@ -612,57 +612,57 @@
         <translation>Фильтр таблицы ферментов</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="127"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="220"/>
         <source>Suppliers</source>
         <translation>Поставщики</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="146"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="239"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="153"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="246"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="160"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="253"/>
         <source>Invert</source>
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="169"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="170"/>
         <source>Recognition sequence length</source>
         <translation>Длина сайта распознования</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="188"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="287"/>
         <source>to</source>
         <translation>до</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="226"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="147"/>
         <source>Overhang type</source>
         <translation>Тип перекрытия</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="249"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="140"/>
         <source>Keep only</source>
         <translation>Показывать только</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="261"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="182"/>
         <source>Palindromic</source>
         <translation>Палиндромные</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="274"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="195"/>
         <source>Uninterrupted</source>
         <translation>Неразрывные</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="287"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="208"/>
         <source>Nondegenerate</source>
         <translation>Невырожденные</translation>
     </message>
@@ -672,17 +672,17 @@
         <translation>Регион поиска</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="258"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="179"/>
         <source>Forward and reverse-complementary enzyme strands are equal</source>
         <translation>Прямая и обратно-комплементарная последовательности сайта совпадают</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="271"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="192"/>
         <source>No internal N&apos;s</source>
         <translation>Нет внутренних N</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="284"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="205"/>
         <source>No extended DNA alphabet symbols (A, C, G, T and N only)</source>
         <translation>Нет символов расширенного алфавита ДНК (только A, C, G, T и N)</translation>
     </message>
@@ -1305,39 +1305,44 @@ To start ligation create a project or open an existing.</source>
         <translation>Выбрано: %1</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="690"/>
-        <source>Total number of enzymes: %1, selected %2</source>
-        <translation>Число ферментов в базе: %1, выбрано %2</translation>
+        <location filename="../src/FindEnzymesDialog.cpp" line="692"/>
+        <source>Total number of enzymes: %1, visible: %2, hidden: %3, selected: %4. </source>
+        <translation>Общее число сайтов: %1, отображается: %2, скрыто: %3, выделено: %4. </translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="727"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="737"/>
         <source>Sequence has been alredy closed.</source>
         <translation>Последовательность уже была закрыта.</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="734"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="744"/>
         <source>Invalid &apos;Search&apos; region!</source>
         <translation>Invalid &apos;Search&apos; region!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="744"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="754"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="727"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="767"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="773"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="737"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="777"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="783"/>
         <source>Error!</source>
         <translation>Проблема!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="767"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="698"/>
+        <source>Some enzymes are hidden due to &quot;Enzyme table filter&quot; settings.</source>
+        <translation>Некоторые энзимы скрыты из-за настроек &quot;Фильтра таблицы ферментов&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="777"/>
         <source>Minimum hit value must be lesser or equal then maximum!</source>
         <translation>Минимальное значение должно быть меньше либо равно максимального!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="772"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="782"/>
         <source>Too many results to render. Please reduce the search region or number of selected enzymes.</source>
         <translation>Слишком много результатов для отрисовки. Необходимо уменьшить регион поиска или число искомых ферментов.</translation>
     </message>

@@ -22,7 +22,9 @@
 #pragma once
 
 extern "C" {
-#include <bam.h>
+#include <samtools_core/bam.h>
+#include <samtools_core/htslib/htslib/bgzf.h>
+#include <samtools_core/htslib/htslib/sam.h>
 }
 
 #include <U2Core/U2AbstractDbi.h>
@@ -87,7 +89,7 @@ private:
     QByteArray nameFilter;
 
     qint64 nextPosToRead = 0;
-    std::shared_ptr<BGZF> bamFile;
+    std::shared_ptr<samFile> bamFile;
     QList<U2AssemblyRead> reads;
     QList<U2AssemblyRead>::Iterator current;
 
@@ -162,21 +164,26 @@ public:
     U2AttributeDbi* getAttributeDbi() override;
     bool isReadOnly() const override;
 
-    const bam_header_t* getHeader() const;
-    const bam_index_t* getIndex() const;
+    const bam_hdr_t* getHeader() const;
+    const hts_idx_t* getIndex() const;
 
     /**
-     * Creates a new 'bamFile' structure for the BAM file backed by the current DBI instance.
-     * The result bamFile is used as an input for various bam_* methods that may modify internal bamFile state and are not thread safe.
+     * Creates a new 'BGZF' structure for the BAM file backed by the current DBI instance.
+     * The result BGZF is used as an input for various bam_* methods that may modify internal BGZF state and are not thread safe.
      * Caller is responsible for closing the file.
      */
-    bamFile openNewBamFileHandler() const;
+    BGZF* openNewBgzfHandler() const;
+
+    const GUrl& getUrl() const {
+        return url;
+    }
+
 
 private:
     GUrl url;
     int assembliesCount;
-    bam_header_t* header;
-    bam_index_t* index;
+    bam_hdr_t* header;
+    hts_idx_t* index;
     QScopedPointer<SamtoolsBasedObjectDbi> objectDbi;
     QScopedPointer<SamtoolsBasedAssemblyDbi> assemblyDbi;
     QScopedPointer<SamtoolsBasedAttributeDbi> attributeDbi;

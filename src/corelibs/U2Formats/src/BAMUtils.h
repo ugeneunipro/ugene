@@ -45,6 +45,7 @@ public:
     /** Converts SAM file to BAM file. */
     static void convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath, const QString& referencePath = "");
 
+    /** Return true if file is sorted. */
     static bool isSortedBam(const QString& bamUrl, U2OpStatus& os);
 
     /**
@@ -53,47 +54,46 @@ public:
      */
     static GUrl sortBam(const QString& bamUrl, const QString& sortedBamFilePath, U2OpStatus& os);
 
-    static GUrl mergeBam(const QStringList& bamUrl, const QString& mergedBamTargetUrl, U2OpStatus& os);
-
-    static bool hasValidBamIndex(const QString& bamUrl);
-
-    static bool hasValidFastaIndex(const QString& fastaUrl);
-
-    static void createBamIndex(const QString& bamUrl, U2OpStatus& os);
-
-    static GUrl getBamIndexUrl(const QString& bamUrl);
-
-    static void writeDocument(Document* doc, U2OpStatus& os);
-
-    static void writeObjects(const QList<GObject*>& objects, const QString& url, const DocumentFormatId& formatId, U2OpStatus& os, const U2Region& desiredRegion = U2_REGION_MAX);
-
-    static bool isEqualByLength(const QString& fileUrl1, const QString& fileUrl2, U2OpStatus& os);
-
-    /**
-     * Returns the list of names of references (despite "*") found among reads.
-     */
-    static QStringList scanSamForReferenceNames(const GUrl& samUrl, U2OpStatus& os);
-
-    /**
-     * Saves the list of references to the file in the SAMtools fai format.
-     */
-    static void createFai(const GUrl& faiUrl, const QStringList& references, U2OpStatus& os);
-
-    /** Calls FileAndDirectoryUtils::openFile(). Kept here for compatibility. */
-    static NP<FILE> openFile(const QString& path, const QString& mode);
-
-    /** Calls FileAndDirectoryUtils::closeFileIfOpen(). Kept here for compatibility. */
-    static void closeFileIfOpen(FILE* file);
-
-    /** Loads BAM index from the file (bam_index_t*). Returns nullptr of error. */
-    static void* loadIndex(const QString& path);
-
     /**
      * Merges multiple sorted BAM.
-     * Copy of the 'bam_merge_core' but with Unicode strings and parameters limited to the current UGENE use-cases.
+     * Returns name of the merget file.
      */
-    static int bamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge);
+    static GUrl mergeBam(const QStringList& bamUrl, const QString& mergedBamTargetUrl, U2OpStatus& os);
 
+    /** Check if a BAM file ha correct index. */
+    static bool hasValidBamIndex(const QString& bamUrl);
+
+    /** Check that a FASTA file has correct index in a .fai file. */
+    static bool hasValidFastaIndex(const QString& fastaUrl);
+
+    /**
+     * Builds and saves index for BAM file.
+     * Index file will be saved to "@bamUrl + .bai".
+     */
+    static void createBamIndex(const QString& bamUrl, U2OpStatus& os);
+
+    /**
+     * Gets ".bai" file path, if index is valid.
+     */
+    static GUrl getBamIndexUrl(const QString& bamUrl);
+
+    /**
+     * Writes current document.
+     */
+    static void writeDocument(Document* doc, U2OpStatus& os);
+
+    /**
+     * Writes assembly objects to the set URL.
+     */
+    static void writeObjects(const QList<GObject*>& objects, const QString& url, const DocumentFormatId& formatId, U2OpStatus& os, const U2Region& desiredRegion = U2_REGION_MAX);
+
+    /**
+     * Check that two assemblies have equal length.
+     */
+    static bool isEqualByLength(const QString& fileUrl1, const QString& fileUrl2, U2OpStatus& os);
+
+    /** Loads HTS index from the file (hts_idx_t*). Returns nullptr of error. */
+    static void* loadIndex(const QString& path);
 };
 
 // iterates over a FASTQ file (including zipped) with kseq from samtools
