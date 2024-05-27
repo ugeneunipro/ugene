@@ -1429,7 +1429,7 @@ Set up the folder:</source>
 <context>
     <name>U2::URLLineEdit</name>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="219"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="182"/>
         <source>Select a folder</source>
         <translation>Укажите папку</translation>
     </message>
@@ -1440,7 +1440,7 @@ Set up the folder:</source>
         <translation>Выберите файл</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="256"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="273"/>
         <source>File path or name contains &apos;;&apos; symbol.<byte value="xd"/>
 That kind of file path/name can&apos;t be correctly handled by this element.<byte value="xd"/>
 Please rename the file or move it to directory which not contain &apos;;&apos; in it path.</source>
@@ -1452,6 +1452,16 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
         <location filename="../src/support/URLLineEdit.cpp" line="222"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
+    </message>
+    <message>
+        <location filename="../src/support/URLLineEdit.cpp" line="196"/>
+        <source>Directory '%1' unable to read.</source>
+        <translation>Папка '%1' не читается.</translation>
+    </message>
+    <message>
+        <location filename="../src/support/URLLineEdit.cpp" line="203"/>
+        <source>Given path '%1' not a file nor a directory.</source>
+        <translation>Данный путь '%1' не является ни файлом, ни папкой.</translation>
     </message>
 </context>
 <context>

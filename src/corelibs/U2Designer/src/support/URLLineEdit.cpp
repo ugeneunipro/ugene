@@ -179,11 +179,28 @@ void URLLineEdit::sl_editingFinished() {
                                   L10N::errorFileNotFound(url));
             return;
         }
-        QFile testReadAccess(url);
-        if (!testReadAccess.open(QIODevice::ReadOnly)) {
+        if (fi.isFile()) {
+            QFile testReadAccess(url);
+            if (!testReadAccess.open(QIODevice::ReadOnly)) {
+                tearDown();
+                QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
+                                      L10N::errorTitle(),
+                                      L10N::errorOpeningFileRead(url));
+                return;
+            }
+        } else if(fi.isDir()) {
+            if (!QDir(url).isReadable()) {
+                tearDown();
+                QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
+                                      L10N::errorTitle(),
+                                      tr("Directory '%1' unable to read.").arg(url));
+                return;
+            } 
+        } else {
             tearDown();
-            QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()), 
-                                  L10N::errorTitle(), L10N::errorOpeningFileRead(url));
+            QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
+                                  L10N::errorTitle(),
+                                  tr("Given path '%1' not a file nor a directory.").arg(url));
             return;
         }
     }

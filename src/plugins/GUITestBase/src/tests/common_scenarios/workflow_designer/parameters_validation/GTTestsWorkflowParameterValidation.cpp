@@ -178,6 +178,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     // 4. Set some nonexistent path to a file as the "Pattern file" parameter of the "Find Substrings" worker
 
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "File not found:"));
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Find Pattern"));
     GTMouseDriver::click();
     GTMouseDriver::moveTo(GTTableView::getCellPosition(table, 1, 2));
@@ -277,19 +278,18 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/fasta/fa1.fa");
 
     // 4. Create an empty folder somewhere (e.g. in the "test/_tmp" folder)
-    QDir newDir(testDir);
-    newDir.mkdir("_empty_tmp");
+    QDir().mkpath(sandBoxDir + "_empty_tmp");
 
     // 5. Set the path to this folder as the "Database folder" parameter of the "CD Search" worker
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("CD Search"));
     GTMouseDriver::click();
     GTMouseDriver::moveTo(GTTableView::getCellPosition(table, 1, 2));
     GTMouseDriver::click();
-    GTKeyboardDriver::keySequence(testDir + "_empty_tmp");
+    GTKeyboardDriver::keySequence(sandBoxDir + "/_empty_tmp");
     GTWidget::click(GTUtilsMdi::activeWindow());
 
     // 6. Remove this folder
-    newDir.rmdir("_empty_tmp");
+    QDir().rmdir(sandBoxDir + "/_empty_tmp");
 
     // 7. In WD press the "Validate" button
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
