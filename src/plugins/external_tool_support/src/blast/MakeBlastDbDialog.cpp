@@ -118,7 +118,7 @@ void MakeBlastDbDialog::sl_lineEditChanged() {
         pathTooltip = tr("Output database path contain space characters.");
     } else if (!QDir(dbPath).exists()) {
         pathTooltip = tr("Output database path does not exist.");
-    } else if (!dbPath.isEmpty() && FileAndDirectoryUtils::isDirectoryWritable(dbPath)) {
+    } else if (!dbPath.isEmpty() && !FileAndDirectoryUtils::isDirectoryWritable(dbPath)) {
         pathTooltip = tr("Output database path is read only.");
     }    
     GUIUtils::setWidgetWarningStyle(databasePathLineEdit, !pathTooltip.isEmpty());    

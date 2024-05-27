@@ -11626,6 +11626,11 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <source>Input file set is empty.</source>
         <translation>Входной файл не выбран.</translation>
     </message>
+    <message>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="60"/>
+        <source>Output database path is read only.</source>
+        <translation>Путь до базы только для чтения.</translation>
+    </message>
 </context>
 <context>
     <name>U2::MfoldContext</name>
