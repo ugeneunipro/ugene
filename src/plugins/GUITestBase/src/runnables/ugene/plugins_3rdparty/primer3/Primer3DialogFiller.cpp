@@ -128,13 +128,16 @@ void Primer3DialogFiller::commonScenario() {
         return;
     }
 
-    if (!settings.hasValidationErrors) {
-        auto button = GTWidget::findPushButton("pickPrimersButton", dialog);
-        GTWidget::click(button);
-    } else {
-        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(
-            settings.continueIfError ? QMessageBox::Ok : QMessageBox::Cancel,
-            settings.validationErrorsText));
+    if (settings.hasValidationErrors || settings.hasValidationCriticals) {
+        if (settings.hasValidationCriticals) {
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok,
+                                    settings.validationErrorsText));
+        } else {
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(
+                settings.continueIfError ? QMessageBox::Yes : QMessageBox::No,
+                settings.validationErrorsText));
+        }
+
         auto button = GTWidget::findPushButton("pickPrimersButton", dialog);
         GTWidget::click(button);
 
@@ -147,7 +150,12 @@ void Primer3DialogFiller::commonScenario() {
         if (!settings.continueIfError) {
             GTWidget::click(GTWidget::findWidget("closeButton", dialog));
         }
+
+    } else {
+        auto button = GTWidget::findPushButton("pickPrimersButton", dialog);
+        GTWidget::click(button);
     }
+
 }
 
 void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {

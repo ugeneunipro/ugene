@@ -128,6 +128,8 @@ void Primer3Task::run() {
 
     // Run primer3 itself
     p3retval* resultPrimers = runPrimer3(settings->getPrimerSettings(), settings->getSeqArgs(), settings->isShowDebugging(), settings->isFormatOutput(), settings->isExplain());
+    CHECK_EXT(resultPrimers != nullptr, setError(tr("Primer3 failed during execution. Please, fix all possible errors in the dialog before run.")), );
+
     settings->setP3RetVal(resultPrimers);
 
     if (settings->getSpanIntronExonBoundarySettings().enabled) {
