@@ -4119,6 +4119,25 @@ GUI_TEST_CLASS_DEFINITION(test_7746) {
     GTUtilsProjectTreeView::checkProjectViewIsClosed();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7747) {
+    // Import "_common_data/sam/2_scaffolds_unsorted.sam", but only one scaffold
+    // Expected: only one scaffold has been imported
+    class Scenario : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTLineEdit::setText("destinationUrlEdit", sandBoxDir + "test_7747.ugenedb", dialog);
+            GTTableView::click(GTWidget::findTableWidget("tableWidget", dialog), 0, 0);
+            GTKeyboardDriver::keyClick(Qt::Key_Space);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(new Scenario));
+    GTFileDialog::openFile(testDir + "_common_data/sam", "2_scaffolds_unsorted.sam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
+    CHECK_SET_ERR(GTUtilsProjectTreeView::getDocuments().values().first().size() == 1, "Unexpected numbers of scaffolds");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7748) {
     GTUtilsDialog::waitForDialog(new ImportBAMFileFiller("", testDir + "_common_data/fasta/broken", "empty_name_multi.fa"));
     GTFileDialog::openFile(dataDir + "samples/Assembly/chrM.sam");

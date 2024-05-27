@@ -2,9 +2,13 @@ include( ../../ugene_globals.pri )
 
 TEMPLATE = lib
 CONFIG +=thread debug_and_release staticlib warn_off
-INCLUDEPATH += src src/samtools ../../include
-win32 : INCLUDEPATH += src/samtools/win32
-DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE
+INCLUDEPATH += src src/samtools_core/htslib ../../include
+# samtools specific
+DEFINES += "_FILE_OFFSET_BITS=64" PCRE2_CODE_UNIT_WIDTH=16 HAVE_CONFIG_H
+# pthread specific
+win32 : DEFINES += PCRE2_STATIC PTW32_BUILD
+#disables rand.c
+unix : DEFINES += HAVE_DRAND48
 win32 : DEFINES += _USE_MATH_DEFINES "__func__=__FUNCTION__" "R_OK=4" "atoll=_atoi64" "alloca=_alloca"
 
 LIBS += -L../../$$out_dir()
