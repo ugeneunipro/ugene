@@ -57,7 +57,7 @@ MakeBlastDbTask::MakeBlastDbTask(const MakeBlastDbSettings& _settings)
 }
 
 void MakeBlastDbTask::prepare() {
-    //CHECK_EXT(FileAndDirectoryUtils::isDirectoryWritable(settings.outputPath), setError(tr("Output database path is read only.")), );
+    CHECK_EXT(!FileAndDirectoryUtils::isDirectoryWritable(settings.outputPath), setError(tr("Output database path is read only.")), );
 
     QString tempDir = prepareTempDir();
     CHECK_OP(stateInfo, );
