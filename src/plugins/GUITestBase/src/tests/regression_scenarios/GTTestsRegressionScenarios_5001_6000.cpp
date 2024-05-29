@@ -857,7 +857,7 @@ GUI_TEST_CLASS_DEFINITION(test_5239) {
             CHECK_SET_ERR(GTWidget::findLineEdit("databasePathLineEdit", dialog)->toolTip() == "Output database path is read only.", "Not expected tooltip");
             CHECK_SET_ERR(!buildButton->isEnabled(), "Build button should be disabled!");
 
-            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), dataDir);
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), sandBoxDir);
             CHECK_SET_ERR(buildButton->isEnabled(), "Build button should be enabled!");
 
             QDir().mkpath(sandBoxDir + "5239");
