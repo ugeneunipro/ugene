@@ -213,6 +213,7 @@ protected:
     void addStatisticsMenu(QMenu* m);
 
     void updateActions() override;
+    void gotoSelectedRead(const MaEditorSelection& selection) override;
 
     void initDragAndDropSupport(MaEditorWgt* wgt);
 

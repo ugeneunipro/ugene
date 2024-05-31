@@ -58,6 +58,8 @@
 #include "MsaEditorOverviewArea.h"
 #include "MsaEditorSequenceArea.h"
 #include "MsaEditorStatusBar.h"
+#include "MsaRowHeightController.h"
+#include "MultilineScrollController.h"
 #include "align_to_alignment/RealignSequencesInAlignmentTask.h"
 #include "export_image/MsaImageExportTask.h"
 #include "highlighting/MsaSchemesMenuBuilder.h"
@@ -1009,4 +1011,61 @@ MaEditorWgt* MsaEditor::getLineWidget(int index) const {
     SAFE_POINT_NN(ui, nullptr);
     return ui->getLineWidget(index);
 }
+
+void MsaEditor::gotoSelectedRead(const MaEditorSelection& selection){
+    QRect selectionRect = selection.toRect();
+    int viewRowIndex = selectionRect.y();
+
+    int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+    CHECK(maRowIndex >= 0 && maRowIndex < maObject->getRowCount(), );
+
+    MsaRow maRow = maObject->getRow(maRowIndex);
+    if (isMultilineMode()){
+        auto widget = getMainWidget();
+        int overviewHeight        = widget->getOverviewArea()->height();
+        int statusBarHeight       = widget->getStatusBar()->height();
+        int availableWidgetHeight = widget->height() - overviewHeight - statusBarHeight;
+
+        auto lineWidget = getLineWidget(0);
+        int consensusAreaHeight = lineWidget->getConsensusArea()->height();
+        int seqAreaHeight       = lineWidget->getSequenceArea()->height();
+        int singleRowHeight     = lineWidget->getRowHeightController()->getSingleRowHeight();
+
+        int wLen = widget->getSequenceAreaBaseLen(0);
+
+        int posStart = maRow->getCoreStart();
+        int numSteps = posStart / wLen;
+        int minimalScroll = numSteps * (consensusAreaHeight + seqAreaHeight);
+        int fineTuningScroll = singleRowHeight * maRowIndex + consensusAreaHeight;
+
+        int finalScroll = minimalScroll + fineTuningScroll;
+        if (finalScroll < availableWidgetHeight / 2) {
+            finalScroll = 0;
+        }
+        else {
+            finalScroll = finalScroll - availableWidgetHeight / 2;
+        }
+
+        auto scrollBar = widget->getScrollController()->getVerticalScrollBar();
+        int scrollPos = scrollBar->sliderPosition();
+        if (scrollPos != finalScroll) { // Scroll to start
+            scrollBar->setSliderPosition(finalScroll);
+        } else { // Scroll to end
+            int posEnd = maRow->getCoreEnd() - 1;
+            numSteps = posEnd / wLen;
+            minimalScroll = numSteps * (consensusAreaHeight + seqAreaHeight);
+            fineTuningScroll = singleRowHeight * maRowIndex + consensusAreaHeight;
+            finalScroll = minimalScroll + fineTuningScroll - availableWidgetHeight / 2;
+            scrollBar->setSliderPosition(finalScroll);
+        }
+    } else {
+        int posToCenter = maRow->getCoreStart();
+        MaEditorSequenceArea* sequenceArea = getLineWidget(0)->getSequenceArea();
+        if (sequenceArea->isPositionCentered(posToCenter)) {
+            posToCenter = maRow->getCoreEnd() - 1;
+        }
+        sequenceArea->centerPos(posToCenter);
+    }
+}
+
 }  // namespace U2

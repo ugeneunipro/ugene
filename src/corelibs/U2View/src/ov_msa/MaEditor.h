@@ -286,6 +286,7 @@ protected:
     void setZoomFactor(double newZoomFactor);
 
     virtual void updateActions();
+    virtual void gotoSelectedRead(const MaEditorSelection& selection) = 0;
 
     MsaObject* maObject = nullptr;
 

@@ -332,4 +332,20 @@ MaEditorSelectionController* McaEditor::getSelectionController() const {
     return selectionController;
 }
 
+void McaEditor::gotoSelectedRead(const MaEditorSelection& selection){
+    QRect selectionRect = selection.toRect();
+    int viewRowIndex = selectionRect.y();
+
+    int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+    CHECK(maRowIndex >= 0 && maRowIndex < maObject->getRowCount(), );
+
+    MsaRow maRow = maObject->getRow(maRowIndex);
+    int posToCenter = maRow->isComplemented() ? maRow->getCoreEnd() - 1 : maRow->getCoreStart();
+    MaEditorSequenceArea* sequenceArea = getLineWidget(0)->getSequenceArea();
+    if (sequenceArea->isPositionCentered(posToCenter)) {
+        posToCenter = maRow->isComplemented() ? maRow->getCoreStart() : maRow->getCoreEnd() - 1;
+    }
+    sequenceArea->centerPos(posToCenter);
+}
+
 }  // namespace U2

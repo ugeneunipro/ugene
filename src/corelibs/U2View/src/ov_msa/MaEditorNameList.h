@@ -178,6 +178,7 @@ protected:
     QPoint mousePressPoint;
     bool isDragging = false;
     QRubberBand* rubberBand = nullptr;
+    bool isDoubleClicked = false;
 
 public:
     QAction* editSequenceNameAction = nullptr;
