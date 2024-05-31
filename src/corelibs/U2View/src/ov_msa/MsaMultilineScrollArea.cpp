@@ -88,19 +88,9 @@ void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directi
 
     maEditorUi->setUpdatesEnabled(false);
 
-    if (directions.testFlag(MultilineScrollController::SliderMoved)) {
-        moveVSlider(globalVBar->value(),
-                    globalVBar->sliderPosition(),
-                    wheel ? directions : MultilineScrollController::None);
-    } else if (byStep) {
-        moveVSlider(globalVBar->value(),
-                    globalVBar->sliderPosition(),
-                    wheel ? directions : MultilineScrollController::None);
-    } else {
-        moveVSlider(globalVBar->value(),
-                    globalVBar->sliderPosition(),
-                    wheel ? directions : MultilineScrollController::None);
-    }
+    moveVSlider(globalVBar->value(),
+                globalVBar->sliderPosition(),
+                wheel ? directions : MultilineScrollController::None);
     maEditorUi->setUpdatesEnabled(true);
 }
 
