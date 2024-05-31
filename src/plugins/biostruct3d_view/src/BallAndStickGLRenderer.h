@@ -34,14 +34,14 @@ protected:
 public:
     virtual ~BallAndStickGLRenderer();
 
-    void drawBioStruct3D();
+    void drawBioStruct3D() override;
 
-    virtual void create();
+    void create() override;
 
-    virtual void update();
-    virtual void updateColorScheme();
-    virtual void updateShownModels();
-    virtual void updateSettings();
+    void update() override;
+    void updateColorScheme() override;
+    void updateShownModels() override;
+    void updateSettings() override;
 
 private:
     void init();

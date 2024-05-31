@@ -46,8 +46,8 @@ class BedGraphToBigWigTask : public ExternalToolSupportTask {
 public:
     BedGraphToBigWigTask(const BedGraphToBigWigSetting& settings);
 
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 
     QString getResult() {
         return resultUrl;
@@ -65,8 +65,8 @@ class BedGraphToBigWigParser : public ExternalToolLogParser {
 public:
     BedGraphToBigWigParser();
 
-    void parseOutput(const QString& partOfLog);
-    void parseErrOutput(const QString& partOfLog);
+    void parseOutput(const QString& partOfLog) override;
+    void parseErrOutput(const QString& partOfLog) override;
 
 private:
     QString lastErrLine;

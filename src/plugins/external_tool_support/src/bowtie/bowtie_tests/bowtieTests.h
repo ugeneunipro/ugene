@@ -41,12 +41,12 @@ class GTest_Bowtie : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Bowtie, "bowtie", TaskFlag_FailOnSubtaskCancel)
 
-    void prepare();
-    void run();
-    Task::ReportResult report();
-    void cleanup();
+    void prepare() override;
+    void run() override;
+    Task::ReportResult report() override;
+    void cleanup() override;
     QString getTempDataDir();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     DnaAssemblyToRefTaskSettings config;

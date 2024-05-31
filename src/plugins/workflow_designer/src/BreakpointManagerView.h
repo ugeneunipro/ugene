@@ -51,14 +51,14 @@ public:
         return newBreakpointAction;
     }
 
-    bool eventFilter(QObject* object, QEvent* event);
+    bool eventFilter(QObject* object, QEvent* event) override;
     void clear();
 
 signals:
     void si_highlightingRequested(const ActorId& actor);
 
 protected:
-    virtual void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent* event) override;
 
 public slots:
     void sl_breakpointRemoved(const ActorId& actorId);

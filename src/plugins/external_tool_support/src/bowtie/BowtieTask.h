@@ -34,7 +34,7 @@ class BowtieBuildTask : public ExternalToolSupportTask {
 public:
     BowtieBuildTask(const QString& referencePath, const QString& indexPath);
 
-    void prepare();
+    void prepare() override;
 
 private:
     class LogParser : public ExternalToolLogParser {
@@ -51,9 +51,9 @@ private:
         };
 
         LogParser();
-        void parseOutput(const QString& partOfLog);
-        void parseErrOutput(const QString& partOfLog);
-        int getProgress();
+        void parseOutput(const QString& partOfLog) override;
+        void parseErrOutput(const QString& partOfLog) override;
+        int getProgress() override;
 
     private:
         Stage stage;
@@ -76,15 +76,15 @@ public:
 
     bool hasResult() const;
 
-    void prepare();
+    void prepare() override;
 
 private:
     class LogParser : public ExternalToolLogParser {
     public:
         LogParser();
 
-        void parseOutput(const QString& partOfLog);
-        void parseErrOutput(const QString& partOfLog);
+        void parseOutput(const QString& partOfLog) override;
+        void parseErrOutput(const QString& partOfLog) override;
 
         bool hasResult() const;
 
@@ -102,10 +102,10 @@ class BowtieTask : public DnaAssemblyToReferenceTask {
 public:
     BowtieTask(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false);
 
-    void prepare();
-    ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
 protected slots:
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 public:
     static const QString OPTION_N_MISMATCHES;
@@ -136,7 +136,7 @@ private:
 
 class BowtieTaskFactory : public DnaAssemblyToRefTaskFactory {
 public:
-    DnaAssemblyToReferenceTask* createTaskInstance(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false);
+    DnaAssemblyToReferenceTask* createTaskInstance(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false) override;
 
 protected:
 };

@@ -31,8 +31,8 @@ public:
     ActorCfgFilterProxyModel(QObject* p = nullptr);
 
 protected:
-    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const;
-    virtual bool filterAcceptsColumn(int sourceColumn, const QModelIndex& sourceParent) const;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override;
+    bool filterAcceptsColumn(int sourceColumn, const QModelIndex& sourceParent) const override;
 };
 
 }  // namespace U2

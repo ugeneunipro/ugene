@@ -46,10 +46,10 @@ class BaseShortReadsAlignerWorker : public BaseWorker {
     Q_OBJECT
 public:
     BaseShortReadsAlignerWorker(Actor* a, const QString& algName);
-    void init();
-    Task* tick();
-    void cleanup();
-    bool isReady() const;
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
+    bool isReady() const override;
 
 protected:
     virtual QVariantMap getCustomParameters() const {
@@ -82,7 +82,7 @@ public slots:
 
 class ShortReadsAlignerSlotsValidator : public PortValidator {
 public:
-    bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const;
+    bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const override;
 };
 
 class BaseShortReadsAlignerWorkerFactory : public DomainFactory {
@@ -106,7 +106,7 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 }  // namespace LocalWorkflow

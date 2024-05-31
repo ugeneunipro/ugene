@@ -31,7 +31,7 @@ public:
     AddNewDocumentDialogFiller(const QString& format, const QString& path);
     AddNewDocumentDialogFiller(CustomScenario* scenario);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     const QString format;

@@ -48,7 +48,7 @@ public:
     AlignToReferenceBlastDialogFiller(const Settings& settings);
     AlignToReferenceBlastDialogFiller(CustomScenario* c);
 
-    void commonScenario();
+    void commonScenario() override;
 
     static void setReference(const QString& referenceUrl, QWidget* dialog);
     static void setReads(const QStringList& readUrls, QWidget* dialog);

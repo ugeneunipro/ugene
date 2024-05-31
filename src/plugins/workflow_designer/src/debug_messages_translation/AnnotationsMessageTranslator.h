@@ -31,7 +31,7 @@ class AnnotationsMessageTranslator : public BaseMessageTranslator {
 public:
     AnnotationsMessageTranslator(const QVariant& atomicMessage, Workflow::WorkflowContext* initContext);
 
-    QString getTranslation() const;
+    QString getTranslation() const override;
 
 protected:
     QList<SharedAnnotationData> annTable;
