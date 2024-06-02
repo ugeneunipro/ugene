@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <U2Core/Counter.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ObjectViewModel.h>
@@ -257,7 +258,9 @@ protected slots:
     virtual void sl_selectionChanged(const MaEditorSelection& ma, const MaEditorSelection& modInfo);
 
     /** Callback for the 'gotoSelectedReadAction' action. See docs for 'gotoSelectedReadAction'. */
-    void sl_gotoSelectedRead();
+    virtual void sl_gotoSelectedRead() {
+        GCOUNTER(cvar, "MAEditor:gotoSelectedRead");
+    };
 
     virtual void sl_multilineViewAction() {
         SAFE_POINT(false, "The function sl_multilineViewAction() must be overridden", );
@@ -286,7 +289,6 @@ protected:
     void setZoomFactor(double newZoomFactor);
 
     virtual void updateActions();
-    virtual void gotoSelectedRead(const MaEditorSelection& selection) = 0;
 
     MsaObject* maObject = nullptr;
 

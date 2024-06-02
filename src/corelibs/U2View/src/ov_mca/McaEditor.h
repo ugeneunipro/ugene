@@ -113,7 +113,7 @@ protected:
     void addAlignmentMenu(QMenu* menu);
     void addAppearanceMenu(QMenu* menu);
     void addNavigationMenu(QMenu* menu);
-    void gotoSelectedRead(const MaEditorSelection& selection) override;
+    void sl_gotoSelectedRead() override;
 };
 
 }  // namespace U2

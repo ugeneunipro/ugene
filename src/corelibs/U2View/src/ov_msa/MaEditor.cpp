@@ -624,13 +624,6 @@ void MaEditor::sl_onClearActionTriggered() {
     getSelectionController()->clearSelection();
 }
 
-void MaEditor::sl_gotoSelectedRead() {
-    GCOUNTER(cvar, "MAEditor:gotoSelectedRead");
-    MaEditorSelection selection = getSelection();
-    CHECK(!selection.isEmpty(), );
-    gotoSelectedRead(selection);
-}
-
 MaCollapseModel* MaEditor::getCollapseModel() const {
     return collapseModel;
 }

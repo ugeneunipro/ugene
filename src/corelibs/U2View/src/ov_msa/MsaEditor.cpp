@@ -1012,14 +1012,17 @@ MaEditorWgt* MsaEditor::getLineWidget(int index) const {
     return ui->getLineWidget(index);
 }
 
-void MsaEditor::gotoSelectedRead(const MaEditorSelection& selection){
+void MsaEditor::sl_gotoSelectedRead(){
+    MaEditor::sl_gotoSelectedRead();
+    MaEditorSelection selection = getSelection();
+    CHECK(!selection.isEmpty(), );
     QRect selectionRect = selection.toRect();
     int viewRowIndex = selectionRect.y();
 
     int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
     CHECK(maRowIndex >= 0 && maRowIndex < maObject->getRowCount(), );
 
-    MsaRow maRow = maObject->getRow(maRowIndex);
+    const MsaRow& maRow = maObject->getRow(maRowIndex);
     if (isMultilineMode()){
         auto widget = getMainWidget();
         int overviewHeight        = widget->getOverviewArea()->height();
@@ -1041,8 +1044,7 @@ void MsaEditor::gotoSelectedRead(const MaEditorSelection& selection){
         int finalScroll = minimalScroll + fineTuningScroll;
         if (finalScroll < availableWidgetHeight / 2) {
             finalScroll = 0;
-        }
-        else {
+        } else {
             finalScroll = finalScroll - availableWidgetHeight / 2;
         }
 

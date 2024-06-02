@@ -332,7 +332,10 @@ MaEditorSelectionController* McaEditor::getSelectionController() const {
     return selectionController;
 }
 
-void McaEditor::gotoSelectedRead(const MaEditorSelection& selection){
+void McaEditor::sl_gotoSelectedRead(){
+    MaEditor::sl_gotoSelectedRead();
+    MaEditorSelection selection = getSelection();
+    CHECK(!selection.isEmpty(), );
     QRect selectionRect = selection.toRect();
     int viewRowIndex = selectionRect.y();
 
