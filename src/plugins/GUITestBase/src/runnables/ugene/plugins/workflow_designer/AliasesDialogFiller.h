@@ -32,7 +32,7 @@ public:
         : Filler("SchemaAliasesConfigurationDialog"),
           map(_map) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QMap<QPoint*, QString> map;

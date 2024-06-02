@@ -32,7 +32,7 @@ public:
     MessageBoxDialogFiller(QMessageBox::StandardButton b, const QString& message = "", const QString& objectName = "");
     MessageBoxDialogFiller(const QString& buttonText, const QString& message = "");
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 protected:
     QMessageBox::StandardButton b;
@@ -43,25 +43,25 @@ protected:
 class HI_EXPORT AppCloseMessageBoxDialogFiller : public Filler {
 public:
     AppCloseMessageBoxDialogFiller();
-    void commonScenario();
+    void commonScenario() override;
 };
 
 class HI_EXPORT MessageBoxNoToAllOrNo : public Filler {
 public:
     MessageBoxNoToAllOrNo();
-    void commonScenario();
+    void commonScenario() override;
 };
 
 class HI_EXPORT MessageBoxOpenAnotherProject : public Filler {
 public:
     MessageBoxOpenAnotherProject();
-    void commonScenario();
+    void commonScenario() override;
 };
 
 class HI_EXPORT InputIntFiller : public Filler {
 public:
     InputIntFiller(int value);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     int value;

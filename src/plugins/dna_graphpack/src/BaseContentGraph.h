@@ -39,8 +39,8 @@ public:
     enum GType { GC,
                  AG };
     BaseContentGraphFactory(GType t, QObject* p);
-    virtual QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v);
-    virtual bool isEnabled(const U2SequenceObject* o) const;
+    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v) override;
+    bool isEnabled(const U2SequenceObject* o) const override;
 
 private:
     QBitArray map;

@@ -213,7 +213,7 @@ public:
         : Filler("AssemblyToRefDialog", c), parameters(nullptr) {
     }
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     void setCommonParameters(QWidget* dialog);

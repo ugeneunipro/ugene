@@ -34,7 +34,7 @@ class GTest_Bowtie2 : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_Bowtie2, "compare-two-sams-by-length");
 
-    ReportResult report();
+    ReportResult report() override;
     QString file1Url;
     QString file2Url;
     QString file3Url;

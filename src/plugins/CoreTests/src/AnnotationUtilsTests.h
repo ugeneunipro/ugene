@@ -29,7 +29,7 @@ class GTest_ShiftSequence : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_ShiftSequence, "check-shift-sequence", TaskFlags_NR_FOSCOE);
 
-    Task::ReportResult report();
+    Task::ReportResult report() override;
 
 private:
     QString locationStringBefore;

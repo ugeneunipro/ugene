@@ -34,7 +34,7 @@ public:
     CAP3SupportDialogFiller(CustomScenario* c)
         : Filler("CAP3SupportDialog", c) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QStringList input;

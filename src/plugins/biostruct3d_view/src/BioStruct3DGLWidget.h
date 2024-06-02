@@ -165,33 +165,33 @@ protected:
     /*!
      * QGlWidget virtual function, initializes OpenGL params. See, Qt docs "QGLWidget" for details.
      */
-    void initializeGL();
+    void initializeGL() override;
     /*!
      * QGlWidget virtual function, sets viewport
      * @param width GLWidget width
      * @param height GLWidget height
      */
-    void resizeGL(int width, int height);
+    void resizeGL(int width, int height) override;
     /*!
      * QGlWidget virtual function, draw GL scene.
      */
-    void paintGL();
+    void paintGL() override;
     /*!
      * QWidget virtual function, mouse button down event handler.
      */
-    void mousePressEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event) override;
     /*!
      * QWidget virtual function, mouse move event handler.
      */
-    void mouseMoveEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event) override;
     /*!
      * QWidget virtual function, mouse wheel event handler.
      */
-    void wheelEvent(QWheelEvent* event);
+    void wheelEvent(QWheelEvent* event) override;
     /*!
      * QWidget virtual function, executes context menu.
      */
-    void contextMenuEvent(QContextMenuEvent* _event);
+    void contextMenuEvent(QContextMenuEvent* _event) override;
 
 private:
     //! Sets unselected regions shading level

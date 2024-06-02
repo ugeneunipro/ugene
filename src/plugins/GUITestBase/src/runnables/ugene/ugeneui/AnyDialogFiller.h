@@ -39,7 +39,7 @@ public:
         : Filler(objectName, _scenario) {
     }
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QDialogButtonBox::StandardButton b = QDialogButtonBox::Ok;

@@ -33,7 +33,7 @@ class AssemblyMessageTranslator : public BaseMessageTranslator {
 public:
     AssemblyMessageTranslator(const QVariant& atomicMessage, Workflow::WorkflowContext* initContext);
 
-    QString getTranslation() const;
+    QString getTranslation() const override;
 
 protected:
     U2EntityRef assemblyRef;

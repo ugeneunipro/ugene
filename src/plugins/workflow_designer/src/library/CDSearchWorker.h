@@ -40,7 +40,7 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class CDSearchWorker : public BaseWorker {
@@ -49,9 +49,9 @@ public:
     CDSearchWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr), cds(nullptr) {
     }
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup() {};
+    void init() override;
+    Task* tick() override;
+    void cleanup() override {};
 private slots:
     void sl_taskFinished(Task*);
 
@@ -69,7 +69,7 @@ public:
     CDSearchWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new CDSearchWorker(a);
     }
 };

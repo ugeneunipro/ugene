@@ -38,7 +38,7 @@ public:
     BlastPrompter(Actor* p = 0);
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class BlastWorker : public BaseWorker {
