@@ -49,9 +49,9 @@ class BAMImporter : public DocumentImporter {
 public:
     BAMImporter();
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url);
+    FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url) override;
 
-    virtual DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showGui, const QVariantMap& hints);
+    DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showGui, const QVariantMap& hints) override;
 };
 
 class LoadInfoTask;
@@ -62,9 +62,9 @@ class BAMImporterTask : public DocumentProviderTask {
 public:
     BAMImporterTask(const GUrl& url, bool useGui, const QVariantMap& hints);
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    ReportResult report();
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    ReportResult report() override;
 
 private:
     void initPrepareToImportTask();

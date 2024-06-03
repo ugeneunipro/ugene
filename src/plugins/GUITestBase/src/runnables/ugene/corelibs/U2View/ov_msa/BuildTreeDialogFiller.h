@@ -39,7 +39,7 @@ public:
     BuildTreeDialogFiller(int replicates, const QString& saveTree = "default", int seed = 5, ConsensusType type = MAJORITYEXT, double fraction = 0.5);
     BuildTreeDialogFiller(CustomScenario* scenario);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString saveTree;
@@ -55,7 +55,7 @@ private:
 class BuildTreeDialogFillerPhyML : public Filler {
 public:
     BuildTreeDialogFillerPhyML(bool _freqOptimRadioPressed, int bootstrap = -1);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     bool freqOptimRadioPressed;

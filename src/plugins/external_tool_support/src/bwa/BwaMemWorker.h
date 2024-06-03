@@ -35,11 +35,11 @@ public:
     BwaMemWorker(Actor* p);
 
 protected:
-    QVariantMap getCustomParameters() const;
-    QString getDefaultFileName() const;
-    QString getBaseSubdir() const;
-    void setGenomeIndex(DnaAssemblyToRefTaskSettings& settings);
-    QString getAlignerSubdir() const;
+    QVariantMap getCustomParameters() const override;
+    QString getDefaultFileName() const override;
+    QString getBaseSubdir() const override;
+    void setGenomeIndex(DnaAssemblyToRefTaskSettings& settings) override;
+    QString getAlignerSubdir() const override;
 };  // BwaMemWorker
 
 class BwaMemWorkerFactory : public BaseShortReadsAlignerWorkerFactory {
@@ -50,7 +50,7 @@ public:
         : BaseShortReadsAlignerWorkerFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker* createWorker(Actor* a);
+    Worker* createWorker(Actor* a) override;
 };  // BwaMemWorkerFactory
 
 }  // namespace LocalWorkflow

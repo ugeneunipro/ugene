@@ -31,9 +31,9 @@ class BuildSArraySettingsWidget : public DnaAssemblyAlgorithmBuildIndexWidget, U
     Q_OBJECT
 public:
     BuildSArraySettingsWidget(QWidget* parent);
-    virtual QMap<QString, QVariant> getBuildIndexCustomSettings();
-    virtual QString getIndexFileExtension();
-    virtual GUrl buildIndexUrl(const GUrl& url);
+    QMap<QString, QVariant> getBuildIndexCustomSettings() override;
+    QString getIndexFileExtension() override;
+    GUrl buildIndexUrl(const GUrl& url) override;
 private slots:
     void sl_onPartSliderChanged(int value);
 

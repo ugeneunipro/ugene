@@ -82,7 +82,7 @@ public:
     AlignToReferenceBlastPrompter(Actor* a);
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 /************************************************************************/
@@ -114,7 +114,7 @@ private:
 class AlignToReferenceBlastWorkerFactory : public DomainFactory {
 public:
     AlignToReferenceBlastWorkerFactory();
-    Worker* createWorker(Actor* a);
+    Worker* createWorker(Actor* a) override;
 
     static void init();
 

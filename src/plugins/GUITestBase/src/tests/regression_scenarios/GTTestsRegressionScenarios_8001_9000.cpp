@@ -457,6 +457,36 @@ GUI_TEST_CLASS_DEFINITION(test_8069) {
     CHECK_SET_ERR(lt.hasMessage("Nothing to write"), "Expected message 'Nothing to write' not found!");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8090) {
+    /*
+    * 1. Open external tools in setting->preferences
+    * 2. Check next tools don't have "unknown" version:
+    * vcf-consensus,Trimmomatic, Spidey (not on Mac), SnpEff, Kalign, BLAST
+    */
+    class CheckNotUnknownVersion : public CustomScenario {
+        public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
+            
+            if (!isOsMac() && AppSettingsDialogFiller::isToolDescriptionContainsString("Spidey", "unknown")) {
+                GT_FAIL("Unknown Spidey version!", );
+            }
+
+            for (const QString& toolName : {"vcf-consensus", "Trimmomatic", "SnpEff", "Kalign", "BlastN"}) {
+                if (AppSettingsDialogFiller::isToolDescriptionContainsString(toolName, "unknown")) {
+                    GT_FAIL("Unknown " + toolName + " version!", );
+                }
+            }
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new CheckNotUnknownVersion));
+    GTMenu::clickMainMenuItem({"Settings", "Preferences..."}, GTGlobals::UseMouse);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8093) {
     // Open any sequence file
     // Open "Find enzymes" dialog
@@ -483,11 +513,10 @@ GUI_TEST_CLASS_DEFINITION(test_8093) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList {}, new custom()));
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find restriction sites");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
-
 
 }  // namespace GUITest_regression_scenarios
 

@@ -1238,6 +1238,43 @@ GUI_TEST_CLASS_DEFINITION(test_5281) {
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup("hmm_signal  (0, 27)").size() == 27, "Unexpected number of result annotations");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5291) {
+    /*
+    * 1. Open schema _common_data/scenarios/_regression/5291/5291.uwl
+    * 2. Set parameter "Annotation names file" in "Filter Annotations by Name" worker by selecting file with browse button. File should contain ';' in path.
+    * Expected state: Error message box appears
+    * 3. Set input file with ';' in path to Read Annotations worker
+    * 4. Set parameter "Annotation names file" in "Filter Annotations by Name" worker by editing line edit. File should contain ';' in path to Filter Annotations by Name worker
+    * Expected state: Error message box appears
+    * 5. Fill parameter "Annotation names file" in "Filter Annotations by Name" with correct data.
+    * 6. Run workflow.
+    * Expected state: no errors in the log.
+    */
+    
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::loadWorkflow(testDir + "_common_data/scenarios/_regression/5291/5291.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "File path/name contains ';' symbol."));
+    GTUtilsWorkflowDesigner::click("Filter Annotations by Name");
+    GTUtilsWorkflowDesigner::setParameter("Annotation names file", testDir + "_common_data/scenarios/_regression/5291/A;;nnota;;tio;n_names.txt", GTUtilsWorkflowDesigner::comboWithFileSelector);
+
+    GTUtilsWorkflowDesigner::click("Read Annotations");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/scenarios/_regression/5291/CV;;U5576;;2.gb");
+
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "File not found:"));
+    GTUtilsWorkflowDesigner::click("Filter Annotations by Name");
+    GTUtilsWorkflowDesigner::setParameter("Annotation names file", testDir + "_common_data/scenarios/_regression/5291/A;;nnota;;tio;n_names.txt", GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::click("Read Annotations");
+    GTUtilsWorkflowDesigner::click("Filter Annotations by Name");
+    GTUtilsWorkflowDesigner::setParameter("Annotation names file", testDir + "_common_data/scenarios/_regression/5291/Annotation_names.txt", GTUtilsWorkflowDesigner::comboWithFileSelector);
+    GTLogTracer lt;
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5356) {
     //    1. Open WD
     //    2. Create workflow: "Read FASTQ" --> "Cut Adapter" --> "FastQC"

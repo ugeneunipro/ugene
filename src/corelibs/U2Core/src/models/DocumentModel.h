@@ -75,7 +75,9 @@ enum DocumentFormatFlag {
     // Document can be locked if created not by UGENE
     DocumentFormatFlag_LockedIfNotCreatedByUGENE = 1 << 10,
 
-    DocumentFormatFlag_CannotBeCompressed = 1 << 11
+    DocumentFormatFlag_CannotBeCompressed = 1 << 11,
+    // Name information could be written to file of corresponding format
+    DocumentFormatFlag_HasModifiableName = 1 << 12
 };
 
 typedef QFlags<DocumentFormatFlag> DocumentFormatFlags;

@@ -88,7 +88,7 @@ class BedtoolsIntersectTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BedtoolsIntersectTask(const BedtoolsIntersectFilesSettings& settings);
-    void prepare();
+    void prepare() override;
 
 protected:
     QStringList getParameters() const;
@@ -101,8 +101,8 @@ class BedtoolsIntersectLogParser : public ExternalToolLogParser {
 public:
     BedtoolsIntersectLogParser(const QString& resultFile);
 
-    void parseOutput(const QString& partOfLog);
-    void parseErrOutput(const QString& /*partOfLog*/) {
+    void parseOutput(const QString& partOfLog) override;
+    void parseErrOutput(const QString& /*partOfLog*/) override {
     }
 
 private:
@@ -119,8 +119,8 @@ class BedtoolsIntersectAnnotationsByEntityTask : public ExternalToolSupportTask 
     Q_OBJECT
 public:
     BedtoolsIntersectAnnotationsByEntityTask(const BedtoolsIntersectByEntityRefSettings& settings);
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     QList<GObject*> getResult() {
         return result;

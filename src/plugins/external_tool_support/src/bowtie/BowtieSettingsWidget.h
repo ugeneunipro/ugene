@@ -32,24 +32,24 @@ class BowtieSettingsWidget : public DnaAssemblyAlgorithmMainWidget, Ui_BowtieSet
     Q_OBJECT
 public:
     BowtieSettingsWidget(QWidget* parent);
-    QMap<QString, QVariant> getDnaAssemblyCustomSettings() const;
-    bool isValidIndex(const QString& oneFileUrl) const;
+    QMap<QString, QVariant> getDnaAssemblyCustomSettings() const override;
+    bool isValidIndex(const QString& oneFileUrl) const override;
 };
 
 class BowtieBuildSettingsWidget : public DnaAssemblyAlgorithmBuildIndexWidget, Ui_BowtieBuildSettings {
     Q_OBJECT
 public:
     BowtieBuildSettingsWidget(QWidget* parent);
-    virtual QMap<QString, QVariant> getBuildIndexCustomSettings();
-    virtual QString getIndexFileExtension();
-    virtual GUrl buildIndexUrl(const GUrl& url);
+    QMap<QString, QVariant> getBuildIndexCustomSettings() override;
+    QString getIndexFileExtension() override;
+    GUrl buildIndexUrl(const GUrl& url) override;
 };
 
 class BowtieGUIExtensionsFactory : public DnaAssemblyGUIExtensionsFactory {
-    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent);
-    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent);
-    bool hasMainWidget();
-    bool hasBuildIndexWidget();
+    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent) override;
+    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent) override;
+    bool hasMainWidget() override;
+    bool hasBuildIndexWidget() override;
 };
 
 }  // namespace U2

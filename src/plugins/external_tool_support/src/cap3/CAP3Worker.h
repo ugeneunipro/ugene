@@ -36,7 +36,7 @@ public:
     CAP3Prompter(Actor* p = 0);
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class CAP3Worker : public BaseWorker {
@@ -44,9 +44,9 @@ class CAP3Worker : public BaseWorker {
 public:
     CAP3Worker(Actor* a);
 
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private slots:
     void sl_taskFinished();
@@ -80,7 +80,7 @@ public:
     CAP3WorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new CAP3Worker(a);
     }
 };

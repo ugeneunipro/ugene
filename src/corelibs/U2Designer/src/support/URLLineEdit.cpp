@@ -22,10 +22,14 @@
 #include "URLLineEdit.h"
 
 #include <QFocusEvent>
+#include <QMainWindow>
+#include <QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
+#include <U2Gui/MainWindow.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
@@ -33,6 +37,7 @@
 #include <U2Gui/U2FileDialog.h>
 
 #include "PropertyWidget.h"
+#include "WorkflowGUIUtils.h"
 
 namespace U2 {
 
@@ -139,6 +144,7 @@ URLLineEdit::URLLineEdit(const QString& type,
         new BaseCompleter(new FilenameCompletionFiller(parent), this);
     }
     setPlaceholderText(DelegateTags::getString(parent->tags(), DelegateTags::PLACEHOLDER_TEXT));
+    connect(this, &QLineEdit::editingFinished, this, &URLLineEdit::sl_editingFinished);
 }
 
 CompletionFiller* URLLineEdit::getCompletionFillerInstance() const {
@@ -154,6 +160,50 @@ void URLLineEdit::sl_onBrowse() {
 
 void URLLineEdit::sl_onBrowseWithAdding() {
     this->browse(true);
+}
+
+void URLLineEdit::sl_editingFinished() {
+    CHECK(!saveFile, );
+    auto tearDown = [&]() {
+        disconnect(this);
+        setText("");
+    };
+    const QStringList urlsList = text().split(';');
+    for (const QString& url : qAsConst(urlsList)) {
+        CHECK_CONTINUE(!url.isEmpty())
+        QFileInfo fi(url);
+        if (!fi.exists()) {
+            tearDown();
+            QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
+                                  L10N::errorTitle(),
+                                  L10N::errorFileNotFound(url));
+            return;
+        }
+        if (fi.isFile()) {
+            QFile testReadAccess(url);
+            if (!testReadAccess.open(QIODevice::ReadOnly)) {
+                tearDown();
+                QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
+                                      L10N::errorTitle(),
+                                      L10N::errorOpeningFileRead(url));
+                return;
+            }
+        } else if(fi.isDir()) {
+            if (!QDir(url).isReadable()) {
+                tearDown();
+                QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
+                                      L10N::errorTitle(),
+                                      tr("Directory '%1' unable to read.").arg(url));
+                return;
+            } 
+        } else {
+            tearDown();
+            QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
+                                  L10N::errorTitle(),
+                                  tr("Given path '%1' not a file nor a directory.").arg(url));
+            return;
+        }
+    }
 }
 
 void URLLineEdit::browse(bool addFiles) {
@@ -176,6 +226,7 @@ void URLLineEdit::browse(bool addFiles) {
     }
 
     QString name;
+    bool filePathIsOk = true;
     if (isPath || multi) {
         QStringList lst;
         if (isPath) {
@@ -184,7 +235,10 @@ void URLLineEdit::browse(bool addFiles) {
         } else {
             lst = U2FileDialog::getOpenFileNames(nullptr, tr("Select file(s)"), lastDir, FileFilter);
         }
-
+        for (const QString& nameStr : qAsConst(lst)) {
+            filePathIsOk = checkNameNoSemicolon(nameStr);
+            CHECK_BREAK(filePathIsOk);
+        }
         if (addFiles) {
             name = this->text();
             if (!lst.isEmpty()) {
@@ -201,9 +255,10 @@ void URLLineEdit::browse(bool addFiles) {
             this->checkExtension(name);
         } else {
             lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir, FileFilter);
+            filePathIsOk = checkNameNoSemicolon(name);
         }
     }
-    if (!name.isEmpty()) {
+    if (!name.isEmpty() && filePathIsOk) {
         if (name.length() > this->maxLength()) {
             this->setMaxLength(name.length() + this->maxLength());
         }
@@ -211,6 +266,17 @@ void URLLineEdit::browse(bool addFiles) {
     }
     setFocus();
     emit si_finished();
+}
+
+bool URLLineEdit::checkNameNoSemicolon(const QString& name) {
+    CHECK(name.contains(";"), true);
+    QString message = URLLineEdit::tr("File path/name contains ';' symbol.\r\n"
+                                  "That kind of file path/name can't be correctly handled by this element.\r\n"
+                                  "Please rename the file or move it to directory which not contain ';' in it path.");
+    QMessageBox::critical(qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow()),
+                          L10N::errorTitle(),
+                          message);
+    return false;
 }
 
 void URLLineEdit::checkExtension(QString& name) const {

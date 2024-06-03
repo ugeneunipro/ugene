@@ -145,6 +145,10 @@ signals:
     void si_nameChanged(const QString& oldName);
     void si_relationChanged(const QList<GObjectRelation>& previousRelations);
     void si_relatedObjectRelationChanged();
+    // Send this signal when user attempted to modify GObject name,
+    // but it is impossible to write this changes to the corresponding file
+    // as far as this file format doesn't support it.
+    void si_failedModifyObjectName();
 
 protected:
     void setGObjectNameNotDbi(const QString& newName);

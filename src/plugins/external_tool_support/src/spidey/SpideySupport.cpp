@@ -29,6 +29,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -76,7 +77,6 @@ SpideySupport::SpideySupport()
     description += tr("<br><br> Wheelan SJ, Church DM, Ostell JM.");
     description += tr("<br>Spidey: a tool for mRNA-to-genomic alignments");
     description += tr("<br>Genome Res. 2001 Nov;11(11):1952-7.");
-    versionRegExp = QRegExp("VersionDate: (\\d+\\/\\d+\\/\\d+)");
     toolKitName = "spidey";
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
@@ -94,6 +94,10 @@ void SpideySupport::sl_validationStatusChanged(bool isValid) {
     } else {
         registry->unregisterTaskFactory(ET_SPIDEY_ID);
     }
+}
+
+const QString SpideySupport::getVersionFromToolPath(const QString& toolPath) const {
+    return IOAdapterUtils::readTextFile(QFileInfo(toolPath).absoluteDir().absolutePath() + "/version.txt");
 }
 
 ////////////////////////////////////////

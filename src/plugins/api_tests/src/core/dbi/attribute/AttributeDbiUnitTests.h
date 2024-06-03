@@ -70,57 +70,57 @@ public:
 
 class AttributeDbiUnitTests_getAvailableAttributeNames : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_getObjectAttributes : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_getObjectAttributesByName : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_getObjectPairAttributes : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_getObjectPairAttributesByName : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_removeAttributes : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_removeObjectAttributes : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_IntegerAttribute : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_RealAttribute : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_StringAttribute : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_ByteArrayAttribute : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 }  // namespace U2

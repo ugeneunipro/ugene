@@ -31,11 +31,11 @@ class AvgQualStep : public TrimmomaticStep {
 public:
     AvgQualStep();
 
-    TrimmomaticStepSettingsWidget* createWidget() const;
+    TrimmomaticStepSettingsWidget* createWidget() const override;
 
 private:
-    QString serializeState(const QVariantMap& widgetState) const;
-    QVariantMap parseState(const QString& command) const;
+    QString serializeState(const QVariantMap& widgetState) const override;
+    QVariantMap parseState(const QString& command) const override;
 };
 
 class AvgQualStepFactory : public TrimmomaticStepFactory {
@@ -44,7 +44,7 @@ public:
 
     AvgQualStepFactory();
 
-    AvgQualStep* createStep() const;
+    AvgQualStep* createStep() const override;
 };
 
 }  // namespace LocalWorkflow

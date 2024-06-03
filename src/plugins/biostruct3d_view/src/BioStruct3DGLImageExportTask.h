@@ -33,7 +33,7 @@ public:
         : ImageExportTask(settings),
           glWidget(widget) {
     }
-    virtual void run() = 0;
+    void run() override = 0;
 
 protected:
     BioStruct3DGLWidget* glWidget;
@@ -44,7 +44,7 @@ public:
     BioStruct3DImageExportToSVGTask(BioStruct3DGLWidget* widget, const ImageExportTaskSettings& settings)
         : BioStruct3DImageExportTask(widget, settings) {
     }
-    void run();
+    void run() override;
 };
 
 class BioStruct3DImageExportToPDFTask : public BioStruct3DImageExportTask {
@@ -52,7 +52,7 @@ public:
     BioStruct3DImageExportToPDFTask(BioStruct3DGLWidget* widget, const ImageExportTaskSettings& settings)
         : BioStruct3DImageExportTask(widget, settings) {
     }
-    void run();
+    void run() override;
 };
 
 class BioStruct3DImageExportToBitmapTask : public BioStruct3DImageExportTask {
@@ -60,7 +60,7 @@ public:
     BioStruct3DImageExportToBitmapTask(BioStruct3DGLWidget* widget, const ImageExportTaskSettings& settings)
         : BioStruct3DImageExportTask(widget, settings) {
     }
-    void run();
+    void run() override;
 };
 
 class BioStruct3DImageExportController : public ImageExportController {
@@ -70,20 +70,20 @@ public:
           glWidget(widget) {
     }
 
-    int getImageWidth() const;
-    int getImageHeight() const;
+    int getImageWidth() const override;
+    int getImageHeight() const override;
 
 protected:
-    void initSettingsWidget() {
+    void initSettingsWidget() override {
     }
 
-    Task* getExportToSvgTask(const ImageExportTaskSettings& settings) const {
+    Task* getExportToSvgTask(const ImageExportTaskSettings& settings) const override {
         return new BioStruct3DImageExportToSVGTask(glWidget, settings);
     }
-    Task* getExportToPdfTask(const ImageExportTaskSettings& settings) const {
+    Task* getExportToPdfTask(const ImageExportTaskSettings& settings) const override {
         return new BioStruct3DImageExportToPDFTask(glWidget, settings);
     }
-    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const {
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const override {
         return new BioStruct3DImageExportToBitmapTask(glWidget, settings);
     }
 

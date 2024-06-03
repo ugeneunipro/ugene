@@ -91,11 +91,11 @@ class BlastMultiTask : public Task {
     Q_OBJECT
 public:
     BlastMultiTask(QList<BlastTaskSettings>& settingsList, QString& url);
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     Task::ReportResult report() override;
-    QString generateReport() const;
+    QString generateReport() const override;
 
 private:
     QList<BlastTaskSettings> settingsList;

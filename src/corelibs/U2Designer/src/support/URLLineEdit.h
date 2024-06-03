@@ -49,6 +49,7 @@ public slots:
 
 private slots:
     void sl_onBrowseWithAdding();
+    void sl_editingFinished();
 
 signals:
     void si_finished();
@@ -63,6 +64,7 @@ public:
 
 private:
     void browse(bool addFiles = false);
+    bool checkNameNoSemicolon(const QString& name);
     void checkExtension(QString& name) const;
 };
 

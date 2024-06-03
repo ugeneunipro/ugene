@@ -43,7 +43,7 @@ public:
           method(_method),
           useDefaultIndexName(_useDefaultIndexName) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString refPath;
