@@ -112,12 +112,12 @@ void MsaEditorMultilineWgt::addChild(MsaEditorWgt* child) {
 
 void MsaEditorMultilineWgt::createChildren() {
     int childrenCount = 1; //isWrapMode() ? 3 : 1;
-    MsaEditorWgt* child = createChild(editor, overviewArea, statusBar);
-    SAFE_POINT(child != nullptr, "Can't create sequence widget", );
-    addChild(child);
+    MsaEditorWgt* child1 = createChild(editor, overviewArea, statusBar);
+    SAFE_POINT(child1 != nullptr, "Can't create sequence widget", );
+    addChild(child1);
     // calculate necessary count of children MSAs
     if (isWrapMode()) {
-        QSize s = child->minimumSizeHint();
+        QSize s = child1->minimumSizeHint();
         childrenCount = height() / s.height() + 3;
         int l = editor->getAlignmentLen();
         int aw = getSequenceAreaAllBaseWidth();
@@ -131,9 +131,9 @@ void MsaEditorMultilineWgt::createChildren() {
     }
 
     for (int i = 1; i < childrenCount; i++) {
-        MsaEditorWgt* child = createChild(editor, overviewArea, statusBar);
-        SAFE_POINT(child != nullptr, "Can't create sequence widget", );
-        addChild(child);
+        MsaEditorWgt* child2 = createChild(editor, overviewArea, statusBar);
+        SAFE_POINT(child2 != nullptr, "Can't create sequence widget", );
+        addChild(child2);
     }
 
     // TODO:ichebyki
