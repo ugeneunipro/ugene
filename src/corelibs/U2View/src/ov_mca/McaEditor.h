@@ -113,6 +113,7 @@ protected:
     void addAlignmentMenu(QMenu* menu);
     void addAppearanceMenu(QMenu* menu);
     void addNavigationMenu(QMenu* menu);
+    void sl_gotoSelectedRead() override;
 };
 
 }  // namespace U2
