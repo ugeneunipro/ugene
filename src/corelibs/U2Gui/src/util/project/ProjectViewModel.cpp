@@ -38,6 +38,7 @@
 #include <U2Gui/ObjectViewModel.h>
 
 #include "ConnectionHelper.h"
+#include "Notification.h"
 #include "ProjectUtils.h"
 
 namespace U2 {
@@ -1118,6 +1119,12 @@ void ProjectViewModel::disconnectDocument(Document* doc) {
 
 void ProjectViewModel::connectGObject(GObject* obj) {
     connect(obj, SIGNAL(si_modifiedStateChanged()), SLOT(sl_objectModifiedStateChanged()));
+    connect(obj, &GObject::si_failedModifyObjectName, this, [obj]() {
+        NotificationStack::addNotification(tr("The object has been renamed, but as far as the \"%1\" format could not store this information,"
+                                              " name will not be saved to the corresponding file")
+                                               .arg(obj->getDocument()->getDocumentFormatId()),
+                                           NotificationType::Warning_Not);
+    });
 }
 
 Folder ProjectViewModel::getDropFolder(const QModelIndex& index) const {

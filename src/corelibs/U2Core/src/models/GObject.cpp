@@ -78,6 +78,18 @@ void GObject::setGObjectName(const QString& newName) {
     }
 
     setGObjectNameNotDbi(newName);
+
+    // In case of exporting we set GObject name,
+    // but it is not connected to document yet
+    auto doc = getDocument();
+    CHECK(doc != nullptr, );
+
+    if (doc->getDocumentFormat()->checkFlags(DocumentFormatFlag_HasModifiableName)) {
+        setModified(true);
+    } else {
+        emit si_failedModifyObjectName();
+    }
+
 }
 
 void GObject::setGObjectNameNotDbi(const QString& newName) {

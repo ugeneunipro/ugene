@@ -45,7 +45,8 @@
 namespace U2 {
 
 FastaFormat::FastaFormat(QObject* p)
-    : TextDocumentFormat(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW, {"fa", "mpfa", "fna", "fsa", "fas", "fasta", "sef", "seq", "seqs"}) {
+    : TextDocumentFormat(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW | DocumentFormatFlag_HasModifiableName,
+                         {"fa", "mpfa", "fna", "fsa", "fas", "fasta", "sef", "seq", "seqs"}) {
     formatName = tr("FASTA");
     supportedObjectTypes += GObjectTypes::SEQUENCE;
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
