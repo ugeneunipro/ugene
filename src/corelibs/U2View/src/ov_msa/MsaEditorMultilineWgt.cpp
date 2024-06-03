@@ -131,7 +131,7 @@ void MsaEditorMultilineWgt::createChildren() {
     }
 
     for (int i = 1; i < childrenCount; i++) {
-        MsaEditorWgt* child = createChild(editor, overviewArea, statusBar);
+        child = createChild(editor, overviewArea, statusBar);
         SAFE_POINT(child != nullptr, "Can't create sequence widget", );
         addChild(child);
     }
