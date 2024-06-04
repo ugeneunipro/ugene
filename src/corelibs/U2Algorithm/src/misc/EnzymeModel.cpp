@@ -49,9 +49,9 @@ int EnzymeData::getFullLength() const {
     int seqSize = seq.size();
     if (cutDirect != ENZYME_CUT_UNKNOWN) {
         if (cutDirect < 0) {
-            leadingNsNumber = qAbs(cutDirect);
+            leadingNsNumber = qMax(leadingNsNumber, qAbs(cutDirect));
         } else if (cutDirect > seqSize) {
-            trailingNsNumber = cutDirect - seqSize;
+            trailingNsNumber = qMax(trailingNsNumber, cutDirect - seqSize);
         }
     }
     if (cutComplement != ENZYME_CUT_UNKNOWN) {
@@ -61,11 +61,25 @@ int EnzymeData::getFullLength() const {
             leadingNsNumber = qMax(leadingNsNumber, cutComplement - seqSize);
         }
     }
+    if (secondCutDirect != ENZYME_CUT_UNKNOWN) {
+        if (secondCutDirect < 0) {
+            leadingNsNumber = qMax(leadingNsNumber, qAbs(secondCutDirect));
+        } else if (secondCutDirect > seqSize) {
+            trailingNsNumber = qMax(trailingNsNumber, secondCutDirect - seqSize);
+        }
+    }
+    if (secondCutComplement != ENZYME_CUT_UNKNOWN) {
+        if (secondCutComplement < 0) {
+            trailingNsNumber = qMax(trailingNsNumber, qAbs(secondCutComplement));
+        } else if (secondCutComplement > seqSize) {
+            leadingNsNumber = qMax(leadingNsNumber, secondCutComplement - seqSize);
+        }
+    }
 
     return leadingNsNumber + seqSize + trailingNsNumber;
 }
 
-static const QString TOOLTIP_TAG = "<p style='font-family:Courier,monospace'><br><strong>3'&nbsp;</strong>%1<strong>&nbsp;5'</strong><br><strong>5'&nbsp;</strong>%2<strong>&nbsp;3'</strong><br></p>";
+static const QString TOOLTIP_TAG = "<p style='font-family:Courier,monospace'><br><strong>5'&nbsp;</strong>%1<strong>&nbsp;3'</strong><br><strong>3'&nbsp;</strong>%2<strong>&nbsp;5'</strong><br></p>";
 static const QString TOOLTIP_N_MARKER = "(N)<sub>%1</sub>";
 static const QString TOOLTIP_FORWARD_MARKER = "<sup>&#x25BC;</sup>";
 static const QString TOOLTIP_REVERSE_MARKER = "<sub>&#x25B2;</sub>";
@@ -235,62 +249,37 @@ QStringList generateTooltipElements(int out, int in, bool forward, Ns type, bool
     return result;
 };
 
-// Join parts to a single tooltip
-QString generateTooltip(Ns type, const QStringList& elements, const QString& mainPart) {
-    QString result;
-    // Join elements which are calculated in @generateTooltipElements
-    auto joinElements = [&elements]() -> QString {
-        QString joinElementsResult;
-        for (const auto& el : qAsConst(elements)) {
-            if (el == TOOLTIP_FORWARD_MARKER || el == TOOLTIP_REVERSE_MARKER) {
-                if (!joinElementsResult.isEmpty()) {
-                    joinElementsResult = joinElementsResult.left(joinElementsResult.size() - TOOLTIP_SPACE.size());
-                }
-                joinElementsResult += el;
-            } else {
-                joinElementsResult += el;
-                if (el != TOOLTIP_SPACE) {
-                    joinElementsResult += TOOLTIP_SPACE;
-                }
+// Join elements which are calculated in @generateTooltipElements
+QString joinTooltipElements(const QStringList& elements) {
+    QString joinElementsResult;
+    for (const auto& el : qAsConst(elements)) {
+        if (el == TOOLTIP_FORWARD_MARKER || el == TOOLTIP_REVERSE_MARKER) {
+            if (!joinElementsResult.isEmpty()) {
+                joinElementsResult = joinElementsResult.left(joinElementsResult.size() - TOOLTIP_SPACE.size());
+            }
+            joinElementsResult += el;
+        } else {
+            joinElementsResult += el;
+            if (el != TOOLTIP_SPACE) {
+                joinElementsResult += TOOLTIP_SPACE;
             }
         }
-        if (joinElementsResult.endsWith(TOOLTIP_SPACE)) {
-            joinElementsResult = joinElementsResult.left(joinElementsResult.size() - TOOLTIP_SPACE.size());
-        }
-        return joinElementsResult;
-    };
-    if (type == Ns::Left) {
-        result += joinElements();
     }
-    result += mainPart;
-    if (type == Ns::Right) {
-        result += joinElements();
+    if (joinElementsResult.endsWith(TOOLTIP_SPACE)) {
+        joinElementsResult = joinElementsResult.left(joinElementsResult.size() - TOOLTIP_SPACE.size());
     }
-    return result;
+    return joinElementsResult;
 };
 
-}  // namespace
-
-QString EnzymeData::generateEnzymeTooltip() const {
-    auto alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
-    auto seqComplement = DNASequenceUtils::reverseComplement(seq, alphabet);
-    if (cutDirect == ENZYME_CUT_UNKNOWN) {
-        auto getColoredSequence = [](const QString& sequence) -> QString {
-            QString result;
-            for (QString ch : qAsConst(sequence)) {
-                if (ch != "N") {
-                    ch = QString("<span style=\"color: #ff0000; \">%1</span>").arg(ch);
-                }
-                result += ch;
-            }
-            return result;
-        };
-        return TOOLTIP_TAG.arg(getColoredSequence(seq)).arg(getColoredSequence(DNASequenceUtils::complement(seq, alphabet)));
-    }
-
-    int enzymeSize = seq.size();
-    QPair<Ns, int> forwardNShift = calculateNShift(cutDirect, true, enzymeSize);
-    QPair<Ns, int> reverseNShift = calculateNShift(cutComplement, false, enzymeSize);
+// Generates forward and reverse side parts of the enzyme.
+// For example:
+//    Side        Main
+// |N N N N N| |A C G T|
+//        N N| |T G C A|
+//
+// Forward side part here is "N N N N N"
+// Reverse side part here is "N N"
+void generateForwardAndReverseTooltipSideParts(const QPair<Ns, int>& forwardNShift, const QPair<Ns, int>& reverseNShift, QString& forwardTooltipSidePart, QString& reverseTooltipSidePart) {
     QStringList forwardTooltipElements;
     QStringList reverseTooltipElements;
     if (forwardNShift.first == reverseNShift.first && forwardNShift.first != Ns::No) {
@@ -325,11 +314,71 @@ QString EnzymeData::generateEnzymeTooltip() const {
             reverseTooltipElements = generateTooltipElements(0, reverseNShift.second, false, reverseNShift.first, false, (forwardNShift.second != 0 && forwardNShift.first == Ns::Left), (forwardNShift.second != 0 && forwardNShift.first == Ns::Right), false);
         }
     }
+
+    forwardTooltipSidePart = joinTooltipElements(forwardTooltipElements);
+    reverseTooltipSidePart = joinTooltipElements(reverseTooltipElements);
+}
+
+// Join parts to a single tooltip
+QString generateTooltip(Ns type, const QString& sidePart, const QString& secondSidePart, const QString& mainPart) {
+    QString result;
+    if (type == Ns::Left) {
+        result += sidePart;
+    } else if (!secondSidePart.isEmpty()) {
+        result += secondSidePart;
+    }
+    result += mainPart;
+    if (type == Ns::Right) {
+        result += sidePart;
+    } else if (!secondSidePart.isEmpty()) {
+        result += secondSidePart;
+    }
+    return result;
+};
+
+}  // namespace
+
+QString EnzymeData::generateEnzymeTooltip() const {
+    if (id == "AloI") {
+        int i = 0;
+    }
+    auto alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
+    auto seqComplement = DNASequenceUtils::reverseComplement(seq, alphabet);
+    if (cutDirect == ENZYME_CUT_UNKNOWN) {
+        auto getColoredSequence = [](const QString& sequence) -> QString {
+            QString result;
+            for (QString ch : qAsConst(sequence)) {
+                if (ch != "N") {
+                    ch = QString("<span style=\"color: #ff0000; \">%1</span>").arg(ch);
+                }
+                result += ch;
+            }
+            return result;
+        };
+        return TOOLTIP_TAG.arg(getColoredSequence(seq)).arg(getColoredSequence(DNASequenceUtils::complement(seq, alphabet)));
+    }
+
+    int enzymeSize = seq.size();
+
+    QPair<Ns, int> forwardNShift = calculateNShift(cutDirect, true, enzymeSize);
+    QPair<Ns, int> reverseNShift = calculateNShift(cutComplement, false, enzymeSize);
+    QString forwardTooltipSidePart;
+    QString reverseTooltipSidePart;
+    generateForwardAndReverseTooltipSideParts(forwardNShift, reverseNShift, forwardTooltipSidePart, reverseTooltipSidePart);
+
+    QString secondForwardTooltipSidePart;
+    QString secondReverseTooltipSidePart;
+    if (secondCutDirect != ENZYME_CUT_UNKNOWN) {
+        QPair<Ns, int> secondForwardNShift = calculateNShift(secondCutDirect, true, enzymeSize);
+        QPair<Ns, int> secondReverseNShift = calculateNShift(secondCutComplement, false, enzymeSize);
+        generateForwardAndReverseTooltipSideParts(secondForwardNShift, secondReverseNShift, secondForwardTooltipSidePart, secondReverseTooltipSidePart);
+    }
+
     QString forwardMainPart = generateMainPart(seq, cutDirect, true, enzymeSize);
     QString reverseMainPart = generateMainPart(seqComplement, cutComplement, false, enzymeSize);
 
-    QString forwardTooltip = generateTooltip(forwardNShift.first, forwardTooltipElements, forwardMainPart);
-    QString reverseTooltip = generateTooltip(reverseNShift.first, reverseTooltipElements, reverseMainPart);
+    QString forwardTooltip = generateTooltip(forwardNShift.first, forwardTooltipSidePart, secondForwardTooltipSidePart, forwardMainPart);
+    QString reverseTooltip = generateTooltip(reverseNShift.first, reverseTooltipSidePart, secondReverseTooltipSidePart, reverseMainPart);
     if (forwardNShift.first == Ns::Left && reverseNShift.first != Ns::Left) {
         if (reverseNShift.first == Ns::Right) {
             forwardTooltip += QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);

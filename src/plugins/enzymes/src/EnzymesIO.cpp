@@ -201,7 +201,14 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFacto
         }
         if (buff[0] == '/' && buff[1] == '/') {
             if (!currentData->id.isEmpty()) {
-                res.append(currentData);
+                //
+                if (!res.isEmpty() && res.last()->id == currentData->id) {
+                    coreLog.info(currentData->id);
+                    res.last()->secondCutDirect = currentData->cutComplement;
+                    res.last()->secondCutComplement = currentData->cutDirect;
+                } else {
+                    res.append(currentData);
+                }
                 currentData = new EnzymeData();
             } else {
                 ioLog.trace(QString("Enzyme without ID, line %1, skipping").arg(line));

@@ -83,6 +83,8 @@ public:
     QByteArray seq;
     int cutDirect = ENZYME_CUT_UNKNOWN;  // starts from the first char in direct strand
     int cutComplement = ENZYME_CUT_UNKNOWN;  // starts from the first char in complement strand, negative->right offset
+    int secondCutDirect = ENZYME_CUT_UNKNOWN;  //
+    int secondCutComplement = ENZYME_CUT_UNKNOWN;  //
     QString organizm;
     QStringList suppliers; // commercial sources of the current enzyme
     const DNAAlphabet* alphabet = nullptr;
