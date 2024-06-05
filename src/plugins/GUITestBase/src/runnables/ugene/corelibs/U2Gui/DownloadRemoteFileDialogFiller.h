@@ -86,7 +86,7 @@ public:
           useMethod(_useMethod),
           outFormatVal(_outFormatVal) {
     }
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QString resID;

@@ -44,7 +44,7 @@ class DistanceMatrixMSAProfileDialog : public QDialog, public Ui_DistanceMatrixM
 public:
     DistanceMatrixMSAProfileDialog(QWidget* p, MsaEditor* ctx);
 
-    void accept();
+    void accept() override;
 
 private slots:
     void sl_formatSelected();
@@ -87,17 +87,17 @@ class DistanceMatrixMSAProfileTask : public Task {
 public:
     DistanceMatrixMSAProfileTask(const DistanceMatrixMSAProfileTaskSettings& s);
 
-    virtual void prepare();
-    QString generateReport() const;
-    virtual bool isReportingEnabled() const;
+    void prepare() override;
+    QString generateReport() const override;
+    bool isReportingEnabled() const override;
 
     void createDistanceTable(MsaDistanceAlgorithm* algo, const QList<MsaRow>& rows, QFile* f);
 
     QList<Task*> createStatisticsDocument(Task* subTask);
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     // void run();
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     DistanceMatrixMSAProfileTaskSettings s;

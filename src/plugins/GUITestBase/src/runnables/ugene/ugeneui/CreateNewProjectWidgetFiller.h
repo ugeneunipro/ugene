@@ -30,7 +30,7 @@ public:
     SaveProjectAsDialogFiller(const QString& _projectName, const QString& _projectFile)
         : Filler("CreateNewProjectDialog"), projectName(_projectName), projectFile(_projectFile) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     const QString projectName;

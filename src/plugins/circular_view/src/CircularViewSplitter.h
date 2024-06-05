@@ -41,11 +41,11 @@ public:
     CircularViewSplitter(AnnotatedDNAView* view);
     // there are no special object handling with this view
     // it only shows existing AO only
-    virtual bool acceptsGObject(GObject*) {
+    bool acceptsGObject(GObject*) override {
         return false;
     }
-    virtual void updateState(const QVariantMap& m);
-    virtual void saveState(QVariantMap& m);
+    void updateState(const QVariantMap& m) override;
+    void saveState(QVariantMap& m) override;
     void addView(CircularView* view, RestrctionMapWidget* rmapWidget);
     void adaptSize();
     void removeView(CircularView* view, RestrctionMapWidget* rmapWidget);

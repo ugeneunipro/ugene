@@ -30,7 +30,7 @@ class ClustalWDialogFiller : public Filler {
 public:
     ClustalWDialogFiller(int _gapOpenVal = 0);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     int gapOpenVal;

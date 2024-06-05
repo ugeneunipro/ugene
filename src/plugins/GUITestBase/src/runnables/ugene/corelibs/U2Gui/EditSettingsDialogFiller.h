@@ -37,7 +37,7 @@ public:
 
     EditSettingsDialogFiller(AnnotationPolicy policy, bool recalculateQualifiers);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     const AnnotationPolicy policy;

@@ -36,7 +36,7 @@ public:
     ClustalWPrompter(Actor* p = 0);
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class ClustalWWorker : public BaseWorker {
@@ -44,9 +44,9 @@ class ClustalWWorker : public BaseWorker {
 public:
     ClustalWWorker(Actor* a);
 
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private slots:
     void sl_taskFinished();
@@ -67,7 +67,7 @@ public:
     ClustalWWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new ClustalWWorker(a);
     }
 };

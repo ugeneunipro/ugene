@@ -36,7 +36,7 @@ public:
         : Filler("AceImportDialog"),
           leDestUrl(_leDest), action(action) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString leDestUrl;

@@ -46,7 +46,7 @@ public:
                          bool _wrongInput = false,
                          bool recalculateQuals = false,
                          bool cancelIfWrongInput = false);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString pasteDataHere;

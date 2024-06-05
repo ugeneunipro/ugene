@@ -35,7 +35,7 @@ public:
     ExportImage(const QString& filePath, const QString& comboValue = "", int spinValue = 0);
     ExportImage(CustomScenario* scenario);
 
-    void commonScenario();
+    void commonScenario() override;
 
 protected:
     const QString filePath;
@@ -55,7 +55,7 @@ public:
     CircularViewExportImage(CustomScenario* scenario)
         : Filler("ImageExportForm", scenario), spinValue(0) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 protected:
     QString filePath, comboValue;
@@ -146,7 +146,7 @@ public:
           settings(settings) {
     }
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     Settings settings;
@@ -158,7 +158,7 @@ public:
         : Filler("SelectSubalignmentDialog"),
           msaRegion(regionMsa) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     RegionMsa msaRegion;
@@ -182,7 +182,7 @@ public:
     };
 
     ImageExportFormFiller(const Parameters& parameters);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     Parameters parameters;

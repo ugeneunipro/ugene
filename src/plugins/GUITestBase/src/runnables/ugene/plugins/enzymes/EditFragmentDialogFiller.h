@@ -60,7 +60,7 @@ public:
 
     EditFragmentDialogFiller(const Parameters& parameters);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     Parameters parameters;

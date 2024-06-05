@@ -31,7 +31,7 @@ class CustomAutoAnnotationDialog : public QDialog, Ui_CustomAutoAnnotationDialog
     Q_OBJECT
 public:
     CustomAutoAnnotationDialog(ADVSequenceObjectContext* ctx);
-    virtual void accept();
+    void accept() override;
 
 private:
     enum class CheckType {

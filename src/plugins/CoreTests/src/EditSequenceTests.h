@@ -41,8 +41,8 @@ public:
 
     ~GTest_RemovePartFromSequenceTask();
 
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
 private:
     U1AnnotationUtils::AnnotationStrategyForResize strat;
@@ -62,8 +62,8 @@ public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_AddPartToSequenceTask, "Add_Part_To_Sequence_Task", TaskFlags_NR_FOSCOE);
 
     ~GTest_AddPartToSequenceTask();
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
 private:
     U1AnnotationUtils::AnnotationStrategyForResize strat;
@@ -83,8 +83,8 @@ public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_ReplacePartOfSequenceTask, "replace-part-of-sequence", TaskFlags_NR_FOSCOE);
 
     ~GTest_ReplacePartOfSequenceTask() {};
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
 private:
     U1AnnotationUtils::AnnotationStrategyForResize strat;

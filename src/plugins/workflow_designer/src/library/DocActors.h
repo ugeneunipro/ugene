@@ -38,7 +38,7 @@ public:
     DocActorProto(const DocumentFormatId& _fid, const Descriptor& desc, const QList<PortDescriptor*>& ports, const QList<Attribute*>& attrs = QList<Attribute*>());
     DocActorProto(const Descriptor& desc, const GObjectType& t, const QList<PortDescriptor*>& ports, const QList<Attribute*>& attrs = QList<Attribute*>());
 
-    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const = 0;
+    bool isAcceptableDrop(const QMimeData*, QVariantMap*) const override = 0;
     bool isAcceptableDrop(const QMimeData*, QVariantMap*, const QString& urlAttrId) const;
 
 protected:
@@ -52,7 +52,7 @@ protected:
 class ReadDocActorProto : public DocActorProto {
 public:
     ReadDocActorProto(const DocumentFormatId& fid, const Descriptor& desc, const QList<PortDescriptor*>& ports, const QList<Attribute*>& attrs = QList<Attribute*>());
-    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
+    bool isAcceptableDrop(const QMimeData*, QVariantMap*) const override;
 };
 
 class WriteDocActorProto : public DocActorProto {
@@ -66,7 +66,7 @@ public:
 
 private:
     void construct(bool canWriteToSharedDb, bool addValidator, bool addPortValidator);
-    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
+    bool isAcceptableDrop(const QMimeData*, QVariantMap*) const override;
     Attribute* urlAttr;
 
 private:
@@ -85,14 +85,14 @@ public:
     ReadDocPrompter(Actor* p = 0)
         : ReadDocPrompterBase(p) {
     }
-    virtual ActorDocument* createDescription(Actor* a) {
+    ActorDocument* createDescription(Actor* a) override {
         auto doc = static_cast<ReadDocPrompter*>(ReadDocPrompterBase::createDescription(a));
         doc->spec = this->spec;
         return doc;
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
     QString spec;
 };
 
@@ -108,7 +108,7 @@ public:
     WriteDocPrompter(Actor* p = 0)
         : WriteDocPrompterBase(p) {
     }
-    virtual ActorDocument* createDescription(Actor* a) {
+    ActorDocument* createDescription(Actor* a) override {
         auto doc = static_cast<WriteDocPrompter*>(WriteDocPrompterBase::createDescription(a));
         doc->spec = this->spec;
         doc->slot = this->slot;
@@ -116,7 +116,7 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
     QString spec, slot;
 };
 
@@ -128,7 +128,7 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class WriteFastaPrompter : public PrompterBaseImpl {
@@ -138,8 +138,8 @@ public:
         : PrompterBaseImpl(p), format(formatId) {
     }
 
-    virtual QString composeRichDoc();
-    virtual ActorDocument* createDescription(Actor*);
+    QString composeRichDoc() override;
+    ActorDocument* createDescription(Actor*) override;
 
 private:
     QString format;

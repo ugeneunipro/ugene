@@ -39,8 +39,8 @@ class GTest_CreateSubalignimentTask : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_CreateSubalignimentTask, "plugin_create-subalignment-task", TaskFlags_NR_FOSCOE);
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
 private:
     MsaObject* maobj;
@@ -57,8 +57,8 @@ class GTest_RemoveAlignmentRegion : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_RemoveAlignmentRegion, "test-remove-alignment-region", TaskFlags_NR_FOSCOE);
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
 private:
     MsaObject* maobj;
@@ -72,8 +72,8 @@ class GTest_AddSequenceToAlignment : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_AddSequenceToAlignment, "test-add-seq-to-alignment", TaskFlags_NR_FOSCOE);
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
 private:
     MsaObject* maobj;
@@ -87,7 +87,7 @@ class GTest_RemoveColumnsOfGaps : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_RemoveColumnsOfGaps, "remove-columns-of-gaps");
-    void prepare();
+    void prepare() override;
 
 private:
     QString inputDocCtxName;

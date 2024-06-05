@@ -35,7 +35,7 @@ class ConstructMoleculeDialog : public QDialog, public Ui_ConstructMoleculeDialo
     Q_OBJECT
 public:
     ConstructMoleculeDialog(const QList<DNAFragment>& fragments, QWidget* parent);
-    virtual void accept();
+    void accept() override;
 
 private slots:
     void sl_onTakeButtonClicked();
@@ -53,7 +53,7 @@ private slots:
     void sl_adjustRightEnd();
 
 protected:
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
     void update();

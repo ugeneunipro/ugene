@@ -40,10 +40,10 @@ class GTest_LoadDocument : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_LoadDocument, "load-document");
 
-    ReportResult report();
-    void prepare();
+    ReportResult report() override;
+    void prepare() override;
 
-    virtual void cleanup();
+    void cleanup() override;
 
 private:
     QString docContextName;
@@ -64,7 +64,7 @@ class GTest_SaveDocument : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_SaveDocument, "save-document");
-    void prepare();
+    void prepare() override;
 
 private:
     QString url;
@@ -81,8 +81,8 @@ public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_LoadBrokenDocument, "load-broken-document", TaskFlags(TaskFlag_NoRun) | TaskFlag_FailOnSubtaskCancel);
 
     Document* getDocument() const;
-    ReportResult report();
-    void cleanup();
+    ReportResult report() override;
+    void cleanup() override;
 
 private:
     LoadDocumentTask* loadTask;
@@ -96,10 +96,10 @@ class GTest_ImportDocument : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_ImportDocument, "import-document");
 
-    ReportResult report();
-    void prepare();
+    ReportResult report() override;
+    void prepare() override;
 
-    virtual void cleanup();
+    void cleanup() override;
 
 private:
     QString docContextName;
@@ -123,8 +123,8 @@ public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_ImportBrokenDocument, "import-broken-document", TaskFlags(TaskFlag_NoRun) | TaskFlag_FailOnSubtaskCancel);
 
     Document* getDocument() const;
-    ReportResult report();
-    void cleanup();
+    ReportResult report() override;
+    void cleanup() override;
 
 private:
     DocumentProviderTask* importTask;
@@ -138,7 +138,7 @@ class GTest_DocumentNumObjects : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DocumentNumObjects, "check-num-objects");
 
-    ReportResult report();
+    ReportResult report() override;
     QString docContextName;
     int numObjs;
 };
@@ -147,7 +147,7 @@ class GTest_DocumentFormat : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DocumentFormat, "check-document-format");
 
-    ReportResult report();
+    ReportResult report() override;
 
     QString docUrl;
     QString docFormat;
@@ -157,7 +157,7 @@ class GTest_DocumentObjectNames : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DocumentObjectNames, "check-document-object-names");
 
-    ReportResult report();
+    ReportResult report() override;
 
     QString docContextName;
     QStringList names;
@@ -167,7 +167,7 @@ class GTest_DocumentObjectTypes : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DocumentObjectTypes, "check-document-object-types");
 
-    ReportResult report();
+    ReportResult report() override;
 
     QString docContextName;
     QList<GObjectType> types;
@@ -182,9 +182,9 @@ class GTest_FindGObjectByName : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_FindGObjectByName, "find-object-by-name");
 
-    ReportResult report();
+    ReportResult report() override;
 
-    void cleanup();
+    void cleanup() override;
 
 private:
     QString docContextName;
@@ -220,7 +220,7 @@ class GTest_Compare_VCF_Files : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_Compare_VCF_Files, "compare-vcf-docs");
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     IOAdapter* createIoAdapter(const QString& filePath);
@@ -236,7 +236,7 @@ class GTest_Compare_PDF_Files : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_Compare_PDF_Files, "compare-pdf-docs");
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QString doc1Path;

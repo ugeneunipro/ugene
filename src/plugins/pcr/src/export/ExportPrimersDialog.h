@@ -36,7 +36,7 @@ public:
     ExportPrimersDialog(const QList<Primer>& primers, QWidget* parent);
 
 private slots:
-    void accept();
+    void accept() override;
 
 private:
     void init();

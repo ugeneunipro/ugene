@@ -31,7 +31,7 @@ public:
         : Filler(""), groupName(_groupName) {
     }
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString groupName;

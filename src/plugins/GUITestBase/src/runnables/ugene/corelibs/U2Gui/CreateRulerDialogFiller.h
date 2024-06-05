@@ -30,7 +30,7 @@ public:
     CreateRulerDialogFiller(QString _rulerName, int _startPos);
     CreateRulerDialogFiller(CustomScenario* c);
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QString rulerName;

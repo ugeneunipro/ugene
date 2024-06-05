@@ -33,13 +33,13 @@ public:
     ConvertSnpeffVariationsToAnnotationsPrompter(Actor* actor);
 
 private:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class ConvertSnpeffVariationsToAnnotationsFactory : public DomainFactory {
 public:
     ConvertSnpeffVariationsToAnnotationsFactory();
-    Worker* createWorker(Actor* actor);
+    Worker* createWorker(Actor* actor) override;
 
     static void init();
     static const QString ACTOR_ID;
@@ -50,9 +50,9 @@ class ConvertSnpeffVariationsToAnnotationsWorker : public BaseWorker {
 public:
     ConvertSnpeffVariationsToAnnotationsWorker(Actor* actor);
 
-    void init();
-    Task* tick();
-    void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private slots:
     void sl_taskFinished(Task* task);

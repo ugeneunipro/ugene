@@ -42,10 +42,10 @@ class GTest_FindEnzymes : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_FindEnzymes, "find-enzymes");
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    ReportResult report();
-    void cleanup();
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    ReportResult report() override;
+    void cleanup() override;
 
 private:
     bool hasUnexpectedError() const;
@@ -84,8 +84,8 @@ class GTest_DigestIntoFragments : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DigestIntoFragments, "digest-into-fragments");
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     QString seqObjCtx;
@@ -106,9 +106,9 @@ class GTest_LigateFragments : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_LigateFragments, "ligate-fragments");
 
-    void cleanup();
-    void prepare();
-    ReportResult report();
+    void cleanup() override;
+    void prepare() override;
+    ReportResult report() override;
     void prepareFragmentsList();
 
 private:

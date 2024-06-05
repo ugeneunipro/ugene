@@ -44,7 +44,7 @@ public:
     ConstructMoleculeDialogFiller(const QList<Action>& actions);
     ConstructMoleculeDialogFiller(CustomScenario* scenario);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     void addFragment(const QVariant& actionData);

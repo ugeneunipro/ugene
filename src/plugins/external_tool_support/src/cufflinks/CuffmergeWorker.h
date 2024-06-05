@@ -36,7 +36,7 @@ public:
     CuffmergePrompter(Actor* parent = 0);
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class CuffmergeWorker : public BaseWorker {
@@ -45,9 +45,9 @@ class CuffmergeWorker : public BaseWorker {
 public:
     CuffmergeWorker(Actor* actor);
 
-    void init();
-    Task* tick();
-    void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private slots:
     void sl_taskFinished();
@@ -70,7 +70,7 @@ public:
     CuffmergeWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker* createWorker(Actor* actor) {
+    Worker* createWorker(Actor* actor) override {
         return new CuffmergeWorker(actor);
     }
 };

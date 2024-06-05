@@ -30,7 +30,7 @@ class ClustalOSupportRunDialogFiller : public Filler {
 public:
     ClustalOSupportRunDialogFiller();
 
-    void commonScenario();
+    void commonScenario() override;
 };
 
 }  // namespace U2

@@ -42,7 +42,7 @@ public:
     DocumentFormatSelectorDialogFiller(CustomScenario* custom)
         : Filler("DocumentFormatSelectorDialog", custom) {
     }
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QString format;

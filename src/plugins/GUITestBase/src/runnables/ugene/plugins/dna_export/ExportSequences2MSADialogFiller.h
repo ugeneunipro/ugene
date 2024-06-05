@@ -39,7 +39,7 @@ public:
     ExportSequenceAsAlignmentFiller(const QString& _path, const QString& _name, ExportSequenceAsAlignmentFiller::FormatToUse _format, bool addDocumentToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
     ExportSequenceAsAlignmentFiller(CustomScenario* scenario);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString path, name;

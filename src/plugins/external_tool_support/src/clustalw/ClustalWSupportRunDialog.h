@@ -37,7 +37,7 @@ public:
     ClustalWSupportRunDialog(const Msa& ma, ClustalWSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
-    void accept();
+    void accept() override;
     void sl_iterationTypeEnabled(bool checked);
 
 private:
@@ -51,7 +51,7 @@ public:
     ClustalWWithExtFileSpecifySupportRunDialog(ClustalWSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
-    void accept();
+    void accept() override;
     void sl_iterationTypeEnabled(bool checked);
     void sl_inputPathButtonClicked();
 

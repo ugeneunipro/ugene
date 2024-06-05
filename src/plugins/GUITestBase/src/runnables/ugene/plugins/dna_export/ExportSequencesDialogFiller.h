@@ -32,7 +32,7 @@ public:
     ExportSelectedRegionFiller(const QString& filePath);
     ExportSelectedRegionFiller(CustomScenario* customScenario);
 
-    void commonScenario();
+    void commonScenario() override;
     void setPath(const QString& value);
     void setName(const QString& value);
 
@@ -61,7 +61,7 @@ public:
         bool _exportWithAnnotations = false,
         GTGlobals::UseMethod method = GTGlobals::UseMouse,
         bool translate = false);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString path;

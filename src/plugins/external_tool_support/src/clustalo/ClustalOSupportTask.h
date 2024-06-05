@@ -139,8 +139,8 @@ private:
 class ClustalOLogParser : public ExternalToolLogParser {
 public:
     ClustalOLogParser();
-    void parseOutput(const QString& partOfLog);
-    int getProgress();
+    void parseOutput(const QString& partOfLog) override;
+    int getProgress() override;
 
 private:
     /* Last line printed to stdout */

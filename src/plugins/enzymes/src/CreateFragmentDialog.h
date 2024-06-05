@@ -40,7 +40,7 @@ class CreateFragmentDialog : public QDialog, public Ui_CreateFragmentDialog {
 public:
     CreateFragmentDialog(ADVSequenceObjectContext* seqCtx, QWidget* p);
     CreateFragmentDialog(U2SequenceObject* seqObj, const U2Region& region, QWidget* p);
-    virtual void accept();
+    void accept() override;
     const DNAFragment& getFragment() {
         return dnaFragment;
     }

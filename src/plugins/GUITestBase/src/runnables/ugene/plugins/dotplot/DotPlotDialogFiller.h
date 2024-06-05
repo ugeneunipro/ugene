@@ -32,7 +32,7 @@ public:
         : Filler("DotPlotDialog"), minLen(_minLen), identity(_identity), invertedRepeats(_invertedRepeats), but1kpressed(_but1kpressed) {
     }
     DotPlotFiller(CustomScenario* customScenario);
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     int minLen, identity;
