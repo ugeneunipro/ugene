@@ -57,6 +57,12 @@ public:
 class FindEnzymesTask;
 
 struct FindEnzymesTaskConfig {
+
+    enum EnzymeExcludeMode {
+        EnzymeExcludeMode_ByRegion,
+        EnzymeExcludeMode_ByFoundEnzymes
+    };
+
     /** Region to search enzymes. When is empty the whole sequence range is processed. */
     U2Region searchRegion;
 
@@ -80,6 +86,9 @@ struct FindEnzymesTaskConfig {
 
     /** If task is not Auto-Annotation-Update task and no results is found the target 'annotationObject' will be removed from the project. */
     bool isAutoAnnotationUpdateTask = false;
+
+    /** Exclude enzymes from result by region or by enzymes found in region */
+    EnzymeExcludeMode excludeMode = EnzymeExcludeMode_ByRegion;
 };
 
 class FindEnzymesToAnnotationsTask : public Task {
@@ -172,6 +181,7 @@ private:
 class FindEnzymesAutoAnnotationUpdater : public AutoAnnotationsUpdater {
     Q_OBJECT
 public:
+
     FindEnzymesAutoAnnotationUpdater();
 
     Task* createAutoAnnotationsUpdateTask(const AutoAnnotationObject* annotationObject) override;
@@ -200,6 +210,14 @@ public:
 
     /** Returns true if the task can safely be started for the given sequence length and number of enzymes. */
     static bool isTooManyAnnotationsInTheResult(qint64 sequenceLength, int countOfEnzymeVariants);
+
+    /** Set exclude mode for the given sequence object. */
+    static void setExcludeModeForObject(U2SequenceObject* sequenceObject, const FindEnzymesTaskConfig::EnzymeExcludeMode mode); 
+    
+    /** Returns exclude mode for the given sequence object. */
+    static FindEnzymesTaskConfig::EnzymeExcludeMode getExcludeModeForObject(U2SequenceObject* sequenceObject);
 };
 
 }  // namespace U2
+
+Q_DECLARE_METATYPE(U2::FindEnzymesTaskConfig::EnzymeExcludeMode);

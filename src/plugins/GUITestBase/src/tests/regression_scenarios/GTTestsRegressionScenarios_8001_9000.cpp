@@ -518,6 +518,39 @@ GUI_TEST_CLASS_DEFINITION(test_8093) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8101) {
+    /*
+    * 1. Open samples/FASTA/human_T1.fa
+    * 2. Open Find enzymes dialog, set following enzymes to search:
+    * "BamHI", "BglII", "ClaI", "DraI", "EcoRI", "EcoRV", "HindIII", "PstI", "SalI", "SmaI", "XmaI"
+    * 3. Run search
+    * Expected state: 636 regions found
+    * 4. Open Find enzymes dialog, set excluded region checked, set "Enzymes found in the region" mode
+    * excluded region "10000 - 12000"
+    * 5. Run search
+    * Expected state: 191 regions found
+    */
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    FindEnzymesDialogFillerSettings settings({"BamHI", "BglII", "ClaI", "DraI", "EcoRI", "EcoRV", "HindIII", "PstI", "SalI", "SmaI", "XmaI"});
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));    
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 636, "Annoatated region counter doesn't match.");
+
+    settings.excludeRegionStart = 10000;
+    settings.excludeRegionEnd = 12000;
+    settings.excludeMode = "Enzymes found in the region";
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 191, "Annoatated region counter doesn't match.");
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2

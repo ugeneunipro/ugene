@@ -50,7 +50,6 @@
 #include <U2View/AutoAnnotationUtils.h>
 
 #include "EnzymesIO.h"
-#include "FindEnzymesTask.h"
 
 // TODO: group by TYPE, ORGANISM
 // TODO: check whole group (tristate mode)
@@ -650,10 +649,18 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
     }
     cbOverhangType->setCurrentIndex(0);
 
+    excludeModeCBox = new QComboBox(this);
+    excludeModeCBox->setObjectName("excludeModeCombo");
+    excludeModeCBox->addItem(tr("Region"), QVariant::fromValue<FindEnzymesTaskConfig::EnzymeExcludeMode>
+                                           (FindEnzymesTaskConfig::EnzymeExcludeMode_ByRegion));
+    excludeModeCBox->addItem(tr("Enzymes found in the region"), QVariant::fromValue<FindEnzymesTaskConfig::EnzymeExcludeMode>
+                                                                (FindEnzymesTaskConfig::EnzymeExcludeMode_ByFoundEnzymes));
+
     regionSelector = new RegionSelectorWithExcludedRegion(this,
                                                           advSequenceContext->getSequenceLength(),
                                                           advSequenceContext->getSequenceSelection(),
-                                                          advSequenceContext->getSequenceObject()->isCircular());
+                                                          advSequenceContext->getSequenceObject()->isCircular(),
+                                                          excludeModeCBox);
     searchRegionLayout->addWidget(regionSelector);
 
     initSettings();
@@ -885,6 +892,8 @@ void FindEnzymesDialog::initSettings() {
         minHitSB->setValue(1);
         maxHitSB->setValue(2);
     }
+    FindEnzymesTaskConfig::EnzymeExcludeMode mode = FindEnzymesAutoAnnotationUpdater::getExcludeModeForObject(sequenceObject);
+    excludeModeCBox->setCurrentIndex(excludeModeCBox->findData(QVariant::fromValue(mode)));
 }
 
 void FindEnzymesDialog::saveSettings() {
@@ -918,6 +927,8 @@ void FindEnzymesDialog::saveSettings() {
     U2Region searchRegion = regionSelector->isWholeSequenceSelected() ? U2Region() : regionSelector->getIncludeRegion();
     FindEnzymesAutoAnnotationUpdater::setLastSearchRegionForObject(sequenceObject, searchRegion);
     FindEnzymesAutoAnnotationUpdater::setLastExcludeRegionForObject(sequenceObject, regionSelector->getExcludeRegion());
+    FindEnzymesAutoAnnotationUpdater::setExcludeModeForObject(sequenceObject, 
+                            excludeModeCBox->currentData().value<FindEnzymesTaskConfig::EnzymeExcludeMode>());
     enzSel->saveSettings();
 }
 

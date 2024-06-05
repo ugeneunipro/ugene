@@ -34,6 +34,8 @@
 #include <ui_EnzymesSelectorWidget.h>
 #include <ui_FindEnzymesDialog.h>
 
+#include "FindEnzymesTask.h"
+
 namespace U2 {
 
 class ADVSequenceObjectContext;
@@ -129,6 +131,7 @@ private:
 
     QPointer<ADVSequenceObjectContext> advSequenceContext;
 
+    QComboBox* excludeModeCBox;
     EnzymesSelectorWidget* enzSel;
     RegionSelectorWithExcludedRegion* regionSelector;
 };

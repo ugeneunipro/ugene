@@ -28,7 +28,8 @@ namespace U2 {
 RegionSelectorWithExcludedRegion::RegionSelectorWithExcludedRegion(QWidget* parent,
                                                                    qint64 maxLen,
                                                                    DNASequenceSelection* selection,
-                                                                   bool isCircularAvailable)
+                                                                   bool isCircularAvailable,
+                                                                   QWidget* extraWidgetForExcludeOption)
     : QWidget(parent),
       ui(new Ui_RegionSelectorWithExcludedRegion) {
     ui->setupUi(this);
@@ -41,7 +42,12 @@ RegionSelectorWithExcludedRegion::RegionSelectorWithExcludedRegion(QWidget* pare
     includeController = new RegionSelectorController(includeGui, settings, this);
     excludeController = new RegionSelectorController(excludeGui, settings, this);
 
-    connectSlots();
+    connect(ui->excludeCheckBox, &QCheckBox::toggled, ui->excludeWidget, &QWidget::setEnabled);
+    if (extraWidgetForExcludeOption != nullptr) {
+        ui->gridLayout->addWidget(extraWidgetForExcludeOption, 2, 2, 1, 1);
+        extraWidgetForExcludeOption->setEnabled(ui->excludeCheckBox->isChecked());
+        connect(ui->excludeCheckBox, &QCheckBox::toggled, extraWidgetForExcludeOption, &QWidget::setEnabled);
+    }
 
     setObjectName("region_selector_with_excluded");
 }
@@ -101,10 +107,6 @@ QString RegionSelectorWithExcludedRegion::getErrorMessage() const {
     }
 
     return QString();
-}
-
-void RegionSelectorWithExcludedRegion::connectSlots() {
-    connect(ui->excludeCheckBox, SIGNAL(toggled(bool)), ui->excludeWidget, SLOT(setEnabled(bool)));
 }
 
 }  // namespace U2
