@@ -81,10 +81,14 @@ public:
     QString accession;
     QString type;
     QByteArray seq;
-    int cutDirect = ENZYME_CUT_UNKNOWN;  // starts from the first char in direct strand
-    int cutComplement = ENZYME_CUT_UNKNOWN;  // starts from the first char in complement strand, negative->right offset
-    int secondCutDirect = ENZYME_CUT_UNKNOWN;  //
-    int secondCutComplement = ENZYME_CUT_UNKNOWN;  //
+    // starts from the first char in direct strand
+    int cutDirect = ENZYME_CUT_UNKNOWN;
+    // starts from the first char in complement strand, negative->right offset
+    int cutComplement = ENZYME_CUT_UNKNOWN;
+    // some enzymes (e.g. AloI) has two pairs of cuts. The second cut of the direct strand is set here (if exists)
+    int secondCutDirect = ENZYME_CUT_UNKNOWN;
+    // some enzymes (e.g. AloI) has two pairs of cuts. The second cut of the complement strand is set here (if exists)
+    int secondCutComplement = ENZYME_CUT_UNKNOWN;
     QString organizm;
     QStringList suppliers; // commercial sources of the current enzyme
     const DNAAlphabet* alphabet = nullptr;
@@ -116,6 +120,20 @@ public:
     bool nondegenerate = false;
 
     static constexpr const char UNDEFINED_BASE = 'N';
+
+    /*
+     * Calculates length of leading and trailing Ns.
+     * For example, "AloI" has the following structure:
+     *
+     *              Leading                Regognition site              Trailing
+     *  5'           ^N N N N N N N | G A A C N N N N N N T C C | N N N N N N N N N N N N^
+     *  3' ^N N N N N N N N N N N N | C T T G N N N N N N A G G | N N N N N N N^
+     *
+     * Which means, that this enzyme has 12 leading and 12 trailing Ns.
+     * \leadingNsNumber Returns number of leading N.
+     * \trailingNsNumber Returns number of trailing N.
+     */
+    void calculateLeadingAndTrailingLengths(int& leadingNsNumber, int& trailingNsNumber) const;
 
     /*
      * Calculates full enzyme length (with leading and trailing N).

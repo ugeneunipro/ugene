@@ -39,6 +39,7 @@ const QByteArray GBFeatureUtils::QUALIFIER_GROUP("ugene_group");
 const QString GBFeatureUtils::DEFAULT_KEY = GBFeatureUtils::getKeyInfo(GBFeatureKey_misc_feature).text;
 
 const QString GBFeatureUtils::QUALIFIER_CUT = "cut";
+const QString GBFeatureUtils::QUALIFIER_SECOND_CUT = "cut-2";
 const QString GBFeatureUtils::QUALIFIER_NOTE = "note";
 const QString GBFeatureUtils::QUALIFIER_TRANSLATION = "translation";
 

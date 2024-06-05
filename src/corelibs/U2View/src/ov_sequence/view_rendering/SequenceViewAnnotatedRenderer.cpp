@@ -185,46 +185,8 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
     // draw restriction sites
     if (isRestrictionSite && displaySettings.displayCutSites) {
         p.setPen(borderPen);
-        const bool isCircular = ctx->getSequenceObject()->isCircular();
-        qint64 seqLength = ctx->getSequenceLength();
-        bool isDirectStrand = aData->getStrand().isDirect();
-        const auto& qual = aData->findFirstQualifierValue(GBFeatureUtils::QUALIFIER_CUT);
-        if (isCircular && U1AnnotationUtils::isAnnotationContainsJunctionPoint(a, seqLength)) {
-            auto merged = U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(location, seqLength);
-            auto regionPair = merged.front();
-            // draw cuts separately,
-            // because they are located one on the 3' end of the direct sequence,
-            // and the other one on the 3' end of reverse-complementary sequence
-            // draw direct cut
-            auto cutPosDirect = getCutPosition(regionPair.first, qual, isDirectStrand, true);
-            if (cutPosDirect != INCORRECT_CUT_POSITION) {
-                auto annRect = getAnnotationRect(regionPair.first, canvasSize, visibleRange, selected, a, as);
-                drawCutSite(p, aData, cutPosDirect, annRect, as->color, canvasSize, visibleRange, true);
-            }
-            // draw complement cut
-            auto cutPosComplement = getCutPosition(regionPair.second, qual, isDirectStrand, false);
-            if (cutPosComplement != INCORRECT_CUT_POSITION) {
-                auto annRect = getAnnotationRect(regionPair.second, canvasSize, visibleRange, selected, a, as);
-                drawCutSite(p, aData, cutPosComplement, annRect, as->color, canvasSize, visibleRange, false);
-            }
-        } else if (location.size() == 1) {
-            const auto& reg = location.first();
-            QRect annRect;
-            // draw direct cut
-            auto cutPosDirect = getCutPosition(reg, qual, isDirectStrand, true);
-            if (cutPosDirect != INCORRECT_CUT_POSITION) {
-                annRect = getAnnotationRect(reg, canvasSize, visibleRange, selected, a, as);
-                drawCutSite(p, aData, cutPosDirect, annRect, as->color, canvasSize, visibleRange, true);
-            }
-            // draw complement cut
-            auto cutPosComplement = getCutPosition(reg, qual, isDirectStrand, false);
-            if (cutPosComplement != INCORRECT_CUT_POSITION) {
-                if (annRect.isEmpty()) {
-                    annRect = getAnnotationRect(reg, canvasSize, visibleRange, selected, a, as);
-                }
-                drawCutSite(p, aData, cutPosComplement, annRect, as->color, canvasSize, visibleRange, false);
-            }
-        }
+        drawCutSite(p, canvasSize, visibleRange, a, selected, as, aData->findFirstQualifierValue(GBFeatureUtils::QUALIFIER_CUT));
+        drawCutSite(p, canvasSize, visibleRange, a, selected, as, aData->findFirstQualifierValue(GBFeatureUtils::QUALIFIER_SECOND_CUT));
     }
 }
 
@@ -366,6 +328,52 @@ void SequenceViewAnnotatedRenderer::drawAnnotationConnections(QPainter& p, Annot
                     p.drawLine(midX, midY, x2, y2 + dy2);
                 }
             }
+        }
+    }
+}
+
+void SequenceViewAnnotatedRenderer::drawCutSite(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, Annotation* a, bool selected, const AnnotationSettings* as, const QString& qualifierValue) {
+    const SharedAnnotationData& aData = a->getData();
+    SAFE_POINT_NN(aData, )
+
+    const bool isCircular = ctx->getSequenceObject()->isCircular();
+    qint64 seqLength = ctx->getSequenceLength();
+    bool isDirectStrand = aData->getStrand().isDirect();
+    const QVector<U2Region>& location = aData->getRegions();
+    if (isCircular && U1AnnotationUtils::isAnnotationContainsJunctionPoint(a, seqLength)) {
+        auto merged = U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(location, seqLength);
+        auto regionPair = merged.front();
+        // draw cuts separately,
+        // because they are located one on the 3' end of the direct sequence,
+        // and the other one on the 3' end of reverse-complementary sequence
+        // draw direct cut
+        auto cutPosDirect = getCutPosition(regionPair.first, qualifierValue, isDirectStrand, true);
+        if (cutPosDirect != INCORRECT_CUT_POSITION) {
+            auto annRect = getAnnotationRect(regionPair.first, canvasSize, visibleRange, selected, a, as);
+            drawCutSite(p, aData, cutPosDirect, annRect, as->color, canvasSize, visibleRange, true);
+        }
+        // draw complement cut
+        auto cutPosComplement = getCutPosition(regionPair.second, qualifierValue, isDirectStrand, false);
+        if (cutPosComplement != INCORRECT_CUT_POSITION) {
+            auto annRect = getAnnotationRect(regionPair.second, canvasSize, visibleRange, selected, a, as);
+            drawCutSite(p, aData, cutPosComplement, annRect, as->color, canvasSize, visibleRange, false);
+        }
+    } else if (location.size() == 1) {
+        const auto& reg = location.first();
+        QRect annRect;
+        // draw direct cut
+        auto cutPosDirect = getCutPosition(reg, qualifierValue, isDirectStrand, true);
+        if (cutPosDirect != INCORRECT_CUT_POSITION) {
+            annRect = getAnnotationRect(reg, canvasSize, visibleRange, selected, a, as);
+            drawCutSite(p, aData, cutPosDirect, annRect, as->color, canvasSize, visibleRange, true);
+        }
+        // draw complement cut
+        auto cutPosComplement = getCutPosition(reg, qualifierValue, isDirectStrand, false);
+        if (cutPosComplement != INCORRECT_CUT_POSITION) {
+            if (annRect.isEmpty()) {
+                annRect = getAnnotationRect(reg, canvasSize, visibleRange, selected, a, as);
+            }
+            drawCutSite(p, aData, cutPosComplement, annRect, as->color, canvasSize, visibleRange, false);
         }
     }
 }

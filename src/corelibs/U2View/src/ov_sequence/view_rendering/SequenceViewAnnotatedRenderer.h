@@ -153,6 +153,21 @@ protected:
      * Draws cuts.
      *
      * \param p An object, which draws restriction cuts.
+     * \param canvasSize Size of the whole details view part, where all annotations are drawn.
+     * \param visibleRange Sequence visible range.
+     * \param a, Annotation object.
+     * \param selected True if annotation is selected, false otherwise.
+     * \param as AnnotationSettings object.
+     * \param qualifierValue Value of the qualifier, which is written to "cut" or "cut-2" qualifiers.
+     */
+    void drawCutSite(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, Annotation* a, bool selected, const AnnotationSettings* as, const QString& qualifierValue);
+
+private:
+    /**
+     * Calculates restriction cuts positions depends on annotation strand.
+     * Draws cuts.
+     *
+     * \param p An object, which draws restriction cuts.
      * \param aData Information about annotation, which contains restriction cuts.
      * \param cutPos Position of cut site.
      * \param annotationRect Rect, which performs annotation positions.
@@ -165,6 +180,7 @@ protected:
 
     void drawCutSite(QPainter& p, const CutSiteDrawData& cData, const QSize& canvasSize, const U2Region& visibleRange);
 
+protected:
     QString prepareAnnotationText(const SharedAnnotationData& a, const AnnotationSettings* as) const;
 
     void addArrowPath(QPainterPath& path, const QRect& rect, bool leftArrow) const;

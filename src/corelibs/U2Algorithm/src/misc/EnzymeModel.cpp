@@ -24,6 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -43,40 +44,38 @@ const QString EnzymeSettings::MIN_HIT_VALUE("plugin_enzymes/min_hit_value");
 const QString EnzymeSettings::MAX_RESULTS("plugin_enzymes/max_results");
 const QString EnzymeSettings::COMMON_ENZYMES("ClaI,BamHI,BglII,DraI,EcoRI,EcoRV,HindIII,PstI,SalI,SmaI,XmaI");
 
+void EnzymeData::calculateLeadingAndTrailingLengths(int& leadingNsNumber, int& trailingNsNumber) const {
+    int seqSize = seq.size();
+    auto calculateDirect = [&leadingNsNumber, &trailingNsNumber, seqSize](int cut) {
+        CHECK(cut != ENZYME_CUT_UNKNOWN, );
+
+        if (cut < 0) {
+            leadingNsNumber = qMax(leadingNsNumber, qAbs(cut));
+        } else if (cut > seqSize) {
+            trailingNsNumber = qMax(trailingNsNumber, cut - seqSize);
+        }
+    };
+    auto calculateComplement = [&leadingNsNumber, &trailingNsNumber, seqSize](int cut) {
+        CHECK(cut != ENZYME_CUT_UNKNOWN, );
+
+        if (cut < 0) {
+            trailingNsNumber = qMax(trailingNsNumber, qAbs(cut));
+        } else if (cut > seqSize) {
+            leadingNsNumber = qMax(leadingNsNumber, cut - seqSize);
+        }
+    };
+
+    calculateDirect(cutDirect);
+    calculateComplement(cutComplement);
+    calculateDirect(secondCutDirect);
+    calculateComplement(secondCutComplement);
+}
+
 int EnzymeData::getFullLength() const {
     int leadingNsNumber = 0;
     int trailingNsNumber = 0;
-    int seqSize = seq.size();
-    if (cutDirect != ENZYME_CUT_UNKNOWN) {
-        if (cutDirect < 0) {
-            leadingNsNumber = qMax(leadingNsNumber, qAbs(cutDirect));
-        } else if (cutDirect > seqSize) {
-            trailingNsNumber = qMax(trailingNsNumber, cutDirect - seqSize);
-        }
-    }
-    if (cutComplement != ENZYME_CUT_UNKNOWN) {
-        if (cutComplement < 0) {
-            trailingNsNumber = qMax(trailingNsNumber, qAbs(cutComplement));
-        } else if (cutComplement > seqSize) {
-            leadingNsNumber = qMax(leadingNsNumber, cutComplement - seqSize);
-        }
-    }
-    if (secondCutDirect != ENZYME_CUT_UNKNOWN) {
-        if (secondCutDirect < 0) {
-            leadingNsNumber = qMax(leadingNsNumber, qAbs(secondCutDirect));
-        } else if (secondCutDirect > seqSize) {
-            trailingNsNumber = qMax(trailingNsNumber, secondCutDirect - seqSize);
-        }
-    }
-    if (secondCutComplement != ENZYME_CUT_UNKNOWN) {
-        if (secondCutComplement < 0) {
-            trailingNsNumber = qMax(trailingNsNumber, qAbs(secondCutComplement));
-        } else if (secondCutComplement > seqSize) {
-            leadingNsNumber = qMax(leadingNsNumber, secondCutComplement - seqSize);
-        }
-    }
-
-    return leadingNsNumber + seqSize + trailingNsNumber;
+    calculateLeadingAndTrailingLengths(leadingNsNumber, trailingNsNumber);
+    return leadingNsNumber + seq.size() + trailingNsNumber;
 }
 
 static const QString TOOLTIP_TAG = "<p style='font-family:Courier,monospace'><br><strong>5'&nbsp;</strong>%1<strong>&nbsp;3'</strong><br><strong>3'&nbsp;</strong>%2<strong>&nbsp;5'</strong><br></p>";
@@ -339,9 +338,6 @@ QString generateTooltip(Ns type, const QString& sidePart, const QString& secondS
 }  // namespace
 
 QString EnzymeData::generateEnzymeTooltip() const {
-    if (id == "AloI") {
-        int i = 0;
-    }
     auto alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     auto seqComplement = DNASequenceUtils::reverseComplement(seq, alphabet);
     if (cutDirect == ENZYME_CUT_UNKNOWN) {

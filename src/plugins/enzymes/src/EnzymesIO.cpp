@@ -201,9 +201,12 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFacto
         }
         if (buff[0] == '/' && buff[1] == '/') {
             if (!currentData->id.isEmpty()) {
-                //
-                if (!res.isEmpty() && res.last()->id == currentData->id) {
-                    coreLog.info(currentData->id);
+                // Some enzymes have two pairs of cuts
+                if (!res.isEmpty() &&
+                    res.last()->id == currentData->id &&
+                    res.last()->seq == DNASequenceUtils::reverseComplement(currentData->seq)) {
+                    // The second enzyme is comlemented,
+                    // so the direct and the complement cut are reversed
                     res.last()->secondCutDirect = currentData->cutComplement;
                     res.last()->secondCutComplement = currentData->cutDirect;
                 } else {
