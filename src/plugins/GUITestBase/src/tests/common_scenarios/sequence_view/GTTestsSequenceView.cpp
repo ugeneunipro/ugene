@@ -2607,7 +2607,7 @@ GUI_TEST_CLASS_DEFINITION(test_0085) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0086) {
+GUI_TEST_CLASS_DEFINITION( test_0086) {
     GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
@@ -2644,6 +2644,39 @@ GUI_TEST_CLASS_DEFINITION(test_0086) {
 
     GTUtilsDialog::waitForDialog(new RemoteBLASTDialogFiller(new Scenario()));
     GTKeyboardDriver::keyClick('b', Qt::ShiftModifier | Qt::ControlModifier);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0087) {
+    GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class custom : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            auto enzymesTree = GTWidget::findTreeWidget("tree", dialog);
+            GTWidget::click(GTWidget::findWidget("selectNoneButton", dialog));
+            QTreeWidgetItem* item = GTTreeWidget::findItem(enzymesTree, "AloI");
+            GTTreeWidget::checkItem(item);
+            auto tooltip = item->data(3, Qt::ToolTipRole).toString();
+            auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips_updated/test_0087.html");
+            CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip"));
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList {}, new custom()));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+
+    auto gn = GTUtilsAnnotationsTreeView::getGroupNames();
+    CHECK_SET_ERR(gn.first() == "enzyme  (0, 17)", QString("Unexpected enzyme group name: %1").arg(gn.first()));
+    auto cutValue = GTUtilsAnnotationsTreeView::getQualifierValue("cut", "AloI");
+    CHECK_SET_ERR(cutValue == "25/-7", QString("Expected cut value: 25/-7, current: %1").arg(cutValue));
+    auto cut2Value = GTUtilsAnnotationsTreeView::getQualifierValue("cut-2", "AloI");
+    CHECK_SET_ERR(cut2Value == "-7/25", QString("Expected cut-2 value: -7/25, current: %1").arg(cut2Value));
 }
 
 

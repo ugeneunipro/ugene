@@ -333,6 +333,8 @@ void SequenceViewAnnotatedRenderer::drawAnnotationConnections(QPainter& p, Annot
 }
 
 void SequenceViewAnnotatedRenderer::drawCutSite(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, Annotation* a, bool selected, const AnnotationSettings* as, const QString& qualifierValue) {
+    CHECK(!qualifierValue.isEmpty(), );
+
     const SharedAnnotationData& aData = a->getData();
     SAFE_POINT_NN(aData, )
 
