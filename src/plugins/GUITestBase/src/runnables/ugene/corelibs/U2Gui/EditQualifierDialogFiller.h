@@ -42,7 +42,7 @@ public:
           closeErrormessageBox(_closeErrorMessageBox) {
     }
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString qualifierName;

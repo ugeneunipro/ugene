@@ -182,12 +182,12 @@ public:
         return result;
     }
 
-    int rowCount(const QModelIndex& parent = QModelIndex()) const {
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override {
         Q_UNUSED(parent);
         return items.count();
     }
 
-    Qt::ItemFlags flags(const QModelIndex&) const {
+    Qt::ItemFlags flags(const QModelIndex&) const override {
         return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 
@@ -196,11 +196,11 @@ public:
         return items.at(index.row());
     }
 
-    QModelIndex parent(const QModelIndex&) const {
+    QModelIndex parent(const QModelIndex&) const override {
         return QModelIndex();
     }
 
-    QVariant data(const QModelIndex& index, int role /* = Qt::DisplayRole */) const {
+    QVariant data(const QModelIndex& index, int role /* = Qt::DisplayRole */) const override {
         CfgListItem* item = getItem(index);
         PropertyDelegate* dg = item->getDelegate();
         switch (role) {
@@ -219,7 +219,7 @@ public:
         }
     }
 
-    bool setData(const QModelIndex& index, const QVariant& value, int role /* = Qt::EditRole */) {
+    bool setData(const QModelIndex& index, const QVariant& value, int role /* = Qt::EditRole */) override {
         switch (role) {
             case Qt::EditRole:
             case ConfigurationEditor::ItemValueRole:
@@ -234,7 +234,7 @@ public:
         return true;
     }
 
-    bool insertRows(int row, int count = 0, const QModelIndex& parent = QModelIndex()) {
+    bool insertRows(int row, int count = 0, const QModelIndex& parent = QModelIndex()) override {
         Q_UNUSED(row);
         beginInsertRows(parent, items.size(), items.size() + count);
         for (int i = 0; i < count; i++) {
@@ -244,7 +244,7 @@ public:
         return true;
     }
 
-    bool removeRows(int row, int count, const QModelIndex& parent /* = QModelIndex */) {
+    bool removeRows(int row, int count, const QModelIndex& parent /* = QModelIndex */) override {
         Q_UNUSED(count);
         if (rowCount() == 0 || row < 0 || row > rowCount()) {
             return false;
@@ -267,15 +267,15 @@ public:
         // attrs.append(new CfgListItem());
     }
 
-    int rowCount(const QModelIndex& /* = QModelIndex */) const {
+    int rowCount(const QModelIndex& /* = QModelIndex */) const override {
         return attrs.size();
     }
 
-    int columnCount(const QModelIndex& /* = QModelIndex */) const {
+    int columnCount(const QModelIndex& /* = QModelIndex */) const override {
         return 2;
     }
 
-    Qt::ItemFlags flags(const QModelIndex&) const {
+    Qt::ItemFlags flags(const QModelIndex&) const override {
         return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 
@@ -288,7 +288,7 @@ public:
         return attrs;
     }
 
-    QVariant data(const QModelIndex& index, int role /* = Qt::DisplayRole */) const {
+    QVariant data(const QModelIndex& index, int role /* = Qt::DisplayRole */) const override {
         CfgListItem* item = getItem(index);
         int col = index.column();
         PropertyDelegate* dg = item->getDelegate();
@@ -315,7 +315,7 @@ public:
         }
     }
 
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const {
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override {
         if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
             switch (section) {
                 case 0:
@@ -329,7 +329,7 @@ public:
         return QVariant();
     }
 
-    bool setData(const QModelIndex& index, const QVariant& value, int role) {
+    bool setData(const QModelIndex& index, const QVariant& value, int role) override {
         int col = index.column();
         CfgListItem* item = getItem(index);
         switch (role) {
@@ -351,7 +351,7 @@ public:
         return true;
     }
 
-    bool insertRows(int row, int count = 0, const QModelIndex& parent = QModelIndex()) {
+    bool insertRows(int row, int count = 0, const QModelIndex& parent = QModelIndex()) override {
         Q_UNUSED(row);
         Q_UNUSED(count);
         beginInsertRows(parent, attrs.size(), attrs.size());
@@ -360,7 +360,7 @@ public:
         return true;
     }
 
-    bool removeRows(int row, int count = 0, const QModelIndex& parent = QModelIndex()) {
+    bool removeRows(int row, int count = 0, const QModelIndex& parent = QModelIndex()) override {
         Q_UNUSED(count);
         if (row >= 0 && row < attrs.size()) {
             beginRemoveRows(parent, row, row);

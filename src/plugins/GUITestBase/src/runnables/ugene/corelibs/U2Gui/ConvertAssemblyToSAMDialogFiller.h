@@ -37,7 +37,7 @@ public:
           databasePath(_dbPath),
           databaseFileName(_dbFileName) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     const QString databasePath;

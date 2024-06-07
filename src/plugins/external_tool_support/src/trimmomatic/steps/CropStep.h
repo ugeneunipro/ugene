@@ -31,11 +31,11 @@ class CropStep : public TrimmomaticStep {
 public:
     CropStep();
 
-    TrimmomaticStepSettingsWidget* createWidget() const;
+    TrimmomaticStepSettingsWidget* createWidget() const override;
 
 private:
-    QString serializeState(const QVariantMap& widgetState) const;
-    QVariantMap parseState(const QString& command) const;
+    QString serializeState(const QVariantMap& widgetState) const override;
+    QVariantMap parseState(const QString& command) const override;
 };
 
 class CropStepFactory : public TrimmomaticStepFactory {
@@ -44,7 +44,7 @@ public:
 
     CropStepFactory();
 
-    CropStep* createStep() const;
+    CropStep* createStep() const override;
 };
 
 }  // namespace LocalWorkflow

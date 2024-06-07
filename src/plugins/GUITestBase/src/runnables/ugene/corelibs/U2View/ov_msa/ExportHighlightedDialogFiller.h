@@ -30,7 +30,7 @@ class ExportHighlightedDialogFiller : public Filler {
 public:
     ExportHighlightedDialogFiller(const QString& filePath, bool invertredExport = true);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     const QString filePath;

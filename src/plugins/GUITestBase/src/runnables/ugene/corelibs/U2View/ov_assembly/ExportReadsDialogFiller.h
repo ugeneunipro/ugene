@@ -29,7 +29,7 @@ using namespace HI;
 class ExportReadsDialogFiller : public Filler {
 public:
     ExportReadsDialogFiller(const QString& filePath, const QString format = "FASTA", bool addToProject = true);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString filePath;

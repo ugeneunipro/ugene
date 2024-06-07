@@ -33,7 +33,7 @@ public:
         : Filler("CreateObjectRelationDialog", sc) {
     }
 
-    virtual void commonScenario();
+    void commonScenario() override;
 };
 
 }  // namespace U2

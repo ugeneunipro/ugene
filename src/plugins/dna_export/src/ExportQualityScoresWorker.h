@@ -42,7 +42,7 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class ExportPhredQualityWorker : public BaseWorker {
@@ -50,9 +50,9 @@ class ExportPhredQualityWorker : public BaseWorker {
 public:
     ExportPhredQualityWorker(Actor* a);
 
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 protected:
     CommunicationChannel* input;
@@ -68,7 +68,7 @@ public:
     ExportPhredQualityWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker* createWorker(Actor* a);
+    Worker* createWorker(Actor* a) override;
 };
 
 }  // namespace LocalWorkflow

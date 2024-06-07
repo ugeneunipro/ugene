@@ -29,7 +29,7 @@ class EscapeClicker : public Filler {
 public:
     EscapeClicker(const QString& name = "", CustomScenario* scenario = nullptr);
 
-    void commonScenario();
+    void commonScenario() override;
 };
 
 }  // namespace U2

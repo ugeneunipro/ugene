@@ -32,7 +32,7 @@ public:
         : Filler("CreateScriptBlockDialog"),
           name(_name) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString name;
@@ -47,7 +47,7 @@ public:
           checkSyntaxResult(_checkSyntaxResult),
           checkSyntax(_checkSyntax) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString url;
@@ -63,7 +63,7 @@ public:
           text(_text),
           message(_message) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString text, message;

@@ -28,7 +28,7 @@
 namespace U2 {
 
 class BLASTFactory : public DataBaseFactory {
-    HttpRequest* getRequest(Task* t) {
+    HttpRequest* getRequest(Task* t) override {
         return new HttpRequestBLAST(t);
     }
 };

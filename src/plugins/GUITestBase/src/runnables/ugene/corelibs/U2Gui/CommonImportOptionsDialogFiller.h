@@ -29,7 +29,7 @@ class CommonImportOptionsDialogFiller : public Filler {
 public:
     CommonImportOptionsDialogFiller(const QVariantMap& data);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QVariantMap data;

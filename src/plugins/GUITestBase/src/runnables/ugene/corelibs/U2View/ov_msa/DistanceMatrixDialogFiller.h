@@ -36,7 +36,7 @@ public:
     DistanceMatrixDialogFiller(SaveFormat format, QString path);
     DistanceMatrixDialogFiller(CustomScenario* c);
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 public:
     bool hamming;

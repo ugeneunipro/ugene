@@ -32,7 +32,7 @@ public:
         : Filler("DeleteGapsDialog"),
           radioButNum(_radioButNum) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     int radioButNum;
@@ -50,7 +50,7 @@ public:
         radioMap[Percent] = "relativeRadioButton";
         radioMap[Column] = "allRadioButton";
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     Radio button;

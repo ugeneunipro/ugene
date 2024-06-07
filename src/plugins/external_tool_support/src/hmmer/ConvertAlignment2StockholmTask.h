@@ -36,8 +36,8 @@ public:
     const QString& getResultUrl() const;
 
 private:
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     void prepareResultUrl();
     void prepareSaveTask();

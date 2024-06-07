@@ -75,8 +75,8 @@ public:
     SaveSequenceTask(const QPointer<U2SequenceObject>& sequence, const QString& url, const DocumentFormatId& formatId);
 
 private:
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     QPointer<U2SequenceObject> sequence;
     const QString url;

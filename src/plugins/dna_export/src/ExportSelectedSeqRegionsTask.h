@@ -37,7 +37,7 @@ class CreateExportItemsFromSeqRegionsTask : public Task {
 public:
     CreateExportItemsFromSeqRegionsTask(const QPointer<U2SequenceObject>& seqObject, const QList<QPointer<AnnotationTableObject>>& connectedAts, const QVector<U2Region>& regions, const ExportSequenceTaskSettings& exportSettings, const DNATranslation* aminoTrans, const DNATranslation* backTranslation, const DNATranslation* complTrans);
 
-    void run();
+    void run() override;
 
     const ExportSequenceTaskSettings& getExportSettings() const;
 
@@ -62,8 +62,8 @@ class ExportSelectedSeqRegionsTask : public DocumentProviderTask {
 public:
     ExportSelectedSeqRegionsTask(U2SequenceObject* seqObject, const QSet<AnnotationTableObject*>& connectedAts, const QVector<U2Region>& regions, const ExportSequenceTaskSettings& exportSettings, const DNATranslation* aminoTrans, const DNATranslation* backTrans, const DNATranslation* complTrans);
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     QPointer<U2SequenceObject> seqObject;

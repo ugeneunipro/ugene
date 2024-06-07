@@ -46,7 +46,7 @@ public:
     DNAExportService();
 
 protected:
-    virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
+    void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged) override;
 
     ExportProjectViewItemsContoller* projectViewController;
     ExportSequenceViewItemsController* sequenceViewController;

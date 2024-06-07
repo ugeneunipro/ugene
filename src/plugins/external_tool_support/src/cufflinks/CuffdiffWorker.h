@@ -36,7 +36,7 @@ public:
     CuffdiffPrompter(Actor* parent = 0);
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class CuffdiffWorker : public BaseWorker {
@@ -44,10 +44,10 @@ class CuffdiffWorker : public BaseWorker {
 public:
     CuffdiffWorker(Actor* actor);
 
-    void init();
-    bool isReady() const;
-    Task* tick();
-    void cleanup();
+    void init() override;
+    bool isReady() const override;
+    Task* tick() override;
+    void cleanup() override;
 
 private slots:
     void sl_onTaskFinished();
@@ -73,7 +73,7 @@ public:
     CuffdiffWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker* createWorker(Actor* actor) {
+    Worker* createWorker(Actor* actor) override {
         return new CuffdiffWorker(actor);
     }
 };

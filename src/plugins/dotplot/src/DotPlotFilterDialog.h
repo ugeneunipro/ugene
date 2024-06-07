@@ -45,7 +45,7 @@ class DotPlotFilterDialog : public QDialog, public Ui_DotPlotFilterDialog {
 public:
     DotPlotFilterDialog(QWidget* parent, ADVSequenceObjectContext* sequenceX, ADVSequenceObjectContext* sequenceY);
 
-    virtual void accept();
+    void accept() override;
 
     FilterType getFilterType();
     QMultiMap<FilterIntersectionParameter, QString> getFeatureNames() {

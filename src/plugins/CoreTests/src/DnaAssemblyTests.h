@@ -37,9 +37,9 @@ class GTest_DnaAssemblyToReferenceTask : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DnaAssemblyToReferenceTask, "test-dna-assembly-to-ref");
-    void prepare();
-    Task::ReportResult report();
-    void cleanup();
+    void prepare() override;
+    Task::ReportResult report() override;
+    void cleanup() override;
 
 private:
     DnaAssemblyMultiTask* assemblyMultiTask;
@@ -58,7 +58,7 @@ class GTest_AssemblycompareTwoSAMbyLength : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_AssemblycompareTwoSAMbyLength, "compare-sam-by-length");
 
-    ReportResult report();
+    ReportResult report() override;
     QString file1Url;
     QString file2Url;
 };

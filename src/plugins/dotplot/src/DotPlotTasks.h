@@ -57,7 +57,7 @@ public:
         tpm = Task::Progress_Manual;
     }
 
-    void run();
+    void run() override;
 
     static DotPlotErrors checkFile(const QString& filename);
 
@@ -98,7 +98,7 @@ public:
         tpm = Task::Progress_Manual;
     }
 
-    void run();
+    void run() override;
 
     static DotPlotErrors checkFile(const QString& filename, const QString& seqXName, const QString& seqYName);
 
@@ -120,9 +120,9 @@ public:
     DotPlotLoadDocumentsTask(QString firstF, int firstG, QString secondF, int secondG, bool view = true);
     ~DotPlotLoadDocumentsTask();
 
-    void run() {
+    void run() override {
     }
-    void prepare();
+    void prepare() override;
 
     QList<Document*> getDocuments() const {
         return docs;
@@ -162,9 +162,9 @@ public:
                       QSharedPointer<QList<DotPlotResults>> _filteredResults,
                       FilterType _type);
 
-    void run();
+    void run() override;
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     ADVSequenceObjectContext* sequenceX;

@@ -32,7 +32,7 @@ public:
         : Filler(""),
           datasetName(_datasetName) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString datasetName;

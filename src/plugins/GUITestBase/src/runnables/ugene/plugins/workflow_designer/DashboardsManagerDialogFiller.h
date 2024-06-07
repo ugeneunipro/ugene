@@ -32,7 +32,7 @@ public:
         : Filler("DashboardsManagerDialog", _c) {
     }
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
     static void selectDashboards(QStringList names);
     static bool isDashboardPresent(QString name);

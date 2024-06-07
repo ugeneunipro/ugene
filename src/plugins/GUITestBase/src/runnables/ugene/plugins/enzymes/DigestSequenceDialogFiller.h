@@ -30,7 +30,7 @@ class DigestSequenceDialogFiller : public Filler {
 public:
     DigestSequenceDialogFiller(CustomScenario* scenario = nullptr);
 
-    void commonScenario();
+    void commonScenario() override;
 };
 
 }  // namespace U2

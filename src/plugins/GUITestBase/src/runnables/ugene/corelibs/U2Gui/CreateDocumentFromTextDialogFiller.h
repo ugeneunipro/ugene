@@ -86,7 +86,7 @@ public:
                                documentFormat _format,
                                const QString& _sequenceName,
                                GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString pasteDataHere;

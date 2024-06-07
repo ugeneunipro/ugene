@@ -31,7 +31,7 @@ public:
     ExportConsensusDialogFiller(CustomScenario* _c)
         : Filler("ExportConsensusDialog", _c) {
     }
-    void commonScenario();
+    void commonScenario() override;
 };
 
 }  // namespace U2

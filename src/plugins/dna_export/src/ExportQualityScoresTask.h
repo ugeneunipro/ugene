@@ -43,7 +43,7 @@ class ExportPhredQualityScoresTask : public Task {
     Q_OBJECT
 public:
     ExportPhredQualityScoresTask(const U2SequenceObject* seqObj, const ExportQualityScoresConfig& config);
-    void run();
+    void run() override;
 
 private:
     const U2SequenceObject* seqObj;

@@ -47,9 +47,9 @@ public:
     CufflinksSupportTask(const CufflinksSettings& settings);
     ~CufflinksSupportTask();
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    ReportResult report();
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    ReportResult report() override;
 
     QList<AnnotationTableObject*> getIsoformAnnotationTables() const;
     const QStringList& getOutputFiles() const;

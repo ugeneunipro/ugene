@@ -57,7 +57,7 @@ public:
                           MANUAL };
     EditConnectionDialogFiller(const Parameters& parameters, ConnectionType type);
     EditConnectionDialogFiller(CustomScenario* scenario);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     Parameters parameters;
@@ -66,7 +66,7 @@ private:
 class AuthenticationDialogFiller : public Filler {
 public:
     AuthenticationDialogFiller(const QString& login, const QString& password);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString login;

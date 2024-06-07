@@ -49,7 +49,7 @@ public:
           cvWidget(cv),
           cvExportSettings(cvExportSettings) {
     }
-    virtual void run() = 0;
+    void run() override = 0;
 
 protected:
     CircularView* cvWidget;
@@ -63,7 +63,7 @@ public:
                                      const ImageExportTaskSettings& settings)
         : CircularViewImageExportTask(cv, cvExportSettings, settings) {
     }
-    void run();
+    void run() override;
 };
 
 class CircularViewImageExportToPDFTask : public CircularViewImageExportTask {
@@ -73,7 +73,7 @@ public:
                                      const ImageExportTaskSettings& settings)
         : CircularViewImageExportTask(cv, cvExportSettings, settings) {
     }
-    void run();
+    void run() override;
 };
 
 class CircularViewImageExportToBitmapTask : public CircularViewImageExportTask {
@@ -83,7 +83,7 @@ public:
                                         const ImageExportTaskSettings& settings)
         : CircularViewImageExportTask(cv, cvExportSettings, settings) {
     }
-    void run();
+    void run() override;
 };
 
 class CircularViewImageExportController : public ImageExportController {
@@ -94,15 +94,15 @@ public:
     CircularViewImageExportController(const QList<CircularView*>& list,
                                       CircularView* defaultCV = nullptr);
 
-    int getImageWidth() const;
-    int getImageHeight() const;
+    int getImageWidth() const override;
+    int getImageHeight() const override;
 
 protected:
-    void initSettingsWidget();
+    void initSettingsWidget() override;
 
-    Task* getExportToSvgTask(const ImageExportTaskSettings& settings) const;
-    Task* getExportToPdfTask(const ImageExportTaskSettings& settings) const;
-    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const;
+    Task* getExportToSvgTask(const ImageExportTaskSettings& settings) const override;
+    Task* getExportToPdfTask(const ImageExportTaskSettings& settings) const override;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const override;
 
 private:
     void updateCvWidget() const;

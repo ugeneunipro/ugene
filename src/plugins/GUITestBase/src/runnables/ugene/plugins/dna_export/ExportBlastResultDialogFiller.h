@@ -30,7 +30,7 @@ class ExportBlastResultDialogFiller : public Filler {
 public:
     ExportBlastResultDialogFiller(const QString& filePath, bool _addRefBoxChecked = false);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     const QString filePath;

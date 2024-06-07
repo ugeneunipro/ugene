@@ -37,7 +37,7 @@ public:
     ClustalOSupportRunDialog(const Msa& ma, ClustalOSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
-    void accept();
+    void accept() override;
 
 private:
     Msa ma;
@@ -50,7 +50,7 @@ public:
     ClustalOWithExtFileSpecifySupportRunDialog(ClustalOSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
-    void accept();
+    void accept() override;
     void sl_inputPathButtonClicked();
 
 private:
