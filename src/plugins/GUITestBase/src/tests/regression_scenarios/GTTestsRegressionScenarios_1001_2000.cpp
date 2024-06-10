@@ -3947,7 +3947,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
 
     auto line = qobject_cast<QLineEdit*>(table->findChild<QLineEdit*>());
     CHECK_SET_ERR(line, "QLineEdit not found. Widget in this cell might be not QLineEdit");
-    GTLineEdit::setText(line, dataDir + "samples/FASTA/HMM/aligment15900.hmm");
+    GTLineEdit::setText(line, dataDir + "samples/HMM/aligment15900.hmm");
     if (isOsMac()) {
         GTMouseDriver::doubleClick();
     }
