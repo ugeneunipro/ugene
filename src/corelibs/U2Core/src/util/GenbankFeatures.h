@@ -154,6 +154,7 @@ public:
     static const QString DEFAULT_KEY;
 
     static const QString QUALIFIER_CUT;
+    static const QString QUALIFIER_SECOND_CUT;
     static const QString QUALIFIER_NOTE;
     static const QString QUALIFIER_TRANSLATION;
 };

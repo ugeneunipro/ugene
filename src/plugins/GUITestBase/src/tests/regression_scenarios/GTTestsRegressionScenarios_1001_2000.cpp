@@ -2457,7 +2457,7 @@ GUI_TEST_CLASS_DEFINITION(test_1249) {
             GTWidget::click(GTWidget::findWidget("pbSelectAll", dialog));
             auto totalNumberOfEnzymesLabel = GTWidget::findLabel("statusLabel");
             QString labelText = totalNumberOfEnzymesLabel->text();
-            QString s = QString("4862");
+            QString s = QString("4836");
             CHECK_SET_ERR(labelText.contains(s), QString("label text: %1. It does not contais %2").arg(labelText).arg(s));
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }

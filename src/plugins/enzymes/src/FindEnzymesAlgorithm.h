@@ -62,20 +62,7 @@ public:
         QByteArray enzymeSequence = enzyme->seq;
         int leadingNsNumber = 0;
         int trailingNsNumber = 0;
-        if (enzyme->cutDirect != ENZYME_CUT_UNKNOWN) {
-            if (enzyme->cutDirect < 0) {
-                leadingNsNumber = qAbs(enzyme->cutDirect);
-            } else if (enzyme->cutDirect > enzymeSequence.size()) {
-                trailingNsNumber = enzyme->cutDirect - enzymeSequence.size();
-            }
-        }
-        if (enzyme->cutComplement != ENZYME_CUT_UNKNOWN) {
-            if (enzyme->cutComplement < 0) {
-                trailingNsNumber = qMax(trailingNsNumber, qAbs(enzyme->cutComplement));
-            } else if (enzyme->cutComplement > enzymeSequence.size()) {
-                leadingNsNumber = qMax(leadingNsNumber, enzyme->cutComplement - enzymeSequence.size());
-            }
-        }
+        enzyme->calculateLeadingAndTrailingLengths(leadingNsNumber, trailingNsNumber);
         if (leadingNsNumber != 0) {
             enzymeSequence.insert(0, QByteArray(leadingNsNumber, EnzymeData::UNDEFINED_BASE));
         }
