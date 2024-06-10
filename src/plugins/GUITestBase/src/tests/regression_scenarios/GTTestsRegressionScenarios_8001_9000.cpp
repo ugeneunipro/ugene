@@ -48,7 +48,9 @@
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsNotifications.h"
+#include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsProject.h"
@@ -377,7 +379,7 @@ GUI_TEST_CLASS_DEFINITION(test_8049) {
     QList<QString> linesCircular = fileContentCircular.split("\n");
     CHECK_SET_ERR(linesCircular[0].startsWith("LOCUS       8049_name                  4 bp    DNA     circular     "), "2. Unexpected LOCUS line: " + linesCircular[0]);
 }
-    
+
 GUI_TEST_CLASS_DEFINITION(test_8052) {
     // UGENE_GUI_TEST=1 env variable is required for this test
     // Open _common_data/fasta/5mbf.fa.gz
@@ -459,16 +461,16 @@ GUI_TEST_CLASS_DEFINITION(test_8069) {
 
 GUI_TEST_CLASS_DEFINITION(test_8090) {
     /*
-    * 1. Open external tools in setting->preferences
-    * 2. Check next tools don't have "unknown" version:
-    * vcf-consensus,Trimmomatic, Spidey (not on Mac), SnpEff, Kalign, BLAST
-    */
+     * 1. Open external tools in setting->preferences
+     * 2. Check next tools don't have "unknown" version:
+     * vcf-consensus,Trimmomatic, Spidey (not on Mac), SnpEff, Kalign, BLAST
+     */
     class CheckNotUnknownVersion : public CustomScenario {
-        public:
+    public:
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
-            
+
             if (!isOsMac() && AppSettingsDialogFiller::isToolDescriptionContainsString("Spidey", "unknown")) {
                 GT_FAIL("Unknown Spidey version!", );
             }
@@ -485,6 +487,28 @@ GUI_TEST_CLASS_DEFINITION(test_8090) {
 
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new CheckNotUnknownVersion));
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."}, GTGlobals::UseMouse);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8092) {
+    // Description: check "Alternative mutations" using slider to set threshold
+    // Copy test file to sandbox
+    // Open sandBoxDir + "test_8069.ugenedb"
+    // Check symbol (2141, 8)
+    // Expected: T
+    // Enable altrnative mutations
+    // // Check symbol (2141, 8) again
+    // Expected: still T
+    QString file = sandBoxDir + "test_8069.ugenedb";
+    GTFile::copy(dataDir + "samples/Sanger/alignment.ugenedb", file);
+    GTFileDialog::openFile(file);
+
+    GTUtilsMcaEditorSequenceArea::clickToPosition(QPoint(2141, 8));
+    char ch = GTUtilsMcaEditorSequenceArea::getSelectedReadChar();
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter 1, expected: T, current: %1").arg(ch));
+
+    GTUtilsOptionPanelMca::showAlternativeMutations(true);
+    ch = GTUtilsMcaEditorSequenceArea::getSelectedReadChar();
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter 2, expected: T, current: %1").arg(ch));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8093) {
