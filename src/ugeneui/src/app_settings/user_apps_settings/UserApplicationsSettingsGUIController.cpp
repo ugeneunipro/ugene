@@ -32,6 +32,8 @@
 
 #include <U2Gui/U2FileDialog.h>
 
+#include "main_window/styles/ProxyStyle.h"
+
 namespace U2 {
 #define TRANSMAP_FILE_NAME "translations.txt"
 
@@ -92,7 +94,8 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* 
 
     if (state->style.compare(st->getVisualStyle(), Qt::CaseInsensitive) != 0) {
         QStyle* style = QStyleFactory::create(state->style);
-        QApplication::setStyle(style);
+        auto proxyStyle = new ProxyStyle(style);
+        QApplication::setStyle(proxyStyle);
         st->setVisualStyle(state->style);
     }
 }

@@ -153,9 +153,10 @@
 
 #include "app_settings/AppSettingsGUIImpl.h"
 #include "app_settings/logview_settings/LogSettingsGUIController.h"
+#include "main_window/styles/DarkStyle.h"
+#include "main_window/styles/ProxyStyle.h"
 #include "main_window/CheckUpdatesTask.h"
 #include "main_window/MainWindowImpl.h"
-#include "main_window/ProxyStyle.h"
 #include "main_window/SplashScreen.h"
 #include "plugin_viewer/PluginViewerImpl.h"
 #include "project_support/ProjectLoaderImpl.h"
@@ -587,7 +588,9 @@ int main(int argc, char** argv) {
     if (qtStyle != nullptr) {
         proxyStyle->setObjectName(qtStyle->objectName());
     }
-    QApplication::setStyle(proxyStyle);
+
+    //QApplication::setStyle(proxyStyle);
+    QApplication::setStyle(new DarkStyle(proxyStyle));
 
     auto resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);

@@ -10,9 +10,9 @@ HEADERS += src/app_settings/AppSettingsDialogController.h \
            src/app_settings/network_settings/NetworkSettingsGUIController.h \
            src/app_settings/resource_settings/ResourceSettingsGUIController.h \
            src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.h \
+           src/main_window/styles/ProxyStyle.h \
            src/main_window/AboutDialogController.h \
            src/main_window/DockWidgetPainter.h \
-           src/main_window/ProxyStyle.h \
            src/main_window/SplashScreen.h \
            src/main_window/CheckUpdatesTask.h \
            src/main_window/CreateDesktopShortcutTask.h \
@@ -73,9 +73,9 @@ SOURCES += src/Main.cpp \
            src/app_settings/network_settings/NetworkSettingsGUIController.cpp \
            src/app_settings/resource_settings/ResourceSettingsGUIController.cpp \
            src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp \
+           src/main_window/styles/ProxyStyle.cpp \
            src/main_window/AboutDialogController.cpp \
            src/main_window/DockWidgetPainter.cpp \
-           src/main_window/ProxyStyle.cpp \
            src/main_window/SplashScreen.cpp \
            src/main_window/CheckUpdatesTask.cpp \
            src/main_window/CreateDesktopShortcutTask.cpp \
@@ -114,4 +114,8 @@ OBJECTIVE_SOURCES += src/app_settings/ResetSettingsMac.mm
 }
 
 RESOURCES += ugeneui.qrc
+!macx: RESOURCES += dark/darkstyle.qrc
+#!macx: RESOURCES += dark/darkstyle.qrc
+!macx: SOURCES += src/main_window/styles/DarkStyle.cpp
+!macx: HEADERS += src/main_window/styles/DarkStyle.h
 TRANSLATIONS += transl/russian.ts
