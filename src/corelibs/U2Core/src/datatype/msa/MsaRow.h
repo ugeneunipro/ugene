@@ -297,7 +297,12 @@ public:
      */
     bool isComplemented() const;
 
-    /** Returns pair of the first and the second most frequent chromatogram characters. */
+    /** Returns pair of the first and the second peaks, wich chromatogram traces have the highest values of the current @position.
+      * The word "peak" mean, that this trace should have the highest value in the middle of the base and lowest values on its edges.
+      * If the central point does not contain smaller values to the left and right of itself, then it is not a peak and, regardless
+      * of its height, does not participate in the calculation. Both peaks must have the maximum trail value for
+      * a given position - otherwise, hasTwoPeaks will be set to false.
+      * If there are no two higest peaks, @hasTwoPeaks is set to false.  */
     QPair<ChromatogramData::TraceAndValue, ChromatogramData::TraceAndValue> getTwoHighestPeaks(int position, bool& hasTwoPeaks) const;
 
     /**

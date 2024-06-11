@@ -30,7 +30,7 @@ class DefaultWizardFiller : public Filler {
 public:
     DefaultWizardFiller(const QString& wizardName = "");
 
-    void commonScenario();
+    void commonScenario() override;
 };
 
 }  // namespace U2

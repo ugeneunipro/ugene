@@ -41,7 +41,7 @@ class DNAStatMSAProfileDialog : public QDialog, public Ui_DNAStatMSAProfileDialo
 public:
     DNAStatMSAProfileDialog(QWidget* p, MsaEditor* ctx);
 
-    void accept();
+    void accept() override;
     /*Notify user about problems with big report, and disable opening report in UGENE*/
     void showAlignmentIsTooBigWarning();
 private slots:
@@ -90,11 +90,11 @@ class DNAStatMSAProfileTask : public Task {
 public:
     DNAStatMSAProfileTask(const DNAStatMSAProfileTaskSettings& s);
 
-    void run();
-    QString generateReport() const;
-    virtual bool isReportingEnabled() const;
+    void run() override;
+    QString generateReport() const override;
+    bool isReportingEnabled() const override;
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     void computeStats();

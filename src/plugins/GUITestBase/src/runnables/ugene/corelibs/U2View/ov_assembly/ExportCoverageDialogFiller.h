@@ -53,7 +53,7 @@ public:
 
     ExportCoverageDialogFiller(const QList<Action>& actions);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     void enterFilePath(const QVariant& actionData);

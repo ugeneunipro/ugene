@@ -40,16 +40,16 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };  // ConvertFilesFormatPrompter
 
 class ConvertFilesFormatWorker : public BaseWorker {
     Q_OBJECT
 public:
     ConvertFilesFormatWorker(Actor* a);
-    void init();
-    Task* tick();
-    void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private:
     IntegralBus* inputUrlPort;
@@ -78,7 +78,7 @@ public:
     ConvertFilesFormatWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new ConvertFilesFormatWorker(a);
     }
 };  // ConvertFilesFormatWorkerFactory

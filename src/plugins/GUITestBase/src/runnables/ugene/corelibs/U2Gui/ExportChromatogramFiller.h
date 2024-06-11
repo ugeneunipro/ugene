@@ -30,7 +30,7 @@ class ExportChromatogramFiller : public Filler {
 public:
     enum FormatToUse { SCF };
     ExportChromatogramFiller(const QString& _path, const QString& _name, ExportChromatogramFiller::FormatToUse _format, bool reversed, bool complement, bool addDocumentToProject, GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString path, name;

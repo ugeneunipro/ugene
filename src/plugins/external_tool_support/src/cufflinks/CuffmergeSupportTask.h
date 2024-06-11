@@ -52,9 +52,9 @@ public:
     CuffmergeSupportTask(const CuffmergeSettings& settings);
     ~CuffmergeSupportTask();
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    void run();
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    void run() override;
     QStringList getOutputFiles() const;
 
     QList<AnnotationTableObject*> takeResult();

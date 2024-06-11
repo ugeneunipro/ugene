@@ -29,7 +29,7 @@ using namespace HI;
 class ExportMSA2MSADialogFiller : public Filler {
 public:
     ExportMSA2MSADialogFiller(int _formatVal = -1, QString _path = "", bool includeGaps = false, bool unknownAsGaps = false, int frame = 1);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     int formatVal;

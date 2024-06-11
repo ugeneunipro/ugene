@@ -133,7 +133,7 @@ class EvaluateBaseContentTask : public Task {
 public:
     EvaluateBaseContentTask(GObject* obj);
 
-    void run();
+    void run() override;
 
     QMap<char, qreal> getResult() const {
         return result;

@@ -281,6 +281,7 @@ void MaEditorNameList::mouseDoubleClickEvent(QMouseEvent* e) {
     if (editor->gotoSelectedReadAction->isEnabled()) {
         editor->gotoSelectedReadAction->trigger();
         e->ignore();
+        isDoubleClicked = true;
         return;
     }
     QWidget::mouseDoubleClickEvent(e);
@@ -569,6 +570,11 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent* e) {
             // Drag or click with no modifiers make a new 1-rect selection.
             int y = qMin(mousePressRow, mouseReleaseRow);
             int width = qMax(mousePressRow, mouseReleaseRow) - y + 1;
+            if (isDoubleClicked) { // When you double-click, it means you are clicking on a single point, not an area.
+                y = mousePressRow;
+                width = mousePressRow - y + 1;
+                isDoubleClicked = false;
+            }
             QRect newSelectionRect(0, y, alignmentLen, width);
             setSelection({{newSelectionRect}});
         }

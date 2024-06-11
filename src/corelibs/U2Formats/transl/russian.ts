@@ -40,27 +40,27 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="90"/>
+        <location filename="../src/BAMUtils.cpp" line="89"/>
         <source>Fail to open &quot;%1&quot; for reading</source>
         <translation>Невозможно открыть &quot;%1&quot; для чтения</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="94"/>
+        <location filename="../src/BAMUtils.cpp" line="93"/>
         <source>Fail to read the header from the file, probably, not an assembly format: &quot;%1&quot;</source>
         <translation>Не удалось считать заголовок из файла, вероятно, это не формат сборки: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="98"/>
+        <location filename="../src/BAMUtils.cpp" line="97"/>
         <source>Fail to write the header to the file: &quot;%1&quot;</source>
         <translation>Не удалось записать заголовок в файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="102"/>
+        <location filename="../src/BAMUtils.cpp" line="101"/>
         <source>Truncated file: &quot;%1&quot;</source>
         <translation>Обрезанный файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="700"/>
+        <location filename="../src/BAMUtils.cpp" line="699"/>
         <source>Can&apos;t open file with given url: %1.</source>
         <translation>Не удается открыть файл по указанному URL: %1.</translation>
     </message>
@@ -119,115 +119,115 @@
 <context>
     <name>U2::ACEFormat</name>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="51"/>
+        <location filename="../src/ace/AceFormat.cpp" line="52"/>
         <source>ACE</source>
         <translation>ACE</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="214"/>
+        <location filename="../src/ace/AceFormat.cpp" line="215"/>
         <source>Line is too long</source>
         <translation>Строка слишком длинная</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="372"/>
         <source>First line is not an ace header</source>
-        <translation>Первая строка не является заголовком ACE</translation>
+        <translation type="vanished">Первая строка не является заголовком ACE</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="375"/>
         <source>No contig count tag in the header line</source>
-        <translation>Отсутствует тег числа контигов в строке заголовка</translation>
+        <translation type="vanished">Отсутствует тег числа контигов в строке заголовка</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="388"/>
         <source>Must be CO keyword</source>
-        <translation>Ожидается ключевое слово CO</translation>
+        <translation type="vanished">Ожидается ключевое слово CO</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="213"/>
+        <location filename="../src/ace/AceFormat.cpp" line="214"/>
         <source>Unexpected end of file</source>
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="398"/>
         <source>There is no note about reads count</source>
-        <translation>Отсуствтует информация о числе считываний</translation>
+        <translation type="vanished">Отсуствтует информация о числе считываний</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="224"/>
-        <location filename="../src/ace/AceFormat.cpp" line="265"/>
+        <location filename="../src/ace/AceFormat.cpp" line="225"/>
+        <location filename="../src/ace/AceFormat.cpp" line="266"/>
         <source>There is no AF note</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="52"/>
+        <location filename="../src/ace/AceFormat.cpp" line="53"/>
         <source>ACE is a format used for storing information about genomic confgurations</source>
         <translation>ACE это формат используемый для хранения информации о геномных конфигурациях</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="230"/>
+        <location filename="../src/ace/AceFormat.cpp" line="231"/>
         <source>No consensus</source>
         <translation>Отсутствует консенсус</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="242"/>
+        <location filename="../src/ace/AceFormat.cpp" line="243"/>
         <source>BQ keyword hasn&apos;t been found</source>
         <translation>Не найдено ключевое слово BQ</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="245"/>
+        <location filename="../src/ace/AceFormat.cpp" line="246"/>
         <source>Bad consensus data</source>
         <translation>Плохие данные в консенсусе</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="272"/>
-        <location filename="../src/ace/AceFormat.cpp" line="277"/>
+        <location filename="../src/ace/AceFormat.cpp" line="273"/>
+        <location filename="../src/ace/AceFormat.cpp" line="278"/>
         <source>Bad AF note</source>
         <translation>Плохое примечание AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="305"/>
+        <location filename="../src/ace/AceFormat.cpp" line="306"/>
         <source>There is no read note</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="313"/>
+        <location filename="../src/ace/AceFormat.cpp" line="314"/>
         <source>No sequence</source>
         <translation>Нет последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="325"/>
+        <location filename="../src/ace/AceFormat.cpp" line="326"/>
         <source>QA keyword hasn&apos;t been found</source>
         <translation>Ключевое слово QA не было найдено</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="331"/>
-        <location filename="../src/ace/AceFormat.cpp" line="334"/>
+        <location filename="../src/ace/AceFormat.cpp" line="332"/>
+        <location filename="../src/ace/AceFormat.cpp" line="335"/>
         <source>QA error no clear range</source>
         <translation>Ошибка QA нет четкого региона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="338"/>
+        <location filename="../src/ace/AceFormat.cpp" line="339"/>
         <source>QA error bad range</source>
         <translation>Ошибка QA: плохой регион</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="343"/>
+        <location filename="../src/ace/AceFormat.cpp" line="344"/>
         <source>Bad sequence data</source>
         <translation>Некорректные данные в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="430"/>
         <source>RD line has read &quot;%1&quot;, but it wasn&apos;t presented in AF</source>
-        <translation>Тэг RD содержит прочтение с именем &quot;%1&quot;, которое не было представлено в тэгах AF</translation>
+        <translation type="vanished">Тэг RD содержит прочтение с именем &quot;%1&quot;, которое не было представлено в тэгах AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="452"/>
+        <location filename="../src/ace/AceFormat.cpp" line="406"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="478"/>
+        <location filename="../src/ace/AceFormat.cpp" line="416"/>
+        <source>Invalid source file</source>
+        <translation>Входной файл невалиден</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceFormat.cpp" line="437"/>
         <source>File doesn&apos;t contain any msa objects</source>
         <translation>Файл не содержит msa объектов</translation>
     </message>
@@ -407,52 +407,52 @@
 <context>
     <name>U2::BAMUtils</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="170"/>
+        <location filename="../src/BAMUtils.cpp" line="169"/>
         <source>Wrong line in a SAM file: &quot;%1&quot;. Skipped</source>
         <translation>Неверная строка в SAM файле: &quot;%1&quot;. Пропущена</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="177"/>
+        <location filename="../src/BAMUtils.cpp" line="176"/>
         <source>Wrong left base position format: &quot;%1&quot;. Line has been skipped.</source>
         <translation>Неверный формат позиции левого символа: &quot;%1&quot;. Строка была пропущена.</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="240"/>
+        <location filename="../src/BAMUtils.cpp" line="239"/>
         <source>There is no header in the SAM file &quot;%1&quot;. The header information will be generated automatically.</source>
         <translation>Нет заголовка в SAM файле &quot;%1&quot;. Необходимая информация будет сгенерирована автоматически.</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="244"/>
+        <location filename="../src/BAMUtils.cpp" line="243"/>
         <source>No reference data in the file: %1</source>
         <translation>Файл не содержит референсных данныз: %1</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="378"/>
+        <location filename="../src/BAMUtils.cpp" line="377"/>
         <source>Sorting &quot;%1&quot; and saving the result to &quot;%2&quot;</source>
         <translation>Сортировка &quot;%1&quot; и сохранение результата в &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="382"/>
+        <location filename="../src/BAMUtils.cpp" line="381"/>
         <source>Cannot sort &quot;%1&quot;, abort</source>
         <translation>Невозможно провести сортировку &quot;%1&quot;, отмена</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="388"/>
+        <location filename="../src/BAMUtils.cpp" line="387"/>
         <source>Merging BAM files: &quot;%1&quot;. Resulting merged file is: &quot;%2&quot;</source>
         <translation>Слияние BAM файлов: &quot;%1&quot;. Соединенный файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="401"/>
+        <location filename="../src/BAMUtils.cpp" line="400"/>
         <source>Failed to merge BAM files: %1 into %2</source>
         <translation>Не удалось объединить файлы BAM: %1 в %2</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="437"/>
+        <location filename="../src/BAMUtils.cpp" line="436"/>
         <source>Build index for bam file: &quot;%1&quot;</source>
         <translation>Построение индекса для bam файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="439"/>
+        <location filename="../src/BAMUtils.cpp" line="438"/>
         <source>Can&apos;t build the index: %1</source>
         <translation>Невозможно посмтроить индекс: %1</translation>
     </message>
@@ -720,18 +720,23 @@
         <translation>Импорт</translation>
     </message>
     <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="155"/>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="198"/>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="142"/>
+        <source>There is no assemblies in input file</source>
+        <translation>В файле нет сборок</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="156"/>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="199"/>
         <source>Invalid source file</source>
         <translation>Invalid source file</translation>
     </message>
     <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="219"/>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="220"/>
         <source>Packing reads for assembly &apos;%1&apos; (%2 of %3)</source>
         <translation>Упаковка ридов для сборки &apos;%1&apos; (%2 от %3)</translation>
     </message>
     <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="274"/>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="275"/>
         <source>Warning: incorrect maxProw == %1, probably packing was not done! Attribute was not set</source>
         <translation>Warning: incorrect maxProw == %1, probably packing was not done! Attribute was not set</translation>
     </message>
@@ -838,14 +843,13 @@
 <context>
     <name>U2::DocumentFormatUtils</name>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="155"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="156"/>
         <source>First line is not an ace header</source>
         <translation>Первая строка не является заголовком ACE</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="159"/>
         <source>There is no assemblies in input file</source>
-        <translation>В файле нет сборок</translation>
+        <translation type="vanished">В файле нет сборок</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="173"/>
@@ -858,126 +862,126 @@
         <translation>Ожидается %1 прочтений, но только %2 тэгов AF было найдено</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="230"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="476"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="232"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="482"/>
         <source>Unexpected end of file</source>
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="231"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="236"/>
         <source>Line is too long</source>
         <translation>Строка слишком длинная</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="238"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="245"/>
         <source>No contig count tag in the header line</source>
         <translation>Отсутствует тег числа контигов в строке заголовка</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="250"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="257"/>
         <source>Not enough parameters in current line</source>
         <translation>Недостаточно параметров в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="261"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="268"/>
         <source>Parameter is not a digit</source>
         <translation>Параметр не является цифрой</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="269"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="276"/>
         <source>There is no note about reads count</source>
         <translation>Отсуствтует информация о числе считываний</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="285"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="291"/>
         <source>No consensus</source>
         <translation>Отсутствует консенсус</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="295"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="301"/>
         <source>BQ keyword hasn&apos;t been found</source>
         <translation>Не найдено ключевое слово BQ</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="298"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="304"/>
         <source>Unexpected symbols in consensus data</source>
         <translation>Неоижданные символы в консенсусе</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="309"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="315"/>
         <source>Can&apos;t find a sequence name in current line</source>
         <translation>Невозможно найти имя последовательности в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="319"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="325"/>
         <source>An empty sequence name</source>
         <translation>Не указано имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="389"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="395"/>
         <source>Not all reads were found</source>
         <translation>Не все риды были найдены</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="398"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="402"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="434"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="446"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="404"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="408"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="440"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="452"/>
         <source>Bad AF note</source>
         <translation>Плохое примечание AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="472"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="478"/>
         <source>There is no read note</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="485"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="491"/>
         <source>Invalid RD part</source>
         <translation>Неверная часть RD</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="497"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="503"/>
         <source>QA keyword hasn&apos;t been found</source>
         <translation>Ключевое слово QA не было найдено</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="506"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="512"/>
         <source>QA error bad range</source>
         <translation>Ошибка QA: плохой регион</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="509"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="515"/>
         <source>Unexpected symbols in sequence data</source>
         <translation>Неоижданные символы в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="489"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="495"/>
         <source>A name is not match with AF names</source>
         <translation>Имя не совпадает с именами AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="515"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="521"/>
         <source>Can&apos;t find clear range start in current line</source>
         <translation>Невозможно найти начало диапазона в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="516"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="522"/>
         <source>Clear range start is invalid</source>
         <translation>Неверное начало диапазона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="523"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="529"/>
         <source>Can&apos;t find clear range end in current line</source>
         <translation>Невозможно найти конец диапазона в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="524"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="530"/>
         <source>Clear range end is invalid</source>
         <translation>Неверный конец диапазона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="548"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="554"/>
         <source>There is no next element</source>
         <translation>Отсутствует следующий элемент</translation>
     </message>

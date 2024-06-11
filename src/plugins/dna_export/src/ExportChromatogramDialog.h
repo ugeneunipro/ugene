@@ -37,7 +37,7 @@ class ExportChromatogramDialog : public QDialog, Ui_ExportChromatogramDialog {
 public:
     ExportChromatogramDialog(QWidget* p, const GUrl& fileName);
 
-    void accept();
+    void accept() override;
 
     QString url;
     DocumentFormatId format;

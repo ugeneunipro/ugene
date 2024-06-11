@@ -38,7 +38,7 @@ public:
     ExportSelectedSequenceFromAlignment(const QString& _path, documentFormat _format = FASTA, bool _keepGaps = true, bool _addToProj = true);
     ExportSelectedSequenceFromAlignment(CustomScenario* scenario);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString path;

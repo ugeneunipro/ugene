@@ -168,7 +168,7 @@ public:
 protected:
     qint64 coordToPos(const QPoint& p) const override;
     void resizeEvent(QResizeEvent* e) override;
-    virtual void drawAll(QPaintDevice* pd) override;
+    void drawAll(QPaintDevice* pd) override;
 
     void buildAnnotationItem(DrawAnnotationPass pass, Annotation* a, int predefinedOrbit = -1, bool selected = false, const AnnotationSettings* as = nullptr);
     void buildAnnotationLabel(const QFont& font, Annotation* a, const AnnotationSettings* as, bool isAutoAnnotation = false);

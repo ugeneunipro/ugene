@@ -152,6 +152,7 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
     CHECK_OP(stateInfo, {});
     QList<SharedAnnotationData> res;
     QString cutStr;
+    QString secondCutStr;
     QString dbxrefStr;
     QList<FindEnzymesAlgResult> searchResultList = searchResultMap.value(enzymeId);
     for (const FindEnzymesAlgResult& searchResult : qAsConst(searchResultList)) {
@@ -168,51 +169,49 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
         } else if (!enzyme->id.isEmpty()) {
             dbxrefStr = "REBASE:" + enzyme->id;
         }
-        if (enzyme->cutDirect != ENZYME_CUT_UNKNOWN) {
-            cutStr = QString::number(enzyme->cutDirect);
-            if (enzyme->cutComplement != ENZYME_CUT_UNKNOWN && enzyme->cutComplement != enzyme->cutDirect) {
-                cutStr += "/" + QString::number(enzyme->cutComplement);
+        auto generateCutQualifier = [](int cutDirect, int cutComplement) -> QString {
+            CHECK(cutDirect != ENZYME_CUT_UNKNOWN, QString());
+
+            QString result;
+            result = QString::number(cutDirect);
+            if (cutComplement != ENZYME_CUT_UNKNOWN && cutComplement != cutDirect) {
+                result += "/" + QString::number(cutComplement);
             }
-        }
+
+            return result;
+        };
+        cutStr = generateCutQualifier(enzyme->cutDirect, enzyme->cutComplement);
+        secondCutStr = generateCutQualifier(enzyme->secondCutDirect, enzyme->secondCutComplement);
         break;
     }
 
     for (const FindEnzymesAlgResult& searchResult : qAsConst(searchResultList)) {
         const SEnzymeData& enzyme = searchResult.enzyme;
+        SharedAnnotationData ad(new AnnotationData);
         if (isCircular && searchResult.pos + enzyme->seq.size() > seqlen) {
-            if (seqlen < searchResult.pos) {
-                continue;
-            }
-            SharedAnnotationData ad(new AnnotationData);
-            ad->type = U2FeatureTypes::RestrictionSite;
-            ad->name = enzyme->id;
+            CHECK_CONTINUE(seqlen >= searchResult.pos);
             qint64 firstRegionLength = seqlen - searchResult.pos;
             if (firstRegionLength != 0) {
                 ad->location->regions << U2Region(searchResult.pos, firstRegionLength);
             }
             ad->location->regions << U2Region(0, enzyme->seq.size() - firstRegionLength);
-            ad->setStrand(searchResult.strand);
-            if (!dbxrefStr.isEmpty()) {
-                ad->qualifiers.append(U2Qualifier("db_xref", dbxrefStr));
-            }
-            if (!cutStr.isEmpty()) {
-                ad->qualifiers.append(U2Qualifier(GBFeatureUtils::QUALIFIER_CUT, cutStr));
-            }
-            res.append(ad);
         } else {
-            SharedAnnotationData ad(new AnnotationData);
-            ad->type = U2FeatureTypes::RestrictionSite;
-            ad->name = enzyme->id;
             ad->location->regions << U2Region(searchResult.pos, enzyme->seq.size());
-            ad->setStrand(searchResult.strand);
-            if (!dbxrefStr.isEmpty()) {
-                ad->qualifiers.append(U2Qualifier("db_xref", dbxrefStr));
-            }
-            if (!cutStr.isEmpty()) {
-                ad->qualifiers.append(U2Qualifier(GBFeatureUtils::QUALIFIER_CUT, cutStr));
-            }
-            res.append(ad);
         }
+        ad->type = U2FeatureTypes::RestrictionSite;
+        ad->name = enzyme->id;
+        ad->setStrand(searchResult.strand);
+        if (!dbxrefStr.isEmpty()) {
+            ad->qualifiers.append(U2Qualifier("db_xref", dbxrefStr));
+        }
+        if (!cutStr.isEmpty()) {
+            ad->qualifiers.append(U2Qualifier(GBFeatureUtils::QUALIFIER_CUT, cutStr));
+        }
+        if (!secondCutStr.isEmpty()) {
+            ad->qualifiers.append(U2Qualifier(GBFeatureUtils::QUALIFIER_SECOND_CUT, secondCutStr));
+        }
+
+        res.append(ad);
     }
     return res;
 }

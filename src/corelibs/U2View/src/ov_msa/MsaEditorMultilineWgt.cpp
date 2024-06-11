@@ -71,8 +71,6 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MsaEditor* _editor, QWidget* parent
     connect(editor->getCollapseModel(), &MaCollapseModel::si_toggled, this, [this]() {
         this->updateSize();
     });
-
-    connect(editor, &MaEditor::si_cursorPositionChanged, this, &MsaEditorMultilineWgt::sl_cursorPositionChanged);
 }
 
 MsaEditorWgt* MsaEditorMultilineWgt::createChild(MsaEditor* msaEditor,
@@ -113,27 +111,29 @@ void MsaEditorMultilineWgt::addChild(MsaEditorWgt* child) {
 }
 
 void MsaEditorMultilineWgt::createChildren() {
-    int childrenCount = isWrapMode() ? 3 : 1;
+    int childrenCount = 1; //isWrapMode() ? 3 : 1;
+    MsaEditorWgt* child = createChild(editor, overviewArea, statusBar);
+    SAFE_POINT(child != nullptr, "Can't create sequence widget", );
+    addChild(child);
+    // calculate necessary count of children MSAs
+    if (isWrapMode()) {
+        QSize s = child->minimumSizeHint();
+        childrenCount = height() / s.height() + 3;
+        int l = editor->getAlignmentLen();
+        int aw = getSequenceAreaAllBaseWidth();
+        int al = getSequenceAreaAllBaseLen();
 
-    for (int i = 0; i < childrenCount; i++) {
-        MsaEditorWgt* child = createChild(editor, overviewArea, statusBar);
+        // TODO:ichebyki: 0.66 is a heuristic value, need to define more smart
+        int b = width() * 0.66 / (aw / al);
+        if (b * (childrenCount - 1) > l) {
+            childrenCount = l / b + (l % b > 0 ? 1 : 0);
+        }
+    }
+
+    for (int i = 1; i < childrenCount; i++) {
+        child = createChild(editor, overviewArea, statusBar);
         SAFE_POINT(child != nullptr, "Can't create sequence widget", );
         addChild(child);
-
-        // recalculate count
-        if (i == 0 && isWrapMode()) {
-            QSize s = child->minimumSizeHint();
-            childrenCount = height() / s.height() + 3;
-            int l = editor->getAlignmentLen();
-            int aw = getSequenceAreaAllBaseWidth();
-            int al = getSequenceAreaAllBaseLen();
-
-            // TODO:ichebyki: 0.66 is a heuristic value, need to define more smart
-            int b = width() * 0.66 / (aw / al);
-            if (b * (childrenCount - 1) > l) {
-                childrenCount = l / b + (l % b > 0 ? 1 : 0);
-            }
-        }
     }
 
     // TODO:ichebyki
@@ -276,12 +276,6 @@ void MsaEditorMultilineWgt::sl_triggerUseDots(int checkState) {
     for (int i = 0; i < getLineWidgetCount(); i++) {
         MaEditorSequenceArea* sequence = getLineWidget(i)->getSequenceArea();
         sequence->sl_triggerUseDots(checkState);
-    }
-}
-
-void MsaEditorMultilineWgt::sl_cursorPositionChanged(const QPoint& point) {
-    if (multilineMode) {
-        scrollController->scrollToPoint(point);
     }
 }
 

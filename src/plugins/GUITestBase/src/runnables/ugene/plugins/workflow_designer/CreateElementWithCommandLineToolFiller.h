@@ -129,7 +129,7 @@ public:
     CreateElementWithCommandLineToolFiller(
         const ElementWithCommandLineSettings& settings);
     CreateElementWithCommandLineToolFiller(CustomScenario* scenario);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString dataTypeToString(const InOutType& type) const;

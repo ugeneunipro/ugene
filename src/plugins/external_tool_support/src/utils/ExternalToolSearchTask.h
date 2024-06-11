@@ -62,7 +62,7 @@ class ExternalToolsSearchTask : public SequentialMultiTask {
 public:
     ExternalToolsSearchTask(const QList<Task*>& _tasks);
 
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 };
 
 }  // namespace U2

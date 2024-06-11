@@ -45,7 +45,7 @@ class DigestSequenceDialog : public QDialog, public Ui_DigestSequenceDialog {
     Q_OBJECT
 public:
     DigestSequenceDialog(ADVSequenceObjectContext* ctx, QWidget* parent);
-    virtual void accept();
+    void accept() override;
 
 private slots:
     void sl_addPushButtonClicked();

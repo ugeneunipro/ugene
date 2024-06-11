@@ -48,7 +48,7 @@ public:
         GTGlobals::UseMethod method = GTGlobals::UseMouse);
     ExportAnnotationsFiller(CustomScenario* scenario);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     void init(const QString& exportToFile);

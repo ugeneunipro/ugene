@@ -40,7 +40,7 @@ class DotPlotDialog : public QDialog, public Ui_DotPlotDialog {
 public:
     DotPlotDialog(QWidget* parent, AnnotatedDNAView* currentADV, int minLen, int identity, ADVSequenceObjectContext* seqX, ADVSequenceObjectContext* seqY, bool dir, bool inv, const QColor& dColor = QColor(), const QColor& iColor = QColor(), bool hideLoadSequences = false);
 
-    virtual void accept();
+    void accept() override;
 
     ADVSequenceObjectContext* getXSeq() const {
         return xSeq;

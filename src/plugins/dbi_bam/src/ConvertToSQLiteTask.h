@@ -45,7 +45,7 @@ class ConvertToSQLiteTask : public Task {
     Q_OBJECT
 public:
     ConvertToSQLiteTask(const GUrl& sourceUrl, const U2DbiRef& dstDbiRef, BAMInfo& bamInfo, bool sam);
-    virtual void run();
+    void run() override;
 
     GUrl getDestinationUrl() const;
     QList<U2Assembly> getAssemblies() const;

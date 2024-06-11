@@ -38,8 +38,8 @@ public:
     enum GDeviationType { GC,
                           AT };
     DeviationGraphFactory(GDeviationType t, QObject* p);
-    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v);
-    bool isEnabled(const U2SequenceObject* o) const;
+    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v) override;
+    bool isEnabled(const U2SequenceObject* o) const override;
 
 private:
     QPair<char, char> devPair;

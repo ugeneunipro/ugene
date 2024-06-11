@@ -39,7 +39,7 @@ public:
     void setOkButtonText(const QString& text) const;
     void setFileLabelText(const QString& text) const;
 
-    virtual void accept();
+    void accept() override;
 
 public:
     QString url;

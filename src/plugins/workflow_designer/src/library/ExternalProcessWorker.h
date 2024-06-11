@@ -35,10 +35,10 @@ class ExternalProcessWorker : public BaseWorker {
 public:
     ExternalProcessWorker(Actor* a);
 
-    bool isReady() const;
-    Task* tick();
-    void init();
-    void cleanup();
+    bool isReady() const override;
+    Task* tick() override;
+    void init() override;
+    void cleanup() override;
 
 private slots:
     void sl_onTaskFinishied();
@@ -78,7 +78,7 @@ public:
         : DomainFactory(name) {
     }
     static bool init(ExternalProcessConfig* cfg);
-    virtual Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new ExternalProcessWorker(a);
     }
 };
@@ -89,7 +89,7 @@ public:
     ExternalProcessWorkerPrompter(Actor* p = nullptr)
         : PrompterBase<ExternalProcessWorkerPrompter>(p) {
     }
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class LaunchExternalToolTask : public Task {
@@ -99,7 +99,7 @@ public:
     LaunchExternalToolTask(const QString& execString, const QString& workingDir, const QMap<QString, DataConfig>& outputUrls);
     ~LaunchExternalToolTask();
 
-    void run();
+    void run() override;
 
     QMap<QString, DataConfig> takeOutputUrls();
     void addListeners(const QList<ExternalToolListener*>& listenersToAdd);

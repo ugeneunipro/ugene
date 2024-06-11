@@ -31,7 +31,7 @@ public:
     ExportProjectDialogFiller(const QString& _projectName = "")
         : Filler("ExportProjectDialog"), projectName(_projectName) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     const QString projectName;
@@ -42,7 +42,7 @@ public:
     ExportProjectDialogChecker(const QString& _projectName)
         : Filler("ExportProjectDialog"), projectName(_projectName) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     const QString projectName;

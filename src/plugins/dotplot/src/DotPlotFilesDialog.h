@@ -31,7 +31,7 @@ class DotPlotFilesDialog : public QDialog, public Ui_DotPlotFilesDialog {
 public:
     DotPlotFilesDialog(QWidget* parent);
 
-    virtual void accept();
+    void accept() override;
 
     QString getFirstFileName() const {
         return firstFileName;

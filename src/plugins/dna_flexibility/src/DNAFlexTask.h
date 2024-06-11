@@ -49,7 +49,7 @@ public:
                 const QString& annDescription,
                 const DNASequence& sequence);
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     QList<SharedAnnotationData> getAnnotationsFromResults(const QList<HighFlexResult>& results);
 
 private:

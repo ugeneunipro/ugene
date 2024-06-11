@@ -49,6 +49,7 @@ public:
     void setReference(const Sequence& reference);
 
     QList<U2AssemblyRead> getReads() const;
+    const QList<Sequence>& getOriginalReads() const;
     int getReadsCount() const;
     void addRead(const Sequence& read);
     void setReads(const QList<Sequence>& reads);

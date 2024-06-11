@@ -61,7 +61,7 @@ const QString CollocationWorkerFactory::ACTOR_ID("collocated-annotation-search")
 
 class CollocationValidator : public ConfigurationValidator {
 public:
-    virtual bool validate(const Configuration* cfg, NotificationsList& notificationList) const {
+    bool validate(const Configuration* cfg, NotificationsList& notificationList) const override {
         QString annotations = cfg->getParameter(ANN_ATTR)->getAttributeValueWithoutScript<QString>();
         QSet<QString> names = QSet<QString>::fromList(annotations.split(QRegExp("\\W+"), QString::SkipEmptyParts));
         if (names.size() < 2) {

@@ -35,7 +35,7 @@ public:
     ColumnConfig config;
 
 public slots:
-    virtual void accept();
+    void accept() override;
 
 private slots:
     virtual void sl_complMarkToggle(bool);

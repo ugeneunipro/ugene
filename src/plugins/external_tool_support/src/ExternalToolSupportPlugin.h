@@ -46,7 +46,7 @@ public:
     ExternalToolSupportService();
 
 protected:
-    virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
+    void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged) override;
 
     ETSProjectViewItemsController* projectViewController;
 };

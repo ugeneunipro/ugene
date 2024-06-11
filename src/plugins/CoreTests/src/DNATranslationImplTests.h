@@ -36,7 +36,7 @@ class GTest_DNATranslation3to1Test : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DNATranslation3to1Test, "check-translation");
 
-    ReportResult report();
+    ReportResult report() override;
 
     QString objContextName;
 

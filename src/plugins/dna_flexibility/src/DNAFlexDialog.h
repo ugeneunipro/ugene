@@ -37,7 +37,7 @@ class DNAFlexDialog : public QDialog, public Ui_DNAFlexDialog {
 
 public:
     DNAFlexDialog(ADVSequenceObjectContext* ctx);
-    virtual void accept();
+    void accept() override;
 
 private slots:
     void sl_spinWindowSizeChanged(int);

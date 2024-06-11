@@ -90,8 +90,8 @@ public:
 
     void setTask(Task*);
 
-    virtual void onResult(const RFResult& r);
-    virtual void onResults(const QVector<RFResult>& v);
+    void onResult(const RFResult& r) override;
+    void onResults(const QVector<RFResult>& v) override;
 
 private:
     QSharedPointer<QList<DotPlotResults>> dotPlotList;
@@ -109,8 +109,8 @@ public:
     DotPlotRevComplResultsListener()
         : xLen(0) {
     }
-    virtual void onResult(const RFResult& r);
-    virtual void onResults(const QVector<RFResult>& v);
+    void onResult(const RFResult& r) override;
+    void onResults(const QVector<RFResult>& v) override;
 
     int xLen;
 };

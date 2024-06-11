@@ -47,7 +47,7 @@ public:
     void hideAddToProjectOption();
 
 public slots:
-    virtual void accept();
+    void accept() override;
 
 private slots:
     void sl_assemblyCheckChanged(QTableWidgetItem* item);

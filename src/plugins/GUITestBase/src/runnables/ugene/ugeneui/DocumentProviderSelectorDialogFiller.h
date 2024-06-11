@@ -34,7 +34,7 @@ public:
         : Filler("DocumentProviderSelectorDialog"),
           openWith(_openWith) {
     }
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     OpenWith openWith;

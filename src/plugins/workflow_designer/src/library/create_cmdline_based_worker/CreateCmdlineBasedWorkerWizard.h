@@ -238,7 +238,7 @@ class ExternalToolSelectComboBox : public QComboBox {
 public:
     ExternalToolSelectComboBox(QWidget* parent = nullptr);
 
-    virtual void hidePopup() override;
+    void hidePopup() override;
 
     void modifyMenuAccordingToData(const QString& data);
     void setDefaultMenuValue(const QString& defaultValue);

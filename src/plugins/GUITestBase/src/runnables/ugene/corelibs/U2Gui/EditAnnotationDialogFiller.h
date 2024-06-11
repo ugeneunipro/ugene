@@ -33,7 +33,7 @@ public:
     EditAnnotationFiller(CustomScenario* c)
         : Filler("CreateAnnotationDialog", c), annotationName(""), location(""), complementStrand(false) {
     }
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QString annotationName;
@@ -46,7 +46,7 @@ public:
     EditAnnotationChecker(const QString& _annotationName, const QString& _location)
         : Filler("CreateAnnotationDialog"), annotationName(_annotationName), location(_location) {
     }
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QString annotationName;
