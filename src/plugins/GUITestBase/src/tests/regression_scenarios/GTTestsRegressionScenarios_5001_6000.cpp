@@ -819,6 +819,65 @@ GUI_TEST_CLASS_DEFINITION(test_5231) {
     CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5239) {
+    /*
+    * 1. Open BLAST make database dialog Tools->BLAST->BLAST make database...
+    * 2. Fill all fields with valid data, except "database path" - set not existed directory
+    * Expected state: Build button is disabled, corresponding tooltip appeared
+    * 3. Fill all fields with valid data, except "database path" - set read only directory
+    * Expected state: Build button is disabled, corresponding tooltip appeared
+    * 4. Set valid "database path" directory
+    * Expected state: Build button is enabled
+    * 5. Set valid "database path" directory
+    * 6. Make it read only, press "Build" button
+    * Expected state: Corresponding error appeared in log
+    */
+
+    class MakeBlastDbDialogTestPathsFiller : public MakeBlastDbDialogFiller {
+    public:
+        MakeBlastDbDialogTestPathsFiller()
+            : MakeBlastDbDialogFiller(MakeBlastDbDialogFiller::Parameters()){};
+        void commonScenario() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            auto inputFilesRadioButton = GTWidget::findRadioButton("inputFilesRadioButton", dialog);
+            GTWidget::findLineEdit("inputFilesLineEdit", dialog);
+
+            GTRadioButton::click(inputFilesRadioButton);
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list(dataDir + "/samples/Genbank/", {"murine.gb"}));
+            GTWidget::click(GTWidget::findWidget("inputFilesToolButton"));
+
+            auto buildButton = GTWidget::findButtonByText("Build", GTUtilsDialog::buttonBox(dialog));
+            
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), "~/", false, true);
+            CHECK_SET_ERR(GTWidget::findLineEdit("databasePathLineEdit", dialog)->toolTip() == "Output database path does not exist.", "Not expected tooltip");
+            CHECK_SET_ERR(!buildButton->isEnabled(), "Build button should be disabled!");
+            
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), sandBoxDir + "read_only_dir");
+            CHECK_SET_ERR(GTWidget::findLineEdit("databasePathLineEdit", dialog)->toolTip() == "Output database path is read only.", "Not expected tooltip");
+            CHECK_SET_ERR(!buildButton->isEnabled(), "Build button should be disabled!");
+
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), sandBoxDir);
+            CHECK_SET_ERR(buildButton->isEnabled(), "Build button should be enabled!");
+
+            QDir().mkpath(sandBoxDir + "5239");
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), sandBoxDir + "5239");
+            GTFile::setReadOnly(sandBoxDir + "5239");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    QDir().mkpath(sandBoxDir + "read_only_dir");
+    GTFile::setReadOnly(sandBoxDir + "read_only_dir");
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new MakeBlastDbDialogTestPathsFiller);
+    GTMenu::clickMainMenuItem({"Tools", "BLAST", "BLAST make database..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasError("Output database path is read only."), "Log should contain 'Output database path is read only.' error");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5246) {
     // 1. Open file human_t1.fa
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
