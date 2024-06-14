@@ -173,6 +173,11 @@ void MainWindowDragNDrop::dragMoveEvent(QDragMoveEvent* event) {
 //////////////////////////////////////////////////////////////////////////
 // MainWindowController
 //////////////////////////////////////////////////////////////////////////
+
+MainWindowImpl::MainWindowImpl(bool _isDark)
+    : isDark(_isDark) {
+}
+
 MainWindowImpl::~MainWindowImpl() {
     SAFE_POINT(mw == nullptr, "main window must be null!", );
 }
@@ -308,6 +313,34 @@ void MainWindowImpl::registerAction(QAction* action) {
     menuManager->registerAction(action);
 }
 
+void MainWindowImpl::setDarkMode(bool _isDark) {
+    isDark = _isDark;
+}
+
+bool MainWindowImpl::isDarkMode() const {
+    return isDark;
+}
+
+void MainWindowImpl::setNewStyle(const QString& style, int colorModeIndex) {
+    auto cm = static_cast<StyleFactory::ColorMode>(colorModeIndex);
+    switch (cm) {
+        case StyleFactory::ColorMode::Light:
+            CHECK(isDark, );
+            break;
+        case StyleFactory::ColorMode::Dark:
+            CHECK(!isDark, );
+            break;
+        case StyleFactory::ColorMode::Auto:
+            CHECK(isDark != StyleFactory::isDarkStyleEnabled(), );
+            break;
+    }
+
+    auto newStyle = StyleFactory::create(style, cm);
+    QApplication::setStyle(newStyle);
+    isDark = !isDark;
+    emit si_darkModeSwitched();
+}
+
 void MainWindowImpl::prepareGUI() {
     mw = new MWStub(this);  // todo: parents?
     mw->setObjectName("main_window");
@@ -374,6 +407,23 @@ void MainWindowImpl::prepareGUI() {
         connect(addRepeatingNotificationAction, &QAction::triggered, [=]() { nStack->add("Repeating notification"); });
         helpMenu->addAction(addRepeatingNotificationAction);
     }
+
+#ifdef Q_OS_WIN
+    connect(&colorModeTimer, &QTimer::timeout, this, [this]() {
+        auto s = AppContext::getAppSettings()->getUserAppsSettings();
+        auto cm = static_cast<StyleFactory::ColorMode>(s->getColorModeIndex());
+        CHECK(cm == StyleFactory::ColorMode::Auto, );
+
+        setNewStyle(s->getVisualStyle(), (int)cm);
+        /*CHECK(isDark != StyleFactory::isDarkStyleEnabled(), );
+
+        auto style = StyleFactory::create(s->getVisualStyle(), cm);
+        QApplication::setStyle(style);
+        isDark = !isDark;
+        emit si_darkModeSwitched();*/
+    });
+    colorModeTimer.start(5000);
+#endif
 
     mdiManager = new MWMDIManagerImpl(this, mdi);
 

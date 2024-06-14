@@ -28,6 +28,8 @@
 
 #include <U2Gui/AppSettingsGUI.h>
 
+#include "main_window/styles/StyleFactory.h"
+
 #include <ui_UserApplicationsSettingsWidget.h>
 
 namespace U2 {
@@ -60,6 +62,7 @@ public:
 
     QString translFile;
     QString style;
+    StyleFactory::ColorMode colorMode = StyleFactory::ColorMode::Light;
     bool openLastProjectFlag= false;
     int askToSaveProject= 0;
     bool enableStatistics = false;

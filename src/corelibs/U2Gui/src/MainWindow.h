@@ -133,6 +133,10 @@ public:
     virtual void addNotification(const QString& message, NotificationType type) = 0;
 
     virtual void registerAction(QAction* action) = 0;
+
+    virtual bool isDarkMode() const = 0;
+
+    virtual void setNewStyle(const QString& style, int colorModeIndex) = 0;
 };
 
 //////////////////////////////////////////////////////////////////////////

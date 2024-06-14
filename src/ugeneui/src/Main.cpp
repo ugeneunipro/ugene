@@ -155,6 +155,7 @@
 #include "app_settings/logview_settings/LogSettingsGUIController.h"
 #include "main_window/styles/DarkStyle.h"
 #include "main_window/styles/ProxyStyle.h"
+#include "main_window/styles/StyleFactory.h"
 #include "main_window/CheckUpdatesTask.h"
 #include "main_window/MainWindowImpl.h"
 #include "main_window/SplashScreen.h"
@@ -576,21 +577,24 @@ int main(int argc, char** argv) {
     qInstallMessageHandler(guiTestMessageOutput);
 
     QString styleName = userAppSettings->getVisualStyle();
-    QStyle* qtStyle = nullptr;
-    if (!styleName.isEmpty()) {
-        qtStyle = QStyleFactory::create(styleName);
-        if (qtStyle == nullptr) {
-            uiLog.details(AppContextImpl::tr("Style not available %1").arg(styleName));
-        }
-    }
-    auto proxyStyle = new ProxyStyle(qtStyle);
-    // Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
-    if (qtStyle != nullptr) {
-        proxyStyle->setObjectName(qtStyle->objectName());
-    }
+    int colorModeIndex = userAppSettings->getColorModeIndex();
+    auto style = StyleFactory::create(styleName, colorModeIndex);
+    QApplication::setStyle(style);
+    //QStyle* qtStyle = nullptr;
+    //if (!styleName.isEmpty()) {
+    //    qtStyle = QStyleFactory::create(styleName);
+    //    if (qtStyle == nullptr) {
+    //        uiLog.details(AppContextImpl::tr("Style not available %1").arg(styleName));
+    //    }
+    //}
+    //auto proxyStyle = new ProxyStyle(qtStyle);
+    //// Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
+    //if (qtStyle != nullptr) {
+    //    proxyStyle->setObjectName(qtStyle->objectName());
+    //}
 
-    //QApplication::setStyle(proxyStyle);
-    QApplication::setStyle(new DarkStyle(proxyStyle));
+    ////QApplication::setStyle(proxyStyle);
+    //QApplication::setStyle(new DarkStyle(proxyStyle));
 
     auto resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);
@@ -613,7 +617,9 @@ int main(int argc, char** argv) {
         Q_UNUSED(res);
     }
 
-    auto mw = new MainWindowImpl();
+    bool isAutoColorMode = static_cast<StyleFactory::ColorMode>(colorModeIndex) == StyleFactory::ColorMode::Auto;
+    bool isDarkStyle = qobject_cast<DarkStyle*>(style) != nullptr;
+    auto mw = new MainWindowImpl(isDarkStyle);
     appContext->setMainWindow(mw);
     mw->prepare();
 

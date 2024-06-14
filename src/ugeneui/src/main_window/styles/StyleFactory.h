@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,31 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-// based on https://github.com/Jorgen-VikingGod/Qt-Frameless-Window-DarkStyle.git
 #pragma once
 
-#include <QApplication>
-#include <QFile>
-#include <QFont>
-#include <QProxyStyle>
 #include <QStyleFactory>
 
-class DarkStyle : public QProxyStyle {
-    Q_OBJECT
+namespace U2 {
 
+class StyleFactory {
 public:
-    //DarkStyle();
-    explicit DarkStyle(QStyle *style);
-    ~DarkStyle();
+    static QStringList keys();
+    enum class ColorMode {
+        Light,
+        Dark,
+        Auto
+    };
+    static QStyle* create(const QString& styleName, ColorMode colorMode);
+    static QStyle* create(const QString& styleName, int colorMode);
 
-    //QStyle *baseStyle() const;
+    static bool isDarkStyleEnabled();
 
-    void polish(QPalette &palette) override;
-    void polish(QApplication *app) override;
 
-private:
-    int defaultFontPointSize = 0;
-
-    /*private:
-     QStyle *styleBase(QStyle *style = nullptr) const;*/
 };
+
+}

@@ -30,9 +30,11 @@
 #include <U2Core/Log.h>
 #include <U2Core/UserApplicationsSettings.h>
 
+#include <U2Gui/MainWindow.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include "main_window/styles/ProxyStyle.h"
+#include "main_window/styles/StyleFactory.h"
 
 namespace U2 {
 #define TRANSMAP_FILE_NAME "translations.txt"
@@ -72,6 +74,7 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageController::getSavedState()
     state->openLastProjectFlag = s->openLastProjectAtStartup();
     state->askToSaveProject = s->getAskToSaveProject();
     state->style = s->getVisualStyle();
+    state->colorMode = static_cast<StyleFactory::ColorMode>(s->getColorModeIndex());
     state->enableStatistics = s->isStatisticsCollectionEnabled();
     state->tabbedWindowLayout = s->tabbedWindowLayout();
     state->resetSettings = s->resetSettings();
@@ -92,11 +95,13 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* 
     st->setUpdatesEnabled(state->updatesEnabled);
     st->setExperimentalFeaturesModeEnabled(state->experimentsEnabled);
 
-    if (state->style.compare(st->getVisualStyle(), Qt::CaseInsensitive) != 0) {
-        QStyle* style = QStyleFactory::create(state->style);
-        auto proxyStyle = new ProxyStyle(style);
-        QApplication::setStyle(proxyStyle);
+    if (state->style.compare(st->getVisualStyle(), Qt::CaseInsensitive) != 0 ||
+        state->colorMode != static_cast<StyleFactory::ColorMode>(st->getColorModeIndex())) {
+        AppContext::getMainWindow()->setNewStyle(state->style, (int)state->colorMode);
+        /*QStyle* style = StyleFactory::create(state->style, state->colorMode);
+        QApplication::setStyle(style);*/
         st->setVisualStyle(state->style);
+        st->setColorModeIndex((int)state->colorMode);
     }
 }
 
@@ -122,6 +127,11 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
     for (const auto& key : qAsConst(keys)) {
         styleCombo->addItem(FIXED_CASE_QSTYLE_KEY_MAP.value(key, key));
     }
+    colorModeCombo->addItem(tr("Light"));
+    colorModeCombo->addItem(tr("Dark"));
+#ifndef Q_OS_UNIX
+    colorModeCombo->addItem(tr("Auto"));
+#endif
 }
 
 void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
@@ -140,6 +150,8 @@ void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
         styleCombo->setCurrentIndex(styleIdx);
     }
 
+    colorModeCombo->setCurrentIndex((int)state->colorMode);
+
     autoOpenProjectBox->setChecked(state->openLastProjectFlag);
     askToSaveProject->addItem(tr("Ask to save new project on exit"), QDialogButtonBox::NoButton);
     askToSaveProject->addItem(tr("Don't save new project on exit"), QDialogButtonBox::No);
@@ -157,6 +169,7 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /
     state->openLastProjectFlag = autoOpenProjectBox->isChecked();
     state->askToSaveProject = askToSaveProject->itemData(askToSaveProject->currentIndex()).toInt();
     state->style = styleCombo->currentText();
+    state->colorMode = static_cast<StyleFactory::ColorMode>(colorModeCombo->currentIndex());
     state->enableStatistics = enableStatisticsEdit->isChecked();
     state->resetSettings = resetSettingsBox->isChecked();
     state->updatesEnabled = updatesCheckBox->isChecked();

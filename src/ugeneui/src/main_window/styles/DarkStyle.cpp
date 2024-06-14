@@ -27,10 +27,17 @@
 
 DarkStyle::DarkStyle(QStyle* style)
     : QProxyStyle(style) {
+    defaultFontPointSize = QApplication::font().pointSize();
 }
 
 DarkStyle::~DarkStyle() {
     qApp->setStyleSheet("");
+    QFont defaultFont = QApplication::font();
+//#ifdef Q_OS_WIN
+//    defaultFontPointSize += 2;
+//#endif
+    //defaultFont.setPointSize(defaultFontPointSize);
+    //qApp->setFont(defaultFont);
 }
 
 //QStyle *DarkStyle::styleBase(QStyle *style) const {
@@ -86,9 +93,9 @@ void DarkStyle::polish(QApplication *app) {
     // increase font size for better reading,
     // setPointSize was reduced from +2 because when applied this way in Qt5, the
     // font is larger than intended for some reason
-    /*QFont defaultFont = QApplication::font();
+    QFont defaultFont = app->font();
     defaultFont.setPointSize(defaultFont.pointSize() + 1);
-    app->setFont(defaultFont);*/
+    //app->setFont(defaultFont);
 
 
     // loadstylesheet

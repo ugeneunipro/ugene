@@ -26,9 +26,12 @@
 #include <QMdiArea>
 #include <QMenu>
 #include <QMenuBar>
+#include <QTimer>
 
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/Notification.h>
+
+#include "styles/StyleFactory.h"
 
 class QMdiArea;
 class QToolBar;
@@ -66,7 +69,7 @@ private slots:
 class MainWindowImpl : public MainWindow {
     Q_OBJECT
 public:
-    MainWindowImpl() = default;
+    MainWindowImpl(bool isDark);
     ~MainWindowImpl();
 
     virtual QMenu* getTopLevelMenu(const QString& sysName) const;
@@ -88,6 +91,11 @@ public:
     virtual void setWindowTitle(const QString& title);
     void registerAction(QAction* action);
 
+    void setDarkMode(bool isDark);
+    bool isDarkMode() const override;
+
+    void setNewStyle(const QString& style, int colorModeIndex) override;
+
     void prepare();
     void close();
 
@@ -95,10 +103,13 @@ public:
     void setShutDownInProcess(bool flag);
     void registerStartupChecks(const QList<Task*>& tasks);
     void addNotification(const QString& message, NotificationType type);
+
 signals:
     void si_show();
     void si_showWelcomePage();
     void si_paste();
+    void si_darkModeSwitched();
+
 public slots:
     void sl_tempDirPathCheckFailed(QString path);
     void sl_show();
@@ -146,7 +157,12 @@ private:
     QAction* installToPathAction = nullptr;
 #endif
     bool shutDownInProcess = false;
-
+    StyleFactory::ColorMode colorMode = StyleFactory::ColorMode::Light;
+    bool isAutoColorMode = false;
+    bool isDark = false;
+#ifdef Q_OS_WIN
+    QTimer colorModeTimer;
+#endif
     QList<Task*> startupTasklist;
 };
 

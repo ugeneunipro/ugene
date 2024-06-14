@@ -11,6 +11,7 @@ HEADERS += src/app_settings/AppSettingsDialogController.h \
            src/app_settings/resource_settings/ResourceSettingsGUIController.h \
            src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.h \
            src/main_window/styles/ProxyStyle.h \
+           src/main_window/styles/StyleFactory.h \
            src/main_window/AboutDialogController.h \
            src/main_window/DockWidgetPainter.h \
            src/main_window/SplashScreen.h \
@@ -74,6 +75,7 @@ SOURCES += src/Main.cpp \
            src/app_settings/resource_settings/ResourceSettingsGUIController.cpp \
            src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp \
            src/main_window/styles/ProxyStyle.cpp \
+           src/main_window/styles/StyleFactory.cpp \
            src/main_window/AboutDialogController.cpp \
            src/main_window/DockWidgetPainter.cpp \
            src/main_window/SplashScreen.cpp \
