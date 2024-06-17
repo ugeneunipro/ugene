@@ -21,9 +21,11 @@
 
 #include "StyleFactory.h"
 
-#include "main_window/MainWindowImpl.h"
-#include "DarkStyle.h"
 #include "ProxyStyle.h"
+
+#ifndef Q_OS_DARWIN
+#include "DarkStyle.h"
+#endif
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
@@ -46,6 +48,9 @@ QStyle* StyleFactory::create(const QString& styleName, ColorMode colorMode) {
     QStyle* qtStyle = QStyleFactory::create(styleName);
     auto proxyStyle = new ProxyStyle(qtStyle);
 
+#ifdef Q_OS_DARWIN
+    result = proxyStyle;
+#else
     switch (colorMode) {
         case ColorMode::Light:
             result = proxyStyle;
@@ -65,7 +70,7 @@ QStyle* StyleFactory::create(const QString& styleName, ColorMode colorMode) {
     if (qtStyle != nullptr) {
         result->setObjectName(qtStyle->objectName());
     }
-
+#endif
     return result;
 }
 
@@ -100,7 +105,7 @@ bool windowsIsInDarkTheme() {
 
 bool StyleFactory::isDarkStyleEnabled() {
 #ifdef Q_OS_DARWIN
-    return macIsInDarkTheme();
+    return false;//macIsInDarkTheme();
 #elif defined(Q_OS_WIN32)
     return windowsIsInDarkTheme();
 #else

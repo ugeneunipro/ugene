@@ -153,7 +153,6 @@
 
 #include "app_settings/AppSettingsGUIImpl.h"
 #include "app_settings/logview_settings/LogSettingsGUIController.h"
-#include "main_window/styles/DarkStyle.h"
 #include "main_window/styles/ProxyStyle.h"
 #include "main_window/styles/StyleFactory.h"
 #include "main_window/CheckUpdatesTask.h"
@@ -167,6 +166,10 @@
 #include "task_view/TaskViewController.h"
 #include "update/UgeneUpdater.h"
 #include "welcome_page/WelcomePageMdiController.h"
+
+#ifndef Q_OS_DARWIN
+#include "main_window/styles/DarkStyle.h"
+#endif
 
 using namespace U2;
 
@@ -617,8 +620,15 @@ int main(int argc, char** argv) {
         Q_UNUSED(res);
     }
 
-    bool isAutoColorMode = static_cast<StyleFactory::ColorMode>(colorModeIndex) == StyleFactory::ColorMode::Auto;
+    //bool isAutoColorMode = static_cast<StyleFactory::ColorMode>(colorModeIndex) == StyleFactory::ColorMode::Auto;
+
+
+#ifndef Q_OS_DARWIN
     bool isDarkStyle = qobject_cast<DarkStyle*>(style) != nullptr;
+#else
+    bool isDarkStyle = false; //TODO
+#endif
+
     auto mw = new MainWindowImpl(isDarkStyle);
     appContext->setMainWindow(mw);
     mw->prepare();
