@@ -74,6 +74,7 @@ QStyle* StyleFactory::create(const QString& styleName, int colorMode) {
     return create(styleName, colorModeEnum);
 }
 
+#ifdef Q_OS_WIN32
 namespace {
 bool windowsDarkThemeAvailable() {
     // dark mode supported Windows 10 1809 10.0.17763 onward
@@ -95,6 +96,7 @@ bool windowsIsInDarkTheme() {
 }
 
 }  // namespace
+#endif
 
 bool StyleFactory::isDarkStyleEnabled() {
 #ifdef Q_OS_DARWIN
@@ -102,7 +104,7 @@ bool StyleFactory::isDarkStyleEnabled() {
 #elif defined(Q_OS_WIN32)
     return windowsIsInDarkTheme();
 #else
-    return false;
+    FAIL("Auto scheme is not avalible on Linux", false);
 #endif
 }
 
