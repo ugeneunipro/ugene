@@ -129,7 +129,7 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
     }
     colorModeCombo->addItem(tr("Light"));
     colorModeCombo->addItem(tr("Dark"));
-#ifndef Q_OS_UNIX
+#if defined(Q_OS_WIN) | defined(Q_OS_DARWIN)
     colorModeCombo->addItem(tr("Auto"));
 #endif
 }
