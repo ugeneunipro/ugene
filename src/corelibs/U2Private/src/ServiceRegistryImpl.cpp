@@ -242,7 +242,7 @@ void EnableServiceTask::prepare() {
 
 Task::ReportResult EnableServiceTask::report() {
     sr->activeServiceTasks.removeAll(this);
-    if (stateInfo.hasError() || s->isEnabled()) {
+    if (stateInfo.isCoR() || s->isEnabled()) {
         return ReportResult_Finished;
     }
     bool success = !propagateSubtaskError();
