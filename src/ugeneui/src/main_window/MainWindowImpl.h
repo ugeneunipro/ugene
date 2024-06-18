@@ -69,7 +69,7 @@ private slots:
 class MainWindowImpl : public MainWindow {
     Q_OBJECT
 public:
-    MainWindowImpl(bool isDark);
+    MainWindowImpl() = default;
     ~MainWindowImpl();
 
     virtual QMenu* getTopLevelMenu(const QString& sysName) const;

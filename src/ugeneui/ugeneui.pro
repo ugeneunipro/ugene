@@ -111,13 +111,15 @@ SOURCES += src/Main.cpp \
            src/welcome_page/WelcomePageWidget.cpp
 
 macx {
-OBJECTIVE_HEADERS += src/app_settings/ResetSettingsMac.h
-OBJECTIVE_SOURCES += src/app_settings/ResetSettingsMac.mm
+OBJECTIVE_HEADERS += src/app_settings/ResetSettingsMac.h \
+                     src/main_window/styles/MacStyleFactory.h
+OBJECTIVE_SOURCES += src/app_settings/ResetSettingsMac.mm \
+                     src/main_window/styles/MacStyleFactory.mm
 }
 
 RESOURCES += ugeneui.qrc
 !macx: RESOURCES += dark/darkstyle.qrc
-#!macx: RESOURCES += dark/darkstyle.qrc
 !macx: SOURCES += src/main_window/styles/DarkStyle.cpp
 !macx: HEADERS += src/main_window/styles/DarkStyle.h
+
 TRANSLATIONS += transl/russian.ts

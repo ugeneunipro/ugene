@@ -60,6 +60,9 @@
 #include "ToolBarManager.h"
 #include "shtirlitz/Shtirlitz.h"
 #include "update/UgeneUpdater.h"
+#ifdef Q_OS_DARWIN
+#    include "styles/MacStyleFactory.h"
+#endif
 
 namespace U2 {
 
@@ -173,10 +176,6 @@ void MainWindowDragNDrop::dragMoveEvent(QDragMoveEvent* event) {
 //////////////////////////////////////////////////////////////////////////
 // MainWindowController
 //////////////////////////////////////////////////////////////////////////
-
-MainWindowImpl::MainWindowImpl(bool _isDark)
-    : isDark(_isDark) {
-}
 
 MainWindowImpl::~MainWindowImpl() {
     SAFE_POINT(mw == nullptr, "main window must be null!", );
@@ -323,6 +322,22 @@ bool MainWindowImpl::isDarkMode() const {
 
 void MainWindowImpl::setNewStyle(const QString& style, int colorModeIndex) {
     auto cm = static_cast<StyleFactory::ColorMode>(colorModeIndex);
+#ifdef Q_OS_DARWIN
+    switch (cm) {
+        case StyleFactory::ColorMode::Light:
+            MacStyleFactory::macSetToLightTheme();
+            isDark = false;
+            break;
+        case StyleFactory::ColorMode::Dark:
+            MacStyleFactory::macSetToDarkTheme();
+            isDark = true;
+            break;
+        case StyleFactory::ColorMode::Auto:
+            MacStyleFactory::macSetToAutoTheme();
+            isDark = StyleFactory::isDarkStyleEnabled();
+            break;
+    }
+#else
     switch (cm) {
         case StyleFactory::ColorMode::Light:
             CHECK(isDark, );
@@ -334,10 +349,10 @@ void MainWindowImpl::setNewStyle(const QString& style, int colorModeIndex) {
             CHECK(isDark != StyleFactory::isDarkStyleEnabled(), );
             break;
     }
-
+    isDark = !isDark;
+#endif
     auto newStyle = StyleFactory::create(style, cm);
     QApplication::setStyle(newStyle);
-    isDark = !isDark;
     emit si_darkModeSwitched();
 }
 

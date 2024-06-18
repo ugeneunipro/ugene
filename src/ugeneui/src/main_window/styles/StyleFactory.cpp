@@ -25,6 +25,8 @@
 
 #ifndef Q_OS_DARWIN
 #include "DarkStyle.h"
+#else
+#include "MacStyleFactory.h"
 #endif
 
 #include <U2Core/AppContext.h>
@@ -105,11 +107,11 @@ bool windowsIsInDarkTheme() {
 
 bool StyleFactory::isDarkStyleEnabled() {
 #ifdef Q_OS_DARWIN
-    return false;//macIsInDarkTheme();
+    return MacStyleFactory::macIsInDarkTheme();
 #elif defined(Q_OS_WIN32)
     return windowsIsInDarkTheme();
 #else
-    FAIL("Auto scheme is not avalible on Linux", false);
+    FAIL("Auto color mode is not avalible on Linux", false);
 #endif
 }
 

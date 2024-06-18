@@ -581,8 +581,8 @@ int main(int argc, char** argv) {
 
     QString styleName = userAppSettings->getVisualStyle();
     int colorModeIndex = userAppSettings->getColorModeIndex();
-    auto style = StyleFactory::create(styleName, colorModeIndex);
-    QApplication::setStyle(style);
+    //auto style = StyleFactory::create(styleName, colorModeIndex);
+    //QApplication::setStyle(style);
     //QStyle* qtStyle = nullptr;
     //if (!styleName.isEmpty()) {
     //    qtStyle = QStyleFactory::create(styleName);
@@ -622,14 +622,16 @@ int main(int argc, char** argv) {
 
     //bool isAutoColorMode = static_cast<StyleFactory::ColorMode>(colorModeIndex) == StyleFactory::ColorMode::Auto;
 
+    /*bool isDarkStyle = false;
+    auto colorMode = static_cast<StyleFactory::ColorMode>(colorModeIndex);
+    if (colorMode == StyleFactory::ColorMode::Dark) {
+        isDarkStyle = true;
+    } else if (colorMode == StyleFactory::ColorMode::Auto) {
+        isDarkStyle = StyleFactory::isDarkStyleEnabled();
+    }*/
 
-#ifndef Q_OS_DARWIN
-    bool isDarkStyle = qobject_cast<DarkStyle*>(style) != nullptr;
-#else
-    bool isDarkStyle = false; //TODO
-#endif
-
-    auto mw = new MainWindowImpl(isDarkStyle);
+    auto mw = new MainWindowImpl;
+    mw->setNewStyle(styleName, colorModeIndex);
     appContext->setMainWindow(mw);
     mw->prepare();
 
