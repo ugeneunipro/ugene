@@ -216,6 +216,17 @@ void MainWindowImpl::close() {
 bool MainWindowImpl::eventFilter(QObject* object, QEvent* event) {
     CHECK(mw == object, false);
     CHECK(event != nullptr, false);
+
+#ifdef Q_OS_DARWIN
+    if (!colorIsChangedByUser && event->type() == QEvent::PaletteChange) {
+        // TODO description
+        auto newStyle = StyleFactory::create(QApplication::style()->objectName(), 0);
+        QApplication::setStyle(newStyle);
+        emit si_darkModeSwitched();
+        return MainWindow::eventFilter(object, event);
+    }
+#endif
+
     CHECK(event->type() == QEvent::KeyPress, false);
 
     auto keyEvent = dynamic_cast<QKeyEvent*>(event);
@@ -323,6 +334,7 @@ bool MainWindowImpl::isDarkMode() const {
 void MainWindowImpl::setNewStyle(const QString& style, int colorModeIndex) {
     auto cm = static_cast<StyleFactory::ColorMode>(colorModeIndex);
 #ifdef Q_OS_DARWIN
+    colorIsChangedByUser = true;
     switch (cm) {
         case StyleFactory::ColorMode::Light:
             MacStyleFactory::macSetToLightTheme();
@@ -337,6 +349,7 @@ void MainWindowImpl::setNewStyle(const QString& style, int colorModeIndex) {
             isDark = StyleFactory::isDarkStyleEnabled();
             break;
     }
+    colorIsChangedByUser = false;
 #else
     switch (cm) {
         case StyleFactory::ColorMode::Light:
@@ -443,6 +456,7 @@ void MainWindowImpl::prepareGUI() {
     mdiManager = new MWMDIManagerImpl(this, mdi);
 
     dockManager = new MWDockManagerImpl(this);
+    //connect(this, &MainWindowImpl::si_darkModeSwitched, dockManager, &MWDockManagerImpl::sl_darkModeSwitched);
 }
 
 void MainWindowImpl::runClosingTask() {

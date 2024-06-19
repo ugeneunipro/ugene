@@ -171,6 +171,8 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* w, const QKey
 
     DockWidgetPainter::updateLabel(data, false);
 
+    //connect(AppContext::getMainWindow(), )
+
     docks.append(data);
 
     if (tb->isHidden()) {
@@ -439,6 +441,11 @@ void MWDockManagerImpl::sl_toggleDocks() {
             }
         }
     }
+}
+
+void MWDockManagerImpl::sl_darkModeSwitched() {
+
+
 }
 
 }  // namespace U2

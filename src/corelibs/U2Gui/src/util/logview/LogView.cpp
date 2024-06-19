@@ -127,6 +127,8 @@ void LogViewWidget::popupMenu(const QPoint& pos) {
     }
 
     popup.exec(QCursor::pos());
+    update();
+    repaint();
 }
 
 void SearchHighlighter::highlightBlock(const QString& text) {

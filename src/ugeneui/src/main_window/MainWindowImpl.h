@@ -108,7 +108,6 @@ signals:
     void si_show();
     void si_showWelcomePage();
     void si_paste();
-    void si_darkModeSwitched();
 
 public slots:
     void sl_tempDirPathCheckFailed(QString path);
@@ -158,6 +157,9 @@ private:
 #endif
     bool shutDownInProcess = false;
     StyleFactory::ColorMode colorMode = StyleFactory::ColorMode::Light;
+#ifdef Q_OS_DARWIN
+    bool colorIsChangedByUser = false;
+#endif
     bool isAutoColorMode = false;
     bool isDark = false;
 #ifdef Q_OS_WIN
