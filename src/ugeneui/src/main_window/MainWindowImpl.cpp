@@ -222,6 +222,7 @@ bool MainWindowImpl::eventFilter(QObject* object, QEvent* event) {
         // TODO description
         auto newStyle = StyleFactory::create(QApplication::style()->objectName(), 0);
         QApplication::setStyle(newStyle);
+        isDark = !isDark;
         emit si_colorModeSwitched();
         return MainWindow::eventFilter(object, event);
     }

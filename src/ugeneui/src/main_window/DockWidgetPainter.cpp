@@ -103,7 +103,11 @@ QColor DockWidgetPainter::getInnerColor(bool active, const QColor& backgroundCol
 #else
     QColor innerColor = backgroundColor;
     if (active) {
-        innerColor = backgroundColor.darker(115);
+        if (isDarkMode) {
+            innerColor = backgroundColor.lighter();
+        } else {
+            innerColor = backgroundColor.darker(115);
+        }
     }
     return innerColor;
 #endif
