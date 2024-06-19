@@ -354,20 +354,27 @@ void MainWindowImpl::setNewStyle(const QString& style, int colorModeIndex) {
 #else
     switch (cm) {
         case StyleFactory::ColorMode::Light:
-            CHECK(isDark, );
+            isDark = false;
+            //CHECK(isDark, );
             break;
         case StyleFactory::ColorMode::Dark:
-            CHECK(!isDark, );
+            isDark = true;
+            //CHECK(!isDark, );
             break;
         case StyleFactory::ColorMode::Auto:
-            CHECK(isDark != StyleFactory::isDarkStyleEnabled(), );
+            isDark = StyleFactory::isDarkStyleEnabled();
+            //CHECK(isDark != StyleFactory::isDarkStyleEnabled(), );
             break;
     }
-    isDark = !isDark;
+    //isDark = !isDark;
 #endif
     auto newStyle = StyleFactory::create(style, cm);
     QApplication::setStyle(newStyle);
     emit si_colorModeSwitched();
+}
+
+void MainWindowImpl::connectLogView(LogViewWidget* view) {
+    connect(this, &MainWindowImpl::si_colorModeSwitched, view, &LogViewWidget::sl_colorModeSwitched);
 }
 
 void MainWindowImpl::prepareGUI() {

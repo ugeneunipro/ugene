@@ -312,6 +312,12 @@ QString LogViewWidget::prepareText(const LogMessage& msg) const {
     return text;
 }
 
+void LogViewWidget::sl_colorModeSwitched() {
+    settings.colorModeSwitched(AppContext::getMainWindow()->isDarkMode());
+    LogSettingsHolder::setSettings(settings);
+    resetView();
+}
+
 void LogViewWidget::addMessage(const LogMessage& msg) {
     if (!isShown(msg)) {
         return;

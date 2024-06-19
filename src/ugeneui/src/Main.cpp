@@ -651,6 +651,8 @@ int main(int argc, char** argv) {
     // Initialize logged log view
     auto logView = new LogViewWidget(&logsCache);
     logView->setObjectName(DOCK_LOG_VIEW);
+    logView->sl_colorModeSwitched();
+    mw->connectLogView(logView);
     AppContext::getAppSettingsGUI()->registerPage(new LogSettingsPageController(logView));
     AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, logView, QKeySequence(Qt::ALT | Qt::Key_3));
 

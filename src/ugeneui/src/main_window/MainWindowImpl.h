@@ -28,6 +28,7 @@
 #include <QMenuBar>
 #include <QTimer>
 
+#include <U2Gui/LogView.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/Notification.h>
 
@@ -95,6 +96,7 @@ public:
     bool isDarkMode() const override;
 
     void setNewStyle(const QString& style, int colorModeIndex) override;
+    void connectLogView(LogViewWidget* view);
 
     void prepare();
     void close();
