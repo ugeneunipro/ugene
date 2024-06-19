@@ -69,6 +69,9 @@ void DarkStyle::polish(QPalette &palette) {
     auto n = palette.color(QPalette::Dark).name();
     //palette.setColor(QPalette::Dark, QColor(35, 35, 35));
     auto n0 = palette.color(QPalette::Dark).name();
+    auto n123 = palette.color(QPalette::Mid).name();
+    palette.setColor(QPalette::Midlight, QColor(28, 28, 28));
+    palette.setColor(QPalette::Mid, QColor(95, 95, 95));
     palette.setColor(QPalette::Shadow, QColor(20, 20, 20));
     palette.setColor(QPalette::Button, QColor(53, 53, 53));
     palette.setColor(QPalette::ButtonText, Qt::white);
