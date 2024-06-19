@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,6 +42,7 @@ class GTest_CalculateTreeFromAligment : public XmlTest {
     QString objContextName;
     QString treeObjContextName;
     QString algId;
+    int bootstrap = -1;
 };
 
 class GTest_CheckPhyNodeHasSibling : public XmlTest {
@@ -73,6 +74,20 @@ class GTest_CompareTreesInTwoObjects : public XmlTest {
     ReportResult report();
     QString docContextName;
     QString secondDocContextName;
+};
+
+// Compares the tree object "current" with the "expected" one for an exact match: all branches must occur in the same
+// order, the distance will be taken into account. Not suitable for comparing deep trees (recursion).
+class GTest_CompareTreesRecursive final : public XmlTest {
+    Q_OBJECT
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CompareTreesRecursive, "compare-trees-recursive");
+
+public:
+    ReportResult report();
+
+private:
+    QString expectedDocContextName;
+    QString currentDocContextName;
 };
 
 class PhyTreeObjectTests {

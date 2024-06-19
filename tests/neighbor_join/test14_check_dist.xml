@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- Neighbor Join Distance Test -->
+    <load-document index="aln_doc" url="neighbor_join/clustal2.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="aln_obj" doc="aln_doc" name="clustal2" type="OT_MSA"/>
+
+    <load-document index="expected_tree_doc" url="neighbor_join/boottree2.nwk" io="local_file" format="newick"/>
+    <find-object-by-name index="expected_tree_obj" doc="expected_tree_doc" name="Tree" type="OT_PTREE"/>
+
+    <calc-tree-from-alignment index="result_tree_obj" obj="aln_obj" algorithm="PHYLIP Neighbor Joining" bootstrap="5781"/>
+    <compare-trees-recursive expected="expected_tree_obj" current="result_tree_obj"/>
+
+</multi-test>

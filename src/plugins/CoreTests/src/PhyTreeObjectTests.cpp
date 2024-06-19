@@ -33,6 +33,7 @@
 
 namespace U2 {
 
+#define BOOTSTRAP_ATTR "bootstrap"
 #define ALGORITHM_ATTR "algorithm"
 #define INDEX_ATTR "index"
 #define OBJ_ATTR "obj"
@@ -62,6 +63,10 @@ void GTest_CalculateTreeFromAligment::init(XMLTestFormat*, const QDomElement& el
         failMissingValue(ALGORITHM_ATTR);
         return;
     }
+
+    if (el.hasAttribute(BOOTSTRAP_ATTR)) {
+        bootstrap = getInt(el, BOOTSTRAP_ATTR);
+    }
 }
 void GTest_CalculateTreeFromAligment::prepare() {
     auto obj = getContext<GObject>(this, objContextName);
@@ -78,6 +83,12 @@ void GTest_CalculateTreeFromAligment::prepare() {
 
     CreatePhyTreeSettings settings;
     settings.algorithm = algId;
+    if (bootstrap != -1) {
+        settings.bootstrap = true;
+        settings.seed = bootstrap;
+        settings.consensusID = "Majority Rule (extended)";
+        settings.replicates = 100;
+    }
     settings.mb_ngen = 1000;
     settings.mrBayesSettingsScript = QString("Begin MrBayes;\n"
                                              "lset Nst=2 rates=gamma ngammacat=4;\n"
@@ -283,12 +294,103 @@ Task::ReportResult GTest_CompareTreesInTwoObjects::report() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
+// If error is empty->objects are equal.
+static QString checkNodesReturnError(const PhyNode* expected, const PhyNode* current);
+
+static QString checkBranchesReturnError(const PhyBranch* expected, const PhyBranch* current) {
+    if (expected == nullptr && current == nullptr) {
+        return {};
+    }
+    if (expected == nullptr || current == nullptr) {
+        return "One of the branches doesn't exist";
+    }
+
+    const auto doublesEqual = [](double lhs, double rhs) {
+        return abs(lhs - rhs) < EPS;
+    };
+
+    if (!doublesEqual(expected->distance, current->distance) && !doublesEqual(expected->nodeValue, current->nodeValue)) {
+        return QString("`%1` branches aren't equal: expected {distance=%2, value=%3}, current {distance=%4, value=%5}")
+            .arg(expected->parentNode == nullptr ? "ROOT" : expected->parentNode->name)
+            .arg(expected->distance)
+            .arg(expected->nodeValue)
+            .arg(current->distance)
+            .arg(current->nodeValue);
+    }
+    return checkNodesReturnError(expected->childNode, current->childNode);
+}
+
+static QString checkNodesReturnError(const PhyNode* expected, const PhyNode* current) {
+    if (expected == nullptr && current == nullptr) {
+        return {};
+    }
+    if (expected == nullptr || current == nullptr) {
+        return "One of the nodes doesn't exist";
+    }
+
+    if (expected->name != current->name) {
+        auto parentNodeName = expected->getParentNode() == nullptr ? "ROOT" : expected->getParentNode()->name;
+        return QString("Expected `%1` node, current node is `%2` (parent is `%3`)")
+            .arg(expected->name, current->name, parentNodeName);
+    }
+
+    const auto& expectedBranches = expected->getChildBranches();
+    const auto& currentBranches = current->getChildBranches();
+    const auto expectedSize = expectedBranches.size();
+    const auto currentSize = currentBranches.size();
+    if (expectedSize != currentSize) {
+        return QString("`%1` node has %2 branches, but expected %3")
+            .arg(expected->name)
+            .arg(expectedSize)
+            .arg(currentSize);
+    }
+    for (size_t i = 0; i < expectedSize; ++i) {
+        auto err = checkBranchesReturnError(expectedBranches[i], currentBranches[i]);
+        CHECK_BREAK(!err.isEmpty(), err);
+    }
+    return {};
+}
+
+void GTest_CompareTreesRecursive::init(XMLTestFormat*, const QDomElement& el) {
+    const auto expectedAttr = QStringLiteral("expected");
+    const auto currentAttr = QStringLiteral("current");
+    checkNecessaryAttributeExistence(el, expectedAttr);
+    checkNecessaryAttributeExistence(el, currentAttr);
+
+    expectedDocContextName = el.attribute(expectedAttr);
+    if (expectedDocContextName.isEmpty()) {
+        failMissingValue(expectedAttr);
+    }
+
+    currentDocContextName = el.attribute(currentAttr);
+    if (currentDocContextName.isEmpty()) {
+        failMissingValue(currentAttr);
+    }
+}
+
+Task::ReportResult GTest_CompareTreesRecursive::report() {
+    CHECK_OP(stateInfo, ReportResult_Finished);
+
+    const auto expectedTree = getContext<PhyTreeObject>(this, expectedDocContextName);
+    const auto currentTree = getContext<PhyTreeObject>(this, currentDocContextName);
+    CHECK(expectedTree && currentTree, ReportResult_Finished);
+
+    auto err = checkNodesReturnError(expectedTree->getTree()->getRootNode(), currentTree->getTree()->getRootNode());
+    if (!err.isEmpty()) {
+        setError(err);
+    }
+    return ReportResult_Finished;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
 QList<XMLTestFactory*> PhyTreeObjectTests::createTestFactories() {
     QList<XMLTestFactory*> res;
     res.append(GTest_CalculateTreeFromAligment::createFactory());
     res.append(GTest_CheckPhyNodeHasSibling::createFactory());
     res.append(GTest_CheckPhyNodeBranchDistance::createFactory());
     res.append(GTest_CompareTreesInTwoObjects::createFactory());
+    res.append(GTest_CompareTreesRecursive::createFactory());
 
     return res;
 }
