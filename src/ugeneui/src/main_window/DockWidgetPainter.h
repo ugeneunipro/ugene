@@ -30,7 +30,7 @@ class DockData;
 
 class DockWidgetPainter {
 public:
-    static void updateLabel(DockData* d, bool active);
+    static void updateLabel(DockData* d, bool active, bool isDark);
 
 private:
     static QString findKeyPrefix(const QAction* action);

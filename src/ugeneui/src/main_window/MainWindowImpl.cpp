@@ -222,7 +222,7 @@ bool MainWindowImpl::eventFilter(QObject* object, QEvent* event) {
         // TODO description
         auto newStyle = StyleFactory::create(QApplication::style()->objectName(), 0);
         QApplication::setStyle(newStyle);
-        emit si_darkModeSwitched();
+        emit si_colorModeSwitched();
         return MainWindow::eventFilter(object, event);
     }
 #endif
@@ -366,7 +366,7 @@ void MainWindowImpl::setNewStyle(const QString& style, int colorModeIndex) {
 #endif
     auto newStyle = StyleFactory::create(style, cm);
     QApplication::setStyle(newStyle);
-    emit si_darkModeSwitched();
+    emit si_colorModeSwitched();
 }
 
 void MainWindowImpl::prepareGUI() {
@@ -448,7 +448,7 @@ void MainWindowImpl::prepareGUI() {
         auto style = StyleFactory::create(s->getVisualStyle(), cm);
         QApplication::setStyle(style);
         isDark = !isDark;
-        emit si_darkModeSwitched();*/
+        emit si_colorModeSwitched();*/
     });
     colorModeTimer.start(5000);
 #endif
@@ -456,7 +456,7 @@ void MainWindowImpl::prepareGUI() {
     mdiManager = new MWMDIManagerImpl(this, mdi);
 
     dockManager = new MWDockManagerImpl(this);
-    //connect(this, &MainWindowImpl::si_darkModeSwitched, dockManager, &MWDockManagerImpl::sl_darkModeSwitched);
+    connect(this, &MainWindowImpl::si_colorModeSwitched, this, &MainWindowImpl::sl_colorModeSwitched);
 }
 
 void MainWindowImpl::runClosingTask() {
@@ -664,6 +664,10 @@ void MainWindowImpl::sl_show() {
 void MainWindowImpl::sl_crashUgene() {
     volatile int* killer = nullptr;
     *killer = 0;
+}
+
+void MainWindowImpl::sl_colorModeSwitched() {
+    dockManager->colorModeSwitched(isDark);
 }
 
 void MainWindowImpl::registerStartupChecks(const QList<Task*>& tasks) {

@@ -138,9 +138,6 @@ public:
 
     virtual void setNewStyle(const QString& style, int colorModeIndex) = 0;
 
-signals:
-    void si_darkModeSwitched();
-
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -235,6 +232,8 @@ public:
     virtual QWidget* toggleDock(const QString& widgetObjName) = 0;
 
     virtual void dontActivateNextTime(MWDockArea a) = 0;
+
+    virtual void colorModeSwitched(bool isDark) = 0;
 };
 
 }  // namespace U2

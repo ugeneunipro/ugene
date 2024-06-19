@@ -39,7 +39,7 @@ const int DockWidgetPaintData::MIN_LABEL_EXTRA_HEIGHT = 6;
 const int DockWidgetPaintData::ICON_TEXT_DIST = 6;
 const int DockWidgetPaintData::ICON_SIZE = 16;
 
-void DockWidgetPainter::updateLabel(DockData* d, bool active) {
+void DockWidgetPainter::updateLabel(DockData* d, bool active, bool isDark) {
     const QIcon icon = d->wrapWidget->windowIcon();
     const QString text = d->wrapWidget->windowTitle();
     const QString keyPrefix = findKeyPrefix(d->action);
@@ -68,6 +68,7 @@ void DockWidgetPainter::updateLabel(DockData* d, bool active) {
     // Save results
     d->label->resize(widgetSize);
     d->label->setPixmap(pixmap);
+    d->isActive = active;
 }
 
 QString DockWidgetPainter::findKeyPrefix(const QAction* action) {

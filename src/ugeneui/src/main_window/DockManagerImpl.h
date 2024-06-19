@@ -47,19 +47,13 @@ public:
 
 class DockData {
 public:
-    DockData() {
-        area = MWDockArea_Left;
-        label = nullptr;
-        dock = nullptr;
-        wrapWidget = nullptr;
-        action = nullptr;
-    }
-    MWDockArea area;
-    QLabel* label;
-    QDockWidget* dock;
-    DockWrapWidget* wrapWidget;
+    MWDockArea area = MWDockArea_Left;
+    QLabel* label = nullptr;
+    QDockWidget* dock = nullptr;
+    DockWrapWidget* wrapWidget = nullptr;
     QIcon dockIcon;
-    QAction* action;
+    QAction* action = nullptr;
+    bool isActive = false;
 };
 
 class MWDockManagerImpl : public MWDockManager {
@@ -80,11 +74,10 @@ public:
 
     virtual void dontActivateNextTime(MWDockArea a);
 
+    virtual void colorModeSwitched(bool isDark) override;
+
 protected:
     bool eventFilter(QObject* obj, QEvent* event);
-
-public slots:
-    void sl_darkModeSwitched();
 
 private slots:
     void sl_dockVisibilityChanged(bool);

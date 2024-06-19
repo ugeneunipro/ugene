@@ -108,6 +108,8 @@ signals:
     void si_show();
     void si_showWelcomePage();
     void si_paste();
+    void si_colorModeSwitched();
+
 
 public slots:
     void sl_tempDirPathCheckFailed(QString path);
@@ -122,6 +124,7 @@ private slots:
     void sl_viewOnlineDocumentation();
     void sl_showWhatsNew();
     void sl_crashUgene();
+    void sl_colorModeSwitched();
 #ifdef _INSTALL_TO_PATH_ACTION
     void sl_installToPathAction();
 #endif
