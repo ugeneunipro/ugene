@@ -45,22 +45,20 @@ public:
 
     static QString warningColorLabelHtmlStr() {
         return AppContext::getMainWindow()->isDarkMode() ? "#FFCF48" : "#FF8B19";
-
-        return "#FF8B19";
     }
 
     static QColor infoHintColor() {
-        return QColor("green");
+        return AppContext::getMainWindow()->isDarkMode() ? QColor("#47D452") : QColor("green");
     }
     static QString infoColorLabelHtmlStr() {
-        return "#218F20";
+        return infoHintColor().name();
     }
     static QString infoHintStyleSheet() {
         return QString("color: %1; font: bold").arg(infoHintColor().name());
     }
 
     static QColor successColor() {
-        return QColor("green");
+        return infoHintColor();
     }
     static QString successColorLabelHtmlStr() {
         return successColor().name();
