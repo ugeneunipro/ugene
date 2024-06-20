@@ -86,8 +86,8 @@ public:
     ReportResult report();
 
 private:
-    QString expectedDocContextName;
-    QString currentDocContextName;
+    QString expectedTreeContextName;
+    QString currentTreeContextName;
 };
 
 class PhyTreeObjectTests {

@@ -309,7 +309,7 @@ static QString checkBranchesReturnError(const PhyBranch* expected, const PhyBran
         return abs(lhs - rhs) < EPS;
     };
 
-    if (!doublesEqual(expected->distance, current->distance) && !doublesEqual(expected->nodeValue, current->nodeValue)) {
+    if (!doublesEqual(expected->distance, current->distance) || !doublesEqual(expected->nodeValue, current->nodeValue)) {
         return QString("`%1` branches aren't equal: expected {distance=%2, value=%3}, current {distance=%4, value=%5}")
             .arg(expected->parentNode == nullptr ? "ROOT" : expected->parentNode->name)
             .arg(expected->distance)
@@ -346,7 +346,7 @@ static QString checkNodesReturnError(const PhyNode* expected, const PhyNode* cur
     }
     for (size_t i = 0; i < expectedSize; ++i) {
         auto err = checkBranchesReturnError(expectedBranches[i], currentBranches[i]);
-        CHECK_BREAK(!err.isEmpty(), err);
+        CHECK(err.isEmpty(), err);
     }
     return {};
 }
@@ -357,13 +357,13 @@ void GTest_CompareTreesRecursive::init(XMLTestFormat*, const QDomElement& el) {
     checkNecessaryAttributeExistence(el, expectedAttr);
     checkNecessaryAttributeExistence(el, currentAttr);
 
-    expectedDocContextName = el.attribute(expectedAttr);
-    if (expectedDocContextName.isEmpty()) {
+    expectedTreeContextName = el.attribute(expectedAttr);
+    if (expectedTreeContextName.isEmpty()) {
         failMissingValue(expectedAttr);
     }
 
-    currentDocContextName = el.attribute(currentAttr);
-    if (currentDocContextName.isEmpty()) {
+    currentTreeContextName = el.attribute(currentAttr);
+    if (currentTreeContextName.isEmpty()) {
         failMissingValue(currentAttr);
     }
 }
@@ -371,9 +371,12 @@ void GTest_CompareTreesRecursive::init(XMLTestFormat*, const QDomElement& el) {
 Task::ReportResult GTest_CompareTreesRecursive::report() {
     CHECK_OP(stateInfo, ReportResult_Finished);
 
-    const auto expectedTree = getContext<PhyTreeObject>(this, expectedDocContextName);
-    const auto currentTree = getContext<PhyTreeObject>(this, currentDocContextName);
-    CHECK(expectedTree && currentTree, ReportResult_Finished);
+    const auto expectedTree = getContext<PhyTreeObject>(this, expectedTreeContextName);
+    const auto currentTree = getContext<PhyTreeObject>(this, currentTreeContextName);
+    if (expectedTree == nullptr || currentTree == nullptr) {
+        setError("One of the trees doesn't exist");
+        return ReportResult_Finished;
+    }
 
     auto err = checkNodesReturnError(expectedTree->getTree()->getRootNode(), currentTree->getTree()->getRootNode());
     if (!err.isEmpty()) {
