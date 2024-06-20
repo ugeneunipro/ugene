@@ -66,6 +66,7 @@
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
@@ -540,6 +541,51 @@ GUI_TEST_CLASS_DEFINITION(test_8093) {
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find restriction sites");
     GTUtilsTaskTreeView::waitTaskFinished();
+}
+GUI_TEST_CLASS_DEFINITION(test_8096_1) {
+    // Open _common_data/scenarios/_regression/8096/test_8096.gb
+    // Expected: sequence already has two fragments
+    // Open Cloning->Create molecule dialog
+    // Click Add All button
+    // Select the first fragment and click Adjust 3'end button
+    // Remove this fragment
+    // Expected: Click Adjust 3' end button is disabled
+    GTFileDialog::openFile(testDir + "/_common_data/scenarios/_regression/8096", "test_8096.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    QList<ConstructMoleculeDialogFiller::Action> actions;
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::AddAllFragments, "");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::SelectAddedFragment, "Fragment (1-20)");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickAdjustRight, "");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickRemove, "");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckAdjustRightEnabled, false);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickCancel, "");
+    GTUtilsDialog::waitForDialog(new ConstructMoleculeDialogFiller(actions));
+    GTUtilsDialog::waitForDialog(new PopupChooser({"Cloning", "CLONING_CONSTRUCT"}));
+    GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8096_2) {
+    // Open _common_data/scenarios/_regression/8096/test_8096.gb
+    // Expected: sequence already has two fragments
+    // Open Cloning->Create molecule dialog
+    // Click Add All button
+    // Select the last fragment and click Adjust 5'end button
+    // Remove this fragment
+    // Expected: Click Adjust 5' end button is disabled
+    GTFileDialog::openFile(testDir + "/_common_data/scenarios/_regression/8096", "test_8096.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    QList<ConstructMoleculeDialogFiller::Action> actions;
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::AddAllFragments, "");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::SelectAddedFragment, "Fragment (50-60)");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickAdjustLeft, "");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickRemove, "");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckAdjustLeftEnabled, false);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickCancel, "");
+    GTUtilsDialog::waitForDialog(new ConstructMoleculeDialogFiller(actions));
+    GTUtilsDialog::waitForDialog(new PopupChooser({"Cloning", "CLONING_CONSTRUCT"}));
+    GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
 }
 
 }  // namespace GUITest_regression_scenarios

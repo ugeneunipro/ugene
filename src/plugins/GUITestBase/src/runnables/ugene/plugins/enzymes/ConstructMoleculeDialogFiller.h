@@ -35,7 +35,10 @@ public:
         InvertAddedFragment,  // QString with a part of the fragment name, if several fragments match this part, the first one will be inverted
         CheckMakeCircular,  // Check state, true if ignored
         ClickAdjustLeft,  // ignored
+        CheckAdjustLeftEnabled,  // Button enabled state, true if enabled, false if not
         ClickAdjustRight,  // ignored
+        CheckAdjustRightEnabled,  // Button enabled state, true if enabled, false if not
+        ClickRemove,  // ignored
         ClickCancel,  // ignored
         ClickOk
     };
@@ -53,7 +56,10 @@ private:
     void invertAddedFragment(const QVariant& actionData);
     void checkMakeCircular(const QVariant& actionData);
     void clickAdjustLeft();
+    void checkAdjustLeftEnabled(const QVariant& actionData);
     void clickAdjustRight();
+    void checkAdjustRightEnabled(const QVariant& actionData);
+    void clickRemove();
     void clickCancel();
     void clickOk();
 

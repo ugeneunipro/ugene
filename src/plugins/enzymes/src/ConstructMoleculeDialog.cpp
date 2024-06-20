@@ -191,6 +191,8 @@ void ConstructMoleculeDialog::sl_onRemoveButtonClicked() {
     }
     int index = molConstructWidget->indexOfTopLevelItem(item);
     selected.removeAt(index);
+    tbAdjustLeft->setDisabled(true);
+    tbAdjustRight->setDisabled(true);
 
     update();
 }
