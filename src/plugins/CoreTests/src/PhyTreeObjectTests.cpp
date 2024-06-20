@@ -20,6 +20,7 @@
  */
 
 #include "PhyTreeObjectTests.h"
+#include <cmath>
 
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorTask.h>
@@ -306,7 +307,7 @@ static QString checkBranchesReturnError(const PhyBranch* expected, const PhyBran
     }
 
     const auto doublesEqual = [](double lhs, double rhs) {
-        return abs(lhs - rhs) < EPS;
+        return std::abs(lhs - rhs) < EPS;
     };
 
     if (!doublesEqual(expected->distance, current->distance) || !doublesEqual(expected->nodeValue, current->nodeValue)) {
