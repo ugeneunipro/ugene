@@ -1041,6 +1041,8 @@ AddDocumentsToProjectTask::~AddDocumentsToProjectTask() {
 }
 
 QList<Task*> AddDocumentsToProjectTask::onSubTaskFinished(Task* t) {
+    CHECK_OP(stateInfo, {});
+
     QList<Task*> res;
     if (!loadTasksAdded) {
         res = prepareLoadTasks();

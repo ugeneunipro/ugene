@@ -316,7 +316,7 @@ void DotPlotDialog::sl_loadSequenceButton() {
     LastUsedDirHelper lod("DotPlot file");
     lod.url = U2FileDialog::getOpenFileName(this, tr("Open file"), lod.dir, filter);
     if (!lod.url.isEmpty()) {
-        auto tasks = new Task("Adding document to the project", TaskFlag_NoRun);
+        auto tasks = new Task("Adding document to the project", TaskFlags_NR_FOSCOE | TaskFlag_SuppressErrorNotification);
 
         if (!AppContext::getProject()) {
             tasks->addSubTask(AppContext::getProjectLoader()->createNewProjectTask());
