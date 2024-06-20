@@ -110,8 +110,6 @@ signals:
     void si_show();
     void si_showWelcomePage();
     void si_paste();
-    void si_colorModeSwitched();
-
 
 public slots:
     void sl_tempDirPathCheckFailed(QString path);

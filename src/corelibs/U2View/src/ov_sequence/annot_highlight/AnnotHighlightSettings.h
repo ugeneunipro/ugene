@@ -44,6 +44,7 @@ private slots:
     void sl_onShowOnTranslationChanged(int checkedState);
     void sl_onShowQualifierChanged(int checkedState);
     void sl_onEditQualifiersChanged(const QString&);
+    void sl_colorModeChanged();
 
 private:
     void setIncorrectState();

@@ -21,12 +21,14 @@
 
 #include "AnnotHighlightSettings.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LabelClickTransmitter.h>
+#include <U2Gui/MainWindow.h>
 
 namespace U2 {
 
@@ -42,6 +44,7 @@ AnnotHighlightSettingsWidget::AnnotHighlightSettingsWidget(QWidget* parent) {
     connect(checkShowOnTranslation, SIGNAL(stateChanged(int)), SLOT(sl_onShowOnTranslationChanged(int)));
     connect(checkVisualQualifier, SIGNAL(stateChanged(int)), SLOT(sl_onShowQualifierChanged(int)));
     connect(editQualifiers, SIGNAL(textChanged(const QString&)), SLOT(sl_onEditQualifiersChanged(const QString&)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AnnotHighlightSettingsWidget::sl_colorModeChanged);
 }
 
 void AnnotHighlightSettingsWidget::setSettings(AnnotationSettings* annotSettings, bool disableShowTranslations) {
@@ -108,12 +111,16 @@ void AnnotHighlightSettingsWidget::sl_onEditQualifiersChanged(const QString& inp
     }
 }
 
+void AnnotHighlightSettingsWidget::sl_colorModeChanged() {
+    sl_onEditQualifiersChanged(editQualifiers->text());
+}
+
 void AnnotHighlightSettingsWidget::setIncorrectState() {
     editQualifiers->setStyleSheet("background-color: " + Theme::errorColorTextFieldStr() + ";");
 }
 
 void AnnotHighlightSettingsWidget::setCorrectState() {
-    editQualifiers->setStyleSheet("background-color: white;");
+    editQualifiers->setStyleSheet(QString("background-color: palette(base);"));
 }
 
 }  // namespace U2

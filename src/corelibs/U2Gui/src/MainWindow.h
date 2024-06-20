@@ -138,6 +138,8 @@ public:
 
     virtual void setNewStyle(const QString& style, int colorModeIndex) = 0;
 
+signals:
+    void si_colorModeSwitched();
 };
 
 //////////////////////////////////////////////////////////////////////////

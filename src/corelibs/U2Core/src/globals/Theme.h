@@ -23,7 +23,10 @@
 
 #include <QColor>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/global.h>
+
+#include <U2Gui/MainWindow.h>
 
 namespace U2 {
 
@@ -31,16 +34,18 @@ class U2CORE_EXPORT Theme : public QObject {
     Q_OBJECT
 public:
     static QString errorColorTextFieldStr() {
-        return "rgb(255, 152, 142)";
+        return AppContext::getMainWindow()->isDarkMode() ? "rgb(206, 20, 0)" : "rgb(255, 152, 142)";
     }
     static QString errorColorLabelStr() {
-        return "rgb(166, 57, 46)";
+        return AppContext::getMainWindow()->isDarkMode() ? "rgb(255, 127, 127)" : "rgb(166, 57, 46)";
     }
     static QString errorColorLabelHtmlStr() {
-        return "#A6392E";
+        return AppContext::getMainWindow()->isDarkMode() ? "#FF7F7F" : "#A6392E";
     }  // the same as errorColorLabelStr()
 
     static QString warningColorLabelHtmlStr() {
+        return AppContext::getMainWindow()->isDarkMode() ? "#FFCF48" : "#FF8B19";
+
         return "#FF8B19";
     }
 
