@@ -494,6 +494,8 @@ void FindPatternWidget::connectSlots() {
 
     connect(useAmbiguousBasesBox, SIGNAL(toggled(bool)), SLOT(sl_toggleExtendedAlphabet()));
     connect(spinMatch, SIGNAL(valueChanged(int)), SLOT(sl_activateNewSearch()));
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &FindPatternWidget::sl_colorModeSwitched);
 }
 
 void FindPatternWidget::updatePatternSourceControlsUiState() {
@@ -1428,6 +1430,10 @@ void FindPatternWidget::sl_usePatternNamesCbClicked() {
     createAnnotationController->setEnabledNameEdit(!usePatternNames);
     updateNamePatterns();
     checkState();
+}
+
+void FindPatternWidget::sl_colorModeSwitched() {
+    updateErrorLabelState();
 }
 
 bool FindPatternWidget::isSearchPatternsDifferent(const QList<NamePattern>& newPatterns) const {

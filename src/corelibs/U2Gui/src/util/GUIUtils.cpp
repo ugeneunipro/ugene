@@ -35,6 +35,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -224,8 +225,8 @@ const QColor GUIUtils::WARNING_COLOR = QColor(255, 200, 200);
 const QColor GUIUtils::OK_COLOR = QColor(255, 255, 255);
 
 void GUIUtils::setWidgetWarningStyle(QWidget* widget, bool value) {
-    QColor color = value ? WARNING_COLOR : OK_COLOR;
-    widget->setStyleSheet("background-color: " + color.name() + ";");
+    QString color = value ? Theme::errorColorTextFieldStr() : "palette(base)";
+    widget->setStyleSheet("background-color: " + color + ";");
 }
 
 void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message) {
