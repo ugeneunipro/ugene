@@ -24,6 +24,7 @@
 #include <QAbstractItemView>
 #include <QMenu>
 
+#include <U2Core/Theme.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -223,7 +224,7 @@ void TrimmomaticPropertyDialog::sl_valuesChanged() {
         const bool isStepValid = steps[i]->validate();
         QListWidgetItem* item = listSteps->item(i);
         SAFE_POINT(item != nullptr, QString("Item with number %1 is NULL").arg(i), );
-        item->setBackgroundColor(isStepValid ? GUIUtils::OK_COLOR : GUIUtils::WARNING_COLOR);
+        item->setBackgroundColor(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
         isValid = isValid && isStepValid;
     }
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isValid);

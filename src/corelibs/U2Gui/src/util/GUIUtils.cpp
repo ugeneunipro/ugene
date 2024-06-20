@@ -221,9 +221,6 @@ void GUIUtils::setMutedLnF(QTreeWidgetItem* item, bool enableMute, bool recursiv
     }
 }
 
-const QColor GUIUtils::WARNING_COLOR = QColor(255, 200, 200);
-const QColor GUIUtils::OK_COLOR = QColor(255, 255, 255);
-
 void GUIUtils::setWidgetWarningStyle(QWidget* widget, bool value) {
     QString color = value ? Theme::errorColorTextFieldStr() : "palette(base)";
     widget->setStyleSheet("background-color: " + color + ";");
@@ -234,6 +231,39 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
 
     QFontMetrics metrics(painter.font(), widgetToPaintOn);
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
+}
+
+namespace {
+
+QPixmap getPixmapResource(const QString& cathegory, const QString& iconName, bool isDark) {
+    QString resourceName = GUIUtils::getResourceName(cathegory, iconName);
+    QPixmap pixmap = QPixmap(resourceName);
+    Q_ASSERT(!pixmap.isNull());
+    return pixmap;
+}
+
+}
+
+QString GUIUtils::getResourceName(const QString& cathegory, const QString& iconName) {
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    return QString(":%1/images/%2/%3").arg(cathegory).arg(isDark ? "dark" : "light").arg(iconName);
+}
+
+
+QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconName) {
+    QIcon icon;
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    QPixmap pixmap = getPixmapResource(cathegory, iconName, isDark);
+    icon.addPixmap(pixmap);
+    if (isDark) {
+        // automatic disabled icon is no good for dark mode
+        // paint transparent black to get disabled look
+        QPainter p(&pixmap);
+        p.fillRect(pixmap.rect(), QColor(48, 47, 47, 128));
+        icon.addPixmap(pixmap, QIcon::Disabled);
+    }
+
+    return icon;
 }
 
 void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {

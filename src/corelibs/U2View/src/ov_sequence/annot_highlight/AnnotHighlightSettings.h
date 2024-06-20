@@ -36,6 +36,8 @@ public:
 
     void setSettings(AnnotationSettings* annotSettings, bool disableShowTranslations);
 
+    void colorModeChanged();
+
 signals:
     void si_annotSettingsChanged(AnnotationSettings* annotSettings);
 
@@ -44,7 +46,6 @@ private slots:
     void sl_onShowOnTranslationChanged(int checkedState);
     void sl_onShowQualifierChanged(int checkedState);
     void sl_onEditQualifiersChanged(const QString&);
-    void sl_colorModeChanged();
 
 private:
     void setIncorrectState();

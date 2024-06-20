@@ -60,7 +60,7 @@ AnnotHighlightTree::AnnotHighlightTree() {
                   "border-style: solid;"
                   "border-color: palette(mid);"
                   "border-width: 1px;"
-                  "background: white;"
+                  "background: palette(base);"
                   "margin-left: 5px;"
                   "margin-right: 10px;"
                   " }");

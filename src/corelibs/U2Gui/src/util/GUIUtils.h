@@ -69,8 +69,9 @@ public:
 
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
 
-    static const QColor WARNING_COLOR;
-    static const QColor OK_COLOR;
+    static QString getResourceName(const QString& cathegory, const QString& iconName);
+
+    static QIcon getIconResource(const QString& cathegory, const QString& iconName);
 
     /**
      * Maximum size of the pixmap that can be safely created for UGENE.

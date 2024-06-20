@@ -44,7 +44,6 @@ AnnotHighlightSettingsWidget::AnnotHighlightSettingsWidget(QWidget* parent) {
     connect(checkShowOnTranslation, SIGNAL(stateChanged(int)), SLOT(sl_onShowOnTranslationChanged(int)));
     connect(checkVisualQualifier, SIGNAL(stateChanged(int)), SLOT(sl_onShowQualifierChanged(int)));
     connect(editQualifiers, SIGNAL(textChanged(const QString&)), SLOT(sl_onEditQualifiersChanged(const QString&)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AnnotHighlightSettingsWidget::sl_colorModeChanged);
 }
 
 void AnnotHighlightSettingsWidget::setSettings(AnnotationSettings* annotSettings, bool disableShowTranslations) {
@@ -111,7 +110,7 @@ void AnnotHighlightSettingsWidget::sl_onEditQualifiersChanged(const QString& inp
     }
 }
 
-void AnnotHighlightSettingsWidget::sl_colorModeChanged() {
+void AnnotHighlightSettingsWidget::colorModeChanged() {
     sl_onEditQualifiersChanged(editQualifiers->text());
 }
 

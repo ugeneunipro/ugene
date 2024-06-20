@@ -250,8 +250,8 @@ QTreeView, QTableView{
 }
 QTreeView QHeaderView::section, QTableView QHeaderView::section{
   background-color:qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
-  border-style:none;
-  border-bottom:1px solid #232323;
+  border-style:solid;
+  border:1px solid #464646;
   padding-left:5px;
   padding-right:5px;
 }

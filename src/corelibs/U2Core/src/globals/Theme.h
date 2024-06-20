@@ -33,9 +33,14 @@ namespace U2 {
 class U2CORE_EXPORT Theme : public QObject {
     Q_OBJECT
 public:
-    static QString errorColorTextFieldStr() {
-        return AppContext::getMainWindow()->isDarkMode() ? "rgb(206, 20, 0)" : "rgb(255, 152, 142)";
+    static QColor errorColorTextFieldColor() {
+        return AppContext::getMainWindow()->isDarkMode() ? QColor(206, 20, 0) : QColor(255, 200, 200);
     }
+
+    static QString errorColorTextFieldStr() {
+        return QString("rgb(%1, %2, %3)").arg(errorColorTextFieldColor().red()).arg(errorColorTextFieldColor().green()).arg(errorColorTextFieldColor().blue());
+    }
+
     static QString errorColorLabelStr() {
         return AppContext::getMainWindow()->isDarkMode() ? "rgb(255, 127, 127)" : "rgb(166, 57, 46)";
     }
