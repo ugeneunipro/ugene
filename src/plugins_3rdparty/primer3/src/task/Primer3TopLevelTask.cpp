@@ -101,6 +101,10 @@ QList<Task*> Primer3TopLevelTask::onSubTaskFinished(Task* subTask) {
     if (subTask == findExonsTask) {
         res << onFindExonTaskFinished();
     } else if (subTask == primer3Task) {
+        if (primer3Task->isCanceled()) {
+            cancel();
+            return res;
+        }
         res << onPrimer3TaskFinished();
     } else if (subTask == checkComplementTask) {
         res << onCheckComplementTaskFinished();

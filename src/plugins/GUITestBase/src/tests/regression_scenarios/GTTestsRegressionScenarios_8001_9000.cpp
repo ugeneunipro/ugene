@@ -30,6 +30,7 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTToolbar.h>
+#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
@@ -586,6 +587,30 @@ GUI_TEST_CLASS_DEFINITION(test_8096_2) {
     GTUtilsDialog::waitForDialog(new ConstructMoleculeDialogFiller(actions));
     GTUtilsDialog::waitForDialog(new PopupChooser({"Cloning", "CLONING_CONSTRUCT"}));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8100) {
+    // Open _common_data/fasta/chr6.fa
+    // Select a region 1..262144.
+    // Open the Task View.
+    // Run the primer3 task twice.
+    // Cancel the "Pick primers task" from the second task.
+    GTFileDialog::openFile(testDir + "/_common_data/fasta", "chr6.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsSequenceView::selectSequenceRegion(1, 262'144);
+
+    auto taskView = GTUtilsTaskTreeView::openView();
+    GTUtilsDialog::add(new Primer3DialogFiller);
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsDialog::add(new Primer3DialogFiller);
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
+
+    GTThread::waitForMainThread();
+    auto secondTaskWidgetItem = taskView->topLevelItem(1);
+    GTTreeWidget::expand(secondTaskWidgetItem);
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(secondTaskWidgetItem->child(0)));
+    GTUtilsDialog::waitForDialog(new PopupChooser({"Cancel task"}, GTGlobals::UseMouse));
+    GTMouseDriver::click(Qt::RightButton);
 }
 
 }  // namespace GUITest_regression_scenarios
