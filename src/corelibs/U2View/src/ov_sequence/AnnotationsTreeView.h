@@ -161,6 +161,8 @@ private slots:
     void sl_sequenceAdded(ADVSequenceObjectContext* advContext);
     void sl_sequenceRemoved(ADVSequenceObjectContext* advContext);
 
+    void sl_colorModeSwitched();
+
 protected:
     bool eventFilter(QObject* o, QEvent* e) override;
 
@@ -212,6 +214,8 @@ private:
     void annotationDoubleClicked(AVAnnotationItem* item, const QList<U2Region>& selectedRegions);
     void clearSelectedNotAnnotations();
     void emitAnnotationActivated(Annotation* annotation);
+
+    void updateColorModeRecursively(AVItem* item);
 
     AnnotationsTreeWidget* tree;
 

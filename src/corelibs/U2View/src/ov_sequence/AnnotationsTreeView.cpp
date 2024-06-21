@@ -92,6 +92,9 @@ private:
 /************************************************************************/
 AnnotationsTreeWidget::AnnotationsTreeWidget(QWidget* parent)
     : QTreeWidget(parent) {
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, [this]() {
+        //update();
+    });
 }
 
 QTreeWidgetItem* AnnotationsTreeWidget::itemFromIndex(const QModelIndex& index) const {
@@ -250,6 +253,8 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     isDragging = false;
     resetDragAndDropData();
     tree->setAcceptDrops(true);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AnnotationsTreeView::sl_colorModeSwitched);
 }
 
 void AnnotationsTreeView::restoreWidgetState() {
@@ -1754,6 +1759,13 @@ void AnnotationsTreeView::sl_sequenceRemoved(ADVSequenceObjectContext* advContex
     disconnectSequenceObjectContext(advContext);
 }
 
+void AnnotationsTreeView::sl_colorModeSwitched() {
+    QString emptyFilter;
+    for (int i = 0; i < tree->topLevelItemCount(); i++) {
+        updateColorModeRecursively(static_cast<AVItem*>(tree->topLevelItem(i)));
+    }
+}
+
 // TODO: refactoring of annotationClicked and annotationDoubleClicked methods.
 // It's too difficult to understand what's going on in this methods
 // UTI-155
@@ -1842,6 +1854,39 @@ void AnnotationsTreeView::emitAnnotationActivated(Annotation* annotation) {
     disconnectSequenceObjectContext(seqObjCtx);
     seqObjCtx->emitAnnotationActivated(annotation, -1);
     connectSequenceObjectContext(seqObjCtx);
+}
+
+void AnnotationsTreeView::updateColorModeRecursively(AVItem* item) {
+    switch (item->type) {
+        case AVItemType_Group: {
+            auto grItem = static_cast<AVGroupItem*>(item);
+            if (grItem->parent() == nullptr) {  // document item
+                GUIUtils::setMutedLnF(grItem, !grItem->group->getGObject()->hasAnnotations(), false);
+            } else {
+                GUIUtils::setMutedLnF(grItem, grItem->childCount() == 0, false);
+            }
+            break;
+        }
+        case AVItemType_Annotation: {
+            auto aItem = static_cast<AVAnnotationItem*>(item);
+            const auto& aData = aItem->annotation->getData();
+            const auto* as = AppContext::getAnnotationsSettingsRegistry()->getAnnotationSettings(aData);
+            GUIUtils::setMutedLnF(aItem, !as->visible, false);
+            break;
+        }
+        case AVItemType_Qualifier: {
+            auto qualItem = static_cast<AVQualifierItem*>(item);
+            auto parentAnnItem = static_cast<AVAnnotationItem*>(qualItem->parent());
+            const auto& aData = parentAnnItem->annotation->getData();
+            const auto* as = AppContext::getAnnotationsSettingsRegistry()->getAnnotationSettings(aData);
+            GUIUtils::setMutedLnF(qualItem, !as->visible, false);
+            break;
+        }
+    }
+
+    for (int i = 0; i < item->childCount(); i++) {
+        updateColorModeRecursively(static_cast<AVItem*>(item->child(i)));
+    }
 }
 
 void AnnotationsTreeView::clearSelectedNotAnnotations() {
@@ -2375,6 +2420,7 @@ void AVGroupItem::updateAnnotations(const QString& nameFilter, ATVAnnUpdateFlags
             auto level1 = static_cast<AVGroupItem*>(item);
             if (noFilter || level1->group->getName() == nameFilter) {
                 level1->updateAnnotations(nameFilter, f);
+                level1->updateVisual();
             }
         } else {
             SAFE_POINT(item->type == AVItemType_Annotation, "Unexpected tree item type", );

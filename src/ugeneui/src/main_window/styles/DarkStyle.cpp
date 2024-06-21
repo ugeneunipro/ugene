@@ -58,6 +58,7 @@ void DarkStyle::polish(QPalette &palette) {
     // modify palette to dark
     palette.setColor(QPalette::Window, QColor(53, 53, 53));
     palette.setColor(QPalette::WindowText, Qt::white);
+    palette.setColor(QPalette::Active, QPalette::WindowText, Qt::white);
     palette.setColor(QPalette::Disabled, QPalette::WindowText,
                      QColor(127, 127, 127));
     // orig 42

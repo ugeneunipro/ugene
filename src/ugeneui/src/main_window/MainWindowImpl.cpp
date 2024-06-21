@@ -362,6 +362,8 @@ void MainWindowImpl::setNewStyle(const QString& style, int colorModeIndex) {
             //CHECK(!isDark, );
             break;
         case StyleFactory::ColorMode::Auto:
+            CHECK(isDark != StyleFactory::isDarkStyleEnabled(), );
+
             isDark = StyleFactory::isDarkStyleEnabled();
             //CHECK(isDark != StyleFactory::isDarkStyleEnabled(), );
             break;
