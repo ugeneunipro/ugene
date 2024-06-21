@@ -58,6 +58,9 @@ void ConstructMoleculeDialogFiller::commonScenario() {
             case InvertAddedFragment:
                 invertAddedFragment(action.second);
                 break;
+            case CheckForceBlunt:
+                checkForceBlunt(action.second);
+                break;
             case CheckMakeCircular:
                 checkMakeCircular(action.second);
                 break;
@@ -72,6 +75,12 @@ void ConstructMoleculeDialogFiller::commonScenario() {
                 break;
             case CheckAdjustRightEnabled:
                 checkAdjustRightEnabled(action.second);
+                break;
+            case ClickUp:
+                clickUp();
+                break;
+            case ClickDown:
+                clickDown();
                 break;
             case ClickRemove:
                 clickRemove();
@@ -121,6 +130,16 @@ void ConstructMoleculeDialogFiller::invertAddedFragment(const QVariant& actionDa
     GTTreeWidget::checkItem(item, 3, GTGlobals::UseMouse, isCheck, false);  // Do not validate the result. The item is replaced on toggle.
 }
 
+void ConstructMoleculeDialogFiller::checkForceBlunt(const QVariant& actionData) {
+    bool check = true;
+    if (!actionData.isValid()) {
+        GT_CHECK(actionData.canConvert<bool>(), "Can't convert to bool");
+        check = actionData.toBool();
+    }
+
+    GTCheckBox::setChecked("makeBluntBox", check);
+}
+
 void ConstructMoleculeDialogFiller::checkMakeCircular(const QVariant& actionData) {
     bool check = true;
     if (!actionData.isValid()) {
@@ -156,6 +175,14 @@ void ConstructMoleculeDialogFiller::checkAdjustRightEnabled(const QVariant& acti
     GT_CHECK(tbAdjustRight->isEnabled() == isAdjustRightEnabled, QString("Adjust 3' enabled state incorrect, current: %1, expected: %2")
                                                                           .arg(tbAdjustRight->isEnabled()).arg(isAdjustRightEnabled));
 
+}
+
+void ConstructMoleculeDialogFiller::clickUp() {
+    GTWidget::click(GTWidget::findToolButton("upButton", dialog));
+}
+
+void ConstructMoleculeDialogFiller::clickDown() {
+    GTWidget::click(GTWidget::findToolButton("downButton", dialog));
 }
 
 void ConstructMoleculeDialogFiller::clickRemove() {

@@ -588,6 +588,49 @@ GUI_TEST_CLASS_DEFINITION(test_8096_2) {
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8096_3) {
+    // Open _common_data/scenarios/_regression/8096/test_8096.gb
+    // Expected: sequence already has two fragments
+    // Open Cloning->Create molecule dialog
+    // Click Add All button
+    // Select the first
+    // Click Down
+    // Expected: Adjust 5' is enabled, adjust and 3' is disabled
+    // Click Up
+    // Expected: Adjust 5' is disabled, adjust and 3' is enabled
+    // Check "Make circular"
+    // Expected: Click Adjust 5' and 3' ends buttons are enabled
+    // Check "Make fors blunt overhangs"
+    // Expected: Click Adjust 5' and 3' ends buttons are disabled
+
+
+    GTFileDialog::openFile(testDir + "/_common_data/scenarios/_regression/8096", "test_8096.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    QList<ConstructMoleculeDialogFiller::Action> actions;
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::AddAllFragments, "");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::SelectAddedFragment, "Fragment (1-20)");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickDown, "");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckAdjustLeftEnabled, true);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckAdjustRightEnabled, false);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickUp, "");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckAdjustLeftEnabled, false);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckAdjustRightEnabled, true);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckMakeCircular, true);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::SelectAddedFragment, "Fragment (1-20)");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckAdjustLeftEnabled, true);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckAdjustRightEnabled, true);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckForceBlunt, true);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::SelectAddedFragment, "Fragment (1-20)");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckAdjustLeftEnabled, false);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::CheckAdjustRightEnabled, false);
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickCancel, "");
+    GTUtilsDialog::waitForDialog(new ConstructMoleculeDialogFiller(actions));
+    GTUtilsDialog::waitForDialog(new PopupChooser({"Cloning", "CLONING_CONSTRUCT"}));
+    GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
+}
+
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
