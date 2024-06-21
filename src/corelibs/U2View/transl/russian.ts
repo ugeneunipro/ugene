@@ -4894,6 +4894,11 @@ Please, check external tools in the settings.</source>
         <source>Cannot read the temporary file.</source>
         <translation>Cannot read the temporary file.</translation>
     </message>
+    <message>
+        <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="220"/>
+        <source>The subalignment is too big and can&apos;t be copied into the clipboard</source>
+        <translation>Область выравнивания слишком большая и не может быть скопирована в буфер обмена</translation>
+    </message>
 </context>
 <context>
     <name>U2::GSequenceGraphDrawer</name>

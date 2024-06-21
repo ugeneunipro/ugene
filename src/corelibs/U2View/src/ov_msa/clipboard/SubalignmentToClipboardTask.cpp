@@ -210,8 +210,17 @@ void RichTextMsaClipboardTask::prepare() {
     resultText.append("</span>");
 }
 
+static constexpr uint64_t operator"" _Mb(uint64_t mbs) {
+    return mbs * 1024 * 1024;
+}
 SubalignmentToClipboardTask::SubalignmentToClipboardTask(MsaEditor* maEditor, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId)
     : Task(tr("Copy formatted alignment to the clipboard"), TaskFlags_NR_FOSE_COSC), formatId(formatId) {
+    const auto dataAmount = static_cast<uint64_t>(maEditor->getAlignmentLen()) * maRowIds.size();
+    if (dataAmount > 256_Mb) {
+        setError(tr("The subalignment is too big and can't be copied into the clipboard"));
+        return;
+    }
+
     prepareDataTask = MsaClipboardDataTaskFactory::newInstance(maEditor, maRowIds, columnRange, formatId);
     addSubTask(prepareDataTask);
 }
