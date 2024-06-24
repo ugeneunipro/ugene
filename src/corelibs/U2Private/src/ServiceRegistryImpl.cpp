@@ -245,7 +245,7 @@ Task::ReportResult EnableServiceTask::report() {
     if (stateInfo.isCoR() || s->isEnabled()) {
         return ReportResult_Finished;
     }
-    bool success = !propagateSubtaskError() && !isCanceled();
+    bool success = !propagateSubtaskError();
     sr->setServiceState(s, success ? ServiceState_Enabled : ServiceState_Disabled_FailedToStart);
     return ReportResult_Finished;
 }
