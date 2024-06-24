@@ -513,9 +513,7 @@ void GTest_TaskStateOrder::func(StateOrderTestTask* _task, StateOrderType st) {
         if (task == _task) {
             if (run_after_all_subs_flag) {
                 for (int i = 0; i < subs.count(); i++) {
-                    StateOrderTestTask* sub = subs[i];
-                    bool isSubProcessingFinished = sub->isFinished() || (sub->isNew() && sub->isCanceled());
-                    if (!isSubProcessingFinished) {
+                    if (!subs[i]->isFinished()) {
                         stateInfo.setError(QString("task promoting error: run after all subtasks processed"));
                         return;
                     }

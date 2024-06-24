@@ -114,8 +114,10 @@ void Task::addSubTask(Task* sub) {
 }
 
 void Task::cleanup() {
-    SAFE_POINT(isFinished() || (isNew() && (isCanceled() || hasError())),
-               QString("Cleanup can only be called for finished tasks. Task: %1, ,state: %2").arg(getTaskName()).arg(getState()), );
+    SAFE_POINT(isFinished(),
+               QString("Cleanup can only be called for finished tasks. Task: %1, ,state: %2")
+                   .arg(getTaskName())
+                   .arg(getState()), );
     foreach (const QPointer<Task>& sub, getSubtasks()) {
         CHECK_CONTINUE(!sub.isNull());
         sub->cleanup();
@@ -163,9 +165,9 @@ void Task::setMinimizeSubtaskErrorText(bool v) {
 }
 
 void Task::addTaskResource(const TaskResourceUsage& resource) {
-    SAFE_POINT((resource.stage == TaskResourceStage::Prepare && state == Task::State_New && !insidePrepare) ||
-                   (resource.stage == TaskResourceStage::Run && state < Task::State_Running),
-               QString("Can't add task resource in current state: %1)").arg(getState()), );
+    SAFE_POINT(state == Task::State_New, QString("Can't add task resource in current state: %1)").arg(getState()), );
+    SAFE_POINT(!insidePrepare || resource.stage != TaskResourceStage::Prepare,
+               "Can't add prepare-time resource from within prepare function call!", );
     SAFE_POINT(!resource.locked, QString("Resource is already locked, resource id: %1").arg(resource.resourceId), );
     taskResources.append(resource);
 }

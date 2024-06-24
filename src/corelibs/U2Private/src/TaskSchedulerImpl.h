@@ -108,6 +108,7 @@ public:
      */
     QList<QString> dynamicAppResourceIds;
 
+    bool wasPrepared = false;  // 'true' if prepare() was called for the task
     bool subtasksWereCanceled = false;  // 'true' if canceled task has called cancel() on its subtasks
     bool selfRunFinished = false;  // indicates that the 'run' method of this task was finished
 
@@ -118,7 +119,6 @@ public:
     QString prevDesc;
 
     int totalPreparedSubtasks = 0;
-    int numActivePreparedSubtasks = 0;
     int numActiveRunningSubtasks = 0;
     int numFinishedSubtasks = 0;
 
@@ -169,6 +169,7 @@ private:
     bool processFinishedTasks();
     void unregisterFinishedTopLevelTasks();
     void processNewTasks();
+    void prepareNewTasks();
     void processPreparedTasks();
 
     static bool isReadyToFinish(TaskInfo* ti);
@@ -201,7 +202,8 @@ private:
      * The queue contains only Prepared or Running tasks.
      */
     QList<TaskInfo*> priorityQueue;
-    QList<Task*> newTopLevelTasks;
+    QList<TaskInfo*> tasksWithNewSubtasks;
+    QList<Task*> newTasks;
     QStringList stateNames;
     QMap<quint64, Qt::HANDLE> threadIds;
 

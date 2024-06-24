@@ -210,13 +210,15 @@ bool TaskSchedulerImpl::processFinishedTasks() {
             continue;
         }
 
-        try {
-            Task::ReportResult res = ti->task->report();
-            if (res == Task::ReportResult_CallMeAgain) {
-                continue;
+        if (ti->wasPrepared) {
+            try {
+                Task::ReportResult res = ti->task->report();
+                if (res == Task::ReportResult_CallMeAgain) {
+                    continue;
+                }
+            } catch (const std::bad_alloc&) {
+                onBadAlloc(ti->task);
             }
-        } catch (const std::bad_alloc&) {
-            onBadAlloc(ti->task);
         }
 
         TaskInfo* pti = ti->parentTaskInfo;
@@ -277,6 +279,11 @@ bool TaskSchedulerImpl::processFinishedTasks() {
                     taskLog.error(QString("Calling onSubTaskFinished from task {%1} with subtask {%2} returned list containing NULL, skipping").arg(parentTask->getTaskName()).arg(task->getTaskName()));
                 }
             }
+            if (!pti->newSubtasks.isEmpty()) {
+                if (!tasksWithNewSubtasks.contains(pti)) {
+                    tasksWithNewSubtasks.append(pti);
+                }
+            }
         }
     }
     checkPriorityQueueState(priorityQueue);
@@ -297,57 +304,32 @@ void TaskSchedulerImpl::unregisterFinishedTopLevelTasks() {
 
 void TaskSchedulerImpl::processNewTasks() {
     checkPriorityQueueState(priorityQueue);
-    QList<TaskInfo*> priorityQueueCopy = priorityQueue;
-    for (TaskInfo* ti : qAsConst(priorityQueueCopy)) {
-        if (ti->task->isCanceled() || ti->task->hasError()) {
-            for (auto subtask : qAsConst(ti->newSubtasks)) {
-                subtask->cancel();
+    for (int i = 0, n = tasksWithNewSubtasks.size(); i < n; i++) {
+        TaskInfo* ti = tasksWithNewSubtasks[i];
+        SAFE_POINT(!ti->newSubtasks.empty(), QString("No new subtasks to process for %1.").arg(ti->task->getTaskName()), );
+
+        int nParallel = ti->task->getNumParallelSubtasks();
+        int nNew = ti->newSubtasks.size();
+        int nToRun = qMin(nParallel - ti->countActiveSubtasks(), nNew);
+        int nRun = 0;
+        for (int j = 0; j < nToRun; j++) {
+            Task* newSub = ti->newSubtasks[j];
+            bool ok = tryPrepare(newSub, ti);
+            if (ok) {
+                ti->newSubtasks[j] = nullptr;
+                nRun++;
             }
+        }
+        if (nRun == nNew) {
             ti->newSubtasks.clear();
-            continue;  // Do not run new subtasks if the task is canceled.
+            tasksWithNewSubtasks[i] = nullptr;
+        } else if (nRun > 0) {
+            ti->newSubtasks.removeAll(nullptr);
         }
-        int maxToNewSubtasksToCheck = ti->newSubtasks.length();
-        int maxParallel = ti->task->getNumParallelSubtasks();
-        int maxToPrepare = maxParallel - ti->countActiveSubtasks();
-        for (int i = 0, nPrepared = 0; nPrepared < maxToPrepare && i < maxToNewSubtasksToCheck; i++) {
-            Task* newSubtask = ti->newSubtasks[i];
-            SAFE_POINT(newSubtask->getState() == Task::State_New, "Subtask has not New: " + newSubtask->getTaskName(), );
-            bool isCoR = newSubtask->isCanceled() || newSubtask->hasError();
-            if (!isCoR && tryPrepare(newSubtask, ti)) {
-                ti->newSubtasks[i] = nullptr;
-                nPrepared++;
-            } else {
-                SAFE_POINT(newSubtask->getState() == Task::State_New, "Task changed state inside failed tryPrepare: " + newSubtask->getTaskName(), );
-                if (newSubtask->hasError() || newSubtask->isCanceled()) {
-                    ti->newSubtasks[i] = nullptr;
-                    setTaskState(newSubtask, Task::State_Finished);
-                    propagateStateToParent(newSubtask);
-                    ti->numFinishedSubtasks++;
-                }
-            }
-        }
-        ti->newSubtasks.removeAll(nullptr);
     }
 
     checkPriorityQueueState(priorityQueue);
-
-    QList<Task*> newTopLevelTasksCopy = newTopLevelTasks;
-    newTopLevelTasks.clear();
-    for (Task* task : qAsConst(newTopLevelTasksCopy)) {
-        if (task->hasError() || task->isCanceled()) {  // The task may be cancelled before it is scheduled.
-            setTaskState(task, Task::State_Finished);
-            unregisterTopLevelTask(task);
-            continue;
-        }
-        if (tryPrepare(task, nullptr)) {
-            newTopLevelTasks.removeOne(task);
-        } else {
-            if (task->hasError() || task->isCanceled()) {
-                newTopLevelTasks.removeOne(task);
-                setTaskState(task, Task::State_Finished);
-            }
-        }
-    }
+    tasksWithNewSubtasks.removeAll(nullptr);
 
     checkPriorityQueueState(priorityQueue);
 }
@@ -592,6 +574,8 @@ void TaskSchedulerImpl::update() {
     }
     processNewTasks();
 
+    prepareNewTasks();
+
     processPreparedTasks();
 
     updateOldTasksPriority();
@@ -604,6 +588,33 @@ void TaskSchedulerImpl::update() {
     }
 
     isInsideSchedulingUpdate = false;
+}
+
+void TaskSchedulerImpl::prepareNewTasks() {
+    if (newTasks.empty()) {
+        return;
+    }
+    QList<Task*> newCopy = newTasks;
+    newTasks.clear();
+    foreach (Task* task, newCopy) {
+        if (task->hasError() || task->isCanceled()) {  // check if its canceled or has errors
+            propagateStateToParent(task);
+
+            // forget about this task
+            TaskInfo pti(task, nullptr);
+            finishSubtasks(&pti);
+            promoteTask(&pti, Task::State_Finished);
+
+            if (task->isTopLevelTask()) {
+                unregisterTopLevelTask(task);
+            }
+            continue;
+        }
+        bool ok = tryPrepare(task, nullptr);
+        if (!ok) {
+            newTasks.append(task);
+        }
+    }
 }
 
 void TaskSchedulerImpl::registerTopLevelTask(Task* task) {
@@ -619,38 +630,56 @@ void TaskSchedulerImpl::registerTopLevelTask(Task* task) {
 
     taskLog.details(tr("Registering new task: %1").arg(task->getTaskName()));
     topLevelTasks.append(task);
-    newTopLevelTasks.append(task);
     emit si_topLevelTaskRegistered(task);
+    newTasks.append(task);
     sleepPreventer->capture();
 }
 
 bool TaskSchedulerImpl::tryPrepare(Task* task, TaskInfo* pti) {
-    SAFE_POINT((pti == nullptr || !pti->task->isCanceled()) && !task->isCanceled(), "Trying to register cancelled task: " + task->getTaskName(), false);
-    SAFE_POINT((pti == nullptr || !pti->task->hasError()) && !task->hasError(), "Trying to register errored task: " + task->getTaskName(), false);
-    SAFE_POINT(task->getState() == Task::State_New, "Only new task can be prepared: " + task->getTaskName(), false);
+    if (pti != nullptr && (pti->task->isCanceled() || pti->task->hasError())) {  // canceled tasks are not processed
+        task->cancel();
+    }
     auto ti = new TaskInfo(task, pti);
-
-    QString lockError = tryLockResources(ti, TaskResourceStage::Prepare);
-    if (!lockError.isEmpty()) {
-        setTaskStateDesc(task, lockError);
-        delete ti;
-        return false;
+    bool lockResources = !task->getStateInfo().isCoR();
+    if (lockResources) {
+        QString failedToLockStateMessage = tryLockResources(ti, TaskResourceStage::Prepare);
+        if (!failedToLockStateMessage.isEmpty()) {
+            setTaskStateDesc(task, failedToLockStateMessage);
+            if (!(task->isCanceled() || task->hasError())) {
+                // Cleanup and return 'false': the task will be processed later again as 'New'.
+                delete ti;
+                return false;
+            }
+            // Otherwise, the task will be processed as 'failed' or 'canceled' below until it is marked as 'finished'.
+        }
     }
-    SAFE_POINT(task->getState() == Task::State_New, "Task changed state inside lock() method: " + task->getTaskName(), false);
-
     priorityQueue.append(ti);
-    setTaskInsidePrepare(task, true);
-    try {
-        task->prepare();
-    } catch (const std::bad_alloc&) {
-        onBadAlloc(task);
+
+    bool runPrepare = !task->getStateInfo().isCoR();
+    if (runPrepare) {
+        setTaskInsidePrepare(task, true);
+        try {
+            task->prepare();
+        } catch (const std::bad_alloc&) {
+            onBadAlloc(task);
+        }
+        setTaskInsidePrepare(task, false);
+        ti->wasPrepared = true;
     }
-    setTaskInsidePrepare(task, false);
+
     promoteTask(ti, Task::State_Prepared);
 
+    int nParallel = task->getNumParallelSubtasks();
     const QList<QPointer<Task>>& subtasks = task->getSubtasks();
-    for (const auto& subtask : qAsConst(subtasks)) {
-        ti->newSubtasks.append(subtask);
+    for (int i = 0, n = subtasks.size(); i < n; i++) {
+        Task* sub = subtasks[i].data();
+        bool ok = i < nParallel && tryPrepare(sub, ti);
+        if (!ok && (!sub->hasError() || sub->getTaskResources().count() == 0)) {  // if task got err on resource allocation -> its not new now, but failed
+            ti->newSubtasks.append(sub);
+            if (!tasksWithNewSubtasks.contains(ti)) {
+                tasksWithNewSubtasks.append(ti);
+            }
+        }
     }
     return true;
 }
@@ -690,13 +719,24 @@ void TaskSchedulerImpl::stopTask(Task* task) {
 }
 
 bool TaskSchedulerImpl::isReadyToFinish(TaskInfo* ti) {
-    Task::State state = ti->task->getState();
-    SAFE_POINT(state != Task::State_Finished, "Task is already finished: " + ti->task->getTaskName(), true);
-    CHECK(state == Task::State_Running, false);
-    CHECK(ti->selfRunFinished, false);
-    CHECK(ti->newSubtasks.isEmpty(), false);
-    CHECK(ti->numActiveRunningSubtasks == 0, false);
-    CHECK(ti->numActivePreparedSubtasks == 0, false);
+    if (ti->task->getState() == Task::State_Finished) {
+        return true;
+    }
+    if (ti->task->getState() != Task::State_Running) {
+        return false;
+    }
+    if (ti->numFinishedSubtasks < ti->task->getSubtasks().size()) {
+        return false;
+    }
+    if (!ti->selfRunFinished) {
+        return false;
+    }
+#ifdef _DEBUG
+    foreach (const QPointer<Task>& sub, ti->task->getSubtasks()) {  // must be true because of 'numFinishedSubtasks' check above
+        SAFE_POINT(sub->getState() == Task::State_Finished, QString("Subtask %1 state is not 'finished'.").arg(sub->getTaskName()), false);
+    }
+#endif
+    SAFE_POINT(ti->newSubtasks.isEmpty(), QString("Task %1 have subtasks to start.").arg(ti->task->getTaskName()), false);
     return true;
 }
 
@@ -721,6 +761,7 @@ static QString state2String(Task::State state) {
 }
 
 void TaskSchedulerImpl::checkSerialPromotion(TaskInfo* pti, Task* subtask) {
+    // must be promoted at this point -> check algorithm depends requirement
     SAFE_POINT(!subtask->isNew(), QString("Subtask %1 is not promoted to 'new' state.").arg(subtask->getTaskName()), );
     Task* task = pti == nullptr ? nullptr : pti->task;
     CHECK(task != nullptr, );
@@ -759,8 +800,16 @@ void TaskSchedulerImpl::createSleepPreventer() {
 }
 
 static void checkFinishedState(TaskInfo* ti) {
-    SAFE_POINT(ti->numActivePreparedSubtasks == 0, QString("Can't finish task with prepared subtasks: %1 task.").arg(ti->task->getTaskName()), );
-    SAFE_POINT(ti->numActiveRunningSubtasks == 0, QString("Can't finish task with running subtasks: %1 task.").arg(ti->task->getTaskName()), );
+#ifdef _DEBUG
+    foreach (const QPointer<Task>& sub, ti->task->getSubtasks()) {
+        SAFE_POINT(sub->getState() == Task::State_Finished, QString("Subtask %1 state is not 'finished'.").arg(sub->getTaskName()), );
+    }
+#endif
+    SAFE_POINT(ti->newSubtasks.empty(), QString("There are new subtasks for %1 task.").arg(ti->task->getTaskName()), );
+    SAFE_POINT(ti->numFinishedSubtasks == ti->task->getSubtasks().size(),
+               QString("Number of finished subtasks for %1 task is not equal subtasks count.").arg(ti->task->getTaskName()), );
+    SAFE_POINT(ti->numActiveRunningSubtasks == 0, QString("There are running subtasks for %1 task.").arg(ti->task->getTaskName()), );
+    SAFE_POINT(ti->totalPreparedSubtasks == 0, QString("There are prepared subtasks for %1 task.").arg(ti->task->getTaskName()), );
 }
 
 void TaskSchedulerImpl::promoteTask(TaskInfo* ti, Task::State newState) {
@@ -787,7 +836,6 @@ void TaskSchedulerImpl::promoteTask(TaskInfo* ti, Task::State newState) {
         case Task::State_Prepared:
             if (pti != nullptr) {
                 pti->totalPreparedSubtasks++;
-                pti->numActivePreparedSubtasks++;
             }
             if (ti->task->isTopLevelTask() && ti->task->isVerboseLogMode()) {
                 taskLog.info(tr("Starting {%1} task").arg(ti->task->getTaskName()));
@@ -796,7 +844,7 @@ void TaskSchedulerImpl::promoteTask(TaskInfo* ti, Task::State newState) {
         case Task::State_Running:
             tti.startTime = GTimer::currentTimeMicros();
             if (pti != nullptr) {
-                pti->numActivePreparedSubtasks--;
+                pti->totalPreparedSubtasks--;
                 pti->numActiveRunningSubtasks++;
                 if (pti->task->getState() < Task::State_Running) {
                     SAFE_POINT(pti->task->getState() == Task::State_Prepared, QString("Parent task %1 is not in 'prepared' state.").arg(pti->task->getTaskName()), );
@@ -838,6 +886,7 @@ void TaskSchedulerImpl::promoteTask(TaskInfo* ti, Task::State newState) {
             int nRunning = 0;
             int nFinished = 0;
             int nNew = 0;
+            int nTotal = 0;
             const QList<QPointer<Task>>& subtasks = parentTask->getSubtasks();
             for (const QPointer<Task>& sub : qAsConst(subtasks)) {
                 switch (sub->getState()) {
@@ -854,11 +903,13 @@ void TaskSchedulerImpl::promoteTask(TaskInfo* ti, Task::State newState) {
                         nFinished++;
                         break;
                 }
+                nTotal++;
             }
-            SAFE_POINT(nPrepared == pti->numActivePreparedSubtasks, QString("Prepared subtask count mismatch: %1.").arg(pti->task->getTaskName()), );
+            SAFE_POINT(nPrepared == pti->totalPreparedSubtasks, QString("Prepared subtask count mismatch: %1.").arg(pti->task->getTaskName()), );
             SAFE_POINT(nRunning == pti->numActiveRunningSubtasks, QString("Running subtask count mismatch: %1.").arg(pti->task->getTaskName()), );
+            SAFE_POINT(nPrepared + nRunning == pti->countActiveSubtasks(), QString("Local active (running and prepared) subtask count for %1 task is not equal parents active subtasks.").arg(pti->task->getTaskName()), );
             SAFE_POINT(nFinished == pti->numFinishedSubtasks, QString("Finished subtask count mismatch %1.").arg(pti->task->getTaskName()), );
-            SAFE_POINT(subtasks.length() == nNew + nPrepared + nRunning + nFinished, QString("Total subtask count mismatch: %1.").arg(pti->task->getTaskName()), );
+            SAFE_POINT(nTotal == nNew + nPrepared + nRunning + nFinished, QString("Total subtask count mismatch: %1.").arg(pti->task->getTaskName()), );
         }
     }
     updateTaskProgressAndDesc(ti);
@@ -1000,7 +1051,6 @@ void TaskSchedulerImpl::pauseThreadWithTask(const Task* task) {
 }
 
 void TaskSchedulerImpl::resumeThreadWithTask(const Task* task) {
-    CHECK(task->getState() >= Task::State_Prepared && task->getState() < Task::State_Finished, );
     foreach (TaskInfo* ti, priorityQueue) {
         if (task == ti->task && ti->thread != nullptr && ti->thread->isPaused) {
             ti->thread->resume();
@@ -1145,7 +1195,7 @@ TaskInfo::TaskInfo(Task* _task, TaskInfo* _parentTaskInfo)
 }
 
 int TaskInfo::countActiveSubtasks() const {
-    return numActivePreparedSubtasks + numActiveRunningSubtasks;
+    return totalPreparedSubtasks + numActiveRunningSubtasks;
 }
 
 TaskInfo::~TaskInfo() {
