@@ -134,7 +134,7 @@ void ConstructMoleculeDialog::sl_onTakeButtonClicked() {
         }
     }
 
-    update();
+    updateConstructMoleculeTableWidget();
 }
 
 void ConstructMoleculeDialog::sl_onTakeAllButtonClicked() {
@@ -144,12 +144,13 @@ void ConstructMoleculeDialog::sl_onTakeAllButtonClicked() {
     for (int i = 0; i < count; ++i) {
         selected.append(i);
     }
-    update();
+    updateConstructMoleculeTableWidget();
 }
 
 void ConstructMoleculeDialog::sl_onClearButtonClicked() {
     selected.clear();
-    update();
+    updateConstructMoleculeTableWidget();
+    updateAdjustEndButtonsStates();
 }
 
 void ConstructMoleculeDialog::sl_onUpButtonClicked() {
@@ -163,9 +164,11 @@ void ConstructMoleculeDialog::sl_onUpButtonClicked() {
 
     qSwap(selected[index], selected[newIndex]);
 
-    update();
+    updateConstructMoleculeTableWidget();
 
     molConstructWidget->setCurrentItem(molConstructWidget->topLevelItem(newIndex), true);
+
+    updateAdjustEndButtonsStates();
 }
 
 void ConstructMoleculeDialog::sl_onDownButtonClicked() {
@@ -179,9 +182,11 @@ void ConstructMoleculeDialog::sl_onDownButtonClicked() {
 
     qSwap(selected[index], selected[newIndex]);
 
-    update();
+    updateConstructMoleculeTableWidget();
 
     molConstructWidget->setCurrentItem(molConstructWidget->topLevelItem(newIndex), true);
+
+    updateAdjustEndButtonsStates();
 }
 
 void ConstructMoleculeDialog::sl_onRemoveButtonClicked() {
@@ -191,13 +196,11 @@ void ConstructMoleculeDialog::sl_onRemoveButtonClicked() {
     }
     int index = molConstructWidget->indexOfTopLevelItem(item);
     selected.removeAt(index);
-    tbAdjustLeft->setDisabled(true);
-    tbAdjustRight->setDisabled(true);
-
-    update();
+    updateConstructMoleculeTableWidget();
+    updateAdjustEndButtonsStates();
 }
 
-void ConstructMoleculeDialog::update() {
+void ConstructMoleculeDialog::updateConstructMoleculeTableWidget() {
     molConstructWidget->clear();
 
     foreach (int index, selected) {
@@ -273,6 +276,28 @@ void ConstructMoleculeDialog::update() {
     }
 }
 
+void ConstructMoleculeDialog::updateAdjustEndButtonsStates() {
+    auto selectedItem = molConstructWidget->currentItem();
+    if (selectedItem == nullptr || makeBluntBox->isChecked()) {
+        tbAdjustLeft->setDisabled(true);
+        tbAdjustRight->setDisabled(true);
+        return;
+    }
+
+    bool adjustLeftIsActive = true;
+    bool adjustRightIsActive = true;
+
+    if (molConstructWidget->itemAbove(selectedItem) == nullptr) {
+        adjustLeftIsActive = makeCircularBox->isChecked();
+    }
+    if (molConstructWidget->itemBelow(selectedItem) == nullptr) {
+        adjustRightIsActive = makeCircularBox->isChecked();
+    }
+
+    tbAdjustLeft->setEnabled(adjustLeftIsActive);
+    tbAdjustRight->setEnabled(adjustRightIsActive);
+}
+
 void ConstructMoleculeDialog::initSaveController() {
     LastUsedDirHelper lod;
 
@@ -302,11 +327,13 @@ const QString ConstructMoleculeDialog::createEndSign(const DNAFragmentTerm& term
 }
 
 void ConstructMoleculeDialog::sl_makeCircularBoxClicked() {
-    update();
+    updateConstructMoleculeTableWidget();
+    updateAdjustEndButtonsStates();
 }
 
 void ConstructMoleculeDialog::sl_forceBluntBoxClicked() {
-    update();
+    updateConstructMoleculeTableWidget();
+    updateAdjustEndButtonsStates();
 }
 
 void ConstructMoleculeDialog::sl_onEditFragmentButtonClicked() {
@@ -326,7 +353,7 @@ void ConstructMoleculeDialog::sl_onEditFragmentButtonClicked() {
         return;
     }
 
-    update();
+    updateConstructMoleculeTableWidget();
 }
 
 bool ConstructMoleculeDialog::eventFilter(QObject* obj, QEvent* event) {
@@ -352,8 +379,6 @@ bool ConstructMoleculeDialog::eventFilter(QObject* obj, QEvent* event) {
 void ConstructMoleculeDialog::sl_onItemClicked(QTreeWidgetItem* item, int column) {
     static constexpr int INVERTED_COLUMN = 3;
 
-    bool adjustLeftIsActive = true;
-    bool adjustRightIsActive = true;
     if (column == INVERTED_COLUMN) {
         int idx = molConstructWidget->indexOfTopLevelItem(item);
         DNAFragment& fragment = fragments[selected[idx]];
@@ -366,17 +391,9 @@ void ConstructMoleculeDialog::sl_onItemClicked(QTreeWidgetItem* item, int column
 
             fragment.setInverted(false);
         }
-        update();
+        updateConstructMoleculeTableWidget();
     } else {
-        if (molConstructWidget->itemAbove(item) == nullptr) {
-            adjustLeftIsActive = makeCircularBox->isChecked();
-        }
-        if (molConstructWidget->itemBelow(item) == nullptr) {
-            adjustRightIsActive = makeCircularBox->isChecked();
-        }
-
-        tbAdjustLeft->setEnabled(adjustLeftIsActive);
-        tbAdjustRight->setEnabled(adjustRightIsActive);
+        updateAdjustEndButtonsStates();
     }
 }
 
