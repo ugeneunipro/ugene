@@ -56,7 +56,8 @@ protected:
     bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
-    void update();
+    void updateConstructMoleculeTableWidget();
+    void updateAdjustEndButtonsStates();
     void initSaveController();
 
     static const QString createEndSign(const DNAFragmentTerm& term);
