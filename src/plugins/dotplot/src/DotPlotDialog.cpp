@@ -48,6 +48,12 @@
 
 namespace U2 {
 
+const QColor DotPlotDialog::DOT_PLOT_DIRECT_COLOR_LIGHT = QColor(0, 0, 0);
+const QColor DotPlotDialog::DOT_PLOT_INVERTED_COLOR_LIGHT = QColor(0, 0, 0);
+
+const QColor DotPlotDialog::DOT_PLOT_DIRECT_COLOR_DARK = QColor(255, 255, 255);
+const QColor DotPlotDialog::DOT_PLOT_INVERTED_COLOR_DARK = QColor(255, 255, 255);
+
 DotPlotDialog::DotPlotDialog(QWidget* parent, AnnotatedDNAView* currentADV, int minLen, int identity, ADVSequenceObjectContext* sequenceX, ADVSequenceObjectContext* sequenceY, bool dir, bool inv, const QColor& dColor, const QColor& iColor, bool hideLoadSequences)
     : QDialog(parent), xSeq(sequenceX), ySeq(sequenceY), adv(currentADV), directColor(dColor), invertedColor(iColor), openSequenceTask(nullptr) {
     setupUi(this);

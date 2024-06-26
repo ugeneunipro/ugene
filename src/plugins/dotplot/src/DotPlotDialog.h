@@ -63,6 +63,12 @@ public:
         return invertedColor;
     }
 
+    static const QColor DOT_PLOT_DIRECT_COLOR_LIGHT;
+    static const QColor DOT_PLOT_INVERTED_COLOR_LIGHT;
+
+    static const QColor DOT_PLOT_DIRECT_COLOR_DARK;
+    static const QColor DOT_PLOT_INVERTED_COLOR_DARK;
+
 protected slots:
     void sl_minLenHeuristics();
 
