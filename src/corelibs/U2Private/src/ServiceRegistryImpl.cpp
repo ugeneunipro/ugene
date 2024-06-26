@@ -242,10 +242,10 @@ void EnableServiceTask::prepare() {
 
 Task::ReportResult EnableServiceTask::report() {
     sr->activeServiceTasks.removeAll(this);
-    if (stateInfo.isCoR() || s->isEnabled()) {
+    if (stateInfo.hasError() || s->isEnabled()) {
         return ReportResult_Finished;
     }
-    bool success = !propagateSubtaskError();
+    bool success = !propagateSubtaskError() && !isCanceled();
     sr->setServiceState(s, success ? ServiceState_Enabled : ServiceState_Disabled_FailedToStart);
     return ReportResult_Finished;
 }
