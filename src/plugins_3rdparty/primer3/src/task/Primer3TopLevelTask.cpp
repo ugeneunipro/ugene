@@ -58,26 +58,30 @@ Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSetting
                                          const QString& _groupName,
                                          const QString& _annName,
                                          const QString& _annDescription)
-    : Task(tr("Find primers with target sequence task"), TaskFlags(TaskFlag_NoRun) |
-                                                              TaskFlag_ReportingIsSupported |
-                                                              TaskFlag_ReportingIsEnabled |
-                                                              TaskFlag_FailOnSubtaskError |
-                                                              TaskFlag_CollectChildrenWarnings),
-    settings(_settings), seqObj(_seqObj), annotationTableObject(_aobj),
-    groupName(_groupName), annName(_annName), annDescription(_annDescription) {
+    : Task(tr("Find primers with target sequence task"),
+           TaskFlags(TaskFlag_NoRun) |
+               TaskFlag_ReportingIsSupported |
+               TaskFlag_ReportingIsEnabled |
+               TaskFlag_FailOnSubtaskError |
+               TaskFlag_FailOnSubtaskCancel |
+               TaskFlag_CollectChildrenWarnings),
+      settings(_settings), seqObj(_seqObj), annotationTableObject(_aobj),
+      groupName(_groupName), annName(_annName), annDescription(_annDescription) {
     GCOUNTER(cvar, "Primer3Task");
 }
 
 Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSettings>& _settings,
                                          const QString& _resultFilePath,
                                          bool _openView)
-    : Task(tr("Find primers without target sequence task"), TaskFlags(TaskFlag_NoRun) |
-                                                              TaskFlag_ReportingIsSupported |
-                                                              TaskFlag_ReportingIsEnabled |
-                                                              TaskFlag_FailOnSubtaskError |
-                                                              TaskFlag_CollectChildrenWarnings),
-    settings(_settings), resultFilePath(_resultFilePath), openView(_openView),
-    groupName(PRIMER_ANNOTATION_NAME), annName(PRIMER_ANNOTATION_NAME) {
+    : Task(tr("Find primers without target sequence task"),
+           TaskFlags(TaskFlag_NoRun) |
+               TaskFlag_ReportingIsSupported |
+               TaskFlag_ReportingIsEnabled |
+               TaskFlag_FailOnSubtaskError |
+               TaskFlag_FailOnSubtaskCancel |
+               TaskFlag_CollectChildrenWarnings),
+      settings(_settings), resultFilePath(_resultFilePath), openView(_openView),
+      groupName(PRIMER_ANNOTATION_NAME), annName(PRIMER_ANNOTATION_NAME) {
     GCOUNTER(cvar, "Primer3Task_noTargetSequence");
 }
 
@@ -101,10 +105,6 @@ QList<Task*> Primer3TopLevelTask::onSubTaskFinished(Task* subTask) {
     if (subTask == findExonsTask) {
         res << onFindExonTaskFinished();
     } else if (subTask == primer3Task) {
-        if (primer3Task->isCanceled()) {
-            cancel();
-            return res;
-        }
         res << onPrimer3TaskFinished();
     } else if (subTask == checkComplementTask) {
         res << onCheckComplementTaskFinished();
