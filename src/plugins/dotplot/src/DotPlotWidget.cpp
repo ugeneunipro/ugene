@@ -97,8 +97,8 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
 
     bool isDark = AppContext::getMainWindow()->isDarkMode();
     dotPlotBGColor = isDark ? DOT_PLOT_BACKGROUND_COLOR_DARK : DOT_PLOT_BACKGROUND_COLOR_LIGHT;
-    dotPlotDirectColor = isDark ? DotPlotDialog::DOT_PLOT_DIRECT_COLOR_DARK : DotPlotDialog::DOT_PLOT_DIRECT_COLOR_LIGHT;
-    dotPlotInvertedColor = isDark ? DotPlotDialog::DOT_PLOT_INVERTED_COLOR_DARK : DotPlotDialog::DOT_PLOT_INVERTED_COLOR_LIGHT;
+    dotPlotDirectColor = isDark ? DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK : DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT;
+    dotPlotInvertedColor = isDark ? DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK : DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT;
     dotPlotNearestRepeatColor = isDark ? DOT_PLOT_NEAREST_REPEAT_COLOR_DARK : DOT_PLOT_NEAREST_REPEAT_COLOR_LIGHT;
 
     setFocusPolicy(Qt::WheelFocus);
@@ -365,8 +365,8 @@ void DotPlotWidget::sl_colorModeSwitched() {
     bool isDark = AppContext::getMainWindow()->isDarkMode();
 
     dotPlotBGColor = isDark ? DOT_PLOT_BACKGROUND_COLOR_DARK : DOT_PLOT_BACKGROUND_COLOR_LIGHT;
-    dotPlotDirectColor = isDark ? DotPlotDialog::DOT_PLOT_DIRECT_COLOR_DARK : DotPlotDialog::DOT_PLOT_DIRECT_COLOR_LIGHT;
-    dotPlotInvertedColor = isDark ? DotPlotDialog::DOT_PLOT_INVERTED_COLOR_DARK : DotPlotDialog::DOT_PLOT_INVERTED_COLOR_LIGHT;
+    dotPlotDirectColor = isDark ? DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK : DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT;
+    dotPlotInvertedColor = isDark ? DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK : DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT;
     dotPlotNearestRepeatColor = isDark ? DOT_PLOT_NEAREST_REPEAT_COLOR_DARK : DOT_PLOT_NEAREST_REPEAT_COLOR_LIGHT;
 
     pixMapUpdateNeeded = true;
