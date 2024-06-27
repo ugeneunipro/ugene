@@ -1810,6 +1810,8 @@ void WorkflowView::sl_pasteItems(const QString& s, bool updateSchemaInfo) {
         }
     }
 
+    recreateBreakpoints();
+
     int shift = GRID_STEP * (pasteCount);
     foreach (QGraphicsItem* it, scene->selectedItems()) {
         it->moveBy(shift, shift);
@@ -1821,6 +1823,15 @@ void WorkflowView::recreateScene() {
     SceneCreator sc(schema.get(), meta);
     sc.recreateScene(scene);
     sceneRecreation = false;
+}
+
+void WorkflowView::recreateBreakpoints() {
+    const auto actorsWithBreakpoints = debugInfo->getActorsWithBreakpoints();
+    for (auto&& a : qAsConst(actorsWithBreakpoints)) {
+        debugInfo->removeBreakpointFromActor(a);
+        debugInfo->addBreakpointToActor(a);
+        changeBreakpointState(a, true);
+    }
 }
 
 void WorkflowView::sl_showEditor() {
