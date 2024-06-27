@@ -101,7 +101,7 @@ QString EnzymeData::generateEnzymeTooltip() const {
             QString result;
             for (QString ch : qAsConst(sequence)) {
                 if (ch != "N") {
-                    ch = QString("<span style=\"color: #ff0000; \">%1</span>").arg(ch);
+                    ch = QString("<span style=\"color: %1; \">%2</span>").arg(AppContext::getMainWindow()->isDarkMode() ? "#FF7F7F" : "#FF0000").arg(ch);
                 }
                 result += ch;
             }
@@ -271,7 +271,7 @@ QString EnzymeData::generateEnzymeTooltip() const {
             }
             QString ch(seq.at(i));
             if (ch != "N") {
-                ch = QString("<span style=\"color: #ff0000; \">%1</span>").arg(ch);
+                ch = QString("<span style=\"color: %1; \">%2</span>").arg(AppContext::getMainWindow()->isDarkMode() ? "#FF7F7F" : "#FF0000").arg(ch);
             }
             append2Result(ch);
             append2Result(TOOLTIP_SPACE);
