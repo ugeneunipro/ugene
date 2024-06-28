@@ -284,6 +284,8 @@ private:
     void createActions();
     void saveState();
     void recreateScene();
+    // Removes and re-adds breakpoints from debugInfo. Actual revalidation after a scene change, for example.
+    void updateBreakpoints();
     void localHostLaunch();
     void rescale(bool updateGui = true);
 
