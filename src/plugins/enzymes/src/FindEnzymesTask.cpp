@@ -50,15 +50,15 @@ FindEnzymesToAnnotationsTask::FindEnzymesToAnnotationsTask(AnnotationTableObject
 
 void FindEnzymesToAnnotationsTask::prepare() {
     CHECK_EXT(!enzymes.isEmpty(), stateInfo.setError(tr("No enzymes selected.")), );
-    U2Region searchRegion = cfg.searchRegion;
-    if (cfg.searchRegion.isEmpty()) {
+    QVector<U2Region> searchRegions = cfg.searchRegions;
+    if (cfg.searchRegions.isEmpty()) {
         U2SequenceObject sequenceObject("sequence", dnaSeqRef);
-        searchRegion = U2Region(0, sequenceObject.getSequenceLength());
+        searchRegions = {U2Region(0, sequenceObject.getSequenceLength())};
     }
-    findTask = new FindEnzymesTask(dnaSeqRef, searchRegion, enzymes, cfg.maxResults, cfg.circular, 
-                                   cfg.excludeMode == FindEnzymesTaskConfig::EnzymeExcludeMode_ByRegion ? 
-                                   cfg.excludedRegions : QVector<U2Region>());
-    addSubTask(findTask);
+    for (const U2Region region : qAsConst(searchRegions)) {
+        findTask = new FindEnzymesTask(dnaSeqRef, region, enzymes, cfg.maxResults, cfg.circular);
+        addSubTask(findTask);
+    }
 }
 
 QList<Task*> FindEnzymesToAnnotationsTask::onSubTaskFinished(Task* subTask) {
@@ -93,7 +93,6 @@ QList<Task*> FindEnzymesToAnnotationsTask::onSubTaskFinished(Task* subTask) {
             }
         }
     }
-
     for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
         CHECK_CONTINUE(!excludedIdsFromResults.contains(enzyme->id));
         QList<SharedAnnotationData> resultAnnotationList = findTask->getResultsAsAnnotations(enzyme->id);
@@ -423,23 +422,24 @@ Task* FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const Au
     cfg.maxHitCount = qMin(appSettings->getValue(EnzymeSettings::MAX_HIT_VALUE, maxAnnotations).toInt(), maxAnnotations);
     cfg.maxResults = qMin(appSettings->getValue(EnzymeSettings::MAX_RESULTS, maxAnnotations).toInt(), maxAnnotations);
 
-    U2Region savedSearchRegion = getLastSearchRegionForObject(sequenceObject);
+    const QVector<U2Region> savedSearchRegions = getLastSearchLocationForObject(sequenceObject).data()->regions;
     U2Region wholeSequenceRegion(0, sequenceLength);
-    if (cfg.circular) {
-        // In circular mode the region can have an overflow to handle end/start positions correctly
-        cfg.searchRegion = U2Region(savedSearchRegion.startPos, qMin(savedSearchRegion.length, wholeSequenceRegion.length));
-    } else {
-        cfg.searchRegion = savedSearchRegion.intersect(wholeSequenceRegion);
+    for (const U2Region region : qAsConst(savedSearchRegions)) {
+        if (cfg.circular) {
+            // In circular mode the region can have an overflow to handle end/start positions correctly
+            cfg.searchRegions << U2Region(region.startPos, qMin(region.length, wholeSequenceRegion.length));
+        } else {
+            cfg.searchRegions << region.intersect(wholeSequenceRegion);
+        }
     }
-    if (cfg.searchRegion.isEmpty()) {
-        cfg.searchRegion = wholeSequenceRegion;
-    }
-
-    U2Region savedExcludedRegion = getLastExcludeRegionForObject(sequenceObject);
-    if (!savedExcludedRegion.isEmpty()) {
-        cfg.excludedRegions << savedExcludedRegion;
+    if (cfg.searchRegions.isEmpty()) {
+        cfg.searchRegions = {wholeSequenceRegion};
     }
 
+    const QVector<U2Region> savedExcludedRegions = getLastExcludeLocationForObject(sequenceObject).data()->regions;
+    if (!savedExcludedRegions.isEmpty()) {
+        cfg.excludedRegions = savedExcludedRegions;
+    }
     cfg.excludeMode = getExcludeModeForObject(sequenceObject);
 
     AnnotationTableObject* annotationTableObject = annotationObject->getAnnotationObject();
@@ -452,38 +452,38 @@ bool FindEnzymesAutoAnnotationUpdater::checkConstraints(const AutoAnnotationCons
 }
 
 /** Search (include) and exclude regions are saved per-sequence object in the persistent object hints which are saved in the project file. */
-#define ENZYMES_SEARCH_REGION "FindEnzymes_searchRegion"
-#define ENZYMES_EXCLUDE_REGION "FindEnzymes_excludeRegion"
+#define ENZYMES_SEARCH_LOCATION "FindEnzymes_searchLocation"
+#define ENZYMES_EXCLUDE_LOCATION "FindEnzymes_excludeLocation"
 #define ENZYMES_EXCLUDE_MODE "FindEnzymes_excludeMode"
 
-static void setRegionToHints(GObject* object, const QString& hintName, const U2Region& region) {
+static void setLocationToHints(GObject* object, const QString& hintName, const U2Location& location) {
     GHints* objectHints = object->getGHints();
-    if (region.isEmpty()) {
+    if (location.data()->regions.isEmpty()) {
         objectHints->remove(hintName);  // same as default, no need to save.
         return;
     }
-    objectHints->set(hintName, QVariant::fromValue<U2Region>(region));
+    objectHints->set(hintName, QVariant::fromValue<U2Location>(location));
 }
 
-static U2Region getRegionFromHints(const GObject* object, const QString& hintName) {
+static U2Location getLocationFromHints(const GObject* object, const QString& hintName) {
     GHints* objectHints = object->getGHints();
-    return objectHints->get(hintName, QVariant::fromValue<U2Region>(U2Region())).value<U2Region>();
+    return objectHints->get(hintName, QVariant::fromValue<U2Location>(U2Location())).value<U2Location>();
 }
 
-U2Region FindEnzymesAutoAnnotationUpdater::getLastSearchRegionForObject(const U2SequenceObject* sequenceObject) {
-    return getRegionFromHints(sequenceObject, ENZYMES_SEARCH_REGION);
+U2Location FindEnzymesAutoAnnotationUpdater::getLastSearchLocationForObject(const U2SequenceObject* sequenceObject) {
+    return getLocationFromHints(sequenceObject, ENZYMES_SEARCH_LOCATION);
 }
 
-void FindEnzymesAutoAnnotationUpdater::setLastSearchRegionForObject(U2SequenceObject* sequenceObject, const U2Region& region) {
-    setRegionToHints(sequenceObject, ENZYMES_SEARCH_REGION, region);
+void FindEnzymesAutoAnnotationUpdater::setLastSearchLocationForObject(U2SequenceObject* sequenceObject, const U2Location& location) {
+    setLocationToHints(sequenceObject, ENZYMES_SEARCH_LOCATION, location);
 }
 
-U2Region FindEnzymesAutoAnnotationUpdater::getLastExcludeRegionForObject(const U2SequenceObject* sequenceObject) {
-    return getRegionFromHints(sequenceObject, ENZYMES_EXCLUDE_REGION);
+U2::U2Location FindEnzymesAutoAnnotationUpdater::getLastExcludeLocationForObject(const U2SequenceObject* sequenceObject) {
+    return getLocationFromHints(sequenceObject, ENZYMES_EXCLUDE_LOCATION);
 }
 
-void FindEnzymesAutoAnnotationUpdater::setLastExcludeRegionForObject(U2SequenceObject* sequenceObject, const U2Region& region) {
-    setRegionToHints(sequenceObject, ENZYMES_EXCLUDE_REGION, region);
+void FindEnzymesAutoAnnotationUpdater::setLastExcludeLocationForObject(U2SequenceObject* sequenceObject, const U2Location& location) {
+    setLocationToHints(sequenceObject, ENZYMES_EXCLUDE_LOCATION, location);
 }
 
 bool FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(qint64 sequenceLength, int countOfEnzymeVariants) {
@@ -501,7 +501,7 @@ void FindEnzymesAutoAnnotationUpdater::setExcludeModeForObject(U2SequenceObject*
 
 FindEnzymesTaskConfig::EnzymeExcludeMode FindEnzymesAutoAnnotationUpdater::getExcludeModeForObject(U2SequenceObject* sequenceObject) {
     GHints* objectHints = sequenceObject->getGHints();
-    return objectHints->get(ENZYMES_EXCLUDE_MODE, FindEnzymesTaskConfig::EnzymeExcludeMode_ByRegion).value<FindEnzymesTaskConfig::EnzymeExcludeMode>();
+    return objectHints->get(ENZYMES_EXCLUDE_MODE, FindEnzymesTaskConfig::EnzymeExcludeMode_None).value<FindEnzymesTaskConfig::EnzymeExcludeMode>();
 }
 
 }  // namespace U2

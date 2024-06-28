@@ -530,6 +530,7 @@ GUI_TEST_CLASS_DEFINITION(test_8101) {
     * 5. Run search
     * Expected state: 191 regions found
     */
+    GT_FAIL("update test", );
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
@@ -540,6 +541,7 @@ GUI_TEST_CLASS_DEFINITION(test_8101) {
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 636, "Annoatated region counter doesn't match.");
 
+    /*
     settings.excludeRegionStart = 10000;
     settings.excludeRegionEnd = 12000;
     settings.excludeMode = "Enzymes found in the region";
@@ -549,6 +551,7 @@ GUI_TEST_CLASS_DEFINITION(test_8101) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 191, "Annoatated region counter doesn't match.");
+    */
 }
 
 }  // namespace GUITest_regression_scenarios

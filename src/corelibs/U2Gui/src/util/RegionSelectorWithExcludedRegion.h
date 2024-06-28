@@ -35,8 +35,7 @@ public:
     RegionSelectorWithExcludedRegion(QWidget* parent,
                                      qint64 maxLen,
                                      DNASequenceSelection* selection = nullptr,
-                                     bool isCircularAvailable = false,
-                                     QWidget *extraWidgetForExcludeOption = nullptr);
+                                     bool isCircularAvailable = false);
     ~RegionSelectorWithExcludedRegion();
 
     U2Region getIncludeRegion(bool* ok = nullptr) const;
@@ -55,6 +54,7 @@ public:
 private:
     void connectSlots();
 
+private:
     Ui_RegionSelectorWithExcludedRegion* ui;
 
     RegionSelectorController* includeController;

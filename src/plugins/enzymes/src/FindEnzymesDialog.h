@@ -34,15 +34,13 @@
 #include <ui_EnzymesSelectorWidget.h>
 #include <ui_FindEnzymesDialog.h>
 
-#include "FindEnzymesTask.h"
-
 namespace U2 {
 
 class ADVSequenceObjectContext;
 class CreateAnnotationWidgetController;
 class EnzymeGroupTreeItem;
 class EnzymeTreeItem;
-class RegionSelectorWithExcludedRegion;
+class GenbankStyleRegionSelectorController;
 
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
@@ -131,9 +129,8 @@ private:
 
     QPointer<ADVSequenceObjectContext> advSequenceContext;
 
-    QComboBox* excludeModeCBox;
     EnzymesSelectorWidget* enzSel;
-    RegionSelectorWithExcludedRegion* regionSelector;
+    GenbankStyleRegionSelectorController* regionSelector;
 };
 
 class EnzymeGroupTreeItem : public QTreeWidgetItem {

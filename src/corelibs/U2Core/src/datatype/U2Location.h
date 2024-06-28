@@ -201,3 +201,5 @@ inline void U2LocationData::reset() {
 }
 
 }  // namespace U2
+
+Q_DECLARE_METATYPE(U2::U2Location);

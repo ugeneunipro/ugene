@@ -41,8 +41,6 @@ struct FindEnzymesDialogFillerSettings {
     // Show suppliers from this list
     QStringList suppliers;
     bool clickSelectAllSuppliers = false;
-    //Possible options "Enzymes found in the region" and "Region"
-    QString excludeMode = "Region";
 };
 
 class FindEnzymesDialogFiller : public Filler {

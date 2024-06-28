@@ -56,6 +56,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/ExportImageDialog.h \
            src/util/ExportObjectUtils.h \
            src/util/GenbankLocationValidator.h \
+           src/util/GenbankStyleRegionSelectorController.h \
            src/util/GlassView.h \
            src/util/GObjectComboBoxController.h \
            src/util/GraphUtils.h \
@@ -146,6 +147,7 @@ FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/ExportAnnotationsDialog.ui \
          src/util/ExportDocumentDialog.ui \
          src/util/ExportImageDialog.ui \
+         src/util/GenbankStyleRegionSelector.ui \
          src/util/MultipartDocFormatConfiguratorWidget.ui \
          src/util/ProjectTreeItemSelectorDialogBase.ui \
          src/util/RangeSelectionDialog.ui \
@@ -212,6 +214,7 @@ SOURCES += src/ComboBoxWithCheckBoxes.cpp \
            src/util/ExportImageDialog.cpp \
            src/util/ExportObjectUtils.cpp \
            src/util/GenbankLocationValidator.cpp \
+           src/util/GenbankStyleRegionSelectorController.cpp \
            src/util/GlassView.cpp \
            src/util/GObjectComboBoxController.cpp \
            src/util/GraphUtils.cpp \

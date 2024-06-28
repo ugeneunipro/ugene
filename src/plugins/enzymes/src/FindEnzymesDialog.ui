@@ -312,7 +312,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Search region</string>
+      <string>Search in</string>
      </property>
      <layout class="QVBoxLayout" name="searchRegionLayout"/>
     </widget>

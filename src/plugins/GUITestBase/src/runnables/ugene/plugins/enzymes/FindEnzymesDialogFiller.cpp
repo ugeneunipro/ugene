@@ -21,7 +21,6 @@
 
 #include "FindEnzymesDialogFiller.h"
 #include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
@@ -102,12 +101,6 @@ void FindEnzymesDialogFiller::commonScenario() {
 
         GTLineEdit::setText("excludeStartLineEdit", QString::number(settings.excludeRegionStart));
         GTLineEdit::setText("excludeEndLinEdit", QString::number(settings.excludeRegionEnd));
-
-        if (QStringList({"Enzymes found in the region", "Region"}).contains(settings.excludeMode)) {
-            GTComboBox::selectItemByText(GTWidget::findComboBox("excludeModeCombo"), settings.excludeMode);
-        } else {
-            GT_FAIL(QString("Unexpected 'excludeRegionStart' value: %1").arg(settings.excludeRegionStart), );
-        }
     }
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
