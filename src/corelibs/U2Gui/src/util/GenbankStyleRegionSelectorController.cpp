@@ -28,7 +28,7 @@
 
  #include "GenbankStyleRegionSelectorController.h"
 
- #include "Ui_GenbankStyleRegionSelector.h"
+ #include "ui_GenbankStyleRegionSelector.h"
 
 namespace U2 {
 
