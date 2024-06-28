@@ -1810,7 +1810,9 @@ void WorkflowView::sl_pasteItems(const QString& s, bool updateSchemaInfo) {
         }
     }
 
-    recreateBreakpoints();
+    if (pasteCount > 0) {
+        recreateBreakpoints();
+    }
 
     int shift = GRID_STEP * (pasteCount);
     foreach (QGraphicsItem* it, scene->selectedItems()) {
