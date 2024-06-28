@@ -51,8 +51,13 @@ GenbankStyleRegionSelectorController::GenbankStyleRegionSelectorController(QWidg
     connect(ui->searchAreaLineEdit, &QLineEdit::textChanged, this, &GenbankStyleRegionSelectorController::sl_genbankLocationChanged);
     connect(ui->excludeAreaLineEdit, &QLineEdit::textChanged, this, &GenbankStyleRegionSelectorController::sl_genbankLocationChanged);    
 
-    sl_presetChanged();
     sl_excludeEnzymesChecked(ui->excludeEnzymesCheckBox->checkState());
+    if (selection->getSelectedRegions().isEmpty()) {
+        ui->presetsComboBox->setCurrentIndex(ui->presetsComboBox->findText(WHOLE_SEQUENCE));
+    } else {
+        ui->presetsComboBox->setCurrentIndex(ui->presetsComboBox->findText(SELECTED_REGIONS));
+        ui->searchAreaLineEdit->setText(U1AnnotationUtils::buildLocationString(selection->getSelectedRegions()));
+    }
 }
 
 GenbankStyleRegionSelectorController::~GenbankStyleRegionSelectorController() {
