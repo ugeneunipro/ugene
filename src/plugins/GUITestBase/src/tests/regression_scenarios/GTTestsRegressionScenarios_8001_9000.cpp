@@ -511,6 +511,7 @@ static void runNoCrash() {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8079_1) {
+    GTUtilsWorkflowDesigner::toggleDebugMode();
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
     GTUtilsWorkflowDesigner::toggleBreakpointManager();
@@ -521,6 +522,7 @@ GUI_TEST_CLASS_DEFINITION(test_8079_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8079_2) {
+    GTUtilsWorkflowDesigner::toggleDebugMode();
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
     GTUtilsWorkflowDesigner::toggleBreakpointManager();
@@ -535,6 +537,7 @@ GUI_TEST_CLASS_DEFINITION(test_8079_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8079_3) {
+    GTUtilsWorkflowDesigner::toggleDebugMode();
     // Open workflow file, then the sample.
     GTUtilsDialog::waitForDialog(new DefaultWizardFiller("Align Sequences with MUSCLE Wizard"));
     GTFileDialog::openFile(dataDir + "workflow_samples/Alignment", "basic_align.uwl");
