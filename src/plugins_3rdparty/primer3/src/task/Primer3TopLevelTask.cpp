@@ -132,6 +132,12 @@ Task::ReportResult Primer3TopLevelTask::report() {
 }
 
 QString Primer3TopLevelTask::generateReport() const {
+    const auto subtasks = getSubtasks();
+    if (std::any_of(subtasks.cbegin(), subtasks.cend(), [](const QPointer<Task>& t) { return t->isCanceled(); }) &&
+        !isCanceled()) {
+        return tr("The task was canceled by the user");
+    }
+
     QString res;
 
     if (hasError() || isCanceled()) {
