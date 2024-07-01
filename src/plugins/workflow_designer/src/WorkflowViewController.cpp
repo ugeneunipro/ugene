@@ -1810,10 +1810,6 @@ void WorkflowView::sl_pasteItems(const QString& s, bool updateSchemaInfo) {
         }
     }
 
-    if (pasteCount > 0) {
-        recreateBreakpoints();
-    }
-
     int shift = GRID_STEP * (pasteCount);
     foreach (QGraphicsItem* it, scene->selectedItems()) {
         it->moveBy(shift, shift);
@@ -1822,18 +1818,9 @@ void WorkflowView::sl_pasteItems(const QString& s, bool updateSchemaInfo) {
 
 void WorkflowView::recreateScene() {
     sceneRecreation = true;
-    SceneCreator sc(schema.get(), meta);
+    SceneCreator sc(schema.get(), meta, debugInfo->getActorsWithBreakpoints());
     sc.recreateScene(scene);
     sceneRecreation = false;
-}
-
-void WorkflowView::recreateBreakpoints() {
-    const auto actorsWithBreakpoints = debugInfo->getActorsWithBreakpoints();
-    for (auto&& a : qAsConst(actorsWithBreakpoints)) {
-        debugInfo->removeBreakpointFromActor(a);
-        debugInfo->addBreakpointToActor(a);
-        changeBreakpointState(a, true);
-    }
 }
 
 void WorkflowView::sl_showEditor() {
@@ -2743,8 +2730,10 @@ void WorkflowScene::connectConfigurationEditors() {
 /************************************************************************/
 /* SceneCreator */
 /************************************************************************/
-SceneCreator::SceneCreator(Schema* _schema, const Workflow::Metadata& _meta)
-    : schema(_schema), meta(_meta), scene(nullptr) {
+SceneCreator::SceneCreator(Schema* _schema,
+                           const Workflow ::Metadata& _meta,
+                           const QList<ActorId>& _actorsWithBreakpoints)
+    : schema(_schema), meta(_meta), scene(nullptr), actorsWithBreakpoints(_actorsWithBreakpoints) {
 }
 
 SceneCreator::~SceneCreator() {
@@ -2770,6 +2759,9 @@ WorkflowScene* SceneCreator::createScene() {
     foreach (Actor* actor, schema->getProcesses()) {
         WorkflowProcessItem* procItem = createProcess(actor);
         scene->addItem(procItem);
+        if (actorsWithBreakpoints.contains(actor->getId()) > 0) {
+            procItem->toggleBreakpoint();
+        }
         QList<WorkflowPortItem*> portItems = procItem->getPortItems();
         for (WorkflowPortItem* portItem : qAsConst(portItems)) {
             ports[portItem->getPort()] = portItem;

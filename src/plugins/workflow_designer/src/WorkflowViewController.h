@@ -284,8 +284,6 @@ private:
     void createActions();
     void saveState();
     void recreateScene();
-    // Removes and re-adds breakpoints from debugInfo. Actual revalidation after a scene change, for example.
-    void recreateBreakpoints();
     void localHostLaunch();
     void rescale(bool updateGui = true);
 
@@ -413,7 +411,7 @@ private:
 
 class SceneCreator {
 public:
-    SceneCreator(Schema* schema, const Workflow::Metadata& meta);
+    SceneCreator(Schema* schema, const Workflow::Metadata& meta, const QList<ActorId>& actorsWithBreakpoints = {});
     virtual ~SceneCreator();
 
     WorkflowScene* createScene(WorkflowView* controller);
@@ -423,6 +421,7 @@ private:
     Schema* schema;
     Workflow::Metadata meta;
     WorkflowScene* scene;
+    QList<ActorId> actorsWithBreakpoints;
 
     WorkflowScene* createScene();
     WorkflowProcessItem* createProcess(Actor* actor);
