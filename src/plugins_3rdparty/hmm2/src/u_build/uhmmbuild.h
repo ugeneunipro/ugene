@@ -1,5 +1,4 @@
-#ifndef _U2_UHMM_BUILD_H_
-#define _U2_UHMM_BUILD_H_
+#pragma once
 
 struct plan7_s;
 struct msa_struct;
@@ -37,5 +36,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif
