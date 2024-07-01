@@ -24,7 +24,6 @@ U2_DISABLE_WARNINGS
 
 #include <U2Core/Log.h>
 
-#include "MuscleConstants.h"
 #include "MuscleParallel.h"
 #include "MuscleWorkPool.h"
 #include "muscle/objscore.h"
