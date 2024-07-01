@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,13 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PLUGIN_VIEWER_CONTROLLER_H_
+#pragma once
 
-#    include <U2Core/PluginModel.h>
-
-#    include <U2Gui/MainWindow.h>
-
-#    include "ui_PluginViewerWidget.h"
+#include <U2Core/PluginModel.h>
+#include <U2Gui/MainWindow.h>
+#include "ui_PluginViewerWidget.h"
 
 namespace U2 {
 
@@ -117,5 +115,3 @@ public:
     Service* service;
 };
 }  // namespace U2
-
-#endif
