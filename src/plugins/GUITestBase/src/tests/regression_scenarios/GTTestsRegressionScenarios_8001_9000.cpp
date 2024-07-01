@@ -460,6 +460,67 @@ GUI_TEST_CLASS_DEFINITION(test_8069) {
     CHECK_SET_ERR(lt.hasMessage("Nothing to write"), "Expected message 'Nothing to write' not found!");
 }
 
+static void waitForBreakpoint() {
+    class GetVisibilityScenario final : public CustomScenario {
+        const QWidget* w;
+        bool& visible;
+
+    public:
+        GetVisibilityScenario(const QWidget* w, bool& visible)
+            : w(w), visible(visible) {
+        }
+        void run() override {
+            visible = w->isVisible();
+        }
+    };
+
+    const auto w = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar("mwtoolbar_activemdi"), "Save workflow");
+    bool visible = false;
+    GTThread::runInMainThread(new GetVisibilityScenario(w, visible));
+    GTThread::waitForMainThread();
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && !visible; time += GT_OP_CHECK_MILLIS) {
+        GTThread::runInMainThread(new GetVisibilityScenario(w, visible));
+        GTThread::waitForMainThread();
+    }
+}
+GUI_TEST_CLASS_DEFINITION(test_8077_1) {
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+
+    GTUtilsDialog::waitForDialog(new WizardFiller("Align Sequences with MUSCLE Wizard",
+                                                  {dataDir + "samples/CLUSTALW/COI.aln"}));
+    GTFileDialog::openFile(dataDir + "workflow_samples/Alignment", "basic_align.uwl");
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
+    GTUtilsProject::checkProject(GTUtilsProject::ExistsAndEmpty);
+
+    GTUtilsWorkflowDesigner::setBreakpoint("Write alignment");
+    GTUtilsWorkflowDesigner::runWorkflow();
+    // No crash.
+    // Finish the workflow task:
+    waitForBreakpoint();
+    GTUtilsWorkflowDesigner::runWorkflow();
+}
+GUI_TEST_CLASS_DEFINITION(test_8077_2) {
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsDialog::waitForDialog(new WizardFiller("Align Sequences with MUSCLE Wizard",
+                                                  {dataDir + "samples/CLUSTALW/COI.aln"}));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE");
+
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
+    GTUtilsWorkflowDesigner::setBreakpoint("Write alignment");
+    GTUtilsProject::checkProject(GTUtilsProject::NotExists);
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    waitForBreakpoint();
+
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::checkProject();
+    // No crash.
+    // Finish the workflow task:
+    GTUtilsMdi::activateWindow("Workflow Designer");
+    GTUtilsWorkflowDesigner::runWorkflow();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8090) {
     /*
      * 1. Open external tools in setting->preferences
