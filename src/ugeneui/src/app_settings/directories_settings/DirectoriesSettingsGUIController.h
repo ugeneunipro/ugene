@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DIRECTORIES_SETTINGS_GUI_CONTROLLER_H_
-#define _U2_DIRECTORIES_SETTINGS_GUI_CONTROLLER_H_
+#pragma once
 
 #include <QUrl>
 
@@ -88,4 +87,3 @@ private slots:
 
 }  // namespace U2
 
-#endif

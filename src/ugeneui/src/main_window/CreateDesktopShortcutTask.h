@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
-#define _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
+#pragma once
 
 #include <QMessageBox>
 
@@ -51,5 +50,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

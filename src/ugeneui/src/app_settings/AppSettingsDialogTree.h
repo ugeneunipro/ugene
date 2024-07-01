@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_APP_SETTINGS_DIALOG_TREE_H_
-#define _U2_APP_SETTINGS_DIALOG_TREE_H_
+#pragma once
 
 #include <QTreeWidget>
 
@@ -42,4 +41,3 @@ private:
     U2::AppSettingsDialogController* controller;
 };
 
-#endif

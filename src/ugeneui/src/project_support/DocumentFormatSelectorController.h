@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOCUMENT_FORMAT_SELECTOR_CONTROLLER_
-#define _U2_DOCUMENT_FORMAT_SELECTOR_CONTROLLER_
+#pragma once
 
 #include <QComboBox>
 #include <QRadioButton>
@@ -68,4 +67,3 @@ private:
 
 }  // namespace U2
 
-#endif

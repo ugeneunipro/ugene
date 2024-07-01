@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ABOUT_DIALOG_CONTROLLER_
-#define _U2_ABOUT_DIALOG_CONTROLLER_
+#pragma once
 
 #include <QBasicTimer>
 #include <QDialog>
@@ -238,4 +237,3 @@ public:
 
 }  // namespace U2
 
-#endif

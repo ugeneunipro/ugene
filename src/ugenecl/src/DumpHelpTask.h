@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_HELP_DUMPER_
-#define _U2_HELP_DUMPER_
+#pragma once
 
 #include <U2Core/Task.h>
 
@@ -46,4 +45,3 @@ protected:
 
 }  // namespace U2
 
-#endif

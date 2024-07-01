@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TMP_DIR_CHANGE_DIALOG_CONTROLLER_
-#define _U2_TMP_DIR_CHANGE_DIALOG_CONTROLLER_
+#pragma once
 
 #include <QDialog>
 #include <QLabel>
@@ -53,4 +52,3 @@ private:
 
 }  // namespace U2
 
-#endif  // _U2_TMP_DIR_CHANGE_DIALOG_CONTROLLER_

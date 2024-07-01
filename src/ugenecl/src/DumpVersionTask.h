@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DUMP_VERSION_TASK_H__
-#define _U2_DUMP_VERSION_TASK_H__
+#pragma once
 
 #include <U2Core/Task.h>
 
@@ -41,4 +40,3 @@ public:
 
 }  // namespace U2
 
-#endif  // _U2_DUMP_VERSION_TASK_H__

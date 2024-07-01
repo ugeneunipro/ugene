@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UGENE_UPDATER_H_
-#define _U2_UGENE_UPDATER_H_
+#pragma once
 
 #include <QMutex>
 #include <QObject>
@@ -66,4 +65,3 @@ private:
 
 }  // namespace U2
 
-#endif  // _U2_UGENE_UPDATER_H_

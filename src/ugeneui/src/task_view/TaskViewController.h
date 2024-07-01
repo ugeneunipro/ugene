@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TASK_VIEW_CONTROLLER_H_
-#define _U2_TASK_VIEW_CONTROLLER_H_
+#pragma once
 
 #include <QAction>
 #include <QMouseEvent>
@@ -160,4 +159,3 @@ public:
 
 }  // namespace U2
 
-#endif

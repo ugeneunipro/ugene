@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MWMENU_MANAGER_IMPL_H_
-#define _U2_MWMENU_MANAGER_IMPL_H_
+#pragma once
 
 #include <QEvent>
 #include <QMenu>
@@ -54,4 +53,3 @@ private:
 
 }  // namespace U2
 
-#endif

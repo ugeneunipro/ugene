@@ -19,11 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PLUGIN_VEIWER_IMPL_H_
+#pragma once
 
-#    include <U2Core/Task.h>
+#include <U2Core/Task.h>
 
-#    include <U2Gui/PluginViewer.h>
+#include <U2Gui/PluginViewer.h>
 
 namespace U2 {
 
@@ -77,5 +77,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

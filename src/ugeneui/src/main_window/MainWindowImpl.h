@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MAINWINDOW_IMPL_
-#define _U2_MAINWINDOW_IMPL_
+#pragma once
 
 #include <QMainWindow>
 #include <QMdiArea>
@@ -159,4 +158,3 @@ public:
 
 }  // namespace U2
 
-#endif

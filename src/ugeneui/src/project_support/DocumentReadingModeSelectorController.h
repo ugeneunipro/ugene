@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOCUMENT_READING_MODE_SELECTOR_CONTROLLER_
-#define _U2_DOCUMENT_READING_MODE_SELECTOR_CONTROLLER_
+#pragma once
 
 #include <U2Core/AppContext.h>
 
@@ -44,4 +43,3 @@ public:
 
 }  // namespace U2
 
-#endif

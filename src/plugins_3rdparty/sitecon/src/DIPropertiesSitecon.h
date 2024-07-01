@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DI_PROPERTIES_SITECON_H_
-#define _U2_DI_PROPERTIES_SITECON_H_
+#pragma once
 
 #include <assert.h>
 
@@ -67,4 +66,3 @@ public:
 
 }  // namespace U2
 
-#endif

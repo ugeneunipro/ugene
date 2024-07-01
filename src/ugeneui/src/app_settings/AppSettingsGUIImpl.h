@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_APPSETTINGS_GUI_IMPL_H_
-#define _U2_APPSETTINGS_GUI_IMPL_H_
+#pragma once
 
 #include <U2Gui/AppSettingsGUI.h>
 
@@ -58,4 +57,3 @@ private:
 
 }  // namespace U2
 
-#endif

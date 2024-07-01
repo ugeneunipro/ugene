@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SITECON_QUERY_H_
-#define _U2_SITECON_QUERY_H_
+#pragma once
 
 #include <U2Lang/QueryDesignerRegistry.h>
 
@@ -97,4 +96,3 @@ private:
 
 }  // namespace U2
 
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TEST_RUNNER_PLUGIN_H_
-#define _U2_TEST_RUNNER_PLUGIN_H_
+#pragma once
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Task.h>
@@ -80,5 +79,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PTOOLS_PLUGIN_H_
-#define _U2_PTOOLS_PLUGIN_H_
+#pragma once
 
 #include <U2Core/PluginModel.h>
 
@@ -43,5 +42,3 @@ public:
 };  // class StructualAlignerTests
 
 }  // namespace U2
-
-#endif  // #ifndef _U2_PTOOLS_PLUGIN_H_

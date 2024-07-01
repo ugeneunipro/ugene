@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SPLASH_SCREEN_CONTROLLER_
-#define _U2_SPLASH_SCREEN_CONTROLLER_
+#pragma once
 
 #include <QDialog>
 
@@ -68,5 +67,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

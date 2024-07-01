@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_STATISTICAL_REPORT_CONTROLLER_H_
-#define _U2_STATISTICAL_REPORT_CONTROLLER_H_
+#pragma once
 
 #include <QtWidgets/QTextBrowser>
 
@@ -53,4 +52,3 @@ private:
 
 }  // namespace U2
 
-#endif

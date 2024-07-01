@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_HMM_IO_WORKER_H_
-#define _U2_HMM_IO_WORKER_H_
+#pragma once
 
 #include <U2Core/SaveDocumentTask.h>
 
@@ -138,5 +137,3 @@ public:
 
 #include <hmmer2/structs.h>
 Q_DECLARE_METATYPE(plan7_s*);
-
-#endif

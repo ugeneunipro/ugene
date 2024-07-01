@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UHMMER_PLUGIN_H_
-#define _U2_UHMMER_PLUGIN_H_
+#pragma once
 
 #include <QMenu>
 
@@ -77,5 +76,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif

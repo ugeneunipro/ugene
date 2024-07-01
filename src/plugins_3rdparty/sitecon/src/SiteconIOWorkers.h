@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SITECON_IO_WORKER_H_
-#define _U2_SITECON_IO_WORKER_H_
+#pragma once
 
 #include <U2Core/SaveDocumentTask.h>
 
@@ -119,4 +118,3 @@ protected:
 }  // namespace LocalWorkflow
 }  // namespace U2
 
-#endif

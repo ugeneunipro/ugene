@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_RESET_SETTINGS_MAC_H_
-#define _U2_RESET_SETTINGS_MAC_H_
+#pragma once
 
 namespace U2 {
 
@@ -31,4 +30,3 @@ public:
 
 }  // namespace U2
 
-#endif  //_U2_RESET_SETTINGS_MAC_H_

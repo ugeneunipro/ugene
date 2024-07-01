@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WELCOME_PAGE_MDI_H_
-#define _U2_WELCOME_PAGE_MDI_H_
+#pragma once
 
 #include <U2Gui/MainWindow.h>
 
@@ -46,4 +45,3 @@ public:
 
 }  // namespace U2
 
-#endif  // _U2_WELCOME_PAGE_MDI_H_

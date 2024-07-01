@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROJECT_VIEW_WIDGET_
-#define _U2_PROJECT_VIEW_WIDGET_
+#pragma once
 
 #include <U2Core/ClipboardController.h>
 #include <U2Core/DocumentSelection.h>
@@ -190,4 +189,3 @@ private:
 };
 
 }  // namespace U2
-#endif

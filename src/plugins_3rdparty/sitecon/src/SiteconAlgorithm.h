@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SITECON_ALG_H_
-#define _U2_SITECON_ALG_H_
+#pragma once
 
 #include <QVector>
 
@@ -112,4 +111,3 @@ public:
 
 }  // namespace U2
 
-#endif

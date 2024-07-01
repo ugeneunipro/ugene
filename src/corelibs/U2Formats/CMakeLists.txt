@@ -10,7 +10,7 @@ add_definitions(-DBUILDING_U2FORMATS_DLL)
 include_directories(src)
 include_directories(../../include)
 include_directories(../../libs_3rdparty/samtools/src)
-include_directories(../../libs_3rdparty/samtools/src/samtools)
+include_directories(../../libs_3rdparty/samtools/src/samtools_core/htslib)
 
 file(GLOB_RECURSE SRCS src/*.cpp)
 file(GLOB_RECURSE HDRS src/*.h)

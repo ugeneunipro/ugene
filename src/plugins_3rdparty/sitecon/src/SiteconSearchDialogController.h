@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SITECON_SEARCH_DIALOG_H_
-#define _U2_SITECON_SEARCH_DIALOG_H_
+#pragma once
 
 #include <QCloseEvent>
 #include <QList>
@@ -99,4 +98,3 @@ private:
 
 }  // namespace U2
 
-#endif
