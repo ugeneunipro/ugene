@@ -1810,6 +1810,8 @@ void WorkflowView::sl_pasteItems(const QString& s, bool updateSchemaInfo) {
         }
     }
 
+    updateBreakpoints();
+
     int shift = GRID_STEP * (pasteCount);
     foreach (QGraphicsItem* it, scene->selectedItems()) {
         it->moveBy(shift, shift);
@@ -1821,6 +1823,21 @@ void WorkflowView::recreateScene() {
     SceneCreator sc(schema.get(), meta);
     sc.recreateScene(scene);
     sceneRecreation = false;
+}
+
+void WorkflowView::updateBreakpoints() {
+    const auto actorsWithBreakpoints = debugInfo->getActorsWithBreakpoints();
+    for (auto&& a : qAsConst(actorsWithBreakpoints)) {
+        // Remove stale and invalid breakpoints for previous scene elements. Such breakpoints refer to
+        // WorkflowProcessItem pointers from a deleted scene.
+        debugInfo->removeBreakpointFromActor(a);
+        // Re-insert breakpoints if the scene is "same". For example, inserting one element doesn't change the scene,
+        // but opening a new workflow from Samples, on the contrary, is a new scene.
+        if (pasteCount > 0) {
+            debugInfo->addBreakpointToActor(a);
+            changeBreakpointState(a, true);
+        }
+    }
 }
 
 void WorkflowView::sl_showEditor() {
