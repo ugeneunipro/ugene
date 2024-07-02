@@ -210,13 +210,16 @@ bool TaskSchedulerImpl::processFinishedTasks() {
             continue;
         }
 
-        try {
-            Task::ReportResult res = ti->task->report();
-            if (res == Task::ReportResult_CallMeAgain) {
-                continue;
+        if (!ti->reportWasCalled) {
+            try {
+                Task::ReportResult res = ti->task->report();
+                if (res == Task::ReportResult_CallMeAgain) {
+                    continue;
+                }
+                ti->reportWasCalled = true;
+            } catch (const std::bad_alloc&) {
+                onBadAlloc(ti->task);
             }
-        } catch (const std::bad_alloc&) {
-            onBadAlloc(ti->task);
         }
 
         TaskInfo* pti = ti->parentTaskInfo;
