@@ -50,12 +50,14 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMsaEditor.h"
 #include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
+#include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -630,6 +632,16 @@ GUI_TEST_CLASS_DEFINITION(test_8096_3) {
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8120) {
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    // Switch to any other window
+    // ->No "Render overview" task.
+    GTLogTracer lt;
+    GTUtilsStartPage::openStartPage();
+    GTUtilsTaskTreeView::checkTaskIsPresent("Render overview", false);
+    CHECK_SET_ERR(!lt.hasMessage("Render overview"), "Unexpected message in the log");
+}
 
 }  // namespace GUITest_regression_scenarios
 
