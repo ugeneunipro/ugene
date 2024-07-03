@@ -50,6 +50,7 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMsaEditor.h"
 #include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
@@ -514,6 +515,7 @@ GUI_TEST_CLASS_DEFINITION(test_8077_2) {
     waitForBreakpoint();
 
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     GTUtilsProject::checkProject();
     // No crash.
     // Finish the workflow task:
