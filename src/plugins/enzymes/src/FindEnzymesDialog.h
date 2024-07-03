@@ -40,7 +40,7 @@ class ADVSequenceObjectContext;
 class CreateAnnotationWidgetController;
 class EnzymeGroupTreeItem;
 class EnzymeTreeItem;
-class GenbankStyleRegionSelectorController;
+class RegionSelector;
 
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
@@ -130,7 +130,7 @@ private:
     QPointer<ADVSequenceObjectContext> advSequenceContext;
 
     EnzymesSelectorWidget* enzSel;
-    GenbankStyleRegionSelectorController* regionSelector;
+    RegionSelector* regionSelector;
 };
 
 class EnzymeGroupTreeItem : public QTreeWidgetItem {

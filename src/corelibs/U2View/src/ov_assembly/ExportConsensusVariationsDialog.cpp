@@ -50,7 +50,7 @@ ExportConsensusVariationsDialog::ExportConsensusVariationsDialog(QWidget* p, con
     initSaveController();
 
     U2OpStatus2Log os;
-    QList<RegionPreset> presets = QList<RegionPreset>() << RegionPreset(tr("Visible"), visibleRegion);
+    QList<RegionPreset> presets = QList<RegionPreset>() << RegionPreset(tr("Visible"), U2Location({visibleRegion}));
     regionSelector = new RegionSelector(this, settings.model->getModelLength(os), false, nullptr, false, presets);
 
     int insertPos = verticalLayout->count() - 3;

@@ -25,7 +25,10 @@
 #include <QApplication>
 
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Formats/GenbankLocationParser.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/U2LongLongValidator.h>
@@ -43,11 +46,10 @@ RegionSelectorSettings::RegionSelectorSettings(qint64 maxLen,
       presetRegions(_presetRegions),
       defaultPreset(defaultPreset) {
     if (selection != nullptr && !selection->isEmpty()) {
-        U2Region region = getOneRegionFromSelection();
-        presetRegions.prepend(RegionPreset(RegionPreset::SELECTED_REGION(), region));
+        presetRegions.prepend(RegionPreset(RegionPreset::SELECTED_REGION(), U2Location({getOneRegionFromSelection()})));
     }
-    presetRegions.prepend(RegionPreset(RegionPreset::WHOLE_SEQUENCE(), U2Region(0, maxLen)));
-    presetRegions.prepend(RegionPreset(RegionPreset::CUSTOM_REGION(), U2Region()));
+    presetRegions.prepend(RegionPreset(RegionPreset::WHOLE_SEQUENCE(), U2Location({U2Region(0, maxLen)})));
+    presetRegions.prepend(RegionPreset(RegionPreset::CUSTOM_REGION(), U2Location({U2Region()})));
 }
 
 U2Region RegionSelectorSettings::getOneRegionFromSelection() const {
@@ -78,6 +80,9 @@ QString RegionPreset::SELECTED_REGION() {
 
 QString RegionPreset::CUSTOM_REGION() {
     return QApplication::translate("RegionSelectorController", "Custom region");
+}
+QString RegionPreset::LOCATION() {
+    return QApplication::translate("RegionSelectorController", "Location");
 }
 
 RegionSelectorController::RegionSelectorController(RegionSelectorGui gui, RegionSelectorSettings settings, QObject* parent)
@@ -147,6 +152,26 @@ void RegionSelectorController::setRegion(const U2Region& region) {
     emit si_regionChanged(region);
 }
 
+U2Location RegionSelectorController::getLocation(bool* ok) const {
+    U2Location res;
+    if (gui.presetsComboBox->currentText() == RegionPreset::LOCATION()) {
+        qint64 circLen = settings.circular ? settings.maxLen : -1;
+        const QByteArray qb = gui.locationLineEdit->text().toLatin1();
+        *ok = Genbank::LocationParser::parseLocation(qb.constData(), qb.length(), res, circLen) == Genbank::LocationParser::Success;
+    } else {
+        res.data()->regions << getRegion(ok);
+    }
+    return res;
+}
+
+void RegionSelectorController::setLocation(const U2Location& location) {
+    if (gui.presetsComboBox->currentText() == RegionPreset::LOCATION()) {
+        gui.locationLineEdit->setText(U1AnnotationUtils::buildLocationString(location->regions));
+    } else {
+        setRegion(location.data()->regions.isEmpty() ? U2Region() : location.data()->regions.first());
+    }
+}
+
 QString RegionSelectorController::getPresetName() const {
     SAFE_POINT(gui.presetsComboBox != nullptr, "Cannot get preset name, ComboBox is NULL", QString());
     return gui.presetsComboBox->currentText();
@@ -201,6 +226,7 @@ QString RegionSelectorController::getErrorMessage() const {
 }
 
 void RegionSelectorController::sl_onPresetChanged(int index) {
+    //emit si_presetChanged(index);
     blockSignals(true);
 
     // set the region
@@ -211,9 +237,11 @@ void RegionSelectorController::sl_onPresetChanged(int index) {
 
     if (index == gui.presetsComboBox->findText(RegionPreset::SELECTED_REGION())) {
         setRegion(settings.getOneRegionFromSelection());
-    } else {
-        const U2Region region = gui.presetsComboBox->itemData(index).value<U2Region>();
-        setRegion(region);
+    } else if(index == gui.presetsComboBox->findText(RegionPreset::LOCATION())) {
+        setLocation(gui.presetsComboBox->itemData(index).value<U2Location>());
+    } else{
+        const U2Location location = gui.presetsComboBox->itemData(index).value<U2Location>();
+        setRegion(location.data()->regions.first());
     }
     blockSignals(false);
 }
@@ -262,9 +290,10 @@ void RegionSelectorController::sl_onSelectionChanged(GSelection* selection) {
         gui.presetsComboBox->insertItem(selectedRegionIndex, RegionPreset::SELECTED_REGION());
     }
 
-    U2Region region = settings.getOneRegionFromSelection();
-    if (region != gui.presetsComboBox->itemData(selectedRegionIndex).value<U2Region>()) {
-        gui.presetsComboBox->setItemData(selectedRegionIndex, qVariantFromValue(region));
+    const U2Region regionFromSelection = settings.getOneRegionFromSelection();
+    const U2Region regionFromComboBox = gui.presetsComboBox->itemData(selectedRegionIndex).value<U2Location>().data()->regions.first();
+    if (regionFromSelection != regionFromComboBox) {
+        gui.presetsComboBox->setItemData(selectedRegionIndex, qVariantFromValue(U2Location({regionFromSelection})));
         if (selectedRegionIndex == gui.presetsComboBox->currentIndex()) {
             sl_onPresetChanged(selectedRegionIndex);
         }
@@ -306,7 +335,7 @@ void RegionSelectorController::setupPresets() {
 
     bool foundDefaultPreset = false;
     foreach (const RegionPreset& presetRegion, settings.presetRegions) {
-        gui.presetsComboBox->addItem(presetRegion.text, QVariant::fromValue(presetRegion.region));
+        gui.presetsComboBox->addItem(presetRegion.text, QVariant::fromValue(presetRegion.location));
         if (presetRegion.text == settings.defaultPreset) {
             foundDefaultPreset = true;
         }
@@ -316,7 +345,9 @@ void RegionSelectorController::setupPresets() {
     }
 
     gui.presetsComboBox->setCurrentText(settings.defaultPreset);
-    const U2Region region = gui.presetsComboBox->itemData(gui.presetsComboBox->findText(settings.defaultPreset)).value<U2Region>();
+    const U2Region region = gui.presetsComboBox->itemData(gui.presetsComboBox->findText(settings.defaultPreset)).value<U2Location>().data()->regions.isEmpty() ? 
+                            U2Region() : 
+                            gui.presetsComboBox->itemData(gui.presetsComboBox->findText(settings.defaultPreset)).value<U2Location>().data()->regions.first();
     setRegion(region);
 }
 

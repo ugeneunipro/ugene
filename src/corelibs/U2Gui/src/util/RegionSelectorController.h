@@ -24,7 +24,7 @@
 #include <QComboBox>
 #include <QLineEdit>
 
-#include <U2Core/U2Region.h>
+#include <U2Core/U2Location.h>
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -36,30 +36,33 @@ struct RegionSelectorGui {
     RegionSelectorGui()
         : startLineEdit(nullptr),
           endLineEdit(nullptr),
+          locationLineEdit(nullptr),
           presetsComboBox(nullptr) {
     }
 
-    RegionSelectorGui(QLineEdit* start, QLineEdit* end, QComboBox* presets = nullptr)
+    RegionSelectorGui(QLineEdit* start, QLineEdit* end, QLineEdit* location,  QComboBox* presets = nullptr)
         : startLineEdit(start),
           endLineEdit(end),
+          locationLineEdit(location),
           presetsComboBox(presets) {
     }
 
     QLineEdit* startLineEdit;
     QLineEdit* endLineEdit;
+    QLineEdit* locationLineEdit;
     QComboBox* presetsComboBox;
 };
 
 struct U2GUI_EXPORT RegionPreset {
     RegionPreset() {
     }
-    RegionPreset(const QString& text, const U2Region& region)
+    RegionPreset(const QString& text, const U2Location& location)
         : text(text),
-          region(region) {
+          location(location) {
     }
 
     QString text;
-    U2Region region;
+    U2Location location;
 
     bool operator==(const RegionPreset& other) const {
         return (text == other.text);
@@ -73,6 +76,9 @@ struct U2GUI_EXPORT RegionPreset {
 
     /** Custom sequence localized preset name. */
     static QString CUSTOM_REGION();
+    
+    /** Custom sequence localized preset name. */
+    static QString LOCATION();
 };
 
 struct RegionSelectorSettings {
@@ -103,6 +109,9 @@ public:
     U2Region getRegion(bool* ok = nullptr) const;
     void setRegion(const U2Region& region);
 
+    U2Location getLocation(bool* ok = nullptr) const;
+    void setLocation(const U2Location& location);
+
     QString getPresetName() const;
     void setPreset(const QString& preset);
     void removePreset(const QString& preset);
@@ -114,6 +123,7 @@ public:
 
 signals:
     void si_regionChanged(const U2Region& newRegion);
+    //void si_presetChanged(int index);
 
 private slots:
     //! rename

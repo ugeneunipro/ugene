@@ -51,17 +51,24 @@ RegionSelector::RegionSelector(QWidget* p, qint64 len, bool isVertical, DNASeque
       maxLen(len),
       startEdit(nullptr),
       endEdit(nullptr),
+      locationLineEdit(nullptr),
       isVertical(isVertical) {
     initLayout();
 
-    RegionSelectorGui gui(startEdit, endEdit, comboBox);
+    RegionSelectorGui gui(startEdit, endEdit, locationLineEdit, comboBox);
     RegionSelectorSettings settings(len, isCircularSelectionAvailable, selection, presetRegions);
     controller = new RegionSelectorController(gui, settings, this);
     connect(controller, SIGNAL(si_regionChanged(U2Region)), this, SIGNAL(si_regionChanged(U2Region)));
+    connect(comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &RegionSelector::sl_presetChanged);
+    sl_presetChanged(comboBox->currentIndex());
 }
 
 U2Region RegionSelector::getRegion(bool* _ok) const {
     return controller->getRegion(_ok);
+}
+
+U2Location RegionSelector::getLocation(bool* ok) const {
+    return controller->getLocation(ok);
 }
 
 bool RegionSelector::isWholeSequenceSelected() const {
@@ -104,6 +111,19 @@ const QLineEdit* RegionSelector::getEndLineEdit() const {
     return endEdit;
 }
 
+static void hideLayoutMembers(QLayout* layout, bool hide) {
+    for (int i = 0; i < layout->count(); ++i) {
+        QWidget* layoutMember = layout->itemAt(i)->widget();
+        layoutMember->setHidden(hide);
+    }
+}
+
+void RegionSelector::sl_presetChanged(int index) {
+    bool hideLocation = index != comboBox->findText(RegionPreset::LOCATION());
+    hideLayoutMembers(locationLayout, hideLocation);
+    hideLayoutMembers(regionLayout, !hideLocation);
+}
+
 void RegionSelector::initLayout() {
     int w = qMax(((int)log10((double)maxLen)) * 10, 50);
 
@@ -118,6 +138,9 @@ void RegionSelector::initLayout() {
     endEdit->setValidator(new U2LongLongValidator(1, maxLen, endEdit));
     endEdit->setMinimumWidth(w);
     endEdit->setAlignment(Qt::AlignRight);
+
+    locationLineEdit = new QLineEdit(this);
+    locationLineEdit->setAlignment(Qt::AlignRight);
 
     if (isVertical) {
         auto gb = new QGroupBox(this);
@@ -141,16 +164,29 @@ void RegionSelector::initLayout() {
     } else {
         auto l = new QHBoxLayout(this);
         l->setMargin(0);
-        setLayout(l);
 
         auto rangeLabel = new QLabel(tr("Region"), this);
         rangeLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 
         l->addWidget(rangeLabel);
         l->addWidget(comboBox);
-        l->addWidget(startEdit);
-        l->addWidget(new QLabel(tr("-"), this));
-        l->addWidget(endEdit);
+        
+        regionLayout = new QHBoxLayout(this);
+        regionLayout->addWidget(startEdit);
+        regionLayout->addWidget(new QLabel(tr("-"), this));
+        regionLayout->addWidget(endEdit);
+
+        locationLayout = new QHBoxLayout(this);
+        locationLayout->setMargin(0);
+        locationLayout->addWidget(locationLineEdit);
+        
+        auto selectorsLayout = new QVBoxLayout(this);
+        selectorsLayout->setMargin(0);
+        selectorsLayout->addLayout(regionLayout);
+        selectorsLayout->addLayout(locationLayout);
+
+        l->addLayout(selectorsLayout);        
+        setLayout(l);
     }
 
     startEdit->setObjectName("start_edit_line");
