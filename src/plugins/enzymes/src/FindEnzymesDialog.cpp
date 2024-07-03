@@ -22,18 +22,13 @@
 #include "FindEnzymesDialog.h"
 
 #include <QCoreApplication>
-#include <QDir>
 #include <QInputDialog>
 #include <QMessageBox>
-#include <QTextStream>
 #include <QTreeWidget>
 #include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DNASequenceUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
@@ -56,7 +51,6 @@
 // TODO: check whole group (tristate mode)
 
 namespace U2 {
-
 QList<SEnzymeData> EnzymesSelectorWidget::loadedEnzymes;
 QSet<QString> EnzymesSelectorWidget::lastSelection;
 QStringList EnzymesSelectorWidget::loadedSuppliers;
@@ -72,10 +66,10 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(const QPointer<ADVSequenceObjectCon
     tree->setSortingEnabled(true);
     tree->sortByColumn(0, Qt::AscendingOrder);
     tree->setUniformRowHeights(true);
-    tree->setColumnWidth(0, 160);  // id
-    tree->setColumnWidth(1, 75);  // accession
-    tree->setColumnWidth(2, 50);  // type
-    tree->setColumnWidth(4, 270);  // organism
+    tree->setColumnWidth(0, 160); // id
+    tree->setColumnWidth(1, 75); // accession
+    tree->setColumnWidth(2, 50); // type
+    tree->setColumnWidth(4, 270); // organism
 
     totalEnzymes = 0;
     minLength = 1;
@@ -146,11 +140,12 @@ EnzymeTreeItem* EnzymesSelectorWidget::getEnzymeTreeItemByEnzymeData(const SEnzy
 }
 
 const QList<SEnzymeData>& EnzymesSelectorWidget::getLoadedEnzymes() {
+    static const QList<SEnzymeData> emptyList;
     if (loadedEnzymes.isEmpty()) {
         U2OpStatus2Log os;
         QString lastUsedFile = AppContext::getSettings()->getValue(EnzymeSettings::DATA_FILE_KEY).toString();
         loadedEnzymes = EnzymesIO::readEnzymes(lastUsedFile, os);
-        CHECK_OP(os, {});
+        CHECK_OP(os, emptyList);
 
         calculateSuppliers();
     }
@@ -170,15 +165,17 @@ void EnzymesSelectorWidget::calculateSuppliers() {
             loadedSuppliers << supplier;
         }
     }
-    std::sort(loadedSuppliers.begin(), loadedSuppliers.end(), [](const QString& first, const QString& second) {
-        static const QString sign = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
-        if (first == sign) {
-            return true;
-        } else if (second == sign) {
-            return false;
-        }
-        return first < second;
-    });
+    std::sort(loadedSuppliers.begin(),
+              loadedSuppliers.end(),
+              [](const QString& first, const QString& second) {
+                  static const QString sign = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+                  if (first == sign) {
+                      return true;
+                  } else if (second == sign) {
+                      return false;
+                  }
+                  return first < second;
+              });
 }
 
 void EnzymesSelectorWidget::loadFile(const QString& url) {
@@ -279,32 +276,35 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
     t3.stop();
 
     connect(tree, SIGNAL(itemChanged(QTreeWidgetItem*, int)), SLOT(sl_itemChanged(QTreeWidgetItem*, int)));
-    connect(tree, &QTreeWidget::itemSelectionChanged, this, [this]() {
-        auto item = tree->currentItem();
-        CHECK(item != nullptr, );
+    connect(tree,
+            &QTreeWidget::itemSelectionChanged,
+            this,
+            [this]() {
+                auto item = tree->currentItem();
+                CHECK(item != nullptr,);
 
-        EnzymeTreeItem* ei = dynamic_cast<EnzymeTreeItem*>(item);
-        EnzymeGroupTreeItem* gi = dynamic_cast<EnzymeGroupTreeItem*>(item);
-        if (ei != nullptr) {
-            teSelectedEnzymeInfo->setHtml(ei->getEnzymeInfo());
-            static constexpr int MAX_CHECKED_SEQUENCE_LENGTH = 200'000;
-            if (!ei->hasNumberCalculationTask &&
-                !advSequenceContext.isNull() &&
-                advSequenceContext->getSequenceLength() < MAX_CHECKED_SEQUENCE_LENGTH) {
-                auto seqObj = advSequenceContext->getSequenceObject();
-                const auto& er = seqObj->getEntityRef();
-                U2Region reg(0, seqObj->getSequenceLength());
-                auto t = new FindSingleEnzymeTask(er, reg, ei->enzyme, nullptr, seqObj->isCircular(), EnzymeTreeItem::MAXIMUM_ENZYMES_NUMBER, false);
-                AppContext::getTaskScheduler()->registerTopLevelTask(t);
-                connect(t, &FindSingleEnzymeTask::si_stateChanged, this, &EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged);
-                ei->hasNumberCalculationTask = true;
-            }
-        } else if (gi != nullptr) {
-            teSelectedEnzymeInfo->clear();
-        } else {
-            FAIL("Unexpected item type", );
-        }
-    });
+                auto ei = dynamic_cast<EnzymeTreeItem*>(item);
+                auto gi = dynamic_cast<EnzymeGroupTreeItem*>(item);
+                if (ei != nullptr) {
+                    teSelectedEnzymeInfo->setHtml(ei->getEnzymeInfo());
+                    static constexpr int MAX_CHECKED_SEQUENCE_LENGTH = 200'000;
+                    if (!ei->hasNumberCalculationTask &&
+                        !advSequenceContext.isNull() &&
+                        advSequenceContext->getSequenceLength() < MAX_CHECKED_SEQUENCE_LENGTH) {
+                        auto seqObj = advSequenceContext->getSequenceObject();
+                        const auto& er = seqObj->getEntityRef();
+                        U2Region reg(0, seqObj->getSequenceLength());
+                        auto t = new FindSingleEnzymeTask(er, reg, ei->enzyme, nullptr, seqObj->isCircular(), EnzymeTreeItem::MAXIMUM_ENZYMES_NUMBER, false);
+                        AppContext::getTaskScheduler()->registerTopLevelTask(t);
+                        connect(t, &FindSingleEnzymeTask::si_stateChanged, this, &EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged);
+                        ei->hasNumberCalculationTask = true;
+                    }
+                } else if (gi != nullptr) {
+                    teSelectedEnzymeInfo->clear();
+                } else {
+                    FAIL("Unexpected item type",);
+                }
+            });
 
     //     GTIMER(c4,t4,"FindEnzymesDialog::loadFile [resize tree]");
     //     tree->header()->resizeSections(QHeaderView::ResizeToContents);
@@ -319,7 +319,7 @@ int EnzymesSelectorWidget::gatherCheckedNamesListString(QString& checkedNamesLis
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         checked += gi->checkedEnzymes.size();
-        foreach (const EnzymeTreeItem* ci, gi->checkedEnzymes) {
+        foreach(const EnzymeTreeItem* ci, gi->checkedEnzymes) {
             checkedNamesList.append(ci->enzyme->id);
         }
     }
@@ -364,21 +364,21 @@ void EnzymesSelectorWidget::sl_filterTextChanged(const QString& filterText) {
 
 void EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged() {
     auto t = qobject_cast<FindSingleEnzymeTask*>(sender());
-    SAFE_POINT_NN(t, );
+    SAFE_POINT_NN(t,);
 
-    CHECK_OP(t->getStateInfo(), );
-    CHECK(t->getState() == Task::State_Finished, );
+    CHECK_OP(t->getStateInfo(),);
+    CHECK(t->getState() == Task::State_Finished,);
 
     auto taskEnzyme = t->getEnzyme();
     auto taskItem = getEnzymeTreeItemByEnzymeData(taskEnzyme);
-    CHECK(taskItem != nullptr, );
+    CHECK(taskItem != nullptr,);
 
     int size = t->getResults().size();
     bool maxResultsFound = t->wasStoppedOnMaxResults();
     taskItem->enzymesNumber = maxResultsFound ? size + 1 : size;
     auto currentItem = dynamic_cast<EnzymeTreeItem*>(tree->currentItem());
-    CHECK(currentItem != nullptr, );
-    CHECK((currentItem->enzyme->id == taskItem->enzyme->id) && (currentItem->enzyme->seq == taskItem->enzyme->seq), );
+    CHECK(currentItem != nullptr,);
+    CHECK((currentItem->enzyme->id == taskItem->enzyme->id) && (currentItem->enzyme->seq == taskItem->enzyme->seq),);
 
     teSelectedEnzymeInfo->setHtml(currentItem->getEnzymeInfo());
 }
@@ -562,7 +562,7 @@ void EnzymesSelectorWidget::sl_loadSelectionFromFile() {
         while (!in.atEnd()) {
             QString line = in.readLine();
             QStringList enzymes = line.split(QRegExp("[,;\\s]+"), QString::SkipEmptyParts);
-            foreach (const QString& enz, enzymes) {
+            foreach(const QString& enz, enzymes) {
                 enzymeNames.insert(enz);
             }
         }
@@ -591,7 +591,7 @@ void EnzymesSelectorWidget::sl_loadSelectionFromFile() {
 
         updateStatus();
 
-        foreach (const QString& enzyme, enzymeNames) {
+        foreach(const QString& enzyme, enzymeNames) {
             ioLog.error(tr("Failed to load %1 from selection.").arg(enzyme));
         }
     }
@@ -621,7 +621,6 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
 
     maxHitSB->setMinimum(ANY_VALUE);
     minHitSB->setMinimum(ANY_VALUE);
-
 
     for (const auto& k : qAsConst(RESTRICTION_SEQUENCE_LENGTH_VALUES)) {
         if (k != RESTRICTION_SEQUENCE_LENGTH_VALUES.back()) {
@@ -690,10 +689,10 @@ void FindEnzymesDialog::sl_onSelectionModified(int visible, int selected) {
     int total = EnzymesSelectorWidget::getLoadedEnzymes().size();
     int hidden = total - visible;
     QString text = tr("Total number of enzymes: %1, visible: %2, hidden: %3, selected: %4. ")
-                       .arg(total)
-                       .arg(visible)
-                       .arg(hidden)
-                       .arg(selected);
+                   .arg(total)
+                   .arg(visible)
+                   .arg(hidden)
+                   .arg(selected);
     if (hidden != 0) {
         text += tr("Some enzymes are hidden due to \"Enzyme table filter\" settings.");
     }
@@ -709,9 +708,11 @@ void FindEnzymesDialog::sl_updateVisibleEnzymes() {
     const auto& enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
     QList<SEnzymeData> visibleEnzymes;
     for (const auto& enzyme : qAsConst(enzymes)) {
-        bool okSupplier = std::find_if(enzyme->suppliers.begin(), enzyme->suppliers.end(), [&checkedSuppliers](const QString& s) {
-                              return checkedSuppliers.contains(s);
-                          }) != enzyme->suppliers.end();
+        bool okSupplier = std::find_if(enzyme->suppliers.begin(),
+                                       enzyme->suppliers.end(),
+                                       [&checkedSuppliers](const QString& s) {
+                                           return checkedSuppliers.contains(s);
+                                       }) != enzyme->suppliers.end();
 
         int recognitionSequenceLength = 0;
         for (const auto& ch : qAsConst(enzyme->seq)) {
@@ -744,7 +745,7 @@ void FindEnzymesDialog::accept() {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search' region!"), QMessageBox::Ok, this);
         msgBox->setInformativeText(regionSelector->getErrorMessage());
         msgBox->exec();
-        CHECK(!msgBox.isNull(), );
+        CHECK(!msgBox.isNull(),);
         return;
     }
 
@@ -799,10 +800,11 @@ void FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets() {
     cbSuppliers->addItems(loadedSuppliers);
     auto settings = AppContext::getSettings();
     QString suppliersSettingString = settings->getValue(EnzymeSettings::CHECKED_SUPPLIERS).toString();
-    auto checkedSuppliers = suppliersSettingString.isEmpty() ? loadedSuppliers
-                                                             : suppliersSettingString.split(SUPPLIERS_LIST_SEPARATOR);
+    auto checkedSuppliers = suppliersSettingString.isEmpty()
+                                ? loadedSuppliers
+                                : suppliersSettingString.split(SUPPLIERS_LIST_SEPARATOR);
     if (suppliersSettingString.isEmpty()) {
-        checkedSuppliers.removeOne(EnzymesIO::NOT_DEFINED_SIGN);  // Do not enable "Non defined" by default.
+        checkedSuppliers.removeOne(EnzymesIO::NOT_DEFINED_SIGN); // Do not enable "Non defined" by default.
     } else if (checkedSuppliers.contains(EnzymesIO::NOT_DEFINED_SIGN)) {
         checkedSuppliers.replace(checkedSuppliers.indexOf(EnzymesIO::NOT_DEFINED_SIGN), notDefinedTr);
     }
@@ -911,7 +913,7 @@ void FindEnzymesDialog::saveSettings() {
     settings->setValue(EnzymeSettings::SHOW_PALINDROMIC, cbShowPalindromic->isChecked());
     settings->setValue(EnzymeSettings::SHOW_UNINTERRUPTED, cbShowUninterrupted->isChecked());
     settings->setValue(EnzymeSettings::SHOW_NONDEGENERATE, cbShowNondegenerate->isChecked());
-    CHECK(!advSequenceContext.isNull(), );
+    CHECK(!advSequenceContext.isNull(),);
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     // Empty search region is processed as 'Whole sequence' by auto-annotation task.
@@ -955,7 +957,7 @@ bool EnzymeTreeItem::operator<(const QTreeWidgetItem& other) const {
 QString EnzymeTreeItem::getEnzymeInfo() const {
     QString result;
     result += QString("<a href=\"http://rebase.neb.com/rebase/enz/%1.html\">%1</a>")
-                  .arg(text(Column::Id));
+        .arg(text(Column::Id));
     if (enzymesNumber != INCORRECT_ENZYMES_NUMBER) {
         if (enzymesNumber > MAXIMUM_ENZYMES_NUMBER) {
             result += tr(" (>%1 sites)").arg(MAXIMUM_ENZYMES_NUMBER);
@@ -978,7 +980,6 @@ QString EnzymeTreeItem::getTypeInfo() const {
     QString result;
     if (type == "M") {
         result = tr("An orphan methylase,<br>not associated with a restriction enzyme or specificity subunit");
-
     } else if (type.size() == 2) {
         if (type == "IE") {
             result = tr("An intron-encoded (homing) endonuclease");
@@ -1031,5 +1032,4 @@ bool EnzymeGroupTreeItem::operator<(const QTreeWidgetItem& other) const {
     int col = treeWidget()->sortColumn();
     return text(col) < other.text(col);
 }
-
-}  // namespace U2
+} // namespace U2
