@@ -83,6 +83,11 @@ const QMap<QString, QString> RemoteDBRegistry::PAGE_LINKS = { {ENSEMBL, ENSEMBL_
                                                               {SWISS_PROT, UNIPROTKB_PAGE_ID},
                                                               {UNIPROTKB_SWISS_PROT, UNIPROTKB_PAGE_ID},
                                                               {UNIPROTKB_TREMBL, UNIPROTKB_PAGE_ID} };
+static QNetworkRequest constructRequest(const QUrl& requestUrl) {
+    QNetworkRequest req(requestUrl);
+    req.setHeader(QNetworkRequest::UserAgentHeader, "UGENE");
+    return req;
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // BaseLoadRemoteDocumentTask
@@ -465,7 +470,7 @@ void LoadDataFromEntrezTask::run() {
 }
 
 void LoadDataFromEntrezTask::runRequest(const QUrl& requestUrl) {
-    downloadReply = networkManager->get(QNetworkRequest(requestUrl));
+    downloadReply = networkManager->get(constructRequest(requestUrl));
     connect(downloadReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(sl_onError()));
     connect(downloadReply, SIGNAL(uploadProgress(qint64, qint64)), this, SLOT(sl_uploadProgress(qint64, qint64)));
 
@@ -564,7 +569,7 @@ void EntrezQueryTask::sl_replyFinished(QNetworkReply* reply) {
 
 void EntrezQueryTask::runRequest(const QUrl& requestUrl) {
     ioLog.trace(QString("Sending request: %1").arg(query));
-    queryReply = networkManager->get(QNetworkRequest(requestUrl));
+    queryReply = networkManager->get(constructRequest(requestUrl));
     connect(queryReply, &QNetworkReply::errorOccurred, this, &EntrezQueryTask::sl_onError);
 }
 
