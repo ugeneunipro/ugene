@@ -993,6 +993,7 @@ void TaskSchedulerImpl::sl_processSubtasks() {
 void TaskSchedulerImpl::pauseThreadWithTask(const Task* task) {
     foreach (TaskInfo* ti, priorityQueue) {
         if (task == ti->task) {
+            CHECK(ti->thread, );
             QCoreApplication::postEvent(ti->thread,
                                         new QEvent(static_cast<QEvent::Type>(PAUSE_THREAD_EVENT_TYPE)));
         }

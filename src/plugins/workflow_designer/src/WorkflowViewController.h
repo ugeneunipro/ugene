@@ -230,8 +230,10 @@ private slots:
 
     void sl_copyItems();
     void sl_cutItems();
-    void sl_pasteItems(const QString& = QString(), bool updateSchemaInfo = false);
+    // Pastes items from sample.
+    void sl_pasteItems(const QString&);
     void sl_pasteSample(const QString&);
+    void sl_pasteAction();
 
     void sl_setStyle();
     void sl_toggleStyle();
@@ -284,8 +286,6 @@ private:
     void createActions();
     void saveState();
     void recreateScene();
-    // Removes and re-adds breakpoints from debugInfo. Actual revalidation after a scene change, for example.
-    void updateBreakpoints();
     void localHostLaunch();
     void rescale(bool updateGui = true);
 
@@ -336,8 +336,8 @@ private:
     ActorPrototype* currentProto;
     Actor* currentActor;
 
-    QString lastPaste;
-    int pasteCount;
+    QString lastPaste;//todo
+    int pasteCount;//todo
 
     bool scriptingMode;
 
@@ -425,8 +425,6 @@ private:
     WorkflowScene* scene;
 
     WorkflowScene* createScene();
-    WorkflowProcessItem* createProcess(Actor* actor);
-    void createBus(const QMap<Port*, WorkflowPortItem*>& ports, Link* link);
 };
 
 class DashboardManagerHelper : public QObject {
