@@ -29,6 +29,7 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
+#include <primitives/GTTabWidget.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
@@ -723,6 +724,41 @@ GUI_TEST_CLASS_DEFINITION(test_8096_3) {
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
 }
 
+
+GUI_TEST_CLASS_DEFINITION(test_8100) {
+    // Open a file on which primer3 will run for a long time.
+    // Open the Task View.
+    // Run the primer3 task twice.
+    // Cancel the "Pick primers task" from the second task.
+    // ->No crash.
+    GTFileDialog::openFile(testDir + "/_common_data/primer3/primer3_xml/primer1_th", "AGAG.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    auto taskView = GTUtilsTaskTreeView::openView();
+
+    class SetSettings final : public CustomScenario {
+    public:
+        void run() override {
+            auto w = GTWidget::findTabWidget("tabWidget");
+            GTTabWidget::clickTab(w, "General Settings");
+            GTCheckBox::setChecked("checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT", w);
+            GTWidget::click(GTWidget::findButtonByText("Pick primers"));
+        }
+    };
+    GTUtilsDialog::add(new AnyDialogFiller("Primer3Dialog", new SetSettings));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsDialog::add(new Primer3DialogFiller);
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
+
+    GTThread::waitForMainThread();
+    auto secondTaskWidgetItem = taskView->topLevelItem(1);
+    GTTreeWidget::expand(secondTaskWidgetItem);
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(secondTaskWidgetItem->child(0)));
+    GTUtilsDialog::waitForDialog(new PopupChooser({"Cancel task"}, GTGlobals::UseMouse));
+    GTMouseDriver::click(Qt::RightButton);
+
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
 
 }  // namespace GUITest_regression_scenarios
 
