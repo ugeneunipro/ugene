@@ -670,7 +670,10 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
         regionSelector->setExcludedCheckboxChecked(false);
     }
     */
-    
+    if (!fitsWell) {
+        searchLocation.data()->regions.clear();
+        searchLocation.data()->regions << U2Region();
+    }
     QList<RegionPreset> presets = {RegionPreset(RegionPreset::RegionPreset::LOCATION(), searchLocation)};
 
     if (!advSequenceContext->getSequenceSelection()->getSelectedRegions().isEmpty()) {
@@ -890,7 +893,6 @@ void FindEnzymesDialog::initSettings() {
     cbShowUninterrupted->setChecked(settings->getValue(EnzymeSettings::SHOW_UNINTERRUPTED, 0).toBool());
     cbShowNondegenerate->setChecked(settings->getValue(EnzymeSettings::SHOW_NONDEGENERATE, 0).toBool());
 
-    U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     filterGroupBox->setChecked(useHitCountControl);
     if (useHitCountControl) {
         minHitSB->setValue(minHitValue);
