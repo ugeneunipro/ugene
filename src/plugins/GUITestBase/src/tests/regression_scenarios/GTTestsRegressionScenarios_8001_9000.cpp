@@ -29,7 +29,9 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
+#include <primitives/GTTabWidget.h>
 #include <primitives/GTToolbar.h>
+#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
@@ -463,6 +465,98 @@ GUI_TEST_CLASS_DEFINITION(test_8069) {
     CHECK_SET_ERR(lt.hasMessage("Nothing to write"), "Expected message 'Nothing to write' not found!");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8083_1) {
+    const auto checkWorkflowPaused = []() {
+        GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
+        GTWidget::checkEnabled(GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI),
+                                                                    "Next step"));
+    };
+
+    const QString elemName = "Read Alignment";
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::addElement(elemName);
+    GTUtilsWorkflowDesigner::addInputFile(elemName, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsWorkflowDesigner::setBreakpoint(elemName);
+    GTMenu::clickMainMenuItem({"Actions", "Copy"});
+    GTMenu::clickMainMenuItem({"Actions", "Paste"});
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    checkWorkflowPaused();
+    // No crash.
+    // Finish the workflow task:
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTMenu::clickMainMenuItem({"Actions", "Select all elements"});
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Break at element");
+    // ->The first element doesn't have breakpoints, but the second does.
+    GTMenu::clickMainMenuItem({"Actions", "Copy"});
+    GTMenu::clickMainMenuItem({"Actions", "Paste"});
+    // ->4 elements, 1 breakpoint.
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    checkWorkflowPaused();
+    // No crash.
+    // Finish the workflow task:
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsWorkflowDesigner::runWorkflow();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8083_2) {
+    // Add breakpoint for one element.
+    // Copy paste the element.
+    // Open the breakpoint manager.
+    // ->It has one breakpoint.
+    // Select it and click "Highlight selected item".
+    // ->The correct element should be highlighted.
+
+    // Check that there is only one breakpoint "Read Alignment" in the breakpoint manager.
+    const auto checkBreakpoints = []() {
+        const auto items = GTTreeWidget::getItems(GTWidget::findTreeWidget("breakpoints list"));
+        const auto breakNames = std::accumulate(items.cbegin(),
+                                                items.cend(),
+                                                QStringList(),
+                                                [](QStringList res, const QTreeWidgetItem* item) {
+                                                    return res += item->text(1);
+                                                });
+        CHECK_SET_ERR(breakNames == QStringList {"Read Alignment"},
+                      QString("One `Read Alignment` breakpoint was expected, but the following breakpoints exist: `%1`")
+                          .arg(breakNames.join(",")));
+    };
+    // Selects the first breakpoint in the manager and presses the "Highlight" button.
+    const auto higlightFirstBreakpoint = []() {
+        auto treeItems = GTTreeWidget::getItems(GTWidget::findTreeWidget("breakpoints list"));
+        GTTreeWidget::click(treeItems[0]);
+        GTWidget::click(GTWidget::findButtonByText("Highlight selected item"));
+    };
+
+    const QString elemName = "Read Alignment";
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::addElement(elemName);
+    GTMenu::clickMainMenuItem({"Actions", "Copy"});
+    GTUtilsWorkflowDesigner::setBreakpoint(elemName);
+    GTMenu::clickMainMenuItem({"Actions", "Paste"});
+
+    GTUtilsWorkflowDesigner::toggleBreakpointManager();
+    checkBreakpoints();
+    higlightFirstBreakpoint();
+    // No crash.
+
+    GTMenu::clickMainMenuItem({"Actions", "Select all elements"});
+    GTMenu::clickMainMenuItem({"Actions", "Copy"});
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Break at element");
+    // ->The first element doesn't have breakpoints, but the second does.
+    GTMenu::clickMainMenuItem({"Actions", "Paste"});
+    // ->4 elements, 1 breakpoint.
+
+    checkBreakpoints();
+    higlightFirstBreakpoint();
+    // No crash.
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8090) {
     /*
      * 1. Open external tools in setting->preferences
@@ -631,6 +725,41 @@ GUI_TEST_CLASS_DEFINITION(test_8096_3) {
     GTUtilsDialog::waitForDialog(new ConstructMoleculeDialogFiller(actions));
     GTUtilsDialog::waitForDialog(new PopupChooser({"Cloning", "CLONING_CONSTRUCT"}));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8100) {
+    // Open a file on which primer3 will run for a long time.
+    // Open the Task View.
+    // Run the primer3 task twice.
+    // Cancel the "Pick primers task" from the second task.
+    // ->No crash.
+    GTFileDialog::openFile(testDir + "/_common_data/primer3/primer3_xml/primer1_th", "AGAG.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    auto taskView = GTUtilsTaskTreeView::openView();
+
+    class SetSettings final : public CustomScenario {
+    public:
+        void run() override {
+            auto w = GTWidget::findTabWidget("tabWidget");
+            GTTabWidget::clickTab(w, "General Settings");
+            GTCheckBox::setChecked("checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT", w);
+            GTWidget::click(GTWidget::findButtonByText("Pick primers"));
+        }
+    };
+    GTUtilsDialog::add(new AnyDialogFiller("Primer3Dialog", new SetSettings));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsDialog::add(new Primer3DialogFiller);
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
+
+    GTThread::waitForMainThread();
+    auto secondTaskWidgetItem = taskView->topLevelItem(1);
+    GTTreeWidget::expand(secondTaskWidgetItem);
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(secondTaskWidgetItem->child(0)));
+    GTUtilsDialog::waitForDialog(new PopupChooser({"Cancel task"}, GTGlobals::UseMouse));
+    GTMouseDriver::click(Qt::RightButton);
+
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8120_1) {

@@ -411,7 +411,7 @@ private:
 
 class SceneCreator {
 public:
-    SceneCreator(Schema* schema, const Workflow::Metadata& meta);
+    SceneCreator(Schema* schema, const Workflow::Metadata& meta, const QList<ActorId>& actorsWithBreakpoints = {});
     virtual ~SceneCreator();
 
     WorkflowScene* createScene(WorkflowView* controller);
@@ -421,6 +421,7 @@ private:
     Schema* schema;
     Workflow::Metadata meta;
     WorkflowScene* scene;
+    QList<ActorId> actorsWithBreakpoints;
 
     WorkflowScene* createScene();
     WorkflowProcessItem* createProcess(Actor* actor);
