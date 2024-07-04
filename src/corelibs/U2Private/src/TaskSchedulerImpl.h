@@ -110,7 +110,6 @@ public:
 
     bool subtasksWereCanceled = false;  // 'true' if canceled task has called cancel() on its subtasks
     bool selfRunFinished = false;  // indicates that the 'run' method of this task was finished
-    bool reportWasCalled = false;  // the report method must be called once
 
     /** If true, the task has locked thread resource. */
     bool hasLockedThreadResource = false;
