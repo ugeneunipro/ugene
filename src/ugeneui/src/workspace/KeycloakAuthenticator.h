@@ -21,27 +21,33 @@
 
 #pragma once
 
-#include "ServiceModel.h"
+#include <QNetworkAccessManager>
+#include <QOAuth2AuthorizationCodeFlow>
+#include <QObject>
 
-namespace U2 {
+class KeycloakAuthenticator : public QObject {
+    Q_OBJECT
 
-class AppResourcePool;
+public:
+    KeycloakAuthenticator(const QString& authUrl,
+                          const QString& tokenUrl,
+                          const QString& clientId,
+                          QObject* parent = nullptr);
 
-const ServiceType Service_PluginViewer = 101;
-const ServiceType Service_Project = 102;
-const ServiceType Service_ProjectView = 103;
+    void startAuthentication();
 
-const ServiceType Service_DNAGraphPack = 104;
-const ServiceType Service_DNAExport = 105;
-const ServiceType Service_TestRunner = 106;
-const ServiceType Service_ScriptRegistry = 107;
-const ServiceType Service_ExternalToolSupport = 108;
-const ServiceType Service_GUITesting = 109;
-const ServiceType Service_WorkflowDesigner = 110;
-const ServiceType Service_QueryDesigner = 111;
-const ServiceType Service_Workspace = 112;
+signals:
+    void si_authenticationGranted(const QString& accessToken);
+    void si_authenticationFailed(const QString& error);
 
-const ServiceType Service_MinCoreServiceId = 500;
-const ServiceType Service_MaxCoreServiceId = 1000;
+private slots:
+    void handleAuthorizationGranted();
+    void handleErrorOccurred(const QString& error);
 
-}  // namespace U2
+private:
+    QNetworkAccessManager networkAccessManager;
+    QOAuth2AuthorizationCodeFlow oauth2;
+    QString authUrl;
+    QString tokenUrl;
+    QString clientId;
+};

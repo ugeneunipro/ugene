@@ -21,6 +21,8 @@
 
 #include <qglobal.h>
 
+#include "workspace/WorkspaceService.h"
+
 #ifdef Q_OS_WIN
 #    include <tchar.h>
 #    include <windows.h>
@@ -197,6 +199,7 @@ static void registerCoreServices() {
     TaskScheduler* ts = AppContext::getTaskScheduler();
     ts->registerTopLevelTask(sr->registerServiceTask(new PluginViewerImpl()));
     ts->registerTopLevelTask(sr->registerServiceTask(new ProjectViewImpl()));
+    ts->registerTopLevelTask(sr->registerServiceTask(new WorkspaceService()));
 }
 
 static void setDataSearchPaths() {

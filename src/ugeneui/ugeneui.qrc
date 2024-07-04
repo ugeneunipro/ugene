@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/ugene">
+        <file>images/login_icon.xml</file>
+        <file>images/logout_icon.xml</file>
         <file>images/create_new_project.png</file>
         <file>images/about.png</file>
         <file>images/ugene_16.png</file>

@@ -42,7 +42,9 @@ HEADERS += src/app_settings/AppSettingsDialogController.h \
            src/update/UgeneUpdater.h \
            src/welcome_page/WelcomePageMdi.h \
            src/welcome_page/WelcomePageMdiController.h \
-           src/welcome_page/WelcomePageWidget.h
+           src/welcome_page/WelcomePageWidget.h \
+           src/workspace/KeycloakAuthenticator.h \
+           src/workspace/WorkspaceService.h
 
 FORMS += src/app_settings/directories_settings/DirectoriesSettingsWidget.ui \
          src/app_settings/format_settings/FormatSettingsWidget.ui \
@@ -106,7 +108,9 @@ SOURCES += src/Main.cpp \
            src/update/UgeneUpdater.cpp \
            src/welcome_page/WelcomePageMdi.cpp \
            src/welcome_page/WelcomePageMdiController.cpp \
-           src/welcome_page/WelcomePageWidget.cpp
+           src/welcome_page/WelcomePageWidget.cpp \
+           src/workspace/KeycloakAuthenticator.cpp \
+           src/workspace/WorkspaceService.cpp
 
 macx {
 OBJECTIVE_HEADERS += src/app_settings/ResetSettingsMac.h

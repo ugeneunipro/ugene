@@ -1,6 +1,6 @@
 include( ../ugene_globals.pri )
 
-QT += xml network script widgets
+QT += xml network networkauth script widgets
 
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release
