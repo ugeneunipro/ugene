@@ -58,6 +58,7 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsStartPage.h"
+#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -632,7 +633,7 @@ GUI_TEST_CLASS_DEFINITION(test_8096_3) {
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
 }
 
-GUI_TEST_CLASS_DEFINITION(test_8120) {
+GUI_TEST_CLASS_DEFINITION(test_8120_1) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     // Switch to any other window
@@ -641,6 +642,27 @@ GUI_TEST_CLASS_DEFINITION(test_8120) {
     GTUtilsStartPage::openStartPage();
     GTUtilsTaskTreeView::checkTaskIsPresent("Render overview", false);
     CHECK_SET_ERR(!lt.hasMessage("Render overview"), "Unexpected message in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8120_2) {
+    // Change MSA when its window inactive->no overview task.
+    // Return back to MSA window->there is an overview task.
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTUtilsStartPage::openStartPage();
+    GTLogTracer lt;
+
+    const auto& objs = GTUtilsDocument::getDocument("COI.aln")->getObjects();
+    CHECK_SET_ERR(objs.size() == 1, QString("Unexpected number of gobjects (%1) in document COI.aln").arg(objs.size()));
+    auto msa = qobject_cast<MsaObject*>(objs[0]);
+    CHECK_SET_ERR(msa, "Error casting to msa");
+    GTThread::runInMainThread([msa]() { msa->removeRow(0); });
+    GTUtilsTaskTreeView::checkTaskIsPresent("Render overview", false);
+    CHECK_SET_ERR(!lt.hasMessage("Render overview"), "Unexpected message in the log");
+
+    GTUtilsMdi::activateWindow("COI");
+    CHECK_SET_ERR(lt.hasMessage("Render overview"), "No expected message in the log");
 }
 
 }  // namespace GUITest_regression_scenarios
