@@ -280,7 +280,10 @@ WorkflowProcessItem* createProcess(Actor* actor, const Workflow::Metadata& meta)
     return procItem;
 }
 
-void createBus(const QMap<Port*, WorkflowPortItem*>& ports, Link* link, WorkflowScene* scene, const Workflow::Metadata& meta) {
+void createBus(const QMap<Port*, WorkflowPortItem*>& ports,
+               Link* link,
+               WorkflowScene* scene,
+               const Workflow::Metadata& meta) {
     WorkflowPortItem* src = ports[link->source()];
     WorkflowPortItem* dst = ports[link->destination()];
     WorkflowBusItem* busItem = scene->addFlow(src, dst, link);
@@ -288,7 +291,11 @@ void createBus(const QMap<Port*, WorkflowPortItem*>& ports, Link* link, Workflow
     ActorId dstActorId = dst->getOwner()->getProcess()->getId();
 
     bool contains = false;
-    QPointF p = meta.getTextPos(srcActorId, link->source()->getId(), dstActorId, link->destination()->getId(), contains);
+    QPointF p = meta.getTextPos(srcActorId,
+                                link->source()->getId(),
+                                dstActorId,
+                                link->destination()->getId(),
+                                contains);
     if (contains) {
         busItem->getText()->setPos(p);
     }
@@ -1901,7 +1908,7 @@ void WorkflowView::sl_pasteAction() {
     meta.mergeVisual(pastedM);
     pastedS.setDeepCopyFlag(false);
 
-    [&pastedS, this]() {
+    // Add scene elements to the scene.
     QMap<Port*, WorkflowPortItem*> ports;
     foreach (Actor* actor, pastedS.getProcesses()) {
         WorkflowProcessItem* procItem = SceneCreatorHelper::createProcess(actor, meta);
@@ -1911,10 +1918,9 @@ void WorkflowView::sl_pasteAction() {
             ports[portItem->getPort()] = portItem;
         }
     }
-
     foreach (Link* link, pastedS.getFlows()) {
         SceneCreatorHelper::createBus(ports, link, scene, meta);
-    } }();
+    }
 
     scene->connectConfigurationEditors();
 }

@@ -233,6 +233,7 @@ private slots:
     // Pastes items from sample.
     void sl_pasteItems(const QString&);
     void sl_pasteSample(const QString&);
+    // Slot for Ctrl+V.
     void sl_pasteAction();
 
     void sl_setStyle();
@@ -336,8 +337,8 @@ private:
     ActorPrototype* currentProto;
     Actor* currentActor;
 
-    QString lastPaste;//todo
-    int pasteCount;//todo
+    QString lastPaste;
+    int pasteCount;
 
     bool scriptingMode;
 
