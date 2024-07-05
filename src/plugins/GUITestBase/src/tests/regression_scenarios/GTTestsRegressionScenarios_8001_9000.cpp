@@ -48,6 +48,7 @@
 #include "GTTestsRegressionScenarios_8001_9000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsBookmarksTreeView.h"
+#include "GTUtilsDashboard.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsNotifications.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
@@ -462,13 +463,58 @@ GUI_TEST_CLASS_DEFINITION(test_8069) {
     CHECK_SET_ERR(lt.hasMessage("Nothing to write"), "Expected message 'Nothing to write' not found!");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_8083_1) {
-    const auto checkWorkflowPaused = []() {
-        GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
-        GTWidget::checkEnabled(GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI),
-                                                                    "Next step"));
-    };
+static void checkWorkflowPaused() {
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
+    GTWidget::checkEnabled(GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI),
+                                                                "Next step"));
+};
 
+GUI_TEST_CLASS_DEFINITION(test_8074) {
+    // Set a break on element.
+    // Run workflow.
+    // Reopen from dashboard.
+    // Run again.
+    // ->No crash.
+    // Set a break.
+    // ->Check it in the break manager; no crash if rerun; the breakpoint triggers successfully.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    const auto elemName = QStringLiteral("Read Alignment");
+    GTUtilsWorkflowDesigner::addElement(elemName);
+    GTUtilsWorkflowDesigner::addInputFile(elemName, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsWorkflowDesigner::setBreakpoint(elemName);
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    checkWorkflowPaused();
+    GTUtilsWorkflowDesigner::runWorkflow();  // To end execution
+
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTWidget::click(GTUtilsWorkflowDesigner::getGotoDashboardButton());
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Discard));
+    GTWidget::click(GTUtilsDashboard::findLoadSchemaButton());
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsWorkflowDesigner::toggleBreakpointManager();
+    auto breakNum = GTUtilsWorkflowDesigner::getBreakpointList().size();
+    CHECK_SET_ERR(breakNum == 0,
+                  QString("Expected no breakpoints, but there is %1 breakpoints in the breakpoint manager")
+                      .arg(breakNum));
+    GTUtilsWorkflowDesigner::runWorkflow();
+    // No crash.
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTWidget::click(GTUtilsWorkflowDesigner::getGotoWorkflowButton());
+    GTUtilsWorkflowDesigner::setBreakpoint(elemName);
+    breakNum = GTUtilsWorkflowDesigner::getBreakpointList().size();
+    CHECK_SET_ERR(breakNum == 1,
+                  QString("Expected 1 breakpoint, but there is %1 breakpoints in the breakpoint manager")
+                      .arg(breakNum));
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    checkWorkflowPaused();
+    GTUtilsWorkflowDesigner::runWorkflow();  // To end execution
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8083_1) {
     const QString elemName = "Read Alignment";
     GTUtilsWorkflowDesigner::toggleDebugMode();
     GTUtilsWorkflowDesigner::openWorkflowDesigner();

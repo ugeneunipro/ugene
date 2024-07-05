@@ -230,8 +230,11 @@ private slots:
 
     void sl_copyItems();
     void sl_cutItems();
-    void sl_pasteItems(const QString& = QString(), bool updateSchemaInfo = false);
+    // Pastes items from sample.
+    void sl_pasteItems(const QString&);
     void sl_pasteSample(const QString&);
+    // Slot for Ctrl+V.
+    void sl_pasteAction();
 
     void sl_setStyle();
     void sl_toggleStyle();
@@ -411,7 +414,7 @@ private:
 
 class SceneCreator {
 public:
-    SceneCreator(Schema* schema, const Workflow::Metadata& meta, const QList<ActorId>& actorsWithBreakpoints = {});
+    SceneCreator(Schema* schema, const Workflow::Metadata& meta);
     virtual ~SceneCreator();
 
     WorkflowScene* createScene(WorkflowView* controller);
@@ -421,11 +424,8 @@ private:
     Schema* schema;
     Workflow::Metadata meta;
     WorkflowScene* scene;
-    QList<ActorId> actorsWithBreakpoints;
 
     WorkflowScene* createScene();
-    WorkflowProcessItem* createProcess(Actor* actor);
-    void createBus(const QMap<Port*, WorkflowPortItem*>& ports, Link* link);
 };
 
 class DashboardManagerHelper : public QObject {
