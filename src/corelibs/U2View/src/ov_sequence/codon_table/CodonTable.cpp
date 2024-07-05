@@ -39,11 +39,13 @@
 #include <U2View/AnnotatedDNAView.h>
 namespace U2 {
 
-const QColor CodonTableView::NONPOLAR_COLOR = QColor("#FFEE00").lighter();
-const QColor CodonTableView::POLAR_COLOR = QColor("#3DF490").lighter();
-const QColor CodonTableView::BASIC_COLOR = QColor("#FF5082").lighter();
-const QColor CodonTableView::ACIDIC_COLOR = QColor("#00ABED").lighter();
+const QColor CodonTableView::NONPOLAR_COLOR = QColor("#FFEE00");
+const QColor CodonTableView::POLAR_COLOR = QColor("#3DF490");
+const QColor CodonTableView::BASIC_COLOR = QColor("#FF5082");
+const QColor CodonTableView::ACIDIC_COLOR = QColor("#00ABED");
 const QColor CodonTableView::STOP_CODON_COLOR = QColor(Qt::gray);
+const QList<char> CodonTableView::NUCLEOBASES = {'U', 'C', 'A', 'G' };
+const QString CodonTableView::LABEL_HTML_TEXT = "<a href=\"%1\" style=\"color: %2\">%3</a>";
 
 // CodonTableView
 CodonTableView::CodonTableView(AnnotatedDNAView* view)
@@ -100,16 +102,9 @@ CodonTableView::CodonTableView(AnnotatedDNAView* view)
     setLayout(l);
     setVisible(false);
 
-    QList<ADVSequenceObjectContext*> list = view->getSequenceContexts();
-    foreach (ADVSequenceObjectContext* ctx, list) {
-        // find first with translation table
-        if (ctx->getAminoTT() != nullptr) {
-            setAminoTranslation(ctx->getAminoTT()->getTranslationId());
-            return;
-        }
-    }
-    // set standard genetic code table
-    setAminoTranslation(DNATranslationID(1));
+    setAminoTranslation(getBestAminoTranslationId());
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &CodonTableView::sl_colorModeSwitched);
 }
 
 void CodonTableView::sl_setVisible() {
@@ -135,6 +130,40 @@ void CodonTableView::sl_onActiveSequenceChanged(ADVSequenceWidget* /*from*/, ADV
     setAminoTranslation(ctx.first()->getAminoTT()->getTranslationId());
 }
 
+void CodonTableView::sl_colorModeSwitched() {
+    DNATranslationRegistry* trReg = AppContext::getDNATranslationRegistry();
+    SAFE_POINT_NN(trReg, );
+
+    DNAAlphabetRegistry* alphReg = AppContext::getDNAAlphabetRegistry();
+    SAFE_POINT_NN(alphReg, );
+
+    const DNAAlphabet* alph = alphReg->findById(BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
+    SAFE_POINT_NN(alph, );
+
+    DNATranslation* tr = trReg->lookupTranslation(alph, getBestAminoTranslationId());
+    SAFE_POINT_NN(tr, );
+
+    for (int i = 0; i < NUCLEOBASES.size(); i++) {
+        for (int j = 0; j < NUCLEOBASES.size(); j++) {
+            for (int k = 0; k < NUCLEOBASES.size(); k++) {
+                char codon = tr->translate3to1(NUCLEOBASES[i], NUCLEOBASES[j], NUCLEOBASES[k]);
+                auto dnaCodon = trReg->lookupCodon(codon);
+                QColor appTextColor = QApplication::palette().text().color();
+
+                QString text = dnaCodon->getFullName() + " (" + dnaCodon->getTreeLetterCode() + (dnaCodon->getFullName() != "Stop codon" ? QString(", ") + QChar(dnaCodon->getSymbol()) : "") + ")";
+                QString link = dnaCodon->getLink();
+
+                auto cellLabel = qobject_cast<QLabel*>(table->cellWidget(2 + i * 4 + k, 2 + j * 2));
+                cellLabel->setText(LABEL_HTML_TEXT.arg(link).arg(appTextColor.name()).arg(text));
+
+                QColor color = getColor(dnaCodon->getCodonGroup());
+                QString backgroundColorHtml = AppContext::getMainWindow()->isDarkMode() ? color.darker().name() : color.lighter().name();
+                cellLabel->setStyleSheet("QLabel {background-color: " + backgroundColorHtml + ";}");
+            }
+        }
+    }
+}
+
 void CodonTableView::setAminoTranslation(const QString& trId) {
     DNATranslationRegistry* trReg = AppContext::getDNATranslationRegistry();
     SAFE_POINT(trReg != nullptr, "DNATranslationRegistry is NULL!", );
@@ -147,12 +176,10 @@ void CodonTableView::setAminoTranslation(const QString& trId) {
     DNATranslation* tr = trReg->lookupTranslation(alph, trId);
     SAFE_POINT(tr != nullptr, "No translation found!", );
 
-    QList<char> nucleobases;
-    nucleobases << 'U' << 'C' << 'A' << 'G';
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            for (int k = 0; k < 4; k++) {
-                char codon = tr->translate3to1(nucleobases[i], nucleobases[j], nucleobases[k]);
+    for (int i = 0; i < NUCLEOBASES.size(); i++) {
+        for (int j = 0; j < NUCLEOBASES.size(); j++) {
+            for (int k = 0; k < NUCLEOBASES.size(); k++) {
+                char codon = tr->translate3to1(NUCLEOBASES[i], NUCLEOBASES[j], NUCLEOBASES[k]);
                 addItemToTable(2 + i * 4 + k, 2 + j * 2, trReg->lookupCodon(codon));
             }
         }
@@ -213,7 +240,7 @@ void CodonTableView::addItemToTable(int row, int column, const QString& text, co
     table->removeCellWidget(row, column);
 
     QColor appTextColor = QApplication::palette().text().color();
-    auto label = new QLabel("<a href=\"" + link + "\" style=\"color: " + appTextColor.name() + "\">" + text + "</a>");
+    auto label = new QLabel(LABEL_HTML_TEXT.arg(link).arg(appTextColor.name()).arg(text));
     label->setObjectName("row_" + QString::number(row) + "_column_" + QString::number(column));
     label->setAlignment(Qt::AlignCenter);
     label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
@@ -221,7 +248,8 @@ void CodonTableView::addItemToTable(int row, int column, const QString& text, co
     QFont font = label->font();
     font.setPointSize(10);
     label->setFont(font);
-    label->setStyleSheet("QLabel {background-color: " + backgroundColor.name() + ";}");
+    QString backgroundColorHtml = AppContext::getMainWindow()->isDarkMode() ? backgroundColor.darker().name() : backgroundColor.lighter().name();
+    label->setStyleSheet("QLabel {background-color: " + backgroundColorHtml + ";}");
 
     label->setOpenExternalLinks(true);
     label->setTextFormat(Qt::RichText);
@@ -251,7 +279,7 @@ void CodonTableView::addItemToTable(int row, int column, DNACodon* codon) {
     addItemToTable(row, column, codon->getFullName() + " (" + codon->getTreeLetterCode() + (codon->getFullName() != "Stop codon" ? QString(", ") + QChar(codon->getSymbol()) : "") + ")", getColor(codon->getCodonGroup()), codon->getLink());
 }
 
-QColor CodonTableView::getColor(DNACodonGroup gr) {
+QColor CodonTableView::getColor(DNACodonGroup gr) const {
     if (gr == DNACodonGroup_POLAR) {
         return POLAR_COLOR;
     }
@@ -268,6 +296,18 @@ QColor CodonTableView::getColor(DNACodonGroup gr) {
         return STOP_CODON_COLOR;
     }
     return QColor();
+}
+
+QString CodonTableView::getBestAminoTranslationId() const {
+    const QList<ADVSequenceObjectContext*>& list = dnaView->getSequenceContexts();
+    for (ADVSequenceObjectContext* ctx : list) {
+        if (ctx->getAminoTT() != nullptr) {
+            // find first with translation table
+            return ctx->getAminoTT()->getTranslationId();
+        }
+    }
+    // choose standard genetic code table
+    return DNATranslationID(1);
 }
 
 }  // namespace U2

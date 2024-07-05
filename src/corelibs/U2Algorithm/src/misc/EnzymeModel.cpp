@@ -25,6 +25,8 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceUtils.h>
 
+#include <U2Gui/MainWindow.h>
+
 namespace U2 {
 
 const QString EnzymeSettings::DATA_DIR_KEY("enzymes");

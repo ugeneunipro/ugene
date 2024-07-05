@@ -46,18 +46,15 @@ public:
     void saveState(QVariantMap&) override {
     }
 
-    static const QColor NONPOLAR_COLOR;
-    static const QColor POLAR_COLOR;
-    static const QColor BASIC_COLOR;
-    static const QColor ACIDIC_COLOR;
-    static const QColor STOP_CODON_COLOR;
-
 public slots:
     void sl_setVisible();
     void sl_setAminoTranslation();
 
     /** Updates amino translation to match the new active sequence translation. */
     void sl_onActiveSequenceChanged(ADVSequenceWidget* from, ADVSequenceWidget* to);
+
+private slots:
+    void sl_colorModeSwitched();
 
 private:
     QTableWidget* table;
@@ -69,7 +66,16 @@ private:
 
     void setAminoTranslation(const QString& trId);
     void spanEqualCells();
-    QColor getColor(DNACodonGroup gr);
+    QColor getColor(DNACodonGroup gr) const;
+    QString getBestAminoTranslationId() const;
+
+    static const QColor NONPOLAR_COLOR;
+    static const QColor POLAR_COLOR;
+    static const QColor BASIC_COLOR;
+    static const QColor ACIDIC_COLOR;
+    static const QColor STOP_CODON_COLOR;
+    static const QList<char> NUCLEOBASES;
+    static const QString LABEL_HTML_TEXT;
 };
 
 }  // namespace U2
