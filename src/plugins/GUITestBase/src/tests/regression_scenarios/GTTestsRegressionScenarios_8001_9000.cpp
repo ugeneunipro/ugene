@@ -477,6 +477,7 @@ GUI_TEST_CLASS_DEFINITION(test_8074) {
     // ->No crash.
     // Set a break.
     // ->Check it in the break manager; no crash if rerun; the breakpoint triggers successfully.
+    GTUtilsWorkflowDesigner::toggleDebugMode();
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     const auto elemName = QStringLiteral("Read Alignment");
     GTUtilsWorkflowDesigner::addElement(elemName);
