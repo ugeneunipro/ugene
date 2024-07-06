@@ -465,7 +465,9 @@ void LoadDataFromEntrezTask::run() {
 }
 
 void LoadDataFromEntrezTask::runRequest(const QUrl& requestUrl) {
-    downloadReply = networkManager->get(QNetworkRequest(requestUrl));
+    QNetworkRequest req(requestUrl);
+    req.setHeader(QNetworkRequest::UserAgentHeader, U2HttpHeaders::userAgent);
+    downloadReply = networkManager->get(req);
     connect(downloadReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(sl_onError()));
     connect(downloadReply, SIGNAL(uploadProgress(qint64, qint64)), this, SLOT(sl_uploadProgress(qint64, qint64)));
 
@@ -564,7 +566,9 @@ void EntrezQueryTask::sl_replyFinished(QNetworkReply* reply) {
 
 void EntrezQueryTask::runRequest(const QUrl& requestUrl) {
     ioLog.trace(QString("Sending request: %1").arg(query));
-    queryReply = networkManager->get(QNetworkRequest(requestUrl));
+    QNetworkRequest req(requestUrl);
+    req.setHeader(QNetworkRequest::UserAgentHeader, U2HttpHeaders::userAgent);
+    queryReply = networkManager->get(req);
     connect(queryReply, &QNetworkReply::errorOccurred, this, &EntrezQueryTask::sl_onError);
 }
 
