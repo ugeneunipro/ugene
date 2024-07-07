@@ -5,7 +5,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 REQUIRED Core Gui Widgets Xml Network NetworkAuth Script Svg LinguistTools)
+find_package(Qt5 REQUIRED Core Gui Widgets Xml Network NetworkAuth WebSockets Script)
 
 include_directories(src)
 include_directories(../include)
@@ -25,6 +25,6 @@ qt5_add_resources(RCC_SRCS ugeneui.qrc)
 add_executable(ugeneui ${HDRS} ${SRCS} ${OBJC_SRCS} ${QM_FILES} ${RCC_SRCS})
 
 target_link_libraries(ugeneui
-        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::NetworkAuth Qt5::Script
+        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::NetworkAuth Qt5::WebSockets Qt5::Script
         U2Core U2Designer U2Algorithm U2Formats U2Gui U2View U2Test U2Lang U2Private breakpad)
 

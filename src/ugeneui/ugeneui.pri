@@ -1,6 +1,6 @@
 include( ../ugene_globals.pri )
 
-QT += xml network networkauth script widgets
+QT += xml network networkauth script websockets widgets
 
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release

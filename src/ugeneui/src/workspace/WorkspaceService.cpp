@@ -31,22 +31,23 @@
 #include <U2Gui/MainWindow.h>
 
 #include "KeycloakAuthenticator.h"
+#include "WebSocketClientService.h"
 
 namespace U2 {
 
 WorkspaceService::WorkspaceService()
     : Service(Service_Workspace, "Workspace", "Remove workspace service for UGENE") {
-    // TODO: icons.
-
-    loginAction = new QAction(QIcon(":ugene/images/login_icon.xml"), tr("Login to Workspace"));
+    loginAction = new QAction(QIcon(":ugene/images/login_icon.svg"), tr("Login to Workspace"));
     loginAction->setObjectName("loginToWorkspaceAction");
     connect(loginAction, &QAction::triggered, this, &WorkspaceService::login);
 
-    logoutAction = new QAction(QIcon(":ugene/images/logout_icon.xml"), tr("Logout from Workspace"));
+    logoutAction = new QAction(QIcon(":ugene/images/logout_icon.svg"), tr("Logout from Workspace"));
     logoutAction->setObjectName("logoutFromWorkspaceAction");
     connect(logoutAction, &QAction::triggered, this, &WorkspaceService::logout);
 
     connect(this, &WorkspaceService::si_authenticationEvent, this, &WorkspaceService::updateMainMenuActions);
+
+    webSocketService = new WebSocketClientService(this);
 }
 
 Task* WorkspaceService::createServiceEnablingTask() {
@@ -64,14 +65,23 @@ void WorkspaceService::enable() {
 void WorkspaceService::updateMainMenuActions() {
     MainWindow* mw = AppContext::getMainWindow();
     QMenu* fileMenu = mw->getTopLevelMenu(MWMENU_FILE);
-
-    if (isLoggedIn()) {
-        fileMenu->removeAction(loginAction);
-        fileMenu->addAction(logoutAction);
-    } else {
-        fileMenu->removeAction(logoutAction);
-        fileMenu->addAction(loginAction);
+    if (!separatorAction) {
+        separatorAction = new QAction("", this);
+        separatorAction->setSeparator(true);
+        auto beforeAction = GUIUtils::findAction(fileMenu->actions(), ACTION_PROJECTSUPPORT__ACCESS_REMOTE_DB);
+        fileMenu->insertAction(beforeAction, separatorAction);
     }
+    if (isLoggedIn()) {
+        fileMenu->insertAction(separatorAction, logoutAction);
+        fileMenu->removeAction(loginAction);
+    } else {
+        fileMenu->insertAction(separatorAction, loginAction);
+        fileMenu->removeAction(logoutAction);
+    }
+}
+
+WebSocketClientService* WorkspaceService::getWebSocketService() const {
+    return webSocketService;
 }
 
 void WorkspaceService::login() {
@@ -82,19 +92,24 @@ void WorkspaceService::login() {
     auto authenticator = new KeycloakAuthenticator(authUrl, tokenUrl, clientId);
     connect(authenticator, &KeycloakAuthenticator::si_authenticationGranted, this, [this](const QString& accessToken) {
         this->accessToken = accessToken;
-        this->updateMainMenuActions();
+        updateMainMenuActions();
+        si_authenticationEvent(true);
+        webSocketService->refreshWebSocketConnection(this->accessToken);
     });
     connect(authenticator, &KeycloakAuthenticator::si_authenticationFailed, this, [this](const QString& error) {
         this->accessToken.clear();
         this->updateMainMenuActions();
         QMessageBox::critical(nullptr, L10N::errorTitle(), tr("Failed to authenticate: %1").arg(error));
     });
-    authenticator->startAuthentication();  // authenticator self-destroys after authentication is finished.
+    authenticator->startAuthentication();  // Authenticator self-destroys after authentication is finished.
 }
 
 void WorkspaceService::logout() {
     accessToken.clear();
     updateMainMenuActions();
+    delete webSocketService;
+    webSocketService = nullptr;
+    emit si_authenticationEvent(false);
 }
 
 EnableWorkspaceTask::EnableWorkspaceTask(WorkspaceService* _ws)

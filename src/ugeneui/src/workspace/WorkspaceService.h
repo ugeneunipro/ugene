@@ -27,9 +27,11 @@
 #include <U2Core/Task.h>
 
 namespace U2 {
-class ProjectViewImpl;
 
+class ProjectViewImpl;
+class WebSocketClientService;
 class EnableWorkspaceTask;
+
 class WorkspaceService : public Service {
     Q_OBJECT
     friend class EnableWorkspaceTask;
@@ -45,6 +47,8 @@ public:
     /** Logs out user. Does nothing if user is already logged out. */
     void logout();
 
+    WebSocketClientService* getWebSocketService() const;
+
 signals:
     void si_authenticationEvent(bool isLoggedIn);
 
@@ -55,10 +59,11 @@ private:
     void enable();
     void updateMainMenuActions();
 
-private:
     QString accessToken;
     QAction* loginAction;
     QAction* logoutAction;
+    WebSocketClientService* webSocketService = nullptr;
+    QAction* separatorAction = nullptr;
 };
 
 class EnableWorkspaceTask : public Task {
