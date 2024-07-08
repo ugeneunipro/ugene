@@ -34,6 +34,10 @@
 namespace U2 {
 typedef QNetworkProxy::ProxyType Proxy_t;
 
+namespace U2HttpHeaders {
+const QString userAgent = "UGENE";
+}
+
 class U2CORE_EXPORT ProxyConfig {
 public:
     ProxyConfig()
