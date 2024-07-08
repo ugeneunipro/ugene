@@ -64,7 +64,8 @@ private:
         // Data
         IOAdapter* io;
         QString currentPDBLine;
-        ResidueIndex currentResidueIndex;
+        // Chain index+residue index
+        QPair<int, ResidueIndex> prevResidueIndex;
         int currentChainIndex;
         int currentMoleculeIndex;
         int currentModelIndex;
