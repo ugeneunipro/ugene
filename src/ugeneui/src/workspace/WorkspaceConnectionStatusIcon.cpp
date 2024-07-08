@@ -55,7 +55,7 @@ void WorkspaceConnectionStatusIcon::reconnectToWorkspace() {
     }
     if (workspaceService && workspaceService->isEnabled()) {
         connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this] { updateIcon(); });
-        connect(workspaceService->getWebSocketService(), &WebSocketClientService::si_connectionStateChanged, [this] {
+        connect(workspaceService->getWebSocketService(), &WebSocketClientService::si_connectionStateChanged, this, [this] {
             updateIcon();
         });
     }

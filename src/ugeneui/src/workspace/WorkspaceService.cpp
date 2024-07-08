@@ -22,18 +22,36 @@
 #include "WorkspaceService.h"
 
 #include <QAction>
+#include <QJsonDocument>
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
+#include "../../../corelibs/U2Core/src/globals/Settings.h"
 #include "KeycloakAuthenticator.h"
 #include "WebSocketClientService.h"
 
 namespace U2 {
+
+static QDateTime getTokenExpirationTime(const QString& accessToken) {
+    QStringList parts = accessToken.split('.');
+    CHECK(parts.size() == 3, {});
+    QByteArray payloadString = QByteArray::fromBase64(parts[1].toUtf8());
+    QJsonDocument doc = QJsonDocument::fromJson(payloadString);
+    QJsonObject payloadJson = doc.object();
+    CHECK(payloadJson.contains("exp"), {});
+    qint64 exp = payloadJson["exp"].toVariant().toLongLong();
+    return QDateTime::fromSecsSinceEpoch(exp);
+}
+
+static const int ACCESS_TOKEN_RENEW_BEFORE_EXPIRE_SECONDS = 30;
+static const QString WORKSPACE_SETTINGS_FOLDER = "workspace";
+static const QString WORKSPACE_SETTINGS_REFRESH_TOKEN = "rt";
 
 WorkspaceService::WorkspaceService()
     : Service(Service_Workspace, "Workspace", "Remove workspace service for UGENE") {
@@ -47,7 +65,36 @@ WorkspaceService::WorkspaceService()
 
     connect(this, &WorkspaceService::si_authenticationEvent, this, &WorkspaceService::updateMainMenuActions);
 
+    refreshToken = AppContext::getSettings()->getValue(WORKSPACE_SETTINGS_FOLDER + "/" + WORKSPACE_SETTINGS_REFRESH_TOKEN).toString();
+
     webSocketService = new WebSocketClientService(this);
+
+    auto refreshTokenTimer = new QTimer(this);
+    connect(refreshTokenTimer, &QTimer::timeout, this, [this] { renewAccessToken(); });
+    int accessTokenRefreshTimerIntervalMillis = (ACCESS_TOKEN_RENEW_BEFORE_EXPIRE_SECONDS / 2) * 1000;
+    refreshTokenTimer->start(accessTokenRefreshTimerIntervalMillis);
+    renewAccessToken();
+}
+
+void WorkspaceService::renewAccessToken() {
+    CHECK(!refreshToken.isEmpty(), );
+    QDateTime refreshTokenExpirationTime = getTokenExpirationTime(refreshToken);
+    QDateTime now = QDateTime::currentDateTimeUtc();
+    CHECK(refreshTokenExpirationTime.isValid() && refreshTokenExpirationTime > now, );
+
+    if (!accessToken.isEmpty()) {
+        QDateTime accessTokenExpirationTime = getTokenExpirationTime(accessToken);
+        if (accessTokenExpirationTime.isValid()) {
+            QDateTime minRenewTime = accessTokenExpirationTime.addSecs(-ACCESS_TOKEN_RENEW_BEFORE_EXPIRE_SECONDS);
+            CHECK(minRenewTime >= now, );  // Do not renew - Access Token will be valid long enough.
+        }
+    }
+
+    auto authenticator = new KeycloakAuthenticator(authUrl, tokenUrl, clientId);
+    connect(authenticator, &KeycloakAuthenticator::si_authenticationGranted, this, [this](const QString& accessToken, const QString& refreshToken) {
+        setTokens(accessToken, refreshToken, true);
+    });
+    authenticator->refreshAccessToken(refreshToken);  // Self destroys upon completion.
 }
 
 Task* WorkspaceService::createServiceEnablingTask() {
@@ -84,17 +131,22 @@ WebSocketClientService* WorkspaceService::getWebSocketService() const {
     return webSocketService;
 }
 
-void WorkspaceService::login() {
-    QString authUrl = "https://auth.ugene.net/realms/ugene-prod/protocol/openid-connect/auth";
-    QString tokenUrl = "https://auth.ugene.net/realms/ugene-prod/protocol/openid-connect/token";
-    QString clientId = "workspace-client-prod";
+void WorkspaceService::setTokens(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings) {
+    accessToken = newAccessToken;
+    refreshToken = newRefreshToken;
+    updateMainMenuActions();
+    if (saveToSettings) {
+        AppContext::getSettings()->setValue(WORKSPACE_SETTINGS_FOLDER + "/" + WORKSPACE_SETTINGS_REFRESH_TOKEN, refreshToken);
+    }
+    si_authenticationEvent(true);
+    webSocketService->refreshWebSocketConnection(this->accessToken);
+}
 
+void WorkspaceService::login() {
     auto authenticator = new KeycloakAuthenticator(authUrl, tokenUrl, clientId);
-    connect(authenticator, &KeycloakAuthenticator::si_authenticationGranted, this, [this](const QString& accessToken) {
-        this->accessToken = accessToken;
-        updateMainMenuActions();
-        si_authenticationEvent(true);
-        webSocketService->refreshWebSocketConnection(this->accessToken);
+    connect(authenticator, &KeycloakAuthenticator::si_authenticationGranted, this, [this](const QString& accessToken, const QString& refreshToken) {
+        this->refreshToken = refreshToken;
+        setTokens(accessToken, refreshToken, true);
     });
     connect(authenticator, &KeycloakAuthenticator::si_authenticationFailed, this, [this](const QString& error) {
         this->accessToken.clear();

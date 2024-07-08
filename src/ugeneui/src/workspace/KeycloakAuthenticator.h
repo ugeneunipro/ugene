@@ -35,9 +35,10 @@ public:
                           QObject* parent = nullptr);
 
     void startAuthentication();
+    void refreshAccessToken(const QString& refreshToken);
 
 signals:
-    void si_authenticationGranted(const QString& accessToken);
+    void si_authenticationGranted(const QString& accessToken, const QString& refreshToken);
     void si_authenticationFailed(const QString& error);
 
 private slots:

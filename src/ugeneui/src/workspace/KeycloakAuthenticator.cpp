@@ -22,10 +22,13 @@
 #include "KeycloakAuthenticator.h"
 
 #include <QDesktopServices>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QOAuthHttpServerReplyHandler>
 #include <QUrl>
+#include <QUrlQuery>
 
 KeycloakAuthenticator::KeycloakAuthenticator(const QString& _authUrl, const QString& _tokenUrl, const QString& _clientId, QObject* parent)
     : QObject(parent), authUrl(_authUrl), tokenUrl(_tokenUrl), clientId(_clientId) {
@@ -46,9 +49,40 @@ void KeycloakAuthenticator::startAuthentication() {
     oauth2.grant();
 }
 
+void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
+    QUrl tokenUrl(this->tokenUrl);
+    QNetworkRequest request(tokenUrl);
+
+    QUrlQuery params;
+    params.addQueryItem("client_id", clientId);
+    params.addQueryItem("grant_type", "refresh_token");
+    params.addQueryItem("refresh_token", refreshToken);
+
+    const auto networkManager = new QNetworkAccessManager(this);
+    connect(networkManager, &QNetworkAccessManager::finished, this, [this](QNetworkReply* reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray response = reply->readAll();
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+            QJsonObject jsonObj = jsonDoc.object();
+
+            QString newAccessToken = jsonObj["access_token"].toString();
+            QString newRefreshToken = jsonObj["refresh_token"].toString();
+
+            oauth2.setToken(newAccessToken);
+            emit si_authenticationGranted(newAccessToken, newRefreshToken);
+        } else {
+            emit si_authenticationFailed(reply->errorString());
+        }
+        reply->deleteLater();
+        deleteLater();
+    });
+    networkManager->post(request, params.toString(QUrl::FullyEncoded).toUtf8());
+}
+
 void KeycloakAuthenticator::handleAuthorizationGranted() {
     QString accessToken = oauth2.token();
-    emit si_authenticationGranted(accessToken);
+    QString refreshToken = oauth2.refreshToken();
+    emit si_authenticationGranted(accessToken, refreshToken);
     deleteLater();
 }
 

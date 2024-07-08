@@ -58,12 +58,18 @@ protected:
 private:
     void enable();
     void updateMainMenuActions();
+    void renewAccessToken();
+    void setTokens(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings);
 
     QString accessToken;
+    QString refreshToken;
     QAction* loginAction;
     QAction* logoutAction;
     WebSocketClientService* webSocketService = nullptr;
     QAction* separatorAction = nullptr;
+    QString authUrl = "https://auth.ugene.net/realms/ugene-prod/protocol/openid-connect/auth";
+    QString tokenUrl = "https://auth.ugene.net/realms/ugene-prod/protocol/openid-connect/token";
+    QString clientId = "workspace-client-prod";
 };
 
 class EnableWorkspaceTask : public Task {
