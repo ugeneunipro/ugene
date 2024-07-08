@@ -109,15 +109,18 @@ bool HttpFileAdapter::open(const QUrl& url, const QNetworkProxy& p) {
             postData = splittedStrings.at(1).toLatin1();
             QNetworkRequest netRequest(headerString);
             netRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+            netRequest.setHeader(QNetworkRequest::UserAgentHeader, U2HttpHeaders::userAgent);
             reply = netManager->post(netRequest, postData);
         } else {
             QNetworkRequest netRequest(url);
+            netRequest.setHeader(QNetworkRequest::UserAgentHeader, U2HttpHeaders::userAgent);
             reply = netManager->post(netRequest, "");
         }
     } else {
         QString urlString = url.toString();
         urlString = urlString.replace(RemoteRequestConfig::HTTP_BODY_SEPARATOR, "&");
         QNetworkRequest netRequest(urlString);
+        netRequest.setHeader(QNetworkRequest::UserAgentHeader, U2HttpHeaders::userAgent);
         reply = netManager->get(netRequest);
     }
     coreLog.details(tr("GET %1").arg(reply->url().toString()));
