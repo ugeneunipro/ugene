@@ -131,6 +131,8 @@ private:
 
     EnzymesSelectorWidget* enzSel;
     RegionSelector* regionSelector;
+    RegionSelector* excludeRegionSelector;
+    QCheckBox* excludeCheckbox;
 };
 
 class EnzymeGroupTreeItem : public QTreeWidgetItem {

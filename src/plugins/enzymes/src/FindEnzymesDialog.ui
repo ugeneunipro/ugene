@@ -314,7 +314,7 @@
      <property name="title">
       <string>Search in</string>
      </property>
-     <layout class="QVBoxLayout" name="searchRegionLayout"/>
+     <layout class="QGridLayout" name="searchRegionLayout"/>
     </widget>
    </item>
    <item>

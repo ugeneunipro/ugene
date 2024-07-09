@@ -660,30 +660,50 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
         }
     }
     
-    //TODO UGENE-8101
-    /*
-    U2Region excludeRegion = FindEnzymesAutoAnnotationUpdater::getLastExcludeRegionForObject(sequenceObject);
-    if (excludeRegion.length > 0) {
-        regionSelector->setExcludeRegion(excludeRegion);
-        regionSelector->setExcludedCheckboxChecked(true);
-    } else {
-        regionSelector->setExcludedCheckboxChecked(false);
-    }
-    */
     if (!fitsWell) {
         searchLocation.data()->regions.clear();
         searchLocation.data()->regions << U2Region();
     }
-    QList<RegionPreset> presets = {RegionPreset(RegionPreset::RegionPreset::LOCATION(), searchLocation)};
-
+    QList<RegionPreset> searchPresets = {RegionPreset(RegionPreset::RegionPreset::LOCATION(), searchLocation)};
     if (!advSequenceContext->getSequenceSelection()->getSelectedRegions().isEmpty()) {
-        presets << RegionPreset(RegionPreset::RegionPreset::SELECTED_REGION(), U2Location({advSequenceContext->getSequenceSelection()->getSelectedRegions().first()}));
+        searchPresets << RegionPreset(RegionPreset::RegionPreset::SELECTED_REGION(), U2Location({advSequenceContext->getSequenceSelection()->getSelectedRegions().first()}));
     }
 
     regionSelector = new RegionSelector(this, advSequenceContext->getSequenceLength(), false, advSequenceContext->getSequenceSelection(), 
-                                        advSequenceContext->getSequenceObject()->isCircular(), presets);
-    searchRegionLayout->addWidget(regionSelector);
+                                        advSequenceContext->getSequenceObject()->isCircular(), searchPresets);
+
+    U2Location excludeLocation = FindEnzymesAutoAnnotationUpdater::getLastExcludeLocationForObject(advSequenceContext->getSequenceObject());
+    fitsWell = true;
+    for (const U2Region region : qAsConst(excludeLocation.data()->regions)) {
+        if (!(region.length > 0 && U2Region(0, advSequenceContext->getSequenceLength()).contains(region))) {
+            fitsWell = false;
+            break;
+        }
+    }
+
+    if (!fitsWell) {
+        excludeLocation.data()->regions.clear();
+        excludeLocation.data()->regions << U2Region();
+    }
+
+    QList<RegionPreset> excludePresets = {RegionPreset(RegionPreset::RegionPreset::LOCATION(), excludeLocation)};
+    excludeRegionSelector = new RegionSelector(this, advSequenceContext->getSequenceLength(), false, advSequenceContext->getSequenceSelection(), 
+                                               advSequenceContext->getSequenceObject()->isCircular(), excludePresets);
+    excludeRegionSelector->removePreset(RegionPreset::RegionPreset::WHOLE_SEQUENCE());
+    excludeRegionSelector->setCurrentPreset(RegionPreset::RegionPreset::CUSTOM_REGION());
     
+    excludeCheckbox = new QCheckBox(this);
+    excludeCheckbox->setText(tr("Uncut area:"));
+    excludeCheckbox->setToolTip(tr("A region that will not be cut by any of the found enzymes. If an enzyme is present in this region, it will be excluded from the flank results."));
+    
+    bool excludeOn = FindEnzymesAutoAnnotationUpdater::getExcludeModeEnabledForObject(advSequenceContext->getSequenceObject()) && fitsWell;
+    excludeCheckbox->setChecked(excludeOn);
+    excludeRegionSelector->setEnabled(excludeOn);
+    
+    searchRegionLayout->addWidget(regionSelector, 0, 1);
+    searchRegionLayout->addWidget(excludeCheckbox, 1, 0);
+    searchRegionLayout->addWidget(excludeRegionSelector, 1, 1);
+
     initSettings();
 
     auto vl = new QVBoxLayout();
@@ -712,6 +732,10 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
     connect(pbInvertSelection, &QPushButton::clicked, this, &FindEnzymesDialog::sl_invertSelection);
     connect(enzSel, SIGNAL(si_selectionModified(int, int)), SLOT(sl_onSelectionModified(int, int)));
     sl_onSelectionModified(enzSel->getTotalNumber(), enzSel->getNumSelected());
+
+    connect(excludeCheckbox, &QCheckBox::stateChanged, this, [this]() {
+        excludeRegionSelector->setEnabled(excludeCheckbox->isChecked());
+    });
 }
 
 void FindEnzymesDialog::sl_onSelectionModified(int visible, int selected) {
@@ -767,11 +791,14 @@ void FindEnzymesDialog::accept() {
     }
 
     QList<SEnzymeData> selectedEnzymes = enzSel->getSelectedEnzymes();
-    // TODO UGENE-8101
     bool ok = false;
+    bool ok2 = false;
     regionSelector->getLocation(&ok);
-    if (!ok) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search' region/location!"), QMessageBox::Ok, this);
+    excludeRegionSelector->getLocation(&ok2);
+    excludeRegionSelector->getLocation(&ok2);
+    ok2 = ok2 || !excludeCheckbox->isChecked();
+    if (!ok || !ok2) {
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search' or 'Uncut' region/location!"), QMessageBox::Ok, this);
         msgBox->setInformativeText(tr("Given region or genbank location is invalid, please correct it."));
         msgBox->exec();
         CHECK(!msgBox.isNull(), );
@@ -935,8 +962,15 @@ void FindEnzymesDialog::saveSettings() {
     U2Location loc = regionSelector->isWholeSequenceSelected() ? U2Location() : regionSelector->getLocation(&ok);
     CHECK(ok, );
     FindEnzymesAutoAnnotationUpdater::setLastSearchLocationForObject(sequenceObject, loc);
-    //TODO UGENE-8101
-    //FindEnzymesAutoAnnotationUpdater::setLastExcludeRegionForObject(sequenceObject, regionSelector->getExcludeRegion());
+
+    if (excludeCheckbox->isChecked()) {
+        loc = excludeRegionSelector->getLocation(&ok);
+        CHECK(ok, );
+        FindEnzymesAutoAnnotationUpdater::setLastExcludeLocationForObject(sequenceObject, loc);
+        FindEnzymesAutoAnnotationUpdater::setExcludeModeEnabledForObject(sequenceObject, true);
+    } else {
+        FindEnzymesAutoAnnotationUpdater::setExcludeModeEnabledForObject(sequenceObject, false);
+    }    
     
     enzSel->saveSettings();
 }

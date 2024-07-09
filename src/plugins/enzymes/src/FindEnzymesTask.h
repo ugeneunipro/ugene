@@ -57,11 +57,6 @@ public:
 class FindEnzymesTask;
 
 struct FindEnzymesTaskConfig {
-    enum EnzymeExcludeMode {
-        EnzymeExcludeMode_None,
-        EnzymeExcludeMode_ByFoundEnzymes
-    };
-
     /** Regions to search enzymes. When is empty the whole sequence range is processed. */
     QVector<U2Region> searchRegions;
 
@@ -87,7 +82,7 @@ struct FindEnzymesTaskConfig {
     bool isAutoAnnotationUpdateTask = false;
 
     /** Exclude enzymes from result by region or by enzymes found in region */
-    EnzymeExcludeMode excludeMode = EnzymeExcludeMode_None;
+    bool excludeMode = false;
 };
 
 class FindEnzymesToAnnotationsTask : public Task {
@@ -109,7 +104,7 @@ private:
 class FindEnzymesTask : public Task, public FindEnzymesAlgListener {
     Q_OBJECT
 public:
-    FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false, QVector<U2Region> excludedRegions = QVector<U2Region>());
+    FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false);
 
     void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) override;
 
@@ -121,7 +116,6 @@ public:
 
 private:
     int maxResults;
-    QVector<U2Region> excludedRegions;
     bool isCircular;
     int seqlen;
 
@@ -211,12 +205,10 @@ public:
     static bool isTooManyAnnotationsInTheResult(qint64 sequenceLength, int countOfEnzymeVariants);
     
     /** Set exclude mode for the given sequence object. */
-    static void setExcludeModeForObject(U2SequenceObject* sequenceObject, const FindEnzymesTaskConfig::EnzymeExcludeMode mode);
+    static void setExcludeModeEnabledForObject(U2SequenceObject* sequenceObject, bool enabled);
 
     /** Returns exclude mode for the given sequence object. */
-    static FindEnzymesTaskConfig::EnzymeExcludeMode getExcludeModeForObject(U2SequenceObject* sequenceObject);
+    static bool getExcludeModeEnabledForObject(U2SequenceObject* sequenceObject);
 };
 
 }  // namespace U2
-
-Q_DECLARE_METATYPE(U2::FindEnzymesTaskConfig::EnzymeExcludeMode);
