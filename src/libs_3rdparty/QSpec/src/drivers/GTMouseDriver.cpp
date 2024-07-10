@@ -81,8 +81,13 @@ bool GTMouseDriver::selectArea(const QPoint& start, const QPoint& end) {
 bool GTMouseDriver::doubleClick() {
     DRIVER_CHECK(press(Qt::LeftButton), "Left button could not be pressed on first click");
     DRIVER_CHECK(release(Qt::LeftButton), "Left button could not be released on first click");
+
     // Use an interval below "doubleClickInterval" between clicks because we want it to be a "double-click".
-    GTGlobals::sleep(QApplication::doubleClickInterval() / 2);
+    auto interval = QApplication::doubleClickInterval() / 2;
+#ifdef Q_OS_WIN
+    interval -= interval / 20;  // -5%
+#endif
+    GTGlobals::sleep(interval);
 
     DRIVER_CHECK(press(Qt::LeftButton), "Left button could not be pressed on second click");
     DRIVER_CHECK(release(Qt::LeftButton), "Left button could not be released on second click");
