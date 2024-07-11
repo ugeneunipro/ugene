@@ -765,6 +765,7 @@ GUI_TEST_CLASS_DEFINITION(test_8100) {
 GUI_TEST_CLASS_DEFINITION(test_8120_1) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    GTUtilsTaskTreeView::waitTaskFinished();
     // Switch to any other window
     // ->No "Render overview" task.
     GTLogTracer lt;
@@ -778,6 +779,7 @@ GUI_TEST_CLASS_DEFINITION(test_8120_2) {
     // Return back to MSA window->there is an overview task.
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsStartPage::openStartPage();
     GTLogTracer lt;
