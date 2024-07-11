@@ -141,6 +141,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
 
     QPen borderPen(Qt::SolidLine);
     borderPen.setWidth(selected ? 2 : 1);
+    borderPen.setColor(QPalette().text().color());
 
     const bool isRestrictionSite = a->getType() == U2FeatureTypes::RestrictionSite;
     QVector<U2Region> location = aData->getRegions();

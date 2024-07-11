@@ -124,7 +124,7 @@ QIcon GUIUtils::createSquareIcon(const QColor& c, int size) {
     int h = size;
     QPixmap pix(w, h);
     QPainter p(&pix);
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
     p.drawRect(0, 0, w - 1, h - 1);
     p.fillRect(1, 1, w - 2, h - 2, c);
     p.end();
@@ -143,7 +143,7 @@ QIcon GUIUtils::createRoundIcon(const QColor& c, int size) {
     // ep.addEllipse(1, 1, w-2, h-2);
     ep.addEllipse(0, 0, w - 1, h - 1);
     p.fillPath(ep, c);
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
     p.drawEllipse(0, 0, w - 1, h - 1);
     p.end();
     return QIcon(pix);

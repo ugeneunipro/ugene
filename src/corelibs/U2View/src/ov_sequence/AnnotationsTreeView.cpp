@@ -1871,6 +1871,11 @@ void AnnotationsTreeView::updateColorModeRecursively(AVItem* item) {
             auto aItem = static_cast<AVAnnotationItem*>(item);
             const auto& aData = aItem->annotation->getData();
             const auto* as = AppContext::getAnnotationsSettingsRegistry()->getAnnotationSettings(aData);
+            const QColor iconColor = as->visible ? as->color : Qt::lightGray;
+            auto icon = GUIUtils::createSquareIcon(iconColor, 9);
+            aItem->setIcon(AnnotationsTreeView::COLUMN_NAME, icon);
+            QMap<QString, QIcon>& cache = AVAnnotationItem::getIconsCache();
+            cache[aData->name] = icon;
             GUIUtils::setMutedLnF(aItem, !as->visible, false);
             break;
         }

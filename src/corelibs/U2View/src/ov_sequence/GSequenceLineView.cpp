@@ -65,6 +65,7 @@ GSequenceLineView::GSequenceLineView(QWidget* p, SequenceObjectContext* _ctx)
             SLOT(sl_onDNASelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)));
 
     connect(ctx->getSequenceGObject(), SIGNAL(si_sequenceChanged()), this, SLOT(sl_sequenceChanged()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &GSequenceLineView::completeUpdate);
 }
 
 void GSequenceLineView::pack() {
@@ -634,7 +635,7 @@ void GSequenceLineViewRenderArea::updateFontMetrics() {
 }
 
 void GSequenceLineViewRenderArea::drawFocus(QPainter& p) {
-    p.setPen(QPen(Qt::black, 1, Qt::DotLine));
+    p.setPen(QPen(QPalette().text().color(), 1, Qt::DotLine));
     p.drawRect(0, 0, width() - 1, height() - 1);
 }
 
@@ -655,7 +656,7 @@ void GSequenceLineViewRenderArea::drawFrame(QPainter& p) {
     double scale = getCurrentScale();
     int xStart = posToCoord(visibleFrameRange.startPos - visibleRange.startPos);
     int xLen = qMax((int)(scale * (double)visibleFrameRange.length), 4);
-    QPen pen(Qt::lightGray, 2, Qt::DashLine);
+    QPen pen((AppContext::getMainWindow()->isDarkMode() ? Qt::darkGray : Qt::lightGray), 2, Qt::DashLine);
     p.setPen(pen);
     p.drawRect(xStart, 0, xLen, height());
 }
