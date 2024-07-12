@@ -29,6 +29,23 @@
 
 namespace U2 {
 
+enum class WebSocketRequestType {
+    Subscribe,
+    Unsubscribe,
+    UpdateAccessToken,
+    Acknowledge,
+};
+
+enum class WebSocketSubscriptionType {
+    StorageState,
+};
+
+class WebSocketSubscription {
+public:
+    WebSocketSubscriptionType type;
+    QString entityId;
+};
+
 class WebSocketClientService : public QObject {
     Q_OBJECT
 
@@ -42,6 +59,7 @@ public:
 
 signals:
     void si_connectionStateChanged(bool isConnected);
+    void si_messageReceived(const QJsonObject& message);
 
 private slots:
     void onConnected();
@@ -50,12 +68,12 @@ private slots:
     void onError(QAbstractSocket::SocketError error);
 
 private:
-    void sendMessage(const QString& type, const QJsonObject& request);
+    void sendMessage(const WebSocketRequestType& type, const QJsonObject& request) const;
     void disconnect(bool clearSubscriptions = true);
     void clearSubscriptions();
-    void updateAccessToken(const QString& accessToken);
-    void subscribe(const QJsonObject& subscription);
-    void unsubscribe(const QJsonObject& subscription);
+    void updateAccessToken() const;
+    void subscribe(const WebSocketSubscription& subscription);
+    void unsubscribe(const WebSocketSubscription& subscription);
 
     QWebSocket* socket;
     QString clientId;
@@ -63,6 +81,6 @@ private:
     QSet<QString> receivedMessageIds;
     bool isRetrying = false;
     QString accessToken;
-    QList<QJsonObject> subscriptions;
+    QList<WebSocketSubscription> subscriptions;
 };
 }  // namespace U2

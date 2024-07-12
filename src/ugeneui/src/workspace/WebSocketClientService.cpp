@@ -22,10 +22,36 @@
 #include "WebSocketClientService.h"
 
 #include <QDebug>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QUuid>
 
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
+
+static QString getWebSocketRequestTypeAsString(const WebSocketRequestType& type) {
+    switch (type) {
+        case WebSocketRequestType::Subscribe:
+            return "subscribe";
+        case WebSocketRequestType::Unsubscribe:
+            return "unsubscribe";
+        case WebSocketRequestType::UpdateAccessToken:
+            return "updateAccessToken";
+        case WebSocketRequestType::Acknowledge:
+            return "acknowledge";
+    }
+    FAIL("Unexpected request type", "");
+}
+
+static QString getSubscriptionTypeAsString(const WebSocketSubscriptionType& type) {
+    switch (type) {
+        case WebSocketSubscriptionType::StorageState:
+            return "STORAGE_STATE";
+    }
+    FAIL("Unexpected subscription type", "");
+}
+
 WebSocketClientService::WebSocketClientService(QObject* parent)
     : QObject(parent),
       socket(new QWebSocket()),
@@ -61,12 +87,14 @@ void WebSocketClientService::onTextMessageReceived(const QString& message) {
     }
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject incomingMessage = doc.object();
-    receivedMessageIds.insert(incomingMessage["messageId"].toString());
-    // Handle incoming message
+    auto messageId = incomingMessage["messageId"].toString();
+    receivedMessageIds.insert(messageId);
+    sendMessage(WebSocketRequestType::Acknowledge, {{"messageId", messageId}});
+    emit si_messageReceived(incomingMessage);
 }
 
 void WebSocketClientService::onError(QAbstractSocket::SocketError error) {
-    qWarning() << "WebSocket error:" << error;
+    qDebug() << "WebSocket error:" << error;
     if (isRetrying) {
         return;
     }
@@ -81,19 +109,23 @@ void WebSocketClientService::onError(QAbstractSocket::SocketError error) {
     });
 }
 
-void WebSocketClientService::sendMessage(const QString& type, const QJsonObject& request) {
-    if (connectionReady) {
-        qDebug() << "WebSocketClientService: sending message to the server:" << type << request;
-        QJsonObject message = request;
-        message["type"] = type;
-        socket->sendTextMessage(QJsonDocument(message).toJson(QJsonDocument::Compact));
+void WebSocketClientService::sendMessage(const WebSocketRequestType& type, const QJsonObject& request) const {
+    CHECK(connectionReady, );
+    auto typeString = getWebSocketRequestTypeAsString(type);
+    qDebug() << "WebSocketClientService: sending message to the server:" << typeString << request;
+    QJsonObject message = request;
+    message["type"] = typeString;
+    message["clientId"] = clientId;
+    if (!accessToken.isEmpty()) {
+        message["accessToken"] = accessToken;
     }
+    socket->sendTextMessage(QJsonDocument(message).toJson(QJsonDocument::Compact));
 }
 
-void WebSocketClientService::refreshWebSocketConnection(const QString& accessToken) {
-    this->accessToken = accessToken;
+void WebSocketClientService::refreshWebSocketConnection(const QString& newAccessToken) {
+    accessToken = newAccessToken;
     if (socket->isValid()) {
-        updateAccessToken(accessToken);
+        updateAccessToken();
         return;
     }
 
@@ -119,27 +151,56 @@ void WebSocketClientService::clearSubscriptions() {
     subscriptions.clear();
 }
 
-void WebSocketClientService::updateAccessToken(const QString& accessToken) {
+void WebSocketClientService::updateAccessToken() const {
     if (!socket->isValid()) {
         qWarning() << "Not connected to WebSocket during access token update.";
         return;
     }
     qDebug() << "Updating access token";
 
-    QJsonObject message;
-    message["accessToken"] = accessToken;
-    message["clientId"] = clientId;
-    sendMessage("updateAccessToken", message);
+    sendMessage(WebSocketRequestType::UpdateAccessToken, {});  // Will add the token to the message.
 }
 
-void WebSocketClientService::subscribe(const QJsonObject& subscription) {
-    Q_UNUSED(subscription);
-    // Implement subscription logic
+static QString getClientSubscriptionKey(const WebSocketSubscription& subscription) {
+    return getSubscriptionTypeAsString(subscription.type) + (subscription.entityId.isEmpty() ? " " + subscription.entityId : "");
 }
 
-void WebSocketClientService::unsubscribe(const QJsonObject& subscription) {
-    Q_UNUSED(subscription);
-    // Implement unsubscription logic
+static bool hasSubscriptionWithKey(const QString& key, const QList<WebSocketSubscription>& subscriptions) {
+    return std::any_of(subscriptions.cbegin(), subscriptions.cend(), [&key](const auto& subscription) {
+        return getClientSubscriptionKey(subscription) == key;
+    });
+}
+
+void WebSocketClientService::subscribe(const WebSocketSubscription& subscription) {
+    auto subscriptionKey = getClientSubscriptionKey(subscription);
+    if (!hasSubscriptionWithKey(subscriptionKey, subscriptions)) {
+        QJsonObject subscriptionAsJsonObject;
+        subscriptionAsJsonObject["type"] = getSubscriptionTypeAsString(subscription.type);
+        if (!subscription.entityId.isEmpty()) {
+            subscriptionAsJsonObject["entityId"] = subscription.entityId;
+        };
+        sendMessage(WebSocketRequestType::Subscribe, {{"subscriptions", QJsonArray {subscriptionAsJsonObject}}});
+    }
+    subscriptions << subscription;
+}
+
+void WebSocketClientService::unsubscribe(const WebSocketSubscription& subscription) {
+    const auto subscriptionKey = getClientSubscriptionKey(subscription);
+    const auto it = std::find_if(subscriptions.begin(), subscriptions.end(), [&](const auto& s) {
+        return getClientSubscriptionKey(s) == subscriptionKey;
+    });
+    CHECK(it != subscriptions.cend(), );
+
+    subscriptions.erase(it);
+
+    if (!hasSubscriptionWithKey(subscriptionKey, subscriptions)) {
+        QJsonObject subscriptionAsJsonObject;
+        subscriptionAsJsonObject["type"] = getSubscriptionTypeAsString(subscription.type);
+        if (!subscription.entityId.isEmpty()) {
+            subscriptionAsJsonObject["entityId"] = subscription.entityId;
+        };
+        sendMessage(WebSocketRequestType::Unsubscribe, {{"subscriptions", QJsonArray {subscriptionAsJsonObject}}});
+    }
 }
 
 bool WebSocketClientService::isConnected() const {
