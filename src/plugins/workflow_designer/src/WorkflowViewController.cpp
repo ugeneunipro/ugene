@@ -257,20 +257,23 @@ static WorkflowProcessItem* createProcess(Actor* actor, const Workflow::Metadata
         {
             ItemViewStyle* eStyle = procItem->getStyleById(ItemStyles::EXTENDED);
             ItemViewStyle* sStyle = procItem->getStyleById(ItemStyles::SIMPLE);
-            SAFE_POINT_NN(eStyle, procItem);
-            SAFE_POINT_NN(sStyle, procItem);
             QColor c = visual.getColor(contains);
             if (contains) {
+                SAFE_POINT_NN(eStyle, procItem);
+                SAFE_POINT_NN(sStyle, procItem);
                 eStyle->setBgColor(c);
                 sStyle->setBgColor(c);
             }
             QFont f = visual.getFont(contains);
             if (contains) {
+                SAFE_POINT_NN(eStyle, procItem);
+                SAFE_POINT_NN(sStyle, procItem);
                 eStyle->setDefaultFont(f);
                 sStyle->setDefaultFont(f);
             }
             QRectF r = visual.getRect(contains);
             if (contains) {
+                SAFE_POINT_NN(eStyle, procItem);
                 qobject_cast<ExtendedProcStyle*>(eStyle)->setFixedBounds(r);
             }
         }
