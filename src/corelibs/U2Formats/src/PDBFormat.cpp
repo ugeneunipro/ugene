@@ -409,7 +409,7 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QList<
 
         QPair<int, ResidueIndex> curResidueInd(chainIndex, residueIndex);
         SharedMolecule& mol = biostruct.moleculeMap[chainIndex];
-        if (prevResidueIndex != curResidueInd) {
+        if (prevChainAndResidueIndex != curResidueInd) {
             SharedResidue residue(new ResidueData);
             residue->name = residueName;
             residue->acronym = residueAcronym;
@@ -417,7 +417,7 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QList<
                 ioLog.details(tr("PDB warning: unknown residue name: %1").arg(residue->name.constData()));
             }
             residue->chainIndex = chainIndex;
-            prevResidueIndex = curResidueInd;
+            prevChainAndResidueIndex = curResidueInd;
             residueOrder++;
             residueIndex.setOrder(residueOrder);
             mol->residueMap.insert(residueIndex, residue);
