@@ -210,6 +210,10 @@ bool TaskSchedulerImpl::processFinishedTasks() {
             continue;
         }
 
+        TaskInfo* pti = ti->parentTaskInfo;
+        if (pti != nullptr && pti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && pti->thread != nullptr && pti->thread->isPaused) {
+            continue;
+        }
         try {
             Task::ReportResult res = ti->task->report();
             if (res == Task::ReportResult_CallMeAgain) {
@@ -217,11 +221,6 @@ bool TaskSchedulerImpl::processFinishedTasks() {
             }
         } catch (const std::bad_alloc&) {
             onBadAlloc(ti->task);
-        }
-
-        TaskInfo* pti = ti->parentTaskInfo;
-        if (pti != nullptr && pti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && pti->thread != nullptr && pti->thread->isPaused) {
-            continue;
         }
 
         hasFinished = true;
