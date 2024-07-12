@@ -257,6 +257,8 @@ static WorkflowProcessItem* createProcess(Actor* actor, const Workflow::Metadata
         {
             ItemViewStyle* eStyle = procItem->getStyleById(ItemStyles::EXTENDED);
             ItemViewStyle* sStyle = procItem->getStyleById(ItemStyles::SIMPLE);
+            SAFE_POINT_NN(eStyle, procItem);
+            SAFE_POINT_NN(sStyle, procItem);
             QColor c = visual.getColor(contains);
             if (contains) {
                 eStyle->setBgColor(c);
