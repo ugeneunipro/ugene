@@ -53,6 +53,7 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMsaEditor.h"
 #include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
@@ -464,6 +465,73 @@ GUI_TEST_CLASS_DEFINITION(test_8069) {
     CHECK_SET_ERR(lt.hasMessage("Nothing to write"), "Expected message 'Nothing to write' not found!");
 }
 
+static void checkWorkflowPaused() {
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
+    GTWidget::checkEnabled(GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI),
+                                                                "Next step"));
+}
+static void waitForBreakpoint() {
+    class GetVisibilityScenario final : public CustomScenario {
+        const QWidget* w;
+        bool& visible;
+
+    public:
+        GetVisibilityScenario(const QWidget* w, bool& visible)
+            : w(w), visible(visible) {
+        }
+        void run() override {
+            visible = w->isVisible();
+        }
+    };
+
+    const auto w = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar("mwtoolbar_activemdi"), "Save workflow");
+    bool visible = false;
+    GTThread::runInMainThread(new GetVisibilityScenario(w, visible));
+    GTThread::waitForMainThread();
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && !visible; time += GT_OP_CHECK_MILLIS) {
+        GTThread::runInMainThread(new GetVisibilityScenario(w, visible));
+        GTThread::waitForMainThread();
+    }
+}
+GUI_TEST_CLASS_DEFINITION(test_8077_1) {
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+
+    GTUtilsDialog::waitForDialog(new WizardFiller("Align Sequences with MUSCLE Wizard",
+                                                  {dataDir + "samples/CLUSTALW/COI.aln"}));
+    GTFileDialog::openFile(dataDir + "workflow_samples/Alignment", "basic_align.uwl");
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
+    GTUtilsProject::checkProject(GTUtilsProject::ExistsAndEmpty);
+
+    GTUtilsWorkflowDesigner::setBreakpoint("Write alignment");
+    GTUtilsWorkflowDesigner::runWorkflow();
+    // No crash.
+    // Finish the workflow task:
+    waitForBreakpoint();
+    GTUtilsWorkflowDesigner::runWorkflow();
+}
+GUI_TEST_CLASS_DEFINITION(test_8077_2) {
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsDialog::waitForDialog(new WizardFiller("Align Sequences with MUSCLE Wizard",
+                                                  {dataDir + "samples/CLUSTALW/COI.aln"}));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE");
+
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
+    GTUtilsWorkflowDesigner::setBreakpoint("Write alignment");
+    GTUtilsProject::checkProject(GTUtilsProject::NotExists);
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    waitForBreakpoint();
+
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    GTUtilsProject::checkProject();
+    // No crash.
+    // Finish the workflow task:
+    GTUtilsMdi::activateWindow("Workflow Designer");
+    GTUtilsWorkflowDesigner::runWorkflow();
+}
+
 // Check that there is only one breakpoint "Read Alignment" in the breakpoint manager.
 static void checkReadAlignmentBreakpoint() {
     GTThread::waitForMainThread();
@@ -477,8 +545,7 @@ static void checkReadAlignmentBreakpoint() {
     CHECK_SET_ERR(breakNames == QStringList {"read alignment"},
                   QString("One `read alignment` breakpoint was expected, but the following breakpoints exist: `%1`")
                       .arg(breakNames.join(",")));
-};
-
+}
 // Opens Align with MUSCLE sample, set breakpoint on the first element "Read alignment" using dialog, check that the
 // correct breakpoint is set.
 static void openSampleSetBreakCheckBreak() {
@@ -491,12 +558,7 @@ static void openSampleSetBreakCheckBreak() {
     GTUtilsDialog::waitForDialog(new DefaultDialogFiller("NewBreakpointDialog"));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Break at element");
     checkReadAlignmentBreakpoint();
-};
-static void checkWorkflowPaused() {
-    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
-    GTWidget::checkEnabled(GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI),
-                                                                "Next step"));
-};
+}
 // Starts the current "Align Sequences with MUSCLE Wizard" workflow. Checks that there is no crash and the workflow has
 // paused. Then, brings it to the end.
 static void runNoCrash() {
@@ -509,7 +571,6 @@ static void runNoCrash() {
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsWorkflowDesigner::runWorkflow();
 }
-
 GUI_TEST_CLASS_DEFINITION(test_8079_1) {
     GTUtilsWorkflowDesigner::toggleDebugMode();
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -580,7 +641,6 @@ GUI_TEST_CLASS_DEFINITION(test_8083_1) {
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsWorkflowDesigner::runWorkflow();
 }
-
 GUI_TEST_CLASS_DEFINITION(test_8083_2) {
     // Add breakpoint for one element.
     // Copy paste the element.
@@ -790,7 +850,6 @@ GUI_TEST_CLASS_DEFINITION(test_8096_3) {
     GTUtilsDialog::waitForDialog(new PopupChooser({"Cloning", "CLONING_CONSTRUCT"}));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
 }
-
 
 GUI_TEST_CLASS_DEFINITION(test_8100) {
     // Open a file on which primer3 will run for a long time.
