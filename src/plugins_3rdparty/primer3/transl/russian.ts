@@ -2707,6 +2707,20 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <translation>%1 параметр(ов) имеют некорректное(ые) значение(я), обратите внимание на подсвеченные красным виджеты. </translation>
     </message>
     <message>
+        <location filename="../src/Primer3Dialog.cpp" line="867"/>
+        <source>The following errors are critical and does not allow one to continue calculation: 
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.cpp" line="874"/>
+        <source>The following not critical errors are possible: 
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.cpp" line="892"/>
         <source>The &quot;%1&quot; parameter has incorrect value, please, read the tooltip of this parameter to find out how the correct one looks like.</source>
         <translation>Параметру &quot;%1&quot; установлено некорректное значение. Пожалуйста, прочитайте подсказку, всплывающую при наведении на данный параметр, чтобы понять, как откорректировать значение.</translation>
@@ -2748,24 +2762,6 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
         <location filename="../src/Primer3Dialog.cpp" line="848"/>
         <source>Result file path is empty. Please, set this value on the &quot;Result Settings&quot; tab.</source>
         <translation>Не задан путь к файлу с результатом. Пожалуйста, задайте данное значение на вкладке &quot;Параметры результатов&quot;.</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.cpp" line="867"/>
-        <source>The following errors are critical and does not allow one to continue calculation:
-
-</source>
-        <translation>Следующие ошибки критичны и не позволяют продолжить расчет:
-
-</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.cpp" line="874"/>
-        <source>The following not critical errors are possible:
-
-</source>
-        <translation>Возможны следующие не критичные ошибки:
-
-</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="880"/>
@@ -2909,149 +2905,154 @@ In case of calculation, all incorrect values will be ignored. Continue?</source>
         <translation>Поиск праймеров с целевой последовательностью</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="74"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="76"/>
         <source>Find primers without target sequence task</source>
         <translation>ПОиск праймеров без целевой последовательности</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="140"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="138"/>
+        <source>The task was canceled by the user</source>
+        <translation>Задача отменена пользователем</translation>
+    </message>
+    <message>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="150"/>
         <source>High any compl</source>
         <translation>Выс any компл</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="141"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="151"/>
         <source>High 3&apos; compl</source>
         <translation>Выс 3&apos; компл</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="142"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="152"/>
         <source>High hairpins</source>
         <translation>Выс шпильки</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="143"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="153"/>
         <source>Considered</source>
         <translation>Рассмотрено</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="144"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="154"/>
         <source>Too many Ns</source>
         <translation>Сл много N</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="145"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="155"/>
         <source>In target</source>
         <translation>В цел рег</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="146"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="156"/>
         <source>In exclude</source>
         <translation>В искл рег</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="147"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="157"/>
         <source>Not OK reg</source>
         <translation>Не ОК рег</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="148"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="158"/>
         <source>Bad GC%</source>
         <translation>Плох GC%</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="149"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="159"/>
         <source>No GC clamp</source>
         <translation>Нет зажима GC</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="150"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="160"/>
         <source>Tm too low</source>
         <translation>Tm низкая</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="151"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="161"/>
         <source>Tm too high</source>
         <translation>Tm высокая</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="155"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="165"/>
         <source>Poly X</source>
         <translation>Poly X</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="156"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="166"/>
         <source>High end stab</source>
         <translation>Выс конц стаб</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="157"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="167"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="161"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="171"/>
         <source>th</source>
         <translation>th</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="208"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="218"/>
         <source>Left</source>
         <translation>Левый</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="211"/>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="220"/>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="229"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="221"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="230"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="239"/>
         <source>&lt;th&gt; %1 &lt;/th&gt;</source>
         <translation>&lt;th&gt; %1 &lt;/th&gt;</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="217"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="227"/>
         <source>Right</source>
         <translation>Правый</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="226"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="236"/>
         <source>Internal</source>
         <translation>Внутренний</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="235"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="245"/>
         <source>Pair stats</source>
         <translation>Статистика пар</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="237"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="247"/>
         <source>considered %1, unacceptable product size %2, high end compl %3, ok %4.</source>
         <translation>рассмотрено %1, неподходящий размер продукта %2, высокая комплементарность на концах %3, ok %4.</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="259"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="269"/>
         <source>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</source>
         <translation>Не получается найти экзон, связанный с последовательностью %1. Убедитесь, что текущая последовательность cDNA и имеет экзонную структуру с аннотациями</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="271"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="281"/>
         <source>The first exon from the selected range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
         <translation>Первый экзон из выбранного диапазона [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="280"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="290"/>
         <source>The the selected exon range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
         <translation>Выбраный диапазон экзонов [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="326"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="336"/>
         <source>No primers has been found due to the parameters you&apos;ve set up</source>
         <translation>Не было найдено праймеров, соответствующих заданным параметрам</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="328"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="338"/>
         <source>All found primers has been filtered due to the &quot;Check complement&quot; parameters</source>
         <translation>Все найденные праймеры были отфильтрованы согласно параметру &quot;Проверить комплементарность&quot;</translation>
     </message>
     <message>
-        <location filename="../src/task/Primer3TopLevelTask.cpp" line="340"/>
+        <location filename="../src/task/Primer3TopLevelTask.cpp" line="350"/>
         <source>Object with annotations was removed</source>
         <translation>Объект с аннотациями удален</translation>
     </message>
