@@ -584,7 +584,7 @@ void GTUtilsProjectTreeView::sendDragAndDrop(const QPoint& enterPos, QWidget* dr
 }
 
 QPoint GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint() {
-    QWidget* projectView = GTWidget::findWidget("project_view");
+    QWidget* projectView = GTWidget::findWidget(DOCK_PROJECT_VIEW);
     QRect rect = projectView->rect();
     int x = rect.topRight().x() + (isOsMac() ? 1 : 4);
     int y = rect.center().y();

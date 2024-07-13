@@ -27,12 +27,13 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
-#include "../../../corelibs/U2Core/src/globals/Settings.h"
+#include "CloudStorageDockWidget.h"
 #include "KeycloakAuthenticator.h"
 #include "WebSocketClientService.h"
 
@@ -55,11 +56,11 @@ static const QString WORKSPACE_SETTINGS_REFRESH_TOKEN = "rt";
 
 WorkspaceService::WorkspaceService()
     : Service(Service_Workspace, "Workspace", "Remove workspace service for UGENE") {
-    loginAction = new QAction(QIcon(":ugene/images/login_icon.svg"), tr("Login to Workspace"));
+    loginAction = new QAction(QIcon(":ugene/images/login.svg"), tr("Login to Workspace"));
     loginAction->setObjectName("loginToWorkspaceAction");
     connect(loginAction, &QAction::triggered, this, &WorkspaceService::login);
 
-    logoutAction = new QAction(QIcon(":ugene/images/logout_icon.svg"), tr("Logout from Workspace"));
+    logoutAction = new QAction(QIcon(":ugene/images/logout.svg"), tr("Logout from Workspace"));
     logoutAction->setObjectName("logoutFromWorkspaceAction");
     connect(logoutAction, &QAction::triggered, this, &WorkspaceService::logout);
 
@@ -107,6 +108,7 @@ bool WorkspaceService::isLoggedIn() const {
 
 void WorkspaceService::enable() {
     updateMainMenuActions();
+    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Left, new CloudStorageDockWidget(), QKeySequence(Qt::ALT | Qt::Key_4));
 }
 
 void WorkspaceService::updateMainMenuActions() {

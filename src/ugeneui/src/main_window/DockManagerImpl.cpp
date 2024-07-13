@@ -20,6 +20,7 @@
  */
 
 #include "DockManagerImpl.h"
+#include <random>
 
 #include <QDockWidget>
 #include <QToolBar>
@@ -28,6 +29,7 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "../../../corelibs/U2Gui/src/util/GUIUtils.h"
 #include "DockWidgetPainter.h"
 #include "MainWindowImpl.h"
 #include "task_view/TaskStatusBar.h"
@@ -140,25 +142,31 @@ static bool ksInUse(const QKeySequence& ks, const QList<DockData*>& docks) {
     return false;
 }
 
-QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* w, const QKeySequence& ks) {
-    bool showDock = w->objectName() == lastActiveDocksState[area];
+QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& ks) {
+    bool showDock = dockWidget->objectName() == lastActiveDocksState[area];
 
-    QToolBar* tb = getDockBar(area);
+    QToolBar* toolBar = getDockBar(area);
+    SAFE_POINT_NN(toolBar, nullptr);
     auto data = new DockData();
     data->area = area;
-    data->label = new QLabel(tb);
-    data->wrapWidget = new DockWrapWidget(w);
-    data->wrapWidget->setObjectName("wrap_widget_" + w->objectName());
-    data->label->setObjectName("doc_label__" + w->objectName());
+    data->label = new QLabel(toolBar);
+    data->wrapWidget = new DockWrapWidget(dockWidget);
+    data->wrapWidget->setObjectName("wrap_widget_" + dockWidget->objectName());
+    data->label->setObjectName("doc_label__" + dockWidget->objectName());
     data->label->installEventFilter(this);
     if (area != MWDockArea_Bottom) {
-        tb->addWidget(data->label);
+        if (dockWidget->objectName() == DOCK_PROJECT_VIEW) {
+            auto actionsList = toolBar->actions();
+            toolBar->insertWidget(actionsList.isEmpty() ? nullptr : actionsList[0], data->label);
+        } else {
+            toolBar->addWidget(data->label);
+        }
     } else {
-        tb->insertWidget(statusBarAction, data->label);
+        toolBar->insertWidget(statusBarAction, data->label);
     }
-    connect(w, SIGNAL(destroyed()), SLOT(sl_widgetDestroyed()));
+    connect(dockWidget, SIGNAL(destroyed()), SLOT(sl_widgetDestroyed()));
 
-    QString ttip = w->windowTitle();
+    QString ttip = dockWidget->windowTitle();
     if (!ks.isEmpty() && !ksInUse(ks, docks)) {
         data->action = new QAction(data->label);
         data->action->setShortcut(ks);
@@ -173,8 +181,8 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* w, const QKey
 
     docks.append(data);
 
-    if (tb->isHidden()) {
-        tb->show();
+    if (toolBar->isHidden()) {
+        toolBar->show();
     }
 
     if (showDock) {

@@ -3,8 +3,9 @@
         <file>images/cloud_connected.svg</file>
         <file>images/cloud_connecting.svg</file>
         <file>images/cloud_disabled.svg</file>
-        <file>images/login_icon.svg</file>
-        <file>images/logout_icon.svg</file>
+        <file>images/cloud_storage.svg</file>
+        <file>images/login.svg</file>
+        <file>images/logout.svg</file>
         <file>images/create_new_project.png</file>
         <file>images/about.png</file>
         <file>images/ugene_16.png</file>
