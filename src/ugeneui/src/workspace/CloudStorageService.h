@@ -20,22 +20,26 @@
  */
 #pragma once
 
-#include <QWidget>
-
-class QLabel;
+#include <QObject>
 
 namespace U2 {
-
 class WorkspaceService;
+}
+namespace U2 {
 
-class CloudStorageDockWidget : public QWidget {
+class CloudStorageService : public QObject {
     Q_OBJECT
+
 public:
-    CloudStorageDockWidget(WorkspaceService* workspaceService);
+    CloudStorageService(WorkspaceService* ws);
+
+signals:
+    void si_storageStateChanged(const QString& state);
 
 private:
+    void onWebSocketMessageReceived(const QJsonObject& message);
+
     WorkspaceService* workspaceService;
-    QLabel* contentLabel;
 };
 
 }  // namespace U2

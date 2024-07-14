@@ -22,15 +22,39 @@
 #include "CloudStorageDockWidget.h"
 
 #include <QIcon>
+#include <QLabel>
+#include <QVBoxLayout>
 
 #include <U2Gui/MainWindow.h>
 
+#include "CloudStorageService.h"
+#include "WorkspaceService.h"
+
 namespace U2 {
 
-CloudStorageDockWidget::CloudStorageDockWidget() {
+CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceService)
+    : workspaceService(_workspaceService) {
     setObjectName(DOCK_CLOUD_STORAGE_VIEW);
     setWindowTitle(tr("Storage"));
     setWindowIcon(QIcon(":ugene/images/cloud_storage.svg"));
+
+    contentLabel = new QLabel("empty");
+    auto layout = new QVBoxLayout();
+    layout->addWidget(contentLabel);
+    setLayout(layout);
+
+    connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this](bool isLoggedIn) {
+        if (!isLoggedIn) {
+            contentLabel->setText("Please login");
+        } else {
+            contentLabel->setText("Loading file list");
+            ;
+        }
+    });
+
+    connect(workspaceService->getCloudStorageService(), &CloudStorageService::si_storageStateChanged, this, [this](const QString& newContent) {
+        contentLabel->setText(newContent);
+    });
 }
 
 }  // namespace U2

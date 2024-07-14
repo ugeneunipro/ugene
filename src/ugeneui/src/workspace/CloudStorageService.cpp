@@ -1,3 +1,4 @@
+#include "CloudStorageService.h"
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
@@ -18,24 +19,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#pragma once
 
-#include <QWidget>
+#include <QJsonDocument>
 
-class QLabel;
+#include <U2Core/U2SafePoints.h>;
 
+#include "WebSocketClientService.h"
+#include "WorkspaceService.h"
 namespace U2 {
 
-class WorkspaceService;
+CloudStorageService::CloudStorageService(WorkspaceService* ws)
+    : QObject(ws), workspaceService(ws) {
+    auto webSocketService = workspaceService->getWebSocketService();
+    webSocketService->subscribe(WebSocketSubscription(WebSocketSubscriptionType::StorageState, "", this));
+    connect(webSocketService, &WebSocketClientService::si_messageReceived, this, &CloudStorageService::onWebSocketMessageReceived);
+}
 
-class CloudStorageDockWidget : public QWidget {
-    Q_OBJECT
-public:
-    CloudStorageDockWidget(WorkspaceService* workspaceService);
-
-private:
-    WorkspaceService* workspaceService;
-    QLabel* contentLabel;
-};
+void CloudStorageService::onWebSocketMessageReceived(const QJsonObject& message) {
+    QJsonDocument jsonDoc(message);
+    QString jsonString = jsonDoc.toJson(QJsonDocument::Indented);
+    emit si_storageStateChanged(jsonString);
+}
 
 }  // namespace U2

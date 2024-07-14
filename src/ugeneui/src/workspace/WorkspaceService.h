@@ -27,6 +27,7 @@
 #include <U2Core/Task.h>
 
 namespace U2 {
+class CloudStorageService;
 
 class ProjectViewImpl;
 class WebSocketClientService;
@@ -47,6 +48,8 @@ public:
     /** Logs out user. Does nothing if user is already logged out. */
     void logout();
 
+    CloudStorageService* getCloudStorageService() const;
+
     WebSocketClientService* getWebSocketService() const;
 
 signals:
@@ -66,6 +69,7 @@ private:
     QAction* loginAction;
     QAction* logoutAction;
     WebSocketClientService* webSocketService = nullptr;
+    CloudStorageService* cloudStorageService = nullptr;
     QAction* separatorAction = nullptr;
     QString authUrl = "https://auth.ugene.net/realms/ugene-prod/protocol/openid-connect/auth";
     QString tokenUrl = "https://auth.ugene.net/realms/ugene-prod/protocol/openid-connect/token";

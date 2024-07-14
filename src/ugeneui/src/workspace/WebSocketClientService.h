@@ -42,8 +42,12 @@ enum class WebSocketSubscriptionType {
 
 class WebSocketSubscription {
 public:
+    WebSocketSubscription(const WebSocketSubscriptionType& type, const QString& entityId, QObject* subscriber = nullptr);
+
     WebSocketSubscriptionType type;
     QString entityId;
+    /** If set the subscription will be automatically unsubscribed when this object is deleted. */
+    QObject* subscriber;
 };
 
 class WebSocketClientService : public QObject {
@@ -56,6 +60,9 @@ public:
     void refreshWebSocketConnection(const QString& accessToken);
 
     bool isConnected() const;
+
+    void subscribe(const WebSocketSubscription& subscription);
+    void unsubscribe(const WebSocketSubscription& subscription);
 
 signals:
     void si_connectionStateChanged(bool isConnected);
@@ -72,11 +79,10 @@ private:
     void disconnect(bool clearSubscriptions = true);
     void clearSubscriptions();
     void updateAccessToken() const;
-    void subscribe(const WebSocketSubscription& subscription);
-    void unsubscribe(const WebSocketSubscription& subscription);
 
     QWebSocket* socket;
-    QString clientId;
+    /** ID if the client. Never changes. */
+    const QString clientId;
     bool connectionReady = false;
     QSet<QString> receivedMessageIds;
     bool isRetrying = false;

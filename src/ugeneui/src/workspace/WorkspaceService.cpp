@@ -34,6 +34,7 @@
 #include <U2Gui/MainWindow.h>
 
 #include "CloudStorageDockWidget.h"
+#include "CloudStorageService.h"
 #include "KeycloakAuthenticator.h"
 #include "WebSocketClientService.h"
 
@@ -108,7 +109,9 @@ bool WorkspaceService::isLoggedIn() const {
 
 void WorkspaceService::enable() {
     updateMainMenuActions();
-    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Left, new CloudStorageDockWidget(), QKeySequence(Qt::ALT | Qt::Key_4));
+    cloudStorageService = new CloudStorageService(this);
+    auto dockWidget = new CloudStorageDockWidget(this);
+    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Left, dockWidget, QKeySequence(Qt::ALT | Qt::Key_4));
 }
 
 void WorkspaceService::updateMainMenuActions() {
@@ -164,6 +167,10 @@ void WorkspaceService::logout() {
     delete webSocketService;
     webSocketService = nullptr;
     emit si_authenticationEvent(false);
+}
+
+CloudStorageService* WorkspaceService::getCloudStorageService() const {
+    return cloudStorageService;
 }
 
 EnableWorkspaceTask::EnableWorkspaceTask(WorkspaceService* _ws)

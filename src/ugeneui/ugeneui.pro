@@ -44,6 +44,7 @@ HEADERS += src/app_settings/AppSettingsDialogController.h \
            src/welcome_page/WelcomePageMdiController.h \
            src/welcome_page/WelcomePageWidget.h \
            src/workspace/CloudStorageDockWidget.h \
+           src/workspace/CloudStorageService.h \
            src/workspace/KeycloakAuthenticator.h \
            src/workspace/WebSocketClientService.h \
            src/workspace/WorkspaceConnectionStatusIcon.h \
@@ -113,6 +114,7 @@ SOURCES += src/Main.cpp \
            src/welcome_page/WelcomePageMdiController.cpp \
            src/welcome_page/WelcomePageWidget.cpp \
            src/workspace/CloudStorageDockWidget.cpp \
+           src/workspace/CloudStorageService.cpp \
            src/workspace/KeycloakAuthenticator.cpp \
            src/workspace/WebSocketClientService.cpp \
            src/workspace/WorkspaceConnectionStatusIcon.cpp \
