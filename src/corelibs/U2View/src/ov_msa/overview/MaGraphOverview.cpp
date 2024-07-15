@@ -181,7 +181,7 @@ void MaGraphOverview::recomputeGraphIfNeeded() {
     state.width = width();
 
     const MaGraphOverviewState& stateToDedup = graphCalculationTaskRunner.isIdle() ? renderedState : inProgressState;
-    bool isViewVisible = isOsMac() ? !visibleRegion().isEmpty() : isVisible();  // On MacOS even a background window has isVisible() true! May be a "too old QT" issue.
+    bool isViewVisible = !visibleRegion().isEmpty();
     CHECK(!isMaChangeInProgress && isViewVisible && state != stateToDedup && state.width > 0, );
     //    uiLog.info(QString("recomputeGraphIfNeeded: %1,%2 -> %3,%4").arg(int(stateToDedup.method)).arg(stateToDedup.width).arg(int(state.method)).arg(state.width));
 
