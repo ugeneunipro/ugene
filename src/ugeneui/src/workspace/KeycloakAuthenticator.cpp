@@ -50,8 +50,11 @@ void KeycloakAuthenticator::startAuthentication() {
 }
 
 void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
+    qDebug() << "KeycloakAuthenticator: Renew access token, refresh: " << refreshToken.toLocal8Bit();
     QUrl tokenUrl(this->tokenUrl);
     QNetworkRequest request(tokenUrl);
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
     QUrlQuery params;
     params.addQueryItem("client_id", clientId);
@@ -61,6 +64,8 @@ void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
     const auto networkManager = new QNetworkAccessManager(this);
     connect(networkManager, &QNetworkAccessManager::finished, this, [this](QNetworkReply* reply) {
         if (reply->error() == QNetworkReply::NoError) {
+            qDebug() << "KeycloakAuthenticator: Request finished with no errors";
+
             QByteArray response = reply->readAll();
             QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
             QJsonObject jsonObj = jsonDoc.object();
@@ -71,6 +76,7 @@ void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
             oauth2.setToken(newAccessToken);
             emit si_authenticationGranted(newAccessToken, newRefreshToken);
         } else {
+            qDebug() << "KeycloakAuthenticator: Request finished with error: " << reply->errorString().toLocal8Bit();
             emit si_authenticationFailed(reply->errorString());
         }
         reply->deleteLater();
@@ -80,6 +86,7 @@ void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
 }
 
 void KeycloakAuthenticator::handleAuthorizationGranted() {
+    qDebug() << "KeycloakAuthenticator: authentication granted";
     QString accessToken = oauth2.token();
     QString refreshToken = oauth2.refreshToken();
     emit si_authenticationGranted(accessToken, refreshToken);
@@ -87,6 +94,7 @@ void KeycloakAuthenticator::handleAuthorizationGranted() {
 }
 
 void KeycloakAuthenticator::handleErrorOccurred(const QString& error) {
+    qDebug() << "KeycloakAuthenticator: authentication failed";
     emit si_authenticationFailed(error);
     deleteLater();
 }

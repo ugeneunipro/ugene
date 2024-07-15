@@ -61,7 +61,7 @@ protected:
 private:
     void enable();
     void updateMainMenuActions();
-    void renewAccessToken();
+    void renewAccessTokenIfCloseToExpire();
     void setTokens(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings);
 
     QString accessToken;

@@ -72,13 +72,14 @@ WorkspaceService::WorkspaceService()
     webSocketService = new WebSocketClientService(this);
 
     auto refreshTokenTimer = new QTimer(this);
-    connect(refreshTokenTimer, &QTimer::timeout, this, [this] { renewAccessToken(); });
+    connect(refreshTokenTimer, &QTimer::timeout, this, [this] { renewAccessTokenIfCloseToExpire(); });
     int accessTokenRefreshTimerIntervalMillis = (ACCESS_TOKEN_RENEW_BEFORE_EXPIRE_SECONDS / 2) * 1000;
     refreshTokenTimer->start(accessTokenRefreshTimerIntervalMillis);
-    renewAccessToken();
+    renewAccessTokenIfCloseToExpire();
 }
 
-void WorkspaceService::renewAccessToken() {
+void WorkspaceService::renewAccessTokenIfCloseToExpire() {
+    qDebug() << "WorkspaceService: Renewing access token";
     CHECK(!refreshToken.isEmpty(), );
     QDateTime refreshTokenExpirationTime = getTokenExpirationTime(refreshToken);
     QDateTime now = QDateTime::currentDateTimeUtc();
@@ -88,7 +89,14 @@ void WorkspaceService::renewAccessToken() {
         QDateTime accessTokenExpirationTime = getTokenExpirationTime(accessToken);
         if (accessTokenExpirationTime.isValid()) {
             QDateTime minRenewTime = accessTokenExpirationTime.addSecs(-ACCESS_TOKEN_RENEW_BEFORE_EXPIRE_SECONDS);
-            CHECK(minRenewTime >= now, );  // Do not renew - Access Token will be valid long enough.
+            qDebug() << "WorkspaceService: accessTokenExpirationTime is "
+                     << accessTokenExpirationTime.toLocalTime().toString()
+                     << ", minRenewTime: " << minRenewTime.toLocalTime().toString()
+                     << ", now: " + now.toLocalTime().toString();
+            if (minRenewTime > now) {
+                qDebug() << "WorkspaceService: skip access token renew: too early";
+                return;  // Do not renew - Access Token will be valid long enough.
+            }
         }
     }
 
@@ -137,6 +145,7 @@ WebSocketClientService* WorkspaceService::getWebSocketService() const {
 }
 
 void WorkspaceService::setTokens(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings) {
+    qDebug() << "WorkspaceService:setTokens is called";
     accessToken = newAccessToken;
     refreshToken = newRefreshToken;
     updateMainMenuActions();

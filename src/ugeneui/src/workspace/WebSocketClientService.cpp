@@ -75,6 +75,7 @@ WebSocketClientService::~WebSocketClientService() {
 void WebSocketClientService::onConnected() {
     qDebug() << "Connected to websocket";
     connectionReady = true;
+    sendPendingMessages();
     emit si_connectionStateChanged(true);
 }
 
@@ -85,7 +86,7 @@ void WebSocketClientService::onDisconnected() {
 }
 
 void WebSocketClientService::onTextMessageReceived(const QString& message) {
-    qDebug() << "WebSocketClientService: received message" << message;
+    qDebug() << "WebSocketClientService: Received message" << message;
     if (message == "heartbeat") {
         return;
     }
@@ -93,7 +94,7 @@ void WebSocketClientService::onTextMessageReceived(const QString& message) {
     QJsonObject incomingMessage = doc.object();
     auto messageId = incomingMessage["messageId"].toString();
     receivedMessageIds.insert(messageId);
-    sendMessage(WebSocketRequestType::Acknowledge, {{"messageId", messageId}});
+    sendMessage({WebSocketRequestType::Acknowledge, {{"messageId", messageId}}});
     emit si_messageReceived(incomingMessage);
 }
 
@@ -106,27 +107,39 @@ void WebSocketClientService::onError(QAbstractSocket::SocketError error) {
     isRetrying = true;
     QTimer::singleShot(3000, [this] {
         if (isRetrying && !socket->isValid()) {
-            qDebug() << "Retrying websocket connection...";
+            qDebug() << "WebSocketClientService: Retrying open websocket connection...";
             refreshWebSocketConnection(accessToken);
         }
         isRetrying = false;
     });
 }
 
-void WebSocketClientService::sendMessage(const WebSocketRequestType& type, const QJsonObject& request) const {
+void WebSocketClientService::sendMessage(const WebSocketOutgoingMessage& message) {
+    pendingMessages << message;
     CHECK(connectionReady, );
-    auto typeString = getWebSocketRequestTypeAsString(type);
-    qDebug() << "WebSocketClientService::sendMessage: " << typeString << request;
-    QJsonObject message = request;
-    message["type"] = typeString;
-    message["clientId"] = clientId;
-    if (!accessToken.isEmpty()) {
-        message["accessToken"] = accessToken;
+    sendPendingMessages();
+}
+
+void WebSocketClientService::sendPendingMessages() {
+    CHECK(connectionReady, );
+    for (const auto& message : qAsConst(pendingMessages)) {
+        auto typeString = getWebSocketRequestTypeAsString(message.type);
+        qDebug() << "WebSocketClientService:sending message: " << typeString;
+        QJsonObject request = message.request;
+        request["type"] = typeString;
+        request["clientId"] = clientId;
+        if (!accessToken.isEmpty()) {
+            request["accessToken"] = accessToken;
+        }
+        socket->sendTextMessage(QJsonDocument(request).toJson(QJsonDocument::Compact));
+        // TODO: check result of the sending.
     }
-    socket->sendTextMessage(QJsonDocument(message).toJson(QJsonDocument::Compact));
+    pendingMessages.clear();
 }
 
 void WebSocketClientService::refreshWebSocketConnection(const QString& newAccessToken) {
+    qDebug() << "WebSocketClientService:refreshWebSocketConnection";
+    CHECK(accessToken != newAccessToken, );
     accessToken = newAccessToken;
     if (socket->isValid()) {
         updateAccessToken();
@@ -154,14 +167,14 @@ void WebSocketClientService::clearSubscriptions() {
     subscriptions.clear();
 }
 
-void WebSocketClientService::updateAccessToken() const {
+void WebSocketClientService::updateAccessToken() {
     if (!socket->isValid()) {
         qWarning() << "Not connected to WebSocket during access token update.";
         return;
     }
-    qDebug() << "Updating access token";
+    qDebug() << "WebSocketClientService: Updating access token";
 
-    sendMessage(WebSocketRequestType::UpdateAccessToken, {});  // Will add the token to the message.
+    sendMessage({WebSocketRequestType::UpdateAccessToken, {}});  // Will add the token to the message.
 }
 
 static QString getClientSubscriptionKey(const WebSocketSubscription& subscription) {
@@ -182,8 +195,8 @@ void WebSocketClientService::subscribe(const WebSocketSubscription& subscription
         subscriptionAsJsonObject["type"] = getSubscriptionTypeAsString(subscription.type);
         if (!subscription.entityId.isEmpty()) {
             subscriptionAsJsonObject["entityId"] = subscription.entityId;
-        };
-        sendMessage(WebSocketRequestType::Subscribe, {{"subscriptions", QJsonArray {subscriptionAsJsonObject}}});
+        }
+        sendMessage({WebSocketRequestType::Subscribe, {{"subscriptions", QJsonArray {subscriptionAsJsonObject}}}});
     }
     subscriptions << subscription;
     if (subscription.subscriber) {
@@ -209,12 +222,16 @@ void WebSocketClientService::unsubscribe(const WebSocketSubscription& subscripti
         if (!subscription.entityId.isEmpty()) {
             subscriptionAsJsonObject["entityId"] = subscription.entityId;
         };
-        sendMessage(WebSocketRequestType::Unsubscribe, {{"subscriptions", QJsonArray {subscriptionAsJsonObject}}});
+        sendMessage({WebSocketRequestType::Unsubscribe, {{"subscriptions", QJsonArray {subscriptionAsJsonObject}}}});
     }
 }
 
 bool WebSocketClientService::isConnected() const {
     return connectionReady;
+}
+
+WebSocketOutgoingMessage::WebSocketOutgoingMessage(const WebSocketRequestType& _type, const QJsonObject& _request)
+    : type(_type), request(_request) {
 }
 
 }  // namespace U2

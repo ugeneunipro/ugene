@@ -40,6 +40,13 @@ enum class WebSocketSubscriptionType {
     StorageState,
 };
 
+class WebSocketOutgoingMessage {
+public:
+    WebSocketOutgoingMessage(const WebSocketRequestType& type, const QJsonObject& request);
+    WebSocketRequestType type;
+    QJsonObject request;
+};
+
 class WebSocketSubscription {
 public:
     WebSocketSubscription(const WebSocketSubscriptionType& type, const QString& entityId, QObject* subscriber = nullptr);
@@ -75,10 +82,11 @@ private slots:
     void onError(QAbstractSocket::SocketError error);
 
 private:
-    void sendMessage(const WebSocketRequestType& type, const QJsonObject& request) const;
+    void sendMessage(const WebSocketOutgoingMessage& message);
+    void sendPendingMessages();
     void disconnect(bool clearSubscriptions = true);
     void clearSubscriptions();
-    void updateAccessToken() const;
+    void updateAccessToken();
 
     QWebSocket* socket;
     /** ID if the client. Never changes. */
@@ -88,5 +96,7 @@ private:
     bool isRetrying = false;
     QString accessToken;
     QList<WebSocketSubscription> subscriptions;
+    QList<WebSocketOutgoingMessage> pendingMessages;
 };
+
 }  // namespace U2
