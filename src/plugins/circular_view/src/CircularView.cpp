@@ -387,7 +387,7 @@ void CircularViewRenderArea::paintContent(QPainter& p, bool paintSelection, bool
         verticalOffset += rulerEllipseSize / 2;
     }
 
-    p.fillRect(0, 0, width(), height(), Qt::white);
+    p.fillRect(0, 0, width(), height(), QPalette().base().color());
 
     p.save();
     p.translate(parentWidget()->width() / 2, verticalOffset);
@@ -449,9 +449,9 @@ void CircularViewRenderArea::drawAll(QPaintDevice* pd) {
     if (completeRedraw) {
         QPainter pCached(getCachedPixmap());
         pCached.setRenderHint(QPainter::Antialiasing);
-        pCached.fillRect(0, 0, pd->width(), pd->height(), Qt::white);
+        pCached.fillRect(0, 0, pd->width(), pd->height(), QPalette().base().color());
         pCached.translate(parentWidget()->width() / 2, verticalOffset);
-        pCached.setPen(Qt::black);
+        pCached.setPen(QPalette().text().color());
         drawRuler(pCached);
         drawAnnotations(pCached);
         pCached.end();
@@ -515,7 +515,7 @@ const int RULER_PAD = 40;
 const int DEFAULT_SYMBOLS_ALLOWED = 20;
 }  // namespace
 void CircularViewRenderArea::drawSequenceName(QPainter& p) {
-    QPen boldPen(Qt::black);
+    QPen boldPen(QPalette().text().color());
     boldPen.setWidth(3);
     SequenceObjectContext* ctx = view->getSequenceContext();
 
@@ -592,7 +592,7 @@ void CircularViewRenderArea::drawSequenceSelection(QPainter& p) {
         paths.append(path);
     }
     p.save();
-    QPen selectionPen(QColor("#007DE3"));
+    QPen selectionPen(AppContext::getMainWindow()->isDarkMode() ? QColor("#0091FF") : QColor("#007DE3"));
     selectionPen.setStyle(Qt::DashLine);
     selectionPen.setWidth(1);
     p.setPen(selectionPen);
@@ -710,7 +710,7 @@ void CircularViewRenderArea::drawRuler(QPainter& p) {
         drawRulerCoordinates(p, range.startPos, range.length);
     }
     if (settings->showRulerLine) {
-        QPen boldPen(Qt::black);
+        QPen boldPen(QPalette().text().color());
         boldPen.setWidth(3);
         p.setPen(boldPen);
         QRectF rulerRect(-rulerEllipseSize / 2, -rulerEllipseSize / 2, rulerEllipseSize, rulerEllipseSize);
@@ -1035,7 +1035,7 @@ void CircularViewRenderArea::drawMarker(QPainter& p) {
     int yLevel = regionY.count() - 1;
     QPen markerPen;
     markerPen.setWidth(1);
-    markerPen.setColor(Qt::gray);
+    markerPen.setColor(AppContext::getMainWindow()->isDarkMode() ? QColor(190, 190, 190) : Qt::gray);
     p.setPen(markerPen);
 
     QPainterPath arr1, arr2;

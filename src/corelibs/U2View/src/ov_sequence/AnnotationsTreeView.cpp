@@ -1871,7 +1871,7 @@ void AnnotationsTreeView::updateColorModeRecursively(AVItem* item) {
             auto aItem = static_cast<AVAnnotationItem*>(item);
             const auto& aData = aItem->annotation->getData();
             const auto* as = AppContext::getAnnotationsSettingsRegistry()->getAnnotationSettings(aData);
-            const QColor iconColor = as->visible ? as->color : Qt::lightGray;
+            const QColor iconColor = as->visible ? as->getActiveColor() : Qt::lightGray;
             auto icon = GUIUtils::createSquareIcon(iconColor, 9);
             aItem->setIcon(AnnotationsTreeView::COLUMN_NAME, icon);
             QMap<QString, QIcon>& cache = AVAnnotationItem::getIconsCache();
@@ -2489,7 +2489,7 @@ void AVAnnotationItem::updateVisual(ATVAnnUpdateFlags f) {
         QMap<QString, QIcon>& cache = getIconsCache();
         QIcon icon = cache.value(aData->name);
         if (icon.isNull()) {
-            const QColor iconColor = as->visible ? as->color : Qt::lightGray;
+            const QColor iconColor = as->visible ? as->getActiveColor() : Qt::lightGray;
             icon = GUIUtils::createSquareIcon(iconColor, 9);
             if (cache.size() > MAX_ICONS_CACHE_SIZE) {
                 cache.clear();

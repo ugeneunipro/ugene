@@ -36,6 +36,7 @@
 
 #include <U2Gui/GScrollBar.h>
 #include <U2Gui/GraphUtils.h>
+#include <U2Gui/MainWindow.h>
 
 #include "ADVSingleSequenceWidget.h"
 #include "DetView.h"
@@ -455,7 +456,7 @@ void OverviewRenderArea::drawAll(QPaintDevice* pd) {
     bool completeRedraw = uf.testFlag(GSLV_UF_NeedCompleteRedraw) || uf.testFlag(GSLV_UF_AnnotationsChanged) || uf.testFlag(GSLV_UF_ViewResized);
     if (completeRedraw) {
         QPainter pCached(getCachedPixmap());
-        pCached.fillRect(0, 0, pd->width(), pd->height(), Qt::white);
+        pCached.fillRect(0, 0, pd->width(), pd->height(), QPalette().base().color());
         if (graphVisible) {
             setAnnotationsOnPos();
             drawGraph(pCached);
@@ -479,7 +480,8 @@ void OverviewRenderArea::drawAll(QPaintDevice* pd) {
     panSlider.setRect(panX, panSliderTop, panW - PEN_WIDTH, panSliderHeight);
     detSlider.setRect(detX, ARROW_TOP_PAD, ARROW_WIDTH, ARROW_HEIGHT);
 
-    pen.setColor(Qt::darkGray);
+    bool isDarkMode = AppContext::getMainWindow()->isDarkMode();
+    pen.setColor(isDarkMode ? Qt::lightGray : Qt::darkGray);
     p.setPen(pen);
 
     // don't show arrow when det view collapsed
@@ -488,7 +490,7 @@ void OverviewRenderArea::drawAll(QPaintDevice* pd) {
     ADVSingleSequenceWidget* ssw = overview->seqWidget;
     SAFE_POINT(ssw != nullptr, "ADVSingleSequenceWidget is NULL", );
     if (!ssw->isPanViewCollapsed()) {
-        drawSlider(p, panSlider, QColor(230, 230, 230));
+        drawSlider(p, panSlider, isDarkMode ? QColor(73, 73, 73) : QColor(230, 230, 230));
     }
 
     if (!ssw->isDetViewCollapsed()) {
@@ -522,7 +524,7 @@ void OverviewRenderArea::drawArrow(QPainter& p, QRectF rect, QColor col) {
 
 void OverviewRenderArea::drawRuler(QPainter& p) {
     p.save();
-    QPen pen(Qt::black);
+    QPen pen(QPalette().text().color());
     pen.setWidth(PEN_WIDTH);
     p.setPen(pen);
     auto gv = static_cast<Overview*>(view);
@@ -547,7 +549,7 @@ void OverviewRenderArea::drawRuler(QPainter& p) {
 
 #define SELECTION_LINE_WIDTH 3
 void OverviewRenderArea::drawSelection(QPainter& p) {
-    QPen pen(QColor("#007DE3"));
+    QPen pen(AppContext::getMainWindow()->isDarkMode() ? QColor("#0091FF") : QColor("#007DE3"));
     pen.setWidth(SELECTION_LINE_WIDTH);
     p.setPen(pen);
     auto gv = qobject_cast<Overview*>(view);
@@ -563,7 +565,7 @@ void OverviewRenderArea::drawGraph(QPainter& p) {
     p.save();
     QPen graphPen;
     graphPen.setWidth(1);
-    p.fillRect(0, 0, width() - PEN_WIDTH, ANNOTATION_GRAPH_HEIGHT - PEN_WIDTH, Qt::white);
+    p.fillRect(0, 0, width() - PEN_WIDTH, ANNOTATION_GRAPH_HEIGHT - PEN_WIDTH, QPalette().base().color());
 
     int halfChar = getCurrentScale() / 2;
     for (int x = 0; x < width(); x++) {
@@ -593,14 +595,14 @@ void OverviewRenderArea::drawGraph(QPainter& p) {
 QColor OverviewRenderArea::getUnitColor(int count) {
     switch (count) {
         case 0:
-            return QColor(0xFF, 0xFF, 0xFF);
+            return QPalette().base().color();
         case 1:
-            return QColor(0xCC, 0xCC, 0xCC);
+            return AppContext::getMainWindow()->isDarkMode() ? QColor(102, 102, 102) : QColor(204, 204, 204);
         case 2:
         case 3:
-            return QColor(0x66, 0x66, 0x66);
+            return AppContext::getMainWindow()->isDarkMode() ? QColor(204, 204, 204) : QColor(102, 102, 102);
         default:
-            return QColor(0x00, 0x00, 0x00);
+            return QPalette().text().color();
     }
 }
 }  // namespace U2

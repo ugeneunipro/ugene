@@ -169,7 +169,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
             }
 
             rectPath.setFillRule(Qt::WindingFill);
-            p.fillPath(rectPath, as->color);
+            p.fillPath(rectPath, as->getActiveColor());
             p.fillPath(rectPath, annMetrics.gradientMaskBrush);
 
             p.setPen(borderPen);
@@ -200,13 +200,13 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
             auto cutPosDirect = getCutPosition(regionPair.first, qual, isDirectStrand, true);
             if (cutPosDirect != INCORRECT_CUT_POSITION) {
                 auto annRect = getAnnotationRect(regionPair.first, canvasSize, visibleRange, selected, a, as);
-                drawCutSite(p, aData, cutPosDirect, annRect, as->color, canvasSize, visibleRange, true);
+                drawCutSite(p, aData, cutPosDirect, annRect, as->getActiveColor(), canvasSize, visibleRange, true);
             }
             // draw complement cut
             auto cutPosComplement = getCutPosition(regionPair.second, qual, isDirectStrand, false);
             if (cutPosComplement != INCORRECT_CUT_POSITION) {
                 auto annRect = getAnnotationRect(regionPair.second, canvasSize, visibleRange, selected, a, as);
-                drawCutSite(p, aData, cutPosComplement, annRect, as->color, canvasSize, visibleRange, false);
+                drawCutSite(p, aData, cutPosComplement, annRect, as->getActiveColor(), canvasSize, visibleRange, false);
             }
         } else if (location.size() == 1) {
             const auto& reg = location.first();
@@ -215,7 +215,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
             auto cutPosDirect = getCutPosition(reg, qual, isDirectStrand, true);
             if (cutPosDirect != INCORRECT_CUT_POSITION) {
                 annRect = getAnnotationRect(reg, canvasSize, visibleRange, selected, a, as);
-                drawCutSite(p, aData, cutPosDirect, annRect, as->color, canvasSize, visibleRange, true);
+                drawCutSite(p, aData, cutPosDirect, annRect, as->getActiveColor(), canvasSize, visibleRange, true);
             }
             // draw complement cut
             auto cutPosComplement = getCutPosition(reg, qual, isDirectStrand, false);
@@ -223,7 +223,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
                 if (annRect.isEmpty()) {
                     annRect = getAnnotationRect(reg, canvasSize, visibleRange, selected, a, as);
                 }
-                drawCutSite(p, aData, cutPosComplement, annRect, as->color, canvasSize, visibleRange, false);
+                drawCutSite(p, aData, cutPosComplement, annRect, as->getActiveColor(), canvasSize, visibleRange, false);
             }
         }
     }

@@ -822,7 +822,7 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
             toggleHLAction->setText(tr("Enable '%1' highlighting").arg(aData->name));
         }
 
-        const QIcon icon = GUIUtils::createSquareIcon(as->color, 10);
+        const QIcon icon = GUIUtils::createSquareIcon(as->getActiveColor(), 10);
         toggleHLAction->setIcon(icon);
 
         toggleHLAction->setObjectName("toggle_HL_action");

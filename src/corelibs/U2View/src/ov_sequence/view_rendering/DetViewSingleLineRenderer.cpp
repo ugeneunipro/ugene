@@ -812,11 +812,12 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
     if (aminoOverlap) {
         result = QPalette().text().color();
     } else if (isDarkMode) {
-        QColor invertedAnnotationColor(255 - as->color.red(), 255 - as->color.green(), 255 - as->color.blue());
+        auto color = as->getActiveColor();
+        QColor invertedAnnotationColor(255 - color.red(), 255 - color.green(), 255 - color.blue());
         invertedAnnotationColor = invertedAnnotationColor.darker(300);
         result = QColor(255 - invertedAnnotationColor.red(), 255 - invertedAnnotationColor.green(), 255 - invertedAnnotationColor.blue());
     } else {
-        result = as->color.darker(300);
+        result = as->getActiveColor().darker(300);
     }
 
     return true;

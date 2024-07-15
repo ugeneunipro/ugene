@@ -30,24 +30,37 @@ namespace U2 {
 
 class Settings;
 
+class U2CORE_EXPORT AnnotationSettingsRegistry;
+
 class U2CORE_EXPORT AnnotationSettings {
 public:
     AnnotationSettings();
-    AnnotationSettings(const QString& name, bool amino, const QColor& color, bool visible);
+    AnnotationSettings(const QString& name, bool amino, const QColor& lightColor, bool visible);
 
     bool operator==(const AnnotationSettings* as) const {
         return equals(as);
     }
     bool equals(const AnnotationSettings* as) const;
 
+    void setLightColor(const QColor& lightColor);
+    void setDarkColor(const QColor& darkColor);
+    void setActiveColor(const QColor& color);
+    const QColor& getActiveColor() const;
+
+
     QString name;
-    QColor color;
     bool amino;
     bool visible;
     bool showNameQuals;  // Specifies whether to show value of qualifier or not
     QStringList nameQuals;  // The list of qualifiers separated by comma.
                             // If "showNameQuals" is true, the first found value of a qualifier from the list
                             // is shown on the annotation.
+
+private:
+    friend class AnnotationSettingsRegistry;
+    friend class SecStructColorScheme;
+    QColor lightColor;
+    QColor darkColor;
 };
 
 class U2CORE_EXPORT AnnotationSettingsRegistry : public QObject {

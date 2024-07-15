@@ -318,6 +318,7 @@ void AnnotHighlightWidget::sl_onAnnotationSelectionChanged() {
 void AnnotHighlightWidget::sl_colorModeSwitched() {
     showAllLabel->colorModeSwitched();
     annotSettingsWidget->colorModeChanged();
+    loadAnnotTypes();
 }
 
 void AnnotHighlightWidget::setNoAnnotTypesLabelValue() {
@@ -482,7 +483,7 @@ void AnnotHighlightWidget::loadAnnotTypes() {
         AnnotationSettingsRegistry* annotRegistry = AppContext::getAnnotationsSettingsRegistry();
         foreach (const QString& name, annotNames) {
             AnnotationSettings* annotSettings = annotRegistry->getAnnotationSettings(name);
-            annotTree->addItem(name, annotSettings->color);
+            annotTree->addItem(name, annotSettings->getActiveColor());
         }
 
         // By default, select either previously selected item (if it is present) or the first item
@@ -510,8 +511,8 @@ void AnnotHighlightWidget::sl_storeNewColor(const QString& annotName, const QCol
     QList<AnnotationSettings*> annotToWrite;
     AnnotationSettingsRegistry* annotRegistry = AppContext::getAnnotationsSettingsRegistry();
     AnnotationSettings* annotSettings = annotRegistry->getAnnotationSettings(annotName);
-    if (annotSettings->color != newColor) {
-        annotSettings->color = newColor;
+    if (annotSettings->getActiveColor() != newColor) {
+        annotSettings->setActiveColor(newColor);
         annotToWrite.append(annotSettings);
         annotRegistry->changeSettings(annotToWrite, true);
     }

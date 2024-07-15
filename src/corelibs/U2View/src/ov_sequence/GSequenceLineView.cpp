@@ -65,7 +65,7 @@ GSequenceLineView::GSequenceLineView(QWidget* p, SequenceObjectContext* _ctx)
             SLOT(sl_onDNASelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)));
 
     connect(ctx->getSequenceGObject(), SIGNAL(si_sequenceChanged()), this, SLOT(sl_sequenceChanged()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &GSequenceLineView::completeUpdate);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &GSequenceLineView::sl_colorModeSwitched);
 }
 
 void GSequenceLineView::pack() {
@@ -488,6 +488,10 @@ U2SequenceObject* GSequenceLineView::getSequenceObject() const {
 void GSequenceLineView::completeUpdate() {
     addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
     update();
+}
+
+void GSequenceLineView::sl_colorModeSwitched() {
+    completeUpdate();
 }
 
 void GSequenceLineView::sl_sequenceChanged() {
