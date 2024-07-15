@@ -1843,7 +1843,7 @@ static void renamePastedSchemaActors(Schema& pasted, Metadata& meta, Schema* ori
 
 void WorkflowView::sl_pasteItems(const QString& s) {
     DocumentFormat* wf = AppContext::getDocumentFormatRegistry()->getFormatById(WorkflowDocFormat::FORMAT_ID);
-    if (wf->checkRawData(s.toLatin1()).score != FormatDetection_Matched) {
+    if (wf->checkRawData(s.toLocal8Bit()).score != FormatDetection_Matched) {
         return;
     }
     disconnect(scene, SIGNAL(selectionChanged()), this, SLOT(sl_editItem()));
@@ -1896,9 +1896,8 @@ void WorkflowView::sl_pasteAction() {
         pasteCount = 0;
         lastPaste = tmp;
     }
-    QByteArray dataToPaste = lastPaste.toLatin1();
     DocumentFormat* wf = AppContext::getDocumentFormatRegistry()->getFormatById(WorkflowDocFormat::FORMAT_ID);
-    if (wf->checkRawData(dataToPaste).score != FormatDetection_Matched) {
+    if (wf->checkRawData(lastPaste.toLocal8Bit()).score != FormatDetection_Matched) {
         return;
     }
     disconnect(scene, &WorkflowScene::selectionChanged, this, &WorkflowView::sl_editItem);
