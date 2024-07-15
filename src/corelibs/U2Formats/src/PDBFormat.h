@@ -64,7 +64,8 @@ private:
         // Data
         IOAdapter* io;
         QString currentPDBLine;
-        ResidueIndex currentResidueIndex;
+        // The previous residue and the number of the chain to which it corresponded.
+        QPair<int, ResidueIndex> prevChainAndResidueIndex;
         int currentChainIndex;
         int currentMoleculeIndex;
         int currentModelIndex;

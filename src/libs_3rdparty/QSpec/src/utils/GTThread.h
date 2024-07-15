@@ -24,6 +24,8 @@
 
 #include <GTGlobals.h>
 #include <core/CustomScenario.h>
+#include <type_traits>
+#include <utility>
 
 #include <QTimer>
 
@@ -33,6 +35,25 @@ class HI_EXPORT GTThread {
 public:
     static void waitForMainThread();
     static void runInMainThread(CustomScenario* scenario);
+
+    template<typename T,
+             typename = typename std::enable_if<!std::is_base_of<
+                 CustomScenario,
+                 typename std::remove_pointer<T>::type>::value>::type>
+    static void runInMainThread(T&& func) {
+        class Aux : public CustomScenario {
+            T f;
+
+        public:
+            Aux(T f)
+                : f(std::move(f)) {
+            }
+            void run() override {
+                f();
+            }
+        };
+        runInMainThread(new Aux(std::forward<T>(func)));
+    }
 
     /** Returns true if the current thread is the main QT thread. */
     static bool isMainThread();
