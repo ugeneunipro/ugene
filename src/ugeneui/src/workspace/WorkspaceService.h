@@ -63,11 +63,16 @@ private:
     void updateMainMenuActions();
     void renewAccessTokenIfCloseToExpire();
     void setTokens(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings);
+    void setTokenFields(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings);
 
-    QString accessToken;
-    QString refreshToken;
-    QAction* loginAction;
-    QAction* logoutAction;
+    QString accessToken = nullptr;
+    QString refreshToken = nullptr;
+    QAction* loginAction = nullptr;
+    QAction* logoutAction = nullptr;
+    /**
+     * Websocket service is created for every session.
+     * When user is logged out webSocketService is null.
+     */
     WebSocketClientService* webSocketService = nullptr;
     CloudStorageService* cloudStorageService = nullptr;
     QAction* separatorAction = nullptr;

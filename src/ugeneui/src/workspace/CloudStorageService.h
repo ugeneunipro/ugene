@@ -39,7 +39,7 @@ signals:
 private:
     void onWebSocketMessageReceived(const QJsonObject& message);
 
-    WorkspaceService* workspaceService;
+    WorkspaceService* workspaceService = nullptr;
 };
 
 }  // namespace U2

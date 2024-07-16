@@ -69,8 +69,6 @@ WorkspaceService::WorkspaceService()
 
     refreshToken = AppContext::getSettings()->getValue(WORKSPACE_SETTINGS_FOLDER + "/" + WORKSPACE_SETTINGS_REFRESH_TOKEN).toString();
 
-    webSocketService = new WebSocketClientService(this);
-
     auto refreshTokenTimer = new QTimer(this);
     connect(refreshTokenTimer, &QTimer::timeout, this, [this] { renewAccessTokenIfCloseToExpire(); });
     int accessTokenRefreshTimerIntervalMillis = (ACCESS_TOKEN_RENEW_BEFORE_EXPIRE_SECONDS / 2) * 1000;
@@ -79,8 +77,8 @@ WorkspaceService::WorkspaceService()
 }
 
 void WorkspaceService::renewAccessTokenIfCloseToExpire() {
-    qDebug() << "WorkspaceService: Renewing access token";
     CHECK(!refreshToken.isEmpty(), );
+    qDebug() << "WorkspaceService: Renewing access token";
     QDateTime refreshTokenExpirationTime = getTokenExpirationTime(refreshToken);
     QDateTime now = QDateTime::currentDateTimeUtc();
     CHECK(refreshTokenExpirationTime.isValid() && refreshTokenExpirationTime > now, );
@@ -146,14 +144,21 @@ WebSocketClientService* WorkspaceService::getWebSocketService() const {
 
 void WorkspaceService::setTokens(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings) {
     qDebug() << "WorkspaceService:setTokens is called";
+    setTokenFields(newAccessToken, newRefreshToken, saveToSettings);
+    if (webSocketService == nullptr) {
+        webSocketService = webSocketService = new WebSocketClientService(this);
+    }
+    updateMainMenuActions();
+    emit si_authenticationEvent(true);
+    webSocketService->refreshWebSocketConnection(this->accessToken);
+}
+
+void WorkspaceService::setTokenFields(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings) {
     accessToken = newAccessToken;
     refreshToken = newRefreshToken;
-    updateMainMenuActions();
     if (saveToSettings) {
         AppContext::getSettings()->setValue(WORKSPACE_SETTINGS_FOLDER + "/" + WORKSPACE_SETTINGS_REFRESH_TOKEN, refreshToken);
     }
-    si_authenticationEvent(true);
-    webSocketService->refreshWebSocketConnection(this->accessToken);
 }
 
 void WorkspaceService::login() {
@@ -175,6 +180,7 @@ void WorkspaceService::logout() {
     updateMainMenuActions();
     delete webSocketService;
     webSocketService = nullptr;
+    setTokenFields("", "", true);
     emit si_authenticationEvent(false);
 }
 

@@ -42,7 +42,7 @@ WorkspaceConnectionStatusIcon::WorkspaceConnectionStatusIcon() {
 
 void WorkspaceConnectionStatusIcon::reconnectToWorkspace() {
     const auto& services = AppContext::getServiceRegistry()->getServices();
-    if (workspaceService) {
+    if (workspaceService != nullptr) {
         disconnect(workspaceService);
         disconnect(workspaceService->getWebSocketService());
         workspaceService = nullptr;
@@ -54,9 +54,14 @@ void WorkspaceConnectionStatusIcon::reconnectToWorkspace() {
         }
     }
     if (workspaceService && workspaceService->isEnabled()) {
-        connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this] { updateIcon(); });
-        connect(workspaceService->getWebSocketService(), &WebSocketClientService::si_connectionStateChanged, this, [this] {
+        connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this] {
             updateIcon();
+            auto websocketService = workspaceService->getWebSocketService();
+            if (websocketService != nullptr) {
+                connect(workspaceService->getWebSocketService(), &WebSocketClientService::si_connectionStateChanged, this, [this] {
+                    updateIcon();
+                }, Qt::UniqueConnection);
+            }
         });
     }
     updateIcon();

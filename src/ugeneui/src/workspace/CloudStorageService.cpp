@@ -30,9 +30,13 @@ namespace U2 {
 
 CloudStorageService::CloudStorageService(WorkspaceService* ws)
     : QObject(ws), workspaceService(ws) {
-    auto webSocketService = workspaceService->getWebSocketService();
-    webSocketService->subscribe(WebSocketSubscription(WebSocketSubscriptionType::StorageState, "", this));
-    connect(webSocketService, &WebSocketClientService::si_messageReceived, this, &CloudStorageService::onWebSocketMessageReceived);
+    connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this] {
+        auto webSocketService = workspaceService->getWebSocketService();
+        if (webSocketService != nullptr) {
+            webSocketService->subscribe(WebSocketSubscription(WebSocketSubscriptionType::StorageState, "", this));
+            connect(webSocketService, &WebSocketClientService::si_messageReceived, this, &CloudStorageService::onWebSocketMessageReceived, Qt::UniqueConnection);
+        }
+    });
 }
 
 void CloudStorageService::onWebSocketMessageReceived(const QJsonObject& message) {
