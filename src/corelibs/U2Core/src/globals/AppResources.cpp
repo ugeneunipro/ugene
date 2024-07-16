@@ -382,8 +382,28 @@ MemoryLocker::MemoryLocker(int preLockMB)
     tryAcquire(0);
 }
 
+MemoryLocker::MemoryLocker(MemoryLocker&& other)
+    : os(std::exchange(other.os, nullptr)),
+      preLockMB(std::exchange(other.preLockMB, 0)),
+      lockedMB(std::exchange(other.lockedMB, 0)),
+      needBytes(std::exchange(other.needBytes, 0)),
+      resource(std::exchange(other.resource, nullptr)),
+      errorMessage(std::exchange(other.errorMessage, "")) {
+}
+MemoryLocker& MemoryLocker::operator=(MemoryLocker&& other) {
+    os = std::exchange(other.os, nullptr);
+    preLockMB = std::exchange(other.preLockMB, 0);
+    lockedMB = std::exchange(other.lockedMB, 0);
+    needBytes = std::exchange(other.needBytes, 0);
+    resource = std::exchange(other.resource, nullptr);
+    errorMessage = std::exchange(other.errorMessage, "");
+    return *this;
+}
+
 MemoryLocker::~MemoryLocker() {
-    release();
+    if (resource != nullptr) {
+        release();
+    }
 }
 
 bool MemoryLocker::tryAcquire(qint64 bytes) {

@@ -23,6 +23,7 @@
 
 #include <QStringList>
 
+#include <U2Core/AppResources.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/Msa.h>
 #include <U2Core/U2Region.h>
@@ -58,12 +59,27 @@ public:
 
     static void updateFormatHints(QList<GObject*>& objects, QVariantMap& fs);
 
+    using Bytes = int;
+    /** The approximate amount of memory required for one merged sequence annotation, in bytes. Doesn't depend on the
+     * sequence name length.
+     */
+    static constexpr Bytes DocumentFormatUtils::memPerMergedAnnot();
+
     /** Doc URL here is used to set up sequence<->annotation relations */
     static AnnotationTableObject* addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
                                                                     const U2DbiRef& dbiRef,
                                                                     const QStringList& contigs,
                                                                     const QVector<U2Region>& mergedMapping,
                                                                     const QVariantMap& hints);
+    /** Function overload above. In addition to creating the "Contigs" annotation table, the function accepts an already
+     * acquired "memory" resource that will be moved to the annotation table itself.
+     */
+    static AnnotationTableObject* addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
+                                                                    const U2DbiRef& dbiRef,
+                                                                    const QStringList& contigs,
+                                                                    const QVector<U2Region>& mergedMapping,
+                                                                    const QVariantMap& hints,
+                                                                    MemoryLocker memLocker);
 
     static QString getFormatNameById(const DocumentFormatId& formatId);
 };

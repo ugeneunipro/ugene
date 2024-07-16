@@ -188,6 +188,9 @@ public:
 
     MemoryLocker(int preLockMB = 10);
 
+    MemoryLocker(MemoryLocker&&);
+    MemoryLocker& operator=(MemoryLocker&&);
+
     virtual ~MemoryLocker();
 
     MemoryLocker(const MemoryLocker& other) = delete;
