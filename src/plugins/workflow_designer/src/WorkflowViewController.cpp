@@ -278,7 +278,8 @@ static WorkflowProcessItem* createProcess(Actor* actor, const Workflow::Metadata
             }
         }
     }
-    for (auto portItem : procItem->getPortItems()) {
+    auto items = procItem->getPortItems();
+    for (auto portItem : qAsConst(items)) {
         Port* port = portItem->getPort();
         qreal a = visual.getPortAngle(port->getId(), contains);
         if (contains) {
@@ -1912,27 +1913,47 @@ void WorkflowView::sl_pasteAction() {
         return;
     }
     renamePastedSchemaActors(pastedS, pastedM, schema.get());
-
+    if (schema->getProcesses().isEmpty()) {
+        schema->setWizards(pastedS.takeWizards());
+    }
     schema->merge(pastedS);
     updateMeta();
     meta.mergeVisual(pastedM);
     pastedS.setDeepCopyFlag(false);
 
-    // Add scene elements to the scene.
-    QMap<Port*, WorkflowPortItem*> ports;
-    for (auto actor : qAsConst(pastedS.getProcesses())) {
-        WorkflowProcessItem* procItem = SceneCreatorHelper::createProcess(actor, meta);
-        scene->addItem(procItem);
-        QList<WorkflowPortItem*> portItems = procItem->getPortItems();
-        for (WorkflowPortItem* portItem : qAsConst(portItems)) {
-            ports[portItem->getPort()] = portItem;
+    {
+        // Add scene elements to the scene.
+        QMap<Port*, WorkflowPortItem*> ports;
+        for (auto actor : qAsConst(pastedS.getProcesses())) {
+            WorkflowProcessItem* procItem = SceneCreatorHelper::createProcess(actor, meta);
+            scene->addItem(procItem);
+            QList<WorkflowPortItem*> portItems = procItem->getPortItems();
+            for (WorkflowPortItem* portItem : qAsConst(portItems)) {
+                ports[portItem->getPort()] = portItem;
+            }
+        }
+        auto flows = pastedS.getFlows();
+        for (auto link : qAsConst(flows)) {
+            SceneCreatorHelper::createBus(ports, link, scene, meta);
         }
     }
-    for (auto link : pastedS.getFlows()) {
-        SceneCreatorHelper::createBus(ports, link, scene, meta);
+    scene->connectConfigurationEditors();
+
+    auto items = scene->items();
+    for (auto it : qAsConst(items)) {
+        auto proc = qgraphicsitem_cast<WorkflowProcessItem*>(it);
+        if (proc != nullptr) {
+            if (pastedS.actorById(proc->getProcess()->getId()) != nullptr) {
+                it->setSelected(true);
+            }
+        }
     }
 
-    scene->connectConfigurationEditors();
+    int shift = GRID_STEP * pasteCount;
+    auto selectedItems = scene->selectedItems();
+    for (auto it : qAsConst(selectedItems)) {
+        it->moveBy(shift, shift);
+    }
 }
 
 void WorkflowView::recreateScene() {
