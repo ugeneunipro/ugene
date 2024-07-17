@@ -48,7 +48,16 @@ DarkStyle::~DarkStyle() {
 
 //QStyle *DarkStyle::baseStyle() const { return styleBase(); }
 
-void DarkStyle::polish(QPalette &palette) {
+QIcon DarkStyle::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption* option, const QWidget* widget) const {
+    if (standardIcon == QStyle::SP_ToolBarHorizontalExtensionButton) {
+        return QIcon(":/darkstyle/icon_tooltip_extend_horizontal.png");
+    } else if (standardIcon == QStyle::SP_ToolBarVerticalExtensionButton) {
+        return QIcon(":/darkstyle/icon_tooltip_extend_vertical.png");
+    }
+    return QProxyStyle::standardIcon(standardIcon, option, widget);
+}
+
+void DarkStyle::polish(QPalette& palette) {
     //return;
     auto sp1 = standardPalette();
     auto n1 = sp1.color(QPalette::Mid).name();

@@ -235,8 +235,8 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
 
 namespace {
 
-QPixmap getPixmapResource(const QString& cathegory, const QString& iconName, bool isDark) {
-    QString resourceName = GUIUtils::getResourceName(cathegory, iconName);
+QPixmap getPixmapResource(const QString& cathegory, const QString& iconName, bool isDark, bool hasColorCathegory) {
+    QString resourceName = GUIUtils::getResourceName(cathegory, iconName, hasColorCathegory);
     QPixmap pixmap = QPixmap(resourceName);
     Q_ASSERT(!pixmap.isNull());
     return pixmap;
@@ -244,16 +244,24 @@ QPixmap getPixmapResource(const QString& cathegory, const QString& iconName, boo
 
 }
 
-QString GUIUtils::getResourceName(const QString& cathegory, const QString& iconName) {
+QString GUIUtils::getResourceName(const QString& cathegory, const QString& iconName, bool hasColorCathegory) {
     bool isDark = AppContext::getMainWindow()->isDarkMode();
-    return QString(":%1/images/%2/%3").arg(cathegory).arg(isDark ? "dark" : "light").arg(iconName);
+    QString colorCathegory;
+    if (hasColorCathegory) {
+        if (isDark) {
+            colorCathegory = "dark/";
+        } else {
+            colorCathegory = "light/";
+        }
+    }
+    return QString(":%1/images/%2%3").arg(cathegory).arg(colorCathegory).arg(iconName);
 }
 
 
-QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconName) {
+QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconName, bool hasColorCathegory) {
     QIcon icon;
     bool isDark = AppContext::getMainWindow()->isDarkMode();
-    QPixmap pixmap = getPixmapResource(cathegory, iconName, isDark);
+    QPixmap pixmap = getPixmapResource(cathegory, iconName, isDark, hasColorCathegory);
     icon.addPixmap(pixmap);
     if (isDark) {
         // automatic disabled icon is no good for dark mode

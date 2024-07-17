@@ -38,6 +38,8 @@ public:
 
     //QStyle *baseStyle() const;
 
+    QIcon standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption* option = nullptr, const QWidget* widget = nullptr) const override;
+
     void polish(QPalette &palette) override;
     void polish(QApplication *app) override;
 

@@ -30,7 +30,6 @@
         <file>images/circular_seq.png</file>
         <file>images/close.png</file>
         <file>images/close_2.png</file>
-        <file>images/close_small.png</file>
         <file>images/codon_table.png</file>
         <file>images/collapse.png</file>
         <file>images/collapse_tree.png</file>
@@ -49,12 +48,10 @@
         <file>images/create_annotation.png</file>
         <file>images/create_annotation_icon.png</file>
         <file>images/database_with_arrow.png</file>
-        <file>images/details_view.png</file>
         <file>images/dna.png</file>
         <file>images/dna_helix.png</file>
         <file>images/do_complement.png</file>
         <file>images/document.png</file>
-        <file>images/edit.png</file>
         <file>images/error_notification.png</file>
         <file>images/expand_tree.png</file>
         <file>images/extract_assembly_region.png</file>
@@ -68,7 +65,6 @@
         <file>images/graphs.png</file>
         <file>images/group_auto.png</file>
         <file>images/group_green_active.png</file>
-        <file>images/hide_all_views.png</file>
         <file>images/highlight.png</file>
         <file>images/inbox-minus.png</file>
         <file>images/info.png</file>
@@ -92,13 +88,11 @@
         <file>images/multiline_view.png</file>
         <file>images/navi_right.png</file>
         <file>images/notch.png</file>
-        <file>images/overview.png</file>
         <file>images/page_refresh.png</file>
         <file>images/pairwise.png</file>
         <file>images/paste.png</file>
         <file>images/phylip.png</file>
         <file>images/plus.png</file>
-        <file>images/predefined_annotation_groups.png</file>
         <file>images/printer.png</file>
         <file>images/progress.gif</file>
         <file>images/pushpin.png</file>
@@ -128,11 +122,9 @@
         <file>images/sam.png</file>
         <file>images/save.png</file>
         <file>images/save_as.png</file>
-        <file>images/select_region.png</file>
         <file>images/set_reference.png</file>
         <file>images/settings.png</file>
         <file>images/settings2.png</file>
-        <file>images/show_all_views.png</file>
         <file>images/show_compl.png</file>
         <file>images/show_trans.png</file>
         <file>images/sort_ascending.png</file>
@@ -152,12 +144,10 @@
         <file>images/tooltip.png</file>
         <file>images/tree.png</file>
         <file>images/tree_layout.png</file>
-        <file>images/tt_switch.png</file>
         <file>images/uindexview_select_field.png</file>
         <file>images/undo.png</file>
         <file>images/unload_document.png</file>
         <file>images/warning_notification.png</file>
-        <file>images/wrap_sequence.png</file>
         <file>images/zoom_1_1.png</file>
         <file>images/zoom_in.png</file>
         <file>images/zoom_in_tree.png</file>
@@ -167,15 +157,45 @@
         <file>images/zoom_reg.png</file>
         <file>images/zoom_rows.png</file>
         <file>images/zoom_sel.png</file>
-        <file>images/zoom_view.png</file>
         <file>images/zoom_whole.png</file>
+        <file>images/zoom_whole_small.png</file>
 
         <file>images/light/arrow_down.png</file>
         <file>images/light/arrow_right.png</file>
+        <file>images/light/cam2.png</file>
+        <file>images/light/close_small.png</file>
+        <file>images/light/details_view.png</file>
+        <file>images/light/edit.png</file>
         <file>images/light/gear.svg</file>
+        <file>images/light/hide_all_views.png</file>
+        <file>images/light/overview.png</file>
+        <file>images/light/predefined_annotation_groups.png</file>
+        <file>images/light/select_region.png</file>
+        <file>images/light/show_all_views.png</file>
+        <file>images/light/show_compl.png</file>
+        <file>images/light/show_trans.png</file>
+        <file>images/light/sum.png</file>
+        <file>images/light/tt_switch.png</file>
+        <file>images/light/wrap_sequence.png</file>
+        <file>images/light/zoom_view.png</file>
 
         <file>images/dark/arrow_down.png</file>
         <file>images/dark/arrow_right.png</file>
+        <file>images/dark/cam2.png</file>
+        <file>images/dark/close_small.png</file>
+        <file>images/dark/details_view.png</file>
+        <file>images/dark/edit.png</file>
         <file>images/dark/gear.svg</file>
+        <file>images/dark/hide_all_views.png</file>
+        <file>images/dark/overview.png</file>
+        <file>images/dark/predefined_annotation_groups.png</file>
+        <file>images/dark/select_region.png</file>
+        <file>images/dark/show_all_views.png</file>
+        <file>images/dark/show_compl.png</file>
+        <file>images/dark/show_trans.png</file>
+        <file>images/dark/sum.png</file>
+        <file>images/dark/tt_switch.png</file>
+        <file>images/dark/wrap_sequence.png</file>
+        <file>images/dark/zoom_view.png</file>
     </qresource>
 </RCC>

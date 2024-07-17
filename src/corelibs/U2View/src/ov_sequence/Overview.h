@@ -54,6 +54,7 @@ protected slots:
     void sl_annotationObjectAdded(AnnotationTableObject* obj);
     void sl_annotationObjectRemoved(AnnotationTableObject* obj);
     void sl_sequenceChanged() override;
+    void sl_colorModeSwitched();
 
 protected:
     void pack() override;
@@ -87,6 +88,8 @@ private:
 
     /** A renderArea from the base class with a correct type. Used to avoid casts in the code. */
     OverviewRenderArea* overviewRenderArea;
+
+    QAction* densityGraphAction = nullptr;
 
     static const QString ANNOTATION_GRAPH_STATE;
 

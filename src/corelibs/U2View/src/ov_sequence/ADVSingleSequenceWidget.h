@@ -170,6 +170,7 @@ signals:
     void si_updateGraphView(const QStringList&, const QVariantMap&);
 private slots:
     void sl_saveScreenshot();
+    void sl_colorModeSwitched();
 
 protected:
     void init();
@@ -209,6 +210,7 @@ private:
     QAction* createNewRulerAction;
     QAction* shotScreenAction;
     QAction* closeViewAction;
+    QAction* exportImageAction = nullptr;
 
     GAutoDeleteList<QAction> rulerActions;
     QList<QString>* buttonTabOrederedNames;

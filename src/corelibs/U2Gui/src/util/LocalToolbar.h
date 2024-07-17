@@ -34,6 +34,7 @@ public:
     LocalToolbar(QWidget* p);
 
     virtual void addAction(QAction* a);
+
 };
 
 }  // namespace U2
