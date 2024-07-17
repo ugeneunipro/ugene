@@ -63,7 +63,7 @@ public:
     /** The approximate amount of memory required for one merged sequence annotation, in bytes. Doesn't depend on the
      * sequence name length.
      */
-    static constexpr Bytes DocumentFormatUtils::memPerMergedAnnot();
+    static constexpr Bytes memPerMergedAnnot();
 
     /** Doc URL here is used to set up sequence<->annotation relations */
     static AnnotationTableObject* addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
