@@ -63,7 +63,18 @@ public:
     /** The approximate amount of memory required for one merged sequence annotation, in bytes. Doesn't depend on the
      * sequence name length.
      */
-    static constexpr Bytes memPerMergedAnnot();
+    static constexpr Bytes memPerMergedAnnot() {
+        // All constants are calculated empirically: open a file with 1 million sequences, open a file with 2 million
+        // sequences, find the difference in heap memory usage between the two runs, then divide that value by 1 million to
+        // get the approximate amount of memory per annotation.
+        // The values are the peak values when using the appropriate functions.
+
+        constexpr Bytes dataMem = 449;  // DocumentFormatUtils::addAnnotationsForMergedU2Sequence
+        constexpr Bytes annTreeViewMem = 648;  // AnnotationsTreeView
+        constexpr Bytes annTreeViewSortMem = 32;  // QTreeModel::sortItems (called as post-event)
+        constexpr Bytes panViewMem = 65;  // PVRowsManager::addAnnotation
+        return dataMem + annTreeViewMem + annTreeViewSortMem + panViewMem;
+    }
 
     /** Doc URL here is used to set up sequence<->annotation relations */
     static AnnotationTableObject* addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,

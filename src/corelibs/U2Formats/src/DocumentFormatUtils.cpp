@@ -50,18 +50,6 @@ static int getIntSettings(const QVariantMap& fs, const char* sName, int defVal) 
     return v.toInt();
 }
 
-constexpr DocumentFormatUtils::Bytes DocumentFormatUtils::memPerMergedAnnot() {
-    // All constants are calculated empirically: open a file with 1 million sequences, open a file with 2 million
-    // sequences, find the difference in heap memory usage between the two runs, then divide that value by 1 million to
-    // get the approximate amount of memory per annotation.
-    // The values are the peak values when using the appropriate functions.
-
-    constexpr Bytes dataMem = 449;  // DocumentFormatUtils::addAnnotationsForMergedU2Sequence
-    constexpr Bytes annTreeViewMem = 648;  // AnnotationsTreeView
-    constexpr Bytes annTreeViewSortMem = 32;  // QTreeModel::sortItems (called as post-event)
-    constexpr Bytes panViewMem = 65;  // PVRowsManager::addAnnotation
-    return dataMem + annTreeViewMem + annTreeViewSortMem + panViewMem;
-}
 // Used in DocumentFormatUtils::addAnnotationsForMergedU2Sequence functions.
 namespace MergedSeqAnnsHelper {
 // Creates hints for the merged sequence annotation table object.

@@ -301,7 +301,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
     MemoryLocker annMemLocker;
     if (!annMemLocker.hasError()) {
         const auto requiredMem = static_cast<qint64>(DocumentFormatUtils::memPerMergedAnnot()) * headers.size();
-        bool ok = annMemLocker.tryAcquire(requiredMem);
+        const auto ok = annMemLocker.tryAcquire(requiredMem);
         if (ok) {
             objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef,
                                                                               dbiRef,
