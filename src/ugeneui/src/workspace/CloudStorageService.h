@@ -20,11 +20,14 @@
  */
 #pragma once
 
+#include <QDateTime>
 #include <QObject>
 
 namespace U2 {
+enum class WebSocketSubscriptionType;
+class WebSocketSubscription;
 class WorkspaceService;
-}
+}  // namespace U2
 namespace U2 {
 
 class CloudStorageService : public QObject {
@@ -37,9 +40,20 @@ signals:
     void si_storageStateChanged(const QString& state);
 
 private:
-    void onWebSocketMessageReceived(const QJsonObject& message);
+    void onWebSocketMessageReceived(const WebSocketSubscriptionType& subscriptionType, const QString& entityId, const QJsonObject& payload);
 
     WorkspaceService* workspaceService = nullptr;
 };
 
+class StorageEntry {
+public:
+    QString name;
+    QList<StorageEntry> children;
+    qint64 size = 0;
+    QDateTime modificationTime;
+
+    StorageEntry(const QString& name, qint64 size, const QDateTime& modificationTime);
+
+    bool isFolder() const;
+};
 }  // namespace U2

@@ -150,7 +150,7 @@ void WorkspaceService::setTokens(const QString& newAccessToken, const QString& n
     }
     updateMainMenuActions();
     emit si_authenticationEvent(true);
-    webSocketService->refreshWebSocketConnection(this->accessToken);
+    webSocketService->setAccessToken(this->accessToken);
 }
 
 void WorkspaceService::setTokenFields(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings) {

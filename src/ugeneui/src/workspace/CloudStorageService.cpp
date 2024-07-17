@@ -26,6 +26,7 @@
 
 #include "WebSocketClientService.h"
 #include "WorkspaceService.h"
+
 namespace U2 {
 
 CloudStorageService::CloudStorageService(WorkspaceService* ws)
@@ -39,10 +40,18 @@ CloudStorageService::CloudStorageService(WorkspaceService* ws)
     });
 }
 
-void CloudStorageService::onWebSocketMessageReceived(const QJsonObject& message) {
-    QJsonDocument jsonDoc(message);
+void CloudStorageService::onWebSocketMessageReceived(const WebSocketSubscriptionType& type, const QString& _, const QJsonObject& payload) {
+    CHECK(type == WebSocketSubscriptionType::StorageState, );
+    QJsonDocument jsonDoc(payload);
     QString jsonString = jsonDoc.toJson(QJsonDocument::Indented);
     emit si_storageStateChanged(jsonString);
 }
 
+StorageEntry::StorageEntry(const QString& _name, qint64 _size, const QDateTime& _modificationTime)
+    : name(_name), size(_size), modificationTime(_modificationTime) {
+}
+
+bool StorageEntry::isFolder() const {
+    return !children.isEmpty();
+}
 }  // namespace U2

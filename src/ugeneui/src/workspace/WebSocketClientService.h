@@ -38,6 +38,7 @@ enum class WebSocketRequestType {
 
 enum class WebSocketSubscriptionType {
     StorageState,
+    Invalid,
 };
 
 class WebSocketOutgoingMessage {
@@ -64,7 +65,8 @@ public:
     explicit WebSocketClientService(QObject* parent = nullptr);
     ~WebSocketClientService() override;
 
-    void refreshWebSocketConnection(const QString& accessToken);
+    void setAccessToken(const QString& accessToken);
+    void reconnectIfNotConnected();
 
     bool isConnected() const;
 
@@ -73,7 +75,7 @@ public:
 
 signals:
     void si_connectionStateChanged(bool isConnected);
-    void si_messageReceived(const QJsonObject& message);
+    void si_messageReceived(const WebSocketSubscriptionType& type, const QString& entityId, const QJsonObject& payload);
 
 private slots:
     void onConnected();
@@ -86,7 +88,7 @@ private:
     void sendPendingMessages();
     void disconnect(bool clearSubscriptions = true);
     void clearSubscriptions();
-    void updateAccessToken();
+    void sendAccessTokenToServer();
 
     QWebSocket* socket;
     /** ID if the client. Never changes. */

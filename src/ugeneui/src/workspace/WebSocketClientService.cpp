@@ -20,6 +20,7 @@
  */
 
 #include "WebSocketClientService.h"
+#include <sys/socket.h>
 
 #include <QDebug>
 #include <QJsonArray>
@@ -48,8 +49,16 @@ static QString getSubscriptionTypeAsString(const WebSocketSubscriptionType& type
     switch (type) {
         case WebSocketSubscriptionType::StorageState:
             return "STORAGE_STATE";
+        default:
+            FAIL("Unexpected subscription type", "");
     }
-    FAIL("Unexpected subscription type", "");
+}
+
+static WebSocketSubscriptionType parseSubscriptionType(const QString& stringValue) {
+    if (stringValue == "STORAGE_STATE") {
+        return WebSocketSubscriptionType::StorageState;
+    }
+    FAIL("Unexpected subscription type", WebSocketSubscriptionType::Invalid);
 }
 
 WebSocketSubscription::WebSocketSubscription(const WebSocketSubscriptionType& _type, const QString& _entityId, QObject* _subscriber)
@@ -95,21 +104,25 @@ void WebSocketClientService::onTextMessageReceived(const QString& message) {
     auto messageId = incomingMessage["messageId"].toString();
     receivedMessageIds.insert(messageId);
     sendMessage({WebSocketRequestType::Acknowledge, {{"messageId", messageId}}});
-    emit si_messageReceived(incomingMessage);
+    auto payloadJson = incomingMessage["payload"].toObject();
+    auto subscriptionJson = incomingMessage["subscription"].toObject();
+    auto typeString = subscriptionJson["type"].toString();
+    auto subscriptionType = parseSubscriptionType(typeString);
+    SAFE_POINT(subscriptionType != WebSocketSubscriptionType::Invalid, "Got unsupported subscription type: " + typeString, );
+    auto entityId = subscriptionJson["entityId"].toString();
+    emit si_messageReceived(subscriptionType, entityId, payloadJson);
 }
 
 void WebSocketClientService::onError(QAbstractSocket::SocketError error) {
     qDebug() << "WebSocket error:" << error;
     if (isRetrying) {
+        qDebug() << "WebSocketClientService::onError - won't retry when inside refreshWebSocketConnection";
         return;
     }
 
     isRetrying = true;
     QTimer::singleShot(3000, [this] {
-        if (isRetrying && !socket->isValid()) {
-            qDebug() << "WebSocketClientService: Retrying open websocket connection...";
-            refreshWebSocketConnection(accessToken);
-        }
+        reconnectIfNotConnected();
         isRetrying = false;
     });
 }
@@ -122,6 +135,7 @@ void WebSocketClientService::sendMessage(const WebSocketOutgoingMessage& message
 
 void WebSocketClientService::sendPendingMessages() {
     CHECK(connectionReady, );
+    CHECK(this->socket->state() == QAbstractSocket::ConnectedState, );
     for (const auto& message : qAsConst(pendingMessages)) {
         auto typeString = getWebSocketRequestTypeAsString(message.type);
         qDebug() << "WebSocketClientService:sending message: " << typeString;
@@ -131,22 +145,27 @@ void WebSocketClientService::sendPendingMessages() {
         if (!accessToken.isEmpty()) {
             request["accessToken"] = accessToken;
         }
-        socket->sendTextMessage(QJsonDocument(request).toJson(QJsonDocument::Compact));
-        // TODO: check result of the sending.
+        qint64 bytesSent = socket->sendTextMessage(QJsonDocument(request).toJson(QJsonDocument::Compact));
+        SAFE_POINT(bytesSent > 0, "Invalid count of sent bytes: " + QString::number(bytesSent), );
+        socket->flush();
     }
     pendingMessages.clear();
 }
 
-void WebSocketClientService::refreshWebSocketConnection(const QString& newAccessToken) {
-    qDebug() << "WebSocketClientService:refreshWebSocketConnection";
+void WebSocketClientService::setAccessToken(const QString& newAccessToken) {
+    qDebug() << "WebSocketClientService:updateAccessToken";
     CHECK(accessToken != newAccessToken, );
     accessToken = newAccessToken;
     if (socket->isValid()) {
-        updateAccessToken();
-        return;
+        sendAccessTokenToServer();
+    } else {
+        reconnectIfNotConnected();
     }
+}
 
-    qDebug() << "Connecting to backend socket";
+void WebSocketClientService::reconnectIfNotConnected() {
+    CHECK(!socket->isValid(), );
+    qDebug() << "WebSocketClientService::reconnectIfNotConnected: Connecting to backend";
     QString wsBackendUrl = "wss://workspace.ugene.net/api/?accessToken=" + accessToken + "&clientId=" + clientId;
     socket->open(QUrl(wsBackendUrl));
 }
@@ -167,7 +186,7 @@ void WebSocketClientService::clearSubscriptions() {
     subscriptions.clear();
 }
 
-void WebSocketClientService::updateAccessToken() {
+void WebSocketClientService::sendAccessTokenToServer() {
     if (!socket->isValid()) {
         qWarning() << "Not connected to WebSocket during access token update.";
         return;
@@ -190,7 +209,9 @@ static bool hasSubscriptionWithKey(const QString& key, const QList<WebSocketSubs
 void WebSocketClientService::subscribe(const WebSocketSubscription& subscription) {
     auto subscriptionKey = getClientSubscriptionKey(subscription);
     qDebug() << "WebSocketClientService:subscribe" << subscriptionKey;
-    if (!hasSubscriptionWithKey(subscriptionKey, subscriptions)) {
+    if (hasSubscriptionWithKey(subscriptionKey, subscriptions)) {
+        qDebug() << "WebSocketClientService:subscribe, already have subscription with this key: " + subscriptionKey;
+    } else {
         QJsonObject subscriptionAsJsonObject;
         subscriptionAsJsonObject["type"] = getSubscriptionTypeAsString(subscription.type);
         if (!subscription.entityId.isEmpty()) {
