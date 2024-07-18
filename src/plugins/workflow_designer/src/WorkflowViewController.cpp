@@ -232,6 +232,89 @@ void DashboardManagerHelper::sl_dashboardsScanningFinished() {
     dmAction->setEnabled(true);
 }
 
+/************************************************************************/
+/* SceneCreatorHelper */
+/************************************************************************/
+namespace SceneCreatorHelper {
+
+// Creates a scene element (process) for the given actor. The appearance/style of such an actor is customizable via
+// metadata.
+static WorkflowProcessItem* createProcess(Actor* actor, const Workflow::Metadata& meta) {
+    auto procItem = new WorkflowProcessItem(actor);
+    bool contains = false;
+    ActorVisualData visual = meta.getActorVisualData(actor->getId(), contains);
+    if (!contains) {
+        return procItem;
+    }
+    QPointF p = visual.getPos(contains);
+    if (contains) {
+        procItem->setPos(p);
+    }
+    QString s = visual.getStyle(contains);
+    if (contains) {
+        SAFE_POINT_NN(s, procItem);
+        procItem->setStyle(s);
+        {
+            ItemViewStyle* eStyle = procItem->getStyleById(ItemStyles::EXTENDED);
+            ItemViewStyle* sStyle = procItem->getStyleById(ItemStyles::SIMPLE);
+            QColor c = visual.getColor(contains);
+            if (contains) {
+                SAFE_POINT_NN(eStyle, procItem);
+                SAFE_POINT_NN(sStyle, procItem);
+                eStyle->setBgColor(c);
+                sStyle->setBgColor(c);
+            }
+            QFont f = visual.getFont(contains);
+            if (contains) {
+                SAFE_POINT_NN(eStyle, procItem);
+                SAFE_POINT_NN(sStyle, procItem);
+                eStyle->setDefaultFont(f);
+                sStyle->setDefaultFont(f);
+            }
+            QRectF r = visual.getRect(contains);
+            if (contains) {
+                SAFE_POINT_NN(eStyle, procItem);
+                qobject_cast<ExtendedProcStyle*>(eStyle)->setFixedBounds(r);
+            }
+        }
+    }
+    auto items = procItem->getPortItems();
+    for (auto portItem : qAsConst(items)) {
+        Port* port = portItem->getPort();
+        qreal a = visual.getPortAngle(port->getId(), contains);
+        if (contains) {
+            portItem->setOrientation(a);
+        }
+    }
+    return procItem;
+}
+
+// Creates a scene element (bus) using the given `link` between `ports` and adds it to the `scene`. The appearance/style
+// of the connection arrow is customizable via metadata.
+static void createBus(const QMap<Port*, WorkflowPortItem*>& ports,
+                      Link* link,
+                      WorkflowScene* scene,
+                      const Workflow::Metadata& meta) {
+    WorkflowPortItem* src = ports[link->source()];
+    WorkflowPortItem* dst = ports[link->destination()];
+    SAFE_POINT_NN(src, );
+    SAFE_POINT_NN(dst, );
+    WorkflowBusItem* busItem = scene->addFlow(src, dst, link);
+    ActorId srcActorId = src->getOwner()->getProcess()->getId();
+    ActorId dstActorId = dst->getOwner()->getProcess()->getId();
+
+    bool contains = false;
+    QPointF p = meta.getTextPos(srcActorId,
+                                link->source()->getId(),
+                                dstActorId,
+                                link->destination()->getId(),
+                                contains);
+    if (contains) {
+        busItem->getText()->setPos(p);
+    }
+}
+}  // namespace SceneCreatorHelper
+
 /********************************
  * WorkflowView
  ********************************/
@@ -708,7 +791,7 @@ void WorkflowView::createActions() {
     pasteAction->setIcon(QIcon(":workflow_designer/images/editpaste.png"));
     pasteAction->setShortcuts(QKeySequence::Paste);
     pasteAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    connect(pasteAction, SIGNAL(triggered()), SLOT(sl_pasteItems()));
+    connect(pasteAction, &QAction::triggered, this, &WorkflowView::sl_pasteAction);
     addAction(pasteAction);
 
     {  // style
@@ -1714,7 +1797,7 @@ void WorkflowView::sl_pasteSample(const QString& s) {
         {
             lastPaste.clear();
         }
-        sl_pasteItems(s, true);
+        sl_pasteItems(s);
         sl_updateTitle();
         sl_updateUi();
         scene->connectConfigurationEditors();
@@ -1759,17 +1842,9 @@ static void renamePastedSchemaActors(Schema& pasted, Metadata& meta, Schema* ori
     meta.renameActors(mapping);
 }
 
-void WorkflowView::sl_pasteItems(const QString& s, bool updateSchemaInfo) {
-    QString tmp = s.isNull() ? QApplication::clipboard()->text() : s;
-    if (tmp == lastPaste) {
-        ++pasteCount;
-    } else {
-        pasteCount = 0;
-        lastPaste = tmp;
-    }
-    QByteArray lpt = lastPaste.toLatin1();
+void WorkflowView::sl_pasteItems(const QString& s) {
     DocumentFormat* wf = AppContext::getDocumentFormatRegistry()->getFormatById(WorkflowDocFormat::FORMAT_ID);
-    if (wf->checkRawData(lpt).score != FormatDetection_Matched) {
+    if (wf->checkRawData(s.toLocal8Bit()).score != FormatDetection_Matched) {
         return;
     }
     disconnect(scene, SIGNAL(selectionChanged()), this, SLOT(sl_editItem()));
@@ -1779,7 +1854,7 @@ void WorkflowView::sl_pasteItems(const QString& s, bool updateSchemaInfo) {
     Schema pastedS;
     pastedS.setDeepCopyFlag(true);
     Metadata pastedM;
-    QString msg = HRSchemaSerializer::string2Schema(lastPaste, &pastedS, &pastedM);
+    QString msg = HRSchemaSerializer::string2Schema(s, &pastedS, &pastedM);
     if (!msg.isEmpty()) {
         uiLog.error("Paste issues: " + msg);
         return;
@@ -1791,12 +1866,10 @@ void WorkflowView::sl_pasteItems(const QString& s, bool updateSchemaInfo) {
     schema->merge(pastedS);
     updateMeta();
     meta.mergeVisual(pastedM);
-    if (updateSchemaInfo) {
-        meta.name = pastedM.name;
-        meta.comment = pastedM.comment;
-        meta.scalePercent = pastedM.scalePercent;
-        meta.estimationsCode = pastedM.estimationsCode;
-    }
+    meta.name = pastedM.name;
+    meta.comment = pastedM.comment;
+    meta.scalePercent = pastedM.scalePercent;
+    meta.estimationsCode = pastedM.estimationsCode;
     pastedS.setDeepCopyFlag(false);
     recreateScene();
     scene->connectConfigurationEditors();
@@ -1816,10 +1889,83 @@ void WorkflowView::sl_pasteItems(const QString& s, bool updateSchemaInfo) {
     }
 }
 
+void WorkflowView::sl_pasteAction() {
+    QString tmp = QApplication::clipboard()->text();
+    if (tmp == lastPaste) {
+        ++pasteCount;
+    } else {
+        pasteCount = 0;
+        lastPaste = tmp;
+    }
+    DocumentFormat* wf = AppContext::getDocumentFormatRegistry()->getFormatById(WorkflowDocFormat::FORMAT_ID);
+    if (wf->checkRawData(lastPaste.toLocal8Bit()).score != FormatDetection_Matched) {
+        return;
+    }
+    disconnect(scene, &WorkflowScene::selectionChanged, this, &WorkflowView::sl_editItem);
+    scene->clearSelection();
+    connect(scene, &WorkflowScene::selectionChanged, this, &WorkflowView::sl_editItem);
+    Schema pastedS;
+    pastedS.setDeepCopyFlag(true);
+    Metadata pastedM;
+    QString msg = HRSchemaSerializer::string2Schema(lastPaste, &pastedS, &pastedM);
+    if (!msg.isEmpty()) {
+        uiLog.error("Paste issues: " + msg);
+        return;
+    }
+    renamePastedSchemaActors(pastedS, pastedM, schema.get());
+    if (schema->getProcesses().isEmpty()) {
+        schema->setWizards(pastedS.takeWizards());
+    }
+    schema->merge(pastedS);
+    updateMeta();
+    meta.mergeVisual(pastedM);
+    pastedS.setDeepCopyFlag(false);
+
+    {
+        // Add scene elements to the scene.
+        QMap<Port*, WorkflowPortItem*> ports;
+        for (auto actor : qAsConst(pastedS.getProcesses())) {
+            WorkflowProcessItem* procItem = SceneCreatorHelper::createProcess(actor, meta);
+            scene->addItem(procItem);
+            QList<WorkflowPortItem*> portItems = procItem->getPortItems();
+            for (WorkflowPortItem* portItem : qAsConst(portItems)) {
+                ports[portItem->getPort()] = portItem;
+            }
+        }
+        auto flows = pastedS.getFlows();
+        for (auto link : qAsConst(flows)) {
+            SceneCreatorHelper::createBus(ports, link, scene, meta);
+        }
+    }
+    scene->connectConfigurationEditors();
+
+    auto items = scene->items();
+    for (auto it : qAsConst(items)) {
+        auto proc = qgraphicsitem_cast<WorkflowProcessItem*>(it);
+        if (proc != nullptr) {
+            if (pastedS.actorById(proc->getProcess()->getId()) != nullptr) {
+                it->setSelected(true);
+            }
+        }
+    }
+
+    int shift = GRID_STEP * pasteCount;
+    auto selectedItems = scene->selectedItems();
+    for (auto it : qAsConst(selectedItems)) {
+        it->moveBy(shift, shift);
+    }
+}
+
 void WorkflowView::recreateScene() {
     sceneRecreation = true;
-    SceneCreator sc(schema.get(), meta, debugInfo->getActorsWithBreakpoints());
+    SceneCreator sc(schema.get(), meta);
     sc.recreateScene(scene);
+
+    const auto actors = debugInfo->getActorsWithBreakpoints();
+    for (auto&& a : qAsConst(actors)) {
+        debugInfo->removeBreakpointFromActor(a);
+    }
+
     sceneRecreation = false;
 }
 
@@ -2730,10 +2876,8 @@ void WorkflowScene::connectConfigurationEditors() {
 /************************************************************************/
 /* SceneCreator */
 /************************************************************************/
-SceneCreator::SceneCreator(Schema* _schema,
-                           const Workflow ::Metadata& _meta,
-                           const QList<ActorId>& _actorsWithBreakpoints)
-    : schema(_schema), meta(_meta), scene(nullptr), actorsWithBreakpoints(_actorsWithBreakpoints) {
+SceneCreator::SceneCreator(Schema* _schema, const Workflow::Metadata& _meta)
+    : schema(_schema), meta(_meta), scene(nullptr) {
 }
 
 SceneCreator::~SceneCreator() {
@@ -2757,11 +2901,8 @@ WorkflowScene* SceneCreator::createScene(WorkflowView* controller) {
 WorkflowScene* SceneCreator::createScene() {
     QMap<Port*, WorkflowPortItem*> ports;
     foreach (Actor* actor, schema->getProcesses()) {
-        WorkflowProcessItem* procItem = createProcess(actor);
+        WorkflowProcessItem* procItem = SceneCreatorHelper::createProcess(actor, meta);
         scene->addItem(procItem);
-        if (actorsWithBreakpoints.contains(actor->getId()) > 0) {
-            procItem->toggleBreakpoint();
-        }
         QList<WorkflowPortItem*> portItems = procItem->getPortItems();
         for (WorkflowPortItem* portItem : qAsConst(portItems)) {
             ports[portItem->getPort()] = portItem;
@@ -2769,69 +2910,12 @@ WorkflowScene* SceneCreator::createScene() {
     }
 
     foreach (Link* link, schema->getFlows()) {
-        createBus(ports, link);
+        SceneCreatorHelper::createBus(ports, link, scene, meta);
     }
 
     WorkflowScene* result = scene;
     scene = nullptr;
     return result;
-}
-
-WorkflowProcessItem* SceneCreator::createProcess(Actor* actor) {
-    auto procItem = new WorkflowProcessItem(actor);
-    bool contains = false;
-    ActorVisualData visual = meta.getActorVisualData(actor->getId(), contains);
-    if (!contains) {
-        return procItem;
-    }
-    QPointF p = visual.getPos(contains);
-    if (contains) {
-        procItem->setPos(p);
-    }
-    QString s = visual.getStyle(contains);
-    if (contains) {
-        procItem->setStyle(s);
-        {
-            ItemViewStyle* eStyle = procItem->getStyleById(ItemStyles::EXTENDED);
-            ItemViewStyle* sStyle = procItem->getStyleById(ItemStyles::SIMPLE);
-            QColor c = visual.getColor(contains);
-            if (contains) {
-                eStyle->setBgColor(c);
-                sStyle->setBgColor(c);
-            }
-            QFont f = visual.getFont(contains);
-            if (contains) {
-                eStyle->setDefaultFont(f);
-                sStyle->setDefaultFont(f);
-            }
-            QRectF r = visual.getRect(contains);
-            if (contains) {
-                qobject_cast<ExtendedProcStyle*>(eStyle)->setFixedBounds(r);
-            }
-        }
-    }
-    foreach (WorkflowPortItem* portItem, procItem->getPortItems()) {
-        Port* port = portItem->getPort();
-        qreal a = visual.getPortAngle(port->getId(), contains);
-        if (contains) {
-            portItem->setOrientation(a);
-        }
-    }
-    return procItem;
-}
-
-void SceneCreator::createBus(const QMap<Port*, WorkflowPortItem*>& ports, Link* link) {
-    WorkflowPortItem* src = ports[link->source()];
-    WorkflowPortItem* dst = ports[link->destination()];
-    WorkflowBusItem* busItem = scene->addFlow(src, dst, link);
-    ActorId srcActorId = src->getOwner()->getProcess()->getId();
-    ActorId dstActorId = dst->getOwner()->getProcess()->getId();
-
-    bool contains = false;
-    QPointF p = meta.getTextPos(srcActorId, link->source()->getId(), dstActorId, link->destination()->getId(), contains);
-    if (contains) {
-        busItem->getText()->setPos(p);
-    }
 }
 
 }  // namespace U2
