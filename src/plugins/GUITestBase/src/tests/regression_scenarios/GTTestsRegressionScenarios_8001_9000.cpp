@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
@@ -75,6 +76,7 @@
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/DefaultWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/ugeneui/AnyDialogFiller.h"
@@ -470,7 +472,7 @@ static void checkWorkflowPaused() {
     GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
     GTWidget::checkEnabled(GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI),
                                                                 "Next step"));
-};
+}
 static void waitForBreakpoint() {
     class GetVisibilityScenario final : public CustomScenario {
         const QWidget* w;
@@ -579,6 +581,83 @@ GUI_TEST_CLASS_DEFINITION(test_8077_2) {
     GTUtilsWorkflowDesigner::runWorkflow();
 }
 
+// Check that there is only one breakpoint "Read Alignment" in the breakpoint manager.
+static void checkReadAlignmentBreakpoint() {
+    GTThread::waitForMainThread();
+    const auto items = GTTreeWidget::getItems(GTWidget::findTreeWidget("breakpoints list"));
+    const auto breakNames = std::accumulate(items.cbegin(),
+                                            items.cend(),
+                                            QStringList(),
+                                            [](QStringList res, const QTreeWidgetItem* item) {
+                                                return res += item->text(1).toLower();
+                                            });
+    CHECK_SET_ERR(breakNames == QStringList {"read alignment"},
+                  QString("One `read alignment` breakpoint was expected, but the following breakpoints exist: `%1`")
+                      .arg(breakNames.join(",")));
+}
+// Opens Align with MUSCLE sample, set breakpoint on the first element "Read alignment" using dialog, check that the
+// correct breakpoint is set.
+static void openSampleSetBreakCheckBreak() {
+    GTUtilsDialog::waitForDialog(new DefaultWizardFiller("Align Sequences with MUSCLE Wizard"));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE");
+
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::getBreakpointList().empty(),
+                  "Unexpected breakpoint in the breakpoint manager");
+
+    GTUtilsDialog::waitForDialog(new DefaultDialogFiller("NewBreakpointDialog"));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Break at element");
+    checkReadAlignmentBreakpoint();
+}
+// Starts the current "Align Sequences with MUSCLE Wizard" workflow. Checks that there is no crash and the workflow has
+// paused. Then, brings it to the end.
+static void runNoCrash() {
+    GTUtilsWorkflowDesigner::addInputFile("Read alignment", UGUITest::dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsWorkflowDesigner::runWorkflow();
+    // No crash.
+
+    checkWorkflowPaused();
+    // Finish the workflow task:
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsWorkflowDesigner::runWorkflow();
+}
+GUI_TEST_CLASS_DEFINITION(test_8079_1) {
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
+    GTUtilsWorkflowDesigner::toggleBreakpointManager();
+
+    openSampleSetBreakCheckBreak();
+    openSampleSetBreakCheckBreak();
+    runNoCrash();
+}
+GUI_TEST_CLASS_DEFINITION(test_8079_2) {
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
+    GTUtilsWorkflowDesigner::toggleBreakpointManager();
+
+    // Add the element, then open the sample.
+    const QString elemName = "Read Alignment";
+    GTUtilsWorkflowDesigner::addElement(elemName);
+    GTUtilsWorkflowDesigner::setBreakpoint(elemName);
+
+    openSampleSetBreakCheckBreak();
+    runNoCrash();
+}
+GUI_TEST_CLASS_DEFINITION(test_8079_3) {
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+    // Open the workflow file, then the sample.
+    GTUtilsDialog::waitForDialog(new DefaultWizardFiller("Align Sequences with MUSCLE Wizard"));
+    GTFileDialog::openFile(dataDir + "workflow_samples/Alignment", "basic_align.uwl");
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive();
+    GTUtilsWorkflowDesigner::toggleBreakpointManager();
+
+    GTUtilsWorkflowDesigner::setBreakpoint("Read alignment");
+
+    openSampleSetBreakCheckBreak();
+    runNoCrash();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8083_1) {
     const QString elemName = "Read Alignment";
     GTUtilsWorkflowDesigner::toggleDebugMode();
@@ -619,19 +698,6 @@ GUI_TEST_CLASS_DEFINITION(test_8083_2) {
     // Select it and click "Highlight selected item".
     // ->The correct element should be highlighted.
 
-    // Check that there is only one breakpoint "Read Alignment" in the breakpoint manager.
-    const auto checkBreakpoints = []() {
-        const auto items = GTTreeWidget::getItems(GTWidget::findTreeWidget("breakpoints list"));
-        const auto breakNames = std::accumulate(items.cbegin(),
-                                                items.cend(),
-                                                QStringList(),
-                                                [](QStringList res, const QTreeWidgetItem* item) {
-                                                    return res += item->text(1);
-                                                });
-        CHECK_SET_ERR(breakNames == QStringList {"Read Alignment"},
-                      QString("One `Read Alignment` breakpoint was expected, but the following breakpoints exist: `%1`")
-                          .arg(breakNames.join(",")));
-    };
     // Selects the first breakpoint in the manager and presses the "Highlight" button.
     const auto higlightFirstBreakpoint = []() {
         auto treeItems = GTTreeWidget::getItems(GTWidget::findTreeWidget("breakpoints list"));
@@ -648,7 +714,7 @@ GUI_TEST_CLASS_DEFINITION(test_8083_2) {
     GTMenu::clickMainMenuItem({"Actions", "Paste"});
 
     GTUtilsWorkflowDesigner::toggleBreakpointManager();
-    checkBreakpoints();
+    checkReadAlignmentBreakpoint();
     higlightFirstBreakpoint();
     // No crash.
 
@@ -659,7 +725,7 @@ GUI_TEST_CLASS_DEFINITION(test_8083_2) {
     GTMenu::clickMainMenuItem({"Actions", "Paste"});
     // ->4 elements, 1 breakpoint.
 
-    checkBreakpoints();
+    checkReadAlignmentBreakpoint();
     higlightFirstBreakpoint();
     // No crash.
 }

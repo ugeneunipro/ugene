@@ -136,7 +136,7 @@ protected:
     /**
      * Calculates position of annotation rect on visible part of details view.
      *
-     * \param reg Annotation region.
+     * \param regionIndex Index of the annotation region.
      * \param canvasSize Size of the whole details view part, where all annotations are drawn.
      * \param visibleRange Sequence visible range.
      * \param selected True if annotation is selected, false otherwise.
@@ -144,7 +144,7 @@ protected:
      * \param as AnnotationSettings object.
      * \return Returns rect, which contains posistions of annotation on details view.
      */
-    QRect getAnnotationRect(const U2Region& reg, const QSize& canvasSize, const U2Region& visibleRange, bool selected, Annotation* a, const AnnotationSettings* as) const;
+    QRect getAnnotationRect(int regionIndex, const QSize& canvasSize, const U2Region& visibleRange, bool selected, Annotation* a, const AnnotationSettings* as) const;
 
     void drawAnnotationConnections(QPainter& p, Annotation* a, const AnnotationSettings* as, const AnnotationDisplaySettings& drawSettings, const QSize& canvasSize, const U2Region& visibleRange);
 
