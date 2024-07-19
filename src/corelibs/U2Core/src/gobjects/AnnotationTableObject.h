@@ -23,7 +23,6 @@
 
 #include <U2Core/Annotation.h>
 #include <U2Core/AnnotationGroup.h>
-#include <U2Core/AppResources.h>
 #include <U2Core/GObject.h>
 
 namespace U2 {
@@ -128,19 +127,6 @@ protected:
 
 private:
     AnnotationGroup* rootGroup;
-};
-
-// The same annotation table object, only it acquires its own amount of memory for its entire lifetime.
-class U2CORE_EXPORT AnnotationTableObjectWithLockedMem : public AnnotationTableObject {
-    Q_OBJECT
-public:
-    AnnotationTableObjectWithLockedMem(const QString& objectName,
-                                       const U2DbiRef& dbiRef,
-                                       const QVariantMap& hintsMap,
-                                       MemoryLocker memLocker);
-
-private:
-    MemoryLocker annotationMemoryLocker;
 };
 
 }  // namespace U2

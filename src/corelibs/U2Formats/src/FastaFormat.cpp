@@ -232,7 +232,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
         }
 
         if (mergeIntoSingleSequence) {
-            memoryLocker.tryAcquire(header.size() + sizeof(U2Region));
+            memoryLocker.tryAcquire(header.size());
             CHECK_OP_BREAK(os);
             headers.append(header);
             mergedMapping.append(U2Region(sequenceStart, sequenceLen));
@@ -296,24 +296,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
 
     U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, nullptr, hints);
     objects << new U2SequenceObject(seq.visualName, U2EntityRef(dbiRef, seq.id));
-
-    // Add annotations of merged sequences.
-    MemoryLocker annMemLocker;
-    if (!annMemLocker.hasError()) {
-        const auto requiredMem = static_cast<qint64>(DocumentFormatUtils::memPerMergedAnnot()) * headers.size();
-        const auto ok = annMemLocker.tryAcquire(requiredMem);
-        if (ok) {
-            objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef,
-                                                                              dbiRef,
-                                                                              headers,
-                                                                              mergedMapping,
-                                                                              hints,
-                                                                              std::move(annMemLocker));
-        } else {
-            os.addWarning(annMemLocker.getError());
-        }
-    }
-
+    objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, headers, mergedMapping, hints);
     if (headers.size() > 1) {
         writeLockReason = QObject::tr("Document sequences were merged");
     }

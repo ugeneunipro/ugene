@@ -320,11 +320,4 @@ void AnnotationTableObject::loadDataCore(U2OpStatus& os) {
     rootGroup = U2FeatureUtils::loadAnnotationTable(table.rootFeature, entityRef.dbiRef, this, os);
 }
 
-AnnotationTableObjectWithLockedMem::AnnotationTableObjectWithLockedMem(const QString& objectName,
-                                                                       const U2DbiRef& dbiRef,
-                                                                       const QVariantMap& hintsMap,
-                                                                       MemoryLocker memLocker)
-    : AnnotationTableObject(objectName, dbiRef, hintsMap), annotationMemoryLocker(std::move(memLocker)) {
-}
-
 }  // namespace U2

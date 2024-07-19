@@ -40,7 +40,6 @@
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
-constexpr char CONTIG_ANNOT_TABLE_NAME[] = "Contigs";
 
 static int getIntSettings(const QVariantMap& fs, const char* sName, int defVal) {
     QVariant v = fs.value(sName);
@@ -50,17 +49,15 @@ static int getIntSettings(const QVariantMap& fs, const char* sName, int defVal) 
     return v.toInt();
 }
 
-// Used in DocumentFormatUtils::addAnnotationsForMergedU2Sequence functions.
-namespace MergedSeqAnnsHelper {
-// Creates hints for the merged sequence annotation table object.
-static QVariantMap createHints(const QVariantMap& hints) {
-    return {{DocumentFormat::DBI_FOLDER_HINT, hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER)}};
-}
-// Fills the annotation table `ao` with data.
-static void addAnns(const GObjectReference& mergedSequenceRef,
-                    const QStringList& contigNames,
-                    const QVector<U2Region>& mergedMapping,
-                    AnnotationTableObject* ao) {
+AnnotationTableObject* DocumentFormatUtils::addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
+                                                                              const U2DbiRef& dbiRef,
+                                                                              const QStringList& contigNames,
+                                                                              const QVector<U2Region>& mergedMapping,
+                                                                              const QVariantMap& hints) {
+    QVariantMap objectHints;
+    objectHints.insert(DocumentFormat::DBI_FOLDER_HINT, hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
+    auto ao = new AnnotationTableObject("Contigs", dbiRef, objectHints);
+
     // save relation if mergedSequenceRef is valid
     if (mergedSequenceRef.isValid()) {
         ao->addObjectRelation(GObjectRelation(mergedSequenceRef, ObjectRole_Sequence));
@@ -78,28 +75,6 @@ static void addAnns(const GObjectReference& mergedSequenceRef,
         resultData.append(d);
     }
     ao->addAnnotations(resultData);
-}
-}  // namespace MergedSeqAnnsHelper
-AnnotationTableObject* DocumentFormatUtils::addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
-                                                                              const U2DbiRef& dbiRef,
-                                                                              const QStringList& contigNames,
-                                                                              const QVector<U2Region>& mergedMapping,
-                                                                              const QVariantMap& hints) {
-    auto ao = new AnnotationTableObject(CONTIG_ANNOT_TABLE_NAME, dbiRef, MergedSeqAnnsHelper::createHints(hints));
-    MergedSeqAnnsHelper::addAnns(mergedSequenceRef, contigNames, mergedMapping, ao);
-    return ao;
-}
-AnnotationTableObject* DocumentFormatUtils::addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
-                                                                              const U2DbiRef& dbiRef,
-                                                                              const QStringList& contigNames,
-                                                                              const QVector<U2Region>& mergedMapping,
-                                                                              const QVariantMap& hints,
-                                                                              MemoryLocker memLocker) {
-    auto ao = new AnnotationTableObjectWithLockedMem(CONTIG_ANNOT_TABLE_NAME,
-                                                     dbiRef,
-                                                     MergedSeqAnnsHelper::createHints(hints),
-                                                     std::move(memLocker));
-    MergedSeqAnnsHelper::addAnns(mergedSequenceRef, contigNames, mergedMapping, ao);
     return ao;
 }
 
