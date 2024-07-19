@@ -337,8 +337,9 @@ void GTest_SwAlignmentSse::prepare() {
 }
 
 Task::ReportResult GTest_SwAlignmentSse::report() {
-    const auto pairs = task->getResult();
-    CHECK_EXT(pairs.size() == 1, "No task results", ReportResult_Finished);
+    if (task->getResult().size() != 1) {
+        setError("No task results");
+    }
     return ReportResult_Finished;
 }
 
