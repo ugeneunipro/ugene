@@ -20,9 +20,10 @@
  */
 #pragma once
 
+#include <QLabel>
+#include <QStandardItemModel>
+#include <QTreeView>
 #include <QWidget>
-
-class QLabel;
 
 namespace U2 {
 
@@ -34,8 +35,10 @@ public:
     CloudStorageDockWidget(WorkspaceService* workspaceService);
 
 private:
-    WorkspaceService* workspaceService;
-    QLabel* contentLabel;
+    WorkspaceService* workspaceService = nullptr;
+    QLabel* stateLabel = nullptr;
+    QTreeView* treeView = nullptr;
+    QStandardItemModel treeViewModel;
 };
 
 }  // namespace U2

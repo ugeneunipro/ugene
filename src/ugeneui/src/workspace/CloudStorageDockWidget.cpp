@@ -21,6 +21,7 @@
 
 #include "CloudStorageDockWidget.h"
 
+#include <QDebug>
 #include <QIcon>
 #include <QLabel>
 #include <QVBoxLayout>
@@ -32,28 +33,54 @@
 
 namespace U2 {
 
+static void addEntryToModel(QStandardItem* parentItem, const CloudStorageEntry& entry) {
+    auto item = new QStandardItem(entry.name);
+    auto sizeItem = new QStandardItem(QString::number(entry.size));
+    auto modificationTimeItem = new QStandardItem(entry.modificationTime.toString(Qt::ISODate));
+
+    parentItem->appendRow({item, sizeItem, modificationTimeItem});
+
+    for (const CloudStorageEntry& child : qAsConst(entry.children)) {
+        addEntryToModel(item, child);
+    }
+}
+
 CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceService)
     : workspaceService(_workspaceService) {
     setObjectName(DOCK_CLOUD_STORAGE_VIEW);
     setWindowTitle(tr("Storage"));
     setWindowIcon(QIcon(":ugene/images/cloud_storage.svg"));
 
-    contentLabel = new QLabel("empty");
+    stateLabel = new QLabel();
+
+    treeView = new QTreeView();
+    treeView->setModel(&treeViewModel);
+    treeView->setVisible(false);
+
     auto layout = new QVBoxLayout();
-    layout->addWidget(contentLabel);
+    layout->addWidget(stateLabel);
+    layout->addWidget(treeView);
     setLayout(layout);
 
     connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this](bool isLoggedIn) {
+        stateLabel->setVisible(true);
+        treeView->setVisible(false);
+        treeViewModel.clear();
         if (!isLoggedIn) {
-            contentLabel->setText("Please login");
+            stateLabel->setText("Please login");
         } else {
-            contentLabel->setText("Loading file list");
-            ;
+            stateLabel->setText("Loading file list");
         }
     });
 
-    connect(workspaceService->getCloudStorageService(), &CloudStorageService::si_storageStateChanged, this, [this](const QString& newContent) {
-        contentLabel->setText(newContent);
+    connect(workspaceService->getCloudStorageService(), &CloudStorageService::si_storageStateChanged, this, [this](const CloudStorageEntry& rootEntry) {
+        qDebug() << "CloudStorageDockWidget: got new cloud storage state";
+        stateLabel->setVisible(false);
+        treeViewModel.clear();
+        treeViewModel.setHorizontalHeaderLabels({"Name", "Size", "Modification Time"});
+        QStandardItem* rootItem = treeViewModel.invisibleRootItem();
+        addEntryToModel(rootItem, rootEntry);
+        treeView->setVisible(true);
     });
 }
 

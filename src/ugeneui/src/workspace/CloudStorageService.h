@@ -24,11 +24,26 @@
 #include <QObject>
 
 namespace U2 {
+class CloudStorageEntry;
 enum class WebSocketSubscriptionType;
 class WebSocketSubscription;
 class WorkspaceService;
 }  // namespace U2
 namespace U2 {
+
+class CloudStorageEntry {
+public:
+    QString name;
+    QList<CloudStorageEntry> children;
+    qint64 size = 0;
+    QDateTime modificationTime;
+
+    CloudStorageEntry(const QString& name, qint64 size, const QDateTime& modificationTime);
+
+    bool isFolder() const;
+
+    static CloudStorageEntry fromJson(const QJsonObject& json);
+};
 
 class CloudStorageService : public QObject {
     Q_OBJECT
@@ -36,24 +51,16 @@ class CloudStorageService : public QObject {
 public:
     CloudStorageService(WorkspaceService* ws);
 
+    const CloudStorageEntry& getRootEntry() const;
+
 signals:
-    void si_storageStateChanged(const QString& state);
+    void si_storageStateChanged(const CloudStorageEntry& rootEntry);
 
 private:
     void onWebSocketMessageReceived(const WebSocketSubscriptionType& subscriptionType, const QString& entityId, const QJsonObject& payload);
 
     WorkspaceService* workspaceService = nullptr;
+    CloudStorageEntry rootEntry;
 };
 
-class StorageEntry {
-public:
-    QString name;
-    QList<StorageEntry> children;
-    qint64 size = 0;
-    QDateTime modificationTime;
-
-    StorageEntry(const QString& name, qint64 size, const QDateTime& modificationTime);
-
-    bool isFolder() const;
-};
 }  // namespace U2
