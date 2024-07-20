@@ -22,6 +22,7 @@
 #include "CloudStorageDockWidget.h"
 
 #include <QDebug>
+#include <QHeaderView>
 #include <QIcon>
 #include <QLabel>
 #include <QVBoxLayout>
@@ -33,15 +34,35 @@
 
 namespace U2 {
 
-static void addEntryToModel(QStandardItem* parentItem, const CloudStorageEntry& entry) {
-    auto item = new QStandardItem(entry.name);
-    auto sizeItem = new QStandardItem(QString::number(entry.size));
-    auto modificationTimeItem = new QStandardItem(entry.modificationTime.toString(Qt::ISODate));
+void updateModel(QStandardItem* parentItem, const CloudStorageEntry& entry) {
+    QMap<QString, QStandardItem*> currentChildrenMap;
+    for (int i = 0; i < parentItem->rowCount(); ++i) {
+        QStandardItem* childItem = parentItem->child(i);
+        currentChildrenMap[childItem->text()] = childItem;
+    }
 
-    parentItem->appendRow({item, sizeItem, modificationTimeItem});
+    for (const CloudStorageEntry& child : entry.children) {
+        QIcon icon(child.isFolder() ? ":U2Designer/images/directory.png" : ":core/images/document.png");
+        if (currentChildrenMap.contains(child.name)) {
+            QStandardItem* childItem = currentChildrenMap[child.name];
+            childItem->setText(child.name);
+            childItem->setIcon(icon);
+            childItem->setData(child.size, Qt::UserRole + 1);
+            updateModel(childItem, child);
+            currentChildrenMap.remove(child.name);
+        } else {
+            auto nameItem = new QStandardItem(icon, child.name);
+            auto sizeItem = new QStandardItem(QString::number(child.size));
+            parentItem->appendRow({
+                nameItem,
+                sizeItem,
+            });
+            updateModel(nameItem, child);
+        }
+    }
 
-    for (const CloudStorageEntry& child : qAsConst(entry.children)) {
-        addEntryToModel(item, child);
+    for (auto it = currentChildrenMap.constBegin(); it != currentChildrenMap.constEnd(); ++it) {
+        parentItem->removeRow(it.value()->row());
     }
 }
 
@@ -66,6 +87,8 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
         stateLabel->setVisible(true);
         treeView->setVisible(false);
         treeViewModel.clear();
+        treeViewModel.setHorizontalHeaderLabels({"Name", "Size"});
+        treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
         if (!isLoggedIn) {
             stateLabel->setText("Please login");
         } else {
@@ -74,13 +97,12 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     });
 
     connect(workspaceService->getCloudStorageService(), &CloudStorageService::si_storageStateChanged, this, [this](const CloudStorageEntry& rootEntry) {
-        qDebug() << "CloudStorageDockWidget: got new cloud storage state";
         stateLabel->setVisible(false);
-        treeViewModel.clear();
-        treeViewModel.setHorizontalHeaderLabels({"Name", "Size", "Modification Time"});
-        QStandardItem* rootItem = treeViewModel.invisibleRootItem();
-        addEntryToModel(rootItem, rootEntry);
         treeView->setVisible(true);
+
+        qDebug() << "CloudStorageDockWidget: got new cloud storage state";
+        QStandardItem* rootItem = treeViewModel.invisibleRootItem();
+        updateModel(rootItem, rootEntry);
     });
 }
 
