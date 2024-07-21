@@ -30,9 +30,8 @@
 #include "WorkspaceService.h"
 
 namespace U2 {
-
 CloudStorageService::CloudStorageService(WorkspaceService* ws)
-    : QObject(ws), workspaceService(ws), rootEntry("", 0, QDateTime()) {
+    : QObject(ws), workspaceService(ws), rootEntry("", 0, QDateTime(), 0) {
     connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this] {
         auto webSocketService = workspaceService->getWebSocketService();
         if (webSocketService != nullptr) {
@@ -53,29 +52,42 @@ void CloudStorageService::onWebSocketMessageReceived(const WebSocketSubscription
     emit si_storageStateChanged(rootEntry);
 }
 
-CloudStorageEntry::CloudStorageEntry(const QString& _name, qint64 _size, const QDateTime& _modificationTime)
-    : name(_name), size(_size), modificationTime(_modificationTime) {
+CloudStorageEntryData::CloudStorageEntryData(const QString& _name, qint64 _size, const QDateTime& _modificationTime, qint64 _sessionLocalId)
+    : name(_name), size(_size), modificationTime(_modificationTime), sessionLocalId(_sessionLocalId) {
+}
+
+CloudStorageEntry::CloudStorageEntry(const QString& name, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId)
+    : data(new CloudStorageEntryData(name, size, modificationTime, sessionLocalId)) {
+}
+
+CloudStorageEntryData* CloudStorageEntry::operator->() {
+    return data.data();
+}
+const CloudStorageEntryData* CloudStorageEntry::operator->() const {
+    return data.data();
 }
 
 bool CloudStorageEntry::isFolder() const {
-    return !children.isEmpty();
+    return !data->children.isEmpty();
 }
 
 CloudStorageEntry CloudStorageEntry::fromJson(const QJsonObject& json) {
     QString name = json["name"].toString();
     qint64 size = json["size"].toVariant().toLongLong();
-    QDateTime modificationTime = QDateTime::fromMSecsSinceEpoch(json["modificationTime"].toVariant().toLongLong());
+    QDateTime modificationTime = QDateTime::fromString(json["modificationTime"].toString(), Qt::ISODate);
+    qint64 sessionLocalId = json["sessionLocalId"].toVariant().toLongLong();
 
-    CloudStorageEntry entry(name, size, modificationTime);
+    CloudStorageEntry entry(name, size, modificationTime, sessionLocalId);
 
-    if (json.contains("children") && json["children"].isArray()) {
+    if (json.contains("children")) {
+        QList<CloudStorageEntry> children;
         QJsonArray childrenArray = json["children"].toArray();
-        for (const QJsonValue& value : childrenArray) {
-            if (value.isObject()) {
-                entry.children.append(fromJson(value.toObject()));
-            }
+        for (const QJsonValue& childValue : childrenArray) {
+            children.append(fromJson(childValue.toObject()));
         }
+        entry->children = children;
     }
+
     return entry;
 }
 

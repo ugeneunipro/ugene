@@ -146,7 +146,7 @@ void WorkspaceService::setTokens(const QString& newAccessToken, const QString& n
     qDebug() << "WorkspaceService:setTokens is called";
     setTokenFields(newAccessToken, newRefreshToken, saveToSettings);
     if (webSocketService == nullptr) {
-        webSocketService = webSocketService = new WebSocketClientService(this);
+        webSocketService = new WebSocketClientService(this);
     }
     updateMainMenuActions();
     emit si_authenticationEvent(true);

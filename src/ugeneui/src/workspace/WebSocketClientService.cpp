@@ -67,7 +67,7 @@ WebSocketSubscription::WebSocketSubscription(const WebSocketSubscriptionType& _t
 
 WebSocketClientService::WebSocketClientService(QObject* parent)
     : QObject(parent),
-      socket(new QWebSocket()),
+      socket(new QWebSocket("", QWebSocketProtocol::Version13)),
       clientId(QUuid::createUuid().toString()) {
     qDebug() << "WebSocketClientService is created";
 
@@ -138,16 +138,18 @@ void WebSocketClientService::sendPendingMessages() {
     CHECK(this->socket->state() == QAbstractSocket::ConnectedState, );
     for (const auto& message : qAsConst(pendingMessages)) {
         auto typeString = getWebSocketRequestTypeAsString(message.type);
-        qDebug() << "WebSocketClientService:sending message: " << typeString;
         QJsonObject request = message.request;
         request["type"] = typeString;
         request["clientId"] = clientId;
         if (!accessToken.isEmpty()) {
             request["accessToken"] = accessToken;
         }
+        socket->ping(); // TODO: used for testing only.
         qint64 bytesSent = socket->sendTextMessage(QJsonDocument(request).toJson(QJsonDocument::Compact));
-        SAFE_POINT(bytesSent > 0, "Invalid count of sent bytes: " + QString::number(bytesSent), );
-        socket->flush();
+        qDebug() << "WebSocketClientService:send message: " << typeString << ", clientId: " << clientId << ", bytes sent: " + QString::number(bytesSent);
+        if (bytesSent == 0) {
+            qDebug() << "Bytes sent = 0, error: " << socket->errorString();
+        }
     }
     pendingMessages.clear();
 }

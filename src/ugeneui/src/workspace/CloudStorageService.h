@@ -24,25 +24,36 @@
 #include <QObject>
 
 namespace U2 {
+
 class CloudStorageEntry;
 enum class WebSocketSubscriptionType;
 class WebSocketSubscription;
 class WorkspaceService;
-}  // namespace U2
-namespace U2 {
 
-class CloudStorageEntry {
+class CloudStorageEntryData : public QSharedData {
 public:
     QString name;
     QList<CloudStorageEntry> children;
-    qint64 size = 0;
+    qint64 size;
     QDateTime modificationTime;
+    qint64 sessionLocalId;
 
-    CloudStorageEntry(const QString& name, qint64 size, const QDateTime& modificationTime);
+    CloudStorageEntryData(const QString& name, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId);
+};
+
+class CloudStorageEntry {
+public:
+    CloudStorageEntry(const QString& name, qint64 size, const QDateTime& modificationTimel, qint64 sessionLocalId);
 
     bool isFolder() const;
 
     static CloudStorageEntry fromJson(const QJsonObject& json);
+
+    CloudStorageEntryData* operator->();
+    const CloudStorageEntryData* operator->() const;
+
+private:
+    QSharedDataPointer<CloudStorageEntryData> data;
 };
 
 class CloudStorageService : public QObject {

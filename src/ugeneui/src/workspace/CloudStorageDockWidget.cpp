@@ -34,30 +34,31 @@
 
 namespace U2 {
 
+constexpr qint64 USER_DATA_SESSION_LOCAL_ID = Qt::UserRole + 1;
+constexpr qint64 USER_DATA_SIZE = Qt::UserRole + 2;
+
 void updateModel(QStandardItem* parentItem, const CloudStorageEntry& entry) {
-    QMap<QString, QStandardItem*> currentChildrenMap;
+    QMap<qint64, QStandardItem*> currentChildrenMap;
     for (int i = 0; i < parentItem->rowCount(); ++i) {
         QStandardItem* childItem = parentItem->child(i);
-        currentChildrenMap[childItem->text()] = childItem;
+        currentChildrenMap[childItem->data(USER_DATA_SESSION_LOCAL_ID).toLongLong()] = childItem;
     }
 
-    for (const CloudStorageEntry& child : entry.children) {
-        QIcon icon(child.isFolder() ? ":U2Designer/images/directory.png" : ":core/images/document.png");
-        if (currentChildrenMap.contains(child.name)) {
-            QStandardItem* childItem = currentChildrenMap[child.name];
-            childItem->setText(child.name);
+    for (const CloudStorageEntry& childEntry : entry->children) {
+        QIcon icon(childEntry.isFolder() ? ":U2Designer/images/directory.png" : ":core/images/document.png");
+        if (currentChildrenMap.contains(childEntry->sessionLocalId)) {
+            QStandardItem* childItem = currentChildrenMap[childEntry->sessionLocalId];
+            childItem->setText(childEntry->name);
             childItem->setIcon(icon);
-            childItem->setData(child.size, Qt::UserRole + 1);
-            updateModel(childItem, child);
-            currentChildrenMap.remove(child.name);
+            childItem->setData(childEntry->size, USER_DATA_SIZE);
+            updateModel(childItem, childEntry);
+            currentChildrenMap.remove(childEntry->sessionLocalId);
         } else {
-            auto nameItem = new QStandardItem(icon, child.name);
-            auto sizeItem = new QStandardItem(QString::number(child.size));
-            parentItem->appendRow({
-                nameItem,
-                sizeItem,
-            });
-            updateModel(nameItem, child);
+            auto nameItem = new QStandardItem(icon, childEntry->name);
+            nameItem->setData(childEntry->sessionLocalId, USER_DATA_SESSION_LOCAL_ID);
+            auto sizeItem = new QStandardItem(QString::number(childEntry->size));
+            parentItem->appendRow({nameItem, sizeItem});
+            updateModel(nameItem, childEntry);
         }
     }
 
@@ -103,6 +104,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
         qDebug() << "CloudStorageDockWidget: got new cloud storage state";
         QStandardItem* rootItem = treeViewModel.invisibleRootItem();
         updateModel(rootItem, rootEntry);
+        // TODO: preserve selection using 'sessionLocalId'
     });
 }
 
