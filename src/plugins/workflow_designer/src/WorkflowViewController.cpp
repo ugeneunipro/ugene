@@ -179,6 +179,13 @@ static QToolButton* scriptMenu(WorkflowView* parent, const QList<QAction*>& scri
     return scriptingModeButton;
 }
 
+static void removeBreakpoints(WorkflowDebugStatus& debugInfo) {
+    const auto actors = debugInfo.getActorsWithBreakpoints();
+    for (auto&& a : qAsConst(actors)) {
+        debugInfo.removeBreakpointFromActor(a);
+    }
+}
+
 DashboardManagerHelper::DashboardManagerHelper(QAction* _dmAction, WorkflowView* _parent)
     : QObject(_parent),
       dmAction(_dmAction),
@@ -1961,10 +1968,7 @@ void WorkflowView::recreateScene() {
     SceneCreator sc(schema.get(), meta);
     sc.recreateScene(scene);
 
-    const auto actors = debugInfo->getActorsWithBreakpoints();
-    for (auto&& a : qAsConst(actors)) {
-        debugInfo->removeBreakpointFromActor(a);
-    }
+    removeBreakpoints(*debugInfo);
 
     sceneRecreation = false;
 }
@@ -2374,6 +2378,7 @@ bool WorkflowView::confirmModified() {
             sl_saveScene();
         }
     }
+    removeBreakpoints(*debugInfo);
     return true;
 }
 
