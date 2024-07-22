@@ -33,11 +33,20 @@ class CloudStorageDockWidget : public QWidget {
     Q_OBJECT
 public:
     CloudStorageDockWidget(WorkspaceService* workspaceService);
+    void showContextMenu(const QPoint& point);
+    void deleteItem();
+    void renameItem();
+    void downloadItem();
+    void uploadItem();
 
 private:
     WorkspaceService* workspaceService = nullptr;
     QLabel* stateLabel = nullptr;
     QTreeView* treeView = nullptr;
+    QAction* deleteAction = nullptr;
+    QAction* renameAction = nullptr;
+    QAction* downloadAction = nullptr;
+    QAction* uploadAction = nullptr;
     QStandardItemModel treeViewModel;
 };
 

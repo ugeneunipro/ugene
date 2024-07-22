@@ -71,6 +71,9 @@ WebSocketClientService::WebSocketClientService(QObject* parent)
       clientId(QUuid::createUuid().toString()) {
     qDebug() << "WebSocketClientService is created";
 
+    QSslConfiguration sslConfiguration = QSslConfiguration::defaultConfiguration();
+    sslConfiguration.setProtocol(QSsl::TlsV1_3);
+
     connect(socket, &QWebSocket::connected, this, &WebSocketClientService::onConnected);
     connect(socket, &QWebSocket::disconnected, this, &WebSocketClientService::onDisconnected);
     connect(socket, &QWebSocket::textMessageReceived, this, &WebSocketClientService::onTextMessageReceived);
@@ -84,8 +87,9 @@ WebSocketClientService::~WebSocketClientService() {
 void WebSocketClientService::onConnected() {
     qDebug() << "Connected to websocket";
     connectionReady = true;
-    sendPendingMessages();
     emit si_connectionStateChanged(true);
+    // Run it with a delay: outside of the onConnected() callback.
+    QTimer::singleShot(500, this, &WebSocketClientService::sendPendingMessages);
 }
 
 void WebSocketClientService::onDisconnected() {
@@ -144,7 +148,6 @@ void WebSocketClientService::sendPendingMessages() {
         if (!accessToken.isEmpty()) {
             request["accessToken"] = accessToken;
         }
-        socket->ping(); // TODO: used for testing only.
         qint64 bytesSent = socket->sendTextMessage(QJsonDocument(request).toJson(QJsonDocument::Compact));
         qDebug() << "WebSocketClientService:send message: " << typeString << ", clientId: " << clientId << ", bytes sent: " + QString::number(bytesSent);
         if (bytesSent == 0) {

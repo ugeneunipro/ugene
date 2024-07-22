@@ -37,6 +37,7 @@ public:
     qint64 size;
     QDateTime modificationTime;
     qint64 sessionLocalId;
+    bool isFolder;
 
     CloudStorageEntryData(const QString& name, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId);
 };
@@ -44,8 +45,6 @@ public:
 class CloudStorageEntry {
 public:
     CloudStorageEntry(const QString& name, qint64 size, const QDateTime& modificationTimel, qint64 sessionLocalId);
-
-    bool isFolder() const;
 
     static CloudStorageEntry fromJson(const QJsonObject& json);
 

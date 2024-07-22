@@ -67,10 +67,6 @@ const CloudStorageEntryData* CloudStorageEntry::operator->() const {
     return data.data();
 }
 
-bool CloudStorageEntry::isFolder() const {
-    return !data->children.isEmpty();
-}
-
 CloudStorageEntry CloudStorageEntry::fromJson(const QJsonObject& json) {
     QString name = json["name"].toString();
     qint64 size = json["size"].toVariant().toLongLong();
@@ -78,15 +74,14 @@ CloudStorageEntry CloudStorageEntry::fromJson(const QJsonObject& json) {
     qint64 sessionLocalId = json["sessionLocalId"].toVariant().toLongLong();
 
     CloudStorageEntry entry(name, size, modificationTime, sessionLocalId);
+    entry->isFolder = json["isFolder"].toBool();
 
-    if (json.contains("children")) {
-        QList<CloudStorageEntry> children;
-        QJsonArray childrenArray = json["children"].toArray();
-        for (const QJsonValue& childValue : childrenArray) {
-            children.append(fromJson(childValue.toObject()));
-        }
-        entry->children = children;
+    QList<CloudStorageEntry> children;
+    QJsonArray childrenArray = json["children"].toArray();
+    for (const QJsonValue& childValue : childrenArray) {
+        children.append(fromJson(childValue.toObject()));
     }
+    entry->children = children;
 
     return entry;
 }

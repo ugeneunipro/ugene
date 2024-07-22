@@ -21,11 +21,17 @@
 
 #include "CloudStorageDockWidget.h"
 
+#include <QAction>
+#include <QContextMenuEvent>
 #include <QDebug>
 #include <QHeaderView>
 #include <QIcon>
 #include <QLabel>
+#include <QMenu>
 #include <QVBoxLayout>
+
+#include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -45,7 +51,7 @@ void updateModel(QStandardItem* parentItem, const CloudStorageEntry& entry) {
     }
 
     for (const CloudStorageEntry& childEntry : entry->children) {
-        QIcon icon(childEntry.isFolder() ? ":U2Designer/images/directory.png" : ":core/images/document.png");
+        QIcon icon(childEntry->isFolder ? ":U2Designer/images/directory.png" : ":core/images/document.png");
         if (currentChildrenMap.contains(childEntry->sessionLocalId)) {
             QStandardItem* childItem = currentChildrenMap[childEntry->sessionLocalId];
             childItem->setText(childEntry->name);
@@ -106,6 +112,53 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
         updateModel(rootItem, rootEntry);
         // TODO: preserve selection using 'sessionLocalId'
     });
+
+    deleteAction = new QAction(tr("Delete"), this);
+    connect(deleteAction, &QAction::triggered, this, &CloudStorageDockWidget::deleteItem);
+
+    renameAction = new QAction(tr("Rename"), this);
+    connect(renameAction, &QAction::triggered, this, &CloudStorageDockWidget::renameItem);
+
+    downloadAction = new QAction(tr("Download"), this);
+    connect(downloadAction, &QAction::triggered, this, &CloudStorageDockWidget::downloadItem);
+
+    uploadAction = new QAction(tr("Upload"), this);
+    connect(uploadAction, &QAction::triggered, this, &CloudStorageDockWidget::uploadItem);
+
+    treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(treeView, &QTreeView::customContextMenuRequested, this, &CloudStorageDockWidget::showContextMenu);
+}
+
+void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
+    QModelIndex index = treeView->indexAt(point);
+    CHECK(index.isValid(), );
+
+    QObjectScopedPointer<QMenu> contextMenu = new QMenu();
+    contextMenu->addAction(deleteAction);
+    contextMenu->addAction(renameAction);
+    contextMenu->addAction(downloadAction);
+    contextMenu->addAction(uploadAction);
+    contextMenu->exec(treeView->viewport()->mapToGlobal(point));
+}
+
+void CloudStorageDockWidget::deleteItem() {
+    qDebug() << "Delete item";
+    // Implement the logic to delete the item
+}
+
+void CloudStorageDockWidget::renameItem() {
+    qDebug() << "Rename item";
+    // Implement the logic to rename the item
+}
+
+void CloudStorageDockWidget::downloadItem() {
+    qDebug() << "Download item";
+    // Implement the logic to download the item
+}
+
+void CloudStorageDockWidget::uploadItem() {
+    qDebug() << "Upload item";
+    // Implement the logic to upload items
 }
 
 }  // namespace U2
