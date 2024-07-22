@@ -1,0 +1,7 @@
+<multi-test>
+    <!-- UGENE-7935 -->
+    <load-document index="msaDoc" url="smith_waterman2/big/7000a.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="msaObj" doc="msaDoc" name="7000a" type="OT_MSA"/>
+
+    <sw-sse-alignment msa="msaObj"/>
+</multi-test>

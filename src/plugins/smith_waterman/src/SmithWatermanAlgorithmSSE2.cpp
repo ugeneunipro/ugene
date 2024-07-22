@@ -611,22 +611,6 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithIn
             f2 = _mm_add_epi32(f1, *((__m128i*)score));
             score += 4; /* subst */
 
-            n = alphaChars.size();
-            for (i = 0; i < n; i++) {
-                int n2;
-                unsigned char ch = alphaCharsData[i];
-                score = score1 + ch * iter * 4;
-                for (j = 0; j < static_cast<int>(iter); j++) {
-                    for (k = j, n2 = 0; n2 < 4; n2++, k += iter) {
-                        int a = -0x8000;
-                        if (k < static_cast<int>(pat_n)) {
-                            a = substitutionMatrix.getScore(ch, pat[k]);
-                        }
-                        *score++ = a;
-                    }
-                }
-            }
-
             f3 = _mm_xor_si128(f3, f3);
             f3 = _mm_cmpgt_epi32(f2, f3);
             f2 = _mm_and_si128(f2, f3);
