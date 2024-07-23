@@ -32,6 +32,8 @@
 
 #include <U2Test/XMLTestUtils.h>
 
+#include "SWAlgorithmTask.h"
+
 namespace U2 {
 
 struct SWresult {
@@ -72,6 +74,23 @@ private:
     Task* swAlgorithmTask;
 
     QString machinePath;
+};
+
+// Runs PairwiseAlignmentTask with Smith-Waterman SSE2 algorithm. Verifies that the task was completed successfully.
+// Input attributes: "msa" -- name of the alignment in the context. The algorithm will run on the 1st and 2nd sequences
+// of this alignment.
+class GTest_SwAlignmentSse : public XmlTest {
+    Q_OBJECT
+public:
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_SwAlignmentSse, "sw-sse-alignment");
+
+    void prepare();
+    Task::ReportResult report();
+
+private:
+    QString msaObjNameInCtx;
+    PairwiseAlignmentSmithWatermanTaskSettings* settings;
+    PairwiseAlignmentSmithWatermanTask* task;
 };
 
 class GTest_SmithWatermnanPerf : public XmlTest {
