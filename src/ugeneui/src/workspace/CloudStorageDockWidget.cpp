@@ -28,8 +28,10 @@
 #include <QIcon>
 #include <QLabel>
 #include <QMenu>
+#include <QMessageBox>
 #include <QVBoxLayout>
 
+#include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -143,7 +145,12 @@ void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
 
 void CloudStorageDockWidget::deleteItem() {
     qDebug() << "Delete item";
-    // Implement the logic to delete the item
+    QModelIndex currentIndex = treeView->currentIndex();
+    QString name = treeView->model()->data(currentIndex, Qt::DisplayRole).toString();
+    qint64 sessionLocalId = treeView->model()->data(currentIndex, USER_DATA_SESSION_LOCAL_ID).toLongLong();
+    QMessageBox::StandardButton result = QMessageBox::question(treeView, tr("Question?"), tr("Do you want to delete %1").arg(name));
+    CHECK(result == QMessageBox::Ok, );
+    workspaceService->getCloudStorageService()->deleteItem(sessionLocalId);
 }
 
 void CloudStorageDockWidget::renameItem() {

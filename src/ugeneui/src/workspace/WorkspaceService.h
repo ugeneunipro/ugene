@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QAction>
+#include <QJsonObject>
 
 #include <U2Core/ServiceTypes.h>
 #include <U2Core/Task.h>
@@ -52,6 +53,9 @@ public:
 
     WebSocketClientService* getWebSocketService() const;
 
+    /** Executes POST request to the remote workspace service and returns the result. */
+    QJsonObject executePostRequest(const QString& path, const QJsonObject& payload);
+
 signals:
     void si_authenticationEvent(bool isLoggedIn);
 
@@ -76,9 +80,11 @@ private:
     WebSocketClientService* webSocketService = nullptr;
     CloudStorageService* cloudStorageService = nullptr;
     QAction* separatorAction = nullptr;
-    QString authUrl = "https://auth.ugene.net/realms/ugene-prod/protocol/openid-connect/auth";
-    QString tokenUrl = "https://auth.ugene.net/realms/ugene-prod/protocol/openid-connect/token";
-    QString clientId = "workspace-client-prod";
+    QString authUrl;
+    QString tokenUrl;
+    QString clientId;
+    QString stage;
+    QString domain;
 };
 
 class EnableWorkspaceTask : public Task {

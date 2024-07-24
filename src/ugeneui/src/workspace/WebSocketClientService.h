@@ -62,7 +62,7 @@ class WebSocketClientService : public QObject {
     Q_OBJECT
 
 public:
-    explicit WebSocketClientService(QObject* parent = nullptr);
+    explicit WebSocketClientService(const QString& domain, QObject* parent = nullptr);
     ~WebSocketClientService() override;
 
     void setAccessToken(const QString& accessToken);
@@ -90,6 +90,7 @@ private:
     void clearSubscriptions();
     void sendAccessTokenToServer();
 
+    QString domain;
     QWebSocket* socket;
     /** ID if the client. Never changes. */
     const QString clientId;

@@ -57,6 +57,17 @@ static const QString WORKSPACE_SETTINGS_REFRESH_TOKEN = "rt";
 
 WorkspaceService::WorkspaceService()
     : Service(Service_Workspace, "Workspace", "Remove workspace service for UGENE") {
+    stage = qgetenv("UGENE_WORKSPACE_STAGE");
+    if (stage != "dev" || stage != "local") {
+        stage = "prod";
+    }
+    domain = stage == "dev"     ? "workspace-dev.ugene.net"
+             : stage == "local" ? "localhost:4200"
+                                : "workspace.ugene.net";
+    clientId = "workspace-client-" + stage;
+    authUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/auth";
+    tokenUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/token";
+
     loginAction = new QAction(QIcon(":ugene/images/login.svg"), tr("Login to Workspace"));
     loginAction->setObjectName("loginToWorkspaceAction");
     connect(loginAction, &QAction::triggered, this, &WorkspaceService::login);
@@ -142,11 +153,18 @@ WebSocketClientService* WorkspaceService::getWebSocketService() const {
     return webSocketService;
 }
 
+QJsonObject WorkspaceService::executePostRequest(const QString& path, const QJsonObject& payload) {
+    Q_UNUSED(path);
+    Q_UNUSED(payload);
+    // TODO:
+    return {};
+}
+
 void WorkspaceService::setTokens(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings) {
     qDebug() << "WorkspaceService:setTokens is called";
     setTokenFields(newAccessToken, newRefreshToken, saveToSettings);
     if (webSocketService == nullptr) {
-        webSocketService = new WebSocketClientService(this);
+        webSocketService = new WebSocketClientService(domain, this);
     }
     updateMainMenuActions();
     emit si_authenticationEvent(true);

@@ -45,6 +45,12 @@ const CloudStorageEntry& CloudStorageService::getRootEntry() const {
     return rootEntry;
 }
 
+void CloudStorageService::deleteItem(qint64 sessionLocalId) {
+    QJsonObject payload;
+    payload["sessionLocalId"] = sessionLocalId;
+    workspaceService->executePostRequest("/api/storage/delete", payload);
+}
+
 void CloudStorageService::onWebSocketMessageReceived(const WebSocketSubscriptionType& type, const QString&, const QJsonObject& payload) {
     qDebug() << "CloudStorageService::onWebSocketMessageReceived";
     CHECK(type == WebSocketSubscriptionType::StorageState, );

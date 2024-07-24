@@ -65,8 +65,9 @@ WebSocketSubscription::WebSocketSubscription(const WebSocketSubscriptionType& _t
     : type(_type), entityId(_entityId), subscriber(_subscriber) {
 }
 
-WebSocketClientService::WebSocketClientService(QObject* parent)
+WebSocketClientService::WebSocketClientService(const QString& _domain, QObject* parent)
     : QObject(parent),
+      domain(_domain),
       socket(new QWebSocket("", QWebSocketProtocol::Version13)),
       clientId(QUuid::createUuid().toString()) {
     qDebug() << "WebSocketClientService is created";
@@ -171,8 +172,11 @@ void WebSocketClientService::setAccessToken(const QString& newAccessToken) {
 void WebSocketClientService::reconnectIfNotConnected() {
     CHECK(!socket->isValid(), );
     qDebug() << "WebSocketClientService::reconnectIfNotConnected: Connecting to backend";
-    QString wsBackendUrl = "wss://workspace.ugene.net/api/?accessToken=" + accessToken + "&clientId=" + clientId;
-    socket->open(QUrl(wsBackendUrl));
+
+    QString protocol = domain.startsWith("localhost") ? "ws://" : "wss://";
+    QString websocketBackendUrl = protocol + domain + "/api/?accessToken=" + accessToken + "&clientId=" + clientId;
+
+    socket->open(QUrl(websocketBackendUrl));
 }
 
 void WebSocketClientService::disconnect(bool clearSubscriptions) {
