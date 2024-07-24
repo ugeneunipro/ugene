@@ -44,7 +44,7 @@ namespace U2 {
 // enzymes -> annotations
 
 FindEnzymesToAnnotationsTask::FindEnzymesToAnnotationsTask(AnnotationTableObject* aobj, const U2EntityRef& seqRef, const QList<SEnzymeData>& enzymes, const FindEnzymesTaskConfig& config)
-    : Task(tr("Find and store enzymes"), TaskFlags_NR_FOSCOE), dnaSeqRef(seqRef), enzymes(enzymes), annotationObject(aobj), cfg(config), findTask(nullptr) {
+    : Task(tr("Find and store enzymes"), TaskFlags_NR_FOSCOE), dnaSeqRef(seqRef), enzymes(enzymes), annotationObject(aobj), cfg(config) {
     GCOUNTER(cvar, "FindEnzymesToAnnotationsTask");
 }
 
@@ -56,53 +56,62 @@ void FindEnzymesToAnnotationsTask::prepare() {
         searchRegions = {U2Region(0, sequenceObject.getSequenceLength())};
     }
     for (const U2Region region : qAsConst(searchRegions)) {
-        findTask = new FindEnzymesTask(dnaSeqRef, region, enzymes, cfg.maxResults, cfg.circular);
+        FindEnzymesTask *findTask = new FindEnzymesTask(dnaSeqRef, region, enzymes, cfg.maxResults, cfg.circular);
         addSubTask(findTask);
+        findTasks.append(findTask);
     }
 }
 
 QList<Task*> FindEnzymesToAnnotationsTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
 
-    CHECK(subTask == findTask, result);
+    CHECK(findTasks.contains(subTask), result);
+    findTasks.removeAll(subTask);
     CHECK_OP(stateInfo, result);
     CHECK_EXT(!annotationObject.isNull(), stateInfo.setError(tr("Annotation table does not exist")), result);
     CHECK_EXT(!annotationObject->isStateLocked(), stateInfo.setError(tr("Annotation table is read-only")), result);
+    FindEnzymesTask* findTask = qobject_cast<FindEnzymesTask*>(subTask);
+    CHECK_EXT(findTask != nullptr, stateInfo.setError(L10N::nullPointerError("FindEnzymesTask")), result);
+    
+    for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
+        regionsByEnzymes[enzyme->id].append(findTask->getResultsAsAnnotations(enzyme->id));
+    }
 
-    bool useSubgroups = enzymes.size() > 1 || cfg.groupName.isEmpty();
-    QMap<QString, QList<SharedAnnotationData>> annotationsByGroupMap;
-
-    QSet<QString> excludedIdsFromResults;
-    if (cfg.excludeMode) {
-        for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
-            QList<U2Region> enzymeRegions;
-            QList<SharedAnnotationData> resultAnnotationList = findTask->getResultsAsAnnotations(enzyme->id);
-            bool intersectionFound = false;
-            for (const SharedAnnotationData& data : qAsConst(resultAnnotationList)) {
-                enzymeRegions << data->getRegions().toList();
-            }            
-            for (const U2Region& r : qAsConst(cfg.excludedRegions)) {
-                for (const U2Region& enzymeRegion : qAsConst(enzymeRegions)) {
-                    if (enzymeRegion.intersects(r)) {
-                        excludedIdsFromResults.insert(enzyme->id);
-                        intersectionFound = true;
+    if (findTasks.isEmpty()) {
+        bool useSubgroups = enzymes.size() > 1 || cfg.groupName.isEmpty();
+        QMap<QString, QList<SharedAnnotationData>> annotationsByGroupMap;
+        QSet<QString> excludedIdsFromResults;
+        if (cfg.excludeMode) {
+            for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
+                QList<U2Region> enzymeRegions;
+                QList<SharedAnnotationData> resultAnnotationList = regionsByEnzymes[enzyme->id];
+                bool intersectionFound = false;
+                for (const SharedAnnotationData& data : qAsConst(resultAnnotationList)) {
+                    enzymeRegions << data->getRegions().toList();
+                }
+                for (const U2Region& r : qAsConst(cfg.excludedRegions)) {
+                    for (const U2Region& enzymeRegion : qAsConst(enzymeRegions)) {
+                        if (enzymeRegion.intersects(r)) {
+                            excludedIdsFromResults.insert(enzyme->id);
+                            intersectionFound = true;
+                        }
+                        CHECK_BREAK(!intersectionFound);
                     }
                     CHECK_BREAK(!intersectionFound);
                 }
-                CHECK_BREAK(!intersectionFound);
             }
         }
-    }
-    for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
-        CHECK_CONTINUE(!excludedIdsFromResults.contains(enzyme->id));
-        QList<SharedAnnotationData> resultAnnotationList = findTask->getResultsAsAnnotations(enzyme->id);
-        if (resultAnnotationList.size() >= cfg.minHitCount && resultAnnotationList.size() <= cfg.maxHitCount) {
-            QString group = useSubgroups ? cfg.groupName + "/" + enzyme->id : cfg.groupName;
-            annotationsByGroupMap[group].append(resultAnnotationList);
+        for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
+            CHECK_CONTINUE(!excludedIdsFromResults.contains(enzyme->id));
+            QList<SharedAnnotationData> resultAnnotationList = regionsByEnzymes[enzyme->id];
+            if (resultAnnotationList.size() >= cfg.minHitCount && resultAnnotationList.size() <= cfg.maxHitCount) {
+                QString group = useSubgroups ? cfg.groupName + "/" + enzyme->id : cfg.groupName;
+                annotationsByGroupMap[group].append(resultAnnotationList);
+            }
         }
-    }
 
-    result << new CreateAnnotationsTask(annotationObject, annotationsByGroupMap);
+        result << new CreateAnnotationsTask(annotationObject, annotationsByGroupMap);
+    }
     return result;
 }
 
@@ -418,7 +427,7 @@ Task* FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const Au
 
     const QVector<U2Region> savedSearchRegions = getLastSearchLocationForObject(sequenceObject).data()->regions;
     U2Region wholeSequenceRegion(0, sequenceLength);
-    for (const U2Region region : qAsConst(savedSearchRegions)) {
+    for (const U2Region& region : qAsConst(savedSearchRegions)) {
         if (cfg.circular) {
             // In circular mode the region can have an overflow to handle end/start positions correctly
             cfg.searchRegions << U2Region(region.startPos, qMin(region.length, wholeSequenceRegion.length));

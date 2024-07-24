@@ -126,6 +126,7 @@ private slots:
 private:
     void initSettings();
     void saveSettings();
+    void fixPreviousLocation(U2Location& previousLocation);
 
     QPointer<ADVSequenceObjectContext> advSequenceContext;
 

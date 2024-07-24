@@ -652,42 +652,32 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
 
     
     U2Location searchLocation = FindEnzymesAutoAnnotationUpdater::getLastSearchLocationForObject(advSequenceContext->getSequenceObject());
-    bool fitsWell = true;
-    for (const U2Region region : qAsConst(searchLocation.data()->regions)) {
-        if (!(region.length > 0 && U2Region(0, advSequenceContext->getSequenceLength()).contains(region))) {
-            fitsWell = false;
-            break;
-        }
-    }
+    fixPreviousLocation(searchLocation);
+    U2Region customRegion = searchLocation.data()->regions.isEmpty() ? U2Region() : searchLocation.data()->regions.first();
     
-    if (!fitsWell) {
-        searchLocation.data()->regions.clear();
-        searchLocation.data()->regions << U2Region();
-    }
     QList<RegionPreset> searchPresets = {RegionPreset(RegionPreset::RegionPreset::LOCATION(), searchLocation)};
-    if (!advSequenceContext->getSequenceSelection()->getSelectedRegions().isEmpty()) {
-        searchPresets << RegionPreset(RegionPreset::RegionPreset::SELECTED_REGION(), U2Location({advSequenceContext->getSequenceSelection()->getSelectedRegions().first()}));
+    const QVector<U2Region> selectedRegions = advSequenceContext->getSequenceSelection()->getSelectedRegions();
+    if (!selectedRegions.isEmpty()) {
+        searchPresets << RegionPreset(RegionPreset::RegionPreset::SELECTED_REGION(), U2Location({selectedRegions.first()}));
     }
 
-    regionSelector = new RegionSelector(this, advSequenceContext->getSequenceLength(), false, advSequenceContext->getSequenceSelection(), 
+    const quint64 sequenceLength = advSequenceContext->getSequenceLength();
+    regionSelector = new RegionSelector(this, sequenceLength, false, advSequenceContext->getSequenceSelection(), 
                                         advSequenceContext->getSequenceObject()->isCircular(), searchPresets);
+    if (customRegion != U2Region()) {
+        regionSelector->setCustomRegion(customRegion);
+    }
+
+    if (!selectedRegions.isEmpty()) {
+        regionSelector->setCurrentPreset(RegionPreset::RegionPreset::SELECTED_REGION());
+    }
 
     U2Location excludeLocation = FindEnzymesAutoAnnotationUpdater::getLastExcludeLocationForObject(advSequenceContext->getSequenceObject());
-    fitsWell = true;
-    for (const U2Region region : qAsConst(excludeLocation.data()->regions)) {
-        if (!(region.length > 0 && U2Region(0, advSequenceContext->getSequenceLength()).contains(region))) {
-            fitsWell = false;
-            break;
-        }
-    }
-
-    if (!fitsWell) {
-        excludeLocation.data()->regions.clear();
-        excludeLocation.data()->regions << U2Region();
-    }
+    fixPreviousLocation(excludeLocation);
+    U2Region excludeRegion = excludeLocation.data()->regions.isEmpty() ? U2Region() : excludeLocation.data()->regions.first();
 
     QList<RegionPreset> excludePresets = {RegionPreset(RegionPreset::RegionPreset::LOCATION(), excludeLocation)};
-    excludeRegionSelector = new RegionSelector(this, advSequenceContext->getSequenceLength(), false, advSequenceContext->getSequenceSelection(), 
+    excludeRegionSelector = new RegionSelector(this, sequenceLength, false, advSequenceContext->getSequenceSelection(), 
                                                advSequenceContext->getSequenceObject()->isCircular(), excludePresets);
     excludeRegionSelector->removePreset(RegionPreset::RegionPreset::WHOLE_SEQUENCE());
     excludeRegionSelector->setCurrentPreset(RegionPreset::RegionPreset::CUSTOM_REGION());
@@ -696,9 +686,13 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
     excludeCheckbox->setText(tr("Uncut area:"));
     excludeCheckbox->setToolTip(tr("A region that will not be cut by any of the found enzymes. If an enzyme is present in this region, it will be excluded from the flank results."));
     
-    bool excludeOn = FindEnzymesAutoAnnotationUpdater::getExcludeModeEnabledForObject(advSequenceContext->getSequenceObject()) && fitsWell;
+    bool excludeLocationIsEmpty = excludeLocation.data()->regions.size() == 1 && excludeLocation.data()->regions.first() == U2Region();
+    bool excludeOn = FindEnzymesAutoAnnotationUpdater::getExcludeModeEnabledForObject(advSequenceContext->getSequenceObject()) && !excludeLocationIsEmpty;
     excludeCheckbox->setChecked(excludeOn);
     excludeRegionSelector->setEnabled(excludeOn);
+    if (excludeOn && excludeRegion != U2Region()) {
+        excludeRegionSelector->setCustomRegion(excludeRegion);
+    }
     
     searchRegionLayout->addWidget(regionSelector, 0, 1);
     searchRegionLayout->addWidget(excludeCheckbox, 1, 0);
@@ -736,6 +730,20 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
     connect(excludeCheckbox, &QCheckBox::stateChanged, this, [this]() {
         excludeRegionSelector->setEnabled(excludeCheckbox->isChecked());
     });
+}
+
+void FindEnzymesDialog::fixPreviousLocation(U2Location& prevLocation) {
+    bool fitsWell = true;
+    for (const U2Region& region : qAsConst(prevLocation.data()->regions)) {
+        if (!(region.length > 0 && U2Region(0, advSequenceContext->getSequenceLength()).contains(region))) {
+            fitsWell = false;
+            break;
+        }
+    }
+    if (!fitsWell) {
+        prevLocation.data()->regions.clear();
+        prevLocation.data()->regions << U2Region();
+    }
 }
 
 void FindEnzymesDialog::sl_onSelectionModified(int visible, int selected) {
@@ -792,12 +800,13 @@ void FindEnzymesDialog::accept() {
 
     QList<SEnzymeData> selectedEnzymes = enzSel->getSelectedEnzymes();
     bool ok = false;
-    bool ok2 = false;
     regionSelector->getLocation(&ok);
-    excludeRegionSelector->getLocation(&ok2);
-    excludeRegionSelector->getLocation(&ok2);
-    ok2 = ok2 || !excludeCheckbox->isChecked();
-    if (!ok || !ok2) {
+    if (excludeCheckbox->isChecked()) {
+        bool prevOk = ok;
+        excludeRegionSelector->getLocation(&ok);
+        ok = prevOk && ok;
+    }
+    if (!ok) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search' or 'Uncut' region/location!"), QMessageBox::Ok, this);
         msgBox->setInformativeText(tr("Given region or genbank location is invalid, please correct it."));
         msgBox->exec();

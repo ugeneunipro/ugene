@@ -98,7 +98,8 @@ private:
     QList<SEnzymeData> enzymes;
     QPointer<AnnotationTableObject> annotationObject;
     FindEnzymesTaskConfig cfg;
-    FindEnzymesTask* findTask;
+    QList<Task*> findTasks;
+    QMap<QString, QList<SharedAnnotationData>> regionsByEnzymes;
 };
 
 class FindEnzymesTask : public Task, public FindEnzymesAlgListener {

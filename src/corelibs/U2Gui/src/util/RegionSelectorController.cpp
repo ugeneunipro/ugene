@@ -155,9 +155,9 @@ void RegionSelectorController::setRegion(const U2Region& region) {
 U2Location RegionSelectorController::getLocation(bool* ok) const {
     U2Location res;
     if (gui.presetsComboBox->currentText() == RegionPreset::LOCATION()) {
-        qint64 circLen = settings.circular ? settings.maxLen : -1;
+        qint64 circularSequenceLength = settings.circular ? settings.maxLen : -1;
         const QByteArray qb = gui.locationLineEdit->text().toLatin1();
-        *ok = Genbank::LocationParser::parseLocation(qb.constData(), qb.length(), res, circLen) == Genbank::LocationParser::Success;
+        *ok = Genbank::LocationParser::parseLocation(qb.constData(), qb.length(), res, circularSequenceLength) == Genbank::LocationParser::Success;
     } else {
         res.data()->regions << getRegion(ok);
     }

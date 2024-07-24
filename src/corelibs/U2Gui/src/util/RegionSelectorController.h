@@ -123,7 +123,6 @@ public:
 
 signals:
     void si_regionChanged(const U2Region& newRegion);
-    //void si_presetChanged(int index);
 
 private slots:
     //! rename

@@ -91,7 +91,7 @@ private:
     qint64 maxLen;
     RegionLineEdit* startEdit;
     RegionLineEdit* endEdit;
-    QLineEdit* locationLineEdit;
+    QLineEdit* locationLineEdit = nullptr;
     QComboBox* comboBox;
     bool isVertical;
 

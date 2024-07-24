@@ -51,7 +51,6 @@ RegionSelector::RegionSelector(QWidget* p, qint64 len, bool isVertical, DNASeque
       maxLen(len),
       startEdit(nullptr),
       endEdit(nullptr),
-      locationLineEdit(nullptr),
       isVertical(isVertical) {
     initLayout();
 
