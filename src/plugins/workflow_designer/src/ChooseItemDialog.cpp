@@ -26,6 +26,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/GUIUtils.h>
 
 #include <U2Lang/WorkflowUtils.h>
 
@@ -57,7 +58,8 @@ QString ChooseItemDialog::select(const QMap<QString, QIcon>& items) {
 Workflow::ActorPrototype* ChooseItemDialog::select(const QList<Workflow::ActorPrototype*>& items) {
     listWidget->clear();
     foreach (Workflow::ActorPrototype* a, items) {
-        auto it = new QListWidgetItem(a->getIcon(), a->getDisplayName());
+        const auto& ip = a->getIconParameters();
+        auto it = new QListWidgetItem(GUIUtils::getIconResource(ip), a->getDisplayName());
         it->setToolTip(a->getDocumentation());
         listWidget->addItem(it);
     }

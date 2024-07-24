@@ -100,6 +100,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/globals/ExternalToolRegistry.h \
            src/globals/FormatSettings.h \
            src/globals/GUrl.h \
+           src/globals/IconParameters.h \
            src/globals/IdRegistry.h \
            src/globals/Identifiable.h \
            src/globals/L10n.h \
@@ -338,6 +339,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/globals/ExternalToolRegistry.cpp \
            src/globals/FormatSettings.cpp \
            src/globals/GUrl.cpp \
+           src/globals/IconParameters.cpp \
            src/globals/Log.cpp \
            src/globals/LogCache.cpp \
            src/globals/NetworkConfiguration.cpp \

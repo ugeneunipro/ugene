@@ -52,6 +52,7 @@
 #include <U2Designer/WizardController.h>
 
 #include <U2Gui/ExportImageDialog.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ScriptEditorDialog.h>
 #include <U2Gui/U2FileDialog.h>
 
@@ -1337,7 +1338,9 @@ bool WorkflowView::sl_validate(bool notify) {
     bool good = WorkflowUtils::validate(*schema, lst);
 
     if (lst.count() != 0) {
-        foreach (QListWidgetItem* wi, lst) {
+        for(QListWidgetItem* wi : qAsConst(lst)) {
+            auto ip = wi->data(ICON_DATA_REF).value<IconParameters>();
+            wi->setIcon(GUIUtils::getIconResource(ip.iconCathegory, ip.iconName, ip.hasColorCathegory));
             infoList->addItem(wi);
         }
         bottomTabs->show();

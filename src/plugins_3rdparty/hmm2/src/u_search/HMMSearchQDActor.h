@@ -22,6 +22,8 @@
 #ifndef _U2_HMM2_QDACTOR_H_
 #define _U2_HMM2_QDACTOR_H_
 
+#include <U2Gui/GUIUtils.h>
+
 #include "U2Lang/QDScheme.h"
 #include <U2Lang/QueryDesignerRegistry.h>
 
@@ -56,7 +58,7 @@ class HMM2QDActorPrototype : public QDActorPrototype {
 public:
     HMM2QDActorPrototype();
     QIcon getIcon() const {
-        return QIcon(":hmm2/images/hmmer_16.png");
+        return GUIUtils::getIconResource("hmm2", "hmmer2.png");
     }
     QDActor* createInstance() const {
         return new HMM2QDActor(this);

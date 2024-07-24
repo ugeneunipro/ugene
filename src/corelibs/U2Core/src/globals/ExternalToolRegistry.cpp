@@ -50,9 +50,9 @@ ExternalTool::ExternalTool(const QString& id, const QString& dirName, const QStr
       isCustomTool(false),
       isRunnerTool(false) {
     if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
+        icon = {"external_tool_support", "cmdline.png", true};
+        grayIcon = {"external_tool_support", "cmdline_gray.png", true};
+        warnIcon = {"external_tool_support", "cmdline_warn.png", true};
     }
 }
 
@@ -68,15 +68,15 @@ const QString& ExternalTool::getPath() const {
     return path;
 }
 
-const QIcon& ExternalTool::getIcon() const {
+const IconParameters& ExternalTool::getIconParameters() const {
     return icon;
 }
 
-const QIcon& ExternalTool::getGrayIcon() const {
+const IconParameters& ExternalTool::getGrayIconParameters() const {
     return grayIcon;
 }
 
-const QIcon& ExternalTool::getWarnIcon() const {
+const IconParameters& ExternalTool::getWarnIconParameters() const {
     return warnIcon;
 }
 

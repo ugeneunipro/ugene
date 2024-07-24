@@ -311,7 +311,7 @@ bool WorkflowUtils::validate(const Schema& schema, QList<QListWidgetItem*>& info
         } else if (notification.type == WorkflowNotification::U2_WARNING) {
             item->setIcon(QIcon(":U2Lang/images/warning.png"));
         } else if (a != nullptr) {
-            item->setIcon(a->getProto()->getIcon());
+            item->setData(ICON_DATA_REF, QVariant::fromValue<IconParameters>(a->getProto()->getIconParameters()));
         }
 
         item->setData(ACTOR_ID_REF, notification.actorId);

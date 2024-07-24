@@ -40,6 +40,7 @@
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Gui/GlassView.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -690,6 +691,7 @@ QueryViewController::QueryViewController()
     connect(samples, SIGNAL(itemActivated(QDDocument*)), SLOT(sl_pasteSample(QDDocument*)));
     connect(tabs, SIGNAL(currentChanged(int)), samples, SLOT(sl_cancel()));
     connect(editor, SIGNAL(modified()), scene, SLOT(sl_setModified()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &QueryViewController::sl_colorModeSwitched);
 
     auto splitter = new QSplitter(Qt::Horizontal, this);
     splitter->addWidget(tabs);
@@ -840,23 +842,23 @@ void QueryViewController::setupMDIToolbar(QToolBar* tb) {
     tb->addAction(runAction);
     tb->addSeparator();
 
-    auto tt = new QToolButton(tb);
+    viewModeToolButton = new QToolButton(tb);
     auto viewModeMenu = new QMenu(tr("View Mode"), this);
     setupViewModeMenu(viewModeMenu);
     QAction* a = viewModeMenu->menuAction();
-    tt->setDefaultAction(a);
-    tt->setPopupMode(QToolButton::InstantPopup);
-    tt->setIcon(QIcon(":query_designer/images/eye.png"));
-    tb->addWidget(tt);
+    viewModeToolButton->setDefaultAction(a);
+    viewModeToolButton->setPopupMode(QToolButton::InstantPopup);
+    viewModeToolButton->setIcon(GUIUtils::getIconResource("query_designer", "eye.png"));
+    tb->addWidget(viewModeToolButton);
 
-    auto st = new QToolButton(tb);
+    querySequenceModeToolButton = new QToolButton(tb);
     auto strandMenu = new QMenu(tr("Query Sequence Mode"), this);
     setupStrandMenu(strandMenu);
     QAction* sa = strandMenu->menuAction();
-    st->setDefaultAction(sa);
-    st->setPopupMode(QToolButton::InstantPopup);
-    st->setIcon(QIcon(":query_designer/images/strands.png"));
-    tb->addWidget(st);
+    querySequenceModeToolButton->setDefaultAction(sa);
+    querySequenceModeToolButton->setPopupMode(QToolButton::InstantPopup);
+    querySequenceModeToolButton->setIcon(GUIUtils::getIconResource("query_designer", "strands.png"));
+    tb->addWidget(querySequenceModeToolButton);
 
     tb->addSeparator();
     tb->addAction(deleteAction);
@@ -871,13 +873,13 @@ void QueryViewController::setupViewMenu(QMenu* m) {
     m->addAction(runAction);
     m->addSeparator();
 
-    auto viewModeMenu = new QMenu(tr("View Mode"), this);
-    viewModeMenu->setIcon(QIcon(":query_designer/images/eye.png"));
+    viewModeMenu = new QMenu(tr("View Mode"), this);
+    viewModeMenu->setIcon(GUIUtils::getIconResource("query_designer", "eye.png"));
     setupViewModeMenu(viewModeMenu);
     m->addMenu(viewModeMenu);
 
-    auto querySequenceModeMenu = new QMenu(tr("Query Sequence Mode"), this);
-    querySequenceModeMenu->setIcon((QIcon(":query_designer/images/strands.png")));
+    querySequenceModeMenu = new QMenu(tr("Query Sequence Mode"), this);
+    querySequenceModeMenu->setIcon(GUIUtils::getIconResource("query_designer", "strands.png"));
     setupQuerySequenceModeMenu(querySequenceModeMenu);
     m->addMenu(querySequenceModeMenu);
 
@@ -1099,6 +1101,13 @@ void QueryViewController::sl_scrollUp() {
     QSize s = sceneView->viewport()->rect().size();
     QRectF topRect(topLeft, s);
     sceneView->ensureVisible(topRect);
+}
+
+void QueryViewController::sl_colorModeSwitched() {
+    viewModeMenu->setIcon(GUIUtils::getIconResource("query_designer", "eye.png"));
+    viewModeToolButton->setIcon(GUIUtils::getIconResource("query_designer", "eye.png"));
+    querySequenceModeMenu->setIcon(GUIUtils::getIconResource("query_designer", "strands.png"));
+    querySequenceModeToolButton->setIcon(GUIUtils::getIconResource("query_designer", "strands.png"));
 }
 
 void QueryViewController::setupConstraintEditor(QDConstraint* c) {

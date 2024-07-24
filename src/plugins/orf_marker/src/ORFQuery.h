@@ -23,6 +23,8 @@
 
 #include "U2Algorithm/ORFFinder.h"
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Lang/QDScheme.h>
 #include <U2Lang/QueryDesignerRegistry.h>
 
@@ -52,7 +54,7 @@ class QDORFActorPrototype : public QDActorPrototype {
 public:
     QDORFActorPrototype();
     QIcon getIcon() const {
-        return QIcon(":orf_marker/images/orf_marker.png");
+        return GUIUtils::getIconResource("orf_marker", "orf_marker.png");
     }
     virtual QDActor* createInstance() const {
         return new QDORFActor(this);

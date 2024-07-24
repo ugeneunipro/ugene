@@ -27,6 +27,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Lang/QDScheme.h>
 #include <U2Lang/QueryDesignerRegistry.h>
 
@@ -69,7 +71,7 @@ class QDEnzymesActorPrototype : public QDActorPrototype {
 public:
     QDEnzymesActorPrototype();
     QIcon getIcon() const {
-        return QIcon(":enzymes/images/enzymes.png");
+        return GUIUtils::getIconResource("enzymes", "enzymes.png");
     }
     QDActor* createInstance() const {
         return new QDEnzymesActor(this);

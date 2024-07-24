@@ -22,6 +22,8 @@
 #ifndef _U2_SITECON_QUERY_H_
 #define _U2_SITECON_QUERY_H_
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Lang/QueryDesignerRegistry.h>
 
 #include "SiteconSearchTask.h"
@@ -57,7 +59,7 @@ public:
         return new QDSiteconActor(this);
     }
     virtual QIcon getIcon() const {
-        return QIcon(":sitecon/images/sitecon.png");
+        return GUIUtils::getIconResource("sitecon", "sitecon.png");
     }
 };
 

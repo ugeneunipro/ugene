@@ -36,6 +36,7 @@ typedef QList<WorkflowNotification> NotificationsList;
 #define TEXT_REF (Qt::UserRole + 3)
 #define TYPE_REF (Qt::UserRole + 4)
 #define ACTOR_NAME_REF (Qt::UserRole + 5)
+#define ICON_DATA_REF (Qt::UserRole + 6)
 
 class U2LANG_EXPORT WorkflowNotification {
 public:

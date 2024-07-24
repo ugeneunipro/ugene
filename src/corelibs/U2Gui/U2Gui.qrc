@@ -30,7 +30,6 @@
         <file>images/circular_seq.png</file>
         <file>images/close.png</file>
         <file>images/close_2.png</file>
-        <file>images/codon_table.png</file>
         <file>images/collapse.png</file>
         <file>images/collapse_tree.png</file>
         <file>images/collapse_update.png</file>
@@ -46,7 +45,6 @@
         <file>images/copy_sequence.png</file>
         <file>images/copy_translation.png</file>
         <file>images/create_annotation.png</file>
-        <file>images/create_annotation_icon.png</file>
         <file>images/database_with_arrow.png</file>
         <file>images/dna.png</file>
         <file>images/dna_helix.png</file>
@@ -73,7 +71,6 @@
         <file>images/load_selected_documents.png</file>
         <file>images/lock.png</file>
         <file>images/lock_open.png</file>
-        <file>images/lock_scales.png</file>
         <file>images/minus.png</file>
         <file>images/mismatch-backward.png</file>
         <file>images/mismatch-forward.png</file>
@@ -128,14 +125,10 @@
         <file>images/show_compl.png</file>
         <file>images/show_trans.png</file>
         <file>images/sort_ascending.png</file>
-        <file>images/ssp_logo.png</file>
         <file>images/sum.png</file>
         <file>images/sync-msa-on.png</file>
         <file>images/sync-msa-off.png</file>
-        <file>images/sw.png</file>
         <file>images/swap.png</file>
-        <file>images/sync_lock.png</file>
-        <file>images/sync_scales.png</file>
         <file>images/table.png</file>
         <file>images/table_add.png</file>
         <file>images/text_ab.png</file>
@@ -164,17 +157,28 @@
         <file>images/light/arrow_right.png</file>
         <file>images/light/cam2.png</file>
         <file>images/light/close_small.png</file>
+        <file>images/light/codon_table.png</file>
+        <file>images/light/create_annotation_icon.png</file>
         <file>images/light/details_view.png</file>
         <file>images/light/edit.png</file>
+        <file>images/light/find_dialog.png</file>
         <file>images/light/gear.svg</file>
+        <file>images/light/graphs.png</file>
+        <file>images/light/goto.png</file>
         <file>images/light/hide_all_views.png</file>
+        <file>images/light/lock_scales.png</file>
         <file>images/light/overview.png</file>
+        <file>images/light/paste.png</file>
         <file>images/light/predefined_annotation_groups.png</file>
         <file>images/light/select_region.png</file>
         <file>images/light/show_all_views.png</file>
         <file>images/light/show_compl.png</file>
         <file>images/light/show_trans.png</file>
+        <file>images/light/ssp_logo.png</file>
         <file>images/light/sum.png</file>
+        <file>images/light/sync_lock.png</file>
+        <file>images/light/sync_scales.png</file>
+        <file>images/light/sw.png</file>
         <file>images/light/tt_switch.png</file>
         <file>images/light/wrap_sequence.png</file>
         <file>images/light/zoom_view.png</file>
@@ -183,17 +187,28 @@
         <file>images/dark/arrow_right.png</file>
         <file>images/dark/cam2.png</file>
         <file>images/dark/close_small.png</file>
+        <file>images/dark/codon_table.png</file>
+        <file>images/dark/create_annotation_icon.png</file>
         <file>images/dark/details_view.png</file>
         <file>images/dark/edit.png</file>
+        <file>images/dark/find_dialog.png</file>
         <file>images/dark/gear.svg</file>
+        <file>images/dark/graphs.png</file>
+        <file>images/dark/goto.png</file>
         <file>images/dark/hide_all_views.png</file>
+        <file>images/dark/lock_scales.png</file>
         <file>images/dark/overview.png</file>
+        <file>images/dark/paste.png</file>
         <file>images/dark/predefined_annotation_groups.png</file>
         <file>images/dark/select_region.png</file>
         <file>images/dark/show_all_views.png</file>
         <file>images/dark/show_compl.png</file>
         <file>images/dark/show_trans.png</file>
+        <file>images/dark/ssp_logo.png</file>
         <file>images/dark/sum.png</file>
+        <file>images/dark/sync_lock.png</file>
+        <file>images/dark/sync_scales.png</file>
+        <file>images/dark/sw.png</file>
         <file>images/dark/tt_switch.png</file>
         <file>images/dark/wrap_sequence.png</file>
         <file>images/dark/zoom_view.png</file>

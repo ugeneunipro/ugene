@@ -238,7 +238,8 @@ namespace {
 QPixmap getPixmapResource(const QString& cathegory, const QString& iconName, bool isDark, bool hasColorCathegory) {
     QString resourceName = GUIUtils::getResourceName(cathegory, iconName, hasColorCathegory);
     QPixmap pixmap = QPixmap(resourceName);
-    Q_ASSERT(!pixmap.isNull());
+    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(cathegory).arg(iconName), QPixmap());
+
     return pixmap;
 }
 
@@ -259,6 +260,8 @@ QString GUIUtils::getResourceName(const QString& cathegory, const QString& iconN
 
 
 QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconName, bool hasColorCathegory) {
+    CHECK((!cathegory.isEmpty() && !iconName.isEmpty()), QIcon());
+
     QIcon icon;
     bool isDark = AppContext::getMainWindow()->isDarkMode();
     QPixmap pixmap = getPixmapResource(cathegory, iconName, isDark, hasColorCathegory);
@@ -272,6 +275,10 @@ QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconNam
     }
 
     return icon;
+}
+
+QIcon GUIUtils::getIconResource(const IconParameters& parameters) {
+    return getIconResource(parameters.iconCathegory, parameters.iconName, parameters.hasColorCathegory);
 }
 
 void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {

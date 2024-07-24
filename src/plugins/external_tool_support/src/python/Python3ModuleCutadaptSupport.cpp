@@ -34,9 +34,9 @@ const QString Python3ModuleCutadaptSupport::ADAPTERS_DATA_NAME = "Adapters file"
 Python3ModuleCutadaptSupport::Python3ModuleCutadaptSupport()
     : ExternalToolModule(Python3ModuleCutadaptSupport::ET_PYTHON_CUTADAPT_ID, "python3", "Cutadapt") {
     if (AppContext::getMainWindow()) {
-        icon = QIcon(":external_tool_support/images/python_cutadapt.png");
-        grayIcon = QIcon(":external_tool_support/images/python_cutadapt_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/python_cutadapt_warn.png");
+        icon = IconParameters("external_tool_support", "python_cutadapt.png", false);
+        grayIcon = IconParameters("external_tool_support", "python_cutadapt_gray.png", false);
+        warnIcon = IconParameters("external_tool_support", "python_cutadapt_warn.png", true);
     }
     description += "Cutadapt" + tr(" finds and removes adapter sequences, primers, poly-A tails and other types of unwanted sequence from your high-throughput sequencing reads.");
 

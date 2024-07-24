@@ -28,6 +28,7 @@
 #include <QLabel>
 #include <QTreeWidgetItem>
 
+#include <U2Core/IconParameters.h>
 #include <U2Core/global.h>
 
 #include "U2FileDialog.h"
@@ -72,6 +73,8 @@ public:
     static QString getResourceName(const QString& cathegory, const QString& iconName, bool hasColorCathegory = true);
 
     static QIcon getIconResource(const QString& cathegory, const QString& iconName, bool hasColorCathegory = true);
+
+    static QIcon getIconResource(const IconParameters& parameters);
 
     /**
      * Maximum size of the pixmap that can be safely created for UGENE.

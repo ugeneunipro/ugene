@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Lang/QDScheme.h>
 #include <U2Lang/QueryDesignerRegistry.h>
 
@@ -58,7 +60,7 @@ public:
         return new QDCDDActor(this);
     }
     virtual QIcon getIcon() const {
-        return QIcon(":remote_blast/images/remote_db_request.png");
+        return GUIUtils::getIconResource("remote_blast", "remote_db_request.png", false);
     }
 };
 

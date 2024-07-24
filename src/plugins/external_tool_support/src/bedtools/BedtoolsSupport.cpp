@@ -38,11 +38,6 @@ const QString BedtoolsSupport::GENOMES_DATA_NAME = "Genome files";
 
 BedtoolsSupport::BedtoolsSupport(const QString& path)
     : ExternalTool(ET_BEDTOOLS_ID, "bedtools", "bedtools", path) {
-    if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
 #ifdef Q_OS_WIN
     executableFileName = "bedtools.exe";
 #else

@@ -34,6 +34,8 @@
 #include <U2Lang/QueryDesignerRegistry.h>
 #include <U2Lang/WorkflowContext.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "CreateScriptWorker.h"
 #include "WorkflowSamples.h"
 #include "WorkflowViewController.h"
@@ -41,6 +43,7 @@
 #include "library/ScriptWorker.h"
 #include "library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.h"
 #include "util/CustomWorkerUtils.h"
+
 namespace U2 {
 
 const QString WorkflowPalette::MIME_TYPE("application/x-ugene-workflow-id");
@@ -403,10 +406,11 @@ QAction* WorkflowPaletteElements::createItemAction(ActorPrototype* item) {
     auto a = new QAction(item->getDisplayName(), this);
     a->setToolTip(item->getDocumentation());
     a->setCheckable(true);
-    if (item->getIcon().isNull()) {
-        item->setIconPath(":workflow_designer/images/green_circle.png");
+    const auto& ip = item->getIconParameters();
+    if (ip.iconName.isEmpty()) {
+        item->setIconParameters(IconParameters("workflow_designer", "green_circle.png", false));
     }
-    a->setIcon(item->getIcon());
+    a->setIcon(GUIUtils::getIconResource(ip));
     a->setData(QVariant::fromValue(item));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
     connect(a, SIGNAL(toggled(bool)), SLOT(sl_selectProcess(bool)));

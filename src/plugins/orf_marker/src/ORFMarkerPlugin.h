@@ -27,6 +27,7 @@
 
 namespace U2 {
 
+class ADVGlobalAction;
 class XMLTestFactory;
 
 class ORFMarkerPlugin : public Plugin {
@@ -49,6 +50,7 @@ protected slots:
 
 protected:
     void initViewContext(GObjectViewController* view) override;
+
 };
 
 class ORFMarkerTests {
