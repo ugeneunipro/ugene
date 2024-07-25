@@ -39,11 +39,11 @@ public:
 
 signals:
     void si_authenticationGranted(const QString& accessToken, const QString& refreshToken);
-    void si_authenticationFailed(const QString& error);
-
-private slots:
-    void handleAuthorizationGranted();
-    void handleErrorOccurred(const QString& error);
+    /**
+     * Emitted when authentication failed.
+     * If the error is retriable the authentication can be retried with the same credentials later.
+     */
+    void si_authenticationFailed(const QString& error, bool isRetriable);
 
 private:
     QNetworkAccessManager networkAccessManager;

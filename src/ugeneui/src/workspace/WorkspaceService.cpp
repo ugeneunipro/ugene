@@ -58,12 +58,14 @@ static const QString WORKSPACE_SETTINGS_REFRESH_TOKEN = "rt";
 WorkspaceService::WorkspaceService()
     : Service(Service_Workspace, "Workspace", "Remove workspace service for UGENE") {
     stage = qgetenv("UGENE_WORKSPACE_STAGE");
-    if (stage != "dev" || stage != "local") {
+    if (stage != "dev" && stage != "local") {
         stage = "prod";
     }
-    domain = stage == "dev"     ? "workspace-dev.ugene.net"
-             : stage == "local" ? "localhost:4200"
-                                : "workspace.ugene.net";
+    apiDomainAndPort = stage == "dev"     ? "workspace-dev.ugene.net"
+                : stage == "local" ? "localhost:4200"
+                                   : "workspace.ugene.net";
+    webSocketDomainAndPort = stage == "local" ? "localhost:4201"
+                                     : apiDomainAndPort;
     clientId = "workspace-client-" + stage;
     authUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/auth";
     tokenUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/token";
@@ -103,15 +105,22 @@ void WorkspaceService::renewAccessTokenIfCloseToExpire() {
                      << ", minRenewTime: " << minRenewTime.toLocalTime().toString()
                      << ", now: " + now.toLocalTime().toString();
             if (minRenewTime > now) {
-                qDebug() << "WorkspaceService: skip access token renew: too early";
+                qDebug() << "WorkspaceService: Skip access token renew: too early";
                 return;  // Do not renew - Access Token will be valid long enough.
             }
         }
     }
 
+    setTokens("", refreshToken, true);  // Forget expired access token.
     auto authenticator = new KeycloakAuthenticator(authUrl, tokenUrl, clientId);
     connect(authenticator, &KeycloakAuthenticator::si_authenticationGranted, this, [this](const QString& accessToken, const QString& refreshToken) {
         setTokens(accessToken, refreshToken, true);
+    });
+    connect(authenticator, &KeycloakAuthenticator::si_authenticationFailed, this, [this](const QString&, bool isRetriable) {
+        if (!isRetriable) {
+            qDebug() << "WorkspaceService: Got unretriable error. Stopping auto token refresh";
+            setTokens("", "", true);  // Forget refresh token.
+        }
     });
     authenticator->refreshAccessToken(refreshToken);  // Self destroys upon completion.
 }
@@ -163,8 +172,9 @@ QJsonObject WorkspaceService::executePostRequest(const QString& path, const QJso
 void WorkspaceService::setTokens(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings) {
     qDebug() << "WorkspaceService:setTokens is called";
     setTokenFields(newAccessToken, newRefreshToken, saveToSettings);
+    CHECK(!newAccessToken.isEmpty() && !newRefreshToken.isEmpty(), );
     if (webSocketService == nullptr) {
-        webSocketService = new WebSocketClientService(domain, this);
+        webSocketService = new WebSocketClientService(webSocketDomainAndPort, this);
     }
     updateMainMenuActions();
     emit si_authenticationEvent(true);
@@ -180,13 +190,12 @@ void WorkspaceService::setTokenFields(const QString& newAccessToken, const QStri
 }
 
 void WorkspaceService::login() {
+    setTokens("", "", true);  // Reset tokens on start.
     auto authenticator = new KeycloakAuthenticator(authUrl, tokenUrl, clientId);
     connect(authenticator, &KeycloakAuthenticator::si_authenticationGranted, this, [this](const QString& accessToken, const QString& refreshToken) {
-        this->refreshToken = refreshToken;
         setTokens(accessToken, refreshToken, true);
     });
     connect(authenticator, &KeycloakAuthenticator::si_authenticationFailed, this, [this](const QString& error) {
-        this->accessToken.clear();
         this->updateMainMenuActions();
         QMessageBox::critical(nullptr, L10N::errorTitle(), tr("Failed to authenticate: %1").arg(error));
     });

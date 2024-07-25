@@ -25,6 +25,7 @@
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QUrlQuery>
 #include <QUuid>
 
 #include <U2Core/U2SafePoints.h>
@@ -65,12 +66,12 @@ WebSocketSubscription::WebSocketSubscription(const WebSocketSubscriptionType& _t
     : type(_type), entityId(_entityId), subscriber(_subscriber) {
 }
 
-WebSocketClientService::WebSocketClientService(const QString& _domain, QObject* parent)
+WebSocketClientService::WebSocketClientService(const QString& _domainAndPort, QObject* parent)
     : QObject(parent),
-      domain(_domain),
+      domainAndPort(_domainAndPort),
       socket(new QWebSocket("", QWebSocketProtocol::Version13)),
-      clientId(QUuid::createUuid().toString()) {
-    qDebug() << "WebSocketClientService is created";
+      clientId(QUuid::createUuid().toString(QUuid::WithoutBraces)) {
+    qDebug() << "WebSocketClientService is created, clientId: " << clientId;
 
     QSslConfiguration sslConfiguration = QSslConfiguration::defaultConfiguration();
     sslConfiguration.setProtocol(QSsl::TlsV1_3);
@@ -171,12 +172,16 @@ void WebSocketClientService::setAccessToken(const QString& newAccessToken) {
 
 void WebSocketClientService::reconnectIfNotConnected() {
     CHECK(!socket->isValid(), );
-    qDebug() << "WebSocketClientService::reconnectIfNotConnected: Connecting to backend";
+    QString protocol = domainAndPort.startsWith("localhost") ? "ws://" : "wss://";
+    QString host = protocol + domainAndPort;
+    qDebug() << "WebSocketClientService::reconnectIfNotConnected: Connecting to backend: " << host;
 
-    QString protocol = domain.startsWith("localhost") ? "ws://" : "wss://";
-    QString websocketBackendUrl = protocol + domain + "/api/?accessToken=" + accessToken + "&clientId=" + clientId;
-
-    socket->open(QUrl(websocketBackendUrl));
+    QUrlQuery query;
+    query.addQueryItem("accessToken", accessToken);
+    query.addQueryItem("clientId", clientId);
+    QUrl url(host + "/api/");
+    url.setQuery(query);
+    socket->open(url);
 }
 
 void WebSocketClientService::disconnect(bool clearSubscriptions) {

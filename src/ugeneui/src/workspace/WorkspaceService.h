@@ -84,7 +84,8 @@ private:
     QString tokenUrl;
     QString clientId;
     QString stage;
-    QString domain;
+    QString apiDomainAndPort;
+    QString webSocketDomainAndPort;
 };
 
 class EnableWorkspaceTask : public Task {

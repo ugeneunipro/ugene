@@ -41,8 +41,21 @@ KeycloakAuthenticator::KeycloakAuthenticator(const QString& _authUrl, const QStr
     oauth2.setReplyHandler(replyHandler);
 
     connect(&oauth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, &QDesktopServices::openUrl);
-    connect(&oauth2, &QOAuth2AuthorizationCodeFlow::granted, this, &KeycloakAuthenticator::handleAuthorizationGranted);
-    connect(&oauth2, &QOAuth2AuthorizationCodeFlow::error, this, &KeycloakAuthenticator::handleErrorOccurred);
+
+    connect(&oauth2, &QOAuth2AuthorizationCodeFlow::granted, this, [this] {
+        qDebug() << "KeycloakAuthenticator: authentication granted";
+        QString accessToken = oauth2.token();
+        QString refreshToken = oauth2.refreshToken();
+        emit si_authenticationGranted(accessToken, refreshToken);
+        deleteLater();
+    });
+
+    connect(&oauth2, &QOAuth2AuthorizationCodeFlow::error, this, [this](const QString& error, const QString& errorDescription, const QUrl& uri) {
+        qDebug() << "KeycloakAuthenticator: authentication failed: " << error << ", description: " << errorDescription << ", uri: " << uri.toString();
+        bool isRetriable = false;
+        emit si_authenticationFailed(error, isRetriable);
+        deleteLater();
+    });
 }
 
 void KeycloakAuthenticator::startAuthentication() {
@@ -50,7 +63,7 @@ void KeycloakAuthenticator::startAuthentication() {
 }
 
 void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
-    qDebug() << "KeycloakAuthenticator: Renew access token, refresh: " << refreshToken.toLocal8Bit();
+    qDebug() << "KeycloakAuthenticator: Renew access token, refresh: " << refreshToken;
     QUrl tokenUrl(this->tokenUrl);
     QNetworkRequest request(tokenUrl);
 
@@ -76,25 +89,22 @@ void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
             oauth2.setToken(newAccessToken);
             emit si_authenticationGranted(newAccessToken, newRefreshToken);
         } else {
-            qDebug() << "KeycloakAuthenticator: Request finished with error: " << reply->errorString().toLocal8Bit();
-            emit si_authenticationFailed(reply->errorString());
+            qDebug() << "KeycloakAuthenticator: Request finished with error: " << reply->errorString() << ", code: " << reply->error();
+            static QSet<QNetworkReply::NetworkError> nonRetriableErrors = {
+                QNetworkReply::ContentAccessDenied,
+                QNetworkReply::ContentOperationNotPermittedError,
+                QNetworkReply::ContentNotFoundError,
+                QNetworkReply::AuthenticationRequiredError,
+                QNetworkReply::ProtocolUnknownError,
+                QNetworkReply::ProtocolFailure,
+                QNetworkReply::ProtocolInvalidOperationError,
+            };
+            auto error = reply->error();
+            bool isRetriable = !nonRetriableErrors.contains(error);
+            emit si_authenticationFailed(reply->errorString(), isRetriable);
         }
         reply->deleteLater();
         deleteLater();
     });
     networkManager->post(request, params.toString(QUrl::FullyEncoded).toUtf8());
-}
-
-void KeycloakAuthenticator::handleAuthorizationGranted() {
-    qDebug() << "KeycloakAuthenticator: authentication granted";
-    QString accessToken = oauth2.token();
-    QString refreshToken = oauth2.refreshToken();
-    emit si_authenticationGranted(accessToken, refreshToken);
-    deleteLater();
-}
-
-void KeycloakAuthenticator::handleErrorOccurred(const QString& error) {
-    qDebug() << "KeycloakAuthenticator: authentication failed";
-    emit si_authenticationFailed(error);
-    deleteLater();
 }

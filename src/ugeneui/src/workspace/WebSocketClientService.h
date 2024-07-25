@@ -90,7 +90,7 @@ private:
     void clearSubscriptions();
     void sendAccessTokenToServer();
 
-    QString domain;
+    QString domainAndPort;
     QWebSocket* socket;
     /** ID if the client. Never changes. */
     const QString clientId;
