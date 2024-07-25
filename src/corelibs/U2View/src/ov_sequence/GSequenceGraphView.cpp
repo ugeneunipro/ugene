@@ -31,6 +31,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GScrollBar.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 #include <U2View/ADVAnnotationCreation.h>
@@ -204,7 +205,7 @@ void GSequenceGraphView::buildPopupMenu(QMenu& menu) {
 
     // Creating the Graphs menu
     auto graphMenu = new QMenu(tr("Graph"));
-    graphMenu->setIcon(QIcon(":core/images/graphs.png"));
+    graphMenu->setIcon(GUIUtils::getIconResource("core", "graphs.png"));
     graphMenu->menuAction()->setObjectName("Graph");
 
     addActionsToGraphMenu(graphMenu);

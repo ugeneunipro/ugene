@@ -248,7 +248,7 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     exportTreeImageButtonMenu->menuAction()->setObjectName("treeImageActionsButtonMenuAction");
     treeImageActionsButton->setDefaultAction(exportTreeImageButtonMenu->menuAction());
     treeImageActionsButton->setPopupMode(QToolButton::InstantPopup);
-    treeImageActionsButton->setIcon(QIcon(":/core/images/cam2.png"));
+    treeImageActionsButton->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
 
     tb->addWidget(treeImageActionsButton);
     tb->addAction(printAction);
@@ -317,7 +317,7 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
 
     auto treeImageActionsSubmenu = new QMenu(tr("Tree image"), ui);
     treeImageActionsSubmenu->menuAction()->setObjectName("treeImageActionsSubmenu");
-    treeImageActionsSubmenu->setIcon(QIcon(":/core/images/cam2.png"));
+    treeImageActionsSubmenu->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
     setupExportTreeImageMenu(treeImageActionsSubmenu);
     m->addMenu(treeImageActionsSubmenu);
 
@@ -503,7 +503,7 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer, QWidget* parent)
     treeImageActionsMenu->addSeparator();
     treeImageActionsMenu->addAction(treeViewer->saveVisibleViewToFileAction);
     treeImageActionsMenu->addAction(treeViewer->saveWholeTreeToSvgAction);
-    treeImageActionsMenu->setIcon(QIcon(":/core/images/cam2.png"));
+    treeImageActionsMenu->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
     buttonPopup->addMenu(treeImageActionsMenu);
 
     updateActions();

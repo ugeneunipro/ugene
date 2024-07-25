@@ -126,7 +126,7 @@ MsaEditor::MsaEditor(const QString& viewName, MsaObject* obj)
     sortGroupsBySizeDescendingAction->setToolTip(tr("Sort groups by number of sequences in the group, descending"));
     connect(sortGroupsBySizeDescendingAction, SIGNAL(triggered()), SLOT(sl_sortGroupsBySize()));
 
-    saveScreenshotAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export as image"), this);
+    saveScreenshotAction = new QAction(GUIUtils::getIconResource("core", "cam2.png"), tr("Export as image"), this);
     saveScreenshotAction->setObjectName("export_msa_as_image_action");
     connect(saveScreenshotAction, &QAction::triggered, this, &MsaEditor::sl_exportImage);
 
@@ -162,7 +162,7 @@ MsaEditor::MsaEditor(const QString& viewName, MsaObject* obj)
     convertRawToAminoAction->setToolTip(tr("Convert alignment from RAW to Amino alphabet: use X for unknown symbols"));
     connect(convertRawToAminoAction, SIGNAL(triggered()), SLOT(sl_convertRawToAminoAlphabet()));
 
-    gotoAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position…"), this);
+    gotoAction = new QAction(GUIUtils::getIconResource("core", "goto.png"), tr("Go to position…"), this);
     gotoAction->setObjectName("action_go_to_position");
     gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
     gotoAction->setShortcutContext(Qt::WindowShortcut);
