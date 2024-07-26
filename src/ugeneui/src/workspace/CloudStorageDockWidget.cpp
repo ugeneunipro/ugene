@@ -144,12 +144,12 @@ void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
 }
 
 void CloudStorageDockWidget::deleteItem() {
-    qDebug() << "Delete item";
+    qDebug() << "CloudStorageDockWidget:: Delete item";
     QModelIndex currentIndex = treeView->currentIndex();
     QString name = treeView->model()->data(currentIndex, Qt::DisplayRole).toString();
     qint64 sessionLocalId = treeView->model()->data(currentIndex, USER_DATA_SESSION_LOCAL_ID).toLongLong();
     QMessageBox::StandardButton result = QMessageBox::question(treeView, tr("Question?"), tr("Do you want to delete %1").arg(name));
-    CHECK(result == QMessageBox::Ok, );
+    CHECK(result == QMessageBox::Yes, );
     workspaceService->getCloudStorageService()->deleteItem(sessionLocalId);
 }
 

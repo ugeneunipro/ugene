@@ -24,6 +24,7 @@
 #include <QAction>
 #include <QJsonDocument>
 #include <QMessageBox>
+#include <QNetworkReply>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
@@ -61,11 +62,11 @@ WorkspaceService::WorkspaceService()
     if (stage != "dev" && stage != "local") {
         stage = "prod";
     }
-    apiDomainAndPort = stage == "dev"     ? "workspace-dev.ugene.net"
-                : stage == "local" ? "localhost:4200"
-                                   : "workspace.ugene.net";
-    webSocketDomainAndPort = stage == "local" ? "localhost:4201"
-                                     : apiDomainAndPort;
+    QString apiDomainAndPort = stage == "dev"     ? "workspace-dev.ugene.net"
+                               : stage == "local" ? "localhost:4201"
+                                                  : "workspace.ugene.net";
+    apiUrl = (stage == "local" ? "http://" : "https://") + apiDomainAndPort;
+    webSocketUrl = stage == "local" ? "ws://localhost:4201" : "wss://" + apiDomainAndPort;
     clientId = "workspace-client-" + stage;
     authUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/auth";
     tokenUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/token";
@@ -162,19 +163,12 @@ WebSocketClientService* WorkspaceService::getWebSocketService() const {
     return webSocketService;
 }
 
-QJsonObject WorkspaceService::executePostRequest(const QString& path, const QJsonObject& payload) {
-    Q_UNUSED(path);
-    Q_UNUSED(payload);
-    // TODO:
-    return {};
-}
-
 void WorkspaceService::setTokens(const QString& newAccessToken, const QString& newRefreshToken, bool saveToSettings) {
     qDebug() << "WorkspaceService:setTokens is called";
     setTokenFields(newAccessToken, newRefreshToken, saveToSettings);
     CHECK(!newAccessToken.isEmpty() && !newRefreshToken.isEmpty(), );
     if (webSocketService == nullptr) {
-        webSocketService = new WebSocketClientService(webSocketDomainAndPort, this);
+        webSocketService = new WebSocketClientService(webSocketUrl, this);
     }
     updateMainMenuActions();
     emit si_authenticationEvent(true);
@@ -213,6 +207,44 @@ void WorkspaceService::logout() {
 
 CloudStorageService* WorkspaceService::getCloudStorageService() const {
     return cloudStorageService;
+}
+
+void WorkspaceService::executeApiRequest(const QString& apiPath,
+                                         const QJsonObject& payload,
+                                         QObject* context,
+                                         std::function<void(const QJsonObject&)>* callback) {
+    qDebug() << "WorkspaceService::sendApiRequest: " << apiPath;
+    SAFE_POINT(callback == nullptr || context != nullptr, "A callback requires non-null life-range context", );
+    SAFE_POINT(apiPath.startsWith("/"), "API path must start with /", );
+
+    QNetworkRequest request(apiUrl + "/api" + apiPath);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    if (!accessToken.isEmpty()) {
+        request.setRawHeader("Authorization", ("Bearer " + accessToken).toUtf8());
+    }
+
+    QNetworkReply* reply = networkManager.post(request, QJsonDocument(payload).toJson());
+    QPointer<QObject> contextLifeRangeTracker(context);
+    connect(reply, &QNetworkReply::finished, this, [reply, callback, contextLifeRangeTracker] {
+        QJsonObject jsonResponse;
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray responseData = reply->readAll();
+            qDebug() << "WorkspaceService::sendApiRequest: Got response: " << responseData;
+            QJsonDocument doc = QJsonDocument::fromJson(responseData);
+            if (doc.isObject()) {
+                jsonResponse = doc.object();
+            }
+        } else {
+            jsonResponse["isError"] = true;
+            jsonResponse["errorMessage"] = reply->errorString();
+            jsonResponse["errorCode"] = reply->error();
+            qDebug() << "WorkspaceService::sendApiRequest: Got error response: " << reply->errorString();
+        }
+        if (callback && !contextLifeRangeTracker.isNull()) {
+            (*callback)(jsonResponse);
+        }
+        reply->deleteLater();
+    });
 }
 
 EnableWorkspaceTask::EnableWorkspaceTask(WorkspaceService* _ws)

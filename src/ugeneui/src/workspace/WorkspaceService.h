@@ -23,6 +23,7 @@
 
 #include <QAction>
 #include <QJsonObject>
+#include <QNetworkAccessManager>
 
 #include <U2Core/ServiceTypes.h>
 #include <U2Core/Task.h>
@@ -51,10 +52,12 @@ public:
 
     CloudStorageService* getCloudStorageService() const;
 
-    WebSocketClientService* getWebSocketService() const;
+    void executeApiRequest(const QString& apiPath,
+                        const QJsonObject& payload,
+                        QObject* context = nullptr,
+                        std::function<void(const QJsonObject&)>* callback = nullptr);
 
-    /** Executes POST request to the remote workspace service and returns the result. */
-    QJsonObject executePostRequest(const QString& path, const QJsonObject& payload);
+    WebSocketClientService* getWebSocketService() const;
 
 signals:
     void si_authenticationEvent(bool isLoggedIn);
@@ -84,8 +87,9 @@ private:
     QString tokenUrl;
     QString clientId;
     QString stage;
-    QString apiDomainAndPort;
-    QString webSocketDomainAndPort;
+    QString apiUrl;
+    QString webSocketUrl;
+    QNetworkAccessManager networkManager;
 };
 
 class EnableWorkspaceTask : public Task {
