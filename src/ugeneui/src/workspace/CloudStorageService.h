@@ -32,7 +32,11 @@ class WorkspaceService;
 
 class CloudStorageEntryData : public QSharedData {
 public:
-    QString name;
+    CloudStorageEntryData(const QList<QString>& path, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId);
+
+    const QString& getName() const;
+
+    QList<QString> path;
 
     QList<CloudStorageEntry> children;
 
@@ -43,15 +47,13 @@ public:
     qint64 sessionLocalId;
 
     bool isFolder = false;
-
-    CloudStorageEntryData(const QString& name, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId);
 };
 
 class CloudStorageEntry {
 public:
-    CloudStorageEntry(const QString& name, qint64 size, const QDateTime& modificationTimel, qint64 sessionLocalId);
+    CloudStorageEntry(const QList<QString>& path, qint64 size, const QDateTime& modificationTimel, qint64 sessionLocalId);
 
-    static CloudStorageEntry fromJson(const QJsonObject& json);
+    static CloudStorageEntry fromJson(const QJsonObject& json, const QList<QString>& parentPath);
 
     CloudStorageEntryData* operator->();
     const CloudStorageEntryData* operator->() const;
@@ -68,7 +70,9 @@ public:
 
     const CloudStorageEntry& getRootEntry() const;
 
-    void deleteItem(qint64 sessionLocalId);
+    void createDir(const QList<QString>& path);
+
+    void deleteItem(const QList<QString>& path);
 
 signals:
     void si_storageStateChanged(const CloudStorageEntry& rootEntry);

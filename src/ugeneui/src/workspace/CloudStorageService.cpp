@@ -31,7 +31,7 @@
 
 namespace U2 {
 CloudStorageService::CloudStorageService(WorkspaceService* ws)
-    : QObject(ws), workspaceService(ws), rootEntry("", 0, QDateTime(), 0) {
+    : QObject(ws), workspaceService(ws), rootEntry({""}, 0, QDateTime(), 0) {
     connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this] {
         auto webSocketService = workspaceService->getWebSocketService();
         if (webSocketService != nullptr) {
@@ -45,26 +45,38 @@ const CloudStorageEntry& CloudStorageService::getRootEntry() const {
     return rootEntry;
 }
 
-void CloudStorageService::deleteItem(qint64 sessionLocalId) {
-    qDebug() << "CloudStorageService::deleteItem: " + QString::number(sessionLocalId);
+void CloudStorageService::createDir(const QList<QString>& path) {
+    qDebug() << "CloudStorageService::createDir: " + path.join(",");
     QJsonObject payload;
-    payload["sessionLocalId"] = sessionLocalId;
+    payload["path"] = QJsonArray::fromStringList(path);
+    workspaceService->executeApiRequest("/storage/createDir", payload);
+}
+
+void CloudStorageService::deleteItem(const QList<QString>& path) {
+    qDebug() << "CloudStorageService::deleteItem: " + path.join(",");
+    QJsonObject payload;
+    payload["path"] = QJsonArray::fromStringList(path);
     workspaceService->executeApiRequest("/storage/delete", payload);
 }
 
 void CloudStorageService::onWebSocketMessageReceived(const WebSocketSubscriptionType& type, const QString&, const QJsonObject& payload) {
     qDebug() << "CloudStorageService::onWebSocketMessageReceived";
     CHECK(type == WebSocketSubscriptionType::StorageState, );
-    rootEntry = CloudStorageEntry::fromJson(payload);
+    rootEntry = CloudStorageEntry::fromJson(payload, {});
     emit si_storageStateChanged(rootEntry);
 }
 
-CloudStorageEntryData::CloudStorageEntryData(const QString& _name, qint64 _size, const QDateTime& _modificationTime, qint64 _sessionLocalId)
-    : name(_name), size(_size), modificationTime(_modificationTime), sessionLocalId(_sessionLocalId) {
+CloudStorageEntryData::CloudStorageEntryData(const QList<QString>& _path, qint64 _size, const QDateTime& _modificationTime, qint64 _sessionLocalId)
+    : path(_path), size(_size), modificationTime(_modificationTime), sessionLocalId(_sessionLocalId) {
+    SAFE_POINT(path.length() >= 1, "Item path must not be empty", );
 }
 
-CloudStorageEntry::CloudStorageEntry(const QString& name, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId)
-    : data(new CloudStorageEntryData(name, size, modificationTime, sessionLocalId)) {
+const QString& CloudStorageEntryData::getName() const {
+    return path.last();
+}
+
+CloudStorageEntry::CloudStorageEntry(const QList<QString>& path, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId)
+    : data(new CloudStorageEntryData(path, size, modificationTime, sessionLocalId)) {
 }
 
 CloudStorageEntryData* CloudStorageEntry::operator->() {
@@ -74,19 +86,21 @@ const CloudStorageEntryData* CloudStorageEntry::operator->() const {
     return data.data();
 }
 
-CloudStorageEntry CloudStorageEntry::fromJson(const QJsonObject& json) {
+CloudStorageEntry CloudStorageEntry::fromJson(const QJsonObject& json, const QList<QString>& parentPath) {
     QString name = json["name"].toString();
     qint64 size = json["size"].toVariant().toLongLong();
     QDateTime modificationTime = QDateTime::fromString(json["modificationTime"].toString(), Qt::ISODate);
     qint64 sessionLocalId = json["sessionLocalId"].toVariant().toLongLong();
 
-    CloudStorageEntry entry(name, size, modificationTime, sessionLocalId);
+    QList<QString> path = parentPath;
+    path.append(name);
+    CloudStorageEntry entry(path, size, modificationTime, sessionLocalId);
     entry->isFolder = json["isFolder"].toBool();
 
     QList<CloudStorageEntry> children;
     QJsonArray childrenArray = json["children"].toArray();
     for (const QJsonValue& childValue : childrenArray) {
-        children.append(fromJson(childValue.toObject()));
+        children.append(fromJson(childValue.toObject(), path));
     }
     entry->children = children;
 

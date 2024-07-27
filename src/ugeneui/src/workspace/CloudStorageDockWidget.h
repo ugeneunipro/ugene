@@ -34,6 +34,7 @@ class CloudStorageDockWidget : public QWidget {
 public:
     CloudStorageDockWidget(WorkspaceService* workspaceService);
     void showContextMenu(const QPoint& point);
+    void createDir();
     void deleteItem();
     void renameItem();
     void downloadItem();
@@ -43,6 +44,7 @@ private:
     WorkspaceService* workspaceService = nullptr;
     QLabel* stateLabel = nullptr;
     QTreeView* treeView = nullptr;
+    QAction* createDirAction = nullptr;
     QAction* deleteAction = nullptr;
     QAction* renameAction = nullptr;
     QAction* downloadAction = nullptr;

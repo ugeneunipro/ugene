@@ -44,33 +44,46 @@ namespace U2 {
 
 constexpr qint64 USER_DATA_SESSION_LOCAL_ID = Qt::UserRole + 1;
 constexpr qint64 USER_DATA_SIZE = Qt::UserRole + 2;
+constexpr qint64 USER_DATA_PATH = Qt::UserRole + 3;
 
 void updateModel(QStandardItem* parentItem, const CloudStorageEntry& entry) {
-    QMap<qint64, QStandardItem*> currentChildrenMap;
-    for (int i = 0; i < parentItem->rowCount(); ++i) {
+    QMap<qint64, QStandardItem*> childrenMap;
+    for (int i = 0; i < parentItem->rowCount(); i++) {
         QStandardItem* childItem = parentItem->child(i);
-        currentChildrenMap[childItem->data(USER_DATA_SESSION_LOCAL_ID).toLongLong()] = childItem;
+        auto childEntryKey = childItem->data(USER_DATA_SESSION_LOCAL_ID).toLongLong();
+        childrenMap[childEntryKey] = childItem;
     }
 
     for (const CloudStorageEntry& childEntry : entry->children) {
         QIcon icon(childEntry->isFolder ? ":U2Designer/images/directory.png" : ":core/images/document.png");
-        if (currentChildrenMap.contains(childEntry->sessionLocalId)) {
-            QStandardItem* childItem = currentChildrenMap[childEntry->sessionLocalId];
-            childItem->setText(childEntry->name);
-            childItem->setIcon(icon);
-            childItem->setData(childEntry->size, USER_DATA_SIZE);
-            updateModel(childItem, childEntry);
-            currentChildrenMap.remove(childEntry->sessionLocalId);
+        auto childEntryKey = childEntry->sessionLocalId;
+        if (childrenMap.contains(childEntryKey)) {
+            QStandardItem* nameItem = childrenMap[childEntryKey];
+            nameItem->setIcon(icon);
+            nameItem->setText(childEntry->getName());
+            nameItem->setData(childEntry->size, USER_DATA_SIZE);
+            nameItem->setData(QVariant::fromValue(childEntry->path), USER_DATA_PATH);
+            updateModel(nameItem, childEntry);
+
+            int rowIndex = nameItem->row();
+            QStandardItemModel* model = nameItem->model();
+            QStandardItem* sizeItem = model->item(rowIndex, 1);
+            sizeItem->setText(QString::number(childEntry->size));
+            // Unregister it from the map, because all entries that left int he map will be removed from the view as unused.
+            childrenMap.remove(childEntryKey);
         } else {
-            auto nameItem = new QStandardItem(icon, childEntry->name);
+            auto nameItem = new QStandardItem(icon, childEntry->getName());
+            nameItem->setData(childEntry->size, USER_DATA_SIZE);
+            nameItem->setData(QVariant::fromValue(childEntry->path), USER_DATA_PATH);
             nameItem->setData(childEntry->sessionLocalId, USER_DATA_SESSION_LOCAL_ID);
+
             auto sizeItem = new QStandardItem(QString::number(childEntry->size));
             parentItem->appendRow({nameItem, sizeItem});
             updateModel(nameItem, childEntry);
         }
     }
 
-    for (auto it = currentChildrenMap.constBegin(); it != currentChildrenMap.constEnd(); ++it) {
+    for (auto it = childrenMap.constBegin(); it != childrenMap.constEnd(); ++it) {
         parentItem->removeRow(it.value()->row());
     }
 }
@@ -115,6 +128,9 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
         // TODO: preserve selection using 'sessionLocalId'
     });
 
+    createDirAction = new QAction(tr("New Folder"), this);
+    connect(createDirAction, &QAction::triggered, this, &CloudStorageDockWidget::createDir);
+
     deleteAction = new QAction(tr("Delete"), this);
     connect(deleteAction, &QAction::triggered, this, &CloudStorageDockWidget::deleteItem);
 
@@ -136,6 +152,7 @@ void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
     CHECK(index.isValid(), );
 
     QObjectScopedPointer<QMenu> contextMenu = new QMenu();
+    contextMenu->addAction(createDirAction);
     contextMenu->addAction(deleteAction);
     contextMenu->addAction(renameAction);
     contextMenu->addAction(downloadAction);
@@ -143,14 +160,19 @@ void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
     contextMenu->exec(treeView->viewport()->mapToGlobal(point));
 }
 
+void CloudStorageDockWidget::createDir() {
+    qDebug() << "CloudStorageDockWidget::createDir";
+    // TODO: if dir is selected, create inside dir. Otherwise create in current dir.
+}
+
 void CloudStorageDockWidget::deleteItem() {
-    qDebug() << "CloudStorageDockWidget:: Delete item";
     QModelIndex currentIndex = treeView->currentIndex();
-    QString name = treeView->model()->data(currentIndex, Qt::DisplayRole).toString();
-    qint64 sessionLocalId = treeView->model()->data(currentIndex, USER_DATA_SESSION_LOCAL_ID).toLongLong();
+    auto name = treeView->model()->data(currentIndex, Qt::DisplayRole).toString();
+    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
+    qDebug() << "CloudStorageDockWidget::deleteItem: " + path.join("/");
     QMessageBox::StandardButton result = QMessageBox::question(treeView, tr("Question?"), tr("Do you want to delete %1").arg(name));
     CHECK(result == QMessageBox::Yes, );
-    workspaceService->getCloudStorageService()->deleteItem(sessionLocalId);
+    workspaceService->getCloudStorageService()->deleteItem(path);
 }
 
 void CloudStorageDockWidget::renameItem() {
