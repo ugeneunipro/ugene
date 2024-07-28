@@ -56,6 +56,7 @@ public:
     static CloudStorageEntry fromJson(const QJsonObject& json, const QList<QString>& parentPath);
 
     CloudStorageEntryData* operator->();
+
     const CloudStorageEntryData* operator->() const;
 
 private:
@@ -73,6 +74,8 @@ public:
     void createDir(const QList<QString>& path);
 
     void deleteItem(const QList<QString>& path);
+
+    static bool checkCloudStorageFolderName(const QString& folderName);
 
 signals:
     void si_storageStateChanged(const CloudStorageEntry& rootEntry);

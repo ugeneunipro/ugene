@@ -89,7 +89,6 @@ private:
     QString stage;
     QString apiUrl;
     QString webSocketUrl;
-    QNetworkAccessManager networkManager;
 };
 
 class EnableWorkspaceTask : public Task {

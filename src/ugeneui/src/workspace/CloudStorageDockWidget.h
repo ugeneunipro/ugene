@@ -31,8 +31,10 @@ class WorkspaceService;
 
 class CloudStorageDockWidget : public QWidget {
     Q_OBJECT
+
 public:
     CloudStorageDockWidget(WorkspaceService* workspaceService);
+
     void showContextMenu(const QPoint& point);
     void createDir();
     void deleteItem();
@@ -41,6 +43,9 @@ public:
     void uploadItem();
 
 private:
+
+    void updateActionsState();
+
     WorkspaceService* workspaceService = nullptr;
     QLabel* stateLabel = nullptr;
     QTreeView* treeView = nullptr;
@@ -50,6 +55,7 @@ private:
     QAction* downloadAction = nullptr;
     QAction* uploadAction = nullptr;
     QStandardItemModel treeViewModel;
+
 };
 
 }  // namespace U2

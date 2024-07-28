@@ -59,6 +59,31 @@ void CloudStorageService::deleteItem(const QList<QString>& path) {
     workspaceService->executeApiRequest("/storage/delete", payload);
 }
 
+static QRegularExpression forbiddenChars(R"([<>:"/\\|?*])");
+
+bool CloudStorageService::checkCloudStorageFolderName(const QString& folderName) {
+    if (forbiddenChars.match(folderName).hasMatch()) {
+        qDebug() << "Folder name contains forbidden characters or path separators.";
+        return false;
+    }
+    if (folderName.trimmed() != folderName) {
+        qDebug() << "Folder name has leading or trailing spaces.";
+        return false;
+    }
+    for (QChar c : qAsConst(folderName)) {
+        if (c.category() == QChar::Other_Control) {
+            qDebug() << "Folder name contains control characters.";
+            return false;
+        }
+    }
+    if (folderName.length() > 255) {
+        qDebug() << "Folder name exceeds maximum length.";
+        return false;
+    }
+
+    return true;
+}
+
 void CloudStorageService::onWebSocketMessageReceived(const WebSocketSubscriptionType& type, const QString&, const QJsonObject& payload) {
     qDebug() << "CloudStorageService::onWebSocketMessageReceived";
     CHECK(type == WebSocketSubscriptionType::StorageState, );

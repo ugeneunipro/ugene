@@ -25,6 +25,7 @@
 #include <QJsonDocument>
 #include <QMessageBox>
 #include <QNetworkReply>
+#include <QScreen>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
@@ -86,6 +87,7 @@ WorkspaceService::WorkspaceService()
     auto refreshTokenTimer = new QTimer(this);
     connect(refreshTokenTimer, &QTimer::timeout, this, [this] { renewAccessTokenIfCloseToExpire(); });
     int accessTokenRefreshTimerIntervalMillis = (ACCESS_TOKEN_RENEW_BEFORE_EXPIRE_SECONDS / 2) * 1000;
+
     refreshTokenTimer->start(accessTokenRefreshTimerIntervalMillis);
     renewAccessTokenIfCloseToExpire();
 }
@@ -223,9 +225,33 @@ void WorkspaceService::executeApiRequest(const QString& apiPath,
         request.setRawHeader("Authorization", ("Bearer " + accessToken).toUtf8());
     }
 
-    QNetworkReply* reply = networkManager.post(request, QJsonDocument(payload).toJson());
+    // Disable cache usage.
+    request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
+    request.setAttribute(QNetworkRequest::CacheSaveControlAttribute, false);
+
+    // Ensure connection is closed after each request
+    request.setRawHeader("Connection", "close");
+
+    auto networkManager = new QNetworkAccessManager();
+    networkManager->setCache(nullptr);
+
+    QNetworkReply* reply = networkManager->post(request, QJsonDocument(payload).toJson());
     QPointer<QObject> contextLifeRangeTracker(context);
-    connect(reply, &QNetworkReply::finished, this, [reply, callback, contextLifeRangeTracker] {
+
+    connect(reply, &QNetworkReply::errorOccurred, this, [](QNetworkReply::NetworkError code) {
+        qDebug() << "WorkspaceService::sendApiRequest error occured: " + QString::number(code);
+    });
+
+    connect(reply, &QNetworkReply::readyRead, this, [] {
+        qDebug() << "WorkspaceService::sendApiRequest: readyRead";
+    });
+
+    connect(networkManager, &QNetworkAccessManager::finished, this, [this] {
+        qDebug() << "WorkspaceService::sendApiRequest: NM FINISHED!!!";
+    });
+
+    connect(reply, &QNetworkReply::finished, this, [reply, networkManager, callback, contextLifeRangeTracker] {
+        qDebug() << "WorkspaceService::sendApiRequest: REPLY FINISHED!!!";
         QJsonObject jsonResponse;
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray responseData = reply->readAll();
@@ -244,6 +270,7 @@ void WorkspaceService::executeApiRequest(const QString& apiPath,
             (*callback)(jsonResponse);
         }
         reply->deleteLater();
+        networkManager->deleteLater();
     });
 }
 
