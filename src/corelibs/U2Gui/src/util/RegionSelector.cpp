@@ -71,7 +71,7 @@ U2Location RegionSelector::getLocation(bool* ok) const {
 }
 
 bool RegionSelector::isWholeSequenceSelected() const {
-    return controller->getPresetName() == RegionPreset::WHOLE_SEQUENCE();
+    return controller->getPresetName() == RegionPreset::getWholeSequenceModeDisplayName();
 }
 
 void RegionSelector::setCustomRegion(const U2Region& value) {
@@ -79,7 +79,7 @@ void RegionSelector::setCustomRegion(const U2Region& value) {
 }
 
 void RegionSelector::setWholeRegionSelected() {
-    controller->setPreset(RegionPreset::WHOLE_SEQUENCE());
+    controller->setPreset(RegionPreset::getWholeSequenceModeDisplayName());
 }
 
 void RegionSelector::setCurrentPreset(const QString& presetName) {
@@ -111,6 +111,7 @@ const QLineEdit* RegionSelector::getEndLineEdit() const {
 }
 
 static void hideLayoutMembers(QLayout* layout, bool hide) {
+    CHECK(layout != nullptr, )
     for (int i = 0; i < layout->count(); ++i) {
         QWidget* layoutMember = layout->itemAt(i)->widget();
         layoutMember->setHidden(hide);
@@ -118,7 +119,7 @@ static void hideLayoutMembers(QLayout* layout, bool hide) {
 }
 
 void RegionSelector::sl_presetChanged(int index) {
-    bool hideLocation = index != comboBox->findText(RegionPreset::LOCATION());
+    bool hideLocation = index != comboBox->findText(RegionPreset::getLocationModeDisplayName());
     hideLayoutMembers(locationLayout, hideLocation);
     hideLayoutMembers(regionLayout, !hideLocation);
 }
@@ -137,9 +138,6 @@ void RegionSelector::initLayout() {
     endEdit->setValidator(new U2LongLongValidator(1, maxLen, endEdit));
     endEdit->setMinimumWidth(w);
     endEdit->setAlignment(Qt::AlignRight);
-
-    locationLineEdit = new QLineEdit(this);
-    locationLineEdit->setAlignment(Qt::AlignRight);
 
     if (isVertical) {
         auto gb = new QGroupBox(this);
@@ -161,6 +159,10 @@ void RegionSelector::initLayout() {
         setLayout(rootLayout);
         rootLayout->addWidget(gb);
     } else {
+        locationLineEdit = new QLineEdit(this);
+        locationLineEdit->setAlignment(Qt::AlignRight);
+        locationLineEdit->setObjectName("location_line_edit");
+
         auto l = new QHBoxLayout(this);
         l->setMargin(0);
 

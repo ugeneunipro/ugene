@@ -69,16 +69,16 @@ struct U2GUI_EXPORT RegionPreset {
     }
 
     /** Whole sequence localized preset name. */
-    static QString WHOLE_SEQUENCE();
+    static QString getWholeSequenceModeDisplayName();
 
     /** Selected sequence localized preset name. */
-    static QString SELECTED_REGION();
+    static QString getSelectedRegionDisplayName();
 
     /** Custom sequence localized preset name. */
-    static QString CUSTOM_REGION();
+    static QString getCustomRegionModeDisplayName();
     
     /** Custom sequence localized preset name. */
-    static QString LOCATION();
+    static QString getLocationModeDisplayName();
 };
 
 struct RegionSelectorSettings {
@@ -86,7 +86,7 @@ struct RegionSelectorSettings {
                            bool circular = false,
                            DNASequenceSelection* selection = nullptr,
                            QList<RegionPreset> presetRegions = QList<RegionPreset>(),
-                           QString defaultPreset = RegionPreset::SELECTED_REGION());
+                           QString defaultPreset = RegionPreset::getSelectedRegionDisplayName());
 
     qint64 maxLen;
     DNASequenceSelection* selection;

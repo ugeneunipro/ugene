@@ -46,10 +46,10 @@ RegionSelectorSettings::RegionSelectorSettings(qint64 maxLen,
       presetRegions(_presetRegions),
       defaultPreset(defaultPreset) {
     if (selection != nullptr && !selection->isEmpty()) {
-        presetRegions.prepend(RegionPreset(RegionPreset::SELECTED_REGION(), U2Location({getOneRegionFromSelection()})));
+        presetRegions.prepend(RegionPreset(RegionPreset::getSelectedRegionDisplayName(), U2Location({getOneRegionFromSelection()})));
     }
-    presetRegions.prepend(RegionPreset(RegionPreset::WHOLE_SEQUENCE(), U2Location({U2Region(0, maxLen)})));
-    presetRegions.prepend(RegionPreset(RegionPreset::CUSTOM_REGION(), U2Location({U2Region()})));
+    presetRegions.prepend(RegionPreset(RegionPreset::getWholeSequenceModeDisplayName(), U2Location({U2Region(0, maxLen)})));
+    presetRegions.prepend(RegionPreset(RegionPreset::getCustomRegionModeDisplayName(), U2Location({U2Region()})));
 }
 
 U2Region RegionSelectorSettings::getOneRegionFromSelection() const {
@@ -70,19 +70,19 @@ U2Region RegionSelectorSettings::getOneRegionFromSelection() const {
     return region;
 }
 
-QString RegionPreset::WHOLE_SEQUENCE() {
-    return QApplication::translate("RegionSelectorController", "Whole sequence");
+QString RegionPreset::getWholeSequenceModeDisplayName() {
+    return RegionSelectorController::tr("Whole sequence");
 }
 
-QString RegionPreset::SELECTED_REGION() {
-    return QApplication::translate("RegionSelectorController", "Selected region");
+QString RegionPreset::getSelectedRegionDisplayName() {
+    return RegionSelectorController::tr("Selected region");
 }
 
-QString RegionPreset::CUSTOM_REGION() {
-    return QApplication::translate("RegionSelectorController", "Custom region");
+QString RegionPreset::getCustomRegionModeDisplayName() {
+    return RegionSelectorController::tr("Custom region");
 }
-QString RegionPreset::LOCATION() {
-    return QApplication::translate("RegionSelectorController", "Location");
+QString RegionPreset::getLocationModeDisplayName() {
+    return RegionSelectorController::tr("Location");
 }
 
 RegionSelectorController::RegionSelectorController(RegionSelectorGui gui, RegionSelectorSettings settings, QObject* parent)
@@ -154,7 +154,7 @@ void RegionSelectorController::setRegion(const U2Region& region) {
 
 U2Location RegionSelectorController::getLocation(bool* ok) const {
     U2Location res;
-    if (gui.presetsComboBox->currentText() == RegionPreset::LOCATION()) {
+    if (gui.presetsComboBox->currentText() == RegionPreset::getLocationModeDisplayName ()) {
         qint64 circularSequenceLength = settings.circular ? settings.maxLen : -1;
         const QByteArray qb = gui.locationLineEdit->text().toLatin1();
         *ok = Genbank::LocationParser::parseLocation(qb.constData(), qb.length(), res, circularSequenceLength) == Genbank::LocationParser::Success;
@@ -165,7 +165,7 @@ U2Location RegionSelectorController::getLocation(bool* ok) const {
 }
 
 void RegionSelectorController::setLocation(const U2Location& location) {
-    if (gui.presetsComboBox->currentText() == RegionPreset::LOCATION()) {
+    if (gui.presetsComboBox->currentText() == RegionPreset::getLocationModeDisplayName ()) {
         gui.locationLineEdit->setText(U1AnnotationUtils::buildLocationString(location->regions));
     } else {
         setRegion(location.data()->regions.isEmpty() ? U2Region() : location.data()->regions.first());
@@ -230,14 +230,14 @@ void RegionSelectorController::sl_onPresetChanged(int index) {
     blockSignals(true);
 
     // set the region
-    if (index == gui.presetsComboBox->findText(RegionPreset::CUSTOM_REGION())) {
+    if (index == gui.presetsComboBox->findText(RegionPreset::getCustomRegionModeDisplayName())) {
         connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged()));
         return;
     }
 
-    if (index == gui.presetsComboBox->findText(RegionPreset::SELECTED_REGION())) {
+    if (index == gui.presetsComboBox->findText(RegionPreset::getSelectedRegionDisplayName())) {
         setRegion(settings.getOneRegionFromSelection());
-    } else if(index == gui.presetsComboBox->findText(RegionPreset::LOCATION())) {
+    } else if(index == gui.presetsComboBox->findText(RegionPreset::getLocationModeDisplayName ())) {
         setLocation(gui.presetsComboBox->itemData(index).value<U2Location>());
     } else{
         const U2Location location = gui.presetsComboBox->itemData(index).value<U2Location>();
@@ -248,7 +248,7 @@ void RegionSelectorController::sl_onPresetChanged(int index) {
 
 void RegionSelectorController::sl_regionChanged() {
     gui.presetsComboBox->blockSignals(true);
-    gui.presetsComboBox->setCurrentIndex(gui.presetsComboBox->findText(RegionPreset::CUSTOM_REGION()));
+    gui.presetsComboBox->setCurrentIndex(gui.presetsComboBox->findText(RegionPreset::getCustomRegionModeDisplayName()));
     gui.presetsComboBox->blockSignals(false);
 }
 
@@ -284,10 +284,10 @@ void RegionSelectorController::sl_onSelectionChanged(GSelection* selection) {
     CHECK(gui.presetsComboBox != nullptr, );  // no combobox - no selection dependency
 
     SAFE_POINT(settings.selection == selection, "Invalid sequence selection", );
-    int selectedRegionIndex = gui.presetsComboBox->findText(RegionPreset::SELECTED_REGION());
+    int selectedRegionIndex = gui.presetsComboBox->findText(RegionPreset::getSelectedRegionDisplayName());
     if (-1 == selectedRegionIndex) {
-        selectedRegionIndex = gui.presetsComboBox->findText(RegionPreset::WHOLE_SEQUENCE()) + 1;
-        gui.presetsComboBox->insertItem(selectedRegionIndex, RegionPreset::SELECTED_REGION());
+        selectedRegionIndex = gui.presetsComboBox->findText(RegionPreset::getWholeSequenceModeDisplayName()) + 1;
+        gui.presetsComboBox->insertItem(selectedRegionIndex, RegionPreset::getSelectedRegionDisplayName());
     }
 
     const U2Region regionFromSelection = settings.getOneRegionFromSelection();
@@ -341,7 +341,7 @@ void RegionSelectorController::setupPresets() {
         }
     }
     if (!foundDefaultPreset) {
-        settings.defaultPreset = RegionPreset::WHOLE_SEQUENCE();
+        settings.defaultPreset = RegionPreset::getWholeSequenceModeDisplayName();
     }
 
     gui.presetsComboBox->setCurrentText(settings.defaultPreset);

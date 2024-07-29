@@ -90,16 +90,24 @@ class FindEnzymesToAnnotationsTask : public Task {
 public:
     FindEnzymesToAnnotationsTask(AnnotationTableObject* aobj, const U2EntityRef& seqRef, const QList<SEnzymeData>& enzymes, const FindEnzymesTaskConfig& cfg);
     void prepare() override;
+
     QList<Task*> onSubTaskFinished(Task* subTask) override;
     ReportResult report() override;
 
 private:
+    void createSearchTasks();
+
     U2EntityRef dnaSeqRef;
     QList<SEnzymeData> enzymes;
     QPointer<AnnotationTableObject> annotationObject;
     FindEnzymesTaskConfig cfg;
-    QList<Task*> findTasks;
+    QList<Task*> searchEnzymesTasks;
+    QList<Task*> searchExcludedEnzymesTasks;
+    /*
     QMap<QString, QList<SharedAnnotationData>> regionsByEnzymes;
+    */
+
+    QSet<QString> enzymesIdToBeExcluded;
 };
 
 class FindEnzymesTask : public Task, public FindEnzymesAlgListener {

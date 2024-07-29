@@ -655,10 +655,10 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
     fixPreviousLocation(searchLocation);
     U2Region customRegion = searchLocation.data()->regions.isEmpty() ? U2Region() : searchLocation.data()->regions.first();
     
-    QList<RegionPreset> searchPresets = {RegionPreset(RegionPreset::RegionPreset::LOCATION(), searchLocation)};
+    QList<RegionPreset> searchPresets = {RegionPreset(RegionPreset::RegionPreset::getLocationModeDisplayName(), searchLocation)};
     const QVector<U2Region> selectedRegions = advSequenceContext->getSequenceSelection()->getSelectedRegions();
     if (!selectedRegions.isEmpty()) {
-        searchPresets << RegionPreset(RegionPreset::RegionPreset::SELECTED_REGION(), U2Location({selectedRegions.first()}));
+        searchPresets << RegionPreset(RegionPreset::RegionPreset::getSelectedRegionDisplayName(), U2Location({selectedRegions.first()}));
     }
 
     const quint64 sequenceLength = advSequenceContext->getSequenceLength();
@@ -669,20 +669,22 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
     }
 
     if (!selectedRegions.isEmpty()) {
-        regionSelector->setCurrentPreset(RegionPreset::RegionPreset::SELECTED_REGION());
+        regionSelector->setCurrentPreset(RegionPreset::RegionPreset::getSelectedRegionDisplayName());
     }
 
     U2Location excludeLocation = FindEnzymesAutoAnnotationUpdater::getLastExcludeLocationForObject(advSequenceContext->getSequenceObject());
     fixPreviousLocation(excludeLocation);
     U2Region excludeRegion = excludeLocation.data()->regions.isEmpty() ? U2Region() : excludeLocation.data()->regions.first();
 
-    QList<RegionPreset> excludePresets = {RegionPreset(RegionPreset::RegionPreset::LOCATION(), excludeLocation)};
+    QList<RegionPreset> excludePresets = {RegionPreset(RegionPreset::RegionPreset::getLocationModeDisplayName(), excludeLocation)};
     excludeRegionSelector = new RegionSelector(this, sequenceLength, false, advSequenceContext->getSequenceSelection(), 
                                                advSequenceContext->getSequenceObject()->isCircular(), excludePresets);
-    excludeRegionSelector->removePreset(RegionPreset::RegionPreset::WHOLE_SEQUENCE());
-    excludeRegionSelector->setCurrentPreset(RegionPreset::RegionPreset::CUSTOM_REGION());
+    excludeRegionSelector->removePreset(RegionPreset::RegionPreset::getWholeSequenceModeDisplayName());
+    excludeRegionSelector->setCurrentPreset(RegionPreset::RegionPreset::getCustomRegionModeDisplayName());
+    excludeRegionSelector->setObjectName("exclude_range_selector");
     
     excludeCheckbox = new QCheckBox(this);
+    excludeCheckbox->setObjectName("excludeCheckBox");
     excludeCheckbox->setText(tr("Uncut area:"));
     excludeCheckbox->setToolTip(tr("A region that will not be cut by any of the found enzymes. If an enzyme is present in this region, it will be excluded from the flank results."));
     

@@ -134,10 +134,7 @@ public:
     }
     U2Location(const U2Location&) = default;
 
-    U2Location(const QVector<U2Region>& regionList)
-        : U2Location() {
-        data()->regions = regionList;
-    }
+    U2Location(const QVector<U2Region>& regionList);
 
     U2LocationData& operator*() {
         return *d;

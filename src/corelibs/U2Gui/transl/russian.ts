@@ -1187,19 +1187,24 @@
 <context>
     <name>RegionSelectorController</name>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="71"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="74"/>
         <source>Whole sequence</source>
         <translation>Вся последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="75"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="78"/>
         <source>Selected region</source>
         <translation>Выбранный регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="79"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="82"/>
         <source>Custom region</source>
         <translation>Заданный регион</translation>
+    </message>    
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="85"/>
+        <source>Location</source>
+        <translation>Позиция</translation>
     </message>
     <message>
         <location filename="../src/util/RegionSelectorController.cpp" line="181"/>
