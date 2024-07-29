@@ -133,7 +133,7 @@ protected:
     void drawAll(QPaintDevice* pd) override;
 
 private:
-    QColor getBaseColor(char base);
+    QColor getBaseColor(bool isDark, char base);
     void drawChromatogramTrace(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const ChromatogramViewSettings& settings);
     void drawOriginalBaseCalls(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba, bool is = true);
     void drawQualityValues(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba);
@@ -151,6 +151,9 @@ private:
     qreal bLinearTransformTrace;
     qreal kLinearTransformBaseCallsOfEdited;
     qreal bLinearTransformBaseCallsOfEdited;
+
+    static const QColor COLOR_FOR_IDS_LIGHT[4];
+    static const QColor COLOR_FOR_IDS_DARK[4];
 };
 
 }  // namespace U2

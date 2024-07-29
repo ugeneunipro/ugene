@@ -235,7 +235,7 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
 
 namespace {
 
-QPixmap getPixmapResource(const QString& cathegory, const QString& iconName, bool isDark, bool hasColorCathegory) {
+QPixmap getPixmapResource(const QString& cathegory, const QString& iconName, bool hasColorCathegory) {
     QString resourceName = GUIUtils::getResourceName(cathegory, iconName, hasColorCathegory);
     QPixmap pixmap = QPixmap(resourceName);
     SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(cathegory).arg(iconName), QPixmap());
@@ -263,10 +263,9 @@ QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconNam
     CHECK((!cathegory.isEmpty() && !iconName.isEmpty()), QIcon());
 
     QIcon icon;
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
-    QPixmap pixmap = getPixmapResource(cathegory, iconName, isDark, hasColorCathegory);
+    QPixmap pixmap = getPixmapResource(cathegory, iconName, hasColorCathegory);
     icon.addPixmap(pixmap);
-    if (isDark) {
+    if (AppContext::getMainWindow()->isDarkMode()) {
         // automatic disabled icon is no good for dark mode
         // paint transparent black to get disabled look
         QPainter p(&pixmap);
