@@ -46,22 +46,30 @@ const CloudStorageEntry& CloudStorageService::getRootEntry() const {
 }
 
 void CloudStorageService::createDir(const QList<QString>& path) {
-    qDebug() << "CloudStorageService::createDir: " + path.join(",");
+    qDebug() << "CloudStorageService::createDir: " + path.join("/");
     QJsonObject payload;
     payload["path"] = QJsonArray::fromStringList(path);
     workspaceService->executeApiRequest("/storage/createDir", payload);
 }
 
-void CloudStorageService::deleteItem(const QList<QString>& path) {
-    qDebug() << "CloudStorageService::deleteItem: " + path.join(",");
+void CloudStorageService::deleteEntry(const QList<QString>& path) {
+    qDebug() << "CloudStorageService::deleteEntry: " + path.join("/");
     QJsonObject payload;
     payload["path"] = QJsonArray::fromStringList(path);
     workspaceService->executeApiRequest("/storage/delete", payload);
 }
 
+void CloudStorageService::renameEntry(const QList<QString>& oldPath, const QList<QString>& newPath) {
+    qDebug() << "CloudStorageService::renameEntry: " + oldPath.join("/") + " -> " + newPath.join("/");
+    QJsonObject payload;
+    payload["path"] = QJsonArray::fromStringList(oldPath);
+    payload["newPath"] = QJsonArray::fromStringList(newPath);
+    workspaceService->executeApiRequest("/storage/move", payload);
+}
+
 static QRegularExpression forbiddenChars(R"([<>:"/\\|?*])");
 
-bool CloudStorageService::checkCloudStorageFolderName(const QString& folderName) {
+bool CloudStorageService::checkCloudStorageEntryName(const QString& folderName) {
     if (forbiddenChars.match(folderName).hasMatch()) {
         qDebug() << "Folder name contains forbidden characters or path separators.";
         return false;

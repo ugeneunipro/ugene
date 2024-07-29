@@ -73,9 +73,11 @@ public:
 
     void createDir(const QList<QString>& path);
 
-    void deleteItem(const QList<QString>& path);
+    void deleteEntry(const QList<QString>& path);
 
-    static bool checkCloudStorageFolderName(const QString& folderName);
+    void renameEntry(const QList<QString>& oldPath, const QList<QString>& newPath);
+
+    static bool checkCloudStorageEntryName(const QString& folderName);
 
 signals:
     void si_storageStateChanged(const CloudStorageEntry& rootEntry);

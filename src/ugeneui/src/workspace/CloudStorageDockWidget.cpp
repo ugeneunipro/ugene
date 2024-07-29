@@ -102,6 +102,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView = new QTreeView();
     treeView->setModel(&treeViewModel);
     treeView->setVisible(false);
+    treeView->setEditTriggers(QTreeView::NoEditTriggers);
     treeView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     auto layout = new QVBoxLayout();
@@ -136,23 +137,31 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     });
 
     createDirAction = new QAction(tr("New Folder"), this);
+    createDirAction->setShortcut(QKeySequence(Qt::Key_Insert));
     connect(createDirAction, &QAction::triggered, this, &CloudStorageDockWidget::createDir);
+    treeView->addAction(createDirAction);
 
     deleteAction = new QAction(tr("Delete"), this);
+    deleteAction->setShortcut(QKeySequence::Delete);
     connect(deleteAction, &QAction::triggered, this, &CloudStorageDockWidget::deleteItem);
+    treeView->addAction(deleteAction);
 
     renameAction = new QAction(tr("Rename"), this);
+    renameAction->setShortcut(QKeySequence(Qt::Key_F2));
     connect(renameAction, &QAction::triggered, this, &CloudStorageDockWidget::renameItem);
+    treeView->addAction(renameAction);
 
     downloadAction = new QAction(tr("Download"), this);
     connect(downloadAction, &QAction::triggered, this, &CloudStorageDockWidget::downloadItem);
+    treeView->addAction(downloadAction);
 
     uploadAction = new QAction(tr("Upload"), this);
     connect(uploadAction, &QAction::triggered, this, &CloudStorageDockWidget::uploadItem);
+    treeView->addAction(uploadAction);
 
     treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(treeView, &QTreeView::customContextMenuRequested, this, &CloudStorageDockWidget::showContextMenu);
-
+    connect(treeView, &QTreeView::doubleClicked, this, &CloudStorageDockWidget::renameItem);
     connect(treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &CloudStorageDockWidget::updateActionsState);
 }
 
@@ -176,15 +185,10 @@ void CloudStorageDockWidget::createDir() {
     QString dirName = QInputDialog::getText(nullptr, tr("Create New Folder"), tr("New Folder Name"), QLineEdit::Normal, "", &ok);
 
     CHECK(ok && !dirName.isEmpty(), );
-    if (!CloudStorageService::checkCloudStorageFolderName(dirName)) {
+    if (!CloudStorageService::checkCloudStorageEntryName(dirName)) {
         QMessageBox::critical(this, L10N::errorTitle(), tr("Folder name contains illegal characters"));
         return;
     }
-    if (!CloudStorageService::checkCloudStorageFolderName(dirName)) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("Folder name contains illegal characters"));
-        return;
-    }
-
     if (!isFolder) {
         path.pop_back();
     }
@@ -196,15 +200,31 @@ void CloudStorageDockWidget::deleteItem() {
     QModelIndex currentIndex = treeView->currentIndex();
     auto name = treeView->model()->data(currentIndex, Qt::DisplayRole).toString();
     auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
-    qDebug() << "CloudStorageDockWidget::deleteItem: " + path.join("/");
+    qDebug() << "CloudStorageDockWidget::delete: " + path.join("/");
     QMessageBox::StandardButton result = QMessageBox::question(treeView, tr("Question?"), tr("Do you want to delete %1").arg(name));
     CHECK(result == QMessageBox::Yes, );
-    workspaceService->getCloudStorageService()->deleteItem(path);
+    workspaceService->getCloudStorageService()->deleteEntry(path);
 }
 
 void CloudStorageDockWidget::renameItem() {
-    qDebug() << "Rename item";
-    // Implement the logic to rename the item
+    auto selectedIndexes = treeView->selectionModel()->selectedIndexes();
+    QModelIndex currentIndex = selectedIndexes.isEmpty() ? QModelIndex() : selectedIndexes.first();
+    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
+    qDebug() << "CloudStorageDockWidget::rename: " + path.join("/");
+    CHECK(path.length() > 0, );
+
+    bool ok;
+    QString newName = QInputDialog::getText(nullptr, tr("Rename %1").arg(path.last()), tr("New Name"), QLineEdit::Normal, "", &ok);
+
+    CHECK(ok && !newName.isEmpty(), );
+    if (!CloudStorageService::checkCloudStorageEntryName(newName)) {
+        QMessageBox::critical(this, L10N::errorTitle(), tr("New name contains illegal characters"));
+        return;
+    }
+    // TODO: check if the entry already exists.
+    QList<QString> newPath = path;
+    newPath[newPath.length() - 1] = newName;
+    workspaceService->getCloudStorageService()->renameEntry(path, newPath);
 }
 
 void CloudStorageDockWidget::downloadItem() {

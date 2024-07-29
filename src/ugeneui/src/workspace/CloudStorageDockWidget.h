@@ -43,7 +43,6 @@ public:
     void uploadItem();
 
 private:
-
     void updateActionsState();
 
     WorkspaceService* workspaceService = nullptr;
@@ -55,7 +54,6 @@ private:
     QAction* downloadAction = nullptr;
     QAction* uploadAction = nullptr;
     QStandardItemModel treeViewModel;
-
 };
 
 }  // namespace U2
