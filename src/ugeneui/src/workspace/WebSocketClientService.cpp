@@ -20,7 +20,6 @@
  */
 
 #include "WebSocketClientService.h"
-#include <sys/socket.h>
 
 #include <QDebug>
 #include <QJsonArray>
