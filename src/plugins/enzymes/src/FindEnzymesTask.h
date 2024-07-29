@@ -102,12 +102,8 @@ private:
     QPointer<AnnotationTableObject> annotationObject;
     FindEnzymesTaskConfig cfg;
     QList<Task*> searchEnzymesTasks;
-    QList<Task*> searchExcludedEnzymesTasks;
-    /*
-    QMap<QString, QList<SharedAnnotationData>> regionsByEnzymes;
-    */
-
-    QSet<QString> enzymesIdToBeExcluded;
+    QList<Task*> searchExcludedEnzymesTasks;    
+    QSet<SEnzymeData> enzymesToBeExcluded;
 };
 
 class FindEnzymesTask : public Task, public FindEnzymesAlgListener {

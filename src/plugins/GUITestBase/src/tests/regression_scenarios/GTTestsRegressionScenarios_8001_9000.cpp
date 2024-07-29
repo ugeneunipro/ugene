@@ -524,15 +524,15 @@ GUI_TEST_CLASS_DEFINITION(test_8101) {
     * 2. Open Find enzymes dialog, set following enzymes to search:
     * "BamHI", "BglII", "ClaI", "DraI", "EcoRI", "EcoRV", "HindIII", "PstI", "SalI", "SmaI", "XmaI"
     * 3. Run search
-    * Expected state: 636 regions found
+    * Expected state: 636 annotations found
     * 4. Open Find enzymes dialog, set excluded region "10000 - 12000"
     * 5. Run search
-    * Expected state: 191 regions found
+    * Expected state: 191 annotations found
     * 6. Open Find enzymes dialog
     * 7. Set search location "1000..8000,90000..108000,14000..34000"
     * 8. Set excluded location set excluded location "9000..12000,50000..55000"
     * 9. Run search
-    * Expected state: 142 regions found
+    * Expected state: 25 annotations found
     */
     
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
@@ -545,7 +545,7 @@ GUI_TEST_CLASS_DEFINITION(test_8101) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 636, "Annoatated region counter doesn't match.");
-
+    
     settings.excludeRegionStart = 10000;
     settings.excludeRegionEnd = 12000;
     GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
@@ -562,7 +562,7 @@ GUI_TEST_CLASS_DEFINITION(test_8101) {
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 142, "Annoatated region counter doesn't match.");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 25, "Annoatated region counter doesn't match.");
 }
 
 }  // namespace GUITest_regression_scenarios

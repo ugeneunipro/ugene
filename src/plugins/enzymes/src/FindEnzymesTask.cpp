@@ -91,10 +91,13 @@ QList<Task*> FindEnzymesToAnnotationsTask::onSubTaskFinished(Task* subTask) {
         for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
             QList<SharedAnnotationData> resultAnnotationList = findTask->getResultsAsAnnotations(enzyme->id);
             if (!resultAnnotationList.isEmpty()) {
-                enzymes.removeAll(enzyme);
+                enzymesToBeExcluded.insert(enzyme);
             }
         }
         if (searchExcludedEnzymesTasks.isEmpty()) {
+            for (const SEnzymeData& enzyme : qAsConst(enzymesToBeExcluded)) {
+                enzymes.removeAll(enzyme);
+            }
             createSearchTasks();
             for (Task* t : qAsConst(searchEnzymesTasks)) {
                 result << t;
