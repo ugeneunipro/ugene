@@ -37,10 +37,15 @@ KeycloakAuthenticator::KeycloakAuthenticator(const QString& _authUrl, const QStr
     oauth2.setClientIdentifier(clientId);
     oauth2.setScope("openid email profile");
 
+    // Use this so previous tokens cached in browser won't work and user will be asked to sign in every time KeycloakAuthenticator is used.
+    oauth2.setState(QString::number(QDateTime::currentMSecsSinceEpoch()));
+
     auto replyHandler = new QOAuthHttpServerReplyHandler(8848, this);
     oauth2.setReplyHandler(replyHandler);
 
-    connect(&oauth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, &QDesktopServices::openUrl);
+    connect(&oauth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, this, [this](const QUrl& url) {
+        QDesktopServices::openUrl(url.toString() + "&prompt=login");
+    });
 
     connect(&oauth2, &QOAuth2AuthorizationCodeFlow::granted, this, [this] {
         qDebug() << "KeycloakAuthenticator: authentication granted";

@@ -126,7 +126,7 @@ void WebSocketClientService::onError(QAbstractSocket::SocketError error) {
     }
 
     isRetrying = true;
-    QTimer::singleShot(3000, [this] {
+    QTimer::singleShot(3000, this, [this] {
         reconnectIfNotConnected();
         isRetrying = false;
     });
