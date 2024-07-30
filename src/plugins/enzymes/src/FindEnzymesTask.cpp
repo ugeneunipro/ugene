@@ -50,79 +50,40 @@ FindEnzymesToAnnotationsTask::FindEnzymesToAnnotationsTask(AnnotationTableObject
 
 void FindEnzymesToAnnotationsTask::prepare() {
     CHECK_EXT(!enzymes.isEmpty(), stateInfo.setError(tr("No enzymes selected.")), );
-    if (cfg.excludeMode) {
-        for (const U2Region excludedRegion : qAsConst(cfg.excludedRegions)) {
-            FindEnzymesTask* findTask = new FindEnzymesTask(dnaSeqRef, excludedRegion, enzymes, cfg.maxResults, cfg.circular);
-            addSubTask(findTask);
-            searchExcludedEnzymesTasks.append(findTask);
-        }
-    }    
-
-    if (cfg.excludedRegions.isEmpty() || !cfg.excludeMode) {
-        createSearchTasks();
-        for (Task* t : qAsConst(searchEnzymesTasks)) {
-            addSubTask(t);
-        }
-    }
-}
-
-void FindEnzymesToAnnotationsTask::createSearchTasks() {
     QVector<U2Region> searchRegions = cfg.searchRegions;
     if (cfg.searchRegions.isEmpty()) {
         U2SequenceObject sequenceObject("sequence", dnaSeqRef);
         searchRegions = {U2Region(0, sequenceObject.getSequenceLength())};
     }
-    for (const U2Region excludedRegion : qAsConst(searchRegions)) {
-        FindEnzymesTask* findTask = new FindEnzymesTask(dnaSeqRef, excludedRegion, enzymes, cfg.maxResults, cfg.circular);
+    QVector<U2Region> excludedRegions = cfg.excludeMode ? cfg.excludedRegions : QVector<U2Region>();
+    for (const U2Region searchRegion : qAsConst(searchRegions)) {
+        FindEnzymesTask* findTask = new FindEnzymesTask(dnaSeqRef, searchRegion, excludedRegions, enzymes, cfg.maxResults, cfg.circular);
         searchEnzymesTasks.append(findTask);
+        addSubTask(findTask);
     }
 }
 
 QList<Task*> FindEnzymesToAnnotationsTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
 
+    CHECK(searchEnzymesTasks.contains(subTask), result);
     CHECK_OP(stateInfo, result);
+    CHECK_EXT(!annotationObject.isNull(), stateInfo.setError(tr("Annotation table does not exist")), result);
+    CHECK_EXT(!annotationObject->isStateLocked(), stateInfo.setError(tr("Annotation table is read-only")), result);
+    FindEnzymesTask* findTask = qobject_cast<FindEnzymesTask*>(subTask);
+    CHECK_EXT(findTask != nullptr, stateInfo.setError(L10N::nullPointerError("FindEnzymesTask")), result);
 
-    if (searchExcludedEnzymesTasks.contains(subTask)) {
-        searchExcludedEnzymesTasks.removeAll(subTask);
-        FindEnzymesTask* findTask = qobject_cast<FindEnzymesTask*>(subTask);
-        CHECK_EXT(findTask != nullptr, stateInfo.setError(L10N::nullPointerError("FindEnzymesTask")), result);
-
-        for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
-            QList<SharedAnnotationData> resultAnnotationList = findTask->getResultsAsAnnotations(enzyme->id);
-            if (!resultAnnotationList.isEmpty()) {
-                enzymesToBeExcluded.insert(enzyme);
-            }
+    bool useSubgroups = enzymes.size() > 1 || cfg.groupName.isEmpty();
+    QMap<QString, QList<SharedAnnotationData>> annotationsByGroupMap;
+    for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
+        QList<SharedAnnotationData> resultAnnotationList = findTask->getResultsAsAnnotations(enzyme->id);
+        if (resultAnnotationList.size() >= cfg.minHitCount && resultAnnotationList.size() <= cfg.maxHitCount) {
+            QString group = useSubgroups ? cfg.groupName + "/" + enzyme->id : cfg.groupName;
+            annotationsByGroupMap[group].append(resultAnnotationList);
         }
-        if (searchExcludedEnzymesTasks.isEmpty()) {
-            for (const SEnzymeData& enzyme : qAsConst(enzymesToBeExcluded)) {
-                enzymes.removeAll(enzyme);
-            }
-            createSearchTasks();
-            for (Task* t : qAsConst(searchEnzymesTasks)) {
-                result << t;
-            }
-        }
-        return result;
     }
 
-    if (searchEnzymesTasks.contains(subTask)) {
-        CHECK_EXT(!annotationObject.isNull(), stateInfo.setError(tr("Annotation table does not exist")), result);
-        CHECK_EXT(!annotationObject->isStateLocked(), stateInfo.setError(tr("Annotation table is read-only")), result);
-        FindEnzymesTask* findTask = qobject_cast<FindEnzymesTask*>(subTask);
-        CHECK_EXT(findTask != nullptr, stateInfo.setError(L10N::nullPointerError("FindEnzymesTask")), result);
-
-        bool useSubgroups = enzymes.size() > 1 || cfg.groupName.isEmpty();
-        QMap<QString, QList<SharedAnnotationData>> annotationsByGroupMap;
-        for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
-            QList<SharedAnnotationData> resultAnnotationList = findTask->getResultsAsAnnotations(enzyme->id);
-            if (resultAnnotationList.size() >= cfg.minHitCount && resultAnnotationList.size() <= cfg.maxHitCount) {
-                QString group = useSubgroups ? cfg.groupName + "/" + enzyme->id : cfg.groupName;
-                annotationsByGroupMap[group].append(resultAnnotationList);
-            }
-        }
-        result << new CreateAnnotationsTask(annotationObject, annotationsByGroupMap);
-    }
+    result << new CreateAnnotationsTask(annotationObject, annotationsByGroupMap);
     return result;
 }
 
@@ -154,19 +115,54 @@ Task::ReportResult FindEnzymesToAnnotationsTask::report() {
 
 //////////////////////////////////////////////////////////////////////////
 // find multiple enzymes task
-FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int mr, bool circular)
+FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& region_, const QVector<U2Region>& excludeRegions, 
+                                 const QList<SEnzymeData>& enzymes_, int mr, bool circular)
     : Task(tr("Find Enzymes"), TaskFlags_NR_FOSCOE),
       maxResults(mr),
       isCircular(circular),
       seqlen(0),
-      countOfResultsInMap(0) {
+      countOfResultsInMap(0),
+      enzymes(enzymes_),
+      seqRef(seqRef_),
+      region(region_) {
     U2SequenceObject seq("sequence", seqRef);
     SAFE_POINT(seq.getAlphabet()->isNucleic(), "Alphabet is not nucleic.", );
     seqlen = seq.getSequenceLength();
-    // for every enzymes in selection create FindSingleEnzymeTask
-    for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
-        addSubTask(new FindSingleEnzymeTask(seqRef, region, enzyme, this, circular));
+    
+    if (excludeRegions.isEmpty()) {
+        for (Task* t : onSubTaskFinished(nullptr)) {
+            addSubTask(t);
+        }
+        return;
     }
+
+    for (const U2Region& excludeRegion : qAsConst(excludeRegions)) {
+        for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
+            SingleEnzymeHitListener* listener = new SingleEnzymeHitListener(&excludedEnzymes);
+            listeners.insert(listener);
+            Task* task = new FindSingleEnzymeTask(seqRef, excludeRegion, enzyme, listener, isCircular);
+            searchExcludedEnzymesTasks.append(task);
+            addSubTask(task);
+        }
+    }
+}
+
+QList<Task*> FindEnzymesTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
+    CHECK(!singleSearchStarted, result);
+    if (searchExcludedEnzymesTasks.contains(subTask)) {
+        searchExcludedEnzymesTasks.removeAll(subTask);
+    }
+    if (searchExcludedEnzymesTasks.isEmpty()) {
+        qDeleteAll(listeners);
+        listeners.clear();
+        for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
+            CHECK_CONTINUE(!excludedEnzymes.contains(enzyme->id));
+            result << new FindSingleEnzymeTask(seqRef, region, enzyme, this, isCircular);
+        }
+        singleSearchStarted = true;
+    }
+    return result;
 }
 
 void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool&) {
@@ -267,6 +263,16 @@ void FindEnzymesTask::cleanup() {
     if (hasError()) {
         searchResultMap.clear();
     }
+}
+
+SingleEnzymeHitListener::SingleEnzymeHitListener(QSet<QString>* enzymesWhichHit_)
+    : enzymesWhichHit(enzymesWhichHit_) {
+}
+
+void SingleEnzymeHitListener::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) {
+    CHECK(!enzymesWhichHit->contains(enzyme->id), );
+    QMutexLocker locker(&resultsLock);
+    enzymesWhichHit->insert(enzyme->id);
 }
 
 //////////////////////////////////////////////////////////////////////////

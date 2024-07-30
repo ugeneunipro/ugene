@@ -33,6 +33,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AutoAnnotationsSupport.h>
 #include <U2Core/DNASequence.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/SequenceDbiWalkerTask.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
@@ -90,26 +91,25 @@ class FindEnzymesToAnnotationsTask : public Task {
 public:
     FindEnzymesToAnnotationsTask(AnnotationTableObject* aobj, const U2EntityRef& seqRef, const QList<SEnzymeData>& enzymes, const FindEnzymesTaskConfig& cfg);
     void prepare() override;
-
     QList<Task*> onSubTaskFinished(Task* subTask) override;
     ReportResult report() override;
 
 private:
-    void createSearchTasks();
-
     U2EntityRef dnaSeqRef;
     QList<SEnzymeData> enzymes;
     QPointer<AnnotationTableObject> annotationObject;
     FindEnzymesTaskConfig cfg;
     QList<Task*> searchEnzymesTasks;
-    QList<Task*> searchExcludedEnzymesTasks;    
-    QSet<SEnzymeData> enzymesToBeExcluded;
 };
+
+class SingleEnzymeHitListener;
 
 class FindEnzymesTask : public Task, public FindEnzymesAlgListener {
     Q_OBJECT
 public:
-    FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false);
+    FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QVector<U2Region>& excludeRegions, 
+                    const QList<SEnzymeData>& enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) override;
 
@@ -130,6 +130,24 @@ private:
     QMutex resultsLock;
 
     QString group;
+
+    QList<Task*> searchExcludedEnzymesTasks;
+    QSet<QString> excludedEnzymes;
+    QList<SEnzymeData> enzymes;
+    U2EntityRef seqRef;
+    U2Region region;
+    QSet <SingleEnzymeHitListener*> listeners;
+    bool singleSearchStarted = false;
+};
+
+class SingleEnzymeHitListener : public FindEnzymesAlgListener {
+public:
+    SingleEnzymeHitListener(QSet<QString>* enzymesWhichHit);
+
+    virtual void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) override;
+private:
+    QMutex resultsLock;
+    QSet<QString>* enzymesWhichHit;
 };
 
 class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public SequenceDbiWalkerCallback {
