@@ -20,10 +20,11 @@
  * MA 02110-1301, USA.
  */
 
+#include <QFileInfo>
 #include <QJsonArray>
 #include <QJsonDocument>
-#include <QJsonValue>
 
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "WebSocketClientService.h"
@@ -65,6 +66,14 @@ void CloudStorageService::renameEntry(const QList<QString>& oldPath, const QList
     payload["path"] = QJsonArray::fromStringList(oldPath);
     payload["newPath"] = QJsonArray::fromStringList(newPath);
     workspaceService->executeApiRequest("/storage/move", payload);
+}
+
+void CloudStorageService::downloadFile(const QList<QString>& path, const QString& localDirPath) {
+    SAFE_POINT(path.length() > 0, "Empty cloud file path", );
+    QFileInfo dir(localDirPath);
+    QString fileName = path.last();
+    QString localFilePath = GUrlUtils::rollFileName(dir.absoluteFilePath() + "/" + fileName, "_");
+    workspaceService->downloadFile(path, localFilePath);
 }
 
 static QRegularExpression forbiddenChars(R"([<>:"/\\|?*])");

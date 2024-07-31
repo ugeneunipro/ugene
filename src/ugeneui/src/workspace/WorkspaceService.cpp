@@ -222,7 +222,7 @@ void WorkspaceService::executeApiRequest(const QString& apiPath,
     QNetworkRequest request(apiUrl + "/api" + apiPath);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     if (!accessToken.isEmpty()) {
-        request.setRawHeader("Authorization", ("Bearer " + accessToken).toUtf8());
+        request.setRawHeader("Authorization", "Bearer " + accessToken.toUtf8());
     }
 
     // Disable cache usage.
@@ -268,6 +268,50 @@ void WorkspaceService::executeApiRequest(const QString& apiPath,
         }
         if (callback && !contextLifeRangeTracker.isNull()) {
             (*callback)(jsonResponse);
+        }
+        reply->deleteLater();
+        networkManager->deleteLater();
+    });
+}
+
+void WorkspaceService::downloadFile(const QList<QString>& cloudPath, const QString& localFilePath) {
+    qDebug() << "WorkspaceService::downloadFile: " << cloudPath << " to " << localFilePath;
+    SAFE_POINT(cloudPath.length() > 0, "Cloud path is empty", );
+    SAFE_POINT(localFilePath.length() > 0, "Local file path is empty", );
+
+    auto networkManager = new QNetworkAccessManager();
+    networkManager->setCache(nullptr);
+
+    QUrl downloadUrl(apiUrl + "/api/storage/download/" + QUrl::toPercentEncoding(cloudPath.join("/")));
+
+    QNetworkRequest request(downloadUrl);
+    if (!accessToken.isEmpty()) {
+        request.setRawHeader("Authorization", "Bearer " + accessToken.toUtf8());
+    }
+
+    // Disable cache usage.
+    request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
+    request.setAttribute(QNetworkRequest::CacheSaveControlAttribute, false);
+
+    QNetworkReply* reply = networkManager->get(request);
+
+    connect(reply, &QNetworkReply::downloadProgress, [](qint64 bytesReceived, qint64 bytesTotal) {
+        qDebug() << "WorkspaceService::downloadFile: progress:" << bytesReceived << "/" << bytesTotal;
+    });
+
+    connect(reply, &QNetworkReply::finished, [reply, localFilePath, networkManager]() {
+        if (reply->error()) {
+            qDebug() << "WorkspaceService::downloadFile ERROR:" << reply->errorString();
+        } else {
+            QByteArray data = reply->readAll();  // TODO: download using streaming. Avoid memory overflow.
+            QFile file(localFilePath);
+            if (file.open(QIODevice::WriteOnly)) {
+                file.write(data);
+                file.close();
+                qDebug() << "WorkspaceService::downloadFile: Download finished and saved to" << localFilePath;
+            } else {
+                qDebug() << "WorkspaceService::downloadFile: Could not open file for writing.";
+            }
         }
         reply->deleteLater();
         networkManager->deleteLater();

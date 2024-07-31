@@ -43,6 +43,9 @@ public:
     void uploadItem();
 
 private:
+    QList<QString> getSelectedItemPath() const;
+    QModelIndex getSelectedItemIndex() const;
+
     void updateActionsState();
 
     WorkspaceService* workspaceService = nullptr;

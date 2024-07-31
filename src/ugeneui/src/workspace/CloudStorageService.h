@@ -77,6 +77,8 @@ public:
 
     void renameEntry(const QList<QString>& oldPath, const QList<QString>& newPath);
 
+    void downloadFile(const QList<QString>& path, const QString& localDirPath);
+
     static bool checkCloudStorageEntryName(const QString& folderName);
 
 signals:

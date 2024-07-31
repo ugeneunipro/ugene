@@ -53,9 +53,11 @@ public:
     CloudStorageService* getCloudStorageService() const;
 
     void executeApiRequest(const QString& apiPath,
-                        const QJsonObject& payload,
-                        QObject* context = nullptr,
-                        std::function<void(const QJsonObject&)>* callback = nullptr);
+                           const QJsonObject& payload,
+                           QObject* context = nullptr,
+                           std::function<void(const QJsonObject&)>* callback = nullptr);
+
+    void downloadFile(const QList<QString>& cloudPath, const QString& localFilePath);
 
     WebSocketClientService* getWebSocketService() const;
 

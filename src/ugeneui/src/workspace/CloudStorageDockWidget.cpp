@@ -37,8 +37,10 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
 
+#include "../../../corelibs/U2Gui/src/util/U2FileDialog.h"
 #include "../../../plugins_3rdparty/phylip/src/phylip.h"
 #include "CloudStorageService.h"
 #include "WorkspaceService.h"
@@ -176,8 +178,7 @@ void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
 }
 
 void CloudStorageDockWidget::createDir() {
-    auto selectedIndexes = treeView->selectionModel()->selectedIndexes();
-    QModelIndex currentIndex = selectedIndexes.isEmpty() ? QModelIndex() : selectedIndexes.first();
+    QModelIndex currentIndex = getSelectedItemIndex();
     auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
     auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.length() == 0;
 
@@ -197,19 +198,27 @@ void CloudStorageDockWidget::createDir() {
 }
 
 void CloudStorageDockWidget::deleteItem() {
-    QModelIndex currentIndex = treeView->currentIndex();
-    auto name = treeView->model()->data(currentIndex, Qt::DisplayRole).toString();
-    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
+    auto path = getSelectedItemPath();
     qDebug() << "CloudStorageDockWidget::delete: " + path.join("/");
-    QMessageBox::StandardButton result = QMessageBox::question(treeView, tr("Question?"), tr("Do you want to delete %1").arg(name));
+    CHECK(path.length() > 0, );
+    QMessageBox::StandardButton result = QMessageBox::question(treeView, tr("Question?"), tr("Do you want to delete %1").arg(path.last()));
     CHECK(result == QMessageBox::Yes, );
     workspaceService->getCloudStorageService()->deleteEntry(path);
 }
 
-void CloudStorageDockWidget::renameItem() {
+QModelIndex CloudStorageDockWidget::getSelectedItemIndex() const {
     auto selectedIndexes = treeView->selectionModel()->selectedIndexes();
     QModelIndex currentIndex = selectedIndexes.isEmpty() ? QModelIndex() : selectedIndexes.first();
-    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
+    return currentIndex;
+}
+
+QList<QString> CloudStorageDockWidget::getSelectedItemPath() const {
+    auto currentIndex = getSelectedItemIndex();
+    QList<QString> path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
+    return path;
+}
+void CloudStorageDockWidget::renameItem() {
+    QList<QString> path = getSelectedItemPath();
     qDebug() << "CloudStorageDockWidget::rename: " + path.join("/");
     CHECK(path.length() > 0, );
 
@@ -228,8 +237,14 @@ void CloudStorageDockWidget::renameItem() {
 }
 
 void CloudStorageDockWidget::downloadItem() {
-    qDebug() << "Download item";
-    // Implement the logic to download the item
+    QList<QString> path = getSelectedItemPath();
+    qDebug() << "CloudStorageDockWidget::rename: " + path.join("/");
+    CHECK(path.length() > 0, );
+    LastUsedDirHelper lod("CloudStorageDownloads");
+    QString dir = U2FileDialog::getExistingDirectory(nullptr, tr("Select a folder to save the downloaded file"), lod.dir);
+    CHECK(!dir.isEmpty(), );
+    lod.dir = dir;
+    workspaceService->getCloudStorageService()->downloadFile(path, dir);
 }
 
 void CloudStorageDockWidget::uploadItem() {
@@ -241,7 +256,14 @@ void CloudStorageDockWidget::updateActionsState() {
     bool hasSelection = treeView->selectionModel()->hasSelection();
     deleteAction->setEnabled(hasSelection);
     renameAction->setEnabled(hasSelection);
-    downloadAction->setEnabled(hasSelection);
+
+    bool isDownloadEnabled = false;
+    if (hasSelection) {
+        auto index = getSelectedItemIndex();
+        auto isFolder = treeView->model()->data(index, USER_DATA_IS_FOLDER).toBool();
+        isDownloadEnabled = !isFolder;
+    }
+    downloadAction->setEnabled(isDownloadEnabled);
 }
 
 }  // namespace U2
