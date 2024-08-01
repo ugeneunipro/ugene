@@ -21,16 +21,13 @@
 
 #include "CloudStorageDockWidget.h"
 
-#include <QAction>
 #include <QContextMenuEvent>
-#include <QDebug>
 #include <QHeaderView>
 #include <QIcon>
 #include <QInputDialog>
 #include <QLabel>
 #include <QMenu>
 #include <QMessageBox>
-#include <QScreen>
 #include <QVBoxLayout>
 
 #include <U2Core/L10n.h>
@@ -39,13 +36,14 @@
 
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/U2FileDialog.h>
 
-#include "../../../corelibs/U2Gui/src/util/U2FileDialog.h"
-#include "../../../plugins_3rdparty/phylip/src/phylip.h"
 #include "CloudStorageService.h"
 #include "WorkspaceService.h"
 
 namespace U2 {
+
+constexpr char* CLOUD_STORAGE_LAST_OPENED_DIR = "CloudStorage";
 
 constexpr qint64 USER_DATA_SESSION_LOCAL_ID = Qt::UserRole + 1;
 constexpr qint64 USER_DATA_SIZE = Qt::UserRole + 2;
@@ -240,16 +238,29 @@ void CloudStorageDockWidget::downloadItem() {
     QList<QString> path = getSelectedItemPath();
     qDebug() << "CloudStorageDockWidget::rename: " + path.join("/");
     CHECK(path.length() > 0, );
-    LastUsedDirHelper lod("CloudStorageDownloads");
-    QString dir = U2FileDialog::getExistingDirectory(nullptr, tr("Select a folder to save the downloaded file"), lod.dir);
+    LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DIR);
+    QString dir = U2FileDialog::getExistingDirectory(this, tr("Select a folder to save the downloaded file"), lod.dir);
     CHECK(!dir.isEmpty(), );
     lod.dir = dir;
     workspaceService->getCloudStorageService()->downloadFile(path, dir);
 }
 
 void CloudStorageDockWidget::uploadItem() {
-    qDebug() << "Upload item";
-    // Implement the logic to upload items
+    QModelIndex currentIndex = getSelectedItemIndex();
+    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
+    auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.length() == 0;
+
+    LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DIR);
+    QString localFilePath = U2FileDialog::getOpenFileName(this, tr("Select a file to upload"), lod.dir);
+    CHECK(!localFilePath.isEmpty(), );
+    lod.dir = localFilePath;
+
+    // TODO: check that file is valid and small enough to fit quotas.
+
+    if (!isFolder) {
+        path.pop_back();
+    }
+    workspaceService->getCloudStorageService()->uploadFile(path, localFilePath);
 }
 
 void CloudStorageDockWidget::updateActionsState() {

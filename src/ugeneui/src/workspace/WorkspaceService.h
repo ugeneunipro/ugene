@@ -59,6 +59,8 @@ public:
 
     void downloadFile(const QList<QString>& cloudPath, const QString& localFilePath);
 
+    void uploadFile(const QList<QString>& path, const QString& localFilePath);
+
     WebSocketClientService* getWebSocketService() const;
 
 signals:

@@ -79,6 +79,8 @@ public:
 
     void downloadFile(const QList<QString>& path, const QString& localDirPath);
 
+    void uploadFile(const QList<QString>& path, const QString& localFilePath);
+
     static bool checkCloudStorageEntryName(const QString& folderName);
 
 signals:

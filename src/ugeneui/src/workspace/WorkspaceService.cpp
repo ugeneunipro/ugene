@@ -22,6 +22,8 @@
 #include "WorkspaceService.h"
 
 #include <QAction>
+#include <QHttpMultiPart>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QMessageBox>
 #include <QNetworkReply>
@@ -35,6 +37,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
+#include "../../../libs_3rdparty/zlib/src/gzguts.h"
 #include "CloudStorageDockWidget.h"
 #include "CloudStorageService.h"
 #include "KeycloakAuthenticator.h"
@@ -299,7 +302,7 @@ void WorkspaceService::downloadFile(const QList<QString>& cloudPath, const QStri
         qDebug() << "WorkspaceService::downloadFile: progress:" << bytesReceived << "/" << bytesTotal;
     });
 
-    connect(reply, &QNetworkReply::finished, [reply, localFilePath, networkManager]() {
+    connect(reply, &QNetworkReply::finished, [reply, localFilePath, networkManager] {
         if (reply->error()) {
             qDebug() << "WorkspaceService::downloadFile ERROR:" << reply->errorString();
         } else {
@@ -315,6 +318,70 @@ void WorkspaceService::downloadFile(const QList<QString>& cloudPath, const QStri
         }
         reply->deleteLater();
         networkManager->deleteLater();
+    });
+}
+
+void WorkspaceService::uploadFile(const QList<QString>& path, const QString& localFilePath) {
+    SAFE_POINT(path.length() > 0, "Path is empty", );
+    QUrl downloadUrl(apiUrl + "/api/storage/upload");
+
+    QNetworkRequest request(downloadUrl);
+    if (!accessToken.isEmpty()) {
+        request.setRawHeader("Authorization", "Bearer " + accessToken.toUtf8());
+    }
+
+    // Disable cache usage.
+    request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
+    request.setAttribute(QNetworkRequest::CacheSaveControlAttribute, false);
+
+    request.setRawHeader("Authorization", "Bearer " + accessToken.toUtf8());
+
+    // Prepare the multipart form data.
+    auto multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+
+    // Path part
+    QHttpPart pathPart;
+    QJsonArray jsonArray = QJsonArray::fromStringList(path);
+    QByteArray jsonData = QJsonDocument(jsonArray).toJson(QJsonDocument::Compact);
+    pathPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"path\""));
+    pathPart.setBody(jsonData);
+
+    // File part.
+    QString cloudFileName = QFileInfo(localFilePath).fileName();
+    QHttpPart filePart;
+    filePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/octet-stream"));
+    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"files\"; filename=\"" + cloudFileName + "\""));
+
+    auto file = new QFile(localFilePath);
+    if (!file->open(QIODevice::ReadOnly)) {
+        qDebug() << "Could not open file for reading:" << localFilePath;
+        delete file;
+        delete multiPart;
+        return;
+    }
+    filePart.setBodyDevice(file);
+    file->setParent(multiPart);  // The multiPart takes ownership of the file.
+
+    multiPart->append(pathPart);
+    multiPart->append(filePart);
+
+    auto manager = new QNetworkAccessManager();
+    QNetworkReply* reply = manager->post(request, multiPart);
+    multiPart->setParent(reply);  // the multiPart object will be deleted along with the reply
+
+    connect(reply, &QNetworkReply::uploadProgress, [](qint64 bytesSent, qint64 bytesTotal) {
+        qDebug() << "WorkspaceService::uploadFile: Upload progress:" << bytesSent << "/" << bytesTotal;
+    });
+
+    connect(reply, &QNetworkReply::finished, [reply, manager, file] {
+        if (reply->error()) {
+            qDebug() << "WorkspaceService::uploadFile: ERROR:" << reply->errorString();
+        } else {
+            qDebug() << "WorkspaceService::uploadFile: Upload finished";
+        }
+        file->close();
+        reply->deleteLater();
+        manager->deleteLater();
     });
 }
 

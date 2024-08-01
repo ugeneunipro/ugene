@@ -76,6 +76,11 @@ void CloudStorageService::downloadFile(const QList<QString>& path, const QString
     workspaceService->downloadFile(path, localFilePath);
 }
 
+void CloudStorageService::uploadFile(const QList<QString>& path, const QString& localFilePath) {
+    SAFE_POINT(path.length() > 0, "Empty cloud file path", );
+    workspaceService->uploadFile(path, localFilePath);
+}
+
 static QRegularExpression forbiddenChars(R"([<>:"/\\|?*])");
 
 bool CloudStorageService::checkCloudStorageEntryName(const QString& folderName) {
