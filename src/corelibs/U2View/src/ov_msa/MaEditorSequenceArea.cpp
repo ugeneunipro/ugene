@@ -84,6 +84,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
     editingEnabled = false;
     movableBorder = SelectionModificationHelper::NoMovableBorder;
     lengthOnMousePress = editor->getMaObject()->getLength();
+    selectionColor = QPalette().text().color();
 
     cachedView = new QPixmap();
     completeRedraw = true;
@@ -132,6 +133,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_onSelectionChanged(const MaEditorSelection&, const MaEditorSelection&)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaEditorSequenceArea::sl_colorModeSwitched);
 }
 
 MaEditorSequenceArea::~MaEditorSequenceArea() {
@@ -784,8 +786,13 @@ void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
 }
 
 void MaEditorSequenceArea::sl_changeSelectionColor() {
-    QColor black(Qt::black);
-    selectionColor = (black == selectionColor) ? Qt::darkGray : Qt::black;
+    QColor mainSelectionColor = QPalette().text().color();
+    QColor secondarySelectionColor = AppContext::getMainWindow()->isDarkMode() ? Qt::lightGray : Qt::darkGray;
+    if (selectionColor == mainSelectionColor) {
+        selectionColor = secondarySelectionColor;
+    } else {
+        selectionColor = mainSelectionColor;
+    }
     update();
 }
 
@@ -809,6 +816,11 @@ U2Region findLongestRegion(const QList<int>& sortedViewIndexes) {
 
 void MaEditorSequenceArea::sl_modelChanged() {
     ui->getScrollController()->updateVerticalScrollBar();
+    sl_completeRedraw();
+}
+
+void MaEditorSequenceArea::sl_colorModeSwitched() {
+    selectionColor = QPalette().text().color();
     sl_completeRedraw();
 }
 
@@ -1298,7 +1310,7 @@ void MaEditorSequenceArea::drawAll() {
     }
 
     QPainter painter(this);
-    painter.fillRect(QRect(QPoint(0, 0), s), Qt::white);
+    painter.fillRect(QRect(QPoint(0, 0), s), QPalette().base().color());
     drawBackground(painter);
 
     painter.drawPixmap(0, 0, *cachedView);
@@ -1376,9 +1388,9 @@ MsaColorSchemeFactory* MaEditorSequenceArea::getDefaultColorSchemeFactory() cons
         case DNAAlphabet_RAW:
             return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::EMPTY);
         case DNAAlphabet_NUCL:
-            return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::UGENE_NUCL);
+            return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::UGENE_NUCL_LIGHT);
         case DNAAlphabet_AMINO:
-            return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::UGENE_AMINO);
+            return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::UGENE_AMINO_LIGHT);
         default:
             FAIL(tr("Unknown alphabet"), nullptr);
     }
@@ -1399,14 +1411,34 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString& csid, QString& hs
             csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, MsaColorScheme::EMPTY).toString();
             hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_RAW, MsaHighlightingScheme::EMPTY).toString();
             break;
-        case DNAAlphabet_NUCL:
-            csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
+        case DNAAlphabet_NUCL: {
+            auto colorSchemeId = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL).toString();
+            bool isDark = AppContext::getMainWindow()->isDarkMode();
+            if (colorSchemeId.isEmpty()) {
+                colorSchemeId = isDark ? MsaColorScheme::UGENE_NUCL_DARK : MsaColorScheme::UGENE_NUCL_LIGHT;
+            } else if (colorSchemeId == MsaColorScheme::UGENE_NUCL_LIGHT && isDark) {
+                colorSchemeId = MsaColorScheme::UGENE_NUCL_DARK;
+            } else if (colorSchemeId == MsaColorScheme::UGENE_NUCL_DARK && !isDark) {
+                colorSchemeId = MsaColorScheme::UGENE_NUCL_LIGHT;
+            }
+            csid = colorSchemeId;
             hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_NUCL, MsaHighlightingScheme::EMPTY).toString();
             break;
-        case DNAAlphabet_AMINO:
-            csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString();
+        }
+        case DNAAlphabet_AMINO: {
+            auto colorSchemeId = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO).toString();
+            bool isDark = AppContext::getMainWindow()->isDarkMode();
+            if (colorSchemeId.isEmpty()) {
+                colorSchemeId = isDark ? MsaColorScheme::UGENE_AMINO_DARK : MsaColorScheme::UGENE_AMINO_LIGHT;
+            } else if (colorSchemeId == MsaColorScheme::UGENE_AMINO_LIGHT && isDark) {
+                colorSchemeId = MsaColorScheme::UGENE_AMINO_DARK;
+            } else if (colorSchemeId == MsaColorScheme::UGENE_AMINO_DARK && !isDark) {
+                colorSchemeId = MsaColorScheme::UGENE_AMINO_LIGHT;
+            }
+            csid = colorSchemeId;
             hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_AMINO, MsaHighlightingScheme::EMPTY).toString();
             break;
+        }
         default:
             csid = "";
             hsid = "";
@@ -1548,7 +1580,7 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
 void MaEditorSequenceArea::exitFromEditCharacterMode() {
     CHECK(maMode != ViewMode, );
     editModeAnimationTimer.stop();
-    selectionColor = Qt::black;
+    selectionColor = QPalette().text().color();
     maMode = ViewMode;
     sl_updateActions();
     update();

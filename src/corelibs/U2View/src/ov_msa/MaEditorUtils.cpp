@@ -65,7 +65,7 @@ void MaUtilsWidget::mousePressEvent(QMouseEvent*) {
 }
 void MaUtilsWidget::paintEvent(QPaintEvent*) {
     QPainter p(this);
-    p.fillRect(rect(), Qt::white);
+    p.fillRect(rect(), QPalette().base().color());
     setMinimumHeight(heightWidget->height() + heightMargin);
 }
 

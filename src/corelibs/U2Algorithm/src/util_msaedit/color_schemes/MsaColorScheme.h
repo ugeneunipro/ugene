@@ -49,7 +49,7 @@ public:
 
     // Get color for symbol "c" on position [seq, pos]. Variable "c" has been added for optimization.
     virtual QColor getBackgroundColor(int seq, int pos, char c) const = 0;
-    virtual QColor getFontColor(int seq, int pos, char c) const = 0;
+    virtual QColor getFontColor(int seq, int pos, char c) const;
 
     virtual void applySettings(const QVariantMap& settings);
 
@@ -57,8 +57,10 @@ public:
 
     static const QString EMPTY;
 
-    static const QString UGENE_NUCL;
-    static const QString UGENE_SANGER_NUCL;
+    static const QString UGENE_NUCL_LIGHT;
+    static const QString UGENE_NUCL_DARK;
+    static const QString UGENE_SANGER_NUCL_LIGHT;
+    static const QString UGENE_SANGER_NUCL_DARK;
     static const QString JALVIEW_NUCL;
     static const QString IDENTPERC_NUCL;
     static const QString IDENTPERC_NUCL_COLORED;
@@ -66,7 +68,8 @@ public:
     static const QString CUSTOM_NUCL;
     static const QString WEAK_SIMILARITIES_NUCL;
 
-    static const QString UGENE_AMINO;
+    static const QString UGENE_AMINO_LIGHT;
+    static const QString UGENE_AMINO_DARK;
     static const QString ZAPPO_AMINO;
     static const QString TAILOR_AMINO;
     static const QString HYDRO_AMINO;

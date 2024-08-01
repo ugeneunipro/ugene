@@ -21,49 +21,32 @@
 
 #pragma once
 
-#include <QWidget>
+#include <QColor>
 
 #include <U2Core/global.h>
 
-class QAbstractButton;
-class QAction;
-class QSlider;
-class QToolButton;
-
 namespace U2 {
 
-class U2GUI_EXPORT ScaleBar : public QWidget {
-    Q_OBJECT
+class U2VIEW_EXPORT McaColors {
 public:
-    ScaleBar(Qt::Orientation ori = Qt::Vertical, QWidget* parent = 0);
+    McaColors() = delete;
 
-    int value() const;
-    void setValue(int value);
+    static const QColor getChromatogramColorByBase(char base);
+    static const QColor getChromatogramColorByBase(bool isDark, char base);
+    static const QColor getChromatogramColorById(bool isDark, int id);
+    static const QColor getArrowColor(bool isReversed);
 
-    void setRange(int minumum, int maximum);
-    void setTickInterval(int interval);
+private:
+    static constexpr int COLORS_NUM = 4;
+    static const QColor COLOR_FOR_IDS_LIGHT[COLORS_NUM];
+    static const QColor COLOR_FOR_IDS_DARK[COLORS_NUM];
 
-    QAction* getPlusAction() const;
-    QAction* getMinusAction() const;
+    static const QColor ARROW_DIRECT_COLOR_LIGHT;
+    static const QColor ARROW_DIRECT_COLOR_DARK;
+    static const QColor ARROW_REVERSE_COLOR_LIGHT;
+    static const QColor ARROW_REVERSE_COLOR_DARK;
 
-    QAbstractButton* getPlusButton() const;
-    QAbstractButton* getMinusButton() const;
 
-signals:
-    void valueChanged(int value);
-
-private slots:
-    void sl_minusButtonClicked();
-    void sl_plusButtonClicked();
-    void sl_updateState();
-    void sl_colorModeSwitched();
-
-protected:
-    QSlider* scaleBar;
-    QAction* minusAction;
-    QAction* plusAction;
-    QToolButton* plusButton;
-    QToolButton* minusButton;
 };
 
-}  // namespace U2
+}

@@ -73,7 +73,7 @@ public:
     }
 
     static QColor selectionBackgroundColor() {
-        return QColor("#EAEDF7");
+        return AppContext::getMainWindow()->isDarkMode() ? QColor("#4D4E51") : QColor("#EAEDF7");
     }
 
     static QString linkColorLabelStr() {

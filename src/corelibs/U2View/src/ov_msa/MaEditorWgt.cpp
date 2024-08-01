@@ -166,7 +166,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
 
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
-    nameAreaContainer->setStyleSheet("background-color: white;");
+    nameAreaContainer->setStyleSheet("background-color: palette(base);");
     horizontalNameListScrollBar->setStyleSheet("background-color: normal;");  // avoid white background of scrollbar set 1 line above.
 
     nameAreaContainer->setMinimumWidth(15);  // Splitter uses min-size to collapse a widget

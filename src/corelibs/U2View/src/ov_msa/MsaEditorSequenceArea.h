@@ -199,6 +199,7 @@ private slots:
     void sl_alphabetChanged(const MaModificationInfo& mi, const DNAAlphabet* prevAlphabet);
 
     void sl_updateActions() override;
+    void sl_colorModeSwitched() override;
 
 private:
     void initRenderer() override;

@@ -51,8 +51,6 @@ private:
 
     void drawChromatogram(QPainter& painter, const MsaRow& row, const U2Region& visibleRange, int xStart) const;
 
-    QColor getBaseColor(char base) const;
-
     void drawChromatogramTrace(const Chromatogram& chromatogram, qreal x, qreal y, qreal h, QPainter& p, const U2Region& visible) const;
     void drawOriginalBaseCalls(qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
     void drawQualityValues(const Chromatogram& chromatogram, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;

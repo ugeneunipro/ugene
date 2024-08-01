@@ -30,12 +30,14 @@
 #include <U2Gui/GraphUtils.h>
 
 #include "ov_mca/McaEditor.h"
+#include "ov_mca/McaEditorNameList.h"
 #include "ov_mca/McaReferenceCharController.h"
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/RowHeightController.h"
 #include "ov_msa/ScrollController.h"
+#include "util_mca_align/McaColors.h"
 
 namespace U2 {
 
@@ -44,8 +46,6 @@ const int MaSangerOverview::MINIMUM_HEIGHT = 100;
 const qreal MaSangerOverview::ARROW_LINE_WIDTH = 2;
 const qreal MaSangerOverview::ARROW_HEAD_WIDTH = 6;
 const qreal MaSangerOverview::ARROW_HEAD_LENGTH = 7;
-const QColor MaSangerOverview::ARROW_DIRECT_COLOR = "blue";
-const QColor MaSangerOverview::ARROW_REVERSE_COLOR = "green";
 
 MaSangerOverview::MaSangerOverview(MaEditor* editor, MaEditorWgt* ui)
     : MaOverview(editor, ui),
@@ -144,6 +144,10 @@ void MaSangerOverview::sl_screenMoved() {
     }
 }
 
+void MaSangerOverview::sl_colorModeSwitched() {
+    sl_completeRedraw();
+}
+
 McaEditor* MaSangerOverview::getEditor() const {
     return qobject_cast<McaEditor*>(editor);
 }
@@ -185,7 +189,7 @@ bool MaSangerOverview::eventFilter(QObject* object, QEvent* event) {
     CHECK(paintEvent != nullptr, MaOverview::eventFilter(object, event));
     if (object == renderArea) {
         QPainter painter(renderArea);
-        painter.fillRect(renderArea->rect(), Qt::white);
+        painter.fillRect(renderArea->rect(), QPalette().base().color());
         painter.drawPixmap(QPoint(0, 0), getView());
 
         drawVisibleRange(painter);
@@ -229,7 +233,7 @@ void MaSangerOverview::drawVisibleRange(QPainter& painter) {
 
 void MaSangerOverview::drawReference() {
     QPainter painter(&cachedReferenceView);
-    painter.fillRect(cachedReferenceView.rect(), Qt::white);
+    painter.fillRect(cachedReferenceView.rect(), QPalette().base().color());
 
     const int referenceUngappedLength = getEditor()->getUI()->getRefCharController()->getUngappedLength();
     GraphUtils::RulerConfig config;
@@ -252,7 +256,7 @@ void MaSangerOverview::drawReference() {
 
 void MaSangerOverview::drawReads() {
     QPainter painter(&cachedReadsView);
-    painter.fillRect(cachedReadsView.rect(), Qt::white);
+    painter.fillRect(cachedReadsView.rect(), QPalette().base().color());
 
     const MsaObject* mcaObject = getEditor()->getMaObject();
     SAFE_POINT(mcaObject != nullptr, "Incorrect multiple chromatogram alignment object", );
@@ -280,8 +284,9 @@ void MaSangerOverview::drawReads() {
         config.lineLength = readRect.width();
         config.arrowHeadWidth = ARROW_HEAD_WIDTH;
         config.arrowHeadLength = ARROW_HEAD_LENGTH;
-        config.color = row->isReversed() ? ARROW_REVERSE_COLOR : ARROW_DIRECT_COLOR;
-        config.direction = row->isReversed() ? GraphUtils::RightToLeft : GraphUtils::LeftToRight;
+        bool isReversed = row->isReversed();
+        config.color = McaColors::getArrowColor(isReversed);
+        config.direction = isReversed ? GraphUtils::RightToLeft : GraphUtils::LeftToRight;
         GraphUtils::drawArrow(painter, readRect, config);
 
         yOffset += yStep;

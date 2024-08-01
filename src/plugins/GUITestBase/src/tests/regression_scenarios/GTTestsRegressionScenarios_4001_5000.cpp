@@ -4268,7 +4268,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     auto colorScheme = GTWidget::findComboBox("colorScheme");
     auto highlightingScheme = GTWidget::findComboBox("highlightingScheme");
-    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_NUCL);
+    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_NUCL_LIGHT);
     GTComboBox::checkCurrentUserDataValue(highlightingScheme, MsaHighlightingScheme::EMPTY);
 
     //    4. Undo changes
@@ -4278,7 +4278,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     colorScheme = GTWidget::findComboBox("colorScheme");
     highlightingScheme = GTWidget::findComboBox("highlightingScheme");
-    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_NUCL);
+    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_NUCL_LIGHT);
     GTComboBox::checkCurrentUserDataValue(highlightingScheme, MsaHighlightingScheme::EMPTY);
 }
 
@@ -4298,7 +4298,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     //    Expected state: "UGENE" color scheme is selected, "UGENE" highlight scheme is selected
     auto colorScheme = GTWidget::findComboBox("colorScheme");
     auto highlightingScheme = GTWidget::findComboBox("highlightingScheme");
-    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO);
+    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO_LIGHT);
     GTComboBox::checkCurrentUserDataValue(highlightingScheme, MsaHighlightingScheme::EMPTY);
 
     //    4. Undo changes
@@ -4308,7 +4308,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     colorScheme = GTWidget::findComboBox("colorScheme");
     highlightingScheme = GTWidget::findComboBox("highlightingScheme");
-    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO);
+    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO_LIGHT);
     GTComboBox::checkCurrentUserDataValue(highlightingScheme, MsaHighlightingScheme::EMPTY);
 }
 
@@ -4337,7 +4337,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_3) {
     auto colorScheme = GTWidget::findComboBox("colorScheme");
     auto highlightingScheme = GTWidget::findComboBox("highlightingScheme");
 
-    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO);
+    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO_LIGHT);
     GTComboBox::checkCurrentUserDataValue(highlightingScheme, MsaHighlightingScheme::EMPTY);
 }
 

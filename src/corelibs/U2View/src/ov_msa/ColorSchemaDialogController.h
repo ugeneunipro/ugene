@@ -58,6 +58,7 @@ private:
     QMap<char, QColor>& newColors;
     QMap<char, QColor> storedColors;
     QMap<char, QRect> charsPlacement;
+    QColor textColor;
 };
 
 class ColorSchemaSettingsPageState : public AppSettingsGUIPageState {

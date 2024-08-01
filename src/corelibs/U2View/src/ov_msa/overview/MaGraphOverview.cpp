@@ -265,7 +265,7 @@ void MaGraphOverview::drawOverview(QPainter& p) {
         p.scale(1, -1);
     }
 
-    p.fillRect(cachedConsensus.rect(), Qt::white);
+    p.fillRect(cachedConsensus.rect(), QPalette().base().color());
 
     CHECK(editor->getAlignmentLen() > 0, )
 

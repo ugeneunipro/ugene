@@ -54,14 +54,6 @@ QColor MsaColorSchemeClustalX::getBackgroundColor(int seq, int pos, char) const 
     return colorByIdx[idx];
 }
 
-QColor MsaColorSchemeClustalX::getFontColor(int seq, int pos, char c) const {
-    Q_UNUSED(seq);
-    Q_UNUSED(pos);
-    Q_UNUSED(c);
-
-    return QColor();
-}
-
 void MsaColorSchemeClustalX::sl_alignmentChanged() {
     objVersion++;
 }

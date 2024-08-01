@@ -31,6 +31,7 @@
 #include <U2Core/Settings.h>
 #include <U2Core/Theme.h>
 
+#include <U2View/McaColors.h>
 #include <U2View/SequenceObjectContext.h>
 
 #include "McaEditorNameList.h"
@@ -114,12 +115,13 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Msa& 
     if (editor->isChromatogramRowExpanded(rowIndex)) {
         painter.save();
         painter.translate(0, yStart + seqRowHeight);
-        painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
+        QColor penColor = AppContext::getMainWindow()->isDarkMode() ? QColor(190, 190, 190) : Qt::gray;
+        painter.setPen(QPen(penColor, 1, Qt::DashLine));
         painter.drawLine(0, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight, width, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight);
 
         const MsaRow& row = editor->getMaObject()->getRow(rowIndex);
         drawChromatogram(painter, row, region, xStart);
-        painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
+        painter.setPen(QPen(penColor, 1, Qt::DashLine));
         painter.restore();
         painter.translate(0, -INDENT_BETWEEN_ROWS / 2);
     }
@@ -170,7 +172,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, c
 
     if (completeRedraw) {
         painter.setRenderHint(QPainter::Antialiasing, true);
-        painter.setPen(Qt::black);
+        painter.setPen(QPalette().text().color());
         if (baseCallsLinesVisible) {
             // quality and base calls can be visible
             if (drawQuality) {
@@ -192,21 +194,6 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, c
     }
 
     painter.translate(-xStart, 0);
-}
-
-QColor SequenceWithChromatogramAreaRenderer::getBaseColor(char base) const {
-    switch (base) {
-        case 'A':
-            return Qt::darkGreen;
-        case 'C':
-            return Qt::blue;
-        case 'G':
-            return Qt::black;
-        case 'T':
-            return Qt::red;
-        default:
-            return Qt::black;
-    }
 }
 
 namespace {
@@ -304,19 +291,19 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const Chromatog
     completePolygonsWithLastBaseCallTrace(polylineA, polylineC, polylineG, polylineT, chromatogram, columnWidth, visible, h);
 
     if (getSettings().drawTraceA) {
-        p.setPen(getBaseColor('A'));
+        p.setPen(McaColors::getChromatogramColorByBase('A'));
         p.drawPolyline(polylineA);
     }
     if (getSettings().drawTraceC) {
-        p.setPen(getBaseColor('C'));
+        p.setPen(McaColors::getChromatogramColorByBase('C'));
         p.drawPolyline(polylineC);
     }
     if (getSettings().drawTraceG) {
-        p.setPen(getBaseColor('G'));
+        p.setPen(McaColors::getChromatogramColorByBase('G'));
         p.drawPolyline(polylineG);
     }
     if (getSettings().drawTraceT) {
-        p.setPen(getBaseColor('T'));
+        p.setPen(McaColors::getChromatogramColorByBase('T'));
         p.drawPolyline(polylineT);
     }
     p.translate(-x, -h - y);
@@ -357,12 +344,13 @@ void SequenceWithChromatogramAreaRenderer::completePolygonsWithLastBaseCallTrace
 }
 
 void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
     p.translate(0, h);
 
     int colWidth = getSeqArea()->getEditor()->getColumnWidth();
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
     for (int i = visible.startPos; i < visible.endPos(); i++) {
-        QColor color = getBaseColor(ba[i]);
+        QColor color = McaColors::getChromatogramColorByBase(isDark, ba[i]);
         p.setPen(color);
 
         int xP = colWidth * (i - visible.startPos) + colWidth / 2;
@@ -427,6 +415,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const 
     double yRes = 0;
     int areaHeight = (heightPD - heightBC) * this->maxTraceHeight / 100;
     int colWidth = getSeqArea()->getEditor()->getColumnWidth();
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
     for (int i = visible.startPos; i < visible.startPos + visible.length; i++) {
         SAFE_POINT(i < chromatogram->baseCalls.length(), "Base calls array is too short: visible range index is out range", );
         int temp = chromatogram->baseCalls[i];
@@ -434,7 +423,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const 
 
         double x = colWidth * (i - visible.startPos) + colWidth / 2;
         bool drawBase = true;
-        p.setPen(getBaseColor(ba[i]));
+        p.setPen(McaColors::getChromatogramColorByBase(isDark, ba[i]));
         switch (ba[i]) {
             case 'A':
                 yRes = -qMin(static_cast<qreal>(chromatogram->A[temp]) * areaHeight / chromaMax, h);
