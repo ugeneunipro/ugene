@@ -129,7 +129,6 @@ private:
 
     QString group;
 
-    QList<Task*> searchExcludedEnzymesTasks;
     QList<SEnzymeData> enzymes;
     U2EntityRef seqRef;
     U2Region region;
