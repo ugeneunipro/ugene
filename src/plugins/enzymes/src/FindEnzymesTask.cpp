@@ -138,10 +138,9 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
 
     for (const U2Region& excludeRegion : qAsConst(excludeRegions)) {
         for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
-            SingleEnzymeHitListener* listener = new SingleEnzymeHitListener(&excludedEnzymes);
-            listeners.insert(listener);
-            Task* task = new FindSingleEnzymeTask(seqRef, excludeRegion, enzyme, listener, isCircular);
+            FindSingleEnzymeTask* task = new FindSingleEnzymeTask(seqRef, excludeRegion, enzyme, nullptr, isCircular, 1, false);
             searchExcludedEnzymesTasks.append(task);
+            exludedEnzymesHits[enzyme->id] += 1;
             addSubTask(task);
         }
     }
@@ -151,13 +150,16 @@ QList<Task*> FindEnzymesTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
     CHECK(!singleSearchStarted, result);
     if (searchExcludedEnzymesTasks.contains(subTask)) {
-        searchExcludedEnzymesTasks.removeAll(subTask);
-    }
-    if (searchExcludedEnzymesTasks.isEmpty()) {
-        qDeleteAll(listeners);
-        listeners.clear();
+        FindSingleEnzymeTask* findSingleEnzymeTask = qobject_cast<FindSingleEnzymeTask*>(subTask);
+        CHECK_EXT(findSingleEnzymeTask != nullptr, setError(L10N::nullPointerError("FindSingleEnzymeTask")), result);
+        CHECK(findSingleEnzymeTask->getResults().isEmpty(), result);
+        const SEnzymeData& enzyme = findSingleEnzymeTask->getEnzyme();
+        exludedEnzymesHits[enzyme->id] -= 1;
+        //if the enzyme was found counter will never be 0
+        CHECK(exludedEnzymesHits[enzyme->id] == 0, result);
+        result << new FindSingleEnzymeTask(seqRef, region, enzyme, this, isCircular);
+    } else if (searchExcludedEnzymesTasks.isEmpty()) {
         for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
-            CHECK_CONTINUE(!excludedEnzymes.contains(enzyme->id));
             result << new FindSingleEnzymeTask(seqRef, region, enzyme, this, isCircular);
         }
         singleSearchStarted = true;
@@ -263,16 +265,6 @@ void FindEnzymesTask::cleanup() {
     if (hasError()) {
         searchResultMap.clear();
     }
-}
-
-SingleEnzymeHitListener::SingleEnzymeHitListener(QSet<QString>* enzymesWhichHit_)
-    : enzymesWhichHit(enzymesWhichHit_) {
-}
-
-void SingleEnzymeHitListener::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) {
-    CHECK(!enzymesWhichHit->contains(enzyme->id), );
-    QMutexLocker locker(&resultsLock);
-    enzymesWhichHit->insert(enzyme->id);
 }
 
 //////////////////////////////////////////////////////////////////////////

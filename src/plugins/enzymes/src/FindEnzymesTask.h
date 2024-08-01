@@ -102,8 +102,6 @@ private:
     QList<Task*> searchEnzymesTasks;
 };
 
-class SingleEnzymeHitListener;
-
 class FindEnzymesTask : public Task, public FindEnzymesAlgListener {
     Q_OBJECT
 public:
@@ -132,22 +130,11 @@ private:
     QString group;
 
     QList<Task*> searchExcludedEnzymesTasks;
-    QSet<QString> excludedEnzymes;
     QList<SEnzymeData> enzymes;
     U2EntityRef seqRef;
     U2Region region;
-    QSet <SingleEnzymeHitListener*> listeners;
     bool singleSearchStarted = false;
-};
-
-class SingleEnzymeHitListener : public FindEnzymesAlgListener {
-public:
-    SingleEnzymeHitListener(QSet<QString>* enzymesWhichHit);
-
-    virtual void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) override;
-private:
-    QMutex resultsLock;
-    QSet<QString>* enzymesWhichHit;
+    QMap<QString, int> exludedEnzymesHits;
 };
 
 class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public SequenceDbiWalkerCallback {
