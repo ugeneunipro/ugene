@@ -2842,6 +2842,29 @@ Are you sure you want to open all of them?</source>
     </message>
 </context>
 <context>
+    <name>U2::RegionSelectorController</name>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="74"/>
+        <source>Whole sequence</source>
+        <translation>Вся последовательность</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="78"/>
+        <source>Selected region</source>
+        <translation>Выбранный регион</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="82"/>
+        <source>Custom region</source>
+        <translation>Заданный регион</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="85"/>
+        <source>Location</source>
+        <translation>Позиция</translation>
+    </message>
+</context>
+<context>
     <name>U2::RemovePartFromSequenceDialogController</name>
     <message>
         <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="56"/>
