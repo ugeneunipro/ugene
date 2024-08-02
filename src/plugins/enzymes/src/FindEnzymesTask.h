@@ -132,8 +132,7 @@ private:
     QList<SEnzymeData> enzymes;
     U2EntityRef seqRef;
     U2Region region;
-    bool singleSearchStarted = false;
-    QMap<QString, int> exludedEnzymesHits;
+    QMap<QString, int> excludedEnzymesHits;
 };
 
 class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public SequenceDbiWalkerCallback {

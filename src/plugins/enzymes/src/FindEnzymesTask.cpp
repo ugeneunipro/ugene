@@ -130,39 +130,32 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
     seqlen = seq.getSequenceLength();
     
     if (excludeRegions.isEmpty()) {
-        for (Task* t : onSubTaskFinished(nullptr)) {
-            addSubTask(t);
-        }
-        return;
-    }
-
-    for (const U2Region& excludeRegion : qAsConst(excludeRegions)) {
+        QList<Task*> result;
         for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
-            FindSingleEnzymeTask* task = new FindSingleEnzymeTask(seqRef, excludeRegion, enzyme, nullptr, isCircular, 1, false);
-            exludedEnzymesHits[enzyme->id] += 1;
-            addSubTask(task);
+            addSubTask(new FindSingleEnzymeTask(seqRef, region, enzyme, this, isCircular));
+        }
+    } else {
+        for (const U2Region& excludeRegion : qAsConst(excludeRegions)) {
+            for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
+                FindSingleEnzymeTask* task = new FindSingleEnzymeTask(seqRef, excludeRegion, enzyme, nullptr, isCircular, 1, false);
+                excludedEnzymesHits[enzyme->id] += 1;
+                addSubTask(task);
+            }
         }
     }
 }
 
 QList<Task*> FindEnzymesTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
-    CHECK(!singleSearchStarted, result);
-    if (!exludedEnzymesHits.isEmpty()) {
-        FindSingleEnzymeTask* findSingleEnzymeTask = qobject_cast<FindSingleEnzymeTask*>(subTask);
-        CHECK_EXT(findSingleEnzymeTask != nullptr, setError(L10N::nullPointerError("FindSingleEnzymeTask")), result);
-        CHECK(findSingleEnzymeTask->getResults().isEmpty(), result);
-        const SEnzymeData& enzyme = findSingleEnzymeTask->getEnzyme();
-        exludedEnzymesHits[enzyme->id] -= 1;
-        //if the enzyme was found counter will never be 0
-        CHECK(exludedEnzymesHits[enzyme->id] == 0, result);
-        result << new FindSingleEnzymeTask(seqRef, region, enzyme, this, isCircular);
-    } else {
-        for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
-            result << new FindSingleEnzymeTask(seqRef, region, enzyme, this, isCircular);
-        }
-        singleSearchStarted = true;
-    }
+    CHECK(!excludedEnzymesHits.isEmpty(), result);
+    FindSingleEnzymeTask* findSingleEnzymeTask = qobject_cast<FindSingleEnzymeTask*>(subTask);
+    SAFE_POINT(findSingleEnzymeTask != nullptr, L10N::nullPointerError("FindSingleEnzymeTask"), result);
+    CHECK(findSingleEnzymeTask->getResults().isEmpty(), result);
+    const SEnzymeData& enzyme = findSingleEnzymeTask->getEnzyme();
+    excludedEnzymesHits[enzyme->id] -= 1;
+    //if the enzyme was found in exclude search - counter will never be 0
+    CHECK(excludedEnzymesHits[enzyme->id] == 0, result);
+    result << new FindSingleEnzymeTask(seqRef, region, enzyme, this, isCircular);
     return result;
 }
 
