@@ -95,6 +95,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/SequenceTextEdit.h \
            src/util/SuggestCompleter.h \
            src/util/TreeWidgetUtils.h \
+           src/util/U2Action.h \
            src/util/U2FileDialog.h \
            src/util/U2LongLongValidator.h \
            src/util/WidgetWithLocalToolbar.h \
@@ -250,6 +251,7 @@ SOURCES += src/ComboBoxWithCheckBoxes.cpp \
            src/util/SequenceTextEdit.cpp \
            src/util/SuggestCompleter.cpp \
            src/util/TreeWidgetUtils.cpp \
+           src/util/U2Action.cpp \
            src/util/U2FileDialog.cpp \
            src/util/U2LongLongValidator.cpp \
            src/util/WidgetWithLocalToolbar.cpp \

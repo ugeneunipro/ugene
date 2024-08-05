@@ -144,8 +144,12 @@ class SaveProjectDialogController : public QDialog, public Ui_SaveProjectDialog 
     Q_OBJECT
 public:
     SaveProjectDialogController(QWidget* p);
+
 public slots:
     void sl_clicked(QAbstractButton* button);
+
+private slots:
+    void sl_colorModeSwitched();
 };
 
 class ProjectDialogController : public QDialog, public Ui_CreateNewProjectDialog {

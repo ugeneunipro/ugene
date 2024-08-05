@@ -284,6 +284,19 @@ void MainWindowImpl::createActions() {
     crashUgeneAction->setObjectName("crash_ugene");
     connect(crashUgeneAction, SIGNAL(triggered()), SLOT(sl_crashUgene()));
 
+    switchColorMode = new QAction("Switch color mode", this);
+    switchColorMode->setShortcut(QKeySequence(Qt::Key_F5));
+    switchColorMode->setShortcutContext(Qt::ApplicationShortcut);
+    connect(switchColorMode, &QAction::triggered, this, [this]() {
+        auto s = AppContext::getAppSettings()->getUserAppsSettings();
+        int cm = 0;
+        if (!isDark) {
+            cm = 1;
+        }
+        setNewStyle(s->getVisualStyle(), cm);
+
+    });
+
 #ifdef _INSTALL_TO_PATH_ACTION
     installToPathAction = new QAction(tr("Enable Terminal Usage..."), this);
     connect(installToPathAction, SIGNAL(triggered()), SLOT(sl_installToPathAction()));
@@ -427,6 +440,8 @@ void MainWindowImpl::prepareGUI() {
         helpMenu->addSeparator();
         helpMenu->addAction(crashUgeneAction);
     }
+
+    helpMenu->addAction(switchColorMode);
 
     if (qgetenv(ENV_TEST_NOTIFICATIONS) == "1") {
         helpMenu->addSeparator();

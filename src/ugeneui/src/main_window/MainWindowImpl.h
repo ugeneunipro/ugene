@@ -154,6 +154,8 @@ private:
     QAction* viewOnlineDocumentation = nullptr;
     QAction* welcomePageAction = nullptr;
     QAction* crashUgeneAction = nullptr;
+    // TODO: remove
+    QAction* switchColorMode = nullptr;
     QAction* showWhatsNewAction = nullptr;
 #ifdef _INSTALL_TO_PATH_ACTION
     QAction* installToPathAction = nullptr;

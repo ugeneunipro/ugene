@@ -94,6 +94,7 @@ TreeViewer::TreeViewer(const QString& viewName, PhyTreeObject* _phyObject, bool 
         CHECK(ui != nullptr, );
         ui->switchTreeLayout(ui->getTreeLayoutType());
     });
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TreeViewer::sl_colorModeSwitched);
 }
 
 QVariantMap TreeViewer::saveState() {
@@ -141,11 +142,11 @@ void TreeViewer::createActions() {
     unrootedLayoutAction->setObjectName("Unrooted");
 
     // Branch Settings
-    collapseAction = new QAction(QIcon(":/core/images/collapse_tree.png"), tr("Collapse"), ui);
+    collapseAction = new QAction(GUIUtils::getIconResource("core", "collapse_tree.png"), tr("Collapse"), ui);
     collapseAction->setObjectName("Collapse");
-    rerootAction = new QAction(QIcon(":/core/images/reroot.png"), tr("Reroot tree"), ui);
+    rerootAction = new QAction(GUIUtils::getIconResource("core", "reroot.png"), tr("Reroot tree"), ui);
     rerootAction->setObjectName("Reroot tree");
-    swapAction = new QAction(QIcon(":core/images/swap.png"), tr("Swap Siblings"), ui);
+    swapAction = new QAction(GUIUtils::getIconResource("core", "swap.png"), tr("Swap Siblings"), ui);
     swapAction->setObjectName("Swap Siblings");
 
     // Show Labels
@@ -340,6 +341,11 @@ void TreeViewer::onAfterViewWindowInit() {
 void TreeViewer::onObjectRenamed(GObject*, const QString&) {
     // update title
     OpenTreeViewerTask::updateTitle(this);
+}
+
+void TreeViewer::sl_colorModeSwitched() {
+    rerootAction->setIcon(GUIUtils::getIconResource("core", "reroot.png"));
+    swapAction->setIcon(GUIUtils::getIconResource("core", "swap.png"));
 }
 
 ////////////////////////////
@@ -1510,7 +1516,7 @@ void TreeViewerUI::updateActions() {
         treeViewer->collapseAction->setIcon(QIcon(":/core/images/expand_tree.png"));
     } else {
         treeViewer->collapseAction->setText(QObject::tr("Collapse"));
-        treeViewer->collapseAction->setIcon(QIcon(":/core/images/collapse_tree.png"));
+        treeViewer->collapseAction->setIcon(GUIUtils::getIconResource("core", "collapse_tree.png"));
     }
 
     QList<QGraphicsItem*> updatingItems = scene()->selectedItems();

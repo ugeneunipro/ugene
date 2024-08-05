@@ -52,6 +52,7 @@
 
 #include <U2Gui/CreateDocumentFromTextDialogController.h>
 #include <U2Gui/DownloadRemoteFileDialog.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
@@ -867,12 +868,18 @@ SaveProjectDialogController::SaveProjectDialogController(QWidget* w)
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
     buttonBox->button(QDialogButtonBox::No)->setText(tr("No"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    setWindowIcon(GUIUtils::getIconResource("core", "save.png"));
 
     connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(sl_clicked(QAbstractButton*)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SaveProjectDialogController::sl_colorModeSwitched);
 }
 
 void SaveProjectDialogController::sl_clicked(QAbstractButton* button) {
     done(buttonBox->standardButton(button));
+}
+
+void SaveProjectDialogController::sl_colorModeSwitched() {
+    setWindowIcon(GUIUtils::getIconResource("core", "save.png"));
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,8 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorStatusBar.h>
 #include <U2View/MsaEditor.h>
@@ -83,6 +85,10 @@ QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment
                              labelHtml,
                              alignment,
                              proxyMouseEventsToNameList);
+}
+
+void MaEditorWgt::sl_colorModeSwitched() {
+    copyFormattedSelectionAction->setIcon(GUIUtils::getIconResource("core", "copy.png", false));
 }
 
 void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
@@ -218,6 +224,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     connect(editor->getCollapseModel(), SIGNAL(si_toggled()), sequenceArea, SLOT(sl_modelChanged()));
 
     connect(delSelectionAction, SIGNAL(triggered()), sequenceArea, SLOT(sl_delCurrentSelection()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaEditorWgt::sl_colorModeSwitched);
 }
 
 void MaEditorWgt::initActions() {
@@ -239,7 +246,7 @@ void MaEditorWgt::initActions() {
     copySelectionAction->setToolTip(QString("%1 (%2)").arg(copySelectionAction->text()).arg(copySelectionAction->shortcut().toString()));
     addAction(copySelectionAction);
 
-    copyFormattedSelectionAction = new QAction(QIcon(":core/images/copy_sequence.png"), tr("Copy (custom format)"), this);
+    copyFormattedSelectionAction = new QAction(GUIUtils::getIconResource("core", "copy.png", false), tr("Copy (custom format)"), this);
     copyFormattedSelectionAction->setObjectName("copy_formatted");
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyFormattedSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
