@@ -47,6 +47,7 @@ private:
     QModelIndex getSelectedItemIndex() const;
 
     void updateActionsState();
+    void updateStateLabelText();
 
     WorkspaceService* workspaceService = nullptr;
     QLabel* stateLabel = nullptr;

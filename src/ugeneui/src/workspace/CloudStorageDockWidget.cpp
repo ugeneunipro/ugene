@@ -43,7 +43,7 @@
 
 namespace U2 {
 
-constexpr char* CLOUD_STORAGE_LAST_OPENED_DIR = "CloudStorage";
+constexpr const char* CLOUD_STORAGE_LAST_OPENED_DIR = "CloudStorage";
 
 constexpr qint64 USER_DATA_SESSION_LOCAL_ID = Qt::UserRole + 1;
 constexpr qint64 USER_DATA_SIZE = Qt::UserRole + 2;
@@ -98,6 +98,9 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     setWindowIcon(QIcon(":ugene/images/cloud_storage.svg"));
 
     stateLabel = new QLabel();
+    stateLabel->setTextFormat(Qt::RichText);
+    stateLabel->setOpenExternalLinks(false);
+    stateLabel->setStyleSheet("background: white; padding: 10px;");
 
     treeView = new QTreeView();
     treeView->setModel(&treeViewModel);
@@ -110,17 +113,13 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     layout->addWidget(treeView);
     setLayout(layout);
 
-    connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this](bool isLoggedIn) {
+    connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this] {
         stateLabel->setVisible(true);
         treeView->setVisible(false);
         treeViewModel.clear();
         treeViewModel.setHorizontalHeaderLabels({"Name", "Size"});
         treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
-        if (!isLoggedIn) {
-            stateLabel->setText("Please login");
-        } else {
-            stateLabel->setText("Loading file list");
-        }
+        updateStateLabelText();
     });
 
     connect(workspaceService->getCloudStorageService(), &CloudStorageService::si_storageStateChanged, this, [this](const CloudStorageEntry& rootEntry) {
@@ -163,6 +162,8 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     connect(treeView, &QTreeView::customContextMenuRequested, this, &CloudStorageDockWidget::showContextMenu);
     connect(treeView, &QTreeView::doubleClicked, this, &CloudStorageDockWidget::renameItem);
     connect(treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &CloudStorageDockWidget::updateActionsState);
+
+    updateStateLabelText();
 }
 
 void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
@@ -275,6 +276,24 @@ void CloudStorageDockWidget::updateActionsState() {
         isDownloadEnabled = !isFolder;
     }
     downloadAction->setEnabled(isDownloadEnabled);
+}
+
+void CloudStorageDockWidget::updateStateLabelText() {
+    disconnect(stateLabel, &QLabel::linkActivated, this, nullptr);
+    auto isLoggedIn = workspaceService->isLoggedIn();
+    if (!isLoggedIn) {
+        stateLabel->setText(tr(R"(Please <a href="login">log in to Workspace</a> to access cloud storage)"));
+    } else {
+        stateLabel->setText(tr(R"(Loading file list...<br><br><br><a href="logout">Logout</a>)"));
+    }
+
+    connect(stateLabel, &QLabel::linkActivated, this, [&](const QString& link) {
+        if (link == "login") {
+            workspaceService->login();
+        } else if (link == "logout") {
+            workspaceService->logout();
+        }
+    });
 }
 
 }  // namespace U2
