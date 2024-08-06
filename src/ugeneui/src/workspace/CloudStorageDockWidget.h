@@ -40,6 +40,7 @@ public:
     void deleteItem();
     void renameItem();
     void downloadItem();
+    void downloadItemSilently();
     void uploadItem();
 
 private:

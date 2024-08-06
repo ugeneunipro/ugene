@@ -22,22 +22,23 @@
 #include "WorkspaceService.h"
 
 #include <QAction>
+#include <QDesktopServices>
 #include <QHttpMultiPart>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QMessageBox>
 #include <QNetworkReply>
-#include <QScreen>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/DocumentUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
-#include "../../../libs_3rdparty/zlib/src/gzguts.h"
 #include "CloudStorageDockWidget.h"
 #include "CloudStorageService.h"
 #include "KeycloakAuthenticator.h"
@@ -312,6 +313,16 @@ void WorkspaceService::downloadFile(const QList<QString>& cloudPath, const QStri
                 file.write(data);
                 file.close();
                 qDebug() << "WorkspaceService::downloadFile: Download finished and saved to" << localFilePath;
+                // Open this file or file folder.
+                DocumentFormatId formatId;
+                auto detectionResult = DocumentUtils::detectFormat(localFilePath, formatId);
+                if (detectionResult == DocumentUtils::FORMAT) {
+                    auto loadDocumentTask = AppContext::getProjectLoader()->openWithProjectTask(localFilePath);
+                    AppContext::getTaskScheduler()->registerTopLevelTask(loadDocumentTask);
+                } else {
+                    QString folderPath = QFileInfo(localFilePath).absolutePath();
+                    QDesktopServices::openUrl(QUrl::fromLocalFile(folderPath));
+                }
             } else {
                 qDebug() << "WorkspaceService::downloadFile: Could not open file for writing.";
             }

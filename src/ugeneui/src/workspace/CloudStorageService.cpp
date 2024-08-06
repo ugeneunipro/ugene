@@ -72,7 +72,7 @@ void CloudStorageService::downloadFile(const QList<QString>& path, const QString
     SAFE_POINT(path.length() > 0, "Empty cloud file path", );
     QFileInfo dir(localDirPath);
     QString fileName = path.last();
-    QString localFilePath = GUrlUtils::rollFileName(dir.absoluteFilePath() + "/" + fileName, "_");
+    QString localFilePath = GUrlUtils::rollFileName(dir.absolutePath() + "/" + fileName, "_");
     workspaceService->downloadFile(path, localFilePath);
 }
 
