@@ -45,6 +45,8 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ProjectTreeController.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
+#include <U2Gui/U2Action.h>
+#include <U2Gui/U2Menu.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
@@ -62,8 +64,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
 
     dnaView = v->getAnnotatedDNAView();
 
-    showQVAction = new QAction(tr("Show quality bars"), this);
-    showQVAction->setIcon(GUIUtils::getIconResource("chroma_view", "bars.png", false));
+    showQVAction = new U2Action(IconParameters("chroma_view", "bars.png", false), tr("Show quality bars"), this);
     showQVAction->setCheckable(true);
     showQVAction->setChecked(chromatogram->hasQV);
     showQVAction->setEnabled(chromatogram->hasQV);
@@ -72,7 +73,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     showAllTraces = new QAction(tr("Show all"), this);
     connect(showAllTraces, SIGNAL(triggered()), SLOT(sl_showAllTraces()));
 
-    traceActionMenu = new QMenu(tr("Show/hide trace"), this);
+    traceActionMenu = new U2Menu(IconParameters("chroma_view", "traces.png", false), tr("Show/hide trace"), this);
     traceActionMenu->addAction(createToggleTraceAction("A"));
     traceActionMenu->addAction(createToggleTraceAction("C"));
     traceActionMenu->addAction(createToggleTraceAction("G"));
@@ -119,7 +120,6 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
 
     addActionToLocalToolbar(showQVAction);
     QToolButton* traceButton = addActionToLocalToolbar(traceActionMenu->menuAction());
-    traceButton->setIcon(GUIUtils::getIconResource("chroma_view", "traces.png", false));
     traceButton->setPopupMode(QToolButton::InstantPopup);
 }
 
