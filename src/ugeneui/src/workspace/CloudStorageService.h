@@ -81,7 +81,10 @@ public:
 
     void uploadFile(const QList<QString>& path, const QString& localFilePath);
 
-    static bool checkCloudStorageEntryName(const QString& folderName);
+    static bool checkCloudStorageEntryName(const QString& entryName);
+
+    /** Checks that the 'path' is a valid cloud storage path: is not empty, does not contain empty or invalid items. */
+    static bool checkCloudStoragePath(const QList<QString>& path);
 
 signals:
     void si_storageStateChanged(const CloudStorageEntry& rootEntry);

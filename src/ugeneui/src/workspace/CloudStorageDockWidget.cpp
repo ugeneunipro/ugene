@@ -41,9 +41,6 @@
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/U2FileDialog.h>
 
-#include "../../../corelibs/U2Core/src/globals/AppContext.h"
-#include "../../../corelibs/U2Core/src/globals/AppSettings.h"
-#include "../../../corelibs/U2Core/src/globals/UserApplicationsSettings.h"
 #include "CloudStorageService.h"
 #include "WorkspaceService.h"
 
