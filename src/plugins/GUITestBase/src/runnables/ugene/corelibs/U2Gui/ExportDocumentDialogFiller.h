@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ public:
     };
 
     ExportDocumentDialogFiller(const QString& _path = "", const QString& _name = "", ExportDocumentDialogFiller::FormatToUse _format = ExportDocumentDialogFiller::Genbank, bool compressFile = false, bool addToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString path, name;

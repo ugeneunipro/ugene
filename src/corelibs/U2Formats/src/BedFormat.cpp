@@ -99,6 +99,7 @@ BedFormat::BedFormat(QObject* p)
     formatName = tr("BED");
     formatDescription = tr("The BED (Browser Extensible Data) format was developed by UCSC for displaying transcript structures in the genome browser.");
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
+    formatFlags |= DocumentFormatFlag_HasModifiableName;
 }
 
 Document* BedFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
@@ -612,6 +613,7 @@ void BedFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
 
     ioLog.trace(tr("Finished BED saving: '%1'").arg(doc->getURLString()));
 }
+
 //-------------------------------------------------------------------
 //  BedFormatParser
 //-------------------------------------------------------------------

@@ -210,6 +210,10 @@ bool TaskSchedulerImpl::processFinishedTasks() {
             continue;
         }
 
+        TaskInfo* pti = ti->parentTaskInfo;
+        if (pti != nullptr && pti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && pti->thread != nullptr && pti->thread->isPaused) {
+            continue;
+        }
         try {
             Task::ReportResult res = ti->task->report();
             if (res == Task::ReportResult_CallMeAgain) {
@@ -217,11 +221,6 @@ bool TaskSchedulerImpl::processFinishedTasks() {
             }
         } catch (const std::bad_alloc&) {
             onBadAlloc(ti->task);
-        }
-
-        TaskInfo* pti = ti->parentTaskInfo;
-        if (pti != nullptr && pti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && pti->thread != nullptr && pti->thread->isPaused) {
-            continue;
         }
 
         hasFinished = true;
@@ -993,6 +992,7 @@ void TaskSchedulerImpl::sl_processSubtasks() {
 void TaskSchedulerImpl::pauseThreadWithTask(const Task* task) {
     foreach (TaskInfo* ti, priorityQueue) {
         if (task == ti->task) {
+            CHECK(ti->thread, );
             QCoreApplication::postEvent(ti->thread,
                                         new QEvent(static_cast<QEvent::Type>(PAUSE_THREAD_EVENT_TYPE)));
         }

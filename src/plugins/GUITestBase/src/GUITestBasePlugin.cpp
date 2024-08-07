@@ -1300,6 +1300,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5220);
     REGISTER_TEST(GUITest_regression_scenarios::test_5227);
     REGISTER_TEST(GUITest_regression_scenarios::test_5231);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5239);
     REGISTER_TEST(GUITest_regression_scenarios::test_5246);
     REGISTER_TEST(GUITest_regression_scenarios::test_5249);
     REGISTER_TEST(GUITest_regression_scenarios::test_5252);
@@ -1307,6 +1308,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5268);
     REGISTER_TEST(GUITest_regression_scenarios::test_5278);
     REGISTER_TEST(GUITest_regression_scenarios::test_5281);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5291);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5314);
     REGISTER_TEST(GUITest_regression_scenarios::test_5330);
@@ -1695,6 +1697,17 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7234);
     REGISTER_TEST(GUITest_regression_scenarios::test_7242);
     REGISTER_TEST(GUITest_regression_scenarios::test_7246);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_4);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_5);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_6);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_7);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_8);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_9);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_10);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_11);
     REGISTER_TEST(GUITest_regression_scenarios::test_7247);
     REGISTER_TEST(GUITest_regression_scenarios::test_7276);
     REGISTER_TEST(GUITest_regression_scenarios::test_7279);
@@ -1878,9 +1891,24 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_8052);
     REGISTER_TEST(GUITest_regression_scenarios::test_8064);
     REGISTER_TEST(GUITest_regression_scenarios::test_8069);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8074);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8077_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8077_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8079_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8079_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8079_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8083_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8083_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_8090);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8092);
     REGISTER_TEST(GUITest_regression_scenarios::test_8093);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8096_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8096_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8096_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8100);
     REGISTER_TEST(GUITest_regression_scenarios::test_8101);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8120_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8120_2);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2096,6 +2124,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0084);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0085);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0086);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0087);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/sequence edit/

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,14 +30,14 @@ public:
     BamBedConversionTask(const GUrl& sourceURL, const QString& detectedFormat, const QString& targetFormat, const QString& dir);
 
 protected:
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 };
 
 class BAMBEDConvertFactory : public ConvertFileFactory {
 public:
-    virtual bool isCustomFormatTask(const QString& detectedFormat, const QString& targetFormat);
-    virtual ConvertFileTask* getTask(const GUrl& sourceURL, const QString& detectedFormat, const QString& targetFormat, const QString& dir) {
+    bool isCustomFormatTask(const QString& detectedFormat, const QString& targetFormat) override;
+    ConvertFileTask* getTask(const GUrl& sourceURL, const QString& detectedFormat, const QString& targetFormat, const QString& dir) override {
         return new BamBedConversionTask(sourceURL, detectedFormat, targetFormat, dir);
     }
 };

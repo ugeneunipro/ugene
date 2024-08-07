@@ -65,14 +65,15 @@ void Assembly::setReference(const Sequence& _reference) {
     reference = _reference;
     if (name.isEmpty()) {
         name = reference.name;
-        if (name.endsWith("_ref")) {
-            name.chop(QString("_ref").length());
-        }
     }
 }
 
 QList<U2AssemblyRead> Assembly::getReads() const {
     return convertReads();
+}
+
+const QList<Assembly::Sequence>& Assembly::getOriginalReads() const {
+    return reads;
 }
 
 void Assembly::addRead(const Sequence& read) {
@@ -156,7 +157,6 @@ AceReader::AceReader(IOAdapter& _io, U2OpStatus& _os)
 
     contigsCount = getContigCount(headerLine);
     CHECK_OP((*os), );
-    CHECK_EXT(contigsCount > 0, os->setError((DocumentFormatUtils::tr("There is no assemblies in input file"))), );
 }
 
 Assembly AceReader::getAssembly() {
@@ -227,8 +227,15 @@ bool AceReader::isFinish() {
 void AceReader::skipBreaks(IOAdapter* io, char* buff, qint64* len) {
     bool lineOk = true;
     *len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
-    CHECK_EXT(*len != 0, os->setError(DocumentFormatUtils::tr("Unexpected end of file")), );
-    CHECK_EXT(lineOk || io->isEof(), os->setError(DocumentFormatUtils::tr("Line is too long")), );
+    CHECK_EXT(!io->hasError(), os->setError(io->errorString()), );
+    if ((len == 0) || (!lineOk && io->isEof())) {
+        os->setError(DocumentFormatUtils::tr("Unexpected end of file"));
+        return;
+    }
+    if (!lineOk && !io->isEof()) {
+        os->setError(DocumentFormatUtils::tr("Line is too long"));
+        return;
+    }
 }
 
 int AceReader::getContigCount(const QByteArray& cur_line) {
@@ -278,7 +285,6 @@ void AceReader::parseConsensus(IOAdapter* io, char* buff, QByteArray& headerLine
     QByteArray line;
 
     consensus.name = getName(headerLine);
-    consensus.name += "_ref";
 
     do {
         len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, aceBStart, IOAdapter::Term_Exclude, &ok);

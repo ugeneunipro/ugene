@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,19 +36,19 @@ class Dbi : public U2AbstractDbi {
 public:
     Dbi();
 
-    virtual void init(const QHash<QString, QString>& properties, const QVariantMap& persistentData, U2OpStatus& os);
+    void init(const QHash<QString, QString>& properties, const QVariantMap& persistentData, U2OpStatus& os) override;
 
-    virtual QVariantMap shutdown(U2OpStatus& os);
+    QVariantMap shutdown(U2OpStatus& os) override;
 
-    virtual QHash<QString, QString> getDbiMetaInfo(U2OpStatus&);
+    QHash<QString, QString> getDbiMetaInfo(U2OpStatus&) override;
 
-    virtual U2DataType getEntityTypeById(const U2DataId& id) const;
+    U2DataType getEntityTypeById(const U2DataId& id) const override;
 
-    virtual U2ObjectDbi* getObjectDbi();
+    U2ObjectDbi* getObjectDbi() override;
 
-    virtual U2AssemblyDbi* getAssemblyDbi();
+    U2AssemblyDbi* getAssemblyDbi() override;
 
-    virtual bool isReadOnly() const;
+    bool isReadOnly() const override;
 
 private:
     void buildIndex(U2OpStatus& os);
@@ -70,17 +70,17 @@ class DbiFactory : public U2DbiFactory {
 public:
     DbiFactory();
 
-    virtual U2Dbi* createDbi();
+    U2Dbi* createDbi() override;
 
-    virtual U2DbiFactoryId getId() const;
+    U2DbiFactoryId getId() const override;
 
-    virtual FormatCheckResult isValidDbi(const QHash<QString, QString>& properties, const QByteArray& rawData, U2OpStatus& os) const;
+    FormatCheckResult isValidDbi(const QHash<QString, QString>& properties, const QByteArray& rawData, U2OpStatus& os) const override;
 
-    virtual GUrl id2Url(const U2DbiId& id) const {
+    GUrl id2Url(const U2DbiId& id) const override {
         return GUrl(id, GUrl_File);
     }
 
-    virtual bool isDbiExists(const U2DbiId& id) const;
+    bool isDbiExists(const U2DbiId& id) const override;
 
 public:
     static const QString ID;
@@ -90,41 +90,41 @@ class ObjectDbi : public U2SimpleObjectDbi {
 public:
     ObjectDbi(Dbi& dbi, DbRef& dbRef, int assembliesCount);
 
-    virtual qint64 countObjects(U2OpStatus& os);
+    qint64 countObjects(U2OpStatus& os) override;
 
-    virtual qint64 countObjects(U2DataType type, U2OpStatus& os);
+    qint64 countObjects(U2DataType type, U2OpStatus& os) override;
 
-    virtual QHash<U2DataId, QString> getObjectNames(qint64 offset, qint64 count, U2OpStatus& os);
+    QHash<U2DataId, QString> getObjectNames(qint64 offset, qint64 count, U2OpStatus& os) override;
 
-    virtual QList<U2DataId> getObjects(qint64 offset, qint64 count, U2OpStatus& os);
+    QList<U2DataId> getObjects(qint64 offset, qint64 count, U2OpStatus& os) override;
 
-    virtual QList<U2DataId> getObjects(U2DataType type, qint64 offset, qint64 count, U2OpStatus& os);
+    QList<U2DataId> getObjects(U2DataType type, qint64 offset, qint64 count, U2OpStatus& os) override;
 
-    virtual QList<U2DataId> getParents(const U2DataId& entityId, U2OpStatus& os);
+    QList<U2DataId> getParents(const U2DataId& entityId, U2OpStatus& os) override;
 
-    virtual QStringList getFolders(U2OpStatus& os);
+    QStringList getFolders(U2OpStatus& os) override;
 
-    virtual qint64 countObjects(const QString& folder, U2OpStatus& os);
+    qint64 countObjects(const QString& folder, U2OpStatus& os) override;
 
-    virtual QList<U2DataId> getObjects(const QString& folder, qint64 offset, qint64 count, U2OpStatus& os);
+    QList<U2DataId> getObjects(const QString& folder, qint64 offset, qint64 count, U2OpStatus& os) override;
 
-    virtual QStringList getObjectFolders(const U2DataId& objectId, U2OpStatus& os);
+    QStringList getObjectFolders(const U2DataId& objectId, U2OpStatus& os) override;
 
-    virtual qint64 getObjectVersion(const U2DataId& objectId, U2OpStatus& os);
+    qint64 getObjectVersion(const U2DataId& objectId, U2OpStatus& os) override;
 
-    virtual qint64 getFolderLocalVersion(const QString& folder, U2OpStatus& os);
+    qint64 getFolderLocalVersion(const QString& folder, U2OpStatus& os) override;
 
-    virtual qint64 getFolderGlobalVersion(const QString& folder, U2OpStatus& os);
+    qint64 getFolderGlobalVersion(const QString& folder, U2OpStatus& os) override;
 
-    virtual U2DbiIterator<U2DataId>* getObjectsByVisualName(const QString& visualName, U2DataType type, U2OpStatus& os);
+    U2DbiIterator<U2DataId>* getObjectsByVisualName(const QString& visualName, U2DataType type, U2OpStatus& os) override;
 
-    virtual void renameObject(const U2DataId& id, const QString& newName, U2OpStatus& os);
+    void renameObject(const U2DataId& id, const QString& newName, U2OpStatus& os) override;
 
-    virtual void setObjectRank(const U2DataId& objectId, U2DbiObjectRank newRank, U2OpStatus& os);
+    void setObjectRank(const U2DataId& objectId, U2DbiObjectRank newRank, U2OpStatus& os) override;
 
-    virtual U2DbiObjectRank getObjectRank(const U2DataId& objectId, U2OpStatus& os);
+    U2DbiObjectRank getObjectRank(const U2DataId& objectId, U2OpStatus& os) override;
 
-    virtual void setParent(const U2DataId& parentId, const U2DataId& childId, U2OpStatus& os);
+    void setParent(const U2DataId& parentId, const U2DataId& childId, U2OpStatus& os) override;
 
 private:
     Dbi& dbi;
@@ -136,19 +136,19 @@ class AssemblyDbi : public U2SimpleAssemblyDbi {
 public:
     AssemblyDbi(Dbi& dbi, BamReader& reader, DbRef& dbRef, QList<qint64> maxReadLengths);
 
-    virtual U2Assembly getAssemblyObject(const U2DataId& id, U2OpStatus& os);
+    U2Assembly getAssemblyObject(const U2DataId& id, U2OpStatus& os) override;
 
-    virtual qint64 countReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os);
+    qint64 countReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) override;
 
-    virtual U2DbiIterator<U2AssemblyRead>* getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool sortedHint = false);
+    U2DbiIterator<U2AssemblyRead>* getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool sortedHint = false) override;
 
-    virtual U2DbiIterator<U2AssemblyRead>* getReadsByRow(const U2DataId& assemblyId, const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os);
+    U2DbiIterator<U2AssemblyRead>* getReadsByRow(const U2DataId& assemblyId, const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) override;
 
-    virtual U2DbiIterator<U2AssemblyRead>* getReadsByName(const U2DataId& assemblyId, const QByteArray& name, U2OpStatus& os);
+    U2DbiIterator<U2AssemblyRead>* getReadsByName(const U2DataId& assemblyId, const QByteArray& name, U2OpStatus& os) override;
 
-    virtual qint64 getMaxPackedRow(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os);
+    qint64 getMaxPackedRow(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) override;
 
-    virtual qint64 getMaxEndPos(const U2DataId& assemblyId, U2OpStatus& os);
+    qint64 getMaxEndPos(const U2DataId& assemblyId, U2OpStatus& os) override;
 
     static U2AssemblyRead alignmentToRead(const Alignment& alignment);
 

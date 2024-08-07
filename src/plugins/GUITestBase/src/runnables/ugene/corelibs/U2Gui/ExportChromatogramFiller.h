@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ class ExportChromatogramFiller : public Filler {
 public:
     enum FormatToUse { SCF };
     ExportChromatogramFiller(const QString& _path, const QString& _name, ExportChromatogramFiller::FormatToUse _format, bool reversed, bool complement, bool addDocumentToProject, GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString path, name;

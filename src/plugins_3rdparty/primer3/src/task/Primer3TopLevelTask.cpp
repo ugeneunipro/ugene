@@ -58,26 +58,30 @@ Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSetting
                                          const QString& _groupName,
                                          const QString& _annName,
                                          const QString& _annDescription)
-    : Task(tr("Find primers with target sequence task"), TaskFlags(TaskFlag_NoRun) |
-                                                              TaskFlag_ReportingIsSupported |
-                                                              TaskFlag_ReportingIsEnabled |
-                                                              TaskFlag_FailOnSubtaskError |
-                                                              TaskFlag_CollectChildrenWarnings),
-    settings(_settings), seqObj(_seqObj), annotationTableObject(_aobj),
-    groupName(_groupName), annName(_annName), annDescription(_annDescription) {
+    : Task(tr("Find primers with target sequence task"),
+           TaskFlags(TaskFlag_NoRun) |
+               TaskFlag_ReportingIsSupported |
+               TaskFlag_ReportingIsEnabled |
+               TaskFlag_FailOnSubtaskError |
+               TaskFlag_FailOnSubtaskCancel |
+               TaskFlag_CollectChildrenWarnings),
+      settings(_settings), seqObj(_seqObj), annotationTableObject(_aobj),
+      groupName(_groupName), annName(_annName), annDescription(_annDescription) {
     GCOUNTER(cvar, "Primer3Task");
 }
 
 Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSettings>& _settings,
                                          const QString& _resultFilePath,
                                          bool _openView)
-    : Task(tr("Find primers without target sequence task"), TaskFlags(TaskFlag_NoRun) |
-                                                              TaskFlag_ReportingIsSupported |
-                                                              TaskFlag_ReportingIsEnabled |
-                                                              TaskFlag_FailOnSubtaskError |
-                                                              TaskFlag_CollectChildrenWarnings),
-    settings(_settings), resultFilePath(_resultFilePath), openView(_openView),
-    groupName(PRIMER_ANNOTATION_NAME), annName(PRIMER_ANNOTATION_NAME) {
+    : Task(tr("Find primers without target sequence task"),
+           TaskFlags(TaskFlag_NoRun) |
+               TaskFlag_ReportingIsSupported |
+               TaskFlag_ReportingIsEnabled |
+               TaskFlag_FailOnSubtaskError |
+               TaskFlag_FailOnSubtaskCancel |
+               TaskFlag_CollectChildrenWarnings),
+      settings(_settings), resultFilePath(_resultFilePath), openView(_openView),
+      groupName(PRIMER_ANNOTATION_NAME), annName(PRIMER_ANNOTATION_NAME) {
     GCOUNTER(cvar, "Primer3Task_noTargetSequence");
 }
 
@@ -128,6 +132,12 @@ Task::ReportResult Primer3TopLevelTask::report() {
 }
 
 QString Primer3TopLevelTask::generateReport() const {
+    const auto subtasks = getSubtasks();
+    if (std::any_of(subtasks.cbegin(), subtasks.cend(), [](const QPointer<Task>& t) { return t->isCanceled(); }) &&
+        !isCanceled()) {
+        return tr("The task was canceled by the user");
+    }
+
     QString res;
 
     if (hasError() || isCanceled()) {

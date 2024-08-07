@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,13 +40,13 @@ class DotPlotSplitter : public ADVSplitWidget {
 public:
     DotPlotSplitter(AnnotatedDNAView*);
 
-    virtual bool acceptsGObject(GObject* objects) {
+    bool acceptsGObject(GObject* objects) override {
         Q_UNUSED(objects);
         return false;
     }
-    virtual void updateState(const QVariantMap&) {
+    void updateState(const QVariantMap&) override {
     }
-    virtual void saveState(QVariantMap&) {
+    void saveState(QVariantMap&) override {
     }
 
     void addView(DotPlotWidget*);
@@ -55,7 +55,7 @@ public:
     void buildPopupMenu(QMenu*);
 
 protected:
-    virtual bool onCloseEvent();
+    bool onCloseEvent() override;
 
 private:
     QAction* createAction(const QString& iconPath, const QString& toolTip, const char* slot, bool checkable = true);

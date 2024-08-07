@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,15 +34,15 @@ class BwaBuildIndexTask : public ExternalToolSupportTask {
 public:
     BwaBuildIndexTask(const QString& referencePath, const QString& indexPath, const DnaAssemblyToRefTaskSettings& settings);
 
-    void prepare();
+    void prepare() override;
 
 private:
     class LogParser : public ExternalToolLogParser {
     public:
         LogParser();
 
-        void parseOutput(const QString& partOfLog);
-        void parseErrOutput(const QString& partOfLog);
+        void parseOutput(const QString& partOfLog) override;
+        void parseErrOutput(const QString& partOfLog) override;
     };
 
     QString referencePath;
@@ -54,17 +54,17 @@ class BwaAlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BwaAlignTask(const QString& indexPath, const QList<ShortReadSet>& shortReadSets, const QString& resultPath, const DnaAssemblyToRefTaskSettings& settings);
-    void prepare();
+    void prepare() override;
 
     class LogParser : public ExternalToolLogParser {
     public:
         LogParser();
-        void parseOutput(const QString& partOfLog);
-        void parseErrOutput(const QString& partOfLog);
+        void parseOutput(const QString& partOfLog) override;
+        void parseErrOutput(const QString& partOfLog) override;
     };
 
 protected slots:
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     QList<ShortReadSet> downStreamList;
@@ -84,7 +84,7 @@ class BwaSwAlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BwaSwAlignTask(const QString& indexPath, const DnaAssemblyToRefTaskSettings& settings);
-    void prepare();
+    void prepare() override;
 
 private:
     const QString indexPath;
@@ -95,10 +95,10 @@ class BwaMemAlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BwaMemAlignTask(const QString& indexPath, const DnaAssemblyToRefTaskSettings& settings);
-    void prepare();
+    void prepare() override;
 
 protected slots:
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     MultiTask* alignMultiTask;
@@ -115,10 +115,10 @@ class BwaTask : public DnaAssemblyToReferenceTask {
 public:
     BwaTask(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false);
 
-    void prepare();
-    ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
 protected slots:
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 public:
     static const QString OPTION_INDEX_ALGORITHM;
@@ -201,7 +201,7 @@ private:
 
 class BwaTaskFactory : public DnaAssemblyToRefTaskFactory {
 public:
-    DnaAssemblyToReferenceTask* createTaskInstance(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false);
+    DnaAssemblyToReferenceTask* createTaskInstance(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false) override;
 
 protected:
 };

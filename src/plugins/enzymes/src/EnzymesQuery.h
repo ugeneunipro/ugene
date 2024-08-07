@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,18 +42,18 @@ class QDEnzymesActor : public QDActor {
     Q_OBJECT
 public:
     QDEnzymesActor(QDActorPrototype const* proto);
-    int getMinResultLen() const {
+    int getMinResultLen() const override {
         return 1;
     }
-    int getMaxResultLen() const {
+    int getMaxResultLen() const override {
         return 20;
     }
-    QString getText() const;
-    Task* getAlgorithmTask(const QVector<U2Region>& location);
-    QColor defaultColor() const {
+    QString getText() const override;
+    Task* getAlgorithmTask(const QVector<U2Region>& location) override;
+    QColor defaultColor() const override {
         return QColor(0xB4, 0x9F, 0xD4);
     }
-    virtual bool hasStrand() const {
+    bool hasStrand() const override {
         return false;
     }
 private slots:
@@ -68,10 +68,10 @@ private:
 class QDEnzymesActorPrototype : public QDActorPrototype {
 public:
     QDEnzymesActorPrototype();
-    QIcon getIcon() const {
+    QIcon getIcon() const override {
         return QIcon(":enzymes/images/enzymes.png");
     }
-    QDActor* createInstance() const {
+    QDActor* createInstance() const override {
         return new QDEnzymesActor(this);
     }
 };
@@ -91,10 +91,10 @@ class EnzymesSelectorDialogHandler : public SelectorDialogHandler {
 public:
     EnzymesSelectorDialogHandler() {
     }
-    virtual QDialog* createSelectorDialog(const QString&) {
+    QDialog* createSelectorDialog(const QString&) override {
         return new EnzymesSelectorDialog(this);
     }
-    virtual QString getSelectedString(QDialog* dlg);
+    QString getSelectedString(QDialog* dlg) override;
 };
 
 }  // namespace U2

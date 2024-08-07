@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,16 +40,16 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };  // ConvertFilesFormatPrompter
 
 class ConvertFilesFormatWorker : public BaseWorker {
     Q_OBJECT
 public:
     ConvertFilesFormatWorker(Actor* a);
-    void init();
-    Task* tick();
-    void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private:
     IntegralBus* inputUrlPort;
@@ -78,7 +78,7 @@ public:
     ConvertFilesFormatWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new ConvertFilesFormatWorker(a);
     }
 };  // ConvertFilesFormatWorkerFactory

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ class ClustalWDialogFiller : public Filler {
 public:
     ClustalWDialogFiller(int _gapOpenVal = 0);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     int gapOpenVal;

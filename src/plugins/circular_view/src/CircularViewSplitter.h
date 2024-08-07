@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,11 +41,11 @@ public:
     CircularViewSplitter(AnnotatedDNAView* view);
     // there are no special object handling with this view
     // it only shows existing AO only
-    virtual bool acceptsGObject(GObject*) {
+    bool acceptsGObject(GObject*) override {
         return false;
     }
-    virtual void updateState(const QVariantMap& m);
-    virtual void saveState(QVariantMap& m);
+    void updateState(const QVariantMap& m) override;
+    void saveState(QVariantMap& m) override;
     void addView(CircularView* view, RestrctionMapWidget* rmapWidget);
     void adaptSize();
     void removeView(CircularView* view, RestrctionMapWidget* rmapWidget);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ public:
                           MANUAL };
     EditConnectionDialogFiller(const Parameters& parameters, ConnectionType type);
     EditConnectionDialogFiller(CustomScenario* scenario);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     Parameters parameters;
@@ -66,7 +66,7 @@ private:
 class AuthenticationDialogFiller : public Filler {
 public:
     AuthenticationDialogFiller(const QString& login, const QString& password);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString login;

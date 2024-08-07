@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,14 +33,14 @@ class QDCDDActor : public QDActor {
     Q_OBJECT
 public:
     QDCDDActor(QDActorPrototype const* a);
-    int getMinResultLen() const;
-    int getMaxResultLen() const;
-    QString getText() const;
-    Task* getAlgorithmTask(const QVector<U2Region>& location);
-    QColor defaultColor() const {
+    int getMinResultLen() const override;
+    int getMaxResultLen() const override;
+    QString getText() const override;
+    Task* getAlgorithmTask(const QVector<U2Region>& location) override;
+    QColor defaultColor() const override {
         return QColor(0x6A, 0x94, 0xd4);
     }
-    virtual bool hasStrand() const {
+    bool hasStrand() const override {
         return false;
     }
 private slots:
@@ -54,10 +54,10 @@ private:
 class QDCDDActorPrototype : public QDActorPrototype {
 public:
     QDCDDActorPrototype();
-    virtual QDActor* createInstance() const {
+    QDActor* createInstance() const override {
         return new QDCDDActor(this);
     }
-    virtual QIcon getIcon() const {
+    QIcon getIcon() const override {
         return QIcon(":remote_blast/images/remote_db_request.png");
     }
 };

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ class ExportPhredQualityScoresTask : public Task {
     Q_OBJECT
 public:
     ExportPhredQualityScoresTask(const U2SequenceObject* seqObj, const ExportQualityScoresConfig& config);
-    void run();
+    void run() override;
 
 private:
     const U2SequenceObject* seqObj;

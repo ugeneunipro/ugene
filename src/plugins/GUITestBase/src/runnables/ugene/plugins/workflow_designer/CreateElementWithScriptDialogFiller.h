@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ public:
         : Filler("CreateScriptBlockDialog"),
           name(_name) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString name;
@@ -47,7 +47,7 @@ public:
           checkSyntaxResult(_checkSyntaxResult),
           checkSyntax(_checkSyntax) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString url;
@@ -63,7 +63,7 @@ public:
           text(_text),
           message(_message) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString text, message;

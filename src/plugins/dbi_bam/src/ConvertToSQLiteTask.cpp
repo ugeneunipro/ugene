@@ -77,11 +77,11 @@ public:
           readValid(false) {
     }
 
-    virtual bool hasNext() {
+    bool hasNext() override {
         return readValid || alignmentReaderValid || !reader.isEof();
     }
 
-    virtual U2AssemblyRead next() {
+    U2AssemblyRead next() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -96,7 +96,7 @@ public:
         return read;
     }
 
-    virtual void skip() {
+    void skip() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -110,7 +110,7 @@ public:
         readValid = false;
     }
 
-    virtual const U2AssemblyRead& peek() {
+    const U2AssemblyRead& peek() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -125,7 +125,7 @@ public:
         return read;
     }
 
-    virtual int peekReferenceId() {
+    int peekReferenceId() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -154,11 +154,11 @@ public:
           readValid(false) {
     }
 
-    virtual bool hasNext() {
+    bool hasNext() override {
         return readValid || !reader.isEof();
     }
 
-    virtual U2AssemblyRead next() {
+    U2AssemblyRead next() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -170,11 +170,11 @@ public:
         return read;
     }
 
-    virtual void skip() {
+    void skip() override {
         next();
     }
 
-    virtual const U2AssemblyRead& peek() {
+    const U2AssemblyRead& peek() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -188,7 +188,7 @@ public:
         return read;
     }
 
-    virtual int peekReferenceId() {
+    int peekReferenceId() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -216,32 +216,32 @@ public:
           iterator(iterator) {
     }
 
-    virtual bool hasNext() {
+    bool hasNext() override {
         return iterator.hasNext() && (iterator.peekReferenceId() == referenceId);
     }
 
-    virtual U2AssemblyRead next() {
+    U2AssemblyRead next() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
         return iterator.next();
     }
 
-    virtual void skip() {
+    void skip() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
         iterator.skip();
     }
 
-    virtual const U2AssemblyRead& peek() {
+    const U2AssemblyRead& peek() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
         return iterator.peek();
     }
 
-    virtual int peekReferenceId() {
+    int peekReferenceId() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -259,12 +259,12 @@ public:
         : iterator(iterator) {
     }
 
-    virtual bool hasNext() {
+    bool hasNext() override {
         skipUnmappedReads();
         return iterator.hasNext();
     }
 
-    virtual U2AssemblyRead next() {
+    U2AssemblyRead next() override {
         skipUnmappedReads();
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
@@ -272,7 +272,7 @@ public:
         return iterator.next();
     }
 
-    virtual void skip() {
+    void skip() override {
         skipUnmappedReads();
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
@@ -280,7 +280,7 @@ public:
         iterator.skip();
     }
 
-    virtual const U2AssemblyRead& peek() {
+    const U2AssemblyRead& peek() override {
         skipUnmappedReads();
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
@@ -288,7 +288,7 @@ public:
         return iterator.peek();
     }
 
-    virtual int peekReferenceId() {
+    int peekReferenceId() override {
         skipUnmappedReads();
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
@@ -318,11 +318,11 @@ public:
     virtual ~DbiIterator() {
     }
 
-    virtual bool hasNext() = 0;
+    bool hasNext() override = 0;
 
-    virtual U2AssemblyRead next() = 0;
+    U2AssemblyRead next() override = 0;
 
-    virtual U2AssemblyRead peek() = 0;
+    U2AssemblyRead peek() override = 0;
 
     virtual qint64 getReadsImported() = 0;
 };
@@ -338,14 +338,14 @@ public:
           ioAdapter(ioAdapter) {
     }
 
-    virtual bool hasNext() {
+    bool hasNext() override {
         if (stateInfo.isCanceled()) {
             throw CancelledException(BAMDbiPlugin::tr("Task was cancelled"));
         }
         return iterator->hasNext();
     }
 
-    virtual U2AssemblyRead next() {
+    U2AssemblyRead next() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -354,14 +354,14 @@ public:
         return iterator->next();
     }
 
-    virtual U2AssemblyRead peek() {
+    U2AssemblyRead peek() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
         return iterator->peek();
     }
 
-    virtual qint64 getReadsImported() {
+    qint64 getReadsImported() override {
         return readsImported;
     }
 
@@ -397,25 +397,25 @@ public:
         }
     }
 
-    virtual bool hasNext() {
+    bool hasNext() override {
         return hasReads && dbiIterator.hasNext();
     }
 
-    virtual U2AssemblyRead next() {
+    U2AssemblyRead next() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
         return dbiIterator.next();
     }
 
-    virtual U2AssemblyRead peek() {
+    U2AssemblyRead peek() override {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
         return dbiIterator.peek();
     }
 
-    virtual qint64 getReadsImported() {
+    qint64 getReadsImported() override {
         return dbiIterator.getReadsImported();
     }
 

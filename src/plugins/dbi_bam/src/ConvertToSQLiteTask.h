@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ class ConvertToSQLiteTask : public Task {
     Q_OBJECT
 public:
     ConvertToSQLiteTask(const GUrl& sourceUrl, const U2DbiRef& dstDbiRef, BAMInfo& bamInfo, bool sam);
-    virtual void run();
+    void run() override;
 
     GUrl getDestinationUrl() const;
     QList<U2Assembly> getAssemblies() const;

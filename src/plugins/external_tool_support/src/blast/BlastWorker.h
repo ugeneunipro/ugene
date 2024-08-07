@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ public:
     BlastPrompter(Actor* p = 0);
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class BlastWorker : public BaseWorker {

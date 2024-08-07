@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,8 +31,8 @@ public:
     ActorCfgFilterProxyModel(QObject* p = nullptr);
 
 protected:
-    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const;
-    virtual bool filterAcceptsColumn(int sourceColumn, const QModelIndex& sourceParent) const;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override;
+    bool filterAcceptsColumn(int sourceColumn, const QModelIndex& sourceParent) const override;
 };
 
 }  // namespace U2

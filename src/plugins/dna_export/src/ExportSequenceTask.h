@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -137,7 +137,7 @@ class ExportAnnotationSequenceSubTask : public Task {
 public:
     ExportAnnotationSequenceSubTask(ExportAnnotationSequenceTaskSettings& s);
 
-    void run();
+    void run() override;
 
 private:
     U2Sequence importAnnotatedSeq2Dbi(const SharedAnnotationData& ad, const ExportSequenceAItem& ei, const U2DbiRef& resultDbiRef, QVector<U2Region>& resultRegions, U2OpStatus& os);
@@ -149,7 +149,7 @@ class ExportAnnotationSequenceTask : public DocumentProviderTask {
 public:
     ExportAnnotationSequenceTask(const ExportAnnotationSequenceTaskSettings& s);
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     ExportAnnotationSequenceTaskSettings config;

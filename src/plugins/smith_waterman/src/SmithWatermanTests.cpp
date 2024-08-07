@@ -27,6 +27,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/MsaObject.h>
 #include <U2Core/SMatrix.h>
 #include <U2Core/SequenceWalkerTask.h>
 #include <U2Core/U2SafePoints.h>
@@ -292,6 +293,53 @@ Task::ReportResult GTest_SmithWatermnan::report() {
         }
     }
 
+    return ReportResult_Finished;
+}
+
+/***************************************
+ * GTest_SwAlignmentSse
+ **************************************/
+const QString inMsaObjAttr = "msa";
+
+void GTest_SwAlignmentSse::init(XMLTestFormat*, const QDomElement& el) {
+    checkNecessaryAttributeExistence(el, inMsaObjAttr);
+    CHECK_OP(stateInfo, );
+    msaObjNameInCtx = el.attribute(inMsaObjAttr);
+}
+
+void GTest_SwAlignmentSse::prepare() {
+    auto msaObj = getContext<MsaObject>(this, msaObjNameInCtx);
+    CHECK_EXT(msaObj != nullptr, stateInfo.setError(QString("Context `%1` not found").arg(msaObjNameInCtx)), );
+
+    const auto msaRef = msaObj->getEntityRef();
+    const auto msa = msaObj->getAlignment();
+
+    DbiConnection con(msaRef.dbiRef, stateInfo);
+    CHECK_OP(stateInfo, );
+
+    const auto firstRow = msa->getRow(0);
+    const auto secndRow = msa->getRow(1);
+    CHECK_EXT(firstRow != nullptr && secndRow != nullptr, stateInfo.setError("Too few sequences in input msa"), );
+    const U2EntityRef firstSeqRef(msaRef.dbiRef, firstRow->getSequenceId());
+    const U2EntityRef secndSeqRef(msaRef.dbiRef, secndRow->getSequenceId());
+
+    PairwiseAlignmentTaskSettings s;
+    s.msaRef = msaRef;
+    s.firstSequenceRef = firstSeqRef;
+    s.secondSequenceRef = secndSeqRef;
+    s.appendCustomSettings({{PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_GAP_OPEN, -10},
+                            {PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_GAP_EXTD, -1},
+                            {PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_SCORING_MATRIX_NAME, "dna"}});
+    settings = new PairwiseAlignmentSmithWatermanTaskSettings(s);
+    settings->resultListener = new SmithWatermanResultListener;
+    task = new PairwiseAlignmentSmithWatermanTask(settings, SW_AlgType::SW_sse2);
+    addSubTask(task);
+}
+
+Task::ReportResult GTest_SwAlignmentSse::report() {
+    if (task->getResult().size() != 1) {
+        setError("No task results");
+    }
     return ReportResult_Finished;
 }
 

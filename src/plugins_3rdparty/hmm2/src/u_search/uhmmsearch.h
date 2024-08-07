@@ -1,5 +1,4 @@
-#ifndef _U2_UHMM_SEARCH_H_
-#define _U2_UHMM_SEARCH_H_
+#pragma once
 
 #include <float.h>
 
@@ -52,5 +51,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

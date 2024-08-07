@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ public:
     AlignToReferenceBlastDialogFiller(const Settings& settings);
     AlignToReferenceBlastDialogFiller(CustomScenario* c);
 
-    void commonScenario();
+    void commonScenario() override;
 
     static void setReference(const QString& referenceUrl, QWidget* dialog);
     static void setReads(const QStringList& readUrls, QWidget* dialog);

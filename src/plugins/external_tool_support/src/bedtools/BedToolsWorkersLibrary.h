@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };  // SlopbedPrompter
 
 class SlopbedWorker : public BaseNGSWorker {
@@ -51,9 +51,9 @@ public:
     SlopbedWorker(Actor* a);
 
 protected:
-    QVariantMap getCustomParameters() const;
-    QString getDefaultFileName() const;
-    Task* getTask(const BaseNGSSetting& settings) const;
+    QVariantMap getCustomParameters() const override;
+    QString getDefaultFileName() const override;
+    Task* getTask(const BaseNGSSetting& settings) const override;
 };  // SlopbedWorker
 
 class SlopbedWorkerFactory : public DomainFactory {
@@ -64,7 +64,7 @@ public:
     SlopbedWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new SlopbedWorker(a);
     }
 };  // SlopbedWorkerFactory
@@ -76,9 +76,9 @@ public:
 
 protected:
     bool filterLines;
-    void prepareStep();
-    void finishStep();
-    QStringList getParameters(U2OpStatus& os);
+    void prepareStep() override;
+    void finishStep() override;
+    QStringList getParameters(U2OpStatus& os) override;
 };
 
 //////////////////////////////////////////////////
@@ -93,7 +93,7 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };  // GenomecovPrompter
 
 class GenomecovWorker : public BaseNGSWorker {
@@ -102,9 +102,9 @@ public:
     GenomecovWorker(Actor* a);
 
 protected:
-    QVariantMap getCustomParameters() const;
-    QString getDefaultFileName() const;
-    Task* getTask(const BaseNGSSetting& settings) const;
+    QVariantMap getCustomParameters() const override;
+    QString getDefaultFileName() const override;
+    Task* getTask(const BaseNGSSetting& settings) const override;
 };  // GenomecovWorker
 
 class GenomecovWorkerFactory : public DomainFactory {
@@ -115,7 +115,7 @@ public:
     GenomecovWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new GenomecovWorker(a);
     }
 };  // GenomecovWorkerFactory
@@ -126,8 +126,8 @@ public:
     GenomecovTask(const BaseNGSSetting& settings);
 
 protected:
-    void prepareStep();
-    QStringList getParameters(U2OpStatus& os);
+    void prepareStep() override;
+    QStringList getParameters(U2OpStatus& os) override;
 };
 
 //////////////////////////////////////////////////
@@ -136,11 +136,11 @@ class BedtoolsIntersectWorker : public BaseWorker {
     Q_OBJECT
 public:
     BedtoolsIntersectWorker(Actor* a);
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup() {
+    void init() override;
+    Task* tick() override;
+    void cleanup() override {
     }
-    virtual bool isReady() const;
+    bool isReady() const override;
 private slots:
     void sl_taskFinished(Task* task);
 
@@ -164,7 +164,7 @@ public:
     BedtoolsIntersectWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new BedtoolsIntersectWorker(a);
     }
 };  // BedtoolsIntersectWorkerFactory
@@ -177,7 +177,7 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };  // BedtoolsIntersectPrompter
 
 }  // namespace LocalWorkflow

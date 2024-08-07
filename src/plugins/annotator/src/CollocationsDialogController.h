@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ public:
     CollocationsDialogController(QStringList names, ADVSequenceObjectContext* ctx);
 
 public slots:
-    void reject();
+    void reject() override;
 
 private slots:
     void sl_searchClicked();
@@ -90,12 +90,12 @@ class CollocationSearchTask : public Task, public CollocationsAlgorithmListener 
 public:
     CollocationSearchTask(const QList<AnnotationTableObject*>& table, const QSet<QString>& names, const CollocationsAlgorithmSettings& cfg);
     CollocationSearchTask(const QList<SharedAnnotationData>& table, const QSet<QString>& names, const CollocationsAlgorithmSettings& cfg, bool keepSourceAnns = false);
-    void run();
+    void run() override;
 
     QVector<U2Region> popResults();
     QList<SharedAnnotationData> popResultAnnotations();
 
-    virtual void onResult(const U2Region& r);
+    void onResult(const U2Region& r) override;
 
 private:
     CollocationsAlgorithmItem& getItem(const QString& name);

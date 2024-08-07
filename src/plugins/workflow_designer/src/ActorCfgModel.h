@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,24 +48,24 @@ public:
 
     void update();
 
-    int columnCount(const QModelIndex&) const;
+    int columnCount(const QModelIndex&) const override;
 
-    int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
-    Qt::ItemFlags flags(const QModelIndex& index) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
 
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     /*Used to supply item data to views and delegates.
     Generally, models only need to supply data for Qt::DisplayRole and any application-specific user roles,
     but it is also good practice to provide data for Qt::ToolTipRole, Qt::AccessibleTextRole, and Qt::AccessibleDescriptionRole.*/
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
     /*Used to modify the item of data associated with a specified model index.
     To be able to accept user input, provided by user interface elements, this function must handle data associated with Qt::EditRole.
     The implementation may also accept data associated with many different kinds of roles specified by Qt::ItemDataRole.
     After changing the item of data, models must emit the dataChanged() signal to inform other components of the change.*/
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
 
     void changeScriptMode(bool _mode);
     bool getScriptMode() const;

@@ -84,7 +84,7 @@ void FileUrlContainer::accept(URLContainerVisitor* visitor) {
 }
 
 bool FileUrlContainer::validateUrl(NotificationsList& notificationList) {
-    return WorkflowUtils::validateInputFiles(url, notificationList);
+    return WorkflowUtils::validateInputFile(url, notificationList);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -136,19 +136,18 @@ void DirUrlContainer::accept(URLContainerVisitor* visitor) {
 }
 
 bool DirUrlContainer::validateUrl(NotificationsList& notificationList) {
-    bool res = WorkflowUtils::validateInputDirs(url, notificationList);
-    if (!res) {
-        return false;
-    }
+    bool res = WorkflowUtils::validateInputDir(url, notificationList);
+    CHECK(res, false);
 
     FilesIterator* it = getFileUrls();
     SAFE_POINT(it != nullptr, "NULL fileIterator!", false);
     while (it->hasNext()) {
         QString fileUrl = it->getNextFile();
-        bool urlIsValid = WorkflowUtils::validateInputFiles(fileUrl, notificationList);
+        bool urlIsValid = WorkflowUtils::validateInputFile(fileUrl, notificationList);
         res = res && urlIsValid;
+        CHECK(res, false);
     }
-    return res;
+    return true;
 }
 
 const QString& DirUrlContainer::getIncludeFilter() const {

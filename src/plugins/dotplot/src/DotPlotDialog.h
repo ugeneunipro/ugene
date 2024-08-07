@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ class DotPlotDialog : public QDialog, public Ui_DotPlotDialog {
 public:
     DotPlotDialog(QWidget* parent, AnnotatedDNAView* currentADV, int minLen, int identity, ADVSequenceObjectContext* seqX, ADVSequenceObjectContext* seqY, bool dir, bool inv, const QColor& dColor = QColor(), const QColor& iColor = QColor(), bool hideLoadSequences = false);
 
-    virtual void accept();
+    void accept() override;
 
     ADVSequenceObjectContext* getXSeq() const {
         return xSeq;

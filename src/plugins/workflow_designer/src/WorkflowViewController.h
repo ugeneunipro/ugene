@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -230,8 +230,11 @@ private slots:
 
     void sl_copyItems();
     void sl_cutItems();
-    void sl_pasteItems(const QString& = QString(), bool updateSchemaInfo = false);
+    // Pastes items from sample.
+    void sl_pasteItems(const QString&);
     void sl_pasteSample(const QString&);
+    // Slot for Ctrl+V.
+    void sl_pasteAction();
 
     void sl_setStyle();
     void sl_toggleStyle();
@@ -423,8 +426,6 @@ private:
     WorkflowScene* scene;
 
     WorkflowScene* createScene();
-    WorkflowProcessItem* createProcess(Actor* actor);
-    void createBus(const QMap<Port*, WorkflowPortItem*>& ports, Link* link);
 };
 
 class DashboardManagerHelper : public QObject {
