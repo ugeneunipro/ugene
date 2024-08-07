@@ -57,7 +57,6 @@ private slots:
     void sl_onCloseTab();
     void sl_onCountChanged(int count);
     void sl_onContextMenuRequested(const QPoint& pos);
-    void sl_colorModeSwitched();
 
 signals:
     void si_tabsCountChanged(int curTabsNumber);

@@ -115,7 +115,7 @@ MuscleAction::MuscleAction(QObject* p, GObjectViewController* v, const QString& 
     auto msaEditor = qobject_cast<MsaEditor*>(getObjectView());
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
-    QAction* msaEditorAction = isAlignSelectionAction ? msaEditor->alignSelectedSequencesToAlignmentAction : msaEditor->alignAction;
+    QAction* msaEditorAction = isAlignSelectionAction ? (QAction*)msaEditor->alignSelectedSequencesToAlignmentAction : msaEditor->alignAction;
     connect(msaEditorAction, &QAction::changed, this, [this, msaEditorAction]() { setEnabled(msaEditorAction->isEnabled()); });
     setEnabled(msaEditorAction->isEnabled());
 }

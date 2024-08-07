@@ -94,7 +94,7 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QToolButton" name="convertNucleicAlphabetButton">
+       <widget class="U2::U2ToolButton" name="convertNucleicAlphabetButton">
         <property name="toolTip">
          <string/>
         </property>
@@ -136,7 +136,7 @@
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QToolButton" name="convertAminoAlphabetButton">
+       <widget class="U2::U2ToolButton" name="convertAminoAlphabetButton">
         <property name="text">
          <string>Amino</string>
         </property>
@@ -182,6 +182,11 @@
    <extends>QWidget</extends>
    <header>ov_msa/general_tab/MaConsensusModeWidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>U2::U2ToolButton</class>
+   <extends>QToolButton</extends>
+   <header location="global">U2Gui/U2ToolButton.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -41,6 +41,7 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/Notification.h>
+#include <U2Gui/U2Action.h>
 
 #include "ADVConstants.h"
 #include "ADVSequenceObjectContext.h"
@@ -64,41 +65,39 @@ ADVClipboard::ADVClipboard(AnnotatedDNAView* c)
         connectSequence(sCtx);
     }
 
-    copySequenceAction = new QAction(GUIUtils::getIconResource("core", "copy_sequence.png", false), tr("Copy selected sequence"), this);
+    copySequenceAction = new U2Action(IconParameters("core", "copy_sequence.png", false), tr("Copy selected sequence"), this);
     copySequenceAction->setObjectName("Copy sequence");
     copySequenceAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
     connect(copySequenceAction, SIGNAL(triggered()), SLOT(sl_copySequence()));
 
-    copyComplementSequenceAction = new QAction(GUIUtils::getIconResource("core", "copy_complement_sequence.png", false), tr("Copy selected complementary 5'-3' sequence"), this);
+    copyComplementSequenceAction = new U2Action(IconParameters("core", "copy_complement_sequence.png", false), tr("Copy selected complementary 5'-3' sequence"), this);
     copyComplementSequenceAction->setObjectName("Copy reverse complement sequence");
     copyComplementSequenceAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     connect(copyComplementSequenceAction, SIGNAL(triggered()), SLOT(sl_copyComplementSequence()));
 
-    copyTranslationAction = new QAction(GUIUtils::getIconResource("core", "copy_translation.png", false), tr("Copy amino acids"), this);
+    copyTranslationAction = new U2Action(IconParameters("core", "copy_translation.png", false), tr("Copy amino acids"), this);
     copyTranslationAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_T));
     copyTranslationAction->setObjectName(ADV_COPY_TRANSLATION_ACTION);
     connect(copyTranslationAction, SIGNAL(triggered()), SLOT(sl_copyTranslation()));
 
-    copyComplementTranslationAction = new QAction(GUIUtils::getIconResource("core", "copy_complement_translation.png", false), tr("Copy amino acids of complementary 5'-3' strand"), this);
+    copyComplementTranslationAction = new U2Action(IconParameters("core", "copy_complement_translation.png", false), tr("Copy amino acids of complementary 5'-3' strand"), this);
     copyComplementTranslationAction->setObjectName("Copy reverse complement translation");
     copyComplementTranslationAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
     connect(copyComplementTranslationAction, SIGNAL(triggered()), SLOT(sl_copyComplementTranslation()));
 
-    copyAnnotationSequenceAction = new QAction(GUIUtils::getIconResource("core", "copy_annotation_sequence.png", false), tr("Copy annotation sequence"), this);
+    copyAnnotationSequenceAction = new U2Action(IconParameters("core", "copy_annotation_sequence.png", false), tr("Copy annotation sequence"), this);
     copyAnnotationSequenceAction->setObjectName("action_copy_annotation_sequence");
     connect(copyAnnotationSequenceAction, SIGNAL(triggered()), SLOT(sl_copyAnnotationSequence()));
 
-    copyAnnotationSequenceTranslationAction = new QAction(GUIUtils::getIconResource("core", "copy_annotation_translation.png", false), tr("Copy annotation amino acids"), this);
+    copyAnnotationSequenceTranslationAction = new U2Action(IconParameters("core", "copy_annotation_translation.png", false), tr("Copy annotation amino acids"), this);
     copyAnnotationSequenceTranslationAction->setObjectName("Copy annotation sequence translation");
     connect(copyAnnotationSequenceTranslationAction, SIGNAL(triggered()), SLOT(sl_copyAnnotationSequenceTranslation()));
 
-    copyQualifierAction = new QAction(GUIUtils::getIconResource("core", "copy_qualifier.png", false), tr("Copy qualifier text"), this);
+    copyQualifierAction = new U2Action(IconParameters("core", "copy_qualifier.png", false), tr("Copy qualifier text"), this);
     copyQualifierAction->setEnabled(false);
 
     pasteSequenceAction = createPasteSequenceAction(this);
     updateActions();
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ADVClipboard::sl_colorModeSwitched);
 }
 
 QAction* ADVClipboard::getCopySequenceAction() const {
@@ -257,17 +256,6 @@ void ADVClipboard::sl_setCopyQualifierActionStatus(bool isEnabled, QString text)
     copyQualifierAction->setText(text);
 }
 
-void ADVClipboard::sl_colorModeSwitched() {
-    copySequenceAction->setIcon(GUIUtils::getIconResource("core", "copy_sequence.png", false));
-    copyComplementSequenceAction->setIcon(GUIUtils::getIconResource("core", "copy_complement_sequence.png", false));
-    copyTranslationAction->setIcon(GUIUtils::getIconResource("core", "copy_translation.png", false));
-    copyComplementTranslationAction->setIcon(GUIUtils::getIconResource("core", "copy_complement_translation.png", false));
-    copyAnnotationSequenceAction->setIcon(GUIUtils::getIconResource("core", "copy_annotation_sequence.png", false));
-    copyAnnotationSequenceTranslationAction->setIcon(GUIUtils::getIconResource("core", "copy_annotation_translation.png", false));
-    copyQualifierAction->setIcon(GUIUtils::getIconResource("core", "copy_qualifier.png", false));
-    pasteSequenceAction->setIcon(GUIUtils::getIconResource("core", "paste.png"));
-}
-
 void ADVClipboard::updateActions() {
     ADVSequenceObjectContext* seqCtx = getSequenceContext();
     CHECK(seqCtx != nullptr, );
@@ -361,7 +349,7 @@ void ADVClipboard::addCopyMenu(QMenu* m) {
 }
 
 QAction* ADVClipboard::createPasteSequenceAction(QObject* parent) {
-    auto action = new QAction(GUIUtils::getIconResource("core", "paste.png"), tr("Paste sequence"), parent);
+    auto action = new U2Action(IconParameters("core", "paste.png"), tr("Paste sequence"), parent);
     action->setObjectName("Paste sequence");
     action->setShortcuts(QKeySequence::Paste);
     action->setShortcutContext(Qt::WidgetWithChildrenShortcut);

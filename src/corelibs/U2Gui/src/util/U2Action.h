@@ -27,23 +27,17 @@
 
 #include <U2Core/IconParameters.h>
 
+#include "IconSwitcher.h"
+
 namespace U2 {
 
-class U2GUI_EXPORT U2Action : public QAction {
+class U2GUI_EXPORT U2Action : public QAction, public IconSwitcher<QAction> {
     Q_OBJECT
 public:
-    U2Action(const QIcon& icon, const QString& text, QObject* parent) = delete;
-
     U2Action(const IconParameters& iconParameters, const QString& text, QObject* parent = nullptr);
-
-    void setIconParameters(const IconParameters& iconParameters);
 
 private slots:
     void sl_colorModeSwitched();
-
-private:
-    IconParameters iconParameters;
-
 };
 
 

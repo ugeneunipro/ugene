@@ -46,6 +46,7 @@
 #include <U2Gui/GScrollBar.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OptionsPanel.h>
+#include <U2Gui/U2Action.h>
 
 #include "MaEditorWgt.h"
 #include "SequenceAreaRenderer.h"

@@ -26,6 +26,8 @@
 #include <U2Core/AnnotationData.h>
 #include <U2Core/Task.h>
 
+#include <U2Gui/U2Action.h>
+
 class QAction;
 
 namespace U2 {
@@ -46,11 +48,10 @@ public:
 
 private slots:
     void sl_createAnnotation();
-    void sl_colorModeSwitched();
 
 private:
     AnnotatedDNAView* ctx;
-    QAction* createAction;
+    U2Action* createAction;
 };
 
 class U2VIEW_EXPORT ADVCreateAnnotationsTask : public Task {

@@ -34,6 +34,7 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/WidgetWithLocalToolbar.h>
+#include <U2Gui/U2Action.h>
 
 #include <U2View/AnnotatedDNAView.h>
 
@@ -45,13 +46,13 @@ namespace U2 {
 DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
     : ADVSplitWidget(a),
       locked(false) {
-    syncLockAction = createAction(GUIUtils::getIconResource("core", "sync_lock.png"), tr("Multiple view synchronization lock"), SLOT(sl_toggleSyncLock(bool)));
-    filterAction = createAction(":dotplot/images/filter.png", tr("Filter results"), SLOT(sl_toggleFilter()), false);
-    zoomInAction = createAction(":core/images/zoom_in.png", tr("Zoom in (<b> + </b>)"), SLOT(sl_toggleZoomIn()), false);
-    zoomOutAction = createAction(":core/images/zoom_out.png", tr("Zoom out (<b> - </b>)"), SLOT(sl_toggleZoomOut()), false);
-    resetZoomingAction = createAction(":core/images/zoom_whole.png", tr("Reset zooming (<b>0</b>)"), SLOT(sl_toggleZoomReset()), false);
-    selAction = createAction(":dotplot/images/cursor.png", tr("Select tool (<b>S</b>)"), SLOT(sl_toggleSel()));
-    handAction = createAction(":dotplot/images/hand_icon.png", tr("Hand tool (<b>H</b>)"), SLOT(sl_toggleHand()));
+    syncLockAction = createAction(IconParameters("core", "sync_lock.png"), tr("Multiple view synchronization lock"), SLOT(sl_toggleSyncLock(bool)));
+    filterAction = createAction(IconParameters("dotplot", "filter.png", false), tr("Filter results"), SLOT(sl_toggleFilter()), false);
+    zoomInAction = createAction(IconParameters("core", "zoom_in.png", false), tr("Zoom in (<b> + </b>)"), SLOT(sl_toggleZoomIn()), false);
+    zoomOutAction = createAction(IconParameters("core", "zoom_out.png", false), tr("Zoom out (<b> - </b>)"), SLOT(sl_toggleZoomOut()), false);
+    resetZoomingAction = createAction(IconParameters("core", "zoom_whole.png", false), tr("Reset zooming (<b>0</b>)"), SLOT(sl_toggleZoomReset()), false);
+    selAction = createAction(IconParameters("dotplot", "cursor.png", false), tr("Select tool (<b>S</b>)"), SLOT(sl_toggleSel()));
+    handAction = createAction(IconParameters("dotplot", "hand_icon.png", false), tr("Hand tool (<b>H</b>)"), SLOT(sl_toggleHand()));
 
     splitter = new QSplitter(Qt::Horizontal);
 
@@ -79,8 +80,6 @@ DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
     setAcceptDrops(false);
 
     setFocus();
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DotPlotSplitter::sl_colorModeSwitched);
 }
 
 bool DotPlotSplitter::onCloseEvent() {
@@ -94,10 +93,9 @@ bool DotPlotSplitter::onCloseEvent() {
     return true;
 }
 
-QAction* DotPlotSplitter::createAction(const QIcon& ic, const QString& toolTip, const char* slot, bool checkable) {
-    auto a = new QAction(this);
+QAction* DotPlotSplitter::createAction(const IconParameters& ic, const QString& toolTip, const char* slot, bool checkable) {
+    auto a = new U2Action(ic, "", this);
     if (a != nullptr) {
-        a->setIcon(ic);
         a->setToolTip(toolTip);
         a->setCheckable(checkable);
         if (checkable) {
@@ -108,10 +106,6 @@ QAction* DotPlotSplitter::createAction(const QIcon& ic, const QString& toolTip, 
     }
 
     return a;
-}
-
-QAction* DotPlotSplitter::createAction(const QString& iconPath, const QString& toolTip, const char* slot, bool checkable) {
-    return createAction(QIcon(iconPath), toolTip, slot, checkable);
 }
 
 void DotPlotSplitter::addView(DotPlotWidget* view) {
@@ -183,10 +177,6 @@ void DotPlotSplitter::buildPopupMenu(QMenu* m) {
         SAFE_POINT(w, "w is NULL", );
         w->buildPopupMenu(m);
     }
-}
-
-void DotPlotSplitter::sl_colorModeSwitched() {
-    syncLockAction->setIcon(GUIUtils::getIconResource("core", "sync_lock.png"));
 }
 
 void DotPlotSplitter::sl_toggleSyncLock(bool l) {

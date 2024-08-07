@@ -55,6 +55,9 @@
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/OrderedToolbar.h>
+#include <U2Gui/U2Action.h>
+#include <U2Gui/U2Menu.h>
+#include <U2Gui/U2ToolButton.h>
 
 #include "./item/TvBranchItem.h"
 #include "./item/TvNodeItem.h"
@@ -94,7 +97,6 @@ TreeViewer::TreeViewer(const QString& viewName, PhyTreeObject* _phyObject, bool 
         CHECK(ui != nullptr, );
         ui->switchTreeLayout(ui->getTreeLayoutType());
     });
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TreeViewer::sl_colorModeSwitched);
 }
 
 QVariantMap TreeViewer::saveState() {
@@ -123,7 +125,7 @@ Task* TreeViewer::updateViewTask(const QString& stateName, const QVariantMap& st
 
 void TreeViewer::createActions() {
     // Tree Settings
-    treeSettingsAction = new QAction(QIcon(":core/images/phylip.png"), tr("Tree Settings..."), ui);
+    treeSettingsAction = new U2Action(IconParameters("core", "phylip.png"), tr("Tree Settings..."), ui);
 
     // Layout
     layoutActionGroup = new QActionGroup(ui);
@@ -142,11 +144,11 @@ void TreeViewer::createActions() {
     unrootedLayoutAction->setObjectName("Unrooted");
 
     // Branch Settings
-    collapseAction = new QAction(GUIUtils::getIconResource("core", "collapse_tree.png"), tr("Collapse"), ui);
+    collapseAction = new U2Action(IconParameters("core", "collapse_tree.png"), tr("Collapse"), ui);
     collapseAction->setObjectName("Collapse");
-    rerootAction = new QAction(GUIUtils::getIconResource("core", "reroot.png"), tr("Reroot tree"), ui);
+    rerootAction = new U2Action(IconParameters("core", "reroot.png"), tr("Reroot tree"), ui);
     rerootAction->setObjectName("Reroot tree");
-    swapAction = new QAction(GUIUtils::getIconResource("core", "swap.png"), tr("Swap Siblings"), ui);
+    swapAction = new U2Action(IconParameters("core", "swap.png"), tr("Swap Siblings"), ui);
     swapAction->setObjectName("Swap Siblings");
 
     // Show Labels
@@ -165,29 +167,29 @@ void TreeViewer::createActions() {
     distanceLabelsAction->setObjectName("Show Distances");
 
     // Formatting
-    textSettingsAction = new QAction(QIcon(":core/images/font.png"), tr("Formatting..."), ui);
+    textSettingsAction = new U2Action(IconParameters("core", "font.png"), tr("Formatting..."), ui);
 
     // Align Labels
     // Note: the icon is truncated to 15 px height to look properly in the main menu when it is checked
-    alignTreeLabelsAction = new QAction(QIcon(":core/images/align_tree_labels.png"), tr("Align Labels"), ui);
+    alignTreeLabelsAction = new U2Action(IconParameters("core", "align_tree_labels.png"), tr("Align Labels"), ui);
     alignTreeLabelsAction->setCheckable(true);
     alignTreeLabelsAction->setObjectName("Align Labels");
 
     // Zooming
-    zoomInAction = new QAction(QIcon(":core/images/zoom_in_tree.png"), tr("Zoom In"), ui);
+    zoomInAction = new U2Action(IconParameters("core", "zoom_in_tree.png"), tr("Zoom In"), ui);
     zoomInAction->setObjectName("zoomInTreeViewerAction");
-    zoomOutAction = new QAction(QIcon(":core/images/zoom_out_tree.png"), tr("Zoom Out"), ui);
+    zoomOutAction = new U2Action(IconParameters("core", "zoom_out_tree.png"), tr("Zoom Out"), ui);
     zoomOutAction->setObjectName("zoomOutTreeViewerAction");
 
-    zoom100Action = new QAction(QIcon(":core/images/zoom_1_1.png"), tr("Reset Zoom"), ui);
+    zoom100Action = new U2Action(IconParameters("core", "sync_scales.png"), tr("Reset Zoom"), ui);
     zoom100Action->setObjectName("zoom100Action");
 
-    zoomFitAction = new QAction(QIcon(":core/images/zoom_fit.png"), tr("Fit Zoom to Window"), ui);
+    zoomFitAction = new U2Action(IconParameters("core", "zoom_fit.png"), tr("Fit Zoom to Window"), ui);
     zoomFitAction->setObjectName("zoomFitAction");
     zoomFitAction->setCheckable(true);
 
     // Print Tree
-    printAction = new QAction(QIcon(":/core/images/printer.png"), tr("Print Tree..."), ui);
+    printAction = new U2Action(IconParameters("core", "printer.png"), tr("Print Tree..."), ui);
 
     copyWholeTreeImageToClipboardAction = new QAction(tr("Copy to clipboard"));
     copyWholeTreeImageToClipboardAction->setObjectName("copyWholeTreeImageToClipboardAction");
@@ -242,14 +244,13 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     // Print and Capture
     tb->addSeparator();
 
-    auto treeImageActionsButton = new QToolButton();
+    auto treeImageActionsButton = new U2ToolButton(IconParameters("core", "cam2.png"));
     treeImageActionsButton->setObjectName("treeImageActionsButton");
-    auto exportTreeImageButtonMenu = new QMenu(tr("Tree image"), ui);
+    auto exportTreeImageButtonMenu = new U2Menu(IconParameters("core", "cam2.png") , tr("Tree image"), ui);
     setupExportTreeImageMenu(exportTreeImageButtonMenu);
     exportTreeImageButtonMenu->menuAction()->setObjectName("treeImageActionsButtonMenuAction");
     treeImageActionsButton->setDefaultAction(exportTreeImageButtonMenu->menuAction());
     treeImageActionsButton->setPopupMode(QToolButton::InstantPopup);
-    treeImageActionsButton->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
 
     tb->addWidget(treeImageActionsButton);
     tb->addAction(printAction);
@@ -316,9 +317,8 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     m->addSeparator();
     m->addAction(printAction);
 
-    auto treeImageActionsSubmenu = new QMenu(tr("Tree image"), ui);
+    auto treeImageActionsSubmenu = new U2Menu(IconParameters("core", "cam2.png"), tr("Tree image"), ui);
     treeImageActionsSubmenu->menuAction()->setObjectName("treeImageActionsSubmenu");
-    treeImageActionsSubmenu->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
     setupExportTreeImageMenu(treeImageActionsSubmenu);
     m->addMenu(treeImageActionsSubmenu);
 
@@ -341,11 +341,6 @@ void TreeViewer::onAfterViewWindowInit() {
 void TreeViewer::onObjectRenamed(GObject*, const QString&) {
     // update title
     OpenTreeViewerTask::updateTitle(this);
-}
-
-void TreeViewer::sl_colorModeSwitched() {
-    rerootAction->setIcon(GUIUtils::getIconResource("core", "reroot.png"));
-    swapAction->setIcon(GUIUtils::getIconResource("core", "swap.png"));
 }
 
 ////////////////////////////
@@ -503,13 +498,12 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer, QWidget* parent)
     buttonPopup->addAction(treeViewer->collapseAction);
     buttonPopup->addSeparator();
 
-    auto treeImageActionsMenu = new QMenu(tr("Tree image"), this);
+    auto treeImageActionsMenu = new U2Menu(IconParameters("core", "cam2.png"), tr("Tree image"), this);
     treeImageActionsMenu->menuAction()->setObjectName("treeImageActionsMenu");
     treeImageActionsMenu->addAction(treeViewer->copyWholeTreeImageToClipboardAction);
     treeImageActionsMenu->addSeparator();
     treeImageActionsMenu->addAction(treeViewer->saveVisibleViewToFileAction);
     treeImageActionsMenu->addAction(treeViewer->saveWholeTreeToSvgAction);
-    treeImageActionsMenu->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
     buttonPopup->addMenu(treeImageActionsMenu);
 
     updateActions();
@@ -1513,7 +1507,7 @@ void TreeViewerUI::updateActions() {
 
     if (isSelectedCollapsed()) {
         treeViewer->collapseAction->setText(QObject::tr("Expand"));
-        treeViewer->collapseAction->setIcon(QIcon(":/core/images/expand_tree.png"));
+        treeViewer->collapseAction->setIcon(GUIUtils::getIconResource("core", "expand_tree.png"));
     } else {
         treeViewer->collapseAction->setText(QObject::tr("Collapse"));
         treeViewer->collapseAction->setIcon(GUIUtils::getIconResource("core", "collapse_tree.png"));

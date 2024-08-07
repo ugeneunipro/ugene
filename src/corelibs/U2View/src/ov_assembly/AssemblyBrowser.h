@@ -34,6 +34,7 @@
 
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/ObjectViewModel.h>
+#include <U2Gui/U2Action.h>
 
 #include "AssemblyModel.h"
 #include "CoveredRegionsManager.h"
@@ -195,7 +196,6 @@ private slots:
     void sl_trackRemoved(VariantTrackObject* obj);
     void sl_setReference();
     void sl_onReferenceLoaded();
-    void sl_colorModeSwitched();
 
 private:
     void initFont();
@@ -242,18 +242,18 @@ private:
 
     AssemblyCellRendererFactoryRegistry* cellRendererRegistry;
 
-    QAction* zoomInAction;
-    QAction* zoomOutAction;
+    U2Action* zoomInAction = nullptr;
+    U2Action* zoomOutAction = nullptr;
     QAction* posSelectorAction;
     PositionSelector* posSelector;
     QList<QAction*> overviewScaleTypeActions;
-    QAction* showCoordsOnRulerAction = nullptr;
-    QAction* showCoverageOnRulerAction;
+    U2Action* showCoordsOnRulerAction = nullptr;
+    U2Action* showCoverageOnRulerAction = nullptr;
     QAction* readHintEnabledAction = nullptr;
-    QAction* saveScreenShotAction;
-    QAction* exportToSamAction;
-    QAction* setReferenceAction;
-    QAction* extractAssemblyRegionAction;
+    U2Action* saveScreenShotAction = nullptr;
+    U2Action* exportToSamAction = nullptr;
+    U2Action* setReferenceAction = nullptr;
+    U2Action* extractAssemblyRegionAction = nullptr;
 
     Task* loadReferenceTask;
 

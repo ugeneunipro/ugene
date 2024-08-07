@@ -44,6 +44,7 @@
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/OptionsPanelWidget.h>
 #include <U2Gui/ProjectView.h>
+#include <U2Gui/U2Action.h>
 
 #include <U2View/BaseWidthController.h>
 #include <U2View/ColorSchemaSettingsController.h>
@@ -126,15 +127,15 @@ MsaEditor::MsaEditor(const QString& viewName, MsaObject* obj)
     sortGroupsBySizeDescendingAction->setToolTip(tr("Sort groups by number of sequences in the group, descending"));
     connect(sortGroupsBySizeDescendingAction, SIGNAL(triggered()), SLOT(sl_sortGroupsBySize()));
 
-    saveScreenshotAction = new QAction(GUIUtils::getIconResource("core", "cam2.png"), tr("Export as image"), this);
+    saveScreenshotAction = new U2Action(IconParameters("core", "cam2.png"), tr("Export as image"), this);
     saveScreenshotAction->setObjectName("export_msa_as_image_action");
     connect(saveScreenshotAction, &QAction::triggered, this, &MsaEditor::sl_exportImage);
 
-    buildTreeAction = new QAction(GUIUtils::getIconResource("core", "phylip.png"), tr("Build Tree"), this);
+    buildTreeAction = new U2Action(IconParameters("core", "phylip.png"), tr("Build Tree"), this);
     buildTreeAction->setObjectName("Build Tree");
     connect(buildTreeAction, SIGNAL(triggered()), SLOT(sl_buildTree()));
 
-    alignSelectedSequencesToAlignmentAction = new QAction(GUIUtils::getIconResource("core", "realign_some_sequences.png", false), tr("Realign sequence(s) to other sequences"), this);
+    alignSelectedSequencesToAlignmentAction = new U2Action(IconParameters("core", "realign_some_sequences.png", false), tr("Realign sequence(s) to other sequences"), this);
     alignSelectedSequencesToAlignmentAction->setObjectName("align_selected_sequences_to_alignment");
 
     pairwiseAlignmentWidgetsSettings = new PairwiseAlignmentWidgetsSettings;
@@ -484,16 +485,6 @@ void MsaEditor::addStatisticsMenu(QMenu* m) {
     em->menuAction()->setObjectName(MSAE_MENU_STATISTICS);
 }
 
-void MsaEditor::sl_colorModeSwitched() {
-    searchInSequencesAction->setIcon(GUIUtils::getIconResource("core", "find_dialog.png"));
-    searchInSequenceNamesAction->setIcon(GUIUtils::getIconResource("core", "find_dialog.png"));
-    saveScreenshotAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
-    buildTreeAction->setIcon(GUIUtils::getIconResource("core", "phylip.png"));
-    alignSelectedSequencesToAlignmentAction->setIcon(GUIUtils::getIconResource("core", "realign_some_sequences.png", false));
-
-    MaEditor::sl_colorModeSwitched();
-}
-
 QWidget* MsaEditor::createViewWidget(QWidget* parent) {
     SAFE_POINT(ui == nullptr, "UI is already created", ui);
 
@@ -544,14 +535,14 @@ void MsaEditor::initChildrenActionsAndSignals() {
 void MsaEditor::initActions() {
     MaEditor::initActions();
 
-    searchInSequencesAction = new QAction(GUIUtils::getIconResource("core", "find_dialog.png"), tr("Search in sequences…"), this);
+    searchInSequencesAction = new U2Action(IconParameters("core", "find_dialog.png"), tr("Search in sequences…"), this);
     searchInSequencesAction->setObjectName("search_in_sequences");
     searchInSequencesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
     searchInSequencesAction->setShortcutContext(Qt::WindowShortcut);
     searchInSequencesAction->setToolTip(QString("%1 (%2)").arg(searchInSequencesAction->text()).arg(searchInSequencesAction->shortcut().toString()));
     connect(searchInSequencesAction, SIGNAL(triggered()), this, SLOT(sl_searchInSequences()));
 
-    searchInSequenceNamesAction = new QAction(GUIUtils::getIconResource("core", "find_dialog.png"), tr("Search in sequence names…"), this);
+    searchInSequenceNamesAction = new U2Action(IconParameters("core", "find_dialog.png"), tr("Search in sequence names…"), this);
     searchInSequenceNamesAction->setObjectName("search_in_sequence_names");
     searchInSequenceNamesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_F));
     searchInSequenceNamesAction->setShortcutContext(Qt::WindowShortcut);

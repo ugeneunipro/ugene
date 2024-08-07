@@ -90,9 +90,6 @@ protected:
     QWidget* createViewWidget(QWidget* parent) override;
     void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
-private slots:
-    void sl_colorModeSwitched();
-
 public:
     QAction* treeSettingsAction = nullptr;
     QAction* rectangularLayoutAction = nullptr;

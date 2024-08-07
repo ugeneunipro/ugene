@@ -232,8 +232,6 @@ private slots:
 
     virtual void sl_removeSelectedSequenceObject();
 
-    void sl_colorModeSwitched();
-
 private:
     void updateScrollAreaHeight();
     void updateMultiViewActions();
@@ -263,7 +261,7 @@ private:
 
     QAction* createAnnotationAction;
     QAction* findPatternAction;
-    QAction* posSelectorAction;
+    QAction* posSelectorAction = nullptr;
     QAction* toggleHLAction;
     QAction* posSelectorWidgetAction;
     QAction* removeAnnsAndQsAction;

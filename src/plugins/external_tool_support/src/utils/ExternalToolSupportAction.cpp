@@ -75,9 +75,7 @@ void ExternalToolSupportAction::setState(bool isAnyToolConfigured) {
     if (!isAnyToolConfigured ||
         (AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath().isEmpty())) {
         isConfiguredToolFont.setItalic(true);
-        const auto& grayIconParameters = tool->getGrayIconParameters();
-        auto grayIcon = GUIUtils::getIconResource(grayIconParameters.iconCathegory, grayIconParameters.iconName, grayIconParameters.hasColorCathegory);
-        setIcon(GUIUtils::getIconResource(grayIconParameters));
+        setIcon(GUIUtils::getIconResource(tool->getGrayIconParameters()));
     } else {
         isConfiguredToolFont.setItalic(false);
         if (AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->isValid()) {

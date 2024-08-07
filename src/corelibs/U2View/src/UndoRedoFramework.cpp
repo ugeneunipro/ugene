@@ -30,6 +30,7 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/U2Action.h>
 
 namespace U2 {
 
@@ -38,12 +39,12 @@ MaUndoRedoFramework::MaUndoRedoFramework(QObject* parent, MsaObject* _maObject)
       maObject(_maObject) {
     SAFE_POINT(maObject != nullptr, "NULL MSA Object!", );
 
-    undoAction = new QAction(GUIUtils::getIconResource("core", "undo.png", false), tr("Undo"), this);
+    undoAction = new U2Action(IconParameters("core", "undo.png", false), tr("Undo"), this);
     undoAction->setObjectName("msa_action_undo");
     undoAction->setShortcut(QKeySequence::Undo);
     GUIUtils::updateActionToolTip(undoAction);
 
-    redoAction = new QAction(GUIUtils::getIconResource("core", "redo.png", false), tr("Redo"), this);
+    redoAction = new U2Action(IconParameters("core", "redo.png", false), tr("Redo"), this);
     redoAction->setObjectName("msa_action_redo");
     redoAction->setShortcut(QKeySequence::Redo);
     GUIUtils::updateActionToolTip(redoAction);
@@ -55,7 +56,6 @@ MaUndoRedoFramework::MaUndoRedoFramework(QObject* parent, MsaObject* _maObject)
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateUndoRedoState()));
     connect(undoAction, SIGNAL(triggered()), this, SLOT(sl_undo()));
     connect(redoAction, SIGNAL(triggered()), this, SLOT(sl_redo()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaUndoRedoFramework::sl_colorModeSwitched);
 }
 
 void MaUndoRedoFramework::sl_completeStateChanged(bool _stateComplete) {
@@ -138,11 +138,6 @@ void MaUndoRedoFramework::sl_redo() {
     MaModificationInfo modInfo;
     modInfo.type = MaModificationType_Redo;
     maObject->updateCachedMultipleAlignment(modInfo);
-}
-
-void MaUndoRedoFramework::sl_colorModeSwitched() {
-    undoAction->setIcon(GUIUtils::getIconResource("core", "undo.png", false));
-    redoAction->setIcon(GUIUtils::getIconResource("core", "redo.png", false));
 }
 
 QAction* MaUndoRedoFramework::getUndoAction() const {

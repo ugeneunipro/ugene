@@ -47,7 +47,6 @@ void ADVGlobalAction::sl_activeSequenceChanged() {
 void ADVGlobalAction::sl_colorModeSwitched() {
     updateState();
 }
-
 void ADVGlobalAction::updateState() {
     auto av = qobject_cast<AnnotatedDNAView*>(getObjectView());
     ADVSequenceWidget* w = av->getActiveSequenceWidget();
@@ -60,9 +59,6 @@ void ADVGlobalAction::updateState() {
         enabled = alphabetFilter.contains(t);
     }
     setEnabled(enabled);
-    if (!iconParameters.isEmpty()) {
-        setIcon(GUIUtils::getIconResource(iconParameters));
-    }
 }
 
 }  // namespace U2

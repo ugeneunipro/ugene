@@ -28,8 +28,10 @@
 
 #include <U2Core/AppContext.h>
 
+#include <U2Gui/U2Action.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/U2ToolButton.h>
 
 namespace U2 {
 
@@ -43,29 +45,25 @@ ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
     connect(scaleBar, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_updateState()));
 
-    minusAction = new QAction(GUIUtils::getIconResource("core", "minus.png", false), tr("Decrease peaks height"), this);
+    minusAction = new U2Action(IconParameters("core", "minus.png", false), tr("Decrease peaks height"), this);
     connect(minusAction, SIGNAL(triggered()), SLOT(sl_minusButtonClicked()));
 
-    minusButton = new QToolButton();
+    minusButton = new U2ToolButton(IconParameters("core", "minus.png", false), this);
     minusButton->setText(QString(tr("Decrease peaks height")));
-    minusButton->setIcon(GUIUtils::getIconResource("core", "minus.png", false));
     minusButton->setFixedSize(20, 20);
     minusButton->setAutoRepeat(true);
     minusButton->setAutoRepeatInterval(20);
     connect(minusButton, SIGNAL(clicked()), minusAction, SLOT(trigger()));
 
-    plusAction = new QAction(GUIUtils::getIconResource("core", "plus.png", false), tr("Increase peaks height"), this);
+    plusAction = new U2Action(IconParameters("core", "plus.png", false), tr("Increase peaks height"), this);
     connect(plusAction, SIGNAL(triggered()), SLOT(sl_plusButtonClicked()));
 
-    plusButton = new QToolButton(this);
+    plusButton = new U2ToolButton(IconParameters("core", "plus.png", false), this);
     plusButton->setText(QString(tr("Increase peaks height")));
-    plusButton->setIcon(GUIUtils::getIconResource("core", "plus.png", false));
     plusButton->setAutoRepeat(true);
     plusButton->setAutoRepeatInterval(20);
     plusButton->setFixedSize(20, 20);
     connect(plusButton, SIGNAL(clicked()), plusAction, SLOT(trigger()));
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ScaleBar::sl_colorModeSwitched);
 
     // layout
     auto zoomLayout = new QBoxLayout(ori == Qt::Vertical ? QBoxLayout::TopToBottom : QBoxLayout::RightToLeft);
@@ -126,13 +124,6 @@ void ScaleBar::sl_updateState() {
     minusButton->setEnabled(minusAction->isEnabled());
     plusAction->setEnabled(scaleBar->value() != scaleBar->maximum());
     plusButton->setEnabled(plusAction->isEnabled());
-}
-
-void ScaleBar::sl_colorModeSwitched() {
-    minusAction->setIcon(GUIUtils::getIconResource("core", "minus.png", false));
-    minusButton->setIcon(GUIUtils::getIconResource("core", "minus.png", false));
-    plusAction->setIcon(GUIUtils::getIconResource("core", "plus.png", false));
-    plusButton->setIcon(GUIUtils::getIconResource("core", "plus.png", false));
 }
 
 }  // namespace U2

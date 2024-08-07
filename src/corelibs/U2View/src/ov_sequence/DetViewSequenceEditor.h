@@ -78,7 +78,6 @@ private slots:
 
     void sl_objectLockStateChanged();
     void sl_paste(Task* pasteTask);
-    void sl_colorModeSwitched();
 
 private:
     qint64 cursor = 0;  // TODO_SVEDIT: can be separate class

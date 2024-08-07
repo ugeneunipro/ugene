@@ -31,6 +31,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/ObjectViewModel.h>
+#include <U2Gui/U2Menu.h>
 
 #include <U2View/ADVAnnotationCreation.h>
 
@@ -49,8 +50,7 @@ AutoAnnotationsADVAction::AutoAnnotationsADVAction(ADVSequenceWidget* v,
     seqWidget = v;
     addToBar = true;
 
-    menu = new QMenu();
-    setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
+    menu = new U2Menu(IconParameters("core", "predefined_annotation_groups.png"), "");
     setMenu(menu);
 
     connect(aaObj, SIGNAL(si_updateStarted()), SLOT(sl_autoAnnotationUpdateStarted()));
@@ -61,7 +61,6 @@ AutoAnnotationsADVAction::AutoAnnotationsADVAction(ADVSequenceWidget* v,
 
     deselectAllAction = new QAction(tr("Deselect all"), this);
     connect(deselectAllAction, SIGNAL(triggered()), SLOT(sl_onDeselectAll()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AutoAnnotationsADVAction::sl_colorModeSwitched);
 
     updateMenu();
 
@@ -147,10 +146,6 @@ void AutoAnnotationsADVAction::sl_onDeselectAll() {
             action->trigger();
         }
     }
-}
-
-void AutoAnnotationsADVAction::sl_colorModeSwitched() {
-    setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
 }
 
 AutoAnnotationsADVAction::~AutoAnnotationsADVAction() {

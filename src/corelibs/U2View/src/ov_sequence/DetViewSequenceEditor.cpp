@@ -38,6 +38,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/U2Action.h>
 
 #include <U2View/ADVSequenceWidget.h>
 
@@ -53,8 +54,7 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
     : cursorColor(Qt::black),
       animationTimer(this),
       view(view) {
-    editAction = new QAction(tr("Switch on the editing mode"), this);
-    editAction->setIcon(GUIUtils::getIconResource("core", "edit.png"));
+    editAction = new U2Action(IconParameters("core", "edit.png") , tr("Switch on the editing mode"), this);
     editAction->setObjectName("edit_sequence_action");
     editAction->setCheckable(true);
     editAction->setDisabled(view->getSequenceObject()->isStateLocked());
@@ -63,7 +63,6 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
 
     reset();
     connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_cursorAnimationTimerCallback()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DetViewSequenceEditor::sl_colorModeSwitched);
     setParent(view);
 }
 
@@ -395,10 +394,6 @@ void DetViewSequenceEditor::sl_paste(Task* task) {
     modifySequence(seqObj, U2Region(cursor, 0), seq);
 
     setCursor(cursor + seq.length());
-}
-
-void DetViewSequenceEditor::sl_colorModeSwitched() {
-    editAction->setIcon(GUIUtils::getIconResource("core", "edit.png"));
 }
 
 }  // namespace U2

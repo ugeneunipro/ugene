@@ -41,6 +41,7 @@
 
 #include <U2Gui/GScrollBar.h>
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/U2Action.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
@@ -62,8 +63,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     : GSequenceLineViewAnnotated(p, ctx) {
     editor = new DetViewSequenceEditor(this);
 
-    showComplementAction = new QAction(tr("Show complementary strand"), this);
-    showComplementAction->setIcon(GUIUtils::getIconResource("core", "show_compl.png"));
+    showComplementAction = new U2Action(IconParameters("core", "show_compl.png"), tr("Show complementary strand"), this);
     showComplementAction->setObjectName("complement_action");
     connect(showComplementAction, SIGNAL(triggered(bool)), SLOT(sl_showComplementToggle(bool)));
 
@@ -96,8 +96,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     connect(showAllFramesAction, SIGNAL(triggered(bool)), SLOT(sl_showAllFrames()));
     showAllFramesAction->setCheckable(true);
 
-    wrapSequenceAction = new QAction(tr("Wrap sequence"), this);
-    wrapSequenceAction->setIcon(GUIUtils::getIconResource("core", "wrap_sequence.png"));
+    wrapSequenceAction = new U2Action(IconParameters("core", "wrap_sequence.png") , tr("Wrap sequence"), this);
     wrapSequenceAction->setObjectName("wrap_sequence_action");
     connect(wrapSequenceAction, SIGNAL(triggered(bool)), SLOT(sl_wrapSequenceToggle(bool)));
 
@@ -391,19 +390,6 @@ void DetView::sl_setUpFramesManually() {
 
 void DetView::sl_showAllFrames() {
     updateSelectedTranslations(SequenceObjectContext::TS_ShowAllFrames);
-}
-
-void DetView::sl_colorModeSwitched() {
-    wrapSequenceAction->setIcon(GUIUtils::getIconResource("core", "wrap_sequence.png"));
-    showComplementAction->setIcon(GUIUtils::getIconResource("core", "show_compl.png"));
-    if (translationsMenu != nullptr) {
-        translationsMenu->setIcon(GUIUtils::getIconResource("core", "show_trans.png"));
-    }
-    if (ttMenu != nullptr) {
-        ttMenu->setIcon(GUIUtils::getIconResource("core", "tt_switch.png"));
-    }
-
-    GSequenceLineViewAnnotated::sl_colorModeSwitched();
 }
 
 void DetView::updateSelectedTranslations(const SequenceObjectContext::TranslationState& state) {

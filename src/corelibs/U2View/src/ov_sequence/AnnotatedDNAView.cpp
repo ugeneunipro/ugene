@@ -108,7 +108,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     createCodonTableAction();
     createAnnotationAction = (new ADVAnnotationCreation(this))->getCreateAnnotationAction();
 
-    posSelectorAction = new QAction(GUIUtils::getIconResource("core", "goto.png"), tr("Go to position..."), this);
+    posSelectorAction = new U2Action(IconParameters("core", "goto.png"), tr("Go to position..."), this);
     posSelectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
     posSelectorAction->setShortcutContext(Qt::WindowShortcut);
     posSelectorAction->setObjectName(ADV_GOTO_ACTION);
@@ -166,8 +166,6 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     complementSequenceAction = new QAction(tr("Complementary (3'-5') sequence"), this);
     complementSequenceAction->setObjectName(ACTION_EDIT_COMPLEMENT_SEQUENCE);
     connect(complementSequenceAction, SIGNAL(triggered()), SLOT(sl_complementSequence()));
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AnnotatedDNAView::sl_colorModeSwitched);
 
     SecStructPredictViewAction::createAction(this);
 }
@@ -1330,10 +1328,6 @@ void AnnotatedDNAView::sl_removeSelectedSequenceObject() {
     ADVSequenceObjectContext* soc = sw->getActiveSequenceContext();
     U2SequenceObject* so = soc->getSequenceObject();
     removeObject(so);
-}
-
-void AnnotatedDNAView::sl_colorModeSwitched() {
-    posSelectorAction->setIcon(GUIUtils::getIconResource("core", "goto.png"));
 }
 
 QList<AnnotationTableObject*> AnnotatedDNAView::getAnnotationObjects(bool includeAutoAnnotations) const {

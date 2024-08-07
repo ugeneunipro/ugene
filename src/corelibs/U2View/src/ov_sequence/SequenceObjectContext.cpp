@@ -35,6 +35,7 @@
 
 #include <U2Gui/MultiClickMenu.h>
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/U2Menu.h>
 
 #include <U2View/CodonTable.h>
 
@@ -287,8 +288,7 @@ void SequenceObjectContext::sl_onAnnotationRelationChange() {
 
 QMenu* SequenceObjectContext::createGeneticCodeMenu() {
     CHECK(translations != nullptr, nullptr);
-    auto menu = new QMenu(tr("Select genetic code"));
-    menu->setIcon(GUIUtils::getIconResource("core", "tt_switch.png"));
+    auto menu = new U2Menu(IconParameters("core", "tt_switch.png") , tr("Select genetic code"));
     menu->menuAction()->setObjectName("AminoTranslationAction");
 
     foreach (QAction* a, translations->actions()) {
@@ -299,8 +299,7 @@ QMenu* SequenceObjectContext::createGeneticCodeMenu() {
 
 QMenu* SequenceObjectContext::createTranslationFramesMenu(QList<QAction*> menuActions) {
     SAFE_POINT(visibleFrames != nullptr, "SequenceObjectContext: visibleFrames is NULL ?!", nullptr);
-    auto menu = new QMenu(tr("Show/hide amino acid translations"));
-    menu->setIcon(GUIUtils::getIconResource("core", "show_trans.png"));
+    auto menu = new U2Menu(IconParameters("core", "show_trans.png"), tr("Show/hide amino acid translations"));
     menu->menuAction()->setObjectName("Translation frames");
     new MultiClickMenu(menu);
 

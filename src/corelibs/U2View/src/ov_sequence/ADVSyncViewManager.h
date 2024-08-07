@@ -58,7 +58,6 @@ private slots:
     void sl_toggleAutoAnnotationHighlighting();
     void sl_updateAutoAnnotationsMenu();
     void sl_updateVisualMode();
-    void sl_colorModeSwitched();
 
 private:
     enum SyncMode {
@@ -96,8 +95,8 @@ private:
 
     QToolButton* syncButton;
     QToolButton* lockButton;
-    QMenu* syncMenu;
-    QMenu* lockMenu;
+    QMenu* syncMenu = nullptr;
+    QMenu* lockMenu = nullptr;
 
     QAction* syncButtonTBAction;
     QAction* lockButtonTBAction;
@@ -109,7 +108,7 @@ private:
     // auto annotation highlighting
     QMap<QString, QAction*> aaActionMap;
     QAction* toggleAutoAnnotationsAction;
-    QMenu* toggleAutoAnnotationsMenu;
+    QMenu* toggleAutoAnnotationsMenu = nullptr;
     QToolButton* toggleAutoAnnotationsButton;
 
     // visual mode vars

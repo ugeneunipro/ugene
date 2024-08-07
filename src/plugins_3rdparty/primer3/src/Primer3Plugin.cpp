@@ -36,6 +36,7 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ToolsMenu.h>
+#include <U2Gui/U2Action.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 
@@ -62,10 +63,9 @@ Primer3Plugin::Primer3Plugin()
         viewCtx = new Primer3ADVContext(this);
         viewCtx->init();
 
-        noTargetSequencePrimer3 = new QAction(GUIUtils::getIconResource("primer3", "primer3.png"), tr("Primer3 (no target sequence)..."), this);
+        noTargetSequencePrimer3 = new U2Action(IconParameters("primer3", "primer3.png"), tr("Primer3 (no target sequence)..."), this);
         noTargetSequencePrimer3->setObjectName(ToolsMenu::PRIMER3);
         connect(noTargetSequencePrimer3, &QAction::triggered, viewCtx, &Primer3ADVContext::sl_showDialog);
-        connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &Primer3Plugin::sl_colorModeSwitched);
         ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, noTargetSequencePrimer3);
     }
 
@@ -87,10 +87,6 @@ Primer3Plugin::Primer3Plugin()
         bool res = xmlTestFormat->registerTestFactory(f);
         SAFE_POINT(res, "Can't register XMLTestFactory", );
     }
-}
-
-void Primer3Plugin::sl_colorModeSwitched() {
-    noTargetSequencePrimer3->setIcon(GUIUtils::getIconResource("primer3", "primer3.png"));
 }
 
 Primer3ADVContext::Primer3ADVContext(QObject* p)

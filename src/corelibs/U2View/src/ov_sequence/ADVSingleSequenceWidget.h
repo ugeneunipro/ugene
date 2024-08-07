@@ -137,7 +137,7 @@ public:
     void setNumBasesVisible(qint64 n) override;
 
     QAction* getSelectRangeAction() const {
-        return selectRangeAction1;
+        return (QAction*)selectRangeAction1;
     }
 
     void onSequenceObjectRenamed(const QString& oldName) override;
@@ -199,17 +199,17 @@ private:
     ADVSingleSequenceHeaderWidget* headerWidget;
 
     QAction* toggleViewAction;
-    QAction* togglePanViewAction;
-    QAction* toggleDetViewAction;
-    QAction* toggleOverviewAction;
-    QAction* selectRangeAction1;
-    QAction* selectRangeAction2;
+    QAction* togglePanViewAction = nullptr;
+    QAction* toggleDetViewAction = nullptr;
+    QAction* toggleOverviewAction = nullptr;
+    QAction* selectRangeAction1 = nullptr;
+    QAction* selectRangeAction2 = nullptr;
     QAction* selectInAnnotationRangeAction;
     QAction* selectOutAnnotationRangeAction;
     QAction* zoomToRangeAction;
     QAction* createNewRulerAction;
     QAction* shotScreenAction;
-    QAction* closeViewAction;
+    QAction* closeViewAction = nullptr;
     QAction* exportImageAction = nullptr;
 
     GAutoDeleteList<QAction> rulerActions;

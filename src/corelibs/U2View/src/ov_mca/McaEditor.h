@@ -24,6 +24,8 @@
 #include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/U2Action.h>
+
 #include <U2View/MaEditor.h>
 #include <U2View/MaEditorWgt.h>
 
@@ -92,13 +94,11 @@ private slots:
     void sl_saveOverviewState();
     void sl_saveChromatogramState();
 
-    void sl_colorModeSwitched();
-
 protected:
     QWidget* createViewWidget(QWidget* parent) override;
     void initActions() override;
 
-    QAction* showChromatogramsAction = nullptr;
+    U2Action* showChromatogramsAction = nullptr;
     QAction* showGeneralTabAction = nullptr;
     QAction* showConsensusTabAction = nullptr;
 

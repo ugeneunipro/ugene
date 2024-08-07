@@ -24,12 +24,8 @@
 #include <QLabel>
 #include <QMovie>
 #include <QStyle>
-#include <QToolButton>
 
-#include <U2Core/AppContext.h>
-
-#include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
+#include <U2Gui/U2ToolButton.h>
 
 static const QString LABEL_STYLE_SHEET = "border: 0px; padding: 0px;";
 static const QString CLEAR_BUTTON_STYLE_SHEET = "border: 0px; padding: 1px 0px 0px 0px;";
@@ -49,16 +45,14 @@ SearchBox::SearchBox(QWidget* p)
     searchIconLabel->setStyleSheet(LABEL_STYLE_SHEET);
     searchIconLabel->setPixmap(QPixmap(":/core/images/zoom_whole_small.png"));
 
-    clearButton = new QToolButton(this);
+    clearButton = new U2ToolButton(IconParameters("core", "close_small.png") , this);
     clearButton->setStyleSheet(CLEAR_BUTTON_STYLE_SHEET);
-    clearButton->setIcon(GUIUtils::getIconResource("core", "close_small.png"));
     clearButton->setCursor(Qt::ArrowCursor);
     clearButton->setVisible(false);
     clearButton->setObjectName("project filter clear button");
 
     connect(clearButton, &QAbstractButton::clicked, this, &SearchBox::sl_clearButtonClicked);
     connect(this, &QLineEdit::textChanged, this, &SearchBox::sl_textChanged);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SearchBox::sl_colorModeSwitched);
 
     QWidget::setTabOrder(this, this);
 
@@ -95,10 +89,6 @@ void SearchBox::sl_textChanged(const QString& text) {
             clearButton->show();
         }
 
-}
-
-void SearchBox::sl_colorModeSwitched() {
-    clearButton->setIcon(GUIUtils::getIconResource("core", "close_small.png"));
 }
 
 void SearchBox::paintEvent(QPaintEvent* event) {

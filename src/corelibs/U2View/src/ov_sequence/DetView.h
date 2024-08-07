@@ -91,7 +91,6 @@ protected slots:
     void sl_translateAnnotationsOrSelection();
     void sl_setUpFramesManually();
     void sl_showAllFrames();
-    void sl_colorModeSwitched() override;
 
 protected:
     void pack() override;
@@ -111,9 +110,9 @@ protected:
     void updateVerticalScrollBar();
     void updateVerticalScrollBarPosition();
 
-    QAction* showComplementAction;
+    QAction* showComplementAction = nullptr;
     QAction* showTranslationAction;
-    QAction* wrapSequenceAction;
+    QAction* wrapSequenceAction = nullptr;
     QAction* doNotTranslateAction;
     QAction* translateAnnotationsOrSelectionAction;
     QAction* setUpFramesManuallyAction;

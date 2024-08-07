@@ -31,6 +31,7 @@
 
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ProjectView.h>
+#include <U2Gui/U2Action.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2View/MaCollapseModel.h>

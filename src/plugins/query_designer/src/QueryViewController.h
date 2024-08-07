@@ -198,7 +198,6 @@ private slots:
     void sl_setGlobalStrand(QAction* a);
     void sl_itemAdded();
     void sl_scrollUp();
-    void sl_colorModeSwitched();
 
 private:
     void createActions();

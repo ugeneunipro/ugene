@@ -33,6 +33,7 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/U2Action.h>
 
 #include "ExportProjectDialogController.h"
 #include "ProjectImpl.h"
@@ -127,10 +128,6 @@ void ProjectServiceImpl::sl_exportProject() {
     }
 }
 
-void ProjectServiceImpl::sl_colorModeSwitched() {
-    saveAction->setIcon(GUIUtils::getIconResource("core", "save.png"));
-}
-
 //////////////////////////////////////////////////////////////////////////
 /// Service tasks
 
@@ -144,7 +141,7 @@ Task::ReportResult ProjectServiceEnableTask::report() {
 
     assert(psi->saveAction == nullptr && psi->closeProjectAction == nullptr);
 
-    psi->saveAction = new QAction(GUIUtils::getIconResource("core", "save.png"), tr("&Save all"), psi);
+    psi->saveAction = new U2Action(IconParameters("core", "save.png"), tr("&Save all"), psi);
     psi->saveAction->setObjectName("saveProjectAction");
     psi->saveAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
     psi->saveAction->setShortcutContext(Qt::WindowShortcut);

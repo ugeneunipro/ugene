@@ -21,32 +21,15 @@
 
 #include "U2Action.h"
 
-#include <U2Core/AppContext.h>
-#include <U2Core/U2SafePoints.h>
-
-#include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
-
 namespace U2 {
 
 U2Action::U2Action(const IconParameters& _iconParameters, const QString& text, QObject* parent)
-    : QAction(GUIUtils::getIconResource(_iconParameters), text, parent),
-      iconParameters(_iconParameters) {
-
-    auto mw = AppContext::getMainWindow();
-    SAFE_POINT_NN(mw, );
-
-    connect(mw, &MainWindow::si_colorModeSwitched, this, &U2Action::sl_colorModeSwitched);
-}
-
-void U2Action::setIconParameters(const IconParameters& _iconParameters) {
-    SAFE_POINT(_iconParameters.isEmpty(), "Not expected to change icon", );
-
-    iconParameters = _iconParameters;
+    : QAction(text, parent), IconSwitcher<QAction>(this, _iconParameters) {
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &U2Action::sl_colorModeSwitched);
 }
 
 void U2Action::sl_colorModeSwitched() {
-    setIcon(GUIUtils::getIconResource(iconParameters));
+    colorModeSwitched();
 }
 
 }  // namespace U2

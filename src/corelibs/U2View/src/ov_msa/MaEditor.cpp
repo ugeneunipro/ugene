@@ -94,31 +94,31 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
 
     // SANGER_TODO: move to separate method
     // do that in createWidget along with initActions?
-    saveAlignmentAction = new QAction(GUIUtils::getIconResource("core", "msa_save.png"), tr("Save alignment"), this);
+    saveAlignmentAction = new U2Action(IconParameters("core", "msa_save.png"), tr("Save alignment"), this);
     saveAlignmentAction->setObjectName("Save alignment");
     connect(saveAlignmentAction, SIGNAL(triggered()), SLOT(sl_saveAlignment()));
 
-    saveAlignmentAsAction = new QAction(GUIUtils::getIconResource("core", "msa_save_as.png"), tr("Save alignment as"), this);
+    saveAlignmentAsAction = new U2Action(IconParameters("core", "msa_save_as.png"), tr("Save alignment as"), this);
     saveAlignmentAsAction->setObjectName("Save alignment as");
     connect(saveAlignmentAsAction, SIGNAL(triggered()), SLOT(sl_saveAlignmentAs()));
 
-    zoomInAction = new QAction(GUIUtils::getIconResource("core", "zoom_in.png", false), tr("Zoom In"), this);
+    zoomInAction = new U2Action(IconParameters("core", "zoom_in.png", false), tr("Zoom In"), this);
     zoomInAction->setObjectName("Zoom In");
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomIn()));
 
-    zoomOutAction = new QAction(GUIUtils::getIconResource("core", "zoom_out.png", false), tr("Zoom Out"), this);
+    zoomOutAction = new U2Action(IconParameters("core", "zoom_out.png", false), tr("Zoom Out"), this);
     zoomOutAction->setObjectName("Zoom Out");
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
-    zoomToSelectionAction = new QAction(GUIUtils::getIconResource("core", "zoom_reg.png", false), tr("Zoom To Selection"), this);
+    zoomToSelectionAction = new U2Action(IconParameters("core", "zoom_reg.png", false), tr("Zoom To Selection"), this);
     zoomToSelectionAction->setObjectName("Zoom To Selection");
     connect(zoomToSelectionAction, SIGNAL(triggered()), SLOT(sl_zoomToSelection()));
 
-    resetZoomAction = new QAction(GUIUtils::getIconResource("core", "zoom_whole.png", false), tr("Reset Zoom"), this);
+    resetZoomAction = new U2Action(IconParameters("core", "zoom_whole.png", false), tr("Reset Zoom"), this);
     resetZoomAction->setObjectName("Reset Zoom");
     connect(resetZoomAction, SIGNAL(triggered()), SLOT(sl_resetZoom()));
 
-    changeFontAction = new QAction(GUIUtils::getIconResource("core", "font.png"), tr("Change Font"), this);
+    changeFontAction = new U2Action(IconParameters("core", "font.png"), tr("Change Font"), this);
     changeFontAction->setObjectName("Change Font");
     connect(changeFontAction, SIGNAL(triggered()), SLOT(sl_changeFont()));
 
@@ -149,7 +149,6 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
             SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)),
             SLOT(sl_onAlignmentChanged(const Msa&, const MaModificationInfo&)));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(resetColumnWidthCache()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaEditor::sl_colorModeSwitched);
 }
 
 void MaEditor::sl_onAlignmentChanged(const Msa&, const MaModificationInfo&) {
@@ -643,16 +642,6 @@ void MaEditor::sl_gotoSelectedRead() {
         posToCenter = maRow->isComplemented() ? maRow->getCoreStart() : maRow->getCoreEnd() - 1;
     }
     sequenceArea->centerPos(posToCenter);
-}
-
-void MaEditor::sl_colorModeSwitched() {
-    saveAlignmentAction->setIcon(GUIUtils::getIconResource("core", "msa_save.png"));
-    saveAlignmentAsAction->setIcon(GUIUtils::getIconResource("core", "msa_save_as.png"));
-    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));
-    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png", false));
-    zoomToSelectionAction->setIcon(GUIUtils::getIconResource("core", "zoom_reg.png", false));
-    resetZoomAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png", false));
-    changeFontAction->setIcon(GUIUtils::getIconResource("core", "font.png"));
 }
 
 MaCollapseModel* MaEditor::getCollapseModel() const {

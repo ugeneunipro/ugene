@@ -64,6 +64,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/GUIUtils.h \
            src/util/HelpButton.h \
            src/util/HoverQLabel.h \
+           src/util/IconSwitcher.h \
            src/util/ImportSequenceFromRawDataTask.h \
            src/util/InputWidgetsControllers.h \
            src/util/ImportWidgetsFactories.h \
@@ -98,6 +99,9 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/U2Action.h \
            src/util/U2FileDialog.h \
            src/util/U2LongLongValidator.h \
+           src/util/U2Menu.h \
+           src/util/U2PushButton.h \
+           src/util/U2ToolButton.h \
            src/util/WidgetWithLocalToolbar.h \
            src/util/imageExport/ImageExportTask.h \
            src/util/imageExport/WidgetScreenshotExportTask.h \
@@ -221,6 +225,7 @@ SOURCES += src/ComboBoxWithCheckBoxes.cpp \
            src/util/GUIUtils.cpp \
            src/util/HelpButton.cpp \
            src/util/HoverQLabel.cpp \
+           src/util/IconSwitcher.cpp \
            src/util/ImportSequenceFromRawDataTask.cpp \
            src/util/InputWidgetsControllers.cpp \
            src/util/ImportWidgetsFactories.cpp \
@@ -254,6 +259,9 @@ SOURCES += src/ComboBoxWithCheckBoxes.cpp \
            src/util/U2Action.cpp \
            src/util/U2FileDialog.cpp \
            src/util/U2LongLongValidator.cpp \
+           src/util/U2Menu.cpp \
+           src/util/U2PushButton.cpp \
+           src/util/U2ToolButton.cpp \
            src/util/WidgetWithLocalToolbar.cpp \
            src/util/imageExport/ImageExportTask.cpp \
            src/util/imageExport/WidgetScreenshotExportTask.cpp \

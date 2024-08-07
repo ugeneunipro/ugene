@@ -23,6 +23,8 @@
 
 #include <QIcon>
 
+#include <U2Core/IconParameters.h>
+
 #include <U2View/ADVSplitWidget.h>
 
 class QMenu;
@@ -57,12 +59,8 @@ public:
 protected:
     virtual bool onCloseEvent();
 
-private slots:
-    void sl_colorModeSwitched();
-
 private:
-    QAction* createAction(const QString& iconPath, const QString& toolTip, const char* slot, bool checkable = true);
-    QAction* createAction(const QIcon& ic, const QString& toolTip, const char* slot, bool checkable = true);
+    QAction* createAction(const IconParameters& ic, const QString& toolTip, const char* slot, bool checkable = true);
 
     QSplitter* splitter;
     QList<DotPlotWidget*> dotPlotList;

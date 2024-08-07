@@ -35,6 +35,7 @@
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/U2Action.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/MsaEditor.h>
