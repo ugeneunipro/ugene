@@ -297,24 +297,17 @@ void FindSingleEnzymeTask::prepare() {
 
 void FindSingleEnzymeTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) {
     CHECK_OP(stateInfo, );
-    if (isCircular && pos >= region.length) {
-        return;
-    }
     QMutexLocker locker(&resultsLock);
-    if (resultList.size() > maxResults) {
-        if (cancelOnMaxResults) {
-            if (!isCanceled()) {
-                stateInfo.setError(FindEnzymesTask::tr("Number of results exceed %1, stopping").arg(maxResults));
-                cancel();
-            }
-        } else {
-            stop = true;
+    CHECK_EXT(resultList.size() > maxResults, resultList.append(FindEnzymesAlgResult(enzyme, pos, strand)), );    
+    if (cancelOnMaxResults) {
+        if (!isCanceled()) {
+            stateInfo.setError(FindEnzymesTask::tr("Number of results exceed %1, stopping").arg(maxResults));
+            cancel();
         }
-        stoppedOnMaxResults = true;
-
-        return;
+    } else {
+        stop = true;
     }
-    resultList.append(FindEnzymesAlgResult(enzyme, pos, strand));
+    stoppedOnMaxResults = true;
 }
 
 void FindSingleEnzymeTask::onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& ti) {
