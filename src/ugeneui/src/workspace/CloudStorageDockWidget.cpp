@@ -33,6 +33,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Log.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -129,7 +130,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
         stateLabel->setVisible(false);
         treeView->setVisible(true);
 
-        qDebug() << "CloudStorageDockWidget: got new cloud storage state";
+        uiLog.trace("CloudStorageDockWidget: Received new cloud storage state");
         QStandardItem* rootItem = treeViewModel.invisibleRootItem();
         treeView->setUpdatesEnabled(false);
         updateModel(rootItem, rootEntry);
@@ -201,7 +202,7 @@ void CloudStorageDockWidget::createDir() {
 
 void CloudStorageDockWidget::deleteItem() {
     auto path = getSelectedItemPath();
-    qDebug() << "CloudStorageDockWidget::delete: " + path.join("/");
+    uiLog.trace("CloudStorageDockWidget::delete: " + path.join("/"));
     CHECK(path.length() > 0, );
     QMessageBox::StandardButton result = QMessageBox::question(treeView, tr("Question?"), tr("Do you want to delete %1").arg(path.last()));
     CHECK(result == QMessageBox::Yes, );
@@ -221,7 +222,7 @@ QList<QString> CloudStorageDockWidget::getSelectedItemPath() const {
 }
 void CloudStorageDockWidget::renameItem() {
     QList<QString> path = getSelectedItemPath();
-    qDebug() << "CloudStorageDockWidget::rename: " + path.join("/");
+    uiLog.trace("CloudStorageDockWidget::rename: " + path.join("/"));
     CHECK(path.length() > 0, );
 
     bool ok;
@@ -244,7 +245,7 @@ void CloudStorageDockWidget::downloadItemSilently() {
     auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.length() == 0;
     CHECK(!isFolder, );
 
-    qDebug() << "CloudStorageDockWidget::downloadItem: " + path.join("/");
+    uiLog.trace("CloudStorageDockWidget::downloadItem: " + path.join("/"));
     CHECK(path.length() > 0, );
     LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
     workspaceService->getCloudStorageService()->downloadFile(path, lod.dir);
@@ -255,7 +256,7 @@ void CloudStorageDockWidget::downloadItem() {
     auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
     auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.length() == 0;
     CHECK(!isFolder, );
-    qDebug() << "CloudStorageDockWidget::downloadItem: " + path.join("/");
+    uiLog.trace("CloudStorageDockWidget::downloadItem: " + path.join("/"));
     CHECK(path.length() > 0, );
     LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
     QString dir = U2FileDialog::getExistingDirectory(this, tr("Select a folder to save the downloaded file"), lod.dir);

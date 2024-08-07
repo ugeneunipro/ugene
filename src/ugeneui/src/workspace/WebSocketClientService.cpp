@@ -27,6 +27,7 @@
 #include <QUrlQuery>
 #include <QUuid>
 
+#include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -70,7 +71,7 @@ WebSocketClientService::WebSocketClientService(const QString& _webSocketUrl, QOb
       webSocketUrl(_webSocketUrl),
       socket(new QWebSocket("", QWebSocketProtocol::Version13)),
       clientId(QUuid::createUuid().toString(QUuid::WithoutBraces)) {
-    qDebug() << "WebSocketClientService is created, clientId: " << clientId;
+    ioLog.trace("WebSocketClientService is created, clientId: " + clientId);
 
     QSslConfiguration sslConfiguration = QSslConfiguration::defaultConfiguration();
     sslConfiguration.setProtocol(QSsl::TlsV1_3);
@@ -86,7 +87,7 @@ WebSocketClientService::~WebSocketClientService() {
 }
 
 void WebSocketClientService::onConnected() {
-    qDebug() << "Connected to websocket";
+    ioLog.trace("WebSocketClientService: Connected to websocket");
     connectionReady = true;
     emit si_connectionStateChanged(true);
     // Run it with a delay: outside of the onConnected() callback.
@@ -94,7 +95,7 @@ void WebSocketClientService::onConnected() {
 }
 
 void WebSocketClientService::onDisconnected() {
-    qDebug() << "Disconnected from websocket";
+    ioLog.trace("WebSocketClientService: Disconnected from websocket");
     connectionReady = false;
     emit si_connectionStateChanged(false);
 }
@@ -171,7 +172,7 @@ void WebSocketClientService::setAccessToken(const QString& newAccessToken) {
 
 void WebSocketClientService::reconnectIfNotConnected() {
     CHECK(!socket->isValid(), );
-    qDebug() << "WebSocketClientService::reconnectIfNotConnected: Connecting to backend: " << webSocketUrl;
+    ioLog.trace("WebSocketClientService::reconnectIfNotConnected: Connecting to backend: " + webSocketUrl);
 
     QUrlQuery query;
     query.addQueryItem("accessToken", accessToken);
@@ -182,7 +183,7 @@ void WebSocketClientService::reconnectIfNotConnected() {
 }
 
 void WebSocketClientService::disconnect(bool clearSubscriptions) {
-    qDebug() << "Disconnecting from websocket, clearSubscriptions:" << clearSubscriptions;
+    ioLog.trace("Disconnecting from websocket, clearSubscriptions:" + clearSubscriptions);
     if (socket->isValid()) {
         socket->close();
     }
@@ -199,10 +200,10 @@ void WebSocketClientService::clearSubscriptions() {
 
 void WebSocketClientService::sendAccessTokenToServer() {
     if (!socket->isValid()) {
-        qWarning() << "Not connected to WebSocket during access token update.";
+        ioLog.error("Not connected to WebSocket during access token update.");
         return;
     }
-    qDebug() << "WebSocketClientService: Updating access token";
+    ioLog.trace("WebSocketClientService: Updating access token");
 
     sendMessage({WebSocketRequestType::UpdateAccessToken, {}});  // Will add the token to the message.
 }
@@ -219,9 +220,9 @@ static bool hasSubscriptionWithKey(const QString& key, const QList<WebSocketSubs
 
 void WebSocketClientService::subscribe(const WebSocketSubscription& subscription) {
     auto subscriptionKey = getClientSubscriptionKey(subscription);
-    qDebug() << "WebSocketClientService:subscribe" << subscriptionKey;
+    ioLog.trace("WebSocketClientService:subscribe" + subscriptionKey);
     if (hasSubscriptionWithKey(subscriptionKey, subscriptions)) {
-        qDebug() << "WebSocketClientService:subscribe, already have subscription with this key: " + subscriptionKey;
+        ioLog.trace("WebSocketClientService:subscribe, already have subscription with this key: " + subscriptionKey);
     } else {
         QJsonObject subscriptionAsJsonObject;
         subscriptionAsJsonObject["type"] = getSubscriptionTypeAsString(subscription.type);
@@ -240,7 +241,7 @@ void WebSocketClientService::subscribe(const WebSocketSubscription& subscription
 
 void WebSocketClientService::unsubscribe(const WebSocketSubscription& subscription) {
     const auto subscriptionKey = getClientSubscriptionKey(subscription);
-    qDebug() << "WebSocketClientService:unsubscribe" << subscriptionKey;
+    ioLog.trace("WebSocketClientService:unsubscribe" + subscriptionKey);
     const auto it = std::find_if(subscriptions.begin(), subscriptions.end(), [&](const auto& s) {
         return getClientSubscriptionKey(s) == subscriptionKey && s.subscriber == subscription.subscriber;
     });
