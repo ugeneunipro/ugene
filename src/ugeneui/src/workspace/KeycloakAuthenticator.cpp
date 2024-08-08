@@ -46,7 +46,7 @@ KeycloakAuthenticator::KeycloakAuthenticator(const QString& _authUrl, const QStr
     auto replyHandler = new QOAuthHttpServerReplyHandler(8848, this);
     oauth2.setReplyHandler(replyHandler);
 
-    connect(&oauth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, this, [this](const QUrl& url) {
+    connect(&oauth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, this, [](const QUrl& url) {
         QDesktopServices::openUrl(url.toString() + "&prompt=login");
     });
 
@@ -59,7 +59,7 @@ KeycloakAuthenticator::KeycloakAuthenticator(const QString& _authUrl, const QStr
     });
 
     connect(&oauth2, &QOAuth2AuthorizationCodeFlow::error, this, [this](const QString& error, const QString& errorDescription, const QUrl& uri) {
-        ioLog.trace("KeycloakAuthenticator: authentication failed: " << error << ", description: " << errorDescription << ", uri: " << uri.toString());
+        ioLog.trace("KeycloakAuthenticator: authentication failed: " + error + ", description: " + errorDescription + ", uri: " + uri.toString());
         bool isRetriable = false;
         emit si_authenticationFailed(error, isRetriable);
         deleteLater();
@@ -97,7 +97,7 @@ void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
             oauth2.setToken(newAccessToken);
             emit si_authenticationGranted(newAccessToken, newRefreshToken);
         } else {
-            ioLog.trace("KeycloakAuthenticator: Request finished with error: " << reply->errorString() << ", code: " << reply->error());
+            ioLog.trace("KeycloakAuthenticator: Request finished with error: " + reply->errorString() + ", code: " + reply->error());
             static QSet<QNetworkReply::NetworkError> nonRetriableErrors = {
                 QNetworkReply::ContentAccessDenied,
                 QNetworkReply::ContentOperationNotPermittedError,
