@@ -156,7 +156,7 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, c
     data->label->setObjectName("doc_label__" + dockWidget->objectName());
     data->label->installEventFilter(this);
     if (area != MWDockArea_Bottom) {
-        if (dockWidget->objectName() == DOCK_PROJECT_VIEW) {
+        if (dockWidget->objectName() == "project_view") {
             auto actionsList = toolBar->actions();
             toolBar->insertWidget(actionsList.isEmpty() ? nullptr : actionsList[0], data->label);
         } else {

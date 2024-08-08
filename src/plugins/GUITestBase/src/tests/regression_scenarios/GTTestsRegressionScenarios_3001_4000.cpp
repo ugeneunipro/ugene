@@ -2093,7 +2093,7 @@ GUI_TEST_CLASS_DEFINITION(test_3443) {
     GTFileDialog::openFile(dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    auto projectViewWidget = GTWidget::findWidget(DOCK_PROJECT_VIEW);
+    auto projectViewWidget = GTWidget::findWidget("project_view");
 
     GTKeyboardDriver::keyClick('1', Qt::AltModifier);
 
