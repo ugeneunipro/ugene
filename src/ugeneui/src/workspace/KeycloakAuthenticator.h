@@ -25,6 +25,7 @@
 #include <QOAuth2AuthorizationCodeFlow>
 #include <QObject>
 
+namespace U2 {
 /** Authentication support for workspace cloud service. */
 class KeycloakAuthenticator : public QObject {
     Q_OBJECT
@@ -61,3 +62,5 @@ private:
     QString tokenUrl;
     QString clientId;
 };
+
+}  // namespace U2

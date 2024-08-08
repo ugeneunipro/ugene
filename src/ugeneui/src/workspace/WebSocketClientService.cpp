@@ -21,7 +21,6 @@
 
 #include "WebSocketClientService.h"
 
-#include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QUrlQuery>
@@ -101,10 +100,8 @@ void WebSocketClientService::onDisconnected() {
 }
 
 void WebSocketClientService::onTextMessageReceived(const QString& message) {
-    qDebug() << "WebSocketClientService: Received message" << message;
-    if (message == "heartbeat") {
-        return;
-    }
+    ioLog.trace("WebSocketClientService: Received message" + message);
+    CHECK(message != "heartbeat", );
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject incomingMessage = doc.object();
     auto messageId = incomingMessage["messageId"].toString();
@@ -120,12 +117,8 @@ void WebSocketClientService::onTextMessageReceived(const QString& message) {
 }
 
 void WebSocketClientService::onError(QAbstractSocket::SocketError error) {
-    qDebug() << "WebSocket error:" << error;
-    if (isRetrying) {
-        qDebug() << "WebSocketClientService::onError - won't retry when inside refreshWebSocketConnection";
-        return;
-    }
-
+    ioLog.trace("WebSocket error:" + error);
+    CHECK_EXT(!isRetrying, ioLog.trace("WebSocketClientService::onError - won't retry when inside refreshWebSocketConnection"), );
     isRetrying = true;
     QTimer::singleShot(3000, this, [this] {
         reconnectIfNotConnected();
@@ -151,16 +144,16 @@ void WebSocketClientService::sendPendingMessages() {
             request["accessToken"] = accessToken;
         }
         qint64 bytesSent = socket->sendTextMessage(QJsonDocument(request).toJson(QJsonDocument::Compact));
-        qDebug() << "WebSocketClientService:send message: " << typeString << ", clientId: " << clientId << ", bytes sent: " + QString::number(bytesSent);
+        ioLog.trace("WebSocketClientService:send message: " + typeString + ", clientId: " + clientId + ", bytes sent: " + QString::number(bytesSent));
         if (bytesSent == 0) {
-            qDebug() << "Bytes sent = 0, error: " << socket->errorString();
+            ioLog.trace("Bytes sent = 0, error: " + socket->errorString());
         }
     }
     pendingMessages.clear();
 }
 
 void WebSocketClientService::setAccessToken(const QString& newAccessToken) {
-    qDebug() << "WebSocketClientService:updateAccessToken";
+    ioLog.trace("WebSocketClientService:updateAccessToken");
     CHECK(accessToken != newAccessToken, );
     accessToken = newAccessToken;
     if (socket->isValid()) {
@@ -199,10 +192,7 @@ void WebSocketClientService::clearSubscriptions() {
 }
 
 void WebSocketClientService::sendAccessTokenToServer() {
-    if (!socket->isValid()) {
-        ioLog.error("Not connected to WebSocket during access token update.");
-        return;
-    }
+    CHECK_EXT(socket->isValid(), ioLog.error("Not connected to WebSocket during access token update."), );
     ioLog.trace("WebSocketClientService: Updating access token");
 
     sendMessage({WebSocketRequestType::UpdateAccessToken, {}});  // Will add the token to the message.

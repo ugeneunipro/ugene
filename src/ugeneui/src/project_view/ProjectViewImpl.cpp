@@ -567,7 +567,7 @@ void ProjectViewImpl::initView() {
     connect(projectTreeController, &ProjectTreeController::si_filteringStarted, projectViewWidget->nameFilterEdit, &SearchBox::sl_filteringStarted);
     connect(projectTreeController, &ProjectTreeController::si_filteringFinished, projectViewWidget->nameFilterEdit, &SearchBox::sl_filteringFinished);
 
-    connect(projectViewWidget->nameFilterEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_filterTextChanged(const QString&)));
+    connect(projectViewWidget->nameFilterEdit, &QLineEdit::textChanged, this, &ProjectViewImpl::sl_filterTextChanged);
     projectViewWidget->nameFilterEdit->installEventFilter(this);
     projectViewWidget->nameFilterEdit->setMaxLength(MAX_SEARCH_PATTERN_LENGTH + 1);
 

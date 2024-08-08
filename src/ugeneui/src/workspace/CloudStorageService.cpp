@@ -1,4 +1,3 @@
-#include "CloudStorageService.h"
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
@@ -20,11 +19,14 @@
  * MA 02110-1301, USA.
  */
 
+#include "CloudStorageService.h"
+
 #include <QFileInfo>
 #include <QJsonArray>
 #include <QJsonDocument>
 
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "WebSocketClientService.h"
@@ -49,14 +51,14 @@ const CloudStorageEntry& CloudStorageService::getRootEntry() const {
 
 void CloudStorageService::createDir(const QList<QString>& path) {
     SAFE_POINT(checkCloudStoragePath(path), "Invalid cloud file path: " + path.join("/"), );
-    qDebug() << "CloudStorageService::createDir: " + path.join("/");
+    ioLog.trace("CloudStorageService::createDir: " + path.join("/"));
     QJsonObject payload;
     payload["path"] = QJsonArray::fromStringList(path);
     workspaceService->executeApiRequest("/storage/createDir", payload);
 }
 
 void CloudStorageService::deleteEntry(const QList<QString>& path) {
-    qDebug() << "CloudStorageService::deleteEntry: " + path.join("/");
+    ioLog.trace("CloudStorageService::deleteEntry: " + path.join("/"));
     SAFE_POINT(checkCloudStoragePath(path), "Invalid cloud file path: " + path.join("/"), );
     QJsonObject payload;
     payload["path"] = QJsonArray::fromStringList(path);
@@ -64,7 +66,7 @@ void CloudStorageService::deleteEntry(const QList<QString>& path) {
 }
 
 void CloudStorageService::renameEntry(const QList<QString>& oldPath, const QList<QString>& newPath) {
-    qDebug() << "CloudStorageService::renameEntry: " + oldPath.join("/") + " -> " + newPath.join("/");
+    ioLog.trace("CloudStorageService::renameEntry: " + oldPath.join("/") + " -> " + newPath.join("/"));
     SAFE_POINT(checkCloudStoragePath(oldPath), "Invalid cloud old file path: " + oldPath.join("/"), );
     SAFE_POINT(checkCloudStoragePath(newPath), "Invalid cloud old file path: " + newPath.join("/"), );
     QJsonObject payload;
@@ -74,7 +76,7 @@ void CloudStorageService::renameEntry(const QList<QString>& oldPath, const QList
 }
 
 void CloudStorageService::downloadFile(const QList<QString>& path, const QString& localDirPath) {
-    qDebug() << "CloudStorageService::downloadFile: " + path.join("/") + " -> " + localDirPath;
+    ioLog.trace("CloudStorageService::downloadFile: " + path.join("/") + " -> " + localDirPath);
     SAFE_POINT(checkCloudStoragePath(path), "Invalid cloud file path: " + path.join("/"), );
     QFileInfo dir(localDirPath);
     QString fileName = path.last();
@@ -83,7 +85,7 @@ void CloudStorageService::downloadFile(const QList<QString>& path, const QString
 }
 
 void CloudStorageService::uploadFile(const QList<QString>& path, const QString& localFilePath) {
-    qDebug() << "CloudStorageService::uploadFile: " + localFilePath + "->" + path.join("/");
+    ioLog.trace("CloudStorageService::uploadFile: " + localFilePath + "->" + path.join("/"));
     SAFE_POINT(checkCloudStoragePath(path), "Invalid cloud file path: " + path.join("/"), );
     workspaceService->uploadFile(path, localFilePath);
 }
@@ -91,31 +93,16 @@ void CloudStorageService::uploadFile(const QList<QString>& path, const QString& 
 static QRegularExpression forbiddenChars(R"([<>:"/\\|?*])");
 
 bool CloudStorageService::checkCloudStorageEntryName(const QString& entryName) {
-    if (entryName.isEmpty()) {
-        qDebug() << "File name is empty.";
-        return false;
+    CHECK_EXT(!entryName.isEmpty(), ioLog.trace("File name is empty"), false);
+    CHECK_EXT(!forbiddenChars.match(entryName).hasMatch(), ioLog.trace("File name contains forbidden characters or path separators: " + entryName), false);
+    CHECK_EXT(entryName.trimmed() == entryName, ioLog.trace("File name has leading or trailing spaces: " + entryName), false);
+    for (const QChar& c : qAsConst(entryName)) {
+        CHECK_EXT(c.category() != QChar::Other_Control, ioLog.trace("File name contains control characters: " + entryName), false);
     }
-    if (forbiddenChars.match(entryName).hasMatch()) {
-        qDebug() << "File name contains forbidden characters or path separators: " << entryName;
-        return false;
-    }
-    if (entryName.trimmed() != entryName) {
-        qDebug() << "File name has leading or trailing spaces: " << entryName;
-        return false;
-    }
-    for (QChar c : qAsConst(entryName)) {
-        if (c.category() == QChar::Other_Control) {
-            qDebug() << "File name contains control characters: " << entryName;
-            return false;
-        }
-    }
-    if (entryName.length() > 255) {
-        qDebug() << "File name exceeds maximum length: " << entryName;
-        return false;
-    }
-
+    CHECK_EXT(entryName.length() <= 255, ioLog.trace("File name exceeds maximum length: " + entryName), false);
     return true;
 }
+
 bool CloudStorageService::checkCloudStoragePath(const QList<QString>& path) {
     CHECK(path.length() > 0, false);
     for (const auto& pathEntry : qAsConst(path)) {
@@ -125,7 +112,7 @@ bool CloudStorageService::checkCloudStoragePath(const QList<QString>& path) {
 }
 
 void CloudStorageService::onWebSocketMessageReceived(const WebSocketSubscriptionType& type, const QString&, const QJsonObject& payload) {
-    qDebug() << "CloudStorageService::onWebSocketMessageReceived";
+    ioLog.trace("CloudStorageService::onWebSocketMessageReceived");
     CHECK(type == WebSocketSubscriptionType::StorageState, );
     rootEntry = CloudStorageEntry::fromJson(payload, {});
     emit si_storageStateChanged(rootEntry);
@@ -169,7 +156,7 @@ CloudStorageEntry CloudStorageEntry::fromJson(const QJsonObject& json, const QLi
 
     QList<CloudStorageEntry> children;
     QJsonArray childrenArray = json["children"].toArray();
-    for (const QJsonValue& childValue : childrenArray) {
+    for (const QJsonValue& childValue : qAsConst(childrenArray)) {
         children.append(fromJson(childValue.toObject(), path));
     }
     entry->children = children;

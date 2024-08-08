@@ -62,7 +62,7 @@ void updateModel(QStandardItem* parentItem, const CloudStorageEntry& entry) {
         childrenMap[childEntryKey] = childItem;
     }
 
-    for (const CloudStorageEntry& childEntry : entry->children) {
+    for (const CloudStorageEntry& childEntry : qAsConst(entry->children)) {
         QIcon icon(childEntry->isFolder ? ":U2Designer/images/directory.png" : ":core/images/document.png");
         auto childEntryKey = childEntry->sessionLocalId;
         if (childrenMap.contains(childEntryKey)) {

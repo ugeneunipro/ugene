@@ -30,6 +30,9 @@
 #include <QUrl>
 #include <QUrlQuery>
 
+#include <U2Core/Log.h>
+
+namespace U2 {
 KeycloakAuthenticator::KeycloakAuthenticator(const QString& _authUrl, const QString& _tokenUrl, const QString& _clientId, QObject* parent)
     : QObject(parent), authUrl(_authUrl), tokenUrl(_tokenUrl), clientId(_clientId) {
     oauth2.setAuthorizationUrl(QUrl(authUrl));
@@ -48,7 +51,7 @@ KeycloakAuthenticator::KeycloakAuthenticator(const QString& _authUrl, const QStr
     });
 
     connect(&oauth2, &QOAuth2AuthorizationCodeFlow::granted, this, [this] {
-        qDebug() << "KeycloakAuthenticator: authentication granted";
+        ioLog.trace("KeycloakAuthenticator: authentication granted");
         QString accessToken = oauth2.token();
         QString refreshToken = oauth2.refreshToken();
         emit si_authenticationGranted(accessToken, refreshToken);
@@ -56,7 +59,7 @@ KeycloakAuthenticator::KeycloakAuthenticator(const QString& _authUrl, const QStr
     });
 
     connect(&oauth2, &QOAuth2AuthorizationCodeFlow::error, this, [this](const QString& error, const QString& errorDescription, const QUrl& uri) {
-        qDebug() << "KeycloakAuthenticator: authentication failed: " << error << ", description: " << errorDescription << ", uri: " << uri.toString();
+        ioLog.trace("KeycloakAuthenticator: authentication failed: " << error << ", description: " << errorDescription << ", uri: " << uri.toString());
         bool isRetriable = false;
         emit si_authenticationFailed(error, isRetriable);
         deleteLater();
@@ -68,7 +71,7 @@ void KeycloakAuthenticator::startAuthentication() {
 }
 
 void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
-    qDebug() << "KeycloakAuthenticator: Renew access token, refresh: " << refreshToken;
+    ioLog.trace("KeycloakAuthenticator: Renew access token, refresh: " + refreshToken);
     QUrl tokenUrl(this->tokenUrl);
     QNetworkRequest request(tokenUrl);
 
@@ -82,7 +85,7 @@ void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
     const auto networkManager = new QNetworkAccessManager(this);
     connect(networkManager, &QNetworkAccessManager::finished, this, [this](QNetworkReply* reply) {
         if (reply->error() == QNetworkReply::NoError) {
-            qDebug() << "KeycloakAuthenticator: Request finished with no errors";
+            ioLog.trace("KeycloakAuthenticator: Request finished with no errors");
 
             QByteArray response = reply->readAll();
             QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
@@ -94,7 +97,7 @@ void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
             oauth2.setToken(newAccessToken);
             emit si_authenticationGranted(newAccessToken, newRefreshToken);
         } else {
-            qDebug() << "KeycloakAuthenticator: Request finished with error: " << reply->errorString() << ", code: " << reply->error();
+            ioLog.trace("KeycloakAuthenticator: Request finished with error: " << reply->errorString() << ", code: " << reply->error());
             static QSet<QNetworkReply::NetworkError> nonRetriableErrors = {
                 QNetworkReply::ContentAccessDenied,
                 QNetworkReply::ContentOperationNotPermittedError,
@@ -113,3 +116,5 @@ void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
     });
     networkManager->post(request, params.toString(QUrl::FullyEncoded).toUtf8());
 }
+
+}  // namespace U2

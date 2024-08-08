@@ -165,7 +165,7 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, c
     } else {
         toolBar->insertWidget(statusBarAction, data->label);
     }
-    connect(dockWidget, SIGNAL(destroyed()), SLOT(sl_widgetDestroyed()));
+    connect(dockWidget, &QObject::destroyed, this, &MWDockManagerImpl::sl_widgetDestroyed);
 
     QString ttip = dockWidget->windowTitle();
     if (!ks.isEmpty() && !ksInUse(ks, docks)) {
