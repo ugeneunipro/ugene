@@ -29,12 +29,14 @@ namespace U2 {
 
 class WorkspaceService;
 
+/** Dock widget that shows cloud storage content and allows basic operations. */
 class CloudStorageDockWidget : public QWidget {
     Q_OBJECT
 
 public:
     CloudStorageDockWidget(WorkspaceService* workspaceService);
 
+private:
     void showContextMenu(const QPoint& point);
     void createDir();
     void deleteItem();
@@ -43,7 +45,6 @@ public:
     void downloadItemSilently();
     void uploadItem();
 
-private:
     QList<QString> getSelectedItemPath() const;
     QModelIndex getSelectedItemIndex() const;
 

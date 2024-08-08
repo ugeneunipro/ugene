@@ -22,8 +22,8 @@
 #include "WorkspaceConnectionStatusIcon.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/U2SafePoints.h>
 
-#include "../../../corelibs/U2Core/src/globals/U2SafePoints.h"
 #include "WebSocketClientService.h"
 #include "WorkspaceService.h"
 
@@ -58,9 +58,7 @@ void WorkspaceConnectionStatusIcon::reconnectToWorkspace() {
             updateIcon();
             auto websocketService = workspaceService->getWebSocketService();
             if (websocketService != nullptr) {
-                connect(workspaceService->getWebSocketService(), &WebSocketClientService::si_connectionStateChanged, this, [this] {
-                    updateIcon();
-                }, Qt::UniqueConnection);
+                connect(workspaceService->getWebSocketService(), &WebSocketClientService::si_connectionStateChanged, this, [this] { updateIcon(); }, Qt::UniqueConnection);
             }
         });
     }

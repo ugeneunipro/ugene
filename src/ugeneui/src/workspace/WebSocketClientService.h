@@ -29,6 +29,10 @@
 
 namespace U2 {
 
+/**
+ * Type of the websocket request.
+ * See the server side for details.
+ */
 enum class WebSocketRequestType {
     Subscribe,
     Unsubscribe,
@@ -36,6 +40,7 @@ enum class WebSocketRequestType {
     Acknowledge,
 };
 
+/** List of subscriptions used by UGENE from Workspace. */
 enum class WebSocketSubscriptionType {
     StorageState,
     Invalid,
@@ -53,7 +58,10 @@ public:
     WebSocketSubscription(const WebSocketSubscriptionType& type, const QString& entityId, QObject* subscriber = nullptr);
 
     WebSocketSubscriptionType type;
+
+    /** Optional entity ID to observe the state. */
     QString entityId;
+
     /** If set the subscription will be automatically unsubscribed when this object is deleted. */
     QObject* subscriber;
 };
@@ -65,16 +73,22 @@ public:
     explicit WebSocketClientService(const QString& webSocketUrl, QObject* parent = nullptr);
     ~WebSocketClientService() override;
 
+    /** Sets new access token to be used by the future socket messages. */
     void setAccessToken(const QString& accessToken);
-    void reconnectIfNotConnected();
 
     bool isConnected() const;
 
+    /** Registers a new workspace state subscription. */
     void subscribe(const WebSocketSubscription& subscription);
+
+    /** Unregisters the subscription. */
     void unsubscribe(const WebSocketSubscription& subscription);
 
 signals:
+    /** Emitted every time web socket state changes. */
     void si_connectionStateChanged(bool isConnected);
+
+    /** Emitted every time a new subscription related message is received via socket. */
     void si_messageReceived(const WebSocketSubscriptionType& type, const QString& entityId, const QJsonObject& payload);
 
 private slots:
@@ -84,6 +98,9 @@ private slots:
     void onError(QAbstractSocket::SocketError error);
 
 private:
+    /** Triggers web socket reconnect if currently is not connected. */
+    void reconnectIfNotConnected();
+
     void sendMessage(const WebSocketOutgoingMessage& message);
     void sendPendingMessages();
     void disconnect(bool clearSubscriptions = true);

@@ -27,11 +27,11 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "../../../libs_3rdparty/zlib/src/zutil.h"
 #include "WebSocketClientService.h"
 #include "WorkspaceService.h"
 
 namespace U2 {
+
 CloudStorageService::CloudStorageService(WorkspaceService* ws)
     : QObject(ws), workspaceService(ws), rootEntry({""}, 0, QDateTime(), 0) {
     connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this] {

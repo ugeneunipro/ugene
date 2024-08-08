@@ -30,6 +30,7 @@ enum class WebSocketSubscriptionType;
 class WebSocketSubscription;
 class WorkspaceService;
 
+/** A single file/folder in the cloud storage. */
 class CloudStorageEntryData : public QSharedData {
 public:
     CloudStorageEntryData(const QList<QString>& path, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId);
@@ -63,6 +64,7 @@ private:
     QSharedDataPointer<CloudStorageEntryData> data;
 };
 
+/** Cloud storage service supports commands to access & manipulate cloud storage content. */
 class CloudStorageService : public QObject {
     Q_OBJECT
 
@@ -81,12 +83,14 @@ public:
 
     void uploadFile(const QList<QString>& path, const QString& localFilePath);
 
+    /** Checks that the 'entryName' is an acceptable cloud storage file/folder name. */
     static bool checkCloudStorageEntryName(const QString& entryName);
 
     /** Checks that the 'path' is a valid cloud storage path: is not empty, does not contain empty or invalid items. */
     static bool checkCloudStoragePath(const QList<QString>& path);
 
 signals:
+    /** Emitted every time cloud storage state is changed. */
     void si_storageStateChanged(const CloudStorageEntry& rootEntry);
 
 private:

@@ -25,6 +25,7 @@
 #include <QOAuth2AuthorizationCodeFlow>
 #include <QObject>
 
+/** Authentication support for workspace cloud service. */
 class KeycloakAuthenticator : public QObject {
     Q_OBJECT
 
@@ -34,11 +35,19 @@ public:
                           const QString& clientId,
                           QObject* parent = nullptr);
 
+    /**
+     * Triggers authentication UI. A user will be asked about login & password.
+     * The result will be reported using signals.
+     */
     void startAuthentication();
+
+    /** Refreshes access token using the given refresh token. */
     void refreshAccessToken(const QString& refreshToken);
 
 signals:
+    /** Emitted when authentication succeed. */
     void si_authenticationGranted(const QString& accessToken, const QString& refreshToken);
+
     /**
      * Emitted when authentication failed.
      * If the error is retriable the authentication can be retried with the same credentials later.

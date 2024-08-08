@@ -29,7 +29,8 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "../../../corelibs/U2Gui/src/util/GUIUtils.h"
+#include <U2Gui/GUIUtils.h>
+
 #include "DockWidgetPainter.h"
 #include "MainWindowImpl.h"
 #include "task_view/TaskStatusBar.h"

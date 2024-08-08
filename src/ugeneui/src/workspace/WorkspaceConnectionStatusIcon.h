@@ -25,6 +25,7 @@
 namespace U2 {
 class WorkspaceService;
 
+/** Status icon for workspace service. Changes state when workspace connection state is changed. */
 class WorkspaceConnectionStatusIcon : public QLabel {
     Q_OBJECT
 public:

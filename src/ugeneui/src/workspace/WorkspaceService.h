@@ -35,6 +35,7 @@ class ProjectViewImpl;
 class WebSocketClientService;
 class EnableWorkspaceTask;
 
+/** Workspace service enables support of all kinds of operations with UGENE Cloud Workspace. */
 class WorkspaceService : public Service {
     Q_OBJECT
     friend class EnableWorkspaceTask;
@@ -42,6 +43,7 @@ class WorkspaceService : public Service {
 public:
     WorkspaceService();
 
+    /** Returns true if the workspace is currectly in the logged in state. */
     bool isLoggedIn() const;
 
     /** Opens login dialog. Does nothing if user is already logged in. */
@@ -52,18 +54,22 @@ public:
 
     CloudStorageService* getCloudStorageService() const;
 
+    WebSocketClientService* getWebSocketService() const;
+
+    /** Executes an API request to Workspace. */
     void executeApiRequest(const QString& apiPath,
                            const QJsonObject& payload,
                            QObject* context = nullptr,
                            std::function<void(const QJsonObject&)>* callback = nullptr);
 
+    /** Downloads a file from the workspace. */
     void downloadFile(const QList<QString>& cloudPath, const QString& localFilePath);
 
+    /** Uploads a file from the workspace. */
     void uploadFile(const QList<QString>& path, const QString& localFilePath);
 
-    WebSocketClientService* getWebSocketService() const;
-
 signals:
+    /** Emitted every time authentication state is changed. */
     void si_authenticationEvent(bool isLoggedIn);
 
 protected:

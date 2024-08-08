@@ -136,7 +136,6 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
         updateModel(rootItem, rootEntry);
         treeView->setUpdatesEnabled(true);
         treeView->update();
-        // TODO: preserve selection using 'sessionLocalId'
     });
 
     createDirAction = new QAction(tr("New Folder"), this);
@@ -233,7 +232,6 @@ void CloudStorageDockWidget::renameItem() {
         QMessageBox::critical(this, L10N::errorTitle(), tr("New name contains illegal characters"));
         return;
     }
-    // TODO: check if the entry already exists.
     QList<QString> newPath = path;
     newPath[newPath.length() - 1] = newName;
     workspaceService->getCloudStorageService()->renameEntry(path, newPath);
@@ -274,8 +272,6 @@ void CloudStorageDockWidget::uploadItem() {
     QString localFilePath = U2FileDialog::getOpenFileName(this, tr("Select a file to upload"), lod.dir);
     CHECK(!localFilePath.isEmpty(), );
     lod.dir = localFilePath;
-
-    // TODO: check that file is valid and small enough to fit quotas.
 
     if (!isFolder) {
         path.pop_back();
