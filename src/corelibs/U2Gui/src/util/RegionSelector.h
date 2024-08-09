@@ -58,9 +58,11 @@ private:
 class U2GUI_EXPORT RegionSelector : public QWidget {
     Q_OBJECT
 public:
-    RegionSelector(QWidget* p, qint64 len = 0, bool isVertical = false, DNASequenceSelection* selection = nullptr, bool isCircularSelectionAvailable = false, QList<RegionPreset> presetRegions = QList<RegionPreset>());
+    RegionSelector(QWidget* p, qint64 len = 0, bool isVertical = false, DNASequenceSelection* selection = nullptr, 
+                   bool isCircularSelectionAvailable = false, QList<RegionPreset> presetRegions = QList<RegionPreset>());
 
     U2Region getRegion(bool* ok = nullptr) const;
+    U2Location getLocation(bool* ok = nullptr) const;
     bool isWholeSequenceSelected() const;
 
     void setCustomRegion(const U2Region& value);
@@ -78,6 +80,9 @@ public:
 signals:
     void si_regionChanged(const U2Region& newRegion);
 
+private slots:
+    void sl_presetChanged(int index);
+
 private:
     void initLayout();
 
@@ -86,8 +91,12 @@ private:
     qint64 maxLen;
     RegionLineEdit* startEdit;
     RegionLineEdit* endEdit;
+    QLineEdit* locationLineEdit = nullptr;
     QComboBox* comboBox;
     bool isVertical;
+
+    QLayout* regionLayout = nullptr;
+    QLayout* locationLayout = nullptr;
 };
 
 }  // namespace U2

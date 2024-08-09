@@ -1290,7 +1290,17 @@ To start ligation create a project or open an existing.</source>
         <translation>Невырожденное липкое</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="668"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="688"/>
+        <source>Uncut area:</source>
+        <translation>Область исключения:</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="689"/>
+        <source>A region that will not be cut by any of the found enzymes. If an enzyme is present in this region, it will be excluded from the flank results.</source>
+        <translation>Регион, в котором не будет ни одного из найденных ферментов. Если в этом регионе присутствует фермент, он будет исключен из результатов.</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="712"/>
         <source>All suppliers</source>
         <translation>Все поставщики</translation>
     </message>

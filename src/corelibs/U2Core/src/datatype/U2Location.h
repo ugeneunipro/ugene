@@ -134,6 +134,8 @@ public:
     }
     U2Location(const U2Location&) = default;
 
+    U2Location(const QVector<U2Region>& regionList);
+
     U2LocationData& operator*() {
         return *d;
     }
@@ -201,3 +203,5 @@ inline void U2LocationData::reset() {
 }
 
 }  // namespace U2
+
+Q_DECLARE_METATYPE(U2::U2Location);

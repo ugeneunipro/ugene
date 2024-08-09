@@ -1182,19 +1182,24 @@
 <context>
     <name>RegionSelectorController</name>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="72"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="74"/>
         <source>Whole sequence</source>
         <translation>Вся последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="76"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="78"/>
         <source>Selected region</source>
         <translation>Выбранный регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="80"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="82"/>
         <source>Custom region</source>
         <translation>Заданный регион</translation>
+    </message>    
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="85"/>
+        <source>Location</source>
+        <translation>Позиция</translation>
     </message>
     <message>
         <location filename="../src/util/RegionSelectorController.cpp" line="182"/>
@@ -2839,6 +2844,29 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/ReloadDocumentsTask.cpp" line="71"/>
         <source>The following errors occurred during the document(s) reloading: &lt;ul&gt;</source>
         <translation>В процессе перезагрузки документа возникли следующие ошибки: &lt;ul&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>U2::RegionSelectorController</name>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="74"/>
+        <source>Whole sequence</source>
+        <translation>Вся последовательность</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="78"/>
+        <source>Selected region</source>
+        <translation>Выбранный регион</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="82"/>
+        <source>Custom region</source>
+        <translation>Заданный регион</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="85"/>
+        <source>Location</source>
+        <translation>Позиция</translation>
     </message>
 </context>
 <context>

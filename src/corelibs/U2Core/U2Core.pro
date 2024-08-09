@@ -299,6 +299,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/UdrRecord.cpp \
            src/datatype/UdrSchema.cpp \
            src/datatype/UdrSchemaRegistry.cpp \
+           src/datatype/U2Location.cpp \
            src/datatype/Vector3D.cpp \
            src/datatype/msa/MsaStateCheck.cpp \
            src/datatype/msa/Msa.cpp \
