@@ -157,7 +157,7 @@ private:
 
     bool saveProjectOnClose = false;
 
-    ProjectViewWidget* w = nullptr;
+    ProjectViewWidget* projectViewWidget = nullptr;
     ProjectViewWidgetFactory* f = nullptr;
     ProjectTreeController* projectTreeController = nullptr;
     ObjectViewTreeController* objectViewController = nullptr;

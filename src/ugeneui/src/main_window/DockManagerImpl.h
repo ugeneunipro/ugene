@@ -68,7 +68,7 @@ public:
     MWDockManagerImpl(MainWindowImpl* _mw);
     ~MWDockManagerImpl();
 
-    virtual QAction* registerDock(MWDockArea area, QWidget* w, const QKeySequence& ks = QKeySequence());
+    virtual QAction* registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& ks = QKeySequence());
 
     virtual QWidget* findWidget(const QString& widgetObjName);
 

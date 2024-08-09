@@ -21,6 +21,8 @@
 
 #include <qglobal.h>
 
+#include "workspace/WorkspaceService.h"
+
 #ifdef Q_OS_WIN
 #    include <tchar.h>
 #    include <windows.h>
@@ -197,6 +199,7 @@ static void registerCoreServices() {
     TaskScheduler* ts = AppContext::getTaskScheduler();
     ts->registerTopLevelTask(sr->registerServiceTask(new PluginViewerImpl()));
     ts->registerTopLevelTask(sr->registerServiceTask(new ProjectViewImpl()));
+    ts->registerTopLevelTask(sr->registerServiceTask(new WorkspaceService()));
 }
 
 static void setDataSearchPaths() {
@@ -595,6 +598,9 @@ int main(int argc, char** argv) {
     auto ts = new TaskSchedulerImpl(appSettings->getAppResourcePool());
     appContext->setTaskScheduler(ts);
 
+    auto sreg = new ServiceRegistryImpl();
+    appContext->setServiceRegistry(sreg);
+
     auto asr = new AnnotationSettingsRegistry(DocumentFormatUtils::predefinedSettings());
     appContext->setAnnotationSettingsRegistry(asr);
 
@@ -779,9 +785,6 @@ int main(int argc, char** argv) {
 
     Workflow::WorkflowEnv::init(new Workflow::WorkflowEnvImpl());
     Workflow::WorkflowEnv::getDomainRegistry()->registerEntry(new LocalWorkflow::LocalDomainFactory());
-
-    auto sreg = new ServiceRegistryImpl();
-    appContext->setServiceRegistry(sreg);
 
     auto psp = new PluginSupportImpl();
     appContext->setPluginSupport(psp);
