@@ -1776,6 +1776,41 @@ GUI_TEST_CLASS_DEFINITION(test_7438) {
     CHECK_SET_ERR(selectedRect.bottom() == 17, "Illegal end of the selection: " + QString::number(selectedRect.bottom()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7445) {
+    /*
+    * 1. Open "Extract consensus from assemblies..." workflow sample
+    * 2. Set input assembly file to  common_data/ugenegb/1.bam.ugenegb
+    * 3. Set document format="ugenegb" or "Vector NTI seqience"
+    * 4. Run workflow
+    * Expected state: no output files produced, only one error in the log "Nothing to write"
+    */
+    class ExtractConsensusWizardSetInputFile : public CustomScenario {
+    public:
+        ExtractConsensusWizardSetInputFile(){
+        }
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTLineEdit::setText("Assembly widget", testDir + "_common_data/ugenedb/1.bam.ugenedb", dialog);
+            GTUtilsWizard::clickButton(GTUtilsWizard::Apply);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsDialog::waitForDialog(new WizardFiller("Extract Consensus Wizard", new ExtractConsensusWizardSetInputFile()));
+
+    GTUtilsWorkflowDesigner::setCurrentTab(GTUtilsWorkflowDesigner::samples);
+    GTUtilsWorkflowDesigner::addSample("Extract consensus from assembly");
+
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Write Sequence"));
+    GTMouseDriver::click();
+    GTUtilsWorkflowDesigner::setParameter("Document format", "GFF", GTUtilsWorkflowDesigner::comboValue);
+
+    GTLogTracer lt;
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasError("Nothing to write"), "Error %1 'Nothing to write' not found in the log");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7447) {
     // Check that search results in MSA Editor are reset when user enters incorrect search pattern.
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/HIV-1.aln");
