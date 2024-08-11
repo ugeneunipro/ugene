@@ -20,28 +20,21 @@
  */
 
 #pragma once
-
-#include "ServiceModel.h"
+#include <QLabel>
 
 namespace U2 {
+class WorkspaceService;
 
-class AppResourcePool;
+/** Status icon for workspace service. Changes state when workspace connection state is changed. */
+class WorkspaceConnectionStatusIcon : public QLabel {
+    Q_OBJECT
+public:
+    WorkspaceConnectionStatusIcon();
 
-const ServiceType Service_PluginViewer = 101;
-const ServiceType Service_Project = 102;
-const ServiceType Service_ProjectView = 103;
+private:
+    void updateIcon();
+    void reconnectToWorkspace();
 
-const ServiceType Service_DNAGraphPack = 104;
-const ServiceType Service_DNAExport = 105;
-const ServiceType Service_TestRunner = 106;
-const ServiceType Service_ScriptRegistry = 107;
-const ServiceType Service_ExternalToolSupport = 108;
-const ServiceType Service_GUITesting = 109;
-const ServiceType Service_WorkflowDesigner = 110;
-const ServiceType Service_QueryDesigner = 111;
-const ServiceType Service_Workspace = 112;
-
-const ServiceType Service_MinCoreServiceId = 500;
-const ServiceType Service_MaxCoreServiceId = 1000;
-
+    WorkspaceService* workspaceService = nullptr;
+};
 }  // namespace U2

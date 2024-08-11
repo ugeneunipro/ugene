@@ -107,6 +107,7 @@ class QMainWindow;
 #define ACTION_REMOVE_BOOKMARK "action_remove_bookmark"
 
 #define DOCK_PROJECT_VIEW "dock_project_view"
+#define DOCK_CLOUD_STORAGE_VIEW "dock_cloud_storage_view"
 #define DOCK_TASK_VIEW "dock_task_view"
 #define DOCK_LOG_VIEW "dock_log_view"
 #define DOCK_TASK_TREE_VIEW "taskViewTree"

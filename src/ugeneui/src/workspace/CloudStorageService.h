@@ -1,0 +1,103 @@
+/**
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
+#pragma once
+
+#include <QDateTime>
+#include <QObject>
+
+namespace U2 {
+
+class CloudStorageEntry;
+enum class WebSocketSubscriptionType;
+class WebSocketSubscription;
+class WorkspaceService;
+
+/** A single file/folder in the cloud storage. */
+class CloudStorageEntryData : public QSharedData {
+public:
+    CloudStorageEntryData(const QList<QString>& path, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId);
+
+    const QString& getName() const;
+
+    QList<QString> path;
+
+    QList<CloudStorageEntry> children;
+
+    qint64 size;
+
+    QDateTime modificationTime;
+
+    qint64 sessionLocalId;
+
+    bool isFolder = false;
+};
+
+class CloudStorageEntry {
+public:
+    CloudStorageEntry(const QList<QString>& path, qint64 size, const QDateTime& modificationTimel, qint64 sessionLocalId);
+
+    static CloudStorageEntry fromJson(const QJsonObject& json, const QList<QString>& parentPath);
+
+    CloudStorageEntryData* operator->();
+
+    const CloudStorageEntryData* operator->() const;
+
+private:
+    QSharedDataPointer<CloudStorageEntryData> data;
+};
+
+/** Cloud storage service supports commands to access & manipulate cloud storage content. */
+class CloudStorageService : public QObject {
+    Q_OBJECT
+
+public:
+    CloudStorageService(WorkspaceService* ws);
+
+    const CloudStorageEntry& getRootEntry() const;
+
+    void createDir(const QList<QString>& path);
+
+    void deleteEntry(const QList<QString>& path);
+
+    void renameEntry(const QList<QString>& oldPath, const QList<QString>& newPath);
+
+    void downloadFile(const QList<QString>& path, const QString& localDirPath);
+
+    void uploadFile(const QList<QString>& path, const QString& localFilePath);
+
+    /** Checks that the 'entryName' is an acceptable cloud storage file/folder name. */
+    static bool checkCloudStorageEntryName(const QString& entryName);
+
+    /** Checks that the 'path' is a valid cloud storage path: is not empty, does not contain empty or invalid items. */
+    static bool checkCloudStoragePath(const QList<QString>& path);
+
+signals:
+    /** Emitted every time cloud storage state is changed. */
+    void si_storageStateChanged(const CloudStorageEntry& rootEntry);
+
+private:
+    void onWebSocketMessageReceived(const WebSocketSubscriptionType& subscriptionType, const QString& entityId, const QJsonObject& payload);
+
+    WorkspaceService* workspaceService = nullptr;
+    CloudStorageEntry rootEntry;
+};
+
+}  // namespace U2

@@ -468,27 +468,27 @@ void ProjectViewImpl::enable() {
     MWMDIManager* mdi = AppContext::getMainWindow()->getMDIManager();
     connect(mdi, SIGNAL(si_windowAdded(MWMDIWindow*)), SLOT(sl_onMDIWindowAdded(MWMDIWindow*)));
 
-    SAFE_POINT(w == nullptr, "Project widget is already initialized", );
-    w = new ProjectViewWidget();
+    SAFE_POINT(projectViewWidget == nullptr, "Project widget is already initialized", );
+    projectViewWidget = new ProjectViewWidget();
 
-    saveSelectedDocsAction = new QAction(QIcon(":ugene/images/save_selected_documents.png"), tr("Save selected documents"), w);
+    saveSelectedDocsAction = new QAction(QIcon(":ugene/images/save_selected_documents.png"), tr("Save selected documents"), projectViewWidget);
     saveSelectedDocsAction->setObjectName(ACTION_PROJECT__SAVE_DOCUMENT);
     connect(saveSelectedDocsAction, SIGNAL(triggered()), SLOT(sl_onSaveSelectedDocs()));
 
-    toggleCircularAction = new QAction(tr("Mark as circular"), w);
+    toggleCircularAction = new QAction(tr("Mark as circular"), projectViewWidget);
     toggleCircularAction->setCheckable(true);
     connect(toggleCircularAction, SIGNAL(triggered()), SLOT(sl_onToggleCircular()));
 
-    relocateDocumentAction = new QAction(tr("Relocate..."), w);
+    relocateDocumentAction = new QAction(tr("Relocate..."), projectViewWidget);
     relocateDocumentAction->setIcon(QIcon(":ugene/images/relocate.png"));
     connect(relocateDocumentAction, SIGNAL(triggered()), SLOT(sl_relocate()));
 
-    exportDocumentAction = new QAction(tr("Export document..."), w);
+    exportDocumentAction = new QAction(tr("Export document..."), projectViewWidget);
     exportDocumentAction->setObjectName("Export document");
     exportDocumentAction->setIcon(QIcon(":ugene/images/save_copy.png"));
     connect(exportDocumentAction, SIGNAL(triggered()), SLOT(sl_exportDocument()));
 
-    openContainingFolderAction = new QAction(tr("Open containing folder"), w);
+    openContainingFolderAction = new QAction(tr("Open containing folder"), projectViewWidget);
     openContainingFolderAction->setObjectName("openContainingFolderAction");
     connect(openContainingFolderAction, &QAction::triggered, this, &ProjectViewImpl::sl_onOpenContainingFolder);
 
@@ -496,10 +496,10 @@ void ProjectViewImpl::enable() {
 
     MainWindow* mw = AppContext::getMainWindow();
     MWDockManager* dm = mw->getDockManager();
-    w->setObjectName("project_view");
-    dm->registerDock(MWDockArea_Left, w, QKeySequence(Qt::ALT | Qt::Key_1));
+    projectViewWidget->setObjectName("project_view");  // TODO: must be DOCK_PROJECT_VIEW (as set in the constructor) but requires fixes across many files.
+    dm->registerDock(MWDockArea_Left, projectViewWidget, QKeySequence(Qt::ALT | Qt::Key_1));
     if (AppContext::getSettings()->getValue(SETTINGS_ROOT + "firstShow", true).toBool()) {
-        dm->activateDock(w->objectName());
+        dm->activateDock(projectViewWidget->objectName());
         AppContext::getSettings()->setValue(SETTINGS_ROOT + "firstShow", false);
     }
 
@@ -513,8 +513,8 @@ void ProjectViewImpl::enable() {
 
 void ProjectViewImpl::disable() {
     MainWindow* mw = AppContext::getMainWindow();
-    if (w != nullptr) {
-        saveWidgetState(w);
+    if (projectViewWidget != nullptr) {
+        saveWidgetState(projectViewWidget);
         saveGroupMode(projectTreeController->getModeSettings().groupMode);
     }
 
@@ -535,8 +535,8 @@ void ProjectViewImpl::disable() {
     }
     mw->setWindowTitle("");
 
-    delete w;
-    w = nullptr;
+    delete projectViewWidget;
+    projectViewWidget = nullptr;
 }
 
 void ProjectViewImpl::saveWidgetState(ProjectViewWidget* w) {
@@ -558,24 +558,24 @@ void ProjectViewImpl::initView() {
     s.loadTaskProvider = this;
     s.markActive = true;
     s.activeFont.setWeight(QFont::Bold);
-    projectTreeController = new ProjectTreeController(w->documentTreeWidget, s, w);
+    projectTreeController = new ProjectTreeController(projectViewWidget->documentTreeWidget, s, projectViewWidget);
     connect(projectTreeController, SIGNAL(si_doubleClicked(GObject*)), SLOT(sl_onActivated(GObject*)));
     connect(projectTreeController, SIGNAL(si_doubleClicked(Document*)), SLOT(sl_onActivated(Document*)));
     connect(projectTreeController, SIGNAL(si_onPopupMenuRequested(QMenu&)), SLOT(sl_onDocTreePopupMenuRequested(QMenu&)));
     projectTreeController->setObjectName("document_Filter_Tree_Controller");
     connect(projectTreeController, SIGNAL(si_returnPressed(GObject*)), SLOT(sl_onActivated(GObject*)));
     connect(projectTreeController, SIGNAL(si_returnPressed(Document*)), SLOT(sl_onActivated(Document*)));
-    connect(projectTreeController, &ProjectTreeController::si_filteringStarted, w->nameFilterEdit, &SearchBox::sl_filteringStarted);
-    connect(projectTreeController, &ProjectTreeController::si_filteringFinished, w->nameFilterEdit, &SearchBox::sl_filteringFinished);
+    connect(projectTreeController, &ProjectTreeController::si_filteringStarted, projectViewWidget->nameFilterEdit, &SearchBox::sl_filteringStarted);
+    connect(projectTreeController, &ProjectTreeController::si_filteringFinished, projectViewWidget->nameFilterEdit, &SearchBox::sl_filteringFinished);
 
-    connect(w->nameFilterEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_filterTextChanged(const QString&)));
-    w->nameFilterEdit->installEventFilter(this);
-    w->nameFilterEdit->setMaxLength(MAX_SEARCH_PATTERN_LENGTH + 1);
+    connect(projectViewWidget->nameFilterEdit, &QLineEdit::textChanged, this, &ProjectViewImpl::sl_filterTextChanged);
+    projectViewWidget->nameFilterEdit->installEventFilter(this);
+    projectViewWidget->nameFilterEdit->setMaxLength(MAX_SEARCH_PATTERN_LENGTH + 1);
 
     assert(objectViewController == nullptr);
-    objectViewController = new ObjectViewTreeController(w->viewTreeWidget);
+    objectViewController = new ObjectViewTreeController(projectViewWidget->viewTreeWidget);
 
-    restoreWidgetState(w);
+    restoreWidgetState(projectViewWidget);
 }
 
 bool ProjectViewImpl::eventFilter(QObject* obj, QEvent* event) {
@@ -585,11 +585,11 @@ bool ProjectViewImpl::eventFilter(QObject* obj, QEvent* event) {
         if (ov->isPersistent()) {
             saveViewState(ov, GObjectViewState::APP_CLOSING_STATE_NAME);
         }
-    } else if (w != nullptr && w->nameFilterEdit == obj) {
+    } else if (projectViewWidget != nullptr && projectViewWidget->nameFilterEdit == obj) {
         if (event->type() == QEvent::KeyPress) {
             auto keyEvent = static_cast<QKeyEvent*>(event);
             if (keyEvent->modifiers() == Qt::NoModifier && keyEvent->key() == Qt::Key_Escape) {
-                w->nameFilterEdit->clear();
+                projectViewWidget->nameFilterEdit->clear();
             }
         }
     }
@@ -1107,7 +1107,7 @@ void ProjectViewImpl::sl_relocate() {
         return;
     }
     LastUsedDirHelper h;
-    h.url = U2FileDialog::getOpenFileName(w, tr("Select new file location"), h.dir);
+    h.url = U2FileDialog::getOpenFileName(projectViewWidget, tr("Select new file location"), h.dir);
     if (h.url.isEmpty()) {
         return;
     }
@@ -1123,7 +1123,7 @@ void ProjectViewImpl::sl_exportDocument() {
     if (!srcDoc->isLoaded()) {
         return;
     }
-    QObjectScopedPointer<ExportDocumentDialogController> dialog = new ExportDocumentDialogController(srcDoc, w);
+    QObjectScopedPointer<ExportDocumentDialogController> dialog = new ExportDocumentDialogController(srcDoc, projectViewWidget);
     ExportObjectUtils::export2Document(dialog);
 }
 
