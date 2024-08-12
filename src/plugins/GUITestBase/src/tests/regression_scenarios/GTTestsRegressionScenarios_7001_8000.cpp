@@ -191,17 +191,7 @@ GUI_TEST_CLASS_DEFINITION(test_7012) {
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
-    bool hasUnexpectedLogMessage = lt.hasMessage("Ignored incorrect value of attribute");
-    CHECK_SET_ERR(!hasUnexpectedLogMessage, "Found unexpected message in the log");
-
-    // Check that output file contains only empty FASTA entries.
-    QStringList fileUrls = GTUtilsDashboard::getOutputFileUrls();
-    CHECK_SET_ERR(fileUrls.length() == 1, "Incorrect number of output files: " + QString::number(fileUrls.length()));
-    QString fileContent = GTFile::readAll(fileUrls[0]);
-    QStringList lines = fileContent.split("\n");
-    for (const auto& line : qAsConst(lines)) {
-        CHECK_SET_ERR(line.startsWith(">") || line.isEmpty(), "Only FASTA header lines are expected: " + line);
-    }
+    CHECK_SET_ERR(lt.hasError("Nothing to write"), "Error %1 'Nothing to write' not found in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7014) {
@@ -1778,28 +1768,24 @@ GUI_TEST_CLASS_DEFINITION(test_7438) {
 
 GUI_TEST_CLASS_DEFINITION(test_7445) {
     /*
-    * 1. Open "Extract consensus from assemblies..." workflow sample
+    * 1. Compose WD scheme Read NGS Reads Assembly->Extract Consensus from Assembly->Write Sequence
     * 2. Set input assembly file to  common_data/ugenegb/1.bam.ugenegb
-    * 3. Set document format="ugenegb" or "Vector NTI seqience"
+    * 3. Set document format "ugenegb" or "Vector NTI seqience"
     * 4. Run workflow
     * Expected state: no output files produced, only one error in the log "Nothing to write"
-    */
-    class ExtractConsensusWizardSetInputFile : public CustomScenario {
-    public:
-        ExtractConsensusWizardSetInputFile(){
-        }
-        void run() override {
-            QWidget* dialog = GTWidget::getActiveModalWidget();
-            GTLineEdit::setText("Assembly widget", testDir + "_common_data/ugenedb/1.bam.ugenedb", dialog);
-            GTUtilsWizard::clickButton(GTUtilsWizard::Apply);
-        }
-    };
+    */    
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
-    GTUtilsDialog::waitForDialog(new WizardFiller("Extract Consensus Wizard", new ExtractConsensusWizardSetInputFile()));
+    GTUtilsWorkflowDesigner::addAlgorithm("Read NGS Reads Assembly", true);
+    GTUtilsWorkflowDesigner::addAlgorithm("Extract Consensus from Assembly", true);
+    GTUtilsWorkflowDesigner::addAlgorithm("Write Sequence", true);
 
-    GTUtilsWorkflowDesigner::setCurrentTab(GTUtilsWorkflowDesigner::samples);
-    GTUtilsWorkflowDesigner::addSample("Extract consensus from assembly");
+    GTUtilsWorkflowDesigner::connect(GTUtilsWorkflowDesigner::getWorker("Read NGS Reads Assembly"), GTUtilsWorkflowDesigner::getWorker("Extract Consensus from Assembly"));
+    GTUtilsWorkflowDesigner::connect(GTUtilsWorkflowDesigner::getWorker("Extract Consensus from Assembly"), GTUtilsWorkflowDesigner::getWorker("Write Sequence"));
+
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read NGS Reads Assembly"));
+    GTMouseDriver::click();
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/ugenedb/1.bam.ugenedb");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Write Sequence"));
     GTMouseDriver::click();

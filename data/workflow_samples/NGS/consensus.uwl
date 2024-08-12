@@ -47,20 +47,20 @@ workflow "Extract consensus from assembly"{
         }
         visual {
             extract-consensus {
-                pos:"-1645 -585";
+                pos:"-645 -585";
                 style:ext;
                 bg-color-ext:"0 129 94 64";
                 in-assembly.angle:180;
                 out-sequence.angle:360;
             }
             read-assembly {
-                pos:"-1840 -585";
+                pos:"-840 -585";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 out-assembly.angle:360;
             }
             write-sequence {
-                pos:"-1360 -585";
+                pos:"-360 -585";
                 style:ext;
                 bg-color-ext:"64 26 96 64";
                 in-sequence.angle:180;
