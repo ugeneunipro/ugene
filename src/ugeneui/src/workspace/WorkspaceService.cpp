@@ -215,10 +215,24 @@ CloudStorageService* WorkspaceService::getCloudStorageService() const {
     return cloudStorageService;
 }
 
+static void fillErrorStateInJson(const QNetworkReply* reply, QJsonObject& jsonResponse) {
+    SAFE_POINT(reply->error() != QNetworkReply::NoError, "QNetworkReply has no error", );
+    jsonResponse["isError"] = true;
+    jsonResponse["errorMessage"] = reply->errorString();
+    jsonResponse["errorCode"] = reply->error();
+}
+
+QString WorkspaceService::getErrorMessageFromResponse(const QJsonObject& response) {
+    if (response["isError"].toBool()) {
+        return response["errorMessage"].toString();
+    }
+    return {};
+}
+
 void WorkspaceService::executeApiRequest(const QString& apiPath,
                                          const QJsonObject& payload,
                                          QObject* context,
-                                         std::function<void(const QJsonObject&)>* callback) {
+                                         std::function<void(const QJsonObject&)> callback) {
     coreLog.trace("WorkspaceService::sendApiRequest: " + apiPath);
     SAFE_POINT(callback == nullptr || context != nullptr, "A callback requires non-null life-range context", );
     SAFE_POINT(apiPath.startsWith("/"), "API path must start with /", );
@@ -242,10 +256,6 @@ void WorkspaceService::executeApiRequest(const QString& apiPath,
     QNetworkReply* reply = networkManager->post(request, QJsonDocument(payload).toJson());
     QPointer<QObject> contextLifeRangeTracker(context);
 
-    connect(reply, &QNetworkReply::errorOccurred, this, [](QNetworkReply::NetworkError code) {
-        coreLog.trace("WorkspaceService::sendApiRequest error occured: " + QString::number(code));
-    });
-
     connect(reply, &QNetworkReply::finished, this, [reply, networkManager, callback, contextLifeRangeTracker] {
         ioLog.trace("WorkspaceService::sendApiRequest: reply finished");
         QJsonObject jsonResponse;
@@ -257,23 +267,25 @@ void WorkspaceService::executeApiRequest(const QString& apiPath,
                 jsonResponse = doc.object();
             }
         } else {
-            jsonResponse["isError"] = true;
-            jsonResponse["errorMessage"] = reply->errorString();
-            jsonResponse["errorCode"] = reply->error();
-            ioLog.trace("WorkspaceService::sendApiRequest: Got error response: " + reply->errorString());
+            ioLog.trace("WorkspaceService::executeApiRequest: Got error response: " + reply->errorString());
+            fillErrorStateInJson(reply, jsonResponse);
         }
         if (callback && !contextLifeRangeTracker.isNull()) {
-            (*callback)(jsonResponse);
+            callback(jsonResponse);
         }
         reply->deleteLater();
         networkManager->deleteLater();
     });
 }
 
-void WorkspaceService::downloadFile(const QList<QString>& cloudPath, const QString& localFilePath) {
-    coreLog.trace("WorkspaceService::downloadFile: " + cloudPath.join("/") + " to " + localFilePath);
+void WorkspaceService::executeDownloadFileRequest(const QList<QString>& cloudPath,
+                                                  const QString& localFilePath,
+                                                  QObject* context,
+                                                  std::function<void(const QJsonObject&)> callback) {
+    coreLog.trace("WorkspaceService::executeDownloadFileRequest: " + cloudPath.join("/") + " to " + localFilePath);
     SAFE_POINT(cloudPath.length() > 0, "Cloud path is empty", );
     SAFE_POINT(localFilePath.length() > 0, "Local file path is empty", );
+    SAFE_POINT(callback == nullptr || context != nullptr, "A callback requires non-null life-range context", );
 
     auto networkManager = new QNetworkAccessManager();
     networkManager->setCache(nullptr);
@@ -290,21 +302,21 @@ void WorkspaceService::downloadFile(const QList<QString>& cloudPath, const QStri
     request.setAttribute(QNetworkRequest::CacheSaveControlAttribute, false);
 
     QNetworkReply* reply = networkManager->get(request);
+    QPointer<QObject> contextLifeRangeTracker(context);
 
     connect(reply, &QNetworkReply::downloadProgress, [](qint64 bytesReceived, qint64 bytesTotal) {
         ioLog.trace("WorkspaceService::downloadFile: progress:" + QString::number(bytesReceived) + "/" + QString::number(bytesTotal));
     });
 
-    connect(reply, &QNetworkReply::finished, [reply, localFilePath, networkManager] {
-        if (reply->error()) {
-            ioLog.trace("WorkspaceService::downloadFile ERROR:" + reply->errorString());
-        } else {
+    connect(reply, &QNetworkReply::finished, [reply, localFilePath, networkManager, callback, contextLifeRangeTracker] {
+        QJsonObject jsonResponse;
+        if (reply->error() == QNetworkReply::NoError) {
             QByteArray data = reply->readAll();
             QFile file(localFilePath);
             if (file.open(QIODevice::WriteOnly)) {
                 file.write(data);
                 file.close();
-                ioLog.trace("WorkspaceService::downloadFile: Download finished and saved to" + localFilePath);
+                ioLog.trace("WorkspaceService::executeDownloadFileRequest: Download finished and saved to" + localFilePath);
                 // Open this file or file folder.
                 DocumentFormatId formatId;
                 auto detectionResult = DocumentUtils::detectFormat(localFilePath, formatId);
@@ -316,16 +328,26 @@ void WorkspaceService::downloadFile(const QList<QString>& cloudPath, const QStri
                     QDesktopServices::openUrl(QUrl::fromLocalFile(folderPath));
                 }
             } else {
-                ioLog.trace("WorkspaceService::downloadFile: Could not open file for writing.");
+                ioLog.trace("WorkspaceService::executeDownloadFileRequest: Could not open file for writing.");
             }
+        } else {
+            ioLog.trace("WorkspaceService::executeDownloadFileRequest ERROR:" + reply->errorString());
+            fillErrorStateInJson(reply, jsonResponse);
+        }
+        if (callback && !contextLifeRangeTracker.isNull()) {
+            callback(jsonResponse);
         }
         reply->deleteLater();
         networkManager->deleteLater();
     });
 }
 
-void WorkspaceService::uploadFile(const QList<QString>& path, const QString& localFilePath) {
-    SAFE_POINT(path.length() > 0, "Path is empty", );
+void WorkspaceService::executeUploadFileRequest(const QList<QString>& cloudDirPath,
+                                                const QString& localFilePath,
+                                                QObject* context,
+                                                std::function<void(const QJsonObject&)> callback) {
+    coreLog.trace("WorkspaceService::executeUploadFileRequest: " + localFilePath + "to " + cloudDirPath.join("/"));
+    SAFE_POINT(callback == nullptr || context != nullptr, "A callback requires non-null life-range context", );
     QUrl downloadUrl(apiUrl + "/api/storage/upload");
 
     QNetworkRequest request(downloadUrl);
@@ -344,7 +366,7 @@ void WorkspaceService::uploadFile(const QList<QString>& path, const QString& loc
 
     // Path part
     QHttpPart pathPart;
-    QJsonArray jsonArray = QJsonArray::fromStringList(path);
+    QJsonArray jsonArray = QJsonArray::fromStringList(cloudDirPath);
     QByteArray jsonData = QJsonDocument(jsonArray).toJson(QJsonDocument::Compact);
     pathPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"path\""));
     pathPart.setBody(jsonData);
@@ -372,17 +394,23 @@ void WorkspaceService::uploadFile(const QList<QString>& path, const QString& loc
     QNetworkReply* reply = manager->post(request, multiPart);
     multiPart->setParent(reply);  // the multiPart object will be deleted along with the reply
 
+    QPointer<QObject> contextLifeRangeTracker(context);
     connect(reply, &QNetworkReply::uploadProgress, [](qint64 bytesSent, qint64 bytesTotal) {
-        ioLog.trace("WorkspaceService::uploadFile: Upload progress:" + QString::number(bytesSent) + "/" + QString::number(bytesTotal));
+        ioLog.trace("WorkspaceService::executeUploadFileRequest: Progress:" + QString::number(bytesSent) + "/" + QString::number(bytesTotal));
     });
 
-    connect(reply, &QNetworkReply::finished, [reply, manager, file] {
-        if (reply->error()) {
-            ioLog.trace("WorkspaceService::uploadFile: ERROR:" + reply->errorString());
+    connect(reply, &QNetworkReply::finished, [reply, manager, file, callback, contextLifeRangeTracker] {
+        QJsonObject jsonResponse;
+        if (reply->error() == QNetworkReply::NoError) {
+            ioLog.trace("WorkspaceService::executeUploadFileRequest: Upload finished");
         } else {
-            ioLog.trace("WorkspaceService::uploadFile: Upload finished");
+            ioLog.trace("WorkspaceService::executeUploadFileRequest: ERROR:" + reply->errorString());
+            fillErrorStateInJson(reply, jsonResponse);
         }
         file->close();
+        if (callback && !contextLifeRangeTracker.isNull()) {
+            callback(jsonResponse);
+        }
         reply->deleteLater();
         manager->deleteLater();
     });

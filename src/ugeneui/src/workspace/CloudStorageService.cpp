@@ -81,13 +81,16 @@ void CloudStorageService::downloadFile(const QList<QString>& path, const QString
     QFileInfo dir(localDirPath);
     QString fileName = path.last();
     QString localFilePath = GUrlUtils::rollFileName(dir.absolutePath() + "/" + fileName, "_");
-    workspaceService->downloadFile(path, localFilePath);
+    workspaceService->executeDownloadFileRequest(path, localFilePath);
 }
 
-void CloudStorageService::uploadFile(const QList<QString>& path, const QString& localFilePath) {
-    ioLog.trace("CloudStorageService::uploadFile: " + localFilePath + "->" + path.join("/"));
-    SAFE_POINT(checkCloudStoragePath(path), "Invalid cloud file path: " + path.join("/"), );
-    workspaceService->uploadFile(path, localFilePath);
+void CloudStorageService::uploadFile(const QList<QString>& cloudDirPath,
+                                     const QString& localFilePath,
+                                     QObject* context,
+                                     std::function<void(const QJsonObject&)> callback) {
+    ioLog.trace("CloudStorageService::uploadFile: " + localFilePath + "->" + cloudDirPath.join("/"));
+    SAFE_POINT(checkCloudStoragePath(cloudDirPath, true), "Invalid cloud file path: " + cloudDirPath.join("/"), );
+    workspaceService->executeUploadFileRequest(cloudDirPath, localFilePath, context, callback);
 }
 
 static QRegularExpression forbiddenChars(R"([<>:"/\\|?*])");
@@ -103,8 +106,8 @@ bool CloudStorageService::checkCloudStorageEntryName(const QString& entryName) {
     return true;
 }
 
-bool CloudStorageService::checkCloudStoragePath(const QList<QString>& path) {
-    CHECK(path.length() > 0, false);
+bool CloudStorageService::checkCloudStoragePath(const QList<QString>& path, bool isDir) {
+    CHECK(path.length() > 0 || isDir, false);
     for (const auto& pathEntry : qAsConst(path)) {
         CHECK(checkCloudStorageEntryName(pathEntry), false);
     }
