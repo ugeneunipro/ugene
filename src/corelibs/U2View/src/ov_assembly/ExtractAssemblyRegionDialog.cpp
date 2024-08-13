@@ -41,10 +41,10 @@ ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget* p, ExtractAsse
 
     initSaveController();
 
-    QList<RegionPreset> presets = QList<RegionPreset>() << RegionPreset(tr("Visible"), settings->regionToExtract);
+    QList<RegionPreset> presets = QList<RegionPreset>() << RegionPreset(tr("Visible"), U2Location({settings->regionToExtract}));
     regionSelector = new RegionSelector(this, settings->assemblyLength, false, nullptr, false, presets);
     regionSelector->setCurrentPreset(tr("Visible"));
-    regionSelector->removePreset(RegionPreset::WHOLE_SEQUENCE());
+    regionSelector->removePreset(RegionPreset::getWholeSequenceModeDisplayName());
     regionSelectorWidget->layout()->addWidget(regionSelector);
 
     setMaximumHeight(layout()->minimumSize().height());
