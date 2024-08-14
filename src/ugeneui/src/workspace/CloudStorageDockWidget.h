@@ -20,6 +20,7 @@
  */
 #pragma once
 
+#include <QJsonObject>
 #include <QLabel>
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -27,6 +28,7 @@
 
 namespace U2 {
 
+class CloudStorageService;
 class WorkspaceService;
 
 /** Dock widget that shows cloud storage content and allows basic operations. */
@@ -45,11 +47,14 @@ private:
     void downloadItemSilently();
     void uploadItem();
 
+    void handleCloudStorageResponse(const QJsonObject& response);
+
     QList<QString> getSelectedItemPath() const;
     QModelIndex getSelectedItemIndex() const;
 
     void updateActionsState();
     void updateStateLabelText();
+    CloudStorageService* getCloudStorageService() const;
 
     WorkspaceService* workspaceService = nullptr;
     QLabel* stateLabel = nullptr;

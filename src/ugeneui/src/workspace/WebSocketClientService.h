@@ -42,8 +42,8 @@ enum class WebSocketRequestType {
 
 /** List of subscriptions used by UGENE from Workspace. */
 enum class WebSocketSubscriptionType {
-    StorageState,
-    Invalid,
+    StorageState = 1,
+    Invalid = 2
 };
 
 class WebSocketOutgoingMessage {
@@ -55,7 +55,18 @@ public:
 
 class WebSocketSubscription {
 public:
-    WebSocketSubscription(const WebSocketSubscriptionType& type, const QString& entityId, QObject* subscriber = nullptr);
+    WebSocketSubscription(
+        const QString& id,
+        const WebSocketSubscriptionType& type,
+        const QString& entityId,
+        QObject* subscriber = nullptr);
+
+    static QString generateSubscriptionId();
+
+    QString toString() const;
+
+    /** Unique subscription ID to handle this subscription later. */
+    QString id;
 
     WebSocketSubscriptionType type;
 
@@ -82,7 +93,7 @@ public:
     void subscribe(const WebSocketSubscription& subscription);
 
     /** Unregisters the subscription. */
-    void unsubscribe(const WebSocketSubscription& subscription);
+    void unsubscribe(const QString& subscriptionId);
 
 signals:
     /** Emitted every time web socket state changes. */
