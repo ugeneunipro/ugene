@@ -62,7 +62,14 @@ void updateModel(QStandardItem* parentItem, const CloudStorageEntry& entry) {
         childrenMap[childEntryKey] = childItem;
     }
 
-    for (const CloudStorageEntry& childEntry : qAsConst(entry->children)) {
+    auto sortedChildren = entry->children;  // Sort, make folders first.
+    std::sort(sortedChildren.begin(), sortedChildren.end(), [](const CloudStorageEntry& e1, const CloudStorageEntry& e2) {
+        if (e1->isFolder != e2->isFolder) {
+            return e1->isFolder;
+        }
+        return e1->getName() < e2->getName();
+    });
+    for (const CloudStorageEntry& childEntry : qAsConst(sortedChildren)) {
         QIcon icon(childEntry->isFolder ? ":U2Designer/images/directory.png" : ":core/images/document.png");
         auto childEntryKey = childEntry->sessionLocalId;
         if (childrenMap.contains(childEntryKey)) {
@@ -276,7 +283,12 @@ void CloudStorageDockWidget::uploadItem() {
     if (!isFolder) {
         path.pop_back();
     }
-    workspaceService->getCloudStorageService()->uploadFile(path, localFilePath);
+    workspaceService->getCloudStorageService()->uploadFile(path, localFilePath, this, [this](const QJsonObject& response) {
+        auto errorMessage = WorkspaceService::getErrorMessageFromResponse(response);
+        if (!errorMessage.isEmpty()) {
+            QMessageBox::critical(this, L10N::errorTitle(), errorMessage);
+        }
+    });
 }
 
 void CloudStorageDockWidget::updateActionsState() {
