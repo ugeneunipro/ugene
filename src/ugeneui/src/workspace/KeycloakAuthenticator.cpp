@@ -43,7 +43,7 @@ KeycloakAuthenticator::KeycloakAuthenticator(const QString& _authUrl, const QStr
     // Use this so previous tokens cached in browser won't work and user will be asked to sign in every time KeycloakAuthenticator is used.
     oauth2.setState(QString::number(QDateTime::currentMSecsSinceEpoch()));
 
-    auto replyHandler = new QOAuthHttpServerReplyHandler(8848, this);
+    auto replyHandler = new QOAuthHttpServerReplyHandler(0, this);
     oauth2.setReplyHandler(replyHandler);
 
     connect(&oauth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, this, [](const QUrl& url) {
