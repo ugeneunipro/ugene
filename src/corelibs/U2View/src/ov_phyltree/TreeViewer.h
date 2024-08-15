@@ -90,10 +90,18 @@ protected:
     QWidget* createViewWidget(QWidget* parent) override;
     void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
-private slots:
-    void sl_colorModeSwitched();
+protected slots:
+    virtual void sl_colorModeSwitched();
 
 public:
+    QMenu* layoutMenu = nullptr;
+    QMenu* labelsMenu = nullptr;
+    QMenu* treeImageActionsSubmenu = nullptr;
+
+    QToolButton* layoutButton = nullptr;
+    QToolButton* showLabelsButton = nullptr;
+    QToolButton* treeImageActionsButton = nullptr;
+
     QAction* treeSettingsAction = nullptr;
     QAction* rectangularLayoutAction = nullptr;
     QAction* circularLayoutAction = nullptr;

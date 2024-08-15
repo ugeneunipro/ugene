@@ -54,7 +54,8 @@ enum TreeViewOption {
      */
     BREADTH_SCALE_ADJUSTMENT_PERCENT = 2,
 
-    LABEL_COLOR = 100,
+    LABEL_COLOR_DARK = 99,
+    LABEL_COLOR_LIGHT = 100,
     LABEL_FONT_FAMILY = 101,
     LABEL_FONT_SIZE = 102,
     LABEL_FONT_BOLD = 103,
@@ -71,7 +72,8 @@ enum TreeViewOption {
     /** Aligns leaf node labels (sequence/species names). */
     ALIGN_LEAF_NODE_LABELS = 109,
 
-    BRANCH_COLOR = 200,
+    BRANCH_COLOR_DARK = 199,
+    BRANCH_COLOR_LIGHT = 200,
     BRANCH_THICKNESS = 201,
     /** Curvature of branches in Rectangular layout mode. 0 -> no curvature. 100 -> maximum possible curvature. */
     BRANCH_CURVATURE = 202,

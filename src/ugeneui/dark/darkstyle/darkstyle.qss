@@ -74,22 +74,6 @@ QMenu::indicator:exclusive:unchecked{
   image:url(:/darkstyle/icon_radiobutton_unchecked.png);
   padding-left:2px;
 }
-QToolBar::top{
-  background-color:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
-  border-bottom:3px solid qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
-}
-QToolBar::bottom{
-  background-color:qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
-  border-top:3px solid qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
-}
-QToolBar::left{
-  background-color:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
-  border-right:3px solid qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
-}
-QToolBar::right{
-  background-color:qlineargradient(x1:1,y1:0,x2:0,y2:0,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
-  border-left:3px solid qlineargradient(x1:1,y1:0,x2:0,y2:0,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
-}
 QMainWindow::separator{
   width:6px;
   height:5px;
@@ -144,14 +128,6 @@ QGroupBox::title{
   border-bottom:2px solid rgb(127,127,127);
   border-top-left-radius:4px;
   border-top-right-radius:4px;
-}
-QTabWidget::pane{
-  background-color:rgba(66,66,66,50%);
-  border-top:1px solid rgba(25,25,25,50%);
-}
-QTabWidget::tab-bar{
-  left:3px;
-  top:1px;
 }
 QTabBar{
   background-color:transparent;

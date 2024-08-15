@@ -24,8 +24,11 @@
 #include <QProxyStyle>
 #include <QStyleFactory>
 
+#include <U2Core/AppContext.h>
+
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/MainWindow.h>
 
 #include "../ov_phyltree/TreeViewerUtils.h"
 
@@ -38,7 +41,8 @@ TextSettingsDialog::TextSettingsDialog(QWidget* parent, const QMap<TreeViewOptio
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    curColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
+    auto labelColor = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+    curColor = qvariant_cast<QColor>(settings[labelColor]);
 
     QStyle* buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
     buttonStyle->setParent(colorButton);
@@ -67,7 +71,8 @@ void TextSettingsDialog::updateColorButton() {
 void TextSettingsDialog::sl_colorButton() {
     curColor = U2ColorDialog::getColor(curColor, this);
     if (curColor.isValid()) {
-        updatedSettings[LABEL_COLOR] = curColor;
+        auto labelColor = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+        updatedSettings[labelColor] = curColor;
         updateColorButton();
     }
 }

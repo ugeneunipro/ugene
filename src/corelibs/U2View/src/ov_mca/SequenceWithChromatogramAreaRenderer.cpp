@@ -379,7 +379,7 @@ void SequenceWithChromatogramAreaRenderer::drawQualityValues(const Chromatogram&
     QBrush brush(gradient);
 
     p.setBrush(brush);
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
     p.setRenderHint(QPainter::Antialiasing, true);
 
     int colWidth = getSeqArea()->getEditor()->getColumnWidth();

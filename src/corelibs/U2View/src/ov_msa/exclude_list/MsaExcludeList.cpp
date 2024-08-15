@@ -74,7 +74,7 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
 
     // Toggles exclude list view in MSA editor. See MsaExcludeList for details.
     auto toggleExcludeListAction = new GObjectViewAction(this, view, tr("Show Exclude List"));
-    toggleExcludeListAction->setIcon(QIcon(":core/images/inbox-minus.png"));
+    toggleExcludeListAction->setIcon(GUIUtils::getIconResource("core", "inbox-minus.png"));
     toggleExcludeListAction->setCheckable(true);
     toggleExcludeListAction->setObjectName(TOGGLE_EXCLUDE_LIST_ACTION_NAME);
     toggleExcludeListAction->setToolTip(tr("Show/Hide Exclude List view visibility"));
