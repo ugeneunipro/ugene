@@ -279,6 +279,7 @@ protected:
     virtual void addEditMenu(QMenu* m) = 0;
     virtual void addExportMenu(QMenu* m);
     void addLoadMenu(QMenu* m);
+    void addNavigationMenu(QMenu* m) const;
 
     void setFont(const QFont& f);
 
@@ -334,6 +335,7 @@ public:
     QAction* resetZoomAction = nullptr;
     QAction* exportHighlightedAction = nullptr;
     QAction* multilineViewAction = nullptr;
+    QAction* gotoAction = nullptr;
 
     /** Clears selection in normal mode or exits from editing mode in the edit mode. */
     QAction* clearSelectionAction = nullptr;

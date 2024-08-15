@@ -164,12 +164,6 @@ MsaEditor::MsaEditor(const QString& viewName, MsaObject* obj)
     convertRawToAminoAction->setToolTip(tr("Convert alignment from RAW to Amino alphabet: use X for unknown symbols"));
     connect(convertRawToAminoAction, SIGNAL(triggered()), SLOT(sl_convertRawToAminoAlphabet()));
 
-    gotoAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position…"), this);
-    gotoAction->setObjectName("action_go_to_position");
-    gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
-    gotoAction->setShortcutContext(Qt::WindowShortcut);
-    gotoAction->setToolTip(QString("%1 (%2)").arg(gotoAction->text()).arg(gotoAction->shortcut().toString()));
-
     initZoom();
     initFont();
 }
@@ -454,9 +448,9 @@ void MsaEditor::addHighlightingMenu(QMenu* m) const {
 }
 
 void MsaEditor::addNavigationMenu(QMenu* m) const {
-    QMenu* navMenu = m->addMenu(tr("Navigation"));
-    navMenu->menuAction()->setObjectName(MSAE_MENU_NAVIGATION);
-    navMenu->addAction(gotoAction);
+    QMenu* navMenu = GUIUtils::findSubMenu(m, MSAE_MENU_NAVIGATION);
+    SAFE_POINT(navMenu != nullptr, "navMenu is null", );
+
     navMenu->addSeparator();
     navMenu->addAction(searchInSequencesAction);
     navMenu->addAction(searchInSequenceNamesAction);

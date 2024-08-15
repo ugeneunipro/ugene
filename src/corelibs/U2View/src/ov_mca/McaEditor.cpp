@@ -231,6 +231,8 @@ void McaEditor::initActions() {
     changeFontAction->setText(tr("Change characters font..."));
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
+
+    connect(gotoAction, &QAction::triggered, ui, &McaEditorWgt::sl_goto);
 }
 
 void McaEditor::sl_saveOverviewState() {
