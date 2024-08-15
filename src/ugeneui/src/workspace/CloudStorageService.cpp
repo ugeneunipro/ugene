@@ -39,7 +39,8 @@ CloudStorageService::CloudStorageService(WorkspaceService* ws)
     connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this] {
         auto webSocketService = workspaceService->getWebSocketService();
         if (webSocketService != nullptr) {
-            webSocketService->subscribe(WebSocketSubscription(WebSocketSubscriptionType::StorageState, "", this));
+            QString subscriptionId = WebSocketSubscription::generateSubscriptionId();
+            webSocketService->subscribe(WebSocketSubscription(subscriptionId, WebSocketSubscriptionType::StorageState, "", this));
             connect(webSocketService, &WebSocketClientService::si_messageReceived, this, &CloudStorageService::onWebSocketMessageReceived, Qt::UniqueConnection);
         }
     });
@@ -49,45 +50,55 @@ const CloudStorageEntry& CloudStorageService::getRootEntry() const {
     return rootEntry;
 }
 
-void CloudStorageService::createDir(const QList<QString>& path) {
+void CloudStorageService::createDir(const QList<QString>& path,
+                                    QObject* context,
+                                    std::function<void(const QJsonObject&)> callback) const {
     SAFE_POINT(checkCloudStoragePath(path), "Invalid cloud file path: " + path.join("/"), );
     ioLog.trace("CloudStorageService::createDir: " + path.join("/"));
     QJsonObject payload;
     payload["path"] = QJsonArray::fromStringList(path);
-    workspaceService->executeApiRequest("/storage/createDir", payload);
+    workspaceService->executeApiRequest("/storage/createDir", payload, context, callback);
 }
 
-void CloudStorageService::deleteEntry(const QList<QString>& path) {
+void CloudStorageService::deleteEntry(const QList<QString>& path,
+                                      QObject* context,
+                                      std::function<void(const QJsonObject&)> callback) const {
     ioLog.trace("CloudStorageService::deleteEntry: " + path.join("/"));
     SAFE_POINT(checkCloudStoragePath(path), "Invalid cloud file path: " + path.join("/"), );
     QJsonObject payload;
     payload["path"] = QJsonArray::fromStringList(path);
-    workspaceService->executeApiRequest("/storage/delete", payload);
+    workspaceService->executeApiRequest("/storage/delete", payload, context, callback);
 }
 
-void CloudStorageService::renameEntry(const QList<QString>& oldPath, const QList<QString>& newPath) {
+void CloudStorageService::renameEntry(const QList<QString>& oldPath,
+                                      const QList<QString>& newPath,
+                                      QObject* context,
+                                      std::function<void(const QJsonObject&)> callback) const {
     ioLog.trace("CloudStorageService::renameEntry: " + oldPath.join("/") + " -> " + newPath.join("/"));
     SAFE_POINT(checkCloudStoragePath(oldPath), "Invalid cloud old file path: " + oldPath.join("/"), );
     SAFE_POINT(checkCloudStoragePath(newPath), "Invalid cloud old file path: " + newPath.join("/"), );
     QJsonObject payload;
     payload["path"] = QJsonArray::fromStringList(oldPath);
     payload["newPath"] = QJsonArray::fromStringList(newPath);
-    workspaceService->executeApiRequest("/storage/move", payload);
+    workspaceService->executeApiRequest("/storage/move", payload, context, callback);
 }
 
-void CloudStorageService::downloadFile(const QList<QString>& path, const QString& localDirPath) {
+void CloudStorageService::downloadFile(const QList<QString>& path,
+                                       const QString& localDirPath,
+                                       QObject* context,
+                                       std::function<void(const QJsonObject&)> callback) const {
     ioLog.trace("CloudStorageService::downloadFile: " + path.join("/") + " -> " + localDirPath);
     SAFE_POINT(checkCloudStoragePath(path), "Invalid cloud file path: " + path.join("/"), );
     QFileInfo dir(localDirPath);
     QString fileName = path.last();
     QString localFilePath = GUrlUtils::rollFileName(dir.absolutePath() + "/" + fileName, "_");
-    workspaceService->executeDownloadFileRequest(path, localFilePath);
+    workspaceService->executeDownloadFileRequest(path, localFilePath, context, callback);
 }
 
 void CloudStorageService::uploadFile(const QList<QString>& cloudDirPath,
                                      const QString& localFilePath,
                                      QObject* context,
-                                     std::function<void(const QJsonObject&)> callback) {
+                                     std::function<void(const QJsonObject&)> callback) const {
     ioLog.trace("CloudStorageService::uploadFile: " + localFilePath + "->" + cloudDirPath.join("/"));
     SAFE_POINT(checkCloudStoragePath(cloudDirPath, true), "Invalid cloud file path: " + cloudDirPath.join("/"), );
     workspaceService->executeUploadFileRequest(cloudDirPath, localFilePath, context, callback);

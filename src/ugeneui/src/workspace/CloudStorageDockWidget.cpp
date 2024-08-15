@@ -133,7 +133,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
         updateStateLabelText();
     });
 
-    connect(workspaceService->getCloudStorageService(), &CloudStorageService::si_storageStateChanged, this, [this](const CloudStorageEntry& rootEntry) {
+    connect(getCloudStorageService(), &CloudStorageService::si_storageStateChanged, this, [this](const CloudStorageEntry& rootEntry) {
         stateLabel->setVisible(false);
         treeView->setVisible(true);
 
@@ -203,7 +203,7 @@ void CloudStorageDockWidget::createDir() {
         path.pop_back();
     }
     path.append(dirName);
-    workspaceService->getCloudStorageService()->createDir(path);
+    getCloudStorageService()->createDir(path, this, [this](const auto& response) { handleCloudStorageResponse(response); });
 }
 
 void CloudStorageDockWidget::deleteItem() {
@@ -212,7 +212,7 @@ void CloudStorageDockWidget::deleteItem() {
     CHECK(path.length() > 0, );
     QMessageBox::StandardButton result = QMessageBox::question(treeView, tr("Question?"), tr("Do you want to delete %1").arg(path.last()));
     CHECK(result == QMessageBox::Yes, );
-    workspaceService->getCloudStorageService()->deleteEntry(path);
+    getCloudStorageService()->deleteEntry(path, this, [this](const auto& response) { handleCloudStorageResponse(response); });
 }
 
 QModelIndex CloudStorageDockWidget::getSelectedItemIndex() const {
@@ -241,7 +241,7 @@ void CloudStorageDockWidget::renameItem() {
     }
     QList<QString> newPath = path;
     newPath[newPath.length() - 1] = newName;
-    workspaceService->getCloudStorageService()->renameEntry(path, newPath);
+    getCloudStorageService()->renameEntry(path, newPath, this, [this](const auto& response) { handleCloudStorageResponse(response); });
 }
 
 void CloudStorageDockWidget::downloadItemSilently() {
@@ -253,7 +253,7 @@ void CloudStorageDockWidget::downloadItemSilently() {
     uiLog.trace("CloudStorageDockWidget::downloadItem: " + path.join("/"));
     CHECK(path.length() > 0, );
     LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
-    workspaceService->getCloudStorageService()->downloadFile(path, lod.dir);
+    getCloudStorageService()->downloadFile(path, lod.dir, this, [this](const auto& response) { handleCloudStorageResponse(response); });
 }
 
 void CloudStorageDockWidget::downloadItem() {
@@ -267,7 +267,7 @@ void CloudStorageDockWidget::downloadItem() {
     QString dir = U2FileDialog::getExistingDirectory(this, tr("Select a folder to save the downloaded file"), lod.dir);
     CHECK(!dir.isEmpty(), );
     lod.dir = dir;
-    workspaceService->getCloudStorageService()->downloadFile(path, dir);
+    getCloudStorageService()->downloadFile(path, dir, this, [this](const auto& response) { handleCloudStorageResponse(response); });
 }
 
 void CloudStorageDockWidget::uploadItem() {
@@ -283,12 +283,14 @@ void CloudStorageDockWidget::uploadItem() {
     if (!isFolder) {
         path.pop_back();
     }
-    workspaceService->getCloudStorageService()->uploadFile(path, localFilePath, this, [this](const QJsonObject& response) {
-        auto errorMessage = WorkspaceService::getErrorMessageFromResponse(response);
-        if (!errorMessage.isEmpty()) {
-            QMessageBox::critical(this, L10N::errorTitle(), errorMessage);
-        }
-    });
+    getCloudStorageService()->uploadFile(path, localFilePath, this, [this](const QJsonObject& response) { handleCloudStorageResponse(response); });
+}
+
+void CloudStorageDockWidget::handleCloudStorageResponse(const QJsonObject& response) {
+    auto errorMessage = WorkspaceService::getErrorMessageFromResponse(response);
+    if (!errorMessage.isEmpty()) {
+        QMessageBox::critical(this, L10N::errorTitle(), errorMessage);
+    }
 }
 
 void CloudStorageDockWidget::updateActionsState() {
@@ -321,6 +323,10 @@ void CloudStorageDockWidget::updateStateLabelText() {
             workspaceService->logout();
         }
     });
+}
+
+CloudStorageService* CloudStorageDockWidget::getCloudStorageService() const {
+    return workspaceService->getCloudStorageService();
 }
 
 }  // namespace U2

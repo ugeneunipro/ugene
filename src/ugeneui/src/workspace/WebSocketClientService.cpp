@@ -61,8 +61,20 @@ static WebSocketSubscriptionType parseSubscriptionType(const QString& stringValu
     FAIL("Unexpected subscription type", WebSocketSubscriptionType::Invalid);
 }
 
-WebSocketSubscription::WebSocketSubscription(const WebSocketSubscriptionType& _type, const QString& _entityId, QObject* _subscriber)
-    : type(_type), entityId(_entityId), subscriber(_subscriber) {
+WebSocketSubscription::WebSocketSubscription(
+    const QString& _id,
+    const WebSocketSubscriptionType& _type,
+    const QString& _entityId,
+    QObject* _subscriber)
+    : id(_id), type(_type), entityId(_entityId), subscriber(_subscriber) {
+}
+
+QString WebSocketSubscription::generateSubscriptionId() {
+    return "sub-" + QUuid::createUuid().toString(QUuid::WithoutBraces);
+}
+
+QString WebSocketSubscription::toString() const {
+    return "WebSocketSubscription[" + id + ", " + getSubscriptionTypeAsString(type) + ", " + entityId + "]";
 }
 
 WebSocketClientService::WebSocketClientService(const QString& _webSocketUrl, QObject* parent)
@@ -198,55 +210,33 @@ void WebSocketClientService::sendAccessTokenToServer() {
     sendMessage({WebSocketRequestType::UpdateAccessToken, {}});  // Will add the token to the message.
 }
 
-static QString getClientSubscriptionKey(const WebSocketSubscription& subscription) {
-    return getSubscriptionTypeAsString(subscription.type) + (subscription.entityId.isEmpty() ? " " + subscription.entityId : "");
-}
-
-static bool hasSubscriptionWithKey(const QString& key, const QList<WebSocketSubscription>& subscriptions) {
-    return std::any_of(subscriptions.cbegin(), subscriptions.cend(), [&key](const auto& subscription) {
-        return getClientSubscriptionKey(subscription) == key;
-    });
-}
-
 void WebSocketClientService::subscribe(const WebSocketSubscription& subscription) {
-    auto subscriptionKey = getClientSubscriptionKey(subscription);
-    ioLog.trace("WebSocketClientService:subscribe" + subscriptionKey);
-    if (hasSubscriptionWithKey(subscriptionKey, subscriptions)) {
-        ioLog.trace("WebSocketClientService:subscribe, already have subscription with this key: " + subscriptionKey);
-    } else {
-        QJsonObject subscriptionAsJsonObject;
-        subscriptionAsJsonObject["type"] = getSubscriptionTypeAsString(subscription.type);
-        if (!subscription.entityId.isEmpty()) {
-            subscriptionAsJsonObject["entityId"] = subscription.entityId;
-        }
-        sendMessage({WebSocketRequestType::Subscribe, {{"subscriptions", QJsonArray {subscriptionAsJsonObject}}}});
+    ioLog.trace("WebSocketClientService:subscribe " + subscription.toString());
+    QJsonObject subscriptionAsJsonObject;
+    subscriptionAsJsonObject["id"] = subscription.id;
+    subscriptionAsJsonObject["type"] = getSubscriptionTypeAsString(subscription.type);
+    if (!subscription.entityId.isEmpty()) {
+        subscriptionAsJsonObject["entityId"] = subscription.entityId;
     }
+    sendMessage({WebSocketRequestType::Subscribe, {{"subscriptions", QJsonArray {subscriptionAsJsonObject}}}});
     subscriptions << subscription;
     if (subscription.subscriber) {
         connect(subscription.subscriber, &QObject::destroyed, this, [this, subscription] {
-            unsubscribe(subscription);
+            unsubscribe(subscription.id);
         });
     }
 }
 
-void WebSocketClientService::unsubscribe(const WebSocketSubscription& subscription) {
-    const auto subscriptionKey = getClientSubscriptionKey(subscription);
-    ioLog.trace("WebSocketClientService:unsubscribe" + subscriptionKey);
-    const auto it = std::find_if(subscriptions.begin(), subscriptions.end(), [&](const auto& s) {
-        return getClientSubscriptionKey(s) == subscriptionKey && s.subscriber == subscription.subscriber;
-    });
+void WebSocketClientService::unsubscribe(const QString& subscriptionId) {
+    ioLog.trace("WebSocketClientService:unsubscribe " + subscriptionId);
+    const auto it = std::find_if(subscriptions.begin(), subscriptions.end(), [subscriptionId](const auto& s) { return s.id == subscriptionId; });
     CHECK(it != subscriptions.cend(), );
 
     subscriptions.erase(it);
 
-    if (!hasSubscriptionWithKey(subscriptionKey, subscriptions)) {
-        QJsonObject subscriptionAsJsonObject;
-        subscriptionAsJsonObject["type"] = getSubscriptionTypeAsString(subscription.type);
-        if (!subscription.entityId.isEmpty()) {
-            subscriptionAsJsonObject["entityId"] = subscription.entityId;
-        };
-        sendMessage({WebSocketRequestType::Unsubscribe, {{"subscriptions", QJsonArray {subscriptionAsJsonObject}}}});
-    }
+    QJsonArray subscriptionIdsAsJsonArray;
+    subscriptionIdsAsJsonArray.append(subscriptionId);
+    sendMessage({WebSocketRequestType::Unsubscribe, {{"subscriptionIds", subscriptionIdsAsJsonArray}}});
 }
 
 bool WebSocketClientService::isConnected() const {
