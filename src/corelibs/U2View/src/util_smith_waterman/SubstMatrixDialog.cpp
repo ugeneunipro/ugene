@@ -28,6 +28,7 @@
 #include <QTableWidgetItem>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/MainWindow.h>
@@ -141,6 +142,9 @@ const QColor& SubstMatrixDialog::getCellColor(ColorType type) const {
         case ColorType::HighlightInner:
             return isDark ? HIGHLIGHT_INNER_CELL_COLOR_DARK : HIGHLIGHT_INNER_CELL_COLOR_LIGHT;
             break;
+        default:
+            FAIL("Unexpected type", QColor());
+            return QColor();
     }
 }
 
