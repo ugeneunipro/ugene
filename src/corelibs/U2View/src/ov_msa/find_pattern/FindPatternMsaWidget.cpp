@@ -313,6 +313,7 @@ void FindPatternMsaWidget::initMaxResultLenContainer() {
     layoutAlgorithmSettings->addWidget(useMaxResultLenContainer);
 
     connect(msaEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapseModelChanged()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &FindPatternMsaWidget::sl_colorModeSwitched);
 }
 
 void FindPatternMsaWidget::connectSlots() {
@@ -525,6 +526,10 @@ void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOut
     } else {
         startFindPatternInMsaTask(newPatterns);
     }
+}
+
+void FindPatternMsaWidget::sl_colorModeSwitched() {
+    updateErrorLabelState();
 }
 
 void FindPatternMsaWidget::clearResults() {

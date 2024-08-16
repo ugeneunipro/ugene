@@ -24,6 +24,7 @@
 #include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LabelClickTransmitter.h>
@@ -91,9 +92,7 @@ void SeqStatisticsWidget::updateWidgetsSettings() {
     ui.algoComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
 
     ui.refSeqWarning->setText(tr("Hint: select a reference above"));
-    ui.refSeqWarning->setStyleSheet(
-        "color: green;"
-        "font: bold;");
+    ui.refSeqWarning->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::infoColorLabelHtmlStr()));
     ui.refSeqWarning->setWordWrap(true);
 
     ui.dataState->setText(tr("Press button to update"));
@@ -112,6 +111,7 @@ void SeqStatisticsWidget::connectSlots() {
     connect(ui.showDistancesColumnCheck, SIGNAL(stateChanged(int)), SLOT(sl_onShowStatisticsChanged(int)));
     connect(ui.autoUpdateCheck, SIGNAL(stateChanged(int)), SLOT(sl_onAutoUpdateChanged(int)));
     connect(msa, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_onRefSeqChanged(qint64)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SeqStatisticsWidget::sl_colorModeSwitched);
 }
 
 void SeqStatisticsWidget::restoreSettings() {
@@ -164,6 +164,10 @@ void SeqStatisticsWidget::sl_onRefSeqChanged(qint64 referenceRowId) {
     } else {
         ui.refSeqWarning->hide();
     }
+}
+
+void SeqStatisticsWidget::sl_colorModeSwitched() {
+    ui.refSeqWarning->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::infoColorLabelHtmlStr()));
 }
 
 void SeqStatisticsWidget::sl_onShowStatisticsChanged(int state) {

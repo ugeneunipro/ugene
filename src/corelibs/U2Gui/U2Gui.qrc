@@ -12,7 +12,6 @@
         <file>images/annotation_settings.png</file>
         <file>images/arrow-move-down.png</file>
         <file>images/arrow-move-up.png</file>
-        <file>images/arrow_rotate_clockwise.png</file>
         <file>images/backward.png</file>
         <file>images/biostruct3d.png</file>
         <file>images/bookmark.png</file>
@@ -119,6 +118,7 @@
         <file>images/light/align_tree_labels.png</file>
         <file>images/light/arrow_down.png</file>
         <file>images/light/arrow_right.png</file>
+        <file>images/light/arrow_rotate_clockwise.png</file>
         <file>images/light/cam2.png</file>
         <file>images/light/close_small.png</file>
         <file>images/light/codon_table.png</file>
@@ -184,6 +184,7 @@
         <file>images/dark/align_tree_labels.png</file>
         <file>images/dark/arrow_down.png</file>
         <file>images/dark/arrow_right.png</file>
+        <file>images/dark/arrow_rotate_clockwise.png</file>
         <file>images/dark/cam2.png</file>
         <file>images/dark/close_small.png</file>
         <file>images/dark/codon_table.png</file>
