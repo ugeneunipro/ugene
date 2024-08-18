@@ -112,7 +112,7 @@ void WebSocketClientService::onDisconnected() {
 }
 
 void WebSocketClientService::onTextMessageReceived(const QString& message) {
-    ioLog.trace("WebSocketClientService: Received message" + message);
+    ioLog.trace("WebSocketClientService: Received message: " + message);
     CHECK(message != "heartbeat", );
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject incomingMessage = doc.object();
