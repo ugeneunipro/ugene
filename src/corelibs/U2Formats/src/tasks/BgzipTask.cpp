@@ -29,7 +29,9 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "bgzf.h"
+extern "C" {
+#include <samtools_core/htslib/htslib/bgzf.h>
+}
 
 namespace U2 {
 
@@ -71,11 +73,9 @@ void BgzipTask::run() {
         bgzfUrl = GUrl(fileUrl.getURLString() + ".gz");
     }
 
-    NP<FILE> outFile = FileAndDirectoryUtils::openFile(bgzfUrl.getURLString(), "w");
-    BGZF* out = bgzf_fdopen(outFile.getNullable(), "w");
+    BGZF* out = bgzf_open(bgzfUrl.getURLString().toLocal8Bit(), "w");
     if (out == nullptr) {
         Task::setError(tr("Can not open output file '%2'").arg(bgzfUrl.getURLString()));
-        FileAndDirectoryUtils::closeFileIfOpen(outFile.getNullable());
         return;
     }
     BGZF_wrapper out_wr(out);
@@ -121,10 +121,7 @@ Task::ReportResult BgzipTask::report() {
 }
 
 bool BgzipTask::checkBgzf(const GUrl& fileUrl) {
-    NP<FILE> file = FileAndDirectoryUtils::openFile(fileUrl.getURLString(), "r");
-    int checkResult = file == nullptr ? -1 : bgzf_check_bgzf(file);
-    FileAndDirectoryUtils::closeFileIfOpen(file);
-    return checkResult;  // TODO: method returns incorrect type and the logic looks inverted from the normal.
+    return bgzf_is_bgzf(fileUrl.getURLString().toLocal8Bit());
 }
 
 GzipDecompressTask::GzipDecompressTask(const GUrl& zipUrl, const GUrl& fileUrl)

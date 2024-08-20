@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,6 +30,8 @@ class TrimmomaticSupport : public ExternalTool {
 public:
     TrimmomaticSupport();
     ~TrimmomaticSupport();
+
+    const QString getVersionFromToolPath(const QString& toolPath) const override;
 
     static const QString ET_TRIMMOMATIC;
     static const QString ET_TRIMMOMATIC_ID;

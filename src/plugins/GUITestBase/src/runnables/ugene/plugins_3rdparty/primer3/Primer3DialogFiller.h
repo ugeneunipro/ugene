@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,6 +50,8 @@ public:
         bool pickInternal = false;
         // If there are some validation errors expected set true
         bool hasValidationErrors = false;
+        // If there are some critical errors expected set true
+        bool hasValidationCriticals = false;
         // Subsequence of the validateion error text
         QString validationErrorsText;
         // Continue calculation even if errors exists

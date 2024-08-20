@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -86,8 +86,8 @@ class CustomPatternAnnotationTask : public Task {
 public:
     CustomPatternAnnotationTask(AnnotationTableObject* aobj, const U2EntityRef& entityRef, const SharedFeatureStore& store, const QStringList& filteredFeatures = QStringList());
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     struct PatternInfo {
         QString name;
@@ -117,8 +117,8 @@ class CustomPatternAutoAnnotationUpdater : public AutoAnnotationsUpdater {
 
 public:
     CustomPatternAutoAnnotationUpdater(const SharedFeatureStore& store);
-    Task* createAutoAnnotationsUpdateTask(const AutoAnnotationObject* aa);
-    bool checkConstraints(const AutoAnnotationConstraints& constraints);
+    Task* createAutoAnnotationsUpdateTask(const AutoAnnotationObject* aa) override;
+    bool checkConstraints(const AutoAnnotationConstraints& constraints) override;
 };
 
 }  // namespace U2

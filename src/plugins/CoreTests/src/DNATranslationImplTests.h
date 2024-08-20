@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ class GTest_DNATranslation3to1Test : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DNATranslation3to1Test, "check-translation");
 
-    ReportResult report();
+    ReportResult report() override;
 
     QString objContextName;
 

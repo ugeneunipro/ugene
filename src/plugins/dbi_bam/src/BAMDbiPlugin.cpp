@@ -165,6 +165,8 @@ QList<Task*> BAMImporterTask::onSubTaskFinished(Task* subTask) {
     }
 
     else if (prepareToImportTask == subTask && prepareToImportTask->isNewURL()) {
+        // This happens if the original file wasn't sorted
+        // and PrepareToImportTask created a new sorted file
         initLoadBamInfoTask();
         CHECK(loadBamInfoTask != nullptr, res);
         res << loadBamInfoTask;
@@ -288,6 +290,29 @@ void BAMImporterTask::initConvertToSqliteTask() {
     if (prepareToImportTask->isNewURL()) {
         sourceURL = loadBamInfoTask->getSourceUrl();
         bamInfo = loadBamInfoTask->getInfo();
+        if (useGui) {
+            // Using @ConvertToSQLiteDialog we could set which scaffolds we should import
+            // and should we import unmapped reads as a separate scaffold or not.
+            // This info is stored to @BAMInfo of @LoadInfoTask loadInfoTask.
+            // If the original file is not sorted, it will be sorted and saved nearby (to "ORIGINAL_NAME_sorted.bam").
+            // If the new sorted file was created, it will be processed by a new one @LoadInfoTask loadBamInfoTask.
+            // As far as this task will create its own new @BAMInfo, we have to store inforation about what scaffolds we should improt.
+            auto& bamInfoWithDialogSettings = loadInfoTask->getInfo();
+            bamInfo.setUnmappedSelected(bamInfoWithDialogSettings.isUnmappedSelected());
+            auto& currentBamSelected = bamInfo.getSelected();
+            const auto& selectedWithDialog = bamInfoWithDialogSettings.getSelected();
+            if (!selectedWithDialog.isEmpty()) {
+                // Empty list of selected scaffolds in the original file means,
+                // that this file doesn't have header (it is possible, if the original file has SAM format)
+                // Overwise, number of scaffolds in orginal and in sorted files should be equal
+                SAFE_POINT_EXT(currentBamSelected.size() == selectedWithDialog.size(),
+                               setError("Original and sorted files have different number of scaffolds"), );
+
+                for (int i = 0; i < currentBamSelected.size(); i++) {
+                    currentBamSelected[i] = selectedWithDialog[i];
+                }
+            }
+        }
     } else {
         sourceURL = prepareToImportTask->getSourceUrl();
         bamInfo = loadInfoTask->getInfo();

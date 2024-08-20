@@ -41,7 +41,7 @@ void GTTabBar::setCurrentIndex(QTabBar* tabBar, int index) {
         MainThreadAction(QTabBar* tabBar, int index)
             : tabBar(tabBar), index(index) {
         }
-        void run() {
+        void run() override {
             if (tabBar->currentIndex() == index) {
                 return;
             }

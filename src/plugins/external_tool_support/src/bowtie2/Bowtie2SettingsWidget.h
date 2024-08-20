@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,8 +31,8 @@ class Bowtie2SettingsWidget : public DnaAssemblyAlgorithmMainWidget, Ui_Bowtie2S
     Q_OBJECT
 public:
     Bowtie2SettingsWidget(QWidget* parent);
-    QMap<QString, QVariant> getDnaAssemblyCustomSettings() const;
-    bool isValidIndex(const QString& oneFileUrl) const;
+    QMap<QString, QVariant> getDnaAssemblyCustomSettings() const override;
+    bool isValidIndex(const QString& oneFileUrl) const override;
 };
 
 class Bowtie2BuildSettingsWidget : public DnaAssemblyAlgorithmBuildIndexWidget {
@@ -41,22 +41,22 @@ public:
     Bowtie2BuildSettingsWidget(QWidget* parent)
         : DnaAssemblyAlgorithmBuildIndexWidget(parent) {
     }
-    virtual QMap<QString, QVariant> getBuildIndexCustomSettings() {
+    QMap<QString, QVariant> getBuildIndexCustomSettings() override {
         return QMap<QString, QVariant>();
     }
-    virtual QString getIndexFileExtension() {
+    QString getIndexFileExtension() override {
         return QString();
     }
-    virtual GUrl buildIndexUrl(const GUrl& /*url*/) {
+    GUrl buildIndexUrl(const GUrl& /*url*/) override {
         return GUrl();
     }
 };
 
 class Bowtie2GUIExtensionsFactory : public DnaAssemblyGUIExtensionsFactory {
-    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent);
-    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent);
-    bool hasMainWidget();
-    bool hasBuildIndexWidget();
+    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent) override;
+    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent) override;
+    bool hasMainWidget() override;
+    bool hasBuildIndexWidget() override;
 };
 
 }  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -136,7 +136,7 @@ protected:
     /**
      * Calculates position of annotation rect on visible part of details view.
      *
-     * \param reg Annotation region.
+     * \param regionIndex Index of the annotation region.
      * \param canvasSize Size of the whole details view part, where all annotations are drawn.
      * \param visibleRange Sequence visible range.
      * \param selected True if annotation is selected, false otherwise.
@@ -144,10 +144,25 @@ protected:
      * \param as AnnotationSettings object.
      * \return Returns rect, which contains posistions of annotation on details view.
      */
-    QRect getAnnotationRect(const U2Region& reg, const QSize& canvasSize, const U2Region& visibleRange, bool selected, Annotation* a, const AnnotationSettings* as) const;
+    QRect getAnnotationRect(int regionIndex, const QSize& canvasSize, const U2Region& visibleRange, bool selected, Annotation* a, const AnnotationSettings* as) const;
 
     void drawAnnotationConnections(QPainter& p, Annotation* a, const AnnotationSettings* as, const AnnotationDisplaySettings& drawSettings, const QSize& canvasSize, const U2Region& visibleRange);
 
+    /**
+     * Calculates restriction cuts positions depends on annotation strand.
+     * Draws cuts.
+     *
+     * \param p An object, which draws restriction cuts.
+     * \param canvasSize Size of the whole details view part, where all annotations are drawn.
+     * \param visibleRange Sequence visible range.
+     * \param a, Annotation object.
+     * \param selected True if annotation is selected, false otherwise.
+     * \param as AnnotationSettings object.
+     * \param qualifierValue Value of the qualifier, which is written to "cut" or "cut-2" qualifiers.
+     */
+    void drawCutSite(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, Annotation* a, bool selected, const AnnotationSettings* as, const QString& qualifierValue);
+
+private:
     /**
      * Calculates restriction cuts positions depends on annotation strand.
      * Draws cuts.
@@ -165,6 +180,7 @@ protected:
 
     void drawCutSite(QPainter& p, const CutSiteDrawData& cData, const QSize& canvasSize, const U2Region& visibleRange);
 
+protected:
     QString prepareAnnotationText(const SharedAnnotationData& a, const AnnotationSettings* as) const;
 
     void addArrowPath(QPainterPath& path, const QRect& rect, bool leftArrow) const;

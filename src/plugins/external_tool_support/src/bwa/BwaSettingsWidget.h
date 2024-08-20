@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,8 +51,8 @@ class BwaSettingsWidget : public DnaAssemblyAlgorithmMainWidget, Ui_BwaSettings 
     Q_OBJECT
 public:
     BwaSettingsWidget(QWidget* parent);
-    QMap<QString, QVariant> getDnaAssemblyCustomSettings() const;
-    void validateReferenceSequence(const GUrl& url) const;
+    QMap<QString, QVariant> getDnaAssemblyCustomSettings() const override;
+    void validateReferenceSequence(const GUrl& url) const override;
 
 private:
     BwaIndexAlgorithmWarningReporter* warningReporter;
@@ -62,8 +62,8 @@ class BwaSwSettingsWidget : public DnaAssemblyAlgorithmMainWidget, Ui_BwaSwSetti
     Q_OBJECT
 public:
     BwaSwSettingsWidget(QWidget* parent);
-    QMap<QString, QVariant> getDnaAssemblyCustomSettings() const;
-    void validateReferenceSequence(const GUrl& url) const;
+    QMap<QString, QVariant> getDnaAssemblyCustomSettings() const override;
+    void validateReferenceSequence(const GUrl& url) const override;
 
 private:
     BwaIndexAlgorithmWarningReporter* warningReporter;
@@ -73,8 +73,8 @@ class BwaMemSettingsWidget : public DnaAssemblyAlgorithmMainWidget, Ui_BwaMemSet
     Q_OBJECT
 public:
     BwaMemSettingsWidget(QWidget* parent);
-    QMap<QString, QVariant> getDnaAssemblyCustomSettings() const;
-    void validateReferenceSequence(const GUrl& url) const;
+    QMap<QString, QVariant> getDnaAssemblyCustomSettings() const override;
+    void validateReferenceSequence(const GUrl& url) const override;
 
 private:
     BwaIndexAlgorithmWarningReporter* warningReporter;
@@ -84,34 +84,34 @@ class BwaBuildSettingsWidget : public DnaAssemblyAlgorithmBuildIndexWidget, Ui_B
     Q_OBJECT
 public:
     BwaBuildSettingsWidget(QWidget* parent);
-    virtual QMap<QString, QVariant> getBuildIndexCustomSettings();
-    virtual QString getIndexFileExtension();
-    virtual GUrl buildIndexUrl(const GUrl& url);
-    void validateReferenceSequence(const GUrl& url) const;
+    QMap<QString, QVariant> getBuildIndexCustomSettings() override;
+    QString getIndexFileExtension() override;
+    GUrl buildIndexUrl(const GUrl& url) override;
+    void validateReferenceSequence(const GUrl& url) const override;
 
 private:
     BwaIndexAlgorithmWarningReporter* warningReporter;
 };
 
 class BwaGUIExtensionsFactory : public DnaAssemblyGUIExtensionsFactory {
-    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent);
-    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent);
-    bool hasMainWidget();
-    bool hasBuildIndexWidget();
+    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent) override;
+    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent) override;
+    bool hasMainWidget() override;
+    bool hasBuildIndexWidget() override;
 };
 
 class BwaSwGUIExtensionsFactory : public DnaAssemblyGUIExtensionsFactory {
-    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent);
-    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent);
-    bool hasMainWidget();
-    bool hasBuildIndexWidget();
+    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent) override;
+    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent) override;
+    bool hasMainWidget() override;
+    bool hasBuildIndexWidget() override;
 };
 
 class BwaMemGUIExtensionsFactory : public DnaAssemblyGUIExtensionsFactory {
-    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent);
-    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent);
-    bool hasMainWidget();
-    bool hasBuildIndexWidget();
+    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent) override;
+    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent) override;
+    bool hasMainWidget() override;
+    bool hasBuildIndexWidget() override;
 };
 
 }  // namespace U2

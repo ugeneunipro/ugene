@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -141,7 +141,8 @@ public:
      * For each folder from a database: DB URL must be available, folder must exist
      */
     static bool validateInputFiles(QString urls, NotificationsList& notificationList);
-    static bool validateInputDirs(QString urls, NotificationsList& notificationList);
+    static bool validateInputFile(const QString& url, NotificationsList& notificationList);
+    static bool validateInputDir(QString url, NotificationsList& notificationList);
 
     static bool validateInputDbObject(const QString& url, NotificationsList& notificationList);
     static bool validateInputDbFolders(QString urls, NotificationsList& notificationList);

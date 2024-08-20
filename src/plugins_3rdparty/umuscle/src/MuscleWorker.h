@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MUSCLE_WORKER_H_
-#define _U2_MUSCLE_WORKER_H_
+#pragma once
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -75,4 +74,3 @@ public:
 }  // namespace LocalWorkflow
 }  // namespace U2
 
-#endif

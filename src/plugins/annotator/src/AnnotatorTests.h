@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,8 +40,8 @@ class GTest_AnnotatorSearch : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_AnnotatorSearch, "plugin_dna-annotator-search");
 
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
 private:
     QString seqName;
@@ -58,8 +58,8 @@ class GTest_CustomAutoAnnotation : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CustomAutoAnnotation, "custom-auto-annotation-search");
 
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
 private:
     QString seqName;
@@ -78,8 +78,8 @@ class GTest_GeneByGeneApproach : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_GeneByGeneApproach, "plugin_dna-annotator-gene-by-gene");
 
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
 private:
     QString seqName;

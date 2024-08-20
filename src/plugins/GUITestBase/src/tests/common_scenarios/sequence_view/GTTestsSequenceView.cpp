@@ -2270,8 +2270,11 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
     // Expected state: message box appears
     // 5. Set start search position back to 1
     // 6. Check the exclude checkbox
-    // 7. Click Ok
+    // 7. Set start exclude position to 5000, end position to 1000
+    // Expected state: the line edits are red
+    // 8. Click Ok
     // Expected state: message box appears
+    // 9. Set start exclude position back to 1
 
     GTFileDialog::openFile(dataDir + "samples/Genbank", "murine.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
@@ -2284,24 +2287,25 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
 
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            auto regionSelector = GTWidget::findWidget("region_selector_with_excluded");
-
-            auto start = GTWidget::findLineEdit("startLineEdit", regionSelector);
-            GTLineEdit::setText(start, "5000");
-
-            auto end = GTWidget::findLineEdit("endLineEdit", regionSelector);
-            GTLineEdit::setText(end, "1000");
+            auto regionSelector = GTWidget::findWidget("range_selector");
+            GTLineEdit::setText("start_edit_line", QString::number(5000), regionSelector);
+            GTLineEdit::setText("end_edit_line", QString::number(1000), regionSelector);
 
             GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 
-            GTLineEdit::setText(start, "1");
+            GTLineEdit::setText("start_edit_line", QString::number(1), regionSelector);
 
+            regionSelector = GTWidget::findWidget("exclude_range_selector");
             auto exclude = GTWidget::findCheckBox("excludeCheckBox");
             GTCheckBox::setChecked(exclude);
+            GTLineEdit::setText("start_edit_line", QString::number(5000), regionSelector);
+            GTLineEdit::setText("end_edit_line", QString::number(1000), regionSelector);
 
             GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+
+            GTLineEdit::setText("start_edit_line", QString::number(1), regionSelector);
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
@@ -2324,7 +2328,7 @@ GUI_TEST_CLASS_DEFINITION(test_0079_1) {
             GTComboBoxWithCheckBoxes::selectItemByText("cbSuppliers", dialog, {"Not defined"}, GTGlobals::UseMouse);
 
             auto text = GTLabel::getText("statusLabel", dialog);
-            CHECK_SET_ERR(text.contains("Total number of enzymes: 16166, visible: 15510, hidden: 656, selected: 0"), QString("Unexpected text: %1").arg(text));
+            CHECK_SET_ERR(text.contains("Total number of enzymes: 16139, visible: 15494, hidden: 645, selected: 0"), QString("Unexpected text: %1").arg(text));
 
             auto chekedValues = GTComboBoxWithCheckBoxes::getCheckedItemsTexts("cbSuppliers", dialog);
             CHECK_SET_ERR(chekedValues.size() == 1, QString("Current checked size: %1").arg(chekedValues.size()));
@@ -2394,7 +2398,7 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
                 auto name = "A" + id;
                 auto item = GTTreeWidget::findItem(tree, name);
                 auto tooltip = item->data(3, Qt::ToolTipRole).toString();
-                auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips/" + name + ".html");
+                auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips_updated/" + name + ".html");
                 CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip %1").arg(name));
             }
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
@@ -2470,8 +2474,8 @@ GUI_TEST_CLASS_DEFINITION(test_0082) {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             static const QList<QString> RESTRICTION_SEQUENCE_LENGTH_VALUES = {"1", "2", "3", "4", "5", "6", "7", "8", "9+"};
-            static const QList<QString> MIN_INCREASING_VALUES = {"656", "654", "649", "649", "519", "445", "67", "34", "5"};
-            static const QList<QString> MAX_DECREASING_VALUES = {"2", "5", "0", "130", "74", "378", "33", "29", "5"};
+            static const QList<QString> MIN_INCREASING_VALUES = {"645", "643", "638", "638", "508", "434", "60", "34", "5"};
+            static const QList<QString> MAX_DECREASING_VALUES = {"2", "5", "0", "130", "74", "374", "26", "29", "5"};
 
             for (int i = 0; i < RESTRICTION_SEQUENCE_LENGTH_VALUES.size(); i++) {
                 const auto& v = RESTRICTION_SEQUENCE_LENGTH_VALUES.at(i);
@@ -2509,7 +2513,7 @@ GUI_TEST_CLASS_DEFINITION(test_0083) {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
-            static const QList<QString> OVERHANG_TYPE_VALUES = {"656", "16", "640", "351", "119", "521", "232", "343", "176"};
+            static const QList<QString> OVERHANG_TYPE_VALUES = {"645", "16", "629", "351", "119", "510", "232", "343", "165"};
             auto cbOverhangType = GTWidget::findComboBox("cbOverhangType", dialog);
             auto values = GTComboBox::getValues(cbOverhangType);
 
@@ -2543,8 +2547,8 @@ GUI_TEST_CLASS_DEFINITION(test_0084) {
 
             GTCheckBox::setChecked("cbShowPalindromic", dialog);
             auto labelText = GTLabel::getText("statusLabel", dialog);
-            CHECK_SET_ERR(labelText.contains("519"),
-                          QString("Incorrect number of palindromic enzymes, expected number: 519, current text: %1").arg(labelText));
+            CHECK_SET_ERR(labelText.contains("517"),
+                          QString("Incorrect number of palindromic enzymes, expected number: 517, current text: %1").arg(labelText));
 
             GTCheckBox::setChecked("cbShowUninterrupted", dialog);
             labelText = GTLabel::getText("statusLabel", dialog);
@@ -2563,8 +2567,8 @@ GUI_TEST_CLASS_DEFINITION(test_0084) {
 
             GTCheckBox::setChecked("cbShowUninterrupted", false, dialog);
             labelText = GTLabel::getText("statusLabel", dialog);
-            CHECK_SET_ERR(labelText.contains("520"),
-                          QString("Incorrect number of nondegenerate enzymes, expected number: 520, current text: %1").arg(labelText));
+            CHECK_SET_ERR(labelText.contains("511"),
+                          QString("Incorrect number of nondegenerate enzymes, expected number: 511, current text: %1").arg(labelText));
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
@@ -2607,7 +2611,7 @@ GUI_TEST_CLASS_DEFINITION(test_0085) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0086) {
+GUI_TEST_CLASS_DEFINITION( test_0086) {
     GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
@@ -2644,6 +2648,39 @@ GUI_TEST_CLASS_DEFINITION(test_0086) {
 
     GTUtilsDialog::waitForDialog(new RemoteBLASTDialogFiller(new Scenario()));
     GTKeyboardDriver::keyClick('b', Qt::ShiftModifier | Qt::ControlModifier);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0087) {
+    GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class custom : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            auto enzymesTree = GTWidget::findTreeWidget("tree", dialog);
+            GTWidget::click(GTWidget::findWidget("selectNoneButton", dialog));
+            QTreeWidgetItem* item = GTTreeWidget::findItem(enzymesTree, "AloI");
+            GTTreeWidget::checkItem(item);
+            auto tooltip = item->data(3, Qt::ToolTipRole).toString();
+            auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips_updated/test_0087.html");
+            CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip"));
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList {}, new custom()));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+
+    auto gn = GTUtilsAnnotationsTreeView::getGroupNames();
+    CHECK_SET_ERR(gn.first() == "enzyme  (0, 17)", QString("Unexpected enzyme group name: %1").arg(gn.first()));
+    auto cutValue = GTUtilsAnnotationsTreeView::getQualifierValue("cut", "AloI");
+    CHECK_SET_ERR(cutValue == "25/-7", QString("Expected cut value: 25/-7, current: %1").arg(cutValue));
+    auto cut2Value = GTUtilsAnnotationsTreeView::getQualifierValue("cut-2", "AloI");
+    CHECK_SET_ERR(cut2Value == "-7/25", QString("Expected cut-2 value: -7/25, current: %1").arg(cut2Value));
 }
 
 

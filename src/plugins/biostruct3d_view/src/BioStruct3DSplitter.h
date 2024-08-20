@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,7 +67,7 @@ public:
     /*!
      * @return True, if GObject has type BioStruct3D and could be added to splitter.
      */
-    virtual bool acceptsGObject(GObject* obj);
+    bool acceptsGObject(GObject* obj) override;
     /*!
      * Creates BioStruct3DWidget for object visualization and adds it to the splitter.
      */
@@ -76,8 +76,8 @@ public:
      * @return First found BioStruct3DObject with corresponding name, NULL if nothing is found.
      */
     BioStruct3DObject* findBioStruct3DObjByName(const QString& objName);
-    virtual void saveState(QVariantMap& m);
-    virtual void updateState(const QVariantMap& m);
+    void saveState(QVariantMap& m) override;
+    void updateState(const QVariantMap& m) override;
     /*!
      * @return List of splitter children widgets.
      */
@@ -109,7 +109,7 @@ public:
     /*!
      * QWidget virtual function, returns preferred widget size.
      */
-    virtual QSize sizeHint() const {
+    QSize sizeHint() const override {
         return QSize(0, 400);
     }
     /*!
@@ -134,9 +134,9 @@ signals:
     void si_bioStruct3DGLWidgetRemoved(BioStruct3DGLWidget* widget);
 
 protected:
-    void dragEnterEvent(QDragEnterEvent* event);
-    void dropEvent(QDropEvent* event);
-    bool eventFilter(QObject* o, QEvent* e);
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
+    bool eventFilter(QObject* o, QEvent* e) override;
 
 private:
     QSplitter* getParentSplitter();
@@ -175,9 +175,9 @@ class AddModelToSplitterTask : public Task {
     Q_OBJECT
 public:
     AddModelToSplitterTask(GObject* o, BioStruct3DSplitter* s);
-    virtual void prepare();
-    virtual void run();
-    virtual ReportResult report();
+    void prepare() override;
+    void run() override;
+    ReportResult report() override;
 
 private:
     Document* doc;
@@ -209,7 +209,7 @@ private:
     OrderedToolbar* toolbar;
 
 protected:
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private slots:
 

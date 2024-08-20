@@ -21,8 +21,12 @@
 
 #include "TrimmomaticSupport.h"
 
+#include <QDir>
+#include <QFileInfo>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRunTask.h>
+#include <U2Core/IOAdapterUtils.h>
 
 #include "TrimmomaticStep.h"
 #include "java/JavaSupport.h"
@@ -79,6 +83,10 @@ void TrimmomaticSupport::initTrimmomaticSteps() {
     registry->registerEntry(new LocalWorkflow::ToPhred33StepFactory());
     registry->registerEntry(new LocalWorkflow::ToPhred64StepFactory());
     registry->registerEntry(new LocalWorkflow::TrailingStepFactory());
+}
+
+const QString TrimmomaticSupport::getVersionFromToolPath(const QString& toolPath) const {
+    return IOAdapterUtils::readTextFile(QFileInfo(toolPath).absoluteDir().absolutePath() + "/version.txt");
 }
 
 }  // namespace U2

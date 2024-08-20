@@ -850,6 +850,8 @@ GUI_TEST_CLASS_DEFINITION(test_3216_2) {
     GTUtilsAnnotationsTreeView::selectItemsByName({"CDS"});
     QString actualValue = GTUtilsAnnotationsTreeView::getQualifierValue("test_3216_2", "CDS");
     CHECK_SET_ERR(actualValue == expectedValue, QString("The qualifier value is incorrect: expect '%1', got '%2'").arg(expectedValue).arg(actualValue));
+
+    GTUtilsProject::closeProject(true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3216_3) {
@@ -4138,7 +4140,7 @@ GUI_TEST_CLASS_DEFINITION(test_3821) {
     GTWidget::click(GTUtilsSequenceView::getSeqWidgetByNumber()->getDetView(), Qt::RightButton);
 
     Primer3DialogFiller::Primer3Settings settings;
-    settings.hasValidationErrors = true;
+    settings.hasValidationCriticals = true;
     GTUtilsDialog::waitForDialog(new Primer3DialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("primer3_action_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,12 +41,12 @@ class GTest_Bwa : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Bwa, "bwa", TaskFlag_FailOnSubtaskCancel)
 
-    void prepare();
-    void run();
-    Task::ReportResult report();
-    void cleanup();
+    void prepare() override;
+    void run() override;
+    Task::ReportResult report() override;
+    void cleanup() override;
     QString getTempDataDir();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     DnaAssemblyToRefTaskSettings config;

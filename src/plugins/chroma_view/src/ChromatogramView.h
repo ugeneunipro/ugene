@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,9 +53,9 @@ class ChromatogramView : public GSequenceLineView {
 public:
     ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSequenceLineView* cv, const Chromatogram& chromatogram);
 
-    virtual void buildPopupMenu(QMenu& m);
+    void buildPopupMenu(QMenu& m) override;
 
-    virtual bool isWidgetOnlyObject(GObject* o) const;
+    bool isWidgetOnlyObject(GObject* o) const override;
 
     U2SequenceObject* getEditedSequence() const {
         return editDNASeq;
@@ -68,8 +68,8 @@ public:
     }
 
 protected:
-    virtual void pack();
-    void mousePressEvent(QMouseEvent* me);
+    void pack() override;
+    void mousePressEvent(QMouseEvent* me) override;
 
 private slots:
     void setRenderAreaHeight(int k);

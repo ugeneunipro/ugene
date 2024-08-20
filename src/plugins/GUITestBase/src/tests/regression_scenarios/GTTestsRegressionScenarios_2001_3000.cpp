@@ -1947,21 +1947,6 @@ GUI_TEST_CLASS_DEFINITION(test_2374) {
     CHECK_SET_ERR(!GTUtilsDashboard::hasTab(GTUtilsDashboard::ExternalTools), "External tools tab exists, but is not expected!");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_2375) {
-    //    1. Open {_common_data/sam/broken_invalid_cigar.sam}
-    //    Expected state: import dialog appears.
-
-    //    2. Fill the import dialog with valid data. Begin the importing.
-    //    Expected state: importing fails, UGENE doesn't crash.
-    QString destUrl = testDir + "_common_data/scenarios/sandbox/test_2375.ugenedb";
-    GTLogTracer lt;
-    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(destUrl));
-    GTFileDialog::openFile(testDir + "_common_data/sam/", "broken_invalid_cigar.sam");
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
-}
-
 GUI_TEST_CLASS_DEFINITION(test_2377) {
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -1989,7 +1974,7 @@ GUI_TEST_CLASS_DEFINITION(test_2377) {
 
     GTWidget::click(GTAction::button("Run workflow"));
 
-    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(!lt.hasErrors(), "Expected no errors in the log, but errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2378) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,6 +49,7 @@ public:
     void setReference(const Sequence& reference);
 
     QList<U2AssemblyRead> getReads() const;
+    const QList<Sequence>& getOriginalReads() const;
     int getReadsCount() const;
     void addRead(const Sequence& read);
     void setReads(const QList<Sequence>& reads);

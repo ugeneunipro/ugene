@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,8 @@
 
 #include "utils/GTUtilsDialog.h"
 
+#include <U2Core/U2Region.h>
+
 namespace U2 {
 using namespace HI;
 
@@ -35,6 +37,8 @@ struct FindEnzymesDialogFillerSettings {
     qint64 searchRegionEnd = -1;
     qint64 excludeRegionStart = -1;
     qint64 excludeRegionEnd = -1;
+    QList<U2Region> searchRegions;
+    QList<U2Region> excludeRegions;
     int minHits = -1;
     int maxHits = -1;
     bool clickFindAll = false;

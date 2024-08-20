@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,12 +55,12 @@ public:
     DotPlotWidget(AnnotatedDNAView* dnaView);
     ~DotPlotWidget();
 
-    virtual bool acceptsGObject(GObject*) {
+    bool acceptsGObject(GObject*) override {
         return false;
     }
-    virtual void updateState(const QVariantMap&) {
+    void updateState(const QVariantMap&) override {
     }
-    virtual void saveState(QVariantMap&) {
+    void saveState(QVariantMap&) override {
     }
 
     void buildPopupMenu(QMenu*) const;
@@ -90,7 +90,7 @@ public:
     void setSequences(U2SequenceObject* seqX, U2SequenceObject* seqY);
     bool isShowDeleteDialogOnDotPlotDestroying() const;
 
-    virtual bool onCloseEvent();
+    bool onCloseEvent() override;
 
 signals:
     void si_removeDotPlot();
@@ -117,16 +117,16 @@ private slots:
     void sl_timer();
 
 protected:
-    void paintEvent(QPaintEvent*);
-    void resizeEvent(QResizeEvent*);
+    void paintEvent(QPaintEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
 
-    void wheelEvent(QWheelEvent*);
-    void mousePressEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
-    void mouseReleaseEvent(QMouseEvent*);
-    void focusInEvent(QFocusEvent* fe);
-    void focusOutEvent(QFocusEvent* fe);
-    bool event(QEvent* event);
+    void wheelEvent(QWheelEvent*) override;
+    void mousePressEvent(QMouseEvent*) override;
+    void mouseMoveEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent*) override;
+    void focusInEvent(QFocusEvent* fe) override;
+    void focusOutEvent(QFocusEvent* fe) override;
+    bool event(QEvent* event) override;
 
 private:
     AnnotatedDNAView* dnaView;

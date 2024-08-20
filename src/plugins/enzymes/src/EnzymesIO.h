@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,8 +59,8 @@ class LoadEnzymeFileTask : public Task {
     Q_OBJECT
 public:
     LoadEnzymeFileTask(const QString& url);
-    void run();
-    void cleanup() {
+    void run() override;
+    void cleanup() override {
         enzymes.clear();
     }
 
@@ -72,7 +72,7 @@ class SaveEnzymeFileTask : public Task {
     Q_OBJECT
 public:
     SaveEnzymeFileTask(const QString& url, const QString& source, const QSet<QString>& enzymes);
-    void run();
+    void run() override;
 
     QString url;
     QString source;

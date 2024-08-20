@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ public:
     ExportSequenceAsAlignmentFiller(const QString& _path, const QString& _name, ExportSequenceAsAlignmentFiller::FormatToUse _format, bool addDocumentToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
     ExportSequenceAsAlignmentFiller(CustomScenario* scenario);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString path, name;

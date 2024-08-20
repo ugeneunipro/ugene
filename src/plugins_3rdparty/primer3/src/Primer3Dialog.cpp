@@ -391,6 +391,7 @@ bool Primer3Dialog::doDataExchange() {
 
     QMap<QWidget*, bool> widgetStates;
     QStringList errors;
+    QStringList criticals;
 
     if (spanIntronExonBox->isChecked()) {
         SpanIntronExonBoundarySettings s;
@@ -522,7 +523,7 @@ bool Primer3Dialog::doDataExchange() {
         bool ok = parseIntervalList(edit_SEQUENCE_INCLUDED_REGION->text(), ",", &list);
         if (ok) {
             if (list.size() > 1) {
-                errors.append(tr("The \"Include region\" should be the only one"));
+                errors.append(tr("The \"Include region\" should be the only one."));
                 ok = false;
             } else if (list.size() == 1) {
                 const auto& region = list.first();
@@ -620,7 +621,7 @@ bool Primer3Dialog::doDataExchange() {
         widgetStates.insert(edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME, ok);
     }
 
-    auto checkSequenceAlphabet = [&errors, &widgetStates](const QByteArray& sequence, const QString& parameterName, QLineEdit* wgt) {
+    auto checkSequenceAlphabet = [&errors, &widgetStates](QByteArray& sequence, const QString& parameterName, QLineEdit* wgt) {
         static const QString INCORRECT_ALPHABET_ERROR_TEMPLATE
             = QT_TR_NOOP(tr("%1 parameter has incorrect alphabet, should be DNA"));
         bool res = true;
@@ -629,7 +630,8 @@ bool Primer3Dialog::doDataExchange() {
             bool isSimpleDna = alphabet->isNucleic() && alphabet->isDefault();
             if (!isSimpleDna) {
                 res = false;
-                errors.append(tr("%1 sequence has incorrect alphabet, should be be simple DNA").arg(parameterName));
+                errors.append(tr("%1 sequence has incorrect alphabet, should be be simple DNA.").arg(parameterName));
+                sequence.clear();
             }
         }
         widgetStates.insert(wgt, res);
@@ -705,6 +707,7 @@ bool Primer3Dialog::doDataExchange() {
             ok = false;
             errors.append(tr("Sequence quality list length must be equal to the sequence length. Sequence length = %1, quality list length = %2.")
                 .arg(sequenceLength).arg(qualityLength));
+            qualityList.clear();
         }
         settings->setSequenceQuality(qualityList);
         widgetStates.insert(edit_SEQUENCE_QUALITY, ok);
@@ -735,7 +738,7 @@ bool Primer3Dialog::doDataExchange() {
     case pick_discriminative_primers:
         if (settings->getSeqArgs()->tar2.count != 1) {
             widgetStates.insert(edit_SEQUENCE_TARGET, false);
-            errors.append(tr("Task \"pick_discriminative_primers\" requires exactly one \"Targets\" region."));
+            criticals.append(tr("Task \"pick_discriminative_primers\" requires exactly one \"Targets\" region."));
         }
         break;
     case pick_cloning_primers:
@@ -751,14 +754,14 @@ bool Primer3Dialog::doDataExchange() {
         bool hasInternalPrimer = pickInternalChecked && !edit_SEQUENCE_INTERNAL_OLIGO->text().isEmpty();
         bool hasRightPrimer = pickRightChecked && !edit_SEQUENCE_PRIMER_REVCOMP->text().isEmpty();
         if (!pickLeftChecked && !pickInternalChecked && !pickRightChecked) {
-            errors.append(tr("At least one primer on the \"Main\" settings page should be enabled - this is required by the \"check_primers\" task."));
+            criticals.append(tr("At least one primer on the \"Main\" settings page should be enabled - this is required by the \"check_primers\" task."));
             setPrimerCheckboxesState(false);
         } else {
             QString possibleError(tr("The %1 primer on the \"Main\" settings page is enabled, but not set."));
-            auto addError = [&possibleError, &errors, &widgetStates](bool needArror, QLineEdit* lePrimer, QString primerName) {
-                CHECK(needArror, );
+            auto addError = [&possibleError, &criticals, &widgetStates](bool needError, QLineEdit* lePrimer, QString primerName) {
+                CHECK(needError, );
 
-                errors.append(possibleError.arg(primerName));
+                criticals.append(possibleError.arg(primerName));
                 widgetStates.insert(lePrimer, false);
             };
             addError(pickLeftChecked && !hasLeftPrimer, edit_SEQUENCE_PRIMER, tr("left"));
@@ -786,7 +789,7 @@ bool Primer3Dialog::doDataExchange() {
         bool alreadyHasError = false;
         if (ok) {
             if (list.isEmpty()) {
-                errors.append(tr("Primer Size Ranges should have at least one range"));
+                criticals.append(tr("Primer Size Ranges should have at least one range."));
                 ok = false;
                 alreadyHasError = true;
             } else if (regionSelector != nullptr) {
@@ -798,7 +801,7 @@ bool Primer3Dialog::doDataExchange() {
                     return false;
                 }
                 if (!settings->isIncludedRegionValid(sequenceRangeRegion)) {
-                    errors.append(tr("Sequence range region is too small for current product size ranges"));
+                    criticals.append(tr("Sequence range region is too small for current product size ranges."));
                     ok = false;
                     alreadyHasError = true;
                 } else {
@@ -816,7 +819,8 @@ bool Primer3Dialog::doDataExchange() {
         U2Region sequenceRangeRegion = regionSelector->getRegion();
         bool ok = true;
         if (sequenceRangeRegion.length > MAXIMUM_ALLOWED_SEQUENCE_LENGTH) {
-            errors.append(tr("The priming sequence is too long, please, decrease the region"));
+            criticals.append(tr("The priming sequence is too long, please, decrease the region. Maximum length allowed: %1.")
+                .arg(MAXIMUM_ALLOWED_SEQUENCE_LENGTH));
             ok = false;
         }
         widgetStates.insert(regionSelector, ok);
@@ -825,14 +829,14 @@ bool Primer3Dialog::doDataExchange() {
     int fbs = settings->getFirstBaseIndex();
     int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
     if (includedRegionOffset < 0) {
-        errors.append(tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0"));
+        criticals.append(tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0."));
     }
     if (regionSelector != nullptr) {
         U2Region sequenceRangeRegion = regionSelector->getRegion();
         if (sequenceRangeRegion.endPos() > context->getSequenceLength() + includedRegionOffset && !context->getSequenceObject()->isCircular()) {
-            errors.append(tr("The priming sequence is out of range.\n"
+            criticals.append(tr("The priming sequence is out of range.\n"
                 "Either make the priming region end \"%1\" less or equal than the sequence size \"%2\" plus the first base index value \"%3\""
-                "or mark the sequence as circular").arg(sequenceRangeRegion.endPos()).arg(context->getSequenceLength()).arg(settings->getFirstBaseIndex()));
+                "or mark the sequence as circular.").arg(sequenceRangeRegion.endPos()).arg(context->getSequenceLength()).arg(settings->getFirstBaseIndex()));
         }
     }
     if (saveDocumentController != nullptr) {
@@ -841,29 +845,46 @@ bool Primer3Dialog::doDataExchange() {
         widgetStates.insert(outputFileLineEdit, true);
         if (saveDocumentController->getSaveFileName().isEmpty()) {
             widgetStates.insert(outputFileLineEdit, false);
-            errors.append(tr("Result file path is empty. Please, set this value on the \"Result Settings\" tab"));
+            criticals.append(tr("Result file path is empty. Please, set this value on the \"Result Settings\" tab."));
         }
     }
 
-    return updateErrorState(widgetStates, errors);
+    return updateErrorState(widgetStates, errors, criticals);
 }
 
-bool Primer3Dialog::updateErrorState(const QMap<QWidget*, bool>& widgetStates, const QStringList& errors) {
+bool Primer3Dialog::updateErrorState(const QMap<QWidget*, bool>& widgetStates, const QStringList& errors, const QStringList& criticals) {
     const auto& widgets = widgetStates.keys();
     for (auto wgt : qAsConst(widgets)) {
         GUIUtils::setWidgetWarningStyle(wgt, !widgetStates.value(wgt));
     }
-    CHECK(!errors.isEmpty(), true);
+    CHECK(!errors.isEmpty() || !criticals.isEmpty(), true);
 
-    QString generalErrorString = tr("%1 parameter(s) have an incorrect value(s), pay attention on red widgets. ").arg(errors.size());
-    if (errors.size() <= 3) {
-        generalErrorString += tr("The following errors are possible: \n\n");
+    int criticalslSize = criticals.size();
+    int errorsSize = errors.size();
+    QString generalErrorString = tr("%1 parameter(s) have an incorrect value(s), pay attention on red widgets. ").arg(errorsSize + criticalslSize);
+    static constexpr int MAX_VISIBLE_ERRORS = 3;
+    if (0 < criticalslSize && criticalslSize <= MAX_VISIBLE_ERRORS) {
+        generalErrorString += tr("The following errors are critical and does not allow one to continue calculation: \n\n");
+        generalErrorString += criticals.join("\n\n");
+    }
+    if (0 < errorsSize && errorsSize <= MAX_VISIBLE_ERRORS) {
+        if (criticalslSize != 0) {
+            generalErrorString += "\n\n";
+        }
+        generalErrorString += tr("The following not critical errors are possible: \n\n");
         generalErrorString += errors.join("\n\n");
     }
-    generalErrorString += tr("\n\nClick OK to continue calculation, but the incorrect values will be ignored.");
 
-    auto result = QMessageBox::question(this, windowTitle(), generalErrorString, QMessageBox::StandardButton::Ok, QMessageBox::StandardButton::Cancel);
-    return result == QMessageBox::StandardButton::Ok;
+    int result;
+    if (criticalslSize != 0) {
+        generalErrorString += tr("\n\nFix criticals and re-run Primer3.");
+        result = QMessageBox::critical(this, windowTitle(), generalErrorString, QMessageBox::StandardButton::Ok);
+    } else {
+        generalErrorString += tr("\n\In case of calculation, all incorrect values will be ignored. Continue?");
+        result = QMessageBox::question(this, windowTitle(), generalErrorString, QMessageBox::StandardButton::Yes, QMessageBox::StandardButton::No);
+    }
+
+    return result == QMessageBox::StandardButton::Yes;
 }
 
 QString Primer3Dialog::getWidgetTemplateError(QWidget* wgt, const QString& errorWgtLabe) const {

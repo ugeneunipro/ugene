@@ -39,7 +39,6 @@
 #include <U2Lang/WorkflowEnv.h>
 
 #include "MuscleAlignDialogController.h"
-#include "MuscleConstants.h"
 #include "TaskLocalStorage.h"
 
 namespace U2 {

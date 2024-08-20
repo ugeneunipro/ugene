@@ -26,7 +26,8 @@
 
 #include "BuiltInAssemblyConsensusAlgorithms.h"
 extern "C" {
-#include <bam2bcf.h>
+#include <samtools_core/bam2bcf.h>
+#include <samtools_core/bam_lpileup.h>
 }
 #include <U2Core/U2Assembly.h>
 #include <U2Core/U2SafePoints.h>
@@ -96,10 +97,10 @@ struct AlgorithmInternal {
 
         int qsum[4], a1, a2, tmp;
         double p[3], prior = 30;
-        bcf_call_glfgen(n, pl, bam_nt16_table[rb], bca, &bcr);
+        bcf_call_glfgen(n, pl, seq_nt16_table[rb], bca, &bcr);
 
         for (i = 0; i < 4; ++i)
-            qsum[i] = bcr.qsum[i] << 2 | i;
+            qsum[i] = (int)bcr.qsum[i] << 2 | i;
         for (i = 1; i < 4; ++i)  // insertion sort
             for (j = i; j > 0 && qsum[j] > qsum[j - 1]; --j)
                 tmp = qsum[j], qsum[j] = qsum[j - 1], qsum[j - 1] = tmp;
@@ -119,11 +120,11 @@ struct AlgorithmInternal {
         else
             call = (1 << a1 | 1 << a2) << 16 | (int)((p[0] < p[2] ? p[0] : p[2]) - p[1] + .499);
 
-        char consensusChar = bam_nt16_rev_table[call >> 16 & 0xf];
+        char consensusChar = seq_nt16_str[call >> 16 & 0xf];
         result[posInArray] = consensusChar;
     }
 
-    static int processBaseCallback(uint32_t tid, uint32_t pos, int n, const bam_pileup1_t* pl, void* data) {
+    static int processBaseCallback(uint32_t tid, hts_pos_t pos, int n, const bam_pileup1_t *pl, void *data) {
         AlgorithmInternal* algorithm = (AlgorithmInternal*)data;
         algorithm->processBase(tid, pos, n, pl);
         return 0;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,14 +34,14 @@ protected:
 public:
     virtual ~BallAndStickGLRenderer();
 
-    void drawBioStruct3D();
+    void drawBioStruct3D() override;
 
-    virtual void create();
+    void create() override;
 
-    virtual void update();
-    virtual void updateColorScheme();
-    virtual void updateShownModels();
-    virtual void updateSettings();
+    void update() override;
+    void updateColorScheme() override;
+    void updateShownModels() override;
+    void updateSettings() override;
 
 private:
     void init();

@@ -3,7 +3,11 @@
             task="extract_coverage"
             in-assembly="!sample_data_dir!/Assembly/chrM.sam"
             url-out="!tmp_data_dir!6802.bedgraph"
-            message="Assembly length must be greater than zero"
     />
+
+	<compare-docs
+	doc1="!tmp_data_dir!6802.bedgraph"
+	doc2="!common_data_dir!regression/6802/res.bedgraph"
+	/>
 
 </multi-test>

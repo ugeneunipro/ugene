@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ public:
     CreateRulerDialogFiller(QString _rulerName, int _startPos);
     CreateRulerDialogFiller(CustomScenario* c);
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QString rulerName;

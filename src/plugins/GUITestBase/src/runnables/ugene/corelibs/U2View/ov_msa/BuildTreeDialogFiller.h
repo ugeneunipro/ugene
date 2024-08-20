@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ public:
     BuildTreeDialogFiller(int replicates, const QString& saveTree = "default", int seed = 5, ConsensusType type = MAJORITYEXT, double fraction = 0.5);
     BuildTreeDialogFiller(CustomScenario* scenario);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString saveTree;
@@ -55,7 +55,7 @@ private:
 class BuildTreeDialogFillerPhyML : public Filler {
 public:
     BuildTreeDialogFillerPhyML(bool _freqOptimRadioPressed, int bootstrap = -1);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     bool freqOptimRadioPressed;

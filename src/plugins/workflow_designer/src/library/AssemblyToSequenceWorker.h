@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,9 +33,9 @@ class AssemblyToSequencesWorker : public BaseWorker {
     Q_OBJECT
 public:
     AssemblyToSequencesWorker(Actor* p);
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup() {
+    void init() override;
+    Task* tick() override;
+    void cleanup() override {
     }
 
 private slots:
@@ -52,8 +52,8 @@ class AssemblyToSequencesTask : public Task {
 public:
     AssemblyToSequencesTask(const Message& m, const QVariantMap& context, IntegralBus* channel, DbiDataStorage* storage);
 
-    virtual void run();
-    virtual void cleanup();
+    void run() override;
+    void cleanup() override;
 
 private:
     Message message;
@@ -70,7 +70,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker* createWorker(Actor* a);
+    Worker* createWorker(Actor* a) override;
 
 };  // AssemblyToSequencesWorkerFactory
 
@@ -82,7 +82,7 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };  // AssemblyToSequencesPrompter
 
 }  // namespace LocalWorkflow

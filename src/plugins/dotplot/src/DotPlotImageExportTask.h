@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ public:
           dotplotWidget(wgt),
           dpExportSettings(dotPlotExportSettings) {
     }
-    void run();
+    void run() override;
 
 protected:
     DotPlotWidget* dotplotWidget;
@@ -62,12 +62,12 @@ class DotPlotImageExportController : public ImageExportController {
 public:
     DotPlotImageExportController(DotPlotWidget* wgt);
 
-    int getImageWidth() const;
-    int getImageHeight() const;
+    int getImageWidth() const override;
+    int getImageHeight() const override;
 
 protected:
-    void initSettingsWidget();
-    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const;
+    void initSettingsWidget() override;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const override;
 
 private:
     DotPlotWidget* dotplotWidget;

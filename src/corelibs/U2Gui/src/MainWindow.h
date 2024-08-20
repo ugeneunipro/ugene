@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -107,6 +107,7 @@ class QMainWindow;
 #define ACTION_REMOVE_BOOKMARK "action_remove_bookmark"
 
 #define DOCK_PROJECT_VIEW "dock_project_view"
+#define DOCK_CLOUD_STORAGE_VIEW "dock_cloud_storage_view"
 #define DOCK_TASK_VIEW "dock_task_view"
 #define DOCK_LOG_VIEW "dock_log_view"
 #define DOCK_TASK_TREE_VIEW "taskViewTree"

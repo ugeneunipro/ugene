@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,117 +56,117 @@ protected:
 
 class AssemblyDbiUnitTests_getAssemblyObject : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_getAssemblyObjectInvalid : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_countReads : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_countReadsInvalid : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_getReads : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_getReadsInvalid : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_getReadsByRow : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_getReadsByRowInvalid : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_getReadsByName : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_getReadsByNameInvalid : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_getMaxPackedRow : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_getMaxPackedRowInvalid : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_getMaxEndPos : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_getMaxEndPosInvalid : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_createAssemblyObject : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_removeReads : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_removeReadsInvalid : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_addReads : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_addReadsInvalid : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_pack : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_packInvalid : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_calculateCoverage : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AssemblyDbiUnitTests_calculateCoverageInvalid : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 }  // namespace U2

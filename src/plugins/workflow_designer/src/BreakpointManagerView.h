@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,14 +51,14 @@ public:
         return newBreakpointAction;
     }
 
-    bool eventFilter(QObject* object, QEvent* event);
+    bool eventFilter(QObject* object, QEvent* event) override;
     void clear();
 
 signals:
     void si_highlightingRequested(const ActorId& actor);
 
 protected:
-    virtual void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent* event) override;
 
 public slots:
     void sl_breakpointRemoved(const ActorId& actorId);

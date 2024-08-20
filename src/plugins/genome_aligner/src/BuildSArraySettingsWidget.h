@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,9 +31,9 @@ class BuildSArraySettingsWidget : public DnaAssemblyAlgorithmBuildIndexWidget, U
     Q_OBJECT
 public:
     BuildSArraySettingsWidget(QWidget* parent);
-    virtual QMap<QString, QVariant> getBuildIndexCustomSettings();
-    virtual QString getIndexFileExtension();
-    virtual GUrl buildIndexUrl(const GUrl& url);
+    QMap<QString, QVariant> getBuildIndexCustomSettings() override;
+    QString getIndexFileExtension() override;
+    GUrl buildIndexUrl(const GUrl& url) override;
 private slots:
     void sl_onPartSliderChanged(int value);
 

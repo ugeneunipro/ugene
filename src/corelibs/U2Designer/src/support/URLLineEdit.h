@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,6 +49,7 @@ public slots:
 
 private slots:
     void sl_onBrowseWithAdding();
+    void sl_editingFinished();
 
 signals:
     void si_finished();
@@ -63,6 +64,7 @@ public:
 
 private:
     void browse(bool addFiles = false);
+    bool checkNameNoSemicolon(const QString& name);
     void checkExtension(QString& name) const;
 };
 

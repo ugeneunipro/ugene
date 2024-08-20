@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ class ADVSequenceObjectContext;
 class CreateAnnotationWidgetController;
 class EnzymeGroupTreeItem;
 class EnzymeTreeItem;
-class RegionSelectorWithExcludedRegion;
+class RegionSelector;
 
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
@@ -126,11 +126,14 @@ private slots:
 private:
     void initSettings();
     void saveSettings();
+    void fixPreviousLocation(U2Location& previousLocation);
 
     QPointer<ADVSequenceObjectContext> advSequenceContext;
 
     EnzymesSelectorWidget* enzSel;
-    RegionSelectorWithExcludedRegion* regionSelector;
+    RegionSelector* regionSelector;
+    RegionSelector* excludeRegionSelector;
+    QCheckBox* excludeCheckbox;
 };
 
 class EnzymeGroupTreeItem : public QTreeWidgetItem {

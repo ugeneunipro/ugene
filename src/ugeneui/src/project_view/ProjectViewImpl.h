@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROJECT_VIEW_WIDGET_
-#define _U2_PROJECT_VIEW_WIDGET_
+#pragma once
 
 #include <U2Core/ClipboardController.h>
 #include <U2Core/DocumentSelection.h>
@@ -158,7 +157,7 @@ private:
 
     bool saveProjectOnClose = false;
 
-    ProjectViewWidget* w = nullptr;
+    ProjectViewWidget* projectViewWidget = nullptr;
     ProjectViewWidgetFactory* f = nullptr;
     ProjectTreeController* projectTreeController = nullptr;
     ObjectViewTreeController* objectViewController = nullptr;
@@ -190,4 +189,3 @@ private:
 };
 
 }  // namespace U2
-#endif

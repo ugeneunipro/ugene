@@ -1440,9 +1440,28 @@ Set up the folder:</source>
         <translation>Выберите файл</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="185"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="273"/>
+        <source>File path or name contains &apos;;&apos; symbol.<byte value="xd"/>
+That kind of file path/name can&apos;t be correctly handled by this element.<byte value="xd"/>
+Please rename the file or move it to directory which not contain &apos;;&apos; in it path.</source>
+        <translation>Путь/имя файла содержит символ &apos;;&apos;.
+Такой путь/имя файла не могут быть корректно обработаны этим элементом.
+Пожалуйста, переименуйте/переместите файл в папку путь до которой не содержит &apos;;&apos;.</translation>
+    </message>
+    <message>
+        <location filename="../src/support/URLLineEdit.cpp" line="222"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
+    </message>
+    <message>
+        <location filename="../src/support/URLLineEdit.cpp" line="196"/>
+        <source>Directory '%1' unable to read.</source>
+        <translation>Папка '%1' не читается.</translation>
+    </message>
+    <message>
+        <location filename="../src/support/URLLineEdit.cpp" line="203"/>
+        <source>Given path '%1' not a file nor a directory.</source>
+        <translation>Данный путь '%1' не является ни файлом, ни папкой.</translation>
     </message>
 </context>
 <context>

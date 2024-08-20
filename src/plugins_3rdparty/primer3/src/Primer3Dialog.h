@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,7 +67,7 @@ public:
 private:
     void reset();
     bool doDataExchange();
-    bool updateErrorState(const QMap<QWidget*, bool>& widgetStates, const QStringList& errors);
+    bool updateErrorState(const QMap<QWidget*, bool>& widgetStates, const QStringList& errors, const QStringList& criticals);
     QString getWidgetTemplateError(QWidget* wgt, const QString& errorWgtLabel = QString()) const;
 
 private slots:

@@ -720,7 +720,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2364);
     REGISTER_TEST(GUITest_regression_scenarios::test_2373);
     REGISTER_TEST(GUITest_regression_scenarios::test_2374);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2375);
     REGISTER_TEST(GUITest_regression_scenarios::test_2377);
     REGISTER_TEST(GUITest_regression_scenarios::test_2378);
     REGISTER_TEST(GUITest_regression_scenarios::test_2378_1);
@@ -1301,6 +1300,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5220);
     REGISTER_TEST(GUITest_regression_scenarios::test_5227);
     REGISTER_TEST(GUITest_regression_scenarios::test_5231);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5239);
     REGISTER_TEST(GUITest_regression_scenarios::test_5246);
     REGISTER_TEST(GUITest_regression_scenarios::test_5249);
     REGISTER_TEST(GUITest_regression_scenarios::test_5252);
@@ -1308,6 +1308,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5268);
     REGISTER_TEST(GUITest_regression_scenarios::test_5278);
     REGISTER_TEST(GUITest_regression_scenarios::test_5281);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5291);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5314);
     REGISTER_TEST(GUITest_regression_scenarios::test_5330);
@@ -1696,6 +1697,17 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7234);
     REGISTER_TEST(GUITest_regression_scenarios::test_7242);
     REGISTER_TEST(GUITest_regression_scenarios::test_7246);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_4);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_5);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_6);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_7);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_8);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_9);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_10);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7267_11);
     REGISTER_TEST(GUITest_regression_scenarios::test_7247);
     REGISTER_TEST(GUITest_regression_scenarios::test_7276);
     REGISTER_TEST(GUITest_regression_scenarios::test_7279);
@@ -1727,6 +1739,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7415_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_7419);
     REGISTER_TEST(GUITest_regression_scenarios::test_7438);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7445);
     REGISTER_TEST(GUITest_regression_scenarios::test_7447);
     REGISTER_TEST(GUITest_regression_scenarios::test_7448_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_7448_2);
@@ -1817,6 +1830,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7740);
     REGISTER_TEST(GUITest_regression_scenarios::test_7744);
     REGISTER_TEST(GUITest_regression_scenarios::test_7746);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7747);
     REGISTER_TEST(GUITest_regression_scenarios::test_7748);
     REGISTER_TEST(GUITest_regression_scenarios::test_7751);
     REGISTER_TEST(GUITest_regression_scenarios::test_7770);
@@ -1879,7 +1893,24 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_8052);
     REGISTER_TEST(GUITest_regression_scenarios::test_8064);
     REGISTER_TEST(GUITest_regression_scenarios::test_8069);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8074);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8077_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8077_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8079_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8079_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8079_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8083_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8083_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8090);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8092);
     REGISTER_TEST(GUITest_regression_scenarios::test_8093);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8096_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8096_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8096_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8100);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8101);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8120_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_8120_2);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2095,6 +2126,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0084);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0085);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0086);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0087);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/sequence edit/
@@ -3533,6 +3565,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0025);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0026);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0027);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0028);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/start_page

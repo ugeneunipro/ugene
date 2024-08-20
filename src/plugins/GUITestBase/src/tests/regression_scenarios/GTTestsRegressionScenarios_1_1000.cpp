@@ -739,7 +739,8 @@ GUI_TEST_CLASS_DEFINITION(test_0627) {
                        << "leftOverlapSizeSpinBox"
                        << "rightOverlapSizeSpinBox"
                        << "leGroupName"
-                       << "leAnnotationName";
+                       << "leAnnotationName"
+                       << "location_line_edit";
 
             for (const QString& name : objsWithoutTooltips) {
                 CHECK_SET_ERR(exceptions.contains(name), QString("The following field has no tool tip: %1").arg(name));

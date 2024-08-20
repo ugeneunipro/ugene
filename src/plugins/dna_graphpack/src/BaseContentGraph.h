@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,8 +39,8 @@ public:
     enum GType { GC,
                  AG };
     BaseContentGraphFactory(GType t, QObject* p);
-    virtual QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v);
-    virtual bool isEnabled(const U2SequenceObject* o) const;
+    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v) override;
+    bool isEnabled(const U2SequenceObject* o) const override;
 
 private:
     QBitArray map;

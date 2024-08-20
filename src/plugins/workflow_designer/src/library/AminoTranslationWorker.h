@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ class TranslateSequence2AminoTask : public Task {
     Q_OBJECT
 public:
     TranslateSequence2AminoTask(const AminoTranslationSettings& configs, const U2DbiRef& dbiRef);
-    virtual void run();
+    void run() override;
     QList<U2SequenceObject*> popResults() {
         return results;
     }
@@ -67,7 +67,7 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class AminoTranslationWorker : public BaseWorker {
@@ -75,9 +75,9 @@ class AminoTranslationWorker : public BaseWorker {
 public:
     AminoTranslationWorker(Actor* a);
 
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private slots:
     void sl_taskFinished();
@@ -93,7 +93,7 @@ public:
     AminoTranslationWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new AminoTranslationWorker(a);
     }
 };

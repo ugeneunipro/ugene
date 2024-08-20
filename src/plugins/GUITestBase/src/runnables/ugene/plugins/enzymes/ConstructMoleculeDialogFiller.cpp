@@ -58,14 +58,32 @@ void ConstructMoleculeDialogFiller::commonScenario() {
             case InvertAddedFragment:
                 invertAddedFragment(action.second);
                 break;
+            case CheckForceBlunt:
+                checkForceBlunt(action.second);
+                break;
             case CheckMakeCircular:
                 checkMakeCircular(action.second);
                 break;
             case ClickAdjustLeft:
                 clickAdjustLeft();
                 break;
+            case CheckAdjustLeftEnabled:
+                checkAdjustLeftEnabled(action.second);
+                break;
             case ClickAdjustRight:
                 clickAdjustRight();
+                break;
+            case CheckAdjustRightEnabled:
+                checkAdjustRightEnabled(action.second);
+                break;
+            case ClickUp:
+                clickUp();
+                break;
+            case ClickDown:
+                clickDown();
+                break;
+            case ClickRemove:
+                clickRemove();
                 break;
             case ClickCancel:
                 clickCancel();
@@ -112,6 +130,16 @@ void ConstructMoleculeDialogFiller::invertAddedFragment(const QVariant& actionDa
     GTTreeWidget::checkItem(item, 3, GTGlobals::UseMouse, isCheck, false);  // Do not validate the result. The item is replaced on toggle.
 }
 
+void ConstructMoleculeDialogFiller::checkForceBlunt(const QVariant& actionData) {
+    bool check = true;
+    if (!actionData.isValid()) {
+        GT_CHECK(actionData.canConvert<bool>(), "Can't convert to bool");
+        check = actionData.toBool();
+    }
+
+    GTCheckBox::setChecked("makeBluntBox", check);
+}
+
 void ConstructMoleculeDialogFiller::checkMakeCircular(const QVariant& actionData) {
     bool check = true;
     if (!actionData.isValid()) {
@@ -126,8 +154,39 @@ void ConstructMoleculeDialogFiller::clickAdjustLeft() {
     GTWidget::click(GTWidget::findToolButton("tbAdjustLeft", dialog));
 }
 
+void ConstructMoleculeDialogFiller::checkAdjustLeftEnabled(const QVariant& actionData) {
+    GT_CHECK(actionData.canConvert<bool>(), "Can't convert to bool");
+
+    bool isAdjustLeftEnabled = actionData.toBool();
+    auto tbAdjustLeft = GTWidget::findToolButton("tbAdjustLeft", dialog);
+    GT_CHECK(tbAdjustLeft->isEnabled() == isAdjustLeftEnabled, QString("Adjust 5' enabled state incorrect, current: %1, expected: %2")
+                                                                        .arg(tbAdjustLeft->isEnabled()).arg(isAdjustLeftEnabled));
+}
+
 void ConstructMoleculeDialogFiller::clickAdjustRight() {
     GTWidget::click(GTWidget::findToolButton("tbAdjustRight", dialog));
+}
+
+void ConstructMoleculeDialogFiller::checkAdjustRightEnabled(const QVariant& actionData) {
+    GT_CHECK(actionData.canConvert<bool>(), "Can't convert to bool");
+
+    bool isAdjustRightEnabled = actionData.toBool();
+    auto tbAdjustRight = GTWidget::findToolButton("tbAdjustRight", dialog);
+    GT_CHECK(tbAdjustRight->isEnabled() == isAdjustRightEnabled, QString("Adjust 3' enabled state incorrect, current: %1, expected: %2")
+                                                                          .arg(tbAdjustRight->isEnabled()).arg(isAdjustRightEnabled));
+
+}
+
+void ConstructMoleculeDialogFiller::clickUp() {
+    GTWidget::click(GTWidget::findToolButton("upButton", dialog));
+}
+
+void ConstructMoleculeDialogFiller::clickDown() {
+    GTWidget::click(GTWidget::findToolButton("downButton", dialog));
+}
+
+void ConstructMoleculeDialogFiller::clickRemove() {
+    GTWidget::click(GTWidget::findToolButton("removeButton", dialog));
 }
 
 void ConstructMoleculeDialogFiller::clickCancel() {

@@ -11552,6 +11552,16 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <source>Output database path contain space characters.</source>
         <translation>Путь до базы данных содержит пробелы.</translation>
     </message>
+    <message>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="118"/>
+        <source>Output database path does not exist.</source>
+        <translation>Путь до базы данных не существует.</translation>
+    </message> 
+    <message>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="120"/>
+        <source>Output database path is read only.</source>
+        <translation>Путь до базы только для чтения.</translation>
+    </message>
 </context>
 <context>
     <name>U2::MakeBlastDbTask</name>
@@ -11615,6 +11625,11 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <location filename="../src/blast/MakeBlastDbTask.cpp" line="168"/>
         <source>Input file set is empty.</source>
         <translation>Входной файл не выбран.</translation>
+    </message>
+    <message>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="60"/>
+        <source>Output database path is read only.</source>
+        <translation>Путь до базы только для чтения.</translation>
     </message>
 </context>
 <context>

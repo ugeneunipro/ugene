@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,9 +33,15 @@ public:
         AddAllFragments,  // ignored
         SelectAddedFragment,  // QString with a part of the fragment name, if several fragments match this part, the first one will be selected
         InvertAddedFragment,  // QString with a part of the fragment name, if several fragments match this part, the first one will be inverted
+        CheckForceBlunt,  // Check state, true if ignored
         CheckMakeCircular,  // Check state, true if ignored
         ClickAdjustLeft,  // ignored
+        CheckAdjustLeftEnabled,  // Button enabled state, true if enabled, false if not
         ClickAdjustRight,  // ignored
+        CheckAdjustRightEnabled,  // Button enabled state, true if enabled, false if not
+        ClickUp,  // ignored
+        ClickDown,  // ignored
+        ClickRemove,  // ignored
         ClickCancel,  // ignored
         ClickOk
     };
@@ -44,16 +50,22 @@ public:
     ConstructMoleculeDialogFiller(const QList<Action>& actions);
     ConstructMoleculeDialogFiller(CustomScenario* scenario);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     void addFragment(const QVariant& actionData);
     void addAllFragments();
     void selectFragment(const QVariant& actionData);
     void invertAddedFragment(const QVariant& actionData);
+    void checkForceBlunt(const QVariant& actionData);
     void checkMakeCircular(const QVariant& actionData);
     void clickAdjustLeft();
+    void checkAdjustLeftEnabled(const QVariant& actionData);
     void clickAdjustRight();
+    void checkAdjustRightEnabled(const QVariant& actionData);
+    void clickUp();
+    void clickDown();
+    void clickRemove();
     void clickCancel();
     void clickOk();
 
