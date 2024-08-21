@@ -67,13 +67,18 @@ WorkspaceService::WorkspaceService()
     if (stage != "dev" && stage != "local") {
         stage = "prod";
     }
+    QString webDomainAndPort = stage == "dev"     ? "workspace-dev.ugene.net"
+                               : stage == "local" ? "localhost:4200"
+                                                  : "workspace.ugene.net";
     QString apiDomainAndPort = stage == "dev"     ? "workspace-dev.ugene.net"
                                : stage == "local" ? "localhost:4201"
                                                   : "workspace.ugene.net";
-    apiUrl = (stage == "local" ? "http://" : "https://") + apiDomainAndPort;
+    QString workspaceHttpProtocolPrefix = (stage == "local" ? "http://" : "https://");
+    apiUrl = workspaceHttpProtocolPrefix + apiDomainAndPort;
     webSocketUrl = stage == "local" ? "ws://localhost:4201" : "wss://" + apiDomainAndPort;
     clientId = "workspace-client-" + stage;
     authUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/auth";
+    logoutUrl = workspaceHttpProtocolPrefix + webDomainAndPort + "/logout";
     tokenUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/token";
 
     loginAction = new QAction(QIcon(":ugene/images/login.svg"), tr("Login to Workspace"));
@@ -203,6 +208,10 @@ void WorkspaceService::login() {
 }
 
 void WorkspaceService::logout() {
+    bool isLogoutFromBrowser = QMessageBox::question(nullptr, tr("Logout"), tr("Do you also want to close the browser session?")) == QMessageBox::Yes;
+    if (isLogoutFromBrowser) {
+        QDesktopServices::openUrl(logoutUrl);
+    }
     accessToken.clear();
     updateMainMenuActions();
     delete webSocketService;
