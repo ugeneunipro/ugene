@@ -133,6 +133,7 @@ private:
     U2EntityRef seqRef;
     U2Region region;
     QMap<QString, int> excludedEnzymesHits;
+    QVector<U2Region> excludeRegions;
 };
 
 class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public SequenceDbiWalkerCallback {

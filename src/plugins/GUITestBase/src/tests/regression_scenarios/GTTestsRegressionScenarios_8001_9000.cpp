@@ -1016,6 +1016,20 @@ GUI_TEST_CLASS_DEFINITION(test_8120_2) {
     CHECK_SET_ERR(lt.hasMessage("Render overview"), "No expected message in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8136) {
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/8136/8136.seq");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    FindEnzymesDialogFillerSettings settings({"AasI"});
+    settings.excludeRegionStart = 29;
+    settings.excludeRegionEnd = 100;
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 0, "Annoatated region counter doesn't match.");
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2

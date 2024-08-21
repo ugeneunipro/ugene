@@ -115,7 +115,7 @@ Task::ReportResult FindEnzymesToAnnotationsTask::report() {
 
 //////////////////////////////////////////////////////////////////////////
 // find multiple enzymes task
-FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& region_, const QVector<U2Region>& excludeRegions, 
+FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& region_, const QVector<U2Region>& excludeRegions_, 
                                  const QList<SEnzymeData>& enzymes_, int mr, bool circular)
     : Task(tr("Find Enzymes"), TaskFlags_NR_FOSCOE),
       maxResults(mr),
@@ -124,7 +124,8 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
       countOfResultsInMap(0),
       enzymes(enzymes_),
       seqRef(seqRef_),
-      region(region_) {
+      region(region_),
+      excludeRegions(excludeRegions_) {
     U2SequenceObject seq("sequence", seqRef);
     SAFE_POINT(seq.getAlphabet()->isNucleic(), "Alphabet is not nucleic.", );
     seqlen = seq.getSequenceLength();
@@ -161,11 +162,25 @@ QList<Task*> FindEnzymesTask::onSubTaskFinished(Task* subTask) {
 
 void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool&) {
     CHECK_OP(stateInfo, );
-    if (pos > seqlen) {
-        pos %= seqlen;
-    }    
+    
+    QVector<U2Region> enzymeRegions;
+    if (isCircular && pos + enzyme->seq.size() > seqlen) {
+        qint64 firstRegionLength = seqlen - pos;
+        if (firstRegionLength != 0) {
+            enzymeRegions << U2Region(pos, firstRegionLength);
+        }
+        enzymeRegions << U2Region(0, enzyme->seq.size() - firstRegionLength);
+    } else {
+        enzymeRegions << U2Region(pos, enzyme->seq.size());
+    }
+    for (const U2Region& excluded : qAsConst(excludeRegions)) {
+        CHECK(!excluded.intersects(enzymeRegions), );
+    }
 
     QMutexLocker locker(&resultsLock);
+    if (pos > seqlen) {
+        pos %= seqlen;
+    }
     if (countOfResultsInMap > maxResults) {
         if (!isCanceled()) {
             stateInfo.setError(tr("Number of results exceed %1, stopping").arg(maxResults));
