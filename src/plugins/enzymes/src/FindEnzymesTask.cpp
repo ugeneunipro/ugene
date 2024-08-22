@@ -174,7 +174,9 @@ void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Stran
         enzymeRegions << U2Region(pos, enzyme->seq.size());
     }
     for (const U2Region& excluded : qAsConst(excludeRegions)) {
-        CHECK(!excluded.intersects(enzymeRegions), );
+        CHECK_EXT(!excluded.intersects(enzymeRegions), 
+        algoLog.info(tr("The following enzymes were found, but skipped because they are presented inside of the \"Uncut area\": %1.")
+        .arg(enzyme->id)), );
     }
 
     QMutexLocker locker(&resultsLock);

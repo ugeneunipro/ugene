@@ -1025,9 +1025,11 @@ GUI_TEST_CLASS_DEFINITION(test_8136) {
     settings.excludeRegionEnd = 100;
     GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
+    GTLogTracer lt;
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 0, "Annoatated region counter doesn't match.");
+    lt.checkMessage("The following enzymes were found, but skipped because they are presented inside of the \"Uncut area\":");
 }
 
 }  // namespace GUITest_regression_scenarios
