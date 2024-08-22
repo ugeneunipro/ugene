@@ -240,8 +240,6 @@ private:
     QStringList headerLabels;
     QStringList qColumns;
     int lastClickedColumn;
-    QIcon addColumnIcon;
-    QIcon removeColumnIcon;
     QTimer sortTimer;
     QPoint dragStartPos;
     QMap<AVAnnotationItem*, QList<U2Region>> selectedAnnotation;

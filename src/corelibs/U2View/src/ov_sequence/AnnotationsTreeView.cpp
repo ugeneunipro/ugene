@@ -173,9 +173,6 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     sortTimer.setSingleShot(true);
     connect(&sortTimer, SIGNAL(timeout()), SLOT(sl_sortTree()));
 
-    addColumnIcon = QIcon(":core/images/add_column.png");
-    removeColumnIcon = QIcon(":core/images/remove_column.png");
-
     /*
     pasteAction = new QAction(QIcon(":/core/images/paste.png"), tr("Paste annotations"), this);
     pasteAction->setObjectName("Paste annotations");
@@ -209,7 +206,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     connect(toggleQualifierColumnAction, SIGNAL(triggered()), SLOT(sl_onToggleQualifierColumn()));
 
     removeColumnByHeaderClickAction = new QAction(tr("Hide column"), this);
-    removeColumnByHeaderClickAction->setIcon(removeColumnIcon);
+    removeColumnByHeaderClickAction->setIcon(GUIUtils::getIconResource("core", "remove_column.png"));
     connect(removeColumnByHeaderClickAction, SIGNAL(triggered()), SLOT(sl_onRemoveColumnByHeaderClick()));
 
     searchQualifierAction = new QAction(tr("Find qualifier..."), this);
@@ -1182,7 +1179,7 @@ void AnnotationsTreeView::updateState() {
     bool hasColumn = qColumns.contains(qName);
     toggleQualifierColumnAction->setText(!hasOnly1QualifierSelected ? tr("Toggle column") : (qColumns.contains(qName) ? tr("Hide '%1' column") : tr("Add '%1' column")).arg(qName));
 
-    toggleQualifierColumnAction->setIcon(hasOnly1QualifierSelected ? (hasColumn ? removeColumnIcon : addColumnIcon) : QIcon());
+    toggleQualifierColumnAction->setIcon(hasOnly1QualifierSelected ? (hasColumn ? GUIUtils::getIconResource("core", "remove_column.png") : GUIUtils::getIconResource("core", "add_column.png")) : QIcon());
 
     QTreeWidgetItem* ciBase = tree->currentItem();
     auto ci = static_cast<AVItem*>(ciBase);
@@ -1764,6 +1761,7 @@ void AnnotationsTreeView::sl_colorModeSwitched() {
     for (int i = 0; i < tree->topLevelItemCount(); i++) {
         updateColorModeRecursively(static_cast<AVItem*>(tree->topLevelItem(i)));
     }
+    removeColumnByHeaderClickAction->setIcon(GUIUtils::getIconResource("core", "remove_column.png"));
 }
 
 // TODO: refactoring of annotationClicked and annotationDoubleClicked methods.

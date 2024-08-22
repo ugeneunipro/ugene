@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/core">
-        <file>images/add_column.png</file>
         <file>images/add_existing_document.png</file>
         <file>images/add_gobject.png</file>
         <file>images/add_new_document.png</file>
@@ -79,7 +78,6 @@
         <file>images/remote_machine_ping_no.png</file>
         <file>images/remote_machine_ping_waiting_response.png</file>
         <file>images/remote_machine_ping_yes.png</file>
-        <file>images/remove_column.png</file>
         <file>images/remove_gobject.png</file>
         <file>images/remove_selected_documents.png</file>
         <file>images/ro_biostruct3d.png</file>
@@ -92,7 +90,6 @@
         <file>images/ruler.png</file>
         <file>images/settings.png</file>
         <file>images/show_compl.png</file>
-        <file>images/show_trans.png</file>
         <file>images/sort_ascending.png</file>
         <file>images/sum.png</file>
         <file>images/table.png</file>
@@ -113,6 +110,7 @@
         <file>images/zoom_whole.png</file>
         <file>images/zoom_whole_small.png</file>
 
+        <file>images/light/add_column.png</file>
         <file>images/light/add_tree.png</file>
         <file>images/light/align.png</file>
         <file>images/light/align_tree_labels.png</file>
@@ -152,6 +150,7 @@
         <file>images/light/predefined_annotation_groups.png</file>
         <file>images/light/printer.png</file>
         <file>images/light/reroot.png</file>
+        <file>images/light/remove_column.png</file>
         <file>images/light/ruler_coverage.png</file>
         <file>images/light/sam.png</file>
         <file>images/light/save.png</file>
@@ -179,6 +178,7 @@
         <file>images/light/zoom_fit.png</file>
         <file>images/light/zoom_out_tree.png</file>
 
+        <file>images/dark/add_column.png</file>
         <file>images/dark/add_tree.png</file>
         <file>images/dark/align.png</file>
         <file>images/dark/align_tree_labels.png</file>
@@ -218,6 +218,7 @@
         <file>images/dark/predefined_annotation_groups.png</file>
         <file>images/dark/printer.png</file>
         <file>images/dark/reroot.png</file>
+        <file>images/dark/remove_column.png</file>
         <file>images/dark/ruler_coverage.png</file>
         <file>images/dark/sam.png</file>
         <file>images/dark/save.png</file>

@@ -58,30 +58,18 @@ QIcon DarkStyle::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleO
 }
 
 void DarkStyle::polish(QPalette& palette) {
-    //return;
-    auto sp1 = standardPalette();
-    auto n1 = sp1.color(QPalette::Mid).name();
-
-    auto nb = baseStyle()->standardPalette().color(QPalette::Dark).name();
-
     // modify palette to dark
     palette.setColor(QPalette::Window, QColor(53, 53, 53));
     palette.setColor(QPalette::WindowText, Qt::white);
     palette.setColor(QPalette::Active, QPalette::WindowText, Qt::white);
     palette.setColor(QPalette::Disabled, QPalette::WindowText,
                      QColor(127, 127, 127));
-    // orig 42
-    auto n123414 = sp1.color(QPalette::Base).name();
     palette.setColor(QPalette::Base, QColor(48, 48, 48));
     palette.setColor(QPalette::AlternateBase, QColor(66, 66, 66));
     palette.setColor(QPalette::ToolTipBase, Qt::white);
     palette.setColor(QPalette::ToolTipText, QColor(53, 53, 53));
     palette.setColor(QPalette::Text, Qt::white);
     palette.setColor(QPalette::Disabled, QPalette::Text, QColor(127, 127, 127));
-    auto n = palette.color(QPalette::Dark).name();
-    //palette.setColor(QPalette::Dark, QColor(35, 35, 35));
-    auto n0 = palette.color(QPalette::Dark).name();
-    auto n123 = palette.color(QPalette::Mid).name();
     palette.setColor(QPalette::Midlight, QColor(28, 28, 28));
     palette.setColor(QPalette::Mid, QColor(95, 95, 95));
     palette.setColor(QPalette::Shadow, QColor(20, 20, 20));
@@ -96,10 +84,6 @@ void DarkStyle::polish(QPalette& palette) {
     palette.setColor(QPalette::HighlightedText, Qt::white);
     palette.setColor(QPalette::Disabled, QPalette::HighlightedText,
                      QColor(127, 127, 127));
-
-    auto sp2 = standardPalette();
-    auto n2 = sp2.color(QPalette::Dark).name();
-    int i = 0;
 }
 
 void DarkStyle::polish(QApplication *app) {

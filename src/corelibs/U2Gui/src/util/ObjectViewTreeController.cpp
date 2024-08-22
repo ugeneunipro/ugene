@@ -30,6 +30,8 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 // TODO:
 //  track factory registry and show only the states with factories available
 //  delete view state if factory refuses create view
@@ -39,7 +41,7 @@ namespace U2 {
 ObjectViewTreeController::ObjectViewTreeController(QTreeWidget* w)
     : QObject(w), tree(w) {
     bookmarkStateIcon = QIcon(":core/images/bookmark_item.png");
-    bookmarkActiveIcon = QIcon(":core/images/bookmark.png");
+    bookmarkActiveIcon = GUIUtils::getIconResource("core", "bookmark.png", false);
     bookmarkInactiveIcon = QIcon(":core/images/bookmark_inactive.png");
 
     tree->headerItem()->setHidden(true);
