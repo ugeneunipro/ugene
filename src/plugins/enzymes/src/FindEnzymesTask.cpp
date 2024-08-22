@@ -174,9 +174,7 @@ void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Stran
         enzymeRegions << U2Region(pos, enzyme->seq.size());
     }
     for (const U2Region& excluded : qAsConst(excludeRegions)) {
-        CHECK_EXT(!excluded.intersects(enzymeRegions), 
-        algoLog.info(tr("The following enzymes were found, but skipped because they are presented inside of the \"Uncut area\": %1.")
-        .arg(enzyme->id)), );
+        CHECK_EXT(!excluded.intersects(enzymeRegions), excludedEnzymesHits.insert(enzyme->id, -1), );
     }
 
     QMutexLocker locker(&resultsLock);
@@ -264,6 +262,16 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
 
 Task::ReportResult FindEnzymesTask::report() {
     if (!hasError() && !isCanceled()) {
+        QStringList enzymes;
+        for (auto it = excludedEnzymesHits.keyValueBegin(); it != excludedEnzymesHits.keyValueEnd(); ++it) {
+            if (it->second != 0) {
+                enzymes << it->first;                
+            }            
+        }
+        if (!enzymes.isEmpty()) {
+            algoLog.info(tr("The following enzymes were found, but skipped because they are presented inside of the \"Uncut area\": %1.")
+                         .arg(enzymes.join(",")));
+        }
         algoLog.info(tr("Found %1 restriction sites").arg(countOfResultsInMap));
     }
     return ReportResult_Finished;
