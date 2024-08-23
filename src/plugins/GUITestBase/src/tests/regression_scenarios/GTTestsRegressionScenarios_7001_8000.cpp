@@ -5295,19 +5295,19 @@ GUI_TEST_CLASS_DEFINITION(test_7974) {
 
 GUI_TEST_CLASS_DEFINITION(test_7979) {
     /*
-    * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
-    * 2. Close view for sars.gb
-    * 3. Right click on sequence object in sars.gb and add it to opened view
-    * 4. Press "Lock scales" button
-    * Expected state: "Lock scales: visible range start" menu item checked in "Lock scales" menu
-    * 5. Activate "Lock scales: visible range start" menu item in "Lock scales" menu
-    * Expected state: "Lock scales" button is not pressed
-    * 6. Press "Lock scales" button
-    * 7. Activate "Lock scales: selected annotation" menu item in "Lock scales" menu
-    * Expected state: "Lock scales: selected annotation" menu item checked in "Lock scales" menu, other items are not checked
-    * 8. Press "Lock scales" button
-    * Expected state: "Lock scales" button is not pressed, no menu items selected
-    */
+     * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
+     * 2. Close view for sars.gb
+     * 3. Right click on sequence object in sars.gb and add it to opened view
+     * 4. Press "Lock scales" button
+     * Expected state: "Lock scales: visible range start" menu item checked in "Lock scales" menu
+     * 5. Activate "Lock scales: visible range start" menu item in "Lock scales" menu
+     * Expected state: "Lock scales" button is not pressed
+     * 6. Select any annotation on active sequence view. Press "Lock scales" button
+     * 7. Activate "Lock scales: selected annotation" menu item in "Lock scales" menu
+     * Expected state: "Lock scales: selected annotation" menu item checked in "Lock scales" menu, other items are not checked
+     * 8. Press "Lock scales" button
+     * Expected state: "Lock scales" button is not pressed, no menu items selected
+     */
     GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Separate;
     GTUtilsDialog::waitForDialog(new GTSequenceReadingModeDialogUtils());
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list(dataDir + "samples/Genbank/", {"NC_014267.1.gb", "sars.gb"}));
@@ -5367,6 +5367,9 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     CHECK_SET_ERR(!lockScalesButton->isDown(), "'Lock scales' button should be down");
+    
+    auto firstAnnotation = GTUtilsAnnotationsTreeView::findFirstAnnotation();
+    GTUtilsAnnotationsTreeView::selectItems({firstAnnotation});
 
     GTWidget::click(lockScalesButton);
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuClicker("Lock scales: selected annotation")));
