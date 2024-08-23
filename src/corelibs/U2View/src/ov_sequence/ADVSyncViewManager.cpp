@@ -77,6 +77,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
     lockMenu = new QMenu(tr("Lock scales"));
     lockMenu->setIcon(QIcon(":core/images/lock_scales.png"));
     lockMenu->addActions(lockActionGroup->actions());
+    connect(lockMenu, &QMenu::aboutToShow, this, &ADVSyncViewManager::sl_setUpLockMenuActions);
 
     syncMenu = new QMenu(tr("Adjust scales"));
     syncMenu->setIcon(QIcon(":core/images/sync_scales.png"));
@@ -438,6 +439,18 @@ void ADVSyncViewManager::sl_updateVisualMode() {
     togglePanAction->setText(haveVisiblePan ? tr("Hide all zoom views") : tr("Show all zoom views"));
     toggleDetAction->setText(haveVisibleDet ? tr("Hide all details") : tr("Show all details"));
     toggleOveAction->setText(haveVisibleOve ? tr("Hide all overviews") : tr("Show all overviews"));
+}
+
+void ADVSyncViewManager::sl_setUpLockMenuActions() {
+    auto focusedW = qobject_cast<ADVSingleSequenceWidget*>(adv->getActiveSequenceWidget());
+    if (focusedW == nullptr) {
+        lockByAnnSelAction->setEnabled(false);
+        lockBySeqSelAction->setEnabled(false);
+        return;
+    }
+
+    lockByAnnSelAction->setEnabled(findSelectedAnnotationPos(focusedW) != -1);
+    lockBySeqSelAction->setEnabled(!focusedW->getSequenceContext()->getSequenceSelection()->isEmpty());
 }
 
 void ADVSyncViewManager::sl_toggleVisualMode() {
