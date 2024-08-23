@@ -139,7 +139,7 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
         for (const U2Region& excludeRegion : qAsConst(excludeRegions)) {
             for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
                 FindSingleEnzymeTask* task = new FindSingleEnzymeTask(seqRef, excludeRegion, enzyme, nullptr, isCircular, 1, false);
-                excludedEnzymesHits[enzyme->id] += 1;
+                excludeSearchTasksRunningCounter[enzyme->id] += 1;
                 addSubTask(task);
             }
         }
@@ -148,14 +148,13 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
 
 QList<Task*> FindEnzymesTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
-    CHECK(!excludedEnzymesHits.isEmpty(), result);
+    CHECK(!excludeSearchTasksRunningCounter.isEmpty(), result);
     FindSingleEnzymeTask* findSingleEnzymeTask = qobject_cast<FindSingleEnzymeTask*>(subTask);
     SAFE_POINT(findSingleEnzymeTask != nullptr, L10N::nullPointerError("FindSingleEnzymeTask"), result);
-    CHECK(findSingleEnzymeTask->getResults().isEmpty(), result);
     const SEnzymeData& enzyme = findSingleEnzymeTask->getEnzyme();
-    excludedEnzymesHits[enzyme->id] -= 1;
-    //if the enzyme was found in exclude search - counter will never be 0
-    CHECK(excludedEnzymesHits[enzyme->id] == 0, result);
+    excludeSearchTasksRunningCounter[enzyme->id] -= 1;
+    CHECK_EXT(findSingleEnzymeTask->getResults().isEmpty(), enzymesFoundInExcludedRegion << enzyme->id, result);
+    CHECK(excludeSearchTasksRunningCounter[enzyme->id] == 0 && !enzymesFoundInExcludedRegion.contains(enzyme->id), result);
     result << new FindSingleEnzymeTask(seqRef, region, enzyme, this, isCircular);
     return result;
 }
@@ -174,7 +173,7 @@ void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Stran
         enzymeRegions << U2Region(pos, enzyme->seq.size());
     }
     for (const U2Region& excluded : qAsConst(excludeRegions)) {
-        CHECK_EXT(!excluded.intersects(enzymeRegions), excludedEnzymesHits.insert(enzyme->id, -1), );
+        CHECK_EXT(!excluded.intersects(enzymeRegions), enzymesFoundInExcludedRegion << enzyme->id, );
     }
 
     QMutexLocker locker(&resultsLock);
@@ -262,15 +261,9 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
 
 Task::ReportResult FindEnzymesTask::report() {
     if (!hasError() && !isCanceled()) {
-        QStringList enzymes;
-        for (auto it = excludedEnzymesHits.keyValueBegin(); it != excludedEnzymesHits.keyValueEnd(); ++it) {
-            if (it->second != 0) {
-                enzymes << it->first;                
-            }            
-        }
-        if (!enzymes.isEmpty()) {
-            algoLog.info(tr("The following enzymes were found, but skipped because they are presented inside of the \"Uncut area\": %1.")
-                         .arg(enzymes.join(",")));
+        if (!enzymesFoundInExcludedRegion.isEmpty()) {
+            algoLog.info(tr("The following enzymes were found, but skipped because they were found inside of the \"Uncut area\": %1.")
+                         .arg(enzymesFoundInExcludedRegion.join(",")));
         }
         algoLog.info(tr("Found %1 restriction sites").arg(countOfResultsInMap));
     }

@@ -1017,19 +1017,55 @@ GUI_TEST_CLASS_DEFINITION(test_8120_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8136) {
+    /*
+    * 1. Open _common_data/scenarios/_regression/8136/8136.seq
+    * 2. Open "Restriction enzymes"dialog
+    * 3. Choose only one "AasI" enzyme.
+    * 4. Check "Uncut area" and set it from 29 to 100.
+    * 5. Click OK.
+    * Expected state: no enzymes were found.
+    * Expected state: there is a info in log about skipped enzyme
+    * 6. Open "Restriction enzymes"dialog
+    * 7. Check "Uncut area" and set it from 29 to 33.
+    * 8. Set "Search area" from 30 to 31.
+    * 5. Click OK.
+    * Expected state: Message box with "Nothing to search" message appeared.
+    */
     GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/8136/8136.seq");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     FindEnzymesDialogFillerSettings settings({"AasI"});
     settings.excludeRegionStart = 29;
-    settings.excludeRegionEnd = 100;
+    settings.excludeRegionEnd = 100;    
     GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTLogTracer lt;
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 0, "Annoatated region counter doesn't match.");
-    lt.checkMessage("The following enzyme was found, but skipped because they are presented inside of the \"Uncut area\":");
+    lt.checkMessage("The following enzymes were found, but skipped because they were found inside of the \"Uncut area\":");
+    
+    class CheckErrorMessageBox : public CustomScenario {
+    public:
+        void run() override {
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "'Uncut' region/location fully contains 'Search in' inside it!"));
+            filler->commonScenario();
+            GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Cancel);
+        }
+        FindEnzymesDialogFiller *filler;
+    };
+
+    settings.searchRegionStart = 30;
+    settings.searchRegionEnd = 31;
+    settings.excludeRegionStart = 29;
+    settings.excludeRegionEnd = 33;
+    
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    CheckErrorMessageBox* scenario = new CheckErrorMessageBox();
+    FindEnzymesDialogFiller* filler = new FindEnzymesDialogFiller(settings, scenario);
+    scenario->filler = filler;
+    GTUtilsDialog::add(filler);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 }
 
 }  // namespace GUITest_regression_scenarios

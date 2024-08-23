@@ -668,8 +668,8 @@
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="315"/>
-        <source>Search region</source>
-        <translation>Регион поиска</translation>
+        <source>Search in</source>
+        <translation>Искать в</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="179"/>
@@ -1347,7 +1347,27 @@ To start ligation create a project or open an existing.</source>
         <translation>Некоторые энзимы скрыты из-за настроек &quot;Фильтра таблицы ферментов&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="777"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="814"/>
+        <source>Invalid &apos;Search in&apos; or &apos;Uncut&apos; region/location!</source>
+        <translation>Неверный регион/позиция &apos;Искать в&apos; или &apos;Область исключения&apos;!</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="815"/>
+        <source>Given region or genbank location is invalid, please correct it.</source>
+        <translation>Заданый регион или позиция неверная, пожалуйста отредактируйте.</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="830"/>
+        <source>&apos;Uncut&apos; region/location fully contains &apos;Search in&apos; inside it!</source>
+        <translation>Регион/позиция &apos;Области исключения&apos; содержит &apos;Искать в&apos; внутри себя!</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="831"/>
+        <source>Nowhere to search!</source>
+        <translation>Негде искать!</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="863"/>
         <source>Minimum hit value must be lesser or equal then maximum!</source>
         <translation>Минимальное значение должно быть меньше либо равно максимального!</translation>
     </message>
