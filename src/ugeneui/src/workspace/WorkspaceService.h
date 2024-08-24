@@ -105,6 +105,7 @@ private:
     CloudStorageService* cloudStorageService = nullptr;
     QAction* separatorAction = nullptr;
     QString authUrl;
+    QString logoutUrl;
     QString tokenUrl;
     QString clientId;
     QString stage;

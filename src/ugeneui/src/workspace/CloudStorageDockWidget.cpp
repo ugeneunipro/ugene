@@ -128,7 +128,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
         stateLabel->setVisible(true);
         treeView->setVisible(false);
         treeViewModel.clear();
-        treeViewModel.setHorizontalHeaderLabels({"Name", "Size"});
+        treeViewModel.setHorizontalHeaderLabels({"Name"});
         treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
         updateStateLabelText();
     });
