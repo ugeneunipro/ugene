@@ -155,15 +155,19 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, c
     data->wrapWidget->setObjectName("wrap_widget_" + dockWidget->objectName());
     data->label->setObjectName("doc_label__" + dockWidget->objectName());
     data->label->installEventFilter(this);
-    if (area != MWDockArea_Bottom) {
+    if (area == MWDockArea_Bottom) {
+        toolBar->insertWidget(statusBarAction, data->label);
+    } else {
         if (dockWidget->objectName() == "project_view") {
             auto actionsList = toolBar->actions();
-            toolBar->insertWidget(actionsList.isEmpty() ? nullptr : actionsList[0], data->label);
+            if (actionsList.isEmpty()) {
+                toolBar->addWidget(data->label);
+            } else {
+                toolBar->insertWidget(actionsList[0], data->label);
+            }
         } else {
             toolBar->addWidget(data->label);
         }
-    } else {
-        toolBar->insertWidget(statusBarAction, data->label);
     }
     connect(dockWidget, &QObject::destroyed, this, &MWDockManagerImpl::sl_widgetDestroyed);
 
