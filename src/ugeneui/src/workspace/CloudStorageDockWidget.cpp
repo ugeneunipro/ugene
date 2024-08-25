@@ -54,22 +54,24 @@ constexpr qint64 USER_DATA_SIZE = Qt::UserRole + 2;
 constexpr qint64 USER_DATA_PATH = Qt::UserRole + 3;
 constexpr qint64 USER_DATA_IS_FOLDER = Qt::UserRole + 4;
 
-void updateModel(QStandardItem* parentItem, const CloudStorageEntry& entry) {
+static bool isLess(QStandardItem* a, QStandardItem* b) {
+    return a->data(USER_DATA_IS_FOLDER) != b->data(USER_DATA_IS_FOLDER)
+               ? a->data(USER_DATA_IS_FOLDER).toBool()
+               : a->text() < b->text();
+}
+
+static void updateModel(QTreeView* tree,
+                        QStandardItem* parentItem,
+                        const CloudStorageEntry& entry,
+                        QList<QStandardItem*>& expandedItems,
+                        QSet<QStandardItem*>& deletedItems) {
     QMap<qint64, QStandardItem*> childrenMap;
     for (int i = 0; i < parentItem->rowCount(); i++) {
         QStandardItem* childItem = parentItem->child(i);
         auto childEntryKey = childItem->data(USER_DATA_SESSION_LOCAL_ID).toLongLong();
         childrenMap[childEntryKey] = childItem;
     }
-
-    auto sortedChildren = entry->children;  // Sort, make folders first.
-    std::sort(sortedChildren.begin(), sortedChildren.end(), [](const CloudStorageEntry& e1, const CloudStorageEntry& e2) {
-        if (e1->isFolder != e2->isFolder) {
-            return e1->isFolder;
-        }
-        return e1->getName() < e2->getName();
-    });
-    for (const CloudStorageEntry& childEntry : qAsConst(sortedChildren)) {
+    for (const CloudStorageEntry& childEntry : qAsConst(entry->children)) {
         QIcon icon(childEntry->isFolder ? ":U2Designer/images/directory.png" : ":core/images/document.png");
         auto childEntryKey = childEntry->sessionLocalId;
         if (childrenMap.contains(childEntryKey)) {
@@ -80,7 +82,7 @@ void updateModel(QStandardItem* parentItem, const CloudStorageEntry& entry) {
             nameItem->setData(childEntry->isFolder, USER_DATA_IS_FOLDER);
             nameItem->setData(QVariant::fromValue(childEntry->path), USER_DATA_PATH);
 
-            updateModel(nameItem, childEntry);
+            updateModel(tree, nameItem, childEntry, expandedItems, deletedItems);
 
             // Unregister it from the map, because all entries that left int he map will be removed from the view as unused.
             childrenMap.remove(childEntryKey);
@@ -93,13 +95,54 @@ void updateModel(QStandardItem* parentItem, const CloudStorageEntry& entry) {
 
             parentItem->appendRow({nameItem});
 
-            updateModel(nameItem, childEntry);
+            updateModel(tree, nameItem, childEntry, expandedItems, deletedItems);
         }
     }
 
     for (auto it = childrenMap.constBegin(); it != childrenMap.constEnd(); ++it) {
-        parentItem->removeRow(it.value()->row());
+        auto item = it.value();
+        deletedItems.insert(item);
+        parentItem->removeRow(item->row());
     }
+
+    // Resort all children. Do not break expanded state.
+    QList<QStandardItem*> sortedChildren;
+    ;
+    int rowCount = parentItem->rowCount();
+    for (int i = 0; i < rowCount; i++) {
+        auto child = parentItem->child(i);
+        if (tree->isExpanded(child->index())) {
+            expandedItems.append(child);
+        }
+        sortedChildren.push_back(parentItem->takeChild(i));
+    }
+    std::sort(sortedChildren.begin(), sortedChildren.end(), [](QStandardItem* a, QStandardItem* b) { return isLess(a, b); });
+    for (int i = 0; i < rowCount; i++) {
+        parentItem->setChild(i, sortedChildren[i]);
+    }
+}
+
+static void updateTree(QTreeView* tree, const QStandardItemModel& model, const CloudStorageEntry& entry) {
+    tree->setUpdatesEnabled(false);
+    QModelIndexList selectedIndexes = tree->selectionModel()->selectedIndexes();
+    QStandardItem* selectedItem = selectedIndexes.isEmpty() ? nullptr : model.itemFromIndex(selectedIndexes.first());
+
+    QList<QStandardItem*> expandedItems;  // List of item that should be expanded after model update.
+    QSet<QStandardItem*> deletedItems;  // List of items that were deleted during model update. Contains deleted pointers.
+    updateModel(tree, model.invisibleRootItem(), entry, expandedItems, deletedItems);
+
+    // Resorting in updateModel breaks expanded & selected states.
+    // We will restore it from the root (last in the list) to leafs ( first in the list).
+    for (int i = expandedItems.length(); --i >= 0;) {
+        tree->setExpanded(expandedItems[i]->index(), true);
+    }
+
+    if (selectedItem != nullptr && !deletedItems.contains(selectedItem)) {
+        tree->selectionModel()->select(selectedItem->index(), QItemSelectionModel::Select);
+    }
+
+    tree->setUpdatesEnabled(true);
+    tree->update();
 }
 
 CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceService)
@@ -136,13 +179,8 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     connect(getCloudStorageService(), &CloudStorageService::si_storageStateChanged, this, [this](const CloudStorageEntry& rootEntry) {
         stateLabel->setVisible(false);
         treeView->setVisible(true);
-
         uiLog.trace("CloudStorageDockWidget: Received new cloud storage state");
-        QStandardItem* rootItem = treeViewModel.invisibleRootItem();
-        treeView->setUpdatesEnabled(false);
-        updateModel(rootItem, rootEntry);
-        treeView->setUpdatesEnabled(true);
-        treeView->update();
+        updateTree(treeView, treeViewModel, rootEntry);
     });
 
     createDirAction = new QAction(tr("New Folder"), this);
