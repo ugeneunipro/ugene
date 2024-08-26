@@ -61,14 +61,14 @@ SeqPasterEventFilter::SeqPasterEventFilter(QObject* parent)
 
 //////////////////////////////////////////////////////////////////////////
 // EditSequenceDialogVirtualController
-EditSequenceDialogVirtualController::EditSequenceDialogVirtualController(const EditSequencDialogConfig& cfg, QWidget* p)
+EditSequenceDialogVirtualController::EditSequenceDialogVirtualController(const EditSequencDialogConfig& cfg, QWidget* p, const QString& helpId)
     : QDialog(p),
       filter(""),
       saveController(nullptr),
       config(cfg) {
     ui = new Ui_EditSequenceDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "65929426");
+    new HelpButton(this, ui->buttonBox, helpId);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
