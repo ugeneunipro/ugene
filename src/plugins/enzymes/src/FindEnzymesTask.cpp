@@ -113,6 +113,34 @@ Task::ReportResult FindEnzymesToAnnotationsTask::report() {
     return ReportResult_Finished;
 }
 
+int getLeftCutLength(const SEnzymeData& enzyme) {
+    int result = 0;
+    if (enzyme->cutDirect != ENZYME_CUT_UNKNOWN) {
+        result = qMax(result, enzyme->cutDirect);
+    }
+    if (enzyme->secondCutDirect != ENZYME_CUT_UNKNOWN) {
+        result = qMax(result, enzyme->cutDirect);
+    }
+    if (result == 0) {
+        result = enzyme->seq.size();
+    }
+    return result;
+}
+
+int getRightCutLength(const SEnzymeData& enzyme) {
+    int result = 0;
+    if (enzyme->cutComplement != ENZYME_CUT_UNKNOWN) {
+        result = qMax(result, enzyme->cutComplement);
+    }
+    if (enzyme->secondCutComplement != ENZYME_CUT_UNKNOWN) {
+        result = qMax(result, enzyme->secondCutComplement);
+    }
+    if (result == 0) {
+        result = enzyme->seq.size();
+    }
+    return result;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // find multiple enzymes task
 FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& region_, const QVector<U2Region>& excludeRegions_, 
@@ -136,11 +164,26 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
             addSubTask(new FindSingleEnzymeTask(seqRef, region, enzyme, this, isCircular));
         }
     } else {
-        for (const U2Region& excludeRegion : qAsConst(excludeRegions)) {
-            for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
-                FindSingleEnzymeTask* task = new FindSingleEnzymeTask(seqRef, excludeRegion, enzyme, nullptr, isCircular, 1, false);
+        for (U2Region excludeRegion : qAsConst(excludeRegions)) {
+            for (const SEnzymeData enzyme : qAsConst(enzymes)) {
+                const int leftExtension = getLeftCutLength(enzyme);
+                const int rightExtension = getRightCutLength(enzyme);
+                const int seqLength = seq.getSequenceLength();
+                if (excludeRegion.startPos - leftExtension < 0) {                        
+                    excludeRegion.startPos = isCircular ? seqLength - (leftExtension - excludeRegion.startPos) : 0;
+                } else {
+                    excludeRegion.startPos -= leftExtension;
+                }
+                if (excludeRegion.endPos() + rightExtension > seqLength) {
+                    excludeRegion.length = isCircular ? excludeRegion.endPos() + rightExtension - seqLength : seqLength - excludeRegion.startPos;
+                } else {
+                    excludeRegion.length += rightExtension;
+                }
+                if (excludeRegion.length > seqLength) {
+                    excludeRegion.length = seqLength;
+                }
                 excludeSearchTasksRunningCounter[enzyme->id] += 1;
-                addSubTask(task);
+                addSubTask(new FindSingleEnzymeTask(seqRef, excludeRegion, enzyme, nullptr, isCircular, 1, false));
             }
         }
     }
@@ -161,21 +204,6 @@ QList<Task*> FindEnzymesTask::onSubTaskFinished(Task* subTask) {
 
 void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool&) {
     CHECK_OP(stateInfo, );
-    
-    QVector<U2Region> enzymeRegions;
-    if (isCircular && pos + enzyme->seq.size() > seqlen) {
-        qint64 firstRegionLength = seqlen - pos;
-        if (firstRegionLength != 0) {
-            enzymeRegions << U2Region(pos, firstRegionLength);
-        }
-        enzymeRegions << U2Region(0, enzyme->seq.size() - firstRegionLength);
-    } else {
-        enzymeRegions << U2Region(pos, enzyme->seq.size());
-    }
-    for (const U2Region& excluded : qAsConst(excludeRegions)) {
-        CHECK_EXT(!excluded.intersects(enzymeRegions), enzymesFoundInExcludedRegion << enzyme->id, );
-    }
-
     QMutexLocker locker(&resultsLock);
     if (pos > seqlen) {
         pos %= seqlen;
