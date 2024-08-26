@@ -75,7 +75,7 @@ struct U2GUI_EXPORT EditSequencDialogConfig {
 class U2GUI_EXPORT EditSequenceDialogVirtualController : public QDialog  {
     Q_OBJECT
 public:
-    EditSequenceDialogVirtualController(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
+    EditSequenceDialogVirtualController(const EditSequencDialogConfig& cfg, QWidget* p = nullptr, const QString& helpId = "65929426");
 
     void accept() override;
 

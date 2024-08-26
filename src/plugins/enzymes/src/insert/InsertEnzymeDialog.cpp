@@ -29,7 +29,7 @@
 namespace U2 {
 
 InsertEnzymeDialog::InsertEnzymeDialog(const EditSequencDialogConfig& cfg, QWidget* p)
- : EditSequenceDialogVirtualController(cfg, p) {
+    : EditSequenceDialogVirtualController(cfg, p, "113541166") {
 
     setWindowTitle(tr("Insert Restriction Site"));
 
