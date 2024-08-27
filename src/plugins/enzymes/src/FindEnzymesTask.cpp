@@ -113,7 +113,7 @@ Task::ReportResult FindEnzymesToAnnotationsTask::report() {
     return ReportResult_Finished;
 }
 
-int getLeftCutLength(const SEnzymeData& enzyme) {
+static int getDirectCutOffset(const SEnzymeData& enzyme) {
     int result = 0;
     if (enzyme->cutDirect != ENZYME_CUT_UNKNOWN) {
         result = qMax(result, enzyme->cutDirect);
@@ -127,7 +127,7 @@ int getLeftCutLength(const SEnzymeData& enzyme) {
     return result;
 }
 
-int getRightCutLength(const SEnzymeData& enzyme) {
+static int getComplementCutOffset(const SEnzymeData& enzyme) {
     int result = 0;
     if (enzyme->cutComplement != ENZYME_CUT_UNKNOWN) {
         result = qMax(result, enzyme->cutComplement);
@@ -137,6 +137,9 @@ int getRightCutLength(const SEnzymeData& enzyme) {
     }
     if (result == 0) {
         result = enzyme->seq.size();
+    }
+    if (enzyme->cutComplement < 0 || enzyme->secondCutComplement < 0) {
+        return result;
     }
     return result;
 }
@@ -166,8 +169,10 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
     } else {
         for (U2Region excludeRegion : qAsConst(excludeRegions)) {
             for (const SEnzymeData enzyme : qAsConst(enzymes)) {
-                const int leftExtension = getLeftCutLength(enzyme);
-                const int rightExtension = getRightCutLength(enzyme);
+                //maximum offset for direct 'cutter' of enzyme
+                const int leftExtension = getDirectCutOffset(enzyme);
+                //maximum offset for complement 'cutter' of enzyme
+                const int rightExtension = getComplementCutOffset(enzyme);
                 const int seqLength = seq.getSequenceLength();
                 if (excludeRegion.startPos - leftExtension < 0) {                        
                     excludeRegion.startPos = isCircular ? seqLength - (leftExtension - excludeRegion.startPos) : 0;
@@ -291,7 +296,7 @@ Task::ReportResult FindEnzymesTask::report() {
     if (!hasError() && !isCanceled()) {
         if (!enzymesFoundInExcludedRegion.isEmpty()) {
             algoLog.info(tr("The following enzymes were found, but skipped because they were found inside of the \"Uncut area\": %1.")
-                         .arg(enzymesFoundInExcludedRegion.join(",")));
+                         .arg(enzymesFoundInExcludedRegion.values().join(",")));
         }
         algoLog.info(tr("Found %1 restriction sites").arg(countOfResultsInMap));
     }
