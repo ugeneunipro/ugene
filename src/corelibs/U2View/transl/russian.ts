@@ -2149,7 +2149,7 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::ADVClipboard</name>
     <message>
-        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="351"/>
+        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="363"/>
         <source>Paste sequence</source>
         <translation>Вставить последовательность</translation>
     </message>
@@ -2194,12 +2194,18 @@ Double-click to collapse the branch</source>
         <translation>Копировать значение квалификатора</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="274"/>
+        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="185"/>
+        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="225"/>
+        <source>There is not enough memory to finish the sequence copy process.</source>
+        <translation>Недостаточно памяти для завершения процесса копирования последовательности.</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="286"/>
         <source>Copy annotation</source>
         <translation>Копировать анноттацию</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="332"/>
+        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="344"/>
         <source>Copy/Paste</source>
         <translation>Копирование/Вставка</translation>
     </message>
@@ -2382,42 +2388,42 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::ADVSyncViewManager</name>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="437"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="438"/>
         <source>Hide all sequences</source>
         <translation>Скрыть все последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="437"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="438"/>
         <source>Show all sequences</source>
         <translation>Показать все последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="438"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="439"/>
         <source>Hide all zoom views</source>
         <translation>Скрыть все масштабируемые представления</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="438"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="439"/>
         <source>Show all zoom views</source>
         <translation>Показать все масштабируемые представления</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="440"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="441"/>
         <source>Hide all overviews</source>
         <translation>Скрыть все панорамы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="440"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="441"/>
         <source>Show all overviews</source>
         <translation>Показать все панорамы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="439"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="440"/>
         <source>Hide all details</source>
         <translation>Скрыть все детали</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="439"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="440"/>
         <source>Show all details</source>
         <translation>Показать все детали</translation>
     </message>
@@ -2457,22 +2463,22 @@ Double-click to collapse the branch</source>
         <translation>Связать шкалы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="81"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="82"/>
         <source>Adjust scales</source>
         <translation>Синхронизировать шкалы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="133"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="134"/>
         <source>Toggle views</source>
         <translation>Переключить обзор</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="599"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="612"/>
         <source>Hide %1</source>
         <translation>Скрыть %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="601"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="614"/>
         <source>Show %1</source>
         <translation>Показать %1</translation>
     </message>
@@ -4329,17 +4335,17 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::ExportHighlightingTask</name>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="843"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="848"/>
         <source>Export highlighting</source>
         <translation>Экспорт подсвеченного</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="869"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="874"/>
         <source>Export highlighting finished successfully</source>
         <translation>Export highligtning finished successfully</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="869"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="874"/>
         <source>Result file:</source>
         <translation>Выходной файл:</translation>
     </message>
@@ -5387,22 +5393,27 @@ Directory Path: %1</source>
         <translation>Удалить последовательность(и)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="242"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="217"/>
+        <source>There is not enough memory to finish the alignment copy process.</source>
+        <translation>Недостаточно памяти для завершения процесса копирования выравнивания.</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="247"/>
         <source>Impossible to delete whole alignment!</source>
         <translation>Невозможно удалить все выравнивание!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="857"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="862"/>
         <source>Rename Read</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="857"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="862"/>
         <source>Rename Sequence</source>
         <translation>Переименовать последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="859"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="864"/>
         <source>New name:</source>
         <translation>Новое имя:</translation>
     </message>
@@ -6319,22 +6330,27 @@ Simple overview is unavailable.</source>
         <translation>Заменить выделенные строки комплементарными</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="352"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="255"/>
+        <source>There is not enough memory to finish the alignment copy process.</source>
+        <translation>Недостаточно памяти для завершения процесса копирования выравнивания.</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="357"/>
         <source>The alignment has been modified, so that its alphabet has been switched from &quot;%1&quot; to &quot;%2&quot;. Use &quot;Undo&quot;, if you&apos;d like to restore the original alignment.</source>
         <translation>Выравнивание было изменено. Алфавит переключен с &quot;%1&quot; на &quot;%2&quot;. Используйте опцию &quot;Отменить&quot; если хотите вернуться к исходному выравниванию.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="607"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="612"/>
         <source>No new rows were inserted: selection contains no valid sequences.</source>
         <translation>Новые ряды не добавлены: выделение не содержит корректных последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="632"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="637"/>
         <source>Open file with sequences</source>
         <translation>Открыть файл с последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="644"/>
+        <location filename="../src/ov_msa/MsaEditorSequenceArea.cpp" line="649"/>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>A problem occurred during adding sequences. The multiple alignment is no more available.</translation>
     </message>

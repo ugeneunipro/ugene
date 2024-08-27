@@ -179,7 +179,13 @@ void ADVClipboard::copySequenceSelection(bool complement, bool amino) {
         QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), tr("An error occurred during getting sequence data: %1").arg(os.getError()));
         return;
     }
-    res = U1SequenceUtils::joinRegions(seqParts);
+    try {
+        res = U1SequenceUtils::joinRegions(seqParts);
+    } catch (const std::bad_alloc&) {
+        NotificationStack::addNotification(tr("There is not enough memory to finish the sequence copy process."), NotificationType::Error_Not);
+        return;
+    }
+
     putIntoClipboard(res);
 }
 
@@ -197,23 +203,29 @@ void ADVClipboard::copyAnnotationSelection(const bool amino) {
     }
 
     QByteArray resultText;
-    for (auto annotation : qAsConst(selectedAnnotationList)) {
-        if (!resultText.isEmpty()) {
-            resultText.append('\n');
+    try {
+        for (auto annotation : qAsConst(selectedAnnotationList)) {
+            if (!resultText.isEmpty()) {
+                resultText.append('\n');
+            }
+            ADVSequenceObjectContext* seqCtx = ctx->getSequenceContext(annotation->getGObject());
+            if (seqCtx == nullptr) {
+                resultText.append(U2Msa::GAP_CHAR);  // insert gap instead of the sequence, if the sequence is not available.
+                continue;
+            }
+            DNATranslation* complTT = annotation->getStrand().isComplementary() ? seqCtx->getComplementTT() : nullptr;
+            DNATranslation* aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
+            // BUG528: add alphabet symbol role: insertion mark and use it instead of the U2Msa::GAP_CHAR
+            const U2EntityRef& sequenceObjectRef = seqCtx->getSequenceRef();
+            QByteArray annotationSequence = AnnotationSelection::getSequenceUnderAnnotation(sequenceObjectRef, annotation, complTT, aminoTT, os);
+            resultText.append(annotationSequence);
+            CHECK_OP(os, );
         }
-        ADVSequenceObjectContext* seqCtx = ctx->getSequenceContext(annotation->getGObject());
-        if (seqCtx == nullptr) {
-            resultText.append(U2Msa::GAP_CHAR);  // insert gap instead of the sequence, if the sequence is not available.
-            continue;
-        }
-        DNATranslation* complTT = annotation->getStrand().isComplementary() ? seqCtx->getComplementTT() : nullptr;
-        DNATranslation* aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
-        // BUG528: add alphabet symbol role: insertion mark and use it instead of the U2Msa::GAP_CHAR
-        const U2EntityRef& sequenceObjectRef = seqCtx->getSequenceRef();
-        QByteArray annotationSequence = AnnotationSelection::getSequenceUnderAnnotation(sequenceObjectRef, annotation, complTT, aminoTT, os);
-        resultText.append(annotationSequence);
-        CHECK_OP(os, );
+    } catch (const std::bad_alloc&) {
+        NotificationStack::addNotification(tr("There is not enough memory to finish the sequence copy process."), NotificationType::Error_Not);
+        return;
     }
+
     putIntoClipboard(resultText);
 }
 

@@ -199,18 +199,23 @@ void MaEditorNameList::sl_copyWholeRow() {
     }
 
     QString resultText;
-    for (const QRect& selectedRect : qAsConst(selectedRects)) {
-        for (int viewRowIndex = selectedRect.top(); viewRowIndex <= selectedRect.bottom(); viewRowIndex++) {
-            int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
-            SAFE_POINT(maRowIndex >= 0, "Can't get MA index by View index", );
-            MsaRow row = maObject->getRow(maRowIndex);
-            if (!resultText.isEmpty()) {
-                resultText += "\n";
+    try {
+        for (const QRect& selectedRect : qAsConst(selectedRects)) {
+            for (int viewRowIndex = selectedRect.top(); viewRowIndex <= selectedRect.bottom(); viewRowIndex++) {
+                int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+                SAFE_POINT(maRowIndex >= 0, "Can't get MA index by View index", );
+                MsaRow row = maObject->getRow(maRowIndex);
+                if (!resultText.isEmpty()) {
+                    resultText += "\n";
+                }
+                QByteArray sequence = row->toByteArray(os, maObject->getLength());
+                CHECK_OP_EXT(os, uiLog.error(os.getError()), );
+                resultText.append(QString::fromLatin1(sequence));
             }
-            QByteArray sequence = row->toByteArray(os, maObject->getLength());
-            CHECK_OP_EXT(os, uiLog.error(os.getError()), );
-            resultText.append(QString::fromLatin1(sequence));
         }
+    } catch (const std::bad_alloc&) {
+        os.setError(tr("There is not enough memory to finish the alignment copy process."));
+        return;
     }
     QApplication::clipboard()->setText(resultText);
 }

@@ -232,23 +232,28 @@ void MsaEditorSequenceArea::copySelection(U2OpStatus& os) {
     U2Clipboard::checkCopyToClipboardSize(estimatedResultLength, os);
     CHECK_OP(os, );
 
-    for (const QRect& selectionRect : qAsConst(selectionRects)) {
-        for (int viewRowIndex = selectionRect.top(); viewRowIndex <= selectionRect.bottom() && !os.hasError(); viewRowIndex++) {
-            if (!textMimeContent.isEmpty()) {
-                textMimeContent.append("\n");
-            }
-            int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
-            const MsaRow& row = maObj->getRow(maRowIndex);
-            QByteArray sequence = row->mid(selectionRect.x(), selectionRect.width(), os)->toByteArray(os, selectionRect.width());
-            CHECK_OP(os, );
+    try {
+        for (const QRect& selectionRect : qAsConst(selectionRects)) {
+            for (int viewRowIndex = selectionRect.top(); viewRowIndex <= selectionRect.bottom() && !os.hasError(); viewRowIndex++) {
+                if (!textMimeContent.isEmpty()) {
+                    textMimeContent.append("\n");
+                }
+                int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+                const MsaRow& row = maObj->getRow(maRowIndex);
+                QByteArray sequence = row->mid(selectionRect.x(), selectionRect.width(), os)->toByteArray(os, selectionRect.width());
+                CHECK_OP(os, );
 
-            ugeneMimeContent.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
-                .append(row.data()->getName())
-                .append('\n')
-                .append(TextUtils::split(sequence, FastaFormat::FASTA_SEQUENCE_LINE_LENGTH).join("\n"))
-                .append('\n');
-            textMimeContent.append(sequence);
+                ugeneMimeContent.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
+                    .append(row.data()->getName())
+                    .append('\n')
+                    .append(TextUtils::split(sequence, FastaFormat::FASTA_SEQUENCE_LINE_LENGTH).join("\n"))
+                    .append('\n');
+                textMimeContent.append(sequence);
+            }
         }
+    } catch (const std::bad_alloc&) {
+        os.setError(tr("There is not enough memory to finish the alignment copy process."));
+        return;
     }
     auto mimeData = new QMimeData();
     mimeData->setText(textMimeContent);
