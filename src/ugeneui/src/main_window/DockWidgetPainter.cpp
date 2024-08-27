@@ -42,7 +42,7 @@ const int DockWidgetPaintData::ICON_SIZE = 16;
 void DockWidgetPainter::updateLabel(DockData* d, bool active) {
     const QIcon icon = d->wrapWidget->windowIcon();
     const QString text = d->wrapWidget->windowTitle();
-    const QString keyPrefix = findKeyPrefix(d->action);
+    const QString keyPrefix = findKeyPrefix(d->keySequenceAction);
     const DockWidgetPaintData paintData(icon, keyPrefix + text, d->area);
 
     // Create pixmap

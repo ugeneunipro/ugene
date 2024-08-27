@@ -47,19 +47,13 @@ public:
 
 class DockData {
 public:
-    DockData() {
-        area = MWDockArea_Left;
-        label = nullptr;
-        dock = nullptr;
-        wrapWidget = nullptr;
-        action = nullptr;
-    }
-    MWDockArea area;
-    QLabel* label;
-    QDockWidget* dock;
-    DockWrapWidget* wrapWidget;
+    MWDockArea area = MWDockArea_Left;
+    QLabel* label = nullptr;
+    QDockWidget* dock = nullptr;
+    DockWrapWidget* wrapWidget = nullptr;
     QIcon dockIcon;
-    QAction* action;
+    QAction* keySequenceAction = nullptr;
+    QAction* toolBarAction = nullptr;
 };
 
 class MWDockManagerImpl : public MWDockManager {
@@ -68,7 +62,7 @@ public:
     MWDockManagerImpl(MainWindowImpl* _mw);
     ~MWDockManagerImpl();
 
-    virtual QAction* registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& ks = QKeySequence());
+    virtual QAction* registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& keySequence = QKeySequence());
 
     virtual QWidget* findWidget(const QString& widgetObjName);
 
