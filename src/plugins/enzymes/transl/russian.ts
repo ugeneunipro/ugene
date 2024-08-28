@@ -1390,6 +1390,11 @@ To start ligation create a project or open an existing.</source>
         <source>Number of results exceed %1, stopping</source>
         <translation>Кол-во результатов превысило %1, задача остановлена</translation>
     </message>
+        <message>
+        <location filename="../src/FindEnzymesTask.cpp" line="188"/>
+        <source>Excluded search region with enzyme offsets equal or larger than whole sequence. %1 enzyme search skipped.</source>
+        <translation>Размер области исключения вместе с отступами энзима равен или больше длинные последовательности. Поиск энзима %1 пропущен.</translation>
+    </message>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="272"/>
         <source>The following enzymes were found, but skipped because they are presented inside of the &quot;Uncut area&quot;: %1.</source>

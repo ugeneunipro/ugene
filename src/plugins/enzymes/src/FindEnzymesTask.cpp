@@ -179,13 +179,15 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
                 } else {
                     excludeRegion.startPos -= leftExtension;
                 }
-                if (excludeRegion.endPos() + rightExtension > seqLength) {
-                    excludeRegion.length = isCircular ? excludeRegion.endPos() + rightExtension - seqLength : seqLength - excludeRegion.startPos;
-                } else {
-                    excludeRegion.length += rightExtension;
+                excludeRegion.length += leftExtension + rightExtension;
+                if (excludeRegion.endPos() > seqLength && !isCircular) {
+                    excludeRegion.length = seqLength - excludeRegion.startPos;
                 }
-                if (excludeRegion.length > seqLength) {
-                    excludeRegion.length = seqLength;
+                if (excludeRegion.length >= seqLength) {
+                    algoLog.info(
+                    tr("Excluded search region with enzyme offsets equal or larger than whole sequence. %1 enzyme search skipped.")
+                    .arg(enzyme->id));
+                    continue;
                 }
                 excludeSearchTasksRunningCounter[enzyme->id] += 1;
                 addSubTask(new FindSingleEnzymeTask(seqRef, excludeRegion, enzyme, nullptr, isCircular, 1, false));
