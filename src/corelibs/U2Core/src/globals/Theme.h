@@ -77,11 +77,15 @@ public:
     }
 
     static QString linkColorLabelStr() {
+        QColor result = QPalette().shadow().color();
 #ifdef Q_OS_DARWIN
-        return "gray";
-#else
-        return "palette(shadow)";
+        if (AppContext::getMainWindow()->isDarkMode()) {
+            result = QColor(190, 190, 190);
+        } else {
+            result = Qt::gray;
+        }
 #endif
+        return result.name();
     }
 };
 

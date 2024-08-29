@@ -26,6 +26,7 @@
 #include <QComboBox>
 #include <QVBoxLayout>
 
+#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
@@ -63,6 +64,8 @@ AssemblySettingsWidget::AssemblySettingsWidget(AssemblyBrowserUi* ui_)
     QWidget* rulerGroup = new ShowHideSubgroupWidget("RULER", tr("Ruler"), createRulerSettings(), true);
     mainLayout->addWidget(rulerGroup);
 
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AssemblySettingsWidget::sl_colorModeSwitched);
+
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 }
 
@@ -81,9 +84,7 @@ QWidget* AssemblySettingsWidget::createReadsSettings() {
     hint = new QLabel("", group);
     hint->setObjectName("HINT_HIGHLIGHTNING");
     hint->setWordWrap(true);
-    hint->setStyleSheet(
-        "color: green;"
-        "font: bold;");
+    hint->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::successColorLabelHtmlStr()));
 
     layout->addSpacing(TITLE_SPACING);
 
@@ -198,6 +199,10 @@ void AssemblySettingsWidget::sl_changeConsensusAlgorithm(int index) {
     CHECK(index >= 0, );
     SAFE_POINT(index <= actions.count(), "too big consensus algorithm action index", );
     actions.at(index)->trigger();
+}
+
+void AssemblySettingsWidget::sl_colorModeSwitched() {
+    hint->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::successColorLabelHtmlStr()));
 }
 
 // ------- Ruler ----------

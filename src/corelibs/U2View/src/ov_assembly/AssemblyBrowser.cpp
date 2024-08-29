@@ -1203,8 +1203,10 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_, QWidget* parent)
     }
 }
 
-QColor AssemblyBrowserUi::getCoverageColor(double grayCoeff) {
-    return QColor(80 - 60 * grayCoeff, 160 - 100 * grayCoeff, 200 - 130 * grayCoeff);
+QColor AssemblyBrowserUi::getCoverageColor(double grayCoeff, bool isDarkMode) {
+    return QColor((isDarkMode ? 55 : 0) + 80 - 60 * grayCoeff,
+                  (isDarkMode ? 55 : 0) + 160 - 100 * grayCoeff,
+                  (isDarkMode ? 55 : 0) + 200 - 130 * grayCoeff);
 }
 
 }  // namespace U2
