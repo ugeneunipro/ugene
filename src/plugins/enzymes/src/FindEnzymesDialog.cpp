@@ -803,17 +803,34 @@ void FindEnzymesDialog::accept() {
 
     QList<SEnzymeData> selectedEnzymes = enzSel->getSelectedEnzymes();
     bool ok = false;
-    regionSelector->getLocation(&ok);
+    U2Location searchLocation = regionSelector->getLocation(&ok);
+    U2Location excludeLocation;
     if (excludeCheckbox->isChecked()) {
         bool prevOk = ok;
-        excludeRegionSelector->getLocation(&ok);
+        excludeLocation = excludeRegionSelector->getLocation(&ok);
         ok = prevOk && ok;
     }
     if (!ok) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search' or 'Uncut' region/location!"), QMessageBox::Ok, this);
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search in' or 'Uncut' region/location!"), QMessageBox::Ok, this);
         msgBox->setInformativeText(tr("Given region or genbank location is invalid, please correct it."));
         msgBox->exec();
         CHECK(!msgBox.isNull(),);
+        return;
+    }
+
+    QVector<U2Region> searchRegionsOutsideExcluded = searchLocation.data()->regions;
+    for (const U2Region& excludedRegion : qAsConst(excludeLocation.data()->regions)) {
+        for (const U2Region& searchRegion : qAsConst(searchLocation.data()->regions)) {
+            if (excludedRegion.contains(searchRegion)) {
+                searchRegionsOutsideExcluded.removeAll(searchRegion);
+            }
+        }
+    }
+    if (searchRegionsOutsideExcluded.isEmpty()) {
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("'Uncut' region/location fully contains 'Search in' inside it!"), QMessageBox::Ok, this);
+        msgBox->setInformativeText(tr("Nowhere to search!"));
+        msgBox->exec();
+        CHECK(!msgBox.isNull(), );
         return;
     }
 

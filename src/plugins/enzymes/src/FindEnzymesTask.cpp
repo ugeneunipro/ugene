@@ -113,9 +113,40 @@ Task::ReportResult FindEnzymesToAnnotationsTask::report() {
     return ReportResult_Finished;
 }
 
+static int getDirectCutOffset(const SEnzymeData& enzyme) {
+    int result = 0;
+    if (enzyme->cutDirect != ENZYME_CUT_UNKNOWN) {
+        result = qMax(result, enzyme->cutDirect);
+    }
+    if (enzyme->secondCutDirect != ENZYME_CUT_UNKNOWN) {
+        result = qMax(result, enzyme->cutDirect);
+    }
+    if (result == 0) {
+        result = enzyme->seq.size();
+    }
+    return result;
+}
+
+static int getComplementCutOffset(const SEnzymeData& enzyme) {
+    int result = 0;
+    if (enzyme->cutComplement != ENZYME_CUT_UNKNOWN) {
+        result = qMax(result, enzyme->cutComplement);
+    }
+    if (enzyme->secondCutComplement != ENZYME_CUT_UNKNOWN) {
+        result = qMax(result, enzyme->secondCutComplement);
+    }
+    if (result == 0) {
+        result = enzyme->seq.size();
+    }
+    if (enzyme->cutComplement < 0 || enzyme->secondCutComplement < 0) {
+        return result;
+    }
+    return result;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // find multiple enzymes task
-FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& region_, const QVector<U2Region>& excludeRegions, 
+FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& region_, const QVector<U2Region>& excludeRegions_, 
                                  const QList<SEnzymeData>& enzymes_, int mr, bool circular)
     : Task(tr("Find Enzymes"), TaskFlags_NR_FOSCOE),
       maxResults(mr),
@@ -124,7 +155,8 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
       countOfResultsInMap(0),
       enzymes(enzymes_),
       seqRef(seqRef_),
-      region(region_) {
+      region(region_),
+      excludeRegions(excludeRegions_) {
     U2SequenceObject seq("sequence", seqRef);
     SAFE_POINT(seq.getAlphabet()->isNucleic(), "Alphabet is not nucleic.", );
     seqlen = seq.getSequenceLength();
@@ -135,11 +167,30 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
             addSubTask(new FindSingleEnzymeTask(seqRef, region, enzyme, this, isCircular));
         }
     } else {
-        for (const U2Region& excludeRegion : qAsConst(excludeRegions)) {
-            for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
-                FindSingleEnzymeTask* task = new FindSingleEnzymeTask(seqRef, excludeRegion, enzyme, nullptr, isCircular, 1, false);
-                excludedEnzymesHits[enzyme->id] += 1;
-                addSubTask(task);
+        for (U2Region excludeRegion : qAsConst(excludeRegions)) {
+            for (const SEnzymeData enzyme : qAsConst(enzymes)) {
+                //maximum offset for direct 'cutter' of enzyme
+                const int leftExtension = getDirectCutOffset(enzyme);
+                //maximum offset for complement 'cutter' of enzyme
+                const int rightExtension = getComplementCutOffset(enzyme);
+                const int seqLength = seq.getSequenceLength();
+                if (excludeRegion.startPos - leftExtension < 0) {                        
+                    excludeRegion.startPos = isCircular ? seqLength - (leftExtension - excludeRegion.startPos) : 0;
+                } else {
+                    excludeRegion.startPos -= leftExtension;
+                }
+                excludeRegion.length += leftExtension + rightExtension;
+                if (excludeRegion.endPos() > seqLength && !isCircular) {
+                    excludeRegion.length = seqLength - excludeRegion.startPos;
+                }
+                if (excludeRegion.length >= seqLength) {
+                    algoLog.info(
+                    tr("Excluded search region with enzyme offsets equal or larger than whole sequence. %1 enzyme search skipped.")
+                    .arg(enzyme->id));
+                    continue;
+                }
+                excludeSearchTasksRunningCounter[enzyme->id] += 1;
+                addSubTask(new FindSingleEnzymeTask(seqRef, excludeRegion, enzyme, nullptr, isCircular, 1, false));
             }
         }
     }
@@ -147,25 +198,23 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
 
 QList<Task*> FindEnzymesTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
-    CHECK(!excludedEnzymesHits.isEmpty(), result);
+    CHECK(!excludeSearchTasksRunningCounter.isEmpty(), result);
     FindSingleEnzymeTask* findSingleEnzymeTask = qobject_cast<FindSingleEnzymeTask*>(subTask);
     SAFE_POINT(findSingleEnzymeTask != nullptr, L10N::nullPointerError("FindSingleEnzymeTask"), result);
-    CHECK(findSingleEnzymeTask->getResults().isEmpty(), result);
     const SEnzymeData& enzyme = findSingleEnzymeTask->getEnzyme();
-    excludedEnzymesHits[enzyme->id] -= 1;
-    //if the enzyme was found in exclude search - counter will never be 0
-    CHECK(excludedEnzymesHits[enzyme->id] == 0, result);
+    excludeSearchTasksRunningCounter[enzyme->id] -= 1;
+    CHECK_EXT(findSingleEnzymeTask->getResults().isEmpty(), enzymesFoundInExcludedRegion << enzyme->id, result);
+    CHECK(excludeSearchTasksRunningCounter[enzyme->id] == 0 && !enzymesFoundInExcludedRegion.contains(enzyme->id), result);
     result << new FindSingleEnzymeTask(seqRef, region, enzyme, this, isCircular);
     return result;
 }
 
 void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool&) {
     CHECK_OP(stateInfo, );
+    QMutexLocker locker(&resultsLock);
     if (pos > seqlen) {
         pos %= seqlen;
-    }    
-
-    QMutexLocker locker(&resultsLock);
+    }
     if (countOfResultsInMap > maxResults) {
         if (!isCanceled()) {
             stateInfo.setError(tr("Number of results exceed %1, stopping").arg(maxResults));
@@ -247,6 +296,10 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
 
 Task::ReportResult FindEnzymesTask::report() {
     if (!hasError() && !isCanceled()) {
+        if (!enzymesFoundInExcludedRegion.isEmpty()) {
+            algoLog.info(tr("The following enzymes were found, but skipped because they were found inside of the \"Uncut area\": %1.")
+                         .arg(enzymesFoundInExcludedRegion.values().join(",")));
+        }
         algoLog.info(tr("Found %1 restriction sites").arg(countOfResultsInMap));
     }
     return ReportResult_Finished;
