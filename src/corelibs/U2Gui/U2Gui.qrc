@@ -18,7 +18,6 @@
         <file>images/bookmark_item.png</file>
         <file>images/bookmark_remove.png</file>
         <file>images/chart_bar.png</file>
-        <file>images/chart_organisation.png</file>
         <file>images/circular_seq.png</file>
         <file>images/close.png</file>
         <file>images/close_2.png</file>
@@ -34,7 +33,6 @@
         <file>images/copy_sequence.png</file>
         <file>images/copy_translation.png</file>
         <file>images/create_annotation.png</file>
-        <file>images/database_with_arrow.png</file>
         <file>images/dna.png</file>
         <file>images/dna_helix.png</file>
         <file>images/do_complement.png</file>
@@ -123,6 +121,7 @@
         <file>images/light/collapse_update.png</file>
         <file>images/light/consensus.png</file>
         <file>images/light/create_annotation_icon.png</file>
+        <file>images/light/database_with_arrow.png</file>
         <file>images/light/details_view.png</file>
         <file>images/light/edit.png</file>
         <file>images/light/expand_tree.png</file>
@@ -195,6 +194,7 @@
         <file>images/dark/collapse_update.png</file>
         <file>images/dark/consensus.png</file>
         <file>images/dark/create_annotation_icon.png</file>
+        <file>images/dark/database_with_arrow.png</file>
         <file>images/dark/details_view.png</file>
         <file>images/dark/edit.png</file>
         <file>images/dark/expand_tree.png</file>

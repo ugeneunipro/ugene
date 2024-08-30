@@ -25,6 +25,8 @@
 
 #include <U2Core/ExternalToolRunTask.h>
 
+class QAction;
+
 namespace U2 {
 
 class DnaAssemblyToRefTaskSettings;
@@ -43,6 +45,12 @@ private slots:
     void sl_showGenomeAssemblyDialog();
     void sl_showBuildIndexDialog();
     void sl_showConvertToSamDialog();
+    void sl_colorModeSwitched();
+
+private:
+    QAction* convertAssemblyToSamAction = nullptr;
+    QAction* dnaAssemblyAction = nullptr;
+    QAction* buildIndexAction = nullptr;
 };
 
 class FilterUnpairedReadsTask : public Task {

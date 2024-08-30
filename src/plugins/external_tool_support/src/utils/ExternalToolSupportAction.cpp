@@ -48,6 +48,11 @@ void ExternalToolSupportAction::sl_pathChanged() {
     setState(isAnyToolConfigured);
 }
 
+void ExternalToolSupportAction::sl_colorModeSwitched() {
+    bool isAnyToolConfigured = checkTools();
+    setState(isAnyToolConfigured);
+}
+
 bool ExternalToolSupportAction::checkTools(bool connectSignals) {
     bool result = false;
     foreach (QString toolId, toolIds) {
@@ -63,6 +68,7 @@ bool ExternalToolSupportAction::checkTools(bool connectSignals) {
 
     if (connectSignals) {
         connect(AppContext::getAppSettings()->getUserAppsSettings(), SIGNAL(si_temporaryPathChanged()), SLOT(sl_pathChanged()));
+        connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ExternalToolSupportAction::sl_colorModeSwitched);
     }
 
     return result;

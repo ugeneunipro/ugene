@@ -35,6 +35,9 @@ public:
     ExternalToolSupportPlugin();
     ~ExternalToolSupportPlugin();
 
+private slots:
+    void sl_colorModeSwitched();
+
 private:
     void registerSettingsController();
     void registerWorkers();

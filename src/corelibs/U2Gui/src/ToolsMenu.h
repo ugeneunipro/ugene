@@ -24,6 +24,7 @@
 #include <QStringList>
 
 #include <U2Core/global.h>
+#include <U2Core/IconParameters.h>
 
 class QAction;
 class QMenu;
@@ -36,6 +37,8 @@ public:
     static void init();
 
     static void addAction(const QString& menuName, QAction* action);
+
+    static void colorModeSwitched(const QString& menuName);
 
     static const QString LINE;
     static const QString TOOLS;
@@ -116,7 +119,7 @@ private:
 
 private:
     static QMap<QString, QString> actionText;
-    static QMap<QString, QString> actionIcon;
+    static QMap<QString, IconParameters> actionIcon;
     static QMap<QString, QStringList> subMenuAction;  // subMenuObjectName -> List(actionObjectName)
 };
 
