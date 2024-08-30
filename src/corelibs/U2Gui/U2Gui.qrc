@@ -6,8 +6,6 @@
         <file>images/add_sequence.png</file>
         <file>images/add_to_alignment.png</file>
         <file>images/adv_widget_menu.png</file>
-        <file>images/amb_backward.png</file>
-        <file>images/amb_forward.png</file>
         <file>images/annotation_settings.png</file>
         <file>images/arrow-move-down.png</file>
         <file>images/arrow-move-up.png</file>
@@ -54,8 +52,6 @@
         <file>images/lock.png</file>
         <file>images/lock_open.png</file>
         <file>images/minus.png</file>
-        <file>images/mismatch-backward.png</file>
-        <file>images/mismatch-forward.png</file>
         <file>images/msa.png</file>
         <file>images/msa_find_next.png</file>
         <file>images/msa_find_prev.png</file>
@@ -114,6 +110,8 @@
         <file>images/light/add_tree.png</file>
         <file>images/light/align.png</file>
         <file>images/light/align_tree_labels.png</file>
+        <file>images/light/amb_backward.png</file>
+        <file>images/light/amb_forward.png</file>
         <file>images/light/arrow_down.png</file>
         <file>images/light/arrow_right.png</file>
         <file>images/light/arrow_rotate_clockwise.png</file>
@@ -139,6 +137,8 @@
         <file>images/light/highlight.png</file>
         <file>images/light/inbox-minus.png</file>
         <file>images/light/lock_scales.png</file>
+        <file>images/light/mismatch-backward.png</file>
+        <file>images/light/mismatch-forward.png</file>
         <file>images/light/msaed_remove_columns_with_gaps.png</file>
         <file>images/light/msaed_remove_all_gaps.png</file>
         <file>images/light/msa_save.png</file>
@@ -182,6 +182,8 @@
         <file>images/dark/add_tree.png</file>
         <file>images/dark/align.png</file>
         <file>images/dark/align_tree_labels.png</file>
+        <file>images/dark/amb_backward.png</file>
+        <file>images/dark/amb_forward.png</file>
         <file>images/dark/arrow_down.png</file>
         <file>images/dark/arrow_right.png</file>
         <file>images/dark/arrow_rotate_clockwise.png</file>
@@ -207,6 +209,8 @@
         <file>images/dark/highlight.png</file>
         <file>images/dark/inbox-minus.png</file>
         <file>images/dark/lock_scales.png</file>
+        <file>images/dark/mismatch-backward.png</file>
+        <file>images/dark/mismatch-forward.png</file>
         <file>images/dark/msaed_remove_columns_with_gaps.png</file>
         <file>images/dark/msaed_remove_all_gaps.png</file>
         <file>images/dark/msa_save.png</file>

@@ -249,6 +249,7 @@ void McaEditor::sl_saveChromatogramState() {
 
 void McaEditor::sl_colorModeSwitched() {
     showChromatogramsAction->setIcon(GUIUtils::getIconResource("core", "graphs.png"));
+    MaEditor::sl_colorModeSwitched();
 }
 
 void McaEditor::addAlignmentMenu(QMenu* menu) {
