@@ -103,6 +103,7 @@
 #include "tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h"
 #include "tests/common_scenarios/workflow_designer/samples/GTTestsWorkflowSamples.h"
 #include "tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.h"
+#include "tests/common_scenarios/workspace/GTTestsWorkspace.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_1001_2000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_1_1000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_2001_3000.h"
@@ -191,7 +192,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_0889);  // Spidey tool is not available on Mac.
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_2140);
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_create_shortcut::test_0001);
-    REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_3690); // Passes only with native menu bar. With non-native menu bar (like Mac uses for GUI tests) the checked shortcut does not work.
+    REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_3690);  // Passes only with native menu bar. With non-native menu bar (like Mac uses for GUI tests) the checked shortcut does not work.
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_7584);  // Spidey tool is not available on Mac.
 
     REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0001);
@@ -3594,6 +3595,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001_2);
+
+    // Workspace.
+    REGISTER_TEST(GUITest_common_scenarios_workspace::test_0001)
 }
 
 void GUITestBasePlugin::registerAdditionalActions(UGUITestBase* guiTestBase) {

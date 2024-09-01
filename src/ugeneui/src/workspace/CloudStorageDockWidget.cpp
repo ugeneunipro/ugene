@@ -161,6 +161,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->setVisible(false);
     treeView->setEditTriggers(QTreeView::NoEditTriggers);
     treeView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    treeView->setObjectName("cloudStorageTreeView");
 
     auto layout = new QVBoxLayout();
     layout->addWidget(stateLabel);

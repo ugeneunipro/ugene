@@ -59,7 +59,7 @@ QModelIndexList GTTreeView::findIndexes(QTreeView* tree, QVariant data, Qt::Item
     }
 
     QAbstractItemModel* model = tree->model();
-    CHECK_SET_ERR_RESULT(NULL != model, "Model is NULL", foundIndexes);
+    CHECK_SET_ERR_RESULT(model != nullptr, "Model is NULL", foundIndexes);
 
     int rowcount = model->rowCount(parent);
     for (int i = 0; i < rowcount; i++) {
