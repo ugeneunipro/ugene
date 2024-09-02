@@ -1396,8 +1396,8 @@ To start ligation create a project or open an existing.</source>
         <translation>Размер области исключения вместе с отступами энзима равен или больше длинные последовательности. Поиск энзима %1 пропущен.</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="272"/>
-        <source>The following enzymes were found, but skipped because they are presented inside of the &quot;Uncut area&quot;: %1.</source>
+        <location filename="../src/FindEnzymesTask.cpp" line="300"/>
+        <source>The following enzymes were found, but skipped because they were found inside of the &quot;Uncut area&quot;: %1.</source>
         <translation>Следующие ферменты были найден, но пропущены потомучто он находился внутри &quot;Области исключения&quot;: %1.</translation>
     </message>
     <message>
