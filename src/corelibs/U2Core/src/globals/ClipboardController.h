@@ -37,14 +37,21 @@ public:
      */
     static const QString UGENE_MIME_TYPE;
 
-    /** Maximum text data size UGENE can put into clipboard safely: 100mb. */
-    static constexpr qint64 MAX_SAFE_COPY_TO_CLIPBOARD_SIZE = 100 * 1000 * 1000;
+    /**
+     * Maximum text data size UGENE can safely put into the clipboard: 25 MB.
+     *
+     * There is no good reason to have more data in the clipboard, as it would become unusable:
+     * virtually no text editors can handle such a large volume of text.
+     *
+     * A better option for the user would be to export the text to a file, instead of copying it into memory.
+     */
+    static constexpr qint64 MAX_SAFE_COPY_TO_CLIPBOARD_SIZE = 25 * 1000 * 1000;
 
     /*
      * Maximum text data size UGENE can put into clipboard safely for GUI test mode.
      * Using lower value then MAX_SAFE_COPY_TO_CLIPBOARD_SIZE helps to speed up GUI tests.
-    **/
-    static constexpr qint64 UGENE_GUI_TEST_MAX_SAFE_COPY_TO_CLIPBOARD_SIZE = MAX_SAFE_COPY_TO_CLIPBOARD_SIZE / 100;
+     **/
+    static constexpr qint64 UGENE_GUI_TEST_MAX_SAFE_COPY_TO_CLIPBOARD_SIZE = 1000 * 1000;
 
     /*
      * Check if text of .@clipboardSize could be copied to clipboard or not.
