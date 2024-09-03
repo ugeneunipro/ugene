@@ -46,7 +46,19 @@
 
 namespace U2 {
 
+static const QString TEST_REFRESH_TOKEN = "value-is-not-used";
+
+/** Returns a non-empty access token in case if UGENE is run in test mode. */
+static QByteArray getTestModeAccessToken() {
+    return qgetenv("UGENE_TEST_WORKSPACE_USER_TOKEN");
+}
+
+static bool isTestMode() {
+    return !getTestModeAccessToken().isEmpty();
+}
+
 static QDateTime getTokenExpirationTime(const QString& accessToken) {
+    CHECK(!isTestMode(), QDateTime(QDate(2100, 1, 1)))
     QStringList parts = accessToken.split('.');
     CHECK(parts.size() == 3, {});
     QByteArray payloadString = QByteArray::fromBase64(parts[1].toUtf8());
@@ -195,6 +207,10 @@ void WorkspaceService::setTokenFields(const QString& newAccessToken, const QStri
 }
 
 void WorkspaceService::login() {
+    if (isTestMode()) {
+        setTokens(getTestModeAccessToken(), TEST_REFRESH_TOKEN, false);
+        return;
+    }
     setTokens("", "", true);  // Reset tokens on start.
     auto authenticator = new KeycloakAuthenticator(authUrl, tokenUrl, clientId);
     connect(authenticator, &KeycloakAuthenticator::si_authenticationGranted, this, [this](const QString& accessToken, const QString& refreshToken) {
