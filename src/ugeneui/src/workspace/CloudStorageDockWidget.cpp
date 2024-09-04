@@ -107,7 +107,6 @@ static void updateModel(QTreeView* tree,
 
     // Resort all children. Do not break expanded state.
     QList<QStandardItem*> sortedChildren;
-    ;
     int rowCount = parentItem->rowCount();
     for (int i = 0; i < rowCount; i++) {
         auto child = parentItem->child(i);
@@ -162,6 +161,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->setEditTriggers(QTreeView::NoEditTriggers);
     treeView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     treeView->setObjectName("cloudStorageTreeView");
+    treeView->header()->hide();
 
     auto layout = new QVBoxLayout();
     layout->addWidget(stateLabel);
@@ -195,6 +195,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->addAction(deleteAction);
 
     renameAction = new QAction(tr("Rename"), this);
+    renameAction->setObjectName("cloudStorageRenameAction");
     renameAction->setShortcut(QKeySequence(Qt::Key_F2));
     connect(renameAction, &QAction::triggered, this, &CloudStorageDockWidget::renameItem);
     treeView->addAction(renameAction);

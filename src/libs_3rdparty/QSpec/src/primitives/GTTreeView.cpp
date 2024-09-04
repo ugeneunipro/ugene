@@ -30,19 +30,32 @@
 namespace HI {
 
 #define GT_CLASS_NAME "GTTreeView"
+
+QModelIndex GTTreeView::findIndexWithWait(QTreeView* tree, QVariant data, Qt::ItemDataRole role) {
+    GTGlobals::FindOptions options;
+    options.failIfNotFound = false;
+    QModelIndex result = findIndex(tree, data, role, options);
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && !result.isValid(); time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        result = findIndex(tree, data, role, options);
+    }
+    GT_CHECK_RESULT(result.isValid(), "Index not found: " + data.toString(), {});
+    return result;
+}
+
 QModelIndex GTTreeView::findIndex(QTreeView* tree, QVariant data, Qt::ItemDataRole role, const GTGlobals::FindOptions& options) {
     return findIndex(tree, data, QModelIndex(), role, options);
 }
 
 QModelIndex GTTreeView::findIndex(QTreeView* tree, QVariant data, QModelIndex parent, Qt::ItemDataRole role, const GTGlobals::FindOptions& options) {
-    GT_CHECK_RESULT(tree != NULL, "Tree widget is NULL", QModelIndex());
+    GT_CHECK_RESULT(tree != nullptr, "Tree widget is NULL", QModelIndex());
 
     QModelIndexList foundIndexes = findIndexes(tree, data, role, parent, 0, options);
     if (foundIndexes.isEmpty()) {
         if (options.failIfNotFound) {
-            GT_CHECK_RESULT(foundIndexes.size() != 0, QString("Item with name %1 not found").arg(data.toString()), QModelIndex());
+            GT_CHECK_RESULT(!foundIndexes.empty(), QString("Item with name %1 not found").arg(data.toString()), QModelIndex());
         } else {
-            return QModelIndex();
+            return {};
         }
     }
 
@@ -54,7 +67,7 @@ QModelIndex GTTreeView::findIndex(QTreeView* tree, QVariant data, QModelIndex pa
 
 QModelIndexList GTTreeView::findIndexes(QTreeView* tree, QVariant data, Qt::ItemDataRole role, QModelIndex parent, int depth, const GTGlobals::FindOptions& options) {
     QModelIndexList foundIndexes;
-    if (!(GTGlobals::FindOptions::INFINITE_DEPTH == options.depth || depth < options.depth)) {
+    if (!(options.depth == GTGlobals::FindOptions::INFINITE_DEPTH || depth < options.depth)) {
         return foundIndexes;
     }
 

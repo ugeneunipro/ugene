@@ -28,6 +28,9 @@ namespace HI {
 
 class HI_EXPORT GTTreeView {
 public:
+    /** Waits until index is present in the tree. */
+    static QModelIndex findIndexWithWait(QTreeView* tree, QVariant data, Qt::ItemDataRole role = Qt::DisplayRole);
+
     // find index with data and role in the tree view
     static QModelIndex findIndex(QTreeView* tree, QVariant data, Qt::ItemDataRole role = Qt::DisplayRole, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 

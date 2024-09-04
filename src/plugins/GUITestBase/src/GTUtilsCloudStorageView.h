@@ -38,7 +38,11 @@ public:
 
     static void clickLogout();
 
-    static void checkItemIsPresent(const QList<QString>& path);
+    static QModelIndex checkItemIsPresent(const QList<QString>& path);
+
+    static void renameItem(const QList<QString>& path, const QString& newName);
+
+    static QTreeView* getStorageTreeView();
 };
 
 }  // namespace U2
