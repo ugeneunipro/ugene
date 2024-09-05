@@ -1398,7 +1398,7 @@ To start ligation create a project or open an existing.</source>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="300"/>
         <source>The following enzymes were found, but skipped because they were found inside of the &quot;Uncut area&quot;: %1.</source>
-        <translation>Некоторые ферменты были найдены, но опущены потомучто они находились внутри &quot;Области исключения&quot;: %1.</translation>
+        <translation>Некоторые ферменты были найдены, но опущены потому что они находились внутри &quot;Области исключения&quot;: %1.</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="222"/>
