@@ -124,9 +124,7 @@ QPoint GTUtilsProjectTreeView::getItemCenter(QTreeView* treeView, const QModelIn
     return treeView->mapToGlobal(r.center());
 }
 
-namespace {
-
-void editItemName(const QString& newItemName, GTGlobals::UseMethod invokeMethod) {
+static void editItemName(const QString& newItemName, GTGlobals::UseMethod invokeMethod) {
     switch (invokeMethod) {
         case GTGlobals::UseKey:
             GTMouseDriver::click();
@@ -147,8 +145,6 @@ void editItemName(const QString& newItemName, GTGlobals::UseMethod invokeMethod)
 
     GTGlobals::sleep(500);
 }
-
-}  // namespace
 
 void GTUtilsProjectTreeView::rename(const QString& itemName, const QString& newItemName, GTGlobals::UseMethod invokeMethod) {
     GTMouseDriver::moveTo(getItemCenter(itemName));
