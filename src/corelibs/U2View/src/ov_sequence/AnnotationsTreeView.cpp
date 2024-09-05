@@ -211,7 +211,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
 
     searchQualifierAction = new QAction(tr("Find qualifier..."), this);
     searchQualifierAction->setObjectName("find_qualifier_action");
-    searchQualifierAction->setIcon(QIcon(":core/images/zoom_whole.png"));
+    searchQualifierAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png", false));
     connect(searchQualifierAction, SIGNAL(triggered()), SLOT(sl_searchQualifier()));
 
     invertAnnotationSelectionAction = new QAction(tr("Invert annotation selection"), this);
@@ -2374,7 +2374,7 @@ const QIcon& AVGroupItem::getGroupIcon() {
 }
 
 const QIcon& AVGroupItem::getDocumentIcon() {
-    static QIcon groupIcon(":/core/images/gobject.png");
+    static QIcon groupIcon = GUIUtils::getIconResource("core", "gobject.png", false).pixmap(16, 16);
     return groupIcon;
 }
 

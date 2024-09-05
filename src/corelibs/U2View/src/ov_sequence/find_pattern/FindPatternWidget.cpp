@@ -248,7 +248,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
     delete textPattern;
     textPattern = findPatternTextEdit;
 
-    progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
+    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
     resultLabel->setObjectName("resultLabel");
     resultLabel->setFixedHeight(progressLabel->height());
@@ -1434,6 +1434,10 @@ void FindPatternWidget::sl_usePatternNamesCbClicked() {
 
 void FindPatternWidget::sl_colorModeSwitched() {
     updateErrorLabelState();
+    auto tmpProgressMovie = progressMovie;
+    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
+    progressLabel->setMovie(progressMovie);
+    delete tmpProgressMovie;
 }
 
 bool FindPatternWidget::isSearchPatternsDifferent(const QList<NamePattern>& newPatterns) const {

@@ -15,5 +15,4 @@ SOURCES += src/BaseContentGraph.cpp \
            src/EntropyAlgorithm.cpp \
            src/GCFramePlot.cpp \
            src/KarlinSignatureDifferenceGraph.cpp
-RESOURCES += dna_graphpack.qrc
 TRANSLATIONS += transl/russian.ts

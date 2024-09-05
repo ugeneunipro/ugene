@@ -80,10 +80,6 @@
        <property name="text">
         <string/>
        </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>:/core/images/show_compl.png</normaloff>:/core/images/show_compl.png</iconset>
-       </property>
        <property name="autoRaise">
         <bool>true</bool>
        </property>

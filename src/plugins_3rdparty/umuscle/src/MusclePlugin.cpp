@@ -110,7 +110,7 @@ void MusclePlugin::sl_runWithExtFileSpecify() {
 
 MuscleAction::MuscleAction(QObject* p, GObjectViewController* v, const QString& text, int order, bool isAlignSelectionAction)
     : GObjectViewAction(p, v, text, order) {
-    setIcon(QIcon(":umuscle/images/muscle_16.png"));
+    setIcon(GUIUtils::getIconResource("umuscle", "muscle.png", false));
 
     auto msaEditor = qobject_cast<MsaEditor*>(getObjectView());
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );

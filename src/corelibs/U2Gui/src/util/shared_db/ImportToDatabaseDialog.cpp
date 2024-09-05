@@ -38,6 +38,7 @@
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
@@ -413,7 +414,8 @@ void ImportToDatabaseDialog::addObject(GObject* object, QTreeWidgetItem* parent)
         treeItem2Object.insert(newItem, object);
     }
 
-    newItem->setIcon(COLUMN_ITEM_TEXT, GObjectTypes::getTypeInfo(object->getGObjectType()).icon);
+    auto gObjTypeInfo = GObjectTypes::getTypeInfo(object->getGObjectType());
+    newItem->setIcon(COLUMN_ITEM_TEXT, GUIUtils::getIconResource(gObjTypeInfo.iconParameters));
     newItem->setFlags(Qt::ItemIsEditable | newItem->flags());
 
     parent->addChild(newItem);

@@ -175,6 +175,8 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString& value,
                                                      QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
+    buttonUp->setIcon(GUIUtils::getIconResource("external_tool_support", "up.png"));
+    buttonDown->setIcon(GUIUtils::getIconResource("external_tool_support", "down.png"));
     new HelpButton(this, buttonBox, "65930159");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
@@ -203,6 +205,7 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString& value,
     connect(buttonUp, SIGNAL(pressed()), SLOT(sl_moveStepUp()));
     connect(buttonDown, SIGNAL(pressed()), SLOT(sl_moveStepDown()));
     connect(buttonRemove, SIGNAL(pressed()), SLOT(sl_removeStep()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TrimmomaticPropertyDialog::si_colorModeSwitched);
 
     parseCommand(value);
     sl_valuesChanged();
@@ -228,6 +231,16 @@ void TrimmomaticPropertyDialog::sl_valuesChanged() {
         isValid = isValid && isStepValid;
     }
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isValid);
+}
+
+void TrimmomaticPropertyDialog::si_colorModeSwitched() {
+    buttonUp->setIcon(GUIUtils::getIconResource("external_tool_support", "up.png"));
+    buttonDown->setIcon(GUIUtils::getIconResource("external_tool_support", "down.png"));
+    for (int i = 0; i < steps.size(); i++) {
+        const bool isStepValid = steps[i]->validate();
+        QListWidgetItem* item = listSteps->item(i);
+        item->setBackgroundColor(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
+    }
 }
 
 void TrimmomaticPropertyDialog::sl_currentRowChanged() {

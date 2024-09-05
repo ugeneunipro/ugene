@@ -744,14 +744,14 @@ void QueryViewController::createActions() {
     saveAction = new QAction(tr("Save Schema"), this);
     saveAction->setShortcut(QKeySequence::Save);
     saveAction->setShortcutContext(Qt::WidgetShortcut);
-    saveAction->setIcon(QIcon(":query_designer/images/filesave.png"));
+    saveAction->setIcon(GUIUtils::getIconResource("query_designer", "filesave.png"));
     saveAction->setDisabled(true);
     connect(saveAction, SIGNAL(triggered()), SLOT(sl_saveScene()));
 
     saveAsAction = new QAction(tr("Save Schema As..."), this);
     saveAsAction->setShortcut(QKeySequence::SaveAs);
     saveAsAction->setShortcutContext(Qt::WidgetShortcut);
-    saveAsAction->setIcon(QIcon(":query_designer/images/filesave.png"));
+    saveAsAction->setIcon(GUIUtils::getIconResource("query_designer", "filesave.png"));
     connect(saveAsAction, SIGNAL(triggered()), SLOT(sl_saveSceneAs()));
 
     deleteAction = new QAction(tr("Delete"), this);
@@ -1108,6 +1108,8 @@ void QueryViewController::sl_colorModeSwitched() {
     viewModeToolButton->setIcon(GUIUtils::getIconResource("query_designer", "eye.png"));
     querySequenceModeMenu->setIcon(GUIUtils::getIconResource("query_designer", "strands.png"));
     querySequenceModeToolButton->setIcon(GUIUtils::getIconResource("query_designer", "strands.png"));
+    saveAction->setIcon(GUIUtils::getIconResource("query_designer", "filesave.png"));
+    saveAsAction->setIcon(GUIUtils::getIconResource("query_designer", "filesave.png"));
 }
 
 void QueryViewController::setupConstraintEditor(QDConstraint* c) {

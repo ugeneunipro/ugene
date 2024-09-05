@@ -294,6 +294,7 @@ WorkflowView::WorkflowView(WorkflowGObject* go)
     }
 
     propertyEditor->reset();
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WorkflowView::sl_colorModeSwitched);
 }
 
 WorkflowView::~WorkflowView() {
@@ -574,7 +575,7 @@ void WorkflowView::createActions() {
 
     estimateAction = new QAction(tr("&Estimate workflow"), this);
     estimateAction->setObjectName("Estimate workflow");
-    estimateAction->setIcon(QIcon(":core/images/sum.png"));
+    estimateAction->setIcon(GUIUtils::getIconResource("core", "sum.png"));
     estimateAction->setObjectName("Estimate workflow");
     connect(estimateAction, SIGNAL(triggered()), SLOT(sl_estimate()));
 
@@ -1563,6 +1564,10 @@ void WorkflowView::sl_convertMessages2Documents(const Workflow::Link* bus,
                                                 const QString& messageType,
                                                 int messageNumber) {
     debugInfo->convertMessagesToDocuments(bus, messageType, messageNumber, meta.name);
+}
+
+void WorkflowView::sl_colorModeSwitched() {
+    estimateAction->setIcon(GUIUtils::getIconResource("core", "sum.png"));
 }
 
 WorkflowProcessItem* WorkflowView::findItemById(ActorId actor) const {

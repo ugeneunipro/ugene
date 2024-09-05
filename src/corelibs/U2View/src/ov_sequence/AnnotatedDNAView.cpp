@@ -256,7 +256,8 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
 
     mainSplitter->addAction(removeAnnsAndQsAction);
 
-    mainSplitter->setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).icon);
+    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).iconParameters);
+    mainSplitter->setWindowIcon(windowIcon);
 
     // Init the Options Panel
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();

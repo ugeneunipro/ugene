@@ -347,6 +347,7 @@ void TreeViewer::onObjectRenamed(GObject*, const QString&) {
 
 void TreeViewer::sl_colorModeSwitched() {
     if (layoutMenu != nullptr) {
+        auto acts = layoutMenu->actions();
         layoutMenu->setIcon(GUIUtils::getIconResource("core", "tree_layout.png"));
         labelsMenu->setIcon(GUIUtils::getIconResource("core", "text_ab.png"));
         treeImageActionsSubmenu->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
@@ -484,7 +485,8 @@ static void storeOptionValueInAppSettings(const TreeViewOption& option, const QV
 TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer, QWidget* parent)
     : QGraphicsView(parent), phyObject(_treeViewer->getPhyObject()),
       treeViewer(_treeViewer) {
-    setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).icon);
+    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).iconParameters);
+    setWindowIcon(windowIcon);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setFrameShape(QFrame::NoFrame);

@@ -150,7 +150,7 @@ FindPatternMsaWidget::FindPatternMsaWidget(MsaEditor* msaEditor, TriState isSear
         isSearchInNamesMode = isSearchInNamesModeTriState == TriState_Yes;
     }
 
-    progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
+    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
     resultLabel->setObjectName("resultLabel");
     resultLabel->setFixedHeight(progressLabel->height());
@@ -313,7 +313,6 @@ void FindPatternMsaWidget::initMaxResultLenContainer() {
     layoutAlgorithmSettings->addWidget(useMaxResultLenContainer);
 
     connect(msaEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapseModelChanged()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &FindPatternMsaWidget::sl_colorModeSwitched);
 }
 
 void FindPatternMsaWidget::connectSlots() {
@@ -338,6 +337,7 @@ void FindPatternMsaWidget::connectSlots() {
             SLOT(sl_onSelectedRegionChanged(const MaEditorSelection&, const MaEditorSelection&)));
 
     connect(searchContextComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_searchModeChanged()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &FindPatternMsaWidget::sl_colorModeSwitched);
 }
 
 void FindPatternMsaWidget::sl_onAlgorithmChanged(int index) {
@@ -530,6 +530,10 @@ void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOut
 
 void FindPatternMsaWidget::sl_colorModeSwitched() {
     updateErrorLabelState();
+    auto tmpProgressMovie = progressMovie;
+    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
+    progressLabel->setMovie(progressMovie);
+    delete tmpProgressMovie;
 }
 
 void FindPatternMsaWidget::clearResults() {

@@ -41,13 +41,14 @@ SearchBox::SearchBox(QWidget* p)
     setObjectName("nameFilterEdit");
 
     progressLabel = new QLabel(this);
-    progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
+    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
     progressLabel->setStyleSheet(LABEL_STYLE_SHEET);
     progressLabel->setMovie(progressMovie);
 
     searchIconLabel = new QLabel(this);
     searchIconLabel->setStyleSheet(LABEL_STYLE_SHEET);
-    searchIconLabel->setPixmap(QPixmap(":/core/images/zoom_whole_small.png"));
+    static constexpr int ZOOM_PIIXMAP_SIZE = 16;
+    searchIconLabel->setPixmap(QPixmap(":/core/images/zoom_whole.png").scaled(ZOOM_PIIXMAP_SIZE, ZOOM_PIIXMAP_SIZE));
 
     clearButton = new QToolButton(this);
     clearButton->setStyleSheet(CLEAR_BUTTON_STYLE_SHEET);
@@ -99,6 +100,10 @@ void SearchBox::sl_textChanged(const QString& text) {
 
 void SearchBox::sl_colorModeSwitched() {
     clearButton->setIcon(GUIUtils::getIconResource("core", "close_small.png"));
+    auto tmpProgressMovie = progressMovie;
+    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
+    progressLabel->setMovie(progressMovie);
+    delete tmpProgressMovie;
 }
 
 void SearchBox::paintEvent(QPaintEvent* event) {
