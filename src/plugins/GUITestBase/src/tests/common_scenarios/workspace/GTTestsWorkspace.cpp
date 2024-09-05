@@ -72,10 +72,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsCloudStorageView::checkItemIsPresent({"Sequences"});
 
     // Check rename.
-    GTUtilsCloudStorageView::renameItem({"about.txt"}, "renamed-about.txt");
-
-    // await changeDir(page, 'Alignments');
-    // await renameFile(page, 'cytb.aln', 'renamed-cyt.aln');
+    GTUtilsCloudStorageView::renameItem({"about.txt"}, "renamed-about.txt"); // Top level.
+    GTUtilsCloudStorageView::renameItem({"Alignments", "cytb.aln"}, "renamed-cytb.aln"); // In folder.
 
     // Check create dir.
     // await createDir(page, 'New Folder');
