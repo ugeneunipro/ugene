@@ -19,22 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTTreeView.h>
 #include <primitives/GTWidget.h>
-#include <system/GTFile.h>
 
-#include <QFileInfo>
 #include <QMainWindow>
 #include <QSortFilterProxyModel>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
-#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -70,15 +65,8 @@ void GTUtilsCloudStorageView::clickLogout() {
 }
 
 QModelIndex GTUtilsCloudStorageView::checkItemIsPresent(const QList<QString>& path) {
-    GT_LOG("GTUtilsCloudStorageView::checkItemIsPresent: [" + path.join("/") + "]");
     QTreeView* tree = getStorageTreeView();
-    return GTTreeView::findIndexWithWait(tree, QVariant::fromValue(path), Qt::ItemDataRole(Qt::UserRole + 3));
-}
-
-void GTUtilsCloudStorageView::checkItemIsNotPresent(const QList<QString>& path) {
-    GT_LOG("GTUtilsCloudStorageView::checkItemIsNotPresent: [" + path.join("/") + "]");
-    QTreeView* tree = getStorageTreeView();
-    GTTreeView::checkItemIsNotPresentWithWait(tree, QVariant::fromValue(path), Qt::ItemDataRole(Qt::UserRole + 3));
+    return GTTreeView::findIndexWithWait(tree, path[0]);  // Works only with top-level items today.
 }
 
 QTreeView* GTUtilsCloudStorageView::getStorageTreeView() {
@@ -92,74 +80,17 @@ void GTUtilsCloudStorageView::renameItem(const QList<QString>& path, const QStri
 
     GTTreeView::click(tree, index);
 
-    GTUtilsDialog::add(new PopupChooser({"cloudStorageRenameAction"}, GTGlobals::UseMouse));
-    GTUtilsDialog::add(new InputDialogFiller(newName));
+    GTUtilsDialog::waitForDialog(new PopupChooser({"cloudStorageRenameAction"}, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
+
+    GTKeyboardDriver::keySequence(newName);
+
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+    GTWidget::findButtonByText("OK", dialog)->click();
 
     QList<QString> renamedPath = path;
     renamedPath[renamedPath.length() - 1] = newName;
     checkItemIsPresent(renamedPath);
-}
-
-/** Clicks to the empty area to drop focus and selection */
-static void clickEmptyAreaInTreeView(QTreeView* tree) {
-    GTMouseDriver::click(tree->mapToGlobal(tree->rect().bottomLeft() + QPoint(20, -20)));
-}
-
-void GTUtilsCloudStorageView::createDir(const QList<QString>& path) {
-    QTreeView* tree = getStorageTreeView();
-    if (path.length() > 1) {
-        QList<QString> parentPath = path;
-        parentPath.pop_back();
-        QModelIndex parentDirIndex = checkItemIsPresent(parentPath);
-        GTTreeView::click(tree, parentDirIndex);
-    } else {
-        clickEmptyAreaInTreeView(tree);
-    }
-
-    GTUtilsDialog::add(new PopupChooser({"cloudStorageCreateDirAction"}, GTGlobals::UseMouse));
-    GTUtilsDialog::add(new InputDialogFiller(path.last()));
-    GTMouseDriver::click(Qt::RightButton);
-
-    checkItemIsPresent(path);
-}
-
-void GTUtilsCloudStorageView::deleteEntry(const QList<QString>& path) {
-    QTreeView* tree = getStorageTreeView();
-    QModelIndex index = checkItemIsPresent(path);
-
-    GTUtilsDialog::add(new PopupChooser({"cloudStorageDeleteAction"}, GTGlobals::UseMouse));
-    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Yes, "Do you want to delete"));
-    GTTreeView::click(tree, index);
-    GTMouseDriver::click(Qt::RightButton);
-
-    checkItemIsNotPresent(path);
-}
-
-void GTUtilsCloudStorageView::uploadFile(const QList<QString>& dirPath, const QString& localFileUrl) {
-    QTreeView* tree = getStorageTreeView();
-    if (!dirPath.isEmpty()) {
-        QModelIndex index = checkItemIsPresent(dirPath);
-        GTTreeView::click(tree, index);
-    } else {
-        clickEmptyAreaInTreeView(tree);
-    }
-
-    GTUtilsDialog::add(new PopupChooser({"cloudStorageUploadAction"}, GTGlobals::UseMouse));
-    GTUtilsDialog::add(new GTFileDialogUtils(localFileUrl));
-    GTMouseDriver::click(Qt::RightButton);
-
-    QList<QString> uploadedPath = dirPath;
-    uploadedPath.append(QFileInfo(localFileUrl).fileName());
-    checkItemIsNotPresent(uploadedPath);
-}
-
-void GTUtilsCloudStorageView::downloadFileWithDoubleClick(const QList<QString>& dirPath, int expectedFileSize) {
-    QTreeView* tree = getStorageTreeView();
-    QModelIndex index = checkItemIsPresent(dirPath);
-    GTTreeView::doubleClick(tree, index);
-    QString downloadedFilePath = AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath() + "/" + dirPath.last();
-    GTFile::checkFileExistsWithWait(downloadedFilePath, 20000, expectedFileSize);
 }
 
 }  // namespace U2

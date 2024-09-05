@@ -40,17 +40,7 @@ public:
 
     static QModelIndex checkItemIsPresent(const QList<QString>& path);
 
-    static void checkItemIsNotPresent(const QList<QString>& path);
-
     static void renameItem(const QList<QString>& path, const QString& newName);
-
-    static void createDir(const QList<QString>& path);
-
-    static void deleteEntry(const QList<QString>& path);
-
-    static void uploadFile(const QList<QString>& dirPath, const QString& localFileUrl);
-
-    static void downloadFileWithDoubleClick(const QList<QString>& dirPath, int expectedFileSize);
 
     static QTreeView* getStorageTreeView();
 };
