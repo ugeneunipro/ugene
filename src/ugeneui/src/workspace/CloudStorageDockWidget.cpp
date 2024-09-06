@@ -185,6 +185,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     });
 
     createDirAction = new QAction(tr("New Folder"), this);
+    createDirAction->setObjectName("cloudStorageCreateDirAction");
     createDirAction->setShortcut(QKeySequence(Qt::Key_Insert));
     connect(createDirAction, &QAction::triggered, this, &CloudStorageDockWidget::createDir);
     treeView->addAction(createDirAction);

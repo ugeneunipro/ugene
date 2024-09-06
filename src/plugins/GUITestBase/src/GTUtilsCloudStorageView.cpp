@@ -94,4 +94,27 @@ void GTUtilsCloudStorageView::renameItem(const QList<QString>& path, const QStri
     checkItemIsPresent(renamedPath);
 }
 
+void GTUtilsCloudStorageView::createDir(const QList<QString>& path) {
+    QTreeView* tree = getStorageTreeView();
+    if (path.length() > 1) {
+        QList<QString> parentPath = path;
+        parentPath.pop_back();
+        QModelIndex parentDirIndex = checkItemIsPresent(parentPath);
+        GTTreeView::click(tree, parentDirIndex);
+    } else {
+        // Click to the empty area to drop focus.
+        GTMouseDriver::click(tree->mapToGlobal(tree->rect().bottomLeft() + QPoint(20, -20)));
+    }
+
+    GTUtilsDialog::waitForDialog(new PopupChooser({"cloudStorageCreateDirAction"}, GTGlobals::UseMouse));
+    GTMouseDriver::click(Qt::RightButton);
+
+    GTKeyboardDriver::keySequence(path.last());
+
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+    GTWidget::findButtonByText("OK", dialog)->click();
+
+    checkItemIsPresent(path);
+}
+
 }  // namespace U2
