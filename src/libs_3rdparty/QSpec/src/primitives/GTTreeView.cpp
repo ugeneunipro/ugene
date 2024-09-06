@@ -20,6 +20,7 @@
  */
 
 #include "primitives/GTTreeView.h"
+#include <utils/GTUtilsQt.h>
 
 #include <QAbstractItemModel>
 
@@ -65,12 +66,10 @@ QModelIndexList GTTreeView::findIndexes(QTreeView* tree, QVariant data, Qt::Item
     for (int i = 0; i < rowcount; i++) {
         const QModelIndex index = model->index(i, 0, parent);
         QVariant indexData = index.data(role);
-
-        if (data == indexData) {
+        if (GTUtilsQt::compareVariants(data, indexData)) {
             foundIndexes << index;
-        } else {
-            foundIndexes << findIndexes(tree, data, role, index, depth + 1, options);
         }
+        foundIndexes << findIndexes(tree, data, role, index, depth + 1, options);
     }
 
     return foundIndexes;

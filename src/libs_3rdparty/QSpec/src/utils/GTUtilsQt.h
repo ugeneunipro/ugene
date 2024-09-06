@@ -19,15 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTUtilsText.h"
+#pragma once
+
+#include "GTGlobals.h"
 
 namespace HI {
 
-QString GTUtilsText::rectToString(const QRect& rect) {
-    return "QRect(" + QString::number(rect.x()) + ", " +
-           QString::number(rect.y()) + ", " +
-           QString::number(rect.width()) + ", " +
-           QString::number(rect.height()) + ")";
-}
+class HI_EXPORT GTUtilsQt {
+public:
+    /** Compares two QVariants. Returns true if they are equal. */
+    static bool compareVariants(const QVariant& variant1, const QVariant& variant2);
+};
 
 }  // namespace HI

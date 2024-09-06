@@ -84,7 +84,7 @@ static void updateModel(QTreeView* tree,
 
             updateModel(tree, nameItem, childEntry, expandedItems, deletedItems);
 
-            // Unregister it from the map, because all entries that left int he map will be removed from the view as unused.
+            // Unregister it from the map, because all entries that left in the map will be removed from the view as unused.
             childrenMap.remove(childEntryKey);
         } else {
             auto nameItem = new QStandardItem(icon, childEntry->getName());
@@ -93,7 +93,7 @@ static void updateModel(QTreeView* tree,
             nameItem->setData(QVariant::fromValue(childEntry->path), USER_DATA_PATH);
             nameItem->setData(childEntry->sessionLocalId, USER_DATA_SESSION_LOCAL_ID);
 
-            parentItem->appendRow({nameItem});
+            parentItem->appendRow(nameItem);
 
             updateModel(tree, nameItem, childEntry, expandedItems, deletedItems);
         }

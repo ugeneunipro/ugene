@@ -21,9 +21,10 @@
 
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTWidget.h>
 #include <primitives/GTTreeView.h>
+#include <primitives/GTWidget.h>
 
 #include <QMainWindow>
 #include <QSortFilterProxyModel>
@@ -63,10 +64,34 @@ void GTUtilsCloudStorageView::clickLogout() {
     GTMenu::checkMainMenuItemState({"File", "Login to Workspace"}, HI::PopupChecker::IsEnabled);
 }
 
-void GTUtilsCloudStorageView::checkItemIsPresent(const QList<QString>& path) {
-    auto dockWidget= GTWidget::findWidget(DOCK_CLOUD_STORAGE_VIEW);
-    auto tree = GTWidget::findTreeView("cloudStorageTreeView", dockWidget);
-    GTTreeView::findIndex(tree, path[0]); // Works only with top-level items today.
+QModelIndex GTUtilsCloudStorageView::checkItemIsPresent(const QList<QString>& path) {
+    GT_LOG("GTUtilsCloudStorageView::checkItemIsPresent: [" + path.join("/") + "]");
+    QTreeView* tree = getStorageTreeView();
+    return GTTreeView::findIndexWithWait(tree, QVariant::fromValue(path), Qt::ItemDataRole(Qt::UserRole + 3));
+}
+
+QTreeView* GTUtilsCloudStorageView::getStorageTreeView() {
+    auto dockWidget = GTWidget::findWidget(DOCK_CLOUD_STORAGE_VIEW);
+    return GTWidget::findTreeView("cloudStorageTreeView", dockWidget);
+}
+
+void GTUtilsCloudStorageView::renameItem(const QList<QString>& path, const QString& newName) {
+    QTreeView* tree = getStorageTreeView();
+    QModelIndex index = checkItemIsPresent(path);
+
+    GTTreeView::click(tree, index);
+
+    GTUtilsDialog::waitForDialog(new PopupChooser({"cloudStorageRenameAction"}, GTGlobals::UseMouse));
+    GTMouseDriver::click(Qt::RightButton);
+
+    GTKeyboardDriver::keySequence(newName);
+
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+    GTWidget::findButtonByText("OK", dialog)->click();
+
+    QList<QString> renamedPath = path;
+    renamedPath[renamedPath.length() - 1] = newName;
+    checkItemIsPresent(renamedPath);
 }
 
 }  // namespace U2
