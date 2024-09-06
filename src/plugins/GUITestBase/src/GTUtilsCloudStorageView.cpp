@@ -65,8 +65,9 @@ void GTUtilsCloudStorageView::clickLogout() {
 }
 
 QModelIndex GTUtilsCloudStorageView::checkItemIsPresent(const QList<QString>& path) {
+    GT_LOG("GTUtilsCloudStorageView::checkItemIsPresent: [" + path.join("/") + "]");
     QTreeView* tree = getStorageTreeView();
-    return GTTreeView::findIndexWithWait(tree, path[0]);  // Works only with top-level items today.
+    return GTTreeView::findIndexWithWait(tree, QVariant::fromValue(path), Qt::ItemDataRole(Qt::UserRole + 3));
 }
 
 QTreeView* GTUtilsCloudStorageView::getStorageTreeView() {
