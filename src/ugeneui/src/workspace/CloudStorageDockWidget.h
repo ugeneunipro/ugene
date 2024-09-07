@@ -38,6 +38,9 @@ class CloudStorageDockWidget : public QWidget {
 public:
     CloudStorageDockWidget(WorkspaceService* workspaceService);
 
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
+
 private:
     void showContextMenu(const QPoint& point);
     void createDir();
