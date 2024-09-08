@@ -48,6 +48,8 @@ public:
 
     static void deleteEntry(const QList<QString>& path);
 
+    static void uploadFile(const QList<QString>& dirPath, const QString& localFileUrl);
+
     static QTreeView* getStorageTreeView();
 };
 

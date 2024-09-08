@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
@@ -26,6 +27,7 @@
 #include <primitives/GTTreeView.h>
 #include <primitives/GTWidget.h>
 
+#include <QFileInfo>
 #include <QMainWindow>
 #include <QSortFilterProxyModel>
 
@@ -96,17 +98,20 @@ void GTUtilsCloudStorageView::renameItem(const QList<QString>& path, const QStri
     checkItemIsPresent(renamedPath);
 }
 
+/** Clicks to the empty area to drop focus and selection */
+static void clickEmptyAreaInTreeView(QTreeView* tree) {
+    GTMouseDriver::click(tree->mapToGlobal(tree->rect().bottomLeft() + QPoint(20, -20)));
+}
+
 void GTUtilsCloudStorageView::createDir(const QList<QString>& path) {
     QTreeView* tree = getStorageTreeView();
-
     if (path.length() > 1) {
         QList<QString> parentPath = path;
         parentPath.pop_back();
         QModelIndex parentDirIndex = checkItemIsPresent(parentPath);
         GTTreeView::click(tree, parentDirIndex);
     } else {
-        // Click to the empty area to drop focus.
-        GTMouseDriver::click(tree->mapToGlobal(tree->rect().bottomLeft() + QPoint(20, -20)));
+        clickEmptyAreaInTreeView(tree);
     }
 
     GTUtilsDialog::add(new PopupChooser({"cloudStorageCreateDirAction"}, GTGlobals::UseMouse));
@@ -126,6 +131,24 @@ void GTUtilsCloudStorageView::deleteEntry(const QList<QString>& path) {
     GTMouseDriver::click(Qt::RightButton);
 
     checkItemIsNotPresent(path);
+}
+
+void GTUtilsCloudStorageView::uploadFile(const QList<QString>& dirPath, const QString& localFileUrl) {
+    QTreeView* tree = getStorageTreeView();
+    if (!dirPath.isEmpty()) {
+        QModelIndex index = checkItemIsPresent(dirPath);
+        GTTreeView::click(tree, index);
+    } else {
+        clickEmptyAreaInTreeView(tree);
+    }
+
+    GTUtilsDialog::add(new PopupChooser({"cloudStorageUploadAction"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new GTFileDialogUtils(localFileUrl));
+    GTMouseDriver::click(Qt::RightButton);
+
+    QList<QString> uploadedPath = dirPath;
+    uploadedPath.append(QFileInfo(localFileUrl).fileName());
+    checkItemIsNotPresent(uploadedPath);
 }
 
 }  // namespace U2
