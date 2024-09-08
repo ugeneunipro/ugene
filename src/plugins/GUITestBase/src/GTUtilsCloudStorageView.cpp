@@ -70,6 +70,12 @@ QModelIndex GTUtilsCloudStorageView::checkItemIsPresent(const QList<QString>& pa
     return GTTreeView::findIndexWithWait(tree, QVariant::fromValue(path), Qt::ItemDataRole(Qt::UserRole + 3));
 }
 
+void GTUtilsCloudStorageView::checkItemIsNotPresent(const QList<QString>& path) {
+    GT_LOG("GTUtilsCloudStorageView::checkItemIsNotPresent: [" + path.join("/") + "]");
+    QTreeView* tree = getStorageTreeView();
+    GTTreeView::checkItemIsNotPresentWithWait(tree, QVariant::fromValue(path), Qt::ItemDataRole(Qt::UserRole + 3));
+}
+
 QTreeView* GTUtilsCloudStorageView::getStorageTreeView() {
     auto dockWidget = GTWidget::findWidget(DOCK_CLOUD_STORAGE_VIEW);
     return GTWidget::findTreeView("cloudStorageTreeView", dockWidget);
@@ -81,13 +87,9 @@ void GTUtilsCloudStorageView::renameItem(const QList<QString>& path, const QStri
 
     GTTreeView::click(tree, index);
 
-    GTUtilsDialog::waitForDialog(new PopupChooser({"cloudStorageRenameAction"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new PopupChooser({"cloudStorageRenameAction"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new InputDialogFiller(newName));
     GTMouseDriver::click(Qt::RightButton);
-
-    GTKeyboardDriver::keySequence(newName);
-
-    QWidget* dialog = GTWidget::getActiveModalWidget();
-    GTWidget::findButtonByText("OK", dialog)->click();
 
     QList<QString> renamedPath = path;
     renamedPath[renamedPath.length() - 1] = newName;
@@ -96,6 +98,7 @@ void GTUtilsCloudStorageView::renameItem(const QList<QString>& path, const QStri
 
 void GTUtilsCloudStorageView::createDir(const QList<QString>& path) {
     QTreeView* tree = getStorageTreeView();
+
     if (path.length() > 1) {
         QList<QString> parentPath = path;
         parentPath.pop_back();
@@ -106,15 +109,23 @@ void GTUtilsCloudStorageView::createDir(const QList<QString>& path) {
         GTMouseDriver::click(tree->mapToGlobal(tree->rect().bottomLeft() + QPoint(20, -20)));
     }
 
-    GTUtilsDialog::waitForDialog(new PopupChooser({"cloudStorageCreateDirAction"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new PopupChooser({"cloudStorageCreateDirAction"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new InputDialogFiller(path.last()));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTKeyboardDriver::keySequence(path.last());
-
-    QWidget* dialog = GTWidget::getActiveModalWidget();
-    GTWidget::findButtonByText("OK", dialog)->click();
-
     checkItemIsPresent(path);
+}
+
+void GTUtilsCloudStorageView::deleteEntry(const QList<QString>& path) {
+    QTreeView* tree = getStorageTreeView();
+    QModelIndex index = checkItemIsPresent(path);
+
+    GTUtilsDialog::add(new PopupChooser({"cloudStorageDeleteAction"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Yes, "Do you want to delete"));
+    GTTreeView::click(tree, index);
+    GTMouseDriver::click(Qt::RightButton);
+
+    checkItemIsNotPresent(path);
 }
 
 }  // namespace U2

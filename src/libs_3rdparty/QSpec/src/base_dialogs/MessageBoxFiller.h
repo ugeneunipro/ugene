@@ -58,13 +58,12 @@ public:
     void commonScenario() override;
 };
 
-class HI_EXPORT InputIntFiller : public Filler {
+class HI_EXPORT InputDialogFiller : public Filler {
 public:
-    InputIntFiller(int value);
+    InputDialogFiller(const QString& value);
     void commonScenario() override;
 
 private:
-    int value;
+    QString value;
 };
-
 }  // namespace HI

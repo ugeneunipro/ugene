@@ -162,6 +162,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     treeView->setObjectName("cloudStorageTreeView");
     treeView->header()->hide();
+    treeView->viewport()->installEventFilter(this);
 
     auto layout = new QVBoxLayout();
     layout->addWidget(stateLabel);
@@ -191,6 +192,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->addAction(createDirAction);
 
     deleteAction = new QAction(tr("Delete"), this);
+    deleteAction->setObjectName("cloudStorageDeleteAction");
     deleteAction->setShortcut(QKeySequence::Delete);
     connect(deleteAction, &QAction::triggered, this, &CloudStorageDockWidget::deleteItem);
     treeView->addAction(deleteAction);
@@ -217,6 +219,20 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     updateStateLabelText();
 }
 
+bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
+    if (watched == treeView->viewport() && event->type() == QEvent::MouseButtonPress) {
+        auto mouseEvent = (QMouseEvent*)event;
+        if (mouseEvent->button() == Qt::MouseButton::LeftButton) {
+            QModelIndex index = treeView->indexAt(mouseEvent->pos());
+            // Clear selection on right-click on empty space.
+            if (!index.isValid()) {
+                treeView->clearSelection();
+            }
+        }
+    }
+    return false;
+}
+
 void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
     QObjectScopedPointer<QMenu> contextMenu = new QMenu();
     contextMenu->addAction(createDirAction);
@@ -230,7 +246,7 @@ void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
 void CloudStorageDockWidget::createDir() {
     QModelIndex currentIndex = getSelectedItemIndex();
     auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
-    auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.length() == 0;
+    auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.isEmpty();
 
     bool ok;
     QString dirName = QInputDialog::getText(nullptr, tr("Create New Folder"), tr("New Folder Name"), QLineEdit::Normal, "", &ok);
@@ -250,7 +266,7 @@ void CloudStorageDockWidget::createDir() {
 void CloudStorageDockWidget::deleteItem() {
     auto path = getSelectedItemPath();
     uiLog.trace("CloudStorageDockWidget::delete: " + path.join("/"));
-    CHECK(path.length() > 0, );
+    CHECK(!path.isEmpty(), );
     QMessageBox::StandardButton result = QMessageBox::question(treeView, tr("Question?"), tr("Do you want to delete %1").arg(path.last()));
     CHECK(result == QMessageBox::Yes, );
     getCloudStorageService()->deleteEntry(path, this, [this](const auto& response) { handleCloudStorageResponse(response); });
@@ -267,10 +283,11 @@ QList<QString> CloudStorageDockWidget::getSelectedItemPath() const {
     QList<QString> path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
     return path;
 }
+
 void CloudStorageDockWidget::renameItem() {
     QList<QString> path = getSelectedItemPath();
     uiLog.trace("CloudStorageDockWidget::rename: " + path.join("/"));
-    CHECK(path.length() > 0, );
+    CHECK(!path.isEmpty(), );
 
     bool ok;
     QString newName = QInputDialog::getText(nullptr, tr("Rename %1").arg(path.last()), tr("New Name"), QLineEdit::Normal, "", &ok);
@@ -288,11 +305,11 @@ void CloudStorageDockWidget::renameItem() {
 void CloudStorageDockWidget::downloadItemSilently() {
     QModelIndex currentIndex = getSelectedItemIndex();
     auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
-    auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.length() == 0;
+    auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.isEmpty();
     CHECK(!isFolder, );
 
     uiLog.trace("CloudStorageDockWidget::downloadItem: " + path.join("/"));
-    CHECK(path.length() > 0, );
+    CHECK(!path.isEmpty(), );
     LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
     getCloudStorageService()->downloadFile(path, lod.dir, this, [this](const auto& response) { handleCloudStorageResponse(response); });
 }
@@ -300,10 +317,10 @@ void CloudStorageDockWidget::downloadItemSilently() {
 void CloudStorageDockWidget::downloadItem() {
     QModelIndex currentIndex = getSelectedItemIndex();
     auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
-    auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.length() == 0;
+    auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.isEmpty();
     CHECK(!isFolder, );
     uiLog.trace("CloudStorageDockWidget::downloadItem: " + path.join("/"));
-    CHECK(path.length() > 0, );
+    CHECK(!path.isEmpty(), );
     LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
     QString dir = U2FileDialog::getExistingDirectory(this, tr("Select a folder to save the downloaded file"), lod.dir);
     CHECK(!dir.isEmpty(), );
@@ -314,7 +331,7 @@ void CloudStorageDockWidget::downloadItem() {
 void CloudStorageDockWidget::uploadItem() {
     QModelIndex currentIndex = getSelectedItemIndex();
     auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
-    auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.length() == 0;
+    auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.isEmpty();
 
     LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
     QString localFilePath = U2FileDialog::getOpenFileName(this, tr("Select a file to upload"), lod.dir);
