@@ -25,7 +25,7 @@
 #include <QApplication>
 
 #include "drivers/GTKeyboardDriver.h"
-#include "primitives/GTSpinBox.h"
+#include "primitives/GTLineEdit.h"
 #include "primitives/GTWidget.h"
 
 namespace HI {
@@ -83,14 +83,14 @@ AppCloseMessageBoxDialogFiller::AppCloseMessageBoxDialogFiller()
 void AppCloseMessageBoxDialogFiller::commonScenario() {
     QWidget* activeModal = GTWidget::getActiveModalWidget();
     auto messageBox = qobject_cast<QMessageBox*>(activeModal);
-    GT_CHECK(messageBox != NULL, "messageBox is NULL");
+    GT_CHECK(messageBox != nullptr, "messageBox is NULL");
 
     QAbstractButton* noButton = messageBox->button(QMessageBox::No);
     QAbstractButton* noToAllButton = messageBox->button(QMessageBox::NoToAll);
 
-    if (NULL != noToAllButton) {
+    if (noToAllButton != nullptr) {
         GTWidget::click(noToAllButton);
-    } else if (NULL != noButton) {
+    } else if (noButton != nullptr) {
         GTWidget::click(noButton);
     } else {
         GT_FAIL("There are neither \"No\" or \"No to all\" buttons in the message box", );
@@ -108,13 +108,13 @@ MessageBoxNoToAllOrNo::MessageBoxNoToAllOrNo()
 void MessageBoxNoToAllOrNo::commonScenario() {
     QWidget* activeModal = GTWidget::getActiveModalWidget();
     auto messageBox = qobject_cast<QMessageBox*>(activeModal);
-    GT_CHECK(messageBox != NULL, "messageBox is NULL");
+    GT_CHECK(messageBox != nullptr, "messageBox is NULL");
 
     QAbstractButton* button = messageBox->button(QMessageBox::NoToAll);
     if (!button) {
         button = messageBox->button(QMessageBox::No);
     }
-    GT_CHECK(button != NULL, "There are no No buttons in messagebox");
+    GT_CHECK(button != nullptr, "There are no No buttons in messagebox");
 
     GTWidget::click(button);
 }
@@ -130,35 +130,34 @@ MessageBoxOpenAnotherProject::MessageBoxOpenAnotherProject()
 void MessageBoxOpenAnotherProject::commonScenario() {
     QWidget* activeModal = GTWidget::getActiveModalWidget();
     auto messageBox = qobject_cast<QMessageBox*>(activeModal);
-    GT_CHECK(messageBox != NULL, "messageBox is NULL");
+    GT_CHECK(messageBox != nullptr, "messageBox is NULL");
 
-    QAbstractButton* button = messageBox->findChild<QAbstractButton*>("New Window");
-    GT_CHECK(button != NULL, "There are no New Window buttons in messagebox");
+    auto button = messageBox->findChild<QAbstractButton*>("New Window");
+    GT_CHECK(button != nullptr, "There are no New Window buttons in messagebox");
 
     button = messageBox->findChild<QAbstractButton*>("This Window");
-    GT_CHECK(button != NULL, "There are no This Window buttons in messagebox");
+    GT_CHECK(button != nullptr, "There are no This Window buttons in messagebox");
 
     button = messageBox->button(QMessageBox::Abort);
-    GT_CHECK(button != NULL, "There are no Abort buttons in messagebox");
+    GT_CHECK(button != nullptr, "There are no Abort buttons in messagebox");
 
     GTWidget::click(button);
 }
 
 #undef GT_CLASS_NAME
 
-#define GT_CLASS_NAME "MessageBoxOpenAnotherProject"
+#define GT_CLASS_NAME "InputDialogFiller"
 
-InputIntFiller::InputIntFiller(int value)
+InputDialogFiller::InputDialogFiller(const QString& _value)
     : Filler(""),
-      value(value) {
+      value(_value) {
 }
 
-void InputIntFiller::commonScenario() {
+void InputDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
-    auto spinBox = GTWidget::findSpinBox("", dialog);
-
-    GTSpinBox::setValue(spinBox, value);
-
+    auto lineEdit = dialog->findChild<QLineEdit*>();
+    GT_CHECK(lineEdit != nullptr, "Input dialog has no line edit");
+    GTLineEdit::setText(lineEdit, value);
     GTWidget::click(GTWidget::findButtonByText("OK", dialog));
 }
 

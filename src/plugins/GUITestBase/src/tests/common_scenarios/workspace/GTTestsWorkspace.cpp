@@ -80,9 +80,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsCloudStorageView::createDir({"New Folder", "New Sub Folder"});
 
     // Check delete file or dir.
-    // await deleteFile(page, 'Documents');
-    // await changeDir(page, 'Alignments');
-    // await deleteFile(page, 'hemoglobin_alpha_alignment.sto');
+    GTUtilsCloudStorageView::deleteEntry({"Documents"});
+    GTUtilsCloudStorageView::deleteEntry({"Alignments", "hemoglobin_alpha_alignment.sto"});
 
     // Check upload.
     // await uploadFile(page, 'Appendix_Fig3.pdf');

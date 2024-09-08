@@ -939,7 +939,7 @@ bowtie index file</source>
     </message>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="211"/>
-        <source>Are you really want to change marker&apos;s type? Some data can be lost!</source>
+        <source>Do you really want to change marker&apos;s type? Some data can be lost!</source>
         <translation>Вы действиетльно хотите изменить тип маркера? Некоторые данные могут быть утеряны!</translation>
     </message>
     <message>
