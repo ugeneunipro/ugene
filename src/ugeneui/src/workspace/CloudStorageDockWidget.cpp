@@ -208,6 +208,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->addAction(downloadAction);
 
     uploadAction = new QAction(tr("Upload"), this);
+    uploadAction->setObjectName("cloudStorageUploadAction");
     connect(uploadAction, &QAction::triggered, this, &CloudStorageDockWidget::uploadItem);
     treeView->addAction(uploadAction);
 
