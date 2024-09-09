@@ -90,8 +90,8 @@ void CloudStorageService::downloadFile(const QList<QString>& path,
     ioLog.trace("CloudStorageService::downloadFile: " + path.join("/") + " -> " + localDirPath);
     SAFE_POINT(checkCloudStoragePath(path), "Invalid cloud file path: " + path.join("/"), );
     QFileInfo dir(localDirPath);
-    QString fileName = path.last();
-    QString localFilePath = GUrlUtils::rollFileName(dir.absolutePath() + "/" + fileName, "_");
+    const QString& fileName = path.last();
+    QString localFilePath = GUrlUtils::rollFileName(dir.absoluteFilePath() + "/" + fileName, "_");
     workspaceService->executeDownloadFileRequest(path, localFilePath, context, callback);
 }
 

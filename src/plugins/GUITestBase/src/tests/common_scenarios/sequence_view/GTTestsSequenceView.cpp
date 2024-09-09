@@ -1140,20 +1140,19 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     //    Export image
     //    GTUtilsDialog::waitForDialog(new ExportSequenceImage(sandBoxDir + "seq_view_test_0037_1.png"));
     //    GTWidget::click(exportButton);
-    //    bool exists = GTFile::check(sandBoxDir + "seq_view_test_0037_1.png");
+    //    bool exists = GTFile::checkFileExists(sandBoxDir + "seq_view_test_0037_1.png");
     //    CHECK_SET_ERR(exists, "Image not exported");
     //    GTGlobals::sleep(1000);
 
     ExportSequenceImage::Settings s = ExportSequenceImage::Settings(ExportSequenceImage::ZoomedView, U2Region(1, 1000));
     GTUtilsDialog::waitForDialog(new ExportSequenceImage(sandBoxDir + "seq_view_test_0037_1_1.png", s));
     GTWidget::click(exportButton);
-    bool exists = GTFile::check(sandBoxDir + "seq_view_test_0037_1_1.png");
-    CHECK_SET_ERR(exists, "Zoomed view not exported");
+    GTFile::checkFileExists(sandBoxDir + "seq_view_test_0037_1_1.png");
 
     //    s.type = ExportSequenceImage::DetailsView;
     //    GTUtilsDialog::waitForDialog(new ExportSequenceImage(sandBoxDir + "seq_view_test_0037_1_2.png", s));
     //    GTWidget::click(exportButton);
-    //    exists = GTFile::check(sandBoxDir + "seq_view_test_0037_1_2.png");
+    //    exists = GTFile::checkFileExists(sandBoxDir + "seq_view_test_0037_1_2.png");
     //    CHECK_SET_ERR(exists, "Details view not exported");
 }
 

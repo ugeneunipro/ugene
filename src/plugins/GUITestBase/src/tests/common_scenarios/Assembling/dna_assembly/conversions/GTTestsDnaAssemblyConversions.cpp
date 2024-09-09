@@ -57,8 +57,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    GTFile::check("_common_data/e_coli/NC_008253.gb.fasta");
-    GTFile::check("_common_data/e_coli/e_coli_1000.gff.fasta");
+    GTFile::checkFileExists("_common_data/e_coli/NC_008253.gb.fasta");
+    GTFile::checkFileExists("_common_data/e_coli/e_coli_1000.gff.fasta");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -83,7 +83,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    GTFile::check("_common_data/e_coli/NC_008253.gff.fasta");
+    GTFile::checkFileExists("_common_data/e_coli/NC_008253.gff.fasta");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -121,7 +121,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    GTFile::check("_common_data/e_coli/e_coli_1000.gff.fasta");
+    GTFile::checkFileExists("_common_data/e_coli/e_coli_1000.gff.fasta");
 }
 
 }  // namespace GUITest_dna_assembly_conversions

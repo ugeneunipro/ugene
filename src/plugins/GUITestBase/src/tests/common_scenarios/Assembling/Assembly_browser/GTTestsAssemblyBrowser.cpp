@@ -305,7 +305,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
     GTUtilsAssemblyBrowser::callExportCoverageDialog();
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTFile::check(sandBoxDir + "common_assembly_browser/test_0013/test_0013_1.txt");
+    GTFile::checkFileExists(sandBoxDir + "common_assembly_browser/test_0013/test_0013_1.txt");
 
     //    4. Call the dialog again. Write the valid output file path manually. Path should be to a non-existent file in the writable folder. Accept the dialog.
     //    Expected state: dialog closes, file appears.
@@ -315,7 +315,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
     GTUtilsAssemblyBrowser::callExportCoverageDialog();
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTFile::check(sandBoxDir + "common_assembly_browser/test_0013/test_0013_2.txt");
+    GTFile::checkFileExists(sandBoxDir + "common_assembly_browser/test_0013/test_0013_2.txt");
 
     //    5. Call the dialog again. Write the valid output file path manually. Path should be to a non-existent file in a non-existent folder with the writable parent folder. Accept the dialog.
     //    Expected state: dialog closes, file appears.
@@ -325,7 +325,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
     GTUtilsAssemblyBrowser::callExportCoverageDialog();
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTFile::check(sandBoxDir + "common_assembly_browser/test_0013/test_0013/test_0013_3.txt");
+    GTFile::checkFileExists(sandBoxDir + "common_assembly_browser/test_0013/test_0013/test_0013_3.txt");
 
     //    6. Call the dialog again. Set the output file path to an existent writable file. Accept the dialog.
     //    Expected state: dialog closes, file is overwritten.
@@ -337,7 +337,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
     GTUtilsAssemblyBrowser::callExportCoverageDialog();
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTFile::check(sandBoxDir + "common_assembly_browser/test_0013/test_0013/test_0013_4.txt");
+    GTFile::checkFileExists(sandBoxDir + "common_assembly_browser/test_0013/test_0013/test_0013_4.txt");
     const qint64 fileSizeAfter = GTFile::getSize(sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
     CHECK_SET_ERR(fileSizeAfter != fileSizeBefore, "File wasn't overwritten");
 }
