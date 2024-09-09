@@ -84,9 +84,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsCloudStorageView::deleteEntry({"Alignments", "hemoglobin_alpha_alignment.sto"});
 
     // Check upload.
-    // await uploadFile(page, 'Appendix_Fig3.pdf');
-    // await changeDir(page, 'Alignments');
-    // await uploadFile(page, 'HA_discrete_MCC.tre');
+    GTUtilsCloudStorageView::uploadFile({}, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsCloudStorageView::uploadFile({"Alignments"}, dataDir + "samples/ABIF/A01.abi");
 
     // Check download file
     // await changeDir(page, 'Sequences');
