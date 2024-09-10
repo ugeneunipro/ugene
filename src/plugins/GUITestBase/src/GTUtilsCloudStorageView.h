@@ -50,6 +50,8 @@ public:
 
     static void uploadFile(const QList<QString>& dirPath, const QString& localFileUrl);
 
+    static void downloadFileWithDoubleClick(const QList<QString>& dirPath, int expectedFileSize);
+
     static QTreeView* getStorageTreeView();
 };
 

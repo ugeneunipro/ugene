@@ -26,12 +26,15 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTTreeView.h>
 #include <primitives/GTWidget.h>
+#include <system/GTFile.h>
 
 #include <QFileInfo>
 #include <QMainWindow>
 #include <QSortFilterProxyModel>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -149,6 +152,14 @@ void GTUtilsCloudStorageView::uploadFile(const QList<QString>& dirPath, const QS
     QList<QString> uploadedPath = dirPath;
     uploadedPath.append(QFileInfo(localFileUrl).fileName());
     checkItemIsNotPresent(uploadedPath);
+}
+
+void GTUtilsCloudStorageView::downloadFileWithDoubleClick(const QList<QString>& dirPath, int expectedFileSize) {
+    QTreeView* tree = getStorageTreeView();
+    QModelIndex index = checkItemIsPresent(dirPath);
+    GTTreeView::doubleClick(tree, index);
+    QString downloadedFilePath = AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath() + "/" + dirPath.last();
+    GTFile::checkFileExistsWithWait(downloadedFilePath, 20000, expectedFileSize);
 }
 
 }  // namespace U2

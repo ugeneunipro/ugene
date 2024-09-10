@@ -31,6 +31,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Settings.h>
@@ -240,10 +241,14 @@ CloudStorageService* WorkspaceService::getCloudStorageService() const {
     return cloudStorageService;
 }
 
+static void fillErrorStateInJson(const QString& errorMessage, QJsonObject& jsonResponse) {
+    jsonResponse["isError"] = true;
+    jsonResponse["errorMessage"] = errorMessage;
+}
+
 static void fillErrorStateInJson(const QNetworkReply* reply, QJsonObject& jsonResponse) {
     SAFE_POINT(reply->error() != QNetworkReply::NoError, "QNetworkReply has no error", );
-    jsonResponse["isError"] = true;
-    jsonResponse["errorMessage"] = reply->errorString();
+    fillErrorStateInJson(reply->errorString(), jsonResponse);
     jsonResponse["errorCode"] = reply->error();
 }
 
@@ -308,8 +313,8 @@ void WorkspaceService::executeDownloadFileRequest(const QList<QString>& cloudPat
                                                   QObject* context,
                                                   std::function<void(const QJsonObject&)> callback) {
     coreLog.trace("WorkspaceService::executeDownloadFileRequest: " + cloudPath.join("/") + " to " + localFilePath);
-    SAFE_POINT(cloudPath.length() > 0, "Cloud path is empty", );
-    SAFE_POINT(localFilePath.length() > 0, "Local file path is empty", );
+    SAFE_POINT(!cloudPath.isEmpty(), "Cloud path is empty", );
+    SAFE_POINT(!localFilePath.isEmpty(), "Local file path is empty", );
     SAFE_POINT(callback == nullptr || context != nullptr, "A callback requires non-null life-range context", );
 
     auto networkManager = new QNetworkAccessManager();
@@ -336,24 +341,29 @@ void WorkspaceService::executeDownloadFileRequest(const QList<QString>& cloudPat
     connect(reply, &QNetworkReply::finished, [reply, localFilePath, networkManager, callback, contextLifeRangeTracker] {
         QJsonObject jsonResponse;
         if (reply->error() == QNetworkReply::NoError) {
-            QByteArray data = reply->readAll();
-            QFile file(localFilePath);
-            if (file.open(QIODevice::WriteOnly)) {
-                file.write(data);
-                file.close();
-                ioLog.trace("WorkspaceService::executeDownloadFileRequest: Download finished and saved to" + localFilePath);
-                // Open this file or file folder.
-                DocumentFormatId formatId;
-                auto detectionResult = DocumentUtils::detectFormat(localFilePath, formatId);
-                if (detectionResult == DocumentUtils::FORMAT) {
-                    auto loadDocumentTask = AppContext::getProjectLoader()->openWithProjectTask(localFilePath);
-                    AppContext::getTaskScheduler()->registerTopLevelTask(loadDocumentTask);
-                } else {
-                    QString folderPath = QFileInfo(localFilePath).absolutePath();
-                    QDesktopServices::openUrl(QUrl::fromLocalFile(folderPath));
-                }
+            QString downloadDirPath = QFileInfo(localFilePath).absolutePath();
+            if (!FileAndDirectoryUtils::createWritableDirIfNotExists(downloadDirPath)) {
+                fillErrorStateInJson(tr("Failed to create download directory: %1").arg(downloadDirPath), jsonResponse);
             } else {
-                ioLog.trace("WorkspaceService::executeDownloadFileRequest: Could not open file for writing.");
+                QByteArray data = reply->readAll();
+                QFile file(localFilePath);
+
+                if (file.open(QIODevice::WriteOnly)) {
+                    file.write(data);
+                    file.close();
+                    ioLog.trace("WorkspaceService::executeDownloadFileRequest: Download finished and saved to" + localFilePath);
+                    // Open this file or file folder.
+                    DocumentFormatId formatId;
+                    auto detectionResult = DocumentUtils::detectFormat(localFilePath, formatId);
+                    if (detectionResult == DocumentUtils::FORMAT) {
+                        auto loadDocumentTask = AppContext::getProjectLoader()->openWithProjectTask(localFilePath);
+                        AppContext::getTaskScheduler()->registerTopLevelTask(loadDocumentTask);
+                    } else {
+                        QDesktopServices::openUrl(QUrl::fromLocalFile(downloadDirPath));
+                    }
+                } else {
+                    ioLog.trace("WorkspaceService::executeDownloadFileRequest: Could not open file for writing.");
+                }
             }
         } else {
             ioLog.trace("WorkspaceService::executeDownloadFileRequest ERROR:" + reply->errorString());

@@ -47,7 +47,8 @@
 
 namespace U2 {
 
-constexpr const char* CLOUD_STORAGE_LAST_OPENED_DIR = "CloudStorage";
+constexpr const char* CLOUD_STORAGE_LAST_OPENED_DOWNLOAD_DIR = "CloudStorageDownloadDir";
+constexpr const char* CLOUD_STORAGE_LAST_OPENED_UPLOAD_DIR = "CloudStorageUploadDir";
 
 constexpr qint64 USER_DATA_SESSION_LOCAL_ID = Qt::UserRole + 1;
 constexpr qint64 USER_DATA_SIZE = Qt::UserRole + 2;
@@ -204,6 +205,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->addAction(renameAction);
 
     downloadAction = new QAction(tr("Download"), this);
+    downloadAction->setObjectName("cloudStorageDownloadAction");
     connect(downloadAction, &QAction::triggered, this, &CloudStorageDockWidget::downloadItem);
     treeView->addAction(downloadAction);
 
@@ -311,7 +313,7 @@ void CloudStorageDockWidget::downloadItemSilently() {
 
     uiLog.trace("CloudStorageDockWidget::downloadItem: " + path.join("/"));
     CHECK(!path.isEmpty(), );
-    LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
+    LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DOWNLOAD_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
     getCloudStorageService()->downloadFile(path, lod.dir, this, [this](const auto& response) { handleCloudStorageResponse(response); });
 }
 
@@ -322,7 +324,7 @@ void CloudStorageDockWidget::downloadItem() {
     CHECK(!isFolder, );
     uiLog.trace("CloudStorageDockWidget::downloadItem: " + path.join("/"));
     CHECK(!path.isEmpty(), );
-    LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
+    LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DOWNLOAD_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
     QString dir = U2FileDialog::getExistingDirectory(this, tr("Select a folder to save the downloaded file"), lod.dir);
     CHECK(!dir.isEmpty(), );
     lod.dir = dir;
@@ -334,10 +336,10 @@ void CloudStorageDockWidget::uploadItem() {
     auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
     auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.isEmpty();
 
-    LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
+    LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_UPLOAD_DIR, AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
     QString localFilePath = U2FileDialog::getOpenFileName(this, tr("Select a file to upload"), lod.dir);
     CHECK(!localFilePath.isEmpty(), );
-    lod.dir = localFilePath;
+    lod.dir = QFileInfo(localFilePath).absolutePath();
 
     if (!isFolder) {
         path.pop_back();
