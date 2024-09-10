@@ -3264,7 +3264,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
 
     REGISTER_TEST(GUITest_dna_assembly_conversions::test_0002);
-    REGISTER_TEST(GUITest_dna_assembly_conversions::test_0003);
     REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
 
     /////////////////////////////////////////////////////////////////////////

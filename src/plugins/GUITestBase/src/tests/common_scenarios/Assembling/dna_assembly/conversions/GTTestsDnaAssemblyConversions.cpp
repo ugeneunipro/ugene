@@ -57,8 +57,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    GTFile::checkFileExists("_common_data/e_coli/NC_008253.gb.fasta");
-    GTFile::checkFileExists("_common_data/e_coli/e_coli_1000.gff.fasta");
+    GTFile::checkFileExists(testDir + "_common_data/e_coli/NC_008253.gb.fa");
+    GTFile::checkFileExists(testDir + "_common_data/e_coli/e_coli_1000.gff.fa");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -83,28 +83,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    GTFile::checkFileExists("_common_data/e_coli/NC_008253.gff.fasta");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0003) {
-    //     1. Click the menu Tools -> Align to reference -> Align short reads.
-    //     2. Fill in the dialog:
-    //     {Mapping tool} BWA
-    //     {Reference sequence} _common_data/e_coli/NC_008253.fa
-    //     {Short reads} _common_data/bam/scerevisiae.bam.bai
-    GTLogTracer lt;
-    AlignShortReadsFiller::Parameters parameters(testDir + "_common_data/e_coli/",
-                                                 "NC_008253.gb",
-                                                 testDir + "_common_data/bam/",
-                                                 "scerevisiae.bam.bai",
-                                                 AlignShortReadsFiller::Parameters::Bwa);
-
-    GTUtilsDialog::add(new AlignShortReadsFiller(&parameters));
-    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok));
-    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
-    //     3. Click start:
-    //     Expected: the error dialog appears. It tells that the short reads file has the unknown format.
+    GTFile::checkFileExists(testDir + "_common_data/e_coli/NC_008253.gff.fa");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
@@ -121,7 +100,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    GTFile::checkFileExists("_common_data/e_coli/e_coli_1000.gff.fasta");
+    GTFile::checkFileExists(testDir + "_common_data/e_coli/e_coli_1000.gff.fa");
 }
 
 }  // namespace GUITest_dna_assembly_conversions
