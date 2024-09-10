@@ -67,6 +67,7 @@ private:
     QAction* renameAction = nullptr;
     QAction* downloadAction = nullptr;
     QAction* uploadAction = nullptr;
+    QAction* openWebWorkspaceAction = nullptr;
     QStandardItemModel treeViewModel;
 };
 

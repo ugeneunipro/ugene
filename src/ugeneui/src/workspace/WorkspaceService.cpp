@@ -87,6 +87,7 @@ WorkspaceService::WorkspaceService()
                                : stage == "local" ? "localhost:4201"
                                                   : "workspace.ugene.net";
     QString workspaceHttpProtocolPrefix = (stage == "local" ? "http://" : "https://");
+    webWorkspaceUrl = workspaceHttpProtocolPrefix + webDomainAndPort;
     apiUrl = workspaceHttpProtocolPrefix + apiDomainAndPort;
     webSocketUrl = stage == "local" ? "ws://localhost:4201" : "wss://" + apiDomainAndPort;
     clientId = "workspace-client-" + stage;
@@ -449,6 +450,10 @@ void WorkspaceService::executeUploadFileRequest(const QList<QString>& cloudDirPa
         reply->deleteLater();
         manager->deleteLater();
     });
+}
+
+QString WorkspaceService::getWebWorkspaceUrl() const {
+    return webWorkspaceUrl;
 }
 
 EnableWorkspaceTask::EnableWorkspaceTask(WorkspaceService* _ws)

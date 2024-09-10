@@ -22,12 +22,14 @@
 #include "CloudStorageDockWidget.h"
 
 #include <QContextMenuEvent>
+#include <QDesktopServices>
 #include <QHeaderView>
 #include <QIcon>
 #include <QInputDialog>
 #include <QLabel>
 #include <QMenu>
 #include <QMessageBox>
+#include <QToolBar>
 #include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>
@@ -148,7 +150,7 @@ static void updateTree(QTreeView* tree, const QStandardItemModel& model, const C
 CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceService)
     : workspaceService(_workspaceService) {
     setObjectName(DOCK_CLOUD_STORAGE_VIEW);
-    setWindowTitle(tr("Storage"));
+    setWindowTitle(tr("Cloud Storage"));
     setWindowIcon(QIcon(":ugene/images/cloud_storage.svg"));
 
     stateLabel = new QLabel();
@@ -165,14 +167,22 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->header()->hide();
     treeView->viewport()->installEventFilter(this);
 
+    auto toolbar = new QToolBar();
+    toolbar->setIconSize(QSize(20, 20));
+    toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+
     auto layout = new QVBoxLayout();
+    layout->addWidget(toolbar);
     layout->addWidget(stateLabel);
     layout->addWidget(treeView);
     setLayout(layout);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
 
     connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this] {
         stateLabel->setVisible(true);
         treeView->setVisible(false);
+        updateActionsState();
         treeViewModel.clear();
         treeViewModel.setHorizontalHeaderLabels({"Name"});
         treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -182,43 +192,62 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     connect(getCloudStorageService(), &CloudStorageService::si_storageStateChanged, this, [this](const CloudStorageEntry& rootEntry) {
         stateLabel->setVisible(false);
         treeView->setVisible(true);
+        updateActionsState();
         uiLog.trace("CloudStorageDockWidget: Received new cloud storage state");
         updateTree(treeView, treeViewModel, rootEntry);
     });
 
-    createDirAction = new QAction(tr("New Folder"), this);
+    createDirAction = new QAction(QIcon(":ugene/images/new_folder.svg"), tr("New Folder"), this);
     createDirAction->setObjectName("cloudStorageCreateDirAction");
     createDirAction->setShortcut(QKeySequence(Qt::Key_Insert));
+    createDirAction->setToolTip(tr("Create New Folder on Cloud Storage"));
     connect(createDirAction, &QAction::triggered, this, &CloudStorageDockWidget::createDir);
     treeView->addAction(createDirAction);
 
-    deleteAction = new QAction(tr("Delete"), this);
+    deleteAction = new QAction(QIcon(":ugene/images/trash.svg"), tr("Delete"), this);
     deleteAction->setObjectName("cloudStorageDeleteAction");
     deleteAction->setShortcut(QKeySequence::Delete);
+    deleteAction->setToolTip(tr("Delete selected file from Cloud Storage"));
     connect(deleteAction, &QAction::triggered, this, &CloudStorageDockWidget::deleteItem);
     treeView->addAction(deleteAction);
 
-    renameAction = new QAction(tr("Rename"), this);
+    renameAction = new QAction(QIcon(":ugene/images/file_rename.svg"), tr("Rename"), this);
     renameAction->setObjectName("cloudStorageRenameAction");
+    renameAction->setToolTip(tr("Rename File on Cloud Storage"));
     renameAction->setShortcut(QKeySequence(Qt::Key_F2));
     connect(renameAction, &QAction::triggered, this, &CloudStorageDockWidget::renameItem);
     treeView->addAction(renameAction);
 
-    downloadAction = new QAction(tr("Download"), this);
+    downloadAction = new QAction(QIcon(":ugene/images/file_download.svg"), tr("Download"), this);
     downloadAction->setObjectName("cloudStorageDownloadAction");
+    downloadAction->setToolTip(tr("Download File from Cloud Storage"));
     connect(downloadAction, &QAction::triggered, this, &CloudStorageDockWidget::downloadItem);
     treeView->addAction(downloadAction);
 
-    uploadAction = new QAction(tr("Upload"), this);
+    uploadAction = new QAction(QIcon(":ugene/images/file_upload.svg"), tr("Upload"), this);
     uploadAction->setObjectName("cloudStorageUploadAction");
+    uploadAction->setToolTip("Upload File to Cloud Storage");
     connect(uploadAction, &QAction::triggered, this, &CloudStorageDockWidget::uploadItem);
     treeView->addAction(uploadAction);
+
+    openWebWorkspaceAction = new QAction(QIcon(":ugene/images/web_link.svg"), tr("Open web interface"));
+    openWebWorkspaceAction->setToolTip(tr("Open Cloud Storage Web Interface in Browser"));
+    connect(openWebWorkspaceAction, &QAction::triggered, this, [this]() { QDesktopServices::openUrl(workspaceService->getWebWorkspaceUrl() + "/storage"); });
+    treeView->addAction(openWebWorkspaceAction);
 
     treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(treeView, &QTreeView::customContextMenuRequested, this, &CloudStorageDockWidget::showContextMenu);
     connect(treeView, &QTreeView::doubleClicked, this, &CloudStorageDockWidget::downloadItemSilently);
     connect(treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &CloudStorageDockWidget::updateActionsState);
 
+    toolbar->addAction(downloadAction);
+    toolbar->addAction(uploadAction);
+    toolbar->addAction(createDirAction);
+    toolbar->addAction(renameAction);
+    toolbar->addAction(deleteAction);
+    toolbar->addAction(openWebWorkspaceAction);
+
+    updateActionsState();
     updateStateLabelText();
 }
 
@@ -355,17 +384,20 @@ void CloudStorageDockWidget::handleCloudStorageResponse(const QJsonObject& respo
 }
 
 void CloudStorageDockWidget::updateActionsState() {
-    bool hasSelection = treeView->selectionModel()->hasSelection();
-    deleteAction->setEnabled(hasSelection);
-    renameAction->setEnabled(hasSelection);
+    bool hasTreeView = treeView->isVisible();
 
-    bool isDownloadEnabled = false;
-    if (hasSelection) {
-        auto index = getSelectedItemIndex();
-        auto isFolder = treeView->model()->data(index, USER_DATA_IS_FOLDER).toBool();
-        isDownloadEnabled = !isFolder;
+    bool hasSelection = false;
+    bool hasFileSelection = false;
+    if (hasTreeView) {
+        QModelIndex currentIndex = getSelectedItemIndex();
+        hasSelection = currentIndex.isValid();
+        hasFileSelection = hasSelection && treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() == false;
     }
-    downloadAction->setEnabled(isDownloadEnabled);
+    createDirAction->setEnabled(hasTreeView);
+    deleteAction->setEnabled(hasTreeView && hasSelection);
+    renameAction->setEnabled(hasTreeView && hasSelection);
+    downloadAction->setEnabled(hasTreeView && hasFileSelection);
+    uploadAction->setEnabled(hasTreeView);
 }
 
 void CloudStorageDockWidget::updateStateLabelText() {
