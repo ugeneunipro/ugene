@@ -29,6 +29,7 @@
 #include <QNetworkRequest>
 
 #include "GTUtilsCloudStorageView.h"
+#include "GTUtilsSequenceView.h"
 
 namespace U2 {
 
@@ -87,10 +88,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsCloudStorageView::uploadFile({}, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsCloudStorageView::uploadFile({"Alignments"}, dataDir + "samples/ABIF/A01.abi");
 
-    // Check download file
-    // await changeDir(page, 'Sequences');
-    // await downloadFile(page, 'D-loop.fasta', 'Sequences/D-loop.fasta');
+    // Check download file.
+    GTUtilsCloudStorageView::downloadFileWithDoubleClick({"Sequences", "D-loop.fasta"}, 773);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
+    // Logout and check logout state.
     GTUtilsCloudStorageView::clickLogout();
 }
 

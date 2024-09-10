@@ -219,11 +219,18 @@ NP<FILE> FileAndDirectoryUtils::openFile(const QString& fileUrl, const QString& 
 #endif
 }
 
-/** Closes file descriptor if the file descriptor is defined and is open. */
-void FileAndDirectoryUtils::closeFileIfOpen(FILE* file) {
-    int fd = file == nullptr ? -1 : fileno(file);
-    CHECK(fd > 0, );
-    fclose(file);
+bool FileAndDirectoryUtils::createWritableDirIfNotExists(const QString& dirPath) {
+    QDir dir(dirPath);
+    if (!dir.exists()) {
+        if (!dir.mkpath(".")) {
+            return false;
+        }
+    }
+    QFileInfo dirInfo(dirPath);
+    if (!dirInfo.isWritable()) {
+        return false;
+    }
+    return true;
 }
 
 }  // namespace U2

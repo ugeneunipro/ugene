@@ -3114,7 +3114,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
     //    Expected state: the msa is successfully exported, there are no errors in the log.
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + "test_4508/test_4508.svg"), QString("File '%1' doesn't exist").arg(sandBoxDir + "test_4508/test_4508.svg"));
+    GTFile::checkFileExists(sandBoxDir + "test_4508/test_4508.svg");
     CHECK_SET_ERR(GTFile::getSize(sandBoxDir + "test_4508/test_4508.svg") > 0, QString("File '%1' has zero size").arg(sandBoxDir + "test_4508/test_4508.svg"));
     lt.assertNoErrors();
     ;
@@ -5668,7 +5668,7 @@ GUI_TEST_CLASS_DEFINITION(test_4981) {
 
     GTKeyboardDriver::keyClick('3', Qt::AltModifier);
     auto logView = GTWidget::findWidget("dock_log_view");
-    GTWidget::click(logView); // Move focus to the log view.
+    GTWidget::click(logView);  // Move focus to the log view.
 
     GTKeyboardDriver::keyClick('1', Qt::AltModifier);
     GTUtilsProjectTreeView::checkProjectViewIsClosed();

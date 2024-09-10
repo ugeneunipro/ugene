@@ -248,9 +248,9 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
     QString testFilePath = homePath + "/test_5018.fa";
 
     //    1. Ensure that there is no "test_5018.fa" file in the home dir.
-    if (GTFile::check(testFilePath)) {
+    if (GTFile::isFileExists(testFilePath)) {
         QFile(testFilePath).remove();
-        CHECK_SET_ERR(!GTFile::check(testFilePath), "File can't be removed");
+        CHECK_SET_ERR(!GTFile::isFileExists(testFilePath), "File can't be removed");
     }
 
     //    2. Open "data/samples/FASTA/human_T1.fa".
@@ -265,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state: "test_5018.fa" appears in the home dir.
-    CHECK_SET_ERR(GTFile::check(testFilePath), "File was not created");
+    GTFile::checkFileExists(testFilePath);
     GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
     QFile(testFilePath).remove();
     GTUtilsDialog::checkNoActiveWaiters(10000);

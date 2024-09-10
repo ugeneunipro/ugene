@@ -58,11 +58,18 @@ public:
     // restores file and deletes backup. fail if there is no backup or can't write to the given file
     static void restoreDir(const QString&);
 
-    // checks if file exists
-    static bool check(const QString&);
+    /** Returns true if the file exists. */
+    static bool isFileExists(const QString& path);
 
-    /** Waits for the file to exist. Fails if file is not exist after 'timeout'. */
-    static void waitForFile(const QString& path, int timeout = 10000);
+    /** Asserts that the file exists. Does not wait and completes immidiately. */
+    static void checkFileExists(const QString& path);
+
+    /**
+     * Waits for the file to exist.
+     * Fails if file is not exist after 'timeout'.
+     * If 'expectedFileSize' >=0 waits until file size matches.
+     */
+    static void checkFileExistsWithWait(const QString& path, int timeout = 10000, qint64 expectedFileSize = -1);
 
     // creates a new empty file, rewrite the file if it already exists
     static void create(const QString& filePath);
