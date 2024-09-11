@@ -376,8 +376,9 @@ void WorkspaceService::executeDownloadFileRequest(const QList<QString>& cloudPat
                     ioLog.trace("WorkspaceService::executeDownloadFileRequest: Download finished and saved to" + localFilePath);
                     // Open this file or file folder.
                     DocumentFormatId formatId;
-                    auto detectionResult = DocumentUtils::detectFormat(localFilePath, formatId);
-                    if (detectionResult == DocumentUtils::FORMAT) {
+                    FormatDetectionConfig detectionConfig;
+                    QList<FormatDetectionResult> detectionResults = DocumentUtils::detectFormat(localFilePath, detectionConfig);
+                    if (!detectionResults.isEmpty()) {
                         auto loadDocumentTask = AppContext::getProjectLoader()->openWithProjectTask(localFilePath);
                         AppContext::getTaskScheduler()->registerTopLevelTask(loadDocumentTask);
                     } else {
