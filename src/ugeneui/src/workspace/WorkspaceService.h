@@ -79,6 +79,9 @@ public:
      * Returns empty string otherwise.
      */
     static QString getErrorMessageFromResponse(const QJsonObject& response);
+
+    QString getWebWorkspaceUrl() const;
+
 signals:
     /** Emitted every time authentication state is changed. */
     void si_authenticationEvent(bool isLoggedIn);
@@ -104,6 +107,7 @@ private:
     WebSocketClientService* webSocketService = nullptr;
     CloudStorageService* cloudStorageService = nullptr;
     QAction* separatorAction = nullptr;
+    QString webWorkspaceUrl;
     QString authUrl;
     QString logoutUrl;
     QString tokenUrl;
