@@ -247,9 +247,30 @@ static void fillErrorStateInJson(const QString& errorMessage, QJsonObject& jsonR
     jsonResponse["errorMessage"] = errorMessage;
 }
 
-static void fillErrorStateInJson(const QNetworkReply* reply, QJsonObject& jsonResponse) {
+static void fillErrorStateInJson(QNetworkReply* reply, QJsonObject& jsonResponse) {
     SAFE_POINT(reply->error() != QNetworkReply::NoError, "QNetworkReply has no error", );
-    fillErrorStateInJson(reply->errorString(), jsonResponse);
+
+    QString serverError = reply->errorString();
+    QString serverReplyPrefixToken = "server replied: ";
+    int index = serverError.indexOf(serverReplyPrefixToken);
+    if (index > 0) {
+        serverError = serverError.mid(index + serverReplyPrefixToken.length()).trimmed();
+        if (serverError == "Request Entity Too Large") {  // Frontend error from Nginx.
+            serverError = "Error uploading file: the file is too large";  // TODO: check this before starting the upload process? Deal with individual quotas correctly.
+        }
+    }
+
+    QByteArray responseData = reply->readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
+    if (!jsonDoc.isNull()) {
+        QJsonObject jsonObj = jsonDoc.object();
+        QString errorMessage = jsonObj["message"].toString();
+        if (!errorMessage.isEmpty()) {
+            serverError = errorMessage;
+        }
+    }
+
+    fillErrorStateInJson(serverError, jsonResponse);
     jsonResponse["errorCode"] = reply->error();
 }
 
@@ -411,7 +432,7 @@ void WorkspaceService::executeUploadFileRequest(const QList<QString>& cloudDirPa
     QString cloudFileName = QFileInfo(localFilePath).fileName();
     QHttpPart filePart;
     filePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/octet-stream"));
-    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"files\"; filename=\"" + cloudFileName + "\""));
+    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant(R"(form-data; name="files"; filename=")" + cloudFileName + "\""));
 
     auto file = new QFile(localFilePath);
     if (!file->open(QIODevice::ReadOnly)) {
