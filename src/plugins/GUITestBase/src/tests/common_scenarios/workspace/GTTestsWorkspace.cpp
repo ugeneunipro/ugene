@@ -29,6 +29,7 @@
 #include <QNetworkRequest>
 
 #include "GTUtilsCloudStorageView.h"
+#include "GTUtilsSequenceView.h"
 
 namespace U2 {
 
@@ -72,30 +73,26 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsCloudStorageView::checkItemIsPresent({"Sequences"});
 
     // Check rename.
-    GTUtilsCloudStorageView::renameItem({"about.txt"}, "renamed-about.txt");
+    GTUtilsCloudStorageView::renameItem({"about.txt"}, "renamed-about.txt");  // Top level.
+    GTUtilsCloudStorageView::renameItem({"Alignments", "cytb.aln"}, "renamed-cytb.aln");  // In folder.
 
-    // await changeDir(page, 'Alignments');
-    // await renameFile(page, 'cytb.aln', 'renamed-cyt.aln');
-
-    // Check create dir.
-    // await createDir(page, 'New Folder');
-    // await changeDir(page, 'New Folder');
-    // await createDir(page, 'New Sub Folder');
+    // Check folder creation.
+    GTUtilsCloudStorageView::createDir({"New Folder"});
+    GTUtilsCloudStorageView::createDir({"New Folder", "New Sub Folder"});
 
     // Check delete file or dir.
-    // await deleteFile(page, 'Documents');
-    // await changeDir(page, 'Alignments');
-    // await deleteFile(page, 'hemoglobin_alpha_alignment.sto');
+    GTUtilsCloudStorageView::deleteEntry({"Documents"});
+    GTUtilsCloudStorageView::deleteEntry({"Alignments", "hemoglobin_alpha_alignment.sto"});
 
     // Check upload.
-    // await uploadFile(page, 'Appendix_Fig3.pdf');
-    // await changeDir(page, 'Alignments');
-    // await uploadFile(page, 'HA_discrete_MCC.tre');
+    GTUtilsCloudStorageView::uploadFile({}, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsCloudStorageView::uploadFile({"Alignments"}, dataDir + "samples/ABIF/A01.abi");
 
-    // Check download file
-    // await changeDir(page, 'Sequences');
-    // await downloadFile(page, 'D-loop.fasta', 'Sequences/D-loop.fasta');
+    // Check download file.
+    GTUtilsCloudStorageView::downloadFileWithDoubleClick({"Sequences", "D-loop.fasta"}, 773);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
+    // Logout and check logout state.
     GTUtilsCloudStorageView::clickLogout();
 }
 
