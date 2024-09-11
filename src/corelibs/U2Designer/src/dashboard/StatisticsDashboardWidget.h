@@ -55,6 +55,7 @@ public:
 private slots:
     void sl_workerInfoChanged(const QString& actorId, const Monitor::WorkerInfo& info);
     void sl_updateProducers();
+    void sl_colorModeSwitched();
 
 private:
     const WorkflowMonitor* monitor;

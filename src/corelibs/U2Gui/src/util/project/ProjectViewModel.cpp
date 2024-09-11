@@ -952,7 +952,7 @@ QVariant ProjectViewModel::data(Folder* folder, int role) const {
 }
 
 QVariant ProjectViewModel::getFolderDecorationData() const {
-    return getIcon(QIcon(":U2Designer/images/directory.png"), true);
+    return getIcon(GUIUtils::getIconResource("U2Designer", "directory.png", false), true);
 }
 
 QVariant ProjectViewModel::data(GObject* obj, int role) const {

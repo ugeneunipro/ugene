@@ -21,7 +21,10 @@
 
 #include "./StatisticsDashboardWidget.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/ProjectModel.h>
+
+#include <U2Gui/MainWindow.h>
 
 #include <U2Lang/WorkflowUtils.h>
 
@@ -66,6 +69,8 @@ StatisticsDashboardWidget::StatisticsDashboardWidget(const QDomElement& dom, con
     for (auto row : qAsConst(statisticsRows)) {
         addTableRow(tableGridLayout, row.id, QStringList() << row.name << row.time << row.count);
     }
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &StatisticsDashboardWidget::sl_colorModeSwitched);
 }
 
 bool StatisticsDashboardWidget::isValidDom(const QDomElement& dom) {
@@ -117,6 +122,10 @@ void StatisticsDashboardWidget::sl_updateProducers() {
         const Monitor::WorkerInfo& info = workerInfoMap[actorId];
         sl_workerInfoChanged(actorId, info);
     }
+}
+
+void StatisticsDashboardWidget::sl_colorModeSwitched() {
+    colorModeSwitched(tableGridLayout);
 }
 
 StatisticsRow::StatisticsRow(const QString& id, const QString& name, const QString& time, const QString& count)

@@ -87,6 +87,11 @@ public:
 #endif
         return result.name();
     }
+
+    static QString hyperlinkColorLabelHtmlStr() {
+        return AppContext::getMainWindow()->isDarkMode() ? "#add8e6" : QColor(Qt::blue).name();
+    }
+
 };
 
 }  // namespace U2

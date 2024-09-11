@@ -31,6 +31,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/MainWindow.h>
 
@@ -650,7 +651,7 @@ void WidgetCreator::visit(LogoWidget* lw) {
     auto label = new QLabel(result);
     QPixmap pix;
     if (lw->isDefault()) {
-        pix = QPixmap(QString(":U2Designer/images/logo.png"));
+        pix = QPixmap(GUIUtils::getResourceName("U2Designer", "logo.png", false));
     } else {
         pix = QPixmap(lw->getLogoPath());
     }

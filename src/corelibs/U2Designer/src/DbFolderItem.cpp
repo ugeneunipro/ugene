@@ -24,6 +24,7 @@
 #include <U2Core/Folder.h>
 #include <U2Core/U2ObjectDbi.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 
 #include "ui_DbFolderOptions.h"
@@ -34,8 +35,7 @@ DbFolderItem::DbFolderItem(const QString& url, QListWidget* parent)
     : UrlItem(url, parent), options(new DbFolderOptions()) {
     connect(options, SIGNAL(si_dataChanged()), SIGNAL(si_dataChanged()));
 
-    QIcon dirIcon = QIcon(QString(":U2Designer/images/database_folder.png"));
-    setIcon(dirIcon);
+    setIcon(GUIUtils::getIconResource("U2Designer", "database_folder.png", false).pixmap(16, 16));
 
     const QString folderPath = SharedDbUrlUtils::getDbFolderPathByUrl(url);
     setToolTip("<p><b>" + SharedDbUrlUtils::getDbShortNameFromEntityUrl(url) + "</b>: " + folderPath + "</p><p>" + tr("Use <i>right click</i> to set advanced options") + "</p>");

@@ -361,7 +361,7 @@ void RemoteDBFetcherFactory::init() {
     proto->setPrompter(new RemoteDBFetcherPrompter());
 
     if (AppContext::isGUIMode()) {
-        proto->setIconParameters(IconParameters("U2Designer", "blue_circle.png", false));
+        proto->setIconParameters(IconParameters("U2Designer", "blue_circle.png"));
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
@@ -563,7 +563,7 @@ void FetchSequenceByIdFromAnnotationFactory::init() {
     proto->setPrompter(new FetchSequenceByIdFromAnnotationPrompter());
 
     if (AppContext::isGUIMode()) {
-        proto->setIconParameters(IconParameters("U2Designer", "blue_circle.png", false));
+        proto->setIconParameters(IconParameters("U2Designer", "blue_circle.png"));
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);

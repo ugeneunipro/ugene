@@ -32,6 +32,8 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Designer/DatasetsController.h>
 
 namespace U2 {
@@ -52,8 +54,7 @@ DatasetsListWidget::DatasetsListWidget(DatasetsController* _ctrl)
     newTabButton->setText("+");
     newTabButton->setObjectName("+");
     newTabButton->setToolTip(tr("Add dataset"));
-    QIcon addIcon = QIcon(QString(":U2Designer/images/add.png"));
-    newTabButton->setIcon(addIcon);
+    newTabButton->setIcon(GUIUtils::getIconResource("core", "plus.png", false));
 
     connect(newTabButton, SIGNAL(clicked()), SLOT(sl_newDataset()));
     connect(tabs, SIGNAL(tabCloseRequested(int)), SLOT(sl_deleteDataset(int)));
