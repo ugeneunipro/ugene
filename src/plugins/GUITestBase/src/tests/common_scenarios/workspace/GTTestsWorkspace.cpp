@@ -82,7 +82,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     // Check delete file or dir.
     GTUtilsCloudStorageView::deleteEntry({"Documents"});
-    GTUtilsCloudStorageView::deleteEntry({"Alignments", "hemoglobin_alpha_alignment.sto"});
+    GTUtilsCloudStorageView::deleteEntry({"Alignments", "hemoglobin_alpha_alignment.msf"});
 
     // Check upload.
     GTUtilsCloudStorageView::uploadFile({}, dataDir + "samples/CLUSTALW/COI.aln");
