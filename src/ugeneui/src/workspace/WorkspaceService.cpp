@@ -380,7 +380,9 @@ void WorkspaceService::executeDownloadFileRequest(const QList<QString>& cloudPat
                     QList<FormatDetectionResult> detectionResults = DocumentUtils::detectFormat(localFilePath, detectionConfig);
                     if (!detectionResults.isEmpty()) {
                         auto loadDocumentTask = AppContext::getProjectLoader()->openWithProjectTask(localFilePath);
-                        AppContext::getTaskScheduler()->registerTopLevelTask(loadDocumentTask);
+                        if (loadDocumentTask != nullptr) {
+                            AppContext::getTaskScheduler()->registerTopLevelTask(loadDocumentTask);
+                        }
                     } else {
                         QDesktopServices::openUrl(QUrl::fromLocalFile(downloadDirPath));
                     }
