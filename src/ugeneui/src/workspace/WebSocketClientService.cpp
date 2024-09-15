@@ -130,7 +130,7 @@ void WebSocketClientService::onTextMessageReceived(const QString& message) {
 
 void WebSocketClientService::onError(QAbstractSocket::SocketError error) {
     ioLog.trace("WebSocket error:" + QString::number(error));
-    CHECK_EXT(!isRetrying, ioLog.trace("WebSocketClientService::onError - won't retry when inside refreshWebSocketConnection"), );
+    CHECK(!isRetrying, );
     isRetrying = true;
     QTimer::singleShot(3000, this, [this] {
         reconnectIfNotConnected();

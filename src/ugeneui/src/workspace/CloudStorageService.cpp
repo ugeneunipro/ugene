@@ -118,7 +118,7 @@ bool CloudStorageService::checkCloudStorageEntryName(const QString& entryName) {
 }
 
 bool CloudStorageService::checkCloudStoragePath(const QList<QString>& path, bool isDir) {
-    CHECK(path.length() > 0 || isDir, false);
+    CHECK(!path.isEmpty() || isDir, false);
     for (const auto& pathEntry : qAsConst(path)) {
         CHECK(checkCloudStorageEntryName(pathEntry), false);
     }
@@ -136,7 +136,7 @@ static constexpr int ROOT_ENTRY_SESSION_LOCAL_ID = 0;
 
 CloudStorageEntryData::CloudStorageEntryData(const QList<QString>& _path, qint64 _size, const QDateTime& _modificationTime, qint64 _sessionLocalId)
     : path(_path), size(_size), modificationTime(_modificationTime), sessionLocalId(_sessionLocalId) {
-    SAFE_POINT(path.length() >= 1 || sessionLocalId == ROOT_ENTRY_SESSION_LOCAL_ID, "Item path must not be empty", );  // Only root path can be empty.
+    SAFE_POINT(!path.isEmpty() || sessionLocalId == ROOT_ENTRY_SESSION_LOCAL_ID, "Item path must not be empty", );  // Only root path can be empty.
 }
 
 const QString& CloudStorageEntryData::getName() const {
