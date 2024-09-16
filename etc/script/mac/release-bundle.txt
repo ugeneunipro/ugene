@@ -1469,7 +1469,6 @@ Unipro UGENE.app/Contents/MacOS/tools/cap3
 Unipro UGENE.app/Contents/MacOS/tools/clustalo
 Unipro UGENE.app/Contents/MacOS/tools/clustalw
 Unipro UGENE.app/Contents/MacOS/tools/cufflinks
-Unipro UGENE.app/Contents/MacOS/tools/fastqc
 Unipro UGENE.app/Contents/MacOS/tools/fasttree
 Unipro UGENE.app/Contents/MacOS/tools/hmmer3
 Unipro UGENE.app/Contents/MacOS/tools/iqtree

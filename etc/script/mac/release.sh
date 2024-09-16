@@ -49,6 +49,7 @@ rm -rf "${APP_EXE_DIR}/plugins/"*GUITestBase*
 rm -rf "${APP_EXE_DIR}/plugins/"*api_tests*
 rm -rf "${APP_EXE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
+rm -rf "${APP_EXE_DIR}/tools/fastqc"
 
 # Copy UGENE files & tools into 'bundle' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
