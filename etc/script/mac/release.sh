@@ -49,7 +49,6 @@ rm -rf "${APP_EXE_DIR}/plugins/"*GUITestBase*
 rm -rf "${APP_EXE_DIR}/plugins/"*api_tests*
 rm -rf "${APP_EXE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
-rm -rf "${APP_EXE_DIR}/tools/fastqc"
 
 # Copy UGENE files & tools into 'bundle' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
@@ -59,6 +58,10 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
 # These tools can't be notarized today:
 # python3: Remove until we find out how to notarize it
 rm -rf "${APP_EXE_DIR}/tools/python3"
+# Since Sep 2024 Apple notarization process fails for fastqc package because it is not signed correctly:
+#       "path": "ugene-51.0-r732-b6391-mac-x86-64.dmg/Unipro UGENE.app/Contents/MacOS/tools/fastqc/cisd-jhdf5.jar/native/nativedata/x86_64-Mac OS X/libnativedata.jnilib",
+#      "message": "The signature does not include a secure timestamp.",
+rm -rf "${APP_EXE_DIR}/tools/fastqc"
 
 echo " ##teamcity[blockClosed name='Copy files']"
 
