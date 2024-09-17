@@ -247,8 +247,8 @@ void QDWorker::sl_taskFinished(Task* t) {
         QList<SharedAnnotationData> res;
         AnnotationTableObject* ao = sched->getSettings().annotationsObj;
         annObjToAnnDataList(ao, res);
-        QVariant v = qVariantFromValue<QList<SharedAnnotationData>>(res);
-        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), v));
+        const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(res);
+        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
     }
 }
 
