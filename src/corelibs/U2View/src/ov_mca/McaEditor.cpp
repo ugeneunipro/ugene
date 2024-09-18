@@ -131,31 +131,7 @@ SequenceObjectContext* McaEditor::getReferenceContext() const {
 }
 
 void McaEditor::sl_onPosChangeRequest(int position) {
-    int baseIndex = position - 1;
-    //CHECK(baseIndex >= 0 && baseIndex < editor->getAlignmentLen(), );
-    getUI()->getScrollController()->scrollToBase(baseIndex, getUI()->getSequenceArea()->width());
-    /*    
-    if (isWrapMode()) {
-        getScrollController()->scrollToBase({baseIndex, 0});
-    } else {
-        getLineWidget(0)->getScrollController()->scrollToBase(baseIndex, getSequenceAreaWidth(0));
-    }
-    // Keep the vertical part of the selection but limit the horizontal to the given position.
-    // In case of 1-row selection it will procude a single cell selection as the result.
-    // If there is no active selection - select a cell of the first visible row on the screen.
-    int selectedBaseIndex = position - 1;
-    QList<QRect> selectedRects = editor->getSelection().getRectList();
-    if (selectedRects.isEmpty()) {
-        int firstVisibleViewRowIndex = getScrollController()->getFirstVisibleViewRowIndex();
-        selectedRects.append({selectedBaseIndex, firstVisibleViewRowIndex, 1, 1});
-    } else {
-        for (QRect& rect : selectedRects) {
-            rect.setX(selectedBaseIndex);
-            rect.setWidth(1);
-        }
-    }
-    editor->getSelectionController()->setSelection(selectedRects);
-    */
+    getUI()->getScrollController()->scrollToBase(position - 1, getUI()->getSequenceArea()->width());
 }
 
 void McaEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {
