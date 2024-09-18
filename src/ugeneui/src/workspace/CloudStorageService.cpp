@@ -75,8 +75,8 @@ void CloudStorageService::renameEntry(const QList<QString>& oldPath,
                                       QObject* context,
                                       std::function<void(const QJsonObject&)> callback) const {
     ioLog.trace("CloudStorageService::renameEntry: " + oldPath.join("/") + " -> " + newPath.join("/"));
-    SAFE_POINT(checkCloudStoragePath(oldPath), "Invalid cloud old file path: " + oldPath.join("/"), );
-    SAFE_POINT(checkCloudStoragePath(newPath), "Invalid cloud old file path: " + newPath.join("/"), );
+    SAFE_POINT(checkCloudStoragePath(oldPath), "Invalid old file path: " + oldPath.join("/"), );
+    SAFE_POINT(checkCloudStoragePath(newPath), "Invalid new file path: " + newPath.join("/"), );
     QJsonObject payload;
     payload["path"] = QJsonArray::fromStringList(oldPath);
     payload["newPath"] = QJsonArray::fromStringList(newPath);
@@ -104,11 +104,11 @@ void CloudStorageService::uploadFile(const QList<QString>& cloudDirPath,
     workspaceService->executeUploadFileRequest(cloudDirPath, localFilePath, context, callback);
 }
 
-static QRegularExpression forbiddenChars(R"([<>:"/\\|?*])");
+static QRegularExpression forbiddenChars(R"([<>:"/\\|?*\x00])");
 
 bool CloudStorageService::checkCloudStorageEntryName(const QString& entryName) {
     CHECK_EXT(!entryName.isEmpty(), ioLog.trace("File name is empty"), false);
-    CHECK_EXT(!forbiddenChars.match(entryName).hasMatch(), ioLog.trace("File name contains forbidden characters or path separators: " + entryName), false);
+    CHECK_EXT(!forbiddenChars.match(entryName).hasMatch(), ioLog.trace("File name contains forbidden characters: " + entryName), false);
     CHECK_EXT(entryName.trimmed() == entryName, ioLog.trace("File name has leading or trailing spaces: " + entryName), false);
     for (const QChar& c : qAsConst(entryName)) {
         CHECK_EXT(c.category() != QChar::Other_Control, ioLog.trace("File name contains control characters: " + entryName), false);

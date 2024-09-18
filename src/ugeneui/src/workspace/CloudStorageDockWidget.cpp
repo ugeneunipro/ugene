@@ -285,7 +285,7 @@ void CloudStorageDockWidget::createDir() {
 
     CHECK(ok && !dirName.isEmpty(), );
     if (!CloudStorageService::checkCloudStorageEntryName(dirName)) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("Folder name contains illegal characters"));
+        QMessageBox::critical(this, L10N::errorTitle(), tr("Folder name contains illegal characters: %1").arg(dirName));
         return;
     }
     if (!isFolder) {
@@ -322,11 +322,11 @@ void CloudStorageDockWidget::renameItem() {
     CHECK(!path.isEmpty(), );
 
     bool ok;
-    QString newName = QInputDialog::getText(nullptr, tr("Rename %1").arg(path.last()), tr("New Name"), QLineEdit::Normal, "", &ok);
+    QString newName = QInputDialog::getText(nullptr, tr("Rename %1").arg(path.last()), tr("New Name"), QLineEdit::Normal, path.last(), &ok);
 
     CHECK(ok && !newName.isEmpty(), );
     if (!CloudStorageService::checkCloudStorageEntryName(newName)) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("New name contains illegal characters"));
+        QMessageBox::critical(this, L10N::errorTitle(), tr("New name contains illegal characters: %1").arg(newName));
         return;
     }
     QList<QString> newPath = path;
