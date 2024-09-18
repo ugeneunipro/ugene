@@ -40,6 +40,7 @@ public:
 
     static QString getWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir);
     static QString createWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir);
+    static bool createWritableDirIfNotExists(const QString& dirPath);
     static QString detectFormat(const QString& url);
     static bool isFileEmpty(const QString& url);
 
@@ -69,9 +70,6 @@ public:
      * If any error happens the method returns nullptr.
      */
     static NP<FILE> openFile(const QString& path, const QString& mode);
-
-    /** Closes file descriptor if the file descriptor is defined and is open. */
-    static void closeFileIfOpen(FILE* file);
 
 private:
     static QString getFormatId(const FormatDetectionResult& r);

@@ -739,7 +739,8 @@ GUI_TEST_CLASS_DEFINITION(test_0627) {
                        << "leftOverlapSizeSpinBox"
                        << "rightOverlapSizeSpinBox"
                        << "leGroupName"
-                       << "leAnnotationName";
+                       << "leAnnotationName"
+                       << "location_line_edit";
 
             for (const QString& name : objsWithoutTooltips) {
                 CHECK_SET_ERR(exceptions.contains(name), QString("The following field has no tool tip: %1").arg(name));
@@ -1719,7 +1720,7 @@ GUI_TEST_CLASS_DEFINITION(test_0814) {
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new LogFile_1(QDir(sandBoxDir).absolutePath() + "test_0814_log")));
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 
-    CHECK_SET_ERR(GTFile::check(QDir(sandBoxDir).absolutePath() + "test_0814_log") == true, "Log file not found");
+    GTFile::checkFileExists(QDir(sandBoxDir).absolutePath() + "test_0814_log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0821) {

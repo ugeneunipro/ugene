@@ -136,14 +136,14 @@ QToolBar* MWDockManagerImpl::getDockBar(MWDockArea a) const {
 
 static bool ksInUse(const QKeySequence& ks, const QList<DockData*>& docks) {
     foreach (DockData* d, docks) {
-        if (d->action != nullptr && d->action->shortcut() == ks) {
+        if (d->keySequenceAction != nullptr && d->keySequenceAction->shortcut() == ks) {
             return true;
         }
     }
     return false;
 }
 
-QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& ks) {
+QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& keySequence) {
     bool showDock = dockWidget->objectName() == lastActiveDocksState[area];
 
     QToolBar* toolBar = getDockBar(area);
@@ -155,26 +155,30 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, c
     data->wrapWidget->setObjectName("wrap_widget_" + dockWidget->objectName());
     data->label->setObjectName("doc_label__" + dockWidget->objectName());
     data->label->installEventFilter(this);
-    if (area != MWDockArea_Bottom) {
+    if (area == MWDockArea_Bottom) {
+        toolBar->insertWidget(statusBarAction, data->label);
+    } else {
         if (dockWidget->objectName() == "project_view") {
             auto actionsList = toolBar->actions();
-            toolBar->insertWidget(actionsList.isEmpty() ? nullptr : actionsList[0], data->label);
+            if (actionsList.isEmpty()) {
+                data->toolBarAction = toolBar->addWidget(data->label);
+            } else {
+                data->toolBarAction = toolBar->insertWidget(actionsList[0], data->label);
+            }
         } else {
-            toolBar->addWidget(data->label);
+            data->toolBarAction = toolBar->addWidget(data->label);
         }
-    } else {
-        toolBar->insertWidget(statusBarAction, data->label);
     }
     connect(dockWidget, &QObject::destroyed, this, &MWDockManagerImpl::sl_widgetDestroyed);
 
     QString ttip = dockWidget->windowTitle();
-    if (!ks.isEmpty() && !ksInUse(ks, docks)) {
-        data->action = new QAction(data->label);
-        data->action->setShortcut(ks);
-        data->action->setShortcutContext(Qt::ApplicationShortcut);
-        connect(data->action, SIGNAL(triggered()), SLOT(sl_toggleDock()));
-        data->label->addAction(data->action);
-        ttip += " (" + ks.toString() + ")";
+    if (!keySequence.isEmpty() && !ksInUse(keySequence, docks)) {
+        data->keySequenceAction = new QAction(data->label);
+        data->keySequenceAction->setShortcut(keySequence);
+        data->keySequenceAction->setShortcutContext(Qt::ApplicationShortcut);
+        connect(data->keySequenceAction, SIGNAL(triggered()), SLOT(sl_toggleDock()));
+        data->label->addAction(data->keySequenceAction);
+        ttip += " (" + keySequence.toString() + ")";
     }
     data->label->setToolTip(ttip);
 
@@ -308,6 +312,9 @@ void MWDockManagerImpl::destroyDockData(DockData* d) {
     if (d->dock != nullptr) {
         saveDockGeometry(d);
     }
+    QToolBar* toolBar= getDockBar(d->area);
+    toolBar->removeAction(d->toolBarAction);
+
     delete d->label;
     d->wrapWidget->deleteLater();
     d->wrapWidget = nullptr;

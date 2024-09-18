@@ -24,7 +24,7 @@
 #include <QComboBox>
 #include <QLineEdit>
 
-#include <U2Core/U2Region.h>
+#include <U2Core/U2Location.h>
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -36,43 +36,49 @@ struct RegionSelectorGui {
     RegionSelectorGui()
         : startLineEdit(nullptr),
           endLineEdit(nullptr),
+          locationLineEdit(nullptr),
           presetsComboBox(nullptr) {
     }
 
-    RegionSelectorGui(QLineEdit* start, QLineEdit* end, QComboBox* presets = nullptr)
+    RegionSelectorGui(QLineEdit* start, QLineEdit* end, QLineEdit* location,  QComboBox* presets = nullptr)
         : startLineEdit(start),
           endLineEdit(end),
+          locationLineEdit(location),
           presetsComboBox(presets) {
     }
 
     QLineEdit* startLineEdit;
     QLineEdit* endLineEdit;
+    QLineEdit* locationLineEdit;
     QComboBox* presetsComboBox;
 };
 
 struct U2GUI_EXPORT RegionPreset {
     RegionPreset() {
     }
-    RegionPreset(const QString& text, const U2Region& region)
+    RegionPreset(const QString& text, const U2Location& location)
         : text(text),
-          region(region) {
+          location(location) {
     }
 
     QString text;
-    U2Region region;
+    U2Location location;
 
     bool operator==(const RegionPreset& other) const {
         return (text == other.text);
     }
 
     /** Whole sequence localized preset name. */
-    static QString WHOLE_SEQUENCE();
+    static QString getWholeSequenceModeDisplayName();
 
     /** Selected sequence localized preset name. */
-    static QString SELECTED_REGION();
+    static QString getSelectedRegionDisplayName();
 
     /** Custom sequence localized preset name. */
-    static QString CUSTOM_REGION();
+    static QString getCustomRegionModeDisplayName();
+    
+    /** Custom sequence localized preset name. */
+    static QString getLocationModeDisplayName();
 };
 
 struct RegionSelectorSettings {
@@ -80,7 +86,7 @@ struct RegionSelectorSettings {
                            bool circular = false,
                            DNASequenceSelection* selection = nullptr,
                            QList<RegionPreset> presetRegions = QList<RegionPreset>(),
-                           QString defaultPreset = RegionPreset::SELECTED_REGION());
+                           QString defaultPreset = RegionPreset::getSelectedRegionDisplayName());
 
     qint64 maxLen;
     DNASequenceSelection* selection;
@@ -102,6 +108,9 @@ public:
 
     U2Region getRegion(bool* ok = nullptr) const;
     void setRegion(const U2Region& region);
+
+    U2Location getLocation(bool* ok = nullptr) const;
+    void setLocation(const U2Location& location);
 
     QString getPresetName() const;
     void setPreset(const QString& preset);

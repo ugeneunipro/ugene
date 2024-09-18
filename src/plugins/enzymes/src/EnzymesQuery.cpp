@@ -74,7 +74,7 @@ Task* QDEnzymesActor::getAlgorithmTask(const QVector<U2Region>& location) {
     }
 
     foreach (const U2Region& r, location) {
-        auto st = new FindEnzymesTask(scheme->getEntityRef(), r, enzymes, INT_MAX, circular);
+        auto st = new FindEnzymesTask(scheme->getEntityRef(), r, {}, enzymes, INT_MAX, circular);
         t->addSubTask(st);
         enzymesTasks.append(st);
     }

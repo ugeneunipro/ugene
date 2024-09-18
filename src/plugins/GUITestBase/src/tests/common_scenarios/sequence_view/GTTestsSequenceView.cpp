@@ -1140,20 +1140,19 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     //    Export image
     //    GTUtilsDialog::waitForDialog(new ExportSequenceImage(sandBoxDir + "seq_view_test_0037_1.png"));
     //    GTWidget::click(exportButton);
-    //    bool exists = GTFile::check(sandBoxDir + "seq_view_test_0037_1.png");
+    //    bool exists = GTFile::checkFileExists(sandBoxDir + "seq_view_test_0037_1.png");
     //    CHECK_SET_ERR(exists, "Image not exported");
     //    GTGlobals::sleep(1000);
 
     ExportSequenceImage::Settings s = ExportSequenceImage::Settings(ExportSequenceImage::ZoomedView, U2Region(1, 1000));
     GTUtilsDialog::waitForDialog(new ExportSequenceImage(sandBoxDir + "seq_view_test_0037_1_1.png", s));
     GTWidget::click(exportButton);
-    bool exists = GTFile::check(sandBoxDir + "seq_view_test_0037_1_1.png");
-    CHECK_SET_ERR(exists, "Zoomed view not exported");
+    GTFile::checkFileExists(sandBoxDir + "seq_view_test_0037_1_1.png");
 
     //    s.type = ExportSequenceImage::DetailsView;
     //    GTUtilsDialog::waitForDialog(new ExportSequenceImage(sandBoxDir + "seq_view_test_0037_1_2.png", s));
     //    GTWidget::click(exportButton);
-    //    exists = GTFile::check(sandBoxDir + "seq_view_test_0037_1_2.png");
+    //    exists = GTFile::checkFileExists(sandBoxDir + "seq_view_test_0037_1_2.png");
     //    CHECK_SET_ERR(exists, "Details view not exported");
 }
 
@@ -2270,8 +2269,11 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
     // Expected state: message box appears
     // 5. Set start search position back to 1
     // 6. Check the exclude checkbox
-    // 7. Click Ok
+    // 7. Set start exclude position to 5000, end position to 1000
+    // Expected state: the line edits are red
+    // 8. Click Ok
     // Expected state: message box appears
+    // 9. Set start exclude position back to 1
 
     GTFileDialog::openFile(dataDir + "samples/Genbank", "murine.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
@@ -2284,24 +2286,25 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
 
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            auto regionSelector = GTWidget::findWidget("region_selector_with_excluded");
-
-            auto start = GTWidget::findLineEdit("startLineEdit", regionSelector);
-            GTLineEdit::setText(start, "5000");
-
-            auto end = GTWidget::findLineEdit("endLineEdit", regionSelector);
-            GTLineEdit::setText(end, "1000");
+            auto regionSelector = GTWidget::findWidget("range_selector");
+            GTLineEdit::setText("start_edit_line", QString::number(5000), regionSelector);
+            GTLineEdit::setText("end_edit_line", QString::number(1000), regionSelector);
 
             GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 
-            GTLineEdit::setText(start, "1");
+            GTLineEdit::setText("start_edit_line", QString::number(1), regionSelector);
 
+            regionSelector = GTWidget::findWidget("exclude_range_selector");
             auto exclude = GTWidget::findCheckBox("excludeCheckBox");
             GTCheckBox::setChecked(exclude);
+            GTLineEdit::setText("start_edit_line", QString::number(5000), regionSelector);
+            GTLineEdit::setText("end_edit_line", QString::number(1000), regionSelector);
 
             GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+
+            GTLineEdit::setText("start_edit_line", QString::number(1), regionSelector);
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }

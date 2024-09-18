@@ -73,21 +73,34 @@ public:
 
     const CloudStorageEntry& getRootEntry() const;
 
-    void createDir(const QList<QString>& path);
+    void createDir(const QList<QString>& path,
+                   QObject* context = nullptr,
+                   std::function<void(const QJsonObject&)> callback = nullptr) const;
 
-    void deleteEntry(const QList<QString>& path);
+    void deleteEntry(const QList<QString>& path,
+                     QObject* context = nullptr,
+                     std::function<void(const QJsonObject&)> callback = nullptr) const;
 
-    void renameEntry(const QList<QString>& oldPath, const QList<QString>& newPath);
+    void renameEntry(const QList<QString>& oldPath,
+                     const QList<QString>& newPath,
+                     QObject* context = nullptr,
+                     std::function<void(const QJsonObject&)> callback = nullptr) const;
 
-    void downloadFile(const QList<QString>& path, const QString& localDirPath);
+    void downloadFile(const QList<QString>& path,
+                      const QString& localDirPath,
+                      QObject* context = nullptr,
+                      std::function<void(const QJsonObject&)> callback = nullptr) const;
 
-    void uploadFile(const QList<QString>& path, const QString& localFilePath);
+    void uploadFile(const QList<QString>& cloudDirPath,
+                    const QString& localFilePath,
+                    QObject* context = nullptr,
+                    std::function<void(const QJsonObject&)> callback = nullptr) const;
 
     /** Checks that the 'entryName' is an acceptable cloud storage file/folder name. */
     static bool checkCloudStorageEntryName(const QString& entryName);
 
-    /** Checks that the 'path' is a valid cloud storage path: is not empty, does not contain empty or invalid items. */
-    static bool checkCloudStoragePath(const QList<QString>& path);
+    /** Checks that the 'path' is a valid cloud storage path: is not empty (unless is dir), does not contain empty or invalid items. */
+    static bool checkCloudStoragePath(const QList<QString>& path, bool isDir = false);
 
 signals:
     /** Emitted every time cloud storage state is changed. */

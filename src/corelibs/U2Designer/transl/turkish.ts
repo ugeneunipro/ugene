@@ -984,7 +984,7 @@ papyon indeks dosyası</translation>
     </message>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="209"/>
-        <source>Are you really want to change marker&apos;s type? Some data can be lost!</source>
+        <source>Do you really want to change marker&apos;s type? Some data can be lost!</source>
         <translation>İşaretçinin türünü gerçekten değiştirmek istiyor musunuz? Bazı veriler kaybolabilir!</translation>
     </message>
     <message>

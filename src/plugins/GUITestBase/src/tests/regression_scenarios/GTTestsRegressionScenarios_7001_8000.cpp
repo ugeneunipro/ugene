@@ -191,17 +191,7 @@ GUI_TEST_CLASS_DEFINITION(test_7012) {
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
-    bool hasUnexpectedLogMessage = lt.hasMessage("Ignored incorrect value of attribute");
-    CHECK_SET_ERR(!hasUnexpectedLogMessage, "Found unexpected message in the log");
-
-    // Check that output file contains only empty FASTA entries.
-    QStringList fileUrls = GTUtilsDashboard::getOutputFileUrls();
-    CHECK_SET_ERR(fileUrls.length() == 1, "Incorrect number of output files: " + QString::number(fileUrls.length()));
-    QString fileContent = GTFile::readAll(fileUrls[0]);
-    QStringList lines = fileContent.split("\n");
-    for (const auto& line : qAsConst(lines)) {
-        CHECK_SET_ERR(line.startsWith(">") || line.isEmpty(), "Only FASTA header lines are expected: " + line);
-    }
+    CHECK_SET_ERR(lt.hasError("Nothing to write"), "Error %1 'Nothing to write' not found in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7014) {
@@ -1774,6 +1764,37 @@ GUI_TEST_CLASS_DEFINITION(test_7438) {
     QRect selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect();
     CHECK_SET_ERR(selectedRect.top() == 15, "Illegal start of the selection: " + QString::number(selectedRect.top()));
     CHECK_SET_ERR(selectedRect.bottom() == 17, "Illegal end of the selection: " + QString::number(selectedRect.bottom()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7445) {
+    /*
+    * 1. Compose WD scheme Read NGS Reads Assembly->Extract Consensus from Assembly->Write Sequence
+    * 2. Set input assembly file to  common_data/ugenegb/1.bam.ugenegb
+    * 3. Set document format "ugenegb" or "Vector NTI seqience"
+    * 4. Run workflow
+    * Expected state: no output files produced, only one error in the log "Nothing to write"
+    */    
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::addAlgorithm("Read NGS Reads Assembly", true);
+    GTUtilsWorkflowDesigner::addAlgorithm("Extract Consensus from Assembly", true);
+    GTUtilsWorkflowDesigner::addAlgorithm("Write Sequence", true);
+
+    GTUtilsWorkflowDesigner::connect(GTUtilsWorkflowDesigner::getWorker("Read NGS Reads Assembly"), GTUtilsWorkflowDesigner::getWorker("Extract Consensus from Assembly"));
+    GTUtilsWorkflowDesigner::connect(GTUtilsWorkflowDesigner::getWorker("Extract Consensus from Assembly"), GTUtilsWorkflowDesigner::getWorker("Write Sequence"));
+
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read NGS Reads Assembly"));
+    GTMouseDriver::click();
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/ugenedb/1.bam.ugenedb");
+
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Write Sequence"));
+    GTMouseDriver::click();
+    GTUtilsWorkflowDesigner::setParameter("Document format", "GFF", GTUtilsWorkflowDesigner::comboValue);
+
+    GTLogTracer lt;
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasError("Nothing to write"), "Error %1 'Nothing to write' not found in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7447) {
@@ -5274,19 +5295,19 @@ GUI_TEST_CLASS_DEFINITION(test_7974) {
 
 GUI_TEST_CLASS_DEFINITION(test_7979) {
     /*
-    * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
-    * 2. Close view for sars.gb
-    * 3. Right click on sequence object in sars.gb and add it to opened view
-    * 4. Press "Lock scales" button
-    * Expected state: "Lock scales: visible range start" menu item checked in "Lock scales" menu
-    * 5. Activate "Lock scales: visible range start" menu item in "Lock scales" menu
-    * Expected state: "Lock scales" button is not pressed
-    * 6. Press "Lock scales" button
-    * 7. Activate "Lock scales: selected annotation" menu item in "Lock scales" menu
-    * Expected state: "Lock scales: selected annotation" menu item checked in "Lock scales" menu, other items are not checked
-    * 8. Press "Lock scales" button
-    * Expected state: "Lock scales" button is not pressed, no menu items selected
-    */
+     * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
+     * 2. Close view for sars.gb
+     * 3. Right click on sequence object in sars.gb and add it to opened view
+     * 4. Press "Lock scales" button
+     * Expected state: "Lock scales: visible range start" menu item checked in "Lock scales" menu
+     * 5. Activate "Lock scales: visible range start" menu item in "Lock scales" menu
+     * Expected state: "Lock scales" button is not pressed
+     * 6. Select any annotation on active sequence view. Press "Lock scales" button
+     * 7. Activate "Lock scales: selected annotation" menu item in "Lock scales" menu
+     * Expected state: "Lock scales: selected annotation" menu item checked in "Lock scales" menu, other items are not checked
+     * 8. Press "Lock scales" button
+     * Expected state: "Lock scales" button is not pressed, no menu items selected
+     */
     GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Separate;
     GTUtilsDialog::waitForDialog(new GTSequenceReadingModeDialogUtils());
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list(dataDir + "samples/Genbank/", {"NC_014267.1.gb", "sars.gb"}));
@@ -5346,6 +5367,9 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     CHECK_SET_ERR(!lockScalesButton->isDown(), "'Lock scales' button should be down");
+    
+    auto firstAnnotation = GTUtilsAnnotationsTreeView::findFirstAnnotation();
+    GTUtilsAnnotationsTreeView::selectItems({firstAnnotation});
 
     GTWidget::click(lockScalesButton);
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuClicker("Lock scales: selected annotation")));

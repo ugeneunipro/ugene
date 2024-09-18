@@ -177,13 +177,13 @@ static bool setFilePermissions(const QString& path, bool allowWrite, bool recurs
 #define GT_CLASS_NAME "GTFile"
 
 void GTFile::setReadWrite(const QString& path, bool recursive) {
-    waitForFile(path);
+    checkFileExists(path);
     bool set = setFilePermissions(path, true, recursive);
     GT_CHECK(set, "read-write permission could not be set")
 }
 
 void GTFile::setReadOnly(const QString& path, bool recursive) {
-    waitForFile(path);
+    checkFileExists(path);
     bool set = setFilePermissions(path, false, recursive);
     GT_CHECK(set, "read-only permission could not be set")
 }
@@ -191,8 +191,8 @@ void GTFile::setReadOnly(const QString& path, bool recursive) {
 const QString GTFile::backupPostfix = "_GT_backup";
 
 bool GTFile::equals(const QString& path1, const QString& path2, bool simplified) {
-    waitForFile(path1);
-    waitForFile(path2);
+    checkFileExists(path1);
+    checkFileExists(path2);
 
     QFile f1(path1);
     QFile f2(path2);
@@ -366,14 +366,29 @@ void GTFile::restoreDir(const QString& path) {
     GT_CHECK(renamed == true, "restore of <" + path + "> can't be done");
 }
 
-bool GTFile::check(const QString& path) {
+bool GTFile::isFileExists(const QString& path) {
     QFile file(path);
     return file.exists();
 }
 
-void GTFile::waitForFile(const QString& path, int timeout) {
-    for (int time = 0; time < timeout && !check(path); time += 500) {
+void GTFile::checkFileExists(const QString& path) {
+    GT_CHECK(isFileExists(path), "File does not exist: " + path);
+}
+
+void GTFile::checkFileExistsWithWait(const QString& path, int timeout, qint64 expectedFileSize) {
+    for (int time = 0; time < timeout; time += GT_OP_CHECK_MILLIS) {
+        QFile file(path);
+        if (file.exists() && (expectedFileSize < 0 || file.size() == expectedFileSize)) {
+            return;
+        }
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
     }
+    QFile file(path);
+    QString failMessage = (file.exists()
+                               ? "File size does not match, actual size: " + QString::number(file.size()) + ", file: "
+                               : "File does not exists: ") +
+                          path;
+    GT_FAIL(failMessage, );
 }
 
 void GTFile::create(const QString& filePath) {

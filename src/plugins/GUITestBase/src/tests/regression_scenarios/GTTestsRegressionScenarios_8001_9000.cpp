@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <api/GTSequenceReadingModeDialog.h>
+#include <api/GTSequenceReadingModeDialogUtils.h>
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -50,6 +52,7 @@
 #include "GTTestsRegressionScenarios_8001_9000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsBookmarksTreeView.h"
+#include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsNotifications.h"
@@ -257,6 +260,69 @@ GUI_TEST_CLASS_DEFINITION(test_8010) {
     GTUtilsAnnotationsTreeView::clickItem("pair 3  (0, 2)", 1, false);
     GTUtilsAnnotationsTreeView::clickItem("pair 4  (0, 2)", 1, false);
     GTUtilsAnnotationsTreeView::clickItem("pair 5  (0, 2)", 1, false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8017) {
+    /*
+     * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
+     * 2. Close view for sars.gb
+     * 3. Right click on sequence object in sars.gb and add it to opened view
+     * 4. Open "Lock scales" menu 
+     * Expected state: only "Lock scales: visible range start" item is active
+     * 5. Select any region for first sequence. Open "Lock scales" menu 
+     * Expected state: "Lock scales: visible range start" and "Lock scales: selected sequence" items are active
+     * 6. Select annotation for first sequence. Open "Lock scales" menu
+     * Expected state: "Lock scales: visible range start" and "Lock scales: selected annotation" items are active
+     */
+
+    class MenuCheckerItemsEnabled : public CustomScenario {
+    public:
+        MenuCheckerItemsEnabled(const QStringList& enabledMmenuItems_)
+            : enabledMmenuItems(enabledMmenuItems_) {};
+        void run() override {
+            QMenu* activePopupMenu = GTWidget::getActivePopupMenu();
+            QList<QAction*> menuActions = activePopupMenu->actions();
+            for (QAction* action : qAsConst(menuActions)) {
+                if (action->isEnabled()) {
+                    const QString actionText = action->text();
+                    CHECK_SET_ERR(enabledMmenuItems.contains(actionText), QString("Item %1 enabled but shouldn't!").arg(actionText));
+                    enabledMmenuItems.removeAll(actionText);
+                }
+            }
+            CHECK_SET_ERR(enabledMmenuItems.isEmpty(), QString("Items '%1' are not enabled!").arg(enabledMmenuItems.join(", ")));
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
+
+        QStringList enabledMmenuItems;
+    };
+
+    GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Separate;
+    GTUtilsDialog::waitForDialog(new GTSequenceReadingModeDialogUtils());
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list(dataDir + "samples/Genbank/", {"NC_014267.1.gb", "sars.gb"}));
+    GTMenu::clickMainMenuItem({"File", "Open..."});
+
+    GTUtilsMdi::closeWindow("NC_004718 [sars.gb]");
+    GTUtilsMdi::closeWindow("Start Page");
+
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Add to view", "Add to view: NC_014267 [NC_014267.1.gb]"}));
+    GTUtilsProjectTreeView::click("NC_004718", Qt::RightButton);
+
+    GTUtilsCv::commonCvBtn::click();
+
+    QAbstractButton* lockScalesButton = qobject_cast<QAbstractButton*>(GTWidget::findWidget("Lock scales"));
+    QPoint menuActivationPoint = QPoint(lockScalesButton->size().width() - 6, lockScalesButton->size().height() / 2);  
+
+    GTUtilsDialog::waitForDialog(new PopupChecker(new MenuCheckerItemsEnabled({"Lock scales: visible range start"})));
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
+
+    GTUtilsSequenceView::selectSequenceRegion(2, 222);
+    GTUtilsDialog::waitForDialog(new PopupChecker(new MenuCheckerItemsEnabled({"Lock scales: visible range start", "Lock scales: selected sequence"})));
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);  
+
+    GTUtilsAnnotationsTreeView::selectItems({GTUtilsAnnotationsTreeView::findItems("rRNA").first()});
+
+    GTUtilsDialog::waitForDialog(new PopupChecker(new MenuCheckerItemsEnabled({"Lock scales: visible range start", "Lock scales: selected annotation"})));
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8018) {
@@ -938,6 +1004,53 @@ GUI_TEST_CLASS_DEFINITION(test_8100) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8101) {
+    /*
+     * 1. Open samples/FASTA/human_T1.fa
+     * 2. Open Find enzymes dialog, set following enzymes to search:
+     * "BamHI", "BglII", "ClaI", "DraI", "EcoRI", "EcoRV", "HindIII", "PstI", "SalI", "SmaI", "XmaI"
+     * 3. Run search
+     * Expected state: 636 annotations found
+     * 4. Open Find enzymes dialog, set excluded region "10000 - 12000"
+     * 5. Run search
+     * Expected state: 191 annotations found
+     * 6. Open Find enzymes dialog
+     * 7. Set search location "1000..8000,90000..108000,14000..34000"
+     * 8. Set excluded location set excluded location "9000..12000,50000..55000"
+     * 9. Run search
+     * Expected state: 25 annotations found
+     */
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    FindEnzymesDialogFillerSettings settings({"BamHI", "BglII", "ClaI", "DraI", "EcoRI", "EcoRV", "HindIII", "PstI", "SalI", "SmaI", "XmaI"});
+
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 636, "Annoatated region counter doesn't match.");
+
+    settings.excludeRegionStart = 10000;
+    settings.excludeRegionEnd = 12000;
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 191, "Annoatated region counter doesn't match.");
+
+    settings.searchRegions = {U2Region(1000, 7000), U2Region(90000, 18000), U2Region(14000, 20000)};
+    settings.excludeRegions = {U2Region(9000, 3000), U2Region(50000, 5000)};
+    settings.excludeRegionStart = -1;
+    settings.excludeRegionEnd = -1;
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 25, "Annoatated region counter doesn't match.");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8118) {
     /*
     * 1. Open Mca alignment
@@ -985,6 +1098,58 @@ GUI_TEST_CLASS_DEFINITION(test_8120_2) {
 
     GTUtilsMdi::activateWindow("COI");
     CHECK_SET_ERR(lt.hasMessage("Render overview"), "No expected message in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8136) {
+    /*
+    * 1. Open _common_data/scenarios/_regression/8136/8136.seq
+    * 2. Open "Restriction enzymes"dialog
+    * 3. Choose only one "AasI" enzyme.
+    * 4. Check "Uncut area" and set it from 29 to 100.
+    * 5. Click OK.
+    * Expected state: no enzymes were found.
+    * Expected state: there is a info in log about skipped enzyme
+    * 6. Open "Restriction enzymes"dialog
+    * 7. Check "Uncut area" and set it from 29 to 33.
+    * 8. Set "Search area" from 30 to 31.
+    * 5. Click OK.
+    * Expected state: Message box with "Nothing to search" message appeared.
+    */
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/8136/8136.seq");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    FindEnzymesDialogFillerSettings settings({"AasI"});
+    settings.excludeRegionStart = 29;
+    settings.excludeRegionEnd = 100;    
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
+    GTLogTracer lt;
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 0, "Annoatated region counter doesn't match.");
+    lt.checkMessage("The following enzymes were found, but skipped because they were found inside of the \"Uncut area\":");
+    
+    class CheckErrorMessageBox : public CustomScenario {
+    public:
+        void run() override {
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "'Uncut' region/location fully contains 'Search in' inside it!"));
+            filler->commonScenario();
+            GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Cancel);
+        }
+        FindEnzymesDialogFiller *filler;
+    };
+
+    settings.searchRegionStart = 30;
+    settings.searchRegionEnd = 31;
+    settings.excludeRegionStart = 29;
+    settings.excludeRegionEnd = 33;
+    
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    CheckErrorMessageBox* scenario = new CheckErrorMessageBox();
+    FindEnzymesDialogFiller* filler = new FindEnzymesDialogFiller(settings, scenario);
+    scenario->filler = filler;
+    GTUtilsDialog::add(filler);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 }
 
 }  // namespace GUITest_regression_scenarios

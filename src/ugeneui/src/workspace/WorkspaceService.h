@@ -60,13 +60,27 @@ public:
     void executeApiRequest(const QString& apiPath,
                            const QJsonObject& payload,
                            QObject* context = nullptr,
-                           std::function<void(const QJsonObject&)>* callback = nullptr);
+                           std::function<void(const QJsonObject&)> callback = nullptr);
 
     /** Downloads a file from the workspace. */
-    void downloadFile(const QList<QString>& cloudPath, const QString& localFilePath);
+    void executeDownloadFileRequest(const QList<QString>& cloudPath,
+                                    const QString& localFilePath,
+                                    QObject* context = nullptr,
+                                    std::function<void(const QJsonObject&)> callback = nullptr);
 
     /** Uploads a file from the workspace. */
-    void uploadFile(const QList<QString>& path, const QString& localFilePath);
+    void executeUploadFileRequest(const QList<QString>& cloudDirPath,
+                                  const QString& localFilePath,
+                                  QObject* context = nullptr,
+                                  std::function<void(const QJsonObject&)> callback = nullptr);
+
+    /**
+     * Returns error message from the response in case if the response is error response.
+     * Returns empty string otherwise.
+     */
+    static QString getErrorMessageFromResponse(const QJsonObject& response);
+
+    QString getWebWorkspaceUrl() const;
 
 signals:
     /** Emitted every time authentication state is changed. */
@@ -93,7 +107,9 @@ private:
     WebSocketClientService* webSocketService = nullptr;
     CloudStorageService* cloudStorageService = nullptr;
     QAction* separatorAction = nullptr;
+    QString webWorkspaceUrl;
     QString authUrl;
+    QString logoutUrl;
     QString tokenUrl;
     QString clientId;
     QString stage;

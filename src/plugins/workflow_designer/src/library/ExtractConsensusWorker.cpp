@@ -78,8 +78,10 @@ void ExtractConsensusWorker::sl_taskFinished() {
     CHECK(t != nullptr, );
     CHECK(t->isFinished() && !t->hasError(), );
     CHECK(!t->isCanceled(), );
-
-    sendResult(context->getDataStorage()->getDataHandler(t->getResult()));
+    U2EntityRef result = t->getResult();
+    U2SequenceObject resultSequenceObject("seq", result);
+    CHECK(resultSequenceObject.getSequenceLength() != 0, );
+    sendResult(context->getDataStorage()->getDataHandler(result));
 }
 
 void ExtractConsensusWorker::cleanup() {

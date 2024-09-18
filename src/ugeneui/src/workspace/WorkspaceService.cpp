@@ -31,6 +31,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Settings.h>
@@ -46,7 +47,19 @@
 
 namespace U2 {
 
+static const QString TEST_REFRESH_TOKEN = "value-is-not-used";
+
+/** Returns a non-empty access token in case if UGENE is run in test mode. */
+static QByteArray getTestModeAccessToken() {
+    return qgetenv("UGENE_TEST_WORKSPACE_USER_TOKEN");
+}
+
+static bool isTestMode() {
+    return !getTestModeAccessToken().isEmpty();
+}
+
 static QDateTime getTokenExpirationTime(const QString& accessToken) {
+    CHECK(!isTestMode(), QDateTime(QDate(2100, 1, 1)))
     QStringList parts = accessToken.split('.');
     CHECK(parts.size() == 3, {});
     QByteArray payloadString = QByteArray::fromBase64(parts[1].toUtf8());
@@ -67,13 +80,19 @@ WorkspaceService::WorkspaceService()
     if (stage != "dev" && stage != "local") {
         stage = "prod";
     }
+    QString webDomainAndPort = stage == "dev"     ? "workspace-dev.ugene.net"
+                               : stage == "local" ? "localhost:4200"
+                                                  : "workspace.ugene.net";
     QString apiDomainAndPort = stage == "dev"     ? "workspace-dev.ugene.net"
                                : stage == "local" ? "localhost:4201"
                                                   : "workspace.ugene.net";
-    apiUrl = (stage == "local" ? "http://" : "https://") + apiDomainAndPort;
+    QString workspaceHttpProtocolPrefix = (stage == "local" ? "http://" : "https://");
+    webWorkspaceUrl = workspaceHttpProtocolPrefix + webDomainAndPort;
+    apiUrl = workspaceHttpProtocolPrefix + apiDomainAndPort;
     webSocketUrl = stage == "local" ? "ws://localhost:4201" : "wss://" + apiDomainAndPort;
     clientId = "workspace-client-" + stage;
     authUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/auth";
+    logoutUrl = workspaceHttpProtocolPrefix + webDomainAndPort + "/logout";
     tokenUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/token";
 
     loginAction = new QAction(QIcon(":ugene/images/login.svg"), tr("Login to Workspace"));
@@ -190,6 +209,10 @@ void WorkspaceService::setTokenFields(const QString& newAccessToken, const QStri
 }
 
 void WorkspaceService::login() {
+    if (isTestMode()) {
+        setTokens(getTestModeAccessToken(), TEST_REFRESH_TOKEN, false);
+        return;
+    }
     setTokens("", "", true);  // Reset tokens on start.
     auto authenticator = new KeycloakAuthenticator(authUrl, tokenUrl, clientId);
     connect(authenticator, &KeycloakAuthenticator::si_authenticationGranted, this, [this](const QString& accessToken, const QString& refreshToken) {
@@ -203,6 +226,10 @@ void WorkspaceService::login() {
 }
 
 void WorkspaceService::logout() {
+    bool isLogoutFromBrowser = QMessageBox::question(nullptr, tr("Logout"), tr("Do you also want to close the browser session?")) == QMessageBox::Yes;
+    if (isLogoutFromBrowser) {
+        QDesktopServices::openUrl(logoutUrl);
+    }
     accessToken.clear();
     updateMainMenuActions();
     delete webSocketService;
@@ -215,10 +242,49 @@ CloudStorageService* WorkspaceService::getCloudStorageService() const {
     return cloudStorageService;
 }
 
+static void fillErrorStateInJson(const QString& errorMessage, QJsonObject& jsonResponse) {
+    jsonResponse["isError"] = true;
+    jsonResponse["errorMessage"] = errorMessage;
+}
+
+static void fillErrorStateInJson(QNetworkReply* reply, QJsonObject& jsonResponse) {
+    SAFE_POINT(reply->error() != QNetworkReply::NoError, "QNetworkReply has no error", );
+
+    QString serverError = reply->errorString();
+    QString serverReplyPrefixToken = "server replied: ";
+    int index = serverError.indexOf(serverReplyPrefixToken);
+    if (index > 0) {
+        serverError = serverError.mid(index + serverReplyPrefixToken.length()).trimmed();
+        if (serverError == "Request Entity Too Large") {  // Frontend error from Nginx.
+            serverError = "Error uploading file: the file is too large";  // TODO: check this before starting the upload process? Deal with individual quotas correctly.
+        }
+    }
+
+    QByteArray responseData = reply->readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
+    if (!jsonDoc.isNull()) {
+        QJsonObject jsonObj = jsonDoc.object();
+        QString errorMessage = jsonObj["message"].toString();
+        if (!errorMessage.isEmpty()) {
+            serverError = errorMessage;
+        }
+    }
+
+    fillErrorStateInJson(serverError, jsonResponse);
+    jsonResponse["errorCode"] = reply->error();
+}
+
+QString WorkspaceService::getErrorMessageFromResponse(const QJsonObject& response) {
+    if (response["isError"].toBool()) {
+        return response["errorMessage"].toString();
+    }
+    return {};
+}
+
 void WorkspaceService::executeApiRequest(const QString& apiPath,
                                          const QJsonObject& payload,
                                          QObject* context,
-                                         std::function<void(const QJsonObject&)>* callback) {
+                                         std::function<void(const QJsonObject&)> callback) {
     coreLog.trace("WorkspaceService::sendApiRequest: " + apiPath);
     SAFE_POINT(callback == nullptr || context != nullptr, "A callback requires non-null life-range context", );
     SAFE_POINT(apiPath.startsWith("/"), "API path must start with /", );
@@ -242,10 +308,6 @@ void WorkspaceService::executeApiRequest(const QString& apiPath,
     QNetworkReply* reply = networkManager->post(request, QJsonDocument(payload).toJson());
     QPointer<QObject> contextLifeRangeTracker(context);
 
-    connect(reply, &QNetworkReply::errorOccurred, this, [](QNetworkReply::NetworkError code) {
-        coreLog.trace("WorkspaceService::sendApiRequest error occured: " + QString::number(code));
-    });
-
     connect(reply, &QNetworkReply::finished, this, [reply, networkManager, callback, contextLifeRangeTracker] {
         ioLog.trace("WorkspaceService::sendApiRequest: reply finished");
         QJsonObject jsonResponse;
@@ -257,23 +319,25 @@ void WorkspaceService::executeApiRequest(const QString& apiPath,
                 jsonResponse = doc.object();
             }
         } else {
-            jsonResponse["isError"] = true;
-            jsonResponse["errorMessage"] = reply->errorString();
-            jsonResponse["errorCode"] = reply->error();
-            ioLog.trace("WorkspaceService::sendApiRequest: Got error response: " + reply->errorString());
+            ioLog.trace("WorkspaceService::executeApiRequest: Got error response: " + reply->errorString());
+            fillErrorStateInJson(reply, jsonResponse);
         }
         if (callback && !contextLifeRangeTracker.isNull()) {
-            (*callback)(jsonResponse);
+            callback(jsonResponse);
         }
         reply->deleteLater();
         networkManager->deleteLater();
     });
 }
 
-void WorkspaceService::downloadFile(const QList<QString>& cloudPath, const QString& localFilePath) {
-    coreLog.trace("WorkspaceService::downloadFile: " + cloudPath.join("/") + " to " + localFilePath);
-    SAFE_POINT(cloudPath.length() > 0, "Cloud path is empty", );
-    SAFE_POINT(localFilePath.length() > 0, "Local file path is empty", );
+void WorkspaceService::executeDownloadFileRequest(const QList<QString>& cloudPath,
+                                                  const QString& localFilePath,
+                                                  QObject* context,
+                                                  std::function<void(const QJsonObject&)> callback) {
+    coreLog.trace("WorkspaceService::executeDownloadFileRequest: " + cloudPath.join("/") + " to " + localFilePath);
+    SAFE_POINT(!cloudPath.isEmpty(), "Cloud path is empty", );
+    SAFE_POINT(!localFilePath.isEmpty(), "Local file path is empty", );
+    SAFE_POINT(callback == nullptr || context != nullptr, "A callback requires non-null life-range context", );
 
     auto networkManager = new QNetworkAccessManager();
     networkManager->setCache(nullptr);
@@ -290,42 +354,60 @@ void WorkspaceService::downloadFile(const QList<QString>& cloudPath, const QStri
     request.setAttribute(QNetworkRequest::CacheSaveControlAttribute, false);
 
     QNetworkReply* reply = networkManager->get(request);
+    QPointer<QObject> contextLifeRangeTracker(context);
 
     connect(reply, &QNetworkReply::downloadProgress, [](qint64 bytesReceived, qint64 bytesTotal) {
         ioLog.trace("WorkspaceService::downloadFile: progress:" + QString::number(bytesReceived) + "/" + QString::number(bytesTotal));
     });
 
-    connect(reply, &QNetworkReply::finished, [reply, localFilePath, networkManager] {
-        if (reply->error()) {
-            ioLog.trace("WorkspaceService::downloadFile ERROR:" + reply->errorString());
-        } else {
-            QByteArray data = reply->readAll();
-            QFile file(localFilePath);
-            if (file.open(QIODevice::WriteOnly)) {
-                file.write(data);
-                file.close();
-                ioLog.trace("WorkspaceService::downloadFile: Download finished and saved to" + localFilePath);
-                // Open this file or file folder.
-                DocumentFormatId formatId;
-                auto detectionResult = DocumentUtils::detectFormat(localFilePath, formatId);
-                if (detectionResult == DocumentUtils::FORMAT) {
-                    auto loadDocumentTask = AppContext::getProjectLoader()->openWithProjectTask(localFilePath);
-                    AppContext::getTaskScheduler()->registerTopLevelTask(loadDocumentTask);
-                } else {
-                    QString folderPath = QFileInfo(localFilePath).absolutePath();
-                    QDesktopServices::openUrl(QUrl::fromLocalFile(folderPath));
-                }
+    connect(reply, &QNetworkReply::finished, [reply, localFilePath, networkManager, callback, contextLifeRangeTracker] {
+        QJsonObject jsonResponse;
+        if (reply->error() == QNetworkReply::NoError) {
+            QString downloadDirPath = QFileInfo(localFilePath).absolutePath();
+            if (!FileAndDirectoryUtils::createWritableDirIfNotExists(downloadDirPath)) {
+                fillErrorStateInJson(tr("Failed to create download directory: %1").arg(downloadDirPath), jsonResponse);
             } else {
-                ioLog.trace("WorkspaceService::downloadFile: Could not open file for writing.");
+                QByteArray data = reply->readAll();
+                QFile file(localFilePath);
+
+                if (file.open(QIODevice::WriteOnly)) {
+                    file.write(data);
+                    file.close();
+                    ioLog.trace("WorkspaceService::executeDownloadFileRequest: Download finished and saved to" + localFilePath);
+                    // Open this file or file folder.
+                    DocumentFormatId formatId;
+                    FormatDetectionConfig detectionConfig;
+                    QList<FormatDetectionResult> detectionResults = DocumentUtils::detectFormat(localFilePath, detectionConfig);
+                    if (!detectionResults.isEmpty()) {
+                        auto loadDocumentTask = AppContext::getProjectLoader()->openWithProjectTask(localFilePath);
+                        if (loadDocumentTask != nullptr) {
+                            AppContext::getTaskScheduler()->registerTopLevelTask(loadDocumentTask);
+                        }
+                    } else {
+                        QDesktopServices::openUrl(QUrl::fromLocalFile(downloadDirPath));
+                    }
+                } else {
+                    ioLog.trace("WorkspaceService::executeDownloadFileRequest: Could not open file for writing.");
+                }
             }
+        } else {
+            ioLog.trace("WorkspaceService::executeDownloadFileRequest ERROR:" + reply->errorString());
+            fillErrorStateInJson(reply, jsonResponse);
+        }
+        if (callback && !contextLifeRangeTracker.isNull()) {
+            callback(jsonResponse);
         }
         reply->deleteLater();
         networkManager->deleteLater();
     });
 }
 
-void WorkspaceService::uploadFile(const QList<QString>& path, const QString& localFilePath) {
-    SAFE_POINT(path.length() > 0, "Path is empty", );
+void WorkspaceService::executeUploadFileRequest(const QList<QString>& cloudDirPath,
+                                                const QString& localFilePath,
+                                                QObject* context,
+                                                std::function<void(const QJsonObject&)> callback) {
+    coreLog.trace("WorkspaceService::executeUploadFileRequest: " + localFilePath + "to " + cloudDirPath.join("/"));
+    SAFE_POINT(callback == nullptr || context != nullptr, "A callback requires non-null life-range context", );
     QUrl downloadUrl(apiUrl + "/api/storage/upload");
 
     QNetworkRequest request(downloadUrl);
@@ -344,7 +426,7 @@ void WorkspaceService::uploadFile(const QList<QString>& path, const QString& loc
 
     // Path part
     QHttpPart pathPart;
-    QJsonArray jsonArray = QJsonArray::fromStringList(path);
+    QJsonArray jsonArray = QJsonArray::fromStringList(cloudDirPath);
     QByteArray jsonData = QJsonDocument(jsonArray).toJson(QJsonDocument::Compact);
     pathPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"path\""));
     pathPart.setBody(jsonData);
@@ -353,7 +435,7 @@ void WorkspaceService::uploadFile(const QList<QString>& path, const QString& loc
     QString cloudFileName = QFileInfo(localFilePath).fileName();
     QHttpPart filePart;
     filePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/octet-stream"));
-    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"files\"; filename=\"" + cloudFileName + "\""));
+    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant(R"(form-data; name="files"; filename=")" + cloudFileName + "\""));
 
     auto file = new QFile(localFilePath);
     if (!file->open(QIODevice::ReadOnly)) {
@@ -372,20 +454,30 @@ void WorkspaceService::uploadFile(const QList<QString>& path, const QString& loc
     QNetworkReply* reply = manager->post(request, multiPart);
     multiPart->setParent(reply);  // the multiPart object will be deleted along with the reply
 
+    QPointer<QObject> contextLifeRangeTracker(context);
     connect(reply, &QNetworkReply::uploadProgress, [](qint64 bytesSent, qint64 bytesTotal) {
-        ioLog.trace("WorkspaceService::uploadFile: Upload progress:" + QString::number(bytesSent) + "/" + QString::number(bytesTotal));
+        ioLog.trace("WorkspaceService::executeUploadFileRequest: Progress:" + QString::number(bytesSent) + "/" + QString::number(bytesTotal));
     });
 
-    connect(reply, &QNetworkReply::finished, [reply, manager, file] {
-        if (reply->error()) {
-            ioLog.trace("WorkspaceService::uploadFile: ERROR:" + reply->errorString());
+    connect(reply, &QNetworkReply::finished, [reply, manager, file, callback, contextLifeRangeTracker] {
+        QJsonObject jsonResponse;
+        if (reply->error() == QNetworkReply::NoError) {
+            ioLog.trace("WorkspaceService::executeUploadFileRequest: Upload finished");
         } else {
-            ioLog.trace("WorkspaceService::uploadFile: Upload finished");
+            ioLog.trace("WorkspaceService::executeUploadFileRequest: ERROR:" + reply->errorString());
+            fillErrorStateInJson(reply, jsonResponse);
         }
         file->close();
+        if (callback && !contextLifeRangeTracker.isNull()) {
+            callback(jsonResponse);
+        }
         reply->deleteLater();
         manager->deleteLater();
     });
+}
+
+QString WorkspaceService::getWebWorkspaceUrl() const {
+    return webWorkspaceUrl;
 }
 
 EnableWorkspaceTask::EnableWorkspaceTask(WorkspaceService* _ws)

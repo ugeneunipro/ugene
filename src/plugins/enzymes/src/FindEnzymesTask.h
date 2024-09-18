@@ -33,6 +33,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AutoAnnotationsSupport.h>
 #include <U2Core/DNASequence.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/SequenceDbiWalkerTask.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
@@ -57,10 +58,10 @@ public:
 class FindEnzymesTask;
 
 struct FindEnzymesTaskConfig {
-    /** Region to search enzymes. When is empty the whole sequence range is processed. */
-    U2Region searchRegion;
+    /** Regions to search enzymes. When is empty the whole sequence range is processed. */
+    QVector<U2Region> searchRegions;
 
-    /** List of regions to exclude from the search. */
+    /** Regions to exclude from the search. */
     QVector<U2Region> excludedRegions;
 
     /** Group name for the result annotations. */
@@ -80,6 +81,9 @@ struct FindEnzymesTaskConfig {
 
     /** If task is not Auto-Annotation-Update task and no results is found the target 'annotationObject' will be removed from the project. */
     bool isAutoAnnotationUpdateTask = false;
+
+    /** Exclude enzymes from result by region or by enzymes found in region */
+    bool excludeMode = false;
 };
 
 class FindEnzymesToAnnotationsTask : public Task {
@@ -95,13 +99,15 @@ private:
     QList<SEnzymeData> enzymes;
     QPointer<AnnotationTableObject> annotationObject;
     FindEnzymesTaskConfig cfg;
-    FindEnzymesTask* findTask;
+    QList<Task*> searchEnzymesTasks;
 };
 
 class FindEnzymesTask : public Task, public FindEnzymesAlgListener {
     Q_OBJECT
 public:
-    FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false, QVector<U2Region> excludedRegions = QVector<U2Region>());
+    FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QVector<U2Region>& excludeRegions, 
+                    const QList<SEnzymeData>& enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) override;
 
@@ -113,7 +119,6 @@ public:
 
 private:
     int maxResults;
-    QVector<U2Region> excludedRegions;
     bool isCircular;
     int seqlen;
 
@@ -123,6 +128,13 @@ private:
     QMutex resultsLock;
 
     QString group;
+
+    QList<SEnzymeData> enzymes;
+    U2EntityRef seqRef;
+    U2Region region;
+    QMap<QString, int> excludeSearchTasksRunningCounter;
+    QVector<U2Region> excludeRegions;
+    QSet<QString> enzymesFoundInExcludedRegion;
 };
 
 class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public SequenceDbiWalkerCallback {
@@ -172,34 +184,41 @@ private:
 class FindEnzymesAutoAnnotationUpdater : public AutoAnnotationsUpdater {
     Q_OBJECT
 public:
+
     FindEnzymesAutoAnnotationUpdater();
 
     Task* createAutoAnnotationsUpdateTask(const AutoAnnotationObject* annotationObject) override;
 
     bool checkConstraints(const AutoAnnotationConstraints& constraints) override;
 
-    /** Returns last saved search region for the given sequence object or empty region if no region was saved. */
-    static U2Region getLastSearchRegionForObject(const U2SequenceObject* sequenceObject);
+    /** Returns last saved search location for the given sequence object or empty region if no region was saved. */
+    static U2Location getLastSearchLocationForObject(const U2SequenceObject* sequenceObject);
 
     /**
-     * Saves the region as last used 'search' region for the object.
+     * Saves the location as last used 'search' region for the object.
      * This region will be used by default during the next auto-annotation task run.
      * If no region is set, the whole sequence will be processed.
      */
-    static void setLastSearchRegionForObject(U2SequenceObject* sequenceObject, const U2Region& region);
+    static void setLastSearchLocationForObject(U2SequenceObject* sequenceObject, const U2Location& location);
 
-    /** Returns last saved 'excluded' region for the given sequence object or empty region if no region was saved. */
-    static U2Region getLastExcludeRegionForObject(const U2SequenceObject* sequenceObject);
+    /** Returns last saved 'excluded' location for the given sequence object or empty region if no region was saved. */
+    static U2Location getLastExcludeLocationForObject(const U2SequenceObject* sequenceObject);
 
     /**
-     * Saves the region as last used 'exclude' region for the object.
+     * Saves the region as last used 'exclude' location for the object.
      * This region will be used by default during the next auto-annotation task run.
      * If no region is set, the whole sequence will be processed.
      */
-    static void setLastExcludeRegionForObject(U2SequenceObject* sequenceObject, const U2Region& region);
+    static void setLastExcludeLocationForObject(U2SequenceObject* sequenceObject, const U2Location& region);
 
     /** Returns true if the task can safely be started for the given sequence length and number of enzymes. */
     static bool isTooManyAnnotationsInTheResult(qint64 sequenceLength, int countOfEnzymeVariants);
+    
+    /** Set exclude mode for the given sequence object. */
+    static void setExcludeModeEnabledForObject(U2SequenceObject* sequenceObject, bool enabled);
+
+    /** Returns exclude mode for the given sequence object. */
+    static bool getExcludeModeEnabledForObject(U2SequenceObject* sequenceObject);
 };
 
 }  // namespace U2
