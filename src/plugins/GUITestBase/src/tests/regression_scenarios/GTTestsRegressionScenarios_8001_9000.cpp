@@ -44,6 +44,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
 
+#include <U2View/McaEditorReferenceArea.h>
 #include <U2View/TvTextItem.h>
 
 #include "GTTestsRegressionScenarios_8001_9000.h"
@@ -54,6 +55,7 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMcaEditor.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsOptionPanelMSA.h"
@@ -70,6 +72,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
@@ -933,6 +936,21 @@ GUI_TEST_CLASS_DEFINITION(test_8100) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8118) {
+    /*
+    * 1. Open Mca alignment
+    * 2. Press Ctrl+g and set valid position to go
+    * Expected state: visible position changed
+    */
+    GTFileDialog::openFile(testDir + "_common_data/sanger/alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive();
+
+    GTUtilsDialog::waitForDialog(new GoToDialogFiller(599));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+
+    CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 599, QString("Unexpected text: slider position doesn't change after 'Go to'"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8120_1) {

@@ -448,7 +448,8 @@ void MsaEditor::addHighlightingMenu(QMenu* m) const {
 }
 
 void MsaEditor::addNavigationMenu(QMenu* m) const {
-    QMenu* navMenu = GUIUtils::findSubMenu(m, MSAE_MENU_NAVIGATION);
+    MaEditor::addNavigationMenu(m);
+    QMenu* navMenu = GUIUtils::findSubMenu(m, MAE_MENU_NAVIGATION);
     SAFE_POINT(navMenu != nullptr, "navMenu is null", );
 
     navMenu->addSeparator();
@@ -577,7 +578,8 @@ void MsaEditor::initActions() {
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_updateRealignAction()));
 
-    connect(gotoAction, &QAction::triggered, ui, &MsaEditorMultilineWgt::sl_goto);
+    connect(gotoAction, &QAction::triggered, ui->getLineWidget(0), &MaEditorWgt::sl_goTo);
+    connect(ui->getLineWidget(0), &MaEditorWgt::si_goToPos, ui, &MsaEditorMultilineWgt::sl_onPosChangeRequest);
 
     qDeleteAll(filters);
 

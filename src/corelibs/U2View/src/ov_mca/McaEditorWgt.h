@@ -49,9 +49,6 @@ public:
 
     QAction* getToggleColumnsAction() const;
 
-public slots:
-    void sl_goto();
-
 protected:
     void initActions() override;
     void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) override;

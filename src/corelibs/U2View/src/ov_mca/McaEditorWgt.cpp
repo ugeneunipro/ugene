@@ -107,10 +107,6 @@ QAction* McaEditorWgt::getToggleColumnsAction() const {
     return offsetsViewController->toggleColumnsViewAction;
 }
 
-void McaEditorWgt::sl_goto() {
-//TODO:write me
-}
-
 void McaEditorWgt::initActions() {
     MaEditorWgt::initActions();
 

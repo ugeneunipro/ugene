@@ -22,11 +22,15 @@
 #include "MaEditorWgt.h"
 
 #include <QGridLayout>
+#include <QMainWindow>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
+#include <U2Core/QObjectScopedPointer.h>
+
+#include <U2Gui/PositionSelector.h>
 
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorStatusBar.h>
@@ -83,6 +87,15 @@ QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment
                              labelHtml,
                              alignment,
                              proxyMouseEventsToNameList);
+}
+
+void MaEditorWgt::sl_goTo() {
+    QObjectScopedPointer<QDialog> gotoDialog = new QDialog(AppContext::getMainWindow()->getQMainWindow());
+    gotoDialog->setModal(true);
+    gotoDialog->setWindowTitle(tr("Go to Position"));
+    auto ps = new PositionSelector(gotoDialog.data(), 1, editor->getMaObject()->getLength(), true);
+    connect(ps, &PositionSelector::si_positionChanged, this, &MaEditorWgt::si_goToPos);
+    gotoDialog->exec();
 }
 
 void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {

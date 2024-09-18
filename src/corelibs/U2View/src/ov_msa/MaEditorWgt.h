@@ -102,6 +102,10 @@ signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);
     void si_completeRedraw();
+    void si_goToPos(int);
+
+public slots:
+    void sl_goTo();
 
 protected:
     virtual void initWidgets(bool addStatusBar = true, bool addOverviewArea = true);

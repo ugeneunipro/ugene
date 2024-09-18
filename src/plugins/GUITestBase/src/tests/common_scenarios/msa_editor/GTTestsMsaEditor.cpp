@@ -319,7 +319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     QWidget* msaWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow();
 
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(6));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(msaWindow);
     GTUtilsDialog::checkNoActiveWaiters();
 
@@ -338,7 +338,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     QWidget* mdiWindow = GTUtilsMdi::activeWindow();
 
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(6));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(mdiWindow);
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -356,7 +356,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     QWidget* mdiWindow = GTUtilsMdi::activeWindow();
 
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(6));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(mdiWindow);
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -491,7 +491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     // Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(300));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(mdiWindow);
 
     // Create bookmark: "middle bookmark"
@@ -501,7 +501,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     // Scroll msa to the end.
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(550));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(mdiWindow);
 
     // Create bookmark: "end bookmark"

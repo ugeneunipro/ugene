@@ -110,7 +110,6 @@ public slots:
     void sl_onPosChangeRequest(int position);
     void sl_triggerUseDots(int checkState);
     void sl_setAllNameAndSequenceAreasSplittersSizes(int pos, int index);
-    void sl_goto();
     void sl_toggleSequenceRowOrder(bool isOrderBySequence);
 
 signals:
