@@ -1134,6 +1134,37 @@ GUI_TEST_CLASS_DEFINITION(test_8136) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8141) {
+    /*
+    * 1. Open _common_data/regression/8141/wd_uql.uwl
+    * 2. Set input file samples/Genbank/NC_014267.1.gb
+    * 3. Set uql schema _common_data/regression/8141/repeats_with_nc.uql
+    * 4. Run schema
+    * Expected state: result file contains annotations "Results", summary 1186 annotations
+    */
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+
+    GTUtilsWorkflowDesigner::loadWorkflow(testDir + "_common_data/regression/8141/wd_uql.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsWorkflowDesigner::click("Read Sequence");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/Genbank/NC_014267.1.gb");
+
+    GTUtilsWorkflowDesigner::click("Annotate with UQL");
+    GTUtilsWorkflowDesigner::setParameter("Schema", testDir + "_common_data/regression/8141/repeats_with_nc.uql", GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::click("Write Sequence");
+    GTUtilsWorkflowDesigner::setParameter("Output file", sandBoxDir + "8141_result.gb", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTFileDialog::openFile(sandBoxDir + "8141_result.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 1186, "Annoatated region counter doesn't match.");
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
