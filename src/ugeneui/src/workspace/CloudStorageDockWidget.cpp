@@ -226,7 +226,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
 
     uploadAction = new QAction(QIcon(":ugene/images/file_upload.svg"), tr("Upload"), this);
     uploadAction->setObjectName("cloudStorageUploadAction");
-    uploadAction->setToolTip("Upload File to Cloud Storage");
+    uploadAction->setToolTip(tr("Upload File to Cloud Storage"));
     connect(uploadAction, &QAction::triggered, this, &CloudStorageDockWidget::uploadItem);
     treeView->addAction(uploadAction);
 

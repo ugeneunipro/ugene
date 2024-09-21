@@ -585,17 +585,17 @@ this merge sequence slot:</source>
 <context>
     <name>U2::AnnsActionDialog</name>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="106"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="107"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="107"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="108"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="109"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="110"/>
         <source>Don&apos;t shift</source>
         <translation>Не сдвигать</translation>
     </message>
@@ -611,14 +611,14 @@ this merge sequence slot:</source>
 <context>
     <name>U2::BowtieWidgetController</name>
     <message>
-        <location filename="../src/wizard/BowtieWidgetController.cpp" line="68"/>
+        <location filename="../src/wizard/BowtieWidgetController.cpp" line="70"/>
         <source>Select
 bowtie index file</source>
         <translation>Выберите
 индексный bowtie файл</translation>
     </message>
     <message>
-        <location filename="../src/wizard/BowtieWidgetController.cpp" line="79"/>
+        <location filename="../src/wizard/BowtieWidgetController.cpp" line="81"/>
         <source>Select one of Bowtie index files</source>
         <translation>Выберите один индексный Bowtie файл</translation>
     </message>
@@ -1055,12 +1055,12 @@ bowtie index file</source>
 <context>
     <name>U2::MsaActionDialog</name>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="216"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="217"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="217"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="218"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1081,32 +1081,32 @@ bowtie index file</source>
 <context>
     <name>U2::NewGrouperSlotDialog</name>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="39"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="40"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="40"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="41"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="53"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="54"/>
         <source>Empty output slot name.</source>
         <translation>Имя выходного слота пусто.</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="55"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="56"/>
         <source>Invalid symbols in the output slot name. Use letters and digits only.</source>
         <translation>Запрещенные символы в имени выходного слота. Используйте только буквы и цифры.</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="57"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="58"/>
         <source>This output out slot already exists.</source>
         <translation>Такой выходной слот уже существует.</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="63"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="64"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -1175,14 +1175,14 @@ Set up the folder:</source>
 <context>
     <name>U2::OutputFilesDashboardWidget</name>
     <message>
-        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="76"/>
-        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="151"/>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="78"/>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="153"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="76"/>
-        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="151"/>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="78"/>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="153"/>
         <source>Producer</source>
         <translation>Производитель</translation>
     </message>
@@ -1190,14 +1190,14 @@ Set up the folder:</source>
 <context>
     <name>U2::ParametersDashboardWidget</name>
     <message>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="224"/>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="290"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="225"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="291"/>
         <source>Parameter</source>
         <translation>Параметр</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="224"/>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="290"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="225"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="291"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
@@ -1281,12 +1281,12 @@ Set up the folder:</source>
 <context>
     <name>U2::SchemaRunModeDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="600"/>
+        <location filename="../src/DelegateEditors.cpp" line="601"/>
         <source>This computer</source>
         <translation>Данный компьютер</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="601"/>
+        <location filename="../src/DelegateEditors.cpp" line="602"/>
         <source>Remote computer</source>
         <translation>Удаленный компьютер</translation>
     </message>
@@ -1294,12 +1294,12 @@ Set up the folder:</source>
 <context>
     <name>U2::SequeceActionDialog</name>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="152"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="153"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="153"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="154"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1367,12 +1367,12 @@ Set up the folder:</source>
 <context>
     <name>U2::StringActionDialog</name>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="249"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="250"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="250"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="251"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1380,17 +1380,17 @@ Set up the folder:</source>
 <context>
     <name>U2::StringListDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="726"/>
+        <location filename="../src/DelegateEditors.cpp" line="732"/>
         <source>Enter items</source>
         <translation>Введите элементы</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="728"/>
+        <location filename="../src/DelegateEditors.cpp" line="734"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="730"/>
+        <location filename="../src/DelegateEditors.cpp" line="736"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1429,39 +1429,47 @@ Set up the folder:</source>
 <context>
     <name>U2::URLLineEdit</name>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="182"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="233"/>
         <source>Select a folder</source>
         <translation>Укажите папку</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="200"/>
-        <location filename="../src/support/URLLineEdit.cpp" line="203"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="254"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="257"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
     <message>
         <location filename="../src/support/URLLineEdit.cpp" line="273"/>
-        <source>File path or name contains &apos;;&apos; symbol.<byte value="xd"/>
+        <source>File path/name contains &apos;;&apos; symbol.<byte value="xd"/>
 That kind of file path/name can&apos;t be correctly handled by this element.<byte value="xd"/>
 Please rename the file or move it to directory which not contain &apos;;&apos; in it path.</source>
         <translation>Путь/имя файла содержит символ &apos;;&apos;.
+Такой путь/имя файла не может быть корректно обработан этим элементом.
+Переименуйте файл или переместите его в каталог, который не содержит символ &apos;;&apos; в пути.</translation>
+    </message>
+    <message>
+        <source>File path or name contains &apos;;&apos; symbol.<byte value="xd"/>
+That kind of file path/name can&apos;t be correctly handled by this element.<byte value="xd"/>
+Please rename the file or move it to directory which not contain &apos;;&apos; in it path.</source>
+        <translation type="vanished">Путь/имя файла содержит символ &apos;;&apos;.
 Такой путь/имя файла не могут быть корректно обработаны этим элементом.
 Пожалуйста, переименуйте/переместите файл в папку путь до которой не содержит &apos;;&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="222"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="236"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
     </message>
     <message>
         <location filename="../src/support/URLLineEdit.cpp" line="196"/>
-        <source>Directory '%1' unable to read.</source>
-        <translation>Папка '%1' не читается.</translation>
+        <source>Directory &apos;%1&apos; unable to read.</source>
+        <translation>Папка &apos;%1&apos; не читается.</translation>
     </message>
     <message>
         <location filename="../src/support/URLLineEdit.cpp" line="203"/>
-        <source>Given path '%1' not a file nor a directory.</source>
-        <translation>Данный путь '%1' не является ни файлом, ни папкой.</translation>
+        <source>Given path &apos;%1&apos; not a file nor a directory.</source>
+        <translation>Данный путь &apos;%1&apos; не является ни файлом, ни папкой.</translation>
     </message>
 </context>
 <context>
@@ -1538,17 +1546,17 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="588"/>
+        <location filename="../src/DelegateEditors.cpp" line="589"/>
         <source>Overwrite</source>
         <translation>Переписать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="589"/>
+        <location filename="../src/DelegateEditors.cpp" line="590"/>
         <source>Rename</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="591"/>
+        <location filename="../src/DelegateEditors.cpp" line="592"/>
         <source>Append</source>
         <translation>Дописать</translation>
     </message>

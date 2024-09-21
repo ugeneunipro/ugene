@@ -272,9 +272,8 @@
         <translation>Структурное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="988"/>
         <source>Molecular surface calculation task for %1</source>
-        <translation>Задача расчета модекулярной поверхности для %1</translation>
+        <translation type="vanished">Задача расчета модекулярной поверхности для %1</translation>
     </message>
 </context>
 <context>

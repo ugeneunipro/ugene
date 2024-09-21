@@ -380,19 +380,19 @@
 <context>
     <name>U2::QDDocFormat</name>
     <message>
-        <location filename="../src/QDDocumentFormat.cpp" line="53"/>
-        <location filename="../src/QDDocumentFormat.cpp" line="61"/>
-        <location filename="../src/QDDocumentFormat.cpp" line="85"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="54"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="62"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="86"/>
         <source>Query Schema</source>
         <translation>Схема дизайнера запросов</translation>
     </message>
     <message>
-        <location filename="../src/QDDocumentFormat.cpp" line="54"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="55"/>
         <source>QDDoc is a format used for creating/editing/storing/retrievingquery schema with the text file</source>
         <translation>QDDoc это формат для создания/редактирования/сохранения схем дизайнера запросов в текстовый файл</translation>
     </message>
     <message>
-        <location filename="../src/QDDocumentFormat.cpp" line="78"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="79"/>
         <source>Invalid header. %1 expected</source>
         <translation>Неправильный заголовок! Должен быть: %1</translation>
     </message>
@@ -822,7 +822,7 @@
 <context>
     <name>U2::QDViewFactory</name>
     <message>
-        <location filename="../src/QDDocumentFormat.cpp" line="133"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="134"/>
         <source>Open multiple views</source>
         <translation>Открыть несколько просмотров</translation>
     </message>

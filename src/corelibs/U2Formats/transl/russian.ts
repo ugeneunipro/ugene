@@ -1475,7 +1475,7 @@
     <message>
         <location filename="../src/GTFFormat.cpp" line="541"/>
         <source>Can not detect chromosome name. &apos;Chr&apos; name will be used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удается определить название хромосомы. Будет использовано название &apos;Chr&apos;.</translation>
     </message>
 </context>
 <context>

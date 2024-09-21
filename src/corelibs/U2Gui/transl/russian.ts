@@ -1182,37 +1182,33 @@
 <context>
     <name>RegionSelectorController</name>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="74"/>
         <source>Whole sequence</source>
-        <translation>Вся последовательность</translation>
+        <translation type="vanished">Вся последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="78"/>
         <source>Selected region</source>
-        <translation>Выбранный регион</translation>
+        <translation type="vanished">Выбранный регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="82"/>
         <source>Custom region</source>
-        <translation>Заданный регион</translation>
-    </message>    
-    <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="85"/>
-        <source>Location</source>
-        <translation>Позиция</translation>
+        <translation type="vanished">Заданный регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="182"/>
+        <source>Location</source>
+        <translation type="vanished">Позиция</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="207"/>
         <source>Invalid Start position of region</source>
         <translation>Некорректная стартовая позиция в регионе</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="183"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="208"/>
         <source>Invalid End position of region</source>
         <translation>Некорректная конечная позиция в регионе</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="184"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="209"/>
         <source>Start position is greater than End position</source>
         <translation>Начальная позичия больше чем конечная</translation>
     </message>
@@ -1220,31 +1216,24 @@
 <context>
     <name>RegionSelectorWithExcludedRegion</name>
     <message>
-        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation type="vanished">Форма</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="27"/>
-        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="73"/>
         <source>1</source>
-        <translation>1</translation>
+        <translation type="vanished">1</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="34"/>
-        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="80"/>
         <source>-</source>
-        <translation>-</translation>
+        <translation type="vanished">-</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="112"/>
         <source>Exclude</source>
-        <translation>Исключить</translation>
+        <translation type="vanished">Исключить</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="129"/>
         <source>Region</source>
-        <translation>Регион</translation>
+        <translation type="vanished">Регион</translation>
     </message>
 </context>
 <context>
@@ -2788,62 +2777,31 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::RegionSelector</name>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="112"/>
+        <location filename="../src/util/RegionSelector.cpp" line="132"/>
         <source>Set minimum</source>
         <translation>Установить минимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="117"/>
+        <location filename="../src/util/RegionSelector.cpp" line="137"/>
         <source>Set maximum</source>
         <translation>Установить максимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="124"/>
-        <location filename="../src/util/RegionSelector.cpp" line="146"/>
+        <location filename="../src/util/RegionSelector.cpp" line="144"/>
+        <location filename="../src/util/RegionSelector.cpp" line="169"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="132"/>
         <location filename="../src/util/RegionSelector.cpp" line="152"/>
+        <location filename="../src/util/RegionSelector.cpp" line="177"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="93"/>
+        <location filename="../src/util/RegionSelector.cpp" line="99"/>
         <source>Invalid sequence region!</source>
         <translation>Некорректный регион последовательности!</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RegionSelectorWithExcludedRegion</name>
-    <message>
-        <location filename="../src/util/RegionSelectorWithExcludedRegion.cpp" line="98"/>
-        <source>&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</source>
-        <translation>&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ReloadDocumentsTask</name>
-    <message>
-        <location filename="../src/ReloadDocumentsTask.cpp" line="36"/>
-        <source>Reload documents task</source>
-        <translation>Reload documents task</translation>
-    </message>
-    <message>
-        <location filename="../src/ReloadDocumentsTask.cpp" line="45"/>
-        <source>Document &apos;%1&apos; can&apos;t be unloaded. &apos;%2&apos;</source>
-        <translation>Документ &apos;%1&apos; не может быть выгружен. &apos;%2&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/ReloadDocumentsTask.cpp" line="64"/>
-        <source>Document(s) reloading failed.</source>
-        <translation>Document(s) reloading failed.</translation>
-    </message>
-    <message>
-        <location filename="../src/ReloadDocumentsTask.cpp" line="71"/>
-        <source>The following errors occurred during the document(s) reloading: &lt;ul&gt;</source>
-        <translation>В процессе перезагрузки документа возникли следующие ошибки: &lt;ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -2867,6 +2825,36 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/util/RegionSelectorController.cpp" line="85"/>
         <source>Location</source>
         <translation>Позиция</translation>
+    </message>
+</context>
+<context>
+    <name>U2::RegionSelectorWithExcludedRegion</name>
+    <message>
+        <source>&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</source>
+        <translation type="vanished">&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ReloadDocumentsTask</name>
+    <message>
+        <location filename="../src/ReloadDocumentsTask.cpp" line="36"/>
+        <source>Reload documents task</source>
+        <translation>Reload documents task</translation>
+    </message>
+    <message>
+        <location filename="../src/ReloadDocumentsTask.cpp" line="45"/>
+        <source>Document &apos;%1&apos; can&apos;t be unloaded. &apos;%2&apos;</source>
+        <translation>Документ &apos;%1&apos; не может быть выгружен. &apos;%2&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/ReloadDocumentsTask.cpp" line="64"/>
+        <source>Document(s) reloading failed.</source>
+        <translation>Document(s) reloading failed.</translation>
+    </message>
+    <message>
+        <location filename="../src/ReloadDocumentsTask.cpp" line="71"/>
+        <source>The following errors occurred during the document(s) reloading: &lt;ul&gt;</source>
+        <translation>В процессе перезагрузки документа возникли следующие ошибки: &lt;ul&gt;</translation>
     </message>
 </context>
 <context>

@@ -458,27 +458,27 @@
 <context>
     <name>U2::LocalWorkflow::RepeatPrompter</name>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="189"/>
+        <location filename="../src/RepeatWorker.cpp" line="190"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="190"/>
+        <location filename="../src/RepeatWorker.cpp" line="191"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="194"/>
+        <location filename="../src/RepeatWorker.cpp" line="195"/>
         <source>inverted</source>
         <translation>инвертированные</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="194"/>
+        <location filename="../src/RepeatWorker.cpp" line="195"/>
         <source>direct</source>
         <translation>прямые</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="196"/>
+        <location filename="../src/RepeatWorker.cpp" line="197"/>
         <source>For each sequence%1, find &lt;u&gt;%2&lt;/u&gt; repeats.&lt;br&gt;Detect &lt;u&gt;%3% identical&lt;/u&gt; repeats &lt;u&gt;not shorter than %4 bps&lt;/u&gt;.&lt;br&gt;Output the list of found regions annotated as &lt;u&gt;%5&lt;/u&gt;.</source>
         <translation>Для каждой последовательности&lt;u&gt;%1&lt;/u&gt;, искать &lt;u&gt;%2&lt;/u&gt; повторы.&lt;br&gt;Учитывать &lt;u&gt;%3% идентичные&lt;/u&gt; повторы &lt;u&gt;не короче %4 нк&lt;/u&gt;.&lt;br&gt;Выдать список найденных регионов аннотированных как &lt;u&gt;%5&lt;/u&gt;.</translation>
     </message>
@@ -486,184 +486,184 @@
 <context>
     <name>U2::LocalWorkflow::RepeatWorker</name>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="77"/>
+        <location filename="../src/RepeatWorker.cpp" line="78"/>
         <source>Input sequences</source>
         <translation>Входные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="77"/>
+        <location filename="../src/RepeatWorker.cpp" line="78"/>
         <source>A nucleotide sequence to search repeats in.</source>
         <translation>Входные нуклеотидные последовательности для поиска повторов.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="78"/>
+        <location filename="../src/RepeatWorker.cpp" line="79"/>
         <source>Repeat annotations</source>
         <translation>Аннотированные повторы</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="78"/>
+        <location filename="../src/RepeatWorker.cpp" line="79"/>
         <source>A set of annotations marking repeats found in the sequence.</source>
         <translation>Список аннотаций маркирующих найденные повторы.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="87"/>
+        <location filename="../src/RepeatWorker.cpp" line="88"/>
         <source>Annotate as</source>
         <translation>Аннотации</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="87"/>
+        <location filename="../src/RepeatWorker.cpp" line="88"/>
         <source>Name of the result annotations marking found repeats.</source>
         <translation>Имя аннотации для разметки найденных повторов.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="88"/>
+        <location filename="../src/RepeatWorker.cpp" line="89"/>
         <source>Identity</source>
         <translation>Идентичность</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="88"/>
+        <location filename="../src/RepeatWorker.cpp" line="89"/>
         <source>Repeats identity.</source>
         <translation>Идентичность повторов.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="89"/>
+        <location filename="../src/RepeatWorker.cpp" line="90"/>
         <source>Min length</source>
         <translation>Мин длина</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="89"/>
+        <location filename="../src/RepeatWorker.cpp" line="90"/>
         <source>Minimum length of repeats.</source>
         <translation>Мин длина повторов.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="90"/>
+        <location filename="../src/RepeatWorker.cpp" line="91"/>
         <source>Min distance</source>
         <translation>Мин дистанция</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="90"/>
+        <location filename="../src/RepeatWorker.cpp" line="91"/>
         <source>Minimum distance between repeats.</source>
         <translation>Мин дистанция между повторами.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="91"/>
+        <location filename="../src/RepeatWorker.cpp" line="92"/>
         <source>Max distance</source>
         <translation>Макс дистанция</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="91"/>
+        <location filename="../src/RepeatWorker.cpp" line="92"/>
         <source>Maximum distance between repeats.</source>
         <translation>Макс дистанция между повторами.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="92"/>
+        <location filename="../src/RepeatWorker.cpp" line="93"/>
         <source>Inverted</source>
         <translation>Инвертированные</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="92"/>
+        <location filename="../src/RepeatWorker.cpp" line="93"/>
         <source>Search for inverted repeats.</source>
         <translation>Искать инвертированные повторы.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="93"/>
+        <location filename="../src/RepeatWorker.cpp" line="94"/>
         <source>Filter algorithm</source>
         <translation>Алгоритм фильтрации</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="93"/>
+        <location filename="../src/RepeatWorker.cpp" line="94"/>
         <source>Filter repeats algorithm.</source>
         <translation>Алгоритм фильтрации повторов.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="94"/>
+        <location filename="../src/RepeatWorker.cpp" line="95"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="94"/>
+        <location filename="../src/RepeatWorker.cpp" line="95"/>
         <source>Control over variations of algorithm.</source>
         <translation>Выбор алгоритма.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="95"/>
+        <location filename="../src/RepeatWorker.cpp" line="96"/>
         <source>Parallel threads</source>
         <translation>Параллельные потоки</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="95"/>
+        <location filename="../src/RepeatWorker.cpp" line="96"/>
         <source>Number of parallel threads used for the task.</source>
         <translation>Кол-во параллельных потоков для задачи.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="96"/>
+        <location filename="../src/RepeatWorker.cpp" line="97"/>
         <source>Exclude tandems</source>
         <translation>Исключить тандемы</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="96"/>
+        <location filename="../src/RepeatWorker.cpp" line="97"/>
         <source>Exclude tandems areas before find repeat task is run.</source>
         <translation>Исключить тандемные области до поиска повторов.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="97"/>
+        <location filename="../src/RepeatWorker.cpp" line="98"/>
         <source>Apply &apos;Max distance&apos; attribute</source>
         <translation>Применить опцию &apos;Макс дистанция&apos;</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="97"/>
+        <location filename="../src/RepeatWorker.cpp" line="98"/>
         <source>Apply &apos;Max distance&apos; attribute.</source>
         <translation>Применить опцию &apos;Макс дистанция&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="98"/>
+        <location filename="../src/RepeatWorker.cpp" line="99"/>
         <source>Apply &apos;Min distance&apos; attribute</source>
         <translation>Применить опцию &apos;Мин дистанция&apos;</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="98"/>
+        <location filename="../src/RepeatWorker.cpp" line="99"/>
         <source>Apply &apos;Min distance&apos; attribute.</source>
         <translation>Применить опцию &apos;Мин дистанция&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="127"/>
+        <location filename="../src/RepeatWorker.cpp" line="128"/>
         <source>Find Repeats</source>
         <translation>Поиск повторов</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="127"/>
+        <location filename="../src/RepeatWorker.cpp" line="128"/>
         <source>Finds repeats in each supplied sequence, stores found regions as annotations.</source>
         <translation>Ищет повторы в нуклеотидных последовательностях, выдаёт найденные регионы как аннотации.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="149"/>
+        <location filename="../src/RepeatWorker.cpp" line="150"/>
         <source>Any</source>
         <translation>Не ограничивать</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="248"/>
+        <location filename="../src/RepeatWorker.cpp" line="249"/>
         <source>result name is empty, default name used</source>
         <translation>имя результата пусто, использовано имя по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="251"/>
         <location filename="../src/RepeatWorker.cpp" line="252"/>
+        <location filename="../src/RepeatWorker.cpp" line="253"/>
         <source>Incorrect value: identity value must be between 0 and 100</source>
         <translation>Некорректное значение: значение схожести должно быть от 0 до 100</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="265"/>
         <location filename="../src/RepeatWorker.cpp" line="266"/>
+        <location filename="../src/RepeatWorker.cpp" line="267"/>
         <source>Incorrect value: minimal distance must be greater then zero</source>
         <translation>Некорректное значение: минимальноге значение должно быть больше нуля</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="270"/>
+        <location filename="../src/RepeatWorker.cpp" line="271"/>
         <source>Sequence alphabet is not nucleic!</source>
         <translation>Алфавит последовательности не является нуклеотидным!</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="293"/>
+        <location filename="../src/RepeatWorker.cpp" line="294"/>
         <source>Found %1 repeats</source>
         <translation>Найдено повторов: %1</translation>
     </message>
