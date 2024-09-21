@@ -98,9 +98,9 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="192"/>
-        <location filename="../src/MuscleWorker.cpp" line="197"/>
-        <location filename="../src/MuscleWorker.cpp" line="203"/>
+        <location filename="../src/MuscleWorker.cpp" line="191"/>
+        <location filename="../src/MuscleWorker.cpp" line="196"/>
+        <location filename="../src/MuscleWorker.cpp" line="202"/>
         <source>Region should be set as &apos;start..end&apos;, start should be less than end, e.g. &apos;1..100&apos;</source>
         <translation>Region should be set as &apos;start..end&apos;, start should be less than end, e.g. &apos;1..100&apos;</translation>
     </message>
@@ -108,12 +108,12 @@
 <context>
     <name>U2::LocalWorkflow::MusclePrompter</name>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="117"/>
+        <location filename="../src/MuscleWorker.cpp" line="116"/>
         <source> from %1</source>
         <translation> из %1</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="131"/>
+        <location filename="../src/MuscleWorker.cpp" line="130"/>
         <source>Aligns each MSA supplied &lt;u&gt;%1&lt;/u&gt; with MUSCLE using &quot;&lt;u&gt;%2&lt;/u&gt;&quot; mode.</source>
         <translation>Для каждого выравнивания&lt;u&gt;%1&lt;/u&gt;, запустить MUSCLE в  &lt;u&gt;&quot;%2&quot;&lt;/u&gt; и выдать результат на  выход.</translation>
     </message>
@@ -121,87 +121,87 @@
 <context>
     <name>U2::LocalWorkflow::MuscleWorker</name>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="61"/>
+        <location filename="../src/MuscleWorker.cpp" line="60"/>
         <source>Input MSA</source>
         <translation>Входное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="62"/>
+        <location filename="../src/MuscleWorker.cpp" line="61"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="71"/>
+        <location filename="../src/MuscleWorker.cpp" line="70"/>
         <source>Mode</source>
         <translation>Конфигурация</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="73"/>
+        <location filename="../src/MuscleWorker.cpp" line="72"/>
         <source>Stable order</source>
         <translation>Сохранять порядок</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="61"/>
+        <location filename="../src/MuscleWorker.cpp" line="60"/>
         <source>Multiple sequence alignment to be processed.</source>
         <translation>Входные данные для выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="62"/>
+        <location filename="../src/MuscleWorker.cpp" line="61"/>
         <source>Result of alignment.</source>
         <translation>Результат выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="76"/>
+        <location filename="../src/MuscleWorker.cpp" line="75"/>
         <source>Max iterations</source>
         <translation>Максимальное число итераций</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="76"/>
+        <location filename="../src/MuscleWorker.cpp" line="75"/>
         <source>Maximum number of iterations.</source>
         <translation>Максимальное число итераций.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="182"/>
+        <location filename="../src/MuscleWorker.cpp" line="181"/>
         <source>An empty MSA &apos;%1&apos; has been supplied to MUSCLE.</source>
         <translation>An empty MSA &apos;%1&apos; has been supplied to MUSCLE.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="77"/>
+        <location filename="../src/MuscleWorker.cpp" line="76"/>
         <source>Region to align</source>
         <translation>Выравнивать</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="77"/>
+        <location filename="../src/MuscleWorker.cpp" line="76"/>
         <source>Whole alignment or column range e.g. &lt;b&gt;1..100&lt;/b&gt;.</source>
         <translation>Все выравнивание или регион, например &lt;b&gt;1..100&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="84"/>
+        <location filename="../src/MuscleWorker.cpp" line="83"/>
         <source>Align with MUSCLE</source>
         <translation>Выравнивание с помощью MUSCLE</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="84"/>
+        <location filename="../src/MuscleWorker.cpp" line="83"/>
         <source>MUSCLE is public domain multiple alignment software for protein and nucleotide sequences.&lt;p&gt;&lt;dfn&gt;MUSCLE stands for MUltiple Sequence Comparison by Log-Expectation.&lt;/dfn&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;dfn&gt;Пакет MUSCLE предназначен для выравнивания множественных протеиновых и нуклеотидных последовательностей.&lt;/dfn&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="206"/>
+        <location filename="../src/MuscleWorker.cpp" line="205"/>
         <source>Region end position should be greater than start position</source>
         <translation>Конец региона должен быть больше чем его начало</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="240"/>
+        <location filename="../src/MuscleWorker.cpp" line="239"/>
         <source>Aligned %1 with MUSCLE</source>
         <translation>Выровнял %1 с MUSCLE</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="71"/>
+        <location filename="../src/MuscleWorker.cpp" line="70"/>
         <source>Selector of preset configurations, that give you the choice of optimizing accuracy, speed, or some compromise between the two. The default favors accuracy.</source>
         <translation>Выбор между режимами максимальной точности, скорости либо компромиса между ними. По умолчанию оптимизируется точность выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="73"/>
+        <location filename="../src/MuscleWorker.cpp" line="72"/>
         <source>Do not rearrange aligned sequences (-stable switch of MUSCLE). &lt;p&gt;Otherwise, MUSCLE re-arranges sequences so that similar sequences are adjacent in the output file. This makes the alignment easier to evaluate by eye. </source>
         <translation>Сохранять начальный порядок последовательностей в выравнивании. &lt;p&gt;Иначе, MUSCLE группирует похожие последовательности в выходном выравнивании, для удобства визуального сравнения. </translation>
     </message>
@@ -222,32 +222,32 @@
         <translation>Выравнивание профиля на профиль при помощи MUSCLE</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="207"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="206"/>
         <source>Master profile</source>
         <translation>Основной профиль</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="208"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="207"/>
         <source>The main alignment which will be aligned on.</source>
         <translation>Основное выравнивание на которое будет произведено выравнивание.</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="210"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="209"/>
         <source>Second profile</source>
         <translation>Второй профиль</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="211"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="210"/>
         <source>Alignment which will be aligned to the master alignment.</source>
         <translation>Выравнивание, которое будет выровнено на основной выравнивание.</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="224"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="223"/>
         <source>Align Profile to Profile With MUSCLE</source>
         <translation>Выравнивание профиля на профиль при помощи MUSCLE</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="225"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="224"/>
         <source>Aligns second profile to master profile with MUSCLE aligner.</source>
         <translation>Выравнивает второй профиль на основной профиль при помощи MUSCLE.</translation>
     </message>
@@ -517,8 +517,12 @@
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="467"/>
+        <source>MsaObject has been changed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>MultipleAlignment object has been changed</source>
-        <translation>MultipleAlignment object has been changed</translation>
+        <translation type="vanished">MultipleAlignment object has been changed</translation>
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="504"/>
@@ -631,9 +635,13 @@
         <translation>Incorrect region to align</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="104"/>
         <source>Stopping MUSCLE task, because of error in MultipleAlignment::mid function</source>
-        <translation>Stopping MUSCLE task, because of error in MultipleAlignment::mid function</translation>
+        <translation type="vanished">Stopping MUSCLE task, because of error in MultipleAlignment::mid function</translation>
+    </message>
+    <message>
+        <location filename="../src/MuscleTask.cpp" line="104"/>
+        <source>Stopping MUSCLE task, because of error in Msa::mid function</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="123"/>

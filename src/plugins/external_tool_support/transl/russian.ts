@@ -5041,7 +5041,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Создать БД BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsController.cpp" line="73"/>
+        <location filename="../src/ETSProjectViewItemsController.cpp" line="67"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
@@ -5080,7 +5080,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSearchAndValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="386"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="389"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -5106,77 +5106,77 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportPlugin</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="131"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="133"/>
         <source>External tool support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="131"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="133"/>
         <source>Runs other external tools</source>
         <translation>Модуль позволяет использовать внешние программы</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="182"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="184"/>
         <source>Align with ClustalW...</source>
         <translation>Выравнивание с помощью ClustalW...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="190"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="192"/>
         <source>Align with ClustalO...</source>
         <translation>Выравнивание с помощью ClustalO...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="198"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="200"/>
         <source>Align with MAFFT...</source>
         <translation>Выравнивание с помощью MAFFT...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="206"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="208"/>
         <source>Align with Kalign...</source>
         <translation>Выровнять с помощью Kalign...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="305"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="310"/>
         <source>&lt;i&gt;Bowtie&lt;i&gt; is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end). &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </source>
         <translation>&lt;i&gt;Bowtie&lt;i&gt;один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час. &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="312"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="317"/>
         <source>&lt;i&gt;Cufflinks&lt;/i&gt; assembles transcripts, estimates their abundances, and tests for differential expression and regulation in RNA-Seq samples. It accepts aligned RNA-Seq reads and assembles the alignments into a parsimonious set of transcripts. It also estimates the relative abundances of these transcripts based on how many reads support each one, taking into account biases in library preparation protocols. </source>
         <translation>&lt;i&gt;Cufflinks&lt;/i&gt; собирает транскрипции и оценивает их распространенность. </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="319"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="324"/>
         <source>&lt;i&gt;Bowtie 2&lt;/i&gt; is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences. It is particularly good at aligning reads of about 50 up to 100s or 1000s of characters, and particularly good at aligning to relatively long (e.g. mammalian) genomes. &lt;br/&gt;&lt;br/&gt;It indexes the genome with an FM index to keep its memory footprint small: for the human genome, its memory footprint is typically around 3.2Gb. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;Bowtie 2&lt;/i&gt; supports gapped, local, and paired-end alignment modes.</source>
         <translation>&lt;i&gt;Bowtie 2&lt;/i&gt; один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на большие референсные последовательности. Особенно эффективно применение инструмента для выравнивания ридов начиная от 50 и до сотен и тысяч символов, и больших геномов (например млекопитающих).</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="327"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="332"/>
         <source>BLAST make database...</source>
         <translation>Создание базы данных BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="331"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="336"/>
         <source>Map reads to reference...</source>
         <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="359"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="364"/>
         <source>Reads de novo assembly (with %1)...</source>
         <translation>Сборка прочтений de novo (при помощи %1)...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="339"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="344"/>
         <source>BLAST search...</source>
         <translation>Поиск с помощью BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="302"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="307"/>
         <source>&lt;i&gt;BLAST&lt;/i&gt; finds regions of similarity between biological sequences. The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance.</source>
         <translation>&lt;i&gt;BLAST&lt;/i&gt; finds regions of similarity between biological sequences. The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="350"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="355"/>
         <source>BLAST query database...</source>
         <translation>Запрос с помощью BLAST...</translation>
     </message>
@@ -5194,12 +5194,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportService</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="459"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="465"/>
         <source>External tools support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="459"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="465"/>
         <source>Provides support to run external tools from UGENE</source>
         <translation>Позволяет запускать внешние инструменты из UGENE</translation>
     </message>
@@ -5319,12 +5319,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsInstallTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="448"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="451"/>
         <source>Installing external tools</source>
         <translation>Installing external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="453"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="456"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -5346,13 +5346,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsValidationMasterTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="403"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="406"/>
         <source>Validate external tools</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="425"/>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="427"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="428"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="430"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -11522,43 +11522,43 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::MakeBlastDbDialog</name>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="40"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="42"/>
         <source>Build</source>
         <translation>Построить</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="41"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="43"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="71"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="73"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="94"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="96"/>
         <source>Select a folder with input files</source>
         <translation>Выберите папку со входным файлом</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="105"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="107"/>
         <source>Select a folder to save database files</source>
         <translation>Выберите папку для сохранения базы данных</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="114"/>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="119"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="118"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="128"/>
         <source>Output database path contain space characters.</source>
         <translation>Путь до базы данных содержит пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="118"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="120"/>
         <source>Output database path does not exist.</source>
         <translation>Путь до базы данных не существует.</translation>
-    </message> 
+    </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="120"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="122"/>
         <source>Output database path is read only.</source>
         <translation>Путь до базы только для чтения.</translation>
     </message>
@@ -11566,68 +11566,68 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::MakeBlastDbTask</name>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="52"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="53"/>
         <source>Run &apos;MakeBlastDbTask&apos; task</source>
         <translation>Run &apos;MakeBlastDbTask&apos; task</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="87"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="91"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="97"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="101"/>
         <source>Blast database creation has been cancelled</source>
         <translation>Создание базы данных BLAST было отменено</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="104"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="108"/>
         <source>Blast database has been successfully created</source>
         <translation>База данных BLAST успешно создана</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="105"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="109"/>
         <source>Source sequences: </source>
         <translation>Исходные последовательности: </translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="113"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="117"/>
         <source>Database file path: %1</source>
         <translation>Путь до базы данных: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="115"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="119"/>
         <source>Type: %1</source>
         <translation>Тип: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="117"/>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="123"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="121"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="127"/>
         <source>Log file path: </source>
         <translation>Log file path: </translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="121"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="125"/>
         <source>Blast database creation has been failed</source>
         <translation>Создание базы данных BLAST завершилось неудачно</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="145"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="149"/>
         <source>Cannot create temp folder</source>
         <translation>Cannot create temp folder</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="164"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="168"/>
         <source>Output database path contain space characters.</source>
         <translation>Путь до базы данных содержит пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="168"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="172"/>
         <source>Input file set is empty.</source>
         <translation>Входной файл не выбран.</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="60"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="61"/>
         <source>Output database path is read only.</source>
         <translation>Путь до базы только для чтения.</translation>
     </message>
@@ -11724,133 +11724,133 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::MfoldTask</name>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="138"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="146"/>
         <source>Error parsing `%1` param</source>
         <translation>Ошибка парсинга параметра `%1`</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="178"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="186"/>
         <source>Unexpected EOF</source>
         <translation>Неожиданный EOF</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="203"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="211"/>
         <source>Found %1 images in `%2` and %3 thermodynamic tables in `%4`</source>
         <translation>Найдено %1 изображения(-ий) в `%2` и %3 термодинамических таблиц(ы) в `%4`</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="404"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="412"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="411"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="419"/>
         <source>Sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="416"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="424"/>
         <source>Sequence path</source>
         <translation>Входная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="422"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="429"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="428"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="434"/>
         <source>Sequence type</source>
         <translation>Тип последовательности</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="429"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="435"/>
         <source>Circular</source>
         <translation>Круговая</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="429"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="435"/>
         <source>Linear</source>
         <translation>Линейная</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="430"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="436"/>
         <source>DNA</source>
         <translation>ДНК</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="430"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="436"/>
         <source>RNA</source>
         <translation>РНК</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="434"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="440"/>
         <source>Temperature</source>
         <translation>Температура</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="440"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="445"/>
         <source>Percent suboptimality</source>
         <translation>Процент субоптимальности</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="446"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="450"/>
         <source>Ionic conditions</source>
         <translation>Ионные условия</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="456"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="459"/>
         <source>Window</source>
         <translation>Окно</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="459"/>
-        <location filename="../src/mfold/MfoldTask.cpp" line="466"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="462"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="469"/>
         <source>default</source>
         <translation>по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="464"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="467"/>
         <source>Maximum distance between paired bases</source>
         <translation>Максимальное расстояние между парами оснований</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="476"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="480"/>
         <source>Output HTML report</source>
         <translation>Выходной HTML отчёт</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="491"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="495"/>
         <source>Found structures</source>
         <translation>Найденные структуры</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="509"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="511"/>
         <source>Structure</source>
         <translation>Структура</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="539"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="541"/>
         <source>mfold log</source>
         <translation>Лог mfold</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="549"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="551"/>
         <source>Predict and visualize hairpins with mfold</source>
         <translation>Предсказание и визуализация шпилек с помощью mfold</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="566"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="568"/>
         <source>mfold tool is invalid, check it in settings</source>
         <translation>Инструмент mfold недействителен, проверьте его в настройках</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="599"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="601"/>
         <source>No hairpins found. Nothing to show</source>
         <translation>Шпильки не найдены. Нечего отображать</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldTask.cpp" line="613"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="615"/>
         <source>Unable to create output file `%1`</source>
         <translation>Невозможно создать выходной файл `%1`</translation>
     </message>
@@ -12393,22 +12393,22 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpideySupport</name>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="74"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="75"/>
         <source>&lt;i&gt;Spidey&lt;/i&gt; is mRNA-to-DNA alignment program.                    &lt;br&gt;Binaries can be downloaded from http://www.ncbi.nlm.nih.gov/spidey/spideyexec.html</source>
         <translation>&lt;i&gt;Spidey&lt;/i&gt;это программа для выранивания mRNA-to-DNA.                    &lt;br&gt;Программа может быть скачана http://www.ncbi.nlm.nih.gov/spidey/spideyexec.html</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="76"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="77"/>
         <source>&lt;br&gt;&lt;br&gt; Wheelan SJ, Church DM, Ostell JM.</source>
         <translation>&lt;br&gt;&lt;br&gt; Wheelan SJ, Church DM, Ostell JM.</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="77"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="78"/>
         <source>&lt;br&gt;Spidey: a tool for mRNA-to-genomic alignments</source>
         <translation>&lt;br&gt;Spidey: a tool for mRNA-to-genomic alignments</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="78"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="79"/>
         <source>&lt;br&gt;Genome Res. 2001 Nov;11(11):1952-7.</source>
         <translation>&lt;br&gt;Genome Res. 2001 Nov;11(11):1952-7.</translation>
     </message>
@@ -12416,17 +12416,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpideySupportContext</name>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="114"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="118"/>
         <source>Align sequence to mRNA</source>
         <translation>Выровнять последовательность на мРНК</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="142"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="146"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="143"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="147"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -12522,7 +12522,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::TrimmomaticSupport</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticSupport.cpp" line="49"/>
+        <location filename="../src/trimmomatic/TrimmomaticSupport.cpp" line="53"/>
         <source>&lt;i&gt;Trimmomatic&lt;/i&gt; is a flexible read trimming tool for Illumina NGS data.</source>
         <translation></translation>
     </message>
@@ -12546,7 +12546,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::VcfConsensusSupport</name>
     <message>
-        <location filename="../src/vcftools/VcfConsensusSupport.cpp" line="52"/>
+        <location filename="../src/vcftools/VcfConsensusSupport.cpp" line="56"/>
         <source>Apply VCF variants to a fasta file to create consensus sequence.</source>
         <translation>Применяет VCF вариации для файла fasta для создания консенсуса.</translation>
     </message>
@@ -12574,12 +12574,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Saving temporary data to file &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="111"/>
+        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="118"/>
         <source>Trying to get path of NULL external tool</source>
         <translation>Trying to get path of NULL external tool</translation>
     </message>
     <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="115"/>
+        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="122"/>
         <source>Path to %1</source>
         <translation>Path to %1</translation>
     </message>

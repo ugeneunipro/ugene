@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../src/misc/FindAlgorithm.cpp" line="160"/>
-        <location filename="../src/misc/FindAlgorithm.cpp" line="824"/>
+        <location filename="../src/misc/FindAlgorithm.cpp" line="836"/>
         <source>The search pattern is too long.</source>
         <translation></translation>
     </message>
@@ -26,17 +26,17 @@
 <context>
     <name>U2::AlignInAminoFormTask</name>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="94"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="93"/>
         <source>Align in amino form</source>
         <translation>Выравнивание в амино форму</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="104"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="103"/>
         <source>AlignInAminoFormTask: Input alphabet is not nucleic!</source>
         <translation>AlignInAminoFormTask: Входной алфавит не является нуклеотидным!</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="105"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="104"/>
         <source>AlignInAminoFormTask: Input alignment is empty!</source>
         <translation>AlignInAminoFormTask: Входное выравнивание пустое!</translation>
     </message>
@@ -44,7 +44,7 @@
 <context>
     <name>U2::AlignmentAlgorithmsRegistry</name>
     <message>
-        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="221"/>
+        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="222"/>
         <source>Align sequences to alignment with UGENE…</source>
         <translation>Добавить последовательности к выравниванию с UGENE...</translation>
     </message>
@@ -65,27 +65,27 @@
 <context>
     <name>U2::AssemblyConsensusAlgorithmFactorySamtools</name>
     <message>
-        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="44"/>
+        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="45"/>
         <source>SAMtools</source>
         <translation>SAMtools</translation>
     </message>
     <message>
-        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="48"/>
+        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="49"/>
         <source>Uses SAMtools to calculate consensus with regard to quality of reads</source>
         <translation>Использует SAMtools для расчета консенсуса по отношению к качеству ридов</translation>
     </message>
     <message>
-        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="69"/>
+        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="70"/>
         <source>Fetching reads from database and converting to SAMtools format</source>
         <translation>Выборка ридов из базы данных и преобразование в формат SAMtools</translation>
     </message>
     <message>
-        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="72"/>
+        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="73"/>
         <source>Sorting reads</source>
         <translation>Сортировка ридов</translation>
     </message>
     <message>
-        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="75"/>
+        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="76"/>
         <source>Calculating consensus</source>
         <translation>Вычисление консенсуса</translation>
     </message>
@@ -114,7 +114,7 @@
 <context>
     <name>U2::DnaAssemblyMultiTask</name>
     <message>
-        <location filename="../src/misc/DnaAssemblyMultiTask.cpp" line="80"/>
+        <location filename="../src/misc/DnaAssemblyMultiTask.cpp" line="78"/>
         <source>The short reads can&apos;t be mapped to the reference sequence!</source>
         <translation>Короткие риды не могут быть отражены в референсной последовательности!</translation>
     </message>
@@ -179,125 +179,113 @@
 <context>
     <name>U2::MSAConsensusAlgorithmFactoryClustal</name>
     <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmClustal.cpp" line="30"/>
         <source>Emulates ClustalW program and file format behavior.</source>
-        <translation>Эмулирует программу ClustalW и её интерпретацию формата файла.</translation>
+        <translation type="vanished">Эмулирует программу ClustalW и её интерпретацию формата файла.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmClustal.cpp" line="34"/>
         <source>ClustalW</source>
-        <translation>Схема ClustalW</translation>
+        <translation type="vanished">Схема ClustalW</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAConsensusAlgorithmFactoryDefault</name>
     <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmDefault.cpp" line="35"/>
         <source>Based on JalView algorithm. Returns &apos;+&apos; if there are 2 characters with high frequency. Returns symbol in lower case if the symbol content in a row is lower than the threshold specified.</source>
-        <translation>В основе лежит алгоритм JalView. Возвращает &apos;+&apos;ˇ, если имеется 2 символа с высокой частотой. Возвращает символ в нижнем регистре, если символ содержится в ряду меньшее число раз, чем это указано в пороге.</translation>
+        <translation type="vanished">В основе лежит алгоритм JalView. Возвращает &apos;+&apos;ˇ, если имеется 2 символа с высокой частотой. Возвращает символ в нижнем регистре, если символ содержится в ряду меньшее число раз, чем это указано в пороге.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmDefault.cpp" line="39"/>
         <source>Default</source>
-        <translation>Схема по умолчанию</translation>
+        <translation type="vanished">Схема по умолчанию</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAConsensusAlgorithmFactoryLevitsky</name>
     <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.cpp" line="35"/>
         <source>The algorithm proposed by Victor Levitsky to work with DNA alignments.
 Collects global alignment frequency for every symbol using extended (15 symbols) DNA alphabet first.
 For every column selects the most rare symbol in the whole alignment with percentage in the column greater or equals to the threshold value.</source>
-        <translation>Алгоритм представлен Виктором Левицким для работы с выравниваниями ДНК.
+        <translation type="vanished">Алгоритм представлен Виктором Левицким для работы с выравниваниями ДНК.
 В первую очередь алгоритм вычисляет глобальную частоту появления каждого символа в выравнивании с использованием расширенного (15-символьного) алфавита ДНК.
 Для каждого столбца выбирается наиболее редко встречаемый символ во всём выравнивании, такой что процентное соотношение его появления в столбце больше либо равно значению порога.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.cpp" line="42"/>
         <source>Levitsky</source>
-        <translation>Схема Левицкого</translation>
+        <translation type="vanished">Схема Левицкого</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAConsensusAlgorithmFactoryStrict</name>
     <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmStrict.cpp" line="37"/>
         <source>The algorithm returns gap character (&apos;-&apos;) if symbol frequency in a column is lower than threshold specified.</source>
-        <translation>Алгоритм возвращает символ пробела (&apos;-&apos;), если частота появления символа в столбце меньше, чем величина, заданная в пороге.</translation>
+        <translation type="vanished">Алгоритм возвращает символ пробела (&apos;-&apos;), если частота появления символа в столбце меньше, чем величина, заданная в пороге.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmStrict.cpp" line="41"/>
         <source>Strict</source>
-        <translation>Строгий</translation>
+        <translation type="vanished">Строгий</translation>
     </message>
 </context>
 <context>
     <name>U2::MSADistanceAlgorithm</name>
     <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithm.cpp" line="59"/>
         <source>MSA distance algorithm &quot;%1&quot; task</source>
-        <translation>Задача вычисления алгоритма дистанций в MSA &quot;%1&quot;</translation>
+        <translation type="vanished">Задача вычисления алгоритма дистанций в MSA &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
     <name>U2::MSADistanceAlgorithmFactoryHamming</name>
     <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHamming.cpp" line="33"/>
         <source>Based on Hamming distance between two sequences</source>
-        <translation>На основании расстояния Хэмминга между двумя последовательностями</translation>
+        <translation type="vanished">На основании расстояния Хэмминга между двумя последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHamming.cpp" line="37"/>
         <source>Hamming dissimilarity</source>
-        <translation>Расхождение Хэмминга</translation>
+        <translation type="vanished">Расхождение Хэмминга</translation>
     </message>
 </context>
 <context>
     <name>U2::MSADistanceAlgorithmFactoryHammingRevCompl</name>
     <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="38"/>
         <source>Based on Hamming distance between two sequences</source>
-        <translation>На основании расстояния Хэмминга между двумя последовательностями</translation>
+        <translation type="vanished">На основании расстояния Хэмминга между двумя последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="42"/>
         <source>Hamming reverse-complement</source>
-        <translation>Значение Хэмминга для обратно-комплементарной</translation>
+        <translation type="vanished">Значение Хэмминга для обратно-комплементарной</translation>
     </message>
 </context>
 <context>
     <name>U2::MSADistanceAlgorithmFactorySimilarity</name>
     <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmSimilarity.cpp" line="33"/>
         <source>Based on similarity distance between two sequences</source>
-        <translation>На основании расстояния сходства между двумя последовательностями</translation>
+        <translation type="vanished">На основании расстояния сходства между двумя последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmSimilarity.cpp" line="37"/>
         <source>Similarity</source>
-        <translation>Простое сходство</translation>
+        <translation type="vanished">Простое сходство</translation>
     </message>
 </context>
 <context>
     <name>U2::MSADistanceAlgorithmHammingRevCompl</name>
     <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="72"/>
         <source>An unexpected error has occurred during running the Hamming reverse-complement algorithm.</source>
-        <translation>Произошла ошибка во время запуска обратно-комплементарного алгоритма Хэмминга.</translation>
+        <translation type="vanished">Произошла ошибка во время запуска обратно-комплементарного алгоритма Хэмминга.</translation>
     </message>
 </context>
 <context>
     <name>U2::MaConsensusAlgorithmFactorySimpleExtended</name>
     <message>
-        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="200"/>
         <source>The algorithm selects the best character from the extended DNA alphabet. Only bases with frequences which are greater than a threshold value are taken into account.</source>
-        <translation>Алгоритм выбирает лучший символ из расширенного ДНК алфавита. Учитываются только символы с частотой, превышающей пороговое значение.</translation>
+        <translation type="vanished">Алгоритм выбирает лучший символ из расширенного ДНК алфавита. Учитываются только символы с частотой, превышающей пороговое значение.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="205"/>
+        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="193"/>
         <source>Simple extended</source>
         <translation>Простой с расширенным алфавитом</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="194"/>
+        <source>The algorithm selects the best character from the extended DNA alphabet. Only bases with frequencies which are greater than a threshold value are taken into account.</source>
+        <translation>Алгоритм выбирает лучший символ из расширенного алфавита ДНК. Учитываются только основания с частотами, превышающими пороговое значение.</translation>
     </message>
 </context>
 <context>
@@ -387,6 +375,117 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="622"/>
         <source>Clustal X</source>
         <translation>Clustal X</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MsaConsensusAlgorithmFactoryClustal</name>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmClustal.cpp" line="32"/>
+        <source>ClustalW</source>
+        <translation>Схема ClustalW</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmClustal.cpp" line="33"/>
+        <source>Emulates ClustalW program and file format behavior.</source>
+        <translation>Эмулирует программу ClustalW и её интерпретацию формата файла.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MsaConsensusAlgorithmFactoryDefault</name>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmDefault.cpp" line="33"/>
+        <source>Default</source>
+        <translation>Схема по умолчанию</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmDefault.cpp" line="34"/>
+        <source>Based on JalView algorithm. Returns &apos;+&apos; if there are 2 characters with high frequency. Returns symbol in lower case if the symbol content in a row is lower than the threshold specified.</source>
+        <translation>В основе лежит алгоритм JalView. Возвращает &apos;+&apos;ˇ, если имеется 2 символа с высокой частотой. Возвращает символ в нижнем регистре, если символ содержится в ряду меньшее число раз, чем это указано в пороге.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MsaConsensusAlgorithmFactoryLevitsky</name>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.cpp" line="32"/>
+        <source>Levitsky</source>
+        <translation>Схема Левицкого</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.cpp" line="33"/>
+        <source>The algorithm proposed by Victor Levitsky to work with DNA alignments.
+Collects global alignment frequency for every symbol using extended (15 symbols) DNA alphabet first.
+For every column selects the most rare symbol in the whole alignment with percentage in the column greater or equals to the threshold value.</source>
+        <translation>Алгоритм представлен Виктором Левицким для работы с выравниваниями ДНК.
+В первую очередь алгоритм вычисляет глобальную частоту появления каждого символа в выравнивании с использованием расширенного (15-символьного) алфавита ДНК.
+Для каждого столбца выбирается наиболее редко встречаемый символ во всём выравнивании, такой что процентное соотношение его появления в столбце больше либо равно значению порога.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MsaConsensusAlgorithmFactoryStrict</name>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmStrict.cpp" line="35"/>
+        <source>Strict</source>
+        <translation>Строгий</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmStrict.cpp" line="36"/>
+        <source>The algorithm returns gap character (&apos;-&apos;) if symbol frequency in a column is lower than threshold specified.</source>
+        <translation>Алгоритм возвращает символ пробела (&apos;-&apos;), если частота появления символа в столбце меньше, чем величина, заданная в пороге.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MsaDistanceAlgorithm</name>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithm.cpp" line="59"/>
+        <source>MSA distance algorithm &quot;%1&quot; task</source>
+        <translation>Задача вычисления алгоритма дистанций в MSA &quot;%1&quot;</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MsaDistanceAlgorithmFactoryHamming</name>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHamming.cpp" line="33"/>
+        <source>Based on Hamming distance between two sequences</source>
+        <translation>На основании расстояния Хэмминга между двумя последовательностями</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHamming.cpp" line="37"/>
+        <source>Hamming dissimilarity</source>
+        <translation>Расхождение Хэмминга</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MsaDistanceAlgorithmFactoryHammingRevCompl</name>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="38"/>
+        <source>Based on Hamming distance between two sequences</source>
+        <translation>На основании расстояния Хэмминга между двумя последовательностями</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="42"/>
+        <source>Hamming reverse-complement</source>
+        <translation>Значение Хэмминга для обратно-комплементарной</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MsaDistanceAlgorithmFactorySimilarity</name>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmSimilarity.cpp" line="33"/>
+        <source>Based on similarity distance between two sequences</source>
+        <translation>На основании расстояния сходства между двумя последовательностями</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmSimilarity.cpp" line="37"/>
+        <source>Similarity</source>
+        <translation>Простое сходство</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MsaDistanceAlgorithmHammingRevCompl</name>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="72"/>
+        <source>An unexpected error has occurred during running the Hamming reverse-complement algorithm.</source>
+        <translation>Произошла ошибка во время запуска обратно-комплементарного алгоритма Хэмминга.</translation>
     </message>
 </context>
 <context>
@@ -485,7 +584,7 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::PairwiseAlignmentTask</name>
     <message>
-        <location filename="../src/pairwise_alignment/PairwiseAlignmentTask.cpp" line="46"/>
+        <location filename="../src/pairwise_alignment/PairwiseAlignmentTask.cpp" line="45"/>
         <source>Pairwise alignment task</source>
         <translation>Задача парного выравнивания</translation>
     </message>
@@ -706,13 +805,13 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::TranslateMsa2AminoTask</name>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="47"/>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="59"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="46"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="58"/>
         <source>Translate nucleic alignment to amino</source>
         <translation>Трансляция нуклеотидного выравнивания в амино</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="53"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="52"/>
         <source>Unable to find suitable translation for %1</source>
         <translation>Невозможно найти подходящую трансляцию для %1</translation>
     </message>

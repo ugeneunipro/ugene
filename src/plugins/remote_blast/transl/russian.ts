@@ -753,12 +753,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::RemoteBLASTPlugin</name>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="69"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="64"/>
         <source>Performs remote database queries: BLAST, CDD, etc...</source>
         <translation>Посылает запрос в удаленную базу данных: BLAST, CDD и т.д...</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="69"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="64"/>
         <source>Remote BLAST</source>
         <translation>Удаленный поиск с помощью BLAST</translation>
     </message>
@@ -845,22 +845,22 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::RemoteBLASTViewContext</name>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="109"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="104"/>
         <source>Query NCBI BLAST database...</source>
         <translation>Поиск в базе данных NCBI с помощью BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="114"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="109"/>
         <source>Transform into a primer pair</source>
         <translation>Превратить в пару праймеров</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="198"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="192"/>
         <source>Selected region is too large!</source>
         <translation>Выбранный регион слишком большой!</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="254"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="248"/>
         <source>Selected annotations belongs to different tables</source>
         <translation>Выделенные аннотации относятся к разным таблицам</translation>
     </message>
@@ -881,43 +881,43 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::SendSelectionDialog</name>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="159"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="161"/>
         <source>The following primer pairs will be BLASTed:</source>
         <translation>BLAST для следующих пар праймеров:</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="167"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="169"/>
         <source>One primer result limit:</source>
         <translation>Предел результатов для одного праймера:</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="169"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="171"/>
         <source>The maximum number of results received for each primer</source>
         <translation>Максимальное количество результатов, которое можно получить для одного праймера</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="175"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="177"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="176"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="178"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="325"/>
-        <location filename="../src/SendSelectionDialog.cpp" line="435"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="327"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="437"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="435"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="437"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="410"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="412"/>
         <source>You chose to search nucleotide sequence in protein database. This sequence will be converted into 6 sequences(3 translations for both strands).Therefore this search may take some time. Continue?</source>
         <translation>Вы выбрали поиск нуклеотидной последовательности в протеиновой базе данных. Эта последовательность будет сконвертирована в 6 последовательностей(3 трансляции для обоих направлений).Этот поиск может занять некоторое время. Продолжить?</translation>
     </message>

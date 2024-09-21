@@ -324,25 +324,25 @@ By default, loglevel=&quot;ERROR&quot;.</source>
     <name>U2::TaskSchedulerImpl</name>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="711"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="710"/>
         <source>New</source>
         <translation>Новая</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="713"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="712"/>
         <source>Prepared</source>
         <translation>Инициализирована</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="715"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="714"/>
         <source>Running</source>
         <translation>Выполняется</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="717"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="716"/>
         <source>Finished</source>
         <translation>Завершена</translation>
     </message>
@@ -362,37 +362,37 @@ By default, loglevel=&quot;ERROR&quot;.</source>
         <translation>Подзадача {%1} завершена с ошибкой: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="483"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="482"/>
         <source>Waiting for resource &apos;%1&apos;, count: 1</source>
         <translation>Ожидание ресурса %1, количество: 1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="501"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="500"/>
         <source>Task resource not found: &apos;%1&apos;</source>
         <translation>Ресурс задачи не найден: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="509"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="508"/>
         <source>Not enough resources for the task, resource: &apos;%1&apos; max: %2%3 requested: %4%5</source>
         <translation>Недостаточно ресурсов для задачи, ресурс: %1, максимум: %2%3, запрошено: %4%5</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="519"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="518"/>
         <source>Waiting for the resource: %1</source>
         <translation>Ожидание ресурса: %1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="620"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="619"/>
         <source>Registering new task: %1</source>
         <translation>Добавлена задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="930"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="929"/>
         <source>Deleting task: %1</source>
         <translation>Удаляется задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="780"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="779"/>
         <source>Promoting task {%1} to &apos;%2&apos;</source>
         <translation>Задача {%1} %2</translation>
     </message>
@@ -402,32 +402,32 @@ By default, loglevel=&quot;ERROR&quot;.</source>
         <translation>Подзадача {%1} отменена %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="662"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="661"/>
         <source>Unregistering task: %1</source>
         <translation>Незарегистрированная задача: %1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="782"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="781"/>
         <source>Promoting task {%1} to &apos;%2&apos;, error &apos;%3&apos;</source>
         <translation>Задача {%1} %2; ошибка: %3</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="793"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="792"/>
         <source>Starting {%1} task</source>
         <translation>Старт задачи {%1}</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="821"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="820"/>
         <source>Task {%1} finished with error: %2</source>
         <translation>Задача {%1} завершена с ошибкой: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="824"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="823"/>
         <source>Task {%1} canceled</source>
         <translation>Отменяется задача {%1}</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="827"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="826"/>
         <source>Task {%1} finished</source>
         <translation>Задача {%1} завершена</translation>
     </message>
@@ -448,7 +448,7 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::VerifyPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="493"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="486"/>
         <source>Verify plugin task: %1</source>
         <translation>Задача верификации модуля: %1</translation>
     </message>

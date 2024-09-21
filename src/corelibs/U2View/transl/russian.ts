@@ -1136,7 +1136,7 @@ Probably, the data are too big.</source>
     <message>
         <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="90"/>
         <source>Bases per line (multiline image):</source>
-        <translation>Символов в строке (режим переноса)</translation>
+        <translation>Символов в строке (режим переноса):</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="71"/>
@@ -2382,42 +2382,42 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::ADVSyncViewManager</name>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="437"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="438"/>
         <source>Hide all sequences</source>
         <translation>Скрыть все последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="437"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="438"/>
         <source>Show all sequences</source>
         <translation>Показать все последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="438"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="439"/>
         <source>Hide all zoom views</source>
         <translation>Скрыть все масштабируемые представления</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="438"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="439"/>
         <source>Show all zoom views</source>
         <translation>Показать все масштабируемые представления</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="440"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="441"/>
         <source>Hide all overviews</source>
         <translation>Скрыть все панорамы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="440"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="441"/>
         <source>Show all overviews</source>
         <translation>Показать все панорамы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="439"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="440"/>
         <source>Hide all details</source>
         <translation>Скрыть все детали</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="439"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="440"/>
         <source>Show all details</source>
         <translation>Показать все детали</translation>
     </message>
@@ -2457,22 +2457,22 @@ Double-click to collapse the branch</source>
         <translation>Связать шкалы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="81"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="82"/>
         <source>Adjust scales</source>
         <translation>Синхронизировать шкалы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="133"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="134"/>
         <source>Toggle views</source>
         <translation>Переключить обзор</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="599"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="612"/>
         <source>Hide %1</source>
         <translation>Скрыть %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="601"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="614"/>
         <source>Show %1</source>
         <translation>Показать %1</translation>
     </message>
@@ -4890,7 +4890,7 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::FormatsMsaClipboardTask</name>
     <message>
-        <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="109"/>
+        <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="108"/>
         <source>Cannot read the temporary file.</source>
         <translation>Cannot read the temporary file.</translation>
     </message>
@@ -7021,7 +7021,7 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::PrepareMsaClipboardDataTask</name>
     <message>
-        <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="54"/>
+        <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="53"/>
         <source>Copy formatted alignment to the clipboard</source>
         <translation>Copy formatted alignment to the clipboard</translation>
     </message>
@@ -7562,14 +7562,13 @@ Please, load the corresponding plugins.</source>
 <context>
     <name>U2::SubalignmentToClipboardTask</name>
     <message>
-        <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="220"/>
+        <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="213"/>
         <source>Copy formatted alignment to the clipboard</source>
         <translation>Copy formatted alignment to the clipboard</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="223"/>
         <source>The subalignment is too big and can&apos;t be copied into the clipboard</source>
-        <translation>Область выравнивания слишком большая и не может быть скопирована в буфер обмена</translation>
+        <translation type="vanished">Область выравнивания слишком большая и не может быть скопирована в буфер обмена</translation>
     </message>
 </context>
 <context>

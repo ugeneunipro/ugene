@@ -4,52 +4,52 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="579"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="583"/>
         <source>This is not ESearch result!</source>
         <translation>Это не является результатом ESearch!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="620"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="624"/>
         <source>This is not a ESummary result!</source>
         <translation>Это не является результатом ESummary!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="698"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="702"/>
         <source>Use Ensembl ID. For example: %1 or %2</source>
         <translation>Используйте Ensembl ID. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="699"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="703"/>
         <source>Use Genbank DNA accession number. For example: %1 or %2</source>
         <translation>Используйте Genbank DNA Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="700"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="704"/>
         <source>Use Genbank protein accession number. For example: %1</source>
         <translation>Используйте Genbank Protein Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="701"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="705"/>
         <source>Use PDB molecule four-letter identifier. For example: %1 or %2</source>
         <translation>Используйте 4-х символьный идентификатор PDB. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="702"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="706"/>
         <source>Use SWISS-PROT accession number. For example: %1 or %2</source>
         <translation>Используйте SWISS-PROT Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="703"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="707"/>
         <source>Use UniProtKB/Swiss-Prot accession number. For example: %1</source>
         <translation>Используйте UniProtKB/Swiss-Prot Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="704"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="708"/>
         <source>Use UniProtKB/TrEMBL accession number. For example: %1</source>
         <translation>Используйте UniProtKB/TrEMBL Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="732"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="736"/>
         <source>Use %1 unique identifier.</source>
         <translation>Используйте уникальный идентификатор %1.</translation>
     </message>
@@ -469,7 +469,7 @@
         <translation>Обнаружено неожиданное значение оператора функции.</translation>
     </message>
     <message>
-        <location filename="../src/globals/ClipboardController.h" line="57"/>
+        <location filename="../src/globals/ClipboardController.cpp" line="35"/>
         <source>Block size is too big and can&apos;t be copied into the clipboard</source>
         <translation>Размер блока слишком большой и не может быть скопирован в буфер обмена</translation>
     </message>
@@ -795,19 +795,24 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::CopyDataTask</name>
     <message>
-        <location filename="../src/tasks/CopyDataTask.cpp" line="32"/>
+        <location filename="../src/tasks/CopyDataTask.cpp" line="37"/>
         <source>Copy Data Task</source>
         <translation>Копирование данных</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CopyDataTask.cpp" line="53"/>
+        <location filename="../src/tasks/CopyDataTask.cpp" line="68"/>
         <source>Cannot get data from: &apos;%1&apos;</source>
         <translation>Невозможно извлечь данные из: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CopyDataTask.cpp" line="72"/>
+        <location filename="../src/tasks/CopyDataTask.cpp" line="94"/>
         <source>IO adapter error. %1</source>
         <translation>Ошибка адаптера IO. %1</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CopyDataTask.cpp" line="98"/>
+        <source>Line endings were changed in target file %1 during copy process.</source>
+        <translation>Концевые символы строк были изменены в целевом файле %1 в процессе копирования.</translation>
     </message>
 </context>
 <context>
@@ -1229,7 +1234,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>ugenedb это внутренний формат файла базы данных UGENE</translation>
     </message>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="146"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="147"/>
         <source>Invalid destination database reference</source>
         <translation>Неверное расположение референса базы</translation>
     </message>
@@ -1306,7 +1311,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::EntrezQueryTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="551"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="553"/>
         <source>Redirecting to %1</source>
         <translation>Перенаправление в %1</translation>
     </message>
@@ -1668,13 +1673,13 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::HttpFileAdapter</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="123"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="126"/>
         <source>GET %1</source>
         <translatorcomment>Запрос %1</translatorcomment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="308"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="311"/>
         <source>Redirecting to %1</source>
         <translation>Перенаправление на %1</translation>
     </message>
@@ -2048,7 +2053,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Последовательность с идентификатором=%1 не найдена.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="494"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="496"/>
         <source>Redirecting to %1</source>
         <translation>Перенаправление на %1</translation>
     </message>
@@ -2311,7 +2316,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::PasteTask</name>
     <message>
-        <location filename="../src/globals/ClipboardController.cpp" line="40"/>
+        <location filename="../src/globals/ClipboardController.cpp" line="49"/>
         <source>Paste data</source>
         <translation>Вставка данных</translation>
     </message>
@@ -2842,7 +2847,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2DbiUtils</name>
     <message>
-        <location filename="../src/dbi/U2DbiUtils.cpp" line="49"/>
+        <location filename="../src/dbi/U2DbiUtils.cpp" line="48"/>
         <source>Feature is not supported: %1, dbi: %2</source>
         <translation>Функция не поддерживается: %1, dbi: %2</translation>
     </message>
