@@ -130,7 +130,9 @@ SequenceObjectContext* McaEditor::getReferenceContext() const {
     return referenceCtx;
 }
 
-void McaEditor::sl_onPosChangeRequest(int position) {
+void McaEditor::sl_onPosChangeRequest() {
+    const int position = getUI()->getGotoPosition();
+    CHECK(position > 0, );
     getUI()->getScrollController()->scrollToBase(position - 1, getUI()->getSequenceArea()->width());
 }
 
@@ -237,8 +239,7 @@ void McaEditor::initActions() {
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
 
-    connect(gotoAction, &QAction::triggered, ui, &MaEditorWgt::sl_goTo);
-    connect(ui, &MaEditorWgt::si_goToPos, this, &McaEditor::sl_onPosChangeRequest);
+    connect(gotoAction, &QAction::triggered, this, &McaEditor::sl_onPosChangeRequest);
 }
 
 void McaEditor::sl_saveOverviewState() {

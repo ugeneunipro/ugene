@@ -311,7 +311,9 @@ void MsaEditorMultilineWgt::hideSimilarity() {
     }
 }
 
-void MsaEditorMultilineWgt::sl_onPosChangeRequest(int position) {
+void MsaEditorMultilineWgt::sl_onPosChangeRequest() {
+    const int position = getLineWidget(0)->getGotoPosition();
+    CHECK(position > 0, );
     int baseIndex = position - 1;
     CHECK(baseIndex >= 0 && baseIndex < editor->getAlignmentLen(), );
     if (isWrapMode()) {

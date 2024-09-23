@@ -578,8 +578,7 @@ void MsaEditor::initActions() {
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_updateRealignAction()));
 
-    connect(gotoAction, &QAction::triggered, ui->getLineWidget(0), &MaEditorWgt::sl_goTo);
-    connect(ui->getLineWidget(0), &MaEditorWgt::si_goToPos, ui, &MsaEditorMultilineWgt::sl_onPosChangeRequest);
+    connect(gotoAction, &QAction::triggered, ui, &MsaEditorMultilineWgt::sl_onPosChangeRequest);
 
     qDeleteAll(filters);
 

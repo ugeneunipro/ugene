@@ -80,7 +80,7 @@ public:
         return ui;
     }
 public slots:
-    void sl_onPosChangeRequest(int position);
+    void sl_onPosChangeRequest();
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint& pos) override;

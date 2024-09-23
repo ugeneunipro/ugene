@@ -89,13 +89,13 @@ QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment
                              proxyMouseEventsToNameList);
 }
 
-void MaEditorWgt::sl_goTo() {
+int MaEditorWgt::getGotoPosition() {
     QObjectScopedPointer<QDialog> gotoDialog = new QDialog(AppContext::getMainWindow()->getQMainWindow());
     gotoDialog->setModal(true);
     gotoDialog->setWindowTitle(tr("Go to Position"));
     auto ps = new PositionSelector(gotoDialog.data(), 1, editor->getMaObject()->getLength(), true);
-    connect(ps, &PositionSelector::si_positionChanged, this, &MaEditorWgt::si_goToPos);
     gotoDialog->exec();
+    return ps->getPosition();
 }
 
 void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {

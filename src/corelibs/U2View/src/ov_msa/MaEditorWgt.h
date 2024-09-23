@@ -98,14 +98,13 @@ public:
         return nameAndSequenceAreasSplitter;
     }
 
+    /* Get destination position by dialog, if dialog is not accepted returns -1 */
+    int getGotoPosition();
+
 signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);
     void si_completeRedraw();
-    void si_goToPos(int);
-
-public slots:
-    void sl_goTo();
 
 protected:
     virtual void initWidgets(bool addStatusBar = true, bool addOverviewArea = true);
