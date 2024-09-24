@@ -450,7 +450,7 @@ void MsaEditor::addHighlightingMenu(QMenu* m) const {
 void MsaEditor::addNavigationMenu(QMenu* m) const {
     MaEditor::addNavigationMenu(m);
     QMenu* navMenu = GUIUtils::findSubMenu(m, MAE_MENU_NAVIGATION);
-    SAFE_POINT(navMenu != nullptr, "navMenu is null", );
+    SAFE_POINT_NN(navMenu, );
 
     navMenu->addSeparator();
     navMenu->addAction(searchInSequencesAction);
