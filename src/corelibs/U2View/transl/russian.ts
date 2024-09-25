@@ -5304,6 +5304,11 @@ Directory Path: %1</source>
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditor.cpp" line="401"/>
+        <source>Go to position…</source>
+        <translation>Перейти к позиции...</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="407"/>
         <source>Save Alignment</source>
         <translation>Сохранить выравнивание</translation>
     </message>
@@ -5336,6 +5341,11 @@ Directory Path: %1</source>
         <location filename="../src/ov_msa/MaEditor.cpp" line="500"/>
         <source>Add</source>
         <translation>Добавить</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="511"/>
+        <source>Navigation</source>
+        <translation>Навигация</translation>
     </message>
 </context>
 <context>
