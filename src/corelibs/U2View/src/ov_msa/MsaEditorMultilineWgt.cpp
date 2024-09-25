@@ -311,7 +311,9 @@ void MsaEditorMultilineWgt::hideSimilarity() {
     }
 }
 
-void MsaEditorMultilineWgt::sl_onPosChangeRequest(int position) {
+void MsaEditorMultilineWgt::sl_onPosChangeRequest() {
+    const int position = getLineWidget(0)->getGotoPosition();
+    CHECK(position > 0, );
     int baseIndex = position - 1;
     CHECK(baseIndex >= 0 && baseIndex < editor->getAlignmentLen(), );
     if (isWrapMode()) {
@@ -350,16 +352,6 @@ void MsaEditorMultilineWgt::sl_setAllNameAndSequenceAreasSplittersSizes(int pos,
             child->getNameAndSequenceAreasSplitter()->setSizes(sizes);
         }
     }
-}
-
-void MsaEditorMultilineWgt::sl_goto() {
-    // TODO: use QScopedPointer with dialogs.
-    QDialog gotoDialog(this);
-    gotoDialog.setModal(true);
-    gotoDialog.setWindowTitle(tr("Go to Position"));
-    auto ps = new PositionSelector(&gotoDialog, 1, editor->getMaObject()->getLength(), true);
-    connect(ps, &PositionSelector::si_positionChanged, this, &MsaEditorMultilineWgt::sl_onPosChangeRequest);
-    gotoDialog.exec();
 }
 
 bool MsaEditorMultilineWgt::moveSelection(int key, bool shift, bool ctrl) {

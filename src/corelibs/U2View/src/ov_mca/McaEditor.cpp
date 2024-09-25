@@ -45,6 +45,7 @@
 #include "ov_msa/MsaEditorOffsetsView.h"
 #include "ov_msa/export_consensus/MaExportConsensusTabFactory.h"
 #include "ov_msa/overview/MaEditorOverviewArea.h"
+#include "ov_msa/ScrollController.h"
 #include "ov_sequence/SequenceObjectContext.h"
 
 namespace U2 {
@@ -127,6 +128,12 @@ char McaEditor::getReferenceCharAt(int pos) const {
 
 SequenceObjectContext* McaEditor::getReferenceContext() const {
     return referenceCtx;
+}
+
+void McaEditor::sl_onPosChangeRequest() {
+    const int position = getUI()->getGotoPosition();
+    CHECK(position > 0, );
+    getUI()->getScrollController()->scrollToBase(position - 1, getUI()->getSequenceArea()->width());
 }
 
 void McaEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {
@@ -231,6 +238,8 @@ void McaEditor::initActions() {
     changeFontAction->setText(tr("Change characters font..."));
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
+
+    connect(gotoAction, &QAction::triggered, this, &McaEditor::sl_onPosChangeRequest);
 }
 
 void McaEditor::sl_saveOverviewState() {
@@ -284,9 +293,8 @@ void McaEditor::addAppearanceMenu(QMenu* menu) {
 }
 
 void McaEditor::addNavigationMenu(QMenu* menu) {
-    QMenu* navigationMenu = menu->addMenu(tr("Navigation"));
-    navigationMenu->menuAction()->setObjectName(MCAE_MENU_NAVIGATION);
-
+    MaEditor::addNavigationMenu(menu);
+    QMenu* navigationMenu = GUIUtils::findSubMenu(menu, MAE_MENU_NAVIGATION);
     navigationMenu->addAction(gotoSelectedReadAction);
 
     auto ambiguousCharactersController = ui->getSequenceArea()->getAmbiguousCharactersController();

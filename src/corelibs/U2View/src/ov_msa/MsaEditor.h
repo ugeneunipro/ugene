@@ -229,7 +229,6 @@ public:
 
     QAction* setAsReferenceSequenceAction = nullptr;
     QAction* unsetReferenceSequenceAction = nullptr;
-    QAction* gotoAction = nullptr;
     QAction* searchInSequencesAction = nullptr;
     QAction* searchInSequenceNamesAction = nullptr;
     QAction* openCustomSettingsAction = nullptr;

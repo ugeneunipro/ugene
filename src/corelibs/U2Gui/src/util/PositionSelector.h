@@ -42,6 +42,9 @@ public:
         return posEdit;
     }
 
+    /* Returns position if dialog accepted, otherwise -1 */
+    qint64 getPosition() const;
+
 signals:
     void si_positionChanged(int pos);
 
@@ -58,6 +61,7 @@ private:
     QLineEdit* posEdit;
     bool autoclose;
     QDialog* dialog;
+    qint64 position = -1;
 };
 
 }  // namespace U2

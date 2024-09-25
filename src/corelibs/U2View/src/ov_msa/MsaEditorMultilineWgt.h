@@ -107,10 +107,9 @@ public:
 public slots:
     void sl_changeColorSchemeOutside(const QString& id);
     void sl_changeColorScheme(const QString& id);
-    void sl_onPosChangeRequest(int position);
+    void sl_onPosChangeRequest();
     void sl_triggerUseDots(int checkState);
     void sl_setAllNameAndSequenceAreasSplittersSizes(int pos, int index);
-    void sl_goto();
     void sl_toggleSequenceRowOrder(bool isOrderBySequence);
 
 signals:
