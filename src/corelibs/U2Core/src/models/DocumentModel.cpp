@@ -622,7 +622,6 @@ void Document::setName(const QString& newName) {
 }
 
 void Document::setURL(const GUrl& newUrl) {
-    assert(!isLoaded() || !isStateLocked());
     if (url == newUrl) {
         return;
     }
