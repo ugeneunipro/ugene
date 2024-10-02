@@ -41,6 +41,7 @@
 
 #include <U2Designer/DashboardInfoRegistry.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ToolsMenu.h>
 
 #include <U2Lang/IncludedProtoFactory.h>
@@ -274,7 +275,7 @@ void WorkflowDesignerService::sl_startWorkflowPlugin() {
 }
 
 void WorkflowDesignerService::initDesignerAction() {
-    designerAction = new QAction(QIcon(":/workflow_designer/images/wd.png"), tr("Workflow Designer..."), this);
+    designerAction = new QAction(GUIUtils::getIconResource("workflow_designer", "wd.png"), tr("Workflow Designer..."), this);
     designerAction->setObjectName(ToolsMenu::WORKFLOW_DESIGNER);
 #ifdef _DEBUG
     designerAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
@@ -284,7 +285,7 @@ void WorkflowDesignerService::initDesignerAction() {
 }
 
 void WorkflowDesignerService::initNewWorkflowAction() {
-    newWorkflowAction = new QAction(QIcon(":/workflow_designer/images/wd.png"), tr("New workflow..."), this);
+    newWorkflowAction = new QAction(GUIUtils::getIconResource("workflow_designer", "wd.png"), tr("New workflow..."), this);
     newWorkflowAction->setObjectName("New workflow");
     connect(newWorkflowAction, SIGNAL(triggered()), SLOT(sl_showDesignerWindow()));
 
@@ -297,6 +298,7 @@ void WorkflowDesignerService::initNewWorkflowAction() {
         }
     }
     fileMenu->insertAction(beforeAction, newWorkflowAction);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WorkflowDesignerService::sl_colorModeSwitched);
 }
 
 bool WorkflowDesignerService::closeViews() {
@@ -311,6 +313,11 @@ bool WorkflowDesignerService::closeViews() {
         }
     }
     return true;
+}
+
+void WorkflowDesignerService::sl_colorModeSwitched() {
+    designerAction->setIcon(GUIUtils::getIconResource("workflow_designer", "wd.png"));
+    newWorkflowAction->setIcon(GUIUtils::getIconResource("workflow_designer", "wd.png"));
 }
 
 bool WorkflowDesignerService::checkServiceState() const {

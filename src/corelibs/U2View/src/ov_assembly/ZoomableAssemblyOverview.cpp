@@ -189,7 +189,7 @@ void ZoomableAssemblyOverview::drawBackground(QPainter& p) {
             assert(false);
     }
 
-    p.fillRect(rect(), QPalette().background().color());
+    p.fillRect(rect(), QPalette().window().color());
 
     // 2. draw the graph line-by-line
     bool isDark = AppContext::getMainWindow()->isDarkMode();

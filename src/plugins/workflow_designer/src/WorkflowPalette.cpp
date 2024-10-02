@@ -218,6 +218,7 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, Sc
     connect(reg, SIGNAL(si_registryModified()), SLOT(rebuild()));
     connect(this, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype*)), SLOT(sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype*)));
     this->setObjectName("WorkflowPaletteElements");
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WorkflowPaletteElements::sl_colorModeSwitched);
 }
 
 QMenu* WorkflowPaletteElements::createMenu(const QString& name) {
@@ -408,8 +409,9 @@ QAction* WorkflowPaletteElements::createItemAction(ActorPrototype* item) {
     a->setCheckable(true);
     const auto& ip = item->getIconParameters();
     if (ip.iconName.isEmpty()) {
-        item->setIconParameters(IconParameters("workflow_designer", "green_circle.png", false));
+        item->setIconParameters(IconParameters("workflow_designer", "green_circle.png"));
     }
+    protoActionsName.insert(item, a);
     a->setIcon(GUIUtils::getIconResource(ip));
     a->setData(QVariant::fromValue(item));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
@@ -601,6 +603,14 @@ void WorkflowPaletteElements::sl_prototypeIsAboutToBeRemoved(ActorPrototype* pro
     }
 
     actionMap.remove(action);
+}
+
+void WorkflowPaletteElements::sl_colorModeSwitched() {
+    auto protos = protoActionsName.keys();
+    for (const auto& proto : qAsConst(protos)) {
+        auto action = protoActionsName.value(proto);
+        action->setIcon(GUIUtils::getIconResource(proto->getIconParameters()));
+    }
 }
 
 void WorkflowPaletteElements::contextMenuEvent(QContextMenuEvent* e) {

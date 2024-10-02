@@ -70,6 +70,9 @@ public:
         return owner;
     }
 
+protected slots:
+    void sl_colorModeSwitched();
+
 protected:
     WorkflowProcessItem* owner;
     QColor bgColor;

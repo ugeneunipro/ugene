@@ -192,6 +192,7 @@ void URLListWidget::sl_dataChanged() {
 }
 
 void URLListWidget::si_colorModeSwitched() {
+    ui->deleteButton->setIcon(GUIUtils::getIconResource("U2Designer", "exit.png", false));
     ui->upButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
     ui->downButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 }

@@ -455,7 +455,7 @@ void DiffNucleotideColorsRenderer::update() {
         himg.setDevicePixelRatio(devicePixelRatio);
         nimg.setDevicePixelRatio(devicePixelRatio);
         // make gaps more noticeable
-        QColor textColor = isGap(c) ? QPalette().background().color() : QPalette().text().color();
+        QColor textColor = isGap(c) ? QPalette().window().color() : QPalette().text().color();
         QColor highlightColor = isGap(c) ? gapBackgroundColor : colorScheme.value(c);
 
         if (extendedPairs.contains(c)) {
