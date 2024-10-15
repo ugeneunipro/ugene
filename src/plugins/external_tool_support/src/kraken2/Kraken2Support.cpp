@@ -29,11 +29,11 @@
 namespace U2 {
 
 
-const QString Kraken2Support::CLASSIFY_TOOL = "kraken 2";
+const QString Kraken2Support::CLASSIFY_TOOL = "Kraken 2";
 const QString Kraken2Support::CLASSIFY_TOOL_ID = "USUPP_KRAKEN";
 
 Kraken2Support::Kraken2Support()
-    : ExternalTool(id, "Kraken 2", name) {
+    : ExternalTool(CLASSIFY_TOOL_ID, "kraken2", "Kraken 2") {
     toolKitName = "Kraken 2";
 
     validationArguments << "--version";
