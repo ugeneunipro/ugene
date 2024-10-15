@@ -94,6 +94,7 @@
 #include "java/JavaSupport.h"
 #include "kalign/KalignSupport.h"
 #include "kalign/KalignWorker.h"
+#include "kraken2/Kraken2Support.h"
 #include "mafft/MAFFTSupport.h"
 #include "mafft/MAFFTWorker.h"
 #include "mfold/MfoldSupport.h"
@@ -302,6 +303,9 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
 
     // Mfold
     etRegistry->registerEntry(new MfoldSupport());
+
+    //Kraken 2
+    etRegistry->registerEntry(new Kraken2Support());
 
     if (AppContext::getMainWindow() != nullptr) {
         etRegistry->setToolkitDescription("BLAST", tr("<i>BLAST</i> finds regions of similarity between biological sequences. "

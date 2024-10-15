@@ -28,13 +28,13 @@
 
 namespace U2 {
 
+
 const QString Kraken2Support::CLASSIFY_TOOL = "kraken 2";
 const QString Kraken2Support::CLASSIFY_TOOL_ID = "USUPP_KRAKEN";
-const QString Kraken2Support::GROUP_NAME = "Kraken";
 
-Kraken2Support::Kraken2Support(const QString &id, const QString &name)
+Kraken2Support::Kraken2Support()
     : ExternalTool(id, "Kraken 2", name) {
-    toolKitName = GROUP_NAME;
+    toolKitName = "Kraken 2";
 
     validationArguments << "--version";
     versionRegExp = QRegExp("Kraken version (\\d+\\.\\d+(\\.\\d+)?(\\-[a-zA-Z]*)?)");

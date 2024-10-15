@@ -28,9 +28,8 @@ namespace U2 {
 class Kraken2Support : public ExternalTool {
     Q_OBJECT
 public:
-    Kraken2Support(const QString &id, const QString &name);
-
-    static const QString GROUP_NAME;
+    Kraken2Support();
+    
     static const QString CLASSIFY_TOOL;
     static const QString CLASSIFY_TOOL_ID;
 };
