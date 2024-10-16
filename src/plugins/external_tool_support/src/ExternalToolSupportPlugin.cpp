@@ -95,6 +95,7 @@
 #include "kalign/KalignSupport.h"
 #include "kalign/KalignWorker.h"
 #include "kraken2/Kraken2Support.h"
+#include "kraken2/Kraken2ClassifyWorkerFactory.h"
 #include "mafft/MAFFTSupport.h"
 #include "mafft/MAFFTWorker.h"
 #include "mfold/MfoldSupport.h"
@@ -437,6 +438,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::BlastWorkerFactory::init();
 
     LocalWorkflow::Kalign3WorkerFactory::init();
+    LocalWorkflow::Kraken2ClassifyWorkerFactory::init();
     LocalWorkflow::CuffdiffWorkerFactory::init();
     LocalWorkflow::CufflinksWorkerFactory::init();
     LocalWorkflow::CuffmergeWorkerFactory::init();
