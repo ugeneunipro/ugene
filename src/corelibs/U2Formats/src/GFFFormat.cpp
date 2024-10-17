@@ -653,9 +653,7 @@ void GFFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
 
             foreach (const U2Region& r, location) {
                 // filling strand field
-                if (ann->getStrand().isComplementary()) {
-                    row[6] = "-";
-                }
+                row[6] = ann->getStrand().isComplementary() ? "-" : "+";
                 // filling location fields
                 row[3] = QString::number(r.startPos + 1);
                 row[4] = QString::number(r.endPos());

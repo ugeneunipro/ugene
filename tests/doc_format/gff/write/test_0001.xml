@@ -1,6 +1,6 @@
 <multi-test>
 
-    <!-- Test save option, check annotations num save correct, in file 1 sequence and 1 annotation, genbank to genbank-->
+    <!-- Test save option, check annotations number and location-->
 
     <load-document index="doc" url="gff/Embedded sequence/1.gff" io="local_file" format="gff"/>
 
@@ -9,4 +9,6 @@
     <load-document index="doc2" url="_temp1.gff" io="local_file" format="gff" dir="temp"/>
 
     <compare-annotations-num-in-two-objects doc="doc" value="doc2"/>
+    
+    <compare-annotations-locations-in-two-objects doc="doc" value="doc2"/>
 </multi-test>
