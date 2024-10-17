@@ -1055,7 +1055,7 @@ GUI_TEST_CLASS_DEFINITION(test_8118) {
     /*
     * 1. Open Mca alignment
     * 2. Press Ctrl+g and set valid position to go
-    * Expected state: visible position changed
+    * Expected state: visible position changed to desired
     */
     GTFileDialog::openFile(testDir + "_common_data/sanger/alignment_short.ugenedb");
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive();
@@ -1064,6 +1064,12 @@ GUI_TEST_CLASS_DEFINITION(test_8118) {
     GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
 
     CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 599, QString("Unexpected text: slider position doesn't change after 'Go to'"));
+
+    GTUtilsDialog::waitForDialog(new GoToDialogFiller(5666));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+
+    //gapped length returned so it differs with 'go to' value
+    CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 5724, QString("Unexpected text: slider position doesn't change after 'Go to'"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8120_1) {

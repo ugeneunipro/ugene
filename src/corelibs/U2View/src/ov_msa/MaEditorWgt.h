@@ -98,8 +98,8 @@ public:
         return nameAndSequenceAreasSplitter;
     }
 
-    /* Get destination position by dialog, if dialog is not accepted returns -1 */
-    int getGotoPosition();
+    /* Get destination gapped position by dialog, if dialog is not accepted returns -1 */
+    int getGotoUserInputValue();
 
 signals:
     void si_startMaChanging();

@@ -38,6 +38,7 @@
 #include "McaEditorSequenceArea.h"
 #include "general_tab/McaGeneralTabFactory.h"
 #include "ov_mca/MaConsensusMismatchController.h"
+#include "ov_mca/McaReferenceCharController.h"
 #include "ov_mca/SequenceWithChromatogramAreaRenderer.h"
 #include "ov_msa/MaAmbiguousCharactersController.h"
 #include "ov_msa/MaEditorFactory.h"
@@ -131,9 +132,11 @@ SequenceObjectContext* McaEditor::getReferenceContext() const {
 }
 
 void McaEditor::sl_onPosChangeRequest() {
-    const int position = getUI()->getGotoPosition();
-    CHECK(position > 0, );
-    getUI()->getScrollController()->scrollToBase(position - 1, getUI()->getSequenceArea()->width());
+    const int position = getUI()->getGotoUserInputValue() - 1;
+    CHECK(position >= 0, );
+    const int gaps = position - getUI()->getRefCharController()->getUngappedPosition(position);
+    const QRect selection(position + gaps, 0, 1, ui->getSequenceArea()->getViewRowCount());
+    getSelectionController()->setSelection(MaEditorSelection({selection}));
 }
 
 void McaEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {

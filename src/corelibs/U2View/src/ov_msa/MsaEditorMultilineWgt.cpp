@@ -312,7 +312,7 @@ void MsaEditorMultilineWgt::hideSimilarity() {
 }
 
 void MsaEditorMultilineWgt::sl_onPosChangeRequest() {
-    const int position = getLineWidget(0)->getGotoPosition();
+    const int position = getLineWidget(0)->getGotoUserInputValue();
     CHECK(position > 0, );
     int baseIndex = position - 1;
     CHECK(baseIndex >= 0 && baseIndex < editor->getAlignmentLen(), );
