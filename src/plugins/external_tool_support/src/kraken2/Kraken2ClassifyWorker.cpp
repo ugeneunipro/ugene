@@ -116,9 +116,7 @@ Kraken2ClassifyTaskSettings Kraken2ClassifyWorker::getSettings(U2OpStatus &os) {
     Kraken2ClassifyTaskSettings settings;
     settings.databaseUrl = getValue<QString>(Kraken2ClassifyWorkerFactory::DATABASE_ATTR_ID);
     settings.quickOperation = getValue<bool>(Kraken2ClassifyWorkerFactory::QUICK_OPERATION_ATTR_ID);
-    settings.minNumberOfHits = getValue<int>(Kraken2ClassifyWorkerFactory::MIN_HITS_NUMBER_ATTR_ID);
     settings.numberOfThreads = getValue<int>(Kraken2ClassifyWorkerFactory::THREADS_NUMBER_ATTR_ID);
-    settings.preloadDatabase = getValue<bool>(Kraken2ClassifyWorkerFactory::PRELOAD_DATABASE_ATTR_ID);
 
     const Message message = getMessageAndSetupScriptValues(input);
     settings.readsUrl = message.getData().toMap()[Kraken2ClassifyWorkerFactory::INPUT_SLOT].toString();

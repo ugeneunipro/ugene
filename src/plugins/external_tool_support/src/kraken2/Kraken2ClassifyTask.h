@@ -34,9 +34,7 @@ struct Kraken2ClassifyTaskSettings {
     QString readsUrl;
     QString pairedReadsUrl;
     bool quickOperation;
-    int minNumberOfHits;
     int numberOfThreads;
-    bool preloadDatabase;
     bool pairedReads;
 
     QString classificationUrl;

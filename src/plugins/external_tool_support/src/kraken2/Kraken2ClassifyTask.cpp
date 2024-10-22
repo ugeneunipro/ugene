@@ -38,9 +38,7 @@ const QString Kraken2ClassifyTaskSettings::PAIRED_END = "paired-end";
 
 Kraken2ClassifyTaskSettings::Kraken2ClassifyTaskSettings()
     : quickOperation(false),
-      minNumberOfHits(1),
       numberOfThreads(1),
-      preloadDatabase(true),
       pairedReads(false) {
 }
 
@@ -77,13 +75,9 @@ QStringList Kraken2ClassifyTask::getArguments() {
 
     if (settings.quickOperation) {
         arguments << "--quick";
-        arguments << "--min-hits" << QString::number(settings.minNumberOfHits);
     }
 
     arguments << "--output" << settings.classificationUrl;
-    if (settings.preloadDatabase) {
-        arguments << "--preload";
-    }
 
     if (settings.pairedReads) {
         arguments << "--paired";

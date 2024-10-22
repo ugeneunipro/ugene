@@ -1223,6 +1223,7 @@ QVariant PrompterBaseImpl::getParameter(const QString& id) {
     if (map.contains(id)) {
         return map.value(id);
     } else {
+        CHECK(target->getParameter(id) != nullptr, QVariant());
         return target->getParameter(id)->getAttributePureValue();
     }
 }
@@ -1239,6 +1240,7 @@ QString PrompterBaseImpl::getURL(const QString& id, bool* empty, const QString& 
     if (empty != nullptr) {
         *empty = false;
     }
+    CHECK_EXT(target->getParameter(id) != nullptr, if (empty != nullptr) {*empty = false;},"<font color='red'>" + tr("unset") + "</font>");
     if (!target->getParameter(id)->getAttributeScript().isEmpty()) {
         url = "got from user script";
     } else if (url.isEmpty()) {

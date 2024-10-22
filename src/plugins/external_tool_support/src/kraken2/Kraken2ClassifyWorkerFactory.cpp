@@ -62,9 +62,7 @@ const QString Kraken2ClassifyWorkerFactory::INPUT_DATA_ATTR_ID = "input-data";
 const QString Kraken2ClassifyWorkerFactory::DATABASE_ATTR_ID = "database";
 const QString Kraken2ClassifyWorkerFactory::OUTPUT_URL_ATTR_ID = "output-url";
 const QString Kraken2ClassifyWorkerFactory::QUICK_OPERATION_ATTR_ID = "quick-operation";
-const QString Kraken2ClassifyWorkerFactory::MIN_HITS_NUMBER_ATTR_ID = "min-hits";
 const QString Kraken2ClassifyWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
-const QString Kraken2ClassifyWorkerFactory::PRELOAD_DATABASE_ATTR_ID = "preload";
 
 const QString Kraken2ClassifyWorkerFactory::SINGLE_END_TEXT = "SE reads or contigs";
 const QString Kraken2ClassifyWorkerFactory::PAIRED_END_TEXT = "PE reads";
@@ -103,7 +101,7 @@ void Kraken2ClassifyWorkerFactory::init() {
                                                                "In case of SE reads or contigs use the \"Input URL 1\" slot only.\n\n"
                                                                "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
                                                                "See also the \"Input data\" parameter of the element."));
-        Descriptor outPortDesc(OUTPUT_PORT_ID, Kraken2ClassifyPrompter::tr("Kraken Classification"), Kraken2ClassifyPrompter::tr("A map of sequence names with the associated taxonomy IDs, classified by Kraken."));
+        Descriptor outPortDesc(OUTPUT_PORT_ID, Kraken2ClassifyPrompter::tr("Kraken 2 Classification"), Kraken2ClassifyPrompter::tr("A map of sequence names with the associated taxonomy IDs, classified by Kraken 2."));
 
         ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
         ports << new PortDescriptor(outPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
@@ -123,31 +121,16 @@ void Kraken2ClassifyWorkerFactory::init() {
         Descriptor quickOperationDesc(QUICK_OPERATION_ATTR_ID, Kraken2ClassifyPrompter::tr("Quick operation"), Kraken2ClassifyPrompter::tr("Stop classification of an input read after the certain number of hits.<br><br>"
                                                                                                                                          "The value can be specified in the \"Minimum number of hits\" parameter."));
 
-        Descriptor minHitsDesc(MIN_HITS_NUMBER_ATTR_ID, Kraken2ClassifyPrompter::tr("Minimum number of hits"), Kraken2ClassifyPrompter::tr("The number of hits that are required to declare an input sequence classified.<br><br>"
-                                                                                                                                         "This can be especially useful with custom databases when testing to see if sequences either do or do not belong to a particular genome."));
-
         Descriptor threadsDesc(THREADS_NUMBER_ATTR_ID, Kraken2ClassifyPrompter::tr("Number of threads"), Kraken2ClassifyPrompter::tr("Use multiple threads (--threads)."));
 
-        Descriptor preloadDatabaseDesc(PRELOAD_DATABASE_ATTR_ID, Kraken2ClassifyPrompter::tr("Load database into memory"), Kraken2ClassifyPrompter::tr("Load the Kraken database into RAM (--preload).<br><br>"
-                                                                                                                                                     "This can be useful to improve the speed. The database size should be less than the RAM size.<br><br>"
-                                                                                                                                                     "The other option to improve the speed is to store the database on ramdisk. Set this parameter to \"False\" in this case."));
-
+        attributes << new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding);
         Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, Kraken2ClassifyTaskSettings::SINGLE_END);
         inputDataAttribute->addSlotRelation(new SlotRelationDescriptor(INPUT_PORT_ID, PAIRED_INPUT_SLOT, QVariantList() << Kraken2ClassifyTaskSettings::PAIRED_END));
         attributes << inputDataAttribute;
-
-        
-
         attributes << new Attribute(quickOperationDesc, BaseTypes::BOOL_TYPE(), Attribute::None, false);
 
-        Attribute *minHitsAttribute = new Attribute(minHitsDesc, BaseTypes::NUM_TYPE(), Attribute::None, 1);
-        attributes << minHitsAttribute;
-
-        attributes << new Attribute(preloadDatabaseDesc, BaseTypes::BOOL_TYPE(), Attribute::None, true);
         attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
-
-        minHitsAttribute->addRelation(new VisibilityRelation(QUICK_OPERATION_ATTR_ID, "true"));
     }
 
     QMap<QString, PropertyDelegate *> delegates;
@@ -156,12 +139,13 @@ void Kraken2ClassifyWorkerFactory::init() {
         inputDataMap[SINGLE_END_TEXT] = Kraken2ClassifyTaskSettings::SINGLE_END;
         inputDataMap[PAIRED_END_TEXT] = Kraken2ClassifyTaskSettings::PAIRED_END;
         delegates[INPUT_DATA_ATTR_ID] = new ComboBoxDelegate(inputDataMap);
+        delegates[DATABASE_ATTR_ID] = new URLDelegate("", "Database Folder", false, true, false);
 
         DelegateTags outputUrlTags;
         outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
         outputUrlTags.set(DelegateTags::FILTER, FileFilters::createFileFilterByObjectTypes({BaseDocumentFormats::PLAIN_TEXT}, true));
         outputUrlTags.set(DelegateTags::FORMAT, BaseDocumentFormats::PLAIN_TEXT);
-        delegates[OUTPUT_URL_ATTR_ID] = new URLDelegate(outputUrlTags, "kraken/output");
+        delegates[OUTPUT_URL_ATTR_ID] = new URLDelegate(outputUrlTags, "kraken2/output");
 
         delegates[QUICK_OPERATION_ATTR_ID] = new ComboBoxWithBoolsDelegate();
 
@@ -169,11 +153,9 @@ void Kraken2ClassifyWorkerFactory::init() {
         threadsProperties["minimum"] = 1;
         threadsProperties["maximum"] = QThread::idealThreadCount();
         delegates[THREADS_NUMBER_ATTR_ID] = new SpinBoxDelegate(threadsProperties);
-
-        delegates[PRELOAD_DATABASE_ATTR_ID] = new ComboBoxWithBoolsDelegate();
     }
 
-    Descriptor desc(ACTOR_ID, Kraken2ClassifyPrompter::tr("Classify Sequences with Kraken"), Kraken2ClassifyPrompter::tr("Kraken is a taxonomic sequence classifier that assigns taxonomic labels to short DNA reads. "
+    Descriptor desc(ACTOR_ID, Kraken2ClassifyPrompter::tr("Classify Sequences with Kraken 2"), Kraken2ClassifyPrompter::tr("Kraken 2 is a taxonomic sequence classifier that assigns taxonomic labels to short DNA reads. "
                                                                                                                        "It does this by examining the k-mers within a read and querying a database with those."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
