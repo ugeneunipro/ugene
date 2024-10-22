@@ -2015,13 +2015,9 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     GTFileDialog::openFile(dataDir + "samples/PDB/1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    auto splitterCenter = GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint();
-    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 1125 : 1100;
-    GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(deltaX, 0));
-
-    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove sequence"}));
-    QToolBar* toolbar = GTWidget::findToolBar("views_tool_bar_1CF7 chain A sequence");
-    GTWidget::click(GTWidget::findWidget("qt_toolbar_ext_button", toolbar));
+    auto toolbar = GTWidget::findToolBar("views_tool_bar_1CF7 chain A sequence");
+    GTWidget::click(GTWidget::findWidget("remove_sequence", toolbar));
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7455) {
