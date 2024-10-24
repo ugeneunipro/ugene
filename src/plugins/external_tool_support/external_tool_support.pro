@@ -122,6 +122,15 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/kalign/KalignWorker.h \
            src/kalign/pairwise/KalignPairwiseAlignmentGUIExtensionFactory.h \
            src/kalign/pairwise/KalignPairwiseAlignmentTask.h \
+           src/kraken2/Kraken2ClassifyLogParser.h \
+           src/kraken2/Kraken2ClassifyPrompter.h \
+           src/kraken2/Kraken2ClassifyTask.h \
+           src/kraken2/Kraken2ClassifyValidator.h \
+           src/kraken2/Kraken2ClassifyWorker.h \
+           src/kraken2/Kraken2ClassifyWorkerFactory.h \
+           src/kraken2/Kraken2Support.h \
+           src/kraken2/Kraken2TranslateLogParser.h \
+           src/kraken2/NgsReadsClassificationUtils.h \
            src/mafft/MAFFTSupport.h \
            src/mafft/MAFFTSupportRunDialog.h \
            src/mafft/MAFFTSupportTask.h \
@@ -367,6 +376,15 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/kalign/KalignWorker.cpp \
            src/kalign/pairwise/KalignPairwiseAlignmentGUIExtensionFactory.cpp \
            src/kalign/pairwise/KalignPairwiseAlignmentTask.cpp \
+           src/kraken2/Kraken2ClassifyLogParser.cpp \
+           src/kraken2/Kraken2ClassifyPrompter.cpp \
+           src/kraken2/Kraken2ClassifyTask.cpp \
+           src/kraken2/Kraken2ClassifyValidator.cpp \
+           src/kraken2/Kraken2ClassifyWorker.cpp \
+           src/kraken2/Kraken2ClassifyWorkerFactory.cpp \
+           src/kraken2/Kraken2Support.cpp \
+           src/kraken2/Kraken2TranslateLogParser.cpp \
+           src/kraken2/NgsReadsClassificationUtils.cpp \
            src/mafft/MAFFTSupport.cpp \
            src/mafft/MAFFTSupportRunDialog.cpp \
            src/mafft/MAFFTSupportTask.cpp \
