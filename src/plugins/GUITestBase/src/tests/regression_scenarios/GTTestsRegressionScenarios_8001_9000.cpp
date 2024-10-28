@@ -1065,10 +1065,20 @@ GUI_TEST_CLASS_DEFINITION(test_8118) {
 
     CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 599, QString("Unexpected text: slider position doesn't change after 'Go to'"));
 
+    GTUtilsDialog::waitForDialog(new GoToDialogFiller(2082));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    // gapped length returned so it differs with 'go to' value
+    int pos = GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos();
+    CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 2083, QString("Unexpected text: slider position doesn't change after 'Go to'"));
+
+    GTUtilsDialog::waitForDialog(new GoToDialogFiller(2083));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    pos = GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos();
+    CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 2084, QString("Unexpected text: slider position doesn't change after 'Go to'"));
+
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(5666));
     GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
 
-    //gapped length returned so it differs with 'go to' value
     CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 5724, QString("Unexpected text: slider position doesn't change after 'Go to'"));
 }
 
