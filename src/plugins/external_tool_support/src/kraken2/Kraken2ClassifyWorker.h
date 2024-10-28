@@ -45,10 +45,10 @@ private:
     bool dataFinished() const;
 
     Kraken2ClassifyTaskSettings getSettings(U2OpStatus &os);
-    IntegralBus *input;
-    IntegralBus *output;
+    IntegralBus *input = nullptr;
+    IntegralBus *output = nullptr;
 
-    bool pairedReadsInput;
+    bool pairedReadsInput = false;
 
     static const QString KRAKEN_DIR;
 };

@@ -31,9 +31,6 @@ public:
 
 private:
     bool isError(const QString &line) const;
-
-    static const QStringList wellKnownErrors;
-    static QStringList initWellKnownErrors();
 };
 
 }  // namespace U2

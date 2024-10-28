@@ -31,7 +31,7 @@ namespace Workflow {
 class Kraken2ClassifyValidator : public ActorValidator {
     Q_DECLARE_TR_FUNCTIONS(Kraken2ClassifyValidator)
 public:
-    bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
+    bool validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const override;
 
 private:
     bool validateDatabase(const Actor *actor, NotificationsList &notificationList) const;

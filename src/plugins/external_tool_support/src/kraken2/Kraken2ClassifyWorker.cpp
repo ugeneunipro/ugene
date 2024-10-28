@@ -40,20 +40,15 @@ namespace LocalWorkflow {
 
 const QString Kraken2ClassifyWorker::KRAKEN_DIR = "Kraken2";
 
-Kraken2ClassifyWorker::Kraken2ClassifyWorker(Actor *actor)
-    : BaseWorker(actor, false),
-      input(nullptr),
-      //      pairedInput(NULL),
-      output(nullptr),
-      pairedReadsInput(false) {
-}
+Kraken2ClassifyWorker::Kraken2ClassifyWorker(Actor *actor) : BaseWorker(actor, false) {
+};
 
 void Kraken2ClassifyWorker::init() {
     input = ports.value(Kraken2ClassifyWorkerFactory::INPUT_PORT_ID);
     output = ports.value(Kraken2ClassifyWorkerFactory::OUTPUT_PORT_ID);
 
-    SAFE_POINT(nullptr != input, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::INPUT_PORT_ID), );
-    SAFE_POINT(nullptr != output, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::OUTPUT_PORT_ID), );
+    SAFE_POINT(input != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::INPUT_PORT_ID), );
+    SAFE_POINT(output != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::OUTPUT_PORT_ID), );
 
     pairedReadsInput = (getValue<QString>(Kraken2ClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == Kraken2ClassifyTaskSettings::PAIRED_END);
 

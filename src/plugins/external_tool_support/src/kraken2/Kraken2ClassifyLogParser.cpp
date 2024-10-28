@@ -23,32 +23,26 @@
 
 namespace U2 {
 
-const QStringList Kraken2ClassifyLogParser::wellKnownErrors = Kraken2ClassifyLogParser::initWellKnownErrors();
+static const QStringList wellKnownErrors = {"Must specify DB", 
+                                            "does not contain necessary file database.kdb", 
+                                            "--paired requires exactly two filenames", 
+                                            "mismatched mate pair names", 
+                                            "can't determine what format",
+                                            "can't open database.idx: No such file or directory",
+                                            "mismatched sequence counts", 
+                                            "Need to specify input filenames"};
 
 Kraken2ClassifyLogParser::Kraken2ClassifyLogParser()
     : ExternalToolLogParser() {
 }
 
 bool Kraken2ClassifyLogParser::isError(const QString &line) const {
-    foreach (const QString &wellKnownError, wellKnownErrors) {
+    for (const QString &wellKnownError : wellKnownErrors) {
         if (line.contains(wellKnownError)) {
             return true;
         }
     }
     return false;
-}
-
-QStringList Kraken2ClassifyLogParser::initWellKnownErrors() {
-    QStringList result;
-    result << "Must specify DB";
-    result << "does not contain necessary file database.kdb";
-    result << "--paired requires exactly two filenames";
-    result << "mismatched mate pair names";
-    result << "can't determine what format";
-    result << "can't open database.idx: No such file or directory";
-    result << "mismatched sequence counts";
-    result << "Need to specify input filenames";
-    return result;
 }
 
 }  // namespace U2

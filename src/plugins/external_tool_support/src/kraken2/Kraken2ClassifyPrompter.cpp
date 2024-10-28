@@ -37,7 +37,7 @@ QString Kraken2ClassifyPrompter::composeRichDoc() {
     const QString readsProducerName = getProducersOrUnset(Kraken2ClassifyWorkerFactory::INPUT_PORT_ID, Kraken2ClassifyWorkerFactory::INPUT_SLOT);
     const QString databaseUrl = getHyperlink(Kraken2ClassifyWorkerFactory::DATABASE_ATTR_ID, getURL(Kraken2ClassifyWorkerFactory::DATABASE_ATTR_ID));
 
-    if (Kraken2ClassifyTaskSettings::SINGLE_END == getParameter(Kraken2ClassifyWorkerFactory::INPUT_DATA_ATTR_ID).toString()) {
+    if (getParameter(Kraken2ClassifyWorkerFactory::INPUT_DATA_ATTR_ID).toString() == Kraken2ClassifyTaskSettings::SINGLE_END) {
         return tr("Classify sequences from <u>%1</u> with Kraken, use %2 database.").arg(readsProducerName).arg(databaseUrl);
     } else {
         //        const QString pairedReadsProducerName = getProducersOrUnset(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID, BaseSlots::URL_SLOT().getId());

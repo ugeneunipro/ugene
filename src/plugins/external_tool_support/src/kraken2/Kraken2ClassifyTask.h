@@ -28,14 +28,12 @@
 namespace U2 {
 
 struct Kraken2ClassifyTaskSettings {
-    Kraken2ClassifyTaskSettings();
-
     QString databaseUrl;
     QString readsUrl;
     QString pairedReadsUrl;
-    bool quickOperation;
-    int numberOfThreads;
-    bool pairedReads;
+    bool quickOperation = false;
+    int numberOfThreads = 1;
+    bool pairedReads = false;
 
     QString classificationUrl;
 
@@ -48,16 +46,17 @@ class Kraken2ClassifyTask : public ExternalToolSupportTask {
 public:
     Kraken2ClassifyTask(const Kraken2ClassifyTaskSettings &settings);
 
+    void prepare() override;
+    void run() override;
+
     const QString &getClassificationUrl() const;
     const LocalWorkflow::TaxonomyClassificationResult &getParsedReport() const;
 
 private:
-    void prepare();
-    void run() override;
     QStringList getArguments();
 
     const Kraken2ClassifyTaskSettings settings;
-    ExternalToolRunTask *classifyTask;
+    ExternalToolRunTask *classifyTask = nullptr;
     LocalWorkflow::TaxonomyClassificationResult parsedReport;
 };
 

@@ -36,12 +36,6 @@ namespace U2 {
 const QString Kraken2ClassifyTaskSettings::SINGLE_END = "single-end";
 const QString Kraken2ClassifyTaskSettings::PAIRED_END = "paired-end";
 
-Kraken2ClassifyTaskSettings::Kraken2ClassifyTaskSettings()
-    : quickOperation(false),
-      numberOfThreads(1),
-      pairedReads(false) {
-}
-
 Kraken2ClassifyTask::Kraken2ClassifyTask(const Kraken2ClassifyTaskSettings &settings)
     : ExternalToolSupportTask(tr("Classify reads with Kraken"), TaskFlags_FOSE_COSC),
       settings(settings),
