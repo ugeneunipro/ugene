@@ -404,6 +404,7 @@ void SmithWatermanDialog::sl_bttnViewMatrix() {
 }
 
 void SmithWatermanDialog::sl_translationToggled(bool checked) {
+    CHECK_EXT(radioTranslation->isEnabled(), radioSequence->setChecked(true), );
     const DNAAlphabet* alphabet = 0;
     if (checked) {
         DNATranslation* aminoTT = ctxSeq->getAminoTT();

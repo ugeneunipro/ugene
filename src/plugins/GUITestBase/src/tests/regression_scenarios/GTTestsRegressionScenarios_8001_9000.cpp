@@ -35,6 +35,7 @@
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
+#include <primitives/GTRadioButton.h>
 #include <primitives/GTWidget.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
@@ -77,6 +78,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
@@ -1187,6 +1189,37 @@ GUI_TEST_CLASS_DEFINITION(test_8141) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 1186, "Annoatated region counter doesn't match.");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8151) {
+    /*
+    * 1. Open human_T1.fa
+    * 2. Open SW dialog, activate "translation" radio button
+    * 3. CLick Cancel
+    * 4. Open AMINO.fa
+    * 5. Open SW dialog
+    * Expected state: no crash
+    */
+    class ActivateTranslationSWScenario : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            if (GTWidget::findRadioButton("radioTranslation")->isEnabled()) {
+                GTRadioButton::click("radioTranslation", dialog);
+            }
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsDialog::waitForDialog(new SmithWatermanDialogFiller(new ActivateTranslationSWScenario));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
+
+    GTFileDialog::openFile(testDir + "_common_data/fasta/AMINO.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsDialog::waitForDialog(new SmithWatermanDialogFiller(new ActivateTranslationSWScenario));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
 }
 
 }  // namespace GUITest_regression_scenarios
