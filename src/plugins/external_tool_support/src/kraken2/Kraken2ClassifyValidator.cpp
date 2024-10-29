@@ -38,7 +38,7 @@ bool Kraken2ClassifyValidator::validate(const Actor *actor, NotificationsList &n
 
 bool Kraken2ClassifyValidator::validateDatabase(const Actor *actor, NotificationsList &notificationList) const {
     const QString databaseUrl = actor->getParameter(LocalWorkflow::Kraken2ClassifyWorkerFactory::DATABASE_ATTR_ID)->getAttributeValueWithoutScript<QString>();
-    const bool doesDatabaseDirExist = FileAndDirectoryUtils::isDirectoryReadable(databaseUrl);
+    const bool doesDatabaseDirExist = FileAndDirectoryUtils::isDirectoryExistsAndReadable(databaseUrl);
     CHECK_EXT(doesDatabaseDirExist,
               notificationList.append(WorkflowNotification(tr("The database folder \"%1\" doesn't exist.").arg(databaseUrl), actor->getId())),
               false);

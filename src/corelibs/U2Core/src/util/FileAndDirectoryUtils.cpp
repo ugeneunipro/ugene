@@ -171,7 +171,7 @@ bool FileAndDirectoryUtils::isDirectoryWritable(const QString& dirPath) {
     return true;
 }
 
-bool FileAndDirectoryUtils::isDirectoryReadable(const QString& path) {
+bool FileAndDirectoryUtils::isDirectoryExistsAndReadable(const QString& path) {
     QDir dir(path);
     if (!dir.exists()) {
         return false;
