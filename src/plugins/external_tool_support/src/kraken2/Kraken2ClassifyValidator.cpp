@@ -21,8 +21,7 @@
 
 #include "Kraken2ClassifyValidator.h"
 
-#include <QFileInfo>
-
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/Configuration.h>
@@ -39,7 +38,7 @@ bool Kraken2ClassifyValidator::validate(const Actor *actor, NotificationsList &n
 
 bool Kraken2ClassifyValidator::validateDatabase(const Actor *actor, NotificationsList &notificationList) const {
     const QString databaseUrl = actor->getParameter(LocalWorkflow::Kraken2ClassifyWorkerFactory::DATABASE_ATTR_ID)->getAttributeValueWithoutScript<QString>();
-    const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
+    const bool doesDatabaseDirExist = FileAndDirectoryUtils::isDirectoryReadable(databaseUrl);
     CHECK_EXT(doesDatabaseDirExist,
               notificationList.append(WorkflowNotification(tr("The database folder \"%1\" doesn't exist.").arg(databaseUrl), actor->getId())),
               false);
