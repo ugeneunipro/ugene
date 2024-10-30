@@ -132,13 +132,9 @@ SequenceObjectContext* McaEditor::getReferenceContext() const {
 }
 
 void McaEditor::sl_onPosChangeRequest() {
-    const int position = getUI()->getGotoUserInputValue() - 1;
+    int position = getUI()->getGotoUserInputValue() - 1;
     CHECK(position >= 0, );
-    const int ungappedPos = getUI()->getRefCharController()->getUngappedPosition(position);
-    const int gaps = ungappedPos == -1 ? 1 : position - ungappedPos;
-    const QRect selection(position + gaps, 0, 1, ui->getSequenceArea()->getViewRowCount());
-    //const int gapped = getUI()->getRefCharController()->getUngappedPosition(position);
-    //const QRect selection(gapped == -1 ? position : gapped, 0, 1, ui->getSequenceArea()->getViewRowCount());
+    const QRect selection(getUI()->getRefCharController()->getGappedPos(position), 0, 1, ui->getSequenceArea()->getViewRowCount());
     getSelectionController()->setSelection(MaEditorSelection({selection}));
 }
 

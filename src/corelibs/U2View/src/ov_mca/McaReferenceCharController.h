@@ -57,6 +57,8 @@ public:
     OffsetRegions getCharRegions(const U2Region& region) const;
 
     int getUngappedPosition(int pos) const;
+    //returns gapped position for ungapped, in case of problems returns -1
+    int getGappedPos(int pos) const;
     int getUngappedLength() const;
 
 signals:
