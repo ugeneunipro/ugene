@@ -1202,23 +1202,30 @@ GUI_TEST_CLASS_DEFINITION(test_8151) {
     */
     class ActivateTranslationSWScenario : public CustomScenario {
     public:
+        ActivateTranslationSWScenario(bool clickTranslationRadio_)
+            : clickTranslationRadio(clickTranslationRadio_) {
+        };
+
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            if (GTWidget::findRadioButton("radioTranslation")->isEnabled()) {
+            if (clickTranslationRadio) {
                 GTRadioButton::click("radioTranslation", dialog);
             }
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
+
+    private:
+        bool clickTranslationRadio;
     };
 
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
-    GTUtilsDialog::waitForDialog(new SmithWatermanDialogFiller(new ActivateTranslationSWScenario));
+    GTUtilsDialog::waitForDialog(new SmithWatermanDialogFiller(new ActivateTranslationSWScenario(true)));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
 
     GTFileDialog::openFile(testDir + "_common_data/fasta/AMINO.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
-    GTUtilsDialog::waitForDialog(new SmithWatermanDialogFiller(new ActivateTranslationSWScenario));
+    GTUtilsDialog::waitForDialog(new SmithWatermanDialogFiller(new ActivateTranslationSWScenario(false)));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
 }
 
