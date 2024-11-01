@@ -43,7 +43,7 @@ bool Kraken2ClassifyValidator::validateDatabase(const Actor *actor, Notification
               notificationList.append(WorkflowNotification(tr("The database folder \"%1\" doesn't exist.").arg(databaseUrl), actor->getId())),
               false);
 
-    const QStringList files = { "opts.k2d", "taxo.k2d", "database100mers.kmer_distrib", "database150mers.kmer_distrib", "database200mers.kmer_distrib", 
+    static const QStringList files = { "opts.k2d", "taxo.k2d", "database100mers.kmer_distrib", "database150mers.kmer_distrib", "database200mers.kmer_distrib", 
                                 "database250mers.kmer_distrib", "database300mers.kmer_distrib", "database50mers.kmer_distrib", "database75mers.kmer_distrib",
                                 "inspect.txt", "ktaxonomy.tsv", "seqid2taxid.map", "hash.k2d", "library_report.tsv"};
     QStringList missedFiles;

@@ -52,7 +52,6 @@ namespace LocalWorkflow {
 const QString Kraken2ClassifyWorkerFactory::ACTOR_ID = "kraken-classify";
 
 const QString Kraken2ClassifyWorkerFactory::INPUT_PORT_ID = "in";
-const QString Kraken2ClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
 
 // Slots should be the same as in GetReadsListWorkerFactory
 const QString Kraken2ClassifyWorkerFactory::INPUT_SLOT = "reads-url1";
@@ -93,7 +92,6 @@ void Kraken2ClassifyWorkerFactory::init() {
         inType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
 
         QMap<Descriptor, DataTypePtr> outType;
-        outType[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
 
         const Descriptor inPortDesc(INPUT_PORT_ID,
                                     Kraken2ClassifyPrompter::tr("Input sequences"),
@@ -101,10 +99,8 @@ void Kraken2ClassifyWorkerFactory::init() {
                                                                "In case of SE reads or contigs use the \"Input URL 1\" slot only.\n\n"
                                                                "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
                                                                "See also the \"Input data\" parameter of the element."));
-        Descriptor outPortDesc(OUTPUT_PORT_ID, Kraken2ClassifyPrompter::tr("Kraken 2 Classification"), Kraken2ClassifyPrompter::tr("A map of sequence names with the associated taxonomy IDs, classified by Kraken 2."));
 
         ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
-        ports << new PortDescriptor(outPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
     }
 
     QList<Attribute *> attributes;

@@ -46,7 +46,6 @@ private:
 
     Kraken2ClassifyTaskSettings getSettings(U2OpStatus &os);
     IntegralBus *input = nullptr;
-    IntegralBus *output = nullptr;
 
     bool pairedReadsInput = false;
 

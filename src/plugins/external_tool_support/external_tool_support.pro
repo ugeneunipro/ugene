@@ -130,7 +130,6 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/kraken2/Kraken2ClassifyWorkerFactory.h \
            src/kraken2/Kraken2Support.h \
            src/kraken2/Kraken2TranslateLogParser.h \
-           src/kraken2/NgsReadsClassificationUtils.h \
            src/mafft/MAFFTSupport.h \
            src/mafft/MAFFTSupportRunDialog.h \
            src/mafft/MAFFTSupportTask.h \
@@ -384,7 +383,6 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/kraken2/Kraken2ClassifyWorkerFactory.cpp \
            src/kraken2/Kraken2Support.cpp \
            src/kraken2/Kraken2TranslateLogParser.cpp \
-           src/kraken2/NgsReadsClassificationUtils.cpp \
            src/mafft/MAFFTSupport.cpp \
            src/mafft/MAFFTSupportRunDialog.cpp \
            src/mafft/MAFFTSupportTask.cpp \

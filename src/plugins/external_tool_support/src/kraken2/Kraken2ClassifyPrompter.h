@@ -31,8 +31,8 @@ class Kraken2ClassifyPrompter : public PrompterBase<Kraken2ClassifyPrompter> {
 public:
     Kraken2ClassifyPrompter(Actor *actor = nullptr);
 
-private:
-    QString composeRichDoc();
+protected:
+    QString composeRichDoc() override;
 };
 
 }  // namespace LocalWorkflow

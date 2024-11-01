@@ -31,7 +31,6 @@
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-#include "NgsReadsClassificationUtils.h"
 #include "Kraken2ClassifyTask.h"
 #include "Kraken2ClassifyWorkerFactory.h"
 
@@ -45,16 +44,10 @@ Kraken2ClassifyWorker::Kraken2ClassifyWorker(Actor *actor) : BaseWorker(actor, f
 
 void Kraken2ClassifyWorker::init() {
     input = ports.value(Kraken2ClassifyWorkerFactory::INPUT_PORT_ID);
-    output = ports.value(Kraken2ClassifyWorkerFactory::OUTPUT_PORT_ID);
 
     SAFE_POINT(input != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::INPUT_PORT_ID), );
-    SAFE_POINT(output != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::OUTPUT_PORT_ID), );
 
     pairedReadsInput = (getValue<QString>(Kraken2ClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == Kraken2ClassifyTaskSettings::PAIRED_END);
-
-    // FIXME: the second port is not taken into account
-    output->addComplement(input);
-    input->addComplement(output);
 }
 
 Task *Kraken2ClassifyWorker::tick() {
@@ -73,7 +66,6 @@ Task *Kraken2ClassifyWorker::tick() {
 
     if (dataFinished()) {
         setDone();
-        output->setEnded();
     }
 
     return nullptr;
@@ -87,16 +79,6 @@ void Kraken2ClassifyWorker::sl_taskFinished(Task *task) {
     if (!krakenTask->isFinished() || krakenTask->hasError() || krakenTask->isCanceled()) {
         return;
     }
-
-    const QString rawClassificationUrl = krakenTask->getClassificationUrl();
-    QVariantMap data;
-    const TaxonomyClassificationResult &classificationResult = krakenTask->getParsedReport();
-    data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID] = QVariant::fromValue<U2::LocalWorkflow::TaxonomyClassificationResult>(classificationResult);
-    output->put(Message(output->getBusType(), data));
-    context->getMonitor()->addOutputFile(rawClassificationUrl, getActor()->getId());
-
-    int classifiedCount = NgsReadsClassificationUtils::countClassified(classificationResult);
-    context->getMonitor()->addInfo(tr("There were %1 input reads, %2 reads were classified.").arg(QString::number(classificationResult.size())).arg(QString::number(classifiedCount)), getActor()->getId(), WorkflowNotification::U2_INFO);
 }
 
 bool Kraken2ClassifyWorker::isReadyToRun() const {
@@ -128,7 +110,7 @@ Kraken2ClassifyTaskSettings Kraken2ClassifyWorker::getSettings(U2OpStatus &os) {
     if (settings.classificationUrl.isEmpty()) {
         const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
         QString fileUrl = metadata.getFileUrl();
-        settings.classificationUrl = tmpDir + "/" + (fileUrl.isEmpty() ? QString("Kraken_%1.txt").arg(NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX) : NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(metadata.getFileUrl(), QStringList() << "Kraken" << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX, "txt", pairedReadsInput));
+        settings.classificationUrl = tmpDir + "/Kraken2_result.txt";
     }
     settings.classificationUrl = GUrlUtils::rollFileName(settings.classificationUrl, "_");
 

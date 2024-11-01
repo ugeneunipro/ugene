@@ -23,8 +23,6 @@
 
 #include <U2Core/ExternalToolRunTask.h>
 
-#include "NgsReadsClassificationUtils.h"
-
 namespace U2 {
 
 struct Kraken2ClassifyTaskSettings {
@@ -47,17 +45,11 @@ public:
     Kraken2ClassifyTask(const Kraken2ClassifyTaskSettings &settings);
 
     void prepare() override;
-    void run() override;
-
-    const QString &getClassificationUrl() const;
-    const LocalWorkflow::TaxonomyClassificationResult &getParsedReport() const;
 
 private:
     QStringList getArguments();
 
     const Kraken2ClassifyTaskSettings settings;
-    ExternalToolRunTask *classifyTask = nullptr;
-    LocalWorkflow::TaxonomyClassificationResult parsedReport;
 };
 
 }  // namespace U2
