@@ -3401,7 +3401,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString();
     CHECK_SET_ERR(NONE_MARK == rowNumberString, QString("10. Unexpected row number label: expected '%1', got '%2'").arg(NONE_MARK).arg(rowNumberString));
     CHECK_SET_ERR("16" == rowCountString, QString("10. Unexpected rows count label: expected '%1', got '%2'").arg("16").arg(rowCountString));
-    CHECK_SET_ERR(GAP_MARK == referencePositionString, QString("10. Unexpected reference position label: expected '%1', got '%2'").arg(GAP_MARK).arg(referencePositionString));
+    CHECK_SET_ERR("2071+" == referencePositionString, QString("10. Unexpected reference position label: expected '%1', got '%2'").arg("2071+").arg(referencePositionString));
     CHECK_SET_ERR("11878" == referenceLengthString, QString("10. Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("10. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR(NONE_MARK == readLengthString, QString("10. Unexpected read length label: expected '%1', got '%2'").arg(NONE_MARK).arg(readLengthString));
@@ -3469,7 +3469,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString();
     CHECK_SET_ERR("7" == rowNumberString, QString("14. Unexpected row number label: expected '%1', got '%2'").arg("7").arg(rowNumberString));
     CHECK_SET_ERR("16" == rowCountString, QString("14. Unexpected rows count label: expected '%1', got '%2'").arg("16").arg(rowCountString));
-    CHECK_SET_ERR(GAP_MARK == referencePositionString, QString("14. Unexpected reference position label: expected '%1', got '%2'").arg(GAP_MARK).arg(referencePositionString));
+    CHECK_SET_ERR("3059+" == referencePositionString, QString("14. Unexpected reference position label: expected '%1', got '%2'").arg("3059+").arg(referencePositionString));
     CHECK_SET_ERR("11878" == referenceLengthString, QString("14. Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR(GAP_MARK == readPositionString, QString("14. Unexpected read position label: expected '%1', got '%2'").arg(GAP_MARK).arg(readPositionString));
     CHECK_SET_ERR("1036" == readLengthString, QString("14. Unexpected read length label: expected '%1', got '%2'").arg("1036").arg(readLengthString));

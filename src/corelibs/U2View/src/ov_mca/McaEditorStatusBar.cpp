@@ -98,7 +98,12 @@ void McaEditorStatusBar::updateLabels() {
     } else {
         int startSelection = selection->getSelectedRegions().first().startPos;
         int refPos = refCharController->getUngappedPosition(startSelection);
-        columnLabel->update(refPos == -1 ? GAP_MARK : QString::number(refPos + 1), ungappedRefLen);
+        QString refPosStr = refPos == -1 ? "+" : "";
+        while (refPos < 0 && startSelection > 0) {
+            refPos = refCharController->getUngappedPosition(--startSelection);
+        }
+        refPosStr.prepend(QString::number(qMax(refPos, 0) + 1));
+        columnLabel->update(refPosStr, ungappedRefLen);
     }
 }
 
