@@ -37,7 +37,7 @@ const QString Kraken2ClassifyTaskSettings::SINGLE_END = "single-end";
 const QString Kraken2ClassifyTaskSettings::PAIRED_END = "paired-end";
 
 Kraken2ClassifyTask::Kraken2ClassifyTask(const Kraken2ClassifyTaskSettings &settings)
-    : ExternalToolSupportTask(tr("Classify reads with Kraken"), TaskFlags_NR_FOSE_COSC),
+    : ExternalToolSupportTask(tr("Classify reads with Kraken 2"), TaskFlags_NR_FOSE_COSC),
       settings(settings) {
     GCOUNTER(cvar, "KrakenClassifyTask");
 

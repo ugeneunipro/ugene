@@ -2370,6 +2370,19 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>Kraken2ClassifyValidator</name>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyValidator.cpp" line="43"/>
+        <source>The database folder &quot;%1&quot; doesn&apos;t exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyValidator.cpp" line="57"/>
+        <source>The mandatory database file &quot;%1&quot; doesn&apos;t exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LengthSettingsWidget</name>
     <message>
         <location filename="../src/trimmomatic/util/LengthSettingsWidget.ui" line="14"/>
@@ -6200,6 +6213,22 @@ Please, convert alignment from %1 alphabet to DNA, RNA or Amino and try again.</
     </message>
 </context>
 <context>
+    <name>U2::Kraken2ClassifyTask</name>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyTask.cpp" line="40"/>
+        <source>Classify reads with Kraken 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::Kraken2Support</name>
+    <message>
+        <location filename="../src/kraken2/Kraken2Support.cpp" line="44"/>
+        <source>The tool is used to classify a set of sequences. It does this by examining the k-mers within a read and querying a database with those k-mers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::LoadCustomExternalToolsTask</name>
     <message>
         <location filename="../src/custom_tools/LoadCustomExternalToolsTask.cpp" line="38"/>
@@ -9457,6 +9486,120 @@ bowtie медленнее, когда указан режим --best.</translati
         <location filename="../src/kalign/KalignWorker.cpp" line="203"/>
         <source>Aligned %1 with Kalign</source>
         <translation>%1 выровнено с помощью Kalign</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::Kraken2ClassifyPrompter</name>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="83"/>
+        <source>Input URL 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="84"/>
+        <source>Input URL 1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="87"/>
+        <source>Input URL 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="88"/>
+        <source>Input URL 2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="97"/>
+        <source>Input sequences</source>
+        <translation type="unfinished">Входные последовательности</translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="98"/>
+        <source>URL(s) to FASTQ or FASTA file(s) should be provided.
+
+In case of SE reads or contigs use the &quot;Input URL 1&quot; slot only.
+
+In case of PE reads input &quot;left&quot; reads to &quot;Input URL 1&quot;, &quot;right&quot; reads to &quot;Input URL 2&quot;.
+
+See also the &quot;Input data&quot; parameter of the element.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="108"/>
+        <source>Input data</source>
+        <translation type="unfinished">Входные данные</translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="108"/>
+        <source>To classify single-end (SE) reads or contigs, received by reads de novo assembly, set this parameter to &quot;SE reads or contigs&quot;.&lt;br&gt;&lt;br&gt;To classify paired-end (PE) reads, set the value to &quot;PE reads&quot;.&lt;br&gt;&lt;br&gt;One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.&lt;br&gt;&lt;br&gt;The input files should be in FASTA or FASTQ formats.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="113"/>
+        <source>Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="113"/>
+        <source>A path to the folder with the Kraken 2 database files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="115"/>
+        <source>Output file</source>
+        <translation type="unfinished">Выходной файл</translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="115"/>
+        <source>Specify the output file name.</source>
+        <translation type="unfinished">Укажите имя выходного файла.</translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="117"/>
+        <source>Quick operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="117"/>
+        <source>Stop classification of an input read after the certain number of hits.&lt;br&gt;&lt;br&gt;The value can be specified in the &quot;Minimum number of hits&quot; parameter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="120"/>
+        <source>Number of threads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="120"/>
+        <source>Use multiple threads (--threads).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="154"/>
+        <source>Classify Sequences with Kraken 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="154"/>
+        <source>Kraken 2 is a taxonomic sequence classifier that assigns taxonomic labels to short DNA reads. It does this by examining the k-mers within a read and querying a database with those.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="162"/>
+        <source>NGS: Metagenomics Classification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyPrompter.cpp" line="41"/>
+        <source>Classify sequences from &lt;u&gt;%1&lt;/u&gt; with Kraken 2, use %2 database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyPrompter.cpp" line="43"/>
+        <source>Classify paired-end reads from &lt;u&gt;%1&lt;/u&gt; with Kraken 2, use %2 database.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

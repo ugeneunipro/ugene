@@ -110,7 +110,7 @@ void Kraken2ClassifyWorkerFactory::init() {
                                                                                                                           "One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.<br><br>"
                                                                                                                           "The input files should be in FASTA or FASTQ formats."));
 
-        Descriptor databaseDesc(DATABASE_ATTR_ID, Kraken2ClassifyPrompter::tr("Database"), Kraken2ClassifyPrompter::tr("A path to the folder with the Kraken database files."));
+        Descriptor databaseDesc(DATABASE_ATTR_ID, Kraken2ClassifyPrompter::tr("Database"), Kraken2ClassifyPrompter::tr("A path to the folder with the Kraken 2 database files."));
 
         Descriptor outputUrlDesc(OUTPUT_URL_ATTR_ID, Kraken2ClassifyPrompter::tr("Output file"), Kraken2ClassifyPrompter::tr("Specify the output file name."));
 
