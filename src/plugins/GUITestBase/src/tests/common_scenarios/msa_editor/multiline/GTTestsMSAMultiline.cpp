@@ -672,7 +672,7 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0001) {
 
     //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(300));
-    GTUtilsDialog::waitForDialog(new PopupChooser(QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(new PopupChooser(QStringList() << MAE_MENU_NAVIGATION << "action_go_to_position"));
     GTMenu::showContextMenu(mdiWindow);
 
     //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
@@ -682,7 +682,7 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0001) {
 
     //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(550));
-    GTUtilsDialog::waitForDialog(new PopupChooser(QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(new PopupChooser(QStringList() << MAE_MENU_NAVIGATION << "action_go_to_position"));
     GTMenu::showContextMenu(mdiWindow);
 
     //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
@@ -735,7 +735,7 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0002) {  // CHANGES: default names used
 
     // Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(300));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
 
     // Create a bookmark. Do not rename the new bookmark.
@@ -745,7 +745,7 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0002) {  // CHANGES: default names used
 
     // Scroll msa to the end.
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(550));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
 
     // Create bookmark. Do not rename the new bookmark..
@@ -789,7 +789,7 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0003) {
 
     //  Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(200));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
 
     // Create a bookmark. Rename "New bookmark" to "middle bookmark"
@@ -798,7 +798,7 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0003) {
 
     // Scroll msa to the end.
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(510));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
 
     // Create bookmark. Rename "New bookmark" to "end bookmark".

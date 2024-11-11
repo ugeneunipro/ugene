@@ -109,6 +109,25 @@ int McaReferenceCharController::getUngappedPosition(int pos) const {
     return -1;
 }
 
+int McaReferenceCharController::getGappedPos(int pos) const {
+    U2OpStatusImpl os;
+    const QByteArray data = refObject->getWholeSequenceData(os);
+    SAFE_POINT_OP(os, -1);
+    int newPos = 0;
+    int symbolsCounter = 0;
+    for (const QChar& c : qAsConst(data)) {
+        const bool notGapChar = c != U2Msa::GAP_CHAR;
+        if (symbolsCounter == pos && notGapChar) {
+            break;
+        }
+        if (notGapChar) {
+            symbolsCounter++;
+        }
+        newPos++;
+    }
+    return newPos;
+}
+
 int McaReferenceCharController::getUngappedLength() const {
     return ungappedLength;
 }

@@ -4488,7 +4488,7 @@ GUI_TEST_CLASS_DEFINITION(test_5833) {
     readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString();
     CHECK_SET_ERR("2" == rowNumberString, QString("Unexpected row number label: expected '%1', got '%2'").arg("2").arg(rowNumberString));
     CHECK_SET_ERR("16" == rowsCountString, QString("Unexpected rows count label: expected '%1', got '%2'").arg("16").arg(rowsCountString));
-    CHECK_SET_ERR("gap" == referencePositionString, QString("Unexpected reference position label: expected '%1', got '%2'").arg("gap").arg(referencePositionString));
+    CHECK_SET_ERR("2499+" == referencePositionString, QString("Unexpected reference position label: expected '%1', got '%2'").arg("2499+").arg(referencePositionString));
     CHECK_SET_ERR("11878" == referenceLengthString, QString("Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR("440" == readPositionString, QString("Unexpected read position label: expected '%1', got '%2'").arg("440").arg(readPositionString));
     CHECK_SET_ERR("1174" == readLengthString, QString("Unexpected read length label: expected '%1', got '%2'").arg("1174").arg(readLengthString));

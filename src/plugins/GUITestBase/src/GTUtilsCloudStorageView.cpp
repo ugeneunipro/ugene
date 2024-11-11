@@ -151,7 +151,7 @@ void GTUtilsCloudStorageView::uploadFile(const QList<QString>& dirPath, const QS
 
     QList<QString> uploadedPath = dirPath;
     uploadedPath.append(QFileInfo(localFileUrl).fileName());
-    checkItemIsNotPresent(uploadedPath);
+    checkItemIsPresent(uploadedPath);
 }
 
 void GTUtilsCloudStorageView::downloadFileWithDoubleClick(const QList<QString>& dirPath, int expectedFileSize) {

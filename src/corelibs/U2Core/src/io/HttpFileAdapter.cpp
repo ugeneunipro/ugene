@@ -138,7 +138,7 @@ void HttpFileAdapter::close() {
     }
     assert(reply);
     reply->abort();
-    delete reply;
+    reply->deleteLater();
     reply = nullptr;
     gurl = GUrl();
     init();

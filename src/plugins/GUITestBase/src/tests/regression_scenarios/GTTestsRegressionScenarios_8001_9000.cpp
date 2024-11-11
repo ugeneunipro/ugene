@@ -35,6 +35,7 @@
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
+#include <primitives/GTRadioButton.h>
 #include <primitives/GTWidget.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
@@ -46,6 +47,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
 
+#include <U2View/McaEditorReferenceArea.h>
 #include <U2View/TvTextItem.h>
 
 #include "GTTestsRegressionScenarios_8001_9000.h"
@@ -57,6 +59,7 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMcaEditor.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsOptionPanelMSA.h"
@@ -73,7 +76,9 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
@@ -1048,6 +1053,34 @@ GUI_TEST_CLASS_DEFINITION(test_8101) {
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 25, "Annoatated region counter doesn't match.");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8118) {
+    /*
+    * 1. Open Mca alignment
+    * 2. Press Ctrl+g and set valid position to go
+    * Expected state: visible position changed to desired
+    */
+    GTFileDialog::openFile(testDir + "_common_data/sanger/alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive();
+
+    GTUtilsDialog::waitForDialog(new GoToDialogFiller(599));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+
+    CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 599, QString("Unexpected text: slider position doesn't change after 'Go to'"));
+
+    GTUtilsDialog::waitForDialog(new GoToDialogFiller(2081));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    // gapped length returned so it differs with 'go to' value
+    CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 2082, QString("Unexpected text: slider position doesn't change after 'Go to'"));
+
+    GTUtilsDialog::waitForDialog(new GoToDialogFiller(2082));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 2084, QString("Unexpected text: slider position doesn't change after 'Go to'"));
+
+    GTUtilsDialog::waitForDialog(new GoToDialogFiller(5666));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);    
+    CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 5724, QString("Unexpected text: slider position doesn't change after 'Go to'"));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8120_1) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
@@ -1163,6 +1196,44 @@ GUI_TEST_CLASS_DEFINITION(test_8141) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 1186, "Annoatated region counter doesn't match.");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8151) {
+    /*
+    * 1. Open human_T1.fa
+    * 2. Open SW dialog, activate "translation" radio button
+    * 3. CLick Cancel
+    * 4. Open AMINO.fa
+    * 5. Open SW dialog
+    * Expected state: no crash
+    */
+    class ActivateTranslationSWScenario : public CustomScenario {
+    public:
+        ActivateTranslationSWScenario(bool clickTranslationRadio_)
+            : clickTranslationRadio(clickTranslationRadio_) {
+        };
+
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            if (clickTranslationRadio) {
+                GTRadioButton::click("radioTranslation", dialog);
+            }
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+
+    private:
+        bool clickTranslationRadio;
+    };
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsDialog::waitForDialog(new SmithWatermanDialogFiller(new ActivateTranslationSWScenario(true)));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
+
+    GTFileDialog::openFile(testDir + "_common_data/fasta/AMINO.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsDialog::waitForDialog(new SmithWatermanDialogFiller(new ActivateTranslationSWScenario(false)));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
 }
 
 }  // namespace GUITest_regression_scenarios

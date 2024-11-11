@@ -144,6 +144,12 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
     multilineViewAction->setChecked(false);
     connect(multilineViewAction, SIGNAL(triggered()), SLOT(sl_multilineViewAction()));
 
+    gotoAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position…"), this);
+    gotoAction->setObjectName("action_go_to_position");
+    gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
+    gotoAction->setShortcutContext(Qt::WindowShortcut);
+    gotoAction->setToolTip(QString("%1 (%2)").arg(gotoAction->text()).arg(gotoAction->shortcut().toString()));
+
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(maObject,
             SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)),
@@ -499,6 +505,12 @@ void MaEditor::addExportMenu(QMenu* m) {
 void MaEditor::addLoadMenu(QMenu* m) {
     QMenu* lsm = m->addMenu(tr("Add"));
     lsm->menuAction()->setObjectName(MSAE_MENU_LOAD);
+}
+
+void MaEditor::addNavigationMenu(QMenu* m) const {
+    QMenu* navMenu = m->addMenu(tr("Navigation"));
+    navMenu->menuAction()->setObjectName(MAE_MENU_NAVIGATION);
+    navMenu->addAction(gotoAction);
 }
 
 void MaEditor::setFont(const QFont& f) {

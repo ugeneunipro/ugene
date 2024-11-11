@@ -5189,14 +5189,14 @@ GUI_TEST_CLASS_DEFINITION(test_6750) {
     GTUtilsOptionPanelMsa::checkResultsText("Results: 1/1");
 
     // 5. Call the "Search in sequences" context menu
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "search_in_sequences"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "search_in_sequences"}));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
 
     // Expected state: "Results: 1/573"
     GTUtilsOptionPanelMsa::checkResultsText("Results: 1/573");
 
     // 6. Call the "Search in sequence names" context menu
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "search_in_sequence_names"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "search_in_sequence_names"}));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
 
     // Expected state: "Results: 1/1
@@ -6724,7 +6724,7 @@ GUI_TEST_CLASS_DEFINITION(test_6995) {
 
     // Check direct read first.
     GTUtilsMcaEditor::clickReadName(1);
-    GTUtilsDialog::waitForDialog(new PopupChooser({MCAE_MENU_NAVIGATION, "center-read-start-end-action"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "center-read-start-end-action"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu();
 
     visibleRange = referenceArea->getVisibleRange();
@@ -6732,7 +6732,7 @@ GUI_TEST_CLASS_DEFINITION(test_6995) {
 
     // Check complement read.
     GTUtilsMcaEditor::clickReadName(2);
-    GTUtilsDialog::waitForDialog(new PopupChooser({MCAE_MENU_NAVIGATION, "center-read-start-end-action"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "center-read-start-end-action"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu();
 
     visibleRange = referenceArea->getVisibleRange();

@@ -37,7 +37,6 @@ class SequenceObjectContext;
 
 #define MCAE_MENU_ALIGNMENT "MCAE_MENU_ALIGNMENT"
 #define MCAE_MENU_APPEARANCE "MCAE_MENU_APPEARANCE"
-#define MCAE_MENU_NAVIGATION "MCAE_MENU_NAVIGATION"
 #define MCAE_MENU_EDIT "MCAE_MENU_EDIT"
 
 #define MCAE_SETTINGS_SHOW_CHROMATOGRAMS "show_chromatograms"
@@ -80,6 +79,8 @@ public:
         SAFE_POINT(index == 0, "Calling getLineWidget(index) with index > 0 is prohibited for Mca", nullptr);
         return ui;
     }
+public slots:
+    void sl_onPosChangeRequest();
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint& pos) override;
