@@ -55,6 +55,8 @@ public:
 
     static QString getAbsolutePath(const QString& filePath);
     static bool isDirectoryWritable(const QString& path);
+    //returns true if directory exists and readable, otherwise false
+    static bool isDirectoryExistsAndReadable(const QString& path);
 
     /**
      * Returns "true" if it is possible to create a file (or a sub-path) in absoluteDirPath.

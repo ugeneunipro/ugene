@@ -38,6 +38,7 @@
 #include <U2Core/PasswordStorage.h>
 #include <U2Core/Settings.h>
 #include <U2Core/StringAdapter.h>
+#include <U2Core/U2Attribute.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -1223,7 +1224,9 @@ QVariant PrompterBaseImpl::getParameter(const QString& id) {
     if (map.contains(id)) {
         return map.value(id);
     } else {
-        return target->getParameter(id)->getAttributePureValue();
+        Attribute* attr = target->getParameter(id);
+        CHECK(attr != nullptr, QVariant());
+        return attr->getAttributePureValue();
     }
 }
 
@@ -1236,10 +1239,14 @@ QString PrompterBaseImpl::getURL(const QString& id, bool* empty, const QString& 
     } else {
         url = getParameter(id).toString();
     }
-    if (empty != nullptr) {
-        *empty = false;
+    Attribute* attr = target->getParameter(id);
+    if (attr == nullptr) {
+        if (empty != nullptr) {
+            *empty = false;
+        }
+        return "<font color='red'>" + tr("unset") + "</font>";
     }
-    if (!target->getParameter(id)->getAttributeScript().isEmpty()) {
+    if (!attr->getAttributeScript().isEmpty()) {
         url = "got from user script";
     } else if (url.isEmpty()) {
         if (!onEmpty.isEmpty()) {

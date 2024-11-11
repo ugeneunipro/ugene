@@ -171,6 +171,14 @@ bool FileAndDirectoryUtils::isDirectoryWritable(const QString& dirPath) {
     return true;
 }
 
+bool FileAndDirectoryUtils::isDirectoryExistsAndReadable(const QString& path) {
+    QDir dir(path);
+    if (!dir.exists()) {
+        return false;
+    }
+    return dir.isReadable();
+}
+
 bool FileAndDirectoryUtils::canWriteToPath(const QString& absoluteDirPath) {
     if (absoluteDirPath.isEmpty()) {
         return true;
