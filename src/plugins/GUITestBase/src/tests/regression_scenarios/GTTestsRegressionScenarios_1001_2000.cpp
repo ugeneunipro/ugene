@@ -7025,7 +7025,7 @@ GUI_TEST_CLASS_DEFINITION(test_1747) {
     CHECK_SET_ERR(progress >= 0 && progress <= 100, QString("Incorrect progress: %1").arg(progress));
     int oldProgress = progress;
 
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep(500);
     text = taskProgressBar->text();
     CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
     text = text.left(text.length() - 1);
