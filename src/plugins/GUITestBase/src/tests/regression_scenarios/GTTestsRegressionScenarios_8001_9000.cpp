@@ -1053,6 +1053,70 @@ GUI_TEST_CLASS_DEFINITION(test_8101) {
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 25, "Annoatated region counter doesn't match.");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8104) {
+    /*
+    * 1. Open human_T1.fa
+    * 2. Open "Find restriction sites" dialog
+    * 3. Set filter to "name" and search for "AS"
+    * Expected state: enzymes with AS in name were found
+    * 4. Change filter to "sequence" and search for "ACCT"
+    * Expected state: enzymes with ACCT in sequence were found
+    */
+    class CheckFilter : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            auto enzymesSelectorWidget = GTWidget::findWidget("enzymesSelectorWidget");
+            auto enzymesTree = GTWidget::findTreeWidget("tree", enzymesSelectorWidget);
+
+            GTComboBox::selectItemByText("filterComboBox", dialog, "name");
+            GTLineEdit::setText("enzymesFilterEdit", "AS", dialog);
+            int treeItemsCount = countTreeItems(enzymesTree);
+            CHECK_SET_ERR(treeItemsCount == 180, "Unexpected number of visible items");
+
+            GTComboBox::selectItemByText("filterComboBox", dialog, "sequence");
+            GTLineEdit::setText("enzymesFilterEdit", "ACCT", dialog);
+            enzymesSelectorWidget = GTWidget::findWidget("enzymesSelectorWidget");
+            enzymesTree = GTWidget::findTreeWidget("tree", enzymesSelectorWidget);
+            treeItemsCount = countTreeItems(enzymesTree);
+            CHECK_SET_ERR(treeItemsCount == 351, "Unexpected number of visible items");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+
+        static int countTreeItems(QTreeWidget* tree, QTreeWidgetItem* parent = 0) {
+            int count = 0;
+            if (parent == 0) {
+                int topCount = tree->topLevelItemCount();
+                for (int i = 0; i < topCount; i++) {
+                    QTreeWidgetItem* item = tree->topLevelItem(i);
+                    if (!item->isHidden()) {
+                        count += countTreeItems(tree, item);
+                    }
+                }
+                count += topCount;
+            } else {
+                int childCount = parent->childCount();
+                for (int i = 0; i < childCount; i++) {
+                    QTreeWidgetItem* item = parent->child(i);
+                    if (!item->isHidden()) {
+                        count += countTreeItems(tree, item);
+                    }
+                }
+                count += childCount;
+            }
+            return count;
+        }
+    };
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(QStringList{}, new CheckFilter));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8118) {
     /*
     * 1. Open Mca alignment

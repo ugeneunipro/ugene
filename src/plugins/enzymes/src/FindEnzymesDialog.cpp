@@ -60,6 +60,9 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(const QPointer<ADVSequenceObjectCon
     setupUi(this);
     ignoreItemChecks = false;
 
+    filterComboBox->addItem(tr("name"), FILTER_BY_NAME_INDEX);
+    filterComboBox->addItem(tr("sequence"), FILTER_BY_SEQUENCE_INDEX);
+
     splitter->setStretchFactor(0, 3);
     splitter->setStretchFactor(1, 2);
 
@@ -83,7 +86,8 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(const QPointer<ADVSequenceObjectCon
     connect(loadSelectionButton, SIGNAL(clicked()), SLOT(sl_loadSelectionFromFile()));
     connect(saveSelectionButton, SIGNAL(clicked()), SLOT(sl_saveSelectionToFile()));
     connect(enzymeInfo, SIGNAL(clicked()), SLOT(sl_openDBPage()));
-    connect(enzymesFilterEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_filterTextChanged(const QString&)));
+    connect(enzymesFilterEdit, &QLineEdit::textChanged, this, &EnzymesSelectorWidget::sl_filterConditionsChanged);
+    connect(filterComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EnzymesSelectorWidget::sl_filterConditionsChanged);
 
     if (loadedEnzymes.isEmpty()) {
         QString lastUsedFile = AppContext::getSettings()->getValue(EnzymeSettings::DATA_FILE_KEY).toString();
@@ -344,19 +348,32 @@ EnzymeGroupTreeItem* EnzymesSelectorWidget::findGroupItem(const QString& s, bool
     return nullptr;
 }
 
-void EnzymesSelectorWidget::sl_filterTextChanged(const QString& filterText) {
+void EnzymesSelectorWidget::sl_filterConditionsChanged() {
+    const QString filterText = enzymesFilterEdit->text();
+    const int filterMode = filterComboBox->currentData().toInt();
     for (int i = 0, n = tree->topLevelItemCount(); i < n; ++i) {
         auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         int numHiddenItems = 0;
         int itemCount = gi->childCount();
         for (int j = 0; j < itemCount; ++j) {
             auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
-            if (item->enzyme->id.contains(filterText, Qt::CaseInsensitive)) {
-                item->setHidden(false);
+            if (filterMode == FILTER_BY_NAME_INDEX) {
+                if (item->enzyme->id.contains(filterText, Qt::CaseInsensitive)) {
+                    item->setHidden(false);
+                } else {
+                    item->setHidden(true);
+                    ++numHiddenItems;
+                }
             } else {
-                item->setHidden(true);
-                ++numHiddenItems;
-            }
+                CHECK(filterMode == FILTER_BY_SEQUENCE_INDEX);
+                const QString enzymeSequence(item->enzyme->seq);
+                if (enzymeSequence.contains(filterText, Qt::CaseInsensitive)) {
+                    item->setHidden(false);
+                } else {
+                    item->setHidden(true);
+                    ++numHiddenItems;
+                }
+            }            
         }
         gi->setHidden(numHiddenItems == itemCount);
     }
