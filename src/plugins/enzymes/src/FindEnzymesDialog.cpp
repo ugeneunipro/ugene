@@ -60,8 +60,8 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(const QPointer<ADVSequenceObjectCon
     setupUi(this);
     ignoreItemChecks = false;
 
-    filterComboBox->addItem(tr("name"), FILTER_BY_NAME_INDEX);
-    filterComboBox->addItem(tr("sequence"), FILTER_BY_SEQUENCE_INDEX);
+    filterComboBox->addItem(tr("name"), FILTER_BY_NAME);
+    filterComboBox->addItem(tr("sequence"), FILTER_BY_SEQUENCE);
 
     splitter->setStretchFactor(0, 3);
     splitter->setStretchFactor(1, 2);
@@ -357,7 +357,7 @@ void EnzymesSelectorWidget::sl_filterConditionsChanged() {
         int itemCount = gi->childCount();
         for (int j = 0; j < itemCount; ++j) {
             auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
-            if (filterMode == FILTER_BY_NAME_INDEX) {
+            if (filterMode == FILTER_BY_NAME) {
                 if (item->enzyme->id.contains(filterText, Qt::CaseInsensitive)) {
                     item->setHidden(false);
                 } else {
@@ -365,7 +365,7 @@ void EnzymesSelectorWidget::sl_filterConditionsChanged() {
                     ++numHiddenItems;
                 }
             } else {
-                CHECK(filterMode == FILTER_BY_SEQUENCE_INDEX);
+                CHECK(filterMode == FILTER_BY_SEQUENCE, );
                 const QString enzymeSequence(item->enzyme->seq);
                 if (enzymeSequence.contains(filterText, Qt::CaseInsensitive)) {
                     item->setHidden(false);

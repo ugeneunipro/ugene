@@ -93,8 +93,8 @@ private:
     void updateStatus();
     int gatherCheckedNamesListString(QString& checkedNamesList) const;
 
-    static constexpr int FILTER_BY_NAME_INDEX = 0;
-    static constexpr int FILTER_BY_SEQUENCE_INDEX = 1;
+    static constexpr int FILTER_BY_NAME = 0;
+    static constexpr int FILTER_BY_SEQUENCE = 1;
 
     EnzymeGroupTreeItem* findGroupItem(const QString& s, bool create);
 

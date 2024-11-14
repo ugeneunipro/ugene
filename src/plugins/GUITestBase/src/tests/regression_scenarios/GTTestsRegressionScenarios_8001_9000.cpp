@@ -1071,41 +1071,17 @@ GUI_TEST_CLASS_DEFINITION(test_8104) {
 
             GTComboBox::selectItemByText("filterComboBox", dialog, "name");
             GTLineEdit::setText("enzymesFilterEdit", "AS", dialog);
-            int treeItemsCount = countTreeItems(enzymesTree);
+            int treeItemsCount = GTTreeWidget::countVisibleItems(enzymesTree);
             CHECK_SET_ERR(treeItemsCount == 180, "Unexpected number of visible items");
 
             GTComboBox::selectItemByText("filterComboBox", dialog, "sequence");
             GTLineEdit::setText("enzymesFilterEdit", "ACCT", dialog);
             enzymesSelectorWidget = GTWidget::findWidget("enzymesSelectorWidget");
             enzymesTree = GTWidget::findTreeWidget("tree", enzymesSelectorWidget);
-            treeItemsCount = countTreeItems(enzymesTree);
+            treeItemsCount = GTTreeWidget::countVisibleItems(enzymesTree);
             CHECK_SET_ERR(treeItemsCount == 351, "Unexpected number of visible items");
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
-        }
-
-        static int countTreeItems(QTreeWidget* tree, QTreeWidgetItem* parent = 0) {
-            int count = 0;
-            if (parent == 0) {
-                int topCount = tree->topLevelItemCount();
-                for (int i = 0; i < topCount; i++) {
-                    QTreeWidgetItem* item = tree->topLevelItem(i);
-                    if (!item->isHidden()) {
-                        count += countTreeItems(tree, item);
-                    }
-                }
-                count += topCount;
-            } else {
-                int childCount = parent->childCount();
-                for (int i = 0; i < childCount; i++) {
-                    QTreeWidgetItem* item = parent->child(i);
-                    if (!item->isHidden()) {
-                        count += countTreeItems(tree, item);
-                    }
-                }
-                count += childCount;
-            }
-            return count;
         }
     };
 
