@@ -7372,8 +7372,13 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
 
     // 3) Reopen UGENE WD.
     GTFileDialog::openFile(sandBoxDir, "test.uwl");
-    GTGlobals::sleep(500); //wait for the dialog
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    if (isOsMac()) {
+        GTGlobals::sleep(500); //wait for the dialog
+        GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    } else {
+        GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
+    }
     GTUtilsDialog::checkNoModalWidget();
 
     // Expected: the state is saved.
