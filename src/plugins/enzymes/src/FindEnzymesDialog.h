@@ -82,7 +82,7 @@ private slots:
     void sl_loadSelectionFromFile();
     void sl_openDBPage();
     void sl_itemChanged(QTreeWidgetItem* item, int col);
-    void sl_filterTextChanged(const QString& filterText);
+    void sl_filterConditionsChanged();
     void sl_findSingleEnzymeTaskStateChanged();
 
 private:
@@ -92,6 +92,9 @@ private:
     void saveFile(const QString& url);
     void updateStatus();
     int gatherCheckedNamesListString(QString& checkedNamesList) const;
+
+    static constexpr int FILTER_BY_NAME = 0;
+    static constexpr int FILTER_BY_SEQUENCE = 1;
 
     EnzymeGroupTreeItem* findGroupItem(const QString& s, bool create);
 

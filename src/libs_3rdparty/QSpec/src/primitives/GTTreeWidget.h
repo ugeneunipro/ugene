@@ -83,6 +83,9 @@ public:
     /** Returns visual string representation of the item for logging. */
     static QString toString(QTreeWidgetItem* item);
 
+    /** Returns count of the visible tree items */
+    static int countVisibleItems(QTreeWidget* tree, QTreeWidgetItem* parent = 0);
+
 private:
     static QTreeWidgetItem* findItemPrivate(
         QTreeWidget* tree,

@@ -449,7 +449,12 @@
         <translation>Выбрать ферменты</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="78"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="42"/>
+        <source>Filter by:</source>
+        <translation>Фильтровать по:</translation>
+    </message>
+    <message>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="81"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
@@ -1134,7 +1139,17 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::EnzymesSelectorWidget</name>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="186"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="63"/>
+        <source>name</source>
+        <translation>имени</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="64"/>
+        <source>sequence</source>
+        <translation>последовательности</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="190"/>
         <source>File not exists: %1</source>
         <translation>Файл не найден: %1</translation>
     </message>
