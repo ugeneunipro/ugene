@@ -30,6 +30,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BaseSlots.h>
@@ -173,7 +175,7 @@ QString HMMReadPrompter::composeRichDoc() {
 QString HMMWritePrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(HMM_IN_PORT_ID));
     Actor* producer = input->getProducer(HMM2_SLOT_ID);
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     QString producerStr = producer ? producer->getLabel() : unsetStr;
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
     url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);

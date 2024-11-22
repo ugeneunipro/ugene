@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-class U2CORE_EXPORT Theme : public QObject {
+class U2GUI_EXPORT Theme : public QObject {
     Q_OBJECT
 public:
     static QColor errorColorTextFieldColor() {
@@ -38,15 +38,28 @@ public:
     }
 
     static QString errorColorTextFieldStr() {
-        return QString("rgb(%1, %2, %3)").arg(errorColorTextFieldColor().red()).arg(errorColorTextFieldColor().green()).arg(errorColorTextFieldColor().blue());
+        auto errorColorTextField = errorColorTextFieldColor();
+        return QString("rgb(%1, %2, %3)").arg(errorColorTextField.red()).arg(errorColorTextField.green()).arg(errorColorTextField.blue());
     }
 
+    static QColor errorColorLabelColor() {
+        return AppContext::getMainWindow()->isDarkMode() ? QColor(255, 127, 127) : QColor(166, 57, 46);
+    }
     static QString errorColorLabelStr() {
-        return AppContext::getMainWindow()->isDarkMode() ? "rgb(255, 127, 127)" : "rgb(166, 57, 46)";
+        auto errorColorLabel = errorColorLabelColor();
+        return QString("rgb(%1, %2, %3)").arg(errorColorLabel.red()).arg(errorColorLabel.green()).arg(errorColorLabel.blue());
     }
     static QString errorColorLabelHtmlStr() {
         return AppContext::getMainWindow()->isDarkMode() ? "#FF7F7F" : "#A6392E";
     }  // the same as errorColorLabelStr()
+
+    static QColor wdParameterLabelColor() {
+        return AppContext::getMainWindow()->isDarkMode() ? QColor(255, 127, 127) : QColor(255, 0, 0);
+    }
+
+    static QString wdParameterLabelStr() {
+        return wdParameterLabelColor().name();
+    }
 
     static QString warningColorLabelHtmlStr() {
         return AppContext::getMainWindow()->isDarkMode() ? "#FFCF48" : "#FF8B19";

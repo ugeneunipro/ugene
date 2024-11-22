@@ -35,13 +35,13 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/Theme.h>
 
 namespace U2 {
 

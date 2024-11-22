@@ -30,11 +30,11 @@
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/Theme.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/RegionSelector.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2FileDialog.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 

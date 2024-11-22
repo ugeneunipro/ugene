@@ -40,11 +40,12 @@
 #include <U2Core/MultiTask.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Core/Theme.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2AssemblyReadIterator.h>
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/Theme.h>
 
 #include "AddReadsToDocumentTask.h"
 #include "AssemblyBrowser.h"

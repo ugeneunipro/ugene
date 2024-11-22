@@ -1130,6 +1130,8 @@ void WorkflowBusItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
     QColor yc = QColor(Qt::yellow);
     if (!isDark) {
         yc = yc.lighter();
+    } else {
+        yc.darker(300);
     }
     yc.setAlpha(127);
     QRectF textRec = text->boundingRect().translated(text->pos());

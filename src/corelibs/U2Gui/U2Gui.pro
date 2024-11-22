@@ -94,6 +94,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/SeqPasterWidgetController.h \
            src/util/SequenceTextEdit.h \
            src/util/SuggestCompleter.h \
+           src/util/Theme.h \
            src/util/TreeWidgetUtils.h \
            src/util/U2Action.h \
            src/util/U2FileDialog.h \

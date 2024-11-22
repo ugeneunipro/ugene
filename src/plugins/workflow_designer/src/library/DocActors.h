@@ -25,6 +25,7 @@
 #include <U2Core/global.h>
 
 #include <U2Designer/DelegateEditors.h>
+#include <U2Designer/PrompterBase.h>
 
 #include <U2Lang/Attribute.h>
 #include <U2Lang/ReadDbObjActorPrototype.h>

@@ -40,6 +40,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Formats/BAMUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
@@ -75,7 +77,7 @@ const QString BedGraphToBigWigFactory::ACTOR_ID("bgtbw-bam");
 QString BedGraphToBigWigPrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BedGraphToBigWigWorker::INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
     QString doc = tr("Converts bedGraph files to bigWig %1 with bedGraphToBigWig.").arg(producerName);

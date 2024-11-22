@@ -29,7 +29,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/Settings.h>
-#include <U2Core/Theme.h>
+
+#include <U2Gui/Theme.h>
 
 #include <U2View/McaColors.h>
 #include <U2View/SequenceObjectContext.h>

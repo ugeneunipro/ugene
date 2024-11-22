@@ -1,6 +1,8 @@
 #ifndef _U2_HMM_BUILD_WORKER_H_
 #define _U2_HMM_BUILD_WORKER_H_
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 

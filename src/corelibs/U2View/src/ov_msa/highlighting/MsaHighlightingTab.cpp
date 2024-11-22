@@ -34,10 +34,10 @@
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/MsaEditor.h>

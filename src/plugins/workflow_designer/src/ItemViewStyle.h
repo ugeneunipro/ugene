@@ -150,6 +150,7 @@ private:
 };
 
 class HintItem : public QGraphicsTextItem {
+    Q_OBJECT
 public:
     HintItem(const QString& text, QGraphicsItem* parent);
 
@@ -157,6 +158,9 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+
+private slots:
+    void sl_colorModeSwitched();
 
 private:
     QPointF initPos;

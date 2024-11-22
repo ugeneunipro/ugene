@@ -120,7 +120,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/globals/ServiceTypes.h \
            src/globals/Settings.h \
            src/globals/Task.h \
-           src/globals/Theme.h \
            src/globals/Timer.h \
            src/globals/U2OpStatus.h \
            src/globals/U2SafePoints.h \

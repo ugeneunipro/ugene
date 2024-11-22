@@ -30,6 +30,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BasePorts.h>
@@ -136,7 +138,7 @@ Worker* Alignment2SequenceWorkerFactory::createWorker(Actor* a) {
  * Alignment2SequencePrompter
  *******************************/
 QString Alignment2SequencePrompter::composeRichDoc() {
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
     Actor* producer = input->getProducer(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId());
     QString source = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);

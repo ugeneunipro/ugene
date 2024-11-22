@@ -41,6 +41,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Formats/BAMUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
@@ -84,7 +86,7 @@ const QString SnpEffFactory::ACTOR_ID("seff");
 QString SnpEffPrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(SnpEffWorker::INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
     QString doc = tr("Annotates and filters variations %1 with SnpEff.").arg(producerName);

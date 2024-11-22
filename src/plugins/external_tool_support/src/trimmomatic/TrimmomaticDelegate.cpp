@@ -24,13 +24,13 @@
 #include <QAbstractItemView>
 #include <QMenu>
 
-#include <U2Core/Theme.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/MultiClickMenu.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/WidgetWithLocalToolbar.h>
 
 #include "TrimmomaticStep.h"

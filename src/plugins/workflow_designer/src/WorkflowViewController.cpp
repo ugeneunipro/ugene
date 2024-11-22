@@ -2662,7 +2662,7 @@ void WorkflowScene::setModified() {
 void WorkflowScene::drawBackground(QPainter* painter, const QRectF& rect) {
     if (WorkflowSettings::showGrid()) {
         int step = GRID_STEP;
-        painter->setPen(QPen(QColor(200, 200, 255, 125)));
+        painter->setPen(QPen(AppContext::getMainWindow()->isDarkMode() ? QColor(75, 75, 48, 125) : QColor(200, 200, 255, 125)));
         // draw horizontal grid
         qreal start = round(rect.top(), step);
         if (start > rect.top()) {

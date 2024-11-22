@@ -32,11 +32,11 @@
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MsaObject.h>
-#include <U2Core/Theme.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
+#include <U2Gui/Theme.h>
 
 #include <U2View/MsaEditor.h>
 #include <U2View/WebWindow.h>

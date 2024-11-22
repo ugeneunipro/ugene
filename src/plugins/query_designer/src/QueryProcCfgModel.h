@@ -23,6 +23,8 @@
 
 #include <QAbstractTableModel>
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/Attribute.h>
 #include <U2Lang/Configuration.h>
 #include <U2Lang/WorkflowUtils.h>

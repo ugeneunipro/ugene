@@ -26,9 +26,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include <U2Core/Theme.h>
-
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/Theme.h>
 
 namespace U2 {
 

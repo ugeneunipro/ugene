@@ -22,6 +22,8 @@
 #ifndef _U2_SITECON_WORKER_H_
 #define _U2_SITECON_WORKER_H_
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 

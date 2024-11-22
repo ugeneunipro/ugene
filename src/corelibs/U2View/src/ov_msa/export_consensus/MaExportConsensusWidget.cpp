@@ -30,7 +30,6 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MsaObject.h>
 #include <U2Core/TaskWatchdog.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2IdTypes.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -39,6 +38,7 @@
 
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/MaEditorTasks.h>

@@ -32,6 +32,8 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/ScriptingToolRegistry.h>
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GroupedComboBoxDelegate.h>
 #include <U2Gui/HelpButton.h>

@@ -26,13 +26,13 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
+#include <U2Gui/Theme.h>
 
 #include "imageExport/WidgetScreenshotExportTask.h"
 #include "ui_ExportImageDialog.h"

@@ -550,11 +550,12 @@ HintItem::HintItem(const QString& text, QGraphicsItem* parent)
     setTextWidth(qMin(3 * R, document()->idealWidth()));
     QRectF tb = boundingRect();
     setPos(-tb.width() / 2, -tb.height() - 3);
-    auto textColor = AppContext::getMainWindow()->isDarkMode() ? QColor(Qt::gray).lighter() : QColor(Qt::gray).darker();
-    setDefaultTextColor(textColor);
+    sl_colorModeSwitched();
     QFont f = font();
     f.setWeight(QFont::Light);
     setFont(f);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &HintItem::sl_colorModeSwitched);
 }
 
 QVariant HintItem::itemChange(GraphicsItemChange change, const QVariant& value) {
@@ -609,6 +610,11 @@ void HintItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
 void HintItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
     dragging = false;
     QGraphicsTextItem::mouseReleaseEvent(event);
+}
+
+void HintItem::sl_colorModeSwitched() {
+    auto textColor = AppContext::getMainWindow()->isDarkMode() ? QColor(Qt::gray).lighter() : QColor(Qt::gray).darker();
+    setDefaultTextColor(textColor);
 }
 
 DescriptionItem::DescriptionItem(ExtendedProcStyle* p)

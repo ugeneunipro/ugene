@@ -36,6 +36,7 @@ public:
     ActorDocument(Actor* a)
         : QTextDocument(a), target(a) {
     }
+
     virtual ~ActorDocument() {
     }
 
