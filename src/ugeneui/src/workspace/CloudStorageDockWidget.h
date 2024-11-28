@@ -42,7 +42,7 @@ protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
-    void showContextMenu(const QPoint& point);
+    void showContextMenu(const QPoint& point) const;
     void createDir();
     void deleteItem();
     void renameItem();
@@ -55,7 +55,7 @@ private:
     QList<QString> getSelectedItemPath() const;
     QModelIndex getSelectedItemIndex() const;
 
-    void updateActionsState();
+    void updateActionsState() const;
     void updateStateLabelText();
     CloudStorageService* getCloudStorageService() const;
 
