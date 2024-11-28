@@ -26,7 +26,6 @@
 #include <QJsonDocument>
 
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "WebSocketClientService.h"
@@ -83,6 +82,19 @@ void CloudStorageService::renameEntry(const QList<QString>& oldPath,
     workspaceService->executeApiRequest("/storage/move", payload, context, callback);
 }
 
+void CloudStorageService::shareEntry(const QList<QString>& path,
+                                     const QString& email,
+                                     QObject* context,
+                                     std::function<void(const QJsonObject&)> callback) const {
+    ioLog.trace("CloudStorageService::shareEntry: " + path.join("/") + " -> " + email);
+    SAFE_POINT(checkCloudStoragePath(path), "Invalid file path: " + path.join("/"), );
+    SAFE_POINT(checkEmail(email), "Invalid email: " + email, );
+    QJsonObject payload;
+    payload["path"] = QJsonArray::fromStringList(path);
+    payload["email"] = email.toLower();
+    workspaceService->executeApiRequest("/storage/share", payload, context, callback);
+}
+
 void CloudStorageService::downloadFile(const QList<QString>& path,
                                        const QString& localDirPath,
                                        QObject* context,
@@ -117,12 +129,17 @@ bool CloudStorageService::checkCloudStorageEntryName(const QString& entryName) {
     return true;
 }
 
+static const QRegularExpression emailRegex(R"((^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$))");
+
+bool CloudStorageService::checkEmail(const QString& email) {
+    return emailRegex.match(email).hasMatch();
+}
+
 bool CloudStorageService::checkCloudStoragePath(const QList<QString>& path, bool isDir) {
     CHECK(!path.isEmpty() || isDir, false);
-    for (const auto& pathEntry : qAsConst(path)) {
-        CHECK(checkCloudStorageEntryName(pathEntry), false);
-    }
-    return true;
+    return std::all_of(path.cbegin(), path.cend(), [](const auto& pathEntry) {
+        return checkCloudStorageEntryName(pathEntry);
+    });
 }
 
 void CloudStorageService::onWebSocketMessageReceived(const WebSocketSubscriptionType& type, const QString&, const QJsonObject& payload) {

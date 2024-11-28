@@ -52,7 +52,7 @@ public:
 
 class CloudStorageEntry {
 public:
-    CloudStorageEntry(const QList<QString>& path, qint64 size, const QDateTime& modificationTimel, qint64 sessionLocalId);
+    CloudStorageEntry(const QList<QString>& path, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId);
 
     static CloudStorageEntry fromJson(const QJsonObject& json, const QList<QString>& parentPath);
 
@@ -86,6 +86,11 @@ public:
                      QObject* context = nullptr,
                      std::function<void(const QJsonObject&)> callback = nullptr) const;
 
+    void shareEntry(const QList<QString>& path,
+                    const QString& email,
+                    QObject* context = nullptr,
+                    std::function<void(const QJsonObject&)> callback = nullptr) const;
+
     void downloadFile(const QList<QString>& path,
                       const QString& localDirPath,
                       QObject* context = nullptr,
@@ -98,6 +103,9 @@ public:
 
     /** Checks that the 'entryName' is an acceptable cloud storage file/folder name. */
     static bool checkCloudStorageEntryName(const QString& entryName);
+
+    /** Checks that the 'email' is a valid email address. */
+    static bool checkEmail(const QString& email);
 
     /** Checks that the 'path' is a valid cloud storage path: is not empty (unless is dir), does not contain empty or invalid items. */
     static bool checkCloudStoragePath(const QList<QString>& path, bool isDir = false);

@@ -15,11 +15,15 @@
         <file>images/cloud_disabled.svg</file>
         <file>images/cloud_storage.svg</file>
         <file>images/create_new_project.png</file>
+        <file>images/document.svg</file>
         <file>images/down.png</file>
         <file>images/empty_notification.png</file>
         <file>images/file_download.svg</file>
         <file>images/file_rename.svg</file>
+        <file>images/file_share.svg</file>
         <file>images/file_upload.svg</file>
+        <file>images/folder.svg</file>
+        <file>images/folder_shared.svg</file>
         <file>images/has_error.png</file>
         <file>images/has_report.png</file>
         <file>images/hourglass.png</file>
