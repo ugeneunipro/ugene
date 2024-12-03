@@ -838,11 +838,14 @@ QList<WidgetController*>& PageContentCreator::getControllers() {
 void PageContentCreator::createTitle(QVBoxLayout* contentLayout) {
     pageTitle = new QLabel();
     pageTitle->setWordWrap(true);
+    QString fontSize;
 #ifdef Q_OS_DARWIN
-    pageTitle->setStyleSheet("QLabel {font-size: 20pt; padding-bottom: 10px; color: #0c3762}");
+    fontSize = "20";
 #else
-    pageTitle->setStyleSheet("QLabel {font-size: 16pt; padding-bottom: 10px; color: #0c3762}");
+    fontSize = "16";
 #endif
+    QString titleColor = AppContext::getMainWindow()->isDarkMode() ? "#7ABCFF" : "#0c3762";
+    pageTitle->setStyleSheet(QString("QLabel {font-size: %1pt; padding-bottom: 10px; color: %2}").arg(fontSize).arg(titleColor));
     pageTitle->resize(0, 0);
     pageTitle->hide();
     contentLayout->addWidget(pageTitle);

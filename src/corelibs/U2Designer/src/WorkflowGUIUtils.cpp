@@ -28,12 +28,17 @@
 #include <QTextDocument>
 #include <QUrl>
 
+#include <U2Core/AppContext.h>
+
+#include <U2Gui/MainWindow.h>
+
 #include <U2Lang/Descriptor.h>
 
 namespace U2 {
 
 void DesignerGUIUtils::paintSamplesArrow(QPainter* painter) {
-    QPen pen(Qt::darkGray);
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    QPen pen(isDark ? Qt::lightGray : Qt::darkGray);
     pen.setWidthF(2);
     painter->setPen(pen);
     painter->setRenderHint(QPainter::SmoothPixmapTransform);
@@ -55,10 +60,12 @@ void DesignerGUIUtils::paintSamplesArrow(QPainter* painter) {
     p.lineTo(res.bottomRight());
     p.lineTo(res.bottomLeft());
     p.closeSubpath();
-    QColor yc = QColor(255, 255, 160);  // QColor(Qt::yellow).lighter();yc.setAlpha(127);
+    QColor yc = Qt::yellow;
+    yc = isDark ? yc.darker() : yc.lighter();
+    yc.setAlpha(127);
     painter->fillPath(p, QBrush(yc));
     painter->drawPath(p);
-    painter->setPen(Qt::black);
+    painter->setPen(QPalette().text().color());
     painter->drawText(approx, Qt::AlignLeft | Qt::AlignTop, txt);
 }
 
@@ -79,7 +86,10 @@ void DesignerGUIUtils::paintSamplesDocument(QPainter* painter, QTextDocument* do
     int pad = 10;
     QRect clearRect = textRect.adjusted(-pad, -pad, pad, pad);
     painter->setPen(Qt::NoPen);
-    painter->setBrush(QColor(0, 0, 0, 63));
+    auto textColor = QPalette().text().color();
+    auto alphaTextColor = textColor;
+    alphaTextColor.setAlpha(63);
+    painter->setBrush(alphaTextColor);
     int shade = 10;
     painter->drawRect(clearRect.x() + clearRect.width() + 1,
                       clearRect.y() + shade,
@@ -91,8 +101,8 @@ void DesignerGUIUtils::paintSamplesDocument(QPainter* painter, QTextDocument* do
                       shade);
 
     painter->setRenderHint(QPainter::Antialiasing, false);
-    painter->setBrush(QColor(255, 255, 255 /*, 220*/));
-    painter->setPen(Qt::black);
+    painter->setBrush(QPalette().base().color());
+    painter->setPen(textColor);
     painter->drawRect(clearRect);
 
     painter->setClipRegion(textRect, Qt::IntersectClip);
@@ -101,8 +111,8 @@ void DesignerGUIUtils::paintSamplesDocument(QPainter* painter, QTextDocument* do
     QAbstractTextDocumentLayout::PaintContext ctx;
 
     QLinearGradient g(0, 0, 0, textRect.height());
-    g.setColorAt(0, Qt::black);
-    g.setColorAt(0.9, Qt::black);
+    g.setColorAt(0, textColor);
+    g.setColorAt(0.9, textColor);
     g.setColorAt(1, Qt::transparent);
 
     // pal.setBrush(QPalette::Text, g);
@@ -116,6 +126,7 @@ void DesignerGUIUtils::setupSamplesDocument(const Descriptor& d, const QIcon& ic
     bool hasIcon = (ico.availableSizes().size() > 0);
     QString text =
         QString(hasIcon ? "<html>"
+                          "<body style='background-color:%6;'>"
                           "<table align='center' border='0' cellpadding='3' cellspacing='3'>"
                           "<tr><td colspan='2'><h1 align='center'>%1</h1></td></tr>"
                           "<tr>"
@@ -126,6 +137,7 @@ void DesignerGUIUtils::setupSamplesDocument(const Descriptor& d, const QIcon& ic
                           "</table>"
                           "</html>"
                         : "<html>"
+                          "<body style='background-color:%6;'>"
                           "<table align='center' border='0' cellpadding='3' cellspacing='3'>"
                           "<tr><td><h1 align='center'>%1</h1></td></tr>"
                           "<tr>%2"
@@ -152,7 +164,8 @@ void DesignerGUIUtils::setupSamplesDocument(const Descriptor& d, const QIcon& ic
         body2 = body.mid(brk + shift);
         body = body.left(brk);
     }
-    text = text.arg(d.getDisplayName()).arg(hasIcon ? img : "").arg(body).arg(body2).arg(QObject::tr("Double click to load the sample"));
+    QString backgroundColor = QPalette().base().color().name();
+    text = text.arg(d.getDisplayName()).arg(hasIcon ? img : "").arg(body).arg(body2).arg(QObject::tr("Double click to load the sample")).arg(backgroundColor);
     doc->setHtml(text);
     QFont f;
     // f.setFamily("Times New Roman");

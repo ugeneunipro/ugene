@@ -361,6 +361,10 @@ void RemoteDBFetcherFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new RemoteDBFetcherPrompter());
 
+    if (AppContext::isGUIMode()) {
+        proto->setIconParameters(IconParameters("U2Designer", "blue_circle.png"));
+    }
+
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
