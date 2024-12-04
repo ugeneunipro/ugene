@@ -827,7 +827,7 @@ void Footnote::init() {
     from->links << this;
     to->links << this;
 
-    QPen refPen(Qt::black);
+    QPen refPen(QPalette().text().color());
     refPen.setStyle(Qt::DotLine);
     leftRef = new QGraphicsLineItem;
     rightRef = new QGraphicsLineItem;
@@ -935,9 +935,9 @@ QRectF Footnote::boundingRect() const {
 void Footnote::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->fillRect(boundingRect(), Qt::white);
+    painter->fillRect(boundingRect(), QPalette().base().color());
     qreal arrW = getDstPoint().x() - getSrcPoint().x();
-    QPen pen(Qt::black);
+    QPen pen(QPalette().text().color());
     if (isSelected()) {
         pen.setStyle(Qt::DashLine);
     }

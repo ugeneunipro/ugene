@@ -34,6 +34,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/Theme.h>
 
 #include <U2Lang/WizardPage.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -844,8 +845,7 @@ void PageContentCreator::createTitle(QVBoxLayout* contentLayout) {
 #else
     fontSize = "16";
 #endif
-    QString titleColor = AppContext::getMainWindow()->isDarkMode() ? "#7ABCFF" : "#0c3762";
-    pageTitle->setStyleSheet(QString("QLabel {font-size: %1pt; padding-bottom: 10px; color: %2}").arg(fontSize).arg(titleColor));
+    pageTitle->setStyleSheet(QString("QLabel {font-size: %1pt; padding-bottom: 10px; color: %2}").arg(fontSize).arg(Theme::wdWizardTopicColorStr()));
     pageTitle->resize(0, 0);
     pageTitle->hide();
     contentLayout->addWidget(pageTitle);

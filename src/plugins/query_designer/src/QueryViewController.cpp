@@ -356,7 +356,7 @@ void QueryScene::setRowsNumber(int count) {
 void QueryScene::drawBackground(QPainter* painter, const QRectF& rect) {
     Q_UNUSED(rect);
     int step = GRID_STEP;
-    painter->setPen(QPen(QColor(200, 200, 255, 125)));
+    painter->setPen(QPen(AppContext::getMainWindow()->isDarkMode() ? QColor(75, 75, 48, 125) : QColor(200, 200, 255, 125)));
     // draw horizontal grid
     const QRectF& area = annotationsArea();
     qreal start = area.top();

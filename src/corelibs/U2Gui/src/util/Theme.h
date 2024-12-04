@@ -61,6 +61,10 @@ public:
         return wdParameterLabelColor().name();
     }
 
+    static QString wdWizardTopicColorStr() {
+        return AppContext::getMainWindow()->isDarkMode() ? "#7ABCFF" : "#0c3762";
+    }
+
     static QString warningColorLabelHtmlStr() {
         return AppContext::getMainWindow()->isDarkMode() ? "#FFCF48" : "#FF8B19";
     }

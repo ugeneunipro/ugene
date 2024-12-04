@@ -195,7 +195,7 @@ ActorPrototype* IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
 
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconParameters(IconParameters("workflow_designer", "external_cmd_tool.png", false));
+    proto->setIconParameters(IconParameters("workflow_designer", "external_cmd_tool.png"));
 
     proto->setPrompter(new LocalWorkflow::ExternalProcessWorkerPrompter());
     proto->setNonStandard(cfg->filePath);
