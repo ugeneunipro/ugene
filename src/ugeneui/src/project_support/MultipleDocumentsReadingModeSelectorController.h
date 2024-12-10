@@ -55,6 +55,7 @@ private slots:
     void sl_onMoveUp();
     void sl_onMoveDown();
     void sl_optionChanged();
+    void sl_colorModeSwitched();
 
 private:
     void initSequenceSaveController();

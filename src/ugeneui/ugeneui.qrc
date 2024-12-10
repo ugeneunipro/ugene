@@ -2,52 +2,31 @@
     <qresource prefix="/ugene">
         <file>images/create_new_project.png</file>
         <file>images/about.png</file>
-        <file>images/ugene_16.png</file>
+        <file>images/ugene.png</file>
         <file>images/originals/ugene_128.png</file>
         <file>images/window_tile.png</file>
         <file>images/window_cascade.png</file>
-        <file>images/window_prev.png</file>
-        <file>images/window_next.png</file>
         <file>images/plugins.png</file>
-        <file>images/service.png</file>
-        <file>images/paste.png</file>
+        <file>images/project.png</file>
         <file>images/project_new.png</file>
         <file>images/project_open.png</file>
-        <file>images/add_existing_document.png</file>
-        <file>images/add_new_document.png</file>
-        <file>images/save_selected_documents.png</file>
-        <file>images/net_settings.png</file>
         <file>images/log_settings.png</file>
-        <file>images/script_registry.png</file>
         <file>images/clock.png</file>
         <file>images/book_open.png</file>
-        <file>images/project.png</file>
-        <file>images/lightbulb.png</file>
-        <file>images/lightbulb_off.png</file>
         <file>images/cancel.png</file>
         <file>images/task_report.png</file>
         <file>images/bin_empty.png</file>
         <file>images/advanced_open.png</file>
         <file>images/hourglass.png</file>
-        <file>images/hourglass_go.png</file>
-        <file>images/hourglass_ok.png</file>
         <file>images/hourglass_err.png</file>
-        <file>images/project_filter.png</file>
-        <file>images/save_copy.png</file>
-        <file>images/relocate.png</file>
         <file>images/world_go.png</file>
         <file>images/empty_notification.png</file>
         <file>images/has_error.png</file>
         <file>images/has_report.png</file>
-        <file>images/preferences.png</file>
         <file>images/ugene.ico</file>
-        <file>images/up.png</file>
-        <file>images/down.png</file>
         <file>images/ugene_splash.gif</file>
         <file>images/ugene_splash.png</file>
-        <file>images/welcome_page/line.png</file>
         <file>images/welcome_page/social_icon_facebook.png</file>
-        <file>images/welcome_page/social_icon_patreon.png</file>
         <file>images/welcome_page/social_icon_linkedin.png</file>
         <file>images/welcome_page/social_icon_rss.png</file>
         <file>images/welcome_page/social_icon_twitter.png</file>
@@ -57,6 +36,31 @@
         <file>images/welcome_page/welcome_btn_help.png</file>
         <file>images/welcome_page/welcome_btn_open.png</file>
         <file>images/welcome_page/welcome_btn_workflow.png</file>
+        <file>images/lightbulb.png</file>
+        <file>images/lightbulb_off.png</file>
+
+        <file>images/dark/hourglass_go.png</file>
+        <file>images/dark/hourglass_ok.png</file>
+        <file>images/dark/preferences.png</file>
+        <file>images/dark/relocate.png</file>
+        <file>images/dark/save_copy.png</file>
+        <file>images/dark/save_selected_documents.png</file>
+        <file>images/dark/window_prev.png</file>
+        <file>images/dark/window_next.png</file>
+        <file>images/welcome_page/dark/line.png</file>
+        <file>images/welcome_page/dark/social_icon_patreon.png</file>
+
+        <file>images/light/hourglass_go.png</file>
+        <file>images/light/hourglass_ok.png</file>
+        <file>images/light/preferences.png</file>
+		<file>images/light/relocate.png</file>
+        <file>images/light/save_copy.png</file>
+        <file>images/light/save_selected_documents.png</file>
+        <file>images/light/window_prev.png</file>
+        <file>images/light/window_next.png</file>
+        <file>images/welcome_page/light/line.png</file>
+        <file>images/welcome_page/light/social_icon_patreon.png</file>
+
         <file>html/version_news_en.html</file>
         <file>html/version_news_ru.html</file>
     </qresource>

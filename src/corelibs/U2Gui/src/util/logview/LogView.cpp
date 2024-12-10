@@ -34,6 +34,7 @@
 #include <U2Core/Timer.h>
 
 #include <U2Gui/AppSettingsGUI.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 namespace U2 {
@@ -64,14 +65,14 @@ void LogViewWidget::init() {
     useRegexp = true;
 
     setWindowTitle(tr("Log"));
-    setWindowIcon(QIcon(":ugene/images/book_open.png"));
+    setWindowIcon(GUIUtils::getIconResource("ugene","book_open.png", false));
 
     connect(&updateViewTimer, SIGNAL(timeout()), this, SLOT(sl_showNewMessages()));
 
     settings.reinitAll();
 
     showSettingsAction = new QAction(tr("Settings..."), this);
-    showSettingsAction->setIcon(QIcon(":ugene/images/log_settings.png"));
+    showSettingsAction->setIcon(GUIUtils::getIconResource("ugene", "log_settings.png", false));
     connect(showSettingsAction, SIGNAL(triggered()), SLOT(sl_openSettingsDialog()));
 
     dumpCountersAction = new QAction(tr("Dump performance counters"), this);

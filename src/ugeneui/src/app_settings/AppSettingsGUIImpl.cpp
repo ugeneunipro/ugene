@@ -26,6 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 #include "AppSettingsDialogController.h"
@@ -42,7 +43,7 @@ AppSettingsGUIImpl::AppSettingsGUIImpl(QObject* p)
     registerBuiltinPages();
     QMenu* m = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_SETTINGS);
 
-    auto settingsDialogAction = new QAction(QIcon(":ugene/images/preferences.png"), tr("Preferences..."), this);
+    settingsDialogAction = new QAction(GUIUtils::getIconResource("ugene", "preferences.png"), tr("Preferences..."), this);
     connect(settingsDialogAction, SIGNAL(triggered()), SLOT(sl_showSettingsDialog()));
     settingsDialogAction->setObjectName("action__settings");
 #ifdef Q_OS_DARWIN
@@ -52,6 +53,8 @@ AppSettingsGUIImpl::AppSettingsGUIImpl(QObject* p)
 #endif
     m->addAction(settingsDialogAction);
     AppContext::getMainWindow()->registerAction(settingsDialogAction);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AppSettingsGUIImpl::sl_colorModeSwitched);
 }
 
 AppSettingsGUIImpl::~AppSettingsGUIImpl() {
@@ -99,6 +102,10 @@ AppSettingsGUIPageController* AppSettingsGUIImpl::findPageById(const QString& pa
         }
     }
     return nullptr;
+}
+
+void AppSettingsGUIImpl::sl_colorModeSwitched() {
+    settingsDialogAction->setIcon(GUIUtils::getIconResource("ugene", "preferences.png"));
 }
 
 void AppSettingsGUIImpl::registerBuiltinPages() {

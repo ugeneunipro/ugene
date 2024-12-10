@@ -100,6 +100,7 @@ private slots:
 
     void sl_downloadRemoteFile();
     void sl_searchGenbankEntry();
+    void sl_colorModeSwitched();
 
 private:
     QAction* addExistingDocumentAction;

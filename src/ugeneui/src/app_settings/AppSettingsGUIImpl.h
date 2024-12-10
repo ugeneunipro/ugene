@@ -50,10 +50,13 @@ private slots:
         showSettingsDialog();
     }
 
+    void sl_colorModeSwitched();
+
 private:
     void registerBuiltinPages();
 
     QList<AppSettingsGUIPageController*> pages;
+    QAction* settingsDialogAction = nullptr;
 };
 
 }  // namespace U2

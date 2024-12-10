@@ -245,7 +245,7 @@ QPixmap getPixmapResource(const QString& cathegory, const QString& iconName, boo
 
 }
 
-QString GUIUtils::getResourceName(const QString& cathegory, const QString& iconName, bool hasColorCathegory) {
+QString GUIUtils::getResourceName(const QString& cathegory, const QString& iconName, bool hasColorCathegory, const QString& innerDirName) {
     bool isDark = AppContext::getMainWindow()->isDarkMode();
     QString colorCathegory;
     if (hasColorCathegory) {
@@ -255,7 +255,11 @@ QString GUIUtils::getResourceName(const QString& cathegory, const QString& iconN
             colorCathegory = "light/";
         }
     }
-    return QString(":%1/images/%2%3").arg(cathegory).arg(colorCathegory).arg(iconName);
+    QString inner;
+    if (!innerDirName.isEmpty()) {
+        inner = innerDirName + "/";
+    }
+    return QString(":%1/images/%2%3%4").arg(cathegory).arg(inner).arg(colorCathegory).arg(iconName);
 }
 
 
@@ -278,6 +282,10 @@ QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconNam
 
 QIcon GUIUtils::getIconResource(const IconParameters& parameters) {
     return getIconResource(parameters.iconCathegory, parameters.iconName, parameters.hasColorCathegory);
+}
+
+QString GUIUtils::getResourceName(const IconParameters& parameters) {
+    return getResourceName(parameters.iconCathegory, parameters.iconName, parameters.hasColorCathegory);
 }
 
 void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {

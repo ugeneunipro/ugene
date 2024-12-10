@@ -28,6 +28,7 @@
 #include <U2Core/TextUtils.h>
 
 #include <U2Gui/DialogUtils.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/MainWindow.h>
 
@@ -57,7 +58,7 @@ CreateRulerDialogController::CreateRulerDialogController(const QSet<QString>& na
     updateColorSample();
 
     connect(colorButton, SIGNAL(clicked()), SLOT(sl_colorButtonClicked()));
-    setWindowIcon(QIcon(":/ugene/images/ugene_16.png"));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png", false));
 }
 
 void CreateRulerDialogController::updateColorSample() {
