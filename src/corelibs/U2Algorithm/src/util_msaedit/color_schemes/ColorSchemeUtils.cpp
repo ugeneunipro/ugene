@@ -62,9 +62,9 @@ bool lineValid(const QStringList& properties, const QMap<char, QColor>& alphColo
 
 QByteArray uniteAlphabetChars(const QByteArray& firstAlphabetChars, const QByteArray& secondAlphabetChars) {
     QByteArray unitedAlphabetChars = firstAlphabetChars;
-    for (int i = 0; i < secondAlphabetChars.size(); ++i) {
-        if (!unitedAlphabetChars.contains(secondAlphabetChars[i])) {
-            unitedAlphabetChars.append(secondAlphabetChars[i]);
+    for (char secondAlphabetChar : secondAlphabetChars) {
+        if (!unitedAlphabetChars.contains(secondAlphabetChar)) {
+            unitedAlphabetChars.append(secondAlphabetChar);
         }
     }
     std::sort(unitedAlphabetChars.begin(), unitedAlphabetChars.end());
@@ -160,7 +160,7 @@ QList<ColorSchemeData> ColorSchemeUtils::getSchemas() {
 
     QDir dir(getColorsDir());
     if (!dir.exists()) {
-        return QList<ColorSchemeData>();
+        return {};
     }
 
     QStringList filters;
@@ -243,8 +243,8 @@ QMap<char, QColor> ColorSchemeUtils::getDefaultSchemaColors(DNAAlphabetType type
     }
 
     QMap<char, QColor> alphColors;
-    for (int i = 0; i < alphabet.size(); ++i) {
-        alphColors[alphabet[i]] = QColor(Qt::white);
+    for (auto&& i : alphabet) {
+        alphColors[i] = QColor(Qt::white);
     }
 
     getDefaultUgeneColors(type, alphColors);

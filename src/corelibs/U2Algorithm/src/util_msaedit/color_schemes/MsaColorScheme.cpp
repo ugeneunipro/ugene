@@ -272,38 +272,40 @@ void fillLightColorsColorScheme(QVector<QColor>& colorsPerChar) {
 }
 
 void addUgeneAmino(QVector<QColor>& colorsPerChar) {
-    Q_UNUSED(colorsPerChar);
-
     // Note: Using direct RGB colors instead of .lighter()/.darker()
     // Reason: lighter() & darker() produce a color that can be mapped back to the RGB space differently on different OSes (RBG space is limited).
-    // To make GUI testing stable across different OS-es we hard-code the some RBB values.
+    // To make GUI testing stable across different OS-es we hard-code some RBB values.
 
-    // amino groups: "KRH", "GPST", "FWY", "ILM"
-    QColor krh("#ffee00");
-    SET_C('K', krh);
-    SET_C('R', "#d5c700");  // krh.darker(120)
-    SET_C('H', "#fff233");  // krh.lighter(120));
+    // Amino group "HKR", distinct shades of yellow.
+    SET_C('H', "#ffff66");  // Light pastel yellow (lighter than K).
+    SET_C('K', "#ffe600");  // Vibrant yellow.
+    SET_C('R', "#d4b700");  // Golden yellow (darker than K).
 
-    QColor gpst("#ff5082");
-    SET_C('G', gpst);
-    SET_C('P', "#d5426c");  // gpst.darker(120).
-    SET_C('S', "#ff83a7");  // gpst.lighter(120)
-    SET_C('T', "#ffd0dd");  // gpst.lighter(150)
+    // Amino group "GPST", distinct shades of red.
+    SET_C('G', "#ffe4ec");  // Lightest blush pink (lightest shade).
+    SET_C('P', "#ff83a7");  // Light pink (lighter than #ff5082).
+    SET_C('S', "#ff5082");  // Vivid red-pink (middle shade).
+    SET_C('T', "#c4375e");  // Deep rose-red (darker than #ff5082).
 
-    QColor fwy("#3df490");
-    SET_C('F', fwy);
-    SET_C('W', "#33cc78");  // fwy.darker(120)
-    SET_C('Y', "#65ffab");  // fwy.lighter(120)
+    // Amino group "FWY", distinct shades of green.
+    SET_C('F', "#65ffab");  // Mint Green,
+    SET_C('W', "#3df490");  // Fresh Emerald.
+    SET_C('Y', "#33cc78");  // Deep Jade.
 
-    QColor ilm("#00abed");
-    SET_C('I', ilm);
-    SET_C('L', "#008fc6");  // ilm.darker(120).
-    SET_C('M', "#1dc0ff");  // ilm.lighter(120)
+    // Amino group "ILM", distinct shades of blue.
+    SET_C('I', "#1dc0ff");
+    SET_C('L', "#00abed");
+    SET_C('M', "#008fc6");
 
-    // fix some color overlaps:
-    // e looks like q by default
-    SET_C('E', "#c0bdbb");  // gray
-    SET_C('X', "#fcfcfc");
+    // Non-group amino acids have distinct, light colors for visibility.
+    SET_C('A', "#ffdab3");  // Light orange-peach.
+    SET_C('C', "#ccffcc");  // Soft mint.
+    SET_C('D', "#ffc2c2");  // Warm pastel pink.
+    SET_C('E', "#c0bdbb");  // Gray.
+    SET_C('N', "#b3e6ff");  // Sky blue.
+    SET_C('Q', "#e6ccff");  // Soft lilac.
+    SET_C('V', "#d6ebff");  // Pale baby blue.
+    SET_C('X', "#fcfcfc");  // Light gray, almost white.
 }
 
 void addUgeneNucleotide(QVector<QColor>& colorsPerChar) {
