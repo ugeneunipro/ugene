@@ -119,6 +119,11 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
     updateState(msaEditor);
 }
 
+void MsaExcludeListContext::disconnectView(GObjectViewController* view) {
+    disconnect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaExcludeListContext::sl_colorModeSwitched);
+    GObjectViewWindowContext::disconnectView(view);
+}
+
 void MsaExcludeListContext::sl_colorModeSwitched() {
     toggleExcludeListAction->setIcon(GUIUtils::getIconResource("core", "inbox-minus.png"));
     moveFromMsaAction->setIcon(GUIUtils::getIconResource("core", "arrow-move-down.png", false));

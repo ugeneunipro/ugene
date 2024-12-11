@@ -539,6 +539,8 @@ void ProjectViewImpl::disable() {
 
     delete w;
     w = nullptr;
+
+    disconnect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ProjectViewImpl::sl_colorModeSwitched);
 }
 
 void ProjectViewImpl::saveWidgetState(ProjectViewWidget* w) {

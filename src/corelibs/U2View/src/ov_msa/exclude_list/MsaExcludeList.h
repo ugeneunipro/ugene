@@ -55,6 +55,7 @@ public:
 
 protected:
     void initViewContext(GObjectViewController* view) override;
+    void disconnectView(GObjectViewController* view) override;
 
 private slots:
     void sl_colorModeSwitched();

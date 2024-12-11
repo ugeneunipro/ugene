@@ -444,15 +444,6 @@ int main(int argc, char** argv) {
 #endif
 
     QMainWindow window;
-    auto splashScreen = new SplashScreen(&window);
-    splashScreen->adjustSize();
-    splashScreen->setGeometry(
-        QStyle::alignedRect(
-            Qt::LeftToRight,
-            Qt::AlignCenter,
-            splashScreen->size(),
-            qApp->desktop()->availableGeometry(QApplication::desktop()->primaryScreen())));
-    splashScreen->show();
 
     AppContextImpl* appContext = AppContextImpl::getApplicationContext();
     appContext->setGUIMode(true);
@@ -485,6 +476,17 @@ int main(int argc, char** argv) {
 
     auto appSettings = new AppSettingsImpl();
     appContext->setAppSettings(appSettings);
+
+    auto splashScreen = new SplashScreen(&window);
+    splashScreen->adjustSize();
+    splashScreen->setGeometry(
+        QStyle::alignedRect(
+            Qt::LeftToRight,
+            Qt::AlignCenter,
+            splashScreen->size(),
+            qApp->desktop()->availableGeometry(QApplication::desktop()->primaryScreen())));
+    splashScreen->show();
+
 
     UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
 

@@ -25,7 +25,6 @@
         <file>images/has_report.png</file>
         <file>images/ugene.ico</file>
         <file>images/ugene_splash.gif</file>
-        <file>images/ugene_splash.png</file>
         <file>images/welcome_page/social_icon_facebook.png</file>
         <file>images/welcome_page/social_icon_linkedin.png</file>
         <file>images/welcome_page/social_icon_rss.png</file>
@@ -47,6 +46,7 @@
         <file>images/dark/save_selected_documents.png</file>
         <file>images/dark/window_prev.png</file>
         <file>images/dark/window_next.png</file>
+        <file>images/dark/ugene_splash.png</file>
         <file>images/welcome_page/dark/line.png</file>
         <file>images/welcome_page/dark/social_icon_patreon.png</file>
 
@@ -58,6 +58,7 @@
         <file>images/light/save_selected_documents.png</file>
         <file>images/light/window_prev.png</file>
         <file>images/light/window_next.png</file>
+        <file>images/light/ugene_splash.png</file>
         <file>images/welcome_page/light/line.png</file>
         <file>images/welcome_page/light/social_icon_patreon.png</file>
 

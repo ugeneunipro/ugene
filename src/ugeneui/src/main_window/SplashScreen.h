@@ -65,6 +65,8 @@ private:
     QString activeTaskName;
     QImage image1;
     QImage image2;
+
+    bool isDark = false;
 };
 
 }  // namespace U2
