@@ -255,10 +255,10 @@ QString GUIUtils::getTextWithDialog(QWidget* parent, const QString& title, const
     inputDialog.setTextValue(defaultText);
     inputDialog.setInputMode(QInputDialog::TextInput);
 
-    // Inline logic to enable Enter key for OK button
+    // Inline logic to enable Enter key for OK button.
     auto lineEdit = inputDialog.findChild<QLineEdit*>();
     if (lineEdit) {
-        QObject::connect(lineEdit, &QLineEdit::returnPressed, &inputDialog, &QInputDialog::accept);
+        connect(lineEdit, &QLineEdit::returnPressed, &inputDialog, &QInputDialog::accept);
     }
 
     if (inputDialog.exec() == QDialog::Accepted) {
