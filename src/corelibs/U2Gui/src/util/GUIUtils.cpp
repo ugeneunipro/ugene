@@ -266,7 +266,7 @@ QString GUIUtils::getTextWithDialog(QWidget* parent, const QString& title, const
         return inputDialog.textValue();
     }
     ok = false;
-    return {};
+    return "";
 }
 
 ResetSliderOnDoubleClickBehavior::ResetSliderOnDoubleClickBehavior(QAbstractSlider* slider, QLabel* relatedLabel)
