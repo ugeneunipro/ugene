@@ -25,9 +25,7 @@
 #include <QDesktopServices>
 #include <QHeaderView>
 #include <QIcon>
-#include <QInputDialog>
 #include <QLabel>
-#include <QMenu>
 #include <QMessageBox>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -39,9 +37,9 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
-#include <U2Gui/U2FileDialog.h>
 
 #include "CloudStorageService.h"
 #include "WorkspaceService.h"
@@ -63,15 +61,15 @@ static bool isLess(const QStandardItem* a, const QStandardItem* b) {
 
 static void updateModel(QTreeView* tree,
                         QStandardItem* parentItem,
-                        const CloudStorageEntry &entry,
-                        QList<QStandardItem*> &expandedItems) {
+                        const CloudStorageEntry& entry,
+                        QList<QStandardItem*>& expandedItems) {
     QMap<qint64, QStandardItem*> childrenMap;
     for (int i = 0; i < parentItem->rowCount(); i++) {
         QStandardItem* childItem = parentItem->child(i);
         auto childEntryKey = childItem->data(USER_DATA_SESSION_LOCAL_ID).toLongLong();
         childrenMap[childEntryKey] = childItem;
     }
-    for (const CloudStorageEntry &childEntry: qAsConst(entry->children)) {
+    for (const CloudStorageEntry& childEntry : qAsConst(entry->children)) {
         QIcon icon(childEntry->isFolder ? ":U2Designer/images/directory.png" : ":core/images/document.png");
         auto childEntryKey = childEntry->sessionLocalId;
         if (childrenMap.contains(childEntryKey)) {
@@ -122,7 +120,7 @@ static void updateModel(QTreeView* tree,
     }
 }
 
-static bool isItemInTree(const QStandardItemModel &model, const QStandardItem* item) {
+static bool isItemInTree(const QStandardItemModel& model, const QStandardItem* item) {
     CHECK(item, false);
     // Traverse the entire model hierarchy to check if the item is reachable.
     QStandardItem* rootItem = model.invisibleRootItem();
@@ -135,7 +133,7 @@ static bool isItemInTree(const QStandardItemModel &model, const QStandardItem* i
         for (int row = 0; row < parent->rowCount(); row++) {
             QStandardItem* child = parent->child(row);
             if (child == item) {
-                return true; // Found the item.
+                return true;  // Found the item.
             }
             // Recurse into the child's children.
             if (isItemInHierarchy(child)) {
@@ -148,14 +146,14 @@ static bool isItemInTree(const QStandardItemModel &model, const QStandardItem* i
     return isItemInHierarchy(rootItem);
 }
 
-static void updateTree(QTreeView* tree, const QStandardItemModel &model, const CloudStorageEntry &entry) {
+static void updateTree(QTreeView* tree, const QStandardItemModel& model, const CloudStorageEntry& entry) {
     tree->setUpdatesEnabled(false);
     QModelIndexList selectedIndexes = tree->selectionModel()->selectedIndexes();
     QStandardItem* selectedItem = selectedIndexes.isEmpty()
                                       ? nullptr
                                       : model.itemFromIndex(selectedIndexes.first());
 
-    QList<QStandardItem*> expandedItems; // List of item that should be expanded after model update.
+    QList<QStandardItem*> expandedItems;  // List of item that should be expanded after model update.
     updateModel(tree, model.invisibleRootItem(), entry, expandedItems);
 
     // Resorting in updateModel breaks expanded & selected states.
@@ -214,14 +212,13 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
         updateStateLabelText();
     });
 
-    connect(getCloudStorageService(), &CloudStorageService::si_storageStateChanged, this,
-            [this](const CloudStorageEntry &rootEntry) {
-                stateLabel->setVisible(false);
-                treeView->setVisible(true);
-                updateActionsState();
-                uiLog.trace("CloudStorageDockWidget: Received new cloud storage state");
-                updateTree(treeView, treeViewModel, rootEntry);
-            });
+    connect(getCloudStorageService(), &CloudStorageService::si_storageStateChanged, this, [this](const CloudStorageEntry& rootEntry) {
+        stateLabel->setVisible(false);
+        treeView->setVisible(true);
+        updateActionsState();
+        uiLog.trace("CloudStorageDockWidget: Received new cloud storage state");
+        updateTree(treeView, treeViewModel, rootEntry);
+    });
 
     createDirAction = new QAction(QIcon(":ugene/images/new_folder.svg"), tr("New Folder"), this);
     createDirAction->setObjectName("cloudStorageCreateDirAction");
@@ -266,8 +263,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(treeView, &QTreeView::customContextMenuRequested, this, &CloudStorageDockWidget::showContextMenu);
     connect(treeView, &QTreeView::doubleClicked, this, &CloudStorageDockWidget::downloadItemSilently);
-    connect(treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this,
-            &CloudStorageDockWidget::updateActionsState);
+    connect(treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &CloudStorageDockWidget::updateActionsState);
 
     toolbar->addAction(downloadAction);
     toolbar->addAction(uploadAction);
@@ -294,7 +290,7 @@ bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
     return false;
 }
 
-void CloudStorageDockWidget::showContextMenu(const QPoint &point) const {
+void CloudStorageDockWidget::showContextMenu(const QPoint& point) const {
     QObjectScopedPointer<QMenu> contextMenu = new QMenu();
     contextMenu->addAction(createDirAction);
     contextMenu->addAction(deleteAction);
@@ -306,24 +302,22 @@ void CloudStorageDockWidget::showContextMenu(const QPoint &point) const {
 
 void CloudStorageDockWidget::createDir() {
     QModelIndex currentIndex = getSelectedItemIndex();
-    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString> >();
+    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
     auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.isEmpty();
 
     bool ok;
-    QString dirName = QInputDialog::getText(nullptr, tr("Create New Folder"), tr("New Folder Name"),
-                                            QLineEdit::Normal, "", &ok);
+    QString dirName = GUIUtils::getTextWithDialog(nullptr, tr("Create New Folder"), tr("New Folder Name"), "", ok);
 
-    CHECK(ok && !dirName.isEmpty(),);
+    CHECK(ok && !dirName.isEmpty(), );
     if (!CloudStorageService::checkCloudStorageEntryName(dirName)) {
-        QMessageBox::critical(this, L10N::errorTitle(),
-                              tr("Folder name contains illegal characters: %1").arg(dirName));
+        QMessageBox::critical(this, L10N::errorTitle(), tr("Folder name contains illegal characters: %1").arg(dirName));
         return;
     }
     if (!isFolder) {
         path.pop_back();
     }
     path.append(dirName);
-    getCloudStorageService()->createDir(path, this, [this](const auto &response) {
+    getCloudStorageService()->createDir(path, this, [this](const auto& response) {
         handleCloudStorageResponse(response);
     });
 }
@@ -331,11 +325,10 @@ void CloudStorageDockWidget::createDir() {
 void CloudStorageDockWidget::deleteItem() {
     auto path = getSelectedItemPath();
     uiLog.trace("CloudStorageDockWidget::delete: " + path.join("/"));
-    CHECK(!path.isEmpty(),);
-    QMessageBox::StandardButton result = QMessageBox::question(treeView, tr("Question?"),
-                                                               tr("Do you want to delete %1").arg(path.last()));
-    CHECK(result == QMessageBox::Yes,);
-    getCloudStorageService()->deleteEntry(path, this, [this](const auto &response) {
+    CHECK(!path.isEmpty(), );
+    QMessageBox::StandardButton result = QMessageBox::question(treeView, tr("Question?"), tr("Do you want to delete %1").arg(path.last()));
+    CHECK(result == QMessageBox::Yes, );
+    getCloudStorageService()->deleteEntry(path, this, [this](const auto& response) {
         handleCloudStorageResponse(response);
     });
 }
@@ -348,92 +341,89 @@ QModelIndex CloudStorageDockWidget::getSelectedItemIndex() const {
 
 QList<QString> CloudStorageDockWidget::getSelectedItemPath() const {
     auto currentIndex = getSelectedItemIndex();
-    QList<QString> path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString> >();
+    QList<QString> path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
     return path;
 }
 
 void CloudStorageDockWidget::renameItem() {
     QList<QString> path = getSelectedItemPath();
     uiLog.trace("CloudStorageDockWidget::rename: " + path.join("/"));
-    CHECK(!path.isEmpty(),);
+    CHECK(!path.isEmpty(), );
 
     bool ok;
-    QString newName = QInputDialog::getText(nullptr, tr("Rename %1").arg(path.last()), tr("New Name"),
-                                            QLineEdit::Normal, path.last(), &ok);
+    QString newName = GUIUtils::getTextWithDialog(nullptr, tr("Rename %1").arg(path.last()), tr("New Name"), path.last(), ok);
 
-    CHECK(ok && !newName.isEmpty(),);
+    CHECK(ok && !newName.isEmpty(), );
     if (!CloudStorageService::checkCloudStorageEntryName(newName)) {
-        QMessageBox::critical(this, L10N::errorTitle(),
-                              tr("New name contains illegal characters: %1").arg(newName));
+        QMessageBox::critical(this, L10N::errorTitle(), tr("New name contains illegal characters: %1").arg(newName));
         return;
     }
     QList<QString> newPath = path;
     newPath[newPath.length() - 1] = newName;
-    getCloudStorageService()->renameEntry(path, newPath, this, [this](const auto &response) {
+    getCloudStorageService()->renameEntry(path, newPath, this, [this](const auto& response) {
         handleCloudStorageResponse(response);
     });
 }
 
 void CloudStorageDockWidget::downloadItemSilently() {
     QModelIndex currentIndex = getSelectedItemIndex();
-    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString> >();
+    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
     auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.isEmpty();
-    CHECK(!isFolder,);
+    CHECK(!isFolder, );
 
     uiLog.trace("CloudStorageDockWidget::downloadItem: " + path.join("/"));
-    CHECK(!path.isEmpty(),);
+    CHECK(!path.isEmpty(), );
     LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DOWNLOAD_DIR,
                           AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
-    getCloudStorageService()->downloadFile(path, lod.dir, this, [this](const auto &response) {
+    getCloudStorageService()->downloadFile(path, lod.dir, this, [this](const auto& response) {
         handleCloudStorageResponse(response);
     });
 }
 
 void CloudStorageDockWidget::downloadItem() {
     QModelIndex currentIndex = getSelectedItemIndex();
-    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString> >();
+    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
     auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.isEmpty();
-    CHECK(!isFolder,);
+    CHECK(!isFolder, );
     uiLog.trace("CloudStorageDockWidget::downloadItem: " + path.join("/"));
-    CHECK(!path.isEmpty(),);
+    CHECK(!path.isEmpty(), );
     LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_DOWNLOAD_DIR,
                           AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
-    QString dir = U2FileDialog::getExistingDirectory(this, tr("Select a folder to save the downloaded file"),
-                                                     lod.dir);
-    CHECK(!dir.isEmpty(),);
+    QString dir = U2FileDialog::getExistingDirectory(this, tr("Select a folder to save the downloaded file"), lod.dir);
+    CHECK(!dir.isEmpty(), );
     lod.dir = dir;
-    getCloudStorageService()->downloadFile(path, dir, this, [this](const auto &response) {
+    getCloudStorageService()->downloadFile(path, dir, this, [this](const auto& response) {
         handleCloudStorageResponse(response);
     });
 }
 
 void CloudStorageDockWidget::uploadItem() {
     QModelIndex currentIndex = getSelectedItemIndex();
-    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString> >();
+    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
     auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.isEmpty();
 
     LastUsedDirHelper lod(CLOUD_STORAGE_LAST_OPENED_UPLOAD_DIR,
                           AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath());
     QString localFilePath = U2FileDialog::getOpenFileName(this, tr("Select a file to upload"), lod.dir);
-    CHECK(!localFilePath.isEmpty(),);
+    CHECK(!localFilePath.isEmpty(), );
     lod.dir = QFileInfo(localFilePath).absolutePath();
 
     if (!isFolder) {
         path.pop_back();
     }
-    getCloudStorageService()->uploadFile(path, localFilePath, this, [this](const QJsonObject &response) {
+    getCloudStorageService()->uploadFile(path, localFilePath, this, [this](const QJsonObject& response) {
         handleCloudStorageResponse(response);
     });
 }
 
-void CloudStorageDockWidget::handleCloudStorageResponse(const QJsonObject &response) {
+void CloudStorageDockWidget::handleCloudStorageResponse(const QJsonObject& response) {
     const auto errorMessage = WorkspaceService::getErrorMessageFromResponse(response);
     if (!errorMessage.isEmpty()) {
         QMessageBox::critical(this, L10N::errorTitle(), errorMessage);
     }
 }
 
-static bool isShareFolderOrChild(const QList<QString> &path) {
+static bool isShareFolderOrChild(const QList<QString>& path) {
     return path.startsWith("Shared");
 }
 
@@ -449,7 +439,7 @@ void CloudStorageDockWidget::updateActionsState() const {
         hasSelection = currentIndex.isValid();
         const auto* treeModel = treeView->model();
         hasFileSelection = hasSelection && treeModel->data(currentIndex, USER_DATA_IS_FOLDER).toBool() == false;
-        const auto path = treeModel->data(currentIndex, USER_DATA_PATH).value<QList<QString> >();
+        const auto path = treeModel->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
         isSharedContent = isShareFolderOrChild(path);
         isTopLevelSharedEntry = isSharedContent && (path.length() == 2 || path.length() == 3);
     }
@@ -467,7 +457,7 @@ void CloudStorageDockWidget::updateStateLabelText() {
                             ? tr(R"(Loading file list...<br><br><br><a href="logout">Logout</a>)")
                             : tr(R"(Please <a href="login">log in to Workspace</a> to access cloud storage)"));
 
-    connect(stateLabel, &QLabel::linkActivated, this, [&](const QString &link) {
+    connect(stateLabel, &QLabel::linkActivated, this, [&](const QString& link) {
         if (link == "login") {
             workspaceService->login();
         } else if (link == "logout") {
@@ -476,7 +466,7 @@ void CloudStorageDockWidget::updateStateLabelText() {
     });
 }
 
-CloudStorageService*CloudStorageDockWidget::getCloudStorageService() const {
+CloudStorageService* CloudStorageDockWidget::getCloudStorageService() const {
     return workspaceService->getCloudStorageService();
 }
-} // namespace U2
+}  // namespace U2
