@@ -21,25 +21,18 @@
 
 #pragma once
 
-#include <QStyleFactory>
-
 namespace U2 {
 
-class StyleFactory {
+class MacStyleFactory {
 public:
-    static QStringList keys();
-    enum class ColorMode {
-        Light,
-        Dark,
-        Auto
-    };
-    static QStyle* create(const QString& styleName, ColorMode colorMode);
-    static QStyle* create(const QString& styleName, int colorMode);
 
-    static bool isDarkStyleAvaliable();
-    static bool isDarkStyleEnabled();
-
+    static bool macDarkThemeAvailable();
+    static bool macIsInDarkTheme();
+    static void macSetToDarkTheme();
+    static void macSetToLightTheme();
+    static void macSetToAutoTheme();
 
 };
 
 }
+

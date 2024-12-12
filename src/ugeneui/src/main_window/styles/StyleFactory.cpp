@@ -105,6 +105,16 @@ bool windowsIsInDarkTheme() {
 }  // namespace
 #endif
 
+bool StyleFactory::isDarkStyleAvaliable() {
+#ifdef Q_OS_DARWIN
+    return MacStyleFactory::macDarkThemeAvailable();
+#elif defined(Q_OS_WIN32)
+    return windowsDarkThemeAvailable();
+#else
+    FAIL("Auto color mode is not avalible on Linux", false);
+#endif
+}
+
 bool StyleFactory::isDarkStyleEnabled() {
 #ifdef Q_OS_DARWIN
     return MacStyleFactory::macIsInDarkTheme();

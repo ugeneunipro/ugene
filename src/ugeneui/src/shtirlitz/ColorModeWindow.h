@@ -21,25 +21,27 @@
 
 #pragma once
 
-#include <QStyleFactory>
+#include <QDialog>
+#include <QRadioButton>
+
+#include "ui_ColorModeWindow.h"
 
 namespace U2 {
 
-class StyleFactory {
+class ColorModeWindow : public QDialog, public Ui_ColorModeWindow {
+    Q_OBJECT
 public:
-    static QStringList keys();
-    enum class ColorMode {
-        Light,
-        Dark,
-        Auto
-    };
-    static QStyle* create(const QString& styleName, ColorMode colorMode);
-    static QStyle* create(const QString& styleName, int colorMode);
+    ColorModeWindow(QWidget* parent = nullptr);
 
-    static bool isDarkStyleAvaliable();
-    static bool isDarkStyleEnabled();
+    QPair<QString, int> getNewStyle() const;
 
+private slots:
+    void sl_updateState();
+
+private:
+    QRadioButton* lightRb = nullptr;
+    QList<QRadioButton*> darkRbs;
 
 };
 
-}
+}  // namespace U2

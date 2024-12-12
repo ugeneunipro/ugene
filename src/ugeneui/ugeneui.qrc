@@ -12,6 +12,7 @@
         <file>images/project_open.png</file>
         <file>images/log_settings.png</file>
         <file>images/clock.png</file>
+        <file>images/color_mode_pic.png</file>
         <file>images/book_open.png</file>
         <file>images/cancel.png</file>
         <file>images/task_report.png</file>
@@ -38,6 +39,7 @@
         <file>images/lightbulb.png</file>
         <file>images/lightbulb_off.png</file>
 
+        <file>images/dark/color_mode_pic.png</file>
         <file>images/dark/hourglass_go.png</file>
         <file>images/dark/hourglass_ok.png</file>
         <file>images/dark/preferences.png</file>
@@ -50,6 +52,7 @@
         <file>images/welcome_page/dark/line.png</file>
         <file>images/welcome_page/dark/social_icon_patreon.png</file>
 
+        <file>images/light/color_mode_pic.png</file>
         <file>images/light/hourglass_go.png</file>
         <file>images/light/hourglass_ok.png</file>
         <file>images/light/preferences.png</file>

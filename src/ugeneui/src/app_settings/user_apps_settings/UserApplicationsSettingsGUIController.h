@@ -84,7 +84,7 @@ public:
 private slots:
     void sl_transFileClicked();
 
-private:
+public:
     /**
      * @brief STYLE_KEYS_FIXED_REGISTER
      * The bunch of "Appearance" with fixed register.
