@@ -83,6 +83,10 @@ public:
 
 private slots:
     void sl_transFileClicked();
+    void sl_updateState();
+
+private:
+    static const QString WINDOWS_VISTA_STYLE;
 
 public:
     /**
@@ -93,6 +97,11 @@ public:
      * (see here, https://doc.qt.io/qt-5/qstylefactory.html#details, "keys are case insensitive")
      */
     static const QMap<QString, QString> FIXED_CASE_QSTYLE_KEY_MAP;
+
+private:
+    QString lightSign;
+    QString darkSign;
+    QString autoSign;
 };
 
 }  // namespace U2

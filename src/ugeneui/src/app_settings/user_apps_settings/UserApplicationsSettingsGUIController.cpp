@@ -31,6 +31,7 @@
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include "main_window/styles/ProxyStyle.h"
@@ -112,8 +113,9 @@ AppSettingsGUIPageWidget* UserApplicationsSettingsPageController::createWidget(A
 }
 
 const QString UserApplicationsSettingsPageController::helpPageId = QString("65929344");
+const QString UserApplicationsSettingsPageWidget::WINDOWS_VISTA_STYLE = "WindowsVista";
 const QMap<QString, QString> UserApplicationsSettingsPageWidget::FIXED_CASE_QSTYLE_KEY_MAP =
-    {{"windowsvista", "WindowsVista"}, {"macintosh", "Macintosh"}};
+    {{"windowsvista", WINDOWS_VISTA_STYLE}, {"macintosh", "Macintosh"}};
 
 UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserApplicationsSettingsPageController* ctrl) {
     setupUi(this);
@@ -127,13 +129,20 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
     for (const auto& key : qAsConst(keys)) {
         styleCombo->addItem(FIXED_CASE_QSTYLE_KEY_MAP.value(key, key));
     }
-    colorModeCombo->addItem(tr("Light"));
-    colorModeCombo->addItem(tr("Dark"));
+    lightSign = tr("Light");
+    colorModeCombo->addItem(lightSign);
+    darkSign = tr("Dark");
+    colorModeCombo->addItem(darkSign);
 #if defined(Q_OS_WIN) | defined(Q_OS_DARWIN)
     if (StyleFactory::isDarkStyleAvaliable()) {
-        colorModeCombo->addItem(tr("Auto"));
+        autoSign = tr("Auto");
+        colorModeCombo->addItem(autoSign);
     }
 #endif
+    errorLabel->setStyleSheet(QString("color: %1;").arg(Theme::errorColorLabelColor().name()));
+    connect(styleCombo, &QComboBox::currentTextChanged, this, &UserApplicationsSettingsPageWidget::sl_updateState);
+    connect(colorModeCombo, &QComboBox::currentTextChanged, this, &UserApplicationsSettingsPageWidget::sl_updateState);
+    sl_updateState();
 }
 
 void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
@@ -178,6 +187,35 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /
     state->experimentsEnabled = experimentsCheckBox->isChecked();
 
     return state;
+}
+
+void UserApplicationsSettingsPageWidget::sl_updateState() {
+    auto removeItemFromComboBox = [this](QComboBox* comboBox, const QString& name) {
+        int styleIdx = comboBox->findText(name, Qt::MatchFixedString);  // case insensitive
+        if (styleIdx != -1) {
+            comboBox->removeItem(styleIdx);
+        }
+    };
+    auto addItemToComboBox = [this](QComboBox* comboBox, const QString& name) {
+        int styleIdx = comboBox->findText(name, Qt::MatchFixedString);  // case insensitive
+        if (styleIdx == -1) {
+            comboBox->addItem(name);
+        }
+    };
+
+    if (styleCombo->currentText() == WINDOWS_VISTA_STYLE) {
+        removeItemFromComboBox(colorModeCombo, darkSign);
+        removeItemFromComboBox(colorModeCombo, autoSign);
+        errorLabel->setText(tr("Note: WindowsVista style is incompatible with Dark color mode. We suggest using Fusion"));
+    } else if (colorModeCombo->currentText() != lightSign) {
+        removeItemFromComboBox(styleCombo, WINDOWS_VISTA_STYLE);
+        errorLabel->setText("Note: Dark color mode is incompatible with WindowsVista style");
+    } else {
+        addItemToComboBox(colorModeCombo, darkSign);
+        addItemToComboBox(colorModeCombo, autoSign);
+        addItemToComboBox(styleCombo, WINDOWS_VISTA_STYLE);
+        errorLabel->setText("");
+    }
 }
 
 void UserApplicationsSettingsPageWidget::sl_transFileClicked() {

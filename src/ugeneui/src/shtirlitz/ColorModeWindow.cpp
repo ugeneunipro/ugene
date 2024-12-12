@@ -129,12 +129,12 @@ void ColorModeWindow::sl_updateState() {
     } else {
         for (auto darkRb : qAsConst(darkRbs)) {
             darkRb->setEnabled(true);
-            errorLabel->setText("");
             int styleIdx = cbStyle->findText(WINDOWS_VISTA_STYLE, Qt::MatchFixedString);
             if (styleIdx == -1) {
                 cbStyle->addItem(WINDOWS_VISTA_STYLE);
             }
         }
+        errorLabel->setText("");
     }
 }
 
