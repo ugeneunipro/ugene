@@ -69,6 +69,9 @@ public:
 
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
 
+    static QString getTextWithDialog(QWidget *parent, const QString &title, const QString &label, const QString &defaultText, bool &ok);
+
+
     static const QColor WARNING_COLOR;
     static const QColor OK_COLOR;
 

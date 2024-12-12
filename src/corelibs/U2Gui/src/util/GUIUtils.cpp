@@ -25,6 +25,7 @@
 #include <QApplication>
 #include <QDesktopServices>
 #include <QFile>
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QPainter>
 #include <QPainterPath>
@@ -245,6 +246,27 @@ void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerActio
     }
     QAction* actionBefore = actions[markerIndex + 1];
     menu->insertAction(actionBefore, actionToInsert);
+}
+
+QString GUIUtils::getTextWithDialog(QWidget* parent, const QString& title, const QString& label, const QString& defaultText, bool& ok) {
+    QInputDialog inputDialog(parent);
+    inputDialog.setWindowTitle(title);
+    inputDialog.setLabelText(label);
+    inputDialog.setTextValue(defaultText);
+    inputDialog.setInputMode(QInputDialog::TextInput);
+
+    // Inline logic to enable Enter key for OK button.
+    auto lineEdit = inputDialog.findChild<QLineEdit*>();
+    if (lineEdit) {
+        connect(lineEdit, &QLineEdit::returnPressed, &inputDialog, &QInputDialog::accept);
+    }
+
+    if (inputDialog.exec() == QDialog::Accepted) {
+        ok = true;
+        return inputDialog.textValue();
+    }
+    ok = false;
+    return "";
 }
 
 ResetSliderOnDoubleClickBehavior::ResetSliderOnDoubleClickBehavior(QAbstractSlider* slider, QLabel* relatedLabel)

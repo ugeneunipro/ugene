@@ -25,9 +25,7 @@
 #include <QDesktopServices>
 #include <QHeaderView>
 #include <QIcon>
-#include <QInputDialog>
 #include <QLabel>
-#include <QMenu>
 #include <QMessageBox>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -39,9 +37,9 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
-#include <U2Gui/U2FileDialog.h>
 
 #include "CloudStorageService.h"
 #include "WorkspaceService.h"
@@ -319,7 +317,7 @@ void CloudStorageDockWidget::createDir() {
     auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.isEmpty();
 
     bool ok;
-    QString dirName = QInputDialog::getText(nullptr, tr("Create New Folder"), tr("New Folder Name"), QLineEdit::Normal, "", &ok);
+    QString dirName = GUIUtils::getTextWithDialog(nullptr, tr("Create New Folder"), tr("New Folder Name"),  "", ok);
 
     CHECK(ok && !dirName.isEmpty(), );
     if (!CloudStorageService::checkCloudStorageEntryName(dirName)) {
@@ -364,7 +362,7 @@ void CloudStorageDockWidget::renameItem() {
     CHECK(!path.isEmpty(), );
 
     bool ok;
-    QString newName = QInputDialog::getText(nullptr, tr("Rename %1").arg(path.last()), tr("New Name"), QLineEdit::Normal, path.last(), &ok);
+    QString newName = GUIUtils::getTextWithDialog(nullptr, tr("Rename %1").arg(path.last()), tr("New Name"),  path.last(), ok);
 
     CHECK(ok && !newName.isEmpty(), );
     if (!CloudStorageService::checkCloudStorageEntryName(newName)) {
