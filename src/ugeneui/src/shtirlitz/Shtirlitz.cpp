@@ -121,7 +121,7 @@ QList<Task*> Shtirlitz::wakeup() {
         return result;
     }
 
-    if (allVersionsFirstLaunch) {
+    if (minorVersionFirstLaunch) {
         ColorModeWindow dialog;
         dialog.exec();
 

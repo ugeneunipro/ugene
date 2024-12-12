@@ -209,7 +209,7 @@ void UserApplicationsSettingsPageWidget::sl_updateState() {
         errorLabel->setText(tr("Note: WindowsVista style is incompatible with Dark color mode. We suggest using Fusion"));
     } else if (colorModeCombo->currentText() != lightSign) {
         removeItemFromComboBox(styleCombo, WINDOWS_VISTA_STYLE);
-        errorLabel->setText("Note: Dark color mode is incompatible with WindowsVista style");
+        errorLabel->setText("");
     } else {
         addItemToComboBox(colorModeCombo, darkSign);
         addItemToComboBox(colorModeCombo, autoSign);
