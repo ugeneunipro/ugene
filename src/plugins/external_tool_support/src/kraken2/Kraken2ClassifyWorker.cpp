@@ -79,6 +79,7 @@ void Kraken2ClassifyWorker::sl_taskFinished(Task *task) {
     if (!krakenTask->isFinished() || krakenTask->hasError() || krakenTask->isCanceled()) {
         return;
     }
+    monitor()->addOutputFile(krakenTask->getClassificationURL(), getActorId());
 }
 
 bool Kraken2ClassifyWorker::isReadyToRun() const {

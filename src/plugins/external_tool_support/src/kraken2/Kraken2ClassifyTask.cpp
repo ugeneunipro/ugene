@@ -52,6 +52,10 @@ void Kraken2ClassifyTask::prepare() {
     addSubTask(classifyTask);
 }
 
+QString Kraken2ClassifyTask::getClassificationURL() const {
+    return settings.classificationUrl;
+}
+
 QStringList Kraken2ClassifyTask::getArguments() {
     QStringList arguments;
     arguments << "--db" << settings.databaseUrl;
