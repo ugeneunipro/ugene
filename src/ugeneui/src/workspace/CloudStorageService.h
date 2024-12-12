@@ -33,7 +33,11 @@ class WorkspaceService;
 /** A single file/folder in the cloud storage. */
 class CloudStorageEntryData : public QSharedData {
 public:
-    CloudStorageEntryData(const QList<QString>& path, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId);
+    CloudStorageEntryData(const QList<QString>& path,
+                          qint64 size,
+                          const QDateTime& modificationTime,
+                          qint64 sessionLocalId,
+                          const QList<QString>& sharedWithEmails);
 
     const QString& getName() const;
 
@@ -47,12 +51,18 @@ public:
 
     qint64 sessionLocalId;
 
+    QList<QString> sharedWithEmails;
+
     bool isFolder = false;
 };
 
 class CloudStorageEntry {
 public:
-    CloudStorageEntry(const QList<QString>& path, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId);
+    CloudStorageEntry(const QList<QString>& path,
+                      qint64 size,
+                      const QDateTime& modificationTime,
+                      qint64 sessionLocalId,
+                      const QList<QString>& sharedWithEmails);
 
     static CloudStorageEntry fromJson(const QJsonObject& json, const QList<QString>& parentPath);
 
