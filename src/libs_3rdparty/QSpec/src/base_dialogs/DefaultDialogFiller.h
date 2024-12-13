@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@ namespace HI {
 class HI_EXPORT DefaultDialogFiller : public Filler {
 public:
     DefaultDialogFiller(const QString& name = "", QDialogButtonBox::StandardButton _b = QDialogButtonBox::Ok, CustomScenario* scenario = NULL);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QDialogButtonBox::StandardButton b;

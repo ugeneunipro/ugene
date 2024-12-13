@@ -45,7 +45,8 @@
 namespace U2 {
 
 FastaFormat::FastaFormat(QObject* p)
-    : TextDocumentFormat(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW, {"fa", "mpfa", "fna", "fsa", "fas", "fasta", "sef", "seq", "seqs"}) {
+    : TextDocumentFormat(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW | DocumentFormatFlag_HasModifiableName,
+                         {"fa", "mpfa", "fna", "fsa", "fas", "fasta", "sef", "seq", "seqs"}) {
     formatName = tr("FASTA");
     supportedObjectTypes += GObjectTypes::SEQUENCE;
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
@@ -231,7 +232,7 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
         }
 
         if (mergeIntoSingleSequence) {
-            memoryLocker.tryAcquire(header.size());
+            memoryLocker.tryAcquire(header.size() + sizeof(U2Region));
             CHECK_OP_BREAK(os);
             headers.append(header);
             mergedMapping.append(U2Region(sequenceStart, sequenceLen));
@@ -295,7 +296,11 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
 
     U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, nullptr, hints);
     objects << new U2SequenceObject(seq.visualName, U2EntityRef(dbiRef, seq.id));
-    objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, headers, mergedMapping, hints);
+    if (headers.size() > 1'000'000) {
+        os.addWarning(FastaFormat::tr("Too many sequences (%1) to add to annotation table").arg(headers.size()));
+    } else {
+        objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, headers, mergedMapping, hints);
+    }
     if (headers.size() > 1) {
         writeLockReason = QObject::tr("Document sequences were merged");
     }

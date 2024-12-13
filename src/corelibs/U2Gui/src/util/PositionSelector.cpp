@@ -134,6 +134,10 @@ void PositionSelector::updateRange(qint64 _rangeStart, qint64 _rangeEnd) {
     posEdit->insert(position);
 }
 
+qint64 PositionSelector::getPosition() const {
+    return position;
+}
+
 void PositionSelector::sl_onButtonClicked(bool checked) {
     Q_UNUSED(checked);
     exec();
@@ -155,6 +159,7 @@ void PositionSelector::exec() {
 
     if (dialog != nullptr && autoclose) {
         dialog->accept();
+        position = v;
     }
 }
 

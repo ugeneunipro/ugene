@@ -497,8 +497,8 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + "/test_ugene_5162.vcf"), "No resut file 1");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + "/test_ugene_5163.vcf"), "No resut file 2");
+    GTFile::checkFileExists(sandBoxDir + "/test_ugene_5162.vcf");
+    GTFile::checkFileExists(sandBoxDir + "/test_ugene_5163.vcf");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0062) {

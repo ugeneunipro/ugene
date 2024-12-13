@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,6 +39,7 @@ const ServiceType Service_ExternalToolSupport = 108;
 const ServiceType Service_GUITesting = 109;
 const ServiceType Service_WorkflowDesigner = 110;
 const ServiceType Service_QueryDesigner = 111;
+const ServiceType Service_Workspace = 112;
 
 const ServiceType Service_MinCoreServiceId = 500;
 const ServiceType Service_MaxCoreServiceId = 1000;

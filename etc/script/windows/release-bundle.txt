@@ -5,6 +5,7 @@ Qt5Gui.dll
 Qt5Multimedia.dll
 Qt5MultimediaWidgets.dll
 Qt5Network.dll
+Qt5NetworkAuth.dll
 Qt5Positioning.dll
 Qt5PrintSupport.dll
 Qt5Qml.dll
@@ -13,6 +14,7 @@ Qt5Script.dll
 Qt5ScriptTools.dll
 Qt5Sensors.dll
 Qt5Svg.dll
+Qt5WebSockets.dll
 Qt5Widgets.dll
 Qt5Xml.dll
 U2Algorithm.dll

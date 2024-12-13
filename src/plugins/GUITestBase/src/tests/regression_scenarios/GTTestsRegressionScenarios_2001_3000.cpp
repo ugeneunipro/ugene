@@ -1974,7 +1974,7 @@ GUI_TEST_CLASS_DEFINITION(test_2377) {
 
     GTWidget::click(GTAction::button("Run workflow"));
 
-    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(!lt.hasErrors(), "Expected no errors in the log, but errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2378) {

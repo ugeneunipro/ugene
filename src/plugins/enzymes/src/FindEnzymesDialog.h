@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ class ADVSequenceObjectContext;
 class CreateAnnotationWidgetController;
 class EnzymeGroupTreeItem;
 class EnzymeTreeItem;
-class RegionSelectorWithExcludedRegion;
+class RegionSelector;
 
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
@@ -82,7 +82,7 @@ private slots:
     void sl_loadSelectionFromFile();
     void sl_openDBPage();
     void sl_itemChanged(QTreeWidgetItem* item, int col);
-    void sl_filterTextChanged(const QString& filterText);
+    void sl_filterConditionsChanged();
     void sl_findSingleEnzymeTaskStateChanged();
     void sl_itemSelectionChanged();
     void sl_colorModeSwitched();
@@ -94,6 +94,9 @@ private:
     void saveFile(const QString& url);
     void updateStatus();
     int gatherCheckedNamesListString(QString& checkedNamesList) const;
+
+    static constexpr int FILTER_BY_NAME = 0;
+    static constexpr int FILTER_BY_SEQUENCE = 1;
 
     EnzymeGroupTreeItem* findGroupItem(const QString& s, bool create);
 
@@ -128,11 +131,14 @@ private slots:
 private:
     void initSettings();
     void saveSettings();
+    void fixPreviousLocation(U2Location& previousLocation);
 
     QPointer<ADVSequenceObjectContext> advSequenceContext;
 
     EnzymesSelectorWidget* enzSel;
-    RegionSelectorWithExcludedRegion* regionSelector;
+    RegionSelector* regionSelector;
+    RegionSelector* excludeRegionSelector;
+    QCheckBox* excludeCheckbox;
 };
 
 class EnzymeGroupTreeItem : public QTreeWidgetItem {

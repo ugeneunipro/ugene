@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -135,7 +135,7 @@ public:
     static void add(Runnable* r, const GUIDialogWaiter::WaitSettings& settings);
 
     /** Same as waitForDialog but adds waiter to the end of the current waiters list. */
-    static void add(Runnable* r, int timeout = 0);
+    static void add(Runnable* r, int timeout = UGENE_DEFAULT_DIALOG_WAIT_TIME_TIMEOUT);
 
     /** Waits up to 'timeout' millis that all dialogs (runnables) are finished: the pool of GUIDialogWaiters is empty. */
     static void checkNoActiveWaiters(int timeout = UGENE_DEFAULT_DIALOG_WAIT_TIME_TIMEOUT);\

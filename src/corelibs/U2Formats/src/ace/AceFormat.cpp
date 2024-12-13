@@ -24,6 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectTypes.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MsaImportUtils.h>
@@ -357,97 +358,50 @@ qint64 ACEFormat::getSmallestOffset(const QList<Assembly::Sequence>& reads) {
 }
 
 void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os) {
-    QByteArray readBuff(READ_BUFF_SIZE + 1, 0);
-    char* buff = readBuff.data();
-    qint64 len = 0;
-
-    QByteArray sequence;
-
-    // skip leading whites if present
-    bool lineOk = true;
-    skipBreaks(io, os, buff, &len);
+    QScopedPointer<AceReader> aceReader(new AceReader(*io, os));
     CHECK_OP(os, );
+    CHECK(aceReader->getContigsCount() > 0, );
 
-    QString headerLine = QString(QByteArray(buff, len)).trimmed();
-    CHECK_EXT(headerLine.startsWith(AS), os.setError(ACEFormat::tr("First line is not an ace header")), );
+    QScopedPointer<AceIterator> iterator;
+    iterator.reset(new AceIterator(*aceReader, os));
 
-    int contigC = contigCount(headerLine);
-    CHECK_EXT(contigC != -1, os.setError(ACEFormat::tr("No contig count tag in the header line")), );
-
-    for (int i = 0; i < contigC; i++) {
-        if (i == 0) {
-            QBitArray nonWhites = ~TextUtils::WHITES;
-            io->readUntil(buff, READ_BUFF_SIZE, nonWhites, IOAdapter::Term_Exclude, &lineOk);
-            CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
-
-            // read header
-            skipBreaks(io, os, buff, &len);
-            CHECK_OP(os, );
-
-            headerLine = QString(QByteArray(buff, len)).trimmed();
-            CHECK_EXT(headerLine.startsWith(CO), os.setError(ACEFormat::tr("Must be CO keyword")), );
-        } else {
-            do {
-                skipBreaks(io, os, buff, &len);
-                CHECK_OP(os, );
-
-                headerLine = QString(QByteArray(buff, len)).trimmed();
-            } while (!headerLine.startsWith(CO));
-        }
-        int count = readsCount(headerLine);
-        CHECK_EXT(count != -1, os.setError(ACEFormat::tr("There is no note about reads count")), );
-
-        // consensus
-        QByteArray consensus;
-        QString consName;
-
-        parseConsensus(io, os, buff, consName, headerLine, consensus);
+    int contigsImportedNum = 0;
+    QSet<QString> consensusNames;
+    while (iterator->hasNext()) {
+        CHECK_OP(os, );
+        Assembly aceAssembly = iterator->next();
         CHECK_OP(os, );
 
-        Msa al(consName);
-        al->addRow(consName, consensus);
+        const auto& consensus = aceAssembly.getReference();
+        QString consensusName = consensus.name;
+        consensusName = GUrlUtils::rollFileName(consensusName, " ", consensusNames);
+        consensusNames.insert(consensusName);
+        Msa al(consensusName);
+        QByteArray consensusData = consensus.data;
+        consensusData.replace('*', U2Msa::GAP_CHAR);
+        al->addRow(consensus.name, consensusData);
 
-        // AF
-        QList<Assembly::Sequence> reads;
-        parseAFTag(io, os, buff, count, reads);
-        CHECK_OP(os, );
+        const auto& sequences = aceAssembly.getOriginalReads();
+        qint64 smallestOffset = getSmallestOffset(sequences);
+        for (const auto& sequence : qAsConst(sequences)) {
+            QString rowName = sequence.name;
+            if (sequence.isComplemented) {
+                rowName.append("(rev-compl)");
+            }
+            QByteArray sequencesData = sequence.data;
+            sequencesData.replace('N', U2Msa::GAP_CHAR);
 
-        qint64 smallestOffset = getSmallestOffset(reads);
-        if (smallestOffset < 0) {
-            al->insertGaps(0, 0, qAbs(smallestOffset), os);
-            CHECK_OP(os, );
-        }
-
-        // RD and QA
-        while (!os.isCoR() && count > 0) {
-            QString name;
-            parseRDandQATag(io, os, buff, name, sequence);
-            CHECK_OP(os, );
-
-            auto resIt = std::find_if(reads.begin(), reads.end(), [&name](const Assembly::Sequence& pair) {
-                return pair.name == name.toLocal8Bit();
-            });
-            CHECK_EXT(resIt != reads.end(), ACEFormat::tr("RD line has read \"%1\", but it wasn't presented in AF"), );
-
-            auto res = *resIt;
-            reads.removeOne(res);
-            qint64 pos = res.offset - 1;
+            qint64 pos = sequence.offset - 1;
             if (smallestOffset < 0) {
                 pos += qAbs(smallestOffset);
             }
-            QString rowName(name);
-            if (res.isComplemented) {
-                rowName.append("(rev-compl)");
-            }
-
             QByteArray offsetGaps;
             offsetGaps.fill(U2Msa::GAP_CHAR, pos);
-            sequence.prepend(offsetGaps);
-            al->addRow(rowName, sequence);
+            sequencesData.prepend(offsetGaps);
 
-            count--;
-            os.setProgress(io->getProgress());
+            al->addRow(rowName, sequencesData);
         }
+
         U2AlphabetUtils::assignAlphabet(al);
         CHECK_EXT(al->getAlphabet() != nullptr, ACEFormat::tr("Alphabet unknown"), );
 
@@ -456,7 +410,12 @@ void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         MsaObject* obj = MsaImportUtils::createMsaObject(dbiRef, al, os, folder);
         CHECK_OP(os, );
         objects.append(obj);
+        os.setProgress(io->getProgress());
+        contigsImportedNum++;
     }
+    CHECK_EXT(aceReader->getContigsCount() == contigsImportedNum, os.setError(tr("Invalid source file")), );
+
+    return;
 }
 
 FormatCheckResult ACEFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {

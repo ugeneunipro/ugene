@@ -1,5 +1,4 @@
-#ifndef _U2_SITECON_MATH_H_
-#define _U2_SITECON_MATH_H_
+#pragma once
 
 #include <math.h>
 
@@ -21,4 +20,3 @@ double poz(double z);
 
 }  // namespace U2
 
-#endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <U2Core/Counter.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ObjectViewModel.h>
@@ -30,8 +31,9 @@ namespace U2 {
 #define MSAE_SETTINGS_ROOT QString("msaeditor/")
 #define MCAE_SETTINGS_ROOT QString("mcaeditor/")
 
+#define MAE_MENU_NAVIGATION "MAE_MENU_NAVIGATION"
+
 #define MSAE_MENU_APPEARANCE "MSAE_MENU_APPEARANCE"
-#define MSAE_MENU_NAVIGATION "MSAE_MENU_NAVIGATION"
 #define MSAE_MENU_COPY "MSAE_MENU_COPY"
 #define MSAE_MENU_EDIT "MSAE_MENU_EDIT"
 #define MSAE_MENU_EXPORT "MSAE_MENU_EXPORT"
@@ -257,7 +259,9 @@ protected slots:
     virtual void sl_selectionChanged(const MaEditorSelection& ma, const MaEditorSelection& modInfo);
 
     /** Callback for the 'gotoSelectedReadAction' action. See docs for 'gotoSelectedReadAction'. */
-    void sl_gotoSelectedRead();
+    virtual void sl_gotoSelectedRead() {
+        GCOUNTER(cvar, "MAEditor:gotoSelectedRead");
+    };
 
     virtual void sl_multilineViewAction() {
         SAFE_POINT(false, "The function sl_multilineViewAction() must be overridden", );
@@ -278,6 +282,7 @@ protected:
     virtual void addEditMenu(QMenu* m) = 0;
     virtual void addExportMenu(QMenu* m);
     void addLoadMenu(QMenu* m);
+    void addNavigationMenu(QMenu* m) const;
 
     void setFont(const QFont& f);
 
@@ -333,6 +338,7 @@ public:
     QAction* resetZoomAction = nullptr;
     QAction* exportHighlightedAction = nullptr;
     QAction* multilineViewAction = nullptr;
+    QAction* gotoAction = nullptr;
 
     /** Clears selection in normal mode or exits from editing mode in the edit mode. */
     QAction* clearSelectionAction = nullptr;

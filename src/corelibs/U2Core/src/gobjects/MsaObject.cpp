@@ -166,6 +166,14 @@ void MsaObject::setGObjectName(const QString& newName) {
         CHECK_OP(os, );
 
         updateCachedMultipleAlignment();
+
+        // TODO: make this fuction call GObject::setGObjectName()
+        // in any case
+        // See UGENE-8099
+        if (type == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
+            setModified(false);
+            emit si_failedModifyObjectName();
+        }
     } else {
         GObject::setGObjectName(newName);
         cachedMa->setName(newName);

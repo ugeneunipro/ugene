@@ -27,6 +27,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/Counter.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
@@ -56,6 +57,9 @@ MakeBlastDbTask::MakeBlastDbTask(const MakeBlastDbSettings& _settings)
 }
 
 void MakeBlastDbTask::prepare() {
+    QDir().mkdir(settings.outputPath);
+    CHECK_EXT(FileAndDirectoryUtils::isDirectoryWritable(settings.outputPath), setError(tr("Output database path is read only.")), );
+
     QString tempDir = prepareTempDir();
     CHECK_OP(stateInfo, );
 

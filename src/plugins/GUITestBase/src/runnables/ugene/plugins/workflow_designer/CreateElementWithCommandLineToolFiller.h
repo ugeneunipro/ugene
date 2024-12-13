@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -129,7 +129,7 @@ public:
     CreateElementWithCommandLineToolFiller(
         const ElementWithCommandLineSettings& settings);
     CreateElementWithCommandLineToolFiller(CustomScenario* scenario);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString dataTypeToString(const InOutType& type) const;

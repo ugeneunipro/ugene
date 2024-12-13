@@ -227,7 +227,7 @@ void MsaEditorSequenceArea::copySelection(U2OpStatus& os) {
     // Estimate approximate result length
     qint64 estimatedResultLength = 0;
     for (const QRect& selectionRect : qAsConst(selectionRects)) {
-        estimatedResultLength += selectionRect.width() * selectionRect.height();
+        estimatedResultLength += qint64(selectionRect.width()) * selectionRect.height();
     }
     U2Clipboard::checkCopyToClipboardSize(estimatedResultLength, os);
     CHECK_OP(os, );

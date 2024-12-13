@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,10 +69,10 @@ class DigestSequenceTask : public Task {
     Q_OBJECT
 public:
     DigestSequenceTask(U2SequenceObject* dnaObj, AnnotationTableObject* destTable, AnnotationTableObject* sourceTable, const DigestSequenceTaskConfig& cfg);
-    virtual void prepare();
-    virtual void run();
-    virtual QString generateReport() const;
-    virtual ReportResult report();
+    void prepare() override;
+    void run() override;
+    QString generateReport() const override;
+    ReportResult report() override;
 
 private:
     void findCutSites();
@@ -114,7 +114,7 @@ public:
     Document* getResultDocument() {
         return resultDoc;
     }
-    void prepare();
+    void prepare() override;
 
 private:
     static QList<SharedAnnotationData> cloneAnnotationsInRegion(const U2Region& region, AnnotationTableObject* source, int globalOffset);

@@ -77,7 +77,7 @@ void createPhyTreeFromPhylipTree(const Msa& ma, node* p, double m, boolean njoin
             counter = 0;
         } else {
             if (bootstrap_repl != 0) {
-                PhyTreeUtils::addBranch(root, current, p->deltav == 0 ? bootstrap_repl : p->deltav == 0);
+                PhyTreeUtils::addBranch(root, current, p->deltav == 0 ? bootstrap_repl : p->deltav);
             } else {
                 PhyTreeUtils::addBranch(root, current, p->v);
             }

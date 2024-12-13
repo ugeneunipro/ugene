@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,6 +40,7 @@ public:
 
     static QString getWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir);
     static QString createWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir);
+    static bool createWritableDirIfNotExists(const QString& dirPath);
     static QString detectFormat(const QString& url);
     static bool isFileEmpty(const QString& url);
 
@@ -54,6 +55,8 @@ public:
 
     static QString getAbsolutePath(const QString& filePath);
     static bool isDirectoryWritable(const QString& path);
+    //returns true if directory exists and readable, otherwise false
+    static bool isDirectoryExistsAndReadable(const QString& path);
 
     /**
      * Returns "true" if it is possible to create a file (or a sub-path) in absoluteDirPath.
@@ -69,9 +72,6 @@ public:
      * If any error happens the method returns nullptr.
      */
     static NP<FILE> openFile(const QString& path, const QString& mode);
-
-    /** Closes file descriptor if the file descriptor is defined and is open. */
-    static void closeFileIfOpen(FILE* file);
 
 private:
     static QString getFormatId(const FormatDetectionResult& r);

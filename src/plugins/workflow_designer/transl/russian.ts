@@ -17,12 +17,12 @@
 <context>
     <name>CmdlineBasedWorkerValidator</name>
     <message>
-        <location filename="../src/library/CmdlineBasedWorkerValidator.cpp" line="40"/>
+        <location filename="../src/library/CmdlineBasedWorkerValidator.cpp" line="42"/>
         <source>The element specifies a nonexistent path to an external tool executable.</source>
         <translation>Этот элемент задаёт несуществующий путь до внешнего инструмента.</translation>
     </message>
     <message>
-        <location filename="../src/library/CmdlineBasedWorkerValidator.cpp" line="43"/>
+        <location filename="../src/library/CmdlineBasedWorkerValidator.cpp" line="45"/>
         <source>The element should specify an executable file.</source>
         <translation>Этот элемент должен задавать запускаемый файл.</translation>
     </message>
@@ -466,17 +466,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/DashboardsManagerDialog.cpp" line="166"/>
+        <location filename="../src/DashboardsManagerDialog.cpp" line="167"/>
         <source>Removing Dashboards</source>
         <translation>Удаление панелей</translation>
     </message>
     <message>
-        <location filename="../src/DashboardsManagerDialog.cpp" line="33"/>
+        <location filename="../src/DashboardsManagerDialog.cpp" line="34"/>
         <source>The following dashboards are about to be deleted:</source>
         <translation>Следующие панели будут удалены:</translation>
     </message>
     <message>
-        <location filename="../src/DashboardsManagerDialog.cpp" line="34"/>
+        <location filename="../src/DashboardsManagerDialog.cpp" line="35"/>
         <source>The following dashboard is about to be deleted:</source>
         <translation>Следующие панели будут удалены:</translation>
     </message>
@@ -553,8 +553,8 @@ p, li { white-space: pre-wrap; }
         <translation>Формат %1 не поддерживает аннотации</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="507"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1567"/>
+        <location filename="../src/WorkflowViewController.cpp" line="598"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1672"/>
         <source>Breakpoints</source>
         <translation>Точки остановки</translation>
     </message>
@@ -562,21 +562,21 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/WorkflowViewController.cpp" line="118"/>
         <location filename="../src/WorkflowViewController.cpp" line="121"/>
         <location filename="../src/WorkflowViewController.cpp" line="122"/>
-        <location filename="../src/WorkflowViewController.cpp" line="517"/>
-        <location filename="../src/WorkflowViewController.cpp" line="523"/>
-        <location filename="../src/WorkflowViewController.cpp" line="530"/>
+        <location filename="../src/WorkflowViewController.cpp" line="608"/>
+        <location filename="../src/WorkflowViewController.cpp" line="614"/>
+        <location filename="../src/WorkflowViewController.cpp" line="621"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="399"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2136"/>
+        <location filename="../src/WorkflowViewController.cpp" line="490"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2301"/>
         <source>You opened obsolete workflow in XML format. It is strongly recommended to clear working space and create workflow from scratch.</source>
         <translation>Вы открыли устаревшую схему в XML формате. Рекомендуется очистить рабочее пространство и создайть новую схему.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="402"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2139"/>
+        <location filename="../src/WorkflowViewController.cpp" line="493"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2304"/>
         <source>Sorry! This workflow is obsolete and cannot be opened.</source>
         <translation>Эта схема устарела и не может быть открыта.</translation>
     </message>
@@ -586,52 +586,52 @@ p, li { white-space: pre-wrap; }
         <translation>Скриптинг</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="835"/>
+        <location filename="../src/WorkflowViewController.cpp" line="928"/>
         <source>Can not create the folder: </source>
         <translation>Невозможно создать папку: </translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="841"/>
+        <location filename="../src/WorkflowViewController.cpp" line="934"/>
         <source>The file &apos;%1&apos; already exists</source>
         <translation>Файл &apos;%1&apos; уже существует</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="846"/>
+        <location filename="../src/WorkflowViewController.cpp" line="939"/>
         <source>Can not copy the file here: </source>
         <translation>Невозможно скопировать файл: </translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1373"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1477"/>
         <source>Run workflow</source>
         <translation>Запустить схему</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractConsensusWorker.cpp" line="222"/>
+        <location filename="../src/library/ExtractConsensusWorker.cpp" line="224"/>
         <source>Extract Consensus from Assembly</source>
         <translation>Извлечение консенсуса из сборки</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractConsensusWorker.cpp" line="223"/>
+        <location filename="../src/library/ExtractConsensusWorker.cpp" line="225"/>
         <source>Extract the consensus sequence from the incoming assembly.</source>
         <translation>Извлечь консенсусную последовательность из входной сборки.</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractConsensusWorker.cpp" line="241"/>
+        <location filename="../src/library/ExtractConsensusWorker.cpp" line="243"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractConsensusWorker.cpp" line="242"/>
+        <location filename="../src/library/ExtractConsensusWorker.cpp" line="244"/>
         <source>The algorithm of consensus extracting.</source>
         <translation>Алгоритм извлечения консенсусной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractConsensusWorker.cpp" line="244"/>
+        <location filename="../src/library/ExtractConsensusWorker.cpp" line="246"/>
         <source>Keep gaps</source>
         <translation>Оставить пробелы</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractConsensusWorker.cpp" line="245"/>
+        <location filename="../src/library/ExtractConsensusWorker.cpp" line="247"/>
         <source>Set this parameter if the result consensus must keep the gaps.</source>
         <translation>Установить этот параметр если консенсус должен содержать пробелы.</translation>
     </message>
@@ -651,12 +651,12 @@ p, li { white-space: pre-wrap; }
         <translation>число оснований</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="272"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="271"/>
         <source>Save annotations</source>
         <translation>Сохранить аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/WriteAnnotationsValidator.cpp" line="54"/>
+        <location filename="../src/util/WriteAnnotationsValidator.cpp" line="56"/>
         <source>Sequence names were not saved, the input slot &apos;Sequence&apos; is empty.</source>
         <translation>Имена последовательности не были сохранены, слот &apos;Последовательность&apos; пустой.</translation>
     </message>
@@ -733,47 +733,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BreakpointManagerView</name>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="133"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="134"/>
         <source>&amp;Break at element...</source>
         <translation>&amp;Точка остановки на элементе...</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="140"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="141"/>
         <source>Delete &amp;all breakpoints</source>
         <translation>Удалить &amp;все точки остановки</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="147"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="148"/>
         <source>&amp;Delete</source>
         <translation>&amp;Удалить</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="154"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="155"/>
         <source>Delete the selected breakpoints</source>
         <translation>Удалить выделенные точки остановки</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="156"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="157"/>
         <source>&amp;Enable or disable all breakpoints</source>
         <translation>&amp;Включить или выключить все точки останвоки</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="162"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="163"/>
         <source>H&amp;ighlight selected item</source>
         <translation>&amp;Подсветить выделенный элемент</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="168"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="169"/>
         <source>&amp;Hit Count...</source>
         <translation>&amp;Число попаданий...</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="171"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="172"/>
         <source>Edit &amp;labels...</source>
         <translation>Редактировать &amp;название...</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="174"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="175"/>
         <source>&amp;Condition...</source>
         <translation>&amp;Условие...</translation>
     </message>
@@ -781,58 +781,58 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CfgExternalToolModel</name>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="272"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="273"/>
         <source>Display name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="274"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="275"/>
         <source>Argument name</source>
         <translation>Имя агумента</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="276"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="277"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="279"/>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="281"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="280"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="282"/>
         <source>Argument value</source>
         <translation>Значение аргумента</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="358"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="359"/>
         <source>URL to %1 file with data</source>
         <translation>URL до файла с данными %1</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="399"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="400"/>
         <source>String data value</source>
         <translation>Значение строки</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="401"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="402"/>
         <source>Output URL</source>
         <translation>Выходной URL</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="411"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="412"/>
         <source>Annotations</source>
         <translation>Аннотации</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="414"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="415"/>
         <source>Alignment</source>
         <translation>Выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="419"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="420"/>
         <source>Annotated sequence</source>
         <translation>Аннотированная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="284"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="285"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
@@ -840,67 +840,67 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CfgExternalToolModelAttributes</name>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="485"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="486"/>
         <source>Boolean</source>
         <translation>Логический</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="486"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="487"/>
         <source>Integer</source>
         <translation>Целочисленный</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="487"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="488"/>
         <source>Double</source>
         <translation>С плавающей точкой</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="488"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="489"/>
         <source>String</source>
         <translation>Строка</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="489"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="490"/>
         <source>Input file URL</source>
         <translation>URL входного файла</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="490"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="491"/>
         <source>Input folder URL</source>
         <translation>URL входной папки</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="491"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="492"/>
         <source>Output file URL</source>
         <translation>URL выходного файла</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="492"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="493"/>
         <source>Output folder URL</source>
         <translation>URL выходной папки</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="680"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="681"/>
         <source>Display name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="682"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="683"/>
         <source>Argument name</source>
         <translation>Имя аргумента</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="684"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="685"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="686"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="687"/>
         <source>Default value</source>
         <translation>Значение по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/library/CfgExternalToolModel.cpp" line="688"/>
+        <location filename="../src/library/CfgExternalToolModel.cpp" line="689"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
@@ -1072,12 +1072,12 @@ Would you like to apply the changes ? </source>
 <context>
     <name>U2::DashboardManagerHelper</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="216"/>
+        <location filename="../src/WorkflowViewController.cpp" line="223"/>
         <source>No Dashboards Found</source>
         <translation>Не найдено панелей</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="216"/>
+        <location filename="../src/WorkflowViewController.cpp" line="223"/>
         <source>You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager.</source>
         <translation>У вас еще нет ни одной панели. Вам необходимо запустить какую-нибудь схему, чтобы использовать менеджер панелей.</translation>
     </message>
@@ -1085,28 +1085,28 @@ Would you like to apply the changes ? </source>
 <context>
     <name>U2::DashboardsManagerDialog</name>
     <message>
-        <location filename="../src/DashboardsManagerDialog.cpp" line="49"/>
+        <location filename="../src/DashboardsManagerDialog.cpp" line="50"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DashboardsManagerDialog.cpp" line="61"/>
+        <location filename="../src/DashboardsManagerDialog.cpp" line="62"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/DashboardsManagerDialog.cpp" line="61"/>
+        <location filename="../src/DashboardsManagerDialog.cpp" line="62"/>
         <source>Folder</source>
         <translation>Папка</translation>
     </message>
     <message>
-        <location filename="../src/DashboardsManagerDialog.cpp" line="171"/>
+        <location filename="../src/DashboardsManagerDialog.cpp" line="172"/>
         <source>Confirm</source>
         <translation>Подтвердить</translation>
     </message>
     <message>
-        <location filename="../src/DashboardsManagerDialog.cpp" line="48"/>
-        <location filename="../src/DashboardsManagerDialog.cpp" line="172"/>
+        <location filename="../src/DashboardsManagerDialog.cpp" line="49"/>
+        <location filename="../src/DashboardsManagerDialog.cpp" line="173"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1953,7 +1953,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>%1 файл не был создан</translation>
     </message>
     <message>
-        <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="141"/>
+        <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="142"/>
         <source>Output data</source>
         <translation>Выходные данные</translation>
     </message>
@@ -2049,12 +2049,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ExtractConsensusTaskHelper</name>
     <message>
-        <location filename="../src/library/ExtractConsensusWorker.cpp" line="142"/>
+        <location filename="../src/library/ExtractConsensusWorker.cpp" line="144"/>
         <source>Extract consensus</source>
         <translation>Извлечь консенсус</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractConsensusWorker.cpp" line="183"/>
+        <location filename="../src/library/ExtractConsensusWorker.cpp" line="185"/>
         <source>Unknown consensus algorithm: </source>
         <translation>Неизвестный консенсусный алгоритм: </translation>
     </message>
@@ -2062,12 +2062,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ExtractConsensusWorker</name>
     <message>
-        <location filename="../src/library/ExtractConsensusWorker.cpp" line="98"/>
+        <location filename="../src/library/ExtractConsensusWorker.cpp" line="100"/>
         <source>Empty assembly slot</source>
         <translation>Слот сборки пуст</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractConsensusWorker.cpp" line="104"/>
+        <location filename="../src/library/ExtractConsensusWorker.cpp" line="106"/>
         <source>Error with assembly object</source>
         <translation>Ошибка со сборкой</translation>
     </message>
@@ -2075,7 +2075,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ExtractConsensusWorkerPrompter</name>
     <message>
-        <location filename="../src/library/ExtractConsensusWorker.cpp" line="279"/>
+        <location filename="../src/library/ExtractConsensusWorker.cpp" line="281"/>
         <source>Extracts the consensus sequence from the incoming assembly using the %1 algorithm.</source>
         <translation>Извлекает консенсусную последовательность из входной сборки используя %1 алгоритм.</translation>
     </message>
@@ -2083,71 +2083,71 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ExtractMSAConsensusSequenceWorker</name>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="261"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="259"/>
         <source>Extract Consensus from Alignment as Sequence</source>
         <translation>Извлечение консенсуса выравнивания как последовательности</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="262"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="260"/>
         <source>Extract the consensus sequence from the incoming multiple sequence alignment.</source>
         <translation>Извлекает консенсусную последовательность из входного множественного выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="274"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="272"/>
         <source>Consensus sequence</source>
         <translation>Консенсусная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="275"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="273"/>
         <source>Provides resulting consensus as a sequence</source>
         <translation>Выводит консенсус как последовательность</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="286"/>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="370"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="284"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="368"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="287"/>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="371"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="285"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="369"/>
         <source>The algorithm of consensus extracting.</source>
         <translation>Алгоритм извлечения консенсусной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="289"/>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="373"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="287"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="371"/>
         <source>Threshold</source>
         <translation>Порог</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="290"/>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="374"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="288"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="372"/>
         <source>The threshold of the algorithm.</source>
         <translation>Порог для алгоритма.</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="292"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="290"/>
         <source>Keep gaps</source>
         <translation>Оставить пробелы</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="293"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="291"/>
         <source>Set this parameter if the result consensus must keep the gaps.</source>
         <translation>Установить этот параметр если консенсус должен содержать пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="344"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="342"/>
         <source>Extract Consensus from Alignment as Text</source>
         <translation>Извлечение консенсуса выравнивания как текста</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="345"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="343"/>
         <source>Extract the consensus string from the incoming multiple sequence alignment.</source>
         <translation>Извлекает консенсус как строку из входного множественного выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="418"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="416"/>
         <source>Extracts the consensus sequence from the incoming alignment(s) using the %1 algorithm.</source>
         <translation>Извлекает консенсусную последовательность из входного выравниваня при помощи %1 алгоритма.</translation>
     </message>
@@ -2155,24 +2155,24 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ExtractMSAConsensusStringWorker</name>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="267"/>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="350"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="265"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="348"/>
         <source>Input alignment</source>
         <translation>Входное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="268"/>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="351"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="266"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="349"/>
         <source>A alignment which consensus should be extracted</source>
         <translation>Выравнивание, соответствующее консенсусу должно быть извлечено</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="358"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="356"/>
         <source>Consensus</source>
         <translation>Консенсус</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="359"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="357"/>
         <source>Provides resulting consensus as a text</source>
         <translation>Выводит консенсус как текст</translation>
     </message>
@@ -2180,12 +2180,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ExtractMSAConsensusTaskHelper</name>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="187"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="185"/>
         <source>Extract consensus</source>
         <translation>Извлечь консенсус</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="232"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="230"/>
         <source>Unknown consensus algorithm: </source>
         <translation>Неизвестный консенсусный алгоритм: </translation>
     </message>
@@ -2193,12 +2193,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ExtractMSAConsensusWorker</name>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="102"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="100"/>
         <source>Empty msa slot</source>
         <translation>Empty msa slot</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="108"/>
+        <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="106"/>
         <source>Error with msa object</source>
         <translation>Error with msa object</translation>
     </message>
@@ -3225,22 +3225,22 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::LoadMSATask</name>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="221"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="220"/>
         <source>File &apos;%1&apos; not exists</source>
         <translation>Файл &apos;%1&apos;  не существует</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="241"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="240"/>
         <source>Unsupported document format: %1</source>
         <translation>Неподдерживаемый формат документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="244"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="243"/>
         <source>Reading MSA from %1 [%2]</source>
         <translation>Читается множественное выравнивание из %1 [формат %2]</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="198"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="197"/>
         <source>Read MSA from %1</source>
         <translation>Чтение выравнивания из %1</translation>
     </message>
@@ -3248,17 +3248,17 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::LoadSeqTask</name>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="326"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="325"/>
         <source>File &apos;%1&apos; not exists</source>
         <translation>Файл &apos;%1&apos; не существует</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="339"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="338"/>
         <source>Unsupported document format: %1</source>
         <translation>Неподдерживаемый формат документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="346"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="345"/>
         <source>Reading sequences from %1 [%2]</source>
         <translation>Читается последовательность из %1 [формат %2]</translation>
     </message>
@@ -4352,28 +4352,28 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ScriptWorker</name>
     <message>
-        <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="58"/>
+        <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="59"/>
         <source>For input port was set empty data type</source>
         <translation>Для входного порта указан пустой тип данных</translation>
     </message>
     <message>
-        <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="72"/>
+        <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="73"/>
         <source>For output port was set empty data type</source>
         <translation>Для выходного порта указан пустой тип данных</translation>
     </message>
     <message>
-        <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="81"/>
+        <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="82"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="82"/>
+        <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="83"/>
         <source>Output data</source>
         <translation>Выходные данные</translation>
     </message>
     <message>
-        <location filename="../src/library/ScriptWorker.cpp" line="211"/>
-        <location filename="../src/library/ScriptWorker.cpp" line="212"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="213"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="214"/>
         <source>no script text</source>
         <translation>нет текста скрипта</translation>
     </message>
@@ -4381,12 +4381,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ScriptWorkerTask</name>
     <message>
-        <location filename="../src/library/ScriptWorker.cpp" line="77"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="79"/>
         <source>Error in line </source>
         <translation>Ошибка в строке </translation>
     </message>
     <message>
-        <location filename="../src/library/ScriptWorker.cpp" line="59"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="60"/>
         <source>Script worker task</source>
         <translation>Задача скриптового элемента</translation>
     </message>
@@ -4394,17 +4394,17 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::SequenceQualityTrimPrompter</name>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="51"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="53"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="52"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="54"/>
         <source>from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="54"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="56"/>
         <source>Trim input sequence %1 from %2, using the quality threshold.</source>
         <translation>Обрезает входные последовательности %1 из %2, используя порог качества.</translation>
     </message>
@@ -4412,72 +4412,72 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::SequenceQualityTrimWorker</name>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="70"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="72"/>
         <source>There is no sequence object in the message</source>
         <translation>There is no sequence object in the message</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="83"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="85"/>
         <source>Sequence was filtered out by quality</source>
         <translation>Sequence was filtered out by quality</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="102"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="104"/>
         <source>Sequence Quality Trimmer</source>
         <translation>Обрезание последовательностей с учетом качества прочтения</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="102"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="104"/>
         <source>The workflow scans each input sequence from the end to find the first position where the quality is greater or equal to the minimum quality threshold. Then it trims the sequence to that position. If a the whole sequence has quality less than the threshold or the length of the output sequence less than the minimum length threshold then the sequence is skipped.</source>
         <translation>Схема сканирует каждую входную последовательность начиная с конца для поиска первой позиции где качество больше или равно минимальному порогу качества. После этого происходит подрезание до этой позиции.</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="108"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="110"/>
         <source>Input Sequence</source>
         <translation>Входная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="108"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="110"/>
         <source>Set of sequences to trim by quality</source>
         <translation>Набор последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="109"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="111"/>
         <source>Output Sequence</source>
         <translation>Выходная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="109"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="111"/>
         <source>Trimmed sequences</source>
         <translation>Обрезанные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="124"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="126"/>
         <source>Trimming quality threshold</source>
         <translation>Порог качества для обрезания</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="124"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="126"/>
         <source>Quality threshold for trimming.</source>
         <translation>порог качества для подрезания.</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="126"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="128"/>
         <source>Min length</source>
         <translation>Минимальная длина</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="126"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="128"/>
         <source>Too short reads are discarded by the filter.</source>
         <translation>слишком короткие риды будут удалены.</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="128"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="130"/>
         <source>Trim both ends</source>
         <translation>Обрезка обоих концов</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="128"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="130"/>
         <source>Trim the both ends of a read or not. Usually, you need to set &lt;b&gt;True&lt;/b&gt; for &lt;b&gt;Sanger&lt;/b&gt; sequencing and &lt;b&gt;False&lt;/b&gt; for &lt;b&gt;NGS&lt;/b&gt;</source>
         <translation>обрезать оба конца рида или нет. Для ридов, полученных методом Сенгера, обычно необходимо установить значение &lt;b&gt;Истина&lt;/b&gt;, а для ридов NGS — &lt;b&gt;Ложь&lt;/b&gt;</translation>
     </message>
@@ -4942,32 +4942,32 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::WriteAnnotationsPrompter</name>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="517"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="516"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="530"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="529"/>
         <source>default file</source>
         <translation>файл по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="551"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="550"/>
         <source>Save all annotations from &lt;u&gt;%1&lt;/u&gt; to %2</source>
         <translation>Сохранить все аннотации из &lt;u&gt;%1&lt;/u&gt; в %2</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="554"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="553"/>
         <source> in %1 format.</source>
         <translation> в формат %1.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="554"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="553"/>
         <source> in the </source>
         <translation> в </translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="554"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="553"/>
         <source> database.</source>
         <translation> базе данных.</translation>
     </message>
@@ -5010,83 +5010,83 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Annotations name not specified. Default value used: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="267"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="266"/>
         <source>Nothing to write</source>
         <translation>Нет данных для записи</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="382"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="381"/>
         <source>Input annotations</source>
         <translation>Входные аннотации</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="382"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="381"/>
         <source>Input annotations which will be written to output file</source>
         <translation>Входные аннотации, которые будут записаны в выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="421"/>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="446"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="420"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="445"/>
         <source>Merge annotation tables</source>
         <translation>Соединить таблицы аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="421"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="420"/>
         <source>If &lt;i&gt;true&lt;/i&gt; all annotation tables from dataset will be merged into one. The value of &lt;i&gt;Annotation table name&lt;/i&gt; parameter will be used as the name of result annotation table.</source>
         <translation>Если &lt;i&gt;true&lt;/i&gt; все таблицы аннотаций из набора данных будут соединены в один. Значение &lt;i&gt;Имя таблиицы аннотаций&lt;/i&gt; параметра будет использовано как имя результирующей таблицы аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="433"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="432"/>
         <source>Annotation table name</source>
         <translation>Имя таблицы аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="433"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="432"/>
         <source>The name for the result annotation table that contains merged annotation data from file or dataset.</source>
         <translation>Имя таблицы аннотаций, которая содержит соединённые аннотации из файла или набора данных.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="446"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="445"/>
         <source>If &lt;i&gt;true&lt;/i&gt; all annotation tables from dataset will be merged into one annotation object. The value of &lt;i&gt;Annotation object name&lt;/i&gt; parameter will be used as the name of result annotation object.</source>
         <translation>Если &lt;i&gt;true&lt;/i&gt; все таблицы из набора данных будут соединены в одну аннотацию. The value of &lt;i&gt;Annotation object name&lt;/i&gt; parameter will be used as the name of result annotation object.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="477"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="476"/>
         <source>The element gets message(s) with annotations data and saves the data to the specified file(s) in one of the appropriate formats (GenBank, GTF, etc.).</source>
         <translation>Этот элемент сохраняет сообщения с данными аннотаций в файл в указанном формате (GenBank, GTF, и т. д.).</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="452"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="451"/>
         <source>Annotation object name</source>
         <translation>Имя объекта аннотации</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="452"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="451"/>
         <source>Name of the saved annotation object.</source>
         <translation>Имя аннотаций: имя для сохранения объекта аннотации.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="459"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="458"/>
         <source>CSV separator</source>
         <translation>Разделитель CSV</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="459"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="458"/>
         <source>String which separates values in CSV files.</source>
         <translation>символ, который разделяет значения в файлах CSV.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="465"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="464"/>
         <source>Write sequence names</source>
         <translation>Записать имена последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="465"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="464"/>
         <source>Add names of sequences into CSV file.</source>
         <translation>добавить имена последовательностей в CSV-файл.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="476"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="475"/>
         <source>Write Annotations</source>
         <translation>Запись аннотаций</translation>
     </message>
@@ -5753,19 +5753,19 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowDocFormat</name>
     <message>
-        <location filename="../src/WorkflowDocument.cpp" line="83"/>
-        <location filename="../src/WorkflowDocument.cpp" line="91"/>
-        <location filename="../src/WorkflowDocument.cpp" line="117"/>
+        <location filename="../src/WorkflowDocument.cpp" line="84"/>
+        <location filename="../src/WorkflowDocument.cpp" line="92"/>
+        <location filename="../src/WorkflowDocument.cpp" line="118"/>
         <source>Workflow</source>
         <translation>Схема</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDocument.cpp" line="85"/>
+        <location filename="../src/WorkflowDocument.cpp" line="86"/>
         <source>WorkflowDoc is a format used for creating/editing/storing/retrievingworkflow with the text file</source>
         <translation>Формат схем это формат используемый для создания/редактирования/восстановления схемы с текстовым файлом</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDocument.cpp" line="109"/>
+        <location filename="../src/WorkflowDocument.cpp" line="110"/>
         <source>Invalid header. %1 expected</source>
         <translation>Неверный заголовок. Ожидается %1</translation>
     </message>
@@ -5773,54 +5773,54 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowEditor</name>
     <message>
-        <location filename="../src/WorkflowEditor.cpp" line="381"/>
+        <location filename="../src/WorkflowEditor.cpp" line="387"/>
         <source>Element name:</source>
         <translation>Имя элемента:</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditor.cpp" line="470"/>
+        <location filename="../src/WorkflowEditor.cpp" line="476"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditor.cpp" line="472"/>
+        <location filename="../src/WorkflowEditor.cpp" line="478"/>
         <source>Output data</source>
         <translation>Выходные данные</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditor.cpp" line="480"/>
+        <location filename="../src/WorkflowEditor.cpp" line="486"/>
         <source>Select an element to inspect.</source>
         <translation>Выберите элемент для просмотра или редактирования.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditor.cpp" line="384"/>
+        <location filename="../src/WorkflowEditor.cpp" line="390"/>
         <source>To configure the parameters of the element go to &quot;Parameters&quot; area below.</source>
         <translation>Параметры элемента можно отредактировать в таблице, расположенной ниже.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditor.cpp" line="446"/>
+        <location filename="../src/WorkflowEditor.cpp" line="452"/>
         <source>You can observe data slots of the port and configure connections if any in the &quot;Parameters&quot; widget suited below.</source>
         <translation>Слоты данных, входящие в порт, указаны в таблице, расположенной немного ниже.
 &lt;br&gt;Там же можно изменить привязку данных в связях, если они есть.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditor.cpp" line="441"/>
+        <location filename="../src/WorkflowEditor.cpp" line="447"/>
         <source>&lt;b&gt;%1 &quot;%2&quot;&lt;/b&gt; of task &quot;%3&quot;:&lt;br&gt;%4&lt;br&gt;&lt;br&gt;%5</source>
         <translation>&lt;b&gt;%1 &quot;%2&quot;&lt;/b&gt; задачи &quot;%3&quot;:&lt;br&gt;%4&lt;br&gt;&lt;br&gt;%5</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditor.cpp" line="301"/>
-        <location filename="../src/WorkflowEditor.cpp" line="396"/>
+        <location filename="../src/WorkflowEditor.cpp" line="307"/>
+        <location filename="../src/WorkflowEditor.cpp" line="402"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditor.cpp" line="442"/>
+        <location filename="../src/WorkflowEditor.cpp" line="448"/>
         <source>Output port</source>
         <translation>Выходной порт</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditor.cpp" line="442"/>
+        <location filename="../src/WorkflowEditor.cpp" line="448"/>
         <source>Input port</source>
         <translation>Входной порт</translation>
     </message>
@@ -5879,48 +5879,48 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowPaletteElements</name>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="478"/>
+        <location filename="../src/WorkflowPalette.cpp" line="475"/>
         <source>Unable to Edit Element</source>
         <translation>Невозможно отредактировать элемент</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="479"/>
+        <location filename="../src/WorkflowPalette.cpp" line="476"/>
         <source>The element with external tool is used in other Workflow Designer window(s). Please remove these instances to be able to edit the element configuration.</source>
         <translation>Элемент с внешним инструментом используется в другом окне дизайнера вычислительных схем. Удалите его, чтобы отредактировать конфигурацию.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="607"/>
+        <location filename="../src/WorkflowPalette.cpp" line="604"/>
         <source>Expand all</source>
         <translation>Развернуть все</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="608"/>
+        <location filename="../src/WorkflowPalette.cpp" line="605"/>
         <source>Collapse all</source>
         <translation>Свернуть все</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="610"/>
+        <location filename="../src/WorkflowPalette.cpp" line="607"/>
         <source>Edit</source>
         <translation>Изменить</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="611"/>
+        <location filename="../src/WorkflowPalette.cpp" line="608"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="718"/>
+        <location filename="../src/WorkflowPalette.cpp" line="715"/>
         <source>Unable to Remove Element</source>
         <translation>Невозможно удалить элемент</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="719"/>
+        <location filename="../src/WorkflowPalette.cpp" line="716"/>
         <source>The element with external tool is used in other Workflow Designer window(s). Please remove these instances to be able to remove the element configuration.</source>
         <translation>Элемент с внешним инструментом используется в другом окне дизайнера вычислительных схем. Удалите его, чтобы отредактировать конфигурацию.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="727"/>
-        <location filename="../src/WorkflowPalette.cpp" line="758"/>
+        <location filename="../src/WorkflowPalette.cpp" line="724"/>
+        <location filename="../src/WorkflowPalette.cpp" line="755"/>
         <source>Can&apos;t remove element &apos;%1&apos;</source>
         <translation>Невозможно удалить элемент &apos;%1&apos;</translation>
     </message>
@@ -5928,47 +5928,47 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowRunFromCMDLineBase</name>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="51"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="47"/>
         <source>Workflow run from cmdline</source>
         <translation>Запуск схемы из командной строки</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="77"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="73"/>
         <source>no task to run</source>
         <translation>нет задач для выполнения</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="94"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="90"/>
         <source>Cannot find workflow: %1</source>
         <translation>Невозможно найти схему: %1</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="119"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="115"/>
         <source>alias &apos;%1&apos; not set in workflow</source>
         <translation>алиас &apos;%1&apos; не установлен в схеме</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="139"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="135"/>
         <source>Incorrect value for &apos;%1&apos;, null or default value passed to workflow</source>
         <translation>Некорректное значение &apos;%1&apos;, нулевое или дефолтное значение передано схеме</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="202"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="198"/>
         <source>Details</source>
         <translation>Детали</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="203"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="199"/>
         <source>Error: %1</source>
         <translation>Ошибка: %1</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="125"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="121"/>
         <source>actor parameter &apos;%1&apos; not found</source>
         <translation>текущий параметр &apos;%1&apos; не найден</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="131"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="127"/>
         <source>cannot parse value from &apos;%1&apos;</source>
         <translation>невозможно разобрать значение из &apos;%1&apos;</translation>
     </message>
@@ -5976,22 +5976,22 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowScene</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2404"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2570"/>
         <source>Open document(s)</source>
         <translation>Открыть документы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2578"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2744"/>
         <source>Workflow Designer</source>
         <translation>Дизайнер вычислительных схем</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2578"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2744"/>
         <source>Unable to open specified documents. Watch log for details.</source>
         <translation>Невозможно открыть указанные документы. Посмотрите лог для выяснения деталей.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2661"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2827"/>
         <source>Drop an element from the palette here</source>
         <translation>Перенесите сюда элемент из палитры</translation>
     </message>
@@ -6035,7 +6035,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="854"/>
+        <location filename="../src/WorkflowViewController.cpp" line="947"/>
         <source>UGENE workflow element</source>
         <translation>Элемент схемы</translation>
     </message>
@@ -6043,280 +6043,280 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowView</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="265"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2206"/>
+        <location filename="../src/WorkflowViewController.cpp" line="356"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2371"/>
         <source>Workflow Designer</source>
         <translation>Дизайнер схем</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="375"/>
-        <location filename="../src/WorkflowViewController.cpp" line="501"/>
+        <location filename="../src/WorkflowViewController.cpp" line="466"/>
+        <location filename="../src/WorkflowViewController.cpp" line="592"/>
         <source>Error list</source>
         <translation>Проблемы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="399"/>
-        <location filename="../src/WorkflowViewController.cpp" line="402"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2136"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2139"/>
+        <location filename="../src/WorkflowViewController.cpp" line="490"/>
+        <location filename="../src/WorkflowViewController.cpp" line="493"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2301"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2304"/>
         <source>Warning!</source>
         <translation>Предупреждение!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="405"/>
+        <location filename="../src/WorkflowViewController.cpp" line="496"/>
         <source>Undefined workflow format for %1</source>
         <translation>Неизвестный workflow формат в %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="405"/>
+        <location filename="../src/WorkflowViewController.cpp" line="496"/>
         <source>file</source>
         <translation>файл</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="620"/>
+        <location filename="../src/WorkflowViewController.cpp" line="711"/>
         <source>&amp;Save workflow as...</source>
         <translation>&amp;Сохранить схему как...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="625"/>
+        <location filename="../src/WorkflowViewController.cpp" line="716"/>
         <source>Show wizard</source>
         <translation>Показать визард</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="653"/>
+        <location filename="../src/WorkflowViewController.cpp" line="744"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="759"/>
+        <location filename="../src/WorkflowViewController.cpp" line="850"/>
         <source>Create element with external tool...</source>
         <translation>Создать элемент при помощи внешних инструментов...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="770"/>
+        <location filename="../src/WorkflowViewController.cpp" line="861"/>
         <source>Add element with external tool...</source>
         <translation>Добавить элемент при помощи внешних инструментов...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="859"/>
-        <location filename="../src/WorkflowViewController.cpp" line="887"/>
+        <location filename="../src/WorkflowViewController.cpp" line="952"/>
+        <location filename="../src/WorkflowViewController.cpp" line="980"/>
         <source>Can&apos;t load element.</source>
         <translation>Невозможно загрузить элемент.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1211"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1272"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1315"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1376"/>
         <source>Element style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="688"/>
+        <location filename="../src/WorkflowViewController.cpp" line="779"/>
         <source>Select all elements</source>
         <translation>Выбрать все элементы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="683"/>
+        <location filename="../src/WorkflowViewController.cpp" line="774"/>
         <source>Create Galaxy tool config...</source>
         <translation>Создать конфигурацию Galaxy инструмента...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="691"/>
+        <location filename="../src/WorkflowViewController.cpp" line="782"/>
         <source>&amp;Copy</source>
         <translation>&amp;Копировать</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="699"/>
+        <location filename="../src/WorkflowViewController.cpp" line="790"/>
         <source>Cu&amp;t</source>
         <translation>&amp;Вырезать</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="706"/>
+        <location filename="../src/WorkflowViewController.cpp" line="797"/>
         <source>&amp;Paste</source>
         <translation>&amp;Вставить</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsController.cpp" line="92"/>
-        <location filename="../src/WorkflowViewController.cpp" line="714"/>
+        <location filename="../src/WorkflowViewController.cpp" line="805"/>
         <source>Minimal</source>
         <translation>Упрощённый</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsController.cpp" line="93"/>
-        <location filename="../src/WorkflowViewController.cpp" line="720"/>
+        <location filename="../src/WorkflowViewController.cpp" line="811"/>
         <source>Extended</source>
         <translation>Развёрнутый</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="855"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1181"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1282"/>
+        <location filename="../src/WorkflowViewController.cpp" line="948"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1285"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1386"/>
         <source>Add element</source>
         <translation>Добавить элемент</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="553"/>
+        <location filename="../src/WorkflowViewController.cpp" line="644"/>
         <source>&amp;Run workflow</source>
         <translation>&amp;Запустить схему</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="560"/>
+        <location filename="../src/WorkflowViewController.cpp" line="651"/>
         <source>S&amp;top workflow</source>
         <translation>О&amp;тменить выполнение схемы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="567"/>
+        <location filename="../src/WorkflowViewController.cpp" line="658"/>
         <source>&amp;Validate workflow</source>
         <translation>&amp;Проверить валидность схемы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="573"/>
+        <location filename="../src/WorkflowViewController.cpp" line="664"/>
         <source>&amp;Estimate workflow</source>
         <translation>&amp;Оценить время на выполнение схемы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="579"/>
+        <location filename="../src/WorkflowViewController.cpp" line="670"/>
         <source>&amp;Pause workflow</source>
         <translation>&amp;Остановить схему</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="587"/>
+        <location filename="../src/WorkflowViewController.cpp" line="678"/>
         <source>&amp;Next step</source>
         <translation>&amp;Следующий шаг</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="597"/>
+        <location filename="../src/WorkflowViewController.cpp" line="688"/>
         <source>Process one &amp;message</source>
         <translation>По одному &amp;сообщению</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="607"/>
+        <location filename="../src/WorkflowViewController.cpp" line="698"/>
         <source>&amp;New workflow...</source>
         <translation>&amp;Новая схема...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="613"/>
+        <location filename="../src/WorkflowViewController.cpp" line="704"/>
         <source>&amp;Save workflow</source>
         <translation>&amp;Сохранить схему</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="642"/>
+        <location filename="../src/WorkflowViewController.cpp" line="733"/>
         <source>&amp;Load workflow</source>
         <translation>&amp;Загрузка схемы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="648"/>
+        <location filename="../src/WorkflowViewController.cpp" line="739"/>
         <source>&amp;Export workflow as image</source>
         <translation>&amp;Экспорт схемы в изображение</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="657"/>
+        <location filename="../src/WorkflowViewController.cpp" line="748"/>
         <source>Dashboards manager</source>
         <translation>Менеджер панелей</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="678"/>
+        <location filename="../src/WorkflowViewController.cpp" line="769"/>
         <source>Set parameter aliases...</source>
         <translation>Выбрать алиасы параметров...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="728"/>
+        <location filename="../src/WorkflowViewController.cpp" line="819"/>
         <source>Hide scripting options</source>
         <translation>Не показывать опции скриптинга</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="735"/>
+        <location filename="../src/WorkflowViewController.cpp" line="826"/>
         <source>Show scripting options</source>
         <translation>Показывать опции скриптинга</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="748"/>
+        <location filename="../src/WorkflowViewController.cpp" line="839"/>
         <source>Create element with script...</source>
         <translation>Создать элемент при помощи скрипта...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="753"/>
+        <location filename="../src/WorkflowViewController.cpp" line="844"/>
         <source>Edit script of the element...</source>
         <translation>Изменить скрипт элемента...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="764"/>
+        <location filename="../src/WorkflowViewController.cpp" line="855"/>
         <source>Edit configuration...</source>
         <translation>Изменить конфигурацию...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1316"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1420"/>
         <source>Empty workflow!</source>
         <translation>Пустая схема!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1316"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1420"/>
         <source>Nothing to run: empty workflow</source>
         <translation>Выполнять нечего: схема пуста</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1341"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1445"/>
         <source>Workflow cannot be executed</source>
         <translation>Схема не может быть выполнена</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1341"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1445"/>
         <source>Please fix issues listed in the error list (located under workflow).</source>
         <translation>Исправьте ошибки представленные в списке ошибок (располодженный под схемой).</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1344"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1448"/>
         <source>Workflow is valid. 
 </source>
         <translation>Схема валидна. 
 </translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1346"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1450"/>
         <source>Well done!</source>
         <translation>Готово!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1348"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1452"/>
         <source>There are non-critical warnings.</source>
         <translation>Нет критических ошибок.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1350"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1454"/>
         <source>Workflow is valid</source>
         <translation>Схема валидна</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1595"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1700"/>
         <source>Aliases for workflow parameters should be different!</source>
         <translation>Алиасы для параметров схемы должны бть разными!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1629"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1734"/>
         <source>Workflow does not contain any parameter aliases</source>
         <translation>Схема не содержит алиасов параметров</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1643"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1748"/>
         <source>Internal error!</source>
         <translation>Веутренняя ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1643"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1748"/>
         <source>Can not create Galaxy config</source>
         <translation>Невозможно создать конфигурацию Galaxy</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1664"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1769"/>
         <source>Drag an element to the scene to add it to the workflow.</source>
         <translation>Перенесите элемент на сцену чтобы добавить его в схему.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1880"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2045"/>
         <source>Confirm file save path</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1881"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2046"/>
         <source>It seems you trying to save workflow schema to &quot;workflow_samples&quot; directory which used by UGENE. Rewriting existing files can cause problems with analyzing algorithms.<byte value="xd"/>
 - &quot;Save anyway&quot; will rewrite existing schema<byte value="xd"/>
 - &quot;Choose new path&quot; will allow you to save schema by another path<byte value="xd"/>
@@ -6327,99 +6327,99 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 - &quot;Отмена&quot; отменит сохранение</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1885"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2050"/>
         <source>Save anyway</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1886"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2051"/>
         <source>Choose new path</source>
         <translation>Выбрать другой путь</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1889"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2054"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1979"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2144"/>
         <source>File is not found: %1</source>
         <translation>Файл не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2065"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2230"/>
         <source>To Workflow Designer</source>
         <translation>В Дизайнер</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2069"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2234"/>
         <source>Go to Dashboard</source>
         <translation>К отчётам</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2071"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2236"/>
         <source>Show dashboard</source>
         <translation>Показать панель</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2067"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2232"/>
         <source>Show workflow</source>
         <translation>Показать схему</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="883"/>
+        <location filename="../src/WorkflowViewController.cpp" line="976"/>
         <source>Can&apos;t register element.</source>
         <translation>Невозможно зарегистрировать элемент.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2112"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2277"/>
         <source>Open workflow file</source>
         <translation>Открыть файл схемы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2151"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2316"/>
         <source>New workflow</source>
         <translation>Новая схема</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2206"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2371"/>
         <source>The workflow has been modified.
 Do you want to save changes?</source>
         <translation>Схема была изменена. Вы хотите сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1217"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1321"/>
         <source>Scripting mode</source>
         <translation>Скриптинг</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1265"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1369"/>
         <source>Element properties</source>
         <translation>Свойства элемента</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1595"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1629"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1700"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1734"/>
         <source>Bad input!</source>
         <translation>Неверные входные данные!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2175"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2340"/>
         <source>Workflow Designer - %1</source>
         <translation>Дизайнер схем - %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="356"/>
+        <location filename="../src/WorkflowViewController.cpp" line="447"/>
         <source>Elements</source>
         <translation>Элементы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="359"/>
+        <location filename="../src/WorkflowViewController.cpp" line="450"/>
         <source>Samples</source>
         <translation>Примеры</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="743"/>
+        <location filename="../src/WorkflowViewController.cpp" line="834"/>
         <source>Unlock Scene</source>
         <translation>Разблокировать схему</translation>
     </message>
@@ -6437,7 +6437,7 @@ Do you want to save changes?</source>
 <context>
     <name>U2::WorkflowViewFactory</name>
     <message>
-        <location filename="../src/WorkflowDocument.cpp" line="162"/>
+        <location filename="../src/WorkflowDocument.cpp" line="163"/>
         <source>Open multiple views</source>
         <translation>Открытие нескольких окон</translation>
     </message>
@@ -6589,17 +6589,17 @@ Do you want to save changes?</source>
 <context>
     <name>WriteAnnotationsValidator</name>
     <message>
-        <location filename="../src/util/WriteAnnotationsValidator.cpp" line="35"/>
+        <location filename="../src/util/WriteAnnotationsValidator.cpp" line="37"/>
         <source>Input port is NULL</source>
         <translation>Input port is NULL</translation>
     </message>
     <message>
-        <location filename="../src/util/WriteAnnotationsValidator.cpp" line="41"/>
+        <location filename="../src/util/WriteAnnotationsValidator.cpp" line="43"/>
         <source>IntegralBusPort is NULL</source>
         <translation>IntegralBusPort is NULL</translation>
     </message>
     <message>
-        <location filename="../src/util/WriteAnnotationsValidator.cpp" line="47"/>
+        <location filename="../src/util/WriteAnnotationsValidator.cpp" line="49"/>
         <source>Attribute is NULL</source>
         <translation>Attribute is NULL</translation>
     </message>

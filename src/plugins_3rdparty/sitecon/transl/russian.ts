@@ -215,7 +215,7 @@
         <translation>Нижний предел качества распознавания, величина более 60% но меньше 100%. Слишком низкий предел приведёт к нахождению большого числа ложных сигналов, чрезмерно высокий отбросит качественные результаты.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="163"/>
+        <location filename="../src/SiteconQuery.cpp" line="164"/>
         <source>Recognition quality percentage threshold. If you need to switch off this filter choose &lt;b&gt;the lowest&lt;/b&gt; value&lt;/i&gt;&lt;/p&gt;.</source>
         <translation>Порог качества. Для того, чтобы отключить этот фильтр укажите наименьшее значение.</translation>
     </message>
@@ -545,107 +545,107 @@
 <context>
     <name>U2::QDSiteconActor</name>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="64"/>
+        <location filename="../src/SiteconQuery.cpp" line="65"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="68"/>
+        <location filename="../src/SiteconQuery.cpp" line="69"/>
         <source>with profile provided by %1 %2&lt;/a&gt;</source>
         <translation>с профайлом %1 %2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="70"/>
+        <location filename="../src/SiteconQuery.cpp" line="71"/>
         <source>with all %1 %2 profiles&lt;/a&gt;</source>
         <translation>со всеми %1 %2 профайлами&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="73"/>
+        <location filename="../src/SiteconQuery.cpp" line="74"/>
         <source>similarity %1%</source>
         <translation>сходство %1%</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="79"/>
+        <location filename="../src/SiteconQuery.cpp" line="80"/>
         <source>both strands</source>
         <translation>оба направления</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="82"/>
+        <location filename="../src/SiteconQuery.cpp" line="83"/>
         <source>direct strand</source>
         <translation>прямой стренд</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="85"/>
+        <location filename="../src/SiteconQuery.cpp" line="86"/>
         <source>complement strand</source>
         <translation>комплементарный стренд</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="107"/>
+        <location filename="../src/SiteconQuery.cpp" line="108"/>
         <source>%1: incorrect sitecon model url(s)</source>
         <translation>%1: incorrect sitecon model url(s)</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="111"/>
+        <location filename="../src/SiteconQuery.cpp" line="112"/>
         <source>%1: min score can not be less 60% or more 100%</source>
         <translation>%1: min score can not be less 60% or more 100%</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="115"/>
+        <location filename="../src/SiteconQuery.cpp" line="116"/>
         <source>%1: min Err1 can not be less 0 or more 1</source>
         <translation>%1: min Err1 can not be less 0 or more 1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="119"/>
+        <location filename="../src/SiteconQuery.cpp" line="120"/>
         <source>%1: max Err2 can not be less 0 or more 1</source>
         <translation>%1: max Err2 can not be less 0 or more 1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="158"/>
+        <location filename="../src/SiteconQuery.cpp" line="159"/>
         <source>Sitecon</source>
         <translation>SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="159"/>
+        <location filename="../src/SiteconQuery.cpp" line="160"/>
         <source>Searches for transcription factor binding sites significantly similar to specified SITECON profiles. In case several profiles were supplied, searches with all profiles one by one and outputs merged set of annotations.</source>
         <translation>Поиск сайтов связывания транскрипционных факторов (ССТФ). В каждой нуклеотидной последовательности, поданной на вход задачи, ищутся значимые совпадения с указанными профайлами SITECON. Найденные регионы выдаются в виде набора аннотаций. Профайлов может быть несколько, поиск отработает для каждого профайла и выдаст общий набор аннотаций для каждой последовательности.&lt;p&gt; Протеиновые последовательности на входе допустимы но игнорируются.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="89"/>
+        <location filename="../src/SiteconQuery.cpp" line="90"/>
         <source>Searches transcription factor binding sites (TFBS) %1.&lt;br&gt;Recognize sites with %2, process %3.</source>
         <translation>Ищет сайты связывания транскрипционных факторов (ТФ) %1. &lt;br&gt;Распознаёт сайты со сходством %2, рассматривает %3.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="163"/>
+        <location filename="../src/SiteconQuery.cpp" line="164"/>
         <source>Min score</source>
         <translation>Мин оценка</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="164"/>
+        <location filename="../src/SiteconQuery.cpp" line="165"/>
         <source>Min Err1</source>
         <translation>Мин ошибка 1 рода</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="164"/>
+        <location filename="../src/SiteconQuery.cpp" line="165"/>
         <source>Alternative setting for filtering results, minimal value of Error type I.&lt;br&gt;Note that all thresholds (by score, by err1 and by err2) are applied when filtering results.</source>
         <translation>Фильтрация результатов по значению ошибки I рода. &lt;br&gt;Учтите что применяются все фильтры (по оценке и ошибкам 1, 2 рода).</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="166"/>
+        <location filename="../src/SiteconQuery.cpp" line="167"/>
         <source>Max Err2</source>
         <translation>Макс ошибка 2 рода</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="166"/>
+        <location filename="../src/SiteconQuery.cpp" line="167"/>
         <source>Alternative setting for filtering results, max value of Error type II.&lt;br&gt;Note that all thresholds (by score, by err1 and by err2) are applied when filtering results.</source>
         <translation>Фильтрация результатов по значению ошибки II рода. &lt;br&gt;Учтите что применяются все фильтры (по оценке и ошибкам 1, 2 рода).</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="168"/>
+        <location filename="../src/SiteconQuery.cpp" line="169"/>
         <source>Model</source>
         <translation>Модель</translation>
     </message>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="168"/>
+        <location filename="../src/SiteconQuery.cpp" line="169"/>
         <source>Profile data to search with.</source>
         <translation>Профайл SITECON характеризующий искомые сайты.</translation>
     </message>
@@ -653,7 +653,7 @@
 <context>
     <name>U2::QDSiteconTask</name>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="209"/>
+        <location filename="../src/SiteconQuery.cpp" line="210"/>
         <source>Sitecon Query</source>
         <translation>SITECON запрос</translation>
     </message>
@@ -1000,7 +1000,7 @@
 <context>
     <name>U2::SiteconReadMultiTask</name>
     <message>
-        <location filename="../src/SiteconQuery.cpp" line="234"/>
+        <location filename="../src/SiteconQuery.cpp" line="235"/>
         <source>Load sitecon models task</source>
         <translation>Load sitecon models task</translation>
     </message>
@@ -1008,7 +1008,7 @@
 <context>
     <name>U2::SiteconReadTask</name>
     <message>
-        <location filename="../src/SiteconIO.h" line="51"/>
+        <location filename="../src/SiteconIO.h" line="50"/>
         <source>Read SITECON Model</source>
         <translation>Загрузка модели SITECON</translation>
     </message>
@@ -1106,7 +1106,7 @@
 <context>
     <name>U2::SiteconWriteTask</name>
     <message>
-        <location filename="../src/SiteconIO.h" line="70"/>
+        <location filename="../src/SiteconIO.h" line="69"/>
         <source>Save SITECON model</source>
         <translation>Сохранение модели SITECON</translation>
     </message>

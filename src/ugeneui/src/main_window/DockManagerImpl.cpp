@@ -20,6 +20,7 @@
  */
 
 #include "DockManagerImpl.h"
+#include <random>
 
 #include <QDockWidget>
 #include <QToolBar>
@@ -27,6 +28,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/GUIUtils.h>
 
 #include "DockWidgetPainter.h"
 #include "MainWindowImpl.h"
@@ -133,39 +136,49 @@ QToolBar* MWDockManagerImpl::getDockBar(MWDockArea a) const {
 
 static bool ksInUse(const QKeySequence& ks, const QList<DockData*>& docks) {
     foreach (DockData* d, docks) {
-        if (d->action != nullptr && d->action->shortcut() == ks) {
+        if (d->keySequenceAction != nullptr && d->keySequenceAction->shortcut() == ks) {
             return true;
         }
     }
     return false;
 }
 
-QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* w, const QKeySequence& ks) {
-    bool showDock = w->objectName() == lastActiveDocksState[area];
+QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& keySequence) {
+    bool showDock = dockWidget->objectName() == lastActiveDocksState[area];
 
-    QToolBar* tb = getDockBar(area);
+    QToolBar* toolBar = getDockBar(area);
+    SAFE_POINT_NN(toolBar, nullptr);
     auto data = new DockData();
     data->area = area;
-    data->label = new QLabel(tb);
-    data->wrapWidget = new DockWrapWidget(w);
-    data->wrapWidget->setObjectName("wrap_widget_" + w->objectName());
-    data->label->setObjectName("doc_label__" + w->objectName());
+    data->label = new QLabel(toolBar);
+    data->wrapWidget = new DockWrapWidget(dockWidget);
+    data->wrapWidget->setObjectName("wrap_widget_" + dockWidget->objectName());
+    data->label->setObjectName("doc_label__" + dockWidget->objectName());
     data->label->installEventFilter(this);
-    if (area != MWDockArea_Bottom) {
-        tb->addWidget(data->label);
+    if (area == MWDockArea_Bottom) {
+        toolBar->insertWidget(statusBarAction, data->label);
     } else {
-        tb->insertWidget(statusBarAction, data->label);
+        if (dockWidget->objectName() == "project_view") {
+            auto actionsList = toolBar->actions();
+            if (actionsList.isEmpty()) {
+                data->toolBarAction = toolBar->addWidget(data->label);
+            } else {
+                data->toolBarAction = toolBar->insertWidget(actionsList[0], data->label);
+            }
+        } else {
+            data->toolBarAction = toolBar->addWidget(data->label);
+        }
     }
-    connect(w, SIGNAL(destroyed()), SLOT(sl_widgetDestroyed()));
+    connect(dockWidget, &QObject::destroyed, this, &MWDockManagerImpl::sl_widgetDestroyed);
 
-    QString ttip = w->windowTitle();
-    if (!ks.isEmpty() && !ksInUse(ks, docks)) {
-        data->action = new QAction(data->label);
-        data->action->setShortcut(ks);
-        data->action->setShortcutContext(Qt::ApplicationShortcut);
-        connect(data->action, SIGNAL(triggered()), SLOT(sl_toggleDock()));
-        data->label->addAction(data->action);
-        ttip += " (" + ks.toString() + ")";
+    QString ttip = dockWidget->windowTitle();
+    if (!keySequence.isEmpty() && !ksInUse(keySequence, docks)) {
+        data->keySequenceAction = new QAction(data->label);
+        data->keySequenceAction->setShortcut(keySequence);
+        data->keySequenceAction->setShortcutContext(Qt::ApplicationShortcut);
+        connect(data->keySequenceAction, SIGNAL(triggered()), SLOT(sl_toggleDock()));
+        data->label->addAction(data->keySequenceAction);
+        ttip += " (" + keySequence.toString() + ")";
     }
     data->label->setToolTip(ttip);
 
@@ -175,8 +188,8 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* w, const QKey
 
     docks.append(data);
 
-    if (tb->isHidden()) {
-        tb->show();
+    if (toolBar->isHidden()) {
+        toolBar->show();
     }
 
     if (showDock) {
@@ -301,6 +314,9 @@ void MWDockManagerImpl::destroyDockData(DockData* d) {
     if (d->dock != nullptr) {
         saveDockGeometry(d);
     }
+    QToolBar* toolBar= getDockBar(d->area);
+    toolBar->removeAction(d->toolBarAction);
+
     delete d->label;
     d->wrapWidget->deleteLater();
     d->wrapWidget = nullptr;

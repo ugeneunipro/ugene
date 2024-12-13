@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ class GTest_BioStruct3DNumberOfAtoms : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_BioStruct3DNumberOfAtoms, "check-biostruct3d-number-of-atoms");
 
-    ReportResult report();
+    ReportResult report() override;
 
     QString objContextName;
     int numAtoms;
@@ -44,7 +44,7 @@ class GTest_BioStruct3DNumberOfChains : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_BioStruct3DNumberOfChains, "check-biostruct3d-number-of-chains");
 
-    ReportResult report();
+    ReportResult report() override;
 
     QString objContextName;
     int numChains;
@@ -54,7 +54,7 @@ class GTest_BioStruct3DAtomCoordinates : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_BioStruct3DAtomCoordinates, "check-biostruct3d-atom-coords");
 
-    ReportResult report();
+    ReportResult report() override;
 
     QString objContextName;
     double x, y, z;
@@ -66,7 +66,7 @@ class GTest_BioStruct3DAtomChainIndex : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_BioStruct3DAtomChainIndex, "check-biostruct3d-atom-chain-id");
 
-    ReportResult report();
+    ReportResult report() override;
 
     QString objContextName;
     int chainId;
@@ -78,7 +78,7 @@ class GTest_BioStruct3DAtomResidueName : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_BioStruct3DAtomResidueName, "check-biostruct3d-atom-residue-name");
 
-    ReportResult report();
+    ReportResult report() override;
 
     QString objContextName;
     QString residueName;
@@ -109,8 +109,8 @@ class GTest_PDBFormatStressTest : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_PDBFormatStressTest, "try-load-all-pdb-documents");
 
-    ReportResult report();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    ReportResult report() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     QHash<Task*, QString> fileNames;
 };
 
@@ -118,8 +118,8 @@ class GTest_ASNFormatStressTest : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_ASNFormatStressTest, "try-load-all-mmdb-documents");
 
-    ReportResult report();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    ReportResult report() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     QHash<Task*, QString> fileNames;
 };
 

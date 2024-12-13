@@ -56,7 +56,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     indexList << testDir + "_common_data/scenarios/sandbox/human_T1_cutted.rev.2.bt2";
 
     for (int i = 0; i < indexList.size(); i++) {
-        CHECK_SET_ERR(GTFile::check(indexList[i]), "Index file " + indexList[i] + " is missing!");
+        GTFile::checkFileExists(indexList[i]);
     }
 }
 

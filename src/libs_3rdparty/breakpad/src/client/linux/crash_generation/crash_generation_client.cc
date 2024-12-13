@@ -48,7 +48,7 @@ class CrashGenerationClientImpl : public CrashGenerationClient {
   explicit CrashGenerationClientImpl(int server_fd) : server_fd_(server_fd) {}
   virtual ~CrashGenerationClientImpl() {}
 
-  virtual bool RequestDump(const void* blob, size_t blob_size) {
+  bool RequestDump(const void* blob, size_t blob_size) override {
     int fds[2];
     if (sys_pipe(fds) < 0)
       return false;

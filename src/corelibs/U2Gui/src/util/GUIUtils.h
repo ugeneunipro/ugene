@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,6 +77,12 @@ public:
     static QIcon getIconResource(const IconParameters& parameters);
 
     static QString getResourceName(const IconParameters& parameters);
+
+    static QString getTextWithDialog(QWidget *parent, const QString &title, const QString &label, const QString &defaultText, bool &ok);
+
+
+    static const QColor WARNING_COLOR;
+    static const QColor OK_COLOR;
 
     /**
      * Maximum size of the pixmap that can be safely created for UGENE.

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,8 +46,8 @@ class BedGraphToBigWigTask : public ExternalToolSupportTask {
 public:
     BedGraphToBigWigTask(const BedGraphToBigWigSetting& settings);
 
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 
     QString getResult() {
         return resultUrl;
@@ -65,8 +65,8 @@ class BedGraphToBigWigParser : public ExternalToolLogParser {
 public:
     BedGraphToBigWigParser();
 
-    void parseOutput(const QString& partOfLog);
-    void parseErrOutput(const QString& partOfLog);
+    void parseOutput(const QString& partOfLog) override;
+    void parseErrOutput(const QString& partOfLog) override;
 
 private:
     QString lastErrLine;

@@ -160,6 +160,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsAssemblyBrowser.h \
             src/GTUtilsBookmarksTreeView.h \
             src/GTUtilsCircularView.h \
+            src/GTUtilsCloudStorageView.h \
             src/GTUtilsDashboard.h \
             src/GTUtilsDocument.h \
             src/GTUtilsEscClicker.h \
@@ -279,6 +280,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h \
             src/tests/common_scenarios/workflow_designer/samples/GTTestsWorkflowSamples.h \
             src/tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.h \
+            src/tests/common_scenarios/workspace/GTTestsWorkspace.h \
 #   UGENE primitives
             src/api/GTBaseCompleter.h \
             src/api/GTGraphicsItem.h \
@@ -449,6 +451,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsAssemblyBrowser.cpp \
             src/GTUtilsBookmarksTreeView.cpp \
             src/GTUtilsCircularView.cpp \
+            src/GTUtilsCloudStorageView.cpp \
             src/GTUtilsDashboard.cpp \
             src/GTUtilsDocument.cpp \
             src/GTUtilsEscClicker.cpp \
@@ -568,6 +571,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.cpp \
             src/tests/common_scenarios/workflow_designer/samples/GTTestsWorkflowSamples.cpp \
             src/tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.cpp \
+            src/tests/common_scenarios/workspace/GTTestsWorkspace.cpp \
 #   UGENE primitives
             src/api/GTBaseCompleter.cpp \
             src/api/GTGraphicsItem.cpp \

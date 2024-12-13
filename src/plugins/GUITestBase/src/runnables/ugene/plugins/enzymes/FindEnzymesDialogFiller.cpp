@@ -21,6 +21,7 @@
 
 #include "FindEnzymesDialogFiller.h"
 #include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
@@ -88,19 +89,36 @@ void FindEnzymesDialogFiller::commonScenario() {
         }
     }
 
+    auto regionSelector = GTWidget::findWidget("range_selector");
     if (settings.searchRegionStart != -1 && settings.searchRegionEnd != -1) {
-        auto regionSelector = GTWidget::findWidget("region_selector_with_excluded");
-
-        GTLineEdit::setText("startLineEdit", QString::number(settings.searchRegionStart), regionSelector);
-        GTLineEdit::setText("endLineEdit", QString::number(settings.searchRegionEnd), regionSelector);
+        GTLineEdit::setText("start_edit_line", QString::number(settings.searchRegionStart), regionSelector);
+        GTLineEdit::setText("end_edit_line", QString::number(settings.searchRegionEnd), regionSelector);
+    } else if (!settings.searchRegions.isEmpty()) {
+        QString locationStr;
+        GTComboBox::selectItemByText(GTWidget::findComboBox("region_type_combo", regionSelector), "Location");
+        for (const U2Region& r : settings.searchRegions) {
+            locationStr += QString::number(r.startPos) + ".." + QString::number(r.endPos()) + ",";
+        }
+        locationStr.chop(1);
+        GTLineEdit::setText("location_line_edit", locationStr, regionSelector);
     }
 
-    if (settings.excludeRegionStart != -1 && settings.excludeRegionEnd != -1) {
+    if ((settings.excludeRegionStart != -1 && settings.excludeRegionEnd != -1) || !settings.excludeRegions.isEmpty()) {
+        regionSelector = GTWidget::findWidget("exclude_range_selector");
         auto exclude = GTWidget::findCheckBox("excludeCheckBox");
         GTCheckBox::setChecked(exclude);
-
-        GTLineEdit::setText("excludeStartLineEdit", QString::number(settings.excludeRegionStart));
-        GTLineEdit::setText("excludeEndLinEdit", QString::number(settings.excludeRegionEnd));
+        if (settings.excludeRegionStart != -1 && settings.excludeRegionEnd != -1) {
+            GTLineEdit::setText("start_edit_line", QString::number(settings.excludeRegionStart), regionSelector);
+            GTLineEdit::setText("end_edit_line", QString::number(settings.excludeRegionEnd), regionSelector);
+        } else {
+            GTComboBox::selectItemByText(GTWidget::findComboBox("region_type_combo", regionSelector), "Location");
+            QString locationStr;
+            for (const U2Region& r : settings.excludeRegions) {
+                locationStr += QString::number(r.startPos) + ".." + QString::number(r.endPos()) + ",";
+            }
+            locationStr.chop(1);
+            GTLineEdit::setText("location_line_edit", locationStr, regionSelector);
+        }
     }
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);

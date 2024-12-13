@@ -301,6 +301,39 @@ QString GTTreeWidget::toString(QTreeWidgetItem* item) {
            : item->columnCount() == 0 ? "?"
                                       : item->text(0);
 }
+
+int GTTreeWidget::countVisibleItems(QTreeWidget* tree, QTreeWidgetItem* parent) {
+    int count = 0;
+    int childCount = parent != nullptr ? parent->childCount() : 0;
+    int topCount = tree->topLevelItemCount();
+
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+        int newChildCount = parent != nullptr ? parent->childCount() : 0;
+        int newTopCount = tree->topLevelItemCount();
+        if (childCount == newChildCount && topCount == newTopCount) {
+            break;
+        }
+        childCount = newChildCount;
+        topCount = newTopCount;
+    }
+
+    if (parent == nullptr) {
+        for (int i = 0; i < topCount; i++) {
+            auto item = tree->topLevelItem(i);
+            count += !item->isHidden() ? countVisibleItems(tree, item) : 0;
+        }
+        count += topCount;
+    } else {
+        for (int i = 0; i < childCount; i++) {
+            auto item = parent->child(i);
+            count += !item->isHidden() ? countVisibleItems(tree, item): 0;
+        }
+        count += childCount;
+    }
+    return count;
+}
+
 #undef GT_CLASS_NAME
 
 }  // namespace HI

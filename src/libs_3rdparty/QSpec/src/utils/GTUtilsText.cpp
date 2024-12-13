@@ -30,6 +30,4 @@ QString GTUtilsText::rectToString(const QRect& rect) {
            QString::number(rect.height()) + ")";
 }
 
-#undef GT_CLASS_NAME
-
 }  // namespace HI

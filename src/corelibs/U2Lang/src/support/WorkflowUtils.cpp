@@ -38,6 +38,7 @@
 #include <U2Core/PasswordStorage.h>
 #include <U2Core/Settings.h>
 #include <U2Core/StringAdapter.h>
+#include <U2Core/U2Attribute.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 

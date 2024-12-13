@@ -2457,7 +2457,7 @@ GUI_TEST_CLASS_DEFINITION(test_1249) {
             GTWidget::click(GTWidget::findWidget("pbSelectAll", dialog));
             auto totalNumberOfEnzymesLabel = GTWidget::findLabel("statusLabel");
             QString labelText = totalNumberOfEnzymesLabel->text();
-            QString s = QString("4862");
+            QString s = QString("4836");
             CHECK_SET_ERR(labelText.contains(s), QString("label text: %1. It does not contais %2").arg(labelText).arg(s));
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
@@ -3947,7 +3947,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
 
     auto line = qobject_cast<QLineEdit*>(table->findChild<QLineEdit*>());
     CHECK_SET_ERR(line, "QLineEdit not found. Widget in this cell might be not QLineEdit");
-    GTLineEdit::setText(line, dataDir + "samples/FASTA/HMM/aligment15900.hmm");
+    GTLineEdit::setText(line, dataDir + "samples/HMM/aligment15900.hmm");
     if (isOsMac()) {
         GTMouseDriver::doubleClick();
     }
@@ -7025,7 +7025,7 @@ GUI_TEST_CLASS_DEFINITION(test_1747) {
     CHECK_SET_ERR(progress >= 0 && progress <= 100, QString("Incorrect progress: %1").arg(progress));
     int oldProgress = progress;
 
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep(500);
     text = taskProgressBar->text();
     CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
     text = text.left(text.length() - 1);
@@ -7372,7 +7372,13 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
 
     // 3) Reopen UGENE WD.
     GTFileDialog::openFile(sandBoxDir, "test.uwl");
-    GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
+
+    if (isOsMac()) {
+        GTGlobals::sleep(500); //wait for the dialog
+        GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    } else {
+        GTUtilsWizard::clickButton(GTUtilsWizard::WizardButton::Cancel);
+    }
     GTUtilsDialog::checkNoModalWidget();
 
     // Expected: the state is saved.

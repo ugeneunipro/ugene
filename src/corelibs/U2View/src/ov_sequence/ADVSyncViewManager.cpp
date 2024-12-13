@@ -81,6 +81,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
     lockMenu = new QMenu(tr("Lock scales"));
     lockMenu->setIcon(GUIUtils::getIconResource("core", "lock_scales.png"));
     lockMenu->addActions(lockActionGroup->actions());
+    connect(lockMenu, &QMenu::aboutToShow, this, &ADVSyncViewManager::sl_setUpLockMenuActions);
 
     syncMenu = new QMenu(tr("Adjust scales"));
     syncMenu->setIcon(GUIUtils::getIconResource("core", "sync_scales.png"));
@@ -282,7 +283,7 @@ void ADVSyncViewManager::sl_lock() {
         m = SyncMode_AnnSel;
     } else if (buttonClicked && !lockButton->isChecked()) {
         m = detectSyncMode();
-    }    
+    }
     if (lockButton->isChecked()) {
         unlock();
     } else {
@@ -450,6 +451,18 @@ void ADVSyncViewManager::sl_colorModeSwitched() {
     lockMenu->setIcon(GUIUtils::getIconResource("core", "lock_scales.png"));
     syncMenu->setIcon(GUIUtils::getIconResource("core", "sync_scales.png"));
     updateEnabledState();
+}
+
+void ADVSyncViewManager::sl_setUpLockMenuActions() {
+    auto focusedW = qobject_cast<ADVSingleSequenceWidget*>(adv->getActiveSequenceWidget());
+    if (focusedW == nullptr) {
+        lockByAnnSelAction->setEnabled(false);
+        lockBySeqSelAction->setEnabled(false);
+        return;
+    }
+
+    lockByAnnSelAction->setEnabled(findSelectedAnnotationPos(focusedW) != -1);
+    lockBySeqSelAction->setEnabled(!focusedW->getSequenceContext()->getSequenceSelection()->isEmpty());
 }
 
 void ADVSyncViewManager::sl_toggleVisualMode() {

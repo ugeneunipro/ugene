@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ public:
     EditAnnotationFiller(CustomScenario* c)
         : Filler("CreateAnnotationDialog", c), annotationName(""), location(""), complementStrand(false) {
     }
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QString annotationName;
@@ -46,7 +46,7 @@ public:
     EditAnnotationChecker(const QString& _annotationName, const QString& _location)
         : Filler("CreateAnnotationDialog"), annotationName(_annotationName), location(_location) {
     }
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QString annotationName;

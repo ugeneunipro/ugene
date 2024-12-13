@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -215,6 +215,7 @@ protected:
     void addStatisticsMenu(QMenu* m);
 
     void updateActions() override;
+    void sl_gotoSelectedRead() override;
 
     void initDragAndDropSupport(MaEditorWgt* wgt);
 
@@ -230,7 +231,6 @@ public:
 
     QAction* setAsReferenceSequenceAction = nullptr;
     QAction* unsetReferenceSequenceAction = nullptr;
-    QAction* gotoAction = nullptr;
     QAction* searchInSequencesAction = nullptr;
     QAction* searchInSequenceNamesAction = nullptr;
     QAction* openCustomSettingsAction = nullptr;

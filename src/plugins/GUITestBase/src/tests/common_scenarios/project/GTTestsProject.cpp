@@ -299,6 +299,8 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     GTUtilsProjectTreeView::rename("human_T1 (UCSC April 2002 chr7:115977709-117855134)", "qqq");
     GTUtilsProjectTreeView::rename("qqq", "eee");
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller("No", "Save document: "));
+
     GTUtilsDocument::removeDocument("human_T1.fa");
 
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");

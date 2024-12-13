@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ class DotPlotFilesDialog : public QDialog, public Ui_DotPlotFilesDialog {
 public:
     DotPlotFilesDialog(QWidget* parent);
 
-    virtual void accept();
+    void accept() override;
 
     QString getFirstFileName() const {
         return firstFileName;

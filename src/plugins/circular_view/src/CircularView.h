@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -168,7 +168,7 @@ public:
 protected:
     qint64 coordToPos(const QPoint& p) const override;
     void resizeEvent(QResizeEvent* e) override;
-    virtual void drawAll(QPaintDevice* pd) override;
+    void drawAll(QPaintDevice* pd) override;
 
     void buildAnnotationItem(DrawAnnotationPass pass, Annotation* a, int predefinedOrbit = -1, bool selected = false, const AnnotationSettings* as = nullptr);
     void buildAnnotationLabel(const QFont& font, Annotation* a, const AnnotationSettings* as, bool isAutoAnnotation = false);

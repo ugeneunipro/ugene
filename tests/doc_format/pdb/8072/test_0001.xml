@@ -1,0 +1,17 @@
+<multi-test>
+    <!-- Check the second sequence isn't empty -->
+    <load-document index="doc" url="pdb/multi_model_with_ter.pdb" io="local_file" format="pdb"/>
+    <check-num-objects doc="doc" value="5"/>
+    <check-document-object-names doc="doc"
+        value=" chain A sequence, chain A annotation, chain B sequence, chain B annotation,multi_model_with_ter"/>
+    <check-document-object-types doc="doc"
+        value="OT_SEQUENCE,OT_ANNOTATIONS,OT_SEQUENCE,OT_ANNOTATIONS,OT_BIOSTRUCT3D"/>
+
+    <find-object-by-name index="pdb_obj" doc="doc" name="multi_model_with_ter" type="OT_BIOSTRUCT3D"/>
+    <check-biostruct3d-number-of-chains obj="pdb_obj" value="2"/>
+
+    <find-object-by-name index="first_seq" doc="doc" name=" chain A sequence" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="first_seq" value="M" seqstart="0"/>
+    <find-object-by-name index="second_seq" doc="doc" name=" chain B sequence" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="second_seq" value="M" seqstart="0"/>
+</multi-test>

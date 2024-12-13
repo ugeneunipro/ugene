@@ -42,6 +42,7 @@ PlainTextFormat::PlainTextFormat(QObject* p)
 Document* PlainTextFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
     // Read the whole text file.
     QString text;
+    QString baseName = reader.getURL().baseFileName();
     reader.read(os, text, -1);
     CHECK_OP(os, nullptr);
 
@@ -52,7 +53,7 @@ Document* PlainTextFormat::loadTextDocument(IOAdapterReader& reader, const U2Dbi
 
     QVariantMap textObjectHints;
     textObjectHints.insert(DBI_FOLDER_HINT, hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
-    TextObject* textObject = TextObject::createInstance(text, reader.getURL().baseFileName(), dbiRef, os, textObjectHints);
+    TextObject* textObject = TextObject::createInstance(text, baseName, dbiRef, os, textObjectHints);
     CHECK_OP(os, nullptr);
     QList<GObject*> objects = {textObject};
     return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, hints);

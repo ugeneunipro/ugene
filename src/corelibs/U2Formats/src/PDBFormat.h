@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,7 +64,8 @@ private:
         // Data
         IOAdapter* io;
         QString currentPDBLine;
-        ResidueIndex currentResidueIndex;
+        // The previous residue and the number of the chain to which it corresponded.
+        QPair<int, ResidueIndex> prevChainAndResidueIndex;
         int currentChainIndex;
         int currentMoleculeIndex;
         int currentModelIndex;

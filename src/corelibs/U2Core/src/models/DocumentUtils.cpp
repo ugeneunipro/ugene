@@ -159,7 +159,7 @@ DocumentUtils::Detection DocumentUtils::detectFormat(const GUrl& url, QString& r
     cfg.bestMatchesOnly = false;
     cfg.useImporters = true;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(url, cfg);
-    CHECK(formats.size() > 0, UNKNOWN);
+    CHECK(!formats.isEmpty(), UNKNOWN);
 
     DocumentFormat* format = formats.first().format;
     DocumentImporter* importer = formats.first().importer;

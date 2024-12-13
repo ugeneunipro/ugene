@@ -26,7 +26,6 @@
 #include <U2Core/AppSettings.h>
 
 namespace U2 {
-#define TRANSMAP_FILE_NAME "translations.txt"
 
 ResourceSettingsGUIPageController::ResourceSettingsGUIPageController(QObject* p)
     : AppSettingsGUIPageController(tr("Resources"), APP_SETTINGS_RESOURCES, p) {

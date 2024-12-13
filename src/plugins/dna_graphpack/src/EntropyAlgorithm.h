@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,8 +37,8 @@ class EntropyGraphFactory : public GSequenceGraphFactory {
     Q_OBJECT
 public:
     EntropyGraphFactory(QObject* p);
-    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v);
-    bool isEnabled(const U2SequenceObject* o) const;
+    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v) override;
+    bool isEnabled(const U2SequenceObject* o) const override;
 };
 
 class EntropyGraphAlgorithm : public GSequenceGraphAlgorithm {

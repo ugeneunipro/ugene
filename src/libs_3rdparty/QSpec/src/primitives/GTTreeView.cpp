@@ -20,6 +20,7 @@
  */
 
 #include "primitives/GTTreeView.h"
+#include <utils/GTUtilsQt.h>
 
 #include <QAbstractItemModel>
 
@@ -30,19 +31,43 @@
 namespace HI {
 
 #define GT_CLASS_NAME "GTTreeView"
-QModelIndex GTTreeView::findIndex(QTreeView* tree, QVariant data, Qt::ItemDataRole role, const GTGlobals::FindOptions& options) {
+
+QModelIndex GTTreeView::findIndexWithWait(QTreeView* tree, const QVariant& data, Qt::ItemDataRole role) {
+    GTGlobals::FindOptions options;
+    options.failIfNotFound = false;
+    QModelIndex result = findIndex(tree, data, role, options);
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && !result.isValid(); time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        result = findIndex(tree, data, role, options);
+    }
+    GT_CHECK_RESULT(result.isValid(), "Item not found: " + data.toString(), {});
+    return result;
+}
+
+void GTTreeView::checkItemIsNotPresentWithWait(QTreeView* tree, const QVariant& data, Qt::ItemDataRole role) {
+    GTGlobals::FindOptions options;
+    options.failIfNotFound = false;
+    QModelIndex result = findIndex(tree, data, role, options);
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && result.isValid(); time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        result = findIndex(tree, data, role, options);
+    }
+    GT_CHECK_RESULT(!result.isValid(), "Item is present in the tree: " + data.toString(), );
+}
+
+QModelIndex GTTreeView::findIndex(QTreeView* tree, const QVariant& data, Qt::ItemDataRole role, const GTGlobals::FindOptions& options) {
     return findIndex(tree, data, QModelIndex(), role, options);
 }
 
-QModelIndex GTTreeView::findIndex(QTreeView* tree, QVariant data, QModelIndex parent, Qt::ItemDataRole role, const GTGlobals::FindOptions& options) {
-    GT_CHECK_RESULT(tree != NULL, "Tree widget is NULL", QModelIndex());
+QModelIndex GTTreeView::findIndex(QTreeView* tree, const QVariant& data, QModelIndex parent, Qt::ItemDataRole role, const GTGlobals::FindOptions& options) {
+    GT_CHECK_RESULT(tree != nullptr, "Tree widget is NULL", QModelIndex());
 
     QModelIndexList foundIndexes = findIndexes(tree, data, role, parent, 0, options);
     if (foundIndexes.isEmpty()) {
         if (options.failIfNotFound) {
-            GT_CHECK_RESULT(foundIndexes.size() != 0, QString("Item with name %1 not found").arg(data.toString()), QModelIndex());
+            GT_CHECK_RESULT(!foundIndexes.empty(), QString("Item with name %1 not found").arg(data.toString()), QModelIndex());
         } else {
-            return QModelIndex();
+            return {};
         }
     }
 
@@ -52,25 +77,23 @@ QModelIndex GTTreeView::findIndex(QTreeView* tree, QVariant data, QModelIndex pa
     return foundIndexes.at(0);
 }
 
-QModelIndexList GTTreeView::findIndexes(QTreeView* tree, QVariant data, Qt::ItemDataRole role, QModelIndex parent, int depth, const GTGlobals::FindOptions& options) {
+QModelIndexList GTTreeView::findIndexes(QTreeView* tree, const QVariant& data, Qt::ItemDataRole role, QModelIndex parent, int depth, const GTGlobals::FindOptions& options) {
     QModelIndexList foundIndexes;
-    if (!(GTGlobals::FindOptions::INFINITE_DEPTH == options.depth || depth < options.depth)) {
+    if (!(options.depth == GTGlobals::FindOptions::INFINITE_DEPTH || depth < options.depth)) {
         return foundIndexes;
     }
 
     QAbstractItemModel* model = tree->model();
-    CHECK_SET_ERR_RESULT(NULL != model, "Model is NULL", foundIndexes);
+    CHECK_SET_ERR_RESULT(model != nullptr, "Model is NULL", foundIndexes);
 
     int rowcount = model->rowCount(parent);
     for (int i = 0; i < rowcount; i++) {
         const QModelIndex index = model->index(i, 0, parent);
         QVariant indexData = index.data(role);
-
-        if (data == indexData) {
+        if (GTUtilsQt::compareVariants(data, indexData)) {
             foundIndexes << index;
-        } else {
-            foundIndexes << findIndexes(tree, data, role, index, depth + 1, options);
         }
+        foundIndexes << findIndexes(tree, data, role, index, depth + 1, options);
     }
 
     return foundIndexes;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -84,17 +84,17 @@ public:
 
     CfgExternalToolModel(ModelType modelType, QObject* obj = nullptr);
 
-    int rowCount(const QModelIndex& parent = QModelIndex()) const;
-    int columnCount(const QModelIndex& parent = QModelIndex()) const;
-    Qt::ItemFlags flags(const QModelIndex& index) const;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
     CfgExternalToolItem* getItem(const QModelIndex& index) const;
     QList<CfgExternalToolItem*> getItems() const;
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     void createFormatDelegate(const QString& newType, CfgExternalToolItem* item);
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex());
-    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex());
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
 private:
     void init();
@@ -163,16 +163,16 @@ public:
     ~CfgExternalToolModelAttributes();
 
     void changeDefaultValueDelegate(const QString& newType, AttributeItem* item);
-    int rowCount(const QModelIndex& parent = QModelIndex()) const;
-    int columnCount(const QModelIndex& parent = QModelIndex()) const;
-    Qt::ItemFlags flags(const QModelIndex& index) const;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
     AttributeItem* getItem(const QModelIndex& index) const;
     QList<AttributeItem*> getItems() const;
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex());
-    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex());
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
 private:
     QList<AttributeItem*> items;

@@ -191,17 +191,7 @@ GUI_TEST_CLASS_DEFINITION(test_7012) {
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
-    bool hasUnexpectedLogMessage = lt.hasMessage("Ignored incorrect value of attribute");
-    CHECK_SET_ERR(!hasUnexpectedLogMessage, "Found unexpected message in the log");
-
-    // Check that output file contains only empty FASTA entries.
-    QStringList fileUrls = GTUtilsDashboard::getOutputFileUrls();
-    CHECK_SET_ERR(fileUrls.length() == 1, "Incorrect number of output files: " + QString::number(fileUrls.length()));
-    QString fileContent = GTFile::readAll(fileUrls[0]);
-    QStringList lines = fileContent.split("\n");
-    for (const auto& line : qAsConst(lines)) {
-        CHECK_SET_ERR(line.startsWith(">") || line.isEmpty(), "Only FASTA header lines are expected: " + line);
-    }
+    CHECK_SET_ERR(lt.hasError("Nothing to write"), "Error %1 'Nothing to write' not found in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7014) {
@@ -987,6 +977,128 @@ GUI_TEST_CLASS_DEFINITION(test_7247) {
     GTUtilsMdi::click(GTGlobals::Close);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7267_1) {
+    GTFile::copy(dataDir + "samples/Genbank/murine.gb", sandBoxDir + "/" + "test_7267_1.gb");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_1.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsProjectTreeView::rename("NC_001363", "test_7267_1");
+    GTUtilsProjectTreeView::rename("NC_001363 features", "test_7267_1");
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
+    GTFileDialog::openFile(sandBoxDir, "test_7267_1.gb");
+    GTUtilsProjectTreeView::click("test_7267_1");
+    GTUtilsProjectTreeView::click("test_7267_1 features");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_2) {
+    GTFile::copy(testDir + "_common_data/cmdline/pcr/pcr_check_ambiguous.seq", sandBoxDir + "/" + "test_7267_2.seq");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_2.seq");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
+    GTUtilsProjectTreeView::rename("test_7267_2", "test_7267_2_new");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_3) {
+    GTFile::copy(dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "/" + "test_7267_3.fa");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_3.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsProjectTreeView::rename("human_T1 (UCSC April 2002 chr7:115977709-117855134)", "test_7267_3");
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
+    GTFileDialog::openFile(sandBoxDir, "test_7267_3.fa");
+    GTUtilsProjectTreeView::click("test_7267_3");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_4) {
+    GTFile::copy(testDir + "_common_data/fastq/90-JRI-07.fastq", sandBoxDir + "/" + "test_7267_4.fastq");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_4.fastq");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsProjectTreeView::rename("90-JRI-07 sequence", "test_7267_4");
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
+
+    GTFileDialog::openFile(sandBoxDir, "test_7267_4.fastq");
+    GTUtilsProjectTreeView::click("test_7267_4");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_5) {
+    GTFile::copy(testDir + "_common_data/bed/valid_input/fields_num_3.bed", sandBoxDir + "/" + "test_7267_5.bed");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_5.bed");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::rename("test_chromosome features", "test_7267_5");
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
+    GTFileDialog::openFile(sandBoxDir, "test_7267_5.bed");
+    GTUtilsProjectTreeView::click("test_7267_5 features");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_6) {
+    GTFile::copy(testDir + "_common_data/gff/comments.gff", sandBoxDir + "/" + "test_7267_6.gff");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_6.gff");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::rename("chr22 features", "test_7267_6");
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
+    GTFileDialog::openFile(sandBoxDir, "test_7267_6.gff");
+    GTUtilsProjectTreeView::click("test_7267_6 features");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_7) {
+    GTFile::copy(testDir + "_common_data/gtf/comments.gtf", sandBoxDir + "/" + "test_7267_7.gtf");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_7.gtf");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::rename("annotationtablename features", "test_7267_7");
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Save all"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
+    GTFileDialog::openFile(sandBoxDir, "test_7267_7.gtf");
+    GTUtilsProjectTreeView::click("test_7267_7 features");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_8) {
+    GTFile::copy(dataDir + "samples/CLUSTALW/COI.aln", sandBoxDir + "/" + "test_7267_8.aln");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_8.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
+    GTUtilsProjectTreeView::rename("test_7267_8", "test_7267_8_new");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_9) {
+    GTFile::copy(dataDir + "samples/Newick/COI.nwk", sandBoxDir + "/" + "test_7267_9.nwk");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_9.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
+    GTUtilsProjectTreeView::rename("Tree", "test_7267_9");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_10) {
+    GTFile::copy(testDir + "_common_data/vcf/valid.vcf", sandBoxDir + "/" + "test_7267_10.vcf");
+    GTFileDialog::openFile(sandBoxDir, "test_7267_10.vcf");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
+    GTUtilsProjectTreeView::rename("II", "test_7267_10");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7267_11) {
+    GTFile::copy(testDir + "_common_data/text/text.txt", sandBoxDir + "/" + "test_7267_11.txt");
+    GTUtilsDialog::waitForDialog(new DocumentFormatSelectorDialogFiller("Plain text"));
+    GTUtilsProject::openFile(sandBoxDir + "/" + "test_7267_11.txt");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsNotifications::waitForNotification(true, "The object has been renamed");
+    GTUtilsProjectTreeView::rename("test_7267_11", "test_7267_11_new");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7276) {
     // Check that selection and sequence order does not change after KAlign alignment.
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
@@ -1654,6 +1766,37 @@ GUI_TEST_CLASS_DEFINITION(test_7438) {
     CHECK_SET_ERR(selectedRect.bottom() == 17, "Illegal end of the selection: " + QString::number(selectedRect.bottom()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7445) {
+    /*
+    * 1. Compose WD scheme Read NGS Reads Assembly->Extract Consensus from Assembly->Write Sequence
+    * 2. Set input assembly file to  common_data/ugenegb/1.bam.ugenegb
+    * 3. Set document format "ugenegb" or "Vector NTI seqience"
+    * 4. Run workflow
+    * Expected state: no output files produced, only one error in the log "Nothing to write"
+    */
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::addAlgorithm("Read NGS Reads Assembly", true);
+    GTUtilsWorkflowDesigner::addAlgorithm("Extract Consensus from Assembly", true);
+    GTUtilsWorkflowDesigner::addAlgorithm("Write Sequence", true);
+
+    GTUtilsWorkflowDesigner::connect(GTUtilsWorkflowDesigner::getWorker("Read NGS Reads Assembly"), GTUtilsWorkflowDesigner::getWorker("Extract Consensus from Assembly"));
+    GTUtilsWorkflowDesigner::connect(GTUtilsWorkflowDesigner::getWorker("Extract Consensus from Assembly"), GTUtilsWorkflowDesigner::getWorker("Write Sequence"));
+
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read NGS Reads Assembly"));
+    GTMouseDriver::click();
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/ugenedb/1.bam.ugenedb");
+
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Write Sequence"));
+    GTMouseDriver::click();
+    GTUtilsWorkflowDesigner::setParameter("Document format", "GFF", GTUtilsWorkflowDesigner::comboValue);
+
+    GTLogTracer lt;
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasError("Nothing to write"), "Error %1 'Nothing to write' not found in the log");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7447) {
     // Check that search results in MSA Editor are reset when user enters incorrect search pattern.
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/HIV-1.aln");
@@ -1872,13 +2015,9 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     GTFileDialog::openFile(dataDir + "samples/PDB/1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    auto splitterCenter = GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint();
-    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 1125 : 1100;
-    GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(deltaX, 0));
-
-    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove sequence"}));
-    QToolBar* toolbar = GTWidget::findToolBar("views_tool_bar_1CF7 chain A sequence");
-    GTWidget::click(GTWidget::findWidget("qt_toolbar_ext_button", toolbar));
+    auto toolbar = GTWidget::findToolBar("views_tool_bar_1CF7 chain A sequence");
+    GTWidget::click(GTWidget::findWidget("remove_sequence", toolbar));
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7455) {
@@ -5010,7 +5149,7 @@ GUI_TEST_CLASS_DEFINITION(test_7956) {
         fixedFile.write(content);
         fixedFile.close();
         fastaFile = fixedFasta;
-    }    
+    }
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(new ImportACEFileFiller(false, sandBoxDir + "test_7957.ugenedb"));
     GTUtilsDialog::waitForDialog(new CAP3SupportDialogFiller({fastaFile}, sandBoxDir + "test_7957.ace"));
@@ -5061,7 +5200,7 @@ GUI_TEST_CLASS_DEFINITION(test_7962) {
         }
     }
 }
-    
+
 GUI_TEST_CLASS_DEFINITION(test_7965) {
     // Open human_T1.fa.
     // Open "Find pattern" tab (Ctrl + F).
@@ -5152,19 +5291,19 @@ GUI_TEST_CLASS_DEFINITION(test_7974) {
 
 GUI_TEST_CLASS_DEFINITION(test_7979) {
     /*
-    * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
-    * 2. Close view for sars.gb
-    * 3. Right click on sequence object in sars.gb and add it to opened view
-    * 4. Press "Lock scales" button
-    * Expected state: "Lock scales: visible range start" menu item checked in "Lock scales" menu
-    * 5. Activate "Lock scales: visible range start" menu item in "Lock scales" menu
-    * Expected state: "Lock scales" button is not pressed
-    * 6. Press "Lock scales" button
-    * 7. Activate "Lock scales: selected annotation" menu item in "Lock scales" menu
-    * Expected state: "Lock scales: selected annotation" menu item checked in "Lock scales" menu, other items are not checked
-    * 8. Press "Lock scales" button
-    * Expected state: "Lock scales" button is not pressed, no menu items selected
-    */
+     * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
+     * 2. Close view for sars.gb
+     * 3. Right click on sequence object in sars.gb and add it to opened view
+     * 4. Press "Lock scales" button
+     * Expected state: "Lock scales: visible range start" menu item checked in "Lock scales" menu
+     * 5. Activate "Lock scales: visible range start" menu item in "Lock scales" menu
+     * Expected state: "Lock scales" button is not pressed
+     * 6. Select any annotation on active sequence view. Press "Lock scales" button
+     * 7. Activate "Lock scales: selected annotation" menu item in "Lock scales" menu
+     * Expected state: "Lock scales: selected annotation" menu item checked in "Lock scales" menu, other items are not checked
+     * 8. Press "Lock scales" button
+     * Expected state: "Lock scales" button is not pressed, no menu items selected
+     */
     GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Separate;
     GTUtilsDialog::waitForDialog(new GTSequenceReadingModeDialogUtils());
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list(dataDir + "samples/Genbank/", {"NC_014267.1.gb", "sars.gb"}));
@@ -5216,7 +5355,7 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     QAbstractButton* lockScalesButton = qobject_cast<QAbstractButton*>(GTWidget::findWidget("Lock scales"));
     GTWidget::click(lockScalesButton);
     QPoint menuActivationPoint = QPoint(lockScalesButton->size().width() - 6, lockScalesButton->size().height() / 2);
-    
+
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("Lock scales: visible range start")));
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
@@ -5224,6 +5363,9 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     CHECK_SET_ERR(!lockScalesButton->isDown(), "'Lock scales' button should be down");
+
+    auto firstAnnotation = GTUtilsAnnotationsTreeView::findFirstAnnotation();
+    GTUtilsAnnotationsTreeView::selectItems({firstAnnotation});
 
     GTWidget::click(lockScalesButton);
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuClicker("Lock scales: selected annotation")));

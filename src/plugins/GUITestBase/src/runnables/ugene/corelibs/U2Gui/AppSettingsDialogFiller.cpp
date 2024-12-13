@@ -332,7 +332,7 @@ void NewColorSchemeCreator::commonScenario() {
 
             class Scenario : public CustomScenario {
             public:
-                void run() {
+                void run() override {
                     QWidget* dialog = GTWidget::getActiveModalWidget();
                     GTUtilsDialog::waitForDialog(new ColorDialogFiller(255, 0, 0));
                     GTWidget::click(GTWidget::findWidget("alphabetColorsFrame", dialog), Qt::LeftButton, QPoint(5, 5));

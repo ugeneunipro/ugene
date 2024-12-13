@@ -705,31 +705,31 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_8) {
     auto colorScheme = GTWidget::findComboBox("colorScheme");
     GTComboBox::selectItemByText(colorScheme, "UGENE");
     //    4. Check colors for all symbols
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(0, 0), "#00ccff");  // a
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(0, 0), "#ffdab3");  // a
     GTUtilsMSAEditorSequenceArea::checkColor(QPoint(1, 0), "#ccff99");  // b
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(2, 0), "#6600ff");  // c
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(3, 0), "#ffff00");  // d
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(2, 0), "#ccffcc");  // c
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(3, 0), "#ffc2c2");  // d
     GTUtilsMSAEditorSequenceArea::checkColor(QPoint(4, 0), "#c0bdbb");  // e
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(5, 0), "#3df490");  // f
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(6, 0), "#ff5082");  // g
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(7, 0), "#fff233");  // h
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(8, 0), "#00abed");  // i
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(5, 0), "#65ffab");  // f
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(6, 0), "#ffe4ec");  // g
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(7, 0), "#ffff66");  // h
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(8, 0), "#1dc0ff");  // i
     GTUtilsMSAEditorSequenceArea::checkColor(QPoint(28, 0), "#6699ff");  // j
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(9, 0), "#ffee00");  // k
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(10, 0), "#008fc6");  // l
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(11, 0), "#1dc0ff");  // m
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(12, 0), "#33ff00");  // n
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(9, 0), "#ffe600");  // k
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(10, 0), "#00abed");  // l
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(11, 0), "#008fc6");  // m
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(12, 0), "#b3e6ff");  // n
     GTUtilsMSAEditorSequenceArea::checkColor(QPoint(26, 0), "#ffff99");  // o
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(13, 0), "#d5426c");  // p
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(14, 0), "#3399ff");  // q
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(15, 0), "#d5c700");  // r
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(16, 0), "#ff83a7");  // s
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(17, 0), "#ffd0dd");  // t
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(13, 0), "#ff83a7");  // p
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(14, 0), "#e6ccff");  // q
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(15, 0), "#d4b700");  // r
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(16, 0), "#ff5082");  // s
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(17, 0), "#c4375e");  // t
     GTUtilsMSAEditorSequenceArea::checkColor(QPoint(27, 0), "#ff00cc");  // u
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(18, 0), "#ff6699");  // v
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(19, 0), "#33cc78");  // w
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(18, 0), "#d6ebff");  // v
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(19, 0), "#3df490");  // w
     GTUtilsMSAEditorSequenceArea::checkColor(QPoint(20, 0), "#fcfcfc");  // x
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(21, 0), "#65ffab");  // y
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(21, 0), "#33cc78");  // y
     GTUtilsMSAEditorSequenceArea::checkColor(QPoint(22, 0), "#ffffcc");  // z
     GTUtilsMSAEditorSequenceArea::checkColor(QPoint(23, 0), "#33ff00");  //*
     GTUtilsMSAEditorSequenceArea::checkColor(QPoint(25, 0), "#ffffff");  // gap
@@ -916,7 +916,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0007_1) {
     //    4. Check no highlighting
     setHighlightingType("No highlighting");
     GTUtilsMSAEditorSequenceArea::checkColor(QPoint(6, 1), "#c0bdbb");
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(7, 1), "#ffee00");
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(7, 1), "#ffe600");
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0008) {
@@ -953,7 +953,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0008_1) {
     //    4. Check Agreements highlighting type
     setHighlightingType("Agreements");
     GTUtilsMSAEditorSequenceArea::checkColor(QPoint(6, 1), "#ffffff");
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(7, 1), "#ffee00");
+    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(7, 1), "#ffe600");
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0009) {

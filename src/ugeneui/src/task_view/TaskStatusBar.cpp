@@ -32,6 +32,7 @@
 #include <U2Gui/MainWindow.h>
 
 #include "TaskViewController.h"
+#include "workspace/WorkspaceConnectionStatusIcon.h"
 
 namespace U2 {
 
@@ -78,6 +79,7 @@ TaskStatusBar::TaskStatusBar() {
     notificationLabel->setPixmap(notificationEmpty);
     notificationLabel->setObjectName("notificationLabel");
     l->addWidget(lampLabel);
+    l->addWidget(new WorkspaceConnectionStatusIcon());
     l->addWidget(notificationLabel);
 
 #ifdef Q_OS_DARWIN

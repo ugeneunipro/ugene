@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,10 +47,10 @@ public:
     CircularAnnotationItem(Annotation* ann, CircularAnnotationRegionItem* region, CircularViewRenderArea* _ra);
     CircularAnnotationItem(Annotation* ann, QList<CircularAnnotationRegionItem*>& regions, CircularViewRenderArea* _ra);
     ~CircularAnnotationItem();
-    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* item, QWidget* widget);
+    void paint(QPainter* p, const QStyleOptionGraphicsItem* item, QWidget* widget) override;
     Annotation* getAnnotation() const;
-    virtual QRectF boundingRect() const;
-    virtual bool contains(const QPointF& point) const;
+    QRectF boundingRect() const override;
+    bool contains(const QPointF& point) const override;
     int containsRegion(const QPointF& point);
     CircularAnnotationRegionItem* getContainingRegion(const QPointF& point);
 
@@ -74,7 +74,7 @@ class CircularAnnotationRegionItem : public QGraphicsPathItem {
 
 public:
     CircularAnnotationRegionItem(const QPainterPath& path, bool isShort, int number);
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget /* = 0 */);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget /* = 0 */) override;
     CircularAnnotationLabel* getLabel() const;
     void setLabel(CircularAnnotationLabel* label);
 
@@ -115,10 +115,10 @@ class CircularAnnotationLabel : public QGraphicsItem {
 public:
     CircularAnnotationLabel(Annotation* ann, const QVector<U2Region>& annLocation, bool isAutoAnnotation, int _region, int sequenceLength, const QFont& font, CircularViewRenderArea* renderArea);
 
-    void paint(QPainter* p, const QStyleOptionGraphicsItem* item, QWidget* widget);
+    void paint(QPainter* p, const QStyleOptionGraphicsItem* item, QWidget* widget) override;
     Annotation* getAnnotation() const;
-    QRectF boundingRect() const;
-    bool contains(const QPointF& point) const;
+    QRectF boundingRect() const override;
+    bool contains(const QPointF& point) const override;
     int getRegion() const;
     void setLabelPosition();
     static void setLabelsVisible(QList<CircularAnnotationLabel*>& labelItems);

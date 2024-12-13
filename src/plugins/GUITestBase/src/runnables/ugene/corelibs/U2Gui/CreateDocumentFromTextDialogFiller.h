@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -86,7 +86,7 @@ public:
                                documentFormat _format,
                                const QString& _sequenceName,
                                GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString pasteDataHere;

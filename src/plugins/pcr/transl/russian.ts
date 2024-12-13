@@ -619,27 +619,27 @@
 <context>
     <name>U2::LocalWorkflow::InSilicoPcrReportTask</name>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="409"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="405"/>
         <source>Generate In Silico PCR report</source>
         <translation>Generate In Silico PCR report</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="442"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="438"/>
         <source>Sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="458"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="454"/>
         <source>Products count table</source>
         <translation>Таблица продуктов</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="467"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="463"/>
         <source>An error &apos;%1&apos; has occurred during processing file with primers &apos;%2&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="474"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="470"/>
         <source>Primer pair details</source>
         <translation>Информация о парах праймеров</translation>
     </message>
@@ -772,57 +772,57 @@
         <translation>Имитирует PCR для последовательностей и пар праймеров. Создает таблицу со статистиками PCR.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="193"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="192"/>
         <source>Can not read the primers file: </source>
         <translation>Can not read the primers file: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="204"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="202"/>
         <source>Can&apos;t read the file: </source>
         <translation>Can&apos;t read the file: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="208"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="206"/>
         <source>No primer sequences in the file: </source>
         <translation>No primer sequences in the file: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="209"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="207"/>
         <source>There is the odd number of primers in the file: </source>
         <translation>There is the odd number of primers in the file: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="227"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="229"/>
         <source>All primer pairs have been filtered, see log for details.</source>
         <translation>Все пары праймеров были отфильтрованы, детали вычисления смотрите в логе.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="307"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="303"/>
         <source>Wrong sequence objects count</source>
         <translation>Wrong sequence objects count</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="317"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="313"/>
         <source>Wrong annotations objects count</source>
         <translation>Wrong annotations objects count</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="351"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="347"/>
         <source>The input file &quot;%1&quot; doesn&apos;t contain a valid sequence.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="355"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="351"/>
         <source>The sequence is too long: </source>
         <translation>The sequence is too long: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="389"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="385"/>
         <source>Failed to find TM algorithm with id &apos;%1&apos;.</source>
         <translation>Не удалось найти алгоритм расчета температуры плавления с ID %1.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="398"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="394"/>
         <source>Multiple In Silico PCR</source>
         <translation>Multiple In Silico PCR</translation>
     </message>

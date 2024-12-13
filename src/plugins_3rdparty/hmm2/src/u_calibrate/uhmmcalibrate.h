@@ -1,5 +1,4 @@
-#ifndef _U2_UHMM_CALIBRATE_H_
-#define _U2_UHMM_CALIBRATE_H_
+#pragma once
 
 struct plan7_s;
 struct alphabet_s;
@@ -66,5 +65,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

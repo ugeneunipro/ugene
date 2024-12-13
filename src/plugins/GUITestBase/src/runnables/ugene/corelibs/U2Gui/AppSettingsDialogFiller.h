@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ public:
           itemStyle(none), r(_r), g(_g), b(_b) {
     }
     AppSettingsDialogFiller(CustomScenario* customScenario);
-    void commonScenario();
+    void commonScenario() override;
 
     static void openTab(Tabs tab);
     static void clickOnTool(const QString& toolName);
@@ -82,7 +82,7 @@ public:
                   Change };
     NewColorSchemeCreator(QString _schemeName, alphabet _al, Action _act = Create, bool cancel = false);
     NewColorSchemeCreator(CustomScenario* c);
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QString schemeName;
@@ -99,7 +99,7 @@ public:
     CreateAlignmentColorSchemeDialogFiller(CustomScenario* c)
         : Filler("CreateMSAScheme", c), al(NewColorSchemeCreator::nucl) {
     }
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QString schemeName;
@@ -114,6 +114,6 @@ public:
     ColorSchemeDialogFiller(CustomScenario* c)
         : Filler("ColorSchemaDialog", c) {
     }
-    virtual void commonScenario();
+    void commonScenario() override;
 };
 }  // namespace U2

@@ -248,9 +248,9 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
     QString testFilePath = homePath + "/test_5018.fa";
 
     //    1. Ensure that there is no "test_5018.fa" file in the home dir.
-    if (GTFile::check(testFilePath)) {
+    if (GTFile::isFileExists(testFilePath)) {
         QFile(testFilePath).remove();
-        CHECK_SET_ERR(!GTFile::check(testFilePath), "File can't be removed");
+        CHECK_SET_ERR(!GTFile::isFileExists(testFilePath), "File can't be removed");
     }
 
     //    2. Open "data/samples/FASTA/human_T1.fa".
@@ -265,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state: "test_5018.fa" appears in the home dir.
-    CHECK_SET_ERR(GTFile::check(testFilePath), "File was not created");
+    GTFile::checkFileExists(testFilePath);
     GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
     QFile(testFilePath).remove();
     GTUtilsDialog::checkNoActiveWaiters(10000);
@@ -819,6 +819,65 @@ GUI_TEST_CLASS_DEFINITION(test_5231) {
     CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5239) {
+    /*
+    * 1. Open BLAST make database dialog Tools->BLAST->BLAST make database...
+    * 2. Fill all fields with valid data, except "database path" - set not existed directory
+    * Expected state: Build button is disabled, corresponding tooltip appeared
+    * 3. Fill all fields with valid data, except "database path" - set read only directory
+    * Expected state: Build button is disabled, corresponding tooltip appeared
+    * 4. Set valid "database path" directory
+    * Expected state: Build button is enabled
+    * 5. Set valid "database path" directory
+    * 6. Make it read only, press "Build" button
+    * Expected state: Corresponding error appeared in log
+    */
+
+    class MakeBlastDbDialogTestPathsFiller : public MakeBlastDbDialogFiller {
+    public:
+        MakeBlastDbDialogTestPathsFiller()
+            : MakeBlastDbDialogFiller(MakeBlastDbDialogFiller::Parameters()){};
+        void commonScenario() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            auto inputFilesRadioButton = GTWidget::findRadioButton("inputFilesRadioButton", dialog);
+            GTWidget::findLineEdit("inputFilesLineEdit", dialog);
+
+            GTRadioButton::click(inputFilesRadioButton);
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list(dataDir + "/samples/Genbank/", {"murine.gb"}));
+            GTWidget::click(GTWidget::findWidget("inputFilesToolButton"));
+
+            auto buildButton = GTWidget::findButtonByText("Build", GTUtilsDialog::buttonBox(dialog));
+
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), "~/", false, true);
+            CHECK_SET_ERR(GTWidget::findLineEdit("databasePathLineEdit", dialog)->toolTip() == "Output database path does not exist.", "Not expected tooltip");
+            CHECK_SET_ERR(!buildButton->isEnabled(), "Build button should be disabled!");
+
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), sandBoxDir + "read_only_dir");
+            CHECK_SET_ERR(GTWidget::findLineEdit("databasePathLineEdit", dialog)->toolTip() == "Output database path is read only.", "Not expected tooltip");
+            CHECK_SET_ERR(!buildButton->isEnabled(), "Build button should be disabled!");
+
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), sandBoxDir);
+            CHECK_SET_ERR(buildButton->isEnabled(), "Build button should be enabled!");
+
+            QDir().mkpath(sandBoxDir + "5239");
+            GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), sandBoxDir + "5239");
+            GTFile::setReadOnly(sandBoxDir + "5239");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    QDir().mkpath(sandBoxDir + "read_only_dir");
+    GTFile::setReadOnly(sandBoxDir + "read_only_dir");
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new MakeBlastDbDialogTestPathsFiller);
+    GTMenu::clickMainMenuItem({"Tools", "BLAST", "BLAST make database..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasError("Output database path is read only."), "Log should contain 'Output database path is read only.' error");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5246) {
     // 1. Open file human_t1.fa
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
@@ -1168,7 +1227,7 @@ GUI_TEST_CLASS_DEFINITION(test_5281) {
     * 3. Find HMM3 signals with _common_data\_regession\1704\LRR_4.hmm model
     * Expected state: there is no errors in the log and 27 results found
     */
-    
+
     GTLogTracer lt;
     GTFileDialog::openFile(testDir + "_common_data/regression/1704", "lrr_test_new.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -1191,7 +1250,7 @@ GUI_TEST_CLASS_DEFINITION(test_5291) {
     * 6. Run workflow.
     * Expected state: no errors in the log.
     */
-    
+
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsWorkflowDesigner::loadWorkflow(testDir + "_common_data/scenarios/_regression/5291/5291.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -2642,7 +2701,7 @@ GUI_TEST_CLASS_DEFINITION(test_5657) {
 
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::General);
     GTWidget::click(GTWidget::findToolButton("convertNucleicAlphabetButton"));
-    
+
     GTLogTracer lt;
     GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTUtilsDialog::add(new KalignDialogFiller());
@@ -4429,7 +4488,7 @@ GUI_TEST_CLASS_DEFINITION(test_5833) {
     readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString();
     CHECK_SET_ERR("2" == rowNumberString, QString("Unexpected row number label: expected '%1', got '%2'").arg("2").arg(rowNumberString));
     CHECK_SET_ERR("16" == rowsCountString, QString("Unexpected rows count label: expected '%1', got '%2'").arg("16").arg(rowsCountString));
-    CHECK_SET_ERR("gap" == referencePositionString, QString("Unexpected reference position label: expected '%1', got '%2'").arg("gap").arg(referencePositionString));
+    CHECK_SET_ERR("2499+" == referencePositionString, QString("Unexpected reference position label: expected '%1', got '%2'").arg("2499+").arg(referencePositionString));
     CHECK_SET_ERR("11878" == referenceLengthString, QString("Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR("440" == readPositionString, QString("Unexpected read position label: expected '%1', got '%2'").arg("440").arg(readPositionString));
     CHECK_SET_ERR("1174" == readLengthString, QString("Unexpected read length label: expected '%1', got '%2'").arg("1174").arg(readLengthString));

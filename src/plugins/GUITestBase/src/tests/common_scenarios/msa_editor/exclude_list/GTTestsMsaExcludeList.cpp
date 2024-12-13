@@ -25,7 +25,6 @@
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTToolbar.h>
-#include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
 
 #include "GTTestsMsaExcludeList.h"
@@ -160,7 +159,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsMsaEditor::openExcludeList();
     GTUtilsMsaEditor::moveRowsToExcludeList({"a", "h"});
     GTUtilsMsaEditor::closeExcludeList();
-    GTFile::check(sandBoxDir + baseFileName + ".exclude-list.fasta");
+    GTFile::checkFileExists(sandBoxDir + baseFileName + ".exclude-list.fasta");
 
     GTUtilsMsaEditor::openExcludeList();
     GTUtilsMsaEditor::checkExcludeList({"a", "h"});

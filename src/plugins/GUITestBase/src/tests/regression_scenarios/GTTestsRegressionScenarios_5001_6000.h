@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,6 +59,7 @@ GUI_TEST_CLASS_DECLARATION(test_5211)
 GUI_TEST_CLASS_DECLARATION(test_5220)
 GUI_TEST_CLASS_DECLARATION(test_5227)
 GUI_TEST_CLASS_DECLARATION(test_5231)
+GUI_TEST_CLASS_DECLARATION(test_5239)
 GUI_TEST_CLASS_DECLARATION(test_5246)
 GUI_TEST_CLASS_DECLARATION(test_5249)
 GUI_TEST_CLASS_DECLARATION(test_5252)

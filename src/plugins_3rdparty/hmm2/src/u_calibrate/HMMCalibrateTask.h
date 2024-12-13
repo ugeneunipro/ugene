@@ -1,5 +1,4 @@
-#ifndef _U2_HMMCALIBRATE_TASK_H_
-#define _U2_HMMCALIBRATE_TASK_H_
+#pragma once
 
 #include <U2Core/Task.h>
 
@@ -117,4 +116,3 @@ private:
 };
 
 }  // namespace U2
-#endif

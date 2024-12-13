@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -121,7 +121,7 @@ private:
 class ChemicalElemColorScheme : public BioStruct3DColorScheme {
     QHash<int, Color4f> elementColorMap;
     ChemicalElemColorScheme(const BioStruct3DObject* biostruct);
-    virtual Color4f getSchemeAtomColor(const SharedAtom& atom) const;
+    Color4f getSchemeAtomColor(const SharedAtom& atom) const override;
 
 public:
     COLOR_SCHEME_FACTORY(ChemicalElemColorScheme)
@@ -130,7 +130,7 @@ public:
 class ChainsColorScheme : public BioStruct3DColorScheme {
     QMap<int, Color4f> chainColorMap;
     ChainsColorScheme(const BioStruct3DObject* biostruct);
-    virtual Color4f getSchemeAtomColor(const SharedAtom& atom) const;
+    Color4f getSchemeAtomColor(const SharedAtom& atom) const override;
 
 private:
     //! @return Molecular chain colors for biostruct object.
@@ -147,7 +147,7 @@ class SecStructColorScheme : public BioStruct3DColorScheme {
     QMap<QByteArray, Color4f> secStrucColorMap;
     QMap<int, MolStructs> molMap;
     SecStructColorScheme(const BioStruct3DObject* biostruct);
-    virtual Color4f getSchemeAtomColor(const SharedAtom& atom) const;
+    Color4f getSchemeAtomColor(const SharedAtom& atom) const override;
 
 private:
     //! @return Secondary structure annotation colors for biostruct object.

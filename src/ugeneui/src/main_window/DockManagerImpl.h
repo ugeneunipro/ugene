@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,8 +52,9 @@ public:
     QDockWidget* dock = nullptr;
     DockWrapWidget* wrapWidget = nullptr;
     QIcon dockIcon;
-    QAction* action = nullptr;
     bool isActive = false;
+    QAction* keySequenceAction = nullptr;
+    QAction* toolBarAction = nullptr;
 };
 
 class MWDockManagerImpl : public MWDockManager {
@@ -62,7 +63,7 @@ public:
     MWDockManagerImpl(MainWindowImpl* _mw);
     ~MWDockManagerImpl();
 
-    virtual QAction* registerDock(MWDockArea area, QWidget* w, const QKeySequence& ks = QKeySequence());
+    virtual QAction* registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& keySequence = QKeySequence());
 
     virtual QWidget* findWidget(const QString& widgetObjName);
 

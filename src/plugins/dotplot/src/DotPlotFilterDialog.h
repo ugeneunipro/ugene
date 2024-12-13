@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ class DotPlotFilterDialog : public QDialog, public Ui_DotPlotFilterDialog {
 public:
     DotPlotFilterDialog(QWidget* parent, ADVSequenceObjectContext* sequenceX, ADVSequenceObjectContext* sequenceY);
 
-    virtual void accept();
+    void accept() override;
 
     FilterType getFilterType();
     QMultiMap<FilterIntersectionParameter, QString> getFeatureNames() {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,6 +82,9 @@ public:
 
     /** Returns visual string representation of the item for logging. */
     static QString toString(QTreeWidgetItem* item);
+
+    /** Returns count of the visible tree items */
+    static int countVisibleItems(QTreeWidget* tree, QTreeWidgetItem* parent = 0);
 
 private:
     static QTreeWidgetItem* findItemPrivate(

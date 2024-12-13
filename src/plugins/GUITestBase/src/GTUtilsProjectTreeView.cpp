@@ -124,9 +124,7 @@ QPoint GTUtilsProjectTreeView::getItemCenter(QTreeView* treeView, const QModelIn
     return treeView->mapToGlobal(r.center());
 }
 
-namespace {
-
-void editItemName(const QString& newItemName, GTGlobals::UseMethod invokeMethod) {
+static void editItemName(const QString& newItemName, GTGlobals::UseMethod invokeMethod) {
     switch (invokeMethod) {
         case GTGlobals::UseKey:
             GTMouseDriver::click();
@@ -147,8 +145,6 @@ void editItemName(const QString& newItemName, GTGlobals::UseMethod invokeMethod)
 
     GTGlobals::sleep(500);
 }
-
-}  // namespace
 
 void GTUtilsProjectTreeView::rename(const QString& itemName, const QString& newItemName, GTGlobals::UseMethod invokeMethod) {
     GTMouseDriver::moveTo(getItemCenter(itemName));
@@ -584,7 +580,7 @@ void GTUtilsProjectTreeView::sendDragAndDrop(const QPoint& enterPos, QWidget* dr
 }
 
 QPoint GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint() {
-    QWidget* projectView = GTWidget::findWidget("project_view");
+    QWidget* projectView = GTWidget::findWidget(DOCK_PROJECT_VIEW);
     QRect rect = projectView->rect();
     int x = rect.topRight().x() + (isOsMac() ? 1 : 4);
     int y = rect.center().y();

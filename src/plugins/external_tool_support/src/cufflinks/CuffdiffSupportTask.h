@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -74,15 +74,15 @@ private:
     class LogParser : public ExternalToolLogParser {
     public:
         LogParser();
-        void parseErrOutput(const QString& partOfLog);
+        void parseErrOutput(const QString& partOfLog) override;
     };
 
 public:
     CuffdiffSupportTask(const CuffdiffSettings& settings);
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    ReportResult report();
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    ReportResult report() override;
     QStringList getOutputFiles() const;
     QStringList getSystemOutputFiles() const;
 

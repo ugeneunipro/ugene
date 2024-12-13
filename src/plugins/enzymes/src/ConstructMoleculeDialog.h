@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ class ConstructMoleculeDialog : public QDialog, public Ui_ConstructMoleculeDialo
     Q_OBJECT
 public:
     ConstructMoleculeDialog(const QList<DNAFragment>& fragments, QWidget* parent);
-    virtual void accept();
+    void accept() override;
 
 private slots:
     void sl_onTakeButtonClicked();
@@ -53,10 +53,11 @@ private slots:
     void sl_adjustRightEnd();
 
 protected:
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
-    void update();
+    void updateConstructMoleculeTableWidget();
+    void updateAdjustEndButtonsStates();
     void initSaveController();
 
     static const QString createEndSign(const DNAFragmentTerm& term);

@@ -139,6 +139,7 @@ qint64 ConvertAceToSqliteTask::importAssemblies(IOAdapter& ioAdapter) {
     QScopedPointer<AceReader> aceReader;
     aceReader.reset(new AceReader(ioAdapter, os));
     CHECK_OP(os, totalReadsImported);
+    CHECK_EXT(aceReader->getContigsCount() > 0, setError(tr("There is no assemblies in input file")), totalReadsImported);
 
     QScopedPointer<AceIterator> iterator;
     iterator.reset(new AceIterator(*aceReader, stateInfo));
@@ -158,7 +159,7 @@ qint64 ConvertAceToSqliteTask::importAssemblies(IOAdapter& ioAdapter) {
 
         U2Sequence reference;
         reference.length = aceReference.data.length();
-        reference.visualName = aceReference.name;
+        reference.visualName = aceReference.name + "_ref";
         reference.alphabet = U2AlphabetUtils::findBestAlphabet(aceReference.data)->getId();
 
         seqDbi->createSequenceObject(reference, U2ObjectDbi::ROOT_FOLDER, stateInfo);

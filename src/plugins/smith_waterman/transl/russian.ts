@@ -50,7 +50,7 @@
 <context>
     <name>U2::AlignmentAlgorithmsRegistry</name>
     <message>
-        <location filename="../src/SWAlgorithmPlugin.cpp" line="146"/>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="147"/>
         <source>Smith-Waterman</source>
         <translation>Поиск Смита-Ватермана</translation>
     </message>
@@ -58,17 +58,17 @@
 <context>
     <name>U2::GTest_SmithWatermnan</name>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="216"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="217"/>
         <source>**</source>
         <translation>**</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="219"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="220"/>
         <source>,</source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="226"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="227"/>
         <source>..</source>
         <translation>..</translation>
     </message>
@@ -345,7 +345,7 @@
 <context>
     <name>U2::PairwiseAlignmentSmithWatermanMainWidget</name>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanGUIExtension.cpp" line="118"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanGUIExtension.cpp" line="119"/>
         <source>Matrix not found.</source>
         <translation>Матрица не найдена.</translation>
     </message>
@@ -524,7 +524,7 @@
 <context>
     <name>U2::SWAlgorithmADVContext</name>
     <message>
-        <location filename="../src/SWAlgorithmPlugin.cpp" line="122"/>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="123"/>
         <source>Find pattern [Smith-Waterman]...</source>
         <translation>Поиск подстроки (алгоритм Смита-Ватермана)...</translation>
     </message>

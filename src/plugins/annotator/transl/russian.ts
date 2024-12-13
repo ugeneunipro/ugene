@@ -252,12 +252,12 @@
 <context>
     <name>U2::CustomPatternAnnotationTask</name>
     <message>
-        <location filename="../src/CustomPatternAnnotationTask.cpp" line="57"/>
+        <location filename="../src/CustomPatternAnnotationTask.cpp" line="65"/>
         <source>Custom pattern annotation</source>
         <translation>Пользовательская аннотация</translation>
     </message>
     <message>
-        <location filename="../src/CustomPatternAnnotationTask.cpp" line="117"/>
+        <location filename="../src/CustomPatternAnnotationTask.cpp" line="125"/>
         <source>Object with annotations was removed</source>
         <translation>Объект с аннотациями был удалён</translation>
     </message>
@@ -265,7 +265,7 @@
 <context>
     <name>U2::CustomPatternAutoAnnotationUpdater</name>
     <message>
-        <location filename="../src/CustomPatternAnnotationTask.cpp" line="222"/>
+        <location filename="../src/CustomPatternAnnotationTask.cpp" line="236"/>
         <source>Plasmid features</source>
         <translation>Аннотирование плазмид</translation>
     </message>

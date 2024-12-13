@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,6 +42,9 @@ public:
         return posEdit;
     }
 
+    /* Returns position if dialog accepted, otherwise -1 */
+    qint64 getPosition() const;
+
 signals:
     void si_positionChanged(int pos);
 
@@ -58,6 +61,7 @@ private:
     QLineEdit* posEdit;
     bool autoclose;
     QDialog* dialog;
+    qint64 position = -1;
 };
 
 }  // namespace U2

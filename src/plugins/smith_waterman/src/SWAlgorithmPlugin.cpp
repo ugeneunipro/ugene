@@ -109,6 +109,7 @@ QList<XMLTestFactory*> SWAlgorithmTests::createTestFactories() {
     QList<XMLTestFactory*> res;
     res.append(GTest_SmithWatermnan::createFactory());
     res.append(GTest_SmithWatermnanPerf::createFactory());
+    res.append(GTest_SwAlignmentSse::createFactory());
     return res;
 }
 

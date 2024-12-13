@@ -49,7 +49,9 @@ namespace U2 {
 const int GFFFormat::LOCAL_READ_BUFFER_SIZE = 32768;
 
 GFFFormat::GFFFormat(QObject* p)
-    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::GFF, DocumentFormatFlag_SupportWriting, QStringList("gff")) {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::GFF,
+                                   DocumentFormatFlag_SupportWriting | DocumentFormatFlag_HasModifiableName,
+                                   QStringList("gff")) {
     formatName = tr("GFF");
     formatDescription = tr("GFF is a format used for storing features and annotations");
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
@@ -231,7 +233,7 @@ static QStringList splitGffAttributes(const QString& line, char sep) {
 void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
-    QScopedArrayPointer<char> buff(new char[LOCAL_READ_BUFFER_SIZE]);    
+    QScopedArrayPointer<char> buff(new char[LOCAL_READ_BUFFER_SIZE]);
     // -1 - because line terminator excluded and we should add it manually
     int len = io->readLine(buff.data(), LOCAL_READ_BUFFER_SIZE - 1);
     CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
@@ -651,9 +653,7 @@ void GFFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
 
             foreach (const U2Region& r, location) {
                 // filling strand field
-                if (ann->getStrand().isComplementary()) {
-                    row[6] = "-";
-                }
+                row[6] = ann->getStrand().isComplementary() ? "-" : "+";
                 // filling location fields
                 row[3] = QString::number(r.startPos + 1);
                 row[4] = QString::number(r.endPos());

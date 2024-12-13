@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ public:
     CuffdiffPrompter(Actor* parent = 0);
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class CuffdiffWorker : public BaseWorker {
@@ -46,10 +46,10 @@ class CuffdiffWorker : public BaseWorker {
 public:
     CuffdiffWorker(Actor* actor);
 
-    void init();
-    bool isReady() const;
-    Task* tick();
-    void cleanup();
+    void init() override;
+    bool isReady() const override;
+    Task* tick() override;
+    void cleanup() override;
 
 private slots:
     void sl_onTaskFinished();
@@ -75,7 +75,7 @@ public:
     CuffdiffWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker* createWorker(Actor* actor) {
+    Worker* createWorker(Actor* actor) override {
         return new CuffdiffWorker(actor);
     }
 };

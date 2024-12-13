@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ class CAP3SupportDialog : public QDialog, public Ui_CAP3SupportDialog {
     Q_OBJECT
 public:
     CAP3SupportDialog(CAP3SupportTaskSettings& settings, QWidget* parent);
-    void accept();
+    void accept() override;
 
 private slots:
     void sl_onAddButtonClicked();

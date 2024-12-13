@@ -208,7 +208,7 @@ void EditMarkerGroupDialog::sl_onTypeChanged(int newTypeIndex) {
     } else {
         auto rc = QMessageBox::question(this,
                                         tr("Warning"),
-                                        tr("Are you really want to change marker's type? Some data can be lost!"),
+                                        tr("Do you really want to change marker's type? Some data can be lost!"),
                                         QMessageBox::Ok | QMessageBox::Cancel);
         changeMarker = rc == QMessageBox::Ok;
     }

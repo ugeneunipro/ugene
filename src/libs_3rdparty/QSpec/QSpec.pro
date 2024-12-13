@@ -51,6 +51,7 @@ HEADERS += \
            src/utils/GTMouseUtils.h \
            src/utils/GTThread.h \
            src/utils/GTUtilsDialog.h \
+           src/utils/GTUtilsQt.h \
            src/utils/GTUtilsText.h \
            src/utils/GTUtilsToolTip.h
 
@@ -108,5 +109,6 @@ SOURCES += \
            src/utils/GTMouseUtils.cpp \
            src/utils/GTThread.cpp \
            src/utils/GTUtilsDialog.cpp \
+           src/utils/GTUtilsQt.cpp \
            src/utils/GTUtilsText.cpp \
            src/utils/GTUtilsToolTip.cpp

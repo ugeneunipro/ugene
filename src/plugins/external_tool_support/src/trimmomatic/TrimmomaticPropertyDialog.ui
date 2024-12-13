@@ -104,7 +104,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../external_tool_support.qrc">
+                <iconset>
                  <normaloff>:/external_tool_support/images/add.png</normaloff>:/external_tool_support/images/add.png</iconset>
                </property>
                <property name="popupMode">
@@ -219,10 +219,6 @@
                <property name="text">
                 <string/>
                </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>:/external_tool_support/images/down.png</normaloff>:/external_tool_support/images/down.png</iconset>
-               </property>
               </widget>
              </item>
              <item>
@@ -277,7 +273,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../external_tool_support.qrc">
+                <iconset>
                  <normaloff>:/external_tool_support/images/cancel.png</normaloff>:/external_tool_support/images/cancel.png</iconset>
                </property>
               </widget>

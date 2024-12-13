@@ -18,7 +18,6 @@ public:
     MsaMultilineScrollArea(MsaEditor* maEditor, MsaEditorMultilineWgt* ui);
     // wheel arg signals that this is non scrollbar scrolling
     void scrollVert(const MultilineScrollController::Directions& directions,
-                    bool byStep,
                     bool wheel = false);
     bool eventFilter(QObject* obj, QEvent* event) override;
 

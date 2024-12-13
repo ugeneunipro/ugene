@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ public:
     ClustalOSupportRunDialog(const Msa& ma, ClustalOSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
-    void accept();
+    void accept() override;
 
 private:
     Msa ma;
@@ -50,7 +50,7 @@ public:
     ClustalOWithExtFileSpecifySupportRunDialog(ClustalOSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
-    void accept();
+    void accept() override;
     void sl_inputPathButtonClicked();
 
 private:

@@ -43,7 +43,8 @@
 namespace U2 {
 
 GenbankPlainTextFormat::GenbankPlainTextFormat(QObject* p)
-    : EMBLGenbankAbstractDocument(BaseDocumentFormats::PLAIN_GENBANK, tr("GenBank"), 79, DocumentFormatFlags_SW, p) {
+    : EMBLGenbankAbstractDocument(BaseDocumentFormats::PLAIN_GENBANK, tr("GenBank"), 79,
+                                  DocumentFormatFlags_SW | DocumentFormatFlag_HasModifiableName, p) {
     formatDescription = tr("GenBank Flat File Format is a rich format for storing sequences and associated annotations");
     fileExtensions << "gb"
                    << "gbk"

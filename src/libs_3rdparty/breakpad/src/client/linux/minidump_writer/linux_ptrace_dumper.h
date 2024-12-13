@@ -50,37 +50,37 @@ class LinuxPtraceDumper : public LinuxDumper {
   // |path| is a character array of at least NAME_MAX bytes to return the
   // result. |node| is the final node without any slashes. Returns true on
   // success.
-  virtual bool BuildProcPath(char* path, pid_t pid, const char* node) const;
+  bool BuildProcPath(char* path, pid_t pid, const char* node) const override;
 
   // Implements LinuxDumper::CopyFromProcess().
   // Copies content of |length| bytes from a given process |child|,
   // starting from |src|, into |dest|. This method uses ptrace to extract
   // the content from the target process. Always returns true.
-  virtual bool CopyFromProcess(void* dest, pid_t child, const void* src,
-                               size_t length);
+  bool CopyFromProcess(void* dest, pid_t child, const void* src,
+                               size_t length) override;
 
   // Implements LinuxDumper::GetThreadInfoByIndex().
   // Reads information about the |index|-th thread of |threads_|.
   // Returns true on success. One must have called |ThreadsSuspend| first.
-  virtual bool GetThreadInfoByIndex(size_t index, ThreadInfo* info);
+  bool GetThreadInfoByIndex(size_t index, ThreadInfo* info) override;
 
   // Implements LinuxDumper::IsPostMortem().
   // Always returns false to indicate this dumper performs a dump of
   // a crashed process via ptrace.
-  virtual bool IsPostMortem() const;
+  bool IsPostMortem() const override;
 
   // Implements LinuxDumper::ThreadsSuspend().
   // Suspends all threads in the given process. Returns true on success.
-  virtual bool ThreadsSuspend();
+  bool ThreadsSuspend() override;
 
   // Implements LinuxDumper::ThreadsResume().
   // Resumes all threads in the given process. Returns true on success.
-  virtual bool ThreadsResume();
+  bool ThreadsResume() override;
 
  protected:
   // Implements LinuxDumper::EnumerateThreads().
   // Enumerates all threads of the given process into |threads_|.
-  virtual bool EnumerateThreads();
+  bool EnumerateThreads() override;
 
  private:
   // Set to true if all threads of the crashed process are suspended.

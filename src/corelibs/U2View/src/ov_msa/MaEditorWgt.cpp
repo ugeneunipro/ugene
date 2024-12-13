@@ -22,11 +22,15 @@
 #include "MaEditorWgt.h"
 
 #include <QGridLayout>
+#include <QMainWindow>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
+#include <U2Core/QObjectScopedPointer.h>
+
+#include <U2Gui/PositionSelector.h>
 
 #include <U2Gui/GUIUtils.h>
 
@@ -89,6 +93,15 @@ QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment
 
 void MaEditorWgt::sl_colorModeSwitched() {
     copyFormattedSelectionAction->setIcon(GUIUtils::getIconResource("core", "copy.png", false));
+}
+
+int MaEditorWgt::getGotoUserInputValue() {
+    QObjectScopedPointer<QDialog> gotoDialog = new QDialog(AppContext::getMainWindow()->getQMainWindow());
+    gotoDialog->setModal(true);
+    gotoDialog->setWindowTitle(tr("Go to Position"));
+    auto ps = new PositionSelector(gotoDialog.data(), 1, editor->getMaObject()->getLength(), true);
+    gotoDialog->exec();
+    return ps->getPosition();
 }
 
 void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {

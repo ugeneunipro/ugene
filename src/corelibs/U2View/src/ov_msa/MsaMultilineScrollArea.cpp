@@ -44,12 +44,12 @@ bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
             case Qt::Key_Up:
                 if (maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed))
                     return true;
-                scrollVert(MultilineScrollController::Up, true, true);
+                scrollVert(MultilineScrollController::Up, true);
                 return true;
             case Qt::Key_Down:
                 if (maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed))
                     return true;
-                scrollVert(MultilineScrollController::Down, true, true);
+                scrollVert(MultilineScrollController::Down, true);
                 return true;
             case Qt::Key_Home:
                 if (maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed))
@@ -64,12 +64,12 @@ bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
             case Qt::Key_PageUp:
                 if (maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed))
                     return true;
-                scrollVert(MultilineScrollController::PageUp, false, true);
+                scrollVert(MultilineScrollController::PageUp, true);
                 return true;
             case Qt::Key_PageDown:
                 if (maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed))
                     return true;
-                scrollVert(MultilineScrollController::PageDown, false, true);
+                scrollVert(MultilineScrollController::PageDown, true);
                 return true;
         }
     }
@@ -78,7 +78,6 @@ bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
 }
 
 void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directions& directions,
-                                        bool byStep,
                                         bool wheel) {
     GScrollBar* globalVBar = maEditorUi->getScrollController()->getVerticalScrollBar();
     if (globalVBar->minimum() == globalVBar->maximum()) {
@@ -88,19 +87,9 @@ void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directi
 
     maEditorUi->setUpdatesEnabled(false);
 
-    if (directions.testFlag(MultilineScrollController::SliderMoved)) {
-        moveVSlider(globalVBar->value(),
-                    globalVBar->sliderPosition(),
-                    wheel ? directions : MultilineScrollController::None);
-    } else if (byStep) {
-        moveVSlider(globalVBar->value(),
-                    globalVBar->sliderPosition(),
-                    wheel ? directions : MultilineScrollController::None);
-    } else {
-        moveVSlider(globalVBar->value(),
-                    globalVBar->sliderPosition(),
-                    wheel ? directions : MultilineScrollController::None);
-    }
+    moveVSlider(globalVBar->value(),
+                globalVBar->sliderPosition(),
+                wheel ? directions : MultilineScrollController::None);
     maEditorUi->setUpdatesEnabled(true);
 }
 
@@ -225,11 +214,11 @@ void MsaMultilineScrollArea::wheelEvent(QWheelEvent* event) {
             event->accept();
             return;
         } else if (direction < 0) {
-            scrollVert(MultilineScrollController::Down, true, true);
+            scrollVert(MultilineScrollController::Down, true);
             event->accept();
             return;
         } else if (direction > 0) {
-            scrollVert(MultilineScrollController::Up, true, true);
+            scrollVert(MultilineScrollController::Up, true);
             event->accept();
             return;
         }

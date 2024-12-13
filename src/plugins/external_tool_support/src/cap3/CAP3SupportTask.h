@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -99,8 +99,8 @@ class PrepareInputForCAP3Task : public Task {
     Q_OBJECT
 public:
     PrepareInputForCAP3Task(const QStringList& inputFiles, const QString& outputDirPath);
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
     bool onlyCopyInputFiles() {
         return onlyCopyFiles;
     }
@@ -122,7 +122,7 @@ class CAP3SupportTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     CAP3SupportTask(const CAP3SupportTaskSettings& settings);
-    void prepare();
+    void prepare() override;
 
     /**
      * Returns output file URL if the file has already been produced
@@ -130,8 +130,8 @@ public:
      */
     QString getOutputFile() const;
 
-    Task::ReportResult report();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    Task::ReportResult report() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     QString tmpDirUrl;
@@ -148,8 +148,8 @@ class RunCap3AndOpenResultTask : public Task {
 public:
     RunCap3AndOpenResultTask(const CAP3SupportTaskSettings& settings);
 
-    virtual void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     CAP3SupportTask* cap3Task;
@@ -160,7 +160,7 @@ class CAP3LogParser : public ExternalToolLogParser {
     // TODO: Implement it (UGENE-2725)
 public:
     CAP3LogParser();
-    int getProgress();
+    int getProgress() override;
     // private:
     //     int countSequencesInMSA;
 };

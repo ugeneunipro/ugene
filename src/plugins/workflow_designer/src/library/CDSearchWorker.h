@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ public:
     }
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class CDSearchWorker : public BaseWorker {
@@ -51,9 +51,9 @@ public:
     CDSearchWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr), cds(nullptr) {
     }
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup() {};
+    void init() override;
+    Task* tick() override;
+    void cleanup() override {};
 private slots:
     void sl_taskFinished(Task*);
 
@@ -71,7 +71,7 @@ public:
     CDSearchWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new CDSearchWorker(a);
     }
 };

@@ -1,5 +1,4 @@
-#ifndef _U2_UHMMER_TESTS_H_
-#define _U2_UHMMER_TESTS_H_
+#pragma once
 
 #include <QDomElement>
 
@@ -95,4 +94,3 @@ public:
 };
 
 }  // namespace U2
-#endif

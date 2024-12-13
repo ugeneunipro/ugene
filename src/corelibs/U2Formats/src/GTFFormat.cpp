@@ -93,7 +93,9 @@ const QString GTFFormat::GENE_ID_QUALIFIER_NAME = "gene_id";
 const QString GTFFormat::TRANSCRIPT_ID_QUALIFIER_NAME = "transcript_id";
 
 GTFFormat::GTFFormat(QObject* parent)
-    : TextDocumentFormatDeprecated(parent, BaseDocumentFormats::GTF, DocumentFormatFlag_SupportWriting, QStringList("gtf")) {
+    : TextDocumentFormatDeprecated(parent, BaseDocumentFormats::GTF,
+                                   DocumentFormatFlag_SupportWriting | DocumentFormatFlag_HasModifiableName,
+                                   QStringList("gtf")) {
     formatName = tr("GTF");
     formatDescription = tr("The Gene transfer format (GTF) is a file format used to hold"
                            " information about gene structure.");
@@ -533,6 +535,11 @@ void GTFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
             if (annotTableName.endsWith(FEATURES_TAG)) {
                 annotTableName.chop(QString(FEATURES_TAG).size());
             }
+        }
+        annotTableName.replace(' ', '_');
+        if (annotTableName.isEmpty()) {
+            ioLog.trace(tr("Can not detect chromosome name. 'Chr' name will be used."));
+            annotTableName = "chr";
         }
 
         for (Annotation* annot : qAsConst(annotationsList)) {

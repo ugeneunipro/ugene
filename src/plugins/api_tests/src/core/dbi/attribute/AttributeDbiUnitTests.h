@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -70,57 +70,57 @@ public:
 
 class AttributeDbiUnitTests_getAvailableAttributeNames : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_getObjectAttributes : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_getObjectAttributesByName : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_getObjectPairAttributes : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_getObjectPairAttributesByName : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_removeAttributes : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_removeObjectAttributes : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_IntegerAttribute : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_RealAttribute : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_StringAttribute : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 class AttributeDbiUnitTests_ByteArrayAttribute : public UnitTest {
 public:
-    void Test();
+    void Test() override;
 };
 
 }  // namespace U2

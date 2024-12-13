@@ -777,6 +777,8 @@ void SeqWriter::storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum)
         FastQWriter::streamingStoreEntry(format, io, data, context, entryNum);
     } else if (fid == BaseDocumentFormats::RAW_DNA_SEQUENCE) {
         RawSeqWriter::streamingStoreEntry(format, io, data, context, entryNum);
+    } else if (fid == BaseDocumentFormats::VECTOR_NTI_SEQUENCE) {
+        GenbankWriter::streamingStoreEntry(format, io, data, context, entryNum);
     } else {
         assert(0);
         ioLog.error(QString("Unknown data format for writing: %1").arg(fid));

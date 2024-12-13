@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -139,8 +139,8 @@ private:
 class ClustalOLogParser : public ExternalToolLogParser {
 public:
     ClustalOLogParser();
-    void parseOutput(const QString& partOfLog);
-    int getProgress();
+    void parseOutput(const QString& partOfLog) override;
+    int getProgress() override;
 
 private:
     /* Last line printed to stdout */

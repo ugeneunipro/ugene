@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,11 +28,16 @@ namespace HI {
 
 class HI_EXPORT GTTreeView {
 public:
+    /** Waits until index is present in the tree. */
+    static QModelIndex findIndexWithWait(QTreeView* tree, const QVariant& data, Qt::ItemDataRole role = Qt::DisplayRole);
+
+    static void checkItemIsNotPresentWithWait(QTreeView* tree, const QVariant& data, Qt::ItemDataRole role = Qt::DisplayRole);
+
     // find index with data and role in the tree view
-    static QModelIndex findIndex(QTreeView* tree, QVariant data, Qt::ItemDataRole role = Qt::DisplayRole, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QModelIndex findIndex(QTreeView* tree, const QVariant& data, Qt::ItemDataRole role = Qt::DisplayRole, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 
     // find index with data and role for current parent index
-    static QModelIndex findIndex(QTreeView* tree, QVariant data, QModelIndex parent, Qt::ItemDataRole role = Qt::DisplayRole, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QModelIndex findIndex(QTreeView* tree, const QVariant& data, QModelIndex parent, Qt::ItemDataRole role = Qt::DisplayRole, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 
     static QPoint getItemCenter(QTreeView* tree, const QModelIndex& itemIndex);
 
@@ -54,7 +59,7 @@ public:
 private:
     static QModelIndexList findIndexes(
         QTreeView* tree,
-        QVariant data,
+        const QVariant& data,
         Qt::ItemDataRole role = Qt::DisplayRole,
         QModelIndex parent = QModelIndex(),
         int depth = 0,

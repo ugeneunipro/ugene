@@ -92,12 +92,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is built
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".1.ebwt"), "index1 not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".2.ebwt"), "index2 not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".3.ebwt"), "index3 not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".4.ebwt"), "index4 not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".rev.1.ebwt"), "index_rev1 not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".rev.2.ebwt"), "index_rev2 not found");
+    GTFile::checkFileExists(sandBoxDir + refName + ".1.ebwt");
+    GTFile::checkFileExists(sandBoxDir + refName + ".2.ebwt");
+    GTFile::checkFileExists(sandBoxDir + refName + ".3.ebwt");
+    GTFile::checkFileExists(sandBoxDir + refName + ".4.ebwt");
+    GTFile::checkFileExists(sandBoxDir + refName + ".rev.1.ebwt");
+    GTFile::checkFileExists(sandBoxDir + refName + ".rev.2.ebwt");
     CHECK_SET_ERR(lt.hasMessage("Launching Bowtie build indexer tool"), "Expected message not found");
 
     //    2. Repeat step 1.
@@ -203,12 +203,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is built
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".1.bt2"), "index1 not created");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".2.bt2"), "index2 not created");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".3.bt2"), "index3 not created");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".4.bt2"), "index4 not created");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".rev.1.bt2"), "index_rev1 not created");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".rev.1.bt2"), "index_rev1 not created");
+    GTFile::checkFileExists(sandBoxDir + refName + ".1.bt2");
+    GTFile::checkFileExists(sandBoxDir + refName + ".2.bt2");
+    GTFile::checkFileExists(sandBoxDir + refName + ".3.bt2");
+    GTFile::checkFileExists(sandBoxDir + refName + ".4.bt2");
+    GTFile::checkFileExists(sandBoxDir + refName + ".rev.1.bt2");
+    GTFile::checkFileExists(sandBoxDir + refName + ".rev.1.bt2");
     CHECK_SET_ERR(lt.hasMessage("Launching Bowtie 2 build indexer tool"), "Expected message not found");
 
     //    2. Repeat step 1.
@@ -301,11 +301,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is built
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.amb"), "amb not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.ann"), "ann not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.bwt"), "bwt not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.pac"), "pac not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.sa"), "sa not found");
+    GTFile::checkFileExists(sandBoxDir + refName + ".fa.amb");
+    GTFile::checkFileExists(sandBoxDir + refName + ".fa.ann");
+    GTFile::checkFileExists(sandBoxDir + refName + ".fa.bwt");
+    GTFile::checkFileExists(sandBoxDir + refName + ".fa.pac");
+    GTFile::checkFileExists(sandBoxDir + refName + ".fa.sa");
     CHECK_SET_ERR(lt.hasMessage("bwa index -p"), "Expected message not found");
 
     //    2. Repeat step 1.
@@ -413,11 +413,11 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is built
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.amb"), "amb not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.ann"), "ann not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.bwt"), "bwt not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.pac"), "pac not found");
-    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.sa"), "sa not found");
+    GTFile::checkFileExists(sandBoxDir + refName + ".fa.amb");
+    GTFile::checkFileExists(sandBoxDir + refName + ".fa.ann");
+    GTFile::checkFileExists(sandBoxDir + refName + ".fa.bwt");
+    GTFile::checkFileExists(sandBoxDir + refName + ".fa.pac");
+    GTFile::checkFileExists(sandBoxDir + refName + ".fa.sa");
     CHECK_SET_ERR(lt.hasMessage("bwa index -p"), "Expected message not found");
 
     //    2. Repeat step 1.

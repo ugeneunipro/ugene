@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ public:
         : Filler("DeleteGapsDialog"),
           radioButNum(_radioButNum) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     int radioButNum;
@@ -50,7 +50,7 @@ public:
         radioMap[Percent] = "relativeRadioButton";
         radioMap[Column] = "allRadioButton";
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     Radio button;

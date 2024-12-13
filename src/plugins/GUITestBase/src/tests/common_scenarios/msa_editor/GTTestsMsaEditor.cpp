@@ -319,7 +319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     QWidget* msaWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow();
 
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(6));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(msaWindow);
     GTUtilsDialog::checkNoActiveWaiters();
 
@@ -338,7 +338,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     QWidget* mdiWindow = GTUtilsMdi::activeWindow();
 
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(6));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(mdiWindow);
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -356,7 +356,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     QWidget* mdiWindow = GTUtilsMdi::activeWindow();
 
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(6));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(mdiWindow);
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -491,7 +491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     // Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(300));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(mdiWindow);
 
     // Create bookmark: "middle bookmark"
@@ -501,7 +501,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     // Scroll msa to the end.
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(550));
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(mdiWindow);
 
     // Create bookmark: "end bookmark"
@@ -1538,8 +1538,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state: image is exported.
-    bool isFileExist = GTFile::check(filePath);
-    CHECK_SET_ERR(isFileExist, "Image file not found: " + filePath);
+    GTFile::checkFileExists(filePath);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_1) {  // DIFFERENCE: context menu is used
@@ -1553,8 +1552,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {  // DIFFERENCE: context menu is used
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
 
     // Expected state: image is exported.
-    bool isFileExist = GTFile::check(filePath);
-    CHECK_SET_ERR(isFileExist, "Image file not found: " + filePath);
+    GTFile::checkFileExists(filePath);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_2) {
@@ -3141,7 +3139,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", "Create new color scheme"}));
     GTMenu::showContextMenu(GTUtilsMSAEditorSequenceArea::getSequenceArea());
 
-    GTFile::check(sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0060.csmsa");
+    GTFile::checkFileExists(sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0060.csmsa");
 
     class customAppSettingsFiller1 : public CustomScenario {
     public:

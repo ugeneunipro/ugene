@@ -22,7 +22,6 @@
 #include "SubalignmentToClipboardTask.h"
 
 #include <QApplication>
-#include <QClipboard>
 #include <QMimeData>
 #include <QSet>
 
@@ -31,6 +30,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/ClipboardController.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GObjectUtils.h>
@@ -38,7 +38,6 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/LocalFileAdapter.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -212,6 +211,11 @@ void RichTextMsaClipboardTask::prepare() {
 
 SubalignmentToClipboardTask::SubalignmentToClipboardTask(MsaEditor* maEditor, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId)
     : Task(tr("Copy formatted alignment to the clipboard"), TaskFlags_NR_FOSE_COSC), formatId(formatId) {
+    auto estimatedResultLength = qint64(maEditor->getAlignmentLen()) * maRowIds.size();
+    U2Clipboard::checkCopyToClipboardSize(estimatedResultLength, stateInfo);
+    if (stateInfo.hasError()) {
+        return;
+    }
     prepareDataTask = MsaClipboardDataTaskFactory::newInstance(maEditor, maRowIds, columnRange, formatId);
     addSubTask(prepareDataTask);
 }

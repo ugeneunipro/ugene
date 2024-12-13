@@ -232,42 +232,42 @@
 <context>
     <name>U2::DotPlotDialog</name>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="54"/>
+        <location filename="../src/DotPlotDialog.cpp" line="56"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="55"/>
+        <location filename="../src/DotPlotDialog.cpp" line="57"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="65"/>
+        <location filename="../src/DotPlotDialog.cpp" line="72"/>
         <source>Auto</source>
         <translation>Автовыбор</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="66"/>
+        <location filename="../src/DotPlotDialog.cpp" line="73"/>
         <source>Suffix index</source>
         <translation>Суффиксный индекс</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="67"/>
+        <location filename="../src/DotPlotDialog.cpp" line="74"/>
         <source>Diagonals</source>
         <translation>Диагональный</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="312"/>
+        <location filename="../src/DotPlotDialog.cpp" line="317"/>
         <source>Open file</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="341"/>
+        <location filename="../src/DotPlotDialog.cpp" line="346"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="341"/>
+        <location filename="../src/DotPlotDialog.cpp" line="346"/>
         <source>Error opening files</source>
         <translation>Ошибка открытия файлов</translation>
     </message>

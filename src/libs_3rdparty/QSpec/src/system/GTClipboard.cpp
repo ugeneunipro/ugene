@@ -43,7 +43,7 @@ QString GTClipboard::text() {
         Scenario(QString& _text)
             : text(_text) {
         }
-        void run() {
+        void run() override {
             QClipboard* clipboard = QApplication::clipboard();
 
             GT_CHECK(clipboard != NULL, "Clipboard is NULL");
@@ -69,7 +69,7 @@ void GTClipboard::checkHasNonEmptyImage() {
         Scenario(QImage& _image)
             : image(_image) {
         }
-        void run() {
+        void run() override {
             QClipboard* clipboard = QApplication::clipboard();
             const QMimeData* mimeData = clipboard->mimeData();
             GT_CHECK(mimeData->hasImage(), "Clipboard doesn't contain image data");
@@ -93,7 +93,7 @@ void GTClipboard::setText(QString text) {
         Scenario(QString _text)
             : text(_text) {
         }
-        void run() {
+        void run() override {
             QClipboard* clipboard = QApplication::clipboard();
             clipboard->clear();
             clipboard->setText(text);
@@ -135,7 +135,7 @@ void GTClipboard::setUrls(const QList<QString>& urls) {
             : urls(urls) {
         }
 
-        void run() {
+        void run() override {
             auto urlMime = new QMimeData();
             urlMime->setUrls(urls);
 

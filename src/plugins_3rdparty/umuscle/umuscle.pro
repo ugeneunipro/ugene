@@ -3,7 +3,6 @@ include (umuscle.pri)
 # Input
 HEADERS += src/MuscleAdapter.h \
            src/MuscleAlignDialogController.h \
-           src/MuscleConstants.h \
            src/MuscleParallel.h \
            src/MusclePlugin.h \
            src/MuscleTask.h \
