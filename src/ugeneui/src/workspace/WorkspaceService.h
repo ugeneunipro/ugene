@@ -43,8 +43,10 @@ class WorkspaceService : public Service {
 public:
     WorkspaceService();
 
-    /** Returns true if the workspace is currectly in the logged in state. */
+    /** Returns true if the workspace is currently in the logged in state. */
     bool isLoggedIn() const;
+
+    QString getCurrentUserEmail() const;
 
     /** Opens login dialog. Does nothing if user is already logged in. */
     void login();
