@@ -70,10 +70,15 @@ static void updateModel(QTreeView* tree,
         childrenMap[childEntryKey] = childItem;
     }
     for (const CloudStorageEntry& childEntry : qAsConst(entry->children)) {
-        QIcon icon(childEntry->isFolder ? ":U2Designer/images/directory.png" : ":core/images/document.png");
+        QIcon icon(childEntry->isFolder
+                       ? (childEntry->getName() == "Shared" && childEntry->path.length() == 1
+                              ? ":ugene/images/folder_shared.svg"
+                              : ":ugene/images/folder.svg")
+                       : ":ugene/images/document.svg");
         auto childEntryKey = childEntry->sessionLocalId;
+        QStandardItem* nameItem;
         if (childrenMap.contains(childEntryKey)) {
-            QStandardItem* nameItem = childrenMap[childEntryKey];
+            nameItem = childrenMap[childEntryKey];
             nameItem->setIcon(icon);
             nameItem->setText(childEntry->getName());
             nameItem->setData(childEntry->size, USER_DATA_SIZE);
@@ -85,7 +90,7 @@ static void updateModel(QTreeView* tree,
             // Unregister it from the map, because all entries that left in the map will be removed from the view as unused.
             childrenMap.remove(childEntryKey);
         } else {
-            const auto nameItem = new QStandardItem(icon, childEntry->getName());
+            nameItem = new QStandardItem(icon, childEntry->getName());
             nameItem->setData(childEntry->size, USER_DATA_SIZE);
             nameItem->setData(childEntry->isFolder, USER_DATA_IS_FOLDER);
             nameItem->setData(QVariant::fromValue(childEntry->path), USER_DATA_PATH);
@@ -95,6 +100,11 @@ static void updateModel(QTreeView* tree,
 
             updateModel(tree, nameItem, childEntry, expandedItems);
         }
+        // TODO: make an icon.
+        // bool isShared = !childEntry->sharedWithEmails.isEmpty();
+        // if (isShared) {
+        // nameItem->setText(nameItem->text() + " (shared)");
+        // }
     }
 
     for (auto it = childrenMap.constBegin(); it != childrenMap.constEnd(); ++it) {
@@ -253,6 +263,12 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     connect(uploadAction, &QAction::triggered, this, &CloudStorageDockWidget::uploadItem);
     treeView->addAction(uploadAction);
 
+    shareAction = new QAction(QIcon(":ugene/images/file_share.svg"), tr("Share"), this);
+    shareAction->setObjectName("cloudStorageShareAction");
+    shareAction->setToolTip(tr("Share file or folder with other users"));
+    connect(shareAction, &QAction::triggered, this, &CloudStorageDockWidget::shareItem);
+    treeView->addAction(shareAction);
+
     openWebWorkspaceAction = new QAction(QIcon(":ugene/images/web_link.svg"), tr("Open web interface"));
     openWebWorkspaceAction->setToolTip(tr("Open Cloud Storage Web Interface in Browser"));
     connect(openWebWorkspaceAction, &QAction::triggered, this, [this] {
@@ -270,6 +286,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     toolbar->addAction(createDirAction);
     toolbar->addAction(renameAction);
     toolbar->addAction(deleteAction);
+    toolbar->addAction(shareAction);
     toolbar->addAction(openWebWorkspaceAction);
 
     updateActionsState();
@@ -297,6 +314,7 @@ void CloudStorageDockWidget::showContextMenu(const QPoint& point) const {
     contextMenu->addAction(renameAction);
     contextMenu->addAction(downloadAction);
     contextMenu->addAction(uploadAction);
+    contextMenu->addAction(shareAction);
     contextMenu->exec(treeView->viewport()->mapToGlobal(point));
 }
 
@@ -416,6 +434,30 @@ void CloudStorageDockWidget::uploadItem() {
     });
 }
 
+void CloudStorageDockWidget::shareItem() {
+    QModelIndex currentIndex = getSelectedItemIndex();
+    SAFE_POINT(currentIndex.isValid(), "No selection found", );
+    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
+
+    bool ok;
+    QString shareWithEmail = GUIUtils::getTextWithDialog(nullptr, tr("Share %1 with email").arg(path.last()), tr("Recipient email"), "", ok);
+
+    CHECK(ok && !shareWithEmail.isEmpty(), );
+    if (!CloudStorageService::checkEmail(shareWithEmail)) {
+        QMessageBox::critical(this, L10N::errorTitle(), tr("Invalid email: %1").arg(shareWithEmail));
+        return;
+    }
+    if (workspaceService->getCurrentUserEmail() == shareWithEmail) {
+        QMessageBox::critical(this, L10N::errorTitle(), tr("You cannot share with yourself."));
+        return;
+    }
+    QList<QString> newPath = path;
+    newPath[newPath.length() - 1] = shareWithEmail;
+    getCloudStorageService()->shareEntry(path, shareWithEmail, this, [this](const auto& response) {
+        handleCloudStorageResponse(response);
+    });
+}
+
 void CloudStorageDockWidget::handleCloudStorageResponse(const QJsonObject& response) {
     const auto errorMessage = WorkspaceService::getErrorMessageFromResponse(response);
     if (!errorMessage.isEmpty()) {
@@ -423,7 +465,7 @@ void CloudStorageDockWidget::handleCloudStorageResponse(const QJsonObject& respo
     }
 }
 
-static bool isShareFolderOrChild(const QList<QString>& path) {
+static bool isSharedFolderOrChild(const QList<QString>& path) {
     return path.startsWith("Shared");
 }
 
@@ -432,22 +474,25 @@ void CloudStorageDockWidget::updateActionsState() const {
 
     bool hasSelection = false;
     bool hasFileSelection = false;
-    bool isSharedContent = false;
-    bool isTopLevelSharedEntry = false;
+    bool isSharedContentSelected = false;
+    bool isTopLevelSharedEntrySelected = false;
     if (hasTreeView) {
         const QModelIndex currentIndex = getSelectedItemIndex();
         hasSelection = currentIndex.isValid();
         const auto* treeModel = treeView->model();
         hasFileSelection = hasSelection && treeModel->data(currentIndex, USER_DATA_IS_FOLDER).toBool() == false;
-        const auto path = treeModel->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
-        isSharedContent = isShareFolderOrChild(path);
-        isTopLevelSharedEntry = isSharedContent && (path.length() == 2 || path.length() == 3);
+        if (hasSelection) {
+            const auto path = treeModel->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
+            isSharedContentSelected = isSharedFolderOrChild(path);
+            isTopLevelSharedEntrySelected = isSharedContentSelected && (path.length() == 2 || path.length() == 3);
+        }
     }
-    createDirAction->setEnabled(hasTreeView && !isSharedContent);
-    deleteAction->setEnabled(hasTreeView && hasSelection && (!isSharedContent || isTopLevelSharedEntry));
-    renameAction->setEnabled(hasTreeView && hasSelection && !isSharedContent);
+    createDirAction->setEnabled(hasTreeView && !isSharedContentSelected);
+    deleteAction->setEnabled(hasTreeView && hasSelection && (!isSharedContentSelected || isTopLevelSharedEntrySelected));
+    renameAction->setEnabled(hasTreeView && hasSelection && !isSharedContentSelected);
     downloadAction->setEnabled(hasTreeView && hasFileSelection);
-    uploadAction->setEnabled(hasTreeView && !isSharedContent);
+    uploadAction->setEnabled(hasTreeView && !isSharedContentSelected);
+    shareAction->setEnabled(hasTreeView && hasSelection && !isSharedContentSelected);
 }
 
 void CloudStorageDockWidget::updateStateLabelText() {

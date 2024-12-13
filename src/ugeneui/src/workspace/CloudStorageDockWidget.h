@@ -49,6 +49,7 @@ private:
     void downloadItem();
     void downloadItemSilently();
     void uploadItem();
+    void shareItem();
 
     void handleCloudStorageResponse(const QJsonObject& response);
 
@@ -67,6 +68,7 @@ private:
     QAction* renameAction = nullptr;
     QAction* downloadAction = nullptr;
     QAction* uploadAction = nullptr;
+    QAction* shareAction = nullptr;
     QAction* openWebWorkspaceAction = nullptr;
     QStandardItemModel treeViewModel;
 };

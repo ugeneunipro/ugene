@@ -46,9 +46,16 @@
         <file>images/cloud_connecting.svg</file>
         <file>images/cloud_disabled.svg</file>
         <file>images/cloud_storage.svg</file>
+        <file>images/document.svg</file>
+        <file>images/file_download.svg</file>
         <file>images/file_download.svg</file>
         <file>images/file_rename.svg</file>
+        <file>images/file_rename.svg</file>
+        <file>images/file_share.svg</file>
         <file>images/file_upload.svg</file>
+        <file>images/file_upload.svg</file>
+        <file>images/folder.svg</file>
+        <file>images/folder_shared.svg</file>
         <file>images/login.svg</file>
         <file>images/logout.svg</file>
         <file>images/new_folder.svg</file>
