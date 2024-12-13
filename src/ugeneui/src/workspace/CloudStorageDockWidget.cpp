@@ -21,12 +21,15 @@
 
 #include "CloudStorageDockWidget.h"
 
+#include <QApplication>
 #include <QContextMenuEvent>
 #include <QDesktopServices>
 #include <QHeaderView>
 #include <QIcon>
 #include <QLabel>
 #include <QMessageBox>
+#include <QPainter>
+#include <QStyledItemDelegate>
 #include <QToolBar>
 #include <QVBoxLayout>
 
@@ -52,6 +55,53 @@ constexpr qint64 USER_DATA_SESSION_LOCAL_ID = Qt::UserRole + 1;
 constexpr qint64 USER_DATA_SIZE = Qt::UserRole + 2;
 constexpr qint64 USER_DATA_PATH = Qt::UserRole + 3;
 constexpr qint64 USER_DATA_IS_FOLDER = Qt::UserRole + 4;
+constexpr qint64 USER_DATA_SECONDARY_ICON = Qt::UserRole + 5;
+
+/** Custom delegate to add a secondary icon to tree item. */
+class MultiIconStyledItemDelegate final : public QStyledItemDelegate {
+public:
+    explicit MultiIconStyledItemDelegate(QObject* parent = nullptr)
+        : QStyledItemDelegate(parent) {
+    }
+
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
+        QStyleOptionViewItem opt = option;
+        initStyleOption(&opt, index);
+
+        QStyle* style = opt.widget ? opt.widget->style() : QApplication::style();
+        QRect rect = opt.rect;
+
+        // Draw the background (including selection)
+        style->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, opt.widget);
+
+        // Draw the main icon.
+        auto mainIcon = index.data(Qt::DecorationRole).value<QIcon>();
+        if (!mainIcon.isNull()) {
+            QSize iconSize(20, 20);
+            QRect iconRect(rect.left(), rect.top() + (rect.height() - iconSize.height()) / 2, iconSize.width(), iconSize.height());
+            mainIcon.paint(painter, iconRect);
+            rect.setLeft(iconRect.right() + 5);
+        }
+
+        // Draw the text.
+        style->drawItemText(painter, rect, Qt::AlignVCenter | Qt::AlignLeft, opt.palette, opt.state & QStyle::State_Enabled, opt.text);
+        int textWidth = painter->fontMetrics().horizontalAdvance(opt.text);
+        rect.setLeft(rect.left() + textWidth + 5);
+
+        // Draw the secondary icon.
+        auto secondaryIcon = index.data(USER_DATA_SECONDARY_ICON).value<QIcon>();
+        if (!secondaryIcon.isNull()) {
+            QSize iconSize(16, 16);
+            QRect secondaryIconRect(rect.left(), rect.top() + (rect.height() - iconSize.height()) / 2, iconSize.width(), iconSize.height());
+            secondaryIcon.paint(painter, secondaryIconRect);
+        }
+    }
+
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override {
+        QSize defaultSize = QStyledItemDelegate::sizeHint(option, index);
+        return {defaultSize.width(), 22};
+    }
+};
 
 static bool isLess(const QStandardItem* a, const QStandardItem* b) {
     return a->data(USER_DATA_IS_FOLDER) != b->data(USER_DATA_IS_FOLDER)
@@ -100,11 +150,11 @@ static void updateModel(QTreeView* tree,
 
             updateModel(tree, nameItem, childEntry, expandedItems);
         }
-        // TODO: make an icon.
-        // bool isShared = !childEntry->sharedWithEmails.isEmpty();
-        // if (isShared) {
-        // nameItem->setText(nameItem->text() + " (shared)");
-        // }
+        bool isShared = !childEntry->sharedWithEmails.isEmpty();
+        if (isShared) {
+            nameItem->setData(QIcon(":ugene/images/group.svg"), USER_DATA_SECONDARY_ICON);
+            nameItem->setToolTip(CloudStorageDockWidget::tr("Shared with:\n%1").arg(childEntry->sharedWithEmails.join("\n")));
+        }
     }
 
     for (auto it = childrenMap.constBegin(); it != childrenMap.constEnd(); ++it) {
@@ -199,6 +249,8 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->setObjectName("cloudStorageTreeView");
     treeView->header()->hide();
     treeView->viewport()->installEventFilter(this);
+    treeView->setItemDelegate(new MultiIconStyledItemDelegate(treeView));
+    treeView->setUniformRowHeights(true);
 
     const auto toolbar = new QToolBar();
     toolbar->setIconSize(QSize(20, 20));
@@ -359,7 +411,7 @@ QModelIndex CloudStorageDockWidget::getSelectedItemIndex() const {
 
 QList<QString> CloudStorageDockWidget::getSelectedItemPath() const {
     auto currentIndex = getSelectedItemIndex();
-    QList<QString> path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
+    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
     return path;
 }
 
