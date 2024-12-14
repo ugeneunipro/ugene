@@ -510,30 +510,6 @@ void CloudStorageDockWidget::shareItem() {
     });
 }
 
-void CloudStorageDockWidget::shareItem() {
-    QModelIndex currentIndex = getSelectedItemIndex();
-    SAFE_POINT(currentIndex.isValid(), "No selection found", );
-    auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
-
-    bool ok;
-    QString shareWithEmail = GUIUtils::getTextWithDialog(nullptr, tr("Share %1 with email").arg(path.last()), tr("Recipient email"), "", ok);
-
-    CHECK(ok && !shareWithEmail.isEmpty(), );
-    if (!CloudStorageService::checkEmail(shareWithEmail)) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("Invalid email: %1").arg(shareWithEmail));
-        return;
-    }
-    if (workspaceService->getCurrentUserEmail() == shareWithEmail) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("You cannot share with yourself."));
-        return;
-    }
-    QList<QString> newPath = path;
-    newPath[newPath.length() - 1] = shareWithEmail;
-    getCloudStorageService()->shareEntry(path, shareWithEmail, this, [this](const auto& response) {
-        handleCloudStorageResponse(response);
-    });
-}
-
 void CloudStorageDockWidget::handleCloudStorageResponse(const QJsonObject& response) {
     const auto errorMessage = WorkspaceService::getErrorMessageFromResponse(response);
     if (!errorMessage.isEmpty()) {
