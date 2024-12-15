@@ -84,6 +84,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsCloudStorageView::deleteEntry({"Documents"});
     GTUtilsCloudStorageView::deleteEntry({"Alignments", "hemoglobin_alpha_alignment.msf"});
 
+    GTUtilsCloudStorageView::shareItem({"about.txt"}, "test@example.com");
+    GTUtilsCloudStorageView::unshareItem({"about.txt"}, "test@example.com");
+
     // Check upload.
     GTUtilsCloudStorageView::uploadFile({}, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsCloudStorageView::uploadFile({"Alignments"}, dataDir + "samples/ABIF/A01.abi");

@@ -56,6 +56,7 @@ constexpr qint64 USER_DATA_SIZE = Qt::UserRole + 2;
 constexpr qint64 USER_DATA_PATH = Qt::UserRole + 3;
 constexpr qint64 USER_DATA_IS_FOLDER = Qt::UserRole + 4;
 constexpr qint64 USER_DATA_SECONDARY_ICON = Qt::UserRole + 5;
+constexpr qint64 USER_DATA_SHARED_WITH_EMAILS = Qt::UserRole + 6;
 
 /** Custom delegate to add a secondary icon to tree item. */
 class MultiIconStyledItemDelegate final : public QStyledItemDelegate {
@@ -154,6 +155,10 @@ static void updateModel(QTreeView* tree,
         if (isShared) {
             nameItem->setData(QIcon(":ugene/images/group.svg"), USER_DATA_SECONDARY_ICON);
             nameItem->setToolTip(CloudStorageDockWidget::tr("Shared with:\n%1").arg(childEntry->sharedWithEmails.join("\n")));
+            nameItem->setData(QVariant::fromValue(childEntry->sharedWithEmails), USER_DATA_SHARED_WITH_EMAILS);
+        } else {
+            nameItem->setData(QVariant(), USER_DATA_SECONDARY_ICON);
+            nameItem->setData(QVariant(), USER_DATA_SHARED_WITH_EMAILS);
         }
     }
 
@@ -359,7 +364,7 @@ bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
     return false;
 }
 
-void CloudStorageDockWidget::showContextMenu(const QPoint& point) const {
+void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
     QObjectScopedPointer<QMenu> contextMenu = new QMenu();
     contextMenu->addAction(createDirAction);
     contextMenu->addAction(deleteAction);
@@ -367,6 +372,24 @@ void CloudStorageDockWidget::showContextMenu(const QPoint& point) const {
     contextMenu->addAction(downloadAction);
     contextMenu->addAction(uploadAction);
     contextMenu->addAction(shareAction);
+
+    QModelIndex currentIndex = getSelectedItemIndex();
+    if (currentIndex.isValid()) {
+        auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
+        auto sharedWithEmails = treeView->model()->data(currentIndex, USER_DATA_SHARED_WITH_EMAILS).value<QList<QString>>();
+        if (!sharedWithEmails.isEmpty()) {
+            auto stopSharingMenu = new QMenu(tr("Stop sharing with ..."));
+            contextMenu->addMenu(stopSharingMenu);
+            for (const auto& email : qAsConst(sharedWithEmails)) {
+                stopSharingMenu->addAction(email, [this, path, email] {
+                    getCloudStorageService()->unshareEntry(path, email, this, [this](const auto& response) {
+                        handleCloudStorageResponse(response);
+                    });
+                });
+            }
+        }
+    }
+
     contextMenu->exec(treeView->viewport()->mapToGlobal(point));
 }
 

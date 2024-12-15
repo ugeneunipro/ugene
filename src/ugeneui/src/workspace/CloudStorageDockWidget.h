@@ -42,7 +42,7 @@ protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
-    void showContextMenu(const QPoint& point) const;
+    void showContextMenu(const QPoint& point);
     void createDir();
     void deleteItem();
     void renameItem();
