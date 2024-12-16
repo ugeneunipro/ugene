@@ -21,6 +21,10 @@
 
 #pragma once
 
+#include <U2Core/AppContext.h>
+
+#include <U2Gui/MainWindow.h>
+
 #include <U2Lang/ActorDocument.h>
 #include <U2Lang/IntegralBusModel.h>
 
@@ -34,7 +38,9 @@ namespace Workflow {
 class U2DESIGNER_EXPORT PrompterBaseImpl : public ActorDocument, public Prompter {
     Q_OBJECT
 public:
-    PrompterBaseImpl(Actor* p = 0);
+    PrompterBaseImpl(Actor* p = 0) : ActorDocument(p) {
+        connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &PrompterBaseImpl::sl_actorModified);
+    }
 
     static bool isWildcardURL(const QString& url) {
         return url.indexOf(QRegExp("[*?\\[\\]]")) >= 0;

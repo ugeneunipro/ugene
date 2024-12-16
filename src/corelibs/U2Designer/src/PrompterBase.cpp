@@ -21,11 +21,9 @@
 
 #include "PrompterBase.h"
 
-#include <U2Core/AppContext.h>
 #include <U2Core/Folder.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/Theme.h>
 
 #include <U2Lang/Dataset.h>
@@ -45,11 +43,6 @@ QVariant PrompterBaseImpl::getParameter(const QString& id) {
     } else {
         return target->getParameter(id)->getAttributePureValue();
     }
-}
-
-inline PrompterBaseImpl::PrompterBaseImpl(Actor* p)
-    : ActorDocument(p) {
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &PrompterBaseImpl::sl_actorModified);
 }
 
 QString PrompterBaseImpl::getURL(const QString& id, bool* empty, const QString& onEmpty, const QString& defaultValue) {

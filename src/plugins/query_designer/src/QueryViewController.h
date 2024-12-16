@@ -23,6 +23,7 @@
 
 #include <QActionGroup>
 #include <QGraphicsScene>
+#include <QToolButton>
 
 #include <U2Gui/MainWindow.h>
 
