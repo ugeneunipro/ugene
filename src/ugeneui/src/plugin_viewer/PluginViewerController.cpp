@@ -312,7 +312,6 @@ void PluginViewerController::sl_acceptLicense() {
 void PluginViewerController::sl_colorModeSwitched() {
     CHECK(mdiWindow != nullptr, );
 
-    QTreeWidget* treeWidget = ui.treeWidget;
     int topLevelCount = ui.treeWidget->topLevelItemCount();
     for (int i = 0; i < topLevelCount; i++) {
         auto item = ui.treeWidget->topLevelItem(i);
