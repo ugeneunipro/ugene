@@ -45,22 +45,11 @@
         <file>images/cloud_connected.svg</file>
         <file>images/cloud_connecting.svg</file>
         <file>images/cloud_disabled.svg</file>
-        <file>images/cloud_storage.svg</file>
         <file>images/document.svg</file>
-        <file>images/file_download.svg</file>
-        <file>images/file_download.svg</file>
-        <file>images/file_rename.svg</file>
-        <file>images/file_rename.svg</file>
-        <file>images/file_share.svg</file>
-        <file>images/file_upload.svg</file>
-        <file>images/file_upload.svg</file>
         <file>images/folder.svg</file>
         <file>images/folder_shared.svg</file>
         <file>images/login.svg</file>
         <file>images/logout.svg</file>
-        <file>images/new_folder.svg</file>
-        <file>images/trash.svg</file>
-        <file>images/web_link.svg</file>
 
         <file>images/dark/color_mode_pic.png</file>
         <file>images/dark/hourglass_go.png</file>
@@ -75,6 +64,15 @@
         <file>images/welcome_page/dark/line.png</file>
         <file>images/welcome_page/dark/social_icon_patreon.png</file>
 
+        <file>images/dark/cloud_storage.svg</file>
+        <file>images/dark/new_folder.svg</file>
+        <file>images/dark/trash.svg</file>
+        <file>images/dark/file_rename.svg</file>
+        <file>images/dark/file_download.svg</file>
+        <file>images/dark/file_upload.svg</file>
+        <file>images/dark/web_link.svg</file>
+        <file>images/dark/file_share.svg</file>
+
 		<file>images/light/relocate.png</file>
         <file>images/light/color_mode_pic.png</file>
         <file>images/light/hourglass_go.png</file>
@@ -87,6 +85,15 @@
         <file>images/light/window_prev.png</file>
         <file>images/welcome_page/light/line.png</file>
         <file>images/welcome_page/light/social_icon_patreon.png</file>
+
+        <file>images/light/cloud_storage.svg</file>
+        <file>images/light/new_folder.svg</file>
+        <file>images/light/trash.svg</file>
+        <file>images/light/file_rename.svg</file>
+        <file>images/light/file_download.svg</file>
+        <file>images/light/file_upload.svg</file>
+        <file>images/light/web_link.svg</file>
+        <file>images/light/file_share.svg</file>
 
     </qresource>
 	<qresource prefix="/dark">
