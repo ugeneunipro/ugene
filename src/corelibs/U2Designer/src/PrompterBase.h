@@ -80,7 +80,7 @@ protected:
  * provides
  */
 template<typename T>
-class U2DESIGNER_EXPORT PrompterBase : public PrompterBaseImpl {
+class PrompterBase : public PrompterBaseImpl {
 public:
     PrompterBase(Actor* p = 0, bool listenInputs = true)
         : PrompterBaseImpl(p), listenInputs(listenInputs) {
