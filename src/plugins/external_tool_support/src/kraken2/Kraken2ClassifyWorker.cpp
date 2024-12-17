@@ -21,6 +21,8 @@
 
 #include "Kraken2ClassifyWorker.h"
 
+#include <QFileInfo>
+
 #include <U2Core/FailTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
@@ -76,10 +78,11 @@ void Kraken2ClassifyWorker::cleanup() {
 
 void Kraken2ClassifyWorker::sl_taskFinished(Task *task) {
     Kraken2ClassifyTask *krakenTask = qobject_cast<Kraken2ClassifyTask *>(task);
-    if (!krakenTask->isFinished() || krakenTask->hasError() || krakenTask->isCanceled()) {
+    QString outputUrl = krakenTask->getClassificationURL();
+    if (!krakenTask->isFinished() || krakenTask->hasError() || krakenTask->isCanceled() || !QFileInfo::exists(outputUrl)) {
         return;
     }
-    monitor()->addOutputFile(krakenTask->getClassificationURL(), getActorId());
+    monitor()->addOutputFile(outputUrl, getActorId());
 }
 
 bool Kraken2ClassifyWorker::isReadyToRun() const {
