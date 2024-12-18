@@ -33,7 +33,7 @@ public:
     QDGroupsEditor(QueryViewController* p);
 
 protected:
-    virtual void mousePressEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event) override;
 private slots:
     void sl_addGroup();
     void sl_removeGroup();
@@ -45,14 +45,13 @@ private slots:
 private:
     void initActions();
 
-private:
-    QueryViewController* view;
+    QueryViewController* view = nullptr;
 
-    QAction* addGroupAction;
-    QAction* removeGroupAction;
-    QAction* addActorAction;
-    QAction* removeActorAction;
-    QAction* setGroupReqNumAction;
+    QAction* addGroupAction = nullptr;
+    QAction* removeGroupAction = nullptr;
+    QAction* addActorAction = nullptr;
+    QAction* removeActorAction = nullptr;
+    QAction* setGroupReqNumAction = nullptr;
 };
 
 }  // namespace U2
