@@ -95,6 +95,19 @@ void CloudStorageService::shareEntry(const QList<QString>& path,
     workspaceService->executeApiRequest("/storage/share", payload, context, callback);
 }
 
+void CloudStorageService::unshareEntry(const QList<QString>& path,
+                                       const QString& email,
+                                       QObject* context,
+                                       std::function<void(const QJsonObject&)> callback) const {
+    ioLog.trace("CloudStorageService::unshareEntry: " + path.join("/") + " -> " + email);
+    SAFE_POINT(checkCloudStoragePath(path), "Invalid file path: " + path.join("/"), );
+    SAFE_POINT(checkEmail(email), "Invalid email: " + email, );
+    QJsonObject payload;
+    payload["path"] = QJsonArray::fromStringList(path);
+    payload["email"] = email.toLower();
+    workspaceService->executeApiRequest("/storage/unshare", payload, context, callback);
+}
+
 void CloudStorageService::downloadFile(const QList<QString>& path,
                                        const QString& localDirPath,
                                        QObject* context,

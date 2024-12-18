@@ -101,6 +101,11 @@ public:
                     QObject* context = nullptr,
                     std::function<void(const QJsonObject&)> callback = nullptr) const;
 
+    void unshareEntry(const QList<QString>& path,
+                      const QString& email,
+                      QObject* context = nullptr,
+                      std::function<void(const QJsonObject&)> callback = nullptr) const;
+
     void downloadFile(const QList<QString>& path,
                       const QString& localDirPath,
                       QObject* context = nullptr,
