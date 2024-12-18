@@ -52,7 +52,7 @@ void Kraken2ClassifyTask::prepare() {
     addSubTask(classifyTask);
 }
 
-QString Kraken2ClassifyTask::getClassificationURL() const {
+const QString& Kraken2ClassifyTask::getClassificationURL() const {
     return settings.classificationUrl;
 }
 
