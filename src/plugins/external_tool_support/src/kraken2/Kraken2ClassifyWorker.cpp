@@ -43,16 +43,19 @@ Kraken2ClassifyWorker::Kraken2ClassifyWorker(Actor *actor) : BaseWorker(actor, f
 };
 
 void Kraken2ClassifyWorker::init() {
-    input = ports.value(Kraken2ClassifyWorkerFactory::INPUT_SLOT);
-    SAFE_POINT(input != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::INPUT_SLOT), );
+    input = ports.value(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_SINGLE);
+    SAFE_POINT(input != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_SINGLE), );
     isPairedReadsInput = (getValue<QString>(Kraken2ClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == Kraken2ClassifyTaskSettings::PAIRED_END);
     if (isPairedReadsInput) {
-        pairedIinput = ports.value(Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT);
-        SAFE_POINT(pairedIinput != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT), );
+        pairedIinput = ports.value(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED);
+        SAFE_POINT(pairedIinput != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED), );
     }
 }
 
 Task *Kraken2ClassifyWorker::tick() {
+    if (isPairedReadsInput) {
+        pairedIinput.process
+    }
     if (isReadyToRun()) {
         U2OpStatus2Log os;
         Kraken2ClassifyTaskSettings settings = getSettings(os);
