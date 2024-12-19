@@ -43,11 +43,13 @@ Kraken2ClassifyWorker::Kraken2ClassifyWorker(Actor *actor) : BaseWorker(actor, f
 };
 
 void Kraken2ClassifyWorker::init() {
-    input = ports.value(Kraken2ClassifyWorkerFactory::INPUT_PORT_ID);
-
-    SAFE_POINT(input != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::INPUT_PORT_ID), );
-
-    pairedReadsInput = (getValue<QString>(Kraken2ClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == Kraken2ClassifyTaskSettings::PAIRED_END);
+    input = ports.value(Kraken2ClassifyWorkerFactory::INPUT_SLOT);
+    SAFE_POINT(input != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::INPUT_SLOT), );
+    isPairedReadsInput = (getValue<QString>(Kraken2ClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == Kraken2ClassifyTaskSettings::PAIRED_END);
+    if (isPairedReadsInput) {
+        pairedIinput = ports.value(Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT);
+        SAFE_POINT(pairedIinput != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT), );
+    }
 }
 
 Task *Kraken2ClassifyWorker::tick() {
@@ -98,7 +100,7 @@ Kraken2ClassifyTaskSettings Kraken2ClassifyWorker::getSettings(U2OpStatus &os) {
     const Message message = getMessageAndSetupScriptValues(input);
     settings.readsUrl = message.getData().toMap()[Kraken2ClassifyWorkerFactory::INPUT_SLOT].toString();
 
-    if (pairedReadsInput) {
+    if (isPairedReadsInput) {
         settings.pairedReads = true;
         settings.pairedReadsUrl = message.getData().toMap()[Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
     }

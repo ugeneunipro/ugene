@@ -46,8 +46,9 @@ private:
 
     Kraken2ClassifyTaskSettings getSettings(U2OpStatus &os);
     IntegralBus *input = nullptr;
+    IntegralBus *pairedIinput = nullptr;
 
-    bool pairedReadsInput = false;
+    bool isPairedReadsInput = false;
 
     static const QString KRAKEN_DIR;
 };
