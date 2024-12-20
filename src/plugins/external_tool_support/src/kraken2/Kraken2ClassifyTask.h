@@ -46,6 +46,8 @@ public:
 
     void prepare() override;
 
+    const QString& getClassificationURL() const;
+
 private:
     QStringList getArguments();
 
