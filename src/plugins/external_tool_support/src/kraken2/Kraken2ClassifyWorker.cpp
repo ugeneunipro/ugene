@@ -125,7 +125,7 @@ bool Kraken2ClassifyWorker::isReadyToRun() const {
 }
 
 bool Kraken2ClassifyWorker::dataFinished() const {
-    return input->isEnded();
+    return readsFetcher.isDone() && (!pairedIinput || pairedReadsFetcher.isDone());
 }
 
 QString Kraken2ClassifyWorker::checkPairedReads() const {
