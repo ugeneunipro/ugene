@@ -50,11 +50,14 @@ void Kraken2ClassifyWorker::init() {
         pairedIinput = ports.value(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED);
         SAFE_POINT(pairedIinput != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED), );
     }
+    readsFetcher = DatasetFetcher(this, input, context);
+    pairedReadsFetcher = DatasetFetcher(this, pairedIinput, context);
 }
 
 Task *Kraken2ClassifyWorker::tick() {
+    readsFetcher.processInputMessage();
     if (isPairedReadsInput) {
-        pairedIinput.process
+        pairedReadsFetcher.processInputMessage();
     }
     if (isReadyToRun()) {
         U2OpStatus2Log os;
@@ -87,7 +90,7 @@ void Kraken2ClassifyWorker::sl_taskFinished(Task *task) {
 }
 
 bool Kraken2ClassifyWorker::isReadyToRun() const {
-    return input->hasMessage();
+    return readsFetcher.hasFullDataset() && (!pairedIinput || pairedReadsFetcher.hasFullDataset());
 }
 
 bool Kraken2ClassifyWorker::dataFinished() const {

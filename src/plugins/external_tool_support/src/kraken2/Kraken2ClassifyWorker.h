@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <U2Lang/DatasetFetcher.h>
 #include <U2Lang/LocalDomain.h>
 
 #include "Kraken2ClassifyTask.h"
@@ -47,6 +48,9 @@ private:
     Kraken2ClassifyTaskSettings getSettings(U2OpStatus &os);
     IntegralBus *input = nullptr;
     IntegralBus *pairedIinput = nullptr;
+
+    DatasetFetcher readsFetcher;
+    DatasetFetcher pairedReadsFetcher;
 
     bool isPairedReadsInput = false;
 
