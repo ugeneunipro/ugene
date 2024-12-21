@@ -76,6 +76,12 @@ Task *Kraken2ClassifyWorker::tick() {
         setDone();
     }
 
+    if (isPairedReadsInput) {
+        const QString error = checkPairedReads();
+        if (!error.isEmpty()) {
+            return new FailTask(error);
+        }
+    }
     return nullptr;
 }
 
@@ -120,6 +126,17 @@ bool Kraken2ClassifyWorker::isReadyToRun() const {
 
 bool Kraken2ClassifyWorker::dataFinished() const {
     return input->isEnded();
+}
+
+QString Kraken2ClassifyWorker::checkPairedReads() const {
+    CHECK(isPairedReadsInput, "");
+    if (readsFetcher.isDone() && pairedReadsFetcher.hasFullDataset()) {
+        return tr("Not enough upstream reads datasets");
+    }
+    if (pairedReadsFetcher.isDone() && readsFetcher.hasFullDataset()) {
+        return tr("Not enough downstream reads datasets");
+    }
+    return "";
 }
 
 Kraken2ClassifyTaskSettings Kraken2ClassifyWorker::getSettings(U2OpStatus &os) {
