@@ -34,9 +34,10 @@ class Kraken2ClassifyWorker : public BaseWorker {
 public:
     Kraken2ClassifyWorker(Actor *actor);
 
-    void init();
-    Task *tick();
-    void cleanup();
+    void init() override;
+    Task *tick() override;
+    void cleanup() override;
+    bool isReady() const override;
 
 private slots:
     void sl_taskFinished(Task *task);

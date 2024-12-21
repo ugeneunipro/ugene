@@ -82,6 +82,31 @@ Task *Kraken2ClassifyWorker::tick() {
 void Kraken2ClassifyWorker::cleanup() {
 }
 
+bool Kraken2ClassifyWorker::isReady() const {
+    if (isDone()) {
+        return false;
+    }
+
+    int hasMsg1 = input->hasMessage();
+    bool ended1 = input->isEnded();
+    if (!isPairedReadsInput) {
+        return hasMsg1 || ended1;
+    }
+
+    int hasMsg2 = pairedIinput->hasMessage();
+    bool ended2 = pairedIinput->isEnded();
+
+    if (hasMsg1 && hasMsg2) {
+        return true;
+    } else if (hasMsg1) {
+        return ended2;
+    } else if (hasMsg2) {
+        return ended1;
+    }
+
+    return ended1 && ended2;
+}
+
 void Kraken2ClassifyWorker::sl_taskFinished(Task *task) {
     Kraken2ClassifyTask *krakenTask = qobject_cast<Kraken2ClassifyTask *>(task);
     if (!krakenTask->isFinished() || krakenTask->hasError() || krakenTask->isCanceled()) {
