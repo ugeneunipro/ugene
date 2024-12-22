@@ -46,15 +46,9 @@ private:
     bool isReadyToRun() const;
     bool dataFinished() const;
 
-    QString checkPairedReads() const;
-
     Kraken2ClassifyTaskSettings getSettings(U2OpStatus &os);
     IntegralBus *input = nullptr;
     IntegralBus *pairedInput = nullptr;
-
-    DatasetFetcher readsFetcher;
-    DatasetFetcher pairedReadsFetcher;
-
     bool isPairedReadsInput = false;
 
     static const QString KRAKEN_DIR;

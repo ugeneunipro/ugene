@@ -52,8 +52,6 @@ void Kraken2ClassifyWorker::init() {
         pairedInput = ports.value(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED);
         SAFE_POINT(pairedInput != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED), );
     }
-    readsFetcher = DatasetFetcher(this, input, context);
-    pairedReadsFetcher = DatasetFetcher(this, pairedInput, context);
 }
 
 Task *Kraken2ClassifyWorker::tick() {
@@ -118,18 +116,7 @@ bool Kraken2ClassifyWorker::isReadyToRun() const {
 }
 
 bool Kraken2ClassifyWorker::dataFinished() const {
-    return readsFetcher.isDone() && (!pairedInput || pairedReadsFetcher.isDone());
-}
-
-QString Kraken2ClassifyWorker::checkPairedReads() const {
-    CHECK(isPairedReadsInput, "");
-    if (readsFetcher.isDone() && pairedReadsFetcher.hasFullDataset()) {
-        return tr("Not enough upstream reads datasets");
-    }
-    if (pairedReadsFetcher.isDone() && readsFetcher.hasFullDataset()) {
-        return tr("Not enough downstream reads datasets");
-    }
-    return "";
+    return input->isEnded() && (!pairedInput || pairedInput->isEnded());
 }
 
 Kraken2ClassifyTaskSettings Kraken2ClassifyWorker::getSettings(U2OpStatus &os) {
