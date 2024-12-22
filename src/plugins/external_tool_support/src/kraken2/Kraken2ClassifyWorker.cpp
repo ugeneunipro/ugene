@@ -116,7 +116,10 @@ bool Kraken2ClassifyWorker::isReadyToRun() const {
 }
 
 bool Kraken2ClassifyWorker::dataFinished() const {
-    return input->isEnded() && (!pairedInput || pairedInput->isEnded());
+    if(isPairedReadsInput) {
+        return input->isEnded() && pairedInput->isEnded();
+    }
+    return input->isEnded();
 }
 
 Kraken2ClassifyTaskSettings Kraken2ClassifyWorker::getSettings(U2OpStatus &os) {
@@ -130,7 +133,11 @@ Kraken2ClassifyTaskSettings Kraken2ClassifyWorker::getSettings(U2OpStatus &os) {
 
     if (isPairedReadsInput) {
         settings.pairedReads = true;
-        settings.pairedReadsUrl = message.getData().toMap()[Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
+        settings.pairedReadsUrl = getMessageAndSetupScriptValues(pairedInput).getData().toMap()[Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
+        if (settings.readsUrl.isEmpty() || settings.pairedReadsUrl.isEmpty()) {
+            os.setError(tr("Quantity of files with reads in \"URL 1\" and \"URL 2\" should be equal."));
+            return settings;
+        }
     }
 
     QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
