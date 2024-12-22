@@ -51,8 +51,6 @@ namespace LocalWorkflow {
 
 const QString Kraken2ClassifyWorkerFactory::ACTOR_ID = "kraken-classify";
 
-const QString Kraken2ClassifyWorkerFactory::INPUT_PORT_ID = "in";
-
 // Slots should be the same as in GetReadsListWorkerFactory
 const QString Kraken2ClassifyWorkerFactory::INPUT_SLOT = "reads-url1";
 const QString Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT = "reads-url2";
@@ -171,7 +169,6 @@ void Kraken2ClassifyWorkerFactory::init() {
     proto->setPrompter(new Kraken2ClassifyPrompter(nullptr));
     proto->addExternalTool(Kraken2Support::CLASSIFY_TOOL_ID);
     proto->setValidator(new Kraken2ClassifyValidator());
-    proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     WorkflowEnv::getProtoRegistry()->registerProto(Kraken2ClassifyPrompter::tr("NGS: Metagenomics Classification"), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

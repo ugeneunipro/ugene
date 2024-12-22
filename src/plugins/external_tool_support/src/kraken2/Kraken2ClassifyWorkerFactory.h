@@ -37,8 +37,6 @@ public:
 
     static const QString ACTOR_ID;
 
-    static const QString INPUT_PORT_ID;
-
     static const QString INPUT_SLOT;
     static const QString PAIRED_INPUT_SLOT;
 
