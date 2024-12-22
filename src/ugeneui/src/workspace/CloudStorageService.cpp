@@ -26,7 +26,6 @@
 #include <QJsonDocument>
 
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "WebSocketClientService.h"
@@ -35,7 +34,7 @@
 namespace U2 {
 
 CloudStorageService::CloudStorageService(WorkspaceService* ws)
-    : QObject(ws), workspaceService(ws), rootEntry({""}, 0, QDateTime(), 0) {
+    : QObject(ws), workspaceService(ws), rootEntry({""}, 0, QDateTime(), 0, {}) {
     connect(workspaceService, &WorkspaceService::si_authenticationEvent, this, [this] {
         auto webSocketService = workspaceService->getWebSocketService();
         if (webSocketService != nullptr) {
@@ -83,6 +82,32 @@ void CloudStorageService::renameEntry(const QList<QString>& oldPath,
     workspaceService->executeApiRequest("/storage/move", payload, context, callback);
 }
 
+void CloudStorageService::shareEntry(const QList<QString>& path,
+                                     const QString& email,
+                                     QObject* context,
+                                     std::function<void(const QJsonObject&)> callback) const {
+    ioLog.trace("CloudStorageService::shareEntry: " + path.join("/") + " -> " + email);
+    SAFE_POINT(checkCloudStoragePath(path), "Invalid file path: " + path.join("/"), );
+    SAFE_POINT(checkEmail(email), "Invalid email: " + email, );
+    QJsonObject payload;
+    payload["path"] = QJsonArray::fromStringList(path);
+    payload["email"] = email.toLower();
+    workspaceService->executeApiRequest("/storage/share", payload, context, callback);
+}
+
+void CloudStorageService::unshareEntry(const QList<QString>& path,
+                                       const QString& email,
+                                       QObject* context,
+                                       std::function<void(const QJsonObject&)> callback) const {
+    ioLog.trace("CloudStorageService::unshareEntry: " + path.join("/") + " -> " + email);
+    SAFE_POINT(checkCloudStoragePath(path), "Invalid file path: " + path.join("/"), );
+    SAFE_POINT(checkEmail(email), "Invalid email: " + email, );
+    QJsonObject payload;
+    payload["path"] = QJsonArray::fromStringList(path);
+    payload["email"] = email.toLower();
+    workspaceService->executeApiRequest("/storage/unshare", payload, context, callback);
+}
+
 void CloudStorageService::downloadFile(const QList<QString>& path,
                                        const QString& localDirPath,
                                        QObject* context,
@@ -117,12 +142,17 @@ bool CloudStorageService::checkCloudStorageEntryName(const QString& entryName) {
     return true;
 }
 
+static const QRegularExpression emailRegex(R"((^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$))");
+
+bool CloudStorageService::checkEmail(const QString& email) {
+    return emailRegex.match(email).hasMatch();
+}
+
 bool CloudStorageService::checkCloudStoragePath(const QList<QString>& path, bool isDir) {
     CHECK(!path.isEmpty() || isDir, false);
-    for (const auto& pathEntry : qAsConst(path)) {
-        CHECK(checkCloudStorageEntryName(pathEntry), false);
-    }
-    return true;
+    return std::all_of(path.cbegin(), path.cend(), [](const auto& pathEntry) {
+        return checkCloudStorageEntryName(pathEntry);
+    });
 }
 
 void CloudStorageService::onWebSocketMessageReceived(const WebSocketSubscriptionType& type, const QString&, const QJsonObject& payload) {
@@ -134,8 +164,12 @@ void CloudStorageService::onWebSocketMessageReceived(const WebSocketSubscription
 
 static constexpr int ROOT_ENTRY_SESSION_LOCAL_ID = 0;
 
-CloudStorageEntryData::CloudStorageEntryData(const QList<QString>& _path, qint64 _size, const QDateTime& _modificationTime, qint64 _sessionLocalId)
-    : path(_path), size(_size), modificationTime(_modificationTime), sessionLocalId(_sessionLocalId) {
+CloudStorageEntryData::CloudStorageEntryData(const QList<QString>& _path,
+                                             qint64 _size,
+                                             const QDateTime& _modificationTime,
+                                             qint64 _sessionLocalId,
+                                             const QList<QString>& _sharedWithEmails)
+    : path(_path), size(_size), modificationTime(_modificationTime), sessionLocalId(_sessionLocalId), sharedWithEmails(_sharedWithEmails) {
     SAFE_POINT(!path.isEmpty() || sessionLocalId == ROOT_ENTRY_SESSION_LOCAL_ID, "Item path must not be empty", );  // Only root path can be empty.
 }
 
@@ -143,8 +177,13 @@ const QString& CloudStorageEntryData::getName() const {
     return path.last();
 }
 
-CloudStorageEntry::CloudStorageEntry(const QList<QString>& path, qint64 size, const QDateTime& modificationTime, qint64 sessionLocalId)
-    : data(new CloudStorageEntryData(path, size, modificationTime, sessionLocalId)) {
+CloudStorageEntry::CloudStorageEntry(const QList<QString>& path,
+                                     qint64 size,
+                                     const QDateTime& modificationTime,
+                                     qint64 sessionLocalId,
+                                     const QList<QString>& sharedWithEmails)
+    : data(new CloudStorageEntryData(path, size, modificationTime, sessionLocalId, sharedWithEmails)) {
+    coreLog.info("Path: " + path.join("/") + " shared: " + sharedWithEmails.join(","));
 }
 
 CloudStorageEntryData* CloudStorageEntry::operator->() {
@@ -159,13 +198,24 @@ CloudStorageEntry CloudStorageEntry::fromJson(const QJsonObject& json, const QLi
     qint64 size = json["size"].toVariant().toLongLong();
     QDateTime modificationTime = QDateTime::fromString(json["modificationTime"].toString(), Qt::ISODate);
     qint64 sessionLocalId = json["sessionLocalId"].toVariant().toLongLong();
+    QList<QString> sharedWithEmails;
+    auto sharingStateJson = json["sharingState"];
+    if (!sharingStateJson.isUndefined()) {
+        auto sharedWithRecipientsJsonArray = sharingStateJson["sharedWith"].toArray();
+        for (const QJsonValue& recipient : qAsConst(sharedWithRecipientsJsonArray)) {
+            auto email = recipient["email"].toString();
+            if (!email.isEmpty()) {
+                sharedWithEmails.append(email);
+            }
+        }
+    }
 
     QList<QString> path = parentPath;
     bool isRoot = parentPath.isEmpty() && name.isEmpty();
     if (!isRoot) {  // Root path is an empty list.
         path.append(name);
     }
-    CloudStorageEntry entry(path, size, modificationTime, sessionLocalId);
+    CloudStorageEntry entry(path, size, modificationTime, sessionLocalId, sharedWithEmails);
     entry->isFolder = json["isFolder"].toBool();
 
     QList<CloudStorageEntry> children;

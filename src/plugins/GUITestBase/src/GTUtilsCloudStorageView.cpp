@@ -29,8 +29,6 @@
 #include <system/GTFile.h>
 
 #include <QFileInfo>
-#include <QMainWindow>
-#include <QSortFilterProxyModel>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -73,6 +71,22 @@ QModelIndex GTUtilsCloudStorageView::checkItemIsPresent(const QList<QString>& pa
     GT_LOG("GTUtilsCloudStorageView::checkItemIsPresent: [" + path.join("/") + "]");
     QTreeView* tree = getStorageTreeView();
     return GTTreeView::findIndexWithWait(tree, QVariant::fromValue(path), Qt::ItemDataRole(Qt::UserRole + 3));
+}
+
+QModelIndex GTUtilsCloudStorageView::checkItemIsShared(const QList<QString>& path, const QString& email) {
+    GT_LOG("GTUtilsCloudStorageView::checkItemIsShared: [" + path.join("/") + "]: " + email);
+    auto modelIndex = checkItemIsPresent(path);
+    auto sharedEmails = modelIndex.data(Qt::ItemDataRole(Qt::UserRole + 6)).value<QList<QString>>();
+    GT_CHECK_RESULT(sharedEmails.contains(email), "Shared email is not found: " + email, modelIndex);
+    return modelIndex;
+}
+
+QModelIndex GTUtilsCloudStorageView::checkItemIsNotShared(const QList<QString>& path, const QString& email) {
+    GT_LOG("GTUtilsCloudStorageView::checkItemIsNotShared: [" + path.join("/") + "]: " + email);
+    auto modelIndex = checkItemIsPresent(path);
+    auto sharedEmails = modelIndex.data(Qt::ItemDataRole(Qt::UserRole + 6)).value<QList<QString>>();
+    GT_CHECK_RESULT(!sharedEmails.contains(email), "Shared email is present: " + email, modelIndex);
+    return modelIndex;
 }
 
 void GTUtilsCloudStorageView::checkItemIsNotPresent(const QList<QString>& path) {
@@ -160,6 +174,31 @@ void GTUtilsCloudStorageView::downloadFileWithDoubleClick(const QList<QString>& 
     GTTreeView::doubleClick(tree, index);
     QString downloadedFilePath = AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath() + "/" + dirPath.last();
     GTFile::checkFileExistsWithWait(downloadedFilePath, 20000, expectedFileSize);
+}
+
+void GTUtilsCloudStorageView::shareItem(const QList<QString>& path, const QString& email) {
+    QTreeView* tree = getStorageTreeView();
+    QModelIndex index = checkItemIsPresent(path);
+
+    GTTreeView::click(tree, index);
+
+    GTUtilsDialog::add(new PopupChooser({"cloudStorageShareAction"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new InputDialogFiller(email));
+    GTMouseDriver::click(Qt::RightButton);
+
+    checkItemIsShared(path, email);
+}
+
+void GTUtilsCloudStorageView::unshareItem(const QList<QString>& path, const QString& email) {
+    QTreeView* tree = getStorageTreeView();
+    QModelIndex index = checkItemIsPresent(path);
+
+    GTTreeView::click(tree, index);
+
+    GTUtilsDialog::add(new PopupChooserByText({"Stop sharing with ...", email}, GTGlobals::UseMouse));
+    GTMouseDriver::click(Qt::RightButton);
+
+    checkItemIsNotShared(path, email);
 }
 
 }  // namespace U2
