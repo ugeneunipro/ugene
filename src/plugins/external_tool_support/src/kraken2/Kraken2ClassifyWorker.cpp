@@ -49,20 +49,14 @@ void Kraken2ClassifyWorker::init() {
     SAFE_POINT(input != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_SINGLE), );
     isPairedReadsInput = (getValue<QString>(Kraken2ClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == Kraken2ClassifyTaskSettings::PAIRED_END);
     if (isPairedReadsInput) {
-        pairedIinput = ports.value(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED);
-        SAFE_POINT(pairedIinput != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED), );
+        pairedInput = ports.value(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED);
+        SAFE_POINT(pairedInput != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED), );
     }
     readsFetcher = DatasetFetcher(this, input, context);
-    pairedReadsFetcher = DatasetFetcher(this, pairedIinput, context);
+    pairedReadsFetcher = DatasetFetcher(this, pairedInput, context);
 }
 
 Task *Kraken2ClassifyWorker::tick() {
-    /*
-    readsFetcher.processInputMessage();
-    if (isPairedReadsInput) {
-        pairedReadsFetcher.processInputMessage();
-    }
-    */
     if (isReadyToRun()) {
         U2OpStatus2Log os;
         Kraken2ClassifyTaskSettings settings = getSettings(os);
@@ -79,14 +73,6 @@ Task *Kraken2ClassifyWorker::tick() {
     if (dataFinished()) {
         setDone();
     }
-    /*
-    if (isPairedReadsInput) {
-        const QString error = checkPairedReads();
-        if (!error.isEmpty()) {
-            return new FailTask(error);
-        }
-    }
-    */
     return nullptr;
 }
 
@@ -104,8 +90,8 @@ bool Kraken2ClassifyWorker::isReady() const {
         return hasMsg1 || ended1;
     }
 
-    int hasMsg2 = pairedIinput->hasMessage();
-    bool ended2 = pairedIinput->isEnded();
+    int hasMsg2 = pairedInput->hasMessage();
+    bool ended2 = pairedInput->isEnded();
 
     if (hasMsg1 && hasMsg2) {
         return true;
@@ -128,11 +114,11 @@ void Kraken2ClassifyWorker::sl_taskFinished(Task *task) {
 }
 
 bool Kraken2ClassifyWorker::isReadyToRun() const {
-    return input->hasMessage() && (!isPairedReadsInput || pairedIinput->hasMessage());
+    return input->hasMessage() && (!isPairedReadsInput || pairedInput->hasMessage());
 }
 
 bool Kraken2ClassifyWorker::dataFinished() const {
-    return readsFetcher.isDone() && (!pairedIinput || pairedReadsFetcher.isDone());
+    return readsFetcher.isDone() && (!pairedInput || pairedReadsFetcher.isDone());
 }
 
 QString Kraken2ClassifyWorker::checkPairedReads() const {

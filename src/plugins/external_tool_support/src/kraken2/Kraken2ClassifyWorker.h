@@ -50,7 +50,7 @@ private:
 
     Kraken2ClassifyTaskSettings getSettings(U2OpStatus &os);
     IntegralBus *input = nullptr;
-    IntegralBus *pairedIinput = nullptr;
+    IntegralBus *pairedInput = nullptr;
 
     DatasetFetcher readsFetcher;
     DatasetFetcher pairedReadsFetcher;
