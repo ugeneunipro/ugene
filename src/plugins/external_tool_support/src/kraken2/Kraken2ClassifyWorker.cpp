@@ -55,10 +55,12 @@ void Kraken2ClassifyWorker::init() {
 }
 
 Task *Kraken2ClassifyWorker::tick() {
+    /*
     readsFetcher.processInputMessage();
     if (isPairedReadsInput) {
         pairedReadsFetcher.processInputMessage();
     }
+    */
     if (isReadyToRun()) {
         U2OpStatus2Log os;
         Kraken2ClassifyTaskSettings settings = getSettings(os);
@@ -75,13 +77,14 @@ Task *Kraken2ClassifyWorker::tick() {
     if (dataFinished()) {
         setDone();
     }
-
+    /*
     if (isPairedReadsInput) {
         const QString error = checkPairedReads();
         if (!error.isEmpty()) {
             return new FailTask(error);
         }
     }
+    */
     return nullptr;
 }
 
@@ -121,7 +124,7 @@ void Kraken2ClassifyWorker::sl_taskFinished(Task *task) {
 }
 
 bool Kraken2ClassifyWorker::isReadyToRun() const {
-    return readsFetcher.hasFullDataset() && (!pairedIinput || pairedReadsFetcher.hasFullDataset());
+    return input->hasMessage() && (!isPairedReadsInput || pairedIinput->hasMessage());
 }
 
 bool Kraken2ClassifyWorker::dataFinished() const {
