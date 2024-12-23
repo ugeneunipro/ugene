@@ -25,14 +25,14 @@ for LIB in ${QT_LIBS[*]}; do
   cp "${QT_DIR}/lib/${FULL_LIB_NAME}" "${UGENE_DIR}/"
 done
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN' "${UGENE_DIR}"/*.so.5
+find "${UGENE_DIR}" -maxdepth 1 -name "*.so.5" -exec patchelf --force-rpath --set-rpath '$ORIGIN' {} \;
 
 # Platform drivers.
 rm -rf "${UGENE_DIR}/platforms"
 mkdir "${UGENE_DIR}/platforms"
 cp "${QT_DIR}/plugins/platforms/libqxcb.so" "${UGENE_DIR}/platforms"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/platforms"/*.so
+find "${UGENE_DIR}/platforms" -maxdepth 1 -name "*.so" -exec patchelf --force-rpath --set-rpath '$ORIGIN/..' {} \;
 # Qt 5.15 requires external libxcb-xinerama.so.0 library.
 cp "${QT_DIR}/lib_extra/libxcb-xinerama.so.0" "${UGENE_DIR}/"
 
@@ -47,14 +47,14 @@ cp -r "${QT_DIR}/plugins/imageformats/libqtiff.so" "${UGENE_DIR}/imageformats"
 cp -r "${QT_DIR}/plugins/imageformats/libqwbmp.so" "${UGENE_DIR}/imageformats"
 cp -r "${QT_DIR}/plugins/imageformats/libqwebp.so" "${UGENE_DIR}/imageformats"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/imageformats"/*.so
+find "${UGENE_DIR}/imageformats" -maxdepth 1 -name "*.so" -exec patchelf --force-rpath --set-rpath '$ORIGIN/..' {} \;
 
 # GTK3 platform theme.
 rm -rf "${UGENE_DIR}/platformthemes"
 mkdir "${UGENE_DIR}/platformthemes"
 cp -r "${QT_DIR}/plugins/platformthemes/libqgtk3.so" "${UGENE_DIR}/platformthemes"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/platformthemes"/*.so
+find "${UGENE_DIR}/platformthemes" -maxdepth 1 -name "*.so" -exec patchelf --force-rpath --set-rpath '$ORIGIN/..' {} \;
 
 # OpenGL support
 rm -rf "${UGENE_DIR}/xcbglintegrations"
@@ -62,4 +62,4 @@ mkdir "${UGENE_DIR}/xcbglintegrations"
 cp -r "${QT_DIR}/plugins/xcbglintegrations/libqxcb-egl-integration.so" "${UGENE_DIR}/xcbglintegrations"
 cp -r "${QT_DIR}/plugins/xcbglintegrations/libqxcb-glx-integration.so" "${UGENE_DIR}/xcbglintegrations"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/xcbglintegrations"/*.so
+find "${UGENE_DIR}/xcbglintegrations" -maxdepth 1 -name "*.so" -exec patchelf --force-rpath --set-rpath '$ORIGIN/..' {} \;
