@@ -65,7 +65,6 @@ void LogViewWidget::init() {
     useRegexp = true;
 
     setWindowTitle(tr("Log"));
-    setWindowIcon(GUIUtils::getIconResource("ugene","book_open.png", false));
 
     connect(&updateViewTimer, SIGNAL(timeout()), this, SLOT(sl_showNewMessages()));
 

@@ -41,6 +41,9 @@ public:
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
+private slots:
+    void sl_colorModeSwitched();
+
 private:
     void showContextMenu(const QPoint& point) const;
     void createDir();

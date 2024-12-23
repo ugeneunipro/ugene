@@ -43,6 +43,7 @@
 
 #include "CloudStorageService.h"
 #include "WorkspaceService.h"
+#include "main_window/DockManagerImpl.h"
 
 namespace U2 {
 constexpr auto CLOUD_STORAGE_LAST_OPENED_DOWNLOAD_DIR = "CloudStorageDownloadDir";
@@ -72,9 +73,9 @@ static void updateModel(QTreeView* tree,
     for (const CloudStorageEntry& childEntry : qAsConst(entry->children)) {
         QIcon icon(childEntry->isFolder
                        ? (childEntry->getName() == "Shared" && childEntry->path.length() == 1
-                              ? ":ugene/images/folder_shared.svg"
-                              : ":ugene/images/folder.svg")
-                       : ":ugene/images/document.svg");
+                              ? GUIUtils::getResourceName("ugene", "folder_shared.svg")
+                              : GUIUtils::getResourceName("ugene", "folder.svg"))
+                       : GUIUtils::getResourceName("ugene", "document.svg"));
         auto childEntryKey = childEntry->sessionLocalId;
         QStandardItem* nameItem;
         if (childrenMap.contains(childEntryKey)) {
@@ -291,6 +292,8 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
 
     updateActionsState();
     updateStateLabelText();
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &CloudStorageDockWidget::sl_colorModeSwitched);
 }
 
 bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
@@ -305,6 +308,18 @@ bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
         }
     }
     return false;
+}
+
+void CloudStorageDockWidget::sl_colorModeSwitched() {
+    stateLabel->setStyleSheet(QString("background: %1; padding: 10px;").arg(QPalette().base().color().name()));
+    createDirAction->setIcon(GUIUtils::getIconResource("ugene", "new_folder.svg"));
+    deleteAction->setIcon(GUIUtils::getIconResource("ugene", "trash.svg"));
+    renameAction->setIcon(GUIUtils::getIconResource("ugene", "file_rename.svg"));
+    downloadAction->setIcon(GUIUtils::getIconResource("ugene", "file_download.svg"));
+    uploadAction->setIcon(GUIUtils::getIconResource("ugene", "file_upload.svg"));
+    shareAction->setIcon(GUIUtils::getIconResource("ugene", "file_share.svg"));
+    openWebWorkspaceAction->setIcon(GUIUtils::getIconResource("ugene", "web_link.svg"));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "cloud_storage.svg"));
 }
 
 void CloudStorageDockWidget::showContextMenu(const QPoint& point) const {

@@ -55,7 +55,6 @@ TaskViewDockWidget::TaskViewDockWidget() {
 
     setObjectName(DOCK_TASK_VIEW);
     setWindowTitle(tr("Tasks"));
-    setWindowIcon(GUIUtils::getIconResource("ugene", "clock.png", false));
 
     auto l = new QVBoxLayout();
     l->setSpacing(0);
