@@ -51,7 +51,6 @@ namespace LocalWorkflow {
 
 const QString Kraken2ClassifyWorkerFactory::ACTOR_ID = "kraken-classify";
 
-// Slots should be the same as in GetReadsListWorkerFactory
 const QString Kraken2ClassifyWorkerFactory::INPUT_SLOT = "reads-url1";
 const QString Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT = "reads-url2";
 
@@ -64,8 +63,8 @@ const QString Kraken2ClassifyWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
 const QString Kraken2ClassifyWorkerFactory::SINGLE_END_TEXT = "SE reads or contigs";
 const QString Kraken2ClassifyWorkerFactory::PAIRED_END_TEXT = "PE reads";
 
-const QString Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_SINGLE = "in-single";
-const QString Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED = "in-paired";
+const QString Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_SINGLE = "in-first-single";
+const QString Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED = "in-second-paired";
 
 const QString Kraken2ClassifyWorkerFactory::WORKFLOW_CLASSIFY_TOOL_KRAKEN = "Kraken 2";
 
