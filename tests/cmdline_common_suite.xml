@@ -36,4 +36,7 @@
     <excluded test="workflow_samples/raw_ngs/test_0002.xml" platform="windows" reason="UGENE-4898: TopHat is not available on Windows"/>
     <excluded test="workflow_samples/raw_ngs/test_0005.xml" platform="windows" reason="UGENE-7765"/>
     <excluded test="workflow_samples/raw_ngs/test_0006.xml" platform="windows" reason="UGENE-7765"/>
+    <excluded test="external-tool-support/kraken2/test_0001.xml" platform="windows" reason="Kraken 2 is not available on Windows"/>
+    <excluded test="external-tool-support/kraken2/test_0001.xml" platform="linux" reason="Kraken 2 is set up Linux"/>
+    <excluded test="external-tool-support/kraken2/test_0001.xml" platform="mac" reason="Kraken 2 is not available on Mac"/>
 </suite>
