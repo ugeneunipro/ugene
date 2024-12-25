@@ -89,14 +89,19 @@ rm -f "${BUILD_DIR}"/*.a
   exit 1
 }
 
-# Patch RPATH for UGENE binaries.
+# Patch RPATH for UGENE binaries and plugins.
+
+# Update RPATH for all shared libraries in the plugins directory.
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${BUILD_DIR}/plugins"/*.so
+find "${BUILD_DIR}/plugins" -name "*.so" -exec patchelf --force-rpath --set-rpath '$ORIGIN/..' {} \;
+
+# Update RPATH for all shared libraries in the build directory.
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN' "${BUILD_DIR}"/*.so
+find "${BUILD_DIR}" -maxdepth 1 -name "*.so" -exec patchelf --force-rpath --set-rpath '$ORIGIN' {} \;
+
+# Update RPATH for individual binaries.
 # shellcheck disable=SC2016
 patchelf --force-rpath --set-rpath '$ORIGIN' "${BUILD_DIR}/plugins_checker"
-# shellcheck disable=SC2016
 # shellcheck disable=SC2016
 patchelf --force-rpath --set-rpath '$ORIGIN' "${BUILD_DIR}/ugenecl"
 # shellcheck disable=SC2016
