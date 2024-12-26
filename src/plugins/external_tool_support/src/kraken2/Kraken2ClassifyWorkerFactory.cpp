@@ -51,9 +51,6 @@ namespace LocalWorkflow {
 
 const QString Kraken2ClassifyWorkerFactory::ACTOR_ID = "kraken-classify";
 
-const QString Kraken2ClassifyWorkerFactory::INPUT_PORT_ID = "in";
-
-// Slots should be the same as in GetReadsListWorkerFactory
 const QString Kraken2ClassifyWorkerFactory::INPUT_SLOT = "reads-url1";
 const QString Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT = "reads-url2";
 
@@ -65,6 +62,9 @@ const QString Kraken2ClassifyWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
 
 const QString Kraken2ClassifyWorkerFactory::SINGLE_END_TEXT = "SE reads or contigs";
 const QString Kraken2ClassifyWorkerFactory::PAIRED_END_TEXT = "PE reads";
+
+const QString Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_SINGLE = "in-first-single";
+const QString Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED = "in-second-paired";
 
 const QString Kraken2ClassifyWorkerFactory::WORKFLOW_CLASSIFY_TOOL_KRAKEN = "Kraken 2";
 
@@ -79,28 +79,34 @@ Worker *Kraken2ClassifyWorkerFactory::createWorker(Actor *actor) {
 void Kraken2ClassifyWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
-        const Descriptor inSlotDesc(INPUT_SLOT,
-                                    Kraken2ClassifyPrompter::tr("Input URL 1"),
-                                    Kraken2ClassifyPrompter::tr("Input URL 1."));
+        QMap<Descriptor, DataTypePtr> inTypeMap;
+        QMap<Descriptor, DataTypePtr> inTypeMapPaired;
+        Descriptor readsDesc(INPUT_SLOT,
+                             Kraken2ClassifyPrompter::tr("Input URL 1"),
+                             Kraken2ClassifyPrompter::tr("Input URL 1."));
+        Descriptor readsPairedDesc(PAIRED_INPUT_SLOT,
+                                   Kraken2ClassifyPrompter::tr("Input URL 2"),
+                                   Kraken2ClassifyPrompter::tr("Input URL 2."));
 
-        const Descriptor inPairedSlotDesc(PAIRED_INPUT_SLOT,
-                                          Kraken2ClassifyPrompter::tr("Input URL 2"),
-                                          Kraken2ClassifyPrompter::tr("Input URL 2."));
+        inTypeMap[readsDesc] = BaseTypes::STRING_TYPE();
+        inTypeMapPaired[readsPairedDesc] = BaseTypes::STRING_TYPE();
 
-        QMap<Descriptor, DataTypePtr> inType;
-        inType[inSlotDesc] = BaseTypes::STRING_TYPE();
-        inType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
+        Descriptor inPortDesc(IN_PORT_DESCR_SINGLE,
+                              Kraken2ClassifyPrompter::tr("Input sequences"),
+                              Kraken2ClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
+                                                          "In case of SE reads or contigs use the \"Input URL 1\"\n\n"
+                                                          "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
+                                                          "See also the \"Input data\" parameter of the element."));
 
-        QMap<Descriptor, DataTypePtr> outType;
-
-        const Descriptor inPortDesc(INPUT_PORT_ID,
+        Descriptor inPortDescPaired(IN_PORT_DESCR_PAIRED,
                                     Kraken2ClassifyPrompter::tr("Input sequences"),
-                                    Kraken2ClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                               "In case of SE reads or contigs use the \"Input URL 1\" slot only.\n\n"
-                                                               "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
-                                                               "See also the \"Input data\" parameter of the element."));
+                                    Kraken2ClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n" 
+                                                                "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
+                                                                "See also the \"Input data\" parameter of the element."));
 
-        ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
+        DataTypePtr inTypeSet(new MapDataType(ACTOR_ID + "-in", inTypeMap));
+        DataTypePtr inTypeSetPaired(new MapDataType(ACTOR_ID + "-in", inTypeMapPaired));
+        ports << new PortDescriptor(inPortDescPaired, inTypeSetPaired, true, false, IntegralBusPort::BLIND_INPUT) << new PortDescriptor(inPortDesc, inTypeSet, true);
     }
 
     QList<Attribute *> attributes;
@@ -120,9 +126,13 @@ void Kraken2ClassifyWorkerFactory::init() {
         Descriptor threadsDesc(THREADS_NUMBER_ATTR_ID, Kraken2ClassifyPrompter::tr("Number of threads"), Kraken2ClassifyPrompter::tr("Use multiple threads (--threads)."));
 
         attributes << new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding);
-        Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, Kraken2ClassifyTaskSettings::SINGLE_END);
-        inputDataAttribute->addSlotRelation(new SlotRelationDescriptor(INPUT_PORT_ID, PAIRED_INPUT_SLOT, QVariantList() << Kraken2ClassifyTaskSettings::PAIRED_END));
+
+        Attribute* inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, Kraken2ClassifyTaskSettings::SINGLE_END);
+        QVariantList visibilityValues;
+        visibilityValues << Kraken2ClassifyTaskSettings::PAIRED_END;
+        inputDataAttribute->addPortRelation(new PortRelationDescriptor(IN_PORT_DESCR_PAIRED, visibilityValues));
         attributes << inputDataAttribute;
+
         attributes << new Attribute(quickOperationDesc, BaseTypes::BOOL_TYPE(), Attribute::None, false);
 
         attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
@@ -158,7 +168,6 @@ void Kraken2ClassifyWorkerFactory::init() {
     proto->setPrompter(new Kraken2ClassifyPrompter(nullptr));
     proto->addExternalTool(Kraken2Support::CLASSIFY_TOOL_ID);
     proto->setValidator(new Kraken2ClassifyValidator());
-    proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     WorkflowEnv::getProtoRegistry()->registerProto(Kraken2ClassifyPrompter::tr("NGS: Metagenomics Classification"), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
