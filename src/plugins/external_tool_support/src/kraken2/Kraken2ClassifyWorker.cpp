@@ -45,11 +45,13 @@ Kraken2ClassifyWorker::Kraken2ClassifyWorker(Actor *actor) : BaseWorker(actor, f
 };
 
 void Kraken2ClassifyWorker::init() {
-    input = ports.value(Kraken2ClassifyWorkerFactory::INPUT_PORT_ID);
-
-    SAFE_POINT(input != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::INPUT_PORT_ID), );
-
-    pairedReadsInput = (getValue<QString>(Kraken2ClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == Kraken2ClassifyTaskSettings::PAIRED_END);
+    input = ports.value(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_SINGLE);
+    SAFE_POINT(input != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_SINGLE), );
+    isPairedReadsInput = (getValue<QString>(Kraken2ClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == Kraken2ClassifyTaskSettings::PAIRED_END);
+    if (isPairedReadsInput) {
+        pairedInput = ports.value(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED);
+        SAFE_POINT(pairedInput != nullptr, QString("Port with id '%1' is NULL").arg(Kraken2ClassifyWorkerFactory::IN_PORT_DESCR_PAIRED), );
+    }
 }
 
 Task *Kraken2ClassifyWorker::tick() {
@@ -69,11 +71,35 @@ Task *Kraken2ClassifyWorker::tick() {
     if (dataFinished()) {
         setDone();
     }
-
     return nullptr;
 }
 
 void Kraken2ClassifyWorker::cleanup() {
+}
+
+bool Kraken2ClassifyWorker::isReady() const {
+    if (isDone()) {
+        return false;
+    }
+
+    int hasMsg1 = input->hasMessage();
+    bool ended1 = input->isEnded();
+    if (!isPairedReadsInput) {
+        return hasMsg1 || ended1;
+    }
+
+    int hasMsg2 = pairedInput->hasMessage();
+    bool ended2 = pairedInput->isEnded();
+
+    if (hasMsg1 && hasMsg2) {
+        return true;
+    } else if (hasMsg1) {
+        return ended2;
+    } else if (hasMsg2) {
+        return ended1;
+    }
+
+    return ended1 && ended2;
 }
 
 void Kraken2ClassifyWorker::sl_taskFinished(Task *task) {
@@ -86,10 +112,13 @@ void Kraken2ClassifyWorker::sl_taskFinished(Task *task) {
 }
 
 bool Kraken2ClassifyWorker::isReadyToRun() const {
-    return input->hasMessage();
+    return input->hasMessage() && (!isPairedReadsInput || pairedInput->hasMessage());
 }
 
 bool Kraken2ClassifyWorker::dataFinished() const {
+    if(isPairedReadsInput) {
+        return input->isEnded() && pairedInput->isEnded();
+    }
     return input->isEnded();
 }
 
@@ -102,9 +131,13 @@ Kraken2ClassifyTaskSettings Kraken2ClassifyWorker::getSettings(U2OpStatus &os) {
     const Message message = getMessageAndSetupScriptValues(input);
     settings.readsUrl = message.getData().toMap()[Kraken2ClassifyWorkerFactory::INPUT_SLOT].toString();
 
-    if (pairedReadsInput) {
+    if (isPairedReadsInput) {
         settings.pairedReads = true;
-        settings.pairedReadsUrl = message.getData().toMap()[Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
+        settings.pairedReadsUrl = getMessageAndSetupScriptValues(pairedInput).getData().toMap()[Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
+        if (settings.readsUrl.isEmpty() || settings.pairedReadsUrl.isEmpty()) {
+            os.setError(tr("Quantity of files with reads in \"URL 1\" and \"URL 2\" should be equal."));
+            return settings;
+        }
     }
 
     QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());

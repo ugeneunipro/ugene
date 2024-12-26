@@ -37,8 +37,6 @@ public:
 
     static const QString ACTOR_ID;
 
-    static const QString INPUT_PORT_ID;
-
     static const QString INPUT_SLOT;
     static const QString PAIRED_INPUT_SLOT;
 
@@ -50,6 +48,9 @@ public:
 
     static const QString SINGLE_END_TEXT;
     static const QString PAIRED_END_TEXT;
+    
+    static const QString IN_PORT_DESCR_SINGLE;
+    static const QString IN_PORT_DESCR_PAIRED;
 
     static const QString WORKFLOW_CLASSIFY_TOOL_KRAKEN;
 };
