@@ -432,7 +432,7 @@ int main(int argc, char** argv) {
     // A workaround for https://bugreports.qt.io/browse/QTBUG-87014: "Qt application gets stuck trying to open main window under Big Sur"
     qputenv("QT_MAC_WANTS_LAYER", "1");
 #endif
-
+    qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
     // QApplication app(argc, argv);
     GApplication app(argc, argv);
 
