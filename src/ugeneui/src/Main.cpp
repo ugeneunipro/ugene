@@ -436,6 +436,14 @@ int main(int argc, char** argv) {
     // QApplication app(argc, argv);
     GApplication app(argc, argv);
 
+#ifdef Q_OS_WIN
+    QFont appFont = QGuiApplication::font();
+    if (appFont.pointSize() < 8) {
+        appFont.setPointSize(8);
+        QGuiApplication::setFont(appFont);
+    }
+#endif
+
 #ifdef Q_OS_LINUX
     QPixmap pixmap(":/ugene/images/originals/ugene_128.png");
     GApplication::setWindowIcon(pixmap);
