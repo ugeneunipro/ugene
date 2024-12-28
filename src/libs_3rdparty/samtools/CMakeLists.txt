@@ -4,6 +4,8 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5 REQUIRED Core LinguistTools)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 include_directories(src)
 include_directories(src/samtools_core/htslib)
 include_directories(../../include)
@@ -19,14 +21,11 @@ add_definitions(
 
 file(GLOB SRCS src/*.cpp src/samtools_core/*.c src/samtools_core/htslib/*.c src/samtools_core/htslib/cram/*.c src/samtools_core/htslib/htscodecs/htscodecs/*.c src/samtools_core/htslib/htslib/*.c src/samtools_core/htslib/os/*.c)
 file(GLOB HDRS src/*.h   src/samtools_core/*.h src/samtools_core/htslib/*.h src/samtools_core/htslib/cram/*.h src/samtools_core/htslib/htscodecs/htscodecs/*.h src/samtools_core/htslib/htslib/*.h src/samtools_core/htslib/os/*.h)
-file(GLOB TS_FILES transl/*.ts)
 
 if (WIN32)
     file(GLOB_RECURSE SRCS src/samtools_core/htslib/win/*.c)
     file(GLOB_RECURSE HDRS src/samtools_core/htslib/win/*.h)
 endif ()
-
-qt5_add_translation(QM_FILES ${TS_FILES})
 
 # Suppress original samtools warnings
 if (CMAKE_COMPILER_IS_GNUCC)

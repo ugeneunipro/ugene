@@ -7,6 +7,8 @@ find_package(Qt5 REQUIRED Core Gui Widgets)
 
 add_definitions(-DBUILDING_U2ALGORITHM_DLL)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 include_directories(src)
 include_directories(../../include)
 include_directories(../../libs_3rdparty/samtools/src)
@@ -21,4 +23,3 @@ target_link_libraries(U2Algorithm
         Qt5::Core Qt5::Gui Qt5::Widgets
         samtools
         U2Core)
-

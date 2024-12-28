@@ -3,14 +3,13 @@
 #
 # For CLion developers:
 #   * add Qt5_DIR variable to File->Settings->Build,Execution,Deployment->CMake pointing to valid QT dir.
-#   * add UGENE_TRANSLATION_FILE environment variable to the RUN configuration and point it to *.qm file produced by qmake build
 
 cmake_minimum_required(VERSION 3.20)
 project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 48.0-dev)
+set(UGENE_VERSION 53.0-dev)
 
 message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
 
@@ -21,6 +20,7 @@ add_definitions(
 )
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_DEBUG_POSTFIX "d")
 
 # Set a default build type for single-configuration
 # CMake generators if no build type is set.
@@ -139,3 +139,19 @@ add_subdirectory(src/plugins_3rdparty/ptools)
 add_subdirectory(src/plugins_3rdparty/sitecon)
 add_subdirectory(src/plugins_3rdparty/umuscle)
 add_subdirectory(src/plugins_3rdparty/variants)
+
+# Generate translations.
+find_package(Qt5LinguistTools REQUIRED)
+set(LANGUAGES "RU" "TR")
+foreach (LANG IN LISTS LANGUAGES)
+    string(TOLOWER ${LANG} LANG_LOWER)
+    set(TRANSLATIONS_VAR GLOBAL_TRANSLATIONS_${LANG})
+    set(QM_FILE ${CMAKE_BINARY_DIR}/dist/transl_${LANG_LOWER}.qm)
+    add_custom_command(
+            OUTPUT ${QM_FILE}
+            COMMAND ${Qt5_LRELEASE_EXECUTABLE} ${${TRANSLATIONS_VAR}} -qm ${QM_FILE}
+            DEPENDS ${${TRANSLATIONS_VAR}}
+            COMMENT "Generating translation file: ${QM_FILE}"
+    )
+    add_custom_target(${LANG}_translation ALL DEPENDS ${QM_FILE})
+endforeach ()

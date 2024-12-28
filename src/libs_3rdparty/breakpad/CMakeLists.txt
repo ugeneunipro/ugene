@@ -2,6 +2,8 @@ project(breakpad)
 
 find_package(Qt5 REQUIRED Core)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 include_directories(src)
 
 file(GLOB COMMON_SRCS src/common/*.cc src/common/*.c src/client/*.cc)

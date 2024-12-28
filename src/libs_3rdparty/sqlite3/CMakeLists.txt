@@ -1,5 +1,7 @@
 project(ugenedb)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 include_directories(src)
 
 file(GLOB_RECURSE SRCS src/*.c)
