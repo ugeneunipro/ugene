@@ -134,15 +134,15 @@ Kraken2ClassifyTaskSettings Kraken2ClassifyWorker::getSettings(U2OpStatus &os) {
     const Message message = getMessageAndSetupScriptValues(input);
     settings.readsUrl = message.getData().toMap()[Kraken2ClassifyWorkerFactory::INPUT_SLOT].toString();
 
-    CHECK_EXT(!FileAndDirectoryUtils::isFileEmpty(settings.readsUrl), 
-              tr("File \"%1\" not exists or empty.").arg(settings.readsUrl), settings);
+    CHECK_EXT(!FileAndDirectoryUtils::isFileEmpty(settings.readsUrl),
+              os.setError(tr("File \"%1\" not exists or empty.").arg(settings.readsUrl)), settings);
 
     if (isPairedReadsInput) {
         settings.pairedReads = true;
         settings.pairedReadsUrl = getMessageAndSetupScriptValues(pairedInput).getData()
                                   .toMap()[Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
-        CHECK_EXT(!FileAndDirectoryUtils::isFileEmpty(settings.pairedReadsUrl), 
-                  tr("File \"%1\" not exists or empty.").arg(settings.pairedReadsUrl), settings);
+        CHECK_EXT(!FileAndDirectoryUtils::isFileEmpty(settings.pairedReadsUrl),
+                  os.setError(tr("File \"%1\" not exists or empty.").arg(settings.pairedReadsUrl)), settings);
     }
 
     QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), 
