@@ -1,0 +1,3 @@
+<suite test-timeout="1800" name="kraken 2 isolated tests, delete me later">
+    <test-dir test-ext="*.xml" path="cmdline/common/external-tool-support/kraken2" test-format="XML"/>    
+</suite>

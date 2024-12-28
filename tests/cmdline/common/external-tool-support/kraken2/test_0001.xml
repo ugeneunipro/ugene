@@ -3,7 +3,7 @@
     <run-cmdline task="!common_data_dir!cmdline/external-tool-support/kraken2/kraken_single_reads.uwl"
                  in="!common_data_dir!cmdline/external-tool-support/kraken2/sars.fa"
                  out="!tmp_data_dir!test_0001_result.txt"
-                 db="/media/sf_file_pile/Kraken2_db/k2_viral_20240904"
+                 db="/opt/share/kraken2_databases/k2_viral_20240904"
                  q="False"
     />
     
