@@ -142,16 +142,6 @@ add_subdirectory(src/plugins_3rdparty/variants)
 
 # Generate translations.
 find_package(Qt5LinguistTools REQUIRED)
-#set(RUSSIAN_QM_FILE ${CMAKE_BINARY_DIR}/dist/transl_ru.qm)
-#add_custom_command(
-#        OUTPUT ${RUSSIAN_QM_FILE}
-#        COMMAND ${Qt5_LRELEASE_EXECUTABLE} ${GLOBAL_TRANSLATIONS_RU} -qm ${RUSSIAN_QM_FILE}
-#        DEPENDS ${GLOBAL_TRANSLATIONS_RU}
-#        COMMENT "Generating a single Russian .qm file: ${RUSSIAN_QM_FILE}"
-#)
-# Add a custom target to build the Russian .qm file
-#add_custom_target(russian_translation ALL DEPENDS ${RUSSIAN_QM_FILE})
-
 set(LANGUAGES "RU" "TR")
 foreach (LANG IN LISTS LANGUAGES)
     string(TOLOWER ${LANG} LANG_LOWER)
