@@ -13,8 +13,6 @@ set(UGENE_VERSION 53.0-dev)
 
 message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
 
-set(GLOBAL_TRANSLATIONS)
-
 add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}
         -DQT_FATAL_ASSERT
@@ -155,7 +153,7 @@ find_package(Qt5LinguistTools REQUIRED)
 #add_custom_target(russian_translation ALL DEPENDS ${RUSSIAN_QM_FILE})
 
 set(LANGUAGES "RU" "TR")
-foreach(LANG IN LISTS LANGUAGES)
+foreach (LANG IN LISTS LANGUAGES)
     string(TOLOWER ${LANG} LANG_LOWER)
     set(TRANSLATIONS_VAR GLOBAL_TRANSLATIONS_${LANG})
     set(QM_FILE ${CMAKE_BINARY_DIR}/dist/transl_${LANG_LOWER}.qm)
@@ -166,4 +164,4 @@ foreach(LANG IN LISTS LANGUAGES)
             COMMENT "Generating translation file: ${QM_FILE}"
     )
     add_custom_target(${LANG}_translation ALL DEPENDS ${QM_FILE})
-endforeach()
+endforeach ()
