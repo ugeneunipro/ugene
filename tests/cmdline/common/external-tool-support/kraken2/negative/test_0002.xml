@@ -1,0 +1,11 @@
+<multi-test>
+    <!-- not existed file in paired reads -->
+    <run-cmdline task="!common_data_dir!cmdline/external-tool-support/kraken2/kraken_paired_reads.uwl"
+                 in1="!common_data_dir!cmdline/external-tool-support/kraken2/paired_reads_1.fastq"
+                 in2="!common_data_dir!cmdline/external-tool-support/kraken2/not_exists.fastq"
+                 out="!tmp_data_dir!test_0001_result.txt"
+                 db="/opt/share/kraken2_databases/k2_viral_20240904"
+                 q="False"
+                 message="not exists or empty."
+    />
+</multi-test>
