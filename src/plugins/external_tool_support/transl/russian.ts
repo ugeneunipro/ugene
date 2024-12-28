@@ -9515,7 +9515,7 @@ bowtie медленнее, когда указан режим --best.</translati
         <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="102"/>
         <source>Input sequences</source>
         <translation>Входные последовательности</translation>
-    </message>    
+    </message>
     <message>
         <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="96"/>
         <source>URL(s) to FASTQ or FASTA file(s) should be provided.
@@ -9626,6 +9626,12 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <location filename="../src/kraken2/Kraken2ClassifyWorker.cpp" line="138"/>
         <source>Quantity of files with reads in &quot;URL 1&quot; and &quot;URL 2&quot; should be equal.</source>
         <translation>Количество файлов с ридами в &quot;URL 1&quot; и &quot;URL 2&quot; должно быть одинаковым.</translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorker.cpp" line="138"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorker.cpp" line="145"/>
+        <source>File &quot;%1&quot; not exists or empty.</source>
+        <translation>Файл &quot;%1&quot; пустой или не существует.</translation>
     </message>
 </context>
 <context>
