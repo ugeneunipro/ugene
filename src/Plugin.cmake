@@ -7,6 +7,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt5 REQUIRED Core Gui Widgets Xml Network PrintSupport Test ScriptTools)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist/plugins)
 
 include_directories(src)
