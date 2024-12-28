@@ -2,12 +2,12 @@
     <!-- single read -->
     <run-cmdline task="!common_data_dir!cmdline/external-tool-support/kraken2/kraken_single_reads.uwl"
                  in="!common_data_dir!cmdline/external-tool-support/kraken2/sars.fa"
-                 out="!tmp_data_dir!test_0001_result.txt"
+                 out="!tmp_data_dir!test_0002_result.txt"
                  db="/media/sf_file_pile/Kraken2_db/k2_viral_20240904"
-                 q="False"
+                 q="True"
     />
     
-    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/kraken2/results_to_compare/test_0001_result.txt" 
-                  doc2="!tmp_data_dir!test_0001_result.txt"
+    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/kraken2/results_to_compare/test_0002_result.txt" 
+                  doc2="!tmp_data_dir!test_0002_result.txt"
     />
 </multi-test>
