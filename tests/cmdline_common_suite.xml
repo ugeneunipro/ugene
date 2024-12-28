@@ -40,4 +40,10 @@
     <excluded test="external-tool-support/kraken2/test_0001.xml" platform="mac" reason="Kraken 2 is not available on Mac"/>
     <excluded test="external-tool-support/kraken2/test_0002.xml" platform="windows" reason="Kraken 2 is not available on Windows"/>
     <excluded test="external-tool-support/kraken2/test_0002.xml" platform="mac" reason="Kraken 2 is not available on Mac"/>
+    <excluded test="external-tool-support/kraken2/test_0003.xml" platform="windows" reason="Kraken 2 is not available on Windows"/>
+    <excluded test="external-tool-support/kraken2/test_0003.xml" platform="mac" reason="Kraken 2 is not available on Mac"/>
+    <excluded test="external-tool-support/kraken2/negative/test_0001.xml" platform="windows" reason="Kraken 2 is not available on Windows"/>
+    <excluded test="external-tool-support/kraken2/negative/test_0001.xml" platform="mac" reason="Kraken 2 is not available on Mac"/>
+    <excluded test="external-tool-support/kraken2/negative/test_0002.xml" platform="windows" reason="Kraken 2 is not available on Windows"/>
+    <excluded test="external-tool-support/kraken2/negative/test_0002.xml" platform="mac" reason="Kraken 2 is not available on Mac"/>
 </suite>
