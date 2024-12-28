@@ -7,6 +7,8 @@ find_package(Qt5 REQUIRED Core Gui Widgets)
 
 add_definitions(-DBUILDING_U2FORMATS_DLL)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 include_directories(src)
 include_directories(../../include)
 include_directories(../../libs_3rdparty/samtools/src)

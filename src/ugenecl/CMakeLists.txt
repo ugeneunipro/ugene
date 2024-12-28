@@ -6,6 +6,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt5 REQUIRED Core Gui)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 include_directories(src)
 include_directories(../include)
 include_directories(../corelibs/U2Private/src)

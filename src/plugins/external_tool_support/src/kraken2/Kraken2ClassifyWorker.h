@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <U2Lang/DatasetFetcher.h>
 #include <U2Lang/LocalDomain.h>
 
 #include "Kraken2ClassifyTask.h"
@@ -33,9 +34,10 @@ class Kraken2ClassifyWorker : public BaseWorker {
 public:
     Kraken2ClassifyWorker(Actor *actor);
 
-    void init();
-    Task *tick();
-    void cleanup();
+    void init() override;
+    Task *tick() override;
+    void cleanup() override;
+    bool isReady() const override;
 
 private slots:
     void sl_taskFinished(Task *task);
@@ -46,8 +48,8 @@ private:
 
     Kraken2ClassifyTaskSettings getSettings(U2OpStatus &os);
     IntegralBus *input = nullptr;
-
-    bool pairedReadsInput = false;
+    IntegralBus *pairedInput = nullptr;
+    bool isPairedReadsInput = false;
 
     static const QString KRAKEN_DIR;
 };
