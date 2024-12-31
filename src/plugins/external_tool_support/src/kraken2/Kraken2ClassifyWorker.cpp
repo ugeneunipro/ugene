@@ -105,7 +105,10 @@ bool Kraken2ClassifyWorker::isReady() const {
 void Kraken2ClassifyWorker::sl_taskFinished(Task *task) {
     Kraken2ClassifyTask *krakenTask = qobject_cast<Kraken2ClassifyTask *>(task);
     QString outputUrl = krakenTask->getClassificationURL();
-    if (!krakenTask->isFinished() || krakenTask->hasError() || krakenTask->isCanceled() || !QFileInfo::exists(outputUrl)) {
+    if (!krakenTask->isFinished() 
+        || krakenTask->hasError() 
+        || krakenTask->isCanceled() 
+        || !QFileInfo::exists(outputUrl)) {
         return;
     }
     monitor()->addOutputFile(outputUrl, getActorId());
@@ -131,16 +134,19 @@ Kraken2ClassifyTaskSettings Kraken2ClassifyWorker::getSettings(U2OpStatus &os) {
     const Message message = getMessageAndSetupScriptValues(input);
     settings.readsUrl = message.getData().toMap()[Kraken2ClassifyWorkerFactory::INPUT_SLOT].toString();
 
+    CHECK_EXT(!FileAndDirectoryUtils::isFileEmpty(settings.readsUrl),
+              os.setError(tr("File \"%1\" not exists or empty.").arg(settings.readsUrl)), settings);
+
     if (isPairedReadsInput) {
         settings.pairedReads = true;
-        settings.pairedReadsUrl = getMessageAndSetupScriptValues(pairedInput).getData().toMap()[Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
-        if (settings.readsUrl.isEmpty() || settings.pairedReadsUrl.isEmpty()) {
-            os.setError(tr("Quantity of files with reads in \"URL 1\" and \"URL 2\" should be equal."));
-            return settings;
-        }
+        settings.pairedReadsUrl = getMessageAndSetupScriptValues(pairedInput).getData()
+                                  .toMap()[Kraken2ClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
+        CHECK_EXT(!FileAndDirectoryUtils::isFileEmpty(settings.pairedReadsUrl),
+                  os.setError(tr("File \"%1\" not exists or empty.").arg(settings.pairedReadsUrl)), settings);
     }
 
-    QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
+    QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), 
+                     FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
     tmpDir = GUrlUtils::createDirectory(tmpDir + KRAKEN_DIR, "_", os);
 
     settings.classificationUrl = getValue<QString>(Kraken2ClassifyWorkerFactory::OUTPUT_URL_ATTR_ID);
