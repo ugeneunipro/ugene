@@ -1,0 +1,13 @@
+<multi-test>
+    <!-- single read -->
+    <run-cmdline task="!common_data_dir!cmdline/external-tool-support/kraken2/kraken_single_reads.uwl"
+                 in="!common_data_dir!cmdline/external-tool-support/kraken2/sars.fa"
+                 out="!tmp_data_dir!test_0001_result.txt"
+                 db="/opt/share/kraken2_databases/k2_viral_20240904"
+                 q="False"
+    />
+    
+    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/kraken2/results_to_compare/test_0001_result.txt" 
+                  doc2="!tmp_data_dir!test_0001_result.txt"
+    />
+</multi-test>
