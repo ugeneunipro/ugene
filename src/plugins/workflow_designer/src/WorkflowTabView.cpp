@@ -21,10 +21,8 @@
 
 #include "WorkflowTabView.h"
 
-#include <QFileInfo>
 #include <QGraphicsView>
 #include <QInputDialog>
-#include <QMenu>
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QTabBar>
@@ -33,6 +31,8 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DashboardInfoRegistry.h>
+
+#include <U2Gui/GUIUtils.h>
 
 #include "WorkflowViewController.h"
 
@@ -165,7 +165,7 @@ void WorkflowTabView::sl_renameTab() {
     CHECK(db != nullptr, );
 
     bool ok = false;
-    QString newName = QInputDialog::getText(this, tr("Rename Dashboard"), tr("New dashboard name:"), QLineEdit::Normal, db->getName(), &ok);
+    QString newName = GUIUtils::getTextWithDialog(this, tr("Rename Dashboard"), tr("New dashboard name:"), db->getName(), ok);
     if (ok && !newName.isEmpty()) {
         db->setName(newName);
         setTabText(idx, newName);
