@@ -95,7 +95,7 @@ void DatasetsListWidget::sl_newDataset() {
     QString text = getTip();
     do {
         bool ok = false;
-        text = GUIUtils::getTextWithDialog(this, tr("Enter Dataset Name"), tr("New dataset name:"), text, ok);
+        text = GUIUtils::getTextWithDialog(tr("Enter Dataset Name"), tr("New dataset name:"), text, ok, this);
         CHECK(ok, );
         U2OpStatusImpl os;
         ctrl->addDataset(text, os);
@@ -121,7 +121,7 @@ void DatasetsListWidget::sl_renameDataset() {
     QString text = tabs->tabText(idx);
     do {
         bool ok = false;
-        text = GUIUtils::getTextWithDialog(this, tr("Rename Dataset"), tr("New dataset name:"), text, ok);
+        text = GUIUtils::getTextWithDialog(tr("Rename Dataset"), tr("New dataset name:"), text, ok, this);
         CHECK(ok, );
         U2OpStatusImpl os;
         ctrl->renameDataset(idx, text, os);

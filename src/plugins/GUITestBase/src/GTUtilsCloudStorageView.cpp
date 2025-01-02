@@ -183,7 +183,7 @@ void GTUtilsCloudStorageView::shareItem(const QList<QString>& path, const QStrin
     GTTreeView::click(tree, index);
 
     GTUtilsDialog::add(new PopupChooser({"cloudStorageShareAction"}, GTGlobals::UseMouse));
-    GTUtilsDialog::add(new InputDialogFiller(email));
+    GTUtilsDialog::add(new InputDialogFiller(email, "formDialogField-email"));
     GTMouseDriver::click(Qt::RightButton);
 
     checkItemIsShared(path, email);

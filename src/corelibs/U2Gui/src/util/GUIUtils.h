@@ -21,11 +21,11 @@
 
 #pragma once
 
+#include <QAbstractSlider>
 #include <QAction>
+#include <QLabel>
 #include <QList>
 #include <QMenu>
-#include <QAbstractSlider>
-#include <QLabel>
 #include <QTreeWidgetItem>
 
 #include <U2Core/global.h>
@@ -35,6 +35,16 @@
 class QAbstractButton;
 
 namespace U2 {
+
+class U2GUI_EXPORT FormFieldDescriptor {
+public:
+    /** Field identifier. */
+    QString name;
+    /** Field label to display. */
+    QString label;
+    QString defaultValue;
+    QString tooltip;
+};
 
 class U2GUI_EXPORT GUIUtils : public QObject {
     Q_OBJECT
@@ -46,7 +56,7 @@ public:
 
     static QAction* findActionAfter(const QList<QAction*>& actions, const QString& name);
 
-    static QMenu* findSubMenu(QMenu* m, const QString& name);
+    static QMenu* findSubMenu(const QMenu* m, const QString& name);
 
     /** Inserts 'actionToInsert' right after 'insertionPointMarkerAction' in the menu. */
     static void insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert);
@@ -54,14 +64,14 @@ public:
     static void updateActionToolTip(QAction* action);
     static void updateButtonToolTip(QAbstractButton* button, const QKeySequence& shortcut);
 
-    static void disableEmptySubmenus(QMenu* m);
+    static void disableEmptySubmenus(const QMenu* m);
 
     static QIcon createSquareIcon(const QColor& c, int size);
     static QIcon createRoundIcon(const QColor& c, int size);
 
     // Sets 'muted' look and feel. The item looks like disabled but still active and can be selected
     static void setMutedLnF(QTreeWidgetItem* item, bool disabled, bool recursive = false);
-    static bool isMutedLnF(QTreeWidgetItem* item);
+    static bool isMutedLnF(const QTreeWidgetItem* item);
 
     static bool runWebBrowser(const QString& url);
 
@@ -69,8 +79,10 @@ public:
 
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
 
-    static QString getTextWithDialog(QWidget *parent, const QString &title, const QString &label, const QString &defaultText, bool &ok);
+    static QString getTextWithDialog(const QString& title, const QString& label, const QString& defaultText, bool& ok, QWidget* parent = nullptr);
 
+    /** Returns map of fieldName -> fieldValue. If the map is empty the dialog was rejected. */
+    static QMap<QString, QString> fillFormWithDialog(const QString& title, const QVector<FormFieldDescriptor>& fields, QWidget* parent = nullptr);
 
     static const QColor WARNING_COLOR;
     static const QColor OK_COLOR;

@@ -165,7 +165,7 @@ void WorkflowTabView::sl_renameTab() {
     CHECK(db != nullptr, );
 
     bool ok = false;
-    QString newName = GUIUtils::getTextWithDialog(this, tr("Rename Dashboard"), tr("New dashboard name:"), db->getName(), ok);
+    QString newName = GUIUtils::getTextWithDialog(tr("Rename Dashboard"), tr("New dashboard name:"), db->getName(), ok, this);
     if (ok && !newName.isEmpty()) {
         db->setName(newName);
         setTabText(idx, newName);
