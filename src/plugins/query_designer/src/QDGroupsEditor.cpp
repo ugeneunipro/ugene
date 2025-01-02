@@ -110,7 +110,7 @@ void QDGroupsEditor::mousePressEvent(QMouseEvent* event) {
 void QDGroupsEditor::sl_addGroup() {
     QDScheme* scheme = view->getScheme();
     bool ok;
-    QString text = GUIUtils::getTextWithDialog(this, tr("Create element group"), tr("Group name"), "", ok);
+    QString text = GUIUtils::getTextWithDialog(tr("Create element group"), tr("Group name"), "", ok, this);
     CHECK(ok, );
     if (scheme->getActorGroups().contains(text)) {
         QMessageBox::critical(nullptr, QObject::tr("Query Designer"), tr("Group '%1' already exists!").arg(text));

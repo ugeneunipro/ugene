@@ -31,12 +31,11 @@
 #include <QPainterPath>
 #include <QProcess>
 #include <QUrl>
+#include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/L10n.h>
-#include <U2Core/Settings.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -65,8 +64,8 @@ QAction* GUIUtils::findActionByData(QList<QAction*> actions, const QString& data
 
 QAction* GUIUtils::findAction(const QList<QAction*>& actions, const QString& name) {
     foreach (QAction* a, actions) {
-        const QString& aname = a->objectName();
-        if (aname == name) {
+        const QString& actionName = a->objectName();
+        if (actionName == name) {
             return a;
         }
     }
@@ -79,8 +78,8 @@ QAction* GUIUtils::findActionAfter(const QList<QAction*>& actions, const QString
         if (found) {
             return a;
         }
-        const QString& aname = a->objectName();
-        if (aname == name) {
+        const QString& actionName = a->objectName();
+        if (actionName == name) {
             found = true;
         }
     }
@@ -90,7 +89,7 @@ QAction* GUIUtils::findActionAfter(const QList<QAction*>& actions, const QString
     return actions.first();
 }
 
-QMenu* GUIUtils::findSubMenu(QMenu* m, const QString& name) {
+QMenu* GUIUtils::findSubMenu(const QMenu* m, const QString& name) {
     QAction* action = findAction(m->actions(), name);
     if (action == nullptr) {
         return nullptr;
@@ -110,7 +109,7 @@ void GUIUtils::updateButtonToolTip(QAbstractButton* button, const QKeySequence& 
     button->setToolTip(toolTip);
 }
 
-void GUIUtils::disableEmptySubmenus(QMenu* m) {
+void GUIUtils::disableEmptySubmenus(const QMenu* m) {
     foreach (QAction* action, m->actions()) {
         QMenu* am = action->menu();
         if (am != nullptr && am->actions().isEmpty()) {
@@ -128,7 +127,7 @@ QIcon GUIUtils::createSquareIcon(const QColor& c, int size) {
     p.drawRect(0, 0, w - 1, h - 1);
     p.fillRect(1, 1, w - 2, h - 2, c);
     p.end();
-    return QIcon(pix);
+    return {pix};
 }
 
 QIcon GUIUtils::createRoundIcon(const QColor& c, int size) {
@@ -146,7 +145,7 @@ QIcon GUIUtils::createRoundIcon(const QColor& c, int size) {
     p.setPen(Qt::black);
     p.drawEllipse(0, 0, w - 1, h - 1);
     p.end();
-    return QIcon(pix);
+    return {pix};
 }
 
 bool GUIUtils::runWebBrowser(const QString& url) {
@@ -173,31 +172,27 @@ bool GUIUtils::runWebBrowser(const QString& url) {
             QString p = program;
             QStringList arguments;
             arguments.append(url);
-            QProcess myProcess;
-            return myProcess.startDetached(program, arguments);
-        } else {
-            return launched;
+            return QProcess::startDetached(program, arguments);
         }
-    } else {
-        if (!ok) {
-            QMessageBox::critical(nullptr, tr("Error!"), tr("Please specify the browser executable"));
-            AppContext::getAppSettingsGUI()->showSettingsDialog(APP_SETTINGS_USER_APPS);
-            program = AppContext::getAppSettings()->getUserAppsSettings()->getWebBrowserURL();
-
-            ok = !program.isEmpty() && QFile(program).exists();
-        }
-        if (!ok) {
-            return false;
-        }
-        QString p = program;
-        QStringList arguments;
-        arguments.append(url);
-        QProcess myProcess;
-        return myProcess.startDetached(program, arguments);
+        return launched;
     }
+    if (!ok) {
+        QMessageBox::critical(nullptr, tr("Error!"), tr("Please specify the browser executable"));
+        AppContext::getAppSettingsGUI()->showSettingsDialog(APP_SETTINGS_USER_APPS);
+        program = AppContext::getAppSettings()->getUserAppsSettings()->getWebBrowserURL();
+
+        ok = !program.isEmpty() && QFile(program).exists();
+    }
+    if (!ok) {
+        return false;
+    }
+    QString p = program;
+    QStringList arguments;
+    arguments.append(url);
+    return QProcess::startDetached(program, arguments);
 }
 
-bool GUIUtils::isMutedLnF(QTreeWidgetItem* item) {
+bool GUIUtils::isMutedLnF(const QTreeWidgetItem* item) {
     static QBrush disabledBrush;
     if (disabledBrush.style() == Qt::NoBrush) {
         disabledBrush = QApplication::palette().brush(QPalette::Disabled, QPalette::Foreground);
@@ -248,7 +243,7 @@ void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerActio
     menu->insertAction(actionBefore, actionToInsert);
 }
 
-QString GUIUtils::getTextWithDialog(QWidget* parent, const QString& title, const QString& label, const QString& defaultText, bool& ok) {
+QString GUIUtils::getTextWithDialog(const QString& title, const QString& label, const QString& defaultText, bool& ok, QWidget* parent) {
     QInputDialog inputDialog(parent);
     inputDialog.setWindowTitle(title);
     inputDialog.setLabelText(label);
@@ -267,6 +262,44 @@ QString GUIUtils::getTextWithDialog(QWidget* parent, const QString& title, const
     }
     ok = false;
     return "";
+}
+
+QMap<QString, QString> GUIUtils::fillFormWithDialog(const QString& title, const QVector<FormFieldDescriptor>& fields, QWidget* parent) {
+    QDialog dialog(parent);
+    dialog.setWindowTitle(title);
+    dialog.setMinimumWidth(400);
+
+    QVBoxLayout layout(&dialog);
+    QMap<QString, QLineEdit*> lineEdits;
+    for (const auto& field : qAsConst(fields)) {
+        auto label = new QLabel(field.label, &dialog);
+        auto lineEdit = new QLineEdit(&dialog);
+        lineEdit->setText(field.defaultValue);
+        lineEdit->setObjectName("formDialogField-" + field.name);
+        layout.addWidget(label);
+        layout.addWidget(lineEdit);
+        if (!field.tooltip.isEmpty()) {
+            lineEdit->setToolTip(field.tooltip);
+        }
+        lineEdits[field.name] = lineEdit;
+    }
+    layout.addSpacing(20);
+
+    // Add OK and Cancel buttons.
+    QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+    layout.addWidget(&buttonBox);
+
+    QObject::connect(&buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+    QObject::connect(&buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+
+    // Show the dialog and collect values if OK is clicked.
+    QMap<QString, QString> result;
+    if (dialog.exec() == QDialog::Accepted) {
+        for (auto it = lineEdits.cbegin(); it != lineEdits.cend(); ++it) {
+            result[it.key()] = it.value()->text();
+        }
+    }
+    return result;
 }
 
 ResetSliderOnDoubleClickBehavior::ResetSliderOnDoubleClickBehavior(QAbstractSlider* slider, QLabel* relatedLabel)

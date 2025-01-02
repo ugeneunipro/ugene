@@ -1,5 +1,6 @@
 # qmake build folders
 **/_tmp
+build
 src/_debug
 src/_release
 src/qmake_msvc_proj_x32.cmd
