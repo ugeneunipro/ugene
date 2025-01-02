@@ -1,3 +1,4 @@
-set(UGENE_PLUGIN_NAME weight_matrix)
+set(UGENE_PLUGIN_ID weight_matrix)
+set(UGENE_PLUGIN_NAME "Weight matrix")
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

@@ -1,3 +1,4 @@
-set(UGENE_PLUGIN_NAME dna_flexibility)
+set(UGENE_PLUGIN_ID dna_flexibility)
+set(UGENE_PLUGIN_NAME "DNA Flexibility")
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)
