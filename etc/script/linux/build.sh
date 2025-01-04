@@ -19,6 +19,10 @@ TEAMCITY_WORK_DIR=$(pwd)
 UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
 #UGENE_DIR="${TEAMCITY_WORK_DIR}"
 SCRIPTS_DIR="${UGENE_DIR}/etc/script/linux"
+BUILD_DIR="${UGENE_DIR}/cmake-build-release"
+
+# Needed by CMake.
+export Qt5_DIR="${QT_DIR}"
 
 # Below this point the script works in 'UGENE_DIR' folder.
 cd "${UGENE_DIR}" || {
@@ -27,8 +31,6 @@ cd "${UGENE_DIR}" || {
 }
 
 if [ -z "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" ]; then UGENE_BUILD_AND_TEST_SKIP_CLEAN="0"; fi
-
-BUILD_DIR="${UGENE_DIR}/cmake-build-release"
 
 ##### Clean ####
 if [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "1" ]; then
@@ -39,11 +41,16 @@ elif [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "2" ]; then
   echo "##teamcity[blockClosed name='fast clean']"
 else
   echo "##teamcity[blockOpened name='make clean']"
-  make clean
+  if
+      cmake --build "${BUILD_DIR}" --target clean
+    then
+      echo "Clean completed successfully"
+    else
+      echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. cmake clean failed']"
+      exit 1
+    fi
   echo "##teamcity[blockClosed name='make clean']"
 fi
-
-export Qt5_DIR="${QT_DIR}"
 
 #### CMake ####
 echo "##teamcity[blockOpened name='CMake']"
