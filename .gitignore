@@ -64,6 +64,8 @@ dist/
 *_autogen
 *.depends
 qrc_*.cpp
+.cmake/
+LastTest.log
 
 # CMake artifacts
 /out
