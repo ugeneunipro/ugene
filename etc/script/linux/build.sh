@@ -26,15 +26,12 @@ cd "${UGENE_DIR}" || {
 }
 
 if [ -z "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" ]; then UGENE_BUILD_AND_TEST_SKIP_CLEAN="0"; fi
-if [ -z "${UGENE_BUILD_AND_TEST_SKIP_QMAKE}" ]; then UGENE_BUILD_AND_TEST_SKIP_QMAKE="0"; fi
-if [ -z "${UGENE_BUILD_AND_TEST_SKIP_MAKE}" ]; then UGENE_BUILD_AND_TEST_SKIP_MAKE="0"; fi
 
-MAKE_TARGET=release
-BUILD_DIR="${UGENE_DIR}/src/_release"
+BUILD_DIR="${UGENE_DIR}/dist"
 
 ##### Clean ####
 if [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "1" ]; then
-  echo "skip clean"
+  echo "Skipping clean"
 elif [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "2" ]; then
   echo "##teamcity[blockOpened name='fast clean']"
   rm -rf "${BUILD_DIR}"
@@ -45,43 +42,35 @@ else
   echo "##teamcity[blockClosed name='make clean']"
 fi
 
-#### QMake ####
-if [ "${UGENE_BUILD_AND_TEST_SKIP_QMAKE}" -ne "1" ]; then
-  echo "##teamcity[blockOpened name='qmake -r ugene.pro']"
-  if
-    # shellcheck disable=SC2086
-    "${QT_DIR}/bin/qmake" -r ugene.pro ${UGENE_QMAKE_PARAMS}
-  then
-    echo
-  else
-    echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. qmake -r ugene.pro failed']"
-    exit 1
-  fi
-  echo "##teamcity[blockClosed name='qmake -r ugene.pro']"
+#### CMake ####
+echo "##teamcity[blockOpened name='CMake']"
+if
+  Qt5_DIR="${QT_DIR}" cmake -DCMAKE_BUILD_TYPE=Release .
+then
+  echo "CMake finished successfully"
+else
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. CMake failed']"
+  exit 1
 fi
+echo "##teamcity[blockClosed name='CMake']"
 
 #### Make ####
-if [ "${UGENE_BUILD_AND_TEST_SKIP_MAKE}" -ne "1" ]; then
-  UGENE_MAKE_PARAMS="-j$(grep "cpu cores" /proc/cpuinfo | uniq | cut -d ':' -f2) ${MAKE_TARGET}"
-  echo "##teamcity[blockOpened name='make ${UGENE_MAKE_PARAMS}']"
-  if
-    # We want these params to be individual params, so disabling inspection for quotes.
-    # shellcheck disable=SC2086
-    make ${UGENE_MAKE_PARAMS}
-  then
-    echo
-  else
-    echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. make ${UGENE_MAKE_PARAMS} failed']"
-    exit 1
-  fi
-  echo "##teamcity[blockClosed name='make ${UGENE_MAKE_PARAMS}']"
+UGENE_MAKE_PARAMS="-j$(grep "cpu cores" /proc/cpuinfo | uniq | cut -d ':' -f2)"
+echo "##teamcity[blockOpened name='make ${UGENE_MAKE_PARAMS}']"
+if
+  # We want these params to be individual params, so disabling inspection for quotes.
+  # shellcheck disable=SC2086
+  make ${UGENE_MAKE_PARAMS}
+then
+  echo
+else
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. make ${UGENE_MAKE_PARAMS} failed']"
+  exit 1
 fi
+echo "##teamcity[blockClosed name='make ${UGENE_MAKE_PARAMS}']"
 
 #### BUNDLE ####
 echo "##teamcity[blockOpened name='Bundle']"
-
-# Remove not needed build artifacts like static libs.
-rm -f "${BUILD_DIR}"/*.a
 
 # Copy & patch Qt libs.
 "${SCRIPTS_DIR}/copy_qt_files_to_ugene.sh" "${QT_DIR}" "${BUILD_DIR}" || {

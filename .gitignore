@@ -57,6 +57,13 @@ ugene.pro.user
 
 # CLion build dir
 cmake-build-*
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+dist/
+*_autogen
+*.depends
+qrc_*.cpp
 
 # CMake artifacts
 /out
