@@ -49,9 +49,14 @@ endif ()
 
 # Warning levels. Keep in sync with ugene_globals.pri
 if (CMAKE_COMPILER_IS_GNUCXX)
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
+        message(FATAL_ERROR "GCC version must be at least 9. Detected version: ${CMAKE_CXX_COMPILER_VERSION}")
+    endif()
+    message(STATUS "Using GCC version: ${CMAKE_CXX_COMPILER_VERSION}")
     # Common warning flags for GCC
 #    string(CONCAT GCC_WARNING_FLAGS
 #            " -Wall"
+#            " -Werror=deprecated-copy"
 #            " -Werror=maybe-uninitialized"
 #            " -Werror=parentheses"
 #            " -Werror=return-type"
@@ -63,11 +68,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 #            " -Werror=unused-variable"
 #            " -Wno-deprecated-declarations"
 #    )
-#
-#    # Add GCC 8+ specific warnings.
-#    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 8)
-#        string(APPEND GCC_WARNING_FLAGS " -Werror=deprecated-copy")
-#    endif ()
+#        string(APPEND GCC_WARNING_FLAGS )
 
     # Apply the warning flags
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
