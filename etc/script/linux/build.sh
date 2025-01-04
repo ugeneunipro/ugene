@@ -1,4 +1,4 @@
-CMAKE_BUILD_TYPE#!/bin/bash
+#!/bin/bash
 #
 # This script builds ugene in the 'ugene' folder into a target folder (ugene/src/_release or ugene/src/_debug).
 # After the build the script copies & patches all required QT libraries and 'data' folder into the target folder.
