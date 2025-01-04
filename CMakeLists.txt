@@ -49,23 +49,25 @@ endif ()
 
 # Warning levels. Keep in sync with ugene_globals.pri
 if (CMAKE_COMPILER_IS_GNUCXX)
-    string(CONCAT GCC_WARNING_FLAGS
-            " -Wall"
-            " -Werror=deprecated-copy"
-            " -Werror=maybe-uninitialized"
-            " -Werror=parentheses"
-            " -Werror=return-type"
-            " -Werror=sequence-point"
-            " -Werror=shadow=local"
-            " -Werror=switch"
-            " -Werror=uninitialized"
-            " -Werror=unused-parameter"
-            " -Werror=unused-but-set-variable"
-            " -Werror=unused-value"
-            " -Werror=unused-variable"
-            " -Wno-deprecated-declarations"
-    )
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 8)
+        string(CONCAT GCC_WARNING_FLAGS
+                " -Wall"
+                " -Werror=deprecated-copy"
+                " -Werror=maybe-uninitialized"
+                " -Werror=parentheses"
+                " -Werror=return-type"
+                " -Werror=sequence-point"
+                " -Werror=shadow=local"
+                " -Werror=switch"
+                " -Werror=uninitialized"
+                " -Werror=unused-parameter"
+                " -Werror=unused-but-set-variable"
+                " -Werror=unused-value"
+                " -Werror=unused-variable"
+                " -Wno-deprecated-declarations"
+        )
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
+    endif ()
     LIST(APPEND COMPILER_FLAGS -Wl,--no-undefined)
 endif ()
 
