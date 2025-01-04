@@ -55,20 +55,9 @@ ugene.VC.db
 # QtCreator files
 ugene.pro.user
 
-# CLion build dir
-cmake-build-*
-CMakeFiles
-CMakeCache.txt
-cmake_install.cmake
-dist/
-*_autogen
-*.depends
-qrc_*.cpp
-.cmake/
-LastTest.log
-
-# CMake artifacts
-/out
+# CMake/CLion artifacts
+/.cmake
+/cmake-build-*
 
 # Qt generated
 **/GeneratedFiles/*

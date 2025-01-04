@@ -1,4 +1,4 @@
-#!/bin/bash
+CMAKE_BUILD_TYPE#!/bin/bash
 #
 # This script builds ugene in the 'ugene' folder into a target folder (ugene/src/_release or ugene/src/_debug).
 # After the build the script copies & patches all required QT libraries and 'data' folder into the target folder.
@@ -17,6 +17,7 @@ fi
 
 TEAMCITY_WORK_DIR=$(pwd)
 UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
+#UGENE_DIR="${TEAMCITY_WORK_DIR}"
 SCRIPTS_DIR="${UGENE_DIR}/etc/script/linux"
 
 # Below this point the script works in 'UGENE_DIR' folder.
@@ -27,7 +28,7 @@ cd "${UGENE_DIR}" || {
 
 if [ -z "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" ]; then UGENE_BUILD_AND_TEST_SKIP_CLEAN="0"; fi
 
-BUILD_DIR="${UGENE_DIR}/dist"
+BUILD_DIR="${UGENE_DIR}/cmake-build-release"
 
 ##### Clean ####
 if [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "1" ]; then
@@ -42,10 +43,12 @@ else
   echo "##teamcity[blockClosed name='make clean']"
 fi
 
+export Qt5_DIR="${QT_DIR}"
+
 #### CMake ####
 echo "##teamcity[blockOpened name='CMake']"
 if
-  Qt5_DIR="${QT_DIR}" cmake -DCMAKE_BUILD_TYPE=Release .
+  cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
 then
   echo "CMake finished successfully"
 else
@@ -60,7 +63,7 @@ echo "##teamcity[blockOpened name='make ${UGENE_MAKE_PARAMS}']"
 if
   # We want these params to be individual params, so disabling inspection for quotes.
   # shellcheck disable=SC2086
-  make ${UGENE_MAKE_PARAMS}
+  cmake --build "${BUILD_DIR}" --target all -- -j ${UGENE_MAKE_PARAMS}
 then
   echo
 else
