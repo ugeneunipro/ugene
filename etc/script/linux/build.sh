@@ -20,6 +20,7 @@ UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
 #UGENE_DIR="${TEAMCITY_WORK_DIR}"
 SCRIPTS_DIR="${UGENE_DIR}/etc/script/linux"
 BUILD_DIR="${UGENE_DIR}/cmake-build-release"
+DIST_DIR="${BUILD_DIR}/dist"
 
 # Needed by CMake.
 export Qt5_DIR="${QT_DIR}"
@@ -83,7 +84,7 @@ echo "##teamcity[blockClosed name='make ${UGENE_MAKE_PARAMS}']"
 echo "##teamcity[blockOpened name='Bundle']"
 
 # Copy & patch Qt libs.
-"${SCRIPTS_DIR}/copy_qt_files_to_ugene.sh" "${QT_DIR}" "${BUILD_DIR}" || {
+"${SCRIPTS_DIR}/copy_qt_files_to_ugene.sh" "${QT_DIR}" "${DIST_DIR}" || {
   echo "'copy_qt_files_to_ugene.sh' script failed"
   exit 1
 }
@@ -92,32 +93,32 @@ echo "##teamcity[blockOpened name='Bundle']"
 
 # Update RPATH for all shared libraries in the plugins directory.
 # shellcheck disable=SC2016
-find "${BUILD_DIR}/plugins" -name "*.so" -exec patchelf --force-rpath --set-rpath '$ORIGIN/..' {} \;
+find "${DIST_DIR}/plugins" -name "*.so" -exec patchelf --force-rpath --set-rpath '$ORIGIN/..' {} \;
 
 # Update RPATH for all shared libraries in the build directory.
 # shellcheck disable=SC2016
-find "${BUILD_DIR}" -maxdepth 1 -name "*.so" -exec patchelf --force-rpath --set-rpath '$ORIGIN' {} \;
+find "${DIST_DIR}" -maxdepth 1 -name "*.so" -exec patchelf --force-rpath --set-rpath '$ORIGIN' {} \;
 
 # Update RPATH for individual binaries.
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN' "${BUILD_DIR}/plugins_checker"
+patchelf --force-rpath --set-rpath '$ORIGIN' "${DIST_DIR}/plugins_checker"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN' "${BUILD_DIR}/ugenecl"
+patchelf --force-rpath --set-rpath '$ORIGIN' "${DIST_DIR}/ugenecl"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN' "${BUILD_DIR}/ugenem"
+patchelf --force-rpath --set-rpath '$ORIGIN' "${DIST_DIR}/ugenem"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN' "${BUILD_DIR}/ugeneui"
+patchelf --force-rpath --set-rpath '$ORIGIN' "${DIST_DIR}/ugeneui"
 
 # Add data.
-rm -rf "${BUILD_DIR}/data"
-cp -r ./data "${BUILD_DIR}"
+rm -rf "${DIST_DIR}/data"
+cp -r ./data "${DIST_DIR}"
 
-cp "${UGENE_DIR}/etc/shared/ugene.png" "${BUILD_DIR}/"
-cp "${UGENE_DIR}/LICENSE.txt" "${BUILD_DIR}/"
-cp "${UGENE_DIR}/LICENSE.3rd_party.txt" "${BUILD_DIR}/"
+cp "${UGENE_DIR}/etc/shared/ugene.png" "${DIST_DIR}/"
+cp "${UGENE_DIR}/LICENSE.txt" "${DIST_DIR}/"
+cp "${UGENE_DIR}/LICENSE.3rd_party.txt" "${DIST_DIR}/"
 
 echo "Compressing app into a tar.gz"
 rm "${TEAMCITY_WORK_DIR}/"*.gz
-tar cfz "${TEAMCITY_WORK_DIR}/bundle-linux-b${TEAMCITY_BUILD_COUNTER}.tar.gz" -C "${BUILD_DIR}" .
+tar cfz "${TEAMCITY_WORK_DIR}/bundle-linux-b${TEAMCITY_BUILD_COUNTER}.tar.gz" -C "${DIST_DIR}" .
 
 echo "##teamcity[blockClosed name='Bundle']"
