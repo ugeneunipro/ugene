@@ -23,6 +23,7 @@ endif ()
 qt5_add_resources(RCC_SRCS ugeneui.qrc)
 
 add_executable(ugeneui ${HDRS} ${SRCS} ${OBJC_SRCS} ${QM_FILES} ${RCC_SRCS})
+set_target_properties(ugeneui PROPERTIES DEBUG_POSTFIX "d")
 
 target_link_libraries(ugeneui
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::NetworkAuth Qt5::WebSockets Qt5::Script

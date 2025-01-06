@@ -16,6 +16,7 @@ file(GLOB_RECURSE SRCS src/*.cpp)
 file(GLOB_RECURSE HDRS src/*.h)
 
 add_executable(ugenecl ${HDRS} ${SRCS})
+set_target_properties(ugenecl PROPERTIES DEBUG_POSTFIX "d")
 
 target_link_libraries(ugenecl
         Qt5::Core Qt5::Gui
