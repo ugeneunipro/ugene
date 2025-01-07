@@ -9,6 +9,7 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
+set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 set(UGENE_VERSION 53.0-dev)
 
 message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
@@ -41,8 +42,6 @@ if (WIN32)
             -D_USE_MATH_DEFINES
     )
 endif ()
-
-#set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 
 # Use to disable -isystem support and work in qmake mode.
 # set(CMAKE_NO_SYSTEM_FROM_IMPORTED True)
