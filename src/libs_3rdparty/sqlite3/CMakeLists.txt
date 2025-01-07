@@ -14,7 +14,7 @@ add_definitions(
         -DTHREADSAFE
 )
 
-add_library(ugenedb STATIC ${HDRS} ${SRCS})
+add_library(ugenedb SHARED ${HDRS} ${SRCS})
 set_property(TARGET ugenedb PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(ugenedb)

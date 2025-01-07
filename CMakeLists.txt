@@ -49,22 +49,28 @@ endif ()
 
 # Warning levels. Keep in sync with ugene_globals.pri
 if (CMAKE_COMPILER_IS_GNUCXX)
-    string(CONCAT GCC_WARNING_FLAGS
-            " -Wall"
-            " -Werror=deprecated-copy"
-            " -Werror=maybe-uninitialized"
-            " -Werror=parentheses"
-            " -Werror=return-type"
-            " -Werror=sequence-point"
-            " -Werror=shadow=local"
-            " -Werror=switch"
-            " -Werror=uninitialized"
-            " -Werror=unused-parameter"
-            " -Werror=unused-but-set-variable"
-            " -Werror=unused-value"
-            " -Werror=unused-variable"
-            " -Wno-deprecated-declarations"
-    )
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
+        message(FATAL_ERROR "GCC version must be at least 9. Detected version: ${CMAKE_CXX_COMPILER_VERSION}")
+    endif()
+    message(STATUS "Using GCC version: ${CMAKE_CXX_COMPILER_VERSION}")
+    # Common warning flags for GCC
+#    string(CONCAT GCC_WARNING_FLAGS
+#            " -Wall"
+#            " -Werror=deprecated-copy"
+#            " -Werror=maybe-uninitialized"
+#            " -Werror=parentheses"
+#            " -Werror=return-type"
+#            " -Werror=sequence-point"
+#            " -Werror=switch"
+#            " -Werror=uninitialized"
+#            " -Werror=unused-parameter"
+#            " -Werror=unused-value"
+#            " -Werror=unused-variable"
+#            " -Wno-deprecated-declarations"
+#    )
+#        string(APPEND GCC_WARNING_FLAGS )
+
+    # Apply the warning flags
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
     LIST(APPEND COMPILER_FLAGS -Wl,--no-undefined)
 endif ()
@@ -155,3 +161,8 @@ foreach (LANG IN LISTS LANGUAGES)
     )
     add_custom_target(${LANG}_translation ALL DEPENDS ${QM_FILE})
 endforeach ()
+
+include(${CMAKE_SOURCE_DIR}/cmake/Environment.cmake)
+
+# UGENE shell script
+file(COPY "${CMAKE_SOURCE_DIR}/etc/shared/ugene${UGENE_BUILD_MODE_SUFFIX}" DESTINATION "${CMAKE_BINARY_DIR}/dist")

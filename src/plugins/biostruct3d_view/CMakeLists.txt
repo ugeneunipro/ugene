@@ -7,7 +7,13 @@ file(GLOB SRCS src/*.cpp src/*.c src/*.h src/gl2ps/*)
 include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)
 
 if (APPLE)
-    target_link_libraries(biostruct3d_view "-framework OpenGL")
+    # Use the OpenGL framework on macOS.
+    target_link_libraries(biostruct3d_view PRIVATE "-framework OpenGL")
 elseif (MSVC)
-    target_link_libraries(biostruct3d_view opengl32 GLU32)
+    # Use OpenGL and GLU on Windows.
+    target_link_libraries(biostruct3d_view PRIVATE opengl32 glu32)
+elseif (UNIX)
+    # Use OpenGL and GLU on Unix/Linux.
+    find_package(OpenGL REQUIRED)
+    target_link_libraries(biostruct3d_view OpenGL::GL GLU)
 endif ()
