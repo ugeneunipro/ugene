@@ -25,6 +25,10 @@ DIST_DIR="${BUILD_DIR}/dist"
 # Needed by CMake.
 export Qt5_DIR="${QT_DIR}"
 
+echo "##teamcity[blockOpened name='env']"
+env
+echo "##teamcity[blockClosed name='env']"
+
 # Below this point the script works in 'UGENE_DIR' folder.
 cd "${UGENE_DIR}" || {
   echo "Can't change dir to '${UGENE_DIR}'"
