@@ -41,6 +41,8 @@ if (WIN32)
             -D_XKEYCHECK_H
             -D_USE_MATH_DEFINES
     )
+    string(REPLACE "/RTC1" "" CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
+    string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
 endif ()
 
 # Use to disable -isystem support and work in qmake mode.

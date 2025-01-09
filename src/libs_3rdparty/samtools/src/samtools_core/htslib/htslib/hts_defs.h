@@ -113,7 +113,7 @@ DEALINGS IN THE SOFTWARE.  */
 #endif
 
 #if defined(_WIN32) || defined(__CYGWIN__)
-#if not defined(HTS_BUILDING_LIBRARY)
+#if !defined(HTS_BUILDING_LIBRARY)
 #define HTSLIB_EXPORT __declspec(dllexport)
 #else
 #define HTSLIB_EXPORT
