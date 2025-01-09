@@ -142,12 +142,13 @@ EnzymesSelectorDialog::EnzymesSelectorDialog(EnzymesSelectorDialogHandler* paren
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
+
     auto vl = new QVBoxLayout();
-    enzSel = new EnzymesSelectorWidget();
+    enzSel = new EnzymesSelectorWidget(this);
     vl->setMargin(0);
     vl->addWidget(enzSel);
     enzymesSelectorWidget->setLayout(vl);
-    enzymesSelectorWidget->setMinimumSize(enzSel->size());
+    //enzymesSelectorWidget->setMinimumSize(enzSel->size());
 }
 
 QString EnzymesSelectorDialog::getSelectedString() const {

@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <QDialog>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <QPointer>
@@ -32,7 +33,7 @@
 #include <U2Gui/MainWindow.h>
 
 #include <ui_EnzymesSelectorWidget.h>
-#include <ui_FindEnzymesDialog.h>
+#include <ui_ResultsCountFilter.h>
 
 namespace U2 {
 
@@ -45,15 +46,14 @@ class RegionSelector;
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
 public:
-    EnzymesSelectorWidget(const QPointer<ADVSequenceObjectContext>& advSequenceContext = nullptr, QWidget* parent = nullptr);
+    EnzymesSelectorWidget(QWidget* parent, const QPointer<ADVSequenceObjectContext>& advSequenceContext = nullptr);
     ~EnzymesSelectorWidget() override;
 
     static void setupSettings();
-    static void saveSettings();
     static void initSelection();
     static const QList<SEnzymeData>& getLoadedEnzymes();
     static const QStringList& getLoadedSuppliers();
-    QList<SEnzymeData> getSelectedEnzymes();
+    QList<SEnzymeData> getSelectedEnzymes() const;
     /*
      * Get enzyme tree item by this enzyme.
      * \param enzyme An enzyme we should find tree item for.
@@ -64,6 +64,8 @@ public:
     int getTotalNumber() const {
         return totalEnzymes;
     }
+
+    void saveSettings();
 
     void setEnzymesList(const QList<SEnzymeData>& enzymes);
 
@@ -85,8 +87,20 @@ private slots:
     void sl_filterConditionsChanged();
     void sl_findSingleEnzymeTaskStateChanged();
 
+private slots:
+    void sl_onSelectionModified(int visible, int selected);
+    void sl_updateVisibleEnzymes();
+    void sl_updateEnzymesVisibilityWidgets();
+    void sl_selectAllSuppliers();
+    void sl_selectNoneSuppliers();
+    void sl_invertSelection();
+    void sl_minLengthChanged(int index);
+    void sl_maxLengthChanged(int index);
+
 private:
     static void calculateSuppliers();
+
+    void initSettings();
 
     void loadFile(const QString& url);
     void saveFile(const QString& url);
@@ -105,38 +119,58 @@ private:
 
     QPointer<ADVSequenceObjectContext> advSequenceContext;
 
-    int totalEnzymes;
-    bool ignoreItemChecks;
-    int minLength;
+    int totalEnzymes = 0;
+    bool ignoreItemChecks = false;
+    int minLength = 1;
 };
 
-class FindEnzymesDialog : public QDialog, public Ui_FindEnzymesDialog {
+class ResultsCountFilter : public QWidget, public Ui_ResultsCountFilter {
     Q_OBJECT
 public:
-    FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& advSequenceContext);
-    void accept() override;
+    ResultsCountFilter(QWidget* parent);
 
-private slots:
-    void sl_onSelectionModified(int visible, int selected);
-    void sl_updateVisibleEnzymes();
-    void sl_updateEnzymesVisibilityWidgets();
-    void sl_selectAll();
-    void sl_selectNone();
-    void sl_invertSelection();
-    void sl_minLengthChanged(int index);
-    void sl_maxLengthChanged(int index);
+    void saveSettings();
 
 private:
     void initSettings();
+
+};
+
+class RegionSelectorWithExclude : public QWidget {
+public:
+    RegionSelectorWithExclude(QWidget* parent, const QPointer<ADVSequenceObjectContext>& advSequenceContext);
+
+    U2Location getRegionSelectorLocation(bool* ok) const;
+    U2Location getExcludeRegionSelectorLocation(bool* ok) const;
+    bool isExcludeCheckboxChecked() const;
+
     void saveSettings();
-    void fixPreviousLocation(U2Location& previousLocation);
+
+private:
+    void fixPreviousLocation(U2Location& prevLocation) const;
 
     QPointer<ADVSequenceObjectContext> advSequenceContext;
 
-    EnzymesSelectorWidget* enzSel;
-    RegionSelector* regionSelector;
-    RegionSelector* excludeRegionSelector;
-    QCheckBox* excludeCheckbox;
+    RegionSelector* regionSelector = nullptr;
+    RegionSelector* excludeRegionSelector = nullptr;
+    QCheckBox* excludeCheckbox = nullptr;
+
+};
+
+class FindEnzymesDialog : public QDialog {
+    Q_OBJECT
+public:
+    FindEnzymesDialog(QWidget* parent, const QPointer<ADVSequenceObjectContext>& advSequenceContext);
+    void accept() override;
+
+private:
+    void saveSettings();
+
+    QPointer<ADVSequenceObjectContext> advSequenceContext;
+
+    EnzymesSelectorWidget* enzSel = nullptr;
+    ResultsCountFilter* countFilter = nullptr;
+    RegionSelectorWithExclude* regionSelector = nullptr;
 };
 
 class EnzymeGroupTreeItem : public QTreeWidgetItem {

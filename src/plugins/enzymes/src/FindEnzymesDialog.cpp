@@ -55,10 +55,11 @@ QList<SEnzymeData> EnzymesSelectorWidget::loadedEnzymes;
 QSet<QString> EnzymesSelectorWidget::lastSelection;
 QStringList EnzymesSelectorWidget::loadedSuppliers;
 
-EnzymesSelectorWidget::EnzymesSelectorWidget(const QPointer<ADVSequenceObjectContext>& _advSequenceContext, QWidget* parent)
+static const QStringList RESTRICTION_SEQUENCE_LENGTH_VALUES = {"1", "2", "3", "4", "5", "6", "7", "8", "9+"};
+
+EnzymesSelectorWidget::EnzymesSelectorWidget(QWidget* parent, const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
     : QWidget(parent), advSequenceContext(_advSequenceContext) {
     setupUi(this);
-    ignoreItemChecks = false;
 
     filterComboBox->addItem(tr("name"), FILTER_BY_NAME);
     filterComboBox->addItem(tr("sequence"), FILTER_BY_SEQUENCE);
@@ -74,8 +75,38 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(const QPointer<ADVSequenceObjectCon
     tree->setColumnWidth(2, 50); // type
     tree->setColumnWidth(4, 270); // organism
 
-    totalEnzymes = 0;
-    minLength = 1;
+    for (const auto& k : qAsConst(RESTRICTION_SEQUENCE_LENGTH_VALUES)) {
+        if (k != RESTRICTION_SEQUENCE_LENGTH_VALUES.back()) {
+            cbMinLength->addItem(k, k.toInt());
+            cbMaxLength->addItem(k, k.toInt());
+        } else {
+            cbMinLength->addItem(k, 9);
+            cbMaxLength->addItem(k, INT_MAX);
+        }
+    }
+    cbMinLength->setCurrentIndex(0);
+    cbMaxLength->setCurrentIndex(RESTRICTION_SEQUENCE_LENGTH_VALUES.size() - 1);
+
+    const QList<QPair<QString, EnzymeData::OverhangTypes>> overhangTypeValues = {
+        {tr("Any"), (EnzymeData::OverhangType::NoOverhang | EnzymeData::OverhangType::Blunt | EnzymeData::OverhangType::Sticky)},
+        {tr("No overhang"), EnzymeData::OverhangType::NoOverhang},
+        {tr("Blunt or Sticky"), (EnzymeData::OverhangType::Blunt | EnzymeData::OverhangType::Sticky)},
+        {tr("Blunt or Nondegenerate Sticky"), (EnzymeData::OverhangType::Blunt | EnzymeData::OverhangType::NondegenerateSticky)},
+        {tr("Blunt"), EnzymeData::OverhangType::Blunt},
+        {tr("Sticky"), EnzymeData::OverhangType::Sticky},
+        {tr("Nondegenerate Sticky"), EnzymeData::OverhangType::NondegenerateSticky},
+        {"5'", EnzymeData::OverhangType::Cut5},
+        {"3'", EnzymeData::OverhangType::Cut3}};
+    for (const auto& ov : qAsConst(overhangTypeValues)) {
+        cbOverhangType->addItem(ov.first, QVariant(ov.second));
+    }
+    cbOverhangType->setCurrentIndex(0);
+
+    cbSuppliers->allSelectedText = tr("All suppliers");
+    cbSuppliers->noneSelectedText = tr("No suppliers");
+    cbSuppliers->nSelectedText = tr("%1 suppliers");
+
+    initSettings();
 
     connect(enzymesFileButton, SIGNAL(clicked()), SLOT(sl_openEnzymesFile()));
     connect(saveEnzymesButton, SIGNAL(clicked()), SLOT(sl_saveEnzymesFile()));
@@ -93,6 +124,23 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(const QPointer<ADVSequenceObjectCon
         QString lastUsedFile = AppContext::getSettings()->getValue(EnzymeSettings::DATA_FILE_KEY).toString();
         loadFile(lastUsedFile);
     }
+
+    connect(cbSuppliers, &ComboBoxWithCheckBoxes::si_checkedChanged, this, &EnzymesSelectorWidget::sl_updateVisibleEnzymes);
+    connect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EnzymesSelectorWidget::sl_minLengthChanged);
+    connect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EnzymesSelectorWidget::sl_maxLengthChanged);
+    connect(this, &EnzymesSelectorWidget::si_newEnzymeFileLoaded, this, &EnzymesSelectorWidget::sl_updateEnzymesVisibilityWidgets);
+    connect(cbOverhangType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EnzymesSelectorWidget::sl_updateVisibleEnzymes);
+    connect(cbShowPalindromic, &QCheckBox::toggled, this, &EnzymesSelectorWidget::sl_updateVisibleEnzymes);
+    connect(cbShowUninterrupted, &QCheckBox::toggled, this, &EnzymesSelectorWidget::sl_updateVisibleEnzymes);
+    connect(cbShowNondegenerate, &QCheckBox::toggled, this, &EnzymesSelectorWidget::sl_updateVisibleEnzymes);
+    sl_updateEnzymesVisibilityWidgets();
+
+    connect(pbSelectAll, &QPushButton::clicked, this, &EnzymesSelectorWidget::sl_selectAllSuppliers);
+    connect(pbSelectNone, &QPushButton::clicked, this, &EnzymesSelectorWidget::sl_selectNoneSuppliers);
+    connect(pbInvertSelection, &QPushButton::clicked, this, &EnzymesSelectorWidget::sl_invertSelection);
+    connect(this, SIGNAL(si_selectionModified(int, int)), SLOT(sl_onSelectionModified(int, int)));
+
+    sl_onSelectionModified(getTotalNumber(), getNumSelected());
 }
 
 EnzymesSelectorWidget::~EnzymesSelectorWidget() {
@@ -113,7 +161,7 @@ void EnzymesSelectorWidget::setupSettings() {
     initSelection();
 }
 
-QList<SEnzymeData> EnzymesSelectorWidget::getSelectedEnzymes() {
+QList<SEnzymeData> EnzymesSelectorWidget::getSelectedEnzymes() const {
     QList<SEnzymeData> selectedEnzymes;
     lastSelection.clear();
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
@@ -180,6 +228,20 @@ void EnzymesSelectorWidget::calculateSuppliers() {
                   }
                   return first < second;
               });
+}
+
+void EnzymesSelectorWidget::initSettings() {
+    EnzymesSelectorWidget::initSelection();
+    auto settings = AppContext::getSettings();
+    auto min = settings->getValue(EnzymeSettings::MIN_ENZYME_LENGTH, RESTRICTION_SEQUENCE_LENGTH_VALUES.first()).toString();
+    cbMinLength->setCurrentText(min);
+    auto max = settings->getValue(EnzymeSettings::MAX_ENZYME_LENGTH, RESTRICTION_SEQUENCE_LENGTH_VALUES.last()).toString();
+    cbMaxLength->setCurrentText(max);
+    auto overhangTypeIndex = settings->getValue(EnzymeSettings::OVERHANG_TYPE, 0).toInt();
+    cbOverhangType->setCurrentIndex(overhangTypeIndex);
+    cbShowPalindromic->setChecked(settings->getValue(EnzymeSettings::SHOW_PALINDROMIC, 0).toBool());
+    cbShowUninterrupted->setChecked(settings->getValue(EnzymeSettings::SHOW_UNINTERRUPTED, 0).toBool());
+    cbShowNondegenerate->setChecked(settings->getValue(EnzymeSettings::SHOW_NONDEGENERATE, 0).toBool());
 }
 
 void EnzymesSelectorWidget::loadFile(const QString& url) {
@@ -373,7 +435,7 @@ void EnzymesSelectorWidget::sl_filterConditionsChanged() {
                     item->setHidden(true);
                     ++numHiddenItems;
                 }
-            }            
+            }
         }
         gi->setHidden(numHiddenItems == itemCount);
     }
@@ -398,6 +460,111 @@ void EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged() {
     CHECK((currentItem->enzyme->id == taskItem->enzyme->id) && (currentItem->enzyme->seq == taskItem->enzyme->seq),);
 
     teSelectedEnzymeInfo->setHtml(currentItem->getEnzymeInfo());
+}
+
+void EnzymesSelectorWidget::sl_onSelectionModified(int visible, int selected) {
+    int total = EnzymesSelectorWidget::getLoadedEnzymes().size();
+    int hidden = total - visible;
+    QString text = tr("Total number of enzymes: %1, visible: %2, hidden: %3, selected: %4. ")
+                       .arg(total)
+                       .arg(visible)
+                       .arg(hidden)
+                       .arg(selected);
+    if (hidden != 0) {
+        text += tr("Some enzymes are hidden due to \"Enzyme table filter\" settings.");
+    }
+    statusLabel->setText(text);
+}
+
+void EnzymesSelectorWidget::sl_updateVisibleEnzymes() {
+    QStringList checkedSuppliers = cbSuppliers->getCheckedItems();
+    int min = cbMinLength->itemData(cbMinLength->currentIndex()).toInt();
+    int max = cbMaxLength->itemData(cbMaxLength->currentIndex()).toInt();
+    U2Region region(min, max - min + 1);
+    auto overhangType = static_cast<EnzymeData::OverhangTypes>(cbOverhangType->itemData(cbOverhangType->currentIndex()).toInt());
+    const auto& enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
+    QList<SEnzymeData> visibleEnzymes;
+    for (const auto& enzyme : qAsConst(enzymes)) {
+        bool okSupplier = std::find_if(enzyme->suppliers.begin(),
+                                       enzyme->suppliers.end(),
+                                       [&checkedSuppliers](const QString& s) {
+                                           return checkedSuppliers.contains(s);
+                                       }) != enzyme->suppliers.end();
+
+        int recognitionSequenceLength = 0;
+        for (const auto& ch : qAsConst(enzyme->seq)) {
+            CHECK_CONTINUE(ch != EnzymeData::UNDEFINED_BASE);
+
+            recognitionSequenceLength++;
+        }
+        bool okRSLength = region.contains(recognitionSequenceLength);
+        bool okOverhangType = enzyme->overhangTypes & overhangType;
+        bool okPalindromic = !cbShowPalindromic->isChecked() || (cbShowPalindromic->isChecked() && enzyme->palindromic);
+        bool okUninterrupted = !cbShowUninterrupted->isChecked() || (cbShowUninterrupted->isChecked() && enzyme->uninterrupted);
+        bool okNondegenerate = !cbShowNondegenerate->isChecked() || (cbShowNondegenerate->isChecked() && enzyme->nondegenerate);
+
+        if (okSupplier && okRSLength && okOverhangType && okPalindromic && okUninterrupted && okNondegenerate) {
+            visibleEnzymes.append(enzyme);
+        }
+    }
+    setEnzymesList(visibleEnzymes);
+}
+
+void EnzymesSelectorWidget::sl_updateEnzymesVisibilityWidgets() {
+    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+
+    const QStringList& loadedSuppliers = EnzymesSelectorWidget::getLoadedSuppliers();
+    cbSuppliers->clear();
+    cbSuppliers->addItems(loadedSuppliers);
+    auto settings = AppContext::getSettings();
+    QString suppliersSettingString = settings->getValue(EnzymeSettings::CHECKED_SUPPLIERS).toString();
+    auto checkedSuppliers = suppliersSettingString.isEmpty()
+                                ? loadedSuppliers
+                                : suppliersSettingString.split(SUPPLIERS_LIST_SEPARATOR);
+    if (suppliersSettingString.isEmpty()) {
+        checkedSuppliers.removeOne(EnzymesIO::NOT_DEFINED_SIGN);  // Do not enable "Non defined" by default.
+    } else if (checkedSuppliers.contains(EnzymesIO::NOT_DEFINED_SIGN)) {
+        checkedSuppliers.replace(checkedSuppliers.indexOf(EnzymesIO::NOT_DEFINED_SIGN), notDefinedTr);
+    }
+    cbSuppliers->setCheckedItems(checkedSuppliers);
+}
+
+void EnzymesSelectorWidget::sl_selectAllSuppliers() {
+    cbSuppliers->setCheckedItems(EnzymesSelectorWidget::getLoadedSuppliers());
+}
+
+void EnzymesSelectorWidget::sl_selectNoneSuppliers() {
+    cbSuppliers->setCheckedItems({});
+}
+
+void EnzymesSelectorWidget::sl_invertSelection() {
+    const auto& suppliers = EnzymesSelectorWidget::getLoadedSuppliers();
+    const auto& selectedSuppliers = cbSuppliers->getCheckedItems();
+    QStringList newSelectedSuppliers;
+    for (const auto& supplier : qAsConst(suppliers)) {
+        CHECK_CONTINUE(!selectedSuppliers.contains(supplier));
+
+        newSelectedSuppliers << supplier;
+    }
+    cbSuppliers->setCheckedItems(newSelectedSuppliers);
+}
+
+void EnzymesSelectorWidget::sl_minLengthChanged(int index) {
+    if (cbMaxLength->currentIndex() <= index) {
+        disconnect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EnzymesSelectorWidget::sl_maxLengthChanged);
+        cbMaxLength->setCurrentIndex(index);
+        connect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EnzymesSelectorWidget::sl_maxLengthChanged);
+    }
+    sl_updateVisibleEnzymes();
+}
+
+void EnzymesSelectorWidget::sl_maxLengthChanged(int index) {
+    if (cbMinLength->currentIndex() >= index) {
+        disconnect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EnzymesSelectorWidget::sl_minLengthChanged);
+        cbMinLength->setCurrentIndex(index);
+        connect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EnzymesSelectorWidget::sl_minLengthChanged);
+    }
+    sl_updateVisibleEnzymes();
 }
 
 void EnzymesSelectorWidget::updateStatus() {
@@ -550,9 +717,24 @@ int EnzymesSelectorWidget::getNumSelected() {
 }
 
 void EnzymesSelectorWidget::saveSettings() {
+    auto settings = AppContext::getSettings();
+    QStringList checkedSuppliers = cbSuppliers->getCheckedItems();
+    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+    if (checkedSuppliers.contains(notDefinedTr)) {
+        checkedSuppliers.replace(checkedSuppliers.indexOf(notDefinedTr), EnzymesIO::NOT_DEFINED_SIGN);
+    }
+    auto value = checkedSuppliers.join(SUPPLIERS_LIST_SEPARATOR);
+    settings->setValue(EnzymeSettings::CHECKED_SUPPLIERS, value);
+    settings->setValue(EnzymeSettings::MIN_ENZYME_LENGTH, cbMinLength->currentText());
+    settings->setValue(EnzymeSettings::MAX_ENZYME_LENGTH, cbMaxLength->currentText());
+    settings->setValue(EnzymeSettings::OVERHANG_TYPE, cbOverhangType->currentIndex());
+    settings->setValue(EnzymeSettings::SHOW_PALINDROMIC, cbShowPalindromic->isChecked());
+    settings->setValue(EnzymeSettings::SHOW_UNINTERRUPTED, cbShowUninterrupted->isChecked());
+    settings->setValue(EnzymeSettings::SHOW_NONDEGENERATE, cbShowNondegenerate->isChecked());
+
     QStringList sl(lastSelection.toList());
     if (!sl.isEmpty()) {
-        AppContext::getSettings()->setValue(EnzymeSettings::LAST_SELECTION, sl.join(ENZYME_LIST_SEPARATOR));
+        settings->setValue(EnzymeSettings::LAST_SELECTION, sl.join(ENZYME_LIST_SEPARATOR));
     }
 }
 
@@ -622,64 +804,80 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile() {
     }
 }
 
-static const QStringList RESTRICTION_SEQUENCE_LENGTH_VALUES = {"1", "2", "3", "4", "5", "6", "7", "8", "9+"};
+static constexpr int MIN_HIT_DEFAULT_VALUE = 1;
+static constexpr int MAX_HIT_DEFAULT_VALUE = 2;
 
-static const int ANY_VALUE = -1;
+ResultsCountFilter::ResultsCountFilter(QWidget* parent)
+    : QWidget(parent) {
 
-FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
-    : QDialog(_advSequenceContext->getAnnotatedDNAView()->getWidget()), advSequenceContext(_advSequenceContext) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "65930747");
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
+    minHitSB->setMinimum(MIN_HIT_DEFAULT_VALUE);
+    minHitSB->setMaximum(MAX_HIT_DEFAULT_VALUE);
+
+    maxHitSB->setMinimum(MAX_HIT_DEFAULT_VALUE - 1);
     maxHitSB->setMaximum(INT_MAX);
-    minHitSB->setMaximum(INT_MAX);
 
-    maxHitSB->setMinimum(ANY_VALUE);
-    minHitSB->setMinimum(ANY_VALUE);
+    connect(minHitSB, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int newMinValue) {
+        maxHitSB->setMinimum(newMinValue);
+    });
+    connect(maxHitSB, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int newMaxValue) {
+        minHitSB->setMaximum(newMaxValue);
+    });
 
-    for (const auto& k : qAsConst(RESTRICTION_SEQUENCE_LENGTH_VALUES)) {
-        if (k != RESTRICTION_SEQUENCE_LENGTH_VALUES.back()) {
-            cbMinLength->addItem(k, k.toInt());
-            cbMaxLength->addItem(k, k.toInt());
-        } else {
-            cbMinLength->addItem(k, 9);
-            cbMaxLength->addItem(k, INT_MAX);
-        }
+    initSettings();
+}
+
+void ResultsCountFilter::saveSettings() {
+    auto settings = AppContext::getSettings();
+    settings->setValue(EnzymeSettings::ENABLE_HIT_COUNT, filterGroupBox->isChecked());
+    if (filterGroupBox->isChecked()) {
+        settings->setValue(EnzymeSettings::MIN_HIT_VALUE, minHitSB->value());
+        settings->setValue(EnzymeSettings::MAX_HIT_VALUE, maxHitSB->value());
+    } else {
+        settings->setValue(EnzymeSettings::MIN_HIT_VALUE, MIN_HIT_DEFAULT_VALUE);
+        settings->setValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX);
     }
-    cbMinLength->setCurrentIndex(0);
-    cbMaxLength->setCurrentIndex(RESTRICTION_SEQUENCE_LENGTH_VALUES.size() - 1);
+}
 
-    const QList<QPair<QString, EnzymeData::OverhangTypes>> overhangTypeValues = {
-        {tr("Any"), (EnzymeData::OverhangType::NoOverhang | EnzymeData::OverhangType::Blunt | EnzymeData::OverhangType::Sticky)},
-        {tr("No overhang"), EnzymeData::OverhangType::NoOverhang},
-        {tr("Blunt or Sticky"), (EnzymeData::OverhangType::Blunt | EnzymeData::OverhangType::Sticky)},
-        {tr("Blunt or Nondegenerate Sticky"), (EnzymeData::OverhangType::Blunt | EnzymeData::OverhangType::NondegenerateSticky)},
-        {tr("Blunt"), EnzymeData::OverhangType::Blunt},
-        {tr("Sticky"), EnzymeData::OverhangType::Sticky},
-        {tr("Nondegenerate Sticky"), EnzymeData::OverhangType::NondegenerateSticky},
-        {"5'", EnzymeData::OverhangType::Cut5},
-        {"3'", EnzymeData::OverhangType::Cut3}};
-    for (const auto& ov : qAsConst(overhangTypeValues)) {
-        cbOverhangType->addItem(ov.first, QVariant(ov.second));
+void ResultsCountFilter::initSettings() {
+    auto settings = AppContext::getSettings();
+    bool useHitCountControl = settings->getValue(EnzymeSettings::ENABLE_HIT_COUNT, false).toBool();
+    int minHitValue = settings->getValue(EnzymeSettings::MIN_HIT_VALUE, MIN_HIT_DEFAULT_VALUE).toInt();
+    int maxHitValue = settings->getValue(EnzymeSettings::MAX_HIT_VALUE, MAX_HIT_DEFAULT_VALUE).toInt();
+    filterGroupBox->setChecked(useHitCountControl);
+    if (useHitCountControl) {
+        minHitSB->setValue(minHitValue);
+        maxHitSB->setValue(maxHitValue);
+    } else {
+        minHitSB->setValue(MIN_HIT_DEFAULT_VALUE);
+        maxHitSB->setValue(MAX_HIT_DEFAULT_VALUE);
     }
-    cbOverhangType->setCurrentIndex(0);
+}
 
-    
+RegionSelectorWithExclude::RegionSelectorWithExclude(QWidget* parent, const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
+    : QWidget(parent), advSequenceContext(_advSequenceContext) {
+
     U2Location searchLocation = FindEnzymesAutoAnnotationUpdater::getLastSearchLocationForObject(advSequenceContext->getSequenceObject());
     fixPreviousLocation(searchLocation);
     U2Region customRegion = searchLocation.data()->regions.isEmpty() ? U2Region() : searchLocation.data()->regions.first();
-    
+
     QList<RegionPreset> searchPresets = {RegionPreset(RegionPreset::RegionPreset::getLocationModeDisplayName(), searchLocation)};
     const QVector<U2Region> selectedRegions = advSequenceContext->getSequenceSelection()->getSelectedRegions();
     if (!selectedRegions.isEmpty()) {
         searchPresets << RegionPreset(RegionPreset::RegionPreset::getSelectedRegionDisplayName(), U2Location({selectedRegions.first()}));
     }
 
+    auto widgetLayout = new QVBoxLayout(this);
+    auto groupBox = new QGroupBox(tr("Select sequence region"), this);
+    widgetLayout->addWidget(groupBox);
+    auto groupBoxLayout = new QGridLayout(this);
+    groupBox->setLayout(groupBoxLayout);
+    setLayout(widgetLayout);
+
     const quint64 sequenceLength = advSequenceContext->getSequenceLength();
-    regionSelector = new RegionSelector(this, sequenceLength, false, advSequenceContext->getSequenceSelection(), 
-                                        advSequenceContext->getSequenceObject()->isCircular(), searchPresets);
+    regionSelector = new RegionSelector(this, sequenceLength, false, advSequenceContext->getSequenceSelection(), advSequenceContext->getSequenceObject()->isCircular(), searchPresets);
+    groupBoxLayout->addWidget(regionSelector, 0, 1);
     if (customRegion != U2Region()) {
         regionSelector->setCustomRegion(customRegion);
     }
@@ -693,17 +891,18 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
     U2Region excludeRegion = excludeLocation.data()->regions.isEmpty() ? U2Region() : excludeLocation.data()->regions.first();
 
     QList<RegionPreset> excludePresets = {RegionPreset(RegionPreset::RegionPreset::getLocationModeDisplayName(), excludeLocation)};
-    excludeRegionSelector = new RegionSelector(this, sequenceLength, false, advSequenceContext->getSequenceSelection(), 
-                                               advSequenceContext->getSequenceObject()->isCircular(), excludePresets);
+    excludeRegionSelector = new RegionSelector(this, sequenceLength, false, advSequenceContext->getSequenceSelection(), advSequenceContext->getSequenceObject()->isCircular(), excludePresets);
+    groupBoxLayout->addWidget(excludeRegionSelector, 1, 1);
     excludeRegionSelector->removePreset(RegionPreset::RegionPreset::getWholeSequenceModeDisplayName());
     excludeRegionSelector->setCurrentPreset(RegionPreset::RegionPreset::getCustomRegionModeDisplayName());
     excludeRegionSelector->setObjectName("exclude_range_selector");
-    
+
     excludeCheckbox = new QCheckBox(this);
     excludeCheckbox->setObjectName("excludeCheckBox");
     excludeCheckbox->setText(tr("Uncut area:"));
     excludeCheckbox->setToolTip(tr("A region that will not be cut by any of the found enzymes. If an enzyme is present in this region, it will be excluded from the flank results."));
-    
+    groupBoxLayout->addWidget(excludeCheckbox, 1, 0);
+
     bool excludeLocationIsEmpty = excludeLocation.data()->regions.size() == 1 && excludeLocation.data()->regions.first() == U2Region();
     bool excludeOn = FindEnzymesAutoAnnotationUpdater::getExcludeModeEnabledForObject(advSequenceContext->getSequenceObject()) && !excludeLocationIsEmpty;
     excludeCheckbox->setChecked(excludeOn);
@@ -711,46 +910,48 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
     if (excludeOn && excludeRegion != U2Region()) {
         excludeRegionSelector->setCustomRegion(excludeRegion);
     }
-    
-    searchRegionLayout->addWidget(regionSelector, 0, 1);
-    searchRegionLayout->addWidget(excludeCheckbox, 1, 0);
-    searchRegionLayout->addWidget(excludeRegionSelector, 1, 1);
 
-    initSettings();
 
-    auto vl = new QVBoxLayout();
-    enzSel = new EnzymesSelectorWidget(advSequenceContext, this);
-    vl->setMargin(0);
-    vl->addWidget(enzSel);
-    enzymesSelectorWidget->setLayout(vl);
-    enzymesSelectorWidget->setMinimumSize(enzSel->size());
-
-    cbSuppliers->allSelectedText = tr("All suppliers");
-    cbSuppliers->noneSelectedText = tr("No suppliers");
-    cbSuppliers->nSelectedText = tr("%1 suppliers");
-
-    connect(cbSuppliers, &ComboBoxWithCheckBoxes::si_checkedChanged, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
-    connect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_minLengthChanged);
-    connect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_maxLengthChanged);
-    connect(enzSel, &EnzymesSelectorWidget::si_newEnzymeFileLoaded, this, &FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets);
-    connect(cbOverhangType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
-    connect(cbShowPalindromic, &QCheckBox::toggled, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
-    connect(cbShowUninterrupted, &QCheckBox::toggled, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
-    connect(cbShowNondegenerate, &QCheckBox::toggled, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
-    sl_updateEnzymesVisibilityWidgets();
-
-    connect(pbSelectAll, &QPushButton::clicked, this, &FindEnzymesDialog::sl_selectAll);
-    connect(pbSelectNone, &QPushButton::clicked, this, &FindEnzymesDialog::sl_selectNone);
-    connect(pbInvertSelection, &QPushButton::clicked, this, &FindEnzymesDialog::sl_invertSelection);
-    connect(enzSel, SIGNAL(si_selectionModified(int, int)), SLOT(sl_onSelectionModified(int, int)));
-    sl_onSelectionModified(enzSel->getTotalNumber(), enzSel->getNumSelected());
+    // searchRegionLayout->addWidget(regionSelector, 0, 1);
+    // searchRegionLayout->addWidget(excludeCheckbox, 1, 0);
+    // searchRegionLayout->addWidget(excludeRegionSelector, 1, 1);
 
     connect(excludeCheckbox, &QCheckBox::stateChanged, this, [this]() {
         excludeRegionSelector->setEnabled(excludeCheckbox->isChecked());
     });
 }
 
-void FindEnzymesDialog::fixPreviousLocation(U2Location& prevLocation) {
+U2Location RegionSelectorWithExclude::getRegionSelectorLocation(bool* ok) const {
+    return regionSelector->getLocation(ok);
+}
+
+U2Location RegionSelectorWithExclude::getExcludeRegionSelectorLocation(bool* ok) const {
+    return excludeRegionSelector->getLocation(ok);
+}
+
+bool RegionSelectorWithExclude::isExcludeCheckboxChecked() const {
+    return excludeCheckbox->isChecked();
+}
+
+void RegionSelectorWithExclude::saveSettings() {
+    U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
+    // Empty search region is processed as 'Whole sequence' by auto-annotation task.
+    bool ok = true;
+    U2Location loc = regionSelector->isWholeSequenceSelected() ? U2Location() : regionSelector->getLocation(&ok);
+    CHECK(ok, );
+    FindEnzymesAutoAnnotationUpdater::setLastSearchLocationForObject(sequenceObject, loc);
+
+    if (excludeCheckbox->isChecked()) {
+        loc = excludeRegionSelector->getLocation(&ok);
+        CHECK(ok, );
+        FindEnzymesAutoAnnotationUpdater::setLastExcludeLocationForObject(sequenceObject, loc);
+        FindEnzymesAutoAnnotationUpdater::setExcludeModeEnabledForObject(sequenceObject, true);
+    } else {
+        FindEnzymesAutoAnnotationUpdater::setExcludeModeEnabledForObject(sequenceObject, false);
+    }
+}
+
+void RegionSelectorWithExclude::fixPreviousLocation(U2Location& prevLocation) const {
     bool fitsWell = true;
     for (const U2Region& region : qAsConst(prevLocation.data()->regions)) {
         if (!(region.length > 0 && U2Region(0, advSequenceContext->getSequenceLength()).contains(region))) {
@@ -764,52 +965,37 @@ void FindEnzymesDialog::fixPreviousLocation(U2Location& prevLocation) {
     }
 }
 
-void FindEnzymesDialog::sl_onSelectionModified(int visible, int selected) {
-    int total = EnzymesSelectorWidget::getLoadedEnzymes().size();
-    int hidden = total - visible;
-    QString text = tr("Total number of enzymes: %1, visible: %2, hidden: %3, selected: %4. ")
-                   .arg(total)
-                   .arg(visible)
-                   .arg(hidden)
-                   .arg(selected);
-    if (hidden != 0) {
-        text += tr("Some enzymes are hidden due to \"Enzyme table filter\" settings.");
+FindEnzymesDialog::FindEnzymesDialog(QWidget* parent, const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
+    : QDialog(parent), advSequenceContext(_advSequenceContext) {
+
+    setObjectName("FindEnzymesDialog");
+    setWindowTitle(tr("Find Restriction Sites"));
+
+    auto layout = new QVBoxLayout(this);
+    layout->setSpacing(0);
+
+    enzSel = new EnzymesSelectorWidget(this, advSequenceContext);
+    enzSel->setObjectName("enzymesSelectorWidget");
+    layout->addWidget(enzSel);
+
+    if (advSequenceContext != nullptr) {
+        countFilter = new ResultsCountFilter(this);
+        layout->addWidget(countFilter);
+        regionSelector = new RegionSelectorWithExclude(this, advSequenceContext);
+        layout->addWidget(regionSelector);
     }
-    statusLabel->setText(text);
-}
 
-void FindEnzymesDialog::sl_updateVisibleEnzymes() {
-    QStringList checkedSuppliers = cbSuppliers->getCheckedItems();
-    int min = cbMinLength->itemData(cbMinLength->currentIndex()).toInt();
-    int max = cbMaxLength->itemData(cbMaxLength->currentIndex()).toInt();
-    U2Region region(min, max - min + 1);
-    auto overhangType = static_cast<EnzymeData::OverhangTypes>(cbOverhangType->itemData(cbOverhangType->currentIndex()).toInt());
-    const auto& enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
-    QList<SEnzymeData> visibleEnzymes;
-    for (const auto& enzyme : qAsConst(enzymes)) {
-        bool okSupplier = std::find_if(enzyme->suppliers.begin(),
-                                       enzyme->suppliers.end(),
-                                       [&checkedSuppliers](const QString& s) {
-                                           return checkedSuppliers.contains(s);
-                                       }) != enzyme->suppliers.end();
+    auto buttonBox = new QDialogButtonBox(this);
+    buttonBox->setObjectName("buttonBox");
+    buttonBox->setStandardButtons(QDialogButtonBox::StandardButton::Cancel | QDialogButtonBox::StandardButton::Ok);
+    new HelpButton(this, buttonBox, "65930747");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-        int recognitionSequenceLength = 0;
-        for (const auto& ch : qAsConst(enzyme->seq)) {
-            CHECK_CONTINUE(ch != EnzymeData::UNDEFINED_BASE);
+    layout->addWidget(buttonBox);
 
-            recognitionSequenceLength++;
-        }
-        bool okRSLength = region.contains(recognitionSequenceLength);
-        bool okOverhangType = enzyme->overhangTypes & overhangType;
-        bool okPalindromic = !cbShowPalindromic->isChecked() || (cbShowPalindromic->isChecked() && enzyme->palindromic);
-        bool okUninterrupted = !cbShowUninterrupted->isChecked() || (cbShowUninterrupted->isChecked() && enzyme->uninterrupted);
-        bool okNondegenerate = !cbShowNondegenerate->isChecked() || (cbShowNondegenerate->isChecked() && enzyme->nondegenerate);
-
-        if (okSupplier && okRSLength && okOverhangType && okPalindromic && okUninterrupted && okNondegenerate) {
-            visibleEnzymes.append(enzyme);
-        }
-    }
-    enzSel->setEnzymesList(visibleEnzymes);
+    QObject::connect(buttonBox, &QDialogButtonBox::accepted, this, &FindEnzymesDialog::accept);
+    QObject::connect(buttonBox, &QDialogButtonBox::rejected, this, &FindEnzymesDialog::reject);
 }
 
 void FindEnzymesDialog::accept() {
@@ -820,18 +1006,18 @@ void FindEnzymesDialog::accept() {
 
     QList<SEnzymeData> selectedEnzymes = enzSel->getSelectedEnzymes();
     bool ok = false;
-    U2Location searchLocation = regionSelector->getLocation(&ok);
+    U2Location searchLocation = regionSelector->getRegionSelectorLocation(&ok);
     U2Location excludeLocation;
-    if (excludeCheckbox->isChecked()) {
+    if (regionSelector->isExcludeCheckboxChecked()) {
         bool prevOk = ok;
-        excludeLocation = excludeRegionSelector->getLocation(&ok);
+        excludeLocation = regionSelector->getExcludeRegionSelectorLocation(&ok);
         ok = prevOk && ok;
     }
     if (!ok) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search in' or 'Uncut' region/location!"), QMessageBox::Ok, this);
         msgBox->setInformativeText(tr("Given region or genbank location is invalid, please correct it."));
         msgBox->exec();
-        CHECK(!msgBox.isNull(),);
+        CHECK(!msgBox.isNull(), );
         return;
     }
 
@@ -868,7 +1054,7 @@ void FindEnzymesDialog::accept() {
         return;
     }
 
-    int maxHitVal = maxHitSB->value(), minHitVal = minHitSB->value();
+    /*int maxHitVal = maxHitSB->value(), minHitVal = minHitSB->value();
     if (maxHitVal == ANY_VALUE) {
         maxHitVal = INT_MAX;
     }
@@ -879,7 +1065,7 @@ void FindEnzymesDialog::accept() {
     if (minHitVal > maxHitVal) {
         QMessageBox::critical(this, tr("Error!"), tr("Minimum hit value must be lesser or equal then maximum!"));
         return;
-    }
+    }*/
 
     if (FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(advSequenceContext->getSequenceLength(), selectedEnzymes.size())) {
         QString message = tr("Too many results to render. Please reduce the search region or number of selected enzymes.");
@@ -894,133 +1080,12 @@ void FindEnzymesDialog::accept() {
     QDialog::accept();
 }
 
-void FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets() {
-    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
-
-    const QStringList& loadedSuppliers = EnzymesSelectorWidget::getLoadedSuppliers();
-    cbSuppliers->clear();
-    cbSuppliers->addItems(loadedSuppliers);
-    auto settings = AppContext::getSettings();
-    QString suppliersSettingString = settings->getValue(EnzymeSettings::CHECKED_SUPPLIERS).toString();
-    auto checkedSuppliers = suppliersSettingString.isEmpty()
-                                ? loadedSuppliers
-                                : suppliersSettingString.split(SUPPLIERS_LIST_SEPARATOR);
-    if (suppliersSettingString.isEmpty()) {
-        checkedSuppliers.removeOne(EnzymesIO::NOT_DEFINED_SIGN); // Do not enable "Non defined" by default.
-    } else if (checkedSuppliers.contains(EnzymesIO::NOT_DEFINED_SIGN)) {
-        checkedSuppliers.replace(checkedSuppliers.indexOf(EnzymesIO::NOT_DEFINED_SIGN), notDefinedTr);
-    }
-    cbSuppliers->setCheckedItems(checkedSuppliers);
-}
-
-void FindEnzymesDialog::sl_selectAll() {
-    cbSuppliers->setCheckedItems(EnzymesSelectorWidget::getLoadedSuppliers());
-}
-
-void FindEnzymesDialog::sl_selectNone() {
-    cbSuppliers->setCheckedItems({});
-}
-
-void FindEnzymesDialog::sl_invertSelection() {
-    const auto& suppliers = EnzymesSelectorWidget::getLoadedSuppliers();
-    const auto& selectedSuppliers = cbSuppliers->getCheckedItems();
-    QStringList newSelectedSuppliers;
-    for (const auto& supplier : qAsConst(suppliers)) {
-        CHECK_CONTINUE(!selectedSuppliers.contains(supplier));
-
-        newSelectedSuppliers << supplier;
-    }
-    cbSuppliers->setCheckedItems(newSelectedSuppliers);
-}
-
-void FindEnzymesDialog::sl_minLengthChanged(int index) {
-    if (cbMaxLength->currentIndex() <= index) {
-        disconnect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_maxLengthChanged);
-        cbMaxLength->setCurrentIndex(index);
-        connect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_maxLengthChanged);
-    }
-    sl_updateVisibleEnzymes();
-}
-
-void FindEnzymesDialog::sl_maxLengthChanged(int index) {
-    if (cbMinLength->currentIndex() >= index) {
-        disconnect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_minLengthChanged);
-        cbMinLength->setCurrentIndex(index);
-        connect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_minLengthChanged);
-    }
-    sl_updateVisibleEnzymes();
-}
-
-void FindEnzymesDialog::initSettings() {
-    EnzymesSelectorWidget::initSelection();
-    auto settings = AppContext::getSettings();
-    bool useHitCountControl = settings->getValue(EnzymeSettings::ENABLE_HIT_COUNT, false).toBool();
-    int minHitValue = settings->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
-    int maxHitValue = settings->getValue(EnzymeSettings::MAX_HIT_VALUE, 2).toInt();
-    auto min = settings->getValue(EnzymeSettings::MIN_ENZYME_LENGTH, RESTRICTION_SEQUENCE_LENGTH_VALUES.first()).toString();
-    cbMinLength->setCurrentText(min);
-    auto max = settings->getValue(EnzymeSettings::MAX_ENZYME_LENGTH, RESTRICTION_SEQUENCE_LENGTH_VALUES.last()).toString();
-    cbMaxLength->setCurrentText(max);
-    auto overhangTypeIndex = settings->getValue(EnzymeSettings::OVERHANG_TYPE, 0).toInt();
-    cbOverhangType->setCurrentIndex(overhangTypeIndex);
-    cbShowPalindromic->setChecked(settings->getValue(EnzymeSettings::SHOW_PALINDROMIC, 0).toBool());
-    cbShowUninterrupted->setChecked(settings->getValue(EnzymeSettings::SHOW_UNINTERRUPTED, 0).toBool());
-    cbShowNondegenerate->setChecked(settings->getValue(EnzymeSettings::SHOW_NONDEGENERATE, 0).toBool());
-
-    filterGroupBox->setChecked(useHitCountControl);
-    if (useHitCountControl) {
-        minHitSB->setValue(minHitValue);
-        maxHitSB->setValue(maxHitValue);
-    } else {
-        minHitSB->setValue(1);
-        maxHitSB->setValue(2);
-    }
-}
-
 void FindEnzymesDialog::saveSettings() {
-    auto settings = AppContext::getSettings();
-    settings->setValue(EnzymeSettings::ENABLE_HIT_COUNT, filterGroupBox->isChecked());
-    if (filterGroupBox->isChecked()) {
-        settings->setValue(EnzymeSettings::MIN_HIT_VALUE, minHitSB->value());
-        settings->setValue(EnzymeSettings::MAX_HIT_VALUE, maxHitSB->value());
-    } else {
-        settings->setValue(EnzymeSettings::MIN_HIT_VALUE, 1);
-        settings->setValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX);
-    }
-
-    QStringList checkedSuppliers = cbSuppliers->getCheckedItems();
-    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
-    if (checkedSuppliers.contains(notDefinedTr)) {
-        checkedSuppliers.replace(checkedSuppliers.indexOf(notDefinedTr), EnzymesIO::NOT_DEFINED_SIGN);
-    }
-    auto value = checkedSuppliers.join(SUPPLIERS_LIST_SEPARATOR);
-    settings->setValue(EnzymeSettings::CHECKED_SUPPLIERS, value);
-    settings->setValue(EnzymeSettings::MIN_ENZYME_LENGTH, cbMinLength->currentText());
-    settings->setValue(EnzymeSettings::MAX_ENZYME_LENGTH, cbMaxLength->currentText());
-    settings->setValue(EnzymeSettings::OVERHANG_TYPE, cbOverhangType->currentIndex());
-    settings->setValue(EnzymeSettings::SHOW_PALINDROMIC, cbShowPalindromic->isChecked());
-    settings->setValue(EnzymeSettings::SHOW_UNINTERRUPTED, cbShowUninterrupted->isChecked());
-    settings->setValue(EnzymeSettings::SHOW_NONDEGENERATE, cbShowNondegenerate->isChecked());
-    CHECK(!advSequenceContext.isNull(),);
-
-    U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
-    // Empty search region is processed as 'Whole sequence' by auto-annotation task.
-    bool ok = true;
-    U2Location loc = regionSelector->isWholeSequenceSelected() ? U2Location() : regionSelector->getLocation(&ok);
-    CHECK(ok, );
-    FindEnzymesAutoAnnotationUpdater::setLastSearchLocationForObject(sequenceObject, loc);
-
-    if (excludeCheckbox->isChecked()) {
-        loc = excludeRegionSelector->getLocation(&ok);
-        CHECK(ok, );
-        FindEnzymesAutoAnnotationUpdater::setLastExcludeLocationForObject(sequenceObject, loc);
-        FindEnzymesAutoAnnotationUpdater::setExcludeModeEnabledForObject(sequenceObject, true);
-    } else {
-        FindEnzymesAutoAnnotationUpdater::setExcludeModeEnabledForObject(sequenceObject, false);
-    }    
-    
     enzSel->saveSettings();
+    countFilter->saveSettings();
+    regionSelector->saveSettings();
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 // Tree item
@@ -1131,4 +1196,4 @@ bool EnzymeGroupTreeItem::operator<(const QTreeWidgetItem& other) const {
     int col = treeWidget()->sortColumn();
     return text(col) < other.text(col);
 }
-} // namespace U2
+}  // namespace U2

@@ -23,7 +23,7 @@ FORMS += src/insert/InsertEnzymeWidget.ui \
          src/EditFragmentDialog.ui \
          src/EnzymesSelectorDialog.ui \
          src/EnzymesSelectorWidget.ui \
-         src/FindEnzymesDialog.ui
+         src/ResultsCountFilter.ui
 SOURCES += src/insert/InsertEnzymeDialog.cpp \
            src/insert/InsertEnzymeWidget.cpp \
            src/CloningUtilTasks.cpp \
