@@ -6,6 +6,7 @@ include_directories(../../libs_3rdparty/samtools/src/samtools_core/htslib)
 
 message(STATUS "Resolved path: ${CMAKE_SOURCE_DIR}/cmake/PluginDescriptor.cmake")
 
+include(../../libs_3rdparty/samtools/Samtools-common.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)
 
 target_link_libraries(api_tests samtools)
