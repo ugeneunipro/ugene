@@ -21,38 +21,55 @@
 
 #pragma once
 
-#include <QDialog>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
+#include <QWidget>
 #include <QPointer>
 
 #include <U2Algorithm/EnzymeModel.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 
-#include <U2Gui/MainWindow.h>
-
 #include <ui_EnzymesSelectorWidget.h>
-#include <ui_ResultsCountFilter.h>
 
 namespace U2 {
 
-class ADVSequenceObjectContext;
-class CreateAnnotationWidgetController;
 class EnzymeGroupTreeItem;
 class EnzymeTreeItem;
-class RegionSelector;
 
+/**
+ * @brief This class describes a widget, which contains enzyme tree, selected enzymes, enzyme info
+ * and enzyme filter group box.
+ */
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
 public:
+    /**
+     * @brief Constructor.
+     * @param parent parent widget.
+     * @param advSequenceContext Context of opened sequence. If it is nullptr,
+     * that means that there is no sequence opened (e.g. widget is created in Query Designer).
+     */
     EnzymesSelectorWidget(QWidget* parent, const QPointer<ADVSequenceObjectContext>& advSequenceContext = nullptr);
     ~EnzymesSelectorWidget() override;
 
+    /**
+    * @brief Load file with enzymes settings from .ini file.
+    */
     static void setupSettings();
+    /**
+     * @brief Load selected enzymes from .ini file.
+     */
     static void initSelection();
+    /**
+     * @return Returns list of loaded enzymes.
+     */
     static const QList<SEnzymeData>& getLoadedEnzymes();
+    /**
+     * @return Returns list of selected suppliers.
+     */
     static const QStringList& getLoadedSuppliers();
+    /**
+     * @return Returns list of selected enzymes.
+     */
     QList<SEnzymeData> getSelectedEnzymes() const;
     /*
      * Get enzyme tree item by this enzyme.
@@ -60,13 +77,24 @@ public:
      * \return Returns pointer to item (if exists).
     **/
     EnzymeTreeItem* getEnzymeTreeItemByEnzymeData(const SEnzymeData& enzyme) const;
+    /**
+     * @return Returns number of selected enzymes.
+     */
     int getNumSelected();
-    int getTotalNumber() const {
-        return totalEnzymes;
-    }
+    /**
+     * @return Returns number of loaded enzymes.
+     */
+    int getTotalNumber() const;
 
+    /**
+     * @brief Saves dialog setting to the .ini file.
+     */
     void saveSettings();
 
+    /**
+     * @brief Set the following list of enzymes to be selected.
+     * \param enzymes Lit of enzymes.
+     */
     void setEnzymesList(const QList<SEnzymeData>& enzymes);
 
 signals:
@@ -122,93 +150,6 @@ private:
     int totalEnzymes = 0;
     bool ignoreItemChecks = false;
     int minLength = 1;
-};
-
-class ResultsCountFilter : public QWidget, public Ui_ResultsCountFilter {
-    Q_OBJECT
-public:
-    ResultsCountFilter(QWidget* parent);
-
-    void saveSettings();
-
-private:
-    void initSettings();
-
-};
-
-class RegionSelectorWithExclude : public QWidget {
-public:
-    RegionSelectorWithExclude(QWidget* parent, const QPointer<ADVSequenceObjectContext>& advSequenceContext);
-
-    U2Location getRegionSelectorLocation(bool* ok) const;
-    U2Location getExcludeRegionSelectorLocation(bool* ok) const;
-    bool isExcludeCheckboxChecked() const;
-
-    void saveSettings();
-
-private:
-    void fixPreviousLocation(U2Location& prevLocation) const;
-
-    QPointer<ADVSequenceObjectContext> advSequenceContext;
-
-    RegionSelector* regionSelector = nullptr;
-    RegionSelector* excludeRegionSelector = nullptr;
-    QCheckBox* excludeCheckbox = nullptr;
-
-};
-
-class FindEnzymesDialog : public QDialog {
-    Q_OBJECT
-public:
-    FindEnzymesDialog(QWidget* parent, const QPointer<ADVSequenceObjectContext>& advSequenceContext);
-    void accept() override;
-
-private:
-    void saveSettings();
-
-    QPointer<ADVSequenceObjectContext> advSequenceContext;
-
-    EnzymesSelectorWidget* enzSel = nullptr;
-    ResultsCountFilter* countFilter = nullptr;
-    RegionSelectorWithExclude* regionSelector = nullptr;
-};
-
-class EnzymeGroupTreeItem : public QTreeWidgetItem {
-public:
-    EnzymeGroupTreeItem(const QString& s);
-    void updateVisual();
-    QString s;
-    QSet<EnzymeTreeItem*> checkedEnzymes;
-    bool operator<(const QTreeWidgetItem& other) const override;
-};
-
-class EnzymeTreeItem : public QTreeWidgetItem {
-    Q_DECLARE_TR_FUNCTIONS(EnzymeTreeItem)
-public:
-    EnzymeTreeItem(const SEnzymeData& ed);
-    const SEnzymeData enzyme;
-    static constexpr int INCORRECT_ENZYMES_NUMBER = -1;
-    static constexpr int MAXIMUM_ENZYMES_NUMBER = 10'000;
-
-    // Number of enzymes in the current sequence
-    int enzymesNumber = INCORRECT_ENZYMES_NUMBER;
-    // True if FindEnzymesTask, which calculates number of enzymes,
-    // has already been run
-    bool hasNumberCalculationTask = false;
-    bool operator<(const QTreeWidgetItem& other) const override;
-    // Get text information about this enzyme
-    QString getEnzymeInfo() const;
-
-private:
-    enum Column {
-        Id = 0,
-        Accession,
-        Type,
-        Sequence,
-        Organism,
-    };
-
-    QString getTypeInfo() const;
 };
 
 }  // namespace U2

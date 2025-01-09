@@ -19,38 +19,32 @@
  * MA 02110-1301, USA.
  */
 
-#include "FindEnzymesDialog.h"
+#include "EnzymesSelectorWidget.h"
 
-#include <QCoreApplication>
+#include <QDir>
 #include <QInputDialog>
 #include <QMessageBox>
-#include <QTreeWidget>
-#include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/Log.h>
-#include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/DNASequence.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2OpStatusUtils.h>
 
-#include <U2Gui/ComboBoxWithCheckBoxes.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Gui/RegionSelector.h>
-
-#include <U2View/AnnotatedDNAView.h>
-#include <U2View/AutoAnnotationUtils.h>
+#include <U2Gui/U2FileDialog.h>
 
 #include "EnzymesIO.h"
+#include "EnzymeGroupTreeItem.h"
+#include "EnzymeTreeItem.h"
 #include "FindEnzymesTask.h"
 
 // TODO: group by TYPE, ORGANISM
 // TODO: check whole group (tristate mode)
 
 namespace U2 {
+
 QList<SEnzymeData> EnzymesSelectorWidget::loadedEnzymes;
 QSet<QString> EnzymesSelectorWidget::lastSelection;
 QStringList EnzymesSelectorWidget::loadedSuppliers;
@@ -716,6 +710,10 @@ int EnzymesSelectorWidget::getNumSelected() {
     return nChecked;
 }
 
+int EnzymesSelectorWidget::getTotalNumber() const {
+    return totalEnzymes;
+}
+
 void EnzymesSelectorWidget::saveSettings() {
     auto settings = AppContext::getSettings();
     QStringList checkedSuppliers = cbSuppliers->getCheckedItems();
@@ -804,396 +802,4 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile() {
     }
 }
 
-static constexpr int MIN_HIT_DEFAULT_VALUE = 1;
-static constexpr int MAX_HIT_DEFAULT_VALUE = 2;
-
-ResultsCountFilter::ResultsCountFilter(QWidget* parent)
-    : QWidget(parent) {
-
-    setupUi(this);
-
-    minHitSB->setMinimum(MIN_HIT_DEFAULT_VALUE);
-    minHitSB->setMaximum(MAX_HIT_DEFAULT_VALUE);
-
-    maxHitSB->setMinimum(MAX_HIT_DEFAULT_VALUE - 1);
-    maxHitSB->setMaximum(INT_MAX);
-
-    connect(minHitSB, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int newMinValue) {
-        maxHitSB->setMinimum(newMinValue);
-    });
-    connect(maxHitSB, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int newMaxValue) {
-        minHitSB->setMaximum(newMaxValue);
-    });
-
-    initSettings();
-}
-
-void ResultsCountFilter::saveSettings() {
-    auto settings = AppContext::getSettings();
-    settings->setValue(EnzymeSettings::ENABLE_HIT_COUNT, filterGroupBox->isChecked());
-    if (filterGroupBox->isChecked()) {
-        settings->setValue(EnzymeSettings::MIN_HIT_VALUE, minHitSB->value());
-        settings->setValue(EnzymeSettings::MAX_HIT_VALUE, maxHitSB->value());
-    } else {
-        settings->setValue(EnzymeSettings::MIN_HIT_VALUE, MIN_HIT_DEFAULT_VALUE);
-        settings->setValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX);
-    }
-}
-
-void ResultsCountFilter::initSettings() {
-    auto settings = AppContext::getSettings();
-    bool useHitCountControl = settings->getValue(EnzymeSettings::ENABLE_HIT_COUNT, false).toBool();
-    int minHitValue = settings->getValue(EnzymeSettings::MIN_HIT_VALUE, MIN_HIT_DEFAULT_VALUE).toInt();
-    int maxHitValue = settings->getValue(EnzymeSettings::MAX_HIT_VALUE, MAX_HIT_DEFAULT_VALUE).toInt();
-    filterGroupBox->setChecked(useHitCountControl);
-    if (useHitCountControl) {
-        minHitSB->setValue(minHitValue);
-        maxHitSB->setValue(maxHitValue);
-    } else {
-        minHitSB->setValue(MIN_HIT_DEFAULT_VALUE);
-        maxHitSB->setValue(MAX_HIT_DEFAULT_VALUE);
-    }
-}
-
-RegionSelectorWithExclude::RegionSelectorWithExclude(QWidget* parent, const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
-    : QWidget(parent), advSequenceContext(_advSequenceContext) {
-
-    U2Location searchLocation = FindEnzymesAutoAnnotationUpdater::getLastSearchLocationForObject(advSequenceContext->getSequenceObject());
-    fixPreviousLocation(searchLocation);
-    U2Region customRegion = searchLocation.data()->regions.isEmpty() ? U2Region() : searchLocation.data()->regions.first();
-
-    QList<RegionPreset> searchPresets = {RegionPreset(RegionPreset::RegionPreset::getLocationModeDisplayName(), searchLocation)};
-    const QVector<U2Region> selectedRegions = advSequenceContext->getSequenceSelection()->getSelectedRegions();
-    if (!selectedRegions.isEmpty()) {
-        searchPresets << RegionPreset(RegionPreset::RegionPreset::getSelectedRegionDisplayName(), U2Location({selectedRegions.first()}));
-    }
-
-    auto widgetLayout = new QVBoxLayout(this);
-    auto groupBox = new QGroupBox(tr("Select sequence region"), this);
-    widgetLayout->addWidget(groupBox);
-    auto groupBoxLayout = new QGridLayout(this);
-    groupBox->setLayout(groupBoxLayout);
-    setLayout(widgetLayout);
-
-    const quint64 sequenceLength = advSequenceContext->getSequenceLength();
-    regionSelector = new RegionSelector(this, sequenceLength, false, advSequenceContext->getSequenceSelection(), advSequenceContext->getSequenceObject()->isCircular(), searchPresets);
-    groupBoxLayout->addWidget(regionSelector, 0, 1);
-    if (customRegion != U2Region()) {
-        regionSelector->setCustomRegion(customRegion);
-    }
-
-    if (!selectedRegions.isEmpty()) {
-        regionSelector->setCurrentPreset(RegionPreset::RegionPreset::getSelectedRegionDisplayName());
-    }
-
-    U2Location excludeLocation = FindEnzymesAutoAnnotationUpdater::getLastExcludeLocationForObject(advSequenceContext->getSequenceObject());
-    fixPreviousLocation(excludeLocation);
-    U2Region excludeRegion = excludeLocation.data()->regions.isEmpty() ? U2Region() : excludeLocation.data()->regions.first();
-
-    QList<RegionPreset> excludePresets = {RegionPreset(RegionPreset::RegionPreset::getLocationModeDisplayName(), excludeLocation)};
-    excludeRegionSelector = new RegionSelector(this, sequenceLength, false, advSequenceContext->getSequenceSelection(), advSequenceContext->getSequenceObject()->isCircular(), excludePresets);
-    groupBoxLayout->addWidget(excludeRegionSelector, 1, 1);
-    excludeRegionSelector->removePreset(RegionPreset::RegionPreset::getWholeSequenceModeDisplayName());
-    excludeRegionSelector->setCurrentPreset(RegionPreset::RegionPreset::getCustomRegionModeDisplayName());
-    excludeRegionSelector->setObjectName("exclude_range_selector");
-
-    excludeCheckbox = new QCheckBox(this);
-    excludeCheckbox->setObjectName("excludeCheckBox");
-    excludeCheckbox->setText(tr("Uncut area:"));
-    excludeCheckbox->setToolTip(tr("A region that will not be cut by any of the found enzymes. If an enzyme is present in this region, it will be excluded from the flank results."));
-    groupBoxLayout->addWidget(excludeCheckbox, 1, 0);
-
-    bool excludeLocationIsEmpty = excludeLocation.data()->regions.size() == 1 && excludeLocation.data()->regions.first() == U2Region();
-    bool excludeOn = FindEnzymesAutoAnnotationUpdater::getExcludeModeEnabledForObject(advSequenceContext->getSequenceObject()) && !excludeLocationIsEmpty;
-    excludeCheckbox->setChecked(excludeOn);
-    excludeRegionSelector->setEnabled(excludeOn);
-    if (excludeOn && excludeRegion != U2Region()) {
-        excludeRegionSelector->setCustomRegion(excludeRegion);
-    }
-
-
-    // searchRegionLayout->addWidget(regionSelector, 0, 1);
-    // searchRegionLayout->addWidget(excludeCheckbox, 1, 0);
-    // searchRegionLayout->addWidget(excludeRegionSelector, 1, 1);
-
-    connect(excludeCheckbox, &QCheckBox::stateChanged, this, [this]() {
-        excludeRegionSelector->setEnabled(excludeCheckbox->isChecked());
-    });
-}
-
-U2Location RegionSelectorWithExclude::getRegionSelectorLocation(bool* ok) const {
-    return regionSelector->getLocation(ok);
-}
-
-U2Location RegionSelectorWithExclude::getExcludeRegionSelectorLocation(bool* ok) const {
-    return excludeRegionSelector->getLocation(ok);
-}
-
-bool RegionSelectorWithExclude::isExcludeCheckboxChecked() const {
-    return excludeCheckbox->isChecked();
-}
-
-void RegionSelectorWithExclude::saveSettings() {
-    U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
-    // Empty search region is processed as 'Whole sequence' by auto-annotation task.
-    bool ok = true;
-    U2Location loc = regionSelector->isWholeSequenceSelected() ? U2Location() : regionSelector->getLocation(&ok);
-    CHECK(ok, );
-    FindEnzymesAutoAnnotationUpdater::setLastSearchLocationForObject(sequenceObject, loc);
-
-    if (excludeCheckbox->isChecked()) {
-        loc = excludeRegionSelector->getLocation(&ok);
-        CHECK(ok, );
-        FindEnzymesAutoAnnotationUpdater::setLastExcludeLocationForObject(sequenceObject, loc);
-        FindEnzymesAutoAnnotationUpdater::setExcludeModeEnabledForObject(sequenceObject, true);
-    } else {
-        FindEnzymesAutoAnnotationUpdater::setExcludeModeEnabledForObject(sequenceObject, false);
-    }
-}
-
-void RegionSelectorWithExclude::fixPreviousLocation(U2Location& prevLocation) const {
-    bool fitsWell = true;
-    for (const U2Region& region : qAsConst(prevLocation.data()->regions)) {
-        if (!(region.length > 0 && U2Region(0, advSequenceContext->getSequenceLength()).contains(region))) {
-            fitsWell = false;
-            break;
-        }
-    }
-    if (!fitsWell) {
-        prevLocation.data()->regions.clear();
-        prevLocation.data()->regions << U2Region();
-    }
-}
-
-FindEnzymesDialog::FindEnzymesDialog(QWidget* parent, const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
-    : QDialog(parent), advSequenceContext(_advSequenceContext) {
-
-    setObjectName("FindEnzymesDialog");
-    setWindowTitle(tr("Find Restriction Sites"));
-
-    auto layout = new QVBoxLayout(this);
-    layout->setSpacing(0);
-
-    enzSel = new EnzymesSelectorWidget(this, advSequenceContext);
-    enzSel->setObjectName("enzymesSelectorWidget");
-    layout->addWidget(enzSel);
-
-    if (advSequenceContext != nullptr) {
-        countFilter = new ResultsCountFilter(this);
-        layout->addWidget(countFilter);
-        regionSelector = new RegionSelectorWithExclude(this, advSequenceContext);
-        layout->addWidget(regionSelector);
-    }
-
-    auto buttonBox = new QDialogButtonBox(this);
-    buttonBox->setObjectName("buttonBox");
-    buttonBox->setStandardButtons(QDialogButtonBox::StandardButton::Cancel | QDialogButtonBox::StandardButton::Ok);
-    new HelpButton(this, buttonBox, "65930747");
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-
-    layout->addWidget(buttonBox);
-
-    QObject::connect(buttonBox, &QDialogButtonBox::accepted, this, &FindEnzymesDialog::accept);
-    QObject::connect(buttonBox, &QDialogButtonBox::rejected, this, &FindEnzymesDialog::reject);
-}
-
-void FindEnzymesDialog::accept() {
-    if (advSequenceContext.isNull()) {
-        QMessageBox::critical(this, tr("Error!"), tr("Sequence has been alredy closed."));
-        return;
-    }
-
-    QList<SEnzymeData> selectedEnzymes = enzSel->getSelectedEnzymes();
-    bool ok = false;
-    U2Location searchLocation = regionSelector->getRegionSelectorLocation(&ok);
-    U2Location excludeLocation;
-    if (regionSelector->isExcludeCheckboxChecked()) {
-        bool prevOk = ok;
-        excludeLocation = regionSelector->getExcludeRegionSelectorLocation(&ok);
-        ok = prevOk && ok;
-    }
-    if (!ok) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search in' or 'Uncut' region/location!"), QMessageBox::Ok, this);
-        msgBox->setInformativeText(tr("Given region or genbank location is invalid, please correct it."));
-        msgBox->exec();
-        CHECK(!msgBox.isNull(), );
-        return;
-    }
-
-    QVector<U2Region> searchRegionsOutsideExcluded = searchLocation.data()->regions;
-    for (const U2Region& excludedRegion : qAsConst(excludeLocation.data()->regions)) {
-        for (const U2Region& searchRegion : qAsConst(searchLocation.data()->regions)) {
-            if (excludedRegion.contains(searchRegion)) {
-                searchRegionsOutsideExcluded.removeAll(searchRegion);
-            }
-        }
-    }
-    if (searchRegionsOutsideExcluded.isEmpty()) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("'Uncut' region/location fully contains 'Search in' inside it!"), QMessageBox::Ok, this);
-        msgBox->setInformativeText(tr("Nowhere to search!"));
-        msgBox->exec();
-        CHECK(!msgBox.isNull(), );
-        return;
-    }
-
-    if (selectedEnzymes.isEmpty()) {
-        int ret = QMessageBox::question(this,
-                                        windowTitle(),
-                                        tr("<html><body align=\"center\">No enzymes are selected! Do you want to turn off <br>enzymes annotations highlighting?</body></html>"),
-                                        QMessageBox::Yes,
-                                        QMessageBox::No);
-        if (ret == QMessageBox::Yes) {
-            QAction* toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(advSequenceContext.data(), ANNOTATION_GROUP_ENZYME);
-            if (toggleAction) {
-                toggleAction->setChecked(false);
-            }
-            saveSettings();
-            QDialog::accept();
-        }
-        return;
-    }
-
-    /*int maxHitVal = maxHitSB->value(), minHitVal = minHitSB->value();
-    if (maxHitVal == ANY_VALUE) {
-        maxHitVal = INT_MAX;
-    }
-    if (minHitVal == ANY_VALUE) {
-        minHitVal = 1;
-    }
-
-    if (minHitVal > maxHitVal) {
-        QMessageBox::critical(this, tr("Error!"), tr("Minimum hit value must be lesser or equal then maximum!"));
-        return;
-    }*/
-
-    if (FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(advSequenceContext->getSequenceLength(), selectedEnzymes.size())) {
-        QString message = tr("Too many results to render. Please reduce the search region or number of selected enzymes.");
-        QMessageBox::critical(this, tr("Error!"), message, QMessageBox::Ok);
-        return;
-    }
-
-    saveSettings();
-
-    AutoAnnotationUtils::triggerAutoAnnotationsUpdate(advSequenceContext.data(), ANNOTATION_GROUP_ENZYME);
-
-    QDialog::accept();
-}
-
-void FindEnzymesDialog::saveSettings() {
-    enzSel->saveSettings();
-    countFilter->saveSettings();
-    regionSelector->saveSettings();
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-// Tree item
-
-EnzymeTreeItem::EnzymeTreeItem(const SEnzymeData& ed)
-    : enzyme(ed) {
-    setText(Column::Id, enzyme->id);
-    setCheckState(Column::Id, Qt::Unchecked);
-    setText(Column::Accession, enzyme->accession);
-    setText(Column::Type, enzyme->type);
-    setData(Column::Type, Qt::ToolTipRole, getTypeInfo());
-    setText(Column::Sequence, enzyme->seq);
-    setData(Column::Sequence, Qt::ToolTipRole, enzyme->generateEnzymeTooltip());
-    setText(Column::Organism, enzyme->organizm);
-    setData(Column::Organism, Qt::ToolTipRole, enzyme->organizm);
-    setText(5, enzyme->suppliers.join("; "));
-    setData(5, Qt::ToolTipRole, enzyme->suppliers.join("\n"));
-}
-
-bool EnzymeTreeItem::operator<(const QTreeWidgetItem& other) const {
-    int col = treeWidget()->sortColumn();
-    const EnzymeTreeItem& ei = (const EnzymeTreeItem&)other;
-    if (col == 0) {
-        bool eq = enzyme->id == ei.enzyme->id;
-        if (!eq) {
-            return enzyme->id < ei.enzyme->id;
-        }
-        return this < &ei;
-    }
-    return text(col) < ei.text(col);
-}
-
-QString EnzymeTreeItem::getEnzymeInfo() const {
-    QString result;
-    result += QString("<a href=\"http://rebase.neb.com/rebase/enz/%1.html\">%1</a>")
-        .arg(text(Column::Id));
-    if (enzymesNumber != INCORRECT_ENZYMES_NUMBER) {
-        if (enzymesNumber > MAXIMUM_ENZYMES_NUMBER) {
-            result += tr(" (>%1 sites)").arg(MAXIMUM_ENZYMES_NUMBER);
-        } else {
-            result += " (" + tr("%n sites", "", enzymesNumber) + ")";
-        }
-    }
-    auto typeString = data(Column::Type, Qt::ToolTipRole).toString();
-    if (!typeString.isEmpty()) {
-        auto lower = typeString.front().toLower();
-        typeString = typeString.replace(0, 1, lower);
-        result += ": " + typeString;
-    }
-    result += data(Column::Sequence, Qt::ToolTipRole).toString();
-    return result;
-}
-
-QString EnzymeTreeItem::getTypeInfo() const {
-    auto type = text(Column::Type);
-    QString result;
-    if (type == "M") {
-        result = tr("An orphan methylase,<br>not associated with a restriction enzyme or specificity subunit");
-    } else if (type.size() == 2) {
-        if (type == "IE") {
-            result = tr("An intron-encoded (homing) endonuclease");
-        } else if (type.startsWith("R")) {
-            result = tr("Type %1 restriction enzyme").arg(type.back());
-        } else if (type.startsWith("M")) {
-            result = tr("Type %1 methylase").arg(type.back());
-        }
-    } else if (type.size() == 3) {
-        if (type.startsWith("R") && type.endsWith("*")) {
-            result = tr("Type %1 restriction enzyme,<br>but only recognizes the sequence when it is methylated").arg(type.at(1));
-        } else if (type.startsWith("RM")) {
-            result = tr("Type %1 enzyme, which acts as both -<br>a restriction enzyme and a methylase").arg(type.back());
-        }
-    }
-
-    return result;
-}
-
-EnzymeGroupTreeItem::EnzymeGroupTreeItem(const QString& _s)
-    : s(_s) {
-    updateVisual();
-}
-
-void EnzymeGroupTreeItem::updateVisual() {
-    int numChilds = childCount();
-    checkedEnzymes.clear();
-    for (int i = 0; i < numChilds; i++) {
-        EnzymeTreeItem* item = static_cast<EnzymeTreeItem*>(child(i));
-        if (item->checkState(0) == Qt::Checked) {
-            checkedEnzymes.insert(item);
-        }
-    }
-    QString text0 = s + " (" + QString::number(checkedEnzymes.size()) + ", " + QString::number(numChilds) + ")";
-    setText(0, text0);
-
-    if (numChilds > 0) {
-        QString text4 = (static_cast<EnzymeTreeItem*>(child(0)))->enzyme->id;
-        if (childCount() > 1) {
-            text4 += " .. " + (static_cast<EnzymeTreeItem*>(child(numChilds - 1)))->enzyme->id;
-        }
-        setText(4, text4);
-    }
-}
-
-bool EnzymeGroupTreeItem::operator<(const QTreeWidgetItem& other) const {
-    if (other.parent() != nullptr) {
-        return true;
-    }
-    int col = treeWidget()->sortColumn();
-    return text(col) < other.text(col);
-}
 }  // namespace U2

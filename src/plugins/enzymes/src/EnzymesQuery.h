@@ -30,7 +30,8 @@
 #include <U2Lang/QDScheme.h>
 #include <U2Lang/QueryDesignerRegistry.h>
 
-#include "FindEnzymesDialog.h"
+#include "enzymes_dialog/EnzymesSelectorWidget.h"
+#include "enzymes_dialog/FindEnzymesDialog.h"
 
 #include <ui_EnzymesSelectorDialog.h>
 
