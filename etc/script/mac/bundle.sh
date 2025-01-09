@@ -93,7 +93,7 @@ function add-plugin() {
 function add-library() {
   lib=$1
   echo "Adding library: ${lib}"
-  LIB_FILE="lib${lib}.1.dylib"
+  LIB_FILE="lib${lib}.dylib"
   if [ ! -f "${DIST_DIR}"/"${LIB_FILE}" ]; then
     echo "Library file is not found: ${LIB_FILE} !"
     exit 1
