@@ -11,7 +11,7 @@ fi
 
 TEAMCITY_WORK_DIR=$(pwd)
 UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
-BUILD_DIR="${UGENE_DIR}/src/_release"
+BUILD_DIR="${TEAMCITY_WORK_DIR}/build"
 
 cd "${UGENE_DIR}" || {
   echo "Can't change dir to '${UGENE_DIR}'"

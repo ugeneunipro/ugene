@@ -11,7 +11,7 @@ fi
 TEAMCITY_WORK_DIR=$(pwd)
 APP_NAME="Unipro UGENE.app"
 SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene"
-BUILD_DIR="${UGENE_DIR}/cmake-build-release"
+BUILD_DIR="${TEAMCITY_WORK_DIR}/build"
 DIST_DIR="${BUILD_DIR}/dist"
 BUNDLE_DIR="${TEAMCITY_WORK_DIR}/bundle"
 TARGET_APP_DIR="${BUNDLE_DIR}/${APP_NAME}/"
@@ -45,8 +45,8 @@ fi
 sed "s/\${UGENE_VERSION}/${UGENE_VERSION_MAJOR}.${UGENE_VERSION_MINOR}/g" "${SOURCE_DIR}/etc/script/mac/dmg/Info.plist" >"${TARGET_APP_DIR}/Contents/Info.plist"
 
 echo Copying translations
-cp "${DIST_DIR}"/transl_*.qm "${TARGET_EXE_DIR}"
-cp -R "${SOURCE_DIR}/etc/script/mac/dmg/qt_menu.nib" "${TARGET_APP_DIR}/Contents/Resources"
+cp "${DIST_DIR}"/transl_*.qm "${TARGET_EXE_DIR}" || exit 1
+cp -R "${SOURCE_DIR}/etc/script/mac/dmg/qt_menu.nib" "${TARGET_APP_DIR}/Contents/Resources" || exit 1
 
 echo Copying data dir
 cp -R "${SOURCE_DIR}/data" "${TARGET_EXE_DIR}/"
