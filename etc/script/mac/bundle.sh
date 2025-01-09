@@ -11,7 +11,8 @@ fi
 TEAMCITY_WORK_DIR=$(pwd)
 APP_NAME="Unipro UGENE.app"
 SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene"
-BUILD_DIR="${SOURCE_DIR}/src/_release"
+BUILD_DIR="${UGENE_DIR}/cmake-build-release"
+DIST_DIR="${BUILD_DIR}/dist"
 BUNDLE_DIR="${TEAMCITY_WORK_DIR}/bundle"
 TARGET_APP_DIR="${BUNDLE_DIR}/${APP_NAME}/"
 TARGET_EXE_DIR="${TARGET_APP_DIR}/Contents/MacOS"
@@ -44,7 +45,7 @@ fi
 sed "s/\${UGENE_VERSION}/${UGENE_VERSION_MAJOR}.${UGENE_VERSION_MINOR}/g" "${SOURCE_DIR}/etc/script/mac/dmg/Info.plist" >"${TARGET_APP_DIR}/Contents/Info.plist"
 
 echo Copying translations
-cp "${BUILD_DIR}"/transl_*.qm "${TARGET_EXE_DIR}"
+cp "${DIST_DIR}"/transl_*.qm "${TARGET_EXE_DIR}"
 cp -R "${SOURCE_DIR}/etc/script/mac/dmg/qt_menu.nib" "${TARGET_APP_DIR}/Contents/Resources"
 
 echo Copying data dir
@@ -53,7 +54,7 @@ cp -R "${SOURCE_DIR}/data" "${TARGET_EXE_DIR}/"
 function add-binary() {
   BINARY=$1
   echo "Adding binary: ${BINARY}"
-  BINARY_PATH="${BUILD_DIR}/${BINARY}"
+  BINARY_PATH="${DIST_DIR}/${BINARY}"
   if [ ! -f "${BINARY_PATH}" ]; then
     echo "Error: binary file is not found: ${BINARY}"
     exit 1
@@ -69,35 +70,35 @@ function add-plugin() {
   PLUGIN_DESC="${plugin}.plugin"
   PLUGIN_LICENSE="${plugin}.license"
 
-  if [ ! -f "${BUILD_DIR}"/plugins/"${PLUGIN_LIB}" ]; then
+  if [ ! -f "${DIST_DIR}"/plugins/"${PLUGIN_LIB}" ]; then
     echo "Plugin library file is not found: ${PLUGIN_LIB} !"
     exit 1
   fi
 
-  if [ ! -f "${BUILD_DIR}"/plugins/"${PLUGIN_DESC}" ]; then
+  if [ ! -f "${DIST_DIR}"/plugins/"${PLUGIN_DESC}" ]; then
     echo "Plugin descriptor file is not found: ${PLUGIN_DESC} !"
     exit 1
   fi
 
-  if [ ! -f "${BUILD_DIR}"/plugins/"${PLUGIN_LICENSE}" ]; then
+  if [ ! -f "${DIST_DIR}"/plugins/"${PLUGIN_LICENSE}" ]; then
     echo "Plugin license file is not found: ${PLUGIN_LICENSE} !"
     exit 1
   fi
 
-  cp "${BUILD_DIR}/plugins/${PLUGIN_LIB}" "${TARGET_PLUGINS_DIR}/"
-  cp "${BUILD_DIR}/plugins/${PLUGIN_DESC}" "${TARGET_PLUGINS_DIR}/"
-  cp "${BUILD_DIR}/plugins/${PLUGIN_LICENSE}" "${TARGET_PLUGINS_DIR}/"
+  cp "${DIST_DIR}/plugins/${PLUGIN_LIB}" "${TARGET_PLUGINS_DIR}/"
+  cp "${DIST_DIR}/plugins/${PLUGIN_DESC}" "${TARGET_PLUGINS_DIR}/"
+  cp "${DIST_DIR}/plugins/${PLUGIN_LICENSE}" "${TARGET_PLUGINS_DIR}/"
 }
 
 function add-library() {
   lib=$1
   echo "Adding library: ${lib}"
   LIB_FILE="lib${lib}.1.dylib"
-  if [ ! -f "${BUILD_DIR}"/"${LIB_FILE}" ]; then
+  if [ ! -f "${DIST_DIR}"/"${LIB_FILE}" ]; then
     echo "Library file is not found: ${LIB_FILE} !"
     exit 1
   fi
-  cp "${BUILD_DIR}/${LIB_FILE}" "${TARGET_EXE_DIR}/"
+  cp "${DIST_DIR}/${LIB_FILE}" "${TARGET_EXE_DIR}/"
 }
 
 echo Copying UGENE binaries
@@ -180,9 +181,9 @@ cp "${QT_DIR}/extra_libs/"* "${TARGET_APP_DIR}/Contents/Frameworks"
 echo Copying readme.txt file
 cp "${SOURCE_DIR}/etc/script/mac/dmg/readme.txt" "${BUNDLE_DIR}/readme.txt"
 echo Linking Samples
-cd "${TARGET_APP_DIR}/.."
+cd "${TARGET_APP_DIR}/.." || exit 1
 ln -s "./${APP_NAME}/Contents/MacOS/data/samples" ./Samples
-cd "${TEAMCITY_WORK_DIR}"
+cd "${TEAMCITY_WORK_DIR}" || exit 1
 
 echo "Compressing app into a tar.gz"
 rm "${TEAMCITY_WORK_DIR}/"*.gz
