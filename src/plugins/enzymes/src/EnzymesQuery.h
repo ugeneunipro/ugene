@@ -31,9 +31,6 @@
 #include <U2Lang/QueryDesignerRegistry.h>
 
 #include "enzymes_dialog/EnzymesSelectorWidget.h"
-#include "enzymes_dialog/FindEnzymesDialog.h"
-
-#include <ui_EnzymesSelectorDialog.h>
 
 namespace U2 {
 
@@ -77,24 +74,11 @@ public:
     }
 };
 
-class EnzymesSelectorDialog : public QDialog, public Ui_EnzymesSelectorDialog {
-    Q_OBJECT
-public:
-    EnzymesSelectorDialog(EnzymesSelectorDialogHandler* parent);
-    QString getSelectedString() const;
-
-private:
-    EnzymesSelectorDialogHandler* factory;
-    EnzymesSelectorWidget* enzSel;
-};
-
 class EnzymesSelectorDialogHandler : public SelectorDialogHandler {
 public:
-    EnzymesSelectorDialogHandler() {
-    }
-    QDialog* createSelectorDialog(const QString&) override {
-        return new EnzymesSelectorDialog(this);
-    }
+    EnzymesSelectorDialogHandler() = default;
+
+    QDialog* createSelectorDialog(const QString&) override;
     QString getSelectedString(QDialog* dlg) override;
 };
 

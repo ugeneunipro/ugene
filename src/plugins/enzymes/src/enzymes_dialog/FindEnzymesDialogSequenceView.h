@@ -21,13 +21,11 @@
 
 #pragma once
 
-#include <QDialog>
-#include <QPointer>
+#include "FindEnzymesDialogBase.h"
 
 namespace U2 {
 
 class ADVSequenceObjectContext;
-class EnzymesSelectorWidget;
 class ResultsCountFilter;
 class RegionSelectorWithExclude;
 
@@ -35,40 +33,27 @@ class RegionSelectorWithExclude;
  * @brief This class describes a dialog, which openes in the Sequence View
  * and allows one to chose restriction enzymes to be found.
  */
-class FindEnzymesDialogBase : public QDialog {
+class FindEnzymesDialogSequenceView : public FindEnzymesDialogBase {
     Q_OBJECT
 public:
-    /**
-     * @brief Constructor. It is used in QD and should not have parent af far as it is destroyed by QD infrastructure.
-     */
-    FindEnzymesDialogBase();
 
     /**
      * @brief Constructor.
      * @param parent parent widget.
      * @param advSequenceContext Context of opened sequence.
      */
-    FindEnzymesDialogBase(QWidget* parent, const QPointer<ADVSequenceObjectContext>& advSequenceContext);
-
-    /**
-     * @brief This function is called when a user clicked OK in the dialog.
-     */
-    void accept() override;
+    FindEnzymesDialogSequenceView(QWidget* parent, const QPointer<ADVSequenceObjectContext>& advSequenceContext);
 
 protected:
-    virtual void acceptProtected() = 0;
+    bool acceptProtected() override;
 
-    void initTitleAndLayout();
-    void initEnzymesSelectorWidget();
     void initResultsCountFilter();
     void initRegionSelectorWithExclude();
-    void initDialogButtonBox();
 
-    void saveSettings();
+    void saveSettings() override;
 
     QPointer<ADVSequenceObjectContext> advSequenceContext;
 
-    EnzymesSelectorWidget* enzSel = nullptr;
     ResultsCountFilter* countFilter = nullptr;
     RegionSelectorWithExclude* regionSelector = nullptr;
 };

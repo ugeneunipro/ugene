@@ -21,32 +21,44 @@
 
 #pragma once
 
-#include <QTreeWidget>
-
-#include <U2View/MsaEditorSequenceArea.h>
-
-#include "GTGlobals.h"
+#include <QDialog>
+#include <QPointer>
 
 namespace U2 {
 
-class GTUtilsQueryDesigner {
+class EnzymesSelectorWidget;
+
+/**
+ * @brief This class describes a base dialog for restriction enzymes.
+ * It can draw restriction enzymet tree view (and corresponding widgets e.g. filters)
+ * and dialog button box (OK, Cancel and Help).
+ * This class is pure virtual.
+ */
+class FindEnzymesDialogBase : public QDialog {
+    Q_OBJECT
 public:
-    static void openQueryDesigner();
+    /**
+     * @brief Constructor.
+     * @param parent parent widget. Could be nullptr.
+     */
+    FindEnzymesDialogBase(QWidget* parent);
 
-    /** Returns active QD window or fails if no active QD window is found. */
-    static QWidget* getActiveQueryDesignerWindow();
+    /**
+     * @brief This function is called when a user clicked OK in the dialog.
+     */
+    void accept() override;
 
-    static void clickParameter(const QString& parameter);
+protected:
+    virtual bool acceptProtected() = 0;
 
-    static QTreeWidgetItem* findAlgorithm(const QString& itemName);
-    static void addAlgorithm(const QString& algName);
-    static QPoint getItemCenter(const QString& itemName);
-    static QRect getItemRect(const QString& itemName);
+    void initTitleAndLayout();
+    void initEnzymesSelectorWidget();
+    void initDialogButtonBox();
 
-    static int getItemLeft(const QString& itemName);
-    static int getItemRight(const QString& itemName);
-    static int getItemTop(const QString& itemName);
-    static int getItemBottom(const QString& itemName);
+    virtual void saveSettings();
+
+    EnzymesSelectorWidget* enzSel = nullptr;
 };
+
 
 }  // namespace U2

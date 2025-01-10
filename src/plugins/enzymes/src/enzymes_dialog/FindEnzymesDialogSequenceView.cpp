@@ -19,18 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "FindEnzymesDialogBase.h"
+#include "FindEnzymesDialogSequenceView.h"
 
-#include <QDialogButtonBox>
-#include <QMessageBox>
+#include <U2Algorithm/EnzymeModel.h>
 
-#include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
-
-#include <U2Gui/HelpButton.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AutoAnnotationUtils.h>
+
+#include <QMessageBox>
 
 #include "EnzymesSelectorWidget.h"
 #include "FindEnzymesTask.h"
@@ -39,28 +37,21 @@
 
 namespace U2 {
 
-FindEnzymesDialogBase::FindEnzymesDialogBase()
-    : QDialog(nullptr) {
+FindEnzymesDialogSequenceView::FindEnzymesDialogSequenceView(QWidget* parent, const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
+    : FindEnzymesDialogBase(parent), advSequenceContext(_advSequenceContext) {
 
     initTitleAndLayout();
     initEnzymesSelectorWidget();
-    initDialogButtonBox();
-}
-
-FindEnzymesDialogBase::FindEnzymesDialogBase(QWidget* parent, const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
-    : QDialog(parent), advSequenceContext(_advSequenceContext) {
-
-    initTitleAndLayout();
-    initEnzymesSelectorWidget();
+    enzSel->setSequenceContext(advSequenceContext);
     initResultsCountFilter();
     initRegionSelectorWithExclude();
     initDialogButtonBox();
 }
 
-void FindEnzymesDialogBase::accept() {
-    if (parent() && advSequenceContext.isNull()) {
+bool FindEnzymesDialogSequenceView::acceptProtected() {
+    if (advSequenceContext.isNull()) {
         QMessageBox::critical(this, tr("Error!"), tr("Sequence has been alredy closed."));
-        return;
+        return false;
     }
 
     QList<SEnzymeData> selectedEnzymes = enzSel->getSelectedEnzymes();
@@ -76,8 +67,9 @@ void FindEnzymesDialogBase::accept() {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search in' or 'Uncut' region/location!"), QMessageBox::Ok, this);
         msgBox->setInformativeText(tr("Given region or genbank location is invalid, please correct it."));
         msgBox->exec();
-        CHECK(!msgBox.isNull(), );
-        return;
+        CHECK(!msgBox.isNull(), false);
+
+        return false;
     }
 
     QVector<U2Region> searchRegionsOutsideExcluded = searchLocation.data()->regions;
@@ -92,86 +84,46 @@ void FindEnzymesDialogBase::accept() {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("'Uncut' region/location fully contains 'Search in' inside it!"), QMessageBox::Ok, this);
         msgBox->setInformativeText(tr("Nowhere to search!"));
         msgBox->exec();
-        CHECK(!msgBox.isNull(), );
-        return;
-    }
+        CHECK(!msgBox.isNull(), false);
 
-    if (selectedEnzymes.isEmpty()) {
-        int ret = QMessageBox::question(this,
-                                        windowTitle(),
-                                        tr("<html><body align=\"center\">No enzymes are selected! Do you want to turn off <br>enzymes annotations highlighting?</body></html>"),
-                                        QMessageBox::Yes,
-                                        QMessageBox::No);
-        if (ret == QMessageBox::Yes) {
-            QAction* toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(advSequenceContext.data(), ANNOTATION_GROUP_ENZYME);
-            if (toggleAction) {
-                toggleAction->setChecked(false);
-            }
-            saveSettings();
-            QDialog::accept();
-        }
-        return;
+        return false;
     }
 
     if (FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(advSequenceContext->getSequenceLength(), selectedEnzymes.size())) {
         QString message = tr("Too many results to render. Please reduce the search region or number of selected enzymes.");
         QMessageBox::critical(this, tr("Error!"), message, QMessageBox::Ok);
-        return;
+        return false;
     }
 
     saveSettings();
 
     AutoAnnotationUtils::triggerAutoAnnotationsUpdate(advSequenceContext.data(), ANNOTATION_GROUP_ENZYME);
 
-    QDialog::accept();
+    return true;
 }
 
-void FindEnzymesDialogBase::initTitleAndLayout() {
-    setObjectName("FindEnzymesDialogBase");
-    setWindowTitle(tr("Find Restriction Sites"));
 
-    auto layout = new QVBoxLayout(this);
-    layout->setSpacing(0);
-}
-
-void FindEnzymesDialogBase::initEnzymesSelectorWidget() {
-    enzSel = new EnzymesSelectorWidget(this, advSequenceContext);
-    enzSel->setObjectName("enzymesSelectorWidget");
-    layout()->addWidget(enzSel);
-}
-
-void FindEnzymesDialogBase::initResultsCountFilter() {
+void FindEnzymesDialogSequenceView::initResultsCountFilter() {
     SAFE_POINT_NN(advSequenceContext.data(), );
 
     countFilter = new ResultsCountFilter(this);
     layout()->addWidget(countFilter);
 }
 
-void FindEnzymesDialogBase::initRegionSelectorWithExclude() {
+void FindEnzymesDialogSequenceView::initRegionSelectorWithExclude() {
     SAFE_POINT_NN(advSequenceContext.data(), );
 
     regionSelector = new RegionSelectorWithExclude(this, advSequenceContext);
     layout()->addWidget(regionSelector);
 }
 
-void FindEnzymesDialogBase::saveSettings() {
-    enzSel->saveSettings();
+void FindEnzymesDialogSequenceView::saveSettings() {
+    FindEnzymesDialogBase::saveSettings();
+
     countFilter->saveSettings();
     regionSelector->saveSettings();
 }
 
-void FindEnzymesDialogBase::initDialogButtonBox() {
-    auto buttonBox = new QDialogButtonBox(this);
-    buttonBox->setObjectName("buttonBox");
-    buttonBox->setStandardButtons(QDialogButtonBox::StandardButton::Cancel | QDialogButtonBox::StandardButton::Ok);
-    new HelpButton(this, buttonBox, "65930747");
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    layout()->addWidget(buttonBox);
-
-    QObject::connect(buttonBox, &QDialogButtonBox::accepted, this, &FindEnzymesDialogBase::accept);
-    QObject::connect(buttonBox, &QDialogButtonBox::rejected, this, &FindEnzymesDialogBase::reject);
-}
 
 }  // namespace U2

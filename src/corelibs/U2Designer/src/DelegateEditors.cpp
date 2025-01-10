@@ -846,6 +846,8 @@ QWidget* StringSelectorDelegate::createEditor(QWidget* parent, const QStyleOptio
     valueEdit->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
     editor->setFocusProxy(valueEdit);
     auto toolButton = new QToolButton(editor);
+    auto n = parent->objectName();
+    toolButton->setObjectName("tbOpenDialog");
     toolButton->setVisible(true);
     toolButton->setText("...");
     toolButton->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));

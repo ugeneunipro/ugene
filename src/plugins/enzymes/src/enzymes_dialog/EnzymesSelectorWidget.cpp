@@ -51,8 +51,8 @@ QStringList EnzymesSelectorWidget::loadedSuppliers;
 
 static const QStringList RESTRICTION_SEQUENCE_LENGTH_VALUES = {"1", "2", "3", "4", "5", "6", "7", "8", "9+"};
 
-EnzymesSelectorWidget::EnzymesSelectorWidget(QWidget* parent, const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
-    : QWidget(parent), advSequenceContext(_advSequenceContext) {
+EnzymesSelectorWidget::EnzymesSelectorWidget(QWidget* parent)
+    : QWidget(parent) {
     setupUi(this);
 
     filterComboBox->addItem(tr("name"), FILTER_BY_NAME);
@@ -200,6 +200,10 @@ const QList<SEnzymeData>& EnzymesSelectorWidget::getLoadedEnzymes() {
 
 const QStringList& EnzymesSelectorWidget::getLoadedSuppliers() {
     return loadedSuppliers;
+}
+
+void EnzymesSelectorWidget::setSequenceContext(const QPointer<ADVSequenceObjectContext>& _advSequenceContext) {
+    advSequenceContext = _advSequenceContext;
 }
 
 void EnzymesSelectorWidget::calculateSuppliers() {

@@ -4,7 +4,9 @@ include (enzymes.pri)
 HEADERS += src/enzymes_dialog/EnzymeGroupTreeItem.h \
            src/enzymes_dialog/EnzymesSelectorWidget.h \
            src/enzymes_dialog/EnzymeTreeItem.h \
-           src/enzymes_dialog/FindEnzymesDialog.h \
+           src/enzymes_dialog/FindEnzymesDialogBase.h \
+           src/enzymes_dialog/FindEnzymesDialogQueryDesigner.h \
+           src/enzymes_dialog/FindEnzymesDialogSequenceView.h \
            src/enzymes_dialog/RegionSelectorWithExclude.h \
            src/enzymes_dialog/ResultsCountFilter.h \
            src/insert/InsertEnzymeDialog.h \
@@ -31,7 +33,9 @@ FORMS += src/enzymes_dialog/EnzymesSelectorWidget.ui \
 SOURCES += src/enzymes_dialog/EnzymeGroupTreeItem.cpp \
            src/enzymes_dialog/EnzymesSelectorWidget.cpp \
            src/enzymes_dialog/EnzymeTreeItem.cpp \
-           src/enzymes_dialog/FindEnzymesDialog.cpp \
+           src/enzymes_dialog/FindEnzymesDialogBase.cpp \
+           src/enzymes_dialog/FindEnzymesDialogQueryDesigner.cpp \
+           src/enzymes_dialog/FindEnzymesDialogSequenceView.cpp \
            src/enzymes_dialog/RegionSelectorWithExclude.cpp \
            src/enzymes_dialog/ResultsCountFilter.cpp \
            src/insert/InsertEnzymeDialog.cpp \

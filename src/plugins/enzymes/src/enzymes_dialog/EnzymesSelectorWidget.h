@@ -45,10 +45,8 @@ public:
     /**
      * @brief Constructor.
      * @param parent parent widget.
-     * @param advSequenceContext Context of opened sequence. If it is nullptr,
-     * that means that there is no sequence opened (e.g. widget is created in Query Designer).
      */
-    EnzymesSelectorWidget(QWidget* parent, const QPointer<ADVSequenceObjectContext>& advSequenceContext = nullptr);
+    EnzymesSelectorWidget(QWidget* parent);
     ~EnzymesSelectorWidget() override;
 
     /**
@@ -67,6 +65,12 @@ public:
      * @return Returns list of selected suppliers.
      */
     static const QStringList& getLoadedSuppliers();
+    /**
+    * @brief Set sequence context. If it is nullptr,
+    * that means that there is no sequence opened (e.g. widget is created in Query Designer).
+    * @param advSequenceContext Context of opened sequence.
+    */
+    void setSequenceContext(const QPointer<ADVSequenceObjectContext>& advSequenceContext);
     /**
      * @return Returns list of selected enzymes.
      */
@@ -145,7 +149,7 @@ private:
     static QSet<QString> lastSelection;
     static QStringList loadedSuppliers;
 
-    QPointer<ADVSequenceObjectContext> advSequenceContext;
+    QPointer<ADVSequenceObjectContext> advSequenceContext = nullptr;
 
     int totalEnzymes = 0;
     bool ignoreItemChecks = false;
