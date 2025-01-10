@@ -35,9 +35,10 @@ cd "${UGENE_DIR}" || {
   exit 1
 }
 
+##### Clean ####
+
 if [ -z "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" ]; then UGENE_BUILD_AND_TEST_SKIP_CLEAN="0"; fi
 
-##### Clean ####
 if [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "1" ]; then
   echo "Skipping clean"
 elif [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "2" ]; then
