@@ -12,6 +12,7 @@ project(ugene)
 set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 set(UGENE_VERSION 53.0-dev)
 
+message(STATUS "CMake version: ${CMAKE_VERSION}")
 message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
 
 add_definitions(
