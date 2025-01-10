@@ -17,25 +17,18 @@ set(UGENE_PLUGIN_LIBRARY "${UGENE_PLUGIN_ID}${UGENE_BUILD_MODE_SUFFIX}")
 
 if (WIN32)
     set(UGENE_PLUGIN_LIBRARY "${UGENE_PLUGIN_LIBRARY}.dll")
-elseif (APPLE)
-    set(UGENE_PLUGIN_LIBRARY "lib${UGENE_PLUGIN_LIBRARY}.dylib")
-else ()
-    set(UGENE_PLUGIN_LIBRARY "lib${UGENE_PLUGIN_LIBRARY}.so")
-endif ()
-
-# Determine platform and architecture
-if (WIN32)
     set(PLATFORM_NAME "win")
-elseif (APPLE)
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(UGENE_PLUGIN_LIBRARY "lib${UGENE_PLUGIN_LIBRARY}.dylib")
     set(PLATFORM_NAME "macx")
 else ()
+    set(UGENE_PLUGIN_LIBRARY "lib${UGENE_PLUGIN_LIBRARY}.so")
     set(PLATFORM_NAME "unix")
 endif ()
 
 set(PLATFORM_ARCH "64")
 
 # Plugin mode
-# TODO!!!
 if (NOT UGENE_PLUGIN_MODE)
     set(UGENE_PLUGIN_MODE "console,ui")
 endif ()

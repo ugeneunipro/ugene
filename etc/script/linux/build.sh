@@ -25,6 +25,10 @@ DIST_DIR="${BUILD_DIR}/dist"
 # Needed by CMake.
 export Qt5_DIR="${QT_DIR}"
 
+echo "##teamcity[blockOpened name='env']"
+env
+echo "##teamcity[blockClosed name='env']"
+
 # Below this point the script works in 'UGENE_DIR' folder.
 cd "${UGENE_DIR}" || {
   echo "Can't change dir to '${UGENE_DIR}'"
@@ -66,12 +70,12 @@ fi
 echo "##teamcity[blockClosed name='CMake']"
 
 #### Make ####
-UGENE_MAKE_PARAMS="-j$(grep "cpu cores" /proc/cpuinfo | uniq | cut -d ':' -f2)"
+UGENE_MAKE_PARAMS="-j $(grep "cpu cores" /proc/cpuinfo | uniq | cut -d ':' -f2)"
 echo "##teamcity[blockOpened name='make ${UGENE_MAKE_PARAMS}']"
 if
   # We want these params to be individual params, so disabling inspection for quotes.
   # shellcheck disable=SC2086
-  cmake --build "${BUILD_DIR}" --target all -- -j ${UGENE_MAKE_PARAMS}
+  cmake --build "${BUILD_DIR}" --target all -- ${UGENE_MAKE_PARAMS}
 then
   echo
 else

@@ -29,3 +29,12 @@ target_link_libraries(ugeneui
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::NetworkAuth Qt5::WebSockets Qt5::Script
         U2Core U2Designer U2Algorithm U2Formats U2Gui U2View U2Test U2Lang U2Private breakpad)
 
+if (APPLE)
+    target_link_libraries(ugeneui
+        "-framework Foundation"
+        "-framework Security"
+        "-framework CoreFoundation"
+        "-framework IOKit"
+    )
+endif ()
+
