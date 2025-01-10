@@ -97,7 +97,8 @@ public:
                      std::function<void(const QJsonObject&)> callback = nullptr) const;
 
     void shareEntry(const QList<QString>& path,
-                    const QString& email,
+                    const QString& sharedWithEmail,
+                    const QString& sharedName,
                     QObject* context = nullptr,
                     std::function<void(const QJsonObject&)> callback = nullptr) const;
 

@@ -1,3 +1,4 @@
-set(UGENE_PLUGIN_NAME genecut)
+set(UGENE_PLUGIN_ID genecut)
+set(UGENE_PLUGIN_NAME "GeneCut access")
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

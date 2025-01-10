@@ -1,6 +1,5 @@
 include (../../ugene_globals.pri)
 
-
 PLUGIN_ID=smith_waterman
 PLUGIN_NAME=Smith-Waterman
 PLUGIN_VENDOR=Unipro

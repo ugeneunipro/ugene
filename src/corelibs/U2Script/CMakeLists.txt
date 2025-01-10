@@ -6,6 +6,8 @@ find_package(Qt5 REQUIRED Core Gui Widgets Script)
 
 add_definitions(-DBUILDING_U2SCRIPT_DLL)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 include_directories(src)
 include_directories(../../include)
 include_directories(../U2Private/src)

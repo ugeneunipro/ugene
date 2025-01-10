@@ -3,14 +3,14 @@
 #
 # For CLion developers:
 #   * add Qt5_DIR variable to File->Settings->Build,Execution,Deployment->CMake pointing to valid QT dir.
-#   * add UGENE_TRANSLATION_FILE environment variable to the RUN configuration and point it to *.qm file produced by qmake build
 
 cmake_minimum_required(VERSION 3.20)
 project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 48.0-dev)
+set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
+set(UGENE_VERSION 53.0-dev)
 
 message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
 
@@ -21,6 +21,7 @@ add_definitions(
 )
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_DEBUG_POSTFIX "d")
 
 # Set a default build type for single-configuration
 # CMake generators if no build type is set.
@@ -40,31 +41,37 @@ if (WIN32)
             -D_XKEYCHECK_H
             -D_USE_MATH_DEFINES
     )
+    string(REPLACE "/RTC1" "" CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
+    string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
 endif ()
-
-#set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 
 # Use to disable -isystem support and work in qmake mode.
 # set(CMAKE_NO_SYSTEM_FROM_IMPORTED True)
 
 # Warning levels. Keep in sync with ugene_globals.pri
 if (CMAKE_COMPILER_IS_GNUCXX)
-    string(CONCAT GCC_WARNING_FLAGS
-            " -Wall"
-            " -Werror=deprecated-copy"
-            " -Werror=maybe-uninitialized"
-            " -Werror=parentheses"
-            " -Werror=return-type"
-            " -Werror=sequence-point"
-            " -Werror=shadow=local"
-            " -Werror=switch"
-            " -Werror=uninitialized"
-            " -Werror=unused-parameter"
-            " -Werror=unused-but-set-variable"
-            " -Werror=unused-value"
-            " -Werror=unused-variable"
-            " -Wno-deprecated-declarations"
-    )
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
+        message(FATAL_ERROR "GCC version must be at least 9. Detected version: ${CMAKE_CXX_COMPILER_VERSION}")
+    endif()
+    message(STATUS "Using GCC version: ${CMAKE_CXX_COMPILER_VERSION}")
+    # Common warning flags for GCC
+#    string(CONCAT GCC_WARNING_FLAGS
+#            " -Wall"
+#            " -Werror=deprecated-copy"
+#            " -Werror=maybe-uninitialized"
+#            " -Werror=parentheses"
+#            " -Werror=return-type"
+#            " -Werror=sequence-point"
+#            " -Werror=switch"
+#            " -Werror=uninitialized"
+#            " -Werror=unused-parameter"
+#            " -Werror=unused-value"
+#            " -Werror=unused-variable"
+#            " -Wno-deprecated-declarations"
+#    )
+#        string(APPEND GCC_WARNING_FLAGS )
+
+    # Apply the warning flags
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
     LIST(APPEND COMPILER_FLAGS -Wl,--no-undefined)
 endif ()
@@ -139,3 +146,24 @@ add_subdirectory(src/plugins_3rdparty/ptools)
 add_subdirectory(src/plugins_3rdparty/sitecon)
 add_subdirectory(src/plugins_3rdparty/umuscle)
 add_subdirectory(src/plugins_3rdparty/variants)
+
+# Generate translations.
+find_package(Qt5LinguistTools REQUIRED)
+set(LANGUAGES "RU" "TR")
+foreach (LANG IN LISTS LANGUAGES)
+    string(TOLOWER ${LANG} LANG_LOWER)
+    set(TRANSLATIONS_VAR GLOBAL_TRANSLATIONS_${LANG})
+    set(QM_FILE ${CMAKE_BINARY_DIR}/dist/transl_${LANG_LOWER}.qm)
+    add_custom_command(
+            OUTPUT ${QM_FILE}
+            COMMAND ${Qt5_LRELEASE_EXECUTABLE} ${${TRANSLATIONS_VAR}} -qm ${QM_FILE}
+            DEPENDS ${${TRANSLATIONS_VAR}}
+            COMMENT "Generating translation file: ${QM_FILE}"
+    )
+    add_custom_target(${LANG}_translation ALL DEPENDS ${QM_FILE})
+endforeach ()
+
+include(${CMAKE_SOURCE_DIR}/cmake/Environment.cmake)
+
+# UGENE shell script
+file(COPY "${CMAKE_SOURCE_DIR}/etc/shared/ugene${UGENE_BUILD_MODE_SUFFIX}" DESTINATION "${CMAKE_BINARY_DIR}/dist")

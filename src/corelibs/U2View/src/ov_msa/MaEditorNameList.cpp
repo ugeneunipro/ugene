@@ -570,7 +570,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent* e) {
             // Drag or click with no modifiers make a new 1-rect selection.
             int y = qMin(mousePressRow, mouseReleaseRow);
             int width = qMax(mousePressRow, mouseReleaseRow) - y + 1;
-            if (isDoubleClicked) { // When you double-click, it means you are clicking on a single point, not an area.
+            if (isDoubleClicked) {  // When you double-click, it means you are clicking on a single point, not an area.
                 y = mousePressRow;
                 width = mousePressRow - y + 1;
                 isDoubleClicked = false;
@@ -856,7 +856,7 @@ void MaEditorNameList::sl_editSequenceName() {
     bool isMca = maObj->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     QString title = isMca ? tr("Rename Read") : tr("Rename Sequence");
     bool ok = false;
-    QString newName = QInputDialog::getText(editor->getWidget(), title, tr("New name:"), QLineEdit::Normal, curName, &ok);
+    QString newName = GUIUtils::getTextWithDialog(title, tr("New name:"), curName, ok, editor->getWidget());
 
     if (ok && !newName.isEmpty() && curName != newName) {
         emit si_sequenceNameChanged(curName, newName);

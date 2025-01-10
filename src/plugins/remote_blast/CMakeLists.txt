@@ -1,3 +1,4 @@
-set(UGENE_PLUGIN_NAME remote_blast)
+set(UGENE_PLUGIN_ID remote_blast)
+set(UGENE_PLUGIN_NAME "Remote BLAST")
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

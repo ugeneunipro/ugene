@@ -1,3 +1,4 @@
-set(UGENE_PLUGIN_NAME psipred)
+set(UGENE_PLUGIN_ID psipred)
+set(UGENE_PLUGIN_NAME "PSIPRED")
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

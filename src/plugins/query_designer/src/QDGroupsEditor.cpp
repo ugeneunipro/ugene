@@ -23,9 +23,12 @@
 
 #include <QHeaderView>
 #include <QInputDialog>
-#include <QMenu>
 #include <QMessageBox>
 #include <QMouseEvent>
+
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/GUIUtils.h>
 
 #include <U2Lang/QDScheme.h>
 
@@ -107,10 +110,8 @@ void QDGroupsEditor::mousePressEvent(QMouseEvent* event) {
 void QDGroupsEditor::sl_addGroup() {
     QDScheme* scheme = view->getScheme();
     bool ok;
-    QString text = QInputDialog::getText(this, tr("Create element group"), tr("Group name"), QLineEdit::Normal, QString(), &ok);
-    if (!ok) {
-        return;
-    }
+    QString text = GUIUtils::getTextWithDialog(tr("Create element group"), tr("Group name"), "", ok, this);
+    CHECK(ok, );
     if (scheme->getActorGroups().contains(text)) {
         QMessageBox::critical(nullptr, QObject::tr("Query Designer"), tr("Group '%1' already exists!").arg(text));
         return;

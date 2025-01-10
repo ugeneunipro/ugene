@@ -148,14 +148,14 @@ void MessageBoxOpenAnotherProject::commonScenario() {
 
 #define GT_CLASS_NAME "InputDialogFiller"
 
-InputDialogFiller::InputDialogFiller(const QString& _value)
+InputDialogFiller::InputDialogFiller(const QString& _value, const QString& _inputFieldObjectName)
     : Filler(""),
-      value(_value) {
+      value(_value), inputFieldObjectName(_inputFieldObjectName) {
 }
 
 void InputDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
-    auto lineEdit = dialog->findChild<QLineEdit*>();
+    auto lineEdit = inputFieldObjectName.isEmpty() ? dialog->findChild<QLineEdit*>() : dialog->findChild<QLineEdit*>(inputFieldObjectName);
     GT_CHECK(lineEdit != nullptr, "Input dialog has no line edit");
     GTLineEdit::setText(lineEdit, value);
     GTWidget::click(GTWidget::findButtonByText("OK", dialog));

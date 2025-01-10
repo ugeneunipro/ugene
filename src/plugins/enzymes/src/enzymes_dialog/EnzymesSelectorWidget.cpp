@@ -64,10 +64,10 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(QWidget* parent)
     tree->setSortingEnabled(true);
     tree->sortByColumn(0, Qt::AscendingOrder);
     tree->setUniformRowHeights(true);
-    tree->setColumnWidth(0, 160); // id
-    tree->setColumnWidth(1, 75); // accession
-    tree->setColumnWidth(2, 50); // type
-    tree->setColumnWidth(4, 270); // organism
+    tree->setColumnWidth(0, 160);  // id
+    tree->setColumnWidth(1, 75);  // accession
+    tree->setColumnWidth(2, 50);  // type
+    tree->setColumnWidth(4, 270);  // organism
 
     for (const auto& k : qAsConst(RESTRICTION_SEQUENCE_LENGTH_VALUES)) {
         if (k != RESTRICTION_SEQUENCE_LENGTH_VALUES.back()) {
@@ -345,7 +345,7 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
             this,
             [this]() {
                 auto item = tree->currentItem();
-                CHECK(item != nullptr,);
+                CHECK(item != nullptr, );
 
                 auto ei = dynamic_cast<EnzymeTreeItem*>(item);
                 auto gi = dynamic_cast<EnzymeGroupTreeItem*>(item);
@@ -366,7 +366,7 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
                 } else if (gi != nullptr) {
                     teSelectedEnzymeInfo->clear();
                 } else {
-                    FAIL("Unexpected item type",);
+                    FAIL("Unexpected item type", );
                 }
             });
 
@@ -383,7 +383,7 @@ int EnzymesSelectorWidget::gatherCheckedNamesListString(QString& checkedNamesLis
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         checked += gi->checkedEnzymes.size();
-        foreach(const EnzymeTreeItem* ci, gi->checkedEnzymes) {
+        foreach (const EnzymeTreeItem* ci, gi->checkedEnzymes) {
             checkedNamesList.append(ci->enzyme->id);
         }
     }
@@ -441,21 +441,21 @@ void EnzymesSelectorWidget::sl_filterConditionsChanged() {
 
 void EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged() {
     auto t = qobject_cast<FindSingleEnzymeTask*>(sender());
-    SAFE_POINT_NN(t,);
+    SAFE_POINT_NN(t, );
 
-    CHECK_OP(t->getStateInfo(),);
-    CHECK(t->getState() == Task::State_Finished,);
+    CHECK_OP(t->getStateInfo(), );
+    CHECK(t->getState() == Task::State_Finished, );
 
     auto taskEnzyme = t->getEnzyme();
     auto taskItem = getEnzymeTreeItemByEnzymeData(taskEnzyme);
-    CHECK(taskItem != nullptr,);
+    CHECK(taskItem != nullptr, );
 
     int size = t->getResults().size();
     bool maxResultsFound = t->wasStoppedOnMaxResults();
     taskItem->enzymesNumber = maxResultsFound ? size + 1 : size;
     auto currentItem = dynamic_cast<EnzymeTreeItem*>(tree->currentItem());
-    CHECK(currentItem != nullptr,);
-    CHECK((currentItem->enzyme->id == taskItem->enzyme->id) && (currentItem->enzyme->seq == taskItem->enzyme->seq),);
+    CHECK(currentItem != nullptr, );
+    CHECK((currentItem->enzyme->id == taskItem->enzyme->id) && (currentItem->enzyme->seq == taskItem->enzyme->seq), );
 
     teSelectedEnzymeInfo->setHtml(currentItem->getEnzymeInfo());
 }
@@ -763,7 +763,7 @@ void EnzymesSelectorWidget::sl_loadSelectionFromFile() {
         while (!in.atEnd()) {
             QString line = in.readLine();
             QStringList enzymes = line.split(QRegExp("[,;\\s]+"), QString::SkipEmptyParts);
-            foreach(const QString& enz, enzymes) {
+            foreach (const QString& enz, enzymes) {
                 enzymeNames.insert(enz);
             }
         }
@@ -792,7 +792,7 @@ void EnzymesSelectorWidget::sl_loadSelectionFromFile() {
 
         updateStatus();
 
-        foreach(const QString& enzyme, enzymeNames) {
+        foreach (const QString& enzyme, enzymeNames) {
             ioLog.error(tr("Failed to load %1 from selection.").arg(enzyme));
         }
     }
@@ -807,3 +807,4 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile() {
 }
 
 }  // namespace U2
+

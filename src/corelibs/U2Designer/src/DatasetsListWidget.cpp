@@ -22,7 +22,6 @@
 #include "DatasetsListWidget.h"
 
 #include <QInputDialog>
-#include <QMenu>
 #include <QMessageBox>
 #include <QResizeEvent>
 #include <QToolButton>
@@ -33,6 +32,8 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DatasetsController.h>
+
+#include <U2Gui/GUIUtils.h>
 
 namespace U2 {
 
@@ -94,15 +95,8 @@ void DatasetsListWidget::sl_newDataset() {
     QString text = getTip();
     do {
         bool ok = false;
-        text = QInputDialog::getText(this,
-                                     tr("Enter Dataset Name"),
-                                     tr("New dataset name:"),
-                                     QLineEdit::Normal,
-                                     text,
-                                     &ok);
-        if (!ok) {
-            return;
-        }
+        text = GUIUtils::getTextWithDialog(tr("Enter Dataset Name"), tr("New dataset name:"), text, ok, this);
+        CHECK(ok, );
         U2OpStatusImpl os;
         ctrl->addDataset(text, os);
         error = os.getError();
@@ -127,15 +121,8 @@ void DatasetsListWidget::sl_renameDataset() {
     QString text = tabs->tabText(idx);
     do {
         bool ok = false;
-        text = QInputDialog::getText(this,
-                                     tr("Rename Dataset"),
-                                     tr("New dataset name:"),
-                                     QLineEdit::Normal,
-                                     text,
-                                     &ok);
-        if (!ok) {
-            return;
-        }
+        text = GUIUtils::getTextWithDialog(tr("Rename Dataset"), tr("New dataset name:"), text, ok, this);
+        CHECK(ok, );
         U2OpStatusImpl os;
         ctrl->renameDataset(idx, text, os);
         if (os.hasError()) {

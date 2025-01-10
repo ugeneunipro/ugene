@@ -1,3 +1,5 @@
-set(UGENE_PLUGIN_NAME perf_monitor)
+set(UGENE_PLUGIN_ID perf_monitor)
+set(UGENE_PLUGIN_NAME "Performance monitor")
+set(UGENE_PLUGIN_MODE ui)
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

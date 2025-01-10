@@ -399,7 +399,7 @@ void CloudStorageDockWidget::createDir() {
     auto isFolder = treeView->model()->data(currentIndex, USER_DATA_IS_FOLDER).toBool() || path.isEmpty();
 
     bool ok;
-    QString dirName = GUIUtils::getTextWithDialog(nullptr, tr("Create New Folder"), tr("New Folder Name"), "", ok);
+    QString dirName = GUIUtils::getTextWithDialog(tr("Create New Folder"), tr("New Folder Name"), "", ok);
 
     CHECK(ok && !dirName.isEmpty(), );
     if (!CloudStorageService::checkCloudStorageEntryName(dirName)) {
@@ -444,7 +444,7 @@ void CloudStorageDockWidget::renameItem() {
     CHECK(!path.isEmpty(), );
 
     bool ok;
-    QString newName = GUIUtils::getTextWithDialog(nullptr, tr("Rename %1").arg(path.last()), tr("New Name"), path.last(), ok);
+    QString newName = GUIUtils::getTextWithDialog(tr("Rename %1").arg(path.last()), tr("New Name"), path.last(), ok);
 
     CHECK(ok && !newName.isEmpty(), );
     if (!CloudStorageService::checkCloudStorageEntryName(newName)) {
@@ -514,10 +514,13 @@ void CloudStorageDockWidget::shareItem() {
     SAFE_POINT(currentIndex.isValid(), "No selection found", );
     auto path = treeView->model()->data(currentIndex, USER_DATA_PATH).value<QList<QString>>();
 
-    bool ok;
-    QString shareWithEmail = GUIUtils::getTextWithDialog(nullptr, tr("Share %1 with email").arg(path.last()), tr("Recipient email"), "", ok);
-
-    CHECK(ok && !shareWithEmail.isEmpty(), );
+    QVector<FormFieldDescriptor> fields = {
+        {"email", "Recipient Email", "", "Enter the email address of the recipient for sharing."},
+        {"sharedName", "Shared File Name", path.last(), "Specify the name of the shared file that will be displayed to the recipient."},
+    };
+    QMap<QString, QString> fieldValues = GUIUtils::fillFormWithDialog(tr("Share %1 with email").arg(path.last()), fields);
+    CHECK(!fieldValues.isEmpty(), );
+    QString shareWithEmail = fieldValues["email"];
     if (!CloudStorageService::checkEmail(shareWithEmail)) {
         QMessageBox::critical(this, L10N::errorTitle(), tr("Invalid email: %1").arg(shareWithEmail));
         return;
@@ -526,9 +529,12 @@ void CloudStorageDockWidget::shareItem() {
         QMessageBox::critical(this, L10N::errorTitle(), tr("You cannot share with yourself."));
         return;
     }
-    QList<QString> newPath = path;
-    newPath[newPath.length() - 1] = shareWithEmail;
-    getCloudStorageService()->shareEntry(path, shareWithEmail, this, [this](const auto& response) {
+    QString sharedName = fieldValues["sharedName"];
+    if (!CloudStorageService::checkCloudStorageEntryName(sharedName)) {
+        QMessageBox::critical(this, L10N::errorTitle(), tr("Invalid shared file name: %1").arg(sharedName));
+        return;
+    }
+    getCloudStorageService()->shareEntry(path, shareWithEmail, sharedName, this, [this](const auto& response) {
         handleCloudStorageResponse(response);
     });
 }
