@@ -7,9 +7,9 @@
 TEAMCITY_WORK_DIR="$(cygpath -aw .)"
 echo "TEAMCITY_WORK_DIR $TEAMCITY_WORK_DIR"
 
-SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene"
+UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
 BUNDLE_DIR="${TEAMCITY_WORK_DIR}/bundle"
-BUILD_DIR="${SOURCE_DIR}/build"
+BUILD_DIR="${UGENE_DIR}/build"
 DIST_DIR="${BUILD_DIR}/dist"
 
 # Needed by CMake.
@@ -17,8 +17,8 @@ export Qt5_DIR="${QT_DIR}"
 
 rm -rf "${BUILD_DIR}"
 
-cd "${SOURCE_DIR}" || {
-  echo "Can't change dir to '${SOURCE_DIR}'"
+cd "${UGENE_DIR}" || {
+  echo "Can't change dir to '${UGENE_DIR}'"
   exit 1
 }
 
@@ -87,9 +87,9 @@ rm "${BUNDLE_DIR}/plugins/"*.pdb
 rm "${BUNDLE_DIR}/plugins/"*.exp
 
 echo "Copy resources"
-cp "${SOURCE_DIR}/LICENSE.txt" "${BUNDLE_DIR}"
-cp "${SOURCE_DIR}/LICENSE.3rd_party.txt" "${BUNDLE_DIR}"
-cp -r "${SOURCE_DIR}/data" "${BUNDLE_DIR}"
+cp "${UGENE_DIR}/LICENSE.txt" "${BUNDLE_DIR}"
+cp "${UGENE_DIR}/LICENSE.3rd_party.txt" "${BUNDLE_DIR}"
+cp -r "${UGENE_DIR}/data" "${BUNDLE_DIR}"
 cp "${PATH_TO_INCLUDE_LIBS}/"* "${BUNDLE_DIR}"
 
 echo copy Qt libraries
