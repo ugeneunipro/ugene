@@ -101,11 +101,8 @@ public:
      */
     static QSet<QRgb> countColors(const QImage& image, int maxColors = 100000);
 
-    /**
-     * Returns image of the widget using widget->grab() method.
-     * If useGrabWindow is true calls QPixmap::grabWindow method: it allows one to capture non-QT (like OpenGL) images.
-     */
-    static QImage getImage(QWidget* widget, bool useGrabWindow = false);
+    /** Returns image of the widget using widget->grab() method. */
+    static QImage getImage(QWidget* widget);
 
     /** Creates sub-image from the given image. Fails if 'rect' is not within the image. */
     static QImage createSubImage(const QImage& image, const QRect& rect);
