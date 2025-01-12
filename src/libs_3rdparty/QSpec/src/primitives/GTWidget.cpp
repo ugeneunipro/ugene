@@ -354,35 +354,34 @@ void GTWidget::showNormal(QWidget* widget) {
 
 QColor GTWidget::getColor(QWidget* widget, const QPoint& point) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QColor());
-    return QColor(getImage(widget).pixel(point));
+    return {getImage(widget).pixel(point)};
 }
 
-QImage GTWidget::getImage(QWidget* widget, bool useGrabWindow) {
+QImage GTWidget::getImage(QWidget* widget) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QImage());
 
     class GrabImageScenario : public CustomScenario {
     public:
-        GrabImageScenario(QWidget* _widget, QImage& _image, bool _useGrabWindow)
-            : widget(_widget), image(_image), useGrabWindow(_useGrabWindow) {
+        GrabImageScenario(QWidget* _widget, QImage& _image)
+            : widget(_widget), image(_image) {
         }
 
         void run() override {
             CHECK_SET_ERR(widget != nullptr, "Widget to grab is NULL");
-            QPixmap pixmap = useGrabWindow ? QPixmap::grabWindow(widget->winId()) : widget->grab(widget->rect());
+            QPixmap pixmap = widget->grab(widget->rect());
             image = pixmap.toImage();
             double ratio = ((QGuiApplication*)QGuiApplication::instance())->devicePixelRatio();
-            if (!useGrabWindow && ratio != 1 && ratio > 0) {
+            if (ratio != 1 && ratio > 0) {
                 image = image.scaled(qRound(image.width() / ratio), qRound(image.height() / ratio));
             }
         }
 
         QWidget* widget;
         QImage& image;
-        bool useGrabWindow;
     };
 
     QImage image;
-    GTThread::runInMainThread(new GrabImageScenario(widget, image, useGrabWindow));
+    GTThread::runInMainThread(new GrabImageScenario(widget, image));
     return image;
 }
 
