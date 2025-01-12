@@ -54,7 +54,8 @@ fi
 #### CMake ####
 echo "##teamcity[blockOpened name='CMake']"
 if
-  cmake -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
+#  cmake -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
+  cmake -DCMAKE_BUILD_TYPE=Release -G  "Visual Studio 16 2019" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
 then
   echo "CMake finished successfully"
 else
