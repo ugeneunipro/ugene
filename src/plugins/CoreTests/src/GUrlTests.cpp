@@ -270,7 +270,7 @@ Task::ReportResult GTest_CheckCreationTime::report() {
     }
 
     QFileInfo info(f);
-    QDateTime created = info.created();
+    QDateTime created = info.birthTime();
     QDateTime now = QDateTime::currentDateTime();
     int seconds = created.secsTo(now);
 
