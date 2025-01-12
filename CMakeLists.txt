@@ -4,7 +4,7 @@
 # For CLion developers:
 #   * add Qt5_DIR variable to File->Settings->Build,Execution,Deployment->CMake pointing to valid QT dir.
 
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.20)
 project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
