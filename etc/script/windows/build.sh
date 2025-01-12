@@ -68,7 +68,7 @@ echo "##teamcity[blockOpened name='make ${UGENE_MAKE_PARAMS}']"
 if
   # We want these params to be individual params, so disabling inspection for quotes.
   # shellcheck disable=SC2086
-  cmake --build "${BUILD_DIR}" --target all -- ${UGENE_MAKE_PARAMS}
+  cmake --build "${BUILD_DIR}" -- ${UGENE_MAKE_PARAMS}
 then
   echo
 else
