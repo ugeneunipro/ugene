@@ -49,28 +49,28 @@ endif ()
 # Use to disable -isystem support and work in qmake mode.
 # set(CMAKE_NO_SYSTEM_FROM_IMPORTED True)
 
-# Warning levels. Keep in sync with ugene_globals.pri
 if (CMAKE_COMPILER_IS_GNUCXX)
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
         message(FATAL_ERROR "GCC version must be at least 9. Detected version: ${CMAKE_CXX_COMPILER_VERSION}")
-    endif()
+    endif ()
     message(STATUS "Using GCC version: ${CMAKE_CXX_COMPILER_VERSION}")
     # Common warning flags for GCC
-#    string(CONCAT GCC_WARNING_FLAGS
-#            " -Wall"
-#            " -Werror=deprecated-copy"
-#            " -Werror=maybe-uninitialized"
-#            " -Werror=parentheses"
-#            " -Werror=return-type"
-#            " -Werror=sequence-point"
-#            " -Werror=switch"
-#            " -Werror=uninitialized"
-#            " -Werror=unused-parameter"
-#            " -Werror=unused-value"
-#            " -Werror=unused-variable"
-#            " -Wno-deprecated-declarations"
-#    )
-#        string(APPEND GCC_WARNING_FLAGS )
+    string(CONCAT GCC_WARNING_FLAGS
+            " -Wall"
+            " -Werror=deprecated-copy"
+            " -Werror=maybe-uninitialized"
+            " -Werror=parentheses"
+            " -Werror=return-type"
+            " -Werror=sequence-point"
+            " -Werror=switch"
+            " -Werror=uninitialized"
+            " -Werror=unused-parameter"
+            " -Werror=unused-value"
+            " -Werror=unused-variable"
+            " -Wno-deprecated-declarations"
+            # TODO: "-Werror=shadow=local"
+    )
+    string(APPEND GCC_WARNING_FLAGS)
 
     # Apply the warning flags
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
