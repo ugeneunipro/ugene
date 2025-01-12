@@ -55,7 +55,7 @@ fi
 echo "##teamcity[blockOpened name='CMake']"
 if
 #  cmake -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
-  cmake -DCMAKE_BUILD_TYPE=Release -G  "Visual Studio 16 2019" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
+  cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
 then
   echo "CMake finished successfully"
 else
@@ -64,18 +64,18 @@ else
 fi
 echo "##teamcity[blockClosed name='CMake']"
 
-echo "##teamcity[blockOpened name='make ${UGENE_MAKE_PARAMS}']"
+echo "##teamcity[blockOpened name='make']"
 if
   # We want these params to be individual params, so disabling inspection for quotes.
   # shellcheck disable=SC2086
-  cmake --build "${BUILD_DIR}" -- ${UGENE_MAKE_PARAMS}
+  cmake --build "${BUILD_DIR}" --parallel
 then
   echo
 else
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. make ${UGENE_MAKE_PARAMS} failed']"
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. make failed']"
   exit 1
 fi
-echo "##teamcity[blockClosed name='make ${UGENE_MAKE_PARAMS}']"
+echo "##teamcity[blockClosed name='make']"
 
 echo "##teamcity[blockOpened name='bundle']"
 rm -rf "${BUNDLE_DIR}"
