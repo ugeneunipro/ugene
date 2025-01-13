@@ -56,11 +56,11 @@ void MaEditorStatusBar::TwoArgPatternLabel::update(const QString& firstArg, int 
 void MaEditorStatusBar::TwoArgPatternLabel::update(const QString& firstArg, const QString& secondArg) {
     setText(textPattern.arg(firstArg).arg(secondArg));
     setToolTip(tooltipPattern.arg(firstArg).arg(secondArg));
-    setMinimumWidth(10 + fm.width(textPattern.arg(secondArg).arg(secondArg)));
+    setMinimumWidth(10 + fm.horizontalAdvance(textPattern.arg(secondArg).arg(secondArg)));
 }
 
 void MaEditorStatusBar::TwoArgPatternLabel::updateMinWidth(QString maxLenArg) {
-    setMinimumWidth(10 + fm.width(textPattern.arg(maxLenArg).arg(maxLenArg)));
+    setMinimumWidth(10 + fm.horizontalAdvance(textPattern.arg(maxLenArg).arg(maxLenArg)));
 }
 
 MaEditorStatusBar::MaEditorStatusBar(MaEditor* _editor)
@@ -168,8 +168,8 @@ void MaEditorStatusBar::updateSelectionLabel() {
                                          : tr("%1 regions").arg(selectionRects.size()));
 
     QFontMetrics fm(lineLabel->font(), this);
-    int maxSelLength = fm.width(selectionPattern.arg(editor->getAlignmentLen()) + "x" + QString::number(editor->getCollapseModel()->getViewRowCount()));
-    int nonSelLength = fm.width(selectionPattern.arg(tr("none")));
+    int maxSelLength = fm.horizontalAdvance(selectionPattern.arg(editor->getAlignmentLen()) + "x" + QString::number(editor->getCollapseModel()->getViewRowCount()));
+    int nonSelLength = fm.horizontalAdvance(selectionPattern.arg(tr("none")));
 
     selectionLabel->update(selSize, 10 + qMax(maxSelLength, nonSelLength));
 }

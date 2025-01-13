@@ -29,6 +29,7 @@
 #include <QGuiApplication>
 #include <QMdiArea>
 #include <QProgressBar>
+#include <QScreen>
 #include <QScrollBar>
 #include <QStyle>
 #include <QTextBrowser>
@@ -466,7 +467,9 @@ void GTWidget::clickWindowTitle(QWidget* window) {
 void GTWidget::resizeWidget(QWidget* widget, const QSize& size) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
 
-    QRect displayRect = QApplication::desktop()->screenGeometry();
+    QScreen* screen = QGuiApplication::primaryScreen();
+    GT_CHECK(screen, "No primary screen available");
+    QRect displayRect = screen->geometry();
     GT_CHECK((displayRect.width() >= size.width()) && (displayRect.height() >= size.height()), "Specified the size larger than the size of the screen");
 
     bool isRequiredPositionFound = false;

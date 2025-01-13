@@ -117,7 +117,7 @@ void AssemblyRuler::drawCursor(QPainter& p) {
             cursorLabel += " C " + FormatUtils::formatNumberWithSeparators(coverage);
         }
     }
-    int textWidth = p.fontMetrics().width(cursorLabel);
+    int textWidth = p.fontMetrics().horizontalAdvance(cursorLabel);
     int textHeight = p.fontMetrics().height();
     QRect offsetRect(cursorPos - textWidth / 2, LABELS_END, textWidth, textHeight);
     if (offsetRect.left() < 0) {
@@ -187,7 +187,7 @@ void AssemblyRuler::drawRuler(QPainter& p) {
 
             // draw labels
             QString offsetStr = FormatUtils::formatNumberWithSeparators(oneBasedOffset);
-            int textWidth = p.fontMetrics().width(offsetStr);
+            int textWidth = p.fontMetrics().horizontalAdvance(offsetStr);
             int textHeight = p.fontMetrics().height();
             QRect offsetRect(x_pix - textWidth / 2, LABELS_END, textWidth, textHeight);
 

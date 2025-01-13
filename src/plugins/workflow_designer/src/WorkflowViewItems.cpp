@@ -1123,7 +1123,7 @@ void WorkflowBusItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 
         QString rts = QString("%1 in queue, %2 passed").arg(msgsInQueue).arg(passed);
         QRectF rtb = textRec.translated(0, -QFontMetricsF(QFont()).height());
-        qreal shift = (QFontMetricsF(QFont()).width(rts) - rtb.width()) / 2;
+        qreal shift = (QFontMetricsF(QFont()).horizontalAdvance(rts) - rtb.width()) / 2;
         rtb.setLeft(rtb.left() - shift);
         rtb.setRight(rtb.right() + shift);
         painter->drawText(rtb, Qt::AlignHCenter, rts);

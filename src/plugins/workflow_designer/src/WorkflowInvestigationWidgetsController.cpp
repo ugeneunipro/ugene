@@ -161,7 +161,7 @@ void WorkflowInvestigationWidgetsController::adjustInvestigationColumnWidth(
     WorkflowInvestigationWidget* investigator) {
     for (int currentColumn = 0; investigationModel->columnCount() > currentColumn; ++currentColumn) {
         const int absoluteColumnNumber = investigationModel->getAbsoluteNumberOfVisibleColumn(currentColumn);
-        const int width = (columnWidths[investigatedLink].size() <= absoluteColumnNumber || 0 == columnWidths[investigatedLink][absoluteColumnNumber]) ? investigator->fontMetrics().width(investigationModel->headerData(
+        const int width = (columnWidths[investigatedLink].size() <= absoluteColumnNumber || 0 == columnWidths[investigatedLink][absoluteColumnNumber]) ? investigator->fontMetrics().horizontalAdvance(investigationModel->headerData(
                                                                                                                                                                                                                  currentColumn, Qt::Horizontal)
                                                                                                                                                                                                .toString()) +
                                                                                                                                                              HEADER_TEXT_MARGIN
