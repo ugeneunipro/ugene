@@ -62,13 +62,16 @@ fi
 echo "##teamcity[blockClosed name='CMake']"
 
 #### Make ####
-echo "##teamcity[blockOpened name='make']"
+UGENE_MAKE_PARAMS="-j $(sysctl -n hw.ncpu)"
+echo "##teamcity[blockOpened name='make ${UGENE_MAKE_PARAMS}']"
 if
-  cmake --build "${BUILD_DIR}" --parallel
+  # We want these params to be individual params, so disabling inspection for quotes.
+  # shellcheck disable=SC2086
+  cmake --build "${BUILD_DIR}" -- ${UGENE_MAKE_PARAMS}
 then
   echo
 else
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. make failed']"
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. make ${UGENE_MAKE_PARAMS} failed']"
   exit 1
 fi
-echo "##teamcity[blockClosed name='make']"
+echo "##teamcity[blockClosed name='make ${UGENE_MAKE_PARAMS}']"
