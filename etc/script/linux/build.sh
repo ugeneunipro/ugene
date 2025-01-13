@@ -35,10 +35,13 @@ cd "${UGENE_DIR}" || {
   exit 1
 }
 
+##### Clean ####
+
 if [ -z "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" ]; then UGENE_BUILD_AND_TEST_SKIP_CLEAN="0"; fi
 
-##### Clean ####
-if [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "1" ]; then
+if [ ! -d "${BUILD_DIR}" ]; then
+  echo "BUILD_DIR does not exist. Skipping clean."
+elif [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "1" ]; then
   echo "Skipping clean"
 elif [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "2" ]; then
   echo "##teamcity[blockOpened name='fast clean']"
@@ -75,7 +78,7 @@ echo "##teamcity[blockOpened name='make ${UGENE_MAKE_PARAMS}']"
 if
   # We want these params to be individual params, so disabling inspection for quotes.
   # shellcheck disable=SC2086
-  cmake --build "${BUILD_DIR}" --target all -- ${UGENE_MAKE_PARAMS}
+  cmake --build "${BUILD_DIR}" -- ${UGENE_MAKE_PARAMS}
 then
   echo
 else
