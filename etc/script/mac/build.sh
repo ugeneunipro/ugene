@@ -25,29 +25,6 @@ echo "##teamcity[blockOpened name='env']"
 env
 echo "##teamcity[blockClosed name='env']"
 
-##### Clean ####
-if [ -z "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" ]; then UGENE_BUILD_AND_TEST_SKIP_CLEAN="0"; fi
-
-if [ ! -d "${BUILD_DIR}" ]; then
-  echo "BUILD_DIR does not exist. Skipping clean."
-elif [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "1" ]; then
-  echo "Skipping clean"
-elif [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "2" ]; then
-  echo "##teamcity[blockOpened name='fast clean']"
-  rm -rf "${BUILD_DIR}"
-  echo "##teamcity[blockClosed name='fast clean']"
-else
-  echo "##teamcity[blockOpened name='make clean']"
-  if
-      cmake --build "${BUILD_DIR}" --target clean
-    then
-      echo "Clean completed successfully"
-    else
-      echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. cmake clean failed']"
-      exit 1
-    fi
-  echo "##teamcity[blockClosed name='make clean']"
-fi
 
 #### CMake ####
 echo "##teamcity[blockOpened name='CMake']"
