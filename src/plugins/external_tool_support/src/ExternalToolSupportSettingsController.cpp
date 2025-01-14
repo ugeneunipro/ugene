@@ -169,7 +169,7 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
 
     auto layout = new QHBoxLayout(widget);
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(toolPathEdit);
 
     auto buttonsLayout = new QHBoxLayout();
@@ -203,7 +203,7 @@ QTreeWidgetItem* ExternalToolSupportSettingsPageWidget::createToolkitItem(QTreeW
 
     auto layout = new QHBoxLayout(widget);
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addStretch();
     layout->addWidget(selectToolKitPathButton);
     treeWidget->setItemWidget(toolkitItem, 1, widget);

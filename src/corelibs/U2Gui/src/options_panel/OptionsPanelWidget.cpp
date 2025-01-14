@@ -144,7 +144,6 @@ GroupOptionsWidget* OptionsPanelWidget::createOptionsWidget(const QString& group
     auto innerWidgets = new QWidget();
     auto layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
-    layout->setMargin(0);
 
     foreach (QWidget* commonWidget, commonWidgets) {
         SAFE_POINT(commonWidget != nullptr, "NULL common widget!", nullptr);

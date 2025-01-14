@@ -222,7 +222,7 @@ bool URLListWidget::eventFilter(QObject* obj, QEvent* event) {
 OptionsPopup::OptionsPopup(QWidget* parent)
     : QFrame(parent) {
     l = new QVBoxLayout(this);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     setWindowFlags(Qt::Popup);
     setFrameShape(QFrame::StyledPanel);
 }

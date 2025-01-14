@@ -195,14 +195,14 @@ bool GUIUtils::runWebBrowser(const QString& url) {
 bool GUIUtils::isMutedLnF(const QTreeWidgetItem* item) {
     static QBrush disabledBrush;
     if (disabledBrush.style() == Qt::NoBrush) {
-        disabledBrush = QApplication::palette().brush(QPalette::Disabled, QPalette::Foreground);
+        disabledBrush = QApplication::palette().brush(QPalette::Disabled, QPalette::WindowText);
     }
     return item->foreground(0) == disabledBrush;
 }
 
 void GUIUtils::setMutedLnF(QTreeWidgetItem* item, bool enableMute, bool recursive) {
     QPalette::ColorGroup colorGroup = enableMute ? QPalette::Disabled : QPalette::Active;
-    QBrush brush = QApplication::palette().brush(colorGroup, QPalette::Foreground);
+    QBrush brush = QApplication::palette().brush(colorGroup, QPalette::WindowText);
     int count = item->columnCount();
     for (int column = 0; column < count; column++) {
         item->setForeground(column, brush);

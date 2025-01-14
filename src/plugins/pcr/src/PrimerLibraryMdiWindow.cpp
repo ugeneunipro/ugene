@@ -49,7 +49,7 @@ void PrimerLibraryMdiWindow::showLibrary() {
 PrimerLibraryMdiWindow::PrimerLibraryMdiWindow(const QString& title)
     : MWMDIWindow(title) {
     auto l = new QVBoxLayout(this);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
 
     auto libraryWidget = new PrimerLibraryWidget(this);
     l->addWidget(libraryWidget);

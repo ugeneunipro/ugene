@@ -48,7 +48,7 @@ TaskStatusBar::TaskStatusBar() {
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     l = new QHBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     setLayout(l);
 
     l->addSpacing(20);

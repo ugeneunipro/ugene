@@ -70,7 +70,7 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement& do
 
     // Vertical layout with all nodes.
     layout = new QVBoxLayout();
-    layout->setMargin(12);
+    layout->setContentsMargins(12, 12, 12, 12);
     layout->setSpacing(0);
     frameWidget->setLayout(layout);
 
@@ -303,7 +303,7 @@ ExternalToolsTreeNode::ExternalToolsTreeNode(int kind, const QString& objectName
     }
     setContentsMargins(0, 5, 0, 5);
     auto layout = new QHBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     setLayout(layout);
 
@@ -453,7 +453,7 @@ static QString getBadgeLabelStyle(int kind, bool isImportant) {
 BadgeLabel::BadgeLabel(int kind, const QString& text, bool isImportant)
     : kind(kind), titleLabel(nullptr), copyButton(nullptr), logView(nullptr) {
     auto layout = new QHBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     setLayout(layout);
 

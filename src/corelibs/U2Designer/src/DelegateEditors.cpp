@@ -853,7 +853,7 @@ QWidget* StringSelectorDelegate::createEditor(QWidget* parent, const QStyleOptio
 
     auto layout = new QHBoxLayout(editor);
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(valueEdit);
     layout->addWidget(toolButton);
 

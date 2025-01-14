@@ -179,7 +179,7 @@ void CreateFragmentDialog::setupAnnotationsWidget() {
     ac = new CreateAnnotationWidgetController(acm, this);
     QWidget* caw = ac->getWidget();
     auto l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->addWidget(caw);
     l->addStretch();
     annotationsWidget->setLayout(l);

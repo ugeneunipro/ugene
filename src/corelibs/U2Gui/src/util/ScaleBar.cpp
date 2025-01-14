@@ -65,7 +65,7 @@ ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
     zoomLayout->addWidget(plusButton);
     zoomLayout->addWidget(scaleBar);
     zoomLayout->addWidget(minusButton);
-    zoomLayout->setMargin(0);
+    zoomLayout->setContentsMargins(0, 0, 0, 0);
     zoomLayout->setSpacing(0);
     setLayout(zoomLayout);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);

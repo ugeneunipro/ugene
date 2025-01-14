@@ -144,7 +144,7 @@ EnzymesSelectorDialog::EnzymesSelectorDialog(EnzymesSelectorDialogHandler* paren
 
     auto vl = new QVBoxLayout();
     enzSel = new EnzymesSelectorWidget();
-    vl->setMargin(0);
+    vl->setContentsMargins(0, 0, 0, 0);
     vl->addWidget(enzSel);
     enzymesSelectorWidget->setLayout(vl);
     enzymesSelectorWidget->setMinimumSize(enzSel->size());

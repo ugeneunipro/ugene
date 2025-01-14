@@ -78,7 +78,9 @@ SearchGenbankSequenceDialogController::~SearchGenbankSequenceDialogController() 
 
 void SearchGenbankSequenceDialogController::addQueryBlockWidget(QWidget* w) {
     ui->queryBuilderBox->layout()->addWidget(w);
-    w->setObjectName("query_block_widget_" + QString::number(ui->queryBuilderBox->findChildren<QWidget*>(QRegExp("query_block_widget_\\d+")).size()));
+    auto childWidgets = ui->queryBuilderBox->findChildren<QWidget*>(QRegularExpression("query_block_widget_\\d+"));
+    w->setObjectName("query_block_widget_" + QString::number(childWidgets.size()));
+
 }
 
 void SearchGenbankSequenceDialogController::removeQueryBlockWidget(QWidget* w) {
@@ -207,7 +209,7 @@ void SearchGenbankSequenceDialogController::sl_itemSelectionChanged() {
 QueryBlockWidget::QueryBlockWidget(QueryBuilderController* controller, bool first)
     : conditionBox(nullptr), termBox(nullptr), queryEdit(nullptr) {
     auto layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     if (first) {
         auto label = new QLabel(tr("Term:"));

@@ -56,7 +56,7 @@ PerfMonitorView::PerfMonitorView()
     treeHeader->setText(3, tr("Reportable"));
 
     auto viewLayout = new QVBoxLayout();
-    viewLayout->setMargin(0);
+    viewLayout->setContentsMargins(0, 0, 0, 0);
     viewLayout->addWidget(tree);
     setLayout(viewLayout);
 

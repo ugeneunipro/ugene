@@ -123,7 +123,7 @@ void CircularViewSettingsWidget::initLayout() {
 
     settingsWidget = new QWidget(this);
     auto settingsLayout = new QVBoxLayout(settingsWidget);
-    settingsLayout->setMargin(0);
+    settingsLayout->setContentsMargins(0, 0, 0, 0);
     settingsLayout->setSpacing(0);
     settingsWidget->setLayout(settingsLayout);
 

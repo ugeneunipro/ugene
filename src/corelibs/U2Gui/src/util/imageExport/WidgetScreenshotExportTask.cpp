@@ -96,7 +96,7 @@ void WidgetScreenshotExportToBitmapTask::run() {
     SAFE_POINT_EXT(settings.isBitmapFormat(),
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("WidgetScreenshotExportToBitmapTask")), );
 
-    QImage image = QPixmap::grabWidget(widget, widget->rect()).toImage();
+    QImage image = widget->grab().toImage();
 
     image = image.scaled(settings.imageSize, Qt::KeepAspectRatio);
 

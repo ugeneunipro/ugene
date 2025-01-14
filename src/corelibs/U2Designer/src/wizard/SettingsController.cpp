@@ -70,7 +70,7 @@ void SettingsController::sl_fileSelect() {
 QWidget* SettingsController::createUrlSettingsWidget(U2OpStatus& /*os*/) {
     auto result = new QWidget;
     auto mainLayout = new QHBoxLayout(result);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
 
     auto label = new QLabel(sw->label());
     mainLayout->addWidget(label);

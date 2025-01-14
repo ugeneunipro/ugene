@@ -35,7 +35,7 @@ AssemblyAnnotationsArea::AssemblyAnnotationsArea(AssemblyBrowserUi* ui)
     variantRowManager = new AssemblyVariantRowManager(ui);
     auto vLayout = new QVBoxLayout(this);
     this->setLayout(vLayout);
-    vLayout->setMargin(0);
+    vLayout->setContentsMargins(0, 0, 0, 0);
     vLayout->setSpacing(0);
 }
 

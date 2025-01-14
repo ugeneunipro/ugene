@@ -77,7 +77,7 @@ BioStruct3DSplitter::BioStruct3DSplitter(QAction* _closeAction, AnnotatedDNAView
 
     widgetWithToolbar = new WidgetWithLocalToolbar(this);
     QLayout* l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
     l->addWidget(splitter);
     widgetWithToolbar->setContentLayout(l);
@@ -363,7 +363,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     // Menu toolbar
     toolbar = new OrderedToolbar(this);
     toolbar->layout()->setSpacing(10);
-    toolbar->layout()->setMargin(0);
+    toolbar->layout()->setContentsMargins(0, 0, 0, 0);
 
     auto pixLabel = new QLabel(this);
     QFont f = pixLabel->font();

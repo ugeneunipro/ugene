@@ -78,7 +78,10 @@ public:
 
             // draw text
             QRect textrect = QRect(r.left() + i * 2, r.top(), r.width() - ((5 * i) / 2), r.height());
-            QString text = elidedText(option.fontMetrics, textrect.width(), Qt::ElideMiddle, model->data(index, Qt::DisplayRole).toString());
+            QString text = option.fontMetrics.elidedText(
+                model->data(index, Qt::DisplayRole).toString(),
+                Qt::ElideMiddle,
+                textrect.width());
             m_view->style()->drawItemText(painter, textrect, Qt::AlignCenter, option.palette, m_view->isEnabled(), text);
 
         } else {
@@ -239,7 +242,7 @@ void QueryPalette::mousePressEvent(QMouseEvent* event) {
             return;
         event->accept();
         if (item->parent() == 0) {
-            setItemExpanded(item, !isItemExpanded(item));
+            item->setExpanded(!item->isExpanded());
             return;
         }
         QAction* action = item->data(0, Qt::UserRole).value<QAction*>();
@@ -248,7 +251,6 @@ void QueryPalette::mousePressEvent(QMouseEvent* event) {
             dragStartPosition = event->pos();
             update(indexFromItem(actionMap.value(action)));
         }
-        return;
     }
 }
 

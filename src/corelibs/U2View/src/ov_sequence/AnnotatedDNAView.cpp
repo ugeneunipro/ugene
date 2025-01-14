@@ -1127,11 +1127,11 @@ void AnnotatedDNAView::seqWidgetMove(const QPoint& pos) {
     }
 
     if (prevWidgetRect.isValid() && pos.y() < prevWidgetRect.center().y()) {
-        seqViews.swap(index - 1, index);
+        std::swap(seqViews[index - 1], seqViews[index]);
         scrolledWidgetLayout->insertWidget(index - 1, scrolledWidgetLayout->takeAt(index)->widget());
     }
     if (nextWidgetRect.isValid() && pos.y() > nextWidgetRect.top()) {
-        seqViews.swap(index, index + 1);
+        std::swap(seqViews[index], seqViews[index + 1]);
         scrolledWidgetLayout->insertWidget(index, scrolledWidgetLayout->takeAt(index + 1)->widget());
     }
 }

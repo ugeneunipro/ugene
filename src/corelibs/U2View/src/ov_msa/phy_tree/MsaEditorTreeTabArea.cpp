@@ -138,7 +138,7 @@ MsaEditorTreeTabArea::MsaEditorTreeTabArea(MsaEditor* msaEditor, QWidget* parent
 
     treeTabWidget = createTabWidget();
     currentLayout = new QVBoxLayout();
-    currentLayout->setMargin(0);
+    currentLayout->setContentsMargins(0, 0, 0, 0);
     currentLayout->setSpacing(0);
     currentLayout->addWidget(treeTabWidget);
     setLayout(currentLayout);

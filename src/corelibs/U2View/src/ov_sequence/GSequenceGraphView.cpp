@@ -158,14 +158,14 @@ void GSequenceGraphView::updateMovingLabels() {
 
 void GSequenceGraphView::pack() {
     auto vLayout = new QVBoxLayout();
-    vLayout->setMargin(0);
+    vLayout->setContentsMargins(0, 0, 0, 0);
     vLayout->setSpacing(0);
     vLayout->addWidget(renderArea);
 
     // use extra layout with scrollbar to have synchronized width with pan-view
     // in future fake-scroll-bar can be replaced with graph specific toolbar
     auto hLayout = new QHBoxLayout();
-    hLayout->setMargin(0);
+    hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(0);
     auto fakeBar = new QScrollBar(Qt::Vertical, this);
     fakeBar->setDisabled(true);

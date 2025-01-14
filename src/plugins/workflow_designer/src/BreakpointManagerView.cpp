@@ -21,14 +21,10 @@
 
 #include "BreakpointManagerView.h"
 
-#include <QAction>
 #include <QCheckBox>
-#include <QGraphicsScene>
-#include <QGroupBox>
 #include <QMenu>
 #include <QToolBar>
 #include <QTreeWidget>
-#include <QVBoxLayout>
 
 #include <U2Core/Counter.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -39,7 +35,6 @@
 #include <U2Designer/EditBreakpointLabelsDialog.h>
 #include <U2Designer/NewBreakpointDialog.h>
 
-#include <U2Lang/WorkflowDebugStatus.h>
 #include <U2Lang/WorkflowSettings.h>
 
 #include "WorkflowViewItems.h"
@@ -106,7 +101,7 @@ BreakpointManagerView::BreakpointManagerView(WorkflowDebugStatus* initDebugInfo,
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     auto contentLayout = new QVBoxLayout(this);
     contentLayout->setSpacing(0);
-    contentLayout->setMargin(0);
+    contentLayout->setContentsMargins(0, 0, 0, 0);
     contentLayout->setContentsMargins(0, 0, 0, 0);
     contentLayout->addWidget(initToolBar());
     contentLayout->addWidget(breakpointsList);
@@ -584,7 +579,7 @@ bool BreakpointManagerView::eventFilter(QObject* /*object*/, QEvent* event) {
 void BreakpointManagerView::setBreakpointBackgroundColor(QTreeWidgetItem* breakpoint,
                                                          const QColor& newBackground) {
     for (int columnNumber = 0; columnNumber < breakpointsList->columnCount(); ++columnNumber) {
-        breakpoint->setBackgroundColor(columnNumber, newBackground);
+        breakpoint->setBackground(columnNumber, QBrush(newBackground));
     }
 }
 
@@ -592,13 +587,13 @@ void BreakpointManagerView::paintEvent(QPaintEvent* /*event*/) {
     static const QColor nonActiveColor = breakpointsList->palette().window().color();
     if (!this->isEnabled()) {
         foreach (QTreeWidgetItem* item, breakpointsList->findItems(QString(), Qt::MatchContains)) {
-            if (BREAKPOINT_DEFAULT_COLOR == item->backgroundColor(BREAKPOINT_LABELS_COLUMN_NUMBER)) {
+            if (item->background(BREAKPOINT_LABELS_COLUMN_NUMBER).color() == BREAKPOINT_DEFAULT_COLOR) {
                 setBreakpointBackgroundColor(item, nonActiveColor);
             }
         }
     } else {
         foreach (QTreeWidgetItem* item, breakpointsList->findItems(QString(), Qt::MatchContains)) {
-            if (nonActiveColor == item->backgroundColor(BREAKPOINT_LABELS_COLUMN_NUMBER)) {
+            if (item->background(BREAKPOINT_LABELS_COLUMN_NUMBER).color() == nonActiveColor) {
                 setBreakpointBackgroundColor(item, BREAKPOINT_DEFAULT_COLOR);
             }
         }
