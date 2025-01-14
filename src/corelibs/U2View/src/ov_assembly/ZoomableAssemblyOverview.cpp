@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -293,7 +293,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter& p) {
 
     // draw Visible Region
     QString visibleRegionText = tr("%1 to %2 (%3 bp)").arg(visibleStartText).arg(visibleEndText).arg(visibleDiffText);
-    QRect grtRect = QRect(0, 0, fontMetrics.width(visibleRegionText), fontMetrics.height());
+    QRect grtRect = QRect(0, 0, fontMetrics.horizontalAdvance(visibleRegionText), fontMetrics.height());
     grtRect.translate(xoffset, rect().height() - yoffset - grtRect.height());
     if (rect().contains(grtRect)) {
         p.fillRect(grtRect, labelBackgroundColor);
@@ -315,7 +315,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter& p) {
 
     // draw text
     QString selectedRegionText = tr("%1 to %2 (%3 bp)").arg(fromText, toText, diff);
-    QRect srtRect = QRect(0, 0, fontMetrics.width(selectedRegionText), fontMetrics.height());
+    QRect srtRect = QRect(0, 0, fontMetrics.horizontalAdvance(selectedRegionText), fontMetrics.height());
     srtRect.translate(rect().width() - srtRect.width() - xoffset, rect().height() - yoffset - grtRect.height());
     if (rect().contains(srtRect) && !srtRect.intersects(grtRect)) {
         p.fillRect(srtRect, labelBackgroundColor);

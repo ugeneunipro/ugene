@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,9 +79,9 @@ QDElement::QDElement(QDSchemeUnit* _unit)
     const QFont& f = itemDescription->font();
     QFontMetrics fm(f);
     if (getActor()->hasAnyDirection()) {
-        bound.setWidth(fm.width(s) + 2 * ARR_W);
+        bound.setWidth(fm.horizontalAdvance(s) + 2 * ARR_W);
     } else {
-        bound.setWidth(fm.width(s) + ARR_W);
+        bound.setWidth(fm.horizontalAdvance(s) + ARR_W);
     }
 }
 
@@ -911,7 +911,7 @@ QRectF Footnote::boundingRect() const {
     const QString& text = getText();
     QFontMetricsF fm(font);
     // fm.boundingRect().width() and fm.width() provide different values
-    QRectF textBound(0, 0, fm.width(text), fm.height());
+    QRectF textBound(0, 0, fm.horizontalAdvance(text), fm.height());
     textBound.moveTop(ARROW_DELTA);
 
     qreal arrW = getDstPoint().x() - getSrcPoint().x();
@@ -946,7 +946,7 @@ void Footnote::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     // draw text
     const QString& text = getText();
     QFontMetrics fm(font);
-    QRectF textBound(0, 0, fm.width(text), fm.height());
+    QRectF textBound(0, 0, fm.horizontalAdvance(text), fm.height());
     textBound.moveTop(ARROW_DELTA);
     QPointF c(boundingRect().center().x(), textBound.center().y());
     textBound.moveCenter(c);
@@ -1133,7 +1133,7 @@ QRectF QDRulerItem::boundingRect() const {
 
 QRectF QDRulerItem::txtBound() const {
     QFontMetricsF fm(font);
-    QRectF txtBound(0, 0, fm.width(text), fm.height());
+    QRectF txtBound(0, 0, fm.horizontalAdvance(text), fm.height());
     qreal txtX = leftPos + (rightPos - leftPos) / 2;
     qreal txtY = QD_RULER_MARGINS + NOTCH_SIZE + txtBound.height() / 2;
     txtBound.moveCenter(QPointF(txtX, txtY));

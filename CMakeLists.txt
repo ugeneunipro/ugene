@@ -12,12 +12,13 @@ project(ugene)
 set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 set(UGENE_VERSION 53.0-dev)
 
+message(STATUS "CMake version: ${CMAKE_VERSION}")
 message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
 
 add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}
         -DQT_FATAL_ASSERT
-        -DQT_DISABLE_DEPRECATED_BEFORE=0x050900
+        -DQT_DISABLE_DEPRECATED_BEFORE=0x050B00
 )
 
 set(CMAKE_CXX_STANDARD 14)
@@ -43,33 +44,37 @@ if (WIN32)
     )
     string(REPLACE "/RTC1" "" CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
     string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+
+    # Add map files for release binaries
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /INCREMENTAL:NO /MAP /MAPINFO:EXPORTS /DEBUG")
+    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /INCREMENTAL:NO /MAP /MAPINFO:EXPORTS /DEBUG")
 endif ()
 
 # Use to disable -isystem support and work in qmake mode.
 # set(CMAKE_NO_SYSTEM_FROM_IMPORTED True)
 
-# Warning levels. Keep in sync with ugene_globals.pri
 if (CMAKE_COMPILER_IS_GNUCXX)
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
         message(FATAL_ERROR "GCC version must be at least 9. Detected version: ${CMAKE_CXX_COMPILER_VERSION}")
-    endif()
+    endif ()
     message(STATUS "Using GCC version: ${CMAKE_CXX_COMPILER_VERSION}")
     # Common warning flags for GCC
-#    string(CONCAT GCC_WARNING_FLAGS
-#            " -Wall"
-#            " -Werror=deprecated-copy"
-#            " -Werror=maybe-uninitialized"
-#            " -Werror=parentheses"
-#            " -Werror=return-type"
-#            " -Werror=sequence-point"
-#            " -Werror=switch"
-#            " -Werror=uninitialized"
-#            " -Werror=unused-parameter"
-#            " -Werror=unused-value"
-#            " -Werror=unused-variable"
-#            " -Wno-deprecated-declarations"
-#    )
-#        string(APPEND GCC_WARNING_FLAGS )
+    string(CONCAT GCC_WARNING_FLAGS
+            " -Wall"
+            " -Werror=deprecated-copy"
+            " -Werror=maybe-uninitialized"
+            " -Werror=parentheses"
+            " -Werror=return-type"
+            " -Werror=sequence-point"
+            " -Werror=switch"
+            " -Werror=uninitialized"
+            " -Werror=unused-parameter"
+            " -Werror=unused-value"
+            " -Werror=unused-variable"
+            " -Wno-deprecated-declarations"
+            # TODO: "-Werror=shadow=local"
+    )
+    string(APPEND GCC_WARNING_FLAGS)
 
     # Apply the warning flags
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
@@ -78,6 +83,16 @@ endif ()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
+
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/dist)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/dist)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/dist)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/dist)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/dist)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/dist)
+endif ()
 
 # 3rd party libraries.
 add_subdirectory(src/libs_3rdparty/QSpec)

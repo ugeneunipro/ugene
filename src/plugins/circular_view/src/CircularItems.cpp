@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -253,7 +253,7 @@ bool CircularAnnotationLabel::canFitToTheRegion() const {
 
     QPainterPath path = regionItem->path();
     QFontMetrics metrics(labelFont, ra);
-    qreal labelTextPixSize = metrics.width(labelText);
+    qreal labelTextPixSize = metrics.horizontalAdvance(labelText);
     // (can fit in width) && (can fit in height)
     if ((regionItem->getArrowCenterPercentage() * path.length() > labelTextPixSize / 2) && (metrics.height() + ra->FREE_SPACE_HEIGHT_FOR_INTERNAL_LABELS < ra->circularView->CV_REGION_ITEM_WIDTH)) {
         return true;
@@ -324,7 +324,7 @@ void CircularAnnotationLabel::drawLabelInsideRegion(QPainter* p, bool canFit) {
         p->drawText(QPoint(0, -p->pen().width()), QString(labelText[i]));
         p->restore();
 
-        percent += percentIncreaseSgn * metrics.width(labelText[i]) / path.length();
+        percent += percentIncreaseSgn * metrics.horizontalAdvance(labelText[i]) / path.length();
     }
 }
 

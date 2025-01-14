@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ void GroupedComboBoxDelegate::paint(QPainter* painter, const QStyleOptionViewIte
         QItemDelegate::paint(painter, parentOption, index);
     } else if (index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("child")) {
         QStyleOptionViewItem childOption = option;
-        int indent = option.fontMetrics.width(QString(4, QChar(' ')));
+        int indent = option.fontMetrics.horizontalAdvance(QString(4, QChar(' ')));
         childOption.rect.adjust(indent, 0, 0, 0);
         childOption.textElideMode = Qt::ElideNone;
         QItemDelegate::paint(painter, childOption, index);

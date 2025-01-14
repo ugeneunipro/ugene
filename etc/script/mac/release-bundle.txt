@@ -62,16 +62,6 @@ Unipro UGENE.app/Contents/Frameworks/QtScript.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtScript.framework/Versions/5/Resources/Info.plist
 Unipro UGENE.app/Contents/Frameworks/QtScript.framework/Versions/5/Resources/QtScript.prl
 Unipro UGENE.app/Contents/Frameworks/QtScript.framework/Versions/Current
-Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework
-Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/QtScriptTools
-Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Resources
-Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions
-Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5
-Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5/QtScriptTools
-Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5/Resources
-Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5/Resources/Info.plist
-Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5/Resources/QtScriptTools.prl
-Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/QtSvg
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Resources

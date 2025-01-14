@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -972,7 +972,7 @@ void DotPlotWidget::drawAll(QPainter& p, qreal rulerFontScale, bool _drawFocus, 
 
     QFontMetrics fm = p.fontMetrics();
     // min textSpace is 4 characters: this is important for sequence name labels.
-    textSpace = fm.width("0") * qMax(4, qRound(1 + log10(sequenceX->getSequenceLength())));
+    textSpace = fm.horizontalAdvance("0") * qMax(4, qRound(1 + log10(sequenceX->getSequenceLength())));
 
     int newPlotWidth = width() - 2 * textSpace;
     int newPlotHeight = height() - 2 * textSpace;
@@ -1033,7 +1033,7 @@ void DotPlotWidget::drawNames(QPainter& p) const {
     const QFontMetrics& fm = this->fontMetrics();
 
     nameX += tr(" (min length %1, identity %2%)").arg(minLen).arg(identity);
-    int nameXWidth = fm.width(nameX);
+    int nameXWidth = fm.horizontalAdvance(nameX);
 
     // If nameX doesn't fit, it should be aligned left instead of center
     int flags = (nameXWidth < w) ? Qt::AlignCenter : Qt::AlignVCenter | Qt::AlignLeft;
@@ -1044,7 +1044,7 @@ void DotPlotWidget::drawNames(QPainter& p) const {
     p.rotate(90);
     p.translate(DP_MARGIN + textSpace, -(w + textSpace * 2));
 
-    int nameYWidth = fm.width(nameY);
+    int nameYWidth = fm.horizontalAdvance(nameY);
 
     // If nameY doesn't fit, it should be aligned left instead of center
     flags = (nameYWidth < h) ? Qt::AlignCenter : Qt::AlignVCenter | Qt::AlignLeft;

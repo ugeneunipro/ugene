@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -270,7 +270,10 @@ Task::ReportResult GTest_CheckCreationTime::report() {
     }
 
     QFileInfo info(f);
-    QDateTime created = info.created();
+    QDateTime created = info.birthTime();
+    if (!created.isValid()) {
+        created = info.metadataChangeTime();  // On Linux ext3/4 birthTime() is not available.
+    }
     QDateTime now = QDateTime::currentDateTime();
     int seconds = created.secsTo(now);
 
