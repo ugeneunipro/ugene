@@ -271,6 +271,9 @@ Task::ReportResult GTest_CheckCreationTime::report() {
 
     QFileInfo info(f);
     QDateTime created = info.birthTime();
+    if (!created.isValid()) {
+        created = info.metadataChangeTime();  // On Linux ext3/4 birthTime() is not available.
+    }
     QDateTime now = QDateTime::currentDateTime();
     int seconds = created.secsTo(now);
 
