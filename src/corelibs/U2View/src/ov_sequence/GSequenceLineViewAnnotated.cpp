@@ -308,8 +308,8 @@ GSequenceLineViewAnnotatedRenderArea::GSequenceLineViewAnnotatedRenderArea(GSequ
     afmNormal = new QFontMetrics(*afNormal, this);
     afmSmall = new QFontMetrics(*afSmall, this);
 
-    afNormalCharWidth = afmNormal->width('w');
-    afSmallCharWidth = afmSmall->width('w');
+    afNormalCharWidth = afmNormal->horizontalAdvance('w');
+    afSmallCharWidth = afmSmall->horizontalAdvance('w');
 
     QLinearGradient gradient(0, 0, 0, 1);  // vertical
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);

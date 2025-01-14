@@ -366,7 +366,7 @@ void PanViewRenderer::drawCustomRulers(GraphUtils::RulerConfig c, QPainter& p, c
 
     int maxRulerTextWidth = 0;
     foreach (const RulerInfo& ri, s->customRulers) {
-        int _w = fm.width(ri.name);
+        int _w = fm.horizontalAdvance(ri.name);
         maxRulerTextWidth = qMax(maxRulerTextWidth, _w);
     }
     QTextOption rulerTo;

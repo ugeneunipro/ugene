@@ -25,6 +25,7 @@
 #include <QDesktopWidget>
 #include <QDir>
 #include <QMap>
+#include <QScreen>
 #include <QTextStream>
 #include <QThread>
 
@@ -508,7 +509,9 @@ QString GUITestLauncher::getScreenRecorderString(const QString& testName) {
     QString result;
     QString videoFilePath = getVideoPath(testName);
     if (isOsLinux()) {
-        QRect rec = QApplication::desktop()->screenGeometry();
+        QScreen* screen = QGuiApplication::primaryScreen();
+        SAFE_POINT(screen, "Screen is not available", {})
+        QRect rec =  screen->geometry();
         int height = rec.height();
         int width = rec.width();
         QString display = qgetenv("DISPLAY");

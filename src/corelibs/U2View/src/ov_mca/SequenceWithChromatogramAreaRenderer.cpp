@@ -52,7 +52,7 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MaEdi
     drawLeadingAndTrailingGaps = false;
 
     QFontMetricsF fm(seqAreaWgt->getEditor()->getFont());
-    charWidth = fm.width('W');
+    charWidth = fm.horizontalAdvance('W');
     charHeight = fm.ascent();
 
     heightBC = seqAreaWgt->getEditor()->getRowHeight();

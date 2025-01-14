@@ -86,7 +86,7 @@ void Notification::updateDisplayText() {
     QFontMetrics metrics(font(), this);
 
     QString counterText = counter == 0 ? "" : "(" + QString::number(counter + 1) + ") ";
-    int counterTextWidth = counter == 0 ? 0 : metrics.width(counterText);
+    int counterTextWidth = counter == 0 ? 0 : metrics.horizontalAdvance(counterText);
 
     QString timestampText = "[" + QDateTime::fromMSecsSinceEpoch(timestamp).time().toString() + "] ";
     QString displayText = timestampText + text;

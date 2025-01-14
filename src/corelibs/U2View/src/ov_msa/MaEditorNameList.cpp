@@ -154,7 +154,7 @@ void MaEditorNameList::updateScrollBar() {
 
     MsaObject* maObj = editor->getMaObject();
     foreach (const MsaRow& row, maObj->getAlignment()->getRows()) {
-        maxNameWidth = qMax(fm.width(row->getName()), maxNameWidth);
+        maxNameWidth = qMax(fm.horizontalAdvance(row->getName()), maxNameWidth);
     }
 
     // Adjustment for branch primitive in collapsing mode
@@ -163,7 +163,7 @@ void MaEditorNameList::updateScrollBar() {
 
     int availableWidth = getAvailableWidth();
     int nSteps = 1;
-    int stepSize = fm.width('W');
+    int stepSize = fm.horizontalAdvance('W');
     if (availableWidth < maxNameWidth) {
         int dw = maxNameWidth - availableWidth;
         nSteps += dw / stepSize + (dw % stepSize != 0 ? 1 : 0);
@@ -685,7 +685,7 @@ QRect MaEditorNameList::calculateTextRect(const U2Region& yRange, bool selected)
     QRect textRect(textX, textY, textW, textH);
     if (nhBar->isVisible()) {
         QFontMetrics fm(getFont(selected));
-        int stepSize = fm.width('W');
+        int stepSize = fm.horizontalAdvance('W');
         int dx = stepSize * nhBar->value();
         textRect = textRect.adjusted(-dx, 0, 0, 0);
     }

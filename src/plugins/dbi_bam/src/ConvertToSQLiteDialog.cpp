@@ -23,6 +23,7 @@
 
 #include <QDesktopWidget>
 #include <QMessageBox>
+#include <QScreen>
 #include <QTextEdit>
 
 #include <U2Core/AppContext.h>
@@ -251,7 +252,10 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
         dialog->layout()->addWidget(new QLabel(BAMDbiPlugin::tr("Programs:")));
         dialog->layout()->addWidget(table);
     }
-    dialog->resize(qMin(600, QApplication::desktop()->screenGeometry().width()), dialog->sizeHint().height());
+    QScreen* screen = QGuiApplication::primaryScreen();
+    if (screen) {
+        dialog->resize(qMin(600, screen->geometry().width()), dialog->sizeHint().height());
+    }
     dialog->exec();
 }
 

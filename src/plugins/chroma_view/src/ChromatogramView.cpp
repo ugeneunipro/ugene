@@ -426,7 +426,7 @@ ChromatogramViewRenderArea::ChromatogramViewRenderArea(ChromatogramView* p, cons
     fontBold = font;
     fontBold.setBold(true);
     QFontMetricsF fm(font);
-    charWidth = fm.width('W');
+    charWidth = fm.horizontalAdvance('W');
     charHeight = fm.ascent();
     heightPD = height();
     heightAreaBC = 50;

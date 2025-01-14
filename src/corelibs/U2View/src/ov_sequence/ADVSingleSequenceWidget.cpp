@@ -942,7 +942,7 @@ ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWi
     updateTitle();
     nameLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     nameLabel->setMinimumWidth(labelWidth);
-    nameLabel->setMaximumWidth(fm.width(nameLabel->text()));
+    nameLabel->setMaximumWidth(fm.horizontalAdvance(nameLabel->text()));
     nameLabel->setFont(f);
     nameLabel->setToolTip(objInfoTip);
     nameLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
