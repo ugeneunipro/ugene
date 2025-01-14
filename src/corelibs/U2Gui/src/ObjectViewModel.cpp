@@ -310,7 +310,7 @@ bool GObjectViewController::containsObject(GObject* obj) const {
 // Returns true if view  contains any objects from the document
 bool GObjectViewController::containsDocumentObjects(Document* doc) const {
     const QList<GObject*>& docObjects = doc->getObjects();
-    return std::any_of(docObjects.begin(), docObjects.end(), [this](auto o) { return containsObject(o); });
+    return std::any_of(docObjects.begin(), docObjects.end(), [this](auto o) { return this->containsObject(o); });
 }
 
 void GObjectViewController::onAfterViewWindowInit() {
