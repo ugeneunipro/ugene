@@ -717,7 +717,7 @@ FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _
 
     auto vl = new QVBoxLayout();
     enzSel = new EnzymesSelectorWidget(advSequenceContext, this);
-    vl->setMargin(0);
+    vl->setContentsMargins(0, 0, 0, 0);
     vl->addWidget(enzSel);
     enzymesSelectorWidget->setLayout(vl);
     enzymesSelectorWidget->setMinimumSize(enzSel->size());

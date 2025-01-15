@@ -36,7 +36,7 @@ WidgetWithLocalToolbar::WidgetWithLocalToolbar(QWidget* p)
     contentWidget = new QWidget(this);
 
     auto layout = new QHBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
 
     layout->addWidget(toolBar);

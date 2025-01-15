@@ -114,7 +114,7 @@ NotificationWidget::NotificationWidget(QWidget* w)
     frame = new QFrame();
     layout = new QVBoxLayout();
     layout->addStretch();
-    layout->setMargin(3);
+    layout->setContentsMargins(3, 3, 3, 3);
     frame->setLayout(layout);
 
     header = new Header(this);
@@ -125,17 +125,17 @@ NotificationWidget::NotificationWidget(QWidget* w)
 
     auto vbox = new QVBoxLayout();
     vbox->addWidget(header);
-    vbox->setMargin(0);
+    vbox->setContentsMargins(0, 0, 0, 0);
     vbox->setSpacing(0);
     setLayout(vbox);
 
     auto lbox = new QVBoxLayout();
     lbox->addWidget(scrollArea);
-    lbox->setMargin(0);
+    lbox->setContentsMargins(0, 0, 0, 0);
     lbox->setSpacing(0);
     vbox->addLayout(lbox);
 
-    int newWidth = TT_WIDTH + layout->margin() * 2 + 4;
+    int newWidth = TT_WIDTH + layout->contentsMargins().left() + layout->contentsMargins().right() + 4;
     setFixedSize(newWidth, header->height() + 40);
 }
 
@@ -176,7 +176,7 @@ bool NotificationWidget::removeNotification(QWidget* w) {
     delete w;
     int notificationCount = layout->count();
     if (notificationCount * TT_HEIGHT + header->height() <= TS_HEIGHT) {
-        int newWidth = TT_WIDTH + layout->margin() * 2 + 4;
+        int newWidth = TT_WIDTH + layout->contentsMargins().left() + contentsMargins().right() + 4;
         setFixedSize(newWidth, notificationCount * (TT_HEIGHT + 6) + header->height());
     }
 

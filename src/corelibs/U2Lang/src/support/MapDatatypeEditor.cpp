@@ -180,7 +180,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     auto verticalLayout = new QVBoxLayout(mainWidget);
     verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
     verticalLayout->setSpacing(0);
-    verticalLayout->setMargin(0);
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
 
     const QString title = getTitle();
     if (!title.isEmpty()) {

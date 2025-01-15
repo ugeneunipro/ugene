@@ -42,7 +42,7 @@ MsaEditorMultiTreeViewer::MsaEditorMultiTreeViewer(const QString& title, MsaEdit
     maUtilsWidget->setHeightMargin(-55);
 
     auto treeAreaLayout = new QVBoxLayout(this);
-    treeAreaLayout->setMargin(0);
+    treeAreaLayout->setContentsMargins(0, 0, 0, 0);
     treeAreaLayout->setSpacing(0);
     treeAreaLayout->addWidget(titleWidget);
     treeAreaLayout->addWidget(treeTabArea);

@@ -35,7 +35,7 @@ DashboardTabPage::DashboardTabPage(const QString& tabObjectName) {
     auto mainWidget = new QWidget();
 
     auto layout = new QHBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     mainWidget->setLayout(layout);
 
@@ -44,7 +44,7 @@ DashboardTabPage::DashboardTabPage(const QString& tabObjectName) {
     layout->addWidget(styleRootWidget);
 
     auto styleRootWidgetLayout = new QHBoxLayout();
-    styleRootWidgetLayout->setMargin(0);
+    styleRootWidgetLayout->setContentsMargins(0, 0, 0, 0);
     styleRootWidgetLayout->setSpacing(0);
     styleRootWidget->setLayout(styleRootWidgetLayout);
 

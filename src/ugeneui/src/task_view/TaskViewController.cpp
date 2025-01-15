@@ -57,7 +57,7 @@ TaskViewDockWidget::TaskViewDockWidget() {
 
     auto l = new QVBoxLayout();
     l->setSpacing(0);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->setContentsMargins(0, 0, 0, 0);
     setLayout(l);
 
@@ -160,7 +160,7 @@ void TaskViewDockWidget::addTopLevelTask(Task* t) {
     auto w = new QWidget();
     auto l = new QHBoxLayout();
     l->addStretch(10);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(10);
     l->addSpacing(10);
     w->setLayout(l);
@@ -419,7 +419,7 @@ void TaskViewDockWidget::selectTask(Task* t) {
 TVReportWindow::TVReportWindow(const QString& taskName, qint64 tid, const QString& report)
     : MWMDIWindow(genWindowName(taskName)), taskId(tid) {
     auto l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     setLayout(l);
 
     textEdit = new QTextEdit();

@@ -978,8 +978,8 @@ GUI_TEST_CLASS_DEFINITION(test_0684) {
             //       The overhangs should be highlighted in green
             auto item = GTTreeWidget::findItem(GTWidget::findTreeWidget("molConstructWidget", dialog), "NC_004718 (sars.gb) Fragment (2000-9000) [core length - 7001 bp]", nullptr, 1);
 
-            const QColor color1 = item->textColor(0);
-            const QColor color2 = item->textColor(2);
+            const QColor color1 = item->foreground(0).color();
+            const QColor color2 = item->foreground(2).color();
             const QColor expectedColor = Qt::green;
 
             CHECK_SET_ERR(expectedColor == color1, QString("An unexpected item text color in column 0: expect '%1', got '%2'").arg(expectedColor.name()).arg(color1.name()));

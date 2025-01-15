@@ -21,10 +21,7 @@
 
 #include "SubstMatrixDialog.h"
 
-#include <QHeaderView>
-#include <QPushButton>
 #include <QScrollBar>
-#include <QTableWidgetItem>
 
 #include <U2Gui/HelpButton.h>
 
@@ -89,7 +86,7 @@ void SubstMatrixDialog::prepareTable() {
             char ch_j = alphaChars.at(j);
             float score = m.getScore(ch_i, ch_j);
             ptwi = new QTableWidgetItem(QString::number(score));
-            ptwi->setBackgroundColor(DEFAULT_INNER_CELL_COLOR);
+            ptwi->setBackground(DEFAULT_INNER_CELL_COLOR);
             ptwi->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
             ptwi->setFlags(flags);
             base->tableMatrix->setItem(i + 1, j + 1, ptwi);
@@ -100,7 +97,7 @@ void SubstMatrixDialog::prepareTable() {
         QString title(ch);
 
         ptwi = new QTableWidgetItem(title);
-        ptwi->setBackgroundColor(DEFAULT_BORDER_CELL_COLOR);
+        ptwi->setBackground(DEFAULT_BORDER_CELL_COLOR);
         ptwi->setFlags(flags);
         ptwi->setTextAlignment(Qt::AlignCenter);
         base->tableMatrix->setItem(i + 1, 0, ptwi);
@@ -108,7 +105,7 @@ void SubstMatrixDialog::prepareTable() {
         ptwi = new QTableWidgetItem(title);
         ptwi->setFlags(flags);
         ptwi->setTextAlignment(Qt::AlignCenter);
-        ptwi->setBackgroundColor(DEFAULT_BORDER_CELL_COLOR);
+        ptwi->setBackground(DEFAULT_BORDER_CELL_COLOR);
         base->tableMatrix->setItem(0, i + 1, ptwi);
     }
 
@@ -122,11 +119,11 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
     if (row != 0 && column != 0 && !(column == hlInnerColumn && row == hlInnerRow)) {
         QTableWidgetItem* prevItem = base->tableMatrix->item(hlInnerRow, hlInnerColumn);
         if (prevItem != nullptr) {
-            prevItem->setBackgroundColor(DEFAULT_INNER_CELL_COLOR);
+            prevItem->setBackground(DEFAULT_INNER_CELL_COLOR);
         }
         QTableWidgetItem* newItem = base->tableMatrix->item(row, column);
         if (newItem != nullptr) {
-            newItem->setBackgroundColor(HIGHLIGHT_INNER_CELL_COLOR);
+            newItem->setBackground(HIGHLIGHT_INNER_CELL_COLOR);
         }
         hlInnerColumn = column;
         hlInnerRow = row;
@@ -136,11 +133,11 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
     if (row != hlBorderRow && row != 0) {
         QTableWidgetItem* pw = base->tableMatrix->item(row, 0);
         if (pw != nullptr) {
-            pw->setBackgroundColor(HIGHLIGHT_BORDER_CELL_COLOR);
+            pw->setBackground(HIGHLIGHT_BORDER_CELL_COLOR);
         }
         pw = base->tableMatrix->item(hlBorderRow, 0);
         if (pw != nullptr) {
-            pw->setBackgroundColor(DEFAULT_BORDER_CELL_COLOR);
+            pw->setBackground(DEFAULT_BORDER_CELL_COLOR);
         }
 
         hlBorderRow = row;
@@ -150,11 +147,11 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
     if (column != hlBorderColumn && column != 0) {
         QTableWidgetItem* pw = base->tableMatrix->item(0, column);
         if (pw != nullptr) {
-            pw->setBackgroundColor(HIGHLIGHT_BORDER_CELL_COLOR);
+            pw->setBackground(HIGHLIGHT_BORDER_CELL_COLOR);
         }
         pw = base->tableMatrix->item(0, hlBorderColumn);
         if (pw != nullptr) {
-            pw->setBackgroundColor(DEFAULT_BORDER_CELL_COLOR);
+            pw->setBackground(DEFAULT_BORDER_CELL_COLOR);
         }
 
         hlBorderColumn = column;

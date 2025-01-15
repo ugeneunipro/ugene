@@ -293,7 +293,7 @@ void SmithWatermanDialog::addAnnotationWidget() {
     annotationController = new CreateAnnotationWidgetController(acm, this);
     QWidget* caw = annotationController->getWidget();
     auto l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->addWidget(caw);
 
     addPatternContentQualifier = new QCheckBox(

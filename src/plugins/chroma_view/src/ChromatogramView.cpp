@@ -124,7 +124,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
 
 void ChromatogramView::pack() {
     auto layout = new QHBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(renderArea);
     layout->addWidget(scaleBar);
     setContentLayout(layout);

@@ -38,7 +38,7 @@ static const int HINT_MAX_WIDTH = 200;
 AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
     : QFrame(parent), label(new QLabel(this)) {
     auto top = new QVBoxLayout(this);
-    top->setMargin(2);
+    top->setContentsMargins(2, 2, 2, 2);
     setLayout(top);
     top->addWidget(label);
     top->setSpacing(0);
@@ -54,7 +54,7 @@ AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
 
     {
         QPalette backgroundPalette = palette();
-        backgroundPalette.setColor(QPalette::Background, QColor(245, 245, 206));
+        backgroundPalette.setColor(QPalette::Window, QColor(245, 245, 206));
         setPalette(backgroundPalette);
     }
 

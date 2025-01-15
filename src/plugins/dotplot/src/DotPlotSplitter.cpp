@@ -55,7 +55,7 @@ DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
 
     auto wgt = new WidgetWithLocalToolbar(this);
     QLayout* l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
     l->addWidget(splitter);
     wgt->setContentLayout(l);
@@ -70,7 +70,7 @@ DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
 
     QLayout* mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->addWidget(wgt);
     setLayout(mainLayout);
 

@@ -318,7 +318,7 @@ void QDDialog::addAnnotationsWidget() {
     QWidget* annotationControllerWidget = annotationWidgetController->getWidget();
 
     auto annotationsWidgetLayout = new QVBoxLayout();
-    annotationsWidgetLayout->setMargin(0);
+    annotationsWidgetLayout->setContentsMargins(0, 0, 0, 0);
     annotationsWidgetLayout->addWidget(annotationControllerWidget);
     annotationsWidget->setLayout(annotationsWidgetLayout);
 }

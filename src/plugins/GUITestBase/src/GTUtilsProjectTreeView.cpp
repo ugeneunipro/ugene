@@ -519,7 +519,7 @@ void GTUtilsProjectTreeView::itemModificationCheck(const QString& itemName, bool
 
 void GTUtilsProjectTreeView::itemModificationCheck(QModelIndex index, bool modified) {
     GT_CHECK(index.isValid(), "item is valid");
-    QVariant data = index.data(Qt::TextColorRole);
+    QVariant data = index.data(Qt::ForegroundRole);
     bool modState = !(QVariant() == data);
     GT_CHECK(modState == modified, "Document's " + index.data(Qt::DisplayRole).toString() + " modification state not equal with expected");
 }

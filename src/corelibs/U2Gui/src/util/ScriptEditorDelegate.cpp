@@ -35,7 +35,7 @@ namespace U2 {
 AbstractScriptEditorDelegate::AbstractScriptEditorDelegate(QWidget* parent)
     : QWidget(parent) {
     layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 }
 
 AbstractScriptEditorDelegate::~AbstractScriptEditorDelegate() {

@@ -55,7 +55,7 @@ WelcomePageWidget::WelcomePageWidget(QWidget* parent)
     : QScrollArea(parent) {
     auto widget = new QWidget();
     auto layout = new QVBoxLayout(widget);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
 
     layout->addWidget(createHeaderWidget());
@@ -76,7 +76,7 @@ QWidget* WelcomePageWidget::createHeaderWidget() {
     headerWidget->setStyleSheet("background: qlineargradient(x1:0 y1:0, x2:1 y2:0, stop:0 #E0E7E9, stop:1 white);");
     headerWidget->setFixedHeight(110);
     auto headerWidgetLayout = new QHBoxLayout();
-    headerWidgetLayout->setMargin(0);
+    headerWidgetLayout->setContentsMargins(0, 0, 0, 0);
     headerWidget->setLayout(headerWidgetLayout);
     auto topLevelWidgetLabel = new QLabel(tr("Welcome to UGENE"));
     topLevelWidgetLabel->setStyleSheet("padding-left: 25px; color: #145774; font-size: 34px;");
@@ -167,7 +167,7 @@ QWidget* WelcomePageWidget::createFooterWidget() {
     footerWidget->setStyleSheet("background-color: #B2C4C9;");
     footerWidget->setFixedHeight(150);
     auto footerWidgetLayout = new QVBoxLayout();
-    footerWidgetLayout->setMargin(0);
+    footerWidgetLayout->setContentsMargins(0, 0, 0, 0);
     footerWidget->setLayout(footerWidgetLayout);
 
     auto footerStrippedLineWidget = new QWidget();

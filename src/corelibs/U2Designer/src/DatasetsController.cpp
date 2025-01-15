@@ -555,7 +555,7 @@ QWidget* UrlAndDatasetController::createDatasetPageWidget(Dataset* set) {
 
     auto widget = new QWidget();
     auto layout = new QVBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setContentsMargins(0, 4, 0, 4);
     layout->setSpacing(6);
     widget->setLayout(layout);

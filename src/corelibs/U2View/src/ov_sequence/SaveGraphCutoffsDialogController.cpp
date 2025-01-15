@@ -59,7 +59,7 @@ SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(QSharedPointe
     QWidget* caw = createAnnotationController->getWidget();
     auto l = new QVBoxLayout();
     l->setSizeConstraint(QLayout::SetMinAndMaxSize);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->addWidget(caw);
     annotationsWidget->setLayout(l);
 

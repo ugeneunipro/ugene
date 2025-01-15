@@ -84,7 +84,7 @@ void LogViewWidget::init() {
 
     auto l = new QVBoxLayout();
     l->setSpacing(0);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->setContentsMargins(0, 0, 0, 0);
     setLayout(l);
 

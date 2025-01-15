@@ -64,7 +64,7 @@ void PositionSelector::init(bool fixedSize) {
         l->setContentsMargins(5, 0, 5, 0);
         l->setSizeConstraint(QLayout::SetFixedSize);
     } else {
-        l->setMargin(0);
+        l->setContentsMargins(0, 0, 0, 0);
     }
 
     setLayout(l);
@@ -99,7 +99,7 @@ PositionSelector::PositionSelector(QDialog* dialog, qint64 rangeStart, qint64 ra
     new HelpButton(dialog, helpButton, "65929411");
 
     auto l3 = new QHBoxLayout();
-    l3->setMargin(0);
+    l3->setContentsMargins(0, 0, 0, 0);
     l3->addStretch();
     l3->addWidget(okButton);
     l3->addWidget(cancelButton);
