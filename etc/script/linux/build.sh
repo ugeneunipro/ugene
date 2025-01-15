@@ -15,6 +15,7 @@ if [ ! -d "${QT_DIR}" ]; then
   exit 1
 fi
 
+UGENE_QMAKE_PARAMS="QMAKE_CC=/home/ugene/gcc/7.5/bin/gcc QMAKE_CXX=/home/ugene/gcc/7.5/bin/g++ QMAKE_LINK=/home/ugene/gcc/7.5/bin/g++ QMAKE_DEFAULT_INCDIRS+=${QT_DIR}/include QMAKE_PROJECT_DEPTH=0 CONFIG+=ugene-warnings-as-errors"
 TEAMCITY_WORK_DIR=$(pwd)
 UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
 SCRIPTS_DIR="${UGENE_DIR}/etc/script/linux"
