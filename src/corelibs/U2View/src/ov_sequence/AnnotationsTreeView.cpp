@@ -140,7 +140,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     connect(tree, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(sl_itemExpanded(QTreeWidgetItem*)));
 
     auto layout = new QVBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(tree);
     setLayout(layout);
 
@@ -885,9 +885,9 @@ void AnnotationsTreeView::sl_onBuildMenu(GObjectViewController*, QMenu* m, const
         QTreeWidgetItem* item = tree->itemAt(viewportPos);
         if (item != nullptr) {
             if (selItems.size() == 1 && selItems.first() != item) {
-                tree->setItemSelected(selItems.first(), false);
+                selItems.first()->setSelected(false);
             }
-            tree->setItemSelected(item, true);
+            item->setSelected(true);
         }
     }
 

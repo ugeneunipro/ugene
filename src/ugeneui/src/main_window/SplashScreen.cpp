@@ -49,12 +49,12 @@ SplashScreen::SplashScreen(QWidget* parent /* = NULL*/)
     auto mainLayout = new QHBoxLayout();
     setLayout(mainLayout);
     setContentsMargins(0, 0, 0, 0);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     auto frame = new QFrame(this);
     mainLayout->addWidget(frame);
 
     auto frameLayout = new QHBoxLayout();
-    frameLayout->setMargin(0);
+    frameLayout->setContentsMargins(0, 0, 0, 0);
     frame->setContentsMargins(0, 0, 0, 0);
     frame->setLayout(frameLayout);
 

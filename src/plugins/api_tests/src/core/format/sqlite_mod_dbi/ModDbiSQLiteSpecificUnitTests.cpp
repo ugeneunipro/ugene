@@ -25,7 +25,6 @@
 #include <U2Core/U2DbiPackUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 
-#include <U2Formats/SQLiteDbi.h>
 #include <U2Formats/SQLiteModDbi.h>
 #include <U2Formats/SQLiteObjectDbi.h>
 
@@ -1215,15 +1214,15 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, setNewRowsOrder_noModTrack) {
     // Get current row order
     QList<qint64> oldOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
-    CHECK_NOT_EQUAL(0, oldOrder.length(), "incorrect oreder list length");
+    CHECK_NOT_EQUAL(0, oldOrder.length(), "incorrect order list length");
 
     // Set new row order
     // Expected order (indexes): 4, 5, 1, 6, 0, 2, 3
     QList<qint64> newOrder = oldOrder;
-    newOrder.swap(0, 4);
-    newOrder.swap(3, 6);
-    newOrder.swap(2, 5);
-    newOrder.swap(1, 2);
+    std::swap(newOrder[0], newOrder[4]);
+    std::swap(newOrder[3], newOrder[6]);
+    std::swap(newOrder[2], newOrder[5]);
+    std::swap(newOrder[1], newOrder[2]);
 
     sqliteDbi->getMsaDbi()->setNewRowsOrder(msaId, newOrder, os);
     CHECK_NO_ERROR(os);

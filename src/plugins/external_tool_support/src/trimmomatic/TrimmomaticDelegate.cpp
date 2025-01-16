@@ -277,7 +277,7 @@ void TrimmomaticPropertyDialog::sl_moveStepUp() {
         listSteps->insertItem(selectedStepNum - 1, listSteps->takeItem(selectedStepNum));
     }
 
-    steps.swap(selectedStepNum, selectedStepNum - 1);
+    std::swap(steps[selectedStepNum], steps[selectedStepNum - 1]);
     listSteps->setCurrentRow(selectedStepNum - 1);
 }
 
@@ -299,7 +299,7 @@ void TrimmomaticPropertyDialog::sl_moveStepDown() {
         listSteps->insertItem(selectedStepNum + 1, listSteps->takeItem(selectedStepNum));
     }
 
-    steps.swap(selectedStepNum, selectedStepNum + 1);
+    std::swap(steps[selectedStepNum], steps[selectedStepNum + 1]);
     listSteps->setCurrentRow(selectedStepNum + 1);
 }
 

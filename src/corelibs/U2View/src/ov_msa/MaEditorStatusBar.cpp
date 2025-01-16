@@ -78,7 +78,7 @@ MaEditorStatusBar::MaEditorStatusBar(MaEditor* _editor)
     lockLabel = new QLabel();
 
     layout = new QHBoxLayout();
-    layout->setMargin(2);
+    layout->setContentsMargins(2, 2, 2, 2);
     layout->addStretch(1);
     setLayout(layout);
 

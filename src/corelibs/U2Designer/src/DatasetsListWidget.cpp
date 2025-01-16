@@ -40,7 +40,7 @@ namespace U2 {
 DatasetsListWidget::DatasetsListWidget(DatasetsController* _ctrl)
     : QWidget(), ctrl(_ctrl) {
     auto l = new QVBoxLayout(this);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     tabs = new DatasetsTabWidget(this);
     l->addWidget(tabs);
 

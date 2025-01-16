@@ -1125,12 +1125,12 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_, QWidget* parent)
         annotationsArea = new AssemblyAnnotationsArea(this);
 
         auto mainLayout = new QVBoxLayout();
-        mainLayout->setMargin(0);
+        mainLayout->setContentsMargins(0, 0, 0, 0);
         mainLayout->setSpacing(2);
         mainLayout->addWidget(zoomableOverview);
 
         auto readsLayout = new QGridLayout();
-        readsLayout->setMargin(0);
+        readsLayout->setContentsMargins(0, 0, 0, 0);
         readsLayout->setSpacing(0);
 
         readsLayout->addWidget(referenceArea, 0, 0);

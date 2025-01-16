@@ -40,7 +40,7 @@ AboutDialogController::AboutDialogController(QAction* visitWebAction, QWidget* p
     setupUi(this);
 
     auto l = new QHBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->addStretch(1);
     l->addStretch(1);
     frame->setContentsMargins(0, 0, 0, 0);
@@ -552,7 +552,7 @@ void TBoard::showNextPiece() {
 
     QPixmap pixmap(dx * squareWidth(), dy * squareHeight());
     QPainter painter(&pixmap);
-    painter.fillRect(pixmap.rect(), nextPieceLabel->palette().background());
+    painter.fillRect(pixmap.rect(), nextPieceLabel->palette().window());
 
     for (int i = 0; i < 4; ++i) {
         int x = nextPiece.x(i) - nextPiece.minX();
@@ -587,11 +587,11 @@ void TBoard::drawSquare(QPainter& painter, int x, int y, TPiece::Shape shape) {
     QColor color = colorTable[int(shape)];
     painter.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2, color);
 
-    painter.setPen(color.light());
+    painter.setPen(color.lighter());
     painter.drawLine(x, y + squareHeight() - 1, x, y);
     painter.drawLine(x, y, x + squareWidth() - 1, y);
 
-    painter.setPen(color.dark());
+    painter.setPen(color.darker());
     painter.drawLine(x + 1, y + squareHeight() - 1, x + squareWidth() - 1, y + squareHeight() - 1);
     painter.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + squareWidth() - 1, y + 1);
 }
@@ -680,7 +680,7 @@ TPiece TPiece::rotatedRight() const {
 NextPieceLabel::NextPieceLabel(QWidget* parent /* = 0*/)
     : QLabel(parent) {
     QPalette p = palette();
-    p.setColor(QPalette::Background, Qt::white);
+    p.setColor(QPalette::Window, Qt::white);
     setPalette(p);
     setFrameShape(QFrame::Box);
     setAlignment(Qt::AlignCenter);

@@ -31,7 +31,7 @@ namespace U2 {
 WelcomePageMdi::WelcomePageMdi(const QString& title, WelcomePageMdiController* controller)
     : MWMDIWindow(title), controller(controller) {
     auto l = new QVBoxLayout(this);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
 
     widget = new WelcomePageWidget(this);
     l->addWidget(widget);

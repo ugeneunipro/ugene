@@ -1144,10 +1144,10 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_noModTrack) {
     // Set new row order
     // Expected order (indexes): 4, 5, 1, 6, 0, 2, 3
     QList<qint64> newOrder = oldOrder;
-    newOrder.swap(0, 4);
-    newOrder.swap(3, 6);
-    newOrder.swap(2, 5);
-    newOrder.swap(1, 2);
+    std::swap(newOrder[0], newOrder[4]);
+    std::swap(newOrder[3], newOrder[6]);
+    std::swap(newOrder[2], newOrder[5]);
+    std::swap(newOrder[1], newOrder[2]);
 
     sqliteDbi->getMsaDbi()->setNewRowsOrder(msaId, newOrder, os);
     CHECK_NO_ERROR(os);
@@ -1236,10 +1236,10 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_undo) {
     // Set new row order
     // Expected order (indexes): 4, 5, 1, 6, 0, 2, 3
     QList<qint64> newOrder = oldOrder;
-    newOrder.swap(0, 4);
-    newOrder.swap(3, 6);
-    newOrder.swap(2, 5);
-    newOrder.swap(1, 2);
+    std::swap(newOrder[0], newOrder[4]);
+    std::swap(newOrder[3], newOrder[6]);
+    std::swap(newOrder[2], newOrder[5]);
+    std::swap(newOrder[1], newOrder[2]);
 
     sqliteDbi->getMsaDbi()->setNewRowsOrder(msaId, newOrder, os);
     CHECK_NO_ERROR(os);
@@ -1381,10 +1381,10 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
     // Set new row order
     // Expected order (indexes): 4, 5, 1, 6, 0, 2, 3
     QList<qint64> newOrder = oldOrder;
-    newOrder.swap(0, 4);
-    newOrder.swap(3, 6);
-    newOrder.swap(2, 5);
-    newOrder.swap(1, 2);
+    std::swap(newOrder[0], newOrder[4]);
+    std::swap(newOrder[3], newOrder[6]);
+    std::swap(newOrder[2], newOrder[5]);
+    std::swap(newOrder[1], newOrder[2]);
 
     sqliteDbi->getMsaDbi()->setNewRowsOrder(msaId, newOrder, os);
     CHECK_NO_ERROR(os);

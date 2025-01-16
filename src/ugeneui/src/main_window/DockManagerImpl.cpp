@@ -42,7 +42,7 @@ namespace U2 {
 DockWrapWidget::DockWrapWidget(QWidget* _w)
     : w(_w) {
     auto l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
     setLayout(l);
     l->addWidget(w);

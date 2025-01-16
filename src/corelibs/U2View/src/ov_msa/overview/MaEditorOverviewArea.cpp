@@ -33,7 +33,7 @@ MaEditorOverviewArea::MaEditorOverviewArea(QWidget* ui, const QString& objectNam
     setObjectName(objectName);
 
     layout = new QVBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     setLayout(layout);
 

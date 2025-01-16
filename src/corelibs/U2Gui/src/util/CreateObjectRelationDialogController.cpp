@@ -55,7 +55,9 @@ CreateObjectRelationDialogController::CreateObjectRelationDialogController(GObje
     foreach (GObject* obj, objects) {
         ui->listWidget->addItem(new QListWidgetItem(objectIcon, obj->getGObjectName()));
     }
-    ui->listWidget->setItemSelected(ui->listWidget->item(0), true);
+    if (auto item = ui->listWidget->item(0)) {
+        item->setSelected(true);
+    }
     ui->relationHintLabel->setText(relationHint);
 }
 

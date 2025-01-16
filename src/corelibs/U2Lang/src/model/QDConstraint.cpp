@@ -72,7 +72,7 @@ QString QDDistanceConstraint::getText(QDSchemeUnit*, QDSchemeUnit*) const {
 }
 
 void QDDistanceConstraint::invert() {
-    units.swap(0, 1);
+    std::swap(units[0], units[1]);
     setMin(-getMax());
     setMax(-getMin());
     distType = QDConstraintController::getInvertedType(distType);

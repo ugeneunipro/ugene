@@ -91,7 +91,7 @@ CodonTableView::CodonTableView(AnnotatedDNAView* view)
 
     auto l = new QVBoxLayout(this);
     l->addWidget(table);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
 
     setMaximumHeight(rowHeight * 18 + 10);
@@ -197,7 +197,7 @@ void CodonTableView::addItemToTable(int row, int column, const QString& text, co
     font.setPointSize(10);
     item->setFont(font);
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-    item->setBackgroundColor(backgroundColor);
+    item->setBackground(backgroundColor);
     item->setTextAlignment(Qt::AlignCenter);
     if (rowSpan != 1 || columnSpan != 1) {
         table->setSpan(row, column, rowSpan, columnSpan);
