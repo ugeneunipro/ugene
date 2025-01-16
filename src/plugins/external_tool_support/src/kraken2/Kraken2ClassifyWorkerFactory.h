@@ -48,7 +48,7 @@ public:
 
     static const QString SINGLE_END_TEXT;
     static const QString PAIRED_END_TEXT;
-    
+
     static const QString IN_PORT_DESCR_SINGLE;
     static const QString IN_PORT_DESCR_PAIRED;
 

@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="orf_marker/" >
-        <file>images/orf_marker.png</file>
+        <file>images/dark/orf_marker.png</file>
+        <file>images/light/orf_marker.png</file>
     </qresource>
 </RCC>

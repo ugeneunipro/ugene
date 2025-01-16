@@ -21,7 +21,10 @@
 
 #include "./OutputFilesDashboardWidget.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/MainWindow.h>
 
 #include <U2Lang/WorkflowUtils.h>
 
@@ -86,6 +89,8 @@ OutputFilesDashboardWidget::OutputFilesDashboardWidget(const QString& dashboardD
     if (monitor != nullptr) {
         connect(monitor, SIGNAL(si_newOutputFile(const Monitor::FileInfo&)), SLOT(sl_newOutputFile(const Monitor::FileInfo&)));
     }
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &OutputFilesDashboardWidget::sl_colorModeSwitched);
 }
 
 void OutputFilesDashboardWidget::addTrailingEmptyRows(bool callTableUpdate) {
@@ -118,6 +123,10 @@ void OutputFilesDashboardWidget::sl_newOutputFile(const Monitor::FileInfo& info)
 
     // Add trailing empty rows back.
     addTrailingEmptyRows(true);
+}
+
+void OutputFilesDashboardWidget::sl_colorModeSwitched() {
+    colorModeSwitched(tableGridLayout);
 }
 
 void OutputFilesDashboardWidget::updateWorkerRow(int workerIndex) {

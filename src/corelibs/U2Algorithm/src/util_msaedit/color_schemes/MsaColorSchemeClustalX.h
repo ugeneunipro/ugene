@@ -35,7 +35,6 @@ public:
     MsaColorSchemeClustalX(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj);
 
     QColor getBackgroundColor(int seq, int pos, char c) const override;
-    QColor getFontColor(int seq, int pos, char c) const override;
 
 private slots:
     void sl_alignmentChanged();

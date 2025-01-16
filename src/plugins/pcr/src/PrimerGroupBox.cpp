@@ -37,6 +37,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
@@ -52,9 +53,13 @@ PrimerGroupBox::PrimerGroupBox(QWidget* parent)
       annotatedDnaView(nullptr) {
     setupUi(this);
 
+    reverseComplementButton->setIcon(GUIUtils::getIconResource("core", "show_compl.png"));
+    browseButton->setIcon(GUIUtils::getIconResource("core", "database_with_arrow.png"));
+
     connect(primerEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_onPrimerChanged(const QString&)));
     connect(reverseComplementButton, SIGNAL(clicked()), SLOT(sl_translate()));
     connect(browseButton, SIGNAL(clicked()), SLOT(sl_browse()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &PrimerGroupBox::sl_colorModeSwitched);
 }
 
 void PrimerGroupBox::setAnnotatedDnaView(AnnotatedDNAView* dnaView) {
@@ -136,6 +141,11 @@ void PrimerGroupBox::sl_activeSequenceChanged() {
     } else {
         annotatedDnaView = nullptr;
     }
+}
+
+void PrimerGroupBox::sl_colorModeSwitched() {
+    reverseComplementButton->setIcon(GUIUtils::getIconResource("core", "show_compl.png"));
+    browseButton->setIcon(GUIUtils::getIconResource("core", "database_with_arrow.png"));
 }
 
 QString PrimerGroupBox::getTmString(const QString& sequence) {

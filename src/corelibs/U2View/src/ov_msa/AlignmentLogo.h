@@ -24,10 +24,13 @@
 #include <QGraphicsItem>
 #include <QMainWindow>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/Msa.h>
 #include <U2Core/MsaInfo.h>
 #include <U2Core/global.h>
+
+#include <U2Gui/MainWindow.h>
 
 namespace U2 {
 
@@ -41,65 +44,7 @@ enum SequenceType { Auto,
 /************************************************************************/
 class U2VIEW_EXPORT AlignmentLogoSettings {
 public:
-    AlignmentLogoSettings(const Msa& _ma)
-        : ma(_ma->getCopy()) {
-        for (int i = 0; i < 256; i++) {
-            colorScheme[i] = Qt::black;
-        }
-
-        if (ma->getAlphabet()->isNucleic()) {
-            sequenceType = NA;
-            colorScheme['G'] = QColor(255, 128, 0);
-            colorScheme['T'] = Qt::red;
-            colorScheme['C'] = Qt::blue;
-            colorScheme['A'] = Qt::green;
-            colorScheme['U'] = Qt::red;
-        } else if (ma->getAlphabet()->isAmino()) {
-            sequenceType = AA;
-        } else {
-            sequenceType = Auto;
-        }
-
-        if (!ma->getAlphabet()->isNucleic()) {
-            colorScheme['G'] = Qt::green;
-            colorScheme['S'] = Qt::green;
-            colorScheme['T'] = Qt::green;
-            colorScheme['Y'] = Qt::green;
-            colorScheme['C'] = Qt::green;
-            colorScheme['N'] = QColor(192, 0, 192);
-            colorScheme['Q'] = QColor(192, 0, 192);
-            colorScheme['K'] = Qt::blue;
-            colorScheme['R'] = Qt::blue;
-            colorScheme['H'] = Qt::blue;
-            colorScheme['D'] = Qt::red;
-            colorScheme['E'] = Qt::red;
-            colorScheme['P'] = Qt::black;
-            colorScheme['A'] = Qt::black;
-            colorScheme['W'] = Qt::black;
-            colorScheme['F'] = Qt::black;
-            colorScheme['L'] = Qt::black;
-            colorScheme['I'] = Qt::black;
-            colorScheme['M'] = Qt::black;
-            colorScheme['V'] = Qt::black;
-        }
-        startPos = 0;
-        len = ma->getLength();
-
-        /*colorScheme.insert('S', Qt::green);
-        colorScheme.insert('G', Qt::green);
-        colorScheme.insert('H', Qt::green);
-        colorScheme.insert('T', Qt::green);
-        colorScheme.insert('A', Qt::green);
-        colorScheme.insert('P', Qt::green);
-        colorScheme.insert('Y', Qt::blue);
-        colorScheme.insert('V', Qt::blue);
-        colorScheme.insert('M', Qt::blue);
-        colorScheme.insert('C', Qt::blue);
-        colorScheme.insert('L', Qt::blue);
-        colorScheme.insert('F', Qt::blue);
-        colorScheme.insert('I', Qt::blue);
-        colorScheme.insert('W', Qt::blue);*/
-    }
+    AlignmentLogoSettings(const Msa& _ma);
 
     Msa ma;
     SequenceType sequenceType;
@@ -107,14 +52,15 @@ public:
     int len;
     QColor colorScheme[256];
 
-private:
-    AlignmentLogoSettings();
+public:
+    void updateColors();
 };
 
 /************************************************************************/
 /* LogoRenderArea                                                       */
 /************************************************************************/
 class U2VIEW_EXPORT AlignmentLogoRenderArea : public QWidget {
+    Q_OBJECT
 public:
     AlignmentLogoRenderArea(const AlignmentLogoSettings& s, QWidget* p);
     void replaceSettings(const AlignmentLogoSettings& s);
@@ -126,6 +72,9 @@ protected:
     void evaluateHeights();
     void sortCharsByHeight();
     qreal getH(int pos);
+
+private slots:
+    void sl_colorModeSwitched();
 
 private:
     AlignmentLogoSettings settings;

@@ -26,8 +26,9 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/PrimerStatistics.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/Theme.h>
 
 #include "ImportPrimerFromObjectTask.h"
 

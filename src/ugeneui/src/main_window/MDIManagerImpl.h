@@ -73,6 +73,7 @@ private slots:
     void sl_updateWindowLayout();
     void sl_setWindowLayoutToMultiDoc();
     void sl_setWindowLayoutToTabbed();
+    void sl_colorModeSwitched();
 
 private:
     MDIItem* getMDIItem(int id) const;

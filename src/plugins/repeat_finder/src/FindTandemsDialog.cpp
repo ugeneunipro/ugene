@@ -38,6 +38,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/RegionSelector.h>
 
@@ -100,7 +101,7 @@ FindTandemsDialog::FindTandemsDialog(ADVSequenceObjectContext* _sc)
     rs = new RegionSelector(this, seqLen, false, sc->getSequenceSelection());
     rangeSelectorLayout->addWidget(rs);
 
-    setWindowIcon(QIcon(":/ugene/images/ugene_16.png"));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png", false));
 }
 
 QStringList FindTandemsDialog::getAvailableAnnotationNames() const {

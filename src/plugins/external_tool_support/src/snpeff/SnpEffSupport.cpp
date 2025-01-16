@@ -43,11 +43,6 @@ const QString SnpEffSupport::ET_SNPEFF_ID = "USUPP_SNPEFF";
 
 SnpEffSupport::SnpEffSupport()
     : ExternalTool(SnpEffSupport::ET_SNPEFF_ID, "snpeff", SnpEffSupport::ET_SNPEFF) {
-    if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
 
     executableFileName = "snpEff.jar";
 

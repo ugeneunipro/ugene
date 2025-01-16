@@ -30,6 +30,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
@@ -101,7 +103,7 @@ ReadSiteconProto::ReadSiteconProto(const Descriptor& _desc, const QList<PortDesc
     QMap<QString, PropertyDelegate*> delegateMap;
     delegateMap[BaseAttributes::URL_IN_ATTRIBUTE().getId()] = new URLDelegate(SiteconIO::getFileFilter(), SiteconIO::SITECON_ID, true, false, false);
     setEditor(new DelegateEditor(delegateMap));
-    setIconPath(":sitecon/images/sitecon.png");
+    setIconParameters(IconParameters("sitecon", "sitecon.png", true));
 }
 
 bool ReadSiteconProto::isAcceptableDrop(const QMimeData* md, QVariantMap* params) const {
@@ -118,7 +120,7 @@ WriteSiteconProto::WriteSiteconProto(const Descriptor& _desc, const QList<PortDe
     delegateMap[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(false);
 
     setEditor(new DelegateEditor(delegateMap));
-    setIconPath(":sitecon/images/sitecon.png");
+    setIconParameters(IconParameters("sitecon", "sitecon.png", true));
     setValidator(new ScreenedParamValidator(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), ports.first()->getId(), BaseSlots::URL_SLOT().getId()));
     setPortValidator(SITECON_IN_PORT_ID, new ScreenedSlotValidator(BaseSlots::URL_SLOT().getId()));
 }

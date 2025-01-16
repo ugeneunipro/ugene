@@ -79,6 +79,7 @@ signals:
 
 private slots:
     void sl_showProgress();
+    void sl_colorModeSwitched();
 
 private:
     void mousePressEvent(QMouseEvent*) override;

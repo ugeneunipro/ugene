@@ -41,6 +41,7 @@
 
 #include <U2Designer/DashboardInfoRegistry.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 #include <U2Lang/WorkflowUtils.h>
@@ -115,36 +116,20 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
 
-    auto tabButtonsRow = new QWidget(this);
+    tabButtonsRow = new QWidget(this);
     mainLayout->addWidget(tabButtonsRow);
 
     tabButtonsRow->setObjectName("tabButtonsRow");
-    tabButtonsRow->setStyleSheet(
-        "#tabButtonsRow {background: url(':U2Designer/images/background-menu.png') repeat scroll 0 0 transparent;}");
 
     auto tabButtonsLayout = new QHBoxLayout(tabButtonsRow);
     tabButtonsLayout->setContentsMargins(5, 5, 5, 5);
     tabButtonsLayout->addSpacing(20);
 
-    QString tabButtonStyleSheet = "QToolButton {"
-                                  "  color: white;"
-                                  "  border-radius: 6px;"
-                                  "  padding: 4px;"
-                                  "}\n"
-                                  "QToolButton:checked {"
-                                  "  color: white;"
-                                  "  background: url(':U2Designer/images/background-menu-button.png') repeat scroll 0 0 transparent;"
-                                  "}"
-                                  "QToolButton:hover:!checked {"
-                                  "  color: #005580;"
-                                  "  background: white;"
-                                  "}\n";
     setObjectName("dashboardWidget");
 
     overviewTabButton = new QToolButton(tabButtonsRow);
     overviewTabButton->setText(tr("Overview"));
     overviewTabButton->setObjectName("overviewTabButton");
-    overviewTabButton->setStyleSheet(tabButtonStyleSheet);
     overviewTabButton->setCursor(Qt::PointingHandCursor);
     overviewTabButton->setCheckable(true);
     overviewTabButton->setChecked(true);
@@ -153,7 +138,6 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
     inputTabButton = new QToolButton(tabButtonsRow);
     inputTabButton->setText(tr("Input"));
     inputTabButton->setObjectName("inputTabButton");
-    inputTabButton->setStyleSheet(tabButtonStyleSheet);
     inputTabButton->setCursor(Qt::PointingHandCursor);
     inputTabButton->setCheckable(true);
     tabButtonsLayout->addWidget(inputTabButton);
@@ -161,10 +145,11 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
     externalToolsTabButton = new QToolButton(tabButtonsRow);
     externalToolsTabButton->setText(tr("External Tools"));
     externalToolsTabButton->setObjectName("externalToolsTabButton");
-    externalToolsTabButton->setStyleSheet(tabButtonStyleSheet);
     externalToolsTabButton->setCursor(Qt::PointingHandCursor);
     externalToolsTabButton->setCheckable(true);
     tabButtonsLayout->addWidget(externalToolsTabButton);
+
+    updateStyleSheets();
 
     auto tabButtonGroup = new QButtonGroup(tabButtonsRow);
     tabButtonGroup->setExclusive(true);
@@ -176,7 +161,7 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
     tabButtonsLayout->addStretch(INT_MAX);  // Push the last button to the end.
 
     auto loadSchemaButton = new QToolButton(tabButtonsRow);
-    loadSchemaButton->setIcon(QIcon(":U2Designer/images/load_schema.png"));
+    loadSchemaButton->setIcon(GUIUtils::getIconResource("U2Designer", "load_schema.png", false));
     loadSchemaButton->setObjectName("loadSchemaButton");
     loadSchemaButton->setToolTip(tr("Open workflow schema"));
     //    loadSchemaButton->setText(tr("Open schema"));
@@ -228,6 +213,8 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
     externalToolsTabButton->setVisible(!externalToolsWidgetState.isNull());
 
     stackedWidget->setCurrentIndex(0);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &Dashboard::sl_colorModeSwitched);
 }
 
 void Dashboard::initExternalToolsTabWidget() {
@@ -253,6 +240,10 @@ void Dashboard::sl_onTabButtonToggled(int id, bool checked) {
             stackedWidget->setCurrentIndex(2);
             break;
     }
+}
+
+void Dashboard::sl_colorModeSwitched() {
+    updateStyleSheets();
 }
 
 void Dashboard::onShow() {
@@ -362,6 +353,30 @@ void Dashboard::saveReportFile() {
                      "<div class=\"widget-content\" id=\"externalToolsWidget\">\n" + externalToolsWidget->toHtml() + "</div>\n");
     }
     IOAdapterUtils::writeTextFile(dir + REPORT_SUB_DIR + DB_FILE_NAME, html);
+}
+
+void Dashboard::updateStyleSheets() {
+    QString bmResourcePath = GUIUtils::getResourceName("U2Designer", "background-menu.png");
+    tabButtonsRow->setStyleSheet(QString(
+        "#tabButtonsRow {background: url('%1') repeat scroll 0 0 transparent;}").arg(bmResourcePath));
+
+    QString bmbResourcePath = GUIUtils::getResourceName("U2Designer", "background-menu-button.png");
+    QString tabButtonStyleSheet = QString("QToolButton {"
+                                  "  color: white;"
+                                  "  border-radius: 6px;"
+                                  "  padding: 4px;"
+                                  "}\n"
+                                  "QToolButton:checked {"
+                                  "  color: white;"
+                                  "  background: url('%1') repeat scroll 0 0 transparent;"
+                                  "}"
+                                  "QToolButton:hover:!checked {"
+                                  "  color: #005580;"
+                                  "  background: white;"
+                                  "}\n").arg(bmbResourcePath);
+    overviewTabButton->setStyleSheet(tabButtonStyleSheet);
+    inputTabButton->setStyleSheet(tabButtonStyleSheet);
+    externalToolsTabButton->setStyleSheet(tabButtonStyleSheet);
 }
 
 void Dashboard::sl_setDirectory(const QString& value) {

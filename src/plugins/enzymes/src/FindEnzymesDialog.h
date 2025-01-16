@@ -84,6 +84,8 @@ private slots:
     void sl_itemChanged(QTreeWidgetItem* item, int col);
     void sl_filterConditionsChanged();
     void sl_findSingleEnzymeTaskStateChanged();
+    void sl_itemSelectionChanged();
+    void sl_colorModeSwitched();
 
 private:
     static void calculateSuppliers();
@@ -164,6 +166,9 @@ public:
     bool operator<(const QTreeWidgetItem& other) const override;
     // Get text information about this enzyme
     QString getEnzymeInfo() const;
+    // Invoce this function, when color mode is switched
+    // If fixes some enzyme info colors
+    void colorModeSwitched();
 
 private:
     enum Column {

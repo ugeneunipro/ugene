@@ -2708,14 +2708,14 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="867"/>
-        <source>The following errors are critical and does not allow one to continue calculation: 
+        <source>The following errors are critical and does not allow one to continue calculation:
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="874"/>
-        <source>The following not critical errors are possible: 
+        <source>The following not critical errors are possible:
 
 </source>
         <translation type="unfinished"></translation>

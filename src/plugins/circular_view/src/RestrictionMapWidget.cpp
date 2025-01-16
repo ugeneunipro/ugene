@@ -22,6 +22,7 @@
 #include "RestrictionMapWidget.h"
 
 #include <QVBoxLayout>
+#include <QElapsedTimer>
 
 #include <U2Algorithm/EnzymeModel.h>
 
@@ -33,6 +34,8 @@
 #include <U2Core/AutoAnnotationsSupport.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U1AnnotationUtils.h>
+
+#include <U2Gui/GUIUtils.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 
@@ -60,7 +63,7 @@ void EnzymeFolderItem::addEnzymeItem(Annotation* enzAnn) {
     const SharedAnnotationData& data = enzAnn->getData();
     QString location = U1AnnotationUtils::buildLocationString(data);
     addChild(new EnzymeItem(location, enzAnn));
-    setIcon(0, QIcon(":circular_view/images/folder.png"));
+    setIcon(0, GUIUtils::getIconResource("circular_view", "folder.png", false));
     int count = childCount();
     QString site = count == 1 ? RestrctionMapWidget::tr("site") : RestrctionMapWidget::tr("sites");
     setText(0, QString("%1 : %2 %3").arg(getName()).arg(count).arg(site));
@@ -75,7 +78,7 @@ void EnzymeFolderItem::removeEnzymeItem(Annotation* enzAnn) {
             QString site = --count == 1 ? RestrctionMapWidget::tr("site") : RestrctionMapWidget::tr("sites");
             setText(0, QString("%1 : %2 %3").arg(getName()).arg(count).arg(site));
             if (count == 0) {
-                setIcon(0, QIcon(":circular_view/images/empty_folder.png"));
+                setIcon(0, GUIUtils::getIconResource("circular_view", "empty_folder.png", false));
             }
             break;
         }
@@ -116,7 +119,7 @@ void RestrctionMapWidget::updateTreeWidget() {
     QList<QTreeWidgetItem*> items;
     foreach (const QString& enzyme, selectedEnzymes) {
         auto item = new EnzymeFolderItem(enzyme);
-        item->setIcon(0, QIcon(":circular_view/images/empty_folder.png"));
+        item->setIcon(0, GUIUtils::getIconResource("circular_view", "empty_folder.png", false));
         items.append(item);
     }
     treeWidget->insertTopLevelItems(0, items);
@@ -134,6 +137,8 @@ void RestrctionMapWidget::registerAnnotationObjects() {
 }
 
 void RestrctionMapWidget::sl_onAnnotationsAdded(const QList<Annotation*>& anns) {
+    QElapsedTimer t;
+    t.start();
     foreach (Annotation* a, anns) {
         QString aName = a->getName();
         EnzymeFolderItem* folderItem = findEnzymeFolderByName(aName);
@@ -145,6 +150,7 @@ void RestrctionMapWidget::sl_onAnnotationsAdded(const QList<Annotation*>& anns) 
     // TODO: enable "intelligent" sorting by reimplementing custom AbstractModel
     //  Take into account number of items in each enzymes folder
     treeWidget->sortItems(0, Qt::AscendingOrder);
+    coreLog.info(QString("Reuqired for table building: %1").arg(t.elapsed()));
 }
 
 void RestrctionMapWidget::sl_onAnnotationsRemoved(const QList<Annotation*>& anns) {

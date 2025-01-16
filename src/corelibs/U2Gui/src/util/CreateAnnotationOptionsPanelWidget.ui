@@ -42,7 +42,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="sizeConstraint">
-       <enum>QLayout::SetMinAndMaxSize</enum>
+       <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -69,11 +69,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QComboBox" name="cbExistingTable">
-          <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-          </property>
-         </widget>
+         <widget class="QComboBox" name="cbExistingTable"/>
         </item>
         <item>
          <widget class="QToolButton" name="tbBrowseExistingTable">
@@ -136,7 +132,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="sizeConstraint">
-       <enum>QLayout::SetMinAndMaxSize</enum>
+       <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -190,11 +186,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="cbAnnotationType">
-        <property name="sizeAdjustPolicy">
-         <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-        </property>
-       </widget>
+       <widget class="QComboBox" name="cbAnnotationType"/>
       </item>
       <item>
        <widget class="QLabel" name="lblAnnotationName">

@@ -29,7 +29,7 @@ class Kraken2Support : public ExternalTool {
     Q_OBJECT
 public:
     Kraken2Support();
-    
+
     static const QString CLASSIFY_TOOL;
     static const QString CLASSIFY_TOOL_ID;
 };

@@ -30,6 +30,8 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 // TODO:
 //  track factory registry and show only the states with factories available
 //  delete view state if factory refuses create view
@@ -38,9 +40,9 @@ namespace U2 {
 
 ObjectViewTreeController::ObjectViewTreeController(QTreeWidget* w)
     : QObject(w), tree(w) {
-    bookmarkStateIcon = QIcon(":core/images/bookmark_item.png");
-    bookmarkActiveIcon = QIcon(":core/images/bookmark.png");
-    bookmarkInactiveIcon = QIcon(":core/images/bookmark_inactive.png");
+    bookmarkStateIcon = GUIUtils::getIconResource("core", "bookmark_item.png", false);
+    bookmarkActiveIcon = GUIUtils::getIconResource("core", "bookmark.png", false);
+    bookmarkInactiveIcon = GUIUtils::getIconResource("core", "bookmark_inactive.png", false);
 
     tree->headerItem()->setHidden(true);
     tree->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -60,7 +62,7 @@ ObjectViewTreeController::ObjectViewTreeController(QTreeWidget* w)
 
     addStateAction = new QAction(tr("Add bookmark"), this);
     addStateAction->setObjectName(ACTION_ADD_BOOKMARK);
-    addStateAction->setIcon(QIcon(":core/images/bookmark_add.png"));
+    addStateAction->setIcon(GUIUtils::getIconResource("core", "bookmark_add.png", false));
     connect(addStateAction, &QAction::triggered, this, &ObjectViewTreeController::sl_addState);
 
     updateStateAction = new QAction(tr("Update bookmark"), this);
@@ -69,14 +71,14 @@ ObjectViewTreeController::ObjectViewTreeController(QTreeWidget* w)
 
     removeStateAction = new QAction(tr("Remove bookmark"), this);
     removeStateAction->setObjectName(ACTION_REMOVE_BOOKMARK);
-    removeStateAction->setIcon(QIcon(":core/images/bookmark_remove.png"));
+    removeStateAction->setIcon(GUIUtils::getIconResource("core", "bookmark_remove.png", false));
     removeStateAction->setShortcut(QKeySequence(Qt::Key_Delete));
     removeStateAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     connect(removeStateAction, &QAction::triggered, this, &ObjectViewTreeController::sl_removeState);
 
     renameStateAction = new QAction(tr("Rename bookmark"), this);
     renameStateAction->setObjectName(ACTION_RENAME_BOOKMARK);
-    renameStateAction->setIcon(QIcon(":core/images/bookmark_edit.png"));
+    renameStateAction->setIcon(GUIUtils::getIconResource("core", "bookmark_edit.png", false));
     renameStateAction->setShortcut(QKeySequence(Qt::Key_F2));
     renameStateAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     connect(renameStateAction, &QAction::triggered, this, &ObjectViewTreeController::sl_renameState);

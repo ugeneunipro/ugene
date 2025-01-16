@@ -51,9 +51,6 @@ MAFFTSupport::MAFFTSupport()
     : ExternalTool(MAFFTSupport::ET_MAFFT_ID, "mafft", "MAFFT") {
     if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new MAFFTSupportContext(this);
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
     }
 
     executableFileName = "mafft.bat";

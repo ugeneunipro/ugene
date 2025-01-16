@@ -73,7 +73,7 @@ CircularAnnotationItem::~CircularAnnotationItem() {
 void CircularAnnotationItem::paint(QPainter* p, const QStyleOptionGraphicsItem*, QWidget* widget) {
     AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
     AnnotationSettings* as = asr->getAnnotationSettings(annotation->getData());
-    this->color = as->color;
+    this->color = as->getActiveColor();
     for (CircularAnnotationRegionItem* item : qAsConst(regions)) {
         item->paint(p, nullptr, widget);
     }
@@ -138,7 +138,7 @@ void CircularAnnotationRegionItem::paint(QPainter* p, const QStyleOptionGraphics
     Q_UNUSED(widget);
     Q_UNUSED(option);
     assert(parent != nullptr);
-    QPen pen(Qt::black);
+    QPen pen(QPalette().text().color());
     pen.setWidth(1);
     if (parent->isSelected) {
         pen.setWidth(2);
@@ -155,7 +155,7 @@ void CircularAnnotationRegionItem::paint(QPainter* p, const QStyleOptionGraphics
     QRadialGradient radialGrad(QPointF(0, 0), outerRadius);
     radialGrad.setColorAt(1, color);
     radialGrad.setColorAt((float)innerRadius / (float)outerRadius, QColor(color.red() * 0.7, color.green() * 0.7, color.blue() * 0.7));
-    radialGrad.setColorAt(0, Qt::black);
+    radialGrad.setColorAt(0, QPalette().text().color());
 
     p->fillPath(path(), radialGrad);
 
@@ -330,7 +330,7 @@ void CircularAnnotationLabel::drawLabelInsideRegion(QPainter* p, bool canFit) {
 
 void CircularAnnotationLabel::drawLabelOutsideRegion(QPainter* p, QPen& pen) {
     QRectF bound = boundingRect();
-    p->fillRect(bound, Qt::white);
+    p->fillRect(bound, QPalette().base().color());
     p->drawText(bound, labelText);
 
     pen.setStyle(Qt::DotLine);
@@ -594,7 +594,7 @@ void CircularAnnotationLabel::paint(QPainter* p, const QStyleOptionGraphicsItem*
     CircularAnnotationItem* ai = ra->circItems.value(annotation);
 
     p->save();
-    QPen pen(Qt::black);
+    QPen pen(QPalette().text().color());
     pen.setWidth(1);
     labelFont.setBold(false);
     if (ai->isSelected) {

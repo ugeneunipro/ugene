@@ -73,20 +73,20 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
     msaEditor->registerActionProvider(this);
 
     // Toggles exclude list view in MSA editor. See MsaExcludeList for details.
-    auto toggleExcludeListAction = new GObjectViewAction(this, view, tr("Show Exclude List"));
-    toggleExcludeListAction->setIcon(QIcon(":core/images/inbox-minus.png"));
+    toggleExcludeListAction = new GObjectViewAction(this, view, tr("Show Exclude List"));
+    toggleExcludeListAction->setIcon(GUIUtils::getIconResource("core", "inbox-minus.png"));
     toggleExcludeListAction->setCheckable(true);
     toggleExcludeListAction->setObjectName(TOGGLE_EXCLUDE_LIST_ACTION_NAME);
     toggleExcludeListAction->setToolTip(tr("Show/Hide Exclude List view visibility"));
     connect(toggleExcludeListAction, &QAction::triggered, this, [this, msaEditor] { toggleExcludeListView(msaEditor); });
-    connect(view, &GObjectViewController::si_buildStaticToolbar, this, [toggleExcludeListAction](GObjectViewController*, QToolBar* toolBar) { toolBar->addAction(toggleExcludeListAction); });
+    connect(view, &GObjectViewController::si_buildStaticToolbar, this, [this](GObjectViewController*, QToolBar* toolBar) { toolBar->addAction(toggleExcludeListAction); });
     addViewAction(toggleExcludeListAction);
 
-    auto moveFromMsaAction = new GObjectViewAction(this, view, tr("Move to Exclude List"));
-    moveFromMsaAction->setIcon(QIcon(":core/images/arrow-move-down.png"));
+    moveFromMsaAction = new GObjectViewAction(this, view, tr("Move to Exclude List"));
+    moveFromMsaAction->setIcon(GUIUtils::getIconResource("core", "arrow-move-down.png", false));
     moveFromMsaAction->setObjectName(MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME);
     moveFromMsaAction->setToolTip(tr("Move selected MSA sequences to Exclude List"));
-    connect(moveFromMsaAction, &QAction::triggered, this, [this, msaEditor, toggleExcludeListAction]() {
+    connect(moveFromMsaAction, &QAction::triggered, this, [this, msaEditor]() {
         auto excludeListWidget = findActiveExcludeList(msaEditor);
         if (excludeListWidget == nullptr) {
             toggleExcludeListAction->trigger();
@@ -109,13 +109,24 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
         CHECK(!msaObjectPtr.isNull(), );
         msaObjectPtr->disconnect(this);
     });
-    connect(view, &GObjectViewController::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectViewController*, QMenu* menu) {
+    connect(view, &GObjectViewController::si_buildMenu, this, [msaEditor, this](GObjectViewController*, QMenu* menu) {
         QMenu* copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
         GUIUtils::insertActionAfter(copyMenu, msaEditor->getLineWidget(0)->cutSelectionAction, moveFromMsaAction);
     });
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaExcludeListContext::sl_colorModeSwitched);
     addViewAction(moveFromMsaAction);
 
     updateState(msaEditor);
+}
+
+void MsaExcludeListContext::disconnectView(GObjectViewController* view) {
+    disconnect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaExcludeListContext::sl_colorModeSwitched);
+    GObjectViewWindowContext::disconnectView(view);
+}
+
+void MsaExcludeListContext::sl_colorModeSwitched() {
+    toggleExcludeListAction->setIcon(GUIUtils::getIconResource("core", "inbox-minus.png"));
+    moveFromMsaAction->setIcon(GUIUtils::getIconResource("core", "arrow-move-down.png", false));
 }
 
 MsaExcludeListWidget* MsaExcludeListContext::findActiveExcludeList(MsaEditor* msaEditor) {
@@ -248,7 +259,7 @@ MsaExcludeListWidget::MsaExcludeListWidget(QWidget* parent, MsaEditor* _msaEdito
 
     moveToMsaAction = new QAction(tr("Move to alignment"), this);
     moveToMsaAction->setToolTip(tr("Move selected Exclude List sequences to MSA"));
-    moveToMsaAction->setIcon(QIcon(":core/images/arrow-move-up.png"));
+    moveToMsaAction->setIcon(GUIUtils::getIconResource("core", "arrow-move-up.png", false));
     connect(moveToMsaAction, &QAction::triggered, this, &MsaExcludeListWidget::moveExcludeListSelectionToMaObject);
 
     auto moveToMsaButton = new QToolButton();
@@ -282,6 +293,7 @@ MsaExcludeListWidget::MsaExcludeListWidget(QWidget* parent, MsaEditor* _msaEdito
     }
 
     connect(AppContext::getTaskScheduler(), &TaskScheduler::si_stateChanged, this, &MsaExcludeListWidget::trackMsaObjectSaveTask);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaExcludeListWidget::sl_colorModeSwitched);
 
     toolbarLayout->addStretch();
 
@@ -671,6 +683,10 @@ void MsaExcludeListWidget::trackMsaObjectSaveTask(Task* task) {
 
 QSize MsaExcludeListWidget::sizeHint() const {
     return {500, 200};
+}
+
+void MsaExcludeListWidget::sl_colorModeSwitched() {
+    moveToMsaAction->setIcon(GUIUtils::getIconResource("core", "arrow-move-up.png", false));
 }
 
 }  // namespace U2

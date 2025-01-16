@@ -25,6 +25,8 @@
 
 #include <U2Core/U2OpStatus.h>
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/DatasetFetcher.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
