@@ -43,6 +43,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/Theme.h>
 
 #include "CloudStorageService.h"
 #include "WorkspaceService.h"
@@ -154,7 +155,7 @@ static void updateModel(QTreeView* tree,
         }
         bool isShared = !childEntry->sharedWithEmails.isEmpty();
         if (isShared) {
-            nameItem->setData(QIcon(":ugene/images/group.svg"), USER_DATA_SECONDARY_ICON);
+            nameItem->setData(GUIUtils::getIconResource("ugene", "group.svg"), USER_DATA_SECONDARY_ICON);
             nameItem->setToolTip(CloudStorageDockWidget::tr("Shared with:\n%1").arg(childEntry->sharedWithEmails.join("\n")));
             nameItem->setData(QVariant::fromValue(childEntry->sharedWithEmails), USER_DATA_SHARED_WITH_EMAILS);
         } else {
@@ -377,6 +378,9 @@ void CloudStorageDockWidget::sl_colorModeSwitched() {
     shareAction->setIcon(GUIUtils::getIconResource("ugene", "file_share.svg"));
     openWebWorkspaceAction->setIcon(GUIUtils::getIconResource("ugene", "web_link.svg"));
     setWindowIcon(GUIUtils::getIconResource("ugene", "cloud_storage.svg"));
+    stateLabel->setText(workspaceService->isLoggedIn()
+                            ? tr(R"(Loading file list...<br><br><br><a href="logout"><span style=\"color: %1;\">Logout</span></a>)").arg(Theme::hyperlinkColorLabelHtmlStr())
+                            : tr(R"(Please <a href="login"><span style=\"color: %1;\">log in to Workspace</span></a> to access cloud storage)").arg(Theme::hyperlinkColorLabelHtmlStr()));
 }
 
 void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
@@ -595,8 +599,8 @@ void CloudStorageDockWidget::updateStateLabelText() {
     disconnect(stateLabel, &QLabel::linkActivated, this, nullptr);
     const auto isLoggedIn = workspaceService->isLoggedIn();
     stateLabel->setText(isLoggedIn
-                            ? tr(R"(Loading file list...<br><br><br><a href="logout">Logout</a>)")
-                            : tr(R"(Please <a href="login">log in to Workspace</a> to access cloud storage)"));
+                            ? tr(R"(Loading file list...<br><br><br><a href="logout"><span style=\"color: %1;\">Logout</span></a>)").arg(Theme::hyperlinkColorLabelHtmlStr())
+                            : tr(R"(Please <a href="login"><span style=\"color: %1;\">log in to Workspace</span></a> to access cloud storage)").arg(Theme::hyperlinkColorLabelHtmlStr()));
 
     connect(stateLabel, &QLabel::linkActivated, this, [&](const QString& link) {
         if (link == "login") {
