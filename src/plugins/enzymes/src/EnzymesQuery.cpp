@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -144,7 +144,7 @@ EnzymesSelectorDialog::EnzymesSelectorDialog(EnzymesSelectorDialogHandler* paren
 
     auto vl = new QVBoxLayout();
     enzSel = new EnzymesSelectorWidget();
-    vl->setMargin(0);
+    vl->setContentsMargins(0, 0, 0, 0);
     vl->addWidget(enzSel);
     enzymesSelectorWidget->setLayout(vl);
     enzymesSelectorWidget->setMinimumSize(enzSel->size());

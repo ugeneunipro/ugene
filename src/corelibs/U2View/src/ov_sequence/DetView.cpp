@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -454,7 +454,7 @@ void DetView::sl_verticalScrollBarMoved(int pos) {
 
 void DetView::pack() {
     auto layout = new QGridLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     layout->addWidget(renderArea, 0, 0);
     layout->addWidget(scrollBar, 1, 0);

@@ -1,3 +1,4 @@
-set(UGENE_PLUGIN_NAME sitecon)
+set(UGENE_PLUGIN_ID sitecon)
+set(UGENE_PLUGIN_NAME Sitecon)
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

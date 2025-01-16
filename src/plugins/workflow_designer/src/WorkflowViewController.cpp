@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -468,7 +468,7 @@ void WorkflowView::setupErrorList() {
         errorList->setTitle(tr("Error list"));
         auto vl = new QVBoxLayout(errorList);
         vl->setSpacing(0);
-        vl->setMargin(0);
+        vl->setContentsMargins(0, 0, 0, 0);
         vl->setContentsMargins(0, 0, 0, 0);
         vl->addWidget(infoList);
     }
@@ -548,7 +548,7 @@ void WorkflowView::setupMainSplitter() {
     layout->addWidget(tabView);
     layout->addWidget(splitter);
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
 
@@ -587,7 +587,7 @@ void WorkflowView::addBottomWidgetsToInfoSplitter() {
     auto w = new QWidget(bottomTabs);
     auto vl = new QVBoxLayout(w);
     vl->setSpacing(0);
-    vl->setMargin(0);
+    vl->setContentsMargins(0, 0, 0, 0);
     vl->setContentsMargins(0, 0, 0, 0);
     vl->addWidget(infoList);
     w->hide();

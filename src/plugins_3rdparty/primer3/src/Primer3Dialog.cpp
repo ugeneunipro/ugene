@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -880,7 +880,7 @@ bool Primer3Dialog::updateErrorState(const QMap<QWidget*, bool>& widgetStates, c
         generalErrorString += tr("\n\nFix criticals and re-run Primer3.");
         result = QMessageBox::critical(this, windowTitle(), generalErrorString, QMessageBox::StandardButton::Ok);
     } else {
-        generalErrorString += tr("\n\In case of calculation, all incorrect values will be ignored. Continue?");
+        generalErrorString += tr("\n\nIn case of calculation, all incorrect values will be ignored. Continue?");
         result = QMessageBox::question(this, windowTitle(), generalErrorString, QMessageBox::StandardButton::Yes, QMessageBox::StandardButton::No);
     }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -86,7 +86,7 @@ ORFDialog::ORFDialog(ADVSequenceObjectContext* _ctx)
     rangeSelectorLayout->addWidget(rs);
 
     resultsTree->setSortingEnabled(true);
-    resultsTree->sortByColumn(0);
+    resultsTree->sortByColumn(0, Qt::AscendingOrder);
 
     timer = new QTimer(this);
 
@@ -425,7 +425,7 @@ void ORFDialog::createAnnotationWidget() {
     ac = new CreateAnnotationWidgetController(acm, this);
     QWidget* caw = ac->getWidget();
     auto l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->addWidget(caw);
     annotationsWidget->setLayout(l);
 }

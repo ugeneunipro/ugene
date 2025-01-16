@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,14 +26,11 @@
 #include <QScopedPointer>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -250,8 +247,8 @@ void ConstructMoleculeDialog::updateConstructMoleculeTableWidget() {
                 bool noStrands = strand.isEmpty() && prevStrand.isEmpty();
                 QColor color = (equaledOverhangs && (differentStrands || noStrands)) ? Qt::green : Qt::red;
 
-                prevItem->setTextColor(2, color);
-                item->setTextColor(0, color);
+                prevItem->setForeground(2, color);
+                item->setForeground(0, color);
             }
             prevItem = item;
         }
@@ -270,8 +267,8 @@ void ConstructMoleculeDialog::updateConstructMoleculeTableWidget() {
 
             QColor color = (firstOverhang == lastOverhang && (firstStrand != lastStrand || (firstStrand.isEmpty() && lastStrand.isEmpty()))) ? Qt::green : Qt::red;
 
-            first->setTextColor(0, color);
-            last->setTextColor(2, color);
+            first->setForeground(0, color);
+            last->setForeground(2, color);
         }
     }
 }
@@ -431,8 +428,8 @@ void ConstructMoleculeDialog::sl_adjustLeftEnd() {
     fragment.setLeftOverhangStrand(!rightTerm.isDirect);
 
     selectedItem->setText(LEFT_END_COLUMN, createEndSign(fragment.getLeftTerminus()));
-    selectedItem->setTextColor(LEFT_END_COLUMN, Qt::green);
-    itemAbove->setTextColor(RIGHT_END_COLUMN, Qt::green);
+    selectedItem->setForeground(LEFT_END_COLUMN, Qt::green);
+    itemAbove->setForeground(RIGHT_END_COLUMN, Qt::green);
 }
 
 void ConstructMoleculeDialog::sl_adjustRightEnd() {
@@ -469,8 +466,8 @@ void ConstructMoleculeDialog::sl_adjustRightEnd() {
     fragment.setRightOverhangStrand(!leftTerm.isDirect);
 
     selectedItem->setText(RIGHT_END_COLUMN, createEndSign(fragment.getRightTerminus()));
-    selectedItem->setTextColor(RIGHT_END_COLUMN, Qt::green);
-    itemBelow->setTextColor(LEFT_END_COLUMN, Qt::green);
+    selectedItem->setForeground(RIGHT_END_COLUMN, Qt::green);
+    itemBelow->setForeground(LEFT_END_COLUMN, Qt::green);
 }
 
 void ConstructMoleculeDialog::sl_onAddFromProjectButtonClicked() {

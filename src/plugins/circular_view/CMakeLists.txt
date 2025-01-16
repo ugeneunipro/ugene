@@ -1,3 +1,5 @@
-set(UGENE_PLUGIN_NAME circular_view)
+set(UGENE_PLUGIN_ID circular_view)
+set(UGENE_PLUGIN_NAME "Plasmid viewer")
+set(UGENE_PLUGIN_MODE ui)
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

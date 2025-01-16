@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -180,7 +180,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     auto verticalLayout = new QVBoxLayout(mainWidget);
     verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
     verticalLayout->setSpacing(0);
-    verticalLayout->setMargin(0);
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
 
     const QString title = getTitle();
     if (!title.isEmpty()) {

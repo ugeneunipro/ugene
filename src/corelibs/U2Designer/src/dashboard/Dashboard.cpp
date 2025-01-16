@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -113,7 +113,7 @@ Dashboard::Dashboard(const QString& dirPath, QWidget* parent)
 
 void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates) {
     mainLayout = new QVBoxLayout(this);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
 
     tabButtonsRow = new QWidget(this);
@@ -122,7 +122,7 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
     tabButtonsRow->setObjectName("tabButtonsRow");
 
     auto tabButtonsLayout = new QHBoxLayout(tabButtonsRow);
-    tabButtonsLayout->setMargin(5);
+    tabButtonsLayout->setContentsMargins(5, 5, 5, 5);
     tabButtonsLayout->addSpacing(20);
 
     setObjectName("dashboardWidget");

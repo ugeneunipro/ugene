@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,6 +38,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QIcon>
+#include <QScreen>
 #include <QStyleFactory>
 #include <QTranslator>
 
@@ -437,9 +438,17 @@ int main(int argc, char** argv) {
     // A workaround for https://bugreports.qt.io/browse/QTBUG-87014: "Qt application gets stuck trying to open main window under Big Sur"
     qputenv("QT_MAC_WANTS_LAYER", "1");
 #endif
-
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
     // QApplication app(argc, argv);
     GApplication app(argc, argv);
+
+#ifdef Q_OS_WIN
+    QFont appFont = QGuiApplication::font();
+    if (appFont.pointSize() < 8) {
+        appFont.setPointSize(8);
+        QGuiApplication::setFont(appFont);
+    }
+#endif
 
 #ifdef Q_OS_LINUX
     QPixmap pixmap(":/ugene/images/originals/ugene_128.png");
@@ -487,7 +496,7 @@ int main(int argc, char** argv) {
             Qt::LeftToRight,
             Qt::AlignCenter,
             splashScreen->size(),
-            qApp->desktop()->availableGeometry(QApplication::desktop()->primaryScreen())));
+            QGuiApplication::primaryScreen()->availableGeometry()));
     splashScreen->show();
 
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -172,7 +172,7 @@ ViewMatrixDialogController::ViewMatrixDialogController(PFMatrix matrix, QWidget*
     MLLayout->addWidget(ml);
 
     QPushButton* closeButton = buttonBox->button(QDialogButtonBox::Close);
-    setMinimumHeight(ml->height() + closeButton->height() + layout()->margin() * 2 + layout()->spacing());
+    setMinimumHeight(ml->height() + closeButton->height() + layout()->contentsMargins().top()  + layout()->contentsMargins().bottom() + layout()->spacing());
     setMinimumWidth(ml->width());
     connect(closeButton, SIGNAL(clicked()), SLOT(sl_onCloseButton()));
 }
@@ -187,7 +187,7 @@ ViewMatrixDialogController::ViewMatrixDialogController(PWMatrix matrix, QWidget*
     MLLayout->addWidget(ml);
 
     QPushButton* closeButton = buttonBox->button(QDialogButtonBox::Close);
-    setMinimumHeight(ml->height() + closeButton->height() + layout()->margin() * 2 + layout()->spacing());
+    setMinimumHeight(ml->height() + closeButton->height() + layout()->contentsMargins().top()  + layout()->contentsMargins().bottom() + layout()->spacing());
     setMinimumWidth(ml->width());
     connect(closeButton, SIGNAL(clicked()), SLOT(sl_onCloseButton()));
 }

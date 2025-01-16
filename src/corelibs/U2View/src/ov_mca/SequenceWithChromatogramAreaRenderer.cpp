@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MaEdi
     drawLeadingAndTrailingGaps = false;
 
     QFontMetricsF fm(seqAreaWgt->getEditor()->getFont());
-    charWidth = fm.width('W');
+    charWidth = fm.horizontalAdvance('W');
     charHeight = fm.ascent();
 
     heightBC = seqAreaWgt->getEditor()->getRowHeight();

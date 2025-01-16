@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -72,7 +72,7 @@ WelcomePageWidget::WelcomePageWidget(QWidget* parent)
     : QScrollArea(parent) {
     auto widget = new QWidget();
     auto layout = new QVBoxLayout(widget);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
 
     layout->addWidget(createHeaderWidget());
@@ -95,7 +95,7 @@ QWidget* WelcomePageWidget::createHeaderWidget() {
     headerWidget->setStyleSheet(BACKGROUND_QLINEARGRADIENT.arg(isDark ? "#494561" : "#E0E7E9").arg(QPalette().base().color().name()));
     headerWidget->setFixedHeight(110);
     auto headerWidgetLayout = new QHBoxLayout();
-    headerWidgetLayout->setMargin(0);
+    headerWidgetLayout->setContentsMargins(0, 0, 0, 0);
     headerWidget->setLayout(headerWidgetLayout);
     topLevelWidgetLabel = new QLabel(tr("Welcome to UGENE"));
     topLevelWidgetLabel->setStyleSheet(PADDING_LEFT.arg(isDark ? "#2BB6F2" : "#145774"));
@@ -189,7 +189,7 @@ QWidget* WelcomePageWidget::createFooterWidget() {
     footerWidget->setStyleSheet(BACKGROUND_COLOR.arg(isDark ? "#3F4547" : "#B2C4C9"));
     footerWidget->setFixedHeight(150);
     auto footerWidgetLayout = new QVBoxLayout();
-    footerWidgetLayout->setMargin(0);
+    footerWidgetLayout->setContentsMargins(0, 0, 0, 0);
     footerWidget->setLayout(footerWidgetLayout);
 
     footerStrippedLineWidget = new QWidget();

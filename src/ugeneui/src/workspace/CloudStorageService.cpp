@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -83,16 +83,32 @@ void CloudStorageService::renameEntry(const QList<QString>& oldPath,
 }
 
 void CloudStorageService::shareEntry(const QList<QString>& path,
-                                     const QString& email,
+                                     const QString& sharedWithEmail,
+                                     const QString& sharedName,
                                      QObject* context,
                                      std::function<void(const QJsonObject&)> callback) const {
-    ioLog.trace("CloudStorageService::shareEntry: " + path.join("/") + " -> " + email);
+    ioLog.trace("CloudStorageService::shareEntry: " + path.join("/") + " -> " + sharedName + " -> as " + sharedName);
+    SAFE_POINT(checkCloudStoragePath(path), "Invalid file path: " + path.join("/"), );
+    SAFE_POINT(checkCloudStorageEntryName(sharedName), "Invalid shared file name: " + sharedName, );
+    SAFE_POINT(checkEmail(sharedWithEmail), "Invalid email: " + sharedWithEmail, );
+    QJsonObject payload;
+    payload["path"] = QJsonArray::fromStringList(path);
+    payload["email"] = sharedWithEmail.toLower();
+    payload["sharedName"] = sharedName;
+    workspaceService->executeApiRequest("/storage/share", payload, context, callback);
+}
+
+void CloudStorageService::unshareEntry(const QList<QString>& path,
+                                       const QString& email,
+                                       QObject* context,
+                                       std::function<void(const QJsonObject&)> callback) const {
+    ioLog.trace("CloudStorageService::unshareEntry: " + path.join("/") + " -> " + email);
     SAFE_POINT(checkCloudStoragePath(path), "Invalid file path: " + path.join("/"), );
     SAFE_POINT(checkEmail(email), "Invalid email: " + email, );
     QJsonObject payload;
     payload["path"] = QJsonArray::fromStringList(path);
     payload["email"] = email.toLower();
-    workspaceService->executeApiRequest("/storage/share", payload, context, callback);
+    workspaceService->executeApiRequest("/storage/unshare", payload, context, callback);
 }
 
 void CloudStorageService::downloadFile(const QList<QString>& path,

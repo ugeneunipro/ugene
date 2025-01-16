@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -123,7 +123,7 @@ void CircularViewSettingsWidget::initLayout() {
 
     settingsWidget = new QWidget(this);
     auto settingsLayout = new QVBoxLayout(settingsWidget);
-    settingsLayout->setMargin(0);
+    settingsLayout->setContentsMargins(0, 0, 0, 0);
     settingsLayout->setSpacing(0);
     settingsWidget->setLayout(settingsLayout);
 

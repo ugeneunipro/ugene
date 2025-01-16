@@ -1,5 +1,6 @@
-set(UGENE_PLUGIN_NAME CoreTests)
+set(UGENE_PLUGIN_ID CoreTests)
+set(UGENE_PLUGIN_NAME "Tests for core UGENE functionality")
 
-set(CMAKE_AUTOMOC_MOC_OPTIONS -nn) # do not display notes.
+set(CMAKE_AUTOMOC_MOC_OPTIONS -nn) # Do not display notes.
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

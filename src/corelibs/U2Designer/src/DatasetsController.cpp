@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -555,7 +555,7 @@ QWidget* UrlAndDatasetController::createDatasetPageWidget(Dataset* set) {
 
     auto widget = new QWidget();
     auto layout = new QVBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setContentsMargins(0, 4, 0, 4);
     layout->setSpacing(6);
     widget->setLayout(layout);

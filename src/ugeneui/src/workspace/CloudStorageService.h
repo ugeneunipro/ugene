@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -97,9 +97,15 @@ public:
                      std::function<void(const QJsonObject&)> callback = nullptr) const;
 
     void shareEntry(const QList<QString>& path,
-                    const QString& email,
+                    const QString& sharedWithEmail,
+                    const QString& sharedName,
                     QObject* context = nullptr,
                     std::function<void(const QJsonObject&)> callback = nullptr) const;
+
+    void unshareEntry(const QList<QString>& path,
+                      const QString& email,
+                      QObject* context = nullptr,
+                      std::function<void(const QJsonObject&)> callback = nullptr) const;
 
     void downloadFile(const QList<QString>& path,
                       const QString& localDirPath,

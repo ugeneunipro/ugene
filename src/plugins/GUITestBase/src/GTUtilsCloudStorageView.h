@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,6 +40,10 @@ public:
 
     static QModelIndex checkItemIsPresent(const QList<QString>& path);
 
+    static QModelIndex checkItemIsShared(const QList<QString>& path, const QString& email);
+
+    static QModelIndex checkItemIsNotShared(const QList<QString>& path, const QString& email);
+
     static void checkItemIsNotPresent(const QList<QString>& path);
 
     static void renameItem(const QList<QString>& path, const QString& newName);
@@ -51,6 +55,10 @@ public:
     static void uploadFile(const QList<QString>& dirPath, const QString& localFileUrl);
 
     static void downloadFileWithDoubleClick(const QList<QString>& dirPath, int expectedFileSize);
+
+    static void shareItem(const QList<QString>& path, const QString& email);
+
+    static void unshareItem(const QList<QString>& path, const QString& email);
 
     static QTreeView* getStorageTreeView();
 };

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,6 +45,8 @@ public:
     Kraken2ClassifyTask(const Kraken2ClassifyTaskSettings &settings);
 
     void prepare() override;
+
+    const QString& getClassificationURL() const;
 
 private:
     QStringList getArguments();

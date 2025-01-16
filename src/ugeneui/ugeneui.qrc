@@ -12,6 +12,9 @@
         <file>images/color_mode_pic.png</file>
         <file>images/create_new_project.png</file>
         <file>images/empty_notification.png</file>
+
+        <file>images/group.svg</file>
+
         <file>images/has_error.png</file>
         <file>images/has_report.png</file>
         <file>images/hourglass.png</file>

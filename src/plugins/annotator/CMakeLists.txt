@@ -1,4 +1,5 @@
-set(UGENE_PLUGIN_NAME annotator)
+set(UGENE_PLUGIN_ID annotator)
+set(UGENE_PLUGIN_NAME "Annotation groups finder")
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)
 

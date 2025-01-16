@@ -674,11 +674,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/bowtie/BowtieSettings.ui" line="215"/>
-        <source>The number of megabytes of memory a given thread is given to store path descriptors in --best mode. 
-Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost. 
-Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases. 
-If you receive an error message saying that chunk memory has been exhausted in --best mode, 
-try adjusting this parameter up to dedicate more memory to the descriptors. 
+        <source>The number of megabytes of memory a given thread is given to store path descriptors in --best mode.
+Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost.
+Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases.
+If you receive an error message saying that chunk memory has been exhausted in --best mode,
+try adjusting this parameter up to dedicate more memory to the descriptors.
 Default: 64.</source>
         <translation>Количество мегабайт памяти для данного потока задается для хранения дескрипторов пути в --best режиме.
 Поиск по первому наилучшему совпадению должен отслеживать множество путей одновременно, убедитесь, что расширение пути происходит с наименьшей стоимостью.
@@ -6971,9 +6971,9 @@ Please, convert alignment from %1 alphabet to DNA, RNA or Amino and try again.</
     </message>
     <message>
         <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="114"/>
-        <source>When the -n option is specified (which is the default), bowtie determines which alignments                               
-are valid according to the following policy, which is similar to Maq&apos;s default policy.                               
-In -v mode, alignments may have no more than V mismatches, where V may be a number from 0                               
+        <source>When the -n option is specified (which is the default), bowtie determines which alignments
+are valid according to the following policy, which is similar to Maq&apos;s default policy.
+In -v mode, alignments may have no more than V mismatches, where V may be a number from 0
 through 3 set using the -v option. Quality values are ignored. The -v option is mutually exclusive with the -n option.</source>
         <translation>Когда задана опция -n, bowtie определяет, какие выравнивания
 действительны в соответствии со следующей политикой, которая похожа на политику Maq по умолчанию.
@@ -6986,7 +6986,7 @@ through 3 set using the -v option. Quality values are ignored. The -v option is 
     </message>
     <message>
         <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="121"/>
-        <source>Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1.                               
+        <source>Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1.
 Setting this higher makes alignment slower (often much slower) but increases sensitivity.</source>
         <translation>Задает количество несовпадений с разрешенным в выравнивании. Может быть 0 или 1. Повышение этого параметра делает выранивание более медленным (чаще всего очень медленным) но повышает точность.</translation>
     </message>
@@ -7037,7 +7037,7 @@ Setting this higher makes alignment slower (often much slower) but increases sen
     </message>
     <message>
         <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="142"/>
-        <source>Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize                               
+        <source>Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize
 when parsing reads and outputting alignments. Searching for alignments is highly parallel, and speedup is close to linear.</source>
         <translation>Запуск определенного количество параллельных потоков поиска. Потоки будут работать на отдельных процессорах/ ядрах и синхронизоваться при разборе ридов и выводе выравнивания.</translation>
     </message>
@@ -7048,8 +7048,8 @@ when parsing reads and outputting alignments. Searching for alignments is highly
     </message>
     <message>
         <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="147"/>
-        <source>If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments                               
-for the constituent mates. This is called &quot;mixed mode.&quot; To disable mixed mode, set this option. Bowtie2 runs a little                               
+        <source>If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments
+for the constituent mates. This is called &quot;mixed mode.&quot; To disable mixed mode, set this option. Bowtie2 runs a little
 faster in the mixed mode, but will only consider alignment status of pairs per se, not individual mates.</source>
         <translation>Если Bowtie2 не сможет найти пару для выполнения парного выравнивания по умолчанию будет сделано непарное выравнивание. Это называется &amp;quot;смешанным режимом.&amp;quot; Чтобы отключить смешанный режим, установите эту опцию. Bowtie2 запустится немного быстрее в смешанном режиме чем для парного выравнивания.</translation>
     </message>
@@ -7060,7 +7060,7 @@ faster in the mixed mode, but will only consider alignment status of pairs per s
     </message>
     <message>
         <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="153"/>
-        <source>By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment                               
+        <source>By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment
 is an alignment where both mates align uniquely, but that does not satisfy the paired-end constraints. This option disables that behavior.</source>
         <translation>По умолчанию, Bowtie2 ищет несогласованные выравнивания, если он не может найти какие-либо согласованные выравнивания. Несогласованное выравнивание это выравнивание, в котором оба рида выровнены однозначно, но они не удовлетворяют условию парности. Это опция отключает это поведение.</translation>
     </message>
@@ -7091,7 +7091,7 @@ is an alignment where both mates align uniquely, but that does not satisfy the p
     </message>
     <message>
         <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="166"/>
-        <source>If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in                                 
+        <source>If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in
 a concordant alignment.</source>
         <translation>Если один участник выравнивания перекрывается с другим, то это несогласованное выравнивание. По умолчанию: участники могут перекрываться в согласованном выравнивании.</translation>
     </message>
@@ -7102,7 +7102,7 @@ a concordant alignment.</source>
     </message>
     <message>
         <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="171"/>
-        <source>If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the                                
+        <source>If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the
 other in a concordant alignment.</source>
         <translation>Если один участник выравнивания содержит другой, то это несогласованное выравнивание. По умолчанию одна часть выравнивания может содержать другую в согласованном выравнивании.</translation>
     </message>
@@ -7199,10 +7199,10 @@ other in a concordant alignment.</source>
         <location filename="../src/bowtie/BowtieWorker.cpp" line="167"/>
         <source>The maximum insert size for valid paired-end alignments. E.g. if -X 100 is specified and a paired-end alignment                               consists of two 20-bp alignments in the proper orientation with a 60-bp gap between them, that alignment is                               considered valid (as long as -I is also satisfied). A 61-bp gap would not be valid in that case.                                If trimming options -3 or -5 are also used, the -X constraint is applied with respect to the untrimmed mates,                               not the trimmed mates. Default: 250.</source>
         <translation>Максимальный размер вставки для выравнивания paired-end.
-Если -X 100 и выравнивание состоит из участков по 20 нуклеотидов и расстоянием между ними в 60 нуклеотидов, 
-такое выравнивание считается действительным. 
+Если -X 100 и выравнивание состоит из участков по 20 нуклеотидов и расстоянием между ними в 60 нуклеотидов,
+такое выравнивание считается действительным.
 В таком случае 61 пропуск не будет считаться допустимым.
-Если также используются опции обрезки -3 или -5, 
+Если также используются опции обрезки -3 или -5,
  -X ограничение применяется к необрезанным участкам.
 По умолчанию: 250.</translation>
     </message>
@@ -9021,17 +9021,17 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="490"/>
-        <source>&lt;b&gt;%1 (%2)&lt;/b&gt; - %3 
-&lt;b&gt;%4 (%5)&lt;/b&gt; - %6 
-&lt;b&gt;%7 (%8)&lt;/b&gt; - %9 
-&lt;b&gt;%10 (%11)&lt;/b&gt; - %12 
-&lt;b&gt;%13 (%14)&lt;/b&gt; - %15 
+        <source>&lt;b&gt;%1 (%2)&lt;/b&gt; - %3
+&lt;b&gt;%4 (%5)&lt;/b&gt; - %6
+&lt;b&gt;%7 (%8)&lt;/b&gt; - %9
+&lt;b&gt;%10 (%11)&lt;/b&gt; - %12
+&lt;b&gt;%13 (%14)&lt;/b&gt; - %15
 </source>
-        <translation>&lt;b&gt;%1 (%2)&lt;/b&gt; - %3 
-&lt;b&gt;%4 (%5)&lt;/b&gt; - %6 
-&lt;b&gt;%7 (%8)&lt;/b&gt; - %9 
-&lt;b&gt;%10 (%11)&lt;/b&gt; - %12 
-&lt;b&gt;%13 (%14)&lt;/b&gt; - %15 
+        <translation>&lt;b&gt;%1 (%2)&lt;/b&gt; - %3
+&lt;b&gt;%4 (%5)&lt;/b&gt; - %6
+&lt;b&gt;%7 (%8)&lt;/b&gt; - %9
+&lt;b&gt;%10 (%11)&lt;/b&gt; - %12
+&lt;b&gt;%13 (%14)&lt;/b&gt; - %15
 </translation>
     </message>
     <message>
@@ -9491,35 +9491,36 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>U2::LocalWorkflow::Kraken2ClassifyPrompter</name>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="83"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="85"/>
         <source>Input URL 1</source>
         <translation>Входной URL 1</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="84"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="86"/>
         <source>Input URL 1.</source>
         <translation>Входной URL 1.</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="87"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="88"/>
         <source>Input URL 2</source>
         <translation>Входной URL 2</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="88"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="89"/>
         <source>Input URL 2.</source>
         <translation>Входной URL 2.</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="97"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="95"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="102"/>
         <source>Input sequences</source>
         <translation>Входные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="98"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="96"/>
         <source>URL(s) to FASTQ or FASTA file(s) should be provided.
 
-In case of SE reads or contigs use the &quot;Input URL 1&quot; slot only.
+In case of SE reads or contigs use the &quot;Input URL 1&quot;
 
 In case of PE reads input &quot;left&quot; reads to &quot;Input URL 1&quot;, &quot;right&quot; reads to &quot;Input URL 2&quot;.
 
@@ -9528,72 +9529,83 @@ See also the &quot;Input data&quot; parameter of the element.</source>
 
 В случае одиночных входных ридов или контигов используйте только &quot;Входной URL 1&quot; слот.
 
-В случае парных ридов, для &quot;левых&quot; используйте &quot;Входной URL 1&quot;, для &quot;правых&quot; используйте &quot;Входной URL 1&quot;.
+В случае парных ридов, для &quot;левых&quot; используйте &quot;Входной URL 1&quot;, для &quot;правых&quot; используйте &quot;Входной URL 2&quot;.
 
 Смотрите так же параметр элемента &quot;Входные данные&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="108"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="103"/>
+        <source>URL(s) to FASTQ or FASTA file(s) should be provided.
+
+In case of PE reads input &quot;left&quot; reads to &quot;Input URL 1&quot;, &quot;right&quot; reads to &quot;Input URL 2&quot;.
+
+See also the &quot;Input data&quot; parameter of the element.</source>
+        <translation>URL(s) к FASTQ или FASTA файлу(ам) должен(ы) быть указан(ы).
+
+В случае парных ридов, для &quot;левых&quot; используйте &quot;Входной URL 1&quot;, для &quot;правых&quot; используйте &quot;Входной URL 2&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="114"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="108"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="114"/>
         <source>To classify single-end (SE) reads or contigs, received by reads de novo assembly, set this parameter to &quot;SE reads or contigs&quot;.&lt;br&gt;&lt;br&gt;To classify paired-end (PE) reads, set the value to &quot;PE reads&quot;.&lt;br&gt;&lt;br&gt;One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.&lt;br&gt;&lt;br&gt;The input files should be in FASTA or FASTQ formats.</source>
         <translation>Чтобы классифицировать одиночные риды или контиги, полученные посредством сборки de-novo установите этот параметр в &quot;Одиночные риды или контиги&quot;.&lt;br&gt;&lt;br&gt;Чтобы классифицировать парные риды, установите этот параметр в &quot;Парные риды&quot;.&lt;br&gt;&lt;br&gt;Количество слотов в этом входном порте зависит от значения параметра. Передайте URL(s) в эти слоты.&lt;br&gt;&lt;br&gt;Входные файлы должны быть в формате FASTA или FASTQ.  </translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="113"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="119"/>
         <source>Database</source>
         <translation>База данных</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="113"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="119"/>
         <source>A path to the folder with the Kraken 2 database files.</source>
         <translation>Путь к директории с базой данных Kraken 2.</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="115"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="121"/>
         <source>Output file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="115"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="121"/>
         <source>Specify the output file name.</source>
         <translation>Укажите имя выходного файла.</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="117"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="123"/>
         <source>Quick operation</source>
         <translation>Быстрая классификация</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="117"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="123"/>
         <source>Stop classification of an input read after the certain number of hits.&lt;br&gt;&lt;br&gt;The value can be specified in the &quot;Minimum number of hits&quot; parameter.</source>
         <translation>Остановить классификацию входных ридов после достижения определенного количества попаданий.&lt;br&gt;&lt;br&gt;Значение мождет быть задано в параметре &quot;Минимальное количество попаданий&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="120"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="126"/>
         <source>Number of threads</source>
         <translation>Количество потоков</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="120"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="126"/>
         <source>Use multiple threads (--threads).</source>
         <translation>Использовать несколько потоков (--threads).</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="154"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="164"/>
         <source>Classify Sequences with Kraken 2</source>
         <translation>Классифицировать последовательности с Kraken 2</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="154"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="164"/>
         <source>Kraken 2 is a taxonomic sequence classifier that assigns taxonomic labels to short DNA reads. It does this by examining the k-mers within a read and querying a database with those.</source>
         <translation>Kraken 2 это классификатор таксономических последовательностей, который присваивает таксономические метки ридам. Он делает это посредством анализа k-меров во входных ридах и поиска их в базе данных.</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="162"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="171"/>
         <source>NGS: Metagenomics Classification</source>
         <translation>NGS: Классификация Метагеномики</translation>
     </message>
@@ -9603,9 +9615,23 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <translation>Классификация последовательностей из &lt;u&gt;%1&lt;/u&gt; с Kraken 2, используя базу данных %2.</translation>
     </message>
     <message>
-        <location filename="../src/kraken2/Kraken2ClassifyPrompter.cpp" line="43"/>
-        <source>Classify paired-end reads from &lt;u&gt;%1&lt;/u&gt; with Kraken 2, use %2 database.</source>
-        <translation>Классификация парных ридов из &lt;u&gt;%1&lt;/u&gt; с Kraken 2, используя базу данных %2.</translation>
+        <location filename="../src/kraken2/Kraken2ClassifyPrompter.cpp" line="44"/>
+        <source>Classify paired-end reads from &lt;u&gt;%1&lt;/u&gt; and &lt;u&gt;%2&lt;/u&gt; with Kraken 2, use %3 database.</source>
+        <translation>Классификация парных ридов из &lt;u&gt;%1&lt;/u&gt; и &lt;u&gt;%2&lt;/u&gt; с Kraken 2, используя базу данных %3.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::Kraken2ClassifyWorker</name>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorker.cpp" line="138"/>
+        <source>Quantity of files with reads in &quot;URL 1&quot; and &quot;URL 2&quot; should be equal.</source>
+        <translation>Количество файлов с ридами в &quot;URL 1&quot; и &quot;URL 2&quot; должно быть одинаковым.</translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorker.cpp" line="138"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorker.cpp" line="145"/>
+        <source>File &quot;%1&quot; not exists or empty.</source>
+        <translation>Файл &quot;%1&quot; пустой или не существует.</translation>
     </message>
 </context>
 <context>

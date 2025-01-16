@@ -10,6 +10,8 @@ endif ()
 
 add_definitions(-DBUILDING_U2PRIVATE_DLL)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 include_directories(src)
 include_directories(../../include)
 include_directories(../../libs_3rdparty/breakpad/src)

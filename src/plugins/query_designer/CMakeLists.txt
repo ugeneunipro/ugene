@@ -1,3 +1,4 @@
-set(UGENE_PLUGIN_NAME query_designer)
+set(UGENE_PLUGIN_ID query_designer)
+set(UGENE_PLUGIN_NAME "Query designer")
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

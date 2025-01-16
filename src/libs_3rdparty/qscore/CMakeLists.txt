@@ -2,6 +2,8 @@ project(qscore)
 
 find_package(Qt5 REQUIRED Core)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 include_directories(src)
 include_directories(../../include)
 

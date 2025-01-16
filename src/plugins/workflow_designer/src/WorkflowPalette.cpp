@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -144,7 +144,10 @@ void PaletteDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
 
         // draw text
         QRect textrect = QRect(r.left() + i * 2, r.top(), r.width() - ((5 * i) / 2), r.height());
-        QString text = elidedText(option.fontMetrics, textrect.width(), Qt::ElideMiddle, model->data(index, Qt::DisplayRole).toString());
+        QString text = option.fontMetrics.elidedText(
+            model->data(index, Qt::DisplayRole).toString(),
+            Qt::ElideMiddle,
+            textrect.width());
         m_view->style()->drawItemText(painter, textrect, Qt::AlignCenter, option.palette, m_view->isEnabled(), text);
 
     } else {
@@ -675,7 +678,7 @@ void WorkflowPaletteElements::mousePressEvent(QMouseEvent* event) {
             return;
         event->accept();
         if (item->parent() == 0) {
-            setItemExpanded(item, !isItemExpanded(item));
+            item->setExpanded(!item->isExpanded());
             return;
         }
 

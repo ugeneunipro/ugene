@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -83,6 +83,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Check delete file or dir.
     GTUtilsCloudStorageView::deleteEntry({"Documents"});
     GTUtilsCloudStorageView::deleteEntry({"Alignments", "hemoglobin_alpha_alignment.msf"});
+
+    GTUtilsCloudStorageView::shareItem({"about.txt"}, "test@example.com");
+    GTUtilsCloudStorageView::unshareItem({"about.txt"}, "test@example.com");
 
     // Check upload.
     GTUtilsCloudStorageView::uploadFile({}, dataDir + "samples/CLUSTALW/COI.aln");

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 #include <QDesktopWidget>
 #include <QDir>
 #include <QMap>
+#include <QScreen>
 #include <QTextStream>
 #include <QThread>
 
@@ -141,7 +142,7 @@ QList<GUITest*> getIdealTestsSplit(int suiteIndex, int suiteCount, const QList<G
     } else if (suiteCount == 4) {
         testsPerSuite << 670 << 670 << 730 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 550 << 580 << 500 << 570 << -1;  // Linux.
+        testsPerSuite << 580 << 650 << 530 << 600 << -1;  // Linux.
     }
     CHECK(suiteCount == testsPerSuite.size(), {});  // Check that we know the distribution. Return an empty list if we do not.
     QList<GUITest*> tests;
@@ -508,7 +509,9 @@ QString GUITestLauncher::getScreenRecorderString(const QString& testName) {
     QString result;
     QString videoFilePath = getVideoPath(testName);
     if (isOsLinux()) {
-        QRect rec = QApplication::desktop()->screenGeometry();
+        QScreen* screen = QGuiApplication::primaryScreen();
+        SAFE_POINT(screen, "Screen is not available", {})
+        QRect rec =  screen->geometry();
         int height = rec.height();
         int width = rec.width();
         QString display = qgetenv("DISPLAY");

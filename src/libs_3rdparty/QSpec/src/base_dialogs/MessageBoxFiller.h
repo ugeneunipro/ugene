@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,10 +60,11 @@ public:
 
 class HI_EXPORT InputDialogFiller : public Filler {
 public:
-    InputDialogFiller(const QString& value);
+    InputDialogFiller(const QString& value, const QString& inputFieldObjectName = "");
     void commonScenario() override;
 
 private:
     QString value;
+    QString inputFieldObjectName;
 };
 }  // namespace HI

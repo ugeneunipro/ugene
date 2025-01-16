@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -529,7 +529,7 @@ void CircularViewRenderArea::drawSequenceName(QPainter& p) {
     font.setBold(settings->titleBold);
     p.setFont(font);
     QFontMetrics fm(font, this);
-    int cw = fm.width('O');
+    int cw = fm.horizontalAdvance('O');
     int symbolsAlowed = (0 == cw) ? DEFAULT_SYMBOLS_ALLOWED : (rulerEllipseSize - RULER_PAD) / cw;
     if (symbolsAlowed < docNameFullLength) {
         docName = docName.mid(0, symbolsAlowed - 2);
@@ -624,7 +624,7 @@ void CircularViewRenderArea::drawRulerNotches(QPainter& p, int start, int span, 
     int notchSize = 5;
     QFont f;
     QFontMetrics fm(f, this);
-    int cw = fm.width('0');
+    int cw = fm.horizontalAdvance('0');
     int N = QString::number(start + span).length() * cw * 3 / 2.0 + 0.5f;
     int rulerLen = span / (float)seqLen * PI * rulerEllipseSize;
     int chunk = GraphUtils::findChunk(rulerLen, span, N);

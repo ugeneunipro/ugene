@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -219,7 +219,7 @@ const SimilarityStatisticsSettings* MsaEditorAlignmentDependentWidget::getSettin
 
 void MsaEditorAlignmentDependentWidget::createWidgetUI() {
     auto mainLayout = new QVBoxLayout();
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
 
     nameWidget = new QLabel(contentWidget->getHeaderText());
@@ -235,7 +235,7 @@ void MsaEditorAlignmentDependentWidget::createWidgetUI() {
 
 void MsaEditorAlignmentDependentWidget::createHeaderWidget() {
     auto headerLayout = new QVBoxLayout();
-    headerLayout->setMargin(0);
+    headerLayout->setContentsMargins(0, 0, 0, 0);
     headerLayout->setSpacing(0);
 
     nameWidget->setAlignment(Qt::AlignCenter);

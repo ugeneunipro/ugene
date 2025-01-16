@@ -1,3 +1,4 @@
-set(UGENE_PLUGIN_NAME orf_marker)
+set(UGENE_PLUGIN_ID orf_marker)
+set(UGENE_PLUGIN_NAME "ORF Marker")
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

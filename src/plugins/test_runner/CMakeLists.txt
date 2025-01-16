@@ -1,5 +1,5 @@
-set(UGENE_PLUGIN_NAME test_runner)
+set(UGENE_PLUGIN_ID test_runner)
+set(UGENE_PLUGIN_NAME "Test runner")
+set(UGENE_PLUGIN_MODE ui)
 
-find_package(Qt5 REQUIRED Test)
-
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

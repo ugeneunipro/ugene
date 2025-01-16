@@ -4,6 +4,8 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5 REQUIRED Core Gui Widgets Test)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 add_definitions(-DBUILDING_QSPEC_DLL)
 
 include_directories(src)

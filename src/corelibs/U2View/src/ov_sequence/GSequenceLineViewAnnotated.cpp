@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -308,8 +308,8 @@ GSequenceLineViewAnnotatedRenderArea::GSequenceLineViewAnnotatedRenderArea(GSequ
     afmNormal = new QFontMetrics(*afNormal, this);
     afmSmall = new QFontMetrics(*afSmall, this);
 
-    afNormalCharWidth = afmNormal->width('w');
-    afSmallCharWidth = afmSmall->width('w');
+    afNormalCharWidth = afmNormal->horizontalAdvance('w');
+    afSmallCharWidth = afmSmall->horizontalAdvance('w');
 
     QLinearGradient gradient(0, 0, 0, 1);  // vertical
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);

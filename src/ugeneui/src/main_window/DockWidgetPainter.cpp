@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -146,7 +146,7 @@ void DockWidgetPainter::drawText(const QString& keyPrefix, const QString& text, 
         font.setUnderline(true);
 
         painter.setFont(font);
-        prefixDx = QFontMetrics(font).width(keyPrefix[0]);
+        prefixDx = QFontMetrics(font).horizontalAdvance(keyPrefix[0]);
         painter.drawText(textPoint.x(), textPoint.y(), keyPrefix.left(1));
         plainText = keyPrefix.mid(1) + text;
 
@@ -164,7 +164,7 @@ DockWidgetPaintData::DockWidgetPaintData(const QIcon& icon, const QString& text,
     iconSize = hasIcon ? ICON_SIZE : 0;
     iconTextDist = hasIcon ? ICON_TEXT_DIST : 0;
 
-    textWidth = fm.width(text);
+    textWidth = fm.horizontalAdvance(text);
     textHeight = fm.height();
 }
 

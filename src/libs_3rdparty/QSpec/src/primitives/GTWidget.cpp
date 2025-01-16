@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +29,7 @@
 #include <QGuiApplication>
 #include <QMdiArea>
 #include <QProgressBar>
+#include <QScreen>
 #include <QScrollBar>
 #include <QStyle>
 #include <QTextBrowser>
@@ -354,35 +355,34 @@ void GTWidget::showNormal(QWidget* widget) {
 
 QColor GTWidget::getColor(QWidget* widget, const QPoint& point) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QColor());
-    return QColor(getImage(widget).pixel(point));
+    return {getImage(widget).pixel(point)};
 }
 
-QImage GTWidget::getImage(QWidget* widget, bool useGrabWindow) {
+QImage GTWidget::getImage(QWidget* widget) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QImage());
 
     class GrabImageScenario : public CustomScenario {
     public:
-        GrabImageScenario(QWidget* _widget, QImage& _image, bool _useGrabWindow)
-            : widget(_widget), image(_image), useGrabWindow(_useGrabWindow) {
+        GrabImageScenario(QWidget* _widget, QImage& _image)
+            : widget(_widget), image(_image) {
         }
 
         void run() override {
             CHECK_SET_ERR(widget != nullptr, "Widget to grab is NULL");
-            QPixmap pixmap = useGrabWindow ? QPixmap::grabWindow(widget->winId()) : widget->grab(widget->rect());
+            QPixmap pixmap = widget->grab(widget->rect());
             image = pixmap.toImage();
             double ratio = ((QGuiApplication*)QGuiApplication::instance())->devicePixelRatio();
-            if (!useGrabWindow && ratio != 1 && ratio > 0) {
+            if (ratio != 1 && ratio > 0) {
                 image = image.scaled(qRound(image.width() / ratio), qRound(image.height() / ratio));
             }
         }
 
         QWidget* widget;
         QImage& image;
-        bool useGrabWindow;
     };
 
     QImage image;
-    GTThread::runInMainThread(new GrabImageScenario(widget, image, useGrabWindow));
+    GTThread::runInMainThread(new GrabImageScenario(widget, image));
     return image;
 }
 
@@ -467,7 +467,9 @@ void GTWidget::clickWindowTitle(QWidget* window) {
 void GTWidget::resizeWidget(QWidget* widget, const QSize& size) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
 
-    QRect displayRect = QApplication::desktop()->screenGeometry();
+    QScreen* screen = QGuiApplication::primaryScreen();
+    GT_CHECK(screen, "No primary screen available");
+    QRect displayRect = screen->geometry();
     GT_CHECK((displayRect.width() >= size.width()) && (displayRect.height() >= size.height()), "Specified the size larger than the size of the screen");
 
     bool isRequiredPositionFound = false;

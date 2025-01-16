@@ -1,3 +1,4 @@
-set(UGENE_PLUGIN_NAME linkdata_support)
+set(UGENE_PLUGIN_ID linkdata_support)
+set(UGENE_PLUGIN_NAME "LinkData support")
 
-include(../../Plugin.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -84,7 +84,7 @@ void RangeSelector::init() {
         l->setContentsMargins(5, 0, 5, 0);
         l->setSizeConstraint(QLayout::SetFixedSize);
     } else {
-        l->setMargin(0);
+        l->setContentsMargins(0, 0, 0, 0);
     }
 
     rangeLabel = new QLabel(tr("Range:"), this);
@@ -123,7 +123,7 @@ RangeSelector::RangeSelector(QDialog* dialog, qint64 rangeStart, qint64 rangeEnd
     connect(cancelButton, SIGNAL(clicked()), dialog, SLOT(reject()));
 
     auto l3 = new QHBoxLayout();
-    l3->setMargin(0);
+    l3->setContentsMargins(0, 0, 0, 0);
     l3->addStretch();
     l3->addWidget(okButton);
     l3->addWidget(cancelButton);

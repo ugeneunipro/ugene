@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ private slots:
     void sl_colorModeSwitched();
 
 private:
-    void showContextMenu(const QPoint& point) const;
+    void showContextMenu(const QPoint& point);
     void createDir();
     void deleteItem();
     void renameItem();

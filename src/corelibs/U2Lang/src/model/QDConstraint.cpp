@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -72,7 +72,7 @@ QString QDDistanceConstraint::getText(QDSchemeUnit*, QDSchemeUnit*) const {
 }
 
 void QDDistanceConstraint::invert() {
-    units.swap(0, 1);
+    std::swap(units[0], units[1]);
     setMin(-getMax());
     setMax(-getMin());
     distType = QDConstraintController::getInvertedType(distType);

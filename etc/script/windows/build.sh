@@ -7,49 +7,67 @@
 TEAMCITY_WORK_DIR="$(cygpath -aw .)"
 echo "TEAMCITY_WORK_DIR $TEAMCITY_WORK_DIR"
 
-SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene"
+UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
 BUNDLE_DIR="${TEAMCITY_WORK_DIR}/bundle"
-BUILD_DIR="${SOURCE_DIR}/src/_release"
+BUILD_DIR="${UGENE_DIR}/build"
+DIST_DIR="${BUILD_DIR}/dist"
+
+# Needed by CMake.
+export Qt5_DIR="${QT_DIR}"
 
 rm -rf "${BUILD_DIR}"
 
-cd "${SOURCE_DIR}" || {
-  echo "Can't change dir to '${SOURCE_DIR}'"
+cd "${UGENE_DIR}" || {
+  echo "Can't change dir to '${UGENE_DIR}'"
   exit 1
 }
 
-echo "##teamcity[blockOpened name='qmake']"
-echo "Running qmake"
-#"${QT_DIR}/bin/qmake.exe" -r ugene.pro || {
-"${QT_DIR}/bin/qmake.exe" -r ugene.pro -tp vc ${UGENE_QMAKE_PARAMS} || {
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. qmake failed']"
-  exit 1
-}
-echo "##teamcity[blockClosed name='qmake']"
+echo "##teamcity[blockOpened name='env']"
+env
+echo "##teamcity[blockClosed name='env']"
 
-echo "##teamcity[blockOpened name='nmake/devenv']"
-echo "Running nmake/devenv"
-#nmake Release || {
-devenv ugene.sln /build Release /out "build.log" || {
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. nmake/devenv failed']"
+#### CMake ####
+echo "##teamcity[blockOpened name='CMake']"
+if
+#  cmake -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
+  cmake -DCMAKE_CONFIGURATION_TYPES=Release -G "Visual Studio 16 2019" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
+then
+  echo "CMake finished successfully"
+else
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. CMake failed']"
   exit 1
-}
-echo "##teamcity[blockClosed name='nmake/devenv']"
+fi
+echo "##teamcity[blockClosed name='CMake']"
+
+echo "##teamcity[blockOpened name='make']"
+if
+  # We want these params to be individual params, so disabling inspection for quotes.
+  # shellcheck disable=SC2086
+  cmake --build "${BUILD_DIR}" --parallel --config Release
+then
+  echo
+else
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. make failed']"
+  exit 1
+fi
+echo "##teamcity[blockClosed name='make']"
 
 echo "##teamcity[blockOpened name='bundle']"
 rm -rf "${BUNDLE_DIR}"
-cp -r "${BUILD_DIR}" "${BUNDLE_DIR}"
+cp -r "${DIST_DIR}" "${BUNDLE_DIR}"
 rm "${BUNDLE_DIR}/"*.lib
 rm "${BUNDLE_DIR}/"*.pdb
 rm "${BUNDLE_DIR}/"*.exp
+rm "${BUNDLE_DIR}/"*.map
 rm "${BUNDLE_DIR}/plugins/"*.lib
 rm "${BUNDLE_DIR}/plugins/"*.pdb
 rm "${BUNDLE_DIR}/plugins/"*.exp
+rm "${BUNDLE_DIR}/plugins/"*.map
 
 echo "Copy resources"
-cp "${SOURCE_DIR}/LICENSE.txt" "${BUNDLE_DIR}"
-cp "${SOURCE_DIR}/LICENSE.3rd_party.txt" "${BUNDLE_DIR}"
-cp -r "${SOURCE_DIR}/data" "${BUNDLE_DIR}"
+cp "${UGENE_DIR}/LICENSE.txt" "${BUNDLE_DIR}"
+cp "${UGENE_DIR}/LICENSE.3rd_party.txt" "${BUNDLE_DIR}"
+cp -r "${UGENE_DIR}/data" "${BUNDLE_DIR}"
 cp "${PATH_TO_INCLUDE_LIBS}/"* "${BUNDLE_DIR}"
 
 echo copy Qt libraries
@@ -80,7 +98,6 @@ copy_with_pdb "${QT_DIR}/bin/Qt5PrintSupport.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Qml.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Quick.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Script.dll" "${BUNDLE_DIR}"
-copy_with_pdb "${QT_DIR}/bin/Qt5ScriptTools.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Sensors.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Svg.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Test.dll" "${BUNDLE_DIR}"

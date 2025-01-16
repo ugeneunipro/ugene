@@ -1,5 +1,7 @@
 project(zlib)
 
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+
 if (CMAKE_COMPILER_IS_GNUCXX)
     # Disable all warning from 3rd party code.
     string(CONCAT GCC_WARNING_FLAGS " -w")

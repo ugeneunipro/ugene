@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ RadioController::~RadioController() {
 QWidget* RadioController::createGUI(U2OpStatus& /*os*/) {
     auto result = new QWidget();
     auto l = new QVBoxLayout(result);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
 #if defined(Q_OS_LINUX)
     l->setSpacing(0);
 #endif

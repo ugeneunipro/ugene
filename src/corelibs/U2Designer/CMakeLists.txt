@@ -5,10 +5,11 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-
 find_package(Qt5 REQUIRED Core Gui Widgets Xml Svg Script)
 
 add_definitions(-DBUILDING_U2DESIGNER_DLL)
+
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
 
 include_directories(src)
 include_directories(../../include)

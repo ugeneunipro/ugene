@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -84,7 +84,7 @@ void LogViewWidget::init() {
 
     auto l = new QVBoxLayout();
     l->setSpacing(0);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->setContentsMargins(0, 0, 0, 0);
     setLayout(l);
 

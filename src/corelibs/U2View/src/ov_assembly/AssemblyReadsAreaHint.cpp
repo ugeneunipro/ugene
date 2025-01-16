@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ static const QColor getBackgroundColor() {
 AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
     : QFrame(parent), label(new QLabel(this)) {
     auto top = new QVBoxLayout(this);
-    top->setMargin(2);
+    top->setContentsMargins(2, 2, 2, 2);
     setLayout(top);
     top->addWidget(label);
     top->setSpacing(0);

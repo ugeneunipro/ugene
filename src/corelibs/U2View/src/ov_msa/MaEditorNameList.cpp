@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -156,7 +156,7 @@ void MaEditorNameList::updateScrollBar() {
 
     MsaObject* maObj = editor->getMaObject();
     foreach (const MsaRow& row, maObj->getAlignment()->getRows()) {
-        maxNameWidth = qMax(fm.width(row->getName()), maxNameWidth);
+        maxNameWidth = qMax(fm.horizontalAdvance(row->getName()), maxNameWidth);
     }
 
     // Adjustment for branch primitive in collapsing mode
@@ -165,7 +165,7 @@ void MaEditorNameList::updateScrollBar() {
 
     int availableWidth = getAvailableWidth();
     int nSteps = 1;
-    int stepSize = fm.width('W');
+    int stepSize = fm.horizontalAdvance('W');
     if (availableWidth < maxNameWidth) {
         int dw = maxNameWidth - availableWidth;
         nSteps += dw / stepSize + (dw % stepSize != 0 ? 1 : 0);
@@ -572,7 +572,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent* e) {
             // Drag or click with no modifiers make a new 1-rect selection.
             int y = qMin(mousePressRow, mouseReleaseRow);
             int width = qMax(mousePressRow, mouseReleaseRow) - y + 1;
-            if (isDoubleClicked) { // When you double-click, it means you are clicking on a single point, not an area.
+            if (isDoubleClicked) {  // When you double-click, it means you are clicking on a single point, not an area.
                 y = mousePressRow;
                 width = mousePressRow - y + 1;
                 isDoubleClicked = false;
@@ -691,7 +691,7 @@ QRect MaEditorNameList::calculateTextRect(const U2Region& yRange, bool selected)
     QRect textRect(textX, textY, textW, textH);
     if (nhBar->isVisible()) {
         QFontMetrics fm(getFont(selected));
-        int stepSize = fm.width('W');
+        int stepSize = fm.horizontalAdvance('W');
         int dx = stepSize * nhBar->value();
         textRect = textRect.adjusted(-dx, 0, 0, 0);
     }
@@ -864,7 +864,7 @@ void MaEditorNameList::sl_editSequenceName() {
     bool isMca = maObj->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     QString title = isMca ? tr("Rename Read") : tr("Rename Sequence");
     bool ok = false;
-    QString newName = QInputDialog::getText(editor->getWidget(), title, tr("New name:"), QLineEdit::Normal, curName, &ok);
+    QString newName = GUIUtils::getTextWithDialog(title, tr("New name:"), curName, ok, editor->getWidget());
 
     if (ok && !newName.isEmpty() && curName != newName) {
         emit si_sequenceNameChanged(curName, newName);
