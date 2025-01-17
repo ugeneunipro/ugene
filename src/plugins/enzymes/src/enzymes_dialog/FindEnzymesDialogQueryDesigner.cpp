@@ -1,4 +1,4 @@
-/**
+﻿/**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
@@ -19,34 +19,37 @@
  * MA 02110-1301, USA.
  */
 
-#pragma once
+#include "FindEnzymesDialogQueryDesigner.h"
 
-#include <QTreeWidget>
+#include <U2Algorithm/EnzymeModel.h>
 
-#include <U2View/MsaEditorSequenceArea.h>
-
-#include "GTGlobals.h"
+#include "EnzymesSelectorWidget.h"
 
 namespace U2 {
 
-class GTUtilsQueryDesigner {
-public:
-    static void openQueryDesigner();
+FindEnzymesDialogQueryDesigner::FindEnzymesDialogQueryDesigner()
+    : FindEnzymesDialogBase(nullptr) {
 
-    /** Returns active QD window or fails if no active QD window is found. */
-    static QWidget* getActiveQueryDesignerWindow();
+    initTitleAndLayout();
+    initEnzymesSelectorWidget();
+    initDialogButtonBox();
+}
 
-    static void clickParameter(const QString& parameter);
+QString FindEnzymesDialogQueryDesigner::getSelectedString() const {
+    QString res;
+    const QList<SEnzymeData>& enzymes = enzSel->getSelectedEnzymes();
+    for (const auto& enzyme : qAsConst(enzymes)) {
+        res += enzyme->id + ',';
+    }
+    res.remove(res.length() - 1, 1);
+    return res;
+}
 
-    static QTreeWidgetItem* findAlgorithm(const QString& itemName);
-    static void addAlgorithm(const QString& algName);
-    static QPoint getItemCenter(const QString& itemName);
-    static QRect getItemRect(const QString& itemName);
+bool FindEnzymesDialogQueryDesigner::acceptProtected() {
+    saveSettings();
 
-    static int getItemLeft(const QString& itemName);
-    static int getItemRight(const QString& itemName);
-    static int getItemTop(const QString& itemName);
-    static int getItemBottom(const QString& itemName);
-};
+    return true;
+}
+
 
 }  // namespace U2

@@ -21,32 +21,33 @@
 
 #pragma once
 
-#include <QTreeWidget>
-
-#include <U2View/MsaEditorSequenceArea.h>
-
-#include "GTGlobals.h"
+#include <QTreeWidgetItem>
 
 namespace U2 {
 
-class GTUtilsQueryDesigner {
+class EnzymeTreeItem;
+
+/**
+ * @brief This class describes a group of enzymes in the enzyme dialog.
+ * Each group contains enzymes, which names starts with some certain letter.
+ */
+class EnzymeGroupTreeItem : public QTreeWidgetItem {
 public:
-    static void openQueryDesigner();
+    /**
+     * @brief Constructor.
+     * @s Enzyme group name.
+     */
+    EnzymeGroupTreeItem(const QString& s);
 
-    /** Returns active QD window or fails if no active QD window is found. */
-    static QWidget* getActiveQueryDesignerWindow();
+    /**
+     * @brief Update group and child enzymes.
+     */
+    void updateVisual();
 
-    static void clickParameter(const QString& parameter);
-
-    static QTreeWidgetItem* findAlgorithm(const QString& itemName);
-    static void addAlgorithm(const QString& algName);
-    static QPoint getItemCenter(const QString& itemName);
-    static QRect getItemRect(const QString& itemName);
-
-    static int getItemLeft(const QString& itemName);
-    static int getItemRight(const QString& itemName);
-    static int getItemTop(const QString& itemName);
-    static int getItemBottom(const QString& itemName);
+    QString s;
+    QSet<EnzymeTreeItem*> checkedEnzymes;
+    bool operator<(const QTreeWidgetItem& other) const override;
 };
+
 
 }  // namespace U2

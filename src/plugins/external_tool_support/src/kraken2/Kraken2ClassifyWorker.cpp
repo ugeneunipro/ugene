@@ -105,9 +105,9 @@ bool Kraken2ClassifyWorker::isReady() const {
 void Kraken2ClassifyWorker::sl_taskFinished(Task *task) {
     Kraken2ClassifyTask *krakenTask = qobject_cast<Kraken2ClassifyTask *>(task);
     QString outputUrl = krakenTask->getClassificationURL();
-    if (!krakenTask->isFinished() 
-        || krakenTask->hasError() 
-        || krakenTask->isCanceled() 
+    if (!krakenTask->isFinished()
+        || krakenTask->hasError()
+        || krakenTask->isCanceled()
         || !QFileInfo::exists(outputUrl)) {
         return;
     }
@@ -145,7 +145,7 @@ Kraken2ClassifyTaskSettings Kraken2ClassifyWorker::getSettings(U2OpStatus &os) {
                   os.setError(tr("File \"%1\" not exists or empty.").arg(settings.pairedReadsUrl)), settings);
     }
 
-    QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), 
+    QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(),
                      FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
     tmpDir = GUrlUtils::createDirectory(tmpDir + KRAKEN_DIR, "_", os);
 
