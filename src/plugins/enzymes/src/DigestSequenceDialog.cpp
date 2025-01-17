@@ -48,7 +48,6 @@
 #include "CloningUtilTasks.h"
 #include "EnzymesIO.h"
 #include "EnzymesQuery.h"
-#include "FindEnzymesDialog.h"
 
 namespace U2 {
 
