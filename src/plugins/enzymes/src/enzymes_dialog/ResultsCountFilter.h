@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,32 +21,35 @@
 
 #pragma once
 
-#include <QTreeWidget>
+#include <QWidget>
 
-#include <U2View/MsaEditorSequenceArea.h>
-
-#include "GTGlobals.h"
+#include <ui_ResultsCountFilter.h>
 
 namespace U2 {
 
-class GTUtilsQueryDesigner {
+/**
+ * @brief This widget describes a group box with minimum and maximum numbers of restriction enzymes, which could be found.
+ */
+class ResultsCountFilter : public QWidget, public Ui_ResultsCountFilter {
+    Q_OBJECT
 public:
-    static void openQueryDesigner();
+    /**
+     * @brief Constructor.
+     * @param parent parent widget.
+     */
+    ResultsCountFilter(QWidget* parent);
 
-    /** Returns active QD window or fails if no active QD window is found. */
-    static QWidget* getActiveQueryDesignerWindow();
+    /**
+    * @brief Load file with enzymes settings from .ini file.
+    */
+    void saveSettings();
 
-    static void clickParameter(const QString& parameter);
+private:
+    void initSettings();
 
-    static QTreeWidgetItem* findAlgorithm(const QString& itemName);
-    static void addAlgorithm(const QString& algName);
-    static QPoint getItemCenter(const QString& itemName);
-    static QRect getItemRect(const QString& itemName);
+    static constexpr int MIN_HIT_DEFAULT_VALUE = 1;
+    static constexpr int MAX_HIT_DEFAULT_VALUE = 2;
 
-    static int getItemLeft(const QString& itemName);
-    static int getItemRight(const QString& itemName);
-    static int getItemTop(const QString& itemName);
-    static int getItemBottom(const QString& itemName);
 };
 
 }  // namespace U2

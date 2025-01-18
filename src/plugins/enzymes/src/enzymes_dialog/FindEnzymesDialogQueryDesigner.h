@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,32 +21,30 @@
 
 #pragma once
 
-#include <QTreeWidget>
-
-#include <U2View/MsaEditorSequenceArea.h>
-
-#include "GTGlobals.h"
+#include "FindEnzymesDialogBase.h"
 
 namespace U2 {
 
-class GTUtilsQueryDesigner {
+/**
+ * @brief This class describes a restriction enzymes dialog for QD.
+ * It has no sequence view (obviously) or parent (QD infrastructure will destroy this dialog).
+ */
+class FindEnzymesDialogQueryDesigner : public FindEnzymesDialogBase {
+    Q_OBJECT
 public:
-    static void openQueryDesigner();
+    /**
+     * @brief Constructor.
+     */
+    FindEnzymesDialogQueryDesigner();
 
-    /** Returns active QD window or fails if no active QD window is found. */
-    static QWidget* getActiveQueryDesignerWindow();
+    /**
+     * @brief Returns all seected enzymes as co,ma-separated string.
+     */
+    QString getSelectedString() const;
 
-    static void clickParameter(const QString& parameter);
+protected:
+    bool acceptProtected() override;
 
-    static QTreeWidgetItem* findAlgorithm(const QString& itemName);
-    static void addAlgorithm(const QString& algName);
-    static QPoint getItemCenter(const QString& itemName);
-    static QRect getItemRect(const QString& itemName);
-
-    static int getItemLeft(const QString& itemName);
-    static int getItemRight(const QString& itemName);
-    static int getItemTop(const QString& itemName);
-    static int getItemBottom(const QString& itemName);
 };
 
 }  // namespace U2
