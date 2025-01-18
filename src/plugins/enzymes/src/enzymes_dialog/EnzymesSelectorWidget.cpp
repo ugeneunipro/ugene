@@ -35,9 +35,9 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
 
-#include "EnzymesIO.h"
 #include "EnzymeGroupTreeItem.h"
 #include "EnzymeTreeItem.h"
+#include "EnzymesIO.h"
 #include "FindEnzymesTask.h"
 
 // TODO: group by TYPE, ORGANISM
@@ -734,7 +734,7 @@ void EnzymesSelectorWidget::saveSettings() {
     settings->setValue(EnzymeSettings::SHOW_UNINTERRUPTED, cbShowUninterrupted->isChecked());
     settings->setValue(EnzymeSettings::SHOW_NONDEGENERATE, cbShowNondegenerate->isChecked());
 
-    QStringList sl(lastSelection.toList());
+    QStringList sl(toList(lastSelection));
     if (!sl.isEmpty()) {
         settings->setValue(EnzymeSettings::LAST_SELECTION, sl.join(ENZYME_LIST_SEPARATOR));
     }
@@ -745,7 +745,7 @@ void EnzymesSelectorWidget::initSelection() {
     if (selStr.isEmpty()) {
         selStr = EnzymeSettings::COMMON_ENZYMES;
     }
-    lastSelection = selStr.split(ENZYME_LIST_SEPARATOR).toSet();
+    lastSelection = toSet(selStr.split(ENZYME_LIST_SEPARATOR));
 }
 
 void EnzymesSelectorWidget::sl_loadSelectionFromFile() {
@@ -807,4 +807,3 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile() {
 }
 
 }  // namespace U2
-
