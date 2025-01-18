@@ -191,7 +191,7 @@ void CollocationsDialogController::sl_searchClicked() {
     CollocationsAlgorithmSettings cfg;
     cfg.distance = regionSpin->value();
     assert(task == nullptr);
-    const QList<AnnotationTableObject*>& aObjects = ctx->getAnnotationObjects().toList();
+    const QList<AnnotationTableObject*>& aObjects = toList(ctx->getAnnotationObjects());
     cfg.searchRegion = U2Region(0, ctx->getSequenceLength());
     if (!wholeAnnotationsBox->isChecked()) {
         cfg.st = CollocationsAlgorithm::PartialSearch;

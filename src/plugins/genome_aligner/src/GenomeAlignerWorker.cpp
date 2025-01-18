@@ -134,7 +134,7 @@ void GenomeAlignerWorker::sl_taskFinished() {
     QString url = t->getSettings().resultFileName.getURLString();
 
     QVariantMap data;
-    data[ASSEBLY_OUT_SLOT_ID] = qVariantFromValue<QString>(url);
+    data[ASSEBLY_OUT_SLOT_ID] = QVariant::fromValue<QString>(url);
     output->put(Message(output->getBusType(), data));
 
     context->getMonitor()->addOutputFile(url, getActor()->getId());

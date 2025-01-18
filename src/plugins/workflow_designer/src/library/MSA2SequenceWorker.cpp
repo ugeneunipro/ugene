@@ -80,7 +80,7 @@ Task* Alignment2SequenceWorker::tick() {
         for (const DNASequence& seq : qAsConst(sequenceList)) {
             QVariantMap msgData;
             SharedDbiDataHandler seqId = context->getDataStorage()->putSequence(seq);
-            msgData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+            msgData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
             output->setContext(channelContext, inputMessage.getMetadataId());
             output->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), msgData));
         }

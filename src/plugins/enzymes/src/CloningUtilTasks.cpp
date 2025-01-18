@@ -714,7 +714,7 @@ void LigateFragmentsTask::createDocument(const QByteArray& seq, const QList<Shar
     QDate date = QDate::currentDate();
     loi.date = QString("%1-%2-%3").arg(date.toString("dd")).arg(FormatUtils::getShortMonthName(date.month())).arg(date.toString("yyyy"));
 
-    dna.info.insert(DNAInfo::LOCUS, qVariantFromValue<DNALocusInfo>(loi));
+    dna.info.insert(DNAInfo::LOCUS, QVariant::fromValue<DNALocusInfo>(loi));
 
     resultDoc = df->createNewLoadedDocument(iof, cfg.docUrl, stateInfo);
     CHECK_OP(stateInfo, );

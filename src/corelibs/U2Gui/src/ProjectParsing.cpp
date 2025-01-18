@@ -88,7 +88,7 @@ static QVariant relationsToHint(const QList<GObjectRelation>& relList) {
 }
 
 static QList<GObjectRelation> removeDuplicates(const QList<GObjectRelation>& relList) {
-    return relList.toSet().toList();
+    return toList(toSet(relList));
 }
 
 static QVariant toRelativeRelations(const QList<GObjectRelation>& absRelations, const QDir& projDir, const QMap<QString, QString>& urlRemap = QMap<QString, QString>()) {

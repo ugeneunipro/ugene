@@ -132,7 +132,7 @@ void ImportAnnotationsWorker::sl_docsLoaded(Task* ta) {
         anns.append(getAnnsFromDoc(sub->getDocument()));
     }
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(anns);
-    outPort->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
+    outPort->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(tableId)));
 }
 
 void ImportAnnotationsWorker::cleanup() {

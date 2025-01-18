@@ -912,7 +912,7 @@ typedef struct {
 // }
 
 inline QString scf_version_float2str(float f) {
-    QString result = QString().sprintf("%1.2f", f);
+    QString result = QString::asprintf("%1.2f", f);
     return result;
 }
 

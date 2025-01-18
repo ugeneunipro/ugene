@@ -123,7 +123,7 @@ void AnnotatorViewContext::sl_showCollocationDialog() {
         return;
     }
 
-    QObjectScopedPointer<CollocationsDialogController> d = new CollocationsDialogController(allNames.toList(), seqCtx);
+    QObjectScopedPointer<CollocationsDialogController> d = new CollocationsDialogController(toList(allNames), seqCtx);
     d->exec();
 }
 

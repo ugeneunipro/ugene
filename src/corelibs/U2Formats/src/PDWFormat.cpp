@@ -109,7 +109,7 @@ void PDWFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& f
                 DNALocusInfo loi;
                 loi.topology = "circular";
                 loi.name = seqName;
-                dnaSeq.info.insert(DNAInfo::LOCUS, qVariantFromValue<DNALocusInfo>(loi));
+                dnaSeq.info.insert(DNAInfo::LOCUS, QVariant::fromValue<DNALocusInfo>(loi));
             }
 
             seqImporter.startSequence(os, dbiRef, folder, dnaSeq.getName(), dnaSeq.circular);

@@ -23,7 +23,8 @@
 
 #include <assert.h>
 
-#include <QObject>
+#include <QList>
+#include <QSet>
 #include <QVariantMap>
 #include <QtGlobal>
 
@@ -202,4 +203,14 @@ inline bool isOsUnix() {
 #else
     return false;
 #endif
+}
+
+template<typename T>
+QSet<T> toSet(const QList<T>& list) {
+    return QSet<T>(list.begin(), list.end());
+}
+
+template<typename T>
+QList<T> toList(const QSet<T>& set) {
+    return QList<T>(set.begin(), set.end());
 }

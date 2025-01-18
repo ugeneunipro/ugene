@@ -247,7 +247,7 @@ void PWMatrixSearchWorker::sl_taskFinished(Task* t) {
         res += WeightMatrixSearchResult::toTable(sst->takeResults(), U2FeatureTypes::MiscFeature, resultName);
     }
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(res);
-    const QVariant v = qVariantFromValue<SharedDbiDataHandler>(tableId);
+    const QVariant v = QVariant::fromValue<SharedDbiDataHandler>(tableId);
     output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), v));
     algoLog.info(tr("Found %1 TFBS").arg(res.size()));  // TODO set task description for report
 }

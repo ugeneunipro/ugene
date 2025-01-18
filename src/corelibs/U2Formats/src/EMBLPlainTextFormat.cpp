@@ -124,7 +124,7 @@ bool EMBLPlainTextFormat::readIdLine(ParserState* s) {
         s->entry->tags.insert(DNAInfo::EMBL_ID, idLineStr);
         s->entry->circular = idLineStr.contains(LOCUS_TAG_CIRCULAR, Qt::CaseInsensitive);
     }
-    s->entry->tags.insert(DNAInfo::LOCUS, qVariantFromValue<DNALocusInfo>(loi));
+    s->entry->tags.insert(DNAInfo::LOCUS, QVariant::fromValue<DNALocusInfo>(loi));
 
     return true;
 }
@@ -178,7 +178,7 @@ bool EMBLPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqImpo
             } else {
                 hasLine = true;
             }
-            st->entry->tags.insertMulti(DNAInfo::SOURCE, qVariantFromValue<DNASourceInfo>(soi));
+            st->entry->tags.insertMulti(DNAInfo::SOURCE, QVariant::fromValue<DNASourceInfo>(soi));
             continue;
         }
         if (st->hasKey("RF") || st->hasKey("RN")) {

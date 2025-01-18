@@ -204,7 +204,7 @@ void SamplesWidget::addCategory(const SampleCategory& cat) {
         ib->setData(0, DATA_ROLE, item.content);
         ib->setData(0, ID_ROLE, item.id);
         auto doc = new QTextDocument(this);
-        ib->setData(0, DOC_ROLE, qVariantFromValue<QTextDocument*>(doc));
+        ib->setData(0, DOC_ROLE, QVariant::fromValue<QTextDocument*>(doc));
         Descriptor d = item.d;
         QIcon ico = item.ico;
         if (ico.isNull()) {

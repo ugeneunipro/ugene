@@ -325,7 +325,7 @@ void HRSchemaSerializer::deprecatedUrlAttribute(Actor* proc, const QString& urls
     if (a != nullptr) {
         QList<Dataset> sets;
         sets << dSet;
-        a->setAttributeValue(qVariantFromValue<QList<Dataset>>(sets));
+        a->setAttributeValue(QVariant::fromValue<QList<Dataset>>(sets));
     }
 }
 
@@ -544,7 +544,7 @@ Actor* HRSchemaSerializer::parseElementsDefinition(Tokenizer& tokenizer, const Q
             parseMarkers(proc, pairs.blockPairs.values(key), key);
         } else if (a->getAttributeType()->getId() == BaseTypes::URL_DATASETS_TYPE()->getId()) {
             QList<Dataset> sets = parseUrlAttribute(a->getId(), pairs.blockPairsList);
-            a->setAttributeValue(qVariantFromValue<QList<Dataset>>(sets));
+            a->setAttributeValue(QVariant::fromValue<QList<Dataset>>(sets));
         } else {
             proc->getParameter(key)->getAttributeScript().setScriptText(pairs.blockPairs.value(key));
         }
@@ -796,7 +796,7 @@ QMap<ActorId, QVariantMap> HRSchemaSerializer::parseIteration(Tokenizer& tokeniz
             }
             QList<Dataset> sets = parseUrlAttribute(attrId, pairs.blockPairsList);
             if (!sets.isEmpty()) {
-                cfg[actorId][attrId] = qVariantFromValue(sets);
+                cfg[actorId][attrId] = QVariant::fromValue(sets);
             }
         }
     }

@@ -908,7 +908,7 @@ void MsaEditor::updateCollapseModel() {
         return;
     } else if (rowOrderMode == MaEditorRowOrderMode::Free) {
         // Check if the modification is compatible with the current view state: all rows have view properties assigned. Reset to the Original order if not.
-        QSet<qint64> maRowIds = getMaRowIds().toSet();
+        QSet<qint64> maRowIds = toSet(getMaRowIds());
         QSet<qint64> viewModelRowIds = collapseModel->getAllRowIds();
         if (viewModelRowIds != maRowIds) {
             rowOrderMode = MaEditorRowOrderMode::Original;
@@ -928,7 +928,7 @@ void MsaEditor::updateCollapseModel() {
     for (int i = 0; i < collapseModel->getGroupCount(); i++) {
         const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(i);
         if (!group->isCollapsed) {
-            maRowIdsOfNonCollapsedRowsBefore += group->maRowIds.toSet();
+            maRowIdsOfNonCollapsedRowsBefore += toSet(group->maRowIds);
         }
     }
     for (const auto& maRowsInGroup : qAsConst(rowGroups)) {

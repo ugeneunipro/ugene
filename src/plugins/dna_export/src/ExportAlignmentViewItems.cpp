@@ -124,7 +124,7 @@ void MSAExportContext::sl_exportSelectedMsaRowsToSeparateFiles() {
 
     QList<int> selectedMaRowIndexes = editor->getSelection().getSelectedRowIndexes();
     const Msa& msa = editor->getMaObject()->getAlignment();
-    QSet<qint64> selectedMaRowIds = msa->getRowIdsByRowIndexes(selectedMaRowIndexes).toSet();
+    QSet<qint64> selectedMaRowIds = toSet(msa->getRowIdsByRowIndexes(selectedMaRowIndexes));
     auto exportTask = new ExportSequencesTask(msa,
                                               selectedMaRowIds,
                                               d->getTrimGapsFlag(),

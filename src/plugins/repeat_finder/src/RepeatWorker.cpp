@@ -289,7 +289,7 @@ void RepeatWorker::sl_taskFinished() {
     if (output != nullptr) {
         const QList<SharedAnnotationData> res = t->importAnnotations();
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(res);
-        const QVariant v = qVariantFromValue<SharedDbiDataHandler>(tableId);
+        const QVariant v = QVariant::fromValue<SharedDbiDataHandler>(tableId);
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), v));
         algoLog.info(tr("Found %1 repeats").arg(res.size()));
     }

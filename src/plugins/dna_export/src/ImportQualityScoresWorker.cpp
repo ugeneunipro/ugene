@@ -169,7 +169,7 @@ Task* ImportPhredQualityWorker::tick() {
             }
         }
         SharedDbiDataHandler handler = context->getDataStorage()->putSequence(seq);
-        output->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(handler)));
+        output->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(handler)));
     } else if (input->isEnded()) {
         output->setEnded();
         setDone();

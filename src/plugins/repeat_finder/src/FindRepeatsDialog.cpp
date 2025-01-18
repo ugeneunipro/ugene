@@ -173,7 +173,7 @@ QStringList FindRepeatsDialog::getAvailableAnnotationNames() const {
             names.insert(a->getName());
         }
     }
-    res = names.toList();
+    res = toList(names);
     res.sort();
     return res;
 }
@@ -208,7 +208,7 @@ bool FindRepeatsDialog::getRegions(QCheckBox* cb, QLineEdit* le, QVector<U2Regio
     if (!enabled || names.isEmpty()) {
         return true;
     }
-    QSet<QString> aNames = names.split(',', QString::SkipEmptyParts).toSet();
+    QSet<QString> aNames = toSet(names.split(',', QString::SkipEmptyParts));
     QSet<AnnotationTableObject*> aObjs = sc->getAnnotationObjects();
     for (AnnotationTableObject* obj : qAsConst(aObjs)) {
         foreach (Annotation* a, obj->getAnnotations()) {

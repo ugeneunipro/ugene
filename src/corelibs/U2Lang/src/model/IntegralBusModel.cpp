@@ -182,7 +182,7 @@ void IntegralBusPort::setPathsBySlotsPair(const QString& dest, const QString& sr
         map.insertMulti(key, path);
     }
 
-    this->setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(map));
+    this->setParameter(PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(map));
 }
 
 void IntegralBusPort::addPathBySlotsPair(const QString& dest, const QString& src, const QStringList& path) {
@@ -190,12 +190,12 @@ void IntegralBusPort::addPathBySlotsPair(const QString& dest, const QString& src
     QPair<QString, QString> key(dest, src);
     map.insertMulti(key, path);
 
-    this->setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(map));
+    this->setParameter(PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(map));
 }
 
 void IntegralBusPort::clearPaths() {
     SlotPathMap map;
-    this->setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(map));
+    this->setParameter(PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(map));
 }
 
 void IntegralBusPort::remap(const QMap<ActorId, ActorId>& m) {
@@ -203,14 +203,14 @@ void IntegralBusPort::remap(const QMap<ActorId, ActorId>& m) {
     if (busAttr) {
         StrStrMap busMap = busAttr->getAttributeValueWithoutScript<StrStrMap>();
         IntegralBusType::remap(busMap, m);
-        setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
+        setParameter(BUS_MAP_ATTR_ID, QVariant::fromValue<StrStrMap>(busMap));
     }
 
     Attribute* pathsAttr = getParameter(PATHS_ATTR_ID);
     if (pathsAttr) {
         SlotPathMap pathsMap = pathsAttr->getAttributeValueWithoutScript<SlotPathMap>();
         IntegralBusType::remapPaths(pathsMap, m);
-        setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathsMap));
+        setParameter(PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(pathsMap));
     }
 }
 
@@ -260,8 +260,8 @@ void IntegralBusPort::updateBindings(const QMap<ActorId, ActorId>& actorsMapping
         busMap[dstSlot] = IntegralBusSlot::listToString(validSrcs);
     }
 
-    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
-    setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathMap));
+    setParameter(BUS_MAP_ATTR_ID, QVariant::fromValue<StrStrMap>(busMap));
+    setParameter(PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(pathMap));
 }
 
 void IntegralBusPort::replaceActor(Actor* oldActor, Actor* newActor, const QList<PortMapping>& mappings) {
@@ -279,13 +279,13 @@ void IntegralBusPort::replaceActor(Actor* oldActor, Actor* newActor, const QList
         }
         IntegralBusUtils::remapBus(busMap, oldActor->getId(), newActor->getId(), pm);
     }
-    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
+    setParameter(BUS_MAP_ATTR_ID, QVariant::fromValue<StrStrMap>(busMap));
 
     SlotPathMap pathMap = getPathsMap();
     QMap<ActorId, ActorId> actorsMapping;
     actorsMapping[oldActor->getId()] = newActor->getId();
     IntegralBusType::remapPaths(pathMap, actorsMapping);
-    setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathMap));
+    setParameter(PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(pathMap));
 }
 
 void IntegralBusPort::setVisibleSlot(const QString& slotId, const bool isVisible) {
@@ -307,7 +307,7 @@ void IntegralBusPort::copyInput(IntegralBusPort* port, const PortMapping& mappin
         U2OpStatus2Log os;
         myBusMap[mapping.getDstSlotId(slotId, os)] = busMap[slotId];
     }
-    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(myBusMap));
+    setParameter(BUS_MAP_ATTR_ID, QVariant::fromValue<StrStrMap>(myBusMap));
 
     SlotPathMap myPathMap;
     SlotPathMap pathMap = port->getPathsMap();
@@ -316,7 +316,7 @@ void IntegralBusPort::copyInput(IntegralBusPort* port, const PortMapping& mappin
         SlotPair myPair(mapping.getDstSlotId(pair.first, os), pair.second);
         myPathMap[myPair] = pathMap[pair];
     }
-    setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(myPathMap));
+    setParameter(PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(myPathMap));
 }
 
 StrStrMap IntegralBusPort::getBusMap() const {
@@ -341,7 +341,7 @@ void IntegralBusPort::setBusMapValue(const QString& slotId, const QString& value
     } else {
         busMap[slotId] = busMap[slotId] + ";" + value;
     }
-    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
+    setParameter(BUS_MAP_ATTR_ID, QVariant::fromValue<StrStrMap>(busMap));
 }
 
 void IntegralBusPort::removeBusMapKey(const QString& slotId) {
@@ -434,8 +434,8 @@ void IntegralBusPort::setupBusMap() {
 
     SlotPathMap pathMap;
     WorkflowUtils::extractPathsFromBindings(busMap, pathMap);
-    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
-    setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathMap));
+    setParameter(BUS_MAP_ATTR_ID, QVariant::fromValue<StrStrMap>(busMap));
+    setParameter(PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(pathMap));
 }
 
 bool IntegralBusPort::validate(NotificationsList& notificationList) const {

@@ -380,7 +380,7 @@ QList<AVAnnotationItem*> AnnotationsTreeView::findAnnotationItems(const AVGroupI
 
 void AnnotationsTreeView::removeGroupAnnotationsFromCache(const AVGroupItem* groupItem) {
     CHECK(!selectedAnnotation.isEmpty(), );
-    const QSet<AVAnnotationItem*> annotationItems = findAnnotationItems(groupItem).toSet();
+    const QSet<AVAnnotationItem*> annotationItems = toSet(findAnnotationItems(groupItem));
     foreach (AVAnnotationItem* annotationItem, selectedAnnotation.keys()) {
         if (annotationItems.contains(annotationItem)) {
             selectedAnnotation.remove(annotationItem);
@@ -1664,7 +1664,7 @@ void AnnotationsTreeView::sl_annotationClicked(Annotation* annotation) {
     auto advctx = qobject_cast<ADVSequenceObjectContext*>(sender());
     SAFE_POINT(advctx != nullptr, "Incorrect sender", );
 
-    QList<AnnotationTableObject*> annotationObjects = advctx->getAnnotationObjects().toList();
+    QList<AnnotationTableObject*> annotationObjects = toList(advctx->getAnnotationObjects());
     QMap<AVAnnotationItem*, QList<U2Region>> sortedAnnotationSelections = sortAnnotationSelection(annotationObjects);
 
     expandItemRecursevly(item->parent());
@@ -1738,7 +1738,7 @@ void AnnotationsTreeView::sl_clearSelectedAnnotations() {
     auto advctx = qobject_cast<ADVSequenceObjectContext*>(sender());
     SAFE_POINT(advctx != nullptr, "Incorrect sender", );
 
-    QList<AnnotationTableObject*> annotationObjects = advctx->getAnnotationObjects().toList();
+    QList<AnnotationTableObject*> annotationObjects = toList(advctx->getAnnotationObjects());
     QMap<AVAnnotationItem*, QList<U2Region>> currentAnnotationSelections = sortAnnotationSelection(annotationObjects);
 
     foreach (AVAnnotationItem* key, currentAnnotationSelections.keys()) {

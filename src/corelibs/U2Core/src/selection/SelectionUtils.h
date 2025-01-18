@@ -24,6 +24,7 @@
 #include <QSet>
 
 #include <U2Core/U2Region.h>
+#include <U2Core/U2IdTypes.h>
 
 namespace U2 {
 

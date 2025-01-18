@@ -128,7 +128,7 @@ QString BaseNGSWorker::getTargetName(const QString& fileUrl, const QString& outD
         name = QFileInfo(fileUrl).fileName();
         name = name + getDefaultFileName();
     }
-    QString rolledUrl = GUrlUtils::rollFileName(outDir + name, "_", outUrls.toSet());
+    QString rolledUrl = GUrlUtils::rollFileName(outDir + name, "_", toSet(outUrls));
     outUrls.append(rolledUrl);
     QFileInfo fi(rolledUrl);
     return fi.fileName();

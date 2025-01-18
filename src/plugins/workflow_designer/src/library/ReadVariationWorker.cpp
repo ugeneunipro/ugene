@@ -79,7 +79,7 @@ void ReadVariationWorker::onTaskFinished(Task* task) {
 
 QString ReadVariationWorker::addReadDbObjectToData(const QString& objUrl, QVariantMap& data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
-    data[BaseSlots::VARIATION_TRACK_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
+    data[BaseSlots::VARIATION_TRACK_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(handler);
     // return getObjectName(handler, U2Type::VariantTrack);
     return getObjectName(handler, 5);
 }
@@ -151,7 +151,7 @@ void ReadVariationTask::run() {
     if (splitAlleles) {
         hints[DocumentReadingMode_SplitVariationAlleles] = true;
     }
-    hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(storage->getDbiRef()));
+    hints.insert(DocumentFormat::DBI_REF_HINT, QVariant::fromValue(storage->getDbiRef()));
     QScopedPointer<Document> doc(format->loadDocument(iof, url, hints, stateInfo));
     CHECK_OP(stateInfo, );
     doc->setDocumentOwnsDbiResources(false);
@@ -164,7 +164,7 @@ void ReadVariationTask::run() {
         m[BaseSlots::URL_SLOT().getId()] = url;
         m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
         SharedDbiDataHandler handler = storage->getDataHandler(trackObj->getEntityRef());
-        m[BaseSlots::VARIATION_TRACK_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
+        m[BaseSlots::VARIATION_TRACK_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(handler);
         results.append(m);
     }
 }

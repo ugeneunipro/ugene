@@ -228,8 +228,8 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task* task, U2OpStatus& os) c
     }
 
     QVariantMap result;
-    result[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(reference);
-    result[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(alignTask->getAnnotations());
+    result[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(reference);
+    result[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(alignTask->getAnnotations());
     if (QFileInfo::exists(resultUrl)) {
         result[BaseSlots::URL_SLOT().getId()] = resultUrl;
     }

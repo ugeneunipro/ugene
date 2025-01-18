@@ -212,7 +212,7 @@ void ClustalOWorker::sl_taskFinished() {
     SAFE_POINT(output != nullptr, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(clustalOTask->getResultAlignment());
     QVariantMap msgData;
-    msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
+    msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(msaId);
     output->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), msgData));
     algoLog.info(tr("Aligned %1 with ClustalO").arg(clustalOTask->getResultAlignment()->getName()));
 }

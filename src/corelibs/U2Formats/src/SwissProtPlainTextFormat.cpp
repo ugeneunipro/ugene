@@ -122,7 +122,7 @@ bool SwissProtPlainTextFormat::readIdLine(ParserState* s) {
         s->si.setError(SwissProtPlainTextFormat::tr("Error parsing ID line. Not found sequence length"));
         return false;
     }
-    s->entry->tags.insert(DNAInfo::LOCUS, qVariantFromValue<DNALocusInfo>(loi));
+    s->entry->tags.insert(DNAInfo::LOCUS, QVariant::fromValue<DNALocusInfo>(loi));
 
     return true;
 }
@@ -179,7 +179,7 @@ bool SwissProtPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& se
             } else {
                 hasLine = true;
             }
-            st->entry->tags.insertMulti(DNAInfo::SOURCE, qVariantFromValue<DNASourceInfo>(soi));
+            st->entry->tags.insertMulti(DNAInfo::SOURCE, QVariant::fromValue<DNASourceInfo>(soi));
             continue;
         }
         if (st->hasKey("RF") || st->hasKey("RN")) {  // The RN (Reference Number) line gives a sequential number to each reference citation in an entry.

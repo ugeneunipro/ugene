@@ -32,9 +32,9 @@ static const QString LEFT_EYE_COLOR_NAME("LeftEyeColor");
 static const QString RIGHT_EYE_COLOR_NAME("RightEyeColor");
 
 QVariantMap AnaglyphSettings::toMap(QVariantMap& map) const {
-    map[EYES_SHIFT_NAME] = qVariantFromValue(eyesShift);
-    map[LEFT_EYE_COLOR_NAME] = qVariantFromValue(leftEyeColor);
-    map[RIGHT_EYE_COLOR_NAME] = qVariantFromValue(rightEyeColor);
+    map[EYES_SHIFT_NAME] = QVariant::fromValue(eyesShift);
+    map[LEFT_EYE_COLOR_NAME] = QVariant::fromValue(leftEyeColor);
+    map[RIGHT_EYE_COLOR_NAME] = QVariant::fromValue(rightEyeColor);
 
     return map;
 }

@@ -78,9 +78,9 @@ private:
 
 }  // namespace U2
 
-template<>
-inline QVariant qVariantFromValue<StrStrMap>(const StrStrMap& map) {
-    return qVariantFromValue(U2::StrPackUtils::packMap(map));
+
+inline QVariant myVariantFromValue(const StrStrMap& map) {
+    return QVariant::fromValue(U2::StrPackUtils::packMap(map));
 }
 
 template<>

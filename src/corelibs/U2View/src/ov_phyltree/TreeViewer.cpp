@@ -680,9 +680,9 @@ static QSet<QGraphicsItem*> getAllLevelChildItems(QGraphicsItem* item) {
 
 void TreeViewerUI::updateTextOptionOnSelectedItems() {
     QMap<TreeViewOption, QVariant> selectionSettings = getSelectionSettings();
-    QSet<QGraphicsItem*> itemsToUpdate = scene()->selectedItems().toSet();
+    QSet<QGraphicsItem*> itemsToUpdate = toSet(scene()->selectedItems());
     if (itemsToUpdate.isEmpty()) {
-        itemsToUpdate = scene()->items().toSet();
+        itemsToUpdate = toSet(scene()->items());
     } else {
         QSet<QGraphicsItem*> rootItems = itemsToUpdate;
         for (auto item : qAsConst(rootItems)) {

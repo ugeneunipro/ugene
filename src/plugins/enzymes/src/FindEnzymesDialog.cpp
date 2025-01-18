@@ -550,7 +550,7 @@ int EnzymesSelectorWidget::getNumSelected() {
 }
 
 void EnzymesSelectorWidget::saveSettings() {
-    QStringList sl(lastSelection.toList());
+    QStringList sl(toList(lastSelection));
     if (!sl.isEmpty()) {
         AppContext::getSettings()->setValue(EnzymeSettings::LAST_SELECTION, sl.join(ENZYME_LIST_SEPARATOR));
     }
@@ -561,7 +561,7 @@ void EnzymesSelectorWidget::initSelection() {
     if (selStr.isEmpty()) {
         selStr = EnzymeSettings::COMMON_ENZYMES;
     }
-    lastSelection = selStr.split(ENZYME_LIST_SEPARATOR).toSet();
+    lastSelection = toSet(selStr.split(ENZYME_LIST_SEPARATOR));
 }
 
 void EnzymesSelectorWidget::sl_loadSelectionFromFile() {

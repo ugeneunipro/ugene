@@ -181,7 +181,7 @@ static Document* loadDocument(const QString& url, const DataConfig& dataCfg, Wor
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QVariantMap hints;
     U2DbiRef dbiRef = context->getDataStorage()->getDbiRef();
-    hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
+    hints.insert(DocumentFormat::DBI_REF_HINT, QVariant::fromValue(dbiRef));
     QScopedPointer<Document> d(f->loadDocument(iof, url, hints, os));
     CHECK_OP(os, nullptr);
     d->setDocumentOwnsDbiResources(false);
@@ -512,7 +512,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
                 if (seqObjects.size() == 1) {
                     GObject* obj = seqObjects.first();
                     Workflow::SharedDbiDataHandler id = context->getDataStorage()->getDataHandler(obj->getEntityRef());
-                    v[slotId] = qVariantFromValue<SharedDbiDataHandler>(id);
+                    v[slotId] = QVariant::fromValue<SharedDbiDataHandler>(id);
                 } else if (1 < seqObjects.size()) {
                     QList<U2EntityRef> refs;
                     foreach (GObject* obj, seqObjects) {
@@ -524,12 +524,12 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
                 SharedDbiDataHandler msaId = getAlignment(d.data(), context, os);
                 CHECK_OP_EXT(os, reportError(os.getError()), );
                 DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(cfg.type);
-                v[WorkflowUtils::getSlotDescOfDatatype(dataType).getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
+                v[WorkflowUtils::getSlotDescOfDatatype(dataType).getId()] = QVariant::fromValue<SharedDbiDataHandler>(msaId);
             } else if (cfg.isAnnotations()) {
                 const SharedDbiDataHandler annTableId = getAnnotations(d.data(), context, os);
                 CHECK_OP_EXT(os, reportError(os.getError()), );
                 DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(cfg.type);
-                v[WorkflowUtils::getSlotDescOfDatatype(dataType).getId()] = qVariantFromValue<SharedDbiDataHandler>(annTableId);
+                v[WorkflowUtils::getSlotDescOfDatatype(dataType).getId()] = QVariant::fromValue<SharedDbiDataHandler>(annTableId);
             } else if (cfg.isAnnotatedSequence()) {
                 if (!d->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded).isEmpty()) {
                     auto seqObj = static_cast<U2SequenceObject*>(d->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded).first());
@@ -537,18 +537,18 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
                     CHECK_OP_EXT(os, reportError(os.getError()), );
                     seq.alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::RAW());
                     SharedDbiDataHandler seqId = context->getDataStorage()->putSequence(seq);
-                    v[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+                    v[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
                 }
                 const SharedDbiDataHandler annTableId = getAnnotations(d.data(), context, os);
                 if (!os.hasError()) {
                     DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(cfg.type);
-                    v[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(annTableId);
+                    v[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(annTableId);
                 }
             } else if (cfg.isText()) {
                 if (!d->findGObjectByType(GObjectTypes::TEXT, UOF_LoadedAndUnloaded).isEmpty()) {
                     auto obj = static_cast<TextObject*>(d->findGObjectByType(GObjectTypes::TEXT, UOF_LoadedAndUnloaded).first());
                     DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(cfg.type);
-                    v[WorkflowUtils::getSlotDescOfDatatype(dataType).getId()] = qVariantFromValue<QString>(obj->getText());
+                    v[WorkflowUtils::getSlotDescOfDatatype(dataType).getId()] = QVariant::fromValue<QString>(obj->getText());
                 }
             }
 
@@ -566,7 +566,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
         const QList<U2EntityRef>& refs = seqsForMergingBySlotId.value(slotId);
         foreach (const U2EntityRef& eRef, refs) {
             SharedDbiDataHandler id = context->getDataStorage()->getDataHandler(eRef);
-            v[slotId] = qVariantFromValue<SharedDbiDataHandler>(id);
+            v[slotId] = QVariant::fromValue<SharedDbiDataHandler>(id);
             output->put(Message(dataType, v));
         }
     } else {
@@ -589,7 +589,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
             U2Sequence seq = seqImporter.finalizeSequenceAndValidate(os);
             U2EntityRef eRef(context->getDataStorage()->getDbiRef(), seq.id);
             SharedDbiDataHandler id = context->getDataStorage()->getDataHandler(eRef);
-            v[slotId] = qVariantFromValue<SharedDbiDataHandler>(id);
+            v[slotId] = QVariant::fromValue<SharedDbiDataHandler>(id);
         }
         CHECK_OP(os, );
         output->put(Message(dataType, v));

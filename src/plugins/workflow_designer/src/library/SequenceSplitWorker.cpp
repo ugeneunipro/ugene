@@ -197,7 +197,7 @@ void SequenceSplitWorker::sl_onTaskFinished(Task*) {
 
             QVariantMap messageData;
             SharedDbiDataHandler seqId = context->getDataStorage()->putSequence(resSeq);
-            messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+            messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
 
             DataTypePtr messageType = WorkflowEnv::getDataTypeRegistry()->getById(REGIONED_SEQ_TYPE);
             if (outPort) {

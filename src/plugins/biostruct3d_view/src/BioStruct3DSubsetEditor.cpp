@@ -34,11 +34,11 @@ BioStruct3DSubsetEditor::BioStruct3DSubsetEditor(const QList<BioStruct3DObject*>
     setupUi(this);
 
     foreach (BioStruct3DObject* bs, biostructs) {
-        objectCombo->addItem(bs->getGObjectName(), qVariantFromValue((void*)bs));
+        objectCombo->addItem(bs->getGObjectName(), QVariant::fromValue((void*)bs));
     }
 
     if (selected) {
-        int idx = objectCombo->findData(qVariantFromValue((void*)selected));
+        int idx = objectCombo->findData(QVariant::fromValue((void*)selected));
         assert(idx != -1 && "Selected object must present in biostructs");
         objectCombo->setCurrentIndex(idx);
     }
@@ -49,7 +49,7 @@ BioStruct3DSubsetEditor::BioStruct3DSubsetEditor(const QList<BioStruct3DObject*>
     fillModelCombo();
 
     if (selectedModel != -1) {
-        int idx = modelCombo->findData(qVariantFromValue(selectedModel));
+        int idx = modelCombo->findData(QVariant::fromValue(selectedModel));
         assert(idx != -1 && "Selected model must present in biostruct");
         modelCombo->setCurrentIndex(idx);
     }
@@ -66,9 +66,9 @@ void BioStruct3DSubsetEditor::fillChainCombo() {
     foreach (const int chainIndex, bso->getBioStruct3D().moleculeMap.keys()) {
         char chainId = bso->getBioStruct3D().getChainIdByIndex(chainIndex);
         if (chainId > 0) {
-            chainCombo->addItem(QString(chainId), qVariantFromValue(chainIndex));
+            chainCombo->addItem(QString(chainId), QVariant::fromValue(chainIndex));
         } else {
-            chainCombo->addItem(QString::number(chainIndex), qVariantFromValue(chainIndex));
+            chainCombo->addItem(QString::number(chainIndex), QVariant::fromValue(chainIndex));
         }
     }
 }
@@ -77,7 +77,7 @@ void BioStruct3DSubsetEditor::fillModelCombo() {
     auto bso = static_cast<BioStruct3DObject*>(objectCombo->itemData(objectCombo->currentIndex()).value<void*>());
     modelCombo->clear();
     foreach (const int modelId, bso->getBioStruct3D().modelMap.keys()) {
-        modelCombo->addItem(QString::number(modelId), qVariantFromValue(modelId));
+        modelCombo->addItem(QString::number(modelId), QVariant::fromValue(modelId));
     }
 }
 

@@ -197,7 +197,7 @@ void AlignSelectedSequencesAction::sl_activate() {
     const MaEditorSelection& selection = msaEditor->getSelection();
     QList<int> selectedMaRowIndexes = msaEditor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selection.getRectList());
     QList<qint64> selectedRowIds = msaObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
-    auto realignTask = new RealignSequencesInAlignmentTask(msaObject, selectedRowIds.toSet(), algorithmId);
+    auto realignTask = new RealignSequencesInAlignmentTask(msaObject, toSet(selectedRowIds), algorithmId);
     TaskWatchdog::trackResourceExistence(msaObject, realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));
     AppContext::getTaskScheduler()->registerTopLevelTask(realignTask);
 }

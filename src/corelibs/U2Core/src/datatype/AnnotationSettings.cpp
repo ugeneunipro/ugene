@@ -65,7 +65,9 @@ void AnnotationSettingsRegistry::changeSettings(const QList<AnnotationSettings*>
 }
 
 QStringList AnnotationSettingsRegistry::getAllSettings() const {
-    return (persistentMap.keys() + transientMap.keys()).toSet().toList();
+    QStringList allKeys = persistentMap.keys() + transientMap.keys();
+    QSet<QString> uniqueKeys(allKeys.begin(), allKeys.end());
+    return QStringList(uniqueKeys.begin(), uniqueKeys.end());
 }
 
 AnnotationSettings* AnnotationSettingsRegistry::getAnnotationSettings(const SharedAnnotationData& a) {

@@ -217,7 +217,7 @@ void AssemblyDbiUnitTests_getReads::Test() {
         read3->flags = None;
 
         QVariantList reads;
-        reads << qVariantFromValue(read1) << qVariantFromValue(read2) << qVariantFromValue(read3);
+        reads << QVariant::fromValue(read1) << QVariant::fromValue(read2) << QVariant::fromValue(read3);
         testData.addValue(GET_READS_OUT, reads);
     }
 
@@ -273,7 +273,7 @@ void AssemblyDbiUnitTests_getReadsByRow::Test() {
         read2->cigar.append(U2CigarToken(U2CigarOp_M, 49));
 
         QVariantList reads;
-        reads << qVariantFromValue(read1) << qVariantFromValue(read2);
+        reads << QVariant::fromValue(read1) << QVariant::fromValue(read2);
 
         testData.addValue(GET_READS_BY_ROW_REGION, U2Region(74, 3));
         testData.addValue(GET_READS_BY_ROW_BEGIN, 5);
@@ -335,7 +335,7 @@ void AssemblyDbiUnitTests_getReadsByName::Test() {
         read->flags = None;
 
         QVariantList readsByName;
-        readsByName.append(qVariantFromValue(read));
+        readsByName.append(QVariant::fromValue(read));
         testData.addValue(READS_BY_NAME_IN, readsByName);
     }
 
@@ -493,7 +493,7 @@ void AssemblyDbiUnitTests_addReads::Test() {
         read2add->effectiveLen = read2add->readSequence.length();
         read2add->flags = None;
         QVariantList reads2add;
-        reads2add.append(qVariantFromValue(read2add));
+        reads2add.append(QVariant::fromValue(read2add));
         testData.addValue(ADD_READ, reads2add);
     }
 

@@ -636,7 +636,7 @@ void ScriptSelectionWidget::setValue(const QVariant& value) {
     } else {
         combobox->setCurrentIndex(USER_SCRIPT_ITEM_STR.second);
     }
-    combobox->setProperty(SCRIPT_PROPERTY.toLatin1().constData(), qVariantFromValue<AttributeScript>(attrScript));
+    combobox->setProperty(SCRIPT_PROPERTY.toLatin1().constData(), QVariant::fromValue<AttributeScript>(attrScript));
 }
 
 QVariant ScriptSelectionWidget::value() {
@@ -658,14 +658,14 @@ void ScriptSelectionWidget::sl_comboCurrentIndexChanged(int itemId) {
             int rc = dlg->exec();
             CHECK(!dlg.isNull(), );
             if (rc != QDialog::Accepted) {
-                combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
+                combobox->setItemData(USER_SCRIPT_ITEM_ID, QVariant::fromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
             } else {
                 auto scriptText = dlg->getScriptText();
                 if (!scriptText.isEmpty()) {
                     GCOUNTER(cvar1, "Script. Done Edit script of the element dialog for parameter with new script");
                 }
                 attrScript.setScriptText(scriptText);
-                combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
+                combobox->setItemData(USER_SCRIPT_ITEM_ID, QVariant::fromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
             }
 
             emit si_finished();

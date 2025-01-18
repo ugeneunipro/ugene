@@ -302,7 +302,7 @@ void GenerateDNAWorker::sl_taskFinished(Task* t) {
     if (ch) {
         foreach (DNASequence seq, task->getSequences()) {
             SharedDbiDataHandler handler = context->getDataStorage()->putSequence(seq);
-            ch->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(handler)));
+            ch->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(handler)));
         }
         ch->setEnded();
     }

@@ -65,7 +65,7 @@ QScriptValue DbiClassPrototype::getId() {
     Workflow::SharedDbiDataHandler id = thisData()->getId();
     SCRIPT_CHECK(id.constData() != nullptr, context(), "Invalid data id. Was it released?", QScriptValue::NullValue);
 
-    return engine()->newVariant(qVariantFromValue(id));
+    return engine()->newVariant(QVariant::fromValue(id));
 }
 
 void DbiClassPrototype::release() {
@@ -104,7 +104,7 @@ QScriptValue DbiScriptClass::prototype() const {
 
 QScriptValue DbiScriptClass::newInstance(const Workflow::SharedDbiDataHandler& id) {
     ScriptDbiData dbiData(id);
-    QScriptValue data = engine()->newVariant(qVariantFromValue(dbiData));
+    QScriptValue data = engine()->newVariant(QVariant::fromValue(dbiData));
     return engine()->newObject(this, data);
 }
 

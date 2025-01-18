@@ -307,7 +307,7 @@ void ORFWorker::sl_taskFinished() {
         const QList<SharedAnnotationData> annsList = ORFFindResult::toTable(res, resultName);
 
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annsList);
-        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
+        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(tableId)));
         algoLog.info(tr("Found %1 ORFs").arg(res.size()));
     }
 }

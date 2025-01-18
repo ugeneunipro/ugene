@@ -375,7 +375,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                                    << "SZYD_Cas9_CR65"
                                                                    << "SZYD_Cas9_CR66";
     const QStringList actualDirectReadsNames = GTUtilsMcaEditor::getDirectReadsNames();
-    CHECK_SET_ERR(expectedDirectReadsNames == actualDirectReadsNames.toSet(), "Direct reads names are incorrect");
+    CHECK_SET_ERR(expectedDirectReadsNames == toSet(actualDirectReadsNames), "Direct reads names are incorrect");
 
     //                    8 reverse reads with names "SZYD_Cas9_CR50"... "SZYD_Cas9_CR56" and "SZYD_Cas9_5B70"
     const QSet<QString> expectedReverseComplementReadsNames = QSet<QString>() << "SZYD_Cas9_CR50"
@@ -387,7 +387,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                                               << "SZYD_Cas9_CR56"
                                                                               << "SZYD_Cas9_5B70";
     const QStringList actualReverseComplementReadsNames = GTUtilsMcaEditor::getReverseComplementReadsNames();
-    CHECK_SET_ERR(expectedReverseComplementReadsNames == actualReverseComplementReadsNames.toSet(), "Reverse complement reads names are incorrect");
+    CHECK_SET_ERR(expectedReverseComplementReadsNames == toSet(actualReverseComplementReadsNames), "Reverse complement reads names are incorrect");
 
     // No Errors in the Log
     CHECK_SET_ERR(!lt.hasErrors(), "Found errors in the log: " + lt.getJoinedErrorString());

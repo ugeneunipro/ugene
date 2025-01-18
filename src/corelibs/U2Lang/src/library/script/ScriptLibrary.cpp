@@ -158,7 +158,7 @@ static QScriptValue putAnnotationTable(QScriptEngine* engine, const QList<Shared
     CHECK(wse != nullptr, QScriptValue::NullValue);
     WorkflowContext* ctx = wse->getWorkflowContext();
     SharedDbiDataHandler id = ctx->getDataStorage()->putAnnotationTable(anns);
-    return engine->newVariant(qVariantFromValue(id));
+    return engine->newVariant(QVariant::fromValue(id));
 }
 
 static QScriptValue putAlignment(QScriptEngine* engine, const Msa& msa) {
@@ -166,7 +166,7 @@ static QScriptValue putAlignment(QScriptEngine* engine, const Msa& msa) {
     CHECK(wse != nullptr, QScriptValue::NullValue);
     WorkflowContext* ctx = wse->getWorkflowContext();
     SharedDbiDataHandler id = ctx->getDataStorage()->putAlignment(msa);
-    return engine->newVariant(qVariantFromValue(id));
+    return engine->newVariant(QVariant::fromValue(id));
 }
 
 // unrefactored obsolete deprecated functions
@@ -996,7 +996,7 @@ QScriptValue WorkflowScriptLibrary::readSequences(QScriptContext* ctx, QScriptEn
     DocumentFormat* format = detection.first();
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QVariantMap hints;
-    hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(storage->getDbiRef());
+    hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(storage->getDbiRef());
 
     U2OpStatusImpl os;
     QScopedPointer<Document> doc(format->loadDocument(iof, filePath, hints, os));

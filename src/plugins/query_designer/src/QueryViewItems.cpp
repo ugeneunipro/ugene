@@ -365,7 +365,7 @@ void QDElement::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
         if (i == serialNum) {
             a->setChecked(true);
         }
-        a->setData(qVariantFromValue(i));
+        a->setData(QVariant::fromValue(i));
     }
 
     QAction* removeFromGroupAction = nullptr;

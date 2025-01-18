@@ -55,11 +55,11 @@ int QDDistanceConstraint::getMax() const {
 }
 
 void QDDistanceConstraint::setMin(int min) {
-    cfg->setParameter(QDConstraintController::MIN_LEN_ATTR, qVariantFromValue(min));
+    cfg->setParameter(QDConstraintController::MIN_LEN_ATTR, QVariant::fromValue(min));
 }
 
 void QDDistanceConstraint::setMax(int max) {
-    cfg->setParameter(QDConstraintController::MAX_LEN_ATTR, qVariantFromValue(max));
+    cfg->setParameter(QDConstraintController::MAX_LEN_ATTR, QVariant::fromValue(max));
 }
 
 QString QDDistanceConstraint::getText(QDSchemeUnit*, QDSchemeUnit*) const {

@@ -393,7 +393,7 @@ QVariantMap BioStruct3DGLWidget::getState() {
     glFrame->writeStateToMap(state);
     anaglyph->getSettings().toMap(state);
 
-    state[ANAGLYPH_STATUS_NAME] = qVariantFromValue((int)anaglyphStatus);
+    state[ANAGLYPH_STATUS_NAME] = QVariant::fromValue((int)anaglyphStatus);
 
     state[COLOR_SCHEME_NAME] = QVariant::fromValue(currentColorSchemeName);
     state[RENDERER_NAME] = QVariant::fromValue(currentGLRendererName);

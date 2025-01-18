@@ -567,7 +567,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
 
     toggleAutoAnnotationsButton->setEnabled(!aaActionMap.isEmpty());
 
-    QSet<QString> actionNames = aaActionMap.keys().toSet();
+    QSet<QString> actionNames = toSet(aaActionMap.keys());
 
     foreach (const QString& aName, actionNames) {
         auto action = new QAction(toggleAutoAnnotationsMenu);

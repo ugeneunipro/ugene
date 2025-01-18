@@ -354,8 +354,8 @@ void SpadesWorker::sl_taskFinished() {
     QString contigsUrl = spadesTask->getContigsUrl();
 
     QVariantMap data;
-    data[SpadesWorkerFactory::SCAFFOLD_OUT_SLOT_ID] = qVariantFromValue<QString>(scaffoldUrl);
-    data[SpadesWorkerFactory::CONTIGS_URL_OUT_SLOT_ID] = qVariantFromValue<QString>(contigsUrl);
+    data[SpadesWorkerFactory::SCAFFOLD_OUT_SLOT_ID] = QVariant::fromValue<QString>(scaffoldUrl);
+    data[SpadesWorkerFactory::CONTIGS_URL_OUT_SLOT_ID] = QVariant::fromValue<QString>(contigsUrl);
     output->put(Message(output->getBusType(), data));
 
     context->getMonitor()->addOutputFile(scaffoldUrl, getActor()->getId());

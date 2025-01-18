@@ -23,12 +23,9 @@
 
 #include <algorithm>
 
-#include <QVector>
+#include <QtCore/QElapsedTimer>
 
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/GAutoDeleteList.h>
 #include <U2Core/Msa.h>
-#include <U2Core/Task.h>
 
 #include "MuscleTask.h"
 
@@ -96,7 +93,7 @@ public:
 
 private:
     MuscleWorkPool* workpool;
-    QTime timer;
+    QElapsedTimer timer;
 };
 
 class ProgressiveAlignWorker : public Task {
@@ -152,4 +149,3 @@ private:
 };
 
 }  // namespace U2
-

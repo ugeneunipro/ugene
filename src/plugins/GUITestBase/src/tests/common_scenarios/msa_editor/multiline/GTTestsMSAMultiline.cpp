@@ -259,7 +259,7 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001) {
     QList<QString> allItems;
     enumerateMenu(menu, &allItems);
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(2, 2));
-    QSet<QString> allSet = allItems.toSet();
+    QSet<QString> allSet = toSet(allItems);
     CHECK_SET_ERR(allSet.size() == allItems.size(), "Context menu contains repeated items");
 }
 
