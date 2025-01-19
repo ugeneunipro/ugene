@@ -44,6 +44,20 @@ const QString StrPackUtils::pairSeparatorPattern = QString("^\\%2|(?!\\\\)\\%2%1
 const QRegExp StrPackUtils::pairSingleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\'"));
 const QRegExp StrPackUtils::pairDoubleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\""));
 
+static bool registerMetaTypes() {
+    qRegisterMetaType<StrStrMap>("StrStrMap");
+
+    QMetaType::registerConverter<StrStrMap, QVariant>(
+        [](const StrStrMap& map) { return QVariant::fromValue(StrPackUtils::packMap(map));});
+
+    QMetaType::registerConverter<QVariant, StrStrMap>(
+        [](const QVariant& variant) -> StrStrMap { return StrPackUtils::unpackMap(variant.toString());});
+
+    return true;
+}
+
+const bool StrPackUtils::isMetaTypesRegistered = registerMetaTypes();
+
 QString StrPackUtils::packStringList(const QStringList& list, Options options) {
     QString packedList;
     foreach (const QString& string, list) {

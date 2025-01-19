@@ -74,16 +74,8 @@ private:
     static const QString pairSeparatorPattern;
     static const QRegExp pairSingleQuoteSeparatorRegExp;
     static const QRegExp pairDoubleQuoteSeparatorRegExp;
+
+    static const bool isMetaTypesRegistered;
 };
 
 }  // namespace U2
-
-
-inline QVariant myVariantFromValue(const StrStrMap& map) {
-    return QVariant::fromValue(U2::StrPackUtils::packMap(map));
-}
-
-template<>
-inline StrStrMap qvariant_cast<StrStrMap>(const QVariant& variant) {
-    return U2::StrPackUtils::unpackMap(qvariant_cast<QString>(variant));
-}
