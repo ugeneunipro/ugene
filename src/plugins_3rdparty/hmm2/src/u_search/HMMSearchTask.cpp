@@ -242,7 +242,7 @@ QList<SharedAnnotationData> HMMSearchTask::getResultsAsAnnotations(U2FeatureType
         if (!info.isEmpty()) {
             a->qualifiers.append(U2Qualifier("HMM-model", info));
         }
-        // a->qualifiers.append(U2Qualifier("E-value", QString().sprintf("%.2lg", ((double) hmmRes.evalue))));
+        // a->qualifiers.append(U2Qualifier("E-value", QString::asprintf("%.2lg", ((double) hmmRes.evalue))));
         a->qualifiers.append(U2Qualifier("E-value", str));
         a->qualifiers.append(U2Qualifier("Score", QString::asprintf("%.1f", hmmRes.score)));
         annotations.append(a);
