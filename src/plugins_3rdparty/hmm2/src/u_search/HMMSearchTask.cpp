@@ -226,7 +226,7 @@ QList<SharedAnnotationData> HMMSearchTask::getResultsAsAnnotations(U2FeatureType
         a->location->regions << hmmRes.r;
 
         QString str; /*add zeros at begin of evalue exponent part, so exponent part must contains 3 numbers*/
-        str.asprintf("%.2g", (double)hmmRes.evalue);
+        str+= QString::asprintf("%.2g", (double)hmmRes.evalue);
         QRegExp rx("\\+|\\-.+");
         int pos = rx.indexIn(str, 0);
         if (pos != -1) {
