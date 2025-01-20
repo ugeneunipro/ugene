@@ -138,7 +138,7 @@ Task* RemoteDBFetcherWorker::tick() {
     const QString seqId = nextId();
 
     QVariantMap hints;
-    hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
+    hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(context->getDataStorage()->getDbiRef());
     hints[FORCE_DOWNLOAD_SEQUENCE_HINT] = true;
     Task* ret = new LoadRemoteDocumentTask(seqId, dbid, fullPathDir, GENBANK_FORMAT, hints);
     connect(ret, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -193,9 +193,9 @@ void RemoteDBFetcherWorker::sl_taskFinished() {
 
         QVariantMap messageData;
         SharedDbiDataHandler seqId = context->getDataStorage()->getDataHandler(dnao->getEntityRef());
-        messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+        messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
         SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(ads);
-        messageData[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
+        messageData[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(tableId);
 
         DataTypePtr messageType = WorkflowEnv::getDataTypeRegistry()->getById(TYPE);
 
@@ -428,7 +428,7 @@ Task* FetchSequenceByIdFromAnnotationWorker::tick() {
         }
 
         QVariantMap hints;
-        hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
+        hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(context->getDataStorage()->getDbiRef());
         hints[FORCE_DOWNLOAD_SEQUENCE_HINT] = true;
         Task* task = new LoadRemoteDocumentTask(accIds.join(","), dbId, "", GENBANK_FORMAT, hints);
         connect(task, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -484,9 +484,9 @@ void FetchSequenceByIdFromAnnotationWorker::sl_taskFinished() {
 
         QVariantMap messageData;
         SharedDbiDataHandler seqId = context->getDataStorage()->getDataHandler(dnao->getEntityRef());
-        messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+        messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
         SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(ads);
-        messageData[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
+        messageData[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(tableId);
 
         DataTypePtr messageType = WorkflowEnv::getDataTypeRegistry()->getById(TYPE);
 

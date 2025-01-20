@@ -233,7 +233,7 @@ void HMMReader::sl_taskFinished() {
         return;
     if (output) {
         if (!t->hasError()) {
-            QVariant v = qVariantFromValue<plan7_s*>(t->getHMM());
+            QVariant v = QVariant::fromValue<plan7_s*>(t->getHMM());
             output->put(Message(HMMLib::HMM_PROFILE_TYPE(), v));
         }
         ioLog.info(tr("Loaded HMM profile from %1").arg(t->getURL()));

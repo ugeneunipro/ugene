@@ -801,7 +801,7 @@ QList<QAction*> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory* f, co
     QList<MWMDIWindow*> windows = AppContext::getMainWindow()->getMDIManager()->getWindows();
     auto objectsSelection = static_cast<const GObjectSelection*>(ms.findSelectionByType(GSelectionTypes::GOBJECTS));
     if (objectsSelection != nullptr) {
-        QSet<GObject*> objectsInSelection = objectsSelection->getSelectedObjects().toSet();
+        QSet<GObject*> objectsInSelection = toSet(objectsSelection->getSelectedObjects());
         foreach (MWMDIWindow* w, windows) {
             auto ov = qobject_cast<GObjectViewWindow*>(w);
             if (ov == nullptr) {

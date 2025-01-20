@@ -89,7 +89,7 @@ void FilterAnnotationsWorker::sl_taskFinished(Task* t) {
     CHECK(!task->getStateInfo().isCoR(), );
 
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(task->takeResult());
-    output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
+    output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(tableId)));
 }
 
 void FilterAnnotationsWorker::cleanup() {

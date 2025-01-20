@@ -333,7 +333,7 @@ void prepareDocTab(const QList<AD2P_DocumentInfo>& docsInfo, const QList<AD2P_Pr
         if (df == nullptr) {
             continue;
         }
-        const GObjectType t = df->getSupportedObjectTypes().toList().first();
+        const GObjectType t = toList(df->getSupportedObjectTypes()).first();
         if (GObjectTypes::getTypeInfo(t).type != GObjectTypes::UNKNOWN) {
             // the project will not be empty
             return;
@@ -362,7 +362,7 @@ bool haveFormatsRelations(const FormatDetectionResult& firstFormat, const Format
         return firstFormat.importer->getFormatIds().contains(secondFormat.format->getFormatId());
     }
     if (firstFormat.importer != nullptr && secondFormat.importer != nullptr) {
-        return !firstFormat.importer->getFormatIds().toSet().intersect(secondFormat.importer->getFormatIds().toSet()).isEmpty();
+        return !toSet(firstFormat.importer->getFormatIds()).intersect(toSet(secondFormat.importer->getFormatIds())).isEmpty();
     }
     return false;
 }
@@ -1090,7 +1090,7 @@ QList<Task*> AddDocumentsToProjectTask::prepareLoadTasks() {
         bool unsupportedObjectType = false;
         if (doc == nullptr) {
             DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(info.formatId);
-            GObjectType t = df->getSupportedObjectTypes().toList().first();
+            GObjectType t = toList(df->getSupportedObjectTypes()).first();
             if (GObjectTypes::getTypeInfo(t).type == GObjectTypes::UNKNOWN) {
                 unsupportedObjectType = true;
             }

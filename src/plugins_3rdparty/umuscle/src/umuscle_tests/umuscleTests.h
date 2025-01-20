@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QDomElement>
+#include <QElapsedTimer>
 #include <QFileInfo>
 
 #include <U2Core/GObject.h>
@@ -174,7 +175,7 @@ public:
 private:
     QString inDirName;
     QString patDirName;
-    QTime timer;
+    QElapsedTimer timer;
 };
 
 class UMUSCLETests {

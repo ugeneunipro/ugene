@@ -638,7 +638,7 @@ static QList<int> toUniqueRowIndexes(const QList<int>& rowIndexes, int numRows) 
             uniqueRowIndexes << rowIndex;
         }
     }
-    return uniqueRowIndexes.toList();
+    return QList<int>(uniqueRowIndexes.begin(), uniqueRowIndexes.end());
 }
 
 int MsaObject::deleteGapByRowIndexList(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps) {

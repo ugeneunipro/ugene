@@ -65,7 +65,7 @@ void GTest_AnnotatorSearch::init(XMLTestFormat*, const QDomElement& el) {
         failMissingValue(GROUPS_ATTR);
         return;
     }
-    groupsToSearch = (groups.split(QRegExp("\\,"))).toSet();  // may be QRegExp("\\,")
+    groupsToSearch = toSet(groups.split(QRegExp("\\,")));  // may be QRegExp("\\,")
 
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
     if (!expected.isEmpty()) {

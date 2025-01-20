@@ -26,6 +26,7 @@
 #include <QUrl>
 
 #include <U2Core/GUrl.h>
+#include <U2Core/U2IdTypes.h>
 #include <U2Core/global.h>
 
 namespace U2 {

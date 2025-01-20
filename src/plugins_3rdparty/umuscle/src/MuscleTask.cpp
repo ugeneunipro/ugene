@@ -648,7 +648,7 @@ MuscleAlignOwnSequencesToSelfAction::MuscleAlignOwnSequencesToSelfAction(MsaObje
     : Task(tr("MUSCLE align rows to alignment '%1'").arg(msaObject->getGObjectName()), TaskFlags_NR_FOSCOE) {
     MuscleTaskSettings settings;
     settings.op = MuscleTaskOp_OwnRowsToAlignment;
-    settings.rowIndexesToAlign = maRowIndexes.toSet();
+    settings.rowIndexesToAlign = toSet(maRowIndexes);
     addSubTask(new MuscleGObjectTask(msaObject, settings));
 }
 

@@ -140,7 +140,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
         // set key item
         auto keyItem = new QTableWidgetItem(key.getDisplayName());
         keyItem->setToolTip(to->getDatatypeByDescriptor(key)->getDisplayName());
-        keyItem->setData(Qt::UserRole, qVariantFromValue<Descriptor>(key));
+        keyItem->setData(Qt::UserRole, QVariant::fromValue<Descriptor>(key));
         keyItem->setFlags(Qt::ItemIsSelectable);
         table->setItem(i, KEY_COLUMN, keyItem);
 
@@ -155,15 +155,15 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
         Descriptor current = WorkflowUtils::getCurrentMatchingDescriptor(candidates, to, key, bindingsMap);
 
         auto valueItem = new QTableWidgetItem(current.getDisplayName());
-        valueItem->setData(Qt::UserRole, qVariantFromValue<Descriptor>(current));
-        valueItem->setData(Qt::UserRole + 1, qVariantFromValue<QList<Descriptor>>(candidates));
+        valueItem->setData(Qt::UserRole, QVariant::fromValue<Descriptor>(current));
+        valueItem->setData(Qt::UserRole + 1, QVariant::fromValue<QList<Descriptor>>(candidates));
         if (elementDatatype->isList()) {
             valueItem->setData(Qt::UserRole + 2, true);
             valueItem->setData(Qt::UserRole + 3, elementDatatype->getDatatypeByDescriptor()->getId());
         } else {
             valueItem->setData(Qt::UserRole + 3, elementDatatype->getId());
         }
-        valueItem->setData(Qt::UserRole + 4, qVariantFromValue<Descriptor>(key));
+        valueItem->setData(Qt::UserRole + 4, QVariant::fromValue<Descriptor>(key));
         table->setItem(i, VALUE_COLUMN, valueItem);
     }
 
@@ -248,7 +248,7 @@ void MapDatatypeEditor::commit() {
             map[key] = val;
         }
     }
-    cfg->setParameter(propertyName, qVariantFromValue<StrStrMap>(map));
+    cfg->setParameter(propertyName, QVariant::fromValue<StrStrMap>(map));
     sl_showDoc();
 }
 
@@ -311,8 +311,8 @@ void BusPortEditor::commit() {
             busMap[key] = srcs.join(";");
         }
     }
-    cfg->setParameter(IntegralBusPort::BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
-    cfg->setParameter(IntegralBusPort::PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathMap));
+    cfg->setParameter(IntegralBusPort::BUS_MAP_ATTR_ID, QVariant::fromValue<StrStrMap>(busMap));
+    cfg->setParameter(IntegralBusPort::PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(pathMap));
     sl_showDoc();
 }
 
@@ -351,7 +351,7 @@ static int addItems(QStandardItemModel* cm, const QList<Descriptor>& list, bool 
     int idx = startIdx;
     foreach (const Descriptor& d, list) {
         auto item = new QStandardItem(d.getDisplayName());
-        item->setData(qVariantFromValue<Descriptor>(d));
+        item->setData(QVariant::fromValue<Descriptor>(d));
         item->setToolTip(d.getDisplayName());
         if (isList) {
             item->setCheckable(true);
@@ -434,11 +434,11 @@ void DescriptorListEditorDelegate::setModelData(QWidget* editor, QAbstractItemMo
             }
         }
         if (ids.isEmpty()) {
-            value = qVariantFromValue<Descriptor>(Descriptor("", tr("<empty>"), tr("Default value")));
+            value = QVariant::fromValue<Descriptor>(Descriptor("", tr("<empty>"), tr("Default value")));
         } else if (ids.size() == 1) {
-            value = qVariantFromValue<Descriptor>(res);
+            value = QVariant::fromValue<Descriptor>(res);
         } else {
-            value = qVariantFromValue<Descriptor>(Descriptor(ids.join(";"), tr("<List of values>"), tr("List of values")));
+            value = QVariant::fromValue<Descriptor>(Descriptor(ids.join(";"), tr("<List of values>"), tr("List of values")));
         }
     } else {
         value = combo->itemData(combo->currentIndex(), Qt::UserRole + 1);

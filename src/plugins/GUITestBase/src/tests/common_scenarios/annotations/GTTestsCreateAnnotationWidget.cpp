@@ -789,7 +789,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     //    Expected state: there is an additional "Insertion" group with an annotation inside.
     const QStringList expectedGroupNames = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 2)", "source  (0, 1)", "Insertion  (0, 1)"};
     const QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ").arg(groupNames.join(", "))));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ").arg(groupNames.join(", "))));
 
     const QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("Insertion  (0, 1)");
     CHECK_SET_ERR(1 == annotationNames.size(), QString("Unexpected annotations count: expect '%1', got '%2'").arg(1).arg(annotationNames.size()));
@@ -828,7 +828,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     //    Expected state: there is an additional "Insertion" group with an annotation inside.
     const QStringList expectedGroupNames = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 2)", "source  (0, 1)", "Insertion  (0, 1)"};
     const QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ").arg(groupNames.join(", "))));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ").arg(groupNames.join(", "))));
 
     const QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("Insertion  (0, 1)");
     CHECK_SET_ERR(1 == annotationNames.size(), QString("Unexpected annotations count: expect '%1', got '%2'").arg(1).arg(annotationNames.size()));
@@ -857,7 +857,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     //    Expected state: there is an additional "Insertion" group with an annotation inside.
     const QStringList expectedGroupNames = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 2)", "source  (0, 1)", "Insertion  (0, 1)"};
     const QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ").arg(groupNames.join(", "))));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ").arg(groupNames.join(", "))));
 
     const QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("Insertion  (0, 1)");
     CHECK_SET_ERR(1 == annotationNames.size(), QString("Unexpected annotations count: expect '%1', got '%2'").arg(1).arg(annotationNames.size()));
@@ -889,7 +889,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     //    Expected state: there is an additional correctly named group with an annotation inside.
     const QStringList expectedGroupNames = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 2)", "source  (0, 1)", "test_0017  (0, 1)"};
     const QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     const QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0017  (0, 1)");
     CHECK_SET_ERR(1 == annotationNames.size(), QString("Unexpected annotations count: expect '%1', got '%2'").arg(1).arg(annotationNames.size()));
@@ -922,7 +922,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     //    Expected state: there is an additional correctly named group with an annotation inside.
     const QStringList expectedGroupNames = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 2)", "source  (0, 1)", "test_0018  (0, 1)"};
     const QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     const QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0018  (0, 1)");
     CHECK_SET_ERR(1 == annotationNames.size(), QString("Unexpected annotations count: expect '%1', got '%2'").arg(1).arg(annotationNames.size()));
@@ -944,7 +944,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     //    Expected state: there is an additional correctly named group with an annotation inside.
     const QStringList expectedGroupNames = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 2)", "source  (0, 1)", "test_0019  (0, 1)"};
     const QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     const QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0019  (0, 1)");
     CHECK_SET_ERR(1 == annotationNames.size(), QString("Unexpected annotations count: expect '%1', got '%2'").arg(1).arg(annotationNames.size()));
@@ -979,7 +979,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     //    Expected state: there is an additional annotation in the "CDS" group.
     const QStringList expectedGroupNames = {"CDS  (0, 5)", "comment  (0, 1)", "misc_feature  (0, 2)", "source  (0, 1)"};
     const QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     const QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("CDS  (0, 5)");
     CHECK_SET_ERR(5 == annotationNames.size(), QString("Unexpected annotations count: expect '%1', got '%2'").arg(5).arg(annotationNames.size()));
@@ -1015,7 +1015,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     //    Expected state: there is an additional annotation in the "CDS" group.
     const QStringList expectedGroupNames = {"CDS  (0, 5)", "comment  (0, 1)", "misc_feature  (0, 2)", "source  (0, 1)"};
     const QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     const QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("CDS  (0, 5)");
     CHECK_SET_ERR(5 == annotationNames.size(), QString("Unexpected annotations count: expect '%1', got '%2'").arg(5).arg(annotationNames.size()));
@@ -1041,7 +1041,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     //    Expected state: there is an additional annotation in the "CDS" group.
     const QStringList expectedGroupNames = {"CDS  (0, 5)", "comment  (0, 1)", "misc_feature  (0, 2)", "source  (0, 1)"};
     const QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     const QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("CDS  (0, 5)");
     CHECK_SET_ERR(5 == annotationNames.size(), QString("Unexpected annotations count: expect '%1', got '%2'").arg(5).arg(annotationNames.size()));
@@ -1072,7 +1072,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     //    Expected state: there is an annotation named "misc_feature" of "misc_feature" type in a group named "misc_feature".
     QStringList expectedGroupNames = {"misc_feature  (0, 1)"};
     QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     QStringList expectedAnnotationNames = {"misc_feature"};
     QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
@@ -1106,7 +1106,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     //    Expected state: there is a correctly named annotation of "misc_feature" type in a group named the same as the annotation.
     expectedGroupNames = QStringList() << "test_0023  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     expectedAnnotationNames = QStringList() << "test_0023";
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0023  (0, 1)");
@@ -1140,7 +1140,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     //    Expected state: there is an annotation named "Loci" of "Loci" type in a group named "Loci".
     expectedGroupNames = QStringList() << "Loci  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     expectedAnnotationNames = QStringList() << "Loci";
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("Loci  (0, 1)");
@@ -1175,7 +1175,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     //    Expected state: there is a correctly named annotation of "Attenuator" type in a group named the same as the annotation.
     expectedGroupNames = QStringList() << "test_0023 again  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     expectedAnnotationNames = QStringList() << "test_0023 again";
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0023 again  (0, 1)");
@@ -1211,7 +1211,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     //    Expected state: there is an annotation named "misc_feature" of "misc_feature" type in a group named "misc_feature".
     QStringList expectedGroupNames = {"misc_feature  (0, 1)"};
     QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     QStringList expectedAnnotationNames = {"misc_feature"};
     QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
@@ -1246,7 +1246,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     //    Expected state: there is a correctly named annotation of "misc_feature" type in a group named the same as the annotation.
     expectedGroupNames = QStringList() << "test_0024  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     expectedAnnotationNames = QStringList() << "test_0024";
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0024  (0, 1)");
@@ -1281,7 +1281,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     //    Expected state: there is an annotation named "Loci" of "Loci" type in a group named "Loci".
     expectedGroupNames = QStringList() << "Loci  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     expectedAnnotationNames = QStringList() << "Loci";
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("Loci  (0, 1)");
@@ -1317,7 +1317,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     //    Expected state: there is a correctly named annotation of "Attenuator" type in a group named the same as the annotation.
     expectedGroupNames = QStringList() << "test_0024 again  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     expectedAnnotationNames = QStringList() << "test_0024 again";
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0024 again  (0, 1)");
@@ -1343,7 +1343,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     //    Expected state: there is an annotation named "misc_feature" of "misc_feature" type in a group named "misc_feature".
     QStringList expectedGroupNames = {"misc_feature  (0, 1)"};
     QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     QStringList expectedAnnotationNames = {"misc_feature"};
     QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
@@ -1366,7 +1366,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     //    Expected state: there is a correctly named annotation of "misc_feature" type in a group named the same as the annotation.
     expectedGroupNames = QStringList() << "test_0025  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     expectedAnnotationNames = QStringList() << "test_0025";
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0025  (0, 1)");
@@ -1389,7 +1389,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     //    Expected state: there is an annotation named "Loci" of "Loci" type in a group named "Loci".
     expectedGroupNames = QStringList() << "Loci  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     expectedAnnotationNames = QStringList() << "Loci";
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("Loci  (0, 1)");
@@ -1413,7 +1413,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     //    Expected state: there is a correctly named annotation of "Attenuator" type in a group named the same as the annotation.
     expectedGroupNames = QStringList() << "test_0025 again  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames();
-    CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroupNames) == toSet(groupNames), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
     expectedAnnotationNames = QStringList() << "test_0025 again";
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0025 again  (0, 1)");
@@ -1647,11 +1647,11 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     // Expected state: there is an additional annotation in the existing annotation table.
     QStringList expectedGroups = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 3)", "source  (0, 1)"};
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames("NC_001363 features [murine.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     QStringList expectedAnnotations = {"misc_feature"};
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 3)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
     // Add a new annotation into a new document.
     class CreateAnnotationInNewDocumentScenario : public CustomScenario {
@@ -1675,11 +1675,11 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     //  Expected state: there is a new annotation table with an annotation within.
     expectedGroups = QStringList("misc_feature  (0, 1)");
     groups = GTUtilsAnnotationsTreeView::getGroupNames("Annotations [test_0028.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     expectedAnnotations = QStringList("misc_feature");
     annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0029) {
@@ -1704,11 +1704,11 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     //    Expected state: there is an additional annotation in the existing annotation table.
     QStringList expectedGroups = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 3)", "source  (0, 1)"};
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames("NC_001363 features [murine.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     QStringList expectedAnnotations = {"misc_feature"};
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 3)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
     // Add a new annotation to a new document.
     class CreateAnnotationInNewDocumentScenario : public CustomScenario {
@@ -1729,11 +1729,11 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     //    Expected state: there is a new annotation table with an annotation within.
     expectedGroups = QStringList("misc_feature  (0, 1)");
     groups = GTUtilsAnnotationsTreeView::getGroupNames("Annotations [test_0029.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     expectedAnnotations = QStringList("misc_feature");
     annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {
@@ -1751,11 +1751,11 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     // Expected state: there is an additional annotation in the existing annotation table.
     QStringList expectedGroups = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 3)", "source  (0, 1)"};
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames("NC_001363 features [murine.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     QStringList expectedAnnotations = QStringList("misc_feature");
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 3)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
     //  Add a new annotation to a new document.
     QDir().mkpath(sandBoxDir + "test_0030");
@@ -1767,11 +1767,11 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     //    Expected state: there is a new annotation table with an annotation within.
     expectedGroups = QStringList("misc_feature  (0, 1)");
     groups = GTUtilsAnnotationsTreeView::getGroupNames("Annotations [test_0030.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     expectedAnnotations = QStringList("misc_feature");
     annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031) {
@@ -1866,11 +1866,11 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     //    Expected state: there is a new annotation in the new correctly named group in the "NC_001363 annotations 2" table.
     QStringList expectedGroups = {"group  (0, 1)", "just an annotation  (0, 1)", "test_0031  (0, 1)"};
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames("NC_001363 annotations 2 [2annot_1seq.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     QStringList expectedAnnotations = {"misc_feature"};
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0031  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0032) {
@@ -1966,11 +1966,11 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     //    Expected state: there is a new annotation in the new correctly named group in the "NC_001363 annotations 2" table.
     QStringList expectedGroups = {"group  (0, 1)", "just an annotation  (0, 1)", "test_0032  (0, 1)"};
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames("NC_001363 annotations 2 [2annot_1seq.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     QStringList expectedAnnotations = {"misc_feature"};
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0032  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0033) {
@@ -2064,11 +2064,11 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
                                    << "just an annotation  (0, 1)"
                                    << "test_0033  (0, 1)";
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames("NC_001363 annotations 2 [2annot_1seq.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     QStringList expectedAnnotations = {"misc_feature"};
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("test_0033  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0034) {
@@ -2107,11 +2107,11 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     //    Expected state: there is a new annotation in a new annotation table.
     QStringList expectedGroups = {"misc_feature  (0, 1)"};
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames("Annotations [test_0034_1.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     QStringList expectedAnnotations = {"misc_feature"};
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
     //    4. Call "Create new annotation" dialog.
 
@@ -2135,11 +2135,11 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     //    Expected state: there is a new annotation in a new annotation table.
     expectedGroups = QStringList() << "misc_feature  (0, 1)";
     groups = GTUtilsAnnotationsTreeView::getGroupNames("Annotations [test_0034_2.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     expectedAnnotations = QStringList() << "misc_feature";
     annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0035) {
@@ -2178,11 +2178,11 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     //    Expected state: there is a new annotation in a new annotation table.
     QStringList expectedGroups = {"misc_feature  (0, 1)"};
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames("Annotations [test_0035_1.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     QStringList expectedAnnotations = {"misc_feature"};
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
     //    4. Call "Smith-Waterman" dialog. Set any pattern. Open "Input and output" tab.
 
@@ -2207,11 +2207,11 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     //    Expected state: there is a new annotation in a new annotation table.
     expectedGroups = QStringList() << "misc_feature  (0, 1)";
     groups = GTUtilsAnnotationsTreeView::getGroupNames("Annotations [test_0035_2.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     expectedAnnotations = QStringList() << "misc_feature";
     annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0036) {
@@ -2240,11 +2240,11 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     //    Expected state: there is a new annotation in a new annotation table.
     QStringList expectedGroups = {"misc_feature  (0, 1)"};
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames("Annotations [test_0036_1.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     QStringList expectedAnnotations = {"misc_feature"};
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
     //    4. Select "Create new table" option. Set any valid file path in the lineedit. Accept the dialog.
     setNewTable(nullptr, sandBoxDir + "test_0036/test_0036_2.gb");
@@ -2255,11 +2255,11 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     //    Expected state: there is a new annotation in a new annotation table.
     expectedGroups = QStringList() << "misc_feature  (0, 1)";
     groups = GTUtilsAnnotationsTreeView::getGroupNames("Annotations [test_0036_2.gb] *");
-    CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
+    CHECK_SET_ERR(toSet(expectedGroups) == toSet(groups), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
     expectedAnnotations = QStringList() << "misc_feature";
     annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup("misc_feature  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
+    CHECK_SET_ERR(toSet(expectedAnnotations) == toSet(annotations), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0037) {

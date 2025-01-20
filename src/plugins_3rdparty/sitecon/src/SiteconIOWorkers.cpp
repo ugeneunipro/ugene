@@ -226,7 +226,7 @@ void SiteconReader::sl_taskFinished() {
         return;
     if (output) {
         if (!t->hasError()) {
-            QVariant v = qVariantFromValue<SiteconModel>(t->getResult());
+            QVariant v = QVariant::fromValue<SiteconModel>(t->getResult());
             output->put(Message(mtype, v));
         }
         algoLog.info(tr("Loaded SITECON model from %1").arg(t->getURL()));

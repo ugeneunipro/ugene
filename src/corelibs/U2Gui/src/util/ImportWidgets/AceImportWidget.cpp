@@ -43,7 +43,7 @@ AceImportWidget::AceImportWidget(const GUrl& url)
 QVariantMap AceImportWidget::getSettings() const {
     QVariantMap settings;
     U2DbiRef ref(SQLITE_DBI_ID, saveController->getSaveFileName());
-    settings.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(ref));
+    settings.insert(DocumentFormat::DBI_REF_HINT, QVariant::fromValue(ref));
 
     return settings;
 }

@@ -256,7 +256,7 @@ void HMMSearchWorker::sl_taskFinished(Task* t) {
         }
 
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(list);
-        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
+        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(tableId)));
         algoLog.info(tr("Found %1 HMM signals").arg(list.size()));
     }
 }

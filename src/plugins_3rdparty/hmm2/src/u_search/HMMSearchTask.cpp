@@ -23,9 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/SequenceWalkerTask.h>
 
 #include "HMMIO.h"
 #include "HMMSearchTask.h"
@@ -228,7 +226,7 @@ QList<SharedAnnotationData> HMMSearchTask::getResultsAsAnnotations(U2FeatureType
         a->location->regions << hmmRes.r;
 
         QString str; /*add zeros at begin of evalue exponent part, so exponent part must contains 3 numbers*/
-        str.sprintf("%.2g", ((double)hmmRes.evalue));
+        str+= QString::asprintf("%.2g", (double)hmmRes.evalue);
         QRegExp rx("\\+|\\-.+");
         int pos = rx.indexIn(str, 0);
         if (pos != -1) {
@@ -236,17 +234,17 @@ QList<SharedAnnotationData> HMMSearchTask::getResultsAsAnnotations(U2FeatureType
         }
         QString info = hmm->name;
         if (hmm->flags & PLAN7_ACC) {
-            info += QString().sprintf("\nAccession number in PFAM : %s", hmm->acc);
+            info += QString::asprintf("\nAccession number in PFAM : %s", hmm->acc);
         }
         if (hmm->flags & PLAN7_DESC) {
-            info += QString().sprintf("\n%s", hmm->desc);
+            info += QString::asprintf("\n%s", hmm->desc);
         }
         if (!info.isEmpty()) {
             a->qualifiers.append(U2Qualifier("HMM-model", info));
         }
-        // a->qualifiers.append(U2Qualifier("E-value", QString().sprintf("%.2lg", ((double) hmmRes.evalue))));
+        // a->qualifiers.append(U2Qualifier("E-value", QString::asprintf("%.2lg", ((double) hmmRes.evalue))));
         a->qualifiers.append(U2Qualifier("E-value", str));
-        a->qualifiers.append(U2Qualifier("Score", QString().sprintf("%.1f", hmmRes.score)));
+        a->qualifiers.append(U2Qualifier("Score", QString::asprintf("%.1f", hmmRes.score)));
         annotations.append(a);
     }
     return annotations;

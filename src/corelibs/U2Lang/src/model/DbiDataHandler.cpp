@@ -59,7 +59,7 @@ bool DbiDataHandler::equals(const DbiDataHandler* other) const {
 }
 
 int DbiDataHandler::getReferenceCount() const {
-    return this->ref.load();
+    return this->ref.loadAcquire();
 }
 
 U2DbiRef DbiDataHandler::getDbiRef() const {

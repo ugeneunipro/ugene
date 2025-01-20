@@ -278,7 +278,7 @@ QMap<QString, Dashboard*> WorkflowTabView::getDashboards(const QStringList& dash
     }
 
     if (result.size() != dashboardIds.size()) {
-        const QSet<QString> difference = dashboardIds.toSet() - result.keys().toSet();
+        const QSet<QString> difference = toSet(dashboardIds) - toSet(result.keys());
         foreach (const QString& dashboardId, difference) {
             result.insert(dashboardId, nullptr);
         }

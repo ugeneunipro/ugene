@@ -146,7 +146,7 @@ ExportMSA2MSATask::ExportMSA2MSATask(const Msa& msa,
     SAFE_POINT_EXT(aminoTranslation == nullptr || aminoTranslation->isThree2One(), setError(QString("Invalid amino translation: %1").arg(aminoTranslation->getTranslationName())), );
     setVerboseLogMode(true);
 
-    sequenceList = MsaUtils::convertMsaToSequenceList(msa, stateInfo, trimLeadingAndTrailingGaps, rowIds.toSet(), columnRegion);
+    sequenceList = MsaUtils::convertMsaToSequenceList(msa, stateInfo, trimLeadingAndTrailingGaps, toSet(rowIds), columnRegion);
     CHECK_OP(stateInfo, )
 }
 

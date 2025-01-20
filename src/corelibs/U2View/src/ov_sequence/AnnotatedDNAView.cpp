@@ -1465,7 +1465,7 @@ void AnnotatedDNAView::sl_aminoTranslationChanged() {
 void AnnotatedDNAView::reverseComplementSequence(bool reverse, bool complement) {
     ADVSequenceObjectContext* seqCtx = getActiveSequenceContext();
     U2SequenceObject* seqObj = seqCtx->getSequenceObject();
-    QList<AnnotationTableObject*> annotationObjects = seqCtx->getAnnotationObjects(false).toList();
+    QList<AnnotationTableObject*> annotationObjects = toList(seqCtx->getAnnotationObjects(false));
 
     DNATranslation* complTT = nullptr;
     if (seqObj->getAlphabet()->isNucleic()) {

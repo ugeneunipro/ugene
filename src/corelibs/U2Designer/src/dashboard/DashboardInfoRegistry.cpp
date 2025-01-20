@@ -114,7 +114,7 @@ void DashboardInfoRegistry::releaseReservedName(const QString& dashboardId) {
 }
 
 QSet<QString> DashboardInfoRegistry::getReservedNames() const {
-    return reservedNames.values().toSet();
+    return toSet(reservedNames.values());
 }
 
 void DashboardInfoRegistry::sl_scanTaskFinished() {

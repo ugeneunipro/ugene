@@ -208,7 +208,7 @@ public:
             case Qt::ToolTipRole:
                 return dg->getDisplayValue(item->getDataType());
             case DelegateRole:
-                return qVariantFromValue<PropertyDelegate*>(dg);
+                return QVariant::fromValue<PropertyDelegate*>(dg);
             case Qt::EditRole:
             case ConfigurationEditor::ItemValueRole:
                 return item->getDataType();
@@ -301,7 +301,7 @@ public:
                     return dg->getDisplayValue(item->getDataType());
             case DelegateRole:
                 if (col == 1)
-                    return qVariantFromValue<PropertyDelegate*>(dg);
+                    return QVariant::fromValue<PropertyDelegate*>(dg);
                 else
                     return QVariant();
             case Qt::EditRole:

@@ -187,7 +187,7 @@ InSilicoPcrWorker::InSilicoPcrWorker(Actor* a)
 Task* InSilicoPcrWorker::createPrepareTask(U2OpStatus& os) const {
     QString primersUrl = getValue<QString>(PRIMERS_ATTR_ID);
     QVariantMap hints;
-    hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
+    hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(context->getDataStorage()->getDbiRef());
     LoadDocumentTask* task = LoadDocumentTask::getDefaultLoadDocTask(primersUrl, hints);
     CHECK_EXT(task != nullptr, os.setError(tr("Can not read the primers file: ") + primersUrl), task);
     task->moveDocumentToMainThread = true;
@@ -304,7 +304,7 @@ QVariant InSilicoPcrWorker::fetchSequence(Document* doc) {
         return QVariant();
     }
     SharedDbiDataHandler seqId = context->getDataStorage()->getDataHandler(seqObjects.first()->getEntityRef());
-    return qVariantFromValue<SharedDbiDataHandler>(seqId);
+    return QVariant::fromValue<SharedDbiDataHandler>(seqId);
 }
 
 QVariant InSilicoPcrWorker::fetchAnnotations(Document* doc) {
@@ -314,7 +314,7 @@ QVariant InSilicoPcrWorker::fetchAnnotations(Document* doc) {
         return QVariant();
     }
     SharedDbiDataHandler annsId = context->getDataStorage()->getDataHandler(annsObjects.first()->getEntityRef());
-    return qVariantFromValue<SharedDbiDataHandler>(annsId);
+    return QVariant::fromValue<SharedDbiDataHandler>(annsId);
 }
 
 int InSilicoPcrWorker::createMetadata(int sequenceLength, const U2Region& productRegion, int pairNumber) {

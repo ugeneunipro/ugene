@@ -193,7 +193,7 @@ static bool checkNamesAndIds(const QStringList& names, const QStringList& ids) {
         }
     }
 
-    const bool areThereDuplicates = (ids.toSet().size() != ids.size());
+    const bool areThereDuplicates = toSet(ids).size() != ids.size();
     if (areThereDuplicates) {
         res = false;
     }

@@ -63,7 +63,7 @@ class CollocationValidator : public ConfigurationValidator {
 public:
     bool validate(const Configuration* cfg, NotificationsList& notificationList) const override {
         QString annotations = cfg->getParameter(ANN_ATTR)->getAttributeValueWithoutScript<QString>();
-        QSet<QString> names = QSet<QString>::fromList(annotations.split(QRegExp("\\W+"), QString::SkipEmptyParts));
+        QSet<QString> names = toSet(annotations.split(QRegExp("\\W+"), QString::SkipEmptyParts));
         if (names.size() < 2) {
             notificationList.append(WorkflowNotification(CollocationWorker::tr("At least 2 annotations are required for collocation search.")));
             return false;
@@ -161,7 +161,7 @@ QString CollocationPrompter::composeRichDoc() {
     }
 
     QString annotations;
-    QStringList names = annotations.split(QRegExp("\\W+"), QString::SkipEmptyParts).toSet().toList();
+    QStringList names = toList(toSet(annotations.split(QRegExp("\\W+"), QString::SkipEmptyParts)));
     annotations = names.join(", ");
     if (annotations.isEmpty()) {
         annotations = getRequiredParam(ANN_ATTR);
@@ -204,7 +204,7 @@ Task* CollocationWorker::tick() {
         cfg.st = actor->getParameter(FIT_ATTR)->getAttributeValue<bool>(context) ? CollocationsAlgorithm::NormalSearch : CollocationsAlgorithm::PartialSearch;
         cfg.resultAnnotationsName = actor->getParameter(NAME_ATTR)->getAttributeValue<QString>(context);
         QString annotations = actor->getParameter(ANN_ATTR)->getAttributeValue<QString>(context);
-        QSet<QString> names = QSet<QString>::fromList(annotations.split(QRegExp("\\W+"), QString::SkipEmptyParts));
+        QSet<QString> names = toSet(annotations.split(QRegExp("\\W+"), QString::SkipEmptyParts));
         QVariantMap qm = inputMessage.getData().toMap();
         QString resultType = actor->getParameter(TYPE_ATTR)->getAttributeValue<QString>(context);
         cfg.includeBoundaries = actor->getParameter(INC_BOUNDARY_ATTR)->getAttributeValue<bool>(context);
@@ -246,7 +246,7 @@ void CollocationWorker::sl_taskFinished() {
     if (output != nullptr) {
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(list);
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(),
-                            qVariantFromValue<SharedDbiDataHandler>(tableId)));
+                            QVariant::fromValue<SharedDbiDataHandler>(tableId)));
     }
 }
 

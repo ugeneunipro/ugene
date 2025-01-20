@@ -64,7 +64,7 @@ void CopyDocumentTask::prepare() {
 
     QVariantMap hints = srcDoc->getGHintsMap();
     U2DbiRef dstDbiRef(DEFAULT_DBI_ID, U2DbiId(dstUrl));
-    hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(dstDbiRef);
+    hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(dstDbiRef);
     dstDoc = df->createNewLoadedDocument(iof, dstUrl, stateInfo, hints);
     CHECK_OP(stateInfo, );
 

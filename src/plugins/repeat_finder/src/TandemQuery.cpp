@@ -147,7 +147,7 @@ void QDTandemActor::loadConfiguration(const QList<QPair<QString, QString>>& strM
             } else if (ALGORITHM_SUFFIX_BINARY == attribute.second) {
                 algorithm = TSConstants::AlgoSuffixBinary;
             }
-            cfg->setParameter(ALGORITHM_ATTRIBUTE, qVariantFromValue(algorithm));
+            cfg->setParameter(ALGORITHM_ATTRIBUTE, QVariant::fromValue(algorithm));
         }
     }
 }

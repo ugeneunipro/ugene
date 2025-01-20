@@ -387,7 +387,7 @@ void AminoTranslationWorker::sl_taskFinished() {
             DNASequence seqData = seqObj->getWholeSequence(os);
             CHECK_OP_EXT(os, reportError(tr("Error on getting %1 sequence: ").arg(seqObj->getGObjectName()) + os.getError()), );
             SharedDbiDataHandler seqId = context->getDataStorage()->putSequence(seqData);
-            msgData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+            msgData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
             output->setContext(channelContext, metadataId);
             output->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), msgData));
         }

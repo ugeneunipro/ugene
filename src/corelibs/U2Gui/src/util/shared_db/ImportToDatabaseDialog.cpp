@@ -437,7 +437,7 @@ void ImportToDatabaseDialog::removeItems(QList<QTreeWidgetItem*> itemList) {
         }
 
         if (!removedItems.contains(item)) {
-            removedItems.unite(removeRecursively(item).toSet());
+            removedItems.unite(toSet(removeRecursively(item)));
         }
     }
 

@@ -138,7 +138,7 @@ bool GenbankPlainTextFormat::readIdLine(ParserState* st) {
         loi.molecule = tokens[3];
         loi.division = tokens[5];
         loi.date = tokens[6];
-        st->entry->tags.insert(DNAInfo::LOCUS, qVariantFromValue<DNALocusInfo>(loi));
+        st->entry->tags.insert(DNAInfo::LOCUS, QVariant::fromValue<DNALocusInfo>(loi));
         st->entry->circular = loi.topology.compare(LOCUS_TAG_CIRCULAR, Qt::CaseInsensitive) == 0;
     } else {
         st->entry->tags.insert(DNAInfo::ID, tokens[0]);
@@ -187,7 +187,7 @@ bool GenbankPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqI
                 st->si.setError(tr("incomplete SOURCE record"));
                 break;
             }
-            st->entry->tags.insertMulti(DNAInfo::SOURCE, qVariantFromValue<DNASourceInfo>(soi));
+            st->entry->tags.insertMulti(DNAInfo::SOURCE, QVariant::fromValue<DNASourceInfo>(soi));
             hasLine = true;
             continue;
         }
@@ -198,7 +198,7 @@ bool GenbankPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqI
                 ri.referencesRecord.append("\n" + QByteArray(st->buff, st->len));
             }
 
-            st->entry->tags.insertMulti(DNAInfo::REFERENCE, qVariantFromValue<DNAReferenceInfo>(ri));
+            st->entry->tags.insertMulti(DNAInfo::REFERENCE, QVariant::fromValue<DNAReferenceInfo>(ri));
             hasLine = true;
             continue;
         }

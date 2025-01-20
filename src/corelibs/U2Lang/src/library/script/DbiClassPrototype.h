@@ -122,7 +122,7 @@ QScriptValue DbiScriptClass::toScriptValue(QScriptEngine* engine, const ScriptDb
     QScriptValue factory = engine->globalObject().property(T::CLASS_NAME);
     auto sClass = qscriptvalue_cast<T*>(factory.data());
     if (!sClass) {
-        return engine->newVariant(qVariantFromValue(id));
+        return engine->newVariant(QVariant::fromValue(id));
     }
     return sClass->newInstance(id, false /* deepCopy */);
 }

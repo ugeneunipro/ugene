@@ -87,7 +87,7 @@ void BioStruct3DSettingsDialog::sl_setShadingLevel() {
 void BioStruct3DSettingsDialog::sl_setAnaglyph() {
     anaglyphStatus = (anaglyphViewGroupBox->isChecked()) ? ENABLED : DISABLED;
 
-    state[glWidget->ANAGLYPH_STATUS_NAME] = qVariantFromValue((int)anaglyphStatus);
+    state[glWidget->ANAGLYPH_STATUS_NAME] = QVariant::fromValue((int)anaglyphStatus);
     glWidget->setState(state);
 }
 

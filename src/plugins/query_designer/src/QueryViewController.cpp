@@ -1172,7 +1172,7 @@ AddConstraintDialog::AddConstraintDialog(QueryScene* _scene, QDDistanceType _kin
     const QList<QDElement*>& elements = scene->getElements();
     int index = 0;
     foreach (QDElement* el, elements) {
-        const QVariant& data = qVariantFromValue(el);
+        const QVariant& data = QVariant::fromValue(el);
         QDActor* a = el->getActor();
         QString name = a->getParameters()->getLabel();
         if (a->getSchemeUnits().size() > 1) {

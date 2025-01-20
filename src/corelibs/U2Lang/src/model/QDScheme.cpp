@@ -791,9 +791,9 @@ QMap<QString, bool> QDAttributeValueMapper::initBooleanMap() {
 
 QVariant QDAttributeValueMapper::stringToAttributeValue(const QString& str) {
     if (getType(str) == BOOLEAN_TYPE) {
-        return qVariantFromValue(BOOLEAN_MAP.value(str));
+        return QVariant::fromValue(BOOLEAN_MAP.value(str));
     }
-    return qVariantFromValue(str);
+    return QVariant::fromValue(str);
 }
 
 QDAttributeValueMapper::ValueType QDAttributeValueMapper::getType(const QString& val) {

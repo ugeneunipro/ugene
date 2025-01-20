@@ -160,7 +160,7 @@ Task* DNAStatWorker::tick() {
         res << gcAnn;
 
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(res);
-        const QVariant v = qVariantFromValue<SharedDbiDataHandler>(tableId);
+        const QVariant v = QVariant::fromValue<SharedDbiDataHandler>(tableId);
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), v));
     }
     if (input->isEnded()) {

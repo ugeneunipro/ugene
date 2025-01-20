@@ -580,7 +580,7 @@ void WorkflowPortItem::setOrientation(qreal angle) {
         for (int i = 1; i < pol.count(); ++i) {
             p2 = pol.at(i);
             polyLine = QLineF(p1, p2);
-            if (QLineF::BoundedIntersection == polyLine.intersect(centerLine, &intersectPoint)) {
+            if (polyLine.intersects(centerLine, &intersectPoint) == QLineF::BoundedIntersection) {
                 break;
             }
             p1 = p2;
@@ -801,7 +801,7 @@ void WorkflowPortItem::paint(QPainter* painter,
         QLineF arr(mapToScene(dragPoint), mapToScene(p1));
         QPointF crossPt;
         foreach (QLineF scEdge, sceneEdges) {
-            if (scEdge.intersect(arr, &crossPt) == QLineF::BoundedIntersection) {
+            if (scEdge.intersects(arr, &crossPt) == QLineF::BoundedIntersection) {
                 pp = mapFromScene(crossPt);
                 break;
             }
@@ -1109,7 +1109,9 @@ void WorkflowBusItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
     drawArrow(painter, pen, p2, p1);
     // update();
 
-    painter->setRenderHint(QPainter::NonCosmeticDefaultPen);
+    QPen pen2 = painter->pen();
+    pen2.setCosmetic(false);
+    painter->setPen(pen2);
     QColor yc = QColor(Qt::yellow).lighter();
     yc.setAlpha(127);
     QRectF textRec = text->boundingRect().translated(text->pos());

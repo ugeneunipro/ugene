@@ -57,7 +57,7 @@ CreateFragmentDialog::CreateFragmentDialog(ADVSequenceObjectContext* ctx, QWidge
     rs = new RegionSelector(this, ctx->getSequenceLength(), false, ctx->getSequenceSelection());
     rangeSelectorLayout->addWidget(rs);
 
-    relatedAnnotations = ctx->getAnnotationObjects(true).toList();
+    relatedAnnotations = toList(ctx->getAnnotationObjects(true));
 
     setupAnnotationsWidget();
 }
