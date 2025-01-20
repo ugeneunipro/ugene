@@ -34,14 +34,14 @@ public:
                                    const QString& dir = QString(),
                                    const QString& filter = QString(),
                                    const QString& selectedFilter = QString(),
-                                   const QFileDialog::Options& options = nullptr);
+                                   const QFileDialog::Options& options = {0});
 
     static QStringList getOpenFileNames(QWidget* parent = nullptr,
                                         const QString& caption = QString(),
                                         const QString& dir = QString(),
                                         const QString& filter = QString(),
                                         const QString& selectedFilter = QString(),
-                                        const QFileDialog::Options& options = nullptr);
+                                        const QFileDialog::Options& options = {0});
 
     static QString getExistingDirectory(QWidget* parent = nullptr,
                                         const QString& caption = QString(),
@@ -53,7 +53,7 @@ public:
                                    const QString& dir = QString(),
                                    const QString& filter = QString(),
                                    const QString& selectedFilter = QString(),
-                                   const QFileDialog::Options& options = nullptr);
+                                   const QFileDialog::Options& options = {0});
 };
 
 }  // namespace U2

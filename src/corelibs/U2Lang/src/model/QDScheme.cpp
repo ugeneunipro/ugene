@@ -780,12 +780,12 @@ const QMap<QString, bool> QDAttributeValueMapper::BOOLEAN_MAP = initBooleanMap()
 
 QMap<QString, bool> QDAttributeValueMapper::initBooleanMap() {
     QMap<QString, bool> map;
-    map.insertMulti("true", true);
-    map.insertMulti("yes", true);
-    map.insertMulti("1", true);
-    map.insertMulti("false", false);
-    map.insertMulti("no", false);
-    map.insertMulti("0", false);
+    map.insert("true", true);
+    map.insert("yes", true);
+    map.insert("1", true);
+    map.insert("false", false);
+    map.insert("no", false);
+    map.insert("0", false);
     return map;
 }
 

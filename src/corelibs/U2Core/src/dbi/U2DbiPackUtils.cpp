@@ -409,7 +409,7 @@ QByteArray U2DbiPackUtils::packSequenceDataHints(const QVariantMap& hints) {
         if (!result.isEmpty()) {
             result += ";";
         }
-        result += key + "," + hints[key].toByteArray();
+        result += key.toLatin1() + "," + hints[key].toByteArray();
     }
     return "\"" + result + "\"";
 }

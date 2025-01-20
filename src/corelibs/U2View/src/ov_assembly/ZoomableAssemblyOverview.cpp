@@ -285,7 +285,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter& p) {
 
     // Prepare font
     QFont font = p.font();
-    font.setStyleHint(QFont::SansSerif, (QFont::StyleStrategy)(QFont::PreferAntialias | QFont::ForceIntegerMetrics));
+    font.setStyleHint(QFont::SansSerif, QFont::PreferAntialias);
     p.setFont(font);
     QFontMetrics fontMetrics(font, this);
 
@@ -557,8 +557,8 @@ void ZoomableAssemblyOverview::mouseReleaseEvent(QMouseEvent* me) {
 }
 
 void ZoomableAssemblyOverview::wheelEvent(QWheelEvent* e) {
-    bool positive = e->delta() > 0;
-    int numDegrees = abs(e->delta()) / 8;
+    bool positive = e->angleDelta().y() > 0;
+    int numDegrees = abs(e->angleDelta().y()) / 8;
     int numSteps = numDegrees / 15;
 
     // zoom
@@ -567,9 +567,9 @@ void ZoomableAssemblyOverview::wheelEvent(QWheelEvent* e) {
             // with Ctrl: zoom overview
             for (int i = 0; i < numSteps; ++i) {
                 if (positive) {
-                    sl_zoomIn(e->pos());
+                    sl_zoomIn(e->position().toPoint());
                 } else {
-                    sl_zoomOut(e->pos());
+                    sl_zoomOut(e->position().toPoint());
                 }
             }
         } else {

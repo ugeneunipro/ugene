@@ -572,7 +572,7 @@ void WizardWidgetParser::addVariable(const Variable& v) {
 }
 
 AttributeInfo WizardWidgetParser::parseInfo(const QString& attrStr, const QString& body) {
-    QStringList vals = attrStr.split(Constants::DOT, QString::SkipEmptyParts);
+    QStringList vals = attrStr.split(Constants::DOT, Qt::SkipEmptyParts);
     if (2 != vals.size()) {
         os.setError(HRWizardParser::tr("Unknown widget name: %1").arg(attrStr));
         return AttributeInfo("", "");

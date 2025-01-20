@@ -62,7 +62,7 @@ void HmmerParseSearchResultsTask::run() {
             continue;
         }
 
-        processHit(readData.split(QRegExp("\\s+"), QString::SkipEmptyParts), lineNumber);
+        processHit(readData.split(QRegExp("\\s+"), Qt::SkipEmptyParts), lineNumber);
         CHECK_OP(stateInfo, );
         lineNumber++;
     }

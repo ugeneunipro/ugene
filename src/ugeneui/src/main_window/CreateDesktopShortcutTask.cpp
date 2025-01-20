@@ -114,15 +114,15 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
     if (link.open(QFile::WriteOnly | QFile::Truncate)) {
         QTextStream out(&link);
         out.setCodec("UTF-8");
-        out << "[Desktop Entry]" << endl
-            << "Encoding=UTF-8" << endl
-            << "Version=1.0" << endl
-            << "Type=Application" << endl
-            << "Terminal=false" << endl
-            << "Exec=" + QCoreApplication::applicationFilePath() << endl
-            << "Name=Unipro UGENE" << endl
-            << "Icon=" + QCoreApplication::applicationDirPath() + "/ugene.png" << endl
-            << "Name[en_US]=Unipro UGENE" << endl;
+        out << "[Desktop Entry]" << Qt::endl
+            << "Encoding=UTF-8" << Qt::endl
+            << "Version=1.0" << Qt::endl
+            << "Type=Application" << Qt::endl
+            << "Terminal=false" << Qt::endl
+            << "Exec=" + QCoreApplication::applicationFilePath() << Qt::endl
+            << "Name=Unipro UGENE" << Qt::endl
+            << "Icon=" + QCoreApplication::applicationDirPath() + "/ugene.png" << Qt::endl
+            << "Name[en_US]=Unipro UGENE" << Qt::endl;
         link.close();
         if (!link.setPermissions(link.permissions() | QFileDevice::ExeOwner | QFileDevice::ExeUser)) {
             return false;

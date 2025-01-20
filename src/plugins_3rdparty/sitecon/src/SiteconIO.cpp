@@ -22,16 +22,13 @@
 #include "SiteconIO.h"
 
 #include <QFileInfo>
-#include <QTextStream>
 #include <QVector>
 #include <QtMath>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
 
@@ -381,8 +378,8 @@ void SiteconIO::writeModel(IOAdapterFactory* iof, const QString& url, TaskStateI
 
     for (int j = 0; j < nProps; j++) {
         const DiPropertySitecon* p = props[j];
-        QString name = p->keys.value("PV");
-        QString index = p->keys.value("MI");
+        QByteArray name = p->keys.value("PV").toUtf8();
+        QByteArray index = p->keys.value("MI").toUtf8();
         aves[j].append(index).append(MATRIX_VAL_SEPARATOR).append(name);
         sdev[j].append(index).append(MATRIX_VAL_SEPARATOR).append(name);
         wght[j].append(index).append(MATRIX_VAL_SEPARATOR).append(name);
@@ -393,9 +390,9 @@ void SiteconIO::writeModel(IOAdapterFactory* iof, const QString& url, TaskStateI
         for (int j = 0; j < nProps; j++) {
             const DiStat& ds = posM[j];
             assert(ds.prop == props[j]);
-            QString aveVal = QByteArray::number(ds.average, 'f', 4);
-            QString devVal = QByteArray::number(ds.sdeviation, 'e', 4);
-            QString wgtVal = ds.weighted ? "1" : "0";
+            QByteArray aveVal = QByteArray::number(ds.average, 'f', 4);
+            QByteArray devVal = QByteArray::number(ds.sdeviation, 'e', 4);
+            QByteArray wgtVal = ds.weighted ? "1" : "0";
             int aveEnd = aves[j].length() + 1 + aveVal.length();
             int devEnd = sdev[j].length() + 1 + devVal.length();
             int wgtEnd = wght[j].length() + 1 + wgtVal.length();
@@ -409,7 +406,7 @@ void SiteconIO::writeModel(IOAdapterFactory* iof, const QString& url, TaskStateI
     }
 
     res.append('\n').append(SETTINGS_HEADER).append("\n");
-    res.append("ORIGIN ").append(model.aliURL).append('\n');
+    res.append("ORIGIN ").append(model.aliURL.toUtf8()).append('\n');
     res.append("W ").append(QByteArray::number(model.settings.windowSize)).append('\n');
     res.append("SEED ").append(QByteArray::number(model.settings.randomSeed)).append('\n');
     res.append("CLEN ").append(QByteArray::number(model.settings.secondTypeErrorCalibrationLen)).append('\n');

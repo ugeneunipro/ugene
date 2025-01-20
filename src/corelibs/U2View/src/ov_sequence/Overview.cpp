@@ -300,13 +300,13 @@ void Overview::mouseDoubleClickEvent(QMouseEvent* me) {
 }
 
 void Overview::wheelEvent(QWheelEvent* we) {
-    bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->pos());
+    bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->position().toPoint());
     if (!renderAreaWheel) {
         QWidget::wheelEvent(we);
         return;
     }
     setFocus();
-    bool toMin = we->delta() > 0;
+    bool toMin = we->angleDelta().y() > 0;
     QAction* zoomAction = toMin ? panView->getZoomInAction() : panView->getZoomOutAction();
     if (zoomAction != nullptr) {
         zoomAction->activate(QAction::Trigger);

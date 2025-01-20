@@ -73,11 +73,11 @@ QString RemoteDBFetcherPrompter::composeRichDoc() {
     QStringList sourceValues;
     if (RemoteDBFetcherFactory::idsListString == getParameter(SOURCE_CHOOSER_ID).toString()) {
         sourceId = SEQID_ID;
-        sourceValues = getParameter(SEQID_ID).value<QString>().split(";", QString::SkipEmptyParts);
+        sourceValues = getParameter(SEQID_ID).value<QString>().split(";", Qt::SkipEmptyParts);
         sourceDescString = sourceValues.size() > 1 ? RemoteDBFetcherWorker::tr("sequences identified with") : RemoteDBFetcherWorker::tr("sequence identified with");
     } else {
         sourceId = SOURCE_FILE_ID;
-        sourceValues = getParameter(SOURCE_FILE_ID).toString().split(";", QString::SkipEmptyParts);
+        sourceValues = getParameter(SOURCE_FILE_ID).toString().split(";", Qt::SkipEmptyParts);
         sourceDescString = sourceValues.size() > 1 ? RemoteDBFetcherWorker::tr("sequences identified with resource IDs that will be read from files") : RemoteDBFetcherWorker::tr("sequences identified with resource IDs that will be read from file");
     }
     sourceLinkStr = sourceValues.isEmpty() ? unsetStr : QString("<u>%1</u>").arg(sourceValues.join(", "));
@@ -110,9 +110,9 @@ void RemoteDBFetcherWorker::init() {
 
     idsSource = actor->getParameter(SOURCE_CHOOSER_ID)->getAttributeValue<QString>(context);
     if (RemoteDBFetcherFactory::idsListString == idsSource) {
-        seqids = actor->getParameter(SEQID_ID)->getAttributeValue<QString>(context).split(";", QString::SkipEmptyParts);
+        seqids = actor->getParameter(SEQID_ID)->getAttributeValue<QString>(context).split(";", Qt::SkipEmptyParts);
     } else {
-        idsFilePaths = actor->getParameter(SOURCE_FILE_ID)->getAttributeValue<QString>(context).split(";", QString::SkipEmptyParts);
+        idsFilePaths = actor->getParameter(SOURCE_FILE_ID)->getAttributeValue<QString>(context).split(";", Qt::SkipEmptyParts);
     }
 
     fullPathDir = actor->getParameter(PATH_ID)->getAttributeValue<QString>(context);
@@ -252,7 +252,7 @@ QString RemoteDBFetcherWorker::getIdFromFile() {
 
         QString idsString = idsFile.readAll();
         idsFile.close();
-        seqids = idsString.split("\n", QString::SkipEmptyParts);
+        seqids = idsString.split("\n", Qt::SkipEmptyParts);
         return getIdFromList();
     } while (hasError);
 

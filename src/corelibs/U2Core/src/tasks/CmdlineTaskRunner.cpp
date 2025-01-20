@@ -201,9 +201,9 @@ int CmdlineTaskRunner::killProcessTree(qint64 processId) {
 int CmdlineTaskRunner::killProcess(qint64 processId) {
     int result = 0;
 #if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
-    int exist = QProcess::execute("kill -0 " + QString::number(processId));
-    if (exist == 0) {
-        result = QProcess::execute("kill -9 " + QString::number(processId));
+    int exists = QProcess::execute("kill", {"-0", QString::number(processId)});
+    if (exists == 0) {
+        result = QProcess::execute("kill", {"-9", QString::number(processId)});
     }
 #elif defined(Q_OS_WIN)
     DWORD dwDesiredAccess = PROCESS_TERMINATE;
@@ -257,12 +257,7 @@ void CmdlineTaskRunner::prepare() {
     QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
     coreLog.details("Starting UGENE command line: " + cmdlineUgenePath + " " + args.join(" "));
     process->start(cmdlineUgenePath, args);
-#if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
-    QString processId = process->pid() != nullptr ? QString::number(process->pid()->dwProcessId) : "unknown";
-    processLogPrefix = QString("process:%1>").arg(processId);
-#else
-    processLogPrefix = QString("process:%1>").arg(process->pid());
-#endif
+    processLogPrefix = QString("process:%1>").arg(process->processId());
     bool startedSuccessfully = process->waitForStarted();
     CHECK_EXT(startedSuccessfully, setError(tr("Cannot start process '%1'").arg(cmdlineUgenePath)), );
 }
@@ -385,7 +380,7 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
     }
 
     for (const QString& line : qAsConst(lines)) {
-        QStringList words = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        QStringList words = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
         for (const QString& word : qAsConst(words)) {
             if (word.startsWith(OUTPUT_PROGRESS_TAG)) {
                 QString numStr = word.mid(OUTPUT_PROGRESS_TAG.size());

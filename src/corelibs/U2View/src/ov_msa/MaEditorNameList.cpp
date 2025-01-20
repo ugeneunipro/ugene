@@ -22,23 +22,16 @@
 #include "MaEditorNameList.h"
 
 #include <QApplication>
-#include <QClipboard>
 #include <QInputDialog>
-#include <QMouseEvent>
-#include <QPainter>
 
 #include <U2Core/ClipboardController.h>
-#include <U2Core/Counter.h>
 #include <U2Core/TextUtils.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2Mod.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/Notification.h>
 
-#include "DrawHelper.h"
 #include "MaEditorSelection.h"
 #include "MaEditorSequenceArea.h"
 #include "MaEditorWgt.h"
@@ -594,7 +587,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent* e) {
 }
 
 void MaEditorNameList::wheelEvent(QWheelEvent* we) {
-    bool toMin = we->delta() > 0;
+    bool toMin = we->angleDelta().y() > 0;
     ui->getScrollController()->scrollStep(toMin ? ScrollController::Up : ScrollController::Down);
     QWidget::wheelEvent(we);
 }

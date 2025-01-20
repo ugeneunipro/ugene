@@ -148,7 +148,7 @@ bool EMBLPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqImpo
         }
         if (st->hasKey("AC")) {
             QVariant v = st->entry->tags.value(DNAInfo::ACCESSION);
-            QStringList l = st->value().split(QRegExp(";\\s*"), QString::SkipEmptyParts);
+            QStringList l = st->value().split(QRegExp(";\\s*"), Qt::SkipEmptyParts);
             st->entry->tags[DNAInfo::ACCESSION] = QVariantUtils::addStr2List(v, l);
             continue;
         }
@@ -178,7 +178,7 @@ bool EMBLPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqImpo
             } else {
                 hasLine = true;
             }
-            st->entry->tags.insertMulti(DNAInfo::SOURCE, QVariant::fromValue<DNASourceInfo>(soi));
+            st->entry->tags.insert(DNAInfo::SOURCE, QVariant::fromValue<DNASourceInfo>(soi));
             continue;
         }
         if (st->hasKey("RF") || st->hasKey("RN")) {
@@ -221,7 +221,7 @@ bool EMBLPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqImpo
             st->entry->tags.insert(lastTagName, v);
         } else if (st->hasValue()) {
             lastTagName = key;
-            st->entry->tags.insertMulti(lastTagName, st->value());
+            st->entry->tags.insert(lastTagName, st->value());
         }
     }
     if (!st->isNull() && !si.isCoR()) {

@@ -920,7 +920,7 @@ void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& ent
     file.readLine();
     while (!file.atEnd()) {
         QString line = file.readLine();
-        QStringList list = line.split(" ", QString::SkipEmptyParts);
+        QStringList list = line.split(" ", Qt::SkipEmptyParts);
         if (list.size() > 3) {
             DWORD addr = list[2].toInt(nullptr, 16);
             DWORD actualAddress = preferredAddress + entry.offset - libAddr;

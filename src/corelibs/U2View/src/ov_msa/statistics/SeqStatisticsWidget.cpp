@@ -88,7 +88,7 @@ void SeqStatisticsWidget::updateWidgetsSettings() {
     foreach (MsaDistanceAlgorithmFactory* a, algos) {
         ui.algoComboBox->addItem(a->getName(), a->getId());
     }
-    ui.algoComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+    ui.algoComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
 
     ui.refSeqWarning->setText(tr("Hint: select a reference above"));
     ui.refSeqWarning->setStyleSheet(

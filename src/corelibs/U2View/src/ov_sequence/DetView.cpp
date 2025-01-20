@@ -539,14 +539,14 @@ void DetView::mouseReleaseEvent(QMouseEvent* me) {
 }
 
 void DetView::wheelEvent(QWheelEvent* we) {
-    bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->pos());
+    bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->position().toPoint());
     if (!renderAreaWheel) {
         QWidget::wheelEvent(we);
         return;
     }
     setFocus();
 
-    bool toMin = we->delta() > 0;
+    bool toMin = we->angleDelta().y() > 0;
     if (we->modifiers() == 0) {
         // clear wheel event
         GScrollBar* sBar = wrapSequenceAction->isChecked() ? verticalScrollBar : scrollBar;

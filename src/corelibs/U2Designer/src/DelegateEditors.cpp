@@ -558,7 +558,7 @@ void URLDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const
     auto lineEdit = dynamic_cast<URLWidget*>(editor);
     SAFE_POINT(lineEdit != nullptr, "URLDelegate::setModelData: lineEdit is null!", );
     QString val = lineEdit->value().toString().replace('\\', '/').trimmed();
-    QStringList urls = val.split(";", QString::SkipEmptyParts);
+    QStringList urls = val.split(";", Qt::SkipEmptyParts);
     val = urls.join(";");
     model->setData(index, val, ConfigurationEditor::ItemValueRole);
     if (options.testFlag(AllowSelectSeveralFiles)) {
@@ -743,7 +743,7 @@ void StingListEdit::sl_onExpand() {
 
     auto edit = new QTextEdit("", editor.data());
 
-    foreach (const QString& item, text().split(";", QString::SkipEmptyParts)) {
+    foreach (const QString& item, text().split(";", Qt::SkipEmptyParts)) {
         edit->append(item.trimmed());
     }
 
@@ -827,7 +827,7 @@ void StringListDelegate::setModelData(QWidget* editor, QAbstractItemModel* model
     model->setData(index, val, ConfigurationEditor::ItemValueRole);
 
     QVariantList vl;
-    foreach (const QString& s, val.split(";", QString::SkipEmptyParts)) {
+    foreach (const QString& s, val.split(";", Qt::SkipEmptyParts)) {
         vl.append(s.trimmed());
     }
 

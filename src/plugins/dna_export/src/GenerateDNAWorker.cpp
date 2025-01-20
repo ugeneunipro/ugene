@@ -227,10 +227,12 @@ Task* GenerateDNAWorker::tick() {
         }
     } else {
         if (actor->getParameter(ALGORITHM)->getAttributeValue<QString>(context) == "GC Skew") {
-            double percentA = qrand();
-            double percentC = qrand();
-            double percentG = qrand();
-            double percentT = qrand();
+            auto rnd = QRandomGenerator::global();
+            double percentA = rnd->generateDouble();
+            double percentC = rnd->generateDouble();
+            double percentG = rnd->generateDouble();
+            double percentT = rnd->generateDouble();
+
             double sum = percentA + percentC + percentG + percentT;
             percentA = percentA / sum * 100;
             percentC = percentC / sum * 100;

@@ -257,7 +257,7 @@ void QDResultLinker::updateCandidates(QDStep* step, int& progress) {
         }
         assert(unlinkedGroupMembersLeft >= 0);
 
-        currentGroupResults.insertMulti(currentActor, currentResults);
+        currentGroupResults.insert(currentActor, currentResults);
 
         if (unlinkedGroupMembersLeft == 0) {
             formGroupResults();
@@ -715,8 +715,8 @@ void QDStep::initTotalMap() {
                     sharedConstraints.append(overallConstraint);
                 }
             }
-            constraintsMap.insertMulti(qMakePair(srcSu, dstSu), sharedConstraints);
-            constraintsMap.insertMulti(qMakePair(dstSu, srcSu), sharedConstraints);
+            constraintsMap.insert(qMakePair(srcSu, dstSu), sharedConstraints);
+            constraintsMap.insert(qMakePair(dstSu, srcSu), sharedConstraints);
         }
     }
 }

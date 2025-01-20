@@ -111,7 +111,7 @@ void RestrctionMapWidget::updateTreeWidget() {
     if (selection.isEmpty()) {
         selection = EnzymeSettings::COMMON_ENZYMES;
     }
-    QStringList selectedEnzymes = selection.split(ENZYME_LIST_SEPARATOR, QString::SkipEmptyParts);
+    QStringList selectedEnzymes = selection.split(ENZYME_LIST_SEPARATOR, Qt::SkipEmptyParts);
 
     QList<QTreeWidgetItem*> items;
     foreach (const QString& enzyme, selectedEnzymes) {

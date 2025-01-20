@@ -368,7 +368,7 @@ void MegaFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject
         for (; si != seqs.constEnd(); si++, ri++) {
             const MsaRow& item = *ri;
             QByteArray line;
-            line.append(MEGA_SEPARATOR).append(item->getName());
+            line.append(MEGA_SEPARATOR).append(item->getName().toUtf8());
             TextUtils::replace(line.data(), line.length(), TextUtils::WHITES, '_');
 
             for (int i = 0; i < maxNameLength - item->getName().length() + 1; i++) {

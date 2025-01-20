@@ -347,13 +347,13 @@ QPoint GSequenceLineView::toRenderAreaPoint(const QPoint& p) const {
 }
 
 void GSequenceLineView::wheelEvent(QWheelEvent* we) {
-    bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->pos());
+    bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->position().toPoint());
     if (!renderAreaWheel) {
         QWidget::wheelEvent(we);
         return;
     }
     setFocus();
-    bool toMin = we->delta() > 0;
+    bool toMin = we->angleDelta().y() > 0;
     if (we->modifiers() == 0) {
         scrollBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
     } else if (we->modifiers() & Qt::SHIFT) {

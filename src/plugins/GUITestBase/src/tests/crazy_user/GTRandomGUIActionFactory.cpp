@@ -27,6 +27,7 @@
 
 #include <QDirIterator>
 #include <QFileDialog>
+#include <QRandomGenerator>
 
 #include <U2Core/U2SafePoints.h>
 
@@ -35,7 +36,7 @@ namespace U2 {
 namespace GUITest_crazy_user {
 
 int randInt(int low, int high) {
-    return qrand() % ((high + 1) - low) + low;
+    return QRandomGenerator::global()->bounded(low, high + 1);
 }
 
 GTAbstractGUIAction* GTRandomGUIActionFactory::create(QObject* obj) {

@@ -947,7 +947,7 @@ void TreeViewerUI::updateLegend() {
 void TreeViewerUI::wheelEvent(QWheelEvent* we) {
     // Wheel + Shift changes zoom level. Wheel only -> scrolls.
     if (we->modifiers().testFlag(Qt::ControlModifier)) {
-        double newZoomLevel = zoomLevel * pow(ZOOM_LEVEL_STEP, we->delta() / 120.0);
+        double newZoomLevel = zoomLevel * pow(ZOOM_LEVEL_STEP, we->angleDelta().y() / 120.0);
         setZoomLevel(newZoomLevel);
     }
     QGraphicsView::wheelEvent(we);
@@ -1236,7 +1236,7 @@ void TreeViewerUI::saveWholeTreeToSvg() {
         QMessageBox::critical(this, tr("Error"), tr("Failed to open file for writing: %1").arg(fileName));
     }
     QTextStream stream(&file);
-    stream << svgText << endl;
+    stream << svgText << Qt::endl;
 }
 
 void TreeViewerUI::sl_contTriggered(bool on) {

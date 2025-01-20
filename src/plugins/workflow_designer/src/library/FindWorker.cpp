@@ -416,7 +416,7 @@ Task* FindWorker::tick() {
         if (qm.contains(BaseSlots::TEXT_SLOT().getId())) {
             ptrnStrs << qm.value(BaseSlots::TEXT_SLOT().getId()).toString();
         } else {
-            ptrnStrs = actor->getParameter(PATTERN_ATTR)->getAttributeValue<QString>(context).split(PATTERN_DELIMITER, QString::SkipEmptyParts);
+            ptrnStrs = actor->getParameter(PATTERN_ATTR)->getAttributeValue<QString>(context).split(PATTERN_DELIMITER, Qt::SkipEmptyParts);
         }
         if (ptrnStrs.isEmpty() && namesPatterns.isEmpty()) {
             return new FailTask(tr("Empty pattern given"));

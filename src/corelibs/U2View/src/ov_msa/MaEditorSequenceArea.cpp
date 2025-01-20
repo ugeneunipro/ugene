@@ -838,7 +838,7 @@ void MaEditorSequenceArea::paintEvent(QPaintEvent* e) {
 }
 
 void MaEditorSequenceArea::wheelEvent(QWheelEvent* we) {
-    bool toMin = we->delta() > 0;
+    bool toMin = we->angleDelta().y() > 0;
     // Manually shift scrollbars on wheel event.
     // With no modifiers the default scrollbar is shifted.
     // Wheel + Alt changes the default wheel action from horizontal <=> vertical (default QT behavior for scroll-areas).

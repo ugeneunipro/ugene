@@ -136,7 +136,7 @@ bool ColorSchemeUtils::getSchemaColors(ColorSchemeData& customScheme) {
         if (line.isEmpty()) {
             continue;
         }
-        QStringList properties = line.split(QString("="), QString::SkipEmptyParts);
+        QStringList properties = line.split(QString("="), Qt::SkipEmptyParts);
 
         if (!lineValid(properties, alphColors)) {
             coreLog.info(QString("%1: scheme is not valid").arg(customScheme.name));

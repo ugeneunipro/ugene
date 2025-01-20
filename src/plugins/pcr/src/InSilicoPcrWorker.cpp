@@ -21,9 +21,6 @@
 
 #include "InSilicoPcrWorker.h"
 
-#include <QTextStream>
-
-#include <U2Algorithm/TmCalculatorFactory.h>
 #include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AnnotationTableObject.h>
@@ -426,8 +423,8 @@ QString InSilicoPcrReportTask::createReport() {
     QByteArray report = tokens[0].toLocal8Bit() + "<body>\n";
 
     report += productsTable();
-    report += primerDetails();
-    report += tokens[1];
+    report += primerDetails().toUtf8();
+    report += tokens[1].toUtf8();
     return report;
 }
 
@@ -435,18 +432,18 @@ QByteArray InSilicoPcrReportTask::productsTable() const {
     QByteArray result;
     result += "<table bordercolor=\"gray\" border=\"1\" width=\"100%\">";
     result += "<tr>";
-    result += PrimerGrouperTask::createColumn(tr("Sequence name"), "width=\"20%\"");
+    result += PrimerGrouperTask::createColumn(tr("Sequence name"), "width=\"20%\"").toUtf8();
     for (int i = 0; i < primers.size(); i++) {
-        result += PrimerGrouperTask::createColumn(primers[i].first.name + "<br/>" + primers[i].second.name);
+        result += PrimerGrouperTask::createColumn(primers[i].first.name + "<br/>" + primers[i].second.name).toUtf8();
     }
     result += "</tr>";
     foreach (const TableRow& tableRow, table) {
         result += "<tr>";
-        result += PrimerGrouperTask::createCell(tableRow.sequenceName);
+        result += PrimerGrouperTask::createCell(tableRow.sequenceName).toUtf8();
         for (int i = 0; i < primers.size(); i++) {
             QString elemClass = (tableRow.productsNumber[i] == 0) ? "red" : "green";
             QString classDef = QString("class=\"%1\"").arg(elemClass);
-            result += PrimerGrouperTask::createCell(QString::number(tableRow.productsNumber[i]), true, classDef);
+            result += PrimerGrouperTask::createCell(QString::number(tableRow.productsNumber[i]), true, classDef).toUtf8();
         }
         result += "</tr>";
     }

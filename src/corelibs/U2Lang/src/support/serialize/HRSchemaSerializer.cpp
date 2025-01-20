@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
+
 #include "HRSchemaSerializer.h"
 
 #include <QTextStream>
@@ -1382,7 +1385,7 @@ void HRSchemaSerializer::addPart(QString& to, const QString& w) {
 QString HRSchemaSerializer::header2String(const Metadata* meta) {
     QString res = Constants::HEADER_LINE + "\n";
     if (meta != nullptr) {
-        QStringList descLines = meta->comment.split(Constants::NEW_LINE, QString::KeepEmptyParts);
+        QStringList descLines = meta->comment.split(Constants::NEW_LINE, Qt::KeepEmptyParts);
         for (int lineIdx = 0; lineIdx < descLines.size(); lineIdx++) {
             const QString& line = descLines.at(lineIdx);
             bool lastLine = (lineIdx == descLines.size() - 1);
@@ -1420,7 +1423,7 @@ QString HRSchemaSerializer::makeArrowPair(const QString& left, const QString& ri
 QString HRSchemaSerializer::scriptBlock(const QString& scriptText, int tabsNum) {
     QString indent = makeIndent(tabsNum);
     QString res;
-    QStringList scriptLines = scriptText.split(Constants::NEW_LINE, QString::SkipEmptyParts);
+    QStringList scriptLines = scriptText.split(Constants::NEW_LINE, Qt::SkipEmptyParts);
     foreach (const QString& line, scriptLines) {
         res += indent + line + Constants::NEW_LINE;
     }
@@ -1764,7 +1767,7 @@ QString HRSchemaSerializer::dataflowDefinition(const QList<Actor*>& procs, const
 
             const QList<QString>& keys = busMap.keys();
             for (const QString& key : qAsConst(keys)) {
-                QStringList srcList = busMap.value(key).split(";", QString::SkipEmptyParts);
+                QStringList srcList = busMap.value(key).split(";", Qt::SkipEmptyParts);
                 QStringList uniqList;
                 for (QString src : qAsConst(srcList)) {
                     if (!uniqList.contains(src)) {

@@ -39,7 +39,7 @@ void URLAttribute::setAttributeValue(const QVariant& newVal) {
     if (newVal.canConvert<QList<Dataset>>()) {
         sets = newVal.value<QList<Dataset>>();
     } else {
-        QStringList urls = newVal.toString().split(";", QString::SkipEmptyParts);
+        QStringList urls = newVal.toString().split(";", Qt::SkipEmptyParts);
         Dataset dSet;
         foreach (const QString url, urls) {
             dSet.addUrl(URLContainerFactory::createUrlContainer(url));

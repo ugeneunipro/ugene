@@ -72,7 +72,7 @@ bool MultipleDocumentsReadingModeSelectorController::mergeDocumentOption(const F
                 return false;
             }
             QString line = QString(QByteArray(buff));
-            QStringList words = line.split(QRegExp("\\s"), QString::SkipEmptyParts);
+            QStringList words = line.split(QRegExp("\\s"), Qt::SkipEmptyParts);
             if (words.size() < 3) {  // origin len not defined
                 return false;
             }

@@ -762,7 +762,7 @@ void EnzymesSelectorWidget::sl_loadSelectionFromFile() {
         QTextStream in(&selectionFile);
         while (!in.atEnd()) {
             QString line = in.readLine();
-            QStringList enzymes = line.split(QRegExp("[,;\\s]+"), QString::SkipEmptyParts);
+            QStringList enzymes = line.split(QRegExp("[,;\\s]+"), Qt::SkipEmptyParts);
             foreach (const QString& enz, enzymes) {
                 enzymeNames.insert(enz);
             }

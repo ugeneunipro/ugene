@@ -107,7 +107,7 @@ bool SwissProtPlainTextFormat::readIdLine(ParserState* s) {
     }
 
     QString idLineStr = s->value();
-    QStringList tokens = idLineStr.split(" ", QString::SkipEmptyParts);
+    QStringList tokens = idLineStr.split(" ", Qt::SkipEmptyParts);
     if (idLineStr.length() < 4 || tokens.isEmpty()) {
         s->si.setError(SwissProtPlainTextFormat::tr("Error parsing ID line"));
         return false;
@@ -149,7 +149,7 @@ bool SwissProtPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& se
         }
         if (st->hasKey("AC")) {  // The AC (ACcession number) line lists the accession number(s) associated with an entry.
             QVariant v = st->entry->tags.value(DNAInfo::ACCESSION);
-            QStringList l = st->value().split(QRegExp(";\\s*"), QString::SkipEmptyParts);
+            QStringList l = st->value().split(QRegExp(";\\s*"), Qt::SkipEmptyParts);
             st->entry->tags[DNAInfo::ACCESSION] = QVariantUtils::addStr2List(v, l);
             continue;
         }
@@ -179,7 +179,7 @@ bool SwissProtPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& se
             } else {
                 hasLine = true;
             }
-            st->entry->tags.insertMulti(DNAInfo::SOURCE, QVariant::fromValue<DNASourceInfo>(soi));
+            st->entry->tags.insert(DNAInfo::SOURCE, QVariant::fromValue<DNASourceInfo>(soi));
             continue;
         }
         if (st->hasKey("RF") || st->hasKey("RN")) {  // The RN (Reference Number) line gives a sequential number to each reference citation in an entry.
@@ -222,7 +222,7 @@ bool SwissProtPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& se
             st->entry->tags.insert(lastTagName, v);
         } else if (st->hasValue()) {
             lastTagName = key;
-            st->entry->tags.insertMulti(lastTagName, st->value());
+            st->entry->tags.insert(lastTagName, st->value());
         }
     }
     if (!st->isNull() && !si.isCoR()) {

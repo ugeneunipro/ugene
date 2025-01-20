@@ -26,7 +26,6 @@
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -84,7 +83,7 @@ QString BlastDBSelectorWidgetController::getDatabasePath() const {
 void BlastDBSelectorWidgetController::sl_onBrowseDatabasePath() {
     LastUsedDirHelper lod("Database Folder");
 
-    QFileDialog::Options options = 0;
+    QFileDialog::Options options = {};
     QString name = U2FileDialog::getOpenFileName(nullptr, tr("Select a database file"), lod.dir, "", nullptr, options);
     if (!name.isEmpty()) {
         QFileInfo fileInfo(name);

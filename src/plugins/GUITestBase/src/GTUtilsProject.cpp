@@ -28,9 +28,7 @@
 #include <QDir>
 #include <QDragEnterEvent>
 #include <QFileInfo>
-#include <QHeaderView>
 #include <QMainWindow>
-#include <QTreeView>
 #include <QUrl>
 
 #include <U2Core/AppContext.h>
@@ -40,7 +38,6 @@
 
 #include <U2View/ADVSingleSequenceWidget.h>
 
-#include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -103,10 +100,10 @@ void GTUtilsProject::openFilesDrop(const QList<QUrl>& urls) {
         GTUtilsDialog::waitForDialog(new GTSequenceReadingModeDialogUtils());
     }
 
-    auto dragEnterEvent = new QDragEnterEvent(widgetPos, dropActions, mimeData, mouseButtons, nullptr);
+    auto dragEnterEvent = new QDragEnterEvent(widgetPos, dropActions, mimeData, mouseButtons, {});
     GTGlobals::sendEvent(widget, dragEnterEvent);
 
-    auto dropEvent = new QDropEvent(widgetPos, dropActions, mimeData, mouseButtons, nullptr);
+    auto dropEvent = new QDropEvent(widgetPos, dropActions, mimeData, mouseButtons, {});
     GTGlobals::sendEvent(widget, dropEvent);
 }
 

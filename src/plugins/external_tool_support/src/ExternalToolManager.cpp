@@ -21,7 +21,6 @@
 
 #include "ExternalToolManager.h"
 
-#include <QEventLoop>
 #include <QSet>
 #include <QTimer>
 
@@ -125,7 +124,7 @@ void ExternalToolManagerImpl::registerTool(ExternalTool* tool) {
     QStringList masterToolList = tool->getDependencies();
     if (!masterToolList.isEmpty()) {
         for (const QString& masterToolId : qAsConst(masterToolList)) {
-            childToolsMultiMap.insertMulti(masterToolId, tool->getId());
+            childToolsMultiMap.insert(masterToolId, tool->getId());
         }
     }
 }
@@ -191,7 +190,7 @@ void ExternalToolManagerImpl::sl_onToolStatusChanged(bool isValid) {
 
     // Process all child tools.
     StrStrMap childToolPathMap;
-    const QList<QString> childToolList = childToolsMultiMap.values(tool->getId());
+    const QList<QString> childToolList = {childToolsMultiMap[tool->getId()]};
     for (const QString& childToolId : qAsConst(childToolList)) {
         ExternalTool* childTool = etRegistry->getById(childToolId);
         SAFE_POINT(childTool, QString("An external tool '%1' isn't found in the registry").arg(childToolId), );
