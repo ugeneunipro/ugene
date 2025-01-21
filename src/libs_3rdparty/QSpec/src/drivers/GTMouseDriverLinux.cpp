@@ -52,7 +52,7 @@ bool GTMouseDriver::moveTo(const QPoint& p) {
     int vertres = XDisplayHeight(display, 0);
 
     QRect screen(0, 0, horres - 1, vertres - 1);
-    DRIVER_CHECK(screen.contains(p), QString("moveTo: Invalid coordinates: %1, %2").arg(p.x(), p.y()));
+    DRIVER_CHECK(screen.contains(p), QString("moveTo: Invalid coordinates: %1, %2").arg(p.x()).arg(p.y()));
 
     Window root, child;
     int root_x, root_y, pos_x, pos_y;
