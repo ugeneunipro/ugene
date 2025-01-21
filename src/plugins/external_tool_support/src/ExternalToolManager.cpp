@@ -19,8 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
+
 #include "ExternalToolManager.h"
 
+#include <QEventLoop>
 #include <QSet>
 #include <QTimer>
 
@@ -124,7 +128,7 @@ void ExternalToolManagerImpl::registerTool(ExternalTool* tool) {
     QStringList masterToolList = tool->getDependencies();
     if (!masterToolList.isEmpty()) {
         for (const QString& masterToolId : qAsConst(masterToolList)) {
-            childToolsMultiMap.insert(masterToolId, tool->getId());
+            childToolsMultiMap.insertMulti(masterToolId, tool->getId());
         }
     }
 }
@@ -190,7 +194,7 @@ void ExternalToolManagerImpl::sl_onToolStatusChanged(bool isValid) {
 
     // Process all child tools.
     StrStrMap childToolPathMap;
-    const QList<QString> childToolList = {childToolsMultiMap[tool->getId()]};
+    const QList<QString> childToolList = childToolsMultiMap.values(tool->getId());
     for (const QString& childToolId : qAsConst(childToolList)) {
         ExternalTool* childTool = etRegistry->getById(childToolId);
         SAFE_POINT(childTool, QString("An external tool '%1' isn't found in the registry").arg(childToolId), );
