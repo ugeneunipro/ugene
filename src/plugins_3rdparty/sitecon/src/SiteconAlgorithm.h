@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <QRandomGenerator>
 #include <QVector>
 
 #include <U2Core/Msa.h>
@@ -106,7 +107,7 @@ public:
 
     static void calculateACGTContent(const Msa& ma, SiteconBuildSettings& bs);
 
-    static QByteArray generateRandomSequence(const int* actgContent, int seqLen, TaskStateInfo& ts);
+    static QByteArray generateRandomSequence(const int* actgContent, int seqLen, QRandomGenerator& rnd, TaskStateInfo& ts);
 };
 
 }  // namespace U2
