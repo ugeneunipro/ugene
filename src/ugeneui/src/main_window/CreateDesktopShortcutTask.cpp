@@ -155,6 +155,7 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
         }
         return true;
     }
+    return false;
 }
 
 void CreateDesktopShortcutTask::run() {
