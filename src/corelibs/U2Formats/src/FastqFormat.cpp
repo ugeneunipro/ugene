@@ -493,7 +493,7 @@ void writeSequence(U2OpStatus& os, IOAdapter* io, const char* seq, int len, cons
 void FastqFormat::writeEntry(const QString& sequenceName, const DNASequence& wholeSeq, IOAdapter* io, const QString& errorMessage, U2OpStatus& os, bool cutLines) {
     QByteArray block;
 
-    block.append('@').append(sequenceName).append('\n');
+    block.append('@').append(sequenceName.toUtf8()).append('\n');
 
     int writtenCount = io->writeBlock(block);
     CHECK_EXT(writtenCount == block.length(), os.setError(errorMessage), );

@@ -70,7 +70,7 @@ QString StrPackUtils::packStringList(const QStringList& list, Options options) {
 QStringList StrPackUtils::unpackStringList(const QString& string, Options options) {
     QStringList unpackedList;
     const QRegExp separator = (options == SingleQuotes ? listSingleQuoteSeparatorRegExp : listDoubleQuoteSeparatorRegExp);
-    foreach (const QString& escapedString, string.split(separator, QString::SkipEmptyParts)) {
+    foreach (const QString& escapedString, string.split(separator, Qt::SkipEmptyParts)) {
         unpackedList << unescapeCharacters(escapedString);
     }
     return unpackedList;
@@ -102,9 +102,9 @@ QString StrPackUtils::packMap(const StrStrMap& map, Options options) {
 StrStrMap StrPackUtils::unpackMap(const QString& string, Options options) {
     StrStrMap map;
     QRegExp elementsSeparator = options == SingleQuotes ? mapSingleQuoteSeparatorRegExp : mapDoubleQuoteSeparatorRegExp;
-    foreach (const QString& pair, string.split(elementsSeparator, QString::SkipEmptyParts)) {
+    foreach (const QString& pair, string.split(elementsSeparator, Qt::SkipEmptyParts)) {
         QRegExp keyValueSeparator = options == SingleQuotes ? pairSingleQuoteSeparatorRegExp : pairDoubleQuoteSeparatorRegExp;
-        QStringList splitPair = pair.split(keyValueSeparator, QString::SkipEmptyParts);
+        QStringList splitPair = pair.split(keyValueSeparator, Qt::SkipEmptyParts);
         Q_ASSERT(splitPair.size() <= 2);
         if (!splitPair.empty()) {  // splitPair can be empty if both key and value are empty strings.
             map.insert(splitPair.first(), splitPair.size() > 1 ? splitPair[1] : "");

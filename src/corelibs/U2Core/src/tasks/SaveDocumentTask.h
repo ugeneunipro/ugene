@@ -49,7 +49,7 @@ Q_DECLARE_FLAGS(SaveDocFlags, SaveDocFlag)
 class U2CORE_EXPORT SaveDocumentTask : public Task {
     Q_OBJECT
 public:
-    SaveDocumentTask(Document* doc, IOAdapterFactory* iof = nullptr, const GUrl& url = GUrl(), SaveDocFlags flags = 0);
+    SaveDocumentTask(Document* doc, IOAdapterFactory* iof = nullptr, const GUrl& url = GUrl(), SaveDocFlags flags = SaveDocFlags(0));
     SaveDocumentTask(Document* doc, SaveDocFlags flags, const QSet<QString>& excludeFileNames = QSet<QString>());
 
     void prepare() override;

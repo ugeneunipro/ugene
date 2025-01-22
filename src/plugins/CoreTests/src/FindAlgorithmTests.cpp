@@ -50,7 +50,7 @@ namespace U2 {
 
 U2Region stringToRegion(const QString& regionStr) {
     int region[2];
-    QStringList regStrList = regionStr.split("..", QString::SkipEmptyParts);
+    QStringList regStrList = regionStr.split("..", Qt::SkipEmptyParts);
     if (regStrList.size() != 2) {
         return U2Region();
     }
@@ -110,7 +110,7 @@ void GTest_FindAlgorithmTest::init(XMLTestFormat*, const QDomElement& el) {
     sequenceName = buf;
 
     buf = el.attribute(RANGE_ATTR);
-    QStringList regionStr = buf.split("..", QString::SkipEmptyParts);
+    QStringList regionStr = buf.split("..", Qt::SkipEmptyParts);
     bool ok;
     int region[2];
     if (regionStr.size() != 2) {
@@ -168,14 +168,14 @@ void GTest_FindAlgorithmTest::init(XMLTestFormat*, const QDomElement& el) {
     }
 
     buf = el.attribute(EXPECTED_ATTR);
-    QStringList splittedToRegions = buf.split(";", QString::SkipEmptyParts);
+    QStringList splittedToRegions = buf.split(";", Qt::SkipEmptyParts);
     U2Region r;
     foreach (QString regStr, splittedToRegions) {
         if (regStr.startsWith(QString(CIRCULAR_LABEL))) {
             regStr.chop(1);
             regStr.remove(QString(CIRCULAR_LABEL) + "(");
 
-            QStringList regList = regStr.split(",", QString::SkipEmptyParts);
+            QStringList regList = regStr.split(",", Qt::SkipEmptyParts);
             r = U2Region();
             for (const QString& reg : qAsConst(regList)) {
                 U2Region regionPart = stringToRegion(reg);

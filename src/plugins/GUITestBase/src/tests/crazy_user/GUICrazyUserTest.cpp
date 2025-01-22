@@ -19,12 +19,16 @@
  * MA 02110-1301, USA.
  */
 
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
+
 #include "GUICrazyUserTest.h"
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
+#include <QRandomGenerator>
 
 #include <U2Core/U2SafePoints.h>
 
@@ -36,7 +40,7 @@ namespace GUITest_crazy_user {
 
 void GTCrazyUserMonitor::checkActiveWidget() {
     QWidget* widget = QApplication::activePopupWidget();
-    if (widget == nullptr || 0 == qrand() % 20) {
+    if (widget == nullptr || QRandomGenerator::global()->bounded(20) == 0) {
         widget = QApplication::activeModalWidget();
         if (widget == nullptr) {
             widget = QApplication::activeWindow();

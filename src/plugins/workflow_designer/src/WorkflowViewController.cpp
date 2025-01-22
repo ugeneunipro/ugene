@@ -633,7 +633,7 @@ static void updateComboBox(QComboBox* scaleComboBox, int scalePercent) {
 void WorkflowView::rescale(bool updateGui) {
     double newScale = meta.scalePercent / 100.0;
     QGraphicsView* elementsView = scene->views().at(0);
-    elementsView->resetMatrix();
+    elementsView->resetTransform();
     elementsView->scale(newScale, newScale);
     if (updateGui) {
         updateComboBox(scaleComboBox, meta.scalePercent);

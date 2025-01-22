@@ -967,7 +967,7 @@ QList<QPair<QString, QString>> FindPatternWidget::getPatternsFromTextPatternFiel
     QList<NamePattern> result = FastaFormat::getSequencesAndNamesFromUserInput(inputText, os);
 
     if (result.isEmpty()) {
-        QStringList patterns = inputText.split(QRegExp("\n"), QString::SkipEmptyParts);
+        QStringList patterns = inputText.split(QRegExp("\n"), Qt::SkipEmptyParts);
         for (const QString& pattern : qAsConst(patterns)) {
             result.append(qMakePair(QString(""), pattern));
         }

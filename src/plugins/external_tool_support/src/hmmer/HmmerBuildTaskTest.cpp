@@ -160,7 +160,7 @@ static void setEffectiveWeightingOption(HmmerBuildSettings& settings, TaskStateI
         QString numStr = str.mid(4).trimmed();
 
         if (!numStr.isEmpty()) {
-            QStringList nums = numStr.split(" ", QString::SkipEmptyParts);
+            QStringList nums = numStr.split(" ", Qt::SkipEmptyParts);
 
             if (nums.isEmpty()) {
                 stateInfo.setError("cannot_parse_ew_option: eent");
@@ -221,7 +221,7 @@ static void setEvalueCalibrationOption(HmmerBuildSettings& settings, TaskStateIn
     if (str.isEmpty()) {
         return;
     }
-    QStringList l = str.split(" ", QString::SkipEmptyParts);
+    QStringList l = str.split(" ", Qt::SkipEmptyParts);
     if (5 != l.size()) {
         stateInfo.setError("error_parsing_eval_option");
         return;
@@ -347,8 +347,8 @@ static const float BUILD_COMPARE_FLOAT_EPS = (float)0.00002;
 static bool compareStr(const QString& s1, const QString& s2) {
     assert(s1.size() == s2.size());
 
-    QStringList words1 = s1.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-    QStringList words2 = s2.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    QStringList words1 = s1.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QStringList words2 = s2.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
 
     if (words1.size() != words2.size()) {
         return false;

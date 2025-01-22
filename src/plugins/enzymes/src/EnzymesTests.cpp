@@ -97,7 +97,7 @@ void GTest_FindEnzymes::init(XMLTestFormat*, const QDomElement& el) {
 
     // get enzymes names to find
     QString ensymesStr = el.attribute("enzymes");
-    enzymeNames = ensymesStr.split(",", QString::SkipEmptyParts);
+    enzymeNames = ensymesStr.split(",", Qt::SkipEmptyParts);
     if (enzymeNames.isEmpty()) {
         stateInfo.setError(QString("Invalid enzyme names: '%1'").arg(ensymesStr));
         return;
@@ -111,7 +111,7 @@ void GTest_FindEnzymes::init(XMLTestFormat*, const QDomElement& el) {
         stateInfo.setError("'result' and expectedError values not set");
         return;
     }
-    QStringList perEnzymeResults = resultsStr.split(";", QString::SkipEmptyParts);
+    QStringList perEnzymeResults = resultsStr.split(";", Qt::SkipEmptyParts);
     for (const QString& enzymeResult : qAsConst(perEnzymeResults)) {
         int nameIdx = enzymeResult.indexOf(':');
         if (nameIdx <= 0 || nameIdx + 1 == enzymeResult.size()) {
@@ -324,7 +324,7 @@ void GTest_DigestIntoFragments::init(XMLTestFormat*, const QDomElement& el) {
 
     // get enzymes names to find
     QString ensymesStr = el.attribute("enzymes");
-    enzymeNames = ensymesStr.split(",", QString::SkipEmptyParts);
+    enzymeNames = ensymesStr.split(",", Qt::SkipEmptyParts);
     if (enzymeNames.isEmpty()) {
         stateInfo.setError(QString("Invalid enzyme names: '%1'").arg(ensymesStr));
         return;

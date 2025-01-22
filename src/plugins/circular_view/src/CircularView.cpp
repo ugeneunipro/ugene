@@ -200,13 +200,13 @@ bool CircularView::isCircularTopology() const {
 
 void CircularView::wheelEvent(QWheelEvent* we) {
     if (we->modifiers() & Qt::ControlModifier) {
-        if (we->delta() > 0) {
+        if (we->angleDelta().y() > 0) {
             sl_zoomIn();
         } else {
             sl_zoomOut();
         }
     } else {
-        emit si_wheelMoved(we->delta());
+        emit si_wheelMoved(we->angleDelta().y());
     }
     QWidget::wheelEvent(we);
 }

@@ -454,7 +454,7 @@ bool QDElement::sceneEvent(QEvent* event) {
     switch (event->type()) {
         case QEvent::GraphicsSceneHoverEnter:
         case QEvent::GraphicsSceneHoverMove: {
-            itemResizeFlags = 0;
+            itemResizeFlags = {};
             auto he = static_cast<QGraphicsSceneHoverEvent*>(event);
             QPointF p = he->pos();
             int dxRight = qAbs(boundingRect().right() - p.x());
@@ -490,7 +490,7 @@ bool QDElement::sceneEvent(QEvent* event) {
         }
         case QEvent::GraphicsSceneHoverLeave:
         case QEvent::GraphicsSceneMouseRelease:
-            itemResizeFlags = 0;
+            itemResizeFlags = {};
             break;
         case QEvent::GraphicsSceneMouseMove: {
             if (itemResizeFlags) {

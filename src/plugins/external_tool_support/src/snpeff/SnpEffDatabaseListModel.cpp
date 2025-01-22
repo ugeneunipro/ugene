@@ -29,7 +29,7 @@
 namespace U2 {
 
 SnpEffDatabaseInfo::SnpEffDatabaseInfo(QString line) {
-    QStringList info = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    QStringList info = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
     CHECK(info.size() > 2, );
     genome = info.at(0);
     organism = info.at(1);

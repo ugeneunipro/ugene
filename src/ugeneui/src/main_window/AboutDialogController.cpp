@@ -27,6 +27,7 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QPainter>
+#include <QRandomGenerator>
 #include <QStyle>
 
 #include <U2Core/AppContext.h>
@@ -182,11 +183,12 @@ void AWidget::timerEvent(QTimerEvent* e) {
     calcWater(page, density);
     page ^= 1;
 
-    if (qrand() % 128 == 0) {
-        int r = 3 + qRound(qrand() * 4. / RAND_MAX);
-        int h = 300 + qrand() * 200 / RAND_MAX;
-        int x = 1 + r + qrand() % (image1.width() - 2 * r - 1);
-        int y = 1 + r + qrand() % (image1.height() - 2 * r - 1);
+    auto rnd = QRandomGenerator::global();
+    if (rnd->bounded(128) == 0) {
+        int r = 3 + rnd->bounded(4);
+        int h = 300 + rnd->bounded(200);
+        int x = 1 + r + rnd->bounded(image1.width() - 2 * r - 1);
+        int y = 1 + r + rnd->bounded(image1.height() - 2 * r - 1);
         addBlob(x, y, r, h);
     }
 
@@ -597,7 +599,7 @@ void TBoard::drawSquare(QPainter& painter, int x, int y, TPiece::Shape shape) {
 }
 
 void TPiece::setRandomShape() {
-    setShape(TPiece::Shape(qrand() % 7 + 1));
+    setShape(TPiece::Shape(QRandomGenerator::global()->bounded(1, 8)));
 }
 
 void TPiece::setShape(TPiece::Shape shape) {

@@ -324,7 +324,7 @@ Task* AminoTranslationWorker::tick() {
             // return new FailTask(tr("Alphabet is not nucleic"));
         }
 
-        QStringList offsets = actor->getParameter(POS_2_TRANSLATE_ATTR)->getAttributeValue<QString>(context).split(OFFSET_DELIMITER, QString::SkipEmptyParts);
+        QStringList offsets = actor->getParameter(POS_2_TRANSLATE_ATTR)->getAttributeValue<QString>(context).split(OFFSET_DELIMITER, Qt::SkipEmptyParts);
         QString resultName = "Amino translation";
 
         QVector<U2Region> regionsDirect = getTranslatedRegions(actor->getParameter(POS_2_TRANSLATE_ATTR)->getAttributeValue<QString>(context), seqObj->getSequenceLength());

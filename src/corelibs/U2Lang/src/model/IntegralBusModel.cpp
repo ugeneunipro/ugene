@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
+
 #include "IntegralBusModel.h"
 
 #include <U2Core/U2OpStatusUtils.h>
@@ -50,7 +53,7 @@ static Actor* getLinkedActor(ActorId id, Port* output, QList<Actor*> visitedActo
     }
     QList<Port*> nextInputPorts = output->owner()->getInputPorts();
     for (Port* transit : qAsConst(nextInputPorts)) {
-        foreach (Port* p, transit->getLinks().uniqueKeys()) {
+        foreach (Port* p, transit->getLinks().keys()) {
             Actor* a = getLinkedActor(id, p, visitedActors);
             if (a) {
                 return a;
@@ -140,7 +143,7 @@ QList<Actor*> IntegralBusPort::getProducers(const QString& slot) {
 
 Actor* IntegralBusPort::getLinkedActorById(ActorId id) const {
     QList<Actor*> res;
-    foreach (Port* peer, getLinks().uniqueKeys()) {
+    foreach (Port* peer, getLinks().keys()) {
         Actor* ac = getLinkedActor(id, peer, QList<Actor*>());
         if (ac != nullptr) {
             res << ac;
@@ -169,7 +172,6 @@ SlotPathMap IntegralBusPort::getPaths() const {
 QList<QStringList> IntegralBusPort::getPathsBySlotsPair(const QString& dest, const QString& src) const {
     SlotPathMap map = getPaths();
     QList<QStringList> list = map.values(QPair<QString, QString>(dest, src));
-
     return list;
 }
 
@@ -634,7 +636,7 @@ IntegralBusSlot IntegralBusSlot::fromString(const QString& slotString, U2OpStatu
 }
 
 QList<IntegralBusSlot> IntegralBusSlot::listFromString(const QString& slotsString, U2OpStatus& os) {
-    QStringList strList = slotsString.split(SLOTS_SEP, QString::SkipEmptyParts);
+    QStringList strList = slotsString.split(SLOTS_SEP, Qt::SkipEmptyParts);
     QList<IntegralBusSlot> result;
     foreach (const QString& slotStr, strList) {
         IntegralBusSlot slot = fromString(slotStr, os);

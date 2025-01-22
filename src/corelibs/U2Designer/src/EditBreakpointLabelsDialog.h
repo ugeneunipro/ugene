@@ -37,8 +37,8 @@ class U2DESIGNER_EXPORT EditBreakpointLabelsDialog : public QDialog {
 public:
     EditBreakpointLabelsDialog(const QStringList& existingLabels = QStringList(),
                                const QStringList& initCallingBreakpointLabels = QStringList(),
-                               QWidget* parent = 0,
-                               Qt::WindowFlags f = 0);
+                               QWidget* parent = nullptr,
+                               Qt::WindowFlags f = {});
     ~EditBreakpointLabelsDialog();
 
 protected:

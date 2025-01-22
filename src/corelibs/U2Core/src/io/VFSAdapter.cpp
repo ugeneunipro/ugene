@@ -53,7 +53,7 @@ bool VFSAdapter::open(const GUrl& _url, IOAdapterMode m) {
     VirtualFileSystemRegistry* vfsReg = AppContext::getVirtualFileSystemRegistry();
     SAFE_POINT(vfsReg != nullptr, "VirtualFileSystemRegistry not found!", false);
 
-    QStringList urlArgs = _url.getURLString().mid(vfsPrefix.size()).split(U2_VFS_FILE_SEPARATOR, QString::SkipEmptyParts);
+    QStringList urlArgs = _url.getURLString().mid(vfsPrefix.size()).split(U2_VFS_FILE_SEPARATOR, Qt::SkipEmptyParts);
     if (2 != urlArgs.size()) {  // urlArgs - vfsname and filename
         return false;
     }

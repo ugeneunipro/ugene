@@ -102,7 +102,7 @@ public:
     }
 
     virtual void clearUpdateFlags() {
-        lastUpdateFlags = 0;
+        lastUpdateFlags = {};
     }
 
     GSLV_UpdateFlags getUpdateFlags() const {

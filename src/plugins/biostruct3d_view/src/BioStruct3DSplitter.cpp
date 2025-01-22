@@ -659,7 +659,7 @@ void SplitterHeaderWidget::sl_showWebMenu() {
 
     const QList<QAction*>& webMenuActions = webActionMap.keys();
     foreach (QAction* action, webMenuActions) {
-        QString wikiName = action->text().split(": ", QString::SkipEmptyParts).last();
+        QString wikiName = action->text().split(": ", Qt::SkipEmptyParts).last();
         action->setText(pdbId + ": " + wikiName);
         m.addAction(action);
     }

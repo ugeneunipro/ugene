@@ -305,7 +305,7 @@ void BusPortEditor::commit() {
 
                 if (!path.isEmpty()) {
                     QPair<QString, QString> slotPair(key, srcId);
-                    pathMap.insertMulti(slotPair, path);
+                    pathMap.insert(slotPair, path);
                 }
             }
             busMap[key] = srcs.join(";");

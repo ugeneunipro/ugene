@@ -84,7 +84,9 @@ StrStrMap ImportDirToDatabaseTask::getSkippedFiles() const {
     CHECK(isFinished(), skippedFiles);
 
     foreach (ImportDirToDatabaseTask* importSubdirTask, importSubdirsTasks) {
-        skippedFiles.unite(importSubdirTask->getSkippedFiles());
+        for (auto it = importSubdirTask->getSkippedFiles().begin(); it != importSubdirTask->getSkippedFiles().end(); ++it) {
+            skippedFiles.insert(it.key(), it.value());
+        }
     }
 
     foreach (ImportFileToDatabaseTask* importSubfileTask, importSubfilesTasks) {

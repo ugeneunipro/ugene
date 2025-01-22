@@ -554,7 +554,10 @@ void TestViewController::sl_saveSelectedSuitesAction() {
         if (item->isSelected())
             runAll = true;
         testsToRun += getSubTestToRun(item, runAll);
-        testsToEx.unite(getSubRefToExclude(item, runAll));
+        auto excludeMap = getSubRefToExclude(item, runAll);
+        for (auto it = excludeMap.cbegin(); it != excludeMap.cend(); ++it) {
+            testsToEx.insert(it.key(), it.value());
+        }
         auto tlItem = static_cast<TVTSItem*>(item);
         if (testsToEx.isEmpty() && testsToRun.isEmpty()) {
             // in current suite no selected elements
@@ -592,7 +595,10 @@ void TestViewController::sl_saveSelectedSuitesAction() {
                 }
             }
         }
-        testsToEx.unite(oldToAdd);
+        for (auto it = oldToAdd.cbegin(); it != oldToAdd.cend(); ++it) {
+            testsToEx.insert(it.key(), it.value());
+        }
+
         if ((testsToEx.size() != tlItem->ts->getExcludedTests().size()) && !testsToEx.isEmpty()) {
             mustBeSaved = true;
         }
@@ -837,9 +843,16 @@ QMap<GTestRef*, QString> TestViewController::getSubRefToExclude(TVItem* sItem, b
             assert(item->isSuite());
             auto tItem2 = static_cast<TVTSItem*>(item);
             if (tItem2->isSelected()) {
-                testsToEx.unite(getSubRefToExclude(tItem2, true));
+                auto map2 = getSubRefToExclude(tItem2, true);
+                for (auto it = map2.cbegin(); it != map2.cend(); ++it) {
+                    testsToEx.insert(it.key(), it.value());
+                }
+
             } else {
-                testsToEx.unite(getSubRefToExclude(tItem2, runAll));
+                auto map2 = getSubRefToExclude(tItem2, runAll);
+                for (auto it = map2.cbegin(); it != map2.cend(); ++it) {
+                    testsToEx.insert(it.key(), it.value());
+                }
             }
         }
     }

@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
+
 #include "WorkflowUtils.h"
 
 #include <QListWidgetItem>
@@ -645,7 +648,7 @@ void WorkflowUtils::extractPathsFromBindings(StrStrMap& busMap, SlotPathMap& pat
             if (!path.isEmpty()) {
                 QPair<QString, QString> slotPair(dest, srcId);
                 busMap[dest] = srcId;
-                pathMap.insertMulti(slotPair, path);
+                pathMap.insert(slotPair, path);
             }
         }
     }
@@ -1182,20 +1185,20 @@ QString WorkflowUtils::packSamples(const QList<TophatSample>& samples) {
 QList<TophatSample> WorkflowUtils::unpackSamples(const QString& samplesStr, U2OpStatus& os) {
     QList<TophatSample> result;
 
-    QStringList pairs = samplesStr.split(";;", QString::SkipEmptyParts);
+    QStringList pairs = samplesStr.split(";;", Qt::SkipEmptyParts);
     foreach (const QString& pairStr, pairs) {
-        QStringList pair = pairStr.split(":", QString::KeepEmptyParts);
+        QStringList pair = pairStr.split(":", Qt::KeepEmptyParts);
         if (2 != pair.size()) {
             os.setError(tr("Wrong samples map string"));
             return result;
         }
-        result << TophatSample(pair[0], pair[1].split(";", QString::SkipEmptyParts));
+        result << TophatSample(pair[0], pair[1].split(";", Qt::SkipEmptyParts));
     }
     return result;
 }
 
 QList<QString> WorkflowUtils::unpackListOfDatasets(const QString& textWithMultipleDatasets) {
-    return textWithMultipleDatasets.split(";;", QString::SkipEmptyParts);
+    return textWithMultipleDatasets.split(";;", Qt::SkipEmptyParts);
 }
 
 QString WorkflowUtils::packListOfDatasets(const QList<QString>& datasetStrings) {
@@ -1203,7 +1206,7 @@ QString WorkflowUtils::packListOfDatasets(const QList<QString>& datasetStrings) 
 }
 
 QList<QString> WorkflowUtils::unpackListOfUrls(const QString& datasetString) {
-    return datasetString.split(";", QString::SkipEmptyParts);
+    return datasetString.split(";", Qt::SkipEmptyParts);
 }
 
 QString WorkflowUtils::packListOfUrls(const QList<QString>& urls) {

@@ -756,7 +756,7 @@ void GTest_CompareFiles::init(XMLTestFormat*, const QDomElement& el) {
     if (!tmpAttr.isEmpty()) {
         // Attribute "tmp" is used to determine paths prefixes,
         // specified paths are relative (used in all old tests, obsolete)
-        QStringList tmpDocNums = tmpAttr.split(TMP_ATTR_SPLITTER, QString::SkipEmptyParts);
+        QStringList tmpDocNums = tmpAttr.split(TMP_ATTR_SPLITTER, Qt::SkipEmptyParts);
         doc1Path = (tmpDocNums.contains("1") ? env->getVar("TEMP_DATA_DIR") : env->getVar("COMMON_DATA_DIR")) + "/" + doc1Path;
         doc2Path = (tmpDocNums.contains("2") ? env->getVar("TEMP_DATA_DIR") : env->getVar("COMMON_DATA_DIR")) + "/" + doc2Path;
         byLines = !el.attribute(BY_LINES_ATTR_ID).isEmpty();
@@ -939,7 +939,7 @@ void GTest_CompareFiles::compareMixed() {
 const QByteArray GTest_Compare_VCF_Files::COMMENT_MARKER = "#";
 
 void GTest_Compare_VCF_Files::init(XMLTestFormat*, const QDomElement& el) {
-    QStringList tmpDocNums = el.attribute(TMP_ATTR_ID).split(TMP_ATTR_SPLITTER, QString::SkipEmptyParts);
+    QStringList tmpDocNums = el.attribute(TMP_ATTR_ID).split(TMP_ATTR_SPLITTER, Qt::SkipEmptyParts);
 
     doc1Path = el.attribute(DOC1_ATTR_ID);
     if (doc1Path.isEmpty()) {
@@ -1032,7 +1032,7 @@ QString GTest_Compare_VCF_Files::getLine(IOAdapter* io) {
 const int NUMDER_OF_LINES = 10;
 
 void GTest_Compare_PDF_Files::init(XMLTestFormat*, const QDomElement& el) {
-    QStringList tmpDocNums = el.attribute(TMP_ATTR_ID).split(TMP_ATTR_SPLITTER, QString::SkipEmptyParts);
+    QStringList tmpDocNums = el.attribute(TMP_ATTR_ID).split(TMP_ATTR_SPLITTER, Qt::SkipEmptyParts);
 
     doc1Path = el.attribute(DOC1_ATTR_ID);
     if (doc1Path.isEmpty()) {

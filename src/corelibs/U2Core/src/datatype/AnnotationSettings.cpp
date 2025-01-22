@@ -127,7 +127,7 @@ void AnnotationSettingsRegistry::read() {
         as->showNameQuals = s->getValue(SETTINGS_ROOT + as->name + "/show_quals", false).toBool();
         QString qs = s->getValue(SETTINGS_ROOT + as->name + "/quals", "").toString();
         if (!qs.isEmpty()) {
-            as->nameQuals = qs.split(',', QString::SkipEmptyParts);
+            as->nameQuals = qs.split(',', Qt::SkipEmptyParts);
         }
         list.append(as);
     }

@@ -56,7 +56,7 @@ RenameChomosomeInVariationPrompter::RenameChomosomeInVariationPrompter(Actor* ac
 QString RenameChomosomeInVariationPrompter::composeRichDoc() {
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
 
-    const QStringList prefixesToReplace = getHyperlink(TO_REPLACE_ATTR, getRequiredParam(TO_REPLACE_ATTR)).split(SEPARATOR, QString::SkipEmptyParts);
+    const QStringList prefixesToReplace = getHyperlink(TO_REPLACE_ATTR, getRequiredParam(TO_REPLACE_ATTR)).split(SEPARATOR, Qt::SkipEmptyParts);
     const QString prefixReplaceWith = getHyperlink(REPLACE_WITH_ATTR, getRequiredParam(REPLACE_WITH_ATTR));
 
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
@@ -98,7 +98,7 @@ QList<Message> RenameChomosomeInVariationWorker::fetchResult(Task* task, U2OpSta
 }
 
 Task* RenameChomosomeInVariationWorker::createTask(const Message& message, U2OpStatus& os) {
-    const QStringList prefixesToReplace = getValue<QString>(TO_REPLACE_ATTR).split(SEPARATOR, QString::SkipEmptyParts);
+    const QStringList prefixesToReplace = getValue<QString>(TO_REPLACE_ATTR).split(SEPARATOR, Qt::SkipEmptyParts);
     const QString prefixReplaceWith = getValue<QString>(REPLACE_WITH_ATTR);
     QString dstFileUrl = monitor()->outputDir() + QFileInfo(context->getMetadataStorage().get(message.getMetadataId()).getFileUrl()).fileName();
 

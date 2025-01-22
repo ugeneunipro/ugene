@@ -23,13 +23,10 @@
 
 #include <QMap>
 #include <QNetworkProxy>
+#include <QSslConfiguration>
 #include <QStringList>
 
 #include <U2Core/global.h>
-
-#ifndef QT_NO_OPENSSL
-#    include <QSslConfiguration>
-#endif
 
 namespace U2 {
 typedef QNetworkProxy::ProxyType Proxy_t;
@@ -104,9 +101,7 @@ public:
     }
     void setRequestTimeout(const int timeout);
 
-#ifndef QT_NO_OPENSSL
     QSsl::SslProtocol getSslProtocol() const;
-#endif
 
 private:
     static Proxy_t url2type(const QUrl& url);

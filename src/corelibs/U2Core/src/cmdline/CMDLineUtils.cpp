@@ -22,6 +22,7 @@
 #include "CMDLineUtils.h"
 
 #include <QFile>
+#include <QRegularExpression>
 
 #include <U2Core/AppContext.h>
 
@@ -67,7 +68,7 @@ QStringList CMDLineRegistryUtils::getParameterValuesByWords(const QString& param
     QStringList res = getParameterValues(paramName, startWith);
     QStringList::const_iterator it = res.constBegin();
     while (it != res.constEnd()) {
-        words << it->split(QRegExp("\\s"), QString::SkipEmptyParts);
+        words << it->split(QRegularExpression("\\s"), Qt::SkipEmptyParts);
         ++it;
     }
     return words;

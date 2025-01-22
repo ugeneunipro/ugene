@@ -59,7 +59,7 @@ ScriptWorkerTask::ScriptWorkerTask(WorkflowScriptEngine* _engine, AttributeScrip
 
 void ScriptWorkerTask::run() {
     QMap<QString, QScriptValue> scriptVars;
-    foreach (const Descriptor& key, script->getScriptVars().uniqueKeys()) {
+    foreach (const Descriptor& key, script->getScriptVars().keys()) {
         assert(!key.getId().isEmpty());
         if (!(script->getScriptVars().value(key)).isNull()) {
             scriptVars[key.getId()] = engine->newVariant(script->getScriptVars().value(key));

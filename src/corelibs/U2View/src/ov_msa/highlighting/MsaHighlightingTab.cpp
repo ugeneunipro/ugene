@@ -70,7 +70,7 @@ QWidget* MsaHighlightingTab::createColorGroup() {
     QVBoxLayout* layout = initVBoxLayout(group);
     colorSchemeController = new MsaSchemeComboBoxController<MsaColorSchemeFactory, MsaColorSchemeRegistry>(msa, AppContext::getMsaColorSchemeRegistry(), this);
     colorSchemeController->getComboBox()->setObjectName("colorScheme");
-    colorSchemeController->getComboBox()->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+    colorSchemeController->getComboBox()->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
 
     colorThresholdLabel = new QLabel(tr("Threshold"));
 

@@ -58,7 +58,7 @@ void GTest_CreateSubalignimentTask::init(XMLTestFormat*, const QDomElement& el) 
         stateInfo.setError(GTest::tr("value not set %1").arg(SEQ_NAMES_ATTR));
         return;
     }
-    seqNames = buf.split(",", QString::SkipEmptyParts);
+    seqNames = buf.split(",", Qt::SkipEmptyParts);
     if (seqNames.isEmpty()) {
         stateInfo.setError(GTest::tr("no subsequences selected"));
         return;

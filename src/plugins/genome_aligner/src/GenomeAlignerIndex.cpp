@@ -75,13 +75,13 @@ void GenomeAlignerIndex::serialize(const QString& refFileName) {
     QByteArray data;
     data = HEADER.toLatin1();
     data += PARAMETERS.arg(refFileName).arg(seqLength).arg(w).toLatin1();
-    data += COMMENT1 + COMMENT2 + COMMENT3 + COMMENT4;
+    data += (COMMENT1 + COMMENT2 + COMMENT3 + COMMENT4).toUtf8();
     data += QByteArray::number(seqLength, 10) + ", ";
     data += QByteArray::number(w, 10) + ", ";
     data += QByteArray::number(bitCharLen, 10) + ", ";
     data += QByteArray::number(seqPartSize, 10) + ", ";
     data += QByteArray::number(objCount, 10) + "\n";
-    data += firstSequenceObjectName + "\n";
+    data += firstSequenceObjectName.toUtf8() + "\n";
     for (qint64 i = 0; i < objCount; i++) {
         data += QByteArray::number(objLens[i], 10);
         if (objCount - 1 == i) {

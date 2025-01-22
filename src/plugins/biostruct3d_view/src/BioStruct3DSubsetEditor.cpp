@@ -149,7 +149,7 @@ U2Region BioStruct3DSubsetEditor::getRegion() const {
     U2Region ret;
 
     QString text = regionEdit->text();
-    QStringList broken = text.split("..", QString::SkipEmptyParts);
+    QStringList broken = text.split("..", Qt::SkipEmptyParts);
     if (broken.size() != 2)
         return ret;
 

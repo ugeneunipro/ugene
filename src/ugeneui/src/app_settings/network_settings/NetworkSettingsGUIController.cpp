@@ -67,9 +67,7 @@ const QString NetworkSettingsPageController::helpPageId = QString("65929349");
 
 NetworkSettingsPageWidget::NetworkSettingsPageWidget() {
     setupUi(this);
-#ifndef QT_NO_OPENSSL
     sslGroup->setEnabled(true);
-#endif
     connect(httpProxyCheck, SIGNAL(stateChanged(int)), SLOT(sl_HttpChecked(int)));
     connect(proxyExceptionsCheck, SIGNAL(stateChanged(int)), SLOT(sl_ExceptionsChecked(int)));
     connect(webBrowserButton, SIGNAL(clicked()), SLOT(sl_changeWebBrowserPathButtonClicked()));
@@ -147,7 +145,7 @@ AppSettingsGUIPageState* NetworkSettingsPageWidget::getState(QString& err) const
         set.addProxy(httpProxy);
     }
 
-    set.setExceptionsList(proxyExceptionsEdit->toPlainText().split("\n", QString::SkipEmptyParts));
+    set.setExceptionsList(proxyExceptionsEdit->toPlainText().split("\n", Qt::SkipEmptyParts));
     set.setProxyUsed(QNetworkProxy::HttpProxy, httpProxyCheck->isChecked());
     set.setExceptionsEnabled(proxyExceptionsCheck->isChecked());
     set.setSslProtocol(sslBox->currentText());

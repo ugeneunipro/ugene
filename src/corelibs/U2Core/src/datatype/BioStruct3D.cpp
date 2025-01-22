@@ -212,7 +212,7 @@ QByteArray BioStruct3D::getRawSequenceByChainIndex(int id) const {
     const SharedMolecule molecule = moleculeMap.value(id);
     foreach (const SharedResidue residue, molecule->residueMap) {
         QChar c = residue->acronym;
-        sequence.append(c);
+        sequence.append(c.toLatin1());
     }
 
     return sequence;

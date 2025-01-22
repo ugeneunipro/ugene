@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
+
 #include "IntegralBus.h"
 #include <limits.h>
 
@@ -112,7 +115,7 @@ QVariantMap BusMap::getMessageData(const Message& m) const {
         parseSource(src, ikey, ipath);
         foreach (QString rkey, busMap.keys(ikey)) {
             if (equalPaths(paths, ipath, rkey, ikey)) {
-//                coreLog.trace("reducing bus from key=" + ikey + " to=" + rkey);
+                //                coreLog.trace("reducing bus from key=" + ikey + " to=" + rkey);
                 result[rkey] = ival;
             }
         }
@@ -126,10 +129,10 @@ QVariantMap BusMap::getMessageData(const Message& m) const {
                 QVariantList vl = result[rkey].toList();
                 if (m.getType()->getDatatypeByDescriptor(src)->isList()) {
                     vl += ival.toList();
-//                    coreLog.trace("reducing bus key=" + src + " to list of " + rkey);
+                    //                    coreLog.trace("reducing bus key=" + src + " to list of " + rkey);
                 } else {
                     vl.append(ival);
-//                    coreLog.trace("reducing bus key=" + src + " to list element of " + rkey);
+                    //                    coreLog.trace("reducing bus key=" + src + " to list element of " + rkey);
                 }
                 result[rkey] = vl;
             }
@@ -166,7 +169,7 @@ QVariantMap BusMap::composeMessageMap(const Message& m, const QVariantMap& conte
         while (it.hasNext()) {
             it.next();
             QString key = busMap.value(it.key());
-//            coreLog.trace("putting key=" + key + " remapped from=" + it.key());
+            //            coreLog.trace("putting key=" + key + " remapped from=" + it.key());
             data.insert(key, it.value());
         }
     } else {
@@ -221,7 +224,7 @@ IntegralBus::IntegralBus(Port* p)
         QMapIterator<QString, QString> it(map);
         while (it.hasNext()) {
             it.next();
-//            coreLog.trace(QString("%1 - input bus map key=%2 val=%3").arg(name).arg(it.key()).arg(it.value()));
+            //            coreLog.trace(QString("%1 - input bus map key=%2 val=%3").arg(name).arg(it.key()).arg(it.value()));
         }
 
         auto busPort = qobject_cast<IntegralBusPort*>(p);
@@ -246,7 +249,7 @@ IntegralBus::IntegralBus(Port* p)
         QMapIterator<QString, QString> it(map);
         while (it.hasNext()) {
             it.next();
-//            coreLog.trace(QString("%1 - output bus map key=%2 val=%3").arg(name).arg(it.key()).arg(it.value()));
+            //            coreLog.trace(QString("%1 - output bus map key=%2 val=%3").arg(name).arg(it.key()).arg(it.value()));
         }
 
         Actor* proc = p->owner();

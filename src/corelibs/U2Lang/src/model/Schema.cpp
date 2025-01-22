@@ -198,8 +198,10 @@ bool Schema::recursiveExpand(QList<QString>& schemaIds) {
                 setAliasedAttributes(proc, subProc);
             }
         }
-        graph.getBindings().unite(schema->graph.getBindings());
-
+        auto schemaGraphBindings = schema->graph.getBindings();
+        for (auto it = schemaGraphBindings.cbegin(); it != schemaGraphBindings.cend(); ++it) {
+            graph.getBindings().insert(it.key(), it.value());
+        }
         // replace procs
         procs.removeOne(proc);
         procs.append(schema->getProcesses());
@@ -334,7 +336,10 @@ void Schema::merge(Schema& other) {
         }
         procs << newActor;
     }
-    graph.getBindings().unite(other.graph.getBindings());
+    auto otherGraphBindings = other.graph.getBindings();
+    for (auto it = otherGraphBindings.cbegin(); it != otherGraphBindings.cend(); ++it) {
+        graph.getBindings().insert(it.key(), it.value());
+    }
 }
 
 void Schema::replaceProcess(Actor* oldActor, Actor* newActor, const QList<PortMapping>& mappings) {
@@ -628,8 +633,13 @@ QString Metadata::renameLink(const QString& linkStr, const ActorId& oldId, const
 }
 
 void Metadata::mergeVisual(const Metadata& other) {
-    actorVisual.unite(other.actorVisual);
-    textPosMap.unite(other.textPosMap);
+    for (auto it = other.actorVisual.cbegin(); it != other.actorVisual.cend(); ++it) {
+        actorVisual.insert(it.key(), it.value());
+    }
+
+    for (auto it = other.textPosMap.cbegin(); it != other.textPosMap.cend(); ++it) {
+        textPosMap.insert(it.key(), it.value());
+    }
 }
 
 void Metadata::replaceProcess(const ActorId& oldId, const ActorId& newId, const QList<PortMapping>& mappings) {

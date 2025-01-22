@@ -22,21 +22,16 @@
 #include <math.h>
 
 #include <QMessageBox>
-#include <QMouseEvent>
 #include <QToolTip>
 
-#include <U2Algorithm/RepeatFinderSettings.h>
-#include <U2Algorithm/RepeatFinderTaskFactory.h>
 #include <U2Algorithm/RepeatFinderTaskFactoryRegistry.h>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/TextUtils.h>
@@ -45,10 +40,8 @@
 
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/GraphUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 
-#include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
 
@@ -1631,10 +1624,10 @@ void DotPlotWidget::wheelEvent(QWheelEvent* e) {
     }
 
     QPointF oldzoom = zoom;
-    QPointF newzoom = zoom * (1 + e->delta() / (float)1000);
+    QPointF newzoom = zoom * (1 + e->angleDelta().y() / (float)1000);
 
     // cursor coords excluding dotplot border
-    calcZooming(oldzoom, newzoom, toInnerCoords(e->pos()));
+    calcZooming(oldzoom, newzoom, toInnerCoords(e->position().toPoint()));
     update();
 }
 

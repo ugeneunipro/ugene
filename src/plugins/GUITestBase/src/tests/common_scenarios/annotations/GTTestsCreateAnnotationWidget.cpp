@@ -49,6 +49,7 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -1985,6 +1986,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
     //    3. Open "Search in Sequence" options panel tab. Set any pattern. Open "Save annotation(s) to" and "Annotation parameters" groups.
     GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionsPanel::resizeToMaximum();
     GTUtilsOptionPanelSequenceView::enterPattern("GATTTTATTTAGTCTCCAG", true);
     GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget();
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget();

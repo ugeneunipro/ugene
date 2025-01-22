@@ -190,7 +190,9 @@ void DocumentProviderSelectorController::accept() {
         if (radioButtonConnectedWidget[i] != nullptr) {
             QVariantMap settings = radioButtonConnectedWidget[i]->getSettings();
             formatId = settings[ImportHint_FormatId].toString();
-            formatDetectionResults[i].rawDataCheckResult.properties.unite(settings);
+            for (auto it = settings.cbegin(); it != settings.cend(); ++it) {
+                formatDetectionResults[i].rawDataCheckResult.properties.insert(it.key(), it.value());
+            }
         }
         bool isChecked = formatsRadioButtons[i]->isChecked();
         if (isChecked) {

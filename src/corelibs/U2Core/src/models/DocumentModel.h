@@ -22,8 +22,6 @@
 #pragma once
 
 #include <QDateTime>
-#include <QMimeData>
-#include <QPointer>
 #include <QScriptValue>
 
 #include <U2Core/DNASequence.h>
@@ -277,8 +275,8 @@ public:
     }
 
     void clear() {
-        flagsToSupport = 0;
-        flagsToExclude = 0;
+        flagsToSupport = DocumentFormatFlags(0);
+        flagsToExclude = DocumentFormatFlags(0);
         checkRawData = false;
         rawData.clear();
         minDataCheckResult = FormatDetection_VeryLowSimilarity;

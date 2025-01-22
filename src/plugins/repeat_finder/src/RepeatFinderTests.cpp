@@ -138,7 +138,7 @@ void GTest_FindSingleSequenceRepeatsTask::init(XMLTestFormat*, const QDomElement
         return;
     }
 
-    excludeList = el.attribute(EXCL_ATTR).split(',', QString::SkipEmptyParts);
+    excludeList = el.attribute(EXCL_ATTR).split(',', Qt::SkipEmptyParts);
 }
 
 static QString getAlgName(RFAlgorithm alg) {
@@ -234,7 +234,7 @@ void GTest_FindSingleSequenceRepeatsTask::run() {
 
     while (!file.atEnd()) {
         QString line = file.readLine();
-        QStringList hit = line.split(' ', QString::SkipEmptyParts);
+        QStringList hit = line.split(' ', Qt::SkipEmptyParts);
         if (!(hit.size() == 3 || hit.size() == 4)) {
             stateInfo.setError(QString("Can't parse results line: %1").arg(line));
             return;
@@ -362,9 +362,9 @@ void GTest_FindTandemRepeatsTask::run() {
     }
     QList<Tandem> expectedResults;
     // load file with results
-    QStringList resList = results.split(';', QString::SkipEmptyParts);
+    QStringList resList = results.split(';', Qt::SkipEmptyParts);
     foreach (const QString& result, resList) {
-        QStringList hit = result.split(',', QString::SkipEmptyParts);
+        QStringList hit = result.split(',', Qt::SkipEmptyParts);
         if (hit.size() != 3) {
             stateInfo.setError(QString("Can't parse results line: %1").arg(result));
             return;
@@ -511,7 +511,7 @@ void GTest_FindRealTandemRepeatsTask::run() {
 
     while (!file.atEnd()) {
         QString line = file.readLine();
-        QStringList hit = line.split(' ', QString::SkipEmptyParts);
+        QStringList hit = line.split(' ', Qt::SkipEmptyParts);
         if (hit.size() != 5) {
             stateInfo.setError(QString("Can't parse results line: %1").arg(line));
             return;

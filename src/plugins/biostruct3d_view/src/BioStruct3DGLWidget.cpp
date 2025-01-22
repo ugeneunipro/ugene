@@ -708,7 +708,7 @@ void BioStruct3DGLWidget::mouseMoveEvent(QMouseEvent* event) {
 }
 
 void BioStruct3DGLWidget::wheelEvent(QWheelEvent* event) {
-    float numDegrees = event->delta() / 8;
+    float numDegrees = event->angleDelta().y() / 8;
     zoom(numDegrees / 10);
 }
 

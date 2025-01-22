@@ -53,7 +53,7 @@ public:
         return registry.values();
     }
     virtual QList<QString> getAllIds() const {
-        return registry.uniqueKeys();
+        return registry.keys();
     }
 
 protected:

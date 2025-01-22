@@ -186,7 +186,7 @@ Task* MuscleWorker::tick() {
             cfg.alignRegion = false;
             cfg.regionToAlign = U2Region(0, msa->getLength());
         } else {
-            QStringList words = range.split(".", QString::SkipEmptyParts);
+            QStringList words = range.split(".", Qt::SkipEmptyParts);
             if (words.size() != 2) {
                 return new FailTask(QObject::tr("Region should be set as 'start..end', start should be less than end, e.g. '1..100'"));
             }

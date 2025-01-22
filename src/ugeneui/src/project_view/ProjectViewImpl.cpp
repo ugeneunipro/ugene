@@ -1093,7 +1093,7 @@ void ProjectViewImpl::sl_filterTextChanged(const QString& str) {
         coreLog.info(warning);
         QMessageBox::warning(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), warning);
     }
-    settings.tokensToShow = changedText.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    settings.tokensToShow = changedText.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
     projectTreeController->updateSettings(settings);
 }
 

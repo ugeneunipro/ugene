@@ -677,7 +677,7 @@ QStringList FindPatternMsaWidget::getPatternsFromTextPatternField(U2OpStatus& os
         }
         return result;
     }
-    return inputText.split(QRegExp("\n"), QString::SkipEmptyParts);
+    return inputText.split(QRegExp("\n"), Qt::SkipEmptyParts);
 }
 
 #define FIND_PATTER_LAST_DIR "Find_msa_pattern_last_dir"
@@ -797,7 +797,7 @@ QString FindPatternMsaWidget::checkSearchRegion() const {
 
     CHECK(selectedAlgorithm != FindAlgorithmPatternSettings_RegExp, "");
 
-    QStringList patternLines = textPattern->toPlainText().split("\n", QString::SkipEmptyParts);
+    QStringList patternLines = textPattern->toPlainText().split("\n", Qt::SkipEmptyParts);
     CHECK(!patternLines.isEmpty(), "");
 
     int minPatternLength = INT_MAX;

@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
+
 #include "NeighborJoinWidget.h"
 
 #include <U2Core/AppContext.h>

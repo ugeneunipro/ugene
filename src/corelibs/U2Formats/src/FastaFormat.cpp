@@ -452,7 +452,7 @@ void FastaFormat::storeSequence(const U2SequenceObject* sequence, IOAdapter* ioA
 }
 
 static QString skipComments(const QString& userInput, U2OpStatus& os) {
-    QStringList lines = userInput.trimmed().split("\n", QString::SkipEmptyParts);
+    QStringList lines = userInput.trimmed().split("\n", Qt::SkipEmptyParts);
     QStringList result = lines;
     QStringList unreferenced;
     foreach (const QString& line, lines) {
@@ -480,7 +480,7 @@ QList<QPair<QString, QString>> FastaFormat::getSequencesAndNamesFromUserInput(co
     QList<QPair<QString, QString>> result;
     if (userInput.contains(FASTA_HEADER_START_SYMBOL)) {
         QString patterns = skipComments(userInput, os);
-        QStringList seqDefs = patterns.trimmed().split(FASTA_HEADER_START_SYMBOL, QString::SkipEmptyParts);
+        QStringList seqDefs = patterns.trimmed().split(FASTA_HEADER_START_SYMBOL, Qt::SkipEmptyParts);
 
         for (const QString& seqDef : qAsConst(seqDefs)) {
             QStringList seqData = seqDef.split("\n");

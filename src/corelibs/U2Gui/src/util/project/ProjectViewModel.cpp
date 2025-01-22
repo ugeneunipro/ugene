@@ -706,7 +706,7 @@ void ProjectViewModel::insertFolder(Document* doc, const QString& path) {
 
     QString absentPath;
     {  // Find the path to the folder which is not in the model. It some parent of @path or @path itself
-        const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
+        const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, Qt::SkipEmptyParts);
         QString fullPath;
         foreach (const QString& folder, pathList) {
             fullPath += U2ObjectDbi::PATH_SEP + folder;

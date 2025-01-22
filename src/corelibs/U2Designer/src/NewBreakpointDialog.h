@@ -32,7 +32,7 @@ namespace U2 {
 class U2DESIGNER_EXPORT NewBreakpointDialog : public QDialog {
     Q_OBJECT
 public:
-    NewBreakpointDialog(const QStringList& elementsNames, QWidget* parent = nullptr, Qt::WindowFlags f = 0);
+    NewBreakpointDialog(const QStringList& elementsNames, QWidget* parent = nullptr, Qt::WindowFlags f = {});
     ~NewBreakpointDialog();
 
 signals:

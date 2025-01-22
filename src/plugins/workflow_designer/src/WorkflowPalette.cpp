@@ -696,9 +696,9 @@ QVariant WorkflowPaletteElements::changeState(const QVariant& savedState) {
         bool expanded = m.value(it->data(0, Qt::UserRole).toString()).toBool();
 
         QRegExp nonWhitespase("\\s");
-        QStringList splitNew = nameFilter.split(nonWhitespase, QString::SkipEmptyParts);
+        QStringList splitNew = nameFilter.split(nonWhitespase, Qt::SkipEmptyParts);
         bool hasCharsNewFilter = splitNew.size() > 0 && !splitNew.first().isEmpty();
-        QStringList splitOld = oldNameFilter.split(nonWhitespase, QString::SkipEmptyParts);
+        QStringList splitOld = oldNameFilter.split(nonWhitespase, Qt::SkipEmptyParts);
         bool hasCharsOldFilter = splitOld.size() > 0 && !splitOld.first().isEmpty();
 
         if (hasCharsNewFilter && !hasCharsOldFilter) {
