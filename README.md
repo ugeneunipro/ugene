@@ -1,35 +1,28 @@
 # UGENE
+
 Download UGENE: [https://ugeneunipro.github.io/ugene/](https://ugeneunipro.github.io/ugene/)
 
 ## Building UGENE
 
 ### Prerequisites
 
-Qt (>= 5.12.0 and <= 5.15.x) with the following components installed with Qt installer:
-* Desktop
-* QtScript
+Qt 5.15.x with the following components installed via the Qt installer:
+- Desktop
+- QtScript
 
-### For Windows users:
+### Build
 
-To build with devenv (Visual Studio):
+1. Set the `Qt5_DIR` system environment variable to point to the Qt 5 installation directory.
+2. Run the following commands based on your operating system:
+    - **Linux & macOS**:
+      ```
+      cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -S . -B "../build-ugene-release"
+      cmake --build "../build-ugene-release" -- -j 4
+      ```
+    - **Windows**:
+      ```
+      cmake -DCMAKE_CONFIGURATION_TYPES=Release -G "Visual Studio 16 2019" -S . -B "../build-ugene-release"
+      cmake --build "../build-ugene-release" --parallel --config Release
+      ```
 
-1. `qmake -r -tp vc ugene.pro`
-2. open ugene.sln from Visual Studio and build or run `devenv.exe ugene.sln /Build` from MSVC command line
-
-To build with nmake:
-
-1. `qmake -r ugene.pro`
-2. run `nmake`, `nmake debug` or `nmake release` to build UGENE
-
-### For *nix users:
-
-To build and install UGENE on *nix:
-
-1. `qmake -r PREFIX=/opt/ugene-${VERSION}`.
-2. `make -j 4`
-3. `sudo make install`
-4. `sudo ln -s /opt/ugene-${VERSION}/ugene /usr/bin`
-5. `ugene -ui`
-
-> Note: you do not need 'sudo' if you select your own folder for the installation.
-
+For more details, please check the `build.sh` files in the `etc/scripts` directory.

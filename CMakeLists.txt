@@ -1,8 +1,8 @@
-# CMake build is not officially supported by UGENE and
-# can only be used for development (for example to enable CLion IDE integration)
+# CMake is the default build system for UGENE.
+# Ensure you add the Qt5_DIR variable, example: Qt5_DIR=/home/yalgaer/tools/qt/5.15.6/gcc_64.
 #
 # For CLion developers:
-#   * add Qt5_DIR variable to File->Settings->Build,Execution,Deployment->CMake pointing to valid QT dir.
+#   Add Qt5_DIR variable in File → Settings → Build, Execution, Deployment → CMake.
 
 cmake_minimum_required(VERSION 3.20)
 project(ugene)
