@@ -102,29 +102,6 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
             }
             psl->Release();
         }
-<<<<<<< HEAD
-        psl->Release();
-    }
-    return SUCCEEDED(hres);
-#elif defined(Q_OS_LINUX)
-    QString homeDir = QDir::homePath();
-    QFile link(homeDir + "/Desktop/UGENE.desktop");
-    if (link.open(QFile::WriteOnly | QFile::Truncate)) {
-        QTextStream out(&link);
-        out.setCodec("UTF-8");
-        out << "[Desktop Entry]" << Qt::endl
-            << "Encoding=UTF-8" << Qt::endl
-            << "Version=1.0" << Qt::endl
-            << "Type=Application" << Qt::endl
-            << "Terminal=false" << Qt::endl
-            << "Exec=" + QCoreApplication::applicationFilePath() << Qt::endl
-            << "Name=Unipro UGENE" << Qt::endl
-            << "Icon=" + QCoreApplication::applicationDirPath() + "/ugene.png" << Qt::endl
-            << "Name[en_US]=Unipro UGENE" << Qt::endl;
-        link.close();
-        if (!link.setPermissions(link.permissions() | QFileDevice::ExeOwner | QFileDevice::ExeUser)) {
-            return false;
-=======
         return SUCCEEDED(hres);
 #endif
     } else if (isOsLinux()) {
@@ -175,7 +152,6 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
             if (QProcess::execute(QString("/usr/bin/mdls ") + link.fileName()) != 0) {
                 return false;
             }
->>>>>>> master
         }
         return true;
     }
