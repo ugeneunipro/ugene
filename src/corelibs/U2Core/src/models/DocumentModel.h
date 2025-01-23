@@ -70,7 +70,6 @@ enum DocumentFormatFlag {
     // Document can contain objects with duplicate names
     DocumentFormatFlag_AllowDuplicateNames = 1 << 8,
     // Document changes are written immedeately, they should'n be saved on closing. Used for databases.
-
     DocumentFormatFlag_DirectWriteOperations = 1 << 9,
     // Document can be locked if created not by UGENE
     DocumentFormatFlag_LockedIfNotCreatedByUGENE = 1 << 10,

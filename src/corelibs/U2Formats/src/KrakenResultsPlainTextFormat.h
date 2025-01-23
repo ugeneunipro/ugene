@@ -19,13 +19,24 @@
  * MA 02110-1301, USA.
  */
  
- #pragma once
+#pragma once
 
 #include "TextDocumentFormat.h"
 
+#include <U2Core/AnnotationData.h>
+
 namespace U2 {
 
-class KrakenResultsPlainTextFormat : TextDocumentFormat {
+class U2FORMATS_EXPORT KrakenResultsPlainTextFormat : public TextDocumentFormat {
+public:
+    KrakenResultsPlainTextFormat(QObject* p);
+
+protected:
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
+
+    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
+private:
+    QPair<QString, QList<SharedAnnotationData>> parse(const QString& line, int lineNumber, U2OpStatus& os);
 
 };
 

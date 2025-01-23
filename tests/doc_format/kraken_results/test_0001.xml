@@ -1,0 +1,11 @@
+<multi-test>
+    <load-document index="doc" url="kraken_results/single_reads_result.txt" io="local_file" format="kraken-results"/>
+    <find-object-by-name index="ato" doc="doc" name="SRR27894019.189310 features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="ato" value="4"/>
+    <find-object-by-name index="ato1" doc="doc" name="SRR27894019.100212 features" type="OT_ANNOTATIONS"/>
+    <find-object-by-name index="ato2" doc="doc" name="SRR27894019.183339 features" type="OT_ANNOTATIONS"/>
+    <find-object-by-name index="ato3" doc="doc" name="SRR27894019.166492 features" type="OT_ANNOTATIONS"/>
+    <find-object-by-name index="ato4" doc="doc" name="SRR27894019.159221 features" type="OT_ANNOTATIONS"/>
+    <find-object-by-name index="ato5" doc="doc" name="SRR27894019.119478 features" type="OT_ANNOTATIONS"/>
+    
+</multi-test>

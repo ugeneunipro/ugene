@@ -49,6 +49,7 @@ const DocumentFormatId BaseDocumentFormats::PHYLIP_SEQUENTIAL("phylip-sequential
 const DocumentFormatId BaseDocumentFormats::PLAIN_ASN("mmdb");
 const DocumentFormatId BaseDocumentFormats::PLAIN_EMBL("embl");
 const DocumentFormatId BaseDocumentFormats::PLAIN_GENBANK("genbank");
+const DocumentFormatId BaseDocumentFormats::PLAIN_KRAKEN_RESULTS("kraken-results");
 const DocumentFormatId BaseDocumentFormats::PLAIN_PDB("pdb");
 const DocumentFormatId BaseDocumentFormats::PLAIN_SWISS_PROT("swiss-prot");
 const DocumentFormatId BaseDocumentFormats::PLAIN_TEXT("text");

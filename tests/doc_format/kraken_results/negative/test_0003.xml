@@ -1,0 +1,6 @@
+<multi-test>
+
+    <load-broken-document url="kraken_results/negative/bad_third_word_2.txt" io="local_file" format="kraken-results" 
+                          message="Error on line 1, 3rd word should be number greater or equal zero."/>
+
+</multi-test>
