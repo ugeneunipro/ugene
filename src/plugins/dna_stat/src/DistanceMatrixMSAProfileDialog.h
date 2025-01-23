@@ -21,12 +21,8 @@
 
 #pragma once
 
-#include <QHash>
-#include <QSet>
-
 #include <U2Core/Msa.h>
 #include <U2Core/Task.h>
-#include <U2Core/global.h>
 
 #include "ui_DistanceMatrixMSAProfileDialog.h"
 

@@ -224,11 +224,11 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 s.ma->sortRowsBySimilarity(unitedRows);
                 QList<MsaRow> rows;
                 int i = 1;
-                srand(uint(QDateTime::currentDateTime().toSecsSinceEpoch() / 1000));
+                QRandomGenerator rnd(static_cast<quint32>(QDateTime::currentMSecsSinceEpoch()));
                 foreach (const U2Region& reg, unitedRows) {
-                    MsaRow row = s.ma->getRow(reg.startPos + QRandomGenerator::global()->bounded((int)reg.length));
+                    MsaRow row = s.ma->getRow(reg.startPos + rnd.bounded((int)reg.length));
                     row->setName(QString("Group %1: ").arg(i) + "(" + row->getName() + ")");
-                    rows.append(s.ma->getRow(reg.startPos + QRandomGenerator::global()->bounded((int)reg.length))->getExplicitCopy());
+                    rows.append(s.ma->getRow(reg.startPos + rnd.bounded((int)reg.length))->getExplicitCopy());
 
                     resultText += "<tr><td><b>" + QString("Group %1: ").arg(i) + "</b></td><td>";
                     for (int x = reg.startPos; x < reg.endPos(); x++) {
