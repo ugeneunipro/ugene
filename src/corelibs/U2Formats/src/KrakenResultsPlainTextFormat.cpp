@@ -41,6 +41,7 @@ KrakenResultsPlainTextFormat::KrakenResultsPlainTextFormat(QObject* p)
 }
 
 FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const {
+    Q_UNUSED(originalDataUrl);
     const QStringList words = dataPrefix.split(QRegExp("\\s+"));
     //first word - 'C' or 'U'
     if ((words[0] == "C" || words[0] == "U") && words.size() > 5) {
@@ -64,6 +65,7 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
 }
 
 Document* KrakenResultsPlainTextFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
+    Q_UNUSED(hints);
     QMultiMap<QString, QList<SharedAnnotationData>> annotationDataForTables;
     int lineNumber = 1;
     QMultiMap<QString, QList<SharedAnnotationData>> annotationsMap;
