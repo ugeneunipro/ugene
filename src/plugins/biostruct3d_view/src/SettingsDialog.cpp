@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ void BioStruct3DSettingsDialog::sl_setShadingLevel() {
 void BioStruct3DSettingsDialog::sl_setAnaglyph() {
     anaglyphStatus = (anaglyphViewGroupBox->isChecked()) ? ENABLED : DISABLED;
 
-    state[glWidget->ANAGLYPH_STATUS_NAME] = qVariantFromValue((int)anaglyphStatus);
+    state[glWidget->ANAGLYPH_STATUS_NAME] = QVariant::fromValue((int)anaglyphStatus);
     glWidget->setState(state);
 }
 

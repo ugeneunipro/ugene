@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 
 #include <QDir>
+#include <QRegularExpression>
 #include <QTextStream>
 #include <QXmlStreamReader>
 
@@ -141,7 +142,7 @@ static bool parseCutFile(const QString& url, char* amino, int* prob, char* n1, c
             line = data.readLine();
             if (line.isEmpty() || line.startsWith("#"))
                 continue;
-            parsedData = line.split(QRegExp("\\s"), QString::SkipEmptyParts);
+            parsedData = line.split(QRegularExpression("\\s"), Qt::SkipEmptyParts);
             if (parsedData.size() != 5)
                 return false;
             if (parsedData[0].length() != 3)

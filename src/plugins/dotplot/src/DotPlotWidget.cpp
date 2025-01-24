@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,21 +22,16 @@
 #include <math.h>
 
 #include <QMessageBox>
-#include <QMouseEvent>
 #include <QToolTip>
 
-#include <U2Algorithm/RepeatFinderSettings.h>
-#include <U2Algorithm/RepeatFinderTaskFactory.h>
 #include <U2Algorithm/RepeatFinderTaskFactoryRegistry.h>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/TextUtils.h>
@@ -45,10 +40,8 @@
 
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/GraphUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 
-#include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
 
@@ -972,7 +965,7 @@ void DotPlotWidget::drawAll(QPainter& p, qreal rulerFontScale, bool _drawFocus, 
 
     QFontMetrics fm = p.fontMetrics();
     // min textSpace is 4 characters: this is important for sequence name labels.
-    textSpace = fm.width("0") * qMax(4, qRound(1 + log10(sequenceX->getSequenceLength())));
+    textSpace = fm.horizontalAdvance("0") * qMax(4, qRound(1 + log10(sequenceX->getSequenceLength())));
 
     int newPlotWidth = width() - 2 * textSpace;
     int newPlotHeight = height() - 2 * textSpace;
@@ -1033,7 +1026,7 @@ void DotPlotWidget::drawNames(QPainter& p) const {
     const QFontMetrics& fm = this->fontMetrics();
 
     nameX += tr(" (min length %1, identity %2%)").arg(minLen).arg(identity);
-    int nameXWidth = fm.width(nameX);
+    int nameXWidth = fm.horizontalAdvance(nameX);
 
     // If nameX doesn't fit, it should be aligned left instead of center
     int flags = (nameXWidth < w) ? Qt::AlignCenter : Qt::AlignVCenter | Qt::AlignLeft;
@@ -1044,7 +1037,7 @@ void DotPlotWidget::drawNames(QPainter& p) const {
     p.rotate(90);
     p.translate(DP_MARGIN + textSpace, -(w + textSpace * 2));
 
-    int nameYWidth = fm.width(nameY);
+    int nameYWidth = fm.horizontalAdvance(nameY);
 
     // If nameY doesn't fit, it should be aligned left instead of center
     flags = (nameYWidth < h) ? Qt::AlignCenter : Qt::AlignVCenter | Qt::AlignLeft;
@@ -1631,10 +1624,10 @@ void DotPlotWidget::wheelEvent(QWheelEvent* e) {
     }
 
     QPointF oldzoom = zoom;
-    QPointF newzoom = zoom * (1 + e->delta() / (float)1000);
+    QPointF newzoom = zoom * (1 + e->angleDelta().y() / (float)1000);
 
     // cursor coords excluding dotplot border
-    calcZooming(oldzoom, newzoom, toInnerCoords(e->pos()));
+    calcZooming(oldzoom, newzoom, toInnerCoords(e->position().toPoint()));
     update();
 }
 

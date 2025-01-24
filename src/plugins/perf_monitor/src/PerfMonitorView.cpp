@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@ PerfMonitorView::PerfMonitorView()
     treeHeader->setText(3, tr("Reportable"));
 
     auto viewLayout = new QVBoxLayout();
-    viewLayout->setMargin(0);
+    viewLayout->setContentsMargins(0, 0, 0, 0);
     viewLayout->addWidget(tree);
     setLayout(viewLayout);
 

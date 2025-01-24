@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
     zoomLayout->addWidget(plusButton);
     zoomLayout->addWidget(scaleBar);
     zoomLayout->addWidget(minusButton);
-    zoomLayout->setMargin(0);
+    zoomLayout->setContentsMargins(0, 0, 0, 0);
     zoomLayout->setSpacing(0);
     setLayout(zoomLayout);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);

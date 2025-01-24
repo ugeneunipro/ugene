@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,15 +31,15 @@ namespace U2 {
 URLAttribute::URLAttribute(const Descriptor& d, const DataTypePtr type, bool required)
     : Attribute(d, type, required) {
     sets << Dataset();
-    defaultValue = qVariantFromValue<QList<Dataset>>(sets);
-    value = qVariantFromValue<QList<Dataset>>(sets);
+    defaultValue = QVariant::fromValue<QList<Dataset>>(sets);
+    value = QVariant::fromValue<QList<Dataset>>(sets);
 }
 
 void URLAttribute::setAttributeValue(const QVariant& newVal) {
     if (newVal.canConvert<QList<Dataset>>()) {
         sets = newVal.value<QList<Dataset>>();
     } else {
-        QStringList urls = newVal.toString().split(";", QString::SkipEmptyParts);
+        QStringList urls = newVal.toString().split(";", Qt::SkipEmptyParts);
         Dataset dSet;
         foreach (const QString url, urls) {
             dSet.addUrl(URLContainerFactory::createUrlContainer(url));
@@ -47,7 +47,7 @@ void URLAttribute::setAttributeValue(const QVariant& newVal) {
         sets.clear();
         sets << dSet;
     }
-    value = qVariantFromValue<QList<Dataset>>(sets);
+    value = QVariant::fromValue<QList<Dataset>>(sets);
 }
 
 bool URLAttribute::isEmpty() const {
@@ -80,7 +80,7 @@ void URLAttribute::updateValue() {
     foreach (const Dataset& dSet, sets) {
         res << dSet;
     }
-    value = qVariantFromValue<QList<Dataset>>(res);
+    value = QVariant::fromValue<QList<Dataset>>(res);
 }
 
 URLAttribute::URLAttribute(const URLAttribute& other)

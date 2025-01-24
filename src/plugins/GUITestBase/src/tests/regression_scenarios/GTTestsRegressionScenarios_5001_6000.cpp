@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,23 +47,14 @@
 
 #include <QApplication>
 #include <QClipboard>
-#include <QDir>
 #include <QFile>
 #include <QRadioButton>
-#include <QTableView>
 
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentModel.h>
 
 #include <U2View/ADVConstants.h>
-#include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
-#include <U2View/MaEditorConsensusArea.h>
-#include <U2View/MaEditorNameList.h>
-#include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
 #include <U2View/McaEditorReferenceArea.h>
-#include <U2View/MsaEditorTreeViewer.h>
 
 #include "GTTestsRegressionScenarios_5001_6000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -491,7 +482,7 @@ GUI_TEST_CLASS_DEFINITION(test_5110) {
     GTCheckBox::setChecked(showAnnotations, false);
     GTCheckBox::setChecked(showAnnotations, true);
 
-    QBrush expectedBrush = QApplication::palette().brush(QPalette::Active, QPalette::Foreground);
+    QBrush expectedBrush = QApplication::palette().brush(QPalette::Active, QPalette::WindowText);
     QBrush actualBrush = cdsItem->foreground(1);
     CHECK_SET_ERR(expectedBrush == actualBrush, "wrong item color");
 }

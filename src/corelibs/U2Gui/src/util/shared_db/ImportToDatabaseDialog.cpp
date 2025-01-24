@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -437,7 +437,7 @@ void ImportToDatabaseDialog::removeItems(QList<QTreeWidgetItem*> itemList) {
         }
 
         if (!removedItems.contains(item)) {
-            removedItems.unite(removeRecursively(item).toSet());
+            removedItems.unite(toSet(removeRecursively(item)));
         }
     }
 

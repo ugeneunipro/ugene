@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -131,7 +131,7 @@ void QDRepeatActor::loadConfiguration(const QList<QPair<QString, QString>>& strM
             } else if (strandVal == ALGO_SUFFIX) {
                 alg = 2;
             }
-            cfg->setParameter(ALGO_ATTR, qVariantFromValue(alg));
+            cfg->setParameter(ALGO_ATTR, QVariant::fromValue(alg));
         } else if (attr.first == NESTED_ATTR) {
             int falg;
             const QString& strandVal = attr.second;
@@ -142,7 +142,7 @@ void QDRepeatActor::loadConfiguration(const QList<QPair<QString, QString>>& strM
             } else if (strandVal == FA_UNIQUE) {
                 falg = 2;
             }
-            cfg->setParameter(NESTED_ATTR, qVariantFromValue(falg));
+            cfg->setParameter(NESTED_ATTR, QVariant::fromValue(falg));
         } else if (attr.first == MIN_DIST_ATTR) {
             minDistStr = attr.second;
         } else if (attr.first == MAX_DIST_ATTR) {

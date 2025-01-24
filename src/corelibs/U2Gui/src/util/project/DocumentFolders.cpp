@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -63,7 +63,7 @@ Folder* DocumentFolders::getFolder(const QString& path) const {
 void DocumentFolders::addFolder(const QString& path) {
     SAFE_POINT(!hasFolder(path), "The folder already exists", );
 
-    const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
+    const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, Qt::SkipEmptyParts);
     QString fullPath;
     foreach (const QString& folder, pathList) {
         fullPath += U2ObjectDbi::PATH_SEP + folder;

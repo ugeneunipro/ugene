@@ -1,7 +1,7 @@
 
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,7 +82,7 @@ QWidget* MsaEditorTreeViewer::createViewWidget(QWidget* parent) {
 
     auto viewLayout = new QVBoxLayout();
     viewLayout->setSpacing(0);
-    viewLayout->setMargin(0);
+    viewLayout->setContentsMargins(0, 0, 0, 0);
     viewLayout->addWidget(toolBar);
     viewLayout->addWidget(ui);
     view->setLayout(viewLayout);
@@ -212,12 +212,12 @@ bool MsaEditorTreeViewer::checkTreeAndMsaCanBeSynchronized() const {
     for (const QStringList& namesInGroup : qAsConst(groupStateGuidedByTree)) {
         treeNameList.append(namesInGroup);
     }
-    QSet<QString> treeNameSet = treeNameList.toSet();
+    QSet<QString> treeNameSet = toSet(treeNameList);
     bool treeHasUniqueNames = treeNameSet.size() == treeNameList.size();
     CHECK(treeHasUniqueNames, false);  // Tree is ambiguous: there is no straight way to map tree branches to MSA sequences.
 
     QStringList msaNameList = editor->getMaObject()->getAlignment()->getRowNames();  // The list of sequences names in the MSA.
-    QSet<QString> msaNameSet = msaNameList.toSet();
+    QSet<QString> msaNameSet = toSet(msaNameList);
     bool msaHasUniqueNames = msaNameSet.size() == msaNameList.size();
     CHECK(msaHasUniqueNames, false);  // MSA is ambiguous: there is no straight way to map tree branches to MSA sequences.
 

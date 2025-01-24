@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -704,7 +704,7 @@ QueryViewController::QueryViewController()
     auto layout = new QHBoxLayout(this);
     layout->addWidget(splitter);
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
 
@@ -1172,7 +1172,7 @@ AddConstraintDialog::AddConstraintDialog(QueryScene* _scene, QDDistanceType _kin
     const QList<QDElement*>& elements = scene->getElements();
     int index = 0;
     foreach (QDElement* el, elements) {
-        const QVariant& data = qVariantFromValue(el);
+        const QVariant& data = QVariant::fromValue(el);
         QDActor* a = el->getActor();
         QString name = a->getParameters()->getLabel();
         if (a->getSchemeUnits().size() > 1) {

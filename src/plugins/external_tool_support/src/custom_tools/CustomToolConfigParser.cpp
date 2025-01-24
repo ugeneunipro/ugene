@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -106,7 +106,7 @@ CustomExternalTool* CustomToolConfigParser::parse(U2OpStatus& os, const QString&
             tool->setLauncher(element.text());
         } else if (compareCaseInsensetive(DEPENDENCIES, tagName)) {
             QStringList dependencies;
-            foreach (const QString& dependency, element.text().split(",", QString::SkipEmptyParts)) {
+            foreach (const QString& dependency, element.text().split(",", Qt::SkipEmptyParts)) {
                 dependencies << dependency.trimmed();
             }
             tool->setDependencies(dependencies);

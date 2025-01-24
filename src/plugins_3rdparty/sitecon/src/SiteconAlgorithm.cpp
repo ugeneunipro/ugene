@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -193,8 +193,8 @@ QVector<qreal> SiteconAlgorithm::calculateSecondTypeError(const QVector<Position
     qreal devThresh = critchi(settings.chisquare, settings.numSequencesInAlignment - 1) / settings.numSequencesInAlignment;
     CHECK(!si.isCoR(), errorPerScore);
 
-    qsrand(settings.randomSeed);
-    QByteArray randomSequence = generateRandomSequence(settings.acgtContent, settings.secondTypeErrorCalibrationLen, si);
+    QRandomGenerator rnd(settings.randomSeed);
+    QByteArray randomSequence = generateRandomSequence(settings.acgtContent, settings.secondTypeErrorCalibrationLen, rnd, si);
 
     int dProgress = 100 - si.progress;
     int nuclsPerProgress = randomSequence.size() / dProgress;
@@ -277,7 +277,7 @@ void SiteconAlgorithm::calculateACGTContent(const Msa& ma, SiteconBuildSettings&
     }
 }
 
-QByteArray SiteconAlgorithm::generateRandomSequence(const int* acgtContent, int seqLen, TaskStateInfo&) {
+QByteArray SiteconAlgorithm::generateRandomSequence(const int* acgtContent, int seqLen, QRandomGenerator& rnd, TaskStateInfo&) {
     QByteArray randomSequence;
     randomSequence.reserve(seqLen);
 
@@ -288,7 +288,7 @@ QByteArray SiteconAlgorithm::generateRandomSequence(const int* acgtContent, int 
     assert(gPercentRange + acgtContent[3] > 0);
 
     for (int i = 0; i < seqLen; i++) {
-        int r = qrand();
+        int r = rnd.generate();
         qreal perc = 100 * (r / (qreal)RAND_MAX);
         char c = 'T';
         if (perc <= aPercentRange) {
@@ -386,7 +386,8 @@ int SiteconAlgorithm::calculateWeights(const Msa& ma, QVector<PositionStats>& or
     // Part1
     // 1. compute props ave on random sequence
     int rndSeqLen = modelSize * ma->getRowCount() + 10;
-    QByteArray rndSeqArray = generateRandomSequence(settings.acgtContent, rndSeqLen, si);
+    QRandomGenerator rnd(settings.randomSeed);
+    QByteArray rndSeqArray = generateRandomSequence(settings.acgtContent, rndSeqLen, rnd, si);
     const char* rndSeq = rndSeqArray.constData();
 
     // init weights with default val

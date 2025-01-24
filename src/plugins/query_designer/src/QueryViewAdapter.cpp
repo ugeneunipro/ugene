@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ QueryViewAdapter::QueryViewAdapter(QDScheme* scheme, const QPointF& topLeftCorne
             auto uv = new QDElement(su);
             uv->moveBy(topLeftCorner.x(), topLeftCorner.y());
             createdElements.append(uv);
-            unitMap.insertMulti(su, uv);
+            unitMap.insert(su, uv);
         }
         constraints << a->getParamConstraints();
     }

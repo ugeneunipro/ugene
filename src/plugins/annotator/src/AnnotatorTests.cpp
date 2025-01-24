@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ void GTest_AnnotatorSearch::init(XMLTestFormat*, const QDomElement& el) {
         failMissingValue(GROUPS_ATTR);
         return;
     }
-    groupsToSearch = (groups.split(QRegExp("\\,"))).toSet();  // may be QRegExp("\\,")
+    groupsToSearch = toSet(groups.split(QRegExp("\\,")));  // may be QRegExp("\\,")
 
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
     if (!expected.isEmpty()) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,8 +89,8 @@ BAMImporter::BAMImporter()
     QSet<QString> extsSet;
     BAMFormatUtils bam;
     SAMFormat sam;
-    extsSet.unite(bam.getSupportedDocumentFileExtensions().toSet()).unite(sam.getSupportedDocumentFileExtensions().toSet());
-    QStringList exts = extsSet.toList();
+    extsSet.unite(toSet(bam.getSupportedDocumentFileExtensions()).unite(toSet(sam.getSupportedDocumentFileExtensions())));
+    QStringList exts = toList(extsSet);
     std::sort(exts.begin(), exts.end());
 
     formatIds << BaseDocumentFormats::BAM << BaseDocumentFormats::SAM;

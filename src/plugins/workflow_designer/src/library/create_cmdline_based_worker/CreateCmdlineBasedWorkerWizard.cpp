@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -193,7 +193,7 @@ static bool checkNamesAndIds(const QStringList& names, const QStringList& ids) {
         }
     }
 
-    const bool areThereDuplicates = (ids.toSet().size() != ids.size());
+    const bool areThereDuplicates = toSet(ids).size() != ids.size();
     if (areThereDuplicates) {
         res = false;
     }

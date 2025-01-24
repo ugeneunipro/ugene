@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -293,7 +293,7 @@ void RegionSelectorController::sl_onSelectionChanged(GSelection* selection) {
     const U2Region regionFromSelection = settings.getOneRegionFromSelection();
     const U2Region regionFromComboBox = gui.presetsComboBox->itemData(selectedRegionIndex).value<U2Location>().data()->regions.first();
     if (regionFromSelection != regionFromComboBox) {
-        gui.presetsComboBox->setItemData(selectedRegionIndex, qVariantFromValue(U2Location({regionFromSelection})));
+        gui.presetsComboBox->setItemData(selectedRegionIndex, QVariant::fromValue(U2Location({regionFromSelection})));
         if (selectedRegionIndex == gui.presetsComboBox->currentIndex()) {
             sl_onPresetChanged(selectedRegionIndex);
         }

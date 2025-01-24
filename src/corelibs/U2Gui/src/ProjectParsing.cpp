@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -88,7 +88,7 @@ static QVariant relationsToHint(const QList<GObjectRelation>& relList) {
 }
 
 static QList<GObjectRelation> removeDuplicates(const QList<GObjectRelation>& relList) {
-    return relList.toSet().toList();
+    return toList(toSet(relList));
 }
 
 static QVariant toRelativeRelations(const QList<GObjectRelation>& absRelations, const QDir& projDir, const QMap<QString, QString>& urlRemap = QMap<QString, QString>()) {

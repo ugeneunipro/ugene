@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -331,7 +331,7 @@ Task* WriteAnnotationsWorker::getSaveDocTask(const QString& formatId, SaveDocFla
             U2OpStatusImpl os;
             QVariantMap hints;
             U2DbiRef dbiRef = context->getDataStorage()->getDbiRef();
-            hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(dbiRef);
+            hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(dbiRef);
             hints[DocumentRemovalMode_Synchronous] = QString();
             Document* doc = df->createNewLoadedDocument(iof, filepath, os, hints);
             CHECK_OP(os, new FailTask(os.getError()));

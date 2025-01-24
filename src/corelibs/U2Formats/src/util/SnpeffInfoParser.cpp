@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ SnpeffInfoParser::~SnpeffInfoParser() {
 
 QList<QList<U2Qualifier>> SnpeffInfoParser::parse(U2OpStatus& os, const QString& snpeffInfo) const {
     QList<QList<U2Qualifier>> qualifiers;
-    const QStringList keyValuePairs = snpeffInfo.split(PAIRS_SEPARATOR, QString::SkipEmptyParts);
+    const QStringList keyValuePairs = snpeffInfo.split(PAIRS_SEPARATOR, Qt::SkipEmptyParts);
     foreach (const QString& keyValuePair, keyValuePairs) {
         const QStringList splittedKeyValuePair = keyValuePair.split(KEY_VALUE_SEPARATOR);
         if (splittedKeyValuePair.size() > 2) {
@@ -172,7 +172,7 @@ QList<U2Qualifier> AnnParser::processValue(const QString& qualifierName, const Q
     if (qualifierName == PUTATIVE_IMPACT && SnpeffDictionary::impactDescriptions.contains(value)) {
         qualifiers << U2Qualifier(PUTATIVE_IMPACT_DESCRIPTION, SnpeffDictionary::impactDescriptions[value]);
     } else if (qualifierName == EFFECT) {
-        const QStringList effects = value.split(EFFECTS_SEPARATOR, QString::SkipEmptyParts);
+        const QStringList effects = value.split(EFFECTS_SEPARATOR, Qt::SkipEmptyParts);
         foreach (const QString& effect, effects) {
             if (SnpeffDictionary::effectDescriptions.contains(effect)) {
                 qualifiers << U2Qualifier(EFFECT_DESCRIPTION, effect + ": " + SnpeffDictionary::effectDescriptions[value]);

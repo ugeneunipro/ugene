@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -544,7 +544,7 @@ void PDBFormat::PDBParser::parseSequence(BioStruct3D& biostruct, U2OpStatus& ti)
         seqResMap.insert(chainIdentifier, QByteArray());
     }
 
-    QStringList residues = currentPDBLine.mid(19).split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    QStringList residues = currentPDBLine.mid(19).split(QRegExp("\\s+"), Qt::SkipEmptyParts);
     QByteArray sequencePart;
     foreach (QString name, residues) {
         SharedResidue residue(new ResidueData);
@@ -584,7 +584,7 @@ void PDBFormat::PDBParser::parseSplitSection(U2OpStatus& /*ti*/) {
     9 - 10 Continuation continuation Allows concatenation of multiple records.
     12 - 15 IDcode idCode ID code of related entry.
     .. every 2 spaces IDcode*/
-    QStringList ids = currentPDBLine.mid(11).split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    QStringList ids = currentPDBLine.mid(11).split(QRegExp("\\s+"), Qt::SkipEmptyParts);
     ioLog.trace(QString("The list of SPLIT ids is %1").arg(ids.join(",")));
 }
 

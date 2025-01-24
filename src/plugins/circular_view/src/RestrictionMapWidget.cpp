@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -111,7 +111,7 @@ void RestrctionMapWidget::updateTreeWidget() {
     if (selection.isEmpty()) {
         selection = EnzymeSettings::COMMON_ENZYMES;
     }
-    QStringList selectedEnzymes = selection.split(ENZYME_LIST_SEPARATOR, QString::SkipEmptyParts);
+    QStringList selectedEnzymes = selection.split(ENZYME_LIST_SEPARATOR, Qt::SkipEmptyParts);
 
     QList<QTreeWidgetItem*> items;
     foreach (const QString& enzyme, selectedEnzymes) {

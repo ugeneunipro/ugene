@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -147,7 +147,7 @@ void QDTandemActor::loadConfiguration(const QList<QPair<QString, QString>>& strM
             } else if (ALGORITHM_SUFFIX_BINARY == attribute.second) {
                 algorithm = TSConstants::AlgoSuffixBinary;
             }
-            cfg->setParameter(ALGORITHM_ATTRIBUTE, qVariantFromValue(algorithm));
+            cfg->setParameter(ALGORITHM_ATTRIBUTE, QVariant::fromValue(algorithm));
         }
     }
 }

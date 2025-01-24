@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,14 +34,14 @@ public:
                                    const QString& dir = QString(),
                                    const QString& filter = QString(),
                                    const QString& selectedFilter = QString(),
-                                   const QFileDialog::Options& options = nullptr);
+                                   const QFileDialog::Options& options = {0});
 
     static QStringList getOpenFileNames(QWidget* parent = nullptr,
                                         const QString& caption = QString(),
                                         const QString& dir = QString(),
                                         const QString& filter = QString(),
                                         const QString& selectedFilter = QString(),
-                                        const QFileDialog::Options& options = nullptr);
+                                        const QFileDialog::Options& options = {0});
 
     static QString getExistingDirectory(QWidget* parent = nullptr,
                                         const QString& caption = QString(),
@@ -53,7 +53,7 @@ public:
                                    const QString& dir = QString(),
                                    const QString& filter = QString(),
                                    const QString& selectedFilter = QString(),
-                                   const QFileDialog::Options& options = nullptr);
+                                   const QFileDialog::Options& options = {0});
 };
 
 }  // namespace U2

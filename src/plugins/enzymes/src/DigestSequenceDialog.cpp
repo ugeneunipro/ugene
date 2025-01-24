@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
 
 #include "DigestSequenceDialog.h"
 
@@ -48,7 +50,6 @@
 #include "CloningUtilTasks.h"
 #include "EnzymesIO.h"
 #include "EnzymesQuery.h"
-#include "FindEnzymesDialog.h"
 
 namespace U2 {
 
@@ -187,7 +188,7 @@ void DigestSequenceDialog::addAnnotationWidget() {
     ac = new CreateAnnotationWidgetController(acm, this);
     QWidget* caw = ac->getWidget();
     auto l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->addWidget(caw);
     l->addStretch(1);
     annotationsArea->setLayout(l);

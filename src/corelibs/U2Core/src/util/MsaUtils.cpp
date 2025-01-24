@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -198,13 +198,16 @@ const DNAAlphabet* MsaUtils::deriveCommonAlphabet(const QList<DNASequence>& sequ
     if (!resultAlphabet->isRaw() || !recheckAlphabetFromDataIfRaw) {
         return resultAlphabet;
     }
-    // now perform slow check with raw data access.
-    QSet<const DNAAlphabet*> availableAlphabets = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets().toSet();
+    auto registeredAlphabetList = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets();
+    // Now perform a slow check with raw data access.
+    QSet<const DNAAlphabet*> availableAlphabets(registeredAlphabetList.begin(), registeredAlphabetList.end());
     foreach (const DNASequence& sequence, sequenceList) {
         QList<const DNAAlphabet*> sequenceAlphabets = U2AlphabetUtils::findAllAlphabets(sequence.constData());
-        availableAlphabets.intersect(sequenceAlphabets.toSet());
+        QSet<const DNAAlphabet*> sequenceAlphabetSet(sequenceAlphabets.begin(), sequenceAlphabets.end());
+        availableAlphabets.intersect(sequenceAlphabetSet);
     }
-    return selectBestAlphabetForAlignment(availableAlphabets.toList());
+    QList<const DNAAlphabet*> availableAlphabetList(availableAlphabets.begin(), availableAlphabets.end());
+    return selectBestAlphabetForAlignment(availableAlphabetList);
 }
 
 const DNAAlphabet* MsaUtils::deriveCommonAlphabet(const QList<U2SequenceObject*>& sequenceList, bool recheckAlphabetFromDataIfRaw, U2OpStatus& os) {
@@ -218,12 +221,12 @@ const DNAAlphabet* MsaUtils::deriveCommonAlphabet(const QList<U2SequenceObject*>
         return resultAlphabet;
     }
     // now perform slow check with raw data access.
-    QSet<const DNAAlphabet*> availableAlphabets = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets().toSet();
+    QSet<const DNAAlphabet*> availableAlphabets = toSet(AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets());
     foreach (const U2SequenceObject* sequence, sequenceList) {
         QList<const DNAAlphabet*> sequenceAlphabets = U2AlphabetUtils::findAllAlphabets(sequence->getWholeSequence(os).constData());
-        availableAlphabets.intersect(sequenceAlphabets.toSet());
+        availableAlphabets.intersect(toSet(sequenceAlphabets));
     }
-    return selectBestAlphabetForAlignment(availableAlphabets.toList());
+    return selectBestAlphabetForAlignment(toList(availableAlphabets));
 }
 
 const DNAAlphabet* MsaUtils::deriveCommonAlphabet(const QList<const DNAAlphabet*>& alphabetList) {
@@ -310,9 +313,9 @@ static bool listContainsSeqObject(const QList<GObject*>& objs, int& firstSeqObjP
 }
 
 MsaObject* MsaUtils::convertSequenceObjectsToMsaObject(const QList<GObject*>& objects,
-                                                                     const QVariantMap& hints,
-                                                                     U2OpStatus& os,
-                                                                     bool recheckAlphabetFromDataIfRaw) {
+                                                       const QVariantMap& hints,
+                                                       U2OpStatus& os,
+                                                       bool recheckAlphabetFromDataIfRaw) {
     CHECK(!objects.isEmpty(), nullptr);
 
     int firstSeqObjPos = -1;

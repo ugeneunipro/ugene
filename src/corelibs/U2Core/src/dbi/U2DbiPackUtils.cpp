@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -409,7 +409,7 @@ QByteArray U2DbiPackUtils::packSequenceDataHints(const QVariantMap& hints) {
         if (!result.isEmpty()) {
             result += ";";
         }
-        result += key + "," + hints[key].toByteArray();
+        result += key.toLatin1() + "," + hints[key].toByteArray();
     }
     return "\"" + result + "\"";
 }

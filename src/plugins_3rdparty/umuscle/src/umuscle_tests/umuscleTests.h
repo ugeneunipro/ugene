@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QDomElement>
+#include <QElapsedTimer>
 #include <QFileInfo>
 
 #include <U2Core/GObject.h>
@@ -174,7 +175,7 @@ public:
 private:
     QString inDirName;
     QString patDirName;
-    QTime timer;
+    QElapsedTimer timer;
 };
 
 class UMUSCLETests {

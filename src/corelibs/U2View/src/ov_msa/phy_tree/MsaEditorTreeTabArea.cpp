@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -138,7 +138,7 @@ MsaEditorTreeTabArea::MsaEditorTreeTabArea(MsaEditor* msaEditor, QWidget* parent
 
     treeTabWidget = createTabWidget();
     currentLayout = new QVBoxLayout();
-    currentLayout->setMargin(0);
+    currentLayout->setContentsMargins(0, 0, 0, 0);
     currentLayout->setSpacing(0);
     currentLayout->addWidget(treeTabWidget);
     setLayout(currentLayout);

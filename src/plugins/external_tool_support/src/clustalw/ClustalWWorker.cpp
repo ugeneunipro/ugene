@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -299,7 +299,7 @@ void ClustalWWorker::send(const Msa& msa) {
     SAFE_POINT(output != nullptr, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;
-    m[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
+    m[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(msaId);
     output->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), m));
 }
 

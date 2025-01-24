@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ namespace U2 {
 WelcomePageMdi::WelcomePageMdi(const QString& title, WelcomePageMdiController* controller)
     : MWMDIWindow(title), controller(controller) {
     auto l = new QVBoxLayout(this);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
 
     widget = new WelcomePageWidget(this);
     l->addWidget(widget);

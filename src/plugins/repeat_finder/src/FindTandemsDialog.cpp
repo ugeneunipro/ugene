@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,7 +80,7 @@ FindTandemsDialog::FindTandemsDialog(ADVSequenceObjectContext* _sc)
 
     QWidget* caw = ac->getWidget();
     auto l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->addWidget(caw);
     annotationsWidget->setLayout(l);
 
@@ -112,7 +112,7 @@ QStringList FindTandemsDialog::getAvailableAnnotationNames() const {
             names.insert(a->getName());
         }
     }
-    res = names.toList();
+    res = toList(names);
     res.sort();
     return res;
 }
@@ -159,7 +159,7 @@ bool FindTandemsDialog::getRegions(QCheckBox* cb, QLineEdit* le, QVector<U2Regio
     if (!enabled || names.isEmpty()) {
         return true;
     }
-    QSet<QString> aNames = names.split(',', QString::SkipEmptyParts).toSet();
+    QSet<QString> aNames = toSet(names.split(',', Qt::SkipEmptyParts));
     QSet<AnnotationTableObject*> aObjs = sc->getAnnotationObjects();
     for (AnnotationTableObject* obj : qAsConst(aObjs)) {
         foreach (Annotation* a, obj->getAnnotations()) {

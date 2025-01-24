@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -185,7 +185,7 @@ void GenericMSAReader::onTaskFinished(Task* task) {
 
 QString GenericMSAReader::addReadDbObjectToData(const QString& objUrl, QVariantMap& data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
-    data[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
+    data[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(handler);
     // return getObjectName(handler, U2Type::Msa);
     return getObjectName(handler, 2);
 }
@@ -243,7 +243,7 @@ void LoadMSATask::run() {
     ioLog.info(tr("Reading MSA from %1 [%2]").arg(url).arg(format->getFormatName()));
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
 
-    cfg[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(storage->getDbiRef());
+    cfg[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(storage->getDbiRef());
     cfg[DocumentReadingMode_DontMakeUniqueNames] = true;
     QScopedPointer<Document> doc(format->loadDocument(iof, url, cfg, stateInfo));
     CHECK_OP(stateInfo, );
@@ -252,7 +252,7 @@ void LoadMSATask::run() {
     if (!doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).isEmpty()) {
         foreach (GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             SharedDbiDataHandler handler = storage->getDataHandler(go->getEntityRef());
-            QVariant res = qVariantFromValue<SharedDbiDataHandler>(handler);
+            QVariant res = QVariant::fromValue<SharedDbiDataHandler>(handler);
             results.append(res);
         }
     } else {
@@ -262,7 +262,7 @@ void LoadMSATask::run() {
         CHECK_OP(stateInfo, );
 
         SharedDbiDataHandler handler = storage->getDataHandler(msaObj->getEntityRef());
-        QVariant res = qVariantFromValue<SharedDbiDataHandler>(handler);
+        QVariant res = QVariant::fromValue<SharedDbiDataHandler>(handler);
         results.append(res);
     }
 }
@@ -311,7 +311,7 @@ void GenericSeqReader::onTaskFinished(Task* task) {
 
 QString GenericSeqReader::addReadDbObjectToData(const QString& objUrl, QVariantMap& data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
-    data[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
+    data[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(handler);
     // return getObjectName(handler, U2Type::Sequence);
     return getObjectName(handler, 1);
 }
@@ -344,7 +344,7 @@ void LoadSeqTask::run() {
     CHECK(format != nullptr, );
     ioLog.info(tr("Reading sequences from %1 [%2]").arg(url).arg(format->getFormatName()));
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    cfg[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(storage->getDbiRef());
+    cfg[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(storage->getDbiRef());
     cfg[DocumentReadingMode_DontMakeUniqueNames] = true;
     QScopedPointer<Document> doc(format->loadDocument(iof, url, cfg, stateInfo));
     CHECK_OP(stateInfo, );
@@ -364,7 +364,7 @@ void LoadSeqTask::run() {
             m[BaseSlots::URL_SLOT().getId()] = url;
             m[BaseSlots::DATASET_SLOT().getId()] = cfg.value(BaseSlots::DATASET_SLOT().getId(), "");
             SharedDbiDataHandler handler = storage->getDataHandler(go->getEntityRef());
-            m[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
+            m[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(handler);
             QList<GObject*> relatedAnnotationObjects = GObjectUtils::findObjectsRelatedToObjectByRole(go,
                                                                                                       GObjectTypes::ANNOTATION_TABLE,
                                                                                                       ObjectRole_Sequence,
@@ -380,7 +380,7 @@ void LoadSeqTask::run() {
                     }
                 }
                 SharedDbiDataHandler tableId = storage->putAnnotationTable(mergedAnnotations);
-                m.insert(BaseSlots::ANNOTATION_TABLE_SLOT().getId(), qVariantFromValue<SharedDbiDataHandler>(tableId));
+                m.insert(BaseSlots::ANNOTATION_TABLE_SLOT().getId(), QVariant::fromValue<SharedDbiDataHandler>(tableId));
             }
             results.append(m);
         }
@@ -407,7 +407,7 @@ void LoadSeqTask::run() {
                 m[BaseSlots::URL_SLOT().getId()] = url;
                 m[BaseSlots::DATASET_SLOT().getId()] = cfg.value(BaseSlots::DATASET_SLOT().getId(), "");
                 SharedDbiDataHandler handler = storage->getDataHandler(seqRef);
-                m[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
+                m[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(handler);
                 results.append(m);
             }
         }

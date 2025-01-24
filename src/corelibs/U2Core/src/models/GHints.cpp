@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,11 +34,10 @@ void GHints::setAll(const QVariantMap& newMap) {
 }
 
 void GHints::dump(const QVariantMap& map) {
-    foreach (QString k, map.keys()) {
-        QList<QVariant> l = map.values(k);
-        for (const QVariant& v : qAsConst(l)) {
-            coreLog.trace(QString("Hint: %1=%2").arg(k).arg(v.toString()));
-        }
+    for (auto it = map.cbegin(); it != map.cend(); ++it) {
+        const QString& key = it.key();
+        const QVariant& value = it.value();
+        coreLog.trace(QString("Hint: %1=%2").arg(key).arg(value.toString()));
     }
 }
 

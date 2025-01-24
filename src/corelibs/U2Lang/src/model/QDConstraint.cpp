@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,11 +55,11 @@ int QDDistanceConstraint::getMax() const {
 }
 
 void QDDistanceConstraint::setMin(int min) {
-    cfg->setParameter(QDConstraintController::MIN_LEN_ATTR, qVariantFromValue(min));
+    cfg->setParameter(QDConstraintController::MIN_LEN_ATTR, QVariant::fromValue(min));
 }
 
 void QDDistanceConstraint::setMax(int max) {
-    cfg->setParameter(QDConstraintController::MAX_LEN_ATTR, qVariantFromValue(max));
+    cfg->setParameter(QDConstraintController::MAX_LEN_ATTR, QVariant::fromValue(max));
 }
 
 QString QDDistanceConstraint::getText(QDSchemeUnit*, QDSchemeUnit*) const {
@@ -72,7 +72,7 @@ QString QDDistanceConstraint::getText(QDSchemeUnit*, QDSchemeUnit*) const {
 }
 
 void QDDistanceConstraint::invert() {
-    units.swap(0, 1);
+    std::swap(units[0], units[1]);
     setMin(-getMax());
     setMax(-getMin());
     distType = QDConstraintController::getInvertedType(distType);

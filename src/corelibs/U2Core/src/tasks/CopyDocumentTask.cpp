@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,7 +64,7 @@ void CopyDocumentTask::prepare() {
 
     QVariantMap hints = srcDoc->getGHintsMap();
     U2DbiRef dstDbiRef(DEFAULT_DBI_ID, U2DbiId(dstUrl));
-    hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(dstDbiRef);
+    hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(dstDbiRef);
     dstDoc = df->createNewLoadedDocument(iof, dstUrl, stateInfo, hints);
     CHECK_OP(stateInfo, );
 

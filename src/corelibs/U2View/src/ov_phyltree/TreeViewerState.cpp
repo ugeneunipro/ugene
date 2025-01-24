@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,8 +56,10 @@ QVariantMap TreeViewerState::saveState(TreeViewer* v) {
         ss.stateData[PHY_OBJ] = QVariant::fromValue<GObjectReference>(GObjectReference(phyObj));
     }
     ss.stateData[ZOOM_LEVEL] = v->getZoomLevel();
-    ss.stateData.unite(v->getSettingsState());
-
+    auto settingsState = v->getSettingsState();
+    for (auto it = settingsState.cbegin(); it != settingsState.cend(); ++it) {
+        ss.stateData.insert(it.key(), it.value());
+    }
     return ss.stateData;
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -169,7 +169,7 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
 
     auto layout = new QHBoxLayout(widget);
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(toolPathEdit);
 
     auto buttonsLayout = new QHBoxLayout();
@@ -203,7 +203,7 @@ QTreeWidgetItem* ExternalToolSupportSettingsPageWidget::createToolkitItem(QTreeW
 
     auto layout = new QHBoxLayout(widget);
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addStretch();
     layout->addWidget(selectToolKitPathButton);
     treeWidget->setItemWidget(toolkitItem, 1, widget);

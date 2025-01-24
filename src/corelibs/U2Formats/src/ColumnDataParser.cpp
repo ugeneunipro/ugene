@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -115,7 +115,7 @@ ColumnDataParser::ColumnDataParser(const QList<Column>& _formatColumns, const QS
 }
 
 void ColumnDataParser::init(const QString& headerLine, U2OpStatus& os) {
-    QStringList names = headerLine.split(separator, QString::SkipEmptyParts);
+    QStringList names = headerLine.split(separator, Qt::SkipEmptyParts);
     for (const QString& name : qAsConst(names)) {
         if (formatColumns.contains(Column(name))) {
             for (const Column& c : qAsConst(formatColumns)) {
@@ -140,7 +140,7 @@ void ColumnDataParser::init(const QString& headerLine, U2OpStatus& os) {
 
 ColumnDataParser::Iterator ColumnDataParser::parseLine(const QString& line, U2OpStatus& os) const {
     SAFE_POINT(inited, "ColumnDataParser is not inited", Iterator(QList<Column>(), QStringList()));
-    QStringList values = line.split(separator, QString::SkipEmptyParts);
+    QStringList values = line.split(separator, Qt::SkipEmptyParts);
     if (currentColumns.size() != values.size()) {
         os.setError("Wrong columns count");
         return Iterator(QList<Column>(), QStringList());

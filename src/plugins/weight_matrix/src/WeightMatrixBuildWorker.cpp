@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -154,7 +154,7 @@ void PWMatrixBuildWorker::sl_taskFinished() {
         return;
     }
     PWMatrix model = t->getResult();
-    QVariant v = qVariantFromValue<PWMatrix>(model);
+    QVariant v = QVariant::fromValue<PWMatrix>(model);
     output->put(Message(mtype, v));
 }
 
@@ -241,7 +241,7 @@ void PFMatrixBuildWorker::sl_taskFinished() {
         return;
     }
     PFMatrix model = t->getResult();
-    QVariant v = qVariantFromValue<PFMatrix>(model);
+    QVariant v = QVariant::fromValue<PFMatrix>(model);
     output->put(Message(mtype, v));
 }
 
@@ -340,7 +340,7 @@ void PFMatrixConvertWorker::sl_taskFinished() {
         return;
     }
     PWMatrix model = t->getResult();
-    QVariant v = qVariantFromValue<PWMatrix>(model);
+    QVariant v = QVariant::fromValue<PWMatrix>(model);
     output->put(Message(mtype, v));
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -96,7 +96,7 @@ void SequencesToMSAWorker::sl_onTaskFinished(Task* t) {
         SAFE_POINT(outPort != nullptr, "NULL outPort!", );
         SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(ma);
 
-        outPort->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), qVariantFromValue<SharedDbiDataHandler>(msaId)));
+        outPort->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(msaId)));
     }
 
     SAFE_POINT(inPort->isEnded(), "Internal error. The workflow is broken", );

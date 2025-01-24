@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -228,8 +228,8 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task* task, U2OpStatus& os) c
     }
 
     QVariantMap result;
-    result[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(reference);
-    result[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(alignTask->getAnnotations());
+    result[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(reference);
+    result[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(alignTask->getAnnotations());
     if (QFileInfo::exists(resultUrl)) {
         result[BaseSlots::URL_SLOT().getId()] = resultUrl;
     }

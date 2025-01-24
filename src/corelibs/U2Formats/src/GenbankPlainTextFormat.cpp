@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -117,7 +117,7 @@ bool GenbankPlainTextFormat::readIdLine(ParserState* st) {
     }
 
     QString locusStr = st->value();
-    QStringList tokens = locusStr.split(QRegExp("(\t| )"), QString::SkipEmptyParts);  // separators: tabs and spaces
+    QStringList tokens = locusStr.split(QRegExp("(\t| )"), Qt::SkipEmptyParts);  // separators: tabs and spaces
     if (tokens.isEmpty()) {
         st->si.setError(tr("Error parsing LOCUS line"));
         return false;
@@ -138,7 +138,7 @@ bool GenbankPlainTextFormat::readIdLine(ParserState* st) {
         loi.molecule = tokens[3];
         loi.division = tokens[5];
         loi.date = tokens[6];
-        st->entry->tags.insert(DNAInfo::LOCUS, qVariantFromValue<DNALocusInfo>(loi));
+        st->entry->tags.insert(DNAInfo::LOCUS, QVariant::fromValue<DNALocusInfo>(loi));
         st->entry->circular = loi.topology.compare(LOCUS_TAG_CIRCULAR, Qt::CaseInsensitive) == 0;
     } else {
         st->entry->tags.insert(DNAInfo::ID, tokens[0]);
@@ -187,7 +187,7 @@ bool GenbankPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqI
                 st->si.setError(tr("incomplete SOURCE record"));
                 break;
             }
-            st->entry->tags.insertMulti(DNAInfo::SOURCE, qVariantFromValue<DNASourceInfo>(soi));
+            st->entry->tags.insert(DNAInfo::SOURCE, QVariant::fromValue<DNASourceInfo>(soi));
             hasLine = true;
             continue;
         }
@@ -198,7 +198,7 @@ bool GenbankPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqI
                 ri.referencesRecord.append("\n" + QByteArray(st->buff, st->len));
             }
 
-            st->entry->tags.insertMulti(DNAInfo::REFERENCE, qVariantFromValue<DNAReferenceInfo>(ri));
+            st->entry->tags.insert(DNAInfo::REFERENCE, QVariant::fromValue<DNAReferenceInfo>(ri));
             hasLine = true;
             continue;
         }
@@ -258,7 +258,7 @@ bool GenbankPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqI
             st->entry->tags.insert(lastTagName, v);
         } else if (st->hasValue()) {
             lastTagName = st->key().trimmed();
-            st->entry->tags.insertMulti(lastTagName, st->value());
+            st->entry->tags.insert(lastTagName, st->value());
         }
     }
     if (!st->isNull() && !si.isCoR()) {
@@ -603,7 +603,7 @@ QString GenbankPlainTextFormat::genLocusString(const QList<GObject*>& aos, U2Seq
         division = locusInfo.division;
         date = locusInfo.date;
     } else if (!locusStrFromAttr.isEmpty()) {
-        QStringList tokens = locusStrFromAttr.split(" ", QString::SkipEmptyParts);
+        QStringList tokens = locusStrFromAttr.split(" ", Qt::SkipEmptyParts);
         SAFE_POINT(tokens.size() >= 5, QString("Incorrect number of tokens for attribute %1").arg(locusStrFromAttr), "");
         molecule = tokens[2];
         division = tokens[3];

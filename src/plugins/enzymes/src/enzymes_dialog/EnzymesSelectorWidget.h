@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,50 +21,84 @@
 
 #pragma once
 
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
+#include <QWidget>
 #include <QPointer>
 
 #include <U2Algorithm/EnzymeModel.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 
-#include <U2Gui/MainWindow.h>
-
 #include <ui_EnzymesSelectorWidget.h>
-#include <ui_FindEnzymesDialog.h>
 
 namespace U2 {
 
-class ADVSequenceObjectContext;
-class CreateAnnotationWidgetController;
 class EnzymeGroupTreeItem;
 class EnzymeTreeItem;
-class RegionSelector;
 
+/**
+ * @brief This class describes a widget, which contains enzyme tree, selected enzymes, enzyme info
+ * and enzyme filter group box.
+ */
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
 public:
-    EnzymesSelectorWidget(const QPointer<ADVSequenceObjectContext>& advSequenceContext = nullptr, QWidget* parent = nullptr);
+    /**
+     * @brief Constructor.
+     * @param parent parent widget.
+     */
+    EnzymesSelectorWidget(QWidget* parent);
     ~EnzymesSelectorWidget() override;
 
+    /**
+    * @brief Load file with enzymes settings from .ini file.
+    */
     static void setupSettings();
-    static void saveSettings();
+    /**
+     * @brief Load selected enzymes from .ini file.
+     */
     static void initSelection();
+    /**
+     * @return Returns list of loaded enzymes.
+     */
     static const QList<SEnzymeData>& getLoadedEnzymes();
+    /**
+     * @return Returns list of selected suppliers.
+     */
     static const QStringList& getLoadedSuppliers();
-    QList<SEnzymeData> getSelectedEnzymes();
+    /**
+    * @brief Set sequence context. If it is nullptr,
+    * that means that there is no sequence opened (e.g. widget is created in Query Designer).
+    * @param advSequenceContext Context of opened sequence.
+    */
+    void setSequenceContext(const QPointer<ADVSequenceObjectContext>& advSequenceContext);
+    /**
+     * @return Returns list of selected enzymes.
+     */
+    QList<SEnzymeData> getSelectedEnzymes() const;
     /*
      * Get enzyme tree item by this enzyme.
      * \param enzyme An enzyme we should find tree item for.
      * \return Returns pointer to item (if exists).
     **/
     EnzymeTreeItem* getEnzymeTreeItemByEnzymeData(const SEnzymeData& enzyme) const;
+    /**
+     * @return Returns number of selected enzymes.
+     */
     int getNumSelected();
-    int getTotalNumber() const {
-        return totalEnzymes;
-    }
+    /**
+     * @return Returns number of loaded enzymes.
+     */
+    int getTotalNumber() const;
 
+    /**
+     * @brief Saves dialog setting to the .ini file.
+     */
+    void saveSettings();
+
+    /**
+     * @brief Set the following list of enzymes to be selected.
+     * \param enzymes Lit of enzymes.
+     */
     void setEnzymesList(const QList<SEnzymeData>& enzymes);
 
 signals:
@@ -85,8 +119,20 @@ private slots:
     void sl_filterConditionsChanged();
     void sl_findSingleEnzymeTaskStateChanged();
 
+private slots:
+    void sl_onSelectionModified(int visible, int selected);
+    void sl_updateVisibleEnzymes();
+    void sl_updateEnzymesVisibilityWidgets();
+    void sl_selectAllSuppliers();
+    void sl_selectNoneSuppliers();
+    void sl_invertSelection();
+    void sl_minLengthChanged(int index);
+    void sl_maxLengthChanged(int index);
+
 private:
     static void calculateSuppliers();
+
+    void initSettings();
 
     void loadFile(const QString& url);
     void saveFile(const QString& url);
@@ -103,78 +149,11 @@ private:
     static QSet<QString> lastSelection;
     static QStringList loadedSuppliers;
 
-    QPointer<ADVSequenceObjectContext> advSequenceContext;
+    QPointer<ADVSequenceObjectContext> advSequenceContext = nullptr;
 
-    int totalEnzymes;
-    bool ignoreItemChecks;
-    int minLength;
-};
-
-class FindEnzymesDialog : public QDialog, public Ui_FindEnzymesDialog {
-    Q_OBJECT
-public:
-    FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& advSequenceContext);
-    void accept() override;
-
-private slots:
-    void sl_onSelectionModified(int visible, int selected);
-    void sl_updateVisibleEnzymes();
-    void sl_updateEnzymesVisibilityWidgets();
-    void sl_selectAll();
-    void sl_selectNone();
-    void sl_invertSelection();
-    void sl_minLengthChanged(int index);
-    void sl_maxLengthChanged(int index);
-
-private:
-    void initSettings();
-    void saveSettings();
-    void fixPreviousLocation(U2Location& previousLocation);
-
-    QPointer<ADVSequenceObjectContext> advSequenceContext;
-
-    EnzymesSelectorWidget* enzSel;
-    RegionSelector* regionSelector;
-    RegionSelector* excludeRegionSelector;
-    QCheckBox* excludeCheckbox;
-};
-
-class EnzymeGroupTreeItem : public QTreeWidgetItem {
-public:
-    EnzymeGroupTreeItem(const QString& s);
-    void updateVisual();
-    QString s;
-    QSet<EnzymeTreeItem*> checkedEnzymes;
-    bool operator<(const QTreeWidgetItem& other) const override;
-};
-
-class EnzymeTreeItem : public QTreeWidgetItem {
-    Q_DECLARE_TR_FUNCTIONS(EnzymeTreeItem)
-public:
-    EnzymeTreeItem(const SEnzymeData& ed);
-    const SEnzymeData enzyme;
-    static constexpr int INCORRECT_ENZYMES_NUMBER = -1;
-    static constexpr int MAXIMUM_ENZYMES_NUMBER = 10'000;
-
-    // Number of enzymes in the current sequence
-    int enzymesNumber = INCORRECT_ENZYMES_NUMBER;
-    // True if FindEnzymesTask, which calculates number of enzymes,
-    // has already been run
-    bool hasNumberCalculationTask = false;
-    bool operator<(const QTreeWidgetItem& other) const override;
-    // Get text information about this enzyme
-    QString getEnzymeInfo() const;
-
-private:
-    enum Column {
-        Id = 0,
-        Accession,
-        Type,
-        Sequence,
-        Organism,
-    };
-
-    QString getTypeInfo() const;
+    int totalEnzymes = 0;
+    bool ignoreItemChecks = false;
+    int minLength = 1;
 };
 
 }  // namespace U2

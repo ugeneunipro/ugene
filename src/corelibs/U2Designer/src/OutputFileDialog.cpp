@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 #include "OutputFileDialog.h"
 
 #include <QMenu>
-#include <QPushButton>
 #include <QWidgetAction>
 
 #include <U2Core/QObjectScopedPointer.h>
@@ -279,16 +278,16 @@ QVariant RFSTreeModel::data(const QModelIndex& index, int role) const {
 }
 
 Qt::ItemFlags RFSTreeModel::flags(const QModelIndex& index) const {
-    CHECK(index.isValid(), 0);
+    CHECK(index.isValid(), {});
 
     if (toItem(index)->isDir() || !saveDir) {
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
-    return 0;
+    return {};
 }
 
 QVariant RFSTreeModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const {
-    return QVariant();
+    return {};
 }
 
 QModelIndex RFSTreeModel::index(int row, int column, const QModelIndex& parent) const {
@@ -303,7 +302,7 @@ QModelIndex RFSTreeModel::index(int row, int column, const QModelIndex& parent) 
     if (childItem) {
         return createIndex(row, column, childItem);
     } else {
-        return QModelIndex();
+        return {};
     }
 }
 

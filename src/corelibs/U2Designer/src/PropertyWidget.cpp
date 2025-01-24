@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -401,7 +401,7 @@ QVariant ComboBoxWithChecksWidget::value() {
 }
 
 void ComboBoxWithChecksWidget::setValue(const QVariant& value) {
-    QStringList curList = value.toString().split(',', QString::SkipEmptyParts);
+    QStringList curList = value.toString().split(',', Qt::SkipEmptyParts);
     // 0-item is a `ghostItem` with the result of all currently checked checkboxes. That's why we start with 1.
     for (int i = 1; i < cm->rowCount(); i++) {
         QStandardItem* item = cm->item(i);

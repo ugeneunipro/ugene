@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -72,7 +72,7 @@ QString DifferentialFormat::getAnnotationName() {
 }
 
 FormatCheckResult DifferentialFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
-    QStringList lines = dataPrefix.split("\n", QString::SkipEmptyParts);
+    QStringList lines = dataPrefix.split("\n", Qt::SkipEmptyParts);
     CHECK(!lines.isEmpty(), FormatDetection_NotMatched);
 
     ColumnDataParser parser(getColumns(), SEPARATOR);

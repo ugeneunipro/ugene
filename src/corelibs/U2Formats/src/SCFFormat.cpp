@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -912,7 +912,7 @@ typedef struct {
 // }
 
 inline QString scf_version_float2str(float f) {
-    QString result = QString().sprintf("%1.2f", f);
+    QString result = QString::asprintf("%1.2f", f);
     return result;
 }
 

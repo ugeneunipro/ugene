@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -572,7 +572,7 @@ void WizardWidgetParser::addVariable(const Variable& v) {
 }
 
 AttributeInfo WizardWidgetParser::parseInfo(const QString& attrStr, const QString& body) {
-    QStringList vals = attrStr.split(Constants::DOT, QString::SkipEmptyParts);
+    QStringList vals = attrStr.split(Constants::DOT, Qt::SkipEmptyParts);
     if (2 != vals.size()) {
         os.setError(HRWizardParser::tr("Unknown widget name: %1").arg(attrStr));
         return AttributeInfo("", "");

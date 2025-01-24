@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -127,7 +127,7 @@ void GenomeAlignerBuildWorker::sl_taskFinished() {
 
     done = true;
 
-    QVariant v = qVariantFromValue<QString>(t->getIndexPath());
+    QVariant v = QVariant::fromValue<QString>(t->getIndexPath());
     output->put(Message(GenomeAlignerPlugin::GENOME_ALIGNER_INDEX_TYPE(), v));
     output->setEnded();
     algoLog.trace(tr("Genome aligner index building finished. Result name is %1").arg(t->getIndexPath()));
@@ -202,7 +202,7 @@ Task* GenomeAlignerIndexReaderWorker::tick() {
 }
 
 void GenomeAlignerIndexReaderWorker::sl_taskFinished() {
-    QVariant v = qVariantFromValue<QString>(indexUrl.getURLString());
+    QVariant v = QVariant::fromValue<QString>(indexUrl.getURLString());
     output->put(Message(GenomeAlignerPlugin::GENOME_ALIGNER_INDEX_TYPE(), v));
     output->setEnded();
     done = true;

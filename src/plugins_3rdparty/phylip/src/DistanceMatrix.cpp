@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -458,13 +458,13 @@ void DistanceMatrix::addPairToTree(QPair<int, int>* location) {
 
     //        dumpRawData(rawMatrix);
     QMap<QString, int> old_map;
-    QList<QString> namelist = index_map.uniqueKeys();
+    QList<QString> namelist = index_map.keys();
     for (int j = 0; j < index_map.size(); j++) {
         int index = index_map[namelist[j]];
         old_map.insert(namelist[j], index);
     }
 
-    QList<QString> names = index_map.uniqueKeys();
+    QList<QString> names = index_map.keys();
     index_map.clear();
     for (auto& name : qAsConst(names)) {
         if (name != name1 && name != name2) {

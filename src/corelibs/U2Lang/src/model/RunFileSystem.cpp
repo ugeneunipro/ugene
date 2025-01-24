@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -261,7 +261,7 @@ FSItem* RunFileSystem::createPath(const QStringList& path, U2OpStatus& os) {
 QStringList RunFileSystem::getPath(const QString& pathStr) const {
     QString correctPath = pathStr;
     correctPath.replace("\\", "/");
-    return correctPath.split("/", QString::SkipEmptyParts);
+    return correctPath.split("/", Qt::SkipEmptyParts);
 }
 
 bool RunFileSystem::getPath(const QString& pathStr, QStringList& parentPath, QString& name) const {

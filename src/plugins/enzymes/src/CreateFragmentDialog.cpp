@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ CreateFragmentDialog::CreateFragmentDialog(ADVSequenceObjectContext* ctx, QWidge
     rs = new RegionSelector(this, ctx->getSequenceLength(), false, ctx->getSequenceSelection());
     rangeSelectorLayout->addWidget(rs);
 
-    relatedAnnotations = ctx->getAnnotationObjects(true).toList();
+    relatedAnnotations = toList(ctx->getAnnotationObjects(true));
 
     setupAnnotationsWidget();
 }
@@ -179,7 +179,7 @@ void CreateFragmentDialog::setupAnnotationsWidget() {
     ac = new CreateAnnotationWidgetController(acm, this);
     QWidget* caw = ac->getWidget();
     auto l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->addWidget(caw);
     l->addStretch();
     annotationsWidget->setLayout(l);

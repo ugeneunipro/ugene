@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -204,7 +204,7 @@ void SamplesWidget::addCategory(const SampleCategory& cat) {
         ib->setData(0, DATA_ROLE, item.content);
         ib->setData(0, ID_ROLE, item.id);
         auto doc = new QTextDocument(this);
-        ib->setData(0, DOC_ROLE, qVariantFromValue<QTextDocument*>(doc));
+        ib->setData(0, DOC_ROLE, QVariant::fromValue<QTextDocument*>(doc));
         Descriptor d = item.d;
         QIcon ico = item.ico;
         if (ico.isNull()) {

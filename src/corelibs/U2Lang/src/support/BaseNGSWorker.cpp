@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -128,7 +128,7 @@ QString BaseNGSWorker::getTargetName(const QString& fileUrl, const QString& outD
         name = QFileInfo(fileUrl).fileName();
         name = name + getDefaultFileName();
     }
-    QString rolledUrl = GUrlUtils::rollFileName(outDir + name, "_", outUrls.toSet());
+    QString rolledUrl = GUrlUtils::rollFileName(outDir + name, "_", toSet(outUrls));
     outUrls.append(rolledUrl);
     QFileInfo fi(rolledUrl);
     return fi.fileName();

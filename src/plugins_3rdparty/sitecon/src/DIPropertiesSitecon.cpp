@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ void DinucleotitePropertyRegistry::registerProperty(const QString& str) {
     float defVal = -100000;
     std::fill((float*)data, data + 16, defVal);
 
-    QStringList lines = str.split('\n', QString::SkipEmptyParts);
+    QStringList lines = str.split('\n', Qt::SkipEmptyParts);
     bool dimode = false;
     foreach (QString line, lines) {
         // printf("line=%s\n",line.toLatin1().constData());
@@ -1457,7 +1457,7 @@ DINUCLEOTIDE\n\
    CC -2.1\n\
 //\n";
 
-    QStringList l = _properties.split("//\n", QString::SkipEmptyParts);
+    QStringList l = _properties.split("//\n", Qt::SkipEmptyParts);
     assert(l.size() == 38);
     return l;
 }

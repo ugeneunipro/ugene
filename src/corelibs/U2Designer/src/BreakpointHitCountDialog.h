@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,13 @@ class U2DESIGNER_EXPORT BreakpointHitCountDialog : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(BreakpointHitCountDialog)
 public:
-    BreakpointHitCountDialog(const QStringList& hitCountConditions, const QString& conditionOnLaunch = "", quint32 hitCountParameterOnLaunch = LOWER_BOUNDARY_FOR_HIT_COUNTER_PARAMETER, quint32 hitCountOnLaunch = 0, const QStringList& hitCountersListWithoutParameter = QStringList(), QWidget* parent = 0, Qt::WindowFlags f = 0);
+    BreakpointHitCountDialog(const QStringList& hitCountConditions,
+                             const QString& conditionOnLaunch = "",
+                             quint32 hitCountParameterOnLaunch = LOWER_BOUNDARY_FOR_HIT_COUNTER_PARAMETER,
+                             quint32 hitCountOnLaunch = 0,
+                             const QStringList& hitCountersListWithoutParameter = QStringList(),
+                             QWidget* parent = nullptr,
+                             Qt::WindowFlags f = {});
     ~BreakpointHitCountDialog();
 
 signals:

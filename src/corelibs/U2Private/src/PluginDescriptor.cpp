@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@ static PlatformArch archFromText(const QString& text) {
 
 static PluginMode modeFromText(const QString& text) {
     QString trimmed = text.trimmed().toLower();
-    QStringList tokens = trimmed.split(QRegExp("[\\s,]"), QString::SkipEmptyParts);
+    QStringList tokens = trimmed.split(QRegExp("[\\s,]"), Qt::SkipEmptyParts);
     PluginMode result;
     if (tokens.isEmpty()) {
         result |= PluginMode_Malformed;
@@ -189,9 +189,9 @@ PluginDesc PluginDescriptorHelper::readPluginDescriptor(const QString& descUrl, 
             continue;
         }
         QString dependsText = dn.toElement().text();
-        QStringList dependsTokes = dependsText.split(QChar(';'), QString::SkipEmptyParts);
+        QStringList dependsTokes = dependsText.split(QChar(';'), Qt::SkipEmptyParts);
         foreach (const QString& token, dependsTokes) {
-            QStringList plugAndVersion = token.split(QChar(':'), QString::KeepEmptyParts);
+            QStringList plugAndVersion = token.split(QChar(':'), Qt::KeepEmptyParts);
             if (plugAndVersion.size() != 2) {
                 error = tr("Invalid depends token: %1").arg(token);
                 return failResult;

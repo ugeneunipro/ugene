@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -88,7 +88,7 @@ void SeqStatisticsWidget::updateWidgetsSettings() {
     foreach (MsaDistanceAlgorithmFactory* a, algos) {
         ui.algoComboBox->addItem(a->getName(), a->getId());
     }
-    ui.algoComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+    ui.algoComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
 
     ui.refSeqWarning->setText(tr("Hint: select a reference above"));
     ui.refSeqWarning->setStyleSheet(

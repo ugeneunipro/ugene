@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -801,7 +801,7 @@ QList<QAction*> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory* f, co
     QList<MWMDIWindow*> windows = AppContext::getMainWindow()->getMDIManager()->getWindows();
     auto objectsSelection = static_cast<const GObjectSelection*>(ms.findSelectionByType(GSelectionTypes::GOBJECTS));
     if (objectsSelection != nullptr) {
-        QSet<GObject*> objectsInSelection = objectsSelection->getSelectedObjects().toSet();
+        QSet<GObject*> objectsInSelection = toSet(objectsSelection->getSelectedObjects());
         foreach (MWMDIWindow* w, windows) {
             auto ov = qobject_cast<GObjectViewWindow*>(w);
             if (ov == nullptr) {
@@ -1093,7 +1093,7 @@ void ProjectViewImpl::sl_filterTextChanged(const QString& str) {
         coreLog.info(warning);
         QMessageBox::warning(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), warning);
     }
-    settings.tokensToShow = changedText.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    settings.tokensToShow = changedText.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
     projectTreeController->updateSettings(settings);
 }
 

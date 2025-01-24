@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,18 +25,15 @@
 #include <QDir>
 #include <QFile>
 #include <QMessageBox>
-#include <QPushButton>
+#include <QRandomGenerator>
 #include <QTextBrowser>
 
-#include <U2Algorithm/MsaDistanceAlgorithm.h>
 #include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MsaObject.h>
 #include <U2Core/TextUtils.h>
 
 #include <U2Gui/HelpButton.h>
@@ -227,11 +224,11 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 s.ma->sortRowsBySimilarity(unitedRows);
                 QList<MsaRow> rows;
                 int i = 1;
-                srand(uint(QDateTime::currentDateTime().toSecsSinceEpoch() / 1000));
+                QRandomGenerator rnd(static_cast<quint32>(QDateTime::currentMSecsSinceEpoch()));
                 foreach (const U2Region& reg, unitedRows) {
-                    MsaRow row = s.ma->getRow(reg.startPos + qrand() % reg.length);
+                    MsaRow row = s.ma->getRow(reg.startPos + rnd.bounded((int)reg.length));
                     row->setName(QString("Group %1: ").arg(i) + "(" + row->getName() + ")");
-                    rows.append(s.ma->getRow(reg.startPos + qrand() % reg.length)->getExplicitCopy());
+                    rows.append(s.ma->getRow(reg.startPos + rnd.bounded((int)reg.length))->getExplicitCopy());
 
                     resultText += "<tr><td><b>" + QString("Group %1: ").arg(i) + "</b></td><td>";
                     for (int x = reg.startPos; x < reg.endPos(); x++) {

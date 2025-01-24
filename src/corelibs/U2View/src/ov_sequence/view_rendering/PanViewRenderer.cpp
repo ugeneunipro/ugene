@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -366,7 +366,7 @@ void PanViewRenderer::drawCustomRulers(GraphUtils::RulerConfig c, QPainter& p, c
 
     int maxRulerTextWidth = 0;
     foreach (const RulerInfo& ri, s->customRulers) {
-        int _w = fm.width(ri.name);
+        int _w = fm.horizontalAdvance(ri.name);
         maxRulerTextWidth = qMax(maxRulerTextWidth, _w);
     }
     QTextOption rulerTo;

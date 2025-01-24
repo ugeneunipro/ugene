@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -648,7 +648,7 @@ MuscleAlignOwnSequencesToSelfAction::MuscleAlignOwnSequencesToSelfAction(MsaObje
     : Task(tr("MUSCLE align rows to alignment '%1'").arg(msaObject->getGObjectName()), TaskFlags_NR_FOSCOE) {
     MuscleTaskSettings settings;
     settings.op = MuscleTaskOp_OwnRowsToAlignment;
-    settings.rowIndexesToAlign = maRowIndexes.toSet();
+    settings.rowIndexesToAlign = toSet(maRowIndexes);
     addSubTask(new MuscleGObjectTask(msaObject, settings));
 }
 

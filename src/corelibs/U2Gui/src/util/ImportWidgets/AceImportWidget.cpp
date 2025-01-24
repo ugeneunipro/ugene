@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ AceImportWidget::AceImportWidget(const GUrl& url)
 QVariantMap AceImportWidget::getSettings() const {
     QVariantMap settings;
     U2DbiRef ref(SQLITE_DBI_ID, saveController->getSaveFileName());
-    settings.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(ref));
+    settings.insert(DocumentFormat::DBI_REF_HINT, QVariant::fromValue(ref));
 
     return settings;
 }

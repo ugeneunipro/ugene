@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -167,14 +167,14 @@ bool crop(const U2Region& within, QVector<U2Region>& regions) {
 void ExtractProductTask::addProductAnnotations(AnnotationTableObject* targetObject, const U2EntityRef& annsRef) const {
     QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject("features", annsRef));
     const bool contain = (ExtractProductSettings::Inner == settings.annotationsExtraction);
-    QSet<Annotation*> anns = annsObject->getAnnotationsByRegion(product.region, contain).toSet();
+    QSet<Annotation*> anns = toSet(annsObject->getAnnotationsByRegion(product.region, contain));
 
     U2Region begin = product.region;
     U2Region end(0, 0);
     if (product.region.endPos() > wholeSequenceLength) {  // circular
         begin.length = wholeSequenceLength - product.region.startPos;
         end.length = product.region.endPos() % wholeSequenceLength;
-        anns.unite(annsObject->getAnnotationsByRegion(end, contain).toSet());
+        anns.unite(toSet(annsObject->getAnnotationsByRegion(end, contain)));
     }
 
     foreach (Annotation* ann, anns) {
@@ -224,7 +224,7 @@ void ExtractProductTask::run() {
     SAFE_POINT_EXT(format != nullptr, setError(L10N::nullPointerError("Genbank Format")), );
     QString outputFileUrl = settings.outputFile;
     if (settings.targetDbiRef.isValid()) {
-        hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(settings.targetDbiRef);
+        hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(settings.targetDbiRef);
         SAFE_POINT_EXT(settings.outputFile.isEmpty(), stateInfo.setError(L10N::internalError("Both dbiRef & fileUrl are set as the result destination")), );
         outputFileUrl = settings.targetDbiRef.dbiId;
     }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -324,7 +324,7 @@ Task* AminoTranslationWorker::tick() {
             // return new FailTask(tr("Alphabet is not nucleic"));
         }
 
-        QStringList offsets = actor->getParameter(POS_2_TRANSLATE_ATTR)->getAttributeValue<QString>(context).split(OFFSET_DELIMITER, QString::SkipEmptyParts);
+        QStringList offsets = actor->getParameter(POS_2_TRANSLATE_ATTR)->getAttributeValue<QString>(context).split(OFFSET_DELIMITER, Qt::SkipEmptyParts);
         QString resultName = "Amino translation";
 
         QVector<U2Region> regionsDirect = getTranslatedRegions(actor->getParameter(POS_2_TRANSLATE_ATTR)->getAttributeValue<QString>(context), seqObj->getSequenceLength());
@@ -387,7 +387,7 @@ void AminoTranslationWorker::sl_taskFinished() {
             DNASequence seqData = seqObj->getWholeSequence(os);
             CHECK_OP_EXT(os, reportError(tr("Error on getting %1 sequence: ").arg(seqObj->getGObjectName()) + os.getError()), );
             SharedDbiDataHandler seqId = context->getDataStorage()->putSequence(seqData);
-            msgData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+            msgData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
             output->setContext(channelContext, metadataId);
             output->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), msgData));
         }

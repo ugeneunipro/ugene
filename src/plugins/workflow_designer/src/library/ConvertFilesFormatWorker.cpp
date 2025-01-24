@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -187,7 +187,7 @@ void ConvertFilesFormatWorker::init() {
     inputUrlPort = ports.value(INPUT_PORT);
     outputUrlPort = ports.value(OUTPUT_PORT);
     targetFormat = getValue<QString>(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-    excludedFormats = getValue<QString>(EXCLUDED_FORMATS_ID).split(",", QString::SkipEmptyParts);
+    excludedFormats = getValue<QString>(EXCLUDED_FORMATS_ID).split(",", Qt::SkipEmptyParts);
 }
 
 bool ConvertFilesFormatWorker::ensureFileExists(const QString& url) {

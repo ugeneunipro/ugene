@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -202,7 +202,7 @@ PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderArea
 
 void PanView::pack() {
     auto layout = new QGridLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     layout->addWidget(renderArea, 0, 0, 1, 1);
     layout->addWidget(rowBar, 0, 1, 1, 1);

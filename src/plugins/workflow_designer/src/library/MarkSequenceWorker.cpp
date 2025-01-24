@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -96,7 +96,7 @@ Task* MarkSequenceWorker::tick() {
         foreach (Marker* marker, attr->getMarkers()) {
             QString res;
             if (SEQUENCE == marker->getGroup()) {
-                res = marker->getMarkingResult(qVariantFromValue<DNASequence>(seq));
+                res = marker->getMarkingResult(QVariant::fromValue<DNASequence>(seq));
             } else if (QUALIFIER == marker->getGroup() || ANNOTATION == marker->getGroup()) {
                 res = marker->getMarkingResult(QVariant(anns));
             } else if (TEXT == marker->getGroup()) {

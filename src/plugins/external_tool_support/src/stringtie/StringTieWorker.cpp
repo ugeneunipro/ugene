@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -150,7 +150,7 @@ void StringTieWorker::sl_taskFinished() {
     context->getMonitor()->addOutputFile(outputPrimary, getActor()->getId());
 
     if (t->getSettings().geneAbundanceOutput) {
-        data[GENE_ABUND_OUT_SLOT_ID] = qVariantFromValue<QString>(t->getSettings().geneAbundanceOutputFile);
+        data[GENE_ABUND_OUT_SLOT_ID] = QVariant::fromValue<QString>(t->getSettings().geneAbundanceOutputFile);
         context->getMonitor()->addOutputFile(t->getSettings().geneAbundanceOutputFile, getActor()->getId());
     }
     outputPort->put(Message(outputPort->getBusType(), data));

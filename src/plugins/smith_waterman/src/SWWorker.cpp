@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -545,7 +545,7 @@ void SWWorker::sl_taskFinished(Task* t) {
     assert(output != nullptr);
     if (output != nullptr) {
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annData);
-        const QVariant v = qVariantFromValue<SharedDbiDataHandler>(tableId);
+        const QVariant v = QVariant::fromValue<SharedDbiDataHandler>(tableId);
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), v));
         algoLog.details(tr("Found %1 matches of pattern '%2'").arg(annData.size()).arg(ptrns.join(PATTERN_DELIMITER)));
     }

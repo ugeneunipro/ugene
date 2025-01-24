@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -245,7 +245,7 @@ QVariant ActorCfgModel::data(const QModelIndex& index, int role) const {
     const Attribute* currentAttribute = getAttributeByRow(index.row());
     SAFE_POINT(currentAttribute != nullptr, "Invalid attribute", QVariant());
     if (role == DescriptorRole) {  // descriptor that will be shown in under editor. 'propDoc' in WorkflowEditor
-        return qVariantFromValue<Descriptor>(*currentAttribute);
+        return QVariant::fromValue<Descriptor>(*currentAttribute);
     }
 
     int col = index.column();
@@ -289,7 +289,7 @@ QVariant ActorCfgModel::data(const QModelIndex& index, int role) const {
                 case Qt::ForegroundRole:
                     return isDefaultVal ? QVariant(QColor(Qt::gray)) : QVariant();
                 case DelegateRole:
-                    return qVariantFromValue<PropertyDelegate*>(propertyDelegate);
+                    return QVariant::fromValue<PropertyDelegate*>(propertyDelegate);
                 case Qt::EditRole:
                 case ConfigurationEditor::ItemValueRole:
                     return attributeValue;
@@ -311,15 +311,15 @@ QVariant ActorCfgModel::data(const QModelIndex& index, int role) const {
             switch (role) {
                 case Qt::DisplayRole:
                 case Qt::ToolTipRole:
-                    return scriptDelegate ? scriptDelegate->getDisplayValue(qVariantFromValue<AttributeScript>(currentAttribute->getAttributeScript())) : QVariant();
+                    return scriptDelegate ? scriptDelegate->getDisplayValue(QVariant::fromValue<AttributeScript>(currentAttribute->getAttributeScript())) : QVariant();
                 case Qt::ForegroundRole:
                     return currentAttribute->getAttributeScript().isEmpty() ? QVariant(QColor(Qt::gray)) : QVariant();
                 case DelegateRole:
                     assert(scriptDelegate != nullptr);
-                    return qVariantFromValue<PropertyDelegate*>(scriptDelegate);
+                    return QVariant::fromValue<PropertyDelegate*>(scriptDelegate);
                 case Qt::EditRole:
                 case ConfigurationEditor::ItemValueRole:
-                    return qVariantFromValue<AttributeScript>(currentAttribute->getAttributeScript());
+                    return QVariant::fromValue<AttributeScript>(currentAttribute->getAttributeScript());
                 default:
                     return QVariant();
             }

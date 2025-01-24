@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,7 +64,7 @@ StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject* fi
 
     StructuralAlignmentAlgorithmRegistry* reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
     foreach (const QString& id, reg->getFactoriesIds()) {
-        algorithmCombo->addItem(id, qVariantFromValue(id));
+        algorithmCombo->addItem(id, QVariant::fromValue(id));
     }
 
     QList<BioStruct3DObject*> biostructs = findAvailableBioStructs();

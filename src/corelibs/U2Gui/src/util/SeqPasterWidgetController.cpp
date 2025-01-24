@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,18 +60,18 @@ QByteArray SeqPasterWidgetController::getNormSequence(const DNAAlphabet* alph, c
             QChar::Category cat = c.category();
             if ((cat != QChar::Separator_Space) &&
                 (cat != QChar::Other_Control)) {
-                ret.append(c);
+                ret.append(c.toLatin1());
             }
         }
     } else {
         QByteArray alphabetSymbols = alph->getAlphabetChars(true);
         for (int i = 0; i < seq.size(); i++) {
-            QChar c = seq.at(i);
+            char c = seq.at(i);
             if (alphabetSymbols.indexOf(c) > -1) {
                 ret.append(c);
             } else {
                 if (replace) {
-                    ret.append(replaceChar);
+                    ret.append(replaceChar.toLatin1());
                 }
             }
         }

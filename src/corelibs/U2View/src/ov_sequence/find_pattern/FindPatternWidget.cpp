@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -334,7 +334,7 @@ void FindPatternWidget::initLayout() {
     layoutSearchButton->setAlignment(Qt::AlignTop);
     this->layout()->setAlignment(Qt::AlignTop);
 
-    this->layout()->setMargin(0);
+    this->layout()->setContentsMargins(0, 0, 0, 0);
 }
 
 void FindPatternWidget::initAlgorithmLayout() {
@@ -967,7 +967,7 @@ QList<QPair<QString, QString>> FindPatternWidget::getPatternsFromTextPatternFiel
     QList<NamePattern> result = FastaFormat::getSequencesAndNamesFromUserInput(inputText, os);
 
     if (result.isEmpty()) {
-        QStringList patterns = inputText.split(QRegExp("\n"), QString::SkipEmptyParts);
+        QStringList patterns = inputText.split(QRegExp("\n"), Qt::SkipEmptyParts);
         for (const QString& pattern : qAsConst(patterns)) {
             result.append(qMakePair(QString(""), pattern));
         }

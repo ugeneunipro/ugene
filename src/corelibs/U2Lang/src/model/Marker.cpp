@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -350,11 +350,11 @@ QString QualifierMarker::getMarkingResult(const QVariant& object) {
                 bool ok = false;
                 QVariant value;
                 if (MarkerTypes::QUAL_INT_VALUE_MARKER_ID == type) {
-                    value = qVariantFromValue(qual.value.toInt(&ok));
+                    value = QVariant::fromValue(qual.value.toInt(&ok));
                 } else if (MarkerTypes::QUAL_FLOAT_VALUE_MARKER_ID == type) {
-                    value = qVariantFromValue(qual.value.toFloat(&ok));
+                    value = QVariant::fromValue(qual.value.toFloat(&ok));
                 } else if (MarkerTypes::QUAL_TEXT_VALUE_MARKER_ID == type) {
-                    value = qVariantFromValue(qual.value);
+                    value = QVariant::fromValue(qual.value);
                     ok = true;
                 } else {
                     FAIL("Unexpected marker type!", rest);
@@ -419,7 +419,7 @@ QString AnnotationMarker::getMarkingResult(const QVariant& object) {
                 }
             }
         }
-        return Marker::getMarkingResult(qVariantFromValue(count));
+        return Marker::getMarkingResult(QVariant::fromValue(count));
     } else if (MarkerTypes::ANNOTATION_LENGTH_MARKER_ID == type) {
         return values.value(MarkerUtils::REST_OPERATION);
     } else {

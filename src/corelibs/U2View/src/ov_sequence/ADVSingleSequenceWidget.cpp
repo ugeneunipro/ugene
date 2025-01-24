@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -129,7 +129,7 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
     connect(createNewRulerAction, SIGNAL(triggered()), SLOT(sl_createCustomRuler()));
 
     linesLayout = new QVBoxLayout();
-    linesLayout->setMargin(0);
+    linesLayout->setContentsMargins(0, 0, 0, 0);
     linesLayout->setSpacing(0);
     linesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
@@ -147,7 +147,7 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
     linesSplitter->addWidget(linesLayoutWidget);
 
     auto l = new QVBoxLayout(this);
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
     l->addWidget(linesSplitter);
     l->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -942,7 +942,7 @@ ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWi
     updateTitle();
     nameLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     nameLabel->setMinimumWidth(labelWidth);
-    nameLabel->setMaximumWidth(fm.width(nameLabel->text()));
+    nameLabel->setMaximumWidth(fm.horizontalAdvance(nameLabel->text()));
     nameLabel->setFont(f);
     nameLabel->setToolTip(objInfoTip);
     nameLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);

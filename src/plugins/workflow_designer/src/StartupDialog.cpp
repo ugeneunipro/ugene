@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ StartupDialog::StartupDialog(QWidget* parent)
 
     outDirWidget = new OutputDirectoryWidget(this, false /*don't commitOnHide*/);
     auto l = new QVBoxLayout(box);
-    l->setMargin(3);
+    l->setContentsMargins(3, 3, 3, 3);
     l->addWidget(outDirWidget);
 
     const QPushButton* button = buttonBox->button(QDialogButtonBox::Ok);

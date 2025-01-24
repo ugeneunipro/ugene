@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,9 +21,6 @@
 
 #include "InSilicoPcrWorker.h"
 
-#include <QTextStream>
-
-#include <U2Algorithm/TmCalculatorFactory.h>
 #include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AnnotationTableObject.h>
@@ -187,7 +184,7 @@ InSilicoPcrWorker::InSilicoPcrWorker(Actor* a)
 Task* InSilicoPcrWorker::createPrepareTask(U2OpStatus& os) const {
     QString primersUrl = getValue<QString>(PRIMERS_ATTR_ID);
     QVariantMap hints;
-    hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
+    hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(context->getDataStorage()->getDbiRef());
     LoadDocumentTask* task = LoadDocumentTask::getDefaultLoadDocTask(primersUrl, hints);
     CHECK_EXT(task != nullptr, os.setError(tr("Can not read the primers file: ") + primersUrl), task);
     task->moveDocumentToMainThread = true;
@@ -304,7 +301,7 @@ QVariant InSilicoPcrWorker::fetchSequence(Document* doc) {
         return QVariant();
     }
     SharedDbiDataHandler seqId = context->getDataStorage()->getDataHandler(seqObjects.first()->getEntityRef());
-    return qVariantFromValue<SharedDbiDataHandler>(seqId);
+    return QVariant::fromValue<SharedDbiDataHandler>(seqId);
 }
 
 QVariant InSilicoPcrWorker::fetchAnnotations(Document* doc) {
@@ -314,7 +311,7 @@ QVariant InSilicoPcrWorker::fetchAnnotations(Document* doc) {
         return QVariant();
     }
     SharedDbiDataHandler annsId = context->getDataStorage()->getDataHandler(annsObjects.first()->getEntityRef());
-    return qVariantFromValue<SharedDbiDataHandler>(annsId);
+    return QVariant::fromValue<SharedDbiDataHandler>(annsId);
 }
 
 int InSilicoPcrWorker::createMetadata(int sequenceLength, const U2Region& productRegion, int pairNumber) {
@@ -426,8 +423,8 @@ QString InSilicoPcrReportTask::createReport() {
     QByteArray report = tokens[0].toLocal8Bit() + "<body>\n";
 
     report += productsTable();
-    report += primerDetails();
-    report += tokens[1];
+    report += primerDetails().toUtf8();
+    report += tokens[1].toUtf8();
     return report;
 }
 
@@ -435,18 +432,18 @@ QByteArray InSilicoPcrReportTask::productsTable() const {
     QByteArray result;
     result += "<table bordercolor=\"gray\" border=\"1\" width=\"100%\">";
     result += "<tr>";
-    result += PrimerGrouperTask::createColumn(tr("Sequence name"), "width=\"20%\"");
+    result += PrimerGrouperTask::createColumn(tr("Sequence name"), "width=\"20%\"").toUtf8();
     for (int i = 0; i < primers.size(); i++) {
-        result += PrimerGrouperTask::createColumn(primers[i].first.name + "<br/>" + primers[i].second.name);
+        result += PrimerGrouperTask::createColumn(primers[i].first.name + "<br/>" + primers[i].second.name).toUtf8();
     }
     result += "</tr>";
     foreach (const TableRow& tableRow, table) {
         result += "<tr>";
-        result += PrimerGrouperTask::createCell(tableRow.sequenceName);
+        result += PrimerGrouperTask::createCell(tableRow.sequenceName).toUtf8();
         for (int i = 0; i < primers.size(); i++) {
             QString elemClass = (tableRow.productsNumber[i] == 0) ? "red" : "green";
             QString classDef = QString("class=\"%1\"").arg(elemClass);
-            result += PrimerGrouperTask::createCell(QString::number(tableRow.productsNumber[i]), true, classDef);
+            result += PrimerGrouperTask::createCell(QString::number(tableRow.productsNumber[i]), true, classDef).toUtf8();
         }
         result += "</tr>";
     }

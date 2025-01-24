@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -94,7 +94,7 @@ QScriptValue ScriptEngineUtils::toScriptValue(QScriptEngine* engine, const QVari
 QVariant ScriptEngineUtils::fromScriptValue(QScriptEngine* engine, const QScriptValue& value, DataTypePtr type) {
     if (BaseTypes::DNA_SEQUENCE_TYPE() == type) {
         SharedDbiDataHandler seqId = ScriptEngineUtils::getDbiId(engine, value, SequenceScriptClass::CLASS_NAME);
-        return qVariantFromValue(seqId);
+        return QVariant::fromValue(seqId);
     }
     return value.toVariant();
 }

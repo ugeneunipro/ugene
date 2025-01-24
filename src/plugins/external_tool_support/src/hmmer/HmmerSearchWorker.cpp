@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -312,7 +312,7 @@ void HmmerSearchWorker::sl_taskFinished(Task* task) {
         CHECK(!list.isEmpty(), );
 
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(list);
-        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
+        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(tableId)));
         algoLog.info(tr("Found %1 HMMER signals").arg(list.size()));
     }
 }

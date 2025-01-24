@@ -11,7 +11,6 @@ Qt5PrintSupport.dll
 Qt5Qml.dll
 Qt5Quick.dll
 Qt5Script.dll
-Qt5ScriptTools.dll
 Qt5Sensors.dll
 Qt5Svg.dll
 Qt5WebSockets.dll

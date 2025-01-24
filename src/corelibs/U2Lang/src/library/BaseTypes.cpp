@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -239,7 +239,7 @@ static void setIfNotNull(bool* to, bool val) {
  ****************************************/
 QVariant StringTypeValueFactory::getValueFromString(const QString& str, bool* ok) const {
     setIfNotNull(ok, true);
-    return qVariantFromValue(str);
+    return QVariant::fromValue(str);
 }
 
 /****************************************
@@ -277,11 +277,11 @@ QVariant BoolTypeValueFactory::getValueFromString(const QString& s, bool* ok) co
     QString str = s.toLower();
     if (str == TRUE_STR || str == YES_STR || str == ONE_STR) {
         setIfNotNull(ok, true);
-        return qVariantFromValue(true);
+        return QVariant::fromValue(true);
     }
     if (str == FALSE_STR || str == NO_STR || str == NIL_STR) {
         setIfNotNull(ok, true);
-        return qVariantFromValue(false);
+        return QVariant::fromValue(false);
     }
     setIfNotNull(ok, false);
     return QVariant();
@@ -296,19 +296,19 @@ QVariant NumTypeValueFactory::getValueFromString(const QString& str, bool* okArg
     qint64 longIntCandidate = str.toLongLong(&ok);
     if (ok) {
         setIfNotNull(okArg, true);
-        return qVariantFromValue(longIntCandidate);
+        return QVariant::fromValue(longIntCandidate);
     }
 
     int intCandidate = str.toInt(&ok);
     if (ok) {
         setIfNotNull(okArg, true);
-        return qVariantFromValue(intCandidate);
+        return QVariant::fromValue(intCandidate);
     }
 
     double doubleCandidate = str.toDouble(&ok);
     if (ok) {
         setIfNotNull(okArg, true);
-        return qVariantFromValue(doubleCandidate);
+        return QVariant::fromValue(doubleCandidate);
     }
 
     setIfNotNull(okArg, false);
@@ -332,7 +332,7 @@ QVariant UrlTypeValueFactory::getValueFromString(const QString& str, bool* ok) c
         sets << dSet;
     }
     *ok = true;
-    return qVariantFromValue<QList<Dataset>>(sets);
+    return QVariant::fromValue<QList<Dataset>>(sets);
 }
 
 QString UrlTypeValueFactory::getId() const {

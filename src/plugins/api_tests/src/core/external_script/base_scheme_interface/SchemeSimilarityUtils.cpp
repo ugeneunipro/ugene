@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -201,7 +201,7 @@ QStringList SchemeSimilarityUtils::getNonSpaceStatementsFromScheme(const QString
     QStringList statements = schemeContent.mid(schemeDescStartPos,
                                                schemeDescEndPos - schemeDescStartPos)
                                  .split(Constants::NEW_LINE,
-                                        QString::SkipEmptyParts);
+                                        Qt::SkipEmptyParts);
     for (int i = 0; i < statements.length(); ++i) {
         statements[i] = statements[i].trimmed();
         if (statements[i].isEmpty()) {

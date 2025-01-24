@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -741,7 +741,7 @@ void TopHatWorker::sl_topHatTaskFinished() {
 
     if (output) {
         QVariantMap m;
-        m[ACCEPTED_HITS_SLOT_ID] = qVariantFromValue<SharedDbiDataHandler>(task->getAcceptedHits());
+        m[ACCEPTED_HITS_SLOT_ID] = QVariant::fromValue<SharedDbiDataHandler>(task->getAcceptedHits());
         m[SAMPLE_SLOT_ID] = getSampleName(task->getDatasetName());
         m[OUT_BAM_URL_SLOT_ID] = task->getOutBamUrl();
         output->put(Message(output->getBusType(), m));

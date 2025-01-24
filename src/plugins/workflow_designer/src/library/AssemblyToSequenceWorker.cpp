@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -124,7 +124,7 @@ void AssemblyToSequencesTask::run() {
         SharedDbiDataHandler seqHandler = storage->putSequence(seq);
 
         QVariantMap seqData;
-        seqData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqHandler);
+        seqData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqHandler);
         Message m(busType, seqData);
         // the context is needed! It keeps the corresponding data
         channel->setContext(ctx, message.getMetadataId());

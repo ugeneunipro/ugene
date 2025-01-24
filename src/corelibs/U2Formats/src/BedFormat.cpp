@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -227,12 +227,12 @@ bool validateBlocks(const QString& blockCountStr, const QString& blockSizesStr, 
     }
 
     // Skipping empty parts because values can have e.g. the following format: "567, 488," (comma at the end)
-    QStringList blockSizesStrValues = blockSizesStr.split(",", QString::SkipEmptyParts);
+    QStringList blockSizesStrValues = blockSizesStr.split(",", Qt::SkipEmptyParts);
     if (blockSizesStrValues.count() != blockCount) {
         return false;
     }
 
-    QStringList blockStartsStrValues = blockStartsStr.split(",", QString::SkipEmptyParts);
+    QStringList blockStartsStrValues = blockStartsStr.split(",", Qt::SkipEmptyParts);
     if (blockStartsStrValues.count() != blockCount) {
         return false;
     }

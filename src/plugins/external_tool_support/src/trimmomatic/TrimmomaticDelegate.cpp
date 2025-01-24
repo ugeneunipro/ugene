@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -277,7 +277,7 @@ void TrimmomaticPropertyDialog::sl_moveStepUp() {
         listSteps->insertItem(selectedStepNum - 1, listSteps->takeItem(selectedStepNum));
     }
 
-    steps.swap(selectedStepNum, selectedStepNum - 1);
+    std::swap(steps[selectedStepNum], steps[selectedStepNum - 1]);
     listSteps->setCurrentRow(selectedStepNum - 1);
 }
 
@@ -299,7 +299,7 @@ void TrimmomaticPropertyDialog::sl_moveStepDown() {
         listSteps->insertItem(selectedStepNum + 1, listSteps->takeItem(selectedStepNum));
     }
 
-    steps.swap(selectedStepNum, selectedStepNum + 1);
+    std::swap(steps[selectedStepNum], steps[selectedStepNum + 1]);
     listSteps->setCurrentRow(selectedStepNum + 1);
 }
 

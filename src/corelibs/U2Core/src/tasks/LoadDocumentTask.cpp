@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -339,8 +339,7 @@ static QList<Document*> loadMulti(const QVariantMap& fs, U2OpStatus& os) {
         int len = 100 / urls.size();
         U2OpStatusChildImpl localOs(&os, U2OpStatusMapping(curentDocIdx * len, (curentDocIdx == urls.size() - 1) ? (100 - curentDocIdx * len) : len));
 
-        QVariantMap fsLocal;
-        fsLocal.unite(fs);
+        QVariantMap fsLocal(fs);
         fsLocal.remove(DocumentReadingMode_SequenceMergeGapSize);
         SAFE_POINT_EXT(AppContext::getDocumentFormatRegistry() != nullptr, os.setError("DocumentFormatRegistry is NULL"), docs);
         DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(formats[0].format->getFormatId());

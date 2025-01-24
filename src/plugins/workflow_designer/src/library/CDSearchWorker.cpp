@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -203,7 +203,7 @@ void CDSearchWorker::sl_taskFinished(Task* t) {
             }
         }
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(res);
-        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
+        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(tableId)));
     }
     delete cds;
     cds = nullptr;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +65,9 @@ void AnnotationSettingsRegistry::changeSettings(const QList<AnnotationSettings*>
 }
 
 QStringList AnnotationSettingsRegistry::getAllSettings() const {
-    return (persistentMap.keys() + transientMap.keys()).toSet().toList();
+    QStringList allKeys = persistentMap.keys() + transientMap.keys();
+    QSet<QString> uniqueKeys(allKeys.begin(), allKeys.end());
+    return QStringList(uniqueKeys.begin(), uniqueKeys.end());
 }
 
 AnnotationSettings* AnnotationSettingsRegistry::getAnnotationSettings(const SharedAnnotationData& a) {
@@ -125,7 +127,7 @@ void AnnotationSettingsRegistry::read() {
         as->showNameQuals = s->getValue(SETTINGS_ROOT + as->name + "/show_quals", false).toBool();
         QString qs = s->getValue(SETTINGS_ROOT + as->name + "/quals", "").toString();
         if (!qs.isEmpty()) {
-            as->nameQuals = qs.split(',', QString::SkipEmptyParts);
+            as->nameQuals = qs.split(',', Qt::SkipEmptyParts);
         }
         list.append(as);
     }

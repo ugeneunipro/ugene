@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,11 +59,11 @@ QString U2SavableWidget::getWidgetId() const {
 
 QSet<QString> U2SavableWidget::getChildIds() const {
     const QSet<QWidget*> compoundChildren = getCompoundChildren();
-    const QSet<QWidget*> allChildren = wrappedWidget->findChildren<QWidget*>().toSet();
+    const QSet<QWidget*> allChildren = toSet(wrappedWidget->findChildren<QWidget*>());
     QSet<QWidget*> childrenToConsider = allChildren;
 
     foreach (QWidget* compoundChild, compoundChildren) {
-        childrenToConsider -= compoundChild->findChildren<QWidget*>().toSet();
+        childrenToConsider -= toSet(compoundChild->findChildren<QWidget*>());
     }
 
     QSet<QString> result;
@@ -194,7 +194,7 @@ MWMDIWindow* U2SavableWidget::getContextWindow() const {
 }
 
 QSet<QWidget*> U2SavableWidget::getCompoundChildren() const {
-    return QSet<QWidget*>();
+    return {};
 }
 
 bool U2SavableWidget::isExcluded(const QString& childId) const {

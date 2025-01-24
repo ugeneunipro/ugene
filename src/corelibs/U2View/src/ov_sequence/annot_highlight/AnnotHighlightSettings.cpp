@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ void AnnotHighlightSettingsWidget::sl_onShowQualifierChanged(int checkedState) {
 
 void AnnotHighlightSettingsWidget::sl_onEditQualifiersChanged(const QString& inputNameQuals) {
     SAFE_POINT(0 != currentSettings, "An annotation should always be selected!", );
-    QStringList qualifierNames = inputNameQuals.split(',', QString::SkipEmptyParts);
+    QStringList qualifierNames = inputNameQuals.split(',', Qt::SkipEmptyParts);
     QStringList prevValue = currentSettings->nameQuals;
 
     // Validate the input

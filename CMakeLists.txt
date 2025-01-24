@@ -1,8 +1,8 @@
-# CMake build is not officially supported by UGENE and
-# can only be used for development (for example to enable CLion IDE integration)
+# CMake is the default build system for UGENE.
+# Ensure you add the Qt5_DIR variable, example: Qt5_DIR=/home/yalgaer/tools/qt/5.15.6/gcc_64.
 #
 # For CLion developers:
-#   * add Qt5_DIR variable to File->Settings->Build,Execution,Deployment->CMake pointing to valid QT dir.
+#   Add Qt5_DIR variable in File → Settings → Build, Execution, Deployment → CMake.
 
 cmake_minimum_required(VERSION 3.20)
 project(ugene)
@@ -12,12 +12,13 @@ project(ugene)
 set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 set(UGENE_VERSION 53.0-dev)
 
+message(STATUS "CMake version: ${CMAKE_VERSION}")
 message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
 
 add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}
         -DQT_FATAL_ASSERT
-        -DQT_DISABLE_DEPRECATED_BEFORE=0x050900
+        -DQT_DISABLE_DEPRECATED_BEFORE=0x050F00
 )
 
 set(CMAKE_CXX_STANDARD 14)
@@ -43,6 +44,10 @@ if (WIN32)
     )
     string(REPLACE "/RTC1" "" CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
     string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+
+    # Add map files for release binaries
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /INCREMENTAL:NO /MAP /MAPINFO:EXPORTS /DEBUG")
+    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /INCREMENTAL:NO /MAP /MAPINFO:EXPORTS /DEBUG")
 endif ()
 
 # Use to disable -isystem support and work in qmake mode.
@@ -78,6 +83,16 @@ endif ()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
+
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/dist)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/dist)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/dist)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/dist)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/dist)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/dist)
+endif ()
 
 # 3rd party libraries.
 add_subdirectory(src/libs_3rdparty/QSpec)

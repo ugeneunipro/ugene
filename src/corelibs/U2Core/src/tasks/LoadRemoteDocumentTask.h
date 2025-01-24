@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,9 @@
  */
 
 #pragma once
+
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
 
 #include <QAuthenticator>
 #include <QNetworkReply>

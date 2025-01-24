@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QPainter>
+#include <QRandomGenerator>
 #include <QStyle>
 
 #include <U2Core/AppContext.h>
@@ -40,7 +41,7 @@ AboutDialogController::AboutDialogController(QAction* visitWebAction, QWidget* p
     setupUi(this);
 
     auto l = new QHBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->addStretch(1);
     l->addStretch(1);
     frame->setContentsMargins(0, 0, 0, 0);
@@ -182,11 +183,12 @@ void AWidget::timerEvent(QTimerEvent* e) {
     calcWater(page, density);
     page ^= 1;
 
-    if (qrand() % 128 == 0) {
-        int r = 3 + qRound(qrand() * 4. / RAND_MAX);
-        int h = 300 + qrand() * 200 / RAND_MAX;
-        int x = 1 + r + qrand() % (image1.width() - 2 * r - 1);
-        int y = 1 + r + qrand() % (image1.height() - 2 * r - 1);
+    auto rnd = QRandomGenerator::global();
+    if (rnd->bounded(128) == 0) {
+        int r = 3 + rnd->bounded(4);
+        int h = 300 + rnd->bounded(200);
+        int x = 1 + r + rnd->bounded(image1.width() - 2 * r - 1);
+        int y = 1 + r + rnd->bounded(image1.height() - 2 * r - 1);
         addBlob(x, y, r, h);
     }
 
@@ -552,7 +554,7 @@ void TBoard::showNextPiece() {
 
     QPixmap pixmap(dx * squareWidth(), dy * squareHeight());
     QPainter painter(&pixmap);
-    painter.fillRect(pixmap.rect(), nextPieceLabel->palette().background());
+    painter.fillRect(pixmap.rect(), nextPieceLabel->palette().window());
 
     for (int i = 0; i < 4; ++i) {
         int x = nextPiece.x(i) - nextPiece.minX();
@@ -587,17 +589,17 @@ void TBoard::drawSquare(QPainter& painter, int x, int y, TPiece::Shape shape) {
     QColor color = colorTable[int(shape)];
     painter.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2, color);
 
-    painter.setPen(color.light());
+    painter.setPen(color.lighter());
     painter.drawLine(x, y + squareHeight() - 1, x, y);
     painter.drawLine(x, y, x + squareWidth() - 1, y);
 
-    painter.setPen(color.dark());
+    painter.setPen(color.darker());
     painter.drawLine(x + 1, y + squareHeight() - 1, x + squareWidth() - 1, y + squareHeight() - 1);
     painter.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + squareWidth() - 1, y + 1);
 }
 
 void TPiece::setRandomShape() {
-    setShape(TPiece::Shape(qrand() % 7 + 1));
+    setShape(TPiece::Shape(QRandomGenerator::global()->bounded(1, 8)));
 }
 
 void TPiece::setShape(TPiece::Shape shape) {
@@ -680,7 +682,7 @@ TPiece TPiece::rotatedRight() const {
 NextPieceLabel::NextPieceLabel(QWidget* parent /* = 0*/)
     : QLabel(parent) {
     QPalette p = palette();
-    p.setColor(QPalette::Background, Qt::white);
+    p.setColor(QPalette::Window, Qt::white);
     setPalette(p);
     setFrameShape(QFrame::Box);
     setAlignment(Qt::AlignCenter);

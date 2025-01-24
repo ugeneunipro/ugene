@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,6 +38,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QIcon>
+#include <QScreen>
 #include <QStyleFactory>
 #include <QTranslator>
 
@@ -453,11 +454,12 @@ int main(int argc, char** argv) {
     auto splashScreen = new SplashScreen(&window);
     splashScreen->adjustSize();
     splashScreen->setGeometry(
-        QStyle::alignedRect(
-            Qt::LeftToRight,
-            Qt::AlignCenter,
-            splashScreen->size(),
-            qApp->desktop()->availableGeometry(QApplication::desktop()->primaryScreen())));
+     QStyle::alignedRect(
+         Qt::LeftToRight,
+         Qt::AlignCenter,
+         splashScreen->size(),
+         QGuiApplication::primaryScreen()->availableGeometry()));
+
     splashScreen->show();
 
     AppContextImpl* appContext = AppContextImpl::getApplicationContext();

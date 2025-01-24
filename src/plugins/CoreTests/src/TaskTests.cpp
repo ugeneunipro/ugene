@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -614,7 +614,7 @@ void GTest_Wait::run() {
             stateInfo.setError(QString("invalid context %1").arg(objContextName));
             return;
         }
-        QTime timer;
+        QElapsedTimer timer;
         timer.start();
         while (timer.elapsed() < ms && !isCanceled()) {
             if (task->getState() == waitForState) {
@@ -623,7 +623,7 @@ void GTest_Wait::run() {
             SThread::msleep(100);
         }
     } else {
-        QTime timer;
+        QElapsedTimer timer;
         timer.start();
         while (timer.elapsed() < ms && !isCanceled()) {
             SThread::msleep(100);

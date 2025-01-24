@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,9 @@
 #include "DialogUtils.h"
 
 #include <QCoreApplication>
-#include <QMessageBox>
 #include <QWizard>
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/FormatUtils.h>
 #include <U2Core/Task.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
@@ -55,7 +53,7 @@ void WizardUtils::setWizardMinimumSize(QWizard* wizard, const QSize& minimumSize
 void FileLineEdit::sl_onBrowse() {
     LastUsedDirHelper lod(type);
 
-    QFileDialog::Options options = 0;
+    QFileDialog::Options options = {0};
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         options |= QFileDialog::DontUseNativeDialog;
     }

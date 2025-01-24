@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -210,7 +210,8 @@ QList<GObject*> GObjectUtils::findObjectsRelatedToObjectByRole(const GObjectRefe
             }
         }
     } else if (UOF_LoadedOnly == f) {
-        loadedObjs = select(fromObjects, resultObjType, f).toSet();
+        auto selectedObjs = select(fromObjects, resultObjType, f);
+        loadedObjs = QSet<GObject*>(selectedObjs.begin(), selectedObjs.end());
     } else {
         FAIL("Unexpected unloaded object filter detected", res);
     }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -197,7 +197,7 @@ void SequenceSplitWorker::sl_onTaskFinished(Task*) {
 
             QVariantMap messageData;
             SharedDbiDataHandler seqId = context->getDataStorage()->putSequence(resSeq);
-            messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+            messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
 
             DataTypePtr messageType = WorkflowEnv::getDataTypeRegistry()->getById(REGIONED_SEQ_TYPE);
             if (outPort) {

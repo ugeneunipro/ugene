@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -285,7 +285,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter& p) {
 
     // Prepare font
     QFont font = p.font();
-    font.setStyleHint(QFont::SansSerif, (QFont::StyleStrategy)(QFont::PreferAntialias | QFont::ForceIntegerMetrics));
+    font.setStyleHint(QFont::SansSerif, QFont::PreferAntialias);
     p.setFont(font);
     QFontMetrics fontMetrics(font, this);
 
@@ -293,7 +293,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter& p) {
 
     // draw Visible Region
     QString visibleRegionText = tr("%1 to %2 (%3 bp)").arg(visibleStartText).arg(visibleEndText).arg(visibleDiffText);
-    QRect grtRect = QRect(0, 0, fontMetrics.width(visibleRegionText), fontMetrics.height());
+    QRect grtRect = QRect(0, 0, fontMetrics.horizontalAdvance(visibleRegionText), fontMetrics.height());
     grtRect.translate(xoffset, rect().height() - yoffset - grtRect.height());
     if (rect().contains(grtRect)) {
         p.fillRect(grtRect, labelBackgroundColor);
@@ -315,7 +315,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter& p) {
 
     // draw text
     QString selectedRegionText = tr("%1 to %2 (%3 bp)").arg(fromText, toText, diff);
-    QRect srtRect = QRect(0, 0, fontMetrics.width(selectedRegionText), fontMetrics.height());
+    QRect srtRect = QRect(0, 0, fontMetrics.horizontalAdvance(selectedRegionText), fontMetrics.height());
     srtRect.translate(rect().width() - srtRect.width() - xoffset, rect().height() - yoffset - grtRect.height());
     if (rect().contains(srtRect) && !srtRect.intersects(grtRect)) {
         p.fillRect(srtRect, labelBackgroundColor);
@@ -557,8 +557,8 @@ void ZoomableAssemblyOverview::mouseReleaseEvent(QMouseEvent* me) {
 }
 
 void ZoomableAssemblyOverview::wheelEvent(QWheelEvent* e) {
-    bool positive = e->delta() > 0;
-    int numDegrees = abs(e->delta()) / 8;
+    bool positive = e->angleDelta().y() > 0;
+    int numDegrees = abs(e->angleDelta().y()) / 8;
     int numSteps = numDegrees / 15;
 
     // zoom
@@ -567,9 +567,9 @@ void ZoomableAssemblyOverview::wheelEvent(QWheelEvent* e) {
             // with Ctrl: zoom overview
             for (int i = 0; i < numSteps; ++i) {
                 if (positive) {
-                    sl_zoomIn(e->pos());
+                    sl_zoomIn(e->position().toPoint());
                 } else {
-                    sl_zoomOut(e->pos());
+                    sl_zoomOut(e->position().toPoint());
                 }
             }
         } else {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -85,7 +85,7 @@ QString Folder::getFolderParentPath(const QString& path) {
 
 QString Folder::getFolderName(const QString& path) {
     SAFE_POINT(!path.isEmpty(), "Can't extract the folder name from the empty path", "");
-    QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
+    QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, Qt::SkipEmptyParts);
     if (pathList.isEmpty()) {
         return U2ObjectDbi::ROOT_FOLDER;
     }

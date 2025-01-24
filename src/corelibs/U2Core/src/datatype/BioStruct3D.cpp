@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -212,7 +212,7 @@ QByteArray BioStruct3D::getRawSequenceByChainIndex(int id) const {
     const SharedMolecule molecule = moleculeMap.value(id);
     foreach (const SharedResidue residue, molecule->residueMap) {
         QChar c = residue->acronym;
-        sequence.append(c);
+        sequence.append(c.toLatin1());
     }
 
     return sequence;

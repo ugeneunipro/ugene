@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,6 @@
 #pragma once
 
 #include <QDateTime>
-#include <QMimeData>
-#include <QPointer>
 #include <QScriptValue>
 
 #include <U2Core/DNASequence.h>
@@ -276,8 +274,8 @@ public:
     }
 
     void clear() {
-        flagsToSupport = 0;
-        flagsToExclude = 0;
+        flagsToSupport = DocumentFormatFlags(0);
+        flagsToExclude = DocumentFormatFlags(0);
         checkRawData = false;
         rawData.clear();
         minDataCheckResult = FormatDetection_VeryLowSimilarity;

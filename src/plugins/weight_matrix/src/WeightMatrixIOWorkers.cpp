@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -229,7 +229,7 @@ void PWMatrixReader::sl_taskFinished() {
         return;
     if (output) {
         if (!t->hasError()) {
-            QVariant v = qVariantFromValue<PWMatrix>(t->getResult());
+            QVariant v = QVariant::fromValue<PWMatrix>(t->getResult());
             output->put(Message(mtype, v));
         }
         ioLog.info(tr("Loaded weight matrix from %1").arg(t->getURL()));
@@ -451,7 +451,7 @@ void PFMatrixReader::sl_taskFinished() {
         return;
     if (output) {
         if (!t->hasError()) {
-            QVariant v = qVariantFromValue<PFMatrix>(t->getResult());
+            QVariant v = QVariant::fromValue<PFMatrix>(t->getResult());
             output->put(Message(mtype, v));
         }
         ioLog.info(tr("Loaded frequency matrix from %1").arg(t->getURL()));

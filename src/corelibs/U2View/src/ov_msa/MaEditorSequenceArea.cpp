@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -838,7 +838,7 @@ void MaEditorSequenceArea::paintEvent(QPaintEvent* e) {
 }
 
 void MaEditorSequenceArea::wheelEvent(QWheelEvent* we) {
-    bool toMin = we->delta() > 0;
+    bool toMin = we->angleDelta().y() > 0;
     // Manually shift scrollbars on wheel event.
     // With no modifiers the default scrollbar is shifted.
     // Wheel + Alt changes the default wheel action from horizontal <=> vertical (default QT behavior for scroll-areas).

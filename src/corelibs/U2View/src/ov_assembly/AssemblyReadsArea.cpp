@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,15 +27,13 @@
 #include <QCursor>
 #include <QMessageBox>
 #include <QPainter>
+#include <QRandomGenerator>
 #include <QResizeEvent>
-#include <QVBoxLayout>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -360,7 +358,7 @@ void AssemblyReadsArea::showWelcomeScreen() {
 
     assert(!HOTKEY_DESCRIPTIONS.isEmpty());
     if (currentHotkeyIndex == -1 || !coveredRegionsLabel.isVisible()) {
-        currentHotkeyIndex = qrand() % HOTKEY_DESCRIPTIONS.size();
+        currentHotkeyIndex = QRandomGenerator::global()->bounded(HOTKEY_DESCRIPTIONS.size());
     }
     QString postfix = "</center><br><br><br><u>TIP:</u>&nbsp;&nbsp;&nbsp;";
     HotkeyDescription hotkey = HOTKEY_DESCRIPTIONS.at(currentHotkeyIndex);
@@ -679,7 +677,7 @@ void AssemblyReadsArea::resizeEvent(QResizeEvent* e) {
 
 void AssemblyReadsArea::wheelEvent(QWheelEvent* e) {
     // This method is complicated because of UGENE-3183
-    accumulateDelta(e->delta());
+    accumulateDelta(e->angleDelta().y());
 
     bool positive = wheelEventAccumulatedDelta > 0;
     int numDegrees = abs(wheelEventAccumulatedDelta) / 8;

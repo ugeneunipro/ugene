@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,10 +66,10 @@ QStringList ImportPrimersFromFolderTask::getDirectSubfolders() {
     U2ObjectDbi* objectDbi = connection.dbi->getObjectDbi();
     SAFE_POINT_EXT(objectDbi != nullptr, setError(L10N::nullPointerError("object DBI")), directSubfolders);
 
-    const QStringList parentFolderPathParts = folder.getFolderPath().split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
+    const QStringList parentFolderPathParts = folder.getFolderPath().split(U2ObjectDbi::PATH_SEP, Qt::SkipEmptyParts);
     const QStringList folderPaths = objectDbi->getFolders(stateInfo);
     foreach (const QString& folderPath, folderPaths) {
-        QStringList folderPathParts = folderPath.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
+        QStringList folderPathParts = folderPath.split(U2ObjectDbi::PATH_SEP, Qt::SkipEmptyParts);
         if (!folderPathParts.isEmpty()) {
             folderPathParts.removeLast();
             if (parentFolderPathParts == folderPathParts) {

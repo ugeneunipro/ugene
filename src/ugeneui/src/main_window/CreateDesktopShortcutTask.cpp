@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
+
 #include "CreateDesktopShortcutTask.h"
 
 #if defined(Q_OS_WIN)
@@ -27,27 +30,18 @@
 #include <ShlGuid.h>
 #include <ShlObj.h>
 // clang-format on
-#elif defined(Q_OS_LINUX)
-#    include <QCoreApplication>
-#    include <QDir>
-#    include <QFile>
-#elif defined(Q_OS_DARWIN)
-#    include <QCoreApplication>
-#    include <QDir>
-#    include <QFileInfo>
-#    include <QProcess>
-#    include <QTemporaryFile>
-#endif  // Q_OS_WIN || Q_OS_LINUX || Q_OS_DARWIN
+#endif
 
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
 #include <QMainWindow>
 #include <QMessageBox>
-#include <QNetworkReply>
-#include <QPushButton>
+#include <QProcess>
+#include <QTemporaryFile>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
-#include <U2Core/NetworkConfiguration.h>
-#include <U2Core/Settings.h>
 #include <U2Core/SyncHttp.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -63,103 +57,107 @@ CreateDesktopShortcutTask::CreateDesktopShortcutTask(bool startUp)
 }
 
 bool CreateDesktopShortcutTask::createDesktopShortcut() {
+    if (isOsWindows()) {
 #if defined(Q_OS_WIN)
-    HRESULT hres;
-    IShellLink* psl;
+        HRESULT hres;
+        IShellLink* psl;
 
-    // Initialize COM
-    CoInitialize(0);
-    // Get a pointer to the IShellLink interface. It is assumed that CoInitialize
-    // has already been called.
-    hres = CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID*)&psl);
-    if (SUCCEEDED(hres)) {
-        // Set the path to the shortcut target and add the description.
-        WCHAR path[MAX_PATH];
-        GetModuleFileNameW(nullptr, path, MAX_PATH);
-        psl->SetPath(path);
-        psl->SetDescription(L"Unipro UGENE");
-
-        // Query IShellLink for the IPersistFile interface, used for saving the
-        // shortcut in persistent storage.
-        IPersistFile* ppf;
-        hres = psl->QueryInterface(IID_IPersistFile, (LPVOID*)&ppf);
-
+        // Initialize COM
+        CoInitialize(0);
+        // Get a pointer to the IShellLink interface. It is assumed that CoInitialize
+        // has already been called.
+        hres = CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID*)&psl);
         if (SUCCEEDED(hres)) {
-            WCHAR wsz[MAX_PATH + 1];
-            CHAR pathLink[MAX_PATH + 1];
+            // Set the path to the shortcut target and add the description.
+            WCHAR path[MAX_PATH];
+            GetModuleFileNameW(nullptr, path, MAX_PATH);
+            psl->SetPath(path);
+            psl->SetDescription(L"Unipro UGENE");
 
-            hres = 0;
-            if (SHGetSpecialFolderPathA(HWND_DESKTOP, pathLink, CSIDL_DESKTOP, FALSE)) {
-                if ((MAX_PATH - strlen(pathLink)) >= strlen("\\UGENE.lnk")) {
-                    strncat(pathLink, "\\UGENE.lnk", strlen("\\UGENE.lnk"));
+            // Query IShellLink for the IPersistFile interface, used for saving the
+            // shortcut in persistent storage.
+            IPersistFile* ppf;
+            hres = psl->QueryInterface(IID_IPersistFile, (LPVOID*)&ppf);
 
-                    // Ensure that the string is Unicode.
-                    MultiByteToWideChar(CP_ACP, 0, pathLink, -1, wsz, MAX_PATH);
+            if (SUCCEEDED(hres)) {
+                WCHAR wsz[MAX_PATH + 1];
+                CHAR pathLink[MAX_PATH + 1];
 
-                    // Add code here to check return value from MultiByteWideChar
-                    // for success.
+                hres = 0;
+                if (SHGetSpecialFolderPathA(HWND_DESKTOP, pathLink, CSIDL_DESKTOP, FALSE)) {
+                    if ((MAX_PATH - strlen(pathLink)) >= strlen("\\UGENE.lnk")) {
+                        strncat(pathLink, "\\UGENE.lnk", strlen("\\UGENE.lnk"));
 
-                    // Save the link by calling IPersistFile::Save.
-                    hres = ppf->Save(wsz, TRUE);
-                    ppf->Release();
+                        // Ensure that the string is Unicode.
+                        MultiByteToWideChar(CP_ACP, 0, pathLink, -1, wsz, MAX_PATH);
+
+                        // Add code here to check return value from MultiByteWideChar
+                        // for success.
+
+                        // Save the link by calling IPersistFile::Save.
+                        hres = ppf->Save(wsz, TRUE);
+                        ppf->Release();
+                    }
                 }
             }
+            psl->Release();
         }
-        psl->Release();
-    }
-    return SUCCEEDED(hres);
-#elif defined(Q_OS_LINUX)
-    QString homeDir = QDir::homePath();
-    QFile link(homeDir + "/Desktop/UGENE.desktop");
-    if (link.open(QFile::WriteOnly | QFile::Truncate)) {
-        QTextStream out(&link);
-        out.setCodec("UTF-8");
-        out << "[Desktop Entry]" << endl
-            << "Encoding=UTF-8" << endl
-            << "Version=1.0" << endl
-            << "Type=Application" << endl
-            << "Terminal=false" << endl
-            << "Exec=" + QCoreApplication::applicationFilePath() << endl
-            << "Name=Unipro UGENE" << endl
-            << "Icon=" + QCoreApplication::applicationDirPath() + "/ugene.png" << endl
-            << "Name[en_US]=Unipro UGENE" << endl;
-        link.close();
-        if (!link.setPermissions(link.permissions() | QFileDevice::ExeOwner | QFileDevice::ExeUser)) {
-            return false;
+        return SUCCEEDED(hres);
+#endif
+    } else if (isOsLinux()) {
+        QString homeDir = QDir::homePath();
+        QFile link(homeDir + "/Desktop/UGENE.desktop");
+        if (link.open(QFile::WriteOnly | QFile::Truncate)) {
+            QTextStream out(&link);
+            out.setCodec("UTF-8");
+            out << "[Desktop Entry]" << Qt::endl
+                << "Encoding=UTF-8" << Qt::endl
+                << "Version=1.0" << Qt::endl
+                << "Type=Application" << Qt::endl
+                << "Terminal=false" << Qt::endl
+                << "Exec=" + QCoreApplication::applicationFilePath() << Qt::endl
+                << "Name=Unipro UGENE" << Qt::endl
+                << "Icon=" + QCoreApplication::applicationDirPath() + "/ugene.png" << Qt::endl
+                << "Name[en_US]=Unipro UGENE" << Qt::endl;
+            link.close();
+            if (!link.setPermissions(link.permissions() | QFileDevice::ExeOwner | QFileDevice::ExeUser)) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    } else if (isOsMac()) {
+        QTemporaryFile file;
+        if (file.open()) {
+            // We're going to streaming text to the file
+            QTextStream stream(&file);
+            stream << "#!/bin/bash" << '\n'
+                   << "" << '\n'
+                   << "osascript <<END_SCRIPT" << '\n'
+                   << "tell application \"Finder\" to make alias file to file (posix file \"$1\") at desktop" << '\n'
+                   << "END_SCRIPT" << '\n';
+            file.close();
+            if (!file.setPermissions(file.permissions() | QFileDevice::ExeOwner | QFileDevice::ExeUser)) {
+                return false;
+            }
+            QFileInfo script(file);
+            QString ugeneui_path = QCoreApplication::applicationFilePath();
+            if (QProcess::execute(QString("/bin/sh ") + script.absoluteFilePath() + " " + ugeneui_path) != 0) {
+                return false;
+            }
+
+            QFileInfo fileInfo(ugeneui_path);
+            QString filename(fileInfo.fileName());
+            QFile link(QDir::homePath() + "/Desktop/" + filename);
+            if (QProcess::execute(QString("/usr/bin/mdls ") + link.fileName()) != 0) {
+                return false;
+            }
         }
         return true;
     }
     return false;
-#elif defined(Q_OS_DARWIN)
-    QTemporaryFile file;
-    if (file.open()) {
-        // We're going to streaming text to the file
-        QTextStream stream(&file);
-        stream << "#!/bin/bash" << '\n'
-               << "" << '\n'
-               << "osascript <<END_SCRIPT" << '\n'
-               << "tell application \"Finder\" to make alias file to file (posix file \"$1\") at desktop" << '\n'
-               << "END_SCRIPT" << '\n';
-        file.close();
-        if (!file.setPermissions(file.permissions() | QFileDevice::ExeOwner | QFileDevice::ExeUser)) {
-            return false;
-        }
-        QFileInfo script(file);
-        QString ugeneui_path = QCoreApplication::applicationFilePath();
-        if (QProcess::execute(QString("/bin/sh ") + script.absoluteFilePath() + " " + ugeneui_path) != 0) {
-            return false;
-        }
-
-        QFileInfo fileInfo(ugeneui_path);
-        QString filename(fileInfo.fileName());
-        QFile link(QDir::homePath() + "/Desktop/" + filename);
-        if (QProcess::execute(QString("/usr/bin/mdls ") + link.fileName()) != 0) {
-            return false;
-        }
-    }
-    return true;
-#endif  // Q_OS_WIN
 }
+
 void CreateDesktopShortcutTask::run() {
     if (!runOnStartup) {
         createDesktopShortcut();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ PFMatrix WeightMatrixIO::readPFMatrix(IOAdapterReader& reader, TaskStateInfo& si
             continue;
         }
 
-        QStringList curr = line.split(" ", QString::SkipEmptyParts);
+        QStringList curr = line.split(" ", Qt::SkipEmptyParts);
 
         if (len == -1) {
             len = curr.length();
@@ -179,7 +179,7 @@ PWMatrix WeightMatrixIO::readPWMatrix(IOAdapterReader& reader, TaskStateInfo& si
             continue;
         }
 
-        QStringList curr = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        QStringList curr = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
 
         if (len == -1) {
             len = curr.length() - 1;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -84,7 +84,9 @@ StrStrMap ImportDirToDatabaseTask::getSkippedFiles() const {
     CHECK(isFinished(), skippedFiles);
 
     foreach (ImportDirToDatabaseTask* importSubdirTask, importSubdirsTasks) {
-        skippedFiles.unite(importSubdirTask->getSkippedFiles());
+        for (auto it = importSubdirTask->getSkippedFiles().begin(); it != importSubdirTask->getSkippedFiles().end(); ++it) {
+            skippedFiles.insert(it.key(), it.value());
+        }
     }
 
     foreach (ImportFileToDatabaseTask* importSubfileTask, importSubfilesTasks) {

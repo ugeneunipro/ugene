@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -107,7 +107,7 @@ void ProfileToProfileWorker::sl_taskFinished() {
         resultAl->setName("Aligned");
         SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(resultAl);
         QVariantMap msgData;
-        msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
+        msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(msaId);
         outPort->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), msgData));
         algoLog.info(tr("Aligned profile to profile with MUSCLE").arg(t->getResult()->getName()));
     }

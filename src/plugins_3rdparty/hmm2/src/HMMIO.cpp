@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -78,40 +78,40 @@ void HMMIO::writeHMM2(IOAdapterFactory* iof, const QString& url, TaskStateInfo& 
     SetAlphabet(hmm->atype);
 
     QString res;
-    res += QString().sprintf("HMMER2.0  [%s]\n", PACKAGE_VERSION);  // magic header
+    res += QString::asprintf("HMMER2.0  [%s]\n", PACKAGE_VERSION);  // magic header
 
     // write header information
-    res += QString().sprintf("NAME  %s\n", hmm->name);
+    res += QString::asprintf("NAME  %s\n", hmm->name);
     if (hmm->flags & PLAN7_ACC) {
-        res += QString().sprintf("ACC   %s\n", hmm->acc);
+        res += QString::asprintf("ACC   %s\n", hmm->acc);
     }
     if (hmm->flags & PLAN7_DESC) {
-        res += QString().sprintf("DESC  %s\n", hmm->desc);
+        res += QString::asprintf("DESC  %s\n", hmm->desc);
     }
-    res += QString().sprintf("LENG  %d\n", hmm->M);
-    res += QString().sprintf("ALPH  %s\n", (al.Alphabet_type == hmmAMINO) ? "Amino" : "Nucleic");
-    res += QString().sprintf("RF    %s\n", (hmm->flags & PLAN7_RF) ? "yes" : "no");
-    res += QString().sprintf("CS    %s\n", (hmm->flags & PLAN7_CS) ? "yes" : "no");
-    res += QString().sprintf("MAP   %s\n", (hmm->flags & PLAN7_MAP) ? "yes" : "no");
+    res += QString::asprintf("LENG  %d\n", hmm->M);
+    res += QString::asprintf("ALPH  %s\n", (al.Alphabet_type == hmmAMINO) ? "Amino" : "Nucleic");
+    res += QString::asprintf("RF    %s\n", (hmm->flags & PLAN7_RF) ? "yes" : "no");
+    res += QString::asprintf("CS    %s\n", (hmm->flags & PLAN7_CS) ? "yes" : "no");
+    res += QString::asprintf("MAP   %s\n", (hmm->flags & PLAN7_MAP) ? "yes" : "no");
     multiline(res, "COM   ", hmm->comlog);
-    res += QString().sprintf("NSEQ  %d\n", hmm->nseq);
-    res += QString().sprintf("DATE  %s\n", hmm->ctime);
-    res += QString().sprintf("CKSUM %d\n", hmm->checksum);
+    res += QString::asprintf("NSEQ  %d\n", hmm->nseq);
+    res += QString::asprintf("DATE  %s\n", hmm->ctime);
+    res += QString::asprintf("CKSUM %d\n", hmm->checksum);
     if (hmm->flags & PLAN7_GA) {
-        res += QString().sprintf("GA    %.1f %.1f\n", hmm->ga1, hmm->ga2);
+        res += QString::asprintf("GA    %.1f %.1f\n", hmm->ga1, hmm->ga2);
     }
     if (hmm->flags & PLAN7_TC) {
-        res += QString().sprintf("TC    %.1f %.1f\n", hmm->tc1, hmm->tc2);
+        res += QString::asprintf("TC    %.1f %.1f\n", hmm->tc1, hmm->tc2);
     }
     if (hmm->flags & PLAN7_NC) {
-        res += QString().sprintf("NC    %.1f %.1f\n", hmm->nc1, hmm->nc2);
+        res += QString::asprintf("NC    %.1f %.1f\n", hmm->nc1, hmm->nc2);
     }
 
     // Specials
     res += "XT     ";
     for (int k = 0; k < 4; k++) {
         for (int x = 0; x < 2; x++) {
-            res += QString().sprintf("%6s ", prob2ascii(hmm->xt[k][x], 1.0));
+            res += QString::asprintf("%6s ", prob2ascii(hmm->xt[k][x], 1.0));
         }
     }
     res += "\n";
@@ -120,27 +120,27 @@ void HMMIO::writeHMM2(IOAdapterFactory* iof, const QString& url, TaskStateInfo& 
      * log odds scores on the fly. Save as log odds probabilities
      * relative to 1/Alphabet_size (flat distribution)
      */
-    res += QString().sprintf("NULT  ");
-    res += QString().sprintf("%6s ", prob2ascii(hmm->p1, 1.0)); /* p1 */
-    res += QString().sprintf("%6s\n", prob2ascii(1.0 - hmm->p1, 1.0)); /* p2 */
+    res += QString::asprintf("NULT  ");
+    res += QString::asprintf("%6s ", prob2ascii(hmm->p1, 1.0)); /* p1 */
+    res += QString::asprintf("%6s\n", prob2ascii(1.0 - hmm->p1, 1.0)); /* p2 */
     res += "NULE  ";
     for (int x = 0; x < al.Alphabet_size; x++) {
-        res += QString().sprintf("%6s ", prob2ascii(hmm->null[x], 1 / (float)(al.Alphabet_size)));
+        res += QString::asprintf("%6s ", prob2ascii(hmm->null[x], 1 / (float)(al.Alphabet_size)));
     }
     res += "\n";
 
     // EVD statistics
     if (hmm->flags & PLAN7_STATS) {
-        res += QString().sprintf("EVD   %10f %10f\n", hmm->mu, hmm->lambda);
+        res += QString::asprintf("EVD   %10f %10f\n", hmm->mu, hmm->lambda);
     }
 
     // Print header
-    res += QString().sprintf("HMM      ");
+    res += QString::asprintf("HMM      ");
     for (int x = 0; x < al.Alphabet_size; x++) {
-        res += QString().sprintf("  %c    ", al.Alphabet[x]);
+        res += QString::asprintf("  %c    ", al.Alphabet[x]);
     }
-    res += QString().sprintf("\n");
-    res += QString().sprintf("       %6s %6s %6s %6s %6s %6s %6s %6s %6s\n",
+    res += QString::asprintf("\n");
+    res += QString::asprintf("       %6s %6s %6s %6s %6s %6s %6s %6s %6s\n",
                              "m->m",
                              "m->i",
                              "m->d",
@@ -152,30 +152,30 @@ void HMMIO::writeHMM2(IOAdapterFactory* iof, const QString& url, TaskStateInfo& 
                              "m->e");
 
     // Print HMM parameters (main section of the save file)
-    res += QString().sprintf("       %6s %6s ", prob2ascii(1 - hmm->tbd1, 1.0), "*");
-    res += QString().sprintf("%6s\n", prob2ascii(hmm->tbd1, 1.0));
+    res += QString::asprintf("       %6s %6s ", prob2ascii(1 - hmm->tbd1, 1.0), "*");
+    res += QString::asprintf("%6s\n", prob2ascii(hmm->tbd1, 1.0));
     for (int k = 1; k <= hmm->M; k++) {
         /* Line 1: k, match emissions, map */
-        res += QString().sprintf(" %5d ", k);
+        res += QString::asprintf(" %5d ", k);
         for (int x = 0; x < al.Alphabet_size; x++) {
-            res += QString().sprintf("%6s ", prob2ascii(hmm->mat[k][x], hmm->null[x]));
+            res += QString::asprintf("%6s ", prob2ascii(hmm->mat[k][x], hmm->null[x]));
         }
         if (hmm->flags & PLAN7_MAP)
-            res += QString().sprintf("%5d", hmm->map[k]);
+            res += QString::asprintf("%5d", hmm->map[k]);
         res += "\n";
         /* Line 2: RF and insert emissions */
-        res += QString().sprintf(" %5c ", (hmm->flags & PLAN7_RF) ? hmm->rf[k] : '-');
+        res += QString::asprintf(" %5c ", (hmm->flags & PLAN7_RF) ? hmm->rf[k] : '-');
         for (int x = 0; x < al.Alphabet_size; x++) {
-            res += QString().sprintf("%6s ", (k < hmm->M) ? prob2ascii(hmm->ins[k][x], hmm->null[x]) : "*");
+            res += QString::asprintf("%6s ", (k < hmm->M) ? prob2ascii(hmm->ins[k][x], hmm->null[x]) : "*");
         }
         res += "\n";
         /* Line 3: CS and transition probs */
-        res += QString().sprintf(" %5c ", (hmm->flags & PLAN7_CS) ? hmm->cs[k] : '-');
+        res += QString::asprintf(" %5c ", (hmm->flags & PLAN7_CS) ? hmm->cs[k] : '-');
         for (int ts = 0; ts < 7; ts++) {
-            res += QString().sprintf("%6s ", (k < hmm->M) ? prob2ascii(hmm->t[k][ts], 1.0) : "*");
+            res += QString::asprintf("%6s ", (k < hmm->M) ? prob2ascii(hmm->t[k][ts], 1.0) : "*");
         }
-        res += QString().sprintf("%6s ", prob2ascii(hmm->begin[k], 1.0));
-        res += QString().sprintf("%6s ", prob2ascii(hmm->end[k], 1.0));
+        res += QString::asprintf("%6s ", prob2ascii(hmm->begin[k], 1.0));
+        res += QString::asprintf("%6s ", prob2ascii(hmm->end[k], 1.0));
 
         res += "\n";
     }

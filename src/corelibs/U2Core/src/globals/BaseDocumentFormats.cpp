@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -155,8 +155,10 @@ StrStrMap initFormatIdsMap() {
     anyIds2trueIds.insert(BaseDocumentFormats::VECTOR_NTI_SEQUENCE, BaseDocumentFormats::VECTOR_NTI_SEQUENCE);
 
     // IDs from 1.26.0
-    anyIds2trueIds.unite(initInvalidFormatIdsMap());
-
+    auto invalidIds = initInvalidFormatIdsMap();
+    for (auto it = invalidIds.begin(); it != invalidIds.end(); ++it) {
+        anyIds2trueIds.insert(it.key(), it.value());
+    }
     return anyIds2trueIds;
 }
 

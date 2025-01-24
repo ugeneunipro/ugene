@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,10 +20,6 @@
  */
 
 #include "ChooseItemDialog.h"
-
-#include <QPushButton>
-
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/HelpButton.h>
 
@@ -46,7 +42,9 @@ QString ChooseItemDialog::select(const QMap<QString, QIcon>& items) {
         it.next();
         listWidget->addItem(new QListWidgetItem(it.value(), it.key()));
     }
-    listWidget->setItemSelected(listWidget->item(0), true);
+    if (auto item = listWidget->item(0)) {
+        item->setSelected(true);
+    }
     if (exec() == QDialog::Accepted) {
         return listWidget->currentItem()->text();
     } else {
@@ -61,7 +59,9 @@ Workflow::ActorPrototype* ChooseItemDialog::select(const QList<Workflow::ActorPr
         it->setToolTip(a->getDocumentation());
         listWidget->addItem(it);
     }
-    listWidget->setItemSelected(listWidget->item(0), true);
+    if (auto item = listWidget->item(0)) {
+        item->setSelected(true);
+    }
     if (exec() == QDialog::Accepted) {
         return items.at(listWidget->currentRow());
     } else {

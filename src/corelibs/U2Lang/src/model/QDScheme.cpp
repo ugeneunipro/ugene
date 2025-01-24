@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -780,20 +780,20 @@ const QMap<QString, bool> QDAttributeValueMapper::BOOLEAN_MAP = initBooleanMap()
 
 QMap<QString, bool> QDAttributeValueMapper::initBooleanMap() {
     QMap<QString, bool> map;
-    map.insertMulti("true", true);
-    map.insertMulti("yes", true);
-    map.insertMulti("1", true);
-    map.insertMulti("false", false);
-    map.insertMulti("no", false);
-    map.insertMulti("0", false);
+    map.insert("true", true);
+    map.insert("yes", true);
+    map.insert("1", true);
+    map.insert("false", false);
+    map.insert("no", false);
+    map.insert("0", false);
     return map;
 }
 
 QVariant QDAttributeValueMapper::stringToAttributeValue(const QString& str) {
     if (getType(str) == BOOLEAN_TYPE) {
-        return qVariantFromValue(BOOLEAN_MAP.value(str));
+        return QVariant::fromValue(BOOLEAN_MAP.value(str));
     }
-    return qVariantFromValue(str);
+    return QVariant::fromValue(str);
 }
 
 QDAttributeValueMapper::ValueType QDAttributeValueMapper::getType(const QString& val) {

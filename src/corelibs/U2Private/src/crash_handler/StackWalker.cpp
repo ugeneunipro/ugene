@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -907,8 +907,7 @@ void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& ent
     library.replace("exe", "map");
     QFile file(library);
     if (!file.exists()) {
-        QString str;
-        buffer += str.sprintf("%p", entry.offset) + ": (" + binaryName + ") " + entry.name + "\n";
+        buffer += QString::asprintf("%p", entry.offset) + ": (" + binaryName + ") " + entry.name + "\n";
         return;
     }
     file.open(QIODevice::ReadOnly);
@@ -921,7 +920,7 @@ void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& ent
     file.readLine();
     while (!file.atEnd()) {
         QString line = file.readLine();
-        QStringList list = line.split(" ", QString::SkipEmptyParts);
+        QStringList list = line.split(" ", Qt::SkipEmptyParts);
         if (list.size() > 3) {
             DWORD addr = list[2].toInt(nullptr, 16);
             DWORD actualAddress = preferredAddress + entry.offset - libAddr;
@@ -936,8 +935,7 @@ void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& ent
         name = "Some static function";
     }
     file.close();
-    QString str;
-    buffer += str.sprintf("%p", entry.offset) + ": (" + binaryName + ") " + name.replace("@", ":") + " + " + str.sprintf("%p", offset) + "\n";
+    buffer += QString::asprintf("%p", entry.offset) + ": (" + binaryName + ") " + name.replace("@", ":") + " + " + QString::asprintf("%p", offset) + "\n";
 }
 
 void StackWalker::OnDbgHelpErr(LPCSTR szFuncName, DWORD gle, DWORD64 addr) {

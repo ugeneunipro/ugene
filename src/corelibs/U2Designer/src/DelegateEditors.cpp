@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -558,7 +558,7 @@ void URLDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const
     auto lineEdit = dynamic_cast<URLWidget*>(editor);
     SAFE_POINT(lineEdit != nullptr, "URLDelegate::setModelData: lineEdit is null!", );
     QString val = lineEdit->value().toString().replace('\\', '/').trimmed();
-    QStringList urls = val.split(";", QString::SkipEmptyParts);
+    QStringList urls = val.split(";", Qt::SkipEmptyParts);
     val = urls.join(";");
     model->setData(index, val, ConfigurationEditor::ItemValueRole);
     if (options.testFlag(AllowSelectSeveralFiles)) {
@@ -636,7 +636,7 @@ void ScriptSelectionWidget::setValue(const QVariant& value) {
     } else {
         combobox->setCurrentIndex(USER_SCRIPT_ITEM_STR.second);
     }
-    combobox->setProperty(SCRIPT_PROPERTY.toLatin1().constData(), qVariantFromValue<AttributeScript>(attrScript));
+    combobox->setProperty(SCRIPT_PROPERTY.toLatin1().constData(), QVariant::fromValue<AttributeScript>(attrScript));
 }
 
 QVariant ScriptSelectionWidget::value() {
@@ -658,14 +658,14 @@ void ScriptSelectionWidget::sl_comboCurrentIndexChanged(int itemId) {
             int rc = dlg->exec();
             CHECK(!dlg.isNull(), );
             if (rc != QDialog::Accepted) {
-                combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
+                combobox->setItemData(USER_SCRIPT_ITEM_ID, QVariant::fromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
             } else {
                 auto scriptText = dlg->getScriptText();
                 if (!scriptText.isEmpty()) {
                     GCOUNTER(cvar1, "Script. Done Edit script of the element dialog for parameter with new script");
                 }
                 attrScript.setScriptText(scriptText);
-                combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
+                combobox->setItemData(USER_SCRIPT_ITEM_ID, QVariant::fromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
             }
 
             emit si_finished();
@@ -743,7 +743,7 @@ void StingListEdit::sl_onExpand() {
 
     auto edit = new QTextEdit("", editor.data());
 
-    foreach (const QString& item, text().split(";", QString::SkipEmptyParts)) {
+    foreach (const QString& item, text().split(";", Qt::SkipEmptyParts)) {
         edit->append(item.trimmed());
     }
 
@@ -827,7 +827,7 @@ void StringListDelegate::setModelData(QWidget* editor, QAbstractItemModel* model
     model->setData(index, val, ConfigurationEditor::ItemValueRole);
 
     QVariantList vl;
-    foreach (const QString& s, val.split(";", QString::SkipEmptyParts)) {
+    foreach (const QString& s, val.split(";", Qt::SkipEmptyParts)) {
         vl.append(s.trimmed());
     }
 
@@ -846,6 +846,7 @@ QWidget* StringSelectorDelegate::createEditor(QWidget* parent, const QStyleOptio
     valueEdit->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
     editor->setFocusProxy(valueEdit);
     auto toolButton = new QToolButton(editor);
+    toolButton->setObjectName("tbOpenDialog");
     toolButton->setVisible(true);
     toolButton->setText("...");
     toolButton->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
@@ -853,7 +854,7 @@ QWidget* StringSelectorDelegate::createEditor(QWidget* parent, const QStyleOptio
 
     auto layout = new QHBoxLayout(editor);
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(valueEdit);
     layout->addWidget(toolButton);
 

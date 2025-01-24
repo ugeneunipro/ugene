@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -130,7 +130,7 @@ void ExtractConsensusWorker::finish() {
 
 void ExtractConsensusWorker::sendResult(const SharedDbiDataHandler& seqId) {
     QVariantMap data;
-    data[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+    data[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
     IntegralBus* outPort = ports[BasePorts::OUT_SEQ_PORT_ID()];
     SAFE_POINT(outPort != nullptr, "NULL sequence port", );
 

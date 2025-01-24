@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,11 +73,11 @@ QString RemoteDBFetcherPrompter::composeRichDoc() {
     QStringList sourceValues;
     if (RemoteDBFetcherFactory::idsListString == getParameter(SOURCE_CHOOSER_ID).toString()) {
         sourceId = SEQID_ID;
-        sourceValues = getParameter(SEQID_ID).value<QString>().split(";", QString::SkipEmptyParts);
+        sourceValues = getParameter(SEQID_ID).value<QString>().split(";", Qt::SkipEmptyParts);
         sourceDescString = sourceValues.size() > 1 ? RemoteDBFetcherWorker::tr("sequences identified with") : RemoteDBFetcherWorker::tr("sequence identified with");
     } else {
         sourceId = SOURCE_FILE_ID;
-        sourceValues = getParameter(SOURCE_FILE_ID).toString().split(";", QString::SkipEmptyParts);
+        sourceValues = getParameter(SOURCE_FILE_ID).toString().split(";", Qt::SkipEmptyParts);
         sourceDescString = sourceValues.size() > 1 ? RemoteDBFetcherWorker::tr("sequences identified with resource IDs that will be read from files") : RemoteDBFetcherWorker::tr("sequences identified with resource IDs that will be read from file");
     }
     sourceLinkStr = sourceValues.isEmpty() ? unsetStr : QString("<u>%1</u>").arg(sourceValues.join(", "));
@@ -110,9 +110,9 @@ void RemoteDBFetcherWorker::init() {
 
     idsSource = actor->getParameter(SOURCE_CHOOSER_ID)->getAttributeValue<QString>(context);
     if (RemoteDBFetcherFactory::idsListString == idsSource) {
-        seqids = actor->getParameter(SEQID_ID)->getAttributeValue<QString>(context).split(";", QString::SkipEmptyParts);
+        seqids = actor->getParameter(SEQID_ID)->getAttributeValue<QString>(context).split(";", Qt::SkipEmptyParts);
     } else {
-        idsFilePaths = actor->getParameter(SOURCE_FILE_ID)->getAttributeValue<QString>(context).split(";", QString::SkipEmptyParts);
+        idsFilePaths = actor->getParameter(SOURCE_FILE_ID)->getAttributeValue<QString>(context).split(";", Qt::SkipEmptyParts);
     }
 
     fullPathDir = actor->getParameter(PATH_ID)->getAttributeValue<QString>(context);
@@ -138,7 +138,7 @@ Task* RemoteDBFetcherWorker::tick() {
     const QString seqId = nextId();
 
     QVariantMap hints;
-    hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
+    hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(context->getDataStorage()->getDbiRef());
     hints[FORCE_DOWNLOAD_SEQUENCE_HINT] = true;
     Task* ret = new LoadRemoteDocumentTask(seqId, dbid, fullPathDir, GENBANK_FORMAT, hints);
     connect(ret, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -193,9 +193,9 @@ void RemoteDBFetcherWorker::sl_taskFinished() {
 
         QVariantMap messageData;
         SharedDbiDataHandler seqId = context->getDataStorage()->getDataHandler(dnao->getEntityRef());
-        messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+        messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
         SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(ads);
-        messageData[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
+        messageData[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(tableId);
 
         DataTypePtr messageType = WorkflowEnv::getDataTypeRegistry()->getById(TYPE);
 
@@ -252,7 +252,7 @@ QString RemoteDBFetcherWorker::getIdFromFile() {
 
         QString idsString = idsFile.readAll();
         idsFile.close();
-        seqids = idsString.split("\n", QString::SkipEmptyParts);
+        seqids = idsString.split("\n", Qt::SkipEmptyParts);
         return getIdFromList();
     } while (hasError);
 
@@ -428,7 +428,7 @@ Task* FetchSequenceByIdFromAnnotationWorker::tick() {
         }
 
         QVariantMap hints;
-        hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
+        hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(context->getDataStorage()->getDbiRef());
         hints[FORCE_DOWNLOAD_SEQUENCE_HINT] = true;
         Task* task = new LoadRemoteDocumentTask(accIds.join(","), dbId, "", GENBANK_FORMAT, hints);
         connect(task, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -484,9 +484,9 @@ void FetchSequenceByIdFromAnnotationWorker::sl_taskFinished() {
 
         QVariantMap messageData;
         SharedDbiDataHandler seqId = context->getDataStorage()->getDataHandler(dnao->getEntityRef());
-        messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+        messageData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
         SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(ads);
-        messageData[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
+        messageData[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(tableId);
 
         DataTypePtr messageType = WorkflowEnv::getDataTypeRegistry()->getById(TYPE);
 

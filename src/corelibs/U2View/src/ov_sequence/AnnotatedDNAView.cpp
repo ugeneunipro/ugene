@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1127,11 +1127,11 @@ void AnnotatedDNAView::seqWidgetMove(const QPoint& pos) {
     }
 
     if (prevWidgetRect.isValid() && pos.y() < prevWidgetRect.center().y()) {
-        seqViews.swap(index - 1, index);
+        std::swap(seqViews[index - 1], seqViews[index]);
         scrolledWidgetLayout->insertWidget(index - 1, scrolledWidgetLayout->takeAt(index)->widget());
     }
     if (nextWidgetRect.isValid() && pos.y() > nextWidgetRect.top()) {
-        seqViews.swap(index, index + 1);
+        std::swap(seqViews[index], seqViews[index + 1]);
         scrolledWidgetLayout->insertWidget(index, scrolledWidgetLayout->takeAt(index + 1)->widget());
     }
 }
@@ -1465,7 +1465,7 @@ void AnnotatedDNAView::sl_aminoTranslationChanged() {
 void AnnotatedDNAView::reverseComplementSequence(bool reverse, bool complement) {
     ADVSequenceObjectContext* seqCtx = getActiveSequenceContext();
     U2SequenceObject* seqObj = seqCtx->getSequenceObject();
-    QList<AnnotationTableObject*> annotationObjects = seqCtx->getAnnotationObjects(false).toList();
+    QList<AnnotationTableObject*> annotationObjects = toList(seqCtx->getAnnotationObjects(false));
 
     DNATranslation* complTT = nullptr;
     if (seqObj->getAlphabet()->isNucleic()) {

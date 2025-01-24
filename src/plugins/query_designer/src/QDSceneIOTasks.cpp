@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -341,9 +341,9 @@ static const QString STRAND_BOTH = "both";
 
 static QMap<QDStrandOption, QString> initDirectionMap() {
     QMap<QDStrandOption, QString> res;
-    res.insertMulti(QDStrand_DirectOnly, STRAND_DIRECT);
-    res.insertMulti(QDStrand_ComplementOnly, STRAND_COMPLEMENT);
-    res.insertMulti(QDStrand_Both, STRAND_BOTH);
+    res.insert(QDStrand_DirectOnly, STRAND_DIRECT);
+    res.insert(QDStrand_ComplementOnly, STRAND_COMPLEMENT);
+    res.insert(QDStrand_Both, STRAND_BOTH);
     return res;
 }
 

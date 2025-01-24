@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -225,7 +225,7 @@ void FindPatternMsaWidget::initLayout() {
     layoutSearchButton->setAlignment(Qt::AlignTop);
     this->layout()->setAlignment(Qt::AlignTop);
 
-    this->layout()->setMargin(0);
+    this->layout()->setContentsMargins(0, 0, 0, 0);
 }
 
 void FindPatternMsaWidget::initAlgorithmLayout() {
@@ -677,7 +677,7 @@ QStringList FindPatternMsaWidget::getPatternsFromTextPatternField(U2OpStatus& os
         }
         return result;
     }
-    return inputText.split(QRegExp("\n"), QString::SkipEmptyParts);
+    return inputText.split(QRegExp("\n"), Qt::SkipEmptyParts);
 }
 
 #define FIND_PATTER_LAST_DIR "Find_msa_pattern_last_dir"
@@ -797,7 +797,7 @@ QString FindPatternMsaWidget::checkSearchRegion() const {
 
     CHECK(selectedAlgorithm != FindAlgorithmPatternSettings_RegExp, "");
 
-    QStringList patternLines = textPattern->toPlainText().split("\n", QString::SkipEmptyParts);
+    QStringList patternLines = textPattern->toPlainText().split("\n", Qt::SkipEmptyParts);
     CHECK(!patternLines.isEmpty(), "");
 
     int minPatternLength = INT_MAX;

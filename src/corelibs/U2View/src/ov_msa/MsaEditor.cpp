@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -908,7 +908,7 @@ void MsaEditor::updateCollapseModel() {
         return;
     } else if (rowOrderMode == MaEditorRowOrderMode::Free) {
         // Check if the modification is compatible with the current view state: all rows have view properties assigned. Reset to the Original order if not.
-        QSet<qint64> maRowIds = getMaRowIds().toSet();
+        QSet<qint64> maRowIds = toSet(getMaRowIds());
         QSet<qint64> viewModelRowIds = collapseModel->getAllRowIds();
         if (viewModelRowIds != maRowIds) {
             rowOrderMode = MaEditorRowOrderMode::Original;
@@ -928,7 +928,7 @@ void MsaEditor::updateCollapseModel() {
     for (int i = 0; i < collapseModel->getGroupCount(); i++) {
         const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(i);
         if (!group->isCollapsed) {
-            maRowIdsOfNonCollapsedRowsBefore += group->maRowIds.toSet();
+            maRowIdsOfNonCollapsedRowsBefore += toSet(group->maRowIds);
         }
     }
     for (const auto& maRowsInGroup : qAsConst(rowGroups)) {

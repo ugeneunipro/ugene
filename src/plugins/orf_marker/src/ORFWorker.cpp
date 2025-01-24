@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -307,7 +307,7 @@ void ORFWorker::sl_taskFinished() {
         const QList<SharedAnnotationData> annsList = ORFFindResult::toTable(res, resultName);
 
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annsList);
-        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
+        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(tableId)));
         algoLog.info(tr("Found %1 ORFs").arg(res.size()));
     }
 }

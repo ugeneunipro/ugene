@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -421,7 +421,7 @@ void BamReader::readHeader() {
         QList<Header::ReadGroup> readGroups;
         QList<Header::Program> programs;
         QList<QByteArray> previousProgramIds;
-        foreach (const QByteArray& line, text.replace('\r', QString("")).split('\n')) {
+        foreach (const QByteArray& line, text.replace('\r', QByteArray("")).split('\n')) {
             if (line.isEmpty()) {
                 continue;
             }

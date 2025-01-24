@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -72,7 +72,7 @@ bool MultipleDocumentsReadingModeSelectorController::mergeDocumentOption(const F
                 return false;
             }
             QString line = QString(QByteArray(buff));
-            QStringList words = line.split(QRegExp("\\s"), QString::SkipEmptyParts);
+            QStringList words = line.split(QRegExp("\\s"), Qt::SkipEmptyParts);
             if (words.size() < 3) {  // origin len not defined
                 return false;
             }

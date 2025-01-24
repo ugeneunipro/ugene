@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -155,13 +155,13 @@ QVariant CfgExternalToolModel::data(const QModelIndex& index, int role) const {
         case DelegateRole:
             switch (col) {
                 case COLUMN_NAME:
-                    return qVariantFromValue<PropertyDelegate*>(item->delegateForNames);
+                    return QVariant::fromValue<PropertyDelegate*>(item->delegateForNames);
                 case COLUMN_ID:
-                    return qVariantFromValue<PropertyDelegate*>(item->delegateForIds);
+                    return QVariant::fromValue<PropertyDelegate*>(item->delegateForIds);
                 case COLUMN_DATA_TYPE:
-                    return qVariantFromValue<PropertyDelegate*>(item->delegateForTypes);
+                    return QVariant::fromValue<PropertyDelegate*>(item->delegateForTypes);
                 case COLUMN_FORMAT:
-                    return qVariantFromValue<PropertyDelegate*>(item->delegateForFormats);
+                    return QVariant::fromValue<PropertyDelegate*>(item->delegateForFormats);
                 default:
                     return QVariant();
             }
@@ -586,13 +586,13 @@ QVariant CfgExternalToolModelAttributes::data(const QModelIndex& index, int role
         case DelegateRole:
             switch (col) {
                 case COLUMN_NAME:
-                    return qVariantFromValue<PropertyDelegate*>(item->delegateForNames);
+                    return QVariant::fromValue<PropertyDelegate*>(item->delegateForNames);
                 case COLUMN_ID:
-                    return qVariantFromValue<PropertyDelegate*>(item->delegateForIds);
+                    return QVariant::fromValue<PropertyDelegate*>(item->delegateForIds);
                 case COLUMN_DATA_TYPE:
-                    return qVariantFromValue<PropertyDelegate*>(typesDelegate);
+                    return QVariant::fromValue<PropertyDelegate*>(typesDelegate);
                 case COLUMN_DEFAULT_VALUE:
-                    return qVariantFromValue<PropertyDelegate*>(item->delegateForDefaultValues);
+                    return QVariant::fromValue<PropertyDelegate*>(item->delegateForDefaultValues);
                 default:
                     return QVariant();
             }

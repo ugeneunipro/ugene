@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -117,7 +117,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elInput.attribute("SEQUENCE_TARGET");
         if (!buf.isEmpty()) {
             QList<U2Region> regionList;
-            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+            for (const QString& str : buf.split(' ', Qt::SkipEmptyParts)) {
                 auto sting = str.split(',');
                 if (sting.size() == 2) {
                     QList<int> v;
@@ -141,7 +141,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elInput.attribute("SEQUENCE_OVERLAP_JUNCTION_LIST");
         if (!buf.isEmpty()) {
             QList<int> intList;
-            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+            for (const QString& str : buf.split(' ', Qt::SkipEmptyParts)) {
                 bool ok = false;
                 int v = str.toInt(&ok);
                 if (!ok) {
@@ -156,7 +156,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elInput.attribute("SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST");
         if (!buf.isEmpty()) {
             QList<int> intList;
-            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+            for (const QString& str : buf.split(' ', Qt::SkipEmptyParts)) {
                 bool ok = false;
                 int v = str.toInt(&ok);
                 if (!ok) {
@@ -171,7 +171,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elInput.attribute("SEQUENCE_EXCLUDED_REGION");
         if (!buf.isEmpty()) {
             QList<U2Region> regionList;
-            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+            for (const QString& str : buf.split(' ', Qt::SkipEmptyParts)) {
                 if (str.split(',').size() == 2) {
                     regionList.append(U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt()));
                 } else {
@@ -185,8 +185,8 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elInput.attribute("SEQUENCE_PRIMER_PAIR_OK_REGION_LIST");
         if (!buf.isEmpty()) {
             QList<QList<int>> intListList;
-            auto qwe = buf.split(';', QString::SkipEmptyParts);
-            for (const QString& str : buf.split(';', QString::SkipEmptyParts)) {
+            auto qwe = buf.split(';', Qt::SkipEmptyParts);
+            for (const QString& str : buf.split(';', Qt::SkipEmptyParts)) {
                 auto strList = str.split(',');
                 if (strList.size() == 4) {
                     QList<int> list;
@@ -211,7 +211,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elInput.attribute("SEQUENCE_INCLUDED_REGION");
         if (!buf.isEmpty()) {
             U2Region region;
-            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+            for (const QString& str : buf.split(' ', Qt::SkipEmptyParts)) {
                 if (str.split(',').size() == 2) {
                     region = U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt());
                 } else {
@@ -225,7 +225,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elInput.attribute("SEQUENCE_INTERNAL_EXCLUDED_REGION");
         if (!buf.isEmpty()) {
             QList<U2Region> regionList;
-            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+            for (const QString& str : buf.split(' ', Qt::SkipEmptyParts)) {
                 auto string = str.split(',');
                 if (string.size() == 2) {
                     QList<int> v;
@@ -250,7 +250,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elInput.attribute("PRIMER_PRODUCT_SIZE_RANGE");
         if (!buf.isEmpty()) {
             QList<U2Region> regionList;
-            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+            for (const QString& str : buf.split(' ', Qt::SkipEmptyParts)) {
                 auto strList = str.split('-');
                 if (strList.size() == 2) {
                     regionList << U2Region(strList[0].toInt(), strList[1].toInt() - strList[0].toInt() + 1);
@@ -320,7 +320,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elInput.attribute("SEQUENCE_QUALITY");
         if (!buf.isEmpty()) {
             QVector<int> qualityVecor;
-            QStringList qualityList = buf.split(' ', QString::SkipEmptyParts);
+            QStringList qualityList = buf.split(' ', Qt::SkipEmptyParts);
             qualityNumber = qualityList.size();
             for (int qualityIndex = 0; qualityIndex < qualityNumber; qualityIndex++) {
                 bool ok = false;

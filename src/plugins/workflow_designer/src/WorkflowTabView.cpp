@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -278,7 +278,7 @@ QMap<QString, Dashboard*> WorkflowTabView::getDashboards(const QStringList& dash
     }
 
     if (result.size() != dashboardIds.size()) {
-        const QSet<QString> difference = dashboardIds.toSet() - result.keys().toSet();
+        const QSet<QString> difference = toSet(dashboardIds) - toSet(result.keys());
         foreach (const QString& dashboardId, difference) {
             result.insert(dashboardId, nullptr);
         }

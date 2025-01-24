@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,7 +79,8 @@ void UdrSchema::addField(const FieldDesc& desc, U2OpStatus& os) {
 }
 
 void UdrSchema::addMultiIndex(const QList<int>& multiIndex, U2OpStatus& os) {
-    CHECK_EXT(multiIndex.toSet().size() == multiIndex.size(), os.setError("Not unique fields"), );
+    QSet<int> uniqueFields(multiIndex.begin(), multiIndex.end());
+    CHECK_EXT(uniqueFields.size() == multiIndex.size(), os.setError("Not unique fields"), );
     foreach (int fieldNum, multiIndex) {
         FieldDesc field = getField(fieldNum, os);
         CHECK_OP(os, );

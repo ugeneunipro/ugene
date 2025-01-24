@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -706,7 +706,7 @@ void ProjectViewModel::insertFolder(Document* doc, const QString& path) {
 
     QString absentPath;
     {  // Find the path to the folder which is not in the model. It some parent of @path or @path itself
-        const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
+        const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, Qt::SkipEmptyParts);
         QString fullPath;
         foreach (const QString& folder, pathList) {
             fullPath += U2ObjectDbi::PATH_SEP + folder;
@@ -861,7 +861,7 @@ int ProjectViewModel::objectRow(GObject* obj) const {
 
 QVariant ProjectViewModel::data(Document* doc, int role) const {
     switch (role) {
-        case Qt::TextColorRole:
+        case Qt::ForegroundRole:
             return getDocumentTextColorData(doc);
         case Qt::FontRole:
             return getDocumentFontData(doc);
@@ -961,7 +961,7 @@ QVariant ProjectViewModel::data(GObject* obj, int role) const {
     SAFE_POINT(folders.contains(parentDoc), "Unknown document", QVariant());
 
     switch (role) {
-        case Qt::TextColorRole:
+        case Qt::ForegroundRole:
             return getObjectTextColorData(obj);
         case Qt::FontRole:
             return getObjectFontData(obj, true);
@@ -974,7 +974,7 @@ QVariant ProjectViewModel::data(GObject* obj, int role) const {
         case Qt::DecorationRole:
             return getObjectDecorationData(obj, true);
         default:
-            return QVariant();
+            return {};
     }
 }
 
@@ -1013,7 +1013,7 @@ QVariant ProjectViewModel::getObjectFontData(GObject* obj, bool itemIsEnabled) c
     if (markedAsActive) {
         return settings.activeFont;
     } else {
-        return QVariant();
+        return {};
     }
 }
 
@@ -1046,7 +1046,7 @@ QVariant ProjectViewModel::getObjectTextColorData(GObject* obj) const {
     if (obj->isItemModified()) {
         return QColor(MODIFIED_ITEM_COLOR);
     } else {
-        return QVariant();
+        return {};
     }
 }
 

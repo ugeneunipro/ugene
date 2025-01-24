@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,18 +21,14 @@
 
 #include <QMessageBox>
 #include <QSettings>
-#include <QTextStream>
 
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -47,8 +43,6 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include "Primer3Dialog.h"
-
-#include <U2View/TmCalculatorSelectorWidget.h>
 
 namespace U2 {
 
@@ -280,7 +274,7 @@ QString Primer3Dialog::okRegions2String(const QList<QList<int>>& regionLins) {
 
 bool Primer3Dialog::parseIntervalList(const QString& inputString, const QString& delimiter, QList<U2Region>* outputList, IntervalDefinition definition) {
     QList<U2Region> result;
-    QStringList intervalStringList = inputString.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    QStringList intervalStringList = inputString.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
     for (const auto& intervalString : qAsConst(intervalStringList)) {
         QStringList valueStringList = intervalString.split(delimiter);
         if (2 != valueStringList.size()) {
@@ -314,7 +308,7 @@ bool Primer3Dialog::parseIntervalList(const QString& inputString, const QString&
 
 bool Primer3Dialog::parseIntList(const QString& inputString, QList<int>* outputList) {
     QList<int> result;
-    QStringList intStringList = inputString.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    QStringList intStringList = inputString.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
     for (const auto& numString : qAsConst(intStringList)) {
         bool ok = false;
         int num = numString.toInt(&ok);
@@ -330,7 +324,7 @@ bool Primer3Dialog::parseIntList(const QString& inputString, QList<int>* outputL
 
 bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>* outputList) {
     QList<QList<int>> result;
-    QStringList intStringList = inputString.split(";", QString::SkipEmptyParts);
+    QStringList intStringList = inputString.split(";", Qt::SkipEmptyParts);
     for (const auto& numList : qAsConst(intStringList)) {
         QStringList numStringList = numList.split(",");
         if (numStringList.size() != 4) {
@@ -691,7 +685,7 @@ bool Primer3Dialog::doDataExchange() {
     if (context != nullptr) {
         QVector<int> qualityList;
         auto sequenceQual = edit_SEQUENCE_QUALITY->toPlainText();
-        QStringList stringList = sequenceQual.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        QStringList stringList = sequenceQual.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
         bool ok = true;
         for (const QString& string : qAsConst(stringList)) {
             bool isInt = false;
@@ -1071,12 +1065,12 @@ void Primer3Dialog::saveSettings(const QString& filePath) {
     for (const auto& key : qAsConst(intProps)) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
-            stream << key << "=" << spinBox->value() << endl;
+            stream << key << "=" << spinBox->value() << Qt::endl;
             continue;
         }
         QCheckBox* checkbox = findChild<QCheckBox*>("checkbox_" + key);
         if (checkbox != nullptr) {
-            stream << key << "=" << (int)checkbox->isChecked() << endl;
+            stream << key << "=" << (int)checkbox->isChecked() << Qt::endl;
         }
     }
     const auto& doubleProps = defaultSettings.getDoublePropertyList();
@@ -1087,42 +1081,42 @@ void Primer3Dialog::saveSettings(const QString& filePath) {
         }
         QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
-            stream << key << "=" << QString::number(spinBox->value(), 'f', 2) << endl;
+            stream << key << "=" << QString::number(spinBox->value(), 'f', 2) << Qt::endl;
         }
     }
 
     for (const auto& par : qAsConst(LINE_EDIT_PARAMETERS)) {
         QLineEdit* lineEdit = findChild<QLineEdit*>("edit_" + par);
         if (lineEdit != nullptr) {
-            stream << par << "=" << lineEdit->text() << endl;
+            stream << par << "=" << lineEdit->text() << Qt::endl;
         }
     }
 
     U2OpStatusImpl os;
     if (context != nullptr) {
-        stream << "SEQUENCE_TEMPLATE=" << context->getSequenceObject()->getWholeSequenceData(os) << endl;
-        stream << "SEQUENCE_ID=" << context->getSequenceObject()->getSequenceName() << endl;
+        stream << "SEQUENCE_TEMPLATE=" << context->getSequenceObject()->getWholeSequenceData(os) << Qt::endl;
+        stream << "SEQUENCE_ID=" << context->getSequenceObject()->getSequenceName() << Qt::endl;
     }
-    stream << "SEQUENCE_QUALITY=" << edit_SEQUENCE_QUALITY->toPlainText() << endl;
+    stream << "SEQUENCE_QUALITY=" << edit_SEQUENCE_QUALITY->toPlainText() << Qt::endl;
 
-    stream << "PRIMER_TASK=" << edit_PRIMER_TASK->currentText() << endl;
-    stream << "PRIMER_TM_FORMULA=" << combobox_PRIMER_TM_FORMULA->currentIndex() << endl;
-    stream << "PRIMER_SALT_CORRECTIONS=" << combobox_PRIMER_SALT_CORRECTIONS->currentIndex() << endl;
+    stream << "PRIMER_TASK=" << edit_PRIMER_TASK->currentText() << Qt::endl;
+    stream << "PRIMER_TM_FORMULA=" << combobox_PRIMER_TM_FORMULA->currentIndex() << Qt::endl;
+    stream << "PRIMER_SALT_CORRECTIONS=" << combobox_PRIMER_SALT_CORRECTIONS->currentIndex() << Qt::endl;
 
     QString pathPrimerMisprimingLibrary;
     QString pathPrimerInternalOligoLibrary;
     for (const auto& lib : qAsConst(repeatLibraries)) {
         if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText()) {
             QFileInfo fi(lib.second);
-            stream << "PRIMER_MISPRIMING_LIBRARY=" << fi.fileName() << endl;
+            stream << "PRIMER_MISPRIMING_LIBRARY=" << fi.fileName() << Qt::endl;
         }
         if (lib.first == combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->currentText()) {
             QFileInfo fi(lib.second);
-            stream << "PRIMER_INTERNAL_MISHYB_LIBRARY=" << fi.fileName() << endl;
+            stream << "PRIMER_INTERNAL_MISHYB_LIBRARY=" << fi.fileName() << Qt::endl;
         }
     }
 
-    stream << "=" << endl;
+    stream << "=" << Qt::endl;
 
     file.close();
 }

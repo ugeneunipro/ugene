@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -140,7 +140,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     connect(tree, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(sl_itemExpanded(QTreeWidgetItem*)));
 
     auto layout = new QVBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(tree);
     setLayout(layout);
 
@@ -380,7 +380,7 @@ QList<AVAnnotationItem*> AnnotationsTreeView::findAnnotationItems(const AVGroupI
 
 void AnnotationsTreeView::removeGroupAnnotationsFromCache(const AVGroupItem* groupItem) {
     CHECK(!selectedAnnotation.isEmpty(), );
-    const QSet<AVAnnotationItem*> annotationItems = findAnnotationItems(groupItem).toSet();
+    const QSet<AVAnnotationItem*> annotationItems = toSet(findAnnotationItems(groupItem));
     foreach (AVAnnotationItem* annotationItem, selectedAnnotation.keys()) {
         if (annotationItems.contains(annotationItem)) {
             selectedAnnotation.remove(annotationItem);
@@ -885,9 +885,9 @@ void AnnotationsTreeView::sl_onBuildMenu(GObjectViewController*, QMenu* m, const
         QTreeWidgetItem* item = tree->itemAt(viewportPos);
         if (item != nullptr) {
             if (selItems.size() == 1 && selItems.first() != item) {
-                tree->setItemSelected(selItems.first(), false);
+                selItems.first()->setSelected(false);
             }
-            tree->setItemSelected(item, true);
+            item->setSelected(true);
         }
     }
 
@@ -1664,7 +1664,7 @@ void AnnotationsTreeView::sl_annotationClicked(Annotation* annotation) {
     auto advctx = qobject_cast<ADVSequenceObjectContext*>(sender());
     SAFE_POINT(advctx != nullptr, "Incorrect sender", );
 
-    QList<AnnotationTableObject*> annotationObjects = advctx->getAnnotationObjects().toList();
+    QList<AnnotationTableObject*> annotationObjects = toList(advctx->getAnnotationObjects());
     QMap<AVAnnotationItem*, QList<U2Region>> sortedAnnotationSelections = sortAnnotationSelection(annotationObjects);
 
     expandItemRecursevly(item->parent());
@@ -1738,7 +1738,7 @@ void AnnotationsTreeView::sl_clearSelectedAnnotations() {
     auto advctx = qobject_cast<ADVSequenceObjectContext*>(sender());
     SAFE_POINT(advctx != nullptr, "Incorrect sender", );
 
-    QList<AnnotationTableObject*> annotationObjects = advctx->getAnnotationObjects().toList();
+    QList<AnnotationTableObject*> annotationObjects = toList(advctx->getAnnotationObjects());
     QMap<AVAnnotationItem*, QList<U2Region>> currentAnnotationSelections = sortAnnotationSelection(annotationObjects);
 
     foreach (AVAnnotationItem* key, currentAnnotationSelections.keys()) {

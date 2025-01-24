@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -169,7 +169,7 @@ Task* ImportPhredQualityWorker::tick() {
             }
         }
         SharedDbiDataHandler handler = context->getDataStorage()->putSequence(seq);
-        output->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(handler)));
+        output->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(handler)));
     } else if (input->isEnded()) {
         output->setEnded();
         setDone();

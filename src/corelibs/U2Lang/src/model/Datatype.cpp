@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -75,7 +75,7 @@ DataTypePtr MapDataType::getDatatypeByDescriptor(const Descriptor& d) const {
 }
 
 QList<Descriptor> MapDataType::getAllDescriptors() const {
-    return map.uniqueKeys();
+    return map.keys();
 }
 
 QMap<Descriptor, DataTypePtr> MapDataType::getDatatypesMap() const {
@@ -127,7 +127,7 @@ QList<DataTypePtr> DataTypeRegistry::getAllEntries() const {
 }
 
 QList<QString> DataTypeRegistry::getAllIds() const {
-    return registry.uniqueKeys();
+    return registry.keys();
 }
 
 }  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -638,7 +638,7 @@ static QList<int> toUniqueRowIndexes(const QList<int>& rowIndexes, int numRows) 
             uniqueRowIndexes << rowIndex;
         }
     }
-    return uniqueRowIndexes.toList();
+    return QList<int>(uniqueRowIndexes.begin(), uniqueRowIndexes.end());
 }
 
 int MsaObject::deleteGapByRowIndexList(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps) {

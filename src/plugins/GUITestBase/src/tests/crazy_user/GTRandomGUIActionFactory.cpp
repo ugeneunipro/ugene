@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 
 #include <QDirIterator>
 #include <QFileDialog>
+#include <QRandomGenerator>
 
 #include <U2Core/U2SafePoints.h>
 
@@ -35,7 +36,7 @@ namespace U2 {
 namespace GUITest_crazy_user {
 
 int randInt(int low, int high) {
-    return qrand() % ((high + 1) - low) + low;
+    return QRandomGenerator::global()->bounded(low, high + 1);
 }
 
 GTAbstractGUIAction* GTRandomGUIActionFactory::create(QObject* obj) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -186,7 +186,7 @@ Task* MuscleWorker::tick() {
             cfg.alignRegion = false;
             cfg.regionToAlign = U2Region(0, msa->getLength());
         } else {
-            QStringList words = range.split(".", QString::SkipEmptyParts);
+            QStringList words = range.split(".", Qt::SkipEmptyParts);
             if (words.size() != 2) {
                 return new FailTask(QObject::tr("Region should be set as 'start..end', start should be less than end, e.g. '1..100'"));
             }
@@ -234,7 +234,7 @@ void MuscleWorker::sl_taskFinished() {
     SAFE_POINT(output != nullptr, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(t->resultMA);
     QVariantMap msgData;
-    msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
+    msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(msaId);
     output->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), msgData));
     algoLog.info(tr("Aligned %1 with MUSCLE").arg(t->resultMA->getName()));
 }

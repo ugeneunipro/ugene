@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -121,7 +121,8 @@ const U2DbiRef& ImportDocumentToDatabaseTask::getDstDbiRef() const {
 }
 
 QSet<GObject*> ImportDocumentToDatabaseTask::getImportedObjects() const {
-    return getObjectPairs().values().toSet();
+    QList<GObject*> values = getObjectPairs().values();
+    return QSet<GObject*>(values.begin(), values.end());
 }
 
 QMap<GObject*, GObject*> ImportDocumentToDatabaseTask::getObjectPairs() const {

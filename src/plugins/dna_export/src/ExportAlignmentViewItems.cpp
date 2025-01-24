@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -124,7 +124,7 @@ void MSAExportContext::sl_exportSelectedMsaRowsToSeparateFiles() {
 
     QList<int> selectedMaRowIndexes = editor->getSelection().getSelectedRowIndexes();
     const Msa& msa = editor->getMaObject()->getAlignment();
-    QSet<qint64> selectedMaRowIds = msa->getRowIdsByRowIndexes(selectedMaRowIndexes).toSet();
+    QSet<qint64> selectedMaRowIds = toSet(msa->getRowIdsByRowIndexes(selectedMaRowIndexes));
     auto exportTask = new ExportSequencesTask(msa,
                                               selectedMaRowIds,
                                               d->getTrimGapsFlag(),

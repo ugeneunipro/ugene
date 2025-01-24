@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
+#include <primitives/GTTableView.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
@@ -66,6 +67,7 @@
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
+#include "GTUtilsQueryDesigner.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsStartPage.h"
 #include "GTUtilsTask.h"
@@ -1275,6 +1277,37 @@ GUI_TEST_CLASS_DEFINITION(test_8151) {
     GTUtilsDialog::waitForDialog(new SmithWatermanDialogFiller(new ActivateTranslationSWScenario(false)));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_8153) {
+    // Open QD
+    // Add "Restriction Sites" element
+    // CLick ont the "Enzymes" parameter and open the "Find restriction enzymes" dialog
+    // Expected: Restriction enzymes are avaliable in the tree
+
+    GTUtilsQueryDesigner::openQueryDesigner();
+    GTUtilsQueryDesigner::addAlgorithm("Restriction Sites");
+    GTWidget::moveToAndClick(GTUtilsQueryDesigner::getItemCenter("Restriction Sites"));
+    GTUtilsQueryDesigner::clickParameter("Enzymes");
+    auto table = GTWidget::findTableView("table");
+    GTWidget::click(GTWidget::findWidget("tbOpenDialog", table));
+
+    class custom : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            auto enzymesTree = GTWidget::findTreeWidget("tree", dialog);
+            auto items = GTTreeWidget::getItems(enzymesTree);
+            CHECK_SET_ERR(items.size() != 0, QString("Should be more than 0 enzymes"));
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList {}, new custom()));
+
+}
+
 
 }  // namespace GUITest_regression_scenarios
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -146,7 +146,7 @@ ExportMSA2MSATask::ExportMSA2MSATask(const Msa& msa,
     SAFE_POINT_EXT(aminoTranslation == nullptr || aminoTranslation->isThree2One(), setError(QString("Invalid amino translation: %1").arg(aminoTranslation->getTranslationName())), );
     setVerboseLogMode(true);
 
-    sequenceList = MsaUtils::convertMsaToSequenceList(msa, stateInfo, trimLeadingAndTrailingGaps, rowIds.toSet(), columnRegion);
+    sequenceList = MsaUtils::convertMsaToSequenceList(msa, stateInfo, trimLeadingAndTrailingGaps, toSet(rowIds), columnRegion);
     CHECK_OP(stateInfo, )
 }
 

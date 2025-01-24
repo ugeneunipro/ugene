@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,8 +46,8 @@ SequenceViewAnnotatedRenderer::AnnotationViewMetrics::AnnotationViewMetrics()
       afSmall(QFont("Arial", 8)),
       afmNormal(QFontMetrics(afNormal)),
       afmSmall(QFontMetrics(afSmall)) {
-    afNormalCharWidth = afmNormal.width('w');
-    afSmallCharWidth = afmSmall.width('w');
+    afNormalCharWidth = afmNormal.horizontalAdvance('w');
+    afSmallCharWidth = afmSmall.horizontalAdvance('w');
 
     QLinearGradient gradient(0, 0, 0, 1);  // vertical
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
@@ -209,7 +209,7 @@ void SequenceViewAnnotatedRenderer::drawBoundedText(QPainter& p, const QRect& r,
     }
     QFont font = annMetrics.afNormal;
     QFontMetrics fm = annMetrics.afmNormal;
-    if (fm.width(text) > r.width()) {
+    if (fm.horizontalAdvance(text) > r.width()) {
         font = annMetrics.afSmall;
         fm = annMetrics.afmSmall;
     }
@@ -219,7 +219,7 @@ void SequenceViewAnnotatedRenderer::drawBoundedText(QPainter& p, const QRect& r,
     int textWidth = 0;
     int prefixLen = 0;
     do {
-        int cw = fm.width(text[prefixLen]);
+        int cw = fm.horizontalAdvance(text[prefixLen]);
         if (textWidth + cw > r.width()) {
             break;
         }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -226,7 +226,7 @@ void SiteconReader::sl_taskFinished() {
         return;
     if (output) {
         if (!t->hasError()) {
-            QVariant v = qVariantFromValue<SiteconModel>(t->getResult());
+            QVariant v = QVariant::fromValue<SiteconModel>(t->getResult());
             output->put(Message(mtype, v));
         }
         algoLog.info(tr("Loaded SITECON model from %1").arg(t->getURL()));

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -144,7 +144,6 @@ GroupOptionsWidget* OptionsPanelWidget::createOptionsWidget(const QString& group
     auto innerWidgets = new QWidget();
     auto layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
-    layout->setMargin(0);
 
     foreach (QWidget* commonWidget, commonWidgets) {
         SAFE_POINT(commonWidget != nullptr, "NULL common widget!", nullptr);

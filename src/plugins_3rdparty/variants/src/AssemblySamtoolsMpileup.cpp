@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -122,7 +122,7 @@ QList<Task*> CallVariantsTask::onSubTaskFinished(Task* subTask) {
         }
         DocumentFormat* df = dfs.first().format;
         QVariantMap cfg;
-        cfg.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(storage->getDbiRef()));
+        cfg.insert(DocumentFormat::DBI_REF_HINT, QVariant::fromValue(storage->getDbiRef()));
         loadTask = new LoadDocumentTask(df->getFormatId(), url, iof, cfg);
         res.append(loadTask);
 
@@ -136,7 +136,7 @@ QList<Task*> CallVariantsTask::onSubTaskFinished(Task* subTask) {
 
             QVariantMap m;
             SharedDbiDataHandler handler = storage->getDataHandler(varObj->getEntityRef());
-            m[BaseSlots::VARIATION_TRACK_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
+            m[BaseSlots::VARIATION_TRACK_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(handler);
             m[BaseSlots::URL_SLOT().getId()] = settings.variationsUrl;
             results.append(m);
         }

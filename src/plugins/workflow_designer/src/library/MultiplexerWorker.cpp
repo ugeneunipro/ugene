@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,6 @@ namespace LocalWorkflow {
 
 const QString MultiplexerWorkerFactory::ACTOR_ID("multiplexer");
 
-static const QString EMPTY_TYPESET_ID("empty");
 static const QString INPUT_PORT_1("input-data-1");
 static const QString INPUT_PORT_2("input-data-2");
 static const QString OUTPUT_PORT("output-data");
@@ -110,7 +109,9 @@ bool MultiplexerWorker::hasDataFotMultiplexing() const {
 }
 
 inline void MultiplexerWorker::sendUnitedMessage(const QVariantMap& m1, QVariantMap& m2, int metadataId) {
-    m2.unite(m1);
+    for (auto it = m1.cbegin(); it != m1.cend(); ++it) {
+        m2.insert(it.key(), it.value());
+    }
     outChannel->putWithoutContext(Message(outChannel->getBusType(), m2, metadataId));
 }
 

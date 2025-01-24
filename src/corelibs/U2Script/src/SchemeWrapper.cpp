@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -133,7 +133,7 @@ U2ErrorType SchemeWrapper::setElementAttribute(const QString& elementName,
         CHECK(U2_OK == result, result);
         if (Constants::FILE_URL == deepestAttributeName) {
             valuesTuple = attributeValue.split(Constants::SEMICOLON,
-                                               QString::SkipEmptyParts);
+                                               Qt::SkipEmptyParts);
         }
     } else {
         deepestAttributeName = attributeName;

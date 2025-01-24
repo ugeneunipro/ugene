@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,6 +26,7 @@
 #include <QString>
 
 #include <U2Core/global.h>
+#include <U2Core/U2IdTypes.h>
 
 namespace U2 {
 

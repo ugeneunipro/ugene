@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -284,7 +284,7 @@ Document* BaseDocWriter::getDocument(IOAdapter* io, U2OpStatus& os) {
 
     QVariantMap hints;
     U2DbiRef dbiRef = context->getDataStorage()->getDbiRef();
-    hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
+    hints.insert(DocumentFormat::DBI_REF_HINT, QVariant::fromValue(dbiRef));
     Document* doc = format->createNewLoadedDocument(io->getFactory(), io->getURL(), os, hints);
     CHECK_OP(os, nullptr);
 

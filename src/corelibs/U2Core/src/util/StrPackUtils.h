@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -74,16 +74,8 @@ private:
     static const QString pairSeparatorPattern;
     static const QRegExp pairSingleQuoteSeparatorRegExp;
     static const QRegExp pairDoubleQuoteSeparatorRegExp;
+
+    static const bool isMetaTypesRegistered;
 };
 
 }  // namespace U2
-
-template<>
-inline QVariant qVariantFromValue<StrStrMap>(const StrStrMap& map) {
-    return qVariantFromValue(U2::StrPackUtils::packMap(map));
-}
-
-template<>
-inline StrStrMap qvariant_cast<StrStrMap>(const QVariant& variant) {
-    return U2::StrPackUtils::unpackMap(qvariant_cast<QString>(variant));
-}

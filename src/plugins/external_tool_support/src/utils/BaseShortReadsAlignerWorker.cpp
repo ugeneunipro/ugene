@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -218,7 +218,7 @@ void BaseShortReadsAlignerWorker::sl_taskFinished() {
     QString url = t->getSettings().resultFileName.getURLString();
 
     QVariantMap data;
-    data[ASSEBLY_OUT_SLOT_ID] = qVariantFromValue<QString>(url);
+    data[ASSEBLY_OUT_SLOT_ID] = QVariant::fromValue<QString>(url);
     output->put(Message(output->getBusType(), data));
 
     context->getMonitor()->addOutputFile(url, getActor()->getId());

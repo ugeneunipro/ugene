@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,8 +58,8 @@ QWidget* UrlAndDatasetWizardController::createGUI(U2OpStatus& os) {
 
 void UrlAndDatasetWizardController::sl_datasetsChanged() {
     CHECK(2 == widget->getInfos().size(), );
-    wc->setAttributeValue(widget->getInfos().at(0), qVariantFromValue<QList<Dataset>>(dsc->getUrls()));
-    wc->setAttributeValue(widget->getInfos().at(1), qVariantFromValue<QList<Dataset>>(dsc->getDatasets()));
+    wc->setAttributeValue(widget->getInfos().at(0), QVariant::fromValue<QList<Dataset>>(dsc->getUrls()));
+    wc->setAttributeValue(widget->getInfos().at(1), QVariant::fromValue<QList<Dataset>>(dsc->getDatasets()));
 }
 
 }  // namespace U2

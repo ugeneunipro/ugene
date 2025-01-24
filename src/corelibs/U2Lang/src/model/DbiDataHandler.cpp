@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@ bool DbiDataHandler::equals(const DbiDataHandler* other) const {
 }
 
 int DbiDataHandler::getReferenceCount() const {
-    return this->ref.load();
+    return this->ref.loadAcquire();
 }
 
 U2DbiRef DbiDataHandler::getDbiRef() const {

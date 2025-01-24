@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,17 +21,11 @@
 
 #include <math.h>
 
-#include <QAction>
 #include <QApplication>
-#include <QComboBox>
 #include <QContextMenuEvent>
 #include <QGroupBox>
-#include <QLabel>
-#include <QMenu>
 #include <QMessageBox>
 #include <QPalette>
-#include <QPushButton>
-#include <QToolButton>
 #include <QVBoxLayout>
 
 #include <U2Core/L10n.h>
@@ -155,7 +149,7 @@ void RegionSelector::initLayout() {
 
         auto rootLayout = new QVBoxLayout(this);
         rootLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
-        rootLayout->setMargin(0);
+        rootLayout->setContentsMargins(0, 0, 0, 0);
         setLayout(rootLayout);
         rootLayout->addWidget(gb);
     } else {
@@ -164,7 +158,7 @@ void RegionSelector::initLayout() {
         locationLineEdit->setObjectName("location_line_edit");
 
         auto l = new QHBoxLayout(this);
-        l->setMargin(0);
+        l->setContentsMargins(0, 0, 0, 0);
 
         auto rangeLabel = new QLabel(tr("Region"), this);
         rangeLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
@@ -178,11 +172,11 @@ void RegionSelector::initLayout() {
         regionLayout->addWidget(endEdit);
 
         locationLayout = new QHBoxLayout(this);
-        locationLayout->setMargin(0);
+        locationLayout->setContentsMargins(0, 0, 0, 0);
         locationLayout->addWidget(locationLineEdit);
         
         auto selectorsLayout = new QVBoxLayout(this);
-        selectorsLayout->setMargin(0);
+        selectorsLayout->setContentsMargins(0, 0, 0, 0);
         selectorsLayout->addLayout(regionLayout);
         selectorsLayout->addLayout(locationLayout);
 

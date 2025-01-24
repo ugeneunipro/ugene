@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -136,7 +136,7 @@ void Overview::sl_sequenceChanged() {
 
 void Overview::pack() {
     auto layout = new QHBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     layout->addWidget(renderArea);
     setContentLayout(layout);
@@ -300,13 +300,13 @@ void Overview::mouseDoubleClickEvent(QMouseEvent* me) {
 }
 
 void Overview::wheelEvent(QWheelEvent* we) {
-    bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->pos());
+    bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->position().toPoint());
     if (!renderAreaWheel) {
         QWidget::wheelEvent(we);
         return;
     }
     setFocus();
-    bool toMin = we->delta() > 0;
+    bool toMin = we->angleDelta().y() > 0;
     QAction* zoomAction = toMin ? panView->getZoomInAction() : panView->getZoomOutAction();
     if (zoomAction != nullptr) {
         zoomAction->activate(QAction::Trigger);

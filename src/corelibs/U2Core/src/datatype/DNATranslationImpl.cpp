@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include "DNATranslationImpl.h"
 
 #include <QDateTime>
+#include <QRandomGenerator>
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/TextUtils.h>
@@ -179,7 +180,11 @@ void Index3To1::init(const QByteArray& alphabetChars) {
 /// 1->3
 DNATranslation1to3Impl::DNATranslation1to3Impl(const QString& _id, const QString& _name, const DNAAlphabet* src, const DNAAlphabet* dst, const BackTranslationRules& rules)
     : DNATranslation(_id, _name, src, dst), index(rules) {
-    qsrand(uint(QDateTime::currentDateTime().toSecsSinceEpoch() / 1000));
+}
+
+static QRandomGenerator& rnd() {
+    static QRandomGenerator instance(static_cast<quint32>(QDateTime::currentMSecsSinceEpoch()));
+    return instance;
 }
 
 DNATranslation1to3Impl::~DNATranslation1to3Impl() {
@@ -213,7 +218,7 @@ qint64 DNATranslation1to3Impl::translate(const char* src, qint64 src_len, char* 
         case USE_FREQUENCE_DISTRIBUTION: {
             if (caseSensitive) {
                 for (int dstIdx = 0, srcIdx = 0; dstIdx < resLen; srcIdx++) {
-                    int p = qrand() % 100;
+                    int p = rnd().bounded(100);
                     int pos = index.index[(int)*(src + srcIdx)];
                     while (index.map[pos].p <= p) {
                         p -= index.map[pos++].p;
@@ -228,7 +233,7 @@ qint64 DNATranslation1to3Impl::translate(const char* src, qint64 src_len, char* 
                 const QByteArray& ucMap = TextUtils::UPPER_CASE_MAP;
                 for (int dstIdx = 0, srcIdx = 0; dstIdx < resLen; srcIdx++) {
                     TextUtils::translate(ucMap, src + srcIdx, 1, &uc);
-                    int p = qrand() % 100;
+                    int p = rnd().bounded(100);
                     int pos = index.index[(int)*(src + srcIdx)];
                     while (index.map[pos].p <= p) {
                         p -= index.map[pos++].p;

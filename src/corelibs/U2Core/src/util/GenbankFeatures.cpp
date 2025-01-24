@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ const QString GBFeatureUtils::QUALIFIER_TRANSLATION = "translation";
 #define FKE(key, type, text, quals) \
     features[key] = GBFeatureKeyInfo(key, type, text); \
     if (strlen(quals) > 0) { \
-        features[key].namingQuals = QString(quals).split(",", QString::SkipEmptyParts); \
+        features[key].namingQuals = QString(quals).split(",", Qt::SkipEmptyParts); \
     }
 
 #define FK(key, type, text) \

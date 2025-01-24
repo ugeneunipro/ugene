@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include "CMDLineUtils.h"
 
 #include <QFile>
+#include <QRegularExpression>
 
 #include <U2Core/AppContext.h>
 
@@ -67,7 +68,7 @@ QStringList CMDLineRegistryUtils::getParameterValuesByWords(const QString& param
     QStringList res = getParameterValues(paramName, startWith);
     QStringList::const_iterator it = res.constBegin();
     while (it != res.constEnd()) {
-        words << it->split(QRegExp("\\s"), QString::SkipEmptyParts);
+        words << it->split(QRegularExpression("\\s"), Qt::SkipEmptyParts);
         ++it;
     }
     return words;

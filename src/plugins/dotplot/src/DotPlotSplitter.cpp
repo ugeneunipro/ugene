@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
 
     auto wgt = new WidgetWithLocalToolbar(this);
     QLayout* l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
     l->addWidget(splitter);
     wgt->setContentLayout(l);
@@ -70,7 +70,7 @@ DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
 
     QLayout* mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->addWidget(wgt);
     setLayout(mainLayout);
 

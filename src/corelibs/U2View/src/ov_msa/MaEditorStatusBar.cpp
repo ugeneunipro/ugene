@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,11 +56,11 @@ void MaEditorStatusBar::TwoArgPatternLabel::update(const QString& firstArg, int 
 void MaEditorStatusBar::TwoArgPatternLabel::update(const QString& firstArg, const QString& secondArg) {
     setText(textPattern.arg(firstArg).arg(secondArg));
     setToolTip(tooltipPattern.arg(firstArg).arg(secondArg));
-    setMinimumWidth(10 + fm.width(textPattern.arg(secondArg).arg(secondArg)));
+    setMinimumWidth(10 + fm.horizontalAdvance(textPattern.arg(secondArg).arg(secondArg)));
 }
 
 void MaEditorStatusBar::TwoArgPatternLabel::updateMinWidth(QString maxLenArg) {
-    setMinimumWidth(10 + fm.width(textPattern.arg(maxLenArg).arg(maxLenArg)));
+    setMinimumWidth(10 + fm.horizontalAdvance(textPattern.arg(maxLenArg).arg(maxLenArg)));
 }
 
 MaEditorStatusBar::MaEditorStatusBar(MaEditor* _editor)
@@ -78,7 +78,7 @@ MaEditorStatusBar::MaEditorStatusBar(MaEditor* _editor)
     lockLabel = new QLabel();
 
     layout = new QHBoxLayout();
-    layout->setMargin(2);
+    layout->setContentsMargins(2, 2, 2, 2);
     layout->addStretch(1);
     setLayout(layout);
 
@@ -168,8 +168,8 @@ void MaEditorStatusBar::updateSelectionLabel() {
                                          : tr("%1 regions").arg(selectionRects.size()));
 
     QFontMetrics fm(lineLabel->font(), this);
-    int maxSelLength = fm.width(selectionPattern.arg(editor->getAlignmentLen()) + "x" + QString::number(editor->getCollapseModel()->getViewRowCount()));
-    int nonSelLength = fm.width(selectionPattern.arg(tr("none")));
+    int maxSelLength = fm.horizontalAdvance(selectionPattern.arg(editor->getAlignmentLen()) + "x" + QString::number(editor->getCollapseModel()->getViewRowCount()));
+    int nonSelLength = fm.horizontalAdvance(selectionPattern.arg(tr("none")));
 
     selectionLabel->update(selSize, 10 + qMax(maxSelLength, nonSelLength));
 }

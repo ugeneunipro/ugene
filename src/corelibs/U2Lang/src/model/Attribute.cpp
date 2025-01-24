@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -157,10 +157,10 @@ AttributeScript& Attribute::getAttributeScript() {
 QVariant Attribute::toVariant() const {
     QVariantList res;
     res << value;
-    res << qVariantFromValue<QString>(scriptData.getScriptText());
+    res << QVariant::fromValue<QString>(scriptData.getScriptText());
     QVariantList scriptVars;
     foreach (const Descriptor& varDesc, scriptData.getScriptVars().keys()) {
-        scriptVars << qVariantFromValue<QString>(varDesc.getId());
+        scriptVars << QVariant::fromValue<QString>(varDesc.getId());
     }
     res << QVariant(scriptVars);
     return res;

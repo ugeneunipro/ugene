@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -104,7 +104,7 @@ public:
     QVariant data(const QModelIndex& index, int role /* = Qt::DisplayRole */) const {
         const Attribute* item = attrs.at(index.row());
         if (role == DescriptorRole) {
-            return qVariantFromValue<Descriptor>(*item);
+            return QVariant::fromValue<Descriptor>(*item);
         }
         if (index.column() == 0) {
             switch (role) {
@@ -136,7 +136,7 @@ public:
                 }
             }
             case DelegateRole:
-                return qVariantFromValue<PropertyDelegate*>(pd);
+                return QVariant::fromValue<PropertyDelegate*>(pd);
             case Qt::EditRole:
             case ConfigurationEditor::ItemValueRole:
                 return val;

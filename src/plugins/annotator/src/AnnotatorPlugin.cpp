@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -123,7 +123,7 @@ void AnnotatorViewContext::sl_showCollocationDialog() {
         return;
     }
 
-    QObjectScopedPointer<CollocationsDialogController> d = new CollocationsDialogController(allNames.toList(), seqCtx);
+    QObjectScopedPointer<CollocationsDialogController> d = new CollocationsDialogController(toList(allNames), seqCtx);
     d->exec();
 }
 

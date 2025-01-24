@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -114,7 +114,7 @@ void DashboardInfoRegistry::releaseReservedName(const QString& dashboardId) {
 }
 
 QSet<QString> DashboardInfoRegistry::getReservedNames() const {
-    return reservedNames.values().toSet();
+    return toSet(reservedNames.values());
 }
 
 void DashboardInfoRegistry::sl_scanTaskFinished() {

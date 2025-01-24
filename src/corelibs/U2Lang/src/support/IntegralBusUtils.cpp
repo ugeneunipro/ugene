@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ IntegralBusUtils::SplitResult IntegralBusUtils::splitCandidates(const QList<Desc
 }
 
 void IntegralBusUtils::remapBus(StrStrMap& busMap, const ActorId& oldId, const ActorId& newId, const PortMapping& mapping) {
-    foreach (QString key, busMap.uniqueKeys()) {
+    foreach (QString key, busMap.keys()) {
         U2OpStatus2Log os;
         QList<IntegralBusSlot> slotList = IntegralBusSlot::listFromString(busMap[key], os);
         QList<IntegralBusSlot> newSlots;

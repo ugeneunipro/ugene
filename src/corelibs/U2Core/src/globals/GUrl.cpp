@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,7 +73,7 @@ static QString makeFilePathCanonical(const QString& originalUrl) {
         isSambaPath = true;
     }
 
-    QStringList parts = result.split('/', QString::SkipEmptyParts);
+    QStringList parts = result.split('/', Qt::SkipEmptyParts);
     if (!parts.empty()) {
         QStringList canonicalParts;
         if (isOsWindows()) {
@@ -187,8 +187,8 @@ QString GUrl::baseFileName() const {
     CHECK(!isNetworkSource(), result);
 
     if (isVFSFile()) {
-        QStringList args = urlString.split(U2_VFS_FILE_SEPARATOR, QString::SkipEmptyParts, Qt::CaseSensitive);
-        if (2 == args.size()) {
+        QStringList args = urlString.split(U2_VFS_FILE_SEPARATOR, Qt::SkipEmptyParts);
+        if (args.size() == 2) {
             result = QFileInfo(args.at(1)).baseName();
             if (!result.length()) {
                 result = QFileInfo(args.at(1)).fileName();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -104,7 +104,7 @@ static void evaluate(const QByteArray& seq, QMap<char, qreal>& result) {
         i.next();
         int count = i.value();
         qreal freq = count / len;
-        result.insertMulti(i.key(), freq);
+        result.insert(i.key(), freq);
     }
 }
 
@@ -129,7 +129,7 @@ void DNASequenceGenerator::evaluateBaseContent(const Msa& ma, QMap<char, qreal>&
             char ch = mapIter.key();
             qreal freq = mapIter.value();
             if (!result.contains(ch)) {
-                result.insertMulti(ch, freq);
+                result.insert(ch, freq);
             } else {
                 result[ch] += freq;
             }

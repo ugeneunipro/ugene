@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ void GTest_AddPartToSequenceTask::init(XMLTestFormat*, const QDomElement& el) {
     }
     buf = el.attribute(EXPECTED_REGIONS_ATTR);
     if (!buf.isEmpty()) {
-        foreach (QString str, buf.split(' ', QString::SkipEmptyParts)) {
+        foreach (QString str, buf.split(' ', Qt::SkipEmptyParts)) {
             expectedRegions.append(U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt() - str.split(',')[0].toInt()));
         }
         // expectedRegions=buf;
@@ -205,7 +205,7 @@ void GTest_RemovePartFromSequenceTask::init(XMLTestFormat*, const QDomElement& e
     }
     buf = el.attribute(EXPECTED_REGIONS_ATTR);
     if (!buf.isEmpty()) {
-        foreach (QString str, buf.split(' ', QString::SkipEmptyParts)) {
+        foreach (QString str, buf.split(' ', Qt::SkipEmptyParts)) {
             expectedRegions.append(U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt() - str.split(',')[0].toInt()));
         }
         // expectedRegions=buf;
@@ -331,7 +331,7 @@ void GTest_ReplacePartOfSequenceTask::init(XMLTestFormat*, const QDomElement& el
     }
     buf = el.attribute(EXPECTED_REGIONS_ATTR);
     if (!buf.isEmpty()) {
-        QStringList items = buf.split(',', QString::SkipEmptyParts);
+        QStringList items = buf.split(',', Qt::SkipEmptyParts);
         foreach (QString str, items) {
             int startPos = str.split("..")[0].toInt() - 1;
             int len = str.split("..")[1].toInt() - startPos;

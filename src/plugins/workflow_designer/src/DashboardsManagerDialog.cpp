@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -74,7 +74,7 @@ void DashboardsManagerDialog::setupList() {
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
         Qt::CheckState state = info.opened ? Qt::Checked : Qt::Unchecked;
         item->setCheckState(0, state);
-        item->setData(0, Qt::UserRole, qVariantFromValue<DashboardInfo>(info));
+        item->setData(0, Qt::UserRole, QVariant::fromValue<DashboardInfo>(info));
         listWidget->addTopLevelItem(item);
     }
     listWidget->sortByColumn(1, Qt::AscendingOrder);

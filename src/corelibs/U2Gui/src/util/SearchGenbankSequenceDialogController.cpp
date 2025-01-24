@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,6 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
 
 #include "SearchGenbankSequenceDialogController.h"
 
@@ -78,7 +81,9 @@ SearchGenbankSequenceDialogController::~SearchGenbankSequenceDialogController() 
 
 void SearchGenbankSequenceDialogController::addQueryBlockWidget(QWidget* w) {
     ui->queryBuilderBox->layout()->addWidget(w);
-    w->setObjectName("query_block_widget_" + QString::number(ui->queryBuilderBox->findChildren<QWidget*>(QRegExp("query_block_widget_\\d+")).size()));
+    auto childWidgets = ui->queryBuilderBox->findChildren<QWidget*>(QRegularExpression("query_block_widget_\\d+"));
+    w->setObjectName("query_block_widget_" + QString::number(childWidgets.size()));
+
 }
 
 void SearchGenbankSequenceDialogController::removeQueryBlockWidget(QWidget* w) {
@@ -207,7 +212,7 @@ void SearchGenbankSequenceDialogController::sl_itemSelectionChanged() {
 QueryBlockWidget::QueryBlockWidget(QueryBuilderController* controller, bool first)
     : conditionBox(nullptr), termBox(nullptr), queryEdit(nullptr) {
     auto layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     if (first) {
         auto label = new QLabel(tr("Term:"));

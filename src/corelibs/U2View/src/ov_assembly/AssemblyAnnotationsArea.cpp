@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ AssemblyAnnotationsArea::AssemblyAnnotationsArea(AssemblyBrowserUi* ui)
     variantRowManager = new AssemblyVariantRowManager(ui);
     auto vLayout = new QVBoxLayout(this);
     this->setLayout(vLayout);
-    vLayout->setMargin(0);
+    vLayout->setContentsMargins(0, 0, 0, 0);
     vLayout->setSpacing(0);
 }
 

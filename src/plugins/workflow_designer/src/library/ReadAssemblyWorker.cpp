@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -88,7 +88,7 @@ void ReadAssemblyWorker::onTaskFinished(Task* task) {
         QVariantMap m;
         m[BaseSlots::URL_SLOT().getId()] = documentUrl;
         m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
-        m[BaseSlots::ASSEMBLY_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
+        m[BaseSlots::ASSEMBLY_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(handler);
 
         cache.append(Message(mtype, m, metadata.getId()));
     }
@@ -99,7 +99,7 @@ void ReadAssemblyWorker::onTaskFinished(Task* task) {
 
 QString ReadAssemblyWorker::addReadDbObjectToData(const QString& objUrl, QVariantMap& data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
-    data[BaseSlots::ASSEMBLY_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
+    data[BaseSlots::ASSEMBLY_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(handler);
     // return getObjectName(handler, U2Type::Assembly);
     return getObjectName(handler, 4);
 }

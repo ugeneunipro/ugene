@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -536,7 +536,7 @@ RefineTask::RefineTask(MuscleWorkPool* _workpool)
 void RefineTask::run() {
     TaskLocalData::bindToMuscleTLSContext(workpool->ctx);
     try {
-        QTime timer;
+        QElapsedTimer timer;
         timer.start();
         _run();
         workpool->refineDone = true;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,6 +44,20 @@ const QString StrPackUtils::pairSeparatorPattern = QString("^\\%2|(?!\\\\)\\%2%1
 const QRegExp StrPackUtils::pairSingleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\'"));
 const QRegExp StrPackUtils::pairDoubleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\""));
 
+static bool registerMetaTypes() {
+    qRegisterMetaType<StrStrMap>("StrStrMap");
+
+    QMetaType::registerConverter<StrStrMap, QVariant>(
+        [](const StrStrMap& map) { return QVariant::fromValue(StrPackUtils::packMap(map));});
+
+    QMetaType::registerConverter<QVariant, StrStrMap>(
+        [](const QVariant& variant) -> StrStrMap { return StrPackUtils::unpackMap(variant.toString());});
+
+    return true;
+}
+
+const bool StrPackUtils::isMetaTypesRegistered = registerMetaTypes();
+
 QString StrPackUtils::packStringList(const QStringList& list, Options options) {
     QString packedList;
     foreach (const QString& string, list) {
@@ -56,7 +70,7 @@ QString StrPackUtils::packStringList(const QStringList& list, Options options) {
 QStringList StrPackUtils::unpackStringList(const QString& string, Options options) {
     QStringList unpackedList;
     const QRegExp separator = (options == SingleQuotes ? listSingleQuoteSeparatorRegExp : listDoubleQuoteSeparatorRegExp);
-    foreach (const QString& escapedString, string.split(separator, QString::SkipEmptyParts)) {
+    foreach (const QString& escapedString, string.split(separator, Qt::SkipEmptyParts)) {
         unpackedList << unescapeCharacters(escapedString);
     }
     return unpackedList;
@@ -88,9 +102,9 @@ QString StrPackUtils::packMap(const StrStrMap& map, Options options) {
 StrStrMap StrPackUtils::unpackMap(const QString& string, Options options) {
     StrStrMap map;
     QRegExp elementsSeparator = options == SingleQuotes ? mapSingleQuoteSeparatorRegExp : mapDoubleQuoteSeparatorRegExp;
-    foreach (const QString& pair, string.split(elementsSeparator, QString::SkipEmptyParts)) {
+    foreach (const QString& pair, string.split(elementsSeparator, Qt::SkipEmptyParts)) {
         QRegExp keyValueSeparator = options == SingleQuotes ? pairSingleQuoteSeparatorRegExp : pairDoubleQuoteSeparatorRegExp;
-        QStringList splitPair = pair.split(keyValueSeparator, QString::SkipEmptyParts);
+        QStringList splitPair = pair.split(keyValueSeparator, Qt::SkipEmptyParts);
         Q_ASSERT(splitPair.size() <= 2);
         if (!splitPair.empty()) {  // splitPair can be empty if both key and value are empty strings.
             map.insert(splitPair.first(), splitPair.size() > 1 ? splitPair[1] : "");

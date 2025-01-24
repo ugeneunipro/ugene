@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,9 +32,9 @@ static const QString LEFT_EYE_COLOR_NAME("LeftEyeColor");
 static const QString RIGHT_EYE_COLOR_NAME("RightEyeColor");
 
 QVariantMap AnaglyphSettings::toMap(QVariantMap& map) const {
-    map[EYES_SHIFT_NAME] = qVariantFromValue(eyesShift);
-    map[LEFT_EYE_COLOR_NAME] = qVariantFromValue(leftEyeColor);
-    map[RIGHT_EYE_COLOR_NAME] = qVariantFromValue(rightEyeColor);
+    map[EYES_SHIFT_NAME] = QVariant::fromValue(eyesShift);
+    map[LEFT_EYE_COLOR_NAME] = QVariant::fromValue(leftEyeColor);
+    map[RIGHT_EYE_COLOR_NAME] = QVariant::fromValue(rightEyeColor);
 
     return map;
 }

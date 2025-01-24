@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -96,7 +96,7 @@ void WidgetScreenshotExportToBitmapTask::run() {
     SAFE_POINT_EXT(settings.isBitmapFormat(),
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("WidgetScreenshotExportToBitmapTask")), );
 
-    QImage image = QPixmap::grabWidget(widget, widget->rect()).toImage();
+    QImage image = widget->grab().toImage();
 
     image = image.scaled(settings.imageSize, Qt::KeepAspectRatio);
 

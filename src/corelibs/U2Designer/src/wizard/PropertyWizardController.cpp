@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -95,7 +95,7 @@ QWidget* InUrlDatasetsController::createGUI(U2OpStatus& /*os*/) {
 }
 
 void InUrlDatasetsController::sl_datasetsChanged() {
-    sl_valueChanged(qVariantFromValue<QList<Dataset>>(dsc->getDatasets()));
+    sl_valueChanged(QVariant::fromValue<QList<Dataset>>(dsc->getDatasets()));
 }
 
 /************************************************************************/

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ namespace U2 {
 
 DashboardWidget::DashboardWidget(const QString& title, QWidget* contentWidget) {
     auto layout = new QHBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     setLayout(layout);
 
@@ -54,7 +54,7 @@ DashboardWidget::DashboardWidget(const QString& title, QWidget* contentWidget) {
     layout->addWidget(styleRootWidget);
 
     auto styleRootWidgetLayout = new QVBoxLayout();
-    styleRootWidgetLayout->setMargin(0);
+    styleRootWidgetLayout->setContentsMargins(0, 0, 0, 0);
     styleRootWidgetLayout->setSpacing(0);
     styleRootWidget->setLayout(styleRootWidgetLayout);
 
@@ -76,7 +76,7 @@ DashboardWidget::DashboardWidget(const QString& title, QWidget* contentWidget) {
     styleRootWidgetLayout->addWidget(contentStyleWidget);
 
     auto contentStyleWidgetLayout = new QVBoxLayout();
-    contentStyleWidgetLayout->setMargin(0);
+    contentStyleWidgetLayout->setContentsMargins(0, 0, 0, 0);
     contentStyleWidgetLayout->setSpacing(0);
     contentStyleWidget->setLayout(contentStyleWidgetLayout);
 

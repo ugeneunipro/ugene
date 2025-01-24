@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -320,7 +320,7 @@ static void readLine(IOAdapter* io, QByteArray& to, QStringList* tokens = nullpt
     }
 
     if (tokens != nullptr) {
-        *tokens = QString(to).split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        *tokens = QString(to).split(QRegExp("\\s+"), Qt::SkipEmptyParts);
     }
 }
 

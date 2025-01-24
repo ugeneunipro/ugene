@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -148,21 +148,9 @@ void NetworkConfiguration::copyFrom(const NetworkConfiguration& image) {
     rrConfig = image.rrConfig;
 }
 
-#ifndef QT_NO_OPENSSL
-
 QSsl::SslProtocol NetworkConfiguration::getSslProtocol() const {
-    if (sslConfig.currentProtocol == SslConfig::SSLV2) {
-        return QSsl::SslV2;
-    } else if (sslConfig.currentProtocol == SslConfig::SSLV3) {
-        return QSsl::SslV3;
-    } else if (sslConfig.currentProtocol == SslConfig::TLSV1) {
-        return QSsl::TlsV1_0;
-    } else {
-        return QSsl::SslV3;
-    }
+    return QSsl::TlsV1_0OrLater;  // Default to a secure protocol
 }
-
-#endif
 
 QString NetworkConfiguration::getSslProtocolName() const {
     if (sslConfig.currentProtocol.isEmpty()) {

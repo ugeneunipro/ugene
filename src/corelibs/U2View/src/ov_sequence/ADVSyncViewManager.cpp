@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,10 +21,8 @@
 
 #include "ADVSyncViewManager.h"
 
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceSelection.h>
-#include <U2Core/U2SafePoints.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
@@ -278,7 +276,7 @@ void ADVSyncViewManager::sl_lock() {
         m = SyncMode_AnnSel;
     } else if (buttonClicked && !lockButton->isChecked()) {
         m = detectSyncMode();
-    }    
+    }
     if (lockButton->isChecked()) {
         unlock();
     } else {
@@ -556,7 +554,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
                 QList<QAction*> aaToggleActions = aaAction->getToggleActions();
                 for (QAction* toggleAction : qAsConst(aaToggleActions)) {
                     if (toggleAction->isEnabled()) {
-                        aaActionMap.insertMulti(toggleAction->text(), toggleAction);
+                        aaActionMap.insert(toggleAction->text(), toggleAction);
                         active = true;
                     }
                 }
@@ -567,7 +565,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
 
     toggleAutoAnnotationsButton->setEnabled(!aaActionMap.isEmpty());
 
-    QSet<QString> actionNames = aaActionMap.keys().toSet();
+    QSet<QString> actionNames = toSet(aaActionMap.keys());
 
     foreach (const QString& aName, actionNames) {
         auto action = new QAction(toggleAutoAnnotationsMenu);
@@ -587,7 +585,7 @@ void ADVSyncViewManager::sl_toggleAutoAnnotationHighlighting() {
     QVariant val = menuAction->property(HAVE_ENABLED_AUTOANNOTATIONS);
     assert(val.isValid());
     bool haveEnabledAutoAnnotations = val.toBool();
-    QList<QAction*> aaActions = aaActionMap.values(menuAction->objectName());
+    QList<QAction*> aaActions = {aaActionMap[menuAction->objectName()]};
     foreach (QAction* aaAction, aaActions) {
         aaAction->setChecked(!haveEnabledAutoAnnotations);
     }
@@ -600,7 +598,7 @@ void ADVSyncViewManager::sl_updateAutoAnnotationsMenu() {
         QString aName = menuAction->objectName();
         bool haveEnabledAutoAnnotations = false;
         // if have at least 1 checked  -> uncheck all
-        QList<QAction*> aaActions = aaActionMap.values(aName);
+        QList<QAction*> aaActions = {aaActionMap[aName]};
         foreach (QAction* aaAction, aaActions) {
             if (aaAction->isChecked()) {
                 haveEnabledAutoAnnotations = true;

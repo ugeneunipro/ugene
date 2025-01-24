@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,12 +21,8 @@
 
 #include "ScriptWorker.h"
 
-#include <QScriptEngineDebugger>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNATranslation.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
@@ -50,7 +46,6 @@ namespace LocalWorkflow {
 
 const QString ScriptWorkerFactory::ACTOR_ID("Script-");
 
-const static QString INPUT_PORT_TYPE("input-for-");
 const static QString OUTPUT_PORT_TYPE("output-for-");
 
 static const QString IN_PORT_ID("in");
@@ -64,7 +59,7 @@ ScriptWorkerTask::ScriptWorkerTask(WorkflowScriptEngine* _engine, AttributeScrip
 
 void ScriptWorkerTask::run() {
     QMap<QString, QScriptValue> scriptVars;
-    foreach (const Descriptor& key, script->getScriptVars().uniqueKeys()) {
+    foreach (const Descriptor& key, script->getScriptVars().keys()) {
         assert(!key.getId().isEmpty());
         if (!(script->getScriptVars().value(key)).isNull()) {
             scriptVars[key.getId()] = engine->newVariant(script->getScriptVars().value(key));
@@ -128,9 +123,6 @@ void ScriptWorker::init() {
     engine = new WorkflowScriptEngine(context);
     if (AppContext::isGUIMode()) {  // add script debugger
         engine->setProcessEventsInterval(50);
-        auto scriptDebugger = new QScriptEngineDebugger(engine);
-        scriptDebugger->setAutoShowStandardWindow(true);
-        scriptDebugger->attachTo(engine);
     }
 }
 
@@ -263,7 +255,7 @@ void ScriptWorker::sl_taskFinished() {
             if (!seqId.constData() || !seqId.constData()->isValid()) {
                 continue;
             }
-            map[desc.getId()] = qVariantFromValue(seqId);
+            map[desc.getId()] = QVariant::fromValue(seqId);
         } else {
             map[desc.getId()] = value.toVariant();
         }
@@ -275,7 +267,7 @@ void ScriptWorker::sl_taskFinished() {
             for (int i = 0; i < value.property("length").toInt32(); i++) {
                 SharedDbiDataHandler seqId = ScriptEngineUtils::getDbiId(t->getEngine(), value.property(i), SequenceScriptClass::CLASS_NAME);
                 if (seqId.constData() && seqId.constData()->isValid()) {
-                    map[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue(seqId);
+                    map[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue(seqId);
                     output->put(Message(ptr, map));
                 }
             }

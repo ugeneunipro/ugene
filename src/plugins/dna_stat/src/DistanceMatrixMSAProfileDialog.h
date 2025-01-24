@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,12 +21,8 @@
 
 #pragma once
 
-#include <QHash>
-#include <QSet>
-
 #include <U2Core/Msa.h>
 #include <U2Core/Task.h>
-#include <U2Core/global.h>
 
 #include "ui_DistanceMatrixMSAProfileDialog.h"
 

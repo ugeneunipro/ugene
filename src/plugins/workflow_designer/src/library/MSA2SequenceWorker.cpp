@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,7 +80,7 @@ Task* Alignment2SequenceWorker::tick() {
         for (const DNASequence& seq : qAsConst(sequenceList)) {
             QVariantMap msgData;
             SharedDbiDataHandler seqId = context->getDataStorage()->putSequence(seq);
-            msgData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
+            msgData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(seqId);
             output->setContext(channelContext, inputMessage.getMetadataId());
             output->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), msgData));
         }

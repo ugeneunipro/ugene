@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ BioStruct3DSplitter::BioStruct3DSplitter(QAction* _closeAction, AnnotatedDNAView
 
     widgetWithToolbar = new WidgetWithLocalToolbar(this);
     QLayout* l = new QVBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
     l->addWidget(splitter);
     widgetWithToolbar->setContentLayout(l);
@@ -363,7 +363,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     // Menu toolbar
     toolbar = new OrderedToolbar(this);
     toolbar->layout()->setSpacing(10);
-    toolbar->layout()->setMargin(0);
+    toolbar->layout()->setContentsMargins(0, 0, 0, 0);
 
     auto pixLabel = new QLabel(this);
     QFont f = pixLabel->font();
@@ -659,7 +659,7 @@ void SplitterHeaderWidget::sl_showWebMenu() {
 
     const QList<QAction*>& webMenuActions = webActionMap.keys();
     foreach (QAction* action, webMenuActions) {
-        QString wikiName = action->text().split(": ", QString::SkipEmptyParts).last();
+        QString wikiName = action->text().split(": ", Qt::SkipEmptyParts).last();
         action->setText(pdbId + ": " + wikiName);
         m.addAction(action);
     }

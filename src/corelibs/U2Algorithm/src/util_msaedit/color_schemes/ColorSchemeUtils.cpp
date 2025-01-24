@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -136,7 +136,7 @@ bool ColorSchemeUtils::getSchemaColors(ColorSchemeData& customScheme) {
         if (line.isEmpty()) {
             continue;
         }
-        QStringList properties = line.split(QString("="), QString::SkipEmptyParts);
+        QStringList properties = line.split(QString("="), Qt::SkipEmptyParts);
 
         if (!lineValid(properties, alphColors)) {
             coreLog.info(QString("%1: scheme is not valid").arg(customScheme.name));

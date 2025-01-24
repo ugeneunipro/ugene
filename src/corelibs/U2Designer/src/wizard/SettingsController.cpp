@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -70,7 +70,7 @@ void SettingsController::sl_fileSelect() {
 QWidget* SettingsController::createUrlSettingsWidget(U2OpStatus& /*os*/) {
     auto result = new QWidget;
     auto mainLayout = new QHBoxLayout(result);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
 
     auto label = new QLabel(sw->label());
     mainLayout->addWidget(label);

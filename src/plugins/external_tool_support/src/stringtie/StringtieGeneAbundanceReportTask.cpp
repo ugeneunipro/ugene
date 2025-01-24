@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -143,7 +143,7 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QMap<QString, QStrin
                           setError(tr("Too long line while reading a file: %1").arg(tempFile)),
                           false);
                 QString line = QString::fromLocal8Bit(block.data(), blockLen);
-                QStringList buf = line.split(inputDelimiter, QString::KeepEmptyParts);
+                QStringList buf = line.split(inputDelimiter, Qt::KeepEmptyParts);
                 CHECK_EXT(buf.size() == 3,
                           setError(tr("Bad line format of input: \"%1\"").arg(line)),
                           false);
@@ -269,9 +269,9 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
 
 QList<QStringList> StringtieGeneAbundanceReportTask::parseLinesIntoTokens(const QString& text) {
     QList<QStringList> result;
-    QStringList lines = text.split('\n', QString::SkipEmptyParts);
+    QStringList lines = text.split('\n', Qt::SkipEmptyParts);
     foreach (const QString& line, lines) {
-        QStringList tokens = line.split(inputDelimiter, QString::KeepEmptyParts);
+        QStringList tokens = line.split(inputDelimiter, Qt::KeepEmptyParts);
         result.append(tokens);
     }
     return result;

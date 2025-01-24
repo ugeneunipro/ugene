@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -129,8 +129,8 @@ void MSAEditorOffsetsViewWidget::updateView() {
     QFont f = getOffsetsFont();
     QFontMetrics fm(f, this);
     int aliLenStrLen = getWidthInBases();
-    int w = OFFS_WIDGET_BORDER + fm.width('X') * aliLenStrLen + OFFS_WIDGET_BORDER;
-    w += (showStartPos ? fm.width('[') : fm.width(']'));
+    int w = OFFS_WIDGET_BORDER + fm.horizontalAdvance('X') * aliLenStrLen + OFFS_WIDGET_BORDER;
+    w += (showStartPos ? fm.horizontalAdvance('[') : fm.horizontalAdvance(']'));
     setFixedWidth(w);
     completeRedraw = true;
     update();
@@ -192,8 +192,8 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     painter.setFont(font);
 
     int alignmentLength = editor->getMaObject()->getLength();
-    int lbw = fm.width('[');
-    int rbw = fm.width(']');
+    int lbw = fm.horizontalAdvance('[');
+    int rbw = fm.horizontalAdvance(']');
     ScrollController* scrollController = ui->getScrollController();
     int pos = showStartPos
                   ? scrollController->getFirstVisibleBase(true)

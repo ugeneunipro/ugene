@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,9 @@ CreateObjectRelationDialogController::CreateObjectRelationDialogController(GObje
     foreach (GObject* obj, objects) {
         ui->listWidget->addItem(new QListWidgetItem(objectIcon, obj->getGObjectName()));
     }
-    ui->listWidget->setItemSelected(ui->listWidget->item(0), true);
+    if (auto item = ui->listWidget->item(0)) {
+        item->setSelected(true);
+    }
     ui->relationHintLabel->setText(relationHint);
 }
 

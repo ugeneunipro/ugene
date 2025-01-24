@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,6 @@
 #include <QProcess>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
 
 #include "GTUtilsTaskTreeView.h"
 #include "PreliminaryActions.h"
@@ -51,7 +50,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0000) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     if (isOsWindows()) {
-        QProcess::execute("closeAllErrors.exe");  // this exe file, compiled Autoit script
+        QProcess::execute("closeAllErrors.exe", {});  // this exe file, compiled Autoit script
     }
 
     uiLog.trace(QString("pre_action_0000: next keyboard modifiers are pressed before test: %1").arg(QGuiApplication::queryKeyboardModifiers()));

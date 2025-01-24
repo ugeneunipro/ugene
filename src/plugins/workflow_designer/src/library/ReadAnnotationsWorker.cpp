@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -103,7 +103,7 @@ Task* ReadAnnotationsWorker::createReadTask(const QString& url, const QString& d
 
 QString ReadAnnotationsWorker::addReadDbObjectToData(const QString& objUrl, QVariantMap& data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
-    data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
+    data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(handler);
     // Using local var to have memory address for the static constant. TODO: switch build to std++17.
     // See https://en.cppreference.com/w/cpp/language/static
     auto type = U2Type::AnnotationTable;
@@ -140,7 +140,7 @@ void ReadAnnotationsWorker::sl_datasetEnded() {
     SharedDbiDataHandler resultTableId = context->getDataStorage()->putAnnotationTable(mergedAnnotationTable.data());
 
     QVariantMap m;
-    m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(resultTableId);
+    m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(resultTableId);
     m[BaseSlots::DATASET_SLOT().getId()] = datasetData.first()[BaseSlots::DATASET_SLOT().getId()];
 
     sendData(QList<QVariantMap>() << m);
@@ -300,7 +300,7 @@ void ReadAnnotationsTask::run() {
         // Otherwise ("MERGE" with several tables of annotations in one file), merge these tables into one.
         if (!isMerge) {
             SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annsObj);
-            m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
+            m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(tableId);
             results.append(m);
 
             SAFE_POINT(doc->removeObject(go, DocumentObjectRemovalMode_Detach),
@@ -315,7 +315,7 @@ void ReadAnnotationsTask::run() {
 
     if (isMerge) {
         SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(mergedAnnotationTable.get());
-        m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
+        m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(tableId);
         results.append(m);
     }
 }

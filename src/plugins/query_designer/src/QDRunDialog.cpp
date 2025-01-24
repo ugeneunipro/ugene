@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -318,7 +318,7 @@ void QDDialog::addAnnotationsWidget() {
     QWidget* annotationControllerWidget = annotationWidgetController->getWidget();
 
     auto annotationsWidgetLayout = new QVBoxLayout();
-    annotationsWidgetLayout->setMargin(0);
+    annotationsWidgetLayout->setContentsMargins(0, 0, 0, 0);
     annotationsWidgetLayout->addWidget(annotationControllerWidget);
     annotationsWidget->setLayout(annotationsWidgetLayout);
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ TaskStatusBar::TaskStatusBar() {
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     l = new QHBoxLayout();
-    l->setMargin(0);
+    l->setContentsMargins(0, 0, 0, 0);
     setLayout(l);
 
     l->addSpacing(20);

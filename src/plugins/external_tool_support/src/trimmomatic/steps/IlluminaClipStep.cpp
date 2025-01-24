@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -202,7 +202,10 @@ QVariantMap IlluminaClipSettingsWidget::getState() const {
     state[PALINDROME_CLIP_THRESHOLD] = palindromeThreshold->value();
     state[SIMPLE_CLIP_THRESHOLD] = simpleThreshold->value();
 
-    return state.unite(additionalOptions);
+    for (auto it = additionalOptions.cbegin(); it != additionalOptions.cend(); ++it) {
+        state.insert(it.key(), it.value());
+    }
+    return state;
 }
 
 void IlluminaClipSettingsWidget::setState(const QVariantMap& state) {

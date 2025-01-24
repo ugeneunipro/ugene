@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -184,7 +184,7 @@ void ReadAssemblyTask::prepare() {
                 SAFE_POINT_OP(os, );
 
                 QVariantMap hints;
-                hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
+                hints.insert(DocumentFormat::DBI_REF_HINT, QVariant::fromValue(dbiRef));
                 QString destination = GUrlUtils::rollFileName(AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath() + "/" + fi.baseName(), "_");
                 hints.insert(ImportHint_DestinationUrl, destination);
                 importTask = f.importer->createImportTask(f, false, hints);
@@ -251,7 +251,7 @@ void ReadAssemblyTask::run() {
             ctx->getDataStorage()->openDbi(dbiRef, os);
             CHECK_OP(os, );
 
-            hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
+            hints.insert(DocumentFormat::DBI_REF_HINT, QVariant::fromValue(dbiRef));
         }
         docPtr.reset(format->loadDocument(iof, url, hints, stateInfo));
         CHECK_OP(stateInfo, );

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ namespace U2 {
 class U2DESIGNER_EXPORT NewBreakpointDialog : public QDialog {
     Q_OBJECT
 public:
-    NewBreakpointDialog(const QStringList& elementsNames, QWidget* parent = nullptr, Qt::WindowFlags f = 0);
+    NewBreakpointDialog(const QStringList& elementsNames, QWidget* parent = nullptr, Qt::WindowFlags f = {});
     ~NewBreakpointDialog();
 
 signals:

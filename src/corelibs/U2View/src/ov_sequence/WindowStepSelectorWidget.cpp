@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ WindowStepSelectorWidget::WindowStepSelectorWidget(QWidget* p, const U2Region& w
     stepsPerWindowEdit->setObjectName("stepsPerWindowEdit");
 
     formLayout = new QFormLayout(this);
-    formLayout->setMargin(0);
+    formLayout->setContentsMargins(0, 0, 0, 0);
     formLayout->addRow(tr("Window"), windowEdit);
     formLayout->addRow(tr("Steps per window"), stepsPerWindowEdit);
     setLayout(formLayout);
@@ -122,7 +122,7 @@ MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget* p, double min, double max, b
 
     auto mainLayout = new QVBoxLayout;
     mainLayout->setSizeConstraint(QLayout::SetFixedSize);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->addWidget(minmaxGroup);
     setLayout(mainLayout);
 

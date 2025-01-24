@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -183,7 +183,7 @@ void HRVisualParser::parseLinkVisualBlock(const QString& from, const QString& to
 }
 
 QPointF HRVisualParser::string2Point(const QString& str, U2OpStatus& os) {
-    QStringList list = str.split(QRegExp("\\s"), QString::SkipEmptyParts);
+    QStringList list = str.split(QRegExp("\\s"), Qt::SkipEmptyParts);
     if (list.size() != 2) {
         os.setError(HRVisualParser::tr("Cannot parse coordinates from '%1'").arg(str));
         return QPointF(0.0, 0.0);

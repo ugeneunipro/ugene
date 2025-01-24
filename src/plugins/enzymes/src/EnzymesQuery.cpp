@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@
 
 #include <U2Lang/BaseTypes.h>
 
+#include "enzymes_dialog/FindEnzymesDialogQueryDesigner.h"
 #include "EnzymesIO.h"
 #include "FindEnzymesTask.h"
 
@@ -125,39 +126,16 @@ QDEnzymesActorPrototype::QDEnzymesActorPrototype() {
 /************************************************************************/
 /* EnzymesSelectorDialogHandler                                         */
 /************************************************************************/
+
+QDialog* EnzymesSelectorDialogHandler::createSelectorDialog(const QString&) {
+    return new FindEnzymesDialogQueryDesigner();
+}
+
 QString EnzymesSelectorDialogHandler::getSelectedString(QDialog* dlg) {
-    auto enzDlg = qobject_cast<EnzymesSelectorDialog*>(dlg);
-    assert(enzDlg);
+    auto enzDlg = qobject_cast<FindEnzymesDialogQueryDesigner*>(dlg);
+    SAFE_POINT_NN(enzDlg, QString());
+
     return enzDlg->getSelectedString();
-}
-
-/************************************************************************/
-/* EnzymesSelectorDialog                                                */
-/************************************************************************/
-
-EnzymesSelectorDialog::EnzymesSelectorDialog(EnzymesSelectorDialogHandler* parent)
-    : factory(parent) {
-    setupUi(this);
-    new HelpButton(this, buttonBox, "65930747");
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-
-    auto vl = new QVBoxLayout();
-    enzSel = new EnzymesSelectorWidget();
-    vl->setMargin(0);
-    vl->addWidget(enzSel);
-    enzymesSelectorWidget->setLayout(vl);
-    enzymesSelectorWidget->setMinimumSize(enzSel->size());
-}
-
-QString EnzymesSelectorDialog::getSelectedString() const {
-    QString res;
-    const QList<SEnzymeData>& enzymes = enzSel->getSelectedEnzymes();
-    foreach (const SEnzymeData& enzyme, enzymes) {
-        res += enzyme->id + ',';
-    }
-    res.remove(res.length() - 1, 1);
-    return res;
 }
 
 }  // namespace U2

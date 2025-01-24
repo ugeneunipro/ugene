@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,6 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
 
 #include "HRSchemaSerializer.h"
 
@@ -325,7 +328,7 @@ void HRSchemaSerializer::deprecatedUrlAttribute(Actor* proc, const QString& urls
     if (a != nullptr) {
         QList<Dataset> sets;
         sets << dSet;
-        a->setAttributeValue(qVariantFromValue<QList<Dataset>>(sets));
+        a->setAttributeValue(QVariant::fromValue<QList<Dataset>>(sets));
     }
 }
 
@@ -544,7 +547,7 @@ Actor* HRSchemaSerializer::parseElementsDefinition(Tokenizer& tokenizer, const Q
             parseMarkers(proc, pairs.blockPairs.values(key), key);
         } else if (a->getAttributeType()->getId() == BaseTypes::URL_DATASETS_TYPE()->getId()) {
             QList<Dataset> sets = parseUrlAttribute(a->getId(), pairs.blockPairsList);
-            a->setAttributeValue(qVariantFromValue<QList<Dataset>>(sets));
+            a->setAttributeValue(QVariant::fromValue<QList<Dataset>>(sets));
         } else {
             proc->getParameter(key)->getAttributeScript().setScriptText(pairs.blockPairs.value(key));
         }
@@ -796,7 +799,7 @@ QMap<ActorId, QVariantMap> HRSchemaSerializer::parseIteration(Tokenizer& tokeniz
             }
             QList<Dataset> sets = parseUrlAttribute(attrId, pairs.blockPairsList);
             if (!sets.isEmpty()) {
-                cfg[actorId][attrId] = qVariantFromValue(sets);
+                cfg[actorId][attrId] = QVariant::fromValue(sets);
             }
         }
     }
@@ -1382,7 +1385,7 @@ void HRSchemaSerializer::addPart(QString& to, const QString& w) {
 QString HRSchemaSerializer::header2String(const Metadata* meta) {
     QString res = Constants::HEADER_LINE + "\n";
     if (meta != nullptr) {
-        QStringList descLines = meta->comment.split(Constants::NEW_LINE, QString::KeepEmptyParts);
+        QStringList descLines = meta->comment.split(Constants::NEW_LINE, Qt::KeepEmptyParts);
         for (int lineIdx = 0; lineIdx < descLines.size(); lineIdx++) {
             const QString& line = descLines.at(lineIdx);
             bool lastLine = (lineIdx == descLines.size() - 1);
@@ -1420,7 +1423,7 @@ QString HRSchemaSerializer::makeArrowPair(const QString& left, const QString& ri
 QString HRSchemaSerializer::scriptBlock(const QString& scriptText, int tabsNum) {
     QString indent = makeIndent(tabsNum);
     QString res;
-    QStringList scriptLines = scriptText.split(Constants::NEW_LINE, QString::SkipEmptyParts);
+    QStringList scriptLines = scriptText.split(Constants::NEW_LINE, Qt::SkipEmptyParts);
     foreach (const QString& line, scriptLines) {
         res += indent + line + Constants::NEW_LINE;
     }
@@ -1764,7 +1767,7 @@ QString HRSchemaSerializer::dataflowDefinition(const QList<Actor*>& procs, const
 
             const QList<QString>& keys = busMap.keys();
             for (const QString& key : qAsConst(keys)) {
-                QStringList srcList = busMap.value(key).split(";", QString::SkipEmptyParts);
+                QStringList srcList = busMap.value(key).split(";", Qt::SkipEmptyParts);
                 QStringList uniqList;
                 for (QString src : qAsConst(srcList)) {
                     if (!uniqList.contains(src)) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -233,7 +233,7 @@ void HMMReader::sl_taskFinished() {
         return;
     if (output) {
         if (!t->hasError()) {
-            QVariant v = qVariantFromValue<plan7_s*>(t->getHMM());
+            QVariant v = QVariant::fromValue<plan7_s*>(t->getHMM());
             output->put(Message(HMMLib::HMM_PROFILE_TYPE(), v));
         }
         ioLog.info(tr("Loaded HMM profile from %1").arg(t->getURL()));

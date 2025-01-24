@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -70,7 +70,7 @@ QWidget* MsaHighlightingTab::createColorGroup() {
     QVBoxLayout* layout = initVBoxLayout(group);
     colorSchemeController = new MsaSchemeComboBoxController<MsaColorSchemeFactory, MsaColorSchemeRegistry>(msa, AppContext::getMsaColorSchemeRegistry(), this);
     colorSchemeController->getComboBox()->setObjectName("colorScheme");
-    colorSchemeController->getComboBox()->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+    colorSchemeController->getComboBox()->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
 
     colorThresholdLabel = new QLabel(tr("Threshold"));
 

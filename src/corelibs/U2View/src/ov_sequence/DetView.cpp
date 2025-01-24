@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -440,7 +440,7 @@ void DetView::sl_verticalScrollBarMoved(int pos) {
 
 void DetView::pack() {
     auto layout = new QGridLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     layout->addWidget(renderArea, 0, 0);
     layout->addWidget(scrollBar, 1, 0);
@@ -539,14 +539,14 @@ void DetView::mouseReleaseEvent(QMouseEvent* me) {
 }
 
 void DetView::wheelEvent(QWheelEvent* we) {
-    bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->pos());
+    bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->position().toPoint());
     if (!renderAreaWheel) {
         QWidget::wheelEvent(we);
         return;
     }
     setFocus();
 
-    bool toMin = we->delta() > 0;
+    bool toMin = we->angleDelta().y() > 0;
     if (we->modifiers() == 0) {
         // clear wheel event
         GScrollBar* sBar = wrapSequenceAction->isChecked() ? verticalScrollBar : scrollBar;

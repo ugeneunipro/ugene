@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,15 @@
  * MA 02110-1301, USA.
  */
 
+// TODO:
+#undef QT_DISABLE_DEPRECATED_BEFORE
+
+
 #include "CloningUtilTasks.h"
 
-#include <U2Core/AddDocumentTask.h>
-#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/Counter.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -714,7 +712,7 @@ void LigateFragmentsTask::createDocument(const QByteArray& seq, const QList<Shar
     QDate date = QDate::currentDate();
     loi.date = QString("%1-%2-%3").arg(date.toString("dd")).arg(FormatUtils::getShortMonthName(date.month())).arg(date.toString("yyyy"));
 
-    dna.info.insert(DNAInfo::LOCUS, qVariantFromValue<DNALocusInfo>(loi));
+    dna.info.insert(DNAInfo::LOCUS, QVariant::fromValue<DNALocusInfo>(loi));
 
     resultDoc = df->createNewLoadedDocument(iof, cfg.docUrl, stateInfo);
     CHECK_OP(stateInfo, );
