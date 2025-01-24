@@ -19,16 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include "QDScheduler.h"
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
@@ -260,7 +256,7 @@ void QDResultLinker::updateCandidates(QDStep* step, int& progress) {
         }
         assert(unlinkedGroupMembersLeft >= 0);
 
-        currentGroupResults.insertMulti(currentActor, currentResults);
+        currentGroupResults.insert(currentActor, currentResults);
 
         if (unlinkedGroupMembersLeft == 0) {
             formGroupResults();
@@ -718,8 +714,8 @@ void QDStep::initTotalMap() {
                     sharedConstraints.append(overallConstraint);
                 }
             }
-            constraintsMap.insertMulti(qMakePair(srcSu, dstSu), sharedConstraints);
-            constraintsMap.insertMulti(qMakePair(dstSu, srcSu), sharedConstraints);
+            constraintsMap.insert(qMakePair(srcSu, dstSu), sharedConstraints);
+            constraintsMap.insert(qMakePair(dstSu, srcSu), sharedConstraints);
         }
     }
 }

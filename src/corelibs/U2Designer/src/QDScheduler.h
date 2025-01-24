@@ -125,7 +125,7 @@ private:
     QList<QDResultGroup*> candidates;
     QMap<QDResultUnit, SharedAnnotationData> result2annotation;
     QList<QDResultGroup*> currentResults;
-    QMap<QDActor*, QList<QDResultGroup*>> currentGroupResults;
+    QMultiMap<QDActor*, QList<QDResultGroup*>> currentGroupResults;
     QMap<QString, QList<SharedAnnotationData>> annotations;
     int maxMemorySizeInMB;
 };

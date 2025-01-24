@@ -19,9 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include "FastqcTask.h"
 
 #include <QDir>
@@ -42,17 +39,16 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 // FastQCParser
 
-const QMap<FastQCParser::ErrorType, QString> FastQCParser::initWellKnownErrors() {
-    QMap<ErrorType, QString> errors;
-    errors.insertMulti(Common, "ERROR");
-    errors.insertMulti(Common, "Failed to process file");
-    errors.insertMulti(Multiline, "uk.ac.babraham.FastQC.Sequence.SequenceFormatException");
-    errors.insertMulti(Multiline, "didn't start with '+'");
-
+QMultiMap<FastQCParser::ErrorType, QString> FastQCParser::initWellKnownErrors() {
+    QMultiMap<ErrorType, QString> errors;
+    errors.insert(Common, "ERROR");
+    errors.insert(Common, "Failed to process file");
+    errors.insert(Multiline, "uk.ac.babraham.FastQC.Sequence.SequenceFormatException");
+    errors.insert(Multiline, "didn't start with '+'");
     return errors;
 }
 
-const QMap<FastQCParser::ErrorType, QString> FastQCParser::WELL_KNOWN_ERRORS = initWellKnownErrors();
+const QMultiMap<FastQCParser::ErrorType, QString> FastQCParser::WELL_KNOWN_ERRORS = initWellKnownErrors();
 
 FastQCParser::FastQCParser(const QString& _inputFile)
     : ExternalToolLogParser(false),

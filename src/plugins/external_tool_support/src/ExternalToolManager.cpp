@@ -19,12 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include "ExternalToolManager.h"
 
-#include <QEventLoop>
 #include <QSet>
 #include <QTimer>
 
@@ -128,7 +124,7 @@ void ExternalToolManagerImpl::registerTool(ExternalTool* tool) {
     QStringList masterToolList = tool->getDependencies();
     if (!masterToolList.isEmpty()) {
         for (const QString& masterToolId : qAsConst(masterToolList)) {
-            childToolsMultiMap.insertMulti(masterToolId, tool->getId());
+            childToolsMultiMap.insert(masterToolId, tool->getId());
         }
     }
 }

@@ -81,7 +81,7 @@ private:
     QTimer* timer;
     QSet<QString> availableEnzymes;
     QSet<QString> selectedEnzymes;
-    QMap<QString, U2Region> annotatedEnzymes;
+    QMultiMap<QString, U2Region> annotatedEnzymes;
     QList<SEnzymeData> enzymesBase;
     int animationCounter;
     static const QString WAIT_MESSAGE;
