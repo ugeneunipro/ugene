@@ -41,26 +41,34 @@ KrakenResultsPlainTextFormat::KrakenResultsPlainTextFormat(QObject* p)
 }
 
 FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
-    const QStringList words = dataPrefix.split(QRegExp("\\s+"));
-    //first word - 'C' or 'U'
-    if ((words[0] == "C" || words[0] == "U") && words.size() > 5) {
-        bool isNumber = false;
-        //fourth word - positive number
-        if (words[3].toInt(&isNumber) > 0 && isNumber) {
-            bool classificationCoordinatesFound = false;
-            //all words - not contain ':Q'
-            for (const QString& word : qAsConst(words)) {
-                if (word.contains(":Q")) {
-                    return FormatDetection_NotMatched; 
-                }
-                if (word.contains(":") && classificationCoordinatesFound == false) {
-                    classificationCoordinatesFound = true;
+    QString textCopy = dataPrefix;
+    QTextStream stream(&textCopy);
+    QString line = stream.readLine();
+    QStringList lines;
+    while (!line.isEmpty()) {
+        lines.append(line);
+        line = stream.readLine();
+    }
+    if (lines.size() > 1) {
+        //last line incomplete don't check it
+        lines.removeLast();
+    }    
+    for (const QString& line : qAsConst(lines)) {
+        const QStringList words = line.split(QRegExp("\\s+"));
+        // first word - 'C' or 'U'
+        if ((words[0] == "C" || words[0] == "U") && words.size() > 5) {
+            bool isNumber = false;
+            // fourth word - positive number
+            if (words[3].toInt(&isNumber) > 0 && isNumber) {
+                // last word should contain ':', and not ends with ':Q', results shouldn't be from quick classification
+                // dot try to analyze last word in case of single line, it is incomplete
+                if (!words.last().contains(":") || words.last().endsWith(":Q") && lines.size() > 1) {
+                    return FormatDetection_NotMatched;
                 }
             }
-            return classificationCoordinatesFound ? FormatDetection_Matched : FormatDetection_NotMatched;
         }
     }
-    return FormatDetection_NotMatched;
+    return FormatDetection_Matched;
 }
 
 Document* KrakenResultsPlainTextFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap&, U2OpStatus& os) {
