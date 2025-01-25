@@ -19,9 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include <QDir>
 
 #if defined(Q_OS_WIN)
@@ -34,14 +31,14 @@
 
 #include <base_dialogs/MessageBoxFiller.h>
 
+#include <QProcess>
+
 #include "GTTestsCreateShortcut.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
-
-#include <QProcess>
 
 namespace U2 {
 
@@ -120,7 +117,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         QFileInfo fileInfo(ugeneui_path);
         QString filename(fileInfo.fileName());
         QFile link(QDir::homePath() + "/Desktop/" + filename);
-        if (QProcess::execute(QString("/usr/bin/mdls ") + link.fileName()) != 0) {
+        int exitCode = QProcess::execute("/usr/bin/mdls", {link.fileName()});
+        if (exitCode != 0) {
             CHECK_SET_ERR(false, "Can't find the desktop shortcut file");
         }
     }

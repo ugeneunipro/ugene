@@ -43,7 +43,7 @@ struct MSAImageExportSettings {
     bool includeConsensus = false;
     bool includeRuler = true;
 
-    /** When defined and > region.length the export image will contain a multi-line rendered MSA. */
+    /** When defined and > 'region.length' the export image will contain a multi-line rendered MSA. */
     int basesPerLine = 0;
 };
 
@@ -77,7 +77,7 @@ private:
      * Appends a new line built from 'sequencePixmap', 'namesPixmap' and 'consensusPixmap' to 'multilinePixmap'
      * and return a new multiline pixmap.
      */
-    QPixmap mergePixmaps(
+    static QPixmap mergePixmaps(
         const QPixmap& multilinePixmap,
         const QPixmap& sequencesPixmap,
         const QPixmap& namesPixmap,
@@ -104,7 +104,7 @@ public slots:
     void sl_regionTypeChanged(int newRegionIndex);
 
 protected:
-    void initSettingsWidget() final ;
+    void initSettingsWidget() final;
 
     Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const override;
     Task* getExportToSvgTask(const ImageExportTaskSettings&) const override;

@@ -22,21 +22,17 @@
 // TODO:
 #undef QT_DISABLE_DEPRECATED_BEFORE
 
-
 #include "DownloadRemoteFileDialog.h"
 
 #include <QMessageBox>
-#include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QPushButton>
 #include <QXmlInputSource>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
-#include <U2Core/Log.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -139,7 +135,6 @@ void DownloadRemoteFileDialog::sl_saveFilenameButtonClicked() {
     }
 }
 
-static const QString DEFAULT_FILENAME = "file.format";
 void DownloadRemoteFileDialog::setSaveFilename() {
     QString dir = AppContext::getSettings()->getValue(SAVE_DIR, "").value<QString>();
     if (dir.isEmpty()) {
@@ -156,7 +151,7 @@ QString DownloadRemoteFileDialog::getResourceId() const {
 QString DownloadRemoteFileDialog::getDBId() const {
     int curIdx = ui->databasesBox->currentIndex();
     if (curIdx == -1) {
-        return QString("");
+        return {""};
     }
     return ui->databasesBox->itemData(curIdx).toString();
 }

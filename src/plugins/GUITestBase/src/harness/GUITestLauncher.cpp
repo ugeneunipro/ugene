@@ -19,9 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include "GUITestLauncher.h"
 
 #include <QApplication>
@@ -320,7 +317,7 @@ static bool restoreTestDirWithExternalScript(const QString& pathToShellScript, c
     //                 ", data dir: " + dataDir.dirName() +
     //                 ", script: " + pathToShellScript);
     if (isOsWindows()) {
-        process.start("cmd /C " + pathToShellScript);
+        process.start("cmd ", {"/C", pathToShellScript});
     } else {
         process.start("/bin/bash", {pathToShellScript});
     }
@@ -399,7 +396,45 @@ QString GUITestLauncher::runTest(const QString& testName, int timeoutMillis) {
     return testOutput;
 }
 
-QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, int iteration, const int timeout, bool enableVideoRecording) {
+/**
+ * Returns full video file path for the given test.
+ *
+ * By default, the dir for the tests is the current QDir::currentDir() + '/videos' but
+ * it can be changed with UGENE_GUI_TEST_VIDEO_DIR_PATH environment variable.
+ */
+QString getVideoPath(const QString& testName) {
+    QString dirPath = qgetenv("UGENE_GUI_TEST_VIDEO_DIR_PATH");
+    if (dirPath.isEmpty()) {
+        dirPath = QDir::currentPath() + "/videos";
+    }
+    if (!QDir(dirPath).exists()) {
+        QDir().mkpath(dirPath);
+    }
+    return dirPath + "/" + QString(testName).replace(":", "_") + ".avi";
+}
+
+/** Returns screen recorder app executable (pair.first) and args (pair.second). */
+static QPair<QString, QStringList> getScreenRecorderApp(const QString& testName) {
+    QString videoFilePath = getVideoPath(testName);
+    QStringList args;
+    if (isOsLinux()) {
+        QScreen* screen = QGuiApplication::primaryScreen();
+        SAFE_POINT(screen, "Screen is not available", {})
+        QRect rec = screen->geometry();
+        int height = rec.height();
+        int width = rec.width();
+        QString display = qgetenv("DISPLAY");
+        args << QString("-video_size %1x%2 -framerate 5 -f x11grab -i %3.0").arg(width).arg(height).arg(display).split(" ") << videoFilePath;
+    } else if (isOsMac()) {
+        args << QString(R"(-f avfoundation -r 5 -i "0:none")").split(" ") << videoFilePath;
+    } else if (isOsWindows()) {
+        args = QString(R"(-f dshow -i video="UScreenCapture" -r 5)").split(" ") << videoFilePath;
+    }
+    uiLog.trace("going to record video: ffmpeg" + args.join(" "));
+    return {"ffmpeg", args};
+}
+
+QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, int iteration, int timeout, bool enableVideoRecording) {
     QProcessEnvironment environment = prepareTestRunEnvironment(testName, iteration);
 
     QString ugeneUiPath = QCoreApplication::applicationFilePath();
@@ -419,7 +454,8 @@ QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, in
 
     QProcess screenRecorderProcess;
     if (enableVideoRecording) {
-        screenRecorderProcess.start(getScreenRecorderString(testName));
+        QPair<QString, QStringList> screenRecorderApp = getScreenRecorderApp(testName);
+        screenRecorderProcess.start(screenRecorderApp.first, screenRecorderApp.second);
     }
 
     bool isStarted = process.waitForStarted();
@@ -436,7 +472,7 @@ QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, in
     }
 
     if (isOsWindows()) {
-        QProcess::execute("closeErrorReport.exe");  // this exe file, compiled Autoit script
+        QProcess::execute("closeErrorReport.exe", {});  // this exe file, compiled Autoit script
     }
 
     QString testResult = readTestResult(process.readAllStandardOutput());
@@ -506,37 +542,6 @@ QString GUITestLauncher::generateReport() const {
     res += "</table>";
 
     return res;
-}
-
-QString GUITestLauncher::getScreenRecorderString(const QString& testName) {
-    QString result;
-    QString videoFilePath = getVideoPath(testName);
-    if (isOsLinux()) {
-        QScreen* screen = QGuiApplication::primaryScreen();
-        SAFE_POINT(screen, "Screen is not available", {})
-        QRect rec =  screen->geometry();
-        int height = rec.height();
-        int width = rec.width();
-        QString display = qgetenv("DISPLAY");
-        result = QString("ffmpeg -video_size %1x%2 -framerate 5 -f x11grab -i %3.0 %4").arg(width).arg(height).arg(display).arg(videoFilePath);
-    } else if (isOsMac()) {
-        result = QString(R"(ffmpeg -f avfoundation -r 5 -i "0:none" "%1")").arg(videoFilePath);
-    } else if (isOsWindows()) {
-        result = QString("ffmpeg -f dshow -i video=\"UScreenCapture\" -r 5 %1").arg(videoFilePath);
-    }
-    uiLog.trace("going to record video: " + result);
-    return result;
-}
-
-QString GUITestLauncher::getVideoPath(const QString& testName) {
-    QString dirPath = qgetenv("UGENE_GUI_TEST_VIDEO_DIR_PATH");
-    if (dirPath.isEmpty()) {
-        dirPath = QDir::currentPath() + "/videos";
-    }
-    if (!QDir(dirPath).exists()) {
-        QDir().mkpath(dirPath);
-    }
-    return dirPath + "/" + QString(testName).replace(":", "_") + ".avi";
 }
 
 }  // namespace U2
