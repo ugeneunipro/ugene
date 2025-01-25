@@ -36,12 +36,11 @@ KrakenResultsPlainTextFormat::KrakenResultsPlainTextFormat(QObject* p)
     : TextDocumentFormat(p, BaseDocumentFormats::PLAIN_KRAKEN_RESULTS, 
                          DocumentFormatFlag_SupportStreaming | DocumentFormatFlag_CannotBeCreated, {"txt"}) {
     formatName = tr("Kraken results");
-    formatDescription = tr("It is Kraken results Format");
+    formatDescription = tr("Kraken classification results text format");
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
 }
 
-FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const {
-    Q_UNUSED(originalDataUrl);
+FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
     const QStringList words = dataPrefix.split(QRegExp("\\s+"));
     //first word - 'C' or 'U'
     if ((words[0] == "C" || words[0] == "U") && words.size() > 5) {
@@ -64,8 +63,7 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
     return FormatDetection_NotMatched;
 }
 
-Document* KrakenResultsPlainTextFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
-    Q_UNUSED(hints);
+Document* KrakenResultsPlainTextFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap&, U2OpStatus& os) {
     QMultiMap<QString, QList<SharedAnnotationData>> annotationDataForTables;
     int lineNumber = 1;
     QMultiMap<QString, QList<SharedAnnotationData>> annotationsMap;
