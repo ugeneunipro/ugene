@@ -21,7 +21,6 @@
 
 #include "MsaImageExportTask.h"
 
-#include <QCheckBox>
 #include <QSvgGenerator>
 #include <QThread>
 
@@ -320,7 +319,7 @@ void MSAImageExportController::initSettingsWidget() {
     settingsUi->setupUi(settingsWidget);
 
     connect(settingsUi->selectRegionButton, &QPushButton::clicked, this, &MSAImageExportController::sl_showSelectRegionDialog);
-    connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionTypeChanged(int)));  // Can't use function pointer until QT_DISABLE_DEPRECATED_BEFORE < 5.15.
+    connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionTypeChanged(int)));
 
     settingsUi->multilineModeCheckbox->setChecked(ui->getEditor()->isMultilineMode());
     settingsUi->multilineWidthSpinbox->setValue(ui->getSequenceArea()->getNumVisibleBases());

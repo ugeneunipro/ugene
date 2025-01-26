@@ -19,9 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include "CreateDesktopShortcutTask.h"
 
 #if defined(Q_OS_WIN)
@@ -134,24 +131,22 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
             stream << "#!/bin/bash" << '\n'
                    << "" << '\n'
                    << "osascript <<END_SCRIPT" << '\n'
-                   << "tell application \"Finder\" to make alias file to file (posix file \"$1\") at desktop" << '\n'
+                   << R"(tell application "Finder" to make alias file to file (posix file "$1") at desktop)" << '\n'
                    << "END_SCRIPT" << '\n';
             file.close();
             if (!file.setPermissions(file.permissions() | QFileDevice::ExeOwner | QFileDevice::ExeUser)) {
                 return false;
             }
             QFileInfo script(file);
-            QString ugeneui_path = QCoreApplication::applicationFilePath();
-            if (QProcess::execute(QString("/bin/sh ") + script.absoluteFilePath() + " " + ugeneui_path) != 0) {
-                return false;
-            }
+            QString ugeneuiPath = QCoreApplication::applicationFilePath();
+            int exitCode = QProcess::execute("/bin/sh", {script.absoluteFilePath(), ugeneuiPath});
+            CHECK(exitCode == 0, false);
 
-            QFileInfo fileInfo(ugeneui_path);
+            QFileInfo fileInfo(ugeneuiPath);
             QString filename(fileInfo.fileName());
             QFile link(QDir::homePath() + "/Desktop/" + filename);
-            if (QProcess::execute(QString("/usr/bin/mdls ") + link.fileName()) != 0) {
-                return false;
-            }
+            exitCode = QProcess::execute("/usr/bin/mdls", {link.fileName()});
+            CHECK(exitCode == 0, false);
         }
         return true;
     }
