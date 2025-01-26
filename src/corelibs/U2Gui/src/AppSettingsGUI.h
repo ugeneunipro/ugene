@@ -21,9 +21,6 @@
 
 #pragma once
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include <QDialogButtonBox>
 #include <QWidget>
 

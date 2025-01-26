@@ -21,9 +21,6 @@
 
 #pragma once
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include <QComboBox>
 #include <QDialog>
 #include <QLineEdit>
@@ -79,25 +76,27 @@ class SearchGenbankSequenceDialogController;
 
 class QueryBuilderController : public QObject {
     Q_OBJECT
-private:
-    SearchGenbankSequenceDialogController* parentController;
-    QList<QueryBlockWidget*> queryBlockWidgets;
 
 public:
     QueryBuilderController(SearchGenbankSequenceDialogController* parent);
-    void removeQueryBlockWidget(QPushButton* callbackButton);
+
 private slots:
     void sl_updateQuery();
     void sl_addQueryBlockWidget();
     void sl_removeQueryBlockWidget();
     void sl_queryReturnPressed();
+
+private:
+    SearchGenbankSequenceDialogController* parentController;
+    QList<QueryBlockWidget*> queryBlockWidgets;
 };
 
 class U2GUI_EXPORT SearchGenbankSequenceDialogController : public QDialog {
     Q_OBJECT
 public:
     SearchGenbankSequenceDialogController(QWidget* p = nullptr);
-    ~SearchGenbankSequenceDialogController();
+    ~SearchGenbankSequenceDialogController() override;
+
     void addQueryBlockWidget(QWidget* w);
     void removeQueryBlockWidget(QWidget* w);
     void setQueryText(const QString& queryText);
@@ -116,8 +115,6 @@ private:
     QScopedPointer<ESummaryResultHandler> summaryResultHandler;
     Task* summaryTask = nullptr;
     QPushButton* downloadButton = nullptr;
-
-    static const int MAX_IDS_PER_QUERY = 100;
 
 public slots:
     void sl_searchButtonClicked();
