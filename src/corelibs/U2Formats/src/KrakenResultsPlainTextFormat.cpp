@@ -45,8 +45,10 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
     QTextStream stream(&textCopy);
     QString line = stream.readLine();
     QStringList lines;
-    while (!line.isEmpty()) {
-        lines.append(line);
+    while (!line.isNull()) {
+        if (!line.isEmpty()) {
+            lines.append(line);
+        }        
         line = stream.readLine();
     }
     if (lines.size() > 1) {
@@ -65,7 +67,11 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
                 if ((!words.last().contains(":") || words.last().endsWith(":Q")) && lines.size() > 1) {
                     return FormatDetection_NotMatched;
                 }
+            } else {
+                return FormatDetection_NotMatched;
             }
+        } else {
+            return FormatDetection_NotMatched;
         }
     }
     return FormatDetection_Matched;
