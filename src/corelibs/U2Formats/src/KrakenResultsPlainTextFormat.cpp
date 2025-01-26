@@ -62,7 +62,7 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
             if (words[3].toInt(&isNumber) > 0 && isNumber) {
                 // last word should contain ':', and not ends with ':Q', results shouldn't be from quick classification
                 // dot try to analyze last word in case of single line, it is incomplete
-                if (!words.last().contains(":") || words.last().endsWith(":Q") && lines.size() > 1) {
+                if ((!words.last().contains(":") || words.last().endsWith(":Q")) && lines.size() > 1) {
                     return FormatDetection_NotMatched;
                 }
             }
