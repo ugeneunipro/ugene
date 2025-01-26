@@ -193,7 +193,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
-    //    1. Select {File -> Search NCBI Genbak} menu item in the main menu.
+    //    1. Select {File -> Search NCBI Genbank} menu item in the main menu.
     //    2. Search "human" in the "nucleotide" database. Download the first result.
     //    Expected state: the "Fetch Data from Remote Database" appears. It is filled with:
     //        Database: "NCBI GenBank (DNA sequence)", it the only database in the combobox.

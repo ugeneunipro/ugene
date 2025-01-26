@@ -203,8 +203,7 @@ void BaseLoadRemoteDocumentTask::createLoadedDocument() {
 // LoadRemoteDocumentTask
 
 LoadRemoteDocumentTask::LoadRemoteDocumentTask(const GUrl& url)
-    : BaseLoadRemoteDocumentTask(),
-      loadDataFromEntrezTask(nullptr) {
+    : BaseLoadRemoteDocumentTask() {
     fileUrl = url;
     GCOUNTER(cvar, "LoadRemoteDocumentTask");
 }
@@ -547,15 +546,15 @@ void EntrezQueryTask::sl_replyFinished(QNetworkReply* reply) {
             QString qName = xmlReader.qualifiedName().toString();
             QXmlStreamAttributes attributes = xmlReader.attributes();
             parsingError = resultHandler->startElement(qName, attributes);
-            CHECK_BREAK(!parsingError.isEmpty())
+            CHECK_BREAK(parsingError.isEmpty())
         } else if (xmlReader.isEndElement()) {
             QString qName = xmlReader.qualifiedName().toString();
             parsingError = resultHandler->endElement(qName);
-            CHECK_BREAK(!parsingError.isEmpty())
+            CHECK_BREAK(parsingError.isEmpty())
         } else if (xmlReader.isCharacters() && !xmlReader.isWhitespace()) {
             QString characters = xmlReader.text().toString();
             parsingError = resultHandler->characters(characters);
-            CHECK_BREAK(!parsingError.isEmpty())
+            CHECK_BREAK(parsingError.isEmpty())
         }
     }
     if (parsingError.isEmpty() && xmlReader.hasError()) {
