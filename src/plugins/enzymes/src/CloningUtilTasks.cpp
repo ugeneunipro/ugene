@@ -19,10 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
-
 #include "CloningUtilTasks.h"
 
 #include <U2Core/BaseDocumentFormats.h>
@@ -154,7 +150,7 @@ void DigestSequenceTask::findCutSites() {
         for (Annotation* a : qAsConst(enzymeAnnotations)) {
             const QVector<U2Region>& location = a->getRegions();
             int cutPos = location.first().startPos;
-            cutSiteMap.insertMulti(GenomicPosition(cutPos, a->getStrand().isDirect()), enzyme);
+            cutSiteMap.insert(GenomicPosition(cutPos, a->getStrand().isDirect()), enzyme);
         }
     }
 }

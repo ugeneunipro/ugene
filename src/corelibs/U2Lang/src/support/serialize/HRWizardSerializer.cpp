@@ -236,7 +236,7 @@ void HRWizardParser::parseNextIds(ParsedPairs& pairs, WizardPage* page, U2OpStat
         return;
     }
     if (pairs.blockPairs.contains(NEXT)) {
-        ParsedPairs predPairs(pairs.blockPairs[NEXT]);
+        ParsedPairs predPairs(pairs.blockPairs.values(NEXT).last());
         foreach (const QString& id, predPairs.equalPairs.keys()) {
             Predicate p = Predicate::fromString(predPairs.equalPairs[id], os);
             CHECK_OP(os, );

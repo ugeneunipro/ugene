@@ -61,7 +61,7 @@ public:
     ParsedPairs() {
     }
     QMap<QString, QString> equalPairs;
-    QMap<QString, QString> blockPairs;
+    QMultiMap<QString, QString> blockPairs;
 
     QList<StrStrPair> equalPairsList;
     QList<StrStrPair> blockPairsList;

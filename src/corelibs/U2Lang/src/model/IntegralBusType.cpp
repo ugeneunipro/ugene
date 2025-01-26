@@ -102,7 +102,7 @@ void IntegralBusType::remapPaths(SlotPathMap& pathsMap, const QMap<ActorId, Acto
         SlotPair newSlotPair(slotsPair);
         remapSlotString(newSlotPair.second, actorIdsMap);
 
-        newPathsMap[newSlotPair] = newPath;
+        newPathsMap.replace(newSlotPair, newPath);
     }
     pathsMap = newPathsMap;
 }

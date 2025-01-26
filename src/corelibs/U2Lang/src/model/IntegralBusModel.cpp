@@ -19,16 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include "IntegralBusModel.h"
 
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/BaseSlots.h>
-#include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/IntegralBus.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -66,7 +62,7 @@ static Actor* getLinkedActor(ActorId id, Port* output, QList<Actor*> visitedActo
 static QMap<QString, QStringList> getListSlotsMappings(const StrStrMap& bm, const Port* p) {
     assert(p->isInput());
     DataTypePtr dt = p->getType();
-    QMap<QString, QStringList> res;
+    QMultiMap<QString, QStringList> res;
     if (dt->isList()) {
         QString val = bm.value(p->getId());
         if (!val.isEmpty()) {
@@ -181,7 +177,7 @@ void IntegralBusPort::setPathsBySlotsPair(const QString& dest, const QString& sr
     map.remove(key);
 
     foreach (const QStringList& path, paths) {
-        map.insertMulti(key, path);
+        map.insert(key, path);
     }
 
     this->setParameter(PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(map));
@@ -190,7 +186,7 @@ void IntegralBusPort::setPathsBySlotsPair(const QString& dest, const QString& sr
 void IntegralBusPort::addPathBySlotsPair(const QString& dest, const QString& src, const QStringList& path) {
     SlotPathMap map = getPaths();
     QPair<QString, QString> key(dest, src);
-    map.insertMulti(key, path);
+    map.insert(key, path);
 
     this->setParameter(PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(map));
 }
@@ -249,7 +245,7 @@ void IntegralBusPort::updateBindings(const QMap<ActorId, ActorId>& actorsMapping
                 }
                 pathMap.remove(slotPair);
                 for (const QStringList& p : qAsConst(validPaths)) {
-                    pathMap.insertMulti(slotPair, p);
+                    pathMap.insert(slotPair, p);
                 }
             } else {
                 hasOneValidPath = WorkflowUtils::isBindingValid(srcSlot.toString(), incomingType, dstSlot, getOwnTypeMap());
@@ -316,7 +312,11 @@ void IntegralBusPort::copyInput(IntegralBusPort* port, const PortMapping& mappin
     foreach (const SlotPair& pair, pathMap.keys()) {
         U2OpStatus2Log os;
         SlotPair myPair(mapping.getDstSlotId(pair.first, os), pair.second);
-        myPathMap[myPair] = pathMap[pair];
+        auto newValue = pathMap.values(pair);
+        myPathMap.remove(myPair);
+        for (const auto& v : qAsConst(newValue)) {
+            myPathMap.insert(myPair, v);
+        }
     }
     setParameter(PATHS_ATTR_ID, QVariant::fromValue<SlotPathMap>(myPathMap));
 }
@@ -376,7 +376,7 @@ void IntegralBusPort::setupBusMap() {
     DataTypePtr to = getType();
     assert(to->isMap());  // all port types made as map datatypes
 
-    DataTypePtr from = bindings.uniqueKeys().first()->getType();
+    DataTypePtr from = bindings.keys().first()->getType();
     QList<Descriptor> keys = to->getAllDescriptors();
     StrStrMap busMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
     for (const Descriptor& key : qAsConst(keys)) {
@@ -477,7 +477,7 @@ bool ScreenedSlotValidator::validate(const QStringList& screenedSlots, const Int
                         assert(!key.isEmpty());
                         bm.remove(key);
                     }
-                    foreach (QString key, listMap.uniqueKeys()) {
+                    foreach (QString key, listMap.keys()) {
                         QStringList& l = listMap[key];
                         l.removeAll(d.getId());
                         if (l.isEmpty()) {

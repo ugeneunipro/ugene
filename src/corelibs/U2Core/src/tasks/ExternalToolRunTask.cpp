@@ -19,9 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include "ExternalToolRunTask.h"
 
 #include <QDir>
@@ -43,7 +40,6 @@ namespace U2 {
 #define SETTINGS_ROOT QString("/genome_aligner_settings/")
 #define INDEX_DIR QString("index_dir")
 
-#define WIN_LAUNCH_CMD_COMMAND "cmd /C "
 #define START_WAIT_MSEC 3000
 
 ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringList& _arguments, ExternalToolLogParser* _logParser, const QString& _workingDirectory, const QStringList& _additionalPaths, bool parseOutputFile)
@@ -376,18 +372,15 @@ bool ExternalToolSupportUtils::startExternalProcess(QProcess* process, const QSt
 
     if (isOsWindows()) {
         if (!started) {
-            QString execStr = WIN_LAUNCH_CMD_COMMAND + program;
-            foreach (const QString arg, arguments) {
-                execStr += " " + arg;
-            }
-            process->start(execStr);
-            coreLog.trace(tr("Can't run an executable file \"%1\" as it is. Try to run it as a cmd line command: \"%2\"")
+            QStringList args = {"/C"};
+            args << arguments;
+            process->start("cmd", args);
+            coreLog.trace(tr(R"(Can't run the executable file "%1" directly. Trying to run it as a command line command: "%2")")
                               .arg(program)
-                              .arg(execStr));
+                              .arg("cmd " + args.join(" ")));
             started = process->waitForStarted(START_WAIT_MSEC);
         }
     }
-
     return started;
 }
 
