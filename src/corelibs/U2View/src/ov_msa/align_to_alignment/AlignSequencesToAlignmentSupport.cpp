@@ -40,6 +40,7 @@
 
 #include "AlignSequencesToAlignmentTask.h"
 #include "RealignSequencesInAlignmentTask.h"
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 

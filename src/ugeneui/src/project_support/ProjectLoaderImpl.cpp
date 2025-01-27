@@ -19,9 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include "ProjectLoaderImpl.h"
 
 #include <QAction>
@@ -33,6 +30,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineUtils.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/FileFilters.h>
 #include <U2Core/GHints.h>
@@ -556,8 +554,8 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                 FormatDetectionResult dr;
                 const bool accepted = detectFormat(url, formats, hints, dr);
                 if (accepted) {
-                    dr.rawDataCheckResult.properties.unite(hints);
-                    dr.rawDataCheckResult.properties.unite(hintsOverDocuments);
+                    unite(dr.rawDataCheckResult.properties, hints);
+                    unite(dr.rawDataCheckResult.properties, hintsOverDocuments);
                     if (dr.format != nullptr) {
                         bool forceReadingOptions = hints.value(ProjectLoaderHint_ForceFormatOptions, false).toBool();
                         bool optionsAlreadyChosen = hints.value((ProjectLoaderHint_MultipleFilesMode_Flag), false).toBool() || hints.value((DocumentReadingMode_SequenceMergeGapSize), false).toBool() || hints.value((DocumentReadingMode_SequenceAsAlignmentHint), false).toBool() || hints.value((DocumentReadingMode_SequenceAsShortReadsHint), false).toBool() || hints.value((DocumentReadingMode_SequenceAsSeparateHint), false).toBool();

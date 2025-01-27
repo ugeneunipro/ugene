@@ -21,6 +21,7 @@
 
 #include "MultiplexerWorker.h"
 
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -109,9 +110,7 @@ bool MultiplexerWorker::hasDataFotMultiplexing() const {
 }
 
 inline void MultiplexerWorker::sendUnitedMessage(const QVariantMap& m1, QVariantMap& m2, int metadataId) {
-    for (auto it = m1.cbegin(); it != m1.cend(); ++it) {
-        m2.insert(it.key(), it.value());
-    }
+    unite(m2, m1);
     outChannel->putWithoutContext(Message(outChannel->getBusType(), m2, metadataId));
 }
 

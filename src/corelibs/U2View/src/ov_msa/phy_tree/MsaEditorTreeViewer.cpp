@@ -22,21 +22,16 @@
 
 #include "MsaEditorTreeViewer.h"
 
-#include <QCursor>
-#include <QDateTime>
-#include <QMessageBox>
 #include <QMouseEvent>
 #include <QStack>
 #include <QVBoxLayout>
 
-#include <U2Core/U2SafePoints.h>
-
 #include <U2View/MaEditorNameList.h>
-#include <U2View/MsaEditor.h>
 #include <U2View/MsaEditorSequenceArea.h>
 #include <U2View/TvNodeItem.h>
 #include <U2View/TvRectangularBranchItem.h>
 #include <U2View/TvTextItem.h>
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 

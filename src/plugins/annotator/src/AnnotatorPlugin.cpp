@@ -25,6 +25,7 @@
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/QObjectScopedPointer.h>
 

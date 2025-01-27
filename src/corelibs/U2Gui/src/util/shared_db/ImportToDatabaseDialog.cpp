@@ -48,6 +48,7 @@
 #include "CommonImportOptionsDialog.h"
 #include "ItemToImportEditDialog.h"
 #include "ui_ImportToDatabaseDialog.h"
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 

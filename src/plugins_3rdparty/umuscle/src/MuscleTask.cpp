@@ -27,11 +27,9 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/Counter.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MsaUtils.h>

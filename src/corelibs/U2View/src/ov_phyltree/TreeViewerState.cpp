@@ -21,9 +21,7 @@
 
 #include "TreeViewerState.h"
 
-#include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/PhyTreeObject.h>
+#include <U2Core/CollectionUtils.h>
 
 #include "TreeViewer.h"
 #include "TreeViewerFactory.h"
@@ -57,9 +55,7 @@ QVariantMap TreeViewerState::saveState(TreeViewer* v) {
     }
     ss.stateData[ZOOM_LEVEL] = v->getZoomLevel();
     auto settingsState = v->getSettingsState();
-    for (auto it = settingsState.cbegin(); it != settingsState.cend(); ++it) {
-        ss.stateData.insert(it.key(), it.value());
-    }
+    unite(ss.stateData, settingsState);
     return ss.stateData;
 }
 

@@ -21,6 +21,7 @@
 
 #include "ADVSyncViewManager.h"
 
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceSelection.h>
 

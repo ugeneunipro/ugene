@@ -34,6 +34,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/CloneObjectTask.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DbiDocumentFormat.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FileAndDirectoryUtils.h>
@@ -263,7 +264,7 @@ void BAMImporterTask::initPrepareToImportTask() {
         convert = false;
         setError(tr("SAM cannot be converted to BAM: neither reference nor header in SAM file is present"));
     }
-    
+
     if (convert) {
         QString dirUrl = getDirUrl(loadInfoTask->getSourceUrl());
         if (!FileAndDirectoryUtils::isDirectoryWritable(dirUrl)) {

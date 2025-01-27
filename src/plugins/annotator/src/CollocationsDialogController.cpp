@@ -22,6 +22,7 @@
 #include "CollocationsDialogController.h"
 
 #include <U2Core/AnnotationSettings.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>

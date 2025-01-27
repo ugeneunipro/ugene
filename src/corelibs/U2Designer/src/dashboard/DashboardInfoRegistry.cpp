@@ -28,6 +28,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "RemoveDashboardsTask.h"
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 

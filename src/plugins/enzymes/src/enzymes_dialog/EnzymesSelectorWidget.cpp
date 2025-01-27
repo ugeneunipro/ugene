@@ -26,6 +26,7 @@
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Timer.h>

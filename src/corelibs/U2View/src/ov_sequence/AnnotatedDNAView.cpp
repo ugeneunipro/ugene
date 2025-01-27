@@ -81,6 +81,7 @@
 #include "DetView.h"
 #include "DetViewSequenceEditor.h"
 #include "GraphMenu.h"
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 

@@ -26,6 +26,7 @@
 #include <QStandardItemModel>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GUrlUtils.h>
@@ -640,7 +641,6 @@ void CreateCmdlineBasedWorkerWizardOutputDataPage::initializePage() {
     if (outputsModel->rowCount() > 0) {
         tvOutput->setCurrentIndex(outputsModel->index(0, 0));
     }
-
 }
 
 bool CreateCmdlineBasedWorkerWizardOutputDataPage::isComplete() const {

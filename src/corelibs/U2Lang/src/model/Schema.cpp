@@ -21,11 +21,10 @@
 
 #include "Schema.h"
 
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Lang/ActorModel.h>
-#include <U2Lang/IntegralBusType.h>
 #include <U2Lang/Wizard.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -199,9 +198,7 @@ bool Schema::recursiveExpand(QList<QString>& schemaIds) {
             }
         }
         auto schemaGraphBindings = schema->graph.getBindings();
-        for (auto it = schemaGraphBindings.cbegin(); it != schemaGraphBindings.cend(); ++it) {
-            graph.getBindings().insert(it.key(), it.value());
-        }
+        unite(graph.getBindings(), schemaGraphBindings);
         // replace procs
         procs.removeOne(proc);
         procs.append(schema->getProcesses());
@@ -337,9 +334,7 @@ void Schema::merge(Schema& other) {
         procs << newActor;
     }
     auto otherGraphBindings = other.graph.getBindings();
-    for (auto it = otherGraphBindings.cbegin(); it != otherGraphBindings.cend(); ++it) {
-        graph.getBindings().insert(it.key(), it.value());
-    }
+    unite(graph.getBindings(), otherGraphBindings);
 }
 
 void Schema::replaceProcess(Actor* oldActor, Actor* newActor, const QList<PortMapping>& mappings) {
@@ -633,13 +628,8 @@ QString Metadata::renameLink(const QString& linkStr, const ActorId& oldId, const
 }
 
 void Metadata::mergeVisual(const Metadata& other) {
-    for (auto it = other.actorVisual.cbegin(); it != other.actorVisual.cend(); ++it) {
-        actorVisual.insert(it.key(), it.value());
-    }
-
-    for (auto it = other.textPosMap.cbegin(); it != other.textPosMap.cend(); ++it) {
-        textPosMap.insert(it.key(), it.value());
-    }
+    unite(actorVisual, other.actorVisual);
+    unite(textPosMap, other.textPosMap);
 }
 
 void Metadata::replaceProcess(const ActorId& oldId, const ActorId& newId, const QList<PortMapping>& mappings) {

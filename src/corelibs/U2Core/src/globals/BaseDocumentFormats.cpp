@@ -22,6 +22,7 @@
 #include "BaseDocumentFormats.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/StrPackUtils.h>
 
@@ -156,9 +157,7 @@ StrStrMap initFormatIdsMap() {
 
     // IDs from 1.26.0
     auto invalidIds = initInvalidFormatIdsMap();
-    for (auto it = invalidIds.begin(); it != invalidIds.end(); ++it) {
-        anyIds2trueIds.insert(it.key(), it.value());
-    }
+    unite(anyIds2trueIds, invalidIds);
     return anyIds2trueIds;
 }
 

@@ -35,6 +35,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/L10n.h>

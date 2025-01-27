@@ -66,6 +66,7 @@
 #include "move_to_object/MoveToObjectMaController.h"
 #include "overview/MaGraphOverview.h"
 #include "overview/MaSimpleOverview.h"
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 
