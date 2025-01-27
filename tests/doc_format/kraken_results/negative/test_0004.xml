@@ -1,0 +1,6 @@
+<multi-test>
+
+    <load-broken-document url="kraken_results/negative/bad_fourth_word.txt" io="local_file" format="kraken-results" 
+                          message="Error on line 1, 4th word should be number."/>
+
+</multi-test>

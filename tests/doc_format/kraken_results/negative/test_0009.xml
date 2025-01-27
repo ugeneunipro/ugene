@@ -1,0 +1,6 @@
+<multi-test>
+
+    <load-broken-document url="kraken_results/negative/bad_fragment_length.txt" io="local_file" format="kraken-results" 
+                          message="should be less or equal sequence length"/>
+
+</multi-test>

@@ -1,0 +1,6 @@
+<multi-test>
+
+    <load-broken-document url="kraken_results/negative/bad_fifth_word_2.txt" io="local_file" format="kraken-results" 
+                          message="Error on line 1, 5th word second element of the pair is not a number."/>
+
+</multi-test>

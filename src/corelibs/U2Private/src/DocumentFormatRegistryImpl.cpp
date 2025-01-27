@@ -43,6 +43,7 @@
 #include <U2Formats/GFFFormat.h>
 #include <U2Formats/GTFFormat.h>
 #include <U2Formats/GenbankPlainTextFormat.h>
+#include <U2Formats/KrakenResultsPlainTextFormat.h>
 #include <U2Formats/MSFFormat.h>
 #include <U2Formats/MegaFormat.h>
 #include <U2Formats/NEXUSFormat.h>
@@ -162,6 +163,7 @@ void DocumentFormatRegistryImpl::init() {
     registerFormat(new PhylipInterleavedFormat(this));
     registerFormat(new PhylipSequentialFormat(this));
     registerFormat(new VectorNtiSequenceFormat(this));
+    registerFormat(new KrakenResultsPlainTextFormat(this));
 
     AppContext::getDbiRegistry()->registerDbiFactory(new SQLiteDbiFactory());
 
