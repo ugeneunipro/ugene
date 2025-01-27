@@ -20,8 +20,6 @@
  */
 
 // TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include <U2Core/Settings.h>
 
 #include "OpenViewTask.h"

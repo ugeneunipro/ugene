@@ -21,12 +21,10 @@
 
 #pragma once
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include <QAuthenticator>
 #include <QNetworkReply>
 #include <QXmlReader>
+#include <QXmlStreamReader>
 
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/GUrl.h>
@@ -86,16 +84,19 @@ public:
 class U2CORE_EXPORT RecentlyDownloadedCache : public QObject {
     Q_OBJECT
     QMap<QString, QString> urlMap;
-    void loadCacheFromSettings();
-    void saveCacheToSettings();
 
 public:
     RecentlyDownloadedCache();
-    ~RecentlyDownloadedCache();
-    bool contains(const QString& fileName);
+    ~RecentlyDownloadedCache() override;
+
+    bool contains(const QString& fileName) const;
+
     void append(const QString& fullPath);
+
     void remove(const QString& fullPath);
-    QString getFullPath(const QString& fileName);
+
+    QString getFullPath(const QString& fileName) const;
+
     void clear() {
         urlMap.clear();
     }
@@ -116,13 +117,10 @@ class U2CORE_EXPORT BaseLoadRemoteDocumentTask : public DocumentProviderTask {
 public:
     BaseLoadRemoteDocumentTask(const QString& downloadPath = QString(), const QVariantMap& hints = QVariantMap(), TaskFlags flags = TaskFlags(TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText));
     void prepare() override;
-    QString getLocalUrl() {
-        return fullPath;
-    }
-
     ReportResult report() override;
 
-    static bool prepareDownloadDirectory(QString& path);
+    QString getLocalUrl() const;
+    static bool prepareDownloadDirectory(const QString& path);
     static QString getDefaultDownloadDirectory();
 
 protected:
@@ -130,12 +128,10 @@ protected:
     virtual GUrl getSourceUrl() = 0;
     virtual QString getFileName() = 0;
 
-protected:
     bool isCached();
     bool initLoadDocumentTask();
     void createLoadedDocument();
 
-protected:
     GUrl sourceUrl;
     QString fileName;
     QString fullPath;
@@ -144,8 +140,8 @@ protected:
     QVariantMap hints;
 
     DocumentFormatId formatId;
-    CopyDataTask* copyDataTask;
-    LoadDocumentTask* loadDocumentTask;
+    CopyDataTask* copyDataTask = nullptr;
+    LoadDocumentTask* loadDocumentTask = nullptr;
 };
 
 class U2CORE_EXPORT LoadRemoteDocumentTask : public BaseLoadRemoteDocumentTask {
@@ -156,12 +152,8 @@ public:
     void prepare() override;
     QString generateReport() const override;
 
-    QString getAccNumber() const {
-        return accNumber;
-    }
-    QString getDBName() const {
-        return dbName;
-    }
+    QString getAccNumber() const;
+    QString getDBName() const;
 
 protected:
     QString getFileFormat(const QString& dbid) override;
@@ -182,7 +174,7 @@ class U2CORE_EXPORT BaseEntrezRequestTask : public Task {
     Q_OBJECT
 public:
     BaseEntrezRequestTask(const QString& taskName);
-    virtual ~BaseEntrezRequestTask();
+    ~BaseEntrezRequestTask() override;
 
 protected slots:
     virtual void sl_replyFinished(QNetworkReply* reply) = 0;
@@ -202,7 +194,6 @@ protected:
 // First step: query eSearch to get global Entrez index
 // Second step: query eFetch to download file by index
 // About eTools: http://www.ncbi.nlm.nih.gov/bookshelf/br.fcgi?book=coursework&part=eutils
-
 class U2CORE_EXPORT LoadDataFromEntrezTask : public BaseEntrezRequestTask {
     Q_OBJECT
 public:
@@ -215,14 +206,13 @@ public:
 
 private slots:
     void sl_replyFinished(QNetworkReply* reply) override;
-    void sl_cancelCheck();
+    void sl_cancelCheck() const;
 
 private:
     void runRequest(const QUrl& requestUrl);
 
-    QNetworkReply* searchReply;  // TODO: I think, it is unsed variable. Check if you can remove it.
-    QNetworkReply* downloadReply;
-    QXmlSimpleReader xmlReader;
+    QNetworkReply* downloadReply = nullptr;
+    QXmlStreamReader xmlReader;
     QString db;
     QString accNumber;
     QString resultIndex;
@@ -230,13 +220,21 @@ private:
     QString format;
 };
 
+class U2CORE_EXPORT XmlStreamReaderHandler {
+public:
+    virtual ~XmlStreamReaderHandler() = default;
+    virtual QString startElement(const QString& qName, const QXmlStreamAttributes& attributes) = 0;
+    virtual QString endElement(const QString& qName) = 0;
+    virtual QString characters(const QString& str) = 0;
+};
+
 class U2CORE_EXPORT EntrezQueryTask : public BaseEntrezRequestTask {
     Q_OBJECT
 public:
-    EntrezQueryTask(QXmlDefaultHandler* resultHandler, const QString& query);
+    EntrezQueryTask(XmlStreamReaderHandler* resultHandler, const QString& query);
 
     void run() override;
-    const QXmlDefaultHandler* getResultHandler() const;
+    const XmlStreamReaderHandler* getResultHandler() const;
 
 private slots:
     void sl_replyFinished(QNetworkReply* reply) override;
@@ -244,65 +242,52 @@ private slots:
 private:
     void runRequest(const QUrl& requestUrl);
 
-    QNetworkReply* queryReply;
-    QXmlDefaultHandler* resultHandler;
-    QXmlSimpleReader xmlReader;
+    QNetworkReply* queryReply = nullptr;
+    XmlStreamReaderHandler* resultHandler;
+    QXmlStreamReader xmlReader;
     QString query;
 };
 
 // Helper class to parse NCBI Entrez eSearch results
-class U2CORE_EXPORT ESearchResultHandler : public QXmlDefaultHandler {
-    bool metESearchResult;
-    QString errorStr;
-    QString curText;
-    QList<QString> idList;
-
+class U2CORE_EXPORT ESearchResultHandler : public XmlStreamReaderHandler {
 public:
     ESearchResultHandler();
-    bool startElement(const QString& namespaceURI, const QString& localName, const QString& qName, const QXmlAttributes& attributes) override;
-    bool endElement(const QString& namespaceURI, const QString& localName, const QString& qName) override;
-    bool characters(const QString& str) override;
-    bool fatalError(const QXmlParseException& exception) override;
-    QString errorString() const override {
-        return errorStr;
-    }
+    QString startElement(const QString& qName, const QXmlStreamAttributes& attributes) override;
+    QString endElement(const QString& qName) override;
+    QString characters(const QString& str) override;
+
     const QList<QString>& getIdList() const {
         return idList;
     }
+
+private:
+    bool metESearchResult;
+    QString curText;
+    QList<QString> idList;
 };
 
 struct EntrezSummary {
-    EntrezSummary()
-        : size(0) {
-    }
-
     QString id;
     QString name;
     QString title;
-    int size;
+    int size = 0;
 };
 
-// Helper class to parse NCBI Entrez ESummary results
-class U2CORE_EXPORT ESummaryResultHandler : public QXmlDefaultHandler {
-    bool metESummaryResult;
-    QString errorStr;
-    QString curText;
-    EntrezSummary currentSummary;
-    QXmlAttributes curAttributes;
-    QList<EntrezSummary> results;
-
+// Helper class to parse NCBI Entre ESummary results.
+class U2CORE_EXPORT ESummaryResultHandler : public XmlStreamReaderHandler {
 public:
     ESummaryResultHandler();
-    bool startElement(const QString& namespaceURI, const QString& localName, const QString& qName, const QXmlAttributes& attributes) override;
-    bool endElement(const QString& namespaceURI, const QString& localName, const QString& qName) override;
-    bool characters(const QString& str) override;
-    bool fatalError(const QXmlParseException& exception) override;
-    QString errorString() const override {
-        return errorStr;
-    }
-    const QList<EntrezSummary>& getResults() const {
-        return results;
-    }
+    QString startElement(const QString& qName, const QXmlStreamAttributes& attributes) override;
+    QString endElement(const QString& qName) override;
+    QString characters(const QString& str) override;
+    const QList<EntrezSummary>& getResults() const;
+
+private:
+    bool metESummaryResult;
+    QString curText;
+    EntrezSummary currentSummary;
+    QXmlStreamAttributes curAttributes;
+    QList<EntrezSummary> results;
 };
 
 }  // namespace U2
