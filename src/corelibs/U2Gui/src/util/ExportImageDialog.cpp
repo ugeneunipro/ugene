@@ -171,6 +171,9 @@ void ExportImageDialog::init() {
         case MolView:
             new HelpButton(this, ui->buttonBox, "65929549");
             break;
+        case MaOverview:
+            new HelpButton(this, ui->buttonBox, "65929638");
+            break;
         default:
             FAIL("Can't find help Id", );
             break;

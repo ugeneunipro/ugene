@@ -44,7 +44,8 @@ public:
                        AssemblyView,
                        PHYTreeView,
                        DotPlot,
-                       MolView };
+                       MolView,
+                       MaOverview};
     enum ImageScalingPolicy {
         NoScaling,
         SupportScaling
