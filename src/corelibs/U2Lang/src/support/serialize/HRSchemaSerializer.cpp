@@ -19,9 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-// TODO:
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include "HRSchemaSerializer.h"
 
 #include <QTextStream>
@@ -32,6 +29,7 @@
 #include <U2Core/GUrl.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -609,8 +607,8 @@ ValidatorDesc HRSchemaSerializer::parseValidator(const QString& desc, U2OpStatus
         return result;
     }
 
-    result.options.unite(pairs.equalPairs);
-    result.options.unite(pairs.blockPairs);
+    unite(result.options, pairs.equalPairs);
+    unite(result.options, pairs.blockPairs);
     return result;
 }
 
@@ -1862,13 +1860,13 @@ QString HRSchemaSerializer::schemaParameterAliases(const QList<Actor*>& procs, c
     QString res;
     for (Actor* actor : qAsConst(procs)) {
         const QMap<QString, QString>& aliases = actor->getParamAliases();
-        foreach (const QString& attrId, aliases.uniqueKeys()) {
+        foreach (const QString& attrId, aliases.keys()) {
             QString pairs;
             QString alias = aliases.value(attrId);
             QString descr = actor->getAliasHelp()[alias];
-            pairs += HRSchemaSerializer::makeEqualsPair(Constants::ALIAS, alias, 4);
+            pairs += makeEqualsPair(Constants::ALIAS, alias, 4);
             if (!descr.isEmpty()) {
-                pairs += HRSchemaSerializer::makeEqualsPair(Constants::DESCRIPTION, descr, 4);
+                pairs += makeEqualsPair(Constants::DESCRIPTION, descr, 4);
             }
             QString paramString = nmap[actor->getId()] + Constants::DOT + attrId;
             res += makeBlock(paramString, Constants::NO_NAME, pairs, 3);

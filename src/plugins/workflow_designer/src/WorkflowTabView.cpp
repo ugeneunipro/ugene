@@ -28,6 +28,7 @@
 #include <QTabBar>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DashboardInfoRegistry.h>

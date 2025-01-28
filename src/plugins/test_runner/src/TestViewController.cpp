@@ -32,7 +32,7 @@
 #include <QToolBar>
 #include <QToolButton>
 
-#include <U2Core/AppContext.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Log.h>
@@ -555,9 +555,7 @@ void TestViewController::sl_saveSelectedSuitesAction() {
             runAll = true;
         testsToRun += getSubTestToRun(item, runAll);
         auto excludeMap = getSubRefToExclude(item, runAll);
-        for (auto it = excludeMap.cbegin(); it != excludeMap.cend(); ++it) {
-            testsToEx.insert(it.key(), it.value());
-        }
+        unite(testsToEx, excludeMap);
         auto tlItem = static_cast<TVTSItem*>(item);
         if (testsToEx.isEmpty() && testsToRun.isEmpty()) {
             // in current suite no selected elements
@@ -595,9 +593,8 @@ void TestViewController::sl_saveSelectedSuitesAction() {
                 }
             }
         }
-        for (auto it = oldToAdd.cbegin(); it != oldToAdd.cend(); ++it) {
-            testsToEx.insert(it.key(), it.value());
-        }
+
+        unite(testsToEx, oldToAdd);
 
         if ((testsToEx.size() != tlItem->ts->getExcludedTests().size()) && !testsToEx.isEmpty()) {
             mustBeSaved = true;
@@ -844,15 +841,10 @@ QMap<GTestRef*, QString> TestViewController::getSubRefToExclude(TVItem* sItem, b
             auto tItem2 = static_cast<TVTSItem*>(item);
             if (tItem2->isSelected()) {
                 auto map2 = getSubRefToExclude(tItem2, true);
-                for (auto it = map2.cbegin(); it != map2.cend(); ++it) {
-                    testsToEx.insert(it.key(), it.value());
-                }
-
+                unite(testsToEx, map2);
             } else {
                 auto map2 = getSubRefToExclude(tItem2, runAll);
-                for (auto it = map2.cbegin(); it != map2.cend(); ++it) {
-                    testsToEx.insert(it.key(), it.value());
-                }
+                unite(testsToEx, map2);
             }
         }
     }

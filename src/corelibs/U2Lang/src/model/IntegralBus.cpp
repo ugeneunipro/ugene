@@ -26,6 +26,7 @@
 
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
+#include <U2Core/CollectionUtils.h>
 
 #include <U2Lang/WorkflowUtils.h>
 
@@ -33,13 +34,6 @@
 
 namespace U2 {
 namespace Workflow {
-
-template<typename Key, typename Value>
-void unite(QMap<Key, Value>& target, const QMap<Key, Value>& other) {
-    for (auto it = other.begin(); it != other.end(); ++it) {
-        target.insert(it.key(), it.value());
-    }
-}
 
 /************************************************************************/
 /* BusMap */

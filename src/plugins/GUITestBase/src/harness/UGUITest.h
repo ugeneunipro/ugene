@@ -26,7 +26,7 @@
 
 #include <QTimer>
 
-#include <U2Core/global.h>
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 using namespace HI;

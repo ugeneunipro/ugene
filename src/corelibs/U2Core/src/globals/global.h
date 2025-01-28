@@ -204,13 +204,3 @@ inline bool isOsUnix() {
     return false;
 #endif
 }
-
-template<typename T>
-QSet<T> toSet(const QList<T>& list) {
-    return QSet<T>(list.begin(), list.end());
-}
-
-template<typename T>
-QList<T> toList(const QSet<T>& set) {
-    return QList<T>(set.begin(), set.end());
-}

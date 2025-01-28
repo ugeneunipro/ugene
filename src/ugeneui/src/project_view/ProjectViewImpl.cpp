@@ -25,15 +25,13 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QTimer>
-#include <QUrl>
 
-#include <U2Core/AppSettings.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DbiDocumentFormat.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/GObject.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>

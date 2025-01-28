@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>

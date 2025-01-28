@@ -27,8 +27,8 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/Log.h>
 
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/ObjectViewModel.h>
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 

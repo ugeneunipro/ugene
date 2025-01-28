@@ -24,20 +24,16 @@
 #include <QFileInfo>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/ChromatogramObject.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MsaImportUtils.h>
-#include <U2Core/MsaObject.h>
 #include <U2Core/MsaUtils.h>
-#include <U2Core/ProjectModel.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>

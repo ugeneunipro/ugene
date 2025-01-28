@@ -23,8 +23,8 @@
 
 #include <QScopedPointer>
 
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/Log.h>
 #include <U2Core/QVariantUtils.h>
 
 #include <U2Designer/DelegateEditors.h>

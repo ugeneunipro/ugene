@@ -55,6 +55,7 @@
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/MaEditorSplitters.h"
 #include "ov_msa/MsaEditor.h"
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 ////////////////////////////////////

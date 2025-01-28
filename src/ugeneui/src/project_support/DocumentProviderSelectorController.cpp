@@ -42,6 +42,7 @@
 
 #include <U2View/AssemblyBrowserFactory.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 

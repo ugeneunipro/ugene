@@ -36,6 +36,8 @@
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SequenceUtils.h>
 
+#include "CollectionUtils.h"
+
 namespace U2 {
 
 bool MsaUtils::equalsIgnoreGaps(const MsaRow& row, int startPos, const QByteArray& pat, int& alternateLen) {

@@ -30,6 +30,7 @@
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/CollectionUtils.h>
 
 /* TRANSLATOR U2::GTest */
 

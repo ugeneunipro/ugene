@@ -22,18 +22,15 @@
 #include <math.h>
 
 #include <QMessageBox>
-#include <QPushButton>
 
-#include <U2Core/Annotation.h>
-#include <U2Core/AnnotationTableObject.h>
-#include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskWatchdog.h>
+#include <U2Core/CollectionUtils.h>
+#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 

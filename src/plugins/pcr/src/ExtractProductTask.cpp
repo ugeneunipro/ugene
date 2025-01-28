@@ -21,13 +21,13 @@
 
 #include "ExtractProductTask.h"
 
-#include <QCoreApplication>
 #include <QDir>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
@@ -38,7 +38,6 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UserApplicationsSettings.h>

@@ -23,6 +23,7 @@
 
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 

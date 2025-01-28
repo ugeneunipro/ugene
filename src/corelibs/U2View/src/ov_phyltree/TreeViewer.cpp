@@ -23,25 +23,21 @@
 
 #include <QBuffer>
 #include <QClipboard>
-#include <QFileInfo>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QQueue>
-#include <QSplitter>
 #include <QStack>
 #include <QSvgGenerator>
 #include <QTextStream>
 #include <QTimer>
 #include <QtMath>
 
-#include <U2Algorithm/PhyTreeGeneratorRegistry.h>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DocumentModel.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
@@ -69,6 +65,7 @@
 #include "TreeViewerUtils.h"
 #include "phyltree/TextSettingsDialog.h"
 #include "phyltree/TreeSettingsDialog.h"
+
 namespace U2 {
 
 TreeViewer::TreeViewer(const QString& viewName, PhyTreeObject* _phyObject, bool hasOptionsPanel)

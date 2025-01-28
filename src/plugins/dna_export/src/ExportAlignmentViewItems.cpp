@@ -24,13 +24,10 @@
 #include <QMainWindow>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/ExportSequencesTask.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MsaObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -46,6 +43,7 @@
 #include "ExportMSA2SequencesDialog.h"
 #include "ExportUtils.h"
 #include "dialogs/SaveSelectedSequenceFromMSADialogController.h"
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 

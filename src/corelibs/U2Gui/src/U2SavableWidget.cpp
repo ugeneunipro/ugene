@@ -22,7 +22,6 @@
 #include "U2SavableWidget.h"
 
 #include <QAbstractButton>
-#include <QComboBox>
 #include <QFontComboBox>
 #include <QGroupBox>
 #include <QLineEdit>
@@ -34,6 +33,7 @@
 
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/CollectionUtils.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
