@@ -65,7 +65,7 @@ CreateFragmentDialog::CreateFragmentDialog(ADVSequenceObjectContext* ctx, QWidge
 CreateFragmentDialog::CreateFragmentDialog(U2SequenceObject* obj, const U2Region& region, QWidget* p)
     : QDialog(p), seqCtx(nullptr) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "65930761");
+    new HelpButton(this, buttonBox, "65930774");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     seqObj = obj;
