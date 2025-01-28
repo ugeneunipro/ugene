@@ -24,6 +24,7 @@
 #include <QDesktopServices>
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QTimer>
 
 #include <U2Core/CollectionUtils.h>
 #include <U2Core/DNAAlphabet.h>
