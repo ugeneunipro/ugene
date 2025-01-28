@@ -78,7 +78,7 @@ void MaOverviewContextMenu::sl_exportAsImageTriggered() {
     MaOverviewImageExportController factory(simpleOverview, graphOverview);
     QWidget* p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     const QString fileName = GUrlUtils::fixFileName(graphOverview->getEditor()->getMaObject()->getGObjectName());
-    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MSA, fileName, ExportImageDialog::NoScaling, p);
+    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MaOverview, fileName, ExportImageDialog::NoScaling, p);
     dialog->exec();
 }
 
