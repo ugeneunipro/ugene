@@ -34,6 +34,7 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/MainWindow.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include "EnzymeGroupTreeItem.h"
