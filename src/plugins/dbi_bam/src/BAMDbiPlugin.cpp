@@ -34,6 +34,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/CloneObjectTask.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DbiDocumentFormat.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FileAndDirectoryUtils.h>
@@ -89,8 +90,8 @@ BAMImporter::BAMImporter()
     QSet<QString> extsSet;
     BAMFormatUtils bam;
     SAMFormat sam;
-    extsSet.unite(bam.getSupportedDocumentFileExtensions().toSet()).unite(sam.getSupportedDocumentFileExtensions().toSet());
-    QStringList exts = extsSet.toList();
+    extsSet.unite(toSet(bam.getSupportedDocumentFileExtensions()).unite(toSet(sam.getSupportedDocumentFileExtensions())));
+    QStringList exts = toList(extsSet);
     std::sort(exts.begin(), exts.end());
 
     formatIds << BaseDocumentFormats::BAM << BaseDocumentFormats::SAM;
@@ -263,7 +264,7 @@ void BAMImporterTask::initPrepareToImportTask() {
         convert = false;
         setError(tr("SAM cannot be converted to BAM: neither reference nor header in SAM file is present"));
     }
-    
+
     if (convert) {
         QString dirUrl = getDirUrl(loadInfoTask->getSourceUrl());
         if (!FileAndDirectoryUtils::isDirectoryWritable(dirUrl)) {

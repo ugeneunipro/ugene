@@ -34,14 +34,15 @@
 #include <QToolTip>
 #include <QVBoxLayout>
 
-#include <U2Core/AppSettings.h>
 #include <U2Core/AnnotationModification.h>
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/AutoAnnotationsSupport.h>
 #include <U2Core/ClipboardController.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DBXRefRegistry.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -50,9 +51,9 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
-#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/CreateAnnotationDialog.h>
 #include <U2Gui/CreateAnnotationWidgetController.h>
@@ -382,7 +383,7 @@ QList<AVAnnotationItem*> AnnotationsTreeView::findAnnotationItems(const AVGroupI
 
 void AnnotationsTreeView::removeGroupAnnotationsFromCache(const AVGroupItem* groupItem) {
     CHECK(!selectedAnnotation.isEmpty(), );
-    const QSet<AVAnnotationItem*> annotationItems = findAnnotationItems(groupItem).toSet();
+    const QSet<AVAnnotationItem*> annotationItems = toSet(findAnnotationItems(groupItem));
     foreach (AVAnnotationItem* annotationItem, selectedAnnotation.keys()) {
         if (annotationItems.contains(annotationItem)) {
             selectedAnnotation.remove(annotationItem);
@@ -1072,11 +1073,11 @@ void AnnotationsTreeView::sl_removeObjectFromView() {
 
     QList<AVGroupItem*> topLevelGroups = selectGroupItems(tree->selectedItems(), TriState_Unknown, TriState_Yes);
     QList<GObject*> objects;
-    for (AVGroupItem *gItem : qAsConst(topLevelGroups)) {
+    for (AVGroupItem* gItem : qAsConst(topLevelGroups)) {
         objects.append(gItem->group->getGObject());
     }
 
-    for (GObject *obj : qAsConst(objects)) {
+    for (GObject* obj : qAsConst(objects)) {
         SAFE_POINT(obj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE, "Unexpected object type", );
         if (AutoAnnotationsSupport::isAutoAnnotationObject(obj)) {
             continue;
@@ -1666,7 +1667,7 @@ void AnnotationsTreeView::sl_annotationClicked(Annotation* annotation) {
     auto advctx = qobject_cast<ADVSequenceObjectContext*>(sender());
     SAFE_POINT(advctx != nullptr, "Incorrect sender", );
 
-    QList<AnnotationTableObject*> annotationObjects = advctx->getAnnotationObjects().toList();
+    QList<AnnotationTableObject*> annotationObjects = toList(advctx->getAnnotationObjects());
     QMap<AVAnnotationItem*, QList<U2Region>> sortedAnnotationSelections = sortAnnotationSelection(annotationObjects);
 
     expandItemRecursevly(item->parent());
@@ -1740,7 +1741,7 @@ void AnnotationsTreeView::sl_clearSelectedAnnotations() {
     auto advctx = qobject_cast<ADVSequenceObjectContext*>(sender());
     SAFE_POINT(advctx != nullptr, "Incorrect sender", );
 
-    QList<AnnotationTableObject*> annotationObjects = advctx->getAnnotationObjects().toList();
+    QList<AnnotationTableObject*> annotationObjects = toList(advctx->getAnnotationObjects());
     QMap<AVAnnotationItem*, QList<U2Region>> currentAnnotationSelections = sortAnnotationSelection(annotationObjects);
 
     foreach (AVAnnotationItem* key, currentAnnotationSelections.keys()) {

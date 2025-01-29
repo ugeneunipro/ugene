@@ -324,7 +324,8 @@ DbiConnection* MaDbiUtils::getCheckedConnection(const U2DbiRef& dbiRef, U2OpStat
 
 /** Validates that all 'rowIds' contains in the alignment rows */
 bool MaDbiUtils::validateRowIds(const Msa& al, const QList<qint64>& rowIds) {
-    QSet<qint64> alRowIds = al->getRowsIds().toSet();
+    auto alignmentRowIds = al->getRowsIds();
+    QSet<qint64> alRowIds = QSet<qint64>(alignmentRowIds.begin(), alignmentRowIds.end());
     for (qint64 rowId : qAsConst(rowIds)) {
         if (!alRowIds.contains(rowId)) {
             coreLog.trace(QString("No row ID '%1' in '%2' alignment!").arg(rowId).arg(al->getName()));

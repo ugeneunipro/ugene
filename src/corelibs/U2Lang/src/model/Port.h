@@ -88,7 +88,7 @@ public:
 
     Actor* owner() const;
 
-    QMap<Port*, Link*> getLinks() const;
+    QMultiMap<Port*, Link*> getLinks() const;
     virtual void addLink(Link*);
     virtual void removeLink(Link*);
 
@@ -122,7 +122,7 @@ protected:
     // owner of this port
     Actor* proc;
     // links with other ports
-    QMap<Port*, Link*> bindings;
+    QMultiMap<Port*, Link*> bindings;
     bool enabled;
 };  // Port
 

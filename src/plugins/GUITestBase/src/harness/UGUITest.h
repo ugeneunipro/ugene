@@ -26,7 +26,7 @@
 
 #include <QTimer>
 
-#include <U2Core/global.h>
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 using namespace HI;
@@ -111,7 +111,7 @@ public:
     class className : public UGUITest { \
     public: \
         className(int timeout = DEFAULT_GUI_TEST_TIMEOUT, const QStringList& labelList = QStringList()) \
-            : UGUITest(TESTNAME(className), SUITENAME(className), timeout, labelList.toSet()) { \
+            : UGUITest(TESTNAME(className), SUITENAME(className), timeout, toSet(labelList)) { \
         } \
 \
     protected: \

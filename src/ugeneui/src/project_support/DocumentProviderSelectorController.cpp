@@ -42,6 +42,7 @@
 
 #include <U2View/AssemblyBrowserFactory.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 
@@ -136,13 +137,13 @@ QString DocumentProviderSelectorController::getButtonName(const GObjectType& obj
 ImportWidget* DocumentProviderSelectorController::getRadioButtonWgt(const FormatDetectionResult& result, QString& radioButtonName, const GUrl& url, int it) {
     ImportWidget* wgt = nullptr;
     if (result.format != nullptr) {
-        GObjectType supportedType = result.format->getSupportedObjectTypes().toList().first();
+        GObjectType supportedType = toList(result.format->getSupportedObjectTypes()).first();
         radioButtonName = result.format->getRadioButtonText();
         if (radioButtonName.isEmpty() && !supportedType.isEmpty()) {
             radioButtonName = getButtonName(supportedType);
         }
     } else if (result.importer != nullptr) {
-        GObjectType supportedType = result.importer->getSupportedObjectTypes().toList().first();
+        GObjectType supportedType = toList(result.importer->getSupportedObjectTypes()).first();
         QString formatId = result.importer->getId();
         radioButtonName = result.importer->getRadioButtonText();
         if (radioButtonName.isEmpty() && !supportedType.isEmpty()) {
@@ -190,7 +191,9 @@ void DocumentProviderSelectorController::accept() {
         if (radioButtonConnectedWidget[i] != nullptr) {
             QVariantMap settings = radioButtonConnectedWidget[i]->getSettings();
             formatId = settings[ImportHint_FormatId].toString();
-            formatDetectionResults[i].rawDataCheckResult.properties.unite(settings);
+            for (auto it = settings.cbegin(); it != settings.cend(); ++it) {
+                formatDetectionResults[i].rawDataCheckResult.properties.insert(it.key(), it.value());
+            }
         }
         bool isChecked = formatsRadioButtons[i]->isChecked();
         if (isChecked) {

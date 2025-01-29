@@ -96,7 +96,7 @@ Task* MarkSequenceWorker::tick() {
         foreach (Marker* marker, attr->getMarkers()) {
             QString res;
             if (SEQUENCE == marker->getGroup()) {
-                res = marker->getMarkingResult(qVariantFromValue<DNASequence>(seq));
+                res = marker->getMarkingResult(QVariant::fromValue<DNASequence>(seq));
             } else if (QUALIFIER == marker->getGroup() || ANNOTATION == marker->getGroup()) {
                 res = marker->getMarkingResult(QVariant(anns));
             } else if (TEXT == marker->getGroup()) {

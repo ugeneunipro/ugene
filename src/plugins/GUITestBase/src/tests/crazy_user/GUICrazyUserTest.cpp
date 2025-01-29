@@ -25,6 +25,7 @@
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
+#include <QRandomGenerator>
 
 #include <U2Core/U2SafePoints.h>
 
@@ -34,9 +35,14 @@ namespace U2 {
 
 namespace GUITest_crazy_user {
 
+static QRandomGenerator& rnd() {
+    static QRandomGenerator instance(static_cast<quint32>(QDateTime::currentMSecsSinceEpoch()));
+    return instance;
+}
+
 void GTCrazyUserMonitor::checkActiveWidget() {
     QWidget* widget = QApplication::activePopupWidget();
-    if (widget == nullptr || 0 == qrand() % 20) {
+    if (widget == nullptr || rnd().bounded(20) == 0) {
         widget = QApplication::activeModalWidget();
         if (widget == nullptr) {
             widget = QApplication::activeWindow();
@@ -93,12 +99,11 @@ QList<GTAbstractGUIAction*> GTCrazyUserMonitor::formGUIActions(QWidget* widget) 
 }
 
 GUI_TEST_CLASS_DEFINITION(simple_crazy_user) {
-    qsrand(QTime().msecsTo(QTime::currentTime()));
     GTCrazyUserMonitor m;
 
     static const int defaultTimeSeconds = 60;
     int time = qgetenv("UGENE_GUI_TEST_CRAZY_USER_TIME").toInt();
-    if (0 == time) {
+    if (time == 0) {
         time = defaultTimeSeconds;
     }
 

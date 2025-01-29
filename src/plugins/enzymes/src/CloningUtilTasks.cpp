@@ -21,15 +21,9 @@
 
 #include "CloningUtilTasks.h"
 
-#include <U2Core/AddDocumentTask.h>
-#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/Counter.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -156,7 +150,7 @@ void DigestSequenceTask::findCutSites() {
         for (Annotation* a : qAsConst(enzymeAnnotations)) {
             const QVector<U2Region>& location = a->getRegions();
             int cutPos = location.first().startPos;
-            cutSiteMap.insertMulti(GenomicPosition(cutPos, a->getStrand().isDirect()), enzyme);
+            cutSiteMap.insert(GenomicPosition(cutPos, a->getStrand().isDirect()), enzyme);
         }
     }
 }
@@ -714,7 +708,7 @@ void LigateFragmentsTask::createDocument(const QByteArray& seq, const QList<Shar
     QDate date = QDate::currentDate();
     loi.date = QString("%1-%2-%3").arg(date.toString("dd")).arg(FormatUtils::getShortMonthName(date.month())).arg(date.toString("yyyy"));
 
-    dna.info.insert(DNAInfo::LOCUS, qVariantFromValue<DNALocusInfo>(loi));
+    dna.info.insert(DNAInfo::LOCUS, QVariant::fromValue<DNALocusInfo>(loi));
 
     resultDoc = df->createNewLoadedDocument(iof, cfg.docUrl, stateInfo);
     CHECK_OP(stateInfo, );

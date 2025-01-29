@@ -22,9 +22,6 @@
 
 #include "MsaEditorTreeViewer.h"
 
-#include <QCursor>
-#include <QDateTime>
-#include <QMessageBox>
 #include <QMouseEvent>
 #include <QStack>
 #include <QVBoxLayout>
@@ -34,11 +31,11 @@
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/MaEditorNameList.h>
-#include <U2View/MsaEditor.h>
 #include <U2View/MsaEditorSequenceArea.h>
 #include <U2View/TvNodeItem.h>
 #include <U2View/TvRectangularBranchItem.h>
 #include <U2View/TvTextItem.h>
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 
@@ -221,12 +218,12 @@ bool MsaEditorTreeViewer::checkTreeAndMsaCanBeSynchronized() const {
     for (const QStringList& namesInGroup : qAsConst(groupStateGuidedByTree)) {
         treeNameList.append(namesInGroup);
     }
-    QSet<QString> treeNameSet = treeNameList.toSet();
+    QSet<QString> treeNameSet = toSet(treeNameList);
     bool treeHasUniqueNames = treeNameSet.size() == treeNameList.size();
     CHECK(treeHasUniqueNames, false);  // Tree is ambiguous: there is no straight way to map tree branches to MSA sequences.
 
     QStringList msaNameList = editor->getMaObject()->getAlignment()->getRowNames();  // The list of sequences names in the MSA.
-    QSet<QString> msaNameSet = msaNameList.toSet();
+    QSet<QString> msaNameSet = toSet(msaNameList);
     bool msaHasUniqueNames = msaNameSet.size() == msaNameList.size();
     CHECK(msaHasUniqueNames, false);  // MSA is ambiguous: there is no straight way to map tree branches to MSA sequences.
 

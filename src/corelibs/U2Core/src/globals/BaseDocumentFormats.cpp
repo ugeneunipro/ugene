@@ -22,6 +22,7 @@
 #include "BaseDocumentFormats.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/StrPackUtils.h>
 
@@ -49,6 +50,7 @@ const DocumentFormatId BaseDocumentFormats::PHYLIP_SEQUENTIAL("phylip-sequential
 const DocumentFormatId BaseDocumentFormats::PLAIN_ASN("mmdb");
 const DocumentFormatId BaseDocumentFormats::PLAIN_EMBL("embl");
 const DocumentFormatId BaseDocumentFormats::PLAIN_GENBANK("genbank");
+const DocumentFormatId BaseDocumentFormats::PLAIN_KRAKEN_RESULTS("kraken-results");
 const DocumentFormatId BaseDocumentFormats::PLAIN_PDB("pdb");
 const DocumentFormatId BaseDocumentFormats::PLAIN_SWISS_PROT("swiss-prot");
 const DocumentFormatId BaseDocumentFormats::PLAIN_TEXT("text");
@@ -154,8 +156,8 @@ StrStrMap initFormatIdsMap() {
     anyIds2trueIds.insert(BaseDocumentFormats::VECTOR_NTI_SEQUENCE, BaseDocumentFormats::VECTOR_NTI_SEQUENCE);
 
     // IDs from 1.26.0
-    anyIds2trueIds.unite(initInvalidFormatIdsMap());
-
+    auto invalidIds = initInvalidFormatIdsMap();
+    unite(anyIds2trueIds, invalidIds);
     return anyIds2trueIds;
 }
 

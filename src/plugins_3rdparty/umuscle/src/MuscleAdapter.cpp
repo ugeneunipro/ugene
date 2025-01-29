@@ -33,6 +33,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "../../../plugins/remote_blast/src/RemoteBLASTPrimerPairToAnnotationsTask.h"
 #include "MuscleUtils.h"
 
 namespace U2 {
@@ -164,7 +165,7 @@ void MuscleAdapter::alignUnsafe(const Msa& ma, Msa& res, TaskStateInfo& ti, bool
     SetMuscleTree(GuideTree);
 
     ti.progress = 45;
-    QTime timer;
+    QElapsedTimer timer;
     timer.start();
     if (ctx->params.g_bAnchors) {
         RefineVert(msa, GuideTree, ctx->params.g_uMaxIters - 2);
@@ -192,7 +193,7 @@ void MuscleAdapter::refine(const Msa& ma, Msa& res, TaskStateInfo& ti) {
         return;
     }
     try {
-        QTime timer;
+        QElapsedTimer timer;
         timer.start();
         refineUnsafe(ma, res, ti);
         algoLog.trace(QString("Serial refine stage complete. Elapsed %1 ms").arg(timer.elapsed()));

@@ -24,6 +24,8 @@
 #include <QObject>
 
 #include <U2Core/GUrl.h>
+#include <U2Core/Task.h>
+#include <U2Core/U2IdTypes.h>
 
 namespace U2 {
 

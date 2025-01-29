@@ -93,12 +93,12 @@ QDSamplesWidget::QDSamplesWidget(QueryScene* scene, QWidget* parent /* =NULL */)
 
 void QDSamplesWidget::addSample(const QDSample& sample) {
     auto item = new QListWidgetItem(sample.d.getDisplayName(), this);
-    item->setData(DATA_ROLE, qVariantFromValue<QDDocument*>(sample.content));
+    item->setData(DATA_ROLE, QVariant::fromValue<QDDocument*>(sample.content));
     auto txtDoc = new QTextDocument(this);
     QIcon ico;
     ico.addPixmap(QDUtils::generateSnapShot(sample.content, QRect()));
     DesignerGUIUtils::setupSamplesDocument(sample.d, ico, txtDoc);
-    item->setData(DOC_ROLE, qVariantFromValue<QTextDocument*>(txtDoc));
+    item->setData(DOC_ROLE, QVariant::fromValue<QTextDocument*>(txtDoc));
 }
 
 void QDSamplesWidget::sl_onItemChanged(QListWidgetItem* item) {

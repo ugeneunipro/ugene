@@ -27,12 +27,9 @@
 #include <U2Algorithm/ColorSchemeUtils.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Log.h>
-#include <U2Core/Settings.h>
-#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/HelpButton.h>
 
@@ -66,14 +63,14 @@ static void setSchemaColors(const ColorSchemeData& customSchema) {
 
     // write header
     QByteArray header;
-    header.append(QString("%1\n").arg(keyword));
+    header.append(QString("%1\n").arg(keyword).toUtf8());
     io->writeBlock(header);
     // write body
     QMapIterator<char, QColor> it(alphColors);
     while (it.hasNext()) {
         it.next();
         QByteArray line;
-        line.append(QString("%1=%2\n").arg(it.key()).arg(it.value().name()));
+        line.append(QString("%1=%2\n").arg(it.key()).arg(it.value().name()).toUtf8());
         io->writeBlock(line);
     }
 }

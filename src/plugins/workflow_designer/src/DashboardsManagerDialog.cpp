@@ -74,7 +74,7 @@ void DashboardsManagerDialog::setupList() {
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
         Qt::CheckState state = info.opened ? Qt::Checked : Qt::Unchecked;
         item->setCheckState(0, state);
-        item->setData(0, Qt::UserRole, qVariantFromValue<DashboardInfo>(info));
+        item->setData(0, Qt::UserRole, QVariant::fromValue<DashboardInfo>(info));
         listWidget->addTopLevelItem(item);
     }
     listWidget->sortByColumn(1, Qt::AscendingOrder);

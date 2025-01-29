@@ -57,8 +57,8 @@ void GTUtilsOptionsPanel::resizeToMaximum() {
     QSplitterHandle* handle = optionsPanelSplitter->handle(1);
     GT_CHECK(handle != nullptr, "Options panel splitter handle is nullptr");
 
-    const QPoint handleCenter = optionsPanelSplitter->mapToGlobal(handle->geometry().center());
-    const int delta = 500;
+    QPoint handleCenter = optionsPanelSplitter->mapToGlobal(handle->geometry().center());
+    int delta = 500;
     GTMouseDriver::dragAndDrop(handleCenter, handleCenter - QPoint(delta, 0));
 }
 

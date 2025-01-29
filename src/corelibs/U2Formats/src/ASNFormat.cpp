@@ -81,7 +81,7 @@ static QList<char> parseChains(const QString& mol) {
     start += 6;  // "Chain:" length
     const int end = mol.indexOf(';', start);
     const QString chains = mol.mid(start, end > start ? end - start : -1);
-    for (QString& str : chains.split(',', QString::SkipEmptyParts)) {
+    for (QString& str : chains.split(',', Qt::SkipEmptyParts)) {
         str = str.trimmed();
         if (str.length() == 1) {
             ans << str.at(0).toLatin1();

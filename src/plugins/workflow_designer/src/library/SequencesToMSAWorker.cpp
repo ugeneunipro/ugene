@@ -96,7 +96,7 @@ void SequencesToMSAWorker::sl_onTaskFinished(Task* t) {
         SAFE_POINT(outPort != nullptr, "NULL outPort!", );
         SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(ma);
 
-        outPort->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), qVariantFromValue<SharedDbiDataHandler>(msaId)));
+        outPort->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(msaId)));
     }
 
     SAFE_POINT(inPort->isEnded(), "Internal error. The workflow is broken", );

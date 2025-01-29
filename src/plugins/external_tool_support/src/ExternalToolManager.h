@@ -93,7 +93,7 @@ private:
     QSet<QString> pendingValidationToolSet;
 
     /** Inversed map of tool dependencies: master tool id -> list of child tool ids.*/
-    StrStrMap childToolsMultiMap;
+    QMultiMap<QString, QString> childToolsMultiMap;
 
     /** State of the tool by tool id. */
     QMap<QString, ExternalToolState> toolStateMap;

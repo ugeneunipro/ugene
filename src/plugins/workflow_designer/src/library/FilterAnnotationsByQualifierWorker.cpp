@@ -89,7 +89,7 @@ void FilterAnnotationsByQualifierWorker::sl_taskFinished(Task* t) {
     }
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(inputAnns);
     output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(),
-                        qVariantFromValue<SharedDbiDataHandler>(tableId)));
+                        QVariant::fromValue<SharedDbiDataHandler>(tableId)));
 }
 
 void FilterAnnotationsByQualifierWorker::cleanup() {

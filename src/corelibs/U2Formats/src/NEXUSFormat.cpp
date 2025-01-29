@@ -443,7 +443,7 @@ bool NEXUSParser::readDataContents(Context& ctx) {
                 } else {
                     CHECK_EXT(sectionRowIndex < names.length(), errors.append("MATRIX sections have different count of rows!"), false);
                     CHECK_EXT(name == names[sectionRowIndex], errors.append("MATRIX sections have different name order"), false);
-                    values[sectionRowIndex].append(value);
+                    values[sectionRowIndex].append(value.toUtf8());
                 }
                 reportProgress();
                 if (isLastValueInTheSection) {
@@ -731,7 +731,7 @@ QList<GObject*> NEXUSFormat::loadObjects(IOAdapter* io, const U2DbiRef& dbiRef, 
 
     if (parser.hasError()) {
         QByteArray msg = "NEXUSParser: ";
-        msg += parser.getErrors().first();
+        msg += parser.getErrors().first().toUtf8();
         ti.setError(tr(msg.data()));
     }
 

@@ -236,7 +236,7 @@ void HRWizardParser::parseNextIds(ParsedPairs& pairs, WizardPage* page, U2OpStat
         return;
     }
     if (pairs.blockPairs.contains(NEXT)) {
-        ParsedPairs predPairs(pairs.blockPairs[NEXT]);
+        ParsedPairs predPairs(pairs.blockPairs.values(NEXT).last());
         foreach (const QString& id, predPairs.equalPairs.keys()) {
             Predicate p = Predicate::fromString(predPairs.equalPairs[id], os);
             CHECK_OP(os, );
@@ -572,7 +572,7 @@ void WizardWidgetParser::addVariable(const Variable& v) {
 }
 
 AttributeInfo WizardWidgetParser::parseInfo(const QString& attrStr, const QString& body) {
-    QStringList vals = attrStr.split(Constants::DOT, QString::SkipEmptyParts);
+    QStringList vals = attrStr.split(Constants::DOT, Qt::SkipEmptyParts);
     if (2 != vals.size()) {
         os.setError(HRWizardParser::tr("Unknown widget name: %1").arg(attrStr));
         return AttributeInfo("", "");

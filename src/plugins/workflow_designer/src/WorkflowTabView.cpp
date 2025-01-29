@@ -28,6 +28,7 @@
 #include <QTabBar>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DashboardInfoRegistry.h>
@@ -278,7 +279,7 @@ QMap<QString, Dashboard*> WorkflowTabView::getDashboards(const QStringList& dash
     }
 
     if (result.size() != dashboardIds.size()) {
-        const QSet<QString> difference = dashboardIds.toSet() - result.keys().toSet();
+        const QSet<QString> difference = toSet(dashboardIds) - toSet(result.keys());
         foreach (const QString& dashboardId, difference) {
             result.insert(dashboardId, nullptr);
         }

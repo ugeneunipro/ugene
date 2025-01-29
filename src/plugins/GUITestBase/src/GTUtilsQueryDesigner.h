@@ -33,6 +33,11 @@ class GTUtilsQueryDesigner {
 public:
     static void openQueryDesigner();
 
+    /** Returns active QD window or fails if no active QD window is found. */
+    static QWidget* getActiveQueryDesignerWindow();
+
+    static void clickParameter(const QString& parameter);
+
     static QTreeWidgetItem* findAlgorithm(const QString& itemName);
     static void addAlgorithm(const QString& algName);
     static QPoint getItemCenter(const QString& itemName);

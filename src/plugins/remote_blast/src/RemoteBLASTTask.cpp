@@ -22,10 +22,7 @@
 #include "RemoteBLASTTask.h"
 
 #include <U2Core/AppSettings.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/Counter.h>
 #include <U2Core/CreateAnnotationTask.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
 #include <U2Core/ProjectModel.h>

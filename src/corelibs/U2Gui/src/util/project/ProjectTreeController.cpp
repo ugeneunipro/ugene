@@ -35,6 +35,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/L10n.h>
@@ -554,13 +555,13 @@ void ProjectTreeController::sl_onProjectItemRenamed(const QModelIndex& index) {
 void ProjectTreeController::sl_onToggleReadonly() {
     QSet<Document*> docsInSelection = getDocumentSelectionDerivedFromObjects();
     CHECK(docsInSelection.size() == 1, );
-    Document* doc = docsInSelection.toList().first();
+    Document* doc = toList(docsInSelection).first();
     doc->setUserModLock(!doc->hasUserModLock());
 }
 
 void ProjectTreeController::sl_onRemoveSelectedItems() {
     QList<Document*> selectedDocs = settings.groupMode != ProjectTreeGroupMode_ByDocument
-                                        ? getDocumentSelectionDerivedFromObjects().toList()
+                                        ? toList(getDocumentSelectionDerivedFromObjects())
                                         : getDocumentSelection()->getSelectedDocuments();
     QList<Folder> selectedFolders = getSelectedFolders();
     QList<GObject*> selectedObjects = objectSelection.getSelectedObjects();
@@ -801,7 +802,7 @@ void ProjectTreeController::runLoadDocumentTasks(const QList<Document*>& docs) c
 }
 
 QSet<Document*> ProjectTreeController::getDocumentSelectionDerivedFromObjects() const {
-    QSet<Document*> result = documentSelection.getSelectedDocuments().toSet();
+    QSet<Document*> result = toSet(documentSelection.getSelectedDocuments());
     QList<GObject*> selectedObjects = objectSelection.getSelectedObjects();
     for (GObject* obj : qAsConst(selectedObjects)) {
         Document* doc = obj->getDocument();

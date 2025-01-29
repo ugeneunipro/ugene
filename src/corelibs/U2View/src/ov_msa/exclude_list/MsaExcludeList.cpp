@@ -55,6 +55,7 @@
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/MaEditorSplitters.h"
 #include "ov_msa/MsaEditor.h"
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 ////////////////////////////////////
@@ -505,7 +506,7 @@ void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const Msa& maBefore, const 
     bool isAddToExcludeList = (isRedo && undoRedoContext.isMoveFromMsaToExcludeList) || (!isRedo && !undoRedoContext.isMoveFromMsaToExcludeList);
     if (isAddToExcludeList) {  // Add rows removed from MSA to Exclude list
         QVector<MsaRow> msaRows;
-        QSet<qint64> msaRowIdsAfter = msaObject->getRowIds().toSet();
+        QSet<qint64> msaRowIdsAfter = toSet(msaObject->getRowIds());
         for (int i = 0; i < maBefore->getRowCount(); i++) {
             const MsaRow& row = maBefore->getRow(i);
             if (!msaRowIdsAfter.contains(row->getRowId())) {
@@ -519,7 +520,7 @@ void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const Msa& maBefore, const 
             addMsaRowEntry(msaRow, excludeListRowId);
         }
     } else {  // Remove rows from Exclude List.
-        QSet<int> rowIdsToRemove = undoRedoContext.excludeListRowIdsDelta.toSet();
+        QSet<int> rowIdsToRemove = toSet(undoRedoContext.excludeListRowIdsDelta);
         QList<QListWidgetItem*> listItemsToRemove;
         for (int rowIndex = nameListView->count(); --rowIndex >= 0;) {
             auto listItem = nameListView->item(rowIndex);

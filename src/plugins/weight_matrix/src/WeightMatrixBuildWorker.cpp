@@ -154,7 +154,7 @@ void PWMatrixBuildWorker::sl_taskFinished() {
         return;
     }
     PWMatrix model = t->getResult();
-    QVariant v = qVariantFromValue<PWMatrix>(model);
+    QVariant v = QVariant::fromValue<PWMatrix>(model);
     output->put(Message(mtype, v));
 }
 
@@ -241,7 +241,7 @@ void PFMatrixBuildWorker::sl_taskFinished() {
         return;
     }
     PFMatrix model = t->getResult();
-    QVariant v = qVariantFromValue<PFMatrix>(model);
+    QVariant v = QVariant::fromValue<PFMatrix>(model);
     output->put(Message(mtype, v));
 }
 
@@ -340,7 +340,7 @@ void PFMatrixConvertWorker::sl_taskFinished() {
         return;
     }
     PWMatrix model = t->getResult();
-    QVariant v = qVariantFromValue<PWMatrix>(model);
+    QVariant v = QVariant::fromValue<PWMatrix>(model);
     output->put(Message(mtype, v));
 }
 

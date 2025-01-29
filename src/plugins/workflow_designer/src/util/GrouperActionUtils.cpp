@@ -249,7 +249,7 @@ QVariant MergeSequencePerformer::finishAction(U2OpStatus& os) {
     CHECK_OP(os, QVariant());
     U2EntityRef entRef(context->getDataStorage()->getDbiRef(), seq.id);
     SharedDbiDataHandler handler = context->getDataStorage()->getDataHandler(entRef);
-    return qVariantFromValue<SharedDbiDataHandler>(handler);
+    return QVariant::fromValue<SharedDbiDataHandler>(handler);
 }
 
 QVariantMap MergeSequencePerformer::getParameters() const {
@@ -309,7 +309,7 @@ bool Sequence2MSAPerformer::applyAction(const QVariant& newData) {
 
 QVariant Sequence2MSAPerformer::finishAction(U2OpStatus&) {
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(result);
-    return qVariantFromValue<SharedDbiDataHandler>(msaId);
+    return QVariant::fromValue<SharedDbiDataHandler>(msaId);
 }
 
 MergerMSAPerformer::MergerMSAPerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context)
@@ -356,7 +356,7 @@ bool MergerMSAPerformer::applyAction(const QVariant& newData) {
 
 QVariant MergerMSAPerformer::finishAction(U2OpStatus&) {
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(result);
-    return qVariantFromValue<SharedDbiDataHandler>(msaId);
+    return QVariant::fromValue<SharedDbiDataHandler>(msaId);
 }
 
 MergerStringPerformer::MergerStringPerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context)
@@ -429,7 +429,7 @@ bool MergeAnnotationPerformer::applyAction(const QVariant& newData) {
 
 QVariant MergeAnnotationPerformer::finishAction(U2OpStatus&) {
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(result);
-    return qVariantFromValue<SharedDbiDataHandler>(tableId);
+    return QVariant::fromValue<SharedDbiDataHandler>(tableId);
 }
 
 QString MergeAnnotationPerformer::PARENT_SEQUENCE_SLOT = QString("parent-seq-slot");

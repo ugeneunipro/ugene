@@ -227,10 +227,12 @@ Task* GenerateDNAWorker::tick() {
         }
     } else {
         if (actor->getParameter(ALGORITHM)->getAttributeValue<QString>(context) == "GC Skew") {
-            double percentA = qrand();
-            double percentC = qrand();
-            double percentG = qrand();
-            double percentT = qrand();
+            auto rnd = QRandomGenerator::global();
+            double percentA = rnd->generateDouble();
+            double percentC = rnd->generateDouble();
+            double percentG = rnd->generateDouble();
+            double percentT = rnd->generateDouble();
+
             double sum = percentA + percentC + percentG + percentT;
             percentA = percentA / sum * 100;
             percentC = percentC / sum * 100;
@@ -302,7 +304,7 @@ void GenerateDNAWorker::sl_taskFinished(Task* t) {
     if (ch) {
         foreach (DNASequence seq, task->getSequences()) {
             SharedDbiDataHandler handler = context->getDataStorage()->putSequence(seq);
-            ch->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(handler)));
+            ch->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(handler)));
         }
         ch->setEnded();
     }

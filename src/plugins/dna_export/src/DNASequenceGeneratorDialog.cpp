@@ -182,10 +182,11 @@ void DNASequenceGeneratorDialog::sl_generate() {
     } else if (gcSkewRadioButton->isChecked()) {
         s->setValue(ROOT_SETTING + SELECTED_OPTION, OPTION_SKEW);
         gcSkew = percentGCSpin->value();
-        qreal percentA = qrand();
-        qreal percentC = qrand();
-        qreal percentT = qrand();
-        qreal percentG = qrand();
+        auto rnd = QRandomGenerator::global();
+        qreal percentA = rnd->generateDouble();
+        qreal percentC = rnd->generateDouble();
+        qreal percentT = rnd->generateDouble();
+        qreal percentG = rnd->generateDouble();
         qreal sum = percentA + percentC + percentG + percentT;
         percentA = percentA / sum * 100;
         percentG = percentG / sum * 100;

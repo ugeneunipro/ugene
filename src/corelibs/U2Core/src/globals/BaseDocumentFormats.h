@@ -53,6 +53,7 @@ public:
     static const DocumentFormatId PHYLIP_SEQUENTIAL;
     static const DocumentFormatId PLAIN_ASN;
     static const DocumentFormatId PLAIN_EMBL;
+    static const DocumentFormatId PLAIN_KRAKEN_RESULTS;
     static const DocumentFormatId PLAIN_GENBANK;
     static const DocumentFormatId PLAIN_PDB;
     static const DocumentFormatId PLAIN_SWISS_PROT;

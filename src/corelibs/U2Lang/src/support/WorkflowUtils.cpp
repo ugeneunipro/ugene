@@ -25,9 +25,7 @@
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CredentialsAsker.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
@@ -44,7 +42,6 @@
 
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
-#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/IntegralBus.h>
 #include <U2Lang/IntegralBusModel.h>
@@ -258,7 +255,7 @@ bool validateScript(Actor* a, NotificationsList& infoList) {
         return false;
     }
     QScopedPointer<WorkflowScriptEngine> engine(new WorkflowScriptEngine(nullptr));
-    QScriptSyntaxCheckResult syntaxResult = engine->checkSyntax(scriptText);
+    QScriptSyntaxCheckResult syntaxResult = WorkflowScriptEngine::checkSyntax(scriptText);
 
     if (syntaxResult.state() != QScriptSyntaxCheckResult::Valid) {
         WorkflowNotification notification;
@@ -464,7 +461,7 @@ QString WorkflowUtils::findPathToSchemaFile(const QString& name) {
     if (QFile::exists(path)) {
         return path;
     }
-    return QString();
+    return {};
 }
 
 void WorkflowUtils::getLinkedActorsId(Actor* a, QList<QString>& linkedActors) {
@@ -645,7 +642,7 @@ void WorkflowUtils::extractPathsFromBindings(StrStrMap& busMap, SlotPathMap& pat
             if (!path.isEmpty()) {
                 QPair<QString, QString> slotPair(dest, srcId);
                 busMap[dest] = srcId;
-                pathMap.insertMulti(slotPair, path);
+                pathMap.insert(slotPair, path);
             }
         }
     }
@@ -698,9 +695,9 @@ QStringList WorkflowUtils::getDatasetsUrls(const QList<Dataset>& sets) {
 
 QStringList WorkflowUtils::getAttributeUrls(Attribute* attribute) {
     QStringList urlList;
-    QVariant var = attribute->getAttributePureValue();
+    const QVariant& var = attribute->getAttributePureValue();
     if (var.canConvert<QList<Dataset>>()) {
-        urlList = WorkflowUtils::getDatasetsUrls(var.value<QList<Dataset>>());
+        urlList = getDatasetsUrls(var.value<QList<Dataset>>());
     } else if (var.canConvert(QVariant::String)) {
         urlList = var.toString().split(";");
     }
@@ -726,7 +723,7 @@ QMap<Descriptor, DataTypePtr> WorkflowUtils::getBusType(Port* inPort) {
         DataTypePtr type = bus->getType();
         return type->getDatatypesMap();
     }
-    return QMap<Descriptor, DataTypePtr>();
+    return {};
 }
 
 bool WorkflowUtils::isBindingValid(const QString& srcSlotId, const QMap<Descriptor, DataTypePtr>& srcBus, const QString& dstSlotId, const QMap<Descriptor, DataTypePtr>& dstBus) {
@@ -833,7 +830,7 @@ QString WorkflowUtils::externalToolInvalidError(const QString& toolName) {
 }
 
 QString WorkflowUtils::customExternalToolInvalidError(const QString& toolName, const QString& elementName) {
-    return tr("Custom tool \"%1\", specified for the \"%2\" element, didn't pass validation.").arg(toolName).arg(elementName);
+    return tr(R"(Custom tool "%1", specified for the "%2" element, didn't pass validation.)").arg(toolName).arg(elementName);
 }
 
 void WorkflowUtils::schemaFromFile(const QString& url, Schema* schema, Metadata* meta, U2OpStatus& os) {
@@ -949,7 +946,7 @@ bool checkDbCredentials(const QString& dbUrl) {
 bool checkObjectInDb(const QString& url) {
     const QStringList urlParts = url.split(",");
     SAFE_POINT(urlParts.size() == 2, "Invalid DB object URL", false);
-    const QString dbUrl = urlParts[0];
+    const QString& dbUrl = urlParts[0];
 
     U2OpStatusImpl os;
     const U2DbiRef dbRef = url2Ref(dbUrl);
@@ -1182,20 +1179,20 @@ QString WorkflowUtils::packSamples(const QList<TophatSample>& samples) {
 QList<TophatSample> WorkflowUtils::unpackSamples(const QString& samplesStr, U2OpStatus& os) {
     QList<TophatSample> result;
 
-    QStringList pairs = samplesStr.split(";;", QString::SkipEmptyParts);
+    QStringList pairs = samplesStr.split(";;", Qt::SkipEmptyParts);
     foreach (const QString& pairStr, pairs) {
-        QStringList pair = pairStr.split(":", QString::KeepEmptyParts);
+        QStringList pair = pairStr.split(":", Qt::KeepEmptyParts);
         if (2 != pair.size()) {
             os.setError(tr("Wrong samples map string"));
             return result;
         }
-        result << TophatSample(pair[0], pair[1].split(";", QString::SkipEmptyParts));
+        result << TophatSample(pair[0], pair[1].split(";", Qt::SkipEmptyParts));
     }
     return result;
 }
 
 QList<QString> WorkflowUtils::unpackListOfDatasets(const QString& textWithMultipleDatasets) {
-    return textWithMultipleDatasets.split(";;", QString::SkipEmptyParts);
+    return textWithMultipleDatasets.split(";;", Qt::SkipEmptyParts);
 }
 
 QString WorkflowUtils::packListOfDatasets(const QList<QString>& datasetStrings) {
@@ -1203,7 +1200,7 @@ QString WorkflowUtils::packListOfDatasets(const QList<QString>& datasetStrings) 
 }
 
 QList<QString> WorkflowUtils::unpackListOfUrls(const QString& datasetString) {
-    return datasetString.split(";", QString::SkipEmptyParts);
+    return datasetString.split(";", Qt::SkipEmptyParts);
 }
 
 QString WorkflowUtils::packListOfUrls(const QList<QString>& urls) {

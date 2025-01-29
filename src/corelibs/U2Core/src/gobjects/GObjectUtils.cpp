@@ -210,7 +210,8 @@ QList<GObject*> GObjectUtils::findObjectsRelatedToObjectByRole(const GObjectRefe
             }
         }
     } else if (UOF_LoadedOnly == f) {
-        loadedObjs = select(fromObjects, resultObjType, f).toSet();
+        auto selectedObjs = select(fromObjects, resultObjType, f);
+        loadedObjs = QSet<GObject*>(selectedObjs.begin(), selectedObjs.end());
     } else {
         FAIL("Unexpected unloaded object filter detected", res);
     }

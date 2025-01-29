@@ -26,6 +26,7 @@
 #include <QStandardItemModel>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GUrlUtils.h>
@@ -196,7 +197,7 @@ static bool checkNamesAndIds(const QStringList& names, const QStringList& ids) {
         }
     }
 
-    const bool areThereDuplicates = (ids.toSet().size() != ids.size());
+    const bool areThereDuplicates = toSet(ids).size() != ids.size();
     if (areThereDuplicates) {
         res = false;
     }
@@ -643,7 +644,6 @@ void CreateCmdlineBasedWorkerWizardOutputDataPage::initializePage() {
     if (outputsModel->rowCount() > 0) {
         tvOutput->setCurrentIndex(outputsModel->index(0, 0));
     }
-
 }
 
 bool CreateCmdlineBasedWorkerWizardOutputDataPage::isComplete() const {

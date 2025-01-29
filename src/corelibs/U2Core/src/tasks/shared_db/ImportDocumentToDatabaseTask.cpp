@@ -121,7 +121,8 @@ const U2DbiRef& ImportDocumentToDatabaseTask::getDstDbiRef() const {
 }
 
 QSet<GObject*> ImportDocumentToDatabaseTask::getImportedObjects() const {
-    return getObjectPairs().values().toSet();
+    QList<GObject*> values = getObjectPairs().values();
+    return QSet<GObject*>(values.begin(), values.end());
 }
 
 QMap<GObject*, GObject*> ImportDocumentToDatabaseTask::getObjectPairs() const {

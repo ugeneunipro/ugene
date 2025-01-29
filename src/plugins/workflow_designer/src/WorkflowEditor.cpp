@@ -360,7 +360,7 @@ void WorkflowEditor::reset() {
 void WorkflowEditor::commitDatasets(const QString& attrId, const QList<Dataset>& sets) {
     assert(!actor.isNull());
     Attribute* attr = actor->getParameter(attrId);
-    attr->setAttributeValue(qVariantFromValue<QList<Dataset>>(sets));
+    attr->setAttributeValue(QVariant::fromValue<QList<Dataset>>(sets));
     sendModified();
 }
 
@@ -641,7 +641,7 @@ void SpecialParametersPanel::sl_datasetRenamed(QPair<QString, QString>& oldNewNa
             for (QList<Dataset>::iterator it(datasetList.begin()); it != datasetList.end(); it++) {
                 if (it->getName() == oldNewNamePair.first) {
                     it->setName(oldNewNamePair.second);
-                    urlAttr->setAttributeValue(qVariantFromValue<QList<Dataset>>(datasetList));
+                    urlAttr->setAttributeValue(QVariant::fromValue<QList<Dataset>>(datasetList));
                     break;
                 }
             }

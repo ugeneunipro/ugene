@@ -1,7 +1,15 @@
 include (enzymes.pri)
 
 # Input
-HEADERS += src/insert/InsertEnzymeDialog.h \
+HEADERS += src/enzymes_dialog/EnzymeGroupTreeItem.h \
+           src/enzymes_dialog/EnzymesSelectorWidget.h \
+           src/enzymes_dialog/EnzymeTreeItem.h \
+           src/enzymes_dialog/FindEnzymesDialogBase.h \
+           src/enzymes_dialog/FindEnzymesDialogQueryDesigner.h \
+           src/enzymes_dialog/FindEnzymesDialogSequenceView.h \
+           src/enzymes_dialog/RegionSelectorWithExclude.h \
+           src/enzymes_dialog/ResultsCountFilter.h \
+           src/insert/InsertEnzymeDialog.h \
            src/insert/InsertEnzymeWidget.h \
            src/CloningUtilTasks.h \
            src/ConstructMoleculeDialog.h \
@@ -14,17 +22,23 @@ HEADERS += src/insert/InsertEnzymeDialog.h \
            src/EnzymesQuery.h \
            src/EnzymesTests.h \
            src/FindEnzymesAlgorithm.h \
-           src/FindEnzymesDialog.h \
            src/FindEnzymesTask.h
-FORMS += src/insert/InsertEnzymeWidget.ui \
+FORMS += src/enzymes_dialog/EnzymesSelectorWidget.ui \
+         src/enzymes_dialog/ResultsCountFilter.ui \
+         src/insert/InsertEnzymeWidget.ui \
          src/ConstructMoleculeDialog.ui \
          src/CreateFragmentDialog.ui \
          src/DigestSequenceDialog.ui \
-         src/EditFragmentDialog.ui \
-         src/EnzymesSelectorDialog.ui \
-         src/EnzymesSelectorWidget.ui \
-         src/FindEnzymesDialog.ui
-SOURCES += src/insert/InsertEnzymeDialog.cpp \
+         src/EditFragmentDialog.ui
+SOURCES += src/enzymes_dialog/EnzymeGroupTreeItem.cpp \
+           src/enzymes_dialog/EnzymesSelectorWidget.cpp \
+           src/enzymes_dialog/EnzymeTreeItem.cpp \
+           src/enzymes_dialog/FindEnzymesDialogBase.cpp \
+           src/enzymes_dialog/FindEnzymesDialogQueryDesigner.cpp \
+           src/enzymes_dialog/FindEnzymesDialogSequenceView.cpp \
+           src/enzymes_dialog/RegionSelectorWithExclude.cpp \
+           src/enzymes_dialog/ResultsCountFilter.cpp \
+           src/insert/InsertEnzymeDialog.cpp \
            src/insert/InsertEnzymeWidget.cpp \
            src/CloningUtilTasks.cpp \
            src/ConstructMoleculeDialog.cpp \
@@ -36,7 +50,6 @@ SOURCES += src/insert/InsertEnzymeDialog.cpp \
            src/EnzymesPlugin.cpp \
            src/EnzymesQuery.cpp \
            src/EnzymesTests.cpp \
-           src/FindEnzymesDialog.cpp \
            src/FindEnzymesTask.cpp
 RESOURCES += enzymes.qrc
 TRANSLATIONS += transl/russian.ts

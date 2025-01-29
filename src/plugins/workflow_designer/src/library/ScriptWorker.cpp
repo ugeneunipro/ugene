@@ -59,7 +59,7 @@ ScriptWorkerTask::ScriptWorkerTask(WorkflowScriptEngine* _engine, AttributeScrip
 
 void ScriptWorkerTask::run() {
     QMap<QString, QScriptValue> scriptVars;
-    foreach (const Descriptor& key, script->getScriptVars().uniqueKeys()) {
+    foreach (const Descriptor& key, script->getScriptVars().keys()) {
         assert(!key.getId().isEmpty());
         if (!(script->getScriptVars().value(key)).isNull()) {
             scriptVars[key.getId()] = engine->newVariant(script->getScriptVars().value(key));
@@ -255,7 +255,7 @@ void ScriptWorker::sl_taskFinished() {
             if (!seqId.constData() || !seqId.constData()->isValid()) {
                 continue;
             }
-            map[desc.getId()] = qVariantFromValue(seqId);
+            map[desc.getId()] = QVariant::fromValue(seqId);
         } else {
             map[desc.getId()] = value.toVariant();
         }
@@ -267,7 +267,7 @@ void ScriptWorker::sl_taskFinished() {
             for (int i = 0; i < value.property("length").toInt32(); i++) {
                 SharedDbiDataHandler seqId = ScriptEngineUtils::getDbiId(t->getEngine(), value.property(i), SequenceScriptClass::CLASS_NAME);
                 if (seqId.constData() && seqId.constData()->isValid()) {
-                    map[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue(seqId);
+                    map[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = QVariant::fromValue(seqId);
                     output->put(Message(ptr, map));
                 }
             }

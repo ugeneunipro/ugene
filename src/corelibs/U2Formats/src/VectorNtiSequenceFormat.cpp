@@ -247,7 +247,7 @@ StrStrMap VectorNtiSequenceFormat::parseComments(const QStringList& comments) {
 }
 
 QString VectorNtiSequenceFormat::parseDate(int date) {
-    static const QDateTime startTime(QDate(1994, 11, 30));
+    static const QDateTime startTime(QDateTime(QDate(1994, 11, 30), QTime(0, 0)));
     static const int secsInYear = 35942400;
     static const int secsInMonth = 2764800;
 

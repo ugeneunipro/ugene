@@ -14,7 +14,8 @@ include_directories(../../include)
 file(GLOB_RECURSE SRCS src/*.cpp)
 file(GLOB_RECURSE HDRS src/*.h)
 
-add_library(U2Core SHARED ${HDRS} ${SRCS})
+add_library(U2Core SHARED ${HDRS} ${SRCS}
+        src/util/CollectionUtils.h)
 
 target_link_libraries(U2Core
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network Qt5::Script Qt5::Xml

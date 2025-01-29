@@ -95,7 +95,7 @@ QWidget* InUrlDatasetsController::createGUI(U2OpStatus& /*os*/) {
 }
 
 void InUrlDatasetsController::sl_datasetsChanged() {
-    sl_valueChanged(qVariantFromValue<QList<Dataset>>(dsc->getDatasets()));
+    sl_valueChanged(QVariant::fromValue<QList<Dataset>>(dsc->getDatasets()));
 }
 
 /************************************************************************/

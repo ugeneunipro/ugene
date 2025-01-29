@@ -28,6 +28,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "RemoveDashboardsTask.h"
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 
@@ -114,7 +115,7 @@ void DashboardInfoRegistry::releaseReservedName(const QString& dashboardId) {
 }
 
 QSet<QString> DashboardInfoRegistry::getReservedNames() const {
-    return reservedNames.values().toSet();
+    return toSet(reservedNames.values());
 }
 
 void DashboardInfoRegistry::sl_scanTaskFinished() {

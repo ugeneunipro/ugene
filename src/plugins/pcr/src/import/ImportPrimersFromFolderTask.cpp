@@ -66,10 +66,10 @@ QStringList ImportPrimersFromFolderTask::getDirectSubfolders() {
     U2ObjectDbi* objectDbi = connection.dbi->getObjectDbi();
     SAFE_POINT_EXT(objectDbi != nullptr, setError(L10N::nullPointerError("object DBI")), directSubfolders);
 
-    const QStringList parentFolderPathParts = folder.getFolderPath().split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
+    const QStringList parentFolderPathParts = folder.getFolderPath().split(U2ObjectDbi::PATH_SEP, Qt::SkipEmptyParts);
     const QStringList folderPaths = objectDbi->getFolders(stateInfo);
     foreach (const QString& folderPath, folderPaths) {
-        QStringList folderPathParts = folderPath.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
+        QStringList folderPathParts = folderPath.split(U2ObjectDbi::PATH_SEP, Qt::SkipEmptyParts);
         if (!folderPathParts.isEmpty()) {
             folderPathParts.removeLast();
             if (parentFolderPathParts == folderPathParts) {

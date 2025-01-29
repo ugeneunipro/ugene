@@ -193,7 +193,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
-    //    1. Select {File -> Search NCBI Genbak} menu item in the main menu.
+    //    1. Select {File -> Search NCBI Genbank} menu item in the main menu.
     //    2. Search "human" in the "nucleotide" database. Download the first result.
     //    Expected state: the "Fetch Data from Remote Database" appears. It is filled with:
     //        Database: "NCBI GenBank (DNA sequence)", it the only database in the combobox.
@@ -204,7 +204,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QList<NcbiSearchDialogFiller::Action> searchActions;
     QList<DownloadRemoteFileDialogFiller::Action> downloadActions;
 
-    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, qVariantFromValue(intStrStrPair(0, "human")));
+    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, QVariant::fromValue(intStrStrPair(0, "human")));
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetDatabase, "nucleotide");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickSearch, "");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::WaitTasksFinish, "");
@@ -220,7 +220,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     downloadActions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::CheckForceSequenceDownloadVisibility, false);
     downloadActions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickCancel, "");
 
-    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickDownload, qVariantFromValue(downloadActions));
+    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickDownload, QVariant::fromValue(downloadActions));
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickClose, "");
 
     GTUtilsDialog::waitForDialog(new NcbiSearchDialogFiller(searchActions));
@@ -239,7 +239,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     QList<NcbiSearchDialogFiller::Action> searchActions;
     QList<DownloadRemoteFileDialogFiller::Action> downloadActions;
 
-    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, qVariantFromValue(intStrStrPair(0, "human")));
+    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, QVariant::fromValue(intStrStrPair(0, "human")));
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetDatabase, "protein");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickSearch, "");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::WaitTasksFinish, "");
@@ -255,7 +255,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     downloadActions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::CheckForceSequenceDownloadVisibility, false);
     downloadActions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickCancel, "");
 
-    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickDownload, qVariantFromValue(downloadActions));
+    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickDownload, QVariant::fromValue(downloadActions));
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickClose, "");
 
     GTUtilsDialog::waitForDialog(new NcbiSearchDialogFiller(searchActions));

@@ -261,7 +261,7 @@ FSItem* RunFileSystem::createPath(const QStringList& path, U2OpStatus& os) {
 QStringList RunFileSystem::getPath(const QString& pathStr) const {
     QString correctPath = pathStr;
     correctPath.replace("\\", "/");
-    return correctPath.split("/", QString::SkipEmptyParts);
+    return correctPath.split("/", Qt::SkipEmptyParts);
 }
 
 bool RunFileSystem::getPath(const QString& pathStr, QStringList& parentPath, QString& name) const {

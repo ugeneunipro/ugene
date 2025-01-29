@@ -349,7 +349,7 @@ void ExtractConsensusTask::run() {
             c = U2Msa::GAP_CHAR;
         }
         if (c != U2Msa::GAP_CHAR || keepGaps) {
-            filteredConsensus.append(c);
+            filteredConsensus.append(c.toLatin1());
         }
     }
 }

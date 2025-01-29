@@ -91,7 +91,7 @@ void FilterAnnotationsWorker::sl_taskFinished(Task* t) {
     CHECK(!task->getStateInfo().isCoR(), );
 
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(task->takeResult());
-    output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
+    output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(tableId)));
 }
 
 void FilterAnnotationsWorker::cleanup() {
@@ -180,7 +180,7 @@ FilterAnnotationsTask::FilterAnnotationsTask(const QList<SharedAnnotationData>& 
 }
 
 void FilterAnnotationsTask::run() {
-    QStringList names = namesString.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    QStringList names = namesString.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
     names << readAnnotationNames(stateInfo);
     CHECK_OP(stateInfo, );
 
@@ -222,7 +222,7 @@ QStringList FilterAnnotationsTask::readAnnotationNames(U2OpStatus& os) const {
             os.setError(tr("Too big annotation names file"));
             return QStringList();
         }
-        return data.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        return data.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
     } catch (const std::bad_alloc&) {
         os.setError(tr("Not enough memory to load the file with annotation names"));
         return QStringList();

@@ -45,7 +45,7 @@ struct DigestSequenceTaskConfig {
     DigestSequenceTaskConfig()
         : searchForRestrictionSites(false), forceCircular(false) {
     }
-    QMap<QString, U2Region> conservedRegions;
+    QMultiMap<QString, U2Region> conservedRegions;
     QList<SEnzymeData> enzymeData;
     bool searchForRestrictionSites;
     bool forceCircular;
@@ -86,7 +86,7 @@ private:
     AnnotationTableObject *sourceObj, *destObj;
     U2SequenceObject* dnaObj;
     DigestSequenceTaskConfig cfg;
-    QMap<GenomicPosition, SEnzymeData> cutSiteMap;
+    QMultiMap<GenomicPosition, SEnzymeData> cutSiteMap;
     QList<SharedAnnotationData> results;
 };
 

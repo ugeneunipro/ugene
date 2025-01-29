@@ -71,7 +71,7 @@
         <item>
          <widget class="QComboBox" name="cbExistingTable">
           <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+           <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
           </property>
          </widget>
         </item>
@@ -192,7 +192,7 @@
       <item>
        <widget class="QComboBox" name="cbAnnotationType">
         <property name="sizeAdjustPolicy">
-         <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+         <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
         </property>
        </widget>
       </item>

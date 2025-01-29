@@ -177,7 +177,7 @@ void SiteconBuildWorker::sl_taskFinished() {
     if (t->getState() != Task::State_Finished)
         return;
     SiteconModel model = t->getResult();
-    QVariant v = qVariantFromValue<SiteconModel>(model);
+    QVariant v = QVariant::fromValue<SiteconModel>(model);
     output->put(Message(mtype, v));
     algoLog.info(tr("Built SITECON model from: %1").arg(model.aliURL));
 }

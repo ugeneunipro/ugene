@@ -28,9 +28,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AutoAnnotationsSupport.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/Log.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U1AnnotationUtils.h>
@@ -48,7 +46,6 @@
 #include "CloningUtilTasks.h"
 #include "EnzymesIO.h"
 #include "EnzymesQuery.h"
-#include "FindEnzymesDialog.h"
 
 namespace U2 {
 
@@ -161,7 +158,7 @@ void DigestSequenceDialog::accept() {
         U2Location l;
         Genbank::LocationParser::parseLocation(qPrintable(aRegion), aRegion.size(), l);
         foreach (const U2Region& region, l->regions) {
-            cfg.conservedRegions.insertMulti(aName, region);
+            cfg.conservedRegions.insert(aName, region);
         }
     }
     if (seqCtx != nullptr) {
@@ -218,7 +215,7 @@ void DigestSequenceDialog::searchForAnnotatedEnzymes(ADVSequenceObjectContext* c
                 }
             }
             if (!isDublicate) {
-                annotatedEnzymes.insertMulti(enzymeId, subTreeAnnotation->getRegions().first());
+                annotatedEnzymes.insert(enzymeId, subTreeAnnotation->getRegions().first());
                 availableEnzymes.insert(enzymeId);
             }
         }

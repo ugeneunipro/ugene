@@ -37,7 +37,13 @@ class U2DESIGNER_EXPORT BreakpointHitCountDialog : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(BreakpointHitCountDialog)
 public:
-    BreakpointHitCountDialog(const QStringList& hitCountConditions, const QString& conditionOnLaunch = "", quint32 hitCountParameterOnLaunch = LOWER_BOUNDARY_FOR_HIT_COUNTER_PARAMETER, quint32 hitCountOnLaunch = 0, const QStringList& hitCountersListWithoutParameter = QStringList(), QWidget* parent = 0, Qt::WindowFlags f = 0);
+    BreakpointHitCountDialog(const QStringList& hitCountConditions,
+                             const QString& conditionOnLaunch = "",
+                             quint32 hitCountParameterOnLaunch = LOWER_BOUNDARY_FOR_HIT_COUNTER_PARAMETER,
+                             quint32 hitCountOnLaunch = 0,
+                             const QStringList& hitCountersListWithoutParameter = QStringList(),
+                             QWidget* parent = nullptr,
+                             Qt::WindowFlags f = {});
     ~BreakpointHitCountDialog();
 
 signals:

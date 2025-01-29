@@ -395,7 +395,7 @@ QVariantMap BioStruct3DGLWidget::getState() {
     glFrame->writeStateToMap(state);
     anaglyph->getSettings().toMap(state);
 
-    state[ANAGLYPH_STATUS_NAME] = qVariantFromValue((int)anaglyphStatus);
+    state[ANAGLYPH_STATUS_NAME] = QVariant::fromValue((int)anaglyphStatus);
 
     state[COLOR_SCHEME_NAME] = QVariant::fromValue(currentColorSchemeName);
     state[RENDERER_NAME] = QVariant::fromValue(currentGLRendererName);
@@ -710,7 +710,7 @@ void BioStruct3DGLWidget::mouseMoveEvent(QMouseEvent* event) {
 }
 
 void BioStruct3DGLWidget::wheelEvent(QWheelEvent* event) {
-    float numDegrees = event->delta() / 8;
+    float numDegrees = event->angleDelta().y() / 8;
     zoom(numDegrees / 10);
 }
 

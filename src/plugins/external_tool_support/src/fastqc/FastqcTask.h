@@ -100,13 +100,13 @@ private:
     bool isCommonError(const QString& err) const;
     bool isMultiLineError(const QString& err);
 
-    static const QMap<ErrorType, QString> initWellKnownErrors();
+    static QMultiMap<ErrorType, QString> initWellKnownErrors();
 
     QString lastErrLine;
     QString inputFile;
     int progress;
 
-    static const QMap<ErrorType, QString> WELL_KNOWN_ERRORS;
+    static const QMultiMap<ErrorType, QString> WELL_KNOWN_ERRORS;
 };
 
 }  // namespace U2

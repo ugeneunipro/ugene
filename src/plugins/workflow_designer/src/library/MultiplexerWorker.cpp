@@ -21,6 +21,7 @@
 
 #include "MultiplexerWorker.h"
 
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -39,7 +40,6 @@ namespace LocalWorkflow {
 
 const QString MultiplexerWorkerFactory::ACTOR_ID("multiplexer");
 
-static const QString EMPTY_TYPESET_ID("empty");
 static const QString INPUT_PORT_1("input-data-1");
 static const QString INPUT_PORT_2("input-data-2");
 static const QString OUTPUT_PORT("output-data");
@@ -112,7 +112,7 @@ bool MultiplexerWorker::hasDataFotMultiplexing() const {
 }
 
 inline void MultiplexerWorker::sendUnitedMessage(const QVariantMap& m1, QVariantMap& m2, int metadataId) {
-    m2.unite(m1);
+    unite(m2, m1);
     outChannel->putWithoutContext(Message(outChannel->getBusType(), m2, metadataId));
 }
 

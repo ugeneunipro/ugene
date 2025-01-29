@@ -72,7 +72,7 @@ bool BreakpointConditionChecker::evaluateCondition(const AttributeScript* condit
     }
 
     QMap<QString, QScriptValue> scriptVars;
-    foreach (const Descriptor& key, conditionContext->getScriptVars().uniqueKeys()) {
+    foreach (const Descriptor& key, conditionContext->getScriptVars().keys()) {
         assert(!key.getId().isEmpty());
         scriptVars[key.getId()] = engine->newVariant(conditionContext->getScriptVars().value(key));
     }

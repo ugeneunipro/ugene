@@ -300,7 +300,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
                 objName = extractSeqObjectName(fastaHeaderName, words, names, isNameModified);
                 anyNamelessSequence = isNameModified || anyNamelessSequence;
                 if (isNameModified && firstFasta) {
-                    seq.append(words[0]);
+                    seq.append(words[0].toUtf8());
                 }
             } else if (words[0].startsWith(">")) {
                 CHECK_OBJECT_COUNT();
@@ -322,7 +322,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
                     os.setError(tr("Parsing error: sequence in FASTA sequence has whitespaces at line %1").arg(lineNumber));
                     return;
                 }
-                seq.append(words[0]);
+                seq.append(words[0].toUtf8());
             }
         } else if (!words[0].startsWith("#")) {
             if (words.size() != 9) {

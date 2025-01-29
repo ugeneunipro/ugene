@@ -24,6 +24,7 @@
 #include <QDir>
 #include <QFileInfo>
 
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -84,7 +85,7 @@ StrStrMap ImportDirToDatabaseTask::getSkippedFiles() const {
     CHECK(isFinished(), skippedFiles);
 
     foreach (ImportDirToDatabaseTask* importSubdirTask, importSubdirsTasks) {
-        skippedFiles.unite(importSubdirTask->getSkippedFiles());
+        unite(skippedFiles, importSubdirTask->getSkippedFiles());
     }
 
     foreach (ImportFileToDatabaseTask* importSubfileTask, importSubfilesTasks) {

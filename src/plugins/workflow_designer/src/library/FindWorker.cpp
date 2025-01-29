@@ -418,7 +418,7 @@ Task* FindWorker::tick() {
         if (qm.contains(BaseSlots::TEXT_SLOT().getId())) {
             ptrnStrs << qm.value(BaseSlots::TEXT_SLOT().getId()).toString();
         } else {
-            ptrnStrs = actor->getParameter(PATTERN_ATTR)->getAttributeValue<QString>(context).split(PATTERN_DELIMITER, QString::SkipEmptyParts);
+            ptrnStrs = actor->getParameter(PATTERN_ATTR)->getAttributeValue<QString>(context).split(PATTERN_DELIMITER, Qt::SkipEmptyParts);
         }
         if (ptrnStrs.isEmpty() && namesPatterns.isEmpty()) {
             return new FailTask(tr("Empty pattern given"));
@@ -520,7 +520,7 @@ void FindWorker::sl_taskFinished(Task* t) {
         }
 
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(result);
-        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
+        output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), QVariant::fromValue<SharedDbiDataHandler>(tableId)));
 
         if (!ptrns.isEmpty()) {
             algoLog.info(tr("Found %1 matches of pattern '%2'").arg(result.size()).arg(ptrns.join(PATTERN_DELIMITER)));

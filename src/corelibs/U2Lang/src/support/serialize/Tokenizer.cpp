@@ -338,7 +338,7 @@ void ParsedPairs::init(Tokenizer& tokenizer, bool bigBlocks) {
                 value = tokenizer.take();
                 tokenizer.assertToken(Constants::BLOCK_END);
             }
-            blockPairs.insertMulti(tok, value);
+            blockPairs.insert(tok, value);
             blockPairsList << StrStrPair(tok, value);
         } else {
             throw ReadFailed(QObject::tr("Expected %3 or %1 after %2").arg(Constants::BLOCK_START).arg(tok).arg(Constants::EQUALS_SIGN));

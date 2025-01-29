@@ -25,6 +25,7 @@
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/QObjectScopedPointer.h>
 
@@ -123,7 +124,7 @@ void AnnotatorViewContext::sl_showCollocationDialog() {
         return;
     }
 
-    QObjectScopedPointer<CollocationsDialogController> d = new CollocationsDialogController(allNames.toList(), seqCtx);
+    QObjectScopedPointer<CollocationsDialogController> d = new CollocationsDialogController(toList(allNames), seqCtx);
     d->exec();
 }
 

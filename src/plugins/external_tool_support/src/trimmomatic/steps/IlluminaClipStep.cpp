@@ -25,6 +25,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/FileFilters.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
@@ -202,7 +203,8 @@ QVariantMap IlluminaClipSettingsWidget::getState() const {
     state[PALINDROME_CLIP_THRESHOLD] = palindromeThreshold->value();
     state[SIMPLE_CLIP_THRESHOLD] = simpleThreshold->value();
 
-    return state.unite(additionalOptions);
+    unite(state, additionalOptions);
+    return state;
 }
 
 void IlluminaClipSettingsWidget::setState(const QVariantMap& state) {

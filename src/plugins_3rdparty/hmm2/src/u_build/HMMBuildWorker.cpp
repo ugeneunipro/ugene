@@ -323,14 +323,14 @@ void HMMBuildWorker::sl_taskFinished(Task* t) {
                 nextTick = new HMMCalibrateParallelTask(hmm, calSettings);
             }
         } else {  // do not calibrate -> put hmm to output
-            output->put(Message(HMMLib::HMM_PROFILE_TYPE(), qVariantFromValue<plan7_s*>(hmm)));
+            output->put(Message(HMMLib::HMM_PROFILE_TYPE(), QVariant::fromValue<plan7_s*>(hmm)));
         }
         algoLog.info(tr("Built HMM profile"));
     } else {
         auto calibrate = qobject_cast<HMMCalibrateAbstractTask*>(sender());
         assert(calibrate);
         hmm = calibrate->getHMM();
-        output->put(Message(HMMLib::HMM_PROFILE_TYPE(), qVariantFromValue<plan7_s*>(hmm)));
+        output->put(Message(HMMLib::HMM_PROFILE_TYPE(), QVariant::fromValue<plan7_s*>(hmm)));
         algoLog.info(tr("Calibrated HMM profile"));
     }
 }

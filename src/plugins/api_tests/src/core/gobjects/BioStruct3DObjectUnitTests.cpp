@@ -122,7 +122,7 @@ BioStruct3D BioStruct3DObjectTestData::readBioStruct(const QString& fileName, U2
 
     QVariantMap hints;
     if (!useSessionDbi) {
-        hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(dbiProvider.getDbi()->getDbiRef());
+        hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(dbiProvider.getDbi()->getDbiRef());
     }
     QScopedPointer<Document> doc(f->loadDocument(iof, trs->getVar("COMMON_DATA_DIR") + "/unit_tests/" + fileName, hints, os));
     CHECK_OP(os, BioStruct3D());

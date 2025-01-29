@@ -23,6 +23,7 @@
 
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 
@@ -240,7 +241,7 @@ void MaCollapseModel::updateIndex() {
 QSet<qint64> MaCollapseModel::getAllRowIds() const {
     QSet<qint64> rowIdSet;
     for (const MaCollapsibleGroup& group : qAsConst(groups)) {
-        rowIdSet += group.maRowIds.toSet();
+        rowIdSet += toSet(group.maRowIds);
     }
     return rowIdSet;
 }

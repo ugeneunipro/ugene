@@ -23,7 +23,7 @@
 
 #include <QSet>
 
-#include <U2Core/DNASequence.h>
+#include <U2Core/U2IdTypes.h>
 #include <U2Core/Msa.h>
 #include <U2Core/Task.h>
 

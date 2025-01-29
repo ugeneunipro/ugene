@@ -106,7 +106,7 @@ CustomExternalTool* CustomToolConfigParser::parse(U2OpStatus& os, const QString&
             tool->setLauncher(element.text());
         } else if (compareCaseInsensetive(DEPENDENCIES, tagName)) {
             QStringList dependencies;
-            foreach (const QString& dependency, element.text().split(",", QString::SkipEmptyParts)) {
+            foreach (const QString& dependency, element.text().split(",", Qt::SkipEmptyParts)) {
                 dependencies << dependency.trimmed();
             }
             tool->setDependencies(dependencies);

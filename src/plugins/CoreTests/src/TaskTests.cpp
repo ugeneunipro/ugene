@@ -614,7 +614,7 @@ void GTest_Wait::run() {
             stateInfo.setError(QString("invalid context %1").arg(objContextName));
             return;
         }
-        QTime timer;
+        QElapsedTimer timer;
         timer.start();
         while (timer.elapsed() < ms && !isCanceled()) {
             if (task->getState() == waitForState) {
@@ -623,7 +623,7 @@ void GTest_Wait::run() {
             SThread::msleep(100);
         }
     } else {
-        QTime timer;
+        QElapsedTimer timer;
         timer.start();
         while (timer.elapsed() < ms && !isCanceled()) {
             SThread::msleep(100);

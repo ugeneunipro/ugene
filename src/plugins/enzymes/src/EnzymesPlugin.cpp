@@ -47,8 +47,9 @@
 #include "DigestSequenceDialog.h"
 #include "EnzymesQuery.h"
 #include "EnzymesTests.h"
-#include "FindEnzymesDialog.h"
 #include "FindEnzymesTask.h"
+#include "enzymes_dialog/EnzymesSelectorWidget.h"
+#include "enzymes_dialog/FindEnzymesDialogSequenceView.h"
 #include "insert/InsertEnzymeDialog.h"
 
 const QString CREATE_PCR_PRODUCT_ACTION_NAME = "Create PCR product";
@@ -210,7 +211,7 @@ void EnzymesADVContext::sl_search() {
     auto seqCtx = QPointer <ADVSequenceObjectContext>(av->getActiveSequenceContext());
     SAFE_POINT(seqCtx->getAlphabet()->isNucleic(), "Expected nucleic alphabet", );
 
-    QObjectScopedPointer<FindEnzymesDialog> d = new FindEnzymesDialog(seqCtx);
+    auto d = QObjectScopedPointer<FindEnzymesDialogSequenceView>(new FindEnzymesDialogSequenceView(seqCtx->getAnnotatedDNAView()->getWidget(), seqCtx));
     d->exec();
 }
 

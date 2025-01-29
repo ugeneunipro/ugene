@@ -21,11 +21,10 @@
 
 #include "Schema.h"
 
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Lang/ActorModel.h>
-#include <U2Lang/IntegralBusType.h>
 #include <U2Lang/Wizard.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -198,8 +197,8 @@ bool Schema::recursiveExpand(QList<QString>& schemaIds) {
                 setAliasedAttributes(proc, subProc);
             }
         }
-        graph.getBindings().unite(schema->graph.getBindings());
-
+        auto schemaGraphBindings = schema->graph.getBindings();
+        unite(graph.getBindings(), schemaGraphBindings);
         // replace procs
         procs.removeOne(proc);
         procs.append(schema->getProcesses());
@@ -334,7 +333,8 @@ void Schema::merge(Schema& other) {
         }
         procs << newActor;
     }
-    graph.getBindings().unite(other.graph.getBindings());
+    auto otherGraphBindings = other.graph.getBindings();
+    unite(graph.getBindings(), otherGraphBindings);
 }
 
 void Schema::replaceProcess(Actor* oldActor, Actor* newActor, const QList<PortMapping>& mappings) {
@@ -628,8 +628,8 @@ QString Metadata::renameLink(const QString& linkStr, const ActorId& oldId, const
 }
 
 void Metadata::mergeVisual(const Metadata& other) {
-    actorVisual.unite(other.actorVisual);
-    textPosMap.unite(other.textPosMap);
+    unite(actorVisual, other.actorVisual);
+    unite(textPosMap, other.textPosMap);
 }
 
 void Metadata::replaceProcess(const ActorId& oldId, const ActorId& newId, const QList<PortMapping>& mappings) {

@@ -157,10 +157,10 @@ AttributeScript& Attribute::getAttributeScript() {
 QVariant Attribute::toVariant() const {
     QVariantList res;
     res << value;
-    res << qVariantFromValue<QString>(scriptData.getScriptText());
+    res << QVariant::fromValue<QString>(scriptData.getScriptText());
     QVariantList scriptVars;
     foreach (const Descriptor& varDesc, scriptData.getScriptVars().keys()) {
-        scriptVars << qVariantFromValue<QString>(varDesc.getId());
+        scriptVars << QVariant::fromValue<QString>(varDesc.getId());
     }
     res << QVariant(scriptVars);
     return res;

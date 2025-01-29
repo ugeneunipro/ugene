@@ -29,6 +29,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/GenbankFeatures.h>
@@ -113,7 +114,7 @@ QStringList FindTandemsDialog::getAvailableAnnotationNames() const {
             names.insert(a->getName());
         }
     }
-    res = names.toList();
+    res = toList(names);
     res.sort();
     return res;
 }
@@ -160,7 +161,7 @@ bool FindTandemsDialog::getRegions(QCheckBox* cb, QLineEdit* le, QVector<U2Regio
     if (!enabled || names.isEmpty()) {
         return true;
     }
-    QSet<QString> aNames = names.split(',', QString::SkipEmptyParts).toSet();
+    QSet<QString> aNames = toSet(names.split(',', Qt::SkipEmptyParts));
     QSet<AnnotationTableObject*> aObjs = sc->getAnnotationObjects();
     for (AnnotationTableObject* obj : qAsConst(aObjs)) {
         foreach (Annotation* a, obj->getAnnotations()) {

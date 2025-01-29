@@ -37,7 +37,7 @@ QueryViewAdapter::QueryViewAdapter(QDScheme* scheme, const QPointF& topLeftCorne
             auto uv = new QDElement(su);
             uv->moveBy(topLeftCorner.x(), topLeftCorner.y());
             createdElements.append(uv);
-            unitMap.insertMulti(su, uv);
+            unitMap.insert(su, uv);
         }
         constraints << a->getParamConstraints();
     }

@@ -51,7 +51,7 @@ public:
     void addValue(const QString& key, const T& val) {
         assert(!key.isEmpty());
         assert(!d.keys().contains(key));
-        const QVariant& var = qVariantFromValue<T>(val);
+        const QVariant& var = QVariant::fromValue<T>(val);
         d[key] = var;
     }
 
@@ -75,7 +75,7 @@ public:
         assert(!d.keys().contains(key));
         QVariantList varList;
         foreach (const T& val, list) {
-            varList << qVariantFromValue<T>(val);
+            varList << QVariant::fromValue<T>(val);
         }
         d[key] = varList;
     }

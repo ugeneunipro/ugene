@@ -342,7 +342,7 @@ QList<QStringList> ReadCSVAsAnnotationsTask::parseLinesIntoTokens(const QString&
     QList<QStringList> result;
     assert(!config.splitToken.isEmpty() || !config.parsingScript.isEmpty());
     maxColumns = 0;
-    QStringList lines = text.split('\n', QString::SkipEmptyParts);
+    QStringList lines = text.split('\n', Qt::SkipEmptyParts);
     int lineNum = 1;
     for (int l = 0; l < lines.size(); l++) {
         if (l < config.linesToSkip) {
@@ -370,7 +370,7 @@ QString ReadCSVAsAnnotationsTask::LINE_NUM_VAR("lineNum");
 QStringList ReadCSVAsAnnotationsTask::parseLineIntoTokens(const QString& line, const CSVParsingConfig& config, TaskStateInfo& ti, int lineNum) {
     QStringList result;
     if (config.parsingScript.isEmpty()) {
-        result = line.split(config.splitToken, config.keepEmptyParts ? QString::KeepEmptyParts : QString::SkipEmptyParts);
+        result = line.split(config.splitToken, config.keepEmptyParts ? Qt::KeepEmptyParts : Qt::SkipEmptyParts);
         return result;
     }
     // run script
@@ -438,7 +438,7 @@ static void mergeFreqs(QVector<CharStat>& globalFreqs, const QVector<CharStat>& 
 
 QString ReadCSVAsAnnotationsTask::guessSeparatorString(const QString& text, const CSVParsingConfig& config) {
     QVector<CharStat> globalFreqs;
-    QStringList lines = text.split('\n', QString::SkipEmptyParts);
+    QStringList lines = text.split('\n', Qt::SkipEmptyParts);
     for (int l = 0; l < lines.size(); l++) {
         if (l < config.linesToSkip) {
             continue;

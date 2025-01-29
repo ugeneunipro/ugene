@@ -39,6 +39,8 @@
 
 namespace U2 {
 
+static const int MAX_IDS_PER_QUERY = 100;
+
 SearchGenbankSequenceDialogController::SearchGenbankSequenceDialogController(QWidget* p)
     : QDialog(p) {
     ui = new Ui_SearchGenbankSequenceDialog();

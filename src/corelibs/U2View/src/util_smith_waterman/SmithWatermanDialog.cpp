@@ -627,7 +627,7 @@ void SmithWatermanDialog::stripFormatSymbolsFromPattern(QString& pattern) {
     const qint32 fastaSequenceNameStart = pattern.indexOf(QRegExp("\\s*>"));
 
     if (0 == fastaSequenceNameStart)
-        pattern = pattern.split(QRegExp("\\s+"), QString::SkipEmptyParts).last();
+        pattern = pattern.split(QRegExp("\\s+"), Qt::SkipEmptyParts).last();
     else if (-1 != fastaSequenceNameStart)
         return;
     else {

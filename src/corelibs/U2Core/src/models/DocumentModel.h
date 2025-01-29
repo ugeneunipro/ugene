@@ -22,8 +22,6 @@
 #pragma once
 
 #include <QDateTime>
-#include <QMimeData>
-#include <QPointer>
 #include <QScriptValue>
 
 #include <U2Core/DNASequence.h>
@@ -70,7 +68,6 @@ enum DocumentFormatFlag {
     // Document can contain objects with duplicate names
     DocumentFormatFlag_AllowDuplicateNames = 1 << 8,
     // Document changes are written immedeately, they should'n be saved on closing. Used for databases.
-
     DocumentFormatFlag_DirectWriteOperations = 1 << 9,
     // Document can be locked if created not by UGENE
     DocumentFormatFlag_LockedIfNotCreatedByUGENE = 1 << 10,
@@ -277,8 +274,8 @@ public:
     }
 
     void clear() {
-        flagsToSupport = 0;
-        flagsToExclude = 0;
+        flagsToSupport = DocumentFormatFlags(0);
+        flagsToExclude = DocumentFormatFlags(0);
         checkRawData = false;
         rawData.clear();
         minDataCheckResult = FormatDetection_VeryLowSimilarity;

@@ -130,7 +130,7 @@ protected:
     // type of port integral bus is binded to
     DataTypePtr busType;
     // communications with other ports
-    QMap<QString, CommunicationChannel*> outerChannels;
+    QMultiMap<QString, CommunicationChannel*> outerChannels;
     // busmap of port integral bus is binded to
     BusMap* busMap;
     // context of an output message. See put() for details

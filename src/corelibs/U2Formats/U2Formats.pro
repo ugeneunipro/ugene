@@ -22,6 +22,7 @@ HEADERS += src/ABIFormat.h \
            src/GFFFormat.h \
            src/GTFFormat.h \
            src/IOLibUtils.h \
+           src/KrakenResultsPlainTextFormat.h \
            src/MegaFormat.h \
            src/MSFFormat.h \
            src/NewickFormat.h \
@@ -103,6 +104,7 @@ SOURCES += src/ABIFormat.cpp \
            src/GenbankPlainTextFormat.cpp \
            src/GFFFormat.cpp \
            src/GTFFormat.cpp \
+           src/KrakenResultsPlainTextFormat.cpp \
            src/MegaFormat.cpp \
            src/MSFFormat.cpp \
            src/NewickFormat.cpp \

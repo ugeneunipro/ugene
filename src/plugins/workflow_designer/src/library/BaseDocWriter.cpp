@@ -284,7 +284,7 @@ Document* BaseDocWriter::getDocument(IOAdapter* io, U2OpStatus& os) {
 
     QVariantMap hints;
     U2DbiRef dbiRef = context->getDataStorage()->getDbiRef();
-    hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
+    hints.insert(DocumentFormat::DBI_REF_HINT, QVariant::fromValue(dbiRef));
     Document* doc = format->createNewLoadedDocument(io->getFactory(), io->getURL(), os, hints);
     CHECK_OP(os, nullptr);
 

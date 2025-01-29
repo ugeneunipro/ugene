@@ -23,9 +23,7 @@
 
 #include <QMessageBox>
 
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
-#include <U2Core/Version.h>
 
 class QPushButton;
 
@@ -39,9 +37,9 @@ public:
                   DoNothing };
 
     CreateDesktopShortcutTask(bool startUp = false);
-    void run();
-    bool createDesktopShortcut();
-    ReportResult report();
+    void run() override;
+    static bool createDesktopShortcut();
+    ReportResult report() override;
     static Answer getAnswer();
 
 private:

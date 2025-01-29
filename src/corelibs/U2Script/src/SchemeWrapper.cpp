@@ -133,7 +133,7 @@ U2ErrorType SchemeWrapper::setElementAttribute(const QString& elementName,
         CHECK(U2_OK == result, result);
         if (Constants::FILE_URL == deepestAttributeName) {
             valuesTuple = attributeValue.split(Constants::SEMICOLON,
-                                               QString::SkipEmptyParts);
+                                               Qt::SkipEmptyParts);
         }
     } else {
         deepestAttributeName = attributeName;

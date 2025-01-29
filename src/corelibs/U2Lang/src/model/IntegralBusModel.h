@@ -30,7 +30,7 @@
 typedef QPair<QString, QString> SlotPair;
 
 // connected slots <-> connection path (actorId1, actorId2, ...)
-typedef QMap<SlotPair, QStringList> SlotPathMap;
+typedef QMultiMap<SlotPair, QStringList> SlotPathMap;
 
 namespace U2 {
 namespace Workflow {

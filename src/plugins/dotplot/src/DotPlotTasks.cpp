@@ -24,9 +24,7 @@
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
@@ -74,10 +72,10 @@ DotPlotErrors SaveDotPlotTask::checkFile(const QString& filename) {
 }
 
 void SaveDotPlotTask::saveDotPlot(QTextStream& stream) {
-    stream << sequenceXName << endl;
-    stream << sequenceYName << endl;
+    stream << sequenceXName << Qt::endl;
+    stream << sequenceYName << Qt::endl;
 
-    stream << minLen << " " << identity << endl;
+    stream << minLen << " " << identity << Qt::endl;
 
     SAFE_POINT(directList, "directList is NULL", );
 
@@ -90,14 +88,14 @@ void SaveDotPlotTask::saveDotPlot(QTextStream& stream) {
             return;
         }
 
-        stream << r.x << " " << r.y << " " << r.len << endl;
+        stream << r.x << " " << r.y << " " << r.len << Qt::endl;
         stateInfo.progress = (100 * i) / listSizes;
 
         i++;
     }
 
-    stream << endl
-           << "0 0 0" << endl;
+    stream << Qt::endl
+           << "0 0 0" << Qt::endl;
 
     SAFE_POINT(inverseList, "inverseList is NULL", );
 
@@ -106,7 +104,7 @@ void SaveDotPlotTask::saveDotPlot(QTextStream& stream) {
             return;
         }
 
-        stream << r.x << " " << r.y << " " << r.len << endl;
+        stream << r.x << " " << r.y << " " << r.len << Qt::endl;
         stateInfo.progress = (100 * i) / listSizes;
 
         i++;

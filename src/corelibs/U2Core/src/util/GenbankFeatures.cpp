@@ -46,7 +46,7 @@ const QString GBFeatureUtils::QUALIFIER_TRANSLATION = "translation";
 #define FKE(key, type, text, quals) \
     features[key] = GBFeatureKeyInfo(key, type, text); \
     if (strlen(quals) > 0) { \
-        features[key].namingQuals = QString(quals).split(",", QString::SkipEmptyParts); \
+        features[key].namingQuals = QString(quals).split(",", Qt::SkipEmptyParts); \
     }
 
 #define FK(key, type, text) \

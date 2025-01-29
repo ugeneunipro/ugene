@@ -504,7 +504,7 @@ static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, U2Op
         }
         header->target_len[objIdx] = seqLength;
 
-        headerText += QString("@SQ\tSN:%1\tLN:%2\n").arg(seqName.constData()).arg(seqLength);
+        headerText += QString("@SQ\tSN:%1\tLN:%2\n").arg(seqName.constData()).arg(seqLength).toUtf8();
 
         objIdx++;
     }

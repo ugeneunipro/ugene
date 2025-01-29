@@ -320,7 +320,7 @@ static void readLine(IOAdapter* io, QByteArray& to, QStringList* tokens = nullpt
     }
 
     if (tokens != nullptr) {
-        *tokens = QString(to).split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        *tokens = QString(to).split(QRegExp("\\s+"), Qt::SkipEmptyParts);
     }
 }
 

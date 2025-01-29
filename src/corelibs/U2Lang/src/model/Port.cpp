@@ -122,7 +122,7 @@ Actor* Port::owner() const {
     return proc;
 }
 
-QMap<Port*, Link*> Port::getLinks() const {
+QMultiMap<Port*, Link*> Port::getLinks() const {
     return bindings;
 }
 
@@ -166,7 +166,7 @@ void Port::addLink(Link* b) {
     assert(this == (isInput() ? b->destination() : b->source()));
     // assert(canBind(peer));
     assert(!bindings.contains(peer));
-    bindings[peer] = b;
+    bindings.replace(peer, b);
     emit bindingChanged();
 }
 

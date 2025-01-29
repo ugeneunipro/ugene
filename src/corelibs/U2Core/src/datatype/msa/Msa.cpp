@@ -21,8 +21,6 @@
 
 #include "Msa.h"
 
-#include <QSet>
-
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaRowUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -615,7 +613,7 @@ bool MsaData::crop(const QList<qint64>& rowIds, const U2Region& columnRange, U2O
     MsaStateCheck check(this);
     Q_UNUSED(check);
 
-    QSet<qint64> rowIdSet = rowIds.toSet();
+    QSet<qint64> rowIdSet(rowIds.begin(), rowIds.end());
     QVector<MsaRow> newRowList;
     for (int i = 0; i < rows.size(); i++) {
         MsaRow row = getRow(i).clone();

@@ -63,7 +63,7 @@ Folder* DocumentFolders::getFolder(const QString& path) const {
 void DocumentFolders::addFolder(const QString& path) {
     SAFE_POINT(!hasFolder(path), "The folder already exists", );
 
-    const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
+    const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, Qt::SkipEmptyParts);
     QString fullPath;
     foreach (const QString& folder, pathList) {
         fullPath += U2ObjectDbi::PATH_SEP + folder;

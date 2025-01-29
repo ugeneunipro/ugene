@@ -55,11 +55,11 @@ int QDDistanceConstraint::getMax() const {
 }
 
 void QDDistanceConstraint::setMin(int min) {
-    cfg->setParameter(QDConstraintController::MIN_LEN_ATTR, qVariantFromValue(min));
+    cfg->setParameter(QDConstraintController::MIN_LEN_ATTR, QVariant::fromValue(min));
 }
 
 void QDDistanceConstraint::setMax(int max) {
-    cfg->setParameter(QDConstraintController::MAX_LEN_ATTR, qVariantFromValue(max));
+    cfg->setParameter(QDConstraintController::MAX_LEN_ATTR, QVariant::fromValue(max));
 }
 
 QString QDDistanceConstraint::getText(QDSchemeUnit*, QDSchemeUnit*) const {
@@ -112,17 +112,14 @@ bool QDConstraintController::match(QDConstraint* c, const QDResultUnit& r1, cons
     if (dc->getSource() == r1->owner) {
         if (complement) {
             return match(reg2, reg1, getInvertedType(dist), min, max);
-        } else {
-            return match(reg1, reg2, dist, min, max);
         }
-    } else {
-        assert(dc->getSource() == r2->owner);
-        if (complement) {
-            return match(reg1, reg2, getInvertedType(dist), min, max);
-        } else {
-            return match(reg2, reg1, dist, min, max);
-        }
+        return match(reg1, reg2, dist, min, max);
     }
+    assert(dc->getSource() == r2->owner);
+    if (complement) {
+        return match(reg1, reg2, getInvertedType(dist), min, max);
+    }
+    return match(reg2, reg1, dist, min, max);
 }
 
 bool QDConstraintController::match(const U2Region& srcReg,

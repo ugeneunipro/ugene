@@ -23,25 +23,21 @@
 
 #include <QBuffer>
 #include <QClipboard>
-#include <QFileInfo>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QQueue>
-#include <QSplitter>
 #include <QStack>
 #include <QSvgGenerator>
 #include <QTextStream>
 #include <QTimer>
 #include <QtMath>
 
-#include <U2Algorithm/PhyTreeGeneratorRegistry.h>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DocumentModel.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
@@ -723,9 +719,9 @@ static QSet<QGraphicsItem*> getAllLevelChildItems(QGraphicsItem* item) {
 
 void TreeViewerUI::updateTextOptionOnSelectedItems() {
     QMap<TreeViewOption, QVariant> selectionSettings = getSelectionSettings();
-    QSet<QGraphicsItem*> itemsToUpdate = scene()->selectedItems().toSet();
+    QSet<QGraphicsItem*> itemsToUpdate = toSet(scene()->selectedItems());
     if (itemsToUpdate.isEmpty()) {
-        itemsToUpdate = scene()->items().toSet();
+        itemsToUpdate = toSet(scene()->items());
     } else {
         QSet<QGraphicsItem*> rootItems = itemsToUpdate;
         for (auto item : qAsConst(rootItems)) {
@@ -994,7 +990,7 @@ void TreeViewerUI::updateLegend() {
 void TreeViewerUI::wheelEvent(QWheelEvent* we) {
     // Wheel + Shift changes zoom level. Wheel only -> scrolls.
     if (we->modifiers().testFlag(Qt::ControlModifier)) {
-        double newZoomLevel = zoomLevel * pow(ZOOM_LEVEL_STEP, we->delta() / 120.0);
+        double newZoomLevel = zoomLevel * pow(ZOOM_LEVEL_STEP, we->angleDelta().y() / 120.0);
         setZoomLevel(newZoomLevel);
     }
     QGraphicsView::wheelEvent(we);
@@ -1285,7 +1281,7 @@ void TreeViewerUI::saveWholeTreeToSvg() {
         QMessageBox::critical(this, tr("Error"), tr("Failed to open file for writing: %1").arg(fileName));
     }
     QTextStream stream(&file);
-    stream << svgText << endl;
+    stream << svgText << Qt::endl;
 }
 
 void TreeViewerUI::sl_contTriggered(bool on) {

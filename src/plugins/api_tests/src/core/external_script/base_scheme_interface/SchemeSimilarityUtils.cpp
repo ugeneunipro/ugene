@@ -201,7 +201,7 @@ QStringList SchemeSimilarityUtils::getNonSpaceStatementsFromScheme(const QString
     QStringList statements = schemeContent.mid(schemeDescStartPos,
                                                schemeDescEndPos - schemeDescStartPos)
                                  .split(Constants::NEW_LINE,
-                                        QString::SkipEmptyParts);
+                                        Qt::SkipEmptyParts);
     for (int i = 0; i < statements.length(); ++i) {
         statements[i] = statements[i].trimmed();
         if (statements[i].isEmpty()) {

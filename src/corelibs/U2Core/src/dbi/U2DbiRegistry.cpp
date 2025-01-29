@@ -21,7 +21,6 @@
 
 #include "U2DbiRegistry.h"
 
-#include <QCoreApplication>
 #include <QFile>
 #include <QThread>
 
@@ -29,8 +28,8 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/Log.h>
 #include <U2Core/PasswordStorage.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2DbiUtils.h>
@@ -283,7 +282,7 @@ U2Dbi* U2DbiPool::createDbi(const U2DbiRef& ref, bool create, U2OpStatus& os, co
     const QString url = dbiFactory->id2Url(ref.dbiId).getURLString();
 
     QHash<QString, QString> initProperties = getInitProperties(url, create);
-    initProperties.unite(properties);
+    unite(initProperties, properties);
     result->init(initProperties, QVariantMap(), os);
     CHECK_EXT(!os.hasError(), delete result, nullptr);
     return result;

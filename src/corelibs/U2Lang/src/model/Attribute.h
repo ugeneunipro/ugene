@@ -199,7 +199,8 @@ inline QString Attribute::getAttributeValue(Workflow::WorkflowContext* ctx) cons
     // run script
     WorkflowScriptEngine engine(ctx);
     QMap<QString, QScriptValue> scriptVars;
-    foreach (const Descriptor& key, scriptData.getScriptVars().uniqueKeys()) {
+    auto keys = scriptData.getScriptVars().keys();
+    for (const Descriptor& key: qAsConst(keys)) {
         assert(!key.getId().isEmpty());
         scriptVars[key.getId()] = engine.newVariant(scriptData.getScriptVars().value(key));
     }
@@ -234,7 +235,7 @@ inline int Attribute::getAttributeValue(Workflow::WorkflowContext* ctx) const {
 
     WorkflowScriptEngine engine(ctx);
     QMap<QString, QScriptValue> scriptVars;
-    foreach (const Descriptor& key, scriptData.getScriptVars().uniqueKeys()) {
+    foreach (const Descriptor& key, scriptData.getScriptVars().keys()) {
         assert(!key.getId().isEmpty());
         scriptVars[key.getId()] = engine.newVariant(scriptData.getScriptVars().value(key));
     }

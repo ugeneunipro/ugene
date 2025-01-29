@@ -64,7 +64,7 @@ StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject* fi
 
     StructuralAlignmentAlgorithmRegistry* reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
     foreach (const QString& id, reg->getFactoriesIds()) {
-        algorithmCombo->addItem(id, qVariantFromValue(id));
+        algorithmCombo->addItem(id, QVariant::fromValue(id));
     }
 
     QList<BioStruct3DObject*> biostructs = findAvailableBioStructs();

@@ -394,8 +394,8 @@ bool labelConnectionLinesIntersect(CircularAnnotationLabel* const label1, Circul
     const QLineF line2(label2->getConnectionStart(), label2->getConnectionEnd());
 
     QPointF intersectionPoint;
-    const QLineF::IntersectType intersection = line1.intersect(line2, &intersectionPoint);
-    return QLineF::BoundedIntersection == intersection;
+    const QLineF::IntersectionType intersection = line1.intersects(line2, &intersectionPoint);
+    return intersection == QLineF::BoundedIntersection;
 }
 
 }  // namespace

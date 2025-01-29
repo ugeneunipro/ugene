@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
@@ -88,7 +89,7 @@ static QVariant relationsToHint(const QList<GObjectRelation>& relList) {
 }
 
 static QList<GObjectRelation> removeDuplicates(const QList<GObjectRelation>& relList) {
-    return relList.toSet().toList();
+    return toList(toSet(relList));
 }
 
 static QVariant toRelativeRelations(const QList<GObjectRelation>& absRelations, const QDir& projDir, const QMap<QString, QString>& urlRemap = QMap<QString, QString>()) {

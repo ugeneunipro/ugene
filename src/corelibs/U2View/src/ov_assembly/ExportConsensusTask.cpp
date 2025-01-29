@@ -24,7 +24,6 @@
 #include <QFileInfo>
 
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -137,7 +136,7 @@ void ExportConsensusTask::reportResult(const ConsensusInfo& result) {
     QByteArray consensus = result.consensus;
 
     if (!settings.keepGaps) {
-        consensus.replace(QString(AssemblyConsensusAlgorithm::EMPTY_CHAR), "");
+        consensus.replace(QString(AssemblyConsensusAlgorithm::EMPTY_CHAR).toLatin1(), "");
     }
     seqImporter.addBlock(consensus.constData(), consensus.length(), stateInfo);
     CHECK_OP(stateInfo, );

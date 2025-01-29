@@ -22,12 +22,14 @@
 #include "GTUtilsQueryDesigner.h"
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTTableView.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 
 #include <QGraphicsItem>
 #include <QTreeWidget>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/U2IdTypes.h>
 
 #include "GTUtilsMdi.h"
@@ -42,6 +44,53 @@ void GTUtilsQueryDesigner::openQueryDesigner() {
     GTMenu::clickMainMenuItem({"Tools", "Query Designer..."});
     GTGlobals::sleep(500);
 }
+
+QWidget* GTUtilsQueryDesigner::getActiveQueryDesignerWindow() {
+    QWidget* wdWindow = nullptr;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && wdWindow == nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        MainWindow* mainWindow = AppContext::getMainWindow();
+        QWidget* mdiWindow = mainWindow == nullptr ? nullptr : mainWindow->getMDIManager()->getActiveWindow();
+        if (mdiWindow != nullptr && mdiWindow->objectName() == "Query Designer") {
+            wdWindow = mdiWindow;
+        }
+    }
+    GT_CHECK_RESULT(wdWindow != nullptr, "No active QD window!", nullptr);
+    GTThread::waitForMainThread();
+    return wdWindow;
+}
+
+namespace {
+
+int getParameterRow(QTableView* table, const QString& parameter) {
+    QAbstractItemModel* model = table->model();
+    int iMax = model->rowCount();
+    for (int i = 0; i < iMax; i++) {
+        QString s = model->data(model->index(i, 0)).toString();
+        if (s == parameter) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+}  // namespace
+
+void GTUtilsQueryDesigner::clickParameter(const QString& parameter) {
+    QWidget* wdWindow = getActiveQueryDesignerWindow();
+    auto table = GTWidget::findTableView("table", wdWindow);
+
+    // FIND CELL
+    const int row = getParameterRow(table, parameter);
+    GT_CHECK_RESULT(row != -1, "parameter not found", );
+
+    QAbstractItemModel* model = table->model();
+    table->scrollTo(model->index(row, 1));
+    GTMouseDriver::moveTo(GTTableView::getCellPosition(table, 1, row));
+    GTMouseDriver::click();
+    GTGlobals::sleep(500);
+}
+
 
 QTreeWidgetItem* GTUtilsQueryDesigner::findAlgorithm(const QString& itemName) {
     QTreeWidgetItem* foundItem = nullptr;

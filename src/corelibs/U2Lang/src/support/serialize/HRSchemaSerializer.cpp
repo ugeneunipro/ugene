@@ -29,6 +29,7 @@
 #include <U2Core/GUrl.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -325,7 +326,7 @@ void HRSchemaSerializer::deprecatedUrlAttribute(Actor* proc, const QString& urls
     if (a != nullptr) {
         QList<Dataset> sets;
         sets << dSet;
-        a->setAttributeValue(qVariantFromValue<QList<Dataset>>(sets));
+        a->setAttributeValue(QVariant::fromValue<QList<Dataset>>(sets));
     }
 }
 
@@ -544,7 +545,7 @@ Actor* HRSchemaSerializer::parseElementsDefinition(Tokenizer& tokenizer, const Q
             parseMarkers(proc, pairs.blockPairs.values(key), key);
         } else if (a->getAttributeType()->getId() == BaseTypes::URL_DATASETS_TYPE()->getId()) {
             QList<Dataset> sets = parseUrlAttribute(a->getId(), pairs.blockPairsList);
-            a->setAttributeValue(qVariantFromValue<QList<Dataset>>(sets));
+            a->setAttributeValue(QVariant::fromValue<QList<Dataset>>(sets));
         } else {
             proc->getParameter(key)->getAttributeScript().setScriptText(pairs.blockPairs.value(key));
         }
@@ -606,8 +607,8 @@ ValidatorDesc HRSchemaSerializer::parseValidator(const QString& desc, U2OpStatus
         return result;
     }
 
-    result.options.unite(pairs.equalPairs);
-    result.options.unite(pairs.blockPairs);
+    unite(result.options, pairs.equalPairs);
+    unite(result.options, pairs.blockPairs);
     return result;
 }
 
@@ -796,7 +797,7 @@ QMap<ActorId, QVariantMap> HRSchemaSerializer::parseIteration(Tokenizer& tokeniz
             }
             QList<Dataset> sets = parseUrlAttribute(attrId, pairs.blockPairsList);
             if (!sets.isEmpty()) {
-                cfg[actorId][attrId] = qVariantFromValue(sets);
+                cfg[actorId][attrId] = QVariant::fromValue(sets);
             }
         }
     }
@@ -1382,7 +1383,7 @@ void HRSchemaSerializer::addPart(QString& to, const QString& w) {
 QString HRSchemaSerializer::header2String(const Metadata* meta) {
     QString res = Constants::HEADER_LINE + "\n";
     if (meta != nullptr) {
-        QStringList descLines = meta->comment.split(Constants::NEW_LINE, QString::KeepEmptyParts);
+        QStringList descLines = meta->comment.split(Constants::NEW_LINE, Qt::KeepEmptyParts);
         for (int lineIdx = 0; lineIdx < descLines.size(); lineIdx++) {
             const QString& line = descLines.at(lineIdx);
             bool lastLine = (lineIdx == descLines.size() - 1);
@@ -1420,7 +1421,7 @@ QString HRSchemaSerializer::makeArrowPair(const QString& left, const QString& ri
 QString HRSchemaSerializer::scriptBlock(const QString& scriptText, int tabsNum) {
     QString indent = makeIndent(tabsNum);
     QString res;
-    QStringList scriptLines = scriptText.split(Constants::NEW_LINE, QString::SkipEmptyParts);
+    QStringList scriptLines = scriptText.split(Constants::NEW_LINE, Qt::SkipEmptyParts);
     foreach (const QString& line, scriptLines) {
         res += indent + line + Constants::NEW_LINE;
     }
@@ -1764,7 +1765,7 @@ QString HRSchemaSerializer::dataflowDefinition(const QList<Actor*>& procs, const
 
             const QList<QString>& keys = busMap.keys();
             for (const QString& key : qAsConst(keys)) {
-                QStringList srcList = busMap.value(key).split(";", QString::SkipEmptyParts);
+                QStringList srcList = busMap.value(key).split(";", Qt::SkipEmptyParts);
                 QStringList uniqList;
                 for (QString src : qAsConst(srcList)) {
                     if (!uniqList.contains(src)) {
@@ -1859,13 +1860,13 @@ QString HRSchemaSerializer::schemaParameterAliases(const QList<Actor*>& procs, c
     QString res;
     for (Actor* actor : qAsConst(procs)) {
         const QMap<QString, QString>& aliases = actor->getParamAliases();
-        foreach (const QString& attrId, aliases.uniqueKeys()) {
+        foreach (const QString& attrId, aliases.keys()) {
             QString pairs;
             QString alias = aliases.value(attrId);
             QString descr = actor->getAliasHelp()[alias];
-            pairs += HRSchemaSerializer::makeEqualsPair(Constants::ALIAS, alias, 4);
+            pairs += makeEqualsPair(Constants::ALIAS, alias, 4);
             if (!descr.isEmpty()) {
-                pairs += HRSchemaSerializer::makeEqualsPair(Constants::DESCRIPTION, descr, 4);
+                pairs += makeEqualsPair(Constants::DESCRIPTION, descr, 4);
             }
             QString paramString = nmap[actor->getId()] + Constants::DOT + attrId;
             res += makeBlock(paramString, Constants::NO_NAME, pairs, 3);

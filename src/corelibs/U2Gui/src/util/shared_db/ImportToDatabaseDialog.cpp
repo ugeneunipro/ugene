@@ -49,6 +49,7 @@
 #include "CommonImportOptionsDialog.h"
 #include "ItemToImportEditDialog.h"
 #include "ui_ImportToDatabaseDialog.h"
+#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 
@@ -439,7 +440,7 @@ void ImportToDatabaseDialog::removeItems(QList<QTreeWidgetItem*> itemList) {
         }
 
         if (!removedItems.contains(item)) {
-            removedItems.unite(removeRecursively(item).toSet());
+            removedItems.unite(toSet(removeRecursively(item)));
         }
     }
 

@@ -133,7 +133,7 @@
       <item row="0" column="2" colspan="4">
        <widget class="QComboBox" name="xAxisCombo">
         <property name="sizeAdjustPolicy">
-         <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+         <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
         </property>
        </widget>
       </item>
@@ -193,7 +193,7 @@
       <item row="4" column="2" colspan="4">
        <widget class="QComboBox" name="yAxisCombo">
         <property name="sizeAdjustPolicy">
-         <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+         <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
         </property>
        </widget>
       </item>

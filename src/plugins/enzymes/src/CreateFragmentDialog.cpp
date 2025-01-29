@@ -27,6 +27,7 @@
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/GObjectRelationRoles.h>
@@ -57,7 +58,7 @@ CreateFragmentDialog::CreateFragmentDialog(ADVSequenceObjectContext* ctx, QWidge
     rs = new RegionSelector(this, ctx->getSequenceLength(), false, ctx->getSequenceSelection());
     rangeSelectorLayout->addWidget(rs);
 
-    relatedAnnotations = ctx->getAnnotationObjects(true).toList();
+    relatedAnnotations = toList(ctx->getAnnotationObjects(true));
 
     setupAnnotationsWidget();
 }
@@ -65,7 +66,7 @@ CreateFragmentDialog::CreateFragmentDialog(ADVSequenceObjectContext* ctx, QWidge
 CreateFragmentDialog::CreateFragmentDialog(U2SequenceObject* obj, const U2Region& region, QWidget* p)
     : QDialog(p), seqCtx(nullptr) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "65930761");
+    new HelpButton(this, buttonBox, "65930774");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     seqObj = obj;

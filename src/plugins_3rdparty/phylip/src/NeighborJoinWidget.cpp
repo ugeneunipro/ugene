@@ -32,6 +32,8 @@
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
+#include <QRandomGenerator>
+
 #include "dnadist.h"
 #include "protdist.h"
 #ifdef __GNUC__
@@ -229,10 +231,8 @@ void NeighborJoinWidget::connectSignals() {
 }
 
 int NeighborJoinWidget::getRandomSeed() {
-    int seed = 0;
-    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
-    seed = qAbs(qrand());
-
+    static QRandomGenerator rnd(static_cast<quint32>(QDateTime::currentMSecsSinceEpoch()));
+    int seed = rnd.bounded(SEED_MIN, SEED_MAX);
     while (!checkSeed(seed)) {
         seed++;
         if (seed >= SEED_MAX) {

@@ -171,7 +171,7 @@ void QueryPalette::setContent() {
         auto algMenuItem = new QTreeWidgetItem(/*algorithmCategory*/);
         actionMap[action] = algMenuItem;
         algMenuItem->setText(0, action->text());
-        algMenuItem->setData(0, Qt::UserRole, qVariantFromValue(action));
+        algMenuItem->setData(0, Qt::UserRole, QVariant::fromValue(action));
         algorithmCategory->addChild(algMenuItem);
     }
 
@@ -190,7 +190,7 @@ void QueryPalette::setContent() {
         auto linkMenuItem = new QTreeWidgetItem(constraintCategory);
         actionMap[a] = linkMenuItem;
         linkMenuItem->setText(0, a->text());
-        linkMenuItem->setData(0, Qt::UserRole, qVariantFromValue(a));
+        linkMenuItem->setData(0, Qt::UserRole, QVariant::fromValue(a));
         constraintCategory->addChild(linkMenuItem);
     }
 }
@@ -203,7 +203,7 @@ QAction* QueryPalette::createItemAction(QDActorPrototype* item) {
     } else {
         a->setIcon(GUIUtils::getIconResource("query_designer", "green_circle.png"));
     }
-    a->setData(qVariantFromValue(item));
+    a->setData(QVariant::fromValue(item));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
     connect(a, SIGNAL(toggled(bool)), SLOT(sl_selectProcess(bool)));
     return a;
@@ -213,7 +213,7 @@ QAction* QueryPalette::createItemAction(const QString& constraintId) {
     auto a = new QAction(constraintId, this);
     a->setCheckable(true);
     a->setIcon(GUIUtils::getIconResource("query_designer", "green_circle.png"));
-    a->setData(qVariantFromValue(constraintId));
+    a->setData(QVariant::fromValue(constraintId));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
     connect(a, SIGNAL(toggled(bool)), SLOT(sl_selectProcess(bool)));
     return a;

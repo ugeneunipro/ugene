@@ -25,7 +25,6 @@
 
 #include <QProcessEnvironment>
 
-#include <U2Core/MultiTask.h>
 #include <U2Core/Task.h>
 #include <U2Core/global.h>
 
@@ -74,23 +73,13 @@ private:
     QString runTest(const QString& testName, int timeoutMillis);
 
     /** Runs test once and returns test output. */
-    QString runTestOnce(U2OpStatus& os, const QString& testName, int iteration, const int timeout, bool enableVideoRecording);
+    QString runTestOnce(U2OpStatus& os, const QString& testName, int iteration, int timeout, bool enableVideoRecording);
 
     static QString readTestResult(const QByteArray& output);
     bool renameTestLog(const QString& testName, int testRunIteration);
 
     bool initTestList();
     void updateProgress(int finishedCount);
-
-    static QString getScreenRecorderString(const QString& testName);
-
-    /**
-     * Returns full video file path for the given test.
-     *
-     * By default the dir for the tests is the current QDir::currentDir() + '/videos' but
-     * it can be changed with UGENE_GUI_TEST_VIDEO_DIR_PATH environment variable.
-     */
-    static QString getVideoPath(const QString& testName);
 };
 
 }  // namespace U2

@@ -23,7 +23,8 @@
 
 #include <assert.h>
 
-#include <QObject>
+#include <QList>
+#include <QSet>
 #include <QVariantMap>
 #include <QtGlobal>
 

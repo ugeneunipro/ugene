@@ -72,7 +72,7 @@ QString DifferentialFormat::getAnnotationName() {
 }
 
 FormatCheckResult DifferentialFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
-    QStringList lines = dataPrefix.split("\n", QString::SkipEmptyParts);
+    QStringList lines = dataPrefix.split("\n", Qt::SkipEmptyParts);
     CHECK(!lines.isEmpty(), FormatDetection_NotMatched);
 
     ColumnDataParser parser(getColumns(), SEPARATOR);

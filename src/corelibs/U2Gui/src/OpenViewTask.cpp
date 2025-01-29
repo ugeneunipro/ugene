@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+// TODO:
+#include <U2Core/Settings.h>
+
 #include "OpenViewTask.h"
 
 #include <QApplication>
@@ -35,14 +38,12 @@
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/ResourceTracker.h>
-#include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ObjectViewModel.h>

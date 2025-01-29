@@ -254,7 +254,7 @@ FormatCheckResult AbstractVariationFormat::checkRawTextData(const QString& dataP
             continue;
         }
 
-        QStringList cols = line.split(COLUMNS_SEPARATOR, QString::SkipEmptyParts);
+        QStringList cols = line.split(COLUMNS_SEPARATOR, Qt::SkipEmptyParts);
         if (!this->checkFormatByColumnCount(cols.size())) {
             return FormatDetection_NotMatched;
         }
@@ -344,13 +344,13 @@ void AbstractVariationFormat::storeTrack(IOAdapterWriter& writer, const VariantT
         snpString.clear();
         for (int columnIndex = 0; columnIndex <= maxColumnIndex; columnIndex++) {
             if (columnIndex != 0) {
-                snpString += COLUMNS_SEPARATOR;
+                snpString += COLUMNS_SEPARATOR.toUtf8();
             }
 
             ColumnRole role = columnRoles.value(columnIndex, ColumnRole_Unknown);
             switch (role) {
                 case ColumnRole_ChromosomeId:
-                    snpString += track.sequenceName;
+                    snpString += track.sequenceName.toUtf8();
                     break;
                 case ColumnRole_StartPos:
                     switch (indexing) {
@@ -383,14 +383,14 @@ void AbstractVariationFormat::storeTrack(IOAdapterWriter& writer, const VariantT
                     snpString += variant.obsData;
                     break;
                 case ColumnRole_PublicId:
-                    snpString += variant.publicId;
+                    snpString += variant.publicId.toUtf8();
                     break;
                 case ColumnRole_Info:
-                    snpString += variant.additionalInfo.value(U2Variant::VCF4_INFO, ".");
+                    snpString += variant.additionalInfo.value(U2Variant::VCF4_INFO, ".").toUtf8();
                     break;
                 case ColumnRole_Unknown: {
                     const QString columnTitle = columnIndex < header.size() ? header[columnIndex] : QString::number(columnIndex);
-                    snpString += variant.additionalInfo.value(columnTitle, ".");
+                    snpString += variant.additionalInfo.value(columnTitle, ".").toUtf8();
                     break;
                 }
                 default:
@@ -401,14 +401,14 @@ void AbstractVariationFormat::storeTrack(IOAdapterWriter& writer, const VariantT
 
         if (!useOnlyBaseColumns) {
             for (int i = maxColumnIndex + 1; i < header.size(); i++) {
-                snpString += COLUMNS_SEPARATOR + variant.additionalInfo.value(header[i], ".").toLatin1();
+                snpString += (COLUMNS_SEPARATOR + variant.additionalInfo.value(header[i], ".")).toUtf8();
             }
 
             for (int i = qMax(maxColumnIndex + 1, header.size()); i <= maxColumnIndex + variant.additionalInfo.size(); i++) {
                 if (!variant.additionalInfo.contains(QString::number(i))) {
                     break;
                 }
-                snpString += COLUMNS_SEPARATOR + variant.additionalInfo[QString::number(i)].toLatin1();
+                snpString += (COLUMNS_SEPARATOR + variant.additionalInfo[QString::number(i)]).toUtf8();
             }
         }
 

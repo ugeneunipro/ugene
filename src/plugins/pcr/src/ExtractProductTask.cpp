@@ -21,13 +21,13 @@
 
 #include "ExtractProductTask.h"
 
-#include <QCoreApplication>
 #include <QDir>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
@@ -38,7 +38,6 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -167,14 +166,14 @@ bool crop(const U2Region& within, QVector<U2Region>& regions) {
 void ExtractProductTask::addProductAnnotations(AnnotationTableObject* targetObject, const U2EntityRef& annsRef) const {
     QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject("features", annsRef));
     const bool contain = (ExtractProductSettings::Inner == settings.annotationsExtraction);
-    QSet<Annotation*> anns = annsObject->getAnnotationsByRegion(product.region, contain).toSet();
+    QSet<Annotation*> anns = toSet(annsObject->getAnnotationsByRegion(product.region, contain));
 
     U2Region begin = product.region;
     U2Region end(0, 0);
     if (product.region.endPos() > wholeSequenceLength) {  // circular
         begin.length = wholeSequenceLength - product.region.startPos;
         end.length = product.region.endPos() % wholeSequenceLength;
-        anns.unite(annsObject->getAnnotationsByRegion(end, contain).toSet());
+        anns.unite(toSet(annsObject->getAnnotationsByRegion(end, contain)));
     }
 
     foreach (Annotation* ann, anns) {
@@ -224,7 +223,7 @@ void ExtractProductTask::run() {
     SAFE_POINT_EXT(format != nullptr, setError(L10N::nullPointerError("Genbank Format")), );
     QString outputFileUrl = settings.outputFile;
     if (settings.targetDbiRef.isValid()) {
-        hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(settings.targetDbiRef);
+        hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(settings.targetDbiRef);
         SAFE_POINT_EXT(settings.outputFile.isEmpty(), stateInfo.setError(L10N::internalError("Both dbiRef & fileUrl are set as the result destination")), );
         outputFileUrl = settings.targetDbiRef.dbiId;
     }

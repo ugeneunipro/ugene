@@ -25,24 +25,19 @@
 #include <QDesktopServices>
 #include <QMainWindow>
 #include <QMessageBox>
-#include <QPushButton>
 #include <QToolBar>
 
-#include <U2Core/AddDocumentTask.h>
-#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineUtils.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DocumentImport.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/FileFilters.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/IdRegistry.h>
 #include <U2Core/L10n.h>
-#include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/ServiceTypes.h>
@@ -55,8 +50,6 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Gui/MainWindow.h>
-#include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/PasteController.h>
 #include <U2Gui/ProjectUtils.h>
@@ -200,7 +193,7 @@ void ProjectLoaderImpl::updateState() {
 #define MAX_RECENT_FILES 7
 
 void ProjectLoaderImpl::sl_newProject() {
-    QWidget* p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
+    auto p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QObjectScopedPointer<ProjectDialogController> d = new ProjectDialogController(ProjectDialogController::New_Project, p);
     int rc = d->exec();
     CHECK(!d.isNull(), );
@@ -228,7 +221,7 @@ void ProjectLoaderImpl::sl_openProject() {
 
     QStringList files;
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        files = U2FileDialog::getOpenFileNames(QApplication::activeWindow(), tr("Select files to open"), h.dir, filter, 0, QFileDialog::DontUseNativeDialog);
+        files = U2FileDialog::getOpenFileNames(QApplication::activeWindow(), tr("Select files to open"), h.dir, filter, nullptr, QFileDialog::DontUseNativeDialog);
     } else {
         files = U2FileDialog::getOpenFileNames(QApplication::activeWindow(), tr("Select files to open"), h.dir, filter);
     }
@@ -252,14 +245,14 @@ void ProjectLoaderImpl::sl_openProject() {
 }
 
 void ProjectLoaderImpl::sl_openRecentProject() {
-    QAction* action = qobject_cast<QAction*>(sender());
+    auto action = qobject_cast<QAction*>(sender());
     SAFE_POINT(action != nullptr, "sl_openRecentProject action is null!", );
     QString url = action->data().toString();
     runOpenRecentFileOrProjectTask(url);
 }
 
 void ProjectLoaderImpl::sl_openRecentFile() {
-    QAction* action = qobject_cast<QAction*>(sender());
+    auto action = qobject_cast<QAction*>(sender());
     SAFE_POINT(action != nullptr, "sl_openRecentFile action is null!", );
     GUrl url = action->data().toString();
     runOpenRecentFileOrProjectTask(url);
@@ -323,19 +316,18 @@ void ProjectLoaderImpl::updateRecentProjectsMenu() {
     }
 }
 
-namespace {
 /**
  * If there are only unsupported documents which are needed to load
  * then it is not needed to show the project because it will be empty
  */
-void prepareDocTab(const QList<AD2P_DocumentInfo>& docsInfo, const QList<AD2P_ProviderInfo>& docProviders) {
+static void prepareDocTab(const QList<AD2P_DocumentInfo>& docsInfo, const QList<AD2P_ProviderInfo>& docProviders) {
     CHECK(docProviders.isEmpty(), );
     foreach (const AD2P_DocumentInfo& info, docsInfo) {
         const DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(info.formatId);
         if (df == nullptr) {
             continue;
         }
-        const GObjectType t = df->getSupportedObjectTypes().toList().first();
+        const GObjectType t = toList(df->getSupportedObjectTypes()).first();
         if (GObjectTypes::getTypeInfo(t).type != GObjectTypes::UNKNOWN) {
             // the project will not be empty
             return;
@@ -353,7 +345,7 @@ void prepareDocTab(const QList<AD2P_DocumentInfo>& docsInfo, const QList<AD2P_Pr
     }
 }
 
-bool haveFormatsRelations(const FormatDetectionResult& firstFormat, const FormatDetectionResult& secondFormat) {
+static bool haveFormatsRelations(const FormatDetectionResult& firstFormat, const FormatDetectionResult& secondFormat) {
     if (firstFormat.format != nullptr && secondFormat.format != nullptr) {
         return false;
     }
@@ -364,24 +356,24 @@ bool haveFormatsRelations(const FormatDetectionResult& firstFormat, const Format
         return firstFormat.importer->getFormatIds().contains(secondFormat.format->getFormatId());
     }
     if (firstFormat.importer != nullptr && secondFormat.importer != nullptr) {
-        return !firstFormat.importer->getFormatIds().toSet().intersect(secondFormat.importer->getFormatIds().toSet()).isEmpty();
+        return !toSet(firstFormat.importer->getFormatIds()).intersect(toSet(secondFormat.importer->getFormatIds())).isEmpty();
     }
     return false;
 }
 
-FormatDetectionResult getFirstUnrelatedFormat(const QList<FormatDetectionResult>& formats) {
+static FormatDetectionResult getFirstUnrelatedFormat(const QList<FormatDetectionResult>& formats) {
     CHECK(formats.size() > 1, FormatDetectionResult());
-    const FormatDetectionResult firstFormat = formats[0];
+    const FormatDetectionResult& firstFormat = formats[0];
 
     for (int i = 1; i < formats.size(); i++) {
         if (!haveFormatsRelations(firstFormat, formats[i])) {
             return formats[i];
         }
     }
-    return FormatDetectionResult();
+    return {};
 }
 
-QList<FormatDetectionResult> getRelatedFormats(const QList<FormatDetectionResult>& formats, int idx) {
+static QList<FormatDetectionResult> getRelatedFormats(const QList<FormatDetectionResult>& formats, int idx) {
     SAFE_POINT(0 <= idx && idx < formats.size(), "Format index is out of range", QList<FormatDetectionResult>());
     QList<FormatDetectionResult> result;
     result << formats[idx];
@@ -392,7 +384,6 @@ QList<FormatDetectionResult> getRelatedFormats(const QList<FormatDetectionResult
     }
     return result;
 }
-}  // namespace
 
 bool ProjectLoaderImpl::shouldFormatBeSelected(const QList<FormatDetectionResult>& formats, bool forceSelectFormat) {
     CHECK(formats.size() > 1, false);
@@ -565,8 +556,8 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                 FormatDetectionResult dr;
                 const bool accepted = detectFormat(url, formats, hints, dr);
                 if (accepted) {
-                    dr.rawDataCheckResult.properties.unite(hints);
-                    dr.rawDataCheckResult.properties.unite(hintsOverDocuments);
+                    unite(dr.rawDataCheckResult.properties, hints);
+                    unite(dr.rawDataCheckResult.properties, hintsOverDocuments);
                     if (dr.format != nullptr) {
                         bool forceReadingOptions = hints.value(ProjectLoaderHint_ForceFormatOptions, false).toBool();
                         bool optionsAlreadyChosen = hints.value((ProjectLoaderHint_MultipleFilesMode_Flag), false).toBool() || hints.value((DocumentReadingMode_SequenceMergeGapSize), false).toBool() || hints.value((DocumentReadingMode_SequenceAsAlignmentHint), false).toBool() || hints.value((DocumentReadingMode_SequenceAsShortReadsHint), false).toBool() || hints.value((DocumentReadingMode_SequenceAsSeparateHint), false).toBool();
@@ -1102,7 +1093,7 @@ QList<Task*> AddDocumentsToProjectTask::prepareLoadTasks() {
         bool unsupportedObjectType = false;
         if (doc == nullptr) {
             DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(info.formatId);
-            GObjectType t = df->getSupportedObjectTypes().toList().first();
+            GObjectType t = toList(df->getSupportedObjectTypes()).first();
             if (GObjectTypes::getTypeInfo(t).type == GObjectTypes::UNKNOWN) {
                 unsupportedObjectType = true;
             }

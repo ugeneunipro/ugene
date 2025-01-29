@@ -536,7 +536,7 @@ RefineTask::RefineTask(MuscleWorkPool* _workpool)
 void RefineTask::run() {
     TaskLocalData::bindToMuscleTLSContext(workpool->ctx);
     try {
-        QTime timer;
+        QElapsedTimer timer;
         timer.start();
         _run();
         workpool->refineDone = true;

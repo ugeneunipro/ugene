@@ -22,7 +22,6 @@
 #include "U2SavableWidget.h"
 
 #include <QAbstractButton>
-#include <QComboBox>
 #include <QFontComboBox>
 #include <QGroupBox>
 #include <QLineEdit>
@@ -34,6 +33,7 @@
 
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/CollectionUtils.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
@@ -59,11 +59,11 @@ QString U2SavableWidget::getWidgetId() const {
 
 QSet<QString> U2SavableWidget::getChildIds() const {
     const QSet<QWidget*> compoundChildren = getCompoundChildren();
-    const QSet<QWidget*> allChildren = wrappedWidget->findChildren<QWidget*>().toSet();
+    const QSet<QWidget*> allChildren = toSet(wrappedWidget->findChildren<QWidget*>());
     QSet<QWidget*> childrenToConsider = allChildren;
 
     foreach (QWidget* compoundChild, compoundChildren) {
-        childrenToConsider -= compoundChild->findChildren<QWidget*>().toSet();
+        childrenToConsider -= toSet(compoundChild->findChildren<QWidget*>());
     }
 
     QSet<QString> result;
@@ -194,7 +194,7 @@ MWMDIWindow* U2SavableWidget::getContextWindow() const {
 }
 
 QSet<QWidget*> U2SavableWidget::getCompoundChildren() const {
-    return QSet<QWidget*>();
+    return {};
 }
 
 bool U2SavableWidget::isExcluded(const QString& childId) const {

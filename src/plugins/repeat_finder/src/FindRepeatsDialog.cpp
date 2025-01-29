@@ -22,18 +22,15 @@
 #include <math.h>
 
 #include <QMessageBox>
-#include <QPushButton>
 
-#include <U2Core/Annotation.h>
-#include <U2Core/AnnotationTableObject.h>
-#include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskWatchdog.h>
+#include <U2Core/CollectionUtils.h>
+#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -175,7 +172,7 @@ QStringList FindRepeatsDialog::getAvailableAnnotationNames() const {
             names.insert(a->getName());
         }
     }
-    res = names.toList();
+    res = toList(names);
     res.sort();
     return res;
 }
@@ -210,7 +207,7 @@ bool FindRepeatsDialog::getRegions(QCheckBox* cb, QLineEdit* le, QVector<U2Regio
     if (!enabled || names.isEmpty()) {
         return true;
     }
-    QSet<QString> aNames = names.split(',', QString::SkipEmptyParts).toSet();
+    QSet<QString> aNames = toSet(names.split(',', Qt::SkipEmptyParts));
     QSet<AnnotationTableObject*> aObjs = sc->getAnnotationObjects();
     for (AnnotationTableObject* obj : qAsConst(aObjs)) {
         foreach (Annotation* a, obj->getAnnotations()) {

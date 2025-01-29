@@ -107,7 +107,7 @@ void ProfileToProfileWorker::sl_taskFinished() {
         resultAl->setName("Aligned");
         SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(resultAl);
         QVariantMap msgData;
-        msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
+        msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = QVariant::fromValue<SharedDbiDataHandler>(msaId);
         outPort->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), msgData));
         algoLog.info(tr("Aligned profile to profile with MUSCLE").arg(t->getResult()->getName()));
     }
