@@ -197,14 +197,14 @@ void SubstMatrixDialog::sl_colorModeSwitched() {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             auto item = base->tableMatrix->item(i + 1, j + 1);
-            item->setBackgroundColor(getCellColor(ColorType::DefaultInner));
+            item->setBackground(getCellColor(ColorType::DefaultInner));
         }
     }
     for (int i = 0; i < n; i++) {
         auto item = base->tableMatrix->item(i + 1, 0);
-        item->setBackgroundColor(getCellColor(ColorType::DefaultBorder));
+        item->setBackground(getCellColor(ColorType::DefaultBorder));
         item = base->tableMatrix->item(0, i + 1);
-        item->setBackgroundColor(getCellColor(ColorType::DefaultBorder));
+        item->setBackground(getCellColor(ColorType::DefaultBorder));
     }
 }
 
