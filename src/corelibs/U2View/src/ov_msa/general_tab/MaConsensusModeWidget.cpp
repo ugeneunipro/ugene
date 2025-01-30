@@ -29,6 +29,8 @@
 #include <U2Core/MsaObject.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/MsaEditorConsensusArea.h>
 
 #include "ov_msa/MaEditor.h"
@@ -41,6 +43,7 @@ MaConsensusModeWidget::MaConsensusModeWidget(QWidget* parent)
       consArea(nullptr),
       maObject(nullptr) {
     setupUi(this);
+    thresholdResetButton->setIcon(GUIUtils::getIconResource("core", "arrow_rotate_clockwise.png"));
 }
 
 void MaConsensusModeWidget::reInit(MsaObject* _maObject, MaEditorConsensusArea* _consArea) {
@@ -82,6 +85,7 @@ void MaConsensusModeWidget::init(MsaObject* _maObject, MaEditorConsensusArea* _c
     connect(consArea,
             SIGNAL(si_consensusThresholdChanged(int)),
             SLOT(sl_thresholdChanged(int)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaConsensusModeWidget::sl_colorModeSwitched);
 }
 
 void MaConsensusModeWidget::updateState() {
@@ -167,6 +171,10 @@ void MaConsensusModeWidget::sl_thresholdResetClicked(bool newState) {
 
 void MaConsensusModeWidget::sl_thresholdChanged(int value) {
     thresholdSpinBox->setValue(value);  // Slider updates automatically
+}
+
+void MaConsensusModeWidget::sl_colorModeSwitched() {
+    thresholdResetButton->setIcon(GUIUtils::getIconResource("core", "arrow_rotate_clockwise.png"));
 }
 
 void MaConsensusModeWidget::initConsensusTypeCombo() {

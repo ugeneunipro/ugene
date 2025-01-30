@@ -29,6 +29,7 @@
 #include <QWidgetAction>
 
 #include <U2Algorithm/CreateSubalignmentTask.h>
+#include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
@@ -85,7 +86,6 @@ MsaEditorSequenceArea::MsaEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(editor, &GObjectViewController::si_buildMenu, this, &MsaEditorSequenceArea::sl_buildMenu);
     connect(editor, &GObjectViewController::si_buildStaticToolbar, this, &MsaEditorSequenceArea::sl_buildStaticToolbar);
 
-    selectionColor = Qt::black;
     editingEnabled = true;
 
     connect(ui->copySelectionAction, SIGNAL(triggered()), SLOT(sl_copySelection()));
@@ -94,7 +94,7 @@ MsaEditorSequenceArea::MsaEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(ui->pasteBeforeAction, SIGNAL(triggered()), SLOT(sl_pasteBefore()));
     connect(ui->cutSelectionAction, SIGNAL(triggered()), SLOT(sl_cutSelection()));
 
-    delColAction = new QAction(QIcon(":core/images/msaed_remove_columns_with_gaps.png"), tr("Remove columns of gaps..."), this);
+    delColAction = new QAction(GUIUtils::getIconResource("core", "msaed_remove_columns_with_gaps.png"), tr("Remove columns of gaps..."), this);
     delColAction->setObjectName("remove_columns_of_gaps");
     delColAction->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Delete));
     delColAction->setShortcutContext(Qt::WidgetShortcut);
@@ -105,7 +105,7 @@ MsaEditorSequenceArea::MsaEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     createSubaligniment->setObjectName("Save subalignment");
     connect(createSubaligniment, SIGNAL(triggered()), SLOT(sl_createSubalignment()));
 
-    removeAllGapsAction = new QAction(QIcon(":core/images/msaed_remove_all_gaps.png"), tr("Remove all gaps"), this);
+    removeAllGapsAction = new QAction(GUIUtils::getIconResource("core", "msaed_remove_all_gaps.png"), tr("Remove all gaps"), this);
     removeAllGapsAction->setObjectName("Remove all gaps");
     connect(removeAllGapsAction, SIGNAL(triggered()), SLOT(sl_removeAllGaps()));
 
@@ -117,12 +117,12 @@ MsaEditorSequenceArea::MsaEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     addSeqFromProjectAction->setObjectName("Sequence from current project");
     connect(addSeqFromProjectAction, SIGNAL(triggered()), SLOT(sl_addSeqFromProject()));
 
-    toggleSequenceRowOrderAction = new QAction(QIcon(":core/images/collapse.png"), tr("Switch on/off collapsing"), this);
+    toggleSequenceRowOrderAction = new QAction(GUIUtils::getIconResource("core", "collapse.png"), tr("Switch on/off collapsing"), this);
     toggleSequenceRowOrderAction->setObjectName("toggle_sequence_row_order_action");
     toggleSequenceRowOrderAction->setCheckable(true);
     connect(toggleSequenceRowOrderAction, SIGNAL(toggled(bool)), SLOT(sl_toggleSequenceRowOrder(bool)));
 
-    refreshSequenceRowOrder = new QAction(QIcon(":core/images/collapse_update.png"), tr("Update collapsed groups"), this);
+    refreshSequenceRowOrder = new QAction(GUIUtils::getIconResource("core", "collapse_update.png"), tr("Update collapsed groups"), this);
     refreshSequenceRowOrder->setObjectName("refresh_sequence_row_order_action");
     refreshSequenceRowOrder->setEnabled(false);
     connect(refreshSequenceRowOrder, SIGNAL(triggered()), SLOT(sl_groupSequencesByContent()));
@@ -388,6 +388,33 @@ void MsaEditorSequenceArea::sl_updateActions() {
     reverseAction->setEnabled(canEditSelectedArea);
     complementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
     removeAllGapsAction->setEnabled(canEditAlignment && maObj->hasNonTrailingGap());
+}
+
+void MsaEditorSequenceArea::sl_colorModeSwitched() {
+    QString colorId;
+    QString unused;
+    getColorAndHighlightingIds(colorId, unused);
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool csChanged = false;
+    if (isDark && (colorId == MsaColorScheme::UGENE_NUCL_LIGHT)) {
+        colorId = MsaColorScheme::UGENE_NUCL_DARK;
+        csChanged = true;
+    } else if (!isDark && (colorId == MsaColorScheme::UGENE_NUCL_DARK)) {
+        colorId = MsaColorScheme::UGENE_NUCL_LIGHT;
+        csChanged = true;
+    }
+    if (csChanged) {
+        MsaColorSchemeRegistry* csr = AppContext::getMsaColorSchemeRegistry();
+        MsaColorSchemeFactory* csf = csr->getSchemeFactoryById(colorId);
+        initColorSchemes(csf);
+    }
+
+    delColAction->setIcon(GUIUtils::getIconResource("core", "msaed_remove_columns_with_gaps.png"));
+    removeAllGapsAction->setIcon(GUIUtils::getIconResource("core", "msaed_remove_all_gaps.png"));
+    toggleSequenceRowOrderAction->setIcon(GUIUtils::getIconResource("core", "collapse.png"));
+    refreshSequenceRowOrder->setIcon(GUIUtils::getIconResource("core", "collapse_update.png"));
+
+    MaEditorSequenceArea::sl_colorModeSwitched();
 }
 
 void MsaEditorSequenceArea::sl_delCol() {

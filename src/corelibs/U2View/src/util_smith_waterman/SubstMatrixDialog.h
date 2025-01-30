@@ -37,12 +37,19 @@ public:
 
 private slots:
     void sl_closeWindow();
-
     void sl_mouseOnCell(int row, int column);
+    void sl_colorModeSwitched();
 
 private:
     void connectGUI();
     void prepareTable();
+    enum class ColorType {
+        DefaultBorder,
+        HighlightBorder,
+        DefaultInner,
+        HighlightInner
+    };
+    const QColor& getCellColor(ColorType type) const;
 
     int hlBorderColumn = -1;
     int hlBorderRow = -1;
@@ -54,6 +61,17 @@ private:
 
     QPushButton* bttnClose = nullptr;
     Ui_SubstMatrixDialogBase* base = nullptr;
+
+    static constexpr int CELL_WIDTH = 25;
+    static const QColor DEFAULT_BORDER_CELL_COLOR_LIGHT;
+    static const QColor HIGHLIGHT_BORDER_CELL_COLOR_LIGHT;
+    static const QColor DEFAULT_INNER_CELL_COLOR_LIGHT;
+    static const QColor HIGHLIGHT_INNER_CELL_COLOR_LIGHT;
+
+    static const QColor DEFAULT_BORDER_CELL_COLOR_DARK;
+    static const QColor HIGHLIGHT_BORDER_CELL_COLOR_DARK;
+    static const QColor DEFAULT_INNER_CELL_COLOR_DARK;
+    static const QColor HIGHLIGHT_INNER_CELL_COLOR_DARK;
 };
 
 }  // namespace U2

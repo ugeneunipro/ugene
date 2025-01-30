@@ -105,7 +105,7 @@ private:
 class FindEnzymesTask : public Task, public FindEnzymesAlgListener {
     Q_OBJECT
 public:
-    FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QVector<U2Region>& excludeRegions, 
+    FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QVector<U2Region>& excludeRegions,
                     const QList<SEnzymeData>& enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false);
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
@@ -213,7 +213,7 @@ public:
 
     /** Returns true if the task can safely be started for the given sequence length and number of enzymes. */
     static bool isTooManyAnnotationsInTheResult(qint64 sequenceLength, int countOfEnzymeVariants);
-    
+
     /** Set exclude mode for the given sequence object. */
     static void setExcludeModeEnabledForObject(U2SequenceObject* sequenceObject, bool enabled);
 

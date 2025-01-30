@@ -345,8 +345,8 @@ void RegionSelectorController::setupPresets() {
     }
 
     gui.presetsComboBox->setCurrentText(settings.defaultPreset);
-    const U2Region region = gui.presetsComboBox->itemData(gui.presetsComboBox->findText(settings.defaultPreset)).value<U2Location>().data()->regions.isEmpty() ? 
-                            U2Region() : 
+    const U2Region region = gui.presetsComboBox->itemData(gui.presetsComboBox->findText(settings.defaultPreset)).value<U2Location>().data()->regions.isEmpty() ?
+                            U2Region() :
                             gui.presetsComboBox->itemData(gui.presetsComboBox->findText(settings.defaultPreset)).value<U2Location>().data()->regions.first();
     setRegion(region);
 }

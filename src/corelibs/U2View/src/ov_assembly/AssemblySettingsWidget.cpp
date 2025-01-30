@@ -29,6 +29,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include "AssemblyBrowser.h"
@@ -63,6 +64,8 @@ AssemblySettingsWidget::AssemblySettingsWidget(AssemblyBrowserUi* ui_)
     QWidget* rulerGroup = new ShowHideSubgroupWidget("RULER", tr("Ruler"), createRulerSettings(), true);
     mainLayout->addWidget(rulerGroup);
 
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AssemblySettingsWidget::sl_colorModeSwitched);
+
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 }
 
@@ -81,9 +84,7 @@ QWidget* AssemblySettingsWidget::createReadsSettings() {
     hint = new QLabel("", group);
     hint->setObjectName("HINT_HIGHLIGHTNING");
     hint->setWordWrap(true);
-    hint->setStyleSheet(
-        "color: green;"
-        "font: bold;");
+    hint->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::successColorLabelHtmlStr()));
 
     layout->addSpacing(TITLE_SPACING);
 
@@ -200,6 +201,10 @@ void AssemblySettingsWidget::sl_changeConsensusAlgorithm(int index) {
     actions.at(index)->trigger();
 }
 
+void AssemblySettingsWidget::sl_colorModeSwitched() {
+    hint->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::successColorLabelHtmlStr()));
+}
+
 // ------- Ruler ----------
 
 QWidget* AssemblySettingsWidget::createRulerSettings() {
@@ -228,7 +233,7 @@ QWidget* AssemblySettingsWidget::createRulerSettings() {
 // AssemblySettingsWidgetFactory
 ////////////////////////////////////
 const QString AssemblySettingsWidgetFactory::GROUP_ID = "OP_ASS_SETTINGS";
-const QString AssemblySettingsWidgetFactory::GROUP_ICON_STR = ":core/images/settings2.png";
+const IconParameters AssemblySettingsWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "settings2.png");
 const QString AssemblySettingsWidgetFactory::GROUP_DOC_PAGE = "65929863";
 
 AssemblySettingsWidgetFactory::AssemblySettingsWidgetFactory() {
@@ -249,7 +254,7 @@ QWidget* AssemblySettingsWidgetFactory::createWidget(GObjectViewController* objV
 }
 
 OPGroupParameters AssemblySettingsWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Assembly Browser Settings"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Assembly Browser Settings"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

@@ -28,6 +28,9 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+
 #include "TaskViewController.h"
 #include "workspace/WorkspaceConnectionStatusIcon.h"
 
@@ -67,9 +70,9 @@ TaskStatusBar::TaskStatusBar() {
     taskCountLabel->setObjectName("taskCountLabel");
     l->addWidget(taskCountLabel);
 
-    notificationEmpty = QPixmap(":ugene/images/empty_notification.png");
-    notificationReport = QPixmap(":ugene/images/has_report.png");
-    notificationError = QPixmap(":ugene/images/has_error.png");
+    notificationEmpty = QPixmap(GUIUtils::getResourceName("ugene", "empty_notification.png", false)).scaled(16, 16);
+    notificationReport = QPixmap(GUIUtils::getResourceName("ugene", "has_report.png", false)).scaled(16, 16);
+    notificationError = QPixmap(GUIUtils::getResourceName("ugene", "has_error.png", false)).scaled(16, 16);
 
     lampLabel = new QLabel();
     notificationLabel = new QLabel();
@@ -83,8 +86,8 @@ TaskStatusBar::TaskStatusBar() {
     l->addSpacing(16);
 #endif
 
-    iconOn = QIcon(":ugene/images/lightbulb.png").pixmap(16, 16);
-    iconOff = QIcon(":ugene/images/lightbulb_off.png").pixmap(16, 16);
+    iconOn = QPixmap(GUIUtils::getResourceName("ugene", "lightbulb.png", false)).scaled(16, 16);
+    iconOff = QPixmap(GUIUtils::getResourceName("ugene", "lightbulb_off.png", false)).scaled(16, 16);
 
     connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_taskStateChanged(Task*)));
     connect(AppContext::getTaskScheduler(), SIGNAL(si_topLevelTaskUnregistered(Task*)), SLOT(sl_newReport(Task*)));
@@ -92,6 +95,7 @@ TaskStatusBar::TaskStatusBar() {
     nStack = AppContext::getMainWindow()->getNotificationStack();
     // nStack = new NotificationStack;
     connect(nStack, SIGNAL(si_changed()), SLOT(sl_notificationChanged()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TaskStatusBar::sl_colorModeSwitched);
 
     lampLabel->installEventFilter(this);
     taskCountLabel->installEventFilter(this);
@@ -307,8 +311,8 @@ void TaskStatusBar::sl_notificationChanged() {
         }
 
         QPainter painter(&iconWithNumber);
-        painter.setPen(Qt::black);
-        QFont font("Arial", 7);
+        painter.setPen(QPalette().text().color());
+        QFont font("Arial", 9);
         font.setBold(true);
         painter.setFont(font);
         QRect rect(0, 0, 16, 16);
@@ -317,6 +321,10 @@ void TaskStatusBar::sl_notificationChanged() {
         notificationLabel->setPixmap(iconWithNumber);
     }
     notificationLabel->setProperty("notifications-count", QString::number(nStack->count()));
+}
+
+void TaskStatusBar::sl_colorModeSwitched() {
+    sl_notificationChanged();
 }
 
 void TaskStatusBar::sl_taskProgressChanged() {

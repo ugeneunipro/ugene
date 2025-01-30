@@ -1773,7 +1773,7 @@ GUI_TEST_CLASS_DEFINITION(test_7445) {
     * 3. Set document format "ugenegb" or "Vector NTI seqience"
     * 4. Run workflow
     * Expected state: no output files produced, only one error in the log "Nothing to write"
-    */    
+    */
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsWorkflowDesigner::addAlgorithm("Read NGS Reads Assembly", true);
@@ -5149,7 +5149,7 @@ GUI_TEST_CLASS_DEFINITION(test_7956) {
         fixedFile.write(content);
         fixedFile.close();
         fastaFile = fixedFasta;
-    }    
+    }
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(new ImportACEFileFiller(false, sandBoxDir + "test_7957.ugenedb"));
     GTUtilsDialog::waitForDialog(new CAP3SupportDialogFiller({fastaFile}, sandBoxDir + "test_7957.ace"));
@@ -5200,7 +5200,7 @@ GUI_TEST_CLASS_DEFINITION(test_7962) {
         }
     }
 }
-    
+
 GUI_TEST_CLASS_DEFINITION(test_7965) {
     // Open human_T1.fa.
     // Open "Find pattern" tab (Ctrl + F).
@@ -5355,7 +5355,7 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     QAbstractButton* lockScalesButton = qobject_cast<QAbstractButton*>(GTWidget::findWidget("Lock scales"));
     GTWidget::click(lockScalesButton);
     QPoint menuActivationPoint = QPoint(lockScalesButton->size().width() - 6, lockScalesButton->size().height() / 2);
-    
+
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("Lock scales: visible range start")));
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
@@ -5363,7 +5363,7 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     CHECK_SET_ERR(!lockScalesButton->isDown(), "'Lock scales' button should be down");
-    
+
     auto firstAnnotation = GTUtilsAnnotationsTreeView::findFirstAnnotation();
     GTUtilsAnnotationsTreeView::selectItems({firstAnnotation});
 

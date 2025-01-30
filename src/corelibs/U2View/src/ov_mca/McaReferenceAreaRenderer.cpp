@@ -70,7 +70,7 @@ void McaReferenceAreaRenderer::drawSequence(QPainter& p, const QSize& /*canvasSi
     const QByteArray sequenceRegion = ctx->getSequenceData(region, os);
     SAFE_POINT_OP(os, );
 
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
     p.setFont(commonMetrics.sequenceFont);
 
     SAFE_POINT(maEditor->getWidget() != nullptr, "MaEditorWgt is NULL", );

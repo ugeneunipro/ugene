@@ -120,8 +120,8 @@ void MakeBlastDbDialog::sl_lineEditChanged() {
         pathTooltip = tr("Output database path does not exist.");
     } else if (!dbPath.isEmpty() && !FileAndDirectoryUtils::isDirectoryWritable(dbPath)) {
         pathTooltip = tr("Output database path is read only.");
-    }    
-    GUIUtils::setWidgetWarningStyle(databasePathLineEdit, !pathTooltip.isEmpty());    
+    }
+    GUIUtils::setWidgetWarningStyle(databasePathLineEdit, !pathTooltip.isEmpty());
     databasePathLineEdit->setToolTip(pathTooltip);
 
     bool nameWarning = baseNamelineEdit->text().contains(' ');

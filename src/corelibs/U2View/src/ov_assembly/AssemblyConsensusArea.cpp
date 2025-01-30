@@ -150,10 +150,11 @@ void AssemblyConsensusArea::drawSequence(QPainter& p) {
                 ConsensusInfo storedLastResult = lastResult;
                 lastResult = getPart(cache, visibleRegion);
                 AssemblySequenceArea::drawSequence(p);
-                p.fillRect(rect(), QColor(0xff, 0xff, 0xff, 0x7f));
+                p.fillRect(rect(), AppContext::getMainWindow()->isDarkMode() ? QColor(48, 48, 48, 127) : QColor(255, 255, 255, 127));
                 lastResult = storedLastResult;
             }
             QString message = consensusTaskRunner.isIdle() ? tr("Consensus calculation canceled") : tr("Calculating consensus...");
+            p.setPen(QPalette().text().color());
             p.drawText(rect(), Qt::AlignCenter, message);
         } else if (lastResult.region == visibleRegion && lastResult.algorithmId == consensusAlgorithm->getId()) {
             AssemblySequenceArea::drawSequence(p);

@@ -1,13 +1,20 @@
 <RCC>
     <qresource prefix="query_designer/" >
         <file>images/delete.png</file>
-        <file>images/green_circle.png</file>
         <file>images/query_designer.png</file>
         <file>images/filenew.png</file>
         <file>images/fileopen.png</file>
-        <file>images/filesave.png</file>
         <file>images/run.png</file>
-        <file>images/strands.png</file>
-        <file>images/eye.png</file>
+
+        <file>images/dark/green_circle.png</file>
+        <file>images/dark/strands.png</file>
+        <file>images/dark/eye.png</file>
+        <file>images/dark/filesave.png</file>
+
+        <file>images/light/green_circle.png</file>
+		<file>images/light/strands.png</file>
+        <file>images/light/eye.png</file>
+        <file>images/light/filesave.png</file>
+
     </qresource>
 </RCC>

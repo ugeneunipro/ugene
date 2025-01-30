@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
- 
+
  #include <QVector>
 
  #include "U2Location.h"
@@ -31,4 +31,3 @@ U2Location::U2Location(const QVector<U2Region>& regionList)
 }
 
 }
- 

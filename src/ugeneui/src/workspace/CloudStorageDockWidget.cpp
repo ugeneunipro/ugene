@@ -43,9 +43,11 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/Theme.h>
 
 #include "CloudStorageService.h"
 #include "WorkspaceService.h"
+#include "main_window/DockManagerImpl.h"
 
 namespace U2 {
 constexpr auto CLOUD_STORAGE_LAST_OPENED_DOWNLOAD_DIR = "CloudStorageDownloadDir";
@@ -123,9 +125,9 @@ static void updateModel(QTreeView* tree,
     for (const CloudStorageEntry& childEntry : qAsConst(entry->children)) {
         QIcon icon(childEntry->isFolder
                        ? (childEntry->getName() == "Shared" && childEntry->path.length() == 1
-                              ? ":ugene/images/folder_shared.svg"
-                              : ":ugene/images/folder.svg")
-                       : ":ugene/images/document.svg");
+                              ? GUIUtils::getResourceName("ugene", "folder_shared.svg")
+                              : GUIUtils::getResourceName("ugene", "folder.svg"))
+                       : GUIUtils::getResourceName("ugene", "document.svg"));
         auto childEntryKey = childEntry->sessionLocalId;
         QStandardItem* nameItem;
         if (childrenMap.contains(childEntryKey)) {
@@ -153,7 +155,7 @@ static void updateModel(QTreeView* tree,
         }
         bool isShared = !childEntry->sharedWithEmails.isEmpty();
         if (isShared) {
-            nameItem->setData(QIcon(":ugene/images/group.svg"), USER_DATA_SECONDARY_ICON);
+            nameItem->setData(GUIUtils::getIconResource("ugene", "group.svg"), USER_DATA_SECONDARY_ICON);
             nameItem->setToolTip(CloudStorageDockWidget::tr("Shared with:\n%1").arg(childEntry->sharedWithEmails.join("\n")));
             nameItem->setData(QVariant::fromValue(childEntry->sharedWithEmails), USER_DATA_SHARED_WITH_EMAILS);
         } else {
@@ -239,12 +241,12 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     : workspaceService(_workspaceService) {
     setObjectName(DOCK_CLOUD_STORAGE_VIEW);
     setWindowTitle(tr("Cloud Storage"));
-    setWindowIcon(QIcon(":ugene/images/cloud_storage.svg"));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "cloud_storage.svg"));
 
     stateLabel = new QLabel();
     stateLabel->setTextFormat(Qt::RichText);
     stateLabel->setOpenExternalLinks(false);
-    stateLabel->setStyleSheet("background: white; padding: 10px;");
+    stateLabel->setStyleSheet(QString("background: %1; padding: 10px;").arg(QPalette().base().color().name()));
 
     treeView = new QTreeView();
     treeView->setModel(&treeViewModel);
@@ -287,46 +289,46 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
         updateTree(treeView, treeViewModel, rootEntry);
     });
 
-    createDirAction = new QAction(QIcon(":ugene/images/new_folder.svg"), tr("New Folder"), this);
+    createDirAction = new QAction(GUIUtils::getIconResource("ugene", "new_folder.svg"), tr("New Folder"), this);
     createDirAction->setObjectName("cloudStorageCreateDirAction");
     createDirAction->setShortcut(QKeySequence(Qt::Key_Insert));
     createDirAction->setToolTip(tr("Create New Folder on Cloud Storage"));
     connect(createDirAction, &QAction::triggered, this, &CloudStorageDockWidget::createDir);
     treeView->addAction(createDirAction);
 
-    deleteAction = new QAction(QIcon(":ugene/images/trash.svg"), tr("Delete"), this);
+    deleteAction = new QAction(GUIUtils::getIconResource("ugene", "trash.svg"), tr("Delete"), this);
     deleteAction->setObjectName("cloudStorageDeleteAction");
     deleteAction->setShortcut(QKeySequence::Delete);
     deleteAction->setToolTip(tr("Delete selected file from Cloud Storage"));
     connect(deleteAction, &QAction::triggered, this, &CloudStorageDockWidget::deleteItem);
     treeView->addAction(deleteAction);
 
-    renameAction = new QAction(QIcon(":ugene/images/file_rename.svg"), tr("Rename"), this);
+    renameAction = new QAction(GUIUtils::getIconResource("ugene", "file_rename.svg"), tr("Rename"), this);
     renameAction->setObjectName("cloudStorageRenameAction");
     renameAction->setToolTip(tr("Rename File on Cloud Storage"));
     renameAction->setShortcut(QKeySequence(Qt::Key_F2));
     connect(renameAction, &QAction::triggered, this, &CloudStorageDockWidget::renameItem);
     treeView->addAction(renameAction);
 
-    downloadAction = new QAction(QIcon(":ugene/images/file_download.svg"), tr("Download"), this);
+    downloadAction = new QAction(GUIUtils::getIconResource("ugene", "file_download.svg"), tr("Download"), this);
     downloadAction->setObjectName("cloudStorageDownloadAction");
     downloadAction->setToolTip(tr("Download File from Cloud Storage"));
     connect(downloadAction, &QAction::triggered, this, &CloudStorageDockWidget::downloadItem);
     treeView->addAction(downloadAction);
 
-    uploadAction = new QAction(QIcon(":ugene/images/file_upload.svg"), tr("Upload"), this);
+    uploadAction = new QAction(GUIUtils::getIconResource("ugene", "file_upload.svg"), tr("Upload"), this);
     uploadAction->setObjectName("cloudStorageUploadAction");
     uploadAction->setToolTip(tr("Upload File to Cloud Storage"));
     connect(uploadAction, &QAction::triggered, this, &CloudStorageDockWidget::uploadItem);
     treeView->addAction(uploadAction);
 
-    shareAction = new QAction(QIcon(":ugene/images/file_share.svg"), tr("Share"), this);
+    shareAction = new QAction(GUIUtils::getIconResource("ugene", "file_share.svg"), tr("Share"), this);
     shareAction->setObjectName("cloudStorageShareAction");
     shareAction->setToolTip(tr("Share file or folder with other users"));
     connect(shareAction, &QAction::triggered, this, &CloudStorageDockWidget::shareItem);
     treeView->addAction(shareAction);
 
-    openWebWorkspaceAction = new QAction(QIcon(":ugene/images/web_link.svg"), tr("Open web interface"));
+    openWebWorkspaceAction = new QAction(GUIUtils::getIconResource("ugene", "web_link.svg"), tr("Open web interface"));
     openWebWorkspaceAction->setToolTip(tr("Open Cloud Storage Web Interface in Browser"));
     connect(openWebWorkspaceAction, &QAction::triggered, this, [this] {
         QDesktopServices::openUrl(workspaceService->getWebWorkspaceUrl() + "/storage");
@@ -348,6 +350,8 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
 
     updateActionsState();
     updateStateLabelText();
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &CloudStorageDockWidget::sl_colorModeSwitched);
 }
 
 bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
@@ -362,6 +366,21 @@ bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
         }
     }
     return false;
+}
+
+void CloudStorageDockWidget::sl_colorModeSwitched() {
+    stateLabel->setStyleSheet(QString("background: %1; padding: 10px;").arg(QPalette().base().color().name()));
+    createDirAction->setIcon(GUIUtils::getIconResource("ugene", "new_folder.svg"));
+    deleteAction->setIcon(GUIUtils::getIconResource("ugene", "trash.svg"));
+    renameAction->setIcon(GUIUtils::getIconResource("ugene", "file_rename.svg"));
+    downloadAction->setIcon(GUIUtils::getIconResource("ugene", "file_download.svg"));
+    uploadAction->setIcon(GUIUtils::getIconResource("ugene", "file_upload.svg"));
+    shareAction->setIcon(GUIUtils::getIconResource("ugene", "file_share.svg"));
+    openWebWorkspaceAction->setIcon(GUIUtils::getIconResource("ugene", "web_link.svg"));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "cloud_storage.svg"));
+    stateLabel->setText(workspaceService->isLoggedIn()
+                            ? tr(R"(Loading file list...<br><br><br><a href="logout"><span style=\"color: %1;\">Logout</span></a>)").arg(Theme::hyperlinkColorLabelHtmlStr())
+                            : tr(R"(Please <a href="login"><span style=\"color: %1;\">log in to Workspace</span></a> to access cloud storage)").arg(Theme::hyperlinkColorLabelHtmlStr()));
 }
 
 void CloudStorageDockWidget::showContextMenu(const QPoint& point) {
@@ -580,8 +599,8 @@ void CloudStorageDockWidget::updateStateLabelText() {
     disconnect(stateLabel, &QLabel::linkActivated, this, nullptr);
     const auto isLoggedIn = workspaceService->isLoggedIn();
     stateLabel->setText(isLoggedIn
-                            ? tr(R"(Loading file list...<br><br><br><a href="logout">Logout</a>)")
-                            : tr(R"(Please <a href="login">log in to Workspace</a> to access cloud storage)"));
+                            ? tr(R"(Loading file list...<br><br><br><a href="logout"><span style=\"color: %1;\">Logout</span></a>)").arg(Theme::hyperlinkColorLabelHtmlStr())
+                            : tr(R"(Please <a href="login"><span style=\"color: %1;\">log in to Workspace</span></a> to access cloud storage)").arg(Theme::hyperlinkColorLabelHtmlStr()));
 
     connect(stateLabel, &QLabel::linkActivated, this, [&](const QString& link) {
         if (link == "login") {
