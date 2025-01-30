@@ -2043,7 +2043,7 @@ GUI_TEST_CLASS_DEFINITION(test_6479) {
 
     auto editPatterns = GTWidget::findPlainTextEdit("textPattern");
     QString style = editPatterns->styleSheet();
-    CHECK_SET_ERR(style == "background-color: " + QPalette().color(QPalette::Base).name() + ";", "unexpected styleSheet: " + style);
+    CHECK_SET_ERR(style == "background-color: palette(base);", "unexpected styleSheet: " + style);
 
     GTUtilsOptionPanelSequenceView::setAlgorithm("Exact");
     GTUtilsOptionPanelSequenceView::setAlgorithm("Substitute");
@@ -2682,7 +2682,7 @@ GUI_TEST_CLASS_DEFINITION(test_6544) {
     // 5. Expected/current result: the search field background is red.
     auto editPatterns = GTWidget::findPlainTextEdit("textPattern");
     QString style0 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style0 == "background-color: " + Theme::errorColorTextFieldColor().name() + ";", "unexpected styleSheet: " + style0);
+    CHECK_SET_ERR(style0 == "background-color: " + Theme::errorColorTextFieldStr() + ";", "unexpected styleSheet: " + style0);
 
     // 6. Make the "Search with ambiguous bases" option checked.
 
@@ -2690,7 +2690,7 @@ GUI_TEST_CLASS_DEFINITION(test_6544) {
 
     // 7. Expected result: the search field should have white background.
     QString style1 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style1 == "background-color: " + QPalette().color(QPalette::Base).name() + ";", "unexpected styleSheet: " + style1);
+    CHECK_SET_ERR(style1 == "background-color: palette(base);", "unexpected styleSheet: " + style1);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546) {
@@ -5134,7 +5134,7 @@ GUI_TEST_CLASS_DEFINITION(test_6749_2) {
     // Expected result; red background and warning "Input value contains characters that do not match the active alphabet!"
     auto editPatterns = GTWidget::findPlainTextEdit("textPattern");
     QString style0 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style0 == "background-color: " + Theme::errorColorTextFieldColor().name() + ";", "unexpected styleSheet: " + style0);
+    CHECK_SET_ERR(style0 == "background-color: " + Theme::errorColorTextFieldStr() + ";", "unexpected styleSheet: " + style0);
 
     // Select using CTRL+SHIFT +F "Sequence Names"
     GTKeyboardDriver::keyPress(Qt::Key_Control);
@@ -5144,7 +5144,7 @@ GUI_TEST_CLASS_DEFINITION(test_6749_2) {
 
     // Expected result; white background, no any warning
     QString style1 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style1 == "background-color: " + QPalette().color(QPalette::Base).name() + ";", "unexpected styleSheet: " + style1);
+    CHECK_SET_ERR(style1 == "background-color: palette(base);", "unexpected styleSheet: " + style1);
 }
 GUI_TEST_CLASS_DEFINITION(test_6749_3) {
     // Open "COI.aln".

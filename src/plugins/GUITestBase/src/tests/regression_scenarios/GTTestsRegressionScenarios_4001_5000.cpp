@@ -5793,7 +5793,7 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
 
     auto editPatterns = GTWidget::findPlainTextEdit("textPattern");
     QString style0 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style0 == "background-color: " + Theme::errorColorTextFieldColor().name() + ";", "unexpected styleSheet: " + style0);
+    CHECK_SET_ERR(style0 == "background-color: " + Theme::errorColorTextFieldStr() + ";", "unexpected styleSheet: " + style0);
 
     // Remove entered pattern, enter a valid pattern:
     //.
@@ -5804,7 +5804,7 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
     GTKeyboardDriver::keyClick('.');
 
     QString style1 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style1 == "background-color: " + QPalette().color(QPalette::Base).name() + ";", "unexpected styleSheet: " + style1);
+    CHECK_SET_ERR(style1 == "background-color: palette(base);", "unexpected styleSheet: " + style1);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5000) {
