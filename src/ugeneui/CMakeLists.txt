@@ -31,6 +31,7 @@ target_link_libraries(ugeneui
 
 if (APPLE)
     target_link_libraries(ugeneui
+        "-framework AppKit"
         "-framework Foundation"
         "-framework Security"
         "-framework CoreFoundation"

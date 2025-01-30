@@ -384,10 +384,10 @@ void PlugViewPluginItem::updateVisual() {
 
 void PlugViewPluginItem::updateTextColor() {
     auto textColor = QPalette().text().color();
-    setTextColor(0, textColor);
-    setTextColor(1, textColor);
-    setTextColor(2, textColor);
-    setTextColor(3, textColor);
+    setForeground(0, textColor);
+    setForeground(1, textColor);
+    setForeground(2, textColor);
+    setForeground(3, textColor);
 }
 
 PlugViewServiceItem::PlugViewServiceItem(PlugViewPluginItem* parent, Service* s)
