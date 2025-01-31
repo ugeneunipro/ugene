@@ -33,6 +33,12 @@ endif ()
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
+if (APPLE)
+elseif (WIN32)
+else ()
+    include_directories(/home/yalgaer/work/qtscript/script/api)
+endif ()
+
 if (WIN32)
     add_definitions(
             -D_UNICODE
