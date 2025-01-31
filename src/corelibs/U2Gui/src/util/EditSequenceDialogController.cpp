@@ -248,8 +248,8 @@ void EditSequenceDialogVirtualController::sl_afterSlectionClicked() {
 //////////////////////////////////////////////////////////////////////////
 // EditSequenceDialogController
 
-EditSequenceDialogController::EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p)
-    : EditSequenceDialogVirtualController(cfg, p) {
+EditSequenceDialogController::EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p, const QString& helpId)
+    : EditSequenceDialogVirtualController(cfg, p, helpId) {
 
     seqPasterWidgetController = new SeqPasterWidgetController(this, config.initialText, true);
     addInputDataWidgetToLayout(seqPasterWidgetController);

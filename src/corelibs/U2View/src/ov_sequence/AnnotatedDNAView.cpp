@@ -1251,7 +1251,7 @@ void AnnotatedDNAView::sl_addSequencePart() {
     const QVector<U2Region>& selection = seqCtx->getSequenceSelection()->getSelectedRegions();
     cfg.selectionRegions = selection;
 
-    QObjectScopedPointer<EditSequenceDialogController> dialog = new EditSequenceDialogController(cfg, getActiveSequenceWidget());
+    QObjectScopedPointer<EditSequenceDialogController> dialog = new EditSequenceDialogController(cfg, getActiveSequenceWidget(), "96665661");
     const int result = dialog->exec();
     CHECK(!dialog.isNull(), );
     CHECK(result == QDialog::Accepted, );
@@ -1312,7 +1312,7 @@ void AnnotatedDNAView::sl_replaceSequencePart() {
 
     cfg.selectionRegions.append(selection);
 
-    QObjectScopedPointer<EditSequenceDialogController> dlg = new EditSequenceDialogController(cfg, getActiveSequenceWidget());
+    QObjectScopedPointer<EditSequenceDialogController> dlg = new EditSequenceDialogController(cfg, getActiveSequenceWidget(), "96665651");
     const int result = dlg->exec();
     CHECK(!dlg.isNull(), );
 
