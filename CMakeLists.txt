@@ -35,6 +35,7 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
 if (APPLE)
 elseif (WIN32)
+    include_directories(C:/work/qtscript/script/api)
 else ()
     include_directories(/home/yalgaer/work/qtscript/script/api)
 endif ()
