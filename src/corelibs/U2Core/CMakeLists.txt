@@ -24,6 +24,9 @@ target_link_libraries(U2Core
 
 if (APPLE)
     target_link_libraries(U2Core "-framework CoreFoundation")
+    target_link_libraries(U2Core
+            ${CMAKE_SOURCE_DIR}/libqtscript.dylib
+    )
 elseif (WIN32)
     target_link_libraries(U2Core
             ${CMAKE_SOURCE_DIR}/qtscript.lib
