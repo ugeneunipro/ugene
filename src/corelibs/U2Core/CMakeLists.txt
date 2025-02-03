@@ -19,20 +19,9 @@ add_library(U2Core SHARED ${HDRS} ${SRCS}
 
 target_link_libraries(U2Core
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network Qt5::Xml
-        ugenedb zlib
+        qtscript ugenedb zlib
 )
 
 if (APPLE)
     target_link_libraries(U2Core "-framework CoreFoundation")
-    target_link_libraries(U2Core
-            ${CMAKE_SOURCE_DIR}/libqtscript.dylib
-    )
-elseif (WIN32)
-    target_link_libraries(U2Core
-            ${CMAKE_SOURCE_DIR}/qtscript.lib
-    )
-else ()
-    target_link_libraries(U2Core
-            ${CMAKE_SOURCE_DIR}/libqtscript.so
-    )
 endif ()
