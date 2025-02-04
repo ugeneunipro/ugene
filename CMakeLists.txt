@@ -33,6 +33,8 @@ endif ()
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
+include_directories(src/libs_3rdparty/qtscript/script/api)
+
 if (WIN32)
     add_definitions(
             -D_UNICODE
@@ -98,6 +100,7 @@ endif ()
 add_subdirectory(src/libs_3rdparty/QSpec)
 add_subdirectory(src/libs_3rdparty/breakpad)
 add_subdirectory(src/libs_3rdparty/qscore)
+add_subdirectory(src/libs_3rdparty/qtscript)
 add_subdirectory(src/libs_3rdparty/samtools)
 add_subdirectory(src/libs_3rdparty/sqlite3)
 add_subdirectory(src/libs_3rdparty/zlib)
