@@ -36,7 +36,6 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-#undef QT_DISABLE_DEPRECATED_BEFORE
 #include "config.h" // compile on Windows
 #include "qscriptstring.h"
 #include "qscriptstring_p.h"
@@ -87,9 +86,9 @@ QScriptString::QScriptString(const QScriptString &other)
     : d_ptr(other.d_ptr)
 {
     if (d_func() && (d_func()->type == QScriptStringPrivate::StackAllocated)) {
-        Q_ASSERT(d_func()->ref.load() != 1);
+        Q_ASSERT(d_func()->ref.loadAcquire() != 1);
         d_ptr.detach();
-        d_func()->ref.store(1);
+        d_func()->ref.storeRelease(1);
         d_func()->type = QScriptStringPrivate::HeapAllocated;
         d_func()->engine->registerScriptString(d_func());
     }
@@ -104,11 +103,11 @@ QScriptString::~QScriptString()
     if (d) {
         switch (d->type) {
         case QScriptStringPrivate::StackAllocated:
-            Q_ASSERT(d->ref.load() == 1);
+            Q_ASSERT(d->ref.loadAcquire() == 1);
             d->ref.ref(); // avoid deletion
             break;
         case QScriptStringPrivate::HeapAllocated:
-            if (d->engine && (d->ref.load() == 1)) {
+            if (d->engine && (d->ref.loadAcquire() == 1)) {
                 // Make sure the identifier is removed from the correct engine.
                 QScript::APIShim shim(d->engine);
                 d->identifier = JSC::Identifier();
@@ -124,15 +123,15 @@ QScriptString::~QScriptString()
 */
 QScriptString &QScriptString::operator=(const QScriptString &other)
 {
-    if (d_func() && d_func()->engine && (d_func()->ref.load() == 1) && (d_func()->type == QScriptStringPrivate::HeapAllocated)) {
+    if (d_func() && d_func()->engine && (d_func()->ref.loadAcquire() == 1) && (d_func()->type == QScriptStringPrivate::HeapAllocated)) {
         // current d_ptr will be deleted at the assignment below, so unregister it first
         d_func()->engine->unregisterScriptString(d_func());
     }
     d_ptr = other.d_ptr;
     if (d_func() && (d_func()->type == QScriptStringPrivate::StackAllocated)) {
-        Q_ASSERT(d_func()->ref.load() != 1);
+        Q_ASSERT(d_func()->ref.loadAcquire() != 1);
         d_ptr.detach();
-        d_func()->ref.store(1);
+        d_func()->ref.storeRelease(1);
         d_func()->type = QScriptStringPrivate::HeapAllocated;
         d_func()->engine->registerScriptString(d_func());
     }
