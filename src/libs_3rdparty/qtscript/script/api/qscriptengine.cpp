@@ -36,8 +36,6 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-#undef QT_DISABLE_DEPRECATED_BEFORE
-
 #include "config.h"
 #include "qscriptengine.h"
 #include "qscriptsyntaxchecker_p.h"
@@ -3146,9 +3144,11 @@ JSC::JSValue QScriptEnginePrivate::create(JSC::ExecState *exec, int type, const 
         case QMetaType::QDateTime:
             result = newDate(exec, *reinterpret_cast<const QDateTime *>(ptr));
             break;
-        case QMetaType::QDate:
-            result = newDate(exec, QDateTime(*reinterpret_cast<const QDate *>(ptr)));
+        case QMetaType::QDate:{
+            QDate date = *reinterpret_cast<const QDate *>(ptr);
+            result = newDate(exec, QDateTime(date, QTime(0, 0), Qt::LocalTime));
             break;
+        }
 #ifndef QT_NO_REGEXP
         case QMetaType::QRegExp:
             result = newRegExp(exec, *reinterpret_cast<const QRegExp *>(ptr));
@@ -3866,7 +3866,7 @@ QStringList QScriptEngine::availableExtensions() const
         }
     }
 
-    QStringList lst = result.toList();
+    QStringList lst(result.begin(), result.end());
     std::sort(lst.begin(), lst.end());
     return lst;
 #endif
@@ -3883,7 +3883,7 @@ QStringList QScriptEngine::availableExtensions() const
 QStringList QScriptEngine::importedExtensions() const
 {
     Q_D(const QScriptEngine);
-    QStringList lst = d->importedExtensions.toList();
+    QStringList lst(d->importedExtensions.begin(), d->importedExtensions.end());
     std::sort(lst.begin(), lst.end());
     return lst;
 }
