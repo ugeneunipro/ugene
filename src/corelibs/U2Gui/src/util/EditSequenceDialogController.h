@@ -123,7 +123,7 @@ private:
 class U2GUI_EXPORT EditSequenceDialogController : public EditSequenceDialogVirtualController {
     Q_OBJECT
 public:
-    EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
+    EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p, const QString& helpId);
 
     void accept() override;
 
