@@ -26,6 +26,8 @@
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/MainWindow.h>
+
 namespace U2 {
 
 const QString EnzymeSettings::DATA_DIR_KEY("enzymes");
@@ -202,7 +204,7 @@ QString generateMainPart(const QByteArray& seq, int cut, bool forward, int enzym
         }
         QString ch(seq.at(i));
         if (ch != "N") {
-            ch = QString("<span style=\"color: #ff0000; \">%1</span>").arg(ch);
+            ch = QString("<span style=\"color: %1; \">%2</span>").arg(AppContext::getMainWindow()->isDarkMode() ? "#FF7F7F" : "#FF0000").arg(ch);
         }
         append2Result(ch);
         append2Result(TOOLTIP_SPACE);
@@ -345,7 +347,7 @@ QString EnzymeData::generateEnzymeTooltip() const {
             QString result;
             for (QString ch : qAsConst(sequence)) {
                 if (ch != "N") {
-                    ch = QString("<span style=\"color: #ff0000; \">%1</span>").arg(ch);
+                    ch = QString("<span style=\"color: %1; \">%2</span>").arg(AppContext::getMainWindow()->isDarkMode() ? "#FF7F7F" : "#FF0000").arg(ch);
                 }
                 result += ch;
             }

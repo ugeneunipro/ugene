@@ -35,11 +35,6 @@ const QString TopHatSupport::TOPHAT_TMP_DIR = "tophat";
 
 TopHatSupport::TopHatSupport()
     : ExternalTool(TopHatSupport::ET_TOPHAT_ID, "tophat2", TopHatSupport::ET_TOPHAT) {
-    if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
 
 #ifdef Q_OS_WIN
     executableFileName = "tophat.exe";

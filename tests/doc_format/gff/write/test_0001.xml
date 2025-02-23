@@ -9,6 +9,6 @@
     <load-document index="doc2" url="_temp1.gff" io="local_file" format="gff" dir="temp"/>
 
     <compare-annotations-num-in-two-objects doc="doc" value="doc2"/>
-    
+
     <compare-annotations-locations-in-two-objects doc="doc" value="doc2"/>
 </multi-test>

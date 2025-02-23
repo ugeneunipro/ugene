@@ -28,6 +28,7 @@
 #include <QMenu>
 #include <QTreeWidgetItem>
 
+#include <U2Core/IconParameters.h>
 #include <U2Core/global.h>
 
 #include "U2FileDialog.h"
@@ -78,6 +79,14 @@ public:
     static void setWidgetWarningStyle(QWidget* widget, bool value);
 
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
+
+    static QString getResourceName(const QString& cathegory, const QString& iconName, bool hasColorCathegory = true, const QString& innerDirName = QString());
+
+    static QIcon getIconResource(const QString& cathegory, const QString& iconName, bool hasColorCathegory = true);
+
+    static QIcon getIconResource(const IconParameters& parameters);
+
+    static QString getResourceName(const IconParameters& parameters);
 
     static QString getTextWithDialog(const QString& title, const QString& label, const QString& defaultText, bool& ok, QWidget* parent = nullptr);
 

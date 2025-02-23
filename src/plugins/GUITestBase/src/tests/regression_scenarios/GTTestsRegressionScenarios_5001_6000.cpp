@@ -839,11 +839,11 @@ GUI_TEST_CLASS_DEFINITION(test_5239) {
             GTWidget::click(GTWidget::findWidget("inputFilesToolButton"));
 
             auto buildButton = GTWidget::findButtonByText("Build", GTUtilsDialog::buttonBox(dialog));
-            
+
             GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), "~/", false, true);
             CHECK_SET_ERR(GTWidget::findLineEdit("databasePathLineEdit", dialog)->toolTip() == "Output database path does not exist.", "Not expected tooltip");
             CHECK_SET_ERR(!buildButton->isEnabled(), "Build button should be disabled!");
-            
+
             GTLineEdit::setText(GTWidget::findLineEdit("databasePathLineEdit", dialog), sandBoxDir + "read_only_dir");
             CHECK_SET_ERR(GTWidget::findLineEdit("databasePathLineEdit", dialog)->toolTip() == "Output database path is read only.", "Not expected tooltip");
             CHECK_SET_ERR(!buildButton->isEnabled(), "Build button should be disabled!");
@@ -1218,7 +1218,7 @@ GUI_TEST_CLASS_DEFINITION(test_5281) {
     * 3. Find HMM3 signals with _common_data\_regession\1704\LRR_4.hmm model
     * Expected state: there is no errors in the log and 27 results found
     */
-    
+
     GTLogTracer lt;
     GTFileDialog::openFile(testDir + "_common_data/regression/1704", "lrr_test_new.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -1241,7 +1241,7 @@ GUI_TEST_CLASS_DEFINITION(test_5291) {
     * 6. Run workflow.
     * Expected state: no errors in the log.
     */
-    
+
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsWorkflowDesigner::loadWorkflow(testDir + "_common_data/scenarios/_regression/5291/5291.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -2692,7 +2692,7 @@ GUI_TEST_CLASS_DEFINITION(test_5657) {
 
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::General);
     GTWidget::click(GTWidget::findToolButton("convertNucleicAlphabetButton"));
-    
+
     GTLogTracer lt;
     GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTUtilsDialog::add(new KalignDialogFiller());

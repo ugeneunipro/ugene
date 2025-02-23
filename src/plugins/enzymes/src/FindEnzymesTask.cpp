@@ -146,7 +146,7 @@ static int getComplementCutOffset(const SEnzymeData& enzyme) {
 
 //////////////////////////////////////////////////////////////////////////
 // find multiple enzymes task
-FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& region_, const QVector<U2Region>& excludeRegions_, 
+FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& region_, const QVector<U2Region>& excludeRegions_,
                                  const QList<SEnzymeData>& enzymes_, int mr, bool circular)
     : Task(tr("Find Enzymes"), TaskFlags_NR_FOSCOE),
       maxResults(mr),
@@ -160,7 +160,7 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
     U2SequenceObject seq("sequence", seqRef);
     SAFE_POINT(seq.getAlphabet()->isNucleic(), "Alphabet is not nucleic.", );
     seqlen = seq.getSequenceLength();
-    
+
     if (excludeRegions.isEmpty()) {
         QList<Task*> result;
         for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
@@ -174,7 +174,7 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef_, const U2Region& reg
                 //maximum offset for complement 'cutter' of enzyme
                 const int rightExtension = getComplementCutOffset(enzyme);
                 const int seqLength = seq.getSequenceLength();
-                if (excludeRegion.startPos - leftExtension < 0) {                        
+                if (excludeRegion.startPos - leftExtension < 0) {
                     excludeRegion.startPos = isCircular ? seqLength - (leftExtension - excludeRegion.startPos) : 0;
                 } else {
                     excludeRegion.startPos -= leftExtension;
@@ -351,7 +351,7 @@ void FindSingleEnzymeTask::prepare() {
 void FindSingleEnzymeTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) {
     CHECK_OP(stateInfo, );
     QMutexLocker locker(&resultsLock);
-    CHECK_EXT(resultList.size() > maxResults, resultList.append(FindEnzymesAlgResult(enzyme, pos, strand)), );    
+    CHECK_EXT(resultList.size() > maxResults, resultList.append(FindEnzymesAlgResult(enzyme, pos, strand)), );
     if (cancelOnMaxResults) {
         if (!isCanceled()) {
             stateInfo.setError(FindEnzymesTask::tr("Number of results exceed %1, stopping").arg(maxResults));

@@ -23,7 +23,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
+      <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
      </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="3,5">
@@ -56,7 +56,7 @@
               </size>
              </property>
              <property name="movement">
-              <enum>QListView::Static</enum>
+              <enum>QListView::Movement::Static</enum>
              </property>
             </widget>
            </item>
@@ -66,7 +66,7 @@
               <number>3</number>
              </property>
              <property name="sizeConstraint">
-              <enum>QLayout::SetFixedSize</enum>
+              <enum>QLayout::SizeConstraint::SetFixedSize</enum>
              </property>
              <item>
               <widget class="QToolButton" name="buttonAdd">
@@ -104,21 +104,21 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../external_tool_support.qrc">
+                <iconset>
                  <normaloff>:/external_tool_support/images/add.png</normaloff>:/external_tool_support/images/add.png</iconset>
                </property>
                <property name="popupMode">
-                <enum>QToolButton::InstantPopup</enum>
+                <enum>QToolButton::ToolButtonPopupMode::InstantPopup</enum>
                </property>
               </widget>
              </item>
              <item>
               <spacer name="buttonsSpacer_1">
                <property name="orientation">
-                <enum>Qt::Vertical</enum>
+                <enum>Qt::Orientation::Vertical</enum>
                </property>
                <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
+                <enum>QSizePolicy::Policy::Expanding</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -163,10 +163,6 @@
                <property name="text">
                 <string/>
                </property>
-               <property name="icon">
-                <iconset resource="../../external_tool_support.qrc">
-                 <normaloff>:/external_tool_support/images/up.png</normaloff>:/external_tool_support/images/up.png</iconset>
-               </property>
                <property name="autoRepeat">
                 <bool>false</bool>
                </property>
@@ -175,10 +171,10 @@
              <item>
               <spacer name="buttonsSpacer_3">
                <property name="orientation">
-                <enum>Qt::Vertical</enum>
+                <enum>Qt::Orientation::Vertical</enum>
                </property>
                <property name="sizeType">
-                <enum>QSizePolicy::Preferred</enum>
+                <enum>QSizePolicy::Policy::Preferred</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -223,19 +219,15 @@
                <property name="text">
                 <string/>
                </property>
-               <property name="icon">
-                <iconset resource="../../external_tool_support.qrc">
-                 <normaloff>:/external_tool_support/images/down.png</normaloff>:/external_tool_support/images/down.png</iconset>
-               </property>
               </widget>
              </item>
              <item>
               <spacer name="buttonsSpacer_2">
                <property name="orientation">
-                <enum>Qt::Vertical</enum>
+                <enum>Qt::Orientation::Vertical</enum>
                </property>
                <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
+                <enum>QSizePolicy::Policy::Expanding</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -281,7 +273,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../external_tool_support.qrc">
+                <iconset>
                  <normaloff>:/external_tool_support/images/cancel.png</normaloff>:/external_tool_support/images/cancel.png</iconset>
                </property>
               </widget>
@@ -343,7 +335,7 @@ QGroupBox::title {
              <number>0</number>
             </property>
             <property name="sizeConstraint">
-             <enum>QLayout::SetMinAndMaxSize</enum>
+             <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -365,7 +357,7 @@ QGroupBox::title {
             <item>
              <spacer name="verticalSpacer_2">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -428,7 +420,7 @@ QGroupBox::title {
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
      </property>
     </widget>
    </item>

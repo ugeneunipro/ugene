@@ -50,6 +50,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ImportToDatabaseDialog.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/LoadDocumentTaskProvider.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/ObjectViewModel.h>
@@ -121,6 +122,8 @@ ProjectTreeController::ProjectTreeController(EditableTreeView* tree, const Proje
     sl_windowActivated(mdi->getActiveWindow());  // if any window is active - check it content
 
     connectToResourceTracker();
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ProjectTreeController::sl_colorModeSwitched);
 
     sl_updateSelection();
 }
@@ -694,24 +697,24 @@ bool ProjectTreeController::eventFilter(QObject* o, QEvent* e) {
 }
 
 void ProjectTreeController::setupActions() {
-    addObjectToDocumentAction = new QAction(QIcon(":core/images/add_gobject.png"), tr("Add object to document..."), this);
+    addObjectToDocumentAction = new QAction(GUIUtils::getIconResource("core", "add_gobject.png", false), tr("Add object to document..."), this);
     addObjectToDocumentAction->setObjectName(ACTION_PROJECT__ADD_OBJECT);
     tree->addAction(addObjectToDocumentAction);
     connect(addObjectToDocumentAction, SIGNAL(triggered()), SLOT(sl_onAddObjectToSelectedDocument()));
 
-    importToDatabaseAction = new QAction(QIcon(":core/images/db/database_copy.png"), tr("Import..."), this);
+    importToDatabaseAction = new QAction(QIcon(GUIUtils::getIconResource("core", "database_copy.png")), tr("Import..."), this);
     importToDatabaseAction->setObjectName(ACTION_PROJECT__IMPORT_TO_DATABASE);
     tree->addAction(importToDatabaseAction);
     connect(importToDatabaseAction, SIGNAL(triggered()), SLOT(sl_onImportToDatabase()));
 
-    loadSelectedDocumentsAction = new QAction(QIcon(":core/images/load_selected_documents.png"), tr("Load selected document(s)"), this);
+    loadSelectedDocumentsAction = new QAction(GUIUtils::getIconResource("core", "load_selected_documents.png", false), tr("Load selected document(s)"), this);
     loadSelectedDocumentsAction->setObjectName("action_load_selected_documents");
     loadSelectedDocumentsAction->setShortcuts(QList<QKeySequence>() << Qt::Key_Enter << Qt::Key_Return);
     loadSelectedDocumentsAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     tree->addAction(loadSelectedDocumentsAction);
     connect(loadSelectedDocumentsAction, SIGNAL(triggered()), SLOT(sl_onLoadSelectedDocuments()));
 
-    unloadSelectedDocumentsAction = new QAction(QIcon(":core/images/unload_document.png"), tr("Unload selected document(s)"), this);
+    unloadSelectedDocumentsAction = new QAction(GUIUtils::getIconResource("core", "unload_document.png", false), tr("Unload selected document(s)"), this);
     unloadSelectedDocumentsAction->setObjectName(ACTION_PROJECT__UNLOAD_SELECTED);
     connect(unloadSelectedDocumentsAction, SIGNAL(triggered()), SLOT(sl_onUnloadSelectedDocuments()));
 
@@ -730,7 +733,7 @@ void ProjectTreeController::setupActions() {
     renameAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     tree->addAction(renameAction);
 
-    removeSelectedItemsAction = new QAction(QIcon(":core/images/remove_selected_documents.png"), tr("Remove selected items"), this);
+    removeSelectedItemsAction = new QAction(GUIUtils::getIconResource("core", "remove_selected_documents.png", false), tr("Remove selected items"), this);
     removeSelectedItemsAction->setShortcut(QKeySequence::Delete);
     removeSelectedItemsAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     tree->addAction(removeSelectedItemsAction);
@@ -945,6 +948,10 @@ void ProjectTreeController::sl_onObjRemovalTaskFinished() {
 
 void ProjectTreeController::sl_filterGroupAdded(const QModelIndex& groupIndex) {
     tree->setExpanded(groupIndex, true);
+}
+
+void ProjectTreeController::sl_colorModeSwitched() {
+    importToDatabaseAction = new QAction(QIcon(GUIUtils::getIconResource("core", "database_copy.png")), tr("Import..."), this);
 }
 
 void ProjectTreeController::sl_onFolderRemovalTaskFinished() {

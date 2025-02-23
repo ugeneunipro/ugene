@@ -94,31 +94,31 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
 
     // SANGER_TODO: move to separate method
     // do that in createWidget along with initActions?
-    saveAlignmentAction = new QAction(QIcon(":core/images/msa_save.png"), tr("Save alignment"), this);
+    saveAlignmentAction = new QAction(GUIUtils::getIconResource("core", "msa_save.png"), tr("Save alignment"), this);
     saveAlignmentAction->setObjectName("Save alignment");
     connect(saveAlignmentAction, SIGNAL(triggered()), SLOT(sl_saveAlignment()));
 
-    saveAlignmentAsAction = new QAction(QIcon(":core/images/msa_save_as.png"), tr("Save alignment as"), this);
+    saveAlignmentAsAction = new QAction(GUIUtils::getIconResource("core", "msa_save_as.png"), tr("Save alignment as"), this);
     saveAlignmentAsAction->setObjectName("Save alignment as");
     connect(saveAlignmentAsAction, SIGNAL(triggered()), SLOT(sl_saveAlignmentAs()));
 
-    zoomInAction = new QAction(QIcon(":core/images/zoom_in.png"), tr("Zoom In"), this);
+    zoomInAction = new QAction(GUIUtils::getIconResource("core", "zoom_in.png", false), tr("Zoom In"), this);
     zoomInAction->setObjectName("Zoom In");
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomIn()));
 
-    zoomOutAction = new QAction(QIcon(":core/images/zoom_out.png"), tr("Zoom Out"), this);
+    zoomOutAction = new QAction(GUIUtils::getIconResource("core", "zoom_out.png", false), tr("Zoom Out"), this);
     zoomOutAction->setObjectName("Zoom Out");
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
-    zoomToSelectionAction = new QAction(QIcon(":core/images/zoom_reg.png"), tr("Zoom To Selection"), this);
+    zoomToSelectionAction = new QAction(GUIUtils::getIconResource("core", "zoom_reg.png", false), tr("Zoom To Selection"), this);
     zoomToSelectionAction->setObjectName("Zoom To Selection");
     connect(zoomToSelectionAction, SIGNAL(triggered()), SLOT(sl_zoomToSelection()));
 
-    resetZoomAction = new QAction(QIcon(":core/images/zoom_whole.png"), tr("Reset Zoom"), this);
+    resetZoomAction = new QAction(GUIUtils::getIconResource("core", "zoom_whole.png", false), tr("Reset Zoom"), this);
     resetZoomAction->setObjectName("Reset Zoom");
     connect(resetZoomAction, SIGNAL(triggered()), SLOT(sl_resetZoom()));
 
-    changeFontAction = new QAction(QIcon(":core/images/font.png"), tr("Change Font"), this);
+    changeFontAction = new QAction(GUIUtils::getIconResource("core", "font.png"), tr("Change Font"), this);
     changeFontAction->setObjectName("Change Font");
     connect(changeFontAction, SIGNAL(triggered()), SLOT(sl_changeFont()));
 
@@ -138,7 +138,7 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
     gotoSelectedReadAction->setEnabled(false);
     connect(gotoSelectedReadAction, &QAction::triggered, this, &MaEditor::sl_gotoSelectedRead);
 
-    multilineViewAction = new QAction(QIcon(":core/images/multiline_view.png"), tr("Wrap mode"), this);
+    multilineViewAction = new QAction(GUIUtils::getIconResource("core", "multiline_view.png", false), tr("Wrap mode"), this);
     multilineViewAction->setObjectName("multilineView");
     multilineViewAction->setCheckable(true);
     multilineViewAction->setChecked(false);
@@ -155,6 +155,7 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
             SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)),
             SLOT(sl_onAlignmentChanged(const Msa&, const MaModificationInfo&)));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(resetColumnWidthCache()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaEditor::sl_colorModeSwitched);
 }
 
 void MaEditor::sl_onAlignmentChanged(const Msa&, const MaModificationInfo&) {
@@ -634,6 +635,16 @@ void MaEditor::sl_onClearActionTriggered() {
         return;
     }
     getSelectionController()->clearSelection();
+}
+
+void MaEditor::sl_colorModeSwitched() {
+    saveAlignmentAction->setIcon(GUIUtils::getIconResource("core", "msa_save.png"));
+    saveAlignmentAsAction->setIcon(GUIUtils::getIconResource("core", "msa_save_as.png"));
+    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));
+    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png", false));
+    zoomToSelectionAction->setIcon(GUIUtils::getIconResource("core", "zoom_reg.png", false));
+    resetZoomAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png", false));
+    changeFontAction->setIcon(GUIUtils::getIconResource("core", "font.png"));
 }
 
 MaCollapseModel* MaEditor::getCollapseModel() const {

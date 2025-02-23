@@ -30,7 +30,7 @@
 namespace U2 {
 
 const QString MSAHighlightingFactory::GROUP_ID = "OP_MSA_HIGHLIGHTING";
-const QString MSAHighlightingFactory::GROUP_ICON_STR = ":core/images/highlight.png";
+const IconParameters MSAHighlightingFactory::GROUP_ICON_PAR = IconParameters("core", "highlight.png");
 const QString MSAHighlightingFactory::GROUP_DOC_PAGE = "65929627";
 
 MSAHighlightingFactory::MSAHighlightingFactory() {
@@ -51,7 +51,7 @@ QWidget* MSAHighlightingFactory::createWidget(GObjectViewController* objView, co
 }
 
 OPGroupParameters MSAHighlightingFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Highlighting"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Highlighting"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2
