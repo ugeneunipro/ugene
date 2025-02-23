@@ -21,6 +21,7 @@ if (APPLE)
 endif ()
 
 qt5_add_resources(RCC_SRCS ugeneui.qrc)
+qt5_add_resources(RCC_SRCS dark/darkstyle.qrc)
 
 add_executable(ugeneui ${HDRS} ${SRCS} ${OBJC_SRCS} ${QM_FILES} ${RCC_SRCS})
 set_target_properties(ugeneui PROPERTIES DEBUG_POSTFIX "d")
