@@ -5,7 +5,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 REQUIRED Core Gui Widgets Xml Network NetworkAuth WebSockets Script)
+find_package(Qt5 REQUIRED Core Gui Widgets Xml Network NetworkAuth WebSockets)
 
 include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
 
@@ -26,7 +26,7 @@ add_executable(ugeneui ${HDRS} ${SRCS} ${OBJC_SRCS} ${QM_FILES} ${RCC_SRCS})
 set_target_properties(ugeneui PROPERTIES DEBUG_POSTFIX "d")
 
 target_link_libraries(ugeneui
-        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::NetworkAuth Qt5::WebSockets Qt5::Script
+        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::NetworkAuth Qt5::WebSockets
         U2Core U2Designer U2Algorithm U2Formats U2Gui U2View U2Test U2Lang U2Private breakpad)
 
 if (APPLE)
