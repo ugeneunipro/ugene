@@ -1,0 +1,6 @@
+<multi-test>
+
+    <load-broken-document url="kraken_results/negative/bad_fourth_word_paired_3.txt" io="local_file" format="kraken-results" 
+                          message="second element of the pair should be a number"/>
+
+</multi-test>

@@ -1,0 +1,24 @@
+<multi-test>
+    <load-document index="doc" url="kraken_results/paired_reads_result.txt" io="local_file" format="kraken-results"/>
+    
+    <find-object-by-name index="ato1_1" doc="doc" name="SRR31821941.12_left features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="ato1_1" value="3"/>
+    <find-object-by-name index="ato1_2" doc="doc" name="SRR31821941.12_right features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="ato1_2" value="3"/>
+    
+    <find-object-by-name index="ato2_1" doc="doc" name="SRR31821941.1_left features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="ato2_1" value="3"/>
+    <find-object-by-name index="ato2_2" doc="doc" name="SRR31821941.1_right features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="ato2_2" value="3"/>
+    
+    <find-object-by-name index="ato3_1" doc="doc" name="SRR31821941.2_left features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="ato3_1" value="3"/>
+    <find-object-by-name index="ato3_2" doc="doc" name="SRR31821941.2_right features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="ato3_2" value="3"/>
+    
+    <find-object-by-name index="ato4_1" doc="doc" name="SRR31821941.3_left features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="ato4_1" value="2"/>
+    <find-object-by-name index="ato4_2" doc="doc" name="SRR31821941.3_right features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="ato4_2" value="5"/>
+    
+</multi-test>

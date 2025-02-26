@@ -1,0 +1,6 @@
+<multi-test>
+
+    <load-broken-document url="kraken_results/negative/bad_fourth_word_paired.txt" io="local_file" format="kraken-results" 
+                          message="4th word not match format"/>
+
+</multi-test>
