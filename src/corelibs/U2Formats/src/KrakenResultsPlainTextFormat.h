@@ -36,8 +36,26 @@ protected:
 
     Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 private:
-    QPair<QString, QList<SharedAnnotationData>> parse(const QString& line, int lineNumber, U2OpStatus& os);
+    
+    struct LineParseResult {
+        QPair<QString, QList<SharedAnnotationData>> left;
+        QPair<QString, QList<SharedAnnotationData>> right;
+    };
+    
+    enum ReadsType {
+        Unknown,
+        Single,
+        Paired
+    };
 
+    LineParseResult parse(const QString& line, int lineNumber, U2OpStatus& os);
+
+    ReadsType readsInFile = Unknown;
+    
+    static const QString PAIRED_READS_DELIMITER;
+    static const QString LENGTHS_DELIMITER;
+    static const QString ID_SEQ_DELIMITER;
+    static const QString QUICK_PROCESSING_MARK;
 };
 
 } //ns

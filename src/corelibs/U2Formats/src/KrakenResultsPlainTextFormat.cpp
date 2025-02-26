@@ -32,6 +32,11 @@
 
 namespace U2 {
 
+const QString KrakenResultsPlainTextFormat::PAIRED_READS_DELIMITER = "|:|";
+const QString KrakenResultsPlainTextFormat::LENGTHS_DELIMITER = "|";
+const QString KrakenResultsPlainTextFormat::ID_SEQ_DELIMITER = ":";
+const QString KrakenResultsPlainTextFormat::QUICK_PROCESSING_MARK = ":Q";
+
 KrakenResultsPlainTextFormat::KrakenResultsPlainTextFormat(QObject* p)
     : TextDocumentFormat(p, BaseDocumentFormats::PLAIN_KRAKEN_RESULTS, 
                          DocumentFormatFlag_SupportStreaming | DocumentFormatFlag_CannotBeCreated, {"txt"}) {
@@ -64,7 +69,7 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
             if (words[3].toInt(&isNumber) > 0 && isNumber) {
                 // last word should contain ':', and not ends with ':Q', results shouldn't be from quick classification
                 // dot try to analyze last word in case of single line, it is incomplete
-                if ((!words.last().contains(":") || words.last().endsWith(":Q")) && lines.size() > 1) {
+                if ((!words.last().contains(ID_SEQ_DELIMITER) || words.last().endsWith(QUICK_PROCESSING_MARK)) && lines.size() > 1) {
                     return FormatDetection_NotMatched;
                 }
             } else {
@@ -78,17 +83,23 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
 }
 
 Document* KrakenResultsPlainTextFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap&, U2OpStatus& os) {
+    readsInFile = Unknown;
     QMultiMap<QString, QList<SharedAnnotationData>> annotationDataForTables;
     int lineNumber = 1;
     QMultiMap<QString, QList<SharedAnnotationData>> annotationsMap;
     while (!os.isCoR() && !reader.atEnd()) {
         QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE).simplified();
         CHECK_OP(os, nullptr);
-        QPair<QString, QList<SharedAnnotationData>> result = parse(line,lineNumber, os);
+        LineParseResult result = parse(line,lineNumber, os);
         CHECK_OP(os, nullptr);
         os.setProgress(reader.getProgress());
-        CHECK_EXT_CONTINUE(!result.second.isEmpty(), ioLog.details(tr("Sequence %1 skipped, because no classified result found").arg(result.first)));
-        annotationsMap.insert(result.first, result.second);
+        CHECK_EXT_CONTINUE(!result.left.second.isEmpty(), ioLog.details(tr("Sequence %1 skipped, because no classified result found").arg(result.left.first)));
+        annotationsMap.insert(result.left.first, result.left.second);
+        if (readsInFile == Paired) {
+            CHECK_EXT_CONTINUE(!result.right.second.isEmpty(), 
+                               ioLog.details(tr("Sequence %1 skipped, because no classified result found").arg(result.right.first)));
+            annotationsMap.insert(result.right.first, result.right.second);
+        }
     }
     
     QMap<AnnotationTableObject*, QMap<QString, QList<SharedAnnotationData>>> annTable2Annotations;
@@ -129,29 +140,75 @@ Document* KrakenResultsPlainTextFormat::loadTextDocument(IOAdapterReader& reader
     return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, gobjects);
 }
 
-QPair<QString, QList<SharedAnnotationData>> KrakenResultsPlainTextFormat::parse(const QString& line, int lineNumber, U2OpStatus& os) {
-    QPair<QString, QList<SharedAnnotationData>> result;
+KrakenResultsPlainTextFormat::LineParseResult KrakenResultsPlainTextFormat::parse(const QString& line, int lineNumber, U2OpStatus& os) {
+    KrakenResultsPlainTextFormat::LineParseResult result;
+    bool linePaired = line.contains(PAIRED_READS_DELIMITER);
+    if (readsInFile == Unknown) {
+        readsInFile = linePaired ? Paired : Single;
+    } else {
+        if (readsInFile == Paired) {
+            CHECK_EXT(linePaired, os.setError(tr("Error on line %1, line contains paired results opposite of previous lines in file.")
+                      .arg(QString::number(lineNumber))), result);
+        } else if (readsInFile == Single) {
+            CHECK_EXT(!linePaired, os.setError(tr("Error on line %1, line contains single results opposite of previous lines in file.")
+                      .arg(QString::number(lineNumber))), result);
+        }
+    }
     const QStringList words = line.split(QRegExp("\\s+"));
     CHECK_EXT(words[0] == "C" || words[0] == "U", os.setError(tr("Error on line %1, 1st word should be \"C\" or \"U\".")
               .arg(QString::number(lineNumber))), result);
-
+    result.left.first = words[1];
+    if (words[0] == "U") {
+        return result;
+    }
     bool conversionIsOk = false;
     int convertedWord = words[2].toInt(&conversionIsOk);
     CHECK_EXT(conversionIsOk, os.setError(tr("Error on line %1, 3rd word should be number.").arg(QString::number(lineNumber))), result);
     CHECK_EXT(convertedWord >= 0, os.setError(tr("Error on line %1, 3rd word should be number greater or equal zero.")
               .arg(QString::number(lineNumber))), result);
+     
+    int leftSequenceLength = 0;
+    int rightSequenceLength = 0;
+    if (readsInFile == Single) {
+        convertedWord = words[3].toInt(&conversionIsOk);
+        CHECK_EXT(conversionIsOk, os.setError(tr("Error on line %1, 4th word should be number.").arg(QString::number(lineNumber))), result);
+        CHECK_EXT(convertedWord > 0, os.setError(tr("Error on line %1, 4th word should be number greater than zero.")
+                  .arg(QString::number(lineNumber))), result);
+        leftSequenceLength = convertedWord;
+    } else {
+        result.left.first = words[1] + "_left";
+        result.right.first = words[1] + "_right";
+        QStringList pair = words[3].split(LENGTHS_DELIMITER);
+        CHECK_EXT(pair.size() == 2, os.setError(tr("Error on line %1, 4th word not match format \"<number>|<number>\".")
+                   .arg(QString::number(lineNumber))), result);
+        convertedWord = pair[0].toInt(&conversionIsOk);
+        CHECK_EXT(conversionIsOk, os.setError(tr("Error on line %1, 4th word, first element of the pair should be a number.")
+                  .arg(QString::number(lineNumber))), result);
+        CHECK_EXT(convertedWord > 0, os.setError(tr("Error on line %1, 4th, first element of the pair should be number greater than zero.")
+                  .arg(QString::number(lineNumber))), result);
+        leftSequenceLength = convertedWord;
+        convertedWord = pair[1].toInt(&conversionIsOk);
+        CHECK_EXT(conversionIsOk, os.setError(tr("Error on line %1, 4th word, second element of the pair should be a number.")
+                  .arg(QString::number(lineNumber))), result);
+        CHECK_EXT(convertedWord > 0, os.setError(tr("Error on line %1, 4th, second element of the pair should be number greater than zero.")
+                  .arg(QString::number(lineNumber))), result);
+        rightSequenceLength = convertedWord;
+    }
     
-    result.first = words[1];
-
-    convertedWord = words[3].toInt(&conversionIsOk);
-    CHECK_EXT(conversionIsOk, os.setError(tr("Error on line %1, 4th word should be number.").arg(QString::number(lineNumber))), result);
-    CHECK_EXT(convertedWord > 0, os.setError(tr("Error on line %1, 4th word should be number greater than zero.")
-              .arg(QString::number(lineNumber))), result);
-    const int sequenceLength  = convertedWord;
     int summaryFramentLength = 0;
+    int summaryFramentLengthLeft = 0;
+    bool leftPart = true;
     QList <SharedAnnotationData> annotationData;
+    QList<SharedAnnotationData>* currentResultPart = &(result.left.second);
     for (int wordIndex = 4; wordIndex < words.size(); wordIndex++) {
-        const QStringList pair = words[wordIndex].split(":");
+        if (words[wordIndex] == PAIRED_READS_DELIMITER) {
+            currentResultPart = &(result.right.second);
+            summaryFramentLengthLeft = summaryFramentLength;
+            summaryFramentLength = 0;
+            leftPart = false;
+            continue;
+        }
+        const QStringList pair = words[wordIndex].split(ID_SEQ_DELIMITER);
         const int naturalWordIndex = wordIndex + 1;
         CHECK_EXT(pair.size() == 2, os.setError(tr("Error on line %1, %2th word not match format \"<string_or_number>:<number>\".")
                                                 .arg(QString::number(lineNumber)).arg(QString::number(naturalWordIndex))), result);
@@ -161,17 +218,24 @@ QPair<QString, QList<SharedAnnotationData>> KrakenResultsPlainTextFormat::parse(
                                                 .arg(QString::number(lineNumber)).arg(QString::number(naturalWordIndex))), result);
         CHECK_EXT(fragmentLength > 0, os.setError(tr("Error on line %1, %2th word second element of the pair should be number greater than zero.")
                                                 .arg(QString::number(lineNumber)).arg(QString::number(naturalWordIndex))), result);
+        const int lengthToCheck = leftPart ? leftSequenceLength : rightSequenceLength;
         if (pair[0] != "0" && pair[0] != "unclassified") {
             SharedAnnotationData annotData(new AnnotationData);
+            if (leftPart) {
+                annotData->location->regions = {U2Region(summaryFramentLength, fragmentLength)};
+            } else {
+                annotData->location->strand = U2Strand::Complementary;
+                annotData->location->regions = {U2Region(summaryFramentLengthLeft - (summaryFramentLength + fragmentLength), fragmentLength)};
+            }
             annotData->name = pair[0];
-            annotData->location->regions = {U2Region(summaryFramentLength, fragmentLength)};
-            result.second.append(annotData);
+            
+            currentResultPart->append(annotData);
         }
         summaryFramentLength += fragmentLength;
-        CHECK_EXT(sequenceLength >= summaryFramentLength,
+        CHECK_EXT(lengthToCheck >= summaryFramentLength,
                   os.setError(tr("Summary fragment length %1 should be less or equal sequence length %2.")
                                   .arg(QString::number(summaryFramentLength))
-                                  .arg(QString::number(sequenceLength))),
+                                  .arg(QString::number(lengthToCheck))),
                   result);
     }
     return result;
