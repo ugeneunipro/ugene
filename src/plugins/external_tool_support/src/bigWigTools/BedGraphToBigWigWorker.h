@@ -23,6 +23,8 @@
 
 #include <U2Core/GUrl.h>
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 

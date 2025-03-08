@@ -81,6 +81,8 @@ private slots:
     /** Callback on alignment collapse model change. Disables sync mode if needed. See 'syncModeAction' for details. */
     void sl_alignmentCollapseModelChanged();
 
+    void sl_colorModeSwitched() override;
+
 signals:
     void si_refreshTree(MsaEditorTreeViewer* treeViewer);
 

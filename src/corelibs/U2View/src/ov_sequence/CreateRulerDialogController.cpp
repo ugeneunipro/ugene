@@ -24,10 +24,13 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/TextUtils.h>
 
 #include <U2Gui/DialogUtils.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/MainWindow.h>
 
 namespace U2 {
 
@@ -50,17 +53,17 @@ CreateRulerDialogController::CreateRulerDialogController(const QSet<QString>& na
     spinBox->setMaximum(INT_MAX);
     spinBox->setValue(defaultOffset);
 
-    color = Qt::darkBlue;
+    color = AppContext::getMainWindow()->isDarkMode() ? Qt::blue : Qt::darkBlue;
 
     updateColorSample();
 
     connect(colorButton, SIGNAL(clicked()), SLOT(sl_colorButtonClicked()));
-    setWindowIcon(QIcon(":/ugene/images/ugene_16.png"));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png", false));
 }
 
 void CreateRulerDialogController::updateColorSample() {
     QPalette lPal;
-    lPal.setColor(QPalette::Window, Qt::white);
+    lPal.setColor(QPalette::Window, QPalette().base().color());
     lPal.setColor(QPalette::WindowText, color);
     sampleLabel->setPalette(lPal);
 }

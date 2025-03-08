@@ -20,6 +20,7 @@
  */
 
 #include <QPainter>
+#include <QPalette>
 #include <QVector>
 
 #include <U2Core/FormatUtils.h>
@@ -52,6 +53,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
 
     SAFE_POINT(c.drawArrow ? c.drawAxis : true, "drawAxis must be enabled when drawArrow is true", );
 
+    p.setPen(QPalette().text().color());
     p.setFont(font);
     QFontMetrics fm(font);
     int cw = fm.size(Qt::TextSingleLine, "0").width();

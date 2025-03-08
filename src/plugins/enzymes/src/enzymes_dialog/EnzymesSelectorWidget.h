@@ -118,6 +118,8 @@ private slots:
     void sl_itemChanged(QTreeWidgetItem* item, int col);
     void sl_filterConditionsChanged();
     void sl_findSingleEnzymeTaskStateChanged();
+    void sl_itemSelectionChanged();
+    void sl_colorModeSwitched();
 
 private slots:
     void sl_onSelectionModified(int visible, int selected);

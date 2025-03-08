@@ -31,7 +31,9 @@
 #include <QStyleOptionGraphicsItem>
 #include <QTextDocument>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
+#include <U2Core/FeatureColors.h>
 #include <U2Core/QVariantUtils.h>
 #include <U2Core/global.h>
 
@@ -71,6 +73,7 @@ QDElement::QDElement(QDSchemeUnit* _unit)
     QDParameters* params = unit->getActor()->getParameters();
     connect(params, SIGNAL(si_modified()), SLOT(sl_refresh()));
     connect(unit->getActor(), SIGNAL(si_strandChanged(QDStrandOption)), SLOT(sl_refresh()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &QDElement::si_colorModeSwitched);
 
     itemDescription = new QDElementDescription(this);
     itemDescription->setDocument(doc);
@@ -183,15 +186,14 @@ void QDElement::saveState(QDElementStatement* el) const {
 }
 
 void QDElement::sl_refresh() {
-    QString baseHtml = "<center>" + getHeaderString();
+    QString baseHtml = "<center>" + QString("<span style=\"color: %1;\">").arg(QPalette().text().color().name()) + getHeaderString();
     auto qs = qobject_cast<QueryScene*>(scene());
     if (qs && !qs->showActorDesc()) {
         doc->setHtml(baseHtml);
     } else {
         QString infoStr = unit->getActor()->getText();
-        doc->setHtml(QString("%1<hr>%2")
-                         .arg(baseHtml)
-                         .arg(infoStr));
+        QString res = QString("%1<hr>%2").arg(baseHtml).arg(infoStr);
+        doc->setHtml(res);
     }
     update();
 
@@ -261,6 +263,7 @@ void QDElement::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
     Q_UNUSED(option);
     Q_UNUSED(widget);
     QPen pen;
+    pen.setColor(QPalette().text().color());
     if (isSelected()) {
         pen.setStyle(Qt::DashLine);
         painter->setPen(pen);
@@ -271,7 +274,13 @@ void QDElement::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
     }
 
     painter->setRenderHint(QPainter::Antialiasing);
-    painter->setBrush(getActor()->defaultColor());
+    auto actor = getActor();
+    auto color = actor->defaultColor();
+    auto colorName = color.name();
+    if (AppContext::getMainWindow()->isDarkMode()) {
+        color = FeatureColors::transformLightToDark(color);
+    }
+    painter->setBrush(color);
 
     qreal w = boundingRect().width();
     qreal h = boundingRect().height();
@@ -311,6 +320,10 @@ QPointF QDElement::getRightConnector() {
 
 QPointF QDElement::getLeftConnector() {
     return mapToScene(QPointF(boundingRect().left(), (boundingRect().top() + boundingRect().bottom()) / 2));
+}
+
+void QDElement::si_colorModeSwitched() {
+    sl_refresh();
 }
 
 void QDElement::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
@@ -814,7 +827,7 @@ void Footnote::init() {
     from->links << this;
     to->links << this;
 
-    QPen refPen(Qt::black);
+    QPen refPen(QPalette().text().color());
     refPen.setStyle(Qt::DotLine);
     leftRef = new QGraphicsLineItem;
     rightRef = new QGraphicsLineItem;
@@ -922,9 +935,9 @@ QRectF Footnote::boundingRect() const {
 void Footnote::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->fillRect(boundingRect(), Qt::white);
+    painter->fillRect(boundingRect(), QPalette().base().color());
     qreal arrW = getDstPoint().x() - getSrcPoint().x();
-    QPen pen(Qt::black);
+    QPen pen(QPalette().text().color());
     if (isSelected()) {
         pen.setStyle(Qt::DashLine);
     }

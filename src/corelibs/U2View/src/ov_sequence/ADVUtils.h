@@ -24,6 +24,7 @@
 #include <QSet>
 
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/IconParameters.h>
 #include <U2Core/global.h>
 
 #include <U2Gui/ObjectViewModel.h>
@@ -46,7 +47,7 @@ class U2VIEW_EXPORT ADVGlobalAction : public GObjectViewAction {
     Q_OBJECT
 public:
     ADVGlobalAction(AnnotatedDNAView* v,
-                    const QIcon& icon,
+                    const IconParameters& iconParameters,
                     const QString& text,
                     int pos = 1000 * 1000,
                     const ADVGlobalActionFlags& flags = ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_AddToAnalyseMenu | ADVGlobalActionFlag_SingleSequenceOnly);
@@ -67,6 +68,7 @@ public:
 private slots:
     /** Calls updateState() on every active sequence widget change. */
     void sl_activeSequenceChanged();
+    void sl_colorModeSwitched();
 
 private:
     void updateState();
@@ -74,6 +76,7 @@ private:
     QSet<DNAAlphabetType> alphabetFilter;
     int pos;
     ADVGlobalActionFlags flags;
+    IconParameters iconParameters;
 };
 
 }  // namespace U2

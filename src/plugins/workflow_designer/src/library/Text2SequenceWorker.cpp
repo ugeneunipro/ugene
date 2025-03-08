@@ -28,6 +28,7 @@
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Gui/SeqPasterWidgetController.h>
+#include <U2Gui/Theme.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -204,7 +205,7 @@ Worker* Text2SequenceWorkerFactory::createWorker(Actor* a) {
  * Text2SequencePrompter
  *******************************/
 QString Text2SequencePrompter::composeRichDoc() {
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_TEXT_PORT_ID()));
     Actor* txtProducer = input->getProducer(BaseSlots::TEXT_SLOT().getId());
     QString txtProducetStr = tr(" from <u>%1</u>").arg(txtProducer ? txtProducer->getLabel() : unsetStr);

@@ -23,13 +23,13 @@
 
 namespace U2 {
 
-static const QStringList wellKnownErrors = {"Must specify DB", 
-                                            "does not contain necessary file database.kdb", 
-                                            "--paired requires exactly two filenames", 
-                                            "mismatched mate pair names", 
+static const QStringList wellKnownErrors = {"Must specify DB",
+                                            "does not contain necessary file database.kdb",
+                                            "--paired requires exactly two filenames",
+                                            "mismatched mate pair names",
                                             "can't determine what format",
                                             "can't open database.idx: No such file or directory",
-                                            "mismatched sequence counts", 
+                                            "mismatched sequence counts",
                                             "Need to specify input filenames"};
 
 Kraken2ClassifyLogParser::Kraken2ClassifyLogParser()

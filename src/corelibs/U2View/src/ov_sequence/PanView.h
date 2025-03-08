@@ -160,6 +160,7 @@ protected:
 protected slots:
     void sl_sequenceChanged() override;
     void sl_onAnnotationsModified(const QList<AnnotationModification>& annotationModifications) override;
+    void sl_colorModeSwitched() override;
 
 private slots:
     void sl_zoomInAction();

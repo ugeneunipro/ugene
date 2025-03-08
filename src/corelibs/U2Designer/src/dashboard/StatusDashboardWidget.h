@@ -50,6 +50,7 @@ private slots:
     void sl_progressChanged(int progress);
     void sl_taskStateChanged(Monitor::TaskState newState);
     void sl_timerEvent();
+    void sl_colorModeSwitched();
 
 private:
     static QString state2StatusMessage(const Monitor::TaskState& state);

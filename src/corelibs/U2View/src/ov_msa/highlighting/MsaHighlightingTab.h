@@ -63,6 +63,7 @@ private slots:
     void sl_colorParametersChanged();
     void sl_highlightingParametersChanged();
     void sl_refreshSchemes();
+    void sl_colorModeSwitched();
 
 private:
     void initSeqArea();

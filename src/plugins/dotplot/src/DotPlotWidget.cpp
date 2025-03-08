@@ -54,6 +54,12 @@
 
 namespace U2 {
 
+const QColor DotPlotWidget::DOT_PLOT_BACKGROUND_COLOR_LIGHT = QColor(240, 240, 255);
+const QColor DotPlotWidget::DOT_PLOT_NEAREST_REPEAT_COLOR_LIGHT = QColor(240, 0, 0);
+
+const QColor DotPlotWidget::DOT_PLOT_BACKGROUND_COLOR_DARK = QColor(63, 63, 48);
+const QColor DotPlotWidget::DOT_PLOT_NEAREST_REPEAT_COLOR_DARK = QColor(255, 83, 83);
+
 DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     : ADVSplitWidget(dnaView),
       selecting(false), shifting(false), miniMapLooking(false), selActive(true), nearestSelecting(false),
@@ -82,8 +88,11 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
 
     initActionsAndSignals();
 
-    dotPlotBGColor = QColor(240, 240, 255);
-    dotPlotNearestRepeatColor = QColor(240, 0, 0);
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    dotPlotBGColor = isDark ? DOT_PLOT_BACKGROUND_COLOR_DARK : DOT_PLOT_BACKGROUND_COLOR_LIGHT;
+    dotPlotDirectColor = isDark ? DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK : DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT;
+    dotPlotInvertedColor = isDark ? DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK : DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT;
+    dotPlotNearestRepeatColor = isDark ? DOT_PLOT_NEAREST_REPEAT_COLOR_DARK : DOT_PLOT_NEAREST_REPEAT_COLOR_LIGHT;
 
     setFocusPolicy(Qt::WheelFocus);
 
@@ -139,6 +148,8 @@ void DotPlotWidget::initActionsAndSignals() {
     }
 
     setMouseTracking(true);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DotPlotWidget::sl_colorModeSwitched);
 }
 
 // connect signals to know if user clicks on dotplot sequences
@@ -341,6 +352,17 @@ void DotPlotWidget::sl_timer() {
         }
     }
     timer->stop();
+}
+
+void DotPlotWidget::sl_colorModeSwitched() {
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
+
+    dotPlotBGColor = isDark ? DOT_PLOT_BACKGROUND_COLOR_DARK : DOT_PLOT_BACKGROUND_COLOR_LIGHT;
+    dotPlotDirectColor = isDark ? DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK : DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT;
+    dotPlotInvertedColor = isDark ? DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK : DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT;
+    dotPlotNearestRepeatColor = isDark ? DOT_PLOT_NEAREST_REPEAT_COLOR_DARK : DOT_PLOT_NEAREST_REPEAT_COLOR_LIGHT;
+
+    pixMapUpdateNeeded = true;
 }
 
 void DotPlotWidget::sl_taskStateChanged() {

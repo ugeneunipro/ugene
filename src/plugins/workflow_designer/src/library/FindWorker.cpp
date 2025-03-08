@@ -41,6 +41,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
@@ -212,7 +214,7 @@ void FindWorkerFactory::init() {
     }
     proto->setEditor(new DelegateEditor(delegates));
 
-    proto->setIconPath(":core/images/find_dialog.png");
+    proto->setIconParameters(IconParameters("core", "find_dialog.png", true));
     proto->setPrompter(new FindPrompter());
     proto->setValidator(new FindPatternsValidator());
     QList<Descriptor> reqSlots;
@@ -249,7 +251,7 @@ static FindAlgorithmStrand getStrand(const QString& s) {
 QString FindPrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     Actor* seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
 
     QString seqName;
     seqProducer ? (seqName = seqProducer->getLabel()) : (seqName = unsetStr);

@@ -34,6 +34,7 @@
 #include <QTextDocument>
 #include <QtMath>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/QVariantUtils.h>
 
 #include <U2Gui/DialogUtils.h>
@@ -51,9 +52,6 @@ const StyleId ItemStyles::EXTENDED = "ext";
 
 #define BGC QString("-bgc")
 #define FONT QString("-font")
-
-const QColor ITEM_WITH_ENABLED_BREAKPOINT_BORDER_COLOR = QColor(178, 34, 34);
-const QColor ITEM_WITH_DISABLED_BREAKPOINT_BORDER_COLOR = QColor(184, 134, 11);
 
 ItemViewStyle::ItemViewStyle(WorkflowProcessItem* p, const QString& id)
     : QGraphicsObject(p),
@@ -108,6 +106,11 @@ void ItemViewStyle::loadState(QDomElement& el) {
     }
 }
 
+void ItemViewStyle::sl_colorModeSwitched() {
+    bgColor = defaultColor();
+    update();
+}
+
 SimpleProcStyle::SimpleProcStyle(WorkflowProcessItem* pit)
     : ItemViewStyle(pit, ItemStyles::SIMPLE) {
     owner = (pit);
@@ -133,6 +136,23 @@ QPainterPath SimpleProcStyle::shape() const {
     return contour;
 }
 
+const QColor ITEM_WITH_ENABLED_BREAKPOINT_BORDER_COLOR_LIGHT = QColor(178, 34, 34);
+const QColor ITEM_WITH_ENABLED_BREAKPOINT_BORDER_COLOR_DARK = QColor(255, 127, 127);
+const QColor ITEM_WITH_DISABLED_BREAKPOINT_BORDER_COLOR_LIGHT = QColor(184, 134, 11);
+const QColor ITEM_WITH_DISABLED_BREAKPOINT_BORDER_COLOR_DARK = QColor(255, 196, 71);
+
+static const QColor getBpBorderColor(bool isBpEnabled) {
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    QColor borderColor;
+    if (isBpEnabled) {
+        borderColor = isDark ? ITEM_WITH_ENABLED_BREAKPOINT_BORDER_COLOR_DARK : ITEM_WITH_ENABLED_BREAKPOINT_BORDER_COLOR_LIGHT;
+    } else {
+        borderColor = isDark ? ITEM_WITH_DISABLED_BREAKPOINT_BORDER_COLOR_DARK : ITEM_WITH_DISABLED_BREAKPOINT_BORDER_COLOR_LIGHT;
+    }
+
+    return borderColor;
+}
+
 void SimpleProcStyle::paint(QPainter* painter,
                             const QStyleOptionGraphicsItem* option,
                             QWidget* widget) {
@@ -144,9 +164,9 @@ void SimpleProcStyle::paint(QPainter* painter,
     contour.addEllipse(QPointF(0, 0), R, R);
 
     QPen pen;
+    pen.setColor(QPalette().text().color());
     if (owner->isBreakpointInserted()) {
-        const QColor borderColor = (owner->isBreakpointEnabled()) ? ITEM_WITH_ENABLED_BREAKPOINT_BORDER_COLOR : ITEM_WITH_DISABLED_BREAKPOINT_BORDER_COLOR;
-        pen.setColor(borderColor);
+        pen.setColor(getBpBorderColor(owner->isBreakpointEnabled()));
     }
     if (owner->isSelected()) {
         pen.setWidthF(2);
@@ -156,7 +176,7 @@ void SimpleProcStyle::paint(QPainter* painter,
 
     QRadialGradient rg(R / 2, -R / 2, R * 2);
     rg.setColorAt(1, bgColor);
-    rg.setColorAt(0, QColor(Qt::white));
+    rg.setColorAt(0, QPalette().window().color());
     QBrush procBrush(rg);
     painter->drawPath(contour);
     painter->fillPath(contour, procBrush);
@@ -284,21 +304,22 @@ void ExtendedProcStyle::paint(QPainter* painter,
         dot.addEllipse(dt, 1.2, 1.2);
         dot.addEllipse(dt - QPointF(4, 0), 1.2, 1.2);
         dot.addEllipse(dt - QPointF(8, 0), 1.2, 1.2);
-        painter->fillPath(dot, QBrush(QColor(0x33, 0x33, 0x33)));
+        painter->fillPath(dot, QBrush(AppContext::getMainWindow()->isDarkMode() ? QColor(204, 204, 204) : QColor(51, 51, 51)));
     }
 
     QPen pen;
+    pen.setColor(QPalette().text().color());
     pen.setWidthF(1.3);
     if (owner->isSelected()) {
         pen.setStyle(Qt::DashLine);
     }
     if (owner->isBreakpointInserted()) {
-        const QColor borderColor = (owner->isBreakpointEnabled()) ? ITEM_WITH_ENABLED_BREAKPOINT_BORDER_COLOR : ITEM_WITH_DISABLED_BREAKPOINT_BORDER_COLOR;
-        pen.setColor(borderColor);
+        pen.setColor(getBpBorderColor(owner->isBreakpointEnabled()));
     }
 
     painter->setPen(pen);
     painter->drawRoundedRect(tb, MARGIN, MARGIN);
+    desc->setDefaultTextColor(QPalette().text().color());
 }
 
 #define RESIZE_AREA 4
@@ -529,10 +550,12 @@ HintItem::HintItem(const QString& text, QGraphicsItem* parent)
     setTextWidth(qMin(3 * R, document()->idealWidth()));
     QRectF tb = boundingRect();
     setPos(-tb.width() / 2, -tb.height() - 3);
-    setDefaultTextColor(QColor(Qt::gray).darker());
+    sl_colorModeSwitched();
     QFont f = font();
     f.setWeight(QFont::Light);
     setFont(f);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &HintItem::sl_colorModeSwitched);
 }
 
 QVariant HintItem::itemChange(GraphicsItemChange change, const QVariant& value) {
@@ -587,6 +610,11 @@ void HintItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
 void HintItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
     dragging = false;
     QGraphicsTextItem::mouseReleaseEvent(event);
+}
+
+void HintItem::sl_colorModeSwitched() {
+    auto textColor = AppContext::getMainWindow()->isDarkMode() ? QColor(Qt::gray).lighter() : QColor(Qt::gray).darker();
+    setDefaultTextColor(textColor);
 }
 
 DescriptionItem::DescriptionItem(ExtendedProcStyle* p)

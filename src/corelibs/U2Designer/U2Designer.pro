@@ -21,6 +21,7 @@ HEADERS += src/BreakpointHitCountDialog.h \
            src/NewBreakpointDialog.h \
            src/NewGrouperSlotDialog.h \
            src/OutputFileDialog.h \
+           src/PrompterBase.h \
            src/PropertyWidget.h \
            src/QDScheduler.h \
            src/UrlItem.h \
@@ -96,6 +97,7 @@ SOURCES += src/BreakpointHitCountDialog.cpp \
            src/NewBreakpointDialog.cpp \
            src/NewGrouperSlotDialog.cpp \
            src/OutputFileDialog.cpp \
+           src/PrompterBase.cpp \
            src/PropertyWidget.cpp \
            src/QDScheduler.cpp \
            src/UrlItem.cpp \
