@@ -57,16 +57,16 @@ public:
 class U2AssemblyReadsImportInfo {
 public:
     U2AssemblyReadsImportInfo(U2AssemblyReadsImportInfo* parentInfo = nullptr)
-        : nReads(0), packed(false), parentInfo(parentInfo) {
+        : parentInfo(parentInfo) {
     }
     virtual ~U2AssemblyReadsImportInfo() {
     }
 
     /** Number of reads added during import */
-    qint64 nReads;
+    qint64 nReads = 0;
 
     /** Specifies if assembly was packed at import time*/
-    bool packed;
+    bool packed = false;
 
     /* Place where to save pack statistics */
     U2AssemblyPackStat packStat;
@@ -79,6 +79,7 @@ public:
         }
     }
 
+    bool trimToContent = false;
 private:
     U2AssemblyReadsImportInfo* parentInfo;
 };
