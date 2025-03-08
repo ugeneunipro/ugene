@@ -75,18 +75,28 @@ QModelIndex GTUtilsCloudStorageView::checkItemIsPresent(const QList<QString>& pa
 
 QModelIndex GTUtilsCloudStorageView::checkItemIsShared(const QList<QString>& path, const QString& email) {
     GT_LOG("GTUtilsCloudStorageView::checkItemIsShared: [" + path.join("/") + "]: " + email);
-    auto modelIndex = checkItemIsPresent(path);
-    auto sharedEmails = modelIndex.data(Qt::ItemDataRole(Qt::UserRole + 6)).value<QList<QString>>();
-    GT_CHECK_RESULT(sharedEmails.contains(email), "Shared email is not found: " + email, modelIndex);
-    return modelIndex;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        auto modelIndex = checkItemIsPresent(path);
+        auto sharedEmails = modelIndex.data(Qt::ItemDataRole(Qt::UserRole + 6)).value<QList<QString>>();
+        if (sharedEmails.contains(email)) {
+            return modelIndex;
+        }
+    }
+    GT_FAIL("Shared email is not found: " + email, {});
 }
 
 QModelIndex GTUtilsCloudStorageView::checkItemIsNotShared(const QList<QString>& path, const QString& email) {
     GT_LOG("GTUtilsCloudStorageView::checkItemIsNotShared: [" + path.join("/") + "]: " + email);
-    auto modelIndex = checkItemIsPresent(path);
-    auto sharedEmails = modelIndex.data(Qt::ItemDataRole(Qt::UserRole + 6)).value<QList<QString>>();
-    GT_CHECK_RESULT(!sharedEmails.contains(email), "Shared email is present: " + email, modelIndex);
-    return modelIndex;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        auto modelIndex = checkItemIsPresent(path);
+        auto sharedEmails = modelIndex.data(Qt::ItemDataRole(Qt::UserRole + 6)).value<QList<QString>>();
+        if (!sharedEmails.contains(email)) {
+            return modelIndex;
+        }
+    }
+    GT_FAIL("Shared email is present: " + email, {});
 }
 
 void GTUtilsCloudStorageView::checkItemIsNotPresent(const QList<QString>& path) {
