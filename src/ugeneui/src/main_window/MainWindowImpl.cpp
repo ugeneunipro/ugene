@@ -293,7 +293,14 @@ void MainWindowImpl::createActions() {
         if (!isDark) {
             cm = 1;
         }
-        setNewStyle(s->getVisualStyle(), cm);
+        auto vs = s->getVisualStyle();
+#ifdef Q_OS_WIN
+        // On Windows Dark mode + fusion is better, than Dark mode + windowsvista
+        if (cm == 1) {
+            vs = "fusion";
+        }
+#endif
+        setNewStyle(vs, cm);
 
     });
 
@@ -441,7 +448,10 @@ void MainWindowImpl::prepareGUI() {
         helpMenu->addAction(crashUgeneAction);
     }
 
-    helpMenu->addAction(switchColorMode);
+    if (qgetenv(ENV_GUI_TEST) == "1") {
+        helpMenu->addSeparator();
+        helpMenu->addAction(switchColorMode);
+    }
 
     if (qgetenv(ENV_TEST_NOTIFICATIONS) == "1") {
         helpMenu->addSeparator();
