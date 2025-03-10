@@ -1,0 +1,6 @@
+<multi-test>
+
+    <load-broken-document url="kraken_results/negative/bad_fourth_word_paired_2.txt" io="local_file" format="kraken-results" 
+                          message="first element of the pair should be number greater than zero."/>
+
+</multi-test>
