@@ -31,6 +31,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BasePorts.h>
@@ -180,7 +182,7 @@ void RemoteBLASTWorkerFactory::init() {
 
     proto->setPrompter(new RemoteBLASTPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconPath(":remote_blast/images/remote_db_request.png");
+    proto->setIconParameters(IconParameters("remote_blast", "remote_db_request.png", false));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -191,7 +193,7 @@ QString RemoteBLASTPrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     SAFE_POINT(input != nullptr, "Not a IntegralBusPort", "Internal error");
     Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
     QString doc = tr("For sequence %1 find annotations in database <u>%2</u>.")

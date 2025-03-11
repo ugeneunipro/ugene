@@ -100,7 +100,7 @@ void Kraken2ClassifyWorkerFactory::init() {
 
         Descriptor inPortDescPaired(IN_PORT_DESCR_PAIRED,
                                     Kraken2ClassifyPrompter::tr("Input sequences"),
-                                    Kraken2ClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n" 
+                                    Kraken2ClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
                                                                 "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
                                                                 "See also the \"Input data\" parameter of the element."));
 

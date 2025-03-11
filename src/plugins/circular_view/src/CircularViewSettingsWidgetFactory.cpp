@@ -31,7 +31,7 @@
 namespace U2 {
 
 const QString CircularViewSettingsWidgetFactory::GROUP_ID = "OP_CV_SETTINGS";
-const QString CircularViewSettingsWidgetFactory::GROUP_ICON_STR = ":circular_view/images/circular.png";
+const IconParameters CircularViewSettingsWidgetFactory::GROUP_ICON_PAR = IconParameters("circular_view", "circular.png", false);
 const QString CircularViewSettingsWidgetFactory::GROUP_DOC_PAGE = "65929523";
 
 CircularViewSettingsWidgetFactory::CircularViewSettingsWidgetFactory(CircularViewContext* context)
@@ -55,7 +55,7 @@ QWidget* CircularViewSettingsWidgetFactory::createWidget(GObjectViewController* 
 }
 
 OPGroupParameters CircularViewSettingsWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Circular View Settings"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Circular View Settings"), GROUP_DOC_PAGE);
 }
 
 bool CircularViewSettingsWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {

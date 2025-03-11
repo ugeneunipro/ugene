@@ -33,12 +33,12 @@
 #include <U2Core/FormatUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/SaveDocumentController.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include "BAMDbiPlugin.h"

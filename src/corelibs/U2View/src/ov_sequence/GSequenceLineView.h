@@ -182,6 +182,7 @@ protected slots:
     void sl_onCoherentRangeViewRangeChanged();
     void sl_onLocalCenteringRequest(qint64 pos);
     void completeUpdate();
+    virtual void sl_colorModeSwitched();
 
 protected:
     QPoint toRenderAreaPoint(const QPoint& p) const;

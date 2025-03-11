@@ -76,7 +76,7 @@ struct U2GUI_EXPORT RegionPreset {
 
     /** Custom sequence localized preset name. */
     static QString getCustomRegionModeDisplayName();
-    
+
     /** Custom sequence localized preset name. */
     static QString getLocationModeDisplayName();
 };

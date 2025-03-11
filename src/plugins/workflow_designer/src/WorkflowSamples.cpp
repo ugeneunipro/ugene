@@ -39,12 +39,15 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/WorkflowGUIUtils.h>
+
+#include <U2Gui/MainWindow.h>
 
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/WorkflowSettings.h>
@@ -105,6 +108,7 @@ SamplesWidget::SamplesWidget(WorkflowScene* scene, QWidget* parent)
     connect(glass, SIGNAL(itemActivated(QTreeWidgetItem*)), SLOT(activateItem(QTreeWidgetItem*)));
     connect(glass, SIGNAL(cancel()), SLOT(cancelItem()));
     connect(WorkflowSettings::watcher, SIGNAL(changed()), this, SLOT(sl_refreshSampesItems()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SamplesWidget::sl_colorModeSwitched);
 }
 
 QTreeWidgetItem* SamplesWidget::getSampleItem(const QString& category, const QString& id) {
@@ -197,7 +201,11 @@ void SamplesWidget::addCategory(const SampleCategory& cat) {
     QFont cf;
     cf.setBold(true);
     ci->setData(0, Qt::FontRole, cf);
-    ci->setData(0, Qt::BackgroundRole, QColor(255, 255, 160, 127));
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    QColor yc = Qt::yellow;
+    yc = isDark ? yc.darker() : yc.lighter();
+    yc.setAlpha(127);
+    ci->setData(0, Qt::BackgroundRole, yc);
 
     foreach (const Sample& item, cat.items) {
         auto ib = new QTreeWidgetItem(ci, QStringList(item.d.getDisplayName()));
@@ -223,6 +231,10 @@ void SamplesWidget::sl_refreshSampesItems() {
         addCategory(cat);
     }
     expandAll();
+}
+
+void SamplesWidget::sl_colorModeSwitched() {
+    sl_refreshSampesItems();
 }
 
 void SamplePane::mouseDoubleClickEvent(QMouseEvent* e) {

@@ -23,13 +23,17 @@
 
 #include <QKeyEvent>
 
+#include <U2Core/AppContext.h>
+
 #include <U2Gui/GraphUtils.h>
+#include <U2Gui/MainWindow.h>
 
 #include "McaEditor.h"
 #include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/RowHeightController.h"
+#include "util_mca_align/McaColors.h"
 
 namespace U2 {
 
@@ -39,8 +43,6 @@ const qreal McaEditorNameList::ARROW_LINE_WIDTH = 2;
 const qreal McaEditorNameList::ARROW_LENGTH = 25;
 const qreal McaEditorNameList::ARROW_HEAD_WIDTH = 6;
 const qreal McaEditorNameList::ARROW_HEAD_LENGTH = 7;
-const QColor McaEditorNameList::ARROW_DIRECT_COLOR = "blue";  // another possible color: "#4EADE1";
-const QColor McaEditorNameList::ARROW_REVERSE_COLOR = "green";  // another possible color: "#03c03c";
 
 McaEditorNameList::McaEditorNameList(McaEditorWgt* ui, QScrollBar* nhBar)
     : MaEditorNameList(ui, nhBar) {
@@ -92,7 +94,7 @@ void McaEditorNameList::drawArrow(QPainter& painter, bool isReversed, const QRec
     config.lineLength = arrowRect.width();
     config.arrowHeadWidth = ARROW_HEAD_WIDTH;
     config.arrowHeadLength = ARROW_HEAD_LENGTH;
-    config.color = isReversed ? ARROW_REVERSE_COLOR : ARROW_DIRECT_COLOR;
+    config.color = McaColors::getArrowColor(isReversed);
     config.direction = isReversed ? GraphUtils::RightToLeft : GraphUtils::LeftToRight;
     GraphUtils::drawArrow(painter, arrowRect, config);
 }

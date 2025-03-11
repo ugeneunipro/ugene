@@ -27,6 +27,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/ToolsMenu.h>
@@ -57,9 +58,10 @@ PcrPlugin::PcrPlugin()
         opRegistry->registerFactory(new InSilicoPcrOPWidgetFactory());
 
         if (library != nullptr) {
-            auto libraryAction = new QAction(QIcon(":/core/images/database_with_arrow.png"), tr("Primer library"), this);
+            libraryAction = new QAction(GUIUtils::getIconResource("core", "database_with_arrow.png"), tr("Primer library"), this);
             libraryAction->setObjectName(ToolsMenu::PRIMER_LIBRARY);
             connect(libraryAction, SIGNAL(triggered()), SLOT(sl_primerLibrary()));
+            connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &PcrPlugin::sl_colorModeSwitched);
             ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, libraryAction);
         }
     }
@@ -74,6 +76,10 @@ PcrPlugin::~PcrPlugin() {
 
 void PcrPlugin::sl_primerLibrary() {
     PrimerLibraryMdiWindow::showLibrary();
+}
+
+void PcrPlugin::sl_colorModeSwitched() {
+    libraryAction->setIcon(GUIUtils::getIconResource("core", "database_with_arrow.png"));
 }
 
 }  // namespace U2

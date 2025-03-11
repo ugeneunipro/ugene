@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
- 
+
  #include <U2Core/AnnotationData.h>
  #include <U2Core/AnnotationTableObject.h>
  #include <U2Core/IOAdapterTextStream.h>
@@ -33,7 +33,7 @@
 namespace U2 {
 
 KrakenResultsPlainTextFormat::KrakenResultsPlainTextFormat(QObject* p)
-    : TextDocumentFormat(p, BaseDocumentFormats::PLAIN_KRAKEN_RESULTS, 
+    : TextDocumentFormat(p, BaseDocumentFormats::PLAIN_KRAKEN_RESULTS,
                          DocumentFormatFlag_SupportStreaming | DocumentFormatFlag_CannotBeCreated, {"txt"}) {
     formatName = tr("Kraken results");
     formatDescription = tr("Kraken classification results text format");
@@ -48,13 +48,13 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
     while (!line.isNull()) {
         if (!line.isEmpty()) {
             lines.append(line);
-        }        
+        }
         line = stream.readLine();
     }
     if (lines.size() > 1) {
         //last line incomplete don't check it
         lines.removeLast();
-    }    
+    }
     for (const QString& line : qAsConst(lines)) {
         const QStringList words = line.split(QRegExp("\\s+"));
         // first word - 'C' or 'U'
@@ -90,7 +90,7 @@ Document* KrakenResultsPlainTextFormat::loadTextDocument(IOAdapterReader& reader
         CHECK_EXT_CONTINUE(!result.second.isEmpty(), ioLog.details(tr("Sequence %1 skipped, because no classified result found").arg(result.first)));
         annotationsMap.insert(result.first, result.second);
     }
-    
+
     QMap<AnnotationTableObject*, QMap<QString, QList<SharedAnnotationData>>> annTable2Annotations;
     QMultiMap<QString, QList<SharedAnnotationData>>::const_iterator iter = annotationsMap.constBegin();
     QList<AnnotationTableObject*> objects;
@@ -99,7 +99,7 @@ Document* KrakenResultsPlainTextFormat::loadTextDocument(IOAdapterReader& reader
         QString annotTableName = sequenceName + FEATURES_TAG;
         AnnotationTableObject* annotTable = nullptr;
         for (GObject* table : qAsConst(objects)) {
-            CHECK_EXT_BREAK(table->getGObjectName() == annotTableName, 
+            CHECK_EXT_BREAK(table->getGObjectName() == annotTableName,
                             ioLog.details(tr("Two or more classification results with same sequence name \"%1\" were found."
                                              "They will be merged in one annotation table").arg(annotTableName)));
         }
@@ -120,7 +120,7 @@ Document* KrakenResultsPlainTextFormat::loadTextDocument(IOAdapterReader& reader
         for (const QString& groupName : qAsConst(keys)) {
             ato->addAnnotations(annTable2Annotations[ato][groupName], groupName);
         }
-    }    
+    }
     CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
     QList<GObject*> gobjects;
     for (GObject* ob : objects) {
@@ -140,7 +140,7 @@ QPair<QString, QList<SharedAnnotationData>> KrakenResultsPlainTextFormat::parse(
     CHECK_EXT(conversionIsOk, os.setError(tr("Error on line %1, 3rd word should be number.").arg(QString::number(lineNumber))), result);
     CHECK_EXT(convertedWord >= 0, os.setError(tr("Error on line %1, 3rd word should be number greater or equal zero.")
               .arg(QString::number(lineNumber))), result);
-    
+
     result.first = words[1];
 
     convertedWord = words[3].toInt(&conversionIsOk);
