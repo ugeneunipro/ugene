@@ -44,17 +44,26 @@ namespace U2 {
 namespace GUITest_common_scenarios_dark_mode {
 
 GUI_TEST_CLASS_DEFINITION(test_0001_win) {
-    // Ручное переключение цветовой схемы через диалог
-
+    // Open "Settings -> Preferences"
+    // Set WindowsVista style
+    // Expected: "WindowsVisty style is not compatible" error
+    // Set Fusion style
+    // Expected: Error dissapeared
+    // Set "Dark" color mode
+    // Expected: No WindowsVisata style
+    // Click OK
+    // Expected: start page color is dark
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_not_win) {
-    // Ручное переключение цветовой схемы через диалог
-
+    // Open "Settings -> Preferences"
+    // Set "Dark" color mode
+    // Click OKW
+    // Expected: start page color is dark
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    // Последовательность
+    //
 
 }
 
