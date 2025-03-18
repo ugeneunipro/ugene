@@ -59,6 +59,7 @@ constexpr qint64 USER_DATA_PATH = Qt::UserRole + 3;
 constexpr qint64 USER_DATA_IS_FOLDER = Qt::UserRole + 4;
 constexpr qint64 USER_DATA_SECONDARY_ICON = Qt::UserRole + 5;
 constexpr qint64 USER_DATA_SHARED_WITH_EMAILS = Qt::UserRole + 6;
+constexpr qint64 USER_DATA_ICON = Qt::UserRole + 7;
 
 /** Custom delegate to add a secondary icon to tree item. */
 class MultiIconStyledItemDelegate final : public QStyledItemDelegate {
@@ -123,11 +124,19 @@ static void updateModel(QTreeView* tree,
         childrenMap[childEntryKey] = childItem;
     }
     for (const CloudStorageEntry& childEntry : qAsConst(entry->children)) {
-        QIcon icon(childEntry->isFolder
-                       ? (childEntry->getName() == "Shared" && childEntry->path.length() == 1
-                              ? GUIUtils::getResourceName("ugene", "folder_shared.svg")
-                              : GUIUtils::getResourceName("ugene", "folder.svg"))
-                       : GUIUtils::getResourceName("ugene", "document.svg"));
+        IconParameters params;
+        params.iconCathegory = "ugene";
+        params.hasColorCathegory = true;
+        if (childEntry->isFolder) {
+            if (childEntry->getName() == "Shared" && childEntry->path.length() == 1) {
+                params.iconName = "folder_shared.svg";
+            } else {
+                params.iconName = "folder.svg";
+            }
+        } else {
+            params.iconName = "document.svg";
+        }
+        QIcon icon = GUIUtils::getIconResource(params);
         auto childEntryKey = childEntry->sessionLocalId;
         QStandardItem* nameItem;
         if (childrenMap.contains(childEntryKey)) {
@@ -137,6 +146,7 @@ static void updateModel(QTreeView* tree,
             nameItem->setData(childEntry->size, USER_DATA_SIZE);
             nameItem->setData(childEntry->isFolder, USER_DATA_IS_FOLDER);
             nameItem->setData(QVariant::fromValue(childEntry->path), USER_DATA_PATH);
+            nameItem->setData(QVariant::fromValue(params), USER_DATA_ICON);
 
             updateModel(tree, nameItem, childEntry, expandedItems);
 
@@ -148,6 +158,7 @@ static void updateModel(QTreeView* tree,
             nameItem->setData(childEntry->isFolder, USER_DATA_IS_FOLDER);
             nameItem->setData(QVariant::fromValue(childEntry->path), USER_DATA_PATH);
             nameItem->setData(childEntry->sessionLocalId, USER_DATA_SESSION_LOCAL_ID);
+            nameItem->setData(QVariant::fromValue(params), USER_DATA_ICON);
 
             parentItem->appendRow(nameItem);
 
@@ -369,6 +380,7 @@ bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
 }
 
 void CloudStorageDockWidget::sl_colorModeSwitched() {
+    updateTreeViewIconsRecursively(treeViewModel.invisibleRootItem());
     stateLabel->setStyleSheet(QString("background: %1; padding: 10px;").arg(QPalette().base().color().name()));
     createDirAction->setIcon(GUIUtils::getIconResource("ugene", "new_folder.svg"));
     deleteAction->setIcon(GUIUtils::getIconResource("ugene", "trash.svg"));
@@ -381,6 +393,17 @@ void CloudStorageDockWidget::sl_colorModeSwitched() {
     stateLabel->setText(workspaceService->isLoggedIn()
                             ? tr(R"(Loading file list...<br><br><br><a href="logout"><span style=\"color: %1;\">Logout</span></a>)").arg(Theme::hyperlinkColorLabelHtmlStr())
                             : tr(R"(Please <a href="login"><span style=\"color: %1;\">log in to Workspace</span></a> to access cloud storage)").arg(Theme::hyperlinkColorLabelHtmlStr()));
+}
+
+void CloudStorageDockWidget::updateTreeViewIconsRecursively(QStandardItem* item) {
+    SAFE_POINT_NN(item, );
+
+    auto params = item->data(USER_DATA_ICON).value<IconParameters>();
+    auto icon = GUIUtils::getIconResource(params);
+    item->setIcon(icon);
+    for (int i = 0; i < item->rowCount(); i++) {
+        updateTreeViewIconsRecursively(item->child(i));
+    }
 }
 
 void CloudStorageDockWidget::showContextMenu(const QPoint& point) {

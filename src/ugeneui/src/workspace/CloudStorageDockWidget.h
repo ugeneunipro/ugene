@@ -45,6 +45,7 @@ private slots:
     void sl_colorModeSwitched();
 
 private:
+    void updateTreeViewIconsRecursively(QStandardItem* item);
     void showContextMenu(const QPoint& point);
     void createDir();
     void deleteItem();
