@@ -433,7 +433,6 @@ int main(int argc, char** argv) {
     // A workaround for https://bugreports.qt.io/browse/QTBUG-87014: "Qt application gets stuck trying to open main window under Big Sur"
     qputenv("QT_MAC_WANTS_LAYER", "1");
 #endif
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
     // QApplication app(argc, argv);
     GApplication app(argc, argv);
 
