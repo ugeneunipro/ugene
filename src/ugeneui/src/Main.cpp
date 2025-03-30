@@ -416,6 +416,14 @@ static void fixMacFonts() {
 }
 #endif
 
+static QStringList getArguments(int argc, char** argv) {
+    QStringList args;
+    for (int i = 0; i < argc; ++i) {
+        args << QString::fromLocal8Bit(argv[i]);
+    }
+    return args;
+}
+
 int main(int argc, char** argv) {
     if (CrashHandler::isEnabled()) {
         CrashHandler::setupHandler();
@@ -427,64 +435,13 @@ int main(int argc, char** argv) {
 
     GTIMER(c1, t1, "main()->QApp::exec");
 
-#ifdef Q_OS_DARWIN
-    fixMacFonts();
-
-    // A workaround for https://bugreports.qt.io/browse/QTBUG-87014: "Qt application gets stuck trying to open main window under Big Sur"
-    qputenv("QT_MAC_WANTS_LAYER", "1");
-#endif
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
-    // QApplication app(argc, argv);
-    GApplication app(argc, argv);
-
-#ifdef Q_OS_WIN
-    QFont appFont = QGuiApplication::font();
-    if (appFont.pointSize() < 8) {
-        appFont.setPointSize(8);
-        QGuiApplication::setFont(appFont);
-    }
-#endif
-
-#ifdef Q_OS_LINUX
-    QPixmap pixmap(":/ugene/images/originals/ugene_128.png");
-    GApplication::setWindowIcon(pixmap);
-#endif
-
-    QMainWindow window;
-    auto splashScreen = new SplashScreen(&window);
-    splashScreen->adjustSize();
-    splashScreen->setGeometry(
-     QStyle::alignedRect(
-         Qt::LeftToRight,
-         Qt::AlignCenter,
-         splashScreen->size(),
-         QGuiApplication::primaryScreen()->availableGeometry()));
-
-    splashScreen->show();
-
+    // Create a global application context & initialize settings first.
     AppContextImpl* appContext = AppContextImpl::getApplicationContext();
     appContext->setGUIMode(true);
-    appContext->setWorkingDirectoryPath(QCoreApplication::applicationDirPath());
 
-    QCoreApplication::addLibraryPath(AppContext::getWorkingDirectoryPath());
-
-    // add some extra paths used during development
-#ifdef Q_OS_WIN
-#    ifdef _DEBUG
-    QString devPluginsPath = QDir(AppContext::getWorkingDirectoryPath() + "/../../extras/windows/dotnet_style/_debug").absolutePath();
-#    else
-    QString devPluginsPath = QDir(AppContext::getWorkingDirectoryPath() + "/../../extras/windows/dotnet_style/_release").absolutePath();
-#    endif
-    QCoreApplication::addLibraryPath(devPluginsPath);  // dev version
-#endif
-
-    setSearchPaths();
-
-    // parse all cmdline arguments
-    auto cmdLineRegistry = new CMDLineRegistry(GApplication::arguments());
+    auto cmdLineRegistry = new CMDLineRegistry(getArguments(argc, argv));
     appContext->setCMDLineRegistry(cmdLineRegistry);
 
-    // 1 create settings
     auto globalSettings = new SettingsImpl(QSettings::SystemScope);
     appContext->setGlobalSettings(globalSettings);
 
@@ -495,7 +452,6 @@ int main(int argc, char** argv) {
     appContext->setAppSettings(appSettings);
 
     UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
-
     if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::DOWNLOAD_DIR)) {
         userAppSettings->setDownloadDirPath(FileAndDirectoryUtils::getAbsolutePath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DOWNLOAD_DIR)));
     }
@@ -511,6 +467,59 @@ int main(int argc, char** argv) {
     if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::FILE_STORAGE_DIR)) {
         userAppSettings->setFileStorageDir(FileAndDirectoryUtils::getAbsolutePath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::FILE_STORAGE_DIR)));
     }
+
+#ifdef Q_OS_DARWIN
+    fixMacFonts();
+
+    // A workaround for https://bugreports.qt.io/browse/QTBUG-87014: "Qt application gets stuck trying to open main window under Big Sur"
+    qputenv("QT_MAC_WANTS_LAYER", "1");
+#endif
+
+    if (!userAppSettings->isAutoScalingInHighDpiModeDisabled()) {
+        QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+    }
+
+    // QApplication app(argc, argv);
+    GApplication app(argc, argv);
+    appContext->setWorkingDirectoryPath(QCoreApplication::applicationDirPath());
+
+    if (isOsWindows()) {
+        QFont appFont = QGuiApplication::font();
+        if (appFont.pointSize() < 8) {
+            appFont.setPointSize(8);
+            QGuiApplication::setFont(appFont);
+        }
+    }
+    if (isOsLinux()) {
+        QPixmap pixmap(":/ugene/images/originals/ugene_128.png");
+        GApplication::setWindowIcon(pixmap);
+    }
+
+    QMainWindow window;
+    auto splashScreen = new SplashScreen(&window);
+    splashScreen->adjustSize();
+    splashScreen->setGeometry(
+        QStyle::alignedRect(
+            Qt::LeftToRight,
+            Qt::AlignCenter,
+            splashScreen->size(),
+            QGuiApplication::primaryScreen()->availableGeometry()));
+
+    splashScreen->show();
+
+    QCoreApplication::addLibraryPath(AppContext::getWorkingDirectoryPath());
+
+    // add some extra paths used during development
+#ifdef Q_OS_WIN
+#    ifdef _DEBUG
+    QString devPluginsPath = QDir(AppContext::getWorkingDirectoryPath() + "/../../extras/windows/dotnet_style/_debug").absolutePath();
+#    else
+    QString devPluginsPath = QDir(AppContext::getWorkingDirectoryPath() + "/../../extras/windows/dotnet_style/_release").absolutePath();
+#    endif
+    QCoreApplication::addLibraryPath(devPluginsPath);  // dev version
+#endif
+
+    setSearchPaths();
 
     // Set translations if needed: use value in the settings or environment variables to override.
     // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.

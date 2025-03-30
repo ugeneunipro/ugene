@@ -75,6 +75,7 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageController::getSavedState()
     state->resetSettings = s->resetSettings();
     state->updatesEnabled = s->updatesEnabled();
     state->experimentsEnabled = s->isExperimentalFeaturesModeEnabled();
+    state->isHighDpiAutoScalingDisabled = s->isAutoScalingInHighDpiModeDisabled();
     return state;
 }
 
@@ -89,6 +90,7 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* 
     st->setResetSettings(state->resetSettings);
     st->setUpdatesEnabled(state->updatesEnabled);
     st->setExperimentalFeaturesModeEnabled(state->experimentsEnabled);
+    st->setAutoScalingInHighDpiModeDisabled(state->isHighDpiAutoScalingDisabled);
 
     if (state->style.compare(st->getVisualStyle(), Qt::CaseInsensitive) != 0) {
         QStyle* style = QStyleFactory::create(state->style);
@@ -146,6 +148,7 @@ void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
     resetSettingsBox->setChecked(state->resetSettings);
     updatesCheckBox->setChecked(state->updatesEnabled);
     experimentsCheckBox->setChecked(state->experimentsEnabled);
+    highDpiAutoScalingCheckBox->setChecked(!state->isHighDpiAutoScalingDisabled);
 }
 
 AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /*err*/) const {
@@ -158,6 +161,7 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /
     state->resetSettings = resetSettingsBox->isChecked();
     state->updatesEnabled = updatesCheckBox->isChecked();
     state->experimentsEnabled = experimentsCheckBox->isChecked();
+    state->isHighDpiAutoScalingDisabled = !highDpiAutoScalingCheckBox->isChecked();
 
     return state;
 }

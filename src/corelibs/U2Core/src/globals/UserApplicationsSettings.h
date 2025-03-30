@@ -106,6 +106,9 @@ public:
      */
     void setExperimentalFeaturesModeEnabled(bool flag);
 
+    /** Returns true if auto-scaling in high dpi mode is disabled. Auto-scaling is enabled by default (Qt6 behaviour). */
+    bool isAutoScalingInHighDpiModeDisabled() const;
+    void setAutoScalingInHighDpiModeDisabled(bool flag);
 signals:
     void si_temporaryPathChanged();
     void si_windowLayoutChanged();
