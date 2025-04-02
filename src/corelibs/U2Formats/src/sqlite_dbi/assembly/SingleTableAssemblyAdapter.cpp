@@ -37,6 +37,7 @@ namespace U2 {
 #define RTM_RANGE_CONDITION_CHECK_COUNT QString("  (gstart < ?1 AND gstart > ?2) ")
 #define ALL_READ_FIELDS QString(" id, prow, gstart, elen, flags, mq, data")
 #define SORTED_READS QString(" ORDER BY gstart ASC ")
+#define STRICT_RANGE_CONDITION_CHECK QString(" (gstart >= ?2 AND gstart + elen <= ?1) ")
 
 SingleTableAssemblyAdapter::SingleTableAssemblyAdapter(SQLiteDbi* _dbi, const U2DataId& assemblyId, char tablePrefix, const QString& tableSuffix, const AssemblyCompressor* compressor, DbRef* db, U2OpStatus&)
     : SQLiteAssemblyAdapter(assemblyId, compressor, db) {
@@ -92,8 +93,8 @@ void SingleTableAssemblyAdapter::dropReadsIndexes(U2OpStatus& os) {
     SQLiteWriteQuery(q2.arg(readsTable), db, os).execute();
 }
 
-void SingleTableAssemblyAdapter::bindRegion(SQLiteQuery& q, const U2Region& r, bool forCount) {
-    if (rangeMode) {
+void SingleTableAssemblyAdapter::bindRegion(SQLiteQuery& q, const U2Region& r, bool forCount, bool forStrictFit) {
+    if (rangeMode && !forStrictFit) {
         q.bindInt64(1, r.endPos());
         q.bindInt64(2, r.startPos - maxReadLength);
         if (!forCount) {
@@ -136,14 +137,15 @@ qint64 SingleTableAssemblyAdapter::getAssemblyLength(U2OpStatus& os) {
     return SQLiteReadQuery(QString("SELECT MAX(gstart + elen) FROM %1").arg(readsTable), db, os).selectInt64();
 }
 
-U2DbiIterator<U2AssemblyRead>* SingleTableAssemblyAdapter::getReads(const U2Region& r, U2OpStatus& os, bool sortedHint) {
-    QString qStr = QString("SELECT " + ALL_READ_FIELDS + " FROM %1 WHERE " + rangeConditionCheck).arg(readsTable);
+U2DbiIterator<U2AssemblyRead>* SingleTableAssemblyAdapter::getReads(const U2Region& r, U2OpStatus& os, bool sortedHint, bool readsStrictlyFitRegion) {
+    const QString condition = readsStrictlyFitRegion ? STRICT_RANGE_CONDITION_CHECK : rangeConditionCheck;
+    QString qStr = QString("SELECT " + ALL_READ_FIELDS + " FROM %1 WHERE " + condition).arg(readsTable);
     if (sortedHint) {
         qStr += SORTED_READS;
     }
 
     QSharedPointer<SQLiteReadQuery> q(new SQLiteReadQuery(qStr, db, os));
-    bindRegion(*q, r);
+    bindRegion(*q, r, false, readsStrictlyFitRegion);
     return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), nullptr, U2AssemblyRead(), os);
 }
 

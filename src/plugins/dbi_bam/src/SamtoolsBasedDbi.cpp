@@ -646,7 +646,7 @@ qint64 SamtoolsBasedAssemblyDbi::countReads(const U2DataId& assemblyId, const U2
     return result;
 }
 
-U2DbiIterator<U2AssemblyRead>* SamtoolsBasedAssemblyDbi::getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool /*sortedHint*/) {
+U2DbiIterator<U2AssemblyRead>* SamtoolsBasedAssemblyDbi::getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool sortedHint, bool readsStrictlyFitRegion) {
     int id = SamtoolsBasedAssemblyDbi::toSamtoolsId(assemblyId, os);
     CHECK_OP(os, nullptr);
     U2Region targetReg = this->getCorrectRegion(assemblyId, r, os);

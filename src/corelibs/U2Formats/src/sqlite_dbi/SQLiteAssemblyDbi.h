@@ -50,7 +50,8 @@ public:
         Return reads that intersect given region
         Note: iterator instance must be deallocated by caller method
     */
-    U2DbiIterator<U2AssemblyRead>* getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool sortedHint = false) override;
+    U2DbiIterator<U2AssemblyRead>* getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, 
+                                            bool sortedHint = false, bool readsStrictlyFitRegion = false) override;
 
     /**
         Return reads with packed row value >= min, <= max that intersect given region

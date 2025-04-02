@@ -24,6 +24,8 @@
 #include <U2Core/AssemblyImporter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
+#include <U2Core/ReadsListIterator.h>
+#include <U2Core/U2AssemblyDbiUtils.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2AttributeUtils.h>
@@ -156,19 +158,15 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject* const src
     // prepare reads
     CHECK_OP(os, U2EntityRef());
     qint64 readsCount = srcAssemblyDbi->countReads(srcObjId, desiredRegion, os);
+    const QList<U2AssemblyRead> shiftedReadsList = U2AssmblyDbiUtils::getShiftedReadsToLeft(srcAssemblyDbi, srcObjId, desiredRegion, os);
     CHECK_OP(os, U2EntityRef());
-    U2DbiIterator<U2AssemblyRead>* iter = srcAssemblyDbi->getReads(srcObjId, desiredRegion, os, true);
-    QScopedPointer<U2DbiIterator<U2AssemblyRead>> iterPtr(iter);
-    CHECK_OP(os, U2EntityRef());
-    Q_UNUSED(iterPtr);
-
     // copy object
     U2Assembly assembly;
     assembly.visualName = srcObj->getGObjectName();
     CloneInfo info(readsCount, os);
 
     AssemblyImporter importer(os);
-    importer.createAssembly(dstDbiRef, dstFolder, iter, info, assembly);
+    importer.createAssembly(dstDbiRef, dstFolder, &ReadsListIterator(shiftedReadsList), info, assembly);
     CHECK_OP(os, U2EntityRef());
 
     // copy attributes
