@@ -45,7 +45,6 @@ QList<U2AssemblyRead> U2AssmblyDbiUtils::getShiftedReadsToLeft(U2AssemblyDbi* sr
     
     while (iterPtr->hasNext()) {
         U2AssemblyRead read(new U2AssemblyReadData(*iterPtr->next().data()));
-        U2AssemblyReadData* rd = read.data();
         CHECK_OP(os, shiftedReadsList);
         read->leftmostPos -= shiftValue;
         shiftedReadsList.append(read);
