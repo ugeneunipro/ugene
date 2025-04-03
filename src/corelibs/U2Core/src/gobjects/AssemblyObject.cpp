@@ -166,7 +166,8 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject* const src
     CloneInfo info(readsCount, os);
 
     AssemblyImporter importer(os);
-    importer.createAssembly(dstDbiRef, dstFolder, &ReadsListIterator(shiftedReadsList), info, assembly);
+    ReadsListIterator it(shiftedReadsList);
+    importer.createAssembly(dstDbiRef, dstFolder, &it, info, assembly);
     CHECK_OP(os, U2EntityRef());
 
     // copy attributes
