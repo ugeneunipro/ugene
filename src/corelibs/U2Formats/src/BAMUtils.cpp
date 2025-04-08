@@ -542,7 +542,7 @@ static void writeObjectsWithSamtools(samFile* out, const QList<GObject*>& object
         if (desiredRegion != U2_REGION_MAX) {
             region = desiredRegion;
         }
-        const QList<U2AssemblyRead> shiftedReadsList = U2AssmblyDbiUtils::getShiftedReadsToLeft(dbi, assemblyId, region, os);
+        const QList<U2AssemblyRead> shiftedReadsList = U2AssemblyDbiUtils::getShiftedReadsToLeft(dbi, assemblyId, region, os);
         CHECK_OP(os, );
         readsToWrite.append(shiftedReadsList);
         qint64 newLength = 0;

@@ -65,7 +65,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/dbi/DbiDocumentFormat.h \
            src/dbi/U2AbstractDbi.h \
            src/dbi/U2AssemblyDbi.h \
-           src/dbi/U2AssemblyDbiUtils.h \
            src/dbi/U2AttributeDbi.h \
            src/dbi/U2CrossDatabaseReferenceDbi.h \
            src/dbi/U2Dbi.h \
@@ -242,7 +241,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/PMatrixSerializeUtils.h \
            src/util/QObjectScopedPointer.h \
            src/util/QVariantUtils.h \
-           src/util/ReadsListIterator.h \
            src/util/SequenceUtils.h \
            src/util/SnpeffDictionary.h \
            src/util/StrPackUtils.h \
@@ -313,7 +311,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/primers/PrimerStatistics.cpp \
            src/datatype/primers/PrimerValidator.cpp \
            src/datatype/udr/RawDataUdrSchema.cpp \
-           src/dbi/U2AssemblyDbiUtils.cpp \
            src/dbi/DbiConnection.cpp \
            src/dbi/DbiDocumentFormat.cpp \
            src/dbi/U2Dbi.cpp \
@@ -465,7 +462,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/MsaRowUtils.cpp \
            src/util/MsaWalker.cpp \
            src/util/QVariantUtils.cpp \
-           src/util/ReadsListIterator.cpp \
            src/util/SequenceUtils.cpp \
            src/util/SnpeffDictionary.cpp \
            src/util/StrPackUtils.cpp \

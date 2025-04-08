@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-QList<U2AssemblyRead> U2AssmblyDbiUtils::getShiftedReadsToLeft(U2AssemblyDbi* srcAssemblyDbi, U2DataId srcObjId, const U2Region& desiredRegion, U2OpStatus& os) {
+QList<U2AssemblyRead> U2AssemblyDbiUtils::getShiftedReadsToLeft(U2AssemblyDbi* srcAssemblyDbi, U2DataId srcObjId, const U2Region& desiredRegion, U2OpStatus& os) {
     QList<U2AssemblyRead> shiftedReadsList;
     QScopedPointer<U2DbiIterator<U2AssemblyRead>> iterPtr(srcAssemblyDbi->getReads(srcObjId, desiredRegion, os, true, true));
     CHECK_OP(os, shiftedReadsList);

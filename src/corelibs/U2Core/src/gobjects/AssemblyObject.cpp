@@ -158,7 +158,7 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject* const src
     // prepare reads
     CHECK_OP(os, U2EntityRef());
     qint64 readsCount = srcAssemblyDbi->countReads(srcObjId, desiredRegion, os);
-    const QList<U2AssemblyRead> shiftedReadsList = U2AssmblyDbiUtils::getShiftedReadsToLeft(srcAssemblyDbi, srcObjId, desiredRegion, os);
+    const QList<U2AssemblyRead> shiftedReadsList = U2AssemblyDbiUtils::getShiftedReadsToLeft(srcAssemblyDbi, srcObjId, desiredRegion, os);
     CHECK_OP(os, U2EntityRef());
     // copy object
     U2Assembly assembly;
