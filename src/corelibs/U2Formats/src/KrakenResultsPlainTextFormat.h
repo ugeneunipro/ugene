@@ -35,9 +35,6 @@ protected:
     FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
     Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
-private:
-    QPair<QString, QList<SharedAnnotationData>> parse(const QString& line, int lineNumber, U2OpStatus& os);
-
 };
 
 } //ns

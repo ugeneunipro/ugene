@@ -1,0 +1,6 @@
+<multi-test>
+
+    <load-broken-document url="kraken_results/negative/paired_and_single_mixed.txt" io="local_file" format="kraken-results" 
+                          message="results opposite of previous lines in file."/>
+
+</multi-test>
