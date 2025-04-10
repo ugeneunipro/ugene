@@ -27,27 +27,20 @@ namespace U2 {
 
 QList<U2AssemblyRead> U2AssemblyDbiUtils::getShiftedReadsToLeft(U2AssemblyDbi* srcAssemblyDbi, U2DataId srcObjId, const U2Region& desiredRegion, U2OpStatus& os) {
     QList<U2AssemblyRead> shiftedReadsList;
-    QScopedPointer<U2DbiIterator<U2AssemblyRead>> iterPtr(srcAssemblyDbi->getReads(srcObjId, desiredRegion, os, true, true));
-    CHECK_OP(os, shiftedReadsList);
-    QScopedPointer<U2DbiIterator<U2AssemblyRead>> iterForShiftCalculationPtr(srcAssemblyDbi->getReads(srcObjId, desiredRegion, os, true, true));
+    QScopedPointer<U2DbiIterator<U2AssemblyRead>> iter(srcAssemblyDbi->getReads(srcObjId, desiredRegion, os, true, true));
     CHECK_OP(os, shiftedReadsList);
 
+    //calculate shift for received reads
     qint64 shiftValue = std::numeric_limits<qint64>::max();
-    qint64 regionLength = 0;
-    while (iterForShiftCalculationPtr->hasNext()) {
-        U2AssemblyRead read = iterForShiftCalculationPtr->next();
+    while (iter->hasNext()) {
+        U2AssemblyRead read = iter->next();
         CHECK_OP(os, shiftedReadsList);
         shiftValue = qMin(read->leftmostPos, shiftValue);
-        regionLength = qMax(read->leftmostPos + read->effectiveLen, regionLength);
-    }
-
-    regionLength -= shiftValue;
-    
-    while (iterPtr->hasNext()) {
-        U2AssemblyRead read(new U2AssemblyReadData(*iterPtr->next().data()));
-        CHECK_OP(os, shiftedReadsList);
-        read->leftmostPos -= shiftValue;
         shiftedReadsList.append(read);
+    }
+    //apply shift
+    for (U2AssemblyRead& read : shiftedReadsList) {
+        read->leftmostPos -= shiftValue;
     }
     return shiftedReadsList;
 }

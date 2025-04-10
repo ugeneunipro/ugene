@@ -55,7 +55,6 @@ extern "C" {
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/ReadsListIterator.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2AssemblyDbi.h>
@@ -546,7 +545,7 @@ static void writeObjectsWithSamtools(samFile* out, const QList<GObject*>& object
         CHECK_OP(os, );
         readsToWrite.append(shiftedReadsList);
         qint64 newLength = 0;
-        ReadsListIterator itToCount(shiftedReadsList);
+        U2DbiIteratorOverList itToCount(shiftedReadsList);
         while (itToCount.hasNext()) {
             const U2AssemblyRead r = itToCount.next();
             newLength = qMax(newLength, r->leftmostPos + r->effectiveLen);
@@ -576,7 +575,7 @@ static void writeObjectsWithSamtools(samFile* out, const QList<GObject*>& object
         ReadsContext ctx(assemblyObj->getGObjectName(), getNumMap(objects, os));
         CHECK_OP(os, );
         bam1_t* read = bam_init1();
-        ReadsListIterator itToWrite(readsToWrite.at(objIdx++));
+        U2DbiIteratorOverList itToWrite(readsToWrite.at(objIdx++));
         while (itToWrite.hasNext()) {
             U2AssemblyRead r = itToWrite.next();
             SamtoolsAdapter::read2samtools(r, ctx, os, *read);

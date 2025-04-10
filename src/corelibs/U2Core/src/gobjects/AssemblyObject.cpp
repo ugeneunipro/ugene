@@ -24,7 +24,6 @@
 #include <U2Core/AssemblyImporter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
-#include <U2Core/ReadsListIterator.h>
 #include <U2Core/U2AssemblyDbiUtils.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -166,7 +165,7 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject* const src
     CloneInfo info(readsCount, os);
 
     AssemblyImporter importer(os);
-    ReadsListIterator it(shiftedReadsList);
+    U2DbiIteratorOverList it(shiftedReadsList);
     importer.createAssembly(dstDbiRef, dstFolder, &it, info, assembly);
     CHECK_OP(os, U2EntityRef());
 
