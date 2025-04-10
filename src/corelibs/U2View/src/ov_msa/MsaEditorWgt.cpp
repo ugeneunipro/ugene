@@ -99,8 +99,13 @@ void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
 }
 
 void MsaEditorWgt::setSimilaritySettings(const SimilarityStatisticsSettings* settings) {
-    CHECK(similarityStatistics != nullptr, )
-    similarityStatistics->setSettings(settings);
+    if (similarityStatistics == nullptr) {
+        dataList = new MsaEditorSimilarityColumn(this, settings);
+        similarityStatistics = new MsaEditorAlignmentDependentWidget(this, dataList);
+        similarityStatistics->hide();
+    } else {
+        similarityStatistics->setSettings(settings);
+    }
 }
 
 const SimilarityStatisticsSettings* MsaEditorWgt::getSimilaritySettings() {
