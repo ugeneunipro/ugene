@@ -39,7 +39,7 @@ const QString Kraken2ClassifyTaskSettings::PAIRED_END = "paired-end";
 Kraken2ClassifyTask::Kraken2ClassifyTask(const Kraken2ClassifyTaskSettings &settings)
     : ExternalToolSupportTask(tr("Classify reads with Kraken 2"), TaskFlags_NR_FOSE_COSC),
       settings(settings) {
-    GCOUNTER(cvar, "KrakenClassifyTask");
+    GCOUNTER(cvar, "Kraken2ClassifyTask");
 
     SAFE_POINT_EXT(!settings.readsUrl.isEmpty(), setError("Reads URL is empty"), );
     SAFE_POINT_EXT(!settings.pairedReads || !settings.readsUrl.isEmpty(), setError("Paired reads URL is empty, but the 'paired reads' option is set"), );
