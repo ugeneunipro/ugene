@@ -31,6 +31,8 @@ class U2FORMATS_EXPORT KrakenResultsPlainTextFormat : public TextDocumentFormat 
 public:
     KrakenResultsPlainTextFormat(QObject* p);
 
+    FormatCheckResult checkRawData(const QByteArray& data, const GUrl& = GUrl()) const override;
+
 protected:
     FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 

@@ -59,6 +59,13 @@ KrakenResultsPlainTextFormat::KrakenResultsPlainTextFormat(QObject* p)
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
 }
 
+FormatCheckResult KrakenResultsPlainTextFormat::checkRawData(const QByteArray& rawData, const GUrl& url) const {
+    const char* data = rawData.constData();
+    int size = rawData.size();
+    bool hasBinaryData = TextUtils::contains(TextUtils::BINARY, data, size);
+    return hasBinaryData ? FormatDetection_NotMatched : checkRawTextData(QString(data), url);
+}
+
 FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
     QString textCopy = dataPrefix;
     QTextStream stream(&textCopy);
@@ -77,7 +84,7 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
     for (const QString& line : qAsConst(lines)) {
         const QStringList words = line.split(QRegExp("\\s+"));
         // first word - 'C' or 'U'
-        if ((words[0] == "C" || words[0] == "U") && words.size() > 5) {
+        if ((words[0] == "C" || words[0] == "U") && words.size() > 4) {
             bool isNumber = false;
             // fourth word - positive number
             if (words[3].toInt(&isNumber) > 0 && isNumber) {
