@@ -101,7 +101,6 @@ QList<Task*> Shtirlitz::wakeup() {
     Settings* s = AppContext::getSettings();
     bool allVersionsFirstLaunch = true;
     bool minorVersionFirstLaunch = true;
-    bool bSentSystemReport = false;
     getFirstLaunchInfo(allVersionsFirstLaunch, minorVersionFirstLaunch);
 
     QString allVersionsKey = SETTINGS_NOT_FIRST_LAUNCH;
@@ -130,7 +129,6 @@ QList<Task*> Shtirlitz::wakeup() {
         }
         coreLog.details(ShtirlitzTask::tr("Shtirlitz is sending the first-time report"));
         result << sendSystemReport();
-        bSentSystemReport = true;
         // Leave a mark that the first-time report was sent
     }
 
