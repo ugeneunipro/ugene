@@ -83,7 +83,7 @@ public:
     static void writeDocument(Document* doc, U2OpStatus& os);
 
     /**
-     * Writes assembly objects to the set URL.
+     * Writes assembly objects to the set URL. Result assembly will be resized to fit reads without empty areas.
      */
     static void writeObjects(const QList<GObject*>& objects, const QString& url, const DocumentFormatId& formatId, U2OpStatus& os, const U2Region& desiredRegion = U2_REGION_MAX);
 
