@@ -873,9 +873,9 @@ int main(int argc, char** argv) {
         tasks << tempDirChecker;
         QObject::connect(tempDirChecker, SIGNAL(si_checkFailed(QString)), mw, SLOT(sl_tempDirPathCheckFailed(QString)));
     }
-    if (!envList.contains(ENV_UGENE_DEV + QString("=1"))) {
-        tasks << new ShtirlitzStartupTask();
-    }
+    //if (!envList.contains(ENV_UGENE_DEV + QString("=1"))) {
+    //    tasks << new ShtirlitzStartupTask();
+    //}
 
     mw->registerStartupChecks(tasks);
 

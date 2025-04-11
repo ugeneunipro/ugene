@@ -49,14 +49,13 @@
 #include "StatisticalReportController.h"
 
 const static char* SETTINGS_NOT_FIRST_LAUNCH = "shtirlitz/not_first_launch";
-const static char* SETTINGS_PREVIOUS_REPORT_DATE = "shtirlitz/previous_report_date";
 const static char* SETTINGS_COUNTERS = "shtirlitz/counters";
 const static char* SETTINGS_UGENE_UID = "shtirlitz/uid";
 
 const static int DAYS_BETWEEN_REPORTS = 7;
 
 // This file stores the actual location of reports-receiver script.
-const static char* DESTINATION_URL_KEEPER_SRV = "http://ugene.net";
+const static char* DESTINATION_URL_KEEPER_SRV = "https://api-ugene.unipro.ru";
 const static char* DESTINATION_URL_KEEPER_PAGE = "/reports_dest.html";
 
 namespace U2 {
@@ -135,22 +134,9 @@ QList<Task*> Shtirlitz::wakeup() {
         // Leave a mark that the first-time report was sent
     }
 
-    // Check if previous report was sent more than a week ago
-    if (!allVersionsFirstLaunch && userAppSettings->isStatisticsCollectionEnabled()) {
-        QVariant prevDateQvar = AppContext::getSettings()->getValue(SETTINGS_PREVIOUS_REPORT_DATE);
-        QDate prevDate = prevDateQvar.toDate();
-        int daysPassed = prevDate.isValid() ? prevDate.daysTo(QDate::currentDate()) : 0;
-
-        if (!prevDate.isValid() || daysPassed > DAYS_BETWEEN_REPORTS) {
-            coreLog.details(ShtirlitzTask::tr("%1 days passed passed since previous Shtirlitz's report. Shtirlitz is sending the new one."));
-            if (!bSentSystemReport) {
-                result << sendSystemReport();
-            }
-            result << sendCountersReport();
-            // and save the new date
-            s->setValue(SETTINGS_PREVIOUS_REPORT_DATE, QDate::currentDate());
-        }
-    }
+    coreLog.details(ShtirlitzTask::tr("Sending counters report."));
+    result << sendSystemReport();
+    result << sendCountersReport();
     return result;
 }
 

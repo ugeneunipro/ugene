@@ -268,6 +268,11 @@ void MainWindowImpl::createActions() {
     crashUgeneAction->setObjectName("crash_ugene");
     connect(crashUgeneAction, SIGNAL(triggered()), SLOT(sl_crashUgene()));
 
+    sendStatAction = new QAction(tr("Send statistics"), this);
+    sendStatAction->setObjectName("send_stat");
+    connect(sendStatAction, SIGNAL(triggered()), SLOT(sl_sendStat()));
+
+
 #ifdef _INSTALL_TO_PATH_ACTION
     installToPathAction = new QAction(tr("Enable Terminal Usage..."), this);
     connect(installToPathAction, SIGNAL(triggered()), SLOT(sl_installToPathAction()));
@@ -352,10 +357,9 @@ void MainWindowImpl::prepareGUI() {
     helpMenu->addAction(visitPatreonAction);
     helpMenu->addAction(welcomePageAction);
     helpMenu->addAction(aboutAction);
-    if (qgetenv(ENV_TEST_CRASH_HANDLER) == "1") {
-        helpMenu->addSeparator();
-        helpMenu->addAction(crashUgeneAction);
-    }
+    helpMenu->addSeparator();
+    helpMenu->addAction(crashUgeneAction);
+    helpMenu->addAction(sendStatAction);
 
     if (qgetenv(ENV_TEST_NOTIFICATIONS) == "1") {
         helpMenu->addSeparator();
@@ -585,6 +589,10 @@ void MainWindowImpl::sl_show() {
 void MainWindowImpl::sl_crashUgene() {
     volatile int* killer = nullptr;
     *killer = 0;
+}
+
+void MainWindowImpl::sl_sendStat() {
+    AppContext::getTaskScheduler()->registerTopLevelTask(new ShtirlitzStartupTask());
 }
 
 void MainWindowImpl::registerStartupChecks(const QList<Task*>& tasks) {

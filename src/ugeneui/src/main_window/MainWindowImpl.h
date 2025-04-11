@@ -111,6 +111,7 @@ private slots:
     void sl_viewOnlineDocumentation();
     void sl_showWhatsNew();
     void sl_crashUgene();
+    void sl_sendStat();
 #ifdef _INSTALL_TO_PATH_ACTION
     void sl_installToPathAction();
 #endif
@@ -140,6 +141,7 @@ private:
     QAction* viewOnlineDocumentation = nullptr;
     QAction* welcomePageAction = nullptr;
     QAction* crashUgeneAction = nullptr;
+    QAction* sendStatAction = nullptr;
     QAction* showWhatsNewAction = nullptr;
 #ifdef _INSTALL_TO_PATH_ACTION
     QAction* installToPathAction = nullptr;
