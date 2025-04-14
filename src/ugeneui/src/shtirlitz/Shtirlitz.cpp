@@ -55,7 +55,7 @@ const static char* SETTINGS_UGENE_UID = "shtirlitz/uid";
 const static int DAYS_BETWEEN_REPORTS = 7;
 
 // This file stores the actual location of reports-receiver script.
-const static char* DESTINATION_URL_KEEPER_SRV = "https://api-ugene.unipro.ru";
+const static char* DESTINATION_URL_KEEPER_SRV = "http://api-ugene.unipro.ru";
 const static char* DESTINATION_URL_KEEPER_PAGE = "/reports_dest.html";
 
 namespace U2 {
