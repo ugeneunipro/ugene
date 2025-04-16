@@ -58,6 +58,7 @@ namespace U2 {
 #define UPDATES_ENABLED QString("check_updates")
 #define SKIP_UPDATE_PREFIX QString("skip_update_")
 #define ENABLE_EXPERIMENTAL_MODE QString("enable_experiments")
+#define DISABLE_AUTO_SCALING_IN_HDPI_MODE QString("disable_auto_scaling_in_hdpi")
 
 // TODO: create a special ENV header to keep all env-vars ugene depends
 #define UGENE_SKIP_TMP_DIR_CLEANUP "UGENE_SKIP_TMP_DIR_CLEANUP"
@@ -309,6 +310,14 @@ bool UserAppsSettings::isExperimentalFeaturesModeEnabled() const {
 
 void UserAppsSettings::setExperimentalFeaturesModeEnabled(bool flag) {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + ENABLE_EXPERIMENTAL_MODE, flag);
+}
+
+bool UserAppsSettings::isAutoScalingInHighDpiModeDisabled() const {
+    return AppContext::getSettings()->getValue(SETTINGS_ROOT + DISABLE_AUTO_SCALING_IN_HDPI_MODE).toBool();
+}
+
+void UserAppsSettings::setAutoScalingInHighDpiModeDisabled(bool flag) {
+    AppContext::getSettings()->setValue(SETTINGS_ROOT + DISABLE_AUTO_SCALING_IN_HDPI_MODE, flag);
 }
 
 }  // namespace U2

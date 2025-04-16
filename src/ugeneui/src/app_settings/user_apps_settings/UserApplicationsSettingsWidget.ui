@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string/>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QGroupBox" name="langBox">
      <property name="title">
@@ -94,79 +94,53 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="statisticsBox">
-     <property name="title">
-      <string>Statistical reports</string>
+    <widget class="QCheckBox" name="enableStatisticsEdit">
+     <property name="toolTip">
+      <string>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QCheckBox" name="enableStatisticsEdit">
-        <property name="toolTip">
-         <string>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</string>
-        </property>
-        <property name="text">
-         <string>Share usage metrics with UGENE team</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="text">
+      <string>Share usage metrics with UGENE team</string>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="updatesBox">
-     <property name="title">
-      <string>Updates</string>
+    <widget class="QCheckBox" name="updatesCheckBox">
+     <property name="toolTip">
+      <string>Do not check and ask about UGENE updates during UGENE startup.</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QCheckBox" name="updatesCheckBox">
-        <property name="toolTip">
-         <string>Do not check and ask about UGENE updates during UGENE startup.</string>
-        </property>
-        <property name="text">
-         <string>Check for updates when UGENE starts</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="text">
+      <string>Check for updates when UGENE starts</string>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="experimentsBox">
-     <property name="title">
-      <string>Experimental features</string>
+    <widget class="QCheckBox" name="highDpiAutoScalingCheckBox">
+     <property name="toolTip">
+      <string>Enable scaling for high-resolution (HiDPI) displays. Improves UI clarity on 4K and Retina screens. Requires restart.</string>
      </property>
-     <layout class="QVBoxLayout" name="experimentalFeaturesBoxLayout">
-      <item>
-       <widget class="QCheckBox" name="experimentsCheckBox">
-        <property name="toolTip">
-         <string>Enables experimental features hidden by default. May require restart for some features to be activated.</string>
-        </property>
-        <property name="text">
-         <string>Enable experimental features</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="text">
+      <string>Enable auto scaling in HDPI mode (requires restart)</string>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="reset">
-     <property name="title">
-      <string>Default settings</string>
+    <widget class="QCheckBox" name="experimentsCheckBox">
+     <property name="toolTip">
+      <string>Enables experimental features hidden by default. May require restart for some features to be activated.</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_5">
-      <item>
-       <widget class="QCheckBox" name="resetSettingsBox">
-        <property name="toolTip">
-         <string>Resets all UGENE settings to default. Requires restart.</string>
-        </property>
-        <property name="text">
-         <string>Reset settings to default on the next run</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="text">
+      <string>Enable experimental features</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="resetSettingsBox">
+     <property name="toolTip">
+      <string>Resets all UGENE settings to default. Requires restart.</string>
+     </property>
+     <property name="text">
+      <string>Reset settings to default on the next run</string>
+     </property>
     </widget>
    </item>
    <item>
