@@ -42,8 +42,7 @@ MsaEditorWgt::MsaEditorWgt(MsaEditor* editor,
                            QWidget* parent,
                            MaEditorOverviewArea* overview,
                            MaEditorStatusBar* statusbar)
-    : MaEditorWgt(editor, parent),
-      similarityStatistics(nullptr) {
+    : MaEditorWgt(editor, parent), restoredSettings(new SimilarityStatisticsSettings()) {
     overviewArea = overview;
     statusBar = statusbar;
     rowHeightController = new MsaRowHeightController(this);
@@ -57,6 +56,10 @@ MsaEditorWgt::MsaEditorWgt(MsaEditor* editor,
 
     setMinimumSize(minimumSizeHint());
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+}
+
+MsaEditorWgt::~MsaEditorWgt() {
+    delete restoredSettings;
 }
 
 MsaEditor* MsaEditorWgt::getEditor() const {
@@ -100,9 +103,7 @@ void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
 
 void MsaEditorWgt::setSimilaritySettings(const SimilarityStatisticsSettings* settings) {
     if (similarityStatistics == nullptr) {
-        dataList = new MsaEditorSimilarityColumn(this, settings);
-        similarityStatistics = new MsaEditorAlignmentDependentWidget(this, dataList);
-        similarityStatistics->hide();
+        restoredSettings = new SimilarityStatisticsSettings(*settings);
     } else {
         similarityStatistics->setSettings(settings);
     }
@@ -113,7 +114,7 @@ const SimilarityStatisticsSettings* MsaEditorWgt::getSimilaritySettings() {
         return static_cast<const SimilarityStatisticsSettings*>(
             similarityStatistics->getSettings());
     }
-    return nullptr;
+    return restoredSettings;
 }
 
 void MsaEditorWgt::refreshSimilarityColumn() {
@@ -122,11 +123,10 @@ void MsaEditorWgt::refreshSimilarityColumn() {
 
 void MsaEditorWgt::showSimilarity() {
     if (similarityStatistics == nullptr) {
-        SimilarityStatisticsSettings settings;
-        settings.algoId = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
-        settings.editor = getEditor();
+        restoredSettings->algoId = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
+        restoredSettings->editor = getEditor();
 
-        dataList = new MsaEditorSimilarityColumn(this, &settings);
+        dataList = new MsaEditorSimilarityColumn(this, restoredSettings);
         dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
         similarityStatistics = new MsaEditorAlignmentDependentWidget(this, dataList);
 

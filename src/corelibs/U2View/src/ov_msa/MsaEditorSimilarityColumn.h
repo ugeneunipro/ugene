@@ -47,6 +47,9 @@ enum DataState {
 
 class SimilarityStatisticsSettings {
 public:
+    SimilarityStatisticsSettings(){};
+    SimilarityStatisticsSettings(const SimilarityStatisticsSettings& copyFrom);
+
     QPointer<MsaEditor> editor;
     bool autoUpdate = true;
     /** Selected algorithm. */

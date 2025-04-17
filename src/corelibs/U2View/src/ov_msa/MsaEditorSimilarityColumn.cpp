@@ -257,4 +257,9 @@ void MsaEditorAlignmentDependentWidget::cancelPendingTasks() {
     contentWidget->cancelPendingTasks();
 }
 
+SimilarityStatisticsSettings::SimilarityStatisticsSettings(const SimilarityStatisticsSettings& copyFrom) : 
+    editor(copyFrom.editor), autoUpdate(copyFrom.autoUpdate), algoId(copyFrom.algoId), 
+    usePercents(copyFrom.usePercents), excludeGaps(copyFrom.excludeGaps) {
+}
+
 }  // namespace U2
