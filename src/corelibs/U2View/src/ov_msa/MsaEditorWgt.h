@@ -48,6 +48,7 @@ public:
                  MaEditorOverviewArea* overview = nullptr,
                  MaEditorStatusBar* statusbar = nullptr);
 
+    ~MsaEditorWgt();
     MsaEditor* getEditor() const;
 
     MsaEditorSequenceArea* getSequenceArea() const;
@@ -96,8 +97,7 @@ private:
     MsaEditorMultiTreeViewer* multiTreeViewer = nullptr;
     MsaEditorAlignmentDependentWidget* similarityStatistics = nullptr;
     MsaEditorWgtEventFilter* eventFilter = nullptr;
-
-
+    SimilarityStatisticsSettings* restoredSettings;
 };
 
 class U2VIEW_EXPORT MsaEditorWgtEventFilter : public QObject {
