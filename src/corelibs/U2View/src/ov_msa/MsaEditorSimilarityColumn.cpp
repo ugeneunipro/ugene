@@ -257,9 +257,6 @@ void MsaEditorAlignmentDependentWidget::cancelPendingTasks() {
     contentWidget->cancelPendingTasks();
 }
 
-SimilarityStatisticsSettings::SimilarityStatisticsSettings(){
-}
-
 SimilarityStatisticsSettings::SimilarityStatisticsSettings(const SimilarityStatisticsSettings& copyFrom) :
     editor(copyFrom.editor), autoUpdate(copyFrom.autoUpdate), algoId(copyFrom.algoId), 
     usePercents(copyFrom.usePercents), excludeGaps(copyFrom.excludeGaps) {

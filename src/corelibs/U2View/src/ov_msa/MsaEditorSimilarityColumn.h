@@ -47,7 +47,7 @@ enum DataState {
 
 class SimilarityStatisticsSettings {
 public:
-    SimilarityStatisticsSettings();
+    SimilarityStatisticsSettings() = default;
     SimilarityStatisticsSettings(const SimilarityStatisticsSettings& copyFrom);
 
     SimilarityStatisticsSettings& operator=(const SimilarityStatisticsSettings& other);
