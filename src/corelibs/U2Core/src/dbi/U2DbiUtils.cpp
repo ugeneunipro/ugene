@@ -265,4 +265,21 @@ DbiOperationsBlock::~DbiOperationsBlock() {
     delete connection;
 }
 
+U2DbiIteratorOverList::U2DbiIteratorOverList(const QList<U2AssemblyRead>& _list) 
+    : it(_list.constBegin())
+    , endIt(_list.constEnd()) {
+}
+
+bool U2DbiIteratorOverList::hasNext() {
+    return it != endIt;
+}
+
+U2AssemblyRead U2DbiIteratorOverList::next() {
+    return *it++;
+}
+
+U2AssemblyRead U2DbiIteratorOverList::peek() {
+    return *it;
+}
+
 }  // namespace U2

@@ -6,6 +6,6 @@
             out="!tmp_data_dir!convert_assembly_0005.sam"
             out_format="sam"
     />
-    <compare-sam-by-length file1="!common_data_dir!bam/small.bam.sorted.bam"
+    <compare-sam-by-length file1="!common_data_dir!sam/convert_assembly_0005.sam"
                            file2="!tmp_data_dir!convert_assembly_0005.sam"/>
 </multi-test>
