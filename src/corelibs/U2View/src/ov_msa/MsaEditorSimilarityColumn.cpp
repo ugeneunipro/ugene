@@ -41,6 +41,7 @@ namespace U2 {
 
 MsaEditorSimilarityColumn::MsaEditorSimilarityColumn(MsaEditorWgt* ui, const SimilarityStatisticsSettings* _settings)
     : MaEditorNameList(ui, new QScrollBar(Qt::Horizontal)),
+      msa(ui->getEditor()->getMaObject()->getAlignment()),
       newSettings(*_settings),
       curSettings(*_settings) {
     updateDistanceMatrix();
@@ -128,7 +129,7 @@ QString MsaEditorSimilarityColumn::getHeaderText() const {
 void MsaEditorSimilarityColumn::updateDistanceMatrix() {
     cancelPendingTasks();
 
-    auto createDistanceMatrixTask = new CreateDistanceMatrixTask(newSettings);
+    auto createDistanceMatrixTask = new CreateDistanceMatrixTask(newSettings, msa);
     connect(new TaskSignalMapper(createDistanceMatrixTask), &TaskSignalMapper::si_taskFinished, this, &MsaEditorSimilarityColumn::sl_createMatrixTaskFinished);
 
     state = DataIsBeingUpdated;
@@ -166,16 +167,14 @@ void MsaEditorSimilarityColumn::sl_createMatrixTaskFinished(Task* t) {
     emit si_dataStateChanged(state);
 }
 
-CreateDistanceMatrixTask::CreateDistanceMatrixTask(const SimilarityStatisticsSettings& _s)
+CreateDistanceMatrixTask::CreateDistanceMatrixTask(const SimilarityStatisticsSettings& _s, const Msa& _msa)
     : BackgroundTask<MsaDistanceMatrix*>(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC),
-      s(_s) {
-    SAFE_POINT(!s.editor.isNull(), "MSAEditor is null in CreateDistanceMatrixTask constructor!", );
+      s(_s), msa(_msa) {
     result = nullptr;
     setVerboseLogMode(true);
 }
 
 void CreateDistanceMatrixTask::prepare() {
-    CHECK_EXT(!s.editor.isNull(), cancel(), );
     MsaDistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
     CHECK(factory != nullptr, );
     if (s.excludeGaps) {
@@ -184,7 +183,7 @@ void CreateDistanceMatrixTask::prepare() {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }
 
-    MsaDistanceAlgorithm* algo = factory->createAlgorithm(s.editor->getMaObject()->getAlignment());
+    MsaDistanceAlgorithm* algo = factory->createAlgorithm(msa);
     CHECK(algo != nullptr, );
     addSubTask(algo);
 }
@@ -205,9 +204,9 @@ MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(MsaEditorWg
     dataIsBeingUpdatedMessage = QString("<FONT COLOR=#0000FF>%1</FONT>").arg(tr("Data is being updated"));
 
     settings = &contentWidget->getSettings();
-    MsaEditor* editor = settings->editor;
-    connect(editor->getMaObject(), &MsaObject::si_alignmentChanged, this, [this] { contentWidget->onAlignmentChanged(); });
-    connect(editor, &MaEditor::si_fontChanged, this, [this](const QFont& font) { nameWidget->setFont(font); });
+    connect(msaEditorWgt->getEditor()->getMaObject(), &MsaObject::si_alignmentChanged, this, [this] { contentWidget->onAlignmentChanged(); });
+    connect(msaEditorWgt->getEditor(), &MaEditor::si_fontChanged, this, [this](const QFont& font) { nameWidget->setFont(font); });
+    connect(msaEditorWgt, &MsaEditorWgt::si_similaritySettingsChanged, this, [this](const SimilarityStatisticsSettings& settings) { setSettings(&settings); });
 
     createWidgetUI();
     setSettings(settings);
@@ -239,7 +238,7 @@ void MsaEditorAlignmentDependentWidget::createHeaderWidget() {
     headerLayout->setSpacing(0);
 
     nameWidget->setAlignment(Qt::AlignCenter);
-    nameWidget->setFont(settings->editor->getFont());
+    nameWidget->setFont(msaEditorWgt->getEditor()->getFont());
     headerLayout->addWidget(nameWidget);
 
     state = DataIsValid;
@@ -255,20 +254,6 @@ void MsaEditorAlignmentDependentWidget::setSettings(const SimilarityStatisticsSe
 
 void MsaEditorAlignmentDependentWidget::cancelPendingTasks() {
     contentWidget->cancelPendingTasks();
-}
-
-SimilarityStatisticsSettings::SimilarityStatisticsSettings(const SimilarityStatisticsSettings& copyFrom) :
-    editor(copyFrom.editor), autoUpdate(copyFrom.autoUpdate), algoId(copyFrom.algoId), 
-    usePercents(copyFrom.usePercents), excludeGaps(copyFrom.excludeGaps) {
-}
-
-SimilarityStatisticsSettings &SimilarityStatisticsSettings::operator=(const SimilarityStatisticsSettings &other) {
-    editor = other.editor;
-    autoUpdate = other.autoUpdate;
-    algoId = other.algoId;
-    usePercents = other.usePercents;
-    excludeGaps = other.excludeGaps;
-    return *this;
 }
 
 }  // namespace U2
