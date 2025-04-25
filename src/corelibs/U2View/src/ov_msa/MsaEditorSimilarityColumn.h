@@ -30,6 +30,7 @@
 
 #include "MaEditorNameList.h"
 #include "MsaEditor.h"
+#include "statistics/SimilarityStatisticsSettings.h"
 
 namespace U2 {
 
@@ -43,16 +44,6 @@ enum DataState {
     DataIsOutdated,
     DataIsValid,
     DataIsBeingUpdated
-};
-
-class SimilarityStatisticsSettings {
-public:
-    QPointer<MsaEditor> editor;
-    bool autoUpdate = true;
-    /** Selected algorithm. */
-    QString algoId;
-    bool usePercents = false;
-    bool excludeGaps = false;
 };
 
 class U2VIEW_EXPORT MsaEditorSimilarityColumn : public MaEditorNameList {
@@ -93,6 +84,7 @@ private slots:
 private:
     void updateDistanceMatrix();
 
+    const Msa& msa;
     MsaDistanceMatrix* matrix = nullptr;
     SimilarityStatisticsSettings newSettings;
     SimilarityStatisticsSettings curSettings;
@@ -105,7 +97,7 @@ private:
 class CreateDistanceMatrixTask : public BackgroundTask<MsaDistanceMatrix*> {
     Q_OBJECT
 public:
-    explicit CreateDistanceMatrixTask(const SimilarityStatisticsSettings& _s);
+    explicit CreateDistanceMatrixTask(const SimilarityStatisticsSettings& _s, const Msa& msa);
 
     void prepare() override;
 
@@ -113,6 +105,7 @@ protected:
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
+    const Msa& msa;
     SimilarityStatisticsSettings s;
     QString resultText;
 };
@@ -122,11 +115,11 @@ class MsaEditorAlignmentDependentWidget : public QWidget {
 public:
     explicit MsaEditorAlignmentDependentWidget(MsaEditorWgt* msaEditorWgt, MsaEditorSimilarityColumn* _contentWidget);
 
-    void setSettings(const SimilarityStatisticsSettings* _settings);
     void cancelPendingTasks();
     const SimilarityStatisticsSettings* getSettings() const;
 
 private:
+    void setSettings(const SimilarityStatisticsSettings* _settings);
     void createWidgetUI();
     void createHeaderWidget();
 
