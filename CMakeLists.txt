@@ -184,4 +184,6 @@ endforeach ()
 include(${CMAKE_SOURCE_DIR}/cmake/Environment.cmake)
 
 # UGENE shell script
-file(COPY "${CMAKE_SOURCE_DIR}/etc/shared/ugene${UGENE_BUILD_MODE_SUFFIX}" DESTINATION "${CMAKE_BINARY_DIR}/dist")
+if (NOT WIN32)
+    file(COPY "${CMAKE_SOURCE_DIR}/etc/shared/ugene${UGENE_BUILD_MODE_SUFFIX}" DESTINATION "${CMAKE_BINARY_DIR}/dist")
+endif ()
