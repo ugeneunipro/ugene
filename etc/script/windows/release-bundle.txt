@@ -5,7 +5,6 @@ Qt5Gui.dll
 Qt5Network.dll
 Qt5NetworkAuth.dll
 Qt5PrintSupport.dll
-Qt5Sensors.dll
 Qt5Svg.dll
 Qt5WebSockets.dll
 Qt5Widgets.dll
@@ -1401,10 +1400,7 @@ transl_ru.qm
 transl_tr.qm
 ugenecl.exe
 ugenedb.dll
-ugenedb.map
 ugenem.exe
-ugenem.map
 ugeneui.exe
-ugeneui.map
 vcruntime140.dll
 vcruntime140_1.dll
