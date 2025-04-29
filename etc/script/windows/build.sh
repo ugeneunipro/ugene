@@ -58,11 +58,9 @@ cp -r "${DIST_DIR}" "${BUNDLE_DIR}"
 rm "${BUNDLE_DIR}/"*.lib
 rm "${BUNDLE_DIR}/"*.pdb
 rm "${BUNDLE_DIR}/"*.exp
-rm "${BUNDLE_DIR}/"*.map
 rm "${BUNDLE_DIR}/plugins/"*.lib
 rm "${BUNDLE_DIR}/plugins/"*.pdb
 rm "${BUNDLE_DIR}/plugins/"*.exp
-rm "${BUNDLE_DIR}/plugins/"*.map
 
 echo "Copy resources"
 cp "${UGENE_DIR}/LICENSE.txt" "${BUNDLE_DIR}"
@@ -89,16 +87,9 @@ function copy_with_pdb() {
 
 copy_with_pdb "${QT_DIR}/bin/Qt5Core.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Gui.dll" "${BUNDLE_DIR}"
-copy_with_pdb "${QT_DIR}/bin/Qt5Multimedia.dll" "${BUNDLE_DIR}"
-copy_with_pdb "${QT_DIR}/bin/Qt5MultimediaWidgets.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Network.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5NetworkAuth.dll" "${BUNDLE_DIR}"
-copy_with_pdb "${QT_DIR}/bin/Qt5Positioning.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5PrintSupport.dll" "${BUNDLE_DIR}"
-copy_with_pdb "${QT_DIR}/bin/Qt5Qml.dll" "${BUNDLE_DIR}"
-copy_with_pdb "${QT_DIR}/bin/Qt5Quick.dll" "${BUNDLE_DIR}"
-copy_with_pdb "${QT_DIR}/bin/Qt5Script.dll" "${BUNDLE_DIR}"
-copy_with_pdb "${QT_DIR}/bin/Qt5Sensors.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Svg.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Test.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5WebSockets.dll" "${BUNDLE_DIR}"
