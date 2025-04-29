@@ -22,6 +22,8 @@ SCRIPTS_DIR="${UGENE_DIR}/etc/script/linux"
 BUILD_DIR="${UGENE_DIR}/cmake-build-release"
 DIST_DIR="${BUILD_DIR}/dist"
 
+rm -rf "${DIST_DIR}"
+
 # Needed by CMake.
 export Qt5_DIR="${QT_DIR}"
 

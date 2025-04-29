@@ -22,6 +22,7 @@ QT_LIBS=("Core" "DBus" "Gui" "Network" "NetworkAuth" "PrintSupport" "Svg" "Test"
 for LIB in ${QT_LIBS[*]}; do
   FULL_LIB_NAME="libQt5${LIB}.so.5"
   rm -rf "${UGENE_DIR:?}/${FULL_LIB_NAME}"
+  echo "Copying ${QT_DIR}/lib/${FULL_LIB_NAME} to ${UGENE_DIR}"
   cp "${QT_DIR}/lib/${FULL_LIB_NAME}" "${UGENE_DIR}/"
 done
 # shellcheck disable=SC2016
