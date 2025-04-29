@@ -55,12 +55,14 @@ echo "##teamcity[blockClosed name='make']"
 echo "##teamcity[blockOpened name='bundle']"
 rm -rf "${BUNDLE_DIR}"
 cp -r "${DIST_DIR}" "${BUNDLE_DIR}"
-rm "${BUNDLE_DIR}/"*.lib
-rm "${BUNDLE_DIR}/"*.pdb
 rm "${BUNDLE_DIR}/"*.exp
-rm "${BUNDLE_DIR}/plugins/"*.lib
-rm "${BUNDLE_DIR}/plugins/"*.pdb
+rm "${BUNDLE_DIR}/"*.lib
+rm "${BUNDLE_DIR}/"*.map
+rm "${BUNDLE_DIR}/"*.pdb
 rm "${BUNDLE_DIR}/plugins/"*.exp
+rm "${BUNDLE_DIR}/plugins/"*.lib
+rm "${BUNDLE_DIR}/plugins/"*.map
+rm "${BUNDLE_DIR}/plugins/"*.pdb
 
 echo "Copy resources"
 cp "${UGENE_DIR}/LICENSE.txt" "${BUNDLE_DIR}"
