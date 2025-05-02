@@ -82,12 +82,14 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
         lines.removeLast();
     }    
     for (const QString& line : qAsConst(lines)) {
-        const QStringList words = line.split(QRegExp("\\s+"));
+        const QStringList words = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
         // first word - 'C' or 'U'
         if ((words[0] == "C" || words[0] == "U") && words.size() > 4) {
             bool isNumber = false;
-            // fourth word - positive number
-            if (words[3].toInt(&isNumber) > 0 && isNumber) {
+            // remove pair delimiter, fourth word - still positive number
+            QString fourthWord = words[3];
+            fourthWord.remove(LENGTHS_DELIMITER);
+            if (fourthWord.toInt(&isNumber) > 0 && isNumber) {
                 // last word should contain ':', and not ends with ':Q', results shouldn't be from quick classification
                 // dot try to analyze last word in case of single line, it is incomplete
                 if ((!words.last().contains(ID_SEQ_DELIMITER) || words.last().endsWith(QUICK_PROCESSING_MARK)) && lines.size() > 1) {
