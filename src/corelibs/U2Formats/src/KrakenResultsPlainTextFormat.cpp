@@ -84,7 +84,7 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
     for (const QString& line : qAsConst(lines)) {
         const QStringList words = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
         // first word - 'C' or 'U'
-        if ((words[0] == "C" || words[0] == "U") && words.size() > 4) {
+        if (words.size() > 4 && (words[0] == "C" || words[0] == "U")) {
             bool isNumber = false;
             // remove pair delimiter, fourth word - still positive number
             QString fourthWord = words[3];
