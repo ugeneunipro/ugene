@@ -176,7 +176,8 @@ echo Running macdeployqt
   -executable="${TARGET_EXE_DIR}/ugenem" \
   -executable="${TARGET_EXE_DIR}/plugins_checker"
 
-rm -f -- "${TARGET_APP_DIR}/Contents/Frameworks/"*.dylib
+# All these libs are copied into Frameworks dir by macdeployqt.
+rm -f -- "${TARGET_EXE_DIR}/"*.dylib
 
 echo Copying extra libraries
 cp "${QT_DIR}/extra_libs/"* "${TARGET_APP_DIR}/Contents/Frameworks"

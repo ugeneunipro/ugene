@@ -1324,20 +1324,6 @@ Unipro UGENE.app/Contents/MacOS/data/workflow_samples/users/LengthMarker.usa
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/users/LinkData Fetch.usa
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/users/QualityFilter.usa
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/users/Read one sequence.usa
-Unipro UGENE.app/Contents/MacOS/libQSpec.dylib
-Unipro UGENE.app/Contents/MacOS/libU2Algorithm.dylib
-Unipro UGENE.app/Contents/MacOS/libU2Core.dylib
-Unipro UGENE.app/Contents/MacOS/libU2Designer.dylib
-Unipro UGENE.app/Contents/MacOS/libU2Formats.dylib
-Unipro UGENE.app/Contents/MacOS/libU2Gui.dylib
-Unipro UGENE.app/Contents/MacOS/libU2Lang.dylib
-Unipro UGENE.app/Contents/MacOS/libU2Private.dylib
-Unipro UGENE.app/Contents/MacOS/libU2Script.dylib
-Unipro UGENE.app/Contents/MacOS/libU2Test.dylib
-Unipro UGENE.app/Contents/MacOS/libU2Test.dylib
-Unipro UGENE.app/Contents/MacOS/libU2View.dylib
-Unipro UGENE.app/Contents/MacOS/libbreakpad.dylib
-Unipro UGENE.app/Contents/MacOS/libugenedb.dylib
 Unipro UGENE.app/Contents/MacOS/plugins
 Unipro UGENE.app/Contents/MacOS/plugins/annotator.license
 Unipro UGENE.app/Contents/MacOS/plugins/annotator.plugin
