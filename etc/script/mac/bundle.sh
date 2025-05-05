@@ -35,6 +35,7 @@ cp "${SOURCE_DIR}/src/ugeneui/images/ugeneui.icns" "${TARGET_APP_DIR}/Contents/R
 echo Creating Info.plist
 # "\$UGENE_VER_type" is a variable that will be replaced below with the corresponding variables from ugene_version.pri:
 # UGENE_VER_MAJOR or UGENE_VER_MINOR.
+# TODO: parse version from CMAKE.
 VERSION_PARSING_COMMAND="sed -n 's/^ *\$UGENE_VER_type *= *\([0-9][0-9]*\) *\(#.*\)*$/\1/p' '${SOURCE_DIR}/src/ugene_version.pri'"
 UGENE_VERSION_MAJOR=$(eval "${VERSION_PARSING_COMMAND/\$UGENE_VER_type/UGENE_VER_MAJOR}")
 UGENE_VERSION_MINOR=$(eval "${VERSION_PARSING_COMMAND/\$UGENE_VER_type/UGENE_VER_MINOR}")
@@ -174,6 +175,8 @@ echo Running macdeployqt
   -executable="${TARGET_EXE_DIR}/ugenecl" \
   -executable="${TARGET_EXE_DIR}/ugenem" \
   -executable="${TARGET_EXE_DIR}/plugins_checker"
+
+rm -f -- "${TARGET_APP_DIR}/Contents/Frameworks/"*.dylib
 
 echo Copying extra libraries
 cp "${QT_DIR}/extra_libs/"* "${TARGET_APP_DIR}/Contents/Frameworks"
