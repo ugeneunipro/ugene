@@ -176,12 +176,6 @@ echo Running macdeployqt
   -executable="${TARGET_EXE_DIR}/ugenem" \
   -executable="${TARGET_EXE_DIR}/plugins_checker"
 
-# All these libs are copied into Frameworks dir by macdeployqt.
-rm -f -- "${TARGET_EXE_DIR}/"*.dylib
-
-echo Copying extra libraries
-cp "${QT_DIR}/extra_libs/"* "${TARGET_APP_DIR}/Contents/Frameworks"
-
 echo Copying readme.txt file
 cp "${SOURCE_DIR}/etc/script/mac/dmg/readme.txt" "${BUNDLE_DIR}/readme.txt"
 echo Linking Samples

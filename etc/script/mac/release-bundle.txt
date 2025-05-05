@@ -102,20 +102,6 @@ Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/5/Resources/Info.plist
 Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/5/Resources/QtXml.prl
 Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/Current
-Unipro UGENE.app/Contents/Frameworks/libQSpec.dylib
-Unipro UGENE.app/Contents/Frameworks/libU2Algorithm.dylib
-Unipro UGENE.app/Contents/Frameworks/libU2Core.dylib
-Unipro UGENE.app/Contents/Frameworks/libU2Designer.dylib
-Unipro UGENE.app/Contents/Frameworks/libU2Formats.dylib
-Unipro UGENE.app/Contents/Frameworks/libU2Gui.dylib
-Unipro UGENE.app/Contents/Frameworks/libU2Lang.dylib
-Unipro UGENE.app/Contents/Frameworks/libU2Private.dylib
-Unipro UGENE.app/Contents/Frameworks/libU2Script.dylib
-Unipro UGENE.app/Contents/Frameworks/libU2Test.dylib
-Unipro UGENE.app/Contents/Frameworks/libU2View.dylib
-Unipro UGENE.app/Contents/Frameworks/libbreakpad.dylib
-Unipro UGENE.app/Contents/Frameworks/libqtscript.dylib
-Unipro UGENE.app/Contents/Frameworks/libugenedb.dylib
 Unipro UGENE.app/Contents/Info.plist
 Unipro UGENE.app/Contents/MacOS
 Unipro UGENE.app/Contents/MacOS/data
@@ -1348,6 +1334,20 @@ Unipro UGENE.app/Contents/MacOS/data/workflow_samples/users/LengthMarker.usa
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/users/LinkData Fetch.usa
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/users/QualityFilter.usa
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/users/Read one sequence.usa
+Unipro UGENE.app/Contents/MacOS/libQSpec.dylib
+Unipro UGENE.app/Contents/MacOS/libU2Algorithm.dylib
+Unipro UGENE.app/Contents/MacOS/libU2Core.dylib
+Unipro UGENE.app/Contents/MacOS/libU2Designer.dylib
+Unipro UGENE.app/Contents/MacOS/libU2Formats.dylib
+Unipro UGENE.app/Contents/MacOS/libU2Gui.dylib
+Unipro UGENE.app/Contents/MacOS/libU2Lang.dylib
+Unipro UGENE.app/Contents/MacOS/libU2Private.dylib
+Unipro UGENE.app/Contents/MacOS/libU2Script.dylib
+Unipro UGENE.app/Contents/MacOS/libU2Test.dylib
+Unipro UGENE.app/Contents/MacOS/libU2View.dylib
+Unipro UGENE.app/Contents/MacOS/libbreakpad.dylib
+Unipro UGENE.app/Contents/MacOS/libqtscript.dylib
+Unipro UGENE.app/Contents/MacOS/libugenedb.dylib
 Unipro UGENE.app/Contents/MacOS/plugins
 Unipro UGENE.app/Contents/MacOS/plugins/annotator.license
 Unipro UGENE.app/Contents/MacOS/plugins/annotator.plugin
