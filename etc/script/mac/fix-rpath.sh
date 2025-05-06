@@ -1,34 +1,6 @@
 #!/bin/sh
 set -eu
 
-# Compute relative path from $1 to $2 (both absolute)
-relpath() {
-    FROM=$(cd "$1" && pwd)
-    TO=$(cd "$(dirname "$2")" && pwd)/$(basename "$2")
-
-    # Split into arrays
-    IFS=/; set -- $FROM; FROM_PARTS=$*
-    IFS=/; set -- $TO; TO_PARTS=$*
-
-    # Find common prefix length
-    IFS=/
-    COMMON=
-    while [ -n "$FROM_PARTS" ] && [ -n "$TO_PARTS" ] && [ "$(echo "$FROM_PARTS" | cut -d' ' -f1)" = "$(echo "$TO_PARTS" | cut -d' ' -f1)" ]; do
-        COMMON="$COMMON/$(echo "$FROM_PARTS" | cut -d' ' -f1)"
-        FROM_PARTS=$(echo "$FROM_PARTS" | cut -d' ' -f2-)
-        TO_PARTS=$(echo "$TO_PARTS" | cut -d' ' -f2-)
-    done
-
-    # Count how many dirs to go up
-    UP=""
-    for part in $FROM_PARTS; do
-        UP="../$UP"
-    done
-
-    REL="$UP$TO_PARTS"
-    echo "$REL" | sed 's|//*|/|g' | sed 's|/$||'
-}
-
 if [ $# -lt 1 ]; then
   echo "Usage: $0 <root_directory>"
   exit 1
@@ -41,25 +13,55 @@ if [ ! -d "$ROOT_DIR" ]; then
   exit 1
 fi
 
-echo "Scanning for binaries in: $ROOT_DIR"
+ROOT_DIR=$(cd "$ROOT_DIR" && pwd)
+
+# Compute relative path FROM=$1 TO=$2 (both relative to $ROOT_DIR).
+relpath() {
+    FROM=$(cd "$1" && pwd)
+    TO_DIR=$(cd "$(dirname "$2")" && pwd)
+    TO="$TO_DIR/$(basename "$2")"
+
+    FROM_PARTS=$(echo "$FROM" | tr '/' ' ')
+    TO_PARTS=$(echo "$TO" | tr '/' ' ')
+
+    # Find common prefix.
+    COMMON=""
+    while [ -n "$FROM_PARTS" ] && [ -n "$TO_PARTS" ]; do
+        F=$(echo "$FROM_PARTS" | cut -d' ' -f1)
+        T=$(echo "$TO_PARTS" | cut -d' ' -f1)
+        [ "$F" = "$T" ] || break
+        COMMON="$COMMON/$F"
+        FROM_PARTS=$(echo "$FROM_PARTS" | cut -d' ' -f2-)
+        TO_PARTS=$(echo "$TO_PARTS" | cut -d' ' -f2-)
+    done
+
+    UP=""
+    for _ in $FROM_PARTS; do
+        UP="$UP../"
+    done
+
+    echo "$UP$(echo "$TO_PARTS" | tr ' ' '/')" | sed 's|//*|/|g' | sed 's|/$||'
+}
+
+echo "Scanning for Mach-O binaries in: $ROOT_DIR"
 echo
 
 find "$ROOT_DIR" -type f | while read bin; do
   file_output=$(file "$bin")
   case "$file_output" in
     *Mach-O*)
-      echo "fix-rpath: checking $bin"
+      echo "Inspecting $bin"
       ;;
     *)
       continue
       ;;
   esac
 
-  bin_dir=$(cd "$(dirname "$bin")" && pwd)
-  bin_path="$bin_dir/$(basename "$bin")"
+  bin_abs=$(cd "$(dirname "$bin")" && pwd)/$(basename "$bin")
+  bin_dir=$(dirname "$bin_abs")
 
   # Replace @rpath links
-  otool -L "$bin_path" 2>/dev/null | tail -n +2 | while read line; do
+  otool -L "$bin_abs" 2>/dev/null | tail -n +2 | while read line; do
     path=$(echo "$line" | awk '{print $1}')
     case "$path" in
       @rpath/*.dylib)
@@ -69,23 +71,25 @@ find "$ROOT_DIR" -type f | while read bin; do
           echo "  Warning: Could not locate $dylib_name in $ROOT_DIR"
           continue
         fi
+
         dylib_abs=$(cd "$(dirname "$dylib_path")" && pwd)/$(basename "$dylib_path")
         rel_loader_path=$(relpath "$bin_dir" "$dylib_abs")
         new_path="@loader_path/$rel_loader_path"
+
         echo "  Rewriting: $path → $new_path"
-        install_name_tool -change "$path" "$new_path" "$bin_path"
+        install_name_tool -change "$path" "$new_path" "$bin_abs"
         ;;
     esac
   done
 
   # Fix install_name (id) in dylib itself if it uses @rpath
-  id=$(otool -D "$bin_path" 2>/dev/null | sed -n '2p')
+  id=$(otool -D "$bin_abs" 2>/dev/null | sed -n '2p')
   case "$id" in
     @rpath/*.dylib)
       dylib_name=$(basename "$id")
       new_id="@loader_path/$dylib_name"
       echo "  Rewriting install_name: $id → $new_id"
-      install_name_tool -id "$new_id" "$bin_path"
+      install_name_tool -id "$new_id" "$bin_abs"
       ;;
   esac
 done
