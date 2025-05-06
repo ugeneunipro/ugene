@@ -25,6 +25,7 @@ echo "##teamcity[blockOpened name='env']"
 env
 echo "##teamcity[blockClosed name='env']"
 
+rm -rf "${BUILD_DIR}/dist" 2>/dev/null
 
 #### CMake ####
 echo "##teamcity[blockOpened name='CMake']"
