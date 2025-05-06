@@ -18,6 +18,9 @@ TARGET_APP_DIR="${BUNDLE_DIR}/${APP_NAME}/"
 TARGET_EXE_DIR="${TARGET_APP_DIR}/Contents/MacOS"
 TARGET_PLUGINS_DIR="${TARGET_EXE_DIR}/plugins"
 
+echo Fixing @rpath in dist
+"${SOURCE_DIR}/etc/script/mac/fix-rpath.sh" "${DIST_DIR}"
+
 echo Creating UGENE application bundle
 rm -rf "${BUNDLE_DIR}"
 mkdir "${BUNDLE_DIR}"
