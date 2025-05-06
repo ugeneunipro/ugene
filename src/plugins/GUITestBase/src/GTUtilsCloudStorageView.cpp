@@ -70,29 +70,44 @@ void GTUtilsCloudStorageView::clickLogout() {
 QModelIndex GTUtilsCloudStorageView::checkItemIsPresent(const QList<QString>& path) {
     GT_LOG("GTUtilsCloudStorageView::checkItemIsPresent: [" + path.join("/") + "]");
     QTreeView* tree = getStorageTreeView();
-    return GTTreeView::findIndexWithWait(tree, QVariant::fromValue(path), Qt::ItemDataRole(Qt::UserRole + 3));
+    auto result = GTTreeView::findIndexWithWait(tree, QVariant::fromValue(path), Qt::ItemDataRole(Qt::UserRole + 3));
+    GT_LOG("GTUtilsCloudStorageView::checkItemIsPresent: [" + path.join("/") + "] Finished");
+    return result;
 }
 
 QModelIndex GTUtilsCloudStorageView::checkItemIsShared(const QList<QString>& path, const QString& email) {
     GT_LOG("GTUtilsCloudStorageView::checkItemIsShared: [" + path.join("/") + "]: " + email);
-    auto modelIndex = checkItemIsPresent(path);
-    auto sharedEmails = modelIndex.data(Qt::ItemDataRole(Qt::UserRole + 6)).value<QList<QString>>();
-    GT_CHECK_RESULT(sharedEmails.contains(email), "Shared email is not found: " + email, modelIndex);
-    return modelIndex;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        auto modelIndex = checkItemIsPresent(path);
+        auto sharedEmails = modelIndex.data(Qt::ItemDataRole(Qt::UserRole + 6)).value<QList<QString>>();
+        if (sharedEmails.contains(email)) {
+            GT_LOG("GTUtilsCloudStorageView::checkItemIsShared: [" + path.join("/") + "]: " + email + " Finished");
+            return modelIndex;
+        }
+    }
+    GT_FAIL("Shared email is not found: " + email, {});
 }
 
 QModelIndex GTUtilsCloudStorageView::checkItemIsNotShared(const QList<QString>& path, const QString& email) {
     GT_LOG("GTUtilsCloudStorageView::checkItemIsNotShared: [" + path.join("/") + "]: " + email);
-    auto modelIndex = checkItemIsPresent(path);
-    auto sharedEmails = modelIndex.data(Qt::ItemDataRole(Qt::UserRole + 6)).value<QList<QString>>();
-    GT_CHECK_RESULT(!sharedEmails.contains(email), "Shared email is present: " + email, modelIndex);
-    return modelIndex;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        auto modelIndex = checkItemIsPresent(path);
+        auto sharedEmails = modelIndex.data(Qt::ItemDataRole(Qt::UserRole + 6)).value<QList<QString>>();
+        if (!sharedEmails.contains(email)) {
+            GT_LOG("GTUtilsCloudStorageView::checkItemIsNotShared: [" + path.join("/") + "]: " + email + " Finished");
+            return modelIndex;
+        }
+    }
+    GT_FAIL("Shared email is present: " + email, {});
 }
 
 void GTUtilsCloudStorageView::checkItemIsNotPresent(const QList<QString>& path) {
     GT_LOG("GTUtilsCloudStorageView::checkItemIsNotPresent: [" + path.join("/") + "]");
     QTreeView* tree = getStorageTreeView();
     GTTreeView::checkItemIsNotPresentWithWait(tree, QVariant::fromValue(path), Qt::ItemDataRole(Qt::UserRole + 3));
+    GT_LOG("GTUtilsCloudStorageView::checkItemIsNotPresent: [" + path.join("/") + "] Finished");
 }
 
 QTreeView* GTUtilsCloudStorageView::getStorageTreeView() {
@@ -139,6 +154,7 @@ void GTUtilsCloudStorageView::createDir(const QList<QString>& path) {
 }
 
 void GTUtilsCloudStorageView::deleteEntry(const QList<QString>& path) {
+    GT_LOG("GTUtilsCloudStorageView::deleteEntry: [" + path.join("/") + "]");
     QTreeView* tree = getStorageTreeView();
     QModelIndex index = checkItemIsPresent(path);
 
@@ -148,6 +164,7 @@ void GTUtilsCloudStorageView::deleteEntry(const QList<QString>& path) {
     GTMouseDriver::click(Qt::RightButton);
 
     checkItemIsNotPresent(path);
+    GT_LOG("GTUtilsCloudStorageView::deleteEntry: [" + path.join("/") + "] is Finished");
 }
 
 void GTUtilsCloudStorageView::uploadFile(const QList<QString>& dirPath, const QString& localFileUrl) {

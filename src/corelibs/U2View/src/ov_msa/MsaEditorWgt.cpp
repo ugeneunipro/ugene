@@ -42,8 +42,7 @@ MsaEditorWgt::MsaEditorWgt(MsaEditor* editor,
                            QWidget* parent,
                            MaEditorOverviewArea* overview,
                            MaEditorStatusBar* statusbar)
-    : MaEditorWgt(editor, parent),
-      similarityStatistics(nullptr) {
+    : MaEditorWgt(editor, parent) {
     overviewArea = overview;
     statusBar = statusbar;
     rowHeightController = new MsaRowHeightController(this);
@@ -99,7 +98,8 @@ void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
 }
 
 void MsaEditorWgt::setSimilaritySettings(const SimilarityStatisticsSettings* settings) {
-    similarityStatistics->setSettings(settings);
+    similarityStatisticsSettings = SimilarityStatisticsSettings(*settings);
+    emit si_similaritySettingsChanged(similarityStatisticsSettings);
 }
 
 const SimilarityStatisticsSettings* MsaEditorWgt::getSimilaritySettings() {
@@ -107,7 +107,7 @@ const SimilarityStatisticsSettings* MsaEditorWgt::getSimilaritySettings() {
         return static_cast<const SimilarityStatisticsSettings*>(
             similarityStatistics->getSettings());
     }
-    return nullptr;
+    return &similarityStatisticsSettings;
 }
 
 void MsaEditorWgt::refreshSimilarityColumn() {
@@ -116,11 +116,9 @@ void MsaEditorWgt::refreshSimilarityColumn() {
 
 void MsaEditorWgt::showSimilarity() {
     if (similarityStatistics == nullptr) {
-        SimilarityStatisticsSettings settings;
-        settings.algoId = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
-        settings.editor = getEditor();
+        similarityStatisticsSettings.algoId = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
 
-        dataList = new MsaEditorSimilarityColumn(this, &settings);
+        dataList = new MsaEditorSimilarityColumn(this, &similarityStatisticsSettings);
         dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
         similarityStatistics = new MsaEditorAlignmentDependentWidget(this, dataList);
 

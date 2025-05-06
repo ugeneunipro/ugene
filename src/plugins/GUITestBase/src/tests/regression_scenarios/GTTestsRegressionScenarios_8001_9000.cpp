@@ -26,6 +26,7 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLabel.h>
@@ -1305,7 +1306,38 @@ GUI_TEST_CLASS_DEFINITION(test_8153) {
     };
 
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList {}, new custom()));
+}
 
+GUI_TEST_CLASS_DEFINITION(test_8161) {
+    /*
+    Load COI.aln
+    Select Wrap mode on
+    Select Highlighting tab
+    Check up "Use dots" checkboõ
+    Select "Statistics" tab
+    Check up "Show distance column" checkboõ
+    Select Distance algorithm=Similarity
+    Uncheck Show distance column" checkboõ
+    Select Wrap mode off
+    Select  Highlighting tab
+    Unexpectedly "Use dots" checkboõ is unchecked, check it again
+    Select  "Statistics" tab
+    */
+
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    QAction* wrapMode = GTAction::findActionByText("Wrap mode");
+    GTWidget::click(GTAction::button(wrapMode));
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Highlighting);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("useDots"), true);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Statistics);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("showDistancesColumnCheck"), true);
+    GTComboBox::selectItemByText(GTWidget::findComboBox("algoComboBox"), "Similarity");
+    GTCheckBox::setChecked(GTWidget::findCheckBox("showDistancesColumnCheck"), false);
+    GTWidget::click(GTAction::button(wrapMode));
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Highlighting);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("useDots"), true);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Statistics);
 }
 
 

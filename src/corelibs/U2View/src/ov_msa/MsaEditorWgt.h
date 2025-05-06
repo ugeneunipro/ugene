@@ -22,6 +22,7 @@
 #pragma once
 
 #include "MaEditorWgt.h"
+#include "statistics/SimilarityStatisticsSettings.h"
 
 namespace U2 {
 
@@ -33,7 +34,6 @@ class MsaEditorMultiTreeViewer;
 class MsaEditorOverviewArea;
 class MsaEditorSimilarityColumn;
 class MsaEditorTreeViewer;
-class SimilarityStatisticsSettings;
 class MsaEditorWgtEventFilter;
 
 class U2VIEW_EXPORT MsaEditorWgt : public MaEditorWgt {
@@ -85,6 +85,7 @@ private slots:
 signals:
     void si_showTreeOP();
     void si_hideTreeOP();
+    void si_similaritySettingsChanged(const SimilarityStatisticsSettings&);
 
 protected:
     void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) override;
@@ -96,8 +97,7 @@ private:
     MsaEditorMultiTreeViewer* multiTreeViewer = nullptr;
     MsaEditorAlignmentDependentWidget* similarityStatistics = nullptr;
     MsaEditorWgtEventFilter* eventFilter = nullptr;
-
-
+    SimilarityStatisticsSettings similarityStatisticsSettings;
 };
 
 class U2VIEW_EXPORT MsaEditorWgtEventFilter : public QObject {

@@ -52,7 +52,7 @@ const QString GTUtilsProjectTreeView::widgetName = "documentTreeWidget";
 int GTUtilsProjectTreeView::countTopLevelItems() {
     QTreeView* treeView = getTreeView();
     QAbstractItemModel* model = treeView->model();
-    CHECK_SET_ERR_RESULT(model != nullptr, "Model is NULL", {});
+    CHECK_SET_ERR_RESULT(model != nullptr, "Model is NULL in GTUtilsProjectTreeView::countTopLevelItems", {});
 
     return model->rowCount();
 }

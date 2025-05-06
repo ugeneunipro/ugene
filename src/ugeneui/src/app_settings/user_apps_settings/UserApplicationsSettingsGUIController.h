@@ -69,6 +69,7 @@ public:
     bool resetSettings = false;
     bool updatesEnabled = true;
     bool experimentsEnabled = false;
+    bool isHighDpiAutoScalingDisabled = false;
 };
 
 class UserApplicationsSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui_UserApplicationsSettingsWidget {
