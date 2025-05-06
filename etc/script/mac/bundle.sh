@@ -125,6 +125,7 @@ add-library U2Script
 add-library U2Test
 add-library U2View
 add-library breakpad
+add-library qtscript
 add-library ugenedb
 
 # Plugins to add to the bundle
