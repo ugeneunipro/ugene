@@ -110,7 +110,20 @@ function code_sign() {
   fi
 }
 
-find "${DIST_DIR_NAME}" | grep -e .exe$ -e .dll$ | grep -v vcruntime | while read -r BINARY_FILE; do
+files_to_sign=$(find "${DIST_DIR_NAME}" -type f \( -name "*.exe" -o -name "*.dll" \) ! -name "*vcruntime*")
+
+# Check if the list is empty and fail if it is.
+if [ -z "$files_to_sign" ]; then
+  echo "No files found to sign. Exiting."
+  echo "##teamcity[blockClosed name='Sign']"
+  exit 1
+fi
+
+# Print the list of files to sign
+echo "Files to sign:"
+echo "${files_to_sign}" | tr ' ' '\n'  # Print each file on a new line
+
+for BINARY_FILE in ${files_to_sign}; do
   code_sign "${BINARY_FILE}" || exit 1
 done
 echo "##teamcity[blockClosed name='Sign']"
