@@ -1,10 +1,13 @@
 <RCC>
     <qresource prefix="/dotplot" >
-        <file>images/dotplot.png</file>
-        <file>images/lock.png</file>
         <file>images/cursor.png</file>
         <file>images/exit.png</file>
         <file>images/hand_icon.png</file>
         <file>images/filter.png</file>
+
+        <file>images/dark/dotplot.png</file>
+
+        <file>images/light/dotplot.png</file>
+
     </qresource>
 </RCC>
