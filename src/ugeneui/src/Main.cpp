@@ -156,9 +156,10 @@
 
 #include "app_settings/AppSettingsGUIImpl.h"
 #include "app_settings/logview_settings/LogSettingsGUIController.h"
+#include "main_window/styles/ProxyStyle.h"
+#include "main_window/styles/StyleFactory.h"
 #include "main_window/CheckUpdatesTask.h"
 #include "main_window/MainWindowImpl.h"
-#include "main_window/ProxyStyle.h"
 #include "main_window/SplashScreen.h"
 #include "plugin_viewer/PluginViewerImpl.h"
 #include "project_support/ProjectLoaderImpl.h"
@@ -168,6 +169,10 @@
 #include "task_view/TaskViewController.h"
 #include "update/UgeneUpdater.h"
 #include "welcome_page/WelcomePageMdiController.h"
+
+#ifndef Q_OS_DARWIN
+#include "main_window/styles/DarkStyle.h"
+#endif
 
 using namespace U2;
 
@@ -435,7 +440,6 @@ int main(int argc, char** argv) {
 
     GTIMER(c1, t1, "main()->QApp::exec");
 
-    // Create a global application context & initialize settings first.
     AppContextImpl* appContext = AppContextImpl::getApplicationContext();
     appContext->setGUIMode(true);
 
@@ -597,19 +601,7 @@ int main(int argc, char** argv) {
     qInstallMessageHandler(guiTestMessageOutput);
 
     QString styleName = userAppSettings->getVisualStyle();
-    QStyle* qtStyle = nullptr;
-    if (!styleName.isEmpty()) {
-        qtStyle = QStyleFactory::create(styleName);
-        if (qtStyle == nullptr) {
-            uiLog.details(AppContextImpl::tr("Style not available %1").arg(styleName));
-        }
-    }
-    auto proxyStyle = new ProxyStyle(qtStyle);
-    // Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
-    if (qtStyle != nullptr) {
-        proxyStyle->setObjectName(qtStyle->objectName());
-    }
-    QApplication::setStyle(proxyStyle);
+    int colorModeIndex = userAppSettings->getColorModeIndex();
 
     auto resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);
@@ -635,7 +627,8 @@ int main(int argc, char** argv) {
         Q_UNUSED(res);
     }
 
-    auto mw = new MainWindowImpl();
+    auto mw = new MainWindowImpl;
+    mw->setNewStyle(styleName, colorModeIndex);
     appContext->setMainWindow(mw);
     mw->prepare();
 
@@ -650,13 +643,15 @@ int main(int argc, char** argv) {
     auto appSettingsGUI = new AppSettingsGUIImpl();
     appContext->setAppSettingsGUI(appSettingsGUI);
 
-    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, new TaskViewDockWidget(), QKeySequence(Qt::ALT | Qt::Key_2));
+    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, new TaskViewDockWidget(), IconParameters("ugene", "clock.png", false), QKeySequence(Qt::ALT | Qt::Key_2));
 
     // Initialize logged log view
     auto logView = new LogViewWidget(&logsCache);
     logView->setObjectName(DOCK_LOG_VIEW);
+    logView->sl_colorModeSwitched();
+    mw->connectLogView(logView);
     AppContext::getAppSettingsGUI()->registerPage(new LogSettingsPageController(logView));
-    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, logView, QKeySequence(Qt::ALT | Qt::Key_3));
+    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, logView, IconParameters("ugene", "book_open.png", false), QKeySequence(Qt::ALT | Qt::Key_3));
 
     auto ovfr = new GObjectViewFactoryRegistry();
     appContext->setObjectViewFactoryRegistry(ovfr);

@@ -25,9 +25,13 @@
 #include <QMdiArea>
 #include <QMenu>
 #include <QMenuBar>
+#include <QTimer>
 
+#include <U2Gui/LogView.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/Notification.h>
+
+#include "styles/StyleFactory.h"
 
 class QMdiArea;
 class QToolBar;
@@ -87,6 +91,12 @@ public:
     virtual void setWindowTitle(const QString& title);
     void registerAction(QAction* action);
 
+    void setDarkMode(bool isDark);
+    bool isDarkMode() const override;
+
+    void setNewStyle(const QString& style, int colorModeIndex) override;
+    void connectLogView(LogViewWidget* view);
+
     void prepare();
     void close();
 
@@ -94,10 +104,12 @@ public:
     void setShutDownInProcess(bool flag);
     void registerStartupChecks(const QList<Task*>& tasks);
     void addNotification(const QString& message, NotificationType type);
+
 signals:
     void si_show();
     void si_showWelcomePage();
     void si_paste();
+
 public slots:
     void sl_tempDirPathCheckFailed(QString path);
     void sl_show();
@@ -111,6 +123,7 @@ private slots:
     void sl_viewOnlineDocumentation();
     void sl_showWhatsNew();
     void sl_crashUgene();
+    void sl_colorModeSwitched();
 #ifdef _INSTALL_TO_PATH_ACTION
     void sl_installToPathAction();
 #endif
@@ -140,12 +153,22 @@ private:
     QAction* viewOnlineDocumentation = nullptr;
     QAction* welcomePageAction = nullptr;
     QAction* crashUgeneAction = nullptr;
+    // TODO: remove
+    QAction* switchColorMode = nullptr;
     QAction* showWhatsNewAction = nullptr;
 #ifdef _INSTALL_TO_PATH_ACTION
     QAction* installToPathAction = nullptr;
 #endif
     bool shutDownInProcess = false;
-
+    StyleFactory::ColorMode colorMode = StyleFactory::ColorMode::Light;
+#ifdef Q_OS_DARWIN
+    bool colorIsChangedByUser = false;
+#endif
+    bool isAutoColorMode = false;
+    bool isDark = false;
+#ifdef Q_OS_WIN
+    QTimer colorModeTimer;
+#endif
     QList<Task*> startupTasklist;
 };
 
