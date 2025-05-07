@@ -35,7 +35,6 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/TextUtils.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -45,6 +44,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/MsaEditorSequenceArea.h>
@@ -150,7 +150,7 @@ FindPatternMsaWidget::FindPatternMsaWidget(MsaEditor* msaEditor, TriState isSear
         isSearchInNamesMode = isSearchInNamesModeTriState == TriState_Yes;
     }
 
-    progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
+    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
     resultLabel->setObjectName("resultLabel");
     resultLabel->setFixedHeight(progressLabel->height());
@@ -337,6 +337,7 @@ void FindPatternMsaWidget::connectSlots() {
             SLOT(sl_onSelectedRegionChanged(const MaEditorSelection&, const MaEditorSelection&)));
 
     connect(searchContextComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_searchModeChanged()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &FindPatternMsaWidget::sl_colorModeSwitched);
 }
 
 void FindPatternMsaWidget::sl_onAlgorithmChanged(int index) {
@@ -525,6 +526,14 @@ void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOut
     } else {
         startFindPatternInMsaTask(newPatterns);
     }
+}
+
+void FindPatternMsaWidget::sl_colorModeSwitched() {
+    updateErrorLabelState();
+    auto tmpProgressMovie = progressMovie;
+    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
+    progressLabel->setMovie(progressMovie);
+    delete tmpProgressMovie;
 }
 
 void FindPatternMsaWidget::clearResults() {

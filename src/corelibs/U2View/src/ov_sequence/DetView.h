@@ -91,6 +91,7 @@ protected slots:
     void sl_translateAnnotationsOrSelection();
     void sl_setUpFramesManually();
     void sl_showAllFrames();
+    void sl_colorModeSwitched() override;
 
 protected:
     void pack() override;
@@ -117,6 +118,9 @@ protected:
     QAction* translateAnnotationsOrSelectionAction;
     QAction* setUpFramesManuallyAction;
     QAction* showAllFramesAction;
+
+    QMenu* translationsMenu = nullptr;
+    QMenu* ttMenu = nullptr;
 
     DetViewSequenceEditor* editor;
 

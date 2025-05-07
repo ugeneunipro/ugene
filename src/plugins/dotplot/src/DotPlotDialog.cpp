@@ -48,6 +48,10 @@
 
 namespace U2 {
 
+const QColor DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT = QColor(0, 0, 0);
+
+const QColor DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK = QColor(255, 255, 255);
+
 DotPlotDialog::DotPlotDialog(QWidget* parent, AnnotatedDNAView* currentADV, int minLen, int identity, ADVSequenceObjectContext* sequenceX, ADVSequenceObjectContext* sequenceY, bool dir, bool inv, const QColor& dColor, const QColor& iColor, bool hideLoadSequences)
     : QDialog(parent), xSeq(sequenceX), ySeq(sequenceY), adv(currentADV), directColor(dColor), invertedColor(iColor), openSequenceTask(nullptr) {
     setupUi(this);
@@ -104,6 +108,8 @@ DotPlotDialog::DotPlotDialog(QWidget* parent, AnnotatedDNAView* currentADV, int 
     if (hideLoadSequences) {
         loadSequenceButton->hide();
     }
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DotPlotDialog::sl_colorModeSwitched);
 }
 
 void DotPlotDialog::reconnectAllProjectDocuments() {
@@ -185,6 +191,11 @@ void DotPlotDialog::sl_sequenceSelectorIndexChanged() {
 
     int defaultWindow = qMin((int)qMin(objX->getSequenceLength(), objY->getSequenceLength()), 100);
     minLenBox->setValue(qMin(defaultWindow, minLenBox->value()));
+}
+
+void DotPlotDialog::sl_colorModeSwitched() {
+    sl_directDefaultColorButton();
+    sl_invertedDefaultColorButton();
 }
 
 void DotPlotDialog::accept() {
@@ -300,13 +311,13 @@ void DotPlotDialog::sl_invertedColorButton() {
 }
 
 void DotPlotDialog::sl_directDefaultColorButton() {
-    directColor = QColor();
+    directColor = AppContext::getMainWindow()->isDarkMode() ? DOT_PLOT_LINE_COLOR_DARK : DOT_PLOT_LINE_COLOR_LIGHT;
     directCheckBox->setChecked(true);
     updateColors();
 }
 
 void DotPlotDialog::sl_invertedDefaultColorButton() {
-    invertedColor = QColor();
+    invertedColor = AppContext::getMainWindow()->isDarkMode() ? DOT_PLOT_LINE_COLOR_DARK : DOT_PLOT_LINE_COLOR_LIGHT;
     invertedCheckBox->setChecked(true);
     updateColors();
 }

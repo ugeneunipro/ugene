@@ -27,6 +27,9 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/FeatureColors.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/MainWindow.h>
 
 namespace U2 {
 
@@ -50,7 +53,8 @@ void AnnotationSettingsRegistry::changeSettings(const QList<AnnotationSettings*>
     }
     QStringList changedNames;
     foreach (AnnotationSettings* s, settings) {
-        assert(s->color.isValid());
+        assert(s->lightColor.isValid());
+        assert(s->darkColor.isValid());
         assert(!s->name.isEmpty());
         persistentMap.remove(s->name);
         transientMap.remove(s->name);
@@ -93,7 +97,8 @@ AnnotationSettings* AnnotationSettingsRegistry::getAnnotationSettings(const QStr
     }
     s = new AnnotationSettings();
     s->name = name;
-    s->color = FeatureColors::genLightColor(name);
+    s->lightColor = FeatureColors::genLightColor(name);
+    s->darkColor = FeatureColors::transformLightToDark(s->lightColor);
     s->visible = true;
     if (transientMap.size() == MAX_CACHE_SIZE) {
         // todo: mutex!?
@@ -113,15 +118,24 @@ void AnnotationSettingsRegistry::read() {
             as = new AnnotationSettings();
             as->name = name;
         }
-        QVariant color = s->getValue(SETTINGS_ROOT + as->name + "/color", FeatureColors::genLightColor(as->name).name());
-        as->color = QColor(color.toString());
-        if (!as->color.isValid()) {
-            // previously color was stored as QColor, not by name
-            as->color = color.value<QColor>();
-            if (!as->color.isValid()) {  // if still invalid - get the default value
-                as->color = FeatureColors::genLightColor(as->name);
+
+        auto getColor = [s, as](const QString& tag, const QColor& defaultColor) -> QColor {
+            QVariant color = s->getValue(SETTINGS_ROOT + as->name + "/" + tag, defaultColor.name());
+            QColor result;
+            result = QColor(color.toString());
+            if (!result.isValid()) {
+                // previously color was stored as QColor, not by name
+                result = color.value<QColor>();
+                if (!result.isValid()) {  // if still invalid - get the default value
+                    result = defaultColor;
+                }
             }
-        }
+
+            return result;
+        };
+
+        as->lightColor = getColor("color", FeatureColors::genLightColor(as->name));
+        as->darkColor = getColor("color_dark", FeatureColors::transformLightToDark(as->lightColor));
         as->visible = s->getValue(SETTINGS_ROOT + as->name + "/visible", true).toBool();
         as->amino = s->getValue(SETTINGS_ROOT + as->name + "/amino", true).toBool();
         as->showNameQuals = s->getValue(SETTINGS_ROOT + as->name + "/show_quals", false).toBool();
@@ -138,7 +152,8 @@ void AnnotationSettingsRegistry::save() {
     Settings* s = AppContext::getSettings();
     QStringList keys = s->getAllKeys(SETTINGS_ROOT);
     foreach (const AnnotationSettings* as, persistentMap.values()) {
-        s->setValue(SETTINGS_ROOT + as->name + "/color", as->color.name());
+        s->setValue(SETTINGS_ROOT + as->name + "/color", as->lightColor.name());
+        s->setValue(SETTINGS_ROOT + as->name + "/color_dark", as->darkColor.name());
         s->setValue(SETTINGS_ROOT + as->name + "/visible", as->visible);
         s->setValue(SETTINGS_ROOT + as->name + "/amino", as->amino);
         s->setValue(SETTINGS_ROOT + as->name + "/show_quals", as->showNameQuals);
@@ -149,21 +164,55 @@ void AnnotationSettingsRegistry::save() {
 //////////////////////////////////////////////////////////////////////////
 AnnotationSettings::AnnotationSettings() {
     amino = false;
-    color = Qt::black;
+    lightColor = Qt::black;
+    darkColor = Qt::white;
     visible = true;
     showNameQuals = false;
 }
 
-AnnotationSettings::AnnotationSettings(const QString& _name, bool _amino, const QColor& _color, bool _visible)
+AnnotationSettings::AnnotationSettings(const QString& _name, bool _amino, const QColor& _lightColor, bool _visible)
     : name(_name),
-      color(_color),
+      lightColor(_lightColor),
       amino(_amino),
       visible(_visible),
       showNameQuals(false) {
+    darkColor = FeatureColors::transformLightToDark(lightColor);
 }
 
 bool AnnotationSettings::equals(const AnnotationSettings* as) const {
-    return name == as->name && amino == as->amino && color == as->color && visible == as->visible && showNameQuals == as->showNameQuals && nameQuals == as->nameQuals;
+    return name == as->name &&
+           amino == as->amino &&
+           lightColor == as->lightColor &&
+           darkColor == as->darkColor &&
+           visible == as->visible &&
+           showNameQuals == as->showNameQuals &&
+           nameQuals == as->nameQuals;
+}
+
+void AnnotationSettings::setLightColor(const QColor& _lightColor) {
+    lightColor = _lightColor;
+}
+
+void AnnotationSettings::setDarkColor(const QColor& _darkColor) {
+    darkColor = _darkColor;
+}
+
+void AnnotationSettings::setActiveColor(const QColor& color) {
+    auto mw = AppContext::getMainWindow();
+    CHECK(mw != nullptr, );
+
+    if (mw->isDarkMode()) {
+        darkColor = color;
+    } else {
+        lightColor = color;
+    }
+}
+
+const QColor& AnnotationSettings::getActiveColor() const {
+    auto mw = AppContext::getMainWindow();
+    CHECK(mw != nullptr, lightColor);
+
+    return mw->isDarkMode() ? darkColor : lightColor;
 }
 
 }  // namespace U2

@@ -21,7 +21,11 @@
 
 #include "GroupHeaderImageWidget.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
 
 namespace U2 {
 
@@ -36,24 +40,29 @@ const QString GroupHeaderImageWidget::HEADER_COMMON_STYLE = "border-style: solid
                                                             "margin-top: 4px;"
                                                             "margin-right: 3px;";
 
-GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const QPixmap& image)
-    : groupId(_groupId) {
-    this->setPixmap(image);
+GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const IconParameters& _iconParameters)
+    : groupId(_groupId), iconParameters(_iconParameters) {
+    setPixmap(GUIUtils::getIconResource(iconParameters).pixmap(ICON_SIZE, ICON_SIZE));
 
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    int HEADER_MIN_SIZE = 32;
+    static constexpr int HEADER_MIN_SIZE = 32;
     setMinimumSize(HEADER_MIN_SIZE, HEADER_MIN_SIZE);
 
     setHeaderDeselected();
 
     this->setObjectName(groupId);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &GroupHeaderImageWidget::sl_colorModeSwitched);
 }
 
 void GroupHeaderImageWidget::mousePressEvent(QMouseEvent* /*event*/) {
     SAFE_POINT(groupId != nullptr, "Internal error: group header with NULL group ID was pressed.", );
 
     emit si_groupHeaderPressed(groupId);
+}
+
+void GroupHeaderImageWidget::sl_colorModeSwitched() {
+    setPixmap(GUIUtils::getIconResource(iconParameters).pixmap(ICON_SIZE, ICON_SIZE));
 }
 
 void GroupHeaderImageWidget::setHeaderSelected() {

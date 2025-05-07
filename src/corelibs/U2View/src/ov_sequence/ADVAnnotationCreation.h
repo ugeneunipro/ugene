@@ -46,6 +46,7 @@ public:
 
 private slots:
     void sl_createAnnotation();
+    void sl_colorModeSwitched();
 
 private:
     AnnotatedDNAView* ctx;

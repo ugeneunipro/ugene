@@ -121,7 +121,7 @@ GraphMenuAction::GraphMenuAction(const DNAAlphabet* a)
     : ADVSequenceWidgetAction(ACTION_NAME, tr("Graphs")) {
     menu = new QMenu();
     menu->setObjectName("graph_menu");
-    this->setIcon(QIcon(":core/images/graphs.png"));
+    this->setIcon(GUIUtils::getIconResource("core", "graphs.png"));
     this->setMenu(menu);
     addToBar = true;
 
@@ -130,6 +130,7 @@ GraphMenuAction::GraphMenuAction(const DNAAlphabet* a)
     auto closeAllAction = new QAction(GraphMenuAction::tr("Close all graphs"), this);
     menu->addAction(closeAllAction);
     connect(closeAllAction, SIGNAL(triggered()), this, SLOT(sl_closeAllGraphs()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &GraphMenuAction::sl_colorModeSwitched);
     setVisible(a->isNucleic());
 }
 
@@ -176,6 +177,10 @@ void GraphMenuAction::sl_closeAllGraphs() {
             graphAction->trigger();
         }
     }
+}
+
+void GraphMenuAction::sl_colorModeSwitched() {
+    setIcon(GUIUtils::getIconResource("core", "graphs.png"));
 }
 
 }  // namespace U2

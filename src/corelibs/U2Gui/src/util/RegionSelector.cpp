@@ -165,7 +165,7 @@ void RegionSelector::initLayout() {
 
         l->addWidget(rangeLabel);
         l->addWidget(comboBox);
-        
+
         regionLayout = new QHBoxLayout(this);
         regionLayout->addWidget(startEdit);
         regionLayout->addWidget(new QLabel(tr("-"), this));
@@ -174,13 +174,13 @@ void RegionSelector::initLayout() {
         locationLayout = new QHBoxLayout(this);
         locationLayout->setContentsMargins(0, 0, 0, 0);
         locationLayout->addWidget(locationLineEdit);
-        
+
         auto selectorsLayout = new QVBoxLayout(this);
         selectorsLayout->setContentsMargins(0, 0, 0, 0);
         selectorsLayout->addLayout(regionLayout);
         selectorsLayout->addLayout(locationLayout);
 
-        l->addLayout(selectorsLayout);        
+        l->addLayout(selectorsLayout);
         setLayout(l);
     }
 

@@ -238,6 +238,7 @@ HEADERS += src/LicenseDialog.h \
            src/util_dna_assembly/DnaAssemblyGUIExtension.h \
            src/util_dna_assembly/DnaAssemblyUtils.h \
            src/util_dna_assembly/GenomeAssemblyDialog.h \
+           src/util_mca_align/McaColors.h \
            src/util_msa_align/AlignmentAlgorithmGUIExtension.h \
            src/util_sec_struct_predict/SecStructDialog.h \
            src/util_sec_struct_predict/SecStructPredictUtils.h \
@@ -517,6 +518,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/util_dna_assembly/DnaAssemblyGUIExtension.cpp \
            src/util_dna_assembly/DnaAssemblyUtils.cpp \
            src/util_dna_assembly/GenomeAssemblyDialog.cpp \
+           src/util_mca_align/McaColors.cpp \
            src/util_msa_align/AlignmentAlgorithmGUIExtension.cpp \
            src/util_sec_struct_predict/SecStructDialog.cpp \
            src/util_sec_struct_predict/SecStructPredictUtils.cpp \

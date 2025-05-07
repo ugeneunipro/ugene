@@ -69,7 +69,7 @@ MusclePlugin::MusclePlugin()
 
         // Add to tools menu for fast run
         auto muscleAction = new QAction(tr("Align with MUSCLE…"), this);
-        muscleAction->setIcon(QIcon(":umuscle/images/muscle_16.png"));
+        muscleAction->setIcon(GUIUtils::getIconResource("umuscle", "muscle.png", false));
         muscleAction->setObjectName(ToolsMenu::MALIGN_MUSCLE);
         connect(muscleAction, SIGNAL(triggered()), SLOT(sl_runWithExtFileSpecify()));
 
@@ -110,7 +110,7 @@ void MusclePlugin::sl_runWithExtFileSpecify() {
 
 MuscleAction::MuscleAction(QObject* p, GObjectViewController* v, const QString& text, int order, bool isAlignSelectionAction)
     : GObjectViewAction(p, v, text, order) {
-    setIcon(QIcon(":umuscle/images/muscle_16.png"));
+    setIcon(GUIUtils::getIconResource("umuscle", "muscle.png", false));
 
     auto msaEditor = qobject_cast<MsaEditor*>(getObjectView());
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );

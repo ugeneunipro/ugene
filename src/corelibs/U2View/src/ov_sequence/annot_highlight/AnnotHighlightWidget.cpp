@@ -33,6 +33,8 @@
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
@@ -45,11 +47,16 @@ ShowAllAnnotTypesLabel::ShowAllAnnotTypesLabel() {
     showAllIsSelected = false;
     setText(QObject::tr("Show all annotation names"));
 
-    setStyleSheet(
+    colorModeSwitched();
+}
+
+void ShowAllAnnotTypesLabel::colorModeSwitched() {
+    setStyleSheet(QString(
         "text-decoration: underline;"
-        "color: gray;"
+        "color: %1;"
         "margin-left: 2px;"
-        "margin-top: 1px;");
+        "margin-top: 1px;")
+        .arg(AppContext::getMainWindow()->isDarkMode() ? "rgb(220, 220, 220)" : "gray"));
 }
 
 void ShowAllAnnotTypesLabel::mousePressEvent(QMouseEvent* event) {
@@ -116,7 +123,7 @@ void AnnotHighlightWidget::initLayout() {
     buttonsLayout->setContentsMargins(0, 0, 0, 0);
     buttonsLayout->setSpacing(0);
 
-    prevAnnotationButton = new QPushButton(QIcon(":core/images/backward.png"), "");
+    prevAnnotationButton = new QPushButton(GUIUtils::getIconResource("core", "arrow-move-left.png", false), "");
     prevAnnotationButton->setFixedSize(32, 32);
     prevAnnotationButton->setToolTip(AnnotHighlightWidget::tr("Previous annotation"));
     prevAnnotationButton->setDisabled(true);
@@ -124,7 +131,7 @@ void AnnotHighlightWidget::initLayout() {
     buttonsLayout->addWidget(prevAnnotationButton);
     buttonsLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-    nextAnnotationButton = new QPushButton(QIcon(":core/images/forward.png"), "");
+    nextAnnotationButton = new QPushButton(GUIUtils::getIconResource("core", "arrow-move-right.png", false), "");
     nextAnnotationButton->setFixedSize(32, 32);
     nextAnnotationButton->setToolTip(AnnotHighlightWidget::tr("Next annotation"));
     nextAnnotationButton->setObjectName("nextAnnotationButton");
@@ -310,6 +317,14 @@ void AnnotHighlightWidget::sl_onAnnotationSelectionChanged() {
     }
 }
 
+void AnnotHighlightWidget::sl_colorModeSwitched() {
+    prevAnnotationButton->setIcon(GUIUtils::getIconResource("core", "arrow-move-left.png", false));
+    nextAnnotationButton->setIcon(GUIUtils::getIconResource("core", "arrow-move-right.png", false));
+    showAllLabel->colorModeSwitched();
+    annotSettingsWidget->colorModeChanged();
+    loadAnnotTypes();
+}
+
 void AnnotHighlightWidget::setNoAnnotTypesLabelValue() {
     QList<ADVSequenceObjectContext*> seqContexts = annotatedDnaView->getSequenceContexts();
 
@@ -367,6 +382,7 @@ void AnnotHighlightWidget::connectSlots() {
     AnnotationSelection* as = annotatedDnaView->getAnnotationsSelection();
     CHECK(as != nullptr, );
     connect(as, SIGNAL(si_selectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&)), SLOT(sl_onAnnotationSelectionChanged()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AnnotHighlightWidget::sl_colorModeSwitched);
 }
 
 void AnnotHighlightWidget::connectSlotsForAnnotTableObj(const AnnotationTableObject* annotTableObj) {
@@ -471,7 +487,7 @@ void AnnotHighlightWidget::loadAnnotTypes() {
         AnnotationSettingsRegistry* annotRegistry = AppContext::getAnnotationsSettingsRegistry();
         foreach (const QString& name, annotNames) {
             AnnotationSettings* annotSettings = annotRegistry->getAnnotationSettings(name);
-            annotTree->addItem(name, annotSettings->color);
+            annotTree->addItem(name, annotSettings->getActiveColor());
         }
 
         // By default, select either previously selected item (if it is present) or the first item
@@ -499,8 +515,8 @@ void AnnotHighlightWidget::sl_storeNewColor(const QString& annotName, const QCol
     QList<AnnotationSettings*> annotToWrite;
     AnnotationSettingsRegistry* annotRegistry = AppContext::getAnnotationsSettingsRegistry();
     AnnotationSettings* annotSettings = annotRegistry->getAnnotationSettings(annotName);
-    if (annotSettings->color != newColor) {
-        annotSettings->color = newColor;
+    if (annotSettings->getActiveColor() != newColor) {
+        annotSettings->setActiveColor(newColor);
         annotToWrite.append(annotSettings);
         annotRegistry->changeSettings(annotToWrite, true);
     }
