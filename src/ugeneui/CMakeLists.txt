@@ -22,8 +22,17 @@ endif ()
 
 qt5_add_resources(RCC_SRCS ugeneui.qrc)
 
-add_executable(ugeneui ${HDRS} ${SRCS} ${OBJC_SRCS} ${QM_FILES} ${RCC_SRCS})
+set(EXTRA_FLAGS "")
+if (WIN32 AND NOT DEFINED ENV{UGENE_BUILD_WITH_CONSOLE})
+    set(EXTRA_FLAGS "WIN32") # Build with SUBSYSTEM:Windows
+endif ()
+
+add_executable(ugeneui ${EXTRA_FLAGS} ${HDRS} ${SRCS} ${OBJC_SRCS} ${QM_FILES} ${RCC_SRCS})
 set_target_properties(ugeneui PROPERTIES DEBUG_POSTFIX "d")
+
+if (WIN32)
+    add_ugene_rc_file(ugeneui)
+endif ()
 
 target_link_libraries(ugeneui
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::NetworkAuth Qt5::WebSockets
@@ -31,10 +40,10 @@ target_link_libraries(ugeneui
 
 if (APPLE)
     target_link_libraries(ugeneui
-        "-framework Foundation"
-        "-framework Security"
-        "-framework CoreFoundation"
-        "-framework IOKit"
+            "-framework Foundation"
+            "-framework Security"
+            "-framework CoreFoundation"
+            "-framework IOKit"
     )
 endif ()
 

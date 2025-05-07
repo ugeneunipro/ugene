@@ -10,13 +10,11 @@ project(ugene)
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
-set(UGENE_VERSION 52.1)
 
 message(STATUS "CMake version: ${CMAKE_VERSION}")
 message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
 
 add_definitions(
-        -DUGENE_VERSION=${UGENE_VERSION}
         -DQT_FATAL_ASSERT
         -DQT_DISABLE_DEPRECATED_BEFORE=0x050F00
 )
