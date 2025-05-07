@@ -17,6 +17,10 @@ file(GLOB_RECURSE HDRS src/*.h)
 add_library(U2Core SHARED ${HDRS} ${SRCS}
         src/util/CollectionUtils.h)
 
+set_source_files_properties(
+    src/globals/Version.cpp PROPERTIES COMPILE_DEFINITIONS "U2_APP_VERSION=${UGENE_VERSION}"
+)
+
 target_link_libraries(U2Core
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network Qt5::Xml
         qtscript ugenedb zlib

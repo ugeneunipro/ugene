@@ -17,6 +17,10 @@ file(GLOB_RECURSE HDRS src/*.h)
 add_executable(ugenem ${HDRS} ${SRCS})
 set_target_properties(ugenem PROPERTIES DEBUG_POSTFIX "d")
 
+if (WIN32)
+    add_ugene_rc_file(ugenem)
+endif ()
+
 target_link_libraries(ugenem
         Qt5::Core Qt5::Gui Qt5::Network Qt5::Widgets
         U2Core U2Gui)

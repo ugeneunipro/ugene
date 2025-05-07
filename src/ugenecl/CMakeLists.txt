@@ -18,6 +18,10 @@ file(GLOB_RECURSE HDRS src/*.h)
 add_executable(ugenecl ${HDRS} ${SRCS})
 set_target_properties(ugenecl PROPERTIES DEBUG_POSTFIX "d")
 
+if (WIN32)
+    add_ugene_rc_file(ugenecl)
+endif ()
+
 target_link_libraries(ugenecl
         Qt5::Core Qt5::Gui
         ugenedb breakpad samtools
