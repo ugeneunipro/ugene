@@ -17,6 +17,10 @@ SYMBOLS_DIR_NAME=symbols
 SYMBOLS_DIR="${TEAMCITY_WORK_DIR}/${SYMBOLS_DIR_NAME}"
 SYMBOLS_LOG="${TEAMCITY_WORK_DIR}/symbols.log"
 
+echo "##teamcity[blockOpened name='env']"
+env
+echo "##teamcity[blockClosed name='env']"
+
 rm -rf "${SYMBOLS_DIR}"
 rm -rf "${SYMBOLS_LOG}"
 rm -rf ./*.zip
@@ -70,7 +74,7 @@ function dump_symbols() {
 }
 
 find "${DIST_DIR_NAME}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui.exe -e ugenecl.exe -e .dll$ | grep -v vcruntime | while read -r BINARY_FILE; do
-  dump_symbols "${BINARY_FILE}"
+  ${PATH_SIGNTOOL_}dump_symbols "${BINARY_FILE}"
 done
 
 # Remove pdb files used for symbol generation.
