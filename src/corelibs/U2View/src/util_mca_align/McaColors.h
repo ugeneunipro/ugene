@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,12 +27,26 @@
 
 namespace U2 {
 
-class U2CORE_EXPORT FeatureColors {
+class U2VIEW_EXPORT McaColors {
 public:
-    static QColor genLightColor(const QString& name);
-    // Generate color for Dark mode form @color
-    static QColor transformLightToDark(QColor color);
+    McaColors() = delete;
+
+    static const QColor getChromatogramColorByBase(char base);
+    static const QColor getChromatogramColorByBase(bool isDark, char base);
+    static const QColor getChromatogramColorById(bool isDark, int id);
+    static const QColor getArrowColor(bool isReversed);
+
+private:
+    static constexpr int COLORS_NUM = 4;
+    static const QColor COLOR_FOR_IDS_LIGHT[COLORS_NUM];
+    static const QColor COLOR_FOR_IDS_DARK[COLORS_NUM];
+
+    static const QColor ARROW_DIRECT_COLOR_LIGHT;
+    static const QColor ARROW_DIRECT_COLOR_DARK;
+    static const QColor ARROW_REVERSE_COLOR_LIGHT;
+    static const QColor ARROW_REVERSE_COLOR_DARK;
+
 
 };
 
-}  // namespace U2
+}
