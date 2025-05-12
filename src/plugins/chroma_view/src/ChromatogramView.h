@@ -132,7 +132,6 @@ protected:
     void drawAll(QPaintDevice* pd) override;
 
 private:
-    QColor getBaseColor(char base);
     void drawChromatogramTrace(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const ChromatogramViewSettings& settings);
     void drawOriginalBaseCalls(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba, bool is = true);
     void drawQualityValues(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba);

@@ -91,10 +91,17 @@ public:
     virtual void setWindowTitle(const QString& title);
     void registerAction(QAction* action);
 
+    // Set true to enable dark mode
     void setDarkMode(bool isDark);
+    // Dark mode is enabled if true
     bool isDarkMode() const override;
 
+    // Set style and color mode type. Possible styles:
+    // Windows, Fusion, windowsvista (Windows only), macintosh (macOS only)/
+    // Possible color mode types:
+    // Luight, Dark, Auto (follow the system stylr)
     void setNewStyle(const QString& style, int colorModeIndex) override;
+    // Connect log view to color mode switch signal
     void connectLogView(LogViewWidget* view);
 
     void prepare();
@@ -153,7 +160,7 @@ private:
     QAction* viewOnlineDocumentation = nullptr;
     QAction* welcomePageAction = nullptr;
     QAction* crashUgeneAction = nullptr;
-    // TODO: remove
+    // If UGENE_GUI_TEST=1 only
     QAction* switchColorMode = nullptr;
     QAction* showWhatsNewAction = nullptr;
 #ifdef _INSTALL_TO_PATH_ACTION
@@ -164,7 +171,6 @@ private:
 #ifdef Q_OS_DARWIN
     bool colorIsChangedByUser = false;
 #endif
-    bool isAutoColorMode = false;
     bool isDark = false;
 #ifdef Q_OS_WIN
     QTimer colorModeTimer;

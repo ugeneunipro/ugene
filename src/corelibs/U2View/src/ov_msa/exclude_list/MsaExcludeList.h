@@ -55,6 +55,10 @@ public:
 
 protected:
     void initViewContext(GObjectViewController* view) override;
+    void disconnectView(GObjectViewController* view) override;
+
+private slots:
+    void sl_colorModeSwitched();
 
 private:
     void toggleExcludeListView(MsaEditor* msaEditor);
@@ -68,6 +72,9 @@ private:
     MsaExcludeListWidget* openExcludeList(MsaEditor* msaEditor);
 
     void updateMsaEditorSplitterStyle(MsaEditor* msaEditor);
+
+    QList<GObjectViewAction*> toggleExcludeListActionList;
+    QList<GObjectViewAction*> moveFromMsaActionList;
 };
 
 /** Stores per step (Undo or Redo) information used by Exclude List to keep synchronized state with MSA Editor during Undo/Redo ops. */
@@ -104,6 +111,9 @@ public:
 
     /** Returns preferred size hint used on instantiation. This size defines initial widget height in the MSA splitter. */
     QSize sizeHint() const override;
+
+private slots:
+    void sl_colorModeSwitched();
 
 private:
     /** Updates state of all child widgets. */

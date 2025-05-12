@@ -39,15 +39,14 @@ namespace U2 {
 
 #define DOCK_SETTINGS QString("mwdockview/")
 
-DockWrapWidget::DockWrapWidget(QWidget* _w)
-    : w(_w) {
+DockWrapWidget::DockWrapWidget(QWidget* _w, const IconParameters& _iconParameters)
+    : w(_w), iconParameters(_iconParameters) {
     auto l = new QVBoxLayout();
     l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
     setLayout(l);
     l->addWidget(w);
     setWindowTitle(w->windowTitle());
-    setWindowIcon(w->windowIcon());
     //    setAttribute(Qt::WA_DeleteOnClose);
 }
 
@@ -143,7 +142,7 @@ static bool ksInUse(const QKeySequence& ks, const QList<DockData*>& docks) {
     return false;
 }
 
-QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& keySequence) {
+QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const IconParameters& iconParameters, const QKeySequence& keySequence) {
     bool showDock = dockWidget->objectName() == lastActiveDocksState[area];
 
     QToolBar* toolBar = getDockBar(area);
@@ -151,7 +150,7 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, c
     auto data = new DockData();
     data->area = area;
     data->label = new QLabel(toolBar);
-    data->wrapWidget = new DockWrapWidget(dockWidget);
+    data->wrapWidget = new DockWrapWidget(dockWidget, iconParameters);
     data->wrapWidget->setObjectName("wrap_widget_" + dockWidget->objectName());
     data->label->setObjectName("doc_label__" + dockWidget->objectName());
     data->label->installEventFilter(this);
@@ -182,7 +181,7 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, c
     }
     data->label->setToolTip(ttip);
 
-    DockWidgetPainter::updateLabel(data, false);
+    DockWidgetPainter::updateLabel(data, false, AppContext::getMainWindow()->isDarkMode());
 
     docks.append(data);
 
@@ -275,14 +274,13 @@ void MWDockManagerImpl::openDock(DockData* d) {
 
     // open new dock
     assert(d->wrapWidget != nullptr);
-    DockWidgetPainter::updateLabel(d, true);
+    DockWidgetPainter::updateLabel(d, true, AppContext::getMainWindow()->isDarkMode());
     restoreDockGeometry(d);
     d->dock = new QDockWidget();
     d->dock->setObjectName("mw_docArea");
     d->dock->setFeatures(QDockWidget::DockWidgetClosable);
     d->dock->setWidget(d->wrapWidget);
     d->dock->setWindowTitle(d->wrapWidget->windowTitle());
-    d->dock->setWindowIcon(d->wrapWidget->windowIcon());
     activeDocks[d->area] = d;
     connect(d->dock, SIGNAL(visibilityChanged(bool)), SLOT(sl_dockVisibilityChanged(bool)));
 
@@ -298,7 +296,7 @@ void MWDockManagerImpl::openDock(DockData* d) {
 void MWDockManagerImpl::closeDock(DockData* d) {
     activeDocks[d->area] = nullptr;
     if (d->wrapWidget != nullptr) {  // widget is closed manually by user ->detach it from its parent to avoid deletion on d->dock->close();
-        DockWidgetPainter::updateLabel(d, false);
+        DockWidgetPainter::updateLabel(d, false, AppContext::getMainWindow()->isDarkMode());
         saveDockGeometry(d);
         lastActiveDocksState[d->area].clear();
         d->wrapWidget->setParent(nullptr);
@@ -422,6 +420,12 @@ void MWDockManagerImpl::dontActivateNextTime(MWDockArea a) {
     lastActiveDocksState[a] = "";
 }
 
+void MWDockManagerImpl::colorModeSwitched(bool isDark) {
+    for (auto doc : qAsConst(docks)) {
+        DockWidgetPainter::updateLabel(doc, doc->isActive, isDark);
+    }
+}
+
 void MWDockManagerImpl::saveDockGeometry(DockData* dd) {
     const QString& id = dd->wrapWidget->w->objectName();
     const QSize& size = dd->wrapWidget->w->size();
@@ -456,5 +460,6 @@ void MWDockManagerImpl::sl_toggleDocks() {
         }
     }
 }
+
 
 }  // namespace U2
