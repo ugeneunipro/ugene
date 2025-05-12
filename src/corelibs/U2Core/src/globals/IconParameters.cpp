@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,20 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#pragma once
-
-#include <QColor>
-
-#include <U2Core/global.h>
+#include "IconParameters.h"
 
 namespace U2 {
 
-class U2CORE_EXPORT FeatureColors {
-public:
-    static QColor genLightColor(const QString& name);
-    // Generate color for Dark mode form @color
-    static QColor transformLightToDark(QColor color);
+IconParameters::IconParameters(const QString& _iconCathegory, const QString& _iconName, bool _hasColorCathegory)
+    : iconCathegory(_iconCathegory), iconName(_iconName), hasColorCathegory(_hasColorCathegory) {
+}
 
-};
+bool IconParameters::isEmpty() const {
+    return iconCathegory.isEmpty() || iconName.isEmpty();
+}
 
 }  // namespace U2
