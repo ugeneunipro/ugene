@@ -68,7 +68,7 @@ DotPlotFilterDialog::DotPlotFilterDialog(QWidget* parent, ADVSequenceObjectConte
             auto aItem = new QTreeWidgetItem(seqXItem);
             aItem->setText(0, aName);
             AnnotationSettings* as = asr->getAnnotationSettings(aName);
-            QIcon icon = GUIUtils::createSquareIcon(as->color, 14);
+            QIcon icon = GUIUtils::createSquareIcon(as->getActiveColor(), 14);
             aItem->setIcon(0, icon);
             aItem->setCheckState(0, Qt::Unchecked);
         }
@@ -82,7 +82,7 @@ DotPlotFilterDialog::DotPlotFilterDialog(QWidget* parent, ADVSequenceObjectConte
                 auto aItem = new QTreeWidgetItem(seqYItem);
                 aItem->setText(0, aName);
                 AnnotationSettings* as = asr->getAnnotationSettings(aName);
-                QIcon icon = GUIUtils::createSquareIcon(as->color, 14);
+                QIcon icon = GUIUtils::createSquareIcon(as->getActiveColor(), 14);
                 aItem->setIcon(0, icon);
                 aItem->setCheckState(0, Qt::Unchecked);
             }

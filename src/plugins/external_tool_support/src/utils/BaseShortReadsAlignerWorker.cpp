@@ -43,6 +43,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Formats/BAMUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
@@ -423,7 +425,7 @@ QString ShortReadsAlignerPrompter::composeRichDoc() {
     auto readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(READS_URL_SLOT_ID);
     Port* pairedPort = target->getPort(IN_PORT_DESCR_PAIRED);
 
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
     if (pairedPort->isEnabled()) {
         auto pairedBus = qobject_cast<IntegralBusPort*>(pairedPort);

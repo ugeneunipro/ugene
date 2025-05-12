@@ -63,6 +63,10 @@ public:
         return invertedColor;
     }
 
+    static const QColor DOT_PLOT_LINE_COLOR_LIGHT;
+
+    static const QColor DOT_PLOT_LINE_COLOR_DARK;
+
 protected slots:
     void sl_minLenHeuristics();
 
@@ -85,6 +89,8 @@ protected slots:
     void sl_loadedStateChanged();
 
     void sl_sequenceSelectorIndexChanged();
+
+    void sl_colorModeSwitched();
 
 private:
     void reconnectAllProjectDocuments();

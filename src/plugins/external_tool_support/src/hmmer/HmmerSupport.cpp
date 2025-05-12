@@ -57,11 +57,6 @@ const QString HmmerSupport::PHMMER_TOOL_ID = "USUPP_PHMMER";
 
 HmmerSupport::HmmerSupport(const QString& id, const QString& name)
     : ExternalTool(id, "hmmer3", name) {
-    if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
 
     toolKitName = "HMMER";
     versionRegExp = QRegExp("HMMER (\\d+.\\d+.\\d+\\w?)");
@@ -282,7 +277,7 @@ void HmmerMsaEditorContext::initViewContext(GObjectViewController* view) {
 
     auto action = new GObjectViewAction(this, view, tr("Build HMMER3 profile"));
     action->setObjectName("Build HMMER3 profile");
-    action->setIcon(QIcon(":/external_tool_support/images/hmmer.png"));
+    action->setIcon(GUIUtils::getIconResource("external_tool_support", "hmmer.png"));
     connect(action, SIGNAL(triggered()), SLOT(sl_build()));
     addViewAction(action);
 }
@@ -322,7 +317,7 @@ void HmmerAdvContext::initViewContext(GObjectViewController* view) {
     auto adv = qobject_cast<AnnotatedDNAView*>(view);
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", );
 
-    auto searchAction = new ADVGlobalAction(adv, QIcon(":/external_tool_support/images/hmmer.png"), tr("Find HMM signals with HMMER3..."), 70);
+    auto searchAction = new ADVGlobalAction(adv, IconParameters("external_tool_support", "hmmer.png"), tr("Find HMM signals with HMMER3..."), 70);
     searchAction->setObjectName("Find HMM signals with HMMER3");
     connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
 }

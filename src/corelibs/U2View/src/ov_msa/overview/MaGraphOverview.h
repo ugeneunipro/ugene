@@ -44,7 +44,10 @@ public:
         FromBottomToTop = 1
     };
 
-    QColor color = Qt::gray;
+    static const QColor DEFAULT_LIGHT_COLOR;
+    static const QColor DEFAULT_DARK_COLOR;
+
+    QColor color = DEFAULT_LIGHT_COLOR;
     GraphType type = Area;
     OrientationMode orientation = FromBottomToTop;
 };
@@ -108,6 +111,9 @@ public slots:
     void sl_graphTypeChanged(const MaGraphOverviewDisplaySettings::GraphType& type);
     void sl_graphColorChanged(const QColor& color);
     void sl_calculationMethodChanged(const MaGraphCalculationMethod& method);
+
+protected slots:
+    void sl_colorModeSwitched() override;
 
 protected:
     void paintEvent(QPaintEvent* e) override;

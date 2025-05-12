@@ -26,6 +26,10 @@
 #include <QStack>
 #include <QVBoxLayout>
 
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MsaEditorSequenceArea.h>
 #include <U2View/TvNodeItem.h>
@@ -67,7 +71,7 @@ QWidget* MsaEditorTreeViewer::createViewWidget(QWidget* parent) {
     updateSyncModeActionState(false);
     connect(syncModeAction, SIGNAL(triggered()), SLOT(sl_syncModeActionTriggered()));
 
-    refreshTreeAction = new QAction(QIcon(":core/images/refresh.png"), tr("Refresh tree"), ui);
+    refreshTreeAction = new QAction(GUIUtils::getIconResource("core", "refresh.png", false), tr("Refresh tree"), ui);
     refreshTreeAction->setObjectName("Refresh tree");
     refreshTreeAction->setEnabled(false);
     connect(refreshTreeAction, SIGNAL(triggered()), SLOT(sl_refreshTree()));
@@ -116,7 +120,7 @@ void MsaEditorTreeViewer::updateSyncModeActionState(bool isSyncModeOn) {
     bool isChecked = isEnabled && isSyncModeOn;  // Override 'isSyncModeOn' with a safer option.
     syncModeAction->setChecked(isChecked);
     syncModeAction->setText(isChecked ? tr("Disable Tree and Alignment synchronization") : tr("Enable Tree and Alignment synchronization"));
-    syncModeAction->setIcon(QIcon(isChecked ? ":core/images/sync-msa-on.png" : ":core/images/sync-msa-off.png"));
+    syncModeAction->setIcon(isChecked ? GUIUtils::getIconResource("core", "sync-msa-on.png") : GUIUtils::getIconResource("core", "sync-msa-off.png"));
 }
 
 MsaEditor* MsaEditorTreeViewer::getMsaEditor() const {
@@ -168,6 +172,13 @@ void MsaEditorTreeViewer::sl_alignmentChanged() {
 
 void MsaEditorTreeViewer::sl_alignmentCollapseModelChanged() {
     disableSyncModeIfTreeAndMsaContentIsNotInSync();
+}
+
+void MsaEditorTreeViewer::sl_colorModeSwitched() {
+    refreshTreeAction->setIcon(GUIUtils::getIconResource("core", "refresh.png", false));
+    syncModeAction->setIcon(syncModeAction->isChecked() ? GUIUtils::getIconResource("core", "sync-msa-on.png") : GUIUtils::getIconResource("core", "sync-msa-off.png"));
+
+    TreeViewer::sl_colorModeSwitched();
 }
 
 void MsaEditorTreeViewer::disableSyncModeIfTreeAndMsaContentIsNotInSync() {

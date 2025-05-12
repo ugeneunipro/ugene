@@ -37,7 +37,8 @@ class TvBranchItem;
 class TvTextItem;
 class PhyNode;
 
-class U2VIEW_EXPORT TvNodeItem : public QGraphicsEllipseItem {
+class U2VIEW_EXPORT TvNodeItem : public QObject, public QGraphicsEllipseItem {
+    Q_OBJECT
 public:
     TvNodeItem(TvBranchItem* parentItem, const QString& nodeName = nullptr);
 
@@ -79,6 +80,10 @@ protected:
     TreeViewerUI* getTreeViewerUI() const;
 
     bool isHovered = false;
+
+private slots:
+    void sl_colorModeSwitched();
+
 };
 
 }  // namespace U2

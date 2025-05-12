@@ -84,32 +84,32 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
     togglePanViewAction = new QAction(this);
     togglePanViewAction->setCheckable(true);
     togglePanViewAction->setObjectName("show_hide_zoom_view");
-    togglePanViewAction->setIcon(QIcon(":/core/images/zoom_view.png"));
+    togglePanViewAction->setIcon(GUIUtils::getIconResource("core", "zoom_view.png"));
     connect(togglePanViewAction, SIGNAL(triggered(bool)), SLOT(sl_togglePanView(bool)));
 
     toggleDetViewAction = new QAction(this);
     toggleDetViewAction->setCheckable(true);
     toggleDetViewAction->setObjectName("show_hide_details_view");
-    toggleDetViewAction->setIcon(QIcon(":/core/images/details_view.png"));
+    toggleDetViewAction->setIcon(GUIUtils::getIconResource("core", "details_view.png"));
     connect(toggleDetViewAction, SIGNAL(triggered(bool)), SLOT(sl_toggleDetView(bool)));
 
     toggleOverviewAction = new QAction(this);
     toggleOverviewAction->setCheckable(true);
     toggleOverviewAction->setObjectName("show_hide_overview");
-    toggleOverviewAction->setIcon(QIcon(":/core/images/overview.png"));
+    toggleOverviewAction->setIcon(GUIUtils::getIconResource("core", "overview.png"));
     connect(toggleOverviewAction, SIGNAL(triggered(bool)), SLOT(sl_toggleOverview(bool)));
 
     connect(seqCtx->getAnnotatedDNAView()->getAnnotationsSelection(),
             SIGNAL(si_selectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&)),
             SLOT(sl_onAnnotationSelectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&)));
 
-    selectRangeAction1 = new QAction(QIcon(":/core/images/select_region.png"), tr("Select sequence region..."), this);
+    selectRangeAction1 = new QAction(GUIUtils::getIconResource("core", "select_region.png"), tr("Select sequence region..."), this);
     selectRangeAction1->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
     selectRangeAction1->setObjectName("select_range_action");
     selectRangeAction1->setShortcutContext(Qt::WidgetShortcut);
     connect(selectRangeAction1, SIGNAL(triggered()), SLOT(sl_onSelectRange()));
 
-    selectRangeAction2 = new QAction(QIcon(":/core/images/select_region.png"), tr("Sequence region..."), this);
+    selectRangeAction2 = new QAction(GUIUtils::getIconResource("core", "select_region.png"), tr("Sequence region..."), this);
     selectRangeAction2->setObjectName("Sequence region");
     connect(selectRangeAction2, SIGNAL(triggered()), SLOT(sl_onSelectRange()));
 
@@ -164,6 +164,19 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
     setDetViewCollapsed(AppContext::getSettings()->getValue(DET_VIEW_COLLAPSED, QVariant(false)).toBool());
     setPanViewCollapsed(AppContext::getSettings()->getValue(ZOOM_VIEW_COLLAPSED, QVariant(false)).toBool());
     setOverviewCollapsed(AppContext::getSettings()->getValue(OVERVIEW_COLLAPSED, QVariant(false)).toBool());
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ADVSingleSequenceWidget::sl_colorModeSwitched);
+}
+
+void ADVSingleSequenceWidget::sl_colorModeSwitched() {
+    selectRangeAction1->setIcon(GUIUtils::getIconResource("core", "select_region.png"));
+    selectRangeAction2->setIcon(GUIUtils::getIconResource("core", "select_region.png"));
+    exportImageAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
+    toggleViewAction->setIcon(isViewCollapsed() ? GUIUtils::getIconResource("core", "show_all_views.png") : GUIUtils::getIconResource("core", "hide_all_views.png"));
+    togglePanViewAction->setIcon(GUIUtils::getIconResource("core", "zoom_view.png"));
+    toggleDetViewAction->setIcon(GUIUtils::getIconResource("core", "details_view.png"));
+    toggleOverviewAction->setIcon(GUIUtils::getIconResource("core", "overview.png"));
+    closeViewAction->setIcon(GUIUtils::getIconResource("core", "close_small.png"));
 }
 
 void ADVSingleSequenceWidget::init() {
@@ -204,7 +217,7 @@ void ADVSingleSequenceWidget::init() {
     addButtonWithActionToToolbar(selectRangeAction1, hStandardBar);
     buttonTabOrederedNames->append(selectRangeAction1->objectName());
 
-    auto exportImageAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export image"), this);
+    exportImageAction = new QAction(GUIUtils::getIconResource("core", "cam2.png"), tr("Export image"), this);
     exportImageAction->setObjectName("export_image");
     connect(exportImageAction, SIGNAL(triggered()), this, SLOT(sl_saveScreenshot()));
 
@@ -222,7 +235,7 @@ void ADVSingleSequenceWidget::init() {
 
     closeViewAction = new QAction(tr("Remove sequence"), this);
     closeViewAction->setObjectName("remove_sequence");
-    closeViewAction->setIcon(QIcon(":core/images/close_small.png"));
+    closeViewAction->setIcon(GUIUtils::getIconResource("core", "close_small.png"));
     addButtonWithActionToToolbar(closeViewAction, hViewsBar);
     connect(closeViewAction, SIGNAL(triggered()), SLOT(sl_closeView()));
 
@@ -298,7 +311,7 @@ void ADVSingleSequenceWidget::setViewCollapsed(bool collapsed) {
 
 void ADVSingleSequenceWidget::updateViewButtonState() {
     toggleViewAction->setText(isViewCollapsed() ? tr("Show all views") : tr("Hide all views"));
-    toggleViewAction->setIcon(isViewCollapsed() ? QIcon(":core/images/show_all_views.png") : QIcon(":core/images/hide_all_views.png"));
+    toggleViewAction->setIcon(isViewCollapsed() ? GUIUtils::getIconResource("core", "show_all_views.png") : GUIUtils::getIconResource("core", "hide_all_views.png"));
 }
 
 void ADVSingleSequenceWidget::setPanViewCollapsed(bool collapsed) {

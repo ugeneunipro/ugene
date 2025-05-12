@@ -39,6 +39,7 @@
 
 #include <U2Gui/CreateAnnotationDialog.h>
 #include <U2Gui/CreateAnnotationWidgetController.h>
+#include <U2Gui/GUIUtils.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "AnnotatedDNAView.h"
@@ -78,11 +79,16 @@ Task::ReportResult ADVCreateAnnotationsTask::report() {
 ADVAnnotationCreation::ADVAnnotationCreation(AnnotatedDNAView* c)
     : QObject(c) {
     ctx = c;
-    createAction = new QAction(QIcon(":core/images/create_annotation_icon.png"), tr("New annotation..."), this);
+    createAction = new QAction(GUIUtils::getIconResource("core", "create_annotation_icon.png"), tr("New annotation..."), this);
     createAction->setObjectName("create_annotation_action");
     createAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
     createAction->setShortcutContext(Qt::WindowShortcut);
     connect(createAction, SIGNAL(triggered()), SLOT(sl_createAnnotation()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ADVAnnotationCreation::sl_colorModeSwitched);
+}
+
+void ADVAnnotationCreation::sl_colorModeSwitched() {
+    createAction->setIcon(GUIUtils::getIconResource("core", "create_annotation_icon.png"));
 }
 
 void ADVAnnotationCreation::sl_createAnnotation() {

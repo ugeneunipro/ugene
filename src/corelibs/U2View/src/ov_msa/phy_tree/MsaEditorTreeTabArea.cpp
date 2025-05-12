@@ -26,10 +26,14 @@
 #include <QTabBar>
 #include <QVBoxLayout>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
 
 #include <U2View/MsaEditor.h>
 
@@ -38,7 +42,7 @@ namespace U2 {
 MsaEditorTreeTab::MsaEditorTreeTab(MsaEditor* msaEditor, QWidget* parent)
     : QTabWidget(parent), editor(msaEditor), addTabButton(nullptr) {
     setObjectName("MsaEditorTreeTab");
-    addTabButton = new QPushButton(QIcon(":/core/images/add_tree.png"), "", this);
+    addTabButton = new QPushButton(GUIUtils::getIconResource("core", "add_tree.png"), "", this);
     addTabButton->setToolTip(tr("Add existing tree"));
     setCornerWidget(addTabButton);
     connect(addTabButton, SIGNAL(clicked(bool)), this, SLOT(sl_addTabTriggered()));
@@ -61,6 +65,7 @@ MsaEditorTreeTab::MsaEditorTreeTab(MsaEditor* msaEditor, QWidget* parent)
     closeTab = new QAction(tr("Close tab"), this);
     closeTab->setObjectName("Close tab");
     connect(closeTab, SIGNAL(triggered()), SLOT(sl_onCloseTab()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaEditorTreeTab::sl_colorModeSwitched);
 }
 
 void MsaEditorTreeTab::sl_onTabCloseRequested(int index) {
@@ -74,6 +79,10 @@ void MsaEditorTreeTab::sl_onContextMenuRequested(const QPoint& pos) {
     tabsMenu.addAction(closeAllTabs);
     tabsMenu.addAction(closeTab);
     tabsMenu.exec(mapToGlobal(pos));
+}
+
+void MsaEditorTreeTab::sl_colorModeSwitched() {
+    addTabButton->setIcon(GUIUtils::getIconResource("core", "add_tree.png"));
 }
 
 void MsaEditorTreeTab::sl_onCountChanged(int count) {

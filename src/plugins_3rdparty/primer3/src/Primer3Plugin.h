@@ -32,6 +32,7 @@
 
 namespace U2 {
 
+class ADVGlobalAction;
 class Primer3ADVContext;
 class XMLTestFactory;
 
@@ -40,8 +41,12 @@ class Primer3Plugin : public Plugin {
 public:
     Primer3Plugin();
 
+private slots:
+    void sl_colorModeSwitched();
+
 private:
     Primer3ADVContext* viewCtx = nullptr;
+    QAction* noTargetSequencePrimer3 = nullptr;
 };
 
 class Primer3ADVContext : public GObjectViewWindowContext {

@@ -33,7 +33,9 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/MainWindow.h>
 #include <U2Gui/SaveDocumentController.h>
 
 namespace U2 {
@@ -129,9 +131,10 @@ bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl>& _urls, QVariantMa
     connect(join2alignmentMode, SIGNAL(toggled(bool)), SLOT(sl_optionChanged()));
     connect(upperButton, SIGNAL(clicked()), SLOT(sl_onMoveUp()));
     connect(bottomButton, SIGNAL(clicked()), SLOT(sl_onMoveDown()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MultipleDocumentsReadingModeDialog::sl_colorModeSwitched);
 
-    upperButton->setIcon(QIcon(":ugene/images/up.png"));
-    bottomButton->setIcon(QIcon(":ugene/images/down.png"));
+    upperButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
+    bottomButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 
     for (int i = 0; i < urls.size(); ++i) {
         listDocuments->addItem(new QListWidgetItem(QString("%1. ").arg(i + 1) + urls.at(i).fileName(), listDocuments));
@@ -218,6 +221,11 @@ void MultipleDocumentsReadingModeDialog::sl_optionChanged() {
     } else {
         return;
     }
+}
+
+void MultipleDocumentsReadingModeDialog::sl_colorModeSwitched() {
+    upperButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
+    bottomButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 }
 
 void MultipleDocumentsReadingModeDialog::initSequenceSaveController() {

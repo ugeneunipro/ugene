@@ -22,6 +22,8 @@
 #pragma once
 #include <U2Core/MsaObject.h>
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 

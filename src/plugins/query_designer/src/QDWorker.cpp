@@ -38,6 +38,8 @@
 #include <U2Designer/DelegateEditors.h>
 #include <U2Designer/QDScheduler.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
@@ -117,7 +119,7 @@ void QDWorkerFactory::init() {
 
     proto->setPrompter(new QDPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconPath(":query_designer/images/query_designer.png");
+    proto->setIconParameters(IconParameters("query_designer", "query_designer.png", false));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -130,7 +132,7 @@ void QDWorkerFactory::init() {
 QString QDPrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     QString producerName = tr("from %1").arg(producer ? producer->getLabel() : unsetStr);
     QString schemaFile = getRequiredParam(SCHEMA_ATTR);
 

@@ -26,6 +26,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Lang/BaseTypes.h>
 
 namespace U2 {
@@ -235,7 +237,7 @@ QDTandemActorPrototype::QDTandemActorPrototype() {
 }
 
 QIcon QDTandemActorPrototype::getIcon() const {
-    return QIcon(":repeat_finder/images/repeats_tandem.png");
+    return GUIUtils::getIconResource("repeat_finder", "repeats_tandem.png");
 }
 
 QDActor* QDTandemActorPrototype::createInstance() const {

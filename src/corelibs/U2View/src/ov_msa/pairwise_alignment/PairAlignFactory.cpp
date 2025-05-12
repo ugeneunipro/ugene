@@ -28,7 +28,7 @@
 namespace U2 {
 
 const QString PairAlignFactory::GROUP_ID = "OP_PAIRALIGN";
-const QString PairAlignFactory::GROUP_ICON_STR = ":core/images/pairwise.png";
+const IconParameters PairAlignFactory::GROUP_ICON_PAR = IconParameters("core", "pairwise.png", false);
 const QString PairAlignFactory::GROUP_DOC_PAGE = "65929675";
 
 PairAlignFactory::PairAlignFactory() {
@@ -49,7 +49,7 @@ QWidget* PairAlignFactory::createWidget(GObjectViewController* objView, const QV
 }
 
 OPGroupParameters PairAlignFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Pairwise Alignment"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Pairwise Alignment"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

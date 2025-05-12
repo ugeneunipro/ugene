@@ -177,7 +177,7 @@ void CoreLib::init() {
         proto->setPrompter(new ReadDocPrompter(tr("Reads text from <u>%1</u>.")));
 
         if (AppContext::isGUIMode()) {
-            proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
+            proto->setIconParameters(IconParameters("U2Designer", "blue_circle.png"));
         }
 
         r->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);

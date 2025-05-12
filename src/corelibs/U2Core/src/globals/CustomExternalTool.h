@@ -32,9 +32,6 @@ public:
 
     void setId(const QString& id);
     void setName(const QString& name);
-    void setIcon(const QIcon& icon);
-    void setGrayIcon(const QIcon& icon);
-    void setWarnIcon(const QIcon& icon);
     void setDescription(const QString& description);
     void setLauncher(const QString& launcherId);
     void setBinaryName(const QString& binaryName);

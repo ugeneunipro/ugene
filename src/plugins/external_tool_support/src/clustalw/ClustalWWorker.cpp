@@ -170,7 +170,7 @@ void ClustalWWorkerFactory::init() {
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new ClustalWPrompter());
-    proto->setIconPath(":external_tool_support/images/clustalx.png");
+    proto->setIconParameters(IconParameters("external_tool_support", "clustalw.png", true));
     proto->addExternalTool(ClustalWSupport::ET_CLUSTAL_ID, EXT_TOOL_PATH);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 

@@ -29,6 +29,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
@@ -78,7 +79,7 @@ void ImportPrimersDialog::sl_addFileClicked() {
     dirHelper.url = QFileInfo(fileList.last()).absoluteFilePath();
 
     for (const QString& filePath : qAsConst(fileList)) {
-        auto item = new QListWidgetItem(QIcon(":/core/images/document.png"), filePath);
+        auto item = new QListWidgetItem(GUIUtils::getIconResource("core", "document.png", false).pixmap(16, 16), filePath);
         item2file.insert(item, filePath);
         lwFiles->addItem(item);
     }
@@ -98,13 +99,14 @@ void ImportPrimersDialog::sl_addObjectClicked() {
     ProjectTreeItemSelectorDialog::selectObjectsAndFolders(settings, this, folders, objects);
 
     foreach (const Folder& folder, folders) {
-        auto item = new QListWidgetItem(QIcon(":U2Designer/images/directory.png"), folder.getFolderPath());
+        auto item = new QListWidgetItem(GUIUtils::getIconResource("U2Designer", "directory.png", false).pixmap(16, 16), folder.getFolderPath());
         item2folder.insert(item, folder);
         lwObjects->addItem(item);
     }
 
     foreach (GObject* object, objects) {
-        auto item = new QListWidgetItem(GObjectTypes::getTypeInfo(object->getGObjectType()).icon, object->getDocument()->getName() + ": " + object->getGObjectName());
+        auto icon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(object->getGObjectType()).iconParameters);
+        auto item = new QListWidgetItem(icon, object->getDocument()->getName() + ": " + object->getGObjectName());
         item2object.insert(item, object);
         lwObjects->addItem(item);
     }

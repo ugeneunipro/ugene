@@ -45,6 +45,8 @@ private slots:
     void sl_consensusAlgorithmChanged();
     void sl_changeConsensusAlgorithm(int newIndex);
 
+    void sl_colorModeSwitched();
+
 private:
     QWidget* createReadsSettings();
     QWidget* createRulerSettings();
@@ -74,7 +76,7 @@ public:
 
 private:
     static const QString GROUP_ID;
-    static const QString GROUP_ICON_STR;
+    static const IconParameters GROUP_ICON_PAR;
     static const QString GROUP_DOC_PAGE;
 };
 

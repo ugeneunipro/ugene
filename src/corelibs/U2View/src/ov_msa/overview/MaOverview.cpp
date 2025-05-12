@@ -23,6 +23,10 @@
 
 #include <QMouseEvent>
 
+#include <U2Core/AppContext.h>
+
+#include <U2Gui/MainWindow.h>
+
 #include <U2View/MsaEditor.h>
 #include <U2View/MsaEditorSequenceArea.h>
 
@@ -55,6 +59,7 @@ MaOverview::MaOverview(MaEditor* _editor, QWidget* _ui)
         connect(swgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
     }
     connect(editor->getCollapseModel(), &MaCollapseModel::si_toggled, this, &MaOverview::sl_redraw);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaOverview::sl_colorModeSwitched);
 }
 
 MaEditor* MaOverview::getEditor() const {
@@ -69,6 +74,10 @@ void MaOverview::sl_visibleRangeChanged() {
 }
 
 void MaOverview::sl_redraw() {
+    update();
+}
+
+void MaOverview::sl_colorModeSwitched() {
     update();
 }
 

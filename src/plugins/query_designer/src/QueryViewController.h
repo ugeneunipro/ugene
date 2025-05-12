@@ -23,6 +23,7 @@
 
 #include <QActionGroup>
 #include <QGraphicsScene>
+#include <QToolButton>
 
 #include <U2Gui/MainWindow.h>
 
@@ -182,6 +183,7 @@ public:
 
 protected:
     bool onCloseEvent();
+
 private slots:
     void sl_newScene();
     void sl_loadScene();
@@ -196,8 +198,8 @@ private slots:
     void sl_updateTitle();
     void sl_setGlobalStrand(QAction* a);
     void sl_itemAdded();
-
     void sl_scrollUp();
+    void sl_colorModeSwitched();
 
 private:
     void createActions();
@@ -235,6 +237,11 @@ private:
     QString inFile_, outFile_;
     QString schemeUri;
     QDActor* currentActor;
+
+    QMenu* viewModeMenu = nullptr;
+    QToolButton* viewModeToolButton = nullptr;
+    QMenu* querySequenceModeMenu = nullptr;
+    QToolButton* querySequenceModeToolButton = nullptr;
 };
 
 class AddConstraintDialog : public QDialog, public Ui_AddConstraintDialog {

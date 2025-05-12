@@ -32,7 +32,7 @@
 namespace U2 {
 
 const QString MSATreeOptionsWidgetFactory::GROUP_ID = "OP_MSA_TREES_WIDGET";
-const QString MSATreeOptionsWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
+const IconParameters MSATreeOptionsWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "tree.png", false);
 const QString MSATreeOptionsWidgetFactory::GROUP_DOC_PAGE = "65929724";
 
 MSATreeOptionsWidgetFactory::MSATreeOptionsWidgetFactory() {
@@ -53,11 +53,11 @@ QWidget* MSATreeOptionsWidgetFactory::createWidget(GObjectViewController* objVie
 }
 
 OPGroupParameters MSATreeOptionsWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
 }
 
 const QString TreeOptionsWidgetFactory::GROUP_ID = "OP_TREES_WIDGET";
-const QString TreeOptionsWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
+const IconParameters TreeOptionsWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "tree.png", false);
 const QString TreeOptionsWidgetFactory::GROUP_DOC_PAGE = "65929724";
 
 TreeOptionsWidgetFactory::TreeOptionsWidgetFactory() {
@@ -78,11 +78,11 @@ QWidget* TreeOptionsWidgetFactory::createWidget(GObjectViewController* objView, 
 }
 
 OPGroupParameters TreeOptionsWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
 }
 
 const QString AddTreeWidgetFactory::GROUP_ID = "OP_MSA_ADD_TREE_WIDGET";
-const QString AddTreeWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
+const IconParameters AddTreeWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "tree.png", false);
 const QString AddTreeWidgetFactory::GROUP_DOC_PAGE = "65929724";
 
 AddTreeWidgetFactory::AddTreeWidgetFactory() {
@@ -103,7 +103,7 @@ QWidget* AddTreeWidgetFactory::createWidget(GObjectViewController* objView, cons
 }
 
 OPGroupParameters AddTreeWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

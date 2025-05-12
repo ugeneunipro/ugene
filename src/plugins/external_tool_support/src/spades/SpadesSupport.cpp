@@ -44,11 +44,6 @@ const QString SpadesSupport::ET_SPADES_ID = "USUPP_SPADES";
 
 SpadesSupport::SpadesSupport()
     : ExternalTool(SpadesSupport::ET_SPADES_ID, "spades", SpadesSupport::ET_SPADES) {
-    if (AppContext::getMainWindow()) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
 
     executableFileName = "spades.py";
     validationMessageRegExp = "SPAdes";

@@ -34,6 +34,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
+#include <U2Gui/GUIUtils.h>
+
 namespace U2 {
 
 #define SETTINGS_DIR QString("main_window/mdi/")
@@ -81,12 +83,12 @@ void MWMDIManagerImpl::prepareGUI() {
     tabbedDocsAct->setChecked(tabbedLayout);
     connect(tabbedDocsAct, SIGNAL(triggered()), SLOT(sl_setWindowLayoutToTabbed()));
 
-    tileAct = new QAction(QIcon(":ugene/images/window_tile.png"), tr("Tile windows"), this);
+    tileAct = new QAction(GUIUtils::getIconResource("ugene", "window_tile.png", false), tr("Tile windows"), this);
     tileAct->setObjectName("Tile windows");
     tileAct->setStatusTip(tr("Tile windows"));
     connect(tileAct, SIGNAL(triggered()), mdiArea, SLOT(tileSubWindows()));
 
-    cascadeAct = new QAction(QIcon(":ugene/images/window_cascade.png"), tr("Cascade windows"), this);
+    cascadeAct = new QAction(GUIUtils::getIconResource("ugene", "window_cascade.png", false), tr("Cascade windows"), this);
     cascadeAct->setObjectName("Cascade windows");
     cascadeAct->setStatusTip(tr("Cascade windows"));
     connect(cascadeAct, SIGNAL(triggered()), mdiArea, SLOT(cascadeSubWindows()));
@@ -107,13 +109,13 @@ void MWMDIManagerImpl::prepareGUI() {
         prevWindowKeySequence = QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Tab);
     }
 
-    nextAct = new QAction(QIcon(":ugene/images/window_next.png"), tr("Next window"), this);
+    nextAct = new QAction(GUIUtils::getIconResource("ugene", "window_next.png"), tr("Next window"), this);
     nextAct->setObjectName("Next window");
     nextAct->setStatusTip(tr("Next window"));
     nextAct->setShortcut(nextWindowKeySequence);
     connect(nextAct, SIGNAL(triggered()), mdiArea, SLOT(activateNextSubWindow()));
 
-    previousAct = new QAction(QIcon(":ugene/images/window_prev.png"), tr("Previous window"), this);
+    previousAct = new QAction(GUIUtils::getIconResource("ugene", "window_prev.png"), tr("Previous window"), this);
     previousAct->setObjectName("Previous window");
     previousAct->setStatusTip(tr("Previous window"));
     previousAct->setShortcut(prevWindowKeySequence);
@@ -132,6 +134,7 @@ void MWMDIManagerImpl::prepareGUI() {
 
     sl_updateWindowLayout();
     connect(AppContext::getAppSettings()->getUserAppsSettings(), SIGNAL(si_windowLayoutChanged()), SLOT(sl_updateWindowLayout()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MWMDIManagerImpl::sl_colorModeSwitched);
 }
 
 bool MWMDIManagerImpl::eventFilter(QObject* obj, QEvent* event) {
@@ -239,7 +242,7 @@ void MWMDIManagerImpl::addMDIWindow(MWMDIWindow* w) {
     qw->setWindowTitle(w->windowTitle());
     QIcon icon = w->windowIcon();
     if (icon.isNull()) {
-        icon = QIcon(":/ugene/images/ugene_16.png");
+        icon = GUIUtils::getIconResource("ugene", "ugene.png", false);
     }
     qw->setWindowIcon(icon);
     if (isOsMac()) {
@@ -432,6 +435,11 @@ void MWMDIManagerImpl::sl_setWindowLayoutToTabbed() {
     UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
     st->setTabbedWindowLayout(true);
     sl_updateWindowLayout();
+}
+
+void MWMDIManagerImpl::sl_colorModeSwitched() {
+    nextAct->setIcon(GUIUtils::getIconResource("ugene", "window_next.png"));
+    previousAct->setIcon(GUIUtils::getIconResource("ugene", "window_prev.png"));
 }
 
 }  // namespace U2

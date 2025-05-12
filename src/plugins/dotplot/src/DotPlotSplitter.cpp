@@ -29,8 +29,10 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/WidgetWithLocalToolbar.h>
 
 #include <U2View/AnnotatedDNAView.h>
@@ -43,7 +45,7 @@ namespace U2 {
 DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
     : ADVSplitWidget(a),
       locked(false) {
-    syncLockAction = createAction(":core/images/sync_lock.png", tr("Multiple view synchronization lock"), SLOT(sl_toggleSyncLock(bool)));
+    syncLockAction = createAction(GUIUtils::getIconResource("core", "sync_lock.png"), tr("Multiple view synchronization lock"), SLOT(sl_toggleSyncLock(bool)));
     filterAction = createAction(":dotplot/images/filter.png", tr("Filter results"), SLOT(sl_toggleFilter()), false);
     zoomInAction = createAction(":core/images/zoom_in.png", tr("Zoom in (<b> + </b>)"), SLOT(sl_toggleZoomIn()), false);
     zoomOutAction = createAction(":core/images/zoom_out.png", tr("Zoom out (<b> - </b>)"), SLOT(sl_toggleZoomOut()), false);
@@ -77,6 +79,8 @@ DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
     setAcceptDrops(false);
 
     setFocus();
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DotPlotSplitter::sl_colorModeSwitched);
 }
 
 bool DotPlotSplitter::onCloseEvent() {
@@ -179,6 +183,10 @@ void DotPlotSplitter::buildPopupMenu(QMenu* m) {
         SAFE_POINT(w, "w is NULL", );
         w->buildPopupMenu(m);
     }
+}
+
+void DotPlotSplitter::sl_colorModeSwitched() {
+    syncLockAction->setIcon(GUIUtils::getIconResource("core", "sync_lock.png"));
 }
 
 void DotPlotSplitter::sl_toggleSyncLock(bool l) {

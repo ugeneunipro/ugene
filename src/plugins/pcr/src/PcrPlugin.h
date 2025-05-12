@@ -24,6 +24,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/PluginModel.h>
 
+class QAction;
+
 namespace U2 {
 
 class PcrPlugin : public Plugin {
@@ -34,6 +36,10 @@ public:
 
 private slots:
     void sl_primerLibrary();
+    void sl_colorModeSwitched();
+
+private:
+    QAction* libraryAction = nullptr;
 };
 
 }  // namespace U2

@@ -94,7 +94,7 @@ ORFViewContext::ORFViewContext(QObject* p)
 
 void ORFViewContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
-    auto a = new ADVGlobalAction(av, QIcon(":orf_marker/images/orf_marker.png"), tr("Find ORFs..."), 20);
+    auto a = new ADVGlobalAction(av, IconParameters("orf_marker", "orf_marker.png"), tr("Find ORFs..."), 20);
     a->setObjectName("Find ORFs");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));

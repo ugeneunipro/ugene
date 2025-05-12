@@ -36,11 +36,6 @@ const QString PhyMLSupport::ET_PHYML_ALGORITHM_NAME_AND_KEY("PhyML Maximum Likel
 
 PhyMLSupport::PhyMLSupport()
     : ExternalTool(PhyMLSupport::PHYML_ID, "phyml", "PhyML Maximum Likelihood") {
-    if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
 
     executableFileName = isOsWindows() ? "PhyML.exe" : "phyml";
     validationArguments << "--help";

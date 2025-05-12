@@ -75,6 +75,9 @@ public:
 
     void onMessage(const LogMessage& msg) override;
 
+public slots:
+    void sl_colorModeSwitched();
+
 protected:
     void addMessage(const LogMessage& msg);
     void addText(const QString& text);

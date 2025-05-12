@@ -49,6 +49,7 @@ private slots:
     void sl_addSeqClicked();
     void sl_deleteSeqClicked();
     void sl_setDefaultLineEditValue();
+    void sl_colorModeSwitched();
 
 private:
     void updateCompleter();

@@ -25,6 +25,8 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/UserApplicationsSettings.h>
 
+#include <U2Gui/GUIUtils.h>
+
 namespace U2 {
 
 ExternalToolSupportAction::ExternalToolSupportAction(QObject* p, GObjectViewController* v, const QString& _text, int order, const QStringList& _toolIds)
@@ -46,6 +48,11 @@ void ExternalToolSupportAction::sl_pathChanged() {
     setState(isAnyToolConfigured);
 }
 
+void ExternalToolSupportAction::sl_colorModeSwitched() {
+    bool isAnyToolConfigured = checkTools();
+    setState(isAnyToolConfigured);
+}
+
 bool ExternalToolSupportAction::checkTools(bool connectSignals) {
     bool result = false;
     foreach (QString toolId, toolIds) {
@@ -61,6 +68,7 @@ bool ExternalToolSupportAction::checkTools(bool connectSignals) {
 
     if (connectSignals) {
         connect(AppContext::getAppSettings()->getUserAppsSettings(), SIGNAL(si_temporaryPathChanged()), SLOT(sl_pathChanged()));
+        connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ExternalToolSupportAction::sl_colorModeSwitched);
     }
 
     return result;
@@ -69,16 +77,23 @@ bool ExternalToolSupportAction::checkTools(bool connectSignals) {
 void ExternalToolSupportAction::setState(bool isAnyToolConfigured) {
     QFont isConfiguredToolFont;
 
+    auto tool = AppContext::getExternalToolRegistry()->getById(toolIds.at(0));
     if (!isAnyToolConfigured ||
         (AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath().isEmpty())) {
         isConfiguredToolFont.setItalic(true);
-        setIcon(AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->getGrayIcon());
+        const auto& grayIconParameters = tool->getGrayIconParameters();
+        auto grayIcon = GUIUtils::getIconResource(grayIconParameters.iconCathegory, grayIconParameters.iconName, grayIconParameters.hasColorCathegory);
+        setIcon(GUIUtils::getIconResource(grayIconParameters));
     } else {
         isConfiguredToolFont.setItalic(false);
         if (AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->isValid()) {
-            setIcon(AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->getIcon());
+            const auto& iconParameters = tool->getIconParameters();
+            auto icon = GUIUtils::getIconResource(iconParameters);
+            setIcon(icon);
         } else {
-            setIcon(AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->getWarnIcon());
+            const auto& warnIiconParameters = tool->getWarnIconParameters();
+            auto warnIcon = GUIUtils::getIconResource(warnIiconParameters);
+            setIcon(warnIcon);
         }
     }
 

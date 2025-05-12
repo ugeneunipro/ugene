@@ -76,6 +76,7 @@ public slots:
 
 private slots:
     void sl_startWorkflowPlugin();
+    void sl_colorModeSwitched();
 
 private:
     bool checkServiceState() const;

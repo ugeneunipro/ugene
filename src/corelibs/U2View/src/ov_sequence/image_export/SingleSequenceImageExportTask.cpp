@@ -114,7 +114,7 @@ void SequenceImageExportToBitmapTask::run() {
 
     QSize size = painter->getImageSize(customSettings.data());
     QPixmap im(size);
-    im.fill(Qt::white);
+    im.fill(QPalette().base().color());
     QPainter p(&im);
     painter->paint(p, customSettings.data());
 

@@ -226,7 +226,7 @@ void ProfileToProfileWorkerFactory::init() {
     ActorPrototype* proto = new IntegralBusActorPrototype(protoD, portDescs, QList<Attribute*>());
     proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
     proto->setPrompter(new ProfileToProfilePrompter());
-    proto->setIconPath(":umuscle/images/muscle_16.png");
+    proto->setIconParameters(IconParameters("umuscle", "muscle.png", false));
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

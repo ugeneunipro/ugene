@@ -34,6 +34,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
@@ -124,7 +126,7 @@ void SiteconSearchWorker::registerProto() {
     delegates[BaseAttributes::STRAND_ATTRIBUTE().getId()] = new ComboBoxDelegate(BaseAttributes::STRAND_ATTRIBUTE_VALUES_MAP());
     proto->setPrompter(new SiteconSearchPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconPath(":sitecon/images/sitecon.png");
+    proto->setIconParameters(IconParameters("sitecon", "sitecon.png", true));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_TRANSCRIPTION(), proto);
 }
 
@@ -151,7 +153,7 @@ QString SiteconSearchPrompter::composeRichDoc() {
     auto modelProducer = qobject_cast<IntegralBusPort*>(target->getPort(MODEL_PORT))->getProducer(SiteconWorkerFactory::SITECON_SLOT.getId());
     auto seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
 
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     QString seqName = tr("For each sequence from <u>%1</u>,").arg(seqProducer ? seqProducer->getLabel() : unsetStr);
     QString modelName = tr("with all profiles provided by <u>%1</u>,").arg(modelProducer ? modelProducer->getLabel() : unsetStr);
 

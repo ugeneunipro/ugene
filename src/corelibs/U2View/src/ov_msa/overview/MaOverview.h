@@ -53,6 +53,9 @@ public slots:
     }
     virtual void sl_redraw();
 
+protected slots:
+    virtual void sl_colorModeSwitched();
+
 protected:
     void mousePressEvent(QMouseEvent*) override;
     void mouseMoveEvent(QMouseEvent*) override;

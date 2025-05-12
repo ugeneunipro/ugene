@@ -25,12 +25,12 @@
 #include <QVBoxLayout>
 
 #include <U2Core/FormatUtils.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/PositionSelector.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include "AssemblyBrowser.h"
@@ -128,7 +128,7 @@ void CoveredRegionsLabel::sl_updateContent() {
 // AssemblyNavigationWidgetFactory
 ////////////////////////////////////
 const QString AssemblyNavigationWidgetFactory::GROUP_ID = "OP_ASS_NAVIGATION";
-const QString AssemblyNavigationWidgetFactory::GROUP_ICON_STR = ":core/images/goto.png";
+const IconParameters AssemblyNavigationWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "goto.png");
 const QString AssemblyNavigationWidgetFactory::GROUP_DOC_PAGE = "65929859";
 
 AssemblyNavigationWidgetFactory::AssemblyNavigationWidgetFactory() {
@@ -149,7 +149,7 @@ QWidget* AssemblyNavigationWidgetFactory::createWidget(GObjectViewController* ob
 }
 
 OPGroupParameters AssemblyNavigationWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Navigation"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Navigation"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

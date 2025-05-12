@@ -41,10 +41,6 @@
        <property name="text">
         <string/>
        </property>
-       <property name="icon">
-        <iconset resource="../../../../U2Gui/U2Gui.qrc">
-         <normaloff>:/core/images/arrow_rotate_clockwise.png</normaloff>:/core/images/arrow_rotate_clockwise.png</iconset>
-       </property>
       </widget>
      </item>
     </layout>

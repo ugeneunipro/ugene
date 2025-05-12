@@ -21,12 +21,13 @@
 
 #include "FileItem.h"
 
+#include <U2Gui/GUIUtils.h>
+
 namespace U2 {
 
 FileItem::FileItem(const QString& url, QListWidget* parent)
     : UrlItem(url, parent) {
-    QIcon fileIcon = QIcon(QString(":U2Designer/images/file.png"));
-    this->setIcon(fileIcon);
+    this->setIcon(GUIUtils::getIconResource("core", "document.png", false).pixmap(16, 16));
 }
 
 void FileItem::accept(UrlItemVisitor* visitor) {

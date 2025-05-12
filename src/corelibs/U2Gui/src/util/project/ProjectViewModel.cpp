@@ -35,6 +35,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ObjectViewModel.h>
 
 #include "ConnectionHelper.h"
@@ -952,7 +953,7 @@ QVariant ProjectViewModel::data(Folder* folder, int role) const {
 }
 
 QVariant ProjectViewModel::getFolderDecorationData() const {
-    return getIcon(QIcon(":U2Designer/images/directory.png"), true);
+    return getIcon(GUIUtils::getIconResource("U2Designer", "directory.png", false), true);
 }
 
 QVariant ProjectViewModel::data(GObject* obj, int role) const {
@@ -1032,13 +1033,13 @@ QVariant ProjectViewModel::getObjectDecorationData(GObject* obj, bool itemIsEnab
         auto seqObj = qobject_cast<U2SequenceObject*>(obj);
         SAFE_POINT(seqObj != nullptr, "Cannot cast GObject to U2SequenceObject", QVariant());
         if (seqObj->isCircular()) {
-            const QIcon circIcon(":core/images/circular_seq.png");
-            return getIcon(circIcon, itemIsEnabled);
+            return getIcon(GUIUtils::getIconResource("core", "circular_seq.png", false), itemIsEnabled);
         }
     }
 
+    bool locked = obj->getGObjectModLock(GObjectModLock_IO) != nullptr;
     const GObjectTypeInfo& ti = GObjectTypes::getTypeInfo(obj->getGObjectType());
-    const QIcon& icon = (obj->getGObjectModLock(GObjectModLock_IO) != nullptr ? ti.lockedIcon : ti.icon);
+    QIcon icon = GUIUtils::getIconResource(locked ? ti.lockedIconParameters : ti.iconParameters);
     return getIcon(icon, itemIsEnabled);
 }
 

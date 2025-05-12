@@ -109,7 +109,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     createCodonTableAction();
     createAnnotationAction = (new ADVAnnotationCreation(this))->getCreateAnnotationAction();
 
-    posSelectorAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position..."), this);
+    posSelectorAction = new QAction(GUIUtils::getIconResource("core", "goto.png"), tr("Go to position..."), this);
     posSelectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
     posSelectorAction->setShortcutContext(Qt::WindowShortcut);
     posSelectorAction->setObjectName(ADV_GOTO_ACTION);
@@ -128,7 +128,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
         addObject(dnaObj);
     }
 
-    findPatternAction = new ADVGlobalAction(this, QIcon(":core/images/find_dialog.png"), tr("Find pattern..."), 10);
+    findPatternAction = new ADVGlobalAction(this, IconParameters("core", "find_dialog.png"), tr("Find pattern..."), 10);
     findPatternAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
     findPatternAction->setShortcutContext(Qt::WindowShortcut);
     connect(findPatternAction, SIGNAL(triggered()), SLOT(sl_onFindPatternClicked()));
@@ -167,6 +167,8 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     complementSequenceAction = new QAction(tr("Complementary (3'-5') sequence"), this);
     complementSequenceAction->setObjectName(ACTION_EDIT_COMPLEMENT_SEQUENCE);
     connect(complementSequenceAction, SIGNAL(triggered()), SLOT(sl_complementSequence()));
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AnnotatedDNAView::sl_colorModeSwitched);
 
     SecStructPredictViewAction::createAction(this);
 }
@@ -255,7 +257,8 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
 
     mainSplitter->addAction(removeAnnsAndQsAction);
 
-    mainSplitter->setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).icon);
+    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).iconParameters);
+    mainSplitter->setWindowIcon(windowIcon);
 
     // Init the Options Panel
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
@@ -823,7 +826,7 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
             toggleHLAction->setText(tr("Enable '%1' highlighting").arg(aData->name));
         }
 
-        const QIcon icon = GUIUtils::createSquareIcon(as->color, 10);
+        const QIcon icon = GUIUtils::createSquareIcon(as->getActiveColor(), 10);
         toggleHLAction->setIcon(icon);
 
         toggleHLAction->setObjectName("toggle_HL_action");
@@ -1142,7 +1145,7 @@ void AnnotatedDNAView::finishSeqWidgetMove() {
 }
 
 void AnnotatedDNAView::createCodonTableAction() {
-    QAction* showCodonTableAction = new ADVGlobalAction(this, QIcon(":core/images/codon_table.png"), tr("Show codon table"), INT_MAX - 1, ADVGlobalActionFlag_AddToToolbar);
+    QAction* showCodonTableAction = new ADVGlobalAction(this, IconParameters("core", "codon_table.png"), tr("Show codon table"), INT_MAX - 1, ADVGlobalActionFlag_AddToToolbar);
     showCodonTableAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_B));
     showCodonTableAction->setShortcutContext(Qt::WindowShortcut);
     connect(showCodonTableAction, SIGNAL(triggered()), codonTableView, SLOT(sl_setVisible()));
@@ -1329,6 +1332,10 @@ void AnnotatedDNAView::sl_removeSelectedSequenceObject() {
     ADVSequenceObjectContext* soc = sw->getActiveSequenceContext();
     U2SequenceObject* so = soc->getSequenceObject();
     removeObject(so);
+}
+
+void AnnotatedDNAView::sl_colorModeSwitched() {
+    posSelectorAction->setIcon(GUIUtils::getIconResource("core", "goto.png"));
 }
 
 QList<AnnotationTableObject*> AnnotatedDNAView::getAnnotationObjects(bool includeAutoAnnotations) const {

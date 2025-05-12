@@ -30,6 +30,8 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/MainWindow.h>
+
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/PanView.h>
 #include <U2View/PanViewRows.h>
@@ -103,8 +105,8 @@ void PanViewRenderer::drawAll(QPainter& p, const U2Region& visibleRange) {
 }
 
 void PanViewRenderer::drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) {
-    p.fillRect(0, 0, canvasSize.width(), canvasSize.height(), Qt::white);
-    p.setPen(Qt::black);
+    p.fillRect(0, 0, canvasSize.width(), canvasSize.height(), QPalette().base().color());
+    p.setPen(QPalette().text().color());
 
     GraphUtils::RulerConfig c;
 
@@ -202,7 +204,7 @@ bool PanViewRenderer::isSequenceCharsVisible() const {
 void PanViewRenderer::drawSequence(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) {
     CHECK(isSequenceCharsVisible(), );
 
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
     double halfCharByScale = getCurrentScale() / 2;
     float halfCharByFont;
     if (getCurrentScale() >= commonMetrics.charWidth) {
@@ -230,8 +232,9 @@ void PanViewRenderer::drawSequenceSelection(QPainter& p, const QSize& canvasSize
     bool showSequenceMode = isSequenceCharsVisible();
     CHECK(!selection.isEmpty(), );
 
-    QPen pen1(Qt::darkGray, 1, Qt::SolidLine);
-    QPen pen2(QColor("#007DE3"), 2, Qt::SolidLine);
+    bool isDarkMode = AppContext::getMainWindow()->isDarkMode();
+    QPen pen1(isDarkMode ? Qt::lightGray : Qt::darkGray, 1, Qt::SolidLine);
+    QPen pen2(isDarkMode ? QColor("#0091FF") : QColor("#007DE3"), 2, Qt::SolidLine);
     p.setFont(commonMetrics.rulerFont);
     QFontMetrics rfm(commonMetrics.rulerFont);
 
@@ -273,7 +276,7 @@ void PanViewRenderer::drawSequenceSelection(QPainter& p, const QSize& canvasSize
         }
 
         if (drawRect) {
-            p.setPen(Qt::black);
+            p.setPen(QPalette().text().color());
             p.drawRect(x1, lineY + 1, x2 - x1, commonMetrics.lineHeight - 2);
         }
 
@@ -299,7 +302,7 @@ void PanViewRenderer::drawSequenceSelection(QPainter& p, const QSize& canvasSize
                 int rtx = x1 + (rulerWidth - rtRect.width()) / 2 + 1;
                 assert(rtx - x1 >= ARROW_DX);
                 rtRect.translate(rtx, rty);
-                p.fillRect(rtRect, Qt::white);
+                p.fillRect(rtRect, QPalette().base().color());
                 p.drawText(rtRect, Qt::AlignCenter, rangeText);
             } else {  // if range text is not in the middle glue it to one of the boundary texts
                 QString newT2 = t2 + rangeText;
@@ -330,8 +333,8 @@ void PanViewRenderer::drawSequenceSelection(QPainter& p, const QSize& canvasSize
             }
 
             // draw regions
-            p.fillRect(t1Rect, Qt::white);
-            p.fillRect(t2Rect, Qt::white);
+            p.fillRect(t1Rect, QPalette().base().color());
+            p.fillRect(t2Rect, QPalette().base().color());
             p.drawText(t1Rect, Qt::AlignCenter, t1);
             p.drawText(t2Rect, Qt::AlignCenter, t2);
 

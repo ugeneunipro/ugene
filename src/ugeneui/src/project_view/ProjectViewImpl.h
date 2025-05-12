@@ -133,6 +133,7 @@ private slots:
     void sl_exportDocument();
     void sl_onToggleCircular();
     void sl_onOpenContainingFolder();
+    void sl_colorModeSwitched();
 
 private:
     void saveWidgetState(ProjectViewWidget* w);

@@ -46,6 +46,9 @@ public slots:
     void sl_redraw() override;
     void sl_highlightingChanged();
 
+protected slots:
+    void sl_colorModeSwitched() override;
+
 protected:
     void paintEvent(QPaintEvent* e) override;
     void resizeEvent(QResizeEvent* e) override;

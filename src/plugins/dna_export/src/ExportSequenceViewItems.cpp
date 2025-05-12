@@ -122,19 +122,19 @@ ADVExportContext::ADVExportContext(AnnotatedDNAView* v)
     annotations2CSVAction->setObjectName(ACTION_EXPORT_ANNOTATIONS);
     connect(annotations2CSVAction, SIGNAL(triggered()), SLOT(sl_saveSelectedAnnotations()));
 
-    annotationsToAlignmentAction = new QAction(QIcon(":core/images/msa.png"), tr("Align selected annotations..."), this);
+    annotationsToAlignmentAction = new QAction(GUIUtils::getIconResource("core", "msa.png", false), tr("Align selected annotations..."), this);
     annotationsToAlignmentAction->setObjectName("Align selected annotations");
     connect(annotationsToAlignmentAction, SIGNAL(triggered()), SLOT(sl_saveSelectedAnnotationsToAlignment()));
 
-    annotationsToAlignmentWithTranslatedAction = new QAction(QIcon(":core/images/msa.png"), tr("Align selected annotations (amino acids)..."), this);
+    annotationsToAlignmentWithTranslatedAction = new QAction(GUIUtils::getIconResource("core", "msa.png", false), tr("Align selected annotations (amino acids)..."), this);
     annotationsToAlignmentWithTranslatedAction->setObjectName("Align selected annotations (amino acids)...");
     connect(annotationsToAlignmentWithTranslatedAction, SIGNAL(triggered()), SLOT(sl_saveSelectedAnnotationsToAlignmentWithTranslation()));
 
-    sequenceToAlignmentAction = new QAction(QIcon(":core/images/msa.png"), tr("Align selected sequence regions..."), this);
+    sequenceToAlignmentAction = new QAction(GUIUtils::getIconResource("core", "msa.png", false), tr("Align selected sequence regions..."), this);
     sequenceToAlignmentAction->setObjectName("action_align_selected_sequence_regions");
     connect(sequenceToAlignmentAction, SIGNAL(triggered()), SLOT(sl_saveSelectedSequenceToAlignment()));
 
-    sequenceToAlignmentWithTranslationAction = new QAction(QIcon(":core/images/msa.png"), tr("Align selected sequence regions (amino acids)..."), this);
+    sequenceToAlignmentWithTranslationAction = new QAction(GUIUtils::getIconResource("core", "msa.png", false), tr("Align selected sequence regions (amino acids)..."), this);
     sequenceToAlignmentWithTranslationAction->setObjectName("Align selected sequence regions (amino acids)");
     connect(sequenceToAlignmentWithTranslationAction, SIGNAL(triggered()), SLOT(sl_saveSelectedSequenceToAlignmentWithTranslation()));
 

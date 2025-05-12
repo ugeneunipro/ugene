@@ -42,6 +42,7 @@ private slots:
     void sl_completeRedraw();
     void sl_resetCaches();
     void sl_screenMoved();
+    void sl_colorModeSwitched() override;
 
 private:
     bool eventFilter(QObject* object, QEvent* event) override;
@@ -77,8 +78,6 @@ private:
     static const qreal ARROW_LINE_WIDTH;
     static const qreal ARROW_HEAD_WIDTH;
     static const qreal ARROW_HEAD_LENGTH;
-    static const QColor ARROW_DIRECT_COLOR;
-    static const QColor ARROW_REVERSE_COLOR;
 };
 
 }  // namespace U2

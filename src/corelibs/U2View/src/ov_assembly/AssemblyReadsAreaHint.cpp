@@ -25,7 +25,10 @@
 #include <QBoxLayout>
 #include <QMouseEvent>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/U2AssemblyUtils.h>
+
+#include <U2Gui/MainWindow.h>
 
 #include "AssemblyReadsArea.h"
 
@@ -34,6 +37,12 @@ namespace U2 {
 const QPoint AssemblyReadsAreaHint::OFFSET_FROM_CURSOR(13, 13);
 const int AssemblyReadsAreaHint::LETTER_MAX_COUNT = 60;
 static const int HINT_MAX_WIDTH = 200;
+static const QColor BACKGROUND_COLOR_LIGHT(245, 245, 206);
+static const QColor BACKGROUND_COLOR_DARK("#590D59");
+
+static const QColor getBackgroundColor() {
+    return AppContext::getMainWindow()->isDarkMode() ? BACKGROUND_COLOR_DARK : BACKGROUND_COLOR_LIGHT;
+}
 
 AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
     : QFrame(parent), label(new QLabel(this)) {
@@ -52,11 +61,7 @@ AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
     label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     label->setObjectName("hintLabel");
 
-    {
-        QPalette backgroundPalette = palette();
-        backgroundPalette.setColor(QPalette::Window, QColor(245, 245, 206));
-        setPalette(backgroundPalette);
-    }
+    colorModeSwitched();
 
     setWindowFlags(Qt::ToolTip);
     setWindowOpacity(0.8);
@@ -183,6 +188,12 @@ void AssemblyReadsAreaHint::setData(U2AssemblyRead r, QList<U2AssemblyRead> mate
     text += "</table>";
     label->setText(text);
     setMaximumHeight(layout()->minimumSize().height());
+}
+
+void AssemblyReadsAreaHint::colorModeSwitched() {
+    QPalette backgroundPalette = palette();
+    backgroundPalette.setColor(QPalette::Window, getBackgroundColor());
+    setPalette(backgroundPalette);
 }
 
 bool AssemblyReadsAreaHint::eventFilter(QObject*, QEvent* event) {

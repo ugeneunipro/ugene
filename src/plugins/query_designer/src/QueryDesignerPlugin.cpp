@@ -103,7 +103,7 @@ QueryDesignerViewContext::QueryDesignerViewContext(QObject* p)
 void QueryDesignerViewContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
     auto action = new ADVGlobalAction(av,
-                                      QIcon(":query_designer/images/query_designer.png"),
+                                      IconParameters("query_designer", "query_designer.png", false),
                                       tr("Analyze with query schema..."),
                                       50,
                                       ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu) | ADVGlobalActionFlag_AddToToolbar);

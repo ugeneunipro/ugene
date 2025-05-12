@@ -47,6 +47,7 @@
 
 #include <U2Gui/CreateDocumentFromTextDialogController.h>
 #include <U2Gui/DownloadRemoteFileDialog.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OpenViewTask.h>
@@ -91,14 +92,15 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
 
     ServiceRegistry* sr = AppContext::getServiceRegistry();
     connect(sr, SIGNAL(si_serviceStateChanged(Service*, ServiceState)), SLOT(sl_serviceStateChanged(Service*, ServiceState)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ProjectLoaderImpl::sl_colorModeSwitched);
 
-    newProjectAction = new QAction(QIcon(":ugene/images/project_new.png"), tr("&New project..."), this);
+    newProjectAction = new QAction(GUIUtils::getIconResource("ugene", "project_new.png", false), tr("&New project..."), this);
     newProjectAction->setObjectName(ACTION_PROJECTSUPPORT__NEW_PROJECT);
     //    newProjectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
     newProjectAction->setShortcutContext(Qt::WindowShortcut);
     connect(newProjectAction, SIGNAL(triggered()), SLOT(sl_newProject()));
 
-    addExistingDocumentAction = new QAction(QIcon(":ugene/images/advanced_open.png"), tr("Open as..."), this);
+    addExistingDocumentAction = new QAction(GUIUtils::getIconResource("ugene", "advanced_open.png", false), tr("Open as..."), this);
     addExistingDocumentAction->setObjectName(ACTION_PROJECTSUPPORT__OPEN_AS);
     addExistingDocumentAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_O));
     addExistingDocumentAction->setShortcutContext(Qt::ApplicationShortcut);
@@ -109,12 +111,12 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
     newDocumentFromTextAction->setShortcutContext(Qt::WindowShortcut);
     connect(newDocumentFromTextAction, SIGNAL(triggered()), SLOT(sl_newDocumentFromText()));
 
-    pasteAction = new QAction(QIcon(":ugene/images/paste.png"), tr("Open from clipboard..."), this);
+    pasteAction = new QAction(GUIUtils::getIconResource("core", "paste.png"), tr("Open from clipboard..."), this);
     pasteAction->setObjectName(ACTION_PROJECTSUPPORT__PASTE);
     pasteAction->setShortcutContext(Qt::WidgetShortcut);
     connect(pasteAction, SIGNAL(triggered()), SLOT(sl_paste()));
 
-    openProjectAction = new QAction(QIcon(":ugene/images/project_open.png"), tr("Open..."), this);
+    openProjectAction = new QAction(GUIUtils::getIconResource("ugene", "project_open.png", false), tr("Open..."), this);
     openProjectAction->setObjectName(ACTION_PROJECTSUPPORT__OPEN_PROJECT);
     openProjectAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
     openProjectAction->setShortcutContext(Qt::WindowShortcut);
@@ -122,12 +124,12 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
 
     downloadRemoteFileAction = new QAction(tr("Access remote database..."), this);
     downloadRemoteFileAction->setObjectName(ACTION_PROJECTSUPPORT__ACCESS_REMOTE_DB);
-    downloadRemoteFileAction->setIcon(QIcon(":ugene/images/world_go.png"));
+    downloadRemoteFileAction->setIcon(GUIUtils::getIconResource("ugene", "world_go.png", false));
     connect(downloadRemoteFileAction, SIGNAL(triggered()), SLOT(sl_downloadRemoteFile()));
 
     searchGenbankEntryAction = new QAction(tr("Search NCBI GenBank..."), this);
     searchGenbankEntryAction->setObjectName(ACTION_PROJECTSUPPORT__SEARCH_GENBANK);
-    searchGenbankEntryAction->setIcon(QIcon(":ugene/images/world_go.png"));
+    searchGenbankEntryAction->setIcon(GUIUtils::getIconResource("ugene", "world_go.png", false));
     connect(searchGenbankEntryAction, SIGNAL(triggered()), SLOT(sl_searchGenbankEntry()));
 
     // add load/close actions to menu and toolbar
@@ -796,6 +798,10 @@ void ProjectLoaderImpl::sl_searchGenbankEntry() {
     dlg->exec();
 }
 
+void ProjectLoaderImpl::sl_colorModeSwitched() {
+    pasteAction->setIcon(GUIUtils::getIconResource("core", "paste.png"));
+}
+
 QAction* ProjectLoaderImpl::getAddExistingDocumentAction() {
     return addExistingDocumentAction;
 }
@@ -858,12 +864,18 @@ SaveProjectDialogController::SaveProjectDialogController(QWidget* w)
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
     buttonBox->button(QDialogButtonBox::No)->setText(tr("No"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    setWindowIcon(GUIUtils::getIconResource("core", "save.png"));
 
     connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(sl_clicked(QAbstractButton*)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SaveProjectDialogController::sl_colorModeSwitched);
 }
 
 void SaveProjectDialogController::sl_clicked(QAbstractButton* button) {
     done(buttonBox->standardButton(button));
+}
+
+void SaveProjectDialogController::sl_colorModeSwitched() {
+    setWindowIcon(GUIUtils::getIconResource("core", "save.png"));
 }
 
 //////////////////////////////////////////////////////////////////////////

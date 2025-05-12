@@ -21,6 +21,8 @@
 
 #include "DirectoryItem.h"
 
+#include <U2Gui/GUIUtils.h>
+
 namespace U2 {
 
 DirectoryItem::DirectoryItem(const QString& url, QListWidget* parent)
@@ -28,8 +30,7 @@ DirectoryItem::DirectoryItem(const QString& url, QListWidget* parent)
     options = new DirectoryOptions();
     connect(options, SIGNAL(si_dataChanged()), SIGNAL(si_dataChanged()));
 
-    QIcon dirIcon = QIcon(QString(":U2Designer/images/directory.png"));
-    this->setIcon(dirIcon);
+    this->setIcon(GUIUtils::getIconResource("U2Designer", "directory.png", false).pixmap(16, 16));
 
     setToolTip(
         "<p>" + url + "</p><p>" +

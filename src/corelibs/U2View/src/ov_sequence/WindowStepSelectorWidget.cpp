@@ -25,6 +25,11 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include <U2Core/AppContext.h>
+
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+
 #include "WindowStepSelectorWidget.h"
 
 namespace U2 {
@@ -189,13 +194,14 @@ WindowStepSelectorDialog::WindowStepSelectorDialog(QWidget* p, const U2Region& w
 
     setLayout(l);
     setWindowTitle(tr("Graph Settings"));
-    setWindowIcon(QIcon(":core/images/graphs.png"));
+    setWindowIcon(GUIUtils::getIconResource("core", "graphs.png"));
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     setMinimumWidth(400);
 
     connect(cancelButton, SIGNAL(clicked(bool)), SLOT(sl_onCancelClicked(bool)));
     connect(okButton, SIGNAL(clicked(bool)), SLOT(sl_onOkClicked(bool)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WindowStepSelectorDialog::sl_colorModeSwitched);
 
     okButton->setDefault(true);
 }
@@ -214,6 +220,10 @@ void WindowStepSelectorDialog::sl_onOkClicked(bool v) {
         return;
     }
     QMessageBox::critical(this, tr("Error!"), err.append(' ').append(mmerr));
+}
+
+void WindowStepSelectorDialog::sl_colorModeSwitched() {
+    setWindowIcon(GUIUtils::getIconResource("core", "graphs.png"));
 }
 
 }  // namespace U2

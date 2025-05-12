@@ -123,6 +123,7 @@ private slots:
     void sl_onEnterPressed();
     void sl_onShiftEnterPressed();
     void sl_usePatternNamesCbClicked();
+    void sl_colorModeSwitched();
 
 private:
     void initLayout();

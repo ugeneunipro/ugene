@@ -62,6 +62,9 @@ public:
 public slots:
     void sl_closeAllGraphs();
 
+private slots:
+    void sl_colorModeSwitched();
+
 private:
     static const QString ACTION_NAME;
     QMenu* menu;

@@ -96,7 +96,7 @@ ActorPrototype* IncludedProtoFactoryImpl::_getScriptProto(QList<DataTypePtr> inp
     Descriptor desc(namePrefix + name, name, description);
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
     proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
-    proto->setIconPath(":workflow_designer/images/script.png");
+    proto->setIconParameters(IconParameters("workflow_designer", "script.png"));
 
     proto->setPrompter(new LocalWorkflow::ScriptPromter());
     proto->setScriptFlag();
@@ -195,7 +195,7 @@ ActorPrototype* IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
 
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconPath(":workflow_designer/images/external_cmd_tool.png");
+    proto->setIconParameters(IconParameters("workflow_designer", "external_cmd_tool.png"));
 
     proto->setPrompter(new LocalWorkflow::ExternalProcessWorkerPrompter());
     proto->setNonStandard(cfg->filePath);
@@ -235,7 +235,7 @@ ActorPrototype* IncludedProtoFactoryImpl::_getSchemaActorProto(Schema* schema, c
     Descriptor desc(name, name, name);
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, portDescs, attrs);
     proto->setEditor(new DelegateEditor(delegateMap));
-    proto->setIconPath(":workflow_designer/images/wd.png");
+    proto->setIconParameters(IconParameters("workflow_designer", "wd.png"));
 
     proto->setPrompter(new LocalWorkflow::SchemaWorkerPrompter());
     proto->setSchema(actorFilePath);

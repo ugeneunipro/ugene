@@ -52,6 +52,7 @@
 #include <U2Designer/WizardController.h>
 
 #include <U2Gui/ExportImageDialog.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ScriptEditorDialog.h>
 #include <U2Gui/U2FileDialog.h>
 
@@ -330,7 +331,6 @@ WorkflowView* WorkflowView::createInstance(WorkflowGObject* go) {
     SAFE_POINT(mdiManager != nullptr, "NULL MDI manager", nullptr);
 
     auto view = new WorkflowView(go);
-    view->setWindowIcon(QIcon(":/workflow_designer/images/wd.png"));
     mdiManager->addMDIWindow(view);
     mdiManager->activateWindow(view);
     view->startFirstAutoRunWizard();
@@ -356,6 +356,7 @@ WorkflowView::WorkflowView(WorkflowGObject* go)
     : MWMDIWindow(tr("Workflow Designer")), running(false), sceneRecreation(false), go(go),
       schema(QSharedPointer<Schema>::create()), currentProto(nullptr), currentActor(nullptr),
       pasteCount(0), debugInfo(new WorkflowDebugStatus(this)), debugActions(), loadWorkflowSceneTask(nullptr) {
+    setWindowIcon(GUIUtils::getIconResource("workflow_designer", "wd.png"));
     scriptingMode = WorkflowSettings::getScriptingMode();
     elementsMenu = nullptr;
     schema->setDeepCopyFlag(true);
@@ -383,6 +384,7 @@ WorkflowView::WorkflowView(WorkflowGObject* go)
     }
 
     propertyEditor->reset();
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WorkflowView::sl_colorModeSwitched);
 }
 
 WorkflowView::~WorkflowView() {
@@ -643,40 +645,40 @@ void WorkflowView::rescale(bool updateGui) {
 void WorkflowView::createActions() {
     runAction = new QAction(tr("&Run workflow"), this);
     runAction->setObjectName("Run workflow");
-    runAction->setIcon(QIcon(":workflow_designer/images/run.png"));
+    runAction->setIcon(GUIUtils::getIconResource("workflow_designer", "run.png", false));
     runAction->setShortcut(QKeySequence("Ctrl+R"));
     connect(runAction, SIGNAL(triggered()), SLOT(sl_launch()));
     connect(runAction, SIGNAL(triggered()), debugInfo, SLOT(sl_resumeTriggerActivated()));
 
     stopAction = new QAction(tr("S&top workflow"), this);
     stopAction->setObjectName("Stop workflow");
-    stopAction->setIcon(QIcon(":workflow_designer/images/stopTask.png"));
+    stopAction->setIcon(GUIUtils::getIconResource("workflow_designer", "stopTask.png", false));
     stopAction->setEnabled(false);
     connect(stopAction, SIGNAL(triggered()), debugInfo, SLOT(sl_executionFinished()));
     connect(stopAction, SIGNAL(triggered()), SLOT(sl_stop()));
 
     validateAction = new QAction(tr("&Validate workflow"), this);
     validateAction->setObjectName("Validate workflow");
-    validateAction->setIcon(QIcon(":workflow_designer/images/ok.png"));
+    validateAction->setIcon(GUIUtils::getIconResource("workflow_designer", "ok.png", false));
     validateAction->setShortcut(QKeySequence("Ctrl+E"));
     connect(validateAction, SIGNAL(triggered()), SLOT(sl_validate()));
 
     estimateAction = new QAction(tr("&Estimate workflow"), this);
     estimateAction->setObjectName("Estimate workflow");
-    estimateAction->setIcon(QIcon(":core/images/sum.png"));
+    estimateAction->setIcon(GUIUtils::getIconResource("core", "sum.png"));
     estimateAction->setObjectName("Estimate workflow");
     connect(estimateAction, SIGNAL(triggered()), SLOT(sl_estimate()));
 
     pauseAction = new QAction(tr("&Pause workflow"), this);
     pauseAction->setObjectName("Pause workflow");
-    pauseAction->setIcon(QIcon(":workflow_designer/images/pause.png"));
+    pauseAction->setIcon(GUIUtils::getIconResource("workflow_designer", "pause.png"));
     pauseAction->setShortcut(QKeySequence("Ctrl+P"));
     pauseAction->setEnabled(false);
     connect(pauseAction, SIGNAL(triggered()), debugInfo, SLOT(sl_pauseTriggerActivated()));
     debugActions.append(pauseAction);
 
     nextStepAction = new QAction(tr("&Next step"), this);
-    nextStepAction->setIcon(QIcon(":workflow_designer/images/next_step.png"));
+    nextStepAction->setIcon(GUIUtils::getIconResource("workflow_designer", "next_step.png", false));
     nextStepAction->setShortcut(QKeySequence("F10"));
     nextStepAction->setEnabled(false);
     connect(nextStepAction, SIGNAL(triggered()), debugInfo, SLOT(sl_isolatedStepTriggerActivated()));
@@ -686,7 +688,7 @@ void WorkflowView::createActions() {
     toggleBreakpointAction->setEnabled(false);
 
     tickReadyAction = new QAction(tr("Process one &message"), this);
-    tickReadyAction->setIcon(QIcon(":workflow_designer/images/process_one_message.png"));
+    tickReadyAction->setIcon(GUIUtils::getIconResource("workflow_designer", "process_one_message.png", false));
     tickReadyAction->setShortcut(QKeySequence("Ctrl+M"));
     tickReadyAction->setEnabled(false);
     connect(tickReadyAction, SIGNAL(triggered()), SLOT(sl_processOneMessage()));
@@ -696,31 +698,30 @@ void WorkflowView::createActions() {
     debugActions.append(tickReadyAction);
 
     newAction = new QAction(tr("&New workflow..."), this);
-    newAction->setIcon(QIcon(":workflow_designer/images/filenew.png"));
+    newAction->setIcon(GUIUtils::getIconResource("workflow_designer", "filenew.png", false));
     newAction->setShortcuts(QKeySequence::New);
     newAction->setObjectName("New workflow action");
     connect(newAction, SIGNAL(triggered()), SLOT(sl_newScene()));
 
     saveAction = new QAction(tr("&Save workflow"), this);
     saveAction->setObjectName("Save workflow");
-    saveAction->setIcon(QIcon(":workflow_designer/images/filesave.png"));
+    saveAction->setIcon(GUIUtils::getIconResource("workflow_designer", "filesave.png"));
     saveAction->setShortcut(QKeySequence::Save);
     saveAction->setShortcutContext(Qt::WindowShortcut);
     connect(saveAction, SIGNAL(triggered()), SLOT(sl_saveScene()));
 
     saveAsAction = new QAction(tr("&Save workflow as..."), this);
-    saveAsAction->setIcon(QIcon(":workflow_designer/images/filesaveas.png"));
+    saveAsAction->setIcon(GUIUtils::getIconResource("workflow_designer", "filesaveas.png"));
     connect(saveAsAction, SIGNAL(triggered()), SLOT(sl_saveSceneAs()));
     saveAsAction->setObjectName("Save workflow action");
 
     showWizard = new QAction(tr("Show wizard"), this);
     showWizard->setObjectName("Show wizard");
-    QPixmap pm = QPixmap(":workflow_designer/images/wizard.png").scaled(16, 16);
-    showWizard->setIcon(QIcon(pm));
+    showWizard->setIcon(GUIUtils::getIconResource("workflow_designer", "wizard.png"));
     connect(showWizard, SIGNAL(triggered()), SLOT(sl_showWizard()));
 
     toggleBreakpointManager = new QAction("Show or hide breakpoint manager", this);
-    toggleBreakpointManager->setIcon(QIcon(":workflow_designer/images/show_breakpoint_manager.png"));
+    toggleBreakpointManager->setIcon(GUIUtils::getIconResource("workflow_designer", "show_breakpoint_manager.png", false));
     toggleBreakpointManager->setObjectName("Show or hide breakpoint manager");
     connect(toggleBreakpointManager, SIGNAL(triggered()), SLOT(sl_toggleBreakpointManager()));
 
@@ -731,22 +732,22 @@ void WorkflowView::createActions() {
     }
 
     loadAction = new QAction(tr("&Load workflow"), this);
-    loadAction->setIcon(QIcon(":workflow_designer/images/fileopen.png"));
+    loadAction->setIcon(GUIUtils::getIconResource("workflow_designer", "fileopen.png", false));
     loadAction->setShortcut(QKeySequence("Ctrl+L"));
     loadAction->setObjectName("Load workflow");
     connect(loadAction, SIGNAL(triggered()), SLOT(sl_loadScene()));
 
     exportAction = new QAction(tr("&Export workflow as image"), this);
-    exportAction->setIcon(QIcon(":workflow_designer/images/export.png"));
+    exportAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
     exportAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
     connect(exportAction, SIGNAL(triggered()), SLOT(sl_exportScene()));
 
     deleteAction = new QAction(tr("Delete"), this);
-    deleteAction->setIcon(QIcon(":workflow_designer/images/delete.png"));
+    deleteAction->setIcon(GUIUtils::getIconResource("workflow_designer", "delete.png", false));
     connect(deleteAction, SIGNAL(triggered()), scene, SLOT(sl_deleteItem()));
 
     dmAction = new QAction(tr("Dashboards manager"), this);
-    dmAction->setIcon(QIcon(":workflow_designer/images/settings.png"));
+    dmAction->setIcon(GUIUtils::getIconResource("core", "settings2.png"));
     dmAction->setObjectName("Dashboards manager");
     new DashboardManagerHelper(dmAction, this);
 
@@ -768,19 +769,19 @@ void WorkflowView::createActions() {
 
     configureParameterAliasesAction = new QAction(tr("Set parameter aliases..."), this);
     configureParameterAliasesAction->setObjectName("Set parameter aliases");
-    configureParameterAliasesAction->setIcon(QIcon(":workflow_designer/images/table_relationship.png"));
+    configureParameterAliasesAction->setIcon(GUIUtils::getIconResource("workflow_designer", "table_relationship.png", false));
     connect(configureParameterAliasesAction, SIGNAL(triggered()), SLOT(sl_configureParameterAliases()));
 
     createGalaxyConfigAction = new QAction(tr("Create Galaxy tool config..."), this);
     createGalaxyConfigAction->setObjectName("Create Galaxy tool config");
-    createGalaxyConfigAction->setIcon(QIcon(":workflow_designer/images/galaxy.png"));
+    createGalaxyConfigAction->setIcon(GUIUtils::getIconResource("workflow_designer", "galaxy.png"));
     connect(createGalaxyConfigAction, SIGNAL(triggered()), SLOT(sl_createGalaxyConfig()));
 
     selectAction = new QAction(tr("Select all elements"), this);
     connect(selectAction, SIGNAL(triggered()), scene, SLOT(sl_selectAll()));
 
     copyAction = new QAction(tr("&Copy"), this);
-    copyAction->setIcon(QIcon(":workflow_designer/images/editcopy.png"));
+    copyAction->setIcon(GUIUtils::getIconResource("core", "copy.png", false));
     copyAction->setShortcut(QKeySequence("Ctrl+C"));
     copyAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     copyAction->setObjectName("Copy action");
@@ -788,14 +789,14 @@ void WorkflowView::createActions() {
     addAction(copyAction);
 
     cutAction = new QAction(tr("Cu&t"), sceneView);
-    cutAction->setIcon(QIcon(":workflow_designer/images/editcut.png"));
+    cutAction->setIcon(GUIUtils::getIconResource("workflow_designer", "editcut.png", false));
     cutAction->setShortcuts(QKeySequence::Cut);
     cutAction->setShortcutContext(Qt::WidgetShortcut);
     connect(cutAction, SIGNAL(triggered()), SLOT(sl_cutItems()));
     addAction(cutAction);
 
     pasteAction = new QAction(tr("&Paste"), this);
-    pasteAction->setIcon(QIcon(":workflow_designer/images/editpaste.png"));
+    pasteAction->setIcon(GUIUtils::getIconResource("core", "paste.png"));
     pasteAction->setShortcuts(QKeySequence::Paste);
     pasteAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     connect(pasteAction, &QAction::triggered, this, &WorkflowView::sl_pasteAction);
@@ -838,29 +839,29 @@ void WorkflowView::createActions() {
 
     createScriptAction = new QAction(tr("Create element with script..."), this);
     createScriptAction->setObjectName("createScriptAction");
-    createScriptAction->setIcon(QIcon(":workflow_designer/images/script.png"));
+    createScriptAction->setIcon(GUIUtils::getIconResource("workflow_designer", "script.png"));
     connect(createScriptAction, SIGNAL(triggered()), SLOT(sl_createScript()));
 
     editScriptAction = new QAction(tr("Edit script of the element..."), this);
     editScriptAction->setObjectName("editScriptAction");
-    editScriptAction->setIcon(QIcon(":workflow_designer/images/script_edit.png"));
+    editScriptAction->setIcon(GUIUtils::getIconResource("workflow_designer", "script_edit.png"));
     editScriptAction->setEnabled(false);  // because user need to select actor with script to enable it
     connect(editScriptAction, SIGNAL(triggered()), SLOT(sl_editScript()));
 
     createCmdlineBasedWorkerAction = new QAction(tr("Create element with external tool..."), this);
     createCmdlineBasedWorkerAction->setObjectName("createElementWithCommandLineTool");
-    createCmdlineBasedWorkerAction->setIcon(QIcon(":workflow_designer/images/external_cmd_tool.png"));
+    createCmdlineBasedWorkerAction->setIcon(GUIUtils::getIconResource("workflow_designer", "external_cmd_tool.png"));
     connect(createCmdlineBasedWorkerAction, SIGNAL(triggered()), SLOT(sl_createCmdlineBasedWorkerAction()));
 
     editExternalToolAction = new QAction(tr("Edit configuration..."), this);
     editExternalToolAction->setObjectName("editConfiguration");
-    editExternalToolAction->setIcon(QIcon(":workflow_designer/images/external_cmd_tool.png"));
+    editExternalToolAction->setIcon(GUIUtils::getIconResource("workflow_designer", "external_cmd_tool.png"));
     editExternalToolAction->setEnabled(false);  // because user need to select actor with script to enable it
     connect(editExternalToolAction, SIGNAL(triggered()), SLOT(sl_editExternalTool()));
 
     appendExternalTool = new QAction(tr("Add element with external tool..."), this);
     appendExternalTool->setObjectName("AddElementWithCommandLineTool");
-    appendExternalTool->setIcon(QIcon(":workflow_designer/images/external_cmd_tool_add.png"));
+    appendExternalTool->setIcon(GUIUtils::getIconResource("workflow_designer", "external_cmd_tool_add.png"));
     connect(appendExternalTool, SIGNAL(triggered()), SLOT(sl_appendExternalToolWorker()));
 
     findPrototypeAction = new QAction(this);
@@ -1427,7 +1428,9 @@ bool WorkflowView::sl_validate(bool notify) {
     bool good = WorkflowUtils::validate(*schema, lst);
 
     if (lst.count() != 0) {
-        foreach (QListWidgetItem* wi, lst) {
+        for(QListWidgetItem* wi : qAsConst(lst)) {
+            auto ip = wi->data(ICON_DATA_REF).value<IconParameters>();
+            wi->setIcon(GUIUtils::getIconResource(ip.iconCathegory, ip.iconName, ip.hasColorCathegory));
             infoList->addItem(wi);
         }
         bottomTabs->show();
@@ -1650,6 +1653,29 @@ void WorkflowView::sl_convertMessages2Documents(const Workflow::Link* bus,
                                                 const QString& messageType,
                                                 int messageNumber) {
     debugInfo->convertMessagesToDocuments(bus, messageType, messageNumber, meta.name);
+}
+
+void WorkflowView::sl_colorModeSwitched() {
+    setWindowIcon(GUIUtils::getIconResource("workflow_designer", "wd.png"));
+    estimateAction->setIcon(GUIUtils::getIconResource("core", "sum.png"));
+    pauseAction->setIcon(GUIUtils::getIconResource("workflow_designer", "pause.png"));
+    saveAction->setIcon(GUIUtils::getIconResource("workflow_designer", "filesave.png"));
+    saveAsAction->setIcon(GUIUtils::getIconResource("workflow_designer", "filesaveas.png"));
+    showWizard->setIcon(GUIUtils::getIconResource("workflow_designer", "wizard.png"));
+    exportAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
+    dmAction->setIcon(GUIUtils::getIconResource("core", "settings2.png"));
+    createGalaxyConfigAction->setIcon(GUIUtils::getIconResource("workflow_designer", "galaxy.png"));
+    pasteAction->setIcon(GUIUtils::getIconResource("core", "paste.png"));
+    createScriptAction->setIcon(GUIUtils::getIconResource("workflow_designer", "script.png"));
+    editScriptAction->setIcon(GUIUtils::getIconResource("workflow_designer", "script_edit.png"));
+    createCmdlineBasedWorkerAction->setIcon(GUIUtils::getIconResource("workflow_designer", "external_cmd_tool.png"));
+    editExternalToolAction->setIcon(GUIUtils::getIconResource("workflow_designer", "external_cmd_tool.png"));
+    appendExternalTool->setIcon(GUIUtils::getIconResource("workflow_designer", "external_cmd_tool_add.png"));
+    if (tabView->isVisible()) {
+        toggleDashboard->setIcon(GUIUtils::getIconResource("workflow_designer", "wd.png"));
+    } else {
+        toggleDashboard->setIcon(GUIUtils::getIconResource("workflow_designer", "dashboard.png"));
+    }
 }
 
 WorkflowProcessItem* WorkflowView::findItemById(ActorId actor) const {
@@ -2185,11 +2211,6 @@ void WorkflowView::sl_showWizard() {
     }
 }
 
-static QIcon getToolbarIcon(const QString& srcPath) {
-    QPixmap pm = QPixmap(":workflow_designer/images/" + srcPath).scaled(16, 16);
-    return QIcon(pm);
-}
-
 static bool isInActiveWindow(QWidget* childWidget) {
     QWidget* activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (activeWindow == nullptr) {
@@ -2228,11 +2249,11 @@ void WorkflowView::showDashboards() {
 void WorkflowView::setDashboardActionDecoration(bool isDashboardsViewActive) {
     if (isDashboardsViewActive) {
         toggleDashboard->setIconText(tr("To Workflow Designer"));
-        toggleDashboard->setIcon(getToolbarIcon("wd.png"));
+        toggleDashboard->setIcon(GUIUtils::getIconResource("workflow_designer", "wd.png"));
         toggleDashboard->setToolTip(tr("Show workflow"));
     } else {
         toggleDashboard->setIconText(tr("Go to Dashboard"));
-        toggleDashboard->setIcon(getToolbarIcon("dashboard.png"));
+        toggleDashboard->setIcon(GUIUtils::getIconResource("workflow_designer", "dashboard.png"));
         toggleDashboard->setToolTip(tr("Show dashboard"));
     }
 }
@@ -2792,7 +2813,7 @@ void WorkflowScene::setModified() {
 void WorkflowScene::drawBackground(QPainter* painter, const QRectF& rect) {
     if (WorkflowSettings::showGrid()) {
         int step = GRID_STEP;
-        painter->setPen(QPen(QColor(200, 200, 255, 125)));
+        painter->setPen(QPen(AppContext::getMainWindow()->isDarkMode() ? QColor(75, 75, 48, 125) : QColor(200, 200, 255, 125)));
         // draw horizontal grid
         qreal start = round(rect.top(), step);
         if (start > rect.top()) {
@@ -2815,7 +2836,6 @@ void WorkflowScene::drawBackground(QPainter* painter, const QRectF& rect) {
 
     if (items().empty()) {
         // draw a hint on empty scene
-        painter->setPen(Qt::darkGray);
         QFont f = painter->font();
         if (hint == SamplesTab) {
         } else {
@@ -2823,9 +2843,10 @@ void WorkflowScene::drawBackground(QPainter* painter, const QRectF& rect) {
             f.setFamily("Courier New");
             f.setPointSizeF(f.pointSizeF() * 2. / trans.m11());
             painter->setFont(f);
+            painter->setPen(QPalette().text().color());
             QRectF res;
             painter->drawText(sceneRect(), Qt::AlignCenter, tr("Drop an element from the palette here"), &res);
-            QPixmap pix(":workflow_designer/images/leftarrow.png");
+            QPixmap pix(GUIUtils::getResourceName("workflow_designer", "leftarrow.png"));
             QPointF pos(res.left(), res.center().y());
             pos.rx() -= pix.width() + GRID_STEP;
             pos.ry() -= pix.height() / 2;

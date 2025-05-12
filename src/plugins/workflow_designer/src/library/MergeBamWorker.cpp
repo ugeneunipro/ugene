@@ -38,6 +38,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Formats/BAMUtils.h>
 #include <U2Formats/MergeBamTask.h>
 
@@ -67,7 +69,7 @@ static const QString OUT_NAME_ID("out-name");
 QString MergeBamPrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
     QString doc = tr("Merge BAM files from %1 with SAMTools merge.").arg(producerName);

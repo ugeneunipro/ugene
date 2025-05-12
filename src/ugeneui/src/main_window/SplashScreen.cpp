@@ -28,9 +28,15 @@
 #include <QPainter>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/Task.h>
+#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/Version.h>
+
+#include <U2Gui/GUIUtils.h>
+
+#include "main_window/styles/StyleFactory.h"
 
 namespace U2 {
 
@@ -88,7 +94,27 @@ SplashScreenWidget::SplashScreenWidget() {
               (v.minor == 0 ? "" : "." + QString::number(v.minor)) +
               (v.suffix.isEmpty() ? "" : "-" + v.suffix);
 
-    QImage image(":ugene/images/ugene_splash.png");
+    UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
+    StyleFactory::ColorMode colorMode = static_cast<StyleFactory::ColorMode>(userAppSettings->getColorModeIndex());
+    switch (colorMode) {
+        case StyleFactory::ColorMode::Light:
+            isDark = false;
+            break;
+        case StyleFactory::ColorMode::Dark:
+            isDark = true;
+            break;
+        case StyleFactory::ColorMode::Auto:
+            isDark = StyleFactory::isDarkStyleEnabled();
+            break;
+    }
+
+    QImage image;
+    if (isDark) {
+        image = QImage(":ugene/images/dark/ugene_splash.png");
+    } else {
+        image = QImage(":ugene/images/light/ugene_splash.png");
+    }
+
     QSize widgetSize = image.size();
     setFixedSize(widgetSize);
 
@@ -168,7 +194,7 @@ void SplashScreenWidget::drawInfo() {
     font.setBold(true);
     font.setPixelSize(VERSION_HEIGHT_PX);
     p.setFont(font);
-    p.setPen(QColor(0, 46, 59));
+    p.setPen(isDark ? QColor(0, 177, 226) : QColor(0, 46, 59));
 
     QString text = tr("Version ") + version + tr(" is loading") + QString(".").repeated(dots_number);
     p.drawText(17, 285, text);

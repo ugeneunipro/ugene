@@ -207,7 +207,7 @@ void HMMMSAEditorContext::initViewContext(GObjectViewController* view) {
 
     auto a = new GObjectViewAction(this, view, tr("Build HMMER2 profile"));
     a->setObjectName("Build HMMER2 profile");
-    a->setIcon(QIcon(":/hmm2/images/hmmer_16.png"));
+    a->setIcon(GUIUtils::getIconResource("hmm2", "hmmer2.png"));
     connect(a, SIGNAL(triggered()), SLOT(sl_build()));
     addViewAction(a);
 }
@@ -245,7 +245,7 @@ HMMADVContext::HMMADVContext(QObject* p)
 
 void HMMADVContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
-    auto a = new ADVGlobalAction(av, QIcon(":/hmm2/images/hmmer_16.png"), tr("Find HMM signals with HMMER2..."), 70);
+    auto a = new ADVGlobalAction(av, IconParameters("hmm2", "hmmer2.png"), tr("Find HMM signals with HMMER2..."), 70);
     connect(a, SIGNAL(triggered()), SLOT(sl_search()));
 }
 

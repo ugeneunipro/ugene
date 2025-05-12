@@ -34,6 +34,8 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U1AnnotationUtils.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/ADVSequenceObjectContext.h>
 
 #define ENZYME_FOLDER_ITEM_TYPE 1022
@@ -60,7 +62,7 @@ void EnzymeFolderItem::addEnzymeItem(Annotation* enzAnn) {
     const SharedAnnotationData& data = enzAnn->getData();
     QString location = U1AnnotationUtils::buildLocationString(data);
     addChild(new EnzymeItem(location, enzAnn));
-    setIcon(0, QIcon(":circular_view/images/folder.png"));
+    setIcon(0, GUIUtils::getIconResource("circular_view", "folder.png", false));
     int count = childCount();
     QString site = count == 1 ? RestrctionMapWidget::tr("site") : RestrctionMapWidget::tr("sites");
     setText(0, QString("%1 : %2 %3").arg(getName()).arg(count).arg(site));
@@ -75,7 +77,7 @@ void EnzymeFolderItem::removeEnzymeItem(Annotation* enzAnn) {
             QString site = --count == 1 ? RestrctionMapWidget::tr("site") : RestrctionMapWidget::tr("sites");
             setText(0, QString("%1 : %2 %3").arg(getName()).arg(count).arg(site));
             if (count == 0) {
-                setIcon(0, QIcon(":circular_view/images/empty_folder.png"));
+                setIcon(0, GUIUtils::getIconResource("circular_view", "empty_folder.png", false));
             }
             break;
         }
@@ -116,7 +118,7 @@ void RestrctionMapWidget::updateTreeWidget() {
     QList<QTreeWidgetItem*> items;
     foreach (const QString& enzyme, selectedEnzymes) {
         auto item = new EnzymeFolderItem(enzyme);
-        item->setIcon(0, QIcon(":circular_view/images/empty_folder.png"));
+        item->setIcon(0, GUIUtils::getIconResource("circular_view", "empty_folder.png", false));
         items.append(item);
     }
     treeWidget->insertTopLevelItems(0, items);

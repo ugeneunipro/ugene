@@ -34,10 +34,10 @@
 #include <U2Core/MultiTask.h>
 #include <U2Core/PrimerStatistics.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/ADVSequenceObjectContext.h>

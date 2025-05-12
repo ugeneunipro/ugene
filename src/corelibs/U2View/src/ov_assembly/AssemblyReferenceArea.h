@@ -66,6 +66,9 @@ protected slots:
     virtual void sl_offsetsChanged();
     virtual void sl_zoomPerformed();
 
+private slots:
+    void sl_colorModeSwitched();
+
 private:
     void initCellRenderer(QString id);
     void connectSlots();

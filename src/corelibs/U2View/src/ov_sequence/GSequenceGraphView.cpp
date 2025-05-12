@@ -31,6 +31,8 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GScrollBar.h>
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
 
 #include <U2View/ADVAnnotationCreation.h>
 
@@ -203,7 +205,7 @@ void GSequenceGraphView::buildPopupMenu(QMenu& menu) {
 
     // Creating the Graphs menu
     auto graphMenu = new QMenu(tr("Graph"));
-    graphMenu->setIcon(QIcon(":core/images/graphs.png"));
+    graphMenu->setIcon(GUIUtils::getIconResource("core", "graphs.png"));
     graphMenu->menuAction()->setObjectName("Graph");
 
     addActionsToGraphMenu(graphMenu);
@@ -281,8 +283,8 @@ void GSequenceGraphViewRA::drawAll(QPaintDevice* pd) {
     // todo: use cached view here!!
 
     QPainter p(pd);
-    p.fillRect(0, 0, pd->width(), pd->height(), Qt::white);
-    p.setPen(Qt::black);
+    p.fillRect(0, 0, pd->width(), pd->height(), QPalette().base().color());
+    p.setPen(QPalette().text().color());
 
     graphRect = QRect(1, headerHeight + 1, pd->width() - 2, pd->height() - headerHeight - 2);
 
@@ -321,6 +323,8 @@ void GSequenceGraphViewRA::drawHeader(QPainter& p) {
                        .arg(QString::number(drawer->getWindow()))
                        .arg(QString::number(drawer->getStep()));
     QRect rect(1, 1, cachedView->width() - 2, headerHeight - 2);
+    p.fillRect(rect, QPalette().base().color());
+    p.setPen(QPalette().text().color());
     p.drawText(rect, Qt::AlignLeft, text);
 }
 
@@ -334,7 +338,7 @@ void GSequenceGraphViewRA::drawSelection(QPainter& p) {
         return;
     }
     const U2Region& visibleRange = view->getVisibleRange();
-    QPen pen1(Qt::darkGray, 1, Qt::SolidLine);
+    QPen pen1((AppContext::getMainWindow()->isDarkMode() ? Qt::lightGray : Qt::darkGray), 1, Qt::SolidLine);
     foreach (const U2Region& r, selection) {
         if (!visibleRange.intersects(r)) {
             continue;

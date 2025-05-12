@@ -190,6 +190,8 @@ protected slots:
         return ui->setMultilineMode(multilineMode);
     }
 
+    void sl_colorModeSwitched() override;
+
 protected:
     QWidget* createViewWidget(QWidget* parent) override;
     void onAfterViewWindowInit() override;

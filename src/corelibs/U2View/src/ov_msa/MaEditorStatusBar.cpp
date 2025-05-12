@@ -175,7 +175,7 @@ void MaEditorStatusBar::updateSelectionLabel() {
 }
 
 void MaEditorStatusBar::setStatusBarStyle() {
-    setStyleSheet(QString("#%1 { background:rgb(219,219,219); border: 1px solid rgb(185,185,185); }").arg(objectName()));
+    setStyleSheet(QString("#%1 { background:palette(alternate-base); border: 1px solid palette(mid); }").arg(objectName()));
 }
 
 }  // namespace U2

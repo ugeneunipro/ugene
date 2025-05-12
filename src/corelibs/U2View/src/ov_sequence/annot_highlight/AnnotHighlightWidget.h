@@ -42,9 +42,12 @@ class ShowAllAnnotTypesLabel : public QLabel {
     Q_OBJECT
 public:
     ShowAllAnnotTypesLabel();
+
     inline bool isShowAllSelected() {
         return showAllIsSelected;
     }
+
+    void colorModeSwitched();
 
 signals:
     void si_showAllStateChanged();
@@ -74,6 +77,7 @@ private slots:
     void sl_onNextAnnotationClick();
     void sl_onPrevAnnotationClick();
     void sl_onAnnotationSelectionChanged();
+    void sl_colorModeSwitched();
 
 private:
     void initLayout();

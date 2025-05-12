@@ -176,12 +176,12 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     QLinearGradient gradient(0, 0, width(), 0);
     // ichebyki: if you want gradient border just change the lg value
     // QColor lg(0xDA, 0xDA, 0xDA);
-    QColor lg = Qt::white;
+    QColor lg = QPalette().base().color();
 
-    QColor dg(0x4A, 0x4A, 0x4A);
+    QColor dg = AppContext::getMainWindow()->isDarkMode() ? QColor("#C8C8C8") : QColor("#4A4A4A");
     gradient.setColorAt(0.00, lg);
-    gradient.setColorAt(0.25, Qt::white);
-    gradient.setColorAt(0.75, Qt::white);
+    gradient.setColorAt(0.25, QPalette().base().color());
+    gradient.setColorAt(0.75, QPalette().base().color());
     gradient.setColorAt(1.00, lg);
     painter.fillRect(rect(), QBrush(gradient));
 
@@ -211,14 +211,14 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
         int seqSize = getBaseCounts(rowNumber, alignmentLength - 1, true);
         QString offset = offs + 1 > seqSize ? QString::number(seqSize) : QString::number(offs + 1);
         if (showStartPos && offs == 0) {
-            painter.setPen(Qt::black);
+            painter.setPen(QPalette().text().color());
             QRect lbr(OFFS_WIDGET_BORDER, yRange.startPos, lbw, yRange.length);
             if (rowNumber == refSeq) {
                 drawRefSequence(painter, lbr);
             }
             painter.drawText(lbr, Qt::AlignTop, "[");
         } else if (!showStartPos && offs == seqSize) {
-            painter.setPen(Qt::black);
+            painter.setPen(QPalette().text().color());
             QRect rbr(widgetWidth - OFFS_WIDGET_BORDER - rbw, yRange.startPos, rbw, yRange.length);
             if (rowNumber == refSeq) {
                 drawRefSequence(painter, rbr);

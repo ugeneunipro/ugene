@@ -29,6 +29,11 @@
 #include <QTableView>
 #include <QtMath>
 
+#include <U2Core/AppContext.h>
+
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+
 #include "InvestigationDataModel.h"
 
 const qint16 HEADER_TEXT_MARGIN = 40;
@@ -60,12 +65,12 @@ WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(Q
     Q_UNUSED(container);
 
     exportInvestigationAction = new QAction(
-        QIcon(":workflow_designer/images/document_convert.png"),
+        GUIUtils::getIconResource("workflow_designer", "document_convert.png", false),
         tr(CONVERT_TO_DOC_ACTION_NAME),
         this);
     connect(exportInvestigationAction, SIGNAL(triggered()), SLOT(sl_exportInvestigation()));
 
-    copyToClipboardAction = new QAction(QIcon(":workflow_designer/images/clipboard.png"),
+    copyToClipboardAction = new QAction(GUIUtils::getIconResource("core", "paste.png"),
                                         tr(COPY_TO_CLIPBOARD_ACTION_NAME),
                                         this);
     connect(copyToClipboardAction, SIGNAL(triggered()), SLOT(sl_copyToClipboard()));
@@ -78,6 +83,8 @@ WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(Q
 
     showAllColumnsAction = new QAction(tr(SHOW_ALL_COLUMNS_ACTION_NAME), this);
     connect(showAllColumnsAction, SIGNAL(triggered()), SLOT(sl_showAllColumns()));
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WorkflowInvestigationWidgetsController::sl_colorModeSwitched);
 }
 
 WorkflowInvestigationWidgetsController::~WorkflowInvestigationWidgetsController() {
@@ -318,6 +325,10 @@ void WorkflowInvestigationWidgetsController::sl_columnsVisibilityResponse() {
         }
     }
     investigationModel->setColumnsVisibility(hiddenColumns);
+}
+
+void WorkflowInvestigationWidgetsController::sl_colorModeSwitched() {
+    copyToClipboardAction->setIcon(GUIUtils::getIconResource("core", "paste.png"));
 }
 
 }  // namespace U2
