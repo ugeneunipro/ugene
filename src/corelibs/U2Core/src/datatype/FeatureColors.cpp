@@ -60,4 +60,9 @@ QColor FeatureColors::genLightColor(const QString& name) {
     return c;
 }
 
+QColor FeatureColors::transformLightToDark(QColor color) {
+    color.setHsv(color.hue(), color.saturation(), color.value() / 2);
+    return color;
+}
+
 }  // namespace U2

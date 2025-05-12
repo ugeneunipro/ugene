@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,21 +18,32 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
 #pragma once
-
-#include <QColor>
 
 #include <U2Core/global.h>
 
 namespace U2 {
 
-class U2CORE_EXPORT FeatureColors {
-public:
-    static QColor genLightColor(const QString& name);
-    // Generate color for Dark mode form @color
-    static QColor transformLightToDark(QColor color);
+// Parameters, which define an image
+struct U2CORE_EXPORT IconParameters {
+    IconParameters() = default;
+    IconParameters(const QString& _iconCathegory,
+               const QString& _iconName,
+               bool _hasColorCathegory = true);
 
+    // True if nothing is set
+    bool isEmpty() const;
+
+    // Cathegory of the image. This is the prefix, defined in .qrc file
+    QString iconCathegory;
+    // Icon name
+    QString iconName;
+    // True, if icon has two implementations (dark and light)
+    // False, if there is only one implementation for both color schemes
+    bool hasColorCathegory = false;
 };
 
 }  // namespace U2
+
+Q_DECLARE_METATYPE(U2::IconParameters)
+
