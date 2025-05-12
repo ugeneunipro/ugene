@@ -26,9 +26,13 @@
 #include <QToolBar>
 #include <QTreeWidget>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
 
 #include <U2Designer/BreakpointHitCountDialog.h>
 #include <U2Designer/DelegateEditors.h>
@@ -114,6 +118,7 @@ BreakpointManagerView::BreakpointManagerView(WorkflowDebugStatus* initDebugInfo,
 
     connect(breakpointsList, SIGNAL(itemSelectionChanged()), SLOT(sl_breakpointsSelectionChanged()));
     connect(breakpointsList, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), SLOT(sl_breakpointDoubleClicked(QTreeWidgetItem*, int)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &BreakpointManagerView::sl_colorModeSwitched);
 
     if (conditionParametertranslations.isEmpty()) {
         conditionParametertranslations[IS_TRUE] = CONDITION_IS_TRUE;
@@ -127,21 +132,21 @@ BreakpointManagerView::BreakpointManagerView(WorkflowDebugStatus* initDebugInfo,
 
 void BreakpointManagerView::createActions() {
     newBreakpointAction = new QAction(tr("&Break at element..."), this);
-    newBreakpointAction->setIcon(QIcon(":workflow_designer/images/breakpoint.png"));
+    newBreakpointAction->setIcon(GUIUtils::getIconResource("workflow_designer", "breakpoint.png", false));
     newBreakpointAction->setShortcut(QKeySequence("Ctrl+B"));
     connect(newBreakpointAction, SIGNAL(triggered()), SLOT(sl_newBreakpoint()));
     connect(newBreakpointAction, SIGNAL(triggered()), scene, SLOT(update()));
     newBreakpointAction->setEnabled(true);
 
     deleteAllBreakpointsAction = new QAction(tr("Delete &all breakpoints"), this);
-    deleteAllBreakpointsAction->setIcon(QIcon(":workflow_designer/images/delete_all_breakpoints.png"));
+    deleteAllBreakpointsAction->setIcon(GUIUtils::getIconResource("U2Lang", "error.png", false));
     deleteAllBreakpointsAction->setShortcut(QKeySequence("Shift+Del"));
     deleteAllBreakpointsAction->setShortcutContext(Qt::WidgetShortcut);
     connect(deleteAllBreakpointsAction, SIGNAL(triggered()), SLOT(sl_deleteAllBreakpoints()));
     deleteAllBreakpointsAction->setEnabled(false);
 
     deleteSelectedBreakpointAction = new QAction(tr("&Delete"), this);
-    deleteSelectedBreakpointAction->setIcon(QIcon(":workflow_designer/images/delete_selected_breakpoints.png"));
+    deleteSelectedBreakpointAction->setIcon(GUIUtils::getIconResource("workflow_designer", "delete.png", false));
     deleteSelectedBreakpointAction->setShortcut(QKeySequence("Del"));
     deleteSelectedBreakpointAction->setShortcutContext(Qt::WidgetShortcut);
 
@@ -150,13 +155,13 @@ void BreakpointManagerView::createActions() {
     deleteSelectedBreakpointAction->setToolTip(tr("Delete the selected breakpoints"));
 
     disableAllBreakpointsAction = new QAction(tr("&Enable or disable all breakpoints"), this);
-    disableAllBreakpointsAction->setIcon(QIcon(":workflow_designer/images/disable_all_breakpoints.png"));
+    disableAllBreakpointsAction->setIcon(GUIUtils::getIconResource("workflow_designer", "disable_all_breakpoints.png", false));
     disableAllBreakpointsAction->setShortcut(QKeySequence("Ctrl+D"));
     connect(disableAllBreakpointsAction, SIGNAL(triggered()), SLOT(sl_disableAllBreakpoints()));
     disableAllBreakpointsAction->setEnabled(false);
 
     highlightItemWithBreakpoint = new QAction(tr("H&ighlight selected item"), this);
-    highlightItemWithBreakpoint->setIcon(QIcon(":workflow_designer/images/highlight_item.png"));
+    highlightItemWithBreakpoint->setIcon(GUIUtils::getIconResource("workflow_designer", "highlight_item.png"));
     highlightItemWithBreakpoint->setShortcut(QKeySequence("Ctrl+H"));
     connect(highlightItemWithBreakpoint, SIGNAL(triggered()), SLOT(sl_highlightItem()));
     highlightItemWithBreakpoint->setEnabled(false);
@@ -533,6 +538,10 @@ void BreakpointManagerView::sl_pauseStateChanged(bool paused) {
         setBreakpointBackgroundColor(lastReachedBreakpoint, BREAKPOINT_DEFAULT_COLOR);
         lastReachedBreakpoint = nullptr;
     }
+}
+
+void BreakpointManagerView::sl_colorModeSwitched() {
+    highlightItemWithBreakpoint->setIcon(GUIUtils::getIconResource("workflow_designer", "highlight_item.png"));
 }
 
 void BreakpointManagerView::updateCurrentHitCountLabels(bool show) const {

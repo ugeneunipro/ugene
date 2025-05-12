@@ -36,6 +36,8 @@ public:
 
     void setSettings(AnnotationSettings* annotSettings, bool disableShowTranslations);
 
+    void colorModeChanged();
+
 signals:
     void si_annotSettingsChanged(AnnotationSettings* annotSettings);
 

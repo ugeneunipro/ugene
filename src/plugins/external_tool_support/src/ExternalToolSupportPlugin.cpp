@@ -416,11 +416,18 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
 
     if (AppContext::getMainWindow()) {
         services << new ExternalToolSupportService();  // Add project view service
+        connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ExternalToolSupportPlugin::sl_colorModeSwitched);
     }
 }
 
 ExternalToolSupportPlugin::~ExternalToolSupportPlugin() {
     ExternalToolSupportSettings::saveExternalToolsToAppConfig();
+}
+
+void ExternalToolSupportPlugin::sl_colorModeSwitched() {
+    ToolsMenu::colorModeSwitched(ToolsMenu::SANGER_MENU);
+    ToolsMenu::colorModeSwitched(ToolsMenu::BLAST_MENU);
+    ToolsMenu::colorModeSwitched(ToolsMenu::HMMER_MENU);
 }
 
 void ExternalToolSupportPlugin::registerSettingsController() {

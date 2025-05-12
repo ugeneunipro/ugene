@@ -23,6 +23,8 @@
 
 #include <U2Core/Task.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Lang/QDScheme.h>
 #include <U2Lang/QueryDesignerRegistry.h>
 
@@ -66,7 +68,7 @@ class QDWMActorPrototype : public QDActorPrototype {
 public:
     QDWMActorPrototype();
     QIcon getIcon() const {
-        return QIcon(":weight_matrix/images/weight_matrix.png");
+        return GUIUtils::getIconResource("weight_matrix", "weight_matrix.png");
     }
     virtual QDActor* createInstance() const {
         return new QDWMActor(this);

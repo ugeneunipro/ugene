@@ -36,7 +36,9 @@
 
 #include <U2Designer/DatasetsController.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/MainWindow.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 #include <U2Gui/ProjectUtils.h>
 #include <U2Gui/U2FileDialog.h>
@@ -55,18 +57,11 @@ URLListWidget::URLListWidget(URLListController* _ctrl)
     popup = new OptionsPopup(this);
 
     reset();
-    QIcon fileIcon = QIcon(QString(":U2Designer/images/add_file.png"));
-    QIcon dirIcon = QIcon(QString(":U2Designer/images/add_directory.png"));
-    QIcon dbIcon = QIcon(QString(":U2Designer/images/database_add.png"));
-    QIcon deleteIcon = QIcon(QString(":U2Designer/images/exit.png"));
-    QIcon upIcon = QIcon(QString(":U2Designer/images/up.png"));
-    QIcon downIcon = QIcon(QString(":U2Designer/images/down.png"));
-
-    ui->addFileButton->setIcon(fileIcon);
-    ui->addDirButton->setIcon(dirIcon);
-    ui->deleteButton->setIcon(deleteIcon);
-    ui->upButton->setIcon(upIcon);
-    ui->downButton->setIcon(downIcon);
+    ui->addFileButton->setIcon(GUIUtils::getIconResource("U2Designer", "add_file.png", false));
+    ui->addDirButton->setIcon(GUIUtils::getIconResource("U2Designer", "add_directory.png", false));
+    ui->deleteButton->setIcon(GUIUtils::getIconResource("U2Designer", "exit.png", false));
+    ui->upButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
+    ui->downButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 
     connect(ui->addFileButton, SIGNAL(clicked()), SLOT(sl_addFileButton()));
     connect(ui->addDirButton, SIGNAL(clicked()), SLOT(sl_addDirButton()));
@@ -89,6 +84,8 @@ URLListWidget::URLListWidget(URLListController* _ctrl)
     ui->itemsArea->addAction(selectAction);
 
     ui->itemsArea->installEventFilter(this);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &URLListWidget::si_colorModeSwitched);
 }
 
 URLListWidget::~URLListWidget() {
@@ -192,6 +189,12 @@ void URLListWidget::sl_selectAll() {
 
 void URLListWidget::sl_dataChanged() {
     ctrl->updateUrl(dynamic_cast<UrlItem*>(sender()));
+}
+
+void URLListWidget::si_colorModeSwitched() {
+    ui->deleteButton->setIcon(GUIUtils::getIconResource("U2Designer", "exit.png", false));
+    ui->upButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
+    ui->downButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 }
 
 bool URLListWidget::eventFilter(QObject* obj, QEvent* event) {

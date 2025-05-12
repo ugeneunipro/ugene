@@ -21,9 +21,14 @@
 
 #include "ADVSyncViewManager.h"
 
+#include <U2Core/AppContext.h>
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceSelection.h>
+
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
@@ -74,12 +79,12 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
     connect(syncByAnnSelAction, SIGNAL(triggered()), SLOT(sl_sync()));
 
     lockMenu = new QMenu(tr("Lock scales"));
-    lockMenu->setIcon(QIcon(":core/images/lock_scales.png"));
+    lockMenu->setIcon(GUIUtils::getIconResource("core", "lock_scales.png"));
     lockMenu->addActions(lockActionGroup->actions());
     connect(lockMenu, &QMenu::aboutToShow, this, &ADVSyncViewManager::sl_setUpLockMenuActions);
 
     syncMenu = new QMenu(tr("Adjust scales"));
-    syncMenu->setIcon(QIcon(":core/images/sync_scales.png"));
+    syncMenu->setIcon(GUIUtils::getIconResource("core", "sync_scales.png"));
     syncMenu->addAction(syncByStartPosAction);
     syncMenu->addAction(syncBySeqSelAction);
     syncMenu->addAction(syncByAnnSelAction);
@@ -102,7 +107,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
     // auto-annotations highlighting ops
 
     toggleAutoAnnotationsMenu = new QMenu("Global automatic annotation highlighting");
-    toggleAutoAnnotationsMenu->setIcon(QIcon(":core/images/predefined_annotation_groups.png"));
+    toggleAutoAnnotationsMenu->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
     connect(toggleAutoAnnotationsMenu, SIGNAL(aboutToShow()), SLOT(sl_updateAutoAnnotationsMenu()));
 
     toggleAutoAnnotationsButton = new QToolButton();
@@ -148,6 +153,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
 
     connect(adv, SIGNAL(si_sequenceWidgetAdded(ADVSequenceWidget*)), SLOT(sl_sequenceWidgetAdded(ADVSequenceWidget*)));
     connect(adv, SIGNAL(si_sequenceWidgetRemoved(ADVSequenceWidget*)), SLOT(sl_sequenceWidgetRemoved(ADVSequenceWidget*)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ADVSyncViewManager::sl_colorModeSwitched);
 }
 
 ADVSyncViewManager::~ADVSyncViewManager() {
@@ -438,6 +444,13 @@ void ADVSyncViewManager::sl_updateVisualMode() {
     togglePanAction->setText(haveVisiblePan ? tr("Hide all zoom views") : tr("Show all zoom views"));
     toggleDetAction->setText(haveVisibleDet ? tr("Hide all details") : tr("Show all details"));
     toggleOveAction->setText(haveVisibleOve ? tr("Hide all overviews") : tr("Show all overviews"));
+}
+
+void ADVSyncViewManager::sl_colorModeSwitched() {
+    toggleAutoAnnotationsMenu->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
+    lockMenu->setIcon(GUIUtils::getIconResource("core", "lock_scales.png"));
+    syncMenu->setIcon(GUIUtils::getIconResource("core", "sync_scales.png"));
+    updateEnabledState();
 }
 
 void ADVSyncViewManager::sl_setUpLockMenuActions() {

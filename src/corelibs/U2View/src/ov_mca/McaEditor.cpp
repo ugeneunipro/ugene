@@ -216,7 +216,7 @@ void McaEditor::initActions() {
     GUIUtils::updateActionToolTip(resetZoomAction);
     ui->addAction(resetZoomAction);
 
-    showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show chromatograms"), this);
+    showChromatogramsAction = new QAction(GUIUtils::getIconResource("core", "graphs.png"), tr("Show chromatograms"), this);
     showChromatogramsAction->setObjectName("chromatograms");
     showChromatogramsAction->setCheckable(true);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
@@ -239,6 +239,8 @@ void McaEditor::initActions() {
     getUI()->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font..."));
 
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &McaEditor::sl_colorModeSwitched);
+
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
 
     connect(gotoAction, &QAction::triggered, this, &McaEditor::sl_onPosChangeRequest);
@@ -254,6 +256,11 @@ void McaEditor::sl_saveChromatogramState() {
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
     s->setValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, showChromatogramsAction->isChecked());
+}
+
+void McaEditor::sl_colorModeSwitched() {
+    showChromatogramsAction->setIcon(GUIUtils::getIconResource("core", "graphs.png"));
+    MaEditor::sl_colorModeSwitched();
 }
 
 void McaEditor::addAlignmentMenu(QMenu* menu) {

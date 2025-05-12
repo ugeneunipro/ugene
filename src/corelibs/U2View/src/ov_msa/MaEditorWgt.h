@@ -106,6 +106,9 @@ signals:
     void si_stopMaChanging(bool modified = false);
     void si_completeRedraw();
 
+protected slots:
+    void sl_colorModeSwitched();
+
 protected:
     virtual void initWidgets(bool addStatusBar = true, bool addOverviewArea = true);
     virtual void initActions();
