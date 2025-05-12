@@ -35,6 +35,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BasePorts.h>
@@ -168,7 +170,7 @@ QString InSilicoPcrPrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     SAFE_POINT(input != nullptr, "No input port", "");
     const Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
-    const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    const QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     const QString producerName = (producer != nullptr) ? producer->getLabel() : unsetStr;
     const QString primersLink = getHyperlink(PRIMERS_ATTR_ID, getURL(PRIMERS_ATTR_ID));
     return tr("Simulates PCR for the sequences from <u>%1</u> and primer pairs from <u>%2</u>.").arg(producerName).arg(primersLink);

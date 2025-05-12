@@ -37,6 +37,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/MsaEditor.h>
@@ -209,6 +210,8 @@ MsaHighlightingTab::MsaHighlightingTab(MsaEditor* m)
     connect(thresholdMoreRb, SIGNAL(toggled(bool)), SLOT(sl_highlightingParametersChanged()));
     connect(thresholdLessRb, SIGNAL(toggled(bool)), SLOT(sl_highlightingParametersChanged()));
 
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaHighlightingTab::sl_colorModeSwitched);
+
     sl_updateHint();
     sl_highlightingParametersChanged();
 
@@ -282,18 +285,14 @@ void MsaHighlightingTab::sl_updateHint() {
     }
     if (U2MsaRow::INVALID_ROW_ID == msa->getReferenceRowId() && !seqArea->getCurrentHighlightingScheme()->getFactory()->isRefFree()) {
         hint->setText(tr("Info: set a reference sequence."));
-        hint->setStyleSheet(
-            "color: green;"
-            "font: bold;");
+        hint->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::infoColorLabelHtmlStr()));
         exportHighlightning->setDisabled(true);
         return;
     }
     hint->setText("");
     if (s->getFactory()->isRefFree()) {
         hint->setText(tr("Info: export is not available for the selected highlighting."));
-        hint->setStyleSheet(
-            "color: green;"
-            "font: bold;");
+        hint->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::infoColorLabelHtmlStr()));
         exportHighlightning->setDisabled(true);
     } else {
         exportHighlightning->setEnabled(true);
@@ -366,6 +365,10 @@ void MsaHighlightingTab::sl_refreshSchemes() {
     colorSchemeController->init();
     highlightingSchemeController->init();
     sl_sync();
+}
+
+void MsaHighlightingTab::sl_colorModeSwitched() {
+    sl_updateHint();
 }
 
 }  // namespace U2

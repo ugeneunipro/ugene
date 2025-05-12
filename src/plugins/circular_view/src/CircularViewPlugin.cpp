@@ -99,7 +99,7 @@ void CircularViewContext::initViewContext(GObjectViewController* v) {
     viewSettings.insert(av, new CircularViewSettings());
 
     auto exportAction = new GObjectViewAction(this, v, tr("Save circular view as image..."));
-    exportAction->setIcon(QIcon(":/core/images/cam2.png"));
+    exportAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
     exportAction->setObjectName(EXPORT_ACTION_NAME);
     addViewAction(exportAction);
 
@@ -115,7 +115,7 @@ void CircularViewContext::initViewContext(GObjectViewController* v) {
     connect(av, SIGNAL(si_sequenceWidgetRemoved(ADVSequenceWidget*)), SLOT(sl_sequenceWidgetRemoved(ADVSequenceWidget*)));
     connect(av, SIGNAL(si_onClose(AnnotatedDNAView*)), SLOT(sl_onDNAViewClosed(AnnotatedDNAView*)));
 
-    auto globalToggleViewAction = new ADVGlobalAction(av, QIcon(":circular_view/images/circular.png"), tr("Toggle circular views"), std::numeric_limits<int>::max(), ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_SingleSequenceOnly);  // big enough to be the last one?
+    auto globalToggleViewAction = new ADVGlobalAction(av, IconParameters("circular_view", "circular.png", false), tr("Toggle circular views"), std::numeric_limits<int>::max(), ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_SingleSequenceOnly);  // big enough to be the last one?
 
     globalToggleViewAction->addAlphabetFilter(DNAAlphabet_NUCL);
     globalToggleViewAction->setObjectName("globalToggleViewAction");

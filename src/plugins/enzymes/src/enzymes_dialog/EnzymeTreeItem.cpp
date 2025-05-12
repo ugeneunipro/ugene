@@ -73,6 +73,10 @@ QString EnzymeTreeItem::getEnzymeInfo() const {
     return result;
 }
 
+void EnzymeTreeItem::colorModeSwitched() {
+    setData(Column::Sequence, Qt::ToolTipRole, enzyme->generateEnzymeTooltip());
+}
+
 QString EnzymeTreeItem::getTypeInfo() const {
     auto type = text(Column::Type);
     QString result;

@@ -29,6 +29,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
@@ -92,7 +94,7 @@ QString ExportPhredQualityPrompter::composeRichDoc() {
     Actor* producer = input->getProducer(BasePorts::IN_SEQ_PORT_ID());
     QString producerName = producer ? tr(" from <u>%1</u>").arg(producer->getLabel()) : "";
     QString qualUrl = getParameter(BaseAttributes::URL_OUT_ATTRIBUTE().getId()).toString();
-    QString qualSeq = qualUrl.isEmpty() ? "<font color='red'>" + tr("unset") + "</font>" : getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), GUrl(qualUrl).fileName());
+    QString qualSeq = qualUrl.isEmpty() ? QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>" : getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), GUrl(qualUrl).fileName());
 
     QString doc = tr("Export PHRED quality scores%1 to %2.")
                       .arg(producerName)

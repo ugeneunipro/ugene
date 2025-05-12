@@ -56,7 +56,7 @@ bool SequenceAreaRenderer::drawContent(QPainter& painter, const U2Region& column
     MsaHighlightingScheme* highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
     MaEditor* editor = seqAreaWgt->getEditor();
 
-    painter.setPen(Qt::black);
+    painter.setPen(QPalette().text().color());
     painter.setFont(editor->getFont());
 
     MsaObject* maObj = editor->getMaObject();
@@ -119,7 +119,7 @@ void SequenceAreaRenderer::drawSelectionFrame(QPainter& painter) const {
 
 void SequenceAreaRenderer::drawFocus(QPainter& painter) const {
     if (seqAreaWgt->hasFocus()) {
-        painter.setPen(QPen(Qt::black, 1, Qt::DotLine));
+        painter.setPen(QPen(QPalette().text().color(), 1, Qt::DotLine));
         painter.drawRect(0, 0, seqAreaWgt->width() - 1, seqAreaWgt->height() - 1);
     }
 }

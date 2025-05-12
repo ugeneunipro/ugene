@@ -23,6 +23,7 @@
 
 #include <QColor>
 #include <QDir>
+#include <QPalette>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -244,7 +245,7 @@ QMap<char, QColor> ColorSchemeUtils::getDefaultSchemaColors(DNAAlphabetType type
 
     QMap<char, QColor> alphColors;
     for (auto&& i : alphabet) {
-        alphColors[i] = QColor(Qt::white);
+        alphColors[i] = QColor(QPalette().base().color());
     }
 
     getDefaultUgeneColors(type, alphColors);

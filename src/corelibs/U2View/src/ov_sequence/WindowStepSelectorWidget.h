@@ -83,6 +83,7 @@ public:
 private slots:
     void sl_onCancelClicked(bool);
     void sl_onOkClicked(bool);
+    void sl_colorModeSwitched();
 
 private:
     WindowStepSelectorWidget* wss;

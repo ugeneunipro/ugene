@@ -55,6 +55,9 @@ public:
 
     static bool isValidDom(const QDomElement& dom);
 
+private slots:
+    void sl_colorModeSwitched();
+
 private:
     void addLimitationWarning(ExternalToolsTreeNode* parentNode = nullptr, const QString& limitationMessage = "");
 
@@ -66,6 +69,7 @@ private:
     QVBoxLayout* layout;
     QList<ExternalToolsTreeNode*> topLevelNodes;
     QString limitationWarningHtml;
+    QWidget* frameWidget = nullptr;
 };
 
 class U2DESIGNER_EXPORT ExternalToolsTreeNode : public QWidget {

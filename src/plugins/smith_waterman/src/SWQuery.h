@@ -26,6 +26,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Lang/QDScheme.h>
 #include <U2Lang/QueryDesignerRegistry.h>
 
@@ -71,7 +73,7 @@ class SWQDActorFactory : public QDActorPrototype {
 public:
     SWQDActorFactory();
     QIcon getIcon() const {
-        return QIcon(":core/images/sw.png");
+        return GUIUtils::getIconResource("core", "sw.png");
     }
     virtual QDActor* createInstance() const {
         return new QDSWActor(this);
