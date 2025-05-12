@@ -144,7 +144,7 @@ void Primer3DialogFiller::commonScenario() {
         for (const auto& errorWidget : qAsConst(settings.errorWidgetsNames)) {
             auto wgt = GTWidget::findWidget(errorWidget, dialog);
             auto ss = wgt->styleSheet();
-            GT_CHECK(ss.contains("#ffc8c8"), QString("Incorrect color for %1").arg(errorWidget));
+            GT_CHECK(ss.contains("rgb(255, 200, 200)"), QString("Incorrect color for %1").arg(errorWidget));
         }
 
         if (!settings.continueIfError) {

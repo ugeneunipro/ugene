@@ -1433,7 +1433,7 @@ GUI_TEST_CLASS_DEFINITION(test_2281) {
 
     QImage img = GTWidget::getImage(sceneView);
 
-    const QColor yc = QColor(255, 255, 160);
+    const QColor yc = QColor(255, 255, 191);
     bool found = false;
     for (int i = sceneView->rect().left(); i < sceneView->rect().right(); i += 10) {
         for (int j = sceneView->rect().top(); j < sceneView->rect().bottom(); j += 10) {
