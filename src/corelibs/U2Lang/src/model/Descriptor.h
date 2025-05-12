@@ -26,6 +26,7 @@
 #include <QMetaType>
 #include <QString>
 
+#include <U2Core/IconParameters.h>
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -85,19 +86,13 @@ protected:
  */
 class U2LANG_EXPORT VisualDescriptor : public Descriptor {
 public:
-    VisualDescriptor(const Descriptor& d, const QString& _iconPath = QString());
+    VisualDescriptor(const Descriptor& d, IconParameters parameters = IconParameters());
 
-    // getIcon will create icon from its path (if path exists) on the first call.
-    // This is compatibility issue for congene.
-    QIcon getIcon();
-    void setIcon(QIcon icon_);
-    void setIconPath(const QString& iconPath_);
+    void setIconParameters(const IconParameters& parameters);
+    const IconParameters& getIconParameters() const;
 
 private:
-    // full path to the icon
-    QString iconPath;
-    // user defined or taken from iconPath icon
-    QIcon icon;
+    IconParameters parameters;
 
 };  // VisualDescriptor
 

@@ -91,6 +91,7 @@ TreeViewer::TreeViewer(const QString& viewName, PhyTreeObject* _phyObject, bool 
         CHECK(ui != nullptr, );
         ui->switchTreeLayout(ui->getTreeLayoutType());
     });
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TreeViewer::sl_colorModeSwitched);
 }
 
 QVariantMap TreeViewer::saveState() {
@@ -119,7 +120,7 @@ Task* TreeViewer::updateViewTask(const QString& stateName, const QVariantMap& st
 
 void TreeViewer::createActions() {
     // Tree Settings
-    treeSettingsAction = new QAction(QIcon(":core/images/phylip.png"), tr("Tree Settings..."), ui);
+    treeSettingsAction = new QAction(GUIUtils::getIconResource("core", "phylip.png"), tr("Tree Settings..."), ui);
 
     // Layout
     layoutActionGroup = new QActionGroup(ui);
@@ -138,11 +139,11 @@ void TreeViewer::createActions() {
     unrootedLayoutAction->setObjectName("Unrooted");
 
     // Branch Settings
-    collapseAction = new QAction(QIcon(":/core/images/collapse_tree.png"), tr("Collapse"), ui);
+    collapseAction = new QAction(GUIUtils::getIconResource("core", "collapse_tree.png"), tr("Collapse"), ui);
     collapseAction->setObjectName("Collapse");
-    rerootAction = new QAction(QIcon(":/core/images/reroot.png"), tr("Reroot tree"), ui);
+    rerootAction = new QAction(GUIUtils::getIconResource("core", "reroot.png"), tr("Reroot tree"), ui);
     rerootAction->setObjectName("Reroot tree");
-    swapAction = new QAction(QIcon(":core/images/swap.png"), tr("Swap Siblings"), ui);
+    swapAction = new QAction(GUIUtils::getIconResource("core", "swap.png"), tr("Swap Siblings"), ui);
     swapAction->setObjectName("Swap Siblings");
 
     // Show Labels
@@ -161,29 +162,30 @@ void TreeViewer::createActions() {
     distanceLabelsAction->setObjectName("Show Distances");
 
     // Formatting
-    textSettingsAction = new QAction(QIcon(":core/images/font.png"), tr("Formatting..."), ui);
+    textSettingsAction = new QAction(GUIUtils::getIconResource("core", "font.png"), tr("Formatting..."), ui);
 
     // Align Labels
     // Note: the icon is truncated to 15 px height to look properly in the main menu when it is checked
-    alignTreeLabelsAction = new QAction(QIcon(":core/images/align_tree_labels.png"), tr("Align Labels"), ui);
+    alignTreeLabelsAction = new QAction(GUIUtils::getIconResource("core", "align_tree_labels.png"), tr("Align Labels"), ui);
     alignTreeLabelsAction->setCheckable(true);
     alignTreeLabelsAction->setObjectName("Align Labels");
 
     // Zooming
-    zoomInAction = new QAction(QIcon(":core/images/zoom_in_tree.png"), tr("Zoom In"), ui);
+    zoomInAction = new QAction(GUIUtils::getIconResource("core", "zoom_in_tree.png"), tr("Zoom In"), ui);
     zoomInAction->setObjectName("zoomInTreeViewerAction");
-    zoomOutAction = new QAction(QIcon(":core/images/zoom_out_tree.png"), tr("Zoom Out"), ui);
+
+    zoomOutAction = new QAction(GUIUtils::getIconResource("core", "zoom_out_tree.png"), tr("Zoom Out"), ui);
     zoomOutAction->setObjectName("zoomOutTreeViewerAction");
 
-    zoom100Action = new QAction(QIcon(":core/images/zoom_1_1.png"), tr("Reset Zoom"), ui);
+    zoom100Action = new QAction(GUIUtils::getIconResource("core", "sync_scales.png"), tr("Reset Zoom"), ui);
     zoom100Action->setObjectName("zoom100Action");
 
-    zoomFitAction = new QAction(QIcon(":core/images/zoom_fit.png"), tr("Fit Zoom to Window"), ui);
+    zoomFitAction = new QAction(GUIUtils::getIconResource("core", "zoom_fit.png"), tr("Fit Zoom to Window"), ui);
     zoomFitAction->setObjectName("zoomFitAction");
     zoomFitAction->setCheckable(true);
 
     // Print Tree
-    printAction = new QAction(QIcon(":/core/images/printer.png"), tr("Print Tree..."), ui);
+    printAction = new QAction(GUIUtils::getIconResource("core", "printer.png"), tr("Print Tree..."), ui);
 
     copyWholeTreeImageToClipboardAction = new QAction(tr("Copy to clipboard"));
     copyWholeTreeImageToClipboardAction->setObjectName("copyWholeTreeImageToClipboardAction");
@@ -213,24 +215,24 @@ void TreeViewer::setupExportTreeImageMenu(QMenu* m) const {
 
 void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     // Layout
-    auto layoutButton = new QToolButton(tb);
+    layoutButton = new QToolButton(tb);
     auto layoutMenu = new QMenu(tr("Layout"), ui);
     setupLayoutSettingsMenu(layoutMenu);
     layoutButton->setDefaultAction(layoutMenu->menuAction());
     layoutButton->setPopupMode(QToolButton::InstantPopup);
-    layoutButton->setIcon(QIcon(":core/images/tree_layout.png"));
+    layoutButton->setIcon(GUIUtils::getIconResource("core", "tree_layout.png"));
     layoutButton->setObjectName("Layout");
     tb->addWidget(layoutButton);
 
     // Labels and Text Settings
     tb->addSeparator();
-    auto showLabelsButton = new QToolButton();
+    showLabelsButton = new QToolButton();
     auto showLabelsMenu = new QMenu(tr("Show Labels"), ui);
     showLabelsButton->setObjectName("Show Labels");
     setupShowLabelsMenu(showLabelsMenu);
     showLabelsButton->setDefaultAction(showLabelsMenu->menuAction());
     showLabelsButton->setPopupMode(QToolButton::InstantPopup);
-    showLabelsButton->setIcon(QIcon(":/core/images/text_ab.png"));
+    showLabelsButton->setIcon(GUIUtils::getIconResource("core", "text_ab.png"));
     tb->addWidget(showLabelsButton);
 
     tb->addAction(textSettingsAction);
@@ -238,14 +240,14 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     // Print and Capture
     tb->addSeparator();
 
-    auto treeImageActionsButton = new QToolButton();
+    treeImageActionsButton = new QToolButton();
     treeImageActionsButton->setObjectName("treeImageActionsButton");
     auto exportTreeImageButtonMenu = new QMenu(tr("Tree image"), ui);
     setupExportTreeImageMenu(exportTreeImageButtonMenu);
     exportTreeImageButtonMenu->menuAction()->setObjectName("treeImageActionsButtonMenuAction");
     treeImageActionsButton->setDefaultAction(exportTreeImageButtonMenu->menuAction());
     treeImageActionsButton->setPopupMode(QToolButton::InstantPopup);
-    treeImageActionsButton->setIcon(QIcon(":/core/images/cam2.png"));
+    treeImageActionsButton->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
 
     tb->addWidget(treeImageActionsButton);
     tb->addAction(printAction);
@@ -279,9 +281,9 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     m->addAction(treeSettingsAction);
 
     // Layout
-    auto layoutMenu = new QMenu(tr("Layout"), ui);
+    layoutMenu = new QMenu(tr("Layout"), ui);
     setupLayoutSettingsMenu(layoutMenu);
-    layoutMenu->setIcon(QIcon(":core/images/tree_layout.png"));
+    layoutMenu->setIcon(GUIUtils::getIconResource("core", "tree_layout.png"));
     m->addMenu(layoutMenu);
 
     // Branch Settings
@@ -292,10 +294,10 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     // Labels and Text Settings
     m->addSeparator();
 
-    auto labelsMenu = new QMenu(tr("Show Labels"), ui);
+    labelsMenu = new QMenu(tr("Show Labels"), ui);
     labelsMenu->menuAction()->setObjectName("show_labels_action");
     setupShowLabelsMenu(labelsMenu);
-    labelsMenu->setIcon(QIcon(":/core/images/text_ab.png"));
+    labelsMenu->setIcon(GUIUtils::getIconResource("core", "text_ab.png"));
     m->addMenu(labelsMenu);
 
     m->addAction(textSettingsAction);
@@ -312,9 +314,9 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     m->addSeparator();
     m->addAction(printAction);
 
-    auto treeImageActionsSubmenu = new QMenu(tr("Tree image"), ui);
+    treeImageActionsSubmenu = new QMenu(tr("Tree image"), ui);
     treeImageActionsSubmenu->menuAction()->setObjectName("treeImageActionsSubmenu");
-    treeImageActionsSubmenu->setIcon(QIcon(":/core/images/cam2.png"));
+    treeImageActionsSubmenu->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
     setupExportTreeImageMenu(treeImageActionsSubmenu);
     m->addMenu(treeImageActionsSubmenu);
 
@@ -339,6 +341,36 @@ void TreeViewer::onObjectRenamed(GObject*, const QString&) {
     OpenTreeViewerTask::updateTitle(this);
 }
 
+void TreeViewer::sl_colorModeSwitched() {
+    if (layoutMenu != nullptr) {
+        auto acts = layoutMenu->actions();
+        layoutMenu->setIcon(GUIUtils::getIconResource("core", "tree_layout.png"));
+        labelsMenu->setIcon(GUIUtils::getIconResource("core", "text_ab.png"));
+        treeImageActionsSubmenu->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
+    }
+
+    layoutButton->setIcon(GUIUtils::getIconResource("core", "tree_layout.png"));
+    showLabelsButton->setIcon(GUIUtils::getIconResource("core", "text_ab.png"));
+    treeImageActionsButton->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
+    textSettingsAction->setIcon(GUIUtils::getIconResource("core", "font.png"));
+    if (ui->isSelectedCollapsed()) {
+        collapseAction->setIcon(GUIUtils::getIconResource("core", "expand_tree.png"));
+    } else {
+        collapseAction->setIcon(GUIUtils::getIconResource("core", "collapse_tree.png"));
+    }
+    alignTreeLabelsAction->setIcon(GUIUtils::getIconResource("core", "align_tree_labels.png"));
+    treeSettingsAction->setIcon(GUIUtils::getIconResource("core", "phylip.png"));
+    rerootAction->setIcon(GUIUtils::getIconResource("core", "reroot.png"));
+    swapAction->setIcon(GUIUtils::getIconResource("core", "swap.png"));
+    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in_tree.png"));
+    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out_tree.png"));
+    zoom100Action->setIcon(GUIUtils::getIconResource("core", "sync_scales.png"));
+    zoomFitAction->setIcon(GUIUtils::getIconResource("core", "zoom_fit.png"));
+    printAction->setIcon(GUIUtils::getIconResource("core", "printer.png"));
+
+    ui->updateTextOptionOnSelectedItems();
+}
+
 ////////////////////////////
 // TreeViewerUI
 
@@ -360,7 +392,8 @@ static constexpr int TREE_MARGINS = 10;
 static const QVector<TreeViewOption> ALL_TREE_VIEW_OPTIONS = {
     TREE_LAYOUT_TYPE,
     BREADTH_SCALE_ADJUSTMENT_PERCENT,
-    LABEL_COLOR,
+    LABEL_COLOR_DARK,
+    LABEL_COLOR_LIGHT,
     LABEL_FONT_FAMILY,
     LABEL_FONT_SIZE,
     LABEL_FONT_BOLD,
@@ -370,7 +403,8 @@ static const QVector<TreeViewOption> ALL_TREE_VIEW_OPTIONS = {
     SHOW_INNER_NODE_LABELS,
     SHOW_LEAF_NODE_LABELS,
     ALIGN_LEAF_NODE_LABELS,
-    BRANCH_COLOR,
+    BRANCH_COLOR_DARK,
+    BRANCH_COLOR_LIGHT,
     BRANCH_THICKNESS,
     BRANCH_CURVATURE,
     BRANCH_DEPTH_SCALE_MODE,
@@ -407,7 +441,8 @@ static QVariant getDefaultTreeOption(const TreeViewOption& option) {
         settings[SCALEBAR_RANGE] = 0.05;  // Based on values from COI.aln.
         settings[SCALEBAR_FONT_SIZE] = 10;
         settings[SCALEBAR_LINE_WIDTH] = 1;
-        settings[LABEL_COLOR] = QColor(Qt::darkGray);
+        settings[LABEL_COLOR_DARK] = QColor(Qt::lightGray);
+        settings[LABEL_COLOR_LIGHT] = QColor(Qt::darkGray);
         settings[LABEL_FONT_FAMILY] = "";  // System default.
         settings[LABEL_FONT_SIZE] = 12;
         settings[LABEL_FONT_BOLD] = false;
@@ -417,7 +452,8 @@ static QVariant getDefaultTreeOption(const TreeViewOption& option) {
         settings[SHOW_BRANCH_DISTANCE_LABELS] = true;
         settings[SHOW_INNER_NODE_LABELS] = false;
         settings[ALIGN_LEAF_NODE_LABELS] = false;
-        settings[BRANCH_COLOR] = QColor(0, 0, 0);
+        settings[BRANCH_COLOR_DARK] = QColor(Qt::white);
+        settings[BRANCH_COLOR_LIGHT] = QColor(Qt::black);
         settings[BRANCH_THICKNESS] = 1;
         settings[BREADTH_SCALE_ADJUSTMENT_PERCENT] = 100;
         settings[BRANCH_CURVATURE] = 0;
@@ -445,7 +481,8 @@ static void storeOptionValueInAppSettings(const TreeViewOption& option, const QV
 TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer, QWidget* parent)
     : QGraphicsView(parent), phyObject(_treeViewer->getPhyObject()),
       treeViewer(_treeViewer) {
-    setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).icon);
+    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).iconParameters);
+    setWindowIcon(windowIcon);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setFrameShape(QFrame::NoFrame);
@@ -500,7 +537,7 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer, QWidget* parent)
     treeImageActionsMenu->addSeparator();
     treeImageActionsMenu->addAction(treeViewer->saveVisibleViewToFileAction);
     treeImageActionsMenu->addAction(treeViewer->saveWholeTreeToSvgAction);
-    treeImageActionsMenu->setIcon(QIcon(":/core/images/cam2.png"));
+    treeImageActionsMenu->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
     buttonPopup->addMenu(treeImageActionsMenu);
 
     updateActions();
@@ -525,9 +562,11 @@ void TreeViewerUI::initializeSettings() {
 /** Returns true if the option can be applied to the selection only. */
 static bool isSelectionScopeOption(const U2::TreeViewOption& option) {
     switch (option) {
-        case BRANCH_COLOR:
+        case BRANCH_COLOR_DARK:
+        case BRANCH_COLOR_LIGHT:
         case BRANCH_THICKNESS:
-        case LABEL_COLOR:
+        case LABEL_COLOR_DARK:
+        case LABEL_COLOR_LIGHT:
         case LABEL_FONT_BOLD:
         case LABEL_FONT_ITALIC:
         case LABEL_FONT_SIZE:
@@ -592,7 +631,8 @@ void TreeViewerUI::updateOption(const TreeViewOption& option, const QVariant& ne
             updateBranchGeometry(rectRoot);
             updateScene();
             break;
-        case LABEL_COLOR:
+        case LABEL_COLOR_DARK:
+        case LABEL_COLOR_LIGHT:
         case LABEL_FONT_FAMILY:
         case LABEL_FONT_SIZE:
         case LABEL_FONT_BOLD:
@@ -600,7 +640,8 @@ void TreeViewerUI::updateOption(const TreeViewOption& option, const QVariant& ne
         case LABEL_FONT_UNDERLINE:
             updateTextOptionOnSelectedItems();
             break;
-        case BRANCH_COLOR:
+        case BRANCH_COLOR_DARK:
+        case BRANCH_COLOR_LIGHT:
         case BRANCH_THICKNESS:
         case NODE_COLOR:
         case NODE_RADIUS:
@@ -650,7 +691,8 @@ void TreeViewerUI::updateTreeSettingsOnSelectedItems() {
 
         if (auto legendLineItem = dynamic_cast<QGraphicsLineItem*>(legendItem)) {
             QPen legendPen;
-            QColor branchColor = qvariant_cast<QColor>(getOption(BRANCH_COLOR));
+            auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+            QColor branchColor = qvariant_cast<QColor>(getOption(branchColorEnum));
             legendPen.setColor(branchColor);
             legendLineItem->setPen(legendPen);
         }
@@ -691,7 +733,8 @@ void TreeViewerUI::updateTextOptionOnSelectedItems() {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(item)) {
             branchItem->updateSettings(selectionSettings);
         } else if (auto legendText = dynamic_cast<TvTextItem*>(item)) {
-            legendText->setBrush(qvariant_cast<QColor>(selectionSettings[LABEL_COLOR]));
+            auto labelColor = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+            legendText->setBrush(qvariant_cast<QColor>(selectionSettings[labelColor]));
         }
     }
 }
@@ -846,10 +889,11 @@ QVariantMap TreeViewerUI::getSettingsState() const {
     }
     int i = 0;
     QList<QGraphicsItem*> graphItems = items();
+    auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
     for (QGraphicsItem* graphItem : qAsConst(graphItems)) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
             QMap<TreeViewOption, QVariant> branchSettings = branchItem->getSettings();
-            m[branchColorSettingsKey + QString::number(i)] = qvariant_cast<QColor>(branchSettings[BRANCH_COLOR]);
+            m[branchColorSettingsKey + QString::number(i)] = qvariant_cast<QColor>(branchSettings[branchColorEnum]);
             m[branchThicknessSettingsKey + QString::number(i)] = branchSettings[BRANCH_THICKNESS].toInt();
             i++;
         }
@@ -874,13 +918,15 @@ void TreeViewerUI::setSettingsState(const QVariantMap& state) {
         }
     }
     QList<QGraphicsItem*> graphItems = items();
+
+    auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
     for (QGraphicsItem* graphItem : qAsConst(graphItems)) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
             QMap<TreeViewOption, QVariant> branchSettings = branchItem->getSettings();
 
             QVariant vColor = state[branchColorSettingsKey + QString::number(i)];
             if (vColor.type() == QVariant::Color) {
-                branchSettings[BRANCH_COLOR] = vColor.value<QColor>();
+                branchSettings[branchColorEnum] = vColor.value<QColor>();
             }
 
             QVariant vThickness = state[branchThicknessSettingsKey + QString::number(i)];
@@ -1036,7 +1082,7 @@ void TreeViewerUI::resizeEvent(QResizeEvent* e) {
 }
 
 void TreeViewerUI::paint(QPainter& painter) {
-    painter.setBrush(Qt::darkGray);
+    painter.setBrush(Qt::red);
     scene()->render(&painter);
 }
 
@@ -1113,7 +1159,8 @@ void TreeViewerUI::updateSettingsOnSelectionChange() {
         }
     }
     newSelectionSettingsDelta[BRANCH_THICKNESS] = branch->getSettings()[BRANCH_THICKNESS];
-    newSelectionSettingsDelta[BRANCH_COLOR] = branch->getSettings()[BRANCH_COLOR];
+    auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+    newSelectionSettingsDelta[branchColorEnum] = branch->getSettings()[branchColorEnum];
 
     TvTextItem* distanceTextItem = branch->getDistanceTextItem();
     if (distanceTextItem != nullptr) {
@@ -1123,7 +1170,8 @@ void TreeViewerUI::updateSettingsOnSelectionChange() {
         newSelectionSettingsDelta[LABEL_FONT_BOLD] = font.bold();
         newSelectionSettingsDelta[LABEL_FONT_ITALIC] = font.italic();
         newSelectionSettingsDelta[LABEL_FONT_UNDERLINE] = font.underline();
-        newSelectionSettingsDelta[LABEL_COLOR] = distanceTextItem->brush().color();
+        auto labelColor = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+        newSelectionSettingsDelta[labelColor] = distanceTextItem->brush().color();
     }
     // Remove settings that are the same as default.
     QList<TreeViewOption> newSelectionSettingsDeltaKeys = newSelectionSettingsDelta.keys();
@@ -1504,10 +1552,10 @@ void TreeViewerUI::updateActions() {
 
     if (isSelectedCollapsed()) {
         treeViewer->collapseAction->setText(QObject::tr("Expand"));
-        treeViewer->collapseAction->setIcon(QIcon(":/core/images/expand_tree.png"));
+        treeViewer->collapseAction->setIcon(GUIUtils::getIconResource("core", "expand_tree.png"));
     } else {
         treeViewer->collapseAction->setText(QObject::tr("Collapse"));
-        treeViewer->collapseAction->setIcon(QIcon(":/core/images/collapse_tree.png"));
+        treeViewer->collapseAction->setIcon(GUIUtils::getIconResource("core", "collapse_tree.png"));
     }
 
     QList<QGraphicsItem*> updatingItems = scene()->selectedItems();

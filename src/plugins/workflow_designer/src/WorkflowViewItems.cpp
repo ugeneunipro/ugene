@@ -32,8 +32,11 @@
 #include <QTextDocument>
 #include <QtMath>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
 #include <U2Core/QVariantUtils.h>
+
+#include <U2Gui/GUIUtils.h>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/IntegralBusModel.h>
@@ -180,7 +183,8 @@ void WorkflowProcessItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
     WorkflowAbstractRunner* rt = getWorkflowScene()->getRunner();
     if (rt) {
         //{WorkerWaiting, WorkerReady, WorkerRunning, WorkerDone};
-        static QColor rsColors[5] = {QColor(234, 143, 7), "#04AA04", "#AA0404", "#0404AA", "#9B30FF"};
+        static QColor rsColorsLight[5] = {QColor(234, 143, 7), "#04AA04", "#AA0404", "#0404AA", "#9B30FF"};
+        static QColor rsColorsDark[5] = {QColor(229, 197, 153), "#9BFF9B", "#FF8C8C", "#8C8CFF", "#E2C6FF"};
         //{QColor(234,143,7),QColor(Qt::red),QColor(Qt::green),QColor(0,0,255)};
         static QString rsNames[5] = {("Waiting"), ("Ready"), ("Running"), ("Done"), ("Paused")};
 
@@ -197,7 +201,8 @@ void WorkflowProcessItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
         }
 
         QString stateName = rsNames[state];
-        QColor scolor = rsColors[state];
+        bool isDark = AppContext::getMainWindow()->isDarkMode();
+        QColor scolor = isDark ? rsColorsDark[state] : rsColorsLight[state];
         painter->setPen(scolor);
         QRectF brect = boundingRect();
         qreal fh = QFontMetrics(QFont()).height();
@@ -239,18 +244,23 @@ void WorkflowProcessItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
             // draw extended text
             painter->save();
             QTextDocument d;
+            auto workerWaitingColor = isDark ? rsColorsDark[WorkerWaiting] : rsColorsLight[WorkerWaiting];
+            auto workerReadyColor = isDark ? rsColorsDark[WorkerReady] : rsColorsLight[WorkerReady];
+            auto workerRunningColor = isDark ? rsColorsDark[WorkerRunning] : rsColorsLight[WorkerRunning];
+            auto workerDoneColor = isDark ? rsColorsDark[WorkerDone] : rsColorsLight[WorkerDone];
+
             d.setHtml("<center><font size='-1'>" + QString("<font color='%1'>%2/</font>"
                                                            " <!--font color='%3'>%4/</font-->"
                                                            " <font color='%5'>%6/</font>"
                                                            " <font color='%7'>%8/</font>"
                                                            " <font color='black'>%9</font>")
-                                                       .arg(rsColors[WorkerWaiting].name())
+                                                       .arg(workerWaitingColor.name())
                                                        .arg(vals[WorkerWaiting])
-                                                       .arg(rsColors[WorkerReady].name())
+                                                       .arg(workerReadyColor.name())
                                                        .arg(vals[WorkerReady])
-                                                       .arg(rsColors[WorkerRunning].name())
+                                                       .arg(workerRunningColor.name())
                                                        .arg(vals[WorkerRunning])
-                                                       .arg(rsColors[WorkerDone].name())
+                                                       .arg(workerDoneColor.name())
                                                        .arg(vals[WorkerDone])
                                                        .arg(rsList.size()) +
                       "</font></center>");
@@ -731,12 +741,15 @@ void WorkflowPortItem::paint(QPainter* painter,
                              QWidget* widget) {
     Q_UNUSED(widget);
     QPointF p1(A / 2 + bl, 0);
-    QColor greenLight(0, 0x99, 0x33, 128);
-    QColor stickyLight(0, 0x77, 0x33);
+    static QColor GREEN_LIGHT_LIGHT(0, 153, 51, 128);
+    static QColor GREEN_LIGHT_DARK(58, 255, 124, 128);
+    static QColor STICKY_LIGHT_LIGHT(0, 119, 51);
+    static QColor STICKY_LIGHT_DARK(71, 255, 147);
 
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
     if (highlight) {
         QPen pen;
-        pen.setColor(greenLight);
+        pen.setColor(isDark ? GREEN_LIGHT_DARK : GREEN_LIGHT_LIGHT);
         painter->setPen(pen);
     }
 
@@ -748,7 +761,7 @@ void WorkflowPortItem::paint(QPainter* painter,
         if (highlight) {
             QPainterPath path;
             path.addEllipse(bl, -A / 2, A, A);
-            painter->fillPath(path, QBrush(greenLight));
+            painter->fillPath(path, QBrush(isDark ? GREEN_LIGHT_DARK : GREEN_LIGHT_LIGHT));
         } else {
             painter->drawArc(QRectF(bl, -A / 2, A, A), 90 * 16, 180 * 16);
         }
@@ -756,7 +769,7 @@ void WorkflowPortItem::paint(QPainter* painter,
         if (highlight) {
             QPainterPath path;
             path.addEllipse(p1, A / 2, A / 2);
-            painter->fillPath(path, QBrush(greenLight));
+            painter->fillPath(path, QBrush(isDark ? GREEN_LIGHT_DARK : GREEN_LIGHT_LIGHT));
         } else {
             painter->drawEllipse(p1, A / 2, A / 2);
         }
@@ -765,6 +778,7 @@ void WorkflowPortItem::paint(QPainter* painter,
         // draw a hint
         painter->save();
         QPen pen;
+        pen.setColor(QPalette().text().color());
         // pen.setWidthF(2);
         pen.setStyle(Qt::DashLine);
         painter->setPen(pen);
@@ -785,10 +799,11 @@ void WorkflowPortItem::paint(QPainter* painter,
     }
     if (dragging) {
         QPen pen;
+        pen.setColor(QPalette().text().color());
         // pen.setWidthF(3);
         pen.setStyle(Qt::DotLine);
         if (sticky) {
-            pen.setColor(stickyLight);
+            pen.setColor(isDark ? STICKY_LIGHT_DARK : STICKY_LIGHT_LIGHT);
         }
         // put drag point inside of the scene rect
         QPointF pp = dragPoint;
@@ -813,6 +828,7 @@ void WorkflowPortItem::paint(QPainter* painter,
             drawArrow(painter, pen, p1, pp);
     } else if (option->state & QStyle::State_Selected) {
         QPen pen;
+        pen.setColor(QPalette().text().color());
         // pen.setWidthF(2);
         pen.setStyle(Qt::DotLine);
         painter->setPen(pen);
@@ -860,7 +876,7 @@ void WorkflowPortItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
         if (event->modifiers() & portRotationModifier) {
             rotating = true;
             // setCursor(portRotationCursor);
-            setCursor(QCursor(QPixmap(":workflow_designer/images/rot_cur.png")));
+            setCursor(QCursor(QPixmap(GUIUtils::getResourceName("workflow_designer", "rot_cur.png"))));
         } else {
             dragging = true;
             setCursor(Qt::ClosedHandCursor);
@@ -905,7 +921,7 @@ void WorkflowPortItem::mousePressEvent(QGraphicsSceneMouseEvent* event) {
         dragPoint = event->pos();
         if ((event->modifiers() & portRotationModifier) && !dragging) {
             rotating = true;
-            setCursor(QCursor(QPixmap(":workflow_designer/images/rot_cur.png")));
+            setCursor(QCursor(QPixmap(GUIUtils::getResourceName("workflow_designer", "rot_cur.png"))));
         } else {
             setCursor(Qt::ClosedHandCursor);
         }
@@ -955,7 +971,7 @@ void WorkflowPortItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
     if (getWorkflowScene()->isLocked()) {
         return;
     }
-    setCursor((event->modifiers() & portRotationModifier) ? QCursor(QPixmap(":workflow_designer/images/rot_cur.png")) : QCursor(Qt::OpenHandCursor));
+    setCursor((event->modifiers() & portRotationModifier) ? QCursor(QPixmap(GUIUtils::getResourceName("workflow_designer", "rot_cur.png"))) : QCursor(Qt::OpenHandCursor));
 }
 
 void WorkflowPortItem::hoverLeaveEvent(QGraphicsSceneHoverEvent*) {
@@ -1086,7 +1102,7 @@ QPainterPath WorkflowBusItem::shape() const {
 void WorkflowBusItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     Q_UNUSED(widget);
     painter->setRenderHint(QPainter::Antialiasing);
-    QColor baseColor(0x66, 0x66, 0x66);
+    QColor baseColor(QPalette().text().color());
     painter->setPen(baseColor);
     // painter->fillRect(boundingRect(), QBrush(Qt::blue));
     QPointF p1 = dst->head(this);
@@ -1102,8 +1118,9 @@ void WorkflowBusItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
         pen.setWidthF(1.5);
         pen.setStyle(Qt::DashLine);
     }
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
     if (!validate()) {
-        pen.setColor(Qt::red);
+        pen.setColor(isDark ? QColor(255, 127, 127) : Qt::red);
     }
 
     drawArrow(painter, pen, p2, p1);
@@ -1112,7 +1129,12 @@ void WorkflowBusItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
     QPen pen2 = painter->pen();
     pen2.setCosmetic(false);
     painter->setPen(pen2);
-    QColor yc = QColor(Qt::yellow).lighter();
+    QColor yc = QColor(Qt::yellow);
+    if (!isDark) {
+        yc = yc.lighter();
+    } else {
+        yc.darker(300);
+    }
     yc.setAlpha(127);
     QRectF textRec = text->boundingRect().translated(text->pos());
     painter->fillRect(textRec, QBrush(yc));
@@ -1128,6 +1150,7 @@ void WorkflowBusItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
         qreal shift = (QFontMetricsF(QFont()).horizontalAdvance(rts) - rtb.width()) / 2;
         rtb.setLeft(rtb.left() - shift);
         rtb.setRight(rtb.right() + shift);
+        painter->setPen(QPalette().text().color());
         painter->drawText(rtb, Qt::AlignHCenter, rts);
         if (msgsInQueue == 0) {
             return;
@@ -1135,10 +1158,10 @@ void WorkflowBusItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
         qreal dx = (p2.x() - p1.x()) / msgsInQueue;
         qreal dy = (p2.y() - p1.y()) / msgsInQueue;
         QPointF dp(dx, dy);
-        QColor c1("#AA0404");
+        QColor c1(isDark ? "#FF6D6D" : "#AA0404");
         painter->setPen(c1);
         c1.setAlphaF(0.8);
-        QColor c2(Qt::white);
+        QColor c2 = QPalette().window().color();
         c2.setAlphaF(0.8);
         while (msgsInQueue-- > 0) {
             QPainterPath p;

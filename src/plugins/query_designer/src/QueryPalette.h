@@ -53,6 +53,7 @@ protected:
     void leaveEvent(QEvent*);
 private slots:
     void sl_selectProcess(bool checked = false);
+    void sl_colorModeSwitched();
 
 private:
     void setContent();

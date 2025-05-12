@@ -141,13 +141,14 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
 
     QPen borderPen(Qt::SolidLine);
     borderPen.setWidth(selected ? 2 : 1);
+    borderPen.setColor(QPalette().text().color());
 
     const bool isRestrictionSite = a->getType() == U2FeatureTypes::RestrictionSite;
     QVector<U2Region> location = aData->getRegions();
     for (int ri = 0, ln = location.size(); ri < ln; ri++) {
         const U2Region& r = location.at(ri);
         if (r.intersects(visibleRange)) {
-            const QRect annotationRect = getAnnotationRect(ri, canvasSize, visibleRange, selected, a, as);
+            const QRect annotationRect = getAnnotationRect(r, canvasSize, visibleRange, selected, a, as);
             CHECK_CONTINUE(!annotationRect.isEmpty());
 
             QPainterPath rectPath;
@@ -168,7 +169,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
             }
 
             rectPath.setFillRule(Qt::WindingFill);
-            p.fillPath(rectPath, as->color);
+            p.fillPath(rectPath, as->getActiveColor());
             p.fillPath(rectPath, annMetrics.gradientMaskBrush);
 
             p.setPen(borderPen);
@@ -258,17 +259,18 @@ int SequenceViewAnnotatedRenderer::getCutPosition(const U2Region& r, const QStri
     return cutPosition;
 }
 
-QRect SequenceViewAnnotatedRenderer::getAnnotationRect(int regionIndex, const QSize& canvasSize, const U2Region& visibleRange, bool selected, Annotation* a, const AnnotationSettings* as) const {
+QRect SequenceViewAnnotatedRenderer::getAnnotationRect(const U2Region& reg, const QSize& canvasSize, const U2Region& visibleRange, bool selected, Annotation* a, const AnnotationSettings* as) const {
     QRect res;
-    const U2Region y = getAnnotationYRange(a, regionIndex, as, canvasSize.height());
+    const U2Region y = getAnnotationYRange(a, 0, as, canvasSize.height());
     CHECK(y.startPos >= 0, res);
 
-    const auto& reg = a->getRegions().at(regionIndex);
     if (reg.intersects(visibleRange)) {
-        const U2Region x = getAnnotationXRange(reg, visibleRange, canvasSize, selected);
-        CHECK(!x.isEmpty(), res);
-
-        res = QRect(x.startPos, y.startPos, x.length, y.length);
+        const U2Region visibleLocation = reg.intersect(visibleRange);
+        const int x1 = posToXCoord(visibleLocation.startPos, canvasSize, visibleRange);
+        const int x2 = posToXCoord(visibleLocation.endPos(), canvasSize, visibleRange);
+        const int rw = qMax(selected ? MIN_SELECTED_ANNOTATION_WIDTH : MIN_ANNOTATION_WIDTH, x2 - x1);
+        SAFE_POINT(rw > 0, "Negative length of annotationYRange", res);
+        res = QRect(x1, y.startPos, rw, y.length);
     } else {
         res = QRect(0, y.startPos, 0, y.length);
     }
@@ -352,14 +354,14 @@ void SequenceViewAnnotatedRenderer::drawCutSite(QPainter& p, const QSize& canvas
         // draw direct cut
         auto cutPosDirect = getCutPosition(regionPair.first, qualifierValue, isDirectStrand, true);
         if (cutPosDirect != INCORRECT_CUT_POSITION) {
-            auto annRect = getAnnotationRect(0, canvasSize, visibleRange, selected, a, as);
-            drawCutSite(p, aData, cutPosDirect, annRect, as->color, canvasSize, visibleRange, true);
+            auto annRect = getAnnotationRect(regionPair.first, canvasSize, visibleRange, selected, a, as);
+            drawCutSite(p, aData, cutPosDirect, annRect, as->getActiveColor(), canvasSize, visibleRange, true);
         }
         // draw complement cut
         auto cutPosComplement = getCutPosition(regionPair.second, qualifierValue, isDirectStrand, false);
         if (cutPosComplement != INCORRECT_CUT_POSITION) {
-            auto annRect = getAnnotationRect(1, canvasSize, visibleRange, selected, a, as);
-            drawCutSite(p, aData, cutPosComplement, annRect, as->color, canvasSize, visibleRange, false);
+            auto annRect = getAnnotationRect(regionPair.second, canvasSize, visibleRange, selected, a, as);
+            drawCutSite(p, aData, cutPosComplement, annRect, as->getActiveColor(), canvasSize, visibleRange, false);
         }
     } else if (location.size() == 1) {
         const auto& reg = location.first();
@@ -367,16 +369,16 @@ void SequenceViewAnnotatedRenderer::drawCutSite(QPainter& p, const QSize& canvas
         // draw direct cut
         auto cutPosDirect = getCutPosition(reg, qualifierValue, isDirectStrand, true);
         if (cutPosDirect != INCORRECT_CUT_POSITION) {
-            annRect = getAnnotationRect(0, canvasSize, visibleRange, selected, a, as);
-            drawCutSite(p, aData, cutPosDirect, annRect, as->color, canvasSize, visibleRange, true);
+            annRect = getAnnotationRect(reg, canvasSize, visibleRange, selected, a, as);
+            drawCutSite(p, aData, cutPosDirect, annRect, as->getActiveColor(), canvasSize, visibleRange, true);
         }
         // draw complement cut
         auto cutPosComplement = getCutPosition(reg, qualifierValue, isDirectStrand, false);
         if (cutPosComplement != INCORRECT_CUT_POSITION) {
             if (annRect.isEmpty()) {
-                annRect = getAnnotationRect(0, canvasSize, visibleRange, selected, a, as);
+                annRect = getAnnotationRect(reg, canvasSize, visibleRange, selected, a, as);
             }
-            drawCutSite(p, aData, cutPosComplement, annRect, as->color, canvasSize, visibleRange, false);
+            drawCutSite(p, aData, cutPosComplement, annRect, as->getActiveColor(), canvasSize, visibleRange, false);
         }
     }
 }

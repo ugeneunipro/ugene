@@ -106,6 +106,7 @@ private slots:
     void editElement();
     bool removeElement();
     void sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype* proto);
+    void sl_colorModeSwitched();
 
 private:
     QTreeWidgetItem* createItemWidget(QAction* a);
@@ -123,6 +124,7 @@ private:
 private:
     QMap<QString, QList<QAction*>> categoryMap;
     QMap<QAction*, QTreeWidgetItem*> actionMap;
+    QMap<ActorPrototype*, QAction*> protoActionsName;
     QTreeWidgetItem* overItem;
     QAction* currentAction;
     QPoint dragStartPosition;

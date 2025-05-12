@@ -24,8 +24,10 @@
 #include <QDateTime>
 #include <QHBoxLayout>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/ProjectModel.h>
 
+#include <U2Gui/MainWindow.h>
 #include <U2Gui/HoverQLabel.h>
 
 #include <U2Lang/Dataset.h>
@@ -59,11 +61,36 @@ static Monitor::TaskState parseStateFromClass(const QString& cssClass) {
     return Monitor::CANCELLED;
 }
 
-#define STATUS_LABEL_COMMON_STYLE QString("padding: 8px 35px 8px 14px; margin-bottom: 10px; border-radius: 4px;")
-#define STATUS_LABEL_DEFAULT_STYLE "background-color: #f5f5f5; border: 1px solid #e3e3e3;"
-#define STATUS_LABEL_INFO_STYLE "color: #3a87ad; background-color: #d9edf7; border: 1px solid #bce8f1;"
-#define STATUS_LABEL_ERROR_STYLE "color: #b94a48; background-color: #f2dede; border: 1px solid #eed3d7;"
-#define STATUS_LABEL_SUCCESS_STYLE "color: #468847; background-color: #dff0d8; border: 1px solid #d6e9c6;"
+static const QString STATUS_LABEL_COMMON_STYLE = "padding: 8px 35px 8px 14px; margin-bottom: 10px; border-radius: 4px;";
+
+static const QString STATUS_LABEL_DEFAULT_BACKGROUND_COLOR_LIGHT = "#f5f5f5";
+static const QString STATUS_LABEL_DEFAULT_BORDER_COLOR_LIGHT = "#e3e3e3";
+static const QString STATUS_LABEL_DEFAULT_BACKGROUND_COLOR_DARK = "#3A3A3A";
+static const QString STATUS_LABEL_DEFAULT_BORDER_COLOR_DARK = "#4C4C4C";
+static const QString STATUS_LABEL_DEFAULT_STYLE = "background-color: %1; border: 1px solid %2;";
+
+static const QString STATUS_LABEL_INFO_TEXT_COLOR_LIGHT = "#3a87ad";
+static const QString STATUS_LABEL_INFO_BACKGROUND_COLOR_LIGHT = "#d9edf7";
+static const QString STATUS_LABEL_INFO_BORDER_COLOR_LIGHT = "#bce8f1";
+static const QString STATUS_LABEL_INFO_TEXT_COLOR_DARK = "#70D1FF";
+static const QString STATUS_LABEL_INFO_BACKGROUND_COLOR_DARK = "#305970";
+static const QString STATUS_LABEL_INFO_BORDER_COLOR_DARK = "#2E616B";
+
+static const QString STATUS_LABEL_ERROR_TEXT_COLOR_LIGHT = "#b94a48";
+static const QString STATUS_LABEL_ERROR_BACKGROUND_COLOR_LIGHT = "#f2dede";
+static const QString STATUS_LABEL_ERROR_BORDER_COLOR_LIGHT = "#eed3d7";
+static const QString STATUS_LABEL_ERROR_TEXT_COLOR_DARK = "#FF8E8C";
+static const QString STATUS_LABEL_ERROR_BACKGROUND_COLOR_DARK = "#583030";
+static const QString STATUS_LABEL_ERROR_BORDER_COLOR_DARK = "#6B222D";
+
+static const QString STATUS_LABEL_SUCCESS_TEXT_COLOR_LIGHT = "#468847";
+static const QString STATUS_LABEL_SUCCESS_BACKGROUND_COLOR_LIGHT = "#dff0d8";
+static const QString STATUS_LABEL_SUCCESS_BORDER_COLOR_LIGHT = "#d6e9c6";
+static const QString STATUS_LABEL_SUCCESS_TEXT_COLOR_DARK = "#84FF84";
+static const QString STATUS_LABEL_SUCCESS_BACKGROUND_COLOR_DARK = "#20440D";
+static const QString STATUS_LABEL_SUCCESS_BORDER_COLOR_DARK = "#233F09";
+
+static const QString STATUS_LABEL_NOT_DEFAULT_STYLE = "color: %1; background-color: %2; border: 1px solid %3;";
 
 StatusDashboardWidget::StatusDashboardWidget(const QDomElement& dom, const WorkflowMonitor* monitor)
     : monitor(monitor), timer(nullptr), timerStartMillis(0) {
@@ -78,7 +105,9 @@ StatusDashboardWidget::StatusDashboardWidget(const QDomElement& dom, const Workf
     auto layout = new QVBoxLayout();
     setLayout(layout);
     timeLabel = new QLabel(tr("Time %1").arg(timeText));
-    timeLabel->setStyleSheet(STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_DEFAULT_STYLE);
+    // There is no default state, but CANCELLED is considered as default for the next function
+    auto defaultState = Monitor::TaskState::CANCELLED;
+    timeLabel->setStyleSheet(state2LabelStyle(defaultState));
     timeLabel->setObjectName("timeLabel");
     layout->addWidget(timeLabel);
 
@@ -114,6 +143,7 @@ StatusDashboardWidget::StatusDashboardWidget(const QDomElement& dom, const Workf
         sl_taskStateChanged(monitor->getTaskState());
     }
     connect(&timer, SIGNAL(timeout()), SLOT(sl_timerEvent()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &StatusDashboardWidget::sl_colorModeSwitched);
 }
 
 void StatusDashboardWidget::startTimer() {
@@ -129,6 +159,13 @@ void StatusDashboardWidget::stopTimer() {
 
 void StatusDashboardWidget::sl_timerEvent() {
     updateTimeLabel();
+}
+
+void StatusDashboardWidget::sl_colorModeSwitched() {
+    // There is no default state, but CANCELLED is considered as default for the next function
+    auto defaultState = Monitor::TaskState::CANCELLED;
+    timeLabel->setStyleSheet(state2LabelStyle(defaultState));
+    statusMessageLabel->setStyleSheet(state2LabelStyle(state));
 }
 
 void StatusDashboardWidget::updateTimeLabel() {
@@ -169,16 +206,37 @@ QString StatusDashboardWidget::state2StatusMessage(const Monitor::TaskState& sta
 }
 
 QString StatusDashboardWidget::state2LabelStyle(const Monitor::TaskState& state) {
+    QString result = STATUS_LABEL_COMMON_STYLE;
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
     switch (state) {
-        case Monitor::RUNNING:
-            return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_INFO_STYLE;
-        case Monitor::FAILED:
-            return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_ERROR_STYLE;
-        case Monitor::SUCCESS:
-            return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_SUCCESS_STYLE;
+        case Monitor::RUNNING: {
+            QString textColor = isDark ? STATUS_LABEL_INFO_TEXT_COLOR_DARK : STATUS_LABEL_INFO_TEXT_COLOR_LIGHT;
+            QString backgroundColor = isDark ? STATUS_LABEL_INFO_BACKGROUND_COLOR_DARK : STATUS_LABEL_INFO_BACKGROUND_COLOR_LIGHT;
+            QString borderColor = isDark ? STATUS_LABEL_INFO_BORDER_COLOR_DARK : STATUS_LABEL_INFO_BORDER_COLOR_LIGHT;
+            result += STATUS_LABEL_NOT_DEFAULT_STYLE.arg(textColor).arg(backgroundColor).arg(borderColor);
+            break;
+        }
+        case Monitor::FAILED: {
+            QString textColor = isDark ? STATUS_LABEL_ERROR_TEXT_COLOR_DARK : STATUS_LABEL_ERROR_TEXT_COLOR_LIGHT;
+            QString backgroundColor = isDark ? STATUS_LABEL_ERROR_BACKGROUND_COLOR_DARK : STATUS_LABEL_ERROR_BACKGROUND_COLOR_LIGHT;
+            QString borderColor = isDark ? STATUS_LABEL_ERROR_BORDER_COLOR_DARK : STATUS_LABEL_ERROR_BORDER_COLOR_LIGHT;
+            result += STATUS_LABEL_NOT_DEFAULT_STYLE.arg(textColor).arg(backgroundColor).arg(borderColor);
+            break;
+        }
+        case Monitor::SUCCESS: {
+            QString textColor = isDark ? STATUS_LABEL_SUCCESS_TEXT_COLOR_DARK : STATUS_LABEL_SUCCESS_TEXT_COLOR_LIGHT;
+            QString backgroundColor = isDark ? STATUS_LABEL_SUCCESS_BACKGROUND_COLOR_DARK : STATUS_LABEL_SUCCESS_BACKGROUND_COLOR_LIGHT;
+            QString borderColor = isDark ? STATUS_LABEL_SUCCESS_BORDER_COLOR_DARK : STATUS_LABEL_SUCCESS_BORDER_COLOR_LIGHT;
+            result += STATUS_LABEL_NOT_DEFAULT_STYLE.arg(textColor).arg(backgroundColor).arg(borderColor);
+            break;
+        }
         default:
-            return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_DEFAULT_STYLE;
+            QString backgroundColor = isDark ? STATUS_LABEL_DEFAULT_BACKGROUND_COLOR_DARK : STATUS_LABEL_DEFAULT_BACKGROUND_COLOR_LIGHT;
+            QString borderColor = isDark ? STATUS_LABEL_DEFAULT_BORDER_COLOR_DARK : STATUS_LABEL_DEFAULT_BORDER_COLOR_LIGHT;
+            result += STATUS_LABEL_DEFAULT_STYLE.arg(backgroundColor).arg(borderColor);
+            break;
     }
+    return result;
 }
 
 void StatusDashboardWidget::sl_taskStateChanged(Monitor::TaskState newState) {

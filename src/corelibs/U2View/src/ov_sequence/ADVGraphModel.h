@@ -172,6 +172,9 @@ protected slots:
     /** Emits 'si_graphDataUpdated' or 'si_graphRenderError' based on the calculation task state. */
     void sl_calculationTaskFinished();
 
+private slots:
+    void sl_colorModeSwitched();
+
 private:
     GSequenceGraphView* view;
     QFont* defFont;
@@ -184,7 +187,9 @@ private:
     GSequenceGraphMinMaxCutOffState cutOffState;
     BackgroundTaskRunner<QList<QVector<float>>> calculationTaskRunner;
 
-    QString DEFAULT_COLOR;
+    QString DEFAULT_COLOR_NAME;
+    QColor DEFAULT_COLOR;
+
 };
 
 class U2VIEW_EXPORT GSequenceGraphData {

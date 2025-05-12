@@ -37,6 +37,8 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "TaskViewController.h"
 
 // TODO: do not create subtask items until not expanded
@@ -46,14 +48,13 @@ namespace U2 {
 #define SETTINGS_ROOT QString("task_view/")
 
 TaskViewDockWidget::TaskViewDockWidget() {
-    waitingIcon = QIcon(":ugene/images/hourglass.png");
-    activeIcon = QIcon(":ugene/images/hourglass_go.png");
-    wasErrorIcon = QIcon(":ugene/images/hourglass_err.png");
-    finishedIcon = QIcon(":ugene/images/hourglass_ok.png");
+    waitingIp = IconParameters("ugene", "hourglass.png", false);
+    activeIp = IconParameters("ugene", "hourglass_go.png");
+    wasErrorIp = IconParameters("ugene", "hourglass_err.png", false);
+    finishedIp = IconParameters("ugene", "hourglass_ok.png");
 
     setObjectName(DOCK_TASK_VIEW);
     setWindowTitle(tr("Tasks"));
-    setWindowIcon(QIcon(":ugene/images/clock.png"));
 
     auto l = new QVBoxLayout();
     l->setSpacing(0);
@@ -87,21 +88,22 @@ TaskViewDockWidget::~TaskViewDockWidget() {
 void TaskViewDockWidget::initActions() {
     cancelTaskAction = new QAction(tr("Cancel task"), this);
     cancelTaskAction->setObjectName("Cancel task");
-    cancelTaskAction->setIcon(QIcon(":ugene/images/cancel.png"));
+    cancelTaskAction->setIcon(GUIUtils::getIconResource("ugene", "cancel.png", false));
     connect(cancelTaskAction, SIGNAL(triggered()), SLOT(sl_onCancelTask()));
 
     viewReportAction = new QAction(tr("View report"), this);
-    viewReportAction->setIcon(QIcon(":ugene/images/task_report.png"));
+    viewReportAction->setIcon(GUIUtils::getIconResource("ugene", "task_report.png", false));
     connect(viewReportAction, SIGNAL(triggered()), SLOT(sl_onViewTaskReport()));
 
     removeReportAction = new QAction(tr("Remove report"), this);
-    removeReportAction->setIcon(QIcon(":ugene/images/bin_empty.png"));
+    removeReportAction->setIcon(GUIUtils::getIconResource("ugene", "task_report.png", false));
     connect(removeReportAction, SIGNAL(triggered()), SLOT(sl_onRemoveTaskReport()));
 
     TaskScheduler* s = AppContext::getTaskScheduler();
     connect(s, SIGNAL(si_topLevelTaskRegistered(Task*)), SLOT(sl_onTopLevelTaskRegistered(Task*)));
     connect(s, SIGNAL(si_topLevelTaskUnregistered(Task*)), SLOT(sl_onTopLevelTaskUnregistered(Task*)));
     connect(s, SIGNAL(si_stateChanged(Task*)), SLOT(sl_onStateChanged(Task*)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TaskViewDockWidget::si_colorModeSwitched);
 }
 
 void TaskViewDockWidget::updateState() {
@@ -246,6 +248,19 @@ TVTreeItem* TaskViewDockWidget::findChildItem(TVTreeItem* ti, Task* t) const {
         }
     }
     return nullptr;
+}
+
+void TaskViewDockWidget::recurciveColorModeUpdate(TVTreeItem* item) {
+    for (int i = 0, n = item->childCount(); i < n; i++) {
+        QTreeWidgetItem* child = item->child(i);
+        SAFE_POINT_NN(child, );
+
+        auto cti = dynamic_cast<TVTreeItem*>(child);
+        SAFE_POINT_NN(cti, );
+
+        cti->updateVisual();
+        recurciveColorModeUpdate(cti);
+    }
 }
 
 void TaskViewDockWidget::sl_onTopLevelTaskRegistered(Task* t) {
@@ -406,6 +421,19 @@ void TaskViewDockWidget::sl_itemExpanded(QTreeWidgetItem* qi) {
     ti->updateVisual();
 }
 
+void TaskViewDockWidget::si_colorModeSwitched() {
+    for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
+        QTreeWidgetItem* item = tree->topLevelItem(i);
+        SAFE_POINT_NN(item, );
+
+        auto ti = static_cast<TVTreeItem*>(item);
+        SAFE_POINT_NN(item, );
+
+        ti->updateVisual();
+        recurciveColorModeUpdate(ti);
+    }
+}
+
 void TaskViewDockWidget::selectTask(Task* t) {
     TVTreeItem* ti = findItem(t, true);
     if (ti == nullptr) {
@@ -543,7 +571,7 @@ QAction* TVReportWindow::createDirAction(const QString& url, QObject* parent) {
         tr("Open containing folder"),
         info.dir().absolutePath(),
         parent,
-        ":ugene/images/project_open.png");
+        GUIUtils::getResourceName("ugene", "project_open.png", false));
 }
 
 QAction* TVReportWindow::createFileAction(const QString& url, QObject* parent) {
@@ -594,9 +622,9 @@ void TVTreeItem::updateVisual() {
     setText(TVColumns_Name, taskName);
 
     if (task == nullptr || task->isFinished()) {
-        setIcon(TVColumns_Name, wasError ? w->wasErrorIcon : w->finishedIcon);
+        setIcon(TVColumns_Name, GUIUtils::getIconResource(wasError ? w->wasErrorIp : w->finishedIp));
     } else {
-        setIcon(TVColumns_Name, task->isRunning() ? w->activeIcon : w->waitingIcon);
+        setIcon(TVColumns_Name, GUIUtils::getIconResource(task->isRunning() ? w->activeIp : w->waitingIp));
         setChildIndicatorPolicy(task->getSubtasks().isEmpty() ? QTreeWidgetItem::DontShowIndicator : QTreeWidgetItem::ShowIndicator);
     }
 

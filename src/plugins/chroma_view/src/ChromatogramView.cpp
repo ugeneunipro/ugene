@@ -49,6 +49,7 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
+#include <U2View/McaColors.h>
 
 namespace U2 {
 
@@ -62,7 +63,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     dnaView = v->getAnnotatedDNAView();
 
     showQVAction = new QAction(tr("Show quality bars"), this);
-    showQVAction->setIcon(QIcon(":chroma_view/images/bars.png"));
+    showQVAction->setIcon(GUIUtils::getIconResource("chroma_view", "bars.png", false));
     showQVAction->setCheckable(true);
     showQVAction->setChecked(chromatogram->hasQV);
     showQVAction->setEnabled(chromatogram->hasQV);
@@ -118,7 +119,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
 
     addActionToLocalToolbar(showQVAction);
     QToolButton* traceButton = addActionToLocalToolbar(traceActionMenu->menuAction());
-    traceButton->setIcon(QIcon(":chroma_view/images/traces.png"));
+    traceButton->setIcon(GUIUtils::getIconResource("chroma_view", "traces.png", false));
     traceButton->setPopupMode(QToolButton::InstantPopup);
 }
 
@@ -415,6 +416,7 @@ void ChromatogramView::sl_showAllTraces() {
 
 //////////////////////////////////////
 ////render area
+
 ChromatogramViewRenderArea::ChromatogramViewRenderArea(ChromatogramView* p, const Chromatogram& _chroma)
     : GSequenceLineViewRenderArea(p),
       linePen(Qt::gray, 1, Qt::DotLine),
@@ -480,11 +482,12 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
     heightPD = height();
 
     if (completeRedraw) {
+        linePen = QPen(AppContext::getMainWindow()->isDarkMode() ? Qt::lightGray : Qt::gray, 1, Qt::DotLine);
         QPainter p(getCachedPixmap());
         p.setRenderHint(QPainter::Antialiasing, true);
         p.setFont(font);
-        p.setPen(Qt::black);
-        p.fillRect(0, 0, pd->width(), heightPD, Qt::white);
+        p.setPen(QPalette().text().color());
+        p.fillRect(0, 0, pd->width(), heightPD, QPalette().base().color());
         if (pd->width() / charWidth > visible.length / dividerBoolShowBaseCallsChars) {
             // draw basecalls
             drawOriginalBaseCalls(0, heightAreaBC - charHeight - addUpIfQVL, width(), charHeight, p, visible, seq);
@@ -502,9 +505,10 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
             int legendCharToCharPadding = int(charWidth);
             int legendX = int(width() - 4 * charWidth - 4 * legendRectWidth - 4 * legendCharToRectPadding - 3 * legendCharToCharPadding - 20);
             int legendY = heightAreaBC - int(charHeight);
-            p.setPen(Qt::black);
+            p.setPen(QPalette().text().color());
+            bool isDark = AppContext::getMainWindow()->isDarkMode();
             for (int i = 0; i < 4; ++i) {
-                p.fillRect(legendX, legendY - (charHeight - legendRectHeight) / 2, legendRectWidth, -legendRectHeight, colors[i]);
+                p.fillRect(legendX, legendY - (charHeight - legendRectHeight) / 2, legendRectWidth, -legendRectHeight, McaColors::getChromatogramColorById(isDark, 1));
                 legendX += legendRectWidth + legendCharToRectPadding;
                 p.drawText(legendX, legendY, charWidth, -charHeight, Qt::AlignCenter, bases[i]);
                 legendX += charWidth;
@@ -605,6 +609,9 @@ void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w
         return;
     }
 
+    // areaHeight how to define startValue?
+    // colorForIds to private members
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
     p.setRenderHint(QPainter::Antialiasing, true);
     p.resetTransform();
     p.translate(x, y + h);
@@ -635,19 +642,19 @@ void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w
         polylineT[j - a1 + mk1] = QPointF(lineX, yT);
     }
     if (settings.drawTraceA) {
-        p.setPen(colors[0]);
+        p.setPen(McaColors::getChromatogramColorById(isDark, 0));
         p.drawPolyline(polylineA);
     }
     if (settings.drawTraceC) {
-        p.setPen(colors[1]);
+        p.setPen(McaColors::getChromatogramColorById(isDark, 1));
         p.drawPolyline(polylineC);
     }
     if (settings.drawTraceG) {
-        p.setPen(colors[2]);
+        p.setPen(McaColors::getChromatogramColorById(isDark, 2));
         p.drawPolyline(polylineG);
     }
     if (settings.drawTraceT) {
-        p.setPen(colors[3]);
+        p.setPen(McaColors::getChromatogramColorById(isDark, 3));
         p.drawPolyline(polylineT);
     }
     p.resetTransform();
@@ -656,7 +663,7 @@ void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w
 void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba, bool is) {
     QRectF rect;
 
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
     p.resetTransform();
     p.translate(x, y + h);
 
@@ -674,8 +681,9 @@ void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w
         bLinearTransformBaseCallsOfEdited = bLinearTransformBaseCalls;
     }
     auto cview = qobject_cast<ChromatogramView*>(view);
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
     for (int i = int(visible.startPos); i < visible.endPos(); i++) {
-        QColor color = getBaseColor(ba[i]);
+        QColor color = McaColors::getChromatogramColorByBase(isDark, ba[i]);
         p.setPen(color);
 
         if (cview->indexOfChangedChars.contains(i) && !is) {
@@ -779,6 +787,7 @@ void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y
     bLinearTransformTrace = leftMargin - kLinearTransformTrace * a1;
     double yRes = 0;
     double areaHeight = (heightPD - heightAreaBC + addUpIfQVL) * this->areaHeight / 100;
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
     for (int j = int(visible.startPos); j < visible.startPos + visible.length; j++) {
         int temp = chromatogram->baseCalls[j];
         if (temp >= chromatogram->traceLength) {
@@ -790,22 +799,22 @@ void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y
         switch (ba[j]) {
             case 'A':
                 yRes = -qMin(chromatogram->A[temp] * areaHeight / chromaMax, h);
-                p.setPen(colors[0]);
+                p.setPen(McaColors::getChromatogramColorById(isDark, 0));
                 drawBase = settings.drawTraceA;
                 break;
             case 'C':
                 yRes = -qMin(chromatogram->C[temp] * areaHeight / chromaMax, h);
-                p.setPen(colors[1]);
+                p.setPen(McaColors::getChromatogramColorById(isDark, 1));
                 drawBase = settings.drawTraceC;
                 break;
             case 'G':
                 yRes = -qMin(chromatogram->G[temp] * areaHeight / chromaMax, h);
-                p.setPen(colors[2]);
+                p.setPen(McaColors::getChromatogramColorById(isDark, 2));
                 drawBase = settings.drawTraceG;
                 break;
             case 'T':
                 yRes = -qMin(chromatogram->T[temp] * areaHeight / chromaMax, h);
-                p.setPen(colors[3]);
+                p.setPen(McaColors::getChromatogramColorById(isDark, 3));
                 drawBase = settings.drawTraceT;
                 break;
             case 'N':
@@ -818,19 +827,5 @@ void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y
     p.resetTransform();
 }
 
-QColor ChromatogramViewRenderArea::getBaseColor(char base) {
-    switch (base) {
-        case 'A':
-            return Qt::darkGreen;
-        case 'C':
-            return Qt::blue;
-        case 'G':
-            return Qt::black;
-        case 'T':
-            return Qt::red;
-        default:
-            return Qt::black;
-    }
-}
 
 }  // namespace U2

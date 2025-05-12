@@ -67,12 +67,17 @@ public:
 
     QString toHtml() const;
 
-    void showWorkerParameters(int workerIndex);
+    void showWorkerParameters();
 
 public slots:
     void sl_workerLabelClicked();
 
+private slots:
+    void sl_colorModeSwitched();
+
 private:
+    void updateStyleSheet();
+
     QString dashboardDir;
     const QPointer<const WorkflowMonitor> monitor;
 
@@ -80,5 +85,6 @@ private:
     QGridLayout* parametersGridLayout;
     QList<WorkerParametersInfo> workers;
     QList<HoverQLabel*> workerNameLabels;
+    int selectedIndex = 0;
 };
 }  // namespace U2

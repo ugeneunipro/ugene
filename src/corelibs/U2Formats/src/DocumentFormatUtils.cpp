@@ -88,11 +88,12 @@ QList<DocumentFormatId> DocumentFormatUtils::toIds(const QList<DocumentFormat*>&
 
 QList<AnnotationSettings*> DocumentFormatUtils::predefinedSettings() {
     QList<AnnotationSettings*> predefined;
-    foreach (GBFeatureKeyInfo fi, GBFeatureUtils::allKeys()) {
+    for (GBFeatureKeyInfo fi : qAsConst(GBFeatureUtils::allKeys())) {
         auto settings = new AnnotationSettings();
         settings->name = fi.text;
         settings->amino = U2FeatureTypes::isShowOnAminoFrame(fi.type);
-        settings->color = U2FeatureTypes::getColor(fi.type);
+        settings->setLightColor(U2FeatureTypes::getLightColor(fi.type));
+        settings->setDarkColor(U2FeatureTypes::getDarkColor(fi.type));
         settings->visible = settings->name != "source";
         settings->nameQuals = fi.namingQuals;
         if (!fi.namingQuals.isEmpty()) {
