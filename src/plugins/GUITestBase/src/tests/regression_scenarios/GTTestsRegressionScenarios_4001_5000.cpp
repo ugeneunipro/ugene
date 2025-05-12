@@ -63,6 +63,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/Theme.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
@@ -4267,7 +4268,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     auto colorScheme = GTWidget::findComboBox("colorScheme");
     auto highlightingScheme = GTWidget::findComboBox("highlightingScheme");
-    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_NUCL);
+    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_NUCL_LIGHT);
     GTComboBox::checkCurrentUserDataValue(highlightingScheme, MsaHighlightingScheme::EMPTY);
 
     //    4. Undo changes
@@ -4277,7 +4278,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     colorScheme = GTWidget::findComboBox("colorScheme");
     highlightingScheme = GTWidget::findComboBox("highlightingScheme");
-    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_NUCL);
+    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_NUCL_LIGHT);
     GTComboBox::checkCurrentUserDataValue(highlightingScheme, MsaHighlightingScheme::EMPTY);
 }
 
@@ -4297,7 +4298,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     //    Expected state: "UGENE" color scheme is selected, "UGENE" highlight scheme is selected
     auto colorScheme = GTWidget::findComboBox("colorScheme");
     auto highlightingScheme = GTWidget::findComboBox("highlightingScheme");
-    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO);
+    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO_LIGHT);
     GTComboBox::checkCurrentUserDataValue(highlightingScheme, MsaHighlightingScheme::EMPTY);
 
     //    4. Undo changes
@@ -4307,7 +4308,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     colorScheme = GTWidget::findComboBox("colorScheme");
     highlightingScheme = GTWidget::findComboBox("highlightingScheme");
-    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO);
+    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO_LIGHT);
     GTComboBox::checkCurrentUserDataValue(highlightingScheme, MsaHighlightingScheme::EMPTY);
 }
 
@@ -4336,7 +4337,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_3) {
     auto colorScheme = GTWidget::findComboBox("colorScheme");
     auto highlightingScheme = GTWidget::findComboBox("highlightingScheme");
 
-    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO);
+    GTComboBox::checkCurrentUserDataValue(colorScheme, MsaColorScheme::UGENE_AMINO_LIGHT);
     GTComboBox::checkCurrentUserDataValue(highlightingScheme, MsaHighlightingScheme::EMPTY);
 }
 
@@ -5792,7 +5793,7 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
 
     auto editPatterns = GTWidget::findPlainTextEdit("textPattern");
     QString style0 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
+    CHECK_SET_ERR(style0 == "background-color: " + Theme::errorColorTextFieldStr() + ";", "unexpected styleSheet: " + style0);
 
     // Remove entered pattern, enter a valid pattern:
     //.
@@ -5803,7 +5804,7 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
     GTKeyboardDriver::keyClick('.');
 
     QString style1 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style1 == "background-color: " + GUIUtils::OK_COLOR.name() + ";", "unexpected styleSheet: " + style1);
+    CHECK_SET_ERR(style1 == "background-color: palette(base);", "unexpected styleSheet: " + style1);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5000) {

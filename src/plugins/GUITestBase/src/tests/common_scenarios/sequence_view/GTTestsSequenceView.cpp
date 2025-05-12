@@ -2397,7 +2397,7 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
                 auto name = "A" + id;
                 auto item = GTTreeWidget::findItem(tree, name);
                 auto tooltip = item->data(3, Qt::ToolTipRole).toString();
-                auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips_updated/" + name + ".html");
+                auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips/" + name + ".html");
                 CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip %1").arg(name));
             }
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
@@ -2663,7 +2663,7 @@ GUI_TEST_CLASS_DEFINITION(test_0087) {
             QTreeWidgetItem* item = GTTreeWidget::findItem(enzymesTree, "AloI");
             GTTreeWidget::checkItem(item);
             auto tooltip = item->data(3, Qt::ToolTipRole).toString();
-            auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips_updated/test_0087.html");
+            auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips/test_0087.html");
             CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip"));
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
