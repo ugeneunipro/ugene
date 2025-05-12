@@ -21,9 +21,16 @@
 
 #include "SubstMatrixDialog.h"
 
+#include <QHeaderView>
+#include <QPalette>
+#include <QPushButton>
 #include <QScrollBar>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/MainWindow.h>
 
 #include "ui_SubstMatrixDialogBase.h"
 
@@ -57,13 +64,18 @@ void SubstMatrixDialog::sl_closeWindow() {
 void SubstMatrixDialog::connectGUI() {
     connect(bttnClose, SIGNAL(clicked()), SLOT(sl_closeWindow()));
     connect(base->tableMatrix, SIGNAL(cellEntered(int, int)), SLOT(sl_mouseOnCell(int, int)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SubstMatrixDialog::sl_colorModeSwitched);
 }
 
-#define CELL_WIDTH 25
-#define DEFAULT_BORDER_CELL_COLOR QColor(200, 200, 200)
-#define HIGHLIGHT_BORDER_CELL_COLOR QColor(200, 230, 200)
-#define DEFAULT_INNER_CELL_COLOR QColor(255, 255, 255)
-#define HIGHLIGHT_INNER_CELL_COLOR QColor(200, 230, 200)
+const QColor SubstMatrixDialog::DEFAULT_BORDER_CELL_COLOR_LIGHT = QColor(200, 200, 200);
+const QColor SubstMatrixDialog::HIGHLIGHT_BORDER_CELL_COLOR_LIGHT = QColor(200, 230, 200);
+const QColor SubstMatrixDialog::DEFAULT_INNER_CELL_COLOR_LIGHT = QColor(255, 255, 255);
+const QColor SubstMatrixDialog::HIGHLIGHT_INNER_CELL_COLOR_LIGHT = QColor(200, 230, 200);
+
+const QColor SubstMatrixDialog::DEFAULT_BORDER_CELL_COLOR_DARK = QColor(95, 95, 95);
+const QColor SubstMatrixDialog::HIGHLIGHT_BORDER_CELL_COLOR_DARK = QColor(80, 175, 80);
+const QColor SubstMatrixDialog::DEFAULT_INNER_CELL_COLOR_DARK = QColor(48, 48, 48);
+const QColor SubstMatrixDialog::HIGHLIGHT_INNER_CELL_COLOR_DARK = QColor(80, 175, 80);
 
 void SubstMatrixDialog::prepareTable() {
     base->tableMatrix->horizontalHeader()->setHidden(true);
@@ -86,7 +98,7 @@ void SubstMatrixDialog::prepareTable() {
             char ch_j = alphaChars.at(j);
             float score = m.getScore(ch_i, ch_j);
             ptwi = new QTableWidgetItem(QString::number(score));
-            ptwi->setBackground(DEFAULT_INNER_CELL_COLOR);
+            ptwi->setBackground(getCellColor(ColorType::DefaultInner));
             ptwi->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
             ptwi->setFlags(flags);
             base->tableMatrix->setItem(i + 1, j + 1, ptwi);
@@ -97,7 +109,7 @@ void SubstMatrixDialog::prepareTable() {
         QString title(ch);
 
         ptwi = new QTableWidgetItem(title);
-        ptwi->setBackground(DEFAULT_BORDER_CELL_COLOR);
+        ptwi->setBackground(getCellColor(ColorType::DefaultBorder));
         ptwi->setFlags(flags);
         ptwi->setTextAlignment(Qt::AlignCenter);
         base->tableMatrix->setItem(i + 1, 0, ptwi);
@@ -105,7 +117,7 @@ void SubstMatrixDialog::prepareTable() {
         ptwi = new QTableWidgetItem(title);
         ptwi->setFlags(flags);
         ptwi->setTextAlignment(Qt::AlignCenter);
-        ptwi->setBackground(DEFAULT_BORDER_CELL_COLOR);
+        ptwi->setBackground(getCellColor(ColorType::DefaultBorder));
         base->tableMatrix->setItem(0, i + 1, ptwi);
     }
 
@@ -114,16 +126,37 @@ void SubstMatrixDialog::prepareTable() {
     base->tableMatrix->setMinimumSize(CELL_WIDTH * (n + 1) + 20, CELL_WIDTH * (n + 1) + 20);  //+20 is for borders
 }
 
+const QColor& SubstMatrixDialog::getCellColor(ColorType type) const {
+    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    switch (type) {
+        case ColorType::DefaultBorder:
+            return isDark ? DEFAULT_BORDER_CELL_COLOR_DARK : DEFAULT_BORDER_CELL_COLOR_LIGHT;
+            break;
+        case ColorType::HighlightBorder:
+            return isDark ? HIGHLIGHT_BORDER_CELL_COLOR_DARK : HIGHLIGHT_BORDER_CELL_COLOR_LIGHT;
+            break;
+        case ColorType::DefaultInner:
+            return isDark ? DEFAULT_INNER_CELL_COLOR_DARK : DEFAULT_INNER_CELL_COLOR_LIGHT;
+            break;
+        case ColorType::HighlightInner:
+            return isDark ? HIGHLIGHT_INNER_CELL_COLOR_DARK : HIGHLIGHT_INNER_CELL_COLOR_LIGHT;
+            break;
+        default:
+            FAIL("Unexpected type", QColor());
+            return QColor();
+    }
+}
+
 void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
     // update mid-cell
     if (row != 0 && column != 0 && !(column == hlInnerColumn && row == hlInnerRow)) {
         QTableWidgetItem* prevItem = base->tableMatrix->item(hlInnerRow, hlInnerColumn);
         if (prevItem != nullptr) {
-            prevItem->setBackground(DEFAULT_INNER_CELL_COLOR);
+            prevItem->setBackground(getCellColor(ColorType::DefaultInner));
         }
         QTableWidgetItem* newItem = base->tableMatrix->item(row, column);
         if (newItem != nullptr) {
-            newItem->setBackground(HIGHLIGHT_INNER_CELL_COLOR);
+            newItem->setBackground(getCellColor(ColorType::HighlightInner));
         }
         hlInnerColumn = column;
         hlInnerRow = row;
@@ -133,11 +166,11 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
     if (row != hlBorderRow && row != 0) {
         QTableWidgetItem* pw = base->tableMatrix->item(row, 0);
         if (pw != nullptr) {
-            pw->setBackground(HIGHLIGHT_BORDER_CELL_COLOR);
+            pw->setBackground(getCellColor(ColorType::HighlightBorder));
         }
         pw = base->tableMatrix->item(hlBorderRow, 0);
         if (pw != nullptr) {
-            pw->setBackground(DEFAULT_BORDER_CELL_COLOR);
+            pw->setBackground(getCellColor(ColorType::DefaultBorder));
         }
 
         hlBorderRow = row;
@@ -147,14 +180,31 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
     if (column != hlBorderColumn && column != 0) {
         QTableWidgetItem* pw = base->tableMatrix->item(0, column);
         if (pw != nullptr) {
-            pw->setBackground(HIGHLIGHT_BORDER_CELL_COLOR);
+            pw->setBackground(getCellColor(ColorType::HighlightBorder));
         }
         pw = base->tableMatrix->item(0, hlBorderColumn);
         if (pw != nullptr) {
-            pw->setBackground(DEFAULT_BORDER_CELL_COLOR);
+            pw->setBackground(getCellColor(ColorType::DefaultBorder));
         }
 
         hlBorderColumn = column;
+    }
+}
+
+void SubstMatrixDialog::sl_colorModeSwitched() {
+    QByteArray alphaChars = m.getAlphabet()->getAlphabetChars();
+    int n = alphaChars.size();
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            auto item = base->tableMatrix->item(i + 1, j + 1);
+            item->setBackground(getCellColor(ColorType::DefaultInner));
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        auto item = base->tableMatrix->item(i + 1, 0);
+        item->setBackground(getCellColor(ColorType::DefaultBorder));
+        item = base->tableMatrix->item(0, i + 1);
+        item->setBackground(getCellColor(ColorType::DefaultBorder));
     }
 }
 
