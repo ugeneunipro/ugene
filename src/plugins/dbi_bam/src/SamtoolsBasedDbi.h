@@ -109,7 +109,8 @@ public:
 
     virtual U2Assembly getAssemblyObject(const U2DataId& id, U2OpStatus& os);
     virtual qint64 countReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os);
-    virtual U2DbiIterator<U2AssemblyRead>* getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool sortedHint = false);
+    virtual U2DbiIterator<U2AssemblyRead>* getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, 
+                                                    bool sortedHint = false, bool readsStrictlyFitRegion = false);
     virtual qint64 getMaxEndPos(const U2DataId& assemblyId, U2OpStatus& os);
     virtual U2DbiIterator<U2AssemblyRead>* getReadsByName(const U2DataId& assemblyId, const QByteArray& name, U2OpStatus& os);
 

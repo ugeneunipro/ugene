@@ -300,10 +300,10 @@ qint64 MultiTableAssemblyAdapter::getAssemblyLength(U2OpStatus& os) {
     return max;
 }
 
-U2DbiIterator<U2AssemblyRead>* MultiTableAssemblyAdapter::getReads(const U2Region& r, U2OpStatus& os, bool sortedHint) {
+U2DbiIterator<U2AssemblyRead>* MultiTableAssemblyAdapter::getReads(const U2Region& r, U2OpStatus& os, bool sortedHint, bool readsStrictlyFitRegion) {
     QVector<U2DbiIterator<U2AssemblyRead>*> iterators;
     foreach (MTASingleTableAdapter* a, adapters) {
-        iterators << a->singleTableAdapter->getReads(r, os, sortedHint);
+        iterators << a->singleTableAdapter->getReads(r, os, sortedHint, readsStrictlyFitRegion);
         if (os.hasError()) {
             break;
         }
