@@ -174,8 +174,12 @@ void GTComboBox::checkValues(QComboBox* comboBox, const QStringList& values) {
     }
 }
 
-void GTComboBox::checkValuesPresence(QComboBox* comboBox, const QStringList& values) {
+void GTComboBox::checkValuesPresence(QComboBox* comboBox, const QStringList& values, bool exactList) {
     GT_CHECK(comboBox != nullptr, "ComboBox is NULL");
+
+    if (exactList) {
+        GT_CHECK(comboBox->count() == values.size(), QString("Expected %1 values, but actual number is %2").arg(values.size()).arg(comboBox->count()));
+    }
 
     for (const QString& s : qAsConst(values)) {
         int index = comboBox->findText(s);

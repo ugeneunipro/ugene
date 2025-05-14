@@ -45,7 +45,9 @@ public:
     static QStringList getValues(QComboBox* comboBox);
     static void checkValues(QComboBox* comboBox, const QStringList& values);
 
-    static void checkValuesPresence(QComboBox* comboBox, const QStringList& values);
+    // Check if values are present in combo box
+    // exactList - if true, than only the presented list should be in combo box, no other elements
+    static void checkValuesPresence(QComboBox* comboBox, const QStringList& values, bool exactList = false);
     static void checkCurrentValue(QComboBox* comboBox, const QString& expectedText);
     static void checkCurrentUserDataValue(QComboBox* comboBox, const QString& expectedValue);
 };
