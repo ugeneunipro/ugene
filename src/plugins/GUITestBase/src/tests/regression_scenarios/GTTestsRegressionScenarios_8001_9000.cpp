@@ -26,6 +26,7 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLabel.h>
@@ -1322,7 +1323,8 @@ GUI_TEST_CLASS_DEFINITION(test_8160) {
     class Scenario : public CustomScenario {
     public:
         Scenario(const QString& format)
-            : formatToSave(format) {};
+            : formatToSave(format) {
+        };
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTLineEdit::setText(GTWidget::findLineEdit("start_edit_line", dialog), "6901");
@@ -1336,16 +1338,16 @@ GUI_TEST_CLASS_DEFINITION(test_8160) {
     };
 
     QDir(sandBoxDir).mkdir("8160");
-    const QStringList formats = {"UGENE Database", "SAM", "BAM"};
+    const QStringList formats = { "UGENE Database", "SAM", "BAM" };
     for (const QString& formatToSave : qAsConst(formats)) {
         GTFileDialog::openFile(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb");
         GTUtilsTaskTreeView::waitTaskFinished();
         GTUtilsAssemblyBrowser::zoomToReads();
-        GTUtilsDialog::add(new PopupChooserByText({"Export", "Assembly region"}));
+        GTUtilsDialog::add(new PopupChooserByText({ "Export", "Assembly region" }));
         GTUtilsDialog::add(new AnyDialogFiller("ExtractAssemblyRegionDialog", new Scenario(formatToSave)));
         if (formatToSave != formats.first()) {
             GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir +
-                                                       "8160/chrM.sorted." + formatToSave + ".ugenedb"));
+                "8160/chrM.sorted." + formatToSave + ".ugenedb"));
         }
         GTUtilsAssemblyBrowser::callContextMenu(GTUtilsAssemblyBrowser::Reads);
         GTUtilsTaskTreeView::waitTaskFinished();
@@ -1353,10 +1355,42 @@ GUI_TEST_CLASS_DEFINITION(test_8160) {
         CHECK_SET_ERR(GTUtilsAssemblyBrowser::getLength() == 110, "Expected assembly length not 110");
         if (formatToSave != formats.last()) {  // skip last for speed up
             GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
-            GTMenu::clickMainMenuItem({"File", "Close project"});
+            GTMenu::clickMainMenuItem({ "File", "Close project" });
             GTUtilsTaskTreeView::waitTaskFinished();
         }
-    } 
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8161) {
+    /*
+    Load COI.aln
+    Select Wrap mode on
+    Select Highlighting tab
+    Check up "Use dots" checkboõ
+    Select "Statistics" tab
+    Check up "Show distance column" checkboõ
+    Select Distance algorithm=Similarity
+    Uncheck Show distance column" checkboõ
+    Select Wrap mode off
+    Select  Highlighting tab
+    Unexpectedly "Use dots" checkboõ is unchecked, check it again
+    Select  "Statistics" tab
+    */
+
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    QAction* wrapMode = GTAction::findActionByText("Wrap mode");
+    GTWidget::click(GTAction::button(wrapMode));
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Highlighting);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("useDots"), true);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Statistics);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("showDistancesColumnCheck"), true);
+    GTComboBox::selectItemByText(GTWidget::findComboBox("algoComboBox"), "Similarity");
+    GTCheckBox::setChecked(GTWidget::findCheckBox("showDistancesColumnCheck"), false);
+    GTWidget::click(GTAction::button(wrapMode));
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Highlighting);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("useDots"), true);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Statistics);
 }
 
 }  // namespace GUITest_regression_scenarios

@@ -20,6 +20,14 @@
     </message>
 </context>
 <context>
+    <name>AppContextImpl</name>
+    <message>
+        <location filename="../src/Main.cpp" line="604"/>
+        <source>Style not available %1</source>
+        <translation type="unfinished">Stil mevcut değil %1</translation>
+    </message>
+</context>
+<context>
     <name>AppSettingsDialog</name>
     <message>
         <location filename="../src/app_settings/AppSettingsDialog.ui" line="14"/>
@@ -437,12 +445,12 @@ p, li { white-space: pre-wrap; }
         <translation>Şekil</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewWidget.ui" line="109"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui" line="113"/>
         <source>Bookmarks</source>
         <translation>Yer imleri</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewWidget.ui" line="61"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui" line="65"/>
         <source>Objects</source>
         <translation>Nesneler</translation>
     </message>
@@ -450,12 +458,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Main.cpp" line="846"/>
+        <location filename="../src/Main.cpp" line="859"/>
         <source>UGENE started</source>
         <translation>UGENE başladı</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="847"/>
+        <location filename="../src/Main.cpp" line="860"/>
         <source>UGENE version: %1 %2-bit</source>
         <translation>UGENE sürümü: %1 %2-bit</translation>
     </message>
@@ -595,6 +603,26 @@ p, li { white-space: pre-wrap; }
         <source>Welcome to UGENE 1.16</source>
         <translation>UGENE 1.16&apos;ya hoş geldiniz</translation>
     </message>
+    <message>
+        <location filename="../src/shtirlitz/StatisticalReport.ui" line="26"/>
+        <source>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/shtirlitz/StatisticalReport.ui" line="29"/>
+        <source>Allow collection of usage data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/shtirlitz/StatisticalReport.ui" line="39"/>
+        <source>Enables experimental features hidden by default. May require restart for some features to be activated.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/shtirlitz/StatisticalReport.ui" line="42"/>
+        <source>Enable experimental features</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TmpDirChangeDialog</name>
@@ -625,29 +653,42 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>U2</name>
+    <message>
+        <location filename="../src/task_view/TaskViewController.cpp" line="471"/>
+        <source>Path doesn&apos;t exist: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/task_view/TaskViewController.cpp" line="473"/>
+        <source>File is empty: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::AboutDialogController</name>
     <message>
-        <location filename="../src/main_window/AboutDialogController.cpp" line="73"/>
+        <location filename="../src/main_window/AboutDialogController.cpp" line="74"/>
         <source>Max score: %1</source>
         <translation>Azami puan: %1</translation>
     </message>
     <message>
-        <location filename="../src/main_window/AboutDialogController.cpp" line="118"/>
+        <location filename="../src/main_window/AboutDialogController.cpp" line="119"/>
         <source>Score: %1</source>
         <translation>Puan: %1</translation>
     </message>
     <message>
-        <location filename="../src/main_window/AboutDialogController.cpp" line="122"/>
+        <location filename="../src/main_window/AboutDialogController.cpp" line="123"/>
         <source>Level: %1</source>
         <translation>Seviye: %1</translation>
     </message>
     <message>
-        <location filename="../src/main_window/AboutDialogController.cpp" line="127"/>
+        <location filename="../src/main_window/AboutDialogController.cpp" line="128"/>
         <source>About UGENE</source>
         <translation>UGENE Hakkında</translation>
     </message>
     <message>
-        <location filename="../src/main_window/AboutDialogController.cpp" line="129"/>
+        <location filename="../src/main_window/AboutDialogController.cpp" line="130"/>
         <source>Have fun ;-)</source>
         <translation>İyi eğlenceler ;-)</translation>
     </message>
@@ -655,17 +696,21 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AddDocumentsToProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1013"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1008"/>
         <source>Loading documents</source>
         <translation>Belgeler yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1070"/>
-        <source>No active project found!</source>
-        <translation>Etkin proje bulunamadı!</translation>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1062"/>
+        <source>Warnings in &quot;%1&quot;:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1106"/>
+        <source>No active project found!</source>
+        <translation type="vanished">Etkin proje bulunamadı!</translation>
+    </message>
+    <message>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1113"/>
         <source>Load document and add to project: %1</source>
         <translation>Belgeyi yükleyin ve projeye ekleyin: %1</translation>
     </message>
@@ -673,9 +718,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AppContextImpl</name>
     <message>
-        <location filename="../src/Main.cpp" line="581"/>
         <source>Style not available %1</source>
-        <translation>Stil mevcut değil %1</translation>
+        <translation type="vanished">Stil mevcut değil %1</translation>
     </message>
 </context>
 <context>
@@ -765,19 +809,188 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>U2::CloudStorageDockWidget</name>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="157"/>
+        <source>Shared with:
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="241"/>
+        <source>Cloud Storage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="290"/>
+        <source>New Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="293"/>
+        <source>Create New Folder on Cloud Storage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="297"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="300"/>
+        <source>Delete selected file from Cloud Storage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="304"/>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="306"/>
+        <source>Rename File on Cloud Storage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="311"/>
+        <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="313"/>
+        <source>Download File from Cloud Storage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="317"/>
+        <source>Upload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="319"/>
+        <source>Upload File to Cloud Storage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="323"/>
+        <source>Share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="325"/>
+        <source>Share file or folder with other users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="329"/>
+        <source>Open web interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="330"/>
+        <source>Open Cloud Storage Web Interface in Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="381"/>
+        <source>Stop sharing with ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="402"/>
+        <source>Create New Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="402"/>
+        <source>New Folder Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="406"/>
+        <source>Folder name contains illegal characters: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="422"/>
+        <source>Question?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="422"/>
+        <source>Do you want to delete %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="447"/>
+        <source>Rename %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="447"/>
+        <source>New Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="451"/>
+        <source>New name contains illegal characters: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="485"/>
+        <source>Select a folder to save the downloaded file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="500"/>
+        <source>Select a file to upload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="521"/>
+        <source>Share %1 with email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="525"/>
+        <source>Invalid email: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="529"/>
+        <source>You cannot share with yourself.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="534"/>
+        <source>Invalid shared file name: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="583"/>
+        <source>Loading file list...&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;logout&quot;&gt;Logout&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="584"/>
+        <source>Please &lt;a href=&quot;login&quot;&gt;log in to Workspace&lt;/a&gt; to access cloud storage</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::CreateDesktopShortcutTask</name>
     <message>
-        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="59"/>
+        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="50"/>
         <source>Create desktop shortcut</source>
         <translation>Masaüstü kısayolu oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="178"/>
+        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="171"/>
         <source>Desktop shortcut</source>
         <translation>Masaüstü kısayolu</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="179"/>
+        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="172"/>
         <source>A new shortcut to the UGENE application was created on the desktop.</source>
         <translation>Masaüstünde UGENE uygulamasına yeni bir kısayol oluşturuldu.</translation>
     </message>
@@ -819,7 +1032,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DisableProjectViewTask</name>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1197"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1179"/>
         <source>Disable project viewer</source>
         <translation>Proje görüntüleyiciyi devre dışı bırakın</translation>
     </message>
@@ -827,77 +1040,77 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DocumentFormatSelectorController</name>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="60"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="62"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="61"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="63"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="73"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="75"/>
         <source>Options for %1</source>
         <translation>%1 için Seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="86"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="88"/>
         <source>&lt;b&gt;%1&lt;/b&gt; format. Score: %2 &lt;i&gt;(%3)&lt;/i&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; biçim. Puan: %2 &lt;i&gt;(%3)&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="90"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="92"/>
         <source>&lt;b&gt;&lt;font color=#A6392E&gt;Import: &lt;/font&gt;%1&lt;/b&gt;. Score: %2 (&lt;i&gt;%3&lt;/i&gt;)</source>
         <translation>&lt;b&gt;&lt;metin rengi=#A6392E&gt;içe aktar: &lt;/font&gt;%1&lt;/b&gt;. Sonuç: %2 (&lt;i&gt;%3&lt;/i&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="108"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="110"/>
         <source>more..</source>
         <translation>daha..</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="122"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="124"/>
         <source>Choose format manually</source>
         <translation>Biçimi elle seçin</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="179"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="181"/>
         <source>Not matched</source>
         <translation>Eşleşmedi</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="182"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="184"/>
         <source>Very low similarity</source>
         <translation>Çok düşük benzerlik</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="185"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="187"/>
         <source>Low similarity</source>
         <translation>Düşük benzerlik</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="188"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="190"/>
         <source>Average similarity</source>
         <translation>Ortalama benzerlik</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="191"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="193"/>
         <source>High similarity</source>
         <translation>Yüksek benzerlik</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="194"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="196"/>
         <source>Very high similarity</source>
         <translation>Çok yüksek benzerlik</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="196"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="198"/>
         <source>Perfect match</source>
         <translation>Mükemmel uyum</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="204"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="206"/>
         <source>Format details for &apos;%1&apos; format</source>
         <translation>&apos;%1&apos; biçiminin ayrıntılarını biçimlendir</translation>
     </message>
@@ -905,17 +1118,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DocumentProviderSelectorController</name>
     <message>
-        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="120"/>
+        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="121"/>
         <source>Short reads assembly</source>
         <translation>Kısa okuma montajı</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="123"/>
+        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="124"/>
         <source>Multiple sequence alignment</source>
         <translation>Çoklu dizi hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="132"/>
+        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="133"/>
         <source>%1 in the %2</source>
         <translation>%2 içinde %1</translation>
     </message>
@@ -923,44 +1136,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DocumentUpdater</name>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="129"/>
         <source>Project contains NULL document</source>
-        <translation>Proje BOŞ belge içeriyor</translation>
+        <translation type="vanished">Proje BOŞ belge içeriyor</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="203"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="201"/>
         <source>The document &apos;%1&apos; was removed from its original folder. Do you wish to save it? Otherwise, it will be removed from the current project.</source>
         <translation>&apos;%1&apos; belgesi orijinal klasöründen kaldırıldı. Kurtarmak ister misin? Aksi takdirde mevcut projeden kaldırılacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="214"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="212"/>
         <source>Save as</source>
         <translation>Farklı kaydet</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="267"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="265"/>
         <source>Several documents were removed from their original folders. Therefore, they will be deleted from the current project. Find the full list below.</source>
         <translation>Orijinal klasörlerinden birkaç belge kaldırıldı. Bu nedenle mevcut projeden silinecekler. Aşağıda tam listeyi bulun.</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="269"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="267"/>
         <source>The document &apos;%1&apos; was removed from its original folder. Therefore, it will be deleted from the current project.</source>
         <translation>&apos;%1&apos; belgesi orijinal klasöründen kaldırıldı. Bu nedenle mevcut projeden silinecektir.</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="309"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="307"/>
         <source>Document &apos;%1&apos; was modified. Do you want to reload it?
 Note that reloading may cause closing of some views associated with objects from the document.</source>
         <translation>&apos;%1&apos; belgesi değiştirildi. Yeniden yüklemek ister misin?
 Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatılmasına neden olabileceğini unutmayın.</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="396"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="394"/>
         <source>Restore state task</source>
         <translation>Durum görevini geri yükle</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="410"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="408"/>
         <source>Reload documents and restore view state task</source>
         <translation>Belgeleri yeniden yükleyin ve görünüm durumu görevini geri yükleyin</translation>
     </message>
@@ -976,9 +1188,17 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
 <context>
     <name>U2::EnableProjectViewTask</name>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1187"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1168"/>
         <source>Enable ProjectView</source>
         <translation>Proje Görünümünü Etkinleştir</translation>
+    </message>
+</context>
+<context>
+    <name>U2::EnableWorkspaceTask</name>
+    <message>
+        <location filename="../src/workspace/WorkspaceService.cpp" line="532"/>
+        <source>Enable Workspace</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1011,22 +1231,22 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
 <context>
     <name>U2::ExportProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="327"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="332"/>
         <source>Export project task</source>
         <translation>Proje görevini dışa aktar</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="354"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="359"/>
         <source>One of the project documents has empty URL</source>
         <translation>Proje belgelerinden birinin boş URL&apos;si var</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="373"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="378"/>
         <source>Error during coping documents: file already exist</source>
         <translation>Belgeleri kopyalarken hata: dosya zaten mevcut</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="375"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="380"/>
         <source>Error during coping documents</source>
         <translation>Belgeleri kopyalarken hata</translation>
     </message>
@@ -1060,17 +1280,17 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
 <context>
     <name>U2::GTest_ExportProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="474"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="479"/>
         <source>GTest_ExportProject::prepare unable to clean folder for exporting</source>
         <translation>GTest_ExportProject::dışa aktarma için klasör temizlenemiyor</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="479"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="484"/>
         <source>GTest_ExportProject::prepare unable to create folder for exporting</source>
         <translation>GTest_ExportProject::dışa aktarma için klasör oluşturulamıyor</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="499"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="504"/>
         <source>GTest_ExportProject::cleanup unable to delete exported files</source>
         <translation>GTest_ExportProject::cleanup dışa aktarılan dosyalar silinemiyor</translation>
     </message>
@@ -1078,17 +1298,17 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
 <context>
     <name>U2::GTest_LoadDocumentFromProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="557"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="562"/>
         <source>No project loaded</source>
         <translation>Hiçbir proje yüklenmedi</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="561"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="566"/>
         <source>Document name to load is empty</source>
         <translation>Yüklenecek belge adı boş</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="576"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="581"/>
         <source>File %1 not found in project</source>
         <translation>%1 dosyası projede bulunamadı</translation>
     </message>
@@ -1096,7 +1316,7 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
 <context>
     <name>U2::GTest_LoadProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="423"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="428"/>
         <source>Unload previous project, then load new</source>
         <translation>Önceki projeyi kaldırın, ardından yenisini yükleyin</translation>
     </message>
@@ -1104,27 +1324,27 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
 <context>
     <name>U2::LoadProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="305"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="310"/>
         <source>Unable to detect parser for project</source>
         <translation>Proje için ayrıştırıcı tespit edilemiyor</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="286"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="291"/>
         <source>Load project</source>
         <translation>Proje yükle</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="296"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="301"/>
         <source>Loading project from: %1</source>
         <translation>Proje yükleniyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="306"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="311"/>
         <source>failed to parse project file %1</source>
         <translation>%1 proje dosyası ayrıştırılamadı</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="311"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="316"/>
         <source>Project loaded: %1</source>
         <translation>Yüklenen proje: %1</translation>
     </message>
@@ -1132,7 +1352,7 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
 <context>
     <name>U2::LogSettingsPageController</name>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="42"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="40"/>
         <source>Logging</source>
         <translation>Günlükleme</translation>
     </message>
@@ -1140,32 +1360,32 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
 <context>
     <name>U2::LogSettingsPageWidget</name>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="91"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="89"/>
         <source>Category</source>
         <translation>Kategori</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="98"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="96"/>
         <source>&lt;&lt;all&gt;&gt;</source>
         <translation>&lt;&lt;hepsi&gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="207"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="205"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="207"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="205"/>
         <source>Unable to open log file for writing, log writing to file disabled</source>
         <translation>Günlük dosyası yazmak için açılamıyor, dosyaya günlük yazma devre dışı bırakıldı</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="296"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="293"/>
         <source>Sample text</source>
         <translation>Örnek yazı</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="305"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="302"/>
         <source>Save to...</source>
         <translation>Şuraya kaydet...</translation>
     </message>
@@ -1173,54 +1393,54 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
 <context>
     <name>U2::MWMDIManagerImpl</name>
     <message>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="57"/>
         <location filename="../src/main_window/MDIManagerImpl.cpp" line="61"/>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="65"/>
         <source>Close active view</source>
         <translation>Aktif görünümü kapat</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="68"/>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="70"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="64"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="66"/>
         <source>Close all windows</source>
         <translation>Tüm pencereleri kapat</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="73"/>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="75"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="69"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="71"/>
         <source>Window layout</source>
         <translation>Pencere düzeni</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="78"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="74"/>
         <source>Multiple documents</source>
         <translation>Çoklu belge</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="83"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="79"/>
         <source>Tabbed documents</source>
         <translation>Sekmeli belgeler</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="88"/>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="90"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="84"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="86"/>
         <source>Tile windows</source>
         <translation>Pencereleri döşe</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="93"/>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="95"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="89"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="91"/>
         <source>Cascade windows</source>
         <translation>Basamaklı pencereler</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="115"/>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="117"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="110"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="112"/>
         <source>Next window</source>
         <translation>Sonraki pencere</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="121"/>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="123"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="116"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="118"/>
         <source>Previous window</source>
         <translation>Önceki pencere</translation>
     </message>
@@ -1266,22 +1486,22 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
         <translation>Çıkış</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="251"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="255"/>
         <source>Create desktop shortcut</source>
         <translation>Masaüstü kısayolu oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="385"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="390"/>
         <source>Shutdown already in process. Close UGENE immediately?</source>
         <translation>Kapatma işlemi zaten devam ediyor. UGENE hemen kapatılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="386"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="391"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="387"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="392"/>
         <source>Wait</source>
         <translation>Bekle</translation>
     </message>
@@ -1302,73 +1522,78 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
     </message>
     <message>
         <location filename="../src/main_window/MainWindowImpl.cpp" line="243"/>
+        <source>Support UGENE on Patreon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="247"/>
         <source>View UGENE Documentation Online</source>
         <translation>UGENE Belgelerini Çevrimiçi Görüntüle</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="247"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="251"/>
         <source>Check for Updates</source>
         <translation>Güncellemeleri Kontrol Et</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="255"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="259"/>
         <source>Open Start Page</source>
         <translation>Başlangıç Sayfasını Aç</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="259"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="263"/>
         <source>What&apos;s New in UGENE</source>
         <translation>UGENE de Neler Yeni</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="263"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="267"/>
         <source>Crash UGENE</source>
         <translation>UGENE çöktü</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="268"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="272"/>
         <source>Enable Terminal Usage...</source>
         <translation>Terminal Kullanımını Etkinleştir...</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="359"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="364"/>
         <source>Add unique notification</source>
         <translation>Benzersiz bildirim ekle</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="367"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="372"/>
         <source>Add repeating notification</source>
         <translation>Yinelenen bildirim ekle</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="453"/>
         <location filename="../src/main_window/MainWindowImpl.cpp" line="458"/>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="466"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="463"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="471"/>
         <source>Installation failed</source>
         <translation>Yükleme başarısız</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="453"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="458"/>
         <source>Failed to enable terminal usage: couldn&apos;t install &apos;%1&apos;</source>
         <translation>Terminal kullanımı etkinleştirilemedi: &apos;%1&apos; yüklenemedi</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="458"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="463"/>
         <source>Failed to enable terminal usage: not authorized</source>
         <translation>Terminal kullanımı etkinleştirilemedi: yetkili değil</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="466"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="471"/>
         <source>Failed to enable terminal usage: authorization failure</source>
         <translation>Terminal kullanımı etkinleştirilemedi: yetkilendirme hatası</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="471"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="476"/>
         <source>Installation successful</source>
         <translation>Kurulum başarılı</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="471"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="476"/>
         <source>Terminal usage successfully enabled.
 
 Now you can type ugene in command line to start UGENE.</source>
@@ -1433,12 +1658,12 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::NetworkSettingsPageWidget</name>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsGUIController.cpp" line="162"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsGUIController.cpp" line="160"/>
         <source>File not exists</source>
         <translation>Dosya mevcut değil</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsGUIController.cpp" line="172"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsGUIController.cpp" line="170"/>
         <source>Select Web browser program</source>
         <translation>Web tarayıcı programını seçin</translation>
     </message>
@@ -1459,12 +1684,12 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::OpenWithProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1135"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1142"/>
         <source>Opening document: %1</source>
         <translation>Belge açılıyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1137"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1144"/>
         <source>Opening %1 documents</source>
         <translation>%1 belgesi açılıyor</translation>
     </message>
@@ -1472,63 +1697,63 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::PluginViewerController</name>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="97"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="95"/>
         <source>Plugins...</source>
         <translation>Eklentiler...</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="57"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="55"/>
         <source>Plugin Viewer</source>
         <translation>Eklenti Görüntüleyici</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="102"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="100"/>
         <source>Enable service</source>
         <translation>Hizmeti etkinleştir</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="105"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="103"/>
         <source>Disable service</source>
         <translation>Hizmeti devre dışı bırak</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="281"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="261"/>
         <source>Select a plugin to view more information about it.</source>
         <translation>Hakkında daha fazla bilgi görüntülemek için bir eklenti seçin.</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="331"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="310"/>
         <source>Hide License</source>
         <translation>Lisansı Gizle</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="348"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="319"/>
         <source>License file not found.</source>
         <translation>Lisans dosyası bulunamadı.</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="355"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="327"/>
         <source>Show License</source>
         <translation>Lisansı Göster</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="369"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="341"/>
         <source>Plugin</source>
         <translation>Eklenti</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="372"/>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="405"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="344"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="377"/>
         <source>On</source>
         <translation>Açık</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="403"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="375"/>
         <source>Service</source>
         <translation>Hizmet</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="405"/>
+        <location filename="../src/plugin_viewer/PluginViewerController.cpp" line="377"/>
         <source>Off</source>
         <translation>Kapalı</translation>
     </message>
@@ -1549,27 +1774,27 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::ProjectDialogController</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="882"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="876"/>
         <source>Create</source>
         <translation>Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="883"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="877"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="937"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="932"/>
         <source>Save file</source>
         <translation>Dosyayı kaydet</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="937"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="932"/>
         <source>Project files</source>
         <translation>Proje dosyaları</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="976"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="971"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;&lt;br&gt;Project file already exists.&lt;br&gt;Are you sure you want to overwrite it?&lt;body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;&lt;br&gt;Proje dosyası zaten var.&lt;br&gt;Üzerine yazmak istediğinizden emin misiniz?&lt;body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1581,39 +1806,40 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::ProjectImpl</name>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="88"/>
+        <location filename="../src/project_support/ProjectImpl.cpp" line="103"/>
         <source>Project URL is set to %1
 </source>
         <translation>Proje URL&apos;si %1 olarak ayarlandı
 </translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="98"/>
-        <source>Project contains NULL document</source>
-        <translation>Proje BOŞ belge içeriyor</translation>
+        <location filename="../src/project_support/ProjectImpl.cpp" line="151"/>
+        <source>Not enough resources for load document, resource: &apos;%1&apos; available: %2%3 requested: %4%3</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="108"/>
+        <source>Project contains NULL document</source>
+        <translation type="vanished">Proje BOŞ belge içeriyor</translation>
+    </message>
+    <message>
+        <location filename="../src/project_support/ProjectImpl.cpp" line="123"/>
         <source>Adding document to the project: %1</source>
         <translation>Projeye belge ekleniyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="129"/>
         <source>Find document failed during resource locking</source>
-        <translation>Kaynak kilitleme sırasında belge bulma başarısız oldu</translation>
+        <translation type="vanished">Kaynak kilitleme sırasında belge bulma başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="135"/>
         <source>Not enough resources for load document, resource name: &apos;%1&apos; available: %2%3 requested: %4%3</source>
-        <translation>Belge yüklemek için yeterli kaynak yok, kaynak adı: &apos;%1&apos; kullanılabilir: %2%3 talep edildilen: %4%3</translation>
+        <translation type="vanished">Belge yüklemek için yeterli kaynak yok, kaynak adı: &apos;%1&apos; kullanılabilir: %2%3 talep edildilen: %4%3</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="141"/>
         <source>No document provided for removeDocument</source>
-        <translation>Belgeyi kaldırmak için belge sağlanmadı</translation>
+        <translation type="vanished">Belgeyi kaldırmak için belge sağlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="142"/>
+        <location filename="../src/project_support/ProjectImpl.cpp" line="162"/>
         <source>Removing document from the project: %1</source>
         <translation>Belge projeden kaldırılıyor: %1</translation>
     </message>
@@ -1621,14 +1847,14 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::ProjectLoaderImpl</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="231"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="217"/>
         <source>UGENE project file</source>
         <translation>UGENE proje dosyası</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="236"/>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="238"/>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="992"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="222"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="224"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="987"/>
         <source>Select files to open</source>
         <translation>Açılacak dosyaları seçin</translation>
     </message>
@@ -1698,87 +1924,86 @@ veya çevrimiçi belgeleri görüntüleyin.
         <translation>Proje yüklemesi durduruldu: %1. Nedeni: etkin proje bulundu</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="813"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="807"/>
         <source>The path %1 does not exist.</source>
         <translation>%1 yolu mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="814"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="808"/>
         <source>The path %1 is not readable.</source>
         <translation>%1 yolu okunamıyor.</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="816"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="810"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="816"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="810"/>
         <source>Remove From List</source>
         <translation>Listeden Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="959"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="954"/>
         <source>New Project</source>
         <translation>Yeni Proje</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="125"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="117"/>
         <source>Open...</source>
         <translation>Aç...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="108"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="101"/>
         <source>Open as...</source>
         <translation>Farklı aç...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="119"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="112"/>
         <source>Open from clipboard...</source>
         <translation>Panodan aç...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="136"/>
         <source>Connect to UGENE shared database...</source>
-        <translation>UGENE paylaşılan veritabanına bağlanın...</translation>
+        <translation type="vanished">UGENE paylaşılan veritabanına bağlanın...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="890"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="884"/>
         <source>Save project as</source>
         <translation>Projeyi farklı kaydet</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="891"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="886"/>
         <source>Save</source>
         <translation>Kaydet</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="150"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="137"/>
         <source>Recent projects</source>
         <translation>Son Projeler</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="102"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="95"/>
         <source>&amp;New project...</source>
         <translation>&amp;Yeni Proje...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="114"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="107"/>
         <source>New document from text...</source>
         <translation>Metinden yeni belge...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="131"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="123"/>
         <source>Access remote database...</source>
         <translation>Uzak veritabanına eriş...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="141"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="128"/>
         <source>Search NCBI GenBank...</source>
         <translation>NCBI GenBank&apos;ta ara...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="154"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="141"/>
         <source>Recent files</source>
         <translation>Son dosyalar</translation>
     </message>
@@ -1790,7 +2015,7 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::ProjectServiceDisableTask</name>
     <message>
-        <location filename="../src/project_support/ProjectServiceImpl.cpp" line="183"/>
+        <location filename="../src/project_support/ProjectServiceImpl.cpp" line="187"/>
         <source>Disable Project</source>
         <translation>Projeyi Devre Dışı Bırak</translation>
     </message>
@@ -1813,7 +2038,7 @@ veya çevrimiçi belgeleri görüntüleyin.
         <translation>&amp;Projeyi kapat</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectServiceImpl.cpp" line="159"/>
+        <location filename="../src/project_support/ProjectServiceImpl.cpp" line="163"/>
         <source>Export project...</source>
         <translation>Projeyi dışa aktar...</translation>
     </message>
@@ -1839,88 +2064,97 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::ProjectViewImpl</name>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="442"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="440"/>
         <source>ProjectView</source>
         <translation>Proje Görünümü</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="442"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="440"/>
         <source>ProjectView service provides basic project visualization and manipulation functionality</source>
         <translation>ProjectView hizmeti, temel proje görselleştirme ve işleme işlevselliği sağlar</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="483"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="472"/>
         <source>Save selected documents</source>
         <translation>Seçili belgeleri kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="487"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="476"/>
         <source>Mark as circular</source>
         <translation>Dairesel olarak işaretle</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="491"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="480"/>
         <source>Relocate...</source>
         <translation>Yer değiştir...</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="495"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="484"/>
         <source>Export document...</source>
         <translation>Belgeyi dışa aktar...</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="500"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="489"/>
         <source>Open containing folder</source>
         <translation>Bulunduğu dizini aç</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="653"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="643"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="743"/>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="785"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="731"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="771"/>
         <source>Active views</source>
         <translation>Aktif görünümler</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="850"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="822"/>
         <source>Activate view: %1</source>
         <translation>Görünümü etkinleştir: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="864"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="836"/>
         <source>Open new view: %1</source>
         <translation>Yeni görünümü aç: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="879"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="851"/>
         <source>Open saved view &apos;%1&apos; with a state &apos;%2&apos;</source>
         <translation>Kaydedilmiş &apos;%1&apos; görünümünü &apos;%2&apos; durumuyla aç</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="927"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="899"/>
         <source>Add to view: %1</source>
         <translation>Görünüme ekle: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="971"/>
-        <source>Open view</source>
-        <translation>Açık görünümü</translation>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="943"/>
+        <source>Open In</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="972"/>
+        <source>Open view</source>
+        <translation type="vanished">Açık görünümü</translation>
+    </message>
+    <message>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="944"/>
         <source>Add to view</source>
         <translation>Görünüme ekle</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1132"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1090"/>
+        <source>The search pattern is too long. Pattern was truncated to 1000 symbols.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1108"/>
         <source>Select new file location</source>
         <translation>Yeni dosya konumunu seçin</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1090"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1060"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
@@ -1928,7 +2162,7 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::ProjectViewWidget</name>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="418"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="416"/>
         <source>Project</source>
         <translation>Proje</translation>
     </message>
@@ -1936,7 +2170,7 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::RegisterProjectServiceTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="318"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="323"/>
         <source>Register project</source>
         <translation>Kayıtlı projeler</translation>
     </message>
@@ -1944,7 +2178,7 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::ResourceSettingsGUIPageController</name>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsGUIController.cpp" line="32"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsGUIController.cpp" line="31"/>
         <source>Resources</source>
         <translation>Kaynaklar</translation>
     </message>
@@ -1952,12 +2186,12 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::SaveOnlyProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="212"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="217"/>
         <source>Save project</source>
         <translation>Projeyi kaydet</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="269"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="274"/>
         <source>Saving project %1</source>
         <translation>%1 projesi kaydediliyor</translation>
     </message>
@@ -1965,17 +2199,17 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::SaveProjectDialogController</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="864"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="858"/>
         <source>Yes</source>
         <translation>Evet</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="865"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="859"/>
         <source>No</source>
         <translation>Hayır</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="866"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="860"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
@@ -1988,7 +2222,7 @@ veya çevrimiçi belgeleri görüntüleyin.
         <translation>Projeyi kaydet</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="204"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="209"/>
         <source>Save documents, remove phantom docs, save project</source>
         <translation>Belgeleri kaydedin, hayali belgeleri kaldırın, projeyi kaydedin</translation>
     </message>
@@ -1996,7 +2230,7 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::ShtirlitzStartupTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="371"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="370"/>
         <source>Shtirlitz Startup Task</source>
         <translation>Shtirlitz Başlangıç Görevi</translation>
     </message>
@@ -2014,22 +2248,22 @@ veya çevrimiçi belgeleri görüntüleyin.
         <translation>Önceki Shtirlitz raporunun üzerinden %1 gün geçti. Shtirlitz yenisini gönderiyor.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="327"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="326"/>
         <source>Connecting to remote server</source>
         <translation>Uzak sunucuya bağlanılıyor</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="348"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="347"/>
         <source>Cannot resolve destination path for statistical reports</source>
         <translation>İstatistiksel raporlar için hedef yol çözülemiyor</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="352"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="351"/>
         <source>Network error while resolving destination URL: </source>
         <translation>Hedef URL çözümlenirken ağ hatası: </translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="365"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="364"/>
         <source>Network error while sending report: </source>
         <translation>Rapor gönderilirken ağ hatası: </translation>
     </message>
@@ -2065,12 +2299,12 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::SplashScreenWidget</name>
     <message>
-        <location filename="../src/main_window/SplashScreen.cpp" line="170"/>
+        <location filename="../src/main_window/SplashScreen.cpp" line="173"/>
         <source>Version </source>
         <translation>Sürüm </translation>
     </message>
     <message>
-        <location filename="../src/main_window/SplashScreen.cpp" line="170"/>
+        <location filename="../src/main_window/SplashScreen.cpp" line="173"/>
         <source> is loading</source>
         <translation> yükleniyor</translation>
     </message>
@@ -2078,9 +2312,8 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::StatisticalReportController</name>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="34"/>
         <source>&lt;b&gt;Optional:&lt;/b&gt; Help make UGENE better by automatically sending anonymous usage statistics.</source>
-        <translation>&lt;b&gt;İsteğe bağlı:&lt;/b&gt; Anonim kullanım istatistiklerini otomatik olarak göndererek UGENE&apos;yi iyileştirmeye yardımcı olun.</translation>
+        <translation type="vanished">&lt;b&gt;İsteğe bağlı:&lt;/b&gt; Anonim kullanım istatistiklerini otomatik olarak göndererek UGENE&apos;yi iyileştirmeye yardımcı olun.</translation>
     </message>
     <message>
         <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="38"/>
@@ -2091,7 +2324,7 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::TBoard</name>
     <message>
-        <location filename="../src/main_window/AboutDialogController.cpp" line="382"/>
+        <location filename="../src/main_window/AboutDialogController.cpp" line="384"/>
         <source>Pause</source>
         <translation>Duraklat</translation>
     </message>
@@ -2099,47 +2332,47 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::TVReportWindow</name>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="436"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="437"/>
         <source>Task report [%1]</source>
         <translation>Görev raporu [%1]</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="446"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="447"/>
         <source>Failed</source>
         <translation>Başarısız</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="446"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="447"/>
         <source>Canceled</source>
         <translation>İptal Edildi</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="447"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="448"/>
         <source>Finished</source>
         <translation>Tamamlandı</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="448"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="449"/>
         <source>Status</source>
         <translation>Durum</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="450"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="451"/>
         <source>Error:</source>
         <translation>Hata:</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="455"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="456"/>
         <source>Time</source>
         <translation>Zaman</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="514"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="543"/>
         <source>Open containing folder</source>
         <translation>Dosyayı içeren klasörü açınız</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="521"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="550"/>
         <source>Open by operating system</source>
         <translation>İşletim sistemine göre aç</translation>
     </message>
@@ -2147,69 +2380,68 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::TaskStatusBar</name>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="120"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="128"/>
         <source>The task &apos;%1&apos; has been finished</source>
         <translation>&apos;%1&apos; görevi tamamlandı</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="125"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="133"/>
         <source>Report for task: &apos;%1&apos;</source>
         <translation>Görev için rapor: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="128"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="136"/>
         <source>&apos;%1&apos; task failed: %2</source>
         <translation>%1 &apos;görevi başarısız oldu: %2</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="131"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="139"/>
         <source>There %1:
 </source>
         <translation>%1 var:
 </translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="163"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="171"/>
         <source>Reports: %1</source>
         <translation>Raporlar: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="168"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="176"/>
         <source>No active tasks</source>
         <translation>Etkin görev yok</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="177"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="185"/>
         <source>Running task: %1</source>
         <translation>Çalışan görev: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="186"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="194"/>
         <source>: %1</source>
         <translation>: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="191"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="199"/>
         <source>Tasks: %1, Reports %2</source>
         <translation>Görevler: %1, Raporlar %2</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="193"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="201"/>
         <source>Tasks: %1</source>
         <translation>Görevler: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="269"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="274"/>
         <source>%1 notification(s)</source>
         <translation>%1 bildirim</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="312"/>
         <source>Wrong signal sender!</source>
-        <translation>Yanlış sinyal gönderen!</translation>
+        <translation type="vanished">Yanlış sinyal gönderen!</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="179"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="187"/>
         <source>canceling...</source>
         <translation>iptal ediliyor...</translation>
     </message>
@@ -2217,62 +2449,62 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::TaskViewDockWidget</name>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="54"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="55"/>
         <source>Tasks</source>
         <translation>Görevler</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="298"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="299"/>
         <source>Activating task report: %1</source>
         <translation>Görev raporu etkinleştiriliyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="593"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="627"/>
         <source>finished</source>
         <translation>bitti</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="575"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="609"/>
         <source>Canceling...</source>
         <translation>İptal ediliyor...</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="87"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="88"/>
         <source>Cancel task</source>
         <translation>Görevi iptal et</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="92"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="93"/>
         <source>View report</source>
         <translation>Raporu görüntüle</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="96"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="97"/>
         <source>Remove report</source>
         <translation>Raporu kaldır</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="126"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="127"/>
         <source>Task name</source>
         <translation>Görev adı</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="129"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="130"/>
         <source>Task state description</source>
         <translation>Görev durumu açıklaması</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="132"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="133"/>
         <source>Task progress</source>
         <translation>Görev ilerlemesi</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="135"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="136"/>
         <source>Actions</source>
         <translation>İşlemler</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="573"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="607"/>
         <source>Canceled</source>
         <translation>İptal Edildi</translation>
     </message>
@@ -2341,28 +2573,28 @@ Would you like to download and install it?</source>
 <context>
     <name>U2::UserApplicationsSettingsPageWidget</name>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="129"/>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="174"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="133"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="182"/>
         <source>Custom translation [%1]</source>
         <translation>Özel çeviri [%1]</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="139"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="143"/>
         <source>Ask to save new project on exit</source>
         <translation>Çıkışta yeni projeyi kaydetmeyi iste</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="140"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="144"/>
         <source>Don&apos;t save new project on exit</source>
         <translation>Çıkışta yeni projeyi kaydetme</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="141"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="145"/>
         <source>Always save new project on exit</source>
         <translation>Her zaman yeni projeyi çıkışta kaydet</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="162"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="170"/>
         <source>Select translation file</source>
         <translation>Çeviri dosyasını seçin</translation>
     </message>
@@ -2370,9 +2602,8 @@ Would you like to download and install it?</source>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/Main.cpp" line="530"/>
         <source>UGENE initialization started</source>
-        <translation>UGENE başlatma başladı</translation>
+        <translation type="vanished">UGENE başlatma başladı</translation>
     </message>
 </context>
 <context>
@@ -2459,19 +2690,76 @@ Would you like to download and install it?</source>
         <translation>UGENE&apos;yi takip edin:</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="247"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="210"/>
+        <source>Support UGENE:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="256"/>
         <source>No recent files</source>
         <translation>Son dosya yok</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="265"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="274"/>
         <source>No recent projects</source>
         <translation>Son proje yok</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="333"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="342"/>
         <source>The Workflow Designer plugin is not loaded. You can add it using the menu Settings -&gt; Plugins. Then you need to restart UGENE.</source>
         <translation>İş Akışı Tasarımcısı eklentisi yüklenmedi. Ayarlar -&gt; Eklentiler menüsünü kullanarak ekleyebilirsiniz. Ardından UGENE&apos;yi yeniden başlatmanız gerekir.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::WorkspaceConnectionStatusIcon</name>
+    <message>
+        <location filename="../src/workspace/WorkspaceConnectionStatusIcon.cpp" line="70"/>
+        <source>Workspace is disconnected.
+Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/WorkspaceConnectionStatusIcon.cpp" line="75"/>
+        <source>Connected to Workspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/WorkspaceConnectionStatusIcon.cpp" line="75"/>
+        <source>Connecting to workspace...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::WorkspaceService</name>
+    <message>
+        <location filename="../src/workspace/WorkspaceService.cpp" line="100"/>
+        <source>Login to Workspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/WorkspaceService.cpp" line="104"/>
+        <source>Logout from Workspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/WorkspaceService.cpp" line="258"/>
+        <source>Failed to authenticate: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/WorkspaceService.cpp" line="264"/>
+        <source>Logout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/WorkspaceService.cpp" line="264"/>
+        <source>Do you also want to close the browser session?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workspace/WorkspaceService.cpp" line="407"/>
+        <source>Failed to create download directory: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2487,6 +2775,46 @@ Would you like to download and install it?</source>
         <translation>Başlangıçta son projeyi aç</translation>
     </message>
     <message>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="99"/>
+        <source>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="102"/>
+        <source>Share usage metrics with UGENE team</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="109"/>
+        <source>Do not check and ask about UGENE updates during UGENE startup.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="119"/>
+        <source>Enable scaling for high-resolution (HiDPI) displays. Improves UI clarity on 4K and Retina screens. Requires restart.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="122"/>
+        <source>Enable auto scaling in HDPI mode (requires restart)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="129"/>
+        <source>Enables experimental features hidden by default. May require restart for some features to be activated.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="132"/>
+        <source>Enable experimental features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="139"/>
+        <source>Resets all UGENE settings to default. Requires restart.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="63"/>
         <source>Project</source>
         <translation>Proje</translation>
@@ -2497,39 +2825,43 @@ Would you like to download and install it?</source>
         <translation>Dil</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="115"/>
         <source>Updates</source>
-        <translation>Güncellemeler</translation>
+        <translation type="vanished">Güncellemeler</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="121"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="112"/>
         <source>Check for updates when UGENE starts</source>
         <translation>UGENE başladığında güncellemeleri kontrol edin</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="131"/>
         <source>Default settings</source>
-        <translation>Öntanımlı ayarlar</translation>
+        <translation type="vanished">Öntanımlı ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="137"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="142"/>
         <source>Reset settings to default on the next run</source>
         <translation>Bir sonraki çalıştırmada ayarları varsayılana sıfırlayın</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="99"/>
         <source>Statistical reports</source>
-        <translation>İstatistiksel raporlar</translation>
+        <translation type="vanished">İstatistiksel raporlar</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="105"/>
         <source>Enable statistical reports collecting</source>
-        <translation>İstatistiksel rapor toplamayı etkinleştirin</translation>
+        <translation type="vanished">İstatistiksel rapor toplamayı etkinleştirin</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="51"/>
         <source>Appearance</source>
         <translation>Görünüm</translation>
+    </message>
+</context>
+<context>
+    <name>UserAppsSettings</name>
+    <message>
+        <location filename="../src/Main.cpp" line="561"/>
+        <source>UGENE initialization started</source>
+        <translation type="unfinished">UGENE başlatma başladı</translation>
     </message>
 </context>
 </TS>

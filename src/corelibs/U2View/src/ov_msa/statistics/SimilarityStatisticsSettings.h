@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,25 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
- 
+
 #pragma once
-
-#include "TextDocumentFormat.h"
-
-#include <U2Core/AnnotationData.h>
 
 namespace U2 {
 
-class U2FORMATS_EXPORT KrakenResultsPlainTextFormat : public TextDocumentFormat {
-public:
-    KrakenResultsPlainTextFormat(QObject* p);
-
-    FormatCheckResult checkRawData(const QByteArray& data, const GUrl& = GUrl()) const override;
-
-protected:
-    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
-
-    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
+struct SimilarityStatisticsSettings {
+    bool autoUpdate = true;
+    /** Selected algorithm. */
+    QString algoId;
+    bool usePercents = false;
+    bool excludeGaps = false;
 };
 
-} //ns
+}

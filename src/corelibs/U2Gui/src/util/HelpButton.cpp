@@ -40,8 +40,12 @@ HelpButton::HelpButton(QObject* parent, QAbstractButton* hb, const QString& _pag
     connect(hb, SIGNAL(clicked()), SLOT(sl_buttonClicked()));
 }
 
+static void openHelpPage(const QString& pageId) {
+    GUIUtils::runWebBrowser("https://ugene.net/docs/ugene-help-page/" + pageId);
+}
+
 void HelpButton::sl_buttonClicked() {
-    GUIUtils::runWebBrowser("https://doc.ugene.net/wiki/pages/viewpage.action?pageId=" + pageId + "&from=ugene");
+    openHelpPage(pageId);
 }
 
 void HelpButton::updatePageId(const QString& newPageId) {
@@ -54,7 +58,7 @@ ComboboxDependentHelpButton::ComboboxDependentHelpButton(QObject* parent, QDialo
 
 void ComboboxDependentHelpButton::sl_buttonClicked() {
     QString pageId = pageMap[cb->currentText()];
-    GUIUtils::runWebBrowser("https://doc.ugene.net/wiki/pages/viewpage.action?pageId=" + pageId + "&from=ugene");
+    openHelpPage(pageId);
 }
 
 }  // namespace U2

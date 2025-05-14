@@ -94,13 +94,6 @@
 #    define U2PRIVATE_EXPORT Q_DECL_IMPORT
 #endif
 
-// UGENE_VERSION must be supplied as a preprocessor directive
-#ifndef UGENE_VERSION
-#    error UGENE_VERSION is not set!
-#else
-#    define U2_APP_VERSION UGENE_VERSION
-#endif
-
 // global
 #define GLOBAL_SETTINGS QString("global/")
 

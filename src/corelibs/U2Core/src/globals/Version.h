@@ -31,7 +31,7 @@ public:
     Version(int major = 0, int minor = 0, int patch = 0);
 
     // Current UGENE instance version
-    static Version appVersion();
+    Q_NEVER_INLINE static Version appVersion();
 
     // Current QT version
     static Version qtVersion();

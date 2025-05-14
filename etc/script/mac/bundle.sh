@@ -18,6 +18,9 @@ TARGET_APP_DIR="${BUNDLE_DIR}/${APP_NAME}/"
 TARGET_EXE_DIR="${TARGET_APP_DIR}/Contents/MacOS"
 TARGET_PLUGINS_DIR="${TARGET_EXE_DIR}/plugins"
 
+echo Fixing @rpath in dist
+"${SOURCE_DIR}/etc/script/mac/fix-rpath.sh" "${DIST_DIR}"
+
 echo Creating UGENE application bundle
 rm -rf "${BUNDLE_DIR}"
 mkdir "${BUNDLE_DIR}"
@@ -35,6 +38,7 @@ cp "${SOURCE_DIR}/src/ugeneui/images/ugeneui.icns" "${TARGET_APP_DIR}/Contents/R
 echo Creating Info.plist
 # "\$UGENE_VER_type" is a variable that will be replaced below with the corresponding variables from ugene_version.pri:
 # UGENE_VER_MAJOR or UGENE_VER_MINOR.
+# TODO: parse version from CMAKE.
 VERSION_PARSING_COMMAND="sed -n 's/^ *\$UGENE_VER_type *= *\([0-9][0-9]*\) *\(#.*\)*$/\1/p' '${SOURCE_DIR}/src/ugene_version.pri'"
 UGENE_VERSION_MAJOR=$(eval "${VERSION_PARSING_COMMAND/\$UGENE_VER_type/UGENE_VER_MAJOR}")
 UGENE_VERSION_MINOR=$(eval "${VERSION_PARSING_COMMAND/\$UGENE_VER_type/UGENE_VER_MINOR}")
@@ -121,6 +125,7 @@ add-library U2Script
 add-library U2Test
 add-library U2View
 add-library breakpad
+add-library qtscript
 add-library ugenedb
 
 # Plugins to add to the bundle
@@ -174,9 +179,6 @@ echo Running macdeployqt
   -executable="${TARGET_EXE_DIR}/ugenecl" \
   -executable="${TARGET_EXE_DIR}/ugenem" \
   -executable="${TARGET_EXE_DIR}/plugins_checker"
-
-echo Copying extra libraries
-cp "${QT_DIR}/extra_libs/"* "${TARGET_APP_DIR}/Contents/Frameworks"
 
 echo Copying readme.txt file
 cp "${SOURCE_DIR}/etc/script/mac/dmg/readme.txt" "${BUNDLE_DIR}/readme.txt"

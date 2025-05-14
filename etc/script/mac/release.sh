@@ -42,8 +42,6 @@ echo "##teamcity[blockClosed name='Get version']"
 
 echo "##teamcity[blockOpened name='Copy files']"
 # Remove excluded files from UGENE.
-rm -rf "${APP_CONTENTS_DIR}/Frameworks/QtTest.framework"
-rm -rf "${APP_EXE_DIR}/libQSpec.so"
 rm -rf "${APP_EXE_DIR}/plugins/"*CoreTests*
 rm -rf "${APP_EXE_DIR}/plugins/"*GUITestBase*
 rm -rf "${APP_EXE_DIR}/plugins/"*api_tests*

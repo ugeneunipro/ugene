@@ -10,13 +10,11 @@ project(ugene)
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
-set(UGENE_VERSION 53.0-dev)
 
 message(STATUS "CMake version: ${CMAKE_VERSION}")
 message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
 
 add_definitions(
-        -DUGENE_VERSION=${UGENE_VERSION}
         -DQT_FATAL_ASSERT
         -DQT_DISABLE_DEPRECATED_BEFORE=0x050F00
 )
@@ -184,4 +182,6 @@ endforeach ()
 include(${CMAKE_SOURCE_DIR}/cmake/Environment.cmake)
 
 # UGENE shell script
-file(COPY "${CMAKE_SOURCE_DIR}/etc/shared/ugene${UGENE_BUILD_MODE_SUFFIX}" DESTINATION "${CMAKE_BINARY_DIR}/dist")
+if (NOT WIN32)
+    file(COPY "${CMAKE_SOURCE_DIR}/etc/shared/ugene${UGENE_BUILD_MODE_SUFFIX}" DESTINATION "${CMAKE_BINARY_DIR}/dist")
+endif ()
