@@ -207,18 +207,25 @@ void UserApplicationsSettingsPageWidget::sl_updateState() {
         }
     };
 
-    if (styleCombo->currentText() == WINDOWS_VISTA_STYLE) {
-        removeItemFromComboBox(colorModeCombo, darkSign);
-        removeItemFromComboBox(colorModeCombo, autoSign);
-        errorLabel->setText(tr("Note: WindowsVista style is incompatible with Dark color mode. We suggest using Fusion"));
-    } else if (colorModeCombo->currentText() != lightSign) {
-        removeItemFromComboBox(styleCombo, WINDOWS_VISTA_STYLE);
-        errorLabel->setText("");
-    } else {
-        addItemToComboBox(colorModeCombo, darkSign);
-        addItemToComboBox(colorModeCombo, autoSign);
-        addItemToComboBox(styleCombo, WINDOWS_VISTA_STYLE);
-        errorLabel->setText("");
+
+    if (isOsWindows()) {
+        if (styleCombo->currentText() == WINDOWS_VISTA_STYLE) {
+            removeItemFromComboBox(colorModeCombo, darkSign);
+            if (StyleFactory::isDarkStyleAvaliable()) {
+                removeItemFromComboBox(colorModeCombo, autoSign);
+            }
+            errorLabel->setText(tr("Note: WindowsVista style is incompatible with Dark color mode. We suggest using Fusion"));
+        } else if (colorModeCombo->currentText() != lightSign) {
+            removeItemFromComboBox(styleCombo, WINDOWS_VISTA_STYLE);
+            errorLabel->setText("");
+        } else {
+            addItemToComboBox(colorModeCombo, darkSign);
+            if (StyleFactory::isDarkStyleAvaliable()) {
+                addItemToComboBox(colorModeCombo, autoSign);
+            }
+            addItemToComboBox(styleCombo, WINDOWS_VISTA_STYLE);
+            errorLabel->setText("");
+        }
     }
 }
 
