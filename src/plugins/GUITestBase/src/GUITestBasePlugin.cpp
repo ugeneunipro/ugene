@@ -2801,9 +2801,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/dark_mode/
     //////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST_WINDOWS(GUITest_common_scenarios_dark_mode::test_0001_win);
-    REGISTER_TEST_LINUX_AND_MAC(GUITest_common_scenarios_dark_mode::test_0001_not_win);
-
+    REGISTER_TEST(GUITest_common_scenarios_dark_mode::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_dark_mode::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_dark_mode::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_dark_mode::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_dark_mode::test_0005);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/document_from_text/
