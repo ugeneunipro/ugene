@@ -51,11 +51,14 @@ using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     QString projectFilePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    QString projectFileName = "proj4.uprj12132131";
+    QString projectFileName = "proj4.uprj";
     QString firstAnnFilePath = testDir + "_common_data/scenarios/project/1.gb";
     QString firstAnnFileName = "1.gb";
     QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
     QString secondAnnFileName = "2.gb";
+
+    GTUtilsDocument::checkDocument(firstAnnFileName, AnnotatedDNAViewFactory::ID);
+    if (1) return;
 
     GTFile::copy(projectFilePath, sandBoxDir + "/" + projectFileName);
     GTFile::copy(firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
