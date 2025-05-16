@@ -430,7 +430,7 @@ static QPair<QString, QStringList> getScreenRecorderApp(const QString& testName)
     } else if (isOsWindows()) {
         args = QString(R"(-f dshow -i video="UScreenCapture" -r 5)").split(" ") << videoFilePath;
     }
-    uiLog.trace("going to record video: ffmpeg" + args.join(" "));
+    uiLog.trace("going to record video: ffmpeg " + args.join(" "));
     return {"ffmpeg", args};
 }
 
@@ -486,6 +486,7 @@ QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, in
         }
         bool keepVideoFile = qgetenv("UGENE_TEST_KEEP_VIDEOS") == "1";
         if (!keepVideoFile && !GUITestTeamcityLogger::isTestFailed(testResult)) {
+            uiLog.trace("Removing video (test passed): " + getVideoPath(testName));
             QFile(getVideoPath(testName)).remove();
         }
     }
