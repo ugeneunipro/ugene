@@ -375,8 +375,8 @@ QProcessEnvironment GUITestLauncher::prepareTestRunEnvironment(const QString& te
 QString GUITestLauncher::runTest(const QString& testName, int timeoutMillis) {
     int maxReruns = qMax(qgetenv("UGENE_TEST_NUMBER_RERUN_FAILED_TEST").toInt(), 0);
     QString testOutput;
-    bool isVideoRecordingOn = qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
-    bool isVideoRecordingAlwaysOn = isVideoRecordingOn && qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING_ALL_ITERATIONS") == "1";
+    bool isVideoRecordingEnabled = qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
+    bool isVideoRecordingEnabledForAllIterations = qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING_ALL_ITERATIONS") == "1";
     for (int iteration = 0; iteration < 1 + maxReruns; iteration++) {
         if (iteration >= 1) {
             coreLog.error(QString("Re-running the test. Current re-run: %1, max re-runs: %2, check logs in: %3")
@@ -385,7 +385,8 @@ QString GUITestLauncher::runTest(const QString& testName, int timeoutMillis) {
                               .arg(testOutputDir));
         }
         U2OpStatusImpl os;
-        testOutput = runTestOnce(os, testName, iteration, timeoutMillis, isVideoRecordingOn && (isVideoRecordingAlwaysOn || iteration > 0));
+        bool isVideoRecordingOn = isVideoRecordingEnabled && (isVideoRecordingEnabledForAllIterations || iteration > 0);
+        testOutput = runTestOnce(os, testName, iteration, timeoutMillis, isVideoRecordingOn);
         bool isFailed = os.hasError() || GUITestTeamcityLogger::isTestFailed(testOutput);
         if (!isFailed) {
             break;
@@ -434,7 +435,7 @@ static QPair<QString, QStringList> getScreenRecorderApp(const QString& testName)
     return {"ffmpeg", args};
 }
 
-QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, int iteration, int timeout, bool enableVideoRecording) {
+QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, int iteration, int timeout, bool isVideoRecordingOn) {
     QProcessEnvironment environment = prepareTestRunEnvironment(testName, iteration);
 
     QString ugeneUiPath = QCoreApplication::applicationFilePath();
@@ -453,7 +454,7 @@ QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, in
     qint64 processId = process.processId();
 
     QProcess screenRecorderProcess;
-    if (enableVideoRecording) {
+    if (isVideoRecordingOn) {
         QPair<QString, QStringList> screenRecorderApp = getScreenRecorderApp(testName);
         screenRecorderProcess.start(screenRecorderApp.first, screenRecorderApp.second);
     }
@@ -477,7 +478,8 @@ QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, in
 
     QString testResult = readTestResult(process.readAllStandardOutput());
 
-    if (enableVideoRecording) {
+    if (isVideoRecordingOn) {
+        uiLog.trace("Video recorder log:\n" + screenRecorderProcess.readAllStandardError());
         screenRecorderProcess.close();
         bool isScreenRecorderFinished = screenRecorderProcess.waitForFinished(2000);
         if (!isScreenRecorderFinished) {

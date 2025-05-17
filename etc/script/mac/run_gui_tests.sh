@@ -28,6 +28,7 @@ export UGENE_SAVE_DATA_DIR="${TEAMCITY_WORK_DIR}/UGENE_Data"
 # ============== Environment for UGENE: all parameters must be exported
 # Disable crash handler
 export USE_CRASH_HANDLER=0
+
 export UGENE_SEND_CRASH_REPORTS=0
 export UGENE_GUI_TEST=1
 export UGENE_DEV=1
