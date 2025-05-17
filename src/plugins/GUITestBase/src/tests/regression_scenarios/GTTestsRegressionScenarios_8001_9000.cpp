@@ -272,9 +272,9 @@ GUI_TEST_CLASS_DEFINITION(test_8017) {
      * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
      * 2. Close view for sars.gb
      * 3. Right click on sequence object in sars.gb and add it to opened view
-     * 4. Open "Lock scales" menu 
+     * 4. Open "Lock scales" menu
      * Expected state: only "Lock scales: visible range start" item is active
-     * 5. Select any region for first sequence. Open "Lock scales" menu 
+     * 5. Select any region for first sequence. Open "Lock scales" menu
      * Expected state: "Lock scales: visible range start" and "Lock scales: selected sequence" items are active
      * 6. Select annotation for first sequence. Open "Lock scales" menu
      * Expected state: "Lock scales: visible range start" and "Lock scales: selected annotation" items are active
@@ -315,14 +315,14 @@ GUI_TEST_CLASS_DEFINITION(test_8017) {
     GTUtilsCv::commonCvBtn::click();
 
     QAbstractButton* lockScalesButton = qobject_cast<QAbstractButton*>(GTWidget::findWidget("Lock scales"));
-    QPoint menuActivationPoint = QPoint(lockScalesButton->size().width() - 6, lockScalesButton->size().height() / 2);  
+    QPoint menuActivationPoint = QPoint(lockScalesButton->size().width() - 6, lockScalesButton->size().height() / 2);
 
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuCheckerItemsEnabled({"Lock scales: visible range start"})));
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     GTUtilsSequenceView::selectSequenceRegion(2, 222);
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuCheckerItemsEnabled({"Lock scales: visible range start", "Lock scales: selected sequence"})));
-    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);  
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     GTUtilsAnnotationsTreeView::selectItems({GTUtilsAnnotationsTreeView::findItems("rRNA").first()});
 
@@ -1120,7 +1120,7 @@ GUI_TEST_CLASS_DEFINITION(test_8118) {
     CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 2084, QString("Unexpected text: slider position doesn't change after 'Go to'"));
 
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(5666));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);    
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
     CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 5724, QString("Unexpected text: slider position doesn't change after 'Go to'"));
 }
 
@@ -1178,7 +1178,7 @@ GUI_TEST_CLASS_DEFINITION(test_8136) {
 
     FindEnzymesDialogFillerSettings settings({"AasI"});
     settings.excludeRegionStart = 29;
-    settings.excludeRegionEnd = 100;    
+    settings.excludeRegionEnd = 100;
     GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTLogTracer lt;
@@ -1186,7 +1186,7 @@ GUI_TEST_CLASS_DEFINITION(test_8136) {
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 0, "Annoatated region counter doesn't match.");
     lt.checkMessage("The following enzymes were found, but skipped because they were found inside of the \"Uncut area\":");
-    
+
     class CheckErrorMessageBox : public CustomScenario {
     public:
         void run() override {
@@ -1201,7 +1201,7 @@ GUI_TEST_CLASS_DEFINITION(test_8136) {
     settings.searchRegionEnd = 31;
     settings.excludeRegionStart = 29;
     settings.excludeRegionEnd = 33;
-    
+
     GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
     CheckErrorMessageBox* scenario = new CheckErrorMessageBox();
     FindEnzymesDialogFiller* filler = new FindEnzymesDialogFiller(settings, scenario);

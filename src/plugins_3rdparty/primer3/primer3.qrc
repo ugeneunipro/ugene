@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="primer3/" >
-        <file>images/primer3.png</file>
+        <file>images/dark/primer3.png</file>
+
+        <file>images/light/primer3.png</file>
     </qresource>
 </RCC>

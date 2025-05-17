@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <U2Gui/GUIUtils.h>
+
 #include "U2Lang/QDScheme.h"
 #include "U2Lang/QueryDesignerRegistry.h"
 
@@ -53,7 +55,7 @@ class QDPrimerActorPrototype : public QDActorPrototype {
 public:
     QDPrimerActorPrototype();
     QIcon getIcon() const {
-        return QIcon(":primer3/images/primer3.png");
+        return GUIUtils::getIconResource("primer3", "primer3.png");
     }
     QDActor* createInstance() const {
         return new QDPrimerActor(this);

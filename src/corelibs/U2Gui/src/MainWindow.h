@@ -24,6 +24,7 @@
 #include <QEvent>
 #include <QWidget>
 
+#include <U2Core/IconParameters.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/ServiceTypes.h>
 #include <U2Core/global.h>
@@ -134,6 +135,13 @@ public:
     virtual void addNotification(const QString& message, NotificationType type) = 0;
 
     virtual void registerAction(QAction* action) = 0;
+
+    virtual bool isDarkMode() const = 0;
+
+    virtual void setNewStyle(const QString& style, int colorModeIndex) = 0;
+
+signals:
+    void si_colorModeSwitched();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -217,7 +225,7 @@ public:
         : QObject(p) {
     }
 
-    virtual QAction* registerDock(MWDockArea area, QWidget* w, const QKeySequence& ks = QKeySequence()) = 0;
+    virtual QAction* registerDock(MWDockArea area, QWidget* w, const IconParameters& iconParameters, const QKeySequence& ks = QKeySequence()) = 0;
 
     virtual QWidget* findWidget(const QString& widgetObjName) = 0;
 
@@ -228,6 +236,8 @@ public:
     virtual QWidget* toggleDock(const QString& widgetObjName) = 0;
 
     virtual void dontActivateNextTime(MWDockArea a) = 0;
+
+    virtual void colorModeSwitched(bool isDark) = 0;
 };
 
 }  // namespace U2

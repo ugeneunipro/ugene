@@ -151,11 +151,11 @@ void RichTextMsaClipboardTask::prepare() {
     SAFE_POINT(appSettings != nullptr, "RTFMSA entry storing: NULL settings object", );
 
     MsaColorSchemeRegistry* colorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QString colorSchemeId = al->getType() == DNAAlphabet_AMINO ? appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString() : appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
+    QString colorSchemeId = al->getType() == DNAAlphabet_AMINO ? appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO_LIGHT).toString() : appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL_LIGHT).toString();
 
     MsaColorSchemeFactory* colorSchemeFactory = colorSchemeRegistry->getSchemeFactoryById(colorSchemeId);
     if (colorSchemeFactory == nullptr) {
-        colorSchemeFactory = colorSchemeRegistry->getSchemeFactoryById(al->getType() == DNAAlphabet_AMINO ? MsaColorScheme::UGENE_AMINO : MsaColorScheme::UGENE_NUCL);
+        colorSchemeFactory = colorSchemeRegistry->getSchemeFactoryById(al->getType() == DNAAlphabet_AMINO ? MsaColorScheme::UGENE_AMINO_LIGHT : MsaColorScheme::UGENE_NUCL_LIGHT);
     }
     SAFE_POINT(colorSchemeFactory != nullptr, "RTFMSA entry storing: NULL MsaColorSchemeFactory object", );
     QSharedPointer<MsaColorScheme> colorScheme(colorSchemeFactory->create(this, maObject));

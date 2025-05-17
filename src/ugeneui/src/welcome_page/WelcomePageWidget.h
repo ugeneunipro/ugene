@@ -28,6 +28,8 @@
 
 namespace U2 {
 
+class HoverQLabel;
+
 class WelcomePageWidget : public QScrollArea {
     Q_OBJECT
 public:
@@ -49,6 +51,7 @@ private slots:
     void sl_openQuickStart();
 
     void sl_openRecentFile();
+    void sl_colorModeSwitched();
 
 private:
     void runAction(const QString& actionId);
@@ -57,8 +60,37 @@ private:
     QWidget* createMiddleWidget();
     QWidget* createFooterWidget();
 
+    QWidget* headerWidget = nullptr;
+    QLabel* topLevelWidgetLabel = nullptr;
+
+    QWidget* middleWidget = nullptr;
+    QWidget* middleRightWidget = nullptr;
+    HoverQLabel* openFilesButton = nullptr;
+    HoverQLabel* createSequenceButton = nullptr;
+    HoverQLabel* createWorkflowButton = nullptr;
+    HoverQLabel* quickStartButton = nullptr;
+    QLabel* recentHeaderLabel = nullptr;
+    QLabel* recentProjectsLabel = nullptr;
+
+    QWidget* footerWidget = nullptr;
+    QWidget* footerStrippedLineWidget = nullptr;
+    QWidget* footerBottomWidget = nullptr;
+    QLabel* footerSupportLabel = nullptr;
+
     QVBoxLayout* recentFilesLayout = nullptr;
     QVBoxLayout* recentProjectsLayout = nullptr;
+
+    static const QString BACKGROUND_QLINEARGRADIENT;
+    static const QString PADDING_LEFT;
+    static const QString NORMAL_STYLE;
+    static const QString HOVERED_STYLE;
+    static const QString MIDDLE_RIGHT_WIDGET;
+    static const QString RECENT_HEADER_STYLE;
+    static const QString BACKGROUND_COLOR;
+    static const QString BACKGROUND_URL;
+    static const QString COLOR_FONT_SIZE;
+    static const QString FOOTER_SUPPORT_LABEL_STRING;
+    static const QString RECENT_ITEM_STYLE;
 };
 
 }  // namespace U2

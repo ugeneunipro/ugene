@@ -30,7 +30,6 @@
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/WorkflowRunTask.h>
-#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 namespace Workflow {

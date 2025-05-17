@@ -33,10 +33,13 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/ScriptingToolRegistry.h>
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GroupedComboBoxDelegate.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
@@ -56,11 +59,11 @@ namespace U2 {
 /**********************************************/
 
 #ifdef Q_OS_DARWIN
-const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -5px; margin-bottom: -5px; margin-top: -5px; font-size: 20pt; padding-bottom: 10px; color: #0c3762}";
+const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -5px; margin-bottom: -5px; margin-top: -5px; font-size: 20pt; padding-bottom: 10px; color: %1}";
 #elif defined Q_OS_LINUX
-const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -6px; font-size: 16pt; padding-bottom: 5px; color: #0c3762}";
+const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -6px; font-size: 16pt; padding-bottom: 5px; color: %1}";
 #else
-const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -6px; margin-bottom: -5px; margin-top: -5px; font-size: 16pt; padding-bottom: 10px; color: #0c3762}";
+const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -6px; margin-bottom: -5px; margin-top: -5px; font-size: 16pt; padding-bottom: 10px; color: %1}";
 #endif
 
 const QString CreateCmdlineBasedWorkerWizard::ATTRIBUTES_DATA_FIELD = "attributes-data";
@@ -288,7 +291,7 @@ CreateCmdlineBasedWorkerWizardGeneralSettingsPage::CreateCmdlineBasedWorkerWizar
     cbIntegratedTools->setObjectName("cbIntegratedTools");
     containerLayout->addWidget(cbIntegratedTools);
 
-    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET.arg(Theme::wdWizardTopicColorStr()));
     leName->setValidator(new QRegularExpressionValidator(WorkflowEntityValidator::ACCEPTABLE_NAME, leName));
 
     connect(leToolPath, SIGNAL(textChanged(const QString&)), SIGNAL(completeChanged()));
@@ -402,7 +405,7 @@ CreateCmdlineBasedWorkerWizardInputDataPage::CreateCmdlineBasedWorkerWizardInput
       initialConfig(_initialConfig) {
     setupUi(this);
 
-    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET.arg(Theme::wdWizardTopicColorStr()));
 
     connect(pbAddInput, SIGNAL(clicked()), SLOT(sl_addInput()));
     connect(pbAddInput, SIGNAL(clicked()), tvInput, SLOT(setFocus()));
@@ -488,7 +491,7 @@ CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardPara
       initialConfig(_initialConfig) {
     setupUi(this);
 
-    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET.arg(Theme::wdWizardTopicColorStr()));
 
     connect(pbAdd, SIGNAL(clicked()), SLOT(sl_addAttribute()));
     connect(pbAdd, SIGNAL(clicked()), tvAttributes, SLOT(setFocus()));
@@ -610,7 +613,7 @@ CreateCmdlineBasedWorkerWizardOutputDataPage::CreateCmdlineBasedWorkerWizardOutp
       initialConfig(_initialConfig) {
     setupUi(this);
 
-    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET.arg(Theme::wdWizardTopicColorStr()));
 
     connect(pbAddOutput, SIGNAL(clicked()), SLOT(sl_addOutput()));
     connect(pbAddOutput, SIGNAL(clicked()), tvOutput, SLOT(setFocus()));
@@ -719,7 +722,7 @@ CreateCmdlineBasedWorkerWizardCommandPage::CreateCmdlineBasedWorkerWizardCommand
       initialConfig(_initialConfig) {
     setupUi(this);
 
-    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET.arg(Theme::wdWizardTopicColorStr()));
 
     teCommand->setWordWrapMode(QTextOption::WrapAnywhere);
     teCommand->document()->setDefaultStyleSheet("span { white-space: pre-wrap; }");
@@ -833,7 +836,7 @@ CreateCmdlineBasedWorkerWizardElementAppearancePage::CreateCmdlineBasedWorkerWiz
       initialConfig(_initialConfig) {
     setupUi(this);
 
-    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET.arg(Theme::wdWizardTopicColorStr()));
 
     new CommandValidator(tePrompter);
     new CommandValidator(teDescription);
@@ -856,7 +859,7 @@ CreateCmdlineBasedWorkerWizardSummaryPage::CreateCmdlineBasedWorkerWizardSummary
     : QWizardPage(nullptr) {
     setupUi(this);
 
-    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET.arg(Theme::wdWizardTopicColorStr()));
     QColor backGroundColor = palette().color(QPalette::Window);
     lblNameValue->setStyleSheet("background-color:" + backGroundColor.name() + ";");
     lblPrompterValue->setStyleSheet("background-color:" + backGroundColor.name() + ";");

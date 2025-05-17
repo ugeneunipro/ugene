@@ -29,6 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -73,6 +74,12 @@ void MsaGeneralTab::sl_convertNucleicAlphabetButtonClicked() {
     }
 }
 
+void MsaGeneralTab::sl_colorModeSwitched() {
+    QIcon icon(GUIUtils::getIconResource("core", "goto.png"));
+    convertNucleicAlphabetButton->setIcon(icon);
+    convertAminoAlphabetButton->setIcon(icon);
+}
+
 void MsaGeneralTab::sl_alignmentChanged() {
     updateState();
 }
@@ -104,6 +111,8 @@ void MsaGeneralTab::connectSignals() {
         reInitializeParameters();
         updateState();
     });
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaGeneralTab::sl_colorModeSwitched);
 }
 
 void MsaGeneralTab::reInitializeParameters() {
@@ -146,6 +155,10 @@ void MsaGeneralTab::initializeParameters() {
 
     QString currentCopyFormattedID = msaEditor->getLineWidget(0)->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
+
+    QIcon icon(GUIUtils::getIconResource("core", "goto.png"));
+    convertNucleicAlphabetButton->setIcon(icon);
+    convertAminoAlphabetButton->setIcon(icon);
 }
 
 void MsaGeneralTab::updateState() {
