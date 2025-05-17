@@ -308,7 +308,7 @@ void ChromatogramView::sl_onAddExistingSequenceObject() {
             indexOfChangedChars.clear();
         } else if (go->getGObjectType() == GObjectTypes::UNLOADED) {
             auto t = new LoadUnloadedDocumentTask(go->getDocument(),
-                                                                       LoadDocumentTaskConfig(false, GObjectReference(go)));
+                                                  LoadDocumentTaskConfig(false, GObjectReference(go)));
             connect(new TaskSignalMapper(t), SIGNAL(si_taskSucceeded(Task*)), SLOT(sl_onSequenceObjectLoaded(Task*)));
             AppContext::getTaskScheduler()->registerTopLevelTask(t);
         }
@@ -429,11 +429,9 @@ ChromatogramViewRenderArea::ChromatogramViewRenderArea(ChromatogramView* p, cons
     charWidth = fm.horizontalAdvance('W');
     charHeight = fm.ascent();
     heightPD = height();
-    heightAreaBC = 50;
     areaHeight = height() - heightAreaBC;
 
     chromatogram = _chroma;
-    chromaMax = 0;
     for (int i = 0; i < chromatogram->traceLength; i++) {
         if (chromaMax < chromatogram->A[i]) {
             chromaMax = chromatogram->A[i];
@@ -458,19 +456,17 @@ ChromatogramViewRenderArea::ChromatogramViewRenderArea(ChromatogramView* p, cons
     }
 }
 
-ChromatogramViewRenderArea::~ChromatogramViewRenderArea() {
-}
+static const QList<QColor> colors = {Qt::darkGreen, Qt::blue, Qt::black, Qt::red};
+static const QList<QString> bases = {"A", "C", "G", "T"};
 
 void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
-    static const QColor colorForIds[4] = {Qt::darkGreen, Qt::blue, Qt::black, Qt::red};
-    static const QString baseForIds[4] = {"A", "C", "G", "T"};
     static const qreal dividerTraceOrBaseCallsLines = 2;
     static const qreal dividerBoolShowBaseCallsChars = 1.5;
 
     auto chromaView = qobject_cast<ChromatogramView*>(view);
 
     const U2Region& visible = view->getVisibleRange();
-    assert(!visible.isEmpty());
+    SAFE_POINT(!visible.isEmpty(), "Visible region is empty", );
 
     SequenceObjectContext* seqCtx = view->getSequenceContext();
     U2OpStatusImpl os;
@@ -497,15 +493,22 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
                 drawQualityValues(0, charHeight, width(), heightAreaBC - 2 * charHeight, p, visible, seq);
             }
         } else {
+            // Draw legend.
             QRectF rect(charWidth, 0, width() - 2 * charWidth, 2 * charHeight);
             p.drawText(rect, Qt::AlignCenter, QString(tr("Chromatogram view (zoom in to see base calls)")));
-            qreal curCP = width() - charWidth;
+            int legendRectHeight = int(0.75 * charHeight);
+            int legendRectWidth = int(0.41 * charWidth);
+            int legendCharToRectPadding = int(charWidth / 2);
+            int legendCharToCharPadding = int(charWidth);
+            int legendX = int(width() - 4 * charWidth - 4 * legendRectWidth - 4 * legendCharToRectPadding - 3 * legendCharToCharPadding - 20);
+            int legendY = heightAreaBC - int(charHeight);
+            p.setPen(Qt::black);
             for (int i = 0; i < 4; ++i) {
-                curCP -= 2 * charWidth;
-                p.setPen(colorForIds[i]);
-                p.drawRect(int(curCP + charWidth / 6), int(heightAreaBC - charHeight), int(charWidth / 2), -int(charHeight / 2));
-                p.setPen(Qt::black);
-                p.drawText(int(curCP + charWidth), int(heightAreaBC - charHeight), baseForIds[i]);
+                p.fillRect(legendX, legendY - (charHeight - legendRectHeight) / 2, legendRectWidth, -legendRectHeight, colors[i]);
+                legendX += legendRectWidth + legendCharToRectPadding;
+                p.drawText(legendX, legendY, charWidth, -charHeight, Qt::AlignCenter, bases[i]);
+                legendX += charWidth;
+                legendX += legendCharToCharPadding;
             }
         }
         if (pd->width() / charWidth > visible.length / dividerTraceOrBaseCallsLines) {
@@ -531,7 +534,6 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
     const QVector<U2Region>& sel = seqCtx->getSequenceSelection()->getSelectedRegions();
     if (!sel.isEmpty()) {
         // draw current selection
-        // selection base on trace transform coef
         QPen linePenSelection(Qt::darkGray, 1, Qt::SolidLine);
         p.setPen(linePenSelection);
         p.setRenderHint(QPainter::Antialiasing, false);
@@ -602,21 +604,10 @@ void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w
         // nothing to draw
         return;
     }
-    // founding problems
 
-    // areaHeight how to define startValue?
-    // colorForIds to private members
-    static const QColor colorForIds[4] = {
-        Qt::darkGreen, Qt::blue, Qt::black, Qt::red};
     p.setRenderHint(QPainter::Antialiasing, true);
     p.resetTransform();
     p.translate(x, y + h);
-
-    // drawBoundingRect
-    /*  p.drawLine(0,0,w,0);
-    p.drawLine(0,-h,w,-h);
-    p.drawLine(0,0,0,-h);
-    p.drawLine(w,0,w,-h);*/
 
     int a1 = chromatogram->baseCalls[visible.startPos];
     int a2 = chromatogram->baseCalls[visible.endPos() - 1];
@@ -644,19 +635,19 @@ void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w
         polylineT[j - a1 + mk1] = QPointF(lineX, yT);
     }
     if (settings.drawTraceA) {
-        p.setPen(colorForIds[0]);
+        p.setPen(colors[0]);
         p.drawPolyline(polylineA);
     }
     if (settings.drawTraceC) {
-        p.setPen(colorForIds[1]);
+        p.setPen(colors[1]);
         p.drawPolyline(polylineC);
     }
     if (settings.drawTraceG) {
-        p.setPen(colorForIds[2]);
+        p.setPen(colors[2]);
         p.drawPolyline(polylineG);
     }
     if (settings.drawTraceT) {
-        p.setPen(colorForIds[3]);
+        p.setPen(colors[3]);
         p.drawPolyline(polylineT);
     }
     p.resetTransform();
@@ -768,8 +759,6 @@ void ChromatogramViewRenderArea::drawQualityValues(qreal x, qreal y, qreal w, qr
 }
 
 void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba, const ChromatogramViewSettings& settings) {
-    static const QColor colorForIds[4] = {
-        Qt::darkGreen, Qt::blue, Qt::black, Qt::red};
     p.setRenderHint(QPainter::Antialiasing, false);
     p.resetTransform();
     p.translate(x, y + h);
@@ -801,22 +790,22 @@ void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y
         switch (ba[j]) {
             case 'A':
                 yRes = -qMin(chromatogram->A[temp] * areaHeight / chromaMax, h);
-                p.setPen(colorForIds[0]);
+                p.setPen(colors[0]);
                 drawBase = settings.drawTraceA;
                 break;
             case 'C':
                 yRes = -qMin(chromatogram->C[temp] * areaHeight / chromaMax, h);
-                p.setPen(colorForIds[1]);
+                p.setPen(colors[1]);
                 drawBase = settings.drawTraceC;
                 break;
             case 'G':
                 yRes = -qMin(chromatogram->G[temp] * areaHeight / chromaMax, h);
-                p.setPen(colorForIds[2]);
+                p.setPen(colors[2]);
                 drawBase = settings.drawTraceG;
                 break;
             case 'T':
                 yRes = -qMin(chromatogram->T[temp] * areaHeight / chromaMax, h);
-                p.setPen(colorForIds[3]);
+                p.setPen(colors[3]);
                 drawBase = settings.drawTraceT;
                 break;
             case 'N':
