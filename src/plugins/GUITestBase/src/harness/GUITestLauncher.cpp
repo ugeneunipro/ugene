@@ -415,7 +415,7 @@ QString getVideoPath(const QString& testName) {
 }
 
 /** Returns screen recorder app executable (pair.first) and args (pair.second). */
-static QPair<QString, QStringList> getScreenRecorderApp(const QString& testName) {
+static QPair<QString, QStringList> getScreenRecorderCommand(const QString& testName) {
     QString videoFilePath = getVideoPath(testName);
     QStringList args;
     if (isOsLinux()) {
@@ -455,8 +455,19 @@ QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, in
 
     QProcess screenRecorderProcess;
     if (isVideoRecordingOn) {
-        QPair<QString, QStringList> screenRecorderApp = getScreenRecorderApp(testName);
-        screenRecorderProcess.start(screenRecorderApp.first, screenRecorderApp.second);
+        QPair<QString, QStringList> screenRecorderCommand = getScreenRecorderCommand(testName);
+        screenRecorderProcess.start(screenRecorderCommand.first, screenRecorderCommand.second);
+
+        screenRecorderProcess.setProcessChannelMode(QProcess::SeparateChannels);
+        connect(&screenRecorderProcess, &QProcess::readyReadStandardError, [&]() {
+            QByteArray errorData = screenRecorderProcess.readAllStandardError();
+            uiLog.error(QString("FFmpeg Error: %1").arg(errorData.constData()));
+        });
+        connect(&screenRecorderProcess, static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), [](int exitCode, QProcess::ExitStatus exitStatus) {
+            if (exitStatus != QProcess::NormalExit || exitCode != 0) {
+                uiLog.error(QString("FFmpeg process failed with code %1 and status %2").arg(exitCode).arg(static_cast<int>(exitStatus)));
+            }
+        });
     }
 
     bool isStarted = process.waitForStarted();
@@ -479,13 +490,13 @@ QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, in
     QString testResult = readTestResult(process.readAllStandardOutput());
 
     if (isVideoRecordingOn) {
-        uiLog.trace("Video recorder log:\n" + screenRecorderProcess.readAllStandardError());
         screenRecorderProcess.close();
         bool isScreenRecorderFinished = screenRecorderProcess.waitForFinished(2000);
         if (!isScreenRecorderFinished) {
             screenRecorderProcess.kill();
             screenRecorderProcess.waitForFinished(2000);
         }
+        uiLog.trace("Video recorder log:\n" + screenRecorderProcess.readAllStandardError());
         bool keepVideoFile = qgetenv("UGENE_TEST_KEEP_VIDEOS") == "1";
         if (!keepVideoFile && !GUITestTeamcityLogger::isTestFailed(testResult)) {
             uiLog.trace("Removing video (test passed): " + getVideoPath(testName));
