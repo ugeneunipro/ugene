@@ -424,23 +424,34 @@ bool OverviewRenderArea::isGraphVisible() const {
 void OverviewRenderArea::setAnnotationsOnPos() {
     annotationsOnPos.clear();
     const SequenceObjectContext* ctx = view->getSequenceContext();
-    const qint64 len = ctx->getSequenceLength();
+    int len = width() + 1;
     annotationsOnPos.resize(len);
 
-    const U2Region sequenceRange(0, ctx->getSequenceObject()->getSequenceLength());
+    const U2Region sequenceRange(0, ctx->getSequenceLength());
     AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
     QSet<AnnotationTableObject*> aObjs = ctx->getAnnotationObjects(true);
 
     for (AnnotationTableObject* at : qAsConst(aObjs)) {
-        foreach (Annotation* a, at->getAnnotations()) {
+        auto annotations = at->getAnnotations();
+        for (Annotation* a : qAsConst(annotations)) {
             const SharedAnnotationData& ad = a->getData();
             const AnnotationSettings* as = asr->getAnnotationSettings(ad);
             if (as->visible) {
                 QVector<U2Region> regions = ad->getRegions();
                 for (const U2Region& r : qAsConst(regions)) {
                     const U2Region innerRegion = r.intersect(sequenceRange);
+                    QVector<bool> countedPos(len, false);
                     for (qint64 i = innerRegion.startPos; i < innerRegion.endPos(); i++) {
-                        annotationsOnPos[i]++;
+                        int coord = posToCoord(i);
+                        // Two annotations positions could have only one screen point
+                        // This prevents double-counting
+                        CHECK_CONTINUE(!countedPos[coord]);
+
+                        int endCoord = qBound(0, posToCoord(i + 1), len);
+                        for (int j = coord; j < endCoord; j++) {
+                            annotationsOnPos[j]++;
+                            countedPos[j] = true;
+                        }
                     }
                 }
             }
@@ -565,23 +576,8 @@ void OverviewRenderArea::drawGraph(QPainter& p) {
     graphPen.setWidth(1);
     p.fillRect(0, 0, width() - PEN_WIDTH, ANNOTATION_GRAPH_HEIGHT - PEN_WIDTH, Qt::white);
 
-    int halfChar = getCurrentScale() / 2;
     for (int x = 0; x < width(); x++) {
-        int count;
-        qint64 pos1 = coordXToPos(x + halfChar);
-        if (pos1 < 1 || pos1 > annotationsOnPos.size() + 1) {
-            continue;
-        }
-        if (coordXToPos(x + 1) > pos1) {
-            count = annotationsOnPos.at(pos1 - 1);
-        } else {
-            qint64 pos2 = coordXToPos(x) - 1;
-            count = annotationsOnPos.at(pos1 - 1);
-            for (int pos = pos1; pos < pos2; pos++) {
-                int nextCount = annotationsOnPos.at(pos - 1);
-                count = qMax(count, nextCount);
-            }
-        }
+        int count = annotationsOnPos.at(x);
         QColor col = getUnitColor(count);
         graphPen.setColor(col);
         p.setPen(graphPen);
