@@ -6,4 +6,4 @@ if [[ -z "$OUTPUT_PATH" ]]; then
   exit 1
 fi
 
-ssh localhost "ffmpeg -f avfoundation -r 5 -i ':0' \"${OUTPUT_PATH}\""
+ssh localhost "/usr/local/bin/ffmpeg -f avfoundation -r 5 -i ':0' \"${OUTPUT_PATH}\""
