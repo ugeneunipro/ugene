@@ -111,7 +111,6 @@ class ChromatogramViewRenderArea : public GSequenceLineViewRenderArea {
     Q_OBJECT
 public:
     ChromatogramViewRenderArea(ChromatogramView* p, const Chromatogram& chroma);
-    ~ChromatogramViewRenderArea();
 
     int getHeightAreaBC() const {
         return heightAreaBC;
@@ -140,12 +139,13 @@ private:
     void drawChromatogramBaseCallsLines(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba, const ChromatogramViewSettings& settings);
 
     Chromatogram chromatogram;
-    int chromaMax;
+    /** Maximum signal value in the chromatogram. */
+    int chromaMax = 0;
     QPen linePen;
     QFont font;
     QFont fontBold;
     int heightPD;
-    int heightAreaBC;
+    const int heightAreaBC = 50;
     int areaHeight;
     qreal kLinearTransformTrace;
     qreal bLinearTransformTrace;

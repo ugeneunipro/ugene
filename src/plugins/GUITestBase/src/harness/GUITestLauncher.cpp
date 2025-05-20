@@ -426,7 +426,7 @@ static QPair<QString, QStringList> getScreenRecorderApp(const QString& testName)
         QString display = qgetenv("DISPLAY");
         args << QString("-video_size %1x%2 -framerate 5 -f x11grab -i %3.0").arg(width).arg(height).arg(display).split(" ") << videoFilePath;
     } else if (isOsMac()) {
-        args << QString(R"(-f avfoundation -r 5 -i "0:none")").split(" ") << videoFilePath;
+        args << QString(R"(-f avfoundation -r 5 -i ":0")").split(" ") << videoFilePath;
     } else if (isOsWindows()) {
         args = QString(R"(-f dshow -i video="UScreenCapture" -r 5)").split(" ") << videoFilePath;
     }
