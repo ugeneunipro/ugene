@@ -443,7 +443,7 @@ void OverviewRenderArea::setAnnotationsOnPos() {
                     int innerRegionStartPosCoord = posToCoord(innerRegion.startPos);
                     int innerRegionEndPosCoord = posToCoord(innerRegion.endPos());
                     for (int i = innerRegionStartPosCoord; i < innerRegionEndPosCoord; i++) {
-                        annotationsOnPos[posToCoord(i)]++;
+                        annotationsOnPos[i]++;
                     }
                 }
             }
