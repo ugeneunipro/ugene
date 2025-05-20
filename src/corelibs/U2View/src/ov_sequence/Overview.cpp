@@ -440,18 +440,10 @@ void OverviewRenderArea::setAnnotationsOnPos() {
                 QVector<U2Region> regions = ad->getRegions();
                 for (const U2Region& r : qAsConst(regions)) {
                     const U2Region innerRegion = r.intersect(sequenceRange);
-                    QVector<bool> countedPos(len, false);
-                    for (qint64 i = innerRegion.startPos; i < innerRegion.endPos(); i++) {
-                        int coord = posToCoord(i);
-                        // Two annotations positions could have only one screen point
-                        // This prevents double-counting
-                        CHECK_CONTINUE(!countedPos[coord]);
-
-                        int endCoord = qBound(0, posToCoord(i + 1), len);
-                        for (int j = coord; j < endCoord; j++) {
-                            annotationsOnPos[j]++;
-                            countedPos[j] = true;
-                        }
+                    int innerRegionStartPosCoord = posToCoord(innerRegion.startPos);
+                    int innerRegionEndPosCoord = posToCoord(innerRegion.endPos());
+                    for (int i = innerRegionStartPosCoord; i < innerRegionEndPosCoord; i++) {
+                        annotationsOnPos[posToCoord(i)]++;
                     }
                 }
             }

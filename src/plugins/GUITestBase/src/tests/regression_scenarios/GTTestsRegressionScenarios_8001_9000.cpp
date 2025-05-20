@@ -1290,6 +1290,7 @@ GUI_TEST_CLASS_DEFINITION(test_8159) {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             GTSpinBox::setValue("lengthSpin", 600000000, dialog);
+            GTRadioButton::click("baseContentRadioButton", dialog);
             GTLineEdit::setText("outputEdit", sandBoxDir + "test_8159.ugenedb", dialog, true);
 
             GTWidget::click(GTWidget::findButtonByText("Generate", dialog));
