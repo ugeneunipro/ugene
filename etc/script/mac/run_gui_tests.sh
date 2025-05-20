@@ -75,7 +75,7 @@ export UGENE_DATA_PATH="${UGENE_DIR}/data/"
 export UGENE_SAVE_DATA_DIR="${UGENE_SAVE_DATA_DIR}"
 export UGENE_SNPEFF_DB_LIST="${UGENE_SAVE_DATA_DIR}/SnpEff_DB.list"
 export UGENE_PRIMER_LIBRARY_PATH="${UGENE_SAVE_DATA_DIR}/primer_library.ugenedb"
-export UGENE_VIDEO_RECORDER_COMMAND="${SOURCE_DIR}/etc/mac/run_video_recorder.sh"
+export UGENE_VIDEO_RECORDER_COMMAND="${SOURCE_DIR}/etc/script/mac/run_video_recorder.sh"
 
 "${UGENE_DIR}/ugeneui" --ini-file="${UGENE_MASTER_USER_INI}" --gui-test-suite="${UGENE_GUI_TEST_SUITE}" | tee "output.txt"
 
