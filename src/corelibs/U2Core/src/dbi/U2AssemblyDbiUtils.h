@@ -29,8 +29,9 @@ namespace U2 {
 
 class U2CORE_EXPORT U2AssemblyDbiUtils {
 public:    
-    //calculates min distance for reads in given region, from start to leftmost read
-    static qint64 calculateLeftShiftForReadsInRegion(U2AssemblyDbi* srcAssemblyDbi, U2DataId srcObjId, const U2Region& desiredRegion, U2OpStatus& os);
+    //calculates min distance for reads in given region, from start to leftmost read and leength between leftmost and rightmost longest reads
+    static QPair<qint64, qint64> calculateLeftShiftAndLength(U2AssemblyDbi* srcAssemblyDbi, U2DataId srcObjId, 
+                                                                                const U2Region& desiredRegion, U2OpStatus& os);
 };
 
 }

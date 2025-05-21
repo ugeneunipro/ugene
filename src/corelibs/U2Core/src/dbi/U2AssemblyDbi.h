@@ -73,7 +73,7 @@ public:
     U2AssemblyPackStat packStat;
 
     /** Left shit for imported reads */
-    quint64 leftShift = 0;
+    qint64 leftShift = 0;
 
     U2AssemblyCoverageImportInfo coverageInfo;
 

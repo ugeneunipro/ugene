@@ -475,13 +475,19 @@ static qint64 getSequenceLength(U2Dbi* dbi, const U2DataId& objectId, U2OpStatus
     return seqLength;
 }
 
-static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, U2OpStatus& os) {
+static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, QList<qint64> objectLengths, U2OpStatus& os) {
     CHECK_EXT(header != nullptr, os.setError("NULL header"), );
 
     header->n_targets = objects.size();
     header->target_name = new char*[header->n_targets];
+    header->target_len = new uint32_t[header->n_targets];
+
+    QByteArray headerText;
+    headerText += "@HD\tVN:1.4\tSO:coordinate\n";
+
     int objIdx = 0;
     for (GObject* obj : qAsConst(objects)) {
+        const qint64 seqLength = objectLengths.at(objIdx);
         QByteArray seqName = obj->getGObjectName().toLatin1();
         header->target_name[objIdx] = new char[seqName.length() + 1];
         {
@@ -489,7 +495,16 @@ static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, U2Op
             qstrncpy(name, seqName.constData(), seqName.length() + 1);
             name[seqName.length()] = 0;
         }
+        header->target_len[objIdx] = seqLength;
+        headerText += QString("@SQ\tSN:%1\tLN:%2\n").arg(seqName.constData()).arg(seqLength).toUtf8();
         objIdx++;
+    }
+
+    if (headerText.length() > 0) {
+        header->text = new char[headerText.length() + 1];
+        qstrncpy(header->text, headerText.constData(), headerText.length() + 1);
+        header->text[headerText.length()] = 0;
+        header->l_text = headerText.length();
     }
 }
 
@@ -546,27 +561,27 @@ static void writeObjectsWithSamtools(samFile* out, const QList<GObject*>& object
         U2Region region(0, dbi->getMaxEndPos(assemblyId, os) + 1);
         if (desiredRegion != U2_REGION_MAX) {
             region = desiredRegion;
-            overrideLengths.append(region.length);
-        } else {
-            overrideLengths.append(getSequenceLength(con.dbi, obj->getEntityRef().entityId, os));
-            CHECK_OP(os, );
         }
-        const qint64 leftShift = U2AssemblyDbiUtils::calculateLeftShiftForReadsInRegion(dbi, assemblyId, desiredRegion, os);
+        const QPair<qint64, qint64>shiftAndLngths = U2AssemblyDbiUtils::calculateLeftShiftAndLength(dbi, assemblyId, desiredRegion, os);
         CHECK_OP(os, );
-        leftShifts.append(leftShift);
+        leftShifts.append(shiftAndLngths.first);
+        overrideLengths.append(shiftAndLngths.second);
     }
 
     bam_hdr_t* header = bam_hdr_init();
-    createHeader(header, objects, os);
+    createHeader(header, objects, overrideLengths, os);
     CHECK_OP_EXT(os, bam_hdr_destroy(header), )
 
     out->bam_header = header;
 
     if (isBinary) {
-        updateHeaderSeqLengthsAndText(header, objects, overrideLengths, os);
         out->is_bin = 1;
         bam_hdr_write(out->fp.bgzf, out->bam_header);
+    } else {
+        out->is_bin = 0;
+        sam_hdr_write(out, out->bam_header);
     }
+
     int idx = 0;
     for (auto obj : qAsConst(objects)) {
         auto assemblyObj = dynamic_cast<AssemblyObject*>(obj);
@@ -585,26 +600,16 @@ static void writeObjectsWithSamtools(samFile* out, const QList<GObject*>& object
         U2DbiIterator<U2AssemblyRead>* iter = dbi->getReads(assemblyObj->getEntityRef().entityId, desiredRegion, os, true, true);
         CHECK_OP(os, );
         QScopedPointer<U2DbiIterator<U2AssemblyRead>> iterPtr(iter);
-        qint64 maxAssemblyLength = 0;
         while (iter->hasNext()) {
             U2AssemblyRead r = iter->next();
             r->leftmostPos -= leftShifts[idx];
             SamtoolsAdapter::read2samtools(r, ctx, os, *read);
             CHECK_OP_EXT(os, bam_destroy1(read), );
             sam_write1(out, out->bam_header, read);
-            maxAssemblyLength = qMax(maxAssemblyLength, r->leftmostPos + r->effectiveLen);
         }
         bam_destroy1(read);
-        overrideLengths.append(maxAssemblyLength);
         idx++;
-    }
-    
-    if (!isBinary) {
-        updateHeaderSeqLengthsAndText(header, objects, overrideLengths, os);
-        CHECK_OP_EXT(os, bam_hdr_destroy(header), )
-        out->is_bin = 0;
-        sam_hdr_write(out, out->bam_header);
-    }    
+    }  
 }
 
 void BAMUtils::writeDocument(Document* doc, U2OpStatus& os) {

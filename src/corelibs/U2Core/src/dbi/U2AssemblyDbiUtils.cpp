@@ -25,19 +25,22 @@
 
 namespace U2 {
 
-qint64 U2AssemblyDbiUtils::calculateLeftShiftForReadsInRegion(U2AssemblyDbi* srcAssemblyDbi, U2DataId srcObjId, const U2Region& desiredRegion, U2OpStatus& os) {
+QPair<qint64, qint64> U2AssemblyDbiUtils::calculateLeftShiftAndLength(U2AssemblyDbi* srcAssemblyDbi, U2DataId srcObjId, 
+                                                                      const U2Region& desiredRegion, U2OpStatus& os) {
     QScopedPointer<U2DbiIterator<U2AssemblyRead>> iter(srcAssemblyDbi->getReads(srcObjId, desiredRegion, os, true, true));
-    CHECK_OP(os, 0);
-    CHECK(iter->hasNext(), 0);
+    const QPair<qint64, qint64> emptyResult(0, 0);
+    CHECK_OP(os, emptyResult);
+    CHECK(iter->hasNext(), emptyResult);
 
-    // calculate shift for received reads
     qint64 shiftValue = std::numeric_limits<qint64>::max();
+    qint64 maxLength = 0;
     while (iter->hasNext()) {
-        U2AssemblyRead read = iter->next();
-        CHECK_OP(os, 0);
+        const U2AssemblyRead read = iter->next();
+        CHECK_OP(os, emptyResult);
         shiftValue = qMin(read->leftmostPos, shiftValue);
+        maxLength = qMax(maxLength, read->leftmostPos + read->effectiveLen);
     }
-    return shiftValue;
+    return QPair<qint64, qint64>(shiftValue, maxLength - shiftValue);
 }
 
 }

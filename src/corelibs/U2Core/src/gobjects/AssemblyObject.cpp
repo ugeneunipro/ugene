@@ -163,7 +163,7 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject* const src
     U2Assembly assembly;
     assembly.visualName = srcObj->getGObjectName();
     CloneInfo info(readsCount, os);
-    info.leftShift = U2AssemblyDbiUtils::calculateLeftShiftForReadsInRegion(srcAssemblyDbi, srcObjId, desiredRegion, os);
+    info.leftShift = U2AssemblyDbiUtils::calculateLeftShiftAndLength(srcAssemblyDbi, srcObjId, desiredRegion, os).first;
     CHECK_OP(os, U2EntityRef());
 
     AssemblyImporter importer(os);
