@@ -28,9 +28,9 @@
 namespace U2 {
 
 class U2CORE_EXPORT U2AssemblyDbiUtils {
-public:
-    //returns reads from desired region shifted to leftmost possible position
-    static QList<U2AssemblyRead> getShiftedReadsToLeft(U2AssemblyDbi* srcAssemblyDbi, U2DataId srcObjId, const U2Region& desiredRegion, U2OpStatus& os);
+public:    
+    //calculates min distance for reads in given region, from start to leftmost read
+    static qint64 calculateLeftShiftForReadsInRegion(U2AssemblyDbi* srcAssemblyDbi, U2DataId srcObjId, const U2Region& desiredRegion, U2OpStatus& os);
 };
 
 }

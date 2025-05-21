@@ -25,24 +25,19 @@
 
 namespace U2 {
 
-QList<U2AssemblyRead> U2AssemblyDbiUtils::getShiftedReadsToLeft(U2AssemblyDbi* srcAssemblyDbi, U2DataId srcObjId, const U2Region& desiredRegion, U2OpStatus& os) {
-    QList<U2AssemblyRead> shiftedReadsList;
+qint64 U2AssemblyDbiUtils::calculateLeftShiftForReadsInRegion(U2AssemblyDbi* srcAssemblyDbi, U2DataId srcObjId, const U2Region& desiredRegion, U2OpStatus& os) {
     QScopedPointer<U2DbiIterator<U2AssemblyRead>> iter(srcAssemblyDbi->getReads(srcObjId, desiredRegion, os, true, true));
-    CHECK_OP(os, shiftedReadsList);
+    CHECK_OP(os, 0);
+    CHECK(iter->hasNext(), 0);
 
-    //calculate shift for received reads
+    // calculate shift for received reads
     qint64 shiftValue = std::numeric_limits<qint64>::max();
     while (iter->hasNext()) {
         U2AssemblyRead read = iter->next();
-        CHECK_OP(os, shiftedReadsList);
+        CHECK_OP(os, 0);
         shiftValue = qMin(read->leftmostPos, shiftValue);
-        shiftedReadsList.append(read);
     }
-    //apply shift
-    for (U2AssemblyRead& read : shiftedReadsList) {
-        read->leftmostPos -= shiftValue;
-    }
-    return shiftedReadsList;
+    return shiftValue;
 }
 
 }

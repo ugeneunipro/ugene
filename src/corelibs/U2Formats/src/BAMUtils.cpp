@@ -475,11 +475,26 @@ static qint64 getSequenceLength(U2Dbi* dbi, const U2DataId& objectId, U2OpStatus
     return seqLength;
 }
 
-static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, QList<qint64> objectLengths, U2OpStatus& os) {
+static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, U2OpStatus& os) {
     CHECK_EXT(header != nullptr, os.setError("NULL header"), );
 
     header->n_targets = objects.size();
     header->target_name = new char*[header->n_targets];
+    int objIdx = 0;
+    for (GObject* obj : qAsConst(objects)) {
+        QByteArray seqName = obj->getGObjectName().toLatin1();
+        header->target_name[objIdx] = new char[seqName.length() + 1];
+        {
+            char* name = header->target_name[objIdx];
+            qstrncpy(name, seqName.constData(), seqName.length() + 1);
+            name[seqName.length()] = 0;
+        }
+        objIdx++;
+    }
+}
+
+static void updateHeaderSeqLengthsAndText(bam_hdr_t* header, const QList<GObject*>& objects, QList<qint64> objectLengths, U2OpStatus& os) {
+    CHECK_EXT(header != nullptr, os.setError("NULL header"), );
     header->target_len = new uint32_t[header->n_targets];
 
     QByteArray headerText;
@@ -488,24 +503,16 @@ static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, QLis
     int objIdx = 0;
     for (GObject* obj : qAsConst(objects)) {
         const qint64 seqLength = objectLengths.at(objIdx);
-        QByteArray seqName = obj->getGObjectName().toLatin1();
-        header->target_name[objIdx] = new char[seqName.length() + 1];
-        {
-            char* name = header->target_name[objIdx];
-            qstrncpy(name, seqName.constData(), seqName.length() + 1);
-            name[seqName.length()] = 0;
-        }
         header->target_len[objIdx] = seqLength;
+        const QByteArray seqName = obj->getGObjectName().toLatin1();
         headerText += QString("@SQ\tSN:%1\tLN:%2\n").arg(seqName.constData()).arg(seqLength).toUtf8();
         objIdx++;
     }
 
-    if (headerText.length() > 0) {
-        header->text = new char[headerText.length() + 1];
-        qstrncpy(header->text, headerText.constData(), headerText.length() + 1);
-        header->text[headerText.length()] = 0;
-        header->l_text = headerText.length();
-    }
+    header->text = new char[headerText.length() + 1];
+    qstrncpy(header->text, headerText.constData(), headerText.length() + 1);
+    header->text[headerText.length()] = 0;
+    header->l_text = headerText.length();
 }
 
 static QMap<QString, int> getNumMap(const QList<GObject*>& objects, U2OpStatus& os) {
@@ -523,9 +530,8 @@ static QMap<QString, int> getNumMap(const QList<GObject*>& objects, U2OpStatus& 
 }
 
 static void writeObjectsWithSamtools(samFile* out, const QList<GObject*>& objects, U2OpStatus& os, const U2Region& desiredRegion, bool isBinary) {
-    QList<QList<U2AssemblyRead>> readsToWrite;
+    QList<qint64> leftShifts;
     QList<qint64> overrideLengths;
-    int objIdx = 0;
     for (auto obj : qAsConst(objects)) {
         auto assemblyObj = dynamic_cast<AssemblyObject*>(obj);
         SAFE_POINT_EXT(assemblyObj != nullptr, os.setError("NULL assembly object"), );
@@ -540,34 +546,28 @@ static void writeObjectsWithSamtools(samFile* out, const QList<GObject*>& object
         U2Region region(0, dbi->getMaxEndPos(assemblyId, os) + 1);
         if (desiredRegion != U2_REGION_MAX) {
             region = desiredRegion;
+            overrideLengths.append(region.length);
+        } else {
+            overrideLengths.append(getSequenceLength(con.dbi, obj->getEntityRef().entityId, os));
+            CHECK_OP(os, );
         }
-        const QList<U2AssemblyRead> shiftedReadsList = U2AssemblyDbiUtils::getShiftedReadsToLeft(dbi, assemblyId, region, os);
+        const qint64 leftShift = U2AssemblyDbiUtils::calculateLeftShiftForReadsInRegion(dbi, assemblyId, desiredRegion, os);
         CHECK_OP(os, );
-        readsToWrite.append(shiftedReadsList);
-        qint64 newLength = 0;
-        U2DbiIteratorOverList itToCount(shiftedReadsList);
-        while (itToCount.hasNext()) {
-            const U2AssemblyRead r = itToCount.next();
-            newLength = qMax(newLength, r->leftmostPos + r->effectiveLen);
-        }        
-        overrideLengths.append(newLength);
-    }
-    bam_hdr_t* header = bam_hdr_init();
-    createHeader(header, objects, overrideLengths, os);
-    if (os.isCoR()) {
-        bam_hdr_destroy(header);
-        return;
-    }
-    out->bam_header = header;
-    if (isBinary) {  // binary
-        out->is_bin = 1;
-        bam_hdr_write(out->fp.bgzf, out->bam_header);
-    } else {
-        out->is_bin = 0;
-        sam_hdr_write(out, out->bam_header);
+        leftShifts.append(leftShift);
     }
 
-    objIdx = 0;
+    bam_hdr_t* header = bam_hdr_init();
+    createHeader(header, objects, os);
+    CHECK_OP_EXT(os, bam_hdr_destroy(header), )
+
+    out->bam_header = header;
+
+    if (isBinary) {
+        updateHeaderSeqLengthsAndText(header, objects, overrideLengths, os);
+        out->is_bin = 1;
+        bam_hdr_write(out->fp.bgzf, out->bam_header);
+    }
+    int idx = 0;
     for (auto obj : qAsConst(objects)) {
         auto assemblyObj = dynamic_cast<AssemblyObject*>(obj);
         SAFE_POINT_EXT(assemblyObj != nullptr, os.setError("NULL assembly object"), );
@@ -575,15 +575,36 @@ static void writeObjectsWithSamtools(samFile* out, const QList<GObject*>& object
         ReadsContext ctx(assemblyObj->getGObjectName(), getNumMap(objects, os));
         CHECK_OP(os, );
         bam1_t* read = bam_init1();
-        U2DbiIteratorOverList itToWrite(readsToWrite.at(objIdx++));
-        while (itToWrite.hasNext()) {
-            U2AssemblyRead r = itToWrite.next();
+
+        DbiConnection con(assemblyObj->getEntityRef().dbiRef, os);
+        CHECK_OP(os, );
+
+        U2AssemblyDbi* dbi = con.dbi->getAssemblyDbi();
+        SAFE_POINT_EXT(dbi != nullptr, os.setError("NULL assembly DBI"), );
+
+        U2DbiIterator<U2AssemblyRead>* iter = dbi->getReads(assemblyObj->getEntityRef().entityId, desiredRegion, os, true, true);
+        CHECK_OP(os, );
+        QScopedPointer<U2DbiIterator<U2AssemblyRead>> iterPtr(iter);
+        qint64 maxAssemblyLength = 0;
+        while (iter->hasNext()) {
+            U2AssemblyRead r = iter->next();
+            r->leftmostPos -= leftShifts[idx];
             SamtoolsAdapter::read2samtools(r, ctx, os, *read);
             CHECK_OP_EXT(os, bam_destroy1(read), );
             sam_write1(out, out->bam_header, read);
+            maxAssemblyLength = qMax(maxAssemblyLength, r->leftmostPos + r->effectiveLen);
         }
         bam_destroy1(read);
+        overrideLengths.append(maxAssemblyLength);
+        idx++;
     }
+    
+    if (!isBinary) {
+        updateHeaderSeqLengthsAndText(header, objects, overrideLengths, os);
+        CHECK_OP_EXT(os, bam_hdr_destroy(header), )
+        out->is_bin = 0;
+        sam_hdr_write(out, out->bam_header);
+    }    
 }
 
 void BAMUtils::writeDocument(Document* doc, U2OpStatus& os) {

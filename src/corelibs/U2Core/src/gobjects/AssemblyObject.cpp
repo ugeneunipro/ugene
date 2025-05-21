@@ -157,16 +157,20 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject* const src
     // prepare reads
     CHECK_OP(os, U2EntityRef());
     qint64 readsCount = srcAssemblyDbi->countReads(srcObjId, desiredRegion, os);
-    const QList<U2AssemblyRead> shiftedReadsList = U2AssemblyDbiUtils::getShiftedReadsToLeft(srcAssemblyDbi, srcObjId, desiredRegion, os);
     CHECK_OP(os, U2EntityRef());
+
     // copy object
     U2Assembly assembly;
     assembly.visualName = srcObj->getGObjectName();
     CloneInfo info(readsCount, os);
+    info.leftShift = U2AssemblyDbiUtils::calculateLeftShiftForReadsInRegion(srcAssemblyDbi, srcObjId, desiredRegion, os);
+    CHECK_OP(os, U2EntityRef());
 
     AssemblyImporter importer(os);
-    U2DbiIteratorOverList it(shiftedReadsList);
-    importer.createAssembly(dstDbiRef, dstFolder, &it, info, assembly);
+    U2DbiIterator<U2AssemblyRead>* iter = srcAssemblyDbi->getReads(srcObjId, desiredRegion, os, true, true);
+    CHECK_OP(os, U2EntityRef());
+    QScopedPointer<U2DbiIterator<U2AssemblyRead>> iterPtr(iter);
+    importer.createAssembly(dstDbiRef, dstFolder, iter, info, assembly);
     CHECK_OP(os, U2EntityRef());
 
     // copy attributes

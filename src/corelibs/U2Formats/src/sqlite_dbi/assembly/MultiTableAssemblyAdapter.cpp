@@ -433,6 +433,7 @@ void MultiTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead>* it, U2As
             int readLen = read->readSequence.length();
             read->effectiveLen = readLen + U2AssemblyUtils::getCigarExtraLength(read->cigar);
             int elenPos = getElenRangePosByLength(read->effectiveLen);
+            read->leftmostPos -= ii.leftShift;
 
             packIsOn = packIsOn && read->leftmostPos >= prevLeftmostPos;
             read->packedViewRow = packIsOn ? AssemblyPackAlgorithm::packRead(U2Region(read->leftmostPos, read->effectiveLen), packContext, os) : 0;

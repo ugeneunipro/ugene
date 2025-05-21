@@ -115,27 +115,6 @@ private:
     T errValue;
 };
 
-/**
-    Iterator over reads list
-*/
-class U2CORE_EXPORT U2DbiIteratorOverList : public U2DbiIterator<U2AssemblyRead> {
-public:
-    U2DbiIteratorOverList(const QList<U2AssemblyRead>& list);
-
-    /** returns true if there are more reads to iterate*/
-    bool hasNext() override;
-
-    /** returns next read and shifts one element*/
-    U2AssemblyRead next() override;
-
-    /** returns next read without shifting*/
-    U2AssemblyRead peek() override;
-
-private:
-    QList<U2AssemblyRead>::const_iterator it;
-    QList<U2AssemblyRead>::const_iterator endIt;
-};
-
 class U2CORE_EXPORT U2DbiUtils : public QObject {
     Q_OBJECT
 public:
