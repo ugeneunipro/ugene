@@ -38,6 +38,7 @@
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
@@ -272,9 +273,9 @@ GUI_TEST_CLASS_DEFINITION(test_8017) {
      * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
      * 2. Close view for sars.gb
      * 3. Right click on sequence object in sars.gb and add it to opened view
-     * 4. Open "Lock scales" menu 
+     * 4. Open "Lock scales" menu
      * Expected state: only "Lock scales: visible range start" item is active
-     * 5. Select any region for first sequence. Open "Lock scales" menu 
+     * 5. Select any region for first sequence. Open "Lock scales" menu
      * Expected state: "Lock scales: visible range start" and "Lock scales: selected sequence" items are active
      * 6. Select annotation for first sequence. Open "Lock scales" menu
      * Expected state: "Lock scales: visible range start" and "Lock scales: selected annotation" items are active
@@ -315,14 +316,14 @@ GUI_TEST_CLASS_DEFINITION(test_8017) {
     GTUtilsCv::commonCvBtn::click();
 
     QAbstractButton* lockScalesButton = qobject_cast<QAbstractButton*>(GTWidget::findWidget("Lock scales"));
-    QPoint menuActivationPoint = QPoint(lockScalesButton->size().width() - 6, lockScalesButton->size().height() / 2);  
+    QPoint menuActivationPoint = QPoint(lockScalesButton->size().width() - 6, lockScalesButton->size().height() / 2);
 
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuCheckerItemsEnabled({"Lock scales: visible range start"})));
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     GTUtilsSequenceView::selectSequenceRegion(2, 222);
     GTUtilsDialog::waitForDialog(new PopupChecker(new MenuCheckerItemsEnabled({"Lock scales: visible range start", "Lock scales: selected sequence"})));
-    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);  
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 
     GTUtilsAnnotationsTreeView::selectItems({GTUtilsAnnotationsTreeView::findItems("rRNA").first()});
 
@@ -1120,7 +1121,7 @@ GUI_TEST_CLASS_DEFINITION(test_8118) {
     CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 2084, QString("Unexpected text: slider position doesn't change after 'Go to'"));
 
     GTUtilsDialog::waitForDialog(new GoToDialogFiller(5666));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);    
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
     CHECK_SET_ERR(GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().endPos() == 5724, QString("Unexpected text: slider position doesn't change after 'Go to'"));
 }
 
@@ -1178,7 +1179,7 @@ GUI_TEST_CLASS_DEFINITION(test_8136) {
 
     FindEnzymesDialogFillerSettings settings({"AasI"});
     settings.excludeRegionStart = 29;
-    settings.excludeRegionEnd = 100;    
+    settings.excludeRegionEnd = 100;
     GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTLogTracer lt;
@@ -1186,7 +1187,7 @@ GUI_TEST_CLASS_DEFINITION(test_8136) {
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotatedRegions().size() == 0, "Annoatated region counter doesn't match.");
     lt.checkMessage("The following enzymes were found, but skipped because they were found inside of the \"Uncut area\":");
-    
+
     class CheckErrorMessageBox : public CustomScenario {
     public:
         void run() override {
@@ -1201,7 +1202,7 @@ GUI_TEST_CLASS_DEFINITION(test_8136) {
     settings.searchRegionEnd = 31;
     settings.excludeRegionStart = 29;
     settings.excludeRegionEnd = 33;
-    
+
     GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
     CheckErrorMessageBox* scenario = new CheckErrorMessageBox();
     FindEnzymesDialogFiller* filler = new FindEnzymesDialogFiller(settings, scenario);
@@ -1277,6 +1278,48 @@ GUI_TEST_CLASS_DEFINITION(test_8151) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
     GTUtilsDialog::waitForDialog(new SmithWatermanDialogFiller(new ActivateTranslationSWScenario(false)));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8159) {
+    // Generate sequence 600000000 bases long
+    // Open overview and enable density graph
+    // Create an annotation
+    // Expected: no crash
+    class Scenario1 : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            GTSpinBox::setValue("lengthSpin", 600000000, dialog);
+            GTRadioButton::click("baseContentRadioButton", dialog);
+            GTLineEdit::setText("outputEdit", sandBoxDir + "test_8159.ugenedb", dialog, true);
+
+            GTWidget::click(GTWidget::findButtonByText("Generate", dialog));
+        }
+    };
+    GTUtilsDialog::waitForDialog(new Filler("DNASequenceGeneratorDialog", new Scenario1));
+    GTMenu::clickMainMenuItem({"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    if (!GTUtilsSequenceView::getOverviewByNumber()) {
+        GTWidget::click(GTAction::button(GTAction::findAction("show_hide_overview")));
+    }
+
+    QAction* destGraph = GTAction::findAction("density_graph_action");
+    if (!destGraph->isChecked()) {
+        GTWidget::click(GTAction::button(destGraph));
+    }
+    GTUtilsSequenceView::getLengthOfSequence();
+
+    class Scenario2 : public CustomScenario {
+        void run() override {
+            GTWidget::getActiveModalWidget();
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new Scenario2));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8153) {
