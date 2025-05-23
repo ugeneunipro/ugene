@@ -73,7 +73,7 @@ private:
     QString runTest(const QString& testName, int timeoutMillis);
 
     /** Runs test once and returns test output. */
-    QString runTestOnce(U2OpStatus& os, const QString& testName, int iteration, int timeout, bool enableVideoRecording);
+    QString runTestOnce(U2OpStatus& os, const QString& testName, int iteration, int timeout, bool isVideoRecordingOn);
 
     static QString readTestResult(const QByteArray& output);
     bool renameTestLog(const QString& testName, int testRunIteration);
