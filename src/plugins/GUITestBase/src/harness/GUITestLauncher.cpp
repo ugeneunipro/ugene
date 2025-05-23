@@ -463,11 +463,11 @@ QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, in
         screenRecorderProcess.setProcessChannelMode(QProcess::SeparateChannels);
         connect(&screenRecorderProcess, &QProcess::readyReadStandardError, [&]() {
             QByteArray errorData = screenRecorderProcess.readAllStandardError();
-            uiLog.error(QString("FFmpeg Error: %1").arg(errorData.constData()));
+            uiLog.error(QString("Video recorder error: %1").arg(errorData.constData()));
         });
         connect(&screenRecorderProcess, static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), [](int exitCode, QProcess::ExitStatus exitStatus) {
             if (exitStatus != QProcess::NormalExit || exitCode != 0) {
-                uiLog.error(QString("FFmpeg process failed with code %1 and status %2").arg(exitCode).arg(static_cast<int>(exitStatus)));
+                uiLog.error(QString("Video recording process failed with code %1 and status %2").arg(exitCode).arg(static_cast<int>(exitStatus)));
             }
         });
     }
