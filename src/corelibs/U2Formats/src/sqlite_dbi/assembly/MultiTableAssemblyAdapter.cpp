@@ -300,10 +300,10 @@ qint64 MultiTableAssemblyAdapter::getAssemblyLength(U2OpStatus& os) {
     return max;
 }
 
-U2DbiIterator<U2AssemblyRead>* MultiTableAssemblyAdapter::getReads(const U2Region& r, U2OpStatus& os, bool sortedHint) {
+U2DbiIterator<U2AssemblyRead>* MultiTableAssemblyAdapter::getReads(const U2Region& r, U2OpStatus& os, bool sortedHint, bool readsStrictlyFitRegion) {
     QVector<U2DbiIterator<U2AssemblyRead>*> iterators;
     foreach (MTASingleTableAdapter* a, adapters) {
-        iterators << a->singleTableAdapter->getReads(r, os, sortedHint);
+        iterators << a->singleTableAdapter->getReads(r, os, sortedHint, readsStrictlyFitRegion);
         if (os.hasError()) {
             break;
         }
@@ -433,6 +433,7 @@ void MultiTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead>* it, U2As
             int readLen = read->readSequence.length();
             read->effectiveLen = readLen + U2AssemblyUtils::getCigarExtraLength(read->cigar);
             int elenPos = getElenRangePosByLength(read->effectiveLen);
+            read->leftmostPos -= ii.leftShift;
 
             packIsOn = packIsOn && read->leftmostPos >= prevLeftmostPos;
             read->packedViewRow = packIsOn ? AssemblyPackAlgorithm::packRead(U2Region(read->leftmostPos, read->effectiveLen), packContext, os) : 0;

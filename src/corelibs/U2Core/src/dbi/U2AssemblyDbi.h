@@ -57,19 +57,23 @@ public:
 class U2AssemblyReadsImportInfo {
 public:
     U2AssemblyReadsImportInfo(U2AssemblyReadsImportInfo* parentInfo = nullptr)
-        : nReads(0), packed(false), parentInfo(parentInfo) {
+        : parentInfo(parentInfo) {
     }
+
     virtual ~U2AssemblyReadsImportInfo() {
     }
 
     /** Number of reads added during import */
-    qint64 nReads;
+    qint64 nReads = 0;
 
     /** Specifies if assembly was packed at import time*/
-    bool packed;
+    bool packed = false;
 
     /* Place where to save pack statistics */
     U2AssemblyPackStat packStat;
+
+    /** Left shit for imported reads */
+    qint64 leftShift = 0;
 
     U2AssemblyCoverageImportInfo coverageInfo;
 
@@ -114,12 +118,13 @@ public:
     virtual qint64 countReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) = 0;
 
     /**
-        Returns reads that intersect given region.
+        Returns reads that intersect or strictly fit in given region.
         If there is no assembly object with the specified id returns NULL.
 
         Note: iterator instance must be deallocated by caller method
     */
-    virtual U2DbiIterator<U2AssemblyRead>* getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool sortedHint = false) = 0;
+    virtual U2DbiIterator<U2AssemblyRead>* getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os,
+                                                    bool sortedHint = false, bool readsStrictlyFitRegion = false) = 0;
 
     /**
         Returns reads with packed row value bounded by 'minRow' and 'maxRow' that intersect given region.
