@@ -57,9 +57,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
     QString secondAnnFileName = "2.gb";
 
-    GTUtilsDocument::checkDocument(firstAnnFileName, AnnotatedDNAViewFactory::ID);
-    if (1) return;
-
     GTFile::copy(projectFilePath, sandBoxDir + "/" + projectFileName);
     GTFile::copy(firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
     GTFile::copy(secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
