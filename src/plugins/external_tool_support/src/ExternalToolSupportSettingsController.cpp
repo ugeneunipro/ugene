@@ -136,7 +136,7 @@ ExternalToolSupportSettingsPageWidget::~ExternalToolSupportSettingsPageWidget() 
     saveShowHideSubgroupsState();
 }
 
-QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent, const QString& path) const {
+QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent, const QString& path) {
     auto widget = new QWidget(parent);
 
     auto toolPathEdit = new PathLineEdit("", "executable", false, widget);
@@ -158,10 +158,10 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
     connect(selectToolPathButton, SIGNAL(clicked()), this, SLOT(sl_onPathEditWidgetClick()));
     connect(selectToolPathButton, SIGNAL(clicked()), toolPathEdit, SLOT(sl_onBrowse()));
 
-    auto clearToolPathButton = new QToolButton(widget);
+    clearToolPathButton = new QToolButton(widget);
     clearToolPathButton->setObjectName("ClearToolPathButton");
     clearToolPathButton->setVisible(true);
-    clearToolPathButton->setIcon(QIcon(":external_tool_support/images/cancel.png"));
+    clearToolPathButton->setIcon(GUIUtils::getIconResource("external_tool_support", "cancel.png", false));
     clearToolPathButton->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
     clearToolPathButton->setEnabled(!path.isEmpty());
 
@@ -324,6 +324,7 @@ void ExternalToolSupportSettingsPageWidget::sl_colorModeSwitched() {
     for (int i = 0; i < twIntegratedTools->topLevelItemCount(); i++) {
         updateColorModeRecursively(twIntegratedTools->topLevelItem(i));
     }
+    clearToolPathButton->setIcon(GUIUtils::getIconResource("external_tool_support", "cancel.png", false));
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_linkActivated(const QString& url) {

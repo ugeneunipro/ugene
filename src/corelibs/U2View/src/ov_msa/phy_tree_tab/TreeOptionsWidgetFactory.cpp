@@ -32,7 +32,7 @@
 namespace U2 {
 
 const QString MSATreeOptionsWidgetFactory::GROUP_ID = "OP_MSA_TREES_WIDGET";
-const IconParameters MSATreeOptionsWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "tree.png", false);
+const IconParameters MSATreeOptionsWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "tree.png");
 const QString MSATreeOptionsWidgetFactory::GROUP_DOC_PAGE = "65929724";
 
 MSATreeOptionsWidgetFactory::MSATreeOptionsWidgetFactory() {
@@ -57,7 +57,7 @@ OPGroupParameters MSATreeOptionsWidgetFactory::getOPGroupParameters() {
 }
 
 const QString TreeOptionsWidgetFactory::GROUP_ID = "OP_TREES_WIDGET";
-const IconParameters TreeOptionsWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "tree.png", false);
+const IconParameters TreeOptionsWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "tree.png");
 const QString TreeOptionsWidgetFactory::GROUP_DOC_PAGE = "65929724";
 
 TreeOptionsWidgetFactory::TreeOptionsWidgetFactory() {
@@ -82,7 +82,7 @@ OPGroupParameters TreeOptionsWidgetFactory::getOPGroupParameters() {
 }
 
 const QString AddTreeWidgetFactory::GROUP_ID = "OP_MSA_ADD_TREE_WIDGET";
-const IconParameters AddTreeWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "tree.png", false);
+const IconParameters AddTreeWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "tree.png");
 const QString AddTreeWidgetFactory::GROUP_DOC_PAGE = "65929724";
 
 AddTreeWidgetFactory::AddTreeWidgetFactory() {

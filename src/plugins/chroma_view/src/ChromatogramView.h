@@ -82,6 +82,7 @@ private slots:
     void sl_onObjectRemoved(GObjectViewController*, GObject*);
     void sl_showHideTrace();
     void sl_showAllTraces();
+    void sl_colorModeSwitched();
 
 private:
     int getEditSeqIndex(int bcIndex);
@@ -105,6 +106,7 @@ private:
     QAction* showQVAction;
     QAction* showAllTraces;
     QMenu* traceActionMenu;
+    QToolButton* traceButton {nullptr};
 };
 
 class ChromatogramViewRenderArea : public GSequenceLineViewRenderArea {

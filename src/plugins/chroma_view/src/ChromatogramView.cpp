@@ -118,9 +118,11 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     pack();
 
     addActionToLocalToolbar(showQVAction);
-    QToolButton* traceButton = addActionToLocalToolbar(traceActionMenu->menuAction());
-    traceButton->setIcon(GUIUtils::getIconResource("chroma_view", "traces.png", false));
+    traceButton = addActionToLocalToolbar(traceActionMenu->menuAction());
+    traceButton->setIcon(GUIUtils::getIconResource("chroma_view", "traces.png"));
     traceButton->setPopupMode(QToolButton::InstantPopup);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ChromatogramView::sl_colorModeSwitched);
 }
 
 void ChromatogramView::pack() {
@@ -414,6 +416,10 @@ void ChromatogramView::sl_showAllTraces() {
     completeUpdate();
 }
 
+void ChromatogramView::sl_colorModeSwitched() {
+    traceButton->setIcon(GUIUtils::getIconResource("chroma_view", "traces.png"));
+}
+
 //////////////////////////////////////
 ////render area
 
@@ -508,7 +514,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
             p.setPen(QPalette().text().color());
             bool isDark = AppContext::getMainWindow()->isDarkMode();
             for (int i = 0; i < 4; ++i) {
-                p.fillRect(legendX, legendY - (charHeight - legendRectHeight) / 2, legendRectWidth, -legendRectHeight, McaColors::getChromatogramColorById(isDark, 1));
+                p.fillRect(legendX, legendY - (charHeight - legendRectHeight) / 2, legendRectWidth, -legendRectHeight, McaColors::getChromatogramColorById(isDark, i));
                 legendX += legendRectWidth + legendCharToRectPadding;
                 p.drawText(legendX, legendY, charWidth, -charHeight, Qt::AlignCenter, bases[i]);
                 legendX += charWidth;

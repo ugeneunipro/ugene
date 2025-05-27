@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="dna_flexibility/" >
-        <file>images/flexibility.png</file>
+        <file>images/light/flexibility.png</file>
+
+        <file>images/dark/flexibility.png</file>
     </qresource>
 </RCC>

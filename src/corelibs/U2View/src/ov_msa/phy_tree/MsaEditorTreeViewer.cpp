@@ -71,7 +71,7 @@ QWidget* MsaEditorTreeViewer::createViewWidget(QWidget* parent) {
     updateSyncModeActionState(false);
     connect(syncModeAction, SIGNAL(triggered()), SLOT(sl_syncModeActionTriggered()));
 
-    refreshTreeAction = new QAction(GUIUtils::getIconResource("core", "refresh.png", false), tr("Refresh tree"), ui);
+    refreshTreeAction = new QAction(GUIUtils::getIconResource("core", "refresh.png"), tr("Refresh tree"), ui);
     refreshTreeAction->setObjectName("Refresh tree");
     refreshTreeAction->setEnabled(false);
     connect(refreshTreeAction, SIGNAL(triggered()), SLOT(sl_refreshTree()));
@@ -175,7 +175,7 @@ void MsaEditorTreeViewer::sl_alignmentCollapseModelChanged() {
 }
 
 void MsaEditorTreeViewer::sl_colorModeSwitched() {
-    refreshTreeAction->setIcon(GUIUtils::getIconResource("core", "refresh.png", false));
+    refreshTreeAction->setIcon(GUIUtils::getIconResource("core", "refresh.png"));
     syncModeAction->setIcon(syncModeAction->isChecked() ? GUIUtils::getIconResource("core", "sync-msa-on.png") : GUIUtils::getIconResource("core", "sync-msa-off.png"));
 
     TreeViewer::sl_colorModeSwitched();

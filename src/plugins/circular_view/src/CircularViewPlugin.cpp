@@ -115,7 +115,7 @@ void CircularViewContext::initViewContext(GObjectViewController* v) {
     connect(av, SIGNAL(si_sequenceWidgetRemoved(ADVSequenceWidget*)), SLOT(sl_sequenceWidgetRemoved(ADVSequenceWidget*)));
     connect(av, SIGNAL(si_onClose(AnnotatedDNAView*)), SLOT(sl_onDNAViewClosed(AnnotatedDNAView*)));
 
-    auto globalToggleViewAction = new ADVGlobalAction(av, IconParameters("circular_view", "circular.png", false), tr("Toggle circular views"), std::numeric_limits<int>::max(), ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_SingleSequenceOnly);  // big enough to be the last one?
+    auto globalToggleViewAction = new ADVGlobalAction(av, IconParameters("circular_view", "circular.png"), tr("Toggle circular views"), std::numeric_limits<int>::max(), ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_SingleSequenceOnly);  // big enough to be the last one?
 
     globalToggleViewAction->addAlphabetFilter(DNAAlphabet_NUCL);
     globalToggleViewAction->setObjectName("globalToggleViewAction");
@@ -130,25 +130,24 @@ void CircularViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
         return;
     }
 
-    auto action = new CircularViewAction();
-    action->setIcon(QIcon(":circular_view/images/circular.png"));
-    action->setCheckable(true);
-    action->setChecked(false);
-    action->addToMenu = true;
-    action->addToBar = true;
-    connect(action, SIGNAL(triggered()), SLOT(sl_showCircular()));
+    auto circularViewAction = new CircularViewAction();
+    circularViewAction->setCheckable(true);
+    circularViewAction->setChecked(false);
+    circularViewAction->addToMenu = true;
+    circularViewAction->addToBar = true;
+    connect(circularViewAction, SIGNAL(triggered()), SLOT(sl_showCircular()));
 
-    sw->addADVSequenceWidgetActionToViewsToolbar(action);
+    sw->addADVSequenceWidgetActionToViewsToolbar(circularViewAction);
 
     qint64 len = sw->getSequenceContext()->getSequenceLength();
     if (len < MIN_LENGTH_TO_AUTO_SHOW) {
         bool circular = sw->getSequenceContext()->getSequenceObject()->isCircular();
         if (circular) {
-            action->trigger();
+            circularViewAction->trigger();
         }
     }
 
-    connect(sw->getSequenceObject(), SIGNAL(si_sequenceCircularStateChanged()), action, SLOT(sl_circularStateChanged()));
+    connect(sw->getSequenceObject(), SIGNAL(si_sequenceCircularStateChanged()), circularViewAction, SLOT(sl_circularStateChanged()));
 }
 
 void CircularViewContext::sl_sequenceWidgetRemoved(ADVSequenceWidget* w) {
@@ -345,6 +344,9 @@ void CircularViewContext::sl_toggleBySettings(CircularViewSettings* s) {
 
 CircularViewAction::CircularViewAction()
     : ADVSequenceWidgetAction(CIRCULAR_ACTION_NAME, tr("Show circular view")), view(nullptr), rmapWidget(nullptr) {
+    setIcon(GUIUtils::getIconResource("circular_view", "circular.png"));
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &CircularViewAction::sl_colorModeSwitched);
 }
 
 void CircularViewAction::sl_circularStateChanged() {
@@ -357,6 +359,10 @@ void CircularViewAction::sl_circularStateChanged() {
     } else if (!seqObj->isCircular() && isChecked()) {
         trigger();
     }
+}
+
+void CircularViewAction::sl_colorModeSwitched() {
+    setIcon(GUIUtils::getIconResource("circular_view", "circular.png"));
 }
 
 }  // namespace U2

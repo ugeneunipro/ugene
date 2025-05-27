@@ -3,14 +3,11 @@
         <file>images/add_existing_document.png</file>
         <file>images/add_gobject.png</file>
         <file>images/add_new_document.png</file>
-        <file>images/add_sequence.png</file>
         <file>images/add_to_alignment.png</file>
         <file>images/adv_widget_menu.png</file>
         <file>images/annotation_settings.png</file>
         <file>images/arrow-move-down.png</file>
-        <file>images/arrow-move-left.png</file>
         <file>images/arrow-move-up.png</file>
-        <file>images/arrow-move-right.png</file>
         <file>images/bookmark.png</file>
         <file>images/bookmark_add.png</file>
         <file>images/bookmark_edit.png</file>
@@ -18,24 +15,11 @@
         <file>images/bookmark_item.png</file>
         <file>images/bookmark_remove.png</file>
         <file>images/chart_bar.png</file>
-        <file>images/circular_seq.png</file>
         <file>images/close.png</file>
         <file>images/close_2.png</file>
         <file>images/color_wheel.png</file>
-        <file>images/copy.png</file>
-        <file>images/copy_annotation_sequence.png</file>
-        <file>images/copy_annotation_translation.png</file>
-        <file>images/copy_complement_annotation_sequence.png</file>
-        <file>images/copy_complement_annotation_translation.png</file>
-        <file>images/copy_complement_sequence.png</file>
-        <file>images/copy_complement_translation.png</file>
-        <file>images/copy_qualifier.png</file>
-        <file>images/copy_sequence.png</file>
-        <file>images/copy_translation.png</file>
         <file>images/create_annotation.png</file>
-        <file>images/dna.png</file>
         <file>images/dna_helix.png</file>
-        <file>images/do_complement.png</file>
         <file>images/document.png</file>
         <file>images/error_notification.png</file>
         <file>images/external_link.png</file>
@@ -43,33 +27,26 @@
         <file>images/group_auto.png</file>
         <file>images/group_green_active.png</file>
         <file>images/info_notification.png</file>
-        <file>images/load_selected_documents.png</file>
         <file>images/lock.png</file>
         <file>images/lock_open.png</file>
         <file>images/minus.png</file>
         <file>images/msa.png</file>
         <file>images/msa_show_overview.png</file>
-        <file>images/multiline_view.png</file>
         <file>images/pairwise.png</file>
         <file>images/plus.png</file>
         <file>images/pushpin.png</file>
         <file>images/pushpin_fixed.png</file>
         <file>images/realign_some_sequences.png</file>
         <file>images/redo.png</file>
-        <file>images/refresh.png</file>
         <file>images/remove_selected_documents.png</file>
-        <file>images/ro_dna.png</file>
         <file>images/ro_document.png</file>
         <file>images/ro_gobject.png</file>
         <file>images/ro_msa.png</file>
         <file>images/ro_texto.png</file>
-        <file>images/ro_tree.png</file>
         <file>images/ruler.png</file>
         <file>images/texto.png</file>
         <file>images/tooltip.png</file>
-        <file>images/tree.png</file>
         <file>images/undo.png</file>
-        <file>images/unload_document.png</file>
         <file>images/warning_notification.png</file>
         <file>images/zoom_in.png</file>
         <file>images/zoom_out.png</file>
@@ -78,26 +55,39 @@
         <file>images/zoom_whole.png</file>
 
         <file>images/light/add_column.png</file>
+        <file>images/light/add_sequence.png</file>
         <file>images/light/add_tree.png</file>
         <file>images/light/align.png</file>
         <file>images/light/align_tree_labels.png</file>
         <file>images/light/amb_backward.png</file>
         <file>images/light/amb_forward.png</file>
-        <file>images/light/arrow_down.png</file>
-        <file>images/light/arrow_right.png</file>
         <file>images/light/arrow_rotate_clockwise.png</file>
+        <file>images/light/arrow-move-left.png</file>
+        <file>images/light/arrow-move-right.png</file>
         <file>images/light/biostruct3d.png</file>
         <file>images/light/cam2.png</file>
+        <file>images/light/circular_seq.png</file>
         <file>images/light/close_small.png</file>
         <file>images/light/codon_table.png</file>
         <file>images/light/collapse.png</file>
         <file>images/light/collapse_tree.png</file>
         <file>images/light/collapse_update.png</file>
         <file>images/light/consensus.png</file>
+        <file>images/light/copy.png</file>
+        <file>images/light/copy_annotation_sequence.png</file>
+        <file>images/light/copy_annotation_translation.png</file>
+        <file>images/light/copy_complement_annotation_sequence.png</file>
+        <file>images/light/copy_complement_annotation_translation.png</file>
+        <file>images/light/copy_complement_sequence.png</file>
+        <file>images/light/copy_complement_translation.png</file>
+        <file>images/light/copy_qualifier.png</file>
+        <file>images/light/copy_sequence.png</file>
+        <file>images/light/copy_translation.png</file>
         <file>images/light/create_annotation_icon.png</file>
         <file>images/light/database_copy.png</file>
         <file>images/light/database_with_arrow.png</file>
         <file>images/light/details_view.png</file>
+        <file>images/light/dna.png</file>
         <file>images/light/edit.png</file>
         <file>images/light/expand_tree.png</file>
         <file>images/light/extract_assembly_region.png</file>
@@ -105,18 +95,20 @@
         <file>images/light/font.png</file>
         <file>images/light/font_default.png</file>
         <file>images/light/gear.svg</file>
-        <file>images/light/graphs.png</file>
         <file>images/light/goto.png</file>
+        <file>images/light/graphs.png</file>
         <file>images/light/hide_all_views.png</file>
         <file>images/light/highlight.png</file>
         <file>images/light/inbox-minus.png</file>
+        <file>images/light/load_selected_documents.png</file>
         <file>images/light/lock_scales.png</file>
         <file>images/light/mismatch-backward.png</file>
         <file>images/light/mismatch-forward.png</file>
-        <file>images/light/msaed_remove_columns_with_gaps.png</file>
-        <file>images/light/msaed_remove_all_gaps.png</file>
         <file>images/light/msa_save.png</file>
         <file>images/light/msa_save_as.png</file>
+        <file>images/light/msaed_remove_all_gaps.png</file>
+        <file>images/light/msaed_remove_columns_with_gaps.png</file>
+        <file>images/light/multiline_view.png</file>
         <file>images/light/navi_right.png</file>
         <file>images/light/notch.png</file>
         <file>images/light/overview.png</file>
@@ -124,13 +116,14 @@
         <file>images/light/phylip.png</file>
         <file>images/light/predefined_annotation_groups.png</file>
         <file>images/light/printer.png</file>
-        <file>images/light/reroot.png</file>
+        <file>images/light/refresh.png</file>
         <file>images/light/remove_column.png</file>
+        <file>images/light/reroot.png</file>
         <file>images/light/ro_biostruct3d.png</file>
+        <file>images/light/ro_dna.png</file>
+        <file>images/light/ro_tree.png</file>
         <file>images/light/ruler_coverage.png</file>
         <file>images/light/sam.png</file>
-        <file>images/light/save.png</file>
-        <file>images/light/save_as.png</file>
         <file>images/light/select_region.png</file>
         <file>images/light/set_reference.png</file>
         <file>images/light/settings2.png</file>
@@ -139,43 +132,58 @@
         <file>images/light/show_trans.png</file>
         <file>images/light/ssp_logo.png</file>
         <file>images/light/sum.png</file>
-        <file>images/light/sync_lock.png</file>
-		<file>images/light/sync-msa-on.png</file>
-        <file>images/light/sync-msa-off.png</file>
-        <file>images/light/sync_scales.png</file>
         <file>images/light/sw.png</file>
         <file>images/light/swap.png</file>
+        <file>images/light/sync_lock.png</file>
+        <file>images/light/sync_scales.png</file>
+        <file>images/light/sync-msa-off.png</file>
+        <file>images/light/sync-msa-on.png</file>
         <file>images/light/text_ab.png</file>
+        <file>images/light/tree.png</file>
         <file>images/light/tree_layout.png</file>
         <file>images/light/tt_switch.png</file>
+        <file>images/light/unload_document.png</file>
         <file>images/light/wrap_sequence.png</file>
-        <file>images/light/zoom_view.png</file>
-        <file>images/light/zoom_in_tree.png</file>
         <file>images/light/zoom_fit.png</file>
+        <file>images/light/zoom_in_tree.png</file>
         <file>images/light/zoom_out_tree.png</file>
+        <file>images/light/zoom_view.png</file>
         <file>images/light/progress.gif</file>
 
         <file>images/dark/add_column.png</file>
+        <file>images/dark/add_sequence.png</file>
         <file>images/dark/add_tree.png</file>
         <file>images/dark/align.png</file>
         <file>images/dark/align_tree_labels.png</file>
         <file>images/dark/amb_backward.png</file>
         <file>images/dark/amb_forward.png</file>
-        <file>images/dark/arrow_down.png</file>
-        <file>images/dark/arrow_right.png</file>
         <file>images/dark/arrow_rotate_clockwise.png</file>
+        <file>images/dark/arrow-move-left.png</file>
+        <file>images/dark/arrow-move-right.png</file>
         <file>images/dark/biostruct3d.png</file>
         <file>images/dark/cam2.png</file>
+        <file>images/dark/circular_seq.png</file>
         <file>images/dark/close_small.png</file>
         <file>images/dark/codon_table.png</file>
         <file>images/dark/collapse.png</file>
         <file>images/dark/collapse_tree.png</file>
         <file>images/dark/collapse_update.png</file>
         <file>images/dark/consensus.png</file>
+        <file>images/dark/copy.png</file>
+        <file>images/dark/copy_annotation_sequence.png</file>
+        <file>images/dark/copy_annotation_translation.png</file>
+        <file>images/dark/copy_complement_annotation_sequence.png</file>
+        <file>images/dark/copy_complement_annotation_translation.png</file>
+        <file>images/dark/copy_complement_sequence.png</file>
+        <file>images/dark/copy_complement_translation.png</file>
+        <file>images/dark/copy_qualifier.png</file>
+        <file>images/dark/copy_sequence.png</file>
+        <file>images/dark/copy_translation.png</file>
         <file>images/dark/create_annotation_icon.png</file>
         <file>images/dark/database_copy.png</file>
         <file>images/dark/database_with_arrow.png</file>
         <file>images/dark/details_view.png</file>
+        <file>images/dark/dna.png</file>
         <file>images/dark/edit.png</file>
         <file>images/dark/expand_tree.png</file>
         <file>images/dark/extract_assembly_region.png</file>
@@ -183,18 +191,20 @@
         <file>images/dark/font.png</file>
         <file>images/dark/font_default.png</file>
         <file>images/dark/gear.svg</file>
-        <file>images/dark/graphs.png</file>
         <file>images/dark/goto.png</file>
+        <file>images/dark/graphs.png</file>
         <file>images/dark/hide_all_views.png</file>
         <file>images/dark/highlight.png</file>
         <file>images/dark/inbox-minus.png</file>
+        <file>images/dark/load_selected_documents.png</file>
         <file>images/dark/lock_scales.png</file>
         <file>images/dark/mismatch-backward.png</file>
         <file>images/dark/mismatch-forward.png</file>
-        <file>images/dark/msaed_remove_columns_with_gaps.png</file>
-        <file>images/dark/msaed_remove_all_gaps.png</file>
         <file>images/dark/msa_save.png</file>
         <file>images/dark/msa_save_as.png</file>
+        <file>images/dark/msaed_remove_all_gaps.png</file>
+        <file>images/dark/msaed_remove_columns_with_gaps.png</file>
+        <file>images/dark/multiline_view.png</file>
         <file>images/dark/navi_right.png</file>
         <file>images/dark/notch.png</file>
         <file>images/dark/overview.png</file>
@@ -202,13 +212,14 @@
         <file>images/dark/phylip.png</file>
         <file>images/dark/predefined_annotation_groups.png</file>
         <file>images/dark/printer.png</file>
-        <file>images/dark/reroot.png</file>
+        <file>images/dark/refresh.png</file>
         <file>images/dark/remove_column.png</file>
+        <file>images/dark/reroot.png</file>
         <file>images/dark/ro_biostruct3d.png</file>
+        <file>images/dark/ro_dna.png</file>
+        <file>images/dark/ro_tree.png</file>
         <file>images/dark/ruler_coverage.png</file>
         <file>images/dark/sam.png</file>
-        <file>images/dark/save.png</file>
-        <file>images/dark/save_as.png</file>
         <file>images/dark/select_region.png</file>
         <file>images/dark/set_reference.png</file>
         <file>images/dark/settings2.png</file>
@@ -217,20 +228,22 @@
         <file>images/dark/show_trans.png</file>
         <file>images/dark/ssp_logo.png</file>
         <file>images/dark/sum.png</file>
-        <file>images/dark/sync_lock.png</file>
-		<file>images/dark/sync-msa-on.png</file>
-        <file>images/dark/sync-msa-off.png</file>
-        <file>images/dark/sync_scales.png</file>
         <file>images/dark/sw.png</file>
         <file>images/dark/swap.png</file>
+        <file>images/dark/sync_lock.png</file>
+        <file>images/dark/sync_scales.png</file>
+        <file>images/dark/sync-msa-off.png</file>
+        <file>images/dark/sync-msa-on.png</file>
         <file>images/dark/text_ab.png</file>
+        <file>images/dark/tree.png</file>
         <file>images/dark/tree_layout.png</file>
         <file>images/dark/tt_switch.png</file>
+        <file>images/dark/unload_document.png</file>
         <file>images/dark/wrap_sequence.png</file>
-        <file>images/dark/zoom_view.png</file>
-        <file>images/dark/zoom_in_tree.png</file>
         <file>images/dark/zoom_fit.png</file>
+        <file>images/dark/zoom_in_tree.png</file>
         <file>images/dark/zoom_out_tree.png</file>
+        <file>images/dark/zoom_view.png</file>
         <file>images/dark/progress.gif</file>
     </qresource>
 </RCC>

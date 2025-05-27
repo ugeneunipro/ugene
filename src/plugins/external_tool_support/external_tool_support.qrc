@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/external_tool_support">
-        <file>images/add.png</file>
         <file>images/cancel.png</file>
         <file>images/mfold_gray.png</file>
         <file>images/python.png</file>

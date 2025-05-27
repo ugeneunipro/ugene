@@ -49,9 +49,9 @@ namespace U2 {
 
 TaskViewDockWidget::TaskViewDockWidget() {
     waitingIp = IconParameters("ugene", "hourglass.png", false);
-    activeIp = IconParameters("ugene", "hourglass_go.png");
+    activeIp = IconParameters("ugene", "hourglass_go.png", false);
     wasErrorIp = IconParameters("ugene", "hourglass_err.png", false);
-    finishedIp = IconParameters("ugene", "hourglass_ok.png");
+    finishedIp = IconParameters("ugene", "hourglass_ok.png", false);
 
     setObjectName(DOCK_TASK_VIEW);
     setWindowTitle(tr("Tasks"));

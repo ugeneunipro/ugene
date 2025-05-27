@@ -92,7 +92,7 @@ QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment
 }
 
 void MaEditorWgt::sl_colorModeSwitched() {
-    copyFormattedSelectionAction->setIcon(GUIUtils::getIconResource("core", "copy.png", false));
+    copyFormattedSelectionAction->setIcon(GUIUtils::getIconResource("core", "copy.png"));
 }
 
 int MaEditorWgt::getGotoUserInputValue() {
@@ -260,7 +260,7 @@ void MaEditorWgt::initActions() {
     copySelectionAction->setToolTip(QString("%1 (%2)").arg(copySelectionAction->text()).arg(copySelectionAction->shortcut().toString()));
     addAction(copySelectionAction);
 
-    copyFormattedSelectionAction = new QAction(GUIUtils::getIconResource("core", "copy.png", false), tr("Copy (custom format)"), this);
+    copyFormattedSelectionAction = new QAction(GUIUtils::getIconResource("core", "copy.png"), tr("Copy (custom format)"), this);
     copyFormattedSelectionAction->setObjectName("copy_formatted");
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyFormattedSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);

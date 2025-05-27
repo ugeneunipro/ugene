@@ -2,5 +2,4 @@
     <qresource prefix="biostruct3d_view/" >
         <file>images/restore.png</file>
     </qresource>
-
 </RCC>

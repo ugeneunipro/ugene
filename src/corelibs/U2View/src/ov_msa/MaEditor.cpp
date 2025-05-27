@@ -138,7 +138,7 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
     gotoSelectedReadAction->setEnabled(false);
     connect(gotoSelectedReadAction, &QAction::triggered, this, &MaEditor::sl_gotoSelectedRead);
 
-    multilineViewAction = new QAction(GUIUtils::getIconResource("core", "multiline_view.png", false), tr("Wrap mode"), this);
+    multilineViewAction = new QAction(GUIUtils::getIconResource("core", "multiline_view.png"), tr("Wrap mode"), this);
     multilineViewAction->setObjectName("multilineView");
     multilineViewAction->setCheckable(true);
     multilineViewAction->setChecked(false);
@@ -441,7 +441,7 @@ void MaEditor::resetColumnWidthCache() {
 }
 
 void MaEditor::initActions() {
-    showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), tr("Overview"), this);
+    showOverviewAction = new QAction(GUIUtils::getIconResource("core", "msa_show_overview.png", false), tr("Overview"), this);
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);
     showOverviewAction->setChecked(true);
@@ -645,6 +645,7 @@ void MaEditor::sl_colorModeSwitched() {
     zoomToSelectionAction->setIcon(GUIUtils::getIconResource("core", "zoom_reg.png", false));
     resetZoomAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png", false));
     changeFontAction->setIcon(GUIUtils::getIconResource("core", "font.png"));
+    multilineViewAction->setIcon(GUIUtils::getIconResource("core", "multiline_view.png"));
 }
 
 MaCollapseModel* MaEditor::getCollapseModel() const {
