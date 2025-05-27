@@ -123,7 +123,7 @@ void AnnotHighlightWidget::initLayout() {
     buttonsLayout->setContentsMargins(0, 0, 0, 0);
     buttonsLayout->setSpacing(0);
 
-    prevAnnotationButton = new QPushButton(GUIUtils::getIconResource("core", "arrow-move-left.png", false), "");
+    prevAnnotationButton = new QPushButton(GUIUtils::getIconResource("core", "arrow-move-left.png"), "");
     prevAnnotationButton->setFixedSize(32, 32);
     prevAnnotationButton->setToolTip(AnnotHighlightWidget::tr("Previous annotation"));
     prevAnnotationButton->setDisabled(true);
@@ -131,7 +131,7 @@ void AnnotHighlightWidget::initLayout() {
     buttonsLayout->addWidget(prevAnnotationButton);
     buttonsLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-    nextAnnotationButton = new QPushButton(GUIUtils::getIconResource("core", "arrow-move-right.png", false), "");
+    nextAnnotationButton = new QPushButton(GUIUtils::getIconResource("core", "arrow-move-right.png"), "");
     nextAnnotationButton->setFixedSize(32, 32);
     nextAnnotationButton->setToolTip(AnnotHighlightWidget::tr("Next annotation"));
     nextAnnotationButton->setObjectName("nextAnnotationButton");
@@ -318,8 +318,8 @@ void AnnotHighlightWidget::sl_onAnnotationSelectionChanged() {
 }
 
 void AnnotHighlightWidget::sl_colorModeSwitched() {
-    prevAnnotationButton->setIcon(GUIUtils::getIconResource("core", "arrow-move-left.png", false));
-    nextAnnotationButton->setIcon(GUIUtils::getIconResource("core", "arrow-move-right.png", false));
+    prevAnnotationButton->setIcon(GUIUtils::getIconResource("core", "arrow-move-left.png"));
+    nextAnnotationButton->setIcon(GUIUtils::getIconResource("core", "arrow-move-right.png"));
     showAllLabel->colorModeSwitched();
     annotSettingsWidget->colorModeChanged();
     loadAnnotTypes();

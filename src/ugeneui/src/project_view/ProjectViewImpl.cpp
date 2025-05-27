@@ -468,7 +468,7 @@ void ProjectViewImpl::enable() {
     SAFE_POINT(projectViewWidget == nullptr, "Project widget is already initialized", );
     projectViewWidget = new ProjectViewWidget();
 
-    saveSelectedDocsAction = new QAction(GUIUtils::getIconResource("ugene", "save_selected_documents.png"), tr("Save selected documents"), projectViewWidget);
+    saveSelectedDocsAction = new QAction(GUIUtils::getIconResource("ugene", "save_selected_documents.png", false), tr("Save selected documents"), projectViewWidget);
     saveSelectedDocsAction->setObjectName(ACTION_PROJECT__SAVE_DOCUMENT);
     connect(saveSelectedDocsAction, SIGNAL(triggered()), SLOT(sl_onSaveSelectedDocs()));
 
@@ -477,12 +477,12 @@ void ProjectViewImpl::enable() {
     connect(toggleCircularAction, SIGNAL(triggered()), SLOT(sl_onToggleCircular()));
 
     relocateDocumentAction = new QAction(tr("Relocate..."), projectViewWidget);
-    relocateDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "relocate.png"));
+    relocateDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "relocate.png", false));
     connect(relocateDocumentAction, SIGNAL(triggered()), SLOT(sl_relocate()));
 
     exportDocumentAction = new QAction(tr("Export document..."), projectViewWidget);
     exportDocumentAction->setObjectName("Export document");
-    exportDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "save_copy.png"));
+    exportDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "save_copy.png", false));
     connect(exportDocumentAction, SIGNAL(triggered()), SLOT(sl_exportDocument()));
 
     openContainingFolderAction = new QAction(tr("Open containing folder"), projectViewWidget);
@@ -506,8 +506,6 @@ void ProjectViewImpl::enable() {
     foreach (MWMDIWindow* w, mdi->getWindows()) {
         sl_onMDIWindowAdded(w);
     }
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ProjectViewImpl::sl_colorModeSwitched);
 }
 
 void ProjectViewImpl::disable() {
@@ -536,8 +534,6 @@ void ProjectViewImpl::disable() {
 
     delete projectViewWidget;
     projectViewWidget = nullptr;
-
-    disconnect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ProjectViewImpl::sl_colorModeSwitched);
 }
 
 void ProjectViewImpl::saveWidgetState(ProjectViewWidget* w) {
@@ -1160,12 +1156,6 @@ void ProjectViewImpl::sl_onOpenContainingFolder() {
             }
         }
     }
-}
-
-void ProjectViewImpl::sl_colorModeSwitched() {
-    saveSelectedDocsAction->setIcon(GUIUtils::getIconResource("ugene", "save_selected_documents.png"));
-    relocateDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "relocate.png"));
-    exportDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "save_copy.png"));
 }
 
 //////////////////////////////////////////////////////////////////////////

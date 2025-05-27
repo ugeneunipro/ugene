@@ -5,47 +5,49 @@
 		<file>images/document_convert.png</file>
 		<file>images/editcut.png</file>
 		<file>images/filenew.png</file>
-		<file>images/fileopen.png</file>
+        <file>images/filesave.png</file>
+		<file>images/filesaveas.png</file>
 		<file>images/ok.png</file>
-		<file>images/run.png</file>
-		<file>images/breakpoint.png</file>
 		<file>images/next_step.png</file>
 		<file>images/process_one_message.png</file>
 		<file>images/show_breakpoint_manager.png</file>
-		<file>images/stopTask.png</file>
 		<file>images/table_relationship.png</file>
 		<file>images/toggle.png</file>
 		<file>images/toggle_expand.png</file>
 
+        <file>images/dark/breakpoint.png</file>
 		<file>images/dark/dashboard.png</file>
 		<file>images/dark/external_cmd_tool.png</file>
-		<file>images/dark/external_cmd_tool_add.png</file>
-		<file>images/dark/filesave.png</file>
-		<file>images/dark/filesaveas.png</file>
+        <file>images/dark/external_cmd_tool_add.png</file>
+		<file>images/dark/fileopen.png</file>
 		<file>images/dark/leftarrow.png</file>
 		<file>images/dark/green_circle.png</file>
 		<file>images/dark/galaxy.png</file>
 		<file>images/dark/highlight_item.png</file>
 		<file>images/dark/pause.png</file>
 		<file>images/dark/rot_cur.png</file>
+        <file>images/dark/run.png</file>
 		<file>images/dark/script.png</file>
 		<file>images/dark/script_edit.png</file>
+        <file>images/dark/stopTask.png</file>
 		<file>images/dark/wd.png</file>
 		<file>images/dark/wizard.png</file>
 
+        <file>images/light/breakpoint.png</file>
 		<file>images/light/dashboard.png</file>
 		<file>images/light/external_cmd_tool.png</file>
 		<file>images/light/external_cmd_tool_add.png</file>
-		<file>images/light/filesave.png</file>
-		<file>images/light/filesaveas.png</file>
+		<file>images/light/fileopen.png</file>
 		<file>images/light/leftarrow.png</file>
 		<file>images/light/green_circle.png</file>
 		<file>images/light/galaxy.png</file>
 		<file>images/light/highlight_item.png</file>
 		<file>images/light/pause.png</file>
 		<file>images/light/rot_cur.png</file>
+        <file>images/light/run.png</file>
 		<file>images/light/script.png</file>
 		<file>images/light/script_edit.png</file>
+        <file>images/light/stopTask.png</file>
 		<file>images/light/wd.png</file>
 		<file>images/light/wizard.png</file>
 

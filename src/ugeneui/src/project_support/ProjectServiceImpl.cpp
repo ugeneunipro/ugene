@@ -128,7 +128,7 @@ void ProjectServiceImpl::sl_exportProject() {
 }
 
 void ProjectServiceImpl::sl_colorModeSwitched() {
-    saveAction->setIcon(GUIUtils::getIconResource("core", "save.png"));
+    saveAction->setIcon(GUIUtils::getIconResource("ugene", "save.png", false));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -144,7 +144,7 @@ Task::ReportResult ProjectServiceEnableTask::report() {
 
     assert(psi->saveAction == nullptr && psi->closeProjectAction == nullptr);
 
-    psi->saveAction = new QAction(GUIUtils::getIconResource("core", "save.png"), tr("&Save all"), psi);
+    psi->saveAction = new QAction(GUIUtils::getIconResource("ugene", "save.png", false), tr("&Save all"), psi);
     psi->saveAction->setObjectName("saveProjectAction");
     psi->saveAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
     psi->saveAction->setShortcutContext(Qt::WindowShortcut);

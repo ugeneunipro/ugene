@@ -864,7 +864,7 @@ SaveProjectDialogController::SaveProjectDialogController(QWidget* w)
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
     buttonBox->button(QDialogButtonBox::No)->setText(tr("No"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-    setWindowIcon(GUIUtils::getIconResource("core", "save.png"));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "save.png", false));
 
     connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(sl_clicked(QAbstractButton*)));
     connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SaveProjectDialogController::sl_colorModeSwitched);
@@ -875,7 +875,7 @@ void SaveProjectDialogController::sl_clicked(QAbstractButton* button) {
 }
 
 void SaveProjectDialogController::sl_colorModeSwitched() {
-    setWindowIcon(GUIUtils::getIconResource("core", "save.png"));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "save.png", false));
 }
 
 //////////////////////////////////////////////////////////////////////////

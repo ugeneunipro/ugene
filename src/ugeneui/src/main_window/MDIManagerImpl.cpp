@@ -109,13 +109,13 @@ void MWMDIManagerImpl::prepareGUI() {
         prevWindowKeySequence = QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Tab);
     }
 
-    nextAct = new QAction(GUIUtils::getIconResource("ugene", "window_next.png"), tr("Next window"), this);
+    nextAct = new QAction(GUIUtils::getIconResource("ugene", "window_next.png", false), tr("Next window"), this);
     nextAct->setObjectName("Next window");
     nextAct->setStatusTip(tr("Next window"));
     nextAct->setShortcut(nextWindowKeySequence);
     connect(nextAct, SIGNAL(triggered()), mdiArea, SLOT(activateNextSubWindow()));
 
-    previousAct = new QAction(GUIUtils::getIconResource("ugene", "window_prev.png"), tr("Previous window"), this);
+    previousAct = new QAction(GUIUtils::getIconResource("ugene", "window_prev.png", false), tr("Previous window"), this);
     previousAct->setObjectName("Previous window");
     previousAct->setStatusTip(tr("Previous window"));
     previousAct->setShortcut(prevWindowKeySequence);
@@ -134,7 +134,6 @@ void MWMDIManagerImpl::prepareGUI() {
 
     sl_updateWindowLayout();
     connect(AppContext::getAppSettings()->getUserAppsSettings(), SIGNAL(si_windowLayoutChanged()), SLOT(sl_updateWindowLayout()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MWMDIManagerImpl::sl_colorModeSwitched);
 }
 
 bool MWMDIManagerImpl::eventFilter(QObject* obj, QEvent* event) {
@@ -435,11 +434,6 @@ void MWMDIManagerImpl::sl_setWindowLayoutToTabbed() {
     UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
     st->setTabbedWindowLayout(true);
     sl_updateWindowLayout();
-}
-
-void MWMDIManagerImpl::sl_colorModeSwitched() {
-    nextAct->setIcon(GUIUtils::getIconResource("ugene", "window_next.png"));
-    previousAct->setIcon(GUIUtils::getIconResource("ugene", "window_prev.png"));
 }
 
 }  // namespace U2

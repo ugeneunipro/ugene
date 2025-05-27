@@ -122,6 +122,7 @@ private:
     QToolButton* overviewTabButton;
     QToolButton* inputTabButton;
     QToolButton* externalToolsTabButton;
+    QToolButton* loadSchemaButton {nullptr};
 
     QStackedWidget* stackedWidget;
 

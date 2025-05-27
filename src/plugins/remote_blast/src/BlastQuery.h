@@ -60,7 +60,7 @@ public:
         return new QDCDDActor(this);
     }
     virtual QIcon getIcon() const override {
-        return GUIUtils::getIconResource("remote_blast", "remote_db_request.png", false);
+        return GUIUtils::getIconResource("remote_blast", "remote_db_request.png");
     }
 };
 

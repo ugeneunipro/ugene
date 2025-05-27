@@ -5,12 +5,18 @@
 
         <file>images/about.png</file>
         <file>images/advanced_open.png</file>
-        <file>images/bin_empty.png</file>
         <file>images/book_open.png</file>
         <file>images/cancel.png</file>
         <file>images/clock.png</file>
         <file>images/color_mode_pic.png</file>
         <file>images/create_new_project.png</file>
+        <file>images/hourglass_go.png</file>
+        <file>images/hourglass_ok.png</file>
+        <file>images/relocate.png</file>
+        <file>images/save_copy.png</file>
+        <file>images/save_selected_documents.png</file>
+        <file>images/window_next.png</file>
+        <file>images/window_prev.png</file>
         <file>images/empty_notification.png</file>
         <file>images/has_error.png</file>
         <file>images/has_report.png</file>
@@ -24,6 +30,7 @@
         <file>images/project.png</file>
         <file>images/project_new.png</file>
         <file>images/project_open.png</file>
+        <file>images/save.png</file>
         <file>images/task_report.png</file>
         <file>images/ugene.ico</file>
         <file>images/ugene.png</file>
@@ -31,78 +38,64 @@
         <file>images/window_cascade.png</file>
         <file>images/window_tile.png</file>
         <file>images/world_go.png</file>
-        <file>images/welcome_page/social_icon_facebook.png</file>
-        <file>images/welcome_page/social_icon_linkedin.png</file>
-        <file>images/welcome_page/social_icon_rss.png</file>
-        <file>images/welcome_page/social_icon_twitter.png</file>
-        <file>images/welcome_page/social_icon_vkontakte.png</file>
-        <file>images/welcome_page/social_icon_youtube.png</file>
-        <file>images/welcome_page/welcome_btn_create_seq.png</file>
-        <file>images/welcome_page/welcome_btn_help.png</file>
-        <file>images/welcome_page/welcome_btn_open.png</file>
         <file>images/welcome_page/welcome_btn_workflow.png</file>
-
-        <file>images/login.svg</file>
-        <file>images/logout.svg</file>
+        <file>images/welcome_page/welcome_btn_open.png</file>
+        <file>images/welcome_page/welcome_btn_help.png</file>
+        <file>images/welcome_page/welcome_btn_create_seq.png</file>
+        <file>images/welcome_page/social_icon_youtube.png</file>
+        <file>images/welcome_page/social_icon_vkontakte.png</file>
+        <file>images/welcome_page/social_icon_twitter.png</file>
+        <file>images/welcome_page/social_icon_rss.png</file>
+        <file>images/welcome_page/social_icon_linkedin.png</file>
+        <file>images/welcome_page/social_icon_facebook.png</file>
 
         <file>images/dark/color_mode_pic.png</file>
-        <file>images/dark/hourglass_go.png</file>
-        <file>images/dark/hourglass_ok.png</file>
         <file>images/dark/preferences.png</file>
-        <file>images/dark/relocate.png</file>
-        <file>images/dark/save_copy.png</file>
-        <file>images/dark/save_selected_documents.png</file>
         <file>images/dark/ugene_splash.png</file>
-        <file>images/dark/window_next.png</file>
-        <file>images/dark/window_prev.png</file>
         <file>images/welcome_page/dark/line.png</file>
         <file>images/welcome_page/dark/social_icon_patreon.png</file>
 
-
-        <file>images/dark/document.svg</file>
-        <file>images/dark/folder.svg</file>
-        <file>images/dark/folder_shared.svg</file>
         <file>images/dark/cloud_connected.svg</file>
         <file>images/dark/cloud_connecting.svg</file>
         <file>images/dark/cloud_disabled.svg</file>
         <file>images/dark/cloud_storage.svg</file>
+        <file>images/dark/document.svg</file>
+        <file>images/dark/file_download.svg</file>
+        <file>images/dark/file_rename.svg</file>
+        <file>images/dark/file_share.svg</file>
+        <file>images/dark/file_upload.svg</file>
+        <file>images/dark/folder.svg</file>
+        <file>images/dark/folder_shared.svg</file>
         <file>images/dark/group.svg</file>
+        <file>images/dark/login.svg</file>
+        <file>images/dark/logout.svg</file>
         <file>images/dark/new_folder.svg</file>
         <file>images/dark/trash.svg</file>
-        <file>images/dark/file_rename.svg</file>
-        <file>images/dark/file_download.svg</file>
-        <file>images/dark/file_upload.svg</file>
         <file>images/dark/web_link.svg</file>
-        <file>images/dark/file_share.svg</file>
 
-		<file>images/light/relocate.png</file>
         <file>images/light/color_mode_pic.png</file>
-        <file>images/light/hourglass_go.png</file>
-        <file>images/light/hourglass_ok.png</file>
         <file>images/light/preferences.png</file>
-        <file>images/light/save_copy.png</file>
-        <file>images/light/save_selected_documents.png</file>
         <file>images/light/ugene_splash.png</file>
-        <file>images/light/window_next.png</file>
-        <file>images/light/window_prev.png</file>
         <file>images/welcome_page/light/line.png</file>
         <file>images/welcome_page/light/social_icon_patreon.png</file>
 
-        <file>images/light/document.svg</file>
-        <file>images/light/folder.svg</file>
-        <file>images/light/folder_shared.svg</file>
         <file>images/light/cloud_connected.svg</file>
         <file>images/light/cloud_connecting.svg</file>
         <file>images/light/cloud_disabled.svg</file>
         <file>images/light/cloud_storage.svg</file>
+        <file>images/light/document.svg</file>
+        <file>images/light/file_download.svg</file>
+        <file>images/light/file_rename.svg</file>
+        <file>images/light/file_share.svg</file>
+        <file>images/light/file_upload.svg</file>
+        <file>images/light/folder.svg</file>
+        <file>images/light/folder_shared.svg</file>
         <file>images/light/group.svg</file>
+        <file>images/light/login.svg</file>
+        <file>images/light/logout.svg</file>
         <file>images/light/new_folder.svg</file>
         <file>images/light/trash.svg</file>
-        <file>images/light/file_rename.svg</file>
-        <file>images/light/file_download.svg</file>
-        <file>images/light/file_upload.svg</file>
         <file>images/light/web_link.svg</file>
-        <file>images/light/file_share.svg</file>
 
     </qresource>
 	<qresource prefix="/dark">

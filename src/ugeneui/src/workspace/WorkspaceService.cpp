@@ -97,15 +97,16 @@ WorkspaceService::WorkspaceService()
     logoutUrl = workspaceHttpProtocolPrefix + webDomainAndPort + "/logout";
     tokenUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/token";
 
-    loginAction = new QAction(QIcon(":ugene/images/login.svg"), tr("Login to Workspace"));
+    loginAction = new QAction(GUIUtils::getIconResource("ugene", "login.svg"), tr("Login to Workspace"));
     loginAction->setObjectName("loginToWorkspaceAction");
     connect(loginAction, &QAction::triggered, this, &WorkspaceService::login);
 
-    logoutAction = new QAction(QIcon(":ugene/images/logout.svg"), tr("Logout from Workspace"));
+    logoutAction = new QAction(GUIUtils::getIconResource("ugene", "logout.svg"), tr("Logout from Workspace"));
     logoutAction->setObjectName("logoutFromWorkspaceAction");
     connect(logoutAction, &QAction::triggered, this, &WorkspaceService::logout);
 
     connect(this, &WorkspaceService::si_authenticationEvent, this, &WorkspaceService::updateMainMenuActions);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WorkspaceService::sl_colorModeSwitched);
 
     refreshToken = AppContext::getSettings()->getValue(
                                                 WORKSPACE_SETTINGS_FOLDER + "/" + WORKSPACE_SETTINGS_REFRESH_TOKEN)
@@ -191,6 +192,11 @@ static QString extractEmailFromJwt(const QString& jwt) {
 QString WorkspaceService::getCurrentUserEmail() const {
     CHECK(isLoggedIn(), "");
     return extractEmailFromJwt(accessToken);
+}
+
+void WorkspaceService::sl_colorModeSwitched() {
+    loginAction->setIcon(GUIUtils::getIconResource("ugene", "login.svg"));
+    logoutAction->setIcon(GUIUtils::getIconResource("ugene", "logout.svg"));
 }
 
 void WorkspaceService::enable() {

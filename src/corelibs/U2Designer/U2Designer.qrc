@@ -4,7 +4,6 @@
         <file>images/directory.png</file>
         <file>images/exit.png</file>
         <file>images/hard_disk.png</file>
-        <file>images/load_schema.png</file>
         <file>images/logo.png</file>
         <file>images/add_directory.png</file>
         <file>images/add_file.png</file>
@@ -16,6 +15,7 @@
         <file>images/dark/background-menu-button.png</file>
         <file>images/dark/blue_circle.png</file>
         <file>images/dark/down.png</file>
+        <file>images/dark/load_schema.png</file>
         <file>images/dark/outside.png</file>
         <file>images/dark/up.png</file>
 
@@ -24,6 +24,7 @@
         <file>images/light/background-menu-button.png</file>
         <file>images/light/blue_circle.png</file>
         <file>images/light/down.png</file>
+        <file>images/light/load_schema.png</file>
         <file>images/light/outside.png</file>
         <file>images/light/up.png</file>
 

@@ -728,7 +728,7 @@ void QueryViewController::loadScene(const QString& content) {
 
 void QueryViewController::createActions() {
     runAction = new QAction(tr("Run Schema..."), this);
-    runAction->setIcon(QIcon(":query_designer/images/run.png"));
+    runAction->setIcon(GUIUtils::getIconResource("query_designer", "run.png"));
     connect(runAction, SIGNAL(triggered()), SLOT(sl_run()));
 
     newAction = new QAction(tr("New Schema"), this);
@@ -738,7 +738,7 @@ void QueryViewController::createActions() {
 
     loadAction = new QAction(tr("Load Schema..."), this);
     loadAction->setShortcut(QKeySequence("Ctrl+L"));
-    loadAction->setIcon(QIcon(":query_designer/images/fileopen.png"));
+    loadAction->setIcon(GUIUtils::getIconResource("query_designer", "fileopen.png"));
     connect(loadAction, SIGNAL(triggered()), SLOT(sl_loadScene()));
 
     saveAction = new QAction(tr("Save Schema"), this);
@@ -1104,9 +1104,9 @@ void QueryViewController::sl_scrollUp() {
 }
 
 void QueryViewController::sl_colorModeSwitched() {
-    viewModeMenu->setIcon(GUIUtils::getIconResource("query_designer", "eye.png"));
+    runAction->setIcon(GUIUtils::getIconResource("query_designer", "run.png"));
+    loadAction->setIcon(GUIUtils::getIconResource("query_designer", "fileopen.png"));
     viewModeToolButton->setIcon(GUIUtils::getIconResource("query_designer", "eye.png"));
-    querySequenceModeMenu->setIcon(GUIUtils::getIconResource("query_designer", "strands.png"));
     querySequenceModeToolButton->setIcon(GUIUtils::getIconResource("query_designer", "strands.png"));
     saveAction->setIcon(GUIUtils::getIconResource("query_designer", "filesave.png"));
     saveAsAction->setIcon(GUIUtils::getIconResource("query_designer", "filesave.png"));

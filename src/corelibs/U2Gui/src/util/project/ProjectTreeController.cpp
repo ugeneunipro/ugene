@@ -707,14 +707,14 @@ void ProjectTreeController::setupActions() {
     tree->addAction(importToDatabaseAction);
     connect(importToDatabaseAction, SIGNAL(triggered()), SLOT(sl_onImportToDatabase()));
 
-    loadSelectedDocumentsAction = new QAction(GUIUtils::getIconResource("core", "load_selected_documents.png", false), tr("Load selected document(s)"), this);
+    loadSelectedDocumentsAction = new QAction(GUIUtils::getIconResource("core", "load_selected_documents.png"), tr("Load selected document(s)"), this);
     loadSelectedDocumentsAction->setObjectName("action_load_selected_documents");
     loadSelectedDocumentsAction->setShortcuts(QList<QKeySequence>() << Qt::Key_Enter << Qt::Key_Return);
     loadSelectedDocumentsAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     tree->addAction(loadSelectedDocumentsAction);
     connect(loadSelectedDocumentsAction, SIGNAL(triggered()), SLOT(sl_onLoadSelectedDocuments()));
 
-    unloadSelectedDocumentsAction = new QAction(GUIUtils::getIconResource("core", "unload_document.png", false), tr("Unload selected document(s)"), this);
+    unloadSelectedDocumentsAction = new QAction(GUIUtils::getIconResource("core", "unload_document.png"), tr("Unload selected document(s)"), this);
     unloadSelectedDocumentsAction->setObjectName(ACTION_PROJECT__UNLOAD_SELECTED);
     connect(unloadSelectedDocumentsAction, SIGNAL(triggered()), SLOT(sl_onUnloadSelectedDocuments()));
 
@@ -951,6 +951,8 @@ void ProjectTreeController::sl_filterGroupAdded(const QModelIndex& groupIndex) {
 }
 
 void ProjectTreeController::sl_colorModeSwitched() {
+    loadSelectedDocumentsAction->setIcon(GUIUtils::getIconResource("core", "load_selected_documents.png"));
+    unloadSelectedDocumentsAction->setIcon(GUIUtils::getIconResource("core", "unload_document.png"));
     importToDatabaseAction = new QAction(QIcon(GUIUtils::getIconResource("core", "database_copy.png")), tr("Import..."), this);
 }
 

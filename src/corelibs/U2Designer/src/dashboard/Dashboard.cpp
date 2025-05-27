@@ -160,8 +160,8 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
 
     tabButtonsLayout->addStretch(INT_MAX);  // Push the last button to the end.
 
-    auto loadSchemaButton = new QToolButton(tabButtonsRow);
-    loadSchemaButton->setIcon(GUIUtils::getIconResource("U2Designer", "load_schema.png", false));
+    loadSchemaButton = new QToolButton(tabButtonsRow);
+    loadSchemaButton->setIcon(GUIUtils::getIconResource("U2Designer", "load_schema.png"));
     loadSchemaButton->setObjectName("loadSchemaButton");
     loadSchemaButton->setToolTip(tr("Open workflow schema"));
     //    loadSchemaButton->setText(tr("Open schema"));
@@ -243,6 +243,7 @@ void Dashboard::sl_onTabButtonToggled(int id, bool checked) {
 }
 
 void Dashboard::sl_colorModeSwitched() {
+    loadSchemaButton->setIcon(GUIUtils::getIconResource("U2Designer", "load_schema.png"));
     updateStyleSheets();
 }
 

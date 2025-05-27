@@ -52,10 +52,11 @@ DNAExportPlugin::DNAExportPlugin()
     : Plugin(tr("DNA export"), tr("Export and import support for DNA & protein sequences")) {
     if (AppContext::getMainWindow()) {
         services.push_back(new DNAExportService());
-        auto a = new QAction(GUIUtils::getIconResource("core", "add_sequence.png", false), tr("Random sequence generator..."), this);
-        a->setObjectName(ToolsMenu::GENERATE_SEQUENCE);
-        connect(a, SIGNAL(triggered()), SLOT(sl_generateSequence()));
-        ToolsMenu::addAction(ToolsMenu::TOOLS, a);
+        randomSequenceGeneratorAction = new QAction(GUIUtils::getIconResource("core", "add_sequence.png"), tr("Random sequence generator..."), this);
+        randomSequenceGeneratorAction->setObjectName(ToolsMenu::GENERATE_SEQUENCE);
+        connect(randomSequenceGeneratorAction, SIGNAL(triggered()), SLOT(sl_generateSequence()));
+        connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DNAExportPlugin::sl_colorModeSwitched);
+        ToolsMenu::addAction(ToolsMenu::TOOLS, randomSequenceGeneratorAction);
     }
 
     // tests
@@ -81,6 +82,10 @@ void DNAExportPlugin::sl_generateSequence() {
     QObjectScopedPointer<DNASequenceGeneratorDialog> dlg = new DNASequenceGeneratorDialog(QApplication::activeWindow());
     dlg->setWindowIcon(QIcon(":/core/images/add_sequence.png"));
     dlg->exec();
+}
+
+void DNAExportPlugin::sl_colorModeSwitched() {
+    randomSequenceGeneratorAction->setIcon(GUIUtils::getIconResource("core", "add_sequence.png"));
 }
 
 //////////////////////////////////////////////////////////////////////////
