@@ -887,6 +887,32 @@ GUI_TEST_CLASS_DEFINITION(test_8093) {
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Find restriction sites");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
+
+GUI_TEST_CLASS_DEFINITION(test_8097) {
+    class EnzymeList : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTWidget::click(GTWidget::findWidget("selectNoneButton", dialog));
+            GTComboBox::selectItemByText("filterComboBox", dialog, "name");
+            QStringList enzymesToShow = {"BamHI", "BglII", "ClaI", "DraI"};
+            GTLineEdit::setText("enzymesFilterEdit", enzymesToShow.join(","), dialog);
+            auto enzymesTree = GTWidget::findTreeWidget("tree", GTWidget::findWidget("enzymesSelectorWidget"));
+            for (const QString& enzyme : qAsConst(enzymesToShow)) {
+                GTTreeWidget::findItem(enzymesTree, enzyme);
+            }
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(QStringList {}, new EnzymeList()));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8096_1) {
     // Open _common_data/scenarios/_regression/8096/test_8096.gb
     // Expected: sequence already has two fragments
