@@ -475,7 +475,7 @@ static qint64 getSequenceLength(U2Dbi* dbi, const U2DataId& objectId, U2OpStatus
     return seqLength;
 }
 
-static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, QList<qint64> objectLengths, U2OpStatus& os) {
+static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, const QList<qint64>& objectLengths, U2OpStatus& os) {
     CHECK_EXT(header != nullptr, os.setError("NULL header"), );
 
     header->n_targets = objects.size();
@@ -506,28 +506,6 @@ static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, QLis
         header->text[headerText.length()] = 0;
         header->l_text = headerText.length();
     }
-}
-
-static void updateHeaderSeqLengthsAndText(bam_hdr_t* header, const QList<GObject*>& objects, QList<qint64> objectLengths, U2OpStatus& os) {
-    CHECK_EXT(header != nullptr, os.setError("NULL header"), );
-    header->target_len = new uint32_t[header->n_targets];
-
-    QByteArray headerText;
-    headerText += "@HD\tVN:1.4\tSO:coordinate\n";
-
-    int objIdx = 0;
-    for (GObject* obj : qAsConst(objects)) {
-        const qint64 seqLength = objectLengths.at(objIdx);
-        header->target_len[objIdx] = seqLength;
-        const QByteArray seqName = obj->getGObjectName().toLatin1();
-        headerText += QString("@SQ\tSN:%1\tLN:%2\n").arg(seqName.constData()).arg(seqLength).toUtf8();
-        objIdx++;
-    }
-
-    header->text = new char[headerText.length() + 1];
-    qstrncpy(header->text, headerText.constData(), headerText.length() + 1);
-    header->text[headerText.length()] = 0;
-    header->l_text = headerText.length();
 }
 
 static QMap<QString, int> getNumMap(const QList<GObject*>& objects, U2OpStatus& os) {
