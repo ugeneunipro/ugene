@@ -1097,6 +1097,21 @@ GUI_TEST_CLASS_DEFINITION(test_8104) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8111) {
+    /*
+     * 1. Open "data/samples/FASTA/human_T1.fa".
+     * 2. Rename to sequence with longer name
+     * Expected state: sequence name label fits well with new name
+     */
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    QWidget *nameLabel = GTWidget::findWidget("nameLabel");
+    const QSize initialSize = nameLabel->size();
+    GTUtilsProjectTreeView::rename("human_T1 (UCSC April 2002 chr7:115977709-117855134)", "human_T1 xxxxxxxxx(UCSC April 2002 chr7:115977709-117855134)xxxxxxxxx");
+    CHECK_SET_ERR(initialSize != nameLabel->size(), "Sequence name label size should change!");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8118) {
     /*
     * 1. Open Mca alignment
