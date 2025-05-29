@@ -39,6 +39,7 @@ const QStringList U2BaseAttributeName::getReadsRelatedAttributes() {
     result.append(count_reads);
     result.append(coverage_statistics);
     result.append(max_prow);
+    result.append(reference_length);
     return result;
 }
 

@@ -744,7 +744,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Select region to extract and import extracted file to project
-    GTUtilsDialog::add(new ExtractAssemblyRegionDialogFiller(sandBoxDir + "/test_26_1.bam", U2Region(228, 1488), "BAM"));
+    GTUtilsDialog::add(new ExtractAssemblyRegionDialogFiller(sandBoxDir + "/test_26_1.bam", U2Region(1, 2000), "BAM"));
     GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "/test_26_1.ugenedb"));
     QAbstractButton* button = GTAction::button("ExtractAssemblyRegion");
     GTWidget::click(button);
@@ -756,9 +756,13 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     CHECK_SET_ERR(textFromLabel.contains("229"), "expected coverage value not found");
     CHECK_SET_ERR(textFromLabel.contains("222"), "expected coverage value not found");
     CHECK_SET_ERR(textFromLabel.contains("215"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("203"), "expected coverage value not found");
     CHECK_SET_ERR(textFromLabel.contains("194"), "expected coverage value not found");
     CHECK_SET_ERR(textFromLabel.contains("192"), "expected coverage value not found");
     CHECK_SET_ERR(textFromLabel.contains("190"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("183"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("182"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("180"), "expected coverage value not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_2) {
@@ -768,7 +772,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow();
 
     //    2. Select region to extract and import extracted file to project
-    GTUtilsDialog::add(new ExtractAssemblyRegionDialogFiller(sandBoxDir + "/test_26_2.sam", U2Region(4500, 300), "SAM"));
+    GTUtilsDialog::add(new ExtractAssemblyRegionDialogFiller(sandBoxDir + "/test_26_2.sam", U2Region(4500, 2250), "SAM"));
     GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "/test_26_2.ugenedb"));
     QAbstractButton* button = GTAction::button("ExtractAssemblyRegion");
     GTWidget::click(button);
@@ -777,10 +781,16 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     auto coveredRegionsLabel = GTWidget::findLabel("CoveredRegionsLabel", GTUtilsMdi::activeWindow());
 
     QString textFromLabel = coveredRegionsLabel->text();
-    CHECK_SET_ERR(textFromLabel.contains("157"), "expected coverage value not found");
-    CHECK_SET_ERR(textFromLabel.contains("65"), "expected coverage value not found");
-    CHECK_SET_ERR(textFromLabel.contains("55"), "expected coverage value not found");
-    CHECK_SET_ERR(textFromLabel.contains("53"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("211"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("207"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("206"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("201"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("193"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("181"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("176"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("171"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("168"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("165"), "expected coverage value not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_3) {
@@ -790,7 +800,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     //    2. Select region to extract and import extracted file to project
-    GTUtilsDialog::waitForDialog(new ExtractAssemblyRegionDialogFiller(sandBoxDir + "/test_26_3.ugenedb", U2Region(6500, 900), "UGENE Database"));
+    GTUtilsDialog::waitForDialog(new ExtractAssemblyRegionDialogFiller(sandBoxDir + "/test_26_3.ugenedb", U2Region(6500, 2000), "UGENE Database"));
     GTWidget::click(GTAction::button("ExtractAssemblyRegion"));
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -799,10 +809,15 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
     QString textFromLabel = coveredRegionsLabel->text();
     CHECK_SET_ERR(textFromLabel.contains("330"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("321"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("316"), "expected coverage value not found");
     CHECK_SET_ERR(textFromLabel.contains("253"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("229"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("216"), "expected coverage value not found");
     CHECK_SET_ERR(textFromLabel.contains("193"), "expected coverage value not found");
     CHECK_SET_ERR(textFromLabel.contains("187"), "expected coverage value not found");
     CHECK_SET_ERR(textFromLabel.contains("186"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("182"), "expected coverage value not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027) {

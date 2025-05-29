@@ -45,6 +45,7 @@
 #include <utils/GTUtilsDialog.h>
 
 #include <QClipboard>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -54,6 +55,7 @@
 #include <U2View/TvTextItem.h>
 
 #include "GTTestsRegressionScenarios_8001_9000.h"
+#include "GTUtilsAssemblyBrowser.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsCircularView.h"
@@ -80,6 +82,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
@@ -1377,6 +1380,56 @@ GUI_TEST_CLASS_DEFINITION(test_8153) {
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList {}, new custom()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8160) {
+    /*
+    * 1. Open "samples/Assembly/chrM.sam"
+    * 2. Click the first position coverage (6950).
+    * 3. Click right mouse button on the assembly area -> Export -> Assebmly region.
+    * 4. Click Export.
+    * Expected: new assembly length 110
+    * Repeat steps with BAM and SAM formats
+    */
+    class Scenario : public CustomScenario {
+    public:
+        Scenario(const QString& format)
+            : formatToSave(format) {
+        };
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTLineEdit::setText(GTWidget::findLineEdit("start_edit_line", dialog), "6901");
+            GTLineEdit::setText(GTWidget::findLineEdit("end_edit_line", dialog), "7010");
+            GTLineEdit::setText(GTWidget::findLineEdit("filepathLineEdit"), sandBoxDir + "8160/file");
+            GTComboBox::selectItemByText(GTWidget::findComboBox("documentFormatComboBox", dialog), formatToSave);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    private:
+        QString formatToSave;
+    };
+
+    QDir(sandBoxDir).mkdir("8160");
+    const QStringList formats = { "UGENE Database", "SAM", "BAM" };
+    for (const QString& formatToSave : qAsConst(formats)) {
+        GTFileDialog::openFile(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb");
+        GTUtilsTaskTreeView::waitTaskFinished();
+        GTUtilsAssemblyBrowser::zoomToReads();
+        GTUtilsDialog::add(new PopupChooserByText({ "Export", "Assembly region" }));
+        GTUtilsDialog::add(new AnyDialogFiller("ExtractAssemblyRegionDialog", new Scenario(formatToSave)));
+        if (formatToSave != formats.first()) {
+            GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir +
+                "8160/chrM.sorted." + formatToSave + ".ugenedb"));
+        }
+        GTUtilsAssemblyBrowser::callContextMenu(GTUtilsAssemblyBrowser::Reads);
+        GTUtilsTaskTreeView::waitTaskFinished();
+
+        CHECK_SET_ERR(GTUtilsAssemblyBrowser::getLength() == 110, "Expected assembly length not 110");
+        if (formatToSave != formats.last()) {  // skip last for speed up
+            GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+            GTMenu::clickMainMenuItem({ "File", "Close project" });
+            GTUtilsTaskTreeView::waitTaskFinished();
+        }
+    }
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8161) {
     /*
     Load COI.aln
@@ -1408,7 +1461,6 @@ GUI_TEST_CLASS_DEFINITION(test_8161) {
     GTCheckBox::setChecked(GTWidget::findCheckBox("useDots"), true);
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Statistics);
 }
-
 
 }  // namespace GUITest_regression_scenarios
 

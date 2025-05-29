@@ -615,7 +615,7 @@ qint64 AssemblyDbi::countReads(const U2DataId& assemblyId, const U2Region& r, U2
     }
 }
 
-U2DbiIterator<U2AssemblyRead>* AssemblyDbi::getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool) {
+U2DbiIterator<U2AssemblyRead>* AssemblyDbi::getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool, bool) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
