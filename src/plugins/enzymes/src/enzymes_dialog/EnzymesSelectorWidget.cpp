@@ -419,9 +419,16 @@ void EnzymesSelectorWidget::sl_filterConditionsChanged() {
         for (int j = 0; j < itemCount; ++j) {
             auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
             if (filterMode == FILTER_BY_NAME) {
-                if (item->enzyme->id.contains(filterText, Qt::CaseInsensitive)) {
-                    item->setHidden(false);
-                } else {
+                const QStringList enzList = filterText.split(",", Qt::SkipEmptyParts);
+                bool notHit = true;
+                for (const QString& itemFromList : qAsConst(enzList)) {
+                    if (item->enzyme->id.contains(itemFromList, Qt::CaseInsensitive)) {
+                        item->setHidden(false);
+                        notHit = false;
+                        break;
+                    }
+                }
+                if (notHit) {
                     item->setHidden(true);
                     ++numHiddenItems;
                 }
