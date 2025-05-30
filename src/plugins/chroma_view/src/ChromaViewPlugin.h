@@ -41,6 +41,8 @@ private:
     GObjectViewWindowContext* viewCtx;
 };
 
+class ChromaViewAction;
+
 class ChromaViewContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
@@ -50,9 +52,12 @@ public:
 protected slots:
     void sl_showChromatogram();
     void sl_sequenceWidgetAdded(ADVSequenceWidget*);
+    void sl_colorModeSwitched();
 
 protected:
     void initViewContext(GObjectViewController* view) override;
+
+    ChromaViewAction* chromaViewAction {nullptr};
 };
 
 class ChromaViewAction : public ADVSequenceWidgetAction {

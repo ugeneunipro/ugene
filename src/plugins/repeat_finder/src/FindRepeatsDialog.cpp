@@ -35,6 +35,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/RegionSelector.h>
 
@@ -142,10 +143,11 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext* _sc)
     connect(maxDistBox, SIGNAL(valueChanged(int)), SLOT(sl_maxDistChanged(int)));
     connect(minDistCheck, SIGNAL(toggled(bool)), SLOT(sl_minMaxToggle(bool)));
     connect(maxDistCheck, SIGNAL(toggled(bool)), SLOT(sl_minMaxToggle(bool)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &FindRepeatsDialog::sl_colorModeSwitched);
 
     updateStatus();
 
-    setWindowIcon(QIcon(":/ugene/images/ugene_16.png"));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png", false));
 }
 
 void FindRepeatsDialog::prepareAMenu(QToolButton* tb, QLineEdit* le, const QStringList& names) {
@@ -158,7 +160,7 @@ void FindRepeatsDialog::prepareAMenu(QToolButton* tb, QLineEdit* le, const QStri
     }
     tb->setMenu(m);
     tb->setPopupMode(QToolButton::InstantPopup);
-    tb->setIcon(QIcon(":/core/images/predefined_annotation_groups.png"));
+    tb->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
 }
 
 QStringList FindRepeatsDialog::getAvailableAnnotationNames() const {
@@ -375,6 +377,12 @@ void FindRepeatsDialog::sl_repeatParamsChanged(int) {
 
 void FindRepeatsDialog::sl_minMaxToggle(bool) {
     updateStatus();
+}
+
+void FindRepeatsDialog::sl_colorModeSwitched() {
+    annotationFitButton->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
+    annotationAroundKeepButton->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
+    annotationAroundFilterButton->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
 }
 
 void FindRepeatsDialog::updateStatus() {

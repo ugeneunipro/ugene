@@ -12,6 +12,7 @@ file(GLOB_RECURSE SRCS src/*.cpp)
 file(GLOB_RECURSE HDRS src/*.h)
 
 add_executable(plugins_checker ${HDRS} ${SRCS})
+set_target_properties(plugins_checker PROPERTIES DEBUG_POSTFIX "d")
 
 if (WIN32)
     add_ugene_rc_file(plugins_checker)

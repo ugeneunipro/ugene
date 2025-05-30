@@ -25,6 +25,7 @@
 
 #include <U2Core/AppContext.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 #include "PerfMonitorView.h"
@@ -44,11 +45,12 @@ PerfMonitorPlugin::PerfMonitorPlugin()
     windowId = 0;
     openWindowAction = new QAction(tr("Show counters"), this);
     openWindowAction->setObjectName("Show counters");
-    openWindowAction->setIcon(QIcon(":perf_monitor/images/mon.png"));
+    openWindowAction->setIcon(GUIUtils::getIconResource("perf_monitor", "mon.png"));
     connect(openWindowAction, SIGNAL(triggered()), SLOT(sl_openWindow()));
 
     QMenu* toolsMenu = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS);
     toolsMenu->addAction(openWindowAction);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &PerfMonitorPlugin::sl_colorModeSwitch);
 }
 
 void PerfMonitorPlugin::sl_openWindow() {
@@ -56,11 +58,22 @@ void PerfMonitorPlugin::sl_openWindow() {
     MWMDIWindow* mdiWindow = mdi->getWindowById(windowId);
     if (mdiWindow == nullptr) {
         mdiWindow = new PerfMonitorView();
-        mdiWindow->setWindowIcon(QIcon(":perf_monitor/images/mon.png"));
+        mdiWindow->setWindowIcon(GUIUtils::getIconResource("perf_monitor", "mon.png"));
         windowId = mdiWindow->getId();
         mdi->addMDIWindow(mdiWindow);
     }
     mdi->activateWindow(mdiWindow);
+}
+
+void PerfMonitorPlugin::sl_colorModeSwitch() {
+    openWindowAction->setIcon(GUIUtils::getIconResource("perf_monitor", "mon.png"));
+    MWMDIManager* mdi = AppContext::getMainWindow()->getMDIManager();
+    MWMDIWindow* mdiWindow = mdi->getWindowById(windowId);
+    if (mdiWindow != nullptr) {
+        mdiWindow->setWindowIcon(GUIUtils::getIconResource("perf_monitor", "mon.png"));
+        mdi->closeMDIWindow(mdiWindow);
+        mdi->addMDIWindow(mdiWindow);
+    }
 }
 
 }  // namespace U2

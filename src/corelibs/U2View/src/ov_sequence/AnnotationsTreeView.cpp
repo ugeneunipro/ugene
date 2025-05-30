@@ -93,6 +93,9 @@ private:
 /************************************************************************/
 AnnotationsTreeWidget::AnnotationsTreeWidget(QWidget* parent)
     : QTreeWidget(parent) {
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, [this]() {
+        //update();
+    });
 }
 
 QTreeWidgetItem* AnnotationsTreeWidget::itemFromIndex(const QModelIndex& index) const {
@@ -171,9 +174,6 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     sortTimer.setSingleShot(true);
     connect(&sortTimer, SIGNAL(timeout()), SLOT(sl_sortTree()));
 
-    addColumnIcon = QIcon(":core/images/add_column.png");
-    removeColumnIcon = QIcon(":core/images/remove_column.png");
-
     /*
     pasteAction = new QAction(QIcon(":/core/images/paste.png"), tr("Paste annotations"), this);
     pasteAction->setObjectName("Paste annotations");
@@ -207,12 +207,12 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     connect(toggleQualifierColumnAction, SIGNAL(triggered()), SLOT(sl_onToggleQualifierColumn()));
 
     removeColumnByHeaderClickAction = new QAction(tr("Hide column"), this);
-    removeColumnByHeaderClickAction->setIcon(removeColumnIcon);
+    removeColumnByHeaderClickAction->setIcon(GUIUtils::getIconResource("core", "remove_column.png"));
     connect(removeColumnByHeaderClickAction, SIGNAL(triggered()), SLOT(sl_onRemoveColumnByHeaderClick()));
 
     searchQualifierAction = new QAction(tr("Find qualifier..."), this);
     searchQualifierAction->setObjectName("find_qualifier_action");
-    searchQualifierAction->setIcon(QIcon(":core/images/zoom_whole.png"));
+    searchQualifierAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png", false));
     connect(searchQualifierAction, SIGNAL(triggered()), SLOT(sl_searchQualifier()));
 
     invertAnnotationSelectionAction = new QAction(tr("Invert annotation selection"), this);
@@ -251,6 +251,8 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     isDragging = false;
     resetDragAndDropData();
     tree->setAcceptDrops(true);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AnnotationsTreeView::sl_colorModeSwitched);
 }
 
 void AnnotationsTreeView::restoreWidgetState() {
@@ -1178,7 +1180,7 @@ void AnnotationsTreeView::updateState() {
     bool hasColumn = qColumns.contains(qName);
     toggleQualifierColumnAction->setText(!hasOnly1QualifierSelected ? tr("Toggle column") : (qColumns.contains(qName) ? tr("Hide '%1' column") : tr("Add '%1' column")).arg(qName));
 
-    toggleQualifierColumnAction->setIcon(hasOnly1QualifierSelected ? (hasColumn ? removeColumnIcon : addColumnIcon) : QIcon());
+    toggleQualifierColumnAction->setIcon(hasOnly1QualifierSelected ? (hasColumn ? GUIUtils::getIconResource("core", "remove_column.png") : GUIUtils::getIconResource("core", "add_column.png")) : QIcon());
 
     QTreeWidgetItem* ciBase = tree->currentItem();
     auto ci = static_cast<AVItem*>(ciBase);
@@ -1755,6 +1757,14 @@ void AnnotationsTreeView::sl_sequenceRemoved(ADVSequenceObjectContext* advContex
     disconnectSequenceObjectContext(advContext);
 }
 
+void AnnotationsTreeView::sl_colorModeSwitched() {
+    QString emptyFilter;
+    for (int i = 0; i < tree->topLevelItemCount(); i++) {
+        updateColorModeRecursively(static_cast<AVItem*>(tree->topLevelItem(i)));
+    }
+    removeColumnByHeaderClickAction->setIcon(GUIUtils::getIconResource("core", "remove_column.png"));
+}
+
 // TODO: refactoring of annotationClicked and annotationDoubleClicked methods.
 // It's too difficult to understand what's going on in this methods
 // UTI-155
@@ -1843,6 +1853,44 @@ void AnnotationsTreeView::emitAnnotationActivated(Annotation* annotation) {
     disconnectSequenceObjectContext(seqObjCtx);
     seqObjCtx->emitAnnotationActivated(annotation, -1);
     connectSequenceObjectContext(seqObjCtx);
+}
+
+void AnnotationsTreeView::updateColorModeRecursively(AVItem* item) {
+    switch (item->type) {
+        case AVItemType_Group: {
+            auto grItem = static_cast<AVGroupItem*>(item);
+            if (grItem->parent() == nullptr) {  // document item
+                GUIUtils::setMutedLnF(grItem, !grItem->group->getGObject()->hasAnnotations(), false);
+            } else {
+                GUIUtils::setMutedLnF(grItem, grItem->childCount() == 0, false);
+            }
+            break;
+        }
+        case AVItemType_Annotation: {
+            auto aItem = static_cast<AVAnnotationItem*>(item);
+            const auto& aData = aItem->annotation->getData();
+            const auto* as = AppContext::getAnnotationsSettingsRegistry()->getAnnotationSettings(aData);
+            const QColor iconColor = as->visible ? as->getActiveColor() : Qt::lightGray;
+            auto icon = GUIUtils::createSquareIcon(iconColor, 9);
+            aItem->setIcon(AnnotationsTreeView::COLUMN_NAME, icon);
+            QMap<QString, QIcon>& cache = AVAnnotationItem::getIconsCache();
+            cache[aData->name] = icon;
+            GUIUtils::setMutedLnF(aItem, !as->visible, false);
+            break;
+        }
+        case AVItemType_Qualifier: {
+            auto qualItem = static_cast<AVQualifierItem*>(item);
+            auto parentAnnItem = static_cast<AVAnnotationItem*>(qualItem->parent());
+            const auto& aData = parentAnnItem->annotation->getData();
+            const auto* as = AppContext::getAnnotationsSettingsRegistry()->getAnnotationSettings(aData);
+            GUIUtils::setMutedLnF(qualItem, !as->visible, false);
+            break;
+        }
+    }
+
+    for (int i = 0; i < item->childCount(); i++) {
+        updateColorModeRecursively(static_cast<AVItem*>(item->child(i)));
+    }
 }
 
 void AnnotationsTreeView::clearSelectedNotAnnotations() {
@@ -2327,7 +2375,7 @@ const QIcon& AVGroupItem::getGroupIcon() {
 }
 
 const QIcon& AVGroupItem::getDocumentIcon() {
-    static QIcon groupIcon(":/core/images/gobject.png");
+    static QIcon groupIcon = GUIUtils::getIconResource("core", "gobject.png", false).pixmap(16, 16);
     return groupIcon;
 }
 
@@ -2376,6 +2424,7 @@ void AVGroupItem::updateAnnotations(const QString& nameFilter, ATVAnnUpdateFlags
             auto level1 = static_cast<AVGroupItem*>(item);
             if (noFilter || level1->group->getName() == nameFilter) {
                 level1->updateAnnotations(nameFilter, f);
+                level1->updateVisual();
             }
         } else {
             SAFE_POINT(item->type == AVItemType_Annotation, "Unexpected tree item type", );
@@ -2439,7 +2488,7 @@ void AVAnnotationItem::updateVisual(ATVAnnUpdateFlags f) {
         QMap<QString, QIcon>& cache = getIconsCache();
         QIcon icon = cache.value(aData->name);
         if (icon.isNull()) {
-            const QColor iconColor = as->visible ? as->color : Qt::lightGray;
+            const QColor iconColor = as->visible ? as->getActiveColor() : Qt::lightGray;
             icon = GUIUtils::createSquareIcon(iconColor, 9);
             if (cache.size() > MAX_ICONS_CACHE_SIZE) {
                 cache.clear();
