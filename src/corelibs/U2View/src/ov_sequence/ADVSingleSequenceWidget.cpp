@@ -62,6 +62,7 @@ namespace U2 {
 #define ADV_HEADER_HEIGHT 30
 #define ADV_HEADER_TOOLBAR_SPACING 6
 #define ADV_HEADER_TOP_BOTTOM_INDENT 2
+#define MIN_LABEL_WIDTH 50
 #define IMAGE_DIR "image"
 
 const QString ADVSingleSequenceWidget::SEQUENCE_SETTINGS = "sequenceViewSettings";
@@ -936,14 +937,11 @@ ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWi
     pixLabel->setToolTip(objInfoTip);
     pixLabel->installEventFilter(this);
 
-    int labelWidth = 50;
-    QFontMetrics fm(f, this);
     nameLabel = new QLabel("", this);
+    nameLabel->setFont(f);
     updateTitle();
     nameLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    nameLabel->setMinimumWidth(labelWidth);
-    nameLabel->setMaximumWidth(fm.horizontalAdvance(nameLabel->text()));
-    nameLabel->setFont(f);
+    nameLabel->setMinimumWidth(MIN_LABEL_WIDTH);
     nameLabel->setToolTip(objInfoTip);
     nameLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     nameLabel->setObjectName("nameLabel");
@@ -977,6 +975,8 @@ void ADVSingleSequenceHeaderWidget::updateTitle() {
     U2SequenceObject* seqObj = ctx->getSequenceObject();
     QString newTitle = seqObj->getGObjectName() + " [" + getShortAlphabetName(seqObj->getAlphabet()) + "]";
     setTitle(newTitle);
+    const QFontMetrics fm(nameLabel->font(), this);
+    nameLabel->setMaximumWidth(fm.horizontalAdvance(nameLabel->text()));
 }
 
 void ADVSingleSequenceHeaderWidget::sl_actionTriggered(QAction* a) {
