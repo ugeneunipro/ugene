@@ -155,7 +155,7 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
             SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)),
             SLOT(sl_onAlignmentChanged(const Msa&, const MaModificationInfo&)));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(resetColumnWidthCache()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaEditor::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaEditor::sl_colorThemeSwitched);
 }
 
 void MaEditor::sl_onAlignmentChanged(const Msa&, const MaModificationInfo&) {
@@ -637,7 +637,7 @@ void MaEditor::sl_onClearActionTriggered() {
     getSelectionController()->clearSelection();
 }
 
-void MaEditor::sl_colorModeSwitched() {
+void MaEditor::sl_colorThemeSwitched() {
     saveAlignmentAction->setIcon(GUIUtils::getIconResource("core", "msa_save.png"));
     saveAlignmentAsAction->setIcon(GUIUtils::getIconResource("core", "msa_save_as.png"));
     zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));

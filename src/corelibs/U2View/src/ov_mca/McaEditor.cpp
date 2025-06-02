@@ -239,7 +239,7 @@ void McaEditor::initActions() {
     getUI()->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font..."));
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &McaEditor::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &McaEditor::sl_colorThemeSwitched);
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
 
@@ -258,9 +258,9 @@ void McaEditor::sl_saveChromatogramState() {
     s->setValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, showChromatogramsAction->isChecked());
 }
 
-void McaEditor::sl_colorModeSwitched() {
+void McaEditor::sl_colorThemeSwitched() {
     showChromatogramsAction->setIcon(GUIUtils::getIconResource("core", "graphs.png"));
-    MaEditor::sl_colorModeSwitched();
+    MaEditor::sl_colorThemeSwitched();
 }
 
 void McaEditor::addAlignmentMenu(QMenu* menu) {

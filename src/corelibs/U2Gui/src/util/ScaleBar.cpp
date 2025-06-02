@@ -65,7 +65,7 @@ ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
     plusButton->setFixedSize(20, 20);
     connect(plusButton, SIGNAL(clicked()), plusAction, SLOT(trigger()));
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ScaleBar::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ScaleBar::sl_colorThemeSwitched);
 
     // layout
     auto zoomLayout = new QBoxLayout(ori == Qt::Vertical ? QBoxLayout::TopToBottom : QBoxLayout::RightToLeft);
@@ -128,7 +128,7 @@ void ScaleBar::sl_updateState() {
     plusButton->setEnabled(plusAction->isEnabled());
 }
 
-void ScaleBar::sl_colorModeSwitched() {
+void ScaleBar::sl_colorThemeSwitched() {
     minusAction->setIcon(GUIUtils::getIconResource("core", "minus.png", false));
     minusButton->setIcon(GUIUtils::getIconResource("core", "minus.png", false));
     plusAction->setIcon(GUIUtils::getIconResource("core", "plus.png", false));

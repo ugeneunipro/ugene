@@ -123,7 +123,7 @@ ProjectTreeController::ProjectTreeController(EditableTreeView* tree, const Proje
 
     connectToResourceTracker();
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ProjectTreeController::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ProjectTreeController::sl_colorThemeSwitched);
 
     sl_updateSelection();
 }
@@ -950,7 +950,7 @@ void ProjectTreeController::sl_filterGroupAdded(const QModelIndex& groupIndex) {
     tree->setExpanded(groupIndex, true);
 }
 
-void ProjectTreeController::sl_colorModeSwitched() {
+void ProjectTreeController::sl_colorThemeSwitched() {
     loadSelectedDocumentsAction->setIcon(GUIUtils::getIconResource("core", "load_selected_documents.png"));
     unloadSelectedDocumentsAction->setIcon(GUIUtils::getIconResource("core", "unload_document.png"));
     importToDatabaseAction = new QAction(QIcon(GUIUtils::getIconResource("core", "database_copy.png")), tr("Import..."), this);

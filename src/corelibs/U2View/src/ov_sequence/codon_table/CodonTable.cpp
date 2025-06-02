@@ -104,7 +104,7 @@ CodonTableView::CodonTableView(AnnotatedDNAView* view)
 
     setAminoTranslation(getBestAminoTranslationId());
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &CodonTableView::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &CodonTableView::sl_colorThemeSwitched);
 }
 
 void CodonTableView::sl_setVisible() {
@@ -130,7 +130,7 @@ void CodonTableView::sl_onActiveSequenceChanged(ADVSequenceWidget* /*from*/, ADV
     setAminoTranslation(ctx.first()->getAminoTT()->getTranslationId());
 }
 
-void CodonTableView::sl_colorModeSwitched() {
+void CodonTableView::sl_colorThemeSwitched() {
     DNATranslationRegistry* trReg = AppContext::getDNATranslationRegistry();
     SAFE_POINT_NN(trReg, );
 
@@ -157,7 +157,7 @@ void CodonTableView::sl_colorModeSwitched() {
                 cellLabel->setText(LABEL_HTML_TEXT.arg(link).arg(appTextColor.name()).arg(text));
 
                 QColor color = getColor(dnaCodon->getCodonGroup());
-                QString backgroundColorHtml = AppContext::getMainWindow()->isDarkMode() ? color.darker().name() : color.lighter().name();
+                QString backgroundColorHtml = AppContext::getMainWindow()->isDarkTheme() ? color.darker().name() : color.lighter().name();
                 cellLabel->setStyleSheet("QLabel {background-color: " + backgroundColorHtml + ";}");
             }
         }
@@ -248,7 +248,7 @@ void CodonTableView::addItemToTable(int row, int column, const QString& text, co
     QFont font = label->font();
     font.setPointSize(10);
     label->setFont(font);
-    QString backgroundColorHtml = AppContext::getMainWindow()->isDarkMode() ? backgroundColor.darker().name() : backgroundColor.lighter().name();
+    QString backgroundColorHtml = AppContext::getMainWindow()->isDarkTheme() ? backgroundColor.darker().name() : backgroundColor.lighter().name();
     label->setStyleSheet("QLabel {background-color: " + backgroundColorHtml + ";}");
 
     label->setOpenExternalLinks(true);

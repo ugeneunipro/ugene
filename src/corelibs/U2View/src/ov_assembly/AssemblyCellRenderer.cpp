@@ -196,7 +196,7 @@ void NucleotideColorsRenderer::render(const QSize& _size, int _devicePixelRatio,
 void NucleotideColorsRenderer::update() {
     images.clear();
 
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     colorScheme = isDark ? nucleotideColorSchemeDark : nucleotideColorSchemeLight;
     auto gapTextColor = isDark ? QColor(255, 127, 127) : Qt::red;
     const auto& colorSchemeKeys = colorScheme.keys();
@@ -274,7 +274,7 @@ void ComplementColorsRenderer::update() {
     directImages.clear();
     complementImages.clear();
 
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QColor gappedColor = isDark ? QColor("#353535") : QColor("#FBFBFB");
     for(char c : qAsConst(assemblyAlphabet)) {
         QPixmap dimg(size * devicePixelRatio), cimg(size * devicePixelRatio);
@@ -384,7 +384,7 @@ void PairedColorsRenderer::update() {
     pairedImages.clear();
     unpairedImages.clear();
 
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QColor gappedColor = isDark ? QColor("#353535") : QColor("#FBFBFB");
     for (char c : qAsConst(assemblyAlphabet)) {
         QPixmap pimg(size * devicePixelRatio), npimg(size * devicePixelRatio);
@@ -445,7 +445,7 @@ void DiffNucleotideColorsRenderer::update() {
     highlightedImages.clear();
     normalImages.clear();
 
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     colorScheme = isDark ? nucleotideColorSchemeDark : nucleotideColorSchemeLight;
     QColor normalColor(isDark ? "#757575" : "#BBBBBB");
     auto gapBackgroundColor = isDark ? QColor("#FF8787") : QColor("#CC4E4E");

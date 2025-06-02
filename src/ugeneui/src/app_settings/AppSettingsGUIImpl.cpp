@@ -54,7 +54,7 @@ AppSettingsGUIImpl::AppSettingsGUIImpl(QObject* p)
     m->addAction(settingsDialogAction);
     AppContext::getMainWindow()->registerAction(settingsDialogAction);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AppSettingsGUIImpl::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AppSettingsGUIImpl::sl_colorThemeSwitched);
 }
 
 AppSettingsGUIImpl::~AppSettingsGUIImpl() {
@@ -104,7 +104,7 @@ AppSettingsGUIPageController* AppSettingsGUIImpl::findPageById(const QString& pa
     return nullptr;
 }
 
-void AppSettingsGUIImpl::sl_colorModeSwitched() {
+void AppSettingsGUIImpl::sl_colorThemeSwitched() {
     settingsDialogAction->setIcon(GUIUtils::getIconResource("ugene", "preferences.png"));
 }
 

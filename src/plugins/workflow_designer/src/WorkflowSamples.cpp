@@ -108,7 +108,7 @@ SamplesWidget::SamplesWidget(WorkflowScene* scene, QWidget* parent)
     connect(glass, SIGNAL(itemActivated(QTreeWidgetItem*)), SLOT(activateItem(QTreeWidgetItem*)));
     connect(glass, SIGNAL(cancel()), SLOT(cancelItem()));
     connect(WorkflowSettings::watcher, SIGNAL(changed()), this, SLOT(sl_refreshSampesItems()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SamplesWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SamplesWidget::sl_colorThemeSwitched);
 }
 
 QTreeWidgetItem* SamplesWidget::getSampleItem(const QString& category, const QString& id) {
@@ -201,7 +201,7 @@ void SamplesWidget::addCategory(const SampleCategory& cat) {
     QFont cf;
     cf.setBold(true);
     ci->setData(0, Qt::FontRole, cf);
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QColor yc = Qt::yellow;
     yc = isDark ? yc.darker() : yc.lighter();
     yc.setAlpha(127);
@@ -233,7 +233,7 @@ void SamplesWidget::sl_refreshSampesItems() {
     expandAll();
 }
 
-void SamplesWidget::sl_colorModeSwitched() {
+void SamplesWidget::sl_colorThemeSwitched() {
     sl_refreshSampesItems();
 }
 

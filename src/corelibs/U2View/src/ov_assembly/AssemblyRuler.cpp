@@ -101,7 +101,7 @@ int numOfDigits(qint64 n) {
 
 void AssemblyRuler::drawCursor(QPainter& p) {
     // 1. draw the cursor itself
-    p.setPen(AppContext::getMainWindow()->isDarkMode() ? QColor(255, 127, 127) : Qt::darkRed);
+    p.setPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(255, 127, 127) : Qt::darkRed);
     p.drawLine(cursorPos, BORDER_NOTCH_START, cursorPos, BORDER_NOTCH_END);
     p.drawLine(cursorPos + 1, BORDER_NOTCH_START, cursorPos + 1, BORDER_NOTCH_END);
 

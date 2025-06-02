@@ -70,7 +70,7 @@ private slots:
     void sl_selectorTextChanged();
     void sl_checkState();
     void sl_alignmentChanged();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void initLayout();

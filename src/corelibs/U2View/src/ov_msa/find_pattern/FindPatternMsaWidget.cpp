@@ -337,7 +337,7 @@ void FindPatternMsaWidget::connectSlots() {
             SLOT(sl_onSelectedRegionChanged(const MaEditorSelection&, const MaEditorSelection&)));
 
     connect(searchContextComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_searchModeChanged()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &FindPatternMsaWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &FindPatternMsaWidget::sl_colorThemeSwitched);
 }
 
 void FindPatternMsaWidget::sl_onAlgorithmChanged(int index) {
@@ -528,7 +528,7 @@ void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOut
     }
 }
 
-void FindPatternMsaWidget::sl_colorModeSwitched() {
+void FindPatternMsaWidget::sl_colorThemeSwitched() {
     updateErrorLabelState();
     auto tmpProgressMovie = progressMovie;
     progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);

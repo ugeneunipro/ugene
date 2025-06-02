@@ -90,7 +90,7 @@ void AssemblyCoverageGraph::drawGraph(QPainter& p, const CoverageInfo& ci, int a
 
     // draw coverage for each visible column
     double readsPerYPixel = double(maxCoverage) / height();
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     for (int ibase = 0; ibase < visibleBases; ++ibase) {
         int columnPixels = qint64(double(coverageInfo[ibase]) / readsPerYPixel + 0.5);
         double grayCoeffD = double(coverageInfo[ibase]) / maxCoverage;

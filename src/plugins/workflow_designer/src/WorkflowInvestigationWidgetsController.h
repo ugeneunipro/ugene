@@ -71,7 +71,7 @@ private slots:
     void sl_hideAllColumnsButSelected();
     void sl_showAllColumns();
     void sl_columnsVisibilityResponse();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void createNewInvestigation();

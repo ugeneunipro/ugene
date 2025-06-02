@@ -36,7 +36,7 @@ public:
 
 private slots:
     void sl_primerLibrary();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     QAction* libraryAction = nullptr;

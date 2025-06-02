@@ -168,7 +168,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     complementSequenceAction->setObjectName(ACTION_EDIT_COMPLEMENT_SEQUENCE);
     connect(complementSequenceAction, SIGNAL(triggered()), SLOT(sl_complementSequence()));
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AnnotatedDNAView::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AnnotatedDNAView::sl_colorThemeSwitched);
 
     SecStructPredictViewAction::createAction(this);
 }
@@ -1334,7 +1334,7 @@ void AnnotatedDNAView::sl_removeSelectedSequenceObject() {
     removeObject(so);
 }
 
-void AnnotatedDNAView::sl_colorModeSwitched() {
+void AnnotatedDNAView::sl_colorThemeSwitched() {
     posSelectorAction->setIcon(GUIUtils::getIconResource("core", "goto.png"));
 }
 

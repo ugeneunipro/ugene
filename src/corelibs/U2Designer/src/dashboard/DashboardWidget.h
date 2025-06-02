@@ -44,7 +44,7 @@ public:
     DashboardWidget(const QString& title, QWidget* contentWidget);
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 };
 
@@ -56,7 +56,7 @@ public:
 private slots:
     void sl_openFileClicked();
     void sl_dashboardDirChanged(const QString& dashboardDir);
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void addUrlActionsToMenu(QMenu* menu, const QString& url, bool addOpenByUgeneAction = false);
@@ -102,7 +102,7 @@ public:
 
     static QString parseOpenUrlValueFromOnClick(const QString& onclickValue);
 
-    static void colorModeSwitched(QGridLayout* gridLayout);
+    static void colorThemeSwitched(QGridLayout* gridLayout);
 
 };
 

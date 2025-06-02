@@ -106,7 +106,7 @@ WorkspaceService::WorkspaceService()
     connect(logoutAction, &QAction::triggered, this, &WorkspaceService::logout);
 
     connect(this, &WorkspaceService::si_authenticationEvent, this, &WorkspaceService::updateMainMenuActions);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WorkspaceService::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &WorkspaceService::sl_colorThemeSwitched);
 
     refreshToken = AppContext::getSettings()->getValue(
                                                 WORKSPACE_SETTINGS_FOLDER + "/" + WORKSPACE_SETTINGS_REFRESH_TOKEN)
@@ -194,7 +194,7 @@ QString WorkspaceService::getCurrentUserEmail() const {
     return extractEmailFromJwt(accessToken);
 }
 
-void WorkspaceService::sl_colorModeSwitched() {
+void WorkspaceService::sl_colorThemeSwitched() {
     loginAction->setIcon(GUIUtils::getIconResource("ugene", "login.svg"));
     logoutAction->setIcon(GUIUtils::getIconResource("ugene", "logout.svg"));
 }

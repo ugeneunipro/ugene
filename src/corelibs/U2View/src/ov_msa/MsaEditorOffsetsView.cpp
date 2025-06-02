@@ -178,7 +178,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     // QColor lg(0xDA, 0xDA, 0xDA);
     QColor lg = QPalette().base().color();
 
-    QColor dg = AppContext::getMainWindow()->isDarkMode() ? QColor("#C8C8C8") : QColor("#4A4A4A");
+    QColor dg = AppContext::getMainWindow()->isDarkTheme() ? QColor("#C8C8C8") : QColor("#4A4A4A");
     gradient.setColorAt(0.00, lg);
     gradient.setColorAt(0.25, QPalette().base().color());
     gradient.setColorAt(0.75, QPalette().base().color());

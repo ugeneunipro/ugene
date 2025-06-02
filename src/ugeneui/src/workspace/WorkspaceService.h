@@ -92,7 +92,7 @@ protected:
     Task* createServiceEnablingTask() override;
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void enable();

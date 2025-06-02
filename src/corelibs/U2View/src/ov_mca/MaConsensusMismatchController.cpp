@@ -61,7 +61,7 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
     prevMismatch->setObjectName("prev_mismatch");
     GUIUtils::updateActionToolTip(prevMismatch);
     connect(prevMismatch, SIGNAL(triggered(bool)), SLOT(sl_prev()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaConsensusMismatchController::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaConsensusMismatchController::sl_colorThemeSwitched);
 }
 
 bool MaConsensusMismatchController::isMismatch(int pos) const {
@@ -97,7 +97,7 @@ void MaConsensusMismatchController::sl_prev() {
     selectNextMismatch(Backward);
 }
 
-void MaConsensusMismatchController::sl_colorModeSwitched() {
+void MaConsensusMismatchController::sl_colorThemeSwitched() {
     nextMismatch->setIcon(GUIUtils::getIconResource("core", "mismatch-forward.png"));
     prevMismatch->setIcon(GUIUtils::getIconResource("core", "mismatch-backward.png"));
 }

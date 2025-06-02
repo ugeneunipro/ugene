@@ -39,7 +39,7 @@ public:
     DashboardWidget* addDashboardWidget(const QString& title, QWidget* contentWidget);
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     QVBoxLayout* leftColumnLayout;

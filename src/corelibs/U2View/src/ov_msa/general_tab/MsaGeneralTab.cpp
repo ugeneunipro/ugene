@@ -74,7 +74,7 @@ void MsaGeneralTab::sl_convertNucleicAlphabetButtonClicked() {
     }
 }
 
-void MsaGeneralTab::sl_colorModeSwitched() {
+void MsaGeneralTab::sl_colorThemeSwitched() {
     QIcon icon(GUIUtils::getIconResource("core", "goto.png"));
     convertNucleicAlphabetButton->setIcon(icon);
     convertAminoAlphabetButton->setIcon(icon);
@@ -112,7 +112,7 @@ void MsaGeneralTab::connectSignals() {
         updateState();
     });
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaGeneralTab::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MsaGeneralTab::sl_colorThemeSwitched);
 }
 
 void MsaGeneralTab::reInitializeParameters() {

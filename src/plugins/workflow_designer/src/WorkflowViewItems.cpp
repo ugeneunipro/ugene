@@ -201,7 +201,7 @@ void WorkflowProcessItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
         }
 
         QString stateName = rsNames[state];
-        bool isDark = AppContext::getMainWindow()->isDarkMode();
+        bool isDark = AppContext::getMainWindow()->isDarkTheme();
         QColor scolor = isDark ? rsColorsDark[state] : rsColorsLight[state];
         painter->setPen(scolor);
         QRectF brect = boundingRect();
@@ -746,7 +746,7 @@ void WorkflowPortItem::paint(QPainter* painter,
     static QColor STICKY_LIGHT_LIGHT(0, 119, 51);
     static QColor STICKY_LIGHT_DARK(71, 255, 147);
 
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     if (highlight) {
         QPen pen;
         pen.setColor(isDark ? GREEN_LIGHT_DARK : GREEN_LIGHT_LIGHT);
@@ -1118,7 +1118,7 @@ void WorkflowBusItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
         pen.setWidthF(1.5);
         pen.setStyle(Qt::DashLine);
     }
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     if (!validate()) {
         pen.setColor(isDark ? QColor(255, 127, 127) : Qt::red);
     }

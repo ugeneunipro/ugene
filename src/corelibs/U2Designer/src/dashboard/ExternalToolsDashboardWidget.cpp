@@ -72,7 +72,7 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement& do
     setLayout(frameLayout);
     frameWidget = new QWidget();
     frameWidget->setObjectName("frameWidget");
-    QString frameWidgetBorderColor = AppContext::getMainWindow()->isDarkMode() ? FRAME_WIDGET_BORDER_COLOR_DARK : FRAME_WIDGET_BORDER_COLOR_LIGHT;
+    QString frameWidgetBorderColor = AppContext::getMainWindow()->isDarkTheme() ? FRAME_WIDGET_BORDER_COLOR_DARK : FRAME_WIDGET_BORDER_COLOR_LIGHT;
     frameWidget->setStyleSheet(FRAME_WIDGET_STYLE_SHEET.arg(frameWidgetBorderColor));
     frameLayout->addWidget(frameWidget);
 
@@ -135,15 +135,15 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement& do
         addLimitationWarningIfNeeded(nullptr, DomUtils::findParentByTag(actorElementList.first(), "ul"));
     }
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ExternalToolsDashboardWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ExternalToolsDashboardWidget::sl_colorThemeSwitched);
 }
 
 bool ExternalToolsDashboardWidget::isValidDom(const QDomElement& dom) {
     return !DomUtils::findElementById(dom, TREE_ID).isNull();
 }
 
-void ExternalToolsDashboardWidget::sl_colorModeSwitched() {
-    QString frameWidgetBorderColor = AppContext::getMainWindow()->isDarkMode() ? FRAME_WIDGET_BORDER_COLOR_DARK : FRAME_WIDGET_BORDER_COLOR_LIGHT;
+void ExternalToolsDashboardWidget::sl_colorThemeSwitched() {
+    QString frameWidgetBorderColor = AppContext::getMainWindow()->isDarkTheme() ? FRAME_WIDGET_BORDER_COLOR_DARK : FRAME_WIDGET_BORDER_COLOR_LIGHT;
     frameWidget->setStyleSheet(FRAME_WIDGET_STYLE_SHEET.arg(frameWidgetBorderColor));
 }
 

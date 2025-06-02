@@ -74,7 +74,7 @@ protected:
     qreal getH(int pos);
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     AlignmentLogoSettings settings;

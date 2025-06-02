@@ -232,9 +232,9 @@ void PanViewRenderer::drawSequenceSelection(QPainter& p, const QSize& canvasSize
     bool showSequenceMode = isSequenceCharsVisible();
     CHECK(!selection.isEmpty(), );
 
-    bool isDarkMode = AppContext::getMainWindow()->isDarkMode();
-    QPen pen1(isDarkMode ? Qt::lightGray : Qt::darkGray, 1, Qt::SolidLine);
-    QPen pen2(isDarkMode ? QColor("#0091FF") : QColor("#007DE3"), 2, Qt::SolidLine);
+    bool isDarkTheme = AppContext::getMainWindow()->isDarkTheme();
+    QPen pen1(isDarkTheme ? Qt::lightGray : Qt::darkGray, 1, Qt::SolidLine);
+    QPen pen2(isDarkTheme ? QColor("#0091FF") : QColor("#007DE3"), 2, Qt::SolidLine);
     p.setFont(commonMetrics.rulerFont);
     QFontMetrics rfm(commonMetrics.rulerFont);
 

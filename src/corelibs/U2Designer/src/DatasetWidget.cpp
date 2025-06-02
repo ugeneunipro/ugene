@@ -85,7 +85,7 @@ URLListWidget::URLListWidget(URLListController* _ctrl)
 
     ui->itemsArea->installEventFilter(this);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &URLListWidget::si_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &URLListWidget::si_colorThemeSwitched);
 }
 
 URLListWidget::~URLListWidget() {
@@ -191,7 +191,7 @@ void URLListWidget::sl_dataChanged() {
     ctrl->updateUrl(dynamic_cast<UrlItem*>(sender()));
 }
 
-void URLListWidget::si_colorModeSwitched() {
+void URLListWidget::si_colorThemeSwitched() {
     ui->deleteButton->setIcon(GUIUtils::getIconResource("U2Designer", "exit.png", false));
     ui->upButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
     ui->downButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));

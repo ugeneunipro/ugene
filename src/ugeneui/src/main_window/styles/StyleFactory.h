@@ -31,16 +31,16 @@ public:
     // Get all possible styles
     static QStringList keys();
 
-    // Supported color modes
-    enum class ColorMode {
+    // Supported color themes
+    enum class ColorTheme {
         Light,
         Dark,
         Auto
     };
-    // Create style by style name and color mode
-    static QStyle* create(const QString& styleName, ColorMode colorMode);
-    // Create style by style name and color mode
-    static QStyle* create(const QString& styleName, int colorMode);
+    // Create style by style name and color theme
+    static QStyle* create(const QString& styleName, ColorTheme colorTheme);
+    // Create style by style name and color theme
+    static QStyle* create(const QString& styleName, int colorTheme);
 
     // True if dark style avaliable
     // Not avaliable on macOS early than 10.14 and

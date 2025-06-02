@@ -59,7 +59,7 @@ MaOverview::MaOverview(MaEditor* _editor, QWidget* _ui)
         connect(swgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
     }
     connect(editor->getCollapseModel(), &MaCollapseModel::si_toggled, this, &MaOverview::sl_redraw);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaOverview::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaOverview::sl_colorThemeSwitched);
 }
 
 MaEditor* MaOverview::getEditor() const {
@@ -77,7 +77,7 @@ void MaOverview::sl_redraw() {
     update();
 }
 
-void MaOverview::sl_colorModeSwitched() {
+void MaOverview::sl_colorThemeSwitched() {
     update();
 }
 

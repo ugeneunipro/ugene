@@ -83,7 +83,7 @@ DnaAssemblySupport::DnaAssemblySupport() {
     connect(buildIndexAction, SIGNAL(triggered()), SLOT(sl_showBuildIndexDialog()));
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, buildIndexAction);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DnaAssemblySupport::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &DnaAssemblySupport::sl_colorThemeSwitched);
 }
 
 void DnaAssemblySupport::sl_showDnaAssemblyDialog() {
@@ -173,11 +173,11 @@ void DnaAssemblySupport::sl_showConvertToSamDialog() {
     }
 }
 
-void DnaAssemblySupport::sl_colorModeSwitched() {
+void DnaAssemblySupport::sl_colorThemeSwitched() {
     convertAssemblyToSamAction->setIcon(GUIUtils::getIconResource("core", "align.png"));
     dnaAssemblyAction->setIcon(GUIUtils::getIconResource("core", "align.png"));
     buildIndexAction->setIcon(GUIUtils::getIconResource("core", "align.png"));
-    ToolsMenu::colorModeSwitched(ToolsMenu::NGS_MENU);
+    ToolsMenu::colorThemeSwitched(ToolsMenu::NGS_MENU);
 }
 
 namespace {

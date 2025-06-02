@@ -91,7 +91,7 @@ TreeViewer::TreeViewer(const QString& viewName, PhyTreeObject* _phyObject, bool 
         CHECK(ui != nullptr, );
         ui->switchTreeLayout(ui->getTreeLayoutType());
     });
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TreeViewer::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TreeViewer::sl_colorThemeSwitched);
 }
 
 QVariantMap TreeViewer::saveState() {
@@ -341,7 +341,7 @@ void TreeViewer::onObjectRenamed(GObject*, const QString&) {
     OpenTreeViewerTask::updateTitle(this);
 }
 
-void TreeViewer::sl_colorModeSwitched() {
+void TreeViewer::sl_colorThemeSwitched() {
     if (layoutMenu != nullptr) {
         auto acts = layoutMenu->actions();
         layoutMenu->setIcon(GUIUtils::getIconResource("core", "tree_layout.png"));
@@ -691,7 +691,7 @@ void TreeViewerUI::updateTreeSettingsOnSelectedItems() {
 
         if (auto legendLineItem = dynamic_cast<QGraphicsLineItem*>(legendItem)) {
             QPen legendPen;
-            auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+            auto branchColorEnum = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
             QColor branchColor = qvariant_cast<QColor>(getOption(branchColorEnum));
             legendPen.setColor(branchColor);
             legendLineItem->setPen(legendPen);
@@ -733,7 +733,7 @@ void TreeViewerUI::updateTextOptionOnSelectedItems() {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(item)) {
             branchItem->updateSettings(selectionSettings);
         } else if (auto legendText = dynamic_cast<TvTextItem*>(item)) {
-            auto labelColor = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+            auto labelColor = AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
             legendText->setBrush(qvariant_cast<QColor>(selectionSettings[labelColor]));
         }
     }
@@ -889,7 +889,7 @@ QVariantMap TreeViewerUI::getSettingsState() const {
     }
     int i = 0;
     QList<QGraphicsItem*> graphItems = items();
-    auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+    auto branchColorEnum = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
     for (QGraphicsItem* graphItem : qAsConst(graphItems)) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
             QMap<TreeViewOption, QVariant> branchSettings = branchItem->getSettings();
@@ -919,7 +919,7 @@ void TreeViewerUI::setSettingsState(const QVariantMap& state) {
     }
     QList<QGraphicsItem*> graphItems = items();
 
-    auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+    auto branchColorEnum = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
     for (QGraphicsItem* graphItem : qAsConst(graphItems)) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
             QMap<TreeViewOption, QVariant> branchSettings = branchItem->getSettings();
@@ -1159,7 +1159,7 @@ void TreeViewerUI::updateSettingsOnSelectionChange() {
         }
     }
     newSelectionSettingsDelta[BRANCH_THICKNESS] = branch->getSettings()[BRANCH_THICKNESS];
-    auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+    auto branchColorEnum = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
     newSelectionSettingsDelta[branchColorEnum] = branch->getSettings()[branchColorEnum];
 
     TvTextItem* distanceTextItem = branch->getDistanceTextItem();
@@ -1170,7 +1170,7 @@ void TreeViewerUI::updateSettingsOnSelectionChange() {
         newSelectionSettingsDelta[LABEL_FONT_BOLD] = font.bold();
         newSelectionSettingsDelta[LABEL_FONT_ITALIC] = font.italic();
         newSelectionSettingsDelta[LABEL_FONT_UNDERLINE] = font.underline();
-        auto labelColor = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+        auto labelColor = AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
         newSelectionSettingsDelta[labelColor] = distanceTextItem->brush().color();
     }
     // Remove settings that are the same as default.

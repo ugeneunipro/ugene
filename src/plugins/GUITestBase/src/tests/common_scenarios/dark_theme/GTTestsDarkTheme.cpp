@@ -18,7 +18,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTTestsDarkMode.h"
+#include "GTTestsDarkTheme.h"
 
 #include "base_dialogs/GTFileDialog.h"
 #include "base_dialogs/MessageBoxFiller.h"
@@ -54,20 +54,20 @@
 
 namespace U2 {
 
-namespace GUITest_common_scenarios_dark_mode {
+namespace GUITest_common_scenarios_dark_theme {
 
 
 
 #ifdef Q_OS_DARWIN
 static void testPreferences(QWidget* dialog) {
     GTComboBox::checkValuesPresence(GTWidget::findComboBox("styleCombo", dialog), {"Fusion", "Windows", "Macintosh"}, true);
-    GTComboBox::checkValuesPresence(GTWidget::findComboBox("colorModeCombo", dialog), {"Light", "Dark", "Auto"}, true);
+    GTComboBox::checkValuesPresence(GTWidget::findComboBox("colorThemeCombo", dialog), {"Light", "Dark", "Auto"}, true);
     CHECK_SET_ERR(GTLabel::getText("errorLabel", dialog).isEmpty(), "Error should be empty");
 }
 #elif defined(Q_OS_UNIX)
 static void testPreferences(QWidget* dialog) {
     GTComboBox::checkValuesPresence(GTWidget::findComboBox("styleCombo", dialog), {"Fusion", "Windows"}, true);
-    GTComboBox::checkValuesPresence(GTWidget::findComboBox("colorModeCombo", dialog), {"Light", "Dark"}, true);
+    GTComboBox::checkValuesPresence(GTWidget::findComboBox("colorThemeCombo", dialog), {"Light", "Dark"}, true);
     CHECK_SET_ERR(GTLabel::getText("errorLabel", dialog).isEmpty(), "Error should be empty");
 }
 #else
@@ -75,17 +75,17 @@ static void testPreferences(QWidget* dialog) {
     auto styleCombo = GTWidget::findComboBox("styleCombo", dialog);
     GTComboBox::selectItemByText(styleCombo , "WindowsVista");
     auto currentText = GTLabel::getText("errorLabel", dialog);
-    static const QString expectedText = "Note: WindowsVista style is incompatible with Dark color mode. We suggest using Fusion";
+    static const QString expectedText = "Note: WindowsVista style is incompatible with Dark color theme. We suggest using Fusion";
     CHECK_SET_ERR(currentText == expectedText, QString("Expected error: %1, actual error: %2").arg(expectedText).arg(currentText));
 
-    auto colorModeCombo = GTWidget::findComboBox("colorModeCombo", dialog);
-    GTComboBox::checkValuesPresence(colorModeCombo, {"Light"}, true);
+    auto colorThemeCombo = GTWidget::findComboBox("colorThemeCombo", dialog);
+    GTComboBox::checkValuesPresence(colorThemeCombo, {"Light"}, true);
     GTComboBox::selectItemByText(styleCombo , "Fusion");
     currentText = GTLabel::getText("errorLabel", dialog);
     CHECK_SET_ERR(currentText.isEmpty(), QString("Error is found, but should not be: %1").arg(currentText));
 
-    GTComboBox::checkValuesPresence(colorModeCombo, {"Light", "Dark"});
-    GTComboBox::selectItemByText(colorModeCombo, "Dark");
+    GTComboBox::checkValuesPresence(colorThemeCombo, {"Light", "Dark"});
+    GTComboBox::selectItemByText(colorThemeCombo, "Dark");
     GTComboBox::checkValuesPresence(styleCombo, {"Fusion", "Windows"}, true);
 }
 #endif
@@ -93,15 +93,15 @@ static void testPreferences(QWidget* dialog) {
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Open "Settings -> Preferences"
     // macOS:
-    // Expected 3 styles and 3 color modes
+    // Expected 3 styles and 3 color themess
     // Linux:
-    // Expected 2 styles and 2 color modes
+    // Expected 2 styles and 2 color themes
     // Windows:
     // Set WindowsVista style
-    // Expected: "WindowsVisty style is not compatible" error and no Auto and Dark color mode
+    // Expected: "WindowsVisty style is not compatible" error and no Auto and Dark color theme
     // Set Fusion style
     // Expected: Error dissapeared
-    // Set "Dark" color mode
+    // Set "Dark" color theme
     // Expected: No WindowsVisata style
     // Click OK
     // Expected: start page color is dark
@@ -252,20 +252,20 @@ static void checkLight() {
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Check color from palette
-    // Expected: white mode
-    // Set Dark mode
+    // Expected: white theme
+    // Set Dark theme
     // Check color from palette
-    // Expected: dark mode
+    // Expected: dark theme
 
     checkLight();
 
-    GTMenu::clickMainMenuItem({"Help", "Switch color mode"});
+    GTMenu::clickMainMenuItem({"Help", "Switch color theme"});
 
     checkDark();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    // Set Dark mode
+    // Set Dark theme
     // Open murine.gb
     // Expected: (48, 48, 48) background color
     // Expected: misc_feature annotatation color #7f7f4c
@@ -277,7 +277,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Open restriction sites dialog and select any enzyme
     // Check html enzyme representation
 
-    GTMenu::clickMainMenuItem({"Help", "Switch color mode"});
+    GTMenu::clickMainMenuItem({"Help", "Switch color theme"});
     GTFileDialog::openFile(dataDir + "samples/Genbank", "murine.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
     GTWidget::click(GTWidget::findWidget("OP_ANNOT_HIGHLIGHT"));
@@ -301,7 +301,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
             QTreeWidgetItem* item = GTTreeWidget::findItem(enzymesTree, "AanI");
             GTTreeWidget::click(item);
             auto tooltip = item->data(3, Qt::ToolTipRole).toString();
-            auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/dark_mode_0003.html");
+            auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/dark_theme_0003.html");
             CHECK_SET_ERR(toltipFromFile == tooltip, "Incorrect enzyme");
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
@@ -313,14 +313,14 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    // Set Dark mode
+    // Set Dark theme
     // Open COI.aln
     // Check color scheme color
     // Check, that following color schemes exists: UGENE Dark, UGENE Sanger Dark
     // Switch to the UGENE sanger Dark
     // Check color scheme color
 
-    GTMenu::clickMainMenuItem({"Help", "Switch color mode"});
+    GTMenu::clickMainMenuItem({"Help", "Switch color theme"});
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     auto checkColor = [](const QPoint& coord, const QString& expectedColor) {
@@ -344,11 +344,11 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    // Set Dark mode
+    // Set Dark theme
     // Open COI.nwk
     // Expected: line color is white on the tree settings page
 
-    GTMenu::clickMainMenuItem({"Help", "Switch color mode"});
+    GTMenu::clickMainMenuItem({"Help", "Switch color theme"});
     GTFileDialog::openFile(dataDir + "samples/Newick/COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsOptionPanelPhyTree::openTab();
@@ -375,5 +375,5 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTWidget::click(branchesColorButton);
 }
 
-}  // namespace GUITest_common_scenarios_dark_mode
+}  // namespace GUITest_common_scenarios_dark_theme
 }  // namespace U2

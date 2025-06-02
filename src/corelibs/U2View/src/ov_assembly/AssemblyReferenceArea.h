@@ -67,7 +67,7 @@ protected slots:
     virtual void sl_zoomPerformed();
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void initCellRenderer(QString id);

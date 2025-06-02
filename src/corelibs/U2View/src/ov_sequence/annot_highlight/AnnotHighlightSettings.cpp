@@ -110,7 +110,7 @@ void AnnotHighlightSettingsWidget::sl_onEditQualifiersChanged(const QString& inp
     }
 }
 
-void AnnotHighlightSettingsWidget::colorModeChanged() {
+void AnnotHighlightSettingsWidget::colorThemeChanged() {
     sl_onEditQualifiersChanged(editQualifiers->text());
 }
 

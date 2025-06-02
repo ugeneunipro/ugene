@@ -37,7 +37,7 @@
 namespace U2 {
 
 void DesignerGUIUtils::paintSamplesArrow(QPainter* painter) {
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QPen pen(isDark ? Qt::lightGray : Qt::darkGray);
     pen.setWidthF(2);
     painter->setPen(pen);

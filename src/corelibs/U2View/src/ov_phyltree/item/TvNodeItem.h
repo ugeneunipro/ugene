@@ -82,7 +82,7 @@ protected:
     bool isHovered = false;
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 };
 

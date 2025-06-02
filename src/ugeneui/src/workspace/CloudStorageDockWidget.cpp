@@ -362,7 +362,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     updateActionsState();
     updateStateLabelText();
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &CloudStorageDockWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &CloudStorageDockWidget::sl_colorThemeSwitched);
 }
 
 bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
@@ -379,7 +379,7 @@ bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
     return false;
 }
 
-void CloudStorageDockWidget::sl_colorModeSwitched() {
+void CloudStorageDockWidget::sl_colorThemeSwitched() {
     updateTreeViewIconsRecursively(treeViewModel.invisibleRootItem());
     stateLabel->setStyleSheet(QString("background: %1; padding: 10px;").arg(QPalette().base().color().name()));
     createDirAction->setIcon(GUIUtils::getIconResource("ugene", "new_folder.svg"));

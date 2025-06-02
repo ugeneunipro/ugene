@@ -95,7 +95,7 @@ TaskStatusBar::TaskStatusBar() {
     nStack = AppContext::getMainWindow()->getNotificationStack();
     // nStack = new NotificationStack;
     connect(nStack, SIGNAL(si_changed()), SLOT(sl_notificationChanged()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TaskStatusBar::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TaskStatusBar::sl_colorThemeSwitched);
 
     lampLabel->installEventFilter(this);
     taskCountLabel->installEventFilter(this);
@@ -323,7 +323,7 @@ void TaskStatusBar::sl_notificationChanged() {
     notificationLabel->setProperty("notifications-count", QString::number(nStack->count()));
 }
 
-void TaskStatusBar::sl_colorModeSwitched() {
+void TaskStatusBar::sl_colorThemeSwitched() {
     sl_notificationChanged();
 }
 

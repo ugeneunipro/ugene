@@ -204,7 +204,7 @@ QString generateMainPart(const QByteArray& seq, int cut, bool forward, int enzym
         }
         QString ch(seq.at(i));
         if (ch != "N") {
-            ch = QString("<span style=\"color: %1; \">%2</span>").arg(AppContext::getMainWindow()->isDarkMode() ? "#FF7F7F" : "#FF0000").arg(ch);
+            ch = QString("<span style=\"color: %1; \">%2</span>").arg(AppContext::getMainWindow()->isDarkTheme() ? "#FF7F7F" : "#FF0000").arg(ch);
         }
         append2Result(ch);
         append2Result(TOOLTIP_SPACE);
@@ -347,7 +347,7 @@ QString EnzymeData::generateEnzymeTooltip() const {
             QString result;
             for (QString ch : qAsConst(sequence)) {
                 if (ch != "N") {
-                    ch = QString("<span style=\"color: %1; \">%2</span>").arg(AppContext::getMainWindow()->isDarkMode() ? "#FF7F7F" : "#FF0000").arg(ch);
+                    ch = QString("<span style=\"color: %1; \">%2</span>").arg(AppContext::getMainWindow()->isDarkTheme() ? "#FF7F7F" : "#FF0000").arg(ch);
                 }
                 result += ch;
             }

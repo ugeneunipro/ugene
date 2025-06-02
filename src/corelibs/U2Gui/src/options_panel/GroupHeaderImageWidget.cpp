@@ -52,7 +52,7 @@ GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const Ic
     setHeaderDeselected();
 
     this->setObjectName(groupId);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &GroupHeaderImageWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &GroupHeaderImageWidget::sl_colorThemeSwitched);
 }
 
 void GroupHeaderImageWidget::mousePressEvent(QMouseEvent* /*event*/) {
@@ -61,7 +61,7 @@ void GroupHeaderImageWidget::mousePressEvent(QMouseEvent* /*event*/) {
     emit si_groupHeaderPressed(groupId);
 }
 
-void GroupHeaderImageWidget::sl_colorModeSwitched() {
+void GroupHeaderImageWidget::sl_colorThemeSwitched() {
     setPixmap(GUIUtils::getIconResource(iconParameters).pixmap(ICON_SIZE, ICON_SIZE));
 }
 

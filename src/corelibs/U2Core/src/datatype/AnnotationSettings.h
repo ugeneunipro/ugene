@@ -38,7 +38,7 @@ public:
     // Annotaiton parameters
     // name - annotation name
     // amino - true if amino annotation
-    // lightColor - annotation color for the Light mode
+    // lightColor - annotation color for the Light theme
     // visible - true if annotation is visible
     AnnotationSettings(const QString& name, bool amino, const QColor& lightColor, bool visible);
 
@@ -47,11 +47,11 @@ public:
     }
     bool equals(const AnnotationSettings* as) const;
 
-    // Change color in Light mode to @lightColor
+    // Change color in Light theme to @lightColor
     void setLightColor(const QColor& lightColor);
-    // Change color in Dark mode to @darkColor
+    // Change color in dark theme to @darkColor
     void setDarkColor(const QColor& darkColor);
-    // Change color in active color mode to color
+    // Change color in active color theme to color
     void setActiveColor(const QColor& color);
     // Get current color
     const QColor& getActiveColor() const;

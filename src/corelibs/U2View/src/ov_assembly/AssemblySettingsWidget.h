@@ -45,7 +45,7 @@ private slots:
     void sl_consensusAlgorithmChanged();
     void sl_changeConsensusAlgorithm(int newIndex);
 
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     QWidget* createReadsSettings();

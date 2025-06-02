@@ -47,7 +47,7 @@ TvBranchItem::TvBranchItem(TvBranchItem* parentTvBranch, const PhyBranch* _phyBr
 
     nodeItem = new TvNodeItem(this, nodeName);
 
-    auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+    auto branchColorEnum = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
     QColor branchColor = qvariant_cast<QColor>(settings[branchColorEnum]);
     setBrush(branchColor);
     QPen pen1(branchColor);
@@ -63,7 +63,7 @@ TvBranchItem::TvBranchItem(TvBranchItem* parentTvBranch, const PhyBranch* _phyBr
     setAcceptHoverEvents(false);
     setAcceptedMouseButtons(Qt::NoButton);
 
-    auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+    auto branchColorEnum = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
     QColor branchColor = qvariant_cast<QColor>(settings[branchColorEnum]);
     setBrush(branchColor);
 
@@ -96,7 +96,7 @@ void TvBranchItem::updateSettings(const QMap<TreeViewOption, QVariant>& newSetti
         penWidth += SELECTED_PEN_WIDTH_DELTA;
     }
 
-    auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+    auto branchColorEnum = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
     QColor branchColor = qvariant_cast<QColor>(settings[branchColorEnum]);
     QPen currentPen = pen();
     currentPen.setColor(branchColor);
@@ -105,7 +105,7 @@ void TvBranchItem::updateSettings(const QMap<TreeViewOption, QVariant>& newSetti
 
     QFont font = TreeViewerUtils::getFontFromSettings(settings);
 
-    auto labelColorEnum = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+    auto labelColorEnum = AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
     QColor labelColor = qvariant_cast<QColor>(settings[labelColorEnum]);
     if (distanceTextItem != nullptr) {
         distanceTextItem->setFont(font);
@@ -140,7 +140,7 @@ void TvBranchItem::toggleCollapsedState() {
             penWidth += SELECTED_PEN_WIDTH_DELTA;
         }
 
-        auto branchColorEnum = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+        auto branchColorEnum = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
         QColor branchColor = qvariant_cast<QColor>(settings[branchColorEnum]);
         QPen pen1(branchColor);
         pen1.setWidth(penWidth);

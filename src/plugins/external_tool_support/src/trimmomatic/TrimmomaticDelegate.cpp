@@ -205,7 +205,7 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString& value,
     connect(buttonUp, SIGNAL(pressed()), SLOT(sl_moveStepUp()));
     connect(buttonDown, SIGNAL(pressed()), SLOT(sl_moveStepDown()));
     connect(buttonRemove, SIGNAL(pressed()), SLOT(sl_removeStep()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TrimmomaticPropertyDialog::si_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TrimmomaticPropertyDialog::si_colorThemeSwitched);
 
     parseCommand(value);
     sl_valuesChanged();
@@ -233,7 +233,7 @@ void TrimmomaticPropertyDialog::sl_valuesChanged() {
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isValid);
 }
 
-void TrimmomaticPropertyDialog::si_colorModeSwitched() {
+void TrimmomaticPropertyDialog::si_colorThemeSwitched() {
     buttonUp->setIcon(GUIUtils::getIconResource("external_tool_support", "up.png"));
     buttonDown->setIcon(GUIUtils::getIconResource("external_tool_support", "down.png"));
     for (int i = 0; i < steps.size(); i++) {

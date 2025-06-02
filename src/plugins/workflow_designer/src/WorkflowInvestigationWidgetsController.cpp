@@ -84,7 +84,7 @@ WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(Q
     showAllColumnsAction = new QAction(tr(SHOW_ALL_COLUMNS_ACTION_NAME), this);
     connect(showAllColumnsAction, SIGNAL(triggered()), SLOT(sl_showAllColumns()));
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WorkflowInvestigationWidgetsController::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &WorkflowInvestigationWidgetsController::sl_colorThemeSwitched);
 }
 
 WorkflowInvestigationWidgetsController::~WorkflowInvestigationWidgetsController() {
@@ -327,7 +327,7 @@ void WorkflowInvestigationWidgetsController::sl_columnsVisibilityResponse() {
     investigationModel->setColumnsVisibility(hiddenColumns);
 }
 
-void WorkflowInvestigationWidgetsController::sl_colorModeSwitched() {
+void WorkflowInvestigationWidgetsController::sl_colorThemeSwitched() {
     copyToClipboardAction->setIcon(GUIUtils::getIconResource("core", "paste.png"));
 }
 

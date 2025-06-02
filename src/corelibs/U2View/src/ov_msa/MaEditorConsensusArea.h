@@ -105,7 +105,7 @@ protected slots:
     void sl_zoomOperationPerformed(bool resizeModeChanged);
 
     void sl_completeRedraw();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
     void setupFontAndHeight();
 

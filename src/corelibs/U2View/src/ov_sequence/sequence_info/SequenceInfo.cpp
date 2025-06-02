@@ -487,7 +487,7 @@ void SequenceInfo::connectSlots() {
     connect(codonWidget,     &ShowHideSubgroupWidget::si_subgroupStateChanged, this, &SequenceInfo::sl_subgroupStateChanged);
     connect(aminoAcidWidget, &ShowHideSubgroupWidget::si_subgroupStateChanged, this, &SequenceInfo::sl_subgroupStateChanged);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SequenceInfo::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SequenceInfo::sl_colorThemeSwitched);
 }
 
 void SequenceInfo::sl_onSelectionChanged(LRegionsSelection*,
@@ -543,7 +543,7 @@ void SequenceInfo::sl_subgroupStateChanged(const QString& subgroupId) {
     }
 }
 
-void SequenceInfo::sl_colorModeSwitched() {
+void SequenceInfo::sl_colorThemeSwitched() {
     updateCommonStatisticsData();
 }
 

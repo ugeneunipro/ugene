@@ -119,7 +119,7 @@ private slots:
     void sl_filterConditionsChanged();
     void sl_findSingleEnzymeTaskStateChanged();
     void sl_itemSelectionChanged();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private slots:
     void sl_onSelectionModified(int visible, int selected);

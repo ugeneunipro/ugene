@@ -42,7 +42,7 @@ public:
     Primer3Plugin();
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     Primer3ADVContext* viewCtx = nullptr;

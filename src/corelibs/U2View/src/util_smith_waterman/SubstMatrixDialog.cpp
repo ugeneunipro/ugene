@@ -64,7 +64,7 @@ void SubstMatrixDialog::sl_closeWindow() {
 void SubstMatrixDialog::connectGUI() {
     connect(bttnClose, SIGNAL(clicked()), SLOT(sl_closeWindow()));
     connect(base->tableMatrix, SIGNAL(cellEntered(int, int)), SLOT(sl_mouseOnCell(int, int)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SubstMatrixDialog::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SubstMatrixDialog::sl_colorThemeSwitched);
 }
 
 const QColor SubstMatrixDialog::DEFAULT_BORDER_CELL_COLOR_LIGHT = QColor(200, 200, 200);
@@ -127,7 +127,7 @@ void SubstMatrixDialog::prepareTable() {
 }
 
 const QColor& SubstMatrixDialog::getCellColor(ColorType type) const {
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     switch (type) {
         case ColorType::DefaultBorder:
             return isDark ? DEFAULT_BORDER_CELL_COLOR_DARK : DEFAULT_BORDER_CELL_COLOR_LIGHT;
@@ -191,7 +191,7 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
     }
 }
 
-void SubstMatrixDialog::sl_colorModeSwitched() {
+void SubstMatrixDialog::sl_colorThemeSwitched() {
     QByteArray alphaChars = m.getAlphabet()->getAlphabetChars();
     int n = alphaChars.size();
     for (int i = 0; i < n; i++) {

@@ -63,7 +63,7 @@ protected slots:
     void sl_updateZoomOutAction(bool);
     void sl_updateFitInViewAction(bool);
     void sl_toggleRestrictionMap(bool);
-    void sl_colorModeSwtiched();
+    void sl_colorThemeSwtiched();
 
 private:
     QSplitter* splitter;

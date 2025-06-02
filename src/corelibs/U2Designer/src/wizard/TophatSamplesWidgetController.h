@@ -97,7 +97,7 @@ private slots:
     void sl_selectionChanged();
     void sl_up();
     void sl_down();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     TophatSamplesWidgetController* ctrl;

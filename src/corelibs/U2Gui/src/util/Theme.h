@@ -34,7 +34,7 @@ class U2GUI_EXPORT Theme : public QObject {
     Q_OBJECT
 public:
     static QColor errorColorTextFieldColor() {
-        return AppContext::getMainWindow()->isDarkMode() ? QColor(206, 20, 0) : QColor(255, 200, 200);
+        return AppContext::getMainWindow()->isDarkTheme() ? QColor(206, 20, 0) : QColor(255, 200, 200);
     }
 
     static QString errorColorTextFieldStr() {
@@ -43,18 +43,18 @@ public:
     }
 
     static QColor errorColorLabelColor() {
-        return AppContext::getMainWindow()->isDarkMode() ? QColor(255, 127, 127) : QColor(166, 57, 46);
+        return AppContext::getMainWindow()->isDarkTheme() ? QColor(255, 127, 127) : QColor(166, 57, 46);
     }
     static QString errorColorLabelStr() {
         auto errorColorLabel = errorColorLabelColor();
         return QString("rgb(%1, %2, %3)").arg(errorColorLabel.red()).arg(errorColorLabel.green()).arg(errorColorLabel.blue());
     }
     static QString errorColorLabelHtmlStr() {
-        return AppContext::getMainWindow()->isDarkMode() ? "#FF7F7F" : "#A6392E";
+        return AppContext::getMainWindow()->isDarkTheme() ? "#FF7F7F" : "#A6392E";
     }  // the same as errorColorLabelStr()
 
     static QColor wdParameterLabelColor() {
-        return AppContext::getMainWindow()->isDarkMode() ? QColor(255, 127, 127) : QColor(255, 0, 0);
+        return AppContext::getMainWindow()->isDarkTheme() ? QColor(255, 127, 127) : QColor(255, 0, 0);
     }
 
     static QString wdParameterLabelStr() {
@@ -62,15 +62,15 @@ public:
     }
 
     static QString wdWizardTopicColorStr() {
-        return AppContext::getMainWindow()->isDarkMode() ? "#7ABCFF" : "#0c3762";
+        return AppContext::getMainWindow()->isDarkTheme() ? "#7ABCFF" : "#0c3762";
     }
 
     static QString warningColorLabelHtmlStr() {
-        return AppContext::getMainWindow()->isDarkMode() ? "#FFCF48" : "#FF8B19";
+        return AppContext::getMainWindow()->isDarkTheme() ? "#FFCF48" : "#FF8B19";
     }
 
     static QColor infoHintColor() {
-        return AppContext::getMainWindow()->isDarkMode() ? QColor("#47D452") : QColor("green");
+        return AppContext::getMainWindow()->isDarkTheme() ? QColor("#47D452") : QColor("green");
     }
     static QString infoColorLabelHtmlStr() {
         return infoHintColor().name();
@@ -90,13 +90,13 @@ public:
     }
 
     static QColor selectionBackgroundColor() {
-        return AppContext::getMainWindow()->isDarkMode() ? QColor("#4D4E51") : QColor("#EAEDF7");
+        return AppContext::getMainWindow()->isDarkTheme() ? QColor("#4D4E51") : QColor("#EAEDF7");
     }
 
     static QString linkColorLabelStr() {
         QColor result = QPalette().shadow().color();
 #ifdef Q_OS_DARWIN
-        if (AppContext::getMainWindow()->isDarkMode()) {
+        if (AppContext::getMainWindow()->isDarkTheme()) {
             result = QColor(190, 190, 190);
         } else {
             result = Qt::gray;
@@ -106,7 +106,7 @@ public:
     }
 
     static QString hyperlinkColorLabelHtmlStr() {
-        return AppContext::getMainWindow()->isDarkMode() ? "#add8e6" : QColor(Qt::blue).name();
+        return AppContext::getMainWindow()->isDarkTheme() ? "#add8e6" : QColor(Qt::blue).name();
     }
 
 };

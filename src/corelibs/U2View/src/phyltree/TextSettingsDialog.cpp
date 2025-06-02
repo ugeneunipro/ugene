@@ -41,7 +41,7 @@ TextSettingsDialog::TextSettingsDialog(QWidget* parent, const QMap<TreeViewOptio
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    auto labelColor = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+    auto labelColor = AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
     curColor = qvariant_cast<QColor>(settings[labelColor]);
 
     QStyle* buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
@@ -71,7 +71,7 @@ void TextSettingsDialog::updateColorButton() {
 void TextSettingsDialog::sl_colorButton() {
     curColor = U2ColorDialog::getColor(curColor, this);
     if (curColor.isValid()) {
-        auto labelColor = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+        auto labelColor = AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
         updatedSettings[labelColor] = curColor;
         updateColorButton();
     }

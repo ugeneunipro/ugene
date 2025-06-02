@@ -65,7 +65,7 @@ Primer3Plugin::Primer3Plugin()
         noTargetSequencePrimer3 = new QAction(GUIUtils::getIconResource("primer3", "primer3.png"), tr("Primer3 (no target sequence)..."), this);
         noTargetSequencePrimer3->setObjectName(ToolsMenu::PRIMER3);
         connect(noTargetSequencePrimer3, &QAction::triggered, viewCtx, &Primer3ADVContext::sl_showDialog);
-        connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &Primer3Plugin::sl_colorModeSwitched);
+        connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &Primer3Plugin::sl_colorThemeSwitched);
         ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, noTargetSequencePrimer3);
     }
 
@@ -89,7 +89,7 @@ Primer3Plugin::Primer3Plugin()
     }
 }
 
-void Primer3Plugin::sl_colorModeSwitched() {
+void Primer3Plugin::sl_colorThemeSwitched() {
     noTargetSequencePrimer3->setIcon(GUIUtils::getIconResource("primer3", "primer3.png"));
 }
 

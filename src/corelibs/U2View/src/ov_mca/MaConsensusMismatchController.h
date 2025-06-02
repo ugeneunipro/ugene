@@ -53,7 +53,7 @@ private slots:
     void sl_next();
     void sl_prev();
 
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void selectNextMismatch(NavigationDirection direction);

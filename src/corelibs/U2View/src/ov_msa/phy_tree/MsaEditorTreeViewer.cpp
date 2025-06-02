@@ -174,11 +174,11 @@ void MsaEditorTreeViewer::sl_alignmentCollapseModelChanged() {
     disableSyncModeIfTreeAndMsaContentIsNotInSync();
 }
 
-void MsaEditorTreeViewer::sl_colorModeSwitched() {
+void MsaEditorTreeViewer::sl_colorThemeSwitched() {
     refreshTreeAction->setIcon(GUIUtils::getIconResource("core", "refresh.png"));
     syncModeAction->setIcon(syncModeAction->isChecked() ? GUIUtils::getIconResource("core", "sync-msa-on.png") : GUIUtils::getIconResource("core", "sync-msa-off.png"));
 
-    TreeViewer::sl_colorModeSwitched();
+    TreeViewer::sl_colorThemeSwitched();
 }
 
 void MsaEditorTreeViewer::disableSyncModeIfTreeAndMsaContentIsNotInSync() {

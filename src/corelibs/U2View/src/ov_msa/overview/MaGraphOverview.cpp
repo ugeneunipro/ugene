@@ -57,7 +57,7 @@ MaGraphOverview::MaGraphOverview(MsaEditor* _editor, QWidget* _ui)
     setFixedHeight(FIXED_HEIGHT);
 
     Settings* settings = AppContext::getSettings();
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     displaySettings.color = settings->getValue(isDark ? MSA_GRAPH_OVERVIEW_COLOR_DARK_KEY : MSA_GRAPH_OVERVIEW_COLOR_LIGHT_KEY,
                                                isDark ? MaGraphOverviewDisplaySettings::DEFAULT_DARK_COLOR : MaGraphOverviewDisplaySettings::DEFAULT_LIGHT_COLOR).value<QColor>();
     displaySettings.type = (MaGraphOverviewDisplaySettings::GraphType)settings->getValue(MSA_GRAPH_OVERVIEW_TYPE_KEY, displaySettings.type).toInt();
@@ -95,14 +95,14 @@ void MaGraphOverview::sl_redraw() {
     MaOverview::sl_redraw();
 }
 
-void MaGraphOverview::sl_colorModeSwitched() {
+void MaGraphOverview::sl_colorThemeSwitched() {
     Settings* settings = AppContext::getSettings();
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     displaySettings.color =
         settings->getValue(isDark ? MSA_GRAPH_OVERVIEW_COLOR_DARK_KEY : MSA_GRAPH_OVERVIEW_COLOR_LIGHT_KEY,
                            isDark ? MaGraphOverviewDisplaySettings::DEFAULT_DARK_COLOR : MaGraphOverviewDisplaySettings::DEFAULT_LIGHT_COLOR)
                                 .value<QColor>();
-    MaOverview::sl_colorModeSwitched();
+    MaOverview::sl_colorThemeSwitched();
 }
 
 void MaGraphOverview::paintEvent(QPaintEvent* e) {
@@ -263,7 +263,7 @@ void MaGraphOverview::sl_graphTypeChanged(const MaGraphOverviewDisplaySettings::
 void MaGraphOverview::sl_graphColorChanged(const QColor& color) {
     CHECK(displaySettings.color != color, )
     displaySettings.color = color;
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     AppContext::getSettings()->setValue(isDark ? MSA_GRAPH_OVERVIEW_COLOR_DARK_KEY : MSA_GRAPH_OVERVIEW_COLOR_LIGHT_KEY, color);
     update();
 }

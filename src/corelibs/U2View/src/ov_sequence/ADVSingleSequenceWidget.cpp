@@ -165,10 +165,10 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
     setPanViewCollapsed(AppContext::getSettings()->getValue(ZOOM_VIEW_COLLAPSED, QVariant(false)).toBool());
     setOverviewCollapsed(AppContext::getSettings()->getValue(OVERVIEW_COLLAPSED, QVariant(false)).toBool());
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ADVSingleSequenceWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ADVSingleSequenceWidget::sl_colorThemeSwitched);
 }
 
-void ADVSingleSequenceWidget::sl_colorModeSwitched() {
+void ADVSingleSequenceWidget::sl_colorThemeSwitched() {
     selectRangeAction1->setIcon(GUIUtils::getIconResource("core", "select_region.png"));
     selectRangeAction2->setIcon(GUIUtils::getIconResource("core", "select_region.png"));
     exportImageAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));

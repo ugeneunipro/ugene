@@ -56,7 +56,7 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_, QWidget* parent)
       saveController(nullptr) {
     setupUi(this);
 
-    sl_colorModeSwitched();
+    sl_colorThemeSwitched();
 
     initSaveController();
 
@@ -65,7 +65,7 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_, QWidget* parent)
 
     connect(exportBtn, SIGNAL(clicked()), SLOT(sl_exportClicked()));
     connect(consensusArea, SIGNAL(si_consensusAlgorithmChanged(const QString&)), SLOT(sl_consensusChanged(const QString&)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaExportConsensusWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaExportConsensusWidget::sl_colorThemeSwitched);
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 
@@ -138,7 +138,7 @@ void MaExportConsensusWidget::sl_exportTaskStateChanged() {
     }
 }
 
-void MaExportConsensusWidget::sl_colorModeSwitched() {
+void MaExportConsensusWidget::sl_colorThemeSwitched() {
     hintLabel->setStyleSheet(Theme::infoHintStyleSheet());
 }
 

@@ -132,7 +132,7 @@ private slots:
     void handleTreeItem(QTreeWidgetItem* item);
     void activateItem(QTreeWidgetItem* item);
     void sl_refreshSampesItems();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 signals:
     void setupGlass(GlassPane*);

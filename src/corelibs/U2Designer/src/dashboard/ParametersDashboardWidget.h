@@ -73,7 +73,7 @@ public slots:
     void sl_workerLabelClicked();
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void updateStyleSheet();

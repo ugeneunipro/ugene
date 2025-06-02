@@ -122,7 +122,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     traceButton->setIcon(GUIUtils::getIconResource("chroma_view", "traces.png"));
     traceButton->setPopupMode(QToolButton::InstantPopup);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ChromatogramView::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ChromatogramView::sl_colorThemeSwitched);
 }
 
 void ChromatogramView::pack() {
@@ -416,7 +416,7 @@ void ChromatogramView::sl_showAllTraces() {
     completeUpdate();
 }
 
-void ChromatogramView::sl_colorModeSwitched() {
+void ChromatogramView::sl_colorThemeSwitched() {
     traceButton->setIcon(GUIUtils::getIconResource("chroma_view", "traces.png"));
 }
 
@@ -488,7 +488,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
     heightPD = height();
 
     if (completeRedraw) {
-        linePen = QPen(AppContext::getMainWindow()->isDarkMode() ? Qt::lightGray : Qt::gray, 1, Qt::DotLine);
+        linePen = QPen(AppContext::getMainWindow()->isDarkTheme() ? Qt::lightGray : Qt::gray, 1, Qt::DotLine);
         QPainter p(getCachedPixmap());
         p.setRenderHint(QPainter::Antialiasing, true);
         p.setFont(font);
@@ -512,7 +512,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
             int legendX = int(width() - 4 * charWidth - 4 * legendRectWidth - 4 * legendCharToRectPadding - 3 * legendCharToCharPadding - 20);
             int legendY = heightAreaBC - int(charHeight);
             p.setPen(QPalette().text().color());
-            bool isDark = AppContext::getMainWindow()->isDarkMode();
+            bool isDark = AppContext::getMainWindow()->isDarkTheme();
             for (int i = 0; i < 4; ++i) {
                 p.fillRect(legendX, legendY - (charHeight - legendRectHeight) / 2, legendRectWidth, -legendRectHeight, McaColors::getChromatogramColorById(isDark, i));
                 legendX += legendRectWidth + legendCharToRectPadding;
@@ -617,7 +617,7 @@ void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w
 
     // areaHeight how to define startValue?
     // colorForIds to private members
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     p.setRenderHint(QPainter::Antialiasing, true);
     p.resetTransform();
     p.translate(x, y + h);
@@ -687,7 +687,7 @@ void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w
         bLinearTransformBaseCallsOfEdited = bLinearTransformBaseCalls;
     }
     auto cview = qobject_cast<ChromatogramView*>(view);
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     for (int i = int(visible.startPos); i < visible.endPos(); i++) {
         QColor color = McaColors::getChromatogramColorByBase(isDark, ba[i]);
         p.setPen(color);
@@ -793,7 +793,7 @@ void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y
     bLinearTransformTrace = leftMargin - kLinearTransformTrace * a1;
     double yRes = 0;
     double areaHeight = (heightPD - heightAreaBC + addUpIfQVL) * this->areaHeight / 100;
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     for (int j = int(visible.startPos); j < visible.startPos + visible.length; j++) {
         int temp = chromatogram->baseCalls[j];
         if (temp >= chromatogram->traceLength) {

@@ -45,7 +45,7 @@ private slots:
     void sl_showGenomeAssemblyDialog();
     void sl_showBuildIndexDialog();
     void sl_showConvertToSamDialog();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     QAction* convertAssemblyToSamAction = nullptr;

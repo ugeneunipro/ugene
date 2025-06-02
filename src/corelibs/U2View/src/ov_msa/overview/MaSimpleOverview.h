@@ -47,7 +47,7 @@ public slots:
     void sl_highlightingChanged();
 
 protected slots:
-    void sl_colorModeSwitched() override;
+    void sl_colorThemeSwitched() override;
 
 protected:
     void paintEvent(QPaintEvent* e) override;

@@ -390,11 +390,11 @@ void MsaEditorSequenceArea::sl_updateActions() {
     removeAllGapsAction->setEnabled(canEditAlignment && maObj->hasNonTrailingGap());
 }
 
-void MsaEditorSequenceArea::sl_colorModeSwitched() {
+void MsaEditorSequenceArea::sl_colorThemeSwitched() {
     QString colorId;
     QString unused;
     getColorAndHighlightingIds(colorId, unused);
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     bool csChanged = false;
     if (isDark && (colorId == MsaColorScheme::UGENE_NUCL_LIGHT)) {
         colorId = MsaColorScheme::UGENE_NUCL_DARK;
@@ -414,7 +414,7 @@ void MsaEditorSequenceArea::sl_colorModeSwitched() {
     toggleSequenceRowOrderAction->setIcon(GUIUtils::getIconResource("core", "collapse.png"));
     refreshSequenceRowOrder->setIcon(GUIUtils::getIconResource("core", "collapse_update.png"));
 
-    MaEditorSequenceArea::sl_colorModeSwitched();
+    MaEditorSequenceArea::sl_colorThemeSwitched();
 }
 
 void MsaEditorSequenceArea::sl_delCol() {

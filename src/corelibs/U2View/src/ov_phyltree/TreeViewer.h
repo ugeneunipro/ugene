@@ -91,7 +91,7 @@ protected:
     void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
 protected slots:
-    virtual void sl_colorModeSwitched();
+    virtual void sl_colorThemeSwitched();
 
 public:
     QMenu* layoutMenu = nullptr;

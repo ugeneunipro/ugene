@@ -38,7 +38,7 @@ public:
 private slots:
     void sl_closeWindow();
     void sl_mouseOnCell(int row, int column);
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void connectGUI();

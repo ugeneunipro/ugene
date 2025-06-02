@@ -42,7 +42,7 @@ protected:
     }
 
 protected slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void setButtonsTabOrder() const;

@@ -86,7 +86,7 @@ private slots:
     void sl_moveStepDown();
     void sl_removeStep();
     void sl_valuesChanged();
-    void si_colorModeSwitched();
+    void si_colorThemeSwitched();
 
 private:
     void emptySelection();

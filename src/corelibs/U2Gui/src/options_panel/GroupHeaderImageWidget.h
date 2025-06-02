@@ -55,7 +55,7 @@ protected:
     void mousePressEvent(QMouseEvent*) override;
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     QString groupId;

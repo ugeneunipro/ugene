@@ -488,14 +488,14 @@ void MsaEditor::addStatisticsMenu(QMenu* m) {
     em->menuAction()->setObjectName(MSAE_MENU_STATISTICS);
 }
 
-void MsaEditor::sl_colorModeSwitched() {
+void MsaEditor::sl_colorThemeSwitched() {
     searchInSequencesAction->setIcon(GUIUtils::getIconResource("core", "find_dialog.png"));
     searchInSequenceNamesAction->setIcon(GUIUtils::getIconResource("core", "find_dialog.png"));
     saveScreenshotAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
     buildTreeAction->setIcon(GUIUtils::getIconResource("core", "phylip.png"));
     alignSelectedSequencesToAlignmentAction->setIcon(GUIUtils::getIconResource("core", "realign_some_sequences.png", false));
 
-    MaEditor::sl_colorModeSwitched();
+    MaEditor::sl_colorThemeSwitched();
 }
 
 QWidget* MsaEditor::createViewWidget(QWidget* parent) {

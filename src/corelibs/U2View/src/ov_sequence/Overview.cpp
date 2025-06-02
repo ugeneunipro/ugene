@@ -74,7 +74,7 @@ Overview::Overview(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx)
         connectAnnotationTableObject(at);
     }
     connect(AppContext::getAnnotationsSettingsRegistry(), SIGNAL(si_annotationSettingsChanged(const QStringList&)), SLOT(sl_onAnnotationSettingsChanged(const QStringList&)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &Overview::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &Overview::sl_colorThemeSwitched);
 
     sl_visibleRangeChanged();
     bool graphState = AppContext::getSettings()->getValue(ANNOTATION_GRAPH_STATE, QVariant(false)).toBool();
@@ -137,10 +137,10 @@ void Overview::sl_sequenceChanged() {
     completeUpdate();
 }
 
-void Overview::sl_colorModeSwitched() {
+void Overview::sl_colorThemeSwitched() {
     densityGraphAction->setIcon(GUIUtils::getIconResource("core", "sum.png"));
 
-    GSequenceLineView::sl_colorModeSwitched();
+    GSequenceLineView::sl_colorThemeSwitched();
 }
 
 void Overview::pack() {
@@ -491,8 +491,8 @@ void OverviewRenderArea::drawAll(QPaintDevice* pd) {
     panSlider.setRect(panX, panSliderTop, panW - PEN_WIDTH, panSliderHeight);
     detSlider.setRect(detX, ARROW_TOP_PAD, ARROW_WIDTH, ARROW_HEIGHT);
 
-    bool isDarkMode = AppContext::getMainWindow()->isDarkMode();
-    pen.setColor(isDarkMode ? Qt::lightGray : Qt::darkGray);
+    bool isDarkTheme = AppContext::getMainWindow()->isDarkTheme();
+    pen.setColor(isDarkTheme ? Qt::lightGray : Qt::darkGray);
     p.setPen(pen);
 
     // don't show arrow when det view collapsed
@@ -501,7 +501,7 @@ void OverviewRenderArea::drawAll(QPaintDevice* pd) {
     ADVSingleSequenceWidget* ssw = overview->seqWidget;
     SAFE_POINT(ssw != nullptr, "ADVSingleSequenceWidget is NULL", );
     if (!ssw->isPanViewCollapsed()) {
-        drawSlider(p, panSlider, isDarkMode ? QColor(73, 73, 73) : QColor(230, 230, 230));
+        drawSlider(p, panSlider, isDarkTheme ? QColor(73, 73, 73) : QColor(230, 230, 230));
     }
 
     if (!ssw->isDetViewCollapsed()) {
@@ -560,7 +560,7 @@ void OverviewRenderArea::drawRuler(QPainter& p) {
 
 #define SELECTION_LINE_WIDTH 3
 void OverviewRenderArea::drawSelection(QPainter& p) {
-    QPen pen(AppContext::getMainWindow()->isDarkMode() ? QColor("#0091FF") : QColor("#007DE3"));
+    QPen pen(AppContext::getMainWindow()->isDarkTheme() ? QColor("#0091FF") : QColor("#007DE3"));
     pen.setWidth(SELECTION_LINE_WIDTH);
     p.setPen(pen);
     auto gv = qobject_cast<Overview*>(view);
@@ -593,10 +593,10 @@ QColor OverviewRenderArea::getUnitColor(int count) {
         case 0:
             return QPalette().base().color();
         case 1:
-            return AppContext::getMainWindow()->isDarkMode() ? QColor(102, 102, 102) : QColor(204, 204, 204);
+            return AppContext::getMainWindow()->isDarkTheme() ? QColor(102, 102, 102) : QColor(204, 204, 204);
         case 2:
         case 3:
-            return AppContext::getMainWindow()->isDarkMode() ? QColor(204, 204, 204) : QColor(102, 102, 102);
+            return AppContext::getMainWindow()->isDarkTheme() ? QColor(204, 204, 204) : QColor(102, 102, 102);
         default:
             return QPalette().text().color();
     }

@@ -104,7 +104,7 @@ void PluginViewerController::connectStaticActions() {
     disableServiceAction = new QAction(tr("Disable service"), this);
     connect(disableServiceAction, SIGNAL(triggered()), SLOT(sl_disableService()));
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &PluginViewerController::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PluginViewerController::sl_colorThemeSwitched);
 }
 
 void PluginViewerController::connectVisualActions() {
@@ -309,7 +309,7 @@ void PluginViewerController::sl_acceptLicense() {
     hideLicense();
 }
 
-void PluginViewerController::sl_colorModeSwitched() {
+void PluginViewerController::sl_colorThemeSwitched() {
     CHECK(mdiWindow != nullptr, );
 
     int topLevelCount = ui.treeWidget->topLevelItemCount();

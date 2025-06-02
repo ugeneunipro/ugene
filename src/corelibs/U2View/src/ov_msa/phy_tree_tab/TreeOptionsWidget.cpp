@@ -195,12 +195,12 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
     }
 }
 
-void TreeOptionsWidget::sl_colorModeSwitched() {
+void TreeOptionsWidget::sl_colorThemeSwitched() {
     auto treeViewer = getTreeViewer();
-    auto labelColorOption = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+    auto labelColorOption = AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
     auto newLabelColor = qvariant_cast<QColor>(treeViewer->getOption(labelColorOption));
     updateButtonColor(labelsColorButton, newLabelColor);
-    auto branchColorOption = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+    auto branchColorOption = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
     auto newBranchColor = qvariant_cast<QColor>(treeViewer->getOption(branchColorOption));
     updateButtonColor(branchesColorButton, newBranchColor);
 }
@@ -280,7 +280,7 @@ void TreeOptionsWidget::connectSlots() {
         connect(multiTreeViewer, &MsaEditorMultiTreeViewer::si_activeTreeViewChanged, this, [this] { updateAllWidgets(); });
     }
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TreeOptionsWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TreeOptionsWidget::sl_colorThemeSwitched);
 }
 
 void TreeOptionsWidget::sl_valueChanged() {
@@ -306,7 +306,7 @@ void TreeOptionsWidget::updateFormatSettings() {
     auto treeViewerUi = getTreeViewer();
     QMap<TreeViewOption, QVariant> settings = treeViewerUi->getSelectionSettings();
 
-    auto buttonColor = qvariant_cast<QColor>(settings[AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT]);
+    auto buttonColor = qvariant_cast<QColor>(settings[AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT]);
     updateButtonColor(labelsColorButton, buttonColor);
 
     QFont font = TreeViewerUtils::getFontFromSettings(settings);
@@ -354,7 +354,7 @@ void TreeOptionsWidget::sl_fontUnderlineChanged() {
 
 void TreeOptionsWidget::sl_labelsColorButton() {
     auto treeViewerUi = getTreeViewer();
-    auto labelColorOption = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+    auto labelColorOption = AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
     auto curColor = qvariant_cast<QColor>(treeViewerUi->getOption(labelColorOption));
     auto newColor = U2ColorDialog::getColor(curColor, AppContext::getMainWindow()->getQMainWindow());
     if (newColor.isValid()) {
@@ -365,7 +365,7 @@ void TreeOptionsWidget::sl_labelsColorButton() {
 
 void TreeOptionsWidget::sl_branchesColorButton() {
     auto treeViewerUi = getTreeViewer();
-    auto branchColor = AppContext::getMainWindow()->isDarkMode() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+    auto branchColor = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
     auto curColor = qvariant_cast<QColor>(treeViewerUi->getOption(branchColor));
     auto newColor = U2ColorDialog::getColor(curColor, AppContext::getMainWindow()->getQMainWindow());
     if (newColor.isValid()) {

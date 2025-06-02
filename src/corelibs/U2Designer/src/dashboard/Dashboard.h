@@ -92,7 +92,7 @@ private slots:
 
     /** Toggles tab button by id. */
     void sl_onTabButtonToggled(int id, bool checked);
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void saveReportFile();

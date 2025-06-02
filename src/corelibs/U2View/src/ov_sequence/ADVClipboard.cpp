@@ -98,7 +98,7 @@ ADVClipboard::ADVClipboard(AnnotatedDNAView* c)
     pasteSequenceAction = createPasteSequenceAction(this);
     updateActions();
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ADVClipboard::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ADVClipboard::sl_colorThemeSwitched);
 }
 
 QAction* ADVClipboard::getCopySequenceAction() const {
@@ -257,7 +257,7 @@ void ADVClipboard::sl_setCopyQualifierActionStatus(bool isEnabled, QString text)
     copyQualifierAction->setText(text);
 }
 
-void ADVClipboard::sl_colorModeSwitched() {
+void ADVClipboard::sl_colorThemeSwitched() {
     copySequenceAction->setIcon(GUIUtils::getIconResource("core", "copy_sequence.png"));
     copyComplementSequenceAction->setIcon(GUIUtils::getIconResource("core", "copy_complement_sequence.png"));
     copyTranslationAction->setIcon(GUIUtils::getIconResource("core", "copy_translation.png"));

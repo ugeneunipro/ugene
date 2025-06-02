@@ -601,7 +601,7 @@ int main(int argc, char** argv) {
     qInstallMessageHandler(guiTestMessageOutput);
 
     QString styleName = userAppSettings->getVisualStyle();
-    int colorModeIndex = userAppSettings->getColorModeIndex();
+    int colorThemeIndex = userAppSettings->getColorThemeIndex();
 
     auto resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);
@@ -628,7 +628,7 @@ int main(int argc, char** argv) {
     }
 
     auto mw = new MainWindowImpl;
-    mw->setNewStyle(styleName, colorModeIndex);
+    mw->setNewStyle(styleName, colorThemeIndex);
     appContext->setMainWindow(mw);
     mw->prepare();
 
@@ -648,7 +648,7 @@ int main(int argc, char** argv) {
     // Initialize logged log view
     auto logView = new LogViewWidget(&logsCache);
     logView->setObjectName(DOCK_LOG_VIEW);
-    logView->sl_colorModeSwitched();
+    logView->sl_colorThemeSwitched();
     mw->connectLogView(logView);
     AppContext::getAppSettingsGUI()->registerPage(new LogSettingsPageController(logView));
     AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, logView, IconParameters("ugene", "book_open.png", false), QKeySequence(Qt::ALT | Qt::Key_3));

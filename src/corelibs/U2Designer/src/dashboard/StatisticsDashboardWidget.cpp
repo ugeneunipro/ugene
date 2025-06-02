@@ -70,7 +70,7 @@ StatisticsDashboardWidget::StatisticsDashboardWidget(const QDomElement& dom, con
         addTableRow(tableGridLayout, row.id, QStringList() << row.name << row.time << row.count);
     }
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &StatisticsDashboardWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &StatisticsDashboardWidget::sl_colorThemeSwitched);
 }
 
 bool StatisticsDashboardWidget::isValidDom(const QDomElement& dom) {
@@ -124,8 +124,8 @@ void StatisticsDashboardWidget::sl_updateProducers() {
     }
 }
 
-void StatisticsDashboardWidget::sl_colorModeSwitched() {
-    colorModeSwitched(tableGridLayout);
+void StatisticsDashboardWidget::sl_colorThemeSwitched() {
+    colorThemeSwitched(tableGridLayout);
 }
 
 StatisticsRow::StatisticsRow(const QString& id, const QString& name, const QString& time, const QString& count)

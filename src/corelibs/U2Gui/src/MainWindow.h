@@ -136,12 +136,12 @@ public:
 
     virtual void registerAction(QAction* action) = 0;
 
-    virtual bool isDarkMode() const = 0;
+    virtual bool isDarkTheme() const = 0;
 
-    virtual void setNewStyle(const QString& style, int colorModeIndex) = 0;
+    virtual void setNewStyle(const QString& style, int colorThemeIndex) = 0;
 
 signals:
-    void si_colorModeSwitched();
+    void si_colorThemeSwitched();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -237,7 +237,7 @@ public:
 
     virtual void dontActivateNextTime(MWDockArea a) = 0;
 
-    virtual void colorModeSwitched(bool isDark) = 0;
+    virtual void colorThemeSwitched(bool isDark) = 0;
 };
 
 }  // namespace U2

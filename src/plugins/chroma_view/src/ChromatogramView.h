@@ -82,7 +82,7 @@ private slots:
     void sl_onObjectRemoved(GObjectViewController*, GObject*);
     void sl_showHideTrace();
     void sl_showAllTraces();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     int getEditSeqIndex(int bcIndex);

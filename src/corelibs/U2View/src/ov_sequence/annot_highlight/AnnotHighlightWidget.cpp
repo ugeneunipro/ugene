@@ -47,16 +47,16 @@ ShowAllAnnotTypesLabel::ShowAllAnnotTypesLabel() {
     showAllIsSelected = false;
     setText(QObject::tr("Show all annotation names"));
 
-    colorModeSwitched();
+    colorThemeSwitched();
 }
 
-void ShowAllAnnotTypesLabel::colorModeSwitched() {
+void ShowAllAnnotTypesLabel::colorThemeSwitched() {
     setStyleSheet(QString(
         "text-decoration: underline;"
         "color: %1;"
         "margin-left: 2px;"
         "margin-top: 1px;")
-        .arg(AppContext::getMainWindow()->isDarkMode() ? "rgb(220, 220, 220)" : "gray"));
+        .arg(AppContext::getMainWindow()->isDarkTheme() ? "rgb(220, 220, 220)" : "gray"));
 }
 
 void ShowAllAnnotTypesLabel::mousePressEvent(QMouseEvent* event) {
@@ -317,11 +317,11 @@ void AnnotHighlightWidget::sl_onAnnotationSelectionChanged() {
     }
 }
 
-void AnnotHighlightWidget::sl_colorModeSwitched() {
+void AnnotHighlightWidget::sl_colorThemeSwitched() {
     prevAnnotationButton->setIcon(GUIUtils::getIconResource("core", "arrow-move-left.png"));
     nextAnnotationButton->setIcon(GUIUtils::getIconResource("core", "arrow-move-right.png"));
-    showAllLabel->colorModeSwitched();
-    annotSettingsWidget->colorModeChanged();
+    showAllLabel->colorThemeSwitched();
+    annotSettingsWidget->colorThemeChanged();
     loadAnnotTypes();
 }
 
@@ -382,7 +382,7 @@ void AnnotHighlightWidget::connectSlots() {
     AnnotationSelection* as = annotatedDnaView->getAnnotationsSelection();
     CHECK(as != nullptr, );
     connect(as, SIGNAL(si_selectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&)), SLOT(sl_onAnnotationSelectionChanged()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AnnotHighlightWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AnnotHighlightWidget::sl_colorThemeSwitched);
 }
 
 void AnnotHighlightWidget::connectSlotsForAnnotTableObj(const AnnotationTableObject* annotTableObj) {

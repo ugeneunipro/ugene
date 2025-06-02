@@ -93,7 +93,7 @@ private:
 /************************************************************************/
 AnnotationsTreeWidget::AnnotationsTreeWidget(QWidget* parent)
     : QTreeWidget(parent) {
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, [this]() {
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, [this]() {
         //update();
     });
 }
@@ -252,7 +252,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     resetDragAndDropData();
     tree->setAcceptDrops(true);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AnnotationsTreeView::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AnnotationsTreeView::sl_colorThemeSwitched);
 }
 
 void AnnotationsTreeView::restoreWidgetState() {
@@ -1757,10 +1757,10 @@ void AnnotationsTreeView::sl_sequenceRemoved(ADVSequenceObjectContext* advContex
     disconnectSequenceObjectContext(advContext);
 }
 
-void AnnotationsTreeView::sl_colorModeSwitched() {
+void AnnotationsTreeView::sl_colorThemeSwitched() {
     QString emptyFilter;
     for (int i = 0; i < tree->topLevelItemCount(); i++) {
-        updateColorModeRecursively(static_cast<AVItem*>(tree->topLevelItem(i)));
+        updateColorThemeRecursively(static_cast<AVItem*>(tree->topLevelItem(i)));
     }
     removeColumnByHeaderClickAction->setIcon(GUIUtils::getIconResource("core", "remove_column.png"));
 }
@@ -1855,7 +1855,7 @@ void AnnotationsTreeView::emitAnnotationActivated(Annotation* annotation) {
     connectSequenceObjectContext(seqObjCtx);
 }
 
-void AnnotationsTreeView::updateColorModeRecursively(AVItem* item) {
+void AnnotationsTreeView::updateColorThemeRecursively(AVItem* item) {
     switch (item->type) {
         case AVItemType_Group: {
             auto grItem = static_cast<AVGroupItem*>(item);
@@ -1889,7 +1889,7 @@ void AnnotationsTreeView::updateColorModeRecursively(AVItem* item) {
     }
 
     for (int i = 0; i < item->childCount(); i++) {
-        updateColorModeRecursively(static_cast<AVItem*>(item->child(i)));
+        updateColorThemeRecursively(static_cast<AVItem*>(item->child(i)));
     }
 }
 

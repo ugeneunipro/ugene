@@ -53,7 +53,7 @@ protected slots:
     void sl_hundredPercent();
     void sl_repeatParamsChanged(int);
     void sl_minMaxToggle(bool);
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void saveState();

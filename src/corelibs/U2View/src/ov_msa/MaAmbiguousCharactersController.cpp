@@ -65,7 +65,7 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt* ma
 
     connect(maEditor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaAmbiguousCharactersController::sl_resetCachedIterator);
     connect(maEditor->getCollapseModel(), &MaCollapseModel::si_toggled, this, &MaAmbiguousCharactersController::sl_resetCachedIterator);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaAmbiguousCharactersController::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaAmbiguousCharactersController::sl_colorThemeSwitched);
 }
 
 QAction* MaAmbiguousCharactersController::getPreviousAction() const {
@@ -90,7 +90,7 @@ void MaAmbiguousCharactersController::sl_resetCachedIterator() {
     cachedIterator.reset();
 }
 
-void MaAmbiguousCharactersController::sl_colorModeSwitched() {
+void MaAmbiguousCharactersController::sl_colorThemeSwitched() {
     nextAction->setIcon(GUIUtils::getIconResource("core", "amb_forward.png"));
     previousAction->setIcon(GUIUtils::getIconResource("core", "amb_backward.png"));
 }

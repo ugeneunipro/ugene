@@ -53,7 +53,7 @@ CreateRulerDialogController::CreateRulerDialogController(const QSet<QString>& na
     spinBox->setMaximum(INT_MAX);
     spinBox->setValue(defaultOffset);
 
-    color = AppContext::getMainWindow()->isDarkMode() ? Qt::blue : Qt::darkBlue;
+    color = AppContext::getMainWindow()->isDarkTheme() ? Qt::blue : Qt::darkBlue;
 
     updateColorSample();
 

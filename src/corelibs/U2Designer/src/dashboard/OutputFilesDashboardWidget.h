@@ -53,7 +53,7 @@ public:
 
 private slots:
     void sl_newOutputFile(const Monitor::FileInfo& info);
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void updateWorkerRow(int workerIndex);

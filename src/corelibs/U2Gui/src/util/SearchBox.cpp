@@ -59,7 +59,7 @@ SearchBox::SearchBox(QWidget* p)
 
     connect(clearButton, &QAbstractButton::clicked, this, &SearchBox::sl_clearButtonClicked);
     connect(this, &QLineEdit::textChanged, this, &SearchBox::sl_textChanged);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SearchBox::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SearchBox::sl_colorThemeSwitched);
 
     QWidget::setTabOrder(this, this);
 
@@ -98,7 +98,7 @@ void SearchBox::sl_textChanged(const QString& text) {
 
 }
 
-void SearchBox::sl_colorModeSwitched() {
+void SearchBox::sl_colorThemeSwitched() {
     clearButton->setIcon(GUIUtils::getIconResource("core", "close_small.png"));
     auto tmpProgressMovie = progressMovie;
     progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);

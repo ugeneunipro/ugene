@@ -80,7 +80,7 @@ public:
 
     virtual void dontActivateNextTime(MWDockArea a);
 
-    virtual void colorModeSwitched(bool isDark) override;
+    virtual void colorThemeSwitched(bool isDark) override;
 
 protected:
     bool eventFilter(QObject* obj, QEvent* event);

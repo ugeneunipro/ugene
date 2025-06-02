@@ -214,7 +214,7 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
 
     stackedWidget->setCurrentIndex(0);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &Dashboard::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &Dashboard::sl_colorThemeSwitched);
 }
 
 void Dashboard::initExternalToolsTabWidget() {
@@ -242,7 +242,7 @@ void Dashboard::sl_onTabButtonToggled(int id, bool checked) {
     }
 }
 
-void Dashboard::sl_colorModeSwitched() {
+void Dashboard::sl_colorThemeSwitched() {
     loadSchemaButton->setIcon(GUIUtils::getIconResource("U2Designer", "load_schema.png"));
     updateStyleSheets();
 }

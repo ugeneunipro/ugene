@@ -90,7 +90,7 @@ protected slots:
 
     void sl_sequenceSelectorIndexChanged();
 
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void reconnectAllProjectDocuments();

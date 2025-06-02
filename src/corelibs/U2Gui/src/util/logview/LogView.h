@@ -76,7 +76,7 @@ public:
     void onMessage(const LogMessage& msg) override;
 
 public slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 protected:
     void addMessage(const LogMessage& msg);

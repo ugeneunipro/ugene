@@ -338,7 +338,7 @@ void GSequenceGraphViewRA::drawSelection(QPainter& p) {
         return;
     }
     const U2Region& visibleRange = view->getVisibleRange();
-    QPen pen1((AppContext::getMainWindow()->isDarkMode() ? Qt::lightGray : Qt::darkGray), 1, Qt::SolidLine);
+    QPen pen1((AppContext::getMainWindow()->isDarkTheme() ? Qt::lightGray : Qt::darkGray), 1, Qt::SolidLine);
     foreach (const U2Region& r, selection) {
         if (!visibleRange.intersects(r)) {
             continue;

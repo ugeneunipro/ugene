@@ -208,7 +208,7 @@ void AssemblyReadsArea::initRedraw() {
 void AssemblyReadsArea::connectSlots() {
     connect(browser, SIGNAL(si_zoomOperationPerformed()), SLOT(sl_zoomOperationPerformed()));
     connect(browser, SIGNAL(si_offsetsChanged()), SLOT(sl_redraw()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AssemblyReadsArea::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AssemblyReadsArea::sl_colorThemeSwitched);
 }
 
 void AssemblyReadsArea::setupHScrollBar() {
@@ -452,7 +452,7 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
             if ((scribbling || scrolling) && optimizeRenderOnScroll) {
                 int width = readVisibleBases.length * cachedReads.letterWidth;
                 int height = cachedReads.letterWidth;
-                p.fillRect(x_pix_start, y_pix_start, width, height, AppContext::getMainWindow()->isDarkMode() ? QColor("#757575") : QColor("#BBBBBB"));
+                p.fillRect(x_pix_start, y_pix_start, width, height, AppContext::getMainWindow()->isDarkTheme() ? QColor("#757575") : QColor("#BBBBBB"));
             } else {
                 // iterate over letters of the read
                 QList<U2CigarToken> cigar(read->cigar);  // hack: to show reads without cigar but with mapped position
@@ -597,7 +597,7 @@ void AssemblyReadsArea::drawCurrentReadHighlight(QPainter& p) {
     bool found = findReadOnPos(curPos, read);
     if (found) {
         p.setBrush(Qt::NoBrush);
-        p.setPen(AppContext::getMainWindow()->isDarkMode() ? QColor(255, 127, 127) : Qt::darkRed);
+        p.setPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(255, 127, 127) : Qt::darkRed);
         QRect rect = calcReadRect(read);
         rect.setBottomRight(rect.bottomRight() - QPoint(1, 1));
 
@@ -642,7 +642,7 @@ void AssemblyReadsArea::drawReadsShadowing(QPainter& p) {
             rects << QRect(this->rect());
         }
 
-        p.setBrush(QBrush(AppContext::getMainWindow()->isDarkMode() ? shadowingColorDark : shadowingColorLight));
+        p.setBrush(QBrush(AppContext::getMainWindow()->isDarkTheme() ? shadowingColorDark : shadowingColorLight));
         p.setPen(Qt::NoPen);
 
         p.drawRects(rects);
@@ -1036,8 +1036,8 @@ void AssemblyReadsArea::sl_onOptimizeRendering(bool enabled) {
     optimizeRenderOnScroll = enabled;
 }
 
-void AssemblyReadsArea::sl_colorModeSwitched() {
-    hintData.hint.colorModeSwitched();
+void AssemblyReadsArea::sl_colorThemeSwitched() {
+    hintData.hint.colorThemeSwitched();
     cellRenderer->makeForceRenderUpdate();
     sl_redraw();
 }

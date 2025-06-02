@@ -143,7 +143,7 @@ StatusDashboardWidget::StatusDashboardWidget(const QDomElement& dom, const Workf
         sl_taskStateChanged(monitor->getTaskState());
     }
     connect(&timer, SIGNAL(timeout()), SLOT(sl_timerEvent()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &StatusDashboardWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &StatusDashboardWidget::sl_colorThemeSwitched);
 }
 
 void StatusDashboardWidget::startTimer() {
@@ -161,7 +161,7 @@ void StatusDashboardWidget::sl_timerEvent() {
     updateTimeLabel();
 }
 
-void StatusDashboardWidget::sl_colorModeSwitched() {
+void StatusDashboardWidget::sl_colorThemeSwitched() {
     // There is no default state, but CANCELLED is considered as default for the next function
     auto defaultState = Monitor::TaskState::CANCELLED;
     timeLabel->setStyleSheet(state2LabelStyle(defaultState));
@@ -207,7 +207,7 @@ QString StatusDashboardWidget::state2StatusMessage(const Monitor::TaskState& sta
 
 QString StatusDashboardWidget::state2LabelStyle(const Monitor::TaskState& state) {
     QString result = STATUS_LABEL_COMMON_STYLE;
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     switch (state) {
         case Monitor::RUNNING: {
             QString textColor = isDark ? STATUS_LABEL_INFO_TEXT_COLOR_DARK : STATUS_LABEL_INFO_TEXT_COLOR_LIGHT;

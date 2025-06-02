@@ -56,7 +56,7 @@ private slots:
     void sl_minusButtonClicked();
     void sl_plusButtonClicked();
     void sl_updateState();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 protected:
     QSlider* scaleBar;

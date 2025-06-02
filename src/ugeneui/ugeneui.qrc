@@ -8,7 +8,7 @@
         <file>images/book_open.png</file>
         <file>images/cancel.png</file>
         <file>images/clock.png</file>
-        <file>images/color_mode_pic.png</file>
+        <file>images/color_theme_pic.png</file>
         <file>images/create_new_project.png</file>
         <file>images/hourglass_go.png</file>
         <file>images/hourglass_ok.png</file>
@@ -49,7 +49,7 @@
         <file>images/welcome_page/social_icon_linkedin.png</file>
         <file>images/welcome_page/social_icon_facebook.png</file>
 
-        <file>images/dark/color_mode_pic.png</file>
+        <file>images/dark/color_theme_pic.png</file>
         <file>images/dark/preferences.png</file>
         <file>images/dark/ugene_splash.png</file>
         <file>images/welcome_page/dark/line.png</file>
@@ -73,7 +73,7 @@
         <file>images/dark/trash.svg</file>
         <file>images/dark/web_link.svg</file>
 
-        <file>images/light/color_mode_pic.png</file>
+        <file>images/light/color_theme_pic.png</file>
         <file>images/light/preferences.png</file>
         <file>images/light/ugene_splash.png</file>
         <file>images/welcome_page/light/line.png</file>

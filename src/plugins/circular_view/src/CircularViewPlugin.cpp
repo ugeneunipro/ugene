@@ -346,7 +346,7 @@ CircularViewAction::CircularViewAction()
     : ADVSequenceWidgetAction(CIRCULAR_ACTION_NAME, tr("Show circular view")), view(nullptr), rmapWidget(nullptr) {
     setIcon(GUIUtils::getIconResource("circular_view", "circular.png"));
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &CircularViewAction::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &CircularViewAction::sl_colorThemeSwitched);
 }
 
 void CircularViewAction::sl_circularStateChanged() {
@@ -361,7 +361,7 @@ void CircularViewAction::sl_circularStateChanged() {
     }
 }
 
-void CircularViewAction::sl_colorModeSwitched() {
+void CircularViewAction::sl_colorThemeSwitched() {
     setIcon(GUIUtils::getIconResource("circular_view", "circular.png"));
 }
 

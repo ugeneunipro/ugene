@@ -116,7 +116,7 @@ void LogSettings::reinitCategories() {
     }
 }
 
-void LogSettings::colorModeSwitched(bool isDark) {
+void LogSettings::colorThemeSwitched(bool isDark) {
     levelColors = isDark ? DARK_LEVEL_COLORS : LIGHT_LEVEL_COLORS;
 }
 

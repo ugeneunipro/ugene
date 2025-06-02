@@ -59,7 +59,7 @@ public:
 
 private slots:
     void sl_newNotification(const WorkflowNotification& wdNotification, int count);
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void updateNotificationRow(int workerIndex);

@@ -47,9 +47,9 @@ public:
     bool operator<(const QTreeWidgetItem& other) const override;
     // Get text information about this enzyme
     QString getEnzymeInfo() const;
-    // Invoce this function, when color mode is switched
+    // Invoce this function, when color theme is switched
     // If fixes some enzyme info colors
-    void colorModeSwitched();
+    void colorThemeSwitched();
 
 private:
     enum Column {

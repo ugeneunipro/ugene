@@ -32,7 +32,7 @@ namespace U2 {
 
 DashboardTabPage::DashboardTabPage(const QString& tabObjectName) {
     setObjectName(tabObjectName);
-    sl_colorModeSwitched();
+    sl_colorThemeSwitched();
 
     auto mainWidget = new QWidget();
 
@@ -77,7 +77,7 @@ DashboardTabPage::DashboardTabPage(const QString& tabObjectName) {
     setWidget(mainWidget);
     setWidgetResizable(true);  // make the widget to fill whole available space
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DashboardTabPage::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &DashboardTabPage::sl_colorThemeSwitched);
 }
 
 DashboardWidget* DashboardTabPage::addDashboardWidget(const QString& title, QWidget* contentWidget) {
@@ -87,7 +87,7 @@ DashboardWidget* DashboardTabPage::addDashboardWidget(const QString& title, QWid
     return dashboardWidget;
 }
 
-void DashboardTabPage::sl_colorModeSwitched() {
+void DashboardTabPage::sl_colorThemeSwitched() {
     QString backgroundImagePath = GUIUtils::getResourceName("U2Designer", "background.png");
     setStyleSheet(QString("QWidget#tabPageStyleRoot {"
                   " background: url('%1') repeat scroll 0 0 transparent; "

@@ -153,7 +153,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
 
     connect(adv, SIGNAL(si_sequenceWidgetAdded(ADVSequenceWidget*)), SLOT(sl_sequenceWidgetAdded(ADVSequenceWidget*)));
     connect(adv, SIGNAL(si_sequenceWidgetRemoved(ADVSequenceWidget*)), SLOT(sl_sequenceWidgetRemoved(ADVSequenceWidget*)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ADVSyncViewManager::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ADVSyncViewManager::sl_colorThemeSwitched);
 }
 
 ADVSyncViewManager::~ADVSyncViewManager() {
@@ -446,7 +446,7 @@ void ADVSyncViewManager::sl_updateVisualMode() {
     toggleOveAction->setText(haveVisibleOve ? tr("Hide all overviews") : tr("Show all overviews"));
 }
 
-void ADVSyncViewManager::sl_colorModeSwitched() {
+void ADVSyncViewManager::sl_colorThemeSwitched() {
     toggleAutoAnnotationsMenu->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
     lockMenu->setIcon(GUIUtils::getIconResource("core", "lock_scales.png"));
     syncMenu->setIcon(GUIUtils::getIconResource("core", "sync_scales.png"));

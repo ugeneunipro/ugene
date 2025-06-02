@@ -298,7 +298,7 @@ void WorkflowDesignerService::initNewWorkflowAction() {
         }
     }
     fileMenu->insertAction(beforeAction, newWorkflowAction);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WorkflowDesignerService::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &WorkflowDesignerService::sl_colorThemeSwitched);
 }
 
 bool WorkflowDesignerService::closeViews() {
@@ -315,7 +315,7 @@ bool WorkflowDesignerService::closeViews() {
     return true;
 }
 
-void WorkflowDesignerService::sl_colorModeSwitched() {
+void WorkflowDesignerService::sl_colorThemeSwitched() {
     designerAction->setIcon(GUIUtils::getIconResource("workflow_designer", "wd.png"));
     newWorkflowAction->setIcon(GUIUtils::getIconResource("workflow_designer", "wd.png"));
 }

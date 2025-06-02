@@ -73,7 +73,7 @@ QDElement::QDElement(QDSchemeUnit* _unit)
     QDParameters* params = unit->getActor()->getParameters();
     connect(params, SIGNAL(si_modified()), SLOT(sl_refresh()));
     connect(unit->getActor(), SIGNAL(si_strandChanged(QDStrandOption)), SLOT(sl_refresh()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &QDElement::si_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &QDElement::si_colorThemeSwitched);
 
     itemDescription = new QDElementDescription(this);
     itemDescription->setDocument(doc);
@@ -277,7 +277,7 @@ void QDElement::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
     auto actor = getActor();
     auto color = actor->defaultColor();
     auto colorName = color.name();
-    if (AppContext::getMainWindow()->isDarkMode()) {
+    if (AppContext::getMainWindow()->isDarkTheme()) {
         color = FeatureColors::transformLightToDark(color);
     }
     painter->setBrush(color);
@@ -322,7 +322,7 @@ QPointF QDElement::getLeftConnector() {
     return mapToScene(QPointF(boundingRect().left(), (boundingRect().top() + boundingRect().bottom()) / 2));
 }
 
-void QDElement::si_colorModeSwitched() {
+void QDElement::si_colorThemeSwitched() {
     sl_refresh();
 }
 

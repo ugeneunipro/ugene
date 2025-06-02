@@ -242,7 +242,7 @@ QPixmap getPixmapResource(const QString& cathegory, const QString& iconName, boo
 }
 
 QString GUIUtils::getResourceName(const QString& cathegory, const QString& iconName, bool hasColorCathegory, const QString& innerDirName) {
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QString colorCathegory;
     if (hasColorCathegory) {
         if (isDark) {
@@ -265,8 +265,8 @@ QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconNam
     QIcon icon;
     QPixmap pixmap = getPixmapResource(cathegory, iconName, hasColorCathegory);
     icon.addPixmap(pixmap);
-    if (AppContext::getMainWindow()->isDarkMode()) {
-        // automatic disabled icon is no good for dark mode
+    if (AppContext::getMainWindow()->isDarkTheme()) {
+        // automatic disabled icon is no good for dark theme
         // paint transparent black to get disabled look
         QPainter p(&pixmap);
         p.fillRect(pixmap.rect(), QColor(48, 47, 47, 128));

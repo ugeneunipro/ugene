@@ -91,7 +91,7 @@ QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment
                              proxyMouseEventsToNameList);
 }
 
-void MaEditorWgt::sl_colorModeSwitched() {
+void MaEditorWgt::sl_colorThemeSwitched() {
     copyFormattedSelectionAction->setIcon(GUIUtils::getIconResource("core", "copy.png"));
 }
 
@@ -238,7 +238,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     connect(editor->getCollapseModel(), SIGNAL(si_toggled()), sequenceArea, SLOT(sl_modelChanged()));
 
     connect(delSelectionAction, SIGNAL(triggered()), sequenceArea, SLOT(sl_delCurrentSelection()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaEditorWgt::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaEditorWgt::sl_colorThemeSwitched);
 }
 
 void MaEditorWgt::initActions() {

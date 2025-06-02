@@ -53,9 +53,9 @@ DetViewSingleLineRenderer::TranslationMetrics::TranslationMetrics(const Sequence
 
     seqBlockRegion = U2Region(minUsedPos, maxUsedPos - minUsedPos);
 
-    bool isDarkMode = AppContext::getMainWindow()->isDarkMode();
-    startC = isDarkMode ? QColor(0, 190, 0) : QColor(0, 153, 0);
-    stopC = isDarkMode ? QColor(190, 0, 0) : QColor(153, 0, 0);
+    bool isDarkTheme = AppContext::getMainWindow()->isDarkTheme();
+    startC = isDarkTheme ? QColor(0, 190, 0) : QColor(0, 153, 0);
+    stopC = isDarkTheme ? QColor(190, 0, 0) : QColor(153, 0, 0);
 
     fontB = commonSequenceFont;
     fontB.setBold(true);
@@ -740,13 +740,13 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
     /*
     logic:
 
-    lignt mode:
+    lignt theme:
     no annotations found -> gray
     found annotation that is on translation -> black
     1 annotation found on nucleic -> darker(annotation color)
     2+ annotations found on nucleic -> black
 
-    dark mode (similar, but reversed):
+    dark theme (similar, but reversed):
     no annotations found -> rgb(190, 190, 190)
     found annotation that is on translation -> white
     1 annotation found on nucleic -> invert -> darker(annotation color) -> invert again
@@ -754,8 +754,8 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
     2+ annotations found on nucleic -> white
 
     Note: we do not use just gray (127, 127, 127) if no annotations found because
-    the background in the light mode is pure white (255, 255, 255),
-    but in the dark mode the background is (48, 48, 48),
+    the background in the light theme is pure white (255, 255, 255),
+    but in the dark theme the background is (48, 48, 48),
     so we keep distanse 128+ between background and text colors.
 
     */
@@ -796,9 +796,9 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
             }
         }
     }
-    bool isDarkMode = AppContext::getMainWindow()->isDarkMode();
+    bool isDarkTheme = AppContext::getMainWindow()->isDarkTheme();
     if (0 == nAnnotations) {
-        result = isDarkMode ? QColor(190, 190, 190) : Qt::gray;
+        result = isDarkTheme ? QColor(190, 190, 190) : Qt::gray;
         return false;
     }
 
@@ -811,7 +811,7 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
     const bool aminoOverlap = (aminoState == TriState_Yes);  // annotation is drawn on amino strand -> use text color for letters
     if (aminoOverlap) {
         result = QPalette().text().color();
-    } else if (isDarkMode) {
+    } else if (isDarkTheme) {
         auto color = as->getActiveColor();
         QColor invertedAnnotationColor(255 - color.red(), 255 - color.green(), 255 - color.blue());
         invertedAnnotationColor = invertedAnnotationColor.darker(300);
@@ -854,15 +854,15 @@ void DetViewSingleLineRenderer::highlight(QPainter& p, const U2Region& regionToH
     int height = commonMetrics.lineHeight;
     p.save();
 
-    bool isDarkMode = AppContext::getMainWindow()->isDarkMode();
+    bool isDarkTheme = AppContext::getMainWindow()->isDarkTheme();
     QPen pen = p.pen();
-    pen.setColor(isDarkMode ? Qt::white : Qt::gray);
+    pen.setColor(isDarkTheme ? Qt::white : Qt::gray);
     pen.setWidth(2);
     p.setPen(pen);
     p.setBrush(Qt::NoBrush);
     p.drawRect(x, y, width, height);
 
-    p.setBrush(isDarkMode ? Qt::lightGray : Qt::darkGray);
+    p.setBrush(isDarkTheme ? Qt::lightGray : Qt::darkGray);
     p.setCompositionMode(QPainter::CompositionMode_ColorBurn);
     p.drawRect(x, y, width, height);
 

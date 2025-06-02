@@ -105,7 +105,7 @@ GSequenceGraphDrawer::GSequenceGraphDrawer(GSequenceGraphView* view, qint64 _win
     seriesColorByName.insert(DEFAULT_COLOR_NAME, DEFAULT_COLOR);
 
     connect(&calculationTaskRunner, &BackgroundTaskRunner_base::si_finished, this, &GSequenceGraphDrawer::sl_calculationTaskFinished);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &GSequenceGraphDrawer::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &GSequenceGraphDrawer::sl_colorThemeSwitched);
 }
 
 GSequenceGraphDrawer::~GSequenceGraphDrawer() {
@@ -140,7 +140,7 @@ void GSequenceGraphDrawer::sl_calculationTaskFinished() {
     }
 }
 
-void GSequenceGraphDrawer::sl_colorModeSwitched() {
+void GSequenceGraphDrawer::sl_colorThemeSwitched() {
     DEFAULT_COLOR = QPalette().text().color();
     seriesColorByName.insert(DEFAULT_COLOR_NAME, DEFAULT_COLOR);
 }

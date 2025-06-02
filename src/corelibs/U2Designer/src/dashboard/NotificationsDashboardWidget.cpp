@@ -80,7 +80,7 @@ NotificationsDashboardWidget::NotificationsDashboardWidget(const QDomElement& do
         connect(monitor, SIGNAL(si_newNotification(WorkflowNotification, int)), SLOT(sl_newNotification(WorkflowNotification, int)));
     }
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &NotificationsDashboardWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &NotificationsDashboardWidget::sl_colorThemeSwitched);
 }
 
 void NotificationsDashboardWidget::setDashboardWidget(QWidget* dashboardWidgetParent) {
@@ -111,8 +111,8 @@ void NotificationsDashboardWidget::sl_newNotification(const WorkflowNotification
     updateNotificationRow(notificationList.size() - 1);
 }
 
-void NotificationsDashboardWidget::sl_colorModeSwitched() {
-    colorModeSwitched(tableGridLayout);
+void NotificationsDashboardWidget::sl_colorThemeSwitched() {
+    colorThemeSwitched(tableGridLayout);
 }
 
 void NotificationsDashboardWidget::updateNotificationRow(int workerIndex) {

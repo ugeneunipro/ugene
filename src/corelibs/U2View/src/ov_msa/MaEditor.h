@@ -267,7 +267,7 @@ protected slots:
         SAFE_POINT(false, "The function sl_multilineViewAction() must be overridden", );
     };
 
-    virtual void sl_colorModeSwitched();
+    virtual void sl_colorThemeSwitched();
 
 private slots:
     void resetColumnWidthCache();

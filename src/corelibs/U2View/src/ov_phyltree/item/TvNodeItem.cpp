@@ -57,7 +57,7 @@ TvNodeItem::TvNodeItem(TvBranchItem* parentItem, const QString& _nodeName)
     setFlag(QGraphicsItem::ItemIsSelectable);
     setToolTip(QObject::tr("Left click to select the branch\nDouble-click to collapse the branch"));
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TvNodeItem::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TvNodeItem::sl_colorThemeSwitched);
 }
 
 void TvNodeItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
@@ -127,7 +127,7 @@ void TvNodeItem::updateSettings(const QMap<TreeViewOption, QVariant>& settings) 
     }
     if (labelItem != nullptr) {
         labelItem->setFont(TreeViewerUtils::getFontFromSettings(settings));
-        auto labelColor = AppContext::getMainWindow()->isDarkMode() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+        auto labelColor = AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
         labelItem->setBrush(qvariant_cast<QColor>(settings[labelColor]));
         QRectF rect = labelItem->boundingRect();
         labelItem->setPos(TvBranchItem::TEXT_SPACING, -rect.height() / 2);
@@ -172,7 +172,7 @@ void TvNodeItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 }
 
 
-void TvNodeItem::sl_colorModeSwitched() {
+void TvNodeItem::sl_colorThemeSwitched() {
     setPen(QPalette().text().color());
 }
 

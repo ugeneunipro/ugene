@@ -77,7 +77,7 @@
           <item>
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Color mode</string>
+             <string>Color theme</string>
             </property>
            </widget>
           </item>
@@ -96,7 +96,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="colorModeCombo">
+           <widget class="QComboBox" name="colorThemeCombo">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
               <horstretch>0</horstretch>

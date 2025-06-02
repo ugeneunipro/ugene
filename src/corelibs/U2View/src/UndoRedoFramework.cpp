@@ -55,7 +55,7 @@ MaUndoRedoFramework::MaUndoRedoFramework(QObject* parent, MsaObject* _maObject)
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateUndoRedoState()));
     connect(undoAction, SIGNAL(triggered()), this, SLOT(sl_undo()));
     connect(redoAction, SIGNAL(triggered()), this, SLOT(sl_redo()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaUndoRedoFramework::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaUndoRedoFramework::sl_colorThemeSwitched);
 }
 
 void MaUndoRedoFramework::sl_completeStateChanged(bool _stateComplete) {
@@ -140,7 +140,7 @@ void MaUndoRedoFramework::sl_redo() {
     maObject->updateCachedMultipleAlignment(modInfo);
 }
 
-void MaUndoRedoFramework::sl_colorModeSwitched() {
+void MaUndoRedoFramework::sl_colorThemeSwitched() {
     undoAction->setIcon(GUIUtils::getIconResource("core", "undo.png", false));
     redoAction->setIcon(GUIUtils::getIconResource("core", "redo.png", false));
 }

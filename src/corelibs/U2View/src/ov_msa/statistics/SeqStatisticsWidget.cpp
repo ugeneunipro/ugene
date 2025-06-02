@@ -110,7 +110,7 @@ void SeqStatisticsWidget::connectSlots() {
     connect(ui.showDistancesColumnCheck, SIGNAL(stateChanged(int)), SLOT(sl_onShowStatisticsChanged(int)));
     connect(ui.autoUpdateCheck, SIGNAL(stateChanged(int)), SLOT(sl_onAutoUpdateChanged(int)));
     connect(msa, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_onRefSeqChanged(qint64)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SeqStatisticsWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SeqStatisticsWidget::sl_colorThemeSwitched);
 }
 
 void SeqStatisticsWidget::restoreSettings() {
@@ -165,7 +165,7 @@ void SeqStatisticsWidget::sl_onRefSeqChanged(qint64 referenceRowId) {
     }
 }
 
-void SeqStatisticsWidget::sl_colorModeSwitched() {
+void SeqStatisticsWidget::sl_colorThemeSwitched() {
     ui.refSeqWarning->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::infoColorLabelHtmlStr()));
 }
 

@@ -67,7 +67,7 @@ void ChromaViewContext::initViewContext(GObjectViewController* v) {
         sl_sequenceWidgetAdded(w);
     }
     connect(av, SIGNAL(si_sequenceWidgetAdded(ADVSequenceWidget*)), SLOT(sl_sequenceWidgetAdded(ADVSequenceWidget*)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ChromaViewContext::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ChromaViewContext::sl_colorThemeSwitched);
 }
 
 static ChromatogramObject* findChromaObj(ADVSingleSequenceWidget* sw) {
@@ -131,7 +131,7 @@ void ChromaViewContext::sl_showChromatogram() {
     }
 }
 
-void ChromaViewContext::sl_colorModeSwitched() {
+void ChromaViewContext::sl_colorThemeSwitched() {
     CHECK(chromaViewAction != nullptr, );
 
     chromaViewAction->setIcon(GUIUtils::getIconResource("chroma_view", "cv.png"));

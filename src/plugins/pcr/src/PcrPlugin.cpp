@@ -61,7 +61,7 @@ PcrPlugin::PcrPlugin()
             libraryAction = new QAction(GUIUtils::getIconResource("core", "database_with_arrow.png"), tr("Primer library"), this);
             libraryAction->setObjectName(ToolsMenu::PRIMER_LIBRARY);
             connect(libraryAction, SIGNAL(triggered()), SLOT(sl_primerLibrary()));
-            connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &PcrPlugin::sl_colorModeSwitched);
+            connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PcrPlugin::sl_colorThemeSwitched);
             ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, libraryAction);
         }
     }
@@ -78,7 +78,7 @@ void PcrPlugin::sl_primerLibrary() {
     PrimerLibraryMdiWindow::showLibrary();
 }
 
-void PcrPlugin::sl_colorModeSwitched() {
+void PcrPlugin::sl_colorThemeSwitched() {
     libraryAction->setIcon(GUIUtils::getIconResource("core", "database_with_arrow.png"));
 }
 

@@ -41,7 +41,7 @@ static const QColor BACKGROUND_COLOR_LIGHT(245, 245, 206);
 static const QColor BACKGROUND_COLOR_DARK("#590D59");
 
 static const QColor getBackgroundColor() {
-    return AppContext::getMainWindow()->isDarkMode() ? BACKGROUND_COLOR_DARK : BACKGROUND_COLOR_LIGHT;
+    return AppContext::getMainWindow()->isDarkTheme() ? BACKGROUND_COLOR_DARK : BACKGROUND_COLOR_LIGHT;
 }
 
 AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
@@ -61,7 +61,7 @@ AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
     label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     label->setObjectName("hintLabel");
 
-    colorModeSwitched();
+    colorThemeSwitched();
 
     setWindowFlags(Qt::ToolTip);
     setWindowOpacity(0.8);
@@ -190,7 +190,7 @@ void AssemblyReadsAreaHint::setData(U2AssemblyRead r, QList<U2AssemblyRead> mate
     setMaximumHeight(layout()->minimumSize().height());
 }
 
-void AssemblyReadsAreaHint::colorModeSwitched() {
+void AssemblyReadsAreaHint::colorThemeSwitched() {
     QPalette backgroundPalette = palette();
     backgroundPalette.setColor(QPalette::Window, getBackgroundColor());
     setPalette(backgroundPalette);

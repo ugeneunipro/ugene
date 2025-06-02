@@ -210,7 +210,7 @@ MsaHighlightingTab::MsaHighlightingTab(MsaEditor* m)
     connect(thresholdMoreRb, SIGNAL(toggled(bool)), SLOT(sl_highlightingParametersChanged()));
     connect(thresholdLessRb, SIGNAL(toggled(bool)), SLOT(sl_highlightingParametersChanged()));
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaHighlightingTab::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MsaHighlightingTab::sl_colorThemeSwitched);
 
     sl_updateHint();
     sl_highlightingParametersChanged();
@@ -367,7 +367,7 @@ void MsaHighlightingTab::sl_refreshSchemes() {
     sl_sync();
 }
 
-void MsaHighlightingTab::sl_colorModeSwitched() {
+void MsaHighlightingTab::sl_colorThemeSwitched() {
     sl_updateHint();
 }
 

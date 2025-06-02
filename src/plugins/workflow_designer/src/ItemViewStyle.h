@@ -71,7 +71,7 @@ public:
     }
 
 protected slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 protected:
     WorkflowProcessItem* owner;
@@ -160,7 +160,7 @@ protected:
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     QPointF initPos;

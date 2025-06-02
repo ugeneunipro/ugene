@@ -130,7 +130,7 @@ GraphMenuAction::GraphMenuAction(const DNAAlphabet* a)
     auto closeAllAction = new QAction(GraphMenuAction::tr("Close all graphs"), this);
     menu->addAction(closeAllAction);
     connect(closeAllAction, SIGNAL(triggered()), this, SLOT(sl_closeAllGraphs()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &GraphMenuAction::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &GraphMenuAction::sl_colorThemeSwitched);
     setVisible(a->isNucleic());
 }
 
@@ -179,7 +179,7 @@ void GraphMenuAction::sl_closeAllGraphs() {
     }
 }
 
-void GraphMenuAction::sl_colorModeSwitched() {
+void GraphMenuAction::sl_colorThemeSwitched() {
     setIcon(GUIUtils::getIconResource("core", "graphs.png"));
 }
 

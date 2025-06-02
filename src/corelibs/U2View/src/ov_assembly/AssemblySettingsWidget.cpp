@@ -64,7 +64,7 @@ AssemblySettingsWidget::AssemblySettingsWidget(AssemblyBrowserUi* ui_)
     QWidget* rulerGroup = new ShowHideSubgroupWidget("RULER", tr("Ruler"), createRulerSettings(), true);
     mainLayout->addWidget(rulerGroup);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AssemblySettingsWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AssemblySettingsWidget::sl_colorThemeSwitched);
 
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 }
@@ -201,7 +201,7 @@ void AssemblySettingsWidget::sl_changeConsensusAlgorithm(int index) {
     actions.at(index)->trigger();
 }
 
-void AssemblySettingsWidget::sl_colorModeSwitched() {
+void AssemblySettingsWidget::sl_colorThemeSwitched() {
     hint->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::successColorLabelHtmlStr()));
 }
 

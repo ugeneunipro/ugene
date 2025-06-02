@@ -92,7 +92,7 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
 
     ServiceRegistry* sr = AppContext::getServiceRegistry();
     connect(sr, SIGNAL(si_serviceStateChanged(Service*, ServiceState)), SLOT(sl_serviceStateChanged(Service*, ServiceState)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ProjectLoaderImpl::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ProjectLoaderImpl::sl_colorThemeSwitched);
 
     newProjectAction = new QAction(GUIUtils::getIconResource("ugene", "project_new.png", false), tr("&New project..."), this);
     newProjectAction->setObjectName(ACTION_PROJECTSUPPORT__NEW_PROJECT);
@@ -798,7 +798,7 @@ void ProjectLoaderImpl::sl_searchGenbankEntry() {
     dlg->exec();
 }
 
-void ProjectLoaderImpl::sl_colorModeSwitched() {
+void ProjectLoaderImpl::sl_colorThemeSwitched() {
     pasteAction->setIcon(GUIUtils::getIconResource("core", "paste.png"));
 }
 
@@ -867,14 +867,14 @@ SaveProjectDialogController::SaveProjectDialogController(QWidget* w)
     setWindowIcon(GUIUtils::getIconResource("ugene", "save.png", false));
 
     connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(sl_clicked(QAbstractButton*)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SaveProjectDialogController::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SaveProjectDialogController::sl_colorThemeSwitched);
 }
 
 void SaveProjectDialogController::sl_clicked(QAbstractButton* button) {
     done(buttonBox->standardButton(button));
 }
 
-void SaveProjectDialogController::sl_colorModeSwitched() {
+void SaveProjectDialogController::sl_colorThemeSwitched() {
     setWindowIcon(GUIUtils::getIconResource("ugene", "save.png", false));
 }
 

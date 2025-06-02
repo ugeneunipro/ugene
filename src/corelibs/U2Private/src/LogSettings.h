@@ -73,7 +73,7 @@ public:
     void reinitAll();
     void reinitCategories();
 
-    void colorModeSwitched(bool isDark);
+    void colorThemeSwitched(bool isDark);
 
     QVector<QString> levelColors;
     QVector<bool> activeLevelGlobalFlag;

@@ -136,7 +136,7 @@ ArrowHeaderWidget::ArrowHeaderWidget(const QString& caption, bool _isOpened)
 
     setLayout(arrowHeaderLayout);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ArrowHeaderWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ArrowHeaderWidget::sl_colorThemeSwitched);
 }
 
 ArrowHeaderWidget::~ArrowHeaderWidget() {
@@ -176,7 +176,7 @@ void ArrowHeaderWidget::setOpened(bool _isOpened) {
     }
 }
 
-void ArrowHeaderWidget::sl_colorModeSwitched() {
+void ArrowHeaderWidget::sl_colorThemeSwitched() {
     if (isOpened) {
         arrow->setPixmap(QPixmap(GUIUtils::getResourceName("core", "arrow_down.png")));
     } else {

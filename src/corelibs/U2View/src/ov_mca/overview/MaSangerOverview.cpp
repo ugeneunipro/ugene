@@ -144,7 +144,7 @@ void MaSangerOverview::sl_screenMoved() {
     }
 }
 
-void MaSangerOverview::sl_colorModeSwitched() {
+void MaSangerOverview::sl_colorThemeSwitched() {
     sl_completeRedraw();
 }
 

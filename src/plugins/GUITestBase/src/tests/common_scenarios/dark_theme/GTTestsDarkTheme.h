@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,27 +21,21 @@
 
 #pragma once
 
-#include <QDialog>
-#include <QRadioButton>
-
-#include "ui_ColorModeWindow.h"
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 
-class ColorModeWindow : public QDialog, public Ui_ColorModeWindow {
-    Q_OBJECT
-public:
-    ColorModeWindow(QWidget* parent = nullptr);
+namespace GUITest_common_scenarios_dark_theme {
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_common_scenarios_dark_theme"
 
-    QPair<QString, int> getNewStyle() const;
+GUI_TEST_CLASS_DECLARATION(test_0001)
+GUI_TEST_CLASS_DECLARATION(test_0002)
+GUI_TEST_CLASS_DECLARATION(test_0003)
+GUI_TEST_CLASS_DECLARATION(test_0004)
+GUI_TEST_CLASS_DECLARATION(test_0005)
 
-private slots:
-    void sl_updateState();
-
-private:
-    QRadioButton* lightRb = nullptr;
-    QList<QRadioButton*> darkRbs;
-
-};
+#undef GUI_TEST_SUITE
+}  // namespace GUITest_common_scenarios_dark_theme
 
 }  // namespace U2

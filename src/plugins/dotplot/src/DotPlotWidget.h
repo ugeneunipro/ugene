@@ -115,7 +115,7 @@ private slots:
     void sl_sequenceWidgetRemoved(ADVSequenceWidget*);
     void sl_panViewChanged();
     void sl_timer();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 protected:
     void paintEvent(QPaintEvent*) override;

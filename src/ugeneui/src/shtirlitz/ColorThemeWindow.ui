@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ColorModeWindow</class>
- <widget class="QDialog" name="ColorModeWindow">
+ <class>ColorThemeWindow</class>
+ <widget class="QDialog" name="ColorThemeWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -65,12 +65,12 @@
       </font>
      </property>
      <property name="text">
-      <string>Choose your color mode</string>
+      <string>Choose your color theme</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="wgtColorModes" native="true"/>
+    <widget class="QWidget" name="wgtColorThemes" native="true"/>
    </item>
    <item>
     <widget class="QLabel" name="label_5">

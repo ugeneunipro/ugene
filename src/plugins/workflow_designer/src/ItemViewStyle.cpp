@@ -106,7 +106,7 @@ void ItemViewStyle::loadState(QDomElement& el) {
     }
 }
 
-void ItemViewStyle::sl_colorModeSwitched() {
+void ItemViewStyle::sl_colorThemeSwitched() {
     bgColor = defaultColor();
     update();
 }
@@ -142,7 +142,7 @@ const QColor ITEM_WITH_DISABLED_BREAKPOINT_BORDER_COLOR_LIGHT = QColor(184, 134,
 const QColor ITEM_WITH_DISABLED_BREAKPOINT_BORDER_COLOR_DARK = QColor(255, 196, 71);
 
 static const QColor getBpBorderColor(bool isBpEnabled) {
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QColor borderColor;
     if (isBpEnabled) {
         borderColor = isDark ? ITEM_WITH_ENABLED_BREAKPOINT_BORDER_COLOR_DARK : ITEM_WITH_ENABLED_BREAKPOINT_BORDER_COLOR_LIGHT;
@@ -304,7 +304,7 @@ void ExtendedProcStyle::paint(QPainter* painter,
         dot.addEllipse(dt, 1.2, 1.2);
         dot.addEllipse(dt - QPointF(4, 0), 1.2, 1.2);
         dot.addEllipse(dt - QPointF(8, 0), 1.2, 1.2);
-        painter->fillPath(dot, QBrush(AppContext::getMainWindow()->isDarkMode() ? QColor(204, 204, 204) : QColor(51, 51, 51)));
+        painter->fillPath(dot, QBrush(AppContext::getMainWindow()->isDarkTheme() ? QColor(204, 204, 204) : QColor(51, 51, 51)));
     }
 
     QPen pen;
@@ -550,12 +550,12 @@ HintItem::HintItem(const QString& text, QGraphicsItem* parent)
     setTextWidth(qMin(3 * R, document()->idealWidth()));
     QRectF tb = boundingRect();
     setPos(-tb.width() / 2, -tb.height() - 3);
-    sl_colorModeSwitched();
+    sl_colorThemeSwitched();
     QFont f = font();
     f.setWeight(QFont::Light);
     setFont(f);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &HintItem::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &HintItem::sl_colorThemeSwitched);
 }
 
 QVariant HintItem::itemChange(GraphicsItemChange change, const QVariant& value) {
@@ -612,8 +612,8 @@ void HintItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
     QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
-void HintItem::sl_colorModeSwitched() {
-    auto textColor = AppContext::getMainWindow()->isDarkMode() ? QColor(Qt::gray).lighter() : QColor(Qt::gray).darker();
+void HintItem::sl_colorThemeSwitched() {
+    auto textColor = AppContext::getMainWindow()->isDarkTheme() ? QColor(Qt::gray).lighter() : QColor(Qt::gray).darker();
     setDefaultTextColor(textColor);
 }
 

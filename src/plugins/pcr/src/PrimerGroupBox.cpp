@@ -59,7 +59,7 @@ PrimerGroupBox::PrimerGroupBox(QWidget* parent)
     connect(primerEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_onPrimerChanged(const QString&)));
     connect(reverseComplementButton, SIGNAL(clicked()), SLOT(sl_translate()));
     connect(browseButton, SIGNAL(clicked()), SLOT(sl_browse()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &PrimerGroupBox::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PrimerGroupBox::sl_colorThemeSwitched);
 }
 
 void PrimerGroupBox::setAnnotatedDnaView(AnnotatedDNAView* dnaView) {
@@ -143,7 +143,7 @@ void PrimerGroupBox::sl_activeSequenceChanged() {
     }
 }
 
-void PrimerGroupBox::sl_colorModeSwitched() {
+void PrimerGroupBox::sl_colorThemeSwitched() {
     reverseComplementButton->setIcon(GUIUtils::getIconResource("core", "show_compl.png"));
     browseButton->setIcon(GUIUtils::getIconResource("core", "database_with_arrow.png"));
 }

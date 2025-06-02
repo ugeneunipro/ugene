@@ -29,13 +29,13 @@ class DockData;
 
 class DockWidgetPainter {
 public:
-    static void updateLabel(DockData* d, bool active, bool isDarkMode);
+    static void updateLabel(DockData* d, bool active, bool isDarkTheme);
 
 private:
     static QString findKeyPrefix(const QAction* action);
     static QColor getBackgroundColor();
-    static QColor getInnerColor(bool active, const QColor& backgroundColor, bool isDarkMode);
-    static void drawBorder(bool active, const QSize& widgetSize, const QColor& backgroundColor, QPainter& updateLabel, bool isDarkMode);
+    static QColor getInnerColor(bool active, const QColor& backgroundColor, bool isDarkTheme);
+    static void drawBorder(bool active, const QSize& widgetSize, const QColor& backgroundColor, QPainter& updateLabel, bool isDarkTheme);
     static void setupOrientation(MWDockArea area, QPainter& updateLabel);
     static void drawIcon(const QIcon& icon, const QPoint& iconPoint, int iconSize, QPainter& updateLabel);
     static void drawText(const QString& keyPrefix, const QString& text, const QPoint& textPoint, QPainter& updateLabel);

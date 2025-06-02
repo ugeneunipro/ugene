@@ -138,7 +138,7 @@ void GraphSettingsDialog::sl_onOkClicked() {
     QMessageBox::critical(this, windowTitle(), err.append(' ').append(mmerr));
 }
 
-void GraphSettingsDialog::sl_colorModeSwitched() {
+void GraphSettingsDialog::sl_colorThemeSwitched() {
     setWindowIcon(GUIUtils::getIconResource("core", "graphs.png"));
 }
 

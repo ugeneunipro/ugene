@@ -129,7 +129,7 @@ ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(Ext
     ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     connect(etRegistry, SIGNAL(si_toolAdded(const QString&)), SLOT(sl_externalToolAdded(const QString&)));
     connect(etRegistry, SIGNAL(si_toolIsAboutToBeRemoved(const QString&)), SLOT(sl_externalToolIsAboutToBeRemoved(const QString&)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ExternalToolSupportSettingsPageWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ExternalToolSupportSettingsPageWidget::sl_colorThemeSwitched);
 }
 
 ExternalToolSupportSettingsPageWidget::~ExternalToolSupportSettingsPageWidget() {
@@ -297,7 +297,7 @@ void ExternalToolSupportSettingsPageWidget::sl_externalToolIsAboutToBeRemoved(co
     }
 }
 
-void ExternalToolSupportSettingsPageWidget::updateColorModeRecursively(QTreeWidgetItem* item) {
+void ExternalToolSupportSettingsPageWidget::updateColorThemeRecursively(QTreeWidgetItem* item) {
     auto id = item->data(0, Qt::ItemDataRole::UserRole).toString();
     auto etRegistry = AppContext::getExternalToolRegistry();
     auto tool = etRegistry->getById(id);
@@ -316,13 +316,13 @@ void ExternalToolSupportSettingsPageWidget::updateColorModeRecursively(QTreeWidg
     item->setIcon(0, GUIUtils::getIconResource(iconParameters));
 
     for (int i = 0; i < item->childCount(); i++) {
-        updateColorModeRecursively(item->child(i));
+        updateColorThemeRecursively(item->child(i));
     }
 }
 
-void ExternalToolSupportSettingsPageWidget::sl_colorModeSwitched() {
+void ExternalToolSupportSettingsPageWidget::sl_colorThemeSwitched() {
     for (int i = 0; i < twIntegratedTools->topLevelItemCount(); i++) {
-        updateColorModeRecursively(twIntegratedTools->topLevelItem(i));
+        updateColorThemeRecursively(twIntegratedTools->topLevelItem(i));
     }
     clearToolPathButton->setIcon(GUIUtils::getIconResource("external_tool_support", "cancel.png", false));
 }

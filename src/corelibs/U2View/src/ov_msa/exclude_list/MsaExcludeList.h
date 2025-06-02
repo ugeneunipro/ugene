@@ -58,7 +58,7 @@ protected:
     void disconnectView(GObjectViewController* view) override;
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void toggleExcludeListView(MsaEditor* msaEditor);
@@ -113,7 +113,7 @@ public:
     QSize sizeHint() const override;
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     /** Updates state of all child widgets. */

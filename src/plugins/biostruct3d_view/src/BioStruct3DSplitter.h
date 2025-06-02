@@ -226,7 +226,7 @@ private slots:
     void sl_zoomOut();
     void sl_restoreDefaults();
     void sl_openBioStructUrl();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     BioStruct3DGLWidget* getActiveWidget();

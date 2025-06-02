@@ -88,7 +88,7 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
 
     initActionsAndSignals();
 
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     dotPlotBGColor = isDark ? DOT_PLOT_BACKGROUND_COLOR_DARK : DOT_PLOT_BACKGROUND_COLOR_LIGHT;
     dotPlotDirectColor = isDark ? DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK : DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT;
     dotPlotInvertedColor = isDark ? DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK : DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT;
@@ -149,7 +149,7 @@ void DotPlotWidget::initActionsAndSignals() {
 
     setMouseTracking(true);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DotPlotWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &DotPlotWidget::sl_colorThemeSwitched);
 }
 
 // connect signals to know if user clicks on dotplot sequences
@@ -354,8 +354,8 @@ void DotPlotWidget::sl_timer() {
     timer->stop();
 }
 
-void DotPlotWidget::sl_colorModeSwitched() {
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+void DotPlotWidget::sl_colorThemeSwitched() {
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
 
     dotPlotBGColor = isDark ? DOT_PLOT_BACKGROUND_COLOR_DARK : DOT_PLOT_BACKGROUND_COLOR_LIGHT;
     dotPlotDirectColor = isDark ? DotPlotDialog::DOT_PLOT_LINE_COLOR_DARK : DotPlotDialog::DOT_PLOT_LINE_COLOR_LIGHT;

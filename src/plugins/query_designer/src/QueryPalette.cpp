@@ -156,7 +156,7 @@ QueryPalette::QueryPalette(QWidget* parent /* =NULL */)
     setMouseTracking(true);
     setContent();
     setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &QueryPalette::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &QueryPalette::sl_colorThemeSwitched);
 }
 
 void QueryPalette::setContent() {
@@ -307,7 +307,7 @@ void QueryPalette::leaveEvent(QEvent*) {
     };
 }
 
-void QueryPalette::sl_colorModeSwitched() {
+void QueryPalette::sl_colorThemeSwitched() {
     QDActorPrototypeRegistry* qpr = AppContext::getQDActorProtoRegistry();
     const auto& dbEntries = qpr->getAllEntries();
     const auto actions = actionMap.keys();

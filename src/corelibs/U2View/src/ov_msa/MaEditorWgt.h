@@ -107,7 +107,7 @@ signals:
     void si_completeRedraw();
 
 protected slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 protected:
     virtual void initWidgets(bool addStatusBar = true, bool addOverviewArea = true);

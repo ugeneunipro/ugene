@@ -93,7 +93,7 @@ private slots:
     void sl_saveOverviewState();
     void sl_saveChromatogramState();
 
-    void sl_colorModeSwitched() override;
+    void sl_colorThemeSwitched() override;
 
 protected:
     QWidget* createViewWidget(QWidget* parent) override;

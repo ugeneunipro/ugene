@@ -85,7 +85,7 @@ void MaConsensusModeWidget::init(MsaObject* _maObject, MaEditorConsensusArea* _c
     connect(consArea,
             SIGNAL(si_consensusThresholdChanged(int)),
             SLOT(sl_thresholdChanged(int)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaConsensusModeWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaConsensusModeWidget::sl_colorThemeSwitched);
 }
 
 void MaConsensusModeWidget::updateState() {
@@ -173,7 +173,7 @@ void MaConsensusModeWidget::sl_thresholdChanged(int value) {
     thresholdSpinBox->setValue(value);  // Slider updates automatically
 }
 
-void MaConsensusModeWidget::sl_colorModeSwitched() {
+void MaConsensusModeWidget::sl_colorThemeSwitched() {
     thresholdResetButton->setIcon(GUIUtils::getIconResource("core", "arrow_rotate_clockwise.png"));
 }
 

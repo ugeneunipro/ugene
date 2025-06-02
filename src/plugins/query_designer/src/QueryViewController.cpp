@@ -356,7 +356,7 @@ void QueryScene::setRowsNumber(int count) {
 void QueryScene::drawBackground(QPainter* painter, const QRectF& rect) {
     Q_UNUSED(rect);
     int step = GRID_STEP;
-    painter->setPen(QPen(AppContext::getMainWindow()->isDarkMode() ? QColor(75, 75, 48, 125) : QColor(200, 200, 255, 125)));
+    painter->setPen(QPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(75, 75, 48, 125) : QColor(200, 200, 255, 125)));
     // draw horizontal grid
     const QRectF& area = annotationsArea();
     qreal start = area.top();
@@ -691,7 +691,7 @@ QueryViewController::QueryViewController()
     connect(samples, SIGNAL(itemActivated(QDDocument*)), SLOT(sl_pasteSample(QDDocument*)));
     connect(tabs, SIGNAL(currentChanged(int)), samples, SLOT(sl_cancel()));
     connect(editor, SIGNAL(modified()), scene, SLOT(sl_setModified()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &QueryViewController::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &QueryViewController::sl_colorThemeSwitched);
 
     auto splitter = new QSplitter(Qt::Horizontal, this);
     splitter->addWidget(tabs);
@@ -1103,7 +1103,7 @@ void QueryViewController::sl_scrollUp() {
     sceneView->ensureVisible(topRect);
 }
 
-void QueryViewController::sl_colorModeSwitched() {
+void QueryViewController::sl_colorThemeSwitched() {
     runAction->setIcon(GUIUtils::getIconResource("query_designer", "run.png"));
     loadAction->setIcon(GUIUtils::getIconResource("query_designer", "fileopen.png"));
     viewModeToolButton->setIcon(GUIUtils::getIconResource("query_designer", "eye.png"));

@@ -42,7 +42,7 @@ private slots:
     void sl_completeRedraw();
     void sl_resetCaches();
     void sl_screenMoved();
-    void sl_colorModeSwitched() override;
+    void sl_colorThemeSwitched() override;
 
 private:
     bool eventFilter(QObject* object, QEvent* event) override;

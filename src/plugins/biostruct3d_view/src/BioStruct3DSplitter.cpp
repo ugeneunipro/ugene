@@ -447,7 +447,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     splitter->addActionToLocalToolBar(addModelAction);
     splitter->addActionToLocalToolBar(syncLockAction);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SplitterHeaderWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SplitterHeaderWidget::sl_colorThemeSwitched);
 }
 
 void SplitterHeaderWidget::sl_showStateMenu() {
@@ -696,7 +696,7 @@ void SplitterHeaderWidget::sl_openBioStructUrl() {
     QDesktopServices::openUrl(urlName);
 }
 
-void SplitterHeaderWidget::sl_colorModeSwitched() {
+void SplitterHeaderWidget::sl_colorThemeSwitched() {
     syncLockAction->setIcon(GUIUtils::getIconResource("core", "sync_lock.png"));
 }
 

@@ -118,7 +118,7 @@ BreakpointManagerView::BreakpointManagerView(WorkflowDebugStatus* initDebugInfo,
 
     connect(breakpointsList, SIGNAL(itemSelectionChanged()), SLOT(sl_breakpointsSelectionChanged()));
     connect(breakpointsList, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), SLOT(sl_breakpointDoubleClicked(QTreeWidgetItem*, int)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &BreakpointManagerView::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &BreakpointManagerView::sl_colorThemeSwitched);
 
     if (conditionParametertranslations.isEmpty()) {
         conditionParametertranslations[IS_TRUE] = CONDITION_IS_TRUE;
@@ -540,7 +540,7 @@ void BreakpointManagerView::sl_pauseStateChanged(bool paused) {
     }
 }
 
-void BreakpointManagerView::sl_colorModeSwitched() {
+void BreakpointManagerView::sl_colorThemeSwitched() {
     newBreakpointAction->setIcon(GUIUtils::getIconResource("workflow_designer", "breakpoint.png"));
     highlightItemWithBreakpoint->setIcon(GUIUtils::getIconResource("workflow_designer", "highlight_item.png"));
 }

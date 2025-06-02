@@ -393,7 +393,7 @@ void DetView::sl_showAllFrames() {
     updateSelectedTranslations(SequenceObjectContext::TS_ShowAllFrames);
 }
 
-void DetView::sl_colorModeSwitched() {
+void DetView::sl_colorThemeSwitched() {
     wrapSequenceAction->setIcon(GUIUtils::getIconResource("core", "wrap_sequence.png"));
     showComplementAction->setIcon(GUIUtils::getIconResource("core", "show_compl.png"));
     if (translationsMenu != nullptr) {
@@ -403,7 +403,7 @@ void DetView::sl_colorModeSwitched() {
         ttMenu->setIcon(GUIUtils::getIconResource("core", "tt_switch.png"));
     }
 
-    GSequenceLineViewAnnotated::sl_colorModeSwitched();
+    GSequenceLineViewAnnotated::sl_colorThemeSwitched();
 }
 
 void DetView::updateSelectedTranslations(const SequenceObjectContext::TranslationState& state) {

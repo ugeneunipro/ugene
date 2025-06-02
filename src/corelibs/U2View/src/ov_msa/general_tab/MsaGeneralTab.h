@@ -40,7 +40,7 @@ public slots:
     void sl_alignmentChanged();
     void sl_copyFormatSelectionChanged(int value);
     void sl_convertNucleicAlphabetButtonClicked();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void connectSignals();

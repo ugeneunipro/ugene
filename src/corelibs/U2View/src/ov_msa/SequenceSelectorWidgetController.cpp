@@ -58,7 +58,7 @@ SequenceSelectorWidgetController::SequenceSelectorWidgetController(MsaEditor* _m
     connect(completer, SIGNAL(si_editingFinished()), SLOT(sl_seqLineEditEditingFinished()));
 
     connect(completer, SIGNAL(si_completerClosed()), SLOT(sl_setDefaultLineEditValue()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &SequenceSelectorWidgetController::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SequenceSelectorWidgetController::sl_colorThemeSwitched);
 }
 
 SequenceSelectorWidgetController::~SequenceSelectorWidgetController() {
@@ -158,7 +158,7 @@ void SequenceSelectorWidgetController::sl_setDefaultLineEditValue() {
     seqLineEdit->clearFocus();
 }
 
-void SequenceSelectorWidgetController::sl_colorModeSwitched() {
+void SequenceSelectorWidgetController::sl_colorThemeSwitched() {
     addSeq->setIcon(GUIUtils::getIconResource("core", "navi_right.png"));
     deleteSeq->setIcon(GUIUtils::getIconResource("core", "close_small.png"));
 }

@@ -133,7 +133,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_onSelectionChanged(const MaEditorSelection&, const MaEditorSelection&)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaEditorSequenceArea::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaEditorSequenceArea::sl_colorThemeSwitched);
 }
 
 MaEditorSequenceArea::~MaEditorSequenceArea() {
@@ -787,7 +787,7 @@ void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
 
 void MaEditorSequenceArea::sl_changeSelectionColor() {
     QColor mainSelectionColor = QPalette().text().color();
-    QColor secondarySelectionColor = AppContext::getMainWindow()->isDarkMode() ? Qt::lightGray : Qt::darkGray;
+    QColor secondarySelectionColor = AppContext::getMainWindow()->isDarkTheme() ? Qt::lightGray : Qt::darkGray;
     if (selectionColor == mainSelectionColor) {
         selectionColor = secondarySelectionColor;
     } else {
@@ -819,7 +819,7 @@ void MaEditorSequenceArea::sl_modelChanged() {
     sl_completeRedraw();
 }
 
-void MaEditorSequenceArea::sl_colorModeSwitched() {
+void MaEditorSequenceArea::sl_colorThemeSwitched() {
     selectionColor = QPalette().text().color();
     sl_completeRedraw();
 }
@@ -1413,7 +1413,7 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString& csid, QString& hs
             break;
         case DNAAlphabet_NUCL: {
             auto colorSchemeId = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL).toString();
-            bool isDark = AppContext::getMainWindow()->isDarkMode();
+            bool isDark = AppContext::getMainWindow()->isDarkTheme();
             if (colorSchemeId.isEmpty()) {
                 colorSchemeId = isDark ? MsaColorScheme::UGENE_NUCL_DARK : MsaColorScheme::UGENE_NUCL_LIGHT;
             } else if (colorSchemeId == MsaColorScheme::UGENE_NUCL_LIGHT && isDark) {
@@ -1427,7 +1427,7 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString& csid, QString& hs
         }
         case DNAAlphabet_AMINO: {
             auto colorSchemeId = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO).toString();
-            bool isDark = AppContext::getMainWindow()->isDarkMode();
+            bool isDark = AppContext::getMainWindow()->isDarkTheme();
             if (colorSchemeId.isEmpty()) {
                 colorSchemeId = isDark ? MsaColorScheme::UGENE_AMINO_DARK : MsaColorScheme::UGENE_AMINO_LIGHT;
             } else if (colorSchemeId == MsaColorScheme::UGENE_AMINO_LIGHT && isDark) {

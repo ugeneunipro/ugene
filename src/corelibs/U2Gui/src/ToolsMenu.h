@@ -38,8 +38,8 @@ public:
 
     static void addAction(const QString& menuName, QAction* action);
 
-    // Change color mode menu icon for menu with @menuName
-    static void colorModeSwitched(const QString& menuName);
+    // Change color theme menu icon for menu with @menuName
+    static void colorThemeSwitched(const QString& menuName);
 
     static const QString LINE;
     static const QString TOOLS;

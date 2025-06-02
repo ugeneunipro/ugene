@@ -38,7 +38,7 @@ OrderedToolbar::OrderedToolbar(QWidget* parent, Qt::Orientation orientation)
       buttonTabOrderList(nullptr) {
     setOrientation(orientation);
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &OrderedToolbar::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &OrderedToolbar::sl_colorThemeSwitched);
 }
 
 void OrderedToolbar::setButtonTabOrderList(QList<QString>* buttonNamesInNeededOrder) {
@@ -84,7 +84,7 @@ void OrderedToolbar::setButtonsTabOrder() const {
     }
 }
 
-void OrderedToolbar::sl_colorModeSwitched() {
+void OrderedToolbar::sl_colorThemeSwitched() {
     auto current = orientation();
     switch (current) {
         case Qt::Orientation::Horizontal:

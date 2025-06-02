@@ -201,7 +201,7 @@ void AnnotationSettings::setActiveColor(const QColor& color) {
     auto mw = AppContext::getMainWindow();
     CHECK(mw != nullptr, );
 
-    if (mw->isDarkMode()) {
+    if (mw->isDarkTheme()) {
         darkColor = color;
     } else {
         lightColor = color;
@@ -212,7 +212,7 @@ const QColor& AnnotationSettings::getActiveColor() const {
     auto mw = AppContext::getMainWindow();
     CHECK(mw != nullptr, lightColor);
 
-    return mw->isDarkMode() ? darkColor : lightColor;
+    return mw->isDarkTheme() ? darkColor : lightColor;
 }
 
 }  // namespace U2

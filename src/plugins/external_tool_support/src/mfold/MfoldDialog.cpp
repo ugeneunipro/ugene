@@ -56,7 +56,7 @@ static QString getLongRegionErr() {
 }
 }  // namespace
 
-void MfoldDialog::sl_colorModeSwitched() {
+void MfoldDialog::sl_colorThemeSwitched() {
     ui.wrongRegionLabel->setStyleSheet(QString("QLabel{ font-weight: bold; color: %1; }").arg(Theme::errorColorLabelHtmlStr()));
 }
 
@@ -85,8 +85,8 @@ MfoldDialog::MfoldDialog(const ADVSequenceObjectContext& ctx)
     });
     new HelpButton(this, ui.buttonBox, "96666238");
 
-    sl_colorModeSwitched();
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MfoldDialog::sl_colorModeSwitched);
+    sl_colorThemeSwitched();
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MfoldDialog::sl_colorThemeSwitched);
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 }
 

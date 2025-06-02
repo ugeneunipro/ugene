@@ -55,7 +55,7 @@ DNAExportPlugin::DNAExportPlugin()
         randomSequenceGeneratorAction = new QAction(GUIUtils::getIconResource("core", "add_sequence.png"), tr("Random sequence generator..."), this);
         randomSequenceGeneratorAction->setObjectName(ToolsMenu::GENERATE_SEQUENCE);
         connect(randomSequenceGeneratorAction, SIGNAL(triggered()), SLOT(sl_generateSequence()));
-        connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DNAExportPlugin::sl_colorModeSwitched);
+        connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &DNAExportPlugin::sl_colorThemeSwitched);
         ToolsMenu::addAction(ToolsMenu::TOOLS, randomSequenceGeneratorAction);
     }
 
@@ -84,7 +84,7 @@ void DNAExportPlugin::sl_generateSequence() {
     dlg->exec();
 }
 
-void DNAExportPlugin::sl_colorModeSwitched() {
+void DNAExportPlugin::sl_colorThemeSwitched() {
     randomSequenceGeneratorAction->setIcon(GUIUtils::getIconResource("core", "add_sequence.png"));
 }
 

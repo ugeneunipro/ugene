@@ -42,7 +42,7 @@ const QColor McaColors::getChromatogramColorByBase(char base) {
     auto mw = AppContext::getMainWindow();
     SAFE_POINT_NN(mw, QPalette().text().color());
 
-    return getChromatogramColorByBase(mw->isDarkMode(), base);
+    return getChromatogramColorByBase(mw->isDarkTheme(), base);
 }
 
 const QColor McaColors::getChromatogramColorByBase(bool isDark, char base) {
@@ -68,7 +68,7 @@ const QColor McaColors::getChromatogramColorById(bool isDark, int id) {
 
 const QColor McaColors::getArrowColor(bool isReversed) {
     QColor result;
-    if (AppContext::getMainWindow()->isDarkMode()) {
+    if (AppContext::getMainWindow()->isDarkTheme()) {
         result = isReversed ? ARROW_REVERSE_COLOR_DARK : ARROW_DIRECT_COLOR_DARK;
     } else {
         result = isReversed ? ARROW_REVERSE_COLOR_LIGHT : ARROW_DIRECT_COLOR_LIGHT;

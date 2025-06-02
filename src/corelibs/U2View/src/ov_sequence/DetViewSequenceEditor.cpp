@@ -63,7 +63,7 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
 
     reset();
     connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_cursorAnimationTimerCallback()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DetViewSequenceEditor::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &DetViewSequenceEditor::sl_colorThemeSwitched);
     setParent(view);
 }
 
@@ -397,7 +397,7 @@ void DetViewSequenceEditor::sl_paste(Task* task) {
     setCursor(cursor + seq.length());
 }
 
-void DetViewSequenceEditor::sl_colorModeSwitched() {
+void DetViewSequenceEditor::sl_colorThemeSwitched() {
     editAction->setIcon(GUIUtils::getIconResource("core", "edit.png"));
 }
 

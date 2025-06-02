@@ -116,7 +116,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Msa& 
     if (editor->isChromatogramRowExpanded(rowIndex)) {
         painter.save();
         painter.translate(0, yStart + seqRowHeight);
-        QColor penColor = AppContext::getMainWindow()->isDarkMode() ? QColor(190, 190, 190) : Qt::gray;
+        QColor penColor = AppContext::getMainWindow()->isDarkTheme() ? QColor(190, 190, 190) : Qt::gray;
         painter.setPen(QPen(penColor, 1, Qt::DashLine));
         painter.drawLine(0, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight, width, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight);
 
@@ -349,7 +349,7 @@ void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPaint
     p.translate(0, h);
 
     int colWidth = getSeqArea()->getEditor()->getColumnWidth();
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     for (int i = visible.startPos; i < visible.endPos(); i++) {
         QColor color = McaColors::getChromatogramColorByBase(isDark, ba[i]);
         p.setPen(color);
@@ -416,7 +416,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const 
     double yRes = 0;
     int areaHeight = (heightPD - heightBC) * this->maxTraceHeight / 100;
     int colWidth = getSeqArea()->getEditor()->getColumnWidth();
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     for (int i = visible.startPos; i < visible.startPos + visible.length; i++) {
         SAFE_POINT(i < chromatogram->baseCalls.length(), "Base calls array is too short: visible range index is out range", );
         int temp = chromatogram->baseCalls[i];

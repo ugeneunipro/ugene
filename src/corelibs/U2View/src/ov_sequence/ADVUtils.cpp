@@ -35,7 +35,7 @@ ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const IconParameters& _ico
         setIcon(GUIUtils::getIconResource(iconParameters));
     }
     connect(v, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ADVGlobalAction::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ADVGlobalAction::sl_colorThemeSwitched);
     updateState();
     v->addADVAction(this);
 }
@@ -44,7 +44,7 @@ void ADVGlobalAction::sl_activeSequenceChanged() {
     updateState();
 }
 
-void ADVGlobalAction::sl_colorModeSwitched() {
+void ADVGlobalAction::sl_colorThemeSwitched() {
     updateState();
 }
 

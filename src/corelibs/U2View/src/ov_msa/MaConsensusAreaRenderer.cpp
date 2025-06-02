@@ -225,7 +225,7 @@ void MaConsensusAreaRenderer::drawConsensus(QPainter& painter, const ConsensusRe
 void MaConsensusAreaRenderer::drawConsensusChar(QPainter& painter, const ConsensusCharRenderData& charData, const ConsensusRenderSettings& settings) {
     const QRect charRect = charData.getCharRect();
 
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QColor color;
     if (charData.isSelected) {
         color = isDark ? Qt::darkGray : Qt::lightGray;
@@ -250,7 +250,7 @@ void MaConsensusAreaRenderer::drawConsensusChar(QPainter& painter, const Consens
 }
 
 void MaConsensusAreaRenderer::drawRuler(QPainter& painter, const ConsensusRenderSettings& settings) {
-    painter.setPen(AppContext::getMainWindow()->isDarkMode() ? Qt::lightGray : Qt::darkGray);
+    painter.setPen(AppContext::getMainWindow()->isDarkTheme() ? Qt::lightGray : Qt::darkGray);
 
     U2Region rulerYRange = settings.yRangeToDrawIn[MSAEditorConsElement_RULER];
     U2Region consensusTextYRange = settings.yRangeToDrawIn[MSAEditorConsElement_CONSENSUS_TEXT];
@@ -283,7 +283,7 @@ void MaConsensusAreaRenderer::drawRuler(QPainter& painter, const ConsensusRender
 }
 
 void MaConsensusAreaRenderer::drawHistogram(QPainter& painter, const ConsensusRenderData& consensusRenderData, const ConsensusRenderSettings& settings) {
-    QColor color = AppContext::getMainWindow()->isDarkMode() ? QColor("#4CA4C4") : QColor("#255060");
+    QColor color = AppContext::getMainWindow()->isDarkTheme() ? QColor("#4CA4C4") : QColor("#255060");
     painter.setPen(color);
 
     // TODO: move calculations to getYRange method

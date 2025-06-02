@@ -76,7 +76,7 @@ private slots:
     /** A subgroup (e.g. characters occurrence subgroup) has been opened/closed */
     void sl_subgroupStateChanged(const QString& subgroupId);
 
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
     bool eventFilter(QObject* object, QEvent* event) override;
 

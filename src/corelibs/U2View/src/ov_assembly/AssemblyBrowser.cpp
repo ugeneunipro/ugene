@@ -676,7 +676,7 @@ void AssemblyBrowser::setupActions() {
     extractAssemblyRegionAction->setObjectName("ExtractAssemblyRegion");
     connect(extractAssemblyRegionAction, SIGNAL(triggered()), SLOT(sl_extractAssemblyRegion()));
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AssemblyBrowser::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AssemblyBrowser::sl_colorThemeSwitched);
 }
 
 void AssemblyBrowser::sl_saveScreenshot() {
@@ -1104,7 +1104,7 @@ void AssemblyBrowser::sl_onReferenceLoaded() {
     setReference(project->findDocumentByURL(url));
 }
 
-void AssemblyBrowser::sl_colorModeSwitched() {
+void AssemblyBrowser::sl_colorThemeSwitched() {
     zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));
     zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png", false));
     showCoordsOnRulerAction->setIcon(GUIUtils::getIconResource("core", "notch.png"));
@@ -1203,10 +1203,10 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_, QWidget* parent)
     }
 }
 
-QColor AssemblyBrowserUi::getCoverageColor(double grayCoeff, bool isDarkMode) {
-    return QColor((isDarkMode ? 55 : 0) + 80 - 60 * grayCoeff,
-                  (isDarkMode ? 55 : 0) + 160 - 100 * grayCoeff,
-                  (isDarkMode ? 55 : 0) + 200 - 130 * grayCoeff);
+QColor AssemblyBrowserUi::getCoverageColor(double grayCoeff, bool isDarkTheme) {
+    return QColor((isDarkTheme ? 55 : 0) + 80 - 60 * grayCoeff,
+                  (isDarkTheme ? 55 : 0) + 160 - 100 * grayCoeff,
+                  (isDarkTheme ? 55 : 0) + 200 - 130 * grayCoeff);
 }
 
 }  // namespace U2

@@ -58,7 +58,7 @@ public slots:
     void sl_circularStateChanged();
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 };
 
 struct CircularViewSettings {

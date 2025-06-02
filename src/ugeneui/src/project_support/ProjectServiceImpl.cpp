@@ -127,7 +127,7 @@ void ProjectServiceImpl::sl_exportProject() {
     }
 }
 
-void ProjectServiceImpl::sl_colorModeSwitched() {
+void ProjectServiceImpl::sl_colorThemeSwitched() {
     saveAction->setIcon(GUIUtils::getIconResource("ugene", "save.png", false));
 }
 

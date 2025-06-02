@@ -75,7 +75,7 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageController::getSavedState()
     state->openLastProjectFlag = s->openLastProjectAtStartup();
     state->askToSaveProject = s->getAskToSaveProject();
     state->style = s->getVisualStyle();
-    state->colorMode = static_cast<StyleFactory::ColorMode>(s->getColorModeIndex());
+    state->colorTheme = static_cast<StyleFactory::ColorTheme>(s->getColorThemeIndex());
     state->enableStatistics = s->isStatisticsCollectionEnabled();
     state->tabbedWindowLayout = s->tabbedWindowLayout();
     state->resetSettings = s->resetSettings();
@@ -99,12 +99,10 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* 
     st->setAutoScalingInHighDpiModeDisabled(state->isHighDpiAutoScalingDisabled);
 
     if (state->style.compare(st->getVisualStyle(), Qt::CaseInsensitive) != 0 ||
-        state->colorMode != static_cast<StyleFactory::ColorMode>(st->getColorModeIndex())) {
-        AppContext::getMainWindow()->setNewStyle(state->style, (int)state->colorMode);
-        /*QStyle* style = StyleFactory::create(state->style, state->colorMode);
-        QApplication::setStyle(style);*/
+        state->colorTheme != static_cast<StyleFactory::ColorTheme>(st->getColorThemeIndex())) {
+        AppContext::getMainWindow()->setNewStyle(state->style, (int)state->colorTheme);
         st->setVisualStyle(state->style);
-        st->setColorModeIndex((int)state->colorMode);
+        st->setColorThemeIndex((int)state->colorTheme);
     }
 }
 
@@ -132,18 +130,18 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
         styleCombo->addItem(FIXED_CASE_QSTYLE_KEY_MAP.value(key, key));
     }
     lightSign = tr("Light");
-    colorModeCombo->addItem(lightSign);
+    colorThemeCombo->addItem(lightSign);
     darkSign = tr("Dark");
-    colorModeCombo->addItem(darkSign);
+    colorThemeCombo->addItem(darkSign);
 #if defined(Q_OS_WIN) | defined(Q_OS_DARWIN)
     if (StyleFactory::isDarkStyleAvaliable()) {
         autoSign = tr("Auto");
-        colorModeCombo->addItem(autoSign);
+        colorThemeCombo->addItem(autoSign);
     }
 #endif
     errorLabel->setStyleSheet(QString("color: %1;").arg(Theme::errorColorLabelColor().name()));
     connect(styleCombo, &QComboBox::currentTextChanged, this, &UserApplicationsSettingsPageWidget::sl_updateState);
-    connect(colorModeCombo, &QComboBox::currentTextChanged, this, &UserApplicationsSettingsPageWidget::sl_updateState);
+    connect(colorThemeCombo, &QComboBox::currentTextChanged, this, &UserApplicationsSettingsPageWidget::sl_updateState);
     sl_updateState();
 }
 
@@ -163,7 +161,7 @@ void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
         styleCombo->setCurrentIndex(styleIdx);
     }
 
-    colorModeCombo->setCurrentIndex((int)state->colorMode);
+    colorThemeCombo->setCurrentIndex((int)state->colorTheme);
 
     autoOpenProjectBox->setChecked(state->openLastProjectFlag);
     askToSaveProject->addItem(tr("Ask to save new project on exit"), QDialogButtonBox::NoButton);
@@ -183,7 +181,7 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /
     state->openLastProjectFlag = autoOpenProjectBox->isChecked();
     state->askToSaveProject = askToSaveProject->itemData(askToSaveProject->currentIndex()).toInt();
     state->style = styleCombo->currentText();
-    state->colorMode = static_cast<StyleFactory::ColorMode>(colorModeCombo->currentIndex());
+    state->colorTheme = static_cast<StyleFactory::ColorTheme>(colorThemeCombo->currentIndex());
     state->enableStatistics = enableStatisticsEdit->isChecked();
     state->resetSettings = resetSettingsBox->isChecked();
     state->updatesEnabled = updatesCheckBox->isChecked();
@@ -210,18 +208,18 @@ void UserApplicationsSettingsPageWidget::sl_updateState() {
 
     if (isOsWindows()) {
         if (styleCombo->currentText() == WINDOWS_VISTA_STYLE) {
-            removeItemFromComboBox(colorModeCombo, darkSign);
+            removeItemFromComboBox(colorThemeCombo, darkSign);
             if (StyleFactory::isDarkStyleAvaliable()) {
-                removeItemFromComboBox(colorModeCombo, autoSign);
+                removeItemFromComboBox(colorThemeCombo, autoSign);
             }
-            errorLabel->setText(tr("Note: WindowsVista style is incompatible with Dark color mode. We suggest using Fusion"));
-        } else if (colorModeCombo->currentText() != lightSign) {
+            errorLabel->setText(tr("Note: WindowsVista style is incompatible with Dark color theme. We suggest using Fusion"));
+        } else if (colorThemeCombo->currentText() != lightSign) {
             removeItemFromComboBox(styleCombo, WINDOWS_VISTA_STYLE);
             errorLabel->setText("");
         } else {
-            addItemToComboBox(colorModeCombo, darkSign);
+            addItemToComboBox(colorThemeCombo, darkSign);
             if (StyleFactory::isDarkStyleAvaliable()) {
-                addItemToComboBox(colorModeCombo, autoSign);
+                addItemToComboBox(colorThemeCombo, autoSign);
             }
             addItemToComboBox(styleCombo, WINDOWS_VISTA_STYLE);
             errorLabel->setText("");

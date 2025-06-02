@@ -54,7 +54,7 @@ protected slots:
     void sl_annotationObjectAdded(AnnotationTableObject* obj);
     void sl_annotationObjectRemoved(AnnotationTableObject* obj);
     void sl_sequenceChanged() override;
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 protected:
     void pack() override;

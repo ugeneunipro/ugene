@@ -63,7 +63,7 @@ public slots:
     void sl_closeAllGraphs();
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     static const QString ACTION_NAME;

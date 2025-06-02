@@ -45,7 +45,7 @@ QStringList StyleFactory::keys() {
     return QStyleFactory::keys();
 }
 
-QStyle* StyleFactory::create(const QString& styleName, ColorMode colorMode) {
+QStyle* StyleFactory::create(const QString& styleName, ColorTheme colorTheme) {
     QStyle* result = nullptr;
     QStyle* qtStyle = QStyleFactory::create(styleName);
     auto proxyStyle = new ProxyStyle(qtStyle);
@@ -53,14 +53,14 @@ QStyle* StyleFactory::create(const QString& styleName, ColorMode colorMode) {
 #ifdef Q_OS_DARWIN
     result = proxyStyle;
 #else
-    switch (colorMode) {
-        case ColorMode::Light:
+    switch (colorTheme) {
+        case ColorTheme::Light:
             result = proxyStyle;
             break;
-        case ColorMode::Dark:
+        case ColorTheme::Dark:
             result = new DarkStyle(proxyStyle);
             break;
-        case ColorMode::Auto:
+        case ColorTheme::Auto:
             if (isDarkStyleEnabled()) {
                 result = new DarkStyle(proxyStyle);
             } else {
@@ -76,15 +76,15 @@ QStyle* StyleFactory::create(const QString& styleName, ColorMode colorMode) {
     return result;
 }
 
-QStyle* StyleFactory::create(const QString& styleName, int colorMode) {
-    auto colorModeEnum = static_cast<ColorMode>(colorMode);
-    return create(styleName, colorModeEnum);
+QStyle* StyleFactory::create(const QString& styleName, int colorTheme) {
+    auto colorThemeEnum = static_cast<ColorTheme>(colorTheme);
+    return create(styleName, colorThemeEnum);
 }
 
 #ifdef Q_OS_WIN32
 namespace {
 bool windowsDarkThemeAvailable() {
-    // dark mode supported Windows 10 1809 10.0.17763 onward
+    // dark theme supported Windows 10 1809 10.0.17763 onward
     // https://stackoverflow.com/questions/53501268/win10-dark-theme-how-to-use-in-winapi
     if (QOperatingSystemVersion::current().majorVersion() == 10) {
         return QOperatingSystemVersion::current().microVersion() >= 17763;
@@ -111,7 +111,7 @@ bool StyleFactory::isDarkStyleAvaliable() {
 #elif defined(Q_OS_WIN32)
     return windowsDarkThemeAvailable();
 #else
-    FAIL("Auto color mode is not avalible on Linux", false);
+    FAIL("Auto color theme is not avalible on Linux", false);
 #endif
 }
 
@@ -121,7 +121,7 @@ bool StyleFactory::isDarkStyleEnabled() {
 #elif defined(Q_OS_WIN32)
     return windowsIsInDarkTheme();
 #else
-    FAIL("Auto color mode is not avalible on Linux", false);
+    FAIL("Auto color theme is not avalible on Linux", false);
 #endif
 }
 

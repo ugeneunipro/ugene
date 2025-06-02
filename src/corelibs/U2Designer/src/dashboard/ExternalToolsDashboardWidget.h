@@ -56,7 +56,7 @@ public:
     static bool isValidDom(const QDomElement& dom);
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void addLimitationWarning(ExternalToolsTreeNode* parentNode = nullptr, const QString& limitationMessage = "");

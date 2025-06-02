@@ -42,7 +42,7 @@ private slots:
     void sl_exportClicked();
     void sl_consensusChanged(const QString& algoId);
     void sl_exportTaskStateChanged();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void initSaveController();

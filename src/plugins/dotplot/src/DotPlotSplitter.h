@@ -58,7 +58,7 @@ protected:
     bool onCloseEvent() override;
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     QAction* createAction(const QString& iconPath, const QString& toolTip, const char* slot, bool checkable = true);

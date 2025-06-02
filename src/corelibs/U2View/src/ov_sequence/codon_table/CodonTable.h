@@ -54,7 +54,7 @@ public slots:
     void sl_onActiveSequenceChanged(ADVSequenceWidget* from, ADVSequenceWidget* to);
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     QTableWidget* table;

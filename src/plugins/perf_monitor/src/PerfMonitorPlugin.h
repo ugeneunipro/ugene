@@ -34,7 +34,7 @@ public:
 
 private slots:
     void sl_openWindow();
-    void sl_colorModeSwitch();
+    void sl_colorThemeSwtiched();
 
 private:
     QAction* openWindowAction;

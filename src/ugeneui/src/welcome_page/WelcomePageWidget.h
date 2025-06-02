@@ -51,7 +51,7 @@ private slots:
     void sl_openQuickStart();
 
     void sl_openRecentFile();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void runAction(const QString& actionId);

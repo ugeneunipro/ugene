@@ -50,7 +50,7 @@ PerfMonitorPlugin::PerfMonitorPlugin()
 
     QMenu* toolsMenu = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS);
     toolsMenu->addAction(openWindowAction);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &PerfMonitorPlugin::sl_colorModeSwitch);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PerfMonitorPlugin::sl_colorThemeSwtiched);
 }
 
 void PerfMonitorPlugin::sl_openWindow() {
@@ -65,7 +65,7 @@ void PerfMonitorPlugin::sl_openWindow() {
     mdi->activateWindow(mdiWindow);
 }
 
-void PerfMonitorPlugin::sl_colorModeSwitch() {
+void PerfMonitorPlugin::sl_colorThemeSwtiched() {
     openWindowAction->setIcon(GUIUtils::getIconResource("perf_monitor", "mon.png"));
     MWMDIManager* mdi = AppContext::getMainWindow()->getMDIManager();
     MWMDIWindow* mdiWindow = mdi->getWindowById(windowId);

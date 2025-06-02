@@ -92,7 +92,7 @@ private:
     QString warn(const QString& text) const;
     bool eventFilter(QObject* watched, QEvent* event) override;
     void saveShowHideSubgroupsState() const;
-    void updateColorModeRecursively(QTreeWidgetItem* item);
+    void updateColorThemeRecursively(QTreeWidgetItem* item);
 
 private slots:
     void sl_toolPathChanged();
@@ -108,7 +108,7 @@ private slots:
     void sl_deleteCustomToolButtonClicked();
     void sl_externalToolAdded(const QString& id);
     void sl_externalToolIsAboutToBeRemoved(const QString& id);
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     QMap<QString, ExternalToolInfo> externalToolsInfo;

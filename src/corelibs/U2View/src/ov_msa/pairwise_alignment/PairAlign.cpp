@@ -218,7 +218,7 @@ void PairAlign::connectSignals() {
     connect(secondSeqSelectorWC, SIGNAL(si_selectionChanged()), SLOT(sl_selectorTextChanged()));
     connect(msa->getMaObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_checkState()));
     connect(msa->getMaObject(), SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &PairAlign::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PairAlign::sl_colorThemeSwitched);
 }
 
 void PairAlign::sl_checkState() {
@@ -242,7 +242,7 @@ void PairAlign::sl_alignmentChanged() {
     checkState();
 }
 
-void PairAlign::sl_colorModeSwitched() {
+void PairAlign::sl_colorThemeSwitched() {
     lblMessage->setStyleSheet(QString("color: %1; font: bold; padding-top: 15px;").arg(Theme::errorColorLabelStr()));
 }
 

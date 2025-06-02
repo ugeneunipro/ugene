@@ -88,7 +88,7 @@ private slots:
     void sl_conditionSwitched(bool enabled);
     void sl_conditionParameterChanged(HitCondition newParameter);
     void sl_pauseStateChanged(bool paused);
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void createActions();

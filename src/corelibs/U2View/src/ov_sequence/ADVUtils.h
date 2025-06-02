@@ -68,7 +68,7 @@ public:
 private slots:
     /** Calls updateState() on every active sequence widget change. */
     void sl_activeSequenceChanged();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void updateState();

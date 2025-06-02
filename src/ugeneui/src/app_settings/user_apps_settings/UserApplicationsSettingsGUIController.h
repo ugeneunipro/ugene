@@ -61,7 +61,7 @@ public:
 
     QString translFile;
     QString style;
-    StyleFactory::ColorMode colorMode = StyleFactory::ColorMode::Light;
+    StyleFactory::ColorTheme colorTheme = StyleFactory::ColorTheme::Light;
     bool openLastProjectFlag= false;
     int askToSaveProject= 0;
     bool enableStatistics = false;

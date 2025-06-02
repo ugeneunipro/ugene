@@ -95,15 +95,15 @@ SplashScreenWidget::SplashScreenWidget() {
               (v.suffix.isEmpty() ? "" : "-" + v.suffix);
 
     UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
-    StyleFactory::ColorMode colorMode = static_cast<StyleFactory::ColorMode>(userAppSettings->getColorModeIndex());
-    switch (colorMode) {
-        case StyleFactory::ColorMode::Light:
+    StyleFactory::ColorTheme colorTheme = static_cast<StyleFactory::ColorTheme>(userAppSettings->getColorThemeIndex());
+    switch (colorTheme) {
+        case StyleFactory::ColorTheme::Light:
             isDark = false;
             break;
-        case StyleFactory::ColorMode::Dark:
+        case StyleFactory::ColorTheme::Dark:
             isDark = true;
             break;
-        case StyleFactory::ColorMode::Auto:
+        case StyleFactory::ColorTheme::Auto:
             isDark = StyleFactory::isDarkStyleEnabled();
             break;
     }

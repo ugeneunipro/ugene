@@ -48,7 +48,7 @@ private slots:
     void sl_onPickColorButtonClicked();
     void sl_onCancelClicked();
     void sl_onOkClicked();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     WindowStepSelectorWidget* wss;

@@ -116,18 +116,18 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
         QMenu* copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
         GUIUtils::insertActionAfter(copyMenu, msaEditor->getLineWidget(0)->cutSelectionAction, moveFromMsaAction);
     });
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaExcludeListContext::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MsaExcludeListContext::sl_colorThemeSwitched);
     addViewAction(moveFromMsaAction);
 
     updateState(msaEditor);
 }
 
 void MsaExcludeListContext::disconnectView(GObjectViewController* view) {
-    disconnect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaExcludeListContext::sl_colorModeSwitched);
+    disconnect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MsaExcludeListContext::sl_colorThemeSwitched);
     GObjectViewWindowContext::disconnectView(view);
 }
 
-void MsaExcludeListContext::sl_colorModeSwitched() {
+void MsaExcludeListContext::sl_colorThemeSwitched() {
     for (auto toggleExcludeListAction : qAsConst(toggleExcludeListActionList)) {
         toggleExcludeListAction->setIcon(GUIUtils::getIconResource("core", "inbox-minus.png"));
     }
@@ -300,7 +300,7 @@ MsaExcludeListWidget::MsaExcludeListWidget(QWidget* parent, MsaEditor* _msaEdito
     }
 
     connect(AppContext::getTaskScheduler(), &TaskScheduler::si_stateChanged, this, &MsaExcludeListWidget::trackMsaObjectSaveTask);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaExcludeListWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MsaExcludeListWidget::sl_colorThemeSwitched);
 
     toolbarLayout->addStretch();
 
@@ -692,7 +692,7 @@ QSize MsaExcludeListWidget::sizeHint() const {
     return {500, 200};
 }
 
-void MsaExcludeListWidget::sl_colorModeSwitched() {
+void MsaExcludeListWidget::sl_colorThemeSwitched() {
     moveToMsaAction->setIcon(GUIUtils::getIconResource("core", "arrow-move-up.png", false));
 }
 

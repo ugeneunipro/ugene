@@ -47,7 +47,7 @@ protected:
 private slots:
     void sl_clearButtonClicked();
     void sl_textChanged(const QString& text);
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void initStyle();

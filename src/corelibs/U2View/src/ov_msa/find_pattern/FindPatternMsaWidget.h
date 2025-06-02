@@ -100,7 +100,7 @@ private slots:
      * and runs a new search if the were no validation errors.
      */
     void sl_validateStateAndStartNewSearch(bool activatedByOutsideChanges = false);
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void updateActions();

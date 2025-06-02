@@ -103,7 +103,7 @@ void TaskViewDockWidget::initActions() {
     connect(s, SIGNAL(si_topLevelTaskRegistered(Task*)), SLOT(sl_onTopLevelTaskRegistered(Task*)));
     connect(s, SIGNAL(si_topLevelTaskUnregistered(Task*)), SLOT(sl_onTopLevelTaskUnregistered(Task*)));
     connect(s, SIGNAL(si_stateChanged(Task*)), SLOT(sl_onStateChanged(Task*)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TaskViewDockWidget::si_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TaskViewDockWidget::si_colorThemeSwitched);
 }
 
 void TaskViewDockWidget::updateState() {
@@ -250,7 +250,7 @@ TVTreeItem* TaskViewDockWidget::findChildItem(TVTreeItem* ti, Task* t) const {
     return nullptr;
 }
 
-void TaskViewDockWidget::recurciveColorModeUpdate(TVTreeItem* item) {
+void TaskViewDockWidget::recurciveColorThemeUpdate(TVTreeItem* item) {
     for (int i = 0, n = item->childCount(); i < n; i++) {
         QTreeWidgetItem* child = item->child(i);
         SAFE_POINT_NN(child, );
@@ -259,7 +259,7 @@ void TaskViewDockWidget::recurciveColorModeUpdate(TVTreeItem* item) {
         SAFE_POINT_NN(cti, );
 
         cti->updateVisual();
-        recurciveColorModeUpdate(cti);
+        recurciveColorThemeUpdate(cti);
     }
 }
 
@@ -421,7 +421,7 @@ void TaskViewDockWidget::sl_itemExpanded(QTreeWidgetItem* qi) {
     ti->updateVisual();
 }
 
-void TaskViewDockWidget::si_colorModeSwitched() {
+void TaskViewDockWidget::si_colorThemeSwitched() {
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         QTreeWidgetItem* item = tree->topLevelItem(i);
         SAFE_POINT_NN(item, );
@@ -430,7 +430,7 @@ void TaskViewDockWidget::si_colorModeSwitched() {
         SAFE_POINT_NN(item, );
 
         ti->updateVisual();
-        recurciveColorModeUpdate(ti);
+        recurciveColorThemeUpdate(ti);
     }
 }
 

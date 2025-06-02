@@ -115,7 +115,7 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(QWidget* parent)
     connect(enzymeInfo, SIGNAL(clicked()), SLOT(sl_openDBPage()));
     connect(enzymesFilterEdit, &QLineEdit::textChanged, this, &EnzymesSelectorWidget::sl_filterConditionsChanged);
     connect(filterComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EnzymesSelectorWidget::sl_filterConditionsChanged);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &EnzymesSelectorWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &EnzymesSelectorWidget::sl_colorThemeSwitched);
 
     if (loadedEnzymes.isEmpty()) {
         QString lastUsedFile = AppContext::getSettings()->getValue(EnzymeSettings::DATA_FILE_KEY).toString();
@@ -469,13 +469,13 @@ void EnzymesSelectorWidget::sl_itemSelectionChanged() {
     }
 }
 
-void EnzymesSelectorWidget::sl_colorModeSwitched() {
+void EnzymesSelectorWidget::sl_colorThemeSwitched() {
     for (int i = 0, n = tree->topLevelItemCount(); i < n; ++i) {
         auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         int itemCount = gi->childCount();
         for (int j = 0; j < itemCount; ++j) {
             auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
-            item->colorModeSwitched();
+            item->colorThemeSwitched();
         }
     }
 

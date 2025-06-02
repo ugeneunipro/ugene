@@ -201,7 +201,7 @@ WindowStepSelectorDialog::WindowStepSelectorDialog(QWidget* p, const U2Region& w
 
     connect(cancelButton, SIGNAL(clicked(bool)), SLOT(sl_onCancelClicked(bool)));
     connect(okButton, SIGNAL(clicked(bool)), SLOT(sl_onOkClicked(bool)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WindowStepSelectorDialog::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &WindowStepSelectorDialog::sl_colorThemeSwitched);
 
     okButton->setDefault(true);
 }
@@ -222,7 +222,7 @@ void WindowStepSelectorDialog::sl_onOkClicked(bool v) {
     QMessageBox::critical(this, tr("Error!"), err.append(' ').append(mmerr));
 }
 
-void WindowStepSelectorDialog::sl_colorModeSwitched() {
+void WindowStepSelectorDialog::sl_colorThemeSwitched() {
     setWindowIcon(GUIUtils::getIconResource("core", "graphs.png"));
 }
 

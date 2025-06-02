@@ -57,7 +57,7 @@ void AlignmentLogoSettings::updateColors() {
         colorScheme[i] = QPalette().text().color();
     }
 
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     if (sequenceType == SequenceType::NA) {
         colorScheme['G'] = QColor(255, 128, 0);
         colorScheme['T'] = Qt::red;
@@ -127,7 +127,7 @@ AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings& _s
     evaluateHeights();
     sortCharsByHeight();
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AlignmentLogoRenderArea::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AlignmentLogoRenderArea::sl_colorThemeSwitched);
 }
 
 void AlignmentLogoRenderArea::replaceSettings(const AlignmentLogoSettings& _s) {
@@ -242,7 +242,7 @@ qreal AlignmentLogoRenderArea::getH(int pos) {
     return h;
 }
 
-void AlignmentLogoRenderArea::sl_colorModeSwitched() {
+void AlignmentLogoRenderArea::sl_colorThemeSwitched() {
     settings.updateColors();
 }
 

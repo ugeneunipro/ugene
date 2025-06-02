@@ -131,7 +131,7 @@ bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl>& _urls, QVariantMa
     connect(join2alignmentMode, SIGNAL(toggled(bool)), SLOT(sl_optionChanged()));
     connect(upperButton, SIGNAL(clicked()), SLOT(sl_onMoveUp()));
     connect(bottomButton, SIGNAL(clicked()), SLOT(sl_onMoveDown()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MultipleDocumentsReadingModeDialog::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MultipleDocumentsReadingModeDialog::sl_colorThemeSwitched);
 
     upperButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
     bottomButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
@@ -223,7 +223,7 @@ void MultipleDocumentsReadingModeDialog::sl_optionChanged() {
     }
 }
 
-void MultipleDocumentsReadingModeDialog::sl_colorModeSwitched() {
+void MultipleDocumentsReadingModeDialog::sl_colorThemeSwitched() {
     upperButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
     bottomButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 }

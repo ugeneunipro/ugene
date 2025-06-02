@@ -65,7 +65,7 @@ MsaEditorTreeTab::MsaEditorTreeTab(MsaEditor* msaEditor, QWidget* parent)
     closeTab = new QAction(tr("Close tab"), this);
     closeTab->setObjectName("Close tab");
     connect(closeTab, SIGNAL(triggered()), SLOT(sl_onCloseTab()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MsaEditorTreeTab::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MsaEditorTreeTab::sl_colorThemeSwitched);
 }
 
 void MsaEditorTreeTab::sl_onTabCloseRequested(int index) {
@@ -81,7 +81,7 @@ void MsaEditorTreeTab::sl_onContextMenuRequested(const QPoint& pos) {
     tabsMenu.exec(mapToGlobal(pos));
 }
 
-void MsaEditorTreeTab::sl_colorModeSwitched() {
+void MsaEditorTreeTab::sl_colorThemeSwitched() {
     addTabButton->setIcon(GUIUtils::getIconResource("core", "add_tree.png"));
 }
 

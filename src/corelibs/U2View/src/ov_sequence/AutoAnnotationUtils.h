@@ -57,7 +57,7 @@ private slots:
     void sl_autoAnnotationUpdateFinished();
     void sl_onSelectAll();
     void sl_onDeselectAll();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void updateMenu();

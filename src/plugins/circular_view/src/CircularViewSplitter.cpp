@@ -72,7 +72,7 @@ CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView* view)
     connect(toggleRestrictionMapAction, SIGNAL(triggered(bool)), SLOT(sl_toggleRestrictionMap(bool)));
 
     connect(exportAction, SIGNAL(triggered()), SLOT(sl_export()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &CircularViewSplitter::sl_colorModeSwtiched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &CircularViewSplitter::sl_colorThemeSwtiched);
 
     splitter = new QSplitter(Qt::Horizontal);
 
@@ -300,7 +300,7 @@ void CircularViewSplitter::sl_toggleRestrictionMap(bool toggle) {
     }
 }
 
-void CircularViewSplitter::sl_colorModeSwtiched() {
+void CircularViewSplitter::sl_colorThemeSwtiched() {
     zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));
     zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png", false));
     fitInViewAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png", false));

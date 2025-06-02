@@ -47,7 +47,7 @@ public:
         return showAllIsSelected;
     }
 
-    void colorModeSwitched();
+    void colorThemeSwitched();
 
 signals:
     void si_showAllStateChanged();
@@ -77,7 +77,7 @@ private slots:
     void sl_onNextAnnotationClick();
     void sl_onPrevAnnotationClick();
     void sl_onAnnotationSelectionChanged();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void initLayout();

@@ -42,7 +42,7 @@ protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void updateTreeViewIconsRecursively(QStandardItem* item);

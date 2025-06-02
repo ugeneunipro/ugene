@@ -384,7 +384,7 @@ WorkflowView::WorkflowView(WorkflowGObject* go)
     }
 
     propertyEditor->reset();
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WorkflowView::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &WorkflowView::sl_colorThemeSwitched);
 }
 
 WorkflowView::~WorkflowView() {
@@ -1655,7 +1655,7 @@ void WorkflowView::sl_convertMessages2Documents(const Workflow::Link* bus,
     debugInfo->convertMessagesToDocuments(bus, messageType, messageNumber, meta.name);
 }
 
-void WorkflowView::sl_colorModeSwitched() {
+void WorkflowView::sl_colorThemeSwitched() {
     setWindowIcon(GUIUtils::getIconResource("workflow_designer", "wd.png"));
     runAction->setIcon(GUIUtils::getIconResource("workflow_designer", "run.png"));
     stopAction->setIcon(GUIUtils::getIconResource("workflow_designer", "stopTask.png"));
@@ -2815,7 +2815,7 @@ void WorkflowScene::setModified() {
 void WorkflowScene::drawBackground(QPainter* painter, const QRectF& rect) {
     if (WorkflowSettings::showGrid()) {
         int step = GRID_STEP;
-        painter->setPen(QPen(AppContext::getMainWindow()->isDarkMode() ? QColor(75, 75, 48, 125) : QColor(200, 200, 255, 125)));
+        painter->setPen(QPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(75, 75, 48, 125) : QColor(200, 200, 255, 125)));
         // draw horizontal grid
         qreal start = round(rect.top(), step);
         if (start > rect.top()) {

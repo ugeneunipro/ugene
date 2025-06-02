@@ -191,7 +191,7 @@ ParametersDashboardWidget::ParametersDashboardWidget(const QString& _dashboardDi
         connect(monitor, &WorkflowMonitor::si_dirSet, this, [&](const QString& newDashboardDir) { dashboardDir = newDashboardDir; });
     }
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ParametersDashboardWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ParametersDashboardWidget::sl_colorThemeSwitched);
 }
 
 void ParametersDashboardWidget::sl_workerLabelClicked() {
@@ -213,8 +213,8 @@ static const QString ACTIVE_WORKER_NAME_LABEL_STYLE = COMMON_WORKER_NAME_LABEL_S
 static const QString NOT_ACTIVE_WORKER_NAME_LABEL_STYLE = COMMON_WORKER_NAME_LABEL_STYLE + "border-right: 1px solid %1;";
 
 
-void ParametersDashboardWidget::sl_colorModeSwitched() {
-    colorModeSwitched(parametersGridLayout);
+void ParametersDashboardWidget::sl_colorThemeSwitched() {
+    colorThemeSwitched(parametersGridLayout);
     updateStyleSheet();
 }
 
@@ -267,7 +267,7 @@ void ParametersDashboardWidget::showWorkerParameters() {
 }
 
 void ParametersDashboardWidget::updateStyleSheet() {
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QString borderColor = isDark ? TABLE_BORDER_COLOR_DARK : TABLE_BORDER_COLOR_LIGHT;
     QString activeWorkerNameLabelStyle = ACTIVE_WORKER_NAME_LABEL_STYLE.arg(borderColor);
     QString notActiveWorkerNameLabelStyle = NOT_ACTIVE_WORKER_NAME_LABEL_STYLE.arg(borderColor);

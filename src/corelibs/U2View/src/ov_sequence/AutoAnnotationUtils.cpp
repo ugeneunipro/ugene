@@ -61,7 +61,7 @@ AutoAnnotationsADVAction::AutoAnnotationsADVAction(ADVSequenceWidget* v,
 
     deselectAllAction = new QAction(tr("Deselect all"), this);
     connect(deselectAllAction, SIGNAL(triggered()), SLOT(sl_onDeselectAll()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &AutoAnnotationsADVAction::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AutoAnnotationsADVAction::sl_colorThemeSwitched);
 
     updateMenu();
 
@@ -149,7 +149,7 @@ void AutoAnnotationsADVAction::sl_onDeselectAll() {
     }
 }
 
-void AutoAnnotationsADVAction::sl_colorModeSwitched() {
+void AutoAnnotationsADVAction::sl_colorThemeSwitched() {
     setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
 }
 

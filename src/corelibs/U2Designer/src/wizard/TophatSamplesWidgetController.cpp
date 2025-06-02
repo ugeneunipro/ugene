@@ -316,7 +316,7 @@ void TophatSamples::init(const QList<TophatSample>& samples) {
 
     updateArrows();
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &TophatSamples::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TophatSamples::sl_colorThemeSwitched);
 }
 
 void TophatSamples::appendSample(const TophatSample& sample) {
@@ -507,7 +507,7 @@ void TophatSamples::sl_down() {
     move(DOWN);
 }
 
-void TophatSamples::sl_colorModeSwitched() {
+void TophatSamples::sl_colorThemeSwitched() {
     upButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
     downButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 }

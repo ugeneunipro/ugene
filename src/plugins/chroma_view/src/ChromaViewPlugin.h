@@ -52,7 +52,7 @@ public:
 protected slots:
     void sl_showChromatogram();
     void sl_sequenceWidgetAdded(ADVSequenceWidget*);
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 protected:
     void initViewContext(GObjectViewController* view) override;

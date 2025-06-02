@@ -48,7 +48,7 @@ void ExternalToolSupportAction::sl_pathChanged() {
     setState(isAnyToolConfigured);
 }
 
-void ExternalToolSupportAction::sl_colorModeSwitched() {
+void ExternalToolSupportAction::sl_colorThemeSwitched() {
     bool isAnyToolConfigured = checkTools();
     setState(isAnyToolConfigured);
 }
@@ -68,7 +68,7 @@ bool ExternalToolSupportAction::checkTools(bool connectSignals) {
 
     if (connectSignals) {
         connect(AppContext::getAppSettings()->getUserAppsSettings(), SIGNAL(si_temporaryPathChanged()), SLOT(sl_pathChanged()));
-        connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ExternalToolSupportAction::sl_colorModeSwitched);
+        connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ExternalToolSupportAction::sl_colorThemeSwitched);
     }
 
     return result;

@@ -84,10 +84,10 @@ ADVAnnotationCreation::ADVAnnotationCreation(AnnotatedDNAView* c)
     createAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
     createAction->setShortcutContext(Qt::WindowShortcut);
     connect(createAction, SIGNAL(triggered()), SLOT(sl_createAnnotation()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &ADVAnnotationCreation::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ADVAnnotationCreation::sl_colorThemeSwitched);
 }
 
-void ADVAnnotationCreation::sl_colorModeSwitched() {
+void ADVAnnotationCreation::sl_colorThemeSwitched() {
     createAction->setIcon(GUIUtils::getIconResource("core", "create_annotation_icon.png"));
 }
 

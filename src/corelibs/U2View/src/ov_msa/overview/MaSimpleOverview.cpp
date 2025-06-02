@@ -81,7 +81,7 @@ void MaSimpleOverview::sl_highlightingChanged() {
     update();
 }
 
-void MaSimpleOverview::sl_colorModeSwitched() {
+void MaSimpleOverview::sl_colorThemeSwitched() {
     sl_redraw();
 }
 
@@ -146,7 +146,7 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
 
             QColor color = sequenceArea->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
             if (MaHighlightingOverviewCalculationTask::isGapScheme(highlightingSchemeId)) {
-                color = AppContext::getMainWindow()->isDarkMode() ? QColor(190, 190, 190) : Qt::gray;
+                color = AppContext::getMainWindow()->isDarkTheme() ? QColor(190, 190, 190) : Qt::gray;
             }
 
             bool drawColor = true;
@@ -170,7 +170,7 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
             }
         }
     }
-    p.setPen(AppContext::getMainWindow()->isDarkMode() ? QColor(190, 190, 190) : Qt::gray);
+    p.setPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(190, 190, 190) : Qt::gray);
     p.drawRect(rect().adjusted(0, 0, -1, -1));
 }
 

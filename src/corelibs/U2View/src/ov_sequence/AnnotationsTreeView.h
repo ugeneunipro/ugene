@@ -161,7 +161,7 @@ private slots:
     void sl_sequenceAdded(ADVSequenceObjectContext* advContext);
     void sl_sequenceRemoved(ADVSequenceObjectContext* advContext);
 
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 protected:
     bool eventFilter(QObject* o, QEvent* e) override;
@@ -215,7 +215,7 @@ private:
     void clearSelectedNotAnnotations();
     void emitAnnotationActivated(Annotation* annotation);
 
-    void updateColorModeRecursively(AVItem* item);
+    void updateColorThemeRecursively(AVItem* item);
 
     AnnotationsTreeWidget* tree;
 

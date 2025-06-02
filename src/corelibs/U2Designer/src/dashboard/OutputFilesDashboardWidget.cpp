@@ -90,7 +90,7 @@ OutputFilesDashboardWidget::OutputFilesDashboardWidget(const QString& dashboardD
         connect(monitor, SIGNAL(si_newOutputFile(const Monitor::FileInfo&)), SLOT(sl_newOutputFile(const Monitor::FileInfo&)));
     }
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &OutputFilesDashboardWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &OutputFilesDashboardWidget::sl_colorThemeSwitched);
 }
 
 void OutputFilesDashboardWidget::addTrailingEmptyRows(bool callTableUpdate) {
@@ -125,8 +125,8 @@ void OutputFilesDashboardWidget::sl_newOutputFile(const Monitor::FileInfo& info)
     addTrailingEmptyRows(true);
 }
 
-void OutputFilesDashboardWidget::sl_colorModeSwitched() {
-    colorModeSwitched(tableGridLayout);
+void OutputFilesDashboardWidget::sl_colorThemeSwitched() {
+    colorThemeSwitched(tableGridLayout);
 }
 
 void OutputFilesDashboardWidget::updateWorkerRow(int workerIndex) {

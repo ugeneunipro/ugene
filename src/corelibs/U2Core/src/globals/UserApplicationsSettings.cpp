@@ -46,7 +46,7 @@ namespace U2 {
 #define LAST_PROJECT_FLAG QString("open_last_project")
 #define SAVE_PROJECT_STATE QString("save_project")
 #define VISUAL_STYLE QString("style")
-#define COLOR_MODE QString("color_mode")
+#define COLOR_THEME QString("color_theme")
 #define DOWNLOAD_DIR QString("download_file")
 #define CUSTOM_EXTERNAL_TOOL_CONFIGS_DIR QString("custom_external_tool_configs_dir")
 #define RECENTLY_DOWNLOADED QString("recently_downloaded")
@@ -148,12 +148,12 @@ void UserAppsSettings::setVisualStyle(const QString& newStyle) {
     return AppContext::getSettings()->setValue(SETTINGS_ROOT + VISUAL_STYLE, newStyle.toLower());
 }
 
-int UserAppsSettings::getColorModeIndex() const {
-    return AppContext::getSettings()->getValue(SETTINGS_ROOT + COLOR_MODE, 0).toInt();
+int UserAppsSettings::getColorThemeIndex() const {
+    return AppContext::getSettings()->getValue(SETTINGS_ROOT + COLOR_THEME, 0).toInt();
 }
 
-void UserAppsSettings::setColorModeIndex(int newColorModeIndex) {
-    return AppContext::getSettings()->setValue(SETTINGS_ROOT + COLOR_MODE, newColorModeIndex);
+void UserAppsSettings::setColorThemeIndex(int newColorThemeIndex) {
+    return AppContext::getSettings()->setValue(SETTINGS_ROOT + COLOR_THEME, newColorThemeIndex);
 }
 
 QString UserAppsSettings::getDownloadDirPath() const {

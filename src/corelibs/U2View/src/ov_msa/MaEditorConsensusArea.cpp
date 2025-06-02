@@ -76,7 +76,7 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt* _ui)
 
     connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(setupFontAndHeight()));
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaEditorConsensusArea::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaEditorConsensusArea::sl_colorThemeSwitched);
 
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
@@ -258,7 +258,7 @@ void MaEditorConsensusArea::sl_completeRedraw() {
     update();
 }
 
-void MaEditorConsensusArea::sl_colorModeSwitched() {
+void MaEditorConsensusArea::sl_colorThemeSwitched() {
     sl_completeRedraw();
 }
 

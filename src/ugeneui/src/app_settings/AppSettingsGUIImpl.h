@@ -49,7 +49,7 @@ private slots:
         showSettingsDialog();
     }
 
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     void registerBuiltinPages();

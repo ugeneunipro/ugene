@@ -173,7 +173,7 @@ protected slots:
     void sl_calculationTaskFinished();
 
 private slots:
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     GSequenceGraphView* view;

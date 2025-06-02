@@ -80,7 +80,7 @@ DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
 
     setFocus();
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &DotPlotSplitter::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &DotPlotSplitter::sl_colorThemeSwitched);
 }
 
 bool DotPlotSplitter::onCloseEvent() {
@@ -185,7 +185,7 @@ void DotPlotSplitter::buildPopupMenu(QMenu* m) {
     }
 }
 
-void DotPlotSplitter::sl_colorModeSwitched() {
+void DotPlotSplitter::sl_colorThemeSwitched() {
     syncLockAction->setIcon(GUIUtils::getIconResource("core", "sync_lock.png"));
 }
 

@@ -355,7 +355,7 @@ void ToolsMenu::addAction(const QString& menuName, QAction* action) {
     insertAction(menu, menuName, action);
 }
 
-void ToolsMenu::colorModeSwitched(const QString& menuName) {
+void ToolsMenu::colorThemeSwitched(const QString& menuName) {
     auto menuIconResource = actionIcon.value(menuName);
     CHECK(!menuIconResource.isEmpty(), );
 

@@ -117,7 +117,7 @@ void ZoomableAssemblyOverview::drawAll() {
             cachedBackground = QPixmap(size() * devicePixelRatio());
             cachedBackground.setDevicePixelRatio(devicePixelRatio());
             QPainter p(&cachedBackground);
-            p.fillRect(rect(), AppContext::getMainWindow()->isDarkMode() ? QColor(190, 190, 190) : Qt::gray);
+            p.fillRect(rect(), AppContext::getMainWindow()->isDarkTheme() ? QColor(190, 190, 190) : Qt::gray);
             p.drawText(rect(), Qt::AlignCenter, tr("Background is rendering..."));
         }
         // coverage is ready -> redraw background if needed
@@ -161,7 +161,7 @@ void ZoomableAssemblyOverview::drawZoomToRegion(QPainter& p) {
         topLeft = QPoint(curX, 0);
         bottomRight = QPoint(zoomToRegionSelector.startPos.x(), height());
     }
-    QColor rectColor = AppContext::getMainWindow()->isDarkMode() ? QColor(255, 127, 127, 100) : QColor(128, 0, 0, 100);
+    QColor rectColor = AppContext::getMainWindow()->isDarkTheme() ? QColor(255, 127, 127, 100) : QColor(128, 0, 0, 100);
     p.fillRect(QRect(topLeft, bottomRight), rectColor);
 }
 
@@ -192,7 +192,7 @@ void ZoomableAssemblyOverview::drawBackground(QPainter& p) {
     p.fillRect(rect(), QPalette().window().color());
 
     // 2. draw the graph line-by-line
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     for (int i = 0; i < widgetWidth; ++i) {
         quint64 columnPixels = 0;
         double grayCoeffD = 0.;
@@ -219,7 +219,7 @@ void ZoomableAssemblyOverview::drawBackground(QPainter& p) {
     }
 
     // 3. draw gray border
-    p.setPen(AppContext::getMainWindow()->isDarkMode() ? QColor(190, 190, 190) : Qt::gray);
+    p.setPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(190, 190, 190) : Qt::gray);
     p.drawRect(rect().adjusted(0, 0, -1, -1));
 }
 
@@ -291,7 +291,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter& p) {
     p.setFont(font);
     QFontMetrics fontMetrics(font, this);
 
-    p.setPen(AppContext::getMainWindow()->isDarkMode() ? labelForegroundColorDark : labelForegroundColorLight);
+    p.setPen(AppContext::getMainWindow()->isDarkTheme() ? labelForegroundColorDark : labelForegroundColorLight);
 
     // draw Visible Region
     QString visibleRegionText = tr("%1 to %2 (%3 bp)").arg(visibleStartText).arg(visibleEndText).arg(visibleDiffText);

@@ -181,7 +181,7 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, c
     }
     data->label->setToolTip(ttip);
 
-    DockWidgetPainter::updateLabel(data, false, AppContext::getMainWindow()->isDarkMode());
+    DockWidgetPainter::updateLabel(data, false, AppContext::getMainWindow()->isDarkTheme());
 
     docks.append(data);
 
@@ -274,7 +274,7 @@ void MWDockManagerImpl::openDock(DockData* d) {
 
     // open new dock
     assert(d->wrapWidget != nullptr);
-    DockWidgetPainter::updateLabel(d, true, AppContext::getMainWindow()->isDarkMode());
+    DockWidgetPainter::updateLabel(d, true, AppContext::getMainWindow()->isDarkTheme());
     restoreDockGeometry(d);
     d->dock = new QDockWidget();
     d->dock->setObjectName("mw_docArea");
@@ -296,7 +296,7 @@ void MWDockManagerImpl::openDock(DockData* d) {
 void MWDockManagerImpl::closeDock(DockData* d) {
     activeDocks[d->area] = nullptr;
     if (d->wrapWidget != nullptr) {  // widget is closed manually by user ->detach it from its parent to avoid deletion on d->dock->close();
-        DockWidgetPainter::updateLabel(d, false, AppContext::getMainWindow()->isDarkMode());
+        DockWidgetPainter::updateLabel(d, false, AppContext::getMainWindow()->isDarkTheme());
         saveDockGeometry(d);
         lastActiveDocksState[d->area].clear();
         d->wrapWidget->setParent(nullptr);
@@ -420,7 +420,7 @@ void MWDockManagerImpl::dontActivateNextTime(MWDockArea a) {
     lastActiveDocksState[a] = "";
 }
 
-void MWDockManagerImpl::colorModeSwitched(bool isDark) {
+void MWDockManagerImpl::colorThemeSwitched(bool isDark) {
     for (auto doc : qAsConst(docks)) {
         DockWidgetPainter::updateLabel(doc, doc->isActive, isDark);
     }

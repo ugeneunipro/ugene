@@ -143,7 +143,7 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext* _sc)
     connect(maxDistBox, SIGNAL(valueChanged(int)), SLOT(sl_maxDistChanged(int)));
     connect(minDistCheck, SIGNAL(toggled(bool)), SLOT(sl_minMaxToggle(bool)));
     connect(maxDistCheck, SIGNAL(toggled(bool)), SLOT(sl_minMaxToggle(bool)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &FindRepeatsDialog::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &FindRepeatsDialog::sl_colorThemeSwitched);
 
     updateStatus();
 
@@ -379,7 +379,7 @@ void FindRepeatsDialog::sl_minMaxToggle(bool) {
     updateStatus();
 }
 
-void FindRepeatsDialog::sl_colorModeSwitched() {
+void FindRepeatsDialog::sl_colorThemeSwitched() {
     annotationFitButton->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
     annotationAroundKeepButton->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
     annotationAroundFilterButton->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));

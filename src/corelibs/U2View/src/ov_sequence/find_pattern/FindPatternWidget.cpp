@@ -495,7 +495,7 @@ void FindPatternWidget::connectSlots() {
     connect(useAmbiguousBasesBox, SIGNAL(toggled(bool)), SLOT(sl_toggleExtendedAlphabet()));
     connect(spinMatch, SIGNAL(valueChanged(int)), SLOT(sl_activateNewSearch()));
 
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &FindPatternWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &FindPatternWidget::sl_colorThemeSwitched);
 }
 
 void FindPatternWidget::updatePatternSourceControlsUiState() {
@@ -1432,7 +1432,7 @@ void FindPatternWidget::sl_usePatternNamesCbClicked() {
     checkState();
 }
 
-void FindPatternWidget::sl_colorModeSwitched() {
+void FindPatternWidget::sl_colorThemeSwitched() {
     updateErrorLabelState();
     auto tmpProgressMovie = progressMovie;
     progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);

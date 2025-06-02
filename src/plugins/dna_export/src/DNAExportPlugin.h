@@ -40,7 +40,7 @@ public:
 
 private slots:
     void sl_generateSequence();
-    void sl_colorModeSwitched();
+    void sl_colorThemeSwitched();
 
 private:
     QAction* randomSequenceGeneratorAction {nullptr};

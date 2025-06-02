@@ -91,7 +91,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_completeRedraw()));
     connect(ui->getScrollController()->getVerticalScrollBar(), SIGNAL(actionTriggered(int)), SLOT(sl_vScrollBarActionPerformed()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &MaEditorNameList::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaEditorNameList::sl_colorThemeSwitched);
 
     nhBar->setParent(this);
     nhBar->setVisible(false);
@@ -657,7 +657,7 @@ void MaEditorNameList::sl_completeUpdate() {
     update();
 }
 
-void MaEditorNameList::sl_colorModeSwitched() {
+void MaEditorNameList::sl_colorThemeSwitched() {
     sl_completeRedraw();
 }
 
@@ -790,7 +790,7 @@ void MaEditorNameList::drawChildSequenceItem(QPainter& painter, const QString& n
 
 void MaEditorNameList::drawBackground(QPainter& p, const QString&, const QRect& rect, bool isReference) {
     if (isReference) {
-        p.fillRect(rect, AppContext::getMainWindow()->isDarkMode() ? QColor("#727299") : QColor("#9999CC"));  // SANGER_TODO: create the const, reference  color
+        p.fillRect(rect, AppContext::getMainWindow()->isDarkTheme() ? QColor("#727299") : QColor("#9999CC"));  // SANGER_TODO: create the const, reference  color
         return;
     }
 
@@ -830,7 +830,7 @@ void MaEditorNameList::drawSelection(QPainter& painter) {
     CHECK(!selectionRectList.isEmpty(), );
 
     painter.save();
-    painter.setPen(QPen(AppContext::getMainWindow()->isDarkMode() ? QColor(190, 190, 190) : Qt::gray, 1, Qt::DashLine));
+    painter.setPen(QPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(190, 190, 190) : Qt::gray, 1, Qt::DashLine));
     for (const QRect& selectionRect : selectionRectList) {
         U2Region rowRange = U2Region::fromYRange(selectionRect);
         U2Region screenYRange = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(rowRange);

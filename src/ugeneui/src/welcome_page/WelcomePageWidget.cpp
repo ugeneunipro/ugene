@@ -85,13 +85,13 @@ WelcomePageWidget::WelcomePageWidget(QWidget* parent)
     setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     installEventFilter(this);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &WelcomePageWidget::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &WelcomePageWidget::sl_colorThemeSwitched);
 }
 
 QWidget* WelcomePageWidget::createHeaderWidget() {
     headerWidget = new QWidget();
     headerWidget->setContentsMargins(0, 0, 0, 0);
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     headerWidget->setStyleSheet(BACKGROUND_QLINEARGRADIENT.arg(isDark ? "#494561" : "#E0E7E9").arg(QPalette().base().color().name()));
     headerWidget->setFixedHeight(110);
     auto headerWidgetLayout = new QHBoxLayout();
@@ -126,7 +126,7 @@ QWidget* WelcomePageWidget::createMiddleWidget() {
     QString createSequenceText = tr("Create Sequence");
     QString createWorkflowText = tr("Run or Create Workflow");
     QString quickStartText = tr("Quick Start Guide");
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QString normalStyle = NORMAL_STYLE.arg(isDark ? "#2BB6F2" : "#145774");
     QString hoveredStyle = HOVERED_STYLE.arg(isDark ? "#2BB6F2" : "#145774");
 
@@ -185,7 +185,7 @@ QWidget* WelcomePageWidget::createMiddleWidget() {
 
 QWidget* WelcomePageWidget::createFooterWidget() {
     footerWidget = new QWidget();
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     footerWidget->setStyleSheet(BACKGROUND_COLOR.arg(isDark ? "#3F4547" : "#B2C4C9"));
     footerWidget->setFixedHeight(150);
     auto footerWidgetLayout = new QVBoxLayout();
@@ -255,7 +255,7 @@ void WelcomePageWidget::updateRecent(const QStringList& recentProjects, const QS
     }
 
     // Add new items.
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QString recentItemStyle = RECENT_ITEM_STYLE.arg(isDark ? "#2DC0FF" : "#1B769D");
     QString normalStyle = recentItemStyle + " text-decoration: none;";
     QString hoveredStyle = recentItemStyle + " text-decoration: underline;";
@@ -332,8 +332,8 @@ void WelcomePageWidget::sl_openRecentFile() {
     AppContext::getProjectLoader()->runOpenRecentFileOrProjectTask(url);
 }
 
-void WelcomePageWidget::sl_colorModeSwitched() {
-    bool isDark = AppContext::getMainWindow()->isDarkMode();
+void WelcomePageWidget::sl_colorThemeSwitched() {
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     headerWidget->setStyleSheet(BACKGROUND_QLINEARGRADIENT.arg(isDark ? "#494561" : "#E0E7E9").arg(QPalette().base().color().name()));
     topLevelWidgetLabel->setStyleSheet(PADDING_LEFT.arg(isDark ? "#2BB6F2" : "#145774"));
 

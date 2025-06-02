@@ -191,7 +191,7 @@ PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderArea
     }
 
     connect(this, SIGNAL(si_updateRows()), SLOT(sl_updateRows()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorModeSwitched, this, &PanView::sl_colorModeSwitched);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PanView::sl_colorThemeSwitched);
 
     updateActions();
     updateRowBar();
@@ -306,13 +306,13 @@ void PanView::sl_onAnnotationsModified(const QList<AnnotationModification>& anno
     GSequenceLineViewAnnotated::sl_onAnnotationsModified(annotationModifications);
 }
 
-void PanView::sl_colorModeSwitched() {
+void PanView::sl_colorThemeSwitched() {
     zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));
     zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png", false));
     zoomToSelectionAction->setIcon(GUIUtils::getIconResource("core", "zoom_sel.png", false));
     zoomToSequenceAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png", false));
 
-    GSequenceLineViewAnnotated::sl_colorModeSwitched();
+    GSequenceLineViewAnnotated::sl_colorThemeSwitched();
 }
 
 void PanView::sl_onAnnotationSettingsChanged(const QStringList& changedSettings) {

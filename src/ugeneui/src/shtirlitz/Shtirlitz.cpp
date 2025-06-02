@@ -46,7 +46,7 @@
 
 #include <U2Gui/MainWindow.h>
 
-#include "ColorModeWindow.h"
+#include "ColorThemeWindow.h"
 #include "StatisticalReportController.h"
 
 const static char* SETTINGS_NOT_FIRST_LAUNCH = "shtirlitz/not_first_launch";
@@ -122,19 +122,19 @@ QList<Task*> Shtirlitz::wakeup() {
     }
 
     if (minorVersionFirstLaunch) {
-        ColorModeWindow dialog;
+        ColorThemeWindow dialog;
         dialog.exec();
 
         if (dialog.result() == QDialog::Accepted) {
             auto styleInfo = dialog.getNewStyle();
             UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
             auto currentVisualStyle = st->getVisualStyle();
-            auto currentColorModeIndex = st->getColorModeIndex();
+            auto currentcolorThemeIndex = st->getColorThemeIndex();
 
-            if (currentVisualStyle != styleInfo.first || currentColorModeIndex != styleInfo.second) {
+            if (currentVisualStyle != styleInfo.first || currentcolorThemeIndex != styleInfo.second) {
                 AppContext::getMainWindow()->setNewStyle(styleInfo.first, styleInfo.second);
                 st->setVisualStyle(styleInfo.first);
-                st->setColorModeIndex((int)styleInfo.second);
+                st->setColorThemeIndex((int)styleInfo.second);
             }
         }
     }

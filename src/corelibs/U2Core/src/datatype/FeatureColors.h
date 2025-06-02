@@ -30,7 +30,7 @@ namespace U2 {
 class U2CORE_EXPORT FeatureColors {
 public:
     static QColor genLightColor(const QString& name);
-    // Generate color for Dark mode form @color
+    // Generate color for Dark theme form @color
     static QColor transformLightToDark(QColor color);
 
 };

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "ColorModeWindow.h"
+#include "ColorThemeWindow.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -35,11 +35,11 @@
 
 namespace U2 {
 
-ColorModeWindow::ColorModeWindow(QWidget* parent)
+ColorThemeWindow::ColorThemeWindow(QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
 
-    setWindowTitle(tr("UGENE color mode"));
+    setWindowTitle(tr("UGENE color theme"));
     errorLabel->setStyleSheet(QString("color: %1;").arg(Theme::errorColorLabelColor().name()));
 
     auto keys = QStyleFactory::keys();
@@ -52,13 +52,13 @@ ColorModeWindow::ColorModeWindow(QWidget* parent)
     if (styleIdx != -1) {
         cbStyle->setCurrentIndex(styleIdx);
     }
-    connect(cbStyle, &QComboBox::currentTextChanged, this, &ColorModeWindow::sl_updateState);
+    connect(cbStyle, &QComboBox::currentTextChanged, this, &ColorThemeWindow::sl_updateState);
 
-    QStringList colorModes = {tr("Light"),
+    QStringList colorThemes = {tr("Light"),
                               tr("Dark")};
 #if defined(Q_OS_WIN) | defined(Q_OS_DARWIN)
     if (StyleFactory::isDarkStyleAvaliable()) {
-        colorModes.append(tr("Auto"));
+        colorThemes.append(tr("Auto"));
     }
 #endif
 
@@ -66,12 +66,12 @@ ColorModeWindow::ColorModeWindow(QWidget* parent)
                                            "/dark",
                                            ""};
 
-    int colorModeIndex = userAppSettings->getColorModeIndex();
+    int colorThemeIndex = userAppSettings->getColorThemeIndex();
     auto hBoxLayout = new QHBoxLayout(this);
-    for (int i = 0; i < colorModes.size(); i++) {
-        const auto& mode = colorModes[i];
+    for (int i = 0; i < colorThemes.size(); i++) {
+        const auto& theme = colorThemes[i];
         const auto& interfix = interfixes[i];
-        QString imagePath = QString(":/ugene/images%1/color_mode_pic.png").arg(interfix);
+        QString imagePath = QString(":/ugene/images%1/color_theme_pic.png").arg(interfix);
         QPixmap pix(imagePath);//
 
         auto pic = new QLabel(this);
@@ -88,38 +88,38 @@ ColorModeWindow::ColorModeWindow(QWidget* parent)
         auto h2BoxLayout = new QHBoxLayout(this);
 
         h2BoxLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
-        auto rbColor = new QRadioButton(mode, this);
+        auto rbColor = new QRadioButton(theme, this);
         auto f = rbColor->font();
         f.setPointSize(label_5->font().pointSize());
         rbColor->setFont(f);
-        rbColor->setChecked(i == colorModeIndex);
+        rbColor->setChecked(i == colorThemeIndex);
         if (i == 0) {
             lightRb = rbColor;
         } else {
             darkRbs.append(rbColor);
         }
         h2BoxLayout->addWidget(rbColor);
-        connect(rbColor, &QRadioButton::toggled, this, &ColorModeWindow::sl_updateState);
+        connect(rbColor, &QRadioButton::toggled, this, &ColorThemeWindow::sl_updateState);
 
         h2BoxLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
         vBoxLayout->addLayout(h2BoxLayout);
 
         hBoxLayout->addLayout(vBoxLayout);
     }
-    wgtColorModes->setLayout(hBoxLayout);
+    wgtColorThemes->setLayout(hBoxLayout);
 
     sl_updateState();
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 }
 
-void ColorModeWindow::sl_updateState() {
+void ColorThemeWindow::sl_updateState() {
     static const QString WINDOWS_VISTA_STYLE = "WindowsVista";
     if (cbStyle->currentText() == WINDOWS_VISTA_STYLE) {
         for (auto darkRb : qAsConst(darkRbs)) {
             darkRb->setEnabled(false);
         }
-        errorLabel->setText(tr("Note: WindowsVista style is incompatible with Dark color mode. We suggest using Fusion"));
+        errorLabel->setText(tr("Note: WindowsVista style is incompatible with Dark color theme. We suggest using Fusion"));
     } else if (!lightRb->isChecked()) {
         int styleIdx = cbStyle->findText(WINDOWS_VISTA_STYLE, Qt::MatchFixedString);
         if (styleIdx != -1) {
@@ -138,7 +138,7 @@ void ColorModeWindow::sl_updateState() {
     }
 }
 
-QPair<QString, int> ColorModeWindow::getNewStyle() const {
+QPair<QString, int> ColorThemeWindow::getNewStyle() const {
     QPair<QString, int> res = {"", 0};
     res.first = cbStyle->currentText();
     QList<QRadioButton*> allRbs = {lightRb};
