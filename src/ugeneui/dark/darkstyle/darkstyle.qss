@@ -32,7 +32,7 @@ QMenu{
   border:1px solid palette(shadow);
 }
 QMenu::item{
-  padding:3px 25px 3px 25px;
+  padding:3px 25px 3px 10px;
   border:1px solid transparent;
 }
 QMenu::item:disabled{
@@ -42,6 +42,10 @@ QMenu::item:disabled{
 QMenu::item:selected{
   border-color:rgba(147,191,236,127);
   background:palette(highlight);
+}
+QMenu::icon{
+  padding-left: 7px;
+  border:1px solid transparent;
 }
 QMenu::icon:checked{
   background-color:qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
