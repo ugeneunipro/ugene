@@ -294,14 +294,16 @@ void MsaData::sortRows(const Msa::SortType& sortType, Msa::Order order, const U2
 MsaRow MsaData::getRow(int rowIndex) {
     static MsaRow emptyRow;
     int rowCount = rows.count();
-    SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
+    SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, QString("Internal error: unexpected row index was passed to MAlignment::getRow:"
+        " %1 >= 0 && %1 < %2").arg(rowIndex).arg(rowCount), emptyRow);
     return rows[rowIndex];
 }
 
 const MsaRow& MsaData::getRow(int rowIndex) const {
     static MsaRow emptyRow;
     int rowCount = rows.count();
-    SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
+    SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, QString("Internal error: unexpected row index was passed to MAlignment::getRow:"
+        " %1 >= 0 && %1 < %2").arg(rowIndex).arg(rowCount), emptyRow);
     return rows[rowIndex];
 }
 
@@ -797,7 +799,15 @@ MsaRow MsaData::createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, 
     int sequenceLength = sequence.length();
     foreach (const U2MsaGap& gap, gaps) {
         if (gap.startPos > sequenceLength || !gap.isValid()) {
-            coreLog.trace("Incorrect gap model was passed to MsaData::createRow");
+            QString gapModelString;
+            for (const U2MsaGap& gap2 : gaps) {
+                gapModelString += QString("(%1-%2),").arg(gap2.startPos).arg(gap2.length);
+            }
+            coreLog.trace(QString("Incorrect gap model was passed to MsaData::createRow: %1 > %2 || %3. GapModel: %4")
+                              .arg(gap.startPos)
+                              .arg(sequenceLength)
+                              .arg(!gap.isValid())
+                              .arg(gapModelString));
             os.setError(errorText);
             return {};
         }
