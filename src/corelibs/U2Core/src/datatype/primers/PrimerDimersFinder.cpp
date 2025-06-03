@@ -214,7 +214,7 @@ HeteroDimersFinder::HeteroDimersFinder(const QByteArray& _forwardPattern, const 
             if (forwardIndex < 0) {
                 continue;
             }
-            if (forwardIndex >= forwardPrimer.size() - 1) {
+            if (forwardIndex >= forwardPrimer.size()) {
                 break;
             }
             if (reverseIndex >= homologousRegion.size()) {
