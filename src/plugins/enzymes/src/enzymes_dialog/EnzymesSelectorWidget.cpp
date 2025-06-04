@@ -114,7 +114,7 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(QWidget* parent)
     connect(selectNoneButton, SIGNAL(clicked()), SLOT(sl_selectNone()));
     connect(invertSelectionButton, SIGNAL(clicked()), SLOT(sl_inverseSelection()));
     connect(loadSelectionButton, SIGNAL(clicked()), SLOT(sl_loadSelectionFromFile()));
-    connect(saveSelectionButton, SIGNAL(clicked()), SLOT(sl_saveSelectionToFile()));//
+    connect(saveSelectionButton, SIGNAL(clicked()), SLOT(sl_saveSelectionToFile()));
     connect(enzymesFilterEdit, &QLineEdit::textChanged, this, &EnzymesSelectorWidget::sl_filterConditionsChanged);
     connect(filterComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EnzymesSelectorWidget::sl_filterConditionsChanged);
 
