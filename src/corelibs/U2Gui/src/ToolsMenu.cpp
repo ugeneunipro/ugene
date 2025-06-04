@@ -158,7 +158,7 @@ void ToolsMenu::init() {
     }
 
     actionText[MALIGN_MENU] = tr("Multiple sequence alignment");
-    actionIcon[MALIGN_MENU] = IconParameters("core", "msa.png", false);
+    actionIcon[MALIGN_MENU] = IconParameters("core", "msa.png");
     subMenuAction[TOOLS] << MALIGN_MENU;
     {
         subMenuAction[MALIGN_MENU] << MALIGN_MUSCLE;
@@ -169,7 +169,7 @@ void ToolsMenu::init() {
     }
 
     actionText[CLONING_MENU] = tr("Cloning");
-    actionIcon[CLONING_MENU] = IconParameters("core", "dna_helix.png", false);
+    actionIcon[CLONING_MENU] = IconParameters("core", "dna_helix.png");
     subMenuAction[TOOLS] << CLONING_MENU;
     {
         subMenuAction[CLONING_MENU] << CLONING_FRAGMENTS;

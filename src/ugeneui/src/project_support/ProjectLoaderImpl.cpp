@@ -94,13 +94,13 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
     connect(sr, SIGNAL(si_serviceStateChanged(Service*, ServiceState)), SLOT(sl_serviceStateChanged(Service*, ServiceState)));
     connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ProjectLoaderImpl::sl_colorThemeSwitched);
 
-    newProjectAction = new QAction(GUIUtils::getIconResource("ugene", "project_new.png", false), tr("&New project..."), this);
+    newProjectAction = new QAction(GUIUtils::getIconResource("ugene", "project_new.png"), tr("&New project..."), this);
     newProjectAction->setObjectName(ACTION_PROJECTSUPPORT__NEW_PROJECT);
     //    newProjectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
     newProjectAction->setShortcutContext(Qt::WindowShortcut);
     connect(newProjectAction, SIGNAL(triggered()), SLOT(sl_newProject()));
 
-    addExistingDocumentAction = new QAction(GUIUtils::getIconResource("ugene", "advanced_open.png", false), tr("Open as..."), this);
+    addExistingDocumentAction = new QAction(GUIUtils::getIconResource("ugene", "advanced_open.png"), tr("Open as..."), this);
     addExistingDocumentAction->setObjectName(ACTION_PROJECTSUPPORT__OPEN_AS);
     addExistingDocumentAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_O));
     addExistingDocumentAction->setShortcutContext(Qt::ApplicationShortcut);
@@ -116,7 +116,7 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
     pasteAction->setShortcutContext(Qt::WidgetShortcut);
     connect(pasteAction, SIGNAL(triggered()), SLOT(sl_paste()));
 
-    openProjectAction = new QAction(GUIUtils::getIconResource("ugene", "project_open.png", false), tr("Open..."), this);
+    openProjectAction = new QAction(GUIUtils::getIconResource("ugene", "project_open.png"), tr("Open..."), this);
     openProjectAction->setObjectName(ACTION_PROJECTSUPPORT__OPEN_PROJECT);
     openProjectAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
     openProjectAction->setShortcutContext(Qt::WindowShortcut);
@@ -124,12 +124,12 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
 
     downloadRemoteFileAction = new QAction(tr("Access remote database..."), this);
     downloadRemoteFileAction->setObjectName(ACTION_PROJECTSUPPORT__ACCESS_REMOTE_DB);
-    downloadRemoteFileAction->setIcon(GUIUtils::getIconResource("ugene", "world_go.png", false));
+    downloadRemoteFileAction->setIcon(GUIUtils::getIconResource("ugene", "world_go.png"));
     connect(downloadRemoteFileAction, SIGNAL(triggered()), SLOT(sl_downloadRemoteFile()));
 
     searchGenbankEntryAction = new QAction(tr("Search NCBI GenBank..."), this);
     searchGenbankEntryAction->setObjectName(ACTION_PROJECTSUPPORT__SEARCH_GENBANK);
-    searchGenbankEntryAction->setIcon(GUIUtils::getIconResource("ugene", "world_go.png", false));
+    searchGenbankEntryAction->setIcon(GUIUtils::getIconResource("ugene", "world_go.png"));
     connect(searchGenbankEntryAction, SIGNAL(triggered()), SLOT(sl_searchGenbankEntry()));
 
     // add load/close actions to menu and toolbar
@@ -864,7 +864,7 @@ SaveProjectDialogController::SaveProjectDialogController(QWidget* w)
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
     buttonBox->button(QDialogButtonBox::No)->setText(tr("No"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-    setWindowIcon(GUIUtils::getIconResource("ugene", "save.png", false));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "save.png"));
 
     connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(sl_clicked(QAbstractButton*)));
     connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SaveProjectDialogController::sl_colorThemeSwitched);
@@ -875,7 +875,7 @@ void SaveProjectDialogController::sl_clicked(QAbstractButton* button) {
 }
 
 void SaveProjectDialogController::sl_colorThemeSwitched() {
-    setWindowIcon(GUIUtils::getIconResource("ugene", "save.png", false));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "save.png"));
 }
 
 //////////////////////////////////////////////////////////////////////////

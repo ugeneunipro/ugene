@@ -83,17 +83,15 @@ public:
     // Returns path to the corresponding resource
     // cathegory - cathegory of the image. This is the prefix, defined in .qrc file
     // iconName - icon name
-    // hasColorCathegory - True, if icon has two implementations (dark and light), false, if there is only one implementation for both color schemes
     // innerDirName - if image is in some inner directory (e.g. welcome_page in ugeneui)
     // returns - path to the resource
-    static QString getResourceName(const QString& cathegory, const QString& iconName, bool hasColorCathegory = true, const QString& innerDirName = QString());
+    static QString getResourceName(const QString& cathegory, const QString& iconName, const QString& innerDirName = QString());
 
     // Returns resource as icon
     // cathegory - cathegory of the image. This is the prefix, defined in .qrc file
     // iconName - icon name
-    // hasColorCathegory - True, if icon has two implementations (dark and light), false, if there is only one implementation for both color schemes
     // returns - the corresponding icon
-    static QIcon getIconResource(const QString& cathegory, const QString& iconName, bool hasColorCathegory = true);
+    static QIcon getIconResource(const QString& cathegory, const QString& iconName);
 
     // Returns resource as icon
     // parameters - icon parameters

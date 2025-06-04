@@ -102,7 +102,7 @@ FindTandemsDialog::FindTandemsDialog(ADVSequenceObjectContext* _sc)
     rs = new RegionSelector(this, seqLen, false, sc->getSequenceSelection());
     rangeSelectorLayout->addWidget(rs);
 
-    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png", false));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png"));
 }
 
 QStringList FindTandemsDialog::getAvailableAnnotationNames() const {

@@ -149,19 +149,19 @@ PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderArea
 
     zoomUsing = 0;
 
-    zoomInAction = new QAction(GUIUtils::getIconResource("core", "zoom_in.png", false), tr("Zoom In"), this);
+    zoomInAction = new QAction(GUIUtils::getIconResource("core", "zoom_in.png"), tr("Zoom In"), this);
     zoomInAction->setObjectName("action_zoom_in_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomInAction()));
 
-    zoomOutAction = new QAction(GUIUtils::getIconResource("core", "zoom_out.png", false), tr("Zoom Out"), this);
+    zoomOutAction = new QAction(GUIUtils::getIconResource("core", "zoom_out.png"), tr("Zoom Out"), this);
     zoomOutAction->setObjectName("action_zoom_out_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOutAction()));
 
-    zoomToSelectionAction = new QAction(GUIUtils::getIconResource("core", "zoom_sel.png", false), tr("Zoom to Selection"), this);
+    zoomToSelectionAction = new QAction(GUIUtils::getIconResource("core", "zoom_sel.png"), tr("Zoom to Selection"), this);
     zoomToSelectionAction->setObjectName("action_zoom_to_selection_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomToSelectionAction, SIGNAL(triggered()), SLOT(sl_zoomToSelection()));
 
-    zoomToSequenceAction = new QAction(GUIUtils::getIconResource("core", "zoom_whole.png", false), tr("Zoom to Whole Sequence"), this);
+    zoomToSequenceAction = new QAction(GUIUtils::getIconResource("core", "zoom_whole.png"), tr("Zoom to Whole Sequence"), this);
     zoomToSequenceAction->setObjectName("action_zoom_to_sequence_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomToSequenceAction, SIGNAL(triggered()), SLOT(sl_zoomToSequence()));
 
@@ -307,10 +307,10 @@ void PanView::sl_onAnnotationsModified(const QList<AnnotationModification>& anno
 }
 
 void PanView::sl_colorThemeSwitched() {
-    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));
-    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png", false));
-    zoomToSelectionAction->setIcon(GUIUtils::getIconResource("core", "zoom_sel.png", false));
-    zoomToSequenceAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png", false));
+    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png"));
+    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png"));
+    zoomToSelectionAction->setIcon(GUIUtils::getIconResource("core", "zoom_sel.png"));
+    zoomToSequenceAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png"));
 
     GSequenceLineViewAnnotated::sl_colorThemeSwitched();
 }

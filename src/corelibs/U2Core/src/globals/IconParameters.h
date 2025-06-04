@@ -28,8 +28,7 @@ namespace U2 {
 struct U2CORE_EXPORT IconParameters {
     IconParameters() = default;
     IconParameters(const QString& _iconÑategory,
-               const QString& _iconName,
-               bool _hasColorÑategory = true);
+               const QString& _iconName);
 
     // True if nothing is set
     bool isEmpty() const;
@@ -38,9 +37,6 @@ struct U2CORE_EXPORT IconParameters {
     QString iconÑategory;
     // Icon name
     QString iconName;
-    // True, if icon has two implementations (dark and light)
-    // False, if there is only one implementation for both color schemes
-    bool hasColorÑategory = false;
 };
 
 }  // namespace U2

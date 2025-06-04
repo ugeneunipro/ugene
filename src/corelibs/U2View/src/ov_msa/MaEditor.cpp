@@ -102,19 +102,19 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
     saveAlignmentAsAction->setObjectName("Save alignment as");
     connect(saveAlignmentAsAction, SIGNAL(triggered()), SLOT(sl_saveAlignmentAs()));
 
-    zoomInAction = new QAction(GUIUtils::getIconResource("core", "zoom_in.png", false), tr("Zoom In"), this);
+    zoomInAction = new QAction(GUIUtils::getIconResource("core", "zoom_in.png"), tr("Zoom In"), this);
     zoomInAction->setObjectName("Zoom In");
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomIn()));
 
-    zoomOutAction = new QAction(GUIUtils::getIconResource("core", "zoom_out.png", false), tr("Zoom Out"), this);
+    zoomOutAction = new QAction(GUIUtils::getIconResource("core", "zoom_out.png"), tr("Zoom Out"), this);
     zoomOutAction->setObjectName("Zoom Out");
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
-    zoomToSelectionAction = new QAction(GUIUtils::getIconResource("core", "zoom_reg.png", false), tr("Zoom To Selection"), this);
+    zoomToSelectionAction = new QAction(GUIUtils::getIconResource("core", "zoom_reg.png"), tr("Zoom To Selection"), this);
     zoomToSelectionAction->setObjectName("Zoom To Selection");
     connect(zoomToSelectionAction, SIGNAL(triggered()), SLOT(sl_zoomToSelection()));
 
-    resetZoomAction = new QAction(GUIUtils::getIconResource("core", "zoom_whole.png", false), tr("Reset Zoom"), this);
+    resetZoomAction = new QAction(GUIUtils::getIconResource("core", "zoom_whole.png"), tr("Reset Zoom"), this);
     resetZoomAction->setObjectName("Reset Zoom");
     connect(resetZoomAction, SIGNAL(triggered()), SLOT(sl_resetZoom()));
 
@@ -441,7 +441,7 @@ void MaEditor::resetColumnWidthCache() {
 }
 
 void MaEditor::initActions() {
-    showOverviewAction = new QAction(GUIUtils::getIconResource("core", "msa_show_overview.png", false), tr("Overview"), this);
+    showOverviewAction = new QAction(GUIUtils::getIconResource("core", "msa_show_overview.png"), tr("Overview"), this);
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);
     showOverviewAction->setChecked(true);
@@ -640,10 +640,10 @@ void MaEditor::sl_onClearActionTriggered() {
 void MaEditor::sl_colorThemeSwitched() {
     saveAlignmentAction->setIcon(GUIUtils::getIconResource("core", "msa_save.png"));
     saveAlignmentAsAction->setIcon(GUIUtils::getIconResource("core", "msa_save_as.png"));
-    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));
-    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png", false));
-    zoomToSelectionAction->setIcon(GUIUtils::getIconResource("core", "zoom_reg.png", false));
-    resetZoomAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png", false));
+    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png"));
+    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png"));
+    zoomToSelectionAction->setIcon(GUIUtils::getIconResource("core", "zoom_reg.png"));
+    resetZoomAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png"));
     changeFontAction->setIcon(GUIUtils::getIconResource("core", "font.png"));
     multilineViewAction->setIcon(GUIUtils::getIconResource("core", "multiline_view.png"));
 }

@@ -55,7 +55,7 @@ DatasetsListWidget::DatasetsListWidget(DatasetsController* _ctrl)
     newTabButton->setText("+");
     newTabButton->setObjectName("+");
     newTabButton->setToolTip(tr("Add dataset"));
-    newTabButton->setIcon(GUIUtils::getIconResource("core", "plus.png", false));
+    newTabButton->setIcon(GUIUtils::getIconResource("core", "plus.png"));
 
     connect(newTabButton, SIGNAL(clicked()), SLOT(sl_newDataset()));
     connect(tabs, SIGNAL(tabCloseRequested(int)), SLOT(sl_deleteDataset(int)));

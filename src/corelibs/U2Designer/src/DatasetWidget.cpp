@@ -57,9 +57,9 @@ URLListWidget::URLListWidget(URLListController* _ctrl)
     popup = new OptionsPopup(this);
 
     reset();
-    ui->addFileButton->setIcon(GUIUtils::getIconResource("U2Designer", "add_file.png", false));
-    ui->addDirButton->setIcon(GUIUtils::getIconResource("U2Designer", "add_directory.png", false));
-    ui->deleteButton->setIcon(GUIUtils::getIconResource("U2Designer", "exit.png", false));
+    ui->addFileButton->setIcon(GUIUtils::getIconResource("U2Designer", "add_file.png"));
+    ui->addDirButton->setIcon(GUIUtils::getIconResource("U2Designer", "add_directory.png"));
+    ui->deleteButton->setIcon(GUIUtils::getIconResource("U2Designer", "exit.png"));
     ui->upButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
     ui->downButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 
@@ -192,7 +192,7 @@ void URLListWidget::sl_dataChanged() {
 }
 
 void URLListWidget::si_colorThemeSwitched() {
-    ui->deleteButton->setIcon(GUIUtils::getIconResource("U2Designer", "exit.png", false));
+    ui->deleteButton->setIcon(GUIUtils::getIconResource("U2Designer", "exit.png"));
     ui->upButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
     ui->downButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 }

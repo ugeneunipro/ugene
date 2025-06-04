@@ -48,16 +48,16 @@ namespace U2 {
 CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView* view)
     : ADVSplitWidget(view) {
     zoomInAction = new QAction(tr("Zoom In"), this);
-    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));
+    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png"));
     zoomInAction->setToolTip(tr("Zoom In"));
     zoomInAction->setObjectName("tbZoomIn_" + view->getName());
 
     zoomOutAction = new QAction(tr("Zoom Out"), this);
-    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png", false));
+    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png"));
     zoomOutAction->setToolTip(tr("Zoom Out"));
 
     fitInViewAction = new QAction(tr("Fit To Full View"), this);
-    fitInViewAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png", false));
+    fitInViewAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png"));
     fitInViewAction->setToolTip(tr("Fit To Full View"));
 
     exportAction = new QAction(tr("Save circular view as image"), this);
@@ -65,7 +65,7 @@ CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView* view)
     exportAction->setToolTip(tr("Save circular view as image"));
 
     toggleRestrictionMapAction = new QAction(tr("Show/hide restriction sites map"), this);
-    toggleRestrictionMapAction->setIcon(GUIUtils::getIconResource("circular_view", "side_list.png", false));
+    toggleRestrictionMapAction->setIcon(GUIUtils::getIconResource("circular_view", "side_list.png"));
     toggleRestrictionMapAction->setToolTip(tr("Show/hide restriction sites map"));
     toggleRestrictionMapAction->setCheckable(true);
     toggleRestrictionMapAction->setChecked(true);
@@ -301,11 +301,11 @@ void CircularViewSplitter::sl_toggleRestrictionMap(bool toggle) {
 }
 
 void CircularViewSplitter::sl_colorThemeSwtiched() {
-    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));
-    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png", false));
-    fitInViewAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png", false));
+    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png"));
+    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png"));
+    fitInViewAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png"));
     exportAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
-    toggleRestrictionMapAction->setIcon(GUIUtils::getIconResource("circular_view", "side_list.png", false));
+    toggleRestrictionMapAction->setIcon(GUIUtils::getIconResource("circular_view", "side_list.png"));
 }
 
 }  // namespace U2

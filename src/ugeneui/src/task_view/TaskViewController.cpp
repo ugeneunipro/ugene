@@ -48,10 +48,10 @@ namespace U2 {
 #define SETTINGS_ROOT QString("task_view/")
 
 TaskViewDockWidget::TaskViewDockWidget() {
-    waitingIp = IconParameters("ugene", "hourglass.png", false);
-    activeIp = IconParameters("ugene", "hourglass_go.png", false);
-    wasErrorIp = IconParameters("ugene", "hourglass_err.png", false);
-    finishedIp = IconParameters("ugene", "hourglass_ok.png", false);
+    waitingIp = IconParameters("ugene", "hourglass.png");
+    activeIp = IconParameters("ugene", "hourglass_go.png");
+    wasErrorIp = IconParameters("ugene", "hourglass_err.png");
+    finishedIp = IconParameters("ugene", "hourglass_ok.png");
 
     setObjectName(DOCK_TASK_VIEW);
     setWindowTitle(tr("Tasks"));
@@ -88,15 +88,15 @@ TaskViewDockWidget::~TaskViewDockWidget() {
 void TaskViewDockWidget::initActions() {
     cancelTaskAction = new QAction(tr("Cancel task"), this);
     cancelTaskAction->setObjectName("Cancel task");
-    cancelTaskAction->setIcon(GUIUtils::getIconResource("ugene", "cancel.png", false));
+    cancelTaskAction->setIcon(GUIUtils::getIconResource("ugene", "cancel.png"));
     connect(cancelTaskAction, SIGNAL(triggered()), SLOT(sl_onCancelTask()));
 
     viewReportAction = new QAction(tr("View report"), this);
-    viewReportAction->setIcon(GUIUtils::getIconResource("ugene", "task_report.png", false));
+    viewReportAction->setIcon(GUIUtils::getIconResource("ugene", "task_report.png"));
     connect(viewReportAction, SIGNAL(triggered()), SLOT(sl_onViewTaskReport()));
 
     removeReportAction = new QAction(tr("Remove report"), this);
-    removeReportAction->setIcon(GUIUtils::getIconResource("ugene", "task_report.png", false));
+    removeReportAction->setIcon(GUIUtils::getIconResource("ugene", "task_report.png"));
     connect(removeReportAction, SIGNAL(triggered()), SLOT(sl_onRemoveTaskReport()));
 
     TaskScheduler* s = AppContext::getTaskScheduler();
@@ -571,7 +571,7 @@ QAction* TVReportWindow::createDirAction(const QString& url, QObject* parent) {
         tr("Open containing folder"),
         info.dir().absolutePath(),
         parent,
-        GUIUtils::getResourceName("ugene", "project_open.png", false));
+        GUIUtils::getResourceName("ugene", "project_open.png"));
 }
 
 QAction* TVReportWindow::createFileAction(const QString& url, QObject* parent) {

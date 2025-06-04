@@ -697,7 +697,7 @@ bool ProjectTreeController::eventFilter(QObject* o, QEvent* e) {
 }
 
 void ProjectTreeController::setupActions() {
-    addObjectToDocumentAction = new QAction(GUIUtils::getIconResource("core", "add_gobject.png", false), tr("Add object to document..."), this);
+    addObjectToDocumentAction = new QAction(GUIUtils::getIconResource("core", "add_gobject.png"), tr("Add object to document..."), this);
     addObjectToDocumentAction->setObjectName(ACTION_PROJECT__ADD_OBJECT);
     tree->addAction(addObjectToDocumentAction);
     connect(addObjectToDocumentAction, SIGNAL(triggered()), SLOT(sl_onAddObjectToSelectedDocument()));
@@ -733,7 +733,7 @@ void ProjectTreeController::setupActions() {
     renameAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     tree->addAction(renameAction);
 
-    removeSelectedItemsAction = new QAction(GUIUtils::getIconResource("core", "remove_selected_documents.png", false), tr("Remove selected items"), this);
+    removeSelectedItemsAction = new QAction(GUIUtils::getIconResource("core", "remove_selected_documents.png"), tr("Remove selected items"), this);
     removeSelectedItemsAction->setShortcut(QKeySequence::Delete);
     removeSelectedItemsAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     tree->addAction(removeSelectedItemsAction);

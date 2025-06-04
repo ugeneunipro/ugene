@@ -392,16 +392,16 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
 
     restoreDefaultsAction = new QAction(this);
     restoreDefaultsAction->setText(tr("Restore Default View"));
-    restoreDefaultsAction->setIcon(GUIUtils::getIconResource("biostruct3d_view", "restore.png", false));
+    restoreDefaultsAction->setIcon(GUIUtils::getIconResource("biostruct3d_view", "restore.png"));
     connect(restoreDefaultsAction, SIGNAL(triggered()), SLOT(sl_restoreDefaults()));
 
     zoomInAction = new QAction(this);
     zoomInAction->setText(tr("Zoom In"));
-    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));
+    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png"));
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomIn()));
 
     zoomOutAction = new QAction(this);
-    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png", false));
+    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png"));
     zoomOutAction->setText(tr("Zoom Out"));
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
@@ -424,7 +424,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     }
 
     addModelAction = new QAction(this);
-    addModelAction->setIcon(GUIUtils::getIconResource("core", "add_gobject.png", false));
+    addModelAction->setIcon(GUIUtils::getIconResource("core", "add_gobject.png"));
     addModelAction->setText(tr("Add"));
     connect(addModelAction, SIGNAL(triggered()), SLOT(sl_addModel()));
 
@@ -435,7 +435,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     // toolbar->addWidget(settingsMenuButton);
 
     widgetStateMenuAction = new QAction(this);
-    widgetStateMenuAction->setIcon(GUIUtils::getIconResource("core", "adv_widget_menu.png", false));
+    widgetStateMenuAction->setIcon(GUIUtils::getIconResource("core", "adv_widget_menu.png"));
     widgetStateMenuAction->setText(tr("Toggle view"));
     widgetStateMenuAction->setToolTip(tr("Toggle view"));
     connect(widgetStateMenuAction, SIGNAL(triggered()), this, SLOT(sl_showStateMenu()));

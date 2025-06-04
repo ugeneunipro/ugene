@@ -305,9 +305,9 @@ bool WorkflowUtils::validate(const Schema& schema, QList<QListWidgetItem*>& info
             item = new QListWidgetItem(QString("%1: %2").arg(a->getLabel()).arg(notification.message));
         }
         if (notification.type == WorkflowNotification::U2_ERROR) {
-            item->setData(ICON_DATA_REF, QVariant::fromValue<IconParameters>(IconParameters("U2Lang", "error.png", false)));
+            item->setData(ICON_DATA_REF, QVariant::fromValue<IconParameters>(IconParameters("U2Lang", "error.png")));
         } else if (notification.type == WorkflowNotification::U2_WARNING) {
-            item->setData(ICON_DATA_REF, QVariant::fromValue<IconParameters>(IconParameters("U2Lang", "warning.png", false)));
+            item->setData(ICON_DATA_REF, QVariant::fromValue<IconParameters>(IconParameters("U2Lang", "warning.png")));
         } else if (a != nullptr) {
             item->setData(ICON_DATA_REF, QVariant::fromValue<IconParameters>(a->getProto()->getIconParameters()));
         }

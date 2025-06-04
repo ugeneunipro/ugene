@@ -58,7 +58,7 @@ CreateRulerDialogController::CreateRulerDialogController(const QSet<QString>& na
     updateColorSample();
 
     connect(colorButton, SIGNAL(clicked()), SLOT(sl_colorButtonClicked()));
-    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png", false));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png"));
 }
 
 void CreateRulerDialogController::updateColorSample() {

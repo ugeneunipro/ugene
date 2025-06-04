@@ -137,7 +137,7 @@ MsaEditor::MsaEditor(const QString& viewName, MsaObject* obj)
     buildTreeAction->setObjectName("Build Tree");
     connect(buildTreeAction, SIGNAL(triggered()), SLOT(sl_buildTree()));
 
-    alignSelectedSequencesToAlignmentAction = new QAction(GUIUtils::getIconResource("core", "realign_some_sequences.png", false), tr("Realign sequence(s) to other sequences"), this);
+    alignSelectedSequencesToAlignmentAction = new QAction(GUIUtils::getIconResource("core", "realign_some_sequences.png"), tr("Realign sequence(s) to other sequences"), this);
     alignSelectedSequencesToAlignmentAction->setObjectName("align_selected_sequences_to_alignment");
 
     pairwiseAlignmentWidgetsSettings = new PairwiseAlignmentWidgetsSettings;
@@ -493,7 +493,7 @@ void MsaEditor::sl_colorThemeSwitched() {
     searchInSequenceNamesAction->setIcon(GUIUtils::getIconResource("core", "find_dialog.png"));
     saveScreenshotAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
     buildTreeAction->setIcon(GUIUtils::getIconResource("core", "phylip.png"));
-    alignSelectedSequencesToAlignmentAction->setIcon(GUIUtils::getIconResource("core", "realign_some_sequences.png", false));
+    alignSelectedSequencesToAlignmentAction->setIcon(GUIUtils::getIconResource("core", "realign_some_sequences.png"));
 
     MaEditor::sl_colorThemeSwitched();
 }
@@ -566,7 +566,7 @@ void MsaEditor::initActions() {
     alignAction->setObjectName("Align");
     connect(alignAction, SIGNAL(triggered()), this, SLOT(sl_align()));
 
-    alignNewSequencesToAlignmentAction = new QAction(GUIUtils::getIconResource("core", "add_to_alignment.png", false), tr("Align sequence(s) to this alignment"), this);
+    alignNewSequencesToAlignmentAction = new QAction(GUIUtils::getIconResource("core", "add_to_alignment.png"), tr("Align sequence(s) to this alignment"), this);
     alignNewSequencesToAlignmentAction->setObjectName("align_new_sequences_to_alignment_action");
     connect(alignNewSequencesToAlignmentAction, &QAction::triggered, this, &MsaEditor::sl_alignNewSequencesToAlignment);
 

@@ -82,7 +82,7 @@ void ExternalToolSupportAction::setState(bool isAnyToolConfigured) {
         (AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath().isEmpty())) {
         isConfiguredToolFont.setItalic(true);
         const auto& grayIconParameters = tool->getGrayIconParameters();
-        auto grayIcon = GUIUtils::getIconResource(grayIconParameters.icon—ategory, grayIconParameters.iconName, grayIconParameters.hasColor—ategory);
+        auto grayIcon = GUIUtils::getIconResource(grayIconParameters);
         setIcon(GUIUtils::getIconResource(grayIconParameters));
     } else {
         isConfiguredToolFont.setItalic(false);

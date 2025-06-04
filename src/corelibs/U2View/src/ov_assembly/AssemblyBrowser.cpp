@@ -635,10 +635,10 @@ void AssemblyBrowser::initFont() {
 }
 
 void AssemblyBrowser::setupActions() {
-    zoomInAction = new QAction(GUIUtils::getIconResource("core", "zoom_in.png", false), tr("Zoom in"), this);
+    zoomInAction = new QAction(GUIUtils::getIconResource("core", "zoom_in.png"), tr("Zoom in"), this);
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomIn()));
 
-    zoomOutAction = new QAction(GUIUtils::getIconResource("core", "zoom_out.png", false), tr("Zoom out"), this);
+    zoomOutAction = new QAction(GUIUtils::getIconResource("core", "zoom_out.png"), tr("Zoom out"), this);
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
     auto linearScaleAction = new QAction(tr("Linear"), this);
@@ -657,7 +657,7 @@ void AssemblyBrowser::setupActions() {
     showCoverageOnRulerAction->setCheckable(true);
     connect(showCoverageOnRulerAction, SIGNAL(toggled(bool)), SLOT(sl_onShowCoverageOnRulerChanged(bool)));
 
-    readHintEnabledAction = new QAction(GUIUtils::getIconResource("core", "tooltip.png", false), tr("Show information about read under cursor in pop-up hint"), this);
+    readHintEnabledAction = new QAction(GUIUtils::getIconResource("core", "tooltip.png"), tr("Show information about read under cursor in pop-up hint"), this);
     readHintEnabledAction->setObjectName("readHintEnabledAction");
     readHintEnabledAction->setCheckable(true);
     connect(readHintEnabledAction, SIGNAL(toggled(bool)), SLOT(sl_onReadHintEnabledChanged(bool)));
@@ -1105,8 +1105,8 @@ void AssemblyBrowser::sl_onReferenceLoaded() {
 }
 
 void AssemblyBrowser::sl_colorThemeSwitched() {
-    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png", false));
-    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png", false));
+    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png"));
+    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png"));
     showCoordsOnRulerAction->setIcon(GUIUtils::getIconResource("core", "notch.png"));
     showCoverageOnRulerAction->setIcon(GUIUtils::getIconResource("core", "ruler_coverage.png"));
     saveScreenShotAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));

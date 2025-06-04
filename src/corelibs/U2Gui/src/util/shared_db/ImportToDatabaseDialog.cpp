@@ -342,7 +342,7 @@ void ImportToDatabaseDialog::addFolder(const QString& url) {
     const QString dstFolder = commonOptions.createSubfolderForTopLevelFolder ? U2DbiUtils::makeFolderCanonical(baseFolder + U2ObjectDbi::PATH_SEP + QFileInfo(url).fileName()) : baseFolder;
 
     auto newItem = new QTreeWidgetItem(QStringList() << url << dstFolder);
-    newItem->setIcon(COLUMN_ITEM_TEXT, GUIUtils::getIconResource("U2Designer", "directory.png", false));
+    newItem->setIcon(COLUMN_ITEM_TEXT, GUIUtils::getIconResource("U2Designer", "directory.png"));
     newItem->setFlags(Qt::ItemIsEditable | newItem->flags());
     setFolderTooltip(newItem);
     folders << newItem;

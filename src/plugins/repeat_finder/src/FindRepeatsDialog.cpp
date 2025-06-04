@@ -147,7 +147,7 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext* _sc)
 
     updateStatus();
 
-    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png", false));
+    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png"));
 }
 
 void FindRepeatsDialog::prepareAMenu(QToolButton* tb, QLineEdit* le, const QStringList& names) {

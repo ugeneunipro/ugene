@@ -46,9 +46,9 @@ MfoldSupport::MfoldSupport()
     : ExternalTool(ET_MFOLD_ID, "mfold", "mfold") {
     if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new MfoldContext(this);
-        icon = IconParameters("external_tool_support", "mfold.png", true);
-        grayIcon = IconParameters("external_tool_support", "mfold_gray.png", false);
-        warnIcon = IconParameters("external_tool_support", "mfold_warn.png", true);
+        icon = IconParameters("external_tool_support", "mfold.png");
+        grayIcon = IconParameters("external_tool_support", "mfold_gray.png");
+        warnIcon = IconParameters("external_tool_support", "mfold_warn.png");
         viewCtx->init();
     }
     description = tr(

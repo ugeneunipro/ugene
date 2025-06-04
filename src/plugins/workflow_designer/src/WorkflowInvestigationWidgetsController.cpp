@@ -65,7 +65,7 @@ WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(Q
     Q_UNUSED(container);
 
     exportInvestigationAction = new QAction(
-        GUIUtils::getIconResource("workflow_designer", "document_convert.png", false),
+        GUIUtils::getIconResource("workflow_designer", "document_convert.png"),
         tr(CONVERT_TO_DOC_ACTION_NAME),
         this);
     connect(exportInvestigationAction, SIGNAL(triggered()), SLOT(sl_exportInvestigation()));

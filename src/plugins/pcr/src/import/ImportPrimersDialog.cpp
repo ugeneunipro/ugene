@@ -79,7 +79,7 @@ void ImportPrimersDialog::sl_addFileClicked() {
     dirHelper.url = QFileInfo(fileList.last()).absoluteFilePath();
 
     for (const QString& filePath : qAsConst(fileList)) {
-        auto item = new QListWidgetItem(GUIUtils::getIconResource("core", "document.png", false).pixmap(16, 16), filePath);
+        auto item = new QListWidgetItem(GUIUtils::getIconResource("core", "document.png").pixmap(16, 16), filePath);
         item2file.insert(item, filePath);
         lwFiles->addItem(item);
     }
@@ -99,7 +99,7 @@ void ImportPrimersDialog::sl_addObjectClicked() {
     ProjectTreeItemSelectorDialog::selectObjectsAndFolders(settings, this, folders, objects);
 
     foreach (const Folder& folder, folders) {
-        auto item = new QListWidgetItem(GUIUtils::getIconResource("U2Designer", "directory.png", false).pixmap(16, 16), folder.getFolderPath());
+        auto item = new QListWidgetItem(GUIUtils::getIconResource("U2Designer", "directory.png").pixmap(16, 16), folder.getFolderPath());
         item2folder.insert(item, folder);
         lwObjects->addItem(item);
     }

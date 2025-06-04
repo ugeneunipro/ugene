@@ -194,7 +194,7 @@ QWidget* WelcomePageWidget::createFooterWidget() {
 
     footerStrippedLineWidget = new QWidget();
     footerStrippedLineWidget->setFixedHeight(31);
-    footerStrippedLineWidget->setStyleSheet(BACKGROUND_URL.arg(GUIUtils::getResourceName("ugene", "line.png", true, "welcome_page")));
+    footerStrippedLineWidget->setStyleSheet(BACKGROUND_URL.arg(GUIUtils::getResourceName("ugene", "line.png", "welcome_page")));
     footerWidgetLayout->addWidget(footerStrippedLineWidget);
 
     footerBottomWidget = new QWidget();
@@ -230,7 +230,7 @@ QWidget* WelcomePageWidget::createFooterWidget() {
     footerBottomWidgetLayout->addStretch(1);
 
     QString supportUgene = tr("Support UGENE:");
-    footerSupportLabel = new QLabel(FOOTER_SUPPORT_LABEL_STRING.arg(supportUgene).arg(GUIUtils::getResourceName("ugene", "social_icon_patreon.png", true, "welcome_page")));
+    footerSupportLabel = new QLabel(FOOTER_SUPPORT_LABEL_STRING.arg(supportUgene).arg(GUIUtils::getResourceName("ugene", "social_icon_patreon.png", "welcome_page")));
     footerSupportLabel->setOpenExternalLinks(true);
     footerSupportLabel->setAlignment(Qt::AlignTop);
     footerBottomWidgetLayout->addWidget(footerSupportLabel);
@@ -350,10 +350,10 @@ void WelcomePageWidget::sl_colorThemeSwitched() {
     recentProjectsLabel->setStyleSheet(recentHeaderStyle);
 
     footerWidget->setStyleSheet(BACKGROUND_COLOR.arg(isDark ? "#3F4547" : "#B2C4C9"));
-    footerStrippedLineWidget->setStyleSheet(BACKGROUND_URL.arg(GUIUtils::getResourceName("ugene", "line.png", true, "welcome_page")));
+    footerStrippedLineWidget->setStyleSheet(BACKGROUND_URL.arg(GUIUtils::getResourceName("ugene", "line.png", "welcome_page")));
     footerBottomWidget->setStyleSheet(COLOR_FONT_SIZE.arg(isDark ? "#2BB6F2" : "#145774"));
     QString supportUgene = tr("Support UGENE:");
-    footerSupportLabel->setText(FOOTER_SUPPORT_LABEL_STRING.arg(supportUgene).arg(GUIUtils::getResourceName("ugene", "social_icon_patreon.png", true, "welcome_page")));
+    footerSupportLabel->setText(FOOTER_SUPPORT_LABEL_STRING.arg(supportUgene).arg(GUIUtils::getResourceName("ugene", "social_icon_patreon.png", "welcome_page")));
 
     QString recentItemStyle = RECENT_ITEM_STYLE.arg(isDark ? "#2DC0FF" : "#1B769D");
     normalStyle = recentItemStyle + " text-decoration: none;";

@@ -643,7 +643,7 @@ int main(int argc, char** argv) {
     auto appSettingsGUI = new AppSettingsGUIImpl();
     appContext->setAppSettingsGUI(appSettingsGUI);
 
-    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, new TaskViewDockWidget(), IconParameters("ugene", "clock.png", false), QKeySequence(Qt::ALT | Qt::Key_2));
+    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, new TaskViewDockWidget(), IconParameters("ugene", "clock.png"), QKeySequence(Qt::ALT | Qt::Key_2));
 
     // Initialize logged log view
     auto logView = new LogViewWidget(&logsCache);
@@ -651,7 +651,7 @@ int main(int argc, char** argv) {
     logView->sl_colorThemeSwitched();
     mw->connectLogView(logView);
     AppContext::getAppSettingsGUI()->registerPage(new LogSettingsPageController(logView));
-    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, logView, IconParameters("ugene", "book_open.png", false), QKeySequence(Qt::ALT | Qt::Key_3));
+    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, logView, IconParameters("ugene", "book_open.png"), QKeySequence(Qt::ALT | Qt::Key_3));
 
     auto ovfr = new GObjectViewFactoryRegistry();
     appContext->setObjectViewFactoryRegistry(ovfr);

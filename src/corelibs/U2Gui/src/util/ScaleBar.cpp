@@ -43,23 +43,23 @@ ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
     connect(scaleBar, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_updateState()));
 
-    minusAction = new QAction(GUIUtils::getIconResource("core", "minus.png", false), tr("Decrease peaks height"), this);
+    minusAction = new QAction(GUIUtils::getIconResource("core", "minus.png"), tr("Decrease peaks height"), this);
     connect(minusAction, SIGNAL(triggered()), SLOT(sl_minusButtonClicked()));
 
     minusButton = new QToolButton();
     minusButton->setText(QString(tr("Decrease peaks height")));
-    minusButton->setIcon(GUIUtils::getIconResource("core", "minus.png", false));
+    minusButton->setIcon(GUIUtils::getIconResource("core", "minus.png"));
     minusButton->setFixedSize(20, 20);
     minusButton->setAutoRepeat(true);
     minusButton->setAutoRepeatInterval(20);
     connect(minusButton, SIGNAL(clicked()), minusAction, SLOT(trigger()));
 
-    plusAction = new QAction(GUIUtils::getIconResource("core", "plus.png", false), tr("Increase peaks height"), this);
+    plusAction = new QAction(GUIUtils::getIconResource("core", "plus.png"), tr("Increase peaks height"), this);
     connect(plusAction, SIGNAL(triggered()), SLOT(sl_plusButtonClicked()));
 
     plusButton = new QToolButton(this);
     plusButton->setText(QString(tr("Increase peaks height")));
-    plusButton->setIcon(GUIUtils::getIconResource("core", "plus.png", false));
+    plusButton->setIcon(GUIUtils::getIconResource("core", "plus.png"));
     plusButton->setAutoRepeat(true);
     plusButton->setAutoRepeatInterval(20);
     plusButton->setFixedSize(20, 20);
@@ -129,10 +129,10 @@ void ScaleBar::sl_updateState() {
 }
 
 void ScaleBar::sl_colorThemeSwitched() {
-    minusAction->setIcon(GUIUtils::getIconResource("core", "minus.png", false));
-    minusButton->setIcon(GUIUtils::getIconResource("core", "minus.png", false));
-    plusAction->setIcon(GUIUtils::getIconResource("core", "plus.png", false));
-    plusButton->setIcon(GUIUtils::getIconResource("core", "plus.png", false));
+    minusAction->setIcon(GUIUtils::getIconResource("core", "minus.png"));
+    minusButton->setIcon(GUIUtils::getIconResource("core", "minus.png"));
+    plusAction->setIcon(GUIUtils::getIconResource("core", "plus.png"));
+    plusButton->setIcon(GUIUtils::getIconResource("core", "plus.png"));
 }
 
 }  // namespace U2

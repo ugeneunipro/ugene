@@ -101,7 +101,7 @@ void PWMatrixSearchWorker::registerProto() {
     delegates[BaseAttributes::STRAND_ATTRIBUTE().getId()] = new ComboBoxDelegate(BaseAttributes::STRAND_ATTRIBUTE_VALUES_MAP());
     proto->setPrompter(new PWMatrixSearchPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconParameters(IconParameters("weight_matrix", "weight_matrix.png", true));
+    proto->setIconParameters(IconParameters("weight_matrix", "weight_matrix.png"));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_TRANSCRIPTION(), proto);
 }
 

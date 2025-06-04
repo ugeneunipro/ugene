@@ -468,7 +468,7 @@ void ProjectViewImpl::enable() {
     SAFE_POINT(projectViewWidget == nullptr, "Project widget is already initialized", );
     projectViewWidget = new ProjectViewWidget();
 
-    saveSelectedDocsAction = new QAction(GUIUtils::getIconResource("ugene", "save_selected_documents.png", false), tr("Save selected documents"), projectViewWidget);
+    saveSelectedDocsAction = new QAction(GUIUtils::getIconResource("ugene", "save_selected_documents.png"), tr("Save selected documents"), projectViewWidget);
     saveSelectedDocsAction->setObjectName(ACTION_PROJECT__SAVE_DOCUMENT);
     connect(saveSelectedDocsAction, SIGNAL(triggered()), SLOT(sl_onSaveSelectedDocs()));
 
@@ -477,12 +477,12 @@ void ProjectViewImpl::enable() {
     connect(toggleCircularAction, SIGNAL(triggered()), SLOT(sl_onToggleCircular()));
 
     relocateDocumentAction = new QAction(tr("Relocate..."), projectViewWidget);
-    relocateDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "relocate.png", false));
+    relocateDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "relocate.png"));
     connect(relocateDocumentAction, SIGNAL(triggered()), SLOT(sl_relocate()));
 
     exportDocumentAction = new QAction(tr("Export document..."), projectViewWidget);
     exportDocumentAction->setObjectName("Export document");
-    exportDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "save_copy.png", false));
+    exportDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "save_copy.png"));
     connect(exportDocumentAction, SIGNAL(triggered()), SLOT(sl_exportDocument()));
 
     openContainingFolderAction = new QAction(tr("Open containing folder"), projectViewWidget);
@@ -494,7 +494,7 @@ void ProjectViewImpl::enable() {
     MainWindow* mw = AppContext::getMainWindow();
     MWDockManager* dm = mw->getDockManager();
     projectViewWidget->setObjectName("project_view");  // TODO: must be DOCK_PROJECT_VIEW (as set in the constructor) but requires fixes across many files.
-    dm->registerDock(MWDockArea_Left, projectViewWidget, IconParameters("ugene", "project.png", false), QKeySequence(Qt::ALT | Qt::Key_1));
+    dm->registerDock(MWDockArea_Left, projectViewWidget, IconParameters("ugene", "project.png"), QKeySequence(Qt::ALT | Qt::Key_1));
     if (AppContext::getSettings()->getValue(SETTINGS_ROOT + "firstShow", true).toBool()) {
         dm->activateDock(projectViewWidget->objectName());
         AppContext::getSettings()->setValue(SETTINGS_ROOT + "firstShow", false);

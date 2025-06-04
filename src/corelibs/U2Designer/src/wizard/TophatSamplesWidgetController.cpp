@@ -333,7 +333,7 @@ QWidget* TophatSamples::initSample(const QString& sampleName, const QStringList&
     auto hl = new QHBoxLayout();
     {  // header
         hl->setContentsMargins(0, 0, 0, 0);
-        QToolButton* removeButton = createButton(this, IconParameters("U2Designer", "exit.png", false));
+        QToolButton* removeButton = createButton(this, IconParameters("U2Designer", "exit.png"));
         connect(removeButton, SIGNAL(clicked()), SLOT(sl_remove()));
         hl->addWidget(new SampleNameEdit(this, sampleName, this));
         hl->addWidget(removeButton);
@@ -551,7 +551,7 @@ QVBoxLayout* TophatSamples::createControlButtons() {
     auto result = new QVBoxLayout();
     result->setContentsMargins(0, 0, 0, 0);
 
-    QToolButton* addButton = createButton(this, IconParameters("core", "plus.png", false));
+    QToolButton* addButton = createButton(this, IconParameters("core", "plus.png"));
     upButton = createButton(this, IconParameters("U2Designer", "up.png"));
     downButton = createButton(this, IconParameters("U2Designer", "down.png"));
     result->addWidget(addButton);

@@ -139,14 +139,14 @@ void BreakpointManagerView::createActions() {
     newBreakpointAction->setEnabled(true);
 
     deleteAllBreakpointsAction = new QAction(tr("Delete &all breakpoints"), this);
-    deleteAllBreakpointsAction->setIcon(GUIUtils::getIconResource("U2Lang", "error.png", false));
+    deleteAllBreakpointsAction->setIcon(GUIUtils::getIconResource("U2Lang", "error.png"));
     deleteAllBreakpointsAction->setShortcut(QKeySequence("Shift+Del"));
     deleteAllBreakpointsAction->setShortcutContext(Qt::WidgetShortcut);
     connect(deleteAllBreakpointsAction, SIGNAL(triggered()), SLOT(sl_deleteAllBreakpoints()));
     deleteAllBreakpointsAction->setEnabled(false);
 
     deleteSelectedBreakpointAction = new QAction(tr("&Delete"), this);
-    deleteSelectedBreakpointAction->setIcon(GUIUtils::getIconResource("workflow_designer", "delete.png", false));
+    deleteSelectedBreakpointAction->setIcon(GUIUtils::getIconResource("workflow_designer", "delete.png"));
     deleteSelectedBreakpointAction->setShortcut(QKeySequence("Del"));
     deleteSelectedBreakpointAction->setShortcutContext(Qt::WidgetShortcut);
 
@@ -155,7 +155,7 @@ void BreakpointManagerView::createActions() {
     deleteSelectedBreakpointAction->setToolTip(tr("Delete the selected breakpoints"));
 
     disableAllBreakpointsAction = new QAction(tr("&Enable or disable all breakpoints"), this);
-    disableAllBreakpointsAction->setIcon(GUIUtils::getIconResource("workflow_designer", "disable_all_breakpoints.png", false));
+    disableAllBreakpointsAction->setIcon(GUIUtils::getIconResource("workflow_designer", "disable_all_breakpoints.png"));
     disableAllBreakpointsAction->setShortcut(QKeySequence("Ctrl+D"));
     connect(disableAllBreakpointsAction, SIGNAL(triggered()), SLOT(sl_disableAllBreakpoints()));
     disableAllBreakpointsAction->setEnabled(false);

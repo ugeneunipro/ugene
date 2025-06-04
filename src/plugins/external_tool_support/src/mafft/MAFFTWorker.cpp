@@ -114,7 +114,7 @@ void MAFFTWorkerFactory::init() {
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new MAFFTPrompter());
-    proto->setIconParameters(IconParameters("external_tool_support", "cmdline.png", true));
+    proto->setIconParameters(IconParameters("external_tool_support", "cmdline.png"));
     proto->addExternalTool(MAFFTSupport::ET_MAFFT_ID, EXT_TOOL_PATH);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 

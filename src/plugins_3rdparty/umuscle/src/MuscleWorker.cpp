@@ -100,7 +100,7 @@ void MuscleWorkerFactory::init() {
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new MusclePrompter());
-    proto->setIconParameters(IconParameters("umuscle", "muscle.png", false));
+    proto->setIconParameters(IconParameters("umuscle", "muscle.png"));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

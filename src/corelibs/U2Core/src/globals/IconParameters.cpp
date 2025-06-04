@@ -23,8 +23,8 @@
 
 namespace U2 {
 
-IconParameters::IconParameters(const QString& _iconÑategory, const QString& _iconName, bool _hasColorÑategory)
-    : iconÑategory(_iconÑategory), iconName(_iconName), hasColorÑategory(_hasColorÑategory) {
+IconParameters::IconParameters(const QString& _iconÑategory, const QString& _iconName)
+    : iconÑategory(_iconÑategory), iconName(_iconName) {
 }
 
 bool IconParameters::isEmpty() const {

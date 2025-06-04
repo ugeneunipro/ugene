@@ -63,7 +63,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     dnaView = v->getAnnotatedDNAView();
 
     showQVAction = new QAction(tr("Show quality bars"), this);
-    showQVAction->setIcon(GUIUtils::getIconResource("chroma_view", "bars.png", false));
+    showQVAction->setIcon(GUIUtils::getIconResource("chroma_view", "bars.png"));
     showQVAction->setCheckable(true);
     showQVAction->setChecked(chromatogram->hasQV);
     showQVAction->setEnabled(chromatogram->hasQV);

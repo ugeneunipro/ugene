@@ -70,9 +70,9 @@ TaskStatusBar::TaskStatusBar() {
     taskCountLabel->setObjectName("taskCountLabel");
     l->addWidget(taskCountLabel);
 
-    notificationEmpty = QPixmap(GUIUtils::getResourceName("ugene", "empty_notification.png", false)).scaled(16, 16);
-    notificationReport = QPixmap(GUIUtils::getResourceName("ugene", "has_report.png", false)).scaled(16, 16);
-    notificationError = QPixmap(GUIUtils::getResourceName("ugene", "has_error.png", false)).scaled(16, 16);
+    notificationEmpty = QPixmap(GUIUtils::getResourceName("ugene", "empty_notification.png")).scaled(16, 16);
+    notificationReport = QPixmap(GUIUtils::getResourceName("ugene", "has_report.png")).scaled(16, 16);
+    notificationError = QPixmap(GUIUtils::getResourceName("ugene", "has_error.png")).scaled(16, 16);
 
     lampLabel = new QLabel();
     notificationLabel = new QLabel();
@@ -86,8 +86,8 @@ TaskStatusBar::TaskStatusBar() {
     l->addSpacing(16);
 #endif
 
-    iconOn = QPixmap(GUIUtils::getResourceName("ugene", "lightbulb.png", false)).scaled(16, 16);
-    iconOff = QPixmap(GUIUtils::getResourceName("ugene", "lightbulb_off.png", false)).scaled(16, 16);
+    iconOn = QPixmap(GUIUtils::getResourceName("ugene", "lightbulb.png")).scaled(16, 16);
+    iconOff = QPixmap(GUIUtils::getResourceName("ugene", "lightbulb_off.png")).scaled(16, 16);
 
     connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_taskStateChanged(Task*)));
     connect(AppContext::getTaskScheduler(), SIGNAL(si_topLevelTaskUnregistered(Task*)), SLOT(sl_newReport(Task*)));

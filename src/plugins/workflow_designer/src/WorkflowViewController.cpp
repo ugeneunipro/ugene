@@ -659,7 +659,7 @@ void WorkflowView::createActions() {
 
     validateAction = new QAction(tr("&Validate workflow"), this);
     validateAction->setObjectName("Validate workflow");
-    validateAction->setIcon(GUIUtils::getIconResource("workflow_designer", "ok.png", false));
+    validateAction->setIcon(GUIUtils::getIconResource("workflow_designer", "ok.png"));
     validateAction->setShortcut(QKeySequence("Ctrl+E"));
     connect(validateAction, SIGNAL(triggered()), SLOT(sl_validate()));
 
@@ -678,7 +678,7 @@ void WorkflowView::createActions() {
     debugActions.append(pauseAction);
 
     nextStepAction = new QAction(tr("&Next step"), this);
-    nextStepAction->setIcon(GUIUtils::getIconResource("workflow_designer", "next_step.png", false));
+    nextStepAction->setIcon(GUIUtils::getIconResource("workflow_designer", "next_step.png"));
     nextStepAction->setShortcut(QKeySequence("F10"));
     nextStepAction->setEnabled(false);
     connect(nextStepAction, SIGNAL(triggered()), debugInfo, SLOT(sl_isolatedStepTriggerActivated()));
@@ -688,7 +688,7 @@ void WorkflowView::createActions() {
     toggleBreakpointAction->setEnabled(false);
 
     tickReadyAction = new QAction(tr("Process one &message"), this);
-    tickReadyAction->setIcon(GUIUtils::getIconResource("workflow_designer", "process_one_message.png", false));
+    tickReadyAction->setIcon(GUIUtils::getIconResource("workflow_designer", "process_one_message.png"));
     tickReadyAction->setShortcut(QKeySequence("Ctrl+M"));
     tickReadyAction->setEnabled(false);
     connect(tickReadyAction, SIGNAL(triggered()), SLOT(sl_processOneMessage()));
@@ -698,20 +698,20 @@ void WorkflowView::createActions() {
     debugActions.append(tickReadyAction);
 
     newAction = new QAction(tr("&New workflow..."), this);
-    newAction->setIcon(GUIUtils::getIconResource("workflow_designer", "filenew.png", false));
+    newAction->setIcon(GUIUtils::getIconResource("workflow_designer", "filenew.png"));
     newAction->setShortcuts(QKeySequence::New);
     newAction->setObjectName("New workflow action");
     connect(newAction, SIGNAL(triggered()), SLOT(sl_newScene()));
 
     saveAction = new QAction(tr("&Save workflow"), this);
     saveAction->setObjectName("Save workflow");
-    saveAction->setIcon(GUIUtils::getIconResource("workflow_designer", "filesave.png", false));
+    saveAction->setIcon(GUIUtils::getIconResource("workflow_designer", "filesave.png"));
     saveAction->setShortcut(QKeySequence::Save);
     saveAction->setShortcutContext(Qt::WindowShortcut);
     connect(saveAction, SIGNAL(triggered()), SLOT(sl_saveScene()));
 
     saveAsAction = new QAction(tr("&Save workflow as..."), this);
-    saveAsAction->setIcon(GUIUtils::getIconResource("workflow_designer", "filesaveas.png", false));
+    saveAsAction->setIcon(GUIUtils::getIconResource("workflow_designer", "filesaveas.png"));
     connect(saveAsAction, SIGNAL(triggered()), SLOT(sl_saveSceneAs()));
     saveAsAction->setObjectName("Save workflow action");
 
@@ -721,7 +721,7 @@ void WorkflowView::createActions() {
     connect(showWizard, SIGNAL(triggered()), SLOT(sl_showWizard()));
 
     toggleBreakpointManager = new QAction("Show or hide breakpoint manager", this);
-    toggleBreakpointManager->setIcon(GUIUtils::getIconResource("workflow_designer", "show_breakpoint_manager.png", false));
+    toggleBreakpointManager->setIcon(GUIUtils::getIconResource("workflow_designer", "show_breakpoint_manager.png"));
     toggleBreakpointManager->setObjectName("Show or hide breakpoint manager");
     connect(toggleBreakpointManager, SIGNAL(triggered()), SLOT(sl_toggleBreakpointManager()));
 
@@ -743,7 +743,7 @@ void WorkflowView::createActions() {
     connect(exportAction, SIGNAL(triggered()), SLOT(sl_exportScene()));
 
     deleteAction = new QAction(tr("Delete"), this);
-    deleteAction->setIcon(GUIUtils::getIconResource("workflow_designer", "delete.png", false));
+    deleteAction->setIcon(GUIUtils::getIconResource("workflow_designer", "delete.png"));
     connect(deleteAction, SIGNAL(triggered()), scene, SLOT(sl_deleteItem()));
 
     dmAction = new QAction(tr("Dashboards manager"), this);
@@ -769,7 +769,7 @@ void WorkflowView::createActions() {
 
     configureParameterAliasesAction = new QAction(tr("Set parameter aliases..."), this);
     configureParameterAliasesAction->setObjectName("Set parameter aliases");
-    configureParameterAliasesAction->setIcon(GUIUtils::getIconResource("workflow_designer", "table_relationship.png", false));
+    configureParameterAliasesAction->setIcon(GUIUtils::getIconResource("workflow_designer", "table_relationship.png"));
     connect(configureParameterAliasesAction, SIGNAL(triggered()), SLOT(sl_configureParameterAliases()));
 
     createGalaxyConfigAction = new QAction(tr("Create Galaxy tool config..."), this);
@@ -789,7 +789,7 @@ void WorkflowView::createActions() {
     addAction(copyAction);
 
     cutAction = new QAction(tr("Cu&t"), sceneView);
-    cutAction->setIcon(GUIUtils::getIconResource("workflow_designer", "editcut.png", false));
+    cutAction->setIcon(GUIUtils::getIconResource("workflow_designer", "editcut.png"));
     cutAction->setShortcuts(QKeySequence::Cut);
     cutAction->setShortcutContext(Qt::WidgetShortcut);
     connect(cutAction, SIGNAL(triggered()), SLOT(sl_cutItems()));
@@ -1430,7 +1430,7 @@ bool WorkflowView::sl_validate(bool notify) {
     if (lst.count() != 0) {
         for(QListWidgetItem* wi : qAsConst(lst)) {
             auto ip = wi->data(ICON_DATA_REF).value<IconParameters>();
-            wi->setIcon(GUIUtils::getIconResource(ip.iconÑategory, ip.iconName, ip.hasColorÑategory));
+            wi->setIcon(GUIUtils::getIconResource(ip));
             infoList->addItem(wi);
         }
         bottomTabs->show();

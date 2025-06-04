@@ -38,12 +38,12 @@ MaUndoRedoFramework::MaUndoRedoFramework(QObject* parent, MsaObject* _maObject)
       maObject(_maObject) {
     SAFE_POINT(maObject != nullptr, "NULL MSA Object!", );
 
-    undoAction = new QAction(GUIUtils::getIconResource("core", "undo.png", false), tr("Undo"), this);
+    undoAction = new QAction(GUIUtils::getIconResource("core", "undo.png"), tr("Undo"), this);
     undoAction->setObjectName("msa_action_undo");
     undoAction->setShortcut(QKeySequence::Undo);
     GUIUtils::updateActionToolTip(undoAction);
 
-    redoAction = new QAction(GUIUtils::getIconResource("core", "redo.png", false), tr("Redo"), this);
+    redoAction = new QAction(GUIUtils::getIconResource("core", "redo.png"), tr("Redo"), this);
     redoAction->setObjectName("msa_action_redo");
     redoAction->setShortcut(QKeySequence::Redo);
     GUIUtils::updateActionToolTip(redoAction);
@@ -141,8 +141,8 @@ void MaUndoRedoFramework::sl_redo() {
 }
 
 void MaUndoRedoFramework::sl_colorThemeSwitched() {
-    undoAction->setIcon(GUIUtils::getIconResource("core", "undo.png", false));
-    redoAction->setIcon(GUIUtils::getIconResource("core", "redo.png", false));
+    undoAction->setIcon(GUIUtils::getIconResource("core", "undo.png"));
+    redoAction->setIcon(GUIUtils::getIconResource("core", "redo.png"));
 }
 
 QAction* MaUndoRedoFramework::getUndoAction() const {

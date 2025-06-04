@@ -27,7 +27,7 @@ namespace U2 {
 
 FileItem::FileItem(const QString& url, QListWidget* parent)
     : UrlItem(url, parent) {
-    this->setIcon(GUIUtils::getIconResource("core", "document.png", false).pixmap(16, 16));
+    this->setIcon(GUIUtils::getIconResource("core", "document.png").pixmap(16, 16));
 }
 
 void FileItem::accept(UrlItemVisitor* visitor) {
