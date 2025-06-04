@@ -601,7 +601,7 @@ int main(int argc, char** argv) {
     qInstallMessageHandler(guiTestMessageOutput);
 
     QString styleName = userAppSettings->getVisualStyle();
-    int colorThemeIndex = userAppSettings->getColorThemeIndex();
+    int colorThemeIndex = userAppSettings->getColorThemeId();
 
     auto resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);

@@ -287,8 +287,6 @@ void fillDarkColorsColorScheme(QVector<QColor>& colorsPerChar) {
 }
 
 void addUgeneAminoLight(QVector<QColor>& colorsPerChar) {
-    Q_UNUSED(colorsPerChar);
-
     // Note: Using direct RGB colors instead of .lighter()/.darker()
     // Reason: lighter() & darker() produce a color that can be mapped back to the RGB space differently on different OSes (RBG space is limited).
     // To make GUI testing stable across different OS-es we hard-code some RBB values.
@@ -326,8 +324,6 @@ void addUgeneAminoLight(QVector<QColor>& colorsPerChar) {
 }
 
 void addUgeneAminoDark(QVector<QColor>& colorsPerChar) {
-    Q_UNUSED(colorsPerChar);
-
     // amino groups: "KRH", "GPST", "FWY", "ILM"
     SET_C('K', "#CCBB00");
     SET_C('R', "#B2A000");

@@ -129,12 +129,12 @@ QList<Task*> Shtirlitz::wakeup() {
             auto styleInfo = dialog.getNewStyle();
             UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
             auto currentVisualStyle = st->getVisualStyle();
-            auto currentcolorThemeIndex = st->getColorThemeIndex();
+            auto currentcolorThemeIndex = st->getColorThemeId();
 
             if (currentVisualStyle != styleInfo.first || currentcolorThemeIndex != styleInfo.second) {
                 AppContext::getMainWindow()->setNewStyle(styleInfo.first, styleInfo.second);
                 st->setVisualStyle(styleInfo.first);
-                st->setColorThemeIndex((int)styleInfo.second);
+                st->setColorThemeId((int)styleInfo.second);
             }
         }
     }

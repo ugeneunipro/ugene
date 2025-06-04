@@ -75,7 +75,7 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageController::getSavedState()
     state->openLastProjectFlag = s->openLastProjectAtStartup();
     state->askToSaveProject = s->getAskToSaveProject();
     state->style = s->getVisualStyle();
-    state->colorTheme = static_cast<StyleFactory::ColorTheme>(s->getColorThemeIndex());
+    state->colorTheme = static_cast<StyleFactory::ColorTheme>(s->getColorThemeId());
     state->enableStatistics = s->isStatisticsCollectionEnabled();
     state->tabbedWindowLayout = s->tabbedWindowLayout();
     state->resetSettings = s->resetSettings();
@@ -99,10 +99,10 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* 
     st->setAutoScalingInHighDpiModeDisabled(state->isHighDpiAutoScalingDisabled);
 
     if (state->style.compare(st->getVisualStyle(), Qt::CaseInsensitive) != 0 ||
-        state->colorTheme != static_cast<StyleFactory::ColorTheme>(st->getColorThemeIndex())) {
+        state->colorTheme != static_cast<StyleFactory::ColorTheme>(st->getColorThemeId())) {
         AppContext::getMainWindow()->setNewStyle(state->style, (int)state->colorTheme);
         st->setVisualStyle(state->style);
-        st->setColorThemeIndex((int)state->colorTheme);
+        st->setColorThemeId((int)state->colorTheme);
     }
 }
 

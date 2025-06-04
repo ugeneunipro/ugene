@@ -95,7 +95,7 @@ SplashScreenWidget::SplashScreenWidget() {
               (v.suffix.isEmpty() ? "" : "-" + v.suffix);
 
     UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
-    StyleFactory::ColorTheme colorTheme = static_cast<StyleFactory::ColorTheme>(userAppSettings->getColorThemeIndex());
+    StyleFactory::ColorTheme colorTheme = static_cast<StyleFactory::ColorTheme>(userAppSettings->getColorThemeId());
     switch (colorTheme) {
         case StyleFactory::ColorTheme::Light:
             isDark = false;

@@ -148,11 +148,11 @@ void UserAppsSettings::setVisualStyle(const QString& newStyle) {
     return AppContext::getSettings()->setValue(SETTINGS_ROOT + VISUAL_STYLE, newStyle.toLower());
 }
 
-int UserAppsSettings::getColorThemeIndex() const {
+int UserAppsSettings::getColorThemeId() const {
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + COLOR_THEME, 0).toInt();
 }
 
-void UserAppsSettings::setColorThemeIndex(int newColorThemeIndex) {
+void UserAppsSettings::setColorThemeId(int newColorThemeIndex) {
     return AppContext::getSettings()->setValue(SETTINGS_ROOT + COLOR_THEME, newColorThemeIndex);
 }
 

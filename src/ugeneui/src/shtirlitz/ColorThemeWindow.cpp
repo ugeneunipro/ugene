@@ -66,7 +66,7 @@ ColorThemeWindow::ColorThemeWindow(QWidget* parent)
                                            "/dark",
                                            ""};
 
-    int colorThemeIndex = userAppSettings->getColorThemeIndex();
+    int colorThemeIndex = userAppSettings->getColorThemeId();
     auto hBoxLayout = new QHBoxLayout(this);
     for (int i = 0; i < colorThemes.size(); i++) {
         const auto& theme = colorThemes[i];

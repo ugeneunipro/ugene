@@ -53,8 +53,8 @@ public:
     void setVisualStyle(const QString& newStyle);
 
     // a style selected by user
-    int getColorThemeIndex() const;
-    void setColorThemeIndex(int newColorThemeIndex);
+    int getColorThemeId() const;
+    void setColorThemeId(int newColorThemeIndex);
 
     // specify dir for downloaded files
     QString getDownloadDirPath() const;

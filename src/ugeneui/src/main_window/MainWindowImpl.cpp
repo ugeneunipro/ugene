@@ -469,7 +469,7 @@ void MainWindowImpl::prepareGUI() {
 #ifdef Q_OS_WIN
     connect(&colorThemeTimer, &QTimer::timeout, this, [this]() {
         auto s = AppContext::getAppSettings()->getUserAppsSettings();
-        auto cm = static_cast<StyleFactory::ColorTheme>(s->getColorThemeIndex());
+        auto cm = static_cast<StyleFactory::ColorTheme>(s->getColorThemeId());
         CHECK(cm == StyleFactory::ColorTheme::Auto, );
 
         setNewStyle(s->getVisualStyle(), (int)cm);

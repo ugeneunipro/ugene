@@ -342,13 +342,6 @@ void TreeViewer::onObjectRenamed(GObject*, const QString&) {
 }
 
 void TreeViewer::sl_colorThemeSwitched() {
-    if (layoutMenu != nullptr) {
-        auto acts = layoutMenu->actions();
-        layoutMenu->setIcon(GUIUtils::getIconResource("core", "tree_layout.png"));
-        labelsMenu->setIcon(GUIUtils::getIconResource("core", "text_ab.png"));
-        treeImageActionsSubmenu->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
-    }
-
     layoutButton->setIcon(GUIUtils::getIconResource("core", "tree_layout.png"));
     showLabelsButton->setIcon(GUIUtils::getIconResource("core", "text_ab.png"));
     treeImageActionsButton->setIcon(GUIUtils::getIconResource("core", "cam2.png"));

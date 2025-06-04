@@ -27,20 +27,20 @@ namespace U2 {
 // Parameters, which define an image
 struct U2CORE_EXPORT IconParameters {
     IconParameters() = default;
-    IconParameters(const QString& _iconCathegory,
+    IconParameters(const QString& _iconÑategory,
                const QString& _iconName,
-               bool _hasColorCathegory = true);
+               bool _hasColorÑategory = true);
 
     // True if nothing is set
     bool isEmpty() const;
 
-    // Cathegory of the image. This is the prefix, defined in .qrc file
-    QString iconCathegory;
+    // Ñategory of the image. This is the prefix, defined in .qrc file
+    QString iconÑategory;
     // Icon name
     QString iconName;
     // True, if icon has two implementations (dark and light)
     // False, if there is only one implementation for both color schemes
-    bool hasColorCathegory = false;
+    bool hasColorÑategory = false;
 };
 
 }  // namespace U2
