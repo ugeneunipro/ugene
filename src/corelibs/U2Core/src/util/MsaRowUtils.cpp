@@ -501,7 +501,10 @@ QByteArray MsaRowUtils::getGappedSubsequence(const U2Region& region, const QByte
             pos += gap->length;
             gapIndex++;
         }
-        SAFE_POINT(pos < region.startPos ? result.isEmpty() : result.length() <= pos - region.startPos, "Invalid result region after processing gap.", {});
+        SAFE_POINT(pos < region.startPos ? result.isEmpty() : result.length() <= pos - region.startPos,
+            QString("Invalid result region after processing gap, failed: %1 < %2 ? %3 : %4 <= %1 - %2")
+            .arg(pos).arg(region.startPos).arg(result.isEmpty()).arg(result.length()),
+                   {});
     }
     SAFE_POINT(result.length() <= region.length, "Invalid result length after processing gaps", {});
 
