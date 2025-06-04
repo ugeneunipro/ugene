@@ -4192,13 +4192,13 @@ GUI_TEST_CLASS_DEFINITION(test_7730) {
     QAction* wrapMode = GTAction::findActionByText("Wrap mode");
     GTWidget::click(GTAction::button(wrapMode));
 
-    // Сheck the "Show distances column" box.
+    // Check the "Show distances column" box.
     GTCheckBox::setChecked("showDistancesColumnCheck", true);
 
     // Disable "Wrap mode".
     GTWidget::click(GTAction::button(wrapMode));
 
-    // Сheck the "Exclude gaps" box.
+    // Check the "Exclude gaps" box.
     GTCheckBox::setChecked("excludeGapsCheckBox", true);
     GTUtilsTaskTreeView::waitTaskFinished();
 

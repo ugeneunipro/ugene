@@ -277,11 +277,11 @@ QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconNam
 }
 
 QIcon GUIUtils::getIconResource(const IconParameters& parameters) {
-    return getIconResource(parameters.icon—ategory, parameters.iconName);
+    return getIconResource(parameters.iconCategory, parameters.iconName);
 }
 
 QString GUIUtils::getResourceName(const IconParameters& parameters) {
-    return getResourceName(parameters.icon—ategory, parameters.iconName);
+    return getResourceName(parameters.iconCategory, parameters.iconName);
 }
 
 void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {

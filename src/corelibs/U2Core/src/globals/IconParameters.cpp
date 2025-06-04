@@ -23,12 +23,12 @@
 
 namespace U2 {
 
-IconParameters::IconParameters(const QString& _iconÑategory, const QString& _iconName)
-    : iconÑategory(_iconÑategory), iconName(_iconName) {
+IconParameters::IconParameters(const QString& _iconCategory, const QString& _iconName)
+    : iconCategory(_iconCategory), iconName(_iconName) {
 }
 
 bool IconParameters::isEmpty() const {
-    return iconÑategory.isEmpty() || iconName.isEmpty();
+    return iconCategory.isEmpty() || iconName.isEmpty();
 }
 
 }  // namespace U2

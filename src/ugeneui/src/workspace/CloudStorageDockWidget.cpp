@@ -125,7 +125,7 @@ static void updateModel(QTreeView* tree,
     }
     for (const CloudStorageEntry& childEntry : qAsConst(entry->children)) {
         IconParameters params;
-        params.iconÑategory = "ugene";
+        params.iconCategory = "ugene";
         if (childEntry->isFolder) {
             if (childEntry->getName() == "Shared" && childEntry->path.length() == 1) {
                 params.iconName = "folder_shared.svg";

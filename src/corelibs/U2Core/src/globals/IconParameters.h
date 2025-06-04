@@ -27,14 +27,14 @@ namespace U2 {
 // Parameters, which define an image
 struct U2CORE_EXPORT IconParameters {
     IconParameters() = default;
-    IconParameters(const QString& _icon—ategory,
+    IconParameters(const QString& _iconCategory,
                const QString& _iconName);
 
     // True if nothing is set
     bool isEmpty() const;
 
-    // —ategory of the image. This is the prefix, defined in .qrc file
-    QString icon—ategory;
+    // Category of the image. This is the prefix, defined in .qrc file
+    QString iconCategory;
     // Icon name
     QString iconName;
 };
