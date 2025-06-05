@@ -123,9 +123,10 @@ void MSAImageExportToBitmapTask::run() {
         QPixmap namesPixmap = msaSettings.includeSeqNames ? QPixmap(ui->getEditorNameList()->getCanvasSize(msaSettings.seqIdx)) : QPixmap();
         QPixmap consensusPixmap = visibleConsensusElements ? QPixmap(ui->getConsensusArea()->getCanvasSize(region, visibleConsensusElements)) : QPixmap();
 
-        sequencesPixmap.fill(Qt::white);
-        namesPixmap.fill(Qt::white);
-        consensusPixmap.fill(Qt::white);
+        QColor base = QPalette().base().color();
+        sequencesPixmap.fill(base);
+        namesPixmap.fill(base);
+        consensusPixmap.fill(base);
 
         QPainter sequencesPainter(&sequencesPixmap);
         QPainter namesPainter;
@@ -167,7 +168,7 @@ QPixmap MSAImageExportToBitmapTask::mergePixmaps(const QPixmap& multilinePixmap,
 
     QPixmap newPixmap = QPixmap(newPixmapWidth, newPixmapHeight);
 
-    newPixmap.fill(Qt::white);
+    newPixmap.fill(QPalette().base().color());
     QPainter p(&newPixmap);
     p.drawPixmap(multilinePixmap.rect(), multilinePixmap);
     p.translate(0, multilinePixmap.height() + verticalSpacing);
@@ -242,7 +243,7 @@ void MSAImageExportToSvgTask::run() {
 
     QPainter p;
     p.begin(&generator);
-    p.fillRect(QRect(0, 0, (int)width, (int)height), Qt::white);
+    p.fillRect(QRect(0, 0, (int)width, (int)height), QPalette().base().color());
     for (const auto& region : qAsConst(multilineRegions)) {
         // Draw consensus & ruler.
         if (msaSettings.includeConsensus || msaSettings.includeRuler) {

@@ -1,8 +1,11 @@
 <RCC>
     <qresource prefix="circular_view/" >
-        <file>images/circular.png</file>
         <file>images/empty_folder.png</file>
         <file>images/folder.png</file>
-        <file>images/side_list.png</file>      
+        <file>images/side_list.png</file>
+
+        <file>images/light/circular.png</file>
+
+        <file>images/dark/circular.png</file>
     </qresource>
 </RCC>

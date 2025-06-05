@@ -41,6 +41,9 @@ protected:
         // do not draw any special toolbar control -> make is merged with parent widget
     }
 
+protected slots:
+    void sl_colorThemeSwitched();
+
 private:
     void setButtonsTabOrder() const;
 

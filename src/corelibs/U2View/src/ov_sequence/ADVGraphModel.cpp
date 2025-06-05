@@ -29,6 +29,8 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/MainWindow.h>
+
 #include "GSequenceGraphView.h"
 #include "GraphSettingsDialog.h"
 #include "WindowStepSelectorWidget.h"
@@ -97,11 +99,13 @@ QPair<float, float> GSequenceGraphUtils::getMinAndMaxInRange(const QSharedPointe
 // drawer
 GSequenceGraphDrawer::GSequenceGraphDrawer(GSequenceGraphView* view, qint64 _window, qint64 _step)
     : QObject(view), view(view), window(_window), step(_step), visibleMin(UNDEFINED_GRAPH_VALUE), visibleMax(UNDEFINED_GRAPH_VALUE) {
-    DEFAULT_COLOR = tr("Default color");
+    DEFAULT_COLOR_NAME = tr("Default color");
+    DEFAULT_COLOR = QPalette().text().color();
     defFont = new QFont("Arial", 8);  // TODO: unsafe. MS-only font.
-    seriesColorByName.insert(DEFAULT_COLOR, Qt::black);
+    seriesColorByName.insert(DEFAULT_COLOR_NAME, DEFAULT_COLOR);
 
     connect(&calculationTaskRunner, &BackgroundTaskRunner_base::si_finished, this, &GSequenceGraphDrawer::sl_calculationTaskFinished);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &GSequenceGraphDrawer::sl_colorThemeSwitched);
 }
 
 GSequenceGraphDrawer::~GSequenceGraphDrawer() {
@@ -136,6 +140,11 @@ void GSequenceGraphDrawer::sl_calculationTaskFinished() {
     }
 }
 
+void GSequenceGraphDrawer::sl_colorThemeSwitched() {
+    DEFAULT_COLOR = QPalette().text().color();
+    seriesColorByName.insert(DEFAULT_COLOR_NAME, DEFAULT_COLOR);
+}
+
 void GSequenceGraphDrawer::draw(QPainter& p, const QList<QSharedPointer<GSequenceGraphData>>& graphs, const QRect& rect) {
     calculatePoints(graphs, rect.width());
     if (!calculationTaskRunner.isIdle()) {
@@ -152,6 +161,7 @@ void GSequenceGraphDrawer::draw(QPainter& p, const QList<QSharedPointer<GSequenc
         }
     }
     if (isUndefined(visibleMin) || isUndefined(visibleMax) || graphs.isEmpty() || graphs[0]->viewPoints.isEmpty()) {
+        p.fillRect(rect, Qt::gray);
         p.drawText(rect, Qt::AlignCenter, tr("Graph is not available. Try to change calculation settings."));
         return;
     }
@@ -169,6 +179,7 @@ void GSequenceGraphDrawer::draw(QPainter& p, const QList<QSharedPointer<GSequenc
     // Draw min & max lines & labels.
     QPen minMaxPen(Qt::DashDotDotLine);
     minMaxPen.setWidth(1);
+    minMaxPen.setColor(QPalette().text().color());
     p.setPen(minMaxPen);
     p.setFont(*defFont);
 
@@ -187,8 +198,10 @@ void GSequenceGraphDrawer::drawGraph(QPainter& p, const QSharedPointer<GSequence
     int width = rect.width();
     SAFE_POINT(graph->viewPoints.size() == width, "Invalid count of view points in graph", );
 
+    p.fillRect(rect, QPalette().base().color());
+
     QPen graphPen(Qt::SolidLine);
-    graphPen.setColor(seriesColorByName.value(seriesColorByName.contains(graph->graphName) ? graph->graphName : DEFAULT_COLOR));
+    graphPen.setColor(seriesColorByName.value(graph->graphName, DEFAULT_COLOR));
     graphPen.setWidth(1);
     p.setPen(graphPen);
 
@@ -271,7 +284,7 @@ void GSequenceGraphDrawer::addLabelsForLocalMinMaxPoints(const QSharedPointer<GS
 }
 
 bool GSequenceGraphDrawer::updateLabel(const QSharedPointer<GSequenceGraphData>& graph, GraphLabel* label, const QRect& rect) const {
-    QColor color = seriesColorByName.value(seriesColorByName.contains(graph->graphName) ? graph->graphName : DEFAULT_COLOR);
+    QColor color = seriesColorByName.value(graph->graphName, DEFAULT_COLOR);
     label->setColor(color, color);
 
     bool isVisible = updateCoordinatesAndText(graph, rect, label);

@@ -53,7 +53,6 @@ Kalign3Support::Kalign3Support()
     : ExternalTool(Kalign3Support::ET_KALIGN_ID, "kalign", "Kalign") {
     if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new Kalign3SupportContext(this);
-        icon = QIcon(":external_tool_support/images/kalign.png");
     }
     executableFileName = isOsWindows() ? "kalign.exe" : "kalign";
     validationMessageRegExp = "kalign \\d+\\.\\d+\\.\\d+";

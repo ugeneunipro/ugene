@@ -28,9 +28,10 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Primer.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/Theme.h>
 
 #include "PrimerLibrary.h"
 
