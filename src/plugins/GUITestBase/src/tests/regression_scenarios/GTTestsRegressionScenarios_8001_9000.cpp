@@ -43,6 +43,7 @@
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
 #include <utils/GTUtilsDialog.h>
+#include <utils/GTUtilsToolTip.h>
 
 #include <QClipboard>
 #include <QDir>
@@ -1139,6 +1140,26 @@ GUI_TEST_CLASS_DEFINITION(test_8111) {
     const QSize initialSize = nameLabel->size();
     GTUtilsProjectTreeView::rename("human_T1 (UCSC April 2002 chr7:115977709-117855134)", "human_T1 xxxxxxxxx(UCSC April 2002 chr7:115977709-117855134)xxxxxxxxx");
     CHECK_SET_ERR(initialSize != nameLabel->size(), "Sequence name label size should change!");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8116) {
+    /*
+     * 1. Open COI.aln
+     * 2. Check tooltips for option panel tabs
+     * Expected state: they're present and the same as tabs headers
+     */
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget("OP_MSA_GENERAL")));
+    GTUtilsToolTip::checkExistingToolTip("General");
+
+    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget("OP_PAIRALIGN")));
+    GTUtilsToolTip::checkExistingToolTip("Pairwise Alignment");
+
+    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget("OP_MSA_TREES_WIDGET")));
+    GTUtilsToolTip::checkExistingToolTip("Tree Settings");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8118) {
