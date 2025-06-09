@@ -40,7 +40,6 @@ const QString GroupHeaderImageWidget::HEADER_COMMON_STYLE = "border-style: solid
 
 GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const QPixmap& image)
     : groupId(_groupId) {
-    //const QString defaultSs = QLabel().style();
     this->setPixmap(image);
 
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
