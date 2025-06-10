@@ -1477,6 +1477,47 @@ GUI_TEST_CLASS_DEFINITION(test_8161) {
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Statistics);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8170) {
+    // Open any sequence (e.g. murine.gb)
+    // Enable Restriction Sites auto annotations
+    // Expected: Restriction Sites auto annotations are enabled
+    // Open the "Find restriction enzymes" dialog
+    // Click "Select none"
+    // Click "OK"
+    // Expected: the messagebox "No enzymes are selected! Do you want to turn off enzymes annotations highlighting?" appeared
+    // Click No
+    // Expected: the messagebox dissapeared, but the "Find restriction enzymes" dialog is still opened
+    // Click Yes
+    // Expected: the "Find restriction enzymes" dialog is closed, Restriction Sites auto annotations are disabled
+    GTFileDialog::openFile(dataDir + "samples/Genbank", "murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    auto parent = GTWidget::findWidget("ADV_single_sequence_widget_0");
+    GTUtilsDialog::waitForDialog(new PopupChooser({"Restriction Sites"}));
+    GTWidget::click(GTWidget::findWidget("AutoAnnotationUpdateAction", parent));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            auto dialog = GTWidget::getActiveModalWidget();
+            GTWidget::click(GTWidget::findWidget("selectNoneButton", dialog));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No, "No enzymes are selected! Do you want to turn off <br>enzymes annotations highlighting?"));
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "No enzymes are selected! Do you want to turn off <br>enzymes annotations highlighting?"));
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{} , new Scenario));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsDialog::waitForDialog(new PopupChecker({"Restriction Sites"}, PopupChecker::CheckOptions(PopupChecker::CheckOption::IsUnchecked)));
+    GTWidget::click(GTWidget::findWidget("AutoAnnotationUpdateAction", parent));
+
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
