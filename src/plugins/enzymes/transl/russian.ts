@@ -269,7 +269,7 @@
     <message>
         <location filename="../src/DigestSequenceDialog.ui" line="78"/>
         <source>Selected enzymes:</source>
-        <translation>Выбранные сайты:</translation>
+        <translation>Выбранные энзимы:</translation>
     </message>
     <message>
         <location filename="../src/DigestSequenceDialog.ui" line="91"/>
@@ -584,7 +584,7 @@
     <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="140"/>
         <source>Selected enzyme info</source>
-        <translation>Выделенный сайт</translation>
+        <translation>Выделенный энзим</translation>
     </message>
     <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="206"/>
