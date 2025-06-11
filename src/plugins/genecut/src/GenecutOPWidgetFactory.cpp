@@ -20,15 +20,16 @@
  */
 
 #include "GenecutOPWidgetFactory.h"
-#include "GenecutOPWidget.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/L10n.h>
-#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2View/AnnotatedDNAView.h>
+
+#include "GenecutOPWidget.h"
 
 namespace U2 {
 

@@ -20,10 +20,11 @@
  */
 
 #include "Python3ModuleCutadaptSupport.h"
-#include "Python3Support.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DataPathRegistry.h>
+
+#include "Python3Support.h"
 
 namespace U2 {
 

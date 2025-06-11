@@ -30,6 +30,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/PositionSelector.h>
 
 #include <U2Gui/GUIUtils.h>

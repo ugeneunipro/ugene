@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/WorkflowUtils.h>
 
 #include <U2Designer/PrompterBase.h>
@@ -31,7 +33,7 @@ namespace LocalWorkflow {
 class Kraken2ClassifyPrompter : public PrompterBase<Kraken2ClassifyPrompter> {
     Q_OBJECT
 public:
-    Kraken2ClassifyPrompter(Actor *actor = nullptr);
+    Kraken2ClassifyPrompter(Actor* actor = nullptr);
 
 protected:
     QString composeRichDoc() override;

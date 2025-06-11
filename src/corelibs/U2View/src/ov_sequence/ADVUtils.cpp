@@ -21,6 +21,8 @@
 
 #include "ADVUtils.h"
 
+#include <U2Gui/GUIUtils.h>
+
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
 #include "AnnotatedDNAView.h"

@@ -310,7 +310,7 @@ void MWDockManagerImpl::destroyDockData(DockData* d) {
     if (d->dock != nullptr) {
         saveDockGeometry(d);
     }
-    QToolBar* toolBar= getDockBar(d->area);
+    QToolBar* toolBar = getDockBar(d->area);
     toolBar->removeAction(d->toolBarAction);
 
     delete d->label;

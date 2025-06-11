@@ -141,7 +141,6 @@ void Primer3ADVContext::sl_showDialog() {
         auto ato = model.getAnnotationObject();
         seqCtx->getAnnotatedDNAView()->tryAddObject(ato);
 
-
         primer3Task = new Primer3TopLevelTask(settings, seqCtx->getSequenceObject(), ato, model.groupName, model.data->name, model.description);
     } else {
         auto resultFilePath = dialog.getResultFileName();

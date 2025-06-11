@@ -55,4 +55,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-

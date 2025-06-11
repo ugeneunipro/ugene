@@ -119,4 +119,3 @@ protected:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-

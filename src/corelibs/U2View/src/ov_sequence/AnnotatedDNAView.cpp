@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "AnnotatedDNAView.h"
+
 #include <QAction>
 #include <QApplication>
 #include <QMenu>
@@ -35,6 +37,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AutoAnnotationsSupport.h>
 #include <U2Core/ClipboardController.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/GObjectUtils.h>
@@ -72,7 +75,6 @@
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
 #include "ADVSyncViewManager.h"
-#include "AnnotatedDNAView.h"
 #include "AnnotatedDNAViewFactory.h"
 #include "AnnotatedDNAViewState.h"
 #include "AnnotatedDNAViewTasks.h"
@@ -81,7 +83,6 @@
 #include "DetView.h"
 #include "DetViewSequenceEditor.h"
 #include "GraphMenu.h"
-#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 

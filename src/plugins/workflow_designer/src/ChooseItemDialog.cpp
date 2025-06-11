@@ -21,6 +21,7 @@
 
 #include "ChooseItemDialog.h"
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/GUIUtils.h>
 

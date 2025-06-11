@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CloneObjectTask.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ImportDirToDatabaseTask.h>
 #include <U2Core/ImportDocumentToDatabaseTask.h>
@@ -49,7 +50,6 @@
 #include "CommonImportOptionsDialog.h"
 #include "ItemToImportEditDialog.h"
 #include "ui_ImportToDatabaseDialog.h"
-#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 
