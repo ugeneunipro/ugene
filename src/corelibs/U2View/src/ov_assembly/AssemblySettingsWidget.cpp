@@ -228,7 +228,7 @@ QWidget* AssemblySettingsWidget::createRulerSettings() {
 // AssemblySettingsWidgetFactory
 ////////////////////////////////////
 const QString AssemblySettingsWidgetFactory::GROUP_ID = "OP_ASS_SETTINGS";
-const QString AssemblySettingsWidgetFactory::GROUP_ICON_STR = ":core/images/settings2.png";
+const IconParameters AssemblySettingsWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "settings2.png");
 const QString AssemblySettingsWidgetFactory::GROUP_DOC_PAGE = "65929863";
 
 AssemblySettingsWidgetFactory::AssemblySettingsWidgetFactory() {
@@ -249,7 +249,7 @@ QWidget* AssemblySettingsWidgetFactory::createWidget(GObjectViewController* objV
 }
 
 OPGroupParameters AssemblySettingsWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Assembly Browser Settings"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Assembly Browser Settings"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

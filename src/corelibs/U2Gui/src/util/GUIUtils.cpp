@@ -230,6 +230,45 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
     QFontMetrics metrics(painter.font(), widgetToPaintOn);
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
 }
+namespace {
+
+QPixmap getPixmapResource(const QString& cathegory, const QString& iconName) {
+    QString resourceName = GUIUtils::getResourceName(cathegory, iconName);
+    QPixmap pixmap = QPixmap(resourceName);
+    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(cathegory).arg(iconName), QPixmap());
+
+    return pixmap;
+}
+
+}
+
+QString GUIUtils::getResourceName(const QString& cathegory, const QString& iconName, const QString& innerDirName) {
+    QString colorCathegory;
+    QString inner;
+    if (!innerDirName.isEmpty()) {
+        inner = innerDirName + "/";
+    }
+    QString resourceName = QString(":%1/images/%2%3%4").arg(cathegory).arg(inner).arg(colorCathegory).arg(iconName);
+    return resourceName;
+}
+
+QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconName) {
+    CHECK((!cathegory.isEmpty() && !iconName.isEmpty()), QIcon());
+
+    QIcon icon;
+    QPixmap pixmap = getPixmapResource(cathegory, iconName);
+    icon.addPixmap(pixmap);
+
+    return icon;
+}
+
+QIcon GUIUtils::getIconResource(const IconParameters& parameters) {
+    return getIconResource(parameters.iconCategory, parameters.iconName);
+}
+
+QString GUIUtils::getResourceName(const IconParameters& parameters) {
+    return getResourceName(parameters.iconCategory, parameters.iconName);
+}
 
 void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {
     SAFE_POINT(menu != nullptr, "menu is null", );

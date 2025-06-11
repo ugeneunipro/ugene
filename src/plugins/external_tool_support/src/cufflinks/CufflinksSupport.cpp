@@ -44,11 +44,6 @@ const QString CufflinksSupport::CUFFMERGE_TMP_DIR = "cuffmerge";
 
 CufflinksSupport::CufflinksSupport(const QString& id, const QString& name, const QString& path)
     : ExternalTool(id, "cufflinks", name, path) {
-    if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
 
     toolKitName = "Cufflinks";
     versionRegExp = QRegExp("v(\\d+\\.\\d+\\.\\d+)");

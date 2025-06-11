@@ -21,7 +21,10 @@
 
 #include "GroupHeaderImageWidget.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/GUIUtils.h>
 
 namespace U2 {
 
@@ -36,13 +39,13 @@ const QString GroupHeaderImageWidget::HEADER_COMMON_STYLE = "border-style: solid
                                                             "margin-top: 4px;"
                                                             "margin-right: 3px;";
 
-GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const QPixmap& image)
-    : groupId(_groupId) {
-    this->setPixmap(image);
+GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const IconParameters& _iconParameters)
+    : groupId(_groupId), iconParameters(_iconParameters) {
+    setPixmap(GUIUtils::getIconResource(iconParameters).pixmap(ICON_SIZE, ICON_SIZE));
 
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    int HEADER_MIN_SIZE = 32;
+    static constexpr int HEADER_MIN_SIZE = 32;
     setMinimumSize(HEADER_MIN_SIZE, HEADER_MIN_SIZE);
 
     setHeaderDeselected();

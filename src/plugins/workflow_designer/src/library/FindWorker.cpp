@@ -212,7 +212,7 @@ void FindWorkerFactory::init() {
     }
     proto->setEditor(new DelegateEditor(delegates));
 
-    proto->setIconPath(":core/images/find_dialog.png");
+    proto->setIconParameters(IconParameters("core", "find_dialog.png"));
     proto->setPrompter(new FindPrompter());
     proto->setValidator(new FindPatternsValidator());
     QList<Descriptor> reqSlots;

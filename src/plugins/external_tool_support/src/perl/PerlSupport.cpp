@@ -31,9 +31,9 @@ const QString PerlSupport::ET_PERL_ID = "USUPP_PERL";
 PerlSupport::PerlSupport()
     : RunnerTool(QStringList(), PerlSupport::ET_PERL_ID, "perl5", "perl") {
     if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/perl.png");
-        grayIcon = QIcon(":external_tool_support/images/perl_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/perl_warn.png");
+        icon = IconParameters("external_tool_support", "perl.png");
+        grayIcon = IconParameters("external_tool_support", "perl_gray.png");
+        warnIcon = IconParameters("external_tool_support", "perl_warn.png");
     }
 #ifdef Q_OS_WIN
     executableFileName = "perl.exe";

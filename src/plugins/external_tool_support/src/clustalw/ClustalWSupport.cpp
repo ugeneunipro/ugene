@@ -50,9 +50,9 @@ ClustalWSupport::ClustalWSupport()
     : ExternalTool(ClustalWSupport::ET_CLUSTAL_ID, "clustalw", "ClustalW") {
     if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new ClustalWSupportContext(this);
-        icon = QIcon(":external_tool_support/images/clustalx.png");
-        grayIcon = QIcon(":external_tool_support/images/clustalx_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/clustalx_warn.png");
+        icon = IconParameters("external_tool_support", "clustalx.png");
+        grayIcon = IconParameters("external_tool_support", "clustalx_gray.png");
+        warnIcon = IconParameters("external_tool_support", "clustalx_warn.png");
     }
 #ifdef Q_OS_WIN
     executableFileName = "clustalw2.exe";

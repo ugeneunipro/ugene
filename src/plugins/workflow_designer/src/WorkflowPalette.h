@@ -123,6 +123,7 @@ private:
 private:
     QMap<QString, QList<QAction*>> categoryMap;
     QMap<QAction*, QTreeWidgetItem*> actionMap;
+    QMap<ActorPrototype*, QAction*> protoActionsName;
     QTreeWidgetItem* overItem;
     QAction* currentAction;
     QPoint dragStartPosition;

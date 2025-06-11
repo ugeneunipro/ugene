@@ -233,7 +233,7 @@ void AminoTranslationWorkerFactory::init() {
 
     proto->setEditor(new DelegateEditor(delegates));
 
-    proto->setIconPath(":core/images/show_trans.png");
+    proto->setIconParameters(IconParameters("core", "show_trans.png"));
     proto->setPrompter(new AminoTranslationPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
@@ -355,7 +355,7 @@ Task* AminoTranslationWorker::tick() {
         DbiDataStorage* storage = context->getDataStorage();
         SAFE_POINT(storage != nullptr, "Invalid workflow data storage!", nullptr);
         auto transTask = new TranslateSequence2AminoTask(config,
-                                                                                 storage->getDbiRef());
+                                                         storage->getDbiRef());
 
         connect(transTask, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return transTask;

@@ -174,7 +174,7 @@ void RepeatWorkerFactory::init() {
 
     proto->setPrompter(new RepeatPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconPath(":repeat_finder/images/repeats.png");
+    proto->setIconParameters(IconParameters("repeat_finder", "repeats.png"));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

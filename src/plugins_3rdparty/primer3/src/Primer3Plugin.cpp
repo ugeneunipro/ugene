@@ -94,7 +94,7 @@ Primer3ADVContext::Primer3ADVContext(QObject* p)
 
 void Primer3ADVContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
-    auto a = new ADVGlobalAction(av, QIcon(":/primer3/images/primer3.png"), tr("Primer3..."), 95);
+    auto a = new ADVGlobalAction(av, IconParameters("primer3", "primer3.png"), tr("Primer3..."), 95);
     a->setObjectName("primer3_action");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, &ADVGlobalAction::triggered, this, &Primer3ADVContext::sl_showDialog);
@@ -135,7 +135,6 @@ void Primer3ADVContext::sl_showDialog() {
         const CreateAnnotationModel& model = dialog.getCreateAnnotationModel();
         auto ato = model.getAnnotationObject();
         seqCtx->getAnnotatedDNAView()->tryAddObject(ato);
-
 
         primer3Task = new Primer3TopLevelTask(settings, seqCtx->getSequenceObject(), ato, model.groupName, model.data->name, model.description);
     } else {

@@ -124,7 +124,7 @@ void SiteconSearchWorker::registerProto() {
     delegates[BaseAttributes::STRAND_ATTRIBUTE().getId()] = new ComboBoxDelegate(BaseAttributes::STRAND_ATTRIBUTE_VALUES_MAP());
     proto->setPrompter(new SiteconSearchPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconPath(":sitecon/images/sitecon.png");
+    proto->setIconParameters(IconParameters("sitecon", "sitecon.png"));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_TRANSCRIPTION(), proto);
 }
 

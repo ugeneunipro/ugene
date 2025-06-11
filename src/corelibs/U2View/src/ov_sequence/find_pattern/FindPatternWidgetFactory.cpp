@@ -32,7 +32,7 @@
 namespace U2 {
 
 const QString FindPatternWidgetFactory::GROUP_ID = "OP_FIND_PATTERN";
-const QString FindPatternWidgetFactory::GROUP_ICON_STR = ":core/images/find_dialog.png";
+const IconParameters FindPatternWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "find_dialog.png");
 const QString FindPatternWidgetFactory::GROUP_DOC_PAGE = "65929429";
 
 FindPatternWidgetFactory::FindPatternWidgetFactory() {
@@ -55,7 +55,7 @@ QWidget* FindPatternWidgetFactory::createWidget(GObjectViewController* objView, 
 }
 
 OPGroupParameters FindPatternWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Search in Sequence"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Search in Sequence"), GROUP_DOC_PAGE);
 }
 
 const QString& FindPatternWidgetFactory::getGroupId() {

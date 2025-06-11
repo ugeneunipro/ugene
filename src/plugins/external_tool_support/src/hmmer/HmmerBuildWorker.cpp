@@ -91,7 +91,7 @@ void HmmerBuildWorkerFactory::init() {
         delegates[SEED_ATTR] = new SpinBoxDelegate(m);
     }
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconPath(":/external_tool_support/images/hmmer.png");
+    proto->setIconParameters(IconParameters("external_tool_support", "hmmer.png"));
     proto->setPrompter(new HmmerBuildPrompter());
     proto->addExternalTool(HmmerSupport::BUILD_TOOL_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(Descriptor("hmmer3", HmmerBuildWorker::tr("HMMER3 Tools"), ""), proto);

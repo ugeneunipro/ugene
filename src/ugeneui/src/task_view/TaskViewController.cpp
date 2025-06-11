@@ -37,6 +37,8 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "TaskViewController.h"
 
 // TODO: do not create subtask items until not expanded
@@ -46,14 +48,13 @@ namespace U2 {
 #define SETTINGS_ROOT QString("task_view/")
 
 TaskViewDockWidget::TaskViewDockWidget() {
-    waitingIcon = QIcon(":ugene/images/hourglass.png");
-    activeIcon = QIcon(":ugene/images/hourglass_go.png");
-    wasErrorIcon = QIcon(":ugene/images/hourglass_err.png");
-    finishedIcon = QIcon(":ugene/images/hourglass_ok.png");
+    waitingIp = IconParameters("ugene", "hourglass.png");
+    activeIp = IconParameters("ugene", "hourglass_go.png");
+    wasErrorIp = IconParameters("ugene", "hourglass_err.png");
+    finishedIp = IconParameters("ugene", "hourglass_ok.png");
 
     setObjectName(DOCK_TASK_VIEW);
     setWindowTitle(tr("Tasks"));
-    setWindowIcon(QIcon(":ugene/images/clock.png"));
 
     auto l = new QVBoxLayout();
     l->setSpacing(0);
@@ -594,9 +595,9 @@ void TVTreeItem::updateVisual() {
     setText(TVColumns_Name, taskName);
 
     if (task == nullptr || task->isFinished()) {
-        setIcon(TVColumns_Name, wasError ? w->wasErrorIcon : w->finishedIcon);
+        setIcon(TVColumns_Name, GUIUtils::getIconResource(wasError ? w->wasErrorIp : w->finishedIp));
     } else {
-        setIcon(TVColumns_Name, task->isRunning() ? w->activeIcon : w->waitingIcon);
+        setIcon(TVColumns_Name, GUIUtils::getIconResource(task->isRunning() ? w->activeIp : w->waitingIp));
         setChildIndicatorPolicy(task->getSubtasks().isEmpty() ? QTreeWidgetItem::DontShowIndicator : QTreeWidgetItem::ShowIndicator);
     }
 

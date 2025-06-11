@@ -83,7 +83,7 @@ void GenomeAlignerBuildWorkerFactory::init() {
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new GenomeAlignerBuildPrompter());
-    proto->setIconPath(":core/images/align.png");
+    proto->setIconParameters(IconParameters("core", "align.png"));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ASSEMBLY(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -175,7 +175,7 @@ void GenomeAlignerIndexReaderWorkerFactory::init() {
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new GenomeAlignerIndexReaderPrompter());
-    proto->setIconPath(":core/images/align.png");
+    proto->setIconParameters(IconParameters("core", "align.png"));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ASSEMBLY(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

@@ -211,7 +211,7 @@ ReadVariationProto::ReadVariationProto()
 
     setPrompter(new ReadDocPrompter(ReadVariationWorker::tr("Reads variations from <u>%1</u>.")));
     if (AppContext::isGUIMode()) {
-        setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
+        setIconParameters(IconParameters("U2Designer", "blue_circle.png"));
     }
 }
 

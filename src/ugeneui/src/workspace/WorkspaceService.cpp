@@ -197,7 +197,7 @@ void WorkspaceService::enable() {
     updateMainMenuActions();
     cloudStorageService = new CloudStorageService(this);
     auto dockWidget = new CloudStorageDockWidget(this);
-    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Left, dockWidget, QKeySequence(Qt::ALT | Qt::Key_4));
+    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Left, dockWidget, IconParameters("ugene", "cloud_storage.svg"), QKeySequence(Qt::ALT | Qt::Key_4));
 }
 
 void WorkspaceService::updateMainMenuActions() {

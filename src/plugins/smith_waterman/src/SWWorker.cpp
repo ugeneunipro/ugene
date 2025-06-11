@@ -229,7 +229,7 @@ void SWWorkerFactory::init() {
     aled->connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(populate()));
     delegates[ALGO_ATTR] = aled;
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconPath(":core/images/sw.png");
+    proto->setIconParameters(IconParameters("core", "sw.png"));
     proto->setPrompter(new SWPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
