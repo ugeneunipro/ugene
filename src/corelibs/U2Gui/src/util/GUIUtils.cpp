@@ -230,40 +230,40 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
 }
 namespace {
 
-QPixmap getPixmapResource(const QString& cathegory, const QString& iconName) {
-    QString resourceName = GUIUtils::getResourceName(cathegory, iconName);
+QPixmap getPixmapResource(const QString& category, const QString& iconName) {
+    QString resourceName = GUIUtils::getResourceName(category, iconName);
     QPixmap pixmap = QPixmap(resourceName);
-    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(cathegory).arg(iconName), QPixmap());
+    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(category).arg(iconName), QPixmap());
 
     return pixmap;
 }
 
 }
 
-QString GUIUtils::getResourceName(const QString& cathegory, const QString& iconName, const QString& innerDirName) {
-    QString colorCathegory;
+QString GUIUtils::getResourceName(const QString& category, const QString& iconName, const QString& innerDirName) {
+    QString colorCategory;
     QString inner;
     if (!innerDirName.isEmpty()) {
         inner = innerDirName + "/";
     }
-    QString resourceName = QString(":%1/images/%2%3%4").arg(cathegory).arg(inner).arg(colorCathegory).arg(iconName);
+    QString resourceName = QString(":%1/images/%2%3%4").arg(category).arg(inner).arg(colorCategory).arg(iconName);
     if (!QFile::exists(resourceName)) {
         bool isDark = AppContext::getMainWindow()->isDarkTheme();
         if (isDark) {
-            colorCathegory = "dark/";
+            colorCategory = "dark/";
         } else {
-            colorCathegory = "light/";
+            colorCategory = "light/";
         }
-        resourceName = QString(":%1/images/%2%3%4").arg(cathegory).arg(inner).arg(colorCathegory).arg(iconName);
+        resourceName = QString(":%1/images/%2%3%4").arg(category).arg(inner).arg(colorCategory).arg(iconName);
     }
     return resourceName;
 }
 
-QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconName) {
-    CHECK((!cathegory.isEmpty() && !iconName.isEmpty()), QIcon());
+QIcon GUIUtils::getIconResource(const QString& category, const QString& iconName) {
+    CHECK((!category.isEmpty() && !iconName.isEmpty()), QIcon());
 
     QIcon icon;
-    QPixmap pixmap = getPixmapResource(cathegory, iconName);
+    QPixmap pixmap = getPixmapResource(category, iconName);
     icon.addPixmap(pixmap);
     if (AppContext::getMainWindow()->isDarkTheme()) {
         // automatic disabled icon is no good for dark theme
