@@ -37,11 +37,6 @@ const QString Bowtie2Support::ET_BOWTIE2_INSPECT_ID = "USUPP_BOWTIE2_INSPECT";
 
 Bowtie2Support::Bowtie2Support(const QString& id)
     : ExternalTool(id, "bowtie2", "") {
-    if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
 
     toolKitName = "Bowtie2";
     versionRegExp = QRegExp("version (\\d+\\.\\d+\\.\\d+[.]{0,1}[\\d+]{0,1})");

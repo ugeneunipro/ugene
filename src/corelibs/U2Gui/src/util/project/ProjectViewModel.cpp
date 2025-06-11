@@ -35,6 +35,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ObjectViewModel.h>
 
 #include "ConnectionHelper.h"
@@ -1037,8 +1038,9 @@ QVariant ProjectViewModel::getObjectDecorationData(GObject* obj, bool itemIsEnab
         }
     }
 
+    bool locked = obj->getGObjectModLock(GObjectModLock_IO) != nullptr;
     const GObjectTypeInfo& ti = GObjectTypes::getTypeInfo(obj->getGObjectType());
-    const QIcon& icon = (obj->getGObjectModLock(GObjectModLock_IO) != nullptr ? ti.lockedIcon : ti.icon);
+    QIcon icon = GUIUtils::getIconResource(locked ? ti.lockedIconParameters : ti.iconParameters);
     return getIcon(icon, itemIsEnabled);
 }
 

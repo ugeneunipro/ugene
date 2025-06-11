@@ -27,6 +27,7 @@
 #include <QTextEdit>
 #include <QTreeWidget>
 
+#include <U2Core/IconParameters.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/ProjectModel.h>
 
@@ -59,10 +60,10 @@ public:
 
     int countAvailableReports() const;
 
-    QIcon waitingIcon;
-    QIcon activeIcon;
-    QIcon finishedIcon;
-    QIcon wasErrorIcon;
+    IconParameters waitingIp;
+    IconParameters activeIp;
+    IconParameters finishedIp;
+    IconParameters wasErrorIp;
 
 signals:
     void si_reportsCountChanged();
@@ -158,4 +159,3 @@ public:
 };
 
 }  // namespace U2
-

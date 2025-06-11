@@ -24,6 +24,8 @@
 
 #include <QIcon>
 
+#include <U2Core/IconParameters.h>
+
 #include <U2Gui/MainWindow.h>
 
 class QLabel;
@@ -35,14 +37,16 @@ class MainWindowImpl;
 // used to save/restore geometry of the dock
 class DockWrapWidget : public QWidget {
 public:
-    DockWrapWidget(QWidget* w);
+    DockWrapWidget(QWidget* w, const IconParameters& iconParameters);
     ~DockWrapWidget();
 
     virtual QSize sizeHint() const {
         return hint.isNull() ? w->sizeHint() : hint;
     }
+
     QWidget* w;
     QSize hint;
+    IconParameters iconParameters;
 };
 
 class DockData {
@@ -62,7 +66,7 @@ public:
     MWDockManagerImpl(MainWindowImpl* _mw);
     ~MWDockManagerImpl();
 
-    virtual QAction* registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& keySequence = QKeySequence());
+    virtual QAction* registerDock(MWDockArea area, QWidget* dockWidget, const IconParameters& iconParameters, const QKeySequence& keySequence = QKeySequence());
 
     virtual QWidget* findWidget(const QString& widgetObjName);
 
