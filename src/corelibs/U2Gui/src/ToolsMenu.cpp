@@ -193,7 +193,7 @@ void ToolsMenu::init() {
     }
 
     actionText[HMMER_MENU] = tr("HMMER tools");
-    actionIcon[HMMER_MENU] = IconParameters("hmm2", "hmmer_16.png");
+    actionIcon[HMMER_MENU] = IconParameters("hmm2", "hmmer2.png");
     subMenuAction[TOOLS] << HMMER_MENU;
     {
         subMenuAction[HMMER_MENU] << HMMER_BUILD3;
@@ -353,6 +353,14 @@ void ToolsMenu::addAction(const QString& menuName, QAction* action) {
     QMenu* menu = getMenu(menuName);
     SAFE_POINT(menu != nullptr, "Can not find menu " + menuName, );
     insertAction(menu, menuName, action);
+}
+
+void ToolsMenu::colorThemeSwitched(const QString& menuName) {
+    auto menuIconResource = actionIcon.value(menuName);
+    CHECK(!menuIconResource.isEmpty(), );
+
+    QMenu* menu = getMenu(menuName);
+    menu->setIcon(GUIUtils::getIconResource(menuIconResource));
 }
 
 }  // namespace U2

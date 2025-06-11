@@ -33,6 +33,8 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/PositionSelector.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorStatusBar.h>
 #include <U2View/MsaEditor.h>
@@ -88,6 +90,10 @@ QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment
                              labelHtml,
                              alignment,
                              proxyMouseEventsToNameList);
+}
+
+void MaEditorWgt::sl_colorThemeSwitched() {
+    copyFormattedSelectionAction->setIcon(GUIUtils::getIconResource("core", "copy.png"));
 }
 
 int MaEditorWgt::getGotoUserInputValue() {
@@ -181,7 +187,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
 
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
-    nameAreaContainer->setStyleSheet("background-color: white;");
+    nameAreaContainer->setStyleSheet("background-color: palette(base);");
     horizontalNameListScrollBar->setStyleSheet("background-color: normal;");  // avoid white background of scrollbar set 1 line above.
 
     nameAreaContainer->setMinimumWidth(15);  // Splitter uses min-size to collapse a widget
@@ -233,6 +239,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     connect(editor->getCollapseModel(), SIGNAL(si_toggled()), sequenceArea, SLOT(sl_modelChanged()));
 
     connect(delSelectionAction, SIGNAL(triggered()), sequenceArea, SLOT(sl_delCurrentSelection()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaEditorWgt::sl_colorThemeSwitched);
 }
 
 void MaEditorWgt::initActions() {
@@ -254,7 +261,7 @@ void MaEditorWgt::initActions() {
     copySelectionAction->setToolTip(QString("%1 (%2)").arg(copySelectionAction->text()).arg(copySelectionAction->shortcut().toString()));
     addAction(copySelectionAction);
 
-    copyFormattedSelectionAction = new QAction(QIcon(":core/images/copy_sequence.png"), tr("Copy (custom format)"), this);
+    copyFormattedSelectionAction = new QAction(GUIUtils::getIconResource("core", "copy.png"), tr("Copy (custom format)"), this);
     copyFormattedSelectionAction->setObjectName("copy_formatted");
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyFormattedSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);

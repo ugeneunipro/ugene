@@ -24,7 +24,7 @@
     <number>25</number>
    </property>
    <property name="sizeConstraint">
-    <enum>QLayout::SetMinAndMaxSize</enum>
+    <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -44,7 +44,7 @@
       <number>5</number>
      </property>
      <property name="sizeConstraint">
-      <enum>QLayout::SetMinAndMaxSize</enum>
+      <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
      </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
@@ -52,7 +52,7 @@
         <number>5</number>
        </property>
        <property name="sizeConstraint">
-        <enum>QLayout::SetMinAndMaxSize</enum>
+        <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
        </property>
        <property name="rightMargin">
         <number>8</number>
@@ -82,7 +82,7 @@
         <number>0</number>
        </property>
        <property name="sizeConstraint">
-        <enum>QLayout::SetMinAndMaxSize</enum>
+        <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
        </property>
        <property name="leftMargin">
         <number>2</number>
@@ -96,7 +96,7 @@
           <number>20</number>
          </property>
          <property name="sizeConstraint">
-          <enum>QLayout::SetMinAndMaxSize</enum>
+          <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
          </property>
          <property name="topMargin">
           <number>0</number>
@@ -107,7 +107,7 @@
          <item>
           <layout class="QGridLayout" name="gridLayout">
            <property name="sizeConstraint">
-            <enum>QLayout::SetMinAndMaxSize</enum>
+            <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
            </property>
            <property name="topMargin">
             <number>14</number>
@@ -207,7 +207,7 @@
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <property name="sizeConstraint">
-             <enum>QLayout::SetMinAndMaxSize</enum>
+             <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
             </property>
             <property name="topMargin">
              <number>6</number>
@@ -228,10 +228,10 @@
                 <item>
                  <spacer name="horizontalSpacer_2">
                   <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                   <enum>Qt::Orientation::Horizontal</enum>
                   </property>
                   <property name="sizeType">
-                   <enum>QSizePolicy::Fixed</enum>
+                   <enum>QSizePolicy::Policy::Fixed</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -257,12 +257,12 @@
                <widget class="QGroupBox" name="gbSimpleFormat">
                 <layout class="QVBoxLayout" name="verticalLayout_3">
                  <property name="sizeConstraint">
-                  <enum>QLayout::SetMinAndMaxSize</enum>
+                  <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
                  </property>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout">
                    <property name="sizeConstraint">
-                    <enum>QLayout::SetMinAndMaxSize</enum>
+                    <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
                    </property>
                    <item>
                     <widget class="QLineEdit" name="leRegionStart"/>
@@ -304,10 +304,10 @@
                 <item>
                  <spacer name="horizontalSpacer">
                   <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                   <enum>Qt::Orientation::Horizontal</enum>
                   </property>
                   <property name="sizeType">
-                   <enum>QSizePolicy::Fixed</enum>
+                   <enum>QSizePolicy::Policy::Fixed</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -333,7 +333,7 @@
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_2">
                  <property name="sizeConstraint">
-                  <enum>QLayout::SetMinAndMaxSize</enum>
+                  <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
                  </property>
                  <item>
                   <widget class="QLineEdit" name="leLocation">
@@ -369,7 +369,7 @@
        <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -443,10 +443,10 @@
               <item>
                <spacer name="horizontalSpacer_3">
                 <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                 <enum>Qt::Orientation::Horizontal</enum>
                 </property>
                 <property name="sizeType">
-                 <enum>QSizePolicy::Preferred</enum>
+                 <enum>QSizePolicy::Policy::Preferred</enum>
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
@@ -473,7 +473,7 @@
                </size>
               </property>
               <property name="sizeAdjustPolicy">
-               <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
+               <enum>QComboBox::SizeAdjustPolicy::AdjustToContentsOnFirstShow</enum>
               </property>
              </widget>
             </item>
@@ -520,10 +520,10 @@
               <item>
                <spacer name="horizontalSpacer_4">
                 <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                 <enum>Qt::Orientation::Horizontal</enum>
                 </property>
                 <property name="sizeType">
-                 <enum>QSizePolicy::Preferred</enum>
+                 <enum>QSizePolicy::Policy::Preferred</enum>
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>

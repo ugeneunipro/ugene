@@ -23,7 +23,9 @@
 
 #include <QAction>
 
-#include "U2Lang/QDScheme.h"
+#include <U2Gui/GUIUtils.h>
+
+#include <U2Lang/QDScheme.h>
 #include <U2Lang/QueryDesignerRegistry.h>
 
 #include "FindRepeatsTask.h"
@@ -63,7 +65,7 @@ class QDRepeatActorPrototype : public QDActorPrototype {
 public:
     QDRepeatActorPrototype();
     QIcon getIcon() const {
-        return QIcon(":repeat_finder/images/repeats.png");
+        return GUIUtils::getIconResource("repeat_finder", "repeats.png");
     }
     QDActor* createInstance() const {
         return new QDRepeatActor(this);

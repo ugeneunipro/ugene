@@ -1,9 +1,5 @@
 <RCC>
     <qresource prefix="biostruct3d_view/" >
-        <file>images/logo.png</file>
         <file>images/restore.png</file>
-        <file>images/lock.png</file>
-        <file>images/world_go.png</file>
     </qresource>
-
 </RCC>

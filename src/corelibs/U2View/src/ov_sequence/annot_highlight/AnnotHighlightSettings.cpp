@@ -21,12 +21,14 @@
 
 #include "AnnotHighlightSettings.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AnnotationTableObject.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LabelClickTransmitter.h>
+#include <U2Gui/MainWindow.h>
+#include <U2Gui/Theme.h>
 
 namespace U2 {
 
@@ -108,12 +110,16 @@ void AnnotHighlightSettingsWidget::sl_onEditQualifiersChanged(const QString& inp
     }
 }
 
+void AnnotHighlightSettingsWidget::colorThemeChanged() {
+    sl_onEditQualifiersChanged(editQualifiers->text());
+}
+
 void AnnotHighlightSettingsWidget::setIncorrectState() {
     editQualifiers->setStyleSheet("background-color: " + Theme::errorColorTextFieldStr() + ";");
 }
 
 void AnnotHighlightSettingsWidget::setCorrectState() {
-    editQualifiers->setStyleSheet("background-color: white;");
+    editQualifiers->setStyleSheet(QString("background-color: palette(base);"));
 }
 
 }  // namespace U2

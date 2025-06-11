@@ -92,9 +92,11 @@ private slots:
 
     /** Toggles tab button by id. */
     void sl_onTabButtonToggled(int id, bool checked);
+    void sl_colorThemeSwitched();
 
 private:
     void saveReportFile();
+    void updateStyleSheets();
 
     /** Initializes layout with all widgets initialized with the given initial states. */
     void initLayout(const QMap<QString, QDomElement>& initialWidgetStates = QMap<QString, QDomElement>());
@@ -115,9 +117,12 @@ private:
 
     QVBoxLayout* mainLayout;
 
+    QWidget* tabButtonsRow = nullptr;
+
     QToolButton* overviewTabButton;
     QToolButton* inputTabButton;
     QToolButton* externalToolsTabButton;
+    QToolButton* loadSchemaButton {nullptr};
 
     QStackedWidget* stackedWidget;
 

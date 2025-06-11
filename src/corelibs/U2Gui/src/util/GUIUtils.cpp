@@ -41,6 +41,7 @@
 
 #include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/Theme.h>
 
 namespace U2 {
 
@@ -123,7 +124,7 @@ QIcon GUIUtils::createSquareIcon(const QColor& c, int size) {
     int h = size;
     QPixmap pix(w, h);
     QPainter p(&pix);
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
     p.drawRect(0, 0, w - 1, h - 1);
     p.fillRect(1, 1, w - 2, h - 2, c);
     p.end();
@@ -142,7 +143,7 @@ QIcon GUIUtils::createRoundIcon(const QColor& c, int size) {
     // ep.addEllipse(1, 1, w-2, h-2);
     ep.addEllipse(0, 0, w - 1, h - 1);
     p.fillPath(ep, c);
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
     p.drawEllipse(0, 0, w - 1, h - 1);
     p.end();
     return {pix};
@@ -216,12 +217,9 @@ void GUIUtils::setMutedLnF(QTreeWidgetItem* item, bool enableMute, bool recursiv
     }
 }
 
-const QColor GUIUtils::WARNING_COLOR = QColor(255, 200, 200);
-const QColor GUIUtils::OK_COLOR = QColor(255, 255, 255);
-
 void GUIUtils::setWidgetWarningStyle(QWidget* widget, bool value) {
-    QColor color = value ? WARNING_COLOR : OK_COLOR;
-    widget->setStyleSheet("background-color: " + color.name() + ";");
+    QString color = value ? Theme::errorColorTextFieldStr() : "palette(base)";
+    widget->setStyleSheet("background-color: " + color + ";");
 }
 
 void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message) {
@@ -232,32 +230,48 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
 }
 namespace {
 
-QPixmap getPixmapResource(const QString& cathegory, const QString& iconName) {
-    QString resourceName = GUIUtils::getResourceName(cathegory, iconName);
+QPixmap getPixmapResource(const QString& category, const QString& iconName) {
+    QString resourceName = GUIUtils::getResourceName(category, iconName);
     QPixmap pixmap = QPixmap(resourceName);
-    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(cathegory).arg(iconName), QPixmap());
+    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(category).arg(iconName), QPixmap());
 
     return pixmap;
 }
 
 }
 
-QString GUIUtils::getResourceName(const QString& cathegory, const QString& iconName, const QString& innerDirName) {
-    QString colorCathegory;
+QString GUIUtils::getResourceName(const QString& category, const QString& iconName, const QString& innerDirName) {
+    QString colorCategory;
     QString inner;
     if (!innerDirName.isEmpty()) {
         inner = innerDirName + "/";
     }
-    QString resourceName = QString(":%1/images/%2%3%4").arg(cathegory).arg(inner).arg(colorCathegory).arg(iconName);
+    QString resourceName = QString(":%1/images/%2%3%4").arg(category).arg(inner).arg(colorCategory).arg(iconName);
+    if (!QFile::exists(resourceName)) {
+        bool isDark = AppContext::getMainWindow()->isDarkTheme();
+        if (isDark) {
+            colorCategory = "dark/";
+        } else {
+            colorCategory = "light/";
+        }
+        resourceName = QString(":%1/images/%2%3%4").arg(category).arg(inner).arg(colorCategory).arg(iconName);
+    }
     return resourceName;
 }
 
-QIcon GUIUtils::getIconResource(const QString& cathegory, const QString& iconName) {
-    CHECK((!cathegory.isEmpty() && !iconName.isEmpty()), QIcon());
+QIcon GUIUtils::getIconResource(const QString& category, const QString& iconName) {
+    CHECK((!category.isEmpty() && !iconName.isEmpty()), QIcon());
 
     QIcon icon;
-    QPixmap pixmap = getPixmapResource(cathegory, iconName);
+    QPixmap pixmap = getPixmapResource(category, iconName);
     icon.addPixmap(pixmap);
+    if (AppContext::getMainWindow()->isDarkTheme()) {
+        // automatic disabled icon is no good for dark theme
+        // paint transparent black to get disabled look
+        QPainter p(&pixmap);
+        p.fillRect(pixmap.rect(), QColor(48, 47, 47, 128));
+        icon.addPixmap(pixmap, QIcon::Disabled);
+    }
 
     return icon;
 }

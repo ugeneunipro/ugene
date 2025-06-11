@@ -30,7 +30,6 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MsaObject.h>
 #include <U2Core/TaskWatchdog.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2IdTypes.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -39,6 +38,7 @@
 
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/MaEditorTasks.h>
@@ -56,7 +56,7 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_, QWidget* parent)
       saveController(nullptr) {
     setupUi(this);
 
-    hintLabel->setStyleSheet(Theme::infoHintStyleSheet());
+    sl_colorThemeSwitched();
 
     initSaveController();
 
@@ -65,6 +65,8 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_, QWidget* parent)
 
     connect(exportBtn, SIGNAL(clicked()), SLOT(sl_exportClicked()));
     connect(consensusArea, SIGNAL(si_consensusAlgorithmChanged(const QString&)), SLOT(sl_consensusChanged(const QString&)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaExportConsensusWidget::sl_colorThemeSwitched);
+
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 
     sl_consensusChanged(consensusArea->getConsensusAlgorithm()->getId());
@@ -134,6 +136,10 @@ void MaExportConsensusWidget::sl_exportTaskStateChanged() {
     if (exportTask->getState() == Task::State_Finished) {
         exportTaskUrls.remove(exportTask->getConsensusUrl());
     }
+}
+
+void MaExportConsensusWidget::sl_colorThemeSwitched() {
+    hintLabel->setStyleSheet(Theme::infoHintStyleSheet());
 }
 
 void MaExportConsensusWidget::initSaveController() {

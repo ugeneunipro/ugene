@@ -41,7 +41,11 @@ public:
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
+private slots:
+    void sl_colorThemeSwitched();
+
 private:
+    void updateTreeViewIconsRecursively(QStandardItem* item);
     void showContextMenu(const QPoint& point);
     void createDir();
     void deleteItem();

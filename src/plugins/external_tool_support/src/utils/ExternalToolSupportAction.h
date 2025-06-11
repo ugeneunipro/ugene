@@ -42,6 +42,7 @@ private slots:
     void sl_toolStateChanged(bool) {
         sl_pathChanged();
     }
+    void sl_colorThemeSwitched();
 
 private:
     bool checkTools(bool connectSignals = false);

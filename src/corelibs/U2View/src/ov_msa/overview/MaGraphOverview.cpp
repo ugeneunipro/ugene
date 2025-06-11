@@ -41,11 +41,15 @@
 #include "ov_msa/MultilineScrollController.h"
 #include "ov_msa/ScrollController.h"
 
-#define MSA_GRAPH_OVERVIEW_COLOR_KEY "msa_graph_overview_color"
+#define MSA_GRAPH_OVERVIEW_COLOR_LIGHT_KEY "msa_graph_overview_color"
+#define MSA_GRAPH_OVERVIEW_COLOR_DARK_KEY "msa_graph_overview_color_dark"
 #define MSA_GRAPH_OVERVIEW_TYPE_KEY "msa_graph_overview_type"
 #define MSA_GRAPH_OVERVIEW_ORIENTATION_KEY "msa_graph_overview_orientation_key"
 
 namespace U2 {
+
+const QColor MaGraphOverviewDisplaySettings::DEFAULT_LIGHT_COLOR = Qt::gray;
+const QColor MaGraphOverviewDisplaySettings::DEFAULT_DARK_COLOR = QColor(48, 48, 48);
 
 MaGraphOverview::MaGraphOverview(MsaEditor* _editor, QWidget* _ui)
     : MaOverview(_editor, _ui) {
@@ -53,7 +57,9 @@ MaGraphOverview::MaGraphOverview(MsaEditor* _editor, QWidget* _ui)
     setFixedHeight(FIXED_HEIGHT);
 
     Settings* settings = AppContext::getSettings();
-    displaySettings.color = settings->getValue(MSA_GRAPH_OVERVIEW_COLOR_KEY, displaySettings.color).value<QColor>();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    displaySettings.color = settings->getValue(isDark ? MSA_GRAPH_OVERVIEW_COLOR_DARK_KEY : MSA_GRAPH_OVERVIEW_COLOR_LIGHT_KEY,
+                                               isDark ? MaGraphOverviewDisplaySettings::DEFAULT_DARK_COLOR : MaGraphOverviewDisplaySettings::DEFAULT_LIGHT_COLOR).value<QColor>();
     displaySettings.type = (MaGraphOverviewDisplaySettings::GraphType)settings->getValue(MSA_GRAPH_OVERVIEW_TYPE_KEY, displaySettings.type).toInt();
     displaySettings.orientation = (MaGraphOverviewDisplaySettings::OrientationMode)settings->getValue(MSA_GRAPH_OVERVIEW_ORIENTATION_KEY, displaySettings.orientation).toInt();
 
@@ -87,6 +93,16 @@ MaGraphOverview::MaGraphOverview(MsaEditor* _editor, QWidget* _ui)
 void MaGraphOverview::sl_redraw() {
     redrawGraph = true;
     MaOverview::sl_redraw();
+}
+
+void MaGraphOverview::sl_colorThemeSwitched() {
+    Settings* settings = AppContext::getSettings();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    displaySettings.color =
+        settings->getValue(isDark ? MSA_GRAPH_OVERVIEW_COLOR_DARK_KEY : MSA_GRAPH_OVERVIEW_COLOR_LIGHT_KEY,
+                           isDark ? MaGraphOverviewDisplaySettings::DEFAULT_DARK_COLOR : MaGraphOverviewDisplaySettings::DEFAULT_LIGHT_COLOR)
+                                .value<QColor>();
+    MaOverview::sl_colorThemeSwitched();
 }
 
 void MaGraphOverview::paintEvent(QPaintEvent* e) {
@@ -247,7 +263,8 @@ void MaGraphOverview::sl_graphTypeChanged(const MaGraphOverviewDisplaySettings::
 void MaGraphOverview::sl_graphColorChanged(const QColor& color) {
     CHECK(displaySettings.color != color, )
     displaySettings.color = color;
-    AppContext::getSettings()->setValue(MSA_GRAPH_OVERVIEW_COLOR_KEY, color);
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    AppContext::getSettings()->setValue(isDark ? MSA_GRAPH_OVERVIEW_COLOR_DARK_KEY : MSA_GRAPH_OVERVIEW_COLOR_LIGHT_KEY, color);
     update();
 }
 

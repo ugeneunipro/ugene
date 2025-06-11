@@ -106,6 +106,7 @@ private slots:
     void editElement();
     bool removeElement();
     void sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype* proto);
+    void sl_colorThemeSwitched();
 
 private:
     QTreeWidgetItem* createItemWidget(QAction* a);

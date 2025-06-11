@@ -88,21 +88,22 @@ TaskViewDockWidget::~TaskViewDockWidget() {
 void TaskViewDockWidget::initActions() {
     cancelTaskAction = new QAction(tr("Cancel task"), this);
     cancelTaskAction->setObjectName("Cancel task");
-    cancelTaskAction->setIcon(QIcon(":ugene/images/cancel.png"));
+    cancelTaskAction->setIcon(GUIUtils::getIconResource("ugene", "cancel.png"));
     connect(cancelTaskAction, SIGNAL(triggered()), SLOT(sl_onCancelTask()));
 
     viewReportAction = new QAction(tr("View report"), this);
-    viewReportAction->setIcon(QIcon(":ugene/images/task_report.png"));
+    viewReportAction->setIcon(GUIUtils::getIconResource("ugene", "task_report.png"));
     connect(viewReportAction, SIGNAL(triggered()), SLOT(sl_onViewTaskReport()));
 
     removeReportAction = new QAction(tr("Remove report"), this);
-    removeReportAction->setIcon(QIcon(":ugene/images/bin_empty.png"));
+    removeReportAction->setIcon(GUIUtils::getIconResource("ugene", "task_report.png"));
     connect(removeReportAction, SIGNAL(triggered()), SLOT(sl_onRemoveTaskReport()));
 
     TaskScheduler* s = AppContext::getTaskScheduler();
     connect(s, SIGNAL(si_topLevelTaskRegistered(Task*)), SLOT(sl_onTopLevelTaskRegistered(Task*)));
     connect(s, SIGNAL(si_topLevelTaskUnregistered(Task*)), SLOT(sl_onTopLevelTaskUnregistered(Task*)));
     connect(s, SIGNAL(si_stateChanged(Task*)), SLOT(sl_onStateChanged(Task*)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TaskViewDockWidget::si_colorThemeSwitched);
 }
 
 void TaskViewDockWidget::updateState() {
@@ -247,6 +248,19 @@ TVTreeItem* TaskViewDockWidget::findChildItem(TVTreeItem* ti, Task* t) const {
         }
     }
     return nullptr;
+}
+
+void TaskViewDockWidget::recurciveColorThemeUpdate(TVTreeItem* item) {
+    for (int i = 0, n = item->childCount(); i < n; i++) {
+        QTreeWidgetItem* child = item->child(i);
+        SAFE_POINT_NN(child, );
+
+        auto cti = dynamic_cast<TVTreeItem*>(child);
+        SAFE_POINT_NN(cti, );
+
+        cti->updateVisual();
+        recurciveColorThemeUpdate(cti);
+    }
 }
 
 void TaskViewDockWidget::sl_onTopLevelTaskRegistered(Task* t) {
@@ -407,6 +421,19 @@ void TaskViewDockWidget::sl_itemExpanded(QTreeWidgetItem* qi) {
     ti->updateVisual();
 }
 
+void TaskViewDockWidget::si_colorThemeSwitched() {
+    for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
+        QTreeWidgetItem* item = tree->topLevelItem(i);
+        SAFE_POINT_NN(item, );
+
+        auto ti = static_cast<TVTreeItem*>(item);
+        SAFE_POINT_NN(item, );
+
+        ti->updateVisual();
+        recurciveColorThemeUpdate(ti);
+    }
+}
+
 void TaskViewDockWidget::selectTask(Task* t) {
     TVTreeItem* ti = findItem(t, true);
     if (ti == nullptr) {
@@ -544,7 +571,7 @@ QAction* TVReportWindow::createDirAction(const QString& url, QObject* parent) {
         tr("Open containing folder"),
         info.dir().absolutePath(),
         parent,
-        ":ugene/images/project_open.png");
+        GUIUtils::getResourceName("ugene", "project_open.png"));
 }
 
 QAction* TVReportWindow::createFileAction(const QString& url, QObject* parent) {

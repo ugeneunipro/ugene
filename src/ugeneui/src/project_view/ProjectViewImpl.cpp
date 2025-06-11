@@ -468,7 +468,7 @@ void ProjectViewImpl::enable() {
     SAFE_POINT(projectViewWidget == nullptr, "Project widget is already initialized", );
     projectViewWidget = new ProjectViewWidget();
 
-    saveSelectedDocsAction = new QAction(QIcon(":ugene/images/save_selected_documents.png"), tr("Save selected documents"), projectViewWidget);
+    saveSelectedDocsAction = new QAction(GUIUtils::getIconResource("ugene", "save_selected_documents.png"), tr("Save selected documents"), projectViewWidget);
     saveSelectedDocsAction->setObjectName(ACTION_PROJECT__SAVE_DOCUMENT);
     connect(saveSelectedDocsAction, SIGNAL(triggered()), SLOT(sl_onSaveSelectedDocs()));
 
@@ -477,12 +477,12 @@ void ProjectViewImpl::enable() {
     connect(toggleCircularAction, SIGNAL(triggered()), SLOT(sl_onToggleCircular()));
 
     relocateDocumentAction = new QAction(tr("Relocate..."), projectViewWidget);
-    relocateDocumentAction->setIcon(QIcon(":ugene/images/relocate.png"));
+    relocateDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "relocate.png"));
     connect(relocateDocumentAction, SIGNAL(triggered()), SLOT(sl_relocate()));
 
     exportDocumentAction = new QAction(tr("Export document..."), projectViewWidget);
     exportDocumentAction->setObjectName("Export document");
-    exportDocumentAction->setIcon(QIcon(":ugene/images/save_copy.png"));
+    exportDocumentAction->setIcon(GUIUtils::getIconResource("ugene", "save_copy.png"));
     connect(exportDocumentAction, SIGNAL(triggered()), SLOT(sl_exportDocument()));
 
     openContainingFolderAction = new QAction(tr("Open containing folder"), projectViewWidget);

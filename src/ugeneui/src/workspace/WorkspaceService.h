@@ -91,6 +91,9 @@ signals:
 protected:
     Task* createServiceEnablingTask() override;
 
+private slots:
+    void sl_colorThemeSwitched();
+
 private:
     void enable();
     void updateMainMenuActions();

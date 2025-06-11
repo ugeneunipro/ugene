@@ -42,6 +42,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
@@ -264,7 +266,7 @@ QString SWPrompter::composeRichDoc() {
     Actor* seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     auto patternPort = qobject_cast<IntegralBusPort*>(target->getPort(PATTERN_PORT));
     Actor* ptrnProducer = patternPort->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
 
     QString seqName;
     seqProducer ? (seqName = seqProducer->getLabel()) : (seqName = unsetStr);

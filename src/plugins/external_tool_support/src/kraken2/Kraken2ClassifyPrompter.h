@@ -25,6 +25,8 @@
 
 #include <U2Lang/WorkflowUtils.h>
 
+#include <U2Designer/PrompterBase.h>
+
 namespace U2 {
 namespace LocalWorkflow {
 
