@@ -60,6 +60,7 @@ void OptionsPanelController::instantiateGroups() {
         OPGroupParameters groupParameters = factory->getOPGroupParameters();
         const QString& groupId = groupParameters.getGroupId();
         GroupHeaderImageWidget* headerImageWidget = widget->createHeaderImageWidget(groupId, groupParameters.getIcon());
+        headerImageWidget->setToolTip(groupParameters.getTitle());
         headerImageWidget->setObjectName(groupId);
 
         // Listen for signals from the header image widget
