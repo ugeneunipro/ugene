@@ -35,6 +35,8 @@
 
 #include <U2Designer/WizardController.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/WorkflowUtils.h>
 
@@ -327,7 +329,7 @@ QWidget* TophatSamples::initSample(const QString& sampleName, const QStringList&
     auto hl = new QHBoxLayout();
     {  // header
         hl->setContentsMargins(0, 0, 0, 0);
-        QToolButton* removeButton = createButton(this, ":U2Designer/images/exit.png");
+        QToolButton* removeButton = createButton(this, IconParameters("U2Designer", "exit.png"));
         connect(removeButton, SIGNAL(clicked()), SLOT(sl_remove()));
         hl->addWidget(new SampleNameEdit(this, sampleName, this));
         hl->addWidget(removeButton);
@@ -507,9 +509,9 @@ QListWidget* TophatSamples::getListWidget(int pos) const {
     return first->findChild<QListWidget*>();
 }
 
-QToolButton* TophatSamples::createButton(QWidget* parent, const QString& icon) const {
+QToolButton* TophatSamples::createButton(QWidget* parent, const IconParameters& iconPrameters) const {
     auto result = new QToolButton(parent);
-    result->setIcon(QIcon(icon));
+    result->setIcon(GUIUtils::getIconResource(iconPrameters));
     result->setAutoRaise(true);
     return result;
 }
@@ -540,9 +542,9 @@ QVBoxLayout* TophatSamples::createControlButtons() {
     auto result = new QVBoxLayout();
     result->setContentsMargins(0, 0, 0, 0);
 
-    QToolButton* addButton = createButton(this, ":U2Designer/images/add.png");
-    upButton = createButton(this, ":U2Designer/images/up.png");
-    downButton = createButton(this, ":U2Designer/images/down.png");
+    QToolButton* addButton = createButton(this, IconParameters("core", "plus.png"));
+    upButton = createButton(this, IconParameters("U2Designer", "up.png"));
+    downButton = createButton(this, IconParameters("U2Designer", "down.png"));
     result->addWidget(addButton);
     result->addWidget(upButton);
     result->addWidget(downButton);

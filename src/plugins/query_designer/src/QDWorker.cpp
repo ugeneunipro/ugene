@@ -117,7 +117,7 @@ void QDWorkerFactory::init() {
 
     proto->setPrompter(new QDPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconPath(":query_designer/images/query_designer.png");
+    proto->setIconParameters(IconParameters("query_designer", "query_designer.png"));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

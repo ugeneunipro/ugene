@@ -52,6 +52,7 @@
 #include <U2Designer/WizardController.h>
 
 #include <U2Gui/ExportImageDialog.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ScriptEditorDialog.h>
 #include <U2Gui/U2FileDialog.h>
 
@@ -715,8 +716,7 @@ void WorkflowView::createActions() {
 
     showWizard = new QAction(tr("Show wizard"), this);
     showWizard->setObjectName("Show wizard");
-    QPixmap pm = QPixmap(":workflow_designer/images/wizard.png").scaled(16, 16);
-    showWizard->setIcon(QIcon(pm));
+    showWizard->setIcon(QIcon (":workflow_designer/images/wizard.png"));
     connect(showWizard, SIGNAL(triggered()), SLOT(sl_showWizard()));
 
     toggleBreakpointManager = new QAction("Show or hide breakpoint manager", this);
@@ -1427,7 +1427,9 @@ bool WorkflowView::sl_validate(bool notify) {
     bool good = WorkflowUtils::validate(*schema, lst);
 
     if (lst.count() != 0) {
-        foreach (QListWidgetItem* wi, lst) {
+        for(QListWidgetItem* wi : qAsConst(lst)) {
+            auto ip = wi->data(ICON_DATA_REF).value<IconParameters>();
+            wi->setIcon(GUIUtils::getIconResource(ip));
             infoList->addItem(wi);
         }
         bottomTabs->show();

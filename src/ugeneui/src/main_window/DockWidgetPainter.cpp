@@ -26,6 +26,7 @@
 #include <QLabel>
 #include <QPainter>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "DockManagerImpl.h"
@@ -40,7 +41,7 @@ const int DockWidgetPaintData::ICON_TEXT_DIST = 6;
 const int DockWidgetPaintData::ICON_SIZE = 16;
 
 void DockWidgetPainter::updateLabel(DockData* d, bool active) {
-    const QIcon icon = d->wrapWidget->windowIcon();
+    const QIcon icon = GUIUtils::getIconResource(d->wrapWidget->iconParameters);
     const QString text = d->wrapWidget->windowTitle();
     const QString keyPrefix = findKeyPrefix(d->keySequenceAction);
     const DockWidgetPaintData paintData(icon, keyPrefix + text, d->area);
@@ -94,12 +95,12 @@ QColor DockWidgetPainter::getInnerColor(bool active, const QColor& backgroundCol
 #ifdef Q_OS_WIN
     Q_UNUSED(active);
     Q_UNUSED(backgroundColor);
-    return QColor(0, 0, 0, active ? 30 : 5);
+        return QColor(0, 0, 0, active ? 30 : 5);
 #else
     QColor innerColor = backgroundColor;
     if (active) {
-        innerColor = backgroundColor.darker(115);
-    }
+            innerColor = backgroundColor.darker(115);
+        }
     return innerColor;
 #endif
 }

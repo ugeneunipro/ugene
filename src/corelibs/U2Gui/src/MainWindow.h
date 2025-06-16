@@ -24,6 +24,7 @@
 #include <QEvent>
 #include <QWidget>
 
+#include <U2Core/IconParameters.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/ServiceTypes.h>
 #include <U2Core/global.h>
@@ -217,7 +218,7 @@ public:
         : QObject(p) {
     }
 
-    virtual QAction* registerDock(MWDockArea area, QWidget* w, const QKeySequence& ks = QKeySequence()) = 0;
+    virtual QAction* registerDock(MWDockArea area, QWidget* w, const IconParameters& iconParameters, const QKeySequence& ks = QKeySequence()) = 0;
 
     virtual QWidget* findWidget(const QString& widgetObjName) = 0;
 

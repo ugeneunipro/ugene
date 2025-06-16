@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CloneObjectTask.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ImportDirToDatabaseTask.h>
 #include <U2Core/ImportDocumentToDatabaseTask.h>
@@ -38,6 +39,7 @@
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
@@ -48,7 +50,6 @@
 #include "CommonImportOptionsDialog.h"
 #include "ItemToImportEditDialog.h"
 #include "ui_ImportToDatabaseDialog.h"
-#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 
@@ -414,7 +415,8 @@ void ImportToDatabaseDialog::addObject(GObject* object, QTreeWidgetItem* parent)
         treeItem2Object.insert(newItem, object);
     }
 
-    newItem->setIcon(COLUMN_ITEM_TEXT, GObjectTypes::getTypeInfo(object->getGObjectType()).icon);
+    auto gObjTypeInfo = GObjectTypes::getTypeInfo(object->getGObjectType());
+    newItem->setIcon(COLUMN_ITEM_TEXT, GUIUtils::getIconResource(gObjTypeInfo.iconParameters));
     newItem->setFlags(Qt::ItemIsEditable | newItem->flags());
 
     parent->addChild(newItem);

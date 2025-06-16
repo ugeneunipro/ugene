@@ -21,15 +21,19 @@
 
 #include "ADVUtils.h"
 
+#include <U2Gui/GUIUtils.h>
+
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
 #include "AnnotatedDNAView.h"
 
 namespace U2 {
 
-ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const QIcon& icon, const QString& text, int ps, const ADVGlobalActionFlags& fl)
-    : GObjectViewAction(v, v, text), pos(ps), flags(fl) {
-    setIcon(icon);
+ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const IconParameters& _iconParameters, const QString& text, int ps, const ADVGlobalActionFlags& fl)
+    : GObjectViewAction(v, v, text), pos(ps), flags(fl), iconParameters(_iconParameters) {
+    if (!iconParameters.isEmpty()) {
+        setIcon(GUIUtils::getIconResource(iconParameters));
+    }
     connect(v, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
     updateState();
     v->addADVAction(this);
@@ -51,6 +55,9 @@ void ADVGlobalAction::updateState() {
         enabled = alphabetFilter.contains(t);
     }
     setEnabled(enabled);
+    if (!iconParameters.isEmpty()) {
+        setIcon(GUIUtils::getIconResource(iconParameters));
+    }
 }
 
 }  // namespace U2

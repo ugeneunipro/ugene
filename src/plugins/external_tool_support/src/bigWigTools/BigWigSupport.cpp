@@ -37,11 +37,6 @@ const QString BigWigSupport::GENOMES_DIR_NAME = "genome_lengths";
 
 BigWigSupport::BigWigSupport(const QString& path)
     : ExternalTool(ET_BIGWIG_ID, "bigwig", "bigwig", path) {
-    if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
 #ifdef Q_OS_WIN
     executableFileName = "bedGraphToBigWig.exe";
 #else
