@@ -163,7 +163,7 @@ void PrepareToImportTask::checkReferenceFile() {
     if (isFaiBuildNeeded && !FileAndDirectoryUtils::isDirectoryWritable(refUrlDir)) {
         QString fastaUrl = workDir + "/" + QFileInfo(refUrl).fileName();
         if (!equalUrls(fastaUrl, refUrl)) {
-            CHECK_EXT(QFileInfo::exists(fastaUrl), setError(tr("Can't copy reference file to the work dir. File already exists: %1").arg(fastaUrl)), );
+            CHECK_EXT(!QFileInfo::exists(fastaUrl), setError(tr("Can't copy reference file to the work dir. File already exists: %1").arg(fastaUrl)), );
             bool copied = QFile::copy(refUrl, fastaUrl);
             CHECK_EXT(copied, setError(getCopyError(refUrl, fastaUrl)), );
             refUrl = fastaUrl;
