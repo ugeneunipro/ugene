@@ -55,6 +55,24 @@ bool FindEnzymesDialogSequenceView::acceptProtected() {
     }
 
     QList<SEnzymeData> selectedEnzymes = enzSel->getSelectedEnzymes();
+    if (selectedEnzymes.isEmpty()) {
+        int ret = QMessageBox::question(this,
+                                        windowTitle(),
+                                        tr("<html><body align=\"center\">No enzymes are selected! Do you want to turn off <br>enzymes annotations highlighting?</body></html>"),
+                                        QMessageBox::Yes,
+                                        QMessageBox::No);
+        if (ret == QMessageBox::Yes) {
+            QAction* toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(advSequenceContext.data(), ANNOTATION_GROUP_ENZYME);
+            if (toggleAction) {
+                toggleAction->setChecked(false);
+            }
+            saveSettings();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     bool ok = false;
     U2Location searchLocation = regionSelector->getRegionSelectorLocation(&ok);
     U2Location excludeLocation;

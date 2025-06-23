@@ -37,7 +37,9 @@ const QString GroupHeaderImageWidget::HEADER_COMMON_STYLE = "border-style: solid
                                                             "border-top-right-radius: 3px;"
                                                             "padding: 5px;"
                                                             "margin-top: 4px;"
-                                                            "margin-right: 3px;";
+                                                            "margin-right: 3px;}"
+                                                            "QToolTip {background: palette(window);"
+                                                            "border-left-width: 0px;}";
 
 GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const IconParameters& _iconParameters)
     : groupId(_groupId), iconParameters(_iconParameters) {
@@ -61,14 +63,14 @@ void GroupHeaderImageWidget::mousePressEvent(QMouseEvent* /*event*/) {
 
 void GroupHeaderImageWidget::setHeaderSelected() {
     setStyleSheet(QString(
-                      "background: palette(window);"
+                      "QLabel { background: palette(window);"
                       "border-left-width: 0px;")
                       .append(HEADER_COMMON_STYLE));
 }
 
 void GroupHeaderImageWidget::setHeaderDeselected() {
     setStyleSheet(QString(
-                      "background: qlineargradient(x1:0, y1:0.5, x2:0.4, y2:0.5, stop:0 palette(mid), stop:1 palette(button));"
+                      "QLabel { background: qlineargradient(x1:0, y1:0.5, x2:0.4, y2:0.5, stop:0 palette(mid), stop:1 palette(button));"
                       "border-left-width: 1px;")
                       .append(HEADER_COMMON_STYLE));
 }

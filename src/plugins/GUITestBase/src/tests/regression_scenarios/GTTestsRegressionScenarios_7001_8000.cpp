@@ -5245,6 +5245,21 @@ GUI_TEST_CLASS_DEFINITION(test_7965) {
     GTUtilsAnnotationsTreeView::checkNoAnnotations();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7966) {
+    const QString readOnlyDirPath = sandBoxDir + "test_7966/read_only";
+    bool ok = QDir().mkpath(readOnlyDirPath);
+    CHECK_SET_ERR(ok, "folder not created");
+    GTFile::copy(dataDir + "samples/Assembly/chrM.fa", readOnlyDirPath + "/chrM.fa");
+    GTFile::copy(dataDir + "samples/Assembly/chrM.sam", readOnlyDirPath + "/chrM.sam");
+    GTFile::setReadOnly(readOnlyDirPath);
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(sandBoxDir + "test_7966/chrM.ugenedb", readOnlyDirPath, "chrM.fa"));
+    GTFileDialog::openFile(readOnlyDirPath, "chrM.sam");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7968) {
     GTFileDialog::openFile(testDir + "_common_data/fasta/AMINO.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
