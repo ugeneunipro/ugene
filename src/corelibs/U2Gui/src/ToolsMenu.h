@@ -25,6 +25,7 @@
 
 #include <U2Core/IconParameters.h>
 #include <U2Core/global.h>
+#include <U2Core/IconParameters.h>
 
 class QAction;
 class QMenu;
@@ -37,6 +38,9 @@ public:
     static void init();
 
     static void addAction(const QString& menuName, QAction* action);
+
+    // Change color theme menu icon for menu with @menuName
+    static void colorThemeSwitched(const QString& menuName);
 
     static const QString LINE;
     static const QString TOOLS;

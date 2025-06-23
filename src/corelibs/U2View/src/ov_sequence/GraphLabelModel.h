@@ -43,7 +43,7 @@ private:
 
 class GraphLabelDot : public QWidget {
 public:
-    GraphLabelDot(QWidget* parent, const QColor& borderColor = Qt::white, const QColor& fillColor = Qt::black);
+    GraphLabelDot(QWidget* parent, const QColor& borderColor = QPalette().base().color(), const QColor& fillColor = QPalette().windowText().color());
 
     void setBorderColor(const QColor& color) {
         borderColor = color;

@@ -25,9 +25,13 @@
 #include <QMdiArea>
 #include <QMenu>
 #include <QMenuBar>
+#include <QTimer>
 
+#include <U2Gui/LogView.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/Notification.h>
+
+#include "styles/StyleFactory.h"
 
 class QMdiArea;
 class QToolBar;
@@ -87,6 +91,19 @@ public:
     virtual void setWindowTitle(const QString& title);
     void registerAction(QAction* action);
 
+    // Set true to enable dark theme
+    void setDarkTheme(bool isDark);
+    // Dark theme is enabled if true
+    bool isDarkTheme() const override;
+
+    // Set style and color theme type. Possible styles:
+    // Windows, Fusion, windowsvista (Windows only), macintosh (macOS only)/
+    // Possible color theme types:
+    // Luight, Dark, Auto (follow the system style)
+    void setNewStyle(const QString& style, int colorThemeIndex) override;
+    // Connect log view to color theme switch signal
+    void connectLogView(LogViewWidget* view);
+
     void prepare();
     void close();
 
@@ -94,10 +111,12 @@ public:
     void setShutDownInProcess(bool flag);
     void registerStartupChecks(const QList<Task*>& tasks);
     void addNotification(const QString& message, NotificationType type);
+
 signals:
     void si_show();
     void si_showWelcomePage();
     void si_paste();
+
 public slots:
     void sl_tempDirPathCheckFailed(QString path);
     void sl_show();
@@ -111,6 +130,7 @@ private slots:
     void sl_viewOnlineDocumentation();
     void sl_showWhatsNew();
     void sl_crashUgene();
+    void sl_colorThemeSwitched();
 #ifdef _INSTALL_TO_PATH_ACTION
     void sl_installToPathAction();
 #endif
@@ -140,12 +160,21 @@ private:
     QAction* viewOnlineDocumentation = nullptr;
     QAction* welcomePageAction = nullptr;
     QAction* crashUgeneAction = nullptr;
+    // If UGENE_GUI_TEST=1 only
+    QAction* switchColorTheme = nullptr;
     QAction* showWhatsNewAction = nullptr;
 #ifdef _INSTALL_TO_PATH_ACTION
     QAction* installToPathAction = nullptr;
 #endif
     bool shutDownInProcess = false;
-
+    StyleFactory::ColorTheme colorTheme = StyleFactory::ColorTheme::Light;
+#ifdef Q_OS_DARWIN
+    bool colorIsChangedByUser = false;
+#endif
+    bool isDark = false;
+#ifdef Q_OS_WIN
+    QTimer colorThemeTimer;
+#endif
     QList<Task*> startupTasklist;
 };
 

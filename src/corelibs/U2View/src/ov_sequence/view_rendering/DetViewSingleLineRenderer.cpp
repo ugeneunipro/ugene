@@ -31,6 +31,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GraphUtils.h>
+#include <U2Gui/MainWindow.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
@@ -52,8 +53,9 @@ DetViewSingleLineRenderer::TranslationMetrics::TranslationMetrics(const Sequence
 
     seqBlockRegion = U2Region(minUsedPos, maxUsedPos - minUsedPos);
 
-    startC = QColor(0, 0x99, 0);
-    stopC = QColor(0x99, 0, 0);
+    bool isDarkTheme = AppContext::getMainWindow()->isDarkTheme();
+    startC = isDarkTheme ? QColor(0, 190, 0) : QColor(0, 153, 0);
+    stopC = isDarkTheme ? QColor(190, 0, 0) : QColor(153, 0, 0);
 
     fontB = commonSequenceFont;
     fontB.setBold(true);
@@ -178,8 +180,8 @@ bool DetViewSingleLineRenderer::isOnAnnotationLine(const QPoint& p, Annotation* 
 }
 
 void DetViewSingleLineRenderer::drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) {
-    p.fillRect(QRect(QPoint(0, 0), canvasSize), Qt::white);
-    p.setPen(Qt::black);
+    p.fillRect(QRect(QPoint(0, 0), canvasSize), QPalette().base().color());
+    p.setPen(QPalette().text().color());
 
     updateLines();
 
@@ -195,7 +197,7 @@ void DetViewSingleLineRenderer::drawAll(QPainter& p, const QSize& canvasSize, co
 }
 
 void DetViewSingleLineRenderer::drawSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) {
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
 
     updateLines();
 
@@ -242,7 +244,7 @@ void DetViewSingleLineRenderer::update() {
 
 void DetViewSingleLineRenderer::drawDirect(QPainter& p, int availableHeight, const U2Region& visibleRange) {
     p.setFont(commonMetrics.sequenceFont);
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
 
     U2OpStatusImpl os;
     QByteArray sequence = ctx->getSequenceData(visibleRange, os);
@@ -259,7 +261,7 @@ void DetViewSingleLineRenderer::drawDirect(QPainter& p, int availableHeight, con
 
 void DetViewSingleLineRenderer::drawComplement(QPainter& p, int availableHeight, const U2Region& visibleRange) {
     p.setFont(commonMetrics.sequenceFont);
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
 
     if (complementLine > 0) {
         U2OpStatusImpl os;
@@ -576,7 +578,7 @@ void DetViewSingleLineRenderer::drawSequenceSelection(QPainter& p, const QSize& 
     DNASequenceSelection* sel = ctx->getSequenceSelection();
     CHECK(!sel->isEmpty(), );
 
-    QPen framePen(Qt::black, 1, Qt::DashLine);
+    QPen framePen(QPalette().text().color(), 1, Qt::DashLine);
     p.setPen(framePen);
 
     const QVector<U2Region>& selectedRegions = sel->getSelectedRegions();
@@ -735,11 +737,28 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
                                                            const U2Strand& strand,
                                                            const QList<SharedAnnotationData>& annotationsInRange,
                                                            QColor& result) {
-    // logic:
-    // no annotations found -> grey
-    // found annotation that is on translation -> black
-    // 1 annotation found on nucleic -> darker(annotation color)
-    // 2+ annotations found on nucleic -> black
+    /*
+    logic:
+
+    lignt theme:
+    no annotations found -> gray
+    found annotation that is on translation -> black
+    1 annotation found on nucleic -> darker(annotation color)
+    2+ annotations found on nucleic -> black
+
+    dark theme (similar, but reversed):
+    no annotations found -> rgb(190, 190, 190)
+    found annotation that is on translation -> white
+    1 annotation found on nucleic -> invert -> darker(annotation color) -> invert again
+      (the lighter() function looks bad)
+    2+ annotations found on nucleic -> white
+
+    Note: we do not use just gray (127, 127, 127) if no annotations found because
+    the background in the light theme is pure white (255, 255, 255),
+    but in the dark theme the background is (48, 48, 48),
+    so we keep distanse 128+ between background and text colors.
+
+    */
 
     int nAnnotations = 0;
     const U2Region tripletRange = strand.isComplementary() ? U2Region(pos - 2, 2) : U2Region(pos, 2);
@@ -777,19 +796,29 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
             }
         }
     }
+    bool isDarkTheme = AppContext::getMainWindow()->isDarkTheme();
     if (0 == nAnnotations) {
-        result = Qt::gray;
+        result = isDarkTheme ? QColor(190, 190, 190) : Qt::gray;
         return false;
     }
 
     if (nAnnotations > 1) {
-        result = Qt::black;
+        result = QPalette().text().color();
         return true;
     }
 
     const TriState aminoState = as->amino ? TriState_Yes : TriState_No;
-    const bool aminoOverlap = (aminoState == TriState_Yes);  // annotation is drawn on amino strand -> use black color for letters
-    result = aminoOverlap ? Qt::black : as->color.darker(300);
+    const bool aminoOverlap = (aminoState == TriState_Yes);  // annotation is drawn on amino strand -> use text color for letters
+    if (aminoOverlap) {
+        result = QPalette().text().color();
+    } else if (isDarkTheme) {
+        auto color = as->getActiveColor();
+        QColor invertedAnnotationColor(255 - color.red(), 255 - color.green(), 255 - color.blue());
+        invertedAnnotationColor = invertedAnnotationColor.darker(300);
+        result = QColor(255 - invertedAnnotationColor.red(), 255 - invertedAnnotationColor.green(), 255 - invertedAnnotationColor.blue());
+    } else {
+        result = as->getActiveColor().darker(300);
+    }
 
     return true;
 }
@@ -825,14 +854,15 @@ void DetViewSingleLineRenderer::highlight(QPainter& p, const U2Region& regionToH
     int height = commonMetrics.lineHeight;
     p.save();
 
+    bool isDarkTheme = AppContext::getMainWindow()->isDarkTheme();
     QPen pen = p.pen();
-    pen.setColor(Qt::gray);
+    pen.setColor(isDarkTheme ? Qt::white : Qt::gray);
     pen.setWidth(2);
     p.setPen(pen);
     p.setBrush(Qt::NoBrush);
     p.drawRect(x, y, width, height);
 
-    p.setBrush(Qt::darkGray);
+    p.setBrush(isDarkTheme ? Qt::lightGray : Qt::darkGray);
     p.setCompositionMode(QPainter::CompositionMode_ColorBurn);
     p.drawRect(x, y, width, height);
 

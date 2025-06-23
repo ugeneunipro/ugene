@@ -99,7 +99,7 @@ void CircularViewContext::initViewContext(GObjectViewController* v) {
     viewSettings.insert(av, new CircularViewSettings());
 
     auto exportAction = new GObjectViewAction(this, v, tr("Save circular view as image..."));
-    exportAction->setIcon(QIcon(":/core/images/cam2.png"));
+    exportAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
     exportAction->setObjectName(EXPORT_ACTION_NAME);
     addViewAction(exportAction);
 
@@ -130,25 +130,24 @@ void CircularViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
         return;
     }
 
-    auto action = new CircularViewAction();
-    action->setIcon(QIcon(":circular_view/images/circular.png"));
-    action->setCheckable(true);
-    action->setChecked(false);
-    action->addToMenu = true;
-    action->addToBar = true;
-    connect(action, SIGNAL(triggered()), SLOT(sl_showCircular()));
+    auto circularViewAction = new CircularViewAction();
+    circularViewAction->setCheckable(true);
+    circularViewAction->setChecked(false);
+    circularViewAction->addToMenu = true;
+    circularViewAction->addToBar = true;
+    connect(circularViewAction, SIGNAL(triggered()), SLOT(sl_showCircular()));
 
-    sw->addADVSequenceWidgetActionToViewsToolbar(action);
+    sw->addADVSequenceWidgetActionToViewsToolbar(circularViewAction);
 
     qint64 len = sw->getSequenceContext()->getSequenceLength();
     if (len < MIN_LENGTH_TO_AUTO_SHOW) {
         bool circular = sw->getSequenceContext()->getSequenceObject()->isCircular();
         if (circular) {
-            action->trigger();
+            circularViewAction->trigger();
         }
     }
 
-    connect(sw->getSequenceObject(), SIGNAL(si_sequenceCircularStateChanged()), action, SLOT(sl_circularStateChanged()));
+    connect(sw->getSequenceObject(), SIGNAL(si_sequenceCircularStateChanged()), circularViewAction, SLOT(sl_circularStateChanged()));
 }
 
 void CircularViewContext::sl_sequenceWidgetRemoved(ADVSequenceWidget* w) {
@@ -345,6 +344,9 @@ void CircularViewContext::sl_toggleBySettings(CircularViewSettings* s) {
 
 CircularViewAction::CircularViewAction()
     : ADVSequenceWidgetAction(CIRCULAR_ACTION_NAME, tr("Show circular view")), view(nullptr), rmapWidget(nullptr) {
+    setIcon(GUIUtils::getIconResource("circular_view", "circular.png"));
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &CircularViewAction::sl_colorThemeSwitched);
 }
 
 void CircularViewAction::sl_circularStateChanged() {
@@ -357,6 +359,10 @@ void CircularViewAction::sl_circularStateChanged() {
     } else if (!seqObj->isCircular() && isChecked()) {
         trigger();
     }
+}
+
+void CircularViewAction::sl_colorThemeSwitched() {
+    setIcon(GUIUtils::getIconResource("circular_view", "circular.png"));
 }
 
 }  // namespace U2

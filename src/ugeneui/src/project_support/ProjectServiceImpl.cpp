@@ -127,6 +127,10 @@ void ProjectServiceImpl::sl_exportProject() {
     }
 }
 
+void ProjectServiceImpl::sl_colorThemeSwitched() {
+    saveAction->setIcon(GUIUtils::getIconResource("ugene", "save.png"));
+}
+
 //////////////////////////////////////////////////////////////////////////
 /// Service tasks
 
@@ -140,7 +144,7 @@ Task::ReportResult ProjectServiceEnableTask::report() {
 
     assert(psi->saveAction == nullptr && psi->closeProjectAction == nullptr);
 
-    psi->saveAction = new QAction(QIcon(":ugene/images/project_save.png"), tr("&Save all"), psi);
+    psi->saveAction = new QAction(GUIUtils::getIconResource("ugene", "save.png"), tr("&Save all"), psi);
     psi->saveAction->setObjectName("saveProjectAction");
     psi->saveAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
     psi->saveAction->setShortcutContext(Qt::WindowShortcut);

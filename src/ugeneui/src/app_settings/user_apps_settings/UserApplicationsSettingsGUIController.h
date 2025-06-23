@@ -27,6 +27,8 @@
 
 #include <U2Gui/AppSettingsGUI.h>
 
+#include "main_window/styles/StyleFactory.h"
+
 #include <ui_UserApplicationsSettingsWidget.h>
 
 namespace U2 {
@@ -59,6 +61,7 @@ public:
 
     QString translFile;
     QString style;
+    StyleFactory::ColorTheme colorTheme = StyleFactory::ColorTheme::Light;
     bool openLastProjectFlag= false;
     int askToSaveProject= 0;
     bool enableStatistics = false;
@@ -80,8 +83,12 @@ public:
 
 private slots:
     void sl_transFileClicked();
+    void sl_updateState();
 
 private:
+    static const QString WINDOWS_VISTA_STYLE;
+
+public:
     /**
      * @brief STYLE_KEYS_FIXED_REGISTER
      * The bunch of "Appearance" with fixed register.
@@ -90,6 +97,11 @@ private:
      * (see here, https://doc.qt.io/qt-5/qstylefactory.html#details, "keys are case insensitive")
      */
     static const QMap<QString, QString> FIXED_CASE_QSTYLE_KEY_MAP;
+
+private:
+    QString lightSign;
+    QString darkSign;
+    QString autoSign;
 };
 
 }  // namespace U2

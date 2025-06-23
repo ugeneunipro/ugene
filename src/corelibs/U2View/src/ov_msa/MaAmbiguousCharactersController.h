@@ -45,6 +45,7 @@ private slots:
     void sl_next();
     void sl_previous();
     void sl_resetCachedIterator();
+    void sl_colorThemeSwitched();
 
 private:
     QPoint getStartPosition() const;

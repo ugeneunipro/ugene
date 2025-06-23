@@ -110,7 +110,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     createCodonTableAction();
     createAnnotationAction = (new ADVAnnotationCreation(this))->getCreateAnnotationAction();
 
-    posSelectorAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position..."), this);
+    posSelectorAction = new QAction(GUIUtils::getIconResource("core", "goto.png"), tr("Go to position..."), this);
     posSelectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
     posSelectorAction->setShortcutContext(Qt::WindowShortcut);
     posSelectorAction->setObjectName(ADV_GOTO_ACTION);
@@ -168,6 +168,8 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     complementSequenceAction = new QAction(tr("Complementary (3'-5') sequence"), this);
     complementSequenceAction->setObjectName(ACTION_EDIT_COMPLEMENT_SEQUENCE);
     connect(complementSequenceAction, SIGNAL(triggered()), SLOT(sl_complementSequence()));
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AnnotatedDNAView::sl_colorThemeSwitched);
 
     SecStructPredictViewAction::createAction(this);
 }
@@ -825,7 +827,7 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
             toggleHLAction->setText(tr("Enable '%1' highlighting").arg(aData->name));
         }
 
-        const QIcon icon = GUIUtils::createSquareIcon(as->color, 10);
+        const QIcon icon = GUIUtils::createSquareIcon(as->getActiveColor(), 10);
         toggleHLAction->setIcon(icon);
 
         toggleHLAction->setObjectName("toggle_HL_action");
@@ -1331,6 +1333,10 @@ void AnnotatedDNAView::sl_removeSelectedSequenceObject() {
     ADVSequenceObjectContext* soc = sw->getActiveSequenceContext();
     U2SequenceObject* so = soc->getSequenceObject();
     removeObject(so);
+}
+
+void AnnotatedDNAView::sl_colorThemeSwitched() {
+    posSelectorAction->setIcon(GUIUtils::getIconResource("core", "goto.png"));
 }
 
 QList<AnnotationTableObject*> AnnotatedDNAView::getAnnotationObjects(bool includeAutoAnnotations) const {

@@ -17,7 +17,7 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <property name="margin">
+   <property name="margin" stdset="0">
     <number>0</number>
    </property>
    <item>
@@ -40,21 +40,17 @@
         <string>Add selected sequence</string>
        </property>
        <property name="text">
-        <string>&gt;</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../../../U2Gui/U2Gui.qrc">
-         <normaloff>:/core/images/navi_right.png</normaloff>:/core/images/navi_right.png</iconset>
+        <string/>
        </property>
       </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
+        <enum>QSizePolicy::Policy::Fixed</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -92,10 +88,10 @@
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
+        <enum>QSizePolicy::Policy::Fixed</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -123,11 +119,7 @@
         <string>Clear</string>
        </property>
        <property name="text">
-        <string>x</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../../../U2Gui/U2Gui.qrc">
-         <normaloff>:/core/images/close_small.png</normaloff>:/core/images/close_small.png</iconset>
+        <string/>
        </property>
        <property name="iconSize">
         <size>

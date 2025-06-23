@@ -953,7 +953,7 @@ QVariant ProjectViewModel::data(Folder* folder, int role) const {
 }
 
 QVariant ProjectViewModel::getFolderDecorationData() const {
-    return getIcon(QIcon(":U2Designer/images/directory.png"), true);
+    return getIcon(GUIUtils::getIconResource("U2Designer", "directory.png"), true);
 }
 
 QVariant ProjectViewModel::data(GObject* obj, int role) const {
@@ -1033,8 +1033,7 @@ QVariant ProjectViewModel::getObjectDecorationData(GObject* obj, bool itemIsEnab
         auto seqObj = qobject_cast<U2SequenceObject*>(obj);
         SAFE_POINT(seqObj != nullptr, "Cannot cast GObject to U2SequenceObject", QVariant());
         if (seqObj->isCircular()) {
-            const QIcon circIcon(":core/images/circular_seq.png");
-            return getIcon(circIcon, itemIsEnabled);
+            return getIcon(GUIUtils::getIconResource("core", "circular_seq.png"), itemIsEnabled);
         }
     }
 

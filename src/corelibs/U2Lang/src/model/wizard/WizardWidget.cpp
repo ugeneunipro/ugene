@@ -25,7 +25,6 @@
 
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/WizardWidgetVisitor.h>
-#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 

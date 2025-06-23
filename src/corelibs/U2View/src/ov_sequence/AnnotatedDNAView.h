@@ -232,6 +232,8 @@ private slots:
 
     virtual void sl_removeSelectedSequenceObject();
 
+    void sl_colorThemeSwitched();
+
 private:
     void updateScrollAreaHeight();
     void updateMultiViewActions();

@@ -30,12 +30,14 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/WizardController.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
 
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -313,6 +315,8 @@ void TophatSamples::init(const QList<TophatSample>& samples) {
 #endif
 
     updateArrows();
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TophatSamples::sl_colorThemeSwitched);
 }
 
 void TophatSamples::appendSample(const TophatSample& sample) {
@@ -501,6 +505,11 @@ void TophatSamples::sl_up() {
 
 void TophatSamples::sl_down() {
     move(DOWN);
+}
+
+void TophatSamples::sl_colorThemeSwitched() {
+    upButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
+    downButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 }
 
 QListWidget* TophatSamples::getListWidget(int pos) const {

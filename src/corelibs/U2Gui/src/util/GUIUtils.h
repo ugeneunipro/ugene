@@ -81,17 +81,17 @@ public:
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
 
     // Returns path to the corresponding resource
-    // cathegory - cathegory of the image. This is the prefix, defined in .qrc file
+    // category - category of the image. This is the prefix, defined in .qrc file
     // iconName - icon name
     // innerDirName - if image is in some inner directory (e.g. welcome_page in ugeneui)
     // returns - path to the resource
-    static QString getResourceName(const QString& cathegory, const QString& iconName, const QString& innerDirName = QString());
+    static QString getResourceName(const QString& category, const QString& iconName, const QString& innerDirName = QString());
 
     // Returns resource as icon
-    // cathegory - cathegory of the image. This is the prefix, defined in .qrc file
+    // category - category of the image. This is the prefix, defined in .qrc file
     // iconName - icon name
     // returns - the corresponding icon
-    static QIcon getIconResource(const QString& cathegory, const QString& iconName);
+    static QIcon getIconResource(const QString& category, const QString& iconName);
 
     // Returns resource as icon
     // parameters - icon parameters

@@ -24,6 +24,10 @@
 #include <QLayout>
 #include <QToolButton>
 
+#include <U2Core/AppContext.h>
+
+#include <U2Gui/MainWindow.h>
+
 #define TOOLBAR_BUTTON_SIZE 25
 
 namespace U2 {
@@ -33,6 +37,8 @@ OrderedToolbar::OrderedToolbar(QWidget* parent, Qt::Orientation orientation)
       tabOrdered(false),
       buttonTabOrderList(nullptr) {
     setOrientation(orientation);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &OrderedToolbar::sl_colorThemeSwitched);
 }
 
 void OrderedToolbar::setButtonTabOrderList(QList<QString>* buttonNamesInNeededOrder) {
@@ -76,6 +82,19 @@ void OrderedToolbar::setButtonsTabOrder() const {
         }
         assert(prevButton != nullptr);
     }
+}
+
+void OrderedToolbar::sl_colorThemeSwitched() {
+    auto current = orientation();
+    switch (current) {
+        case Qt::Orientation::Horizontal:
+            setOrientation(Qt::Orientation::Vertical);
+            break;
+        case Qt::Orientation::Vertical:
+            setOrientation(Qt::Orientation::Horizontal);
+            break;
+    }
+    setOrientation(current);
 }
 
 }  // namespace U2

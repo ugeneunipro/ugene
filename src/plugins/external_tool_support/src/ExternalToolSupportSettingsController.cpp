@@ -30,13 +30,13 @@
 #include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "custom_tools/ImportCustomToolsTask.h"
@@ -88,7 +88,7 @@ QList<ExternalTool*> ExternalToolSupportSettingsPageState::getExternalTools() co
 
 const QString ExternalToolSupportSettingsPageWidget::INSTALLED = QObject::tr("Installed");
 const QString ExternalToolSupportSettingsPageWidget::NOT_INSTALLED = QObject::tr("Not installed");
-const QString ExternalToolSupportSettingsPageWidget::ET_DOWNLOAD_INFO = QObject::tr("<html><head/><body><p>Download <a href=\"http://ugene.net/download-all.html\"><span style=\" text-decoration: underline; color:#1866af;\">tools executables</span></a> and configure the tools paths. </p></body></html>");
+const QString ExternalToolSupportSettingsPageWidget::ET_DOWNLOAD_INFO = QObject::tr("<html><head/><body><p>Download <a href=\"http://ugene.net/download-all.html\" style=\"color:%1\"><span style=\" text-decoration: underline; color:#1866af;\">tools executables</span></a> and configure the tools paths. </p></body></html>");
 
 const QString ExternalToolSupportSettingsPageWidget::SUPPORTED_ID = "integrated tools";
 const QString ExternalToolSupportSettingsPageWidget::CUSTOM_ID = "custom tools";
@@ -100,7 +100,7 @@ ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(Ext
     setupUi(this);
     defaultDescriptionText = descriptionTextBrowser->toPlainText();
 
-    selectToolPackLabel->setText(ET_DOWNLOAD_INFO);
+    selectToolPackLabel->setText(ET_DOWNLOAD_INFO.arg(Theme::hyperlinkColorLabelHtmlStr()));
     versionLabel->hide();
     binaryPathLabel->hide();
 
@@ -129,13 +129,14 @@ ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(Ext
     ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     connect(etRegistry, SIGNAL(si_toolAdded(const QString&)), SLOT(sl_externalToolAdded(const QString&)));
     connect(etRegistry, SIGNAL(si_toolIsAboutToBeRemoved(const QString&)), SLOT(sl_externalToolIsAboutToBeRemoved(const QString&)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ExternalToolSupportSettingsPageWidget::sl_colorThemeSwitched);
 }
 
 ExternalToolSupportSettingsPageWidget::~ExternalToolSupportSettingsPageWidget() {
     saveShowHideSubgroupsState();
 }
 
-QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent, const QString& path) const {
+QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent, const QString& path) {
     auto widget = new QWidget(parent);
 
     auto toolPathEdit = new PathLineEdit("", "executable", false, widget);
@@ -157,10 +158,10 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
     connect(selectToolPathButton, SIGNAL(clicked()), this, SLOT(sl_onPathEditWidgetClick()));
     connect(selectToolPathButton, SIGNAL(clicked()), toolPathEdit, SLOT(sl_onBrowse()));
 
-    auto clearToolPathButton = new QToolButton(widget);
+    clearToolPathButton = new QToolButton(widget);
     clearToolPathButton->setObjectName("ClearToolPathButton");
     clearToolPathButton->setVisible(true);
-    clearToolPathButton->setIcon(QIcon(":external_tool_support/images/cancel.png"));
+    clearToolPathButton->setIcon(GUIUtils::getIconResource("external_tool_support", "cancel.png"));
     clearToolPathButton->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
     clearToolPathButton->setEnabled(!path.isEmpty());
 
@@ -294,6 +295,36 @@ void ExternalToolSupportSettingsPageWidget::sl_externalToolIsAboutToBeRemoved(co
         }
         externalToolsItems.remove(id);
     }
+}
+
+void ExternalToolSupportSettingsPageWidget::updateColorThemeRecursively(QTreeWidgetItem* item) {
+    auto id = item->data(0, Qt::ItemDataRole::UserRole).toString();
+    auto etRegistry = AppContext::getExternalToolRegistry();
+    auto tool = etRegistry->getById(id);
+    if (tool == nullptr) {
+        SAFE_POINT(item->childCount() > 0, "Incorrect choldren number", );
+
+        id = item->child(0)->data(0, Qt::ItemDataRole::UserRole).toString();
+        tool = etRegistry->getById(id);
+        SAFE_POINT_NN(tool, );
+    }
+
+    const ExternalToolInfo& toolInfo = externalToolsInfo.value(id);
+    auto iconParameters = toolInfo.path.isEmpty() ? tool->getGrayIconParameters()
+                                                  : (toolInfo.isValid ? tool->getIconParameters()
+                                                                      : tool->getWarnIconParameters());
+    item->setIcon(0, GUIUtils::getIconResource(iconParameters));
+
+    for (int i = 0; i < item->childCount(); i++) {
+        updateColorThemeRecursively(item->child(i));
+    }
+}
+
+void ExternalToolSupportSettingsPageWidget::sl_colorThemeSwitched() {
+    for (int i = 0; i < twIntegratedTools->topLevelItemCount(); i++) {
+        updateColorThemeRecursively(twIntegratedTools->topLevelItem(i));
+    }
+    clearToolPathButton->setIcon(GUIUtils::getIconResource("external_tool_support", "cancel.png"));
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_linkActivated(const QString& url) {
