@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/Datatype.h>
 #include <U2Lang/GrouperOutSlot.h>
 #include <U2Lang/LocalDomain.h>
