@@ -25,7 +25,6 @@
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowScriptEngine.h>
-#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 

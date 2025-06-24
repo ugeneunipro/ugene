@@ -21,6 +21,7 @@
 
 #include "BwaMemWorker.h"
 
+#include <QDir>
 #include <QScopedPointer>
 
 #include <U2Algorithm/DnaAssemblyTask.h>

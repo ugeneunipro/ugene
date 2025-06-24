@@ -21,6 +21,8 @@
 
 #include "HmmerBuildWorker.h"
 
+#include <QFileInfo>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/Log.h>

@@ -39,6 +39,7 @@
 #include <U2Lang/Datatype.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "PWMSearchDialogController.h"
 #include "WeightMatrixIO.h"

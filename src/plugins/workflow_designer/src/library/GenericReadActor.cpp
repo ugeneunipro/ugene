@@ -40,6 +40,7 @@
 #include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/URLAttribute.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "CoreLib.h"
 #include "DocActors.h"

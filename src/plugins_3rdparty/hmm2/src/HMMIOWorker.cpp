@@ -38,6 +38,7 @@
 #include <U2Lang/Datatype.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "HMMIO.h"
 #include "u_build/HMMBuildWorker.h"
