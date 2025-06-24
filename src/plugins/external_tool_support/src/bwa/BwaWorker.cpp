@@ -33,6 +33,8 @@
 #include "BwaSupport.h"
 #include "BwaTask.h"
 
+#include <QDir>
+
 namespace U2 {
 namespace LocalWorkflow {
 

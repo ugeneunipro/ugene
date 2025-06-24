@@ -29,7 +29,6 @@
 
 #include <U2Lang/DatasetFetcher.h>
 #include <U2Lang/LocalDomain.h>
-#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 

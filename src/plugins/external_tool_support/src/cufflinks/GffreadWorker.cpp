@@ -21,6 +21,9 @@
 
 #include "GffreadWorker.h"
 
+#include <QDir>
+#include <QFileInfo>
+
 #include <U2Core/FailTask.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2OpStatusUtils.h>

@@ -32,6 +32,7 @@
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "CmdlineBasedWorkerValidator.h"
 #include "library/ExternalProcessWorker.h"

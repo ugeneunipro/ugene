@@ -33,6 +33,8 @@
 #include "BowtieSupport.h"
 #include "BowtieTask.h"
 
+#include <QDir>
+
 namespace U2 {
 namespace LocalWorkflow {
 

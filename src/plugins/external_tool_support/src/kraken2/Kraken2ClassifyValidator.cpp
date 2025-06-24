@@ -21,6 +21,8 @@
 
 #include "Kraken2ClassifyValidator.h"
 
+#include <QFileInfo>
+
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/U2SafePoints.h>
 

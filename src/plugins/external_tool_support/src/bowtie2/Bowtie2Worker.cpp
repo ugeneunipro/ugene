@@ -35,6 +35,8 @@
 #include "perl/PerlSupport.h"
 #include "python/Python3Support.h"
 
+#include <QDir>
+
 namespace U2 {
 namespace LocalWorkflow {
 
