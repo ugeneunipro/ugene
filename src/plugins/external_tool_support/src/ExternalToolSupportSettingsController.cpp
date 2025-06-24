@@ -368,8 +368,8 @@ void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState* s)
             }
         } else {
             groupTool = toolsList[0];
-            const auto& iconParameters = groupTool->getIconParameters();
-            auto icon = GUIUtils::getIconResource(iconParameters);
+            const auto& iconRef = groupTool->getIconRef();
+            auto icon = GUIUtils::getIconResource(iconRef);
             QTreeWidgetItem* toolkitItem = createToolkitItem(twIntegratedTools, groupTool->getToolKitName(), icon);
             for (ExternalTool* tool : qAsConst(toolsList)) {
                 appendToolItem(toolkitItem, tool);
@@ -403,10 +403,10 @@ QTreeWidgetItem* ExternalToolSupportSettingsPageWidget::appendToolItem(QTreeWidg
 
     treeWidget->setItemWidget(item, 1, toolItemWidget);
 
-    auto iconParameters = toolInfo.path.isEmpty() ? tool->getGrayIconParameters()
-                                         : (toolInfo.isValid ? tool->getIconParameters()
-                                                             : tool->getWarnIconParameters());
-    item->setIcon(0, GUIUtils::getIconResource(iconParameters));
+    auto iconRef = toolInfo.path.isEmpty() ? tool->getGrayIconRef()
+                                         : (toolInfo.isValid ? tool->getIconRef()
+                                                             : tool->getWarnIconRef());
+    item->setIcon(0, GUIUtils::getIconResource(iconRef));
     return item;
 }
 
@@ -421,19 +421,19 @@ void ExternalToolSupportSettingsPageWidget::setToolState(ExternalTool* tool) {
 
     auto toolById = AppContext::getExternalToolRegistry()->getById(tool->getId());
     if (tool->isValid()) {
-        const auto& iconParameters = toolById->getIconParameters();
-        auto icon = GUIUtils::getIconResource(iconParameters);
+        const auto& iconRef = toolById->getIconRef();
+        auto icon = GUIUtils::getIconResource(iconRef);
         item->setIcon(0, icon);
         moduleToolState = INSTALLED;
     } else if (!tool->getPath().isEmpty()) {
         toolStateDesc = getToolStateDescription(tool);
-        const auto& warnIiconParameters = toolById->getWarnIconParameters();
-        auto warnIcon = GUIUtils::getIconResource(warnIiconParameters);
+        const auto& warnIiconRef = toolById->getWarnIconRef();
+        auto warnIcon = GUIUtils::getIconResource(warnIiconRef);
         item->setIcon(0, warnIcon);
         moduleToolState = NOT_INSTALLED;
     } else {
-        const auto& grayIconParameters = toolById->getGrayIconParameters();
-        auto grayIcon = GUIUtils::getIconResource(grayIconParameters);
+        const auto& grayIconRef = toolById->getGrayIconRef();
+        auto grayIcon = GUIUtils::getIconResource(grayIconRef);
         item->setIcon(0, grayIcon);
         moduleToolState = "";
     }
@@ -621,8 +621,8 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
             QString toolId = item->data(0, Qt::ItemDataRole::UserRole).toString();
             if (path.isEmpty()) {
                 auto tool = AppContext::getExternalToolRegistry()->getById(toolId);
-                const auto& iconParameters = tool->getIconParameters();
-                item->setIcon(0, GUIUtils::getIconResource(iconParameters));
+                const auto& iconRef = tool->getIconRef();
+                item->setIcon(0, GUIUtils::getIconResource(iconRef));
             }
 
             ExternalToolManager* etManager = AppContext::getExternalToolRegistry()->getManager();

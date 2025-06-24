@@ -145,7 +145,7 @@ void GetReadsListWorkerFactory::init() {
         proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
         proto->setPrompter(new GetReadsListPrompter());
         if (AppContext::isGUIMode()) {
-            proto->setIconParameters(IconParameters("U2Designer", "blue_circle.png"));
+            proto->setIconRef(IconRef("U2Designer", "blue_circle.png"));
         }
         WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
         WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new GetReadsListWorkerFactory(SE_ACTOR_ID));
@@ -183,7 +183,7 @@ void GetReadsListWorkerFactory::init() {
         proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
         proto->setPrompter(new GetReadsListPrompter());
         if (AppContext::isGUIMode()) {
-            proto->setIconParameters(IconParameters("U2Designer", "blue_circle.png"));
+            proto->setIconRef(IconRef("U2Designer", "blue_circle.png"));
         }
         WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
         WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new GetReadsListWorkerFactory(PE_ACTOR_ID));

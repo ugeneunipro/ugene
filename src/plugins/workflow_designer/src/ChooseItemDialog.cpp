@@ -56,7 +56,7 @@ QString ChooseItemDialog::select(const QMap<QString, QIcon>& items) {
 Workflow::ActorPrototype* ChooseItemDialog::select(const QList<Workflow::ActorPrototype*>& items) {
     listWidget->clear();
     foreach (Workflow::ActorPrototype* a, items) {
-        const auto& ip = a->getIconParameters();
+        const auto& ip = a->getIconRef();
         auto it = new QListWidgetItem(GUIUtils::getIconResource(ip), a->getDisplayName());
         it->setToolTip(a->getDocumentation());
         listWidget->addItem(it);

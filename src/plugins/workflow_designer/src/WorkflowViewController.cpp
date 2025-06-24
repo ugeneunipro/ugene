@@ -1428,7 +1428,7 @@ bool WorkflowView::sl_validate(bool notify) {
 
     if (lst.count() != 0) {
         for(QListWidgetItem* wi : qAsConst(lst)) {
-            auto ip = wi->data(ICON_DATA_REF).value<IconParameters>();
+            auto ip = wi->data(ICON_DATA_REF).value<IconRef>();
             wi->setIcon(GUIUtils::getIconResource(ip));
             infoList->addItem(wi);
         }

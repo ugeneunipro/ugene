@@ -43,7 +43,7 @@
 namespace U2 {
 
 SecStructPredictViewAction::SecStructPredictViewAction(AnnotatedDNAView* v)
-    : ADVGlobalAction(v, IconParameters("core", "ssp_logo.png"), tr("Predict secondary structure...")) {
+    : ADVGlobalAction(v, IconRef("core", "ssp_logo.png"), tr("Predict secondary structure...")) {
     connect(this, SIGNAL(triggered()), SLOT(sl_execute()));
     setObjectName("Predict secondary structure");
     addAlphabetFilter(DNAAlphabet_AMINO);

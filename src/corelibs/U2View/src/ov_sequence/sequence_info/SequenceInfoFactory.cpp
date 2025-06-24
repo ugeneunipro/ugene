@@ -32,7 +32,7 @@
 namespace U2 {
 
 const QString SequenceInfoFactory::GROUP_ID = "OP_SEQ_INFO";
-const IconParameters SequenceInfoFactory::GROUP_ICON_PAR = IconParameters("core", "chart_bar.png");
+const IconRef SequenceInfoFactory::GROUP_ICON_PAR = IconRef("core", "chart_bar.png");
 const QString SequenceInfoFactory::GROUP_DOC_PAGE = "65929387";
 
 SequenceInfoFactory::SequenceInfoFactory() {

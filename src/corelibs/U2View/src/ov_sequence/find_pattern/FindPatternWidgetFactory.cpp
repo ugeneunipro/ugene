@@ -32,7 +32,7 @@
 namespace U2 {
 
 const QString FindPatternWidgetFactory::GROUP_ID = "OP_FIND_PATTERN";
-const IconParameters FindPatternWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "find_dialog.png");
+const IconRef FindPatternWidgetFactory::GROUP_ICON_PAR = IconRef("core", "find_dialog.png");
 const QString FindPatternWidgetFactory::GROUP_DOC_PAGE = "65929429";
 
 FindPatternWidgetFactory::FindPatternWidgetFactory() {

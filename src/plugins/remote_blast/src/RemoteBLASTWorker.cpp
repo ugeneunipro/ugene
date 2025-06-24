@@ -180,7 +180,7 @@ void RemoteBLASTWorkerFactory::init() {
 
     proto->setPrompter(new RemoteBLASTPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconParameters(IconParameters("remote_blast", "remote_db_request.png"));
+    proto->setIconRef(IconRef("remote_blast", "remote_db_request.png"));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

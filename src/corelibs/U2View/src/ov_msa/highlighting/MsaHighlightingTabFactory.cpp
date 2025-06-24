@@ -30,7 +30,7 @@
 namespace U2 {
 
 const QString MSAHighlightingFactory::GROUP_ID = "OP_MSA_HIGHLIGHTING";
-const IconParameters MSAHighlightingFactory::GROUP_ICON_PAR = IconParameters("core", "highlight.png");
+const IconRef MSAHighlightingFactory::GROUP_ICON_PAR = IconRef("core", "highlight.png");
 const QString MSAHighlightingFactory::GROUP_DOC_PAGE = "65929627";
 
 MSAHighlightingFactory::MSAHighlightingFactory() {

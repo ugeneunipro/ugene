@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-const IconParameters GROUP_ICON_PAR = IconParameters("core", "consensus.png");
+const IconRef GROUP_ICON_PAR = IconRef("core", "consensus.png");
 const QString GROUP_DOC_PAGE_MSA = "20880299";
 const QString GROUP_DOC_PAGE_MCA = "20880557";
 const QString MsaExportConsensusTabFactory::GROUP_ID = "OP_EXPORT_CONSENSUS";

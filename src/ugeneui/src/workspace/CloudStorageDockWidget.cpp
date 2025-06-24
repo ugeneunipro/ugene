@@ -91,11 +91,11 @@ public:
         rect.setLeft(rect.left() + textWidth + 5);
 
         // Draw the secondary icon.
-        auto secondaryIconParameters = index.data(USER_DATA_SECONDARY_ICON).value<IconParameters>();
-        if (!secondaryIconParameters.isEmpty()) {
+        auto secondaryIconRef = index.data(USER_DATA_SECONDARY_ICON).value<IconRef>();
+        if (!secondaryIconRef.isEmpty()) {
             QSize iconSize(16, 16);
             QRect secondaryIconRect(rect.left(), rect.top() + (rect.height() - iconSize.height()) / 2, iconSize.width(), iconSize.height());
-            GUIUtils::getIconResource(secondaryIconParameters).paint(painter, secondaryIconRect);
+            GUIUtils::getIconResource(secondaryIconRef).paint(painter, secondaryIconRect);
         }
     }
 
@@ -122,8 +122,8 @@ static void updateModel(QTreeView* tree,
         childrenMap[childEntryKey] = childItem;
     }
     for (const CloudStorageEntry& childEntry : qAsConst(entry->children)) {
-        IconParameters params;
-        params.iconCategory = "ugene";
+        IconRef params;
+        params.iconModule = "ugene";
         if (childEntry->isFolder) {
             if (childEntry->getName() == "Shared" && childEntry->path.length() == 1) {
                 params.iconName = "folder_shared.svg";
@@ -163,7 +163,7 @@ static void updateModel(QTreeView* tree,
         }
         bool isShared = !childEntry->sharedWithEmails.isEmpty();
         if (isShared) {
-            nameItem->setData(QVariant::fromValue(IconParameters("ugene", "group.svg")), USER_DATA_SECONDARY_ICON);
+            nameItem->setData(QVariant::fromValue(IconRef("ugene", "group.svg")), USER_DATA_SECONDARY_ICON);
             nameItem->setToolTip(CloudStorageDockWidget::tr("Shared with:\n%1").arg(childEntry->sharedWithEmails.join("\n")));
             nameItem->setData(QVariant::fromValue(childEntry->sharedWithEmails), USER_DATA_SHARED_WITH_EMAILS);
         } else {

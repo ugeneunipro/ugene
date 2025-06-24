@@ -101,12 +101,12 @@ const QString ToolsMenu::WORKFLOW_DESIGNER = "WORKFLOW_DESIGNER";
 const QString ToolsMenu::GUI_TEST_RUNNER = "GUI_TEST_RUNNER";
 
 QMap<QString, QString> ToolsMenu::actionText;
-QMap<QString, IconParameters> ToolsMenu::actionIcon;
+QMap<QString, IconRef> ToolsMenu::actionIcon;
 QMap<QString, QStringList> ToolsMenu::subMenuAction;
 
 void ToolsMenu::init() {
     actionText[SANGER_MENU] = tr("Sanger data analysis");
-    actionIcon[SANGER_MENU] = IconParameters("core", "align.png");
+    actionIcon[SANGER_MENU] = IconRef("core", "align.png");
     subMenuAction[TOOLS] << SANGER_MENU;
     {
         subMenuAction[SANGER_MENU] << SANGER_CONTROL;
@@ -116,7 +116,7 @@ void ToolsMenu::init() {
     }
 
     actionText[NGS_MENU] = tr("NGS data analysis");
-    actionIcon[NGS_MENU] = IconParameters("core", "align.png");
+    actionIcon[NGS_MENU] = IconRef("core", "align.png");
     subMenuAction[TOOLS] << NGS_MENU;
     {
         subMenuAction[NGS_MENU] << NGS_CONTROL;
@@ -144,7 +144,7 @@ void ToolsMenu::init() {
     }
 
     actionText[BLAST_MENU] = tr("BLAST");
-    actionIcon[BLAST_MENU] = IconParameters("external_tool_support", "ncbi.png");
+    actionIcon[BLAST_MENU] = IconRef("external_tool_support", "ncbi.png");
     subMenuAction[TOOLS] << BLAST_MENU;
     {
         subMenuAction[BLAST_MENU] << BLAST_NCBI;
@@ -158,7 +158,7 @@ void ToolsMenu::init() {
     }
 
     actionText[MALIGN_MENU] = tr("Multiple sequence alignment");
-    actionIcon[MALIGN_MENU] = IconParameters("core", "msa.png");
+    actionIcon[MALIGN_MENU] = IconRef("core", "msa.png");
     subMenuAction[TOOLS] << MALIGN_MENU;
     {
         subMenuAction[MALIGN_MENU] << MALIGN_MUSCLE;
@@ -169,7 +169,7 @@ void ToolsMenu::init() {
     }
 
     actionText[CLONING_MENU] = tr("Cloning");
-    actionIcon[CLONING_MENU] = IconParameters("core", "dna_helix.png");
+    actionIcon[CLONING_MENU] = IconRef("core", "dna_helix.png");
     subMenuAction[TOOLS] << CLONING_MENU;
     {
         subMenuAction[CLONING_MENU] << CLONING_FRAGMENTS;
@@ -193,7 +193,7 @@ void ToolsMenu::init() {
     }
 
     actionText[HMMER_MENU] = tr("HMMER tools");
-    actionIcon[HMMER_MENU] = IconParameters("hmm2", "hmmer_16.png");
+    actionIcon[HMMER_MENU] = IconRef("hmm2", "hmmer_16.png");
     subMenuAction[TOOLS] << HMMER_MENU;
     {
         subMenuAction[HMMER_MENU] << HMMER_BUILD3;

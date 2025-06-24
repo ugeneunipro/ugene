@@ -32,7 +32,7 @@
 namespace U2 {
 
 const QString FindPatternMsaWidgetFactory::GROUP_ID = "OP_MSA_FIND_PATTERN_WIDGET";
-const IconParameters FindPatternMsaWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "find_dialog.png");
+const IconRef FindPatternMsaWidgetFactory::GROUP_ICON_PAR = IconRef("core", "find_dialog.png");
 const QString FindPatternMsaWidgetFactory::GROUP_DOC_PAGE = "65929651";
 
 FindPatternMsaWidgetFactory::FindPatternMsaWidgetFactory() {

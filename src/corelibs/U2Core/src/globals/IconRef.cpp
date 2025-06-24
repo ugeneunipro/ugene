@@ -19,16 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "IconParameters.h"
+#include "IconRef.h"
 
 namespace U2 {
 
-IconParameters::IconParameters(const QString& _iconCategory, const QString& _iconName)
-    : iconCategory(_iconCategory), iconName(_iconName) {
+IconRef::IconRef(const QString& _iconModule, const QString& _iconName)
+    : iconModule(_iconModule), iconName(_iconName) {
 }
 
-bool IconParameters::isEmpty() const {
-    return iconCategory.isEmpty() || iconName.isEmpty();
+bool IconRef::isEmpty() const {
+    return iconModule.isEmpty() || iconName.isEmpty();
 }
 
 }  // namespace U2

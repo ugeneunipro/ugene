@@ -101,7 +101,7 @@ const QString TRANSFORM_INTO_A_PRIMER_PAIR_NAME = "transform_into_a_primer_pair"
 
 void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
-    auto a = new ADVGlobalAction(av, IconParameters("remote_blast", "remote_db_request.png"), tr("Query NCBI BLAST database..."), 60);
+    auto a = new ADVGlobalAction(av, IconRef("remote_blast", "remote_db_request.png"), tr("Query NCBI BLAST database..."), 60);
     a->setObjectName("Query NCBI BLAST database");
     a->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));

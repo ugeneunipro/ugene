@@ -41,9 +41,9 @@ const QString GroupHeaderImageWidget::HEADER_COMMON_STYLE = "border-style: solid
                                                             "QToolTip {background: palette(window);"
                                                             "border-left-width: 0px;}";
 
-GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const IconParameters& _iconParameters)
-    : groupId(_groupId), iconParameters(_iconParameters) {
-    setPixmap(GUIUtils::getIconResource(iconParameters).pixmap(ICON_SIZE, ICON_SIZE));
+GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const IconRef& _iconRef)
+    : groupId(_groupId), iconRef(_iconRef) {
+    setPixmap(GUIUtils::getIconResource(iconRef).pixmap(ICON_SIZE, ICON_SIZE));
 
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 

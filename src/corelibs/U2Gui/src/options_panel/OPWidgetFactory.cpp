@@ -25,9 +25,9 @@
 
 namespace U2 {
 
-OPGroupParameters::OPGroupParameters(QString groupId, IconParameters headerImageParameters, QString title, QString documentationPage)
+OPGroupParameters::OPGroupParameters(QString groupId, IconRef headerImageParameters, QString title, QString documentationPage)
     : groupId(groupId),
-      groupIconParameters(headerImageParameters),
+      groupIconRef(headerImageParameters),
       groupTitle(title),
       groupDocumentationPage(documentationPage) {
 }

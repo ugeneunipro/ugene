@@ -54,9 +54,9 @@ ClustalOSupport::ClustalOSupport()
     : ExternalTool(ClustalOSupport::ET_CLUSTALO_ID, "clustalo", "ClustalO") {
     if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new ClustalOSupportContext(this);
-        icon = IconParameters("external_tool_support", "clustalo.png");
-        grayIcon = IconParameters("external_tool_support", "clustalo_gray.png");
-        warnIcon = IconParameters("external_tool_support", "clustalo_warn.png");
+        icon = IconRef("external_tool_support", "clustalo.png");
+        grayIcon = IconRef("external_tool_support", "clustalo_gray.png");
+        warnIcon = IconRef("external_tool_support", "clustalo_warn.png");
     }
     executableFileName = isOsWindows() ? "ClustalO.exe" : "clustalo";
     validationArguments << "--help";

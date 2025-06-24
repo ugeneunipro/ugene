@@ -98,12 +98,12 @@ RepeatViewContext::RepeatViewContext(QObject* p)
 
 void RepeatViewContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
-    auto a = new ADVGlobalAction(av, IconParameters("repeat_finder", "repeats.png"), tr("Find repeats..."), 40);
+    auto a = new ADVGlobalAction(av, IconRef("repeat_finder", "repeats.png"), tr("Find repeats..."), 40);
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     a->setObjectName("find_repeats_action");
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
 
-    auto a2 = new ADVGlobalAction(av, IconParameters("repeat_finder", "repeats_tandem.png"), tr("Find tandem repeats..."), 41);
+    auto a2 = new ADVGlobalAction(av, IconRef("repeat_finder", "repeats_tandem.png"), tr("Find tandem repeats..."), 41);
     a2->addAlphabetFilter(DNAAlphabet_NUCL);
     a2->setObjectName("find_tandems_action");
     connect(a2, SIGNAL(triggered()), SLOT(sl_showTandemDialog()));

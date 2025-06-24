@@ -105,7 +105,7 @@ void ImportPrimersDialog::sl_addObjectClicked() {
     }
 
     foreach (GObject* object, objects) {
-        auto icon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(object->getGObjectType()).iconParameters);
+        auto icon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(object->getGObjectType()).iconRef);
         auto item = new QListWidgetItem(icon, object->getDocument()->getName() + ": " + object->getGObjectName());
         item2object.insert(item, object);
         lwObjects->addItem(item);

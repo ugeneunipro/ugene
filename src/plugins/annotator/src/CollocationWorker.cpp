@@ -134,7 +134,7 @@ void CollocationWorkerFactory::init() {
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setValidator(new CollocationValidator());
-    proto->setIconParameters(IconParameters("annotator", "regions.png"));
+    proto->setIconRef(IconRef("annotator", "regions.png"));
     proto->setPrompter(new CollocationPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 

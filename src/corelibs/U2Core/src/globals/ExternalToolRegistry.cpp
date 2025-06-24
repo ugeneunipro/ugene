@@ -68,15 +68,15 @@ const QString& ExternalTool::getPath() const {
     return path;
 }
 
-const IconParameters& ExternalTool::getIconParameters() const {
+const IconRef& ExternalTool::getIconRef() const {
     return icon;
 }
 
-const IconParameters& ExternalTool::getGrayIconParameters() const {
+const IconRef& ExternalTool::getGrayIconRef() const {
     return grayIcon;
 }
 
-const IconParameters& ExternalTool::getWarnIconParameters() const {
+const IconRef& ExternalTool::getWarnIconRef() const {
     return warnIcon;
 }
 

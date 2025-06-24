@@ -29,10 +29,10 @@
 
 namespace U2 {
 
-ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const IconParameters& _iconParameters, const QString& text, int ps, const ADVGlobalActionFlags& fl)
-    : GObjectViewAction(v, v, text), pos(ps), flags(fl), iconParameters(_iconParameters) {
-    if (!iconParameters.isEmpty()) {
-        setIcon(GUIUtils::getIconResource(iconParameters));
+ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const IconRef& _iconRef, const QString& text, int ps, const ADVGlobalActionFlags& fl)
+    : GObjectViewAction(v, v, text), pos(ps), flags(fl), iconRef(_iconRef) {
+    if (!iconRef.isEmpty()) {
+        setIcon(GUIUtils::getIconResource(iconRef));
     }
     connect(v, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
     updateState();
@@ -55,8 +55,8 @@ void ADVGlobalAction::updateState() {
         enabled = alphabetFilter.contains(t);
     }
     setEnabled(enabled);
-    if (!iconParameters.isEmpty()) {
-        setIcon(GUIUtils::getIconResource(iconParameters));
+    if (!iconRef.isEmpty()) {
+        setIcon(GUIUtils::getIconResource(iconRef));
     }
 }
 

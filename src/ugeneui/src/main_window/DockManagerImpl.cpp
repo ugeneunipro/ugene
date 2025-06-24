@@ -39,8 +39,8 @@ namespace U2 {
 
 #define DOCK_SETTINGS QString("mwdockview/")
 
-DockWrapWidget::DockWrapWidget(QWidget* _w, const IconParameters& _iconParameters)
-    : w(_w), iconParameters(_iconParameters) {
+DockWrapWidget::DockWrapWidget(QWidget* _w, const IconRef& _iconRef)
+    : w(_w), iconRef(_iconRef) {
     auto l = new QVBoxLayout();
     l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
@@ -142,7 +142,7 @@ static bool ksInUse(const QKeySequence& ks, const QList<DockData*>& docks) {
     return false;
 }
 
-QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const IconParameters& iconParameters, const QKeySequence& keySequence) {
+QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const IconRef& iconRef, const QKeySequence& keySequence) {
     bool showDock = dockWidget->objectName() == lastActiveDocksState[area];
 
     QToolBar* toolBar = getDockBar(area);
@@ -150,7 +150,7 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, c
     auto data = new DockData();
     data->area = area;
     data->label = new QLabel(toolBar);
-    data->wrapWidget = new DockWrapWidget(dockWidget, iconParameters);
+    data->wrapWidget = new DockWrapWidget(dockWidget, iconRef);
     data->wrapWidget->setObjectName("wrap_widget_" + dockWidget->objectName());
     data->label->setObjectName("doc_label__" + dockWidget->objectName());
     data->label->installEventFilter(this);

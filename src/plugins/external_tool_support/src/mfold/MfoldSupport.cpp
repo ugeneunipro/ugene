@@ -46,9 +46,9 @@ MfoldSupport::MfoldSupport()
     : ExternalTool(ET_MFOLD_ID, "mfold", "mfold") {
     if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new MfoldContext(this);
-        icon = IconParameters("external_tool_support", "mfold.png");
-        grayIcon = IconParameters("external_tool_support", "mfold_gray.png");
-        warnIcon = IconParameters("external_tool_support", "mfold_warn.png");
+        icon = IconRef("external_tool_support", "mfold.png");
+        grayIcon = IconRef("external_tool_support", "mfold_gray.png");
+        warnIcon = IconRef("external_tool_support", "mfold_warn.png");
         viewCtx->init();
     }
     description = tr(
@@ -83,7 +83,7 @@ void MfoldContext::initViewContext(GObjectViewController* controller) {
     auto adv = qobject_cast<AnnotatedDNAView*>(controller);
     SAFE_POINT_NN(adv, );
     ADVGlobalAction* a = new ADVGlobalAction(adv,
-                                             IconParameters("external_tool_support", "mfold.png"),
+                                             IconRef("external_tool_support", "mfold.png"),
                                              "Mfold...",
                                              2002,
                                              ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) |

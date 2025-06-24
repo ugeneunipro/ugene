@@ -129,7 +129,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
         addObject(dnaObj);
     }
 
-    findPatternAction = new ADVGlobalAction(this, IconParameters("core", "find_dialog.png"), tr("Find pattern..."), 10);
+    findPatternAction = new ADVGlobalAction(this, IconRef("core", "find_dialog.png"), tr("Find pattern..."), 10);
     findPatternAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
     findPatternAction->setShortcutContext(Qt::WindowShortcut);
     connect(findPatternAction, SIGNAL(triggered()), SLOT(sl_onFindPatternClicked()));
@@ -256,7 +256,7 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
 
     mainSplitter->addAction(removeAnnsAndQsAction);
 
-    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).iconParameters);
+    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).iconRef);
     mainSplitter->setWindowIcon(windowIcon);
 
     // Init the Options Panel
@@ -1144,7 +1144,7 @@ void AnnotatedDNAView::finishSeqWidgetMove() {
 }
 
 void AnnotatedDNAView::createCodonTableAction() {
-    QAction* showCodonTableAction = new ADVGlobalAction(this, IconParameters("core", "codon_table.png"), tr("Show codon table"), INT_MAX - 1, ADVGlobalActionFlag_AddToToolbar);
+    QAction* showCodonTableAction = new ADVGlobalAction(this, IconRef("core", "codon_table.png"), tr("Show codon table"), INT_MAX - 1, ADVGlobalActionFlag_AddToToolbar);
     showCodonTableAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_B));
     showCodonTableAction->setShortcutContext(Qt::WindowShortcut);
     connect(showCodonTableAction, SIGNAL(triggered()), codonTableView, SLOT(sl_setVisible()));

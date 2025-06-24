@@ -409,9 +409,9 @@ QAction* WorkflowPaletteElements::createItemAction(ActorPrototype* item) {
     auto a = new QAction(item->getDisplayName(), this);
     a->setToolTip(item->getDocumentation());
     a->setCheckable(true);
-    const auto& ip = item->getIconParameters();
+    const auto& ip = item->getIconRef();
     if (ip.iconName.isEmpty()) {
-        item->setIconParameters(IconParameters("workflow_designer", "green_circle.png"));
+        item->setIconRef(IconRef("workflow_designer", "green_circle.png"));
     }
     protoActionsName.insert(item, a);
     a->setIcon(GUIUtils::getIconResource(ip));

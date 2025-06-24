@@ -28,7 +28,7 @@
 namespace U2 {
 
 const QString PairAlignFactory::GROUP_ID = "OP_PAIRALIGN";
-const IconParameters PairAlignFactory::GROUP_ICON_PAR = IconParameters("core", "pairwise.png");
+const IconRef PairAlignFactory::GROUP_ICON_PAR = IconRef("core", "pairwise.png");
 const QString PairAlignFactory::GROUP_DOC_PAGE = "65929675";
 
 PairAlignFactory::PairAlignFactory() {

@@ -124,8 +124,8 @@ QWidget* OptionsPanelWidget::getOptionsWidget() const {
     return optionsScrollArea;
 }
 
-GroupHeaderImageWidget* OptionsPanelWidget::createHeaderImageWidget(const QString& groupId, const IconParameters& iconParameters) {
-    auto widget = new GroupHeaderImageWidget(groupId, iconParameters);
+GroupHeaderImageWidget* OptionsPanelWidget::createHeaderImageWidget(const QString& groupId, const IconRef& iconRef) {
+    auto widget = new GroupHeaderImageWidget(groupId, iconRef);
 
     // Add widget to the layout and "parent" it
     groupsLayout->addWidget(widget);

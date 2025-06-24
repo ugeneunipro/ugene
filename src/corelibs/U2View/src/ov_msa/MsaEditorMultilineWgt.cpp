@@ -459,7 +459,7 @@ void MsaEditorMultilineWgt::initWidgets() {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setMinimumSize(300, 200);
 
-    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).iconParameters);
+    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).iconRef);
     setWindowIcon(windowIcon);
 
     auto cvBar = new GScrollBar(Qt::Vertical);

@@ -70,15 +70,15 @@ void Descriptor::setDisplayName(const QString& n) {
 /**************************
  * VisualDescriptor
  **************************/
-VisualDescriptor::VisualDescriptor(const Descriptor& d, IconParameters _parameters)
+VisualDescriptor::VisualDescriptor(const Descriptor& d, IconRef _parameters)
     : Descriptor(d), parameters(_parameters) {
 }
 
-void VisualDescriptor::setIconParameters(const IconParameters& _parameters) {
+void VisualDescriptor::setIconRef(const IconRef& _parameters) {
     parameters = _parameters;
 }
 
-const IconParameters& VisualDescriptor::getIconParameters() const {
+const IconRef& VisualDescriptor::getIconRef() const {
     return parameters;
 }
 

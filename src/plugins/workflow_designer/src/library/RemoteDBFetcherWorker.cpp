@@ -361,7 +361,7 @@ void RemoteDBFetcherFactory::init() {
     proto->setPrompter(new RemoteDBFetcherPrompter());
 
     if (AppContext::isGUIMode()) {
-        proto->setIconParameters(IconParameters("U2Designer", "blue_circle.png"));
+        proto->setIconRef(IconRef("U2Designer", "blue_circle.png"));
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);

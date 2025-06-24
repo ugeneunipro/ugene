@@ -445,7 +445,7 @@ static void storeOptionValueInAppSettings(const TreeViewOption& option, const QV
 TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer, QWidget* parent)
     : QGraphicsView(parent), phyObject(_treeViewer->getPhyObject()),
       treeViewer(_treeViewer) {
-    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).iconParameters);
+    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).iconRef);
     setWindowIcon(windowIcon);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);

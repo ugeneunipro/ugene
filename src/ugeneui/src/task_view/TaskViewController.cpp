@@ -48,10 +48,10 @@ namespace U2 {
 #define SETTINGS_ROOT QString("task_view/")
 
 TaskViewDockWidget::TaskViewDockWidget() {
-    waitingIp = IconParameters("ugene", "hourglass.png");
-    activeIp = IconParameters("ugene", "hourglass_go.png");
-    wasErrorIp = IconParameters("ugene", "hourglass_err.png");
-    finishedIp = IconParameters("ugene", "hourglass_ok.png");
+    waitingIp = IconRef("ugene", "hourglass.png");
+    activeIp = IconRef("ugene", "hourglass_go.png");
+    wasErrorIp = IconRef("ugene", "hourglass_err.png");
+    finishedIp = IconRef("ugene", "hourglass_ok.png");
 
     setObjectName(DOCK_TASK_VIEW);
     setWindowTitle(tr("Tasks"));

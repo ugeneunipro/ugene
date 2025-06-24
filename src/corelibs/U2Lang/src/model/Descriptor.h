@@ -26,7 +26,7 @@
 #include <QMetaType>
 #include <QString>
 
-#include <U2Core/IconParameters.h>
+#include <U2Core/IconRef.h>
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -86,13 +86,13 @@ protected:
  */
 class U2LANG_EXPORT VisualDescriptor : public Descriptor {
 public:
-    VisualDescriptor(const Descriptor& d, IconParameters parameters = IconParameters());
+    VisualDescriptor(const Descriptor& d, IconRef parameters = IconRef());
 
-    void setIconParameters(const IconParameters& parameters);
-    const IconParameters& getIconParameters() const;
+    void setIconRef(const IconRef& parameters);
+    const IconRef& getIconRef() const;
 
 private:
-    IconParameters parameters;
+    IconRef parameters;
 
 };  // VisualDescriptor
 

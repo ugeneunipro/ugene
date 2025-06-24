@@ -103,7 +103,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setMinimumSize(300, 100);
 
-    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).iconParameters);
+    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).iconRef);
     setWindowIcon(windowIcon);
 
     auto horizontalSequenceScrollBar = new GScrollBar(Qt::Horizontal);

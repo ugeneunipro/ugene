@@ -228,7 +228,7 @@ QWidget* AssemblySettingsWidget::createRulerSettings() {
 // AssemblySettingsWidgetFactory
 ////////////////////////////////////
 const QString AssemblySettingsWidgetFactory::GROUP_ID = "OP_ASS_SETTINGS";
-const IconParameters AssemblySettingsWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "settings2.png");
+const IconRef AssemblySettingsWidgetFactory::GROUP_ICON_PAR = IconRef("core", "settings2.png");
 const QString AssemblySettingsWidgetFactory::GROUP_DOC_PAGE = "65929863";
 
 AssemblySettingsWidgetFactory::AssemblySettingsWidgetFactory() {

@@ -90,11 +90,11 @@ AnnotatorViewContext::AnnotatorViewContext(QObject* p, bool customAutoAnnotation
 
 void AnnotatorViewContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
-    auto findRegionsAction = new ADVGlobalAction(av, IconParameters("annotator", "regions.png"), tr("Find annotated regions..."), 30);
+    auto findRegionsAction = new ADVGlobalAction(av, IconRef("annotator", "regions.png"), tr("Find annotated regions..."), 30);
     connect(findRegionsAction, SIGNAL(triggered()), SLOT(sl_showCollocationDialog()));
 
     if (customFeaturesAvailable) {
-        auto annotatePlasmidAction = new ADVGlobalAction(av, IconParameters("annotator", "plasmid_features.png"), tr("Annotate plasmid..."), 31);
+        auto annotatePlasmidAction = new ADVGlobalAction(av, IconRef("annotator", "plasmid_features.png"), tr("Annotate plasmid..."), 31);
         annotatePlasmidAction->addAlphabetFilter(DNAAlphabet_NUCL);
         connect(annotatePlasmidAction, SIGNAL(triggered()), SLOT(sl_showCustomAutoAnnotationDialog()));
     }

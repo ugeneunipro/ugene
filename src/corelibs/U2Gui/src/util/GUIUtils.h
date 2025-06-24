@@ -28,7 +28,7 @@
 #include <QMenu>
 #include <QTreeWidgetItem>
 
-#include <U2Core/IconParameters.h>
+#include <U2Core/IconRef.h>
 #include <U2Core/global.h>
 
 #include "U2FileDialog.h"
@@ -94,14 +94,14 @@ public:
     static QIcon getIconResource(const QString& cathegory, const QString& iconName);
 
     // Returns resource as icon
-    // parameters - icon parameters
+    // iconRef - icon reference
     // returns - the corresponding icon
-    static QIcon getIconResource(const IconParameters& parameters);
+    static QIcon getIconResource(const IconRef& iconRef);
 
     // Returns path to the corresponding resource
-    // parameters - icon parameters
+    // iconRef - icon reference
     // returns - path to the resource
-    static QString getResourceName(const IconParameters& parameters);
+    static QString getResourceName(const IconRef& iconRef);
 
     static QString getTextWithDialog(const QString& title, const QString& label, const QString& defaultText, bool& ok, QWidget* parent = nullptr);
 

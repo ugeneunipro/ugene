@@ -34,7 +34,7 @@
 namespace U2 {
 
 const QString McaReadsTabFactory::GROUP_ID = "OP_MCA_READS";
-const IconParameters McaReadsTabFactory::GROUP_ICON_PAR = IconParameters("core", "graphs.png");
+const IconRef McaReadsTabFactory::GROUP_ICON_PAR = IconRef("core", "graphs.png");
 const QString McaReadsTabFactory::GROUP_DOC_PAGE = "66814020";
 
 McaReadsTabFactory::McaReadsTabFactory() {
