@@ -28,6 +28,7 @@
 #include <QMenu>
 #include <QTreeWidgetItem>
 
+#include <U2Core/IconRef.h>
 #include <U2Core/global.h>
 
 #include "U2FileDialog.h"
@@ -78,6 +79,29 @@ public:
     static void setWidgetWarningStyle(QWidget* widget, bool value);
 
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
+
+    // Returns path to the corresponding resource
+    // cathegory - cathegory of the image. This is the prefix, defined in .qrc file
+    // iconName - icon name
+    // innerDirName - if image is in some inner directory (e.g. welcome_page in ugeneui)
+    // returns - path to the resource
+    static QString getResourceName(const QString& cathegory, const QString& iconName, const QString& innerDirName = QString());
+
+    // Returns resource as icon
+    // cathegory - cathegory of the image. This is the prefix, defined in .qrc file
+    // iconName - icon name
+    // returns - the corresponding icon
+    static QIcon getIconResource(const QString& cathegory, const QString& iconName);
+
+    // Returns resource as icon
+    // iconRef - icon reference
+    // returns - the corresponding icon
+    static QIcon getIconResource(const IconRef& iconRef);
+
+    // Returns path to the corresponding resource
+    // iconRef - icon reference
+    // returns - path to the resource
+    static QString getResourceName(const IconRef& iconRef);
 
     static QString getTextWithDialog(const QString& title, const QString& label, const QString& defaultText, bool& ok, QWidget* parent = nullptr);
 

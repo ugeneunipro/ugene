@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2024 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,32 +18,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+#pragma once
 
-#include "BcfToolsSupport.h"
-
-#include <U2Core/AppContext.h>
+#include <U2Core/global.h>
 
 namespace U2 {
 
-const QString BcfToolsSupport::ET_BCFTOOLS = "BCFtools";
-const QString BcfToolsSupport::ET_BCFTOOLS_ID = "USUPP_BCFTOOLS";
+// Parameters, which define an image
+struct U2CORE_EXPORT IconRef {
+    IconRef() = default;
+    IconRef(const QString& _iconModule,
+               const QString& _iconName);
 
-BcfToolsSupport::BcfToolsSupport()
-    : ExternalTool(BcfToolsSupport::ET_BCFTOOLS_ID, "samtools", BcfToolsSupport::ET_BCFTOOLS) {
+    // True if nothing is set
+    bool isEmpty() const;
 
-#ifdef Q_OS_WIN
-    executableFileName = "bcftools.exe";
-#elif defined(Q_OS_UNIX)
-    executableFileName = "bcftools";
-#endif
-
-    validationMessageRegExp = "bcftools \\(Tools for data in the VCF/BCF formats\\)";
-    description = "<i>BCFtools</i> is a set of utilities for data in the VCF/BCF formats";
-    versionRegExp = QRegExp("Version: (\\d+.\\d+.\\d+)");
-
-    toolKitName = "SAMtools";
-
-    muted = true;
-}
+    // Module of the image. This is the prefix, defined in .qrc file
+    QString iconModule;
+    // Icon name
+    QString iconName;
+};
 
 }  // namespace U2
+
+// Metatype for IconRef to serialize it in QVariant
+// Search for ICON_DATA_REF in the codebase to find where it is used
+Q_DECLARE_METATYPE(U2::IconRef)
+
