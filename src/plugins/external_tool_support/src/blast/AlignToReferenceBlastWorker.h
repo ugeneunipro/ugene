@@ -21,8 +21,9 @@
 
 #pragma once
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/BaseDatasetWorker.h>
-#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 

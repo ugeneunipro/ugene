@@ -21,6 +21,8 @@
 
 #include "ConvertFilesFormatWorker.h"
 
+#include <QDir>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DocumentImport.h>

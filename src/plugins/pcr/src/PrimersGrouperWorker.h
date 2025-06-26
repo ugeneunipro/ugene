@@ -25,8 +25,9 @@
 #include <U2Core/Msa.h>
 #include <U2Core/PrimerStatistics.h>
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/LocalDomain.h>
-#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 namespace LocalWorkflow {

@@ -26,8 +26,9 @@
 #include <U2Core/DNATranslation.h>
 #include <U2Core/ExtractAnnotatedRegionTask.h>
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/LocalDomain.h>
-#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 namespace LocalWorkflow {

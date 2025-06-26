@@ -21,9 +21,10 @@
 
 #pragma once
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/BaseThroughWorker.h>
 #include <U2Lang/WorkflowManager.h>
-#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 namespace LocalWorkflow {

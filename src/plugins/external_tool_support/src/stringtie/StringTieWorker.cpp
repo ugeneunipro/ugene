@@ -21,6 +21,7 @@
 
 #include "StringTieWorker.h"
 
+#include <QFileInfo>
 #include <QThread>
 
 #include <U2Core/AppContext.h>

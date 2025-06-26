@@ -23,8 +23,9 @@
 
 #include <U2Core/Primer.h>
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/BaseThroughWorker.h>
-#include <U2Lang/WorkflowUtils.h>
 
 #include "InSilicoPcrTask.h"
 

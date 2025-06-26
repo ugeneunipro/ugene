@@ -65,6 +65,7 @@
 #include <U2Lang/WorkflowManager.h>
 #include <U2Lang/WorkflowRunTask.h>
 #include <U2Lang/WorkflowSettings.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "BreakpointManagerView.h"
 #include "ChooseItemDialog.h"

@@ -22,8 +22,9 @@
 #ifndef _SAMTOOLS_MPILEUP_WORKER_H_
 #define _SAMTOOLS_MPILEUP_WORKER_H_
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/LocalDomain.h>
-#include <U2Lang/WorkflowUtils.h>
 
 #include "AssemblySamtoolsMpileup.h"
 

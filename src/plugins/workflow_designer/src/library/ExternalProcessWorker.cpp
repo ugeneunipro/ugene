@@ -56,6 +56,7 @@
 #include <U2Lang/IncludedProtoFactory.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "CustomExternalToolLogParser.h"
 #include "CustomExternalToolRunTaskHelper.h"

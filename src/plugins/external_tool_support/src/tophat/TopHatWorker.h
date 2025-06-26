@@ -21,11 +21,15 @@
 
 #pragma once
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/DatasetFetcher.h>
+#include <U2Lang/SupportStructures.h>
 #include <U2Lang/LocalDomain.h>
-#include <U2Lang/WorkflowUtils.h>
 
 #include "TopHatSettings.h"
+
+#include <QList>
 
 namespace U2 {
 namespace LocalWorkflow {

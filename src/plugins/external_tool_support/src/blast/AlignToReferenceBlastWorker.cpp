@@ -50,6 +50,9 @@
 #include "align_worker_subtasks/MakeBlastDbAlignerSubtask.h"
 #include "align_worker_subtasks/PrepareReferenceSequenceTask.h"
 
+#include <QFileInfo>
+#include <QDir>
+
 namespace U2 {
 namespace LocalWorkflow {
 

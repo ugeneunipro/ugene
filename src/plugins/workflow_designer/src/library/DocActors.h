@@ -25,10 +25,10 @@
 #include <U2Core/global.h>
 
 #include <U2Designer/DelegateEditors.h>
+#include <U2Designer/PrompterBase.h>
 
 #include <U2Lang/Attribute.h>
 #include <U2Lang/ReadDbObjActorPrototype.h>
-#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 namespace Workflow {

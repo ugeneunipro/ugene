@@ -24,8 +24,9 @@
 #include <U2Algorithm/FindAlgorithm.h>
 #include <U2Algorithm/FindAlgorithmTask.h>
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/LocalDomain.h>
-#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 

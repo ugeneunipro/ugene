@@ -23,8 +23,9 @@
 
 #include <U2Core/SaveDocumentTask.h>
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/LocalDomain.h>
-#include <U2Lang/WorkflowUtils.h>
 
 #include "SiteconAlgorithm.h"
 
@@ -117,4 +118,3 @@ protected:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
