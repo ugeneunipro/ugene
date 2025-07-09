@@ -143,6 +143,7 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
 
     QString url = lod.url;
     QFileInfo urlInfo(url);
+    CHECK_EXT(!urlInfo.baseName().isEmpty(), QMessageBox::critical(ui, L10N::errorTitle(), tr("Set file with not empty name.")), );
     QString fileExtension = urlInfo.suffix();
     DocumentFormatRegistry* formatRegistry = AppContext::getDocumentFormatRegistry();
     DocumentFormat* format = formatRegistry->selectFormatByFileExtension(fileExtension);

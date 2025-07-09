@@ -6003,6 +6003,11 @@ Simple overview is unavailable.</source>
         <translation>Выберите новый файл, чтобы переместить выделенные строки</translation>
     </message>
     <message>
+        <location filename="../src/ov_msa/move_to_object/MoveToObjectMaController.cpp" line="146"/>
+        <source>Set file with not empty name.</source>
+        <translation>Выберите файл с не пустым именем.</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/move_to_object/MoveToObjectMaController.cpp" line="174"/>
         <source>Export alignment rows to a new file</source>
         <translation>Экспортировать строки выравнивания в новый файл</translation>
