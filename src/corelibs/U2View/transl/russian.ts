@@ -6004,8 +6004,8 @@ Simple overview is unavailable.</source>
     </message>
     <message>
         <location filename="../src/ov_msa/move_to_object/MoveToObjectMaController.cpp" line="146"/>
-        <source>Set file with not empty name.</source>
-        <translation>Выберите файл с не пустым именем.</translation>
+        <source>Please select a file with a non-empty name.</source>
+        <translation>Пожалуйста выберите файл с не пустым именем.</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/move_to_object/MoveToObjectMaController.cpp" line="174"/>
