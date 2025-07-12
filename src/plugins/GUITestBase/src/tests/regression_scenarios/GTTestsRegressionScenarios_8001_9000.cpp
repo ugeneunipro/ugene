@@ -1510,7 +1510,7 @@ GUI_TEST_CLASS_DEFINITION(test_8163) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Set file with not empty name."));
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Please select a file with a non-empty name."));
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir, ".fasta", GTFileDialogUtils::Save, GTGlobals::UseMouse));
     GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
     GTUtilsTaskTreeView::waitTaskFinished();
