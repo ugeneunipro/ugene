@@ -66,9 +66,11 @@ void BuildDotPlotFiller::commonScenario() {
             GTSpinBox::setValue("gapSecond", secondGapSize, dialog);
         }
     }
-    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+    
     if (cancel) {
         GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+    } else {
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
     }
 }
 #undef GT_CLASS_NAME
