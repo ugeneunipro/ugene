@@ -1498,6 +1498,24 @@ GUI_TEST_CLASS_DEFINITION(test_8161) {
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Statistics);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8163) {
+    /*
+     * 1. Open COI.aln
+     * 2. Select any row
+     * 3. Call context menu Export->Move selected rows to another alignment->Create a new document
+     * 4. In opened dialog add fasta file without name: ".fasta"
+     * Expected state: message box about empty name appeared
+     **/
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Please select a file with a non-empty name."));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir, ".fasta", GTFileDialogUtils::Save, GTGlobals::UseMouse));
+    GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8170) {
     // Open any sequence (e.g. murine.gb)
     // Enable Restriction Sites auto annotations
