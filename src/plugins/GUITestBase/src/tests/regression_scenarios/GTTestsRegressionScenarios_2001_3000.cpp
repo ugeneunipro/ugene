@@ -1846,9 +1846,21 @@ GUI_TEST_CLASS_DEFINITION(test_2352) {
     // 3. Select any binary file as first file in dialog
     // Expected state: file is not selected, no crash
 
-    QString randomBinaryFile = QCoreApplication::applicationFilePath();
+    class InputBinaryFile : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTUtilsDialog::add(new BuildDotPlotFiller(randomBinaryFile, randomBinaryFile, false, false, false, 5, 5, true));
+            GTLineEdit::setText("firstFileEdit", QCoreApplication::applicationFilePath(), dialog);
+            GTCheckBox::setChecked("oneSequenceCheckBox", true, dialog);
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+            GTGlobals::sleep(10000);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::add(new BuildDotPlotFiller(new InputBinaryFile()));
     GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok));
     GTMenu::clickMainMenuItem({"Tools", "Build dotplot..."});
 }

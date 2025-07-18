@@ -38,16 +38,18 @@ public:
         int _gapSecondValue = 5,
         bool cancel = false);
 
+    BuildDotPlotFiller(CustomScenario* customScenario);
+
     void commonScenario() override;
 
 private:
-    bool mergeFirstBoxChecked;
-    bool oneSequenceBoxChecked;
-    bool mergeSecondBoxChecked;
-    QString firstFileName;
-    QString secondFileName;
-    int firstGapSize;
-    int secondGapSize;
-    bool cancel;
+    bool mergeFirstBoxChecked = "";
+    bool oneSequenceBoxChecked = "";
+    bool mergeSecondBoxChecked = false;
+    QString firstFileName = "";
+    QString secondFileName = "";
+    int firstGapSize = 5;
+    int secondGapSize = 5;
+    bool cancel = false;
 };
 }  // namespace U2
