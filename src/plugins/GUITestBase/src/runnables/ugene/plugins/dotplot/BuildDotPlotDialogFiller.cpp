@@ -47,6 +47,10 @@ BuildDotPlotFiller::BuildDotPlotFiller(
       secondGapSize(_gapSecondValue), cancel(_cancel) {
 }
 
+BuildDotPlotFiller::BuildDotPlotFiller(CustomScenario* customScenario)
+    : Filler("DotPlotFilesDialog", customScenario) {
+}
+
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 void BuildDotPlotFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
