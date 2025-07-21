@@ -54,6 +54,9 @@ signals:
 protected:
     void mousePressEvent(QMouseEvent*) override;
 
+private slots:
+    void sl_colorThemeSwitched();
+
 private:
     QString groupId;
     IconRef iconRef;

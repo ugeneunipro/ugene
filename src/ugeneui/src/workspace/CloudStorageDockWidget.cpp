@@ -358,6 +358,8 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
 
     updateActionsState();
     updateStateLabelText();
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &CloudStorageDockWidget::sl_colorThemeSwitched);
 }
 
 bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
@@ -372,6 +374,21 @@ bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
         }
     }
     return false;
+}
+
+void CloudStorageDockWidget::sl_colorThemeSwitched() {
+    updateTreeViewIconsRecursively(treeViewModel.invisibleRootItem());
+}
+
+void CloudStorageDockWidget::updateTreeViewIconsRecursively(QStandardItem* item) {
+    SAFE_POINT_NN(item, );
+
+    auto params = item->data(USER_DATA_ICON).value<IconRef>();
+    auto icon = GUIUtils::getIconResource(params);
+    item->setIcon(icon);
+    for (int i = 0; i < item->rowCount(); i++) {
+        updateTreeViewIconsRecursively(item->child(i));
+    }
 }
 
 void CloudStorageDockWidget::showContextMenu(const QPoint& point) {

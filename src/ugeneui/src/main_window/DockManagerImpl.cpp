@@ -420,6 +420,12 @@ void MWDockManagerImpl::dontActivateNextTime(MWDockArea a) {
     lastActiveDocksState[a] = "";
 }
 
+void MWDockManagerImpl::colorThemeSwitched() {
+    for (auto doc : qAsConst(docks)) {
+        DockWidgetPainter::updateLabel(doc, doc->isActive);
+    }
+}
+
 void MWDockManagerImpl::saveDockGeometry(DockData* dd) {
     const QString& id = dd->wrapWidget->w->objectName();
     const QSize& size = dd->wrapWidget->w->size();

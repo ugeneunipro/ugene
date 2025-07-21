@@ -221,6 +221,7 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, Sc
     connect(reg, SIGNAL(si_registryModified()), SLOT(rebuild()));
     connect(this, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype*)), SLOT(sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype*)));
     this->setObjectName("WorkflowPaletteElements");
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &WorkflowPaletteElements::sl_colorThemeSwitched);
 }
 
 QMenu* WorkflowPaletteElements::createMenu(const QString& name) {
@@ -605,6 +606,14 @@ void WorkflowPaletteElements::sl_prototypeIsAboutToBeRemoved(ActorPrototype* pro
     }
 
     actionMap.remove(action);
+}
+
+void WorkflowPaletteElements::sl_colorThemeSwitched() {
+    auto protos = protoActionsName.keys();
+    for (const auto& proto : qAsConst(protos)) {
+        auto action = protoActionsName.value(proto);
+        action->setIcon(GUIUtils::getIconResource(proto->getIconRef()));
+    }
 }
 
 void WorkflowPaletteElements::contextMenuEvent(QContextMenuEvent* e) {

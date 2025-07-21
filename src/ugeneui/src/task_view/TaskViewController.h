@@ -84,6 +84,7 @@ private slots:
     void sl_activateReportByButton();
     void sl_itemDoubleClicked(QTreeWidgetItem* item, int column);
     void sl_itemExpanded(QTreeWidgetItem* i);
+    void si_colorThemeSwitched();
 
 private:
     void activateReport(TVTreeItem* i);
@@ -96,6 +97,8 @@ private:
 
     TVTreeItem* findItem(Task* t, bool topLevelOnly) const;
     TVTreeItem* findChildItem(TVTreeItem* i, Task* t) const;
+
+    void recurciveColorThemeUpdate(TVTreeItem* item);
 
     // actual widget
     QTreeWidget* tree;

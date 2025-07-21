@@ -135,6 +135,9 @@ public:
     virtual void addNotification(const QString& message, NotificationType type) = 0;
 
     virtual void registerAction(QAction* action) = 0;
+
+signals:
+    void si_colorThemeSwitched();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -229,6 +232,8 @@ public:
     virtual QWidget* toggleDock(const QString& widgetObjName) = 0;
 
     virtual void dontActivateNextTime(MWDockArea a) = 0;
+
+    virtual void colorThemeSwitched() = 0;
 };
 
 }  // namespace U2

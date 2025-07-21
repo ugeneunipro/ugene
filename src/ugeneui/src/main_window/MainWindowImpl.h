@@ -111,6 +111,7 @@ private slots:
     void sl_viewOnlineDocumentation();
     void sl_showWhatsNew();
     void sl_crashUgene();
+    void sl_colorThemeSwitched();
 #ifdef _INSTALL_TO_PATH_ACTION
     void sl_installToPathAction();
 #endif

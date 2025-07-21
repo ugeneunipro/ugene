@@ -56,6 +56,7 @@ public:
     QDockWidget* dock = nullptr;
     DockWrapWidget* wrapWidget = nullptr;
     QIcon dockIcon;
+    bool isActive = false;
     QAction* keySequenceAction = nullptr;
     QAction* toolBarAction = nullptr;
 };
@@ -77,6 +78,8 @@ public:
     virtual QWidget* toggleDock(const QString& widgetObjName);
 
     virtual void dontActivateNextTime(MWDockArea a);
+
+    virtual void colorThemeSwitched() override;
 
 protected:
     bool eventFilter(QObject* obj, QEvent* event);

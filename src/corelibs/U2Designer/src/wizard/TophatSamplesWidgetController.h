@@ -79,7 +79,7 @@ private:
     QWidget* initSample(const QString& sampleName, const QStringList& datasets);
     QListWidget* getListWidget(int pos) const;
     QScrollArea* createScrollArea();
-    QToolButton* createButton(QWidget* parent, const IconRef& iconPrameters) const;
+    QToolButton* createButton(QWidget* parent, const IconRef& iconRef) const;
     QVBoxLayout* createControlButtonsLayout();
     QVBoxLayout* createControlButtons();
     enum Direction { UP,

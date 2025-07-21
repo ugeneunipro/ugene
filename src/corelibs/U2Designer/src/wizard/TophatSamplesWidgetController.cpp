@@ -509,9 +509,9 @@ QListWidget* TophatSamples::getListWidget(int pos) const {
     return first->findChild<QListWidget*>();
 }
 
-QToolButton* TophatSamples::createButton(QWidget* parent, const IconRef& iconPrameters) const {
+QToolButton* TophatSamples::createButton(QWidget* parent, const IconRef& iconRef) const {
     auto result = new QToolButton(parent);
-    result->setIcon(GUIUtils::getIconResource(iconPrameters));
+    result->setIcon(GUIUtils::getIconResource(iconRef));
     result->setAutoRaise(true);
     return result;
 }

@@ -103,6 +103,7 @@ void TaskViewDockWidget::initActions() {
     connect(s, SIGNAL(si_topLevelTaskRegistered(Task*)), SLOT(sl_onTopLevelTaskRegistered(Task*)));
     connect(s, SIGNAL(si_topLevelTaskUnregistered(Task*)), SLOT(sl_onTopLevelTaskUnregistered(Task*)));
     connect(s, SIGNAL(si_stateChanged(Task*)), SLOT(sl_onStateChanged(Task*)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TaskViewDockWidget::si_colorThemeSwitched);
 }
 
 void TaskViewDockWidget::updateState() {
@@ -247,6 +248,19 @@ TVTreeItem* TaskViewDockWidget::findChildItem(TVTreeItem* ti, Task* t) const {
         }
     }
     return nullptr;
+}
+
+void TaskViewDockWidget::recurciveColorThemeUpdate(TVTreeItem* item) {
+    for (int i = 0, n = item->childCount(); i < n; i++) {
+        QTreeWidgetItem* child = item->child(i);
+        SAFE_POINT_NN(child, );
+
+        auto cti = dynamic_cast<TVTreeItem*>(child);
+        SAFE_POINT_NN(cti, );
+
+        cti->updateVisual();
+        recurciveColorThemeUpdate(cti);
+    }
 }
 
 void TaskViewDockWidget::sl_onTopLevelTaskRegistered(Task* t) {
@@ -405,6 +419,19 @@ void TaskViewDockWidget::sl_itemExpanded(QTreeWidgetItem* qi) {
     }
     ti->addChildren(newSubtaskItems);
     ti->updateVisual();
+}
+
+void TaskViewDockWidget::si_colorThemeSwitched() {
+    for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
+        QTreeWidgetItem* item = tree->topLevelItem(i);
+        SAFE_POINT_NN(item, );
+
+        auto ti = static_cast<TVTreeItem*>(item);
+        SAFE_POINT_NN(item, );
+
+        ti->updateVisual();
+        recurciveColorThemeUpdate(ti);
+    }
 }
 
 void TaskViewDockWidget::selectTask(Task* t) {

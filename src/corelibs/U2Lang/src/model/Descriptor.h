@@ -86,13 +86,13 @@ protected:
  */
 class U2LANG_EXPORT VisualDescriptor : public Descriptor {
 public:
-    VisualDescriptor(const Descriptor& d, IconRef parameters = IconRef());
+    VisualDescriptor(const Descriptor& d, IconRef ref = IconRef());
 
-    void setIconRef(const IconRef& parameters);
+    void setIconRef(const IconRef& ref);
     const IconRef& getIconRef() const;
 
 private:
-    IconRef parameters;
+    IconRef ref;
 
 };  // VisualDescriptor
 

@@ -70,16 +70,16 @@ void Descriptor::setDisplayName(const QString& n) {
 /**************************
  * VisualDescriptor
  **************************/
-VisualDescriptor::VisualDescriptor(const Descriptor& d, IconRef _parameters)
-    : Descriptor(d), parameters(_parameters) {
+VisualDescriptor::VisualDescriptor(const Descriptor& d, IconRef _ref)
+    : Descriptor(d), ref(_ref) {
 }
 
-void VisualDescriptor::setIconRef(const IconRef& _parameters) {
-    parameters = _parameters;
+void VisualDescriptor::setIconRef(const IconRef& _ref) {
+    ref = _ref;
 }
 
 const IconRef& VisualDescriptor::getIconRef() const {
-    return parameters;
+    return ref;
 }
 
 }  // namespace U2
