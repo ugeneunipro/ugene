@@ -81,7 +81,7 @@ public:
     virtual AppSettingsGUIPageState* getState(QString& err) const override;
 
 private:
-    QWidget* createPathEditor(QWidget* parent, const QString& path) const;
+    QWidget* createPathEditor(QWidget* parent, const QString& path);
     QTreeWidgetItem* createToolkitItem(QTreeWidget* treeWidget, const QString& toolkitName, const QIcon& icon);
     /** Appends tool tree item to the tree and registers the tool in 'externalToolsItems' map. */
     QTreeWidgetItem* appendToolItem(QTreeWidgetItem* rootItem, const ExternalTool* tool, bool isModule = false);
@@ -92,6 +92,7 @@ private:
     QString warn(const QString& text) const;
     bool eventFilter(QObject* watched, QEvent* event) override;
     void saveShowHideSubgroupsState() const;
+    void updateColorThemeRecursively(QTreeWidgetItem* item);
 
 private slots:
     void sl_toolPathChanged();
@@ -107,6 +108,7 @@ private slots:
     void sl_deleteCustomToolButtonClicked();
     void sl_externalToolAdded(const QString& id);
     void sl_externalToolIsAboutToBeRemoved(const QString& id);
+    void sl_colorThemeSwitched();
 
 private:
     QMap<QString, ExternalToolInfo> externalToolsInfo;
@@ -117,6 +119,7 @@ private:
     ShowHideSubgroupWidget* supportedToolsShowHideWidget;
     ShowHideSubgroupWidget* customToolsShowHideWidget;
     ShowHideSubgroupWidget* infoShowHideWidget;
+    QToolButton* clearToolPathButton {nullptr};
 
     static const QString INSTALLED;
     static const QString NOT_INSTALLED;

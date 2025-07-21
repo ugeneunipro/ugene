@@ -43,9 +43,9 @@ const QString MrBayesSupport::MRBAYES_TMP_DIR = "mrbayes";
 MrBayesSupport::MrBayesSupport()
     : ExternalTool(MrBayesSupport::ET_MRBAYES_ID, "mrbayes", "MrBayes") {
     if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/mrbayes.png");
-        grayIcon = QIcon(":external_tool_support/images/mrbayes_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/mrbayes_warn.png");
+        icon = IconRef("external_tool_support", "mrbayes.png");
+        grayIcon = IconRef("external_tool_support", "mrbayes_gray.png");
+        warnIcon = IconRef("external_tool_support", "mrbayes_warn.png");
     }
 
 #ifdef Q_OS_WIN

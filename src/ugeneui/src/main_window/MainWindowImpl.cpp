@@ -587,6 +587,10 @@ void MainWindowImpl::sl_crashUgene() {
     *killer = 0;
 }
 
+void MainWindowImpl::sl_colorThemeSwitched() {
+    dockManager->colorThemeSwitched();
+}
+
 void MainWindowImpl::registerStartupChecks(const QList<Task*>& tasks) {
     startupTasklist << tasks;
 }

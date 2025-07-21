@@ -231,6 +231,25 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
 }
 
+QString GUIUtils::getResourceName(const QString& module, const QString& iconName, const QString& innerDirName) {
+    QString inner;
+    if (!innerDirName.isEmpty()) {
+        inner = innerDirName + "/";
+    }
+    QString resourceName = QString(":%1/images/%2%3").arg(module).arg(inner).arg(iconName);
+    return resourceName;
+}
+
+QIcon GUIUtils::getIconResource(const IconRef& iconRef) {
+    CHECK((!iconRef.iconModule.isEmpty() && !iconRef.iconName.isEmpty()), QIcon());
+
+    QString resourceName = GUIUtils::getResourceName(iconRef.iconModule, iconRef.iconName);
+    QPixmap pixmap = QPixmap(resourceName);
+    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(iconRef.iconModule).arg(iconRef.iconName), QIcon());
+
+    return QIcon(pixmap);
+}
+
 void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {
     SAFE_POINT(menu != nullptr, "menu is null", );
     QList<QAction*> actions = menu->actions();

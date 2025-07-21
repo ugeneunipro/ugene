@@ -28,6 +28,7 @@
 #include <QMenu>
 #include <QTreeWidgetItem>
 
+#include <U2Core/IconRef.h>
 #include <U2Core/global.h>
 
 #include "U2FileDialog.h"
@@ -79,6 +80,11 @@ public:
 
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
 
+    // Returns resource as icon
+    // iconRef - icon reference
+    // returns - the corresponding icon
+    static QIcon getIconResource(const IconRef& iconRef);
+
     static QString getTextWithDialog(const QString& title, const QString& label, const QString& defaultText, bool& ok, QWidget* parent = nullptr);
 
     /** Returns map of fieldName -> fieldValue. If the map is empty the dialog was rejected. */
@@ -94,6 +100,14 @@ public:
      */
     static constexpr int MAX_SAFE_PIXMAP_WIDTH = 10 * 1000;
     static constexpr int MAX_SAFE_PIXMAP_HEIGHT = 10 * 1000;
+
+private:
+    // Returns path to the corresponding resource
+    // module - module of the image. This is the prefix, defined in .qrc file
+    // iconName - icon name
+    // innerDirName - if image is in some inner directory (e.g. welcome_page in ugeneui)
+    // returns - path to the resource
+    static QString getResourceName(const QString& module, const QString& iconName, const QString& innerDirName = QString());
 };
 
 /** Resets QSlider value on double clicks. Uses the slider as a parent and is auto-deleted with a slider. */
