@@ -325,7 +325,6 @@ void ExternalToolSupportSettingsPageWidget::sl_colorThemeSwitched() {
     for (int i = 0; i < twIntegratedTools->topLevelItemCount(); i++) {
         updateColorThemeRecursively(twIntegratedTools->topLevelItem(i));
     }
-    clearToolPathButton->setIcon(GUIUtils::getIconResource("external_tool_support", "cancel.png"));
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_linkActivated(const QString& url) {

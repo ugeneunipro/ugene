@@ -231,14 +231,6 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
 }
 
-QPixmap GUIUtils::getPixmapResource(const QString& module, const QString& iconName) {
-    QString resourceName = GUIUtils::getResourceName(module, iconName);
-    QPixmap pixmap = QPixmap(resourceName);
-    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(module).arg(iconName), QPixmap());
-
-    return pixmap;
-}
-
 QString GUIUtils::getResourceName(const QString& module, const QString& iconName, const QString& innerDirName) {
     QString inner;
     if (!innerDirName.isEmpty()) {
@@ -248,22 +240,14 @@ QString GUIUtils::getResourceName(const QString& module, const QString& iconName
     return resourceName;
 }
 
-QIcon GUIUtils::getIconResource(const QString& module, const QString& iconName) {
-    CHECK((!module.isEmpty() && !iconName.isEmpty()), QIcon());
-
-    QIcon icon;
-    QPixmap pixmap = getPixmapResource(module, iconName);
-    icon.addPixmap(pixmap);
-
-    return icon;
-}
-
 QIcon GUIUtils::getIconResource(const IconRef& iconRef) {
-    return getIconResource(iconRef.iconModule, iconRef.iconName);
-}
+    CHECK((!iconRef.iconModule.isEmpty() && !iconRef.iconName.isEmpty()), QIcon());
 
-QString GUIUtils::getResourceName(const IconRef& iconRef) {
-    return getResourceName(iconRef.iconModule, iconRef.iconName);
+    QString resourceName = GUIUtils::getResourceName(iconRef.iconModule, iconRef.iconName);
+    QPixmap pixmap = QPixmap(resourceName);
+    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(iconRef.iconModule).arg(iconRef.iconName), QIcon());
+
+    return QIcon(pixmap);
 }
 
 void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {

@@ -80,28 +80,10 @@ public:
 
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
 
-    // Returns path to the corresponding resource
-    // module - module of the image. This is the prefix, defined in .qrc file
-    // iconName - icon name
-    // innerDirName - if image is in some inner directory (e.g. welcome_page in ugeneui)
-    // returns - path to the resource
-    static QString getResourceName(const QString& module, const QString& iconName, const QString& innerDirName = QString());
-
-    // Returns resource as icon
-    // module - module of the image. This is the prefix, defined in .qrc file
-    // iconName - icon name
-    // returns - the corresponding icon
-    static QIcon getIconResource(const QString& module, const QString& iconName);
-
     // Returns resource as icon
     // iconRef - icon reference
     // returns - the corresponding icon
     static QIcon getIconResource(const IconRef& iconRef);
-
-    // Returns path to the corresponding resource
-    // iconRef - icon reference
-    // returns - path to the resource
-    static QString getResourceName(const IconRef& iconRef);
 
     static QString getTextWithDialog(const QString& title, const QString& label, const QString& defaultText, bool& ok, QWidget* parent = nullptr);
 
@@ -120,7 +102,12 @@ public:
     static constexpr int MAX_SAFE_PIXMAP_HEIGHT = 10 * 1000;
 
 private:
-    static QPixmap getPixmapResource(const QString& module, const QString& iconName);
+    // Returns path to the corresponding resource
+    // module - module of the image. This is the prefix, defined in .qrc file
+    // iconName - icon name
+    // innerDirName - if image is in some inner directory (e.g. welcome_page in ugeneui)
+    // returns - path to the resource
+    static QString getResourceName(const QString& module, const QString& iconName, const QString& innerDirName = QString());
 };
 
 /** Resets QSlider value on double clicks. Uses the slider as a parent and is auto-deleted with a slider. */
