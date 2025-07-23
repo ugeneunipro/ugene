@@ -86,6 +86,12 @@ if (CMAKE_COMPILER_IS_GNUCXX)
     # Apply the warning flags
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
     LIST(APPEND COMPILER_FLAGS -Wl,--no-undefined)
+
+	if(DEFINED ENV{ENABLE_COVERAGE} AND "$ENV{ENABLE_COVERAGE}" STREQUAL "1")
+		message(STATUS "Coverage is enabled")
+		set(CMAKE_CXX_FLAGS_RELWITHCOVERAGE "-O0 -g --coverage -DNDEBUG")
+		set(CMAKE_C_FLAGS_RELWITHCOVERAGE "-O0 -g --coverage -DNDEBUG")
+	endif()
 endif ()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)

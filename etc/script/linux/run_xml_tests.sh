@@ -5,10 +5,15 @@
 # test data in 'test_data' and external tools in 'tools'.
 #
 TEAMCITY_WORK_DIR=$(pwd)
-UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
-UGENE_OUTPUT_DIR="${TEAMCITY_WORK_DIR}/out"
-SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
+if [[ "$ENABLE_COVERAGE" == "1" ]]; then
+  SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene"
+  UGENE_DIR="${SOURCE_DIR}/cmake-build-relwithcov/dist"
+else
+  SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
+  UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
+fi
 SCRIPTS_DIR="${SOURCE_DIR}/etc/script/linux"
+UGENE_OUTPUT_DIR="${TEAMCITY_WORK_DIR}/out"
 
 # UGENE_TESTS_PATH is used both by the script and by UGENE tests.
 export UGENE_TESTS_PATH="${SOURCE_DIR}/tests"
