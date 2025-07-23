@@ -82,8 +82,8 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 
 	if(DEFINED ENV{ENABLE_COVERAGE} AND "$ENV{ENABLE_COVERAGE}" STREQUAL "1")
 		message(STATUS "Coverage is enabled")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
-		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+		set(CMAKE_CXX_FLAGS_RELWITHCOVERAGE "-O0 -g --coverage -DNDEBUG")
+		set(CMAKE_C_FLAGS_RELWITHCOVERAGE "-O0 -g --coverage -DNDEBUG")
 	endif()
 endif ()
 

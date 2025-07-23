@@ -7,8 +7,7 @@
 TEAMCITY_WORK_DIR=$(pwd)
 if [[ "$ENABLE_COVERAGE" == "1" ]]; then
   SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene"
-  UGENE_DIR="${SOURCE_DIR}/cmake-build-debug/dist"
-  UGENE_POSTFIX="d"
+  UGENE_DIR="${SOURCE_DIR}/cmake-build-relwithcov/dist"
 else
   SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
   UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
@@ -53,8 +52,8 @@ env
 echo "##teamcity[blockClosed name='Environment']"
 
 # Kill any existing ugene instances that may left in a hanging state since the previous run.
-killall -q -9 ugeneui"${UGENE_POSTFIX}"
-killall -q -9 ugenecl"${UGENE_POSTFIX}"
+killall -q -9 ugeneui
+killall -q -9 ugenecl
 
 # Copy 'tools' into 'ugene' dir.
 # Reason: Teamcity cleanup of 'ugene' dir removes all symlinks recursively and cleanup the original 'tools' repository.
@@ -73,7 +72,7 @@ fi
 
 rm -rf "${UGENE_OUTPUT_DIR}"
 mkdir -p "${UGENE_OUTPUT_DIR}"
-if stdbuf -oL "${UGENE_DIR}/ugeneui${UGENE_POSTFIX}" --test-suite="${UGENE_TESTS_PATH}/${UGENE_TEST_SUITE}" \
+if stdbuf -oL "${UGENE_DIR}/ugeneui" --test-suite="${UGENE_TESTS_PATH}/${UGENE_TEST_SUITE}" \
   --test-report="${UGENE_OUTPUT_DIR}/test_report.html" \
   --test-threads="${UGENE_TEST_THREADS}" \
   --ini-file="${UGENE_OUTPUT_DIR}/ugene.ini"; then
