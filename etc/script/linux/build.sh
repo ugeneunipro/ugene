@@ -17,9 +17,12 @@ fi
 
 TEAMCITY_WORK_DIR=$(pwd)
 UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
-#UGENE_DIR="${TEAMCITY_WORK_DIR}"
 SCRIPTS_DIR="${UGENE_DIR}/etc/script/linux"
-BUILD_DIR="${UGENE_DIR}/cmake-build-release"
+if [[ "$ENABLE_COVERAGE" == "1" ]]; then
+  BUILD_DIR="${UGENE_DIR}/cmake-build-relwithcov"
+else
+  BUILD_DIR="${UGENE_DIR}/cmake-build-release"
+fi
 DIST_DIR="${BUILD_DIR}/dist"
 
 rm -rf "${DIST_DIR}"
@@ -40,7 +43,11 @@ cd "${UGENE_DIR}" || {
 #### CMake ####
 echo "##teamcity[blockOpened name='CMake']"
 if
-  cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
+  if [[ "$ENABLE_COVERAGE" == "1" ]]; then
+    cmake -DCMAKE_BUILD_TYPE=RelWithCoverage -G "Unix Makefiles" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
+  else
+    cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -S "${UGENE_DIR}" -B "${BUILD_DIR}"
+  fi
 then
   echo "CMake finished successfully"
 else
