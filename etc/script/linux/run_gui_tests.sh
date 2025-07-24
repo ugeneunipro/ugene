@@ -7,8 +7,13 @@
 
 # ============== Environment for test script
 TEAMCITY_WORK_DIR=$(pwd)
-UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
-SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
+if [[ "$ENABLE_COVERAGE" == "1" ]]; then
+  SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene"
+  UGENE_DIR="${SOURCE_DIR}/cmake-build-relwithcov/dist"
+else
+  SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
+  UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
+fi
 SCRIPTS_DIR="${SOURCE_DIR}/etc/script/linux"
 echo "TEAMCITY_WORK_DIR: '${TEAMCITY_WORK_DIR}', UGENE_DIR: '${UGENE_DIR}'"
 
