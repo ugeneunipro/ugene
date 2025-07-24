@@ -9,7 +9,7 @@ rm coverage.info
 echo "##teamcity[blockClosed name='Cleanup']"
 
 echo "##teamcity[blockOpened name='Build UGENE']"
-#"${SCRIPTS_DIR}"/build.sh
+"${SCRIPTS_DIR}"/build.sh
 echo "##teamcity[blockClosed name='Build UGENE']"
 
 echo "##teamcity[blockOpened name='Run XML Tests']"
