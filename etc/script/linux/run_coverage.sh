@@ -26,3 +26,28 @@ echo "Generate report"
 "${LCOV_DIR}"genhtml coverage.info --output-directory coverage_report --ignore-errors inconsistent
 
 echo "##teamcity[blockClosed name='Run Coverage']"
+
+echo "##teamcity[blockOpened name='Run on server']"
+
+cd ugene
+
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+echo "Branch name: ${BRANCH_NAME}"
+
+cd ..
+
+# Убрать все символы, которые могут сломать путь
+SAFE_BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's#[^a-zA-Z0-9._-]#_#g')
+echo "Safe branch name: ${SAFE_BRANCH_NAME}"
+
+# Целевая директория
+TARGET_DIR="/var/www/html/coverage/${SAFE_BRANCH_NAME}"
+echo "Target dir: ${TARGET_DIR}"
+
+#mkdir -p "$TARGET_DIR"
+#cp -r coverage_report "$TARGET_DIR/"
+
+#echo "##teamcity[message text='Coverage report: http://ugene-cuda/coverage/${SAFE_BRANCH_NAME}/coverage_report/index.html']"
+#echo "http://your-domain/coverage/${SAFE_BRANCH_NAME}/coverage_report/index.html" > coverage_url.txt
+
+echo "##teamcity[blockClosed name='Run on server']"
