@@ -601,6 +601,33 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& importInfo
             int cigarOp = readToReferenceMap[ri];
             isReadPresentInCoveredRegion = cigarOp != U2CigarOp_D && cigarOp != U2CigarOp_N;
         }
+        int idx = coverageStartIndex + ci;
+        if (idx < 0 || idx >= importInfo.coverage.size()) {
+            coreLog.error(QString(
+                // This code should help us finding out the problem if crash appears again
+                // Crash report 26246
+                "[SQLiteAssemblyUtils::addToCoverage] Out of bounds! "
+                "idx: %1; "
+                "coverageStartIndex: %2; "
+                "ci: %3; "
+                "coverageLengthUnderRead: %4; "
+                "importInfo.coverage.size(): %5; "
+                "read->leftmostPos: %6; "
+                "read->effectiveLen: %7; "
+                "importInfo.readBasesPerCoveragePoint: %8; "
+                "readToReferenceMap.length(): %9; "
+                "read->cigar.size(): %10")
+                .arg(idx)
+                .arg(coverageStartIndex)
+                .arg(ci)
+                .arg(coverageLengthUnderRead)
+                .arg(importInfo.coverage.size())
+                .arg(read->leftmostPos)
+                .arg(read->effectiveLen)
+                .arg(importInfo.readBasesPerCoveragePoint, 0, 'g', 16)
+                .arg(readToReferenceMap.length())
+                .arg(read->cigar.size()));
+        }
         coverageData[coverageStartIndex + ci] += isReadPresentInCoveredRegion ? 1 : 0;
     }
 }
