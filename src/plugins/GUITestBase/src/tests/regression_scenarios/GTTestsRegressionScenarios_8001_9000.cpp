@@ -1142,6 +1142,41 @@ GUI_TEST_CLASS_DEFINITION(test_8111) {
     CHECK_SET_ERR(initialSize != nameLabel->size(), "Sequence name label size should change!");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8114) {
+    /*  
+     *  1. Select "Tools>Sanger data analysis>Map reads to reference..."
+     *  2. Set reference file with ";" in path, and correct reads path. Press OK.
+     *  Expected state: message box with error appears
+     *  3. Set correct reference file, and reads with ";" in path. Press OK.
+     *  Expected state: message box with error appears
+     */
+    QDir(sandBoxDir).mkdir("8114");
+    QDir(sandBoxDir).mkdir("8114/bad;path");
+    GTFile::copy(testDir + "_common_data/sanger/sanger_01.ab1", sandBoxDir + "8114/bad;path/sanger_01.ab1");
+    GTFile::copy(testDir + "_common_data/sanger/reference.gb", sandBoxDir + "8114/bad;path/reference.gb");
+
+    class CheckBadPaths : public CustomScenario {
+        void run() override {
+            GTLineEdit::setText(GTWidget::findLineEdit("referenceLineEdit"), sandBoxDir + "8114/bad;path/reference.gb");           
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/sanger/sanger_01.ab1"));
+            GTWidget::click(GTWidget::findPushButton("addReadButton"));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, 
+                                            "Reference sequence path should not contain \";\" character."));
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
+
+            GTLineEdit::setText(GTWidget::findLineEdit("referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");           
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir + "8114/bad;path/sanger_01.ab1"));
+            GTWidget::click(GTWidget::findPushButton("addReadButton"));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, 
+                                            "Read sequence path should not contain \";\" character."));
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
+        }
+    };    
+    GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(new CheckBadPaths()));
+    GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8116) {
     /*
      * 1. Open COI.aln
